@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "convergence-codex"
+version = "0.1.0"
+description = "The Convergence Codex — Logos AI (formalisation), Synthesis AI (communication), and pipeline orchestrator."
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.11"
+authors = [{name = "Mark E. Mala (Ekram Alam)"}]
+
+dependencies = [
+    "anthropic>=0.40.0",
+    "click>=8.0",
+]
+
+[project.scripts]
+logos = "logos.cli:main"
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0", "ruff>=0.1"]
