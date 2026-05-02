@@ -36,12 +36,19 @@ class Composer:
     def detect_boundaries(
         self, convergences: list[dict], proofs: list[dict], findings: list[dict]
     ) -> list[PaperBundle]:
-        """Auto-detect appropriate paper boundaries.
+        """Deterministic paper boundary detection by domain pair.
 
-        Groups convergences/proofs into bundles, each becoming one paper.
+        Groups convergences by their domain pair (e.g. "Topology × Quantum Mechanics").
+        This is fully reproducible, semantically coherent, and avoids the risk of
+        Claude hallucinating convergence IDs (which it was never given in the old approach).
+
+        Rules:
+        - Each domain pair with ≥3 convergences = one paper (split at 10 if large)
+        - Small domain pairs (1-2 convergences) sharing a domain are merged
+        - Any remaining singletons get a catch-all paper
+        - Every convergence is assigned to exactly one paper (completeness guaranteed)
         """
         if len(convergences) <= 10:
-            # Small enough for a single paper
             bundle = PaperBundle(
                 convergences=convergences,
                 proofs=proofs,
@@ -49,98 +56,107 @@ class Composer:
             )
             return [bundle]
 
-        # Use Claude to determine groupings
-        domain_pairs = {}
-        for c in convergences:
-            domains = tuple(sorted(c.get("domain_names", c.get("domains", []))))
-            key = " × ".join(domains)
-            domain_pairs[key] = domain_pairs.get(key, 0) + 1
-
-        proof_types = {}
-        for p in proofs:
-            t = p.get("formalisation_type", "unknown")
-            proof_types[t] = proof_types.get(t, 0) + 1
-
-        finding_levels = {}
-        for f in findings:
-            lvl = f.get("level", 0)
-            finding_levels[str(lvl)] = finding_levels.get(str(lvl), 0) + 1
-
-        prompt = BOUNDARY_PROMPT.format(
-            n_convergences=len(convergences),
-            domain_pairs_text="\n".join(f"  {k}: {v}" for k, v in sorted(domain_pairs.items(), key=lambda x: -x[1])),
-            n_proofs=len(proofs),
-            proof_types_text="\n".join(f"  {k}: {v}" for k, v in proof_types.items()),
-            n_findings=len(findings),
-            findings_levels_text="\n".join(f"  Level {k}: {v}" for k, v in finding_levels.items()),
-            min_words=self.api.config.target_word_count_min,
-            max_words=self.api.config.target_word_count_max,
-        )
-
-        data = self.api.query_deep_json(prompt, system=SECTION_SYSTEM)
-
-        # Build bundles from boundary decision
-        conv_by_id = {c.get("id", ""): c for c in convergences}
+        # Build proof lookup
         proof_by_conv = {}
         for p in proofs:
-            cid = p.get("convergence_id", "")
-            proof_by_conv[cid] = p
-        finding_by_id = {f.get("id", ""): f for f in findings}
+            proof_by_conv[p.get("convergence_id", "")] = p
+
+        # Group convergences by domain pair
+        pair_groups: dict[str, list[dict]] = {}
+        for c in convergences:
+            domains = tuple(sorted(c.get("domain_names", c.get("domains", []))))
+            key = " × ".join(domains) if domains else "Unknown"
+            pair_groups.setdefault(key, []).append(c)
 
         bundles = []
-        assigned_conv_ids = set()
+        small_groups: list[tuple[str, list[dict]]] = []  # pairs with <3 convergences
 
-        for paper_spec in data.get("papers", []):
-            paper_convs = [conv_by_id[cid] for cid in paper_spec.get("convergence_ids", []) if cid in conv_by_id]
-            # Auto-match proofs to convergences (don't rely on Claude listing proof IDs)
-            paper_proofs = [proof_by_conv[c.get("id", "")] for c in paper_convs if c.get("id", "") in proof_by_conv]
-            paper_findings = [finding_by_id[fid] for fid in paper_spec.get("finding_ids", []) if fid in finding_by_id]
+        for pair_key, convs in sorted(pair_groups.items(), key=lambda x: -len(x[1])):
+            if len(convs) < 3:
+                small_groups.append((pair_key, convs))
+                continue
 
-            bundle = PaperBundle(
-                convergences=paper_convs,
-                proofs=paper_proofs,
-                findings=paper_findings,
-                theme=paper_spec.get("theme", ""),
-                target_structure=paper_spec.get("title_suggestion", ""),
-            )
-            if bundle.convergences:
-                bundles.append(bundle)
-                for c in paper_convs:
-                    assigned_conv_ids.add(c.get("id", ""))
-
-        # ─── COMPLETENESS GUARANTEE ───
-        # Any convergence NOT assigned to a paper gets collected into remainder bundles.
-        # This prevents silent data loss from Claude missing IDs in boundary detection.
-        all_conv_ids = set(conv_by_id.keys())
-        missed_ids = all_conv_ids - assigned_conv_ids
-        if missed_ids:
-            missed_convs = [conv_by_id[cid] for cid in missed_ids]
-            missed_proofs = [proof_by_conv[cid] for cid in missed_ids if cid in proof_by_conv]
-
-            # Group missed convergences into papers of ~8 each
-            chunk_size = 8
-            for i in range(0, len(missed_convs), chunk_size):
-                chunk = missed_convs[i:i + chunk_size]
-                chunk_ids = {c.get("id", "") for c in chunk}
-                chunk_proofs = [p for p in missed_proofs if p.get("convergence_id", "") in chunk_ids]
-
-                domains = set()
-                for c in chunk:
-                    for d in c.get("domain_names", c.get("domains", [])):
-                        domains.add(d)
-
+            # Split large groups into papers of ~8
+            max_per_paper = 10
+            for i in range(0, len(convs), max_per_paper):
+                chunk = convs[i:i + max_per_paper]
+                chunk_proofs = [proof_by_conv[c.get("id", "")]
+                                for c in chunk if c.get("id", "") in proof_by_conv]
+                suffix = f" (Part {i // max_per_paper + 1})" if len(convs) > max_per_paper else ""
                 bundles.append(PaperBundle(
                     convergences=chunk,
                     proofs=chunk_proofs,
-                    findings=[],  # Findings assigned to main papers
-                    theme=f"Additional convergences: {', '.join(sorted(domains)[:4])}",
-                    target_structure="",
+                    findings=[],
+                    theme=pair_key,
+                    target_structure=f"Structural Convergences in {pair_key}{suffix}",
                 ))
+
+        # Merge small groups by shared domain
+        if small_groups:
+            # Group small pairs by their first domain
+            domain_buckets: dict[str, list[dict]] = {}
+            for pair_key, convs in small_groups:
+                first_domain = pair_key.split(" × ")[0] if " × " in pair_key else pair_key
+                domain_buckets.setdefault(first_domain, []).extend(convs)
+
+            for domain, convs in domain_buckets.items():
+                if not convs:
+                    continue
+                # Split into papers of ~8 if bucket got large
+                for i in range(0, len(convs), 10):
+                    chunk = convs[i:i + 10]
+                    chunk_proofs = [proof_by_conv[c.get("id", "")]
+                                    for c in chunk if c.get("id", "") in proof_by_conv]
+                    pair_names = set()
+                    for c in chunk:
+                        for d in c.get("domain_names", c.get("domains", [])):
+                            pair_names.add(d)
+                    bundles.append(PaperBundle(
+                        convergences=chunk,
+                        proofs=chunk_proofs,
+                        findings=[],
+                        theme=f"Cross-domain convergences involving {domain}",
+                        target_structure=f"Cross-Domain Convergences: {', '.join(sorted(pair_names)[:4])}",
+                    ))
+
+        # Assign findings to the most relevant paper
+        if findings:
+            self._assign_findings_to_bundles(findings, bundles)
 
         if not bundles:
             return [PaperBundle(convergences=convergences, proofs=proofs, findings=findings)]
 
         return bundles
+
+    def _assign_findings_to_bundles(
+        self, findings: list[dict], bundles: list[PaperBundle]
+    ):
+        """Assign each finding to the bundle whose convergences it most references."""
+        for f in findings:
+            # Findings may reference convergence IDs or domain pairs
+            f_domains = set(f.get("domains", []))
+            f_conv_ids = set(f.get("convergence_ids", []))
+
+            best_bundle = None
+            best_score = -1
+
+            for bundle in bundles:
+                score = 0
+                bundle_conv_ids = {c.get("id", "") for c in bundle.convergences}
+                score += len(f_conv_ids & bundle_conv_ids) * 10  # Strong signal
+
+                bundle_domains = set()
+                for c in bundle.convergences:
+                    for d in c.get("domain_names", c.get("domains", [])):
+                        bundle_domains.add(d)
+                score += len(f_domains & bundle_domains)
+
+                if score > best_score:
+                    best_score = score
+                    best_bundle = bundle
+
+            if best_bundle is not None:
+                best_bundle.findings.append(f)
 
     def compose(self, bundle: PaperBundle) -> tuple[PaperDraft, ReviewRequest]:
         """Compose a complete paper from a bundle."""
@@ -417,56 +433,97 @@ class Composer:
             for a in p.get("mathematical_apparatus", []):
                 apparatus.add(a)
 
+        verification_stats = {"verified": 0, "partial": 0, "unverified": 0}
+        for p in bundle.proofs:
+            if p.get("lean_verified"):
+                verification_stats["verified"] += 1
+            elif p.get("lean_partial"):
+                verification_stats["partial"] += 1
+            else:
+                verification_stats["unverified"] += 1
+
         details = (
             f"Formalisation types used: {', '.join(formalisation_types)}\n"
             f"Mathematical apparatus: {', '.join(apparatus)}\n"
-            f"Proofs generated: {len(bundle.proofs)}"
+            f"Proofs generated: {len(bundle.proofs)}\n"
+            f"Lean 4 verification: {verification_stats['verified']} verified, "
+            f"{verification_stats['partial']} partial, {verification_stats['unverified']} unverified"
         )
 
         prompt = METHODS_PROMPT.format(
             discovery_method="Convergent Descent (pairwise structural comparison with EA validation)",
             formalisation_details=details,
         )
-        return self.api.query(prompt, system=SECTION_SYSTEM, max_tokens=2048).strip()
+        return self.api.query_deep(prompt, system=SECTION_SYSTEM, max_tokens=2048).strip()
 
     def _compose_results(self, bundle: PaperBundle) -> str:
+        # Build proof lookup
+        proof_by_conv = {}
+        for p in bundle.proofs:
+            proof_by_conv[p.get("convergence_id", "")] = p
+
         results_parts = []
         for i, c in enumerate(bundle.convergences):
             claim = c.get("structural_claim", "")
             domains = ", ".join(c.get("domain_names", c.get("domains", [])))
             ea = c.get("ea_scores", {})
-            conf = ea.get("confidence_category", "unknown")
 
-            proof_text = ""
+            # Full EA scores — all 5 dimensions (not just category)
+            ea_text = f"  EA confidence: {ea.get('confidence_category', 'unknown')} ({ea.get('confidence', 'N/A')})"
+            for dim in ["strength", "independence", "adversarial", "reproducibility", "depth_consistency"]:
+                score = ea.get(dim)
+                if isinstance(score, (int, float)):
+                    ea_text += f"\n    {dim}: {score:.2f}"
+
+            # Full proof data — proposition, key steps, confidence
+            proof_text = "  [No formalisation available — Logos did not produce a proof for this convergence]"
             cid = c.get("id", "")
-            for p in bundle.proofs:
-                if p.get("convergence_id") == cid:
-                    proof_text = (
-                        f"  Formalisation: {p.get('formalisation_type', 'N/A')}\n"
-                        f"  Apparatus: {', '.join(p.get('mathematical_apparatus', []))}\n"
-                        f"  Verification: {p.get('verification_status', 'N/A')}\n"
-                        f"  Proof confidence: {p.get('confidence_category', 'N/A')}"
-                    )
-                    break
+            p = proof_by_conv.get(cid)
+            if p:
+                proof_text = (
+                    f"  Formalisation type: {p.get('formalisation_type', 'N/A')}\n"
+                    f"  Apparatus: {', '.join(p.get('mathematical_apparatus', []))}\n"
+                    f"  Verification: {p.get('verification_status', 'N/A')}\n"
+                    f"  Proof confidence: {p.get('confidence_score', 'N/A')} ({p.get('confidence_category', 'N/A')})"
+                )
+                if p.get("proposition_natural"):
+                    proof_text += f"\n  Proposition: {p['proposition_natural']}"
+                if p.get("proof_natural"):
+                    # Include key proof narrative (cap at 500 chars to keep prompt manageable)
+                    pn = p["proof_natural"]
+                    proof_text += f"\n  Proof narrative: {pn[:500]}{'...' if len(pn) > 500 else ''}"
+
+            # Supporting results summary
+            supporting = c.get("supporting_results", [])
+            sr_text = ""
+            if supporting:
+                sr_text = f"\n  Supporting results ({len(supporting)}):"
+                for sr in supporting[:4]:  # First 4 for prompt size
+                    sr_text += f"\n    - [{sr.get('domain_name', '?')}] {sr.get('result_name', '?')}: {sr.get('structural_conclusion', '')[:100]}"
 
             results_parts.append(
                 f"### Convergence {i+1}: {domains}\n"
                 f"**Claim:** {claim}\n"
-                f"**EA confidence:** {conf}\n"
+                f"{ea_text}\n"
                 f"{proof_text}"
+                f"{sr_text}"
             )
 
-        target_words = min(400 * len(bundle.convergences), 3000)
+        # Scale target words with convergence count — no arbitrary cap
+        target_words = max(500 * len(bundle.convergences), 2000)
         prompt = RESULTS_PROMPT.format(
             results_text="\n\n".join(results_parts),
             target_words=target_words,
         )
-        return self.api.query_deep(prompt, system=SECTION_SYSTEM, max_tokens=8192).strip()
+        return self.api.query_deep(prompt, system=SECTION_SYSTEM, max_tokens=16384).strip()
 
     def _compose_discussion(self, title: str, bundle: PaperBundle) -> str:
+        # Full claims for ALL convergences (not truncated, not limited)
         results_summary = "\n".join(
-            f"- {c.get('structural_claim', '')[:100]}"
-            for c in bundle.convergences[:10]
+            f"- [{', '.join(c.get('domain_names', c.get('domains', [])))}] "
+            f"{c.get('structural_claim', '')} "
+            f"(confidence: {c.get('ea_scores', {}).get('confidence_category', '?')})"
+            for c in bundle.convergences
         )
         themes = set()
         for c in bundle.convergences:
@@ -478,24 +535,44 @@ class Composer:
             results_summary=results_summary,
             themes=", ".join(themes) or bundle.theme or "cross-domain structural convergence",
         )
-        return self.api.query_deep(prompt, system=SECTION_SYSTEM, max_tokens=2048).strip()
+        return self.api.query_deep(prompt, system=SECTION_SYSTEM, max_tokens=4096).strip()
 
     def _compose_honest_scope(self, bundle: PaperBundle) -> str:
-        # Build confidence and limitation summaries
+        # Full claims with confidence — NOT truncated
         results_confidence = []
         for c in bundle.convergences:
             ea = c.get("ea_scores", {})
+            domains = ", ".join(c.get("domain_names", c.get("domains", [])))
             results_confidence.append(
-                f"- {c.get('structural_claim', '')[:60]}... → {ea.get('confidence_category', 'unknown')}"
+                f"- [{domains}] {c.get('structural_claim', '')} → "
+                f"{ea.get('confidence_category', 'unknown')} ({ea.get('confidence', 'N/A')})"
             )
 
+        # ALL limitations (not capped at 3 per proof)
         limitations = []
         verification_status = []
         for p in bundle.proofs:
             if p.get("limitations"):
-                limitations.extend(p["limitations"][:3])
+                for lim in p["limitations"]:
+                    if isinstance(lim, dict):
+                        limitations.append(f"[{lim.get('severity', '?')}] {lim.get('description', str(lim))}")
+                    else:
+                        limitations.append(str(lim))
+            v_status = p.get("verification_status", "N/A")
+            lean_status = "machine-verified" if p.get("lean_verified") else \
+                          "partial (contains sorry)" if p.get("lean_partial") else \
+                          "natural-language only"
             verification_status.append(
-                f"- {p.get('formalisation_type', 'N/A')}: {p.get('verification_status', 'N/A')}"
+                f"- {p.get('formalisation_type', 'N/A')}: {v_status} (Lean 4: {lean_status})"
+            )
+
+        # Count proofless convergences
+        proof_conv_ids = {p.get("convergence_id", "") for p in bundle.proofs}
+        proofless = [c for c in bundle.convergences if c.get("id", "") not in proof_conv_ids]
+        if proofless:
+            limitations.append(
+                f"{len(proofless)} convergence(s) have no formal proof — "
+                f"formalisation was not completed for these discoveries"
             )
 
         prompt = HONEST_SCOPE_PROMPT.format(
@@ -503,15 +580,18 @@ class Composer:
             limitations="\n".join(f"- {l}" for l in limitations) or "- None identified",
             verification_status="\n".join(verification_status) or "- No proofs included",
         )
-        return self.api.query(prompt, system=SECTION_SYSTEM, max_tokens=1024).strip()
+        return self.api.query_deep(prompt, system=SECTION_SYSTEM, max_tokens=2048).strip()
 
     def _compose_conclusion(self, title: str, bundle: PaperBundle) -> str:
+        # ALL convergences with full claims and confidence
         key_results = "\n".join(
-            f"- {c.get('structural_claim', '')[:80]}"
-            for c in bundle.convergences[:5]
+            f"- [{', '.join(c.get('domain_names', c.get('domains', [])))}] "
+            f"{c.get('structural_claim', '')} "
+            f"({c.get('ea_scores', {}).get('confidence_category', '?')})"
+            for c in bundle.convergences
         )
         prompt = CONCLUSION_PROMPT.format(title=title, key_results=key_results)
-        return self.api.query(prompt, system=SECTION_SYSTEM, max_tokens=1024).strip()
+        return self.api.query_deep(prompt, system=SECTION_SYSTEM, max_tokens=2048).strip()
 
     def _compose_references(self, bundle: PaperBundle) -> str:
         # Collect all citations from proofs
