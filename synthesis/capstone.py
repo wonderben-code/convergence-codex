@@ -483,90 +483,67 @@ class CapstoneComposer:
                 seen_texts.add(text_key)
             deduped.append(claim)
 
-        # AI pass: ask for paper planning (merge similar claims, assess portfolio)
-        cascade_summary = self._build_cascade_summary(ctx)
-        # Include numeric indexes so AI can reference claims reliably
-        claims_with_index = []
-        for idx, c in enumerate(deduped):
-            d = asdict(c)
-            d["_index"] = idx  # AI should use these indexes in claim_ids
-            claims_with_index.append(d)
-        claims_json = json.dumps(claims_with_index, indent=2, default=str)
+        # ONE PAPER PER CLAIM — the cascade decides which claims merit papers,
+        # not the AI. Each finding at each cascade level makes a genuinely different
+        # claim (L5 "Reality is constraint" ≠ L1 "Topological Governance").
+        # The AI generates titles and identifies crises, but does NOT merge or filter.
 
-        prompt = PAPER_PLANNING_PROMPT.format(
-            claims_json=claims_json,
-            cascade_summary=cascade_summary,
+        # AI pass: generate compelling titles and existing crises for each claim
+        cascade_summary = self._build_cascade_summary(ctx)
+        claims_for_titles = []
+        for c in deduped:
+            claims_for_titles.append({
+                "coined_term": c.coined_term,
+                "claim_text": c.claim_text[:200],
+                "tier": c.tier,
+                "level": c.source_finding_level,
+                "num_convergences": c.num_source_convergences,
+                "existing_crisis": c.existing_crisis,
+            })
+
+        title_prompt = (
+            "Generate a compelling paper title and identify the existing open problem "
+            "(crisis) for EACH of the following claims. Each claim gets its OWN paper — "
+            "do NOT merge claims.\n\n"
+            f"Claims:\n{json.dumps(claims_for_titles, indent=2)}\n\n"
+            f"Cascade context:\n{cascade_summary[:2000]}\n\n"
+            "Return JSON: {{\"titles\": [{{\"title\": \"...\", \"existing_crisis\": \"...\"}}, ...]}}\n"
+            "One entry per claim, in the SAME ORDER as the input claims."
         )
 
         try:
-            planning = self.api.query_deep_json(prompt, system=CAPSTONE_SYSTEM, max_tokens=8192)
+            title_data = self.api.query_deep_json(title_prompt, system=CAPSTONE_SYSTEM, max_tokens=4096)
+            titles = title_data.get("titles", [])
         except Exception:
-            # If AI planning fails, use deterministic plan
-            planning = {"papers": [{"claim_ids": [c.id], "title": c.coined_term or c.claim_text[:60],
-                                     "target_pages": "8-15", "existing_crisis": c.existing_crisis}
-                                    for c in deduped]}
+            titles = []
 
-        # Build PaperPlan objects
-        claim_by_id = {c.id: c for c in deduped}
+        # Build PaperPlan objects — one per deduplicated claim
         plans = []
-        used_claim_indexes = set()
+        for idx, claim in enumerate(deduped):
+            # Get AI-generated title, fall back to coined term
+            title_info = titles[idx] if idx < len(titles) else {}
+            title = title_info.get("title", claim.coined_term or claim.claim_text[:60])
+            crisis = title_info.get("existing_crisis", claim.existing_crisis)
 
-        for paper_spec in planning.get("papers", []):
-            claim_ids = paper_spec.get("claim_ids", [])
-            matched_claims = []
-            for cid in claim_ids:
-                # Try as integer index first (preferred — we told AI to use indexes)
-                try:
-                    idx = int(cid)
-                    if 0 <= idx < len(deduped) and idx not in used_claim_indexes:
-                        matched_claims.append(deduped[idx])
-                        used_claim_indexes.add(idx)
-                        continue
-                except (ValueError, TypeError):
-                    pass
-                # Try as claim ID
-                if isinstance(cid, str) and cid in claim_by_id:
-                    matched_claims.append(claim_by_id[cid])
-
-            if not matched_claims and deduped:
-                # Fallback: assign next unused claim
-                for idx, c in enumerate(deduped):
-                    if idx not in used_claim_indexes:
-                        matched_claims = [c]
-                        used_claim_indexes.add(idx)
-                        break
-
-            if not matched_claims:
-                continue
-
-            primary_claim = matched_claims[0]
-
-            # Collect all convergence/finding/proof IDs across merged claims
-            all_conv_ids = []
-            all_finding_ids = []
-            for mc in matched_claims:
-                all_conv_ids.extend(mc.supporting_convergence_ids)
-                all_finding_ids.extend(mc.supporting_finding_ids)
-
-            # Deduplicate
-            all_conv_ids = list(dict.fromkeys(all_conv_ids))
-            all_finding_ids = list(dict.fromkeys(all_finding_ids))
-
-            # Find proof IDs for these convergences
+            # Find proof IDs for this claim's convergences
             proof_ids = []
             for p in ctx.proofs:
-                if p.get("convergence_id", "") in all_conv_ids:
+                if p.get("convergence_id", "") in claim.supporting_convergence_ids:
                     proof_ids.append(p.get("id", ""))
 
+            # Target length based on tier
+            target_pages = {"meta": "10-15", "framework": "8-12",
+                           "anchor": "6-10", "bridge": "4-8"}.get(claim.tier, "8-12")
+
             plan = PaperPlan(
-                tier=primary_claim.tier,
-                title=paper_spec.get("title", primary_claim.coined_term or "Untitled"),
-                claim=asdict(primary_claim),
-                convergence_ids=all_conv_ids,
-                finding_ids=all_finding_ids,
+                tier=claim.tier,
+                title=title,
+                claim=asdict(claim),
+                convergence_ids=claim.supporting_convergence_ids,
+                finding_ids=claim.supporting_finding_ids,
                 proof_ids=proof_ids,
-                existing_crisis=paper_spec.get("existing_crisis", primary_claim.existing_crisis),
-                target_length_pages=paper_spec.get("target_pages", "8-15"),
+                existing_crisis=crisis,
+                target_length_pages=target_pages,
             )
             plans.append(plan)
 
@@ -725,22 +702,43 @@ class CapstoneComposer:
         )
         sections.append(self._make_section("limitations", "6. Limitations and Open Problems", limitations))
 
-        # 8. Priority and Provenance
-        # Compute SHA-256 of paper content so far for provenance
+        # 8. Priority and Provenance (DETERMINISTIC — no AI, prevents hallucination)
         content_so_far = "\n\n".join(s.get("content", "") for s in sections)
         paper_hash = hashlib.sha256(content_so_far.encode("utf-8")).hexdigest()
+        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
-        provenance = self.api.query(
-            CAPSTONE_PROVENANCE_PROMPT.format(
-                paper_id=paper.id,
-                claim_text=claim_text,
-                convergence_ids=", ".join(plan.convergence_ids[:10]),
-                finding_ids=", ".join(plan.finding_ids[:5]),
-                git_hash=paper_hash,
-                block_height="[recorded at push time — filled by git_stamp_capstone]",
-            ),
-            system=composition_system,
-            max_tokens=2048,
+        conv_ids_str = ", ".join(plan.convergence_ids[:10])
+        if len(plan.convergence_ids) > 10:
+            conv_ids_str += f" (and {len(plan.convergence_ids) - 10} more)"
+        finding_ids_str = ", ".join(plan.finding_ids[:5])
+
+        provenance = (
+            f"**Priority Claims:**\n\n"
+            f"Claim 1. The central claim of this paper — {claim_text[:200]} — "
+            f"was first identified through convergence analysis and timestamped on {today} "
+            f"via Bitcoin blockchain anchoring of the git repository containing this paper.\n\n"
+            f"Claim 2. The supporting convergences ({conv_ids_str}) were discovered by "
+            f"Gnosis AI and formalised by Logos AI prior to this paper's composition.\n\n"
+            f"Claim 3. The predictions in Section 4 were generated as part of this paper's "
+            f"composition and timestamped simultaneously with the paper itself.\n\n"
+            f"**Verification Instructions:**\n\n"
+            f"All data, reasoning logs, and intermediate results are preserved in the "
+            f"convergence-codex repository (github.com/wonderben-code/convergence-codex). "
+            f"The SHA-256 hash of this paper's content (sections 1-6) is:\n\n"
+            f"`{paper_hash}`\n\n"
+            f"Bitcoin timestamping is performed via the OpenTimestamps protocol on the git "
+            f"commit containing this paper. The Bitcoin block height is recorded in the git "
+            f"history and can be verified by running `ots verify` on the corresponding "
+            f"`.ots` file in the repository.\n\n"
+            f"**Attribution:**\n\n"
+            f"All convergences were discovered by Gnosis AI. All formalisations were produced "
+            f"by Logos AI. This paper was composed by Synthesis AI (Capstone Mode). The entire "
+            f"pipeline was designed and directed by Mark E. Mala.\n\n"
+            f"**Reproducibility:**\n\n"
+            f"The discovery, formalisation, and composition pipelines are deterministic given "
+            f"the same model, parameters, and input data. All parameters are recorded in the "
+            f"repository. Supporting convergence IDs: {conv_ids_str}. "
+            f"Supporting finding IDs: {finding_ids_str}."
         )
         sections.append(self._make_section("provenance", "7. Priority and Provenance", provenance))
 
