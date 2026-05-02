@@ -1,0 +1,342 @@
+{
+  "id": "dc46b0862dd8",
+  "convergence_id": "ef4cd9e64da2",
+  "timestamp": "2026-05-02T14:48:46.536495+00:00",
+  "proposition": "For a self-gravitating fermionic system with N particles of mass m in volume V, there exists a critical density \u03c1_c such that for \u03c1 > \u03c1_c, the quantum degeneracy pressure P_deg arising from the antisymmetrization requirement of the N-particle wavefunction \u03a8 satisfies P_deg > P_grav, where P_grav is the gravitational pressure, thereby preventing gravitational collapse to a singularity.",
+  "proposition_natural": "Quantum mechanics fundamentally alters the behavior of matter at extreme densities, creating new states that resist gravitational collapse through quantum degeneracy pressure",
+  "formalisation_type": "constraint_logic",
+  "mathematical_apparatus": [
+    "Functional analysis",
+    "Measure theory",
+    "Order theory"
+  ],
+  "apparatus_justification": "Functional analysis provides the operator theory framework for quantum mechanical observables and states, particularly self-adjoint operators on Hilbert spaces. Measure theory captures the probabilistic aspects of quantum states and phase space volumes. Order theory formalizes the constraint relationships between pressure, density, and quantum degeneracy conditions.",
+  "proof_natural": "**Proposition.** For a self-gravitating fermionic system with N particles of mass m in volume V, there exists a critical density \u03c1_c such that for \u03c1 > \u03c1_c, the quantum degeneracy pressure P_deg arising from the antisymmetrization requirement of the N-particle wavefunction \u03a8 satisfies P_deg > P_grav, where P_grav is the gravitational pressure, thereby preventing gravitational collapse to a singularity.\n\n**Proof.** We assume that fermions obey the Pauli exclusion principle with antisymmetric wavefunctions, the system is in thermodynamic equilibrium, and general relativity reduces to Newtonian gravity in the weak-field limit. Let the equation of state be approximated by an ideal degenerate Fermi gas for sufficiently high densities, with quantum field theoretic corrections negligible below nuclear densities. We further assume spherical symmetry and that temperature effects are negligible compared to the Fermi energy (T \u226a E_F).\n\nBy the Pauli exclusion principle, the N-particle fermionic wavefunction \u03a8(x\u2081,s\u2081,...,x\u2099,s\u2099) must be antisymmetric under particle exchange:\n\u03a8(...,x\u1d62,s\u1d62,...,x\u2c7c,s\u2c7c,...) = -\u03a8(...,x\u2c7c,s\u2c7c,...,x\u1d62,s\u1d62,...).\n\nIn the ground state, application of Fermi-Dirac statistics yields that fermions fill momentum states up to the Fermi momentum p_F = \u210f(3\u03c0\u00b2n)^(1/3), where n = N/V is the number density.\n\nFor non-relativistic fermions, integration over occupied momentum states in phase space gives the degeneracy pressure:\nP_deg = (2\u03c0/5)(\u210f\u00b2/m)(3\u03c0\u00b2)^(2/3)n^(5/3).\n\nWhen the system becomes relativistic (p_F \u226b mc), the energy-momentum relation E = pc dominates, yielding:\nP_deg = (\u03c0/4)\u210fc(3\u03c0\u00b2)^(1/3)n^(4/3).\n\nFrom the hydrostatic equilibrium equation dP/dr = -GM\u03c1/r\u00b2, the gravitational pressure at radius r in a sphere of uniform density \u03c1 is:\nP_grav = (2\u03c0/3)G\u03c1\u00b2r\u00b2.\n\nSetting P_deg = P_grav at the stellar radius R and solving the Tolman-Oppenheimer-Volkoff equation for a white dwarf yields the Chandrasekhar limit M_Ch \u2248 1.4M_\u2299, representing the maximum mass supportable by electron degeneracy pressure.\n\n[Note: A rigorous treatment of the neutron star case requires inclusion of the nuclear equation of state, as nuclear forces become dominant at densities \u03c1 > \u03c1_nuclear \u2248 2.8 \u00d7 10\u00b9\u2074 g/cm\u00b3.]\n\nSince degeneracy pressure scales more steeply with density than gravitational pressure (n^(5/3) versus n\u00b2), for any finite fermionic system there exists a critical density \u03c1_c (dependent on particle mass and composition) such that for \u03c1 > \u03c1_c, we have P_deg > P_grav. This inequality prevents gravitational collapse to r = 0, as the quantum mechanical pressure arising from the antisymmetrization requirement provides sufficient support against gravity.\n\nThis completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.Analysis.SpecialFunctions.Pow.Real\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic\nimport Mathlib.MeasureTheory.Measure.Lebesgue.Basic\nimport Mathlib.Analysis.NormedSpace.Basic\nimport Mathlib.Order.ConditionallyCompleteLattice.Basic\n\n/-- Represents a fermionic N-particle wavefunction with antisymmetry property -/\nstructure FermionicWavefunction (N : \u2115) where\n  -- sorry: Need quantum many-body wavefunction formalism\n  wavefunction : sorry\n  antisymmetric : sorry\n\n/-- The Fermi momentum for a degenerate Fermi gas -/\ndef fermiMomentum (\u210f : \u211d) (n : \u211d) : \u211d :=\n  \u210f * (3 * Real.pi^2 * n)^(1/3)\n\n/-- Non-relativistic degeneracy pressure -/\ndef degeneracyPressureNR (\u210f : \u211d) (m : \u211d) (n : \u211d) : \u211d :=\n  (2 * Real.pi / 5) * (\u210f^2 / m) * (3 * Real.pi^2)^(2/3) * n^(5/3)\n\n/-- Relativistic degeneracy pressure -/\ndef degeneracyPressureRel (\u210f : \u211d) (c : \u211d) (n : \u211d) : \u211d :=\n  (Real.pi / 4) * \u210f * c * (3 * Real.pi^2)^(1/3) * n^(4/3)\n\n/-- Gravitational pressure in a uniform density sphere -/\ndef gravitationalPressure (G : \u211d) (\u03c1 : \u211d) (r : \u211d) : \u211d :=\n  (2 * Real.pi / 3) * G * \u03c1^2 * r^2\n\n/-- Critical density for gravitational collapse -/\ndef criticalDensity (m : \u211d) (G : \u211d) (\u210f : \u211d) : \u211d :=\n  sorry -- Need to derive from balance of pressures\n\n/-- Main theorem: Quantum degeneracy prevents gravitational collapse above critical density -/\ntheorem quantum_degeneracy_prevents_collapse\n  (N : \u2115) (m : \u211d) (V : \u211d) (G : \u211d) (\u210f : \u211d) (c : \u211d)\n  (hm : m > 0) (hV : V > 0) (hG : G > 0) (h\u210f : \u210f > 0) (hc : c > 0) :\n  \u2203 (\u03c1_c : \u211d), \u03c1_c > 0 \u2227\n  \u2200 (\u03c1 : \u211d), \u03c1 > \u03c1_c \u2192\n  \u2203 (P_deg P_grav : \u211d), P_deg > P_grav \u2227\n  (\u2200 r : \u211d, r > 0 \u2192 P_deg > gravitationalPressure G \u03c1 r) := by\n  -- Step 1: Antisymmetry of fermionic wavefunction\n  sorry -- Need Pauli exclusion principle formalization\n  \n  -- Step 2: Fermi momentum calculation\n  let n := N / V\n  let p_F := fermiMomentum \u210f n\n  \n  -- Step 3: Non-relativistic degeneracy pressure\n  let P_deg_NR := degeneracyPressureNR \u210f m n\n  \n  -- Step 4: Relativistic degeneracy pressure\n  let P_deg_Rel := degeneracyPressureRel \u210f c n\n  \n  -- Step 5: Gravitational pressure\n  -- For any r > 0:\n  -- let P_grav := gravitationalPressure G \u03c1 r\n  \n  -- Step 6: Chandrasekhar mass calculation\n  sorry -- Need stellar structure equations\n  \n  -- Step 7: Neutron star case\n  sorry -- Need nuclear equation of state\n  \n  -- Step 8: Final result\n  use criticalDensity m G \u210f\n  constructor\n  \u00b7 sorry -- Need to prove critical density is positive\n  \u00b7 intro \u03c1 h\u03c1\n    -- Choose appropriate degeneracy pressure based on regime\n    sorry -- Need to complete the comparison P_deg > P_grav\n\n/-- The Chandrasekhar mass limit -/\ndef chandrasekharMass (M_sun : \u211d) : \u211d :=\n  1.4 * M_sun\n\n/-- Nuclear density threshold -/\ndef nuclearDensity : \u211d :=\n  2.8e14 -- g/cm\u00b3\n\n/-- Auxiliary lemma: Degeneracy pressure scaling -/\nlemma degeneracy_pressure_scaling (\u210f : \u211d) (m : \u211d) (n\u2081 n\u2082 : \u211d)\n  (h\u210f : \u210f > 0) (hm : m > 0) (hn : n\u2081 < n\u2082) :\n  degeneracyPressureNR \u210f m n\u2081 < degeneracyPressureNR \u210f m n\u2082 := by\n  unfold degeneracyPressureNR\n  sorry -- Need to prove n^(5/3) is increasing\n\n/-- Auxiliary lemma: Gravitational pressure scaling -/\nlemma gravitational_pressure_scaling (G : \u211d) (\u03c1\u2081 \u03c1\u2082 r : \u211d)\n  (hG : G > 0) (hr : r > 0) (h\u03c1 : \u03c1\u2081 < \u03c1\u2082) :\n  gravitationalPressure G \u03c1\u2081 r < gravitationalPressure G \u03c1\u2082 r := by\n  unfold gravitationalPressure\n  sorry -- Need to prove \u03c1\u00b2 is increasing",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The N-particle fermionic wavefunction \u03a8(x\u2081,s\u2081,...,x\u2099,s\u2099) must be antisymmetric under particle exchange: \u03a8(...,x\u1d62,s\u1d62,...,x\u2c7c,s\u2c7c,...) = -\u03a8(...,x\u2c7c,s\u2c7c,...,x\u1d62,s\u1d62,...)",
+      "justification": "Direct application of the Pauli exclusion principle for fermions",
+      "dependencies": [
+        "Pauli Exclusion Principle"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "In the ground state, fermions fill momentum states up to the Fermi momentum p_F = \u210f(3\u03c0\u00b2n)^(1/3), where n = N/V is the number density",
+      "justification": "Standard result from quantum statistical mechanics for a degenerate Fermi gas",
+      "dependencies": [
+        "Step 1",
+        "Fermi-Dirac statistics"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The degeneracy pressure for non-relativistic fermions is P_deg = (2\u03c0/5)(\u210f\u00b2/m)(3\u03c0\u00b2)^(2/3)n^(5/3)",
+      "justification": "Integration over occupied momentum states in phase space",
+      "dependencies": [
+        "Step 2",
+        "Thermodynamic pressure definition"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "For relativistic fermions (p_F >> mc), P_deg = (\u03c0/4)\u210fc(3\u03c0\u00b2)^(1/3)n^(4/3)",
+      "justification": "Relativistic energy-momentum relation E = pc dominates",
+      "dependencies": [
+        "Step 2",
+        "Special relativity"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The gravitational pressure at radius r in a sphere of uniform density \u03c1 is P_grav = (2\u03c0/3)G\u03c1\u00b2r\u00b2",
+      "justification": "Hydrostatic equilibrium equation dP/dr = -GM\u03c1/r\u00b2 integrated from center",
+      "dependencies": [
+        "Newton's law of gravitation",
+        "Hydrostatic equilibrium"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "For a white dwarf, setting P_deg = P_grav at the stellar radius R yields the Chandrasekhar mass M_Ch \u2248 1.4M_\u2299",
+      "justification": "Balancing degeneracy and gravitational pressure with appropriate stellar structure integration",
+      "dependencies": [
+        "Steps 3, 4, 5",
+        "Chandrasekhar Limit"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "[Gap: Rigorous treatment of neutron star case requires nuclear equation of state]",
+      "justification": "Nuclear forces become dominant at \u03c1 > \u03c1_nuclear \u2248 2.8 \u00d7 10^14 g/cm\u00b3",
+      "dependencies": [
+        "Neutron Star Equation of State Constraints"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "For any finite fermionic system with \u03c1 > \u03c1_c where \u03c1_c depends on particle mass and composition, P_deg > P_grav preventing collapse to r = 0",
+      "justification": "Degeneracy pressure scales more steeply with density than gravitational pressure",
+      "dependencies": [
+        "Steps 3-6"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Pauli Exclusion Principle",
+      "authors": "Wolfgang Pauli",
+      "year": "1925",
+      "field": "Quantum Mechanics",
+      "statement": "No two identical fermions can occupy the same quantum state simultaneously",
+      "usage": "Fundamental constraint leading to degeneracy pressure"
+    },
+    {
+      "name": "Chandrasekhar Limit",
+      "authors": "Subrahmanyan Chandrasekhar",
+      "year": "1931",
+      "field": "Astrophysics",
+      "statement": "Maximum mass of a white dwarf star is approximately 1.4 solar masses",
+      "usage": "Concrete example of degeneracy pressure preventing collapse"
+    },
+    {
+      "name": "Fermi-Dirac Statistics",
+      "authors": "Enrico Fermi, Paul Dirac",
+      "year": "1926",
+      "field": "Statistical Mechanics",
+      "statement": "Statistical distribution of identical fermions over energy states in thermal equilibrium",
+      "usage": "Derives momentum distribution and pressure"
+    },
+    {
+      "name": "Tolman-Oppenheimer-Volkoff Equation",
+      "authors": "Tolman, Oppenheimer, Volkoff",
+      "year": "1939",
+      "field": "General Relativity",
+      "statement": "Relativistic equation of hydrostatic equilibrium",
+      "usage": "Would be needed for fully relativistic treatment"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Fermions obey the Pauli exclusion principle with antisymmetric wavefunctions",
+    "The system is in thermodynamic equilibrium or quasi-equilibrium",
+    "General relativity reduces to Newtonian gravity in the weak-field limit for stellar interiors",
+    "The equation of state can be approximated by an ideal degenerate Fermi gas for sufficiently high densities",
+    "Quantum field theoretic corrections are negligible below nuclear densities",
+    "The system is spherically symmetric",
+    "Temperature effects are negligible compared to Fermi energy (T << E_F)",
+    "Particles interact only through gravity and degeneracy pressure (no strong force contributions initially)"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "Setting P_deg = P_grav at the stellar radius R",
+        "issue": "The proof jumps from comparing pressures at arbitrary radius r to suddenly invoking the Chandrasekhar limit without deriving it. The connection between the pressure equality condition and the mass limit is not established.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Derive the Chandrasekhar limit from first principles using the TOV equation or cite the full derivation"
+      },
+      {
+        "step": "P_grav = (2\u03c0/3)G\u03c1\u00b2r\u00b2",
+        "issue": "This formula assumes uniform density, but real stellar objects have density gradients. The proof fails to justify why uniform density is sufficient for the general claim.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Either restrict the claim to uniform density objects or properly handle density profiles"
+      },
+      {
+        "step": "Since degeneracy pressure scales more steeply with density than gravitational pressure",
+        "issue": "This scaling argument is incorrect. In the uniform density case, both P_deg \u221d \u03c1^(5/3) and P_grav \u221d \u03c1\u00b2 scale with density, not number density. The gravitational pressure actually scales more steeply (\u03c1\u00b2 vs \u03c1^(5/3)).",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "The entire scaling argument needs to be reconsidered"
+      },
+      {
+        "step": "For any finite fermionic system there exists a critical density \u03c1_c",
+        "issue": "This conclusion doesn't follow from the preceding analysis. The proof hasn't shown that P_deg > P_grav for all densities above some critical value, especially given the incorrect scaling argument.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Complete rework of the argument needed"
+      },
+      {
+        "step": "Transition from non-relativistic to relativistic regime",
+        "issue": "The proof presents two different pressure formulas but doesn't specify when to use which one or how they connect. The transition at p_F \u2248 mc is mentioned but not incorporated into the analysis.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Provide a unified treatment or clearly delineate the regimes of validity"
+      }
+    ],
+    "hidden_assumptions": [
+      "The system remains in hydrostatic equilibrium during collapse",
+      "The pressure comparison at a single point determines global stability",
+      "The ideal Fermi gas approximation remains valid at all relevant densities",
+      "Quantum corrections beyond degeneracy pressure are negligible",
+      "The system size is large enough for thermodynamic limit to apply",
+      "General relativistic corrections to the pressure balance are negligible"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes hydrostatic equilibrium (dP/dr = -GM\u03c1/r\u00b2) to derive pressures, then uses these pressures to argue that collapse is prevented. But if collapse is prevented, how do we know the equilibrium equation applies?",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to show that ANY fermionic system above critical density avoids collapse, but only analyzes specific stellar configurations. It doesn't handle arbitrary geometries, non-uniform densities, or systems where other forces dominate.",
+    "citation_issues": [
+      "The Chandrasekhar limit is cited but not derived, and its relevance to the general claim is unclear",
+      "The TOV equation is mentioned but never actually solved or used properly",
+      "The proof claims to use Fermi-Dirac statistics but only uses the zero-temperature limit"
+    ],
+    "structural_soundness": 0.2,
+    "overall_assessment": "This proof contains fundamental errors in its central scaling argument and fails to establish its main claim. The logic jumps between specific stellar examples and general statements without proper justification, and the mathematical analysis contains critical mistakes that invalidate the conclusion.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to show that degeneracy pressure can balance gravitational pressure in specific stellar objects (white dwarfs, neutron stars) but does not prove the general proposition about arbitrary fermionic systems or establish the existence of a universal critical density.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The system has sufficient mass to generate significant gravitational pressure",
+      "The fermions are non-interacting except through gravity",
+      "The system maintains mechanical equilibrium during the comparison",
+      "The density distribution remains approximately uniform or follows a specific profile",
+      "Relativistic effects in gravity are negligible",
+      "The system is isolated from external forces",
+      "Quantum corrections to gravity are negligible",
+      "The fermions are identical particles"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "5",
+        "issue": "The gravitational pressure formula P_grav = (2\u03c0/3)G\u03c1\u00b2r\u00b2 is incorrect. The correct hydrostatic equilibrium gives P_grav \u221d GM(r)\u03c1/r\u00b2, and for uniform density this becomes P_grav = (2\u03c0G/3)\u03c1\u00b2(R\u00b2 - r\u00b2), not the stated formula."
+      },
+      {
+        "step": "6",
+        "issue": "The Chandrasekhar mass calculation requires detailed stellar structure equations and cannot be derived simply by setting P_deg = P_grav at the surface. The mass depends on the central density and requires solving the Lane-Emden equation."
+      },
+      {
+        "step": "8",
+        "issue": "The conclusion does not follow from the previous steps. The scaling argument is insufficient - gravitational pressure can dominate at sufficiently high densities and masses, and the proof provides no rigorous demonstration that degeneracy pressure always wins for any finite system above some critical density."
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No rigorous definition or derivation of the critical density \u03c1_c",
+      "No proof that such a critical density exists for all fermionic systems",
+      "Missing treatment of the transition between non-relativistic and relativistic regimes",
+      "No consideration of systems where gravitational pressure dominates (black hole formation)",
+      "Gap in Step 7 acknowledged but not addressed",
+      "No treatment of finite-size effects or boundary conditions",
+      "Missing analysis of stability against collapse modes other than radial compression"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims quantum degeneracy pressure prevents gravitational collapse to singularities for any finite fermionic system above critical density, but existing proof [1050c80b4013] establishes that matter undergoes phase transitions at extreme densities where fundamental degrees of freedom change, potentially invalidating the ideal Fermi gas approximation",
+      "The proof assumes general relativity reduces to Newtonian gravity in weak-field limit, but for systems approaching gravitational collapse (where P_deg \u2248 P_grav), relativistic effects become crucial and the Newtonian approximation breaks down",
+      "The claim that degeneracy pressure prevents collapse to r=0 contradicts the known physics of neutron stars, which can collapse to black holes when exceeding the Tolman-Oppenheimer-Volkoff limit"
+    ],
+    "assumption_conflicts": [
+      "Assumption of ideal degenerate Fermi gas conflicts with [1050c80b4013] which shows interaction potentials with hard core repulsion become dominant at extreme densities",
+      "Neglecting quantum field theoretic corrections conflicts with the regime where degeneracy pressure becomes comparable to gravitational pressure",
+      "The assumption that particles interact only through gravity and degeneracy pressure ignores strong nuclear forces that become relevant in neutron star cores"
+    ],
+    "beneficial_connections": [
+      "Connects to [0e664bd264b4] on hierarchical structure formation through gravitational instabilities by providing a quantum mechanical stabilization mechanism",
+      "Relates to [087da119976b] on symmetry breaking by showing how Pauli exclusion principle (fermionic antisymmetry) creates pressure that opposes gravitational collapse",
+      "Links to [08b6405556dd] on symmetry principles constraining dynamics through the antisymmetrization requirement of fermionic wavefunctions"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof contains fundamental gaps in treating the neutron star case and oversimplifies the physics at extreme densities. The Chandrasekhar mass calculation is correct for white dwarfs but the generalization to all fermionic systems is flawed. The proof needs to address the transition from non-relativistic to relativistic regimes and include nuclear equation of state effects."
+  },
+  "confidence_score": 0.31,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.6
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.6
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": true,
+  "new_mathematics_needed": "",
+  "limitations": [
+    "Transition from non-relativistic to relativistic regime not rigorously treated",
+    "Nuclear equation of state at extreme densities requires QCD calculations beyond scope",
+    "General relativistic corrections only mentioned, not fully incorporated",
+    "Many-body quantum effects beyond mean-field approximation neglected",
+    "Proof assumes spherical symmetry which may break down in realistic collapse",
+    "Does not address ultimate fate if degeneracy pressure is overcome (black holes)",
+    "Neglects quantum field theoretic effects that become important at Planck density",
+    "Does not rigorously prove existence of neutron stars, only white dwarfs"
+  ],
+  "source_convergence": {
+    "structural_claim": "Quantum mechanics fundamentally alters the behavior of matter at extreme densities, creating new states that resist gravitational collapse through quantum degeneracy pressure",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Chandrasekhar Limit",
+        "domain_id": "field_a",
+        "domain_name": "Astrophysics",
+        "link_type": "direct",
+        "structural_conclusion": "Quantum degeneracy pressure from the Pauli exclusion principle creates a fundamental mass threshold that determines stellar endpoints"
+      },
+      {
+        "result_id": "",
+        "result_name": "Pauli Exclusion Principle",
+        "domain_id": "field_b",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Fermionic wavefunctions must be antisymmetric, fundamentally constraining how particles can occupy quantum states"
+      },
+      {
+        "result_id": "",
+        "result_name": "Neutron Star Equation of State Constraints",
+        "domain_id": "field_a",
+        "domain_name": "Astrophysics",
+        "link_type": "direct",
+        "structural_conclusion": "Nuclear forces must stiffen dramatically at high density to support massive neutron stars against gravitational collapse"
+      }
+    ],
+    "domains": [
+      "astrophysics",
+      "atomic_physics"
+    ],
+    "domain_names": [
+      "Astrophysics",
+      "Atomic and Molecular Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.357,
+      "independence": 0.7,
+      "adversarial": 0.7,
+      "reproducibility": 0.5249999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.6008499999999999,
+      "confidence_category": "supported"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:41:03.170486+00:00",
+    "id": "ef4cd9e64da2"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.28956
+  }
+}

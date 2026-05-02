@@ -1,0 +1,38 @@
+{
+  "proof_id": "40ec729e9fb6",
+  "timestamp": "2026-05-02T14:45:18.472677+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "constraint_logic",
+      "alternatives_considered": [
+        "categorical - One could frame this as a functor from initial conditions to observable spectra, but this misses the essential role of physical constraints in determining the mapping"
+      ],
+      "reasoning": "The CMB's properties arise from physical constraints: thermodynamic equilibrium producing the blackbody spectrum, and gravitational/acoustic physics generating the anisotropies. The convergence is fundamentally about how initial conditions plus physical constraints determine the observed structure."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Differential geometry, Measure theory, Information theory",
+      "alternatives_considered": [],
+      "reasoning": "Differential geometry provides the framework for spacetime manifolds and the metric tensor needed to model the CMB's propagation through curved spacetime. Measure theory formalizes the statistical properties of temperature fluctuations as a random field. Information theory quantifies how primordial density perturbations are encoded in the CMB anisotropies."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof shows that photons from the decoupling epoch maintain their blackbody spectrum through cosmological redshift while acquiring temperature anisotropies from metric perturbations. The key insight is that Liouville's theorem preserves the thermal distribution while the Sachs-Wolfe effect imprints gravitational potential fluctuations as temperature variations, thereby encoding primordial information in observable CMB anisotropies.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 9 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3833 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 4151 chars, 9 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This formalization captures the mathematical structure of CMB temperature evolution and anisotropies, but the actual physics content requires extensive cosmological and relativistic frameworks not available in Mathlib. The proof structure follows the given steps but most computational details must be left as sorry."
+    }
+  ]
+}

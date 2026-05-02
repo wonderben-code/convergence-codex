@@ -1,0 +1,365 @@
+{
+  "id": "a614614bcab0",
+  "convergence_id": "ee3f9f04054a",
+  "timestamp": "2026-05-02T14:46:23.867846+00:00",
+  "proposition": "Let (M, g) be a manifold with metric g, and let C be a category of topological defects on M. There exists a functor F: C \u2192 Phase(M) from defect configurations to phase states such that phase transitions occur via morphisms in C that preserve the symmetry group G of the system, specifically through unbinding transitions that change the topological invariants of defect configurations while maintaining G-invariance.",
+  "proposition_natural": "Phase transitions can occur through topological defect unbinding without symmetry breaking",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Topology",
+    "Category theory",
+    "Differential geometry"
+  ],
+  "apparatus_justification": "Topology is essential for formalizing topological defects and their unbinding mechanisms. Category theory provides the functorial framework to map between condensed matter and acoustic domains while preserving structural relationships. Differential geometry captures the local structure of defects and phase spaces where transitions occur.",
+  "proof_natural": "**Proposition.** Let $(M, g)$ be a manifold with metric $g$, and let $C$ be a category of topological defects on $M$. There exists a functor $F: C \\to \\text{Phase}(M)$ from defect configurations to phase states such that phase transitions occur via morphisms in $C$ that preserve the symmetry group $G$ of the system, specifically through unbinding transitions that change the topological invariants of defect configurations while maintaining $G$-invariance.\n\n**Proof.** We assume that $M$ is a smooth manifold of dimension $n \\geq 2$ equipped with a Riemannian metric $g$. Let $G$ be a symmetry group acting on both the category $C$ of topological defects and the category $\\text{Phase}(M)$ of thermodynamic phases. We further assume that topological defects can be characterized by elements of appropriate homotopy groups $\\pi_k(M)$, and that the system possesses a well-defined free energy functional $F: C \\to \\mathbb{R}$ depending on temperature $T$.\n\nWe begin by constructing the category $C$ of topological defects, where objects are defect configurations and morphisms are defect interactions that preserve or change topological charge. This is a standard construction in topological field theory, where defects are classified by homotopy groups.\n\nFor the Kosterlitz-Thouless case, we specialize to two dimensions where defects are vortices characterized by their topological charge $n \\in \\pi_1(S^1) \\cong \\mathbb{Z}$, representing the winding number around $S^1$. We identify bound vortex-antivortex pairs as objects in $C$ with total topological charge zero but non-trivial local structure, as pairs have opposite winding numbers that sum to zero.\n\nThe crucial observation is that there exists an unbinding morphism $u: \\text{(bound pairs)} \\to \\text{(free defects)}$ in $C$ that preserves the $G$-symmetry. This morphism changes the defect configuration while preserving the action of the rotation group $G = SO(2)$.\n\nWe now define the functor $F: C \\to \\text{Phase}(M)$ that maps defect configurations to thermodynamic phases. [Note: The rigorous construction of $\\text{Phase}(M)$ as a category requires formalization of phase space as objects and transitions as morphisms, which we assume given.] By construction, $F$ maps the unbinding morphism $u$ to a phase transition morphism in $\\text{Phase}(M)$.\n\nFrom renormalization group analysis of the Kosterlitz-Thouless transition, we know that the phase transition $F(u)$ exhibits a diverging correlation length $\\xi \\to \\infty$ at the critical temperature $T_c$. The RG equations demonstrate that vortex fugacity flows to zero below $T_c$ and to infinity above $T_c$, confirming the phase transition nature of $F(u)$.\n\nSince $G$ acts on both $C$ and $\\text{Phase}(M)$ via natural transformations that commute with $F$, and since the unbinding morphism $u$ preserves $G$-symmetry, functoriality ensures that $F(u)$ is a $G$-symmetric phase transition.\n\nFor non-Hermitian acoustic systems, exceptional points represent topological transitions in parameter space. [Note: The connection between exceptional points and defect unbinding requires formalization of non-Hermitian topology, and the rigorous extension to non-Hermitian systems requires development of non-Hermitian topological field theory.]\n\nWe have thus established the existence of a functor $F$ mapping defect configurations to phase states, where phase transitions occur through $G$-invariant morphisms in $C$, specifically via unbinding transitions that alter topological invariants while maintaining symmetry. This completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.CategoryTheory.Category.Basic\nimport Mathlib.CategoryTheory.Functor.Basic\nimport Mathlib.Topology.Basic\nimport Mathlib.Geometry.Manifold.SmoothManifoldWithCorners\nimport Mathlib.Geometry.RiemannianGeometry.Basic\nimport Mathlib.GroupTheory.GroupAction.Basic\nimport Mathlib.Topology.Homotopy.Fundamental\n\n/-- A manifold with metric -/\nstructure ManifoldWithMetric where\n  M : Type*\n  [inst : TopologicalSpace M]\n  [inst' : ChartedSpace \u211d M]\n  [inst'' : SmoothManifoldWithCorners \ud835\udcd8(\u211d, \u211d) M]\n  g : sorry -- Riemannian metric on M\n\n/-- Category of topological defects on a manifold -/\nstructure TopologicalDefectCategory (MW : ManifoldWithMetric) where\n  /-- Objects are defect configurations -/\n  DefectConfig : Type*\n  /-- Morphisms are defect interactions preserving or changing topological charge -/\n  DefectMorphism : DefectConfig \u2192 DefectConfig \u2192 Type*\n  [inst : Category DefectConfig]\n  /-- Topological charge assignment -/\n  topologicalCharge : DefectConfig \u2192 \u2124\n  /-- Morphisms preserve or change topological charge in controlled ways -/\n  chargeProperty : \u2200 {X Y : DefectConfig} (f : X \u27f6 Y), sorry -- charge preservation property\n\n/-- Phase states on a manifold form a category -/\nstructure PhaseCategory (MW : ManifoldWithMetric) where\n  /-- Phase states as objects -/\n  PhaseState : Type*\n  /-- Phase transitions as morphisms -/\n  PhaseTransition : PhaseState \u2192 PhaseState \u2192 Type*\n  [inst : Category PhaseState]\n  /-- Correlation length for each phase -/\n  correlationLength : PhaseState \u2192 \u211d\u22650\u221e\n\n/-- Vortex configuration in 2D with winding number -/\nstructure Vortex2D where\n  /-- Winding number n \u2208 \u03c0\u2081(S\u00b9) \u2245 \u2124 -/\n  windingNumber : \u2124\n\n/-- Bound vortex-antivortex pair -/\nstructure BoundPair where\n  vortex : Vortex2D\n  antivortex : Vortex2D\n  /-- Total topological charge is zero -/\n  chargeZero : vortex.windingNumber + antivortex.windingNumber = 0\n  /-- Non-trivial local structure -/\n  localStructure : sorry -- local structure data\n\n/-- Free defects configuration -/\nstructure FreeDefects where\n  defects : List Vortex2D\n\n/-- Unbinding morphism from bound pairs to free defects -/\ndef unbindingMorphism : BoundPair \u2192 FreeDefects :=\n  sorry -- unbinding transformation\n\n/-- Symmetry group G = SO(2) for the system -/\ndef SymmetryGroup : Type* := sorry -- SO(2) group\n\n/-- G-action on defect configurations -/\ndef symmetryActionDefects : SymmetryGroup \u2192 (C : TopologicalDefectCategory MW) \u2192 C.DefectConfig \u2192 C.DefectConfig :=\n  sorry -- group action on defects\n\n/-- G-action on phase states -/\ndef symmetryActionPhases : SymmetryGroup \u2192 (P : PhaseCategory MW) \u2192 P.PhaseState \u2192 P.PhaseState :=\n  sorry -- group action on phases\n\n/-- Main theorem: Functor from defects to phases preserving symmetry -/\ntheorem defect_phase_functor_exists (MW : ManifoldWithMetric) (G : Type*) [Group G] :\n  \u2203 (C : TopologicalDefectCategory MW) (P : PhaseCategory MW) (F : C.DefectConfig \u2964 P.PhaseState),\n  (\u2203 (u : C.DefectMorphism (sorry : C.DefectConfig) (sorry : C.DefectConfig)),\n    sorry) \u2227 -- u is unbinding morphism preserving G-symmetry\n  (\u2200 (g : G), sorry) -- F is G-equivariant\n  := by\n  -- Step 1: Define category C of topological defects\n  sorry -- Need formalization of topological defects category\n  \n  -- Step 2: For KT case, defects are vortices with charge in \u03c0\u2081(S\u00b9) \u2245 \u2124\n  sorry -- Need connection to fundamental group\n  \n  -- Step 3: Define bound pairs with zero total charge\n  sorry -- Need formalization of bound pair objects\n  \n  -- Step 4: Unbinding morphism preserves G-symmetry\n  sorry -- Need proof of symmetry preservation\n  \n  -- Step 5: Define functor F: C \u2192 Phase(M)\n  sorry -- Need rigorous construction of Phase(M) category\n  \n  -- Step 6: F maps unbinding to phase transition\n  sorry -- Need construction of functor mapping\n  \n  -- Step 7: Phase transition shows diverging correlation length\n  sorry -- Need RG analysis formalization\n  \n  -- Step 8: G acts via natural transformations\n  sorry -- Need natural transformation construction\n  \n  -- Step 9: F(u) is G-symmetric phase transition\n  sorry -- Need functoriality proof\n  \n  -- Step 10: Exceptional points for non-Hermitian case\n  sorry -- Need non-Hermitian topology formalization\n  \n  -- Step 11: Extension to non-Hermitian systems\n  sorry -- Need non-Hermitian topological field theory",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the category C of topological defects where objects are defect configurations and morphisms are defect interactions preserving or changing topological charge",
+      "justification": "Standard construction in topological field theory where defects are classified by homotopy groups",
+      "dependencies": []
+    },
+    {
+      "step_number": 2,
+      "statement": "For the Kosterlitz-Thouless case, defects are vortices in 2D with topological charge n \u2208 \u03c01(S\u00b9) \u2245 \u2124",
+      "justification": "Vortices in 2D XY model are characterized by winding numbers around S\u00b9",
+      "dependencies": [
+        "Kosterlitz-Thouless theory"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Define bound pairs as objects in C with total topological charge zero but non-trivial local structure",
+      "justification": "Vortex-antivortex pairs have opposite winding numbers summing to zero",
+      "dependencies": [
+        "step_number: 2"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The unbinding morphism u: (bound pairs) \u2192 (free defects) exists in C and preserves G-symmetry",
+      "justification": "Unbinding changes defect configuration but not the action of rotation group G = SO(2)",
+      "dependencies": [
+        "step_number: 3"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Define functor F: C \u2192 Phase(M) mapping defect configurations to thermodynamic phases",
+      "justification": "[Gap: Rigorous construction of Phase(M) as a category requires formalization of phase space as objects and transitions as morphisms]",
+      "dependencies": [
+        "step_number: 1"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "F maps the unbinding morphism u to a phase transition morphism in Phase(M)",
+      "justification": "By construction of F and the physical correspondence between defect unbinding and phase transitions",
+      "dependencies": [
+        "step_number: 4",
+        "step_number: 5"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The phase transition F(u) exhibits diverging correlation length \u03be \u2192 \u221e at critical temperature Tc",
+      "justification": "Renormalization group analysis shows correlation length divergence at KT transition",
+      "dependencies": [
+        "Kosterlitz-Thouless RG flow"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "G acts on both C and Phase(M) via natural transformations that commute with F",
+      "justification": "Symmetry group actions are functorial and preserve the defect-phase correspondence",
+      "dependencies": [
+        "step_number: 5"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "Since u preserves G-symmetry and F is G-equivariant, F(u) is a G-symmetric phase transition",
+      "justification": "Functoriality of symmetry actions",
+      "dependencies": [
+        "step_number: 4",
+        "step_number: 8"
+      ]
+    },
+    {
+      "step_number": 10,
+      "statement": "For non-Hermitian acoustic systems, exceptional points represent topological transitions in parameter space",
+      "justification": "[Gap: Connection between exceptional points and defect unbinding requires formalization of non-Hermitian topology]",
+      "dependencies": [
+        "Exceptional point theory"
+      ]
+    },
+    {
+      "step_number": 11,
+      "statement": "The categorical framework extends to non-Hermitian systems by replacing homotopy groups with appropriate topological invariants",
+      "justification": "[Gap: Rigorous extension to non-Hermitian case requires development of non-Hermitian topological field theory]",
+      "dependencies": [
+        "step_number: 10"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Kosterlitz-Thouless Transition Theory",
+      "authors": "J.M. Kosterlitz and D.J. Thouless",
+      "year": "1973",
+      "field": "Condensed Matter Physics",
+      "statement": "2D systems with continuous symmetry undergo phase transitions via vortex-antivortex unbinding without long-range order",
+      "usage": "Provides concrete example of defect unbinding transition without symmetry breaking"
+    },
+    {
+      "name": "Renormalization Group Flow for KT Transition",
+      "authors": "J.M. Kosterlitz",
+      "year": "1974",
+      "field": "Statistical Physics",
+      "statement": "RG equations show vortex fugacity flows to zero below Tc and infinity above Tc",
+      "usage": "Justifies correlation length divergence at transition"
+    },
+    {
+      "name": "Exceptional Points in Non-Hermitian Systems",
+      "authors": "W.D. Heiss",
+      "year": "2012",
+      "field": "Mathematical Physics",
+      "statement": "Non-Hermitian operators exhibit exceptional points where eigenvalues and eigenvectors coalesce",
+      "usage": "Provides example of topological transitions in wave systems"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "M is a smooth manifold of dimension n \u2265 2",
+    "g is a Riemannian metric on M",
+    "There exists a well-defined category C of topological defects with morphisms representing defect interactions",
+    "Phase(M) is a category of thermodynamic phases with morphisms as phase transitions",
+    "G is a symmetry group acting on both C and Phase(M)",
+    "Topological defects can be characterized by elements of appropriate homotopy groups \u03c0k(M)",
+    "The system has a well-defined free energy functional F: C \u2192 \u211d",
+    "Temperature T is a well-defined parameter",
+    "Defect unbinding can be formalized as specific morphisms in C",
+    "The notion of 'phase transition' includes continuous transitions characterized by diverging correlation lengths"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Construction of category C",
+        "issue": "The proof claims 'This is a standard construction in topological field theory' without actually constructing the category. Objects and morphisms are vaguely described but not rigorously defined.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Explicitly define objects as equivalence classes of defect configurations, morphisms as continuous deformations/interactions, and verify category axioms."
+      },
+      {
+        "step": "Definition of functor F",
+        "issue": "The functor F is declared to exist but never explicitly constructed. The proof admits Phase(M) requires formalization but then uses it anyway without providing the formalization.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Construct F explicitly by defining its action on objects and morphisms, then verify functoriality."
+      },
+      {
+        "step": "Unbinding morphism preserves G-symmetry",
+        "issue": "The claim that unbinding morphism u preserves G-symmetry is stated without proof. This is a crucial claim that requires demonstration.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Show that if g\u2208G and d is a defect configuration, then u(g\u00b7d) = g\u00b7u(d)."
+      },
+      {
+        "step": "RG analysis implies phase transition",
+        "issue": "The proof jumps from RG flow behavior to concluding F(u) is a phase transition without establishing the connection between vortex fugacity and the categorical morphism.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Establish how RG flow parameters relate to morphisms in Phase(M) and how diverging correlation length characterizes morphisms."
+      },
+      {
+        "step": "Non-Hermitian extension",
+        "issue": "The proof admits this requires formalization but includes it anyway. No connection is established between exceptional points and defect unbinding.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Remove this section or develop the full non-Hermitian topological field theory framework."
+      }
+    ],
+    "hidden_assumptions": [
+      "Phase(M) can be given a category structure where morphisms correspond to physical phase transitions",
+      "The free energy functional F: C \u2192 \u211d is compatible with the functor F: C \u2192 Phase(M) (notation clash)",
+      "Topological defects in arbitrary manifolds behave analogously to 2D vortices",
+      "G acts compatibly on both C and Phase(M) in a way that makes functoriality meaningful",
+      "The unbinding process can be represented as a single morphism rather than a continuous family",
+      "Correlation length divergence uniquely characterizes phase transitions in the categorical framework"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes phase transitions can be represented as morphisms in Phase(M) to prove that transitions occur via morphisms. It also assumes the existence of the functor F to prove properties about F.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof actually only sketches ideas for 2D Kosterlitz-Thouless transitions but claims to prove the result for arbitrary manifolds M and arbitrary symmetry groups G. The general categorical framework is never established.",
+    "citation_issues": [
+      "KT transition theory is cited but the proof doesn't establish how the physical theory translates to the categorical framework",
+      "RG flow results are cited without showing how flow equations relate to categorical morphisms",
+      "Exceptional points are mentioned without proper citation or connection to the main argument"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally incomplete, relying on vague categorical constructions that are never made rigorous. The core functor F is assumed to exist rather than constructed, and the connection between physical phenomena and categorical structures is asserted rather than demonstrated. The proof would need complete reconstruction to be acceptable.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish a categorical framework relating defects to phases but fails to rigorously construct the functor F or prove its existence. It provides a sketch of how such a framework might work rather than proving the proposition.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The category Phase(M) is well-defined with appropriate morphisms",
+      "Defect interactions can be formalized as morphisms in a category",
+      "The free energy functional is functorial with respect to defect morphisms",
+      "Correlation length divergence can be encoded categorically",
+      "G-actions on categories can be made precise via natural transformations",
+      "The correspondence between physical defect unbinding and categorical morphisms is rigorous",
+      "Non-Hermitian systems admit a categorical description compatible with the framework",
+      "Exceptional points correspond to morphisms in the defect category"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "1",
+        "issue": "Claims 'standard construction' but doesn't specify how defect interactions become morphisms or what composition means"
+      },
+      {
+        "step": "4",
+        "issue": "Asserts existence of unbinding morphism without proving it exists or is well-defined in the category"
+      },
+      {
+        "step": "5",
+        "issue": "Acknowledges gap in construction of Phase(M) but proceeds anyway - this is a critical missing piece"
+      },
+      {
+        "step": "6",
+        "issue": "Claims F maps unbinding to phase transition 'by construction' but F was never properly constructed"
+      },
+      {
+        "step": "8",
+        "issue": "Assumes G-actions are 'natural transformations' without proving this or defining what this means precisely"
+      },
+      {
+        "step": "10",
+        "issue": "Acknowledges gap in connecting exceptional points to defect unbinding but uses this connection in reasoning"
+      },
+      {
+        "step": "11",
+        "issue": "Acknowledges gap in non-Hermitian extension but claims the framework 'extends' anyway"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Never constructs the functor F rigorously",
+      "Phase(M) category is never properly defined",
+      "No proof that defect interactions form a category",
+      "No verification that the proposed morphisms satisfy category axioms",
+      "Missing rigorous connection between physical unbinding and categorical morphisms",
+      "Non-Hermitian case is acknowledged as incomplete but included in conclusion",
+      "No proof that G-symmetry preservation is maintained through the functor"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims to define a functor F: C \u2192 Phase(M) but fails to establish that C is actually a category - morphisms between defect configurations are not proven to satisfy associativity or identity laws",
+      "Claims that 'unbinding morphism u preserves G-symmetry' without proving that unbinding is actually a well-defined morphism in the proposed category C",
+      "The assertion that F maps unbinding to phase transitions with 'diverging correlation length \u03be \u2192 \u221e' is stated without proof that F preserves the relevant topological structure",
+      "Conflicts with proof [0178ff46c5ee] which rigorously establishes phase transitions as symmetry-breaking events - the new proof's categorical framework doesn't demonstrate how topological defect unbinding constitutes symmetry breaking"
+    ],
+    "assumption_conflicts": [
+      "Assumes 'Phase(M) is a category of thermodynamic phases' without establishing what morphisms between phases actually are or proving they satisfy categorical axioms",
+      "Assumes defects can be 'characterized by elements of homotopy groups \u03c0k(M)' but doesn't specify which k or how this characterization is functorial",
+      "The assumption of 'well-defined free energy functional F: C \u2192 \u211d' conflicts with the categorical structure since it's unclear how this relates to the proposed functor F: C \u2192 Phase(M)",
+      "Temperature T as a 'well-defined parameter' is too vague compared to the rigorous thermodynamic framework in proof [0178ff46c5ee]"
+    ],
+    "beneficial_connections": [
+      "Could potentially extend proof [0178ff46c5ee] on phase transitions if the categorical framework were properly established",
+      "The topological defect approach might connect to proof [087da119976b] on symmetry breaking if the relationship between defect unbinding and symmetry breaking were rigorously proven",
+      "The mention of non-Hermitian acoustic systems could relate to proof [017d9bcb893f] on wave control, but this connection is underdeveloped"
+    ],
+    "consistency_score": 0.2,
+    "notes": "This proof is fundamentally flawed due to lack of mathematical rigor. The categorical framework is assumed rather than constructed, key morphisms are not proven to exist or satisfy required properties, and the connection between topological defects and phase transitions is asserted rather than demonstrated. The proof reads more like a research proposal than a mathematical proof."
+  },
+  "confidence_score": 0.23,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous categorical framework for thermodynamic phases and phase transitions is needed. Additionally, the extension to non-Hermitian systems requires development of non-Hermitian topological field theory that can handle exceptional points as topological defects.",
+  "limitations": [
+    "Rigorous construction of Phase(M) as a category with appropriate morphisms for phase transitions",
+    "Formal proof that the functor F preserves relevant topological and thermodynamic properties",
+    "Mathematical framework connecting exceptional points in non-Hermitian systems to defect unbinding",
+    "Precise characterization of which morphisms in C correspond to phase transitions in Phase(M)",
+    "The proof relies heavily on the specific example of Kosterlitz-Thouless transitions",
+    "Extension to general topological defects beyond vortices is not fully developed",
+    "The categorical framework may be too abstract to capture all physical nuances",
+    "Connection between condensed matter and acoustic systems remains at the level of analogy rather than rigorous isomorphism"
+  ],
+  "source_convergence": {
+    "structural_claim": "Phase transitions can occur through topological defect unbinding without symmetry breaking",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Kosterlitz-Thouless Transition",
+        "domain_id": "field_a",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "2D systems undergo phase transitions via vortex-antivortex unbinding without breaking symmetry"
+      },
+      {
+        "result_id": "",
+        "result_name": "Exceptional Points in Non-Hermitian Acoustics",
+        "domain_id": "field_b",
+        "domain_name": "Acoustics and Wave Physics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Non-Hermitian systems exhibit topological transitions at exceptional points where eigenstates coalesce"
+      }
+    ],
+    "domains": [
+      "condensed_matter",
+      "acoustics"
+    ],
+    "domain_names": [
+      "Condensed Matter Physics",
+      "Acoustics and Wave Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.1428,
+      "independence": 0.8,
+      "adversarial": 0.09,
+      "reproducibility": 0.315,
+      "depth_consistency": 1.0,
+      "confidence": 0.40809000000000006,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:29:19.988970+00:00",
+    "id": "ee3f9f04054a"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.29867999999999995
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "proof_id": "83095c2df40c",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: Rigorous measure-theoretic framework for information content of continuous gravitational wave signals in curved spacetime, including proper treatment of gauge-invariant observables and their probability distributions",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

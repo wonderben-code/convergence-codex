@@ -1,0 +1,15 @@
+{
+  "proof_id": "3579fd50bd4e",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A unified categorical framework bridging topological K-theory for quantum systems with symplectic topology for classical waves. Need rigorous construction of the functor F that works uniformly across different physical realizations and a general theory of 'topological protection' that encompasses both quantum and classical phenomena.",
+    "Difficulty assessed as challenging",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "proof_id": "5a8506a748c4",
+  "timestamp": "2026-05-02T14:48:46.471250+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "equivalence - This could capture the structural correspondence between the GR and astrophysical formulations, but was rejected because the convergence is fundamentally about identifying the shared physical principle rather than establishing a mathematical correspondence between different structures."
+      ],
+      "reasoning": "Both domains describe the same physical phenomenon (Hubble's Law) but from different theoretical frameworks. The convergence identifies shared principles about spacetime expansion that can be captured by axioms relating distance, recession velocity, and the dynamic nature of spacetime geometry."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Differential geometry, Dynamical systems",
+      "alternatives_considered": [],
+      "reasoning": "The claim concerns spacetime geometry and its dynamic evolution, requiring differential geometry to formalize manifolds, metrics, and curvature. Dynamical systems theory captures the systematic expansion behavior where recession velocity varies with distance."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "Starting from the cosmological principle, we derive the FLRW metric form for spacetime. Computing proper distances between comoving observers and their time derivatives yields Hubble's law v = H(t)d as a geometric consequence of the scale factor evolution, with Einstein's equations confirming dynamic expansion exists.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 9 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3098 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 2661 chars, 11 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This formalization captures the structure of Hubble's law in FLRW spacetime but requires significant development of differential geometry in Mathlib, particularly pseudo-Riemannian geometry, foliations of spacetime, and general relativity concepts. The key mathematical content about the relationship v = H(t)d is captured in the theorem statement."
+    }
+  ]
+}

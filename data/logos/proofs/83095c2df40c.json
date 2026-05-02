@@ -1,0 +1,356 @@
+{
+  "id": "83095c2df40c",
+  "convergence_id": "ede5fbc54d04",
+  "timestamp": "2026-05-02T14:46:05.625182+00:00",
+  "proposition": "Let (M,g) be a 4-dimensional Lorentzian manifold satisfying Einstein's field equations. Then linearized perturbations h_\u03bc\u03bd to the metric g_\u03bc\u03bd propagate as waves satisfying \u25a1h_\u03bc\u03bd = 0 in the transverse-traceless gauge, where \u25a1 is the d'Alembertian operator, with propagation speed c. These waves carry energy density T_00 = (c^4/32\u03c0G)|\u2202_t h_ij|^2 and encode information about their source through their amplitude and phase structure.",
+  "proposition_natural": "Gravitational waves propagate at light speed as spacetime ripples carrying energy and information",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Differential geometry",
+    "Functional analysis",
+    "Information theory"
+  ],
+  "apparatus_justification": "Differential geometry provides the mathematical framework for spacetime manifolds, metric tensors, and the Einstein field equations that govern gravitational waves. Functional analysis is needed for wave equations on curved spacetime and energy-momentum tensors. Information theory formalizes the information-carrying capacity of gravitational waves.",
+  "proof_natural": "**Proposition.** Let $(M,g)$ be a 4-dimensional Lorentzian manifold satisfying Einstein's field equations. Then linearized perturbations $h_{\\mu\\nu}$ to the metric $g_{\\mu\\nu}$ propagate as waves satisfying $\\square h_{\\mu\\nu} = 0$ in the transverse-traceless gauge, where $\\square$ is the d'Alembertian operator, with propagation speed $c$. These waves carry energy density $T_{00} = \\frac{c^4}{32\\pi G}|\\partial_t h_{ij}|^2$ and encode information about their source through their amplitude and phase structure.\n\n**Proof.** We assume that spacetime is a 4-dimensional pseudo-Riemannian manifold with Lorentzian signature $(-,+,+,+)$ satisfying Einstein's field equations $R_{\\mu\\nu} - \\frac{1}{2}g_{\\mu\\nu}R = \\frac{8\\pi G}{c^4}T_{\\mu\\nu}$. Let the background spacetime be approximately Minkowski with $\\eta_{\\mu\\nu} = \\text{diag}(-1,1,1,1)$, and consider weak-field perturbations such that $g_{\\mu\\nu} = \\eta_{\\mu\\nu} + h_{\\mu\\nu}$ where $|h_{\\mu\\nu}| \\ll 1$.\n\nWe begin by linearizing Einstein's field equations. Applying perturbation theory to first order in $h_{\\mu\\nu}$, we compute the linearized Ricci tensor $R^{(1)}_{\\mu\\nu}$. In vacuum where $T_{\\mu\\nu} = 0$, the linearized field equations yield:\n$$\\square h_{\\mu\\nu} - \\partial_\\mu\\partial^\\rho h_{\\rho\\nu} - \\partial_\\nu\\partial^\\rho h_{\\rho\\mu} + \\partial_\\mu\\partial_\\nu h + \\eta_{\\mu\\nu}(\\partial^\\rho\\partial^\\sigma h_{\\rho\\sigma} - \\square h) = 0$$\n\nThe gauge freedom of general relativity permits coordinate transformations $x^\\mu \\to x^\\mu + \\xi^\\mu$ that preserve the linearized form. We exploit this freedom to impose the transverse-traceless (TT) gauge conditions: $h = h^\\mu_\\mu = 0$ and $\\partial^\\mu h_{\\mu\\nu} = 0$. Under these conditions, the field equations dramatically simplify to the wave equation:\n$$\\square h_{\\mu\\nu} = 0$$\n\nIn Minkowski coordinates, the d'Alembertian operator takes the form $\\square = -\\frac{1}{c^2}\\partial_t^2 + \\nabla^2$. This is precisely the wave operator, whose solutions are well-known to propagate at speed $c$. Thus gravitational perturbations propagate as waves with speed $c$.\n\nTo establish that these waves carry energy, we invoke the Isaacson stress-energy tensor. Through short-wavelength averaging over several wavelengths, one obtains an effective stress-energy tensor for gravitational waves:\n$$t_{\\mu\\nu} = \\frac{c^4}{32\\pi G}\\langle\\partial_\\mu h_{\\alpha\\beta} \\partial_\\nu h^{\\alpha\\beta}\\rangle$$\n\nThe energy density, given by the $00$-component in the TT gauge, is:\n$$T_{00} = \\frac{c^4}{32\\pi G}|\\partial_t h_{ij}|^2$$\n\nThis quantity is manifestly positive for non-zero wave amplitudes, confirming that gravitational waves carry energy.\n\nFinally, we address information content. The quadrupole radiation formula provides the leading-order solution for gravitational radiation from a time-varying source:\n$$h_{\\mu\\nu} \\sim \\frac{G}{c^4r}\\frac{d^2Q_{\\mu\\nu}}{dt^2}$$\n\nwhere $Q_{\\mu\\nu}$ is the quadrupole moment tensor of the source. The amplitude and phase structure of $h_{\\mu\\nu}$ thus directly encode information about the source dynamics. Following Shannon information theory, the information content can be quantified through the entropy $I = -\\int p(h)\\log p(h)dh$, where $p(h)$ is the probability distribution of wave amplitudes.\n\n[Note: The connection between gravitational wave observables and Shannon entropy requires additional specification of the measurement process and signal encoding scheme.]\n\nTherefore, we have established that linearized metric perturbations in the TT gauge satisfy the wave equation with propagation speed $c$, carry positive energy density, and encode source information in their amplitude and phase structure. This completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.Geometry.Manifold.SmoothManifoldWithCorners\nimport Mathlib.Geometry.RiemannianGeometry.Basic\nimport Mathlib.Analysis.NormedSpace.PiLp\nimport Mathlib.Analysis.Calculus.FDeriv.Basic\nimport Mathlib.MeasureTheory.Integral.Bochner\nimport Mathlib.Probability.Notation\n\n/-- A 4-dimensional Lorentzian manifold satisfying Einstein's field equations -/\nstructure LorentzianManifold where\n  M : Type*\n  [inst1 : TopologicalSpace M]\n  [inst2 : ChartedSpace (EuclideanSpace \u211d (Fin 4)) M]\n  [inst3 : SmoothManifoldWithCorners \ud835\udcd8(\u211d, EuclideanSpace \u211d (Fin 4)) M]\n  /-- The Lorentzian metric tensor -/\n  g : sorry -- Lorentzian metric not in Mathlib\n  /-- Einstein field equations are satisfied -/\n  einstein_eq : sorry -- Einstein equations not in Mathlib\n\n/-- Linearized metric perturbation -/\ndef MetricPerturbation (LM : LorentzianManifold) := sorry -- Tensor field h_\u03bc\u03bd not formalized\n\n/-- The d'Alembertian operator on a Lorentzian manifold -/\ndef dAlembertian (LM : LorentzianManifold) : sorry := sorry -- d'Alembertian not in Mathlib\n\n/-- Transverse-traceless gauge condition -/\ndef TransverseTracelessGauge (LM : LorentzianManifold) (h : MetricPerturbation LM) : Prop :=\n  sorry -- TT gauge conditions not formalized\n\n/-- Energy density of gravitational waves -/\ndef GravitationalWaveEnergyDensity (LM : LorentzianManifold) (h : MetricPerturbation LM) : \u211d :=\n  sorry -- Isaacson stress-energy tensor not in Mathlib\n\n/-- Information content of gravitational waves using Shannon entropy -/\ndef InformationContent (h : MetricPerturbation sorry) : \u211d :=\n  sorry -- Shannon entropy for continuous distributions\n\n/-- Main theorem: Gravitational waves propagate at speed c and carry energy and information -/\ntheorem gravitational_wave_propagation \n  (LM : LorentzianManifold) \n  (h : MetricPerturbation LM)\n  (hTT : TransverseTracelessGauge LM h) :\n  (\u2203 (wave_eq : sorry), wave_eq = dAlembertian LM h \u2227 wave_eq = 0) \u2227 \n  (\u2203 (c : \u211d), c > 0 \u2227 sorry) \u2227 -- propagation speed equals c\n  (GravitationalWaveEnergyDensity LM h \u2265 0) \u2227\n  (\u2203 (I : \u211d), I = InformationContent h \u2227 I \u2265 0) := by\n  sorry -- Complete proof requires formalization of general relativity\n  \n/-- Step 1: Linearization of Einstein field equations -/\nlemma linearize_einstein (LM : LorentzianManifold) : \n  \u2203 (h : MetricPerturbation LM), sorry := by\n  sorry -- Perturbation theory for Einstein equations not formalized\n\n/-- Step 2: Vacuum linearized field equations -/\nlemma vacuum_linearized_equations (LM : LorentzianManifold) (h : MetricPerturbation LM) :\n  sorry := by -- Linearized Ricci tensor calculation\n  sorry\n\n/-- Step 3-4: TT gauge simplification -/\nlemma tt_gauge_simplification (LM : LorentzianManifold) (h : MetricPerturbation LM)\n  (hTT : TransverseTracelessGauge LM h) :\n  dAlembertian LM h = 0 := by\n  sorry -- Gauge fixing procedure not formalized\n\n/-- Step 5-6: Wave propagation at speed c -/\nlemma wave_propagation_speed (LM : LorentzianManifold) (h : MetricPerturbation LM)\n  (hwave : dAlembertian LM h = 0) :\n  \u2203 (c : \u211d), c > 0 \u2227 sorry := by -- propagation speed\n  sorry -- Wave equation solutions not fully formalized\n\n/-- Step 7-8: Energy density calculation -/\nlemma energy_density_positive (LM : LorentzianManifold) (h : MetricPerturbation LM)\n  (hTT : TransverseTracelessGauge LM h) (hnonzero : h \u2260 0) :\n  GravitationalWaveEnergyDensity LM h > 0 := by\n  sorry -- Isaacson averaging not formalized\n\n/-- Step 9-10: Information encoding -/\nlemma information_encoding (LM : LorentzianManifold) (h : MetricPerturbation LM) :\n  \u2203 (source_info : Type*), sorry := by -- encodes source quadrupole moment\n  sorry -- Quadrupole formula not formalized",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Linearize Einstein's field equations around flat spacetime",
+      "justification": "Apply perturbation theory to R_\u03bc\u03bd - (1/2)g_\u03bc\u03bd R = (8\u03c0G/c^4)T_\u03bc\u03bd with g_\u03bc\u03bd = \u03b7_\u03bc\u03bd + h_\u03bc\u03bd",
+      "dependencies": [
+        "Einstein field equations",
+        "Weak-field assumption"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "In vacuum (T_\u03bc\u03bd = 0), the linearized field equations reduce to: \u25a1h_\u03bc\u03bd - \u2202_\u03bc\u2202^\u03c1 h_\u03c1\u03bd - \u2202_\u03bd\u2202^\u03c1 h_\u03c1\u03bc + \u2202_\u03bc\u2202_\u03bd h + \u03b7_\u03bc\u03bd(\u2202^\u03c1\u2202^\u03c3 h_\u03c1\u03c3 - \u25a1h) = 0",
+      "justification": "Direct calculation of linearized Ricci tensor R^(1)_\u03bc\u03bd",
+      "dependencies": [
+        "Step 1",
+        "Christoffel symbol linearization"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Impose transverse-traceless gauge conditions: h = h^\u03bc_\u03bc = 0 and \u2202^\u03bc h_\u03bc\u03bd = 0",
+      "justification": "Gauge freedom in general relativity allows coordinate transformations x^\u03bc \u2192 x^\u03bc + \u03be^\u03bc preserving the linearized form",
+      "dependencies": [
+        "Gauge invariance of linearized gravity"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "In TT gauge, the field equations simplify to: \u25a1h_\u03bc\u03bd = 0",
+      "justification": "Direct substitution of gauge conditions into Step 2",
+      "dependencies": [
+        "Step 2",
+        "Step 3"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The d'Alembertian in flat spacetime is \u25a1 = -\u2202_t^2/c^2 + \u2207^2",
+      "justification": "Definition of d'Alembertian operator in Minkowski coordinates",
+      "dependencies": [
+        "Minkowski metric"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Solutions to \u25a1h_\u03bc\u03bd = 0 are waves propagating at speed c",
+      "justification": "Standard wave equation has solutions f(t - r/c) + g(t + r/c) with propagation speed c",
+      "dependencies": [
+        "Step 4",
+        "Step 5",
+        "Wave equation theory"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The effective stress-energy tensor for gravitational waves is t_\u03bc\u03bd = (c^4/32\u03c0G)\u27e8\u2202_\u03bc h_\u03b1\u03b2 \u2202_\u03bd h^\u03b1\u03b2\u27e9",
+      "justification": "Isaacson averaging procedure over several wavelengths",
+      "dependencies": [
+        "Isaacson (1968) formalism"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Energy density is T_00 = (c^4/32\u03c0G)|\u2202_t h_ij|^2 > 0 for non-zero waves",
+      "justification": "00-component of effective stress-energy tensor in TT gauge",
+      "dependencies": [
+        "Step 7",
+        "TT gauge properties"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "Information content I = -\u222b p(h) log p(h) dh where p(h) is the probability distribution of wave amplitudes",
+      "justification": "Shannon entropy applied to gravitational wave signal",
+      "dependencies": [
+        "Shannon information theory",
+        "[Gap: rigorous measure theory for GW amplitudes]"
+      ]
+    },
+    {
+      "step_number": 10,
+      "statement": "Non-zero h_\u03bc\u03bd encodes source information through amplitude A \u221d (G/c^4)(d^2Q/dt^2)/r and phase \u03c6",
+      "justification": "Quadrupole formula solution to linearized Einstein equations with source",
+      "dependencies": [
+        "Quadrupole radiation formula",
+        "Step 6"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Linearized Gravity Theory",
+      "authors": "Weinberg, S.",
+      "year": "1972",
+      "field": "General Relativity",
+      "statement": "Perturbations to Einstein equations around flat spacetime yield wave equations",
+      "usage": "Foundation for Steps 1-4"
+    },
+    {
+      "name": "Isaacson Stress-Energy Tensor",
+      "authors": "Isaacson, R.A.",
+      "year": "1968",
+      "field": "General Relativity",
+      "statement": "Short-wavelength averaging of gravitational waves yields effective energy-momentum tensor",
+      "usage": "Justifies energy content in Steps 7-8"
+    },
+    {
+      "name": "Quadrupole Radiation Formula",
+      "authors": "Einstein, A.",
+      "year": "1918",
+      "field": "General Relativity",
+      "statement": "Leading order gravitational radiation from time-varying quadrupole moment",
+      "usage": "Source-wave relationship in Step 10"
+    },
+    {
+      "name": "Shannon Information Theory",
+      "authors": "Shannon, C.E.",
+      "year": "1948",
+      "field": "Information Theory",
+      "statement": "Information content quantified by entropy H = -\u03a3 p_i log p_i",
+      "usage": "Information quantification in Step 9"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Spacetime is a 4-dimensional pseudo-Riemannian manifold with Lorentzian signature (-,+,+,+)",
+    "Einstein's field equations R_\u03bc\u03bd - (1/2)g_\u03bc\u03bd R = (8\u03c0G/c^4)T_\u03bc\u03bd hold",
+    "The weak-field approximation is valid: g_\u03bc\u03bd = \u03b7_\u03bc\u03bd + h_\u03bc\u03bd where |h_\u03bc\u03bd| << 1",
+    "The transverse-traceless gauge can be imposed: h^\u03bc_\u03bc = 0 and \u2202^\u03bc h_\u03bc\u03bd = 0",
+    "The background spacetime is approximately Minkowski: \u03b7_\u03bc\u03bd = diag(-1,1,1,1)",
+    "Energy-momentum tensor T_\u03bc\u03bd is well-defined and conserved: \u2207^\u03bc T_\u03bc\u03bd = 0",
+    "Information content can be quantified through Shannon entropy of the wave amplitude/phase",
+    "The speed of light c is constant in vacuum"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.4,
+    "gaps": [
+      {
+        "step": "Background spacetime is approximately Minkowski",
+        "issue": "The proof assumes the background is Minkowski but the proposition claims validity for ANY 4-dimensional Lorentzian manifold. This is a massive restriction that invalidates the generality claimed.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "The proposition must be restricted to asymptotically flat spacetimes or the proof must handle general backgrounds"
+      },
+      {
+        "step": "Linearization of Einstein equations",
+        "issue": "The linearization procedure is not justified for arbitrary Lorentzian manifolds. It requires the existence of a background metric around which to perturb, which may not exist globally.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Restrict to spacetimes admitting a well-defined background/foreground split"
+      },
+      {
+        "step": "Imposing TT gauge",
+        "issue": "The proof claims gauge freedom permits imposing TT gauge but doesn't prove this gauge can always be achieved. The gauge conditions form a system of PDEs that may not have solutions.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Prove existence of gauge transformation achieving TT conditions or cite appropriate theorem"
+      },
+      {
+        "step": "Energy density formula",
+        "issue": "The Isaacson tensor requires high-frequency limit and averaging procedure not defined here. The formula given is only valid in specific limits.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "State high-frequency limit assumption and define averaging procedure explicitly"
+      },
+      {
+        "step": "Information content via Shannon entropy",
+        "issue": "The connection between gravitational wave observables and Shannon entropy is completely unjustified. No probability distribution is defined, no measurement process specified.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Remove information-theoretic claims or provide rigorous connection"
+      },
+      {
+        "step": "Propagation speed c",
+        "issue": "The proof shows solutions to wave equation but doesn't prove ALL perturbations propagate at speed c. Could have evanescent modes or gauge artifacts.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Analyze full solution space and show physical modes propagate at c"
+      }
+    ],
+    "hidden_assumptions": [
+      "Existence of global inertial coordinates",
+      "Smoothness of metric perturbations",
+      "Existence of Fourier decomposition",
+      "High-frequency limit for Isaacson tensor",
+      "Asymptotic flatness of spacetime",
+      "Existence of well-defined background/foreground split",
+      "Convergence of perturbation series",
+      "Gauge transformations preserve all required properties"
+    ],
+    "circular_reasoning": false,
+    "circular_details": "",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof actually shows wave propagation only for perturbations around Minkowski space, not for general Lorentzian manifolds. The information content claim is completely unjustified.",
+    "citation_issues": [
+      "Isaacson stress-energy tensor requires high-frequency limit not stated",
+      "Quadrupole formula only valid in specific gauges and asymptotic regions",
+      "Shannon information theory connection is hand-waved without justification",
+      "No citation for existence of TT gauge"
+    ],
+    "structural_soundness": 0.3,
+    "overall_assessment": "This proof contains critical flaws including unjustified restriction to Minkowski background while claiming general validity, unproven gauge conditions, and completely unjustified information-theoretic claims. The proof would need major restructuring and restriction of scope to be salvageable.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "Proves that linearized gravitational perturbations satisfy a wave equation in TT gauge and have an associated energy density, but fails to rigorously establish information encoding claims",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Isaacson averaging procedure is valid and well-defined",
+      "Shannon entropy is applicable to continuous gravitational wave amplitudes",
+      "Quadrupole approximation is valid for the source",
+      "Far-field approximation holds (r >> wavelength)",
+      "Source is non-relativistic and weak",
+      "Gauge choice is globally consistent",
+      "Linearization is self-consistent (no back-reaction)",
+      "Spacetime is asymptotically flat"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "7",
+        "issue": "Isaacson effective stress-energy tensor requires averaging procedure that is not justified or defined precisely"
+      },
+      {
+        "step": "9",
+        "issue": "Shannon entropy formula assumes discrete probability distribution but applies to continuous amplitude h, and probability distribution p(h) is never defined"
+      },
+      {
+        "step": "10",
+        "issue": "Quadrupole formula is stated without derivation and requires additional assumptions about source properties not listed"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No rigorous definition of information content or how it relates to source properties",
+      "Missing derivation of quadrupole formula",
+      "No proof that TT gauge can always be imposed globally",
+      "No demonstration that energy density is physically meaningful",
+      "Missing analysis of gauge invariance of physical quantities",
+      "No justification for why linearization remains valid throughout"
+    ],
+    "internal_score": 0.3
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": false,
+    "contradiction_details": [],
+    "assumption_conflicts": [],
+    "beneficial_connections": [
+      "Connects to [03445cd603f4] through shared Lorentzian manifold framework and information encoding in spacetime dynamics",
+      "Relates to [017d9bcb893f] through wave propagation phenomena, though at different scales (gravitational vs electromagnetic)",
+      "Supports [06d1b829563e] by providing specific mechanism for information encoding in gravitational wave dynamics",
+      "Complements [0c1797de78e2] by providing perturbative framework around the FLRW cosmological solutions",
+      "Extends [08b6405556dd] by demonstrating how gauge symmetries (diffeomorphism invariance) constrain gravitational wave dynamics"
+    ],
+    "consistency_score": 0.85,
+    "notes": "The proof is mathematically sound but contains a critical dimensional error in the d'Alembertian definition (should be \u25a1 = -\u2202_t\u00b2/c\u00b2 + \u2207\u00b2) and lacks rigorous justification for the effective stress-energy tensor derivation. The information content quantification through Shannon entropy is conceptually reasonable but needs more precise mathematical formulation. The proof correctly applies standard linearized general relativity techniques."
+  },
+  "confidence_score": 0.4075,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.4,
+    "internal": 0.3,
+    "cross_proof": 0.85,
+    "calibration": 0.29999999999999993
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.4,
+    "internal": 0.3,
+    "cross_proof": 0.85,
+    "calibration": 0.29999999999999993
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "Rigorous measure-theoretic framework for information content of continuous gravitational wave signals in curved spacetime, including proper treatment of gauge-invariant observables and their probability distributions",
+  "limitations": [
+    "Step 9: Information-theoretic treatment of gravitational waves lacks rigorous mathematical foundation for continuous fields in curved spacetime",
+    "Transition from linearized to full nonlinear regime not addressed",
+    "Quantum corrections to gravitational wave propagation ignored",
+    "Backreaction of gravitational waves on background metric neglected in weak-field limit",
+    "Proof restricted to weak-field regime where linearization is valid",
+    "Information content definition is heuristic rather than rigorously gauge-invariant",
+    "Energy localization for gravitational waves is coordinate-dependent",
+    "Proof does not address strong-field regime near sources"
+  ],
+  "source_convergence": {
+    "structural_claim": "Gravitational waves propagate at light speed as spacetime ripples carrying energy and information",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Gravitational Waves Detection",
+        "domain_id": "field_a",
+        "domain_name": "General Relativity and Cosmology",
+        "link_type": "direct",
+        "structural_conclusion": "Spacetime ripples propagate at the speed of light carrying energy away from accelerating masses"
+      },
+      {
+        "result_id": "",
+        "result_name": "LIGO Detection of Gravitational Waves",
+        "domain_id": "field_b",
+        "domain_name": "Astrophysics",
+        "link_type": "direct",
+        "structural_conclusion": "Spacetime ripples propagate at light speed carrying energy and information, confirming gravity is a dynamical field"
+      }
+    ],
+    "domains": [
+      "general_relativity",
+      "astrophysics"
+    ],
+    "domain_names": [
+      "General Relativity and Cosmology",
+      "Astrophysics"
+    ],
+    "ea_scores": {
+      "strength": 0.238,
+      "independence": 0.2,
+      "adversarial": 0.09,
+      "reproducibility": 0.42,
+      "depth_consistency": 1.0,
+      "confidence": 0.3024,
+      "confidence_category": "speculative"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:40:35.686345+00:00",
+    "id": "ede5fbc54d04"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.328905
+  }
+}

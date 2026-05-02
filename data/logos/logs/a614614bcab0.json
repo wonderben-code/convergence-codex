@@ -1,0 +1,38 @@
+{
+  "proof_id": "a614614bcab0",
+  "timestamp": "2026-05-02T14:46:23.867861+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "categorical",
+      "alternatives_considered": [
+        "axiomatic - Could define axioms for 'topological phase transitions without symmetry breaking' but the categorical approach better captures the universal nature of how topology drives transitions across different physical contexts"
+      ],
+      "reasoning": "Both domains involve phase transitions characterized by topological features (defects in KT, exceptional points in non-Hermitian systems) without symmetry breaking. This suggests a universal characterization of 'topological phase transitions' that both instantiate, best captured through categorical universal properties rather than direct structural correspondence."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Topology, Category theory, Differential geometry",
+      "alternatives_considered": [],
+      "reasoning": "Topology is essential for formalizing topological defects and their unbinding mechanisms. Category theory provides the functorial framework to map between condensed matter and acoustic domains while preserving structural relationships. Differential geometry captures the local structure of defects and phase spaces where transitions occur."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "We construct a category of topological defects and show that phase transitions can occur via morphisms (unbinding transitions) that preserve system symmetries. The key insight is that defect unbinding changes topological properties without breaking the symmetry group G, as demonstrated in the Kosterlitz-Thouless transition where vortex-antivortex pairs unbind while preserving rotational symmetry.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 11 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3571 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 4280 chars, 17 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "The formalization requires significant development of topological defect theory, phase transition categories, and non-Hermitian topology that are not currently in Mathlib. The structure provides a framework but most technical details require new mathematical foundations."
+    }
+  ]
+}

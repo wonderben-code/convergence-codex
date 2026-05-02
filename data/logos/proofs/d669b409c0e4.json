@@ -1,0 +1,321 @@
+{
+  "id": "d669b409c0e4",
+  "convergence_id": "f1e82ab0b0fc",
+  "timestamp": "2026-05-02T14:49:01.254689+00:00",
+  "proposition": "Let H be a separable Hilbert space, \u03c1 \u2208 B(H) a density operator representing a quantum state, and M = {M_i} a quantum measurement represented by a collection of measurement operators satisfying \u2211_i M_i\u2020M_i = I. Then the post-measurement state \u03c1' given outcome i is \u03c1' = M_i \u03c1 M_i\u2020 / Tr(M_i \u03c1 M_i\u2020), which lies in the eigenspace of the measurement observable when M_i are projectors.",
+  "proposition_natural": "Measurement fundamentally alters quantum evolution by projecting systems into eigenstates",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Functional analysis",
+    "Category theory",
+    "Measure theory"
+  ],
+  "apparatus_justification": "Functional analysis provides the rigorous framework for quantum measurement via projection operators on Hilbert spaces and spectral theory. Category theory captures the structural transformation across optical and atomic domains through functorial relationships. Measure theory formalizes the probabilistic aspects of quantum measurement outcomes.",
+  "proof_natural": "**Proposition.** Let $H$ be a separable Hilbert space, $\\rho \\in B(H)$ a density operator representing a quantum state, and $M = \\{M_i\\}$ a quantum measurement represented by a collection of measurement operators satisfying $\\sum_i M_i^\\dagger M_i = I$. Then the post-measurement state $\\rho'$ given outcome $i$ is $\\rho' = M_i \\rho M_i^\\dagger / \\text{Tr}(M_i \\rho M_i^\\dagger)$, which lies in the eigenspace of the measurement observable when $M_i$ are projectors.\n\n*Proof.* We assume that $H$ is a separable complex Hilbert space and that $\\rho$ is a positive trace-class operator with $\\text{Tr}(\\rho) = 1$. Let $M = \\{M_i\\}$ form a quantum measurement (POVM) with $\\sum_i M_i^\\dagger M_i = I$, where the measurement outcome $i$ occurs with probability $p_i = \\text{Tr}(M_i \\rho M_i^\\dagger) > 0$. We further assume that the system evolves according to the postulates of quantum mechanics, with no decoherence or environmental interactions during measurement, and that the measurement apparatus can be treated classically.\n\nPrior to measurement, the system evolves unitarily according to $\\rho(t) = U(t)\\rho(0)U^\\dagger(t)$ where $U(t) = \\exp(-iHt/\\hbar)$. This unitary evolution is guaranteed by Stone's theorem, which ensures that strongly continuous one-parameter unitary groups have self-adjoint generators.\n\nUpon measurement with outcome $i$, the quantum measurement postulate (a generalization of the Born rule) dictates that the state transforms to\n$$\\rho' = \\frac{M_i \\rho M_i^\\dagger}{\\text{Tr}(M_i \\rho M_i^\\dagger)}.$$\n\nFor the special case of projective measurements where $M_i = P_i$ with orthogonal projectors, we have $P_i^2 = P_i$ and $P_i P_j = \\delta_{ij} P_i$ by definition. The post-measurement state then becomes\n$$\\rho' = \\frac{P_i \\rho P_i}{\\text{Tr}(P_i \\rho)}.$$\n\nBy direct calculation using the projector property $P_i^2 = P_i$, we verify that $P_i \\rho' = \\rho' P_i = \\rho'$. This demonstrates that $\\rho'$ has support only in the range of $P_i$. By the spectral theorem, if $P_i$ projects onto the eigenspace of observable $A$ with eigenvalue $\\lambda_i$, then the post-measurement state $\\rho'$ lies entirely within this eigenspace.\n\nThe evolution $\\rho \\mapsto \\rho'$ is manifestly non-unitary, as it cannot be expressed in the form $\\rho' = U\\rho U^\\dagger$ for any unitary operator $U$. This follows from the fact that unitary evolution preserves von Neumann entropy, while the measurement process satisfies $S(\\rho') \\leq S(\\rho)$, with equality holding only when $\\rho$ commutes with all projectors $P_i$.\n\n[Note: The transition from unitary to non-unitary evolution at the moment of measurement represents a fundamental gap in our formalism. This transition cannot be derived from unitary dynamics alone and requires additional axioms beyond standard quantum mechanics\u2014this is the essence of the quantum measurement problem.]\n\nWe have thus established that quantum measurement, as formalized by the measurement postulate, produces a post-measurement state that lies in the appropriate eigenspace for projective measurements, while necessarily breaking the unitarity of quantum evolution. This completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.Analysis.InnerProductSpace.Basic\nimport Mathlib.Analysis.InnerProductSpace.Spectrum\nimport Mathlib.Topology.Algebra.Module.FiniteDimension\nimport Mathlib.Analysis.NormedSpace.OperatorNorm\nimport Mathlib.Analysis.SpecialFunctions.Exponential\nimport Mathlib.MeasureTheory.Integral.Bochner\n\n/-- A density operator on a Hilbert space H is a positive trace-class operator with trace 1 -/\ndef DensityOperator (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H] :=\n  sorry -- Need: trace class operators, positivity, trace = 1\n\n/-- A quantum measurement is a collection of operators satisfying completeness relation -/\nstructure QuantumMeasurement (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H] where\n  operators : \u2115 \u2192 (H \u2192L[\u2102] H)\n  completeness : sorry -- Need: \u2211_i M_i\u2020 M_i = I\n\n/-- Post-measurement state formula -/\ndef postMeasurementState {H : Type*} [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H]\n  (\u03c1 : DensityOperator H) (M : H \u2192L[\u2102] H) : DensityOperator H :=\n  sorry -- Need: M \u03c1 M\u2020 / Tr(M \u03c1 M\u2020)\n\n/-- Von Neumann entropy of a density operator -/\ndef vonNeumannEntropy {H : Type*} [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H]\n  (\u03c1 : DensityOperator H) : \u211d :=\n  sorry -- Need: -Tr(\u03c1 log \u03c1)\n\n/-- Main theorem: Post-measurement state lies in eigenspace for projective measurements -/\ntheorem post_measurement_eigenspace {H : Type*} [NormedAddCommGroup H] [InnerProductSpace \u2102 H] \n  [CompleteSpace H] [SeparableSpace H]\n  (\u03c1 : DensityOperator H) (M : QuantumMeasurement H) (i : \u2115) :\n  let \u03c1' := postMeasurementState \u03c1 (M.operators i)\n  \u2203 (U : H \u2192L[\u2102] H), IsometryClass.isometry U \u2227 \n    -- Step 1: Pre-measurement evolution is unitary\n    (\u2200 t : \u211d, \u2203 (H_op : H \u2192L[\u2102] H), IsSelfAdjoint H_op \u2227 \n      U = ContinuousLinearMap.exp ((-Complex.I * t / sorry : \u2102) \u2022 H_op)) \u2227\n    -- Step 2: Measurement postulate (Born rule)\n    sorry \u2227 -- Need: proper formulation of measurement postulate\n    -- Step 3: For projective measurements\n    (\u2200 j k : \u2115, IsOrthogonalProjection (M.operators j) \u2192 \n      M.operators j \u2218L M.operators j = M.operators j \u2227\n      (j \u2260 k \u2192 M.operators j \u2218L M.operators k = 0)) \u2192\n    -- Step 4: Post-measurement state in eigenspace\n    (IsOrthogonalProjection (M.operators i) \u2192 \n      M.operators i \u2218L (sorry : H \u2192L[\u2102] H) = sorry \u2227 -- Need: \u03c1' as operator\n      sorry \u2218L M.operators i = sorry) \u2227 -- Need: \u03c1' as operator\n    -- Step 5: Support in eigenspace\n    sorry \u2227 -- Need: support characterization\n    -- Step 6: Non-unitary evolution\n    (\u00ac\u2203 (V : H \u2192L[\u2102] H), IsometryClass.isometry V \u2227 \n      sorry) \u2227 -- Need: \u03c1' = V\u03c1V\u2020\n    -- Step 7: Measurement problem gap\n    sorry -- Cannot derive from unitary dynamics alone\n  := by\n  sorry",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The pre-measurement evolution is unitary: \u03c1(t) = U(t)\u03c1(0)U\u2020(t) where U(t) = exp(-iHt/\u210f)",
+      "justification": "Stone's theorem guarantees unitary evolution for self-adjoint Hamiltonians",
+      "dependencies": [
+        "Stone's theorem",
+        "Quantum postulate of unitary evolution"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Upon measurement with outcome i, the state transforms to \u03c1' = M_i \u03c1 M_i\u2020 / Tr(M_i \u03c1 M_i\u2020)",
+      "justification": "Measurement postulate of quantum mechanics (Born rule generalization)",
+      "dependencies": [
+        "Quantum measurement postulate"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "For projective measurements where M_i = P_i, we have P_i\u00b2 = P_i and P_i P_j = \u03b4_ij P_i",
+      "justification": "Definition of orthogonal projectors",
+      "dependencies": [
+        "Properties of projection operators"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The post-measurement state \u03c1' = P_i \u03c1 P_i / Tr(P_i \u03c1) satisfies P_i \u03c1' = \u03c1' P_i = \u03c1'",
+      "justification": "Direct calculation using P_i\u00b2 = P_i",
+      "dependencies": [
+        "Step 3"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Therefore \u03c1' has support only in the range of P_i, which is the eigenspace of the measured observable with eigenvalue \u03bb_i",
+      "justification": "P_i projects onto the eigenspace of observable A with eigenvalue \u03bb_i",
+      "dependencies": [
+        "Step 4",
+        "Spectral theorem"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "The evolution \u03c1 \u2192 \u03c1' is non-unitary since it cannot be written as \u03c1' = U\u03c1U\u2020 for any unitary U",
+      "justification": "Unitary evolution preserves von Neumann entropy, but S(\u03c1') \u2264 S(\u03c1) with equality only if \u03c1 commutes with all P_i",
+      "dependencies": [
+        "Steps 2, 5",
+        "Properties of von Neumann entropy"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "[Gap: The transition from unitary to non-unitary evolution at measurement requires additional axioms beyond standard quantum mechanics]",
+      "justification": "The measurement problem - no derivation from unitary dynamics alone",
+      "dependencies": [
+        "Measurement problem literature"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Stone's Theorem",
+      "authors": "Marshall Stone",
+      "year": "1932",
+      "field": "Functional Analysis",
+      "statement": "One-parameter strongly continuous unitary groups have self-adjoint generators",
+      "usage": "Justifies unitary time evolution in Step 1"
+    },
+    {
+      "name": "Spectral Theorem",
+      "authors": "von Neumann, Hilbert",
+      "year": "1920s-1930s",
+      "field": "Functional Analysis",
+      "statement": "Self-adjoint operators have spectral decomposition into projection-valued measures",
+      "usage": "Connects projectors to eigenspaces in Step 5"
+    },
+    {
+      "name": "Quantum Measurement Postulate",
+      "authors": "von Neumann",
+      "year": "1932",
+      "field": "Quantum Mechanics",
+      "statement": "Measurement causes state reduction according to Born rule",
+      "usage": "Core postulate used in Step 2"
+    },
+    {
+      "name": "Properties of von Neumann Entropy",
+      "authors": "von Neumann",
+      "year": "1932",
+      "field": "Quantum Information Theory",
+      "statement": "S(\u03c1) = -Tr(\u03c1 log \u03c1) is non-increasing under quantum operations",
+      "usage": "Shows non-unitarity in Step 6"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "H is a separable complex Hilbert space",
+    "\u03c1 is a positive trace-class operator with Tr(\u03c1) = 1 (density operator)",
+    "M = {M_i} forms a quantum measurement (POVM) with \u2211_i M_i\u2020M_i = I",
+    "The measurement outcome i occurs with probability p_i = Tr(M_i \u03c1 M_i\u2020) > 0",
+    "For projective measurements, M_i = P_i where P_i are orthogonal projectors",
+    "The system evolves according to the postulates of quantum mechanics",
+    "No decoherence or environmental interactions during measurement",
+    "The measurement apparatus can be treated classically"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "Prior to measurement, the system evolves unitarily according to \u03c1(t) = U(t)\u03c1(0)U\u2020(t)",
+        "issue": "This discussion of unitary evolution before measurement is completely irrelevant to the proposition being proved. The proposition makes no claims about time evolution.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Remove this entire paragraph as it contributes nothing to proving the stated proposition."
+      },
+      {
+        "step": "Upon measurement with outcome i, the quantum measurement postulate dictates that the state transforms to \u03c1' = M_i \u03c1 M_i\u2020 / Tr(M_i \u03c1 M_i\u2020)",
+        "issue": "This is exactly what needs to be proved! The proof simply asserts the formula as a 'postulate' rather than deriving it.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed - this is circular reasoning at its core."
+      },
+      {
+        "step": "We assume... that the measurement outcome i occurs with probability p_i = Tr(M_i \u03c1 M_i\u2020) > 0",
+        "issue": "The assumption p_i > 0 excludes the case where outcome i has zero probability. The formula for \u03c1' is undefined when Tr(M_i \u03c1 M_i\u2020) = 0.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "State explicitly that the formula only applies when p_i > 0, and that \u03c1' is undefined for zero-probability outcomes."
+      },
+      {
+        "step": "By direct calculation using the projector property P_i\u00b2 = P_i, we verify that P_i \u03c1' = \u03c1' P_i = \u03c1'",
+        "issue": "No actual calculation is shown. This is an assertion without proof.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Show the actual calculation: P_i \u03c1' = P_i(P_i \u03c1 P_i)/Tr(P_i \u03c1) = (P_i \u03c1 P_i)/Tr(P_i \u03c1) = \u03c1'."
+      },
+      {
+        "step": "The evolution \u03c1 \u2192 \u03c1' is manifestly non-unitary",
+        "issue": "This entire paragraph about non-unitarity and entropy is irrelevant to the proposition being proved.",
+        "severity": "minor",
+        "fixable": true,
+        "suggested_fix": "Remove this digression or move it to a remark after the proof."
+      }
+    ],
+    "hidden_assumptions": [
+      "The measurement operators M_i are bounded",
+      "The index set for i is countable (needed for the sum \u2211_i M_i\u2020 M_i = I to make sense)",
+      "The trace Tr(M_i \u03c1 M_i\u2020) exists and is finite",
+      "The operator M_i \u03c1 M_i\u2020 is trace-class",
+      "The normalized operator M_i \u03c1 M_i\u2020/Tr(M_i \u03c1 M_i\u2020) is a valid density operator"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes the quantum measurement postulate to prove a statement about quantum measurement. It literally states 'the quantum measurement postulate dictates that the state transforms to \u03c1' = M_i \u03c1 M_i\u2020/Tr(M_i \u03c1 M_i\u2020)' which is exactly what needs to be proved.",
+    "over_generalisation": false,
+    "over_generalisation_details": "The proof claims what it states, though it doesn't actually prove it",
+    "citation_issues": [
+      "Stone's theorem is cited but completely irrelevant - the proof never uses unitary groups",
+      "The 'quantum measurement postulate' is cited as if it's an external theorem, but it's exactly what's being proved",
+      "Von Neumann entropy properties are mentioned but never actually used in the proof"
+    ],
+    "structural_soundness": 0.2,
+    "overall_assessment": "This is not a proof but rather a restatement of quantum measurement axioms disguised as a derivation. The core issue is that it assumes what it needs to prove by invoking the 'quantum measurement postulate.' The proof also contains significant irrelevant material about unitary evolution and entropy that obscures the circular reasoning.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof establishes the post-measurement state formula and shows that for projective measurements the state lies in the range of the projector, but fails to prove the eigenspace claim without establishing the connection between projectors and observables",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The projectors P_i are spectral projectors of some self-adjoint observable A",
+      "The observable A has discrete spectrum with eigenvalues \u03bb_i",
+      "The measurement outcome i corresponds to measuring eigenvalue \u03bb_i of observable A",
+      "The Hilbert space dimension allows for the claimed eigenspace decomposition"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "1",
+        "issue": "Step 1 is irrelevant to the proposition - pre-measurement unitary evolution is not needed to prove the post-measurement state formula"
+      },
+      {
+        "step": "5",
+        "issue": "Claims P_i projects onto eigenspace of observable A with eigenvalue \u03bb_i without establishing what observable A is or that such a connection exists"
+      },
+      {
+        "step": "6",
+        "issue": "Discusses non-unitary evolution which is not part of the stated proposition"
+      },
+      {
+        "step": "7",
+        "issue": "Acknowledges a gap but this entire discussion of unitary vs non-unitary evolution is outside the scope of the proposition"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Never establishes which observable the projectors correspond to",
+      "Never proves that the range of P_i equals an eigenspace of any specific observable",
+      "Missing the crucial connection between measurement operators and spectral decomposition",
+      "Steps 1, 6, 7 address irrelevant topics while the core eigenspace claim remains unproven"
+    ],
+    "internal_score": 0.3
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims measurement causes non-unitary evolution \u03c1 \u2192 \u03c1' that 'cannot be written as \u03c1' = U\u03c1U\u2020 for any unitary U', but proof [06d6ace265c2] establishes that quantum-classical boundary emerges through 'unitary evolution U on H\u2297H_E followed by partial trace', showing measurement can be understood as unitary evolution on larger system",
+      "The new proof treats 'measurement apparatus classically' and assumes 'no decoherence or environmental interactions', directly contradicting proof [06d6ace265c2] which shows classical behavior emerges precisely through 'information dispersal into environmental degrees of freedom'",
+      "The claim that measurement requires 'additional axioms beyond standard quantum mechanics' conflicts with proof [06879fd9ae87] which shows measurement contextuality is already encoded in the algebraic structure of quantum systems"
+    ],
+    "assumption_conflicts": [
+      "Assumption of classical measurement apparatus conflicts with [06d6ace265c2]'s demonstration that classical behavior emerges from quantum evolution",
+      "Assumption of no environmental interactions contradicts [06d1b829563e]'s framework where information loss emerges from dynamical constraints",
+      "The gap identified about needing additional axioms conflicts with [06879fd9ae87]'s categorical treatment showing measurement is already encoded in quantum structure"
+    ],
+    "beneficial_connections": [
+      "The density operator formalism connects to [00f62716e74a]'s information copying constraints - measurement creates classical information that can be copied",
+      "The eigenspace localization result relates to [087da119976b]'s symmetry breaking - measurement breaks superposition symmetry",
+      "The non-unitary evolution connects to [06d1b829563e]'s information loss mechanisms"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof contains fundamental conceptual errors about the nature of quantum measurement. The identified 'gap' is actually resolved by existing proofs showing measurement emerges from unitary evolution on extended systems. The classical apparatus assumption is particularly problematic given existing proofs about quantum-classical emergence."
+  },
+  "confidence_score": 0.32999999999999996,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.3,
+    "cross_proof": 0.3,
+    "calibration": 0.6
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.3,
+    "cross_proof": 0.3,
+    "calibration": 0.6
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": true,
+  "new_mathematics_needed": "",
+  "limitations": [
+    "The measurement postulate is taken as axiomatic rather than derived",
+    "The classical-quantum boundary for the measurement apparatus is not rigorously defined",
+    "The timescale of state reduction is not specified",
+    "Decoherence effects are not included in the formal framework",
+    "Proof relies on measurement postulate rather than deriving it",
+    "Does not address the measurement problem",
+    "Assumes idealized projective measurements",
+    "Does not include continuous measurements or weak measurements",
+    "No treatment of measurement back-action or disturbance"
+  ],
+  "source_convergence": {
+    "structural_claim": "Measurement fundamentally alters quantum evolution by projecting systems into eigenstates",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Quantum Zeno Effect in Optics",
+        "domain_id": "field_a",
+        "domain_name": "Optics and Photonics",
+        "link_type": "direct",
+        "structural_conclusion": "Frequent measurement inhibits quantum evolution by projecting into measurement eigenstates"
+      },
+      {
+        "result_id": "",
+        "result_name": "Quantum Gas Microscopy",
+        "domain_id": "field_b",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Single-site resolution imaging reveals quantum fluctuations through projective measurement"
+      }
+    ],
+    "domains": [
+      "optics",
+      "atomic_physics"
+    ],
+    "domain_names": [
+      "Optics and Photonics",
+      "Atomic and Molecular Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.238,
+      "independence": 0.7,
+      "adversarial": 0.4,
+      "reproducibility": 0.42,
+      "depth_consistency": 1.0,
+      "confidence": 0.48940000000000006,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:42:55.291863+00:00",
+    "id": "f1e82ab0b0fc"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.271125
+  }
+}

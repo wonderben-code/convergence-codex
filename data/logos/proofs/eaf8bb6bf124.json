@@ -1,0 +1,353 @@
+{
+  "id": "eaf8bb6bf124",
+  "convergence_id": "ecbe8bb02fa7",
+  "timestamp": "2026-05-02T14:45:51.708489+00:00",
+  "proposition": "Let (X, \u03bc) be a measure space with disorder parameter \u03bb > 0, and let H = H\u2080 + \u03bbV be a self-adjoint operator on L\u00b2(X, \u03bc) where H\u2080 is the free evolution operator and V is a random potential with bounded support. Then for sufficiently large \u03bb, the spectrum of H is pure point with exponentially localized eigenfunctions, and the transport coefficient \u03c3(\u03c9) \u2192 0 as \u03bb \u2192 \u221e for almost all disorder realizations \u03c9.",
+  "proposition_natural": "Disorder induces localization through destructive interference, fundamentally limiting transport",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Functional analysis",
+    "Measure theory",
+    "Dynamical systems"
+  ],
+  "apparatus_justification": "Functional analysis provides spectral theory for operators on Hilbert spaces, essential for analyzing wave propagation and localization phenomena. Measure theory handles the probabilistic aspects of disorder, while dynamical systems theory captures the transport dynamics and stability of localized states.",
+  "proof_natural": "**Proposition.** Let $(X, \\mu)$ be a measure space with disorder parameter $\\lambda > 0$, and let $H = H_0 + \\lambda V$ be a self-adjoint operator on $L^2(X, \\mu)$ where $H_0$ is the free evolution operator and $V$ is a random potential with bounded support. Then for sufficiently large $\\lambda$, the spectrum of $H$ is pure point with exponentially localized eigenfunctions, and the transport coefficient $\\sigma(\\omega) \\to 0$ as $\\lambda \\to \\infty$ for almost all disorder realizations $\\omega$.\n\n**Proof.** We assume that $X$ is a locally compact metric space with Borel measure $\\mu$, and that $H_0$ is a self-adjoint operator on $L^2(X, \\mu)$ with absolutely continuous spectrum. Let $V$ be a measurable function with $\\|V\\|_\\infty < \\infty$, where the disorder is modeled by a probability measure $P$ on the space of potentials. We further assume that the potential $V$ satisfies independence conditions on disjoint regions, the transport coefficient $\\sigma(\\omega)$ is defined via the Kubo formula, and the system satisfies ergodicity under spatial translations.\n\nBy standard spectral theory for self-adjoint operators, the resolvent $(H - z)^{-1}$ exists for $z \\notin \\sigma(H)$ and satisfies $\\|(H - z)^{-1}\\| \\leq 1/\\text{dist}(z, \\sigma(H))$.\n\nFor large $\\lambda$, we apply the fractional moment method following the Aizenman-Molchanov theorem. This establishes that the Green's function $G(x,y;E) = \\langle x|(H - E - i\\varepsilon)^{-1}|y\\rangle$ exhibits exponential decay: $|G(x,y;E)| \\leq Ce^{-\\gamma|x-y|}$ for some $\\gamma > 0$. The key insight is that sufficient disorder suppresses quantum tunneling between distant regions.\n\nBy the Combes-Thomas estimate, the exponential decay of the resolvent implies that eigenfunctions $\\psi_n$ of $H$ satisfy $|\\psi_n(x)| \\leq C_n e^{-\\alpha_n|x-x_n|}$ for some localization centers $x_n$. This exponential localization is the hallmark of Anderson localization.\n\nApplying the Simon-Wolff criterion to these exponentially decaying eigenfunctions, we conclude that the spectrum of $H$ is pure point for large $\\lambda$. This means that all spectral measures are supported on discrete eigenvalues with normalizable eigenfunctions.\n\nTo establish the vanishing of transport, we invoke the Kubo formula: $\\sigma(\\omega) = \\lim_{t\\to\\infty} \\int_0^t ds \\langle J(s)J(0)\\rangle$, where $J$ is the current operator. Since the current operator is local and the eigenfunctions are exponentially localized, the matrix elements $\\langle\\psi_n|J|\\psi_m\\rangle$ decay exponentially with $|x_n - x_m|$.\n\n[Note: A complete proof requires detailed analysis of dynamical correlations in the localized phase, which we omit here.] Under the assumption that such analysis can be carried out, the time-averaged current-current correlation $\\langle J(t)J(0)\\rangle \\to 0$ as $t \\to \\infty$. This is consistent with the physical picture that localized states cannot support persistent currents.\n\nTherefore, $\\sigma(\\omega) = 0$ for almost all disorder realizations when $\\lambda$ is sufficiently large. The vanishing of the transport coefficient is a direct consequence of the exponential localization of all eigenstates, which prevents the flow of charge or energy through the system.\n\nThis completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.MeasureTheory.Measure.MeasureSpace\nimport Mathlib.MeasureTheory.Function.L2Space\nimport Mathlib.Analysis.InnerProductSpace.Spectrum\nimport Mathlib.Analysis.NormedSpace.OperatorNorm\nimport Mathlib.Topology.MetricSpace.Bounded\n\n/-- A measure space with disorder parameter -/\nstructure DisorderMeasureSpace (X : Type*) [MeasurableSpace X] extends MeasureSpace X where\n  \u03bb : \u211d\n  \u03bb_pos : 0 < \u03bb\n\n/-- Random potential with bounded support -/\nstructure RandomPotential (X : Type*) [MeasurableSpace X] (\u03bc : Measure X) where\n  V : X \u2192 \u211d\n  measurable : Measurable V\n  bounded_support : \u2203 (C : \u211d), \u2200 x, |V x| \u2264 C\n\n/-- Transport coefficient for a given disorder realization -/\ndef transportCoefficient (\u03c9 : \u03a9) : \u211d := sorry -- Missing: Kubo formula implementation\n\n/-- Green's function for the operator H -/\ndef greenFunction {X : Type*} [MeasurableSpace X] (H : L\u00b2(X) \u2192L[\u211d] L\u00b2(X)) \n  (x y : X) (E : \u211d) (\u03b5 : \u211d) : \u2102 := sorry -- Missing: Green's function definition\n\n/-- Current operator -/\ndef currentOperator {X : Type*} [MeasurableSpace X] : L\u00b2(X) \u2192L[\u211d] L\u00b2(X) := \n  sorry -- Missing: Current operator definition\n\n/-- Main theorem: Anderson localization for large disorder -/\ntheorem anderson_localization \n  {X : Type*} [MeasurableSpace X] [MetricSpace X]\n  (dms : DisorderMeasureSpace X)\n  (H\u2080 : L\u00b2(X, dms.toMeasureSpace) \u2192L[\u211d] L\u00b2(X, dms.toMeasureSpace))\n  (V : RandomPotential X dms.volume)\n  (h_selfadj_H\u2080 : IsSelfAdjoint H\u2080)\n  (h_free : sorry) -- Missing: Characterization of free evolution operator\n  : \u2203 (\u03bb\u2080 : \u211d), \u2200 (\u03bb : \u211d), \u03bb\u2080 < \u03bb \u2192 \n    let H := H\u2080 + \u03bb \u2022 (sorry : L\u00b2(X, dms.toMeasureSpace) \u2192L[\u211d] L\u00b2(X, dms.toMeasureSpace)) -- Missing: Multiplication operator by V\n    (\u2200 (\u03c9 : \u03a9), sorry) -- Missing: Almost sure statement about pure point spectrum and localization\n    \u2227 (\u2200\u1d50 (\u03c9 : \u03a9), transportCoefficient \u03c9 = 0) := by\n  sorry -- Missing: Anderson localization theory\n  \n  -- Step 1: Resolvent bounds\n  have resolvent_bound : \u2200 (H : L\u00b2(X, dms.toMeasureSpace) \u2192L[\u211d] L\u00b2(X, dms.toMeasureSpace)) \n    (h_sa : IsSelfAdjoint H) (z : \u2102), z \u2209 spectrum \u211d H \u2192 \n    \u2016(H - z \u2022 1)\u207b\u00b9\u2016 \u2264 1 / dist z (spectrum \u211d H) := by\n    sorry -- Standard spectral theory result\n  \n  -- Step 2: Exponential decay of Green's function\n  have green_decay : \u2203 (\u03bb\u2080 : \u211d), \u2200 (\u03bb : \u211d), \u03bb\u2080 < \u03bb \u2192 \n    \u2203 (C \u03b3 : \u211d) (hC : 0 < C) (h\u03b3 : 0 < \u03b3), \n    \u2200 (x y : X) (E : \u211d) (\u03b5 : \u211d), \n    |greenFunction H x y E \u03b5| \u2264 C * Real.exp (-\u03b3 * dist x y) := by\n    sorry -- Missing: Fractional moment method\n  \n  -- Step 3: Exponential localization of eigenfunctions\n  have eigenfunction_decay : sorry := by\n    sorry -- Missing: Consequence of Green's function decay\n  \n  -- Step 4: Pure point spectrum\n  have pure_point : sorry := by\n    sorry -- Missing: Simon-Wolff criterion\n  \n  -- Step 5: Transport coefficient via Kubo formula\n  have kubo_formula : \u2200 (\u03c9 : \u03a9), transportCoefficient \u03c9 = \n    sorry -- Missing: Time integral of current-current correlations\n    := by sorry\n  \n  -- Step 6: Current matrix elements decay\n  have current_decay : sorry := by\n    sorry -- Missing: Analysis of current operator between localized states\n  \n  -- Step 7: Vanishing current-current correlations\n  have correlation_vanish : sorry := by\n    sorry -- Gap: Dynamical correlations in localized phase\n  \n  -- Step 8: Transport coefficient vanishes\n  have transport_vanish : \u2200\u1d50 (\u03c9 : \u03a9), transportCoefficient \u03c9 = 0 := by\n    sorry -- Missing: Consequence of vanishing correlations\n  \n  sorry -- Missing: Complete proof assembly",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The resolvent (H - z)\u207b\u00b9 exists for z \u2209 \u03c3(H) and satisfies ||(H - z)\u207b\u00b9|| \u2264 1/dist(z, \u03c3(H))",
+      "justification": "Standard spectral theory for self-adjoint operators",
+      "dependencies": [
+        "Assumption that H is self-adjoint"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "For large \u03bb, the Green's function G(x,y;E) = \u27e8x|(H - E - i\u03b5)\u207b\u00b9|y\u27e9 decays exponentially: |G(x,y;E)| \u2264 Ce^{-\u03b3|x-y|} for some \u03b3 > 0",
+      "justification": "Application of fractional moment method",
+      "dependencies": [
+        "Step 1",
+        "Aizenman-Molchanov theorem"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The eigenfunctions \u03c8\u2099 of H satisfy |\u03c8\u2099(x)| \u2264 C\u2099e^{-\u03b1\u2099|x-x\u2099|} for some localization centers x\u2099",
+      "justification": "Consequence of exponential decay of Green's function",
+      "dependencies": [
+        "Step 2",
+        "Combes-Thomas estimate"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The spectrum of H is pure point for large \u03bb",
+      "justification": "Simon-Wolff criterion applied to exponentially decaying eigenfunctions",
+      "dependencies": [
+        "Step 3",
+        "Simon-Wolff theorem"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The transport coefficient \u03c3(\u03c9) = lim_{t\u2192\u221e} \u222b\u2080^t ds \u27e8J(s)J(0)\u27e9 where J is the current operator",
+      "justification": "Definition via Kubo formula",
+      "dependencies": [
+        "Assumption on transport coefficient definition"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "For localized states, \u27e8\u03c8\u2099|J|\u03c8\u2098\u27e9 decays exponentially with |x\u2099 - x\u2098|",
+      "justification": "Current operator is local and eigenfunctions are exponentially localized",
+      "dependencies": [
+        "Step 3",
+        "Locality of current operator"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The time-averaged current-current correlation \u27e8J(t)J(0)\u27e9 \u2192 0 as t \u2192 \u221e",
+      "justification": "[Gap: Requires detailed analysis of dynamical correlations in localized phase]",
+      "dependencies": [
+        "Step 6",
+        "Riemann-Lebesgue lemma"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Therefore \u03c3(\u03c9) = 0 for almost all disorder realizations when \u03bb is sufficiently large",
+      "justification": "Direct consequence of vanishing current-current correlations",
+      "dependencies": [
+        "Step 5",
+        "Step 7"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Aizenman-Molchanov Theorem",
+      "authors": "Aizenman, M. and Molchanov, S.",
+      "year": "1993",
+      "field": "Mathematical Physics",
+      "statement": "For random Schr\u00f6dinger operators with sufficient disorder, fractional moments of Green's function are finite, implying exponential localization",
+      "usage": "Establishes exponential decay of Green's function in Step 2"
+    },
+    {
+      "name": "Combes-Thomas Estimate",
+      "authors": "Combes, J.M. and Thomas, L.",
+      "year": "1973",
+      "field": "Mathematical Physics",
+      "statement": "Exponential decay of resolvents implies exponential decay of eigenfunctions",
+      "usage": "Connects Green's function decay to eigenfunction localization in Step 3"
+    },
+    {
+      "name": "Simon-Wolff Criterion",
+      "authors": "Simon, B. and Wolff, T.",
+      "year": "1986",
+      "field": "Spectral Theory",
+      "statement": "If eigenfunctions decay sufficiently fast, the spectrum is pure point",
+      "usage": "Establishes pure point spectrum in Step 4"
+    },
+    {
+      "name": "Lieb-Robinson Bounds",
+      "authors": "Lieb, E.H. and Robinson, D.W.",
+      "year": "1972",
+      "field": "Mathematical Physics",
+      "statement": "Information propagation in quantum lattice systems has finite speed",
+      "usage": "Implicit in establishing locality constraints for transport"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "X is a locally compact metric space with Borel measure \u03bc",
+    "H\u2080 is a self-adjoint operator on L\u00b2(X, \u03bc) with absolutely continuous spectrum",
+    "V is a measurable function with ||V||\u221e < \u221e",
+    "The disorder is modeled by a probability measure P on the space of potentials V",
+    "The potential V satisfies independence conditions on disjoint regions",
+    "The transport coefficient \u03c3(\u03c9) is defined via the Kubo formula",
+    "The system satisfies ergodicity under spatial translations"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Application of fractional moment method",
+        "issue": "The proof jumps from 'we apply the fractional moment method' directly to exponential decay of Green's function without showing the fractional moments are actually finite or verifying the conditions of the Aizenman-Molchanov theorem",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Must prove that E[|G(x,y;E)|^s] < \u221e for some s \u2208 (0,1) and verify all conditions of the theorem including the specific independence structure required"
+      },
+      {
+        "step": "Combes-Thomas estimate application",
+        "issue": "The proof claims exponential decay of resolvent implies exponential decay of eigenfunctions, but doesn't verify that the eigenfunctions actually exist or that H has discrete spectrum at this stage",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot apply Combes-Thomas to eigenfunctions before proving they exist"
+      },
+      {
+        "step": "Simon-Wolff criterion",
+        "issue": "The proof applies Simon-Wolff criterion backwards - it uses exponential decay to conclude pure point spectrum, but Simon-Wolff requires checking time-averaged behavior of spectral measures",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Must verify the actual Simon-Wolff condition: limsup T\u2192\u221e (1/T)\u222b\u2080\u1d40 |\u27e8\u03b4\u2093,e^{-itH}\u03b4\u1d67\u27e9|\u00b2 dt = 0"
+      },
+      {
+        "step": "Transport coefficient calculation",
+        "issue": "The proof admits it omits the 'detailed analysis of dynamical correlations' which is the entire core of proving \u03c3(\u03c9) \u2192 0",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Cannot claim the result without actually proving the dynamical correlations vanish"
+      },
+      {
+        "step": "Definition of measure space",
+        "issue": "The proof assumes X is locally compact metric space but the proposition only states (X,\u03bc) is a measure space",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Either change the proposition or work with general measure spaces"
+      },
+      {
+        "step": "Current operator definition",
+        "issue": "The current operator J is never defined, and its existence and properties depend crucially on the specific form of H\u2080",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Must define J explicitly in terms of H\u2080 and verify it exists and is self-adjoint"
+      }
+    ],
+    "hidden_assumptions": [
+      "X has a metric structure (not stated in proposition)",
+      "The disorder model has specific independence properties never specified",
+      "H\u2080 generates a unitary group (needed for dynamics)",
+      "The current operator J exists and is well-defined",
+      "The system has translation invariance (needed for ergodicity)",
+      "The Green's function G(x,y;E) makes sense pointwise (requires additional structure)",
+      "Eigenfunctions form a complete basis (not proven)",
+      "The fractional moment method applies to this general setting"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes eigenfunctions exist and are exponentially localized to prove the spectrum is pure point, but pure point spectrum is what guarantees the existence of such eigenfunctions",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to work for general measure spaces with abstract 'free evolution operator' H\u2080, but the techniques used (fractional moments, current operators, spatial decay) require very specific structures like lattices or continuous space with translation invariance",
+    "citation_issues": [
+      "Aizenman-Molchanov theorem requires specific independence conditions and lattice or continuum structure not verified",
+      "Combes-Thomas estimate is misapplied - it gives decay of matrix elements of functions of H, not eigenfunctions",
+      "Simon-Wolff criterion is stated incorrectly - it's a criterion for pure point spectrum, not a consequence of exponential decay",
+      "Lieb-Robinson bounds are cited but never used and only apply to lattice systems with local interactions"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed with circular reasoning, omitted crucial steps, and misapplied theorems. The core dynamical analysis is completely missing, and the proof conflates different notions from discrete lattice and continuous models without establishing the necessary framework.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to prove Anderson localization but fails to establish key connections between Green's function decay and spectral properties, and contains a critical gap in the transport analysis",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Specific conditions on H\u2080 for fractional moment method to apply",
+      "Regularity conditions on the measure space X",
+      "Specific independence conditions for the random potential",
+      "Conditions ensuring the current operator J is well-defined and bounded",
+      "Spectral gap conditions for H\u2080",
+      "Conditions ensuring the Kubo formula is applicable",
+      "Assumptions about the support and distribution of V needed for localization"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "2",
+        "issue": "Fractional moment method application is not justified - requires specific conditions on H\u2080, dimension of X, and disorder distribution that are not established"
+      },
+      {
+        "step": "3",
+        "issue": "The connection between Green's function decay and eigenfunction localization is not automatic and requires additional spectral analysis"
+      },
+      {
+        "step": "4",
+        "issue": "Simon-Wolff criterion requires more than just exponential decay - needs specific conditions on the spectral measure that are not established"
+      },
+      {
+        "step": "6",
+        "issue": "The claim that current matrix elements decay exponentially is not justified - requires detailed analysis of the current operator structure"
+      },
+      {
+        "step": "7",
+        "issue": "Explicitly marked as having a gap - the connection between localized eigenfunctions and vanishing dynamical correlations is non-trivial and not established"
+      },
+      {
+        "step": "8",
+        "issue": "Conclusion does not follow due to the gap in step 7 and invalid reasoning in previous steps"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Critical gap in step 7 regarding dynamical correlations",
+      "Missing rigorous application of fractional moment method",
+      "No verification that Simon-Wolff criterion conditions are met",
+      "Missing analysis of current operator properties",
+      "No treatment of measure-theoretic aspects of 'almost all disorder realizations'",
+      "Missing connection between pointwise eigenfunction estimates and spectral properties"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims pure point spectrum with exponentially localized eigenfunctions for large disorder \u03bb, but this contradicts the general principle from [06d6ace265c2] that quantum-classical boundaries emerge through environmental information dispersal rather than parameter thresholds",
+      "The claim that transport coefficient \u03c3(\u03c9) \u2192 0 as \u03bb \u2192 \u221e contradicts the multi-scale dynamics principle from [052632f8abba] where microscopic distributions determine macroscopic behavior - complete transport suppression would violate this coupling",
+      "The assertion of pure point spectrum conflicts with [087da119976b] which shows systems break symmetry to create ordered patterns when driving forces overcome dissipation - large disorder should enhance, not suppress, spectral complexity"
+    ],
+    "assumption_conflicts": [
+      "The assumption of bounded support for random potential V conflicts with the ergodicity requirement under spatial translations - bounded support breaks translation invariance",
+      "The independence conditions on disjoint regions assumption conflicts with the hierarchical structure formation principle from [0e664bd264b4] where small-scale fluctuations seed large-scale organization",
+      "The assumption that H\u2080 has absolutely continuous spectrum conflicts with the localization conclusion - if H\u2080 is already continuous, the perturbation theory used is questionable"
+    ],
+    "beneficial_connections": [
+      "The exponential decay of Green's functions connects to the geometric curvature-instability coupling from [0a979a982999] where localized breakdown occurs",
+      "The use of resolvent bounds relates to the analytic function encoding from [043c25bfbbd8] through poles and zeros of the resolvent",
+      "The ergodicity assumption connects to the information loss and thermodynamic behavior from [06d1b829563e] through invariant measures"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof contains fundamental mathematical errors: the resolvent bound ||(H-z)\u207b\u00b9|| \u2264 1/dist(z,\u03c3(H)) is trivial and provides no information about localization. The exponential decay claim for Green's functions lacks rigorous justification. The connection between localized eigenfunctions and vanishing transport is asserted without proper proof of the current operator matrix elements. The disorder model is insufficiently specified for the strong conclusions claimed."
+  },
+  "confidence_score": 0.23,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous mathematical framework for connecting microscopic localization to macroscopic transport coefficients in disordered systems. Current approaches rely on physical intuition about destructive interference that lacks complete mathematical formalization.",
+  "limitations": [
+    "Step 7 requires detailed analysis of long-time dynamical correlations that is not fully rigorous",
+    "The connection between pure point spectrum and vanishing transport requires additional technical conditions",
+    "The role of destructive interference is invoked physically but not captured mathematically",
+    "Proof applies only to strong disorder regime (large \u03bb)",
+    "Requires specific independence assumptions on disorder",
+    "Does not capture the full localization-delocalization transition",
+    "The mathematical formulation of 'destructive interference' remains implicit"
+  ],
+  "source_convergence": {
+    "structural_claim": "Disorder induces localization through destructive interference, fundamentally limiting transport",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Lieb-Robinson Bounds",
+        "domain_id": "field_a",
+        "domain_name": "Thermodynamics and Statistical Mechanics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Information propagation in quantum systems has finite speed limits, establishing locality constraints"
+      },
+      {
+        "result_id": "",
+        "result_name": "Anderson Localization of Acoustic Waves",
+        "domain_id": "field_b",
+        "domain_name": "Acoustics and Wave Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Disorder halts wave propagation through destructive interference"
+      }
+    ],
+    "domains": [
+      "thermodynamics",
+      "acoustics"
+    ],
+    "domain_names": [
+      "Thermodynamics and Statistical Mechanics",
+      "Acoustics and Wave Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.1428,
+      "independence": 0.7,
+      "adversarial": 0.09,
+      "reproducibility": 0.315,
+      "depth_consistency": 1.0,
+      "confidence": 0.38308999999999993,
+      "confidence_category": "speculative"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:16:24.932906+00:00",
+    "id": "ecbe8bb02fa7"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.28339499999999995
+  }
+}

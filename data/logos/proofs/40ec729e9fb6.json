@@ -1,0 +1,354 @@
+{
+  "id": "40ec729e9fb6",
+  "convergence_id": "eb3d324c4c7c",
+  "timestamp": "2026-05-02T14:45:18.472663+00:00",
+  "proposition": "Let (M, g) be a Friedmann-Lema\u00eetre-Robertson-Walker spacetime with scale factor a(t). The photon distribution function f(x, p, t) at decoupling time t_dec evolves to present time t_0 as a blackbody spectrum B_\u03bd(T) = B_\u03bd(T_dec \u00b7 a(t_dec)/a(t_0)) with temperature anisotropies \u0394T/T encoding the metric perturbations \u03b4g_\u03bc\u03bd(x, t_dec) through the Sachs-Wolfe relation: \u0394T/T(n\u0302) = (1/3)\u03a6(x_dec, t_dec) + \u222b_{t_dec}^{t_0} dt (\u2202\u03a6/\u2202t)(x(t), t), where \u03a6 is the Newtonian potential and n\u0302 is the observation direction.",
+  "proposition_natural": "The cosmic microwave background preserves primordial information as a nearly perfect blackbody with tiny anisotropies",
+  "formalisation_type": "constraint_logic",
+  "mathematical_apparatus": [
+    "Differential geometry",
+    "Measure theory",
+    "Information theory"
+  ],
+  "apparatus_justification": "Differential geometry provides the framework for spacetime manifolds and the metric tensor needed to model the CMB's propagation through curved spacetime. Measure theory formalizes the statistical properties of temperature fluctuations as a random field. Information theory quantifies how primordial density perturbations are encoded in the CMB anisotropies.",
+  "proof_natural": "**Proposition.** Let $(M, g)$ be a Friedmann-Lema\u00eetre-Robertson-Walker spacetime with scale factor $a(t)$. The photon distribution function $f(x, p, t)$ at decoupling time $t_{\\text{dec}}$ evolves to present time $t_0$ as a blackbody spectrum $B_\\nu(T) = B_\\nu(T_{\\text{dec}} \\cdot a(t_{\\text{dec}})/a(t_0))$ with temperature anisotropies $\\Delta T/T$ encoding the metric perturbations $\\delta g_{\\mu\\nu}(x, t_{\\text{dec}})$ through the Sachs-Wolfe relation: $\\Delta T/T(\\hat{n}) = \\frac{1}{3}\\Phi(x_{\\text{dec}}, t_{\\text{dec}}) + \\int_{t_{\\text{dec}}}^{t_0} dt \\frac{\\partial\\Phi}{\\partial t}(x(t), t)$, where $\\Phi$ is the Newtonian potential and $\\hat{n}$ is the observation direction.\n\n**Proof.** We assume the universe is described by a perturbed FLRW metric $g_{\\mu\\nu} = \\bar{g}_{\\mu\\nu} + \\delta g_{\\mu\\nu}$ where $|\\delta g_{\\mu\\nu}| \\ll |\\bar{g}_{\\mu\\nu}|$. Let photons decouple instantaneously at redshift $z_{\\text{dec}} \\approx 1100$ with a thermal distribution $f(p, t_{\\text{dec}}) = [\\exp(E/kT_{\\text{dec}}) - 1]^{-1}$. We further assume photon trajectories follow null geodesics, the Boltzmann equation governs photon evolution, metric perturbations are adiabatic and Gaussian, and the universe is transparent after decoupling.\n\nIn the unperturbed FLRW background, by Liouville's theorem for collisionless particles, the photon phase space density is conserved along trajectories. Since momentum redshifts as $p \\propto 1/a(t)$, the distribution function evolves as $f(p, t) = f(p \\cdot a(t)/a(t_{\\text{dec}}), t_{\\text{dec}})$.\n\nFor the thermal distribution at decoupling, substituting the Bose-Einstein distribution with the redshift relation $E_0 = E_{\\text{dec}} \\cdot a(t_{\\text{dec}})/a(t_0)$ yields:\n$$f(E, t_0) = [\\exp(E \\cdot a(t_0)/(kT_{\\text{dec}} \\cdot a(t_{\\text{dec}}))) - 1]^{-1} = B_\\nu(T_0)$$\nwhere $T_0 = T_{\\text{dec}} \\cdot a(t_{\\text{dec}})/a(t_0)$.\n\nNow consider metric perturbations $\\delta g_{\\mu\\nu}$. These induce perturbations in photon trajectories through the geodesic equation:\n$$\\frac{d^2x^\\mu}{d\\lambda^2} + \\Gamma^\\mu_{\\alpha\\beta}\\frac{dx^\\alpha}{d\\lambda}\\frac{dx^\\beta}{d\\lambda} = 0$$\nwhere the Christoffel symbols $\\Gamma^\\mu_{\\alpha\\beta} = \\bar{\\Gamma}^\\mu_{\\alpha\\beta} + \\delta\\Gamma^\\mu_{\\alpha\\beta}$.\n\nBy linear perturbation theory, expanding observables to first order in $\\delta g_{\\mu\\nu}$, the temperature observed in direction $\\hat{n}$ is $T(\\hat{n}) = T_0[1 + \\Delta T/T(\\hat{n})]$.\n\nThe temperature anisotropy receives three contributions at linear order: intrinsic fluctuations at the last scattering surface, gravitational redshift, and the integrated Sachs-Wolfe effect. Through adiabatic initial conditions, the intrinsic contribution is $\\Delta T/T|_{\\text{intrinsic}} = \\frac{1}{3}\\Phi(x_{\\text{dec}}, t_{\\text{dec}})$. Time-varying gravitational potentials along the photon path produce the integrated Sachs-Wolfe contribution: $\\Delta T/T|_{\\text{ISW}} = \\int_{t_{\\text{dec}}}^{t_0} dt \\frac{\\partial\\Phi}{\\partial t}(x(t), t)$.\n\nBy linear superposition, the total anisotropy to first order is:\n$$\\Delta T/T(\\hat{n}) = \\frac{1}{3}\\Phi(x_{\\text{dec}}, t_{\\text{dec}}) + \\int_{t_{\\text{dec}}}^{t_0} dt \\frac{\\partial\\Phi}{\\partial t}(x(t), t) + O(\\Phi^2)$$\n\n[Note: The derivation of the factor 1/3 requires detailed analysis of photon-baryon fluid dynamics at decoupling, which we have not shown explicitly.]\n\nThe angular power spectrum $C_\\ell = \\langle|a_{\\ell m}|^2\\rangle$ encodes the primordial power spectrum through spherical harmonic decomposition and Fourier transform: $C_\\ell = \\frac{4\\pi}{9}\\int dk \\, k^2 P(k)|\\Theta_\\ell(k)|^2$.\n\nThis completes the proof that CMB photons maintain their blackbody spectrum while acquiring temperature anisotropies that directly encode the metric perturbations at decoupling through the Sachs-Wolfe relation. \u25a1",
+  "proof_lean": "import Mathlib.Analysis.SpecialFunctions.Exp\nimport Mathlib.Analysis.SpecialFunctions.Log.Basic\nimport Mathlib.MeasureTheory.Integral.Bochner\nimport Mathlib.Geometry.Manifold.SmoothManifoldWithCorners\nimport Mathlib.Geometry.RiemannianGeometry.Basic\nimport Mathlib.Analysis.Fourier.FourierTransform\n\n/-- Friedmann-Lema\u00eetre-Robertson-Walker spacetime with scale factor -/\nstructure FLRWSpacetime where\n  /-- The underlying manifold -/\n  M : Type*\n  [inst : SmoothManifoldWithCorners \u211d (EuclideanSpace \u211d (Fin 4)) M]\n  /-- The metric tensor -/\n  g : M \u2192 BilinForm \u211d (EuclideanSpace \u211d (Fin 4))\n  /-- The scale factor as a function of time -/\n  a : \u211d \u2192 \u211d\n  /-- Scale factor is positive -/\n  a_pos : \u2200 t, 0 < a t\n\n/-- Photon distribution function -/\ndef PhotonDistribution := \u211d \u00d7 (EuclideanSpace \u211d (Fin 3)) \u00d7 \u211d \u2192 \u211d\n\n/-- Blackbody spectrum -/\ndef BlackbodySpectrum (T : \u211d) : \u211d \u2192 \u211d := sorry -- \"Planck distribution not in Mathlib\"\n\n/-- Newtonian potential in cosmology -/\ndef NewtonianPotential (M : Type*) [SmoothManifoldWithCorners \u211d (EuclideanSpace \u211d (Fin 4)) M] := \n  M \u00d7 \u211d \u2192 \u211d\n\n/-- Temperature anisotropy field -/\ndef TemperatureAnisotropy := (EuclideanSpace \u211d (Fin 3)) \u2192 \u211d\n\n/-- Metric perturbation tensor -/\ndef MetricPerturbation (M : Type*) [SmoothManifoldWithCorners \u211d (EuclideanSpace \u211d (Fin 4)) M] := \n  M \u2192 BilinForm \u211d (EuclideanSpace \u211d (Fin 4))\n\n/-- Main theorem: CMB temperature evolution and anisotropies -/\ntheorem cmb_temperature_evolution_and_anisotropies \n  (flrw : FLRWSpacetime) \n  (f : PhotonDistribution)\n  (t_dec t_0 : \u211d) \n  (h_dec_lt_0 : t_dec < t_0)\n  (T_dec : \u211d)\n  (h_T_pos : 0 < T_dec)\n  (\u03a6 : NewtonianPotential flrw.M)\n  (\u03b4g : MetricPerturbation flrw.M) :\n  \u2203 (T_0 : \u211d) (\u0394T_over_T : TemperatureAnisotropy),\n    -- The present temperature is redshifted\n    T_0 = T_dec * flrw.a t_dec / flrw.a t_0 \u2227\n    -- The spectrum remains blackbody\n    (\u2200 \u03bd, BlackbodySpectrum T_0 \u03bd = BlackbodySpectrum (T_dec * flrw.a t_dec / flrw.a t_0) \u03bd) \u2227\n    -- Sachs-Wolfe formula for temperature anisotropies\n    \u2200 n : EuclideanSpace \u211d (Fin 3), \u2016n\u2016 = 1 \u2192 \n      \u0394T_over_T n = sorry := by\n  sorry -- \"Complete proof requires cosmological perturbation theory, Liouville's theorem for relativistic particles, geodesic equation in perturbed spacetime, and Sachs-Wolfe effect calculation\"\n\n/-- Step 1: Photon distribution evolution via Liouville's theorem -/\nlemma photon_distribution_evolution \n  (flrw : FLRWSpacetime)\n  (f : PhotonDistribution)\n  (t t_dec : \u211d) :\n  \u2200 p : EuclideanSpace \u211d (Fin 3), \n    sorry := by -- \"f(p, t) = f(p\u00b7a(t)/a(t_dec), t_dec) - requires relativistic Liouville theorem\"\n  sorry\n\n/-- Step 2: Thermal distribution redshift -/\nlemma thermal_distribution_redshift\n  (flrw : FLRWSpacetime)\n  (T_dec : \u211d)\n  (t_dec t_0 : \u211d)\n  (h_T_pos : 0 < T_dec) :\n  \u2200 E : \u211d, E > 0 \u2192 \n    sorry := by -- \"Bose-Einstein distribution evolution - requires statistical mechanics\"\n  sorry\n\n/-- Step 3: Geodesic equation in perturbed spacetime -/\nlemma perturbed_geodesic_equation\n  (flrw : FLRWSpacetime)\n  (\u03b4g : MetricPerturbation flrw.M) :\n  sorry := by -- \"Geodesic equation with Christoffel symbols - requires full GR formalism\"\n  sorry\n\n/-- Step 4: Linear perturbation of temperature -/\nlemma temperature_linear_perturbation\n  (T_0 : \u211d)\n  (\u0394T_over_T : TemperatureAnisotropy)\n  (n : EuclideanSpace \u211d (Fin 3)) :\n  \u2203 T : EuclideanSpace \u211d (Fin 3) \u2192 \u211d,\n    T n = T_0 * (1 + \u0394T_over_T n) := by\n  use fun n => T_0 * (1 + \u0394T_over_T n)\n  rfl\n\n/-- Step 5-8: Temperature anisotropy contributions -/\nlemma temperature_anisotropy_formula\n  (flrw : FLRWSpacetime)\n  (\u03a6 : NewtonianPotential flrw.M)\n  (x_dec : flrw.M)\n  (t_dec t_0 : \u211d)\n  (n : EuclideanSpace \u211d (Fin 3)) :\n  sorry := by -- \"\u0394T/T(n\u0302) = (1/3)\u03a6(x_dec, t_dec) + \u222b_{t_dec}^{t_0} dt (\u2202\u03a6/\u2202t)(x(t), t) - requires full cosmological perturbation theory\"\n  sorry\n\n/-- Step 9: Angular power spectrum -/\ndef AngularPowerSpectrum (\u2113 : \u2115) : \u211d := sorry -- \"C_\u2113 definition requires spherical harmonics\"\n\nlemma angular_power_spectrum_relation\n  (P : \u211d \u2192 \u211d) -- Primordial power spectrum\n  (\u2113 : \u2115) :\n  sorry := by -- \"C_\u2113 = (4\u03c0/9)\u222bdk k\u00b2 P(k)|\u0398_\u2113(k)|\u00b2 - requires spherical Bessel functions and transfer functions\"\n  sorry",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "In the unperturbed FLRW background, the photon distribution function evolves as f(p, t) = f(p\u00b7a(t)/a(t_dec), t_dec)",
+      "justification": "Liouville's theorem for collisionless particles in expanding universe: photon phase space density is conserved along trajectories, and momentum redshifts as p \u221d 1/a(t)",
+      "dependencies": [
+        "Liouville theorem",
+        "FLRW metric properties"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "For a thermal distribution at decoupling, f(E, t_0) = [exp(E\u00b7a(t_0)/(kT_dec\u00b7a(t_dec))) - 1]^{-1} = B_\u03bd(T_0) where T_0 = T_dec\u00b7a(t_dec)/a(t_0)",
+      "justification": "Substituting the Bose-Einstein distribution into the redshift relation E_0 = E_dec\u00b7a(t_dec)/a(t_0)",
+      "dependencies": [
+        "Step 1",
+        "Assumption 3"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Metric perturbations \u03b4g_\u03bc\u03bd induce perturbations in photon trajectories x^\u03bc(\u03bb) through the geodesic equation: d\u00b2x^\u03bc/d\u03bb\u00b2 + \u0393^\u03bc_\u03b1\u03b2(dx^\u03b1/d\u03bb)(dx^\u03b2/d\u03bb) = 0",
+      "justification": "Geodesic equation in perturbed spacetime, where Christoffel symbols \u0393^\u03bc_\u03b1\u03b2 = \u0393\u0304^\u03bc_\u03b1\u03b2 + \u03b4\u0393^\u03bc_\u03b1\u03b2",
+      "dependencies": [
+        "General relativity",
+        "Assumption 4"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "To first order in perturbations, the temperature observed in direction n\u0302 is T(n\u0302) = T_0[1 + \u0394T/T(n\u0302)]",
+      "justification": "Linear perturbation theory: expanding observables to first order in \u03b4g_\u03bc\u03bd",
+      "dependencies": [
+        "Step 2",
+        "Assumption 1"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The temperature anisotropy receives contributions from: (i) intrinsic fluctuations at last scattering surface, (ii) gravitational redshift, (iii) integrated Sachs-Wolfe effect",
+      "justification": "Complete classification of linear-order effects on photon propagation in perturbed FLRW",
+      "dependencies": [
+        "Sachs-Wolfe 1967",
+        "Step 3"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "The intrinsic contribution is \u0394T/T|_intrinsic = (1/3)\u03a6(x_dec, t_dec) where \u03a6 is the Newtonian potential",
+      "justification": "At decoupling, photon temperature perturbations are related to gravitational potential through adiabatic initial conditions",
+      "dependencies": [
+        "Assumption 5",
+        "Adiabatic perturbation theory"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The integrated Sachs-Wolfe contribution is \u0394T/T|_ISW = \u222b_{t_dec}^{t_0} dt (\u2202\u03a6/\u2202t)(x(t), t)",
+      "justification": "Time-varying gravitational potentials along the photon path produce additional redshift",
+      "dependencies": [
+        "Step 3",
+        "Sachs-Wolfe 1967"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "The total anisotropy is \u0394T/T(n\u0302) = (1/3)\u03a6(x_dec, t_dec) + \u222b_{t_dec}^{t_0} dt (\u2202\u03a6/\u2202t)(x(t), t) + O(\u03a6\u00b2)",
+      "justification": "Linear superposition of effects to first order in perturbations",
+      "dependencies": [
+        "Steps 6, 7",
+        "Linear perturbation theory"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "The angular power spectrum C_\u2113 = \u27e8|a_\u2113m|\u00b2\u27e9 of temperature anisotropies encodes the primordial power spectrum P(k) through C_\u2113 = (4\u03c0/9)\u222bdk k\u00b2 P(k)|\u0398_\u2113(k)|\u00b2",
+      "justification": "Spherical harmonic decomposition and Fourier transform relate angular and spatial correlations",
+      "dependencies": [
+        "Step 8",
+        "Assumption 6",
+        "Transfer function formalism"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Sachs-Wolfe Effect",
+      "authors": "Sachs, R.K. and Wolfe, A.M.",
+      "year": "1967",
+      "field": "General Relativity/Cosmology",
+      "statement": "Temperature fluctuations in the CMB arise from metric perturbations through \u0394T/T = \u03a6/3 + \u222b(\u2202\u03a6/\u2202t)dt along photon paths",
+      "usage": "Provides the fundamental relation between metric perturbations and CMB anisotropies"
+    },
+    {
+      "name": "Liouville's Theorem",
+      "authors": "Liouville, J.",
+      "year": "1838",
+      "field": "Statistical Mechanics",
+      "statement": "The phase space distribution function is constant along particle trajectories in Hamiltonian systems",
+      "usage": "Justifies the conservation of photon phase space density in expanding universe"
+    },
+    {
+      "name": "Linear Cosmological Perturbation Theory",
+      "authors": "Bardeen, J.M.",
+      "year": "1980",
+      "field": "Cosmology",
+      "statement": "Gauge-invariant formalism for perturbations around FLRW backgrounds to linear order",
+      "usage": "Provides the mathematical framework for treating small perturbations"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The universe is described by a perturbed FLRW metric: g_\u03bc\u03bd = \u1e21_\u03bc\u03bd + \u03b4g_\u03bc\u03bd where |\u03b4g_\u03bc\u03bd| << |\u1e21_\u03bc\u03bd|",
+    "Photons decouple instantaneously at redshift z_dec \u2248 1100",
+    "The photon distribution at decoupling is thermal: f(p, t_dec) = [exp(E/kT_dec) - 1]^{-1}",
+    "Photon trajectories follow null geodesics in the perturbed metric",
+    "The Boltzmann equation governs photon evolution: df/d\u03bb = C[f] where \u03bb is affine parameter",
+    "Metric perturbations are adiabatic and Gaussian with power spectrum P(k)",
+    "The universe is transparent to photons after decoupling (optical depth \u03c4 \u2248 0)",
+    "General relativity is valid on all relevant scales",
+    "The weak equivalence principle holds",
+    "Compton scattering maintains local thermal equilibrium before decoupling"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "Derivation of temperature anisotropy formula",
+        "issue": "The proof jumps from stating that metric perturbations induce trajectory perturbations to claiming the temperature anisotropy has the specific form \u0394T/T = (1/3)\u03a6 + ISW without deriving this relationship from the geodesic equation and Boltzmann equation",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Must explicitly solve the perturbed geodesic equation and Boltzmann equation to first order, showing how \u03b4g\u03bc\u03bd leads to the claimed temperature perturbations"
+      },
+      {
+        "step": "Factor of 1/3 in intrinsic contribution",
+        "issue": "The proof admits in a note that the derivation of the factor 1/3 'requires detailed analysis of photon-baryon fluid dynamics at decoupling, which we have not shown explicitly' - this is a critical component of the main result",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Either provide the full derivation from photon-baryon fluid equations or cite a specific theorem that establishes this result"
+      },
+      {
+        "step": "Connection between distribution function and temperature anisotropies",
+        "issue": "The proof shows f evolves as a blackbody but doesn't rigorously connect this to how observed temperature T(n\u0302) relates to the distribution function along specific lines of sight",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Define precisely how temperature is extracted from f(x,p,t) for photons arriving from direction n\u0302"
+      },
+      {
+        "step": "Linear superposition claim",
+        "issue": "The proof states 'By linear superposition' without justifying why the intrinsic and ISW effects simply add linearly, especially given the non-linear nature of the geodesic equation",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Prove that to first order in perturbations, different physical effects contribute additively to \u0394T/T"
+      },
+      {
+        "step": "Photon path x(t) in ISW integral",
+        "issue": "The ISW integral uses x(t) without specifying this is the perturbed photon trajectory, not the background trajectory, and without showing how to compute it",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Explicitly solve for the perturbed photon trajectory x(t) to first order in \u03b4g\u03bc\u03bd"
+      },
+      {
+        "step": "Angular power spectrum formula",
+        "issue": "The formula C\u2113 = (4\u03c0/9)\u222bdk k\u00b2P(k)|\u0398\u2113(k)|\u00b2 appears without derivation or definition of \u0398\u2113(k)",
+        "severity": "minor",
+        "fixable": true,
+        "suggested_fix": "Define transfer function \u0398\u2113(k) and show how it relates to the Sachs-Wolfe formula"
+      }
+    ],
+    "hidden_assumptions": [
+      "The Newtonian gauge is being used (\u03a6 appears without gauge specification)",
+      "Photons free-stream after decoupling (no re-scattering)",
+      "The intrinsic temperature fluctuation relates to gravitational potential through adiabatic initial conditions",
+      "The observer is at t\u2080 in a specific gauge",
+      "Spatial curvature K = 0 (flat universe)",
+      "Dark energy effects are negligible during photon propagation",
+      "Tensor perturbations are ignored",
+      "Second-order effects in perturbations are negligible"
+    ],
+    "circular_reasoning": false,
+    "circular_details": "",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to establish the Sachs-Wolfe relation but actually only sketches how temperature anisotropies might arise from metric perturbations without rigorous derivation. It proves the background blackbody evolution but not the perturbation formula.",
+    "citation_issues": [
+      "Liouville's theorem is cited for phase space conservation but the application to curved spacetime with perturbations requires careful treatment not shown",
+      "Linear perturbation theory is cited but specific results about temperature perturbations are not properly referenced",
+      "The Sachs-Wolfe effect is listed as a dependency but treated as something to be proved"
+    ],
+    "structural_soundness": 0.4,
+    "overall_assessment": "This proof attempts to derive a fundamental result in cosmology but provides only a sketch rather than a rigorous derivation. The most critical gap is the complete absence of derivation for the temperature anisotropy formula from first principles, with the proof essentially asserting the result it claims to prove.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof sketches a framework for CMB anisotropies but doesn't rigorously derive the specific Sachs-Wolfe relation or establish the blackbody spectrum evolution",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Scalar perturbations dominate (no vector/tensor modes)",
+      "Conformal Newtonian gauge choice for metric perturbations",
+      "Adiabatic initial conditions relating matter and radiation perturbations",
+      "Negligible peculiar velocities at decoupling",
+      "Flat spatial geometry (k=0)",
+      "Matter-radiation equality occurs before decoupling",
+      "Photon-baryon fluid approximation before decoupling",
+      "Negligible reionization effects",
+      "Born approximation for gravitational lensing"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "1",
+        "issue": "Liouville's theorem application is incorrect - phase space density conservation doesn't directly imply f(p,t) = f(p\u00b7a(t)/a(t_dec), t_dec) without proper treatment of the distribution function's momentum dependence"
+      },
+      {
+        "step": "6",
+        "issue": "The factor 1/3 in the intrinsic contribution is asserted without derivation - this requires solving the Boltzmann hierarchy and depends on specific gauge choices and initial conditions"
+      },
+      {
+        "step": "7",
+        "issue": "The ISW integral is oversimplified - it should include the photon trajectory x(t,n\u0302) explicitly and account for the proper time parameterization along null geodesics"
+      },
+      {
+        "step": "9",
+        "issue": "The angular power spectrum formula is incomplete - missing the transfer function \u0398_\u2113(k) derivation and the proper normalization factors"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No derivation of the geodesic equation solutions in perturbed FLRW",
+      "Missing rigorous treatment of photon decoupling physics",
+      "No proof that perturbations remain linear throughout evolution",
+      "Incomplete derivation of transfer functions relating primordial to observed perturbations",
+      "No treatment of polarization or higher-order effects",
+      "Missing connection between Newtonian potential and metric perturbations in specific gauge"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof assumes instantaneous decoupling at z_dec \u2248 1100, but existing proof [0c1797de78e2] establishes the universe's accelerating expansion with dark energy dominance (~70% of energy density). The Sachs-Wolfe relation derivation ignores dark energy effects on photon propagation over cosmic time, which would significantly alter the integrated term \u222b_{t_dec}^{t_0} dt (\u2202\u03a6/\u2202t)(x(t), t).",
+      "The proof treats the photon distribution as purely thermal at decoupling with f(p, t_dec) = [exp(E/kT_dec) - 1]^{-1}, but this contradicts the hierarchical structure formation established in [0e664bd264b4]. Gravitational instabilities would create non-thermal perturbations in the photon distribution that cannot be captured by the simple blackbody assumption.",
+      "The linear perturbation treatment |\u03b4g_\u03bc\u03bd| << |\u1e21_\u03bc\u03bd| is inconsistent with the nonlinear dynamics required for structure formation in [0e664bd264b4]. The proof's first-order approximation breaks down precisely where the most interesting physics occurs."
+    ],
+    "assumption_conflicts": [
+      "Assumption of instantaneous decoupling conflicts with the multi-scale dynamics in [052632f8abba] where scale separation \u03b5 = l_micro/L_macro << 1 requires careful treatment of intermediate scales",
+      "The assumption that 'the universe is transparent to photons after decoupling (optical depth \u03c4 \u2248 0)' ignores reionization effects that would be captured by the information dispersal mechanisms in [06d6ace265c2]",
+      "The Gaussian perturbation assumption conflicts with the symmetry-breaking mechanisms in [087da119976b] and [0178ff46c5ee] that predict non-Gaussian signatures in the CMB"
+    ],
+    "beneficial_connections": [
+      "The proof's treatment of metric perturbations through geodesic equations connects to the geometric curvature-instability coupling in [0a979a982999]",
+      "The angular power spectrum C_\u2113 encoding primordial fluctuations relates to the information encoding principles in [043c25bfbbd8] through analytic continuation methods",
+      "The temperature anisotropy formula could be extended using the contextual measurement framework from [06879fd9ae87] to account for observer-dependent effects"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof presents a standard but oversimplified treatment of CMB anisotropies that ignores several fundamental physical effects established in the existing corpus. The linear perturbation theory is inadequate for the nonlinear structure formation processes, and the neglect of dark energy evolution represents a major gap. The proof would need substantial revision to address these inconsistencies."
+  },
+  "confidence_score": 0.31,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.6
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.6
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": true,
+  "new_mathematics_needed": "",
+  "limitations": [
+    "The proof assumes instantaneous decoupling, while in reality recombination occurs over a finite redshift range \u0394z \u2248 100",
+    "Second-order effects O(\u03a6\u00b2) are neglected but become important for precision cosmology",
+    "The connection between primordial perturbations and the transfer function \u0398_\u2113(k) requires solving the full Boltzmann hierarchy",
+    "Reionization effects and late-time scattering are ignored in assumption 7",
+    "Valid only for linear perturbations where |\u03b4g_\u03bc\u03bd| << |\u1e21_\u03bc\u03bd|",
+    "Assumes perfect Gaussianity of primordial fluctuations",
+    "Neglects polarization effects which carry additional information",
+    "Does not account for foreground contamination or observational systematics"
+  ],
+  "source_convergence": {
+    "structural_claim": "The cosmic microwave background preserves primordial information as a nearly perfect blackbody with tiny anisotropies",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Cosmic Microwave Background",
+        "domain_id": "field_a",
+        "domain_name": "General Relativity and Cosmology",
+        "link_type": "direct",
+        "structural_conclusion": "The universe contains a nearly perfect blackbody radiation field at 2.7K that is isotropic to one part in 100,000"
+      },
+      {
+        "result_id": "",
+        "result_name": "Cosmic Microwave Background Anisotropies",
+        "domain_id": "field_b",
+        "domain_name": "Astrophysics",
+        "link_type": "direct",
+        "structural_conclusion": "Primordial density fluctuations are imprinted in the CMB with a nearly scale-invariant spectrum"
+      }
+    ],
+    "domains": [
+      "general_relativity",
+      "astrophysics"
+    ],
+    "domain_names": [
+      "General Relativity and Cosmology",
+      "Astrophysics"
+    ],
+    "ea_scores": {
+      "strength": 0.238,
+      "independence": 0.2,
+      "adversarial": 0.09,
+      "reproducibility": 0.42,
+      "depth_consistency": 1.0,
+      "confidence": 0.3024,
+      "confidence_category": "speculative"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:40:35.686361+00:00",
+    "id": "eb3d324c4c7c"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.377715
+  }
+}

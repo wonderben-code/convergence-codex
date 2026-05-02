@@ -1,0 +1,325 @@
+{
+  "id": "5a8506a748c4",
+  "convergence_id": "eef7c286205c",
+  "timestamp": "2026-05-02T14:48:46.471233+00:00",
+  "proposition": "Let (M, g) be a 4-dimensional Lorentzian manifold representing spacetime. There exists a foliation of M by spacelike hypersurfaces \u03a3_t such that for any two comoving observers at points p, q \u2208 \u03a3_t with proper distance d(p,q), the recession velocity v satisfies v = H(t)d(p,q) where H(t) is the Hubble parameter, and the metric g admits a Friedmann-Lema\u00eetre-Robertson-Walker (FLRW) form ds\u00b2 = -dt\u00b2 + a(t)\u00b2\u03b3_ij dx^i dx^j where a(t) is the scale factor and \u03b3_ij is the spatial metric.",
+  "proposition_natural": "The universe exhibits systematic expansion where recession velocity is proportional to distance, revealing dynamic spacetime geometry",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Differential geometry",
+    "Dynamical systems"
+  ],
+  "apparatus_justification": "The claim concerns spacetime geometry and its dynamic evolution, requiring differential geometry to formalize manifolds, metrics, and curvature. Dynamical systems theory captures the systematic expansion behavior where recession velocity varies with distance.",
+  "proof_natural": "**Proposition.** Let $(M, g)$ be a 4-dimensional Lorentzian manifold representing spacetime. There exists a foliation of $M$ by spacelike hypersurfaces $\\Sigma_t$ such that for any two comoving observers at points $p, q \\in \\Sigma_t$ with proper distance $d(p,q)$, the recession velocity $v$ satisfies $v = H(t)d(p,q)$ where $H(t)$ is the Hubble parameter, and the metric $g$ admits a Friedmann-Lema\u00eetre-Robertson-Walker (FLRW) form $ds^2 = -dt^2 + a(t)^2\\gamma_{ij} dx^i dx^j$ where $a(t)$ is the scale factor and $\\gamma_{ij}$ is the spatial metric.\n\n**Proof.** We assume that spacetime is a 4-dimensional smooth Lorentzian manifold $(M, g)$ satisfying the cosmological principle: the universe is homogeneous and isotropic on large scales. Let there exist a preferred foliation by spacelike hypersurfaces orthogonal to a timelike vector field $u^\\mu$, with matter content modeled as a perfect fluid with energy-momentum tensor $T^{\\mu\\nu} = (\\rho + p)u^\\mu u^\\nu + p g^{\\mu\\nu}$. We further assume the Einstein field equations $G^{\\mu\\nu} + \\Lambda g^{\\mu\\nu} = 8\\pi T^{\\mu\\nu}$ hold, the weak energy condition $\\rho \\geq 0$ and $\\rho + p \\geq 0$ is satisfied, and comoving observers follow integral curves of $u^\\mu$. Let the spatial metric $\\gamma_{ij}$ have constant curvature $k \\in \\{-1, 0, 1\\}$, and the scale factor $a(t)$ be differentiable and positive.\n\nBy the cosmological principle, there exists a foliation of $M$ by homogeneous and isotropic spacelike hypersurfaces $\\Sigma_t$. This follows from the fact that the cosmological principle implies the existence of a 6-parameter group of isometries acting transitively on spacelike hypersurfaces. By the Robertson-Walker theorem, a spacetime admitting such a 6-parameter group of isometries with spacelike orbits must have a metric of FLRW form. Therefore, the metric $g$ can be written as:\n$$ds^2 = -dt^2 + a(t)^2\\gamma_{ij} dx^i dx^j$$\nwhere $\\gamma_{ij}$ is a metric of constant curvature.\n\nFor comoving observers at points $p, q \\in \\Sigma_t$, the proper distance is obtained by integrating along the spatial slice:\n$$d(p,q) = a(t)\\int_p^q \\sqrt{\\gamma_{ij} dx^i dx^j}$$\n\nSince comoving observers have fixed spatial coordinates in the FLRW coordinate system, the coordinate distance $\\chi(p,q) = \\int_p^q \\sqrt{\\gamma_{ij} dx^i dx^j}$ is time-independent. Thus, the proper distance evolves as $d(p,q,t) = a(t)\\chi(p,q)$.\n\nTaking the time derivative, the recession velocity is:\n$$v = \\dot{d} = \\dot{a}(t)\\chi(p,q) = \\frac{\\dot{a}(t)}{a(t)}d(p,q,t)$$\n\nDefining the Hubble parameter $H(t) = \\dot{a}(t)/a(t)$, we obtain the desired relation:\n$$v = H(t)d(p,q,t)$$\n\nTo verify that expansion indeed occurs, we apply the Einstein field equations to the FLRW metric. Direct calculation of the Einstein tensor components yields the Friedmann equations, particularly:\n$$\\left(\\frac{\\dot{a}}{a}\\right)^2 = \\frac{8\\pi\\rho}{3} - \\frac{k}{a^2} + \\frac{\\Lambda}{3}$$\n\nFor $\\rho > 0$ or $\\Lambda > 0$, analysis of this equation shows that solutions with $\\dot{a} > 0$ exist, confirming dynamic expansion of the universe.\n\nThis completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.Geometry.Manifold.SmoothManifoldWithCorners\nimport Mathlib.Geometry.Manifold.Instances.Real\nimport Mathlib.Analysis.InnerProductSpace.Basic\nimport Mathlib.Topology.MetricSpace.Basic\n\n/-- A Lorentzian manifold is a pseudo-Riemannian manifold with signature (-,+,+,+) -/\nstructure LorentzianManifold (M : Type*) [TopologicalSpace M] [ChartedSpace \u211d\u2074 M] [SmoothManifoldWithCorners \ud835\udcd8(\u211d, \u211d\u2074) M] where\n  -- sorry: Need pseudo-Riemannian metric with Lorentzian signature\n  metric : sorry\n\n/-- A spacelike hypersurface in a Lorentzian manifold -/\nstructure SpacelikeHypersurface (M : Type*) [TopologicalSpace M] [ChartedSpace \u211d\u2074 M] [SmoothManifoldWithCorners \ud835\udcd8(\u211d, \u211d\u2074) M] (g : LorentzianManifold M) where\n  -- sorry: Need definition of spacelike submanifold\n  surface : sorry\n\n/-- FLRW metric form -/\nstructure FLRWMetric (M : Type*) [TopologicalSpace M] [ChartedSpace \u211d\u2074 M] [SmoothManifoldWithCorners \ud835\udcd8(\u211d, \u211d\u2074) M] where\n  scale_factor : \u211d \u2192 \u211d\n  -- sorry: Need spatial metric \u03b3_ij\n  spatial_metric : sorry\n\n/-- The Hubble parameter H(t) = \u0227(t)/a(t) -/\ndef hubbleParameter (a : \u211d \u2192 \u211d) (ha : Differentiable \u211d a) (t : \u211d) (h_nonzero : a t \u2260 0) : \u211d :=\n  (deriv a t) / (a t)\n\n/-- Main theorem: Hubble's law in FLRW spacetime -/\ntheorem hubbles_law_flrw \n  (M : Type*) [TopologicalSpace M] [ChartedSpace \u211d\u2074 M] [SmoothManifoldWithCorners \ud835\udcd8(\u211d, \u211d\u2074) M]\n  (g : LorentzianManifold M) :\n  \u2203 (foliation : \u211d \u2192 SpacelikeHypersurface M g) (flrw : FLRWMetric M),\n    \u2200 t : \u211d, \u2200 p q : M,\n      -- sorry: Need proper formulation of comoving observers\n      sorry \u2192 \n      -- sorry: Need definition of proper distance\n      \u2203 (d : \u211d) (v : \u211d),\n        -- sorry: Need recession velocity definition\n        sorry \u2227\n        v = hubbleParameter flrw.scale_factor sorry t sorry * d := by\n  -- Step 1: By cosmological principle, foliation exists\n  -- sorry: Need cosmological principle and isometry group theory\n  sorry\n  \n  -- Step 2: Metric admits FLRW form\n  -- sorry: Need theorem on metrics with 6-parameter isometry groups\n  \n  -- Step 3: Proper distance calculation\n  -- sorry: Need integration over spatial metric\n  \n  -- Step 4: Coordinate distance is time-independent\n  -- sorry: Need comoving coordinate system\n  \n  -- Step 5: Proper distance evolution\n  -- sorry: Need to show d(p,q,t) = a(t)\u03c7(p,q)\n  \n  -- Step 6: Recession velocity calculation\n  -- sorry: Need time derivative of proper distance\n  \n  -- Step 7: Hubble parameter definition\n  -- sorry: Need to connect to our hubbleParameter definition\n  \n  -- Step 8: Friedmann equations\n  -- sorry: Need Einstein field equations\n  \n  -- Step 9: Dynamic expansion\n  -- sorry: Need analysis of Friedmann equation solutions",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "By the cosmological principle, there exists a foliation of M by homogeneous and isotropic spacelike hypersurfaces \u03a3_t",
+      "justification": "The cosmological principle implies existence of a 6-parameter group of isometries acting transitively on spacelike hypersurfaces",
+      "dependencies": [
+        "Assumption: cosmological principle"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "The metric g can be written in the FLRW form: ds\u00b2 = -dt\u00b2 + a(t)\u00b2\u03b3_ij dx^i dx^j where \u03b3_ij is a metric of constant curvature",
+      "justification": "By the theorem on metrics admitting 6-parameter isometry groups with spacelike orbits",
+      "dependencies": [
+        "Step 1",
+        "Robertson-Walker theorem"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "For comoving observers at points p, q \u2208 \u03a3_t, the proper distance is d(p,q) = a(t)\u222b_p^q \u221a(\u03b3_ij dx^i dx^j)",
+      "justification": "Direct calculation from the spatial part of the FLRW metric",
+      "dependencies": [
+        "Step 2",
+        "Definition of proper distance"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The coordinate distance \u03c7(p,q) = \u222b_p^q \u221a(\u03b3_ij dx^i dx^j) is time-independent for comoving observers",
+      "justification": "Comoving observers have fixed spatial coordinates in the FLRW coordinate system",
+      "dependencies": [
+        "Step 3",
+        "Definition of comoving observers"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The proper distance evolves as d(p,q,t) = a(t)\u03c7(p,q)",
+      "justification": "Substituting the time-independent coordinate distance into Step 3",
+      "dependencies": [
+        "Steps 3, 4"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "The recession velocity is v = \u1e0b = \u0227(t)\u03c7(p,q) = (\u0227(t)/a(t))d(p,q,t)",
+      "justification": "Time derivative of proper distance, using the chain rule",
+      "dependencies": [
+        "Step 5"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Defining the Hubble parameter H(t) = \u0227(t)/a(t), we obtain v = H(t)d(p,q,t)",
+      "justification": "Direct substitution of the definition of H(t)",
+      "dependencies": [
+        "Step 6",
+        "Definition of Hubble parameter"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "The Einstein field equations applied to the FLRW metric yield the Friedmann equations: (\u0227/a)\u00b2 = (8\u03c0\u03c1/3) - k/a\u00b2 + \u039b/3",
+      "justification": "Direct calculation of Einstein tensor components for FLRW metric",
+      "dependencies": [
+        "Step 2",
+        "Einstein field equations",
+        "Perfect fluid assumption"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "For \u03c1 > 0 or \u039b > 0, there exist solutions with \u0227 > 0, confirming dynamic expansion",
+      "justification": "Analysis of Friedmann equation shows positive \u0227 solutions exist",
+      "dependencies": [
+        "Step 8",
+        "Weak energy condition"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Robertson-Walker theorem",
+      "authors": "Robertson, H.P.; Walker, A.G.",
+      "year": "1935-1936",
+      "field": "General Relativity",
+      "statement": "A spacetime admitting a 6-parameter group of isometries with spacelike orbits has metric of FLRW form",
+      "usage": "Justifies the FLRW metric form in Step 2"
+    },
+    {
+      "name": "Friedmann equations",
+      "authors": "Friedmann, A.",
+      "year": "1922",
+      "field": "Cosmology",
+      "statement": "Einstein field equations applied to FLRW metric yield evolution equations for scale factor",
+      "usage": "Used in Step 8 to connect geometry to matter content"
+    },
+    {
+      "name": "Einstein field equations",
+      "authors": "Einstein, A.",
+      "year": "1915",
+      "field": "General Relativity",
+      "statement": "G^\u03bc\u03bd + \u039bg^\u03bc\u03bd = 8\u03c0T^\u03bc\u03bd relates spacetime curvature to energy-momentum",
+      "usage": "Fundamental equation relating geometry to matter"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Spacetime is a 4-dimensional smooth Lorentzian manifold (M, g)",
+    "The cosmological principle holds: the universe is homogeneous and isotropic on large scales",
+    "There exists a preferred foliation by spacelike hypersurfaces orthogonal to a timelike vector field",
+    "Matter content can be modeled as a perfect fluid with energy-momentum tensor T^\u03bc\u03bd = (\u03c1 + p)u^\u03bc u^\u03bd + p g^\u03bc\u03bd",
+    "Einstein field equations G^\u03bc\u03bd + \u039bg^\u03bc\u03bd = 8\u03c0T^\u03bc\u03bd hold",
+    "The weak energy condition \u03c1 \u2265 0 and \u03c1 + p \u2265 0 holds",
+    "Comoving observers follow integral curves of the timelike vector field u^\u03bc",
+    "The spatial metric \u03b3_ij has constant curvature k \u2208 {-1, 0, 1}",
+    "The scale factor a(t) is differentiable and positive"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "Existence of foliation by homogeneous and isotropic spacelike hypersurfaces",
+        "issue": "The proof assumes that the cosmological principle automatically implies the existence of a foliation with the required properties. This is not proven - the existence of such a foliation requires additional conditions on the manifold topology and causal structure.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Prove that the manifold admits a time function whose level sets are homogeneous and isotropic, or cite appropriate existence theorems for cosmological foliations."
+      },
+      {
+        "step": "Application of Robertson-Walker theorem",
+        "issue": "The proof jumps from '6-parameter group of isometries' to 'must have FLRW form' without verifying all conditions of the Robertson-Walker theorem, particularly that the orbits are spacelike and that the isotropy subgroup acts transitively on the unit sphere in the tangent space.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Explicitly verify that the isometry group has the required structure: 3-dimensional isotropy subgroup at each point plus 3-dimensional translation group."
+      },
+      {
+        "step": "Proper distance calculation",
+        "issue": "The integral for proper distance is not well-defined without specifying the path of integration. In curved spaces, different paths between p and q yield different distances.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Specify that the distance is measured along geodesics within the spatial slice, or define a unique path prescription."
+      },
+      {
+        "step": "Recession velocity definition",
+        "issue": "The proof defines recession velocity as the time derivative of proper distance, but this is coordinate-dependent and not a physically observable quantity without additional structure relating observations at different times.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Define recession velocity in terms of redshift or relative velocities measured by local observers, then show this equals Hd."
+      },
+      {
+        "step": "Existence of expanding solutions",
+        "issue": "The proof claims that \u03c1 > 0 or \u039b > 0 implies solutions with \u0227 > 0 exist, but doesn't prove these solutions are global or that they apply to the entire manifold M.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Prove global existence of solutions or restrict the proposition to regions where expansion occurs."
+      }
+    ],
+    "hidden_assumptions": [
+      "The manifold M is globally hyperbolic",
+      "The foliation is unique or at least canonical in some sense",
+      "The coordinate system (t, x^i) covers the entire manifold",
+      "The scale factor a(t) is the same everywhere on each slice",
+      "Geodesic completeness of spatial slices",
+      "The matter distribution actually satisfies the perfect fluid assumption globally",
+      "The timelike vector field u^\u03bc is globally defined and non-vanishing"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes the existence of an FLRW metric to prove that the metric has FLRW form. It presupposes the very structure it claims to derive from the cosmological principle.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to show that ANY 4-dimensional Lorentzian manifold satisfying the cosmological principle admits an FLRW foliation, but actually only shows this for manifolds already possessing very specific geometric structures. The proposition should be restricted to manifolds with appropriate topological and causal properties.",
+    "citation_issues": [
+      "Robertson-Walker theorem is cited without verifying all its hypotheses",
+      "The connection between the cosmological principle and the existence of a 6-parameter isometry group is asserted without proof or citation",
+      "Friedmann equations are mentioned but their derivation is glossed over with 'direct calculation'"
+    ],
+    "structural_soundness": 0.2,
+    "overall_assessment": "This proof contains multiple critical flaws including circular reasoning, unjustified existence claims, and confusion between coordinate artifacts and physical observables. The proof essentially assumes its conclusion by presupposing the FLRW structure it claims to derive.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof shows that IF a spacetime satisfies the cosmological principle and admits an FLRW metric, THEN Hubble's law follows. It does not prove existence of such a foliation for arbitrary Lorentzian manifolds.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The cosmological principle actually holds for the given manifold M",
+      "The manifold M admits a 6-parameter isometry group",
+      "The timelike vector field exists and is hypersurface orthogonal",
+      "The foliation by spacelike hypersurfaces actually exists",
+      "Comoving observers exist and follow geodesics of the timelike vector field",
+      "The spatial coordinates can be chosen to make comoving observers have fixed spatial coordinates"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "1",
+        "issue": "Circular reasoning: assumes the cosmological principle holds without proving it applies to the given manifold M. The existence of 6-parameter isometry groups is not guaranteed for arbitrary Lorentzian manifolds."
+      },
+      {
+        "step": "2",
+        "issue": "The justification assumes the conclusion. Not every spacetime with some symmetries admits FLRW form - this requires very specific conditions that are not established."
+      },
+      {
+        "step": "4",
+        "issue": "Assumes without proof that comoving observers have fixed spatial coordinates in some coordinate system. This coordinate choice needs justification."
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Never establishes that the given manifold M actually satisfies the cosmological principle",
+      "Does not prove existence of the required foliation - merely assumes it",
+      "Missing proof that comoving observers exist and behave as claimed",
+      "No demonstration that the coordinate system can be chosen as required",
+      "The proposition claims existence for any 4D Lorentzian manifold, but proof only works for very special cases"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": false,
+    "contradiction_details": [],
+    "assumption_conflicts": [],
+    "beneficial_connections": [
+      "Directly supports [0c1797de78e2] which assumes FLRW metric and cosmological principle - this proof provides the mathematical foundation for those assumptions",
+      "Complements [03445cd603f4] by providing the spacetime foliation structure that enables causal boundary analysis in cosmological contexts",
+      "Connects to [08b6405556dd] through symmetry principles - the cosmological principle represents spatial symmetry that constrains metric form",
+      "Relates to [0e664bd264b4] by providing the background spacetime framework for hierarchical structure formation analysis"
+    ],
+    "consistency_score": 0.85,
+    "notes": "The proof is mathematically sound and consistent with existing cosmological proofs. However, it lacks rigor in several areas: (1) The existence of the preferred foliation is assumed rather than proven from the cosmological principle, (2) The proof doesn't establish uniqueness of the FLRW form, (3) The connection between homogeneity/isotropy and the specific metric form needs more justification, (4) The treatment of comoving observers and their worldlines could be more precise. The proof would benefit from addressing the global topology and causal structure more carefully."
+  },
+  "confidence_score": 0.3925,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.85,
+    "calibration": 0.6
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.85,
+    "calibration": 0.6
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": true,
+  "new_mathematics_needed": "",
+  "limitations": [
+    "The transition from observational Hubble's law to theoretical FLRW framework requires additional justification",
+    "The proof assumes rather than derives the cosmological principle from observations",
+    "The connection between theoretical comoving observers and actual astronomical observations needs clarification",
+    "Valid only on scales where homogeneity and isotropy approximations hold (>100 Mpc)",
+    "Assumes perfect fluid matter model, neglecting structure formation",
+    "Does not address observational uncertainties in measuring distances and velocities",
+    "Requires pre-existing foliation structure rather than deriving it from first principles"
+  ],
+  "source_convergence": {
+    "structural_claim": "The universe exhibits systematic expansion where recession velocity is proportional to distance, revealing dynamic spacetime geometry",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Hubble's Law",
+        "domain_id": "field_a",
+        "domain_name": "General Relativity and Cosmology",
+        "link_type": "direct",
+        "structural_conclusion": "The universe exhibits systematic expansion with recession velocity proportional to distance, revealing spacetime itself is dynamically expanding"
+      },
+      {
+        "result_id": "",
+        "result_name": "Hubble's Law",
+        "domain_id": "field_b",
+        "domain_name": "Astrophysics",
+        "link_type": "direct",
+        "structural_conclusion": "The universe possesses global expansion linking distance and recession velocity linearly, revealing dynamic geometry on cosmological scales"
+      }
+    ],
+    "domains": [
+      "general_relativity",
+      "astrophysics"
+    ],
+    "domain_names": [
+      "General Relativity and Cosmology",
+      "Astrophysics"
+    ],
+    "ea_scores": {
+      "strength": 0.238,
+      "independence": 0.2,
+      "adversarial": 0.09,
+      "reproducibility": 0.42,
+      "depth_consistency": 1.0,
+      "confidence": 0.3024,
+      "confidence_category": "speculative"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:40:35.686275+00:00",
+    "id": "eef7c286205c"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.3054
+  }
+}

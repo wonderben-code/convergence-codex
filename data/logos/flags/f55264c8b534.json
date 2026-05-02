@@ -1,0 +1,13 @@
+{
+  "proof_id": "f55264c8b534",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous category-theoretic framework connecting quantum information topology to fluid dynamical topology, including functors that preserve constraint structures between these domains",
+    "7 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

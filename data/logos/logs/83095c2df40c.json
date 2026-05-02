@@ -1,0 +1,38 @@
+{
+  "proof_id": "83095c2df40c",
+  "timestamp": "2026-05-02T14:46:05.625196+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "equivalence - rejected because this isn't about structural similarity between two mathematical objects, but rather about empirical confirmation that physical phenomena satisfy theoretical predictions"
+      ],
+      "reasoning": "This convergence identifies shared principles between theoretical predictions in GR and experimental observations in astrophysics: that gravitational disturbances propagate at c, carry energy, and transmit information. The formalisation should capture these as axioms that both the Einstein field equations and LIGO observations satisfy as models."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Differential geometry, Functional analysis, Information theory",
+      "alternatives_considered": [],
+      "reasoning": "Differential geometry provides the mathematical framework for spacetime manifolds, metric tensors, and the Einstein field equations that govern gravitational waves. Functional analysis is needed for wave equations on curved spacetime and energy-momentum tensors. Information theory formalizes the information-carrying capacity of gravitational waves."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof linearizes Einstein's equations around flat spacetime, showing that metric perturbations satisfy a wave equation with propagation speed c in the transverse-traceless gauge. Energy content follows from the Isaacson averaged stress-energy tensor, while information content is characterized through the wave's amplitude and phase structure encoding source properties.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 10 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3709 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 3627 chars, 16 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This formalization attempt highlights the significant gap between current Mathlib capabilities and general relativity. While basic differential geometry is available, the specific structures needed for Lorentzian geometry, Einstein's equations, and gravitational wave physics are missing. A complete formalization would require building up the entire framework of general relativity from scratch."
+    }
+  ]
+}

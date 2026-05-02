@@ -1,0 +1,364 @@
+{
+  "id": "3579fd50bd4e",
+  "convergence_id": "ee1fac93eb37",
+  "timestamp": "2026-05-02T14:46:15.232715+00:00",
+  "proposition": "Let (M, g) be a Riemannian manifold representing configuration space. For both quantum field systems with Hilbert space H and classical wave systems with phase space P, there exists a functor F: Top(M) \u2192 Stab(S) from the category of topological invariants of M to the category of stable states of system S, such that F preserves homotopy equivalence: if \u03c0_n(M) \u2260 0, then Ker(\u03b4H) \u2260 \u2205 where \u03b4H is the perturbation operator on states.",
+  "proposition_natural": "Physical phenomena in both quantum and classical wave systems are fundamentally constrained by topology, with topological invariants protecting certain states against perturbations",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Topology",
+    "Category theory",
+    "Differential geometry"
+  ],
+  "apparatus_justification": "Topology provides the core language for topological invariants and protection against perturbations. Category theory enables formal comparison of structures across quantum and classical domains via functors. Differential geometry is essential for wave physics formulation and fiber bundle descriptions of both quantum and classical wave phenomena.",
+  "proof_natural": "**Proposition.** Let $(M, g)$ be a Riemannian manifold representing configuration space. For both quantum field systems with Hilbert space $\\mathcal{H}$ and classical wave systems with phase space $P$, there exists a functor $F: \\text{Top}(M) \\to \\text{Stab}(S)$ from the category of topological invariants of $M$ to the category of stable states of system $S$, such that $F$ preserves homotopy equivalence: if $\\pi_n(M) \\neq 0$, then $\\text{Ker}(\\delta H) \\neq \\emptyset$ where $\\delta H$ is the perturbation operator on states.\n\n**Proof.** We assume that $M$ is a smooth manifold admitting a Riemannian metric $g$, with vacuum manifold $M_{\\text{vac}} \\subset M$ forming a closed submanifold. For quantum systems, let $\\mathcal{H}$ be a separable Hilbert space with self-adjoint Hamiltonian; for classical wave systems, let $(P, \\omega)$ be a symplectic phase space. We further assume perturbations are represented by bounded operators with $\\|\\delta H\\| < \\varepsilon$ for some $\\varepsilon > 0$, and that energy functionals are continuous with respect to the topology on $M$.\n\nWe first establish the topological structure of the vacuum manifold. For gauge theories with spontaneous symmetry breaking, the orbit-stabilizer theorem yields $M_{\\text{vac}} = G/H$ where $G$ is the gauge group and $H$ is the unbroken subgroup. By the classification theorem for principal $G$-bundles, non-trivial elements of $\\pi_n(M_{\\text{vac}})$ correspond to topologically stable field configurations, as $\\pi_n(M_{\\text{vac}})$ classifies maps $S^n \\to M_{\\text{vac}}$ up to homotopy.\n\nIn the classical wave setting, consider acoustic or photonic crystals where Bloch's theorem guarantees that the Brillouin zone forms a $d$-torus $\\mathbb{T}^d$ with band structure map $f: \\mathbb{T}^d \\to \\text{Gr}(k,n)$ to the Grassmannian, as eigenstates at each $k$-point span a $k$-dimensional subspace. The Chern-Weil theorem applied to the Berry connection on the eigenbundle shows that the Chern number $c_1 = \\frac{1}{2\\pi} \\int_{\\mathbb{T}^2} F$, where $F$ is the Berry curvature, constitutes a topological invariant.\n\n[Note: The functoriality of the correspondence requires careful construction.] We define $F$ on objects by $F(\\pi_n(M)) = \\{\\psi \\in \\mathcal{H} : \\delta H(\\psi) = 0 \\text{ for all } \\|\\delta H\\| < \\varepsilon_n\\}$ where $\\varepsilon_n$ depends on the energy scale of the topological defect. This assignment must respect the categorical structure, which remains to be fully established.\n\nThe correspondence manifests concretely in both domains. By the 't Hooft-Polyakov monopole construction, when $\\pi_2(M_{\\text{vac}}) \\neq 0$ in gauge theory, Derrick's theorem and topological charge conservation ensure that monopole states $|M\\rangle$ satisfy $H|M\\rangle = E_M|M\\rangle$ with $E_M$ stable under gauge-invariant perturbations. Similarly, in topological acoustics, when $c_1 \\neq 0$, the bulk-boundary correspondence and the index theorem for Toeplitz operators guarantee the existence of exponentially localized edge modes $\\psi_{\\text{edge}}$ that remain stable against gap-preserving disorder.\n\n[Note: The unification across quantum and classical domains requires showing that the functor $F$ preserves composition uniformly, namely that topological operations on $M$ correspond to stability-preserving operations on states in both settings.]\n\nThe established correspondences in each domain\u2014monopoles in gauge theory and edge states in wave systems\u2014demonstrate that topological invariants of the configuration space directly determine the existence of perturbation-stable states. This completes the proof of the proposition, modulo the gaps in establishing full functoriality and domain-independent uniformity. $\\square$",
+  "proof_lean": "import Mathlib.Topology.Homotopy.HomotopyGroup\nimport Mathlib.Geometry.RiemannianGeometry.Basic\nimport Mathlib.CategoryTheory.Functor.Basic\nimport Mathlib.Analysis.InnerProductSpace.Basic\nimport Mathlib.Topology.Basic\nimport Mathlib.Geometry.Manifold.Algebra.LieGroup\n\n/-- Configuration space as a Riemannian manifold -/\nstructure ConfigurationSpace where\n  M : Type*\n  [inst1 : TopologicalSpace M]\n  [inst2 : ChartedSpace \u210d M]\n  [inst3 : SmoothManifoldWithCorners \ud835\udcd8(\u211d, \u210d) M]\n  g : Metric.RiemannianMetric \ud835\udcd8(\u211d, \u210d) M\n\n/-- Quantum field system with Hilbert space -/\nstructure QuantumFieldSystem where\n  H : Type*\n  [inst : InnerProductSpace \u2102 H]\n\n/-- Classical wave system with phase space -/\nstructure ClassicalWaveSystem where\n  P : Type*  -- Phase space\n  -- sorry: Phase space structure not in Mathlib\n\n/-- Perturbation operator on states -/\nstructure PerturbationOperator (S : Type*) where\n  \u03b4H : S \u2192 S\n  -- sorry: Perturbation operator properties not in Mathlib\n\n/-- Category of stable states of a system -/\nstructure StableStates (S : Type*) where\n  states : Set S\n  stability : \u2200 s \u2208 states, \u2203 \u03b5 > 0, \u2200 \u03b4, \u2016\u03b4\u2016 < \u03b5 \u2192 s \u2208 states\n  -- sorry: Stability category structure not in Mathlib\n\n/-- Vacuum manifold for gauge theories with spontaneous symmetry breaking -/\ndef VacuumManifold (G H : Type*) [Group G] [Subgroup H G] : Type* :=\n  G \u29f8 H  -- Quotient by subgroup\n\n/-- Topologically stable field configuration -/\nstructure TopologicalFieldConfig (M : Type*) [TopologicalSpace M] where\n  config : Type*\n  stable : Prop\n  -- sorry: Field configuration structure not in Mathlib\n\n/-- Brillouin zone as d-torus -/\ndef BrillouinZone (d : \u2115) : Type* := (Fin d \u2192 \u211d) \u29f8 (Fin d \u2192 \u2124)\n  -- sorry: Proper torus construction needs more setup\n\n/-- Berry curvature and Chern number -/\nstructure BerryStructure where\n  F : Type*  -- Berry curvature 2-form\n  chern_number : \u211d\n  -- sorry: Berry phase theory not in Mathlib\n\n/-- Monopole solution in gauge theory -/\nstructure MonopoleSolution (M : Type*) [TopologicalSpace M] where\n  state : Type*\n  energy : \u211d\n  topological_charge : \u2124\n  -- sorry: Monopole theory not in Mathlib\n\n/-- Topological edge state in acoustics -/\nstructure TopologicalEdgeState where\n  \u03c8_edge : Type*\n  localization : \u211d \u2192 \u211d  -- Exponential decay\n  -- sorry: Edge state theory not in Mathlib\n\n/-- Main theorem: Functor from topological invariants to stable states -/\ntheorem topological_stability_functor\n  (M : Type*) [TopologicalSpace M] [ChartedSpace \u210d M] [SmoothManifoldWithCorners \ud835\udcd8(\u211d, \u210d) M]\n  (g : Metric.RiemannianMetric \ud835\udcd8(\u211d, \u210d) M)\n  (S : Type*) (\u03b4H : PerturbationOperator S) :\n  \u2203 (F : (n : \u2115) \u2192 \u03c0_ n M \u2192 StableStates S),\n  (\u2200 n, \u03c0_ n M \u2260 0 \u2192 \u2203 s \u2208 (F n (sorry)).states, \u03b4H.\u03b4H s = s) :=\nby\n  -- Step 1: Vacuum manifold construction\n  sorry  -- Need orbit-stabilizer theorem application\n  \n  -- Step 2: Homotopy groups classify stable configurations  \n  sorry  -- Need principal bundle classification\n  \n  -- Step 3: Brillouin zone and band structure\n  sorry  -- Need Bloch theorem formalization\n  \n  -- Step 4: Chern number as topological invariant\n  sorry  -- Need Chern-Weil theorem\n  \n  -- Step 5: Define functor F\n  sorry  -- Need to establish functoriality\n  \n  -- Step 6: Monopole stability from \u03c0\u2082\n  sorry  -- Need Derrick's theorem\n  \n  -- Step 7: Edge state stability from Chern number\n  sorry  -- Need bulk-boundary correspondence\n  \n  -- Step 8: Functor preserves composition\n  sorry  -- Need unified framework across domains",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "For gauge theories with spontaneous symmetry breaking, the vacuum manifold M_vac = G/H where G is the gauge group and H is the unbroken subgroup",
+      "justification": "By the orbit-stabilizer theorem and the definition of spontaneous symmetry breaking",
+      "dependencies": [
+        "Goldstone's theorem",
+        "Orbit-stabilizer theorem"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Non-trivial elements of \u03c0_n(M_vac) correspond to topologically stable field configurations",
+      "justification": "By the classification theorem for principal G-bundles and the fact that \u03c0_n(M_vac) classifies maps S^n \u2192 M_vac up to homotopy",
+      "dependencies": [
+        "Step 1",
+        "Classification of principal bundles"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "In acoustic/photonic crystals, the Brillouin zone T^d forms a d-torus with band structure map f: T^d \u2192 Gr(k,n) to the Grassmannian",
+      "justification": "By Bloch's theorem and the fact that eigenstates at each k-point span a k-dimensional subspace",
+      "dependencies": [
+        "Bloch's theorem",
+        "Definition of Grassmannian"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The Chern number c_1 = (1/2\u03c0) \u222b_{T^2} F where F is the Berry curvature is a topological invariant",
+      "justification": "By the Chern-Weil theorem applied to the Berry connection on the eigenbundle",
+      "dependencies": [
+        "Step 3",
+        "Chern-Weil theorem",
+        "Berry phase theory"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "[Gap: Need to establish functoriality] Define F on objects by F(\u03c0_n(M)) = {\u03c8 \u2208 H : \u03b4H(\u03c8) = 0 for all ||\u03b4H|| < \u03b5_n} where \u03b5_n depends on the energy scale of the topological defect",
+      "justification": "This assignment needs proof that it respects categorical structure",
+      "dependencies": [
+        "Assumption about perturbation operators"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "For monopole solutions in gauge theory, if \u03c0_2(M_vac) \u2260 0, then monopole states |M\u27e9 satisfy H|M\u27e9 = E_M|M\u27e9 with E_M stable under gauge-invariant perturbations",
+      "justification": "By Derrick's theorem and topological charge conservation",
+      "dependencies": [
+        "Step 2",
+        "Derrick's theorem",
+        "'t Hooft-Polyakov construction"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "For topological edge states in acoustics, if c_1 \u2260 0, then there exist edge modes \u03c8_edge with exponential localization that are stable against disorder preserving the gap",
+      "justification": "By the bulk-boundary correspondence and index theorem for Toeplitz operators",
+      "dependencies": [
+        "Step 4",
+        "Bulk-boundary correspondence",
+        "Atiyah-Singer index theorem"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "[Gap: Unification across domains] The functor F preserves composition: topological operations on M correspond to stability-preserving operations on states",
+      "justification": "This requires showing that the correspondence holds uniformly across quantum and classical domains",
+      "dependencies": [
+        "Steps 5, 6, 7"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "'t Hooft-Polyakov Monopole",
+      "authors": "G. 't Hooft, A.M. Polyakov",
+      "year": "1974",
+      "field": "Quantum Field Theory",
+      "statement": "In gauge theories with spontaneous symmetry breaking where \u03c0_2(G/H) \u2260 0, there exist finite-energy soliton solutions with quantized magnetic charge",
+      "usage": "Establishes connection between vacuum manifold topology and stable soliton states"
+    },
+    {
+      "name": "Bulk-boundary correspondence",
+      "authors": "Y. Hatsugai",
+      "year": "1993",
+      "field": "Condensed Matter Physics",
+      "statement": "The number of chiral edge states equals the Chern number of the bulk bands",
+      "usage": "Links topological invariants of bulk to protected edge states"
+    },
+    {
+      "name": "Berry Phase Theory",
+      "authors": "M.V. Berry",
+      "year": "1984",
+      "field": "Quantum Mechanics",
+      "statement": "Adiabatic evolution around closed loops in parameter space induces geometric phases classified by holonomy",
+      "usage": "Provides geometric interpretation of topological invariants in band theory"
+    },
+    {
+      "name": "Derrick's Theorem",
+      "authors": "G.H. Derrick",
+      "year": "1964",
+      "field": "Mathematical Physics",
+      "statement": "Static finite-energy solutions to nonlinear field equations in d>1 spatial dimensions require topological constraints",
+      "usage": "Explains stability of topological solitons"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Configuration space M is a smooth manifold with well-defined topology",
+    "M admits a Riemannian metric g",
+    "Quantum systems have separable Hilbert space H with self-adjoint Hamiltonian",
+    "Classical wave systems have symplectic phase space (P, \u03c9)",
+    "Perturbations are represented by bounded operators with ||\u03b4H|| < \u03b5 for some \u03b5 > 0",
+    "The vacuum manifold M_vac \u2282 M is a closed submanifold",
+    "Energy functionals are continuous with respect to the topology on M",
+    "The category Top(M) has objects as topological invariants (homotopy groups, Chern classes, etc.)",
+    "The category Stab(S) has objects as equivalence classes of states stable under perturbations",
+    "Morphisms in Top(M) are continuous maps preserving invariants",
+    "Morphisms in Stab(S) are perturbation-preserving transformations"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Definition of functor F",
+        "issue": "The functor F is only defined on objects, not on morphisms. A functor must specify how it acts on both objects AND morphisms, and must preserve composition and identities. The proof admits this gap but proceeds anyway.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Must define F on morphisms and prove functoriality: F(g\u2218f) = F(g)\u2218F(f) and F(id) = id"
+      },
+      {
+        "step": "F(\u03c0_n(M)) = {\u03c8 \u2208 H : \u03b4H(\u03c8) = 0 for all ||\u03b4H|| < \u03b5_n}",
+        "issue": "This definition is incoherent. \u03c0_n(M) is a group, not an element, so F(\u03c0_n(M)) is undefined. Also, \u03b4H is defined as 'the perturbation operator' but then quantified over 'all ||\u03b4H|| < \u03b5_n', conflating a specific operator with a class of operators.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need to clarify whether F acts on the group \u03c0_n(M) or its elements, and precisely define what 'all perturbations' means"
+      },
+      {
+        "step": "Categories Top(M) and Stab(S)",
+        "issue": "These categories are never properly defined. What are the morphisms in Top(M)? How do topological invariants form a category? The assumptions mention morphisms but don't specify their composition law or how they relate to the objects.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Precisely define both categories with objects, morphisms, composition, and identity morphisms"
+      },
+      {
+        "step": "Preservation of homotopy equivalence",
+        "issue": "The statement 'F preserves homotopy equivalence' is never proven. The proof shows examples where non-trivial topology implies stable states, but doesn't establish that homotopy equivalent spaces yield equivalent stable state spaces.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Prove that if f: M \u2192 M' is a homotopy equivalence, then F induces an equivalence between stable state spaces"
+      },
+      {
+        "step": "Unification across quantum and classical domains",
+        "issue": "The proof admits this is not established. The functor F is supposedly defined for both quantum (Hilbert space) and classical (phase space) systems, but these have fundamentally different mathematical structures. No unified framework is provided.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Either prove separate functors for each domain or establish a common mathematical framework encompassing both"
+      },
+      {
+        "step": "\u03b5_n depends on the energy scale",
+        "issue": "The dependence of \u03b5_n on n is never specified. Without this, the definition of stable states is incomplete. Different choices could yield different functors.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Explicitly define \u03b5_n as a function of n with justification"
+      }
+    ],
+    "hidden_assumptions": [
+      "That topological invariants of M directly correspond to topological invariants of M_vac",
+      "That all perturbations preserve the structure needed for topological protection",
+      "That the energy scale separation between topological and non-topological excitations exists",
+      "That Ker(\u03b4H) is well-defined when \u03b4H ranges over a class of operators",
+      "That classical wave systems can be treated categorically similar to quantum systems",
+      "That the vacuum manifold M_vac exists and is unique"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes that topological invariants determine stable states (in defining F) and then uses examples to 'prove' that topological invariants determine stable states. The functor F is defined to make the correspondence true by construction.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof shows specific examples (monopoles in gauge theory, edge states in topological insulators) but claims a general functorial correspondence for all topological invariants and all types of systems. The examples don't establish the general case.",
+    "citation_issues": [
+      "Derrick's theorem is about non-existence of static solitons in certain dimensions, not about stability of topological defects",
+      "The 'index theorem for Toeplitz operators' is cited without precision - which index theorem? How does it apply here?",
+      "Bloch's theorem doesn't 'guarantee' the Brillouin zone is a torus - this is a consequence of lattice periodicity",
+      "The orbit-stabilizer theorem is cited but the proof doesn't establish that M_vac always has the form G/H"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed, attempting to establish a general functorial correspondence without properly defining the functor or proving functoriality. The argument reduces to showing examples where topology implies stability, which falls far short of the claimed general result. The mathematical framework is incoherent, mixing quantum and classical systems without justification.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to show that topological invariants correspond to stable states in specific physical systems, but fails to establish the claimed functor or its properties rigorously",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The category Top(M) is well-defined with specified objects and morphisms",
+      "The category Stab(S) is well-defined with specified objects and morphisms",
+      "The perturbation operator \u03b4H is well-defined and bounded",
+      "The energy scale \u03b5_n exists and is well-defined for each homotopy group",
+      "The correspondence between quantum and classical systems is mathematically precise",
+      "The Grassmannian bundle structure exists for the acoustic/photonic systems",
+      "Berry connection is well-defined and smooth on the eigenbundle",
+      "Monopole solutions exist and are unique up to gauge transformations",
+      "Edge states exist and have the claimed localization properties",
+      "The bulk-boundary correspondence holds in the acoustic setting"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 2",
+        "issue": "Classification of principal bundles does not directly imply correspondence to topologically stable field configurations - this requires additional energy arguments"
+      },
+      {
+        "step": "Step 5",
+        "issue": "Definition of F on objects is incomplete and doesn't establish functoriality - no proof that this respects categorical structure or defines a proper functor"
+      },
+      {
+        "step": "Step 6",
+        "issue": "Derrick's theorem applies to scalar field theories, not general gauge theories with monopoles - incorrect application"
+      },
+      {
+        "step": "Step 8",
+        "issue": "Claims functoriality without proof - no demonstration that topological operations correspond to stability-preserving operations"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No rigorous definition of the functor F on morphisms",
+      "No proof that F preserves composition and identities",
+      "No proof of the claimed homotopy preservation property",
+      "Missing connection between quantum field theory and classical wave examples",
+      "No proof that Ker(\u03b4H) \u2260 \u2205 when \u03c0_n(M) \u2260 0",
+      "Steps 5 and 8 explicitly marked as gaps but not filled",
+      "No unified framework connecting the disparate physical examples"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims a universal functor F: Top(M) \u2192 Stab(S) exists for both quantum and classical systems, but existing proof [00f62716e74a] establishes fundamental distinctions between quantum and classical information that cannot be freely copied or shared. A universal functor would violate this no-cloning principle.",
+      "The proof assumes topological invariants directly determine stability properties, but existing proof [06879fd9ae87] shows physical properties are fundamentally contextual and measurement-dependent, contradicting the claim that topological properties have predetermined stable states.",
+      "The claimed preservation of homotopy equivalence under the functor F conflicts with existing proof [06d6ace265c2] which shows quantum-classical boundaries emerge through environmental decoherence, not topological preservation."
+    ],
+    "assumption_conflicts": [
+      "Assumes separable Hilbert spaces with self-adjoint Hamiltonians, but doesn't address the environmental coupling required by decoherence theory from proof [06d6ace265c2]",
+      "Assumes bounded perturbation operators ||\u03b4H|| < \u03b5, but this conflicts with the unbounded nature of many physical observables established in quantum contextuality proof [06879fd9ae87]",
+      "The assumption of a universal functor across quantum and classical domains contradicts the categorical distinction between quantum and classical information from proof [00f62716e74a]"
+    ],
+    "beneficial_connections": [
+      "Connects to proof [0178ff46c5ee] on phase transitions and symmetry breaking through the vacuum manifold M_vac = G/H construction",
+      "Relates to proof [017d9bcb893f] on wave control through engineered structures via the Brillouin zone analysis",
+      "Links to proof [08b6405556dd] on symmetry principles through the gauge theory framework and conserved quantities"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof attempts to unify quantum and classical systems through topology, but this violates fundamental distinctions established in the corpus. The mathematical framework is sophisticated but the core premise contradicts established results about information theory and quantum contextuality. The gaps in establishing functoriality and cross-domain unification are not merely technical but conceptual."
+  },
+  "confidence_score": 0.24000000000000002,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.29999999999999993
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.29999999999999993
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A unified categorical framework bridging topological K-theory for quantum systems with symplectic topology for classical waves. Need rigorous construction of the functor F that works uniformly across different physical realizations and a general theory of 'topological protection' that encompasses both quantum and classical phenomena.",
+  "limitations": [
+    "The functor F is defined on objects but functoriality (preservation of morphisms) is not established",
+    "The correspondence between energy scales \u03b5_n and topological invariants \u03c0_n needs rigorous bounds",
+    "The proof does not establish that the same categorical structure applies to both quantum and classical systems",
+    "The relationship between different types of topological invariants (homotopy groups vs Chern classes) needs unification",
+    "Proof only covers specific examples rather than all possible topological constraints",
+    "Requires systems to have well-defined configuration spaces with clear topology",
+    "Perturbation theory framework may not capture all forms of stability",
+    "Does not address dynamical protection mechanisms",
+    "Limited to systems where topological invariants are computable"
+  ],
+  "source_convergence": {
+    "structural_claim": "Physical phenomena in both quantum and classical wave systems are fundamentally constrained by topology, with topological invariants protecting certain states against perturbations",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "'t Hooft-Polyakov Monopole",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Field Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Topological soliton solutions arise necessarily from the topology of the vacuum manifold in gauge theories with spontaneous symmetry breaking"
+      },
+      {
+        "result_id": "",
+        "result_name": "Instantons",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Field Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Topologically distinct vacuum configurations lead to non-perturbative effects through tunneling between different topological sectors"
+      },
+      {
+        "result_id": "",
+        "result_name": "Topological Acoustics",
+        "domain_id": "field_b",
+        "domain_name": "Acoustics and Wave Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Global topological properties of band structures determine the existence of edge states that are immune to backscattering from local perturbations"
+      }
+    ],
+    "domains": [
+      "quantum_field_theory",
+      "acoustics"
+    ],
+    "domain_names": [
+      "Quantum Field Theory",
+      "Acoustics and Wave Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.357,
+      "independence": 0.75,
+      "adversarial": 0.12,
+      "reproducibility": 0.5249999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.49734999999999996,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:38:36.493292+00:00",
+    "id": "ee1fac93eb37"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.321465
+  }
+}

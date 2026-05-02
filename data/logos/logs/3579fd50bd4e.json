@@ -1,0 +1,38 @@
+{
+  "proof_id": "3579fd50bd4e",
+  "timestamp": "2026-05-02T14:46:15.232730+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "categorical",
+      "alternatives_considered": [
+        "axiomatic - One could axiomatize the properties of topologically protected states, but this would miss the deeper structural relationship about how topology constrains dynamics across domains"
+      ],
+      "reasoning": "The convergence claims that topological invariants play a universal protective role across different physical domains. This is best captured by identifying the categorical structure where topological invariants act as functors preserving certain properties under perturbations, with natural transformations describing how protection mechanisms translate between quantum and classical settings."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Topology, Category theory, Differential geometry",
+      "alternatives_considered": [],
+      "reasoning": "Topology provides the core language for topological invariants and protection against perturbations. Category theory enables formal comparison of structures across quantum and classical domains via functors. Differential geometry is essential for wave physics formulation and fiber bundle descriptions of both quantum and classical wave phenomena."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof establishes that topological invariants of configuration/parameter spaces (vacuum manifolds in QFT, Brillouin zones in wave physics) necessarily lead to protected states through a correspondence between homotopy/cohomology classes and kernel elements of perturbation operators. The key insight is that topological obstructions to continuous deformations translate into dynamical stability, though a fully rigorous categorical unification remains incomplete.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 8 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3728 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 3453 chars, 8 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This proof requires extensive physics formalization beyond current Mathlib. The mathematical skeleton is present but the physics-specific structures (gauge theories, Berry phases, edge states) need substantial development. The functor construction particularly needs a proper category of stable states."
+    }
+  ]
+}

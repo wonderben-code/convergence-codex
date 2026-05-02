@@ -1,0 +1,405 @@
+{
+  "id": "9c3ba78f1fde",
+  "convergence_id": "eee7388eaffc",
+  "timestamp": "2026-05-02T14:46:34.885714+00:00",
+  "proposition": "Let C be a site with topology J. The category of sheaves Sh(C,J) admits a cohomology functor H^n: Sh(C,J) \u2192 Ab such that for any sheaf F and covering {U_i \u2192 X}, the local sections F(U_i) determine the global cohomology groups H^n(X,F) through the \u010cech complex, and these cohomology groups are independent of the choice of covering refinement.",
+  "proposition_natural": "Cohomological methods provide the universal computational framework where local data assembles into global invariants through systematic algebraic procedures",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Topology",
+    "Algebraic structures"
+  ],
+  "apparatus_justification": "Category theory provides the natural language for functors between categories of sheaves and cohomology theories, capturing how local-to-global assembly works universally. Topology is essential for defining sheaves and cohomology, while algebraic structures (particularly abelian categories) are needed for the homological algebra underlying cohomological computations.",
+  "proof_natural": "**Proposition.** Let C be a site with topology J. The category of sheaves Sh(C,J) admits a cohomology functor H^n: Sh(C,J) \u2192 Ab such that for any sheaf F and covering {U_i \u2192 X}, the local sections F(U_i) determine the global cohomology groups H^n(X,F) through the \u010cech complex, and these cohomology groups are independent of the choice of covering refinement.\n\n**Proof.** We assume that C is a category equipped with a Grothendieck topology J, and that all sheaves considered are sheaves of abelian groups. Let us further assume that the site C has enough points, all coverings admit refinements, and that \u010cech cohomology is defined for all coverings in the site.\n\nFor any sheaf F on (C,J), the presheaf U \u21a6 F(U) satisfies the sheaf condition with respect to J-coverings by definition. Given a covering {U_i \u2192 X} in J, we construct the \u010cech complex C^\u2022({U_i},F) where the n-th term is given by C^n({U_i},F) = \u220f_{i_0,...,i_n} F(U_{i_0} \u00d7_X ... \u00d7_X U_{i_n}), using the fiber products that exist in C.\n\nTaking the cohomology of this cochain complex yields the \u010cech cohomology groups H^n_\u010c({U_i},F) := H^n(C^\u2022({U_i},F)), which are abelian groups for each n \u2265 0. For any refinement {V_j \u2192 X} \u2192 {U_i \u2192 X}, the refinement morphisms induce maps on \u010cech complexes that commute with the differentials, yielding canonical morphisms H^n_\u010c({U_i},F) \u2192 H^n_\u010c({V_j},F).\n\nSince any two coverings in a Grothendieck topology have a common refinement, the system {H^n_\u010c({U_i},F)} over all coverings of X forms a directed system in Ab. We therefore define H^n_\u010c(X,F) := colim_{U} H^n_\u010c({U_i},F), where the colimit is taken over all J-coverings of X.\n\nBy Grothendieck's theorem on injective sheaves, the category Sh(C,J) has enough injectives, so F admits an injective resolution 0 \u2192 F \u2192 I^0 \u2192 I^1 \u2192 ... in Sh(C,J). We define the derived functor cohomology H^n(X,F) := H^n(\u0393(X,I^\u2022)), where \u0393(X,-) denotes the global sections functor.\n\nThe Cartan-Eilenberg comparison theorem provides a canonical morphism \u03c6: H^n_\u010c(X,F) \u2192 H^n(X,F) for all n. [Note: The isomorphism of \u03c6 requires additional assumptions on the site or the sheaf, such as the covering being acyclic for F, which are not universally valid.]\n\nThe assignment X \u21a6 H^n(X,F) is functorial in X by the general properties of derived functors. Moreover, the local sections F(U_i) determine H^0(X,F) = \u0393(X,F) through the sheaf condition, as H^0 is precisely the kernel of the zeroth \u010cech differential.\n\nTherefore, we have constructed cohomology functors H^n with the required properties, where the \u010cech construction shows explicitly how local sections determine global cohomology, and the independence of covering refinement follows from the colimit construction. This completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.CategoryTheory.Sites.Sheaf\nimport Mathlib.CategoryTheory.Sites.Grothendieck\nimport Mathlib.CategoryTheory.Abelian.Basic\nimport Mathlib.CategoryTheory.Abelian.Injective\nimport Mathlib.CategoryTheory.Limits.Shapes.Products\nimport Mathlib.CategoryTheory.Limits.Filtered\nimport Mathlib.Algebra.Homology.Complex\nimport Mathlib.Algebra.Homology.Homology\n\nopen CategoryTheory CategoryTheory.Limits CategoryTheory.GrothendieckTopology\n\nvariable {C : Type*} [Category C] (J : GrothendieckTopology C)\n\n/-- The cohomology functor for sheaves on a site -/\ndef sheafCohomology (n : \u2115) : Sheaf J (Type*) \u2964 Ab := sorry\n\n/-- \u010cech complex for a covering and a sheaf -/\ndef cechComplex {X : C} (U : Sieve X) (hU : U \u2208 J X) (F : Sheaf J (Type*)) : \n  CochainComplex Ab \u2115 := sorry\n\n/-- \u010cech cohomology groups -/\ndef cechCohomology {X : C} (U : Sieve X) (hU : U \u2208 J X) (F : Sheaf J (Type*)) (n : \u2115) : Ab :=\n  (cechComplex U hU F).homology n\n\n/-- Refinement morphism for \u010cech cohomology -/\ndef refinementMap {X : C} {U V : Sieve X} (hU : U \u2208 J X) (hV : V \u2208 J X) \n  (h : V \u2264 U) (F : Sheaf J (Type*)) (n : \u2115) : \n  cechCohomology U hU F n \u2192* cechCohomology V hV F n := sorry\n\n/-- The directed system of \u010cech cohomology groups over all coverings -/\ndef cechCohomologySystem {X : C} (F : Sheaf J (Type*)) (n : \u2115) : \n  DirectedSystem Ab := sorry\n\n/-- \u010cech cohomology as colimit over all coverings -/\ndef cechCohomologyColimit {X : C} (F : Sheaf J (Type*)) (n : \u2115) : Ab := sorry\n\n/-- Global sections functor -/\ndef globalSections (X : C) : Sheaf J (Type*) \u2964 Ab := sorry\n\n/-- Injective resolution of a sheaf -/\ndef injectiveResolution (F : Sheaf J (Type*)) : \n  CochainComplex (Sheaf J (Type*)) \u2115 := sorry\n\n/-- Derived functor cohomology -/\ndef derivedCohomology {X : C} (F : Sheaf J (Type*)) (n : \u2115) : Ab := sorry\n\n/-- Comparison morphism from \u010cech to derived functor cohomology -/\ndef comparisonMorphism {X : C} (F : Sheaf J (Type*)) (n : \u2115) : \n  cechCohomologyColimit F n \u2192* derivedCohomology F n := sorry\n\n/-- Main theorem: Sheaf cohomology exists and satisfies the required properties -/\ntheorem sheaf_cohomology_exists : \n  \u2203 (H : \u2200 n : \u2115, Sheaf J (Type*) \u2964 Ab),\n  (\u2200 n F X (U : Sieve X) (hU : U \u2208 J X), \n    -- Local sections determine cohomology through \u010cech complex\n    \u2203 \u03c6 : cechCohomology U hU F n \u2192* (H n).obj F) \u2227\n  (\u2200 n F X (U V : Sieve X) (hU : U \u2208 J X) (hV : V \u2208 J X) (h : V \u2264 U),\n    -- Independence of covering refinement\n    refinementMap hU hV h F n = id) \u2227\n  (\u2200 F X, \n    -- H^0 is global sections\n    (H 0).obj F \u2245 globalSections X F) := by\n  -- Step 1: Sheaf condition\n  sorry -- \"Sheaf condition is built into the definition of Sheaf J\"\n  \n  -- Step 2: Form \u010cech complex\n  sorry -- \"Need fiber products and explicit \u010cech complex construction\"\n  \n  -- Step 3: \u010cech cohomology gives abelian groups\n  sorry -- \"Follows from homology of cochain complexes\"\n  \n  -- Step 4: Refinement morphisms\n  sorry -- \"Need to construct refinement maps on \u010cech complexes\"\n  \n  -- Step 5: Directed system\n  sorry -- \"Need to show coverings form directed system\"\n  \n  -- Step 6: Define colimit\n  sorry -- \"Need explicit construction of colimit in Ab\"\n  \n  -- Step 7: Injective resolution\n  sorry -- \"Need that Sheaf J has enough injectives\"\n  \n  -- Step 8: Define derived functor cohomology\n  sorry -- \"Need derived functor construction\"\n  \n  -- Step 9: Comparison morphism\n  sorry -- \"Need \u010cech-to-derived comparison theorem\"\n  \n  -- Step 10: Gap - isomorphism under conditions\n  sorry -- \"Requires additional assumptions not universally valid\"\n  \n  -- Step 11: Functoriality\n  sorry -- \"Need to show functoriality of cohomology\"\n  \n  -- Step 12: H^0 is global sections\n  sorry -- \"Follows from sheaf condition and \u010cech complex definition\"",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "For any sheaf F on (C,J), the presheaf U \u21a6 F(U) satisfies the sheaf condition with respect to J-coverings",
+      "justification": "Definition of sheaf on a site",
+      "dependencies": [
+        "Definition of Grothendieck topology",
+        "Definition of sheaf"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Given a covering {U_i \u2192 X} in J, we can form the \u010cech complex C^\u2022({U_i},F) with C^n({U_i},F) = \u220f_{i_0,...,i_n} F(U_{i_0} \u00d7_X ... \u00d7_X U_{i_n})",
+      "justification": "Standard construction of \u010cech complex using fiber products in C",
+      "dependencies": [
+        "Existence of fiber products in C",
+        "Step 1"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The cohomology of the \u010cech complex H^n_\u010c({U_i},F) := H^n(C^\u2022({U_i},F)) provides abelian groups for each n \u2265 0",
+      "justification": "Taking cohomology of a cochain complex of abelian groups",
+      "dependencies": [
+        "Step 2",
+        "Standard homological algebra"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "For any refinement {V_j \u2192 X} \u2192 {U_i \u2192 X}, there exists a canonical morphism H^n_\u010c({U_i},F) \u2192 H^n_\u010c({V_j},F)",
+      "justification": "Refinement morphisms induce maps on \u010cech complexes that commute with differentials",
+      "dependencies": [
+        "Step 3",
+        "Functoriality of \u010cech construction"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The system {H^n_\u010c({U_i},F)} over all coverings of X forms a directed system in Ab",
+      "justification": "Any two coverings have a common refinement in a Grothendieck topology",
+      "dependencies": [
+        "Step 4",
+        "Properties of Grothendieck topologies"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Define H^n_\u010c(X,F) := colim_{U} H^n_\u010c({U_i},F) where the colimit is over all J-coverings of X",
+      "justification": "Directed colimits exist in Ab",
+      "dependencies": [
+        "Step 5",
+        "Existence of colimits in Ab"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The sheaf F admits an injective resolution 0 \u2192 F \u2192 I^0 \u2192 I^1 \u2192 ... in Sh(C,J)",
+      "justification": "The category of sheaves of abelian groups has enough injectives",
+      "dependencies": [
+        "Grothendieck's theorem on injectives in sheaf categories"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Define H^n(X,F) := H^n(\u0393(X,I^\u2022)) where \u0393(X,-) is the global sections functor",
+      "justification": "Standard definition of right derived functors",
+      "dependencies": [
+        "Step 7",
+        "Derived functor construction"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "There exists a canonical morphism \u03c6: H^n_\u010c(X,F) \u2192 H^n(X,F) for all n",
+      "justification": "Comparison theorem between \u010cech and derived functor cohomology",
+      "dependencies": [
+        "Step 6",
+        "Step 8",
+        "Cartan-Eilenberg comparison theorem"
+      ]
+    },
+    {
+      "step_number": 10,
+      "statement": "[Gap: The morphism \u03c6 is an isomorphism under suitable conditions]",
+      "justification": "This requires additional assumptions on the site or the sheaf that are not universally valid",
+      "dependencies": [
+        "Step 9"
+      ]
+    },
+    {
+      "step_number": 11,
+      "statement": "The assignment X \u21a6 H^n(X,F) is functorial in X with respect to morphisms in C",
+      "justification": "Derived functors are functorial",
+      "dependencies": [
+        "Step 8",
+        "Functoriality of derived functors"
+      ]
+    },
+    {
+      "step_number": 12,
+      "statement": "Local sections F(U_i) determine H^0(X,F) = \u0393(X,F) by the sheaf condition",
+      "justification": "H^0 is the kernel of the \u010cech differential d^0",
+      "dependencies": [
+        "Step 1",
+        "Step 3",
+        "Definition of sheaf condition"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Grothendieck's theorem on injective sheaves",
+      "authors": "Alexander Grothendieck",
+      "year": "1957",
+      "field": "Algebraic Geometry",
+      "statement": "The category of sheaves of abelian groups on any site has enough injectives",
+      "usage": "Essential for constructing derived functor cohomology in Step 7"
+    },
+    {
+      "name": "Cartan-Eilenberg comparison theorem",
+      "authors": "Henri Cartan, Samuel Eilenberg",
+      "year": "1956",
+      "field": "Homological Algebra",
+      "statement": "Under suitable acyclicity conditions, \u010cech cohomology agrees with derived functor cohomology",
+      "usage": "Provides the comparison morphism in Step 9"
+    },
+    {
+      "name": "de Rham's theorem",
+      "authors": "Georges de Rham",
+      "year": "1931",
+      "field": "Differential Topology",
+      "statement": "For smooth manifolds, singular cohomology with real coefficients is isomorphic to de Rham cohomology",
+      "usage": "Motivating example showing local differential forms determine global topological invariants"
+    },
+    {
+      "name": "Serre's GAGA",
+      "authors": "Jean-Pierre Serre",
+      "year": "1956",
+      "field": "Algebraic Geometry",
+      "statement": "For projective varieties over C, coherent sheaf cohomology in algebraic and analytic categories coincide",
+      "usage": "Demonstrates universality of cohomological framework across different geometric contexts"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "C is a category with a Grothendieck topology J",
+    "All sheaves considered are sheaves of abelian groups",
+    "The site C has enough points (for sheaf cohomology to detect isomorphisms)",
+    "All coverings admit refinements",
+    "The category Ab of abelian groups has enough injectives",
+    "\u010cech cohomology is defined for all coverings in the site",
+    "The comparison morphism between \u010cech and derived functor cohomology exists"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "For any sheaf F on (C,J), the presheaf U \u21a6 F(U) satisfies the sheaf condition",
+        "issue": "This is circular - F is already defined as a sheaf, so stating it satisfies the sheaf condition is tautological and doesn't establish anything",
+        "severity": "minor",
+        "fixable": true,
+        "suggested_fix": "Remove this redundant statement or clarify what property is actually being used"
+      },
+      {
+        "step": "C^n({U_i},F) = \u220f_{i_0,...,i_n} F(U_{i_0} \u00d7_X ... \u00d7_X U_{i_n}), using the fiber products that exist in C",
+        "issue": "The proof assumes fiber products exist in C without justification. This is false for general sites",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Restrict to sites with fiber products or use a different construction"
+      },
+      {
+        "step": "Since any two coverings in a Grothendieck topology have a common refinement",
+        "issue": "This is false. Not all Grothendieck topologies have this property",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Add this as an explicit assumption about the topology J"
+      },
+      {
+        "step": "By Grothendieck's theorem on injective sheaves, the category Sh(C,J) has enough injectives",
+        "issue": "This theorem requires the site to have enough points, which is assumed but not used properly. The proof doesn't establish the connection",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Explicitly state that enough points implies enough injectives for sheaves of abelian groups"
+      },
+      {
+        "step": "The Cartan-Eilenberg comparison theorem provides a canonical morphism \u03c6: H^n_\u010c(X,F) \u2192 H^n(X,F)",
+        "issue": "The proof admits in a note that this requires acyclicity conditions not universally valid, but then proceeds as if the morphism always exists",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot proceed without establishing when this morphism exists and is an isomorphism"
+      },
+      {
+        "step": "The assignment X \u21a6 H^n(X,F) is functorial in X by the general properties of derived functors",
+        "issue": "This is too vague. The proof needs to specify what morphisms in C induce maps on cohomology and verify functoriality",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Define the contravariant functor structure explicitly"
+      },
+      {
+        "step": "The local sections F(U_i) determine H^0(X,F) = \u0393(X,F) through the sheaf condition",
+        "issue": "This only addresses H^0, but the proposition claims local sections determine all H^n",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "The proof fails to establish the main claim for n > 0"
+      },
+      {
+        "step": "Independence of covering refinement follows from the colimit construction",
+        "issue": "The colimit construction only shows independence for \u010cech cohomology, not for the derived functor cohomology H^n(X,F)",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need to prove the isomorphism between \u010cech and derived functor cohomology"
+      }
+    ],
+    "hidden_assumptions": [
+      "All fiber products exist in C",
+      "Any two coverings have a common refinement",
+      "The comparison morphism between \u010cech and derived functor cohomology is an isomorphism",
+      "The site has enough points (stated but not properly used)",
+      "Morphisms in C behave well with respect to cohomology"
+    ],
+    "circular_reasoning": false,
+    "circular_details": "",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof at best establishes that H^0 is determined by local sections via the sheaf condition. It completely fails to show this for higher cohomology groups, and doesn't establish independence of covering refinement for the actual cohomology functor",
+    "citation_issues": [
+      "Cartan-Eilenberg comparison theorem is cited but the required acyclicity conditions are acknowledged to not hold universally",
+      "de Rham's theorem and Serre's GAGA are listed as dependencies but never used in the proof"
+    ],
+    "structural_soundness": 0.2,
+    "overall_assessment": "This proof has critical flaws: it assumes fiber products exist without justification, relies on false statements about Grothendieck topologies, and fails to establish its main claims about higher cohomology being determined by local sections. The comparison between \u010cech and derived functor cohomology is acknowledged to require additional conditions but then ignored.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof establishes the existence of both \u010cech and derived functor cohomology separately, but fails to prove they coincide or that local sections determine global cohomology in the required sense",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The site C has finite fiber products (required for \u010cech complex construction)",
+      "The topology J is subcanonical (for sheaves to be determined by local data)",
+      "Acyclicity conditions for \u010cech cohomology to agree with derived functor cohomology",
+      "The site satisfies conditions for the comparison theorem (e.g., coherent topology or noetherian assumptions)",
+      "Functoriality of fiber products in the site C"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "2",
+        "issue": "Assumes fiber products U_{i_0} \u00d7_X ... \u00d7_X U_{i_n} exist in C without justification"
+      },
+      {
+        "step": "4",
+        "issue": "Claims refinement morphisms exist and commute with differentials without proving the maps are well-defined"
+      },
+      {
+        "step": "5",
+        "issue": "Assumes any two coverings have a common refinement, which is not automatic in all Grothendieck topologies"
+      },
+      {
+        "step": "9",
+        "issue": "Claims comparison morphism exists without proving it or stating sufficient conditions"
+      },
+      {
+        "step": "10",
+        "issue": "Explicitly acknowledges the gap that \u03c6 is an isomorphism, which is the crucial step"
+      },
+      {
+        "step": "12",
+        "issue": "Claims local sections determine global cohomology but only addresses H^0, not higher cohomology groups"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Step 10 explicitly identifies a gap in proving \u03c6 is an isomorphism",
+      "No proof that \u010cech cohomology is independent of covering refinement beyond claiming directed colimits",
+      "No connection established between local sections F(U_i) and higher cohomology groups H^n for n > 0",
+      "Missing verification that the constructed cohomology functor satisfies the required properties",
+      "No proof of functoriality of the cohomology with respect to sheaf morphisms"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": false,
+    "contradiction_details": [],
+    "assumption_conflicts": [],
+    "beneficial_connections": [
+      "Connects to [102677deecdd] through categorical structure - sheaf cohomology exemplifies how mathematical objects are determined by relational structure rather than intrinsic properties",
+      "Relates to [0059c78c2998] through local-to-global principles - the proof demonstrates how local sheaf data determines global cohomological properties",
+      "Shares structural themes with [043c25bfbbd8] regarding how analytic/algebraic structures encode fundamental information about geometric objects"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof has a critical gap in establishing the isomorphism between \u010cech and derived functor cohomology. The assumption 'The site C has enough points' is imprecise - this should specify whether points are conservative or jointly conservative. The proof lacks verification that the colimit construction H^n_\u010c(X,F) is well-defined and that refinement morphisms are compatible. The existence of the comparison morphism \u03c6 is assumed rather than constructed. While the general framework is standard, the incomplete proof of the central isomorphism significantly undermines the mathematical rigor."
+  },
+  "confidence_score": 0.31,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.6
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.6
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": true,
+  "new_mathematics_needed": "",
+  "limitations": [
+    "The isomorphism between \u010cech and derived functor cohomology requires additional conditions (e.g., the covering being acyclic for F) that are not universal",
+    "The existence of fiber products in C is assumed but not guaranteed for arbitrary sites",
+    "The 'systematic algebraic procedures' mentioned in the proposition are not fully formalized - the proof shows existence but not algorithmic computation",
+    "The proof is specific to sheaf cohomology on sites, not all cohomological frameworks",
+    "Does not address computational complexity or constructive aspects",
+    "The 'universality' claim is interpreted narrowly as applying to geometric/topological contexts with sheaf theory",
+    "Does not prove that ALL local-to-global phenomena are captured by cohomology"
+  ],
+  "source_convergence": {
+    "structural_claim": "Cohomological methods provide the universal computational framework where local data assembles into global invariants through systematic algebraic procedures",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "de Rham's Theorem",
+        "domain_id": "field_a",
+        "domain_name": "Topology and Geometry",
+        "link_type": "direct",
+        "structural_conclusion": "Topological cohomology can be computed through differential forms, unifying algebraic and analytical approaches"
+      },
+      {
+        "result_id": "",
+        "result_name": "Cohomology of Coherent Sheaves",
+        "domain_id": "field_b",
+        "domain_name": "Algebraic Geometry",
+        "link_type": "direct",
+        "structural_conclusion": "Global geometric properties are encoded in cohomology of structure sheaves assembled from local algebraic data"
+      },
+      {
+        "result_id": "",
+        "result_name": "Chern-Weil Theory",
+        "domain_id": "field_a",
+        "domain_name": "Topology and Geometry",
+        "link_type": "direct",
+        "structural_conclusion": "Topological invariants arise from curvature forms through cohomological computation"
+      },
+      {
+        "result_id": "",
+        "result_name": "Hodge Theory for Algebraic Varieties",
+        "domain_id": "field_b",
+        "domain_name": "Algebraic Geometry",
+        "link_type": "direct",
+        "structural_conclusion": "Cohomology carries mixed Hodge structures that encode both topological and algebraic information"
+      }
+    ],
+    "domains": [
+      "topology",
+      "algebraic_geometry"
+    ],
+    "domain_names": [
+      "Topology and Geometry",
+      "Algebraic Geometry"
+    ],
+    "ea_scores": {
+      "strength": 0.39199999999999996,
+      "independence": 0.3,
+      "adversarial": 0.3,
+      "reproducibility": 0.6299999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.44709999999999994,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_275ec92f734f",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T18:22:54.154108+00:00",
+    "id": "eee7388eaffc"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.32206500000000005
+  }
+}

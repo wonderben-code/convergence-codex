@@ -1,0 +1,38 @@
+{
+  "proof_id": "f55264c8b534",
+  "timestamp": "2026-05-02T14:48:51.713912+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "constraint_logic was considered since both domains involve structures defined by conservation laws and constraints, but axiomatic is better because the convergence is about identifying the abstract principles themselves rather than structures arising from constraint satisfaction"
+      ],
+      "reasoning": "The convergence identifies shared abstract principles about conservation and distribution constraints across both domains. Both quantum no-cloning/monogamy and fluid vortex theorems express fundamental limitations on how certain structures (quantum states/entanglement vs vorticity) can be replicated and distributed, making an axiomatic framework that captures these shared constraint principles most appropriate."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Information theory, Category theory, Measure theory",
+      "alternatives_considered": [],
+      "reasoning": "Information theory provides the formal framework for quantifying replication and distribution constraints through entropy and channel capacity. Category theory captures the structural mappings between quantum and fluid domains via functors. Measure theory grounds the probabilistic aspects of both quantum states and fluid distributions."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof establishes that both quantum systems (via no-cloning and monogamy of entanglement) and fluid systems (via circulation conservation and vortex line topology) impose fundamental constraints on replication and distribution of their respective conserved quantities. These constraints are argued to share a common categorical structure, suggesting a universal principle limiting information/structure replication across physical domains.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 9 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3129 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 3208 chars, 15 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This proof heavily relies on quantum information theory and fluid dynamics concepts not available in Mathlib. The core mathematical structure (bounds and inequalities) can be stated, but the physical content and the crucial quantum-fluid correspondence in Step 7 cannot be formalised without extensive additional definitions."
+    }
+  ]
+}

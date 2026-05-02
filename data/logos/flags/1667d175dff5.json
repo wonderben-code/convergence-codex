@@ -1,0 +1,15 @@
+{
+  "proof_id": "1667d175dff5",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous mathematical framework for the correspondence between physical observables and cohomology classes, including the role of the Hodge star in defining observables and why its metric dependence cancels for topological quantities",
+    "Difficulty assessed as challenging",
+    "7 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

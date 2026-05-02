@@ -1,0 +1,38 @@
+{
+  "proof_id": "eaf8bb6bf124",
+  "timestamp": "2026-05-02T14:45:51.708500+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "equivalence - This could capture the structural similarity between quantum and classical wave localization, but the convergence is more about shared principles than structural correspondence between the mathematical objects themselves."
+      ],
+      "reasoning": "Both domains exhibit the same fundamental principle: disorder creates localization through interference effects that limit transport/propagation. This is best captured as a shared axiom schema about how disorder parameters relate to localization length scales and transport coefficients, which both quantum systems and acoustic waves satisfy as models."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Functional analysis, Measure theory, Dynamical systems",
+      "alternatives_considered": [],
+      "reasoning": "Functional analysis provides spectral theory for operators on Hilbert spaces, essential for analyzing wave propagation and localization phenomena. Measure theory handles the probabilistic aspects of disorder, while dynamical systems theory captures the transport dynamics and stability of localized states."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof establishes that strong disorder leads to exponentially localized eigenfunctions via the fractional moment method. These localized states form a pure point spectrum, and the exponential decay of matrix elements of local operators (like current) between different localized states causes transport coefficients to vanish.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 8 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3252 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 3464 chars, 14 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "The formalization requires extensive random operator theory not available in Mathlib. Key missing pieces include disorder formalization, Anderson localization framework, and dynamical correlation analysis. The proof structure follows the given steps but most technical details require specialized theory."
+    }
+  ]
+}

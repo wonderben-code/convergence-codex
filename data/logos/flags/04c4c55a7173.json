@@ -1,0 +1,13 @@
+{
+  "proof_id": "04c4c55a7173",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: Rigorous inverse scattering theory for many-body quantum systems that maps excitation spectra to correlation functions; functional analysis framework for operator-valued distributions in infinite-dimensional Hilbert spaces",
+    "7 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

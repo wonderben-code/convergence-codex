@@ -1,0 +1,15 @@
+{
+  "proof_id": "a614614bcab0",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous categorical framework for thermodynamic phases and phase transitions is needed. Additionally, the extension to non-Hermitian systems requires development of non-Hermitian topological field theory that can handle exceptional points as topological defects.",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}
