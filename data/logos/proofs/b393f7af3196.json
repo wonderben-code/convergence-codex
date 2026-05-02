@@ -1,0 +1,344 @@
+{
+  "id": "b393f7af3196",
+  "convergence_id": "d141c9d3ff25",
+  "timestamp": "2026-05-02T14:12:58.666840+00:00",
+  "proposition": "For any system S admitting measurements M with outcomes in measurable spaces (\u03a9_i, \u03a3_i), if S exhibits correlations C that violate Bell-type inequalities or contextuality witnesses, then no probability space (\u039b, F, \u03bc) with measurable functions f_i: \u039b \u2192 \u03a9_i exists such that C = \u222b_\u039b \u2297_i f_i d\u03bc, necessitating a contextual sheaf or topos-theoretic description where measurement contexts form the base category.",
+  "proposition_natural": "Non-local correlations and information cannot be explained by local hidden variables or predetermined values, requiring fundamentally contextual descriptions",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Measure theory",
+    "Order theory"
+  ],
+  "apparatus_justification": "Category theory provides the natural framework for contextuality via presheaves and the Kochen-Specker theorem's categorical formulation. Measure theory is essential for probability spaces underlying both quantum correlations and acoustic wave interference. Order theory captures the lattice structures of contexts and their relationships.",
+  "proof_natural": "**Proposition.** For any system S admitting measurements M with outcomes in measurable spaces (\u03a9\u1d62, \u03a3\u1d62), if S exhibits correlations C that violate Bell-type inequalities or contextuality witnesses, then no probability space (\u039b, F, \u03bc) with measurable functions f\u1d62: \u039b \u2192 \u03a9\u1d62 exists such that C = \u222b_\u039b \u2297\u1d62 f\u1d62 d\u03bc, necessitating a contextual sheaf or topos-theoretic description where measurement contexts form the base category.\n\n**Proof.** Let S be a system admitting a collection of measurements M = {M\u1d62}\u1d62\u2208I with outcome spaces (\u03a9\u1d62, \u03a3\u1d62). We assume that correlations C are empirically accessible multi-point correlation functions, Bell-type inequalities are well-defined for the measurement setup, and that the existence of a local hidden variable model corresponds to the existence of a probability space (\u039b, F, \u03bc) with measurable functions f\u1d62: \u039b \u2192 \u03a9\u1d62. Furthermore, we assume contextuality is formalized via presheaves on measurement contexts, where measurement contexts form a category C with morphisms representing compatibility relations.\n\nBy Bell's theorem in its CHSH formulation, quantum correlations violate the inequality |E(a,b) - E(a,b') + E(a',b) + E(a',b')| \u2264 2, which must hold for any local hidden variable theory. Quantum mechanics achieves the Tsirelson bound of 2\u221a2, establishing that no classical probability space can reproduce these correlations through predetermined values.\n\nThe Kochen-Specker theorem strengthens this result by proving that no assignment v: O \u2192 {0,1} exists that preserves the functional relationships among quantum observables O. This demonstrates that quantum measurements exhibit irreducible contextuality\u2014the outcome of a measurement depends not only on the system state but on the entire measurement context.\n\nWe now consider acoustic systems exhibiting analogous non-local behavior. In time-reversal acoustics, scattered wave fields \u03c8(r,t) through random media preserve source information via phase conjugation, where \u03c8*(-t) refocuses to the source despite complex scattering. Anderson localization in disordered media creates exponentially localized eigenmodes \u03c8\u2099 with |\u03c8\u2099(r)| ~ exp(-|r-r\u2099|/\u03be), where the localization length \u03be depends non-locally on the entire disorder configuration.\n\n[Note: A rigorous connection between acoustic non-locality and quantum non-locality requires developing a unified mathematical framework bridging wave mechanics and quantum correlations.]\n\nFollowing the Abramsky-Brandenburger approach, we construct a measurement context category C with objects as measurement setups and morphisms as inclusion or compatibility relations. For any system exhibiting contextuality, we obtain a presheaf P: C^op \u2192 Set assigning outcome sets to contexts. The crucial observation is that contextuality corresponds precisely to the non-existence of global sections in this presheaf\u2014there is no consistent way to assign outcomes across all contexts that respects the compatibility constraints.\n\n[Note: A complete proof would require demonstrating that acoustic non-local effects satisfy the same sheaf-theoretic obstruction, which would necessitate developing sheaf theory for classical wave systems.]\n\nGiven that both quantum and acoustic systems exhibit correlations that cannot be explained by local hidden variables, and that such correlations necessitate contextual descriptions, we conclude that any system S exhibiting Bell-inequality violations or contextuality witnesses cannot admit a global probability space representation. Instead, such systems require a contextual framework where measurements are understood relative to their contexts, naturally leading to a sheaf or topos-theoretic description.\n\nThis completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.CategoryTheory.Category.Basic\nimport Mathlib.CategoryTheory.Functor.Basic\nimport Mathlib.CategoryTheory.Limits.Presheaf\nimport Mathlib.MeasureTheory.MeasurableSpace.Basic\nimport Mathlib.MeasureTheory.Measure.MeasureSpace\nimport Mathlib.MeasureTheory.Integral.Bochner\nimport Mathlib.Topology.Sheaves.Presheaf\nimport Mathlib.Order.Lattice\n\n/-- A physical system admitting measurements -/\nstructure PhysicalSystem where\n  carrier : Type*\n\n/-- Measurement on a system with outcomes in a measurable space -/\nstructure Measurement (S : PhysicalSystem) where\n  \u03a9 : Type*\n  \u03a3 : MeasurableSpace \u03a9\n\n/-- Correlations exhibited by a system under measurements -/\nstructure Correlations (S : PhysicalSystem) (M : List (Measurement S)) where\n  /-- The correlation data - sorry: need quantum correlation formalism -/\n  data : Type*\n\n/-- Bell-type inequality violation predicate -/\ndef violatesBellInequality (C : Correlations S M) : Prop :=\n  sorry -- Need Bell inequality formalism\n\n/-- Contextuality witness violation predicate -/\ndef violatesContextuality (C : Correlations S M) : Prop :=\n  sorry -- Need contextuality witness formalism\n\n/-- Hidden variable model for correlations -/\nstructure HiddenVariableModel (M : List (Measurement S)) where\n  \u039b : Type*\n  F : MeasurableSpace \u039b\n  \u03bc : Measure \u039b\n  f : \u2200 (m : Measurement S), m \u2208 M \u2192 (\u039b \u2192 m.\u03a9)\n  measurable : \u2200 (m : Measurement S) (h : m \u2208 M), Measurable (f m h)\n\n/-- Measurement context category -/\nstructure MeasurementContext where\n  /-- Objects are measurement setups -/\n  Setup : Type*\n  /-- Morphisms are compatibility relations -/\n  Compatible : Setup \u2192 Setup \u2192 Prop\n  /-- Category structure - sorry: need to define properly -/\n  id : \u2200 s : Setup, Compatible s s\n  comp : \u2200 {s\u2081 s\u2082 s\u2083 : Setup}, Compatible s\u2081 s\u2082 \u2192 Compatible s\u2082 s\u2083 \u2192 Compatible s\u2081 s\u2083\n\n/-- Convert measurement context to category -/\ndef MeasurementContext.toCategory (MC : MeasurementContext) : Type* :=\n  sorry -- Need to construct category from measurement context\n\n/-- Presheaf of measurement outcomes -/\ndef OutcomePresheaf (MC : MeasurementContext) : (MeasurementContext.toCategory MC)\u1d52\u1d56 \u2964 Type* :=\n  sorry -- Need to define presheaf functor\n\n/-- Global section existence predicate -/\ndef hasGlobalSection (MC : MeasurementContext) : Prop :=\n  sorry -- Need to define global section for presheaf\n\n/-- Main theorem: Systems with Bell/contextuality violations require contextual description -/\ntheorem contextual_description_necessary\n  (S : PhysicalSystem)\n  (M : List (Measurement S))\n  (C : Correlations S M)\n  (h_bell : violatesBellInequality C \u2228 violatesContextuality C) :\n  (\u00ac \u2203 (HVM : HiddenVariableModel M), sorry) \u2227 \n  (\u2203 (MC : MeasurementContext), \u00ac hasGlobalSection MC) := by\n  constructor\n  \u00b7 -- Step 1-5: Bell and KS theorems imply no hidden variable model\n    intro \u27e8HVM\u27e9\n    sorry -- Need Bell's theorem and KS theorem formalization\n  \u00b7 -- Step 6-9: Construct measurement context category without global sections\n    sorry -- Need sheaf-theoretic characterization of contextuality",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Bell's theorem establishes that quantum correlations violate CHSH inequality: |E(a,b) - E(a,b') + E(a',b) + E(a',b')| \u2264 2 for local hidden variables, but quantum mechanics achieves 2\u221a2",
+      "justification": "Direct application of Bell's theorem with CHSH formulation",
+      "dependencies": [
+        "Bell's Theorem (1964)"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Kochen-Specker theorem proves no assignment v: O \u2192 {0,1} exists preserving functional relationships for quantum observables O",
+      "justification": "KS theorem shows contextuality via impossibility of non-contextual value assignments",
+      "dependencies": [
+        "Kochen-Specker Theorem (1967)"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Time-reversal acoustics demonstrates that scattered wave fields \u03c8(r,t) through random media preserve source information via phase conjugation: \u03c8*(-t) refocuses to source",
+      "justification": "Experimental observation and theoretical analysis of time-reversal invariance",
+      "dependencies": [
+        "Time Reversal Acoustics results"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "Anderson localization creates exponentially localized eigenmodes \u03c8_n with |\u03c8_n(r)| ~ exp(-|r-r_n|/\u03be) where localization length \u03be depends non-locally on disorder configuration",
+      "justification": "Standard result from Anderson localization theory",
+      "dependencies": [
+        "Anderson Localization theory"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "[Gap: Need to establish formal connection between acoustic non-locality and quantum non-locality]",
+      "justification": "The mathematical frameworks for acoustic waves and quantum correlations require unification",
+      "dependencies": [
+        "Steps 3, 4"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Define measurement context category C with objects as measurement setups and morphisms as inclusion/compatibility relations",
+      "justification": "Standard construction in categorical approaches to contextuality",
+      "dependencies": [
+        "Category theory foundations"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Non-existence of global sections in the presheaf of outcomes P: C^op \u2192 Set corresponds precisely to contextuality",
+      "justification": "Abramsky-Brandenburger sheaf-theoretic characterization of contextuality",
+      "dependencies": [
+        "Step 6",
+        "Abramsky-Brandenburger (2011)"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "[Gap: Rigorous proof that acoustic non-local effects satisfy same sheaf-theoretic obstruction]",
+      "justification": "Would require developing sheaf theory for classical wave systems",
+      "dependencies": [
+        "Steps 3, 4, 7"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "Therefore, both quantum and acoustic systems require contextual descriptions where global assignments fail",
+      "justification": "Follows from non-existence of global sections in both cases",
+      "dependencies": [
+        "Steps 1, 2, 7, 8"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Bell's Theorem",
+      "authors": "J.S. Bell",
+      "year": "1964",
+      "field": "Quantum Foundations",
+      "statement": "No local hidden variable theory can reproduce all predictions of quantum mechanics",
+      "usage": "Establishes violation of local realism in quantum systems"
+    },
+    {
+      "name": "Kochen-Specker Theorem",
+      "authors": "S. Kochen, E.P. Specker",
+      "year": "1967",
+      "field": "Quantum Foundations",
+      "statement": "Quantum observables cannot possess predetermined values independent of measurement context",
+      "usage": "Proves quantum contextuality"
+    },
+    {
+      "name": "Sheaf-theoretic approach to contextuality",
+      "authors": "S. Abramsky, A. Brandenburger",
+      "year": "2011",
+      "field": "Quantum Foundations/Category Theory",
+      "statement": "Contextuality corresponds to non-existence of global sections in presheaves",
+      "usage": "Provides categorical framework for contextuality"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "System S admits a collection of measurements M = {M_i}_{i\u2208I} with outcome spaces (\u03a9_i, \u03a3_i)",
+    "Correlations C are empirically accessible multi-point correlation functions",
+    "Bell-type inequalities are well-defined for the measurement setup",
+    "The notion of 'local hidden variable model' corresponds to existence of (\u039b, F, \u03bc) with f_i: \u039b \u2192 \u03a9_i measurable",
+    "Contextuality is formalized via presheaves on measurement contexts",
+    "Measurement contexts form a category C with morphisms representing compatibility relations",
+    "The acoustic systems admit wave-theoretic descriptions in appropriate function spaces",
+    "Time-reversal symmetry is well-defined for the acoustic systems",
+    "Anderson localization can be characterized via spectral properties of wave operators"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Definition of correlations C and the equation C = \u222b_\u039b \u2297_i f_i d\u03bc",
+        "issue": "The notation \u2297_i f_i is undefined. What does tensor product of functions mean here? How does this integrate to produce correlations? The mathematical object C is never properly defined.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Define C precisely as a probability distribution or correlation function, and clarify what \u222b_\u039b \u2297_i f_i d\u03bc means mathematically"
+      },
+      {
+        "step": "Connection between acoustic systems and quantum non-locality",
+        "issue": "The proof admits in brackets that 'A rigorous connection between acoustic non-locality and quantum non-locality requires developing a unified mathematical framework.' This is a critical gap - the acoustic discussion is completely disconnected from the main argument.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Either remove the acoustic discussion or develop the required framework"
+      },
+      {
+        "step": "Application of Abramsky-Brandenburger to general systems",
+        "issue": "The sheaf-theoretic approach is developed specifically for quantum systems. The proof provides no justification for why it applies to arbitrary systems S, especially classical acoustic systems.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Prove that the sheaf-theoretic framework applies to the general class of systems under consideration"
+      },
+      {
+        "step": "Final conclusion about 'any system S'",
+        "issue": "The proof only establishes results for quantum systems via Bell and Kochen-Specker theorems. The jump to 'any system S' is unjustified.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Restrict the claim to quantum systems or provide a general proof"
+      }
+    ],
+    "hidden_assumptions": [
+      "That Bell inequality violations in quantum systems generalize to all systems exhibiting 'non-local correlations'",
+      "That the sheaf-theoretic obstruction for quantum contextuality applies to all forms of contextuality",
+      "That acoustic 'non-locality' is mathematically equivalent to quantum non-locality",
+      "That the existence of a hidden variable model is equivalent to the specific integral representation given",
+      "That all systems admitting measurements can be described in the presheaf framework"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes that systems exhibiting Bell inequality violations require contextual descriptions, then uses this to conclude they require contextual descriptions. The connection between Bell violations and the non-existence of the integral representation is assumed rather than proven.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof actually shows that quantum systems violating Bell inequalities don't admit local hidden variable models. It claims to prove this for arbitrary systems S with arbitrary 'correlations C', including classical acoustic systems, without establishing the necessary connections.",
+    "citation_issues": [
+      "Bell's theorem is specific to quantum mechanics - its application to general systems is unjustified",
+      "Kochen-Specker theorem applies to quantum observables - extension to general measurements undefined",
+      "Abramsky-Brandenburger framework is cited but the specific results needed are not stated or proven"
+    ],
+    "structural_soundness": 0.3,
+    "overall_assessment": "This proof attempts to generalize quantum no-go theorems to arbitrary physical systems without establishing the necessary mathematical framework. The acoustic examples are disconnected red herrings, and the core argument contains multiple critical gaps including undefined notation, unjustified generalizations, and circular reasoning.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish that quantum systems require contextual descriptions and makes unsupported claims about acoustic systems having similar properties, but fails to prove the stated proposition about general systems S with Bell-violating correlations necessitating contextual sheaf descriptions.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Assumption that CHSH inequality violation implies general Bell-type inequality violation",
+      "Assumption that Kochen-Specker contextuality is equivalent to Bell non-locality",
+      "Assumption that acoustic wave systems can exhibit contextuality in the same sense as quantum systems",
+      "Assumption that time-reversal acoustics and Anderson localization are relevant to contextuality",
+      "Assumption that non-local effects in classical systems correspond to quantum-type contextuality",
+      "Assumption that the category C of measurement contexts is well-defined for all systems S",
+      "Assumption that presheaf obstruction characterizes all forms of contextuality"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "3",
+        "issue": "Time-reversal acoustics is irrelevant to Bell inequalities or contextuality - this is a classical wave phenomenon with no connection to quantum non-locality"
+      },
+      {
+        "step": "4",
+        "issue": "Anderson localization describes spatial localization of eigenmodes, not contextuality or Bell violations - the 'non-local dependence on disorder' is not the same as quantum non-locality"
+      },
+      {
+        "step": "5",
+        "issue": "Explicitly acknowledges missing connection but provides no justification for why such connection should exist"
+      },
+      {
+        "step": "8",
+        "issue": "Explicitly acknowledges gap in proving acoustic systems satisfy sheaf-theoretic obstruction without providing the required proof"
+      },
+      {
+        "step": "9",
+        "issue": "Conclusion does not follow from premises since the connection between acoustic and quantum contextuality was never established"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No proof that general systems S violating Bell inequalities require contextual descriptions",
+      "No connection established between acoustic phenomena and quantum contextuality",
+      "Steps 5 and 8 explicitly acknowledge critical gaps that are never filled",
+      "No proof that the specific sheaf-theoretic framework applies to all Bell-violating systems",
+      "Conflates different types of non-locality without justification"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims acoustic systems exhibit the same contextual structure as quantum systems, but existing proof [06879fd9ae87] specifically establishes contextuality as a fundamental quantum property distinguishing it from classical physics",
+      "The proof attempts to unify quantum and acoustic non-locality without establishing that acoustic systems satisfy the algebraic structure (C*-algebras) required for contextuality as defined in existing proofs",
+      "Claims about Anderson localization creating 'non-local' effects conflate spatial correlation with the specific type of non-locality that violates Bell inequalities"
+    ],
+    "assumption_conflicts": [
+      "Assumes acoustic systems can be described by the same presheaf formalism as quantum systems, conflicting with [06879fd9ae87] which grounds contextuality in quantum algebraic structures",
+      "Assumes measurement contexts for acoustic systems form the same categorical structure as quantum measurement contexts without justification",
+      "The assumption that classical wave equations can exhibit genuine contextuality conflicts with the classical/quantum distinction in [00f62716e74a]"
+    ],
+    "beneficial_connections": [
+      "Connects to [017d9bcb893f] on wave control through engineered structures, potentially extending to contextual measurement scenarios",
+      "Relates to [052632f8abba] on multi-scale dynamics, as both quantum and acoustic systems exhibit scale-dependent behavior",
+      "Could strengthen [102677deecdd] on relational structure by providing concrete examples of context-dependent properties"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof contains significant gaps and conflates different types of 'non-locality'. The claimed formal connection between acoustic and quantum contextuality is not rigorously established. The proof would need to demonstrate that acoustic systems satisfy the same algebraic constraints that make quantum contextuality mathematically precise, rather than relying on superficial analogies."
+  },
+  "confidence_score": 0.24500000000000002,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A unified categorical framework bridging quantum contextuality and classical wave non-locality, including: (1) Sheaf theory for classical wave systems with disorder, (2) Functorial relationships between quantum and acoustic measurement categories, (3) Topos-theoretic characterization of information preservation in time-reversal acoustics",
+  "limitations": [
+    "Formal mathematical connection between acoustic wave non-locality and quantum non-locality not established",
+    "Sheaf-theoretic framework for acoustic systems not developed",
+    "Precise characterization of 'non-local information' in acoustic context needs formalization",
+    "Functorial relationship between quantum and acoustic categories not constructed",
+    "Proof relies on analogy rather than rigorous mathematical connection",
+    "Acoustic 'measurements' not formally defined in same framework as quantum measurements",
+    "The notion of 'contextuality' for classical waves requires precise definition",
+    "Does not establish if acoustic non-locality is fundamentally the same phenomenon as quantum non-locality"
+  ],
+  "source_convergence": {
+    "structural_claim": "Non-local correlations and information cannot be explained by local hidden variables or predetermined values, requiring fundamentally contextual descriptions",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Bell's Theorem",
+        "domain_id": "quantum_foundations",
+        "domain_name": "Quantum Foundations",
+        "link_type": "direct",
+        "structural_conclusion": "Local hidden variable theories cannot reproduce quantum correlations"
+      },
+      {
+        "result_id": "",
+        "result_name": "Kochen-Specker Theorem",
+        "domain_id": "quantum_foundations",
+        "domain_name": "Quantum Foundations",
+        "link_type": "direct",
+        "structural_conclusion": "Quantum observables cannot possess predetermined values independent of measurement context"
+      },
+      {
+        "result_id": "",
+        "result_name": "Time Reversal Acoustics",
+        "domain_id": "acoustics_wave_physics",
+        "domain_name": "Acoustics and Wave Physics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Wave propagation through complex media preserves source information despite apparent randomization, revealing non-local information preservation"
+      },
+      {
+        "result_id": "",
+        "result_name": "Anderson Localization of Acoustic Waves",
+        "domain_id": "acoustics_wave_physics",
+        "domain_name": "Acoustics and Wave Physics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Disorder creates fundamentally non-local interference effects that cannot be understood through local wave properties alone"
+      }
+    ],
+    "domains": [
+      "quantum_foundations",
+      "acoustics"
+    ],
+    "domain_names": [
+      "Quantum Foundations",
+      "Acoustics and Wave Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.2856,
+      "independence": 0.85,
+      "adversarial": 0.06,
+      "reproducibility": 0.4724999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.481055,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:23:35.239187+00:00",
+    "id": "d141c9d3ff25"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.28398
+  }
+}

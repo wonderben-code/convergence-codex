@@ -1,0 +1,38 @@
+{
+  "proof_id": "3ee45cbd61fe",
+  "timestamp": "2026-05-02T14:13:17.501815+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "categorical - This could capture the universal property of 'uncopyable information' but the convergence is more about shared constraints than universal characterizations"
+      ],
+      "reasoning": "The convergence identifies a shared abstract principle across quantum and gravitational domains: information cannot be freely copied or shared without fundamental constraints. This is best captured by identifying axioms about information constraints that both quantum no-cloning/monogamy and gravitational information bounds satisfy, rather than claiming the structures themselves are equivalent."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Category theory, Information theory, Functional analysis",
+      "alternatives_considered": [],
+      "reasoning": "Category theory provides the natural framework for formalizing structural constraints across domains through functors and natural transformations. Information theory gives precise definitions of copying/cloning operations and their limitations, while functional analysis provides the operator formalism for quantum states and observables."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof establishes that both quantum systems (via no-cloning and monogamy theorems) and gravitational systems (via holographic bounds and AdS/CFT error correction) impose fundamental constraints on information copying and sharing. While the specific mechanisms differ, both domains exhibit the phenomenon that information cannot be freely duplicated or distributed, suggesting a deep principle that transcends the specific physical implementation.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 8 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3232 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 3824 chars, 11 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This formalization attempts to capture the structure of the proof but is severely limited by the absence of quantum information theory, AdS/CFT correspondence, and gravitational information theory in Mathlib. The code provides a skeletal structure showing how the proof would be organized if these theories were available."
+    }
+  ]
+}

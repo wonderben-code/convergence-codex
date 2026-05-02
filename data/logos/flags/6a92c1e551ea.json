@@ -1,0 +1,13 @@
+{
+  "proof_id": "6a92c1e551ea",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A general controllability theory for infinite-dimensional systems with time-dependent Hamiltonians that can prove reachability of target states under symmetry-breaking perturbations. Current control theory is primarily developed for finite-dimensional systems or specific classes of PDEs.",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

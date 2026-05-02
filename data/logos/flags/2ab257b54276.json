@@ -1,0 +1,15 @@
+{
+  "proof_id": "2ab257b54276",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A unified geometric framework connecting symmetry breaking in curved spacetimes (GR) with symmetry breaking in Euclidean fluid systems. Need rigorous treatment of: (1) Symmetry breaking on manifolds with varying curvature, (2) Topological stability criteria for defects in different geometric contexts, (3) Categorical framework unifying discrete structures across domains",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

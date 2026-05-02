@@ -1,0 +1,382 @@
+{
+  "id": "fd08b8e7903b",
+  "convergence_id": "d0f65ba32126",
+  "timestamp": "2026-05-02T14:12:11.466162+00:00",
+  "proposition": "Let (S, G) be a system with symmetry group G. The emergence of distinguishable states from an initially symmetric state occurs if and only if there exists a symmetry-breaking mechanism \u03c6: S \u2192 S/H where H \u228a G is a proper subgroup, such that the quotient space S/H exhibits greater structural diversity than S under the action of G.",
+  "proposition_natural": "Symmetry breaking is the mechanism through which apparent diversity emerges from underlying unity",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Algebraic structures",
+    "Topology"
+  ],
+  "apparatus_justification": "Category theory provides the natural framework for formalizing symmetry breaking as functors between categories with different symmetry groups, where morphisms preserve structure. Algebraic structures are essential for representing symmetry groups and their actions, while topology captures the continuity of symmetry breaking transitions and the emergence of distinct phases.",
+  "proof_natural": "**Proposition.** Let (S, G) be a system with symmetry group G. The emergence of distinguishable states from an initially symmetric state occurs if and only if there exists a symmetry-breaking mechanism \u03c6: S \u2192 S/H where H \u228a G is a proper subgroup, such that the quotient space S/H exhibits greater structural diversity than S under the action of G.\n\n**Proof.** We assume that physical systems can be modeled as objects in a category with symmetry groups acting on state spaces, and that the notion of distinguishability can be formalized through orbit structures under group actions. Let Sym denote the category of systems with symmetry, where objects are pairs (S, G) with S a state space and G a group acting on S.\n\nFor quantum systems, let S = H be a Hilbert space with G acting via unitary representations U(g): H \u2192 H, as guaranteed by Wigner's theorem. We define the diversity measure of a system as D(S,G) = |S/G|, where S/G denotes the orbit space under the G-action. This measure captures the number of distinguishable states under the symmetry group.\n\nConsider first the case of quantum decoherence. Environmental coupling induces a map E: H \u2192 H \u2297 H_E that breaks the full unitary symmetry U(n) to a preferred pointer basis. By Zurek's einselection principle, the environment selects preferred basis states robust against decoherence, effectively reducing the symmetry group G to its stabilizer subgroup H. [Note: A rigorous proof that decoherence generically increases the diversity measure D(H/H) > D(H/G) requires detailed analysis of specific Hamiltonians and remains model-dependent.]\n\nIn particle physics, spontaneous symmetry breaking provides a concrete realization. Consider the Higgs potential V(\u03c6) = -\u03bc\u00b2|\u03c6|\u00b2 + \u03bb|\u03c6|\u2074 with \u03bc\u00b2 > 0, possessing SU(2)\u00d7U(1) symmetry. The potential minimum occurs at |\u03c6| = v \u2260 0, forming a degenerate manifold. Choosing a vacuum state |0\u27e9 with \u27e80|\u03c6|0\u27e9 = v breaks the symmetry SU(2)\u00d7U(1) \u2192 U(1)_EM. By the Goldstone theorem, this spontaneous breaking of continuous symmetry yields massless Goldstone bosons.\n\nPrior to symmetry breaking, all gauge bosons are massless and indistinguishable under the SU(2)\u00d7U(1) action. After breaking, the Higgs mechanism generates distinct masses: m_W = gv/2 for the W\u00b1 bosons and m_Z = gv/(2cos\u03b8_W) for the Z boson, while the photon remains massless. Thus, the reduction from G to its proper subgroup H creates distinguishable particle states.\n\nBy the orbit-stabilizer theorem, |G| = |Orb(x)| \u00d7 |Stab(x)|. When G reduces to H \u228a G, the stabilizer groups decrease, implying larger orbits and fewer identifications in the quotient space. [Note: A general proof that the symmetry breaking functor F: Sym \u2192 Sym with F(S,G) = (S,H) always increases diversity requires additional constraints on how subgroups relate to quotient structures.]\n\nIn both quantum decoherence and spontaneous symmetry breaking, the reduction G \u2192 H with H \u228a G creates distinguishable states that were previously equivalent under the G-action, establishing the emergence of distinguishability from symmetric initial conditions. This completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.GroupTheory.GroupAction.Basic\nimport Mathlib.GroupTheory.GroupAction.Quotient\nimport Mathlib.GroupTheory.Subgroup.Basic\nimport Mathlib.CategoryTheory.Category.Basic\nimport Mathlib.Topology.Basic\nimport Mathlib.Analysis.InnerProductSpace.Basic\n\n/-- A system with symmetry consists of a state space and a group acting on it -/\nstructure SystemWithSymmetry where\n  S : Type*\n  G : Type*\n  [group : Group G]\n  [action : MulAction G S]\n\n/-- The category of systems with symmetry -/\ndef Sym : Type* := SystemWithSymmetry\n\n/-- Morphisms in the category Sym are equivariant maps -/\nstructure SymMorphism (sys1 sys2 : Sym) where\n  f : sys1.S \u2192 sys2.S\n  g_map : sys1.G \u2192 sys2.G\n  [group_hom : GroupHom g_map]\n  equivariant : \u2200 (g : sys1.G) (s : sys1.S), f (g \u2022 s) = g_map g \u2022 f s\n\n/-- Diversity measure for a system with symmetry -/\ndef diversityMeasure (sys : SystemWithSymmetry) : Cardinal :=\n  sorry -- Need formalization of orbit space cardinality |S/G|\n\n/-- A symmetry-breaking mechanism -/\nstructure SymmetryBreaking (sys : SystemWithSymmetry) where\n  H : Subgroup sys.G\n  proper : H < \u22a4\n  \u03c6 : sys.S \u2192 Quotient (MulAction.orbitRel H sys.S)\n\n/-- Quantum system with unitary symmetry -/\nstructure QuantumSystem (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H] extends SystemWithSymmetry where\n  S := H\n  G := unitaryGroup H\n  unitary_action : \u2200 g : G, \u2203 U : H \u2192L[\u2102] H, IsometryOn U Set.univ \u2227 (\u2200 h : H, g \u2022 h = U h)\n\nwhere unitaryGroup (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H] : Type* :=\n  sorry -- Need formalization of unitary group\n\n/-- Environmental coupling induces decoherence -/\ndef environmentalCoupling (H H_E : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H]\n    [NormedAddCommGroup H_E] [InnerProductSpace \u2102 H_E] : H \u2192L[\u2102] (H \u2297[\u2102] H_E) :=\n  sorry -- Need tensor product of Hilbert spaces and coupling operator\n\n/-- Decoherence reduces symmetry group to stabilizer subgroup -/\ndef decoherenceSymmetryBreaking (qsys : QuantumSystem H) (E : environmentalCoupling H H_E) :\n    SymmetryBreaking qsys.toSystemWithSymmetry :=\n  sorry -- Need formalization of pointer basis and einselection\n\n/-- Higgs field with SU(2)\u00d7U(1) symmetry -/\nstructure HiggsSystem where\n  field : \u2102 \u2192 \u2102\n  potential : \u2102 \u2192 \u211d\n  mexican_hat : \u2200 \u03c6 : \u2102, potential \u03c6 = -\u03bc\u00b2 * Complex.abs \u03c6 ^ 2 + \u03bb * Complex.abs \u03c6 ^ 4\n  \u03bc_positive : \u03bc\u00b2 > 0\n  \u03bb_positive : \u03bb > 0\nwhere\n  \u03bc\u00b2 : \u211d := sorry -- Higgs mass parameter\n  \u03bb : \u211d := sorry -- Self-coupling constant\n\n/-- Higgs mechanism breaks SU(2)\u00d7U(1) to U(1)_EM -/\ndef higgsSymmetryBreaking (hsys : HiggsSystem) : SymmetryBreaking (higgsSystemWithSymmetry hsys) :=\n  sorry -- Need formalization of gauge symmetry breaking\nwhere\n  higgsSystemWithSymmetry : HiggsSystem \u2192 SystemWithSymmetry :=\n    sorry -- Need SU(2)\u00d7U(1) group action on Higgs field\n\n/-- Main theorem: Emergence of distinguishable states via symmetry breaking -/\ntheorem emergence_via_symmetry_breaking (sys : SystemWithSymmetry) :\n    (\u2203 (sb : SymmetryBreaking sys), diversityMeasure \u27e8sys.S, sb.H, inferInstance, inferInstance\u27e9 >\n     diversityMeasure sys) \u2194\n    (\u2203 (distinguishable_states : sys.S \u00d7 sys.S),\n     (\u2200 g : sys.G, g \u2022 distinguishable_states.1 \u2260 distinguishable_states.2) \u2227\n     (\u2203 h : sb.H, h \u2022 distinguishable_states.1 = distinguishable_states.2)) :=\n  sorry -- Main theorem requires formalization of diversity ordering and orbit structure\n\n/-- Decoherence example -/\nexample (H H_E : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H]\n    [NormedAddCommGroup H_E] [InnerProductSpace \u2102 H_E]\n    (qsys : QuantumSystem H) (E : environmentalCoupling H H_E) :\n    let sb := decoherenceSymmetryBreaking qsys E\n    diversityMeasure \u27e8qsys.S, sb.H, inferInstance, inferInstance\u27e9 > diversityMeasure qsys.toSystemWithSymmetry :=\n  sorry -- Requires proof that decoherence increases distinguishable states\n\n/-- Higgs mechanism example -/\nexample (hsys : HiggsSystem) :\n    let sb := higgsSymmetryBreaking hsys\n    \u2203 (W_plus W_minus Z photon : higgsSystemWithSymmetry hsys).S,\n    (\u2200 g : (higgsSystemWithSymmetry hsys).G, g \u2022 W_plus = W_plus \u2192 g \u2022 photon = photon \u2192 False) :=\n  sorry -- Requires showing W\u00b1, Z bosons become distinguishable from photon",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the category Sym of systems with symmetry, where objects are pairs (S, G) with S a state space and G a group acting on S",
+      "justification": "Standard construction in category theory for systems with structure",
+      "dependencies": [
+        "Category theory axioms"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "For quantum systems, let S = H (Hilbert space) with G acting via unitary representations U(g): H \u2192 H",
+      "justification": "Wigner's theorem: symmetries in quantum mechanics are represented by unitary or antiunitary operators",
+      "dependencies": [
+        "Wigner (1931)"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Define diversity measure D(S,G) = |S/G| where S/G denotes the orbit space under G-action",
+      "justification": "Orbit counting provides a natural measure of distinguishable states",
+      "dependencies": [
+        "Step 1",
+        "Orbit-stabilizer theorem"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "For decoherence: Environmental coupling E: H \u2192 H \u2297 H_E breaks U(n) symmetry to preferred pointer basis, reducing G to stabilizer subgroup H",
+      "justification": "Zurek's einselection principle shows environment selects preferred basis",
+      "dependencies": [
+        "Zurek (1981, 2003)",
+        "Step 2"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "[Gap: Rigorous proof that decoherence always increases diversity measure D requires showing D(H/H) > D(H/G) for generic environmental couplings]",
+      "justification": "This requires detailed analysis of specific Hamiltonians and is model-dependent",
+      "dependencies": [
+        "Step 3",
+        "Step 4"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "For particle physics: The Higgs potential V(\u03c6) = -\u03bc\u00b2|\u03c6|\u00b2 + \u03bb|\u03c6|\u2074 with \u03bc\u00b2 > 0 has SU(2)\u00d7U(1) symmetry but minimum at |\u03c6| = v \u2260 0",
+      "justification": "Standard model Lagrangian with Mexican hat potential",
+      "dependencies": [
+        "Higgs (1964)",
+        "Weinberg (1967)"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Choosing vacuum state |0\u27e9 with \u27e80|\u03c6|0\u27e9 = v breaks SU(2)\u00d7U(1) \u2192 U(1)_EM",
+      "justification": "Goldstone theorem: spontaneous breaking of continuous symmetry",
+      "dependencies": [
+        "Goldstone (1961)",
+        "Step 6"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Pre-breaking: all gauge bosons massless and indistinguishable under SU(2)\u00d7U(1). Post-breaking: W\u00b1, Z acquire mass, photon remains massless",
+      "justification": "Higgs mechanism generates mass terms m_W = gv/2, m_Z = gv/(2cos\u03b8_W)",
+      "dependencies": [
+        "Step 7",
+        "Anderson-Higgs mechanism"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "[Gap: General proof that symmetry breaking functor F: Sym \u2192 Sym with F(S,G) = (S,H), H \u228a G always increases diversity requires additional structure]",
+      "justification": "Need constraints on how subgroups H relate to quotient structures",
+      "dependencies": [
+        "Steps 1-8"
+      ]
+    },
+    {
+      "step_number": 10,
+      "statement": "In both cases, reduction G \u2192 H with H \u228a G creates distinguishable states that were equivalent under G-action",
+      "justification": "Smaller symmetry group means fewer identifications in quotient space",
+      "dependencies": [
+        "Steps 4-9",
+        "Orbit-stabilizer theorem"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Wigner's theorem on symmetry representations",
+      "authors": "Eugene Wigner",
+      "year": "1931",
+      "field": "Quantum mechanics",
+      "statement": "Symmetry transformations in quantum mechanics are represented by unitary or antiunitary operators",
+      "usage": "Justifies representation of symmetries as unitary group actions on Hilbert space"
+    },
+    {
+      "name": "Einselection and pointer basis",
+      "authors": "Wojciech Zurek",
+      "year": "1981, 2003",
+      "field": "Quantum foundations",
+      "statement": "Environmental coupling selects preferred 'pointer' basis states robust against decoherence",
+      "usage": "Explains how decoherence breaks quantum superposition symmetry"
+    },
+    {
+      "name": "Goldstone theorem",
+      "authors": "Jeffrey Goldstone",
+      "year": "1961",
+      "field": "Particle physics",
+      "statement": "Spontaneous breaking of continuous symmetry implies massless bosons",
+      "usage": "Foundation for understanding symmetry breaking in particle physics"
+    },
+    {
+      "name": "Higgs mechanism",
+      "authors": "Peter Higgs, Fran\u00e7ois Englert, Robert Brout",
+      "year": "1964",
+      "field": "Particle physics",
+      "statement": "Gauge bosons acquire mass through coupling to scalar field with broken symmetry",
+      "usage": "Explains mass generation through symmetry breaking"
+    },
+    {
+      "name": "Orbit-stabilizer theorem",
+      "authors": "Classical group theory",
+      "year": "19th century",
+      "field": "Mathematics",
+      "statement": "|G| = |Orb(x)| \u00d7 |Stab(x)| for group G acting on set",
+      "usage": "Relates symmetry group structure to orbit counting"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Systems can be modeled as objects in a category with symmetry groups",
+    "Symmetry groups act on state spaces via group actions",
+    "Diversity can be formalized as the cardinality of distinguishable orbits under group action",
+    "Physical systems admit mathematical description via Hilbert spaces (for quantum systems) or phase spaces (for classical systems)",
+    "Symmetry breaking can be represented as a functor between categories",
+    "The notion of 'emergence' can be captured by comparing pre- and post-symmetry-breaking orbit structures",
+    "Environmental interactions can be modeled as tensor products with environment degrees of freedom",
+    "Spontaneous symmetry breaking can be formalized via potential functions with degenerate minima"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Definition of diversity measure D(S,G) = |S/G|",
+        "issue": "The cardinality of an orbit space is often infinite or uncountable for continuous groups acting on continuous spaces. This definition is mathematically meaningless without proper measure theory.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Replace with a proper measure-theoretic definition or restrict to finite groups/discrete spaces"
+      },
+      {
+        "step": "Claim that D(H/H) > D(H/G) for decoherence",
+        "issue": "The proof admits this is model-dependent but then uses it as if proven. This is a critical gap.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed without proving the claim for general systems"
+      },
+      {
+        "step": "Application of orbit-stabilizer theorem",
+        "issue": "The theorem gives |G| = |Orb(x)| \u00d7 |Stab(x)|, but the proof incorrectly concludes that smaller stabilizers imply 'larger orbits and fewer identifications'. This doesn't follow logically.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Provide rigorous argument connecting orbit sizes to diversity measure"
+      },
+      {
+        "step": "Definition of 'structural diversity'",
+        "issue": "The term 'structural diversity' in the proposition is never formally defined, making the entire proposition ill-posed.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Provide precise mathematical definition before stating proposition"
+      },
+      {
+        "step": "Symmetry-breaking mechanism \u03c6: S \u2192 S/H",
+        "issue": "This map is nonsensical. S/H is the quotient of S by H-action, not a subspace of S. A mechanism cannot map S to its quotient.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Redefine \u03c6 properly, perhaps as projection to H-invariant subspace"
+      }
+    ],
+    "hidden_assumptions": [
+      "That orbit spaces have well-defined cardinalities",
+      "That 'distinguishability' is equivalent to being in different orbits",
+      "That symmetry breaking always reduces to a subgroup (not true for explicit breaking)",
+      "That the category Sym has the required structure for the claimed functor to exist",
+      "That quantum and classical systems can be treated uniformly",
+      "That environmental decoherence always selects a unique pointer basis"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes that symmetry breaking creates distinguishable states (in the examples) to prove that symmetry breaking creates distinguishable states. The examples are presented as evidence but they assume the conclusion.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof shows specific examples (Higgs mechanism) where symmetry breaking creates distinguishable states, but claims this holds for ALL systems with symmetry. The 'if and only if' claim is completely unjustified.",
+    "citation_issues": [
+      "Zurek's einselection principle doesn't guarantee a unique pointer basis in all cases",
+      "Goldstone theorem has specific conditions (Lorentz invariance, etc.) not mentioned",
+      "Orbit-stabilizer theorem is misapplied - the conclusion about diversity doesn't follow"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed with multiple critical errors including undefined terms, nonsensical mappings, circular reasoning, and unjustified generalizations from specific examples. The mathematical formalism is sloppy and the logical structure is unsound.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to show that symmetry breaking can create distinguishable states in specific physical examples, but fails to establish the general if-and-only-if characterization claimed in the proposition",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The diversity measure D(S,G) = |S/G| is well-defined and finite for all relevant systems",
+      "The quotient space S/H has a well-defined notion of 'structural diversity' that can be compared across different group actions",
+      "The phrase 'greater structural diversity' has a precise mathematical meaning beyond orbit counting",
+      "Environmental decoherence can always be modeled as a reduction to a stabilizer subgroup",
+      "The category Sym has well-defined morphisms and the symmetry-breaking functor is well-defined",
+      "The examples (quantum decoherence and Higgs mechanism) are representative of all possible symmetry-breaking scenarios"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "3",
+        "issue": "D(S,G) = |S/G| may be infinite or undefined for continuous groups and infinite-dimensional spaces, making the diversity measure meaningless"
+      },
+      {
+        "step": "4",
+        "issue": "Claims environmental coupling 'reduces G to stabilizer subgroup H' without proving this reduction always occurs or that H \u228a G"
+      },
+      {
+        "step": "5",
+        "issue": "Explicitly acknowledges the gap but doesn't fill it - the core claim about decoherence increasing diversity is unproven"
+      },
+      {
+        "step": "9",
+        "issue": "Explicitly acknowledges another gap - the general functorial statement about symmetry breaking increasing diversity is unproven"
+      },
+      {
+        "step": "10",
+        "issue": "Claims 'smaller symmetry group means fewer identifications' but this doesn't necessarily imply |S/H| > |S/G| when both may be infinite"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No proof of the 'only if' direction - that emergence of distinguishable states requires symmetry breaking",
+      "No general proof that symmetry breaking increases diversity beyond specific examples",
+      "No rigorous definition of 'structural diversity' or proof it's captured by orbit counting",
+      "Gaps in steps 5 and 9 are acknowledged but not resolved",
+      "No proof that the examples generalize to establish the universal quantification in the proposition",
+      "No treatment of cases where symmetry breaking might not increase distinguishability"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims symmetry breaking 'if and only if' there exists a mechanism \u03c6: S \u2192 S/H that increases diversity, but existing proof [0178ff46c5ee] shows phase transitions can occur through collective behavior without requiring explicit diversity increase in orbit structure",
+      "The diversity measure D(S,G) = |S/G| is problematic for infinite-dimensional Hilbert spaces where orbit spaces may not have well-defined cardinality, contradicting quantum system assumptions in [06d6ace265c2]",
+      "The claim that decoherence 'always increases diversity' conflicts with [06d6ace265c2] which shows decoherence can create apparent classical behavior without necessarily increasing distinguishable states"
+    ],
+    "assumption_conflicts": [
+      "Assumes diversity can be formalized as cardinality of orbits, but this fails for continuous symmetries and infinite-dimensional spaces used in [06d6ace265c2] and [08b6405556dd]",
+      "The assumption that 'emergence' is captured by comparing orbit structures conflicts with [052632f8abba] which defines emergence through scale separation and collective behavior",
+      "Environmental interactions modeled as tensor products conflicts with [10f57fdaae83] which treats environment as active participant changing boundary conditions"
+    ],
+    "beneficial_connections": [
+      "Connects to [0178ff46c5ee] on symmetry-breaking phase transitions, though with different mathematical framework",
+      "Relates to [087da119976b] on spontaneous symmetry breaking, providing categorical perspective",
+      "Complements [08b6405556dd] on symmetry principles by focusing on emergence rather than conservation"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof has significant gaps acknowledged by the authors and makes overly strong 'if and only if' claims without rigorous justification. The diversity measure is mathematically problematic for the stated quantum systems context. The categorical framework is underdeveloped compared to existing proofs."
+  },
+  "confidence_score": 0.24500000000000002,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A general theory of 'diversity functors' that rigorously captures how symmetry reduction maps to increased distinguishability of states. This would require: (1) A category-theoretic framework for measuring structural diversity beyond simple orbit counting, (2) Theorems relating subgroup lattices to quotient space structures, (3) A formal theory of emergence that connects symmetry breaking to complexity increase",
+  "limitations": [
+    "Rigorous proof that decoherence generically increases diversity measure",
+    "General conditions under which symmetry breaking increases distinguishability",
+    "Formal connection between mathematical symmetry breaking and physical notion of 'emergence'",
+    "Unified framework encompassing both spontaneous and explicit symmetry breaking",
+    "Diversity measure via orbit counting is crude and may not capture all relevant structure",
+    "Proof relies on specific physical examples rather than general mathematical principle",
+    "Cannot prove the 'only if' direction - that diversity increase requires symmetry breaking",
+    "Framework doesn't address approximate or partial symmetry breaking",
+    "Missing rigorous definition of 'apparent diversity' and 'underlying unity'"
+  ],
+  "source_convergence": {
+    "structural_claim": "Symmetry breaking is the mechanism through which apparent diversity emerges from underlying unity",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Decoherence Theory",
+        "domain_id": "quantum_foundations",
+        "domain_name": "Quantum Foundations",
+        "link_type": "direct",
+        "structural_conclusion": "Classical behavior emerges through environmental selection of preferred pointer states, breaking the symmetry of superposition"
+      },
+      {
+        "result_id": "",
+        "result_name": "Quantum Darwinism",
+        "domain_id": "quantum_foundations",
+        "domain_name": "Quantum Foundations",
+        "link_type": "direct",
+        "structural_conclusion": "Classical objectivity emerges through redundant encoding in the environment, breaking quantum symmetry"
+      },
+      {
+        "result_id": "",
+        "result_name": "Discovery of the W and Z bosons",
+        "domain_id": "particle_physics",
+        "domain_name": "Particle Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Electroweak symmetry is spontaneously broken, giving mass to gauge bosons"
+      },
+      {
+        "result_id": "",
+        "result_name": "Discovery of the Higgs boson",
+        "domain_id": "particle_physics",
+        "domain_name": "Particle Physics",
+        "link_type": "direct",
+        "structural_conclusion": "A scalar field breaks electroweak symmetry, generating mass for fundamental particles"
+      }
+    ],
+    "domains": [
+      "quantum_foundations",
+      "particle_physics"
+    ],
+    "domain_names": [
+      "Quantum Foundations",
+      "Particle Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.2856,
+      "independence": 0.85,
+      "adversarial": 0.09,
+      "reproducibility": 0.6299999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.51068,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:12:45.977300+00:00",
+    "id": "d0f65ba32126"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.30851999999999996
+  }
+}

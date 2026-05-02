@@ -1,0 +1,365 @@
+{
+  "id": "6a92c1e551ea",
+  "convergence_id": "d48247a39af8",
+  "timestamp": "2026-05-02T14:13:17.896567+00:00",
+  "proposition": "Let (M, g, \u03a6) be a physical system where M is a manifold, g is a metric structure, and \u03a6: M \u2192 V is a field configuration with symmetry group G. Then for any external field F: M \u2192 W breaking G-symmetry, there exists a decomposition \u03a6 = \u03a6\u2080 \u2295 \u03a6\u2081 where \u03a6\u2081 represents previously hidden degrees of freedom, and a control map C: W \u00d7 M \u2192 M such that the evolution operator U_F satisfies ||U_F(\u03a6(t)) - \u03a6_target|| < \u03b5 for appropriate choice of F and sufficiently large t.",
+  "proposition_natural": "Symmetry breaking by external fields reveals hidden structure and enables coherent control of system states",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Differential geometry",
+    "Dynamical systems",
+    "Algebraic structures"
+  ],
+  "apparatus_justification": "Differential geometry provides the framework for symmetry breaking via gauge fields and connections on manifolds, essential for both GR and atomic physics. Dynamical systems theory captures the state transitions and stability analysis under external perturbations. Algebraic structures (particularly Lie groups/algebras) formalize the symmetries being broken.",
+  "proof_natural": "**Proposition.** Let $(M, g, \\Phi)$ be a physical system where $M$ is a manifold, $g$ is a metric structure, and $\\Phi: M \\to V$ is a field configuration with symmetry group $G$. Then for any external field $F: M \\to W$ breaking $G$-symmetry, there exists a decomposition $\\Phi = \\Phi_0 \\oplus \\Phi_1$ where $\\Phi_1$ represents previously hidden degrees of freedom, and a control map $C: W \\times M \\to M$ such that the evolution operator $U_F$ satisfies $\\|U_F(\\Phi(t)) - \\Phi_{\\text{target}}\\| < \\varepsilon$ for appropriate choice of $F$ and sufficiently large $t$.\n\n**Proof.** We assume that $M$ is a smooth differentiable manifold representing the configuration space, equipped with a Riemannian or pseudo-Riemannian metric $g$. Let $\\Phi: M \\to V$ be a smooth field configuration where $V$ is a vector space, and let $G$ be a Lie group acting on both $M$ and $V$ preserving the dynamics. We further assume that the unperturbed Hamiltonian $H_0$ commutes with the $G$-action, and that the system admits a well-defined evolution operator $U_F$ under the perturbed Hamiltonian $H = H_0 + H_F$, where $H_F$ depends on an external field $F: M \\to W$.\n\nSince $[H_0, g] = 0$ for all $g \\in G$, Schur's lemma implies that the eigenspaces $E_\\lambda$ of $H_0$ carry representations of $G$. Consequently, these eigenspaces exhibit degeneracy with $\\dim(E_\\lambda) \\geq \\dim(\\text{irrep of } G)$.\n\nBy construction, the external field $F$ transforms non-trivially under $G$, ensuring that $[H_F, g] \\neq 0$ for some $g \\in G$. This breaks the $G$-symmetry of the system. Applying first-order perturbation theory, we find that $H_F$ lifts the degeneracies within each $E_\\lambda$, splitting them into direct sums: $E_\\lambda \\to \\bigoplus_i E_\\lambda^{(i)}$.\n\nBy the spectral theorem, there exist orthogonal projection operators $P_i$ onto these split eigenspaces $E_\\lambda^{(i)}$. We now decompose the field configuration as $\\Phi = \\Phi_0 \\oplus \\Phi_1$, where $\\Phi_0 = \\sum_\\lambda P_\\lambda^{(0)}\\Phi$ projects onto the dominant eigenspaces and $\\Phi_1 = \\Phi - \\Phi_0$ captures the remaining components. The component $\\Phi_1$ represents degrees of freedom that were hidden by the original $G$-symmetry but become accessible under the symmetry-breaking field $F$.\n\nBy Stone's theorem, the evolution operator takes the form $U_F = \\exp(-iHt/\\hbar)$. [Note: We require a proof that $H(F)$ depends continuously on $F$ and that the exponential map preserves this continuity.] Assuming this continuity, we define the control map $C: W \\times M \\to M$ by $C(F, \\Phi) = U_F(\\Phi)$.\n\nFinally, we claim that for an appropriate time-dependent control field $F(t)$ and sufficient time $T$, we can achieve $\\|U_F(\\Phi(T)) - \\Phi_{\\text{target}}\\| < \\varepsilon$. [Note: This requires a controllability theorem for infinite-dimensional systems with time-dependent Hamiltonians, which is beyond the scope of this proof.]\n\nSubject to these technical gaps, we have shown that symmetry-breaking external fields reveal hidden degrees of freedom through the decomposition $\\Phi = \\Phi_0 \\oplus \\Phi_1$ and enable control toward target states via the map $C$. This completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.Geometry.Manifold.SmoothManifoldWithCorners\nimport Mathlib.Geometry.RiemannianGeometry.Basic\nimport Mathlib.GroupTheory.GroupAction.Basic\nimport Mathlib.Algebra.DirectSum.Basic\nimport Mathlib.Analysis.NormedSpace.Basic\nimport Mathlib.Analysis.SpecialFunctions.Exponential\nimport Mathlib.Topology.ContinuousFunction.Basic\n\n/-- A physical field configuration on a manifold with symmetry group -/\nstructure PhysicalSystem (M V W : Type*) [TopologicalSpace M] [NormedAddCommGroup V] \n  [NormedAddCommGroup W] where\n  manifold : M\n  metric : sorry -- Riemannian metric structure\n  field : M \u2192 V\n  symmetryGroup : Type*\n  groupAction : sorry -- Action of symmetryGroup on field configurations\n\n/-- External field that breaks symmetry -/\ndef ExternalField (M W : Type*) [TopologicalSpace M] [NormedAddCommGroup W] := M \u2192 W\n\n/-- Hamiltonian operator (placeholder) -/\ndef Hamiltonian (V : Type*) [NormedAddCommGroup V] := sorry\n\n/-- Evolution operator -/\ndef EvolutionOperator (V : Type*) [NormedAddCommGroup V] (H : Hamiltonian V) (t : \u211d) : V \u2192 V := \n  sorry -- exp(-iHt/\u210f)\n\n/-- Control map for field evolution -/\ndef ControlMap (M V W : Type*) [TopologicalSpace M] [NormedAddCommGroup V] \n  [NormedAddCommGroup W] : W \u00d7 M \u2192 M := sorry\n\n/-- Main theorem: External field control of symmetry-broken systems -/\ntheorem external_field_control \n  {M V W : Type*} [TopologicalSpace M] [ChartedSpace \u211d M] [SmoothManifoldWithCorners \ud835\udcd8(\u211d, \u211d) M]\n  [NormedAddCommGroup V] [NormedSpace \u211d V] [CompleteSpace V]\n  [NormedAddCommGroup W] [NormedSpace \u211d W]\n  (sys : PhysicalSystem M V W)\n  (F : ExternalField M W)\n  (\u03a6_target : M \u2192 V)\n  (\u03b5 : \u211d) (h\u03b5 : \u03b5 > 0) :\n  \u2203 (\u03a6\u2080 \u03a6\u2081 : M \u2192 V) (C : W \u00d7 M \u2192 M),\n    (\u2200 x : M, sys.field x = \u03a6\u2080 x + \u03a6\u2081 x) \u2227 \n    (\u2203 (t : \u211d), \u2200 x : M, \u2016EvolutionOperator V sorry F t (sys.field x) - \u03a6_target x\u2016 < \u03b5) := by\n  -- Step 1: Degenerate eigenspaces due to G-symmetry\n  have h_degen : sorry := sorry -- Schur's lemma implies degeneracy\n  \n  -- Step 2: External field breaks symmetry\n  have h_break : sorry := sorry -- [H_F, g] \u2260 0 for some g\n  \n  -- Step 3: Symmetry breaking splits eigenspaces\n  have h_split : sorry := sorry -- Perturbation theory lifts degeneracies\n  \n  -- Step 4: Define projection operators\n  have proj_ops : sorry := sorry -- Spectral theorem gives projections\n  \n  -- Step 5: Decompose field\n  use sorry, sorry -- \u03a6\u2080 and \u03a6\u2081\n  constructor\n  \u00b7 intro x\n    sorry -- Direct sum decomposition\n  \n  -- Step 6: Evolution operator continuity\n  have h_cont : sorry := sorry -- Continuity in F parameter\n  \n  -- Step 7: Define control map\n  use sorry -- Control map C\n  \n  -- Step 8: Achieve target with appropriate F and time\n  use sorry -- Time T\n  intro x\n  sorry -- Controllability for infinite-dimensional systems",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The unperturbed system has degenerate eigenspaces E_\u03bb due to G-symmetry",
+      "justification": "By Schur's lemma, if [H\u2080, g] = 0 for all g \u2208 G, then eigenspaces of H\u2080 carry representations of G, implying degeneracy dim(E_\u03bb) \u2265 dim(irrep of G)",
+      "dependencies": [
+        "Assumption 5",
+        "Schur's lemma"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "The external field F breaks G-symmetry: [H_F, g] \u2260 0 for some g \u2208 G",
+      "justification": "By construction, H_F depends on F which transforms non-trivially under G",
+      "dependencies": [
+        "Assumption 7"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Symmetry breaking splits degenerate eigenspaces: E_\u03bb \u2192 \u2295_i E_\u03bb^(i)",
+      "justification": "First-order perturbation theory shows that H_F lifts degeneracies within E_\u03bb",
+      "dependencies": [
+        "Step 1",
+        "Step 2",
+        "Perturbation theory"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "Define projection operators P_i onto split eigenspaces E_\u03bb^(i)",
+      "justification": "Spectral theorem guarantees existence of orthogonal projections for self-adjoint operators",
+      "dependencies": [
+        "Step 3",
+        "Spectral theorem"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Decompose \u03a6 = \u03a6\u2080 \u2295 \u03a6\u2081 where \u03a6\u2080 = \u03a3_\u03bb P_\u03bb^(0)\u03a6 and \u03a6\u2081 = \u03a6 - \u03a6\u2080",
+      "justification": "Direct sum decomposition using projection operators from step 4",
+      "dependencies": [
+        "Step 4"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "The evolution operator U_F = exp(-iHt/\u210f) depends continuously on F",
+      "justification": "[Gap: Requires proof that H(F) is continuous in F and that exp map preserves continuity]",
+      "dependencies": [
+        "Assumption 8",
+        "Stone's theorem"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Define control map C: W \u00d7 M \u2192 M by C(F,\u03a6) = U_F(\u03a6)",
+      "justification": "Direct definition using evolution operator",
+      "dependencies": [
+        "Step 6"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "For appropriate F(t) and sufficient time T, ||U_F(\u03a6(T)) - \u03a6_target|| < \u03b5",
+      "justification": "[Gap: Requires controllability theorem for infinite-dimensional systems with time-dependent Hamiltonians]",
+      "dependencies": [
+        "Step 7",
+        "Assumption 9",
+        "Controllability theory"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Schur's Lemma",
+      "authors": "Issai Schur",
+      "year": "1905",
+      "field": "Representation Theory",
+      "statement": "If \u03c1: G \u2192 GL(V) is an irreducible representation and T: V \u2192 V commutes with \u03c1(g) for all g \u2208 G, then T = \u03bbI for some scalar \u03bb",
+      "usage": "Used to establish degeneracy of eigenspaces under symmetry"
+    },
+    {
+      "name": "Spectral Theorem",
+      "authors": "David Hilbert, John von Neumann",
+      "year": "1900-1930",
+      "field": "Functional Analysis",
+      "statement": "Every self-adjoint operator on a Hilbert space has a spectral decomposition",
+      "usage": "Guarantees existence of projection operators onto eigenspaces"
+    },
+    {
+      "name": "Stone's Theorem",
+      "authors": "Marshall Stone",
+      "year": "1932",
+      "field": "Functional Analysis",
+      "statement": "One-parameter unitary groups U(t) = exp(-iHt) correspond to self-adjoint generators H",
+      "usage": "Establishes existence and properties of evolution operator"
+    },
+    {
+      "name": "Time-dependent Perturbation Theory",
+      "authors": "Paul Dirac, others",
+      "year": "1927",
+      "field": "Quantum Mechanics",
+      "statement": "Systematic expansion of solutions for H = H\u2080 + \u03bbV(t)",
+      "usage": "Justifies splitting of degenerate levels under perturbation"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "M is a smooth differentiable manifold representing the configuration space",
+    "g is a Riemannian or pseudo-Riemannian metric on M",
+    "\u03a6: M \u2192 V is a smooth field configuration where V is a vector space",
+    "G is a Lie group acting on M and V preserving the dynamics",
+    "The unperturbed Hamiltonian H\u2080 commutes with the G-action",
+    "F: M \u2192 W represents an external field where W is a vector space",
+    "The perturbed Hamiltonian H = H\u2080 + H_F where H_F depends on F",
+    "The system admits a well-defined evolution operator U_F",
+    "The target state \u03a6_target is reachable within the manifold M",
+    "The control field F can be varied continuously in time"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Application of Schur's lemma",
+        "issue": "Schur's lemma applies to irreducible representations, but the proof never establishes that the representations on eigenspaces are irreducible. The conclusion about degeneracy is unjustified.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need to prove irreducibility or use a different approach"
+      },
+      {
+        "step": "Decomposition \u03a6 = \u03a6\u2080 \u2295 \u03a6\u2081",
+        "issue": "The direct sum notation implies V = V\u2080 \u2295 V\u2081, but no such decomposition of the target space V is established. The projection operators P_\u03bb^(0) are undefined.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Properly define the decomposition and specify which eigenspaces constitute \u03a6\u2080"
+      },
+      {
+        "step": "Application of Stone's theorem",
+        "issue": "Stone's theorem requires H to be self-adjoint on a Hilbert space, but V is only stated to be a vector space, not a Hilbert space. No inner product structure is defined.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Specify that V is a Hilbert space with appropriate inner product"
+      },
+      {
+        "step": "Control map definition C(F,\u03a6) = U_F(\u03a6)",
+        "issue": "U_F acts on states in the Hilbert space, but C is defined as mapping W \u00d7 M \u2192 M. The domain and codomain are incompatible with the definition.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Redefine C with correct domain and codomain"
+      },
+      {
+        "step": "Controllability claim",
+        "issue": "The proof admits it cannot establish controllability but then concludes as if it has been proven. This is a fundamental logical gap.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot claim the result without proving controllability"
+      },
+      {
+        "step": "First-order perturbation theory application",
+        "issue": "No justification that first-order perturbation theory is valid (requires H_F to be small compared to level spacings)",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Add assumption that ||H_F|| << energy gaps"
+      }
+    ],
+    "hidden_assumptions": [
+      "V is actually a Hilbert space, not just a vector space",
+      "The Hamiltonian H exists and is self-adjoint",
+      "The system is quantum mechanical (uses \u210f without justification)",
+      "The eigenspaces E_\u03bb form a complete basis for the state space",
+      "The perturbation H_F is small enough for perturbation theory",
+      "The map F \u21a6 H_F is well-defined and continuous",
+      "The target state \u03a6_target lies in the accessible subspace"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes that symmetry breaking reveals 'hidden degrees of freedom' (in defining \u03a6\u2081) but this is essentially what it's trying to prove. The existence of a meaningful decomposition \u03a6 = \u03a6\u2080 \u2295 \u03a6\u2081 is assumed rather than derived.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to work for any manifold M, any symmetry group G, and any external field F, but actually requires very specific quantum mechanical structure. Even if fixed, it would only apply to quantum systems with discrete spectra, not general physical systems.",
+    "citation_issues": [
+      "Schur's lemma is misapplied - it doesn't imply degeneracy, only that scalars commute with irreps",
+      "Spectral theorem requires self-adjoint operators on Hilbert spaces, not general operators on vector spaces",
+      "Stone's theorem is cited but the continuity requirement it imposes is acknowledged as unproven"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed with multiple critical gaps, undefined objects, and circular reasoning. The mathematical framework switches inconsistently between differential geometry (manifolds) and functional analysis (Hilbert spaces) without proper connections. The core controllability claim is admitted to be unproven, making the entire enterprise vacuous.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to show that symmetry breaking reveals hidden degrees of freedom and enables controllability, but fails to establish the existence of the decomposition \u03a6 = \u03a6\u2080 \u2295 \u03a6\u2081 or the controllability claim",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "H\u2080 and H_F are self-adjoint operators on appropriate Hilbert spaces",
+      "The field configuration space V has appropriate topological structure",
+      "The manifold M is finite-dimensional",
+      "The symmetry group G acts unitarily on the relevant Hilbert space",
+      "The external field F can be chosen arbitrarily from W",
+      "The system is controllable (this is what needs to be proven, not assumed)",
+      "The perturbation H_F is small enough for perturbation theory to apply",
+      "The eigenspaces E_\u03bb are finite-dimensional",
+      "The target state \u03a6_target lies in the same connected component as initial states"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "1",
+        "issue": "Schur's lemma applies to irreducible representations, but eigenspaces need not be irreducible. The conclusion about degeneracy doesn't follow without additional assumptions about the representation structure"
+      },
+      {
+        "step": "3",
+        "issue": "First-order perturbation theory only applies when H_F is a small perturbation. No assumption about the size of the perturbation is stated, and the splitting may not occur for arbitrary F"
+      },
+      {
+        "step": "5",
+        "issue": "The decomposition \u03a6 = \u03a6\u2080 \u2295 \u03a6\u2081 conflates the field configuration \u03a6: M \u2192 V with elements of eigenspaces of operators. The projection operators P_\u03bb^(0) act on Hilbert space elements, not field configurations"
+      },
+      {
+        "step": "7",
+        "issue": "The control map definition C(F,\u03a6) = U_F(\u03a6) doesn't make sense dimensionally - U_F is a time evolution operator, but no time parameter is specified"
+      },
+      {
+        "step": "8",
+        "issue": "This step assumes controllability without proof. The existence of appropriate F(t) achieving the target is precisely what needs to be demonstrated, not assumed"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No proof that the decomposition \u03a6 = \u03a6\u2080 \u2295 \u03a6\u2081 actually exists or represents 'hidden degrees of freedom'",
+      "No demonstration that the system is controllable",
+      "No proof of continuity claims in step 6",
+      "No specification of what 'appropriate choice of F' means",
+      "No proof that \u03a6_target is reachable",
+      "Missing analysis of whether the control field F can actually be chosen to achieve the desired evolution",
+      "No treatment of potential obstructions to controllability in infinite-dimensional systems"
+    ],
+    "internal_score": 0.1
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims arbitrary controllability through external field manipulation, which contradicts proof [06879fd9ae87] that establishes physical properties are fundamentally contextual and cannot possess predetermined values independent of measurement framework",
+      "The claim that ||U_F(\u03a6(T)) - \u03a6_target|| < \u03b5 for any target state contradicts proof [00f62716e74a] which establishes fundamental constraints on information copying and sharing",
+      "The assumption of continuous control field variation conflicts with proof [06d6ace265c2] which shows quantum-classical boundaries emerge through environmental information dispersal, not external control"
+    ],
+    "assumption_conflicts": [
+      "Assumes complete controllability of quantum systems through external fields, conflicting with contextuality principles in [06879fd9ae87]",
+      "Assumes target states are always reachable, conflicting with information constraints in [00f62716e74a]",
+      "Assumes smooth manifold structure is preserved under symmetry breaking, potentially conflicting with phase transition dynamics in [0178ff46c5ee]",
+      "The decomposition \u03a6 = \u03a6\u2080 \u2295 \u03a6\u2081 assumes hidden degrees of freedom can be arbitrarily accessed, conflicting with environmental decoherence in [06d6ace265c2]"
+    ],
+    "beneficial_connections": [
+      "Connects to symmetry breaking principles in [087da119976b] and [0178ff46c5ee] regarding ordered pattern emergence",
+      "Relates to multi-scale dynamics in [052632f8abba] through the \u03a6\u2080 \u2295 \u03a6\u2081 decomposition",
+      "Builds on symmetry principles from [08b6405556dd] regarding group actions and conserved quantities",
+      "Could complement hierarchical structure formation in [0e664bd264b4] if controllability claims were properly constrained"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof makes overly strong controllability claims that violate fundamental quantum mechanical and information-theoretic constraints established in multiple existing proofs. The mathematical framework is sound but the physical interpretation ignores contextuality, measurement limitations, and environmental decoherence effects."
+  },
+  "confidence_score": 0.21000000000000002,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.1,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.1,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A general controllability theory for infinite-dimensional systems with time-dependent Hamiltonians that can prove reachability of target states under symmetry-breaking perturbations. Current control theory is primarily developed for finite-dimensional systems or specific classes of PDEs.",
+  "limitations": [
+    "Continuity of H(F) in the field F requires careful functional analysis depending on the specific form of H_F",
+    "Controllability result (Step 8) requires development of new mathematical framework combining differential geometry, control theory, and functional analysis",
+    "The existence of appropriate F(t) to reach \u03a6_target is asserted but not constructively proven",
+    "The proof assumes separability of Hilbert spaces which may not hold for all field theories",
+    "The decomposition \u03a6 = \u03a6\u2080 \u2295 \u03a6\u2081 may not be unique without additional constraints",
+    "The time T required for control may be impractically large",
+    "The proof does not address stability of the controlled state",
+    "No explicit construction of the control field F(t) is provided"
+  ],
+  "source_convergence": {
+    "structural_claim": "Symmetry breaking by external fields reveals hidden structure and enables coherent control of system states",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Kerr Solution",
+        "domain_id": "field_a",
+        "domain_name": "General Relativity and Cosmology",
+        "link_type": "direct",
+        "structural_conclusion": "Rotation breaks spherical symmetry in spacetime, creating qualitatively new geometric structures like the ergosphere"
+      },
+      {
+        "result_id": "",
+        "result_name": "Zeeman Effect",
+        "domain_id": "field_b",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Magnetic fields break rotational symmetry in atoms, splitting degenerate energy levels and revealing hidden magnetic substructure"
+      },
+      {
+        "result_id": "",
+        "result_name": "Stark Effect",
+        "domain_id": "field_b",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Electric fields break symmetry and mix atomic states, enabling coherent manipulation of quantum systems"
+      }
+    ],
+    "domains": [
+      "general_relativity",
+      "atomic_physics"
+    ],
+    "domain_names": [
+      "General Relativity and Cosmology",
+      "Atomic and Molecular Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.21419999999999997,
+      "independence": 0.85,
+      "adversarial": 0.09,
+      "reproducibility": 0.5249999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.47351,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:52:09.691991+00:00",
+    "id": "d48247a39af8"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.307665
+  }
+}

@@ -1,0 +1,346 @@
+{
+  "id": "2ab257b54276",
+  "convergence_id": "d5dc5a30b5ea",
+  "timestamp": "2026-05-02T14:13:46.628334+00:00",
+  "proposition": "Let (M, g) be a smooth Riemannian manifold with continuous symmetry group G acting isometrically. Under appropriate stability conditions, the system undergoes spontaneous symmetry breaking G \u2192 H < G, resulting in discrete topological defects characterized by elements of \u03c0\u2099(G/H) that organize the subsequent dynamics through topological constraints.",
+  "proposition_natural": "Continuous systems spontaneously break symmetry to create discrete, topologically protected structures that organize the dynamics",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Differential geometry",
+    "Topology",
+    "Dynamical systems"
+  ],
+  "apparatus_justification": "Differential geometry provides the framework for continuous manifolds and symmetry groups in both GR and fluid dynamics. Topology captures the notion of 'topologically protected structures' through invariants. Dynamical systems theory formalizes spontaneous symmetry breaking through bifurcation theory.",
+  "proof_natural": "**Proposition.** Let $(M, g)$ be a smooth Riemannian manifold with continuous symmetry group $G$ acting isometrically. Under appropriate stability conditions, the system undergoes spontaneous symmetry breaking $G \\to H < G$, resulting in discrete topological defects characterized by elements of $\\pi_n(G/H)$ that organize the subsequent dynamics through topological constraints.\n\n**Proof.** Let $(M, g)$ be a smooth manifold equipped with a Riemannian metric $g$, and let $G$ be a Lie group acting continuously and isometrically on $(M, g)$. We assume the system admits a dynamical evolution governed by geometric partial differential equations\u2014such as the Einstein equations in general relativity or the Navier-Stokes equations in fluid dynamics. Further, we assume that initial conditions satisfy appropriate energy and stability criteria, that the coset space $G/H$ admits non-trivial homotopy groups, that physical fields take values in appropriate bundles over $M$, and that boundary conditions preserve relevant topological invariants.\n\nWe begin by observing that the continuous symmetry group $G$ acts on the configuration space, preserving the action functional $S[\\phi]$. By Noether's theorem, this symmetry guarantees the existence of conserved currents $J^a_\\mu$ corresponding to each generator of $G$.\n\nNext, we perform a linear stability analysis around symmetric configurations. Standard perturbation theory for partial differential equations with symmetry reveals that when characteristic parameters\u2014such as Rayleigh numbers in convection or Reynolds numbers in fluid flow\u2014exceed critical values, certain modes become unstable. By the equivariant bifurcation theory, these unstable modes necessarily select a preferred direction in the $G$-orbit space, thereby breaking the symmetry from $G$ to a proper subgroup $H < G$.\n\nThe spontaneous symmetry breaking establishes the coset space $G/H$ as the order parameter space. Since we have assumed that $G/H$ admits non-trivial homotopy groups $\\pi_n(G/H)$, spatial variations of the order parameter can create topological defects. Specifically, continuous maps from spatial regions to $G/H$ that cannot be continuously deformed to a constant map define topological defects, and these defects are classified precisely by elements of the appropriate homotopy group $\\pi_n(G/H)$.\n\n[Note: While topological protection follows from the continuity of fields and the non-triviality of $\\pi_n(G/H)$, a rigorous proof that these defects are dynamically stable requires case-specific analysis involving detailed energy estimates.]\n\nOnce formed, these topological defects act as organizing centers for the system's dynamics. The topological invariants associated with elements of $\\pi_n(G/H)$ impose constraints on possible field configurations and their evolution. In fluid systems, for instance, the Helmholtz vortex theorems guarantee that vortex lines move with the fluid while maintaining their topological structure, thereby organizing the flow patterns around them.\n\nWe have thus established that under the stated conditions, spontaneous symmetry breaking $G \\to H$ produces topological defects classified by $\\pi_n(G/H)$, and these defects subsequently organize the system's dynamics through topological constraints. This completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.Geometry.RiemannianGeometry.Basic\nimport Mathlib.GroupTheory.GroupAction.Basic\nimport Mathlib.Topology.Homotopy.Fundamental\nimport Mathlib.Topology.Homotopy.HomotopyGroup\nimport Mathlib.Geometry.Manifold.Algebra.LieGroup\nimport Mathlib.Topology.ContinuousFunction.Basic\n\n/-- A Riemannian manifold with a continuous symmetry group acting isometrically -/\nstructure SymmetricRiemannianManifold (M : Type*) [TopologicalSpace M] [ChartedSpace \u211d M] \n  [SmoothManifoldWithCorners \ud835\udcd8(\u211d, M) M] extends RiemannianManifold M where\n  G : Type*\n  [group : Group G]\n  [topological_group : TopologicalGroup G]\n  action : G \u2192* Diffeomorph M M\n  isometric : \u2200 g : G, Isometry (action g).toFun\n\nvariable {M : Type*} [TopologicalSpace M] [ChartedSpace \u211d M] \n  [SmoothManifoldWithCorners \ud835\udcd8(\u211d, M) M]\nvariable (srm : SymmetricRiemannianManifold M)\n\n/-- The action functional preserved by the symmetry group -/\ndef ActionFunctional (\u03c6 : C(M, \u211d)) : \u211d := sorry -- \"Need field theory formalism\"\n\n/-- Conserved currents from Noether's theorem -/\ndef NoetherCurrents (srm : SymmetricRiemannianManifold M) : \n  srm.G \u2192 (M \u2192 TangentBundle M) := sorry -- \"Need Noether's theorem for field theories\"\n\n/-- Stability condition for symmetry breaking -/\nstructure StabilityCondition (srm : SymmetricRiemannianManifold M) where\n  critical_parameter : \u211d\n  unstable_above : \u2200 p > critical_parameter, \u2203 (mode : M \u2192 \u211d), sorry -- \"Need stability analysis framework\"\n\n/-- Subgroup after spontaneous symmetry breaking -/\nstructure BrokenSymmetry (srm : SymmetricRiemannianManifold M) where\n  H : Subgroup srm.G\n  stability : StabilityCondition srm\n  breaking_mechanism : sorry -- \"Need equivariant bifurcation theory\"\n\n/-- Order parameter space as coset -/\ndef OrderParameterSpace (srm : SymmetricRiemannianManifold M) \n  (broken : BrokenSymmetry srm) : Type* := \n  srm.G \u29f8 broken.H\n\n/-- Topological defects classified by homotopy groups -/\nstructure TopologicalDefect (srm : SymmetricRiemannianManifold M) \n  (broken : BrokenSymmetry srm) (n : \u2115) where\n  defect_map : C(Sphere n, OrderParameterSpace srm broken)\n  nontrivial : sorry -- \"Need homotopy group computation for G/H\"\n\n/-- Main theorem: Spontaneous symmetry breaking produces topological defects -/\ntheorem spontaneous_symmetry_breaking_defects \n  (srm : SymmetricRiemannianManifold M) \n  (stable : StabilityCondition srm) :\n  \u2203 (broken : BrokenSymmetry srm) (n : \u2115), \n    Nonempty (TopologicalDefect srm broken n) \u2227 \n    sorry := by -- \"Need full symmetry breaking formalism and defect dynamics\"\n  sorry\n\n/-- Step 1: Symmetry preserves action functional -/\nlemma symmetry_preserves_action (srm : SymmetricRiemannianManifold M) \n  (g : srm.G) (\u03c6 : C(M, \u211d)) : \n  ActionFunctional (\u03c6.comp (srm.action g).toFun) = ActionFunctional \u03c6 := by\n  sorry -- \"Need field theory action functional\"\n\n/-- Step 2: Linear stability analysis -/\nlemma linear_instability (srm : SymmetricRiemannianManifold M) \n  (stable : StabilityCondition srm) (p : \u211d) (hp : p > stable.critical_parameter) :\n  \u2203 (mode : M \u2192 \u211d), sorry := by -- \"Need perturbation theory for PDEs\"\n  sorry\n\n/-- Step 3: Symmetry breaking pattern -/\nlemma symmetry_breaking_pattern (srm : SymmetricRiemannianManifold M) \n  (stable : StabilityCondition srm) :\n  \u2203 (H : Subgroup srm.G), H < srm.G := by\n  sorry -- \"Need equivariant bifurcation theory\"\n\n/-- Step 4: Order parameter space structure -/\nlemma order_parameter_homotopy (srm : SymmetricRiemannianManifold M) \n  (broken : BrokenSymmetry srm) (n : \u2115) :\n  \u2203 (\u03b1 : \u03c0\u2099 (OrderParameterSpace srm broken)), \u03b1 \u2260 1 := by\n  sorry -- \"Need homotopy group calculations for cosets\"\n\n/-- Step 5: Defect classification -/\nlemma defect_classification (srm : SymmetricRiemannianManifold M) \n  (broken : BrokenSymmetry srm) (n : \u2115) :\n  TopologicalDefect srm broken n \u2243 \u03c0\u2099 (OrderParameterSpace srm broken) := by\n  sorry -- \"Need topological defect classification theory\"\n\n/-- Step 6: Dynamical stability (partial) -/\nlemma defect_stability (srm : SymmetricRiemannianManifold M) \n  (broken : BrokenSymmetry srm) (n : \u2115) \n  (defect : TopologicalDefect srm broken n) :\n  sorry := by -- \"Case-specific energy estimates needed for dynamical stability\"\n  sorry\n\n/-- Step 7: Topological organization of dynamics -/\nlemma topological_organization (srm : SymmetricRiemannianManifold M) \n  (broken : BrokenSymmetry srm) (n : \u2115) \n  (defect : TopologicalDefect srm broken n) :\n  sorry := by -- \"Need formalism for topological constraints on dynamics\"\n  sorry",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The continuous symmetry group G acts on the configuration space, preserving the action functional S[\u03c6]",
+      "justification": "Noether's theorem guarantees conserved currents J\u1d43\u03bc for each generator of G",
+      "dependencies": [
+        "Noether's theorem (1918)"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Linear stability analysis around symmetric configurations shows unstable modes when Rayleigh/Reynolds numbers exceed critical values",
+      "justification": "Standard perturbation theory for PDEs with symmetry",
+      "dependencies": [
+        "Linear stability theory",
+        "Spectral theory of differential operators"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The unstable modes select a preferred direction in G-orbit space, breaking G \u2192 H",
+      "justification": "Equivariant bifurcation theory guarantees symmetry-breaking patterns",
+      "dependencies": [
+        "Equivariant bifurcation theory (Golubitsky & Stewart)"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The order parameter space is the coset G/H with non-trivial \u03c0\u2099(G/H)",
+      "justification": "Definition of spontaneous symmetry breaking and homotopy theory",
+      "dependencies": [
+        "Homotopy theory",
+        "Step 3"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Spatial variations of the order parameter create topological defects classified by \u03c0\u2099(G/H)",
+      "justification": "Maps from spatial regions to G/H that cannot be continuously deformed define defects",
+      "dependencies": [
+        "Step 4",
+        "Classification theorem for topological defects"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "[Gap: Rigorous proof that these defects are dynamically stable requires case-specific analysis]",
+      "justification": "Topological protection follows from continuity of fields but dynamical stability needs energy estimates",
+      "dependencies": [
+        "Energy methods for PDEs"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The defects act as organizing centers for the dynamics through topological constraints",
+      "justification": "Topological invariants constrain possible field configurations and evolution",
+      "dependencies": [
+        "Steps 5-6",
+        "Topological conservation laws"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Noether's Theorem",
+      "authors": "Emmy Noether",
+      "year": "1918",
+      "field": "Mathematical Physics",
+      "statement": "Continuous symmetries of the action imply conserved currents",
+      "usage": "Establishes connection between symmetries and dynamics"
+    },
+    {
+      "name": "Equivariant Bifurcation Theory",
+      "authors": "Golubitsky & Stewart",
+      "year": "1985",
+      "field": "Dynamical Systems",
+      "statement": "Symmetry-breaking bifurcations follow predictable patterns determined by group theory",
+      "usage": "Predicts which subgroups H < G can arise from instabilities"
+    },
+    {
+      "name": "Classification of Topological Defects",
+      "authors": "Mermin",
+      "year": "1979",
+      "field": "Condensed Matter Physics",
+      "statement": "Topological defects are classified by homotopy groups of the order parameter space",
+      "usage": "Provides mathematical framework for discrete structures"
+    },
+    {
+      "name": "Helmholtz Vortex Theorems",
+      "authors": "Helmholtz",
+      "year": "1858",
+      "field": "Fluid Dynamics",
+      "statement": "Vortex lines move with the fluid and maintain topological structure",
+      "usage": "Example of topologically protected structures in fluids"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "M is a smooth manifold with Riemannian metric g",
+    "G is a Lie group acting continuously and isometrically on (M, g)",
+    "The system admits a dynamical evolution governed by geometric PDEs (Einstein equations for GR, Navier-Stokes for fluids)",
+    "Initial conditions satisfy appropriate energy/stability criteria",
+    "The coset space G/H admits non-trivial homotopy groups",
+    "Physical fields take values in appropriate bundles over M",
+    "Boundary conditions preserve relevant topological invariants"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "Linear stability analysis around symmetric configurations",
+        "issue": "The proof jumps from 'certain modes become unstable' to 'these unstable modes necessarily select a preferred direction'. This is not automatic - unstable modes could lead to turbulence, multiple competing patterns, or time-dependent behavior without selecting any particular H < G.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would need to prove that the specific PDEs and stability conditions guarantee convergence to a state with residual symmetry H, not just instability"
+      },
+      {
+        "step": "The spontaneous symmetry breaking establishes G/H as the order parameter space",
+        "issue": "This assumes the system actually settles into a state with symmetry H. The proof hasn't shown that symmetry breaking occurs, only that symmetric states can become unstable.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need to prove existence of stable states with symmetry H and that the system converges to them"
+      },
+      {
+        "step": "Topological defects act as organizing centers",
+        "issue": "The proof asserts but doesn't prove that defects 'organize' dynamics. The Helmholtz theorem example only shows conservation, not organization. What does 'organize' even mean rigorously?",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Define 'organize' precisely and prove that defects actually constrain/determine large-scale dynamics"
+      },
+      {
+        "step": "Application of equivariant bifurcation theory",
+        "issue": "The proof doesn't verify that the system satisfies the hypotheses of equivariant bifurcation theory (smoothness, genericity conditions, etc.). Also doesn't show which H emerges from the bifurcation.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Verify all hypotheses of the bifurcation theorems being invoked"
+      }
+    ],
+    "hidden_assumptions": [
+      "The system reaches a steady state after instability (could be chaotic/turbulent instead)",
+      "The order parameter is well-defined globally (might only exist locally)",
+      "The symmetry breaking is spatially uniform (could vary in space)",
+      "The 'appropriate stability conditions' actually exist and can be satisfied",
+      "The geometric PDEs admit solutions with the required properties",
+      "Defects, once formed, persist (they could annihilate or be unstable)"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes symmetry breaking G \u2192 H occurs to conclude that defects classified by \u03c0_n(G/H) exist, but the existence of a well-defined H is part of what needs to be proved",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims this works for any Riemannian manifold with any isometric G-action under vague 'appropriate conditions'. At best, it might work for specific PDEs with specific symmetries under very restrictive conditions. The proposition claims far more generality than the argument supports.",
+    "citation_issues": [
+      "Noether's theorem is cited but conserved currents are never used in the proof",
+      "Equivariant bifurcation theory requires specific non-degeneracy conditions not verified",
+      "Helmholtz theorems apply to specific fluid equations, not general geometric PDEs",
+      "The classification of defects by homotopy groups requires the order parameter to be a map to G/H, but this hasn't been established"
+    ],
+    "structural_soundness": 0.2,
+    "overall_assessment": "This 'proof' is more of a physics narrative than a mathematical proof. It strings together plausible-sounding statements without establishing the logical connections between them. The same argument structure could 'prove' that any system with symmetry must have defects, which is false.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof sketches a general framework for symmetry breaking but fails to establish the specific claims about topological defects organizing dynamics through topological constraints. It proves at most that symmetry breaking can occur and that topological defects can be classified, but not their dynamical role.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Existence of a well-defined action functional S[\u03c6] on the configuration space",
+      "Differentiability and appropriate functional analytic properties of S[\u03c6]",
+      "Existence of symmetric equilibrium configurations",
+      "Validity of linear approximation near bifurcation points",
+      "Non-degeneracy conditions for the bifurcation",
+      "Appropriate boundary conditions that don't interfere with defect formation",
+      "Energy bounds ensuring finite-energy configurations",
+      "Regularity assumptions on solutions to the governing PDEs",
+      "Compactness properties of the configuration space",
+      "Existence and uniqueness of solutions to the evolution equations"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "1",
+        "issue": "Noether's theorem requires a Lagrangian formulation and differentiability properties not established. The connection between isometric group action and action functional preservation is not automatic."
+      },
+      {
+        "step": "2",
+        "issue": "References Rayleigh/Reynolds numbers without establishing these are the relevant parameters. Linear stability analysis requires specific functional forms and regularity not provided."
+      },
+      {
+        "step": "3",
+        "issue": "Equivariant bifurcation theory requires non-degeneracy conditions and specific symmetry assumptions not verified. The claim that unstable modes 'select' a direction needs rigorous justification."
+      },
+      {
+        "step": "5",
+        "issue": "The classification of defects by \u03c0\u2099(G/H) requires additional topological and analytical conditions. Not all spatial variations create topologically protected defects."
+      },
+      {
+        "step": "7",
+        "issue": "The claim that defects 'organize dynamics through topological constraints' is vague and unsubstantiated. Topological invariants constrain configurations but don't necessarily organize dynamics."
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Step 6 explicitly acknowledges a gap in proving dynamical stability",
+      "No rigorous connection between topological classification and actual defect formation",
+      "Missing analysis of defect interactions and their effect on global dynamics",
+      "No proof that the symmetry breaking actually occurs under the stated conditions",
+      "Lack of energy estimates or bounds on defect configurations",
+      "No demonstration that topological constraints actually organize dynamics rather than merely restrict them",
+      "Missing treatment of boundary effects and global topology of M"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": false,
+    "contradiction_details": [],
+    "assumption_conflicts": [],
+    "beneficial_connections": [
+      "Directly extends proof 0178ff46c5ee on phase transitions and symmetry breaking by providing geometric framework for topological defect formation",
+      "Connects to proof 087da119976b on spontaneous symmetry breaking by adding topological classification of resulting patterns",
+      "Complements proof 08b6405556dd on symmetry principles by showing how symmetry breaking creates new dynamical constraints",
+      "Relates to proof 0e664bd264b4 on hierarchical structure formation by providing topological mechanism for multi-scale organization",
+      "Supports proof 052632f8abba on multi-scale dynamics by showing how topological defects organize collective behavior"
+    ],
+    "consistency_score": 0.85,
+    "notes": "The proof has a significant gap in rigorously establishing dynamical stability of topological defects, which weakens its claims. The mathematical framework is sound and consistent with existing symmetry-breaking results, but the connection between homotopy groups and actual physical stability needs strengthening. The assumptions about appropriate stability conditions and energy criteria are somewhat vague and could conflict with specific cases in existing proofs."
+  },
+  "confidence_score": 0.35250000000000004,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.85,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.85,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A unified geometric framework connecting symmetry breaking in curved spacetimes (GR) with symmetry breaking in Euclidean fluid systems. Need rigorous treatment of: (1) Symmetry breaking on manifolds with varying curvature, (2) Topological stability criteria for defects in different geometric contexts, (3) Categorical framework unifying discrete structures across domains",
+  "limitations": [
+    "Rigorous proof of dynamical stability of topological defects requires case-specific energy estimates",
+    "Connection between symmetry breaking mechanisms in GR (gravitational) and fluids (hydrodynamic) not fully formalized",
+    "Precise conditions for when continuous systems will spontaneously break symmetry need specification",
+    "The role of boundary conditions in determining which topological structures emerge",
+    "Proof sketch rather than complete rigorous proof",
+    "Requires separate verification for each physical system",
+    "Does not specify which symmetries break under which conditions",
+    "Topological protection proven abstractly but dynamical consequences system-dependent"
+  ],
+  "source_convergence": {
+    "structural_claim": "Continuous systems spontaneously break symmetry to create discrete, topologically protected structures that organize the dynamics",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Schwarzschild Solution",
+        "domain_id": "field_a",
+        "domain_name": "General Relativity and Cosmology",
+        "link_type": "direct",
+        "structural_conclusion": "Spherical symmetry in spacetime spontaneously creates a discrete boundary (event horizon) that topologically separates regions"
+      },
+      {
+        "result_id": "",
+        "result_name": "No-Hair Theorem",
+        "domain_id": "field_a",
+        "domain_name": "General Relativity and Cosmology",
+        "link_type": "direct",
+        "structural_conclusion": "Gravitational collapse erases all structure except three topologically protected quantities"
+      },
+      {
+        "result_id": "",
+        "result_name": "Taylor-Couette Instability",
+        "domain_id": "field_b",
+        "domain_name": "Fluid Dynamics",
+        "link_type": "direct",
+        "structural_conclusion": "Rotating flows spontaneously break symmetry to create discrete vortex structures"
+      },
+      {
+        "result_id": "",
+        "result_name": "Rayleigh-B\u00e9nard Convection",
+        "domain_id": "field_b",
+        "domain_name": "Fluid Dynamics",
+        "link_type": "direct",
+        "structural_conclusion": "Thermal gradients spontaneously break symmetry to create discrete convection cells"
+      },
+      {
+        "result_id": "",
+        "result_name": "Helmholtz Vortex Theorems",
+        "domain_id": "field_b",
+        "domain_name": "Fluid Dynamics",
+        "link_type": "direct",
+        "structural_conclusion": "Vortex lines are topologically conserved structures that cannot be created or destroyed"
+      }
+    ],
+    "domains": [
+      "general_relativity",
+      "fluid_dynamics"
+    ],
+    "domain_names": [
+      "General Relativity and Cosmology",
+      "Fluid Dynamics"
+    ],
+    "ea_scores": {
+      "strength": 0.357,
+      "independence": 0.85,
+      "adversarial": 0.09,
+      "reproducibility": 0.7,
+      "depth_consistency": 1.0,
+      "confidence": 0.5426,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:52:55.524814+00:00",
+    "id": "d5dc5a30b5ea"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.25101
+  }
+}

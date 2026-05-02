@@ -1,0 +1,15 @@
+{
+  "proof_id": "b393f7af3196",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A unified categorical framework bridging quantum contextuality and classical wave non-locality, including: (1) Sheaf theory for classical wave systems with disorder, (2) Functorial relationships between quantum and acoustic measurement categories, (3) Topos-theoretic characterization of information preservation in time-reversal acoustics",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "proof_id": "fd08b8e7903b",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A general theory of 'diversity functors' that rigorously captures how symmetry reduction maps to increased distinguishability of states. This would require: (1) A category-theoretic framework for measuring structural diversity beyond simple orbit counting, (2) Theorems relating subgroup lattices to quotient space structures, (3) A formal theory of emergence that connects symmetry breaking to complexity increase",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

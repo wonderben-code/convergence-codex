@@ -826,3 +826,31 @@
 [14:13:46]     [ce7f2a656c80] Confidence: 0.26 (low)
 [14:13:46]     [ce7f2a656c80] Done: 181s, $0.59 (total: $115.60)
 [14:13:46]   [215/266] d5dc5a30b5ea — General Relativity and Cosmology, Fluid Dynamics
+[14:14:18]     [d141c9d3ff25] Type: axiomatic | Apparatus: Category theory, Measure theory | Steps: 9
+[14:14:18]     [cf19aa53852b] Confidence: 0.24 (low)
+[14:14:18]     [cf19aa53852b] Done: 193s, $0.58 (total: $116.18)
+[14:14:18]   [216/266] d6aa6b8cf93a — Thermodynamics and Statistical Mechanics, Astrophysics
+[14:14:36]     [d3202942e8cd] Type: axiomatic | Apparatus: Category theory, Information theory | Steps: 8
+[14:14:38]     [d2b6b2c11b0f] Type: categorical | Apparatus: Category theory, Functional analysis | Steps: 10
+[14:14:39]     [d48247a39af8] Type: axiomatic | Apparatus: Differential geometry, Dynamical systems | Steps: 8
+[14:14:55]     [d5dc5a30b5ea] Type: categorical | Apparatus: Differential geometry, Topology | Steps: 7
+[14:15:12]     [d56a80524732] Type: axiomatic | Apparatus: Algebraic structures, Functional analysis | Steps: 9
+[14:15:25]     [d0f65ba32126] Confidence: 0.25 (low)
+[14:15:25]     [d0f65ba32126] Done: 194s, $0.61 (total: $116.80)
+[14:15:25]   [217/266] d6ba7da99d8a — Quantum Field Theory, Particle Physics
+[14:15:44]     [d6aa6b8cf93a] Type: axiomatic | Apparatus: Dynamical systems, Statistical mechanics | Steps: 9
+[14:15:48]     [d141c9d3ff25] Confidence: 0.25 (low)
+[14:15:48]     [d141c9d3ff25] Done: 170s, $0.54 (total: $117.33)
+[14:15:48]   [218/266] d6cd176c6c9a — General Relativity and Cosmology, Thermodynamics and Statistical Mechanics
+[14:16:09]     [d3202942e8cd] Confidence: 0.32 (low)
+[14:16:09]     [d3202942e8cd] Done: 172s, $0.59 (total: $117.93)
+[14:16:09]   [219/266] d70ecdcb79b0 — Quantum Gravity, Acoustics and Wave Physics
+[14:16:13]     [d48247a39af8] Confidence: 0.21 (low)
+[14:16:13]     [d48247a39af8] Done: 176s, $0.59 (total: $118.52)
+[14:16:13]   [220/266] d7df95dc9b2e — Quantum Field Theory, Particle Physics
+[14:16:15]     [d2b6b2c11b0f] Confidence: 0.28 (low)
+[14:16:15]     [d2b6b2c11b0f] Done: 191s, $0.63 (total: $119.15)
+[14:16:15]   [221/266] d8c8132ec561 — Thermodynamics and Statistical Mechanics, Fluid Dynamics
+[14:16:34]     [d5dc5a30b5ea] Confidence: 0.35 (low)
+[14:16:34]     [d5dc5a30b5ea] Done: 168s, $0.55 (total: $119.70)
+[14:16:34]   [222/266] d8f378829d24 — Optics and Photonics, Atomic and Molecular Physics

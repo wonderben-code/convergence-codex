@@ -1,0 +1,368 @@
+{
+  "id": "ad45b1665817",
+  "convergence_id": "cf19aa53852b",
+  "timestamp": "2026-05-02T14:11:05.499618+00:00",
+  "proposition": "Let (S, G, \u03c6) be a system where S is a state space, G is a symmetry group acting on S via \u03c6: G \u00d7 S \u2192 S, and let F: S \u2192 \u211d be a free energy functional. Then: (1) Phase transitions occur at critical points where the isotropy subgroup G\u209b = {g \u2208 G : \u03c6(g,s) = s} changes discontinuously, and (2) The emergent order parameter space is isomorphic to the quotient G/G\u209b, characterizing all possible collective behaviors.",
+  "proposition_natural": "Symmetry breaking serves as the fundamental organizing principle for phase transitions and emergent collective behavior",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Algebraic structures",
+    "Order theory"
+  ],
+  "apparatus_justification": "Category theory provides the natural framework for formalizing structural convergences across domains through functors that preserve symmetry-breaking patterns. Algebraic structures capture the group-theoretic nature of symmetries and their breaking, while order theory formalizes the partial ordering of phases and the lattice structure of broken symmetry states.",
+  "proof_natural": "**Proposition.** Let (S, G, \u03c6) be a system where S is a state space, G is a symmetry group acting on S via \u03c6: G \u00d7 S \u2192 S, and let F: S \u2192 \u211d be a free energy functional. Then: (1) Phase transitions occur at critical points where the isotropy subgroup G\u209b = {g \u2208 G : \u03c6(g,s) = s} changes discontinuously, and (2) The emergent order parameter space is isomorphic to the quotient G/G\u209b, characterizing all possible collective behaviors.\n\n**Proof.** We assume that S is a complete metric space representing all possible system configurations, G is a Lie group representing system symmetries, and \u03c6: G \u00d7 S \u2192 S is a continuous group action. Let F: S \u2192 \u211d be a C\u00b2 free energy functional satisfying thermodynamic stability conditions, and suppose the system admits a Gibbs measure \u03bc_\u03b2 at inverse temperature \u03b2. We further assume that order parameters can be represented as elements of a vector space V, and that any associated acoustic/wave system can be modeled by a Hamiltonian H with translation symmetry, where Bloch states form a complete basis.\n\nWe begin by defining the order parameter manifold M = {s \u2208 S : \u2207F(s) = 0} as the set of equilibrium states, since equilibrium configurations necessarily minimize the free energy functional. For each s \u2208 M, the isotropy subgroup G\u209b = {g \u2208 G : \u03c6(g,s) = s} is closed in G, being the preimage of {s} under the continuous map g \u21a6 \u03c6(g,s).\n\nBy the Orbit-Stabilizer Theorem, the orbit G\u00b7s = {\u03c6(g,s) : g \u2208 G} is homeomorphic to the quotient space G/G\u209b. This establishes the fundamental relationship between symmetry and the space of possible states.\n\nFrom Catastrophe Theory, we know that phase transitions occur when rank(\u2207\u00b2F(s)) changes, corresponding to bifurcations in the equilibrium manifold M. At these bifurcation points, the dimension of the isotropy subgroup G\u209b changes discontinuously. [Note: A complete proof that Hessian degeneracy necessarily implies symmetry change requires additional technical conditions on the group action.]\n\nTo establish the correspondence with acoustic systems, we observe that Bloch states \u03c8\u2096 satisfy (H - E(k))\u03c8\u2096 = 0 with E(k + G) = E(k) for all reciprocal lattice vectors G, as guaranteed by Bloch's Theorem for periodic Hamiltonians. Band gaps occur precisely where \u2202\u00b2E/\u2202k\u00b2 is singular, creating Van Hove singularities in the density of states. These singularities are directly analogous to the Hessian degeneracies at thermodynamic phase transition points.\n\nCrucially, the symmetry group of Bloch states changes across band gaps, with different bands transforming according to different irreducible representations of the space group. This parallels the discontinuous change in isotropy subgroups at thermodynamic phase transitions.\n\nTherefore, both thermodynamic phases and acoustic band structures are classified by the same mathematical object: the quotient G/G\u209b. This quotient space encodes all possible collective behaviors arising from the underlying symmetry structure, whether in thermodynamic or wave-mechanical contexts. The isomorphism between the order parameter space and G/G\u209b follows from the Orbit-Stabilizer Theorem, completing our proof that symmetry breaking provides a unified framework for understanding both phase transitions and band structure. \u220e",
+  "proof_lean": "import Mathlib.GroupTheory.GroupAction.Basic\nimport Mathlib.GroupTheory.GroupAction.Quotient\nimport Mathlib.GroupTheory.Subgroup.Basic\nimport Mathlib.Topology.Basic\nimport Mathlib.Topology.ContinuousFunction.Basic\nimport Mathlib.Analysis.Calculus.Gradient.Basic\nimport Mathlib.Analysis.Calculus.ContDiff\n\n/-- A physical system with symmetry group action and free energy functional -/\nstructure PhysicalSystem (S : Type*) [TopologicalSpace S] [NormedAddCommGroup S] [NormedSpace \u211d S] where\n  G : Type*\n  [group : Group G]\n  [topological_group : TopologicalSpace G]\n  \u03c6 : G \u2192* S \u2192\u209c S  -- Group action as homeomorphisms\n  F : S \u2192 \u211d  -- Free energy functional\n  F_diff : ContDiff \u211d 2 F  -- F is twice continuously differentiable\n\n/-- The isotropy subgroup at a state s -/\ndef isotropySubgroup {S : Type*} [TopologicalSpace S] [NormedAddCommGroup S] [NormedSpace \u211d S]\n  (sys : PhysicalSystem S) (s : S) : Subgroup sys.G :=\n{ carrier := {g : sys.G | sys.\u03c6 g s = s}\n  mul_mem' := fun {a b} ha hb => by simp [mul_smul, ha, hb]\n  one_mem' := by simp\n  inv_mem' := fun {a} ha => by simp [\u2190 ha] }\n\n/-- The order parameter manifold (equilibrium states) -/\ndef orderParameterManifold {S : Type*} [TopologicalSpace S] [NormedAddCommGroup S] [NormedSpace \u211d S]\n  (sys : PhysicalSystem S) : Set S :=\n{s : S | gradient sys.F s = 0}\n\n/-- Phase transition occurs when Hessian rank changes -/\ndef isPhaseTransition {S : Type*} [TopologicalSpace S] [NormedAddCommGroup S] [NormedSpace \u211d S]\n  (sys : PhysicalSystem S) (s : S) : Prop :=\n  sorry  -- Need: Definition of Hessian rank change and catastrophe theory\n\n/-- Main theorem: Phase transitions and order parameter classification -/\ntheorem phase_transition_symmetry_breaking\n  {S : Type*} [TopologicalSpace S] [NormedAddCommGroup S] [NormedSpace \u211d S] [CompleteSpace S]\n  (sys : PhysicalSystem S) :\n  (\u2200 s \u2208 orderParameterManifold sys,\n    -- Part 1: Phase transitions occur where isotropy subgroup changes discontinuously\n    isPhaseTransition sys s \u2192\n    \u2203 \u03b5 > 0, \u2200 t \u2208 Metric.ball s \u03b5, t \u2260 s \u2192\n      isotropySubgroup sys t \u2260 isotropySubgroup sys s) \u2227\n  (\u2200 s \u2208 orderParameterManifold sys,\n    -- Part 2: Order parameter space is isomorphic to G/G\u209b\n    \u2203 f : sys.G \u29f8 isotropySubgroup sys s \u2243\u209c (sys.G \u2022 s : Set S),\n      Continuous f \u2227 Continuous f.symm) := by\n  constructor\n  \u00b7 -- Part 1: Phase transitions and isotropy subgroup changes\n    intro s hs h_phase\n    sorry  -- Need: Catastrophe theory and proof that Hessian degeneracy implies symmetry change\n  \u00b7 -- Part 2: Order parameter space classification\n    intro s hs\n    -- Step 2: Isotropy subgroup is closed\n    have h_closed : IsClosed (isotropySubgroup sys s : Set sys.G) := by\n      sorry  -- Need: Proof that preimage of {s} under continuous map is closed\n    -- Step 3: Orbit-stabilizer theorem application\n    sorry  -- Need: Explicit construction of homeomorphism using orbit-stabilizer theorem\n\n/-- Acoustic system with Bloch states -/\nstructure AcousticSystem where\n  H : \u2102 \u2192 \u2102  -- Hamiltonian (simplified)\n  sorry  -- Need: Proper definition with lattice structure, Bloch states, band structure\n\n/-- Band gap occurs where energy Hessian is singular -/\ndef hasBandGap (acoustic : AcousticSystem) (k : \u211d) : Prop :=\n  sorry  -- Need: Definition of band gaps and Van Hove singularities\n\n/-- Parallel between thermodynamic and acoustic systems -/\ntheorem thermodynamic_acoustic_correspondence\n  {S : Type*} [TopologicalSpace S] [NormedAddCommGroup S] [NormedSpace \u211d S]\n  (thermo : PhysicalSystem S) (acoustic : AcousticSystem) :\n  -- Both systems exhibit symmetry breaking classified by quotient groups\n  sorry  -- Need: Bloch's theorem, representation theory, and full correspondence proof",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the order parameter manifold M = {s \u2208 S : \u2207F(s) = 0} as the set of equilibrium states",
+      "justification": "Equilibrium states minimize free energy, requiring vanishing gradient",
+      "dependencies": [
+        "Assumption of C\u00b2 free energy functional"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "For each s \u2208 M, the isotropy subgroup G\u209b = {g \u2208 G : \u03c6(g,s) = s} is closed in G",
+      "justification": "G\u209b is the preimage of {s} under the continuous map g \u21a6 \u03c6(g,s)",
+      "dependencies": [
+        "Continuity of group action \u03c6"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The orbit G\u00b7s = {\u03c6(g,s) : g \u2208 G} is homeomorphic to G/G\u209b",
+      "justification": "Orbit-stabilizer theorem from group theory",
+      "dependencies": [
+        "Standard group theory result"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "Phase transitions occur when rank(\u2207\u00b2F(s)) changes, corresponding to bifurcations in M",
+      "justification": "Catastrophe theory: degeneracy of Hessian indicates structural instability",
+      "dependencies": [
+        "Thom's classification theorem",
+        "Step 1"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "At bifurcation points, the dimension of G\u209b changes discontinuously",
+      "justification": "[Gap: Requires proof that Hessian degeneracy implies symmetry change]",
+      "dependencies": [
+        "Step 4",
+        "Landau theory assumptions"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "In the acoustic system, Bloch states \u03c8\u2096 satisfy (H - E(k))\u03c8\u2096 = 0 with E(k + G) = E(k) for reciprocal lattice vectors G",
+      "justification": "Direct application of Bloch's theorem to periodic Hamiltonian",
+      "dependencies": [
+        "Bloch's theorem",
+        "Periodic Hamiltonian assumption"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Band gaps occur where \u2202\u00b2E/\u2202k\u00b2 is singular, analogous to phase transition points",
+      "justification": "Van Hove singularities in density of states correspond to Hessian degeneracy",
+      "dependencies": [
+        "Step 6",
+        "Standard band theory"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "The symmetry group of Bloch states changes across band gaps: different irreducible representations of the space group",
+      "justification": "Group representation theory applied to Bloch states",
+      "dependencies": [
+        "Step 6",
+        "Wigner's theorem on symmetry"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "Therefore, both thermodynamic phases and acoustic band structures are classified by G/G\u209b quotients",
+      "justification": "Steps 3, 5, and 8 establish parallel symmetry-breaking mechanisms",
+      "dependencies": [
+        "Steps 3, 5, 8"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Landau Theory of Phase Transitions",
+      "authors": "L.D. Landau",
+      "year": "1937",
+      "field": "Statistical Physics",
+      "statement": "Phase transitions can be classified by symmetry breaking of an order parameter",
+      "usage": "Provides framework connecting symmetry to phase transitions"
+    },
+    {
+      "name": "Bloch's Theorem",
+      "authors": "F. Bloch",
+      "year": "1928",
+      "field": "Solid State Physics",
+      "statement": "Wave functions in periodic potentials can be written as \u03c8(r) = e^(ik\u00b7r)u(r) where u has lattice periodicity",
+      "usage": "Establishes symmetry constraints on wave propagation"
+    },
+    {
+      "name": "Orbit-Stabilizer Theorem",
+      "authors": "Classical group theory",
+      "year": "19th century",
+      "field": "Mathematics",
+      "statement": "For group action of G on X, |G\u00b7x| = |G|/|G\u2093|",
+      "usage": "Connects symmetry groups to quotient spaces"
+    },
+    {
+      "name": "Catastrophe Theory",
+      "authors": "R. Thom",
+      "year": "1972",
+      "field": "Mathematics",
+      "statement": "Structural stability changes at degenerate critical points",
+      "usage": "Formalizes notion of phase transitions as bifurcations"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "S is a complete metric space representing all possible system configurations",
+    "G is a Lie group representing system symmetries",
+    "\u03c6: G \u00d7 S \u2192 S is a continuous group action",
+    "F: S \u2192 \u211d is a C\u00b2 free energy functional satisfying thermodynamic stability conditions",
+    "The system admits a Gibbs measure \u03bc_\u03b2 at inverse temperature \u03b2",
+    "Order parameters can be represented as elements of a vector space V",
+    "The acoustic/wave system can be modeled by a Hamiltonian H with translation symmetry",
+    "Bloch states form a complete basis for the wave system",
+    "The correspondence between thermodynamic phases and acoustic band structures is well-defined"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Defining M = {s \u2208 S : \u2207F(s) = 0} as equilibrium states",
+        "issue": "The gradient \u2207F(s) is not well-defined since S is only assumed to be a metric space, not a manifold. Gradients require differentiable structure.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Assume S is a differentiable manifold or work with more general notions of critical points"
+      },
+      {
+        "step": "Phase transitions occur when rank(\u2207\u00b2F(s)) changes",
+        "issue": "This is a massive oversimplification. Many phase transitions occur without Hessian rank changes (e.g., first-order transitions). The claim conflates continuous phase transitions with all phase transitions.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Restrict to continuous phase transitions and provide rigorous connection between Hessian degeneracy and symmetry breaking"
+      },
+      {
+        "step": "At bifurcation points, the dimension of G\u209b changes discontinuously",
+        "issue": "No proof provided. The connection between Hessian degeneracy and isotropy subgroup dimension change is asserted without justification.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "This requires a complete reworking with explicit examples or general theorems connecting these concepts"
+      },
+      {
+        "step": "Band gaps occur where \u2202\u00b2E/\u2202k\u00b2 is singular",
+        "issue": "False. Band gaps occur where no states exist for certain energy ranges, not necessarily where the dispersion has singular curvature.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Completely revise understanding of band gap formation"
+      },
+      {
+        "step": "Van Hove singularities are analogous to Hessian degeneracies",
+        "issue": "This analogy is superficial at best. Van Hove singularities are density of states features, while Hessian degeneracies relate to stability. No rigorous connection established.",
+        "severity": "major",
+        "fixable": false,
+        "suggested_fix": "Either prove a precise mathematical connection or remove this claim"
+      },
+      {
+        "step": "Symmetry group of Bloch states changes across band gaps",
+        "issue": "Imprecise and often false. The space group symmetry is typically preserved across band gaps. Different bands may transform differently under the same group.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Clarify that representations change, not the symmetry group itself"
+      },
+      {
+        "step": "Order parameter space is isomorphic to G/G\u209b",
+        "issue": "This assumes order parameters transform simply under G, which is not established. Order parameter spaces can be more complex than coset spaces.",
+        "severity": "major",
+        "fixable": false,
+        "suggested_fix": "Provide explicit construction of order parameter from symmetry considerations"
+      }
+    ],
+    "hidden_assumptions": [
+      "F is G-invariant (never stated but required for symmetry analysis)",
+      "Phase transitions are equilibrium phenomena (excludes non-equilibrium transitions)",
+      "Order parameters transform linearly under group action",
+      "The connection between thermodynamic and quantum mechanical systems is meaningful",
+      "All phase transitions involve symmetry breaking (false for many transitions)",
+      "The metric on S is compatible with the group action",
+      "The Gibbs measure exists and is unique"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes phase transitions are characterized by symmetry breaking to prove that symmetry breaking characterizes phase transitions. The definition of order parameter space already presupposes the conclusion.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to characterize ALL phase transitions and ALL collective behaviors, but at best addresses only continuous symmetry-breaking transitions. Many phase transitions (e.g., liquid-gas, many quantum phase transitions) don't fit this framework. The acoustic analogy is forced and doesn't establish the claimed unified framework.",
+    "citation_issues": [
+      "Catastrophe Theory is cited incorrectly - it doesn't directly connect rank changes to phase transitions",
+      "Landau Theory only applies to continuous phase transitions near critical points, not all transitions",
+      "Bloch's Theorem is stated correctly but its relevance to thermodynamic phases is not established",
+      "Orbit-Stabilizer Theorem is used correctly but doesn't justify the main claims"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed, attempting to unify disparate physical phenomena through superficial mathematical analogies. The core argument contains multiple critical gaps, unjustified leaps, and false statements about both phase transitions and band theory. The proof would need complete reconstruction to be salvageable.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish a connection between thermodynamic phase transitions and acoustic band structures through symmetry breaking, but fails to prove either part of the stated proposition rigorously",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "F is G-invariant under the group action",
+      "The group action \u03c6 preserves the free energy functional",
+      "The order parameter manifold M is non-empty and well-defined",
+      "The correspondence between acoustic systems and thermodynamic systems is mathematically valid",
+      "Van Hove singularities actually correspond to symmetry changes",
+      "The Hamiltonian H commutes with group elements",
+      "Band gaps correspond to actual phase transitions rather than just spectral features",
+      "The quotient space G/G\u209b has the correct topology for the order parameter space"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "1",
+        "issue": "\u2207F(s) = 0 defines critical points, not necessarily equilibrium states. Global minima require additional conditions beyond vanishing gradient"
+      },
+      {
+        "step": "4",
+        "issue": "Changes in rank(\u2207\u00b2F(s)) indicate bifurcations but do not necessarily correspond to phase transitions. The connection requires additional thermodynamic arguments"
+      },
+      {
+        "step": "5",
+        "issue": "No proof provided that Hessian degeneracy implies symmetry change. This is a critical gap that invalidates the main argument"
+      },
+      {
+        "step": "7",
+        "issue": "Van Hove singularities in density of states do not necessarily correspond to Hessian degeneracy of the energy functional. These are different mathematical objects"
+      },
+      {
+        "step": "8",
+        "issue": "No rigorous proof that symmetry groups change across band gaps. Band gaps can exist without symmetry breaking"
+      },
+      {
+        "step": "9",
+        "issue": "The conclusion does not follow from the previous steps due to the gaps identified above"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No proof of the fundamental claim in Step 5 linking Hessian degeneracy to symmetry changes",
+      "Missing rigorous connection between thermodynamic and acoustic systems",
+      "No proof that G/G\u209b quotients actually characterize 'all possible collective behaviors'",
+      "Discontinuous changes in isotropy subgroups not established",
+      "The isomorphism claim in part (2) of the proposition is never proven"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims phase transitions occur at critical points where isotropy subgroup changes discontinuously, but existing proof [0178ff46c5ee] establishes phase transitions as symmetry-breaking events with continuous order parameter evolution governed by universal principles",
+      "The claim that 'rank(\u2207\u00b2F(s)) changes' at phase transitions contradicts thermodynamic stability conditions assumed in the proof itself - stable equilibria require positive definite Hessian",
+      "The assertion that 'dimension of G\u209b changes discontinuously' at bifurcation points is mathematically inconsistent - isotropy subgroups form a continuous family in well-behaved systems"
+    ],
+    "assumption_conflicts": [
+      "Assumes F: S \u2192 \u211d is C\u00b2 and satisfies thermodynamic stability, but then claims rank changes at critical points violate stability",
+      "Claims Bloch states form complete basis while simultaneously asserting band gaps create singular points in \u2202\u00b2E/\u2202k\u00b2 - completeness and singularities are incompatible",
+      "Assumes continuous group action \u03c6: G \u00d7 S \u2192 S but claims discontinuous changes in isotropy subgroups"
+    ],
+    "beneficial_connections": [
+      "Connects to [0178ff46c5ee] on phase transitions and symmetry breaking, though with conflicting mechanisms",
+      "Relates to [08b6405556dd] on symmetry principles constraining dynamics",
+      "Potentially extends [087da119976b] on spontaneous symmetry breaking, but with incompatible mathematical framework"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof contains fundamental mathematical errors including claiming discontinuous changes in continuous structures, violating its own stability assumptions, and mischaracterizing the relationship between band theory and phase transitions. The core mathematical framework is internally inconsistent."
+  },
+  "confidence_score": 0.24000000000000002,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.29999999999999993
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.29999999999999993
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous category-theoretic framework connecting: (1) The functor from symmetry groups to phase spaces, (2) Natural transformations between thermodynamic and wave-mechanical categories, (3) Proof that Hessian degeneracy implies isotropy subgroup dimension change",
+  "limitations": [
+    "Step 5 assumes but does not prove that free energy Hessian degeneracy implies symmetry breaking",
+    "The precise categorical equivalence between thermodynamic phases and acoustic bands is asserted but not constructed",
+    "The correspondence between order parameters and band structure requires additional formalization",
+    "Proof assumes equilibrium systems; non-equilibrium phase transitions may require different framework",
+    "Continuous symmetries treated; discrete symmetries may need separate analysis",
+    "Quantum phase transitions not explicitly addressed",
+    "The mapping between thermodynamic and acoustic systems is structural, not necessarily physical"
+  ],
+  "source_convergence": {
+    "structural_claim": "Symmetry breaking serves as the fundamental organizing principle for phase transitions and emergent collective behavior",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Landau Theory of Phase Transitions",
+        "domain_id": "field_a",
+        "domain_name": "Thermodynamics and Statistical Mechanics",
+        "link_type": "direct",
+        "structural_conclusion": "Phase transitions are fundamentally symmetry-breaking events where order parameters emerge"
+      },
+      {
+        "result_id": "",
+        "result_name": "Bloch's Theorem for Periodic Media",
+        "domain_id": "field_b",
+        "domain_name": "Acoustics and Wave Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Periodic symmetry imposes fundamental constraints on wave propagation, creating band gaps analogous to phase boundaries"
+      }
+    ],
+    "domains": [
+      "thermodynamics",
+      "acoustics"
+    ],
+    "domain_names": [
+      "Thermodynamics and Statistical Mechanics",
+      "Acoustics and Wave Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.238,
+      "independence": 0.75,
+      "adversarial": 0.2,
+      "reproducibility": 0.42,
+      "depth_consistency": 1.0,
+      "confidence": 0.4619000000000001,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:16:24.932803+00:00",
+    "id": "cf19aa53852b"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.282675
+  }
+}

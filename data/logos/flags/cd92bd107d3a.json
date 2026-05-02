@@ -1,0 +1,13 @@
+{
+  "proof_id": "cd92bd107d3a",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: Rigorous non-perturbative RG for strongly coupled quantum systems in d>2; mathematical framework for proving universality of fixed points beyond perturbation theory; rigorous treatment of operator product expansion in quantum field theory",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

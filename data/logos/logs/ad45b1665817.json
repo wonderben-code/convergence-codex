@@ -1,0 +1,38 @@
+{
+  "proof_id": "ad45b1665817",
+  "timestamp": "2026-05-02T14:11:05.499634+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "categorical - This could capture the universal property of symmetry breaking, but the convergence is more about shared principles than universal characterizations"
+      ],
+      "reasoning": "The convergence identifies symmetry breaking as a shared abstract principle governing both phase transitions and wave propagation in periodic media. Both domains satisfy axioms about how symmetry constraints determine possible states and transitions, making an axiomatic framework most appropriate for capturing this unifying principle."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Category theory, Algebraic structures, Order theory",
+      "alternatives_considered": [],
+      "reasoning": "Category theory provides the natural framework for formalizing structural convergences across domains through functors that preserve symmetry-breaking patterns. Algebraic structures capture the group-theoretic nature of symmetries and their breaking, while order theory formalizes the partial ordering of phases and the lattice structure of broken symmetry states."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof establishes that both phase transitions and band gap formation are fundamentally symmetry-breaking phenomena characterized by changes in isotropy subgroups. The emergent order in both cases is classified by the quotient space G/G\u209b, providing a unified mathematical framework for understanding collective behavior across different physical domains.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 9 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3239 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 3685 chars, 6 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "The formalization captures the mathematical structure of symmetry groups, isotropy subgroups, and order parameter manifolds. However, the physics-specific concepts like free energy functionals, phase transitions, catastrophe theory, and Bloch's theorem require substantial additional definitions not available in Mathlib. The orbit-stabilizer theorem exists in Mathlib but applying it to this specific physical context requires additional work."
+    }
+  ]
+}

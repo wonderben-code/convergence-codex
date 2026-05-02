@@ -1,0 +1,38 @@
+{
+  "proof_id": "6a92c1e551ea",
+  "timestamp": "2026-05-02T14:13:17.896581+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "categorical - One could frame this as a functor from symmetry groups to observable structures, but the axiomatic approach better captures the physical principle of symmetry breaking as a general phenomenon"
+      ],
+      "reasoning": "The convergence identifies a shared abstract principle across different physical domains: external fields break symmetries to reveal hidden structure and enable control. This is best captured by axioms about symmetry groups, their representations, and how external perturbations reduce these symmetries, rather than claiming the mathematical structures themselves are equivalent."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Differential geometry, Dynamical systems, Algebraic structures",
+      "alternatives_considered": [],
+      "reasoning": "Differential geometry provides the framework for symmetry breaking via gauge fields and connections on manifolds, essential for both GR and atomic physics. Dynamical systems theory captures the state transitions and stability analysis under external perturbations. Algebraic structures (particularly Lie groups/algebras) formalize the symmetries being broken."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof establishes that symmetry under group G forces degeneracies in the spectrum of H\u2080. External fields F break this symmetry, splitting degenerate levels and revealing hidden structure \u03a6\u2081. The resulting non-degenerate spectrum enables selective population transfer between states, providing a control mechanism C that can steer the system toward target states.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 8 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3175 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 2744 chars, 13 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This formalization captures the mathematical structure but requires significant development of quantum field theory machinery in Lean. The proof outline follows the given steps but most technical details require custom definitions not available in Mathlib."
+    }
+  ]
+}

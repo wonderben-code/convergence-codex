@@ -1,0 +1,13 @@
+{
+  "proof_id": "3ee45cbd61fe",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A unified category-theoretic framework that can rigorously treat both quantum mechanical constraints (no-cloning, monogamy) and gravitational constraints (holographic bounds, area laws) as instances of a general information-theoretic principle. This would require extending current quantum information theory to incorporate gravitational degrees of freedom in a mathematically consistent way.",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}
