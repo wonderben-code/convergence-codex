@@ -162,7 +162,7 @@ Not just pairwise comparisons — combinatorial at EVERY level:
 | 4 | **Pipeline Orchestrator** — 479 lines, 3 files, thin coordination, human checkpoints | **DONE** |
 | 5 | **Stage A** — 266 existing convergences through Logos → Synthesis | **RUNNING** (2 May) |
 | 5b | **Stage A PUBLICATION** — ~70 domain-pair papers, ~256 formal conjectures → Zenodo with DOIs | NOT DONE |
-| 5c | **Stage A CAPSTONE** — 1-3 papers synthesising ACROSS all Stage A results: the meta-finding cascade (266→26→6→2→1), terminal fixed points as formal conjectures, what they mean for the structure of reality, testable predictions. The "Nobel paper" for Stage A. | NOT DONE |
+| 5c | **Stage A CAPSTONE** — ~15-25 papers across all cascade levels (L5→L1). Nobel-format: genuine ontological claims about reality (Einstein/Higgs model), precisely scoped, with predictions extending into untested domains. 6-stage pipeline built (census → claim formulation → planning → composition → 18-point review → prediction extraction). Anti-over-generalisation enforced via scope boundaries. Predictions register Bitcoin-timestamped separately. | NOT DONE |
 | 6 | **Stage B** — full Codex across 81 fields (6 phases) | NOT DONE |
 | 6b | **Stage B PUBLICATION** — ~300-500 papers, thousands of conjectures → Zenodo | NOT DONE |
 | 6c | **Stage B CAPSTONE** — updated fixed points with full 81-field evidence base. Do the Stage A fixed points hold? Strengthen/revise/discover new ones. The "Nobel paper" for Stage B. | NOT DONE |
@@ -174,6 +174,7 @@ Not just pairwise comparisons — combinatorial at EVERY level:
 | 9b | **Stage E PUBLICATION** — THE capstone paper: updated Theory of Everything | NOT DONE |
 | 10 | **Website wing** — Convergence Codex on infinitography.com | NOT DONE |
 | 11 | **QC + stamp + ship** | NOT DONE |
+| 12 | **Open Source + Production Grade** — Make all 4 AIs (Gnosis, Logos, Synthesis, Capstone) + Orchestrator production-ready for anyone to clone, install, and run. PyPI packages (`pip install convergence-codex`), proper `pyproject.toml`, CLI entry points, config file system (no hardcoded paths), comprehensive README with quickstart, example data for dry runs without API credits, CI/CD (tests + linting), Docker option, framing audit ("landmark scientific paper format" not "Nobel AI"), license decision (MIT/Apache 2.0). Goal: a researcher anywhere in the world can `pip install` and run the full pipeline on their own domains. | NOT DONE |
 
 **Every convergence, every formalisation, every meta-convergence is a publishable formal conjecture.** The corpus from Stages A+B alone could be 300-500+ papers with thousands of novel formal mathematical conjectures, all Bitcoin-stamped for priority.
 
@@ -272,15 +273,7 @@ These were originally part of Stage 3 but should happen AFTER the Codex and Pans
 - agentciv-creator: pip install → real campaigns
 - agentciv-engine: pip install → all presets, Max Plan + API
 - agentciv-sim: pip install → configs, chronicler
-- **Convergence Codex AIs (Gnosis + Logos + Synthesis + Capstone):** Full open-source readiness pass:
-  - Remove hardcoded paths from runners (replace with CLI args / env vars / config file)
-  - Add `requirements.txt` / `pyproject.toml` with all dependencies
-  - Add comprehensive README: setup instructions, API key config, example runs, expected output
-  - Verify clean `git clone → pip install → run` on a fresh machine
-  - Ensure all 4 AIs (Gnosis, Logos, Synthesis standard, Synthesis capstone) can run independently
-  - Framing check: "Nobel-grade" language → "landmark scientific paper format" (see 5D)
-  - Add example output / sample data so users can verify their setup without burning API credits
-  - License file (decide: MIT / Apache 2.0 / custom research license)
+- **Convergence Codex AIs:** Basic playtest (does `python3 scripts/run_stage_a.py --help` work from clean clone?). Full production-grade packaging is Step 12 in the Convergence Codex roadmap.
 
 **5C. Repo + Infrastructure:**
 - ORCID populated with all DOIs
@@ -291,6 +284,7 @@ These were originally part of Stage 3 but should happen AFTER the Codex and Pans
 **5D. Decisions:**
 - Colony + Gnosis repo visibility (public before outreach?)
 - Paper 3 figures (references fig1-fig8 that don't exist)
+- **Capstone AI framing** — public repo contains "Nobel-grade" language in prompts/code. QC must ensure this is framed properly: papers written in the FORMAT of landmark scientific papers (Einstein, Dirac, Higgs model — genuine claims about reality with precise scoping and falsifiable predictions), NOT "AI that wins Nobel Prizes." The quality standard is clear; the branding should be about the scientific rigour, not the prize.
 
 **5E. Outreach Prep:**
 - AgentCiv outreach email (full rewrite from v0.1)
