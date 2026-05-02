@@ -90,3 +90,22 @@
 [18:51:42]       Revising: 5 critical/major issues...
 [18:54:20]       Post-revision: quality=0.82
 [18:54:20]       Saved: capstone_2371a2c85b26
+[18:54:22]     Bitcoin stamped: capstone_2371a2c85b26
+[18:54:22] 
+  Stage 5b: Cross-paper consistency check...
+[18:54:43]     Contradictions: 0
+[18:54:43]     Redundancies: 1
+[18:54:43] 
+  Stage 6: Prediction extraction & timestamping...
+[18:54:43]     Predictions extracted: 13
+[18:54:44]     Predictions register Bitcoin stamped
+[18:54:44] 
+  Capstone complete: 3 papers, 20605 words, 13 predictions, $10.83
+[18:54:44] 
+============================================================
+[18:54:44]   CAPSTONE COMPLETE
+[18:54:44]   Papers: 3
+[18:54:44]   Predictions: 13
+[18:54:44]   Cost: $10.83
+[18:54:44]   Finished: 2026-05-02T18:54:44.446569+00:00
+[18:54:44] ============================================================
