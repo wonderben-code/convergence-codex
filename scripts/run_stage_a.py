@@ -665,9 +665,18 @@ def run_capstone(gnosis_dir: Path, proofs_dir: Path, max_cost: float, log_file: 
     log(f"    Independence clusters: {len(ctx.independence_clusters)}", log_file)
     log(f"    Cascade: {ctx.cascade_dag.get('reduction', '')}", log_file)
 
-    # ─── STAGE 2: CLAIM FORMULATION ───
-    log("\n  Stage 2: Claim Formulation (cascade-driven)...", log_file)
-    claims = composer.generate_claims(ctx)
+    # ─── STAGE 2: CLAIM FORMULATION (with resume) ───
+    claims_cache = capstone_dir / "claims" / "all_candidates.json"
+    if claims_cache.exists():
+        log("\n  Stage 2: Claim Formulation — RESUMING from cached claims", log_file)
+        import json as _json
+        cached = _json.loads(claims_cache.read_text())
+        from synthesis.models import CandidateClaim
+        claims = [CandidateClaim(**c) for c in cached]
+        log(f"    Loaded {len(claims)} cached claims (skipping ~$5-10 API cost)", log_file)
+    else:
+        log("\n  Stage 2: Claim Formulation (cascade-driven)...", log_file)
+        claims = composer.generate_claims(ctx)
     run.candidates_generated = len(claims)
 
     log(f"    Claims formulated: {len(claims)}", log_file)
@@ -675,9 +684,18 @@ def run_capstone(gnosis_dir: Path, proofs_dir: Path, max_cost: float, log_file: 
         log(f"      [{claim.tier}] L{claim.source_finding_level} "
             f"({claim.num_source_convergences} convs): {claim.coined_term or claim.claim_text[:50]}", log_file)
 
-    # ─── STAGE 3: PAPER PLANNING ───
-    log("\n  Stage 3: Paper Planning (quality-filtered)...", log_file)
-    plans = composer.plan_papers(claims, ctx)
+    # ─── STAGE 3: PAPER PLANNING (with resume) ───
+    plans_cache = capstone_dir / "plans" / "paper_plans.json"
+    if plans_cache.exists():
+        log("\n  Stage 3: Paper Planning — RESUMING from cached plans", log_file)
+        import json as _json2
+        cached_plans = _json2.loads(plans_cache.read_text())
+        from synthesis.models import PaperPlan
+        plans = [PaperPlan(**p) for p in cached_plans]
+        log(f"    Loaded {len(plans)} cached plans (skipping ~$2-3 API cost)", log_file)
+    else:
+        log("\n  Stage 3: Paper Planning (quality-filtered)...", log_file)
+        plans = composer.plan_papers(claims, ctx)
     run.papers_planned = len(plans)
 
     log(f"    Papers planned: {len(plans)}", log_file)
