@@ -56,10 +56,16 @@ class Composer:
             )
             return [bundle]
 
-        # Build proof lookup
+        # Build proof lookup — if duplicate proofs exist for a convergence,
+        # keep the one with higher confidence (race conditions in parallel runs)
         proof_by_conv = {}
         for p in proofs:
-            proof_by_conv[p.get("convergence_id", "")] = p
+            cid = p.get("convergence_id", "")
+            existing = proof_by_conv.get(cid)
+            if existing is None:
+                proof_by_conv[cid] = p
+            elif p.get("confidence_score", 0) > existing.get("confidence_score", 0):
+                proof_by_conv[cid] = p  # Keep higher confidence
 
         # Group convergences by domain pair
         pair_groups: dict[str, list[dict]] = {}
