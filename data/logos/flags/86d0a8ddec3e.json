@@ -1,0 +1,15 @@
+{
+  "proof_id": "86d0a8ddec3e",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: Rigorous mathematical framework for: (1) Regularization and renormalization in curved spacetime as functorial operations, (2) Well-defined measure theory for path integrals in infinite dimensions, (3) Convergent operator product expansions near boundaries, (4) Mathematical proof of holographic principle beyond AdS/CFT",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

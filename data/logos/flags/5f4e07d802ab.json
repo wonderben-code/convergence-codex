@@ -1,0 +1,15 @@
+{
+  "proof_id": "5f4e07d802ab",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A categorical framework connecting: (1) functors from topological invariants of manifolds to conservation laws on configuration spaces, (2) a rigorous notion of 'topological constraint' that unifies the quantum field theory and fluid dynamics examples, (3) a general theorem relating the cohomology ring structure to the algebra of conserved quantities",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

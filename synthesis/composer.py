@@ -19,8 +19,8 @@ from synthesis.models import (
 from synthesis.prompts.compose import (
     SECTION_SYSTEM,
     ABSTRACT_PROMPT, INTRODUCTION_PROMPT, METHODS_PROMPT,
-    RESULTS_PROMPT, DISCUSSION_PROMPT, HONEST_SCOPE_PROMPT,
-    CONCLUSION_PROMPT, REFERENCES_PROMPT,
+    RESULTS_PROMPT, DISCUSSION_PROMPT, NOVEL_CONTRIBUTIONS_PROMPT,
+    HONEST_SCOPE_PROMPT, CONCLUSION_PROMPT, REFERENCES_PROMPT,
 )
 from synthesis.prompts.boundary import BOUNDARY_PROMPT
 from synthesis.prompts.review import REVIEW_PROMPT, REVISION_PROMPT
@@ -207,14 +207,20 @@ class Composer:
         sections.append({"section": "discussion", "title": "4. Discussion", "content": discussion_text,
                         "word_count": len(discussion_text.split()), "confidence": 0.6, "flags": []})
 
+        # Novel Contributions (priority/provenance)
+        novel_text = self._compose_novel_contributions(paper.title, bundle, corpus_context)
+        sections.append({"section": "novel_contributions", "title": "5. Novel Contributions",
+                        "content": novel_text, "word_count": len(novel_text.split()),
+                        "confidence": 0.8, "flags": []})
+
         # Honest Scope
         scope_text = self._compose_honest_scope(bundle)
-        sections.append({"section": "honest_scope", "title": "5. Honest Scope", "content": scope_text,
+        sections.append({"section": "honest_scope", "title": "6. Honest Scope", "content": scope_text,
                         "word_count": len(scope_text.split()), "confidence": 0.9, "flags": []})
 
         # Conclusion
         conclusion_text = self._compose_conclusion(paper.title, bundle)
-        sections.append({"section": "conclusion", "title": "6. Conclusion", "content": conclusion_text,
+        sections.append({"section": "conclusion", "title": "7. Conclusion", "content": conclusion_text,
                         "word_count": len(conclusion_text.split()), "confidence": 0.8, "flags": []})
 
         # References
@@ -536,6 +542,40 @@ class Composer:
             themes=", ".join(themes) or bundle.theme or "cross-domain structural convergence",
         )
         return self.api.query_deep(prompt, system=SECTION_SYSTEM, max_tokens=4096).strip()
+
+    def _compose_novel_contributions(self, title: str, bundle: PaperBundle,
+                                      corpus_context: str) -> str:
+        """Compose the Novel Contributions section — explicit priority claims."""
+        # Build full list of convergences with their formalisation status
+        proof_by_conv = {}
+        for p in bundle.proofs:
+            proof_by_conv[p.get("convergence_id", "")] = p
+
+        conv_lines = []
+        for i, c in enumerate(bundle.convergences):
+            domains = ", ".join(c.get("domain_names", c.get("domains", [])))
+            claim = c.get("structural_claim", "")
+            ea = c.get("ea_scores", {})
+            conf = ea.get("confidence_category", "unknown")
+
+            p = proof_by_conv.get(c.get("id", ""))
+            if p:
+                formal_status = (f"Formalised as {p.get('formalisation_type', 'N/A')} "
+                                f"({p.get('confidence_category', '?')} confidence)")
+            else:
+                formal_status = "Discovery only (not yet formalised)"
+
+            conv_lines.append(
+                f"{i+1}. [{domains}] {claim}\n"
+                f"   Discovery confidence: {conf}. {formal_status}."
+            )
+
+        prompt = NOVEL_CONTRIBUTIONS_PROMPT.format(
+            title=title,
+            convergences_text="\n".join(conv_lines),
+            corpus_context=corpus_context,
+        )
+        return self.api.query_deep(prompt, system=SECTION_SYSTEM, max_tokens=2048).strip()
 
     def _compose_honest_scope(self, bundle: PaperBundle) -> str:
         # Full claims with confidence — NOT truncated

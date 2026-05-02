@@ -1,0 +1,15 @@
+{
+  "proof_id": "c26fdea2a27c",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous construction of the category UnivLang with appropriate universal properties, along with verification that all required functors can be made compatible. This would likely require advanced \u221e-categorical techniques and a unified framework for handling objects of different mathematical natures.",
+    "Difficulty assessed as challenging",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "proof_id": "bb3eb2e60f47",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous category-theoretic framework for quantum field theory with boundary conditions, including: (1) A precise definition of the category of boundary conditions \u03a9 with appropriate morphisms, (2) A functorial quantization procedure that respects the categorical structure, (3) A proof that the assignment \u03c9 \u21a6 (\u03b3(\u03c9), |0_\u03c9\u27e9) preserves categorical morphisms",
+    "Difficulty assessed as challenging",
+    "10 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

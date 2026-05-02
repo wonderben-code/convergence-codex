@@ -135,6 +135,46 @@ The Discussion should:
 Return the section text only (markdown), no JSON.
 """
 
+NOVEL_CONTRIBUTIONS_PROMPT = """Write the Novel Contributions section for this paper.
+
+Title: {title}
+
+Convergences discovered and formalised in this paper:
+{convergences_text}
+
+Existing Codex corpus context:
+{corpus_context}
+
+This section establishes scientific priority. It is the timestamped, permanent record
+of what this paper contributes that did not exist before. Write it for a patent examiner,
+a grant reviewer, and a historian of science.
+
+The Novel Contributions section MUST:
+1. **Numbered list of novel contributions** — Each contribution is one specific claim.
+   Format each as:
+   "**N.** To the authors' knowledge, [specific structural convergence / formal result]
+   has not been previously identified or formalised in the literature."
+   Be precise — name the domains, the structure, and the formal result.
+
+2. **Distinguish discovery from formalisation** — Some contributions are the discovery
+   itself (Gnosis AI identified this convergence), others are the formalisation
+   (Logos AI proved it formally). State which is which.
+
+3. **Note any partial precedents** — If a convergence is related to known work (e.g.
+   "the connection between X and Y has been noted informally by [Author, Year], but
+   no formal proof existed"), state this. DO NOT claim novelty for something that is
+   well-known — only for the SPECIFIC formal result or newly-identified structural parallel.
+
+4. **State the provenance** — "All contributions in this paper were discovered by
+   Gnosis AI and formalised by Logos AI as part of the Convergence Codex project.
+   Priority is established via Bitcoin timestamping of the GitHub repository
+   (commit hash and OpenTimestamps proof)."
+
+5. Be 200-500 words depending on number of convergences.
+
+Return the section text only (markdown), no JSON.
+"""
+
 HONEST_SCOPE_PROMPT = """Write the Honest Scope section for this paper.
 
 This is a REQUIRED section in every Convergence Codex paper. It is the most important

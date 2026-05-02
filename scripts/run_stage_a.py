@@ -310,26 +310,40 @@ def run_synthesis(convergences: list[dict], findings: list[dict],
                 continue
 
     # Enrich proofs with reasoning logs (so Synthesis appendices have full methodology)
+    # NOTE: Log/flag files are named by PROOF ID, not convergence_id.
+    # Proof file: proofs/{proof_id}.json  →  contains {"id": proof_id, "convergence_id": conv_id}
+    # Log file:   logs/{proof_id}.json    →  contains {"proof_id": proof_id, "decisions": [...]}
+    # Flag file:  flags/{proof_id}.json   →  contains {"proof_id": proof_id, ...}
     logs_dir = proofs_dir.parent / "logs"
+    enriched_logs = 0
     if logs_dir.exists():
         for p in proofs:
-            log_path = logs_dir / f"{p.get('convergence_id', p.get('id', ''))}.json"
+            # Look up by proof ID (filename matches proof, not convergence)
+            proof_id = p.get("id", "")
+            log_path = logs_dir / f"{proof_id}.json"
             if log_path.exists():
                 try:
                     p["_reasoning_log"] = json.loads(log_path.read_text())
+                    enriched_logs += 1
                 except (json.JSONDecodeError, Exception):
                     pass
 
     # Enrich proofs with flag data (so Synthesis appendices have review status)
     flags_dir = proofs_dir.parent / "flags"
+    enriched_flags = 0
     if flags_dir.exists():
         for p in proofs:
-            flag_path = flags_dir / f"{p.get('convergence_id', p.get('id', ''))}.json"
+            proof_id = p.get("id", "")
+            flag_path = flags_dir / f"{proof_id}.json"
             if flag_path.exists():
                 try:
                     p["_flag_data"] = json.loads(flag_path.read_text())
+                    enriched_flags += 1
                 except (json.JSONDecodeError, Exception):
                     pass
+
+    log(f"  Enrichment: {enriched_logs}/{len(proofs)} logs, "
+        f"{enriched_flags}/{len(proofs)} flags attached to proofs", log_file)
 
     log(f"\nSynthesis: {len(convergences)} convergences, {len(proofs)} proofs, "
         f"{len(findings)} findings", log_file)

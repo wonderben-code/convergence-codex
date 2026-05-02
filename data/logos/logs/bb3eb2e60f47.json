@@ -1,0 +1,38 @@
+{
+  "proof_id": "bb3eb2e60f47",
+  "timestamp": "2026-05-02T14:54:51.634005+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "categorical",
+      "alternatives_considered": [
+        "axiomatic - One could axiomatize the principles of environmental modification of quantum processes, but this would miss the functorial nature of how boundary conditions systematically transform quantum dynamics across domains"
+      ],
+      "reasoning": "The convergence describes how environmental boundary conditions universally modify quantum processes across different physical contexts. This is best captured by identifying the universal property that characterizes how environments act as functors on quantum systems, with natural transformations describing the modification of vacuum fluctuations and emission rates."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Functional analysis, Category theory, Measure theory",
+      "alternatives_considered": [],
+      "reasoning": "Functional analysis provides the rigorous framework for quantum states as vectors in Hilbert spaces and observables as operators, with spectral theory capturing emission rates. Category theory formalizes the structural mapping between boundary conditions and quantum processes. Measure theory handles the probabilistic aspects of spontaneous emission and vacuum fluctuations."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof establishes that boundary conditions determine the complete set of electromagnetic field modes, which in turn determines both the vacuum state and the density of states. Through the fluctuation-dissipation theorem and Fermi's golden rule, these quantities directly control vacuum fluctuations and spontaneous emission rates, demonstrating the fundamental role of environmental boundaries in shaping quantum processes.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 10 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3926 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 4187 chars, 17 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This formalization captures the mathematical structure but cannot implement the physics-specific content. The core issue is that Mathlib lacks quantum field theory, electromagnetic field quantization, Fock spaces, and the machinery for boundary value problems in quantum optics. The categorical structure is partially formalizable but the physical content requires extensive additional definitions."
+    }
+  ]
+}
