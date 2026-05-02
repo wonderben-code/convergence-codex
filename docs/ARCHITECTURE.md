@@ -309,7 +309,17 @@ Target: 70-100+ fields. Additions to consider:
    → Formal statement of structural principles (not proof sketches
      — fully closed proofs where possible)
    → Collaboration with domain experts for verification
-   → Publish as standalone papers with DOIs
+
+7b. STAGE C PUBLICATION — Principle Papers          ← AFTER 7
+   → Standalone paper for EACH fixed-point principle
+   → These are the deepest, most rigorous mathematical papers
+   → Machine-verified where possible (Lean 4 + Mathlib)
+   → Each paper: "The recursive cascade converges to principle P.
+     Here is the formal proof / conjecture with identified gaps.
+     Here is what P says about the structure of reality."
+   → Human + domain expert review → Zenodo with DOIs → Bitcoin-stamp
+   → THESE ARE THE CROWN JEWELS — formal principles about
+     the structure of physical law and mathematics
 
 8. STAGE D — Testable Predictions
    → Derive specific, falsifiable predictions from Stage C principles
@@ -317,8 +327,16 @@ Target: 70-100+ fields. Additions to consider:
      be observable/measurable in domain Y"
    → Cross-check predictions against existing experimental literature
    → Identify experiments that would confirm or refute each prediction
-   → Publish prediction papers (pre-registration of predictions)
-   → Bitcoin-stamp predictions BEFORE any experimental confirmation
+
+8b. STAGE D PUBLICATION — Prediction Papers         ← AFTER 8
+   → Pre-registration papers: predictions published BEFORE
+     any experimental confirmation
+   → Each paper: "Principle P predicts observable X in domain Y"
+   → Three tiers: retrodictions (matches known), novel within-domain,
+     cross-domain (most valuable — connects unexpected fields)
+   → Bitcoin-stamp EVERY prediction BEFORE seeking confirmation
+   → This is the Higgs mechanism: predict → stamp → wait → confirm
+   → Human review → Zenodo with DOIs → Bitcoin-stamp
 
 9. STAGE E — ToE Integration
    → Map Stage B discoveries against Paper 15 (ToE proposal)
@@ -327,12 +345,21 @@ Target: 70-100+ fields. Additions to consider:
    → Where Stage B reveals structure Paper 15 didn't predict: extend
    → Produce an updated ToE informed by empirical computational evidence
    → This is the feedback loop: theory → computational evidence → theory
-   → Publish as major revision of the ToE with full Codex evidence base
+
+9b. STAGE E PUBLICATION — The Updated ToE           ← AFTER 9
+   → THE capstone paper: a Theory of Everything tested
+     computationally against 81 fields of science
+   → "We proposed a theory. We built three AIs to test it.
+     We ran it across every field. Here's what we found."
+   → Full Codex evidence base attached
+   → Human review → Zenodo with DOIs → Bitcoin-stamp
+   → If predictions from 8b are later confirmed, THIS is the
+     framework paper that unified it all
 
 10. WEBSITE — Convergence Codex Wing (on infinitography.com)
     → The three AIs + pipeline architecture
     → The full possibility space explained
-    → All papers with DOIs
+    → All papers with DOIs (every corpus paper, principle, prediction, ToE)
     → Interactive explorer (every level of discovery)
     → Novel contributions catalogue
     → Fixed points + predictions visualised
@@ -490,6 +517,15 @@ STAGE C ────── ✦ CHECKPOINT 3: Rigorous Formalisation
                Precedent: Higgs (prediction → 48yr → confirmation → Nobel),
                Penrose (mathematical theorem → observational evidence → Nobel).
 
+STAGE C PUB ── ✦ CHECKPOINT 3b: Principle Papers Published
+               Standalone paper for each fixed-point principle.
+               The deepest, most rigorous mathematical publications.
+               Machine-verified where possible. Each states what
+               the principle says about the structure of reality.
+               These are the crown jewels of the Codex.
+               Precedent: Wiles (Fermat's Last Theorem — single
+               principle paper that changed mathematics).
+
 STAGE D ────── ✦ CHECKPOINT 4: Predictions
                Specific, falsifiable predictions derived from
                fixed-point principles. Bitcoin-stamped BEFORE
@@ -499,13 +535,33 @@ STAGE D ────── ✦ CHECKPOINT 4: Predictions
                Precedent: Dirac (equation → prediction → positron found → Nobel),
                Einstein (hypothesis → prediction → photoelectric confirmation → Nobel).
 
+STAGE D PUB ── ✦ CHECKPOINT 4b: Prediction Papers Published
+               Pre-registration papers on Zenodo with DOIs.
+               Every prediction Bitcoin-stamped BEFORE any
+               experimental confirmation. Retrodictions,
+               within-domain predictions, cross-domain predictions.
+               The cross-domain predictions are the most valuable:
+               "If P holds in physics AND biology, then X."
+               This is the Higgs mechanism at industrial scale.
+               Precedent: Clinical trial pre-registration
+               (prediction → stamp → confirm). No one has done
+               this systematically across ALL fields of science.
+
 STAGE E ────── ✦ CHECKPOINT 5: Unified Framework
                Updated Theory of Everything backed by
                computational evidence from the largest
                cross-domain structural analysis ever conducted.
+
+STAGE E PUB ── ✦ CHECKPOINT 5b: The Updated ToE Published
+               THE capstone paper. A Theory of Everything
+               computationally tested against 81 fields, with
+               formal proofs, predictions, and the full Codex
+               evidence base. Published on Zenodo with DOI.
                If the ToE's predictions are confirmed, this
                becomes the most significant scientific
                contribution of the century.
+               Precedent: Einstein (General Relativity — single
+               framework paper that unified gravity and geometry).
 
 CONFIRMATION ─ ✦ CHECKPOINT 6: Experimental Validation
                A prediction from Stage D is independently
@@ -514,7 +570,7 @@ CONFIRMATION ─ ✦ CHECKPOINT 6: Experimental Validation
                the moment the Nobel case becomes inarguable.
 ```
 
-**Key insight:** Checkpoints 1-3 are in OUR control (we do the work). Checkpoint 4 is in our control (we make predictions). Checkpoints 5-6 depend on reality (whether the predictions are correct). But the PRIORITY for all claims is established at the moment of Bitcoin-stamping, regardless of when confirmation arrives.
+**Key insight:** Every stage has TWO checkpoints — the work (discovery/formalisation) AND the publication (Zenodo + DOI + Bitcoin-stamp). Checkpoints 1-3 and their publications are in OUR control (we do the work). Checkpoint 4 is in our control (we make predictions). Checkpoints 5-6 depend on reality (whether the predictions are correct). But the PRIORITY for ALL claims is established at the moment of Bitcoin-stamping, regardless of when confirmation arrives. That's **11 distinct Nobel-clearing checkpoints**, each with its own publication event.
 
 ---
 
@@ -549,8 +605,6 @@ Where possible, close the gaps:
 2. For each: assess what it claims about the structure of reality/mathematics
 3. Produce Tier 1 output (formal conjecture) for ALL fixed points
 4. Attempt Tier 2 (rigorous proof) for the most promising
-5. Publish all as standalone papers on Zenodo
-6. Bitcoin-stamp everything
 
 **What we're looking for:**
 - "The recursive cascade across 81 fields converges to principle P. Here is the formal statement, the proof sketch, and what remains to prove."
@@ -558,10 +612,18 @@ Where possible, close the gaps:
 - "The convergence to P is NOT an artefact — here is the independence verification."
 
 **Success criteria:**
-- ALL fixed points have Tier 1 formal conjectures, Bitcoin-stamped
+- ALL fixed points have Tier 1 formal conjectures
 - At least one fixed point has a Tier 2 machine-verified proof
 - At least three have Tier 2 expert-reviewed proofs
 - Clear formal statement of what each principle says about reality
+
+**Publication (Stage 7b):**
+- Standalone paper for EACH fixed-point principle — these are not bundled into corpus papers
+- Each is the deepest, most rigorous mathematical treatment the Codex produces
+- Machine-verified papers include Lean 4 proof alongside natural language
+- Human + domain expert review before publication
+- Published on Zenodo with DOIs, Bitcoin-stamped
+- These are the crown jewels: formal statements about the structure of reality
 
 **Estimated cost: ~$500-1,000**
 
@@ -578,8 +640,6 @@ Where possible, close the gaps:
    - Already confirmed? → cite evidence (retrodiction — principle matches known reality)
    - Not yet tested? → describe the experiment needed (novel prediction — highest value)
    - Contradicted? → revise the principle honestly (integrity)
-4. Publish prediction papers BEFORE seeking confirmation
-5. Bitcoin-stamp EVERY prediction
 
 **Types of predictions (in order of significance):**
 - **Retrodictions:** "Principle P predicts known result R" — validates P against reality
@@ -588,6 +648,15 @@ Where possible, close the gaps:
 
 **Why Bitcoin-stamping predictions is the single most important step:**
 If you predict something and it's later confirmed, the timestamp proves priority. This is how Higgs got his Nobel — he predicted the boson 48 years before CERN found it. The Convergence Codex can do this systematically across ALL fields, with cryptographic proof of priority. No physicist in history has had this tool.
+
+**Publication (Stage 8b):**
+- Pre-registration papers: predictions published BEFORE seeking any confirmation
+- Each prediction paper: principle → derived prediction → experimental test needed
+- Bitcoin-stamp EVERY prediction — this is the priority mechanism
+- Retrodictions, novel within-domain, and cross-domain predictions each get papers
+- Human review → Zenodo with DOIs → Bitcoin-stamp
+- The cross-domain prediction papers are the most valuable: unexpected connections
+  between fields nobody thought were related, with formal mathematical backing
 
 **Estimated cost: ~$300-600**
 
@@ -610,7 +679,16 @@ Paper 15 (theory, 2025) → Codex Stage B (evidence, 2026) → Stage E (updated 
 2. Identify which Paper 15 claims are now SUPPORTED by formal proofs
 3. Produce updated ToE paper with full Codex evidence base
 4. This paper says: "We proposed a theory. We built tools to test it. We tested it across 81 fields. Here's what we found."
-5. Publish on Zenodo, Bitcoin-stamp
+
+**Publication (Stage 9b):**
+- THE capstone paper — the single most important publication from the Codex
+- A Theory of Everything backed by the largest cross-domain structural analysis
+  ever conducted: thousands of convergences, hundreds of proofs, machine-verified
+  principles, and testable predictions across 81 fields of science
+- Full evidence base attached (references to ALL corpus papers from Stages A/B)
+- Human review → Zenodo with DOI → Bitcoin-stamp
+- If predictions from Stage D are later experimentally confirmed, THIS is the
+  paper that unified it all
 
 **Why this could be the most important paper:**
 A Theory of Everything that has been TESTED computationally against every field of science — not just proposed theoretically — would be unprecedented. If the ToE's predictions (from Stage D) are later experimentally confirmed, this paper is the framework paper that unified it all.
