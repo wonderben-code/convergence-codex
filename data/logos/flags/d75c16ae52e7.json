@@ -1,0 +1,13 @@
+{
+  "proof_id": "d75c16ae52e7",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous framework for 'singular flows' that extends smooth dynamical systems theory to include controlled topological transitions at well-characterized singular sets. This would need to formalize how physical singularities (infinite densities, currents) map to mathematical singular sets where topology can change.",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

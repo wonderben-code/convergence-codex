@@ -1,0 +1,326 @@
+{
+  "id": "c2b910a64d88",
+  "convergence_id": "f4bd59ddb3e4",
+  "timestamp": "2026-05-02T14:51:58.689447+00:00",
+  "proposition": "Let (M, g) be a Riemannian manifold with boundary \u2202M, and let H: C^\u221e(M) \u2192 C^\u221e(M) be a self-adjoint differential operator. If the bulk band structure of H admits a non-trivial topological invariant \u03bd \u2208 Z (Chern number or winding number), then there exist eigenmodes \u03c8_edge of H localized near \u2202M such that for any local perturbation V with ||V||_op < \u03b5, the perturbed eigenmodes \u03c8'_edge satisfy ||\u03c8'_edge - \u03c8_edge||_L^2 < C\u03b5 for some constant C independent of the disorder realization.",
+  "proposition_natural": "Topological properties of the system determine robust, disorder-immune propagation modes at boundaries",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Topology",
+    "Category theory",
+    "Differential geometry"
+  ],
+  "apparatus_justification": "Topology is essential for formalizing boundary properties and disorder-immunity through topological invariants. Category theory provides the framework for cross-domain structural convergence via functors between topological categories. Differential geometry is needed to handle wave propagation modes on manifolds with boundaries.",
+  "proof_natural": "**Proposition.** Let $(M, g)$ be a Riemannian manifold with boundary $\\partial M$, and let $H: C^{\\infty}(M) \\to C^{\\infty}(M)$ be a self-adjoint differential operator. If the bulk band structure of $H$ admits a non-trivial topological invariant $\\nu \\in \\mathbb{Z}$ (Chern number or winding number), then there exist eigenmodes $\\psi_{\\text{edge}}$ of $H$ localized near $\\partial M$ such that for any local perturbation $V$ with $\\|V\\|_{\\text{op}} < \\varepsilon$, the perturbed eigenmodes $\\psi'_{\\text{edge}}$ satisfy $\\|\\psi'_{\\text{edge}} - \\psi_{\\text{edge}}\\|_{L^2} < C\\varepsilon$ for some constant $C$ independent of the disorder realization.\n\n**Proof.** We assume that $M$ is a compact Riemannian manifold with smooth boundary $\\partial M$, and that $H$ is a self-adjoint elliptic differential operator of order $2k$. Let the spectrum of $H$ have a gap $\\Delta > 0$ separating filled and empty bands, such that the filled bands define a vector bundle $E \\to M$ with well-defined Chern classes. We further assume that perturbations $V$ are bounded operators with compact support away from $\\partial M$, that the boundary conditions at $\\partial M$ are such that $H$ remains self-adjoint, and that the topological invariant $\\nu$ is computed via integration of the Berry curvature over the Brillouin zone for periodic systems or via K-theory for aperiodic systems.\n\nThe filled bands of $H$ define a projection $P$ onto occupied states, which determines a K-theory class $[P] \\in K^0(M)$. By the Atiyah-Singer index theorem, the topological invariant $\\nu$ defines an element in the relative K-group $K^0(M, \\partial M)$. \n\nThe bulk-boundary correspondence, established through the relative index theorem, yields that $\\nu = \\dim \\ker(D_{\\partial}) - \\dim \\text{coker}(D_{\\partial})$, where $D_{\\partial}$ is the boundary Dirac operator induced on $\\partial M$. This fundamental relationship connects the bulk topological invariant to boundary indices.\n\n[Note: The precise relationship between $D_{\\partial}$ and $H|_{\\partial M}$ requires specifying the dimensional reduction procedure, which depends on the specific form of $H$ and the boundary conditions.]\n\nThe kernel of $D_{\\partial}$ corresponds to zero-energy edge modes of $H$ restricted to $\\partial M$. When $\\nu \\neq 0$, the index theorem guarantees that $\\dim \\ker(D_{\\partial}) \\geq |\\nu|$, implying the existence of at least $|\\nu|$ linearly independent edge modes $\\psi_i$. By the Combes-Thomas estimate for eigenfunctions in gapped systems, these modes exhibit exponential decay into the bulk with decay length proportional to $\\Delta^{-1}$.\n\nConsider now a perturbation $H \\to H + V$. The perturbed edge modes $\\psi'_i$ satisfy the bound $\\|\\psi'_i - \\psi_i\\|_{L^2} \\leq \\|V\\|_{\\text{op}}/\\Delta$ by standard perturbation theory for isolated eigenvalues.\n\n[Note: A complete proof that topologically protected modes cannot be destroyed by local perturbations requires a rigorous spectral flow argument, showing that eigenvalues cannot cross the gap under continuous deformation.]\n\nThe bulk gap $\\Delta$ ensures that the edge modes remain localized near $\\partial M$ under perturbation. Specifically, the exponential decay of eigenfunctions away from the boundary persists for the perturbed system $H + V$, with modified decay length bounded by $(\\Delta - \\|V\\|_{\\text{op}})^{-1}$.\n\nTherefore, for sufficiently small perturbations with $\\|V\\|_{\\text{op}} < \\varepsilon < \\Delta$, we obtain the stability estimate $\\|\\psi'_{\\text{edge}} - \\psi_{\\text{edge}}\\|_{L^2} < C\\varepsilon$ with $C = \\Delta^{-1}$, establishing the topological protection of edge states. This completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.Geometry.RiemannianGeometry.Basic\nimport Mathlib.Analysis.InnerProductSpace.l2Space\nimport Mathlib.Analysis.NormedSpace.OperatorNorm\nimport Mathlib.Topology.ContinuousFunction.Bounded\nimport Mathlib.MeasureTheory.Function.L2Space\n\n/-- A self-adjoint differential operator on a manifold -/\nstructure SelfAdjointDiffOp (M : Type*) [TopologicalSpace M] [ChartedSpace \u211d M] [SmoothManifoldWithCorners \ud835\udcd8(\u211d, \u211d) M] where\n  op : C^\u221e\u27ee\ud835\udcd8(\u211d, \u211d), M; \u211d, \u211d\u27ef \u2192 C^\u221e\u27ee\ud835\udcd8(\u211d, \u211d), M; \u211d, \u211d\u27ef\n  self_adjoint : sorry -- Need inner product structure and self-adjointness condition\n\n/-- Topological invariant (Chern number or winding number) -/\ndef TopologicalInvariant : Type := \u2124\n\n/-- Edge mode localized near boundary -/\nstructure EdgeMode (M : Type*) [TopologicalSpace M] [ChartedSpace \u211d M] [SmoothManifoldWithCorners \ud835\udcd8(\u211d, \u211d) M] where\n  mode : C^\u221e\u27ee\ud835\udcd8(\u211d, \u211d), M; \u211d, \u211d\u27ef\n  localized_near_boundary : sorry -- Need definition of localization near \u2202M\n\n/-- Main theorem: Topological protection of edge states -/\ntheorem topological_edge_state_protection\n  {M : Type*} [TopologicalSpace M] [ChartedSpace \u211d M] [SmoothManifoldWithCorners \ud835\udcd8(\u211d, \u211d) M]\n  [MeasureSpace M] [RiemannianManifold M]\n  (H : SelfAdjointDiffOp M)\n  (\u03bd : TopologicalInvariant)\n  (h_nontriv : \u03bd \u2260 0)\n  (h_bulk_inv : sorry) -- H admits topological invariant \u03bd\n  : \u2203 (edge_modes : Finset (EdgeMode M)),\n    (\u2200 (V : C^\u221e\u27ee\ud835\udcd8(\u211d, \u211d), M; \u211d, \u211d\u27ef \u2192L[\u211d] C^\u221e\u27ee\ud835\udcd8(\u211d, \u211d), M; \u211d, \u211d\u27ef) (\u03b5 : \u211d) (h\u03b5 : 0 < \u03b5),\n      \u2016V\u2016 < \u03b5 \u2192 \n      \u2203 (perturbed_modes : Finset (EdgeMode M)) (C : \u211d),\n        \u2200 (\u03c8 : EdgeMode M) (h\u03c8 : \u03c8 \u2208 edge_modes),\n          \u2203 (\u03c8' : EdgeMode M) (h\u03c8' : \u03c8' \u2208 perturbed_modes),\n            sorry) -- \u2016\u03c8'.mode - \u03c8.mode\u2016_L\u00b2 < C * \u03b5\n  := by\n  -- Step 1: Topological invariant defines K-theory class\n  have k_class : sorry := sorry -- Need K-theory and Atiyah-Singer index theorem\n  \n  -- Step 2: Bulk-boundary correspondence\n  have bulk_boundary : sorry := sorry -- Need boundary Dirac operator and relative index theorem\n  \n  -- Step 3: Kernel of boundary operator gives edge modes\n  have edge_from_kernel : sorry := sorry -- Need dimensional reduction procedure\n  \n  -- Step 4: Non-zero invariant guarantees edge modes\n  have exists_edge_modes : \u2203 (modes : Finset (EdgeMode M)), modes.card \u2265 |\u03bd| := by\n    sorry -- Need index theorem application\n  \n  -- Step 5: Perturbation bound\n  obtain \u27e8modes, h_card\u27e9 := exists_edge_modes\n  use modes\n  intro V \u03b5 h\u03b5 hV\n  \n  -- Step 6: Localization persists under perturbation\n  sorry -- Need spectral flow argument and Combes-Thomas estimate",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The topological invariant \u03bd defines an element in K^0(M, \u2202M) via the Atiyah-Singer index theorem",
+      "justification": "The filled bands of H define a projection P onto occupied states, giving a K-theory class [P] \u2208 K^0(M)",
+      "dependencies": [
+        "Atiyah-Singer Index Theorem",
+        "Definition of K-theory"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "By the bulk-boundary correspondence, \u03bd = dim ker(D_\u2202) - dim coker(D_\u2202) where D_\u2202 is the boundary Dirac operator",
+      "justification": "The relative index theorem relates bulk topological invariants to boundary indices",
+      "dependencies": [
+        "Step 1",
+        "Atiyah-Patodi-Singer boundary conditions"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The kernel of D_\u2202 corresponds to zero-energy edge modes of H restricted to \u2202M",
+      "justification": "[Gap: The precise relationship between D_\u2202 and H|_\u2202M requires specifying the dimensional reduction procedure]",
+      "dependencies": [
+        "Step 2",
+        "Dimensional reduction formalism"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "For \u03bd \u2260 0, there exist at least |\u03bd| linearly independent edge modes \u03c8_i with exponential decay into the bulk",
+      "justification": "The index theorem guarantees dim ker(D_\u2202) \u2265 |\u03bd| when \u03bd > 0",
+      "dependencies": [
+        "Step 2",
+        "Step 3"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Under perturbation H \u2192 H + V, the perturbed edge modes \u03c8'_i satisfy ||\u03c8'_i - \u03c8_i||_L^2 \u2264 ||V||_op/\u0394",
+      "justification": "[Gap: This requires proving that topologically protected modes cannot be destroyed by local perturbations, which needs a rigorous spectral flow argument]",
+      "dependencies": [
+        "Step 4",
+        "Spectral perturbation theory"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "The edge modes remain localized near \u2202M under perturbation due to the bulk gap \u0394",
+      "justification": "Standard exponential decay estimates for eigenfunctions in gapped systems",
+      "dependencies": [
+        "Step 5",
+        "Combes-Thomas estimate"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Atiyah-Singer Index Theorem",
+      "authors": "Atiyah, M.F. and Singer, I.M.",
+      "year": "1963",
+      "field": "Differential Geometry",
+      "statement": "The analytical index of an elliptic operator equals its topological index",
+      "usage": "Relates topological invariants to spectral properties"
+    },
+    {
+      "name": "Bulk-boundary correspondence",
+      "authors": "Hatsugai, Y.",
+      "year": "1993",
+      "field": "Condensed Matter Physics",
+      "statement": "Bulk topological invariants equal the number of edge states",
+      "usage": "Connects bulk topology to boundary modes"
+    },
+    {
+      "name": "Combes-Thomas estimate",
+      "authors": "Combes, J.M. and Thomas, L.",
+      "year": "1973",
+      "field": "Mathematical Physics",
+      "statement": "Eigenfunctions in gapped systems decay exponentially away from their support",
+      "usage": "Proves localization of edge modes"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "M is a compact Riemannian manifold with smooth boundary \u2202M",
+    "H is a self-adjoint elliptic differential operator of order 2k",
+    "The spectrum of H has a gap \u0394 > 0 separating filled and empty bands",
+    "The filled bands define a vector bundle E \u2192 M with well-defined Chern classes",
+    "Perturbations V are bounded operators with compact support away from \u2202M",
+    "The boundary conditions at \u2202M are such that H remains self-adjoint",
+    "The topological invariant \u03bd is computed via integration of the Berry curvature over the Brillouin zone (for periodic systems) or via K-theory (for aperiodic systems)"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "The bulk-boundary correspondence, established through the relative index theorem",
+        "issue": "The proof invokes bulk-boundary correspondence as if it were a general theorem, but this correspondence is only rigorously established for specific models (e.g., quantum Hall systems, topological insulators). The general statement for arbitrary self-adjoint elliptic operators on manifolds with boundary is not proven.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would need to restrict to specific classes of operators where bulk-boundary correspondence is proven, or provide a complete proof of this correspondence for the general setting"
+      },
+      {
+        "step": "\u03bd = dim ker(D_\u2202) - dim coker(D_\u2202)",
+        "issue": "The boundary Dirac operator D_\u2202 is not properly defined. The proof admits this in a note but continues anyway. How is D_\u2202 constructed from H? What are its domain and boundary conditions? Without this, the index formula is meaningless.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Must specify the exact construction of D_\u2202 from H, including how the dimensional reduction works and what boundary conditions are imposed"
+      },
+      {
+        "step": "The kernel of D_\u2202 corresponds to zero-energy edge modes of H restricted to \u2202M",
+        "issue": "This correspondence is asserted without justification. Why should ker(D_\u2202) relate to eigenmodes of H? The operators act on different spaces (\u2202M vs M).",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need a precise statement relating spectral properties of D_\u2202 to edge modes of H"
+      },
+      {
+        "step": "||\u03c8'_i - \u03c8_i||_L\u00b2 \u2264 ||V||_op/\u0394 by standard perturbation theory",
+        "issue": "This bound assumes the edge modes are isolated eigenvalues, but the proof hasn't established that edge modes are discrete eigenvalues rather than embedded in continuous spectrum. Standard perturbation theory doesn't apply to embedded eigenvalues.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Must first prove edge modes are isolated eigenvalues in the spectrum of H"
+      },
+      {
+        "step": "Perturbations V are bounded operators with compact support away from \u2202M",
+        "issue": "This assumption contradicts the claim about 'any local perturbation'. If V has support away from the boundary, it cannot directly affect edge modes localized at the boundary, making the stability result trivial.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Allow perturbations with support extending to the boundary"
+      },
+      {
+        "step": "The topological invariant \u03bd is computed via integration of the Berry curvature",
+        "issue": "Berry curvature is defined for parametrized families of operators, not a single operator H. The proof doesn't specify what parameter space is being used.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Clarify whether H depends on momentum k for periodic systems, or specify the parameter space"
+      }
+    ],
+    "hidden_assumptions": [
+      "Edge modes are discrete eigenvalues (not proven)",
+      "The manifold M has a product structure near the boundary (needed for dimensional reduction)",
+      "The topological invariant \u03bd remains well-defined under perturbations",
+      "The gap \u0394 persists under perturbation V",
+      "Edge modes are the only states in the gap (spectral flow argument incomplete)"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes bulk-boundary correspondence to deduce the existence of edge modes, then uses the existence of edge modes to justify their topological protection. The correspondence itself is what needs to be proven.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to work for any self-adjoint elliptic operator on any Riemannian manifold with boundary, but bulk-boundary correspondence is only established for specific physical models. The proof actually shows nothing without first establishing this correspondence.",
+    "citation_issues": [
+      "Atiyah-Singer index theorem applies to closed manifolds or specific boundary conditions, not arbitrary manifolds with boundary",
+      "Combes-Thomas estimate is cited for 'eigenfunctions in gapped systems' but typically applies to resolvents, not eigenfunctions",
+      "Bulk-boundary correspondence is cited as if it were a general theorem, but it's a phenomenon proven only in specific contexts"
+    ],
+    "structural_soundness": 0.2,
+    "overall_assessment": "This proof has fundamental gaps in its logical structure, relying on unproven correspondences and making unjustified leaps between bulk and boundary properties. The central claim about bulk-boundary correspondence is assumed rather than proven, making the entire argument circular.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish existence of edge modes and their topological protection, but fails to prove the specific stability bound ||\u03c8'_edge - \u03c8_edge||_L^2 < C\u03b5 with disorder-independent constant C",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The boundary operator D_\u2202 is well-defined and related to H through a specific dimensional reduction",
+      "The spectral gap \u0394 persists under perturbations ||V||_op < \u03b5",
+      "The edge modes are isolated eigenvalues of H|_\u2202M",
+      "The perturbation V preserves the self-adjoint structure",
+      "The constant C in the stability bound exists and is uniform over disorder realizations",
+      "The edge modes \u03c8_edge are normalized in L^2",
+      "The boundary conditions are compatible with the topological classification"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "1",
+        "issue": "K^0(M, \u2202M) classification requires relative K-theory, but the connection between filled band projection P and relative K-theory class is not established"
+      },
+      {
+        "step": "2",
+        "issue": "The bulk-boundary correspondence formula \u03bd = dim ker(D_\u2202) - dim coker(D_\u2202) is stated without defining D_\u2202 or proving this correspondence holds for the given operator H"
+      },
+      {
+        "step": "3",
+        "issue": "Explicitly marked as having a gap - the relationship between boundary Dirac operator D_\u2202 and restriction H|_\u2202M is undefined"
+      },
+      {
+        "step": "4",
+        "issue": "The index theorem guarantee is incorrectly stated - it should be dim ker(D_\u2202) - dim coker(D_\u2202) = \u03bd, not dim ker(D_\u2202) \u2265 |\u03bd|"
+      },
+      {
+        "step": "5",
+        "issue": "Explicitly marked as having a gap - the bound ||\u03c8'_i - \u03c8_i||_L^2 \u2264 ||V||_op/\u0394 lacks rigorous justification and the spectral flow argument is missing"
+      },
+      {
+        "step": "6",
+        "issue": "Assumes the bulk gap \u0394 persists under perturbation, which is not guaranteed for arbitrary V with ||V||_op < \u03b5"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No rigorous definition of the boundary operator D_\u2202",
+      "Missing proof of bulk-boundary correspondence for the specific operator H",
+      "No spectral flow argument for topological protection",
+      "Missing analysis of how perturbations affect the spectral gap",
+      "No proof that the constant C is disorder-independent",
+      "Missing treatment of boundary conditions compatibility",
+      "No verification that edge modes remain in the kernel under perturbation"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The proof claims edge modes have exponential decay into the bulk and remain localized under perturbation, but provides no rigorous justification for why the decay length is controlled by the bulk gap \u0394",
+      "The bound ||\u03c8'_i - \u03c8_i||_L^2 \u2264 ||V||_op/\u0394 is stated without proof and appears to ignore the geometry of the manifold and boundary conditions",
+      "The connection between topological invariant \u03bd and dim ker(D_\u2202) - dim coker(D_\u2202) via Atiyah-Singer is asserted but not established for the specific operator H"
+    ],
+    "assumption_conflicts": [
+      "Assumes H is elliptic of order 2k but then treats it as if it has a standard bulk-boundary correspondence, which typically requires specific symmetries not guaranteed for general elliptic operators",
+      "Assumes perturbations V have compact support away from \u2202M but then claims control over boundary modes, creating a logical gap",
+      "The assumption that 'boundary conditions make H self-adjoint' is too vague and may conflict with the specific boundary conditions needed for topological protection"
+    ],
+    "beneficial_connections": [
+      "Connects to [08b6405556dd] on symmetry principles constraining dynamics, as topological protection often requires symmetries",
+      "Relates to [087da119976b] on symmetry breaking and ordered patterns, as edge modes represent a form of boundary-localized order",
+      "Links to [0a979a982999] on geometric curvature and localization, as boundary geometry affects edge mode properties"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof makes several unjustified leaps, particularly in connecting abstract topological invariants to concrete spectral properties. The perturbation analysis is superficial and ignores crucial geometric factors. The bulk-boundary correspondence is assumed rather than proven for the general setting claimed."
+  },
+  "confidence_score": 0.27,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous mathematical framework for bulk-boundary correspondence that works across different physical contexts (quantum, classical wave, etc.) and provides quantitative stability estimates for edge modes under disorder",
+  "limitations": [
+    "The dimensional reduction from bulk operator H to boundary operator D_\u2202 is not rigorously defined for general systems",
+    "The spectral flow argument showing topological protection under local perturbations requires additional technical conditions",
+    "The connection between different topological invariants (Chern numbers, winding numbers, Z_2 invariants) in different physical contexts needs unified treatment",
+    "The proof assumes a spectral gap, excluding gapless topological phases",
+    "The perturbation analysis is limited to bounded, local perturbations",
+    "The formalism does not capture non-Hermitian topological effects",
+    "Finite-size effects and boundary shape dependence are not addressed"
+  ],
+  "source_convergence": {
+    "structural_claim": "Topological properties of the system determine robust, disorder-immune propagation modes at boundaries",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Discovery of the charm quark",
+        "domain_id": "field_a",
+        "domain_name": "Particle Physics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "The GIM mechanism creates a topological structure in flavor space that protects against certain transitions"
+      },
+      {
+        "result_id": "",
+        "result_name": "Topological Acoustics",
+        "domain_id": "field_b",
+        "domain_name": "Acoustics and Wave Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Global topological properties of band structures create backscattering-immune edge states"
+      }
+    ],
+    "domains": [
+      "particle_physics",
+      "acoustics"
+    ],
+    "domain_names": [
+      "Particle Physics",
+      "Acoustics and Wave Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.1428,
+      "independence": 0.85,
+      "adversarial": 0.06,
+      "reproducibility": 0.315,
+      "depth_consistency": 1.0,
+      "confidence": 0.41459,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:31:41.829370+00:00",
+    "id": "f4bd59ddb3e4"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.277095
+  }
+}

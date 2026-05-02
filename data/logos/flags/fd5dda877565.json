@@ -1,0 +1,15 @@
+{
+  "proof_id": "fd5dda877565",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous theory connecting analytical singularity categories to cobordism categories, including: (1) A precise definition of the singularity category Sing(M) that captures all relevant local analytical data, (2) A functor from Sing(M) to a suitable point-like subcategory of Cob(M), (3) Proof that this functor satisfies the hypotheses of the cobordism hypothesis",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

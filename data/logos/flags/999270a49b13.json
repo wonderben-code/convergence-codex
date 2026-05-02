@@ -1,0 +1,13 @@
+{
+  "proof_id": "999270a49b13",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous categorical framework for physical phases and emergent degrees of freedom is needed. Specifically: (1) A category-theoretic definition of 'phase' that captures the physical notion, (2) A formal definition of 'emergent' vs 'fundamental' degrees of freedom in categorical terms, (3) A proof that quotient objects exist in the relevant categories of physical systems, (4) Functorial properties of the phase correspondence",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

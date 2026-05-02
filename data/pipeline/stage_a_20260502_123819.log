@@ -1003,3 +1003,36 @@
 [14:52:48]     [f20a7047d3fa] Confidence: 0.23 (low)
 [14:52:48]     [f20a7047d3fa] Done: 211s, $0.65 (total: $139.96)
 [14:52:48]   [261/266] faa0628646b2 — General Relativity and Cosmology, Astrophysics
+[14:53:11]     [f4bd59ddb3e4] Type: categorical | Apparatus: Topology, Category theory | Steps: 6
+[14:53:39]     [f7210df7f5d8] Type: categorical | Apparatus: Category theory, Dynamical systems | Steps: 9
+[14:53:41]     [f6c17dd46347] Type: categorical | Apparatus: Category theory, Topology | Steps: 9
+[14:53:42]     [f7fe79e51b41] Type: categorical | Apparatus: Category theory, Topology | Steps: 8
+[14:53:46]     [f760d26129e8] Type: categorical | Apparatus: Category theory, Algebraic structures | Steps: 9
+[14:53:57]     [f9ab553e2ff2] Type: categorical | Apparatus: Topology, Category theory | Steps: 8
+[14:54:07]     [faa0628646b2] Type: axiomatic | Apparatus: Differential geometry, Functional analysis | Steps: 10
+[14:54:51]     [f4bd59ddb3e4] Confidence: 0.27 (low)
+[14:54:51]     [f4bd59ddb3e4] Done: 173s, $0.57 (total: $140.53)
+[14:54:51]   [262/266] fbc5c978466b — Quantum Foundations, Optics and Photonics
+[14:55:09]     [f7210df7f5d8] Confidence: 0.21 (low)
+[14:55:09]     [f7210df7f5d8] Done: 161s, $0.54 (total: $141.07)
+[14:55:09]   [263/266] fdb67c62dd71 — Algebraic Geometry, Number Theory
+[14:55:13]     [f7fe79e51b41] Confidence: 0.21 (low)
+[14:55:13]     [f7fe79e51b41] Done: 161s, $0.52 (total: $141.59)
+[14:55:13]   [264/266] fdea44ecf6f9 — Astrophysics, Plasma Physics
+[14:55:18]     [f760d26129e8] Confidence: 0.21 (low)
+[14:55:18]     [f760d26129e8] Done: 170s, $0.56 (total: $142.15)
+[14:55:18]   [265/266] ff6aacc05449 — Quantum Gravity, Optics and Photonics
+[14:55:28]     [f6c17dd46347] Confidence: 0.24 (low)
+[14:55:28]     [f6c17dd46347] Done: 201s, $0.67 (total: $142.82)
+[14:55:28]   [266/266] ff8eba52e6d8 — Quantum Field Theory, Fluid Dynamics
+[14:55:44]     [faa0628646b2] Confidence: 0.28 (low)
+[14:55:44]     [faa0628646b2] Done: 176s, $0.59 (total: $143.41)
+[14:56:04]     [f9ab553e2ff2] Confidence: 0.23 (low)
+[14:56:04]     [f9ab553e2ff2] Done: 202s, $0.68 (total: $144.10)
+[14:56:22]     [fbc5c978466b] Type: categorical | Apparatus: Functional analysis, Category theory | Steps: 10
+[14:56:26]     [fdb67c62dd71] Type: categorical | Apparatus: Category theory, Algebraic structures | Steps: 8
+[14:56:30]     [fdea44ecf6f9] Type: constraint_logic | Apparatus: Topology, Dynamical systems | Steps: 8
+[14:56:50]     [ff8eba52e6d8] Type: categorical | Apparatus: Differential geometry, Category theory | Steps: 6
+[14:57:02]     [ff6aacc05449] Type: axiomatic | Apparatus: Differential geometry, Functional analysis | Steps: 8
+[14:57:59]     [fdea44ecf6f9] Confidence: 0.21 (low)
+[14:57:59]     [fdea44ecf6f9] Done: 167s, $0.52 (total: $144.62)

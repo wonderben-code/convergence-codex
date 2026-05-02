@@ -1,0 +1,13 @@
+{
+  "proof_id": "4f42155d59f5",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous categorical framework for physical systems and phase transitions does not exist in standard mathematics. We need: (1) A formal definition of the category C of physical systems with phase transitions as morphisms, (2) A precise characterization of 'microscopic details' as a mathematical structure, (3) A categorical formulation of the renormalization group that properly captures its semigroup structure and fixed points",
+    "10 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

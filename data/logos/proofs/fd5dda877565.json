@@ -1,0 +1,349 @@
+{
+  "id": "fd5dda877565",
+  "convergence_id": "f7fe79e51b41",
+  "timestamp": "2026-05-02T14:52:32.610554+00:00",
+  "proposition": "Let M be a smooth manifold and C be a category. For any functor F: Sing(M) \u2192 C from the singularity category of M to C that preserves local analytical data, there exists a unique extension F\u0303: Cob(M) \u2192 C to the cobordism category of M such that F\u0303 determines all global structural invariants of M.",
+  "proposition_natural": "Local analytical singularities completely determine global structural properties",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Topology",
+    "Differential geometry"
+  ],
+  "apparatus_justification": "Category theory provides the framework for formalizing how local data determines global structure through sheaf theory and the comparison between local/global sections. Topology is essential for defining singularities and local neighborhoods, while differential geometry provides the geometric context where singularities naturally arise.",
+  "proof_natural": "**Proposition.** Let M be a smooth manifold and C be a category. For any functor F: Sing(M) \u2192 C from the singularity category of M to C that preserves local analytical data, there exists a unique extension F\u0303: Cob(M) \u2192 C to the cobordism category of M such that F\u0303 determines all global structural invariants of M.\n\n**Proof.** Let M be a smooth manifold of dimension n, and let C be a category with sufficient limits and colimits. We assume that M is oriented and compact unless otherwise specified. Let Sing(M) denote the category of germs of analytical singularities on M, and let Cob(M) denote the cobordism category associated to M. We understand local analytical data to include jet spaces, Taylor expansions, and critical point behavior, while global structural invariants encompass homology groups, characteristic classes, and cobordism classes. We work in a setting where the cobordism hypothesis applies.\n\nBy Morse theory, the critical points of a generic smooth function f: M \u2192 \u211d determine the homology of M. This follows from the Morse inequalities and the handle decomposition theorem, which establish that M has the homotopy type of a CW-complex with one cell of dimension k for each critical point of index k. The local behavior near these critical points is encoded in Sing(M) through the Hessian and higher derivatives, as the singularity category by definition includes germs of functions at critical points.\n\nFor any elliptic differential operator D on M, the Atiyah-Singer index theorem establishes that ind(D) equals the integral of the Chern character of the symbol of D times the Todd class of M. The local analytical invariants of D near singularities determine its symbol class, since the principal symbol is completely determined by the highest order terms of the operator in local coordinates.\n\n[Note: At this stage, we require a result showing that all global invariants of M can be expressed via indices of suitable elliptic operators. While many important invariants admit such descriptions, a complete classification remains open.]\n\nBy the cobordism hypothesis, as proved by Lurie following Baez-Dolan, a functor from points (corresponding to 0-dimensional singularities) extends uniquely to a symmetric monoidal functor on all cobordisms, provided the target objects are fully dualizable. The hypothesis states that symmetric monoidal n-functors from Cob_n to C are completely determined by their values on fully dualizable objects in C.\n\n[Note: A gap remains in establishing that Sing(M) generates sufficient data to apply the cobordism hypothesis directly. This would require showing that singularities form a generating set for the cobordism category, which is a non-trivial claim requiring further investigation.]\n\nGiven these constructions, the functor F\u0303 obtained via the cobordism hypothesis recovers all cobordism invariants of M by the very construction of the cobordism category. The uniqueness of F\u0303 follows from the uniqueness statement in the cobordism hypothesis.\n\nTherefore, modulo the identified gaps, we have shown that local analytical data encoded in Sing(M) determines a unique extension to Cob(M) that captures global structural invariants. This completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.CategoryTheory.Functor.Basic\nimport Mathlib.Geometry.Manifold.SmoothManifoldWithCorners\nimport Mathlib.Topology.Basic\nimport Mathlib.Analysis.Calculus.Deriv\n\n/-- The singularity category of a smooth manifold M -/\ndef SingularityCategory (M : Type*) [SmoothManifoldWithCorners \ud835\udcd8(\u211d, M) M] : Type* :=\n  sorry -- Missing: Definition of singularity category encoding critical points and local data\n\n/-- The cobordism category of a smooth manifold M -/\ndef CobordismCategory (M : Type*) [SmoothManifoldWithCorners \ud835\udcd8(\u211d, M) M] : Type* :=\n  sorry -- Missing: Definition of cobordism category\n\ninstance (M : Type*) [SmoothManifoldWithCorners \ud835\udcd8(\u211d, M) M] : Category (SingularityCategory M) :=\n  sorry -- Missing: Category structure on singularity category\n\ninstance (M : Type*) [SmoothManifoldWithCorners \ud835\udcd8(\u211d, M) M] : Category (CobordismCategory M) :=\n  sorry -- Missing: Category structure on cobordism category\n\n/-- A functor preserves local analytical data if it respects the local structure near singularities -/\ndef PreservesLocalAnalyticalData {M : Type*} [SmoothManifoldWithCorners \ud835\udcd8(\u211d, M) M]\n  {C : Type*} [Category C] (F : SingularityCategory M \u2964 C) : Prop :=\n  sorry -- Missing: Definition of preservation of local analytical data\n\n/-- Global structural invariants of a manifold -/\ndef GlobalStructuralInvariants (M : Type*) [SmoothManifoldWithCorners \ud835\udcd8(\u211d, M) M] : Type* :=\n  sorry -- Missing: Definition of global structural invariants\n\n/-- A functor determines global structural invariants -/\ndef DeterminesGlobalInvariants {M : Type*} [SmoothManifoldWithCorners \ud835\udcd8(\u211d, M) M]\n  {C : Type*} [Category C] (F : CobordismCategory M \u2964 C) : Prop :=\n  sorry -- Missing: Definition of how a functor determines invariants\n\n/-- Main theorem: Extension of functors from singularity to cobordism category -/\ntheorem functor_extension_theorem {M : Type*} [SmoothManifoldWithCorners \ud835\udcd8(\u211d, M) M]\n  {C : Type*} [Category C] (F : SingularityCategory M \u2964 C)\n  (h : PreservesLocalAnalyticalData F) :\n  \u2203! (F_tilde : CobordismCategory M \u2964 C), DeterminesGlobalInvariants F_tilde :=\nbegin\n  -- Step 1: Apply Morse theory\n  have morse_critical : \u2200 (f : C\u221e(M, \u211d)), \u2203 (critical_points : Set M),\n    sorry, -- Missing: Morse theory formalization\n  \n  -- Step 2: Local behavior encoded in Sing(M)\n  have local_encoding : \u2200 (p : M) (f : C\u221e(M, \u211d)),\n    sorry, -- Missing: Encoding of Hessian and higher derivatives in singularity category\n  \n  -- Step 3: Atiyah-Singer index theorem\n  have atiyah_singer : \u2200 (D : EllipticOperator M),\n    sorry, -- Missing: Atiyah-Singer index theorem\n  \n  -- Step 4: Local analytical invariants determine symbol class\n  have symbol_determination : \u2200 (D : DifferentialOperator M),\n    sorry, -- Missing: Principal symbol theory\n  \n  -- Step 5: Gap - need classification of invariants\n  have invariants_via_indices : sorry, -- Gap: Complete classification needed\n  \n  -- Step 6: Cobordism hypothesis application\n  have cobordism_hypothesis : \u2200 (F\u2080 : Points \u2964 C),\n    sorry, -- Missing: Lurie's cobordism hypothesis\n  \n  -- Step 7: Gap - singularities generate cobordisms\n  have generating_property : sorry, -- Gap: Need to show generating property\n  \n  -- Step 8: Construction recovers all invariants\n  use sorry, -- The extended functor F_tilde\n  constructor,\n  { -- Proof that F_tilde determines global invariants\n    sorry -- Missing: Construction via cobordism hypothesis\n  },\n  { -- Uniqueness proof\n    intros G hG,\n    sorry -- Missing: Uniqueness from cobordism hypothesis\n  }\nend",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "By Morse theory, the critical points of a generic smooth function f: M \u2192 \u211d determine the homology of M",
+      "justification": "Morse inequalities and the handle decomposition theorem",
+      "dependencies": [
+        "Morse Theory (Milnor, 1963)"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "The local behavior near critical points is encoded in Sing(M) via the Hessian and higher derivatives",
+      "justification": "Definition of the singularity category includes germs of functions at critical points",
+      "dependencies": [
+        "Definition of Sing(M)"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "For any elliptic differential operator D on M, the Atiyah-Singer index theorem relates ind(D) to topological data",
+      "justification": "The index equals the integral of the Chern character times the Todd class",
+      "dependencies": [
+        "Atiyah-Singer Index Theorem (1963)"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The local analytical invariants of D near singularities determine its symbol class",
+      "justification": "The principal symbol is determined by highest order terms in local coordinates",
+      "dependencies": [
+        "Step 3",
+        "Theory of elliptic operators"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "[Gap: Need to show that all global invariants can be expressed via indices of suitable operators]",
+      "justification": "This would require a complete classification of invariants",
+      "dependencies": [
+        "Unproven conjecture"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "By the cobordism hypothesis, a functor from points (0-dimensional singularities) extends uniquely to all cobordisms",
+      "justification": "Lurie's proof of the Baez-Dolan cobordism hypothesis",
+      "dependencies": [
+        "Cobordism Hypothesis (Lurie, 2009)"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "[Gap: Need to establish that Sing(M) generates enough data to apply cobordism hypothesis]",
+      "justification": "Requires showing singularities form a generating set for cobordisms",
+      "dependencies": [
+        "Steps 1-6"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "The functor F\u0303 constructed via the cobordism hypothesis recovers all cobordism invariants of M",
+      "justification": "By construction of the cobordism category",
+      "dependencies": [
+        "Step 6",
+        "Step 7"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Morse Theory",
+      "authors": "Milnor, J.",
+      "year": "1963",
+      "field": "Differential Topology",
+      "statement": "Critical points of a Morse function determine a CW-complex structure homotopy equivalent to the manifold",
+      "usage": "Establishes that local critical point data determines global topology"
+    },
+    {
+      "name": "Atiyah-Singer Index Theorem",
+      "authors": "Atiyah, M.F. and Singer, I.M.",
+      "year": "1963",
+      "field": "Differential Geometry",
+      "statement": "The analytical index of an elliptic operator equals its topological index",
+      "usage": "Shows local analytical data of operators determines global topological invariants"
+    },
+    {
+      "name": "Cobordism Hypothesis",
+      "authors": "Lurie, J.",
+      "year": "2009",
+      "field": "Higher Category Theory",
+      "statement": "Symmetric monoidal n-functors from Cob_n to C are determined by fully dualizable objects in C",
+      "usage": "Provides mechanism for extending local data to global structures"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "M is a smooth manifold of dimension n",
+    "C is a category with sufficient limits and colimits",
+    "Sing(M) denotes the category of germs of analytical singularities on M",
+    "Cob(M) denotes the cobordism category associated to M",
+    "Local analytical data includes jet spaces, Taylor expansions, and critical point behavior",
+    "Global structural invariants include homology groups, characteristic classes, and cobordism classes",
+    "The notion of 'determines' means there exists a functorial reconstruction",
+    "We work in a setting where the cobordism hypothesis applies",
+    "All manifolds are oriented and compact unless otherwise specified"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Definition of Sing(M)",
+        "issue": "The 'singularity category of M' is never properly defined. What are the objects? Morphisms? How does this relate to actual singularities when M is smooth?",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot fix without completely redefining the fundamental objects"
+      },
+      {
+        "step": "Definition of 'preserves local analytical data'",
+        "issue": "This condition on functors is never made precise. What exactly must be preserved? In what sense?",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Provide explicit conditions on how F acts on jet spaces and Taylor expansions"
+      },
+      {
+        "step": "Connection between Morse theory and Sing(M)",
+        "issue": "The proof jumps from Morse critical points to claiming they're encoded in Sing(M) without establishing how germs at critical points relate to the singularity category",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Explicitly construct the functor from critical points to Sing(M)"
+      },
+      {
+        "step": "Application of cobordism hypothesis",
+        "issue": "The cobordism hypothesis requires symmetric monoidal functors, but nothing establishes that F or its extension has this structure",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would require completely different approach or additional strong assumptions"
+      },
+      {
+        "step": "Cobordism hypothesis prerequisites",
+        "issue": "No verification that target objects in C are fully dualizable, which is required for the cobordism hypothesis",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Add assumption that F maps to fully dualizable objects"
+      },
+      {
+        "step": "Uniqueness claim",
+        "issue": "Even if cobordism hypothesis applies, it only guarantees uniqueness for symmetric monoidal functors, not arbitrary functors",
+        "severity": "major",
+        "fixable": false,
+        "suggested_fix": "Weaken uniqueness claim to symmetric monoidal extensions only"
+      },
+      {
+        "step": "Global invariants determination",
+        "issue": "The proof admits it cannot show all global invariants come from indices of elliptic operators, undermining the main claim",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed without solving an open problem"
+      }
+    ],
+    "hidden_assumptions": [
+      "Sing(M) has a well-defined category structure for smooth manifolds",
+      "There exists a natural functor from critical points to Sing(M)",
+      "F extends to a symmetric monoidal functor",
+      "All global invariants are expressible via elliptic operator indices",
+      "The cobordism category Cob(M) is the standard n-dimensional cobordism category",
+      "Local analytical data at singularities determines global topology"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes singularities determine global invariants to argue that a functor on singularities extends to determine global invariants",
+    "over_generalisation": true,
+    "over_generalisation_details": "Even if all gaps were filled, the proof would at best show that some global invariants (those from elliptic operators) might be recovered, not 'all global structural invariants'",
+    "citation_issues": [
+      "Cobordism hypothesis is misapplied - it concerns n-dimensional cobordisms between manifolds, not the cobordism category 'of M'",
+      "Atiyah-Singer is cited but its connection to the main argument is tenuous at best",
+      "Morse theory doesn't directly relate to a 'singularity category' without additional construction"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed, starting with undefined objects and making unjustified leaps between local and global properties. The attempted application of the cobordism hypothesis is incorrect, and the proof acknowledges but doesn't resolve critical gaps.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish a connection between singularity categories and cobordism categories but fails to prove the existence or uniqueness of the extension F\u0303, and does not demonstrate that F\u0303 determines all global structural invariants",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The singularity category Sing(M) is well-defined and has the claimed properties",
+      "The cobordism category Cob(M) exists and is well-defined for arbitrary manifolds M",
+      "The functor F actually preserves the specific local analytical data claimed",
+      "The cobordism hypothesis applies to the specific categories Sing(M) and Cob(M)",
+      "There exists a meaningful notion of 'generating set for cobordisms' in this context",
+      "The category C has the required structure to support the claimed extension",
+      "All differential operators of interest are elliptic",
+      "The manifold M admits generic Morse functions"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "2",
+        "issue": "The definition of Sing(M) is not standard and the claim that it encodes Hessian and higher derivatives via germs is not justified"
+      },
+      {
+        "step": "4",
+        "issue": "The connection between local analytical invariants near singularities and symbol class determination is not established"
+      },
+      {
+        "step": "6",
+        "issue": "The cobordism hypothesis applies to specific topological field theories, not arbitrary functors from arbitrary categories"
+      },
+      {
+        "step": "8",
+        "issue": "The claim that F\u0303 recovers all cobordism invariants does not follow from the construction, which was never properly established"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Step 5 gap is never filled - no proof that global invariants can be expressed via operator indices",
+      "Step 7 gap is never filled - no proof that singularities generate cobordisms",
+      "No proof of uniqueness of the extension F\u0303",
+      "No proof that F\u0303 actually determines global structural invariants",
+      "No connection established between Steps 1-4 (about Morse theory and operators) and Steps 6-8 (about cobordism hypothesis)",
+      "The relationship between Sing(M) and standard mathematical objects is undefined"
+    ],
+    "internal_score": 0.1
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims uniqueness of extension F\u0303: Cob(M) \u2192 C, but this contradicts proof [102677deecdd] which establishes that mathematical objects are determined by relational structure - multiple functors could preserve the same relational data while differing globally",
+      "The claim that 'all global structural invariants' can be determined from local analytical data conflicts with proof [06879fd9ae87] which shows physical properties are fundamentally contextual and cannot possess predetermined values independent of measurement framework",
+      "The assertion that local singularity data generates sufficient information contradicts proof [0059c78c2998] which requires 'appropriate structural constraints' beyond just local properties to produce global regularity"
+    ],
+    "assumption_conflicts": [
+      "Assumes cobordism hypothesis applies without justification, while existing proofs require explicit structural constraints",
+      "Assumes 'determines' has a functorial reconstruction meaning, but proof [102677deecdd] shows relational structure alone may not uniquely determine objects",
+      "Assumes local analytical data is sufficient for global reconstruction, conflicting with contextuality requirements in proof [06879fd9ae87]"
+    ],
+    "beneficial_connections": [
+      "Could potentially strengthen proof [043c25bfbbd8] about analytic functions encoding structural information if the gaps about operator indices were filled",
+      "Shares categorical framework with proof [0059c78c2998] about local-global relationships, though with conflicting conclusions about sufficiency",
+      "The Morse theory component aligns with proof [0a979a982999] about geometric curvature and localized breakdown mechanisms"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof contains two major gaps that are acknowledged but not addressed, and makes several unjustified leaps. The uniqueness claim is particularly problematic given the categorical framework of existing proofs. The assumption that local data determines global invariants contradicts established results about contextuality and the need for additional structural constraints."
+  },
+  "confidence_score": 0.21000000000000002,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.1,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.1,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous theory connecting analytical singularity categories to cobordism categories, including: (1) A precise definition of the singularity category Sing(M) that captures all relevant local analytical data, (2) A functor from Sing(M) to a suitable point-like subcategory of Cob(M), (3) Proof that this functor satisfies the hypotheses of the cobordism hypothesis",
+  "limitations": [
+    "Step 5: No proof that all global invariants can be expressed via indices of differential operators",
+    "Step 7: Missing rigorous connection between singularity categories and cobordism categories",
+    "The relationship between analytical singularities and algebraic/categorical singularities is not established",
+    "The precise sense in which local data 'determines' global properties needs categorical formalization",
+    "The proof sketch relies on three different mathematical frameworks that are not fully integrated",
+    "The notion of 'complete determination' is not made precise enough for a formal proof",
+    "The cobordism hypothesis applies to topological/smooth structures but may not capture all analytical invariants",
+    "The proof would only work for finite-dimensional manifolds with mild singularities"
+  ],
+  "source_convergence": {
+    "structural_claim": "Local analytical singularities completely determine global structural properties",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Morse Theory",
+        "domain_id": "field_a",
+        "domain_name": "Topology and Geometry",
+        "link_type": "direct",
+        "structural_conclusion": "Global topological structure emerges from local analytical singularities at critical points of smooth functions"
+      },
+      {
+        "result_id": "",
+        "result_name": "Atiyah-Singer Index Theorem",
+        "domain_id": "field_a",
+        "domain_name": "Topology and Geometry",
+        "link_type": "direct",
+        "structural_conclusion": "Local analytical invariants of differential operators equal global topological invariants"
+      },
+      {
+        "result_id": "",
+        "result_name": "Cobordism Hypothesis",
+        "domain_id": "field_b",
+        "domain_name": "Category Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Topological quantum field theories are completely determined by their values on points, showing local algebraic data determines global topological behavior"
+      }
+    ],
+    "domains": [
+      "topology",
+      "category_theory"
+    ],
+    "domain_names": [
+      "Topology and Geometry",
+      "Category Theory"
+    ],
+    "ea_scores": {
+      "strength": 0.1764,
+      "independence": 0.3,
+      "adversarial": 0.3,
+      "reproducibility": 0.5249999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.36666999999999994,
+      "confidence_category": "speculative"
+    },
+    "discovered_in_run": "run_275ec92f734f",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T18:23:11.646368+00:00",
+    "id": "f7fe79e51b41"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.25268999999999997
+  }
+}

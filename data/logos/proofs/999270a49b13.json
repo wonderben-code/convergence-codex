@@ -1,0 +1,354 @@
+{
+  "id": "999270a49b13",
+  "convergence_id": "f760d26129e8",
+  "timestamp": "2026-05-02T14:52:29.139403+00:00",
+  "proposition": "Let C be a category with objects representing physical systems and morphisms representing symmetry transformations. Then for any object S with symmetry group G acting on it, there exists a functor F: C \u2192 C' where C' has objects representing phases, such that: (1) Each symmetry-breaking morphism \u03c6: S \u2192 S' in C maps to a distinct phase object in C', and (2) The kernel of the group homomorphism \u03c1: G \u2192 Aut(S') corresponds bijectively to emergent collective degrees of freedom in the quotient space S/Ker(\u03c1).",
+  "proposition_natural": "Symmetry breaking serves as the fundamental mechanism for the emergence of distinct phases and the appearance of new collective degrees of freedom",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Algebraic structures",
+    "Order theory"
+  ],
+  "apparatus_justification": "Category theory provides the natural framework for formalizing structural convergences across domains through functors and natural transformations. Algebraic structures capture symmetry groups and their breaking, while order theory formalizes phase transitions as partial order relations and fixed points.",
+  "proof_natural": "**Proposition.** Let $\\mathcal{C}$ be a category with objects representing physical systems and morphisms representing symmetry transformations. Then for any object $S$ with symmetry group $G$ acting on it, there exists a functor $F: \\mathcal{C} \\to \\mathcal{C}'$ where $\\mathcal{C}'$ has objects representing phases, such that: (1) Each symmetry-breaking morphism $\\varphi: S \\to S'$ in $\\mathcal{C}$ maps to a distinct phase object in $\\mathcal{C}'$, and (2) The kernel of the group homomorphism $\\rho: G \\to \\text{Aut}(S')$ corresponds bijectively to emergent collective degrees of freedom in the quotient space $S/\\text{Ker}(\\rho)$.\n\n**Proof.** We assume that physical systems can be represented as objects in a category $\\mathcal{C}$ enriched over $\\textbf{Set}$, with symmetry transformations forming functorial group actions. Let phases correspond to equivalence classes of states under residual symmetries, and suppose collective degrees of freedom can be identified with elements of appropriate quotient spaces. We further assume that symmetry breaking can be represented as a morphism reducing the automorphism group, and that there exists a well-defined notion of emergent degrees of freedom in our categorical framework.\n\nLet $S$ be an object in $\\mathcal{C}$ equipped with a $G$-action. By the definition of group actions, this induces a group homomorphism $G \\to \\text{Aut}(S)$, so the automorphism group $\\text{Aut}(S)$ contains $G$ as a subgroup. \n\nConsider a symmetry-breaking morphism $\\varphi: S \\to S'$. By functoriality of group actions under morphisms, this induces a group homomorphism $\\rho: G \\to \\text{Aut}(S')$. The kernel $\\text{Ker}(\\rho)$ consists precisely of those elements of $G$ that act trivially on $S'$, representing the symmetries that have been broken by the morphism $\\varphi$.\n\n[Note: To establish that distinct kernels correspond to distinct phases requires a precise categorical definition of 'phase' that may not exist in standard mathematical literature. We proceed under the assumption that such a correspondence can be established.]\n\nThe quotient space $S/\\text{Ker}(\\rho)$ represents the system modulo the broken symmetries. [Note: The existence of such quotients in general categories is not guaranteed and depends on additional structure in $\\mathcal{C}$.] Elements of this quotient space that are not in the image of the canonical quotient map can be interpreted as new degrees of freedom arising from the symmetry breaking. [Note: The notion of 'emergent' degrees of freedom requires a rigorous categorical definition that we assume but do not provide here.]\n\nWe now construct the functor $F: \\mathcal{C} \\to \\mathcal{C}'$. For each symmetry-breaking morphism $\\varphi: S \\to S'$, we assign a phase object in $\\mathcal{C}'$ determined by the kernel $\\text{Ker}(\\rho)$. [Note: The functoriality of this construction depends on showing that the assignment respects composition, which requires the unestablished correspondence between kernels and phases.]\n\nBy the First Isomorphism Theorem, we have $G/\\text{Ker}(\\rho) \\cong \\text{Im}(\\rho)$. This isomorphism, combined with our construction, yields a bijection between elements of $\\text{Ker}(\\rho)$ and the emergent collective degrees of freedom in $S/\\text{Ker}(\\rho)$. [Note: This requires showing that the relevant structures form groups or modules in a compatible way, which depends on additional assumptions about the categorical framework.]\n\nThe construction draws upon fundamental results from physics: Goldstone's Theorem, which relates spontaneous breaking of continuous symmetries to massless excitations, and Landau's theory of phase transitions, which classifies phases by symmetry breaking and order parameters. These provide physical motivation for our categorical formulation.\n\nThis completes the proof, subject to the noted gaps in the categorical foundations. \u25a1",
+  "proof_lean": "import Mathlib.CategoryTheory.Category.Basic\nimport Mathlib.CategoryTheory.Functor.Basic\nimport Mathlib.GroupTheory.GroupAction.Basic\nimport Mathlib.GroupTheory.GroupAction.Hom\nimport Mathlib.GroupTheory.QuotientGroup\nimport Mathlib.Algebra.Group.Subgroup.Basic\nimport Mathlib.Algebra.Group.Hom.Basic\n\n/-- Category of physical systems with symmetry transformations as morphisms -/\nstructure PhysicalSystemCategory where\n  /-- Objects represent physical systems -/\n  obj : Type*\n  /-- Morphisms represent symmetry transformations -/\n  hom : obj \u2192 obj \u2192 Type*\n  /-- Category structure -/\n  category : Category.{0} obj\n  /-- Each morphism is a symmetry transformation -/\n  symmetry_morphism : \u2200 {X Y : obj}, hom X Y \u2192 sorry -- Need definition of symmetry transformation\n\n/-- Phase category where objects represent phases -/\nstructure PhaseCategory where\n  obj : Type*\n  hom : obj \u2192 obj \u2192 Type*\n  category : Category.{0} obj\n  /-- Phase objects have specific properties -/\n  phase_property : obj \u2192 Prop := sorry -- Need definition of phase\n\nvariable (C : PhysicalSystemCategory) (G : Type*) [Group G]\n\n/-- A physical system with G-action -/\nstructure SystemWithSymmetry where\n  system : C.obj\n  action : G \u2192* Aut system\n\n/-- Symmetry-breaking morphism -/\nstructure SymmetryBreakingMorphism (S S' : SystemWithSymmetry C G) where\n  morphism : S.system \u27f6 S'.system\n  /-- Property that makes this a symmetry-breaking morphism -/\n  breaks_symmetry : sorry -- Need definition of symmetry breaking\n\n/-- The main theorem about symmetry breaking and emergent degrees of freedom -/\ntheorem symmetry_breaking_emergence (C : PhysicalSystemCategory) (G : Type*) [Group G]\n    (S : SystemWithSymmetry C G) :\n    \u2203 (C' : PhaseCategory) (F : C.obj \u2964 C'.obj),\n    (\u2200 (S' : SystemWithSymmetry C G) (\u03c6 : SymmetryBreakingMorphism S S'),\n      \u2203! (phase : C'.obj), F.obj S'.system = phase) \u2227\n    (\u2200 (S' : SystemWithSymmetry C G) (\u03c6 : SymmetryBreakingMorphism S S'),\n      let \u03c1 : G \u2192* Aut S'.system := sorry -- Induced homomorphism\n      \u2203 (emergent_dof : Type*),\n      Nonempty (emergent_dof \u2243 sorry)) := by -- Need quotient S/Ker(\u03c1) and definition of emergent DOF\n  -- Step 1: C is defined as PhysicalSystemCategory by construction\n  \n  -- Step 2: G acts on S giving a subgroup of Aut(S)\n  have g_in_aut : \u2200 g : G, S.action g \u2208 Aut S.system := by\n    intro g\n    exact S.action g\n  \n  -- Step 3: Symmetry-breaking morphism induces group homomorphism\n  sorry -- Need to show how morphism \u03c6 induces \u03c1 : G \u2192* Aut(S')\n  \n  -- Step 4: Kernel represents broken symmetries\n  sorry -- Need to define Ker(\u03c1) and show it represents broken symmetries\n  \n  -- Step 5: Distinct kernels correspond to distinct phases\n  sorry -- Gap: Need categorical definition of phase\n  \n  -- Step 6: Quotient space S/Ker(\u03c1) exists\n  sorry -- Gap: Quotient may not exist in general categories\n  \n  -- Step 7: Elements not in image represent new degrees of freedom\n  sorry -- Gap: Need definition of emergent degrees of freedom\n  \n  -- Step 8: Define functor F\n  sorry -- Gap: Need to construct F and prove functoriality\n  \n  -- Step 9: Bijection via first isomorphism theorem\n  sorry -- Gap: Need compatible group/module structures",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the category C of physical systems with G-actions",
+      "justification": "By assumption, physical systems form objects in a category with symmetry transformations as morphisms",
+      "dependencies": [
+        "Assumption 1",
+        "Assumption 2"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "For any object S in C with G-action, the automorphism group Aut(S) contains G as a subgroup",
+      "justification": "Group actions induce automorphisms by definition",
+      "dependencies": [
+        "Step 1",
+        "Standard category theory"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "A symmetry-breaking morphism \u03c6: S \u2192 S' induces a group homomorphism \u03c1: G \u2192 Aut(S')",
+      "justification": "Functoriality of group actions under morphisms",
+      "dependencies": [
+        "Step 2",
+        "Assumption 6"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The kernel Ker(\u03c1) represents the broken symmetries",
+      "justification": "Elements of G that act trivially on S' are precisely those symmetries that have been broken",
+      "dependencies": [
+        "Step 3",
+        "Group theory"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "[Gap: Need to establish that distinct kernels correspond to distinct phases]",
+      "justification": "This requires a precise categorical definition of 'phase' that may not exist in standard mathematics",
+      "dependencies": [
+        "Step 4",
+        "Assumption 3"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "The quotient space S/Ker(\u03c1) exists in an appropriate category",
+      "justification": "[Gap: Existence of quotients in general categories is not guaranteed]",
+      "dependencies": [
+        "Step 4",
+        "Assumption 4"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Elements of S/Ker(\u03c1) that are not in the image of the quotient map represent new degrees of freedom",
+      "justification": "[Gap: The notion of 'new' or 'emergent' degrees of freedom needs rigorous categorical definition]",
+      "dependencies": [
+        "Step 6",
+        "Assumption 7"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Define functor F mapping symmetry-breaking morphisms to phase objects",
+      "justification": "[Gap: Construction of F requires showing functoriality, which depends on unestablished correspondence]",
+      "dependencies": [
+        "Steps 5, 7",
+        "Assumption 8"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "The bijection between Ker(\u03c1) and emergent degrees of freedom follows from the first isomorphism theorem",
+      "justification": "[Gap: This requires showing that the relevant structures form groups/modules in a compatible way]",
+      "dependencies": [
+        "Steps 4, 7",
+        "First Isomorphism Theorem"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Goldstone's Theorem",
+      "authors": "Goldstone, Salam, Weinberg",
+      "year": "1962",
+      "field": "Quantum Field Theory",
+      "statement": "Spontaneous breaking of continuous symmetries implies massless excitations",
+      "usage": "Provides physical motivation but not used directly in categorical proof"
+    },
+    {
+      "name": "Landau Theory of Phase Transitions",
+      "authors": "L.D. Landau",
+      "year": "1937",
+      "field": "Statistical Mechanics",
+      "statement": "Phase transitions can be classified by symmetry breaking and order parameters",
+      "usage": "Motivates the correspondence between symmetry breaking and phases"
+    },
+    {
+      "name": "First Isomorphism Theorem",
+      "authors": "Emmy Noether",
+      "year": "1927",
+      "field": "Abstract Algebra",
+      "statement": "For group homomorphism f: G \u2192 H, G/ker(f) \u2245 Im(f)",
+      "usage": "Used to establish bijection in step 9"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Physical systems can be represented as objects in a category C",
+    "Symmetry transformations form group actions that are functorial",
+    "Phases correspond to equivalence classes of states under residual symmetries",
+    "Collective degrees of freedom can be identified with elements of quotient spaces",
+    "The category C has sufficient structure to support group actions (enriched over Set)",
+    "Symmetry breaking can be represented as a morphism that reduces the automorphism group",
+    "There exists a well-defined notion of 'emergent' degrees of freedom in the categorical framework",
+    "The correspondence between broken symmetries and new degrees of freedom is functorial"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Definition of category C'",
+        "issue": "The category C' with 'objects representing phases' is never properly constructed or defined. The proof assumes its existence without showing how to build it or proving it exists",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would require a complete mathematical definition of what 'phases' are categorically and proof that they form a category"
+      },
+      {
+        "step": "Construction of functor F",
+        "issue": "The functor F is claimed to exist but never actually constructed. No definition on objects or morphisms is given, and functoriality is not verified",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Must explicitly define F on objects and morphisms and prove it preserves composition and identities"
+      },
+      {
+        "step": "Correspondence between kernels and phases",
+        "issue": "The proof admits this correspondence is not established but then proceeds to use it as if it were proven",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot proceed without first establishing this correspondence rigorously"
+      },
+      {
+        "step": "Existence of quotient S/Ker(\u03c1)",
+        "issue": "Quotients by group actions don't exist in general categories. The proof acknowledges this but continues anyway",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need additional structure on C (limits, colimits, etc.) and proof that quotients exist"
+      },
+      {
+        "step": "Bijection claim in part (2)",
+        "issue": "Claims bijection between Ker(\u03c1) and 'emergent collective degrees of freedom' without defining the latter or proving any bijection exists",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Requires precise definition of 'emergent collective degrees of freedom' and actual proof of bijection"
+      },
+      {
+        "step": "Application of First Isomorphism Theorem",
+        "issue": "The isomorphism G/Ker(\u03c1) \u2245 Im(\u03c1) is used to claim a bijection with 'emergent degrees of freedom' but the logical connection is completely missing",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "The First Isomorphism Theorem says nothing about emergent degrees of freedom"
+      }
+    ],
+    "hidden_assumptions": [
+      "That 'phases' form mathematical objects that can be organized into a category",
+      "That 'emergent collective degrees of freedom' is a well-defined mathematical concept",
+      "That symmetry-breaking morphisms form a distinguished class of morphisms in C",
+      "That every symmetry group action on objects in C induces the claimed group homomorphism structure",
+      "That physical intuition from Goldstone's theorem and Landau theory translates to categorical statements",
+      "That distinct kernels necessarily correspond to distinct phases",
+      "That the quotient construction is functorial"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes the existence of a functor F with the desired properties to prove that such a functor exists. It also assumes the correspondence between kernels and phases that it claims to establish",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to work for any category C with the stated properties, but actually requires very specific additional structure (quotients, specific group actions, etc.) that may not exist. Even if all gaps were fixed, this would only work for very special categories, not the general case claimed",
+    "citation_issues": [
+      "Goldstone's Theorem and Landau theory are physics results about specific physical systems, not general categorical statements. Their invocation adds no mathematical content to the proof",
+      "The First Isomorphism Theorem is correctly stated but misapplied - it says nothing about emergent degrees of freedom or the claimed bijection"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This is not a mathematical proof but rather a sketch of physical intuition dressed in categorical language. The core mathematical objects (category C', phases, emergent degrees of freedom) are undefined, the functor F is never constructed, and critical steps are acknowledged as gaps but then ignored. The proof would fail even if attempting to prove a much weaker statement.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish a framework for relating symmetry breaking to phases but fails to prove either the existence of the functor F or the bijective correspondence claimed in the proposition",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The category C is enriched over groups or has sufficient structure for group actions",
+      "The target category C' exists and has the required properties",
+      "Quotient objects S/Ker(\u03c1) exist in the category C",
+      "The notion of 'emergent degrees of freedom' has a precise categorical definition",
+      "The correspondence between phases and equivalence classes is functorial",
+      "Symmetry-breaking morphisms preserve enough structure to induce meaningful group homomorphisms",
+      "The category C has pullbacks/pushouts needed for quotient constructions"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 2",
+        "issue": "Group actions do not necessarily induce automorphisms in arbitrary categories - this requires additional structure"
+      },
+      {
+        "step": "Step 3",
+        "issue": "Functoriality of group actions under morphisms is not automatic and requires the morphism to be G-equivariant"
+      },
+      {
+        "step": "Step 6",
+        "issue": "Quotient objects do not exist in general categories without additional assumptions about limits/colimits"
+      },
+      {
+        "step": "Step 7",
+        "issue": "The notion of elements 'not in the image' is meaningless without a concrete realization, and 'emergent degrees of freedom' lacks definition"
+      },
+      {
+        "step": "Step 8",
+        "issue": "The construction of functor F is not provided, and functoriality cannot be established without the missing correspondence"
+      },
+      {
+        "step": "Step 9",
+        "issue": "The first isomorphism theorem applies to groups/modules, but the categorical structures involved are not shown to have this algebraic structure"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No construction of the functor F is provided",
+      "The bijective correspondence in part (2) of the proposition is never established",
+      "Critical gaps in Steps 5, 6, 7, 8, and 9 are acknowledged but not resolved",
+      "The definition of 'phase objects' in category C' is never given",
+      "No verification that the constructed functor satisfies the required properties"
+    ],
+    "internal_score": 0.1
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims 'Elements of S/Ker(\u03c1) that are not in the image of the quotient map represent new degrees of freedom' - this is mathematically incoherent since by definition of quotient spaces, ALL elements of S/Ker(\u03c1) are in the image of the quotient map",
+      "The proof claims to use 'the first isomorphism theorem' to establish bijection between Ker(\u03c1) and emergent degrees of freedom, but the first isomorphism theorem relates kernels to quotient groups, not to 'emergent degrees of freedom' which is undefined",
+      "Proof [0178ff46c5ee] establishes that phase transitions involve symmetry breaking with specific measure-theoretic structure, but the new proof provides no measure theory or probability framework to be consistent with this established result"
+    ],
+    "assumption_conflicts": [
+      "New proof assumes 'emergent degrees of freedom' can be categorically defined without providing this definition, conflicting with the rigorous axiomatic approach in proofs [0178ff46c5ee] and [087da119976b]",
+      "Claims functoriality of symmetry breaking without establishing the categorical structure needed, while proof [102677deecdd] emphasizes that relational structure must be precisely defined",
+      "Assumes bijective correspondence between broken symmetries and new degrees of freedom without justification, contradicting the careful constraint analysis in proof [06d1b829563e]"
+    ],
+    "beneficial_connections": [
+      "Attempts to connect to proof [0178ff46c5ee] on phase transitions and symmetry breaking",
+      "Could potentially relate to proof [087da119976b] on spontaneous symmetry breaking if mathematical errors were corrected"
+    ],
+    "consistency_score": 0.2,
+    "notes": "This proof contains fundamental mathematical errors including misunderstanding of quotient spaces and misapplication of the first isomorphism theorem. The gap noted '[Gap: Need to establish that distinct kernels correspond to distinct phases]' is actually a fatal flaw that invalidates the main claim. The categorical framework is poorly defined and the notion of 'emergent degrees of freedom' lacks mathematical rigor."
+  },
+  "confidence_score": 0.21000000000000002,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.1,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.1,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous categorical framework for physical phases and emergent degrees of freedom is needed. Specifically: (1) A category-theoretic definition of 'phase' that captures the physical notion, (2) A formal definition of 'emergent' vs 'fundamental' degrees of freedom in categorical terms, (3) A proof that quotient objects exist in the relevant categories of physical systems, (4) Functorial properties of the phase correspondence",
+  "limitations": [
+    "No rigorous categorical definition of 'phase' exists that captures the physical notion",
+    "The concept of 'emergent' degrees of freedom lacks precise categorical formulation",
+    "Quotient objects may not exist in general categories of physical systems",
+    "The functoriality of the phase correspondence F is assumed but not proven",
+    "The bijection between broken symmetries and new degrees of freedom requires additional structure",
+    "The proof sketch relies on analogies between physical concepts and categorical structures that may not be exact",
+    "The framework assumes all symmetries can be represented as group actions, excluding more general symmetry concepts",
+    "The correspondence may only hold for certain classes of symmetry breaking, not universally",
+    "The categorical framework may be too abstract to capture all physically relevant details"
+  ],
+  "source_convergence": {
+    "structural_claim": "Symmetry breaking serves as the fundamental mechanism for the emergence of distinct phases and the appearance of new collective degrees of freedom",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Spontaneous Symmetry Breaking (Higgs Mechanism)",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Field Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Gauge symmetries can be hidden with new massive degrees of freedom emerging from symmetry breaking"
+      },
+      {
+        "result_id": "",
+        "result_name": "Landau Theory of Phase Transitions",
+        "domain_id": "field_b",
+        "domain_name": "Thermodynamics and Statistical Mechanics",
+        "link_type": "direct",
+        "structural_conclusion": "Phase transitions represent symmetry-breaking events where order parameters emerge"
+      }
+    ],
+    "domains": [
+      "quantum_field_theory",
+      "thermodynamics"
+    ],
+    "domain_names": [
+      "Quantum Field Theory",
+      "Thermodynamics and Statistical Mechanics"
+    ],
+    "ea_scores": {
+      "strength": 0.1428,
+      "independence": 0.7,
+      "adversarial": 0.12,
+      "reproducibility": 0.42,
+      "depth_consistency": 1.0,
+      "confidence": 0.40484,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:24:43.564417+00:00",
+    "id": "f760d26129e8"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.284955
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "proof_id": "c2b910a64d88",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous mathematical framework for bulk-boundary correspondence that works across different physical contexts (quantum, classical wave, etc.) and provides quantitative stability estimates for edge modes under disorder",
+    "Difficulty assessed as challenging",
+    "7 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}
