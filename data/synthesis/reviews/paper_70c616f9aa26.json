@@ -1,0 +1,44 @@
+{
+  "paper_id": "paper_70c616f9aa26",
+  "sections_to_review": [
+    {
+      "section": "results",
+      "reason": "The proof of Proposition 1 states 'The proof proceeds by establishing that the topological invariant \u03bd acts as a conservation law' but never actually provides the proof steps, only a high-level description.",
+      "priority": "major",
+      "suggested_fix": "Either provide the actual proof steps or explicitly state 'The proof sketch proceeds as follows...' to clarify this is an outline rather than a complete proof."
+    },
+    {
+      "section": "results",
+      "reason": "Mathematical notation introduced without plain-language interpretation: 'T*M' appears in Proposition 1 without explanation.",
+      "priority": "minor",
+      "suggested_fix": "Add: 'T*M (the cotangent bundle, representing all possible positions and momenta on the manifold)'"
+    },
+    {
+      "section": "results",
+      "reason": "The connection between 'operator norm ||V||_op < \u0394/2' and physical disorder is not explained for non-specialists.",
+      "priority": "minor",
+      "suggested_fix": "Add: 'where the operator norm measures the maximum strength of the perturbation and \u0394/2 ensures the perturbation is weaker than half the gap between energy bands'"
+    },
+    {
+      "section": "discussion",
+      "reason": "The claim 'The absence of fermion statistics in acoustic systems means that many-body effects central to condensed matter physics\u2014such as superconductivity or the fractional quantum Hall effect\u2014have no direct acoustic analog' could be clearer about what fermion statistics are.",
+      "priority": "minor",
+      "suggested_fix": "Add brief explanation: 'fermion statistics (the quantum mechanical rule that no two electrons can occupy the same state)'"
+    },
+    {
+      "section": "conclusion",
+      "reason": "The conclusion introduces a new concept not discussed in the main text: 'developing a complete field theory of acoustic topological transitions'",
+      "priority": "minor",
+      "suggested_fix": "Either remove this or add a brief explanation of what a field theory approach would entail."
+    },
+    {
+      "section": "references",
+      "reason": "References appear to be all pre-2015, which seems unlikely for a field involving topological acoustics. The cutoff suggests these may be foundational references only.",
+      "priority": "minor",
+      "suggested_fix": "Add a note if these are only foundational references, or include more recent work on acoustic topological insulators."
+    }
+  ],
+  "citation_concerns": [],
+  "framing_decisions": [],
+  "overall_priority": "recommended"
+}
