@@ -41,7 +41,6 @@ from synthesis.prompts.capstone import (
     CAPSTONE_PREDICTIONS_PROMPT,
     CAPSTONE_CONNECTIONS_PROMPT,
     CAPSTONE_LIMITATIONS_PROMPT,
-    CAPSTONE_PROVENANCE_PROMPT,
     CAPSTONE_REFERENCES_PROMPT,
     CAPSTONE_REVIEW_PROMPT,
     CROSS_PAPER_CHECK_PROMPT,
@@ -664,11 +663,19 @@ class CapstoneComposer:
                            f"Independence score: {claim.get('independence_score', 0):.2f}, " \
                            f"Source convergences: {claim.get('num_source_convergences', 0)}"
 
+        # Build real convergence ID reference for the AI (prevents hallucinated IDs)
+        # Include ALL supporting convergences — not capped — so AI never needs to invent
+        real_conv_ids_for_predictions = "\n".join(
+            f"- {c.get('id', '???')}: {' × '.join(c.get('domain_names', c.get('domains', [])))}"
+            for c in supporting_convs
+        )
+
         predictions = self.api.query_deep(
             CAPSTONE_PREDICTIONS_PROMPT.format(
                 claim_text=claim_text,
                 predictions_list=predictions_list,
                 evidence_strength=evidence_strength,
+                real_convergence_ids=real_conv_ids_for_predictions,
             ),
             system=composition_system,
             max_tokens=4096,
@@ -1012,6 +1019,7 @@ class CapstoneComposer:
 
     def _assemble_markdown(self, paper: PaperDraft, sections: list[dict]) -> str:
         """Assemble full markdown from sections."""
+        import re
         lines = [
             f"# {paper.title}",
             "",
@@ -1026,7 +1034,12 @@ class CapstoneComposer:
         for s in sections:
             lines.append(f"## {s.get('title', '')}")
             lines.append("")
-            lines.append(s.get("content", ""))
+            # Strip duplicate header: AI sometimes starts content with its own
+            # markdown header (e.g. "## The Problem" or "### Abstract").
+            # Remove leading headers that duplicate the one we just added.
+            content = s.get("content", "")
+            content = re.sub(r"^#{1,4}\s+.*?\n+", "", content, count=1)
+            lines.append(content)
             lines.append("")
         return "\n".join(lines)
 
@@ -1306,7 +1319,6 @@ class CapstoneComposer:
         to Paper G16 or other methodology papers.
         """
         return (
-            "## Discovery Methodology\n\n"
             "All convergences reported in this paper were discovered by Gnosis AI, an autonomous "
             "knowledge discovery system. The methodology proceeds in three stages:\n\n"
             "**Stage 1: Domain Analysis.** For each pair of knowledge domains (e.g., quantum mechanics "

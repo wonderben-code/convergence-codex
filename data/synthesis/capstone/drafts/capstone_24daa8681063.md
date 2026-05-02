@@ -9,8 +9,6 @@
 
 ## Abstract
 
-### Abstract
-
 The foundations of physics face a profound crisis: quantum mechanics demands contextuality while general relativity assumes predetermined spacetime structure. This incompatibility blocks every attempt to unify our fundamental theories. Yet the solution may lie hidden in plain sight, encoded in how physical systems actually behave at their boundaries.
 
 Physical reality encodes its fundamental structure through dimensional reduction at boundaries where constraints meet measurement contexts. When quantum fields encounter boundaries—whether the edge of a material, the horizon of a black hole, or the choice of measurement basis—the full dimensional structure cannot be maintained. The system must project onto a lower-dimensional surface that preserves only certain information while destroying others. This projection IS spontaneous symmetry breaking in quantum field theory. This projection IS contextuality in quantum foundations. The boundary forces reality to choose what can be simultaneously real.
@@ -18,8 +16,6 @@ Physical reality encodes its fundamental structure through dimensional reduction
 This principle makes testable predictions grounded in our convergence evidence: First, every spontaneous symmetry breaking phenomenon must exhibit boundary-induced dimensional reduction measurable through entanglement entropy scaling. Second, as a speculative extension, if this principle applies to gravitational horizons, the information paradox may dissolve because dimensional reduction at the would-be horizon could prevent full black hole formation—though this remains beyond our current evidence base. Third, these findings suggest—again speculatively—that quantum gravity cannot be a fixed-background theory because spacetime structure itself may emerge from how boundaries constrain dimensional reduction. The core claim stands on solid convergence evidence: the structure of physical law emerges from geometry's response to constraint at boundaries.
 
 ## 1. The Problem
-
-## The Problem
 
 The measurement problem in quantum mechanics stands as perhaps the most profound unresolved question in fundamental physics. At its core lies a stark contradiction: quantum mechanics describes systems evolving unitarily according to the Schrödinger equation, maintaining superpositions indefinitely, yet we observe definite outcomes when we measure. This transition from quantum superposition to classical definiteness — the "collapse" of the wave function — has no place in the fundamental equations of quantum mechanics.
 
@@ -36,8 +32,6 @@ More profoundly, the measurement problem reflects our failure to understand how 
 Recent developments have sharpened rather than resolved these issues. Experiments demonstrating quantum effects at ever-larger scales — from fullerene molecules to mechanical oscillators approaching the quantum regime — push the boundary where collapse must occur without revealing its mechanism. Quantum information theory has clarified what decoherence can and cannot explain, highlighting the persistent gap between loss of coherence and selection of outcomes. The measurement problem remains as acute today as when von Neumann first formalized it, despite eight decades of theoretical and experimental progress.
 
 ## 2. Setup and Definitions
-
-## Setup and Definitions
 
 We establish the mathematical framework for analyzing how physical reality encodes structure through dimensional reduction at constraint-measurement boundaries.
 
@@ -93,8 +87,6 @@ This framework applies to:
 The mathematical structure combines topos-theoretic formulations of contextuality (following 06879fd9ae87) with differential geometric descriptions of constraint surfaces, unified through the categorical framework of Context(S).
 
 ## 3. The Central Result
-
-## The Central Result
 
 ### Conjecture 1 (Boundary Encoding Principle)
 Physical reality encodes its fundamental structure through dimensional reduction at boundaries where constraints meet measurement contexts, manifesting as spontaneous symmetry breaking in quantum field theory and contextuality in quantum foundations.
@@ -172,13 +164,11 @@ If further research validates the conjecture, the following corollaries would fo
 
 ## 4. Predictions
 
-## Predictions
-
 The following predictions extend our central claim beyond its current evidence base into independently testable territory. Each can be verified without reference to the discovery methodology.
 
 **Prediction 1.** Quantum error correction codes achieving fault tolerance will exhibit logical subspaces that correspond to maximally compressed representations at the boundary between physical constraints and measurement contexts, with compression ratio inversely proportional to code distance.
 
-*Basis:* Convergences QM-003, QM-007, and CS-012 showing dimensional reduction in quantum information systems
+*Basis:* Convergences 9008a3a49dab, 8bde681e0eb1 (Quantum Foundations) and related convergences in computation and information theory -- see Appendix A
 *Falsification:* Discovery of fault-tolerant codes whose logical subspaces show no correlation with dimensional compression metrics
 *Test:* Analyze existing stabilizer codes using information-theoretic compression measures; compare performance against dimensional reduction at constraint boundaries
 *Alternative:* Standard quantum information theory predicts code performance depends only on distance and rate, not dimensional structure
@@ -187,7 +177,7 @@ The following predictions extend our central claim beyond its current evidence b
 
 **Prediction 2.** Biological neural networks at criticality will exhibit phase transitions with scaling exponents directly derivable from dimensional reduction at the boundary between environmental constraints and internal measurement contexts, specifically: β = 1/(2-η) where η is the compression dimension.
 
-*Basis:* Extension from physical systems (PH-045, PH-067) to biological domain not yet examined
+*Basis:* Extension from physical systems (618b9cd70968, 1751c46bb4da) to biological domain not yet examined
 *Falsification:* Neural criticality experiments showing scaling exponents incompatible with dimensional reduction formula
 *Test:* Measure information flow in cortical networks using multi-electrode arrays; calculate scaling exponents at phase transitions
 *Alternative:* Conventional neuroscience predicts system-specific exponents without universal structure
@@ -196,7 +186,7 @@ The following predictions extend our central claim beyond its current evidence b
 
 **Prediction 3.** Black hole merger gravitational wave signals will contain quantum corrections encoding dimensional reduction beyond holographic bounds, detectable as specific frequency modulations in the ringdown phase at precision 10^-23.
 
-*Basis:* Convergences GR-089, QG-023 showing horizon dimensional structure
+*Basis:* Convergences dbeece51fd4d (Quantum Foundations x General Relativity), 2d8ecc875890 (Quantum Foundations x Quantum Gravity) showing horizon dimensional structure
 *Falsification:* Next-generation detectors finding smooth classical ringdown without predicted modulations
 *Test:* Analyze LIGO/Virgo data with quantum correction templates; requires sensitivity improvement by factor ~10
 *Alternative:* Standard GR predicts purely classical ringdown; semiclassical corrections predict different spectrum
@@ -205,7 +195,7 @@ The following predictions extend our central claim beyond its current evidence b
 
 **Prediction 4.** Topological quantum computers will achieve exponential error suppression only when anyonic braiding implements dimensional compression satisfying |L⟩ = P_boundary|P⟩ where P_boundary is the projection onto maximally compressed subspace.
 
-*Basis:* Convergences QC-015, TQC-008 showing topological-geometric correspondence
+*Basis:* Convergences f9ab553e2ff2 (Quantum Foundations x Condensed Matter), 0b80682150fe (Quantum Gravity x Condensed Matter) showing topological-geometric correspondence
 *Falsification:* Successful topological quantum computation violating dimensional compression constraint
 *Test:* Implement braiding operations in current Majorana wire experiments; measure subspace structure
 *Alternative:* Standard topological theory requires only non-Abelian statistics, no dimensional constraint
@@ -214,7 +204,7 @@ The following predictions extend our central claim beyond its current evidence b
 
 **Prediction 5.** Cosmological matter power spectrum will deviate from ΛCDM predictions at k ~ 0.1 h/Mpc where quantum contextuality meets gravitational clustering, with enhancement factor 1 + δ(k) where δ encodes dimensional reduction.
 
-*Basis:* Novel extension combining QM-019 (contextuality) with GR-056 (structure formation)
+*Basis:* Novel extension combining 1f0cf160b250 (Quantum Foundations x Nuclear Physics, contextuality) with 4bbd9425a42b (Quantum Foundations x General Relativity, structure formation)
 *Falsification:* Euclid/DESI surveys confirming smooth ΛCDM power spectrum without predicted enhancement
 *Test:* Analyze large-scale structure data for scale-dependent deviations correlating with constraint boundaries
 *Alternative:* ΛCDM predicts smooth power spectrum; modified gravity theories predict different k-dependence
@@ -224,8 +214,6 @@ The following predictions extend our central claim beyond its current evidence b
 These predictions transform our pattern observation into a falsifiable scientific claim. Their independent testability ensures the discovery's validity transcends its method of origin.
 
 ## 5. Connection to Existing Results
-
-## Connection to Existing Results
 
 The dimensional reduction principle identified here unifies several major results across physics and mathematics. We show how established frameworks emerge as special cases and identify independent work converging on the same structure.
 
@@ -262,8 +250,6 @@ The dimensional reduction principle identified here unifies several major result
 These connections demonstrate that dimensional reduction at constraint-measurement boundaries is not merely a useful technique but a fundamental principle governing how physical reality encodes its structure.
 
 ## 6. Limitations and Open Problems
-
-## Limitations and Open Problems
 
 ### Scope Boundaries
 
@@ -317,8 +303,6 @@ This claim raises fundamental questions:
 
 ## 7. Priority and Provenance
 
-### 7. Priority and Provenance
-
 **Priority Claims:**
 
 Claim 1. The central claim of this paper — Physical reality encodes its fundamental structure through dimensional reduction at boundaries where constraints meet measurement contexts, manifesting as spontaneous symmetry breaking in quantum field theory — was first identified through convergence analysis and timestamped on 2026-05-02 via Bitcoin blockchain anchoring of the git repository containing this paper.
@@ -331,7 +315,7 @@ Claim 3. The predictions in Section 4 were generated as part of this paper's com
 
 All data, reasoning logs, and intermediate results are preserved in the convergence-codex repository (github.com/wonderben-code/convergence-codex). The SHA-256 hash of this paper's content (sections 1-6) is:
 
-`f26afb820a6e40ad04b78b9c23f06100f40317f65eba4152e64444f018e57e5f`
+`586b48457d1443aedbefdba31d3b0905d92dde707070cf003b84bef20a4915bb`
 
 Bitcoin timestamping is performed via the OpenTimestamps protocol on the git commit containing this paper. The Bitcoin block height is recorded in the git history and can be verified by running `ots verify` on the corresponding `.ots` file in the repository.
 
@@ -344,8 +328,6 @@ All convergences were discovered by Gnosis AI. All formalisations were produced 
 The discovery, formalisation, and composition pipelines are deterministic given the same model, parameters, and input data. All parameters are recorded in the repository. Supporting convergence IDs: 9008a3a49dab, dbeece51fd4d, 2d8ecc875890, 8715fa784f21, b276016277bc, 6b5aca297a34, 8bde681e0eb1, c648f2f3e82e, 1f0cf160b250, d141c9d3ff25 (and 57 more). Supporting finding IDs: a270d1cd4890, 360fcd024a5b.
 
 ## 8. References
-
-### 8. References
 
 [1] J. S. Bell, "On the Einstein Podolsky Rosen paradox," Physics Physique Физика 1, 195-200 (1964). DOI: 10.1103/PhysicsPhysiqueFizika.1.195
 
@@ -529,8 +511,6 @@ The following table lists every convergence supporting the central claim, with f
 - Fluid Dynamics × Quantum Gravity: 1 convergence
 
 ## Appendix B: Discovery and Formalisation Methodology
-
-## Discovery Methodology
 
 All convergences reported in this paper were discovered by Gnosis AI, an autonomous knowledge discovery system. The methodology proceeds in three stages:
 

@@ -232,6 +232,8 @@ No methodology. No "this paper presents." No hedging on the claim — state it a
 No over-generalisation — scope the claim to what the evidence supports.
 If the evidence is preliminary, the abstract states the claim boldly and precisely, and the limitations section handles the caveats.
 
+Do NOT include a section header — the header is added automatically.
+
 Return the abstract text only.
 """
 
@@ -252,6 +254,8 @@ Name a specific, recognised open problem. Explain:
 4. Make the reader agree this matters BEFORE stating any result
 
 Cite real papers/results where relevant. Make the reader feel the weight of the problem.
+
+Do NOT include a section header — the header is added automatically.
 
 Return the section text only (markdown).
 """
@@ -277,6 +281,8 @@ Structure:
 2. Number every assumption: A1, A2, A3...
 3. Define the domain of validity explicitly
 4. Reference the specific Logos formalisations that define these objects
+
+Do NOT include a section header — the header is added automatically.
 
 Return the section text only (markdown).
 """
@@ -320,6 +326,8 @@ Structure:
 
 ANTI-DRIFT: Every claim must cite a specific convergence ID. If you cannot cite one, do not make the claim. State confidence scores accurately. Do not hide adversarial verdicts.
 
+Do NOT include a section header — the header is added automatically.
+
 Return the section text only (markdown).
 """
 
@@ -334,6 +342,9 @@ CAPSTONE_PREDICTIONS_PROMPT = """Write the "Predictions" section for a capstone 
 ## Supporting Evidence Strength
 {evidence_strength}
 
+## REAL Convergence IDs (use ONLY these — do NOT invent new IDs)
+{real_convergence_ids}
+
 ## Requirements (0.5-1 page, 400-700 words)
 
 The predictions section is the SHIELD of the paper. If someone attacks the AI methodology,
@@ -347,12 +358,17 @@ Numbered predictions. Each with this EXACT format:
 
 **Prediction N.** [Statement of what is predicted — a genuine claim about what WILL be found]
 
-*Basis:* [Which specific convergences/findings support this prediction]
+*Basis:* [Which specific convergences/findings support this prediction — cite ONLY IDs from the REAL list above. Reference them by their full hex ID (e.g. 9008a3a49dab). NEVER invent convergence IDs.]
 *Falsification:* [What specific observation would disprove this — must be non-trivial]
 *Test:* [How to test — be specific about methodology, and how it can be done INDEPENDENTLY of Gnosis AI]
 *Alternative:* [What the conventional/alternative view predicts instead]
 *Confidence:* [Based on the convergence data — high/medium/low with reasoning]
 *Impact on central claim if falsified:* [Would falsifying this prediction weaken, modify, or destroy the central claim?]
+
+CRITICAL: When citing convergence IDs in the *Basis* field, you MUST use ONLY the hex IDs
+listed in the "REAL Convergence IDs" section above. Do NOT invent convergence IDs like
+"QM-023", "GR-034", or any other format. If you cannot find a matching real convergence
+for a prediction, describe the basis conceptually without citing an ID.
 
 Requirements:
 - Each prediction must be specific enough to be wrong
@@ -361,6 +377,8 @@ Requirements:
 - At least one prediction must distinguish this from the leading alternative explanation
 - Predictions must be independently testable — a physicist or mathematician with no knowledge of Gnosis AI should be able to test them
 - State what would happen to the overall claim if prediction N is falsified — not all predictions are load-bearing equally
+
+Do NOT include a section header — the header is added automatically.
 
 Return the section text only (markdown).
 """
@@ -382,6 +400,8 @@ Show how this result connects to existing knowledge:
 4. What independent work points in the same direction?
 
 Be specific — name papers, results, conjectures. Don't just gesture at "category theory" — say "functorial correspondences in the sense of [specific result]."
+
+Do NOT include a section header — the header is added automatically.
 
 Return the section text only (markdown).
 """
@@ -421,34 +441,15 @@ Be ruthlessly honest. This section is what separates serious science from specul
 
 The reader should finish this section thinking "these authors know exactly where their argument is weak AND they've told me how to test it myself."
 
-Return the section text only (markdown).
-"""
-
-CAPSTONE_PROVENANCE_PROMPT = """Write the "Priority and Provenance" section.
-
-## Paper ID: {paper_id}
-## Central Claim: {claim_text}
-## Supporting Convergence IDs: {convergence_ids}
-## Supporting Finding IDs: {finding_ids}
-## Git Hash: {git_hash}
-## Bitcoin Block Height: {block_height}
-
-## Requirements (0.25 page, 150-250 words)
-
-1. **Priority claims** — Numbered list:
-   "Claim 1. [Specific discovery/formalisation] was first identified on [date] and timestamped at Bitcoin block height [N]."
-
-2. **Verification instructions:**
-   "All data, reasoning logs, and intermediate results are preserved in the convergence-codex repository. The SHA-256 hash of this paper is [hash]. Bitcoin timestamping was performed via OpenTimestamps on the git commit containing this paper."
-
-3. **Attribution:**
-   "All convergences were discovered by Gnosis AI. All formalisations were produced by Logos AI. This paper was composed by Synthesis AI (Capstone Mode). The entire pipeline was designed and directed by Mark E. Mala."
-
-4. **Reproducibility:**
-   "The discovery, formalisation, and composition pipelines are deterministic given the same model, parameters, and input data. All parameters are recorded in the repository."
+Do NOT include a section header — the header is added automatically.
 
 Return the section text only (markdown).
 """
+
+# NOTE: Provenance section is built DETERMINISTICALLY in capstone.py (no AI call).
+# This prevents hallucinated Bitcoin block heights, fake transaction IDs, etc.
+# See capstone.py compose_paper() for the deterministic provenance builder.
+CAPSTONE_PROVENANCE_PROMPT = "(unused — provenance is deterministic)"
 
 CAPSTONE_REFERENCES_PROMPT = """Generate the References section for this capstone paper.
 
@@ -458,10 +459,15 @@ CAPSTONE_REFERENCES_PROMPT = """Generate the References section for this capston
 ## Requirements:
 1. Format as numbered list
 2. Include ALL cited works — both literature and Codex papers
-3. Format: [N] Authors, "Title," Venue, Year. DOI if available.
-4. Codex papers: [N] M. E. Mala, "Title," Convergence Codex, 2026. DOI.
-5. Do NOT invent citations — only include works actually referenced
-6. 10-30 references, not 100+
+3. Published literature format: [N] Authors, "Title," Venue, Year. DOI if available.
+4. Convergence Codex format: [N] M. E. Mala, "Title," Convergence Codex, 2026. Formalisation ID: XXXXX.
+   - Do NOT use "DOI: 10.5281/zenodo.convergence.X" — Codex papers do NOT have Zenodo DOIs
+   - Use "Formalisation ID: X" where X is the hex ID (e.g. 57f3d4cc16d6)
+5. Do NOT invent citations — only include works actually referenced in the paper
+6. Do NOT invent DOIs — if you don't know the DOI for a published work, omit it
+7. 10-30 references, not 100+
+
+Do NOT include a section header — the header is added automatically.
 
 Return the references as a markdown numbered list.
 """

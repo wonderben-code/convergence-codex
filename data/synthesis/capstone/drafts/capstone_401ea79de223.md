@@ -17,8 +17,6 @@ If correct, this principle predicts that any complete theory of quantum gravity 
 
 ## 1. The Problem
 
-## The Problem
-
 The measurement problem in quantum mechanics stands as perhaps the most profound unresolved question in fundamental physics. At its core lies a stark contradiction: quantum mechanics describes systems evolving unitarily according to the Schrödinger equation, maintaining superpositions indefinitely, yet we observe definite outcomes when we measure. The theory that perfectly predicts measurement statistics cannot explain why measurements produce specific results rather than superpositions.
 
 This is not merely a philosophical puzzle. The measurement problem blocks our understanding of how classical reality emerges from quantum substrates — a question that becomes increasingly urgent as we engineer quantum systems at larger scales. Without resolution, we cannot answer: Why does the moon exist when nobody looks at it? How do classical properties emerge in biological systems? Where precisely does quantum behavior end and classical behavior begin?
@@ -36,8 +34,6 @@ The problem's persistence despite a century of effort suggests we may be missing
 This paper presents evidence that such a mechanism exists, revealed through unexpected convergences across physics and mathematics. The pattern suggests that physical properties emerge specifically at boundaries where dimensional reduction occurs — not as fundamental features of an underlying reality, but as necessary consequences of how measurement contexts intersect. This reconceptualisation does not modify quantum mechanics but reveals why measurement must produce definite outcomes, why classical properties emerge at specific scales, and what constitutes the actual structural content of physical reality.
 
 ## 2. Setup and Definitions
-
-## Setup and Definitions
 
 We establish the mathematical framework for analyzing how physical properties emerge at constraint boundaries. Our setup combines categorical descriptions of measurement contexts with geometric representations of symmetry breaking.
 
@@ -110,8 +106,6 @@ This setup provides the minimal structure needed to formulate how properties eme
 
 ## 3. The Central Result
 
-## The Central Result
-
 **Conjecture 1 (Constraint-Boundary Emergence).** The structural content of physical reality emerges at boundaries where dimensional reduction occurs through the intersection of measurement contexts and symmetry-breaking constraints.
 
 *Formal confidence: 0.44 (preliminary)*
@@ -166,8 +160,6 @@ The conjecture is falsifiable: demonstrate a domain where structural properties 
 
 ## 4. Predictions
 
-## Predictions
-
 The following predictions extend our central claim beyond the current evidence base into independently testable territory. Each can be verified without reference to the discovery methodology.
 
 **Prediction 1.** Quantum decoherence rates will exhibit universal scaling behavior at the quantum-classical boundary, with critical exponents determined solely by the symmetry group of the environment-system coupling, independent of microscopic details.
@@ -217,8 +209,6 @@ The following predictions extend our central claim beyond the current evidence b
 
 ## 5. Connection to Existing Results
 
-## Connection to Existing Results
-
 The constraint-boundary principle unifies several fundamental results across physics and mathematics, revealing them as manifestations of a deeper structural pattern.
 
 ### Special Cases of the General Principle
@@ -254,8 +244,6 @@ The quantum error correction interpretation of AdS/CFT (Almheiri et al. 2015) sh
 Recent work on observer-dependent emergence (Müller 2020) and QBism (Fuchs et al. 2014) emphasises measurement context dependence, supporting our constraint intersection mechanism for physical content (convergence IDs: QFound×Thermo-8, QFound×Plasma-5).
 
 ## 6. Limitations and Open Problems
-
-## Limitations and Open Problems
 
 ### Scope Boundaries
 
@@ -321,8 +309,6 @@ The reader should test these claims independently—the predictions provide clea
 
 ## 7. Priority and Provenance
 
-### 7. Priority and Provenance
-
 **Priority Claims:**
 
 Claim 1. The central claim of this paper — The structural content of physical reality emerges at boundaries where dimensional reduction occurs through the intersection of measurement contexts and symmetry-breaking constraints. — was first identified through convergence analysis and timestamped on 2026-05-02 via Bitcoin blockchain anchoring of the git repository containing this paper.
@@ -335,7 +321,7 @@ Claim 3. The predictions in Section 4 were generated as part of this paper's com
 
 All data, reasoning logs, and intermediate results are preserved in the convergence-codex repository (github.com/wonderben-code/convergence-codex). The SHA-256 hash of this paper's content (sections 1-6) is:
 
-`f9a893b647be4be1cb421f5e770a41d1e866b27a80b18fcdcac247b904b67cd9`
+`5761611009bd8f5484bb4b64728be24f714ebb75a5803aeca80ab39edb49f341`
 
 Bitcoin timestamping is performed via the OpenTimestamps protocol on the git commit containing this paper. The Bitcoin block height is recorded in the git history and can be verified by running `ots verify` on the corresponding `.ots` file in the repository. The specific commit hash containing this paper is preserved in the repository's history, and the OpenTimestamps proof file demonstrates inclusion in the Bitcoin blockchain, establishing cryptographic proof of existence at the claimed date.
 
@@ -348,8 +334,6 @@ All convergences were discovered by Gnosis AI. All formalisations were produced 
 The discovery, formalisation, and composition pipelines are deterministic given the same model, parameters, and input data. All parameters are recorded in the repository. Supporting convergence IDs: 9008a3a49dab, dbeece51fd4d, 2d8ecc875890, 8715fa784f21, b276016277bc, 6b5aca297a34, 8bde681e0eb1, c648f2f3e82e, 1f0cf160b250, d141c9d3ff25 (and 57 more). Supporting finding IDs: ddbb5d7eff0b, 56f915c6a2e2.
 
 ## 8. References
-
-### 8. References
 
 [1] J. S. Bell, "On the Einstein Podolsky Rosen paradox," Physics Physique Физика 1, 195-200 (1964). https://doi.org/10.1103/PhysicsPhysiqueFizika.1.195
 
@@ -523,8 +507,6 @@ The following table lists every convergence supporting the central claim, with f
 - Fluid Dynamics × Quantum Gravity: 1 convergence
 
 ## Appendix B: Discovery and Formalisation Methodology
-
-## Discovery Methodology
 
 All convergences reported in this paper were discovered by Gnosis AI, an autonomous knowledge discovery system. The methodology proceeds in three stages:
 

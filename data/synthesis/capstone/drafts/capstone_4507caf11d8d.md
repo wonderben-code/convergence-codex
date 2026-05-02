@@ -17,8 +17,6 @@ If correct, this principle predicts: (1) undiscovered dualities in quantum field
 
 ## 1. The Problem
 
-## The Problem
-
 Modern physics rests on three pillars: gauge theory describes electromagnetic, weak, and strong forces; general relativity governs spacetime and gravity; quantum mechanics dictates microscopic behaviour. Each framework exhibits a profound pattern — local constraints determine global structure. In gauge theory, local symmetry requirements fix the form of interactions (Yang & Mills, 1954). In general relativity, the Einstein equations relate local curvature to global spacetime geometry. In quantum mechanics, local observables and commutation relations constrain the global Hilbert space structure.
 
 Yet these frameworks resist unification. String theory requires extra dimensions and supersymmetry, neither observed. Loop quantum gravity breaks general covariance at the Planck scale. The standard model cannot incorporate gravity. Each attempt adds complexity — more fields, more dimensions, more symmetries — without explaining why the original pattern exists.
@@ -42,8 +40,6 @@ The unification problem thus transcends its original formulation. It is not simp
 Solving this would not merely unify physics — it would explain why unification is possible at all.
 
 ## 2. Setup and Definitions
-
-## Setup and Definitions
 
 We establish the mathematical framework for formalizing how constraint determines structure across physical and mathematical domains.
 
@@ -110,9 +106,7 @@ This assumption formalizes the claim that constraint determination preserves inf
 
 ## 3. The Central Result
 
-# The Central Result
-
-## Conjecture 1 (Constraint Determination of Structure)
+### Conjecture 1 (Constraint Determination of Structure)
 
 The structural content of physical and mathematical reality IS determined by constraint: local constraints and obstructions completely determine global properties through universal computational procedures that preserve information across dual representations.
 
@@ -192,13 +186,11 @@ The claim is precisely scoped to what the convergence data supports: a structura
 
 ## 4. Predictions
 
-## Predictions
-
 The following predictions extend the constraint-determination principle beyond current evidence into independently testable territory:
 
 **Prediction 1.** Quantum gravity calculations will reveal an exact duality between local operator constraints and emergent spacetime geometry, with a functorial mapping that preserves information content to all orders.
 
-*Basis:* Convergences #7 (gauge/gravity duality), #11 (holographic principle), #26 (quantum error correction as spacetime)  
+*Basis:* Convergences bfb71be2f99b, b73cbdbb4718, 5f489082bc0c (see Appendix A for complete evidence table)  
 *Falsification:* Demonstration that holographic calculations in AdS/CFT yield different information content on boundary vs bulk sides when computed to sufficient precision  
 *Test:* Calculate entanglement entropy in strongly coupled CFTs and compare with geometric entropy in dual gravity descriptions; verify information preservation under RG flow  
 *Alternative:* Conventional view predicts approximate duality with information loss at quantum corrections  
@@ -207,7 +199,7 @@ The following predictions extend the constraint-determination principle beyond c
 
 **Prediction 2.** String theory vacua with non-compact moduli spaces will prove inconsistent when quantum corrections are fully included, forced by a universal compactness principle.
 
-*Basis:* Convergences #3 (compactness creates rigidity), #19 (swampland constraints), #22 (finiteness from obstruction)  
+*Basis:* Convergences 20b1c27e4643, 5aadf154d2e7, 530f33b12007 (see Appendix A for complete evidence table)  
 *Falsification:* Construction of fully consistent string vacuum with genuinely non-compact moduli space stable under all corrections  
 *Test:* Systematic analysis of quantum corrections in candidate non-compact vacua; search for hidden compactification mechanisms  
 *Alternative:* String landscape view allows arbitrary non-compact directions  
@@ -216,7 +208,7 @@ The following predictions extend the constraint-determination principle beyond c
 
 **Prediction 3.** Neural networks trained on raw physics simulations will spontaneously develop internal representations isomorphic to constraint formulations, without being given this structure.
 
-*Basis:* Convergences #15 (compression as physics discovery), #21 (minimal programs find constraints)  
+*Basis:* Convergences 66662a91052a, 9660fa6a0d31 (see Appendix A for complete evidence table)  
 *Falsification:* Networks achieving optimal performance using fundamentally non-constraint representations  
 *Test:* Train transformers on molecular dynamics data; analyze learned representations for Lagrangian/Hamiltonian structure  
 *Alternative:* ML systems use arbitrary high-dimensional representations unrelated to physical constraints  
@@ -244,8 +236,6 @@ The following predictions extend the constraint-determination principle beyond c
 These predictions transform pattern recognition into scientific hypothesis. Their falsification would either refine the domain of applicability or, in the case of Prediction 1, require fundamental revision of the constraint-determination principle itself.
 
 ## 5. Connection to Existing Results
-
-## Connection to Existing Results
 
 Our claim that constraint determines the structural content of physical and mathematical reality connects to and generalises several fundamental results across domains.
 
@@ -278,8 +268,6 @@ The geometric Langlands correspondence (Kapustin-Witten, Ben-Zvi-Nadler) demonst
 These connections show our principle does not stand in isolation but synthesises and extends a web of deep results across mathematics and physics, providing a unifying framework for understanding how constraint determines structure.
 
 ## 6. Limitations and Open Problems
-
-## Limitations and Open Problems
 
 ### Scope Boundaries
 
@@ -343,8 +331,6 @@ The predictions in Section 5 provide specific, testable claims that can be verif
 
 ## 7. Priority and Provenance
 
-### 7. Priority and Provenance
-
 **Priority Claims:**
 
 Claim 1. The central claim of this paper — The structural content of physical and mathematical reality IS determined by constraint: local constraints and obstructions completely determine global properties through universal computational processes — was first identified through convergence analysis and timestamped on 2026-05-02 via Bitcoin blockchain anchoring of the git repository containing this paper.
@@ -357,7 +343,7 @@ Claim 3. The predictions in Section 4 were generated as part of this paper's com
 
 All data, reasoning logs, and intermediate results are preserved in the convergence-codex repository (github.com/wonderben-code/convergence-codex). The SHA-256 hash of this paper's content (sections 1-6) is:
 
-`eb230e7d6d007c3af2582a9cad4e7a6cb371d03de253d52f9649ef4e2d980765`
+`c8f3f03466e7b5ede8bd5c9b23b02c6c56f42e53e7d093a5ba90f394c2271228`
 
 Bitcoin timestamping is performed via the OpenTimestamps protocol on the git commit containing this paper. The Bitcoin block height is recorded in the git history and can be verified by running `ots verify` on the corresponding `.ots` file in the repository.
 
@@ -370,8 +356,6 @@ All convergences were discovered by Gnosis AI. All formalisations were produced 
 The discovery, formalisation, and composition pipelines are deterministic given the same model, parameters, and input data. All parameters are recorded in the repository. Supporting convergence IDs: 2674bcdafb4c, f7fe79e51b41, 20b1c27e4643, 753539f1fd90, 798982b510ad, b4958fb4b591, bfb71be2f99b, 09364dc014d0, 189a4a3708ca, dc69dd3eb66f (and 16 more). Supporting finding IDs: 4226453497d2, e3348f697813.
 
 ## 8. References
-
-### 8. References
 
 [1] C. N. Yang and R. L. Mills, "Conservation of Isotopic Spin and Isotopic Gauge Invariance," Physical Review, vol. 96, no. 1, pp. 191-195, 1954. DOI: 10.1103/PhysRev.96.191
 
@@ -464,8 +448,6 @@ The following table lists every convergence supporting the central claim, with f
 - Algebraic Geometry × Number Theory: 1 convergence
 
 ## Appendix B: Discovery and Formalisation Methodology
-
-## Discovery Methodology
 
 All convergences reported in this paper were discovered by Gnosis AI, an autonomous knowledge discovery system. The methodology proceeds in three stages:
 

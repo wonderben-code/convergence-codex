@@ -9,13 +9,9 @@
 
 ## Abstract
 
-**Abstract**
-
 The measurement problem in quantum mechanics and the information paradox in black hole physics share a common origin: both arise from attempting to describe physical properties as if they exist independently of the boundaries where they are observed. We establish that the fundamental properties of physical systems emerge through information-theoretic compression at boundaries where global symmetries meet local measurement contexts, with the universe encoding its essential structure on lower-dimensional interfaces between constraint and observation. This principle resolves the apparent conflict between quantum contextuality and classical objectivity by recognizing that properties are not predetermined attributes but rather emerge through the compression of global constraints onto local measurement boundaries. The framework predicts that any sufficiently isolated quantum system will exhibit novel interference patterns when measured across previously unexplored boundary configurations, that black hole information is preserved through boundary encodings that become accessible only during evaporation, and that the dimensionality of physical laws must decrease at extreme scales where boundary compression becomes maximal. If correct, physical reality is not a collection of objects with intrinsic properties but a network of boundaries where universal constraints compress into observable phenomena.
 
 ## 1. The Problem
-
-## The Problem
 
 The holographic principle represents one of the most profound yet incomplete ideas in modern physics. Since 't Hooft (1993) and Susskind (1995) proposed that the information content of any region should scale with its boundary area rather than volume, and especially since Maldacena's AdS/CFT correspondence (1997) provided concrete realisation, physics has grappled with a fundamental question: Is the universe fundamentally holographic, with all information encoded on lower-dimensional boundaries?
 
@@ -41,8 +37,6 @@ Perhaps most importantly, we cannot answer a basic question: Is the apparent thr
 The stakes could not be higher. If the universe is truly holographic, then our entire understanding of space, time, and physical reality requires revision. The fact that we can demonstrate holography in specific contexts but cannot explain why it occurs suggests we are missing something fundamental about how nature organises information. This gap between example and principle — between knowing that something works and understanding why it must work — represents one of the deepest puzzles in theoretical physics.
 
 ## 2. Setup and Definitions
-
-## Setup and Definitions
 
 We establish the mathematical framework for analyzing how physical properties emerge at boundaries between constraint and observation.
 
@@ -100,10 +94,6 @@ The framework requires:
 Systems outside this domain (e.g., purely classical systems with commuting observables, systems without symmetries) may not exhibit the predicted boundary compression phenomena.
 
 ## 3. The Central Result
-
-### 3. The Central Result
-
-## The Central Result
 
 ### Conjecture 1 (Constraint-Boundary Correspondence)
 The fundamental properties of physical systems emerge through information-theoretic compression at boundaries where global symmetries meet local measurement contexts, with the universe encoding its essential structure on lower-dimensional interfaces between constraint and observation.
@@ -171,8 +161,6 @@ The conjecture is precisely scoped to match the convergence evidence: a claim ab
 
 ## 4. Predictions
 
-## Predictions
-
 The following predictions extend our central claim beyond the current evidence base into independently testable territory. Each can be verified without reference to the discovery methodology.
 
 **Prediction 1.** Quantum error correction codes in condensed matter systems will exhibit maximum efficiency precisely at phase boundaries where symmetry-breaking meets measurement-induced transitions.
@@ -224,8 +212,6 @@ These predictions transform our pattern observation into a falsifiable scientifi
 
 ## 5. Connection to Existing Results
 
-## Connection to Existing Results
-
 The principle of boundary compression provides a unifying framework for several established results across physics and mathematics. We identify four categories of connection: results that emerge as special cases, mathematical frameworks that are extended, conjectures that gain new perspective, and independent work converging on similar principles.
 
 ### Special Cases of Boundary Compression
@@ -259,8 +245,6 @@ Recent work on quantum error correction (Almheiri et al. 2015, Pastawski et al. 
 The pattern is clear: whenever physics discovers fundamental encoding principles, they involve compression at boundaries. Our contribution is recognising this as a universal structural principle rather than coincidental similarities across domains.
 
 ## 6. Limitations and Open Problems
-
-## Limitations and Open Problems
 
 ### Scope Boundaries
 
@@ -316,8 +300,6 @@ The predictions in Section 5 provide the critical test: if constraint represents
 
 ## 7. Priority and Provenance
 
-### 7. Priority and Provenance
-
 **Priority Claims:**
 
 Claim 1. The central claim of this paper — that the fundamental properties of physical systems emerge through information-theoretic compression at boundaries where global symmetries meet local measurement contexts — was first identified through convergence analysis and timestamped on 2026-05-02 via Bitcoin blockchain anchoring of the git repository containing this paper.
@@ -330,7 +312,7 @@ Claim 3. The predictions in Section 4 were generated as part of this paper's com
 
 All data, reasoning logs, and intermediate results are preserved in the convergence-codex repository (github.com/wonderben-code/convergence-codex). The SHA-256 hash of this paper's content (sections 1-6) is:
 
-`fdd7ba2de8cbefca72acad160c1b9369ba3362ce0596f8e41a8c1228df59239d`
+`a0a192684db8f733178a8e75e5d9e2d2b79fa328e7240b3a5823483621834225`
 
 Bitcoin timestamping is performed via the OpenTimestamps protocol on the git commit containing this paper. The Bitcoin transaction ID for this timestamp is:
 
@@ -347,8 +329,6 @@ All convergences were discovered by Gnosis AI. All formalisations were produced 
 The discovery, formalisation, and composition pipelines are deterministic given the same model, parameters, and input data. All parameters are recorded in the repository. Supporting convergence IDs: 9008a3a49dab, dbeece51fd4d, 2d8ecc875890, 8715fa784f21, b276016277bc, 6b5aca297a34, 8bde681e0eb1, c648f2f3e82e, 1f0cf160b250, d141c9d3ff25 (and 57 more). Supporting finding IDs: 56f915c6a2e2, ddbb5d7eff0b.
 
 ## 8. References
-
-### 8. References
 
 [1] G. 't Hooft, "Dimensional Reduction in Quantum Gravity," arXiv:gr-qc/9310026, 1993.
 
@@ -378,17 +358,17 @@ The discovery, formalisation, and composition pipelines are deterministic given 
 
 [14] J. D. Bekenstein, "Black Holes and Entropy," Physical Review D 7, 2333-2346, 1973. DOI: 10.1103/PhysRevD.7.2333
 
-[15] M. E. Mala, "Quantum Contextuality in Atomic Systems: Measurement-Dependent Properties and the Kochen-Specker Theorem," Convergence Codex, 2026. DOI: 10.5281/zenodo.convergence.8bde681e0eb1
+[15] M. E. Mala, "Quantum Contextuality in Atomic Systems: Measurement-Dependent Properties and the Kochen-Specker Theorem," Convergence Codex, 2026. Formalisation ID: 8bde681e0eb1
 
-[16] M. E. Mala, "Measurement-Induced Dynamics in Quantum Systems: Non-Commutative Evolution and Active Observation," Convergence Codex, 2026. DOI: 10.5281/zenodo.convergence.c648f2f3e82e
+[16] M. E. Mala, "Measurement-Induced Dynamics in Quantum Systems: Non-Commutative Evolution and Active Observation," Convergence Codex, 2026. Formalisation ID: c648f2f3e82e
 
-[17] M. E. Mala, "Spontaneous Symmetry Breaking as Universal Mass Generation Mechanism," Convergence Codex, 2026. DOI: 10.5281/zenodo.convergence.58d65d5acae1
+[17] M. E. Mala, "Spontaneous Symmetry Breaking as Universal Mass Generation Mechanism," Convergence Codex, 2026. Formalisation ID: 58d65d5acae1
 
-[18] M. E. Mala, "Order Parameters and Vacuum Structure in Condensed Matter and Particle Physics," Convergence Codex, 2026. DOI: 10.5281/zenodo.convergence.85e1ea9b59a5
+[18] M. E. Mala, "Order Parameters and Vacuum Structure in Condensed Matter and Particle Physics," Convergence Codex, 2026. Formalisation ID: 85e1ea9b59a5
 
-[19] M. E. Mala, "Universal Critical Behavior and Symmetry-Dimensionality Classification," Convergence Codex, 2026. DOI: 10.5281/zenodo.convergence.a09f505946db
+[19] M. E. Mala, "Universal Critical Behavior and Symmetry-Dimensionality Classification," Convergence Codex, 2026. Formalisation ID: a09f505946db
 
-[20] M. E. Mala, "Renormalization Group Universality in Quantum Field Theory and Thermodynamics," Convergence Codex, 2026. DOI: 10.5281/zenodo.convergence.b75d3e72ccd6
+[20] M. E. Mala, "Renormalization Group Universality in Quantum Field Theory and Thermodynamics," Convergence Codex, 2026. Formalisation ID: b75d3e72ccd6
 
 [21] R. Penrose, "Gravitational Collapse and Space-Time Singularities," Physical Review Letters 14, 57-59, 1965. DOI: 10.1103/PhysRevLett.14.57
 
@@ -524,8 +504,6 @@ The following table lists every convergence supporting the central claim, with f
 - Fluid Dynamics × Quantum Gravity: 1 convergence
 
 ## Appendix B: Discovery and Formalisation Methodology
-
-## Discovery Methodology
 
 All convergences reported in this paper were discovered by Gnosis AI, an autonomous knowledge discovery system. The methodology proceeds in three stages:
 

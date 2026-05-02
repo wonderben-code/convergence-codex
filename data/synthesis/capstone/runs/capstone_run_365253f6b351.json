@@ -1,0 +1,28 @@
+{
+  "id": "capstone_run_365253f6b351",
+  "started_at": "2026-05-02T19:08:21.813127+00:00",
+  "completed_at": "2026-05-02T20:23:14.653920+00:00",
+  "census_convergences": 266,
+  "census_proofs": 256,
+  "census_findings": 26,
+  "census_fixed_points": 4,
+  "candidates_generated": 26,
+  "papers_planned": 22,
+  "papers_composed": 8,
+  "papers_reviewed": 0,
+  "papers_completed": 8,
+  "total_word_count": 53937,
+  "paper_ids": [
+    "capstone_33a346b97758",
+    "capstone_56590594c70b",
+    "capstone_4507caf11d8d",
+    "capstone_2f851bef01ec",
+    "capstone_24daa8681063",
+    "capstone_347ef9385625",
+    "capstone_8b81e21ff808",
+    "capstone_401ea79de223"
+  ],
+  "total_predictions": 38,
+  "total_cost_usd": 20.173815000000005,
+  "total_api_calls": 150
+}

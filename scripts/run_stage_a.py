@@ -667,14 +667,25 @@ def run_capstone(gnosis_dir: Path, proofs_dir: Path, max_cost: float, log_file: 
 
     # ─── STAGE 2: CLAIM FORMULATION (with resume) ───
     claims_cache = capstone_dir / "claims" / "all_candidates.json"
+    claims = None
     if claims_cache.exists():
         log("\n  Stage 2: Claim Formulation — RESUMING from cached claims", log_file)
-        import json as _json
-        cached = _json.loads(claims_cache.read_text())
-        from synthesis.models import CandidateClaim
-        claims = [CandidateClaim(**c) for c in cached]
-        log(f"    Loaded {len(claims)} cached claims (skipping ~$5-10 API cost)", log_file)
-    else:
+        try:
+            import json as _json
+            cached = _json.loads(claims_cache.read_text())
+            if not isinstance(cached, list) or not cached:
+                raise ValueError(f"Invalid cache: expected non-empty list, got {type(cached)}")
+            # Validate first entry has required fields
+            required = {"claim_text", "tier", "supporting_convergence_ids"}
+            if not required.issubset(set(cached[0].keys())):
+                raise ValueError(f"Cache missing required fields: {required - set(cached[0].keys())}")
+            from synthesis.models import CandidateClaim
+            claims = [CandidateClaim(**c) for c in cached]
+            log(f"    Loaded {len(claims)} cached claims (skipping ~$5-10 API cost)", log_file)
+        except Exception as e:
+            log(f"    WARNING: Cache invalid ({e}), regenerating claims...", log_file)
+            claims = None
+    if claims is None:
         log("\n  Stage 2: Claim Formulation (cascade-driven)...", log_file)
         claims = composer.generate_claims(ctx)
     run.candidates_generated = len(claims)
@@ -686,14 +697,24 @@ def run_capstone(gnosis_dir: Path, proofs_dir: Path, max_cost: float, log_file: 
 
     # ─── STAGE 3: PAPER PLANNING (with resume) ───
     plans_cache = capstone_dir / "plans" / "paper_plans.json"
+    plans = None
     if plans_cache.exists():
         log("\n  Stage 3: Paper Planning — RESUMING from cached plans", log_file)
-        import json as _json2
-        cached_plans = _json2.loads(plans_cache.read_text())
-        from synthesis.models import PaperPlan
-        plans = [PaperPlan(**p) for p in cached_plans]
-        log(f"    Loaded {len(plans)} cached plans (skipping ~$2-3 API cost)", log_file)
-    else:
+        try:
+            import json as _json2
+            cached_plans = _json2.loads(plans_cache.read_text())
+            if not isinstance(cached_plans, list) or not cached_plans:
+                raise ValueError(f"Invalid cache: expected non-empty list, got {type(cached_plans)}")
+            required = {"tier", "title", "convergence_ids"}
+            if not required.issubset(set(cached_plans[0].keys())):
+                raise ValueError(f"Cache missing required fields: {required - set(cached_plans[0].keys())}")
+            from synthesis.models import PaperPlan
+            plans = [PaperPlan(**p) for p in cached_plans]
+            log(f"    Loaded {len(plans)} cached plans (skipping ~$2-3 API cost)", log_file)
+        except Exception as e:
+            log(f"    WARNING: Cache invalid ({e}), regenerating plans...", log_file)
+            plans = None
+    if plans is None:
         log("\n  Stage 3: Paper Planning (quality-filtered)...", log_file)
         plans = composer.plan_papers(claims, ctx)
     run.papers_planned = len(plans)
@@ -765,12 +786,18 @@ def run_capstone(gnosis_dir: Path, proofs_dir: Path, max_cost: float, log_file: 
 
             log(f"      Saved: {paper.id}", log_file)
 
-            # Bitcoin stamp immediately
-            git_stamp_capstone(paper.id, paper.title,
-                               plan.tier, log_file)
+            # Bitcoin stamp immediately — separate try so paper is still saved
+            try:
+                git_stamp_capstone(paper.id, paper.title,
+                                   plan.tier, log_file)
+            except Exception as stamp_err:
+                log(f"      CRITICAL: Bitcoin stamping FAILED for {paper.id}: {stamp_err}", log_file)
+                log(f"      Paper is saved but NOT Bitcoin-timestamped. Re-run to retry.", log_file)
 
         except Exception as e:
-            log(f"      ERROR: {e}", log_file)
+            log(f"      ERROR composing paper: {e}", log_file)
+            import traceback
+            log(f"      {traceback.format_exc()[:300]}", log_file)
 
         # Cost check
         if api.stats.cost_usd >= max_cost:
@@ -802,12 +829,23 @@ def run_capstone(gnosis_dir: Path, proofs_dir: Path, max_cost: float, log_file: 
     # ─── STAGE 6: PREDICTION EXTRACTION ───
     if all_papers:
         log("\n  Stage 6: Prediction extraction & timestamping...", log_file)
-        register = composer.extract_predictions(all_papers)
-        run.total_predictions = register.get("total_predictions", 0)
-        log(f"    Predictions extracted: {run.total_predictions}", log_file)
+        try:
+            register = composer.extract_predictions(all_papers)
+            run.total_predictions = register.get("total_predictions", 0)
+            log(f"    Predictions extracted: {run.total_predictions}", log_file)
 
-        # Bitcoin stamp predictions separately
-        git_stamp_predictions(log_file)
+            if run.total_predictions == 0:
+                log(f"    WARNING: Zero predictions extracted — skipping timestamping", log_file)
+            else:
+                # Bitcoin stamp predictions separately
+                try:
+                    git_stamp_predictions(log_file)
+                except Exception as stamp_err:
+                    log(f"    CRITICAL: Prediction register stamping FAILED: {stamp_err}", log_file)
+        except Exception as e:
+            log(f"    ERROR extracting predictions: {e}", log_file)
+            import traceback
+            log(f"    {traceback.format_exc()[:300]}", log_file)
 
     # ─── FINAL STATS ───
     run.total_cost_usd = api.stats.cost_usd

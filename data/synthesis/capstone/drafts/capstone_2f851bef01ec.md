@@ -9,8 +9,6 @@
 
 ## Abstract
 
-### Abstract
-
 The fundamental incompleteness theorems of mathematics and the contextuality theorems of quantum mechanics reveal a profound crisis: our most successful theories describe reality through structures that cannot be predetermined or completed. This persistent pattern across domains suggests we have been asking the wrong question. Rather than seeking what reality "is made of," we should ask how its structure emerges.
 
 The structural content of physical reality IS determined by information-theoretic compression at dimensional boundaries where global symmetries break to encode local contextual properties. Just as mathematical incompleteness arises at the boundary between formal systems and their meta-theoretic descriptions, and quantum contextuality emerges at the measurement boundary between system and observer, all fundamental structures in physics manifest through compression of global invariances into local, context-dependent information at dimensional transitions.
@@ -18,8 +16,6 @@ The structural content of physical reality IS determined by information-theoreti
 This principle predicts: (1) Every fundamental constant encodes a specific compression ratio between adjacent dimensional descriptions, (2) New particles must emerge at energies corresponding to dimensional boundary transitions where current compression schemes fail, (3) Quantum gravity will require a formalism where spacetime itself emerges as compressed boundary information between higher-dimensional structures. These predictions suggest that understanding reality's structure requires recognizing how universal compression principles operate at every scale, rather than seeking a single fixed description.
 
 ## 1. The Problem
-
-## The Problem
 
 The measurement problem in quantum mechanics stands as perhaps the most profound unresolved question in fundamental physics. At its core lies a stark contradiction: quantum systems evolve unitarily according to the Schrödinger equation, maintaining superpositions indefinitely, yet measurements yield definite outcomes. This transition from quantum superposition to classical definiteness — the "collapse" of the wave function — has no explanation within the standard formalism of quantum mechanics.
 
@@ -48,8 +44,6 @@ The stakes could not be higher. The measurement problem sits at the intersection
 Most fundamentally, it represents our failure to understand the boundary between quantum and classical realms — a boundary we cross every time we make an observation, yet cannot explain. Until we solve the measurement problem, our picture of reality remains fundamentally incomplete, with a gap at the very interface between our theories and our experience.
 
 ## 2. Setup and Definitions
-
-## Setup and Definitions
 
 We establish the mathematical framework for analyzing how physical structure emerges through information compression at dimensional boundaries. Our formulation builds on category-theoretic foundations developed in formalisations f947e3c087c0, d67b9ff9a720, and 88c4200de801.
 
@@ -101,8 +95,6 @@ For quantum systems with density operator ρ ∈ B(H):
 These definitions establish the precise mathematical framework within which our central claim operates, grounding all subsequent analysis in the formal structures validated through our convergence evidence.
 
 ## 3. The Central Result
-
-## The Central Result
 
 **Conjecture 1 (Boundary Encoding Principle).** The fundamental structure of physical reality emerges through information-theoretic compression at dimensional boundaries where global symmetries break to encode local contextual properties.
 
@@ -170,8 +162,6 @@ The claim is precisely scoped to what convergence evidence supports: in physical
 
 ## 4. Predictions
 
-## Predictions
-
 The following predictions extend our central claim beyond the current evidence base into independently testable territory. Each can be verified without reference to the discovery methodology.
 
 **Prediction 1.** Quantum error correction codes at decoherence boundaries will exhibit compression ratios that precisely match those found at black hole horizons when calculated using the same information-theoretic measures.
@@ -212,8 +202,6 @@ The following predictions extend our central claim beyond the current evidence b
 
 ## 5. Connection to Existing Results
 
-## Connection to Existing Results
-
 The boundary-encoding principle unifies several fundamental results across physics and mathematics as special cases of a deeper structural pattern.
 
 ### Holographic Principles as Special Cases
@@ -251,8 +239,6 @@ Our results support programs deriving spacetime from entanglement (Van Raamsdonk
 These connections demonstrate that boundary encoding is not merely analogical but represents a fundamental organising principle underlying diverse physical phenomena.
 
 ## 6. Limitations and Open Problems
-
-## Limitations and Open Problems
 
 ### Scope Boundaries
 
@@ -307,8 +293,6 @@ This claim raises fundamental questions we cannot currently answer:
 
 ## 7. Priority and Provenance
 
-### 7. Priority and Provenance
-
 **Priority Claims:**
 
 Claim 1. The central claim of this paper — The fundamental structure of physical reality emerges through information-theoretic compression at dimensional boundaries where global symmetries break to encode local contextual properties. — was first identified through convergence analysis and timestamped on 2026-05-02 via Bitcoin blockchain anchoring of the git repository containing this paper.
@@ -322,7 +306,7 @@ Claim 3. The predictions in Section 4 were generated as part of this paper's com
 This paper establishes scientific priority through cryptographic timestamping on the Bitcoin blockchain. The method ensures that the exact content and date of these claims can be independently verified by any party at any future time.
 
 The timestamping process:
-1. The complete paper content (sections 1-6) generates SHA-256 hash: `27a2b5e7e54bdd9f21750329a7e3e66a9fcbb5f3a6929b5de9ca76f08c17606d`
+1. The complete paper content (sections 1-6) generates SHA-256 hash: `d42662bc486b8feadccd7c77c4b01ee6bc341205fe08fa0ae12c43c9107c482f`
 2. This hash is included in a git commit to the convergence-codex repository
 3. The git commit hash is timestamped using the OpenTimestamps protocol
 4. OpenTimestamps creates a cryptographic proof linking our document to a specific Bitcoin block
@@ -358,8 +342,6 @@ The discovery, formalisation, and composition pipelines are deterministic given 
 
 ## 8. References
 
-### 8. References
-
 [1] J. Preskill, "Quantum Computing in the NISQ era and beyond," Quantum 2, 79 (2018). DOI: 10.22331/q-2018-08-06-79.
 
 [2] R. Penrose, "On Gravity's role in Quantum State Reduction," General Relativity and Gravitation 28, 581-600 (1996). DOI: 10.1007/BF02105068.
@@ -370,19 +352,19 @@ The discovery, formalisation, and composition pipelines are deterministic given 
 
 [5] M. Schlosshauer, "Decoherence, the measurement problem, and interpretations of quantum mechanics," Reviews of Modern Physics 76, 1267-1305 (2004). DOI: 10.1103/RevModPhys.76.1267.
 
-[6] M. E. Mala, "Contextuality in Quantum Field Theory: A Categorical Framework," Convergence Codex, 2026. DOI: 10.5281/zenodo.convergence.57f3d4cc16d6.
+[6] M. E. Mala, "Contextuality in Quantum Field Theory: A Categorical Framework," Convergence Codex, 2026. Formalisation ID: 57f3d4cc16d6.
 
-[7] M. E. Mala, "Measurement-Induced State Transformations in Atomic Systems," Convergence Codex, 2026. DOI: 10.5281/zenodo.convergence.f947e3c087c0.
+[7] M. E. Mala, "Measurement-Induced State Transformations in Atomic Systems," Convergence Codex, 2026. Formalisation ID: f947e3c087c0.
 
-[8] M. E. Mala, "Symmetry Breaking and Information Encoding in Physical Systems," Convergence Codex, 2026. DOI: 10.5281/zenodo.convergence.d67b9ff9a720.
+[8] M. E. Mala, "Symmetry Breaking and Information Encoding in Physical Systems," Convergence Codex, 2026. Formalisation ID: d67b9ff9a720.
 
-[9] M. E. Mala, "Dimensional Boundaries and Structural Emergence," Convergence Codex, 2026. DOI: 10.5281/zenodo.convergence.88c4200de801.
+[9] M. E. Mala, "Dimensional Boundaries and Structural Emergence," Convergence Codex, 2026. Formalisation ID: 88c4200de801.
 
-[10] M. E. Mala, "Non-Commutativity of Measurement and Evolution Operators," Convergence Codex, 2026. DOI: 10.5281/zenodo.convergence.f81a15bdfef4.
+[10] M. E. Mala, "Non-Commutativity of Measurement and Evolution Operators," Convergence Codex, 2026. Formalisation ID: f81a15bdfef4.
 
-[11] M. E. Mala, "Contextual Properties in Quantum-Classical Boundaries," Convergence Codex, 2026. DOI: 10.5281/zenodo.convergence.8597ba2a0bd3.
+[11] M. E. Mala, "Contextual Properties in Quantum-Classical Boundaries," Convergence Codex, 2026. Formalisation ID: 8597ba2a0bd3.
 
-[12] M. E. Mala, "Information Compression at Measurement Interfaces," Convergence Codex, 2026. DOI: 10.5281/zenodo.convergence.f205e9c27eca.
+[12] M. E. Mala, "Information Compression at Measurement Interfaces," Convergence Codex, 2026. Formalisation ID: f205e9c27eca.
 
 [13] N. Bohr, "Can Quantum-Mechanical Description of Physical Reality be Considered Complete?" Physical Review 48, 696-702 (1935). DOI: 10.1103/PhysRev.48.696.
 
@@ -548,8 +530,6 @@ The following table lists every convergence supporting the central claim, with f
 - Fluid Dynamics × Quantum Gravity: 1 convergence
 
 ## Appendix B: Discovery and Formalisation Methodology
-
-## Discovery Methodology
 
 All convergences reported in this paper were discovered by Gnosis AI, an autonomous knowledge discovery system. The methodology proceeds in three stages:
 
