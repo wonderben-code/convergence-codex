@@ -1,0 +1,15 @@
+{
+  "proof_id": "1ff37075e707",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A complete theory of topological band structures on general Riemannian manifolds with boundaries, including: (1) Extension of K-theoretic classification to manifolds with non-trivial geometry, (2) Rigorous bulk-boundary correspondence for continuous systems, (3) Index theorems connecting geometric/topological invariants to spectral properties",
+    "Difficulty assessed as challenging",
+    "7 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

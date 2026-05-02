@@ -1,0 +1,13 @@
+{
+  "proof_id": "30cc71c46a28",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous mathematical framework for spontaneous symmetry breaking in infinite-dimensional spaces that: (1) handles the selection mechanism from degenerate minima, (2) incorporates fluctuations and noise, (3) proves existence and uniqueness of solutions for general nonlinear PDEs governing pattern formation",
+    "10 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

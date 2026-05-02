@@ -1,0 +1,38 @@
+{
+  "proof_id": "30c266c6b030",
+  "timestamp": "2026-05-02T14:05:30.681922+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "categorical - This could capture the universal property of symmetry breaking as a functor from symmetric to broken-symmetry states, but the convergence is more about the shared principle than the categorical role"
+      ],
+      "reasoning": "The convergence identifies symmetry breaking as a shared abstract principle that generates observable properties across different physical domains. Both particle physics and atomic physics satisfy axioms about how symmetry groups act on states, how breaking these symmetries creates new energy scales, and how this leads to observable phenomena. The claim is about shared principles rather than identical structures."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Category theory, Algebraic structures, Differential geometry",
+      "alternatives_considered": [],
+      "reasoning": "Category theory provides the natural framework for formalizing structural convergences across domains through functors that preserve symmetry-breaking patterns. Algebraic structures capture the group-theoretic nature of symmetries and their breaking, while differential geometry handles the manifold structure of parameter spaces where symmetry breaking occurs."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof constructs a functor from symmetry breaking patterns to physical observables by analyzing the quotient structure G/H. Goldstone's theorem provides massless modes from broken generators, while massive modes arise from H-invariant sections, establishing that symmetry breaking determines both mass spectrum and observable properties through the geometry of the vacuum manifold.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 9 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3578 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 3191 chars, 9 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This proof requires significant physics formalization beyond what Mathlib provides. The mathematical structures (groups, representations, categories) are available, but the physical interpretation and specific theorems like Goldstone's theorem are not. The connection between abstract symmetry breaking and concrete physical observables like mass spectra would need substantial additional formalization."
+    }
+  ]
+}

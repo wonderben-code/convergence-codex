@@ -1,0 +1,13 @@
+{
+  "proof_id": "30c266c6b030",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous mathematical framework connecting: (1) Lie algebra cohomology to mass eigenvalues in quantum field theory, (2) Functorial relationships between symmetry categories and observable categories, (3) Mathematical formulation of measurement theory compatible with category-theoretic structures",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

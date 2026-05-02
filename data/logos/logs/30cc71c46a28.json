@@ -1,0 +1,38 @@
+{
+  "proof_id": "30cc71c46a28",
+  "timestamp": "2026-05-02T14:02:28.723869+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "constraint_logic was considered since these are equilibrium phenomena arising from energy/stability constraints, but the emphasis on symmetry breaking and critical transitions makes an axiomatic approach more natural for capturing the shared mathematical structure."
+      ],
+      "reasoning": "The convergence identifies shared abstract principles across different physical systems: continuous symmetry breaking, critical transitions governed by dimensionless parameters, and emergence of discrete ordered structures. These are best captured as a set of axioms that both BEC and fluid instabilities satisfy, rather than claiming the systems are structurally identical or equivalent."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Dynamical systems, Differential geometry, Measure theory",
+      "alternatives_considered": [],
+      "reasoning": "Dynamical systems theory provides the framework for critical transitions and bifurcations governed by parameters. Differential geometry captures the continuous symmetries as Lie groups acting on manifolds. Measure theory is essential for defining order parameters and phase transitions in both atomic systems and fluid dynamics."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof uses Landau theory to show that a G-invariant free energy functional develops degenerate minima when a control parameter crosses a critical value. The system spontaneously selects one minimum, breaking the continuous symmetry G to a discrete subgroup H, with the resulting state exhibiting discrete spatial ordering determined by the representation of H.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 7 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3150 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 2749 chars, 14 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This formalization captures the mathematical structure of spontaneous symmetry breaking but requires significant physics-specific machinery not available in Mathlib. The proof structure follows the given steps but many physical concepts (Landau theory, order parameters, phase transitions) need proper formalization."
+    }
+  ]
+}

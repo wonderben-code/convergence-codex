@@ -1,0 +1,13 @@
+{
+  "proof_id": "d91b0b36fd1f",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous theory of emergent operators in many-body quantum systems that: (1) provides criteria for when collective modes exist, (2) characterizes their irreducibility to single-particle operators, (3) quantifies the degree of collectivity",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "proof_id": "ef975c3682ab",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous categorical framework for number-theoretic reciprocity laws, including: (1) Functorial interpretation of the Legendre symbol, (2) Categorical characterization of reciprocity as natural transformations, (3) Precise connection between adjunctions and reciprocity phenomena, (4) Topos-theoretic framework for Galois representations",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

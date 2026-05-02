@@ -1,0 +1,351 @@
+{
+  "id": "30cc71c46a28",
+  "convergence_id": "bf811aba6f27",
+  "timestamp": "2026-05-02T14:02:28.723856+00:00",
+  "proposition": "Let (X, g) be a physical system with state space X and dynamics governed by g. If X admits a continuous symmetry group G and there exists a dimensionless control parameter \u03bb \u2208 \u211d, then there exists a critical value \u03bbc such that for \u03bb > \u03bbc, the system undergoes spontaneous symmetry breaking from G to a discrete subgroup H \u2282 G, with the resulting state exhibiting discrete ordered structures.",
+  "proposition_natural": "Physical systems spontaneously break continuous symmetries to form discrete, ordered structures through critical transitions governed by dimensionless parameters",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Dynamical systems",
+    "Differential geometry",
+    "Measure theory"
+  ],
+  "apparatus_justification": "Dynamical systems theory provides the framework for critical transitions and bifurcations governed by parameters. Differential geometry captures the continuous symmetries as Lie groups acting on manifolds. Measure theory is essential for defining order parameters and phase transitions in both atomic systems and fluid dynamics.",
+  "proof_natural": "**Proposition.** Let $(X, g)$ be a physical system with state space $X$ and dynamics governed by $g$. If $X$ admits a continuous symmetry group $G$ and there exists a dimensionless control parameter $\\lambda \\in \\mathbb{R}$, then there exists a critical value $\\lambda_c$ such that for $\\lambda > \\lambda_c$, the system undergoes spontaneous symmetry breaking from $G$ to a discrete subgroup $H \\subset G$, with the resulting state exhibiting discrete ordered structures.\n\n**Proof.** We assume that the state space $X$ is a smooth manifold with metric structure, and that the dynamics $g: X \\to X$ is at least $C^2$. Let the symmetry group $G$ act continuously on $X$, and suppose the system admits a $G$-invariant free energy functional $F: X \\to \\mathbb{R}$. We further assume that the control parameter $\\lambda$ appears in $F$ in a dimensionally consistent manner, that the system is in thermodynamic equilibrium or quasi-equilibrium, that fluctuations are small compared to mean values, that any transition is second-order or weakly first-order, and that the order parameter space is finite-dimensional.\n\nBy the Landau theory of phase transitions, near the symmetric state $\\phi = 0$, we may expand the free energy as\n$$F(\\phi, \\lambda) = F_0 + a(\\lambda)|\\phi|^2 + b|\\phi|^4 + O(|\\phi|^6),$$\nwhere the $G$-invariance of $F$ restricts the allowed terms in the expansion. Near the critical point, we have $a(\\lambda) = a_0(\\lambda - \\lambda_c)$ by the requirement of criticality.\n\nFor $\\lambda < \\lambda_c$, we have $a(\\lambda) > 0$. Computing the critical points of $F$ by setting $\\partial F/\\partial \\phi = 0$, we find that the global minimum occurs at $\\phi = 0$, preserving the full symmetry group $G$.\n\nFor $\\lambda > \\lambda_c$, however, $a(\\lambda) < 0$. The critical point equation now yields minima at $|\\phi| = \\sqrt{-a(\\lambda)/2b} \\neq 0$, while examination of the second derivatives confirms these are indeed minima. The symmetric state $\\phi = 0$ has become a local maximum.\n\nThe manifold of minima $M = \\{\\phi : |\\phi| = \\sqrt{-a(\\lambda)/2b}\\}$ forms an orbit under the action of $G$. By the orbit-stabilizer theorem, this manifold has dimension $\\dim(G/H)$, where $H$ is the stabilizer subgroup of any particular minimum.\n\nThe system must select a specific point on $M$, thereby breaking the symmetry from $G$ to the stabilizer $H$. [Note: A complete analysis would require examining the role of fluctuations and selection mechanisms in this symmetry-breaking process.] Once selected, the order parameter $\\phi$ transforms under the discrete group $H$, inducing spatial patterns with the corresponding discrete symmetry.\n\nBy Goldstone's theorem, this spontaneous breaking of the continuous symmetry $G$ to the discrete subgroup $H$ implies the existence of $\\dim(G/H)$ massless modes corresponding to motion along the degenerate manifold $M$.\n\nTherefore, for $\\lambda > \\lambda_c$, the system exhibits spontaneous symmetry breaking from the continuous group $G$ to a discrete subgroup $H$, with the resulting ordered state displaying discrete spatial structures consistent with the residual symmetry. This completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.Topology.Basic\nimport Mathlib.Topology.ContinuousFunction.Basic\nimport Mathlib.GroupTheory.GroupAction.Basic\nimport Mathlib.GroupTheory.Subgroup.Basic\nimport Mathlib.Analysis.Calculus.Taylor\nimport Mathlib.Analysis.InnerProductSpace.Basic\nimport Mathlib.Topology.MetricSpace.Basic\n\n/-- A physical system with state space and dynamics -/\nstructure PhysicalSystem where\n  X : Type*\n  [topologicalSpace : TopologicalSpace X]\n  g : X \u2192 X\n  [continuous_g : Continuous g]\n\n/-- Free energy functional for a physical system -/\nstructure FreeEnergy (X : Type*) [TopologicalSpace X] where\n  F : X \u2192 \u211d \u2192 \u211d\n  smooth : sorry -- Need smoothness condition\n\n/-- Spontaneous symmetry breaking theorem -/\ntheorem spontaneous_symmetry_breaking\n  {X : Type*} [NormedAddCommGroup X] [InnerProductSpace \u211d X]\n  (system : PhysicalSystem)\n  (G : Type*) [Group G] [TopologicalSpace G] [TopologicalGroup G]\n  (action : G \u2192* (X \u2192* X))\n  (continuous_action : \u2200 g : G, Continuous (action g))\n  (\u03bb : \u211d) -- dimensionless control parameter\n  (F_functional : FreeEnergy X) :\n  \u2203 (\u03bbc : \u211d) (H : Subgroup G),\n    \u03bb > \u03bbc \u2192 \n    \u2203 (\u03c6 : X), \u03c6 \u2260 0 \u2227 \n    (\u2200 h \u2208 H, action h \u03c6 = \u03c6) \u2227\n    sorry -- discrete ordered structures property\n  := by\n  -- Step 1: Landau expansion of free energy near symmetric state\n  have landau_expansion : \u2203 (F\u2080 a b : \u211d \u2192 \u211d),\n    \u2200 \u03c6 : X, \u2200 \u03bb' : \u211d,\n    F_functional.F \u03c6 \u03bb' = F\u2080 \u03bb' + a \u03bb' * \u2016\u03c6\u2016^2 + b \u03bb' * \u2016\u03c6\u2016^4 + sorry := by\n    sorry -- Need Landau theory formalization\n  \n  -- Step 2: Critical behavior of coefficient a(\u03bb)\n  obtain \u27e8F\u2080, a, b, h_expansion\u27e9 := landau_expansion\n  use sorry -- \u03bbc value\n  have h_a : \u2203 (a\u2080 \u03bbc : \u211d), \u2200 \u03bb', a \u03bb' = a\u2080 * (\u03bb' - \u03bbc) := by\n    sorry -- Need critical phenomena theory\n  \n  -- Step 3: For \u03bb < \u03bbc, minimum at \u03c6 = 0\n  have h_below_critical : \u2200 \u03bb' < sorry, -- \u03bbc\n    \u2200 \u03c6 : X, F_functional.F 0 \u03bb' \u2264 F_functional.F \u03c6 \u03bb' := by\n    sorry -- Need variational calculus\n  \n  -- Step 4: For \u03bb > \u03bbc, minimum at non-zero \u03c6\n  have h_above_critical : \u2200 \u03bb' > sorry, -- \u03bbc\n    \u2203 \u03c6 : X, \u03c6 \u2260 0 \u2227 \n    \u2200 \u03c8 : X, F_functional.F \u03c6 \u03bb' \u2264 F_functional.F \u03c8 \u03bb' := by\n    sorry -- Need critical point analysis\n  \n  -- Step 5: Manifold of minima and orbit-stabilizer theorem\n  have h_manifold : \u2200 \u03bb' > sorry, -- \u03bbc\n    \u2203 (M : Set X) (H : Subgroup G),\n    (\u2200 \u03c6 \u2208 M, \u2200 \u03c8 : X, F_functional.F \u03c6 \u03bb' \u2264 F_functional.F \u03c8 \u03bb') \u2227\n    sorry -- dim(M) = dim(G/H) property\n    := by\n    sorry -- Need orbit-stabilizer theorem application\n  \n  -- Step 6: System selects point breaking G to H\n  use sorry -- H subgroup\n  intro h_lambda\n  obtain \u27e8M, H, h_M\u27e9 := h_manifold h_lambda\n  use sorry -- selected \u03c6\n  constructor\n  \u00b7 sorry -- \u03c6 \u2260 0\n  constructor\n  \u00b7 sorry -- stabilizer property\n  -- Step 7: Discrete ordering\n  \u00b7 sorry -- discrete spatial patterns",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The free energy F(\u03c6, \u03bb) can be expanded near the symmetric state \u03c6 = 0 as a Landau expansion",
+      "justification": "Taylor expansion of smooth functions near critical points",
+      "dependencies": [
+        "Assumption of smoothness of F",
+        "Landau theory of phase transitions"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "F(\u03c6, \u03bb) = F\u2080 + a(\u03bb)|\u03c6|\u00b2 + b|\u03c6|\u2074 + O(|\u03c6|\u2076) where a(\u03bb) = a\u2080(\u03bb - \u03bbc)",
+      "justification": "G-invariance of F restricts allowed terms; linear dependence of a(\u03bb) near \u03bbc follows from criticality",
+      "dependencies": [
+        "Step 1",
+        "Group representation theory"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "For \u03bb < \u03bbc, a(\u03bb) > 0 and the minimum of F occurs at \u03c6 = 0 (symmetric state)",
+      "justification": "Direct calculation of critical points of F",
+      "dependencies": [
+        "Step 2"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "For \u03bb > \u03bbc, a(\u03bb) < 0 and the minimum occurs at |\u03c6| = \u221a(-a(\u03bb)/2b) \u2260 0",
+      "justification": "Setting \u2202F/\u2202\u03c6 = 0 and checking second derivatives",
+      "dependencies": [
+        "Step 2",
+        "Assumption b > 0 for stability"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The manifold of minima M = {\u03c6 : |\u03c6| = \u221a(-a(\u03bb)/2b)} has dimension dim(G/H)",
+      "justification": "Orbit-stabilizer theorem applied to group action",
+      "dependencies": [
+        "Step 4",
+        "Orbit-stabilizer theorem"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "The system selects a point on M, breaking G to stabilizer subgroup H",
+      "justification": "[Gap: Requires analysis of fluctuations and selection mechanisms]",
+      "dependencies": [
+        "Step 5",
+        "Fluctuation theory"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The selected state exhibits spatial ordering with discrete symmetry H",
+      "justification": "The order parameter \u03c6 transforms under H, inducing discrete spatial patterns",
+      "dependencies": [
+        "Step 6",
+        "Representation theory of H"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Landau Theory of Phase Transitions",
+      "authors": "L.D. Landau",
+      "year": "1937",
+      "field": "Statistical Physics",
+      "statement": "Near continuous phase transitions, free energy can be expanded in powers of order parameter",
+      "usage": "Justifies expansion in steps 1-2"
+    },
+    {
+      "name": "Orbit-Stabilizer Theorem",
+      "authors": "Classical group theory",
+      "year": "19th century",
+      "field": "Mathematics",
+      "statement": "For group G acting on set X, |G\u00b7x| = |G|/|G\u2093| where G\u2093 is stabilizer",
+      "usage": "Used in step 5 to determine dimension of order parameter manifold"
+    },
+    {
+      "name": "Goldstone's Theorem",
+      "authors": "J. Goldstone",
+      "year": "1961",
+      "field": "Quantum Field Theory",
+      "statement": "Spontaneous breaking of continuous symmetry implies massless modes",
+      "usage": "Implicit in understanding of symmetry breaking mechanism"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The state space X is a smooth manifold with metric structure",
+    "The dynamics g: X \u2192 X is sufficiently smooth (at least C\u00b2)",
+    "The symmetry group G acts continuously on X",
+    "The system admits a free energy functional F: X \u2192 \u211d that is G-invariant",
+    "The control parameter \u03bb appears in F in a way that preserves dimensional analysis",
+    "The system is in thermodynamic equilibrium or quasi-equilibrium",
+    "Fluctuations are small compared to mean values",
+    "The transition is second-order or weakly first-order",
+    "The order parameter space is finite-dimensional"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "Let the symmetry group G act continuously on X",
+        "issue": "No proof that the dynamics g respects or commutes with the G-action. The symmetry of the state space doesn't imply the dynamics preserves it.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Must prove g is G-equivariant: g(h\u00b7x) = h\u00b7g(x) for all h in G, x in X"
+      },
+      {
+        "step": "suppose the system admits a G-invariant free energy functional F",
+        "issue": "Existence of such a functional is assumed without justification. Not all physical systems have well-defined free energy functionals.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "This is a fundamental assumption that should be part of the hypothesis, not introduced mid-proof"
+      },
+      {
+        "step": "By the Landau theory of phase transitions",
+        "issue": "Landau theory applies to specific types of systems near equilibrium. No verification that this system satisfies Landau theory's prerequisites.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Verify system has: local equilibrium, small fluctuations, and order parameter that transforms properly under G"
+      },
+      {
+        "step": "we have a(\u03bb) = a\u2080(\u03bb - \u03bbc) by the requirement of criticality",
+        "issue": "Circular reasoning: assumes existence of \u03bbc to prove existence of \u03bbc. Also assumes linear dependence without justification.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Must first prove a(\u03bb) changes sign, then define \u03bbc as the zero-crossing point"
+      },
+      {
+        "step": "The system must select a specific point on M",
+        "issue": "No mechanism provided for symmetry breaking. In perfect symmetry, system could remain in superposition. Requires fluctuations or perturbations.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Include explicit symmetry-breaking mechanism (thermal/quantum fluctuations, boundary conditions, etc.)"
+      },
+      {
+        "step": "the stabilizer H is a discrete subgroup",
+        "issue": "No proof that H is discrete. Could be a continuous subgroup, invalidating the entire conclusion about discrete structures.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "This cannot be proven in general - counterexample: SO(3) \u2192 SO(2) leaves continuous symmetry"
+      },
+      {
+        "step": "By Goldstone's theorem",
+        "issue": "Goldstone's theorem requires specific conditions (relativistic invariance, etc.) not verified here. Also applies to quantum field theory, not general physical systems.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Either verify Goldstone's conditions or use appropriate classical analog"
+      }
+    ],
+    "hidden_assumptions": [
+      "Order parameter \u03c6 exists and characterizes the system completely",
+      "System reaches thermal equilibrium",
+      "No first-order transitions possible",
+      "Fluctuations can be ignored except for symmetry breaking",
+      "Free energy expansion converges",
+      "Parameter b > 0 (for stability)",
+      "System is finite or has appropriate boundary conditions",
+      "No competing order parameters",
+      "Classical treatment is valid (no quantum effects)"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "Assumes existence of critical point \u03bbc in the expansion a(\u03bb) = a\u2080(\u03bb - \u03bbc) to prove that such a critical point exists. Also assumes symmetry breaks to discrete subgroup to prove discrete structures emerge.",
+    "over_generalisation": true,
+    "over_generalisation_details": "Proof at best shows that IF system admits Landau description AND IF stabilizer happens to be discrete AND IF various unstated conditions hold, then symmetry might break. Claims universal result for all physical systems with continuous symmetry.",
+    "citation_issues": [
+      "Landau theory is not universal - only applies near second-order transitions in specific systems",
+      "Goldstone's theorem has specific prerequisites (Lorentz invariance, quantum field theory context) not verified",
+      "Orbit-stabilizer theorem used correctly but doesn't guarantee H is discrete"
+    ],
+    "structural_soundness": 0.2,
+    "overall_assessment": "This proof is fundamentally flawed, relying on circular reasoning and unjustified assumptions. The core claim that continuous symmetries always break to discrete subgroups is false, as demonstrated by numerous counterexamples in physics. The proof structure could equally well 'prove' that all symmetry breaking leads to purple unicorns.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof only establishes that under certain conditions, a Landau-type free energy functional can exhibit symmetry breaking. It does not prove that an arbitrary physical system with the stated properties must undergo such symmetry breaking, nor does it establish the existence of discrete ordered structures in the actual physical system.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The order parameter \u03c6 is well-defined and captures all relevant degrees of freedom",
+      "The Landau expansion is valid (requires proximity to critical point and absence of other instabilities)",
+      "The coefficient b > 0 (required for stability)",
+      "The system can be described by equilibrium thermodynamics",
+      "Spatial variations of the order parameter can be neglected",
+      "The mapping from physical system (X,g) to order parameter space is well-defined",
+      "The symmetry group G acts on the order parameter space in a way consistent with its action on X",
+      "Higher-order terms in the Landau expansion do not qualitatively change the behavior"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "1",
+        "issue": "No justification for why the physical system (X,g) can be described by a free energy functional F(\u03c6,\u03bb) in terms of an order parameter \u03c6. The connection between the abstract system and the Landau formalism is not established."
+      },
+      {
+        "step": "2",
+        "issue": "The claim that G-invariance restricts terms to even powers of |\u03c6| assumes \u03c6 transforms in a specific way under G, which is not established. The linear dependence a(\u03bb) = a\u2080(\u03bb - \u03bbc) is assumed without justification."
+      },
+      {
+        "step": "4",
+        "issue": "Assumes b > 0 without stating this assumption. Also assumes the expansion truncation is valid for determining minima."
+      },
+      {
+        "step": "5",
+        "issue": "The orbit-stabilizer theorem application requires that G acts transitively on the manifold of minima, which is not proven. The dimension formula assumes a specific group action structure."
+      },
+      {
+        "step": "7",
+        "issue": "The connection between the order parameter \u03c6 having discrete symmetry H and the physical system exhibiting 'discrete spatial patterns' is not established. This requires additional assumptions about how \u03c6 relates to spatial structure."
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Step 6 explicitly identifies a gap in the selection mechanism",
+      "No proof that the abstract system (X,g) can be described by the Landau formalism",
+      "No connection established between order parameter symmetry breaking and actual physical spatial ordering",
+      "Missing analysis of when the Landau expansion is valid",
+      "No proof that \u03bbc exists or is unique",
+      "No consideration of competing instabilities or phases"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": false,
+    "contradiction_details": [],
+    "assumption_conflicts": [
+      "New proof assumes 'dimensionless control parameter \u03bb' but provides no justification for why \u03bb must be dimensionless, while existing proof [08b6405556dd] emphasizes dimensional consistency in symmetry-constrained dynamics",
+      "Assumes 'fluctuations are small compared to mean values' which conflicts with the general treatment in [087da119976b] that handles arbitrary fluctuation magnitudes in symmetry breaking",
+      "Claims transition is 'second-order or weakly first-order' without proof, while [0178ff46c5ee] provides rigorous characterization of phase transition orders"
+    ],
+    "beneficial_connections": [
+      "Directly extends [087da119976b] by providing explicit Landau expansion framework for spontaneous symmetry breaking",
+      "Complements [0178ff46c5ee] by giving concrete mechanism for symmetry-breaking phase transitions with order parameter dynamics",
+      "Connects to [08b6405556dd] through shared emphasis on symmetry group constraints on system dynamics",
+      "Relates to [0e664bd264b4] through hierarchical structure formation via symmetry breaking instabilities"
+    ],
+    "consistency_score": 0.7,
+    "notes": "The proof is mathematically sound but lacks rigor in several key assumptions. The Landau expansion approach is standard but the proof doesn't establish convergence conditions or justify truncation at fourth order. The claim about manifold dimension dim(G/H) needs geometric justification. The proof would benefit from explicit connection to existing thermodynamic frameworks and more careful treatment of the control parameter's role."
+  },
+  "confidence_score": 0.33,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.7,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.7,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous mathematical framework for spontaneous symmetry breaking in infinite-dimensional spaces that: (1) handles the selection mechanism from degenerate minima, (2) incorporates fluctuations and noise, (3) proves existence and uniqueness of solutions for general nonlinear PDEs governing pattern formation",
+  "limitations": [
+    "Step 6 requires rigorous treatment of how system selects from degenerate minima",
+    "Connection between abstract order parameter and physical spatial patterns needs formalization",
+    "Proof assumes Landau expansion is valid but doesn't prove convergence",
+    "Dimensional analysis of parameters not fully formalized",
+    "Transition from microscopic to macroscopic description lacks rigorous justification",
+    "Only applies to second-order or weakly first-order transitions",
+    "Requires existence of small order parameter expansion",
+    "Does not handle strongly fluctuating systems",
+    "Assumes thermodynamic limit without proving it",
+    "Does not address dynamical aspects of pattern formation"
+  ],
+  "source_convergence": {
+    "structural_claim": "Physical systems spontaneously break continuous symmetries to form discrete, ordered structures through critical transitions governed by dimensionless parameters",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Bose-Einstein Condensation in Dilute Gases",
+        "domain_id": "field_a",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Below a critical temperature, a continuous ensemble of atoms undergoes symmetry breaking to form a discrete macroscopic quantum state"
+      },
+      {
+        "result_id": "",
+        "result_name": "Rayleigh-B\u00e9nard Convection",
+        "domain_id": "field_b",
+        "domain_name": "Fluid Dynamics",
+        "link_type": "direct",
+        "structural_conclusion": "Above a critical Rayleigh number, continuous fluid undergoes symmetry breaking to form discrete convection cells"
+      },
+      {
+        "result_id": "",
+        "result_name": "Taylor-Couette Instability",
+        "domain_id": "field_b",
+        "domain_name": "Fluid Dynamics",
+        "link_type": "direct",
+        "structural_conclusion": "Rotating flows undergo hierarchical symmetry-breaking transitions at critical Reynolds numbers, forming discrete vortex structures"
+      }
+    ],
+    "domains": [
+      "atomic_physics",
+      "fluid_dynamics"
+    ],
+    "domain_names": [
+      "Atomic and Molecular Physics",
+      "Fluid Dynamics"
+    ],
+    "ea_scores": {
+      "strength": 0.21419999999999997,
+      "independence": 0.85,
+      "adversarial": 0.09,
+      "reproducibility": 0.5249999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.47351,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:56:00.480478+00:00",
+    "id": "bf811aba6f27"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.26283
+  }
+}

@@ -1,0 +1,376 @@
+{
+  "id": "9f16b24d2b99",
+  "convergence_id": "c295cef91f7b",
+  "timestamp": "2026-05-02T14:04:37.049926+00:00",
+  "proposition": "Let (X, G, \u03bc) be a measure-preserving dynamical system where X is a phase space, G is a symmetry group acting on X, and \u03bc is a G-invariant measure. Let F: X \u2192 \u211d be an order parameter functional. Then there exists a critical parameter \u03bbc such that for \u03bb > \u03bbc, the system exhibits symmetry breaking characterized by \u27e8F\u27e9\u03bc \u2260 0 for \u03bc-almost all ergodic components, where the microscopic dynamics preserves G-symmetry.",
+  "proposition_natural": "Symmetry breaking drives the emergence of macroscopic ordered states from symmetric microscopic dynamics",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Order theory",
+    "Dynamical systems"
+  ],
+  "apparatus_justification": "Category theory provides the natural framework for formalizing structural convergences across domains through functors that preserve symmetry-breaking patterns. Order theory captures the partial ordering of symmetry groups and phase transitions, while dynamical systems theory formalizes the emergence of ordered states from symmetric dynamics.",
+  "proof_natural": "**Proposition.** Let $(X, G, \\mu)$ be a measure-preserving dynamical system where $X$ is a phase space, $G$ is a symmetry group acting on $X$, and $\\mu$ is a $G$-invariant measure. Let $F: X \\to \\mathbb{R}$ be an order parameter functional. Then there exists a critical parameter $\\lambda_c$ such that for $\\lambda > \\lambda_c$, the system exhibits symmetry breaking characterized by $\\langle F \\rangle_\\mu \\neq 0$ for $\\mu$-almost all ergodic components, where the microscopic dynamics preserves $G$-symmetry.\n\n**Proof.** We assume that $X$ is a Polish space with $G$ a locally compact topological group acting continuously on $X$. Let $\\mu$ be a $G$-invariant Borel probability measure on $X$, and suppose the dynamics is given by a one-parameter group $\\{T_t\\}_{t \\in \\mathbb{R}}$ commuting with $G$. We further assume that $F: X \\to \\mathbb{R}$ is a measurable $G$-variant function, meaning $F(gx) \\neq F(x)$ for some $g \\in G$ and $x \\in X$. The system depends continuously on a control parameter $\\lambda \\in \\mathbb{R}$. We assume the existence of an ergodic decomposition of $\\mu$, that the free energy functional is well-defined and differentiable, and that appropriate limits exist (thermodynamic limit for condensed matter systems, unique solutions for Navier-Stokes equations in fluid systems).\n\nBy the Ergodic Decomposition Theorem, the measure $\\mu$ admits a unique decomposition $\\mu = \\int \\mu_\\omega \\, d\\nu(\\omega)$ where each $\\mu_\\omega$ is ergodic. We define the free energy functional $\\Phi_\\lambda[\\rho] = \\int f_\\lambda(\\rho(x))dx - TS[\\rho]$, where $\\rho$ is a density, $f_\\lambda$ is the local free energy density, and $S$ is the entropy functional.\n\nFor $\\lambda < \\lambda_c$, the convexity of the free energy functional ensures that its unique minimizer is the $G$-invariant state $\\rho_0$ satisfying $\\langle F \\rangle_{\\rho_0} = 0$. This follows from the fact that any $G$-variant function must have zero expectation under a $G$-invariant measure.\n\nAt the critical value $\\lambda = \\lambda_c$, the system undergoes a bifurcation. Specifically, the Hessian $D^2\\Phi_{\\lambda_c}[\\rho_0]$ develops a zero eigenvalue in the direction of symmetry-breaking perturbations. This characterizes $\\lambda_c$ as a critical point in the sense of bifurcation theory.\n\nFor $\\lambda > \\lambda_c$, the Equivariant Bifurcation Theorem guarantees that $\\Phi_\\lambda$ develops multiple local minima $\\{\\rho_i\\}$ related by the group action: $\\rho_i = g \\cdot \\rho_j$ for appropriate $g \\in G$. This is the hallmark of a pitchfork bifurcation in $G$-equivariant systems, consistent with Landau's theory of phase transitions.\n\nEach local minimum $\\rho_i$ necessarily satisfies $\\langle F \\rangle_{\\rho_i} \\neq 0$. This follows because $F$ is $G$-variant and each $\\rho_i$ breaks the $G$-symmetry\u2014if $\\rho_i$ were $G$-invariant, then $\\langle F \\rangle_{\\rho_i}$ would vanish by the same argument as for $\\rho_0$.\n\nThe system selects one of these symmetry-broken states $\\rho_i$ through fluctuations or boundary conditions. [Note: The precise selection mechanism requires a detailed analysis of fluctuations beyond the mean-field approximation presented here.] By the Center Manifold Theorem, near the bifurcation point, the infinite-dimensional dynamics effectively reduces to a finite-dimensional center manifold where this selection occurs.\n\nIn the thermodynamic limit for condensed matter systems, or in the long-time limit for fluid systems, ergodicity breaking ensures that the system remains in the selected symmetry-broken state. Thus, for $\\lambda > \\lambda_c$, we have $\\langle F \\rangle_\\mu \\neq 0$ for $\\mu$-almost all ergodic components, despite the microscopic dynamics preserving the full $G$-symmetry.\n\nThis completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.MeasureTheory.Measure.MeasureSpace\nimport Mathlib.MeasureTheory.Group.Action\nimport Mathlib.Dynamics.Ergodic.Basic\nimport Mathlib.Analysis.Convex.Basic\nimport Mathlib.Analysis.Calculus.FDeriv.Basic\n\n/-- A measure-preserving dynamical system with a group action -/\nstructure MeasurePreservingSystem (X : Type*) (G : Type*) [MeasurableSpace X] [Group G] where\n  \u03bc : Measure X\n  action : G \u2192 X \u2192 X\n  measurable_action : \u2200 g : G, Measurable (action g)\n  measure_preserving : \u2200 g : G, MeasureTheory.Measure.map (action g) \u03bc = \u03bc\n\n/-- An order parameter functional -/\nstructure OrderParameter (X : Type*) [MeasurableSpace X] where\n  F : X \u2192 \u211d\n  measurable : Measurable F\n\n/-- Ergodic decomposition of a measure -/\nstructure ErgodicDecomposition {X : Type*} [MeasurableSpace X] (\u03bc : Measure X) where\n  \u03a9 : Type*\n  meas_\u03a9 : MeasurableSpace \u03a9\n  \u03bd : Measure \u03a9\n  \u03bc_\u03c9 : \u03a9 \u2192 Measure X\n  decomposition : \u03bc = sorry -- \u222b \u03bc_\u03c9 d\u03bd(\u03c9)\n  ergodic : \u2200 \u03c9 : \u03a9, sorry -- \u03bc_\u03c9 is ergodic\n\n/-- Free energy functional -/\ndef FreeEnergyFunctional {X : Type*} [MeasurableSpace X] (\u03bb : \u211d) (T : \u211d) : (X \u2192 \u211d) \u2192 \u211d :=\n  sorry -- \u03a6\u03bb[\u03c1] = \u222b f\u03bb(\u03c1(x))dx - TS[\u03c1]\n\n/-- Critical parameter for symmetry breaking -/\ndef CriticalParameter {X G : Type*} [MeasurableSpace X] [Group G] \n  (sys : MeasurePreservingSystem X G) (F : OrderParameter X) : \u211d :=\n  sorry -- \u03bbc such that symmetry breaking occurs for \u03bb > \u03bbc\n\n/-- Main theorem: Symmetry breaking in measure-preserving dynamical systems -/\ntheorem symmetry_breaking_theorem {X G : Type*} [MeasurableSpace X] [Group G]\n  (sys : MeasurePreservingSystem X G) (F : OrderParameter X) :\n  \u2203 \u03bbc : \u211d, \u2200 \u03bb > \u03bbc, \n  \u2203 (decomp : ErgodicDecomposition sys.\u03bc),\n  \u2200\u1d50 \u03c9 \u2202decomp.\u03bd, \u222b F.F d(decomp.\u03bc_\u03c9 \u03c9) \u2260 0 := by\n  -- Step 1: Ergodic decomposition\n  have h1 : \u2203 (decomp : ErgodicDecomposition sys.\u03bc), True := by\n    sorry -- Ergodic decomposition theorem not in Mathlib\n  obtain \u27e8decomp, _\u27e9 := h1\n  \n  -- Step 2: Define free energy functional\n  let \u03a6 := fun \u03bb => FreeEnergyFunctional \u03bb 1\n  \n  -- Step 3: Below critical point, unique minimizer is G-invariant\n  have h3 : \u2203 \u03bbc : \u211d, \u2200 \u03bb < \u03bbc, \u2203! \u03c1\u2080, \n    sorry -- \u03c1\u2080 minimizes \u03a6 \u03bb and is G-invariant with \u27e8F\u27e9_\u03c1\u2080 = 0\n  \n  -- Step 4: At critical point, Hessian has zero eigenvalue\n  have h4 : \u2203 \u03bbc : \u211d, sorry -- D\u00b2\u03a6_\u03bbc[\u03c1\u2080] has zero eigenvalue\n  \n  -- Step 5: Above critical point, multiple local minima\n  have h5 : \u2203 \u03bbc : \u211d, \u2200 \u03bb > \u03bbc, \n    sorry -- \u03a6 \u03bb has multiple local minima related by G-action\n  \n  -- Step 6: Each local minimum has non-zero order parameter\n  have h6 : \u2203 \u03bbc : \u211d, \u2200 \u03bb > \u03bbc, \n    sorry -- Each local minimum \u03c1\u1d62 satisfies \u27e8F\u27e9_\u03c1\u1d62 \u2260 0\n  \n  -- Step 7: System selects one minimum\n  have h7 : sorry -- Selection mechanism through fluctuations\n  \n  -- Step 8: Thermodynamic/long-time limit\n  have h8 : sorry -- System remains in selected state\n  \n  -- Combine results\n  sorry -- Complete proof requires equivariant bifurcation theory",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The measure \u03bc admits an ergodic decomposition \u03bc = \u222b \u03bc\u03c9 d\u03bd(\u03c9) where each \u03bc\u03c9 is ergodic",
+      "justification": "Ergodic decomposition theorem for measure-preserving dynamical systems",
+      "dependencies": [
+        "Assumption: X is Polish space",
+        "Assumption: \u03bc is invariant measure"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Define the free energy functional \u03a6\u03bb[\u03c1] = \u222b f\u03bb(\u03c1(x))dx - TS[\u03c1] where \u03c1 is a density, f\u03bb is local free energy, and S is entropy",
+      "justification": "Standard definition from statistical mechanics",
+      "dependencies": [
+        "Assumption: Free energy functional is well-defined"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "For \u03bb < \u03bbc, the unique minimizer of \u03a6\u03bb is the G-invariant state \u03c10 with \u27e8F\u27e9\u03c10 = 0",
+      "justification": "Convexity of free energy below critical point",
+      "dependencies": [
+        "Step 2",
+        "[Gap: Rigorous proof of convexity requires specific form of f\u03bb]"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "At \u03bb = \u03bbc, the Hessian D\u00b2\u03a6\u03bbc[\u03c10] develops a zero eigenvalue in the direction of symmetry-breaking perturbations",
+      "justification": "Definition of critical point in bifurcation theory",
+      "dependencies": [
+        "Step 3",
+        "Assumption: Free energy is differentiable"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "For \u03bb > \u03bbc, \u03a6\u03bb develops multiple local minima {\u03c1i} related by G-action: \u03c1i = g\u00b7\u03c1j for some g \u2208 G",
+      "justification": "Pitchfork bifurcation theorem applied to G-equivariant systems",
+      "dependencies": [
+        "Step 4",
+        "Equivariant Bifurcation Theory"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Each local minimum \u03c1i satisfies \u27e8F\u27e9\u03c1i \u2260 0 due to broken G-symmetry",
+      "justification": "F is G-variant, and \u03c1i breaks G-symmetry",
+      "dependencies": [
+        "Step 5",
+        "Assumption: F is G-variant"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The system selects one of the \u03c1i through fluctuations or boundary conditions",
+      "justification": "[Gap: Selection mechanism requires analysis of fluctuations beyond mean-field]",
+      "dependencies": [
+        "Step 6"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "In the thermodynamic limit (condensed matter) or long-time limit (fluids), the system remains in the selected state",
+      "justification": "Ergodicity breaking in infinite systems",
+      "dependencies": [
+        "Step 7",
+        "[Gap: Rigorous treatment of infinite volume limit]"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Ergodic Decomposition Theorem",
+      "authors": "Rohlin, V.A.",
+      "year": "1949",
+      "field": "Ergodic Theory",
+      "statement": "Any invariant measure on a Polish space admits a unique decomposition into ergodic measures",
+      "usage": "Justifies decomposition of phase space into ergodic components"
+    },
+    {
+      "name": "Equivariant Bifurcation Theory",
+      "authors": "Golubitsky, M. and Stewart, I.",
+      "year": "1985",
+      "field": "Dynamical Systems",
+      "statement": "Symmetry-breaking bifurcations in G-equivariant systems produce solution branches related by group action",
+      "usage": "Explains emergence of symmetry-related ordered states"
+    },
+    {
+      "name": "Landau Theory of Phase Transitions",
+      "authors": "Landau, L.D.",
+      "year": "1937",
+      "field": "Condensed Matter Physics",
+      "statement": "Phase transitions can be classified by symmetry breaking and order parameters",
+      "usage": "Provides physical framework for order parameter approach"
+    },
+    {
+      "name": "Center Manifold Theorem",
+      "authors": "Carr, J.",
+      "year": "1981",
+      "field": "Dynamical Systems",
+      "statement": "Near bifurcation points, dynamics reduces to finite-dimensional center manifold",
+      "usage": "Justifies reduction to order parameter dynamics"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "X is a Polish space (complete separable metric space)",
+    "G is a locally compact topological group acting continuously on X",
+    "\u03bc is a G-invariant Borel probability measure on X",
+    "The dynamics is given by a one-parameter group {Tt}t\u2208\u211d commuting with G",
+    "F: X \u2192 \u211d is a measurable G-variant function (F(gx) \u2260 F(x) for some g \u2208 G, x \u2208 X)",
+    "The system depends continuously on a control parameter \u03bb \u2208 \u211d",
+    "Ergodic decomposition of \u03bc exists",
+    "The free energy functional is well-defined and differentiable",
+    "Thermodynamic limit exists (for condensed matter systems)",
+    "Navier-Stokes equations admit unique solutions (for fluid systems)"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Definition of free energy functional \u03a6_\u03bb[\u03c1]",
+        "issue": "The free energy functional is introduced without justification for why it exists or is relevant to the dynamical system (X,G,\u03bc). The connection between the measure-preserving dynamical system and this thermodynamic formalism is never established.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need to establish rigorous connection between the dynamical system and statistical mechanics formalism"
+      },
+      {
+        "step": "For \u03bb < \u03bb_c, the unique minimizer is \u03c1_0",
+        "issue": "No proof that the free energy has a unique minimizer, or that this minimizer must be G-invariant. The convexity claim is unsubstantiated.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Prove convexity of \u03a6_\u03bb and uniqueness of minimizer for \u03bb < \u03bb_c"
+      },
+      {
+        "step": "At \u03bb = \u03bb_c, the Hessian develops a zero eigenvalue",
+        "issue": "This assumes \u03a6_\u03bb is twice differentiable and that the critical point is characterized by a zero eigenvalue. No justification for why this must occur at some \u03bb_c.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Prove existence of \u03bb_c and characterize the bifurcation rigorously"
+      },
+      {
+        "step": "Application of Equivariant Bifurcation Theorem",
+        "issue": "The theorem's hypotheses are not verified. The proof doesn't establish that we have a smooth family of equivariant vector fields or maps.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Verify all hypotheses of the Equivariant Bifurcation Theorem"
+      },
+      {
+        "step": "Each local minimum \u03c1_i satisfies \u27e8F\u27e9_\u03c1i \u2260 0",
+        "issue": "This doesn't follow logically. A state can break G-symmetry without having non-zero expectation for every G-variant function F.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Need additional conditions on F or prove for specific F"
+      },
+      {
+        "step": "System selects one symmetry-broken state",
+        "issue": "The selection mechanism is hand-waved. The proof admits this is beyond its scope but then uses it as a crucial step.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot complete proof without addressing selection mechanism"
+      },
+      {
+        "step": "Ergodicity breaking in thermodynamic limit",
+        "issue": "No proof that ergodicity breaking occurs or that it ensures the system remains in selected state. The connection to the original ergodic decomposition is unclear.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need rigorous treatment of thermodynamic limit and ergodicity breaking"
+      }
+    ],
+    "hidden_assumptions": [
+      "The dynamical system admits a statistical mechanical description with free energy",
+      "The system has a well-defined thermodynamic limit",
+      "The free energy functional is smooth enough for bifurcation analysis",
+      "The order parameter F is related to the symmetry breaking in a specific way",
+      "Fluctuations or boundary conditions can select between degenerate minima",
+      "The ergodic components of \u03bc correspond to the minima of the free energy"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes symmetry breaking occurs (via the free energy having multiple minima for \u03bb > \u03bb_c) to prove that symmetry breaking occurs (\u27e8F\u27e9_\u03bc \u2260 0). The connection between these two notions of symmetry breaking is never established.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to work for any measure-preserving dynamical system with a symmetry group, but actually requires very specific thermodynamic/statistical mechanical structure. At best, it might work for specific physical systems with well-defined free energies.",
+    "citation_issues": [
+      "Ergodic Decomposition Theorem is correctly stated but its relevance to the free energy analysis is unclear",
+      "Equivariant Bifurcation Theory requires smoothness hypotheses not verified here",
+      "Center Manifold Theorem requires finite-dimensional reduction near fixed points, not shown for this infinite-dimensional system",
+      "Landau Theory is a phenomenological theory, not a rigorous mathematical framework"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof attempts to prove a general mathematical result using physics-inspired arguments that lack rigor. The fundamental issue is the unjustified leap from an abstract dynamical system to thermodynamic formalism. The proof would need complete restructuring with either much stronger hypotheses or a different approach entirely.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to prove existence of symmetry breaking in a variational/thermodynamic framework, but the stated proposition is about measure-preserving dynamical systems with ergodic components, which is a different mathematical context",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Connection between free energy functional and measure-preserving dynamics",
+      "Relationship between density \u03c1 and measure \u03bc",
+      "Existence of thermodynamic limit for the specific dynamical system",
+      "Validity of mean-field approximation",
+      "Compactness assumptions for variational problems",
+      "Regularity assumptions on f\u03bb and boundary conditions",
+      "Assumption that ergodic components correspond to symmetry-broken states"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "2",
+        "issue": "Free energy functional introduced without connection to the measure-preserving dynamical system framework established in step 1"
+      },
+      {
+        "step": "3",
+        "issue": "Claims unique minimizer without proving existence or uniqueness of minimizers for the functional"
+      },
+      {
+        "step": "5",
+        "issue": "Pitchfork bifurcation theorem requires specific conditions on the functional that are not verified"
+      },
+      {
+        "step": "6",
+        "issue": "Does not establish that \u03c1i breaking G-symmetry implies \u27e8F\u27e9\u03c1i \u2260 0 for the specific F"
+      },
+      {
+        "step": "7",
+        "issue": "Explicitly acknowledges gap in selection mechanism"
+      },
+      {
+        "step": "8",
+        "issue": "Claims ergodicity breaking without proving it follows from the previous steps"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No connection established between variational approach and measure-preserving dynamics",
+      "Selection mechanism explicitly incomplete",
+      "No proof that ergodic components correspond to symmetry-broken states",
+      "Missing analysis of how \u03bbc relates to the dynamical system parameters",
+      "No verification that the constructed states are actually invariant under the dynamics"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": false,
+    "contradiction_details": [],
+    "assumption_conflicts": [
+      "New proof assumes F is G-variant (F(gx) \u2260 F(x)) while existing proof [087da119976b] deals with symmetry breaking but doesn't specify order parameter variance properties",
+      "New proof assumes thermodynamic limit exists for condensed matter systems without establishing connection to the phase transition framework in [0178ff46c5ee]",
+      "New proof assumes Navier-Stokes equations admit unique solutions for fluid systems, which is a major open problem and conflicts with the general applicability claimed"
+    ],
+    "beneficial_connections": [
+      "Directly extends [0178ff46c5ee] by providing explicit mechanism for symmetry-breaking phase transitions through order parameter analysis",
+      "Complements [087da119976b] by adding thermodynamic framework to symmetry breaking in driven systems",
+      "Connects to [052632f8abba] multi-scale dynamics through the separation of microscopic G-preserving dynamics and macroscopic symmetry-broken states",
+      "Relates to [08b6405556dd] symmetry principles by showing how symmetry constraints can be spontaneously violated at phase transitions"
+    ],
+    "consistency_score": 0.7,
+    "notes": "The proof framework is mathematically sound and consistent with existing symmetry-breaking theory, but makes several strong assumptions (unique Navier-Stokes solutions, thermodynamic limit existence) that are not rigorously established. The connection between measure-theoretic ergodic decomposition and physical phase transitions needs more careful justification. The proof would benefit from explicit connection to the Gibbs measure framework used in [0178ff46c5ee]."
+  },
+  "confidence_score": 0.30500000000000005,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.7,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.7,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "Rigorous infinite-dimensional bifurcation theory for measure-preserving systems with continuous symmetries, mathematical framework for thermodynamic limits in non-equilibrium systems, and convergence theory for ergodic measures in symmetry-breaking contexts",
+  "limitations": [
+    "Rigorous proof of free energy convexity requires specific functional forms",
+    "Selection mechanism for symmetry-broken states involves fluctuations beyond deterministic dynamics",
+    "Thermodynamic limit requires careful treatment of boundary conditions and correlations",
+    "Connection between microscopic dynamics and macroscopic order parameter evolution not fully established",
+    "Ergodicity breaking in infinite systems needs more rigorous mathematical foundation",
+    "Proof assumes mean-field type behavior near critical point",
+    "Does not account for critical fluctuations that may destroy long-range order in low dimensions",
+    "Requires existence of well-defined order parameter",
+    "Limited to systems where symmetry breaking occurs through continuous transitions",
+    "Does not address metastability or glassy dynamics"
+  ],
+  "source_convergence": {
+    "structural_claim": "Symmetry breaking drives the emergence of macroscopic ordered states from symmetric microscopic dynamics",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Landau Theory of Phase Transitions",
+        "domain_id": "condensed_matter",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Phase transitions occur through spontaneous symmetry breaking, with order parameters distinguishing phases"
+      },
+      {
+        "result_id": "",
+        "result_name": "Ginzburg-Landau Theory",
+        "domain_id": "condensed_matter",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Superconductivity emerges through spontaneous gauge symmetry breaking of a complex order parameter"
+      },
+      {
+        "result_id": "",
+        "result_name": "Taylor-Couette Instability",
+        "domain_id": "fluid_dynamics",
+        "domain_name": "Fluid Dynamics",
+        "link_type": "direct",
+        "structural_conclusion": "Rotating flows spontaneously break azimuthal symmetry to form ordered Taylor vortices"
+      },
+      {
+        "result_id": "",
+        "result_name": "Rayleigh-B\u00e9nard Convection",
+        "domain_id": "fluid_dynamics",
+        "domain_name": "Fluid Dynamics",
+        "link_type": "direct",
+        "structural_conclusion": "Thermal convection spontaneously breaks translational symmetry to form ordered cellular patterns"
+      }
+    ],
+    "domains": [
+      "condensed_matter",
+      "fluid_dynamics"
+    ],
+    "domain_names": [
+      "Condensed Matter Physics",
+      "Fluid Dynamics"
+    ],
+    "ea_scores": {
+      "strength": 0.2856,
+      "independence": 0.75,
+      "adversarial": 0.12,
+      "reproducibility": 0.6299999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.49168,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:28:52.834258+00:00",
+    "id": "c295cef91f7b"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.311685
+  }
+}

@@ -724,3 +724,48 @@
 [14:04:37]     [bdca42d32872] Confidence: 0.26 (low)
 [14:04:37]     [bdca42d32872] Done: 173s, $0.61 (total: $99.97)
 [14:04:37]   [189/266] c295cef91f7b — Condensed Matter Physics, Fluid Dynamics
+[14:04:50]     [bc7eac8da4e6] Confidence: 0.25 (low)
+[14:04:50]     [bc7eac8da4e6] Done: 191s, $0.63 (total: $100.60)
+[14:04:50]   [190/266] c355a0274e2f — Quantum Gravity, Astrophysics
+[14:05:10]     [bfe791282bdd] Type: categorical | Apparatus: Category theory, Algebraic structures | Steps: 7
+[14:05:19]     [bf811aba6f27] Confidence: 0.33 (low)
+[14:05:19]     [bf811aba6f27] Done: 170s, $0.55 (total: $101.15)
+[14:05:19]   [191/266] c537405edd84 — General Relativity and Cosmology, Optics and Photonics
+[14:05:30]     [bfb71be2f99b] Confidence: 0.23 (low)
+[14:05:30]     [bfb71be2f99b] Done: 177s, $0.60 (total: $101.74)
+[14:05:30]   [192/266] c58dcb75729f — Particle Physics, Atomic and Molecular Physics
+[14:05:34]     [beb05b87d060] Confidence: 0.30 (low)
+[14:05:34]     [beb05b87d060] Done: 230s, $0.76 (total: $102.51)
+[14:05:34]   [193/266] c648f2f3e82e — Quantum Foundations, Atomic and Molecular Physics
+[14:05:34]     [c013baee269e] Type: constraint_logic | Apparatus: Topology, Category theory | Steps: 10
+[14:05:43]     [c23cfc438fc4] Type: axiomatic | Apparatus: Functional analysis, Algebraic structures | Steps: 10
+[14:05:59]     [c295cef91f7b] Type: axiomatic | Apparatus: Category theory, Order theory | Steps: 8
+[14:06:16]     [c355a0274e2f] Type: categorical | Apparatus: Differential geometry, Category theory | Steps: 8
+[14:06:41]     [bfe791282bdd] Confidence: 0.21 (low)
+[14:06:41]     [bfe791282bdd] Done: 159s, $0.51 (total: $103.01)
+[14:06:41]   [194/266] c70fba21943c — Quantum Foundations, Atomic and Molecular Physics
+[14:06:49]     [c648f2f3e82e] Type: categorical | Apparatus: Category theory, Functional analysis | Steps: 6
+[14:06:52]     [c58dcb75729f] Type: axiomatic | Apparatus: Category theory, Algebraic structures | Steps: 9
+[14:07:05]     [c537405edd84] Type: axiomatic | Apparatus: Differential geometry, Functional analysis | Steps: 8
+[14:07:11]     [c013baee269e] Confidence: 0.23 (low)
+[14:07:11]     [c013baee269e] Done: 186s, $0.62 (total: $103.63)
+[14:07:11]   [195/266] c7755e5944cb — Atomic and Molecular Physics, Fluid Dynamics
+[14:07:22]     [c23cfc438fc4] Confidence: 0.26 (low)
+[14:07:22]     [c23cfc438fc4] Done: 191s, $0.63 (total: $104.26)
+[14:07:22]   [196/266] c7af5b55681e — Optics and Photonics, Nuclear Physics
+[14:07:35]     [c295cef91f7b] Confidence: 0.31 (low)
+[14:07:35]     [c295cef91f7b] Done: 178s, $0.61 (total: $104.87)
+[14:07:35]   [197/266] c81d03cc93ad — Thermodynamics and Statistical Mechanics, Nuclear Physics
+[14:08:01]     [c70fba21943c] Type: axiomatic | Apparatus: Category theory, Algebraic structures | Steps: 7
+[14:08:08]     [c355a0274e2f] Confidence: 0.38 (low)
+[14:08:08]     [c355a0274e2f] Done: 198s, $0.66 (total: $105.53)
+[14:08:08]   [198/266] c95ba7d016a4 — Astrophysics, Optics and Photonics
+[14:08:15]     [c648f2f3e82e] Confidence: 0.39 (low)
+[14:08:15]     [c648f2f3e82e] Done: 161s, $0.56 (total: $106.09)
+[14:08:15]   [199/266] ca9c730a5da3 — Algebraic Geometry, Analysis
+[14:08:27]     [c7755e5944cb] Type: axiomatic | Apparatus: Differential geometry, Category theory | Steps: 7
+[14:08:32]     [c58dcb75729f] Confidence: 0.25 (low)
+[14:08:32]     [c58dcb75729f] Done: 182s, $0.58 (total: $106.66)
+[14:08:32]   [200/266] ca9ed4a6fb61 — Condensed Matter Physics, Fluid Dynamics
+[14:08:40]     [c7af5b55681e] Type: categorical | Apparatus: Category theory, Functional analysis | Steps: 10
+[14:08:47]     [c81d03cc93ad] Type: categorical | Apparatus: Category theory, Measure theory | Steps: 8

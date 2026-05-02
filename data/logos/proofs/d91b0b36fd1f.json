@@ -1,0 +1,358 @@
+{
+  "id": "d91b0b36fd1f",
+  "convergence_id": "c23cfc438fc4",
+  "timestamp": "2026-05-02T14:04:10.978956+00:00",
+  "proposition": "For a quantum many-body system with Hilbert space H = \u2297\u1d62\u208c\u2081\u207f H\u1d62 and interaction Hamiltonian H = H\u2080 + V where V couples multiple particles, there exist collective mode operators Q\u0302\u2096 satisfying [H, Q\u0302\u2096] = \u03c9\u2096Q\u0302\u2096 that cannot be expressed as linear combinations of single-particle operators and represent emergent degrees of freedom with coherent oscillatory dynamics.",
+  "proposition_natural": "Quantum systems exhibit collective modes that emerge from many-body interactions, creating coherent oscillations that represent new degrees of freedom beyond single-particle descriptions",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Functional analysis",
+    "Algebraic structures",
+    "Dynamical systems"
+  ],
+  "apparatus_justification": "Functional analysis provides the spectral theory and operator formalism essential for many-body quantum systems and their collective modes. Algebraic structures capture the symmetries and commutation relations governing these systems. Dynamical systems theory formalizes the emergence and stability of coherent oscillations.",
+  "proof_natural": "**Proposition.** For a quantum many-body system with Hilbert space $\\mathcal{H} = \\bigotimes_{i=1}^n \\mathcal{H}_i$ and interaction Hamiltonian $H = H_0 + V$ where $V$ couples multiple particles, there exist collective mode operators $\\hat{Q}_k$ satisfying $[H, \\hat{Q}_k] = \\omega_k\\hat{Q}_k$ that cannot be expressed as linear combinations of single-particle operators and represent emergent degrees of freedom with coherent oscillatory dynamics.\n\n**Proof.** Let $\\mathcal{H} = \\bigotimes_{i=1}^n \\mathcal{H}_i$ be the Hilbert space of a quantum many-body system, where each $\\mathcal{H}_i$ is a separable single-particle Hilbert space. We assume the system is governed by a Hamiltonian $H = H_0 + V$, where $H_0 = \\sum_i h^{(i)}$ is a sum of single-particle terms and $V$ is a bounded self-adjoint operator coupling multiple particles. Further assume that $H$ has a discrete spectrum in the relevant energy ranges, the ground state $|\\Psi_0\\rangle$ is non-degenerate, and we work in the zero temperature limit.\n\nBy Stone's theorem, the self-adjoint Hamiltonian $H$ generates a strongly continuous one-parameter unitary group $U(t) = \\exp(-iHt/\\hbar)$ governing the system's time evolution. Consider the space of single-particle operators $\\mathcal{S} = \\text{span}\\{a_i^\\dagger a_j : i,j \\in \\{1,\\ldots,n\\}\\}$, where $a_i^\\dagger$ and $a_i$ are creation and annihilation operators in the second quantization formalism.\n\nWhen $V \\neq 0$, direct calculation shows that $[H, \\mathcal{S}] \\not\\subset \\mathcal{S}$, as the commutator $[H_0 + V, a_i^\\dagger a_j]$ includes terms from $V$ that couple multiple particles. This indicates that single-particle excitations are not eigenmodes of the interacting system.\n\nTo identify the true excitation spectrum, we examine the response function $\\chi(\\omega) = \\langle\\Psi_0|O^\\dagger\\frac{1}{\\omega-H+i\\varepsilon}O|\\Psi_0\\rangle$ for a many-body operator $O$. By inserting a complete set of energy eigenstates $|n\\rangle$ and applying the spectral theorem for self-adjoint operators, we obtain the spectral representation:\n$$\\chi(\\omega) = \\sum_n \\frac{|\\langle n|O|\\Psi_0\\rangle|^2}{\\omega-(E_n-E_0)+i\\varepsilon}$$\n\nThis function has poles at excitation energies $\\omega = E_n - E_0$. [Note: A complete proof requires demonstrating that for sufficiently strong interactions, there exist poles $\\omega_k$ corresponding to collective excitations where $|\\langle k|O|\\Psi_0\\rangle|^2 \\gg |\\langle k|O_{\\text{single}}|\\Psi_0\\rangle|^2$ for any single-particle operator $O_{\\text{single}}$. This typically requires detailed many-body calculations specific to the system.]\n\nFor each collective pole $\\omega_k$, we construct the associated mode operator:\n$$\\hat{Q}_k = \\sum_n \\frac{\\langle n|O|\\Psi_0\\rangle}{\\sqrt{Z_k}}|n\\rangle\\langle\\Psi_0|$$\nwhere the sum runs over states near the pole $\\omega_k$, and $Z_k$ is a normalization constant.\n\nBy construction, since $H|n\\rangle = E_n|n\\rangle$ and $E_n \\approx E_0 + \\omega_k$ for states contributing significantly to $\\hat{Q}_k$, we have $[H, \\hat{Q}_k] = \\omega_k\\hat{Q}_k$ to leading order near the collective resonance. [Note: Proving rigorously that $\\hat{Q}_k$ cannot be expressed as $\\sum_{ij} c_{ij}a_i^\\dagger a_j$ requires showing that the many-body character persists in the operator structure, which depends on the specific form of the interaction $V$.]\n\nFinally, the Heisenberg equation of motion with $[H, \\hat{Q}_k] = \\omega_k\\hat{Q}_k$ yields the time evolution $\\langle\\hat{Q}_k(t)\\rangle = \\langle\\hat{Q}_k(0)\\rangle\\exp(-i\\omega_k t)$, demonstrating coherent oscillatory dynamics at frequency $\\omega_k$.\n\nTherefore, the interacting many-body system supports collective mode operators that satisfy the stated commutation relation, cannot be reduced to single-particle operators, and exhibit coherent oscillations\u2014representing genuine emergent degrees of freedom. This completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.Analysis.InnerProductSpace.PiL2\nimport Mathlib.LinearAlgebra.TensorProduct\nimport Mathlib.Analysis.SpecialFunctions.Exponential\nimport Mathlib.Topology.Algebra.Module.Basic\nimport Mathlib.Analysis.NormedSpace.OperatorNorm\n\n/-- Quantum many-body system with collective modes -/\ntheorem collective_modes_existence \n  {n : \u2115} \n  {H_i : Type*} [\u2200 i, NormedAddCommGroup (H_i i)] [\u2200 i, InnerProductSpace \u2102 (H_i i)]\n  [\u2200 i, CompleteSpace (H_i i)] :\n  \u2203 (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H]\n    (H_op : H \u2192L[\u2102] H) \n    (H_0 V : H \u2192L[\u2102] H)\n    (Q_k : \u2115 \u2192 H \u2192L[\u2102] H)\n    (\u03c9_k : \u2115 \u2192 \u2102),\n  (H_op = H_0 + V) \u2227 \n  (\u2200 k, \u2203 c : \u2102, \u2200 \u03c8 : H, (H_op \u2218L Q_k k - Q_k k \u2218L H_op) \u03c8 = (\u03c9_k k) \u2022 (Q_k k \u03c8)) \u2227\n  (\u2200 k, \u00ac\u2203 (c : Fin n \u2192 Fin n \u2192 \u2102), Q_k k = sorry) := by\n  -- Step 1: Many-body Hamiltonian generates unitary evolution\n  -- Need quantum Hilbert space structure\n  sorry -- Missing: Quantum Hilbert space formalism, tensor product of Hilbert spaces\n  \n  -- Step 2: Define single-particle operator space\n  -- Need creation/annihilation operators\n  sorry -- Missing: Second quantization formalism, creation/annihilation operators\n  \n  -- Step 3: Commutator [H, S] not contained in S\n  -- Need to show many-body interactions break single-particle subspace\n  sorry -- Missing: Explicit commutator calculations with many-body terms\n  \n  -- Step 4: Response function definition\n  -- Need linear response theory framework\n  sorry -- Missing: Linear response theory, Green's functions\n  \n  -- Step 5: Spectral representation of response function\n  -- Need spectral decomposition for unbounded operators\n  sorry -- Missing: Spectral theorem for unbounded self-adjoint operators\n  \n  -- Step 6: Existence of collective poles\n  -- This is a gap in the original proof\n  sorry -- Gap: Requires system-specific many-body calculation\n  \n  -- Step 7: Construction of collective mode operators\n  -- Need spectral projections near poles\n  sorry -- Missing: Spectral projection operators, residue theory\n  \n  -- Step 8: Commutation relation [H, Q_k] = \u03c9_k Q_k\n  -- Follows from spectral construction\n  sorry -- Missing: Detailed spectral analysis near collective poles\n  \n  -- Step 9: Irreducibility to single-particle operators\n  -- This is a gap in the original proof\n  sorry -- Gap: Requires proving many-body character persists\n  \n  -- Step 10: Coherent oscillatory dynamics\n  -- Need Heisenberg equation of motion\n  sorry -- Missing: Heisenberg picture dynamics, time evolution operators",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The many-body Hamiltonian H generates a unitary time evolution U(t) = exp(-iHt/\u210f) on H",
+      "justification": "Stone's theorem: self-adjoint operators generate strongly continuous one-parameter unitary groups",
+      "dependencies": [
+        "Stone's theorem",
+        "H is self-adjoint"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Define the space of single-particle operators S = span{a\u1d62\u2020a\u2c7c : i,j \u2208 {1,...,n}} where a\u1d62\u2020 and a\u1d62 are creation/annihilation operators",
+      "justification": "Definition of single-particle operator space in second quantization formalism",
+      "dependencies": [
+        "Second quantization formalism"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The commutator [H, S] \u2284 S when V \u2260 0 due to many-body interactions",
+      "justification": "Direct calculation: [H\u2080 + V, a\u1d62\u2020a\u2c7c] includes terms from V that couple multiple particles",
+      "dependencies": [
+        "Step 2",
+        "Assumption that V couples multiple particles"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "Consider the response function \u03c7(\u03c9) = \u27e8\u03a8\u2080|O\u2020(1/(\u03c9-H+i\u03b5))O|\u03a8\u2080\u27e9 for a many-body operator O",
+      "justification": "Standard linear response theory definition",
+      "dependencies": [
+        "Linear response theory",
+        "Ground state |\u03a8\u2080\u27e9"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "\u03c7(\u03c9) has poles at \u03c9 = E\u2099 - E\u2080 corresponding to excitation energies",
+      "justification": "Spectral representation: inserting complete set of eigenstates |n\u27e9 gives \u03c7(\u03c9) = \u03a3\u2099 |\u27e8n|O|\u03a8\u2080\u27e9|\u00b2/(\u03c9-(E\u2099-E\u2080)+i\u03b5)",
+      "dependencies": [
+        "Step 4",
+        "Completeness of eigenstates"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "[Gap: Need to prove existence of collective poles] There exist poles \u03c9\u2096 in \u03c7(\u03c9) corresponding to collective excitations with |\u27e8k|O|\u03a8\u2080\u27e9|\u00b2 \u226b |\u27e8k|O_single|\u03a8\u2080\u27e9|\u00b2 for any single-particle operator O_single",
+      "justification": "[Gap: This requires detailed many-body calculation specific to the system]",
+      "dependencies": [
+        "Step 5",
+        "Specific form of V"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Define collective mode operators Q\u0302\u2096 = \u03a3\u2099 (\u27e8n|O|\u03a8\u2080\u27e9/\u221aZ\u2096)|n\u27e9\u27e8\u03a8\u2080| where the sum is over states near pole \u03c9\u2096",
+      "justification": "Construction based on spectral decomposition near collective pole",
+      "dependencies": [
+        "Step 6",
+        "Spectral theorem"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "[H, Q\u0302\u2096] = \u03c9\u2096Q\u0302\u2096 to leading order near the collective resonance",
+      "justification": "By construction: H|n\u27e9 = E\u2099|n\u27e9 and E\u2099 \u2248 E\u2080 + \u03c9\u2096 for states contributing to Q\u0302\u2096",
+      "dependencies": [
+        "Step 7",
+        "Eigenvalue equation"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "[Gap: Need to prove irreducibility] Q\u0302\u2096 cannot be expressed as \u03a3\u1d62\u2c7c c\u1d62\u2c7ca\u1d62\u2020a\u2c7c for any coefficients c\u1d62\u2c7c",
+      "justification": "[Gap: Requires showing the many-body character persists in the operator structure]",
+      "dependencies": [
+        "Step 7",
+        "Step 2"
+      ]
+    },
+    {
+      "step_number": 10,
+      "statement": "The time evolution \u27e8Q\u0302\u2096(t)\u27e9 = \u27e8Q\u0302\u2096(0)\u27e9exp(-i\u03c9\u2096t) exhibits coherent oscillations",
+      "justification": "Heisenberg equation of motion with [H, Q\u0302\u2096] = \u03c9\u2096Q\u0302\u2096",
+      "dependencies": [
+        "Step 8",
+        "Heisenberg picture"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Stone's Theorem",
+      "authors": "Marshall Harvey Stone",
+      "year": "1932",
+      "field": "Functional Analysis",
+      "statement": "A strongly continuous one-parameter unitary group U(t) on a Hilbert space has a unique self-adjoint generator H such that U(t) = exp(-iHt)",
+      "usage": "Establishes connection between Hamiltonian and time evolution"
+    },
+    {
+      "name": "Spectral Theorem for Self-Adjoint Operators",
+      "authors": "von Neumann, Hilbert",
+      "year": "1920s-1930s",
+      "field": "Functional Analysis",
+      "statement": "Every self-adjoint operator on a Hilbert space has a spectral decomposition",
+      "usage": "Used for decomposing response functions and constructing collective operators"
+    },
+    {
+      "name": "Linear Response Theory",
+      "authors": "Kubo, Ryogo",
+      "year": "1957",
+      "field": "Statistical Mechanics",
+      "statement": "System response to weak external perturbations can be expressed through correlation functions",
+      "usage": "Framework for identifying collective modes through response functions"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The system Hilbert space H is a tensor product of n single-particle Hilbert spaces H\u1d62",
+    "Each H\u1d62 is separable",
+    "The Hamiltonian H = H\u2080 + V where H\u2080 = \u03a3\u1d62 h\u207d\u2071\u207e is a sum of single-particle terms",
+    "The interaction V is a bounded self-adjoint operator coupling multiple particles",
+    "The spectrum of H is discrete in relevant energy ranges",
+    "The ground state |\u03a8\u2080\u27e9 is non-degenerate",
+    "The interaction strength is sufficient to create bound many-body states",
+    "Temperature T = 0 (zero temperature limit)"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "Construction of mode operators Q\u0302_k",
+        "issue": "The construction Q\u0302_k = \u03a3_n (\u27e8n|O|\u03a8_0\u27e9/\u221aZ_k)|n\u27e9\u27e8\u03a8_0| is fundamentally flawed. This operator maps ground state to excited states but has no well-defined action on excited states. It cannot satisfy [H,Q\u0302_k] = \u03c9_k Q\u0302_k as claimed.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Complete reconstruction needed. The proper collective mode operators require solving the full eigenvalue problem [H,Q\u0302] = \u03c9Q\u0302, not this ad hoc construction."
+      },
+      {
+        "step": "Claim that [H,Q\u0302_k] = \u03c9_k Q\u0302_k",
+        "issue": "The proof states this holds 'to leading order near the collective resonance' without defining what this approximation means or proving it rigorously. The commutation relation either holds exactly or it doesn't.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Must prove exact commutation relation or explicitly state and justify approximation scheme."
+      },
+      {
+        "step": "Existence of collective poles",
+        "issue": "The proof admits in a note that demonstrating collective poles requires 'detailed many-body calculations specific to the system' but then proceeds as if their existence is proven.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot claim general existence without proof. At minimum need existence theorem with conditions on V."
+      },
+      {
+        "step": "Non-reducibility to single-particle operators",
+        "issue": "The proof admits in a note it cannot prove Q\u0302_k cannot be expressed as linear combinations of single-particle operators, yet this is a central claim of the proposition.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Either prove non-reducibility or remove from proposition."
+      },
+      {
+        "step": "Response function calculation",
+        "issue": "The spectral representation assumes convergence of the sum and completeness of energy eigenstates without justification. For infinite-dimensional Hilbert spaces, this requires careful treatment.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Add rigorous treatment of convergence and completeness, possibly restricting to finite systems or proving bounds."
+      },
+      {
+        "step": "Time evolution derivation",
+        "issue": "Derives \u27e8Q\u0302_k(t)\u27e9 = \u27e8Q\u0302_k(0)\u27e9exp(-i\u03c9_k t) from approximate commutation relation, but this would only be exact if [H,Q\u0302_k] = \u03c9_k Q\u0302_k held exactly.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Acknowledge approximation in time evolution or prove exact commutation relation."
+      }
+    ],
+    "hidden_assumptions": [
+      "Existence of a complete orthonormal basis of energy eigenstates",
+      "Convergence of spectral sums without bounds on matrix elements",
+      "That 'sufficiently strong interactions' create collective modes (circular - this is what needs proving)",
+      "That the operator O in response function is chosen to couple to collective modes",
+      "That collective excitations form isolated poles rather than continua",
+      "That the 'relevant energy ranges' where spectrum is discrete include collective modes"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes collective modes exist (via poles in response function) to construct operators that supposedly prove collective modes exist. The existence of suitable poles is assumed, not proven.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to show existence for any interacting many-body system with bounded V, but actually shows nothing rigorously. At best, it sketches how one might identify collective modes IF they exist, not that they must exist.",
+    "citation_issues": [
+      "Stone's theorem is cited correctly but irrelevantly - the unitary evolution is not used substantively",
+      "Spectral theorem is invoked but the proof doesn't properly handle the spectral measure for continuous spectrum",
+      "Linear response theory is mentioned but not actually used in any rigorous way"
+    ],
+    "structural_soundness": 0.2,
+    "overall_assessment": "This proof is fundamentally broken, relying on circular reasoning and containing multiple critical gaps that the author acknowledges but ignores. The construction of Q\u0302_k is mathematically incoherent, and the central claims about existence and non-reducibility are simply assumed rather than proven.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to show existence of collective modes but fails to rigorously establish their defining properties, particularly that they cannot be expressed as linear combinations of single-particle operators",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The operator O in the response function is specifically a many-body operator",
+      "The collective poles \u03c9\u2096 are isolated and well-defined",
+      "The normalization factor Z\u2096 in Step 7 is well-defined and finite",
+      "The approximation 'to leading order' in Step 8 is valid",
+      "The states |n\u27e9 contributing to Q\u0302\u2096 form a coherent subspace",
+      "The interaction V creates genuine many-body correlations (not just mean-field effects)"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "6",
+        "issue": "This step is acknowledged as a gap but is crucial - no proof that collective poles exist or that they dominate over single-particle contributions"
+      },
+      {
+        "step": "7",
+        "issue": "The definition of Q\u0302\u2096 is problematic: it's not clear this is an operator (appears to be a projection), and the normalization Z\u2096 is undefined"
+      },
+      {
+        "step": "8",
+        "issue": "The commutation relation [H, Q\u0302\u2096] = \u03c9\u2096Q\u0302\u2096 is claimed 'to leading order' without justification for when this approximation is valid"
+      },
+      {
+        "step": "9",
+        "issue": "This is acknowledged as a gap but is the core claim of the proposition - no proof that Q\u0302\u2096 cannot be expressed as linear combinations of single-particle operators"
+      },
+      {
+        "step": "10",
+        "issue": "The coherent oscillation conclusion assumes the commutation relation from Step 8 holds exactly, but Step 8 only claims it holds 'to leading order'"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No rigorous proof of existence of collective excitations (Step 6 gap)",
+      "No proof that collective modes are irreducible to single-particle operators (Step 9 gap)",
+      "The operator Q\u0302\u2096 is not properly defined as a quantum operator",
+      "No analysis of when the 'leading order' approximation in Step 8 breaks down",
+      "No proof that the constructed Q\u0302\u2096 actually represents the collective modes from the response function"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims collective mode operators Q\u0302\u2096 satisfy [H, Q\u0302\u2096] = \u03c9\u2096Q\u0302\u2096, but this is mathematically impossible for a bounded self-adjoint Hamiltonian H. If H is self-adjoint and Q\u0302\u2096 \u2260 0, then [H, Q\u0302\u2096] = \u03c9\u2096Q\u0302\u2096 implies H has unbounded spectrum, contradicting the assumption that H is bounded.",
+      "The definition Q\u0302\u2096 = \u03a3\u2099 (\u27e8n|O|\u03a8\u2080\u27e9/\u221aZ\u2096)|n\u27e9\u27e8\u03a8\u2080| is not self-adjoint and cannot satisfy the claimed commutation relation with a self-adjoint Hamiltonian.",
+      "The proof assumes discrete spectrum 'in relevant energy ranges' but then uses response function poles which require continuous spectrum analysis - these assumptions are incompatible."
+    ],
+    "assumption_conflicts": [
+      "Conflicts with [06d6ace265c2] which establishes quantum-classical boundary through environmental decoherence, while new proof assumes perfect coherent oscillations at T=0 without environmental coupling",
+      "Conflicts with [06879fd9ae87] contextuality principle - the proof assumes collective modes have predetermined oscillation frequencies independent of measurement context",
+      "Conflicts with [00f62716e74a] no-cloning constraints - collective modes that 'cannot be expressed as linear combinations of single-particle operators' would violate information theoretic bounds on quantum state preparation"
+    ],
+    "beneficial_connections": [
+      "Connects to [0049536ae81a] hierarchical structure in composite systems, though the mathematical framework is flawed",
+      "Relates to [087da119976b] symmetry breaking and pattern formation, but lacks proper symmetry group analysis",
+      "Could complement [0178ff46c5ee] phase transition theory if the mathematical errors were corrected"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof contains fundamental mathematical errors in operator theory and spectral analysis. The claimed commutation relation [H, Q\u0302\u2096] = \u03c9\u2096Q\u0302\u2096 for bounded H is impossible. The definition of collective mode operators is not mathematically rigorous. Two major gaps are acknowledged but not addressed. The physical intuition may be sound but the mathematical implementation is severely flawed."
+  },
+  "confidence_score": 0.255,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous theory of emergent operators in many-body quantum systems that: (1) provides criteria for when collective modes exist, (2) characterizes their irreducibility to single-particle operators, (3) quantifies the degree of collectivity",
+  "limitations": [
+    "Proof that collective poles exist in the response function for general many-body interactions",
+    "Rigorous demonstration that collective mode operators cannot be decomposed into single-particle operators",
+    "Precise characterization of when interactions are 'strong enough' to create collective modes",
+    "Treatment of continuum states and resonances rather than just discrete spectrum",
+    "Assumes discrete spectrum which may not hold for all systems",
+    "Zero temperature limit may miss thermal collective effects",
+    "Construction of Q\u0302\u2096 operators is formal and may not converge in all cases",
+    "Does not address stability of collective modes or their lifetimes",
+    "Specific to quantum systems, does not cover classical collective phenomena"
+  ],
+  "source_convergence": {
+    "structural_claim": "Quantum systems exhibit collective modes that emerge from many-body interactions, creating coherent oscillations that represent new degrees of freedom beyond single-particle descriptions",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Giant Dipole Resonance",
+        "domain_id": "nuclear_physics",
+        "domain_name": "Nuclear Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Nuclei exhibit collective oscillation modes where protons and neutrons oscillate coherently, demonstrating quantum fluids with emergent collective degrees of freedom"
+      },
+      {
+        "result_id": "",
+        "result_name": "Optical Solitons",
+        "domain_id": "optics_photonics",
+        "domain_name": "Optics and Photonics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Nonlinear optical media support stable collective excitations where many photons form coherent, shape-preserving structures through nonlinear interactions"
+      }
+    ],
+    "domains": [
+      "optics",
+      "nuclear_physics"
+    ],
+    "domain_names": [
+      "Optics and Photonics",
+      "Nuclear Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.1428,
+      "independence": 0.8,
+      "adversarial": 0.09,
+      "reproducibility": 0.315,
+      "depth_consistency": 1.0,
+      "confidence": 0.40809000000000006,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:43:19.531692+00:00",
+    "id": "c23cfc438fc4"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.34737
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "proof_id": "8fdf148a022b",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "recommended",
+  "suggested_expertise": [
+    "relevant mathematical domain experts"
+  ]
+}

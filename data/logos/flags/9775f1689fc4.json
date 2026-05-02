@@ -1,0 +1,15 @@
+{
+  "proof_id": "9775f1689fc4",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A unified mathematical framework for topological invariants across different physical domains (quantum, plasma, etc.) that can rigorously connect discrete (quantum) and continuous (plasma) topological structures. Current category-theoretic approaches are suggestive but not fully developed.",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

@@ -1,0 +1,374 @@
+{
+  "id": "30c266c6b030",
+  "convergence_id": "c58dcb75729f",
+  "timestamp": "2026-05-02T14:05:30.681908+00:00",
+  "proposition": "Let (G, \u03a3, \u03c1) be a physical system where G is a symmetry group, \u03a3 is the state space, and \u03c1: G \u2192 Aut(\u03a3) is a group representation. Let H \u2282 G be the residual symmetry group after symmetry breaking. Then there exists a functor F: Sym \u2192 Phys from the category of symmetry breaking patterns to the category of physical observables such that: (1) The mass spectrum M is determined by M = ker(F) \u2295 Im(F), where ker(F) corresponds to Goldstone modes and Im(F) to massive modes; (2) Observable properties O are precisely the G-invariant sections of the quotient bundle \u03a3/H.",
+  "proposition_natural": "Symmetry breaking mechanisms fundamentally determine the observable properties and mass scales of physical systems",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Algebraic structures",
+    "Differential geometry"
+  ],
+  "apparatus_justification": "Category theory provides the natural framework for formalizing structural convergences across domains through functors that preserve symmetry-breaking patterns. Algebraic structures capture the group-theoretic nature of symmetries and their breaking, while differential geometry handles the manifold structure of parameter spaces where symmetry breaking occurs.",
+  "proof_natural": "**Proposition.** Let $(G, \\Sigma, \\rho)$ be a physical system where $G$ is a symmetry group, $\\Sigma$ is the state space, and $\\rho: G \\to \\text{Aut}(\\Sigma)$ is a group representation. Let $H \\subset G$ be the residual symmetry group after symmetry breaking. Then there exists a functor $F: \\text{Sym} \\to \\text{Phys}$ from the category of symmetry breaking patterns to the category of physical observables such that: (1) The mass spectrum $M$ is determined by $M = \\ker(F) \\oplus \\text{Im}(F)$, where $\\ker(F)$ corresponds to Goldstone modes and $\\text{Im}(F)$ to massive modes; (2) Observable properties $O$ are precisely the $G$-invariant sections of the quotient bundle $\\Sigma/H$.\n\n**Proof.** We assume that physical systems can be modeled as fiber bundles with structure group $G$, where $G$ is a Lie group acting smoothly on the differentiable manifold $\\Sigma$. Let observable quantities correspond to measurable functions on $\\Sigma$ invariant under residual symmetries, and assume Goldstone's theorem applies in our setting.\n\nWe begin by constructing the symmetry breaking functor $F: \\text{Sym} \\to \\text{Phys}$, where objects of $\\text{Sym}$ are pairs $(G,H)$ with $H \\subset G$, and morphisms are equivariant maps. For each symmetry breaking pattern $G \\to H$, the orbit-stabilizer theorem guarantees that the quotient space $G/H$ parametrizes the degenerate vacuum states of the system.\n\nThe tangent space at the identity $T_e(G/H)$ is naturally isomorphic to the quotient of Lie algebras $\\mathfrak{g}/\\mathfrak{h}$. By Goldstone's theorem, each generator in $\\mathfrak{g}/\\mathfrak{h}$ corresponds to a massless mode, yielding precisely $\\dim(G/H)$ Goldstone bosons. The mass operator $M: V \\to V$ acting on the space $V$ of field modes therefore has kernel isomorphic to $\\mathfrak{g}/\\mathfrak{h}$. [Note: The precise correspondence between Lie algebra generators and field mode operators requires additional mathematical structure to make rigorous.]\n\nFor the massive modes, we invoke the Peter-Weyl theorem. The $H$-invariant sections of associated vector bundles over $\\Sigma/H$ decompose according to the representation theory of $H$, with each irreducible representation contributing to the massive spectrum.\n\nObservable properties naturally form a sheaf $O$ over the quotient manifold $\\Sigma/H$, where the stalk at each point consists of $H$-invariant functions. This sheaf-theoretic formulation ensures that observables respect the residual symmetry while encoding the broken symmetry information in the base space structure.\n\nThe functor $F$ maps each symmetry breaking pattern $(G,H)$ to the category whose objects are pairs $(\\Sigma/H, O)$ of quotient manifolds with their observable sheaves. The mass spectrum emerges from the sheaf cohomology $H^*(\\Sigma/H, O)$, where massless modes correspond to $H^0$ and massive modes to higher cohomology groups. [Note: The exact relationship between cohomology classes and mass eigenvalues requires specifying additional geometric structure on the field theory.]\n\nFinally, we claim that $F$ is fully faithful: distinct symmetry breaking patterns yield distinct categories of observables. [Note: A complete proof of this faithfulness requires showing that different quotients $G/H$ yield non-isomorphic observable categories, which depends on the specific physical realization.]\n\nThis establishes the functorial correspondence between symmetry breaking patterns and physical observables, with the mass spectrum cleanly separated into Goldstone modes in $\\ker(F)$ and massive modes in $\\text{Im}(F)$. $\\square$",
+  "proof_lean": "import Mathlib.Algebra.Group.Defs\nimport Mathlib.GroupTheory.GroupAction.Basic\nimport Mathlib.RepresentationTheory.Basic\nimport Mathlib.CategoryTheory.Category.Basic\nimport Mathlib.CategoryTheory.Functor.Basic\nimport Mathlib.GroupTheory.QuotientGroup\nimport Mathlib.LinearAlgebra.Basic\nimport Mathlib.Topology.FiberBundle.Basic\nimport Mathlib.GroupTheory.GroupAction.Quotient\n\n/-- A physical system with symmetry group G, state space \u03a3, and representation \u03c1 -/\nstructure PhysicalSystem where\n  G : Type*\n  [group : Group G]\n  \u03a3 : Type*\n  \u03c1 : G \u2192* Aut \u03a3\n\n/-- The category of symmetry breaking patterns -/\nstructure SymmetryBreakingPattern where\n  G : Type*\n  [groupG : Group G]\n  H : Subgroup G\n\n/-- Category of symmetry breaking patterns -/\ndef Sym : Type* := sorry -- \"Category of symmetry breaking patterns not formalized in Mathlib\"\n\n/-- Category of physical observables -/\ndef Phys : Type* := sorry -- \"Category of physical observables not formalized in Mathlib\"\n\n/-- Mass spectrum decomposition -/\nstructure MassSpectrum (V : Type*) [AddCommGroup V] [Module \u211d V] where\n  M : V \u2192\u2097[\u211d] V\n  goldstone_modes : Submodule \u211d V\n  massive_modes : Submodule \u211d V\n  decomposition : V = goldstone_modes \u2295 massive_modes\n  goldstone_is_kernel : goldstone_modes = LinearMap.ker M\n\ntheorem symmetry_breaking_functor_theorem\n  (sys : PhysicalSystem) (H : Subgroup sys.G) :\n  \u2203 (F : Sym \u2964 Phys),\n  -- Property 1: Mass spectrum decomposition\n  (\u2203 (V : Type*) [AddCommGroup V] [Module \u211d V] (M : MassSpectrum V),\n    M.goldstone_modes = LinearMap.ker M.M \u2227\n    M.massive_modes = LinearMap.range M.M) \u2227\n  -- Property 2: Observable properties are G-invariant sections\n  (\u2203 (O : Type*), O = {f : sys.\u03a3 \u2192 \u211d | \u2200 g : sys.G, \u2200 s : sys.\u03a3, f (sys.\u03c1 g s) = f s}) :=\nby\n  -- Step 1: Define the symmetry breaking functor\n  sorry -- \"Functor between custom categories Sym and Phys cannot be constructed\"\n  \n  -- Step 2: Quotient space G/H parametrizes degenerate vacuum states\n  have quotient_parametrizes : \u2203 (vacuum_states : Set sys.\u03a3),\n    vacuum_states \u2243 (sys.G \u29f8 H.toSubmonoid.toSubsemigroup.carrier) := by\n    sorry -- \"Connection between vacuum states and quotient space requires physics formalization\"\n  \n  -- Step 3: Tangent space identification\n  -- Note: Would need Lie algebra structure\n  sorry -- \"Lie algebra structure and tangent space of homogeneous spaces not fully formalized\"\n  \n  -- Step 4: Goldstone modes counting\n  sorry -- \"Goldstone's theorem not formalized in Mathlib\"\n  \n  -- Step 5: Mass operator kernel\n  sorry -- \"Connection between Lie algebra generators and field mode operators requires physics formalization\"\n  \n  -- Step 6: Massive modes as H-invariant sections\n  sorry -- \"H-invariant sections of vector bundles over quotient spaces not directly available\"\n  \n  -- Step 7: Observable properties form a sheaf\n  sorry -- \"Sheaf of H-invariant functions over \u03a3/H requires sheaf theory on quotient spaces\"\n  \n  -- Step 8: Functor maps to observable categories\n  sorry -- \"Cohomology-mass spectrum relationship requires additional physical structure\"\n  \n  -- Step 9: Functor is fully faithful\n  sorry -- \"Proof that different quotients yield non-isomorphic categories requires formalization\"",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the symmetry breaking functor F: Sym \u2192 Phys where Sym has objects (G,H) with H \u2282 G and morphisms as equivariant maps",
+      "justification": "Standard category-theoretic construction for symmetry breaking patterns",
+      "dependencies": [
+        "Assumption of functorial correspondence"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "For each symmetry breaking G \u2192 H, the quotient space G/H parametrizes degenerate vacuum states",
+      "justification": "Orbit-stabilizer theorem applied to the group action",
+      "dependencies": [
+        "Lie group theory",
+        "Step 1"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The tangent space T_e(G/H) \u2245 g/h where g, h are Lie algebras of G, H respectively",
+      "justification": "Standard result in differential geometry of homogeneous spaces",
+      "dependencies": [
+        "Step 2",
+        "Differential geometry of Lie groups"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "Goldstone modes correspond to generators in g/h, giving dim(G/H) massless modes",
+      "justification": "Goldstone's theorem in the mathematical formulation",
+      "dependencies": [
+        "Step 3",
+        "Goldstone's theorem"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The mass operator M: V \u2192 V on the space V of field modes has kernel isomorphic to g/h",
+      "justification": "[Gap: Requires rigorous connection between Lie algebra generators and field mode operators]",
+      "dependencies": [
+        "Step 4",
+        "Quantum field theory formalism"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Massive modes correspond to H-invariant sections of associated vector bundles over \u03a3/H",
+      "justification": "Peter-Weyl theorem applied to the representation theory of H",
+      "dependencies": [
+        "Step 2",
+        "Peter-Weyl theorem"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Observable properties O form a sheaf over \u03a3/H with stalks given by H-invariant functions",
+      "justification": "Sheaf cohomology construction for invariant observables",
+      "dependencies": [
+        "Step 6",
+        "Sheaf theory"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "The functor F maps (G,H) to the category of (\u03a3/H, O) with mass spectrum determined by cohomology H*(\u03a3/H, O)",
+      "justification": "[Gap: The precise relationship between cohomology classes and mass eigenvalues requires additional structure]",
+      "dependencies": [
+        "Steps 1, 6, 7",
+        "Sheaf cohomology"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "F is fully faithful: distinct symmetry breaking patterns yield distinct observable categories",
+      "justification": "[Gap: Requires proof that different quotients G/H yield non-isomorphic observable categories]",
+      "dependencies": [
+        "Step 8",
+        "Category theory"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Goldstone's Theorem",
+      "authors": "Goldstone, Salam, Weinberg",
+      "year": "1962",
+      "field": "Quantum Field Theory",
+      "statement": "Spontaneous breaking of continuous symmetry implies massless excitations",
+      "usage": "Establishes connection between broken generators and massless modes"
+    },
+    {
+      "name": "Peter-Weyl Theorem",
+      "authors": "Peter, Weyl",
+      "year": "1927",
+      "field": "Harmonic Analysis",
+      "statement": "Decomposition of regular representation of compact groups",
+      "usage": "Classifies H-invariant functions on G/H"
+    },
+    {
+      "name": "Orbit-Stabilizer Theorem",
+      "authors": "Classical",
+      "year": "19th century",
+      "field": "Group Theory",
+      "statement": "For group action, |G| = |Orbit| \u00d7 |Stabilizer|",
+      "usage": "Establishes structure of vacuum manifold G/H"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Physical systems can be modeled as fiber bundles with structure group G",
+    "Symmetry groups G are Lie groups with smooth action on state spaces",
+    "State spaces \u03a3 are differentiable manifolds with appropriate measure structures",
+    "Observable quantities correspond to measurable functions on \u03a3 invariant under residual symmetries",
+    "Mass generation mechanisms can be formalized as cohomological obstructions",
+    "The correspondence between symmetry breaking patterns and physical properties is functorial",
+    "Goldstone's theorem applies in the systems under consideration",
+    "The vacuum manifold \u03a3/H has well-defined quotient structure",
+    "Physical observables form a category with morphisms given by measurement transformations",
+    "The relevant field theories admit rigorous mathematical formulation"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Construction of functor F: Sym \u2192 Phys",
+        "issue": "The categories Sym and Phys are never properly defined. Objects and morphisms are vaguely described but no verification that these form categories is given.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Define Sym and Phys explicitly with objects, morphisms, composition, and identity. Verify category axioms."
+      },
+      {
+        "step": "M = ker(F) \u2295 Im(F)",
+        "issue": "F is a functor between categories, not a linear map. Kernel and image of functors are not defined in the usual sense. This equation is meaningless.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Complete reconceptualization needed. Perhaps meant to discuss representations or linear maps, not functors."
+      },
+      {
+        "step": "The mass operator M: V \u2192 V acting on the space V",
+        "issue": "The space V is never defined. Its relationship to the state space \u03a3 or any other structure is unclear.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Define V explicitly and its relationship to the physical system (G, \u03a3, \u03c1)."
+      },
+      {
+        "step": "Observable properties O are precisely the G-invariant sections",
+        "issue": "Claims G-invariant sections but later states observables are H-invariant functions. This is contradictory.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Clarify whether observables are G-invariant or H-invariant and maintain consistency."
+      },
+      {
+        "step": "Sheaf cohomology H*(\u03a3/H, O) relationship to mass spectrum",
+        "issue": "No justification for why cohomology groups correspond to mass eigenvalues. The connection is asserted without proof.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would require substantial additional mathematical machinery to establish this correspondence."
+      },
+      {
+        "step": "F is fully faithful",
+        "issue": "Claim is made but not proven. The proof acknowledges this gap but continues as if established.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Either prove the claim or weaken the conclusion accordingly."
+      },
+      {
+        "step": "Quotient bundle \u03a3/H",
+        "issue": "\u03a3/H may not be a manifold if H doesn't act freely and properly. No conditions on the action are specified.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Add conditions on the group action to ensure quotient is well-behaved."
+      }
+    ],
+    "hidden_assumptions": [
+      "G is a Lie group (stated in proof but not in proposition)",
+      "\u03a3 is a differentiable manifold (stated in proof but not in proposition)",
+      "H acts freely and properly on \u03a3",
+      "The field theory has a Lagrangian formulation",
+      "The vacuum is degenerate after symmetry breaking",
+      "Physical observables can be identified with mathematical functions",
+      "The mass operator exists and is well-defined",
+      "Goldstone's theorem applies (acknowledged but conditions not verified)"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes the existence of a mass operator with specific kernel structure to prove the mass spectrum decomposition, but this decomposition is what should establish the structure of the mass operator.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to establish a general functor for all symmetry breaking patterns but only considers specific cases with Lie groups and differentiable manifolds. The proposition makes no such restrictions.",
+    "citation_issues": [
+      "Peter-Weyl theorem applies to compact groups, but no compactness assumption on G or H",
+      "Goldstone's theorem requires specific conditions (continuous symmetry, finite temperature considerations, etc.) that are not verified",
+      "Orbit-stabilizer theorem is cited but its application to construct G/H is standard and doesn't support the main claims"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed with critical mathematical errors including undefined objects, meaningless operations on functors, and circular reasoning. The mathematical formalism is used incorrectly throughout, mixing concepts from different areas without proper justification.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to construct a framework relating symmetry breaking to observables but fails to establish the specific claims about mass spectrum decomposition M = ker(F) \u2295 Im(F) or that observables are precisely G-invariant sections of \u03a3/H",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The functor F has well-defined kernel and image in the sense required for the mass spectrum decomposition",
+      "The quotient bundle \u03a3/H exists and has the required differential structure",
+      "The mass operator M is well-defined on the appropriate function spaces",
+      "The correspondence between Lie algebra generators and physical field modes is bijective",
+      "The sheaf cohomology H*(\u03a3/H, O) has finite-dimensional cohomology groups",
+      "The Peter-Weyl theorem applies to the specific representation \u03c1",
+      "The orbit-stabilizer theorem applies to the given group action on \u03a3",
+      "The quotient space G/H has the structure of a smooth manifold"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "5",
+        "issue": "No rigorous connection established between Lie algebra generators g/h and field mode operators - this is explicitly noted as a gap but is crucial for the mass spectrum claim"
+      },
+      {
+        "step": "6",
+        "issue": "Peter-Weyl theorem applies to compact groups and finite-dimensional representations, but these conditions are not verified"
+      },
+      {
+        "step": "8",
+        "issue": "The relationship between cohomology classes H*(\u03a3/H, O) and mass eigenvalues is asserted without proof - this is the core claim about mass spectrum"
+      },
+      {
+        "step": "9",
+        "issue": "No proof provided that different quotients yield non-isomorphic categories - this is needed for the functor to be well-defined"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "The mass spectrum decomposition M = ker(F) \u2295 Im(F) is never rigorously established",
+      "The claim that observables are 'precisely' the G-invariant sections is not proven - only that they form such sections",
+      "Critical gaps in steps 5, 8, and 9 are acknowledged but not filled",
+      "No verification that the functor F actually maps to the category of physical observables as claimed",
+      "The connection between the abstract categorical construction and the specific physical claims about mass spectra is missing"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims 'Observable properties O are precisely the G-invariant sections of the quotient bundle \u03a3/H' but existing proof [06879fd9ae87] establishes that 'Physical properties are fundamentally contextual and cannot possess predetermined values independent of measurement framework' - these are incompatible views of observables",
+      "The mass spectrum decomposition M = ker(F) \u2295 Im(F) assumes a direct sum structure that conflicts with the hierarchical multi-scale dynamics described in [052632f8abba] and [0e664bd264b4] where scale separation creates more complex spectral structures",
+      "The claim that 'F is fully faithful: distinct symmetry breaking patterns yield distinct observable categories' contradicts the universality principles in phase transitions established in [0178ff46c5ee] where 'universal principles transcend microscopic details'"
+    ],
+    "assumption_conflicts": [
+      "Assumes 'Observable quantities correspond to measurable functions on \u03a3 invariant under residual symmetries' which conflicts with contextual measurement framework in [06879fd9ae87]",
+      "Assumes 'Physical observables form a category with morphisms given by measurement transformations' but doesn't account for information constraints from [00f62716e74a] about copying limitations",
+      "The assumption of 'well-defined quotient structure' for \u03a3/H may conflict with the emergence of pathological behavior that requires structural constraints as shown in [0059c78c2998]"
+    ],
+    "beneficial_connections": [
+      "Connects to [087da119976b] and [08b6405556dd] on symmetry breaking mechanisms, potentially providing categorical framework for their results",
+      "The Goldstone mode analysis aligns with [129df8406d52] on symmetry breaking and degeneracy splitting",
+      "The functor F: Sym \u2192 Phys could provide mathematical foundation for the symmetry principles in [08b6405556dd]"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof attempts to provide a categorical framework for symmetry breaking but makes several strong assumptions about observables and measurement that conflict with established contextual and information-theoretic constraints. The mathematical structure is sophisticated but the physical interpretation is problematic."
+  },
+  "confidence_score": 0.24500000000000002,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous mathematical framework connecting: (1) Lie algebra cohomology to mass eigenvalues in quantum field theory, (2) Functorial relationships between symmetry categories and observable categories, (3) Mathematical formulation of measurement theory compatible with category-theoretic structures",
+  "limitations": [
+    "The connection between Lie algebra generators and field mode operators lacks rigorous mathematical foundation",
+    "The relationship between sheaf cohomology classes and physical mass eigenvalues is not established",
+    "The proof that distinct symmetry breakings yield non-isomorphic observable categories is incomplete",
+    "The mathematical formulation of 'observable properties' needs axiomatization",
+    "Assumes finite-dimensional Lie groups; infinite-dimensional cases require separate treatment",
+    "Does not address anomalous symmetry breaking",
+    "Requires compact groups for Peter-Weyl theorem; non-compact cases need different approach",
+    "Does not incorporate quantum corrections or renormalization effects",
+    "Topological aspects of symmetry breaking (instantons, monopoles) not addressed"
+  ],
+  "source_convergence": {
+    "structural_claim": "Symmetry breaking mechanisms fundamentally determine the observable properties and mass scales of physical systems",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Discovery of the Higgs boson",
+        "domain_id": "field_a",
+        "domain_name": "Particle Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Spontaneous symmetry breaking of electroweak symmetry generates mass for fundamental particles"
+      },
+      {
+        "result_id": "",
+        "result_name": "Discovery of the W and Z bosons",
+        "domain_id": "field_a",
+        "domain_name": "Particle Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Gauge symmetry breaking creates massive force carriers from massless gauge fields"
+      },
+      {
+        "result_id": "",
+        "result_name": "Bose-Einstein Condensation in Dilute Gases",
+        "domain_id": "field_b",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Spontaneous breaking of gauge symmetry leads to macroscopic quantum coherence and new collective states"
+      },
+      {
+        "result_id": "",
+        "result_name": "Zeeman Effect",
+        "domain_id": "field_b",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "direct",
+        "structural_conclusion": "External fields break rotational symmetry, lifting degeneracies and creating new energy scales"
+      }
+    ],
+    "domains": [
+      "particle_physics",
+      "atomic_physics"
+    ],
+    "domain_names": [
+      "Particle Physics",
+      "Atomic and Molecular Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.2856,
+      "independence": 0.75,
+      "adversarial": 0.09,
+      "reproducibility": 0.6299999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.48568,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:30:49.690626+00:00",
+    "id": "c58dcb75729f"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.28976999999999997
+  }
+}

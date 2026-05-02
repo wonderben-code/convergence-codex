@@ -1,0 +1,38 @@
+{
+  "proof_id": "1ff37075e707",
+  "timestamp": "2026-05-02T14:01:40.011964+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "equivalence - This would require showing a functorial relationship between spacetime geometry and acoustic media structures, but the physical mechanisms are too different for such a direct structural correspondence."
+      ],
+      "reasoning": "The convergence identifies shared abstract principles about how geometry/topology constrains wave propagation across different physical contexts. Both domains exhibit phenomena (band gaps, localization, protected states) that arise from geometric/topological constraints, but through different mechanisms (spacetime curvature vs. periodic/topological media)."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Differential geometry, Functional analysis, Topology",
+      "alternatives_considered": [],
+      "reasoning": "Differential geometry provides the framework for curved spacetime in GR and wave equations on manifolds. Functional analysis gives spectral theory for wave operators and eigenvalue problems determining band structures. Topology captures the global properties that protect certain wave states."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof establishes that manifold topology and geometry constrain wave propagation through three mechanisms: fundamental group structure creates quasi-periodicity constraints leading to gaps, periodic metrics generate band structures via Bloch theory, and non-trivial band topology produces protected edge states through bulk-boundary correspondence. The key insight is that geometric/topological properties of the domain manifold directly translate to spectral properties of wave operators.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 9 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3701 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 4002 chars, 11 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This proof requires significant mathematical physics machinery not currently in Mathlib. The formalization captures the structure of the theorem but cannot complete the proof steps due to missing definitions for wave operators, band theory, and topological physics concepts."
+    }
+  ]
+}
