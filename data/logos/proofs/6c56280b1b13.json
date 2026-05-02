@@ -1,0 +1,321 @@
+{
+  "id": "6c56280b1b13",
+  "convergence_id": "d56a80524732",
+  "timestamp": "2026-05-02T14:13:45.180833+00:00",
+  "proposition": "Let H be a Hilbert space, G a Lie group acting unitarily on H, and H\u2080 \u2208 L(H) a self-adjoint operator invariant under G. If V \u2208 L(H) is a self-adjoint perturbation breaking the G-symmetry, then: (1) The eigenspace decomposition of H\u2080 + \u03b5V removes degeneracies in the spectrum of H\u2080 for generic V and small \u03b5 > 0; (2) The one-parameter family {H\u2080 + \u03b5V}_{\u03b5\u2208\u211d} provides a controllable path in the space of self-adjoint operators connecting symmetric and asymmetric configurations.",
+  "proposition_natural": "External fields break symmetries to lift degeneracies and provide control handles for manipulating system states",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Algebraic structures",
+    "Functional analysis",
+    "Differential geometry"
+  ],
+  "apparatus_justification": "Symmetry breaking is fundamentally about group actions and their representations, making algebraic structures essential. Functional analysis provides the spectral theory needed for degeneracy lifting in quantum systems. Differential geometry captures how external fields modify the underlying space structure.",
+  "proof_natural": "**Proposition.** Let $H$ be a Hilbert space, $G$ a Lie group acting unitarily on $H$, and $H_0 \\in \\mathcal{L}(H)$ a self-adjoint operator invariant under $G$. If $V \\in \\mathcal{L}(H)$ is a self-adjoint perturbation breaking the $G$-symmetry, then: (1) The eigenspace decomposition of $H_0 + \\varepsilon V$ removes degeneracies in the spectrum of $H_0$ for generic $V$ and small $\\varepsilon > 0$; (2) The one-parameter family $\\{H_0 + \\varepsilon V\\}_{\\varepsilon \\in \\mathbb{R}}$ provides a controllable path in the space of self-adjoint operators connecting symmetric and asymmetric configurations.\n\n**Proof.** We assume that $H$ is a separable Hilbert space and $G$ is a Lie group with a unitary representation $U: G \\to \\mathcal{U}(H)$. Let $H_0$ be a self-adjoint operator with discrete spectrum that commutes with $U(g)$ for all $g \\in G$, and let $V$ be a self-adjoint operator that does not commute with all $U(g)$. We further assume that the eigenvalues of $H_0$ have finite multiplicity, that $V$ has finite operator norm or $H_0 + \\varepsilon V$ has compact resolvent, and that $V$ is generic in the sense that matrix elements $\\langle \\psi_i | V | \\psi_j \\rangle$ between degenerate eigenstates are non-zero.\n\nSince $[H_0, U(g)] = 0$ for all $g \\in G$, the eigenspaces of $H_0$ are $G$-invariant. Indeed, if $H_0 \\psi = \\lambda \\psi$, then $H_0(U(g)\\psi) = U(g)H_0\\psi = \\lambda U(g)\\psi$. Thus we have the eigenspace decomposition $H = \\bigoplus_i E_i$ where each $E_i$ is $G$-invariant.\n\nFor a degenerate eigenvalue $\\lambda$ with multiplicity $n > 1$, the eigenspace $E_\\lambda$ carries a representation of $G$ given by the restriction of $U$. Since $V$ breaks the $G$-symmetry, there exist $g \\in G$ and $\\psi \\in E_\\lambda$ such that $\\langle \\psi | V | U(g)\\psi \\rangle \\neq \\langle U(g)\\psi | V | U(g)\\psi \\rangle$. [Note: This follows from the contrapositive\u2014if $V$ commuted with all $U(g)$, it would be $G$-invariant.]\n\nBy the Kato-Rellich perturbation theorem, for sufficiently small $\\varepsilon$, the operator $H_0 + \\varepsilon V$ remains self-adjoint on $D(H_0)$. Applying first-order degenerate perturbation theory, we must diagonalize $V$ restricted to each degenerate eigenspace $E_\\lambda$. The eigenvalue corrections are given by $\\delta\\lambda_i = \\langle \\psi_i | V | \\psi_i \\rangle$, where $\\{\\psi_i\\}$ are the eigenvectors of $V|_{E_\\lambda}$.\n\nFor generic $V$, the restriction $V|_{E_\\lambda}$ has distinct eigenvalues. This follows from the fact that the set of symmetric matrices with repeated eigenvalues has measure zero in the space of all symmetric matrices. Therefore, the $n$-fold degenerate eigenvalue $\\lambda$ splits into $n$ distinct eigenvalues $\\lambda + \\varepsilon\\delta\\lambda_i + O(\\varepsilon^2)$.\n\nThe one-parameter family $H(\\varepsilon) = H_0 + \\varepsilon V$ provides a continuous path in the space of self-adjoint operators, connecting the symmetric configuration at $\\varepsilon = 0$ to asymmetric configurations for $\\varepsilon \\neq 0$. By the spectral continuity theorem for self-adjoint operators, the spectrum $\\sigma(H(\\varepsilon))$ varies continuously with $\\varepsilon$. Moreover, by Kato's analytic perturbation theory, the eigenvalues and eigenvectors vary analytically with $\\varepsilon$ in regions where eigenvalues remain isolated. The Wigner-von Neumann non-crossing rule ensures that eigenvalues generically do not cross in one-parameter families.\n\nThis establishes both claims: generic symmetry-breaking perturbations remove degeneracies, and the one-parameter family provides controllable interpolation between symmetric and asymmetric configurations. This completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.Analysis.InnerProductSpace.Basic\nimport Mathlib.Analysis.InnerProductSpace.Spectrum\nimport Mathlib.Topology.Algebra.Group.Basic\nimport Mathlib.Topology.ContinuousFunction.Basic\nimport Mathlib.Analysis.NormedSpace.OperatorNorm\nimport Mathlib.Analysis.InnerProductSpace.Adjoint\n\n/-- A Lie group acting unitarily on a Hilbert space -/\nstructure UnitaryAction (G : Type*) (H : Type*) [TopologicalSpace G] [Group G] \n  [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H] where\n  /-- The unitary action map -/\n  act : G \u2192 H \u2192L[\u2102] H\n  /-- Each U(g) is unitary -/\n  unitary : \u2200 g : G, IsometryOn (act g) Set.univ\n  /-- Group homomorphism property -/\n  hom : \u2200 g\u2081 g\u2082 : G, act (g\u2081 * g\u2082) = act g\u2081 \u2218L act g\u2082\n  /-- Identity preservation -/\n  one : act 1 = ContinuousLinearMap.id \u2102 H\n\n/-- An operator is G-invariant if it commutes with the group action -/\ndef IsGInvariant {G H : Type*} [TopologicalSpace G] [Group G]\n  [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H]\n  (U : UnitaryAction G H) (T : H \u2192L[\u2102] H) : Prop :=\n  \u2200 g : G, T \u2218L U.act g = U.act g \u2218L T\n\n/-- Main theorem about symmetry breaking and degeneracy removal -/\ntheorem symmetry_breaking_degeneracy_removal\n  {G H : Type*} [TopologicalSpace G] [Group G]\n  [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H]\n  (U : UnitaryAction G H)\n  (H\u2080 : H \u2192L[\u2102] H) (hH\u2080_sa : IsSelfAdjoint H\u2080)\n  (hH\u2080_inv : IsGInvariant U H\u2080)\n  (V : H \u2192L[\u2102] H) (hV_sa : IsSelfAdjoint V)\n  (hV_breaks : \u00acIsGInvariant U V) :\n  (\u2203 (\u03b5\u2080 : \u211d), \u03b5\u2080 > 0 \u2227 \n    \u2200 \u03b5 \u2208 Set.Ioo 0 \u03b5\u2080,\n    -- Part 1: Degeneracy removal for generic V\n    sorry) \u2227 \n  -- Part 2: Controllable path property\n  (\u2200 \u03b5 : \u211d, IsSelfAdjoint (H\u2080 + \u03b5 \u2022 V)) \u2227\n  (Continuous (fun \u03b5 : \u211d \u21a6 H\u2080 + \u03b5 \u2022 V)) := by\n  constructor\n  \u00b7 -- Part 1: Degeneracy removal\n    -- Step 1: Eigenspace decomposition with G-invariance\n    sorry -- Need: Eigenspace decomposition theory, G-invariance of eigenspaces\n    \n  constructor\n  \u00b7 -- Self-adjointness of the family\n    intro \u03b5\n    apply IsSelfAdjoint.add hH\u2080_sa\n    apply IsSelfAdjoint.smul_of_real hV_sa\n    \n  \u00b7 -- Continuity of the family\n    apply Continuous.add\n    \u00b7 exact continuous_const\n    \u00b7 exact Continuous.smul continuous_id continuous_const\n\n/-- The eigenspace decomposition respects G-invariance -/\nlemma eigenspace_G_invariant\n  {G H : Type*} [TopologicalSpace G] [Group G]\n  [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H]\n  (U : UnitaryAction G H)\n  (H\u2080 : H \u2192L[\u2102] H) (hH\u2080_sa : IsSelfAdjoint H\u2080)\n  (hH\u2080_inv : IsGInvariant U H\u2080)\n  (\u03bb : \u2102) :\n  sorry := by\n  sorry -- Need: Eigenspace theory and proof that G-invariant operators have G-invariant eigenspaces\n\n/-- First-order perturbation theory for degenerate eigenvalues -/\nlemma first_order_perturbation\n  {H : Type*} [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H]\n  (H\u2080 V : H \u2192L[\u2102] H) (hH\u2080_sa : IsSelfAdjoint H\u2080) (hV_sa : IsSelfAdjoint V)\n  (\u03bb : \u2102) (E_\u03bb : Submodule \u2102 H) -- eigenspace for \u03bb\n  (hE_\u03bb : sorry) : -- E_\u03bb is the eigenspace of H\u2080 for eigenvalue \u03bb\n  sorry := by\n  sorry -- Need: Kato-Rellich perturbation theorem\n\n/-- Generic perturbations remove degeneracies -/\nlemma generic_perturbation_splits_eigenvalues\n  {H : Type*} [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H]\n  (V : H \u2192L[\u2102] H) (hV_sa : IsSelfAdjoint V)\n  (E : Submodule \u2102 H) (hdim : FiniteDimensional.finrank \u2102 E > 1) :\n  sorry := by\n  sorry -- Need: Measure theory on space of symmetric operators, generic properties\n\n/-- Spectral continuity for self-adjoint operators -/\nlemma spectrum_continuous\n  {H : Type*} [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H]\n  (H\u2080 V : H \u2192L[\u2102] H) (hH\u2080_sa : IsSelfAdjoint H\u2080) (hV_sa : IsSelfAdjoint V) :\n  Continuous (fun \u03b5 : \u211d \u21a6 spectrum \u2102 (H\u2080 + \u03b5 \u2022 V)) := by\n  sorry -- Need: Spectral continuity theorem\n\n/-- Analytic dependence of eigenvectors on parameters -/\nlemma eigenvector_analyticity\n  {H : Type*} [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H]\n  (H\u2080 V : H \u2192L[\u2102] H) (hH\u2080_sa : IsSelfAdjoint H\u2080) (hV_sa : IsSelfAdjoint V)\n  (\u03b5 : \u211d) :\n  sorry := by\n  sorry -- Need: Kato's analytic perturbation theory",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The operator H\u2080 has eigenspace decomposition H = \u2295\u1d62 E\u1d62 where each E\u1d62 is G-invariant",
+      "justification": "Since [H\u2080, U(g)] = 0 for all g \u2208 G, if H\u2080\u03c8 = \u03bb\u03c8 then H\u2080(U(g)\u03c8) = U(g)H\u2080\u03c8 = \u03bbU(g)\u03c8, so eigenspaces are G-invariant",
+      "dependencies": [
+        "Assumption that H\u2080 commutes with representation"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "For degenerate eigenvalue \u03bb with multiplicity n > 1, the eigenspace E_\u03bb carries a representation of G",
+      "justification": "The restriction of U to E_\u03bb gives a representation since E_\u03bb is G-invariant",
+      "dependencies": [
+        "Step 1"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The perturbation V does not commute with the representation, so \u27e8\u03c8|V|U(g)\u03c8\u27e9 \u2260 \u27e8U(g)\u03c8|V|U(g)\u03c8\u27e9 for some g \u2208 G and \u03c8 \u2208 E_\u03bb",
+      "justification": "If V commuted with all U(g), it would be G-invariant, contradicting the symmetry-breaking assumption",
+      "dependencies": [
+        "Assumption that V breaks G-symmetry"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "By first-order perturbation theory, eigenvalue corrections are \u03b4\u03bb\u1d62 = \u27e8\u03c8\u1d62|V|\u03c8\u1d62\u27e9 where {\u03c8\u1d62} diagonalize V restricted to E_\u03bb",
+      "justification": "Standard degenerate perturbation theory (Kato-Rellich theorem)",
+      "dependencies": [
+        "Kato-Rellich perturbation theorem",
+        "Assumption of small \u03b5"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "For generic V, the matrix elements \u27e8\u03c8\u1d62|V|\u03c8\u2c7c\u27e9 form a matrix with distinct eigenvalues",
+      "justification": "The set of symmetric matrices with repeated eigenvalues has measure zero in the space of symmetric matrices",
+      "dependencies": [
+        "Generic position assumption",
+        "Finite dimensionality of E_\u03bb"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Therefore, the n-fold degenerate eigenvalue \u03bb splits into n distinct eigenvalues \u03bb + \u03b5\u03b4\u03bb\u1d62 + O(\u03b5\u00b2)",
+      "justification": "Combining steps 4 and 5 with perturbation expansion",
+      "dependencies": [
+        "Steps 4, 5"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The one-parameter family H(\u03b5) = H\u2080 + \u03b5V provides continuous interpolation between symmetric (\u03b5=0) and asymmetric (\u03b5\u22600) configurations",
+      "justification": "The map \u03b5 \u21a6 H\u2080 + \u03b5V is continuous in operator norm topology",
+      "dependencies": [
+        "Assumption of bounded V or compact resolvent"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "The spectrum \u03c3(H(\u03b5)) varies continuously with \u03b5, providing control over energy levels",
+      "justification": "Spectral continuity theorem for self-adjoint operators",
+      "dependencies": [
+        "Step 7",
+        "Spectral theorem"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "The eigenvectors |\u03c8\u1d62(\u03b5)\u27e9 vary analytically with \u03b5 for non-crossing levels, providing control over states",
+      "justification": "Analytic perturbation theory (Kato)",
+      "dependencies": [
+        "Kato's analytic perturbation theory",
+        "Non-degeneracy from Step 6"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Kato-Rellich Perturbation Theorem",
+      "authors": "Tosio Kato",
+      "year": "1966",
+      "field": "Functional Analysis",
+      "statement": "If H\u2080 is self-adjoint and V is symmetric with ||V\u03c8|| \u2264 a||H\u2080\u03c8|| + b||\u03c8|| for a < 1, then H\u2080 + V is self-adjoint on D(H\u2080)",
+      "usage": "Ensures H\u2080 + \u03b5V remains self-adjoint with discrete spectrum"
+    },
+    {
+      "name": "Analytic Perturbation Theory",
+      "authors": "Tosio Kato",
+      "year": "1966",
+      "field": "Functional Analysis",
+      "statement": "Eigenvalues and eigenvectors of analytic families of operators are analytic in regions where eigenvalues remain isolated",
+      "usage": "Justifies analytic dependence of spectrum and eigenvectors on \u03b5"
+    },
+    {
+      "name": "Wigner-von Neumann Non-crossing Rule",
+      "authors": "Eugene Wigner, John von Neumann",
+      "year": "1929",
+      "field": "Quantum Mechanics",
+      "statement": "In one-parameter families of real symmetric matrices, eigenvalues generically do not cross",
+      "usage": "Ensures persistent splitting of degeneracies under generic perturbations"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "H is a separable Hilbert space",
+    "G is a Lie group with a unitary representation U: G \u2192 U(H)",
+    "H\u2080 is a self-adjoint operator with discrete spectrum",
+    "H\u2080 commutes with U(g) for all g \u2208 G",
+    "V is a self-adjoint operator that does not commute with all U(g)",
+    "The perturbation parameter \u03b5 is sufficiently small for perturbation theory to apply",
+    "V has finite operator norm or H\u2080 + \u03b5V has compact resolvent",
+    "The eigenvalues of H\u2080 have finite multiplicity",
+    "V is 'generic' in the sense that matrix elements \u27e8\u03c8\u1d62|V|\u03c8\u2c7c\u27e9 between degenerate eigenstates are non-zero"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "Since $V$ breaks the $G$-symmetry, there exist $g \\in G$ and $\\psi \\in E_\\lambda$ such that $\\langle \\psi | V | U(g)\\psi \\rangle \\neq \\langle U(g)\\psi | V | U(g)\\psi \\rangle$",
+        "issue": "This inequality makes no sense. The right-hand side equals $\\langle U(g)\\psi | V | U(g)\\psi \\rangle = \\langle \\psi | U(g)^* V U(g) | \\psi \\rangle$. The claimed inequality would require $V$ to not be self-adjoint, contradicting the hypothesis.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "The author likely meant to compare $V$ with $U(g)^* V U(g)$, but this fundamental error undermines the entire symmetry-breaking argument."
+      },
+      {
+        "step": "For generic $V$, the restriction $V|_{E_\\lambda}$ has distinct eigenvalues",
+        "issue": "The proof jumps from finite-dimensional matrix theory to potentially infinite-dimensional operators without justification. The measure-theoretic argument only applies to finite-dimensional spaces.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Restrict to finite-dimensional eigenspaces or provide a proper infinite-dimensional genericity argument."
+      },
+      {
+        "step": "Application of Kato-Rellich theorem",
+        "issue": "The proof assumes $V$ has finite operator norm OR $H_0 + \\varepsilon V$ has compact resolvent, but never uses these assumptions properly. The Kato-Rellich theorem requires relative boundedness conditions that aren't verified.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Explicitly verify the relative boundedness condition $||V\\psi|| \\leq a||H_0\\psi|| + b||\\psi||$ with $a < 1$."
+      },
+      {
+        "step": "The eigenvalue corrections are given by $\\delta\\lambda_i = \\langle \\psi_i | V | \\psi_i \\rangle$",
+        "issue": "This is only valid to first order and assumes the eigenvectors $\\psi_i$ of $V|_{E_\\lambda}$ form a complete basis for $E_\\lambda$, which isn't proven for infinite-dimensional eigenspaces.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "State explicitly that this is first-order perturbation theory and verify completeness of eigenvectors."
+      },
+      {
+        "step": "Wigner-von Neumann non-crossing rule ensures that eigenvalues generically do not cross",
+        "issue": "The Wigner-von Neumann theorem applies to real symmetric matrices, not general self-adjoint operators on infinite-dimensional Hilbert spaces. The proof misapplies this result.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot directly apply finite-dimensional results to infinite-dimensional operators without significant additional work."
+      },
+      {
+        "step": "By the spectral continuity theorem for self-adjoint operators, the spectrum $\\sigma(H(\\varepsilon))$ varies continuously with $\\varepsilon$",
+        "issue": "There is no general 'spectral continuity theorem' that guarantees continuous variation of spectrum. The spectrum can vary discontinuously even for norm-continuous families of self-adjoint operators.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Use proper results about continuity of isolated eigenvalues or restrict claims appropriately."
+      }
+    ],
+    "hidden_assumptions": [
+      "All eigenspaces are finite-dimensional",
+      "The operator $V$ is bounded",
+      "The spectrum of $H_0$ consists entirely of eigenvalues (no continuous spectrum)",
+      "The eigenvectors of $V$ restricted to each eigenspace form a complete basis",
+      "Perturbation theory convergence radius is uniform across all eigenspaces",
+      "The Hilbert space admits a discrete spectral decomposition"
+    ],
+    "circular_reasoning": false,
+    "circular_details": "",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims results for general Hilbert spaces and Lie groups but only establishes them (poorly) for finite-dimensional eigenspaces. The 'controllable path' claim is vague and unjustified. The proof doesn't establish what 'generic' means in infinite dimensions.",
+    "citation_issues": [
+      "Kato-Rellich theorem conditions not verified",
+      "Wigner-von Neumann theorem incorrectly applied to infinite-dimensional operators",
+      "Nonexistent 'spectral continuity theorem' cited",
+      "Analytic perturbation theory applied without verifying analyticity conditions"
+    ],
+    "structural_soundness": 0.2,
+    "overall_assessment": "This proof contains multiple critical errors including nonsensical inequalities, misapplication of finite-dimensional results to infinite dimensions, and citation of nonexistent theorems. The fundamental approach might work for finite-dimensional eigenspaces with substantial revision, but the current proof is unsalvageable for the general case claimed.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "internal_score": 0.5,
+    "proves_stated_proposition": true
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": false,
+    "contradiction_details": [],
+    "assumption_conflicts": [],
+    "beneficial_connections": [
+      "Connects to [087da119976b] on symmetry breaking - provides specific mechanism for how perturbations break symmetry in quantum systems with Lie group invariance",
+      "Relates to [08b6405556dd] on symmetry principles - demonstrates how symmetry-breaking perturbations affect spectral structure while preserving the underlying mathematical framework",
+      "Complements [0178ff46c5ee] on phase transitions and symmetry breaking - offers a controllable perturbative approach to studying symmetry-breaking transitions in quantum systems",
+      "Extends [06d6ace265c2] on quantum-classical boundary - the controllable parameter \u03b5 provides a mechanism for studying the transition between symmetric and asymmetric quantum configurations"
+    ],
+    "consistency_score": 0.85,
+    "notes": "The proof is mathematically sound and consistent with existing framework. However, the 'generic' assumption for perturbation V lacks rigorous definition - what measure-theoretic or topological sense of genericity is intended? The proof would benefit from specifying whether genericity means 'for almost all V in some appropriate topology' or 'except for a lower-dimensional subvariety.' Additionally, the claim about analytical dependence of eigenvectors on \u03b5 requires more careful treatment near level crossings, where analyticity typically breaks down."
+  },
+  "confidence_score": 0.4425,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.5,
+    "cross_proof": 0.85,
+    "calibration": 0.49999999999999994
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.5,
+    "cross_proof": 0.85,
+    "calibration": 0.49999999999999994
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": true,
+  "new_mathematics_needed": "",
+  "limitations": [
+    "The notion of 'generic' perturbation V requires precise measure-theoretic formulation for infinite-dimensional spaces",
+    "The connection between abstract symmetry breaking and specific physical control mechanisms (Zeeman, Stark effects) requires additional structure",
+    "Extension to continuous spectrum requires different techniques not covered here",
+    "Proof assumes discrete spectrum; continuous spectrum requires scattering theory",
+    "Small perturbation assumption limits to weak field regime",
+    "Does not address time-dependent control or non-unitary evolution",
+    "The specific group structure of G may impose additional constraints not captured in general proof"
+  ],
+  "source_convergence": {
+    "structural_claim": "External fields break symmetries to lift degeneracies and provide control handles for manipulating system states",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Zeeman Effect",
+        "domain_id": "field_b",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Magnetic fields break rotational symmetry to split degenerate energy levels"
+      },
+      {
+        "result_id": "",
+        "result_name": "Stark Effect",
+        "domain_id": "field_b",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Electric fields mix states of different angular momentum through symmetry breaking"
+      },
+      {
+        "result_id": "",
+        "result_name": "Feshbach Resonances",
+        "domain_id": "field_b",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Magnetic fields tune interaction strengths by coupling different scattering channels"
+      },
+      {
+        "result_id": "",
+        "result_name": "MHD Equilibrium (Grad-Shafranov Equation)",
+        "domain_id": "field_a",
+        "domain_name": "Plasma Physics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Magnetic field geometry determines plasma equilibrium structure"
+      },
+      {
+        "result_id": "",
+        "result_name": "Ballooning Mode Theory",
+        "domain_id": "field_a",
+        "domain_name": "Plasma Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Magnetic field curvature couples to pressure gradients to drive instabilities"
+      }
+    ],
+    "domains": [
+      "plasma_physics",
+      "atomic_physics"
+    ],
+    "domain_names": [
+      "Plasma Physics",
+      "Atomic and Molecular Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.357,
+      "independence": 0.85,
+      "adversarial": 0.09,
+      "reproducibility": 0.63,
+      "depth_consistency": 1.0,
+      "confidence": 0.5321,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:53:38.712226+00:00",
+    "id": "d56a80524732"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.33291
+  }
+}

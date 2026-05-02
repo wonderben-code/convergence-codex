@@ -1,0 +1,38 @@
+{
+  "proof_id": "3f6b3b9d6a37",
+  "timestamp": "2026-05-02T14:14:18.866798+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "equivalence - This would require showing a functorial relationship between the mathematical frameworks of statistical mechanics and cosmological perturbation theory, but the connection is more about shared principles than structural correspondence between the formalisms."
+      ],
+      "reasoning": "Both phase transitions and cosmic structure formation are characterized by shared abstract principles: symmetry breaking, critical phenomena where fluctuations become macroscopic, and the emergence of order parameters. These are best captured as a set of axioms about systems exhibiting spontaneous symmetry breaking and critical behavior, rather than claiming the mathematical structures are identical or equivalent."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Dynamical systems, Statistical mechanics, Differential geometry",
+      "alternatives_considered": [],
+      "reasoning": "Dynamical systems theory provides the rigorous framework for bifurcation theory and stability analysis needed to formalize symmetry-breaking transitions. Statistical mechanics gives the ensemble formalism for microscopic-to-macroscopic emergence, while differential geometry provides the manifold structure for order parameter spaces and symmetry groups."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "Both phase transitions in matter and cosmic structure formation can be understood as symmetry-breaking phenomena where order parameters transition from zero to non-zero values. Near the critical point, fluctuations exhibit power-law correlations with diverging correlation lengths, allowing microscopic fluctuations to organize into macroscopic structures through the same universal scaling mechanisms.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 9 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3390 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 2636 chars, 11 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "The formalization captures the basic structure of phase transition spaces with symmetry groups and order parameters, but most of the physics content requires specialized definitions from statistical mechanics and cosmology that are not available in Mathlib. The proof structure follows the outlined steps but relies heavily on sorry for the actual physics content."
+    }
+  ]
+}

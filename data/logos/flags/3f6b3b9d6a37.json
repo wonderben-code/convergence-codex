@@ -1,0 +1,13 @@
+{
+  "proof_id": "3f6b3b9d6a37",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous mathematical framework connecting equilibrium statistical mechanics phase transitions to non-equilibrium cosmological structure formation. This would require: (1) Extension of renormalization group to far-from-equilibrium systems, (2) Rigorous treatment of quantum-to-classical transition in inflationary cosmology, (3) Mathematical theory of emergent symmetry breaking in gravitational systems",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

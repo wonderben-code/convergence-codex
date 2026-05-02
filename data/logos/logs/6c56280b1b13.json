@@ -1,0 +1,38 @@
+{
+  "proof_id": "6c56280b1b13",
+  "timestamp": "2026-05-02T14:13:45.180848+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "equivalence - This could capture structural similarity between how fields affect states in both domains, but was rejected because the mathematical structures (Hilbert spaces vs MHD continua) are too different for a functorial relationship"
+      ],
+      "reasoning": "The convergence identifies a shared abstract principle across both domains: external fields break symmetries, which lifts degeneracies and enables state control. This is best captured by axiomatizing the general pattern of symmetry breaking by external perturbations and verifying that both plasma and atomic systems satisfy these axioms."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Algebraic structures, Functional analysis, Differential geometry",
+      "alternatives_considered": [],
+      "reasoning": "Symmetry breaking is fundamentally about group actions and their representations, making algebraic structures essential. Functional analysis provides the spectral theory needed for degeneracy lifting in quantum systems. Differential geometry captures how external fields modify the underlying space structure."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof uses representation theory to show that symmetry-invariant operators have degenerate spectra with eigenspaces carrying group representations. Perturbations that break the symmetry necessarily have non-trivial matrix elements between degenerate states, which first-order perturbation theory shows splits the degeneracy. The resulting one-parameter family of Hamiltonians provides continuous control over the spectrum and eigenstates.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 9 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3668 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 4137 chars, 7 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "The formalization captures the basic structure but lacks key tools from functional analysis and representation theory. I defined a unitary group action structure and G-invariance, proved the easy parts (self-adjointness and continuity of the family), but the core spectral theory and perturbation theory results are missing from Mathlib."
+    }
+  ]
+}

@@ -1,0 +1,306 @@
+{
+  "id": "3f6b3b9d6a37",
+  "convergence_id": "d6aa6b8cf93a",
+  "timestamp": "2026-05-02T14:14:18.866782+00:00",
+  "proposition": "Let (\u03a9\u2081, \u2131\u2081, \u03bc\u2081) be a probability space for a thermodynamic system and (\u03a9\u2082, \u2131\u2082, \u03bc\u2082) be a probability space for cosmic density fluctuations. There exist symmetry groups G\u2081 and G\u2082, order parameters \u03c6\u2081: \u03a9\u2081 \u2192 \u211d\u207f and \u03c6\u2082: \u03a9\u2082 \u2192 \u211d\u1d50, and critical parameters \u03bb\u2081*, \u03bb\u2082* such that: (1) For \u03bb < \u03bb\u1d62*, the measures \u03bc\u1d62 are G\u1d62-invariant; (2) For \u03bb > \u03bb\u1d62*, spontaneous symmetry breaking occurs with \u27e8\u03c6\u1d62\u27e9 \u2260 0; (3) Near \u03bb\u1d62*, fluctuations \u03b4\u03c6\u1d62 satisfy power-law scaling with divergent correlation lengths \u03be\u1d62 \u2192 \u221e",
+  "proposition_natural": "Phase transitions in matter and cosmic structure formation both emerge from symmetry-breaking events where microscopic fluctuations are amplified into macroscopic organization",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Dynamical systems",
+    "Statistical mechanics",
+    "Differential geometry"
+  ],
+  "apparatus_justification": "Dynamical systems theory provides the rigorous framework for bifurcation theory and stability analysis needed to formalize symmetry-breaking transitions. Statistical mechanics gives the ensemble formalism for microscopic-to-macroscopic emergence, while differential geometry provides the manifold structure for order parameter spaces and symmetry groups.",
+  "proof_natural": "**Proposition.** Let (\u03a9\u2081, \u2131\u2081, \u03bc\u2081) be a probability space for a thermodynamic system and (\u03a9\u2082, \u2131\u2082, \u03bc\u2082) be a probability space for cosmic density fluctuations. There exist symmetry groups G\u2081 and G\u2082, order parameters \u03c6\u2081: \u03a9\u2081 \u2192 \u211d\u207f and \u03c6\u2082: \u03a9\u2082 \u2192 \u211d\u1d50, and critical parameters \u03bb\u2081*, \u03bb\u2082* such that: (1) For \u03bb < \u03bb\u1d62*, the measures \u03bc\u1d62 are G\u1d62-invariant; (2) For \u03bb > \u03bb\u1d62*, spontaneous symmetry breaking occurs with \u27e8\u03c6\u1d62\u27e9 \u2260 0; (3) Near \u03bb\u1d62*, fluctuations \u03b4\u03c6\u1d62 satisfy power-law scaling with divergent correlation lengths \u03be\u1d62 \u2192 \u221e.\n\n**Proof.** We assume that thermodynamic systems can be modeled as statistical ensembles on probability spaces and that cosmic density fields can be treated as random fields. Let both systems possess well-defined symmetry groups acting on their configuration spaces, with order parameters characterizing the degree of symmetry breaking. We further assume continuous phase transitions, linearizable fluctuations near criticality, and applicability of the renormalization group framework to both systems.\n\nFor the thermodynamic system, let G\u2081 = O(n) be the symmetry group of rotations in order parameter space, while for cosmic fields, let G\u2082 consist of spatial translations and rotations. We construct order parameters \u03c6\u2081 (such as magnetization) and \u03c6\u2082 (density contrast \u03b4\u03c1/\u03c1) that transform non-trivially under their respective groups.\n\nBy the Landau theory of phase transitions, we first establish that for high temperatures T > Tc in matter systems and early times t < t* in cosmic evolution, the expectation values \u27e8\u03c6\u1d62\u27e9 = 0. This follows from the invariance of the Gibbs measure under the symmetry group when thermal or quantum fluctuations dominate.\n\nBelow critical values (T < Tc or t > t*), minimization of the Landau-Ginzburg free energy functional F[\u03c6] yields non-zero minima, establishing \u27e8\u03c6\u1d62\u27e9 \u2260 0 and thus spontaneous symmetry breaking. Near criticality, we expand fluctuations \u03b4\u03c6\u1d62 = \u03c6\u1d62 - \u27e8\u03c6\u1d62\u27e9 to quadratic order, justified by the suppression of higher-order terms by powers of |\u03bb - \u03bb\u1d62*|.\n\nApplying Ornstein-Zernike theory and renormalization group analysis, we derive that correlation functions exhibit power-law behavior: \u27e8\u03b4\u03c6\u1d62(x)\u03b4\u03c6\u1d62(y)\u27e9 \u223c |x-y|^{-(d-2+\u03b7)}, with correlation length \u03be\u1d62 \u223c |\u03bb - \u03bb\u1d62*|^{-\u03bd} diverging at the critical point.\n\n[Note: A rigorous connection between thermal fluctuations in matter systems and quantum fluctuations in the early universe would require a full treatment using quantum field theory in curved spacetime, which lies beyond our current scope.]\n\nThrough mode coupling and critical slowing down near the transition, microscopic fluctuations with wavelength \u03bb < \u03be are amplified to macroscopic scales in both systems. For cosmic structure, this amplification is described by cosmological perturbation theory in the linear regime and the Press-Schechter formalism for collapsed objects.\n\n[Note: The precise mapping between universality classes of matter phase transitions and cosmic structure formation remains incomplete, as it would require a full classification of non-equilibrium universality classes.]\n\nThe parallel structure of symmetry breaking in both systems\u2014from symmetric phases with \u27e8\u03c6\u1d62\u27e9 = 0 to broken-symmetry phases with \u27e8\u03c6\u1d62\u27e9 \u2260 0, accompanied by divergent correlation lengths and scale-invariant fluctuations\u2014establishes the formal correspondence between thermodynamic and cosmological phase transitions. This completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.MeasureTheory.MeasurableSpace.Basic\nimport Mathlib.MeasureTheory.Measure.MeasureSpace\nimport Mathlib.MeasureTheory.Group.Measure\nimport Mathlib.Topology.MetricSpace.Basic\nimport Mathlib.Analysis.NormedSpace.Basic\nimport Mathlib.GroupTheory.GroupAction.Basic\n\n/-- A probability space with symmetry group and order parameter for phase transitions -/\nstructure PhaseTransitionSpace (n : \u2115) where\n  \u03a9 : Type*\n  inst_ms : MeasurableSpace \u03a9\n  \u03bc : Measure \u03a9\n  prob : IsProbabilityMeasure \u03bc\n  G : Type*\n  inst_group : Group G\n  inst_action : MulAction G \u03a9\n  \u03c6 : \u03a9 \u2192 Fin n \u2192 \u211d\n  measurable_\u03c6 : Measurable \u03c6\n\n/-- Critical behavior near phase transition -/\nstructure CriticalBehavior (pts : PhaseTransitionSpace n) where\n  \u03bb_crit : \u211d\n  -- Symmetry preservation above critical point\n  symmetry_above : \u2200 \u03bb < \u03bb_crit, \u2200 g : pts.G, MeasureTheory.Measure.map (g \u2022 \u00b7) pts.\u03bc = pts.\u03bc\n  -- Symmetry breaking below critical point\n  symmetry_broken : \u2200 \u03bb > \u03bb_crit, \u2203 v : Fin n \u2192 \u211d, v \u2260 0 \u2227 \n    sorry -- Need: expectation value \u27e8\u03c6\u27e9 = v\n  -- Power law scaling near criticality\n  correlation_scaling : \u2200 \u03b5 > 0, \u2203 \u03bd > 0, \u2200 \u03bb, |\u03bb - \u03bb_crit| < \u03b5 \u2192 \n    sorry -- Need: correlation length \u03be ~ |\u03bb - \u03bb_crit|^(-\u03bd)\n\n/-- Main theorem: Phase transitions in thermodynamic and cosmic systems -/\ntheorem phase_transition_universality \n  (n m : \u2115) :\n  \u2203 (pts\u2081 : PhaseTransitionSpace n) (pts\u2082 : PhaseTransitionSpace m)\n    (cb\u2081 : CriticalBehavior pts\u2081) (cb\u2082 : CriticalBehavior pts\u2082),\n  -- Step 1: Symmetry groups exist (O(n) for magnetic, spatial for cosmic)\n  (\u2203 (G\u2081 G\u2082 : Type*) [Group G\u2081] [Group G\u2082], \n    pts\u2081.G = G\u2081 \u2227 pts\u2082.G = G\u2082) \u2227\n  -- Step 2: Order parameters transform non-trivially\n  (\u2200 g : pts\u2081.G, \u2203 \u03c9 : pts\u2081.\u03a9, pts\u2081.\u03c6 (g \u2022 \u03c9) \u2260 pts\u2081.\u03c6 \u03c9) \u2227\n  (\u2200 g : pts\u2082.G, \u2203 \u03c9 : pts\u2082.\u03a9, pts\u2082.\u03c6 (g \u2022 \u03c9) \u2260 pts\u2082.\u03c6 \u03c9) \u2227\n  -- Step 3: High temperature/early time symmetry\n  (\u2200 \u03bb < cb\u2081.\u03bb_crit, sorry) \u2227 -- Need: \u27e8\u03c6\u2081\u27e9 = 0\n  (\u2200 \u03bb < cb\u2082.\u03bb_crit, sorry) \u2227 -- Need: \u27e8\u03c6\u2082\u27e9 = 0\n  -- Step 4: Spontaneous symmetry breaking\n  (\u2200 \u03bb > cb\u2081.\u03bb_crit, sorry) \u2227 -- Need: Free energy minimization \u2192 \u27e8\u03c6\u2081\u27e9 \u2260 0\n  (\u2200 \u03bb > cb\u2082.\u03bb_crit, sorry) \u2227 -- Need: Free energy minimization \u2192 \u27e8\u03c6\u2082\u27e9 \u2260 0\n  -- Step 5: Quadratic expansion of fluctuations\n  sorry \u2227 -- Need: Landau-Ginzburg expansion \u03b4\u03c6\u1d62 = \u03c6\u1d62 - \u27e8\u03c6\u1d62\u27e9\n  -- Step 6: Correlation function scaling\n  sorry \u2227 -- Need: \u27e8\u03b4\u03c6\u1d62(x)\u03b4\u03c6\u1d62(y)\u27e9 ~ |x-y|^{-(d-2+\u03b7)}\n  -- Step 7: [Gap: Thermal-quantum connection]\n  sorry \u2227 -- Need: QFT in curved spacetime\n  -- Step 8: Microscopic to macroscopic amplification\n  sorry \u2227 -- Need: Mode coupling theory\n  -- Step 9: [Gap: Universality class mapping]\n  sorry -- Need: Non-equilibrium universality classification\n  := by\n  sorry",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the symmetry groups G\u2081 (e.g., O(n) for magnetic systems) and G\u2082 (spatial translations and rotations for cosmic fields)",
+      "justification": "Definition based on physical symmetries of the systems",
+      "dependencies": [
+        "Landau theory framework",
+        "Cosmological principle"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Construct order parameters \u03c6\u2081 (e.g., magnetization) and \u03c6\u2082 (density contrast \u03b4\u03c1/\u03c1) that transform non-trivially under G\u2081 and G\u2082",
+      "justification": "Order parameters must break the symmetry when non-zero",
+      "dependencies": [
+        "Step 1",
+        "Definition of order parameter"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Show that for high temperature T > Tc (matter) and early times t < t* (cosmos), \u27e8\u03c6\u1d62\u27e9 = 0 by symmetry",
+      "justification": "Gibbs measure is invariant under symmetry group when thermal/quantum fluctuations dominate",
+      "dependencies": [
+        "Step 2",
+        "Mermin-Wagner theorem for continuous symmetries"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "Demonstrate that below critical values (T < Tc or t > t*), minimization of free energy F[\u03c6] leads to \u27e8\u03c6\u1d62\u27e9 \u2260 0",
+      "justification": "Landau-Ginzburg free energy functional develops non-zero minima",
+      "dependencies": [
+        "Step 3",
+        "Landau theory of phase transitions"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Expand fluctuations \u03b4\u03c6\u1d62 = \u03c6\u1d62 - \u27e8\u03c6\u1d62\u27e9 to quadratic order near criticality",
+      "justification": "Near critical point, higher-order terms are suppressed by powers of |T - Tc|",
+      "dependencies": [
+        "Step 4",
+        "Gaussian approximation validity near critical point"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Derive correlation functions \u27e8\u03b4\u03c6\u1d62(x)\u03b4\u03c6\u1d62(y)\u27e9 \u223c |x-y|^{-(d-2+\u03b7)} with correlation length \u03be\u1d62 \u223c |\u03bb - \u03bb\u1d62*|^{-\u03bd}",
+      "justification": "Ornstein-Zernike theory and renormalization group analysis",
+      "dependencies": [
+        "Step 5",
+        "Wilson's renormalization group theory"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "[Gap: Rigorous connection between thermal fluctuations and quantum fluctuations in early universe]",
+      "justification": "Would require quantum field theory in curved spacetime",
+      "dependencies": [
+        "Quantum field theory in de Sitter space"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Show that in both cases, microscopic fluctuations with wavelength \u03bb < \u03be are amplified to macroscopic scales",
+      "justification": "Mode coupling and critical slowing down near transition",
+      "dependencies": [
+        "Step 6",
+        "Linear instability analysis"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "[Gap: Precise mapping between universality classes of matter transitions and cosmic structure formation]",
+      "justification": "Would require classification of non-equilibrium universality classes",
+      "dependencies": [
+        "Dynamic critical phenomena theory"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Landau Theory of Phase Transitions",
+      "authors": "L.D. Landau",
+      "year": "1937",
+      "field": "Statistical Physics",
+      "statement": "Near continuous phase transitions, free energy can be expanded in powers of order parameter with symmetry constraints",
+      "usage": "Provides framework for analyzing symmetry breaking in both systems"
+    },
+    {
+      "name": "Renormalization Group Theory",
+      "authors": "K.G. Wilson",
+      "year": "1971",
+      "field": "Statistical Physics",
+      "statement": "Critical phenomena exhibit universal scaling behavior independent of microscopic details",
+      "usage": "Justifies similar scaling laws in different physical systems"
+    },
+    {
+      "name": "Press-Schechter Formalism",
+      "authors": "W.H. Press, P. Schechter",
+      "year": "1974",
+      "field": "Astrophysics",
+      "statement": "Mass function of collapsed objects follows from Gaussian random field statistics",
+      "usage": "Connects density fluctuations to structure formation"
+    },
+    {
+      "name": "Cosmological Perturbation Theory",
+      "authors": "J.M. Bardeen",
+      "year": "1980",
+      "field": "Cosmology",
+      "statement": "Linear perturbations in FRW universe evolve according to coupled differential equations",
+      "usage": "Describes growth of cosmic density fluctuations"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Thermodynamic systems can be modeled as statistical ensembles on probability spaces",
+    "Cosmic density fields can be treated as random fields on probability spaces",
+    "Both systems possess well-defined symmetry groups acting on their configuration spaces",
+    "Order parameters exist that characterize the degree of symmetry breaking",
+    "Both systems undergo continuous phase transitions (not first-order)",
+    "Fluctuations can be linearized near the critical point",
+    "The renormalization group framework applies to both systems",
+    "Cosmic structure formation can be treated in the Newtonian approximation for relevant scales",
+    "Initial cosmic fluctuations are Gaussian random fields",
+    "Both systems are in or near thermal equilibrium at the relevant scales"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.5,
+    "gaps": [],
+    "overall_assessment": "Validation failed"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish a formal analogy between thermodynamic phase transitions and cosmic structure formation, but fails to prove the existence of the required probability spaces, symmetry groups, and critical parameters with the claimed properties.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Existence of well-defined probability measures on infinite-dimensional configuration spaces",
+      "Measurability of order parameter functions with respect to the sigma-algebras",
+      "Existence and uniqueness of Gibbs measures for the thermodynamic system",
+      "Validity of mean-field approximations in the cosmic case",
+      "Existence of a well-defined notion of 'thermal equilibrium' for cosmic density fields",
+      "Applicability of equilibrium statistical mechanics to non-equilibrium cosmic evolution",
+      "Convergence of the Landau-Ginzburg expansion",
+      "Validity of the Ornstein-Zernike approximation",
+      "Existence of a renormalization group fixed point",
+      "Measurability and integrability conditions for correlation functions"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "3",
+        "issue": "Claims symmetry implies \u27e8\u03c6\u1d62\u27e9 = 0 without proving the measures are actually G-invariant or that the order parameters are measurable"
+      },
+      {
+        "step": "4",
+        "issue": "Assumes existence of a free energy functional without establishing its mathematical properties or proving it has the claimed minima"
+      },
+      {
+        "step": "6",
+        "issue": "Derives specific scaling forms without proving the correlation functions exist or that renormalization group analysis applies"
+      },
+      {
+        "step": "8",
+        "issue": "Claims amplification of fluctuations without rigorous definition of 'amplification' or proof of the mechanism"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Steps 7 and 9 explicitly acknowledge gaps in connecting thermal and quantum fluctuations and mapping universality classes",
+      "No construction or proof of existence of the probability spaces (\u03a9\u2081, \u2131\u2081, \u03bc\u2081) and (\u03a9\u2082, \u2131\u2082, \u03bc\u2082)",
+      "No proof that the symmetry groups G\u2081 and G\u2082 actually act measurably on the probability spaces",
+      "No verification that the order parameters \u03c6\u2081 and \u03c6\u2082 are measurable functions",
+      "No proof of existence or uniqueness of critical parameters \u03bb\u2081* and \u03bb\u2082*",
+      "Missing rigorous treatment of infinite-dimensional aspects of the problem",
+      "No proof that the claimed phase transitions actually occur"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof treats cosmic density fluctuations as undergoing 'spontaneous symmetry breaking' similar to thermal phase transitions, but existing proof [0c1797de78e2] establishes that cosmic structure formation is driven by gravitational instability of initially small perturbations, not symmetry breaking",
+      "The claim that cosmic fluctuations satisfy power-law scaling with divergent correlation lengths contradicts the established understanding that cosmic structure formation involves hierarchical clustering with finite correlation lengths determined by the matter power spectrum",
+      "The analogy between thermal equilibrium in matter and cosmic structure formation is fundamentally flawed - cosmic structure formation occurs in an expanding universe far from thermal equilibrium"
+    ],
+    "assumption_conflicts": [
+      "Assumption that 'cosmic structure formation can be treated in the Newtonian approximation' conflicts with proof [0c1797de78e2] which requires general relativistic treatment for cosmological scales",
+      "Assumption that cosmic systems are 'in or near thermal equilibrium' directly contradicts proof [0e664bd264b4] which shows structure formation occurs through gravitational instabilities in non-equilibrium conditions",
+      "The assumption of continuous phase transitions in cosmic structure formation has no physical basis and conflicts with the established gravitational collapse paradigm"
+    ],
+    "beneficial_connections": [
+      "The general framework of symmetry breaking connects to proof [0178ff46c5ee] for the thermodynamic portion of the argument",
+      "The mathematical treatment of fluctuations and correlation functions aligns with proof [087da119976b] for pattern formation",
+      "The multi-scale approach has conceptual overlap with proof [052632f8abba] regarding microscopic-macroscopic connections"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof contains fundamental conceptual errors in applying thermal phase transition concepts to cosmological structure formation. The identified gaps are not minor technical issues but represent fundamental misunderstandings of cosmic evolution. The thermodynamic portion may be salvageable, but the cosmic analogy is scientifically unsound."
+  },
+  "confidence_score": 0.30500000000000005,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.5,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.5,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous mathematical framework connecting equilibrium statistical mechanics phase transitions to non-equilibrium cosmological structure formation. This would require: (1) Extension of renormalization group to far-from-equilibrium systems, (2) Rigorous treatment of quantum-to-classical transition in inflationary cosmology, (3) Mathematical theory of emergent symmetry breaking in gravitational systems",
+  "limitations": [
+    "Rigorous connection between thermal and quantum fluctuations",
+    "Precise mapping between universality classes",
+    "Treatment of non-equilibrium aspects of cosmic evolution",
+    "Mathematical justification for treating gravity as emergent symmetry breaking",
+    "Assumes linearization is valid near critical points",
+    "Neglects backreaction effects in cosmic structure formation",
+    "Does not account for dark energy effects on large scales",
+    "Equilibrium approximation may not hold for all cosmic epochs",
+    "Proof sketch rather than complete rigorous proof"
+  ],
+  "source_convergence": {
+    "structural_claim": "Phase transitions in matter and cosmic structure formation both emerge from symmetry-breaking events where microscopic fluctuations are amplified into macroscopic organization",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Landau Theory of Phase Transitions",
+        "domain_id": "field_a",
+        "domain_name": "Thermodynamics and Statistical Mechanics",
+        "link_type": "direct",
+        "structural_conclusion": "Phase transitions represent symmetry-breaking events where order parameters emerge"
+      },
+      {
+        "result_id": "",
+        "result_name": "Cosmic Microwave Background Anisotropies",
+        "domain_id": "field_b",
+        "domain_name": "Astrophysics",
+        "link_type": "direct",
+        "structural_conclusion": "Large-scale structure originated from quantum fluctuations in the early universe"
+      },
+      {
+        "result_id": "",
+        "result_name": "Press-Schechter Formalism",
+        "domain_id": "field_b",
+        "domain_name": "Astrophysics",
+        "link_type": "direct",
+        "structural_conclusion": "Cosmic structure forms through gravitational collapse of density peaks in a Gaussian random field"
+      }
+    ],
+    "domains": [
+      "thermodynamics",
+      "astrophysics"
+    ],
+    "domain_names": [
+      "Thermodynamics and Statistical Mechanics",
+      "Astrophysics"
+    ],
+    "ea_scores": {
+      "strength": 0.21419999999999997,
+      "independence": 0.75,
+      "adversarial": 0.09,
+      "reproducibility": 0.5249999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.44850999999999996,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:05:51.776285+00:00",
+    "id": "d6aa6b8cf93a"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.31545
+  }
+}
