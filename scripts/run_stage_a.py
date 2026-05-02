@@ -380,7 +380,28 @@ def run_synthesis(convergences: list[dict], findings: list[dict],
     # Track which convergences end up in final papers
     final_covered_ids = set()
 
+    # ─── RESUME SUPPORT ───
+    # Scan existing papers to find already-completed convergence IDs.
+    # If a bundle's convergences are fully covered, skip it on restart.
+    existing_papers = store.list_papers()
+    already_covered_ids = set()
+    for ep in existing_papers:
+        already_covered_ids.update(ep.convergence_ids)
+    if already_covered_ids:
+        log(f"\n  Resume: found {len(existing_papers)} existing papers covering "
+            f"{len(already_covered_ids)} convergences", log_file)
+    skipped = 0
+
     for i, bundle in enumerate(bundles):
+        # Check if this bundle is already fully covered by existing papers
+        bundle_conv_ids = {c.get("id", "") for c in bundle.convergences}
+        if bundle_conv_ids and bundle_conv_ids.issubset(already_covered_ids):
+            skipped += 1
+            final_covered_ids.update(bundle_conv_ids)
+            log(f"\n  [{i+1}/{len(bundles)}] SKIP (already completed) — "
+                f"{len(bundle.convergences)} convergences", log_file)
+            continue
+
         log(f"\n  [{i+1}/{len(bundles)}] Paper — {len(bundle.convergences)} convergences, "
             f"{len(bundle.proofs)} proofs", log_file)
 
@@ -446,6 +467,11 @@ def run_synthesis(convergences: list[dict], findings: list[dict],
     stats["completed_at"] = now_iso()
     stats["total_cost"] = api.stats.cost_usd
     stats["total_calls"] = api.stats.calls
+    stats["skipped_existing"] = skipped
+
+    if skipped:
+        log(f"\n  Resume summary: {skipped} papers skipped (already done), "
+            f"{stats['completed']} new papers composed this run", log_file)
 
     # ─── FINAL COMPLETENESS CHECK ───
     all_input_ids = {c.get("id", "") for c in convergences}
