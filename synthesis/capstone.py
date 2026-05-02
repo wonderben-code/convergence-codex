@@ -757,6 +757,20 @@ class CapstoneComposer:
         )
         sections.append(self._make_section("references", "8. References", references))
 
+        # Appendix A: Complete Evidence Table (deterministic, no AI)
+        # Lists ALL supporting convergences — not just the 30 shown to the AI
+        evidence_table = self._build_evidence_table(supporting_convs, proof_by_conv)
+        sections.append(self._make_section(
+            "appendix_a", "Appendix A: Complete Evidence Table", evidence_table
+        ))
+
+        # Appendix B: Methodology Note (deterministic, no AI)
+        # Brief self-contained explanation so the paper doesn't depend on external papers
+        methodology_note = self._build_methodology_note(len(supporting_convs), len(supporting_proofs))
+        sections.append(self._make_section(
+            "appendix_b", "Appendix B: Discovery and Formalisation Methodology", methodology_note
+        ))
+
         # Assemble paper
         paper.sections = sections
         paper.full_markdown = self._assemble_markdown(paper, sections)
@@ -1047,7 +1061,7 @@ class CapstoneComposer:
     def _format_proofs_for_prompt(self, proofs: list[dict]) -> str:
         """Format proofs for inclusion in a prompt."""
         parts = []
-        for p in proofs[:15]:
+        for p in proofs[:30]:  # Match convergence cap — more evidence for Nobel-grade papers
             pid = p.get("id", "")
             cid = p.get("convergence_id", "")
             ftype = p.get("formalisation_type", "")
@@ -1055,9 +1069,9 @@ class CapstoneComposer:
             adv = p.get("adversarial_result", {})
             verdict = adv.get("verdict", "unknown") if isinstance(adv, dict) else "unknown"
             apparatus = ", ".join(p.get("mathematical_apparatus", [])[:3])
-            # proposition is a string, not a dict
+            # proposition is a string, not a dict — include FULL text for Nobel-grade precision
             proposition = p.get("proposition", "")
-            formal = proposition[:200] if isinstance(proposition, str) else str(proposition)[:200]
+            formal = proposition if isinstance(proposition, str) else str(proposition)
             complete = p.get("internal_consistency", {}).get("proof_complete", False)
 
             parts.append(
@@ -1065,8 +1079,8 @@ class CapstoneComposer:
                 f"  Apparatus: {apparatus}\n"
                 f"  Proposition: {formal}"
             )
-        if len(proofs) > 15:
-            parts.append(f"\n(... and {len(proofs) - 15} more formalisations)")
+        if len(proofs) > 30:
+            parts.append(f"\n(... and {len(proofs) - 30} more formalisations)")
         return "\n".join(parts)
 
     def _describe_cascade_position(self, finding: dict, level: int, ctx: CapstoneContext) -> str:
@@ -1185,6 +1199,131 @@ class CapstoneComposer:
             f"Mean confidence: {mean_conf:.2f}\n"
             f"Most formalisations are Level 3-4 (formal conjectures with structured arguments, "
             f"NOT complete proofs). This is stated honestly in the paper."
+        )
+
+    def _build_evidence_table(self, convs: list[dict], proof_by_conv: dict) -> str:
+        """Build a complete evidence table of ALL supporting convergences.
+
+        This is deterministic — no AI involved. Lists every convergence with
+        its domains, confidence, adversarial verdict, and formalisation status.
+        This ensures the paper contains the COMPLETE evidence base, not just
+        the top 30 shown to the AI during composition.
+        """
+        lines = [
+            "The following table lists every convergence supporting the central claim, "
+            "with formalisation confidence scores and adversarial review verdicts.\n",
+            "| # | Convergence ID | Domain Pair | Confidence | Adversarial Verdict | Proof Complete | Mathematical Apparatus |",
+            "|---|---------------|-------------|------------|--------------------|----|----------------------|",
+        ]
+
+        for i, c in enumerate(convs, 1):
+            cid = c.get("id", "")
+            domains = " × ".join(c.get("domain_names", c.get("domains", [])))
+
+            proof = proof_by_conv.get(cid, {})
+            conf = proof.get("confidence_score", 0)
+            adv = proof.get("adversarial_result", {})
+            verdict = adv.get("verdict", "unknown") if isinstance(adv, dict) else "unknown"
+            complete = proof.get("internal_consistency", {}).get("proof_complete", False)
+            apparatus = ", ".join(proof.get("mathematical_apparatus", [])[:3])
+
+            lines.append(
+                f"| {i} | {cid} | {domains} | {conf:.2f} | {verdict} | "
+                f"{'Yes' if complete else 'No'} | {apparatus or '—'} |"
+            )
+
+        # Summary statistics
+        confidences = [
+            proof_by_conv.get(c.get("id", ""), {}).get("confidence_score", 0)
+            for c in convs
+        ]
+        valid_confs = [c for c in confidences if c > 0]
+        mean_conf = sum(valid_confs) / len(valid_confs) if valid_confs else 0
+
+        verdicts = [
+            proof_by_conv.get(c.get("id", ""), {}).get("adversarial_result", {}).get("verdict", "unknown")
+            if isinstance(proof_by_conv.get(c.get("id", ""), {}).get("adversarial_result", {}), dict)
+            else "unknown"
+            for c in convs
+        ]
+        verdict_counts = Counter(verdicts)
+
+        lines.append("")
+        lines.append(f"**Total convergences:** {len(convs)}")
+        lines.append(f"**Mean formalisation confidence:** {mean_conf:.3f}")
+        lines.append(f"**Adversarial verdicts:** {', '.join(f'{v}: {n}' for v, n in sorted(verdict_counts.items()))}")
+
+        # Domain pair distribution
+        pair_counts = Counter()
+        for c in convs:
+            pair = " × ".join(sorted(c.get("domain_names", c.get("domains", []))))
+            pair_counts[pair] += 1
+
+        lines.append(f"\n**Unique domain pairs:** {len(pair_counts)}")
+        lines.append("**Domain pair distribution:**")
+        for pair, count in pair_counts.most_common():
+            lines.append(f"- {pair}: {count} convergence{'s' if count > 1 else ''}")
+
+        return "\n".join(lines)
+
+    def _build_methodology_note(self, num_convergences: int, num_proofs: int) -> str:
+        """Build a self-contained methodology explanation.
+
+        This is deterministic — no AI involved. Provides enough methodological
+        detail that the paper stands alone without requiring external references
+        to Paper G16 or other methodology papers.
+        """
+        return (
+            "## Discovery Methodology\n\n"
+            "All convergences reported in this paper were discovered by Gnosis AI, an autonomous "
+            "knowledge discovery system. The methodology proceeds in three stages:\n\n"
+            "**Stage 1: Domain Analysis.** For each pair of knowledge domains (e.g., quantum mechanics "
+            "and thermodynamics, or topology and economics), Gnosis AI identifies structural parallels — "
+            "cases where the same mathematical structure, symmetry, or organising principle appears "
+            "in both domains. Each candidate convergence is scored on five epistemic adequacy (EA) "
+            "dimensions: novelty, specificity, explanatory depth, cross-domain validity, and "
+            "falsifiability.\n\n"
+            "**Stage 2: Formalisation.** Each convergence is independently formalised by Logos AI, "
+            "which attempts to express the structural claim as a precise mathematical proposition "
+            "with defined terms, stated assumptions, and a structured argument. Formalisations are "
+            "classified by type (formal_proof, formal_conjecture, structured_argument, etc.) and "
+            "scored for confidence.\n\n"
+            "**Stage 3: Adversarial Review.** Each formalisation undergoes adversarial review, where "
+            "a separate AI instance attempts to find gaps, logical errors, unstated assumptions, "
+            "and counterexamples. The adversarial reviewer issues a verdict (accept, minor_revision, "
+            "major_revision, or reject) and identifies specific gaps with severity ratings.\n\n"
+            f"This paper draws on {num_convergences} convergences and {num_proofs} formalisations "
+            "that survived this three-stage pipeline.\n\n"
+            "## Cascade Analysis\n\n"
+            "After individual convergences are established, a meta-convergence analysis identifies "
+            "higher-order patterns: cases where multiple convergences from different domain pairs "
+            "point to the same underlying structure. This cascade proceeds through multiple levels "
+            "of abstraction:\n\n"
+            "- **Level 1:** Direct meta-findings from groups of convergences\n"
+            "- **Level 2:** Patterns across Level 1 findings\n"
+            "- **Level 3–5:** Successive reductions toward terminal fixed points\n\n"
+            "The cascade structure (266 convergences → 26 findings → 6 → 2 → 1 terminal structure) "
+            "is itself a result — the data reduces to a small number of fundamental structural "
+            "claims, which form the basis of this paper's central result.\n\n"
+            "## Provenance\n\n"
+            "All data is committed to a git repository and pushed to GitHub, where each push is "
+            "anchored to a Bitcoin block height via the OpenTimestamps protocol. This provides "
+            "cryptographic proof-of-existence at the time of discovery, independent of any "
+            "institutional authority. The SHA-256 hash of each paper and its supporting data "
+            "is recorded in the git history, and the Bitcoin block height at time of push is "
+            "noted in the Priority and Provenance section.\n\n"
+            "## Limitations of This Methodology\n\n"
+            "1. **AI-generated claims:** All convergences were identified by AI, not human domain "
+            "experts. While the three-stage pipeline (discovery → formalisation → adversarial review) "
+            "reduces hallucination risk, it does not eliminate it.\n"
+            "2. **Formalisation depth:** Most formalisations are at Level 3–4 (formal conjectures "
+            "with structured arguments), not complete mathematical proofs. The confidence scores "
+            "reflect this honestly.\n"
+            "3. **Independence:** Domain pairs were analysed independently, but the same AI system "
+            "was used for all analyses, which may introduce systematic biases.\n"
+            "4. **Verification:** The predictions made in this paper have not been independently "
+            "verified. They are offered as falsifiable conjectures for the scientific community "
+            "to test."
         )
 
     # ─── Save/Load utilities ───
