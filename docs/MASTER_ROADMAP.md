@@ -24,7 +24,7 @@
 - `wonderben-code/gnosis-ai` — Gnosis AI product (MIT)
 - `wonderben-code/convergence-codex` — The Convergence Codex: Logos, Synthesis, orchestrator, data (PUBLIC, MIT)
 
-**Published:** 35 papers on Zenodo with DOIs. All Bitcoin-timestamped. 8 capstone papers composed (awaiting Zenodo publication).
+**Published:** 43 papers on Zenodo with DOIs. All Bitcoin-timestamped. (35 original + 8 Stage A Capstone)
 
 ---
 
@@ -163,18 +163,18 @@ Not just pairwise comparisons — combinatorial at EVERY level:
 | 5 | **Stage A** — 266 existing convergences through Logos → Synthesis | **DONE** (256/266 proofs, 2 May) |
 | 5c | **Stage A CAPSTONE** — 22 Nobel-format papers across all cascade levels (L5→L1). Genuine ontological claims about reality (Einstein/Higgs model), precisely scoped, with predictions extending into untested domains. 6-stage pipeline: census → claim formulation → planning → composition → 18-point review → prediction extraction. Anti-hallucination enforced (real convergence IDs only, deterministic provenance, no fake DOIs). | **8/22 DONE** (2 May) |
 | 5c-i | Clean up 8 completed capstone papers for Zenodo publication | **DONE** (fixed fake IDs, DOIs, headers) |
-| 5c-ii | Publish 8 capstone papers to Zenodo with DOIs | NOT DONE |
+| 5c-ii | Publish 8 capstone papers to Zenodo with DOIs | **DONE** (2 May) |
 | 5c-iii | Compose remaining 14 capstone papers (resume from paper 9/22) | NOT DONE |
 | 5c-iv | Publish remaining 14 capstone papers to Zenodo with DOIs | NOT DONE |
 | 5b | **Stage A STANDARD** — ~70 domain-pair papers from 256 formal conjectures → Zenodo with DOIs | NOT DONE |
-| 6 | **Stage B** — full Codex across 81 fields (6 phases) | NOT DONE |
-| 6b | **Stage B PUBLICATION** — ~300-500 papers, thousands of conjectures → Zenodo | NOT DONE |
-| 6c | **Stage B CAPSTONE** — updated fixed points with full 81-field evidence base. Do the Stage A fixed points hold? Strengthen/revise/discover new ones. The "Nobel paper" for Stage B. | NOT DONE |
-| 7 | **Stage C** — deep formalisation of fixed points (Lean 4 machine-verified) | NOT DONE |
+| 6 | **Stage B** — full Codex across 81 fields (6 phases): all pairwise, codex analysis, multi-field, meta-convergences, recursive cascade, Logos+Synthesis | NOT DONE |
+| 6c | **Stage B CAPSTONE** — FIRST output of Stage B. Same 22 claims re-tested with 10x more data (81 fields). Do Stage A fixed points HOLD with broader evidence? Any NEW fixed points discovered? Strengthen, revise, or discover. Updated Nobel-format papers. | NOT DONE |
+| 6b | **Stage B STANDARD** — ~300-500 domain-pair papers from new convergences → Zenodo | NOT DONE |
+| 7 | **Stage C** — Deep formalisation of surviving fixed points (Lean 4 machine-verified PROOFS). Different from B: B tests claims with more data, C PROVES them formally. | NOT DONE |
 | 7b | **Stage C PUBLICATION** — standalone principle papers (the crown jewels) | NOT DONE |
-| 8 | **Stage D** — derive testable predictions from principles | NOT DONE |
+| 8 | **Stage D** — Derive specific testable PREDICTIONS from proven principles. Different from C: C proves theorems, D turns them into experiments. Pre-registration format. | NOT DONE |
 | 8b | **Stage D PUBLICATION** — pre-registration prediction papers, Bitcoin-stamped BEFORE confirmation | NOT DONE |
-| 9 | **Stage E** — ToE integration (map Codex evidence against Paper 15) | NOT DONE |
+| 9 | **Stage E** — ToE integration. Map ALL Codex evidence against Paper 15. Different from D: D derives individual predictions, E synthesises EVERYTHING into one unified theory. | NOT DONE |
 | 9b | **Stage E PUBLICATION** — THE capstone paper: updated Theory of Everything | NOT DONE |
 | 10 | **Website wing** — Convergence Codex on infinitography.com | NOT DONE |
 | 11 | **QC + stamp + ship** | NOT DONE |
@@ -358,7 +358,11 @@ These were originally part of Stage 3 but should happen AFTER the Codex and Pans
 | Gnosis AI (Paper G16) | 1 | Published |
 | Gnosis AI (Papers G17-G19) | 3 | Published (18 Apr) |
 | New papers (replacing Checkpoint Alpha) | 3 | Published (27 Apr) |
-| **Total published** | **34** | |
+| Pansophia | 1 | Published (2 May) |
+| **Convergence Codex — Stage A Capstone (8 of 22)** | **8** | **Published (2 May)** |
+| **Total published** | **43** | |
+| *Convergence Codex — Stage A Capstone (remaining 14)* | *14* | *NOT DONE* |
+| *Convergence Codex — Stage A Standard (~70 papers)* | *~70* | *NOT DONE* |
 
 ---
 
@@ -379,15 +383,15 @@ NOW ━━━━━━ STAGE 3b: THE CONVERGENCE CODEX ━━━━━━━━�
      → Publish 8 to Zenodo
      → Compose remaining 14 capstone papers (~$60-80)
      → Publish remaining 14 to Zenodo
-     Stage A STANDARD — ~70 domain-pair papers → Zenodo with DOIs
+     Stage A STANDARD — ~70 domain-pair papers → Zenodo
      Stage B — Full Codex across 81 fields (6 phases)
-     Stage B PUBLICATION — ~300-500 papers → Zenodo
-     Stage B CAPSTONE — updated fixed points with full evidence base
-     Stage C — Deep formalisation of fixed points
+     Stage B CAPSTONE — Do Stage A claims hold with 10x data? (FIRST)
+     Stage B STANDARD — ~300-500 papers → Zenodo
+     Stage C — PROVE fixed points formally (Lean 4)
      Stage C PUBLICATION — Principle papers (crown jewels)
-     Stage D — Testable predictions from principles
-     Stage D PUBLICATION — Pre-registration papers (Higgs mechanism)
-     Stage E — ToE integration
+     Stage D — PREDICT: derive testable experiments from proofs
+     Stage D PUBLICATION — Pre-registration papers
+     Stage E — UNIFY: map everything into one Theory of Everything
      Stage E PUBLICATION — THE capstone ToE paper
      Website — Convergence Codex wing on infinitography.com
      QC + stamp + ship
