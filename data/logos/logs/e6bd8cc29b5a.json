@@ -1,0 +1,38 @@
+{
+  "proof_id": "e6bd8cc29b5a",
+  "timestamp": "2026-05-02T13:52:40.061781+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "categorical - One could try to capture this via a universal property of 'active media', but the convergence is more about shared principles than universal characterizations"
+      ],
+      "reasoning": "The convergence identifies a shared abstract principle across different physical domains: that the vacuum possesses active properties that influence physical processes. This is best captured by axiomatizing the notion of an 'active vacuum' and showing that quantum field theory in particle physics and quantum optics both satisfy these axioms."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Functional analysis, Differential geometry, Measure theory",
+      "alternatives_considered": [],
+      "reasoning": "Functional analysis provides the rigorous framework for quantum field operators and vacuum states as elements of Hilbert spaces. Differential geometry captures the manifold structure of spacetime where these fields live. Measure theory formalizes the probabilistic aspects of vacuum fluctuations and path integrals."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof establishes that vacuum expectation values are non-zero for fundamental fields (Higgs), that vacuum fluctuations modify physical processes (Purcell effect), and that all scattering amplitudes depend on vacuum structure through the LSZ formula. This demonstrates the vacuum actively shapes physical processes rather than being empty.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 8 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3658 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 4822 chars, 17 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This formalization captures the mathematical structure of the proposition but cannot implement the physics content due to the absence of QFT foundations in Mathlib. The code defines the basic types (Lorentzian manifold, observable algebra, vacuum state, field operators) and states each proof step as a lemma, but all physics-specific content must be marked as sorry."
+    }
+  ]
+}

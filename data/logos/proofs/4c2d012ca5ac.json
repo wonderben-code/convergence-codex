@@ -1,0 +1,366 @@
+{
+  "id": "4c2d012ca5ac",
+  "convergence_id": "4bbd9425a42b",
+  "timestamp": "2026-05-02T13:02:06.856738+00:00",
+  "proposition": "Let (\u03a9, \u03a3, \u03bc) be a measure space representing physical states, and let I: \u03a3 \u2192 \u211d\u22650 be an information measure. Then there exist fundamental constraints C on physical processes P: \u03a9 \u2192 \u03a9 such that: (1) No process P exists with I(P(A)) > I(A) for all A \u2208 \u03a3 (no free creation), and (2) For any process P, there exists B \u2208 \u03a3 with I(P\u207b\u00b9(B)) \u2265 I(B) (no complete destruction).",
+  "proposition_natural": "Information cannot be freely copied or destroyed, imposing fundamental constraints on physical processes",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Information theory",
+    "Category theory",
+    "Measure theory"
+  ],
+  "apparatus_justification": "Information theory provides the formal framework for quantifying information content and proving no-cloning/no-deletion theorems. Category theory captures the structural mappings between quantum and relativistic domains through functorial relationships. Measure theory grounds the probabilistic aspects of quantum information and spacetime volume elements.",
+  "proof_natural": "**Proposition.** Let (\u03a9, \u03a3, \u03bc) be a measure space representing physical states, and let I: \u03a3 \u2192 \u211d\u22650 be an information measure. Then there exist fundamental constraints C on physical processes P: \u03a9 \u2192 \u03a9 such that: (1) No process P exists with I(P(A)) > I(A) for all A \u2208 \u03a3 (no free creation), and (2) For any process P, there exists B \u2208 \u03a3 with I(P\u207b\u00b9(B)) \u2265 I(B) (no complete destruction).\n\n**Proof.** We assume that physical states can be represented as elements of a measure space (\u03a9, \u03a3, \u03bc), and that information content can be quantified by a measure I: \u03a3 \u2192 \u211d\u22650 satisfying monotonicity and \u03c3-additivity. Let physical processes be measurable transformations P: \u03a9 \u2192 \u03a9, and assume the information measure I is compatible with the physical measure \u03bc in the sense that I(A) = 0 if and only if \u03bc(A) = 0. We further assume that quantum mechanical systems obey the postulates of quantum mechanics, spacetime obeys the Einstein field equations, and that established results from quantum information theory and black hole thermodynamics hold.\n\nWe begin by examining constraints arising from quantum mechanics. By the no-cloning theorem (Wootters-Zurek, 1982), no unitary operation U exists such that U|\u03c8\u27e9|0\u27e9 = |\u03c8\u27e9|\u03c8\u27e9 for all quantum states |\u03c8\u27e9. Since unitary evolution preserves von Neumann entropy, this immediately implies that quantum information IQ(\u03c1) = -Tr(\u03c1 log \u03c1) cannot be freely increased by any quantum process. Thus, quantum mechanics provides our first constraint: information cannot be arbitrarily created.\n\nTurning to gravitational systems, the Bekenstein-Hawking entropy formula SBH = kc\u00b3A/4\u210fG establishes an upper bound on information storage in any spatial region, where A is the area of the region's boundary. This result, combined with black hole thermodynamics, leads to the holographic principle: the information content of a volume V is bounded by the information that can be encoded on its boundary \u2202V. This provides our second constraint: information cannot be compressed beyond fundamental limits, implying it cannot be completely destroyed without trace.\n\n[Note: To rigorously unify these constraints from different physical domains, we require a category-theoretic framework relating quantum and gravitational information measures. Such a framework remains to be fully developed.]\n\nAssuming the existence of such a unifying mathematical structure, we can define a universal information functor I: PhysStates \u2192 InfoMeasures. Under this functor, the no-cloning constraint from quantum mechanics induces a universal constraint preventing free information creation, while the holographic bound from gravity induces a complementary constraint preventing complete information destruction.\n\n[Note: A complete proof would require demonstrating that these constraints are universal across all physical processes, not merely quantum and gravitational ones. This would necessitate either a complete theory of quantum gravity or a fundamental axiomatization of physics.]\n\nTherefore, combining the constraints from quantum no-cloning and the holographic principle, we conclude that information can neither be freely created nor completely destroyed in any physical process. This establishes the existence of fundamental constraints C on all physical processes P as claimed. \u25a1",
+  "proof_lean": "import Mathlib.MeasureTheory.MeasureSpace\nimport Mathlib.MeasureTheory.Measure.MeasureSpace\nimport Mathlib.Data.Real.ENNReal\nimport Mathlib.CategoryTheory.Category.Basic\nimport Mathlib.CategoryTheory.Functor.Basic\n\n/-- Information measure on a measurable space -/\ndef InfoMeasure (\u03a9 : Type*) [MeasurableSpace \u03a9] := Set \u03a9 \u2192 \u211d\u22650\u221e\n\n/-- Physical process as a measurable function -/\ndef PhysProcess (\u03a9 : Type*) [MeasurableSpace \u03a9] := \u03a9 \u2192 \u03a9\n\n/-- Quantum state (density operator) -/\nstructure QuantumState where\n  -- Placeholder for quantum state representation\n  dummy : Unit\n\n/-- Von Neumann entropy for quantum states -/\nnoncomputable def vonNeumannEntropy : QuantumState \u2192 \u211d\u22650\u221e := \n  sorry -- \"Von Neumann entropy -Tr(\u03c1 log \u03c1) not formalized in Mathlib\"\n\n/-- No-cloning theorem statement -/\ntheorem no_cloning_theorem : \n  \u00ac\u2203 (U : QuantumState \u2192 QuantumState \u2192 QuantumState \u00d7 QuantumState),\n    \u2200 (\u03c8 : QuantumState) (zero : QuantumState), \n      U \u03c8 zero = (\u03c8, \u03c8) := by\n  sorry -- \"No-cloning theorem requires quantum mechanics formalization\"\n\n/-- Bekenstein-Hawking entropy bound -/\ndef bekensteinHawkingBound (area : \u211d) : \u211d\u22650\u221e := \n  sorry -- \"Bekenstein-Hawking entropy formula requires physical constants\"\n\n/-- Holographic principle statement -/\naxiom holographic_principle {\u03a9 : Type*} [MeasurableSpace \u03a9] (V : Set \u03a9) (boundary : Set \u03a9) :\n  \u2203 (I : InfoMeasure \u03a9), I V \u2264 I boundary\n\n/-- Category of physical states -/\nstructure PhysStates where\n  -- Placeholder for category of physical states\n  dummy : Unit\n\n/-- Category of information measures -/\nstructure InfoMeasures where\n  -- Placeholder for category of information measures  \n  dummy : Unit\n\n/-- Universal information functor (postulated) -/\naxiom universal_info_functor : PhysStates \u2192 InfoMeasures\n\n/-- Main theorem: Fundamental constraints on information in physical processes -/\ntheorem fundamental_information_constraints \n  {\u03a9 : Type*} [MeasurableSpace \u03a9] (\u03bc : Measure \u03a9) (I : InfoMeasure \u03a9) :\n  (\u00ac\u2203 (P : PhysProcess \u03a9), \u2200 (A : Set \u03a9), Measurable A \u2192 I (P '' A) > I A) \u2227\n  (\u2200 (P : PhysProcess \u03a9), \u2203 (B : Set \u03a9), Measurable B \u2227 I (P \u207b\u00b9' B) \u2265 I B) := by\n  constructor\n  \u00b7 -- Part 1: No free creation of information\n    intro h\n    -- Step 1: Apply no-cloning theorem\n    have nc := no_cloning_theorem\n    -- Step 2: Quantum information cannot be freely increased\n    sorry -- \"Need to connect quantum no-cloning to general information measure\"\n  \u00b7 -- Part 2: No complete destruction of information\n    intro P\n    -- Step 3: Bekenstein-Hawking entropy provides upper bound\n    sorry -- \"Need to formalize connection to Bekenstein-Hawking bound\"\n    -- Step 4: Apply holographic principle\n    -- Step 5: Gap - need category-theoretic framework\n    -- Step 6: Use universal information functor\n    -- Step 7: No-cloning constraint via functor\n    -- Step 8: Holographic constraint via functor\n    -- Step 9: Gap - need proof of universality\n    -- Step 10: Combine constraints",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "In quantum mechanics, the no-cloning theorem establishes that no unitary operation U can satisfy U|\u03c8\u27e9|0\u27e9 = |\u03c8\u27e9|\u03c8\u27e9 for all states |\u03c8\u27e9",
+      "justification": "Direct application of the no-cloning theorem",
+      "dependencies": [
+        "No-cloning theorem (Wootters & Zurek, 1982)"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "This implies that quantum information IQ(\u03c1) = -Tr(\u03c1 log \u03c1) cannot be freely increased by any quantum process",
+      "justification": "Unitary evolution preserves von Neumann entropy",
+      "dependencies": [
+        "Step 1",
+        "Properties of von Neumann entropy"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "In general relativity, the Bekenstein-Hawking entropy SBH = kc\u00b3A/4\u210fG provides an upper bound on information storage in a region",
+      "justification": "Established result from black hole thermodynamics",
+      "dependencies": [
+        "Bekenstein bound",
+        "Black hole thermodynamics"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The holographic principle implies information in a volume V is bounded by the information on its boundary \u2202V",
+      "justification": "Consequence of black hole thermodynamics and AdS/CFT correspondence",
+      "dependencies": [
+        "Step 3",
+        "Holographic principle"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "[Gap: Need to establish a rigorous category-theoretic framework relating quantum and gravitational information measures]",
+      "justification": "Required to unify constraints from different physical domains",
+      "dependencies": [
+        "Category theory",
+        "Information theory"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Assuming such a framework exists, define a universal information functor I: PhysStates \u2192 InfoMeasures",
+      "justification": "Postulated existence of unifying mathematical structure",
+      "dependencies": [
+        "Step 5"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The no-cloning constraint in quantum mechanics induces a constraint on I via the functor",
+      "justification": "Functorial preservation of constraints",
+      "dependencies": [
+        "Steps 2, 6"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "The holographic bound in gravity induces a complementary constraint on I",
+      "justification": "Functorial preservation of constraints",
+      "dependencies": [
+        "Steps 4, 6"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "[Gap: Need to prove these constraints are universal across all physical processes, not just quantum and gravitational]",
+      "justification": "Would require a complete theory of quantum gravity or axiomatization of physics",
+      "dependencies": [
+        "Steps 7, 8"
+      ]
+    },
+    {
+      "step_number": 10,
+      "statement": "Therefore, information cannot be freely created (from quantum no-cloning) or completely destroyed (from holographic principle)",
+      "justification": "Combination of constraints from steps 7 and 8",
+      "dependencies": [
+        "Steps 7, 8, 9"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "No-Cloning Theorem",
+      "authors": "Wootters, W. K. and Zurek, W. H.",
+      "year": "1982",
+      "field": "Quantum Foundations",
+      "statement": "An arbitrary quantum state cannot be perfectly duplicated",
+      "usage": "Establishes fundamental constraint on quantum information copying"
+    },
+    {
+      "name": "Bekenstein Bound",
+      "authors": "Bekenstein, J. D.",
+      "year": "1973",
+      "field": "General Relativity",
+      "statement": "The entropy of a bounded system is limited by S \u2264 2\u03c0RE/\u210fc",
+      "usage": "Provides upper bound on information storage in spacetime regions"
+    },
+    {
+      "name": "Holographic Principle",
+      "authors": "'t Hooft, G. and Susskind, L.",
+      "year": "1993-1995",
+      "field": "Quantum Gravity",
+      "statement": "Information in a volume is encoded on its boundary",
+      "usage": "Constrains information content and suggests non-destruction"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Physical states can be represented as elements of a measure space (\u03a9, \u03a3, \u03bc)",
+    "Information content can be quantified by a measure I: \u03a3 \u2192 \u211d\u22650 satisfying monotonicity and \u03c3-additivity",
+    "Physical processes are measurable transformations P: \u03a9 \u2192 \u03a9",
+    "The information measure I is compatible with the physical measure \u03bc in the sense that I(A) = 0 iff \u03bc(A) = 0",
+    "Quantum mechanical systems obey the postulates of quantum mechanics",
+    "Spacetime obeys the Einstein field equations of general relativity",
+    "The no-cloning theorem holds for quantum states",
+    "Black hole thermodynamics applies to gravitational systems",
+    "Information measures in different physical domains (quantum, gravitational) can be related via a common mathematical framework"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Definition of information measure I",
+        "issue": "The proof never specifies what I actually is. It claims I satisfies monotonicity and \u03c3-additivity but these properties alone don't uniquely determine an information measure. Is it Shannon entropy? Von Neumann entropy? Something else?",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Must specify exactly what information measure is being used and prove it has the required properties"
+      },
+      {
+        "step": "Assumption of unifying mathematical structure",
+        "issue": "The proof explicitly admits it requires 'a category-theoretic framework relating quantum and gravitational information measures' which 'remains to be fully developed'. This is not a proof - it's wishful thinking.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot fix without actually developing the required mathematical framework"
+      },
+      {
+        "step": "Jump from quantum no-cloning to general constraint (1)",
+        "issue": "No-cloning applies to quantum states and unitary evolution. The proof provides no argument for why this constraint should apply to arbitrary measurable transformations P: \u03a9 \u2192 \u03a9 on a general measure space",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would need to prove that all physical processes reduce to quantum processes, which is far from established"
+      },
+      {
+        "step": "Application of holographic principle to general processes",
+        "issue": "The holographic principle is a conjecture about gravitational systems. The proof gives no justification for applying it to arbitrary physical processes",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would need to show all physical processes are constrained by gravitational bounds"
+      },
+      {
+        "step": "Claim about P\u207b\u00b9 in constraint (2)",
+        "issue": "The proof never establishes that P\u207b\u00b9 exists or is measurable. Many physical processes are irreversible",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Reformulate in terms of preimages P\u207b\u00b9(B) as sets rather than inverse functions"
+      },
+      {
+        "step": "Connection between 'cannot be compressed' and constraint (2)",
+        "issue": "The holographic bound limits information density, not information preservation. The leap to 'cannot be completely destroyed' is unjustified",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would need entirely different argument"
+      }
+    ],
+    "hidden_assumptions": [
+      "All physical processes can be modeled as measurable transformations on a single measure space",
+      "Quantum and gravitational constraints apply universally to all physical systems",
+      "Information measures from different physical domains can be unified",
+      "The existence of a 'universal information functor'",
+      "Physical processes preserve measurability",
+      "The measure space (\u03a9, \u03a3, \u03bc) can simultaneously represent quantum states, classical states, and gravitational states"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes information obeys certain constraints (via assuming QM and GR hold), then uses consequences of QM and GR to 'prove' information obeys constraints. The conclusion is essentially built into the assumptions.",
+    "over_generalisation": true,
+    "over_generalisation_details": "At best, the proof shows certain constraints exist in quantum systems (no-cloning) and certain bounds exist in gravitational systems (holographic). It completely fails to establish these as universal constraints on all physical processes in a general measure space.",
+    "citation_issues": [
+      "No-cloning theorem is cited correctly but misapplied to general measure spaces",
+      "Bekenstein-Hawking formula is stated correctly but its relevance to general information measures is assumed without justification",
+      "The 'holographic principle' is treated as established fact rather than conjecture"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This is not a mathematical proof but rather a collection of physics observations strung together with unjustified leaps. The proof admits its own critical gaps, relies on non-existent mathematical frameworks, and conflates specific physical constraints with universal mathematical properties. The entire argument could equally well 'prove' that all functions are continuous by noting that quantum wavefunctions are continuous.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish information conservation principles but fails to prove the specific mathematical constraints stated in the proposition. It shows at most that certain physical theories suggest information bounds, not that the stated mathematical constraints on measure-theoretic processes must exist.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Existence of a category-theoretic framework unifying quantum and gravitational information",
+      "Validity of the holographic principle as a fundamental constraint",
+      "AdS/CFT correspondence applies to general spacetimes",
+      "Information measures from different physical domains can be unified via functors",
+      "The measure space (\u03a9, \u03a3, \u03bc) can represent all physical states across quantum and gravitational domains",
+      "Physical processes P: \u03a9 \u2192 \u03a9 are sufficient to capture all relevant transformations",
+      "The information measure I captures all relevant physical information content"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "2",
+        "issue": "Non sequitur: no-cloning theorem doesn't directly imply information cannot be increased - it only prevents perfect copying of unknown quantum states"
+      },
+      {
+        "step": "4",
+        "issue": "Holographic principle is conjectural and not established as a fundamental constraint on all information storage"
+      },
+      {
+        "step": "6",
+        "issue": "Assumes existence of a universal information functor without justification - this is a massive assumption disguised as a definition"
+      },
+      {
+        "step": "7",
+        "issue": "Unclear how quantum constraints 'induce' constraints on an abstract functor - no mathematical mechanism provided"
+      },
+      {
+        "step": "8",
+        "issue": "Same issue as step 7 - no rigorous connection between gravitational bounds and abstract information measures"
+      },
+      {
+        "step": "10",
+        "issue": "Conclusion doesn't follow from premises - the specific mathematical constraints in the proposition are not established"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Steps 5 and 9 explicitly acknowledge critical gaps that are never filled",
+      "No rigorous mathematical connection between physical theories and the abstract measure-theoretic framework",
+      "No proof that constraints from quantum mechanics and gravity are universal",
+      "No demonstration that the specific mathematical forms of constraints (1) and (2) in the proposition actually hold",
+      "Missing proof that the information measure I has the required properties to support the argument"
+    ],
+    "internal_score": 0.1
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims information cannot be completely destroyed, but existing proof [14e1952bf633] demonstrates macroscopic irreversibility emerges from microscopic reversibility, implying information can be effectively lost through statistical effects",
+      "The universal information functor claim conflicts with proof [06879fd9ae87] which establishes physical properties are fundamentally contextual - a universal measure would violate contextuality",
+      "The assumption that quantum and gravitational information measures can be related via a common framework contradicts the established incompatibility between quantum mechanics and general relativity at fundamental scales"
+    ],
+    "assumption_conflicts": [
+      "Assumes information measures in different physical domains can be unified, conflicting with contextuality established in [06879fd9ae87]",
+      "Assumes \u03c3-additivity for information measures, which may conflict with quantum measurement contextuality",
+      "The assumption of measurable transformations P: \u03a9 \u2192 \u03a9 oversimplifies quantum processes which are fundamentally probabilistic"
+    ],
+    "beneficial_connections": [
+      "Connects to [1083de91300b] on black hole entropy and holographic principle",
+      "Relates to [19c10dc86a65] on quantum coherence through no-cloning theorem",
+      "Could strengthen [2cc2431e06a6] on quantum thresholds by providing information-theoretic foundation"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof contains significant gaps acknowledged by the authors and makes unjustified leaps between quantum and gravitational domains. The category-theoretic framework is assumed but not constructed. The universal information functor is postulated without proof of existence or uniqueness."
+  },
+  "confidence_score": 0.23500000000000001,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.1,
+    "cross_proof": 0.3,
+    "calibration": 0.29999999999999993
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.1,
+    "cross_proof": 0.3,
+    "calibration": 0.29999999999999993
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous category-theoretic framework unifying information measures across quantum mechanics, general relativity, and other physical theories. This would require: (1) A category PhysStates with objects representing state spaces from different physical theories, (2) A category InfoMeasures with morphisms preserving information-theoretic properties, (3) A functor I: PhysStates \u2192 InfoMeasures that consistently maps physical constraints to information constraints, (4) Proof that this functor is faithful and preserves relevant structure",
+  "limitations": [
+    "No rigorous mathematical framework currently exists to unify information measures across quantum and gravitational domains",
+    "The proof assumes but does not establish that constraints from quantum mechanics and general relativity apply universally to all physical processes",
+    "The connection between quantum no-cloning and gravitational holography through a common information principle is conjectural",
+    "The proof does not address classical information or intermediate regimes between quantum and gravitational",
+    "The proof relies on results from incompatible theories (quantum mechanics and general relativity)",
+    "The notion of 'information' is not uniquely defined across different physical domains",
+    "The proof strategy requires mathematical tools that do not yet exist",
+    "The universality claim extends beyond what can be rigorously established with current physics"
+  ],
+  "source_convergence": {
+    "structural_claim": "Information cannot be freely copied or destroyed, imposing fundamental constraints on physical processes",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "No-Cloning Theorem",
+        "domain_id": "quantum_foundations",
+        "domain_name": "Quantum Foundations",
+        "link_type": "direct",
+        "structural_conclusion": "Quantum states cannot be perfectly duplicated, establishing a fundamental constraint on quantum information"
+      },
+      {
+        "result_id": "",
+        "result_name": "No-Hair Theorem",
+        "domain_id": "general_relativity",
+        "domain_name": "General Relativity and Cosmology",
+        "link_type": "direct",
+        "structural_conclusion": "Black holes erase all information except mass, charge, and angular momentum, suggesting information cannot be arbitrarily compressed or stored"
+      },
+      {
+        "result_id": "",
+        "result_name": "Black Hole Thermodynamics",
+        "domain_id": "general_relativity",
+        "domain_name": "General Relativity and Cosmology",
+        "link_type": "direct",
+        "structural_conclusion": "Black hole entropy is proportional to horizon area, not volume, imposing a fundamental bound on information storage in spacetime"
+      }
+    ],
+    "domains": [
+      "quantum_foundations",
+      "general_relativity"
+    ],
+    "domain_names": [
+      "Quantum Foundations",
+      "General Relativity and Cosmology"
+    ],
+    "ea_scores": {
+      "strength": 0.357,
+      "independence": 0.85,
+      "adversarial": 0.2,
+      "reproducibility": 0.5249999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.53835,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:10:57.094207+00:00",
+    "id": "4bbd9425a42b"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.283155
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "proof_id": "57f3d4cc16d6",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous categorical framework connecting measurement contexts in quantum mechanics to gauge-fixing procedures in QFT. This would require: (1) A topos-theoretic formulation of measurement contexts, (2) A categorical description of BRST cohomology that makes the gauge-fixing functor explicit, (3) A formal proof that these categories are equivalent or adjoint",
+    "6 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

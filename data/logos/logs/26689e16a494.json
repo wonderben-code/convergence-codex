@@ -1,0 +1,38 @@
+{
+  "proof_id": "26689e16a494",
+  "timestamp": "2026-05-02T13:48:57.792753+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "categorical - Could frame phase transitions as universal constructions, but the physical content about microscopic-to-macroscopic emergence is better captured by axioms about critical phenomena rather than abstract categorical properties"
+      ],
+      "reasoning": "The convergence identifies shared abstract principles about phase transitions across different physical domains - specifically that microscopic interactions lead to emergent collective behavior with fundamentally altered properties. This is best captured by identifying axioms that characterize phase transitions (critical points, order parameters, symmetry breaking) that both nuclear matter and cosmological systems satisfy."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Dynamical systems, Measure theory, Functional analysis",
+      "alternatives_considered": [],
+      "reasoning": "Phase transitions are fundamentally about qualitative changes in system behavior as parameters vary, which is precisely captured by bifurcation theory in dynamical systems. Measure theory provides the rigorous foundation for statistical mechanics and thermodynamic limits, while functional analysis supplies the operator formalism needed for quantum phase transitions and renormalization group methods."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof establishes that phase transitions correspond to non-analyticities in the free energy function in the thermodynamic limit. These non-analyticities manifest as discontinuities in thermodynamic observables and diverging correlation lengths, which indicate the emergence of collective behavior and new macroscopic phases with fundamentally different properties.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 8 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3465 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 4929 chars, 11 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "The formalization captures the basic structure of phase transitions in statistical mechanics, but many key concepts like correlation functions, order parameters, and effective potentials require substantial additional theory not currently in Mathlib. The proof outline is preserved but most technical steps require sorry."
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "proof_id": "1c543cc8a5d8",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous mathematical framework for information measures that applies consistently across classical, quantum, and gravitational regimes. Current approaches either use von Neumann entropy (quantum) or coarse-grained entropy (classical/gravitational) without rigorous connection principles.",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

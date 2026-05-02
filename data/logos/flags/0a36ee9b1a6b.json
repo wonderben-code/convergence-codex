@@ -1,0 +1,13 @@
+{
+  "proof_id": "0a36ee9b1a6b",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A general theory of soliton stability and interactions beyond integrable systems. Current methods (Evans functions, Lyapunov-Schmidt reduction) work case-by-case but no unified framework exists for arbitrary nonlinear evolution equations. Need: (1) Classification of all nonlinearity-dispersion balance conditions, (2) General collision theory for non-integrable solitons, (3) Rigorous perturbation theory for near-integrable systems",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

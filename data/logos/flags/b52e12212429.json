@@ -1,0 +1,15 @@
+{
+  "proof_id": "b52e12212429",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A formal categorical framework for 'information content' that can measure when two categories encode 'identical information' beyond mere equivalence. Also needed: systematic categorical reformulations of classical dualities (Poincar\u00e9, Serre, Langlands) to verify they fit this framework.",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

@@ -1,0 +1,357 @@
+{
+  "id": "8126d10f358e",
+  "convergence_id": "3445c7ccc030",
+  "timestamp": "2026-05-02T12:54:00.775468+00:00",
+  "proposition": "Let (X, d) be a metric space with periodic structure group G acting by isometries, and let L be a linear wave operator on L\u00b2(X) that commutes with G. Then the spectrum \u03c3(L) decomposes into bands separated by gaps, where the band structure is determined by the irreducible representations of G, independent of whether L represents a quantum or classical wave equation.",
+  "proposition_natural": "Periodic structures impose fundamental constraints on wave propagation through the formation of band gaps and allowed bands, regardless of whether the waves are quantum or classical",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Functional analysis",
+    "Algebraic structures",
+    "Topology"
+  ],
+  "apparatus_justification": "Functional analysis provides the spectral theory of operators needed to rigorously characterize band structures in both quantum (Hamiltonians) and classical (wave operators) settings. Algebraic structures capture the periodicity through group actions on function spaces, while topology ensures proper treatment of continuity and compactness in Brillouin zones.",
+  "proof_natural": "**Proposition.** Let $(X, d)$ be a metric space with periodic structure group $G$ acting by isometries, and let $L$ be a linear wave operator on $L^2(X)$ that commutes with $G$. Then the spectrum $\\sigma(L)$ decomposes into bands separated by gaps, where the band structure is determined by the irreducible representations of $G$, independent of whether $L$ represents a quantum or classical wave equation.\n\n**Proof.** We assume that $X$ is a locally compact metric space with metric $d$, and that $G$ is a discrete group acting on $X$ by isometries with compact fundamental domain. Let $L: \\text{Dom}(L) \\subseteq L^2(X) \\to L^2(X)$ be a self-adjoint linear operator that commutes with the unitary representation of $G$ on $L^2(X)$, so that $[L, U(g)] = 0$ for all $g \\in G$. We further assume that $L$ has discrete spectrum when restricted to the fundamental domain with appropriate boundary conditions, and that the wave equation takes the form $i\\partial\\psi/\\partial t = L\\psi$ (quantum) or $\\partial^2\\psi/\\partial t^2 = -L\\psi$ (classical), where solutions $\\psi$ belong to appropriate Sobolev spaces ensuring $L^2$-integrability.\n\nBy the theory of unitary representations of discrete groups on $L^2$ spaces, the Hilbert space $L^2(X)$ admits a direct integral decomposition over the unitary dual $\\hat{G}$ of $G$:\n$$L^2(X) = \\int_{\\hat{G}}^{\\oplus} H_\\pi \\, d\\mu(\\pi),$$\nwhere $H_\\pi$ are representation spaces and $\\mu$ is the Plancherel measure.\n\nSince $L$ commutes with the group action, $[L, U(g)] = 0$, the operator $L$ decomposes according to the same direct integral:\n$$L = \\int_{\\hat{G}}^{\\oplus} L_\\pi \\, d\\mu(\\pi).$$\nThis follows from the general principle that operators commuting with a unitary representation decompose according to the representation's irreducible components.\n\nFor each $\\pi \\in \\hat{G}$, the operator $L_\\pi$ acts on the representation space $H_\\pi$. By our assumption on the fundamental domain and the compactness of the resolvent under periodic boundary conditions, each $L_\\pi$ has discrete spectrum $\\sigma(L_\\pi) = \\{E_n^\\pi\\}_{n \\in \\mathbb{N}}$. The total spectrum of $L$ is then given by\n$$\\sigma(L) = \\bigcup_{\\pi \\in \\hat{G}} \\sigma(L_\\pi).$$\n\nFor periodic structures in $\\mathbb{R}^d$, Pontryagin duality identifies $\\hat{G}$ with the Brillouin zone $B$, a compact subset of $\\mathbb{R}^d$ (specifically, the torus $\\mathbb{R}^d/G^*$ where $G^*$ is the reciprocal lattice). This parametrization allows us to write the eigenvalues as functions $k \\mapsto E_n(k)$ for $k \\in B$.\n\nBy Kato's perturbation theory for self-adjoint operators, these eigenvalue functions vary continuously with $k$. Moreover, the self-adjointness of $L$ ensures that eigenvalues cannot cross, leading to the formation of continuous bands $\\{E_n(k) : k \\in B\\}$ for each $n$, with gaps between consecutive bands.\n\nCrucially, this band structure depends only on the spatial operator $L$ and not on the temporal evolution. For the quantum equation $i\\partial_t \\psi = L\\psi$, solutions have the form $e^{-iE_n(k)t}\\phi_n(k,x)$, while for the classical equation $\\partial_{tt} \\psi = -L\\psi$, solutions take the form $e^{\\pm i\\sqrt{E_n(k)}t}\\phi_n(k,x)$. In both cases, the spatial spectrum\u2014and hence the band structure\u2014is determined by the same eigenvalues $E_n(k)$.\n\n[Note: The connection to Bloch's theorem, which states that eigenfunctions can be written as $\\psi(x) = e^{ik \\cdot x}u(x)$ with $u$ having the periodicity of the lattice, provides the explicit form of the eigenfunctions but is not essential for the spectral decomposition argument.]\n\nTherefore, the spectrum $\\sigma(L)$ exhibits a band structure with gaps, determined entirely by the irreducible representations of the symmetry group $G$, regardless of whether the underlying wave equation is quantum or classical in nature. This completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.Topology.MetricSpace.Basic\nimport Mathlib.Analysis.InnerProductSpace.l2Space\nimport Mathlib.Analysis.SpecialFunctions.Exponential\nimport Mathlib.RepresentationTheory.Basic\nimport Mathlib.RepresentationTheory.Character\nimport Mathlib.MeasureTheory.Integral.Bochner\nimport Mathlib.Topology.Algebra.Group.Basic\n\n/-- A periodic structure group acting on a metric space -/\nstructure PeriodicStructureGroup (X : Type*) [MetricSpace X] (G : Type*) [Group G] where\n  action : G \u2192 X \u2192 X\n  isometry : \u2200 g : G, Isometry (action g)\n  -- sorry: need to formalize periodicity conditions\n\n/-- A linear wave operator on L\u00b2(X) -/\nstructure WaveOperator (X : Type*) [MeasureSpace X] where\n  toLinearMap : L\u00b2(X) \u2192\u2097[\u2102] L\u00b2(X)\n  selfAdjoint : sorry -- need self-adjoint operator theory\n\n/-- Band structure for a wave operator -/\nstructure BandStructure (X : Type*) [MetricSpace X] (G : Type*) [Group G] where\n  bands : \u2115 \u2192 Set \u211d\n  gaps : Set (\u211d \u00d7 \u211d)\n  continuous : sorry -- need continuity of band functions\n  separated : sorry -- need gap separation property\n\n/-- Main theorem: spectrum decomposes into bands with gaps -/\ntheorem spectrum_band_decomposition \n  {X : Type*} [MetricSpace X] [MeasureSpace X]\n  {G : Type*} [Group G] [TopologicalSpace G] [TopologicalGroup G]\n  (PSG : PeriodicStructureGroup X G)\n  (L : WaveOperator X)\n  (comm : \u2200 g : G, sorry) -- L commutes with G action\n  : \u2203 (B : BandStructure X G), \n    (spectrum L.toLinearMap = \u22c3 n, B.bands n) \u2227 \n    (\u2200 n m, n \u2260 m \u2192 \u2203 gap \u2208 B.gaps, sorry) \u2227\n    (sorry) -- band structure same for quantum and classical\n  := by\n  -- Step 1: Hilbert space decomposition\n  have h1 : \u2203 (\u03bc : MeasureTheory.Measure (IrreducibleRepresentation \u2102 G)), \n    sorry := sorry -- Direct integral decomposition exists\n  \n  -- Step 2: Direct integral representation\n  have h2 : sorry := sorry -- L\u00b2(X) = \u222b_{\u011c} \u2295 H_\u03c0 d\u03bc(\u03c0)\n  \n  -- Step 3: Operator decomposition\n  have h3 : sorry := sorry -- L decomposes according to representations\n  \n  -- Step 4: Discrete spectrum for each representation\n  have h4 : \u2200 \u03c0 : IrreducibleRepresentation \u2102 G, \n    sorry := sorry -- Each L_\u03c0 has discrete spectrum\n  \n  -- Step 5: Total spectrum is union\n  have h5 : spectrum L.toLinearMap = sorry := sorry -- Union of component spectra\n  \n  -- Step 6: Brillouin zone parametrization\n  have h6 : sorry := sorry -- \u011c parametrized by Brillouin zone\n  \n  -- Step 7: Continuous bands with gaps\n  have h7 : sorry := sorry -- Band functions are continuous with gaps\n  \n  -- Step 8: Same structure for quantum and classical\n  have h8 : sorry := sorry -- Evolution equations give same spatial spectrum\n  \n  sorry -- Combine all steps to construct band structure",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The Hilbert space L\u00b2(X) decomposes as a direct integral over the unitary dual \u011c of G",
+      "justification": "By the theory of unitary representations of discrete groups on L\u00b2 spaces",
+      "dependencies": [
+        "Mackey's theory of induced representations",
+        "Peter-Weyl theorem for compact groups"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "L\u00b2(X) = \u222b_{\u011c} \u2295 H_\u03c0 d\u03bc(\u03c0), where H_\u03c0 are representation spaces and \u03bc is the Plancherel measure",
+      "justification": "Direct integral decomposition for group actions on Hilbert spaces",
+      "dependencies": [
+        "Step 1",
+        "Plancherel theorem for locally compact groups"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Since [L, U(g)] = 0, the operator L decomposes as L = \u222b_{\u011c} \u2295 L_\u03c0 d\u03bc(\u03c0)",
+      "justification": "Operators commuting with a unitary representation decompose according to the same direct integral",
+      "dependencies": [
+        "Step 2",
+        "Von Neumann's theory of decomposable operators"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "For each \u03c0 \u2208 \u011c, the operator L_\u03c0 has discrete spectrum \u03c3(L_\u03c0) = {E_n^\u03c0}_{n\u2208\u2115}",
+      "justification": "Restriction to fundamental domain with periodic boundary conditions yields compact resolvent",
+      "dependencies": [
+        "Assumption about discrete spectrum",
+        "Rellich-Kondrachov theorem"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The total spectrum is \u03c3(L) = \u222a_{\u03c0\u2208\u011c} \u03c3(L_\u03c0)",
+      "justification": "Spectrum of direct integral is union of component spectra",
+      "dependencies": [
+        "Steps 3, 4",
+        "Spectral theory of direct integrals"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "For periodic structures, \u011c is parametrized by the Brillouin zone B, a compact subset of \u211d^d",
+      "justification": "Pontryagin duality for lattice groups gives torus as dual group",
+      "dependencies": [
+        "Pontryagin duality theorem",
+        "Assumption of periodic structure"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The functions k \u2192 E_n(k) for k \u2208 B form continuous bands with gaps between them",
+      "justification": "Eigenvalues vary continuously with k by perturbation theory, non-crossing by self-adjointness",
+      "dependencies": [
+        "Step 6",
+        "Kato's perturbation theory",
+        "Wigner-von Neumann theorem"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "The band structure is identical for quantum (i\u2202_t \u03c8 = L\u03c8) and classical (\u2202_tt \u03c8 = -L\u03c8) cases",
+      "justification": "Both evolution equations have solutions of form e^{\u00b1i\u221aE_n(k)t}\u03c6_n(k,x), giving same spatial spectrum",
+      "dependencies": [
+        "Steps 5, 7",
+        "Stone's theorem",
+        "Spectral theorem for self-adjoint operators"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Bloch's Theorem",
+      "authors": "Felix Bloch",
+      "year": "1928",
+      "field": "Quantum Mechanics",
+      "statement": "Eigenfunctions of periodic Hamiltonians can be written as \u03c8(x) = e^{ik\u00b7x}u(x) where u has the periodicity of the lattice",
+      "usage": "Establishes connection between crystal momentum k and band structure"
+    },
+    {
+      "name": "Floquet Theory",
+      "authors": "Gaston Floquet",
+      "year": "1883",
+      "field": "Differential Equations",
+      "statement": "Solutions of linear ODEs with periodic coefficients have Floquet form",
+      "usage": "Classical analogue of Bloch's theorem for periodic systems"
+    },
+    {
+      "name": "Peter-Weyl Theorem",
+      "authors": "Hermann Weyl, Fritz Peter",
+      "year": "1927",
+      "field": "Harmonic Analysis",
+      "statement": "Unitary representations of compact groups decompose L\u00b2 spaces into irreducibles",
+      "usage": "Justifies decomposition of L\u00b2(X) by group representations"
+    },
+    {
+      "name": "Kato's Perturbation Theory",
+      "authors": "Tosio Kato",
+      "year": "1966",
+      "field": "Functional Analysis",
+      "statement": "Eigenvalues of self-adjoint operators vary analytically with parameters",
+      "usage": "Ensures continuity of E_n(k) forming bands"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "X is a locally compact metric space with metric d",
+    "G is a discrete group acting on X by isometries with compact fundamental domain",
+    "L: Dom(L) \u2286 L\u00b2(X) \u2192 L\u00b2(X) is a self-adjoint linear operator",
+    "L commutes with the unitary representation of G on L\u00b2(X): [L, U(g)] = 0 for all g \u2208 G",
+    "L has discrete spectrum when restricted to the fundamental domain with appropriate boundary conditions",
+    "The wave equation is of the form i\u2202\u03c8/\u2202t = L\u03c8 (quantum) or \u2202\u00b2\u03c8/\u2202t\u00b2 = -L\u03c8 (classical)",
+    "Solutions \u03c8 belong to appropriate Sobolev spaces ensuring L\u00b2-integrability"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "Direct integral decomposition of L\u00b2(X)",
+        "issue": "The proof assumes G is discrete but then applies direct integral decomposition theory which requires G to be locally compact. For discrete groups acting on non-compact spaces, the decomposition is not automatic and requires additional conditions on the action (e.g., proper discontinuous action).",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need to restrict to either compact groups or add strong conditions on the action"
+      },
+      {
+        "step": "Identification of \u011c with Brillouin zone via Pontryagin duality",
+        "issue": "Pontryagin duality applies to locally compact abelian groups. The proof never assumes G is abelian, yet uses this identification. For non-abelian groups, there is no Brillouin zone.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Must restrict to abelian groups or completely reformulate without Brillouin zones"
+      },
+      {
+        "step": "Each L_\u03c0 has discrete spectrum",
+        "issue": "The proof claims this follows from assumptions about the fundamental domain, but provides no justification. The spectrum of L_\u03c0 depends on the specific representation space H_\u03c0, not just on fundamental domain properties.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Need additional assumptions on L or prove discreteness from compactness conditions"
+      },
+      {
+        "step": "Eigenvalues cannot cross",
+        "issue": "This is false even for self-adjoint operators. Eigenvalue crossings are generic in multi-parameter families. The proof confuses level repulsion (which occurs for random matrices) with a general no-crossing rule.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Remove claim or add very specific non-degeneracy conditions"
+      },
+      {
+        "step": "Formation of gaps between bands",
+        "issue": "Even with continuous eigenvalue functions E_n(k), gaps between bands are not guaranteed. Bands can touch or overlap. The proof provides no mechanism for gap formation.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Need specific conditions on L or potential that guarantee gap opening"
+      },
+      {
+        "step": "Classical wave equation solutions",
+        "issue": "For classical equations with \u2202\u00b2\u03c8/\u2202t\u00b2 = -L\u03c8, negative eigenvalues of L lead to exponentially growing solutions, not oscillatory ones. The proof ignores this fundamental difference.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Restrict to positive L or handle hyperbolic vs elliptic cases separately"
+      }
+    ],
+    "hidden_assumptions": [
+      "G acts properly discontinuously on X",
+      "G is abelian (required for Brillouin zone interpretation)",
+      "The fundamental domain has finite measure",
+      "L is bounded below (needed for classical wave equation)",
+      "The representation spaces H_\u03c0 are separable",
+      "The Plancherel measure exists and is well-defined for this action"
+    ],
+    "circular_reasoning": false,
+    "circular_details": "",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to work for arbitrary discrete groups and metric spaces, but the arguments only potentially work for abelian groups acting on Euclidean spaces. The claim about gap formation is not proven at all, only band formation is partially addressed.",
+    "citation_issues": [
+      "Peter-Weyl theorem applies to compact groups, not discrete groups acting on non-compact spaces",
+      "Kato's perturbation theory is cited for continuity but misused for the false no-crossing claim",
+      "Bloch's theorem is specific to periodic potentials in Euclidean space, not general metric spaces"
+    ],
+    "structural_soundness": 0.2,
+    "overall_assessment": "This proof contains multiple critical errors including applying theorems outside their domain of validity, making false claims about eigenvalue crossings, and failing to justify the existence of spectral gaps. The central claim about band gaps is essentially unproven, and the generality claimed is far beyond what the arguments support.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "Proves that under very specific conditions (compact fundamental domain, discrete spectrum restriction, etc.), a band structure exists, but not the general proposition about metric spaces with periodic structure groups",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "G must be a lattice group (not just any discrete group)",
+      "X must have translation-invariant structure compatible with lattice action",
+      "L must be elliptic or have compact resolvent globally",
+      "Fundamental domain must be measurable with finite measure",
+      "The metric d must be translation-invariant under G",
+      "X must be complete as a metric space",
+      "The group action must be properly discontinuous",
+      "L must be essentially self-adjoint on its natural domain"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "1",
+        "issue": "Direct integral decomposition requires G to be locally compact, but discrete groups acting on general metric spaces don't automatically give this structure"
+      },
+      {
+        "step": "2",
+        "issue": "Plancherel measure \u03bc is not well-defined for arbitrary discrete groups acting on metric spaces - requires specific harmonic analysis setup"
+      },
+      {
+        "step": "4",
+        "issue": "Discrete spectrum claim requires compactness arguments that aren't justified - compact resolvent doesn't follow from periodic boundary conditions alone"
+      },
+      {
+        "step": "6",
+        "issue": "Pontryagin duality gives torus only for \u2124^d, not arbitrary discrete groups with periodic structure"
+      },
+      {
+        "step": "7",
+        "issue": "Continuity of eigenvalue functions and non-crossing require additional regularity assumptions on L and the group action"
+      },
+      {
+        "step": "8",
+        "issue": "The equivalence between quantum and classical cases ignores fundamental differences in spectral properties and domain requirements"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No verification that the direct integral decomposition actually exists",
+      "Missing analysis of boundary conditions and their compatibility with group action",
+      "No proof that gaps actually exist between bands",
+      "Missing treatment of essential spectrum",
+      "No justification for why band structure is independent of quantum vs classical nature",
+      "Lacks rigorous definition of 'periodic structure group'",
+      "Missing verification that \u03c3(L_\u03c0) are actually discrete for each \u03c0"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims band structure is identical for quantum (i\u2202_t \u03c8 = L\u03c8) and classical (\u2202_tt \u03c8 = -L\u03c8) cases, but this is mathematically false. The spectrum of L appears directly in quantum case but as -L in classical case, giving fundamentally different dispersion relations",
+      "Claims discrete spectrum when restricted to fundamental domain, but this contradicts the band structure claim - bands are continuous functions E_n(k) over Brillouin zone, not discrete",
+      "The direct integral decomposition L\u00b2(X) = \u222b_{\u011c} \u2295 H_\u03c0 d\u03bc(\u03c0) assumes G is amenable, but this is not stated in assumptions and fails for many crystallographic groups"
+    ],
+    "assumption_conflicts": [
+      "Assumes L has discrete spectrum on fundamental domain while simultaneously claiming continuous band structure - these are incompatible",
+      "Claims G acts by isometries with compact fundamental domain but doesn't specify whether G is amenable, which is required for the direct integral decomposition",
+      "The assumption that solutions belong to 'appropriate Sobolev spaces' is too vague and may conflict with the L\u00b2 framework assumed throughout"
+    ],
+    "beneficial_connections": [
+      "Connects to [523a76365e87] regarding topological constraints and conservation laws through symmetry group actions",
+      "Relates to [3f0bc99f45de] on collective phenomena and symmetry breaking, as band gaps can be viewed as emergent from collective behavior",
+      "Links to [574d327c8078] on scale-dependent descriptions through the Brillouin zone parametrization"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof contains fundamental mathematical errors in equating quantum and classical spectra, confuses discrete and continuous spectral properties, and makes unjustified assumptions about group amenability. The core mathematical framework is flawed."
+  },
+  "confidence_score": 0.295,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.6
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.6
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": true,
+  "new_mathematics_needed": "",
+  "limitations": [
+    "[Gap: The proof assumes without justification that the Plancherel measure for discrete groups acting on non-compact spaces is well-defined]",
+    "[Gap: The transition from abstract group representations to concrete Brillouin zone parametrization requires additional technical conditions on the lattice structure]",
+    "[Gap: The proof does not establish explicit conditions under which gaps must exist between bands, only that bands form]",
+    "Does not quantify the size or location of band gaps",
+    "Requires self-adjointness which may fail for dissipative systems",
+    "Assumes perfect periodicity without disorder or defects",
+    "Does not address the physical mechanisms creating the periodic potential",
+    "The correspondence between quantum and classical only holds for linear wave equations"
+  ],
+  "source_convergence": {
+    "structural_claim": "Periodic structures impose fundamental constraints on wave propagation through the formation of band gaps and allowed bands, regardless of whether the waves are quantum or classical",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Nuclear Shell Model",
+        "domain_id": "field_a",
+        "domain_name": "Nuclear Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Nucleons occupy discrete quantum shells with forbidden energy regions between them, creating a band structure in nuclear energy levels"
+      },
+      {
+        "result_id": "",
+        "result_name": "Bloch's Theorem for Periodic Media",
+        "domain_id": "field_b",
+        "domain_name": "Acoustics and Wave Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Wave propagation in periodic structures exhibits band gaps and pass bands that fundamentally constrain allowable frequencies"
+      }
+    ],
+    "domains": [
+      "nuclear_physics",
+      "acoustics"
+    ],
+    "domain_names": [
+      "Nuclear Physics",
+      "Acoustics and Wave Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.238,
+      "independence": 0.8,
+      "adversarial": 0.2,
+      "reproducibility": 0.42,
+      "depth_consistency": 1.0,
+      "confidence": 0.47440000000000004,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:57:13.863579+00:00",
+    "id": "3445c7ccc030"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.311895
+  }
+}

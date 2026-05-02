@@ -1,0 +1,15 @@
+{
+  "proof_id": "f17045616ed2",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous mathematical framework for quantum gravity that allows precise formulation of diffeomorphism symmetry breaking and emergent spacetime. Current approaches (string theory, loop quantum gravity) provide partial frameworks but lack complete mathematical rigor for this specific mechanism.",
+    "Difficulty assessed as challenging",
+    "6 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

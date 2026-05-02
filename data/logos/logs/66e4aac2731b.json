@@ -1,0 +1,38 @@
+{
+  "proof_id": "66e4aac2731b",
+  "timestamp": "2026-05-02T12:24:07.637552+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "categorical",
+      "alternatives_considered": [
+        "equivalence was considered since decoherence/quantum Darwinism and RG/EFT share structural features of coarse-graining, but the convergence is really about the universal emergence mechanism rather than structural similarity between the theories"
+      ],
+      "reasoning": "The convergence describes how classical behavior emerges from quantum systems through a universal process of information flow and environmental interaction. This is best captured by categorical structures that characterize the emergence functor and the universal property of classicality as a limit of quantum systems under environmental coupling."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Category theory, Functional analysis, Information theory",
+      "alternatives_considered": [],
+      "reasoning": "Category theory provides the natural framework for describing the emergence of classical behavior as a functor from quantum to classical categories, with decoherence as a natural transformation. Functional analysis is essential for rigorously treating infinite-dimensional Hilbert spaces and trace-preserving operations. Information theory quantifies the dispersal of quantum information into environmental degrees of freedom."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof shows that unitary evolution of a quantum system coupled to an environment leads to decoherence in a dynamically selected pointer basis. This decoherence suppresses quantum coherences exponentially, yielding an effectively classical probability distribution. The emergent classical dynamics arises from tracing out environmental degrees of freedom, producing an effective action whose quantum corrections are exponentially suppressed in the semiclassical regime.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 12 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3680 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 2573 chars, 12 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This proof requires extensive quantum mechanics formalism not currently in Mathlib. The statement captures the essence of decoherence and emergent classicality, but full formalization would require building a substantial quantum mechanics library including density matrices, partial traces, open quantum systems, and quantum information theory."
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "proof_id": "f7910a257b91",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous categorical framework for renormalization group theory, including: (1) Categorical formulation of scale transformations and their fixed points, (2) Definition of linearization in the categorical setting, (3) Rigorous treatment of 'near critical point' in category-theoretic terms, (4) Categorical characterization of microscopic vs macroscopic properties",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

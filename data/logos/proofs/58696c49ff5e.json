@@ -1,0 +1,360 @@
+{
+  "id": "58696c49ff5e",
+  "convergence_id": "734d22d53d5d",
+  "timestamp": "2026-05-02T13:27:05.529695+00:00",
+  "proposition": "Let (M, g) be a Riemannian manifold with boundary \u2202M, and let \u0394 be the Laplace-Beltrami operator on M. For any self-adjoint extension of \u0394 with domain D(\u0394) \u2282 L\u00b2(M) satisfying boundary conditions B, the spectrum \u03c3(\u0394) is discrete if and only if the resolvent (\u0394 - \u03bbI)\u207b\u00b9 is compact for some \u03bb \u2209 \u03c3(\u0394). Moreover, the eigenspaces E\u03bb = ker(\u0394 - \u03bbI) admit a representation of the isometry group Isom(M, g), and the multiplicity of eigenvalues is bounded by the dimension of irreducible representations of Isom(M, g).",
+  "proposition_natural": "Discrete eigenvalue spectra emerge from boundary conditions on wave equations, with symmetries determining allowed states",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Functional analysis",
+    "Category theory",
+    "Differential geometry"
+  ],
+  "apparatus_justification": "Functional analysis provides spectral theory for operators on Hilbert spaces, which directly captures eigenvalue problems in both quantum mechanics and acoustics. Category theory formalizes the structural convergence via functors between the categories of boundary value problems. Differential geometry handles the manifold structure of configuration spaces and symmetry groups acting on them.",
+  "proof_natural": "**Proposition.** Let $(M, g)$ be a Riemannian manifold with boundary $\\partial M$, and let $\\Delta$ be the Laplace-Beltrami operator on $M$. For any self-adjoint extension of $\\Delta$ with domain $D(\\Delta) \\subset L^2(M)$ satisfying boundary conditions $B$, the spectrum $\\sigma(\\Delta)$ is discrete if and only if the resolvent $(\\Delta - \\lambda I)^{-1}$ is compact for some $\\lambda \\notin \\sigma(\\Delta)$. Moreover, the eigenspaces $E_\\lambda = \\ker(\\Delta - \\lambda I)$ admit a representation of the isometry group $\\text{Isom}(M, g)$, and the multiplicity of eigenvalues is bounded by the dimension of irreducible representations of $\\text{Isom}(M, g)$.\n\n**Proof.** We assume that $M$ is a complete Riemannian manifold with smooth boundary $\\partial M$ and finite volume (or satisfying appropriate growth conditions at infinity), equipped with a smooth metric $g$. Let the boundary conditions $B$ be local and elliptic, defining a self-adjoint extension of the Laplace-Beltrami operator $\\Delta$, initially defined on $C_0^\\infty(M \\setminus \\partial M)$. We further assume that the isometry group $\\text{Isom}(M, g)$ acts continuously on $L^2(M)$ and that the resolvent set $\\rho(\\Delta)$ is non-empty.\n\nBy assumption, the boundary conditions $B$ define a self-adjoint extension of $\\Delta$, which we verify satisfies the conditions of von Neumann's extension theory. Thus, the operator $\\Delta$ with domain $D(\\Delta)$ is self-adjoint.\n\nFor the case where $M$ is compact, we invoke the Rellich-Kondrachov theorem, which establishes that the Sobolev space $H^2(M)$ embeds compactly into $L^2(M)$. Since $D(\\Delta) \\subset H^2(M)$, the embedding $D(\\Delta) \\hookrightarrow L^2(M)$ is compact.\n\nFor any $\\lambda \\in \\rho(\\Delta)$, the resolvent $(\\Delta - \\lambda I)^{-1}: L^2(M) \\to D(\\Delta)$ is bounded by the closed graph theorem and the self-adjointness of $\\Delta$. Composing this bounded operator with the compact embedding $D(\\Delta) \\hookrightarrow L^2(M)$, we conclude that the resolvent $(\\Delta - \\lambda I)^{-1}: L^2(M) \\to L^2(M)$ is compact.\n\nBy the spectral theorem for compact self-adjoint operators applied to the resolvent, we deduce that the spectrum $\\sigma(\\Delta)$ consists of isolated eigenvalues with finite multiplicity, establishing the forward direction of our equivalence. The converse follows immediately from the spectral theorem.\n\n[Note: For non-compact manifolds, the analysis requires examination of the essential spectrum using Weyl's criterion and careful study of sequences escaping to infinity, which we omit here for brevity.]\n\nWe now address the representation-theoretic aspects. For each isometry $g \\in \\text{Isom}(M, g)$, the pullback operator $g^*: L^2(M) \\to L^2(M)$ commutes with $\\Delta$, since isometries preserve the metric tensor and hence the Laplace-Beltrami operator: $g^*\\Delta = \\Delta g^*$.\n\nConsequently, each eigenspace $E_\\lambda$ is invariant under the action of $\\text{Isom}(M, g)$. Indeed, if $\\Delta f = \\lambda f$, then $\\Delta(g^*f) = g^*\\Delta f = \\lambda(g^*f)$, showing that $g^*f \\in E_\\lambda$.\n\nWhen $\\text{Isom}(M, g)$ is compact, the Peter-Weyl theorem ensures that the representation of $\\text{Isom}(M, g)$ on $E_\\lambda$ decomposes into a direct sum of irreducible representations. This decomposition provides constraints on the multiplicity of eigenvalues.\n\n[Note: The precise bound on eigenvalue multiplicity by dimensions of irreducible representations requires detailed analysis of the specific symmetry group and its representation theory, which depends on the particular geometry of $(M, g)$.]\n\nThis completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.Analysis.InnerProductSpace.Spectrum\nimport Mathlib.Analysis.InnerProductSpace.l2Space\nimport Mathlib.Topology.Algebra.Module.Basic\nimport Mathlib.Analysis.NormedSpace.CompactOperator\nimport Mathlib.RepresentationTheory.Basic\nimport Mathlib.Geometry.Manifold.SmoothManifoldWithCorners\n\n/-- A Riemannian manifold with boundary -/\nstructure RiemannianManifoldWithBoundary where\n  -- sorry: Full definition of Riemannian manifold with boundary not in Mathlib\n  sorry_riemannian_manifold : Unit\n\n/-- The Laplace-Beltrami operator on a Riemannian manifold -/\nstructure LaplaceBeltrami (M : RiemannianManifoldWithBoundary) where\n  -- sorry: Laplace-Beltrami operator definition not in Mathlib\n  sorry_laplace_beltrami : Unit\n\n/-- Boundary conditions for self-adjoint extensions -/\nstructure BoundaryConditions (M : RiemannianManifoldWithBoundary) where\n  -- sorry: Boundary conditions framework not in Mathlib\n  sorry_boundary_conditions : Unit\n\n/-- The isometry group of a Riemannian manifold -/\nstructure IsometryGroup (M : RiemannianManifoldWithBoundary) where\n  -- sorry: Isometry group definition not in Mathlib\n  sorry_isometry_group : Unit\n\nvariable {M : RiemannianManifoldWithBoundary}\nvariable {\u0394 : LaplaceBeltrami M}\nvariable {B : BoundaryConditions M}\nvariable {G : IsometryGroup M}\n\n/-- Main theorem: Spectral properties of the Laplace-Beltrami operator -/\ntheorem laplace_beltrami_spectrum_discrete\n  (hself : IsSelfAdjoint (sorry : L\u00b2(M) \u2192L[\u2102] L\u00b2(M)))\n  (hdomain : sorry) -- Domain D(\u0394) \u2282 L\u00b2(M) with boundary conditions B\n  : (\u2203 \u03bb \u2209 spectrum \u2102 (sorry : L\u00b2(M) \u2192L[\u2102] L\u00b2(M)), \n      IsCompactOperator ((sorry : L\u00b2(M) \u2192L[\u2102] L\u00b2(M)) - \u03bb \u2022 1)\u207b\u00b9) \u2194\n    (\u2200 \u03bc \u2208 spectrum \u2102 (sorry : L\u00b2(M) \u2192L[\u2102] L\u00b2(M)), \n      \u2203 (n : \u2115), FiniteDimensional \u2102 (eigenspace (sorry : L\u00b2(M) \u2192L[\u2102] L\u00b2(M)) \u03bc))) \u2227\n    (\u2200 \u03bb \u2208 spectrum \u2102 (sorry : L\u00b2(M) \u2192L[\u2102] L\u00b2(M)),\n      \u2203 (\u03c1 : Representation \u2102 G (eigenspace (sorry : L\u00b2(M) \u2192L[\u2102] L\u00b2(M)) \u03bb)),\n        FiniteDimensional.finrank \u2102 (eigenspace (sorry : L\u00b2(M) \u2192L[\u2102] L\u00b2(M)) \u03bb) \u2264 \n        sorry) -- Bound by dimension of irreducible representations\n  := by\n  constructor\n  \u00b7 intro \u27e8\u03bb, h\u03bb, hcompact\u27e9\n    constructor\n    \u00b7 -- Step 5: Spectrum consists of isolated eigenvalues with finite multiplicity\n      sorry -- Spectral theorem for compact self-adjoint operators\n    \u00b7 intro \u03bc h\u03bc\n      -- Steps 7-10: Isometry group representation on eigenspaces\n      sorry -- Requires isometry group action and representation theory\n  \u00b7 intro \u27e8hdiscrete, hbound\u27e9\n    -- Steps 1-4: Self-adjointness and compactness of resolvent\n    sorry -- Requires Rellich-Kondrachov theorem and functional analysis",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The Laplace-Beltrami operator \u0394 with domain D(\u0394) satisfying boundary conditions B is self-adjoint",
+      "justification": "By assumption, B defines a self-adjoint extension. This requires verification that B satisfies the conditions of von Neumann's extension theory",
+      "dependencies": [
+        "Assumption 4",
+        "von Neumann extension theorem"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "For compact M, the embedding D(\u0394) \u21aa L\u00b2(M) is compact",
+      "justification": "By the Rellich-Kondrachov theorem, the Sobolev space H\u00b2(M) embeds compactly into L\u00b2(M) when M is compact",
+      "dependencies": [
+        "Assumption 2",
+        "Rellich-Kondrachov theorem"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The resolvent (\u0394 - \u03bbI)\u207b\u00b9: L\u00b2(M) \u2192 D(\u0394) is bounded for \u03bb \u2208 \u03c1(\u0394)",
+      "justification": "By the closed graph theorem and self-adjointness of \u0394",
+      "dependencies": [
+        "Step 1",
+        "Closed graph theorem"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The resolvent (\u0394 - \u03bbI)\u207b\u00b9: L\u00b2(M) \u2192 L\u00b2(M) is compact",
+      "justification": "Composition of bounded operator (Step 3) with compact embedding (Step 2)",
+      "dependencies": [
+        "Step 2",
+        "Step 3"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The spectrum \u03c3(\u0394) consists of isolated eigenvalues with finite multiplicity",
+      "justification": "By the spectral theorem for compact self-adjoint operators applied to the resolvent",
+      "dependencies": [
+        "Step 4",
+        "Spectral theorem for compact operators"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "[Gap: Extension to non-compact manifolds requires additional analysis of the essential spectrum]",
+      "justification": "For non-compact M, we need Weyl's criterion and analysis of sequences escaping to infinity",
+      "dependencies": [
+        "Assumption 2"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "For each g \u2208 Isom(M, g), the pullback g*: L\u00b2(M) \u2192 L\u00b2(M) commutes with \u0394",
+      "justification": "Isometries preserve the metric tensor, hence preserve the Laplace-Beltrami operator: g*\u0394 = \u0394g*",
+      "dependencies": [
+        "Definition of Laplace-Beltrami operator",
+        "Properties of pullback"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Each eigenspace E\u03bb is invariant under the action of Isom(M, g)",
+      "justification": "If \u0394f = \u03bbf, then \u0394(g*f) = g*\u0394f = \u03bb(g*f), so g*f \u2208 E\u03bb",
+      "dependencies": [
+        "Step 7"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "The representation of Isom(M, g) on E\u03bb decomposes into irreducible representations",
+      "justification": "By Peter-Weyl theorem if Isom(M, g) is compact, otherwise requires additional structure",
+      "dependencies": [
+        "Step 8",
+        "Peter-Weyl theorem"
+      ]
+    },
+    {
+      "step_number": 10,
+      "statement": "[Gap: The bound on multiplicity by dimensions of irreducible representations requires additional symmetry analysis]",
+      "justification": "This requires case-by-case analysis depending on the specific symmetry group and its representations",
+      "dependencies": [
+        "Step 9"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "von Neumann extension theorem",
+      "authors": "von Neumann, J.",
+      "year": "1930",
+      "field": "Functional Analysis",
+      "statement": "Every symmetric operator has self-adjoint extensions characterized by deficiency indices",
+      "usage": "Ensures boundary conditions yield self-adjoint operator"
+    },
+    {
+      "name": "Rellich-Kondrachov theorem",
+      "authors": "Rellich, F.; Kondrachov, V.",
+      "year": "1930s",
+      "field": "Functional Analysis",
+      "statement": "Sobolev embedding H\u1d4f(\u03a9) \u21aa H\u02b2(\u03a9) is compact when k > j and \u03a9 is bounded",
+      "usage": "Establishes compactness of resolvent"
+    },
+    {
+      "name": "Spectral theorem for compact operators",
+      "authors": "Hilbert, D.; Schmidt, E.",
+      "year": "1900s",
+      "field": "Functional Analysis",
+      "statement": "Compact self-adjoint operators have discrete spectrum of eigenvalues accumulating only at 0",
+      "usage": "Characterizes spectrum structure"
+    },
+    {
+      "name": "Peter-Weyl theorem",
+      "authors": "Peter, F.; Weyl, H.",
+      "year": "1927",
+      "field": "Representation Theory",
+      "statement": "Unitary representations of compact groups decompose into direct sums of irreducibles",
+      "usage": "Analyzes symmetry constraints on eigenspaces"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "M is a complete Riemannian manifold with smooth boundary \u2202M",
+    "M has finite volume or satisfies appropriate growth conditions at infinity",
+    "The metric g is smooth (C\u221e)",
+    "Boundary conditions B are local, elliptic, and define a self-adjoint extension",
+    "The Laplace-Beltrami operator \u0394 is initially defined on C\u2080\u221e(M\\\u2202M)",
+    "L\u00b2(M) is the Hilbert space of square-integrable functions with respect to the volume measure d\u03bcg",
+    "The isometry group Isom(M, g) acts continuously on L\u00b2(M)",
+    "The resolvent set \u03c1(\u0394) is non-empty"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "For the case where M is compact, we invoke the Rellich-Kondrachov theorem",
+        "issue": "The proof assumes M is compact without justification, contradicting the general setup. The Rellich-Kondrachov theorem requires bounded domains, but the proposition claims to hold for general Riemannian manifolds with boundary.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "The proposition needs to be restricted to compact manifolds or provide a complete treatment of the non-compact case"
+      },
+      {
+        "step": "Since D(\u0394) \u2282 H\u00b2(M), the embedding D(\u0394) \u21aa L\u00b2(M) is compact",
+        "issue": "This inclusion is not justified. The domain D(\u0394) depends on the boundary conditions B, and may not be contained in H\u00b2(M). Even if it were, the compactness of the embedding requires M to be bounded.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need to carefully characterize D(\u0394) based on the specific boundary conditions and prove the required inclusions"
+      },
+      {
+        "step": "By the spectral theorem for compact self-adjoint operators applied to the resolvent",
+        "issue": "The resolvent is not self-adjoint unless \u03bb is real. The spectral theorem for compact operators requires self-adjointness or normality.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Restrict to \u03bb \u2208 \u211d \u2229 \u03c1(\u0394) or use the spectral theorem for compact operators more carefully"
+      },
+      {
+        "step": "The converse follows immediately from the spectral theorem",
+        "issue": "The converse is not immediate. If the spectrum is discrete, it doesn't automatically follow that the resolvent is compact. This requires additional argument.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Provide a complete proof of the converse direction"
+      },
+      {
+        "step": "the multiplicity of eigenvalues is bounded by the dimension of irreducible representations",
+        "issue": "This claim is vague and potentially false. The multiplicity could exceed the dimension of any single irreducible representation if multiple copies appear in the decomposition.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Clarify what specific bound is being claimed and prove it rigorously"
+      },
+      {
+        "step": "When Isom(M,g) is compact, the Peter-Weyl theorem ensures",
+        "issue": "The proof never establishes when or if Isom(M,g) is compact. For many manifolds, the isometry group is non-compact.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Either assume Isom(M,g) is compact or handle the non-compact case"
+      }
+    ],
+    "hidden_assumptions": [
+      "M is assumed to be compact without stating this restriction",
+      "The boundary conditions B are assumed to yield a domain contained in H\u00b2(M)",
+      "The resolvent set is assumed to contain real numbers",
+      "The isometry group is implicitly assumed to be compact for the representation theory",
+      "The proof assumes eigenspaces are finite-dimensional without justification"
+    ],
+    "circular_reasoning": false,
+    "circular_details": "",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof only handles compact manifolds but claims to prove the result for general Riemannian manifolds with boundary. The representation-theoretic bounds are stated without precision and likely only hold under additional assumptions.",
+    "citation_issues": [
+      "Rellich-Kondrachov theorem is misapplied - it requires bounded domains",
+      "The spectral theorem for compact operators is incorrectly applied to non-self-adjoint resolvents",
+      "Peter-Weyl theorem requires compact groups but compactness of Isom(M,g) is not established"
+    ],
+    "structural_soundness": 0.2,
+    "overall_assessment": "This proof has fundamental flaws, attempting to prove a general result using techniques that only apply to compact manifolds. The treatment of the non-compact case is relegated to a bracketed note, and the representation-theoretic claims are imprecise and unsubstantiated.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "Only proves the discrete spectrum characterization for compact manifolds, and establishes that eigenspaces carry representations of the isometry group, but fails to prove the multiplicity bound claim",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "M is compact (required for Steps 2-5 to work)",
+      "Isom(M,g) is compact (required for Peter-Weyl theorem in Step 9)",
+      "Boundary conditions B are compatible with the isometry group action",
+      "The domain D(\u0394) \u2286 H\u00b2(M) (needed for Rellich-Kondrachov)",
+      "Specific growth conditions for non-compact case are not specified"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 1",
+        "issue": "Circular reasoning - assumes B defines self-adjoint extension without proving the von Neumann conditions are satisfied"
+      },
+      {
+        "step": "Step 2",
+        "issue": "Assumes M is compact without stating this assumption, and assumes D(\u0394) = H\u00b2(M) without justification"
+      },
+      {
+        "step": "Step 6",
+        "issue": "Acknowledges gap but doesn't resolve it - non-compact case is not actually handled"
+      },
+      {
+        "step": "Step 9",
+        "issue": "Peter-Weyl theorem requires Isom(M,g) to be compact, which is not assumed or proven"
+      },
+      {
+        "step": "Step 10",
+        "issue": "Acknowledges gap and provides no actual proof of the multiplicity bound"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Non-compact manifold case is completely unresolved despite being in the proposition",
+      "Multiplicity bound is not proven, only asserted",
+      "No verification that boundary conditions are compatible with isometry group",
+      "No proof that the stated boundary conditions actually yield self-adjoint extensions",
+      "Missing analysis of essential spectrum for non-compact case"
+    ],
+    "internal_score": 0.3
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims eigenspace multiplicity is bounded by dimensions of irreducible representations of Isom(M,g), but this is mathematically incorrect. For manifolds with large isometry groups, eigenspaces can have multiplicity exceeding irreducible representation dimensions due to multiple copies of the same irreducible representation appearing in the decomposition.",
+      "The proof assumes the resolvent is compact for non-compact manifolds without proper justification. This contradicts established spectral theory where non-compact manifolds typically have essential spectrum, making the resolvent non-compact.",
+      "The claim that discrete spectrum is equivalent to compact resolvent is stated without addressing the essential spectrum, which is a fundamental gap contradicting standard operator theory."
+    ],
+    "assumption_conflicts": [
+      "Assumes finite volume or 'appropriate growth conditions' without specifying what these conditions are, conflicting with the precision required in spectral theory",
+      "Claims self-adjoint extensions always exist for the given boundary conditions without proving elliptic boundary conditions guarantee this",
+      "Assumes continuous action of Isom(M,g) on L\u00b2(M) without addressing when this group is even well-defined or locally compact"
+    ],
+    "beneficial_connections": [
+      "Connects to proof [08b6405556dd] regarding symmetry principles and group actions on manifolds",
+      "Relates to proof [087da119976b] concerning group actions and symmetry breaking, though in a different context",
+      "Could potentially strengthen understanding of spectral theory in geometric contexts if the gaps were properly addressed"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof contains fundamental mathematical errors and significant gaps. The multiplicity bound claim is particularly problematic and appears to misunderstand basic representation theory. The extension to non-compact manifolds is inadequately treated, and several key assumptions lack proper justification."
+  },
+  "confidence_score": 0.315,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.3,
+    "cross_proof": 0.2,
+    "calibration": 0.6
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.3,
+    "cross_proof": 0.2,
+    "calibration": 0.6
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": true,
+  "new_mathematics_needed": "",
+  "limitations": [
+    "Extension to non-compact manifolds requires careful analysis of essential spectrum",
+    "Precise relationship between symmetry group representations and eigenvalue multiplicities needs case-specific analysis",
+    "Boundary condition classification for general manifolds is incomplete",
+    "Proof assumes compact manifold or strong growth conditions",
+    "Multiplicity bounds depend on specific symmetry group structure",
+    "Does not address singular boundary conditions",
+    "Connection between continuous and discrete symmetries not fully developed"
+  ],
+  "source_convergence": {
+    "structural_claim": "Discrete eigenvalue spectra emerge from boundary conditions on wave equations, with symmetries determining allowed states",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Schr\u00f6dinger Equation for Hydrogen Atom",
+        "domain_id": "field_a",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Atomic energy levels arise as discrete eigenvalues from boundary conditions on the wave equation"
+      },
+      {
+        "result_id": "",
+        "result_name": "Helmholtz Equation",
+        "domain_id": "field_b",
+        "domain_name": "Acoustics and Wave Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Acoustic modes are eigenfunctions of the Laplacian with eigenvalues determined by geometry"
+      }
+    ],
+    "domains": [
+      "atomic_physics",
+      "acoustics"
+    ],
+    "domain_names": [
+      "Atomic and Molecular Physics",
+      "Acoustics and Wave Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.238,
+      "independence": 0.7,
+      "adversarial": 0.09,
+      "reproducibility": 0.42,
+      "depth_consistency": 1.0,
+      "confidence": 0.4274,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:56:26.304713+00:00",
+    "id": "734d22d53d5d"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.3168
+  }
+}

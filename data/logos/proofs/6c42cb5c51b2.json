@@ -1,0 +1,344 @@
+{
+  "id": "6c42cb5c51b2",
+  "convergence_id": "23258f63a41f",
+  "timestamp": "2026-05-02T12:48:59.441866+00:00",
+  "proposition": "Let (X, \u03c4) be a topological space and P: X \u2192 \u211d^n be a continuous function representing a physical observable. For any homeomorphism h: X \u2192 X and any \u03b5 > 0, there exists \u03b4 > 0 such that for all continuous perturbations g: X \u2192 X with sup_{x\u2208X} d(g(x), x) < \u03b4, the topological invariants of P (including homology groups H_k(P^{-1}(-\u221e,a]), Betti numbers, and persistent homology diagrams) remain unchanged.",
+  "proposition_natural": "Topological properties provide robust features that persist under continuous deformations and local perturbations",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Topology",
+    "Differential geometry",
+    "Functional analysis"
+  ],
+  "apparatus_justification": "Topology directly captures persistence under continuous deformations via homeomorphisms and homotopy invariants. Differential geometry is needed for quantum gravity's spacetime manifolds and curvature. Functional analysis provides the framework for wave equations in acoustics and spectral properties.",
+  "proof_natural": "**Proposition.** Let $(X, \\tau)$ be a topological space and $P: X \\to \\mathbb{R}^n$ be a continuous function representing a physical observable. For any homeomorphism $h: X \\to X$ and any $\\varepsilon > 0$, there exists $\\delta > 0$ such that for all continuous perturbations $g: X \\to X$ with $\\sup_{x \\in X} d(g(x), x) < \\delta$, the topological invariants of $P$ (including homology groups $H_k(P^{-1}(-\\infty, a])$, Betti numbers, and persistent homology diagrams) remain unchanged.\n\n**Proof.** Let $X$ be a compact topological space with metric $d$, and let $P: X \\to \\mathbb{R}^n$ be a continuous function representing a physical observable. We assume that the topology $\\tau$ on $X$ is metrizable, that physical perturbations can be modeled as continuous maps $g: X \\to X$, and that homology groups are computed with coefficients in a field $F$. We further assume that the relevant topological invariants are well-defined for sublevel sets of $P$, and that persistent homology is computed with respect to the sublevel set filtration of $P$.\n\nWe begin by observing that for any homeomorphism $h: X \\to X$, the functions $P$ and $P \\circ h$ have identical topological invariants. This follows from the functoriality of homology: homeomorphisms induce isomorphisms on homology groups, and thus preserve all homological invariants.\n\nDefine the sublevel set filtration $\\mathcal{F}_a = P^{-1}(-\\infty, a]$ for $a \\in \\mathbb{R}$. This filtration captures the topological evolution of the sublevel sets as the threshold parameter $a$ varies.\n\nNow consider a continuous perturbation $g: X \\to X$ with $\\sup_{x \\in X} d(g(x), x) < \\delta$. Since the composition of continuous functions is continuous, $P \\circ g$ is continuous.\n\nBy the Heine-Cantor theorem, since $P$ is continuous on the compact metric space $X$, it is uniformly continuous. Therefore, for any $\\varepsilon > 0$, there exists $\\delta > 0$ such that $d(x, y) < \\delta$ implies $|P(x) - P(y)| < \\varepsilon$.\n\nApplying this uniform continuity, for $g$ with $\\sup_{x \\in X} d(g(x), x) < \\delta$, we obtain\n$$\\sup_{x \\in X} |P(g(x)) - P(x)| < \\varepsilon.$$\n\nBy the stability theorem for persistent homology (Cohen-Steiner, Edelsbrunner, and Harer), the bottleneck distance between the persistence diagrams of $P$ and $P \\circ g$ is at most $\\sup_{x \\in X} |P(g(x)) - P(x)| < \\varepsilon$.\n\n[Note: To complete the proof rigorously, we need to establish that sufficiently small changes in function values preserve the homology groups of sublevel sets. This requires showing that small bottleneck distance between persistence diagrams implies that the homology groups and Betti numbers remain unchanged. While the stability theorem guarantees that the persistence diagrams are close, the precise connection to the invariance of individual homology groups requires additional topological arguments that depend on the specific nature of the critical values of $P$.]\n\nUnder the assumption that this gap can be filled with appropriate stability results from persistent homology theory, we conclude that for sufficiently small $\\delta$, all topological invariants of $P$ remain unchanged under perturbations $g$ with $\\sup_{x \\in X} d(g(x), x) < \\delta$.\n\nThis completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.Topology.Basic\nimport Mathlib.Topology.ContinuousFunction.Basic\nimport Mathlib.Topology.Homeomorph\nimport Mathlib.Analysis.NormedSpace.Basic\nimport Mathlib.Topology.MetricSpace.Basic\nimport Mathlib.Topology.CompactOpen\nimport Mathlib.Data.Real.Basic\n\n/-- Sublevel set of a function at level a -/\ndef sublevelSet {X : Type*} [TopologicalSpace X] (P : X \u2192 \u211d) (a : \u211d) : Set X :=\n  {x : X | P x \u2264 a}\n\n/-- Persistence diagram type (placeholder) -/\nstructure PersistenceDiagram where\n  -- sorry: full definition requires persistent homology theory\n  dummy : Unit\n\n/-- Bottleneck distance between persistence diagrams (placeholder) -/\ndef bottleneckDistance : PersistenceDiagram \u2192 PersistenceDiagram \u2192 \u211d := \n  sorry -- requires persistent homology theory\n\n/-- Compute persistence diagram from a continuous function (placeholder) -/\ndef persistenceDiagramOf {X : Type*} [TopologicalSpace X] (P : C(X, \u211d)) : PersistenceDiagram :=\n  sorry -- requires persistent homology theory\n\n/-- Homology groups of a topological space (placeholder) -/\ndef HomologyGroup (X : Type*) [TopologicalSpace X] (k : \u2115) : Type* :=\n  sorry -- requires algebraic topology\n\n/-- Betti numbers (placeholder) -/\ndef bettiNumber {X : Type*} [TopologicalSpace X] (k : \u2115) : \u2115 :=\n  sorry -- requires homology theory\n\n/-- Main theorem: Topological invariants are stable under small perturbations -/\ntheorem topological_invariants_stability \n  {X : Type*} [TopologicalSpace X] [MetricSpace X] [CompactSpace X]\n  (P : C(X, \u211d)) (\u03b5 : \u211d) (h\u03b5 : 0 < \u03b5) :\n  \u2203 \u03b4 > 0, \u2200 g : C(X, X), \n    (\u2200 x : X, dist (g x) x < \u03b4) \u2192 \n    (\u2200 a : \u211d, \u2200 k : \u2115, \n      -- Homology groups remain isomorphic\n      Nonempty (HomologyGroup (sublevelSet (P \u2218 g) a) k \u2243 \n                HomologyGroup (sublevelSet P a) k)) \u2227\n    -- Persistence diagrams remain close\n    bottleneckDistance (persistenceDiagramOf (P.comp g)) (persistenceDiagramOf P) < \u03b5 :=\nbegin\n  -- Step 1: For homeomorphism h, P and P\u2218h have identical invariants\n  -- This is true by functoriality of homology\n  sorry, -- requires homology functoriality\n  \n  -- Step 2: Sublevel set filtration is defined above\n  \n  -- Step 3: P\u2218g is continuous by composition\n  -- This is automatic in Lean with C(X,X) and C(X,\u211d)\n  \n  -- Step 4: Uniform continuity of P on compact X\n  have unif_cont : \u2200 \u03b5' > 0, \u2203 \u03b4' > 0, \u2200 x y : X, \n    dist x y < \u03b4' \u2192 dist (P x) (P y) < \u03b5',\n  { intros \u03b5' h\u03b5',\n    -- Heine-Cantor theorem\n    sorry }, -- requires full Heine-Cantor theorem\n  \n  -- Step 5: Control |P(g(x)) - P(x)| by controlling d(g(x), x)\n  obtain \u27e8\u03b4, h\u03b4, h\u03b4_prop\u27e9 := unif_cont \u03b5 h\u03b5,\n  use \u03b4, h\u03b4,\n  intros g hg,\n  \n  -- Step 6 & 7: Stability theorem for persistent homology\n  have stability : bottleneckDistance (persistenceDiagramOf (P.comp g)) \n                                     (persistenceDiagramOf P) \u2264 \n                   \u2a06 x : X, |P (g x) - P x|,\n  { sorry }, -- requires stability theorem from persistent homology\n  \n  -- Step 8: Connect bottleneck distance to homology invariance\n  split,\n  { intros a k,\n    sorry }, -- requires showing small bottleneck distance implies homology isomorphism\n  \n  -- Show bottleneck distance is small\n  apply lt_of_le_of_lt stability,\n  have : \u2a06 x : X, |P (g x) - P x| < \u03b5,\n  { sorry }, -- requires showing supremum bound from pointwise bounds\n  exact this,\nend",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "For homeomorphism h: X \u2192 X, P and P\u2218h have identical topological invariants",
+      "justification": "Homeomorphisms induce isomorphisms on homology groups",
+      "dependencies": [
+        "Standard result in algebraic topology"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Define the sublevel set filtration F_a = P^{-1}(-\u221e,a] for a \u2208 \u211d",
+      "justification": "Definition of sublevel set filtration for continuous functions",
+      "dependencies": []
+    },
+    {
+      "step_number": 3,
+      "statement": "For continuous g: X \u2192 X with sup_{x\u2208X} d(g(x), x) < \u03b4, the function P\u2218g is continuous",
+      "justification": "Composition of continuous functions is continuous",
+      "dependencies": []
+    },
+    {
+      "step_number": 4,
+      "statement": "By uniform continuity of P on compact X, for any \u03b5 > 0, there exists \u03b4 > 0 such that d(x,y) < \u03b4 implies |P(x) - P(y)| < \u03b5",
+      "justification": "Heine-Cantor theorem: continuous functions on compact metric spaces are uniformly continuous",
+      "dependencies": [
+        "Heine-Cantor theorem"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "For g with sup_{x\u2208X} d(g(x), x) < \u03b4, we have sup_{x\u2208X} |P(g(x)) - P(x)| < \u03b5",
+      "justification": "Direct application of uniform continuity from step 4",
+      "dependencies": [
+        "Step 4"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "[Gap: Need to show that small changes in function values preserve homology groups of sublevel sets]",
+      "justification": "This requires stability results from persistent homology theory",
+      "dependencies": [
+        "Stability theorem for persistent homology"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "By the stability theorem for persistent homology, the bottleneck distance between persistence diagrams of P and P\u2218g is at most sup_{x\u2208X} |P(g(x)) - P(x)| < \u03b5",
+      "justification": "Application of Cohen-Steiner, Edelsbrunner, Harer stability theorem",
+      "dependencies": [
+        "Step 5",
+        "Stability theorem"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "[Gap: Need to connect bottleneck distance stability to invariance of homology groups and Betti numbers]",
+      "justification": "Requires showing that sufficiently small bottleneck distance implies isomorphic homology groups",
+      "dependencies": [
+        "Relationship between persistence diagrams and homology groups"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Heine-Cantor Theorem",
+      "authors": "Heine, Cantor",
+      "year": "1872",
+      "field": "Real Analysis",
+      "statement": "A continuous function on a compact metric space is uniformly continuous",
+      "usage": "Establishes uniform continuity of observable P"
+    },
+    {
+      "name": "Stability of Persistence Diagrams",
+      "authors": "Cohen-Steiner, Edelsbrunner, Harer",
+      "year": "2007",
+      "field": "Computational Topology",
+      "statement": "The bottleneck distance between persistence diagrams is bounded by the L\u221e distance between functions",
+      "usage": "Provides quantitative stability for topological features"
+    },
+    {
+      "name": "Functoriality of Homology",
+      "authors": "Eilenberg, Steenrod",
+      "year": "1952",
+      "field": "Algebraic Topology",
+      "statement": "Continuous maps induce homomorphisms on homology groups; homeomorphisms induce isomorphisms",
+      "usage": "Justifies invariance under homeomorphisms"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "X is a compact topological space with metric d",
+    "P represents a physical observable that can be modeled as a continuous real-valued or vector-valued function",
+    "The topology \u03c4 on X is metrizable",
+    "Physical perturbations can be modeled as continuous maps g: X \u2192 X",
+    "The relevant topological invariants are well-defined for sublevel sets of P",
+    "Homology groups are computed with coefficients in a field F",
+    "Persistent homology is computed with respect to the sublevel set filtration of P"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Proposition statement",
+        "issue": "The statement claims invariants remain unchanged for ANY homeomorphism h, but h is never used in the proof. The proof only considers perturbations g, not compositions with homeomorphisms.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Complete restatement needed - either remove h or actually use it"
+      },
+      {
+        "step": "Assumption that X has a metric",
+        "issue": "The proposition starts with a general topological space (X,\u03c4) but the proof immediately assumes X has a metric d. This is a massive restriction not stated in the proposition.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Either state metrizability in the proposition or prove without assuming a metric"
+      },
+      {
+        "step": "Application of stability theorem",
+        "issue": "The stability theorem gives bottleneck distance bounds but does NOT imply homology groups remain unchanged. Small bottleneck distance means diagrams are close, not identical.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "This gap cannot be fixed - the conclusion doesn't follow"
+      },
+      {
+        "step": "Definition of sublevel sets",
+        "issue": "For P: X \u2192 \u211d\u207f with n>1, sublevel sets P\u207b\u00b9(-\u221e,a] are not well-defined since there's no natural ordering on \u211d\u207f",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Restrict to P: X \u2192 \u211d or define sublevel sets differently"
+      },
+      {
+        "step": "Uniform continuity application",
+        "issue": "The proof uses |P(x) - P(y)| < \u03b5 but for P: X \u2192 \u211d\u207f this should be ||P(x) - P(y)|| < \u03b5 with appropriate norm",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Use proper norm notation throughout"
+      },
+      {
+        "step": "Final conclusion",
+        "issue": "The proof admits a critical gap exists and hand-waves it away by assuming it can be filled. This is not a complete proof.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Actually prove the missing step or acknowledge the proof is incomplete"
+      }
+    ],
+    "hidden_assumptions": [
+      "X is compact (not stated in proposition)",
+      "X is metrizable (not stated in proposition)",
+      "P takes values in \u211d rather than \u211d\u207f for sublevel sets to make sense",
+      "The perturbations preserve the domain (g: X \u2192 X rather than g: X \u2192 Y)",
+      "There exists a metric on X compatible with the topology \u03c4",
+      "The homology groups in question are singular homology",
+      "Critical values of P are isolated (needed for the gap to be fillable)"
+    ],
+    "circular_reasoning": false,
+    "circular_details": "",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof at best shows persistence diagrams are \u03b5-close in bottleneck distance, NOT that homology groups, Betti numbers, and persistence diagrams remain unchanged. The stability theorem gives approximation, not exact preservation.",
+    "citation_issues": [
+      "Stability theorem is misapplied - it gives bounds on bottleneck distance, not invariance of homology groups",
+      "The connection between bottleneck distance and homology group invariance is assumed without justification",
+      "No proper citation format for Cohen-Steiner, Edelsbrunner, and Harer"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed with multiple critical gaps, hidden assumptions, and a complete disconnect between what's claimed and what's shown. The author even admits the main step is missing and attempts to hand-wave it away.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to show stability of persistent homology diagrams under small perturbations, but fails to establish that topological invariants like homology groups and Betti numbers remain unchanged",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "X is assumed to be compact metric space but only stated as compact topological space with metric",
+      "P is assumed to be real-valued in steps 4-5 but stated as \u211d^n-valued",
+      "Sublevel sets P^{-1}(-\u221e,a] are assumed to be well-defined for vector-valued P",
+      "Homology coefficients field F is assumed to make persistence diagrams meaningful",
+      "Bottleneck distance is assumed to be well-defined between persistence diagrams"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 1",
+        "issue": "Claims homeomorphisms preserve topological invariants but h is arbitrary homeomorphism, not related to perturbation g"
+      },
+      {
+        "step": "Step 2",
+        "issue": "Sublevel sets P^{-1}(-\u221e,a] are undefined for vector-valued functions P: X \u2192 \u211d^n"
+      },
+      {
+        "step": "Step 4",
+        "issue": "Applies uniform continuity to P: X \u2192 \u211d^n but treats it as real-valued function"
+      },
+      {
+        "step": "Step 5",
+        "issue": "Uses |P(x) - P(y)| notation for vector-valued function without specifying norm"
+      },
+      {
+        "step": "Step 7",
+        "issue": "Stability theorem requires real-valued functions but P is \u211d^n-valued"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Step 6 gap is acknowledged but not filled",
+      "Step 8 gap is acknowledged but not filled",
+      "No connection established between bottleneck distance bounds and invariance of homology groups",
+      "No proof that small bottleneck distance implies identical rather than just similar topological invariants",
+      "Vector-valued case is never properly handled",
+      "No consideration of how to define sublevel sets for \u211d^n-valued functions"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims topological invariants remain unchanged under continuous perturbations, but this directly contradicts basic topology. Homology groups and Betti numbers of sublevel sets can change discontinuously even under arbitrarily small perturbations of the function P.",
+      "The proof conflates stability of persistence diagrams (which holds in bottleneck distance) with invariance of individual homology groups, which is mathematically false.",
+      "The claim that homeomorphisms preserve 'topological invariants of P' is imprecise and potentially false - while P and P\u2218h may have the same range and continuity properties, their sublevel sets can have completely different topological structure."
+    ],
+    "assumption_conflicts": [
+      "Assumes topological invariants are stable under small perturbations, contradicting well-established results in algebraic topology",
+      "The assumption that 'physical perturbations' preserve topological structure conflicts with existing proofs [1b27ca45ba4e] and [4aa47cb7a004] which show topological constraints fundamentally limit system evolution",
+      "Assumes uniform continuity arguments suffice for topological stability, which conflicts with the discrete nature established in [37338340b3ed]"
+    ],
+    "beneficial_connections": [
+      "Connects to [7562124710df] regarding topological constraints determining system behavior, though reaches opposite conclusions",
+      "Relates to [1f680e11fff8] on computing topological invariants, but misapplies the stability theory",
+      "Could potentially strengthen [4aa47cb7a004] if the mathematical errors were corrected to show when topological constraints are preserved vs. broken"
+    ],
+    "consistency_score": 0.1,
+    "notes": "This proof contains fundamental mathematical errors. The stability theorem for persistent homology provides bounds on bottleneck distance between persistence diagrams, not invariance of individual homology groups. Small perturbations can create or destroy critical points, dramatically changing sublevel set topology. The proof needs complete reconstruction with correct mathematical foundations."
+  },
+  "confidence_score": 0.215,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.1,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.1,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous framework connecting: (1) stability results from persistent homology to actual invariance of discrete topological invariants, (2) physical perturbations in quantum gravity and acoustics to continuous maps on appropriate topological spaces, (3) the specific topological invariants relevant to each physical domain",
+  "limitations": [
+    "The connection between small bottleneck distance and actual invariance of homology groups is not established",
+    "The modeling of physical perturbations as continuous maps needs domain-specific justification",
+    "The choice of which topological invariants are physically relevant is not formalized",
+    "The proof only addresses abstract topological spaces, not specific physical systems",
+    "Quantum effects may introduce discontinuities not captured by continuous maps",
+    "The compactness assumption may not hold for all physical systems",
+    "The proof does not specify which topology is appropriate for each physical domain"
+  ],
+  "source_convergence": {
+    "structural_claim": "Topological properties provide robust features that persist under continuous deformations and local perturbations",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "String Theory Dualities",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Gravity",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Different geometries can describe the same physics through topological equivalences"
+      },
+      {
+        "result_id": "",
+        "result_name": "Quantum Error Correction in AdS/CFT",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Gravity",
+        "link_type": "direct",
+        "structural_conclusion": "Bulk information is topologically protected against boundary perturbations"
+      },
+      {
+        "result_id": "",
+        "result_name": "Topological Acoustics",
+        "domain_id": "field_b",
+        "domain_name": "Acoustics and Wave Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Topological edge states are immune to backscattering from local disorder"
+      },
+      {
+        "result_id": "",
+        "result_name": "Anderson Localization of Acoustic Waves",
+        "domain_id": "field_b",
+        "domain_name": "Acoustics and Wave Physics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Global interference effects from disorder create robust localization independent of local details"
+      }
+    ],
+    "domains": [
+      "quantum_gravity",
+      "acoustics"
+    ],
+    "domain_names": [
+      "Quantum Gravity",
+      "Acoustics and Wave Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.2856,
+      "independence": 0.8,
+      "adversarial": 0.09,
+      "reproducibility": 0.4724999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.47455500000000006,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:04:43.051787+00:00",
+    "id": "23258f63a41f"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.268815
+  }
+}

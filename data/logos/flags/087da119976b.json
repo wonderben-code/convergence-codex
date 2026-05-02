@@ -1,0 +1,13 @@
+{
+  "proof_id": "087da119976b",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous theory connecting linear instability analysis to nonlinear pattern formation in infinite-dimensional spaces with symmetry. Current approaches rely on formal expansions and center manifold reductions that are not fully justified for PDEs. Additionally, a general framework for proving persistence and structural stability of symmetry-broken states in dissipative systems is needed.",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

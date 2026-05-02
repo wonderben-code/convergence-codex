@@ -1,0 +1,358 @@
+{
+  "id": "2c6eb7138df0",
+  "convergence_id": "4cf2ed250ca7",
+  "timestamp": "2026-05-02T13:03:11.695470+00:00",
+  "proposition": "Let (S, G, \u03c1) be a physical system where S is the state space, G is a symmetry group acting on S via representation \u03c1: G \u2192 Aut(S), and H \u2286 S is the space of physically realizable states. Then: (1) H = {s \u2208 S : \u03c1(g)(s) \u2208 H \u2200g \u2208 Stab(H)}, where Stab(H) is the stabilizer subgroup, and (2) The observable spectrum Spec(O) for any observable O: S \u2192 \u211d satisfies Spec(O|H) \u2286 {\u03bb \u2208 \u211d : \u2203s \u2208 H, \u2203g \u2208 G/Stab(s) such that O(\u03c1(g)(s)) = \u03bb}",
+  "proposition_natural": "Symmetry principles fundamentally dictate the allowed states and transitions in physical systems, with symmetry breaking determining the observable spectrum",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Algebraic structures",
+    "Functional analysis"
+  ],
+  "apparatus_justification": "Category theory provides the natural framework for formalizing symmetry as automorphism groups and their actions on state spaces, with symmetry breaking as functorial relationships between categories. Algebraic structures are essential for group representations and their breaking patterns. Functional analysis is needed for the spectral theory connecting symmetries to observable spectra in infinite-dimensional Hilbert spaces.",
+  "proof_natural": "**Proposition.** Let $(S, G, \\rho)$ be a physical system where $S$ is the state space, $G$ is a symmetry group acting on $S$ via representation $\\rho: G \\to \\text{Aut}(S)$, and $H \\subseteq S$ is the space of physically realizable states. Then:\n1. $H = \\{s \\in S : \\rho(g)(s) \\in H \\; \\forall g \\in \\text{Stab}(H)\\}$, where $\\text{Stab}(H)$ is the stabilizer subgroup\n2. The observable spectrum $\\text{Spec}(O)$ for any observable $O: S \\to \\mathbb{R}$ satisfies $\\text{Spec}(O|_H) \\subseteq \\{\\lambda \\in \\mathbb{R} : \\exists s \\in H, \\exists g \\in G/\\text{Stab}(s) \\text{ such that } O(\\rho(g)(s)) = \\lambda\\}$\n\n**Proof.** We assume that $S$ is a Hilbert space or manifold with appropriate structure, $G$ is a Lie group with a faithful representation on $S$, and physical observables are self-adjoint operators or smooth functions on $S$. Further, we assume the action $\\rho$ preserves the physical structure (inner product, symplectic form, etc.), symmetry breaking is modeled as restriction to an invariant subspace $H \\subseteq S$, and Wigner's theorem applies so that symmetries are represented by unitary or antiunitary operators. Let the stabilizer subgroups be closed subgroups of $G$ and physical states form a convex subset of $S$.\n\nWe first establish that the space of allowed states $H$ is invariant under the stabilizer subgroup $\\text{Stab}(H) = \\{g \\in G : \\rho(g)(H) = H\\}$. By definition of the stabilizer and the requirement that symmetries map physical states to physical states, for any $s \\in H$ and $g \\in \\text{Stab}(H)$, we have $\\rho(g)(s) \\in H$. This proves the first claim.\n\nFor the second claim, we invoke the orbit-stabilizer theorem, which states that $|\\text{Orb}(s)| = |G|/|\\text{Stab}(s)|$ for finite groups, with appropriate measure-theoretic generalization for Lie groups. Consider an observable $O$ compatible with the symmetry, meaning $[O, \\rho(g)] = 0$ for all $g \\in G$. By Schur's lemma, $O$ has the same eigenvalue on each irreducible representation of $G$.\n\nWhen symmetry is broken from $G$ to $\\text{Stab}(H)$, the degenerate eigenspaces of $O$ split according to the branching rules for group representations, which determine how representations of $G$ decompose under restriction to the subgroup $\\text{Stab}(H)$. The observable spectrum $\\text{Spec}(O|_H)$ consists precisely of eigenvalues corresponding to $\\text{Stab}(H)$-invariant states.\n\nFurthermore, by the Wigner-Eckart theorem, selection rules arise as matrix elements $\\langle\\psi|O|\\phi\\rangle = 0$ when $\\psi$ and $\\phi$ transform under different irreducible representations of $\\text{Stab}(H)$. This constrains which transitions are allowed and thus which eigenvalues appear in the physical spectrum.\n\n[Note: The precise measure-theoretic formulation for continuous groups requires additional technical machinery not fully developed here.]\n\nTherefore, the spectrum of any observable restricted to the physical subspace $H$ is determined by the orbit structure under the residual symmetry group, establishing our second claim. This completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.GroupTheory.GroupAction.Basic\nimport Mathlib.GroupTheory.GroupAction.Quotient\nimport Mathlib.GroupTheory.Subgroup.Basic\nimport Mathlib.GroupTheory.Coset\nimport Mathlib.Topology.Basic\nimport Mathlib.Analysis.SpecialFunctions.Complex.Log\nimport Mathlib.CategoryTheory.Abelian.Basic\n\n/-- A physical system with symmetry group action -/\nstructure PhysicalSystem where\n  S : Type*\n  G : Type*\n  [group : Group G]\n  [topS : TopologicalSpace S]\n  \u03c1 : G \u2192* (S \u2243 S)\n  H : Set S\n  H_closed : IsClosed H\n\n/-- The stabilizer subgroup of a subset -/\ndef stabilizerSubgroup {S G : Type*} [Group G] (\u03c1 : G \u2192* (S \u2243 S)) (H : Set S) : Subgroup G :=\n  { carrier := {g : G | \u2200 s \u2208 H, \u03c1 g s \u2208 H}\n    mul_mem' := fun {a b} ha hb s hs => by\n      rw [\u2190 MulEquiv.coe_toEquiv, \u2190 MonoidHom.map_mul]\n      exact ha (\u03c1 b s) (hb s hs)\n    one_mem' := fun s hs => by simp [MonoidHom.map_one]\n    inv_mem' := fun {a} ha s hs => by\n      have : \u03c1 a\u207b\u00b9 (\u03c1 a s) = s := by simp [\u2190 MonoidHom.map_inv, MulEquiv.symm_apply_apply]\n      rw [\u2190 this]\n      exact ha (\u03c1 a s) (ha s hs) }\n\n/-- An observable on a physical system -/\nstructure Observable (sys : PhysicalSystem) where\n  f : sys.S \u2192 \u211d\n  continuous : Continuous f\n  -- Symmetry compatibility condition\n  symmetry_compatible : \u2200 g : sys.G, \u2200 s : sys.S, f (sys.\u03c1 g s) = f s := by\n    sorry -- \"Requires formalization of commutation with symmetry action\"\n\n/-- The spectrum of an observable restricted to H -/\ndef observableSpectrum (sys : PhysicalSystem) (O : Observable sys) : Set \u211d :=\n  {\u03bb : \u211d | \u2203 s \u2208 sys.H, O.f s = \u03bb}\n\n/-- Main theorem: Characterization of physical states and observable spectrum -/\ntheorem physical_system_symmetry (sys : PhysicalSystem) :\n  -- Part 1: H is characterized by stabilizer invariance\n  (sys.H = {s \u2208 sys.S | \u2200 g \u2208 stabilizerSubgroup sys.\u03c1 sys.H, sys.\u03c1 g s \u2208 sys.H}) \u2227\n  -- Part 2: Observable spectrum characterization\n  (\u2200 O : Observable sys, observableSpectrum sys O \u2286 \n    {\u03bb : \u211d | \u2203 s \u2208 sys.H, \u2203 g : sys.G, O.f (sys.\u03c1 g s) = \u03bb}) := by\n  constructor\n  \u00b7 -- Part 1 proof\n    ext s\n    simp [stabilizerSubgroup]\n    constructor\n    \u00b7 intro hs g hg\n      exact hg s hs\n    \u00b7 intro h\n      -- Need to show s \u2208 H given invariance under stabilizer\n      sorry -- \"Requires proof that stabilizer-invariant states are in H\"\n  \u00b7 -- Part 2 proof\n    intro O \u03bb h\u03bb\n    obtain \u27e8s, hs, hOs\u27e9 := h\u03bb\n    use s, hs, 1\n    simp [hOs]\n\n/-- Step 3: Orbit-Stabilizer theorem application -/\nlemma orbit_stabilizer_physical (sys : PhysicalSystem) [Fintype sys.G] (s : sys.S) :\n  Fintype.card (MulAction.orbit sys.G s) * Fintype.card (MulAction.stabilizer sys.G s) = Fintype.card sys.G := by\n  sorry -- \"Requires adaptation of orbit-stabilizer theorem to our action\"\n\n/-- Step 5: Symmetry breaking and eigenspace decomposition -/\nlemma symmetry_breaking_decomposition (sys : PhysicalSystem) (O : Observable sys) :\n  -- When G \u2192 Stab(H), eigenspaces decompose\n  True := by\n  sorry -- \"Requires formalization of representation branching rules\"\n\n/-- Step 7: Selection rules from Wigner-Eckart -/\nlemma selection_rules (sys : PhysicalSystem) (O : Observable sys) \n  (\u03c8 \u03c6 : sys.S) (h\u03c8 : \u03c8 \u2208 sys.H) (h\u03c6 : \u03c6 \u2208 sys.H) :\n  -- Matrix elements vanish for different irreps\n  True := by\n  sorry -- \"Requires Wigner-Eckart theorem formalization\"",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The space of allowed states H is invariant under the stabilizer subgroup Stab(H) = {g \u2208 G : \u03c1(g)(H) = H}",
+      "justification": "By definition of stabilizer subgroup and the requirement that symmetries map physical states to physical states",
+      "dependencies": [
+        "Definition of stabilizer subgroup",
+        "Physical principle that symmetries preserve realizability"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "For any s \u2208 H and g \u2208 Stab(H), we have \u03c1(g)(s) \u2208 H",
+      "justification": "Follows from step 1 and the definition of group action",
+      "dependencies": [
+        "Step 1",
+        "Properties of group representations"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The orbit-stabilizer theorem gives |Orb(s)| = |G|/|Stab(s)| for finite groups, with appropriate measure-theoretic generalization for Lie groups",
+      "justification": "Standard result from group theory",
+      "dependencies": [
+        "Orbit-stabilizer theorem"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "For an observable O compatible with the symmetry (i.e., [O, \u03c1(g)] = 0 for g \u2208 G), the spectrum on H is constrained by symmetry",
+      "justification": "Schur's lemma implies that O has the same eigenvalue on irreducible representations",
+      "dependencies": [
+        "Schur's lemma",
+        "Representation theory of compact groups"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "When symmetry is broken G \u2192 Stab(H), degenerate eigenspaces of O split according to irreducible representations of Stab(H)",
+      "justification": "Branching rules for group representations determine how representations decompose under subgroup restriction",
+      "dependencies": [
+        "Step 4",
+        "Branching rules for Lie groups"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "The observable spectrum Spec(O|H) consists precisely of eigenvalues corresponding to Stab(H)-invariant states",
+      "justification": "Physical states must be invariant under residual symmetry group",
+      "dependencies": [
+        "Steps 2, 5",
+        "Physical postulate of symmetry invariance"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Selection rules arise as matrix elements \u27e8\u03c8|O|\u03c6\u27e9 = 0 when \u03c8 and \u03c6 transform under different irreducible representations of Stab(H)",
+      "justification": "Wigner-Eckart theorem constrains matrix elements by symmetry",
+      "dependencies": [
+        "Step 6",
+        "Wigner-Eckart theorem"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Wigner's Theorem on Symmetry Representations",
+      "authors": "Eugene Wigner",
+      "year": "1931",
+      "field": "Quantum Mechanics",
+      "statement": "Any symmetry transformation of a quantum system is represented by a unitary or antiunitary operator",
+      "usage": "Ensures symmetries have well-defined action on quantum states"
+    },
+    {
+      "name": "Schur's Lemma",
+      "authors": "Issai Schur",
+      "year": "1905",
+      "field": "Representation Theory",
+      "statement": "A linear map between irreducible representations that commutes with the group action is either zero or an isomorphism",
+      "usage": "Constrains eigenvalues of symmetric operators on irreducible representations"
+    },
+    {
+      "name": "Wigner-Eckart Theorem",
+      "authors": "Eugene Wigner, Carl Eckart",
+      "year": "1930s",
+      "field": "Quantum Mechanics",
+      "statement": "Matrix elements of tensor operators factor into geometric (Clebsch-Gordan) and dynamical (reduced matrix element) parts",
+      "usage": "Derives selection rules from symmetry considerations"
+    },
+    {
+      "name": "Orbit-Stabilizer Theorem",
+      "authors": "Classical result",
+      "year": "19th century",
+      "field": "Group Theory",
+      "statement": "For a group action, |Orb(x)| \u00d7 |Stab(x)| = |G| for finite groups",
+      "usage": "Relates symmetry breaking to orbit structure"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "S is a Hilbert space or manifold with appropriate structure for the physical system",
+    "G is a Lie group with a faithful representation on S",
+    "Physical observables are self-adjoint operators or smooth functions on S",
+    "The action \u03c1 preserves the physical structure (inner product, symplectic form, etc.)",
+    "Symmetry breaking is modeled as restriction to an invariant subspace H \u2286 S",
+    "The spectrum of observables is well-defined (discrete or continuous)",
+    "Wigner's theorem applies: symmetries are represented by unitary or antiunitary operators",
+    "The stabilizer subgroups are closed subgroups of G",
+    "Physical states form a convex subset of S"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "First claim proof",
+        "issue": "The proof only shows H \u2286 {s \u2208 S : \u03c1(g)(s) \u2208 H \u2200g \u2208 Stab(H)}, not equality. The reverse inclusion is never established.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Must prove that if \u03c1(g)(s) \u2208 H for all g \u2208 Stab(H), then s \u2208 H"
+      },
+      {
+        "step": "Observable compatibility assumption",
+        "issue": "Assumes [O, \u03c1(g)] = 0 for all g \u2208 G without justification. This is not true for general observables.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "The proposition claims to hold for ANY observable O, but the proof requires O to be G-invariant"
+      },
+      {
+        "step": "Application of Schur's lemma",
+        "issue": "Schur's lemma applies to irreducible representations, but S is not assumed irreducible. The conclusion about eigenvalues is unjustified.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would need to decompose S into irreducibles first, but this changes the entire argument"
+      },
+      {
+        "step": "Spectrum characterization in claim 2",
+        "issue": "The proof never actually establishes the subset relation claimed. It discusses eigenvalue splitting but doesn't prove the specific formula given.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Need explicit construction showing every \u03bb \u2208 Spec(O|_H) has the required form"
+      },
+      {
+        "step": "Wigner-Eckart theorem application",
+        "issue": "The theorem applies to tensor operators in quantum mechanics, not general observables on arbitrary state spaces S.",
+        "severity": "major",
+        "fixable": false,
+        "suggested_fix": "Restrict to quantum mechanical systems or remove this argument"
+      },
+      {
+        "step": "Orbit-stabilizer theorem usage",
+        "issue": "The theorem is stated but never actually used in the proof. Its relevance to the spectrum claim is unclear.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Either use it properly or remove the reference"
+      }
+    ],
+    "hidden_assumptions": [
+      "H is G-invariant (used but not stated)",
+      "Observables have discrete spectra",
+      "The representation \u03c1 is unitary/orthogonal",
+      "S has a decomposition into irreducible G-representations",
+      "The quotient G/Stab(s) makes sense (requires Stab(s) to be normal or use coset space)",
+      "Physical realizability is preserved under group action"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes H is invariant under Stab(H) to prove the first claim, but Stab(H) is defined as the subgroup that leaves H invariant. This is circular.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof only works for G-invariant observables in quantum systems with discrete spectra, but claims to hold for any observable on general state spaces.",
+    "citation_issues": [
+      "Schur's lemma requires irreducible representations, not mentioned in assumptions",
+      "Wigner-Eckart theorem is specific to angular momentum in quantum mechanics, not general symmetries",
+      "Orbit-stabilizer theorem is cited but never actually applied",
+      "Wigner's theorem about unitary/antiunitary operators contradicts the general manifold setting"
+    ],
+    "structural_soundness": 0.3,
+    "overall_assessment": "This proof is fundamentally flawed, mixing quantum mechanical results with general mathematical structures without proper justification. The main claims are never actually proven, and the argument relies on unstated assumptions that may not hold in the general setting claimed.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish properties of symmetry-broken systems but fails to prove either part of the stated proposition. Part (1) is circular (defining H in terms of itself), and part (2) is never actually demonstrated.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Observable O is required to commute with G for Step 4 but this contradicts the general case",
+      "Assumption that all physical states are eigenstates of observables",
+      "Assumption that H forms irreducible representations under Stab(H)",
+      "Assumption that symmetry breaking can be modeled as subgroup restriction",
+      "Assumption that Schur's lemma applies in the given context",
+      "Assumption that branching rules are well-defined for the specific representation",
+      "Assumption that Wigner-Eckart theorem applies to the observable O"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "1",
+        "issue": "Circular definition: defines H in terms of Stab(H) which is defined in terms of H"
+      },
+      {
+        "step": "4",
+        "issue": "Assumes O commutes with G without justification, and Schur's lemma application is incorrect - it doesn't imply constant eigenvalues across irreducible representations"
+      },
+      {
+        "step": "5",
+        "issue": "Assumes without proof that symmetry breaking G \u2192 Stab(H) causes eigenspace splitting according to branching rules"
+      },
+      {
+        "step": "6",
+        "issue": "Non sequitur: doesn't follow that spectrum consists only of eigenvalues of Stab(H)-invariant states"
+      },
+      {
+        "step": "7",
+        "issue": "Introduces selection rules without connecting them to the main proposition, and Wigner-Eckart theorem application is unjustified"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Never actually proves part (1) of the proposition due to circular reasoning",
+      "Never demonstrates the spectrum constraint in part (2)",
+      "No connection established between Steps 1-3 and the final claims",
+      "Missing proof that the orbit structure relates to observable spectra",
+      "No justification for why G/Stab(s) appears in part (2)",
+      "Fails to address both discrete and continuous spectrum cases"
+    ],
+    "internal_score": 0.1
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof assumes observables are 'self-adjoint operators or smooth functions' but existing proof [06879fd9ae87] establishes that physical properties cannot possess predetermined values independent of measurement framework, which contradicts the notion of well-defined observable functions on state space",
+      "Claim that 'For an observable O compatible with the symmetry (i.e., [O, \u03c1(g)] = 0 for g \u2208 G), the spectrum on H is constrained by symmetry' assumes classical commutativity that conflicts with [19c10dc86a65] which proves quantum coherence fundamentally alters system properties beyond classical predictions",
+      "The assumption that 'Physical states form a convex subset of S' contradicts [2cc2431e06a6] which proves quantum effects create fundamental thresholds that bifurcate outcomes into discrete classes, not continuous convex combinations"
+    ],
+    "assumption_conflicts": [
+      "Assumes faithful group representations while [06879fd9ae87] works with categorical quantum systems where observables form C*-algebras, creating incompatible mathematical frameworks",
+      "Assumes well-defined spectrum for all observables conflicts with contextual nature established in [06879fd9ae87]",
+      "Classical orbit-stabilizer theorem application ignores quantum measurement contextuality from [06879fd9ae87]"
+    ],
+    "beneficial_connections": [
+      "Connects to [2373a9c1ee2d] on symmetry breaking and emergent collective modes through the stabilizer subgroup analysis",
+      "Extends [087da119976b] on spontaneous symmetry breaking by providing explicit spectral constraints",
+      "Relates to [139ee0499c9e] through topological constraints via group actions, though the new proof focuses on algebraic rather than topological aspects"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof attempts to apply classical group theory to quantum systems without properly accounting for measurement contextuality and non-classical behavior established in multiple existing proofs. The mathematical framework is internally consistent but fundamentally incompatible with the quantum foundations established in the corpus."
+  },
+  "confidence_score": 0.22000000000000003,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.1,
+    "cross_proof": 0.2,
+    "calibration": 0.29999999999999993
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.1,
+    "cross_proof": 0.2,
+    "calibration": 0.29999999999999993
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous category-theoretic framework connecting representation theory to physical observables that works uniformly across classical and quantum systems, including proper treatment of infinite-dimensional representations and continuous spectra",
+  "limitations": [
+    "The transition from abstract symmetry groups to physical observables requires additional structure not fully captured in the proof",
+    "The relationship between symmetry breaking and spectrum determination is stated but not proven with full mathematical rigor",
+    "The proof assumes discrete spectra; continuous spectra require measure-theoretic arguments not developed here",
+    "The connection between different types of symmetry breaking (explicit vs spontaneous) is not formalized",
+    "Proof focuses on kinematical aspects; dynamical symmetry breaking requires additional machinery",
+    "Does not address gauge symmetries which require quotient by gauge orbits",
+    "Assumes semisimple Lie groups; exceptional cases may require separate treatment",
+    "The proof sketch doesn't capture subtleties of infinite-dimensional representations"
+  ],
+  "source_convergence": {
+    "structural_claim": "Symmetry principles fundamentally dictate the allowed states and transitions in physical systems, with symmetry breaking determining the observable spectrum",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Yang-Mills Theory",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Field Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Local gauge symmetries dictate the form of fundamental interactions and constrain possible field configurations"
+      },
+      {
+        "result_id": "",
+        "result_name": "Selection Rules for Atomic Transitions",
+        "domain_id": "field_b",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Conservation laws arising from symmetries strictly constrain which quantum transitions can occur between atomic states"
+      },
+      {
+        "result_id": "",
+        "result_name": "Spontaneous Symmetry Breaking (Higgs Mechanism)",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Field Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Hidden symmetries determine the mass spectrum and interaction structure of particles"
+      },
+      {
+        "result_id": "",
+        "result_name": "Zeeman Effect",
+        "domain_id": "field_b",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "direct",
+        "structural_conclusion": "External fields break rotational symmetry, splitting degenerate states and revealing hidden structure"
+      }
+    ],
+    "domains": [
+      "quantum_field_theory",
+      "atomic_physics"
+    ],
+    "domain_names": [
+      "Quantum Field Theory",
+      "Atomic and Molecular Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.476,
+      "independence": 0.7,
+      "adversarial": 0.12,
+      "reproducibility": 0.6299999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.5363,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:37:15.028817+00:00",
+    "id": "4cf2ed250ca7"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.29395499999999997
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "proof_id": "be34d758021c",
+  "timestamp": "2026-05-02T13:43:50.048631+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "constraint_logic was considered since these structures arise from balance conditions (nonlinearity vs dispersion/dissipation), but the convergence emphasizes the shared principles rather than optimization or equilibrium characterization"
+      ],
+      "reasoning": "The convergence identifies a shared abstract principle across domains: nonlinearity enabling stable, localized, shape-preserving propagation. This is best captured by axioms characterizing the balance between nonlinear effects and dispersive/dissipative tendencies, which both optical solitons and vortex structures satisfy as models."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Functional analysis, Dynamical systems, Differential geometry",
+      "alternatives_considered": [],
+      "reasoning": "Functional analysis provides the framework for studying nonlinear PDEs and their soliton solutions through operator theory and spectral methods. Dynamical systems theory captures stability and shape-preservation under evolution. Differential geometry handles the manifold structure of solution spaces and geometric flows."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof uses a traveling wave reduction to convert the evolution equation into a stationary problem, then applies functional analytic methods to prove existence of localized solutions. The key insight is that nonlinearity can balance dispersion to create structures that neither spread nor collapse, though the precise conditions are domain-specific.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 5 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3154 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 2768 chars, 11 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This formalization captures the structure of traveling wave solutions but cannot complete the proof due to missing PDE-specific theory in Mathlib. The key missing components are: traveling wave reduction theory, decay estimates for localized functions, and stability theory for nonlinear PDEs. The implicit function theorem is available but needs to be adapted for the PDE context."
+    }
+  ]
+}

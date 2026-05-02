@@ -1,0 +1,369 @@
+{
+  "id": "1318ecd2c25c",
+  "convergence_id": "4fd476d245bb",
+  "timestamp": "2026-05-02T13:04:28.801421+00:00",
+  "proposition": "Let (\u03a9, F, P) be a probability space supporting a family of measures {\u03bc_\u03b2}_{\u03b2\u2208\u211d^+} indexed by inverse temperature \u03b2. Let G be a symmetry group acting on a configuration space X, and let \u03c6: X \u2192 \u211d be an order parameter. Then phase transitions at critical points \u03b2_c are characterized by: (1) Symmetry breaking: \u2203g \u2208 G such that lim_{\u03b2\u2192\u03b2_c^+} \u27e8g\u03c6\u27e9_\u03b2 \u2260 lim_{\u03b2\u2192\u03b2_c^-} \u27e8g\u03c6\u27e9_\u03b2, and (2) Universal scaling: Near \u03b2_c, correlation functions \u03be(\u03b2) ~ |\u03b2 - \u03b2_c|^{-\u03bd} where \u03bd depends only on (dim(X), G) and not on microscopic Hamiltonian details.",
+  "proposition_natural": "Phase transitions represent symmetry-breaking organizational events governed by universal scaling laws that transcend microscopic details",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Measure theory",
+    "Order theory"
+  ],
+  "apparatus_justification": "Category theory captures the universal scaling laws and symmetry-breaking as functorial relationships between phases. Measure theory provides the rigorous foundation for statistical mechanics and thermodynamic limits. Order theory formalizes the partial ordering of phases and critical phenomena.",
+  "proof_natural": "**Proposition.** Let (\u03a9, F, P) be a probability space supporting a family of measures {\u03bc_\u03b2}_{\u03b2\u2208\u211d^+} indexed by inverse temperature \u03b2. Let G be a symmetry group acting on a configuration space X, and let \u03c6: X \u2192 \u211d be an order parameter. Then phase transitions at critical points \u03b2_c are characterized by: (1) Symmetry breaking: \u2203g \u2208 G such that lim_{\u03b2\u2192\u03b2_c^+} \u27e8g\u03c6\u27e9_\u03b2 \u2260 lim_{\u03b2\u2192\u03b2_c^-} \u27e8g\u03c6\u27e9_\u03b2, and (2) Universal scaling: Near \u03b2_c, correlation functions \u03be(\u03b2) ~ |\u03b2 - \u03b2_c|^{-\u03bd} where \u03bd depends only on (dim(X), G) and not on microscopic Hamiltonian details.\n\n**Proof.** We assume that X is a Polish space with Borel \u03c3-algebra, G acts measurably on X, and the order parameter \u03c6: X \u2192 \u211d is measurable and G-equivariant. Let the Gibbs measures \u03bc_\u03b2 exist for all \u03b2 > 0 and satisfy the DLR conditions. We further assume the Hamiltonian H: X \u2192 \u211d is translation-invariant with finite range interactions, the thermodynamic limit exists, and the system exhibits a phase transition at some \u03b2_c \u2208 (0,\u221e).\n\nFor \u03b2 < \u03b2_c, by Dobrushin's uniqueness theorem, the Gibbs state is unique in the high-temperature phase. Since H is G-invariant, this unique measure \u03bc_\u03b2 must also be G-invariant. Thus \u27e8g\u03c6\u27e9_\u03b2 = \u27e8\u03c6\u27e9_\u03b2 for all g \u2208 G when \u03b2 < \u03b2_c.\n\nFor \u03b2 > \u03b2_c, the Peierls argument (or alternatively, reflection positivity methods) establishes the existence of multiple extremal Gibbs states {\u03bc_\u03b2^\u03b1}. These states are related by the action of G, and the decomposition \u03bc_\u03b2 = \u2211_\u03b1 w_\u03b1 \u03bc_\u03b2^\u03b1 shows that symmetry is spontaneously broken. Consequently, there exists g \u2208 G such that \u27e8g\u03c6\u27e9_{\u03bc_\u03b2^\u03b1} \u2260 \u27e8\u03c6\u27e9_{\u03bc_\u03b2^\u03b1}, establishing the discontinuous behavior of the order parameter at \u03b2_c under symmetry transformations.\n\nNear the critical point \u03b2_c, the correlation length \u03be(\u03b2) := -lim_{|x-y|\u2192\u221e} |x-y|/log|\u27e8\u03c6(x)\u03c6(y)\u27e9_c| diverges by definition, as correlations become long-ranged. At precisely \u03b2 = \u03b2_c, the system exhibits scale invariance with correlations satisfying \u27e8\u03c6(\u03bbx)\u03c6(\u03bby)\u27e9_{\u03b2_c} = \u03bb^{-2\u0394_\u03c6}\u27e8\u03c6(x)\u03c6(y)\u27e9_{\u03b2_c}. [Note: A complete proof of this scale invariance requires renormalization group fixed point analysis or conformal field theory methods, which we omit here.]\n\nThe key insight comes from Wilson's renormalization group theory. Under the Kadanoff block-spin transformation, microscopic details become irrelevant operators that flow to zero under repeated RG iterations, while the long-distance physics is preserved. The RG fixed points governing critical behavior are classified solely by symmetry group G and spatial dimension d = dim(X). \n\nSince irrelevant operators do not affect the critical behavior, the critical exponents\u2014including \u03bd\u2014depend only on the universality class characterized by (d, G). By the scaling hypothesis combined with dimensional analysis of RG eigenvalues, we obtain the universal scaling form \u03be(\u03b2) ~ |\u03b2 - \u03b2_c|^{-\u03bd} near \u03b2_c, where \u03bd = \u03bd(d,G) is independent of microscopic Hamiltonian details.\n\nThis establishes both the symmetry-breaking characterization of the phase transition and the universality of critical scaling. \u220e",
+  "proof_lean": "import Mathlib.MeasureTheory.ProbabilityMeasure\nimport Mathlib.MeasureTheory.Measure\nimport Mathlib.GroupTheory.GroupAction.Basic\nimport Mathlib.Topology.Basic\nimport Mathlib.Analysis.NormedSpace.Basic\nimport Mathlib.Order.Basic\n\n/-- Configuration space for statistical mechanics -/\nstructure ConfigSpace where\n  X : Type*\n  [inst : TopologicalSpace X]\n  [measurableSpace : MeasurableSpace X]\n  dim : \u2115\n\n/-- Gibbs measure indexed by inverse temperature -/\nstructure GibbsMeasure (\u03a9 : Type*) [MeasurableSpace \u03a9] where\n  \u03bc : \u211d\u207a \u2192 Measure \u03a9\n  [isProbability : \u2200 \u03b2, IsProbabilityMeasure (\u03bc \u03b2)]\n\n/-- Order parameter as a measurable function -/\nstructure OrderParameter (X : Type*) [MeasurableSpace X] where\n  \u03c6 : X \u2192 \u211d\n  [measurable : Measurable \u03c6]\n\n/-- Critical point in the parameter space -/\nstructure CriticalPoint where\n  \u03b2_c : \u211d\u207a\n\n/-- Correlation function -/\ndef correlationFunction {X : Type*} [MeasurableSpace X] \n  (\u03bc : Measure X) (\u03c6 : X \u2192 \u211d) (x y : X) : \u211d := \n  sorry -- Need definition of connected correlation function\n\n/-- Correlation length -/\ndef correlationLength {X : Type*} [MeasurableSpace X] [MetricSpace X]\n  (\u03bc : Measure X) (\u03c6 : X \u2192 \u211d) : \u211d := \n  sorry -- Need definition as decay rate of correlations\n\n/-- Symmetry breaking condition -/\ndef symmetryBreaking {\u03a9 X : Type*} [MeasurableSpace \u03a9] [MeasurableSpace X]\n  (G : Type*) [Group G] [MulAction G X] \n  (\u03bc_family : GibbsMeasure \u03a9) (\u03c6 : OrderParameter X) (\u03b2_c : CriticalPoint) : Prop :=\n  \u2203 g : G, sorry -- Need limits and expectation values under group action\n\n/-- Universal scaling near critical point -/\ndef universalScaling {\u03a9 X : Type*} [MeasurableSpace \u03a9] [MeasurableSpace X] [MetricSpace X]\n  (\u03bc_family : GibbsMeasure \u03a9) (\u03c6 : OrderParameter X) (\u03b2_c : CriticalPoint) \n  (\u03bd : \u211d) : Prop :=\n  sorry -- Need asymptotic behavior |\u03b2 - \u03b2_c|^{-\u03bd}\n\n/-- Main theorem: Phase transitions exhibit symmetry breaking and universal scaling -/\ntheorem phase_transition_characterization \n  {\u03a9 X : Type*} [MeasurableSpace \u03a9] [MeasurableSpace X] [MetricSpace X]\n  (probSpace : Measure \u03a9) [IsProbabilityMeasure probSpace]\n  (config : ConfigSpace) (G : Type*) [Group G] [MulAction G X]\n  (\u03bc_family : GibbsMeasure \u03a9) (\u03c6 : OrderParameter X) (\u03b2_c : CriticalPoint) :\n  (symmetryBreaking G \u03bc_family \u03c6 \u03b2_c) \u2227 \n  (\u2203 \u03bd : \u211d, \u03bd = \u03bd(config.dim, G) \u2227 universalScaling \u03bc_family \u03c6 \u03b2_c \u03bd) := by\n  constructor\n  \u00b7 -- Part 1: Symmetry breaking\n    -- Step 1: G-invariance for \u03b2 < \u03b2_c\n    have h1 : \u2200 \u03b2 < \u03b2_c.\u03b2_c, sorry -- Dobrushin uniqueness theorem needed\n    -- Step 2: Multiple extremal states for \u03b2 > \u03b2_c  \n    have h2 : \u2200 \u03b2 > \u03b2_c.\u03b2_c, sorry -- Peierls argument needed\n    -- Step 3: Discontinuous order parameter\n    sorry -- Need extremal decomposition theory\n  \u00b7 -- Part 2: Universal scaling\n    -- Step 4: Diverging correlation length\n    have h4 : sorry -- Need proper definition of critical point\n    -- Step 5: Scale invariance at \u03b2_c\n    have h5 : sorry -- Requires RG fixed point analysis\n    -- Step 6: Irrelevant operators flow to zero\n    have h6 : sorry -- Kadanoff block-spin transformation\n    -- Step 7: Critical exponents depend only on (d,G)\n    have h7 : sorry -- RG universality classes\n    -- Step 8: Scaling law \u03be ~ |\u03b2 - \u03b2_c|^{-\u03bd}\n    use sorry -- Critical exponent \u03bd(d,G)\n    constructor\n    \u00b7 sorry -- \u03bd depends only on dimension and symmetry\n    \u00b7 sorry -- Scaling hypothesis",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The Gibbs measure \u03bc_\u03b2 is G-invariant for \u03b2 < \u03b2_c",
+      "justification": "By uniqueness of Gibbs states in the high-temperature phase (Dobrushin's theorem) and G-invariance of H",
+      "dependencies": [
+        "Dobrushin uniqueness theorem",
+        "Assumption: H is G-invariant"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "For \u03b2 > \u03b2_c, there exist multiple extremal Gibbs states {\u03bc_\u03b2^\u03b1} breaking G-symmetry",
+      "justification": "Peierls argument or reflection positivity methods show coexistence of phases",
+      "dependencies": [
+        "Peierls-Griffiths theorem",
+        "Step 1"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The order parameter \u27e8\u03c6\u27e9_\u03b2 exhibits discontinuous behavior at \u03b2_c under symmetry transformations",
+      "justification": "By decomposition of \u03bc_\u03b2 into extremal states: \u03bc_\u03b2 = \u2211_\u03b1 w_\u03b1 \u03bc_\u03b2^\u03b1 with \u03bc_\u03b2^\u03b1 related by G-action",
+      "dependencies": [
+        "Step 2",
+        "Choquet decomposition theorem"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "Near \u03b2_c, the correlation length \u03be(\u03b2) := -lim_{|x-y|\u2192\u221e} |x-y|/log|\u27e8\u03c6(x)\u03c6(y)\u27e9_c| diverges",
+      "justification": "By definition of critical point as locus where correlations become long-ranged",
+      "dependencies": [
+        "Definition of phase transition",
+        "Assumption: exponential decay away from \u03b2_c"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The system exhibits scale invariance at \u03b2_c: correlations satisfy \u27e8\u03c6(\u03bbx)\u03c6(\u03bby)\u27e9_{\u03b2_c} = \u03bb^{-2\u0394_\u03c6}\u27e8\u03c6(x)\u03c6(y)\u27e9_{\u03b2_c}",
+      "justification": "[Gap: Requires proof via RG fixed point analysis or conformal field theory]",
+      "dependencies": [
+        "Step 4",
+        "Renormalization group theory"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Under RG flow, microscopic details become irrelevant operators flowing to zero",
+      "justification": "Kadanoff block-spin transformation preserves long-distance physics while integrating out short scales",
+      "dependencies": [
+        "Step 5",
+        "Wilson's RG formulation"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Critical exponents \u03bd, \u03b7, etc. depend only on (d, G) where d = dim(X)",
+      "justification": "RG fixed points are classified by symmetry and dimensionality; irrelevant operators don't affect critical behavior",
+      "dependencies": [
+        "Step 6",
+        "Universality hypothesis"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Near \u03b2_c: \u03be(\u03b2) ~ |\u03b2 - \u03b2_c|^{-\u03bd} with \u03bd = \u03bd(d,G)",
+      "justification": "Scaling hypothesis plus dimensional analysis of RG eigenvalues",
+      "dependencies": [
+        "Step 7",
+        "Scaling relations"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Dobrushin Uniqueness Theorem",
+      "authors": "R.L. Dobrushin",
+      "year": "1968",
+      "field": "Statistical Mechanics",
+      "statement": "For sufficiently high temperature (small \u03b2), the Gibbs measure is unique",
+      "usage": "Establishes symmetry preservation in high-temperature phase"
+    },
+    {
+      "name": "Peierls-Griffiths Theorem",
+      "authors": "R. Peierls, R.B. Griffiths",
+      "year": "1936, 1964",
+      "field": "Statistical Mechanics",
+      "statement": "Low-temperature Ising model exhibits multiple phases with spontaneous magnetization",
+      "usage": "Proves symmetry breaking in low-temperature phase"
+    },
+    {
+      "name": "Wilson's Renormalization Group",
+      "authors": "K.G. Wilson",
+      "year": "1971",
+      "field": "Statistical Mechanics/QFT",
+      "statement": "Critical phenomena are governed by RG fixed points; irrelevant operators flow to zero",
+      "usage": "Establishes universality and scaling behavior"
+    },
+    {
+      "name": "Scaling Hypothesis",
+      "authors": "B. Widom, L. Kadanoff",
+      "year": "1965-1966",
+      "field": "Statistical Mechanics",
+      "statement": "Near critical points, thermodynamic functions exhibit homogeneous scaling",
+      "usage": "Relates critical exponents to RG eigenvalues"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Configuration space X is a Polish space with Borel \u03c3-algebra",
+    "Symmetry group G acts measurably on X",
+    "Order parameter \u03c6: X \u2192 \u211d is measurable and G-equivariant",
+    "Gibbs measures \u03bc_\u03b2 exist for all \u03b2 > 0 and satisfy DLR conditions",
+    "Hamiltonian H: X \u2192 \u211d is translation-invariant and has finite range interactions",
+    "Thermodynamic limit exists: lim_{\u039b\u2197\u2124^d} (1/|\u039b|) log Z_\u039b,\u03b2 exists",
+    "System exhibits a phase transition at some \u03b2_c \u2208 (0,\u221e)",
+    "Correlation functions \u27e8\u03c6(x)\u03c6(y)\u27e9_\u03b2 - \u27e8\u03c6(x)\u27e9_\u03b2\u27e8\u03c6(y)\u27e9_\u03b2 decay exponentially for \u03b2 \u2260 \u03b2_c",
+    "Order parameter transforms non-trivially under G"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "For \u03b2 > \u03b2_c, the Peierls argument establishes the existence of multiple extremal Gibbs states",
+        "issue": "The Peierls argument only applies to specific models (e.g., Ising) with specific symmetries. The proof claims this for arbitrary G and arbitrary Hamiltonians with finite range interactions.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed without restricting to specific models where Peierls arguments are known to work"
+      },
+      {
+        "step": "At precisely \u03b2 = \u03b2_c, the system exhibits scale invariance",
+        "issue": "This is assumed without proof. Scale invariance at criticality is not automatic and requires substantial justification. The proof admits this by noting 'complete proof requires RG/CFT methods'.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would require a complete RG or CFT analysis, which is model-dependent"
+      },
+      {
+        "step": "Correlation length \u03be(\u03b2) := -lim_{|x-y|\u2192\u221e} |x-y|/log|\u27e8\u03c6(x)\u03c6(y)\u27e9_c|",
+        "issue": "This definition assumes exponential decay away from criticality and that the limit exists. Neither is justified.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Add assumptions about exponential clustering and existence of correlation length"
+      },
+      {
+        "step": "Since H is G-invariant, this unique measure \u03bc_\u03b2 must also be G-invariant",
+        "issue": "This assumes the Gibbs measure construction preserves symmetry in the thermodynamic limit, which is not automatic",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Add assumption that boundary conditions respect G-symmetry or prove symmetry preservation"
+      },
+      {
+        "step": "RG fixed points governing critical behavior are classified solely by symmetry group G and spatial dimension d",
+        "issue": "This is false in general. There can be multiple fixed points with the same symmetry, and classification depends on more than just (d,G)",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed without completely restructuring the universality claim"
+      }
+    ],
+    "hidden_assumptions": [
+      "The order parameter \u03c6 is assumed to be the primary field driving the phase transition",
+      "Assumes existence of a unique critical temperature \u03b2_c",
+      "Assumes the phase transition is second-order (continuous)",
+      "Assumes translation invariance of the system",
+      "Assumes the RG flow has a unique fixed point governing the transition",
+      "Assumes boundary conditions that don't break the symmetry",
+      "Assumes the correlation functions are well-defined in the thermodynamic limit",
+      "Assumes G acts transitively on the order parameter space"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes the existence of a phase transition at \u03b2_c to prove properties of phase transitions. The definition of \u03be(\u03b2) already assumes it diverges at criticality, which is part of what needs to be proved.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims results for arbitrary symmetry groups G and arbitrary dimensions, but the arguments (Peierls, RG universality) only work for specific cases. The universality claim that \u03bd depends only on (d,G) is false - there are many universality classes with the same symmetry.",
+    "citation_issues": [
+      "Dobrushin's theorem requires specific conditions on the interaction strength not verified here",
+      "Peierls argument does not apply to general symmetry groups G, only discrete symmetries in specific models",
+      "Wilson's RG theory does not guarantee that microscopic details are always irrelevant - there are dangerously irrelevant operators",
+      "The scaling hypothesis is not a theorem but an assumption that must be verified case-by-case"
+    ],
+    "structural_soundness": 0.2,
+    "overall_assessment": "This proof attempts to establish extremely general results about phase transitions using arguments that only apply to specific models. The logical structure assumes what it tries to prove in several places, and makes sweeping claims about universality that are known to be false in general. The proof would need to be completely rewritten with much more restrictive hypotheses.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish phase transition characterization but fails to rigorously prove either symmetry breaking or universal scaling as stated",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Existence of renormalization group fixed points",
+      "Validity of scaling hypothesis",
+      "Existence of conformal field theory description at criticality",
+      "Convergence of RG flow",
+      "Irrelevance of microscopic operators under RG",
+      "Existence of scaling limit",
+      "Finite correlation length for \u03b2 \u2260 \u03b2_c",
+      "Analyticity properties of free energy",
+      "Cluster decomposition property"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 3",
+        "issue": "Does not establish discontinuous behavior - decomposition into extremal states doesn't imply discontinuity of order parameter under symmetry transformations"
+      },
+      {
+        "step": "Step 4",
+        "issue": "Definition of correlation length is incorrect - should be \u03be(\u03b2) = lim_{|x-y|\u2192\u221e} -|x-y|/log|\u27e8\u03c6(x)\u03c6(y)\u27e9_c - \u27e8\u03c6\u27e9\u00b2|, and divergence at \u03b2_c is assumed not proven"
+      },
+      {
+        "step": "Step 5",
+        "issue": "Scale invariance is asserted without proof - the gap is acknowledged but this is a critical step that invalidates subsequent reasoning"
+      },
+      {
+        "step": "Step 6",
+        "issue": "Irrelevance of microscopic details requires proof that RG flow actually drives irrelevant operators to zero, which is not established"
+      },
+      {
+        "step": "Step 7",
+        "issue": "Classification of RG fixed points by (d,G) alone requires proof of universality hypothesis which is not provided"
+      },
+      {
+        "step": "Step 8",
+        "issue": "Scaling hypothesis is assumed without justification, and dimensional analysis alone doesn't determine critical exponents"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No rigorous proof of scale invariance at criticality",
+      "Missing proof of RG fixed point existence and properties",
+      "No demonstration that symmetry breaking actually occurs as stated",
+      "Scaling hypothesis assumed without proof",
+      "No proof that correlation length actually diverges as |\u03b2 - \u03b2_c|^{-\u03bd}",
+      "Missing rigorous connection between RG analysis and critical behavior",
+      "No proof of universality beyond assertion"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims universal scaling exponents \u03bd depend only on (dim(X), G), but existing proof [087da119976b] shows symmetry breaking in systems with G-invariant measures on Banach spaces X, which would imply different scaling behavior for infinite-dimensional systems",
+      "The claim that Gibbs measure \u03bc_\u03b2 is G-invariant for \u03b2 < \u03b2_c contradicts the general framework in [2373a9c1ee2d] which shows symmetry breaking can occur at any temperature depending on the action structure",
+      "The assertion of discontinuous order parameter behavior conflicts with [139ee0499c9e] which establishes that topological constraints determine evolution continuity, and phase transitions should respect topological invariants"
+    ],
+    "assumption_conflicts": [
+      "Assumes finite range interactions and translation invariance, but [21fcf0926d92] shows vacuum properties fundamentally shape processes through long-range correlations",
+      "Requires exponential decay of correlations for \u03b2 \u2260 \u03b2_c, conflicting with [1083de91300b] which demonstrates area-law scaling in gapped systems",
+      "Polish space assumption for X conflicts with the separable Banach space framework in [087da119976b] for symmetry breaking analysis"
+    ],
+    "beneficial_connections": [
+      "Connects to [2373a9c1ee2d] on symmetry breaking and emergent collective modes, providing specific mathematical framework for phase transitions",
+      "Extends [087da119976b] by providing explicit critical exponent predictions for symmetry breaking systems",
+      "Complements [1050c80b4013] by offering a general framework for understanding phase transitions beyond just density-driven transitions"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof makes strong universality claims that are not well-supported by the existing corpus. The assumption of universal scaling depending only on dimension and symmetry group is particularly problematic given the diversity of phase transition mechanisms shown in existing proofs. The mathematical framework is sound but the physical claims are overly restrictive."
+  },
+  "confidence_score": 0.27999999999999997,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.29999999999999993
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.29999999999999993
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "Rigorous mathematical foundation for RG transformations on measure spaces, particularly: (1) Well-defined coarse-graining maps on infinite-dimensional spaces, (2) Spectral theory of RG linearization at fixed points, (3) Rigorous derivation of scaling forms from RG flow",
+  "limitations": [
+    "Step 5: Scale invariance at criticality requires either RG fixed point analysis or CFT methods not fully rigorous in d>2",
+    "Step 7: Universality hypothesis assumed rather than proven for general (d,G)",
+    "Connection between RG eigenvalues and critical exponents requires non-rigorous scaling arguments",
+    "Proof assumes existence of phase transition rather than deriving it",
+    "Limited to equilibrium statistical mechanics with short-range interactions",
+    "Universality proven only for specific models (e.g., \u03c6^4 theory near d=4)",
+    "Does not cover first-order transitions or systems without order parameters"
+  ],
+  "source_convergence": {
+    "structural_claim": "Phase transitions represent symmetry-breaking organizational events governed by universal scaling laws that transcend microscopic details",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Landau Theory of Phase Transitions",
+        "domain_id": "field_a",
+        "domain_name": "Thermodynamics and Statistical Mechanics",
+        "link_type": "direct",
+        "structural_conclusion": "Phase transitions are symmetry-breaking events where order parameters emerge, with symmetry as the fundamental organizing principle"
+      },
+      {
+        "result_id": "",
+        "result_name": "Landau Theory of Phase Transitions",
+        "domain_id": "field_b",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Phase transitions are classified by symmetry breaking and order parameters, with macroscopic phases distinguished by symmetries rather than microscopic details"
+      },
+      {
+        "result_id": "",
+        "result_name": "Renormalization Group Theory",
+        "domain_id": "field_a",
+        "domain_name": "Thermodynamics and Statistical Mechanics",
+        "link_type": "direct",
+        "structural_conclusion": "Critical phenomena exhibit scale invariance and universality, with microscopic details becoming irrelevant near phase transitions"
+      },
+      {
+        "result_id": "",
+        "result_name": "Renormalization Group Theory",
+        "domain_id": "field_b",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Physical systems exhibit scale invariance at critical points, with universal behavior determined by symmetry and dimensionality rather than microscopic details"
+      }
+    ],
+    "domains": [
+      "thermodynamics",
+      "condensed_matter"
+    ],
+    "domain_names": [
+      "Thermodynamics and Statistical Mechanics",
+      "Condensed Matter Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.476,
+      "independence": 0.2,
+      "adversarial": 0.12,
+      "reproducibility": 0.6299999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.4113,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:05:11.490733+00:00",
+    "id": "4fd476d245bb"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.31626
+  }
+}

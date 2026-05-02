@@ -1,0 +1,15 @@
+{
+  "proof_id": "d67b9ff9a720",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous categorical framework connecting quantum measurement contexts to thermodynamic measurement protocols, including: (1) Formal definition of morphisms between Context_QM and Context_TD categories, (2) Proof of functorial relationship preserving contextuality structure, (3) Unified treatment of incompatibility/commutativity across domains",
+    "Difficulty assessed as challenging",
+    "7 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

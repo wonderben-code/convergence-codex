@@ -1,0 +1,38 @@
+{
+  "proof_id": "4b2dc505f672",
+  "timestamp": "2026-05-02T13:30:23.076725+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "equivalence - This could capture the structural similarity between electronic band structure and phononic/photonic crystals, but was rejected because the physical mechanisms differ significantly (quantum vs classical waves) making a functorial relationship less natural than identifying shared axioms."
+      ],
+      "reasoning": "Both phenomena involve wave propagation through periodic structures resulting in forbidden frequency/energy bands. The convergence identifies shared abstract principles: periodicity leading to band gaps, wave equations in periodic potentials, and dispersion relations with forbidden regions. These are best captured as a common set of axioms about periodic operators and their spectral properties."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Functional analysis, Differential geometry, Algebraic structures",
+      "alternatives_considered": [],
+      "reasoning": "Band structure emerges from spectral theory of differential operators on periodic domains. Functional analysis provides the spectral theory framework, differential geometry handles the periodic structure via manifolds and symmetry groups, while algebraic structures capture the periodicity through group actions and representation theory."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof uses Bloch's theorem to reduce the problem to a family of operators H\u2096 parametrized by crystal momentum k. Each H\u2096 has discrete spectrum forming continuous bands E\u2099(k), and gaps arise when these bands do not overlap.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 7 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 2795 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "failed",
+      "alternatives_considered": [],
+      "reasoning": "The read operation timed out"
+    }
+  ]
+}

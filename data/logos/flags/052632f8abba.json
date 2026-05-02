@@ -1,0 +1,15 @@
+{
+  "proof_id": "052632f8abba",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous category-theoretic framework for multi-scale systems that handles: (1) Infinite-dimensional morphism spaces with appropriate topologies, (2) Approximate functors with quantified error bounds, (3) Scale-dependent categories with systematic coarse-graining functors, (4) Non-equilibrium measure theory for systems with persistent currents",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

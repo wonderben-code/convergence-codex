@@ -1,0 +1,38 @@
+{
+  "proof_id": "06d6ace265c2",
+  "timestamp": "2026-05-02T12:54:22.702762+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "categorical",
+      "alternatives_considered": [
+        "axiomatic - One could axiomatize properties of information dispersal, but this would miss the functorial nature of how quantum states map to classical states through environmental interaction"
+      ],
+      "reasoning": "The convergence describes a universal mechanism (information dispersal) that characterizes the quantum-classical transition across different physical contexts. This is best captured as a categorical universal property where 'classicality' emerges whenever quantum information flows into environmental degrees of freedom, regardless of the specific physical implementation."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Category theory, Information theory, Functional analysis",
+      "alternatives_considered": [],
+      "reasoning": "Category theory provides the natural framework for formalizing structure-preserving maps between quantum and classical domains, with functors capturing how information dispersal creates emergent boundaries. Information theory quantifies the dispersal process itself, while functional analysis provides the operator-theoretic foundation for quantum systems and their environmental coupling."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof shows that quantum-to-classical transitions arise from information-theoretic processes: system-environment entanglement transfers coherence information into environmental degrees of freedom, creating redundant classical information accessible to multiple observers. This mechanism depends only on entropic quantities and channel properties, not on system scale or fundamental collapse parameters, establishing that information dispersal rather than size or collapse drives classical emergence.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 7 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3532 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 3061 chars, 13 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "The formalization captures the mathematical structure but cannot implement the physics-specific concepts like decoherence, quantum Darwinism, and open quantum systems without extensive additional theory development"
+    }
+  ]
+}

@@ -1,0 +1,329 @@
+{
+  "id": "e30dfb046c31",
+  "convergence_id": "5411b8cce612",
+  "timestamp": "2026-05-02T13:06:02.190146+00:00",
+  "proposition": "Let H be a Hamiltonian on a Hilbert space \u210b with topological invariant \u03bd \u2208 \u2124. Then there exists a subspace S \u2286 \u210b of dimension dim(S) = |\u03bd| such that for any perturbation V with ||V|| < \u0394/2 (where \u0394 is the spectral gap), the ground state manifold of H + V is unitarily equivalent to S, independent of the microscopic details of V.",
+  "proposition_natural": "Topological constraints create robust quantum states independent of material details",
+  "formalisation_type": "constraint_logic",
+  "mathematical_apparatus": [
+    "Topology",
+    "Category theory",
+    "Algebraic structures"
+  ],
+  "apparatus_justification": "Topology directly captures the notion of topological constraints and their invariance properties. Category theory provides the framework to formalize 'independence of material details' through functorial relationships between topological spaces and quantum state spaces. Algebraic structures (specifically topological groups and their representations) bridge the gap between abstract topological properties and concrete quantum states.",
+  "proof_natural": "**Proposition.** Let $H$ be a Hamiltonian on a Hilbert space $\\mathcal{H}$ with topological invariant $\\nu \\in \\mathbb{Z}$. Then there exists a subspace $S \\subseteq \\mathcal{H}$ of dimension $\\dim(S) = |\\nu|$ such that for any perturbation $V$ with $\\|V\\| < \\Delta/2$ (where $\\Delta$ is the spectral gap), the ground state manifold of $H + V$ is unitarily equivalent to $S$, independent of the microscopic details of $V$.\n\n**Proof.** We assume that $H$ acts on a finite-dimensional Hilbert space $\\mathcal{H}$ and possesses a spectral gap $\\Delta > 0$ between its ground and excited states. Let the topological invariant $\\nu$ be computed via a well-defined procedure (such as a Chern number or winding number), and assume the system has appropriate translation invariance or boundary conditions such that $\\nu$ remains well-defined under perturbations satisfying $\\|V\\| < \\Delta/2$. We consider perturbations $V$ that are bounded self-adjoint operators.\n\nBy the spectral theorem for self-adjoint operators, the spectral gap $\\Delta$ ensures that the ground state manifold of $H$ is isolated from the excited states. When we introduce a perturbation $V$ with $\\|V\\| < \\Delta/2$, Weyl's perturbation theorem guarantees that each eigenvalue of $H + V$ differs from the corresponding eigenvalue of $H$ by at most $\\|V\\|$. Consequently, the perturbed Hamiltonian $H + V$ maintains a spectral gap of at least $\\Delta/2$.\n\nThe stability of the topological invariant under small perturbations ensures that $\\nu(H) = \\nu(H + V)$ for $\\|V\\| < \\Delta/2$. [Note: The rigorous justification of this stability depends on the specific topological invariant under consideration and typically requires showing that the relevant topological quantities vary continuously with the Hamiltonian.]\n\nBy the Atiyah-Singer index theorem, or its appropriate generalization to our setting, the dimension of the ground state manifold equals $|\\nu|$. This fundamental connection between topology and the dimension of protected subspaces is central to our argument.\n\nKato's perturbation theory for isolated eigenspaces establishes that the projector $P_0$ onto the ground states of $H$ evolves continuously to the projector $P_0(V)$ onto the ground states of $H + V$. Since both projectors have the same rank $|\\nu|$, we have $\\dim(P_0\\mathcal{H}) = \\dim(P_0(V)\\mathcal{H}) = |\\nu|$.\n\nAs finite-dimensional vector spaces of equal dimension are isomorphic, there exists a unitary operator $U: P_0\\mathcal{H} \\to P_0(V)\\mathcal{H}$ establishing the desired unitary equivalence between the ground state manifolds.\n\nThe independence from microscopic details of $V$ follows from the topological nature of the invariant $\\nu$. [Note: A complete argument would require showing that the unitary mapping depends only on topological properties rather than the specific form of $V$, which typically involves demonstrating that continuous deformations of $V$ within the allowed norm bound yield continuously related unitaries.]\n\nWe have thus established that the ground state manifold of $H + V$ is unitarily equivalent to a fixed subspace $S = P_0\\mathcal{H}$ of dimension $|\\nu|$ for all perturbations satisfying $\\|V\\| < \\Delta/2$. This completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.Analysis.InnerProductSpace.Basic\nimport Mathlib.Analysis.InnerProductSpace.Spectrum\nimport Mathlib.LinearAlgebra.Eigenspace.Basic\nimport Mathlib.Topology.ContinuousFunction.Bounded\nimport Mathlib.Analysis.NormedSpace.OperatorNorm\n\n/-- A Hamiltonian operator on a Hilbert space -/\nstructure Hamiltonian (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H] where\n  toOperator : H \u2192L[\u2102] H\n  selfAdjoint : IsSelfAdjoint toOperator\n\n/-- The spectral gap of a Hamiltonian -/\ndef spectralGap (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H]\n  (h : Hamiltonian H) : \u211d := sorry -- \"Need definition of spectral gap between ground and excited states\"\n\n/-- The topological invariant of a Hamiltonian -/\ndef topologicalInvariant (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H]\n  (h : Hamiltonian H) : \u2124 := sorry -- \"Need definition of topological invariant for quantum systems\"\n\n/-- The ground state manifold of a Hamiltonian -/\ndef groundStateManifold (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H]\n  (h : Hamiltonian H) : Submodule \u2102 H := sorry -- \"Need definition of ground state eigenspace\"\n\n/-- Unitary equivalence between subspaces -/\ndef UnitarilyEquivalent (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H]\n  (S\u2081 S\u2082 : Submodule \u2102 H) : Prop := \n  \u2203 (U : H \u2192L[\u2102] H), (\u2200 x y, \u27eaU x, U y\u27eb = \u27eax, y\u27eb) \u2227 U '' S\u2081 = S\u2082\n\n/-- Main theorem: Topological protection of ground states -/\ntheorem topological_protection_of_ground_states\n  (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H]\n  (h : Hamiltonian H) (\u03bd : \u2124) (\u0394 : \u211d) \n  (h_inv : topologicalInvariant h = \u03bd)\n  (h_gap : spectralGap h = \u0394)\n  (h_gap_pos : \u0394 > 0) :\n  \u2203 (S : Submodule \u2102 H), FiniteDimensional.finrank \u2102 S = Int.natAbs \u03bd \u2227\n  \u2200 (V : H \u2192L[\u2102] H), IsSelfAdjoint V \u2192 \u2016V\u2016 < \u0394 / 2 \u2192\n  UnitarilyEquivalent (groundStateManifold \u27e8h.toOperator + V, sorry\u27e9) S := by\n  -- Step 1: Spectral gap ensures ground state isolation\n  have h_isolated : sorry := sorry -- \"Need spectral theorem and gap properties\"\n  \n  -- Step 2: Perturbed Hamiltonian maintains gap\n  have h_perturbed_gap : \u2200 (V : H \u2192L[\u2102] H), IsSelfAdjoint V \u2192 \u2016V\u2016 < \u0394 / 2 \u2192 \n    spectralGap \u27e8h.toOperator + V, sorry\u27e9 \u2265 \u0394 / 2 := by\n    sorry -- \"Need Weyl's perturbation theorem\"\n  \n  -- Step 3: Topological invariant stability\n  have h_inv_stable : \u2200 (V : H \u2192L[\u2102] H), IsSelfAdjoint V \u2192 \u2016V\u2016 < \u0394 / 2 \u2192\n    topologicalInvariant \u27e8h.toOperator + V, sorry\u27e9 = \u03bd := by\n    sorry -- \"Need stability of topological invariants under small perturbations\"\n  \n  -- Step 4: Dimension equals topological invariant\n  have h_dim : FiniteDimensional.finrank \u2102 (groundStateManifold h) = Int.natAbs \u03bd := by\n    sorry -- \"Need index theorem connecting topological invariant to dimension\"\n  \n  -- Step 5: Continuous evolution of projectors\n  have h_continuous : sorry := sorry -- \"Need Kato's perturbation theory\"\n  \n  -- Step 6: Construct unitary equivalence\n  use groundStateManifold h\n  constructor\n  \u00b7 exact h_dim\n  \u00b7 intro V hV hV_norm\n    have h_dim_eq : FiniteDimensional.finrank \u2102 (groundStateManifold \u27e8h.toOperator + V, sorry\u27e9) = \n      FiniteDimensional.finrank \u2102 (groundStateManifold h) := by\n      rw [h_dim]\n      rw [\u2190 h_inv_stable V hV hV_norm]\n      sorry -- \"Need dimension formula for perturbed ground states\"\n    sorry -- \"Need to construct explicit unitary using equal dimensions\"\n\n-- Step 7: Independence from microscopic details is implicit in the universal quantifier over V",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The spectral gap \u0394 ensures the ground state manifold is isolated from excited states",
+      "justification": "By definition of spectral gap and spectral theorem for self-adjoint operators",
+      "dependencies": [
+        "Spectral theorem",
+        "Definition of spectral gap"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "For ||V|| < \u0394/2, the perturbed Hamiltonian H + V maintains a spectral gap of at least \u0394/2",
+      "justification": "Weyl's perturbation theorem bounds eigenvalue shifts by ||V||",
+      "dependencies": [
+        "Weyl's perturbation theorem"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The topological invariant \u03bd(H) = \u03bd(H + V) for ||V|| < \u0394/2",
+      "justification": "[Gap: This requires showing topological invariants are stable under small perturbations, which depends on the specific invariant]",
+      "dependencies": [
+        "Stability of topological invariants"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The dimension of the ground state manifold equals |\u03bd| by the index theorem",
+      "justification": "Atiyah-Singer index theorem or appropriate generalization connects topological invariant to dimension",
+      "dependencies": [
+        "Index theorem appropriate to the system"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The projector P\u2080 onto ground states of H evolves continuously to P\u2080(V) for H + V",
+      "justification": "Kato's perturbation theory for isolated eigenspaces",
+      "dependencies": [
+        "Kato's perturbation theory",
+        "Step 2"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Since dim(P\u2080\u210b) = dim(P\u2080(V)\u210b) = |\u03bd|, there exists unitary U: P\u2080\u210b \u2192 P\u2080(V)\u210b",
+      "justification": "Finite-dimensional vector spaces of equal dimension are isomorphic",
+      "dependencies": [
+        "Step 4",
+        "Linear algebra"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The unitary equivalence is independent of microscopic details of V",
+      "justification": "[Gap: Need to show the mapping depends only on topology, not on specific form of V]",
+      "dependencies": [
+        "Step 3",
+        "Step 6"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Weyl's Perturbation Theorem",
+      "authors": "Hermann Weyl",
+      "year": "1912",
+      "field": "Functional Analysis",
+      "statement": "For self-adjoint operators A, B, the eigenvalues satisfy |\u03bb\u1d62(A) - \u03bb\u1d62(B)| \u2264 ||A - B||",
+      "usage": "Bounds spectral gap under perturbation"
+    },
+    {
+      "name": "Kato's Perturbation Theory",
+      "authors": "Tosio Kato",
+      "year": "1966",
+      "field": "Mathematical Physics",
+      "statement": "Isolated eigenspaces vary analytically under small perturbations",
+      "usage": "Ensures continuous evolution of ground state projector"
+    },
+    {
+      "name": "Atiyah-Singer Index Theorem",
+      "authors": "Michael Atiyah, Isadore Singer",
+      "year": "1963",
+      "field": "Differential Geometry",
+      "statement": "The analytical index equals the topological index",
+      "usage": "Connects topological invariant to dimension of kernel"
+    },
+    {
+      "name": "TKNN Formula",
+      "authors": "Thouless, Kohmoto, Nightingale, den Nijs",
+      "year": "1982",
+      "field": "Condensed Matter Physics",
+      "statement": "Hall conductance equals Chern number times e\u00b2/h",
+      "usage": "Example of topological invariant determining physical property"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The Hamiltonian H acts on a finite-dimensional Hilbert space \u210b",
+    "H has a spectral gap \u0394 > 0 between ground and excited states",
+    "The topological invariant \u03bd is computed via a well-defined procedure (e.g., Chern number, winding number)",
+    "Perturbations V are bounded self-adjoint operators",
+    "The system has translation invariance or appropriate boundary conditions",
+    "The topological invariant remains well-defined under perturbations ||V|| < \u0394/2",
+    "Unitarily equivalent means there exists U unitary such that U(ground states of H)U\u2020 = ground states of H+V"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "Application of Atiyah-Singer index theorem",
+        "issue": "The Atiyah-Singer index theorem applies to elliptic operators on manifolds, not general Hamiltonians on Hilbert spaces. The proof provides no justification for why this theorem applies here or what the relevant elliptic operator would be.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed without completely restructuring the argument around a different principle"
+      },
+      {
+        "step": "Claim that dim(ground state manifold) = |\u03bd|",
+        "issue": "This is asserted without proof. The connection between topological invariant and ground state degeneracy is not established, just claimed via an inappropriate citation of Atiyah-Singer.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would require proving this relationship from first principles for the specific topological invariant"
+      },
+      {
+        "step": "Independence from microscopic details",
+        "issue": "The proof admits in brackets that this requires showing the unitary depends only on topological properties, but never actually shows this. This is the core claim being made.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would need to explicitly construct the unitary and prove its independence from non-topological features"
+      },
+      {
+        "step": "Stability of topological invariant",
+        "issue": "The proof admits in brackets that rigorous justification depends on the specific invariant, but provides none. This is assumed rather than proven.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Specify which topological invariant and prove its stability under the given perturbations"
+      },
+      {
+        "step": "Definition of topological invariant \u03bd",
+        "issue": "The proof never specifies what \u03bd actually is or how it's computed, making it impossible to verify any claims about it.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Define \u03bd precisely (e.g., as a Chern number) and show how it's calculated"
+      }
+    ],
+    "hidden_assumptions": [
+      "The ground state manifold of H has dimension |\u03bd| (this is what needs to be proven)",
+      "The unitary equivalence is canonical/natural in some sense",
+      "The topological invariant \u03bd is integer-valued for all Hamiltonians considered",
+      "The system has some underlying geometric structure that makes topological invariants meaningful",
+      "Perturbations preserve whatever structure makes \u03bd well-defined"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes that ground state dimension equals |\u03bd| to conclude that perturbed and unperturbed ground state manifolds have the same dimension, but this relationship is what needs to be established.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to work for any Hamiltonian with a topological invariant, but the arguments (if valid) would only apply to very specific classes of topological systems. The proof actually shows nothing substantive.",
+    "citation_issues": [
+      "Atiyah-Singer index theorem is completely misapplied - it concerns elliptic operators on manifolds, not general quantum Hamiltonians",
+      "TKNN formula is cited but never used",
+      "Weyl's theorem is correctly stated but doesn't justify the broader topological claims",
+      "Kato's perturbation theory is correctly applied for continuity but doesn't address the topological aspects"
+    ],
+    "structural_soundness": 0.2,
+    "overall_assessment": "This proof is fundamentally flawed, relying on a misapplication of the Atiyah-Singer theorem and assuming the key relationship it claims to prove. The argument is circular and lacks mathematical rigor, with critical steps relegated to bracketed notes admitting the gaps.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to show that ground state manifolds have the same dimension under small perturbations, but fails to establish the claimed unitary equivalence or independence from microscopic details",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The topological invariant \u03bd is actually well-defined for the given Hamiltonian H",
+      "The index theorem applies to this specific context and invariant",
+      "The ground state manifold is non-degenerate or has well-defined degeneracy",
+      "The Hilbert space has appropriate structure for the topological invariant to be meaningful",
+      "Boundary conditions are compatible with topological invariant preservation"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "3",
+        "issue": "Explicitly marked as gap - topological invariant stability is assumed without proof and depends critically on the specific invariant"
+      },
+      {
+        "step": "4",
+        "issue": "Index theorem application is not justified - requires specific geometric/topological setup that may not exist for arbitrary Hamiltonians"
+      },
+      {
+        "step": "6",
+        "issue": "Existence of unitary isomorphism between abstract vector spaces does not establish the claimed unitary equivalence of ground state manifolds as subspaces of the original Hilbert space"
+      },
+      {
+        "step": "7",
+        "issue": "Explicitly marked as gap - independence from microscopic details is claimed without any supporting argument"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Two explicit gaps acknowledged in steps 3 and 7",
+      "No construction or characterization of the claimed subspace S",
+      "No proof that the unitary equivalence claimed actually holds in the original Hilbert space",
+      "Missing definition of what 'microscopic details' means precisely",
+      "No verification that the topological invariant is actually computable for the given setup"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims topological invariant \u03bd determines ground state manifold dimension as |\u03bd|, but this is mathematically incorrect - topological invariants like Chern numbers can be zero while systems have non-trivial ground state degeneracy",
+      "Claims unitary equivalence of ground state manifolds is 'independent of microscopic details of V' contradicts fundamental quantum mechanics where different perturbations can break different symmetries and lead to different ground state structures",
+      "The assertion that spectral gap preservation under ||V|| < \u0394/2 guarantees topological invariant preservation is false - counterexamples exist where small perturbations change topology while preserving gaps"
+    ],
+    "assumption_conflicts": [
+      "Conflicts with [19c10dc86a65] which establishes that quantum coherence fundamentally alters system properties - the new proof's claim of perturbation-independent ground states ignores coherence effects",
+      "Contradicts [2c6eb7138df0] on symmetry breaking determining observable spectrum - the new proof ignores how different perturbations break different symmetries",
+      "Conflicts with [139ee0499c9e] on topological constraints and singular structures - the proof fails to account for how perturbations can create or destroy topological singularities"
+    ],
+    "beneficial_connections": [
+      "Relates to [1b27ca45ba4e] on topological constraints determining system evolution, though the new proof makes unjustified claims about universality",
+      "Connects to [1f680e11fff8] on local singularities determining global properties, but misapplies this principle to quantum ground states"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof contains fundamental mathematical errors including incorrect claims about topological invariants, oversimplified perturbation theory, and unjustified assertions about universal behavior. The dimensional relationship dim(S) = |\u03bd| is particularly problematic as it conflates distinct mathematical concepts."
+  },
+  "confidence_score": 0.255,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A general framework connecting arbitrary topological invariants to Hilbert space dimensions and proving their stability under all perturbations preserving the gap. Current results are case-by-case (Chern numbers, Z\u2082 invariants, etc.)",
+  "limitations": [
+    "Step 3: Proving topological invariant stability requires case-by-case analysis for each type of invariant",
+    "Step 7: Showing independence from microscopic details requires proving the unitary map depends only on topological data",
+    "The connection between arbitrary topological invariants and ground state degeneracy is not universally established",
+    "Proof assumes finite-dimensional Hilbert space; infinite dimensions require additional care",
+    "Different topological invariants require different mathematical machinery",
+    "The bound ||V|| < \u0394/2 may not be optimal",
+    "Does not address dynamical robustness, only spectral robustness"
+  ],
+  "source_convergence": {
+    "structural_claim": "Topological constraints create robust quantum states independent of material details",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Integer Quantum Hall Effect",
+        "domain_id": "field_a",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Topology determines quantized conductance independent of materials"
+      },
+      {
+        "result_id": "",
+        "result_name": "Topological Insulators",
+        "domain_id": "field_a",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Topology enforces robust boundary states"
+      },
+      {
+        "result_id": "",
+        "result_name": "Rydberg Blockade",
+        "domain_id": "field_b",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Geometric constraints from blockade radius create robust collective states"
+      }
+    ],
+    "domains": [
+      "condensed_matter",
+      "atomic_physics"
+    ],
+    "domain_names": [
+      "Condensed Matter Physics",
+      "Atomic and Molecular Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.21419999999999997,
+      "independence": 0.75,
+      "adversarial": 0.09,
+      "reproducibility": 0.4374999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.435385,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:18:28.214315+00:00",
+    "id": "5411b8cce612"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.270945
+  }
+}

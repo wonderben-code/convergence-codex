@@ -1,0 +1,356 @@
+{
+  "id": "b96d159941dd",
+  "convergence_id": "5d5524330f6d",
+  "timestamp": "2026-05-02T13:10:37.214596+00:00",
+  "proposition": "Let (M, g) be a spacetime manifold with symmetry group G acting transitively. Let \u03c6: M \u2192 V be a scalar field with potential V(\u03c6) invariant under G. Then spontaneous symmetry breaking \u03c6 \u2192 \u03c6\u2080 + \u03b4\u03c6, where \u03c6\u2080 minimizes V, induces a quotient G \u2192 G/H where H = Stab(\u03c6\u2080), and the coset space G/H parametrizes the space of physically distinct vacuum states, with observable physics determined by representations of H.",
+  "proposition_natural": "Fundamental symmetries spontaneously break to generate emergent structure, with the breaking pattern determining observable physics",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Differential geometry",
+    "Algebraic structures",
+    "Category theory"
+  ],
+  "apparatus_justification": "Differential geometry provides the manifold structure and gauge theory formalism essential for both GR spacetime symmetries and particle physics gauge symmetries. Algebraic structures capture the group-theoretic nature of symmetries and their representations. Category theory enables precise formulation of the breaking pattern as a functor between symmetry categories.",
+  "proof_natural": "**Proposition.** Let $(M, g)$ be a spacetime manifold with symmetry group $G$ acting transitively. Let $\\phi: M \\to V$ be a scalar field with potential $V(\\phi)$ invariant under $G$. Then spontaneous symmetry breaking $\\phi \\to \\phi_0 + \\delta\\phi$, where $\\phi_0$ minimizes $V$, induces a quotient $G \\to G/H$ where $H = \\text{Stab}(\\phi_0)$, and the coset space $G/H$ parametrizes the space of physically distinct vacuum states, with observable physics determined by representations of $H$.\n\n**Proof.** We assume that $M$ is a smooth 4-dimensional Lorentzian manifold on which the Lie group $G$ acts smoothly and transitively. Let the scalar field $\\phi$ take values in a vector space $V$ on which $G$ acts linearly, with dynamics governed by the action\n$$S[\\phi, g] = \\int_M \\sqrt{-g}\\left[\\frac{1}{2}g^{\\mu\\nu}\\partial_\\mu\\phi\\partial_\\nu\\phi - V(\\phi)\\right]d^4x,$$\nwhere $V: \\mathbb{R}^n \\to \\mathbb{R}$ is a smooth potential function invariant under the $G$-action. We further assume that $V$ has a non-trivial minimum at some $\\phi_0 \\neq 0$, that quantum corrections are negligible, and that the vacuum state $|0\\rangle$ satisfies $\\langle 0|\\phi|0\\rangle = \\phi_0$.\n\nSince $V(\\phi)$ is invariant under $G$, we have $V(g\\phi) = V(\\phi)$ for all $g \\in G$ by definition of $G$-invariance for functions on representation spaces. Consequently, the set of minima $\\text{Min}(V) = \\{\\phi \\in V : \\nabla V(\\phi) = 0, \\text{Hess}(V)(\\phi) > 0\\}$ forms a $G$-orbit. Indeed, if $\\phi_0 \\in \\text{Min}(V)$ and $V(g\\phi) = V(\\phi)$ for all $g \\in G$, then $g\\phi_0 \\in \\text{Min}(V)$ for every $g \\in G$.\n\nThe stabilizer $H = \\text{Stab}(\\phi_0) = \\{g \\in G : g\\phi_0 = \\phi_0\\}$ is a closed subgroup of $G$ by a standard result from Lie group theory. By the Orbit-Stabilizer Theorem, the orbit $G \\cdot \\phi_0$ is diffeomorphic to the quotient space $G/H$.\n\nExpanding the field as $\\phi = \\phi_0 + \\delta\\phi$ in the action yields quadratic terms that determine the mass spectrum. [Note: A detailed computation of these quadratic terms and identification of zero eigenvalues of the Hessian is required here.] By Goldstone's Theorem, the spontaneous breaking of the continuous symmetry $G$ to $H$ implies the existence of massless Goldstone bosons corresponding to directions tangent to the coset space $G/H$.\n\nAfter symmetry breaking, only transformations that preserve $\\phi_0$ remain as symmetries of the vacuum. Therefore, physical fields transform under representations of $H$ rather than the full group $G$. By Wigner's classification, particle states form irreducible representations of the residual symmetry group $H$. [Note: The precise connection between representation theory and observable quantities such as particle spectra and interaction vertices requires the full quantum field theory formalism.]\n\nThus, spontaneous symmetry breaking induces the quotient $G \\to G/H$, where $H = \\text{Stab}(\\phi_0)$. The coset space $G/H$ parametrizes the physically distinct vacuum states, each related by broken symmetry transformations, while observable physics is determined by $H$-representations and $H$-invariant couplings. This completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.GroupTheory.GroupAction.Basic\nimport Mathlib.GroupTheory.GroupAction.Quotient\nimport Mathlib.GroupTheory.Subgroup.Basic\nimport Mathlib.Topology.Basic\nimport Mathlib.Geometry.Manifold.SmoothManifoldWithCorners\nimport Mathlib.RepresentationTheory.Basic\n\n/-- A spacetime manifold with Lorentzian metric -/\nstructure SpacetimeManifold where\n  -- sorry: Lorentzian metrics not in Mathlib\n  sorry_spacetime : Unit\n\n/-- A scalar field on a manifold M with values in vector space V -/\nstructure ScalarField (M : Type*) (V : Type*) [TopologicalSpace M] [AddCommGroup V] where\n  -- sorry: Field theory structures not in Mathlib\n  sorry_field : Unit\n\n/-- The potential function for a scalar field -/\ndef Potential (V : Type*) [AddCommGroup V] := V \u2192 \u211d\n\n/-- Spontaneous symmetry breaking of a scalar field -/\ntheorem spontaneous_symmetry_breaking\n  {M V G : Type*} [TopologicalSpace M] [AddCommGroup V] [TopologicalSpace V]\n  [Group G] [MulAction G V] [ContinuousMulAction G V]\n  (spacetime : SpacetimeManifold)\n  (\u03c6 : ScalarField M V)\n  (pot : Potential V)\n  (G_transitive : \u2200 x y : M, \u2203 g : G, g \u2022 x = y)\n  (pot_invariant : \u2200 (g : G) (v : V), pot (g \u2022 v) = pot v)\n  (\u03c6\u2080 : V)\n  (\u03c6\u2080_minimizes : \u2200 v : V, pot \u03c6\u2080 \u2264 pot v) :\n  \u2203 (H : Subgroup G),\n    (H = MulAction.stabilizer G \u03c6\u2080) \u2227\n    (\u2203 (quotient_map : G \u2192 G \u29f8 H), Function.Surjective quotient_map) \u2227\n    (\u2203 (vacuum_parametrization : G \u29f8 H \u2192 Set V), True) \u2227\n    (\u2203 (observable_determined_by_H : Type*), True) :=\nby\n  -- Step 1: G-invariance of potential is given by hypothesis pot_invariant\n  have h1 : \u2200 (g : G) (v : V), pot (g \u2022 v) = pot v := pot_invariant\n  \n  -- Step 2: Set of minima forms a G-orbit\n  -- sorry: Need definition of minima with gradient and Hessian\n  have h2 : \u2203 (minima : Set V), \u2200 \u03c6 \u2208 minima, \u2200 g : G, g \u2022 \u03c6 \u2208 minima := by\n    sorry -- Requires differential geometry on V\n  \n  -- Step 3: Stabilizer H is a closed subgroup\n  let H := MulAction.stabilizer G \u03c6\u2080\n  have h3 : Subgroup G := H\n  -- sorry: Closedness requires topology on G\n  have h3_closed : True := by\n    sorry -- Need topological group structure\n  \n  -- Step 4: Orbit diffeomorphic to G/H\n  have h4 : \u2203 f : G \u29f8 H \u2192 MulAction.orbit G \u03c6\u2080, Function.Bijective f := by\n    -- This follows from orbit-stabilizer theorem\n    sorry -- Need smooth structure for diffeomorphism\n  \n  -- Step 5: Goldstone modes\n  -- sorry: Requires action expansion and Hessian analysis\n  have h5 : \u2203 (goldstone_modes : Type*), True := by\n    sorry -- Requires field theory formalism\n  \n  -- Step 6: Physical fields transform under H\n  -- sorry: Requires representation theory in physics context\n  have h6 : \u2203 (H_reps : Type*), True := by\n    sorry -- Need physical field representations\n  \n  -- Step 7: Observable physics determined by H\n  -- sorry: Requires full QFT framework\n  have h7 : \u2203 (observables : Type*), True := by\n    sorry -- Need observable physics formalism\n  \n  use H\n  constructor\n  \u00b7 rfl\n  constructor\n  \u00b7 use Quotient.mk''\n    exact Quotient.mk_surjective\n  constructor\n  \u00b7 -- Vacuum parametrization by G/H\n    use fun _ => MulAction.orbit G \u03c6\u2080\n    trivial\n  \u00b7 -- Observable physics\n    use Unit\n    trivial",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The potential V(\u03c6) invariant under G implies V(g\u03c6) = V(\u03c6) for all g \u2208 G",
+      "justification": "Definition of G-invariance for functions on representation spaces",
+      "dependencies": [
+        "Assumption that V is G-invariant"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "The set of minima Min(V) = {\u03c6 \u2208 V : \u2207V(\u03c6) = 0, Hess(V)(\u03c6) > 0} forms a G-orbit",
+      "justification": "If \u03c6\u2080 \u2208 Min(V) and V(g\u03c6) = V(\u03c6), then g\u03c6\u2080 \u2208 Min(V) for all g \u2208 G",
+      "dependencies": [
+        "Step 1",
+        "Properties of group actions on smooth manifolds"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The stabilizer H = Stab(\u03c6\u2080) = {g \u2208 G : g\u03c6\u2080 = \u03c6\u2080} is a closed subgroup of G",
+      "justification": "Standard result from Lie group theory: stabilizers are closed subgroups",
+      "dependencies": [
+        "Cartan's theorem on closed subgroups"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The orbit G\u00b7\u03c6\u2080 is diffeomorphic to G/H",
+      "justification": "Orbit-stabilizer theorem: for transitive actions, orbits are diffeomorphic to quotient by stabilizer",
+      "dependencies": [
+        "Step 3",
+        "Orbit-stabilizer theorem"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Expanding \u03c6 = \u03c6\u2080 + \u03b4\u03c6 in the action yields massless Goldstone modes in directions tangent to G/H",
+      "justification": "[Gap: Requires detailed computation of quadratic terms in action and identification of zero eigenvalues of Hessian]",
+      "dependencies": [
+        "Steps 2-4",
+        "Second-order perturbation theory"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Physical fields transform under representations of H rather than G",
+      "justification": "After symmetry breaking, only transformations preserving \u03c6\u2080 remain as symmetries of the vacuum",
+      "dependencies": [
+        "Step 3",
+        "Wigner's classification of particle states"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Observable physics (particle spectrum, interaction vertices) is determined by H-representations and H-invariant couplings",
+      "justification": "[Gap: Connection between representation theory and observable quantities requires quantum field theory formalism]",
+      "dependencies": [
+        "Step 6",
+        "LSZ reduction formula",
+        "Representation theory of Lie groups"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Orbit-Stabilizer Theorem",
+      "authors": "Classical result in group theory",
+      "year": "19th century",
+      "field": "Group Theory",
+      "statement": "For a group G acting on a set X, |G\u00b7x| = |G|/|Stab(x)|",
+      "usage": "Establishes diffeomorphism between orbit and coset space"
+    },
+    {
+      "name": "Goldstone's Theorem",
+      "authors": "Goldstone, Salam, Weinberg",
+      "year": "1962",
+      "field": "Quantum Field Theory",
+      "statement": "Spontaneous breaking of continuous symmetry implies massless bosons",
+      "usage": "Justifies emergence of massless modes (not fully proven here)"
+    },
+    {
+      "name": "Wigner's Classification",
+      "authors": "Eugene Wigner",
+      "year": "1939",
+      "field": "Quantum Mechanics",
+      "statement": "Particle states form irreducible representations of the symmetry group",
+      "usage": "Connects symmetry groups to particle content"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "M is a smooth 4-dimensional Lorentzian manifold",
+    "G is a Lie group acting smoothly and transitively on M",
+    "V: \u211d\u207f \u2192 \u211d is a smooth potential function invariant under the G-action",
+    "V has a non-trivial minimum at some \u03c6\u2080 \u2260 0",
+    "The scalar field \u03c6 takes values in a vector space V on which G acts linearly",
+    "The action S[\u03c6, g] = \u222b_M \u221a(-g)[\u00bdg^\u03bc\u03bd\u2202_\u03bc\u03c6\u2202_\u03bd\u03c6 - V(\u03c6)]d\u2074x is well-defined",
+    "Quantum corrections are negligible (classical approximation)",
+    "The vacuum state |0\u27e9 satisfies \u27e80|\u03c6|0\u27e9 = \u03c6\u2080"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "Let \u03c6: M \u2192 V be a scalar field",
+        "issue": "Conflicting notation: \u03c6 is defined as a map from spacetime M to vector space V, but later \u03c6 takes values in a vector space V on which G acts. The codomain V appears to be used for two different things.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Clarify whether V is the target vector space or the potential function. Use consistent notation throughout."
+      },
+      {
+        "step": "G acting transitively on M",
+        "issue": "The proof never uses the transitivity of G on M. Moreover, for a general spacetime with nontrivial curvature, having a transitive symmetry group is extremely restrictive (essentially limits to maximally symmetric spaces).",
+        "severity": "major",
+        "fixable": false,
+        "suggested_fix": "Either use the transitivity assumption or remove it. Clarify why such a restrictive assumption is needed."
+      },
+      {
+        "step": "Min(V) = {\u03c6 \u2208 V : \u2207V(\u03c6) = 0, Hess(V)(\u03c6) > 0}",
+        "issue": "This defines minima incorrectly. The Hessian should be positive semi-definite (\u2265 0), not positive definite (> 0). Also, this is local minima, not global.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Correct the definition and specify whether local or global minima are meant."
+      },
+      {
+        "step": "the set of minima Min(V) forms a G-orbit",
+        "issue": "This is false in general. The set of minima could consist of multiple orbits. The proof only shows that if \u03c6\u2080 is a minimum, then its entire orbit consists of minima, not that all minima form a single orbit.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "The claim needs to be substantially weakened or additional assumptions added."
+      },
+      {
+        "step": "Expanding the field as \u03c6 = \u03c6\u2080 + \u03b4\u03c6 in the action yields quadratic terms",
+        "issue": "The proof admits this computation is missing but proceeds anyway. Without this computation, the connection to Goldstone's theorem is unjustified.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Provide the actual computation showing the mass matrix and its zero eigenvalues."
+      },
+      {
+        "step": "By Goldstone's Theorem",
+        "issue": "Goldstone's theorem requires specific conditions (continuous symmetry, Lorentz invariance, etc.) that haven't been verified. The theorem also requires showing that broken generators don't annihilate the vacuum.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Verify all conditions for Goldstone's theorem explicitly."
+      },
+      {
+        "step": "The vacuum state |0\u27e9 satisfies \u27e80|\u03c6|0\u27e9 = \u03c6\u2080",
+        "issue": "This assumes a quantum field theory framework but the proof primarily uses classical field theory. The relationship between classical minima and quantum vacuum expectation values is non-trivial.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Either work entirely classically or properly set up the quantum framework."
+      },
+      {
+        "step": "particle states form irreducible representations of the residual symmetry group H",
+        "issue": "This jumps from classical field theory to particle states without establishing the quantization procedure or explaining how classical symmetries become quantum symmetries.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Provide the quantum field theory framework or restrict claims to classical physics."
+      }
+    ],
+    "hidden_assumptions": [
+      "The potential V has isolated minima (not a continuous manifold of minima)",
+      "The field configuration \u03c6\u2080 is constant over spacetime",
+      "The symmetry group G has a well-defined action on the field space",
+      "The integral defining the action converges",
+      "The spacetime M is geodesically complete",
+      "Quantum corrections don't destabilize the classical vacuum",
+      "The broken symmetry is not anomalous at the quantum level"
+    ],
+    "circular_reasoning": false,
+    "circular_details": "",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to establish a general result about spontaneous symmetry breaking but actually only sketches the standard case. It doesn't prove that G/H parametrizes all physically distinct vacua or that observable physics is fully determined by H-representations.",
+    "citation_issues": [
+      "Goldstone's theorem is cited without verifying its hypotheses",
+      "Wigner's classification is mentioned but not properly connected to the symmetry breaking context",
+      "The Orbit-Stabilizer theorem is used correctly but doesn't establish what the proof claims"
+    ],
+    "structural_soundness": 0.4,
+    "overall_assessment": "This proof is more of a sketch than a rigorous demonstration. It conflates classical and quantum frameworks, makes unjustified claims about the structure of minima, and omits crucial computations while proceeding as if they were done. The mathematical rigor expected for a journal publication is absent.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof establishes some basic group-theoretic facts about symmetry breaking but fails to prove that observable physics is determined by H-representations or that G/H parametrizes physically distinct vacuum states",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The potential V has a unique minimum up to G-action",
+      "The Hessian condition in Step 2 is positive definite, not just positive",
+      "The field \u03c6 transforms linearly under G",
+      "The kinetic term is G-invariant",
+      "The vacuum expectation value is well-defined and unique",
+      "Quantum field theory framework assumptions for Steps 5-7",
+      "Goldstone theorem applicability conditions",
+      "Connection between classical field configurations and quantum vacuum states"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "2",
+        "issue": "The condition Hess(V)(\u03c6) > 0 should be positive definite, and the claim that minima form a G-orbit requires that all minima are G-related, which isn't proven"
+      },
+      {
+        "step": "4",
+        "issue": "Orbit-stabilizer theorem applies to group actions, but the connection to the transitive action on M is unclear - the relevant action is on the field space V, not spacetime M"
+      },
+      {
+        "step": "5",
+        "issue": "Explicitly marked as having a gap - the Goldstone theorem requires detailed analysis of the action's second variation"
+      },
+      {
+        "step": "6",
+        "issue": "The claim that 'only transformations preserving \u03c6\u2080 remain as symmetries' conflates classical field configurations with quantum vacuum states"
+      },
+      {
+        "step": "7",
+        "issue": "Explicitly marked as having a gap - no justification provided for how representation theory determines observable physics"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Missing derivation of Goldstone modes",
+      "No connection established between classical symmetry breaking and quantum vacuum structure",
+      "No proof that G/H parametrizes physically distinct states rather than just mathematically distinct field configurations",
+      "Missing analysis of how H-representations determine observable physics",
+      "No treatment of gauge fixing or physical vs unphysical degrees of freedom"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof assumes G acts transitively on spacetime M, but existing proof [08b6405556dd] only requires G to act by isometries without transitivity. Transitivity is a much stronger condition that may not be physically realistic for most spacetimes.",
+      "The claim that 'observable physics is determined by H-representations' contradicts the contextual nature of physical properties established in [06879fd9ae87], which shows observables cannot have predetermined values independent of measurement context.",
+      "The assumption of negligible quantum corrections conflicts with [19c10dc86a65] which establishes that quantum coherence fundamentally alters system properties beyond classical predictions."
+    ],
+    "assumption_conflicts": [
+      "Transitivity assumption conflicts with general covariance - most physically relevant spacetimes do not admit transitive symmetry groups",
+      "Classical approximation assumption directly conflicts with quantum foundations established in multiple existing proofs",
+      "The assumption that vacuum expectation value \u27e80|\u03c6|0\u27e9 = \u03c6\u2080 is constant conflicts with the contextual nature of observables in [06879fd9ae87]"
+    ],
+    "beneficial_connections": [
+      "Connects to [087da119976b] on spontaneous symmetry breaking, though that proof uses more rigorous measure-theoretic foundations",
+      "Relates to [1318ecd2c25c] on phase transitions as symmetry-breaking events, but the new proof lacks the universal scaling law framework",
+      "Partially connects to [08b6405556dd] on symmetry principles constraining dynamics, though with incompatible assumptions"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof makes several unjustified leaps: (1) assumes transitivity without justification, (2) claims Goldstone modes are massless without proving the Goldstone theorem applies in curved spacetime, (3) assumes classical limit without addressing quantum corrections that existing proofs show are fundamental. The mathematical framework is incomplete and the physical assumptions are too restrictive."
+  },
+  "confidence_score": 0.27,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "Rigorous mathematical framework connecting: (1) symmetry breaking in infinite-dimensional field spaces to finite-dimensional Lie group quotients, (2) representation theory of broken symmetries to measurable physics, (3) classical symmetry breaking to quantum vacuum structure",
+  "limitations": [
+    "Step 5: Detailed derivation of Goldstone modes requires careful analysis of infinite-dimensional function spaces",
+    "Step 7: Connection between abstract representation theory and concrete observables lacks rigorous mathematical foundation",
+    "Quantum corrections and renormalization effects not addressed",
+    "Transition from classical field theory to quantum observables not rigorously justified",
+    "Proof assumes classical fields; quantum effects treated heuristically",
+    "Does not address gauge symmetries which require additional constraint analysis",
+    "Assumes existence and uniqueness of vacuum state",
+    "Does not prove stability of broken symmetry phase",
+    "Connection to cosmological structure formation remains phenomenological"
+  ],
+  "source_convergence": {
+    "structural_claim": "Fundamental symmetries spontaneously break to generate emergent structure, with the breaking pattern determining observable physics",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Inflation Theory",
+        "domain_id": "field_a",
+        "domain_name": "General Relativity and Cosmology",
+        "link_type": "direct",
+        "structural_conclusion": "A scalar field's symmetry breaking drives exponential expansion, with the field rolling from high to low potential determining cosmic structure"
+      },
+      {
+        "result_id": "",
+        "result_name": "Discovery of the Higgs boson",
+        "domain_id": "field_b",
+        "domain_name": "Particle Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Electroweak symmetry spontaneously breaks via a scalar field acquiring a vacuum expectation value, generating particle masses"
+      },
+      {
+        "result_id": "",
+        "result_name": "Electroweak unification",
+        "domain_id": "field_b",
+        "domain_name": "Particle Physics",
+        "link_type": "direct",
+        "structural_conclusion": "A unified SU(2)\u00d7U(1) symmetry spontaneously breaks to U(1)_EM, with the breaking pattern determining force structure"
+      }
+    ],
+    "domains": [
+      "general_relativity",
+      "particle_physics"
+    ],
+    "domain_names": [
+      "General Relativity and Cosmology",
+      "Particle Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.21419999999999997,
+      "independence": 0.7,
+      "adversarial": 0.12,
+      "reproducibility": 0.5249999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.44201,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:39:57.041149+00:00",
+    "id": "5d5524330f6d"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.28443
+  }
+}

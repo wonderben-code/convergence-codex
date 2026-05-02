@@ -1,0 +1,38 @@
+{
+  "proof_id": "4e16485f588b",
+  "timestamp": "2026-05-02T12:41:24.877600+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "categorical - Could frame as a functor between categories of symmetric systems and controllable systems, but the axiomatic approach more directly captures the physical principle of external field control"
+      ],
+      "reasoning": "The convergence identifies a shared abstract principle across domains: external fields break symmetries/degeneracies and enable state control. This is best captured by axioms about symmetry breaking, degeneracy lifting, and controllability that both atomic systems and fluid systems satisfy as models."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Functional analysis, Dynamical systems, Differential geometry",
+      "alternatives_considered": [],
+      "reasoning": "Functional analysis provides the spectral theory needed to formalize degeneracy breaking and mode mixing as eigenvalue perturbations and eigenspace decompositions. Dynamical systems theory captures how external fields modify system evolution, while differential geometry handles the manifold structure of configuration spaces where these perturbations act."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof uses transversality theory to show that generic external fields lift eigenvalue degeneracies of the system Hessian. Perturbation theory then establishes that the new eigenvectors mix the original degenerate subspaces. Finally, control theory shows these mixed modes provide handles for state manipulation.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 6 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3550 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 4049 chars, 11 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "The formalization captures the structure of the theorem but many key concepts from differential geometry and perturbation theory are missing from Mathlib. The spectrum notation and eigenvector analysis would need substantial additional infrastructure."
+    }
+  ]
+}

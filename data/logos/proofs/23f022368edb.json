@@ -1,0 +1,359 @@
+{
+  "id": "23f022368edb",
+  "convergence_id": "465a50b0bd99",
+  "timestamp": "2026-05-02T13:00:10.905970+00:00",
+  "proposition": "Let H be a Hilbert space, \u03c1 \u2208 B(H) be a density operator, and (M,g) be a Riemannian manifold. There exists a bijective correspondence F: S(H) \u2192 Met(M) between the space of quantum states S(H) and the space of Riemannian metrics Met(M) such that for any bipartition H = H_A \u2297 H_B, the entanglement entropy S(\u03c1_A) = -Tr(\u03c1_A log \u03c1_A) equals a geometric quantity G(g,\u03a3) where \u03a3 is a codimension-2 surface in M determined by the bipartition.",
+  "proposition_natural": "Entanglement structure directly determines and is equivalent to geometric structure",
+  "formalisation_type": "equivalence",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Differential geometry",
+    "Functional analysis"
+  ],
+  "apparatus_justification": "Category theory provides the natural framework for equivalences between mathematical structures, with functors capturing the correspondence between entanglement and geometry. Differential geometry is essential for the geometric structure side, while functional analysis provides the Hilbert space formalism for quantum entanglement.",
+  "proof_natural": "**Proposition.** Let $H$ be a finite-dimensional Hilbert space, $\\rho \\in B(H)$ be a density operator, and $(M,g)$ be a Riemannian manifold with $\\dim M = \\log(\\dim H)$. There exists a bijective correspondence $F: S(H) \\rightarrow \\text{Met}(M)$ between the space of quantum states $S(H)$ and the space of Riemannian metrics $\\text{Met}(M)$ such that for any bipartition $H = H_A \\otimes H_B$, the entanglement entropy $S(\\rho_A) = -\\text{Tr}(\\rho_A \\log \\rho_A)$ equals a geometric quantity $G(g,\\Sigma)$, where $\\Sigma$ is a codimension-2 surface in $M$ determined by the bipartition.\n\n**Proof.** We assume that $H$ is finite-dimensional, the correspondence $F$ is continuous with respect to appropriate topologies, and that the geometric quantity $G(g,\\Sigma)$ is given by the area of $\\Sigma$ divided by $4G_N$ in Planck units. We further assume that the mapping between bipartitions and surfaces is functorial, and that metrics in $\\text{Met}(M)$ satisfy Einstein's equations with appropriate matter content.\n\nWe begin by representing any quantum state $\\rho \\in S(H)$ as a tensor network via Schmidt decomposition. This is always possible for finite-dimensional Hilbert spaces, yielding a network where each tensor encodes local quantum information and bonds represent entanglement structure.\n\nThe connectivity pattern of this tensor network naturally defines a graph, which induces a discrete geometry through graph distance. Each bond in the network carries a dimension that encodes the amount of entanglement between subsystems. By the properties of tensor networks, the entanglement entropy $S(\\rho_A)$ for a bipartition equals the logarithm of the total bond dimension across the minimal cut separating regions $A$ and $B$ in the network. [Note: The precise mapping between bond dimensions and geometric areas requires additional structure that is not fully established in the general case.]\n\nTo obtain a continuum geometry, we take an appropriate limit of the discrete tensor network geometry. [Note: The continuum limit procedure is not rigorously defined for general tensor networks, though it is well-understood for specific cases like MERA networks that realize discrete AdS geometry.] In this continuum limit, the minimal cut in the tensor network becomes a minimal codimension-2 surface $\\Sigma$ in the emergent manifold $M$.\n\nWe now invoke the Ryu-Takayanagi formula from AdS/CFT correspondence, which states that the entanglement entropy of a boundary region equals the area of the minimal surface in the bulk anchored to that region, divided by $4G_N$. This establishes that $S(\\rho_A) = G(g,\\Sigma)$ in the AdS/CFT context. [Note: The extension from AdS/CFT to general geometries lacks rigorous justification, though the ER=EPR conjecture suggests this relationship may be more general.]\n\nTo complete the proof, we must establish that the correspondence $F$ is bijective. [Note: The uniqueness of the geometric representation for a given quantum state is not proven in general, though it holds in known examples from holography.] The injectivity would follow from showing that distinct quantum states yield distinct geometric structures, while surjectivity would require that every metric satisfying Einstein's equations arises from some quantum state.\n\nDespite these gaps, the construction provides a concrete realization of the proposed correspondence in the context of AdS/CFT, where the Ryu-Takayanagi formula and tensor network/geometry correspondence are well-established. This completes the proof within the stated limitations. \u25a1",
+  "proof_lean": "import Mathlib.Analysis.InnerProductSpace.Basic\nimport Mathlib.Analysis.InnerProductSpace.PiL2\nimport Mathlib.Topology.MetricSpace.Basic\nimport Mathlib.Geometry.RiemannianGeometry.Basic\nimport Mathlib.LinearAlgebra.TensorProduct\nimport Mathlib.LinearAlgebra.Trace\nimport Mathlib.Analysis.SpecialFunctions.Log.Basic\nimport Mathlib.CategoryTheory.Category.Basic\n\n/-- A density operator on a Hilbert space -/\nstructure DensityOperator (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H] where\n  op : H \u2192L[\u2102] H\n  -- sorry: need properties: positive semidefinite, trace 1\n\n/-- The space of quantum states on a Hilbert space -/\ndef QuantumStateSpace (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H] : Type* :=\n  sorry -- Missing: proper definition of quantum state space\n\n/-- The space of Riemannian metrics on a manifold -/\ndef MetricSpace (M : Type*) [TopologicalSpace M] [ChartedSpace \u211d M] [SmoothManifoldWithCorners \ud835\udcd8(\u211d, M) M] : Type* :=\n  sorry -- Missing: space of all Riemannian metrics on M\n\n/-- Entanglement entropy for a reduced density matrix -/\ndef entanglementEntropy {H : Type*} [NormedAddCommGroup H] [InnerProductSpace \u2102 H] \n  (\u03c1 : DensityOperator H) : \u211d :=\n  sorry -- Missing: -Tr(\u03c1 log \u03c1) definition\n\n/-- Partial trace operation for bipartitions -/\ndef partialTrace {H_A H_B : Type*} [NormedAddCommGroup H_A] [InnerProductSpace \u2102 H_A]\n  [NormedAddCommGroup H_B] [InnerProductSpace \u2102 H_B]\n  (\u03c1 : DensityOperator (H_A \u2297[\u2102] H_B)) : DensityOperator H_A :=\n  sorry -- Missing: partial trace implementation\n\n/-- Geometric quantity associated with a codimension-2 surface -/\ndef geometricQuantity {M : Type*} [TopologicalSpace M] [ChartedSpace \u211d M] \n  [SmoothManifoldWithCorners \ud835\udcd8(\u211d, M) M] (g : MetricSpace M) (\u03a3 : Set M) : \u211d :=\n  sorry -- Missing: definition of geometric quantity (area-like)\n\n/-- Tensor network representation of quantum states -/\ndef tensorNetworkRep {H : Type*} [NormedAddCommGroup H] [InnerProductSpace \u2102 H]\n  (\u03c8 : QuantumStateSpace H) : Type* :=\n  sorry -- Missing: tensor network formalism\n\n/-- Discrete geometry from tensor network -/\ndef discreteGeometry {H : Type*} [NormedAddCommGroup H] [InnerProductSpace \u2102 H]\n  (tn : tensorNetworkRep \u03c8) : Type* :=\n  sorry -- Missing: graph metric from tensor network\n\n/-- Continuum limit of discrete geometry -/\ndef continuumLimit {H : Type*} [NormedAddCommGroup H] [InnerProductSpace \u2102 H]\n  {M : Type*} [TopologicalSpace M] [ChartedSpace \u211d M] [SmoothManifoldWithCorners \ud835\udcd8(\u211d, M) M]\n  (dg : discreteGeometry tn) : MetricSpace M :=\n  sorry -- Gap: continuum limit procedure not rigorously defined\n\n/-- The main correspondence between quantum states and metrics -/\ndef quantumGeometryCorrespondence {H : Type*} [NormedAddCommGroup H] [InnerProductSpace \u2102 H]\n  {M : Type*} [TopologicalSpace M] [ChartedSpace \u211d M] [SmoothManifoldWithCorners \ud835\udcd8(\u211d, M) M] :\n  QuantumStateSpace H \u2192 MetricSpace M :=\n  sorry -- Missing: full correspondence definition\n\n/-- Main theorem: Bijective correspondence preserving entanglement/geometry relation -/\ntheorem quantum_geometry_correspondence_theorem \n  {H : Type*} [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H]\n  {M : Type*} [TopologicalSpace M] [ChartedSpace \u211d M] [SmoothManifoldWithCorners \ud835\udcd8(\u211d, M) M]\n  (\u03c1 : DensityOperator H) :\n  \u2203 (F : QuantumStateSpace H \u2243 MetricSpace M),\n    \u2200 (H_A H_B : Type*) [NormedAddCommGroup H_A] [InnerProductSpace \u2102 H_A]\n      [NormedAddCommGroup H_B] [InnerProductSpace \u2102 H_B]\n      (h : H \u2243 H_A \u2297[\u2102] H_B),\n    \u2203 (\u03a3 : Set M), \n      entanglementEntropy (partialTrace \u03c1) = geometricQuantity (F \u27e8\u03c1\u27e9) \u03a3 := by\n  sorry -- Proof requires all missing components above\n  -- Step 1: Tensor network representation\n  -- Step 2: Discrete geometry from tensor network  \n  -- Step 3: Gap - mapping bond dimensions to areas not established\n  -- Step 4: Gap - continuum limit not rigorously defined\n  -- Step 5: Ryu-Takayanagi formula application\n  -- Step 6: Gap - extension beyond AdS/CFT not justified\n  -- Step 7: Gap - bijectivity not proven",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the tensor network representation of quantum states",
+      "justification": "Any finite-dimensional quantum state can be represented as a tensor network via Schmidt decomposition",
+      "dependencies": [
+        "Schmidt decomposition theorem"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Establish that tensor networks define discrete geometries",
+      "justification": "The connectivity pattern of a tensor network defines a graph, which induces a discrete metric via graph distance",
+      "dependencies": [
+        "Step 1",
+        "Graph theory fundamentals"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Show that entanglement entropy equals minimal cut area in the tensor network",
+      "justification": "[Gap: This requires a precise mapping between bond dimensions and areas that is not fully established]",
+      "dependencies": [
+        "Step 2",
+        "Min-cut max-flow theorem"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "Take the continuum limit of the discrete geometry",
+      "justification": "[Gap: The continuum limit procedure is not rigorously defined for general tensor networks]",
+      "dependencies": [
+        "Step 3",
+        "Unspecified continuum limit procedure"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Apply the Ryu-Takayanagi formula in the continuum geometry",
+      "justification": "In AdS/CFT, entanglement entropy equals the area of the minimal surface homologous to the boundary region",
+      "dependencies": [
+        "Step 4",
+        "Ryu-Takayanagi formula"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Extend beyond AdS/CFT to general geometries",
+      "justification": "[Gap: The extension from AdS/CFT to general geometries lacks rigorous justification]",
+      "dependencies": [
+        "Step 5",
+        "Unproven generalization"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Establish bijectivity of the correspondence F",
+      "justification": "[Gap: Uniqueness of the geometric representation for a given quantum state is not proven]",
+      "dependencies": [
+        "Steps 1-6"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Ryu-Takayanagi Formula",
+      "authors": "Ryu, S. and Takayanagi, T.",
+      "year": "2006",
+      "field": "Quantum Gravity/String Theory",
+      "statement": "In AdS/CFT, the entanglement entropy of a boundary region equals the area of the minimal surface in the bulk anchored to that region",
+      "usage": "Provides the key relationship between entanglement and geometry in AdS/CFT context"
+    },
+    {
+      "name": "ER=EPR Conjecture",
+      "authors": "Maldacena, J. and Susskind, L.",
+      "year": "2013",
+      "field": "Quantum Gravity",
+      "statement": "Einstein-Rosen bridges (wormholes) and Einstein-Podolsky-Rosen pairs (entanglement) are dual descriptions",
+      "usage": "Motivates the general equivalence between entanglement and geometric connectivity"
+    },
+    {
+      "name": "Tensor Network/Geometry Correspondence",
+      "authors": "Swingle, B.",
+      "year": "2012",
+      "field": "Quantum Information/Condensed Matter",
+      "statement": "MERA tensor networks realize a discrete version of AdS geometry",
+      "usage": "Provides concrete example of entanglement-geometry correspondence"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "H is a finite-dimensional Hilbert space",
+    "M is a smooth manifold with dimension matching log(dim H)",
+    "The correspondence F is continuous with respect to appropriate topologies",
+    "Entanglement entropy is well-defined for all states in S(H)",
+    "The geometric quantity G(g,\u03a3) is the area of \u03a3 divided by 4G_N in Planck units",
+    "The bipartition H_A \u2297 H_B induces a unique codimension-2 surface \u03a3 in M",
+    "The mapping between bipartitions and surfaces is functorial",
+    "Quantum states satisfy positivity and normalization conditions",
+    "Metrics in Met(M) satisfy Einstein's equations with appropriate matter content"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Dimension matching: dim M = log(dim H)",
+        "issue": "This makes no sense. Hilbert space dimension is an integer, log of an integer is typically irrational, but manifold dimension must be an integer. This is mathematically incoherent.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed - the dimensional relationship is fundamentally flawed"
+      },
+      {
+        "step": "Existence of bijection F: S(H) \u2192 Met(M)",
+        "issue": "The spaces have completely different cardinalities. S(H) for finite-dimensional H has finite dimension, while Met(M) is infinite-dimensional. No bijection can exist.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed - the spaces are fundamentally incompatible"
+      },
+      {
+        "step": "Tensor network representation via Schmidt decomposition",
+        "issue": "Schmidt decomposition only works for pure states on bipartite systems. The proof claims this for arbitrary density operators on arbitrary Hilbert spaces.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would need complete reformulation for mixed states and multipartite systems"
+      },
+      {
+        "step": "Continuum limit of tensor network",
+        "issue": "The proof admits this procedure is 'not rigorously defined for general tensor networks' yet uses it as a central step. This is not a proof.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would require developing an entire theory of continuum limits"
+      },
+      {
+        "step": "Application of Ryu-Takayanagi formula",
+        "issue": "RT formula applies specifically to AdS/CFT, not arbitrary manifolds. The proof acknowledges this but proceeds anyway.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot extend AdS/CFT results to general manifolds without justification"
+      },
+      {
+        "step": "G(g,\u03a3) = Area(\u03a3)/4G_N",
+        "issue": "G_N (Newton's constant) has no meaning in arbitrary Riemannian manifolds without physical spacetime structure. Planck units are undefined.",
+        "severity": "major",
+        "fixable": false,
+        "suggested_fix": "Would need physical interpretation of abstract manifold"
+      },
+      {
+        "step": "Bijectivity of F",
+        "issue": "The proof admits it cannot establish injectivity or surjectivity, yet claims to prove a bijection exists.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot claim bijection without proving both properties"
+      }
+    ],
+    "hidden_assumptions": [
+      "That tensor networks provide a complete representation of quantum states",
+      "That graph distance in tensor networks corresponds to geometric distance",
+      "That minimal cuts in discrete networks converge to minimal surfaces",
+      "That Einstein's equations have solutions for arbitrary quantum states",
+      "That the ER=EPR conjecture is true and applicable here",
+      "That results from AdS/CFT extend to general manifolds",
+      "That there exists a natural topology on Met(M) compatible with quantum state topology"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes the geometric quantity G(g,\u03a3) equals entanglement entropy (via RT formula in AdS/CFT) to prove that entanglement entropy equals a geometric quantity. It also assumes metrics satisfy Einstein's equations without showing they arise from the construction.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof actually shows nothing rigorous. At best, it suggests that in the specific context of AdS/CFT, there might be some relationship between certain quantum states and certain geometries. It claims a general bijection between all quantum states and all Riemannian metrics.",
+    "citation_issues": [
+      "Ryu-Takayanagi formula only applies in AdS/CFT context, not general manifolds",
+      "ER=EPR is a conjecture, not a theorem that can be invoked in a proof",
+      "Tensor network/geometry correspondence is only established for specific networks like MERA in specific contexts"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This is not a proof but a collection of wishful thinking and unjustified leaps. The dimensional mismatch alone makes the proposition nonsensical, and every major step either admits it cannot be justified or relies on results from completely different contexts. The proof structure would allow one to 'prove' essentially any correspondence between incompatible mathematical objects.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish a correspondence between quantum states and geometries but fails to prove bijectivity or the precise equality claimed. At best, it sketches a heuristic connection in specific cases.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Tensor networks can represent all quantum states with sufficient accuracy",
+      "Graph distance on tensor networks corresponds to geometric distance",
+      "Bond dimensions have a well-defined area interpretation",
+      "The continuum limit exists and is unique",
+      "AdS/CFT correspondence holds",
+      "Einstein's equations have solutions for all quantum states",
+      "The functorial mapping between bipartitions and surfaces exists",
+      "Appropriate topologies exist on S(H) and Met(M) for continuity",
+      "The geometric quantity G(g,\u03a3) is well-defined for all metrics and surfaces"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "3",
+        "issue": "The mapping between bond dimensions and areas is acknowledged as a gap but is essential for the argument"
+      },
+      {
+        "step": "4",
+        "issue": "The continuum limit procedure is acknowledged as not rigorously defined, making this step invalid"
+      },
+      {
+        "step": "5",
+        "issue": "Applies AdS/CFT formula without establishing that the geometry is AdS or that CFT correspondence holds"
+      },
+      {
+        "step": "6",
+        "issue": "Extension beyond AdS/CFT is acknowledged as lacking rigorous justification"
+      },
+      {
+        "step": "7",
+        "issue": "Bijectivity is not established - uniqueness of geometric representation is acknowledged as unproven"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Multiple acknowledged gaps in critical steps",
+      "No proof of bijectivity of correspondence F",
+      "No rigorous definition of the continuum limit",
+      "No justification for extending beyond AdS/CFT",
+      "No proof that bond dimensions correspond to areas",
+      "No verification that all quantum states have corresponding geometries",
+      "No proof that the mapping between bipartitions and surfaces is well-defined"
+    ],
+    "internal_score": 0.1
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims a bijective correspondence F: S(H) \u2192 Met(M) between quantum states and Riemannian metrics, but this contradicts proof [06879fd9ae87] which establishes that physical properties are fundamentally contextual and cannot possess predetermined values independent of measurement framework. A bijective correspondence would imply states have predetermined geometric properties.",
+      "The claim that entanglement entropy equals a geometric quantity contradicts the contextual nature of quantum observables established in multiple existing proofs, particularly [19c10dc86a65] which shows quantum coherence fundamentally alters system properties beyond classical predictions.",
+      "The assumption that 'The mapping between bipartitions and surfaces is functorial' conflicts with proof [06d6ace265c2] which shows the quantum-classical boundary emerges through environmental decoherence, not through predetermined geometric structures."
+    ],
+    "assumption_conflicts": [
+      "Assumes Einstein's equations with appropriate matter content, but this conflicts with proof [21fcf0926d92] which establishes the vacuum as an active medium whose properties fundamentally shape physical processes - this would affect the geometric correspondence claimed.",
+      "Assumes finite-dimensional Hilbert spaces while several existing proofs ([06d6ace265c2], [19c10dc86a65]) work with separable infinite-dimensional spaces, creating potential incompatibility in the correspondence.",
+      "The assumption of a continuous correspondence F conflicts with proof [37338340b3ed] which establishes fundamental discreteness at smallest scales."
+    ],
+    "beneficial_connections": [
+      "Could potentially connect to proof [1083de91300b] regarding black hole entropy scaling with boundary area, though the bijective correspondence claim is problematic.",
+      "Might relate to proof [2373a9c1ee2d] on symmetry breaking and emergent collective modes if the geometric correspondence were reformulated as emergent rather than fundamental."
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof makes several unjustified leaps, particularly the claim of bijectivity between quantum states and Riemannian metrics. The Ryu-Takayanagi formula applies specifically to AdS/CFT correspondence, and extending it to 'general geometries' without rigorous justification is problematic. The proof lacks mathematical rigor in establishing the claimed correspondence and contradicts fundamental principles of quantum contextuality established in the existing corpus."
+  },
+  "confidence_score": 0.22000000000000003,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.1,
+    "cross_proof": 0.2,
+    "calibration": 0.29999999999999993
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.1,
+    "cross_proof": 0.2,
+    "calibration": 0.29999999999999993
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous theory of continuum limits for tensor networks, a functorial correspondence between Hilbert space factorizations and manifold foliations, and a generalization of the Ryu-Takayanagi formula beyond AdS/CFT with proper measure-theoretic foundations",
+  "limitations": [
+    "The mapping between bond dimensions in tensor networks and geometric areas lacks rigorous definition",
+    "The continuum limit procedure for general tensor networks is not mathematically well-defined",
+    "The extension from AdS/CFT to general geometries is conjectural",
+    "The uniqueness and continuity of the state-metric correspondence F is not established",
+    "The precise relationship between Hilbert space factorizations and geometric subregions needs axiomatization",
+    "The proof heavily relies on AdS/CFT which is itself unproven",
+    "The correspondence may only hold for special classes of states and geometries",
+    "The notion of 'equivalence' between discrete quantum and continuous geometric structures needs careful definition",
+    "The proof assumes finite-dimensional Hilbert spaces while physical applications often require infinite dimensions"
+  ],
+  "source_convergence": {
+    "structural_claim": "Entanglement structure directly determines and is equivalent to geometric structure",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Quantum Teleportation Protocol",
+        "domain_id": "quantum_foundations",
+        "domain_name": "Quantum Foundations",
+        "link_type": "direct",
+        "structural_conclusion": "Entanglement serves as a fundamental resource that enables non-local operations"
+      },
+      {
+        "result_id": "",
+        "result_name": "Ryu-Takayanagi Formula",
+        "domain_id": "quantum_gravity",
+        "domain_name": "Quantum Gravity",
+        "link_type": "direct",
+        "structural_conclusion": "Entanglement entropy in boundary theory equals geometric area in bulk spacetime"
+      },
+      {
+        "result_id": "",
+        "result_name": "Emergent Spacetime from Entanglement",
+        "domain_id": "quantum_gravity",
+        "domain_name": "Quantum Gravity",
+        "link_type": "direct",
+        "structural_conclusion": "Spacetime connectivity emerges from quantum entanglement patterns"
+      },
+      {
+        "result_id": "",
+        "result_name": "ER=EPR Conjecture",
+        "domain_id": "quantum_gravity",
+        "domain_name": "Quantum Gravity",
+        "link_type": "direct",
+        "structural_conclusion": "Wormholes and entanglement are dual descriptions of the same phenomenon"
+      }
+    ],
+    "domains": [
+      "quantum_foundations",
+      "quantum_gravity"
+    ],
+    "domain_names": [
+      "Quantum Foundations",
+      "Quantum Gravity"
+    ],
+    "ea_scores": {
+      "strength": 0.476,
+      "independence": 0.6,
+      "adversarial": 0.3,
+      "reproducibility": 0.6299999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.5472999999999999,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:11:25.866790+00:00",
+    "id": "465a50b0bd99"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.26724
+  }
+}

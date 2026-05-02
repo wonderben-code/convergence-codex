@@ -1,0 +1,15 @@
+{
+  "proof_id": "dda53b604b24",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous categorical framework for emergent phenomena that: (1) formalizes the notion of 'transcending individual properties' categorically, (2) provides composition rules for collective operators that respect physical constraints, (3) establishes functorial relationships between microscopic and collective descriptions preserving relevant physics",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

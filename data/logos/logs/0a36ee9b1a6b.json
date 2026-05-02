@@ -1,0 +1,38 @@
+{
+  "proof_id": "0a36ee9b1a6b",
+  "timestamp": "2026-05-02T13:13:18.011073+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "equivalence - rejected because the mathematical structures (many-body quantum states vs classical field equations) are too different for a functorial relationship, despite sharing the abstract principle"
+      ],
+      "reasoning": "Both domains exhibit the same abstract principle: nonlinearity enables stable localized excitations with particle-like behavior. The convergence identifies shared mathematical properties (nonlinearity, stability, localization, particle-like dynamics) rather than asserting structural equivalence between fractional quantum Hall states and optical solitons."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Dynamical systems, Functional analysis, Differential geometry",
+      "alternatives_considered": [],
+      "reasoning": "Dynamical systems theory provides the framework for analyzing stability and localization of excitations in nonlinear systems. Functional analysis is needed to rigorously treat the infinite-dimensional spaces of field configurations and their perturbations. Differential geometry provides the manifold structure for configuration spaces and the geometric interpretation of soliton dynamics."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof establishes that nonlinear evolution equations with appropriate balance between nonlinearity and dispersion admit traveling wave solutions that are spatially localized. These solutions carry conserved quantities due to symmetries and maintain stability through the energy landscape created by the nonlinearity. However, rigorous proof of particle-like collision behavior requires additional mathematical machinery not available in the general case.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 8 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3832 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 3233 chars, 16 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This formalization captures the high-level structure but most of the soliton theory machinery is missing from Mathlib. Key missing pieces include: nonlinear PDEs, traveling waves, soliton theory, inverse scattering, and field-theoretic Noether's theorem."
+    }
+  ]
+}

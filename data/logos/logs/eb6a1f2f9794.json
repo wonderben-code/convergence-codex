@@ -1,0 +1,38 @@
+{
+  "proof_id": "eb6a1f2f9794",
+  "timestamp": "2026-05-02T13:10:41.451651+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "categorical - One could frame this as a universal property of symmetry-breaking systems, but the axiomatic approach better captures the physical content of spontaneous symmetry breaking as a phenomenon rather than just structural relationships"
+      ],
+      "reasoning": "The convergence identifies a shared abstract principle across domains: systems with continuous symmetries spontaneously break them to create discrete structures. This is best captured by axiomatizing the conditions under which symmetry breaking occurs (continuous field, symmetry group action, energy/stability considerations) and showing both particle physics and fluid dynamics satisfy these axioms."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Dynamical systems, Group theory, Measure theory",
+      "alternatives_considered": [],
+      "reasoning": "Dynamical systems theory provides the framework for analyzing spontaneous symmetry breaking through bifurcation theory and stability analysis. Group theory formalizes the symmetries being broken, while measure theory handles the continuous-to-discrete transition and statistical properties of the emergent structures."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof shows that symmetric states with unstable modes along symmetry directions evolve via dominant mode growth to symmetry-broken states with reduced isotropy groups. The discrete spectrum of linearized operators around these states generates spatially organized patterns. The key gap is rigorously connecting linear instability to nonlinear pattern selection.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 8 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3256 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 3051 chars, 11 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This formalization captures the structure of the symmetry breaking proof but many key concepts are missing from Mathlib: second derivatives on manifolds, spectral theory for stability operators, Lyapunov theory for PDEs, center manifold theorem, and pattern formation theory. The proof skeleton is valid but most technical details require sorry."
+    }
+  ]
+}

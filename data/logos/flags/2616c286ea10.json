@@ -1,0 +1,15 @@
+{
+  "proof_id": "2616c286ea10",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A unified geometric framework that encompasses both pseudo-Riemannian geometry (for GR) and magnetic field line geometry (for plasmas) with a common notion of 'effective curvature' that determines stability. This would require extending differential geometry to include non-metric geometric structures and their associated transport equations.",
+    "Difficulty assessed as challenging",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

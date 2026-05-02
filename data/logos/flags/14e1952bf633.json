@@ -1,0 +1,15 @@
+{
+  "proof_id": "14e1952bf633",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous category-theoretic framework for coarse-graining that properly handles the non-commutativity of time evolution and projection operations, along with a formal treatment of 'information loss' functors between reversible and irreversible categories",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

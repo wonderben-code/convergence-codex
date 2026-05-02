@@ -1,0 +1,13 @@
+{
+  "proof_id": "f29cee15c290",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A unified categorical framework that simultaneously captures cobordism relations from differential topology and birational equivalence from algebraic geometry. Current category theory does not provide tools to rigorously relate these distinct notions of 'continuous deformation' across different geometric contexts.",
+    "7 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

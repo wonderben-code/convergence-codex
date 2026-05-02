@@ -1,0 +1,15 @@
+{
+  "proof_id": "cd79ee2e8a11",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous functorial construction from homotopy categories to spectral categories that preserves stability conditions. Current spectral flow theory is insufficient for infinite-dimensional field configuration spaces. Need extension of Morse-Bott theory to handle continuous symmetries in field theory context.",
+    "Difficulty assessed as challenging",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

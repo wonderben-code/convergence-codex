@@ -1,0 +1,38 @@
+{
+  "proof_id": "017d9bcb893f",
+  "timestamp": "2026-05-02T13:29:57.149393+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "equivalence - This could capture the structural correspondence between atomic state mixing and metamaterial wave control, but was rejected because the physical mechanisms differ significantly despite sharing abstract principles"
+      ],
+      "reasoning": "Both domains involve controlling wave phenomena through structured interactions at scales smaller than the wavelength. The convergence identifies shared abstract principles: subwavelength structures can engineer effective medium properties, enabling coherent wave control through designed interactions."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Functional analysis, Differential geometry, Measure theory",
+      "alternatives_considered": [],
+      "reasoning": "Wave phenomena require operator theory and spectral analysis from functional analysis to characterize propagation and resonances. Differential geometry provides the framework for describing wave behavior on curved interfaces and metamaterial geometries. Measure theory is essential for handling the limiting behavior at subwavelength scales and homogenization."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof uses homogenization theory to show that periodic subwavelength structures lead to effective wave equations with designer coefficients. Two-scale asymptotic expansion separates microscale and macroscale behavior, with the effective parameters determined by cell problems. However, key gaps remain in proving arbitrary parameter achievability and coherent control capabilities.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 10 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3845 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "failed",
+      "alternatives_considered": [],
+      "reasoning": "The read operation timed out"
+    }
+  ]
+}

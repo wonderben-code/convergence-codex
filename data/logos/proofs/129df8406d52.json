@@ -1,0 +1,299 @@
+{
+  "id": "129df8406d52",
+  "convergence_id": "a2570479f9c8",
+  "timestamp": "2026-05-02T13:53:17.662650+00:00",
+  "proposition": "Let H be a self-adjoint operator on a Hilbert space \u210b with a discrete spectrum. If H possesses a symmetry group G such that [H,g] = 0 for all g \u2208 G, and if there exists a degenerate eigenspace E_\u03bb with dim(E_\u03bb) > 1, then for any external perturbation V that breaks the symmetry (i.e., [V,g] \u2260 0 for some g \u2208 G), the perturbed operator H + \u03b5V for sufficiently small \u03b5 > 0 has split eigenvalues in a neighborhood of \u03bb.",
+  "proposition_natural": "External fields break symmetries and split degenerate states/modes",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Functional analysis",
+    "Algebraic structures"
+  ],
+  "apparatus_justification": "Functional analysis provides spectral theory for operators on Hilbert spaces, which captures both quantum mechanical Hamiltonians and wave operators. Algebraic structures (specifically group theory) formalizes the symmetries that get broken. The convergence centers on how perturbations lift degeneracies in eigenspaces.",
+  "proof_natural": "**Proposition.** Let $H$ be a self-adjoint operator on a Hilbert space $\\mathcal{H}$ with a discrete spectrum. If $H$ possesses a symmetry group $G$ such that $[H,g] = 0$ for all $g \\in G$, and if there exists a degenerate eigenspace $E_\\lambda$ with $\\dim(E_\\lambda) > 1$, then for any external perturbation $V$ that breaks the symmetry (i.e., $[V,g] \\neq 0$ for some $g \\in G$), the perturbed operator $H + \\varepsilon V$ for sufficiently small $\\varepsilon > 0$ has split eigenvalues in a neighborhood of $\\lambda$.\n\n**Proof.** Let $\\mathcal{H}$ be a separable Hilbert space and $H$ a self-adjoint operator with discrete spectrum. We assume that $G$ is a group acting unitarily on $\\mathcal{H}$ such that $H$ commutes with all elements of $G$: $[H,g] = 0$ for all $g \\in G$. Let $\\lambda$ be an isolated degenerate eigenvalue of $H$ with eigenspace $E_\\lambda$ where $\\dim(E_\\lambda) = n > 1$. Further, let $V$ be a bounded self-adjoint operator that breaks the symmetry, meaning there exists $g \\in G$ such that $[V,g] \\neq 0$. We assume that the restriction of $V$ to $E_\\lambda$ is not a scalar multiple of the identity.\n\nFirst, we observe that the eigenspace $E_\\lambda$ carries a representation of $G$. Indeed, since $[H,g] = 0$ for all $g \\in G$, if $\\psi \\in E_\\lambda$, then $H(g(\\psi)) = g(H(\\psi)) = g(\\lambda\\psi) = \\lambda g(\\psi)$, which shows that $g(\\psi) \\in E_\\lambda$.\n\nBy Schur's lemma, if the representation of $G$ on $E_\\lambda$ is irreducible and if $V$ restricted to $E_\\lambda$ were to commute with all $g \\in G$, then necessarily $V|_{E_\\lambda} = c \\cdot I$ for some scalar $c$. However, since $V$ breaks the symmetry\u2014that is, $[V,g] \\neq 0$ for some $g \\in G$\u2014and we have assumed that $V|_{E_\\lambda}$ is not a scalar multiple of the identity, it follows that $V|_{E_\\lambda}$ cannot commute with all group elements when the $G$-representation on $E_\\lambda$ is irreducible.\n\nWe now apply degenerate perturbation theory. By the Kato-Rellich theorem, for sufficiently small $\\varepsilon$, the eigenvalues of $H + \\varepsilon V$ depend analytically on $\\varepsilon$. The first-order corrections to the eigenvalue $\\lambda$ are given by the eigenvalues of the matrix $M_{ij} = \\langle\\psi_i|V|\\psi_j\\rangle$, where $\\{\\psi_i\\}$ is an orthonormal basis of $E_\\lambda$.\n\n[Note: A complete proof would require showing that the matrix $M$ has distinct eigenvalues when $V$ breaks the symmetry. This typically follows from analyzing the structure of $M$ in relation to the representation theory of $G$ and the specific way in which $V$ breaks the symmetry.]\n\nAssuming that $M$ has $k > 1$ distinct eigenvalues $\\mu_1, \\ldots, \\mu_k$, standard results from degenerate perturbation theory tell us that $H + \\varepsilon V$ has eigenvalues of the form $\\lambda + \\varepsilon\\mu_i + O(\\varepsilon^2)$ for $i = 1, \\ldots, k$. For sufficiently small $\\varepsilon > 0$, these eigenvalues remain distinct, as the $O(\\varepsilon^2)$ terms cannot overcome the first-order splitting $\\varepsilon(\\mu_i - \\mu_j)$ when $\\mu_i \\neq \\mu_j$.\n\nTherefore, the originally degenerate eigenvalue $\\lambda$ splits into distinct eigenvalues under the symmetry-breaking perturbation $V$. This completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.Analysis.InnerProductSpace.Basic\nimport Mathlib.Analysis.InnerProductSpace.Spectrum\nimport Mathlib.LinearAlgebra.Eigenspace.Basic\nimport Mathlib.GroupTheory.GroupAction.Basic\nimport Mathlib.Topology.Algebra.Module.Basic\n\n/-- A self-adjoint operator with discrete spectrum and symmetry group -/\nstructure SymmetricOperator (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H] where\n  op : H \u2192L[\u2102] H\n  self_adjoint : IsSelfAdjoint op\n  -- discrete_spectrum : sorry -- Not in Mathlib\n  symmetry_group : Type*\n  [group : Group symmetry_group]\n  [action : MulAction symmetry_group H]\n  [continuous_action : ContinuousSMul symmetry_group H]\n  commutes : \u2200 g : symmetry_group, \u2200 v : H, op (g \u2022 v) = g \u2022 (op v)\n\n/-- Perturbation that breaks symmetry -/\nstructure SymmetryBreakingPerturbation (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H]\n  (S : SymmetricOperator H) where\n  V : H \u2192L[\u2102] H\n  breaks_symmetry : \u2203 g : S.symmetry_group, \u2203 v : H, V (g \u2022 v) \u2260 g \u2022 (V v)\n\n/-- Main theorem: Symmetry breaking causes eigenvalue splitting -/\ntheorem eigenvalue_splitting_under_symmetry_breaking\n  {H : Type*} [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H]\n  (S : SymmetricOperator H) (P : SymmetryBreakingPerturbation H S)\n  (\u03bb : \u2102) (E_\u03bb : Submodule \u2102 H)\n  (h_eigenspace : E_\u03bb = (S.op - \u03bb \u2022 1).ker)\n  (h_degenerate : 1 < FiniteDimensional.finrank \u2102 E_\u03bb) :\n  \u2203 \u03b4 > 0, \u2200 \u03b5 \u2208 Set.Ioo (0 : \u211d) \u03b4,\n  \u2203 (eigenvalues : Finset \u2102),\n  (1 < eigenvalues.card) \u2227\n  (\u2200 \u03bc \u2208 eigenvalues, \u2203 v : H, v \u2260 0 \u2227 (S.op + \u03b5 \u2022 P.V - \u03bc \u2022 1) v = 0) \u2227\n  (\u2200 \u03bc \u2208 eigenvalues, \u2016\u03bc - \u03bb\u2016 < \u03b5) := by\n  -- Step 1: The eigenspace E_\u03bb carries a representation of G\n  have h_invariant : \u2200 g : S.symmetry_group, \u2200 v \u2208 E_\u03bb, g \u2022 v \u2208 E_\u03bb := by\n    intro g v hv\n    rw [h_eigenspace, LinearMap.mem_ker] at hv \u22a2\n    simp only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.one_apply] at hv \u22a2\n    rw [S.commutes, hv, smul_zero]\n  \n  -- Step 2: Apply Schur's lemma (not available in Mathlib for this context)\n  -- If the representation is irreducible and V commutes with G, then V|_E_\u03bb is scalar\n  sorry -- Schur's lemma for operator algebras not in Mathlib\n  \n  -- Step 3: Since V breaks symmetry, V|_E_\u03bb cannot be scalar when representation is irreducible\n  sorry -- Requires representation theory machinery\n  \n  -- Step 4: First-order perturbation theory eigenvalue corrections\n  -- Matrix M_ij = \u27e8\u03c8_i|V|\u03c8_j\u27e9 for orthonormal basis {\u03c8_i} of E_\u03bb\n  sorry -- Kato-Rellich theorem not in Mathlib\n  \n  -- Step 5: Show M has distinct eigenvalues when V breaks symmetry\n  sorry -- Requires analysis of symmetry breaking structure\n  \n  -- Step 6: Apply degenerate perturbation theory\n  sorry -- Degenerate perturbation theory not fully developed in Mathlib\n  \n  -- Step 7: For small \u03b5, the perturbed eigenvalues remain distinct\n  sorry -- Requires continuity arguments for eigenvalue perturbations",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The eigenspace E_\u03bb carries a representation of G",
+      "justification": "Since [H,g] = 0 for all g \u2208 G, if \u03c8 \u2208 E_\u03bb then g(\u03c8) \u2208 E_\u03bb because H(g(\u03c8)) = g(H(\u03c8)) = g(\u03bb\u03c8) = \u03bbg(\u03c8)",
+      "dependencies": [
+        "Assumption that [H,g] = 0"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "By Schur's lemma, if the representation of G on E_\u03bb is irreducible and V restricted to E_\u03bb commutes with all g \u2208 G, then V|_{E_\u03bb} = c\u00b7I for some scalar c",
+      "justification": "Standard application of Schur's lemma in representation theory",
+      "dependencies": [
+        "Schur's lemma"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Since V breaks the symmetry, V|_{E_\u03bb} cannot be a scalar multiple of the identity when the G-representation on E_\u03bb is irreducible",
+      "justification": "Contrapositive of step 2, using the assumption that [V,g] \u2260 0 for some g",
+      "dependencies": [
+        "Step 2",
+        "Assumption that V breaks symmetry"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The first-order perturbation theory eigenvalue corrections are given by the eigenvalues of the matrix M_{ij} = \u27e8\u03c8_i|V|\u03c8_j\u27e9 where {\u03c8_i} is an orthonormal basis of E_\u03bb",
+      "justification": "Standard degenerate perturbation theory (Kato-Rellich theorem)",
+      "dependencies": [
+        "Kato-Rellich perturbation theorem"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "[Gap: Need to show that M has distinct eigenvalues when V breaks symmetry]",
+      "justification": "This requires analyzing the structure of M in relation to the broken symmetry",
+      "dependencies": [
+        "Steps 3, 4"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "If M has k distinct eigenvalues \u03bc_1, ..., \u03bc_k with k > 1, then H + \u03b5V has eigenvalues \u03bb + \u03b5\u03bc_i + O(\u03b5\u00b2) for i = 1, ..., k",
+      "justification": "Standard result from degenerate perturbation theory",
+      "dependencies": [
+        "Step 4",
+        "Kato-Rellich theorem"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "For sufficiently small \u03b5 > 0, the eigenvalues \u03bb + \u03b5\u03bc_i + O(\u03b5\u00b2) are distinct when the \u03bc_i are distinct",
+      "justification": "For small enough \u03b5, the O(\u03b5\u00b2) terms cannot overcome the \u03b5\u03bc_i splitting",
+      "dependencies": [
+        "Step 6"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Schur's Lemma",
+      "authors": "Issai Schur",
+      "year": "1905",
+      "field": "Representation Theory",
+      "statement": "If \u03c1: G \u2192 GL(V) is an irreducible representation and T: V \u2192 V commutes with \u03c1(g) for all g \u2208 G, then T = cI for some scalar c",
+      "usage": "Used to characterize operators that preserve symmetry on irreducible representations"
+    },
+    {
+      "name": "Kato-Rellich Perturbation Theorem",
+      "authors": "Tosio Kato, Franz Rellich",
+      "year": "1950s",
+      "field": "Functional Analysis",
+      "statement": "For self-adjoint operators H and V with V relatively bounded with respect to H, the eigenvalues of H + \u03b5V depend analytically on \u03b5 for small |\u03b5|",
+      "usage": "Justifies the use of perturbation series for eigenvalue corrections"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "\u210b is a separable Hilbert space",
+    "H is a self-adjoint operator with discrete spectrum",
+    "G is a group acting unitarily on \u210b",
+    "H commutes with all elements of G: [H,g] = 0 for all g \u2208 G",
+    "\u03bb is a degenerate eigenvalue of H with eigenspace E_\u03bb, dim(E_\u03bb) = n > 1",
+    "V is a bounded self-adjoint operator",
+    "V breaks the symmetry: \u2203g \u2208 G such that [V,g] \u2260 0",
+    "The restriction of V to E_\u03bb is not a scalar multiple of the identity",
+    "\u03b5 is sufficiently small for perturbation theory to apply",
+    "The eigenvalue \u03bb is isolated in the spectrum of H"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "Application of Schur's lemma",
+        "issue": "The proof assumes the representation of G on E_\u03bb is irreducible without justification. If E_\u03bb decomposes into multiple irreducible representations, Schur's lemma cannot be applied as stated.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Decompose E_\u03bb into irreducible G-representations and analyze each component separately"
+      },
+      {
+        "step": "Conclusion from Schur's lemma",
+        "issue": "Even if the representation is irreducible, the logic is backwards. The proof tries to conclude that V|_{E_\u03bb} cannot commute with G because it's not scalar, but this requires proving V has non-scalar restriction first.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Complete restructuring needed - cannot use Schur's lemma to prove V|_{E_\u03bb} is non-scalar"
+      },
+      {
+        "step": "Matrix M has distinct eigenvalues",
+        "issue": "The proof admits this crucial step is missing but proceeds anyway. Without proving M has distinct eigenvalues, the entire conclusion fails.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Prove that symmetry-breaking implies M has at least two distinct eigenvalues"
+      },
+      {
+        "step": "First-order perturbation theory application",
+        "issue": "The proof assumes \u03bb is non-degenerate after restricting to each eigenspace of M, but provides no justification for this",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Verify that higher-order degeneracies don't persist"
+      },
+      {
+        "step": "Group action definition",
+        "issue": "The proof doesn't specify whether G acts by unitary or merely bounded operators, though unitarity is assumed later",
+        "severity": "minor",
+        "fixable": true,
+        "suggested_fix": "Explicitly state G acts by unitary operators"
+      }
+    ],
+    "hidden_assumptions": [
+      "The representation of G on E_\u03bb is irreducible",
+      "The matrix M = \u27e8\u03c8_i|V|\u03c8_j\u27e9 has more than one distinct eigenvalue",
+      "The group G is represented by unitary operators",
+      "The eigenvalue \u03bb remains isolated under perturbation",
+      "V is relatively bounded with respect to H (needed for Kato-Rellich)"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes V|_{E_\u03bb} is not scalar to apply representation theory, but this non-scalarity is what needs to be proven from the symmetry-breaking condition",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims the result for any symmetry-breaking perturbation V, but actually requires V|_{E_\u03bb} to have specific properties that don't follow from [V,g]\u22600 alone",
+    "citation_issues": [
+      "Schur's lemma is misapplied - it requires irreducibility which isn't established",
+      "Kato-Rellich theorem requires relative boundedness of V with respect to H, which isn't verified"
+    ],
+    "structural_soundness": 0.2,
+    "overall_assessment": "This proof has fundamental logical gaps and circular reasoning that render it invalid. The core issue of proving that symmetry-breaking leads to eigenvalue splitting is left unaddressed, with the proof essentially assuming what it needs to prove.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to show eigenvalue splitting but fails to establish the key connection between symmetry breaking and non-scalar perturbation matrix, and only addresses irreducible representations",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The representation of G on E_\u03bb is irreducible",
+      "The group G acts unitarily on the Hilbert space",
+      "The perturbation V is bounded",
+      "Higher-order perturbation terms don't cause level crossings",
+      "The eigenvalue \u03bb remains isolated under perturbation"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 3",
+        "issue": "The logic is circular - assumes V|_{E_\u03bb} is not scalar to conclude symmetry breaking, but needs to prove V|_{E_\u03bb} is not scalar from symmetry breaking assumption"
+      },
+      {
+        "step": "Step 5",
+        "issue": "This is explicitly marked as a gap and the critical step is missing - no proof that the perturbation matrix M has distinct eigenvalues"
+      },
+      {
+        "step": "Step 7",
+        "issue": "Assumes without proof that O(\u03b5\u00b2) terms cannot cause level crossings or coalescence of eigenvalues"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Step 5 is explicitly incomplete - the crucial connection between symmetry breaking and matrix eigenvalue structure is missing",
+      "No consideration of reducible representations where the eigenspace decomposes into irreducible subspaces",
+      "No analysis of what happens when V|_{E_\u03bb} has repeated eigenvalues",
+      "Missing proof that symmetry breaking implies non-scalar perturbation matrix",
+      "No verification that perturbation theory convergence conditions are satisfied"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims that symmetry-breaking perturbations always split degenerate eigenvalues, but this contradicts the general principle from [08b6405556dd] that symmetry groups determine conserved quantities and constrain dynamics - if the perturbation truly breaks all relevant symmetries, the splitting pattern should depend on the specific representation structure, not just the existence of symmetry breaking",
+      "The proof assumes V restricted to E_\u03bb cannot be a scalar multiple of identity when V breaks symmetry, but this is false - V can break symmetry globally while acting as scalar on specific eigenspaces, especially when the eigenspace carries a trivial representation of the broken symmetry subgroup"
+    ],
+    "assumption_conflicts": [
+      "The assumption that symmetry-breaking automatically implies non-scalar action on eigenspaces conflicts with representation theory principles underlying [08b6405556dd] and [087da119976b]",
+      "The discrete spectrum assumption may conflict with the continuous spectrum scenarios implied in wave control proofs like [017d9bcb893f]"
+    ],
+    "beneficial_connections": [
+      "Connects to [087da119976b] on spontaneous symmetry breaking, though the new proof addresses external perturbations rather than spontaneous breaking",
+      "Relates to [08b6405556dd] on symmetry principles constraining dynamics, providing a specific perturbative example",
+      "Could extend [1318ecd2c25c] on phase transitions and symmetry-breaking by providing microscopic eigenvalue splitting mechanism"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof has a critical gap in showing that the perturbation matrix M has distinct eigenvalues, and the logic connecting symmetry-breaking to eigenvalue splitting is flawed. The Schur's lemma application is incorrect - it only applies when the representation is irreducible, but the proof doesn't establish this condition. The conclusion may be true under additional assumptions, but the current argument is insufficient."
+  },
+  "confidence_score": 0.27,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A general theorem connecting symmetry-breaking perturbations to the non-degeneracy of the perturbation matrix M restricted to degenerate eigenspaces. This would require developing a systematic theory relating group representations, their characters, and the spectral properties of symmetry-breaking operators.",
+  "limitations": [
+    "The crucial step showing that symmetry-breaking implies distinct eigenvalues of the perturbation matrix M is not rigorously established",
+    "The proof assumes irreducible representations but doesn't handle the general case of reducible representations",
+    "The connection between the abstract symmetry breaking [V,g] \u2260 0 and the concrete splitting of eigenvalues needs more detailed analysis",
+    "Only applies to discrete spectra, not continuous spectra",
+    "Requires the external field to be treated as a small perturbation",
+    "Does not quantify the amount of splitting in terms of the symmetry-breaking strength",
+    "Does not address non-Hermitian cases mentioned in the acoustic example",
+    "The proof sketch doesn't fully capture the complexity of symmetry breaking in different physical contexts"
+  ],
+  "source_convergence": {
+    "structural_claim": "External fields break symmetries and split degenerate states/modes",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Zeeman Effect",
+        "domain_id": "field_a",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Magnetic fields break rotational symmetry and split degenerate atomic energy levels"
+      },
+      {
+        "result_id": "",
+        "result_name": "Exceptional Points in Non-Hermitian Acoustics",
+        "domain_id": "field_b",
+        "domain_name": "Acoustics and Wave Physics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Loss and gain break Hermiticity and create degeneracy splitting in acoustic systems"
+      }
+    ],
+    "domains": [
+      "atomic_physics",
+      "acoustics"
+    ],
+    "domain_names": [
+      "Atomic and Molecular Physics",
+      "Acoustics and Wave Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.1428,
+      "independence": 0.8,
+      "adversarial": 0.12,
+      "reproducibility": 0.315,
+      "depth_consistency": 1.0,
+      "confidence": 0.41409000000000007,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:56:26.304879+00:00",
+    "id": "a2570479f9c8"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.302595
+  }
+}

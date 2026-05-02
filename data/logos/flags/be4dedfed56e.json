@@ -1,0 +1,15 @@
+{
+  "proof_id": "be4dedfed56e",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A complete theory of 'correlation categories' with well-defined morphisms between arbitrary correlation patterns, and a general construction principle for deriving geometric structures from arbitrary quantum states beyond specific examples like AdS/CFT",
+    "Difficulty assessed as challenging",
+    "10 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

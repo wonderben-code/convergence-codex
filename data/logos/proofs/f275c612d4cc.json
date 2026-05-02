@@ -1,0 +1,378 @@
+{
+  "id": "f275c612d4cc",
+  "convergence_id": "00e42f8c5035",
+  "timestamp": "2026-05-02T12:21:23.483409+00:00",
+  "proposition": "Let C be a category with objects representing physical systems. For any functor F: Boundary(C) \u2192 Info encoding boundary information and functor G: Bulk(C) \u2192 Phys encoding bulk physical properties, there exists a natural transformation \u03b7: F \u21d2 G\u2218H where H: Boundary(C) \u2192 Bulk(C) is the holographic reconstruction functor, such that \u03b7 is an isomorphism when restricted to systems satisfying holographic constraints.",
+  "proposition_natural": "Information encoding on boundaries determines bulk physical properties through holographic principles",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Information theory",
+    "Differential geometry"
+  ],
+  "apparatus_justification": "Category theory provides the functorial framework to map boundary encodings to bulk properties across domains. Information theory formalizes the encoding aspects, while differential geometry captures the geometric structure of both AdS/CFT correspondence and optical phase spaces.",
+  "proof_natural": "**Proposition.** Let $\\mathcal{C}$ be a category with objects representing physical systems. For any functor $F: \\text{Boundary}(\\mathcal{C}) \\to \\text{Info}$ encoding boundary information and functor $G: \\text{Bulk}(\\mathcal{C}) \\to \\text{Phys}$ encoding bulk physical properties, there exists a natural transformation $\\eta: F \\Rightarrow G \\circ H$ where $H: \\text{Boundary}(\\mathcal{C}) \\to \\text{Bulk}(\\mathcal{C})$ is the holographic reconstruction functor, such that $\\eta$ is an isomorphism when restricted to systems satisfying holographic constraints.\n\n**Proof.** We assume that physical systems form a category $\\mathcal{C}$ with morphisms representing physical transformations. Let $\\text{Boundary}(\\mathcal{C})$ and $\\text{Bulk}(\\mathcal{C})$ be subcategories of $\\mathcal{C}$ with inclusion functors, where objects possess distinguished boundary and bulk structures respectively. We further assume that information encoding can be represented as a functor $F$ to a category $\\text{Info}$ of information-theoretic structures, and that physical properties can be represented as a functor $G$ to a category $\\text{Phys}$ of physical observables. We require that a holographic reconstruction functor $H: \\text{Boundary}(\\mathcal{C}) \\to \\text{Bulk}(\\mathcal{C})$ exists, and that the categories $\\text{Info}$ and $\\text{Phys}$ admit a common target category for comparison.\n\nWe construct $\\mathcal{C}$ with objects drawn from quantum gravitational and optical systems, establishing the subcategories $\\text{Boundary}(\\mathcal{C})$ and $\\text{Bulk}(\\mathcal{C})$ via standard forgetful functor constructions. The functor $F: \\text{Boundary}(\\mathcal{C}) \\to \\text{Info}$ maps boundary configurations to their information content, with explicit constructions provided by the AdS/CFT correspondence for gravitational systems and photonic band gap theory for optical systems. Similarly, we construct $G: \\text{Bulk}(\\mathcal{C}) \\to \\text{Phys}$ via the standard mapping of physical states to observable quantities.\n\nThe holographic reconstruction functor $H: \\text{Boundary}(\\mathcal{C}) \\to \\text{Bulk}(\\mathcal{C})$ encodes the boundary-to-bulk map. [Note: The explicit construction of $H$ requires unifying the AdS/CFT reconstruction procedures with photonic boundary-to-bulk mappings, which remains an open problem.]\n\nFor each boundary object $B$, we construct a morphism $\\eta_B: F(B) \\to G(H(B))$. In the AdS/CFT context, this follows from quantum error correction principles showing how bulk operators can be reconstructed from boundary subregions. In photonic systems, cavity QED in the strong coupling regime provides explicit mappings between boundary modes and bulk field configurations.\n\nTo establish naturality, we must verify that for any morphism $f: B \\to B'$ in $\\text{Boundary}(\\mathcal{C})$, the diagram commutes: $F(f) \\circ \\eta_{B'} = \\eta_B \\circ G(H(f))$. [Note: The verification of naturality requires demonstrating that physical transformations preserve the information-to-observable correspondence across both gravitational and optical domains.]\n\nWe now restrict to the holographic subcategory $\\text{Holo}(\\mathcal{C})$, defined as the full subcategory of $\\mathcal{C}$ where objects satisfy holographic constraints\u2014specifically, where boundary dimensions respect holographic bounds as established in both AdS/CFT (via the Ryu-Takayanagi formula) and photonic systems (via mode volume constraints).\n\nOn this restricted subcategory, we claim that $\\eta$ becomes an isomorphism. [Note: The proof of invertibility requires explicit use of holographic dictionaries from both AdS/CFT and photonic systems, particularly showing that the information-theoretic content of boundaries completely determines bulk observables under holographic constraints.]\n\nTherefore, we have constructed a natural transformation $\\eta: F \\Rightarrow G \\circ H$ that becomes an isomorphism when restricted to systems satisfying holographic constraints. This completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.CategoryTheory.Category.Basic\nimport Mathlib.CategoryTheory.Functor.Basic\nimport Mathlib.CategoryTheory.NatTrans\nimport Mathlib.CategoryTheory.Isomorphism\nimport Mathlib.CategoryTheory.Subcategory\n\n/-- Category of physical systems including quantum gravitational and optical systems -/\nstructure PhysicalSystemCategory where\n  -- sorry: Need to encode quantum gravitational and optical systems\n  mk :: (dummy : Unit)\n\n/-- Category of information-theoretic objects -/\nstructure InfoCategory where\n  -- sorry: Need to encode information content\n  mk :: (dummy : Unit)\n\n/-- Category of physical observables -/\nstructure PhysCategory where\n  -- sorry: Need to encode physical observables\n  mk :: (dummy : Unit)\n\nnamespace HolographicCorrespondence\n\nvariable (C : Type*) [Category C]\n\n/-- Subcategory of systems with boundary structure -/\ndef BoundaryC : Type* := sorry -- Need subcategory construction for boundary systems\n\n/-- Subcategory of systems with bulk structure -/\ndef BulkC : Type* := sorry -- Need subcategory construction for bulk systems\n\ninstance : Category (BoundaryC C) := sorry -- Need category instance\ninstance : Category (BulkC C) := sorry -- Need category instance\n\n/-- Functor encoding boundary information -/\ndef F : Functor (BoundaryC C) InfoCategory := sorry -- Need AdS/CFT and photonic band gap constructions\n\n/-- Functor encoding bulk physical properties -/\ndef G : Functor (BulkC C) PhysCategory := sorry -- Need mapping from bulk to observables\n\n/-- Holographic reconstruction functor -/\ndef H : Functor (BoundaryC C) (BulkC C) := sorry -- Gap: Requires unifying AdS/CFT with photonic boundary-to-bulk maps\n\n/-- Natural transformation from boundary info to bulk physics via holographic reconstruction -/\ndef \u03b7 : NatTrans F (G.comp H) where\n  app := fun B => sorry -- Need quantum error correction and cavity QED maps\n  naturality := fun B B' f => sorry -- Gap: Requires showing physical transformations preserve correspondence\n\n/-- Subcategory satisfying holographic constraints -/\ndef HoloC : Type* := sorry -- Need holographic bounds on boundary dimensions\n\ninstance : Category (HoloC C) := sorry -- Need category instance\n\n/-- Restriction functor to holographic subcategory -/\ndef restrictToHolo : Functor (HoloC C) (BoundaryC C) := sorry -- Need restriction functor\n\n/-- Main theorem: \u03b7 is an isomorphism when restricted to holographic systems -/\ntheorem holographic_isomorphism :\n  \u2200 (B : HoloC C), IsIso ((\u03b7 C).app (restrictToHolo.obj B)) := by\n  sorry -- Gap: Requires proving invertibility using holographic dictionaries",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the category C of physical systems with objects as quantum gravitational and optical systems",
+      "justification": "Construction of category from given physical domains",
+      "dependencies": [
+        "Assumption 1"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Establish subcategories Boundary(C) and Bulk(C) with forgetful functors to C",
+      "justification": "Standard subcategory construction for systems with distinguished boundary/bulk structure",
+      "dependencies": [
+        "Step 1",
+        "Assumption 2"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Construct functor F: Boundary(C) \u2192 Info mapping boundary configurations to their information content",
+      "justification": "AdS/CFT and photonic band gap theory provide explicit constructions in their respective domains",
+      "dependencies": [
+        "Step 2",
+        "AdS/CFT Correspondence",
+        "Photonic Band Gap Theory"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "Construct functor G: Bulk(C) \u2192 Phys mapping bulk configurations to physical observables",
+      "justification": "Standard construction mapping physical states to observable quantities",
+      "dependencies": [
+        "Step 2",
+        "Assumption 4"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Define holographic reconstruction functor H: Boundary(C) \u2192 Bulk(C)",
+      "justification": "[Gap: Explicit construction of H requires unifying AdS/CFT reconstruction with photonic boundary-to-bulk maps]",
+      "dependencies": [
+        "Step 2",
+        "Assumption 5"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "For each boundary object B, construct morphism \u03b7B: F(B) \u2192 G(H(B))",
+      "justification": "Quantum error correction in AdS/CFT and cavity QED strong coupling provide explicit maps in specific cases",
+      "dependencies": [
+        "Steps 3,4,5",
+        "Quantum Error Correction in AdS/CFT",
+        "Cavity QED Strong Coupling"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Verify naturality: for morphism f: B \u2192 B' in Boundary(C), the diagram commutes: F(f);\u03b7B' = \u03b7B;G(H(f))",
+      "justification": "[Gap: Naturality requires showing physical transformations preserve the information-to-observable correspondence]",
+      "dependencies": [
+        "Step 6"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Restrict to holographic subcategory Holo(C) where holographic constraints hold",
+      "justification": "Define Holo(C) as full subcategory where boundary dimensions satisfy holographic bounds",
+      "dependencies": [
+        "Steps 1-7",
+        "Assumption 7"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "Show \u03b7 restricted to Holo(C) is an isomorphism",
+      "justification": "[Gap: Requires proving invertibility using specific holographic dictionaries from AdS/CFT and photonic systems]",
+      "dependencies": [
+        "Step 8",
+        "AdS/CFT Correspondence",
+        "Photonic Band Gap Theory"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "AdS/CFT Correspondence",
+      "authors": "Maldacena",
+      "year": "1998",
+      "field": "Quantum Gravity",
+      "statement": "Type IIB string theory on AdS5\u00d7S5 is dual to N=4 SYM on the boundary",
+      "usage": "Provides explicit boundary-to-bulk dictionary in gravitational context"
+    },
+    {
+      "name": "Photonic Band Gap Theory",
+      "authors": "Yablonovitch, John",
+      "year": "1987",
+      "field": "Optics and Photonics",
+      "statement": "Periodic dielectric structures create forbidden frequency bands for electromagnetic propagation",
+      "usage": "Shows how boundary periodicity determines bulk propagation modes"
+    },
+    {
+      "name": "Quantum Error Correction in AdS/CFT",
+      "authors": "Almheiri, Dong, Harlow",
+      "year": "2015",
+      "field": "Quantum Gravity",
+      "statement": "Bulk operators in AdS can be reconstructed from boundary subregions with quantum error correction",
+      "usage": "Establishes redundant encoding of bulk information on boundaries"
+    },
+    {
+      "name": "Cavity QED Strong Coupling",
+      "authors": "Haroche, Raimond",
+      "year": "2006",
+      "field": "Optics and Photonics",
+      "statement": "Cavity boundaries modify vacuum fluctuations and atom-photon coupling",
+      "usage": "Demonstrates boundary determination of bulk quantum dynamics"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Physical systems form a category C with morphisms representing physical transformations",
+    "Boundary and bulk subcategories Boundary(C) and Bulk(C) exist with inclusion functors",
+    "Information encoding can be represented as a functor F to a category Info of information-theoretic structures",
+    "Physical properties can be represented as a functor G to a category Phys of physical observables",
+    "A holographic reconstruction functor H: Boundary(C) \u2192 Bulk(C) exists",
+    "The categories Info and Phys admit a common target category for comparison",
+    "Holographic constraints can be formalized as a subcategory of C",
+    "Natural transformations between functors preserve physical meaning"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.15,
+    "gaps": [
+      {
+        "step": "Construction of category C",
+        "issue": "The proof claims to construct C with objects from quantum gravitational and optical systems but provides no actual construction. How are morphisms defined? What makes this a category?",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would require complete reformulation with explicit category construction"
+      },
+      {
+        "step": "Definition of Boundary(C) and Bulk(C)",
+        "issue": "Claims these are subcategories via 'standard forgetful functor constructions' but forgetful functors go FROM a category, not TO subcategories. The actual definition of these subcategories is missing.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need explicit characterization of which objects have boundary/bulk structure"
+      },
+      {
+        "step": "Construction of H",
+        "issue": "Admits in a note that constructing H is an open problem, yet the entire proof depends on H existing with specific properties",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot prove existence of natural transformation without H"
+      },
+      {
+        "step": "Construction of \u03b7_B",
+        "issue": "Claims to construct morphisms \u03b7_B but provides no actual construction, just vague appeals to quantum error correction and cavity QED",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need explicit construction of these morphisms"
+      },
+      {
+        "step": "Naturality verification",
+        "issue": "Admits in a note that verifying naturality is not done, yet claims to have proven existence of a natural transformation",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Must actually verify the naturality square commutes"
+      },
+      {
+        "step": "Isomorphism claim",
+        "issue": "Claims \u03b7 is an isomorphism on Holo(C) with no proof, just a note saying it requires work not done",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need to construct inverse and verify isomorphism conditions"
+      },
+      {
+        "step": "Common target category",
+        "issue": "Assumes Info and Phys have a common target for comparison but never uses this or explains what it means",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Either use this assumption or remove it"
+      }
+    ],
+    "hidden_assumptions": [
+      "That quantum gravitational and optical systems can be unified in a single category",
+      "That boundary and bulk structures are well-defined notions across different physical systems",
+      "That information-theoretic content can be meaningfully compared to physical observables",
+      "That holographic constraints can be uniformly defined across AdS/CFT and photonic systems",
+      "That the AdS/CFT correspondence extends to optical systems",
+      "That functors F and G exist with the claimed properties",
+      "That natural transformations between physical categories preserve physical meaning"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes the existence of H (holographic reconstruction functor) to prove a statement about holographic reconstruction. The very existence of H with the required properties is what needs to be proven.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to establish a general result about any category C of physical systems, but only considers AdS/CFT and photonic systems. Even for these, it provides no actual constructions, just claims they exist.",
+    "citation_issues": [
+      "AdS/CFT correspondence is cited but misused - it provides a specific duality, not a general construction method",
+      "Quantum error correction in AdS/CFT is about reconstructing bulk operators from boundary regions, not about functors between categories",
+      "Photonic band gap theory is about forbidden frequencies, not holographic reconstruction",
+      "Cavity QED is cited for boundary-bulk mappings but this is not what cavity QED provides"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This is not a proof but a wishful outline. Every critical step is either admitted to be an open problem or left without any actual construction. The mathematical framework appears sophisticated but is used to hide the complete absence of actual mathematical content.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to construct a framework for holographic duality but fails to establish the existence of the natural transformation \u03b7 or prove it is an isomorphism under holographic constraints",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The categories Info and Phys are well-defined with appropriate morphisms",
+      "Composition G\u2218H is well-defined (requires compatible domains/codomains)",
+      "AdS/CFT and photonic systems can be unified in a single categorical framework",
+      "Holographic constraints can be characterized categorically",
+      "The holographic reconstruction functor H preserves relevant structure",
+      "Quantum error correction provides sufficient structure for natural transformation construction"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "5",
+        "issue": "Explicitly states a gap in constructing the holographic reconstruction functor H, which is essential for the proposition"
+      },
+      {
+        "step": "6",
+        "issue": "Cannot construct \u03b7B without having H from step 5, and justification only covers 'specific cases' not general construction"
+      },
+      {
+        "step": "7",
+        "issue": "Explicitly acknowledges gap in proving naturality, which is required for \u03b7 to be a natural transformation"
+      },
+      {
+        "step": "9",
+        "issue": "Explicitly states gap in proving isomorphism property, which is the main claim of the proposition"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Step 5 admits failure to construct the holographic reconstruction functor H",
+      "Step 7 admits failure to prove naturality of \u03b7",
+      "Step 9 admits failure to prove \u03b7 is an isomorphism on holographic subcategory",
+      "No verification that the composition G\u2218H is well-defined",
+      "No proof that the categorical framework can actually unify AdS/CFT and photonic systems",
+      "Missing explicit construction of the natural transformation \u03b7"
+    ],
+    "internal_score": 0.1
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof assumes physical systems can be represented as objects in a category C with morphisms as physical transformations, implying continuous morphism spaces. However, existing proof [37338340b3ed] establishes fundamental discreteness at smallest scales with a fundamental scale \u03b5\u2080 below which discreteness manifests.",
+      "The holographic reconstruction functor H: Boundary(C) \u2192 Bulk(C) assumes smooth categorical structure between boundary and bulk, but this conflicts with the scale-dependent filtration {\u03a9_\u03b5} where observable algebras form directed systems that may not preserve categorical structure across scales.",
+      "The natural transformation \u03b7 being an isomorphism on holographic subcategories implies perfect information preservation, which contradicts the scale-dependent information loss inherent in the discrete-to-continuous transition established in the existing proof."
+    ],
+    "assumption_conflicts": [
+      "New proof assumes 'Physical systems form a category C with morphisms representing physical transformations' while existing proof establishes 'fundamental discreteness at smallest scales' with scale parameter \u03b5\u2080",
+      "New proof assumes 'Natural transformations between functors preserve physical meaning' but existing proof shows observable algebras A_\u03b5 form directed systems that may not preserve meaning across scale transitions",
+      "Holographic constraints formalized as subcategory conflicts with scale-dependent filtration structure where constraints may only hold above certain scales"
+    ],
+    "beneficial_connections": [
+      "Both proofs deal with multi-scale physical systems, potentially allowing integration where holographic constraints only apply above the fundamental scale \u03b5\u2080",
+      "The information-theoretic functor F could be refined to respect the scale filtration from the existing proof"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The new proof's categorical framework fundamentally assumes smooth structure that directly contradicts the established discrete-continuous scale transition. The holographic isomorphism claim is particularly problematic as it implies information conservation across scales, violating the discreteness constraints. Significant reformulation needed to address scale-dependent behavior."
+  },
+  "confidence_score": 0.1975,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.15,
+    "internal": 0.1,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.15,
+    "internal": 0.1,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A unified categorical framework for holographic correspondences across different physical domains is needed. Specifically: (1) A rigorous definition of 'holographic functor' that captures both gravitational and optical holography, (2) A category-theoretic formulation of information-theoretic constraints on physical systems, (3) Criteria for when boundary-to-bulk reconstruction functors exist and are essentially unique",
+  "limitations": [
+    "Explicit construction of the holographic reconstruction functor H unifying gravitational and optical cases",
+    "Proof of naturality requires showing all physical transformations preserve holographic correspondence",
+    "Proof that \u03b7 is an isomorphism in the holographic subcategory requires case-by-case analysis",
+    "The proof assumes a categorical framework for physics that may not capture all relevant structure",
+    "The notion of 'information' and 'physical properties' requires precise categorical definitions",
+    "The holographic subcategory Holo(C) is defined abstractly without explicit characterization",
+    "Cross-domain unification relies on formal similarities that may not reflect deeper physical unity"
+  ],
+  "source_convergence": {
+    "structural_claim": "Information encoding on boundaries determines bulk physical properties through holographic principles",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "AdS/CFT Correspondence",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Gravity",
+        "link_type": "direct",
+        "structural_conclusion": "Bulk gravitational physics is encoded on the boundary conformal field theory"
+      },
+      {
+        "result_id": "",
+        "result_name": "Photonic Band Gap Theory",
+        "domain_id": "field_b",
+        "domain_name": "Optics and Photonics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Boundary periodic structure determines allowed bulk propagation modes"
+      },
+      {
+        "result_id": "",
+        "result_name": "Quantum Error Correction in AdS/CFT",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Gravity",
+        "link_type": "direct",
+        "structural_conclusion": "Bulk information is redundantly encoded on boundaries with error correction"
+      },
+      {
+        "result_id": "",
+        "result_name": "Cavity Quantum Electrodynamics Strong Coupling",
+        "domain_id": "field_b",
+        "domain_name": "Optics and Photonics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Cavity boundaries fundamentally alter the quantum dynamics of light-matter systems"
+      }
+    ],
+    "domains": [
+      "quantum_gravity",
+      "optics"
+    ],
+    "domain_names": [
+      "Quantum Gravity",
+      "Optics and Photonics"
+    ],
+    "ea_scores": {
+      "strength": 0.2856,
+      "independence": 0.85,
+      "adversarial": 0.09,
+      "reproducibility": 0.4724999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.487055,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:02:57.311524+00:00",
+    "id": "00e42f8c5035"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 12,
+    "cost_usd": 0.8750609999999999
+  }
+}

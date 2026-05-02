@@ -1,0 +1,15 @@
+{
+  "proof_id": "ed68c1db2acc",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous categorical framework for quantum renormalization group that preserves superposition principles and tracks coherence properties under coarse-graining. Current RG formalism is primarily classical/statistical.",
+    "Difficulty assessed as challenging",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

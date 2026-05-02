@@ -1,0 +1,369 @@
+{
+  "id": "eb6a1f2f9794",
+  "convergence_id": "5de3709b7f19",
+  "timestamp": "2026-05-02T13:10:41.451636+00:00",
+  "proposition": "Let (X, \u03bc, G) be a measure space with a continuous group action, and let F: X \u2192 \u211d be a G-invariant potential function. Under appropriate conditions on F and the dynamics, the system evolves from a G-symmetric initial state to a state with reduced symmetry group H \u228a G, where the symmetry-broken state exhibits discrete, spatially organized structures characterized by a discrete spectrum of the associated linear stability operator.",
+  "proposition_natural": "Complex systems spontaneously break symmetries to create discrete, organized structures from continuous fields",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Dynamical systems",
+    "Group theory",
+    "Measure theory"
+  ],
+  "apparatus_justification": "Dynamical systems theory provides the framework for analyzing spontaneous symmetry breaking through bifurcation theory and stability analysis. Group theory formalizes the symmetries being broken, while measure theory handles the continuous-to-discrete transition and statistical properties of the emergent structures.",
+  "proof_natural": "**Proposition.** Let $(X, \\mu, G)$ be a measure space with a continuous group action, and let $F: X \\to \\mathbb{R}$ be a $G$-invariant potential function. Under appropriate conditions on $F$ and the dynamics, the system evolves from a $G$-symmetric initial state to a state with reduced symmetry group $H \\subsetneq G$, where the symmetry-broken state exhibits discrete, spatially organized structures characterized by a discrete spectrum of the associated linear stability operator.\n\n**Proof.** Let $X$ be a separable Hilbert space or manifold with measure $\\mu$, and let $G$ be a Lie group acting continuously on $X$. We assume $F: X \\to \\mathbb{R}$ is a $C^2$ potential function satisfying $F(g \\cdot x) = F(x)$ for all $g \\in G$ and $x \\in X$. Consider dynamics given by gradient flow $\\partial x/\\partial t = -\\nabla F(x)$ or a Hamiltonian system. \n\nLet $x_0$ be a symmetric critical point of $F$ with $Gx_0 = G$. We assume the Hessian $D^2F(x_0)$ has at least one negative eigenvalue along $G$-orbit directions, the system satisfies appropriate growth/decay conditions at infinity, and perturbations lie in suitable function spaces such as Sobolev spaces.\n\nBy assumption, $D^2F(x_0)$ possesses negative eigenvalues along $G$-orbit directions, which immediately implies linear instability of the symmetric state $x_0$. Applying standard linear stability analysis for gradient or Hamiltonian flows, we find that small perturbations $\\delta x$ in unstable eigendirections grow exponentially: $\\|\\delta x(t)\\| \\geq \\|\\delta x(0)\\|e^{\\lambda t}$ for some $\\lambda > 0$.\n\nThrough dominant mode analysis in the linear regime, the system evolves away from $x_0$ along the most unstable mode, necessarily breaking the original $G$-symmetry. [Note: The transition from linear instability to finite-amplitude states requires case-specific analysis of nonlinear terms, which we do not detail here.]\n\nBy energy minimization arguments combined with appropriate compactness conditions, the system settles into a new equilibrium $x_1$ with stabilizer subgroup $H = \\{g \\in G : g \\cdot x_1 = x_1\\} \\subsetneq G$. The Orbit-Stabilizer Theorem then implies that $G \\cdot x_1$ forms a lower-dimensional manifold in $X$, representing the manifold of discrete symmetry-broken states.\n\nWe further assume that the linearization $L = D^2F(x_1)$ around the symmetry-broken state has discrete spectrum. This property, combined with the Rellich-Kondrachov Theorem for compact embeddings of Sobolev spaces, ensures that the linear stability operator possesses a discrete spectrum. By spectral decomposition, the eigenfunctions of $L$ exhibit discrete, spatially organized patterns characterized by their nodal structure.\n\nThe Center Manifold Theorem guarantees that near non-hyperbolic fixed points, the dynamics can be reduced to a lower-dimensional center manifold, while Lyapunov Stability Theory confirms that stability is determined by the eigenvalues of the linearization.\n\nTherefore, starting from a $G$-symmetric state, the system evolves through symmetry-breaking instability to states with reduced symmetry group $H \\subsetneq G$, exhibiting discrete spatial organization as characterized by the discrete spectrum of the linearized operator. This completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.MeasureTheory.Group.Action\nimport Mathlib.GroupTheory.GroupAction.Basic\nimport Mathlib.GroupTheory.GroupAction.Quotient\nimport Mathlib.Analysis.InnerProductSpace.Spectrum\nimport Mathlib.Analysis.Calculus.FDeriv.Basic\nimport Mathlib.Topology.ContinuousFunction.Basic\nimport Mathlib.LinearAlgebra.Eigenspace.Basic\n\n/-- A measure space with continuous group action and G-invariant potential -/\nstructure SymmetryBreakingSystem (X : Type*) (G : Type*) [TopologicalSpace X] [MeasurableSpace X]\n  [Group G] [TopologicalSpace G] [ContinuousConstSMul G X] where\n  \u03bc : Measure X\n  F : X \u2192 \u211d\n  F_invariant : \u2200 (g : G) (x : X), F (g \u2022 x) = F x\n  F_smooth : ContDiff \u211d 2 F\n  /-- The symmetric state has negative eigenvalues along symmetry directions -/\n  symmetric_unstable : \u2200 (x\u2080 : X), (\u2200 g : G, g \u2022 x\u2080 = x\u2080) \u2192 \n    \u2203 (v : X) (\u03bb : \u211d), \u03bb < 0 \u2227 sorry -- D\u00b2F(x\u2080) has negative eigenvalue \u03bb with eigenvector v\n  /-- Discrete spectrum condition for linearization at symmetry-broken states -/\n  discrete_spectrum : \u2200 (x : X) (H : Subgroup G), \n    (\u2200 h \u2208 H, h \u2022 x = x) \u2192 sorry -- Spectrum of D\u00b2F(x) is discrete\n\n/-- The main theorem on symmetry breaking and pattern formation -/\ntheorem symmetry_breaking_pattern_formation \n  {X G : Type*} [TopologicalSpace X] [MeasurableSpace X] [NormedAddCommGroup X]\n  [Group G] [TopologicalSpace G] [ContinuousConstSMul G X]\n  (sys : SymmetryBreakingSystem X G) :\n  \u2200 (x\u2080 : X), (\u2200 g : G, g \u2022 x\u2080 = x\u2080) \u2192 \n  \u2203 (x\u2081 : X) (H : Subgroup G), \n    (H < \u22a4) \u2227 \n    (\u2200 h \u2208 H, h \u2022 x\u2081 = x\u2081) \u2227\n    (\u2203 (patterns : Set X), sorry) -- Discrete spatially organized structures exist\n    := by\n  intro x\u2080 h_symmetric\n  \n  -- Step 1: The symmetric state x\u2080 is unstable\n  have h_unstable : \u2203 (v : X) (\u03bb : \u211d), \u03bb < 0 \u2227 sorry := \n    sys.symmetric_unstable x\u2080 h_symmetric\n  \n  -- Step 2: Small perturbations grow exponentially\n  have h_growth : \u2200 (\u03b4x : X) (t : \u211d), t \u2265 0 \u2192 \n    sorry -- ||\u03b4x(t)|| \u2265 ||\u03b4x(0)||e^{\u03bbt} for some \u03bb > 0\n  \n  -- Step 3: Evolution along most unstable mode breaks symmetry\n  have h_breaks : \u2203 (direction : X), sorry -- System evolves away from x\u2080\n  \n  -- Step 4: Nonlinear evolution (gap in proof)\n  sorry -- Requires case-specific analysis of nonlinear terms\n  \n  -- Step 5: System settles into new equilibrium with reduced symmetry\n  obtain \u27e8x\u2081, H, h_equilibrium\u27e9 : \u2203 (x\u2081 : X) (H : Subgroup G), \n    (\u2200 h \u2208 H, h \u2022 x\u2081 = x\u2081) \u2227 sorry := sorry -- Energy minimization argument\n  \n  use x\u2081, H\n  \n  constructor\n  \u00b7 -- H is a proper subgroup\n    sorry -- Need to show H \u2260 G using symmetry breaking\n    \n  constructor\n  \u00b7 -- x\u2081 is H-invariant\n    exact fun h hH => sorry -- From h_equilibrium\n    \n  \u00b7 -- Step 6: Orbit forms lower-dimensional manifold\n    have h_orbit : sorry -- G\u00b7x\u2081 forms a manifold := by orbit-stabilizer theorem\n    \n    -- Step 7: Linearization has discrete spectrum\n    have h_discrete : sorry -- Spectrum of D\u00b2F(x\u2081) is discrete := \n      sys.discrete_spectrum x\u2081 H sorry\n    \n    -- Step 8: Eigenfunctions form spatial patterns\n    sorry -- Spectral decomposition gives spatially organized structures",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The symmetric state x\u2080 is unstable due to negative eigenvalues of D\u00b2F(x\u2080) along symmetry directions",
+      "justification": "By assumption, D\u00b2F(x\u2080) has negative eigenvalues along G-orbit directions, implying linear instability",
+      "dependencies": [
+        "Assumption 6",
+        "Standard spectral theory"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Small perturbations \u03b4x in unstable eigendirections grow exponentially: ||\u03b4x(t)|| \u2265 ||\u03b4x(0)||e^{\u03bbt} for \u03bb > 0",
+      "justification": "Linear stability analysis of gradient/Hamiltonian flows",
+      "dependencies": [
+        "Step 1",
+        "Lyapunov stability theorem"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The system evolves away from x\u2080 along the most unstable mode, breaking the original G-symmetry",
+      "justification": "Dominant mode analysis in linear regime",
+      "dependencies": [
+        "Step 2",
+        "Center manifold theorem"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "[Gap: Nonlinear evolution from linear instability to finite-amplitude state]",
+      "justification": "Requires case-specific analysis of nonlinear terms",
+      "dependencies": [
+        "Step 3"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The system settles into a new equilibrium x\u2081 with stabilizer subgroup H = {g \u2208 G : g\u00b7x\u2081 = x\u2081} \u228a G",
+      "justification": "Energy minimization under constraints and compactness arguments",
+      "dependencies": [
+        "Step 4",
+        "Palais-Smale condition or similar"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "The orbit G\u00b7x\u2081 forms a lower-dimensional manifold in X, representing discrete symmetry-broken states",
+      "justification": "Orbit-stabilizer theorem from group theory",
+      "dependencies": [
+        "Step 5",
+        "Basic Lie group theory"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The linearization L = D\u00b2F(x\u2081) around symmetry-broken state has discrete spectrum",
+      "justification": "By assumption 9 and compact embedding theorems",
+      "dependencies": [
+        "Assumption 9",
+        "Rellich-Kondrachov theorem"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Eigenfunctions of L form discrete, spatially organized patterns",
+      "justification": "Spectral decomposition and nodal structure of eigenfunctions",
+      "dependencies": [
+        "Step 7",
+        "Sturm-Liouville theory or generalizations"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Center Manifold Theorem",
+      "authors": "Carr, J.",
+      "year": "1981",
+      "field": "Dynamical Systems",
+      "statement": "Near a non-hyperbolic fixed point, dynamics can be reduced to a lower-dimensional center manifold",
+      "usage": "Justifies reduction to dominant unstable modes in Step 3"
+    },
+    {
+      "name": "Orbit-Stabilizer Theorem",
+      "authors": "Classical",
+      "year": "19th century",
+      "field": "Group Theory",
+      "statement": "For group action G on X, |G\u00b7x| = |G|/|Stab(x)|",
+      "usage": "Characterizes symmetry-broken states in Step 6"
+    },
+    {
+      "name": "Rellich-Kondrachov Theorem",
+      "authors": "Rellich, F.; Kondrachov, V.",
+      "year": "1930s",
+      "field": "Functional Analysis",
+      "statement": "Compact embedding of Sobolev spaces implies discrete spectrum for elliptic operators",
+      "usage": "Ensures discrete spectrum in Step 7"
+    },
+    {
+      "name": "Lyapunov Stability Theory",
+      "authors": "Lyapunov, A.M.",
+      "year": "1892",
+      "field": "Dynamical Systems",
+      "statement": "Stability determined by eigenvalues of linearization",
+      "usage": "Justifies instability analysis in Steps 1-2"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "X is a separable Hilbert space or manifold with measure \u03bc",
+    "G is a Lie group acting continuously on X",
+    "F: X \u2192 \u211d is a C\u00b2 potential function satisfying F(g\u00b7x) = F(x) for all g \u2208 G, x \u2208 X",
+    "The dynamics are given by gradient flow \u2202x/\u2202t = -\u2207F(x) or a Hamiltonian system",
+    "The symmetric state x\u2080 (with Gx\u2080 = G) is a critical point of F",
+    "The Hessian D\u00b2F(x\u2080) has at least one negative eigenvalue along G-orbit directions",
+    "The system satisfies appropriate growth/decay conditions at infinity",
+    "Perturbations are in appropriate function spaces (e.g., Sobolev spaces)",
+    "The linearized operator at symmetry-broken states has discrete spectrum"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Linear instability implies symmetry breaking",
+        "issue": "The proof jumps from linear instability to actual symmetry breaking without justification. Linear instability only shows the symmetric state is unstable, not that the system necessarily evolves to a state with reduced symmetry.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need to prove that unstable modes actually break symmetry and that the system doesn't evolve to another symmetric state"
+      },
+      {
+        "step": "Transition from linear to nonlinear regime",
+        "issue": "The proof explicitly admits it doesn't handle the nonlinear analysis, which is the core of the problem. This is not a minor detail but the heart of symmetry breaking.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Complete nonlinear analysis is required, not optional"
+      },
+      {
+        "step": "Energy minimization argument",
+        "issue": "No proof that the system actually minimizes energy or that energy minima have reduced symmetry. The proof just asserts this without justification.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need to prove existence of energy minima and their symmetry properties"
+      },
+      {
+        "step": "Discrete spectrum assumption",
+        "issue": "The proof assumes the linearization at x\u2081 has discrete spectrum without proving this emerges from the dynamics. This is circular - assuming what needs to be proved.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Must derive discrete spectrum from the dynamics, not assume it"
+      },
+      {
+        "step": "Application of Rellich-Kondrachov",
+        "issue": "The theorem requires compact domain or specific boundary conditions. The proof doesn't verify these conditions hold for the problem at hand.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Specify domain geometry and verify compactness conditions"
+      },
+      {
+        "step": "Center Manifold Theorem application",
+        "issue": "The theorem is mentioned but never actually used in the argument. Its relevance to the proof is unclear.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Either use the theorem properly or remove the reference"
+      }
+    ],
+    "hidden_assumptions": [
+      "The most unstable mode breaks symmetry (not proven)",
+      "The system reaches equilibrium (could have periodic or chaotic dynamics)",
+      "Energy minima exist and are attained",
+      "The gradient flow is well-defined globally",
+      "The measure \u03bc is invariant under the dynamics",
+      "The stabilizer subgroup H is proper (H \u2260 G)",
+      "Compactness conditions hold for the domain"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes the linearized operator at symmetry-broken states has discrete spectrum, which is part of what needs to be proved. The discrete spatial organization is assumed rather than derived.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to show evolution to states with discrete spatial organization, but at best shows linear instability of symmetric states. The actual emergence of spatial patterns is not proven.",
+    "citation_issues": [
+      "Rellich-Kondrachov requires compact domain or decay conditions not verified",
+      "Center Manifold Theorem cited but not actually used",
+      "Lyapunov theory only applies near equilibria, not for global dynamics"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed, relying on unjustified leaps from linear instability to symmetry breaking and assuming the very discrete spectrum it claims to derive. The omission of nonlinear analysis is fatal, as this is where symmetry breaking actually occurs.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to show symmetry breaking occurs but fails to establish the discrete spectrum characterization of the final state or the spatial organization of structures",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Existence and uniqueness of solutions to the dynamical system",
+      "Global existence of flows (no finite-time blowup)",
+      "Convergence to equilibrium from unstable states",
+      "Compactness of level sets of F or coercivity conditions",
+      "Regularity assumptions on the group action",
+      "Specific conditions ensuring discrete spectrum (compact resolvent, etc.)",
+      "Assumptions on the domain and boundary conditions for the operators"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 1",
+        "issue": "Negative eigenvalues along symmetry directions don't necessarily imply instability - the statement confuses eigenvalues of D\u00b2F with eigenvalues of the linearized dynamical system"
+      },
+      {
+        "step": "Step 4",
+        "issue": "Explicitly acknowledged gap with no justification provided"
+      },
+      {
+        "step": "Step 5",
+        "issue": "Energy minimization and compactness arguments are not sufficient without proving convergence of the flow and existence of the limiting state"
+      },
+      {
+        "step": "Step 7",
+        "issue": "Assumption 9 is referenced but not listed in the stated assumptions, and compact embedding theorems require specific domain and regularity conditions not established"
+      },
+      {
+        "step": "Step 8",
+        "issue": "Spectral decomposition doesn't automatically imply spatial organization - this requires additional analysis of the specific operator and domain"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Step 4 is an acknowledged gap in the argument",
+      "No proof that the system actually reaches a new equilibrium state",
+      "No rigorous connection between linear instability and nonlinear evolution",
+      "Missing analysis of why the discrete spectrum leads to spatially organized structures",
+      "No proof that H is indeed a proper subgroup of G",
+      "No verification that the final state actually exhibits the claimed discrete, spatially organized structures"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims discrete spectrum for linearized operator at symmetry-broken states, but provides no justification for this assumption. This contradicts the rigorous spectral theory requirements in existing proofs.",
+      "The proof assumes exponential growth ||\u03b4x(t)|| \u2265 ||\u03b4x(0)||e^{\u03bbt} without establishing that the linearization is valid in the nonlinear regime, contradicting standard dynamical systems theory.",
+      "Claims that 'small perturbations' lead to 'finite-amplitude states' without any analysis of the basin of attraction or global dynamics, which contradicts the careful treatment of scale separation in proof [0e664bd264b4]."
+    ],
+    "assumption_conflicts": [
+      "Assumes discrete spectrum without justification, conflicting with the rigorous functional analysis framework in [087da119976b]",
+      "Uses gradient flow \u2202x/\u2202t = -\u2207F(x) on general manifolds without establishing existence of the gradient, conflicting with the careful geometric setup in [139ee0499c9e]",
+      "Claims G-invariant measure \u03bc exists without proof, conflicting with the measure-theoretic rigor in [1318ecd2c25c]",
+      "Assumes 'appropriate growth/decay conditions at infinity' without specification, making the proof framework incompatible with the precise functional space requirements in existing proofs"
+    ],
+    "beneficial_connections": [
+      "Connects to [087da119976b] on symmetry breaking, but the new proof lacks the mathematical rigor of the existing framework",
+      "Relates to [1318ecd2c25c] on phase transitions and symmetry breaking, but fails to provide the universal scaling analysis",
+      "Could complement [139ee0499c9e] on topological constraints, but needs proper geometric formulation"
+    ],
+    "consistency_score": 0.2,
+    "notes": "This proof contains a critical gap in the nonlinear analysis and makes unjustified assumptions about spectral properties. The transition from linear instability to finite-amplitude equilibrium is not established. The discrete spectrum assumption for the linearized operator is particularly problematic as it's stated as an assumption rather than derived. The proof needs substantial mathematical development to meet the standards of the existing corpus."
+  },
+  "confidence_score": 0.23,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A general theory connecting symmetry-breaking bifurcations to spatial pattern formation that works uniformly across different physical systems. Current bifurcation theory is often system-specific.",
+  "limitations": [
+    "Rigorous control of nonlinear evolution from initial instability to final state (Step 4)",
+    "Proof that symmetry-broken states are global attractors rather than just local minima",
+    "Quantitative relationship between symmetry group reduction and resulting spatial scales",
+    "Uniform treatment across different types of dynamics (gradient, Hamiltonian, dissipative)",
+    "Proof sketch rather than complete proof due to system-specific details",
+    "Assumes existence of discrete spectrum without proving it in general",
+    "Does not address time-dependent or chaotic symmetry breaking",
+    "Limited to continuous symmetries and smooth systems",
+    "Does not quantify the spatial scales of resulting patterns"
+  ],
+  "source_convergence": {
+    "structural_claim": "Complex systems spontaneously break symmetries to create discrete, organized structures from continuous fields",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Discovery of the Higgs boson",
+        "domain_id": "field_a",
+        "domain_name": "Particle Physics",
+        "link_type": "direct",
+        "structural_conclusion": "A continuous scalar field spontaneously breaks electroweak symmetry, creating discrete mass scales and particle properties from an initially symmetric state"
+      },
+      {
+        "result_id": "",
+        "result_name": "Electroweak unification",
+        "domain_id": "field_a",
+        "domain_name": "Particle Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Unified gauge symmetry spontaneously breaks into distinct electromagnetic and weak forces"
+      },
+      {
+        "result_id": "",
+        "result_name": "Taylor-Couette Instability",
+        "domain_id": "field_b",
+        "domain_name": "Fluid Dynamics",
+        "link_type": "direct",
+        "structural_conclusion": "Continuous rotating flow spontaneously breaks axial symmetry to create discrete vortex structures"
+      },
+      {
+        "result_id": "",
+        "result_name": "Rayleigh-B\u00e9nard Convection",
+        "domain_id": "field_b",
+        "domain_name": "Fluid Dynamics",
+        "link_type": "direct",
+        "structural_conclusion": "Uniform thermal field spontaneously breaks translational symmetry to create discrete convection cells"
+      }
+    ],
+    "domains": [
+      "particle_physics",
+      "fluid_dynamics"
+    ],
+    "domain_names": [
+      "Particle Physics",
+      "Fluid Dynamics"
+    ],
+    "ea_scores": {
+      "strength": 0.2856,
+      "independence": 0.85,
+      "adversarial": 0.09,
+      "reproducibility": 0.6299999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.51068,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:31:27.459943+00:00",
+    "id": "5de3709b7f19"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.27774000000000004
+  }
+}

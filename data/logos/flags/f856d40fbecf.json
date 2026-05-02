@@ -1,0 +1,15 @@
+{
+  "proof_id": "f856d40fbecf",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: Rigorous mathematical framework for emergent collective Hamiltonians from microscopic dynamics. Current kinetic theory provides equations of motion but not a systematic Hamiltonian formulation of collective phenomena. Need: (1) Precise characterization of resonance conditions in general phase spaces, (2) Construction of effective Hamiltonians for collective modes that captures non-additive dynamics, (3) Rigorous proof of critical density thresholds for collective behavior.",
+    "Difficulty assessed as challenging",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

@@ -1,0 +1,316 @@
+{
+  "id": "545b51664443",
+  "convergence_id": "497bf62e6c3b",
+  "timestamp": "2026-05-02T13:01:15.166859+00:00",
+  "proposition": "Let L be a linear differential operator with periodic coefficients of period a in \u211d\u207f. Then the spectrum \u03c3(L) consists of bands [\u03bb\u2096,min, \u03bb\u2096,max] separated by gaps, and eigenfunctions take the form \u03c8\u2096(x) = e^(ik\u00b7x)u\u2096(x) where u\u2096 has the same periodicity as L and k belongs to the first Brillouin zone.",
+  "proposition_natural": "Periodic structures impose band gaps that forbid wave propagation at certain frequencies, with allowed modes characterized by Bloch wavefunctions",
+  "formalisation_type": "isomorphism",
+  "mathematical_apparatus": [
+    "Functional analysis",
+    "Algebraic structures",
+    "Differential geometry"
+  ],
+  "apparatus_justification": "Functional analysis provides spectral theory for operators on periodic domains, which directly captures band gaps and eigenmode structure. Algebraic structures (specifically group theory) formalizes the periodicity via translation groups. Differential geometry handles the manifold structure of Brillouin zones where Bloch wavefunctions live.",
+  "proof_natural": "**Proposition.** Let L be a linear differential operator with periodic coefficients of period a in \u211d\u207f. Then the spectrum \u03c3(L) consists of bands [\u03bb\u2096,min, \u03bb\u2096,max] separated by gaps, and eigenfunctions take the form \u03c8\u2096(x) = e^(ik\u00b7x)u\u2096(x) where u\u2096 has the same periodicity as L and k belongs to the first Brillouin zone.\n\n**Proof.** We assume that L is a self-adjoint differential operator on an appropriate Sobolev space H^s(\u211d\u207f), with bounded, measurable coefficients that are periodic with period lattice \u039b = a\u2124\u207f. We further assume that L is elliptic (its principal symbol is non-degenerate), that we work in the Hilbert space L\u00b2(\u211d\u207f) with appropriate domain for L, that the periodic medium extends infinitely without boundary effects, and that the coefficients are at least C\u00b9 to ensure the applicability of Floquet-Bloch theory.\n\nWe begin by observing that the translation operators T\u2090, defined by T\u2090f(x) = f(x+a), commute with L. This follows directly from the periodicity of the coefficients: for any periodic coefficient function p(x) = p(x+a), we have L(T\u2090f) = T\u2090(Lf) for all f in the domain of L.\n\nSince L and T\u2090 commute, they possess simultaneous eigenfunctions. By the Floquet-Bloch theorem, these eigenfunctions can be chosen in the form of Bloch functions \u03c8\u2096(x) = e^(ik\u00b7x)u\u2096(x), where u\u2096(x) is periodic with the same period as the coefficients, and k is the quasi-momentum belonging to the first Brillouin zone.\n\nFor each fixed k, we define the operator L\u2096 by L\u2096u = e^(-ik\u00b7x)L(e^(ik\u00b7x)u). Direct computation reveals that L\u2096 has periodic coefficients and maps periodic functions to periodic functions. When restricted to L\u00b2(\u03a9), where \u03a9 is the fundamental domain, L\u2096 becomes a self-adjoint operator on a compact domain with periodic boundary conditions. By the Spectral Theorem for self-adjoint operators on compact domains, L\u2096 possesses a discrete spectrum {\u03bb\u2099(k)}\u2099\u208c\u2081^\u221e.\n\nThe eigenvalues \u03bb\u2099(k) depend continuously on the quasi-momentum k. This continuity follows from analytic perturbation theory, which guarantees that eigenvalues of analytic families of operators vary analytically with parameters when the eigenvalues remain isolated. As k varies over the compact Brillouin zone, each function \u03bb\u2099(k) traces out a continuous curve, forming the n-th energy band.\n\nSpectral gaps emerge when max_k \u03bb\u2099(k) < min_k \u03bb\u2099\u208a\u2081(k) for some band index n. The existence of these extrema is guaranteed by the continuity of \u03bb\u2099(k) and the compactness of the Brillouin zone. [Note: The actual existence of gaps depends on the specific form of L and is not guaranteed in general; certain conditions on the potential strength or geometry are typically required.]\n\nFinally, the Floquet-Bloch decomposition establishes that the total spectrum of L is given by \u03c3(L) = \u222a\u2099 \u222a\u2096 {\u03bb\u2099(k)}, which consists of the union of all eigenvalues over all quasi-momenta k and all band indices n. This spectrum therefore has a band structure, consisting of closed intervals [\u03bb\u2099,min, \u03bb\u2099,max] that may be separated by forbidden gaps.\n\nThis completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.Analysis.InnerProductSpace.Spectrum\nimport Mathlib.Analysis.Fourier.FourierTransform\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic\nimport Mathlib.Topology.Periodic\nimport Mathlib.Analysis.NormedSpace.OperatorNorm\nimport Mathlib.Analysis.InnerProductSpace.Basic\n\n/-- A linear differential operator with periodic coefficients -/\nstructure PeriodicDifferentialOperator (n : \u2115) (a : Fin n \u2192 \u211d) where\n  /-- The underlying linear operator -/\n  toLinearMap : (EuclideanSpace \u211d (Fin n) \u2192 \u2102) \u2192L[\u2102] (EuclideanSpace \u211d (Fin n) \u2192 \u2102)\n  /-- The coefficients are periodic with period a -/\n  periodic_coeff : sorry -- Need definition of periodic coefficients for differential operators\n\n/-- Translation operator by vector a -/\ndef translationOperator (n : \u2115) (a : EuclideanSpace \u211d (Fin n)) :\n    (EuclideanSpace \u211d (Fin n) \u2192 \u2102) \u2192L[\u2102] (EuclideanSpace \u211d (Fin n) \u2192 \u2102) :=\n  sorry -- Need translation operator definition\n\n/-- Bloch function with quasimomentum k -/\ndef BlochFunction (n : \u2115) (k : EuclideanSpace \u211d (Fin n)) (u : EuclideanSpace \u211d (Fin n) \u2192 \u2102) \n    (x : EuclideanSpace \u211d (Fin n)) : \u2102 :=\n  Complex.exp (Complex.I * \u27eak, x\u27eb_\u211d) * u x\n\n/-- The first Brillouin zone -/\ndef FirstBrillouinZone (n : \u2115) (a : Fin n \u2192 \u211d) : Set (EuclideanSpace \u211d (Fin n)) :=\n  sorry -- Need Brillouin zone definition from crystal lattice theory\n\n/-- Spectral band structure -/\nstructure SpectralBand where\n  min : \u211d\n  max : \u211d\n  band_property : min \u2264 max\n\n/-- Main theorem: Spectrum of periodic differential operators consists of bands -/\ntheorem periodic_operator_spectrum_bands (n : \u2115) (a : Fin n \u2192 \u211d) \n    (L : PeriodicDifferentialOperator n a) :\n    \u2203 (bands : \u2115 \u2192 SpectralBand),\n    (\u2200 \u03bb \u2208 spectrum \u2102 L.toLinearMap, \u2203 k, \u03bb \u2208 Set.Icc (bands k).min (bands k).max) \u2227\n    (\u2200 k : EuclideanSpace \u211d (Fin n), k \u2208 FirstBrillouinZone n a \u2192 \n      \u2203 (\u03c8 : EuclideanSpace \u211d (Fin n) \u2192 \u2102) (u : EuclideanSpace \u211d (Fin n) \u2192 \u2102),\n      (\u2200 x, \u03c8 x = BlochFunction n k u x) \u2227 \n      (\u2200 i, Function.Periodic (fun x => u (x + a i \u2022 (Pi.single i 1))) (a i))) := by\n  -- Step 1: Translation operators commute with L\n  have translation_commute : \u2200 i, Commute L.toLinearMap (translationOperator n (a i \u2022 Pi.single i 1)) := by\n    sorry -- Requires periodic coefficient property\n  \n  -- Step 2: Apply Floquet-Bloch theorem\n  have floquet_bloch : sorry := by\n    sorry -- Floquet-Bloch theorem not in Mathlib\n  \n  -- Step 3: Define reduced operator L_k\n  have L_k_periodic : \u2200 k \u2208 FirstBrillouinZone n a, \n    \u2203 (L_k : (EuclideanSpace \u211d (Fin n) \u2192 \u2102) \u2192L[\u2102] (EuclideanSpace \u211d (Fin n) \u2192 \u2102)),\n    sorry := by\n    sorry -- Need to formalize L_k construction\n  \n  -- Step 4: L_k has discrete spectrum\n  have L_k_discrete_spectrum : sorry := by\n    sorry -- Requires theory of self-adjoint operators on compact domains\n  \n  -- Step 5: Eigenvalues form continuous bands\n  have continuous_bands : sorry := by\n    sorry -- Requires analytic perturbation theory\n  \n  -- Step 6: Gaps exist between bands\n  have band_gaps : sorry := by\n    sorry -- Requires band structure theory\n  \n  -- Step 7: Total spectrum is union of bands\n  sorry -- Requires complete Floquet-Bloch decomposition theory",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The translation operators T\u2090 commute with L due to periodicity of coefficients",
+      "justification": "For periodic coefficient function p(x) = p(x+a), we have L(T\u2090f) = T\u2090(Lf) for all f in domain of L",
+      "dependencies": [
+        "Definition of periodic coefficients",
+        "Properties of translation operators"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "By Floquet-Bloch theorem, eigenfunctions of L can be chosen as Bloch functions \u03c8\u2096(x) = e^(ik\u00b7x)u\u2096(x)",
+      "justification": "Since [L,T\u2090] = 0, simultaneous eigenfunctions exist. Floquet-Bloch theorem characterizes these as Bloch waves",
+      "dependencies": [
+        "Step 1",
+        "Floquet-Bloch theorem"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "For fixed k, the operator L\u2096 defined by L\u2096u = e^(-ik\u00b7x)L(e^(ik\u00b7x)u) acts on periodic functions",
+      "justification": "Direct computation shows L\u2096 has periodic coefficients and maps periodic functions to periodic functions",
+      "dependencies": [
+        "Step 2",
+        "Definition of Bloch decomposition"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The operator L\u2096 on L\u00b2(\u03a9) (fundamental domain) has discrete spectrum {\u03bb\u2099(k)}",
+      "justification": "L\u2096 is self-adjoint on compact domain \u03a9 with periodic boundary conditions, hence has discrete spectrum",
+      "dependencies": [
+        "Step 3",
+        "Spectral theorem for compact self-adjoint operators"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The functions \u03bb\u2099(k) are continuous in k and form bands as k varies over the Brillouin zone",
+      "justification": "Perturbation theory shows eigenvalues depend continuously on parameters when gaps exist",
+      "dependencies": [
+        "Step 4",
+        "Analytic perturbation theory"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Gaps occur when max_k \u03bb\u2099(k) < min_k \u03bb\u2099\u208a\u2081(k) for some band index n",
+      "justification": "By continuity of \u03bb\u2099(k) and compactness of Brillouin zone, these extrema exist",
+      "dependencies": [
+        "Step 5",
+        "Extreme value theorem"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The spectrum \u03c3(L) = \u222a\u2099 \u222a\u2096 {\u03bb\u2099(k)} consists of bands with possible gaps",
+      "justification": "Floquet-Bloch decomposition shows total spectrum is union over all k and n",
+      "dependencies": [
+        "Steps 2-6",
+        "Floquet-Bloch decomposition theorem"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Floquet-Bloch Theorem",
+      "authors": "Floquet (1883), Bloch (1929)",
+      "year": "1883/1929",
+      "field": "Mathematical Physics",
+      "statement": "Solutions to periodic differential equations can be written as \u03c8(x) = e^(ik\u00b7x)u(x) with u periodic",
+      "usage": "Essential for characterizing eigenfunctions in periodic media"
+    },
+    {
+      "name": "Spectral Theorem for Self-Adjoint Operators",
+      "authors": "von Neumann, Stone",
+      "year": "1930s",
+      "field": "Functional Analysis",
+      "statement": "Self-adjoint operators have real spectrum and complete orthonormal eigenbasis",
+      "usage": "Guarantees existence and properties of eigenvalues/eigenfunctions"
+    },
+    {
+      "name": "Analytic Perturbation Theory",
+      "authors": "Kato",
+      "year": "1966",
+      "field": "Functional Analysis",
+      "statement": "Eigenvalues of analytic families of operators vary analytically with parameters",
+      "usage": "Establishes continuity of band functions \u03bb\u2099(k)"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The differential operator L is self-adjoint on appropriate Sobolev space H^s(\u211d\u207f)",
+    "Coefficients of L are bounded, measurable, and periodic with period lattice \u039b = a\u2124\u207f",
+    "The operator L is elliptic (principal symbol is non-degenerate)",
+    "We work in the Hilbert space L\u00b2(\u211d\u207f) with appropriate domain for L",
+    "The periodic medium is infinite in extent (no boundary effects)",
+    "Coefficients are sufficiently smooth (at least C\u00b9) for Floquet-Bloch theory to apply"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.4,
+    "gaps": [
+      {
+        "step": "For each fixed k, we define the operator L\u2096 by L\u2096u = e^(-ik\u00b7x)L(e^(ik\u00b7x)u)",
+        "issue": "The domain of L\u2096 is not properly specified. The transformation changes the domain and boundary conditions in non-trivial ways that affect self-adjointness",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Carefully define the domain of L\u2096 and prove it remains self-adjoint with the appropriate boundary conditions"
+      },
+      {
+        "step": "By the Spectral Theorem for self-adjoint operators on compact domains, L\u2096 possesses a discrete spectrum",
+        "issue": "The domain \u03a9 is not compact - it's a torus with periodic boundary conditions. The spectral theorem for compact domains doesn't apply directly",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Use the spectral theorem for self-adjoint operators with compact resolvent on the torus"
+      },
+      {
+        "step": "The eigenvalues \u03bb\u2099(k) depend continuously on the quasi-momentum k",
+        "issue": "Continuity is claimed but not proven. At band crossings or near degeneracies, continuity can fail or require careful analysis",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Prove continuity using perturbation theory, addressing potential eigenvalue crossings"
+      },
+      {
+        "step": "This continuity follows from analytic perturbation theory",
+        "issue": "Analytic perturbation theory requires non-degenerate eigenvalues. The proof doesn't address what happens at degeneracies",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Use Kato's perturbation theory which handles degenerate cases, or restrict to non-degenerate situations"
+      },
+      {
+        "step": "Spectral gaps emerge when max_k \u03bb\u2099(k) < min_k \u03bb\u2099\u208a\u2081(k)",
+        "issue": "The proof admits gaps may not exist but still claims the spectrum consists of bands separated by gaps",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Reformulate to state spectrum consists of bands which may or may not be separated by gaps"
+      },
+      {
+        "step": "We assume that L is a self-adjoint differential operator on an appropriate Sobolev space H^s(\u211d\u207f)",
+        "issue": "Working simultaneously in H^s(\u211d\u207f) and L\u00b2(\u211d\u207f) without clarifying the relationship. Self-adjointness depends on the specific Hilbert space",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Clarify that L is defined on a domain in H^s but self-adjoint as an operator on L\u00b2"
+      }
+    ],
+    "hidden_assumptions": [
+      "The spectrum is purely continuous (no embedded eigenvalues)",
+      "The bands are indexed in increasing order without overlaps",
+      "The Brillouin zone is well-defined (requires specifying the reciprocal lattice)",
+      "The operator L has compact resolvent when restricted to periodic functions",
+      "Eigenvalue branches can be labeled consistently across the Brillouin zone"
+    ],
+    "circular_reasoning": false,
+    "circular_details": "",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims spectrum consists of bands separated by gaps, but actually shows spectrum consists of bands that may touch or overlap. Gap existence requires additional conditions on L not stated in the proposition",
+    "citation_issues": [
+      "Floquet-Bloch theorem is cited but its precise statement and applicability conditions aren't verified",
+      "Analytic perturbation theory is misapplied - it doesn't handle degenerate cases which are common in band structures",
+      "The Spectral Theorem reference is incorrect - compact domain version doesn't apply to torus with periodic BC"
+    ],
+    "structural_soundness": 0.5,
+    "overall_assessment": "The proof contains several critical gaps in rigor, particularly regarding domain issues, self-adjointness preservation, and the application of spectral theory. While the general approach via Floquet-Bloch theory is correct, the execution lacks the precision required for a rigorous mathematical proof.",
+    "verdict": "major_revision"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof establishes that eigenfunctions have Bloch form and that the spectrum consists of bands, but does not prove that gaps necessarily exist or that bands are separated by gaps as claimed in the proposition.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The operator L has compact resolvent or some compactness condition ensuring discrete spectrum",
+      "The coefficients satisfy conditions ensuring the Floquet-Bloch theorem applies (beyond just periodicity)",
+      "The ellipticity condition is strong enough to ensure the spectral properties claimed",
+      "Boundary conditions at infinity are properly specified",
+      "The domain of L is properly characterized for the functional analytic arguments"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 4",
+        "issue": "Claims L\u2096 has discrete spectrum on L\u00b2(\u03a9) but doesn't establish that L\u2096 is actually self-adjoint on the periodic function space or that it has compact resolvent"
+      },
+      {
+        "step": "Step 5",
+        "issue": "Invokes perturbation theory without establishing the perturbation setup or proving that gaps actually exist - continuity alone doesn't guarantee band structure"
+      },
+      {
+        "step": "Step 6",
+        "issue": "Claims gaps occur based on extrema existing, but existence of extrema doesn't imply gaps - bands could overlap even with continuous eigenvalue functions"
+      },
+      {
+        "step": "Step 7",
+        "issue": "The union \u222a\u2099 \u222a\u2096 {\u03bb\u2099(k)} may not equal \u03c3(L) without proving that every point in \u03c3(L) arises this way and that the Floquet-Bloch decomposition is complete"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No proof that gaps actually exist between bands",
+      "No proof that the Floquet-Bloch decomposition captures the entire spectrum",
+      "Missing analysis of the relationship between the original operator L and the family of operators L\u2096",
+      "No verification that the spectral properties transfer correctly between the original and transformed problems",
+      "Missing proof that bands are actually intervals [\u03bb\u2096,min, \u03bb\u2096,max] rather than more complex sets"
+    ],
+    "internal_score": 0.3
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": false,
+    "contradiction_details": [],
+    "assumption_conflicts": [],
+    "beneficial_connections": [
+      "Connects to [19c10dc86a65] through quantum mechanical foundations - both deal with Hilbert space formulations and spectral properties",
+      "Relates to [139ee0499c9e] and [1b27ca45ba4e] through topological constraints - band gaps represent topological obstructions in momentum space",
+      "Supports [37338340b3ed] by showing how continuous spectra emerge from discrete eigenvalue problems through periodic boundary conditions",
+      "Complements [2373a9c1ee2d] through symmetry considerations - translation symmetry leads to Bloch wave solutions and band structure",
+      "Extends [1f680e11fff8] by demonstrating how local periodic structure determines global spectral properties"
+    ],
+    "consistency_score": 0.85,
+    "notes": "The proof is mathematically sound but lacks rigor in several areas: (1) The claim that eigenfunctions 'take the form' \u03c8\u2096(x) = e^(ik\u00b7x)u\u2096(x) is imprecise - this should specify that the spectrum decomposes into generalized eigenfunctions of this form; (2) The assumption of self-adjointness on 'appropriate Sobolev space H^s' is vague without specifying s; (3) The proof doesn't address spectral multiplicity or whether bands can overlap; (4) The ellipticity assumption may be too strong for some applications. The Floquet-Bloch theory application is standard but the presentation conflates point spectrum with continuous spectrum issues."
+  },
+  "confidence_score": 0.4375,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.4,
+    "internal": 0.3,
+    "cross_proof": 0.85,
+    "calibration": 0.6
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.4,
+    "internal": 0.3,
+    "cross_proof": 0.85,
+    "calibration": 0.6
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": true,
+  "new_mathematics_needed": "",
+  "limitations": [
+    "[Gap: Precise conditions for gap opening not specified - requires detailed analysis of specific operators]",
+    "[Gap: Rigorous treatment of domain issues for unbounded operators on \u211d\u207f glossed over]",
+    "[Gap: Convergence of Floquet-Bloch decomposition in appropriate topology not fully addressed]",
+    "Proof assumes sufficient regularity without specifying precise function spaces",
+    "Does not address when gaps actually occur - only that they can occur",
+    "Limited to linear wave equations - nonlinear effects not considered",
+    "Assumes infinite periodic medium - finite size effects ignored"
+  ],
+  "source_convergence": {
+    "structural_claim": "Periodic structures impose band gaps that forbid wave propagation at certain frequencies, with allowed modes characterized by Bloch wavefunctions",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Topological Band Theory",
+        "domain_id": "field_a",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Electronic states in crystals form bands with gaps, characterized by Bloch states and topological invariants"
+      },
+      {
+        "result_id": "",
+        "result_name": "Bloch's Theorem for Periodic Media",
+        "domain_id": "field_b",
+        "domain_name": "Acoustics and Wave Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Waves in periodic structures exhibit band gaps and Bloch modes determined by periodicity"
+      }
+    ],
+    "domains": [
+      "condensed_matter",
+      "acoustics"
+    ],
+    "domain_names": [
+      "Condensed Matter Physics",
+      "Acoustics and Wave Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.238,
+      "independence": 0.4,
+      "adversarial": 0.12,
+      "reproducibility": 0.42,
+      "depth_consistency": 1.0,
+      "confidence": 0.35839999999999994,
+      "confidence_category": "speculative"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:29:19.988935+00:00",
+    "id": "497bf62e6c3b"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.27333
+  }
+}

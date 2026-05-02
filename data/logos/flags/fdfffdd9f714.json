@@ -1,0 +1,15 @@
+{
+  "proof_id": "fdfffdd9f714",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous category-theoretic framework for physical systems that: (1) unifies gravitational, quantum, and classical wave systems, (2) provides well-defined information functors F with appropriate continuity/measurability conditions, (3) characterizes when boundary-bulk reconstruction maps exist and their properties, (4) extends beyond known dualities to general physical systems",
+    "Difficulty assessed as challenging",
+    "10 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

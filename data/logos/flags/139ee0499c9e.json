@@ -1,0 +1,15 @@
+{
+  "proof_id": "139ee0499c9e",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: Need a general theory connecting: (1) Topological invariants of foliations, (2) Dynamical preservation of foliation structure, (3) Singular behavior at topology changes. Current catastrophe theory and Morse theory provide pieces but not complete framework.",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

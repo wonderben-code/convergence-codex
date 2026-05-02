@@ -1,0 +1,38 @@
+{
+  "proof_id": "a4c1ca2d6625",
+  "timestamp": "2026-05-02T13:11:55.190808+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "equivalence - This was rejected because while the mathematical structures share important features, they operate on fundamentally different physical quantities (electromagnetic vs mechanical waves) with different governing equations, making a functorial relationship inappropriate."
+      ],
+      "reasoning": "Both photonic and acoustic wave propagation in periodic structures satisfy the same fundamental axioms: periodicity of the medium, wave equation dynamics, and Bloch's theorem applicability. The convergence identifies shared abstract principles (band gap formation through periodic scattering) rather than claiming the structures are identical or categorically equivalent."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Functional analysis, Algebraic structures, Topology",
+      "alternatives_considered": [],
+      "reasoning": "Wave propagation in periodic structures is fundamentally about spectral properties of differential operators on periodic domains. Functional analysis provides the spectral theory needed to characterize band gaps, while algebraic structures capture the periodicity through group actions and topology handles the continuity and compactness arguments needed for Bloch's theorem."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof uses Floquet-Bloch theory to decompose wave functions in periodic media into Bloch waves labeled by quasi-momentum k. For each k, the spectrum is discrete, and eigenvalues vary continuously with k over the Brillouin zone, forming bands. Gaps appear where consecutive bands do not overlap.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 8 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 2834 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 2373 chars, 8 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This proof requires substantial theory about periodic operators, Floquet-Bloch theory, and band structure that is not currently available in Mathlib. The formalization sets up the basic structures (periodic medium, wave operator) but cannot complete the proof without these advanced topics from mathematical physics."
+    }
+  ]
+}

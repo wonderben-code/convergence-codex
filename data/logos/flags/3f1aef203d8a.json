@@ -1,0 +1,15 @@
+{
+  "proof_id": "3f1aef203d8a",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: Rigorous mathematical framework for: (1) The space of all possible QFTs as a category, (2) Convergence criteria for Wilsonian RG in non-perturbative regime, (3) General proof that operator spectrum has only finitely many relevant/marginal operators, (4) Precise characterization of 'emergence' in categorical terms",
+    "Difficulty assessed as challenging",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

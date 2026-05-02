@@ -1,0 +1,343 @@
+{
+  "id": "4dff4e61551e",
+  "convergence_id": "11e34e34a739",
+  "timestamp": "2026-05-02T12:40:39.337868+00:00",
+  "proposition": "For systems admitting both a bulk description with volume V and boundary description with area A, there exists a functor F: BulkCat \u2192 BoundaryCat such that the entropy S satisfies S = O(A^{d-1}) rather than S = O(V^d) where d is the spatial dimension, establishing a categorical equivalence between bulk degrees of freedom and boundary degrees of freedom.",
+  "proposition_natural": "Fundamental degrees of freedom scale with boundary area rather than bulk volume, revealing a holographic principle in both quantum gravity and quantum many-body systems",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Information theory",
+    "Differential geometry"
+  ],
+  "apparatus_justification": "Category theory provides the functorial framework to map between quantum gravity and many-body systems while preserving the boundary/bulk scaling structure. Information theory formalizes entropy scaling with area, and differential geometry provides the manifold structure for boundaries and holographic screens.",
+  "proof_natural": "**Proposition.** For systems admitting both a bulk description with volume V and boundary description with area A, there exists a functor F: BulkCat \u2192 BoundaryCat such that the entropy S satisfies S = O(A^{d-1}) rather than S = O(V^d) where d is the spatial dimension, establishing a categorical equivalence between bulk degrees of freedom and boundary degrees of freedom.\n\n**Proof.** Let us consider a physical system with a well-defined bulk-boundary correspondence. We assume that entropy S is a well-defined functional on the space of states, the system has a finite correlation length \u03be, and the boundary \u2202V is a smooth (d-1)-dimensional manifold. Furthermore, we assume the system satisfies either general covariance (in the gravity case) or possesses a spectral gap (in the many-body case), with area A and volume V scaling as A ~ L^{d-1} and V ~ L^d for characteristic length L.\n\nWe begin by constructing the relevant categories. Define BulkCat as the category whose objects are quantum states in the bulk Hilbert space H_bulk and whose morphisms are completely positive trace-preserving maps. Similarly, define BoundaryCat with objects as quantum states on the boundary Hilbert space H_boundary and morphisms as boundary-preserving quantum operations.\n\nFor quantum gravity systems, we invoke the Bekenstein-Hawking formula, which states that black hole entropy is given by S_BH = A/(4G_N), where A is the horizon area and G_N is Newton's constant. This immediately establishes area-law scaling for gravitational entropy.\n\nFor many-body systems with spectral gap \u0394 > 0, we apply the area law theorem for gapped systems, which guarantees that the ground state entanglement entropy satisfies S_E \u2264 c\u00b7A\u00b7log(\u03be/a), where c is a constant and a is the lattice spacing. This provides area-law scaling in the condensed matter context.\n\n[Note: The explicit construction of the functor F: BulkCat \u2192 BoundaryCat remains a gap in this proof. We postulate its existence based on physical principles, but a rigorous construction would require specification of the particular bulk-boundary correspondence.]\n\nAssuming the existence of such a functor F that maps bulk states to boundary states while preserving entanglement structure, we must verify that it preserves entropy scaling. Specifically, we require that S[F(\u03c1_bulk)] ~ S[\u03c1_bulk] for any bulk density matrix \u03c1_bulk. [Note: A complete proof of this preservation property requires additional technical conditions on F that we have not fully specified.]\n\nIn the gravitational case, we can further apply the Ryu-Takayanagi formula, which states that the entanglement entropy in a conformal field theory equals S_E = Area(\u03b3_A)/(4G_N), where \u03b3_A is the minimal surface in the AdS bulk anchored to the entangling region on the boundary. This provides additional support for the area-law scaling in holographic systems.\n\nCombining these results, we conclude that in both quantum gravity and many-body systems, the entropy scales as S = O(A) = O(L^{d-1}) rather than the naive volume scaling S = O(V) = O(L^d). The functor F thus establishes a categorical equivalence between bulk and boundary degrees of freedom, with the crucial property that information content scales with the boundary area rather than the bulk volume.\n\n[Note: The uniqueness and essential surjectivity of F, which would complete the categorical equivalence, remain to be established and depend on the specific realization of the bulk-boundary correspondence.]\n\nThis completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.CategoryTheory.Functor.Basic\nimport Mathlib.CategoryTheory.Equivalence\nimport Mathlib.Analysis.Asymptotics.Asymptotics\nimport Mathlib.Data.Real.Basic\nimport Mathlib.Topology.MetricSpace.Basic\n\n/-- Category of bulk quantum states -/\nstructure BulkCat where\n  /-- Objects are quantum states in bulk Hilbert space -/\n  obj : Type*\n  /-- Morphisms are completely positive trace-preserving maps -/\n  hom : obj \u2192 obj \u2192 Type*\n  /-- Composition of morphisms -/\n  comp : \u2200 {X Y Z : obj}, hom X Y \u2192 hom Y Z \u2192 hom X Z\n  /-- Identity morphism -/\n  id : \u2200 X : obj, hom X X\n  /-- Associativity of composition -/\n  comp_assoc : \u2200 {W X Y Z : obj} (f : hom W X) (g : hom X Y) (h : hom Y Z),\n    comp (comp f g) h = comp f (comp g h)\n  /-- Left identity law -/\n  id_comp : \u2200 {X Y : obj} (f : hom X Y), comp (id X) f = f\n  /-- Right identity law -/\n  comp_id : \u2200 {X Y : obj} (f : hom X Y), comp f (id Y) = f\n\n/-- Category of boundary quantum states -/\nstructure BoundaryCat where\n  /-- Objects are quantum states on boundary Hilbert space -/\n  obj : Type*\n  /-- Morphisms are boundary-preserving quantum operations -/\n  hom : obj \u2192 obj \u2192 Type*\n  /-- Composition of morphisms -/\n  comp : \u2200 {X Y Z : obj}, hom X Y \u2192 hom Y Z \u2192 hom X Z\n  /-- Identity morphism -/\n  id : \u2200 X : obj, hom X X\n  /-- Associativity of composition -/\n  comp_assoc : \u2200 {W X Y Z : obj} (f : hom W X) (g : hom X Y) (h : hom Y Z),\n    comp (comp f g) h = comp f (comp g h)\n  /-- Left identity law -/\n  id_comp : \u2200 {X Y : obj} (f : hom X Y), comp (id X) f = f\n  /-- Right identity law -/\n  comp_id : \u2200 {X Y : obj} (f : hom X Y), comp f (id Y) = f\n\ninstance : CategoryTheory.Category BulkCat.obj where\n  Hom X Y := sorry -- Need quantum channel definition\n  id X := sorry -- Need identity channel\n  comp f g := sorry -- Need channel composition\n\ninstance : CategoryTheory.Category BoundaryCat.obj where\n  Hom X Y := sorry -- Need boundary quantum channel definition\n  id X := sorry -- Need identity boundary channel\n  comp f g := sorry -- Need boundary channel composition\n\n/-- Entropy function for quantum states -/\ndef entropy : Type* \u2192 \u211d := sorry -- Need von Neumann entropy definition\n\n/-- Area function for boundary -/\ndef area (d : \u2115) : \u211d \u2192 \u211d := sorry -- Need physical area measure\n\n/-- Volume function for bulk -/\ndef volume (d : \u2115) : \u211d \u2192 \u211d := sorry -- Need physical volume measure\n\n/-- Bekenstein-Hawking entropy formula -/\ndef bekensteinHawkingEntropy (A : \u211d) (G_N : \u211d) : \u211d := sorry -- S_BH = A/(4G_N)\n\n/-- Area law for entanglement entropy in gapped systems -/\ndef areaLawEntanglement (A : \u211d) (\u03be : \u211d) (a : \u211d) (c : \u211d) : \u211d := sorry -- S_E \u2264 c\u00b7A\u00b7log(\u03be/a)\n\n/-- Ryu-Takayanagi formula -/\ndef ryuTakayanagiEntropy (A_min : \u211d) (G_N : \u211d) : \u211d := sorry -- S_E = Area(\u03b3_A)/(4G_N)\n\n/-- The bulk-boundary correspondence functor -/\ndef bulkBoundaryFunctor : BulkCat.obj \u2964 BoundaryCat.obj where\n  obj := sorry -- Need explicit mapping of bulk states to boundary states\n  map := sorry -- Need mapping of bulk morphisms to boundary morphisms\n  map_id := sorry -- Functor preserves identity\n  map_comp := sorry -- Functor preserves composition\n\n/-- Main theorem: Entropy scales with area rather than volume -/\ntheorem holographic_entropy_bound \n  (d : \u2115) (L : \u211d) (hL : L > 0) \n  (bulk_state : BulkCat.obj) :\n  \u2203 (C : \u211d), C > 0 \u2227 \n  entropy (bulkBoundaryFunctor.obj bulk_state) = O[Filter.atTop] (fun L => L^(d-1)) :=\nby\n  sorry -- Need:\n  -- 1. Explicit construction of bulkBoundaryFunctor preserving entropy scaling\n  -- 2. Proof that entropy scales as O(A) = O(L^(d-1))\n  -- 3. Connection between physical area/volume and mathematical scaling\n  -- 4. Verification for both quantum gravity and many-body cases\n\n/-- The functor establishes categorical equivalence up to area-law scaling -/\ntheorem bulk_boundary_equivalence :\n  \u2203 (F : BulkCat.obj \u2964 BoundaryCat.obj),\n  (\u2200 (\u03c1 : BulkCat.obj), \u2203 (c : \u211d), c > 0 \u2227 \n    entropy (F.obj \u03c1) \u2264 c * entropy \u03c1) \u2227\n  sorry -- Need: F is essentially surjective and fully faithful up to boundary degrees of freedom\n  :=\nby\n  sorry -- Need:\n  -- 1. Proof of essential surjectivity\n  -- 2. Proof of full faithfulness\n  -- 3. Preservation of entanglement structure",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the category BulkCat with objects as quantum states in the bulk Hilbert space H_bulk and morphisms as completely positive trace-preserving maps",
+      "justification": "Standard construction in quantum information theory",
+      "dependencies": []
+    },
+    {
+      "step_number": 2,
+      "statement": "Define the category BoundaryCat with objects as quantum states on the boundary Hilbert space H_boundary and morphisms as boundary-preserving quantum operations",
+      "justification": "Categorical formulation of boundary quantum theory",
+      "dependencies": []
+    },
+    {
+      "step_number": 3,
+      "statement": "For quantum gravity systems, invoke the Bekenstein-Hawking formula S_BH = A/(4G_N) where A is the horizon area",
+      "justification": "Established result in quantum gravity",
+      "dependencies": [
+        "Bekenstein-Hawking Entropy Formula"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "For many-body systems with spectral gap \u0394 > 0, the ground state entanglement entropy satisfies S_E \u2264 c\u00b7A\u00b7log(\u03be/a) where c is a constant, a is lattice spacing",
+      "justification": "Area law theorem for gapped systems",
+      "dependencies": [
+        "Area Law for Entanglement Entropy"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "[Gap: Construction of explicit functor F] Postulate existence of functor F: BulkCat \u2192 BoundaryCat that maps bulk states to boundary states while preserving entanglement structure",
+      "justification": "Required for categorical equivalence but explicit construction depends on specific system",
+      "dependencies": [
+        "Step 1",
+        "Step 2"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Show that F preserves entropy scaling: S[F(\u03c1_bulk)] ~ S[\u03c1_bulk] where \u03c1_bulk is a bulk density matrix",
+      "justification": "[Gap: Requires proof that F preserves von Neumann entropy up to boundary area scaling]",
+      "dependencies": [
+        "Step 5"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "In the gravity case, apply Ryu-Takayanagi formula: S_E = Area(\u03b3_A)/(4G_N) where \u03b3_A is minimal surface",
+      "justification": "Establishes area scaling of entanglement entropy in AdS/CFT",
+      "dependencies": [
+        "Ryu-Takayanagi Formula",
+        "Step 3"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Combine results: In both cases, entropy scales as S = O(A) = O(L^{d-1}) rather than S = O(V) = O(L^d)",
+      "justification": "Direct consequence of area law scaling in both quantum gravity and many-body systems",
+      "dependencies": [
+        "Step 3",
+        "Step 4",
+        "Step 7"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "[Gap: Uniqueness of F] The functor F establishes an equivalence of categories up to area-law scaling of entropy",
+      "justification": "Requires proof that F is essentially surjective and fully faithful up to boundary degrees of freedom",
+      "dependencies": [
+        "Step 5",
+        "Step 6",
+        "Step 8"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Bekenstein-Hawking Entropy Formula",
+      "authors": "Bekenstein, J.D.; Hawking, S.W.",
+      "year": "1973-1975",
+      "field": "Quantum Gravity",
+      "statement": "Black hole entropy S = A/(4G_N) where A is horizon area and G_N is Newton's constant",
+      "usage": "Establishes area scaling in gravitational systems"
+    },
+    {
+      "name": "Ryu-Takayanagi Formula",
+      "authors": "Ryu, S.; Takayanagi, T.",
+      "year": "2006",
+      "field": "Quantum Gravity/String Theory",
+      "statement": "Entanglement entropy in CFT equals area of minimal surface in AdS bulk",
+      "usage": "Provides holographic entanglement entropy calculation"
+    },
+    {
+      "name": "Area Law for Entanglement Entropy",
+      "authors": "Eisert, J.; Cramer, M.; Plenio, M.B.",
+      "year": "2010",
+      "field": "Quantum Many-Body Physics",
+      "statement": "Ground state entanglement entropy in gapped systems scales with boundary area",
+      "usage": "Establishes area scaling in condensed matter systems"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The system admits a well-defined bulk-boundary correspondence",
+    "Entropy S is a well-defined functional on the space of states",
+    "The system has a finite correlation length \u03be",
+    "The boundary \u2202V is a smooth (d-1)-dimensional manifold",
+    "The categories BulkCat and BoundaryCat have objects representing quantum states and morphisms representing physical processes",
+    "The functor F preserves entanglement structure",
+    "The system satisfies either: (a) general covariance (gravity case) or (b) has a spectral gap (many-body case)",
+    "Area A and volume V scale as A ~ L^{d-1} and V ~ L^d for characteristic length L"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Construction of functor F",
+        "issue": "The proof admits it cannot construct F and merely postulates its existence based on 'physical principles'. This is the central claim requiring proof.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Must explicitly construct F for specific systems or prove existence theorem"
+      },
+      {
+        "step": "Entropy preservation by F",
+        "issue": "The proof admits it cannot verify that F preserves entropy scaling, which is essential for the claimed equivalence",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Requires rigorous proof that S[F(\u03c1_bulk)] ~ S[\u03c1_bulk]"
+      },
+      {
+        "step": "Categorical equivalence claim",
+        "issue": "The proof admits it hasn't established uniqueness or essential surjectivity of F, so cannot claim categorical equivalence",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Must prove F is fully faithful and essentially surjective"
+      },
+      {
+        "step": "Application of Bekenstein-Hawking formula",
+        "issue": "This formula applies to black holes specifically, not general bulk-boundary systems",
+        "severity": "major",
+        "fixable": false,
+        "suggested_fix": "Cannot generalize from black holes to all systems"
+      },
+      {
+        "step": "Area law theorem application",
+        "issue": "Area law for gapped systems gives upper bound on entanglement entropy, not total entropy",
+        "severity": "major",
+        "fixable": false,
+        "suggested_fix": "Distinguish between entanglement entropy and total thermodynamic entropy"
+      }
+    ],
+    "hidden_assumptions": [
+      "That a bulk-boundary correspondence exists for all systems considered",
+      "That categorical equivalence implies entropy scaling equivalence",
+      "That results from AdS/CFT generalize to arbitrary bulk-boundary systems",
+      "That entanglement entropy bounds imply bounds on total entropy",
+      "That the boundary Hilbert space H_boundary exists and is well-defined",
+      "That quantum gravity systems and many-body systems can be treated uniformly"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes bulk-boundary correspondence exists to prove properties of bulk-boundary correspondence. It uses holographic results (which assume area-law scaling) to prove area-law scaling.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to establish results for all systems with bulk-boundary correspondence, but only considers specific examples (black holes, gapped systems, AdS/CFT). Even for these, it doesn't prove the claimed categorical equivalence.",
+    "citation_issues": [
+      "Bekenstein-Hawking formula applies only to black holes, not general systems",
+      "Area law theorem gives bounds on entanglement entropy, not total entropy",
+      "Ryu-Takayanagi formula assumes AdS/CFT correspondence, cannot be used to prove general bulk-boundary correspondence"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed, admitting multiple critical gaps in its own presentation. It conflates specific examples with general principles, confuses different types of entropy, and fails to construct or prove properties of its central object F. The proof is essentially a collection of observations about specific physical systems masquerading as a general mathematical theorem.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish that entropy scales as area rather than volume in certain systems, but fails to prove the existence of a categorical equivalence functor or that such scaling implies categorical equivalence between bulk and boundary degrees of freedom.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The bulk and boundary Hilbert spaces have compatible tensor product structures",
+      "The von Neumann entropy is the relevant entropy measure for the categorical equivalence",
+      "The area law scaling is sufficient to establish categorical equivalence",
+      "The minimal surface \u03b3_A in Ryu-Takayanagi formula exists and is unique",
+      "The correlation length \u03be is related to the spectral gap in a specific way",
+      "The boundary-preserving quantum operations form a well-defined category",
+      "The entanglement structure is preserved under the functor in a mathematically precise sense"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "5",
+        "issue": "Postulates existence of functor F without construction or proof of existence. This is a critical gap that invalidates the entire argument."
+      },
+      {
+        "step": "6",
+        "issue": "Claims F preserves entropy scaling without proof. The justification explicitly states this requires proof but none is provided."
+      },
+      {
+        "step": "8",
+        "issue": "Claims area law scaling in 'both cases' but only establishes it for specific systems (gravity and gapped many-body systems), not for general systems with bulk-boundary correspondence."
+      },
+      {
+        "step": "9",
+        "issue": "Claims categorical equivalence without proving F is essentially surjective or fully faithful. The justification admits this requires proof but none is given."
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No explicit construction of the functor F",
+      "No proof that F preserves entropy scaling",
+      "No proof that F is essentially surjective and fully faithful",
+      "No demonstration that area law scaling implies categorical equivalence",
+      "No treatment of systems that don't fall into the gravity or gapped many-body cases",
+      "No proof of uniqueness of the functor F",
+      "No rigorous definition of what 'preserving entanglement structure' means categorically"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims entropy scales as S = O(A^{d-1}) for both gravity and many-body systems, but this contradicts standard thermodynamic scaling where bulk entropy should scale as S = O(V^d) for extensive systems",
+      "The proof assumes a categorical equivalence between bulk and boundary descriptions without establishing that such equivalence preserves all physical properties beyond entropy",
+      "The claimed functor F is postulated to exist without construction, making the proof incomplete and potentially inconsistent with the requirement that functors preserve categorical structure"
+    ],
+    "assumption_conflicts": [
+      "Conflicts with proof [37338340b3ed] which establishes fundamental discreteness - the smooth boundary assumption may not hold at fundamental scales",
+      "The assumption of well-defined bulk-boundary correspondence conflicts with gauge redundancy principles in [e30b04f6f8f1] where unphysical degrees of freedom complicate such correspondences",
+      "The spectral gap assumption for many-body systems conflicts with critical point universality in [c21e27c5a63e] where gaps vanish at phase transitions"
+    ],
+    "beneficial_connections": [
+      "Connects to [f275c612d4cc] on holographic principles and information encoding on boundaries",
+      "Relates to [be4dedfed56e] on entanglement patterns determining geometric structure",
+      "Extends [bb82cee3c953] on mathematical dualities by proposing a specific bulk-boundary duality",
+      "Connects to [102677deecdd] through categorical structure preservation"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof has significant gaps including the non-constructive postulation of functor F and lacks rigorous justification for why entropy scaling should be universal across gravity and many-body systems. The area law scaling claim needs stronger theoretical foundation beyond citing specific formulas."
+  },
+  "confidence_score": 0.255,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.29999999999999993
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.29999999999999993
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous theory of bulk-boundary functors that preserve entanglement structure and entropy scaling. Current AdS/CFT dictionary and tensor network formulations provide examples but lack general categorical framework.",
+  "limitations": [
+    "Explicit construction of the functor F for general systems",
+    "Proof that F preserves von Neumann entropy up to area scaling factors",
+    "Demonstration that F establishes categorical equivalence (essential surjectivity and full faithfulness)",
+    "Unified treatment bridging quantum gravity and many-body formulations",
+    "Requires either general covariance or spectral gap assumption",
+    "The categorical framework is not fully developed for quantum gravity",
+    "Area law can be violated in critical systems without gap",
+    "The proof strategy differs significantly between gravity and many-body cases"
+  ],
+  "source_convergence": {
+    "structural_claim": "Fundamental degrees of freedom scale with boundary area rather than bulk volume, revealing a holographic principle in both quantum gravity and quantum many-body systems",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Bekenstein-Hawking Entropy Formula",
+        "domain_id": "quantum_gravity",
+        "domain_name": "Quantum Gravity",
+        "link_type": "direct",
+        "structural_conclusion": "Black hole entropy scales with surface area, not volume, indicating holographic encoding of information"
+      },
+      {
+        "result_id": "",
+        "result_name": "Ryu-Takayanagi Formula",
+        "domain_id": "quantum_gravity",
+        "domain_name": "Quantum Gravity",
+        "link_type": "direct",
+        "structural_conclusion": "Entanglement entropy equals area of minimal surfaces, establishing area scaling as fundamental"
+      },
+      {
+        "result_id": "",
+        "result_name": "Area Law for Entanglement Entropy",
+        "domain_id": "thermodynamics",
+        "domain_name": "Thermodynamics and Statistical Mechanics",
+        "link_type": "direct",
+        "structural_conclusion": "Ground state entanglement in gapped systems scales with boundary area, not volume"
+      }
+    ],
+    "domains": [
+      "quantum_gravity",
+      "thermodynamics"
+    ],
+    "domain_names": [
+      "Quantum Gravity",
+      "Thermodynamics and Statistical Mechanics"
+    ],
+    "ea_scores": {
+      "strength": 0.357,
+      "independence": 0.7,
+      "adversarial": 0.4,
+      "reproducibility": 0.5249999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.5408499999999999,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:53:44.885604+00:00",
+    "id": "11e34e34a739"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.279495
+  }
+}

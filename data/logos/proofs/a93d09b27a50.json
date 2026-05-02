@@ -1,0 +1,331 @@
+{
+  "id": "a93d09b27a50",
+  "convergence_id": "386a86d7e78d",
+  "timestamp": "2026-05-02T12:54:28.881656+00:00",
+  "proposition": "For a Schwarzschild black hole of mass M with event horizon H, the entropy S satisfies S = kc\u00b3A/(4G\u210f) where A is the area of H, establishing that the maximum information content I_max of the region bounded by H is I_max = A/(4l_p\u00b2) bits, where l_p is the Planck length",
+  "proposition_natural": "Black holes are thermodynamic objects with entropy proportional to surface area rather than volume, revealing that gravitational horizons encode information holographically",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Differential geometry",
+    "Information theory",
+    "Measure theory"
+  ],
+  "apparatus_justification": "Differential geometry provides the mathematical structure of spacetime, event horizons, and the area calculation of black hole surfaces. Information theory formalizes entropy and information content, while measure theory bridges the geometric area calculations with probabilistic entropy definitions.",
+  "proof_natural": "**Proposition.** For a Schwarzschild black hole of mass $M$ with event horizon $\\mathcal{H}$, the entropy $S$ satisfies $S = kc^3A/(4G\\hbar)$ where $A$ is the area of $\\mathcal{H}$, establishing that the maximum information content $I_{\\max}$ of the region bounded by $\\mathcal{H}$ is $I_{\\max} = A/(4\\ell_p^2)$ bits, where $\\ell_p$ is the Planck length.\n\n**Proof.** Let spacetime be a 4-dimensional Lorentzian manifold $(M,g)$ satisfying the Einstein field equations. We assume the black hole is in thermodynamic equilibrium, described by the Schwarzschild solution, and that quantum field theory in curved spacetime is valid near the horizon. We further assume the generalized second law of thermodynamics holds for systems including black holes, information is conserved in quantum mechanical evolution (unitarity), and the semi-classical approximation is valid (taking $\\hbar \\to 0$ with $G\\hbar/c^3$ fixed).\n\nConsider a Schwarzschild black hole of mass $M$. The event horizon $\\mathcal{H}$ is a null hypersurface located at $r = 2GM/c^2$. From the Schwarzschild metric\n$$ds^2 = -\\left(1-\\frac{2GM}{rc^2}\\right)c^2dt^2 + \\left(1-\\frac{2GM}{rc^2}\\right)^{-1}dr^2 + r^2d\\Omega^2,$$\nwe calculate directly that the area of the horizon is $A = 16\\pi G^2M^2/c^4$.\n\nBy Hawking's celebrated result using Bogoliubov transformations in quantum field theory on curved spacetime, black holes emit thermal radiation at temperature\n$$T_H = \\frac{\\hbar c^3}{8\\pi GMk}.$$\n\nThe first law of black hole mechanics, derived through differential geometry calculations on the horizon using Killing vector fields, states\n$$dM = \\frac{\\kappa}{8\\pi G}dA + \\Omega dJ + \\Phi dQ,$$\nwhere $\\kappa$ is the surface gravity, $\\Omega$ is the angular velocity, and $\\Phi$ is the electric potential. For a Schwarzschild black hole with $J = 0$ and $Q = 0$, the surface gravity is $\\kappa = c^4/(4GM)$, yielding\n$$dM = \\frac{c^4}{32\\pi G^2M}dA.$$\n\nComparing this with the thermodynamic first law $dE = TdS$ and using the Hawking temperature $T_H$, we identify the entropy as\n$$S = \\frac{kc^3A}{4G\\hbar}.$$\n\n[Note: This identification relies on the correspondence between the laws of black hole mechanics and thermodynamics, which while compelling, represents a theoretical framework rather than a direct derivation.]\n\nFrom information theory, the maximum information content of a system with entropy $S$ is $I_{\\max} = S/(k\\ln 2)$ bits. Therefore,\n$$I_{\\max} = \\frac{c^3A}{4G\\hbar\\ln 2} = \\frac{A}{4\\ell_p^2\\ln 2} \\text{ bits},$$\nwhere $\\ell_p = \\sqrt{G\\hbar/c^3}$ is the Planck length.\n\nThis result demonstrates a holographic encoding principle: the information content scales with the boundary area $A \\sim r^2$ rather than the volume $V \\sim r^3$ of the region. This area scaling represents a fundamental departure from conventional expectations and suggests that the degrees of freedom of a gravitational system reside on its boundary rather than in its bulk.\n\nThis completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.Analysis.SpecialFunctions.Log.Basic\nimport Mathlib.MeasureTheory.Measure.Lebesgue.Basic\nimport Mathlib.Geometry.Manifold.Instances.Sphere\nimport Mathlib.Data.Real.Pi\nimport Mathlib.Data.Real.Sqrt\n\n/-- Physical constants and definitions for black hole thermodynamics -/\nnoncomputable section\n\n-- Physical constants\nvariable (G \u210f c k : \u211d) -- Newton's constant, reduced Planck constant, speed of light, Boltzmann constant\nvariable (hG : 0 < G) (h\u210f : 0 < \u210f) (hc : 0 < c) (hk : 0 < k)\n\n/-- Planck length -/\ndef planck_length (G \u210f c : \u211d) : \u211d := Real.sqrt (G * \u210f / c^3)\n\n/-- Schwarzschild radius -/\ndef schwarzschild_radius (G M c : \u211d) : \u211d := 2 * G * M / c^2\n\n/-- Area of event horizon for Schwarzschild black hole -/\ndef horizon_area (G M c : \u211d) : \u211d := 16 * Real.pi * G^2 * M^2 / c^4\n\n/-- Hawking temperature -/\ndef hawking_temperature (G M c \u210f k : \u211d) : \u211d := \u210f * c^3 / (8 * Real.pi * G * M * k)\n\n/-- Surface gravity for Schwarzschild black hole -/\ndef surface_gravity (G M c : \u211d) : \u211d := c^4 / (4 * G * M)\n\n/-- Bekenstein-Hawking entropy -/\ndef black_hole_entropy (k c A G \u210f : \u211d) : \u211d := k * c^3 * A / (4 * G * \u210f)\n\n/-- Maximum information content in bits -/\ndef max_information (c A G \u210f : \u211d) : \u211d := c^3 * A / (4 * G * \u210f * Real.log 2)\n\n/-- Main theorem: Black hole entropy and information content -/\ntheorem black_hole_entropy_theorem (M : \u211d) (hM : 0 < M) :\n  let r_s := schwarzschild_radius G M c\n  let A := horizon_area G M c\n  let T_H := hawking_temperature G M c \u210f k\n  let \u03ba := surface_gravity G M c\n  let S := black_hole_entropy k c A G \u210f\n  let I_max := max_information c A G \u210f\n  let l_p := planck_length G \u210f c\n  -- Step 1: Event horizon area\n  A = 16 * Real.pi * G^2 * M^2 / c^4 \u2227\n  -- Step 2: Hawking temperature (statement only, proof requires QFT)\n  T_H = \u210f * c^3 / (8 * Real.pi * G * M * k) \u2227\n  -- Step 3-4: First law of black hole mechanics (requires GR framework)\n  sorry \u2227 -- First law: dM = (\u03ba/8\u03c0G)dA for Schwarzschild\n  -- Step 5: Entropy formula\n  S = k * c^3 * A / (4 * G * \u210f) \u2227\n  -- Step 6-7: Information content\n  I_max = A / (4 * l_p^2 * Real.log 2) \u2227\n  -- Step 8: Holographic property (area vs volume scaling)\n  \u2203 (V : \u211d), V = (4/3) * Real.pi * r_s^3 \u2227 \n    I_max = c^3 * A / (4 * G * \u210f * Real.log 2) \u2227\n    sorry -- Proof that I_max scales with A not V\n  := by\n  -- Introduce local definitions\n  intro r_s A T_H \u03ba S I_max l_p\n  \n  constructor\n  -- Step 1: Area calculation\n  \u00b7 rfl\n  \n  constructor\n  -- Step 2: Hawking temperature (definition)\n  \u00b7 rfl\n  \n  constructor\n  -- Step 3-4: First law requires GR framework\n  \u00b7 sorry -- Requires general relativity and differential geometry of horizons\n  \n  constructor\n  -- Step 5: Entropy formula (definition)\n  \u00b7 rfl\n  \n  constructor\n  -- Step 6-7: Information content\n  \u00b7 simp [max_information, planck_length]\n    ring_nf\n    sorry -- Algebraic manipulation to show equivalence\n  \n  -- Step 8: Holographic scaling\n  \u00b7 use (4/3) * Real.pi * (schwarzschild_radius G M c)^3\n    constructor\n    \u00b7 rfl\n    constructor\n    \u00b7 rfl\n    \u00b7 sorry -- Requires showing information scales with area not volume\n\n/-- Corollary: Information bound in terms of Planck area -/\ntheorem information_planck_bound (A : \u211d) (hA : 0 < A) :\n  let l_p := planck_length G \u210f c\n  let I_max := max_information c A G \u210f\n  I_max = A / (4 * l_p^2 * Real.log 2) := by\n  sorry -- Algebraic manipulation from definitions",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The event horizon H of a Schwarzschild black hole of mass M is a null hypersurface at r = 2GM/c\u00b2 with area A = 16\u03c0G\u00b2M\u00b2/c\u2074",
+      "justification": "Direct calculation from Schwarzschild metric ds\u00b2 = -(1-2GM/rc\u00b2)c\u00b2dt\u00b2 + (1-2GM/rc\u00b2)\u207b\u00b9dr\u00b2 + r\u00b2d\u03a9\u00b2",
+      "dependencies": [
+        "Schwarzschild solution to Einstein field equations"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Black holes emit Hawking radiation with temperature T_H = \u210fc\u00b3/(8\u03c0GMk)",
+      "justification": "Quantum field theory calculation in curved spacetime using Bogoliubov transformations",
+      "dependencies": [
+        "Hawking (1975) calculation",
+        "Assumption: QFT in curved spacetime"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The first law of black hole mechanics states dM = (\u03ba/8\u03c0G)dA + \u03a9dJ + \u03a6dQ where \u03ba is surface gravity",
+      "justification": "Differential geometry calculation on the horizon using Killing vector fields",
+      "dependencies": [
+        "Bardeen-Carter-Hawking (1973)",
+        "Step 1"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "For Schwarzschild black holes, \u03ba = c\u2074/(4GM) and dM = (c\u2074/32\u03c0G\u00b2M)dA",
+      "justification": "Specialization of step 3 to J=0, Q=0 case with \u03ba calculation from metric",
+      "dependencies": [
+        "Step 3",
+        "Step 1"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Comparing with thermodynamic first law dE = TdS, we identify S = kc\u00b3A/(4G\u210f)",
+      "justification": "Pattern matching with dE = TdS using T_H from step 2 and dM relation from step 4",
+      "dependencies": [
+        "Step 2",
+        "Step 4",
+        "Assumption: generalized second law"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "The maximum information content of a region is I_max = S/k ln(2) bits",
+      "justification": "Information-theoretic relation between entropy and information capacity",
+      "dependencies": [
+        "Shannon information theory",
+        "Step 5"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Therefore I_max = c\u00b3A/(4G\u210f ln(2)) = A/(4l_p\u00b2 ln(2)) bits where l_p = \u221a(G\u210f/c\u00b3)",
+      "justification": "Direct substitution of S from step 5 into step 6",
+      "dependencies": [
+        "Step 5",
+        "Step 6"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "This demonstrates holographic encoding: information scales with boundary area A rather than volume V ~ r\u00b3",
+      "justification": "For sphere of radius r, V ~ r\u00b3 but A ~ r\u00b2, and I_max ~ A not V",
+      "dependencies": [
+        "Step 7",
+        "Step 1"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Hawking radiation calculation",
+      "authors": "S.W. Hawking",
+      "year": "1975",
+      "field": "Quantum Gravity",
+      "statement": "Black holes emit thermal radiation at temperature T_H = \u210fc\u00b3/(8\u03c0GMk)",
+      "usage": "Essential for establishing thermodynamic nature and temperature-entropy relation"
+    },
+    {
+      "name": "Laws of black hole mechanics",
+      "authors": "J.M. Bardeen, B. Carter, S.W. Hawking",
+      "year": "1973",
+      "field": "General Relativity",
+      "statement": "Four laws analogous to thermodynamics, including dM = (\u03ba/8\u03c0G)dA + work terms",
+      "usage": "Provides differential relation connecting mass and area changes"
+    },
+    {
+      "name": "Bekenstein bound",
+      "authors": "J.D. Bekenstein",
+      "year": "1973",
+      "field": "Quantum Gravity",
+      "statement": "Maximum entropy in a region of radius R with energy E is S \u2264 2\u03c0RE/(\u210fc)",
+      "usage": "Theoretical foundation for area-entropy relation"
+    },
+    {
+      "name": "Information theory",
+      "authors": "C.E. Shannon",
+      "year": "1948",
+      "field": "Information Theory",
+      "statement": "Information content I = S/(k ln 2) relates entropy to bits",
+      "usage": "Converts thermodynamic entropy to information-theoretic bits"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Spacetime is a 4-dimensional Lorentzian manifold (M,g) satisfying Einstein field equations",
+    "The black hole is in thermodynamic equilibrium (Schwarzschild solution)",
+    "Quantum field theory in curved spacetime is valid near the horizon",
+    "The generalized second law of thermodynamics holds for systems including black holes",
+    "Information is conserved in quantum mechanical evolution (unitarity)",
+    "The Bekenstein bound applies to bounded regions in spacetime",
+    "The no-hair theorem holds: black holes are characterized only by mass, charge, and angular momentum",
+    "Semi-classical approximation is valid (\u210f \u2192 0 limit with G\u210f/c\u00b3 fixed)"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "Identifying entropy from first law comparison",
+        "issue": "The identification S = kc\u00b3A/(4G\u210f) from comparing dM = (c\u2074/32\u03c0G\u00b2M)dA with dE = TdS is not a derivation but an assumption. The proof admits this is 'correspondence' not derivation, yet still claims to prove the formula.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed - this is the central claim being 'proved' by assumption"
+      },
+      {
+        "step": "Information content formula I_max = S/(k ln 2)",
+        "issue": "This formula assumes classical Shannon entropy relationship, but black holes are quantum gravitational objects. No justification for why classical information theory applies to quantum gravity.",
+        "severity": "major",
+        "fixable": false,
+        "suggested_fix": "Would require proving information-theoretic properties of quantum gravity"
+      },
+      {
+        "step": "Final result I_max = A/(4\u2113_p\u00b2 ln 2) bits",
+        "issue": "The proposition claims I_max = A/(4\u2113_p\u00b2) but derives I_max = A/(4\u2113_p\u00b2 ln 2). Factor of ln 2 discrepancy.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Either change proposition or explain the ln 2 factor properly"
+      },
+      {
+        "step": "Semi-classical approximation validity",
+        "issue": "Claims \u210f \u2192 0 limit while keeping G\u210f/c\u00b3 fixed, but the entire result depends on \u210f appearing in the denominator. Cannot take \u210f \u2192 0 without the entropy diverging.",
+        "severity": "major",
+        "fixable": false,
+        "suggested_fix": "Need different approximation scheme or admit quantum gravity regime"
+      }
+    ],
+    "hidden_assumptions": [
+      "Black hole entropy exists and is well-defined",
+      "Thermodynamic description of black holes is exact rather than approximate",
+      "Information and entropy have the same relationship in quantum gravity as in classical systems",
+      "The horizon area is the relevant quantity for information (not proven, just assumed)",
+      "Quantum field theory near horizons gives correct entropy despite known divergences"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes black holes have thermodynamic properties to derive their entropy formula, but the existence of black hole entropy is what establishes they have thermodynamic properties in the first place.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to establish the entropy formula and maximum information content, but actually only shows that IF black holes have entropy corresponding to temperature via first law, THEN it has the given form. The fundamental question of why black holes have entropy is assumed not proven.",
+    "citation_issues": [
+      "Hawking radiation is cited as 'celebrated result' but the derivation has known issues with trans-Planckian modes",
+      "Bekenstein bound is listed in dependencies but never used in the proof",
+      "No-hair theorem is assumed but not used",
+      "Laws of black hole mechanics are cited but their thermodynamic interpretation is assumed not derived"
+    ],
+    "structural_soundness": 0.2,
+    "overall_assessment": "This 'proof' is fundamentally an argument by analogy that assumes its conclusion. It takes the formal similarity between black hole mechanics and thermodynamics as evidence for actual thermodynamic behavior, then uses this assumption to 'derive' the entropy formula. The mathematical manipulations are correct but the logical structure is entirely circular.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof establishes the Bekenstein-Hawking entropy formula and derives a holographic bound, but fails to prove the specific claim that I_max = A/(4l_p\u00b2) bits due to an error in Step 7",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The Bekenstein bound I_max = S/k ln(2) is assumed without justification",
+      "The identification of black hole entropy with maximum information content requires additional assumptions about information storage",
+      "The validity of treating classical geometric area as fundamental in quantum gravity",
+      "The assumption that the holographic principle applies to black hole horizons"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 7",
+        "issue": "Mathematical error: claims I_max = A/(4l_p\u00b2 ln(2)) but then states I_max = A/(4l_p\u00b2), dropping the ln(2) factor without justification"
+      },
+      {
+        "step": "Step 6",
+        "issue": "The relation I_max = S/k ln(2) is stated as fact but requires justification - this is the Bekenstein bound which needs proof or explicit assumption"
+      },
+      {
+        "step": "Step 5",
+        "issue": "Pattern matching between dM = (c\u2074/32\u03c0G\u00b2M)dA and dE = TdS is not rigorous - requires showing these are actually the same physical law, not just similar forms"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No justification for why black hole entropy equals maximum information content",
+      "Missing proof or assumption of the Bekenstein bound",
+      "No demonstration that the thermodynamic analogy is physically meaningful rather than formal",
+      "The final claimed result I_max = A/(4l_p\u00b2) contradicts the calculation in Step 7"
+    ],
+    "internal_score": 0.3
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims I_max = A/(4l_p\u00b2) bits, but existing proof [1083de91300b] establishes S_BH = kA_H/4l_p\u00b2 which would give I_max = A/(4l_p\u00b2 ln(2)) bits when converted to bits. The new proof omits the ln(2) factor.",
+      "The new proof uses semi-classical approximation (\u210f \u2192 0 limit) but simultaneously relies on quantum effects (Hawking radiation, unitarity) which require \u210f \u2260 0. This is internally inconsistent.",
+      "The derivation incorrectly identifies dM = (c\u2074/32\u03c0G\u00b2M)dA from \u03ba = c\u2074/(4GM), but the correct relation from first law gives dM = (\u03ba/8\u03c0G)dA = c\u2074/(32\u03c0GM)dA, missing an M in denominator."
+    ],
+    "assumption_conflicts": [
+      "Semi-classical approximation conflicts with quantum unitarity assumption - cannot take \u210f \u2192 0 while preserving quantum information conservation",
+      "Thermodynamic equilibrium assumption conflicts with Hawking radiation emission which represents non-equilibrium process",
+      "The no-hair theorem assumption is irrelevant for Schwarzschild case and adds unnecessary complexity"
+    ],
+    "beneficial_connections": [
+      "Connects to [1083de91300b] on holographic principle and area scaling of entropy",
+      "Relates to [4dff4e61551e] on degrees of freedom scaling with boundary area",
+      "Supports [37338340b3ed] on fundamental discreteness at Planck scales"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof contains fundamental mathematical errors in the entropy-to-information conversion and internal logical inconsistencies in its assumptions. The holographic principle connection is valid but the quantitative results are incorrect."
+  },
+  "confidence_score": 0.29999999999999993,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.3,
+    "cross_proof": 0.3,
+    "calibration": 0.29999999999999993
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.3,
+    "cross_proof": 0.3,
+    "calibration": 0.29999999999999993
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "Rigorous quantum field theory in curved spacetime, particularly near horizons where curvature diverges; mathematical framework for information in quantum gravity; precise formulation of holographic principle",
+  "limitations": [
+    "Step 2 relies on semi-classical approximation whose validity near horizon is unclear",
+    "Step 5 assumes thermodynamic interpretation is exact rather than approximate",
+    "Information interpretation in step 6 assumes quantum information framework extends to gravity",
+    "Proof doesn't address information paradox or unitarity directly",
+    "Only proven for Schwarzschild (non-rotating, uncharged) black holes",
+    "Requires semi-classical approximation (quantum fields on classical spacetime)",
+    "Doesn't prove information is recoverable, only bounds storage capacity",
+    "Assumes thermodynamic laws extend exactly to gravitational systems"
+  ],
+  "source_convergence": {
+    "structural_claim": "Black holes are thermodynamic objects with entropy proportional to surface area rather than volume, revealing that gravitational horizons encode information holographically",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Bekenstein-Hawking Entropy Formula",
+        "domain_id": "quantum_gravity",
+        "domain_name": "Quantum Gravity",
+        "link_type": "direct",
+        "structural_conclusion": "Black hole entropy is proportional to surface area, suggesting holographic encoding of information"
+      },
+      {
+        "result_id": "",
+        "result_name": "Black Hole Thermodynamics Laws",
+        "domain_id": "quantum_gravity",
+        "domain_name": "Quantum Gravity",
+        "link_type": "direct",
+        "structural_conclusion": "Black holes obey thermodynamic laws with entropy proportional to area"
+      },
+      {
+        "result_id": "",
+        "result_name": "Hawking Radiation",
+        "domain_id": "astrophysics",
+        "domain_name": "Astrophysics",
+        "link_type": "direct",
+        "structural_conclusion": "Black holes emit thermal radiation, confirming their thermodynamic nature with temperature inversely proportional to mass"
+      }
+    ],
+    "domains": [
+      "quantum_gravity",
+      "astrophysics"
+    ],
+    "domain_names": [
+      "Quantum Gravity",
+      "Astrophysics"
+    ],
+    "ea_scores": {
+      "strength": 0.357,
+      "independence": 0.2,
+      "adversarial": 0.7,
+      "reproducibility": 0.5249999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.47585,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:54:49.327646+00:00",
+    "id": "386a86d7e78d"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.286425
+  }
+}

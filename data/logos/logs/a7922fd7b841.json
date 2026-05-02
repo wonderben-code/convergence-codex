@@ -1,0 +1,38 @@
+{
+  "proof_id": "a7922fd7b841",
+  "timestamp": "2026-05-02T13:43:53.242644+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "categorical",
+      "alternatives_considered": [
+        "axiomatic - Could formalize shared axioms about symmetry groups, order parameters, and vacuum states, but this would miss the functorial relationships between symmetries and observables that make the pattern universal"
+      ],
+      "reasoning": "The convergence describes a universal pattern where symmetry breaking leads to emergent properties (mass, phase distinctions) through order parameters. This is best captured as a categorical construction involving symmetry groups, their representations, and the universal property of how broken symmetries generate observable quantities."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Category theory, Algebraic structures, Functional analysis",
+      "alternatives_considered": [],
+      "reasoning": "Category theory captures the structural mapping between symmetry breaking in different physical domains through functors between categories of symmetric/broken states. Algebraic structures formalize symmetry groups and their representations, while functional analysis handles the infinite-dimensional state spaces and operators in quantum field theory."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "We construct a categorical framework where symmetry breaking corresponds to a natural transformation between functors representing symmetric and broken phases. The key insight is that spontaneous symmetry breaking changes the representation category from Rep(G) to Rep(H) for H \u2282 G, with order parameters having non-zero VEVs characterizing this transition and generating mass terms through the effective potential.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 10 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3838 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 3434 chars, 13 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This formalization captures the categorical structure but requires substantial physics formalism (operators, Hamiltonians, ground states, Lagrangians) that is not available in Mathlib. The mathematical skeleton is present but the physics content needs dedicated libraries."
+    }
+  ]
+}

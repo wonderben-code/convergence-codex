@@ -1,0 +1,13 @@
+{
+  "proof_id": "017d9bcb893f",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: Inverse homogenization theory for complex-valued tensors with constraints from causality and passivity. Framework for proving phase/amplitude decoupling in effective media. Rigorous connection between subwavelength scale and homogenization validity for wave equations.",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

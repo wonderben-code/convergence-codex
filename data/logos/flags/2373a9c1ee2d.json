@@ -1,0 +1,15 @@
+{
+  "proof_id": "2373a9c1ee2d",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous category-theoretic framework connecting symmetry breaking functors to spectral properties of induced operators on quotient spaces. Specifically, we need: (1) A functor from the category of G-spaces with broken symmetry to the category of Hilbert spaces with anomalous spectral properties, (2) Rigorous characterization of 'fundamental difference' in spectral properties as a categorical invariant, (3) Extension of Goldstone theorem to general topological groups beyond Lie groups",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

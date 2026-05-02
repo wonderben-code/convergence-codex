@@ -1,0 +1,13 @@
+{
+  "proof_id": "abbce3e9461b",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: Rigorous functional analytic framework for the space of Hamiltonians/actions with appropriate topology making R continuous and compact. Proof that microscopic differences only affect irrelevant operators. Mathematical formulation of 'universality classes' as equivalence classes under RG flow.",
+    "10 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

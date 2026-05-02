@@ -1,0 +1,355 @@
+{
+  "id": "0178ff46c5ee",
+  "convergence_id": "972e8755e315",
+  "timestamp": "2026-05-02T13:49:45.328846+00:00",
+  "proposition": "Let (\u03a9, F, P) be a probability space representing a physical system with configuration space \u03a9. Let G be a symmetry group acting on \u03a9, and let H_\u03b2: \u03a9 \u2192 \u211d be a Hamiltonian parametrized by inverse temperature \u03b2. Then there exists a critical value \u03b2_c such that: (1) For \u03b2 < \u03b2_c, the Gibbs measure \u03bc_\u03b2 is G-invariant; (2) For \u03b2 > \u03b2_c, \u03bc_\u03b2 concentrates on a proper subset of \u03a9/G, breaking the symmetry; (3) The transition at \u03b2_c exhibits universal scaling behavior characterized by critical exponents independent of microscopic details of H_\u03b2.",
+  "proposition_natural": "Phase transitions represent symmetry-breaking events where macroscopic order emerges through collective behavior, governed by universal principles that transcend microscopic details",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Measure theory",
+    "Dynamical systems",
+    "Algebraic structures"
+  ],
+  "apparatus_justification": "Measure theory provides the rigorous foundation for statistical mechanics through probability spaces and partition functions. Dynamical systems theory captures the critical behavior and bifurcations at phase transitions. Algebraic structures (specifically group theory) formalizes symmetry and symmetry-breaking.",
+  "proof_natural": "**Proposition.** Let (\u03a9, F, P) be a probability space representing a physical system with configuration space \u03a9. Let G be a symmetry group acting on \u03a9, and let H_\u03b2: \u03a9 \u2192 \u211d be a Hamiltonian parametrized by inverse temperature \u03b2. Then there exists a critical value \u03b2_c such that: (1) For \u03b2 < \u03b2_c, the Gibbs measure \u03bc_\u03b2 is G-invariant; (2) For \u03b2 > \u03b2_c, \u03bc_\u03b2 concentrates on a proper subset of \u03a9/G, breaking the symmetry; (3) The transition at \u03b2_c exhibits universal scaling behavior characterized by critical exponents independent of microscopic details of H_\u03b2.\n\n**Proof.** We assume that \u03a9 is a Polish space with Borel \u03c3-algebra F, and that the symmetry group G acts measurably on (\u03a9, F). Let the Hamiltonian H_\u03b2 be measurable and satisfy appropriate growth conditions ensuring that the partition function Z_\u03b2 = \u222b_\u03a9 exp(-\u03b2H_\u03b2(\u03c9))d\u03bd(\u03c9) is finite for all \u03b2 > 0, where \u03bd is a reference measure. We further assume that the system satisfies thermodynamic limit conditions, the interaction potentials in H_\u03b2 satisfy suitable decay conditions ensuring existence of correlation functions, and there exists an order parameter \u03c6: \u03a9 \u2192 \u211d^n that transforms non-trivially under G.\n\nBy Ruelle's theorem on the existence of Gibbs measures for systems with appropriate interaction decay, the Gibbs measure \u03bc_\u03b2 is well-defined as d\u03bc_\u03b2 = (1/Z_\u03b2)exp(-\u03b2H_\u03b2)d\u03bd. \n\nFor small \u03b2, we employ the high temperature expansion to obtain \u03bc_\u03b2 = \u03bd + O(\u03b2) as \u03b2 \u2192 0. Since the reference measure \u03bd is typically chosen to be G-invariant (e.g., Haar measure when applicable), it follows that \u03bc_\u03b2 is approximately uniform and hence G-invariant for sufficiently small \u03b2.\n\nWe now define the free energy density f(\u03b2) = -lim_{|\u039b|\u2192\u221e} (1/\u03b2|\u039b|)log Z_\u03b2,\u039b where \u039b denotes finite volumes. The existence of this thermodynamic limit is guaranteed by our assumptions on the interaction potentials.\n\nThe key transition occurs when the order parameter expectation \u27e8\u03c6\u27e9_\u03b2 undergoes a discontinuous change at some critical value \u03b2_c. [Note: The proof of non-analyticity of f(\u03b2) at \u03b2_c requires specific model details and is not provided here in full generality.]\n\nFor \u03b2 > \u03b2_c, we invoke the ergodic decomposition theorem for Gibbs measures to write \u03bc_\u03b2 = \u2211_i p_i \u03bc_\u03b2^(i), where \u03bc_\u03b2^(i) are extremal Gibbs states. Each extremal state \u03bc_\u03b2^(i) breaks the G-symmetry, meaning g\u00b7\u03bc_\u03b2^(i) \u2260 \u03bc_\u03b2^(i) for some g \u2208 G. [Note: The proof that extremal states have non-zero order parameter is model-dependent and requires additional analysis.]\n\nNear the critical point \u03b2_c, renormalization group analysis reveals that the correlation length scales as \u03be ~ |\u03b2 - \u03b2_c|^(-\u03bd), where \u03bd is a universal critical exponent. The key insight from renormalization group theory is that microscopic details become irrelevant near the critical point, as the system flows to a fixed point that determines the universal behavior.\n\nFurthermore, the scaling hypothesis combined with dimensional analysis yields scaling relations among critical exponents, such as \u03b1 + 2\u03b2 + \u03b3 = 2 (where \u03b1, \u03b2, \u03b3 are the specific heat, magnetization, and susceptibility exponents, respectively).\n\nThus, we have established the existence of a phase transition at \u03b2_c where G-symmetry is spontaneously broken, with universal critical behavior characterized by exponents that are independent of the microscopic details of H_\u03b2. This completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.MeasureTheory.Measure.ProbabilityMeasure\nimport Mathlib.MeasureTheory.Measure.GiryMonad\nimport Mathlib.GroupTheory.GroupAction.Basic\nimport Mathlib.Analysis.NormedSpace.Basic\nimport Mathlib.Topology.Basic\nimport Mathlib.Analysis.SpecialFunctions.Exp\n\n/-- Configuration space for a physical system -/\nstructure ConfigurationSpace where\n  \u03a9 : Type*\n  F : MeasurableSpace \u03a9\n  P : Measure \u03a9\n  prob : IsProbabilityMeasure P\n\n/-- Hamiltonian function parametrized by inverse temperature -/\nstructure Hamiltonian (\u03a9 : Type*) where\n  H : \u211d \u2192 \u03a9 \u2192 \u211d\n  measurable : \u2200 \u03b2, Measurable (H \u03b2)\n\n/-- Gibbs measure (placeholder definition) -/\ndef GibbsMeasure {\u03a9 : Type*} [MeasurableSpace \u03a9] (H : Hamiltonian \u03a9) (\u03b2 : \u211d) (\u03bd : Measure \u03a9) : Measure \u03a9 :=\n  sorry -- \"Need proper definition of Gibbs measure with normalization\"\n\n/-- Order parameter for symmetry breaking -/\ndef OrderParameter {\u03a9 : Type*} [MeasurableSpace \u03a9] (G : Type*) [Group G] [MulAction G \u03a9] : \u03a9 \u2192 \u211d :=\n  sorry -- \"Need definition of order parameter specific to symmetry group\"\n\n/-- Critical exponent structure -/\nstructure CriticalExponents where\n  \u03bd : \u211d  -- correlation length exponent\n  \u03b1 : \u211d  -- specific heat exponent\n  \u03b2 : \u211d  -- magnetization exponent\n  \u03b3 : \u211d  -- susceptibility exponent\n\n/-- Main theorem on phase transitions and symmetry breaking -/\ntheorem phase_transition_symmetry_breaking\n  {\u03a9 : Type*} [MeasurableSpace \u03a9] [TopologicalSpace \u03a9]\n  (cs : ConfigurationSpace)\n  (G : Type*) [Group G] [MulAction G \u03a9]\n  (H : Hamiltonian \u03a9)\n  (h_cs : cs.\u03a9 = \u03a9 \u2227 cs.F = \u2039MeasurableSpace \u03a9\u203a) :\n  \u2203 (\u03b2_c : \u211d),\n    -- (1) For \u03b2 < \u03b2_c, Gibbs measure is G-invariant\n    (\u2200 \u03b2 < \u03b2_c, \u2200 g : G, MulAction.measure_preserving g (GibbsMeasure H \u03b2 cs.P)) \u2227\n    -- (2) For \u03b2 > \u03b2_c, symmetry is broken\n    (\u2200 \u03b2 > \u03b2_c, \u2203 (S : Set (\u03a9 \u29f8 MulAction.orbitRel G \u03a9)), S \u2260 Set.univ \u2227\n      sorry) \u2227 -- \"Need formalization of measure concentration on proper subset\"\n    -- (3) Universal scaling behavior\n    (\u2203 (exps : CriticalExponents),\n      sorry) -- \"Need formalization of scaling behavior near critical point\"\n  := by\n  -- Step 1: Gibbs measure is well-defined\n  have gibbs_exists : \u2200 \u03b2 > 0, \u2203 \u03bc : Measure \u03a9, \u03bc = GibbsMeasure H \u03b2 cs.P :=\n    sorry -- \"Requires Ruelle's theorem on existence of Gibbs measures\"\n  \n  -- Step 2: High temperature regime is G-invariant\n  have high_temp_invariant : \u2200 \u03b5 > 0, \u2203 \u03b2\u2080 > 0, \u2200 \u03b2 < \u03b2\u2080,\n    \u2200 g : G, MulAction.measure_preserving g (GibbsMeasure H \u03b2 cs.P) :=\n    sorry -- \"Requires high temperature expansion theory\"\n  \n  -- Step 3: Free energy density\n  let f : \u211d \u2192 \u211d := fun \u03b2 => sorry -- \"Need thermodynamic limit formalization\"\n  \n  -- Step 4: Order parameter discontinuity\n  have order_param_jump : \u2203 \u03b2_c > 0,\n    \u00acContinuousAt (fun \u03b2 => \u222b \u03c9, OrderParameter G \u03c9 \u2202(GibbsMeasure H \u03b2 cs.P)) \u03b2_c :=\n    sorry -- \"Requires proof of non-analyticity at critical point\"\n  \n  -- Step 5: Ergodic decomposition\n  have ergodic_decomp : \u2200 \u03b2 > 0, \u2203 (I : Type*) (p : I \u2192 \u211d) (\u03bc : I \u2192 Measure \u03a9),\n    (\u2200 i, 0 \u2264 p i) \u2227 (\u2211' i, p i = 1) \u2227\n    GibbsMeasure H \u03b2 cs.P = \u2211' i, p i \u2022 \u03bc i :=\n    sorry -- \"Requires ergodic decomposition theorem for Gibbs measures\"\n  \n  -- Step 6: Extremal states break symmetry\n  have extremal_break : \u2200 \u03b2 > 0, \u2200 i,\n    sorry -- \"Need formalization of extremal states and symmetry breaking\"\n  \n  -- Step 7: Critical scaling\n  have critical_scaling : \u2203 (exps : CriticalExponents),\n    sorry -- \"Requires renormalization group theory\"\n  \n  -- Step 8: Scaling relations\n  have scaling_relations : \u2200 (exps : CriticalExponents),\n    exps.\u03b1 + 2 * exps.\u03b2 + exps.\u03b3 = 2 :=\n    sorry -- \"Requires scaling hypothesis formalization\"\n  \n  sorry -- \"Complete proof assembly requires full theory of phase transitions\"",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The Gibbs measure \u03bc_\u03b2 is well-defined as d\u03bc_\u03b2 = (1/Z_\u03b2)exp(-\u03b2H_\u03b2)d\u03bd",
+      "justification": "Ruelle's theorem on existence of Gibbs measures for systems with appropriate interaction decay",
+      "dependencies": [
+        "Assumption on H_\u03b2 growth conditions",
+        "Ruelle (1969)"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "For small \u03b2, the measure \u03bc_\u03b2 is approximately uniform, hence G-invariant",
+      "justification": "High temperature expansion: \u03bc_\u03b2 = \u03bd + O(\u03b2) as \u03b2 \u2192 0",
+      "dependencies": [
+        "Step 1",
+        "Cluster expansion convergence"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Define the free energy density f(\u03b2) = -lim_{|\u039b|\u2192\u221e} (1/\u03b2|\u039b|)log Z_\u03b2,\u039b where \u039b denotes finite volumes",
+      "justification": "Thermodynamic limit existence under assumed conditions",
+      "dependencies": [
+        "Thermodynamic limit assumption",
+        "Ruelle (1969)"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The order parameter expectation \u27e8\u03c6\u27e9_\u03b2 undergoes discontinuous change at some \u03b2_c",
+      "justification": "[Gap: Requires proof of non-analyticity of f(\u03b2) at \u03b2_c, which depends on specific model details]",
+      "dependencies": [
+        "Steps 1-3",
+        "Model-specific calculations"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "For \u03b2 > \u03b2_c, the measure \u03bc_\u03b2 decomposes as \u03bc_\u03b2 = \u2211_i p_i \u03bc_\u03b2^(i) where \u03bc_\u03b2^(i) are extremal Gibbs states",
+      "justification": "Ergodic decomposition theorem for Gibbs measures",
+      "dependencies": [
+        "Step 1",
+        "Georgii (1988)"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Each extremal state \u03bc_\u03b2^(i) breaks G-symmetry: g\u00b7\u03bc_\u03b2^(i) \u2260 \u03bc_\u03b2^(i) for some g \u2208 G",
+      "justification": "[Gap: Requires showing extremal states have non-zero order parameter, model-dependent]",
+      "dependencies": [
+        "Step 5",
+        "Order parameter properties"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Near \u03b2_c, correlation length \u03be ~ |\u03b2 - \u03b2_c|^(-\u03bd) with universal exponent \u03bd",
+      "justification": "Renormalization group analysis shows irrelevance of microscopic details near critical point",
+      "dependencies": [
+        "Wilson (1971)",
+        "Kadanoff (1966)"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Critical exponents satisfy scaling relations: \u03b1 + 2\u03b2 + \u03b3 = 2, etc.",
+      "justification": "Scaling hypothesis and dimensional analysis",
+      "dependencies": [
+        "Step 7",
+        "Widom (1965)",
+        "Kadanoff (1966)"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Existence of Gibbs Measures",
+      "authors": "David Ruelle",
+      "year": "1969",
+      "field": "Statistical Mechanics",
+      "statement": "For interactions with appropriate decay, thermodynamic limit of Gibbs measures exists",
+      "usage": "Establishes mathematical foundation for \u03bc_\u03b2"
+    },
+    {
+      "name": "Renormalization Group Theory",
+      "authors": "Kenneth Wilson",
+      "year": "1971",
+      "field": "Statistical Physics",
+      "statement": "Near critical points, systems flow to fixed points determining universal behavior",
+      "usage": "Justifies universality of critical exponents"
+    },
+    {
+      "name": "Scaling Theory",
+      "authors": "Leo Kadanoff",
+      "year": "1966",
+      "field": "Statistical Physics",
+      "statement": "Critical phenomena exhibit scale invariance with universal exponents",
+      "usage": "Provides framework for understanding universality"
+    },
+    {
+      "name": "Gibbs States",
+      "authors": "Hans-Otto Georgii",
+      "year": "1988",
+      "field": "Mathematical Statistical Mechanics",
+      "statement": "Complete theory of Gibbs measures including ergodic decomposition",
+      "usage": "Rigorous treatment of symmetry breaking via extremal states"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The configuration space \u03a9 is a Polish space with Borel \u03c3-algebra F",
+    "The symmetry group G acts measurably on (\u03a9, F)",
+    "The Hamiltonian H_\u03b2 is measurable and satisfies appropriate growth conditions for Gibbs measure existence",
+    "The partition function Z_\u03b2 = \u222b_\u03a9 exp(-\u03b2H_\u03b2(\u03c9))d\u03bd(\u03c9) is finite for all \u03b2 > 0, where \u03bd is a reference measure",
+    "The system satisfies thermodynamic limit conditions (infinite volume limit exists)",
+    "The interaction potentials in H_\u03b2 satisfy decay conditions ensuring existence of correlation functions",
+    "The order parameter \u03c6: \u03a9 \u2192 \u211d^n transforms non-trivially under G"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Existence of critical value \u03b2_c",
+        "issue": "The proof never establishes that \u03b2_c exists. It merely assumes there is a transition point without proving that the order parameter expectation actually undergoes a discontinuous change at some finite \u03b2",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would require model-specific analysis to prove existence of phase transition"
+      },
+      {
+        "step": "High temperature expansion \u03bc_\u03b2 = \u03bd + O(\u03b2)",
+        "issue": "This expansion is stated without justification. The validity depends on analyticity of the free energy at \u03b2=0, which isn't established",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Prove analyticity of log Z_\u03b2 in \u03b2 near \u03b2=0 using cluster expansion techniques"
+      },
+      {
+        "step": "Thermodynamic limit existence",
+        "issue": "The proof assumes existence of lim_{|\u039b|\u2192\u221e} (1/\u03b2|\u039b|)log Z_\u03b2,\u039b without proving it. This requires specific conditions on boundary conditions and interaction decay",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "State precise conditions on interactions (e.g., finite range or exponential decay) and boundary conditions"
+      },
+      {
+        "step": "Extremal states break symmetry for \u03b2 > \u03b2_c",
+        "issue": "The proof asserts without justification that extremal Gibbs states break G-symmetry. This is false in general - extremal states could still be symmetric",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "This requires model-specific analysis and cannot be proven in general"
+      },
+      {
+        "step": "Universal scaling behavior",
+        "issue": "The proof invokes renormalization group theory without establishing that the system is in a universality class or that it flows to a non-trivial fixed point",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would require proving existence of RG fixed point and relevance of perturbations"
+      },
+      {
+        "step": "Order parameter definition",
+        "issue": "The proof assumes existence of an order parameter \u03c6 that transforms non-trivially under G but doesn't specify what 'non-trivially' means or prove such \u03c6 exists",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Define precisely what constitutes a valid order parameter and prove existence"
+      }
+    ],
+    "hidden_assumptions": [
+      "The Hamiltonian H_\u03b2 has the same functional form for all \u03b2 (only coefficients change)",
+      "The reference measure \u03bd is G-invariant",
+      "The system exhibits a second-order phase transition (not first-order)",
+      "The correlation length diverges at \u03b2_c",
+      "The system is in the thermodynamic limit throughout",
+      "Boundary conditions preserve symmetry",
+      "The configuration space \u03a9/G is well-defined and has nice properties"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes the existence of a phase transition at \u03b2_c to prove properties about the transition at \u03b2_c. The entire argument presupposes what it claims to establish.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to establish universal results for all systems with symmetry groups, but the arguments (when valid) only apply to specific classes of models with second-order transitions. Many symmetry-breaking transitions are first-order or exhibit non-universal behavior.",
+    "citation_issues": [
+      "Ruelle's theorem is cited too vaguely - specific conditions for its application aren't verified",
+      "Ergodic decomposition theorem application requires proving uniqueness issues that aren't addressed",
+      "Renormalization group theory is invoked without establishing applicability conditions",
+      "Scaling hypothesis is assumed rather than derived"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed, attempting to prove a general result about all symmetry-breaking phase transitions without engaging with the model-specific details that determine whether such transitions exist. The argument is circular, assumes its conclusions, and makes unjustified leaps at every critical juncture.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish a general phase transition framework but fails to prove the existence of \u03b2_c or the universal scaling behavior for arbitrary systems satisfying the assumptions",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Specific model class (e.g., lattice systems, mean-field models) - universality claims require restricted model families",
+      "Dimension of the system - critical exponents depend on spatial dimension",
+      "Nature of the phase transition (continuous vs discontinuous) - Step 4 assumes discontinuous change without justification",
+      "Existence of a unique critical point \u03b2_c",
+      "Validity of renormalization group approach for the specific model class",
+      "Conditions ensuring extremal Gibbs states exist and are non-trivial",
+      "Assumptions needed for thermodynamic limit to commute with symmetry operations"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 4",
+        "issue": "Claims discontinuous change in order parameter without proving non-analyticity of free energy. The justification explicitly acknowledges this gap and notes model-dependence, contradicting the universal claims"
+      },
+      {
+        "step": "Step 6",
+        "issue": "Claims extremal states break symmetry without proof. The justification acknowledges this is model-dependent, again contradicting universality claims"
+      },
+      {
+        "step": "Step 7",
+        "issue": "Assumes renormalization group analysis applies without establishing the system is near a fixed point or that RG flow exists for this model class"
+      },
+      {
+        "step": "Step 8",
+        "issue": "States scaling relations without proving they hold for this system. Scaling hypothesis is an assumption, not a consequence of the given assumptions"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No proof that \u03b2_c exists - this is assumed rather than derived",
+      "No proof that the phase transition is continuous (required for critical exponents)",
+      "No proof that renormalization group analysis applies to the given model class",
+      "No proof that extremal Gibbs states actually break symmetry",
+      "No proof that critical exponents are universal rather than model-dependent",
+      "Missing analysis of finite-size effects and approach to thermodynamic limit",
+      "No proof that the order parameter is well-defined in the thermodynamic limit"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": false,
+    "contradiction_details": [],
+    "assumption_conflicts": [
+      "New proof assumes discontinuous order parameter change at \u03b2_c, but existing proof [087da119976b] deals with continuous symmetry breaking in similar systems",
+      "New proof assumes finite partition function for all \u03b2 > 0, which may conflict with systems in [1050c80b4013] where phase transitions involve divergent quantities",
+      "Universal scaling assumption conflicts with [06d1b829563e] which suggests thermodynamic behavior emerges from specific dynamical constraints rather than universal laws"
+    ],
+    "beneficial_connections": [
+      "Strongly connects to [1318ecd2c25c] which establishes the general framework for symmetry-breaking phase transitions with universal scaling laws",
+      "Complements [087da119976b] by providing specific conditions for spontaneous symmetry breaking in statistical mechanical systems",
+      "Extends [08b6405556dd] by showing how symmetry principles manifest in thermodynamic phase transitions",
+      "Relates to [14e1952bf633] through the emergence of macroscopic order from microscopic statistical mechanics",
+      "Connects to [148d85f6c7b4] through universal scaling behavior and power laws near critical points"
+    ],
+    "consistency_score": 0.75,
+    "notes": "The proof is largely consistent with the corpus but makes strong assumptions about universality that may not hold in all physical systems. The discontinuous nature of the transition claimed conflicts with some continuous symmetry breaking scenarios in existing proofs. The mathematical framework is sound but the physical universality claims are overstated."
+  },
+  "confidence_score": 0.32249999999999995,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.75,
+    "calibration": 0.29999999999999993
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.75,
+    "calibration": 0.29999999999999993
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A fully rigorous proof requires: (1) General theorems connecting non-analyticity of free energy to symmetry breaking that work for all models, not case-by-case; (2) Mathematical framework for renormalization group that doesn't rely on physical intuition; (3) Rigorous derivation of universality from first principles without perturbative assumptions",
+  "limitations": [
+    "Step 4: Proving existence of phase transition (non-analyticity of f(\u03b2)) requires model-specific analysis",
+    "Step 6: Showing extremal states break symmetry requires proving \u27e8\u03c6\u27e9 \u2260 0 in these states",
+    "Connection between symmetry breaking and emergence of macroscopic order not fully formalized",
+    "Rigorous non-perturbative proof of universality still incomplete for general systems",
+    "Proof sketch rather than complete proof due to model-dependence",
+    "Universality arguments rely on renormalization group which lacks fully rigorous mathematical foundation",
+    "Assumes classical statistical mechanics; quantum phase transitions require different framework",
+    "Limited to equilibrium phase transitions; non-equilibrium transitions need different approach"
+  ],
+  "source_convergence": {
+    "structural_claim": "Phase transitions represent symmetry-breaking events where macroscopic order emerges through collective behavior, governed by universal principles that transcend microscopic details",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Landau Theory of Phase Transitions",
+        "domain_id": "field_a",
+        "domain_name": "Thermodynamics and Statistical Mechanics",
+        "link_type": "direct",
+        "structural_conclusion": "Phase transitions are fundamentally symmetry-breaking events where order parameters emerge"
+      },
+      {
+        "result_id": "",
+        "result_name": "Renormalization Group Theory",
+        "domain_id": "field_a",
+        "domain_name": "Thermodynamics and Statistical Mechanics",
+        "link_type": "direct",
+        "structural_conclusion": "Near phase transitions, microscopic details become irrelevant and systems organize into universal classes"
+      },
+      {
+        "result_id": "",
+        "result_name": "Bose-Einstein Condensation in Dilute Gases",
+        "domain_id": "field_b",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Below a critical temperature, bosonic atoms undergo a phase transition where macroscopic order emerges through collective quantum behavior"
+      }
+    ],
+    "domains": [
+      "thermodynamics",
+      "atomic_physics"
+    ],
+    "domain_names": [
+      "Thermodynamics and Statistical Mechanics",
+      "Atomic and Molecular Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.357,
+      "independence": 0.7,
+      "adversarial": 0.3,
+      "reproducibility": 0.5249999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.5208499999999999,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:15:14.261351+00:00",
+    "id": "972e8755e315"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.29644499999999996
+  }
+}

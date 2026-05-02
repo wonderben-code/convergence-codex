@@ -1,0 +1,15 @@
+{
+  "proof_id": "d61383e977fe",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A unified categorical framework for scale transformations across different physical domains that rigorously captures the notion of 'integrating out' degrees of freedom in both quantum and classical contexts",
+    "Difficulty assessed as challenging",
+    "10 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

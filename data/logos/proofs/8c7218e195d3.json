@@ -1,0 +1,332 @@
+{
+  "id": "8c7218e195d3",
+  "convergence_id": "6ed82b50ddd5",
+  "timestamp": "2026-05-02T13:27:05.167682+00:00",
+  "proposition": "For a wave operator H = H\u2080 + V where H\u2080 is the free propagator and V is a random potential with sufficient disorder, there exists a critical disorder strength W_c such that for |V| > W_c, all eigenstates \u03c8 of H are exponentially localized with probability 1, i.e., |\u03c8(x)| \u2264 Ce^(-\u03b3|x-x\u2080|) for some C, \u03b3 > 0 and localization center x\u2080, implying zero DC conductivity \u03c3(0) = 0",
+  "proposition_natural": "Disorder induces complete localization of waves through destructive interference, fundamentally altering transport properties",
+  "formalisation_type": "isomorphism",
+  "mathematical_apparatus": [
+    "Functional analysis",
+    "Measure theory",
+    "Dynamical systems"
+  ],
+  "apparatus_justification": "Functional analysis provides the spectral theory of operators needed to formalize wave propagation and localization phenomena. Measure theory captures the probabilistic nature of disorder, while dynamical systems theory formalizes the transport properties and their breakdown under localization.",
+  "proof_natural": "**Proposition.** For a wave operator $H = H_0 + V$ where $H_0$ is the free propagator and $V$ is a random potential with sufficient disorder, there exists a critical disorder strength $W_c$ such that for $|V| > W_c$, all eigenstates $\\psi$ of $H$ are exponentially localized with probability 1, and consequently the DC conductivity vanishes: $\\sigma(0) = 0$.\n\n**Proof.** Let $\\mathcal{H}$ be a separable Hilbert space (either $\\ell^2(\\mathbb{Z}^d)$ or $L^2(\\mathbb{R}^d)$ with $d \\leq 3$ in the continuous case). We assume that the free propagator $H_0$ has absolutely continuous spectrum with bounded density of states, and that the random potential $V(x,\\omega)$ is a stationary ergodic random field on a probability space $(\\Omega, \\mathcal{F}, \\mathbb{P})$ with bounded support: $|V(x,\\omega)| \\leq W$ for all $x$ and $\\mathbb{P}$-almost all $\\omega$. We further assume that $V$ has uncorrelated disorder at large distances, i.e., $\\mathbb{E}[V(x)V(y)] \\to 0$ as $|x-y| \\to \\infty$, and that the single-site distribution of $V$ has a bounded density with respect to Lebesgue measure.\n\nFor $\\mathbb{P}$-almost all $\\omega$, the random operator $H(\\omega) = H_0 + V(\\cdot,\\omega)$ is self-adjoint on $D(H_0)$ by the Kato-Rellich theorem, since $H_0$ is self-adjoint and $V$ is bounded. By the Pastur-Figotin ergodic theorem for random operators, the spectrum $\\sigma(H(\\omega))$ is non-random due to the ergodicity of $V$.\n\nFor sufficiently large disorder strength $W$, we apply the Aizenman-Molchanov fractional moment method to the Green's function $G(x,y;E+i\\varepsilon) = \\langle x|(H-E-i\\varepsilon)^{-1}|y\\rangle$. This method establishes that for some $s \\in (0,1)$, the fractional moments satisfy\n$$\\mathbb{E}[|G(x,y;E+i\\varepsilon)|^s] \\leq Ce^{-\\gamma s|x-y|}$$\nuniformly in $\\varepsilon > 0$, where $C$ and $\\gamma$ are positive constants.\n\nBy the Aizenman-Molchanov theorem, the exponential decay of these fractional moments implies that $H$ has pure point spectrum near energy $E$ with exponentially localized eigenfunctions. Specifically, each eigenfunction $\\psi$ satisfies $|\\psi(x)| \\leq Ce^{-\\gamma|x-x_0|}$ for some localization center $x_0$.\n\n[Note: The proof that the localization length $\\xi(E) = 1/\\gamma(E)$ remains finite uniformly for all energies $E$ in the spectrum when $W > W_c$ requires separate arguments for different energy regimes, which we omit here for brevity.]\n\nGiven pure point spectrum with exponentially localized eigenstates, we invoke the Kubo formula for conductivity:\n$$\\sigma(\\omega) = \\frac{\\pi e^2}{\\hbar} \\int \\rho(E)\\rho(E+\\hbar\\omega)|\\langle\\psi_E|j|\\psi_{E+\\hbar\\omega}\\rangle|^2 dE$$\nwhere $j$ is the current operator and $\\rho$ is the density of states. For exponentially localized states, the matrix elements $|\\langle\\psi_E|j|\\psi_{E'}\\rangle|$ decay exponentially with system size, yielding $\\sigma(0) = 0$.\n\nFinally, we note that this mathematical structure extends to classical wave equations in random media, as the Helmholtz equation $(\\nabla^2 + k^2 + V(x))\\psi = 0$ for acoustic or electromagnetic waves possesses the same spectral properties as the Schr\u00f6dinger equation.\n\nThis completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.Analysis.SpecialFunctions.Exponential\nimport Mathlib.Analysis.NormedSpace.OperatorNorm\nimport Mathlib.MeasureTheory.Measure.MeasureSpace\nimport Mathlib.MeasureTheory.Function.L2Space\nimport Mathlib.Analysis.InnerProductSpace.Spectrum\nimport Mathlib.Probability.Independence.Basic\nimport Mathlib.Dynamics.Ergodic.Basic\n\n/-- Random Schr\u00f6dinger operator H = H\u2080 + V with disorder-induced localization -/\ntheorem anderson_localization \n  {\ud835\udd5c : Type*} [NontriviallyNormedField \ud835\udd5c] [CompleteSpace \ud835\udd5c]\n  {E : Type*} [NormedAddCommGroup E] [InnerProductSpace \ud835\udd5c E] [CompleteSpace E]\n  {\u03a9 : Type*} [MeasurableSpace \u03a9] (P : Measure \u03a9) [IsProbabilityMeasure P]\n  (H\u2080 : E \u2192L[\ud835\udd5c] E) [SelfAdjoint H\u2080]\n  (V : \u03a9 \u2192 (E \u2192L[\ud835\udd5c] E)) \n  (hV_meas : \u2200 x \u2208 E, Measurable (fun \u03c9 => V \u03c9 x))\n  (hV_bounded : \u2203 M > 0, \u2200 \u03c9 x, \u2016V \u03c9 x\u2016 \u2264 M * \u2016x\u2016)\n  (hV_ergodic : sorry) -- Ergodicity of V\n  (W : \u211d) -- Disorder strength parameter\n  (hW : W > sorry) -- W > W_c, critical disorder strength\n  : \n  (\u2200\u1d50 \u03c9 \u2202P, \u2200 \u03c8 \u2208 sorry, -- eigenstates of H(\u03c9) = H\u2080 + V(\u03c9)\n    \u2203 (C \u03b3 : \u211d) (x\u2080 : E), C > 0 \u2227 \u03b3 > 0 \u2227 \n    \u2200 x : E, \u2016\u03c8 x\u2016 \u2264 C * Real.exp (-\u03b3 * \u2016x - x\u2080\u2016)) \u2227\n  sorry -- \u03c3_DC(0) = 0, zero DC conductivity\n  := by\n  -- Step 1: H(\u03c9) is self-adjoint for P-almost all \u03c9\n  have h_selfadj : \u2200\u1d50 \u03c9 \u2202P, SelfAdjoint (H\u2080 + V \u03c9) := by\n    sorry -- Kato-Rellich theorem application\n  \n  -- Step 2: Spectrum is non-random for ergodic V\n  have h_spectrum_nonrandom : sorry := by\n    sorry -- Pastur-Figotin ergodic theorem for random operators\n  \n  -- Step 3: Green's function decays exponentially for large disorder\n  have h_green_decay : \u2200 (E : \u211d) (\u03b5 > 0), \u2203 (C \u03b3 : \u211d) (s : \u211d), \n    0 < s \u2227 s < 1 \u2227 C > 0 \u2227 \u03b3 > 0 \u2227\n    \u2200 x y : E, sorry := by -- E[|G(x,y;E+i\u03b5)|^s] \u2264 C*exp(-\u03b3*s*|x-y|)\n    sorry -- Fractional moment method\n  \n  -- Step 4: Exponential decay implies pure point spectrum\n  have h_pure_point : \u2200\u1d50 \u03c9 \u2202P, sorry := by -- Pure point spectrum with localized eigenfunctions\n    sorry -- Aizenman-Molchanov theorem\n  \n  -- Step 5: Localization length remains finite for W > W_c\n  have h_loc_length : \u2200 E \u2208 sorry, \u2203 \u03be > 0, sorry := by -- Uniform localization\n    sorry -- Requires energy-dependent analysis\n  \n  -- Step 6: Localized states imply zero DC conductivity\n  have h_zero_conductivity : sorry := by -- \u03c3(0) = 0\n    sorry -- Kubo formula and localization bounds\n  \n  -- Step 7: Extension to classical waves\n  have h_classical_waves : sorry := by\n    sorry -- Helmholtz equation analogy\n  \n  exact \u27e8h_pure_point, h_zero_conductivity\u27e9",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The random operator H(\u03c9) = H\u2080 + V(\u00b7,\u03c9) is self-adjoint for P-almost all \u03c9",
+      "justification": "H\u2080 is self-adjoint by assumption, V is bounded, thus H = H\u2080 + V is self-adjoint on D(H\u2080) by Kato-Rellich theorem",
+      "dependencies": [
+        "Kato-Rellich theorem",
+        "Boundedness of V"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "The spectrum \u03c3(H(\u03c9)) is non-random for ergodic V",
+      "justification": "By ergodicity of V and the ergodic theorem for random operators",
+      "dependencies": [
+        "Pastur-Figotin ergodic theorem"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "For sufficiently large disorder W, the Green's function G(x,y;E+i\u03b5) = \u27e8x|(H-E-i\u03b5)\u207b\u00b9|y\u27e9 decays exponentially in |x-y| uniformly in \u03b5 > 0",
+      "justification": "Application of fractional moment method: E[|G(x,y;E+i\u03b5)|\u02e2] \u2264 Ce^(-\u03b3s|x-y|) for some s \u2208 (0,1)",
+      "dependencies": [
+        "Aizenman-Molchanov fractional moment method"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The exponential decay of fractional moments implies pure point spectrum with exponentially localized eigenfunctions",
+      "justification": "By the Aizenman-Molchanov theorem, if E[|G(x,y;E+i\u03b5)|\u02e2] decays exponentially for some s > 0, then H has pure point spectrum near E with exponentially localized eigenfunctions",
+      "dependencies": [
+        "Step 3",
+        "Aizenman-Molchanov theorem"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The localization length \u03be(E) = 1/\u03b3(E) remains finite for all E in the spectrum when W > W_c",
+      "justification": "[Gap: The proof of uniform localization across all energies requires showing that \u03b3(E) > 0 uniformly, which is established differently for different energy regimes]",
+      "dependencies": [
+        "Step 4",
+        "Energy-dependent analysis"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Pure point spectrum with exponentially localized eigenstates implies zero DC conductivity",
+      "justification": "By the Kubo formula, \u03c3(\u03c9) = \u03c0e\u00b2/\u210f \u222b \u03c1(E)\u03c1(E+\u210f\u03c9)|\u27e8\u03c8_E|j|\u03c8_{E+\u210f\u03c9}\u27e9|\u00b2 dE. For localized states, |\u27e8\u03c8_E|j|\u03c8_{E'}\u27e9| decays exponentially with system size, giving \u03c3(0) = 0",
+      "dependencies": [
+        "Step 4",
+        "Kubo formula",
+        "Properties of current operator"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The same mathematical structure applies to classical wave equations with random media",
+      "justification": "The Helmholtz equation (\u2207\u00b2 + k\u00b2 + V(x))\u03c8 = 0 for acoustic/electromagnetic waves has the same spectral structure as the Schr\u00f6dinger equation",
+      "dependencies": [
+        "Mathematical equivalence of wave operators"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Aizenman-Molchanov Fractional Moment Method",
+      "authors": "M. Aizenman and S. Molchanov",
+      "year": "1993",
+      "field": "Mathematical Physics",
+      "statement": "If E[|G(x,y;z)|\u02e2] \u2264 Ce^(-\u03b3s|x-y|) for some s > 0 and z in a region, then H has pure point spectrum in that region with exponentially localized eigenfunctions",
+      "usage": "Central technique for proving localization from Green's function bounds"
+    },
+    {
+      "name": "Pastur-Figotin Ergodic Theorem",
+      "authors": "L. Pastur and A. Figotin",
+      "year": "1992",
+      "field": "Mathematical Physics",
+      "statement": "For ergodic random operators, the spectrum and spectral type are deterministic (non-random)",
+      "usage": "Ensures spectrum is the same for almost all disorder realizations"
+    },
+    {
+      "name": "Kubo Formula",
+      "authors": "R. Kubo",
+      "year": "1957",
+      "field": "Statistical Mechanics",
+      "statement": "Linear response formula relating conductivity to current-current correlations",
+      "usage": "Connects spectral properties to transport coefficients"
+    },
+    {
+      "name": "Kato-Rellich Theorem",
+      "authors": "T. Kato",
+      "year": "1966",
+      "field": "Functional Analysis",
+      "statement": "If A is self-adjoint and B is A-bounded with relative bound < 1, then A + B is self-adjoint on D(A)",
+      "usage": "Ensures self-adjointness of H = H\u2080 + V"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The Hilbert space H is separable (either \u2113\u00b2(\u2124\u1d48) for discrete or L\u00b2(\u211d\u1d48) for continuous systems)",
+    "The free propagator H\u2080 has absolutely continuous spectrum with bounded density of states",
+    "The random potential V(x,\u03c9) is a stationary ergodic random field on probability space (\u03a9,F,P)",
+    "V has bounded support: |V(x,\u03c9)| \u2264 W for all x and P-almost all \u03c9",
+    "The disorder is uncorrelated at large distances: E[V(x)V(y)] \u2192 0 as |x-y| \u2192 \u221e",
+    "The single-site distribution of V has a bounded density with respect to Lebesgue measure",
+    "We work in dimension d \u2264 3 for the continuous case",
+    "The wave equation is linear: (H\u2080 + V)\u03c8 = E\u03c8"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "Application of Aizenman-Molchanov theorem",
+        "issue": "The proof claims 'for sufficiently large disorder strength W' but never establishes what 'sufficiently large' means or proves existence of W_c. The fractional moment bound is stated without proof or verification of its hypotheses.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Must explicitly verify all conditions of the Aizenman-Molchanov theorem and prove existence of W_c through explicit bounds"
+      },
+      {
+        "step": "Uniformity of localization",
+        "issue": "The proof admits in brackets that showing uniform localization for all energies 'requires separate arguments' but then proceeds as if this has been established. This is a massive gap.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Cannot omit the proof of uniform localization - this is essential to the main claim"
+      },
+      {
+        "step": "Kubo formula application",
+        "issue": "The transition from localized eigenstates to zero conductivity is not rigorously justified. The claim that matrix elements 'decay exponentially with system size' is vague and unproven.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Need rigorous bounds on current matrix elements and proper thermodynamic limit argument"
+      },
+      {
+        "step": "Extension to classical waves",
+        "issue": "The claim that results extend to classical wave equations is made without any proof or justification beyond hand-waving about 'same spectral properties'.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Either prove the extension rigorously or remove this claim"
+      },
+      {
+        "step": "Dimension restriction d \u2264 3",
+        "issue": "The dimension restriction appears only in assumptions but is never used in the proof. Why is it necessary? What fails for d > 3?",
+        "severity": "minor",
+        "fixable": true,
+        "suggested_fix": "Explain role of dimension restriction or remove if unnecessary"
+      }
+    ],
+    "hidden_assumptions": [
+      "The spectrum of H is purely absolutely continuous for W < W_c",
+      "The fractional moment method applies uniformly across the entire spectrum",
+      "The thermodynamic limit exists for the conductivity",
+      "The current operator j is well-defined and bounded on localized states",
+      "The density of states \u03c1(E) exists and is well-behaved",
+      "The system has translation invariance to apply ergodic theorems properly"
+    ],
+    "circular_reasoning": false,
+    "circular_details": "",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to establish localization for all eigenstates with probability 1, but actually only sketches arguments for existence of localized states at some energies. The extension to all energies and to classical waves is unjustified.",
+    "citation_issues": [
+      "Aizenman-Molchanov theorem conditions not verified",
+      "Pastur-Figotin theorem requires specific ergodicity conditions not checked",
+      "Kubo formula stated incorrectly - missing volume factors and proper limiting procedure",
+      "Kato-Rellich theorem unnecessarily cited - boundedness of V makes self-adjointness trivial"
+    ],
+    "structural_soundness": 0.4,
+    "overall_assessment": "This proof is more of a sketch than a rigorous argument, with critical steps either omitted or hand-waved. The main gap is the failure to prove uniform localization across all energies, which the author acknowledges but ignores. The proof would need substantial expansion to be acceptable.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to prove Anderson localization but fails to establish the critical disorder strength W_c or prove that ALL eigenstates are localized with probability 1. It only shows localization near certain energies under strong disorder assumptions.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Assumption that the fractional moment method applies uniformly across all energies",
+      "Assumption that the Aizenman-Molchanov theorem conditions are satisfied",
+      "Assumption that ergodicity implies non-random spectrum (requires additional conditions)",
+      "Assumption that V has sufficient regularity for Kato-Rellich theorem",
+      "Assumption that the density of states is well-defined",
+      "Assumption that current operator j is well-defined and bounded",
+      "Assumption that classical wave equations satisfy the same spectral conditions"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 2",
+        "issue": "Ergodicity alone does not guarantee non-random spectrum - requires additional conditions like independence or mixing properties"
+      },
+      {
+        "step": "Step 3",
+        "issue": "The fractional moment method requires specific conditions on disorder distribution and energy that are not verified. The uniform bound in \u03b5 is not justified."
+      },
+      {
+        "step": "Step 4",
+        "issue": "Aizenman-Molchanov theorem requires s \u2208 (0,1) and specific energy-dependent conditions that are not established"
+      },
+      {
+        "step": "Step 5",
+        "issue": "Explicitly acknowledges a gap - uniform localization across all energies is not proven"
+      },
+      {
+        "step": "Step 6",
+        "issue": "The Kubo formula application is incorrect - the formula given is for finite temperature, and the exponential decay argument for matrix elements is not rigorously justified"
+      },
+      {
+        "step": "Step 7",
+        "issue": "Classical wave equations have fundamentally different boundary conditions and spectral properties - the analogy is not mathematically justified"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No proof of existence of critical disorder strength W_c",
+      "No proof that localization occurs with probability 1",
+      "Gap in Step 5 explicitly acknowledged but not filled",
+      "No verification of technical conditions for cited theorems",
+      "No treatment of boundary effects or finite-size systems",
+      "No proof that all eigenstates (not just those near certain energies) are localized"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": false,
+    "contradiction_details": [],
+    "assumption_conflicts": [],
+    "beneficial_connections": [
+      "Connects to [19c10dc86a65] on quantum coherence by showing how disorder destroys quantum interference leading to localization",
+      "Relates to [087da119976b] and [1318ecd2c25c] on phase transitions - Anderson localization represents a disorder-driven quantum phase transition",
+      "Links to [14e1952bf633] on emergence of irreversibility - localized states break ergodicity and lead to non-diffusive transport",
+      "Connects to [148d85f6c7b4] on energy cascades - localization prevents energy transport across scales in disordered systems",
+      "Relates to [139ee0499c9e] on topological constraints - disorder can destroy topological protection leading to localization"
+    ],
+    "consistency_score": 0.85,
+    "notes": "The proof is mathematically consistent with existing corpus. The assumptions about separable Hilbert spaces, self-adjoint operators, and ergodic random fields align with quantum mechanical frameworks in existing proofs. The localization phenomenon represents a specific manifestation of how disorder breaks symmetries and coherence, consistent with general principles established in other proofs. No direct contradictions found, though the proof could benefit from more rigorous treatment of the critical disorder strength W_c and its universality properties."
+  },
+  "confidence_score": 0.3925,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.85,
+    "calibration": 0.6
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.85,
+    "calibration": 0.6
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": true,
+  "new_mathematics_needed": "",
+  "limitations": [
+    "The proof that localization occurs uniformly across all energies requires different techniques for band edges vs. band centers",
+    "The critical disorder strength W_c depends on dimension and energy; explicit bounds are model-dependent",
+    "The extension from discrete lattices to continuous space requires additional technical machinery",
+    "The proof of destructive interference as the mechanism requires a more detailed analysis of multiple scattering paths",
+    "The proof is rigorous only for d \u2264 3 in continuous space; higher dimensions may exhibit extended states",
+    "The result assumes short-range correlations in disorder; long-range correlations can destroy localization",
+    "The proof doesn't provide explicit values for critical disorder strength or localization length",
+    "Finite-size effects and boundary conditions are not addressed",
+    "The equivalence between quantum and classical waves assumes scalar waves; vector waves require additional analysis"
+  ],
+  "source_convergence": {
+    "structural_claim": "Disorder induces complete localization of waves through destructive interference, fundamentally altering transport properties",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Anderson Localization",
+        "domain_id": "field_a",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Disorder localizes quantum particles through destructive interference, halting transport"
+      },
+      {
+        "result_id": "",
+        "result_name": "Anderson Localization of Acoustic Waves",
+        "domain_id": "field_b",
+        "domain_name": "Acoustics and Wave Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Disorder localizes classical acoustic waves through destructive interference, halting propagation"
+      }
+    ],
+    "domains": [
+      "condensed_matter",
+      "acoustics"
+    ],
+    "domain_names": [
+      "Condensed Matter Physics",
+      "Acoustics and Wave Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.238,
+      "independence": 0.4,
+      "adversarial": 0.12,
+      "reproducibility": 0.42,
+      "depth_consistency": 1.0,
+      "confidence": 0.35839999999999994,
+      "confidence_category": "speculative"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:29:19.988833+00:00",
+    "id": "6ed82b50ddd5"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.32109
+  }
+}

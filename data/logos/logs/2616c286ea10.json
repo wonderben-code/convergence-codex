@@ -1,0 +1,38 @@
+{
+  "proof_id": "2616c286ea10",
+  "timestamp": "2026-05-02T13:46:22.960726+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "equivalence - This could capture structural correspondence between curvature-driven instabilities, but the domains are too physically distinct for a functorial relationship to be natural or illuminating"
+      ],
+      "reasoning": "The convergence identifies a shared abstract principle across both domains: that geometric curvature fundamentally determines stability boundaries and drives instabilities. This is best captured by axiomatizing the relationship between curvature, stability, and dynamics that both Einstein's field equations and plasma MHD theory satisfy as different models."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Differential geometry, Dynamical systems",
+      "alternatives_considered": [],
+      "reasoning": "Differential geometry provides the rigorous framework for curvature (Riemann tensor, sectional curvature) and geometric structures on manifolds needed for both GR and plasma configurations. Dynamical systems theory supplies the formal machinery for stability analysis, bifurcations, and instability boundaries."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof establishes that dynamical systems on curved spaces can be analyzed via variational principles, where stability is determined by the spectrum of the Hessian operator at equilibrium. The key insight is that this Hessian necessarily contains curvature terms arising from covariant derivatives, creating a fundamental coupling between geometry and dynamics. While the general principle is demonstrated, the specific curvature-stability relationships remain system-dependent.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 9 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3675 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 4782 chars, 19 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This formalization attempts to capture the abstract structure of the theorem but requires significant development of infinite-dimensional differential geometry, variational calculus on manifolds, and stability theory. The connection between sectional curvature and dynamical stability is particularly challenging to formalize without specific physical context."
+    }
+  ]
+}

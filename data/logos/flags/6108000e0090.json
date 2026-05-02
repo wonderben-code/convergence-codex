@@ -1,0 +1,13 @@
+{
+  "proof_id": "6108000e0090",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: Rigorous mathematical framework for time-reversal operators in infinite-dimensional spaces, precise conditions for convergence of transport integrals, and mathematical formalization of causality constraints on response functions",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

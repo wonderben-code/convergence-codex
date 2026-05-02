@@ -1,0 +1,15 @@
+{
+  "proof_id": "e30dfb046c31",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A general framework connecting arbitrary topological invariants to Hilbert space dimensions and proving their stability under all perturbations preserving the gap. Current results are case-by-case (Chern numbers, Z\u2082 invariants, etc.)",
+    "Difficulty assessed as challenging",
+    "7 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

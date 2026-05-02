@@ -1,0 +1,15 @@
+{
+  "proof_id": "2cc2431e06a6",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous categorical framework for phase transitions in quantum field theory that can handle non-analytic behavior at critical points and prove general existence of bifurcation functors",
+    "Difficulty assessed as challenging",
+    "7 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

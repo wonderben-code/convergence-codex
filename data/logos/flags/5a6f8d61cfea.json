@@ -1,0 +1,13 @@
+{
+  "proof_id": "5a6f8d61cfea",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A unified framework connecting: (1) Modulation theory for tracking soliton parameters under perturbations, (2) Rigorous asymptotic analysis of multi-soliton interactions beyond integrable cases, (3) Quantitative stability estimates bridging spectral analysis and nonlinear dynamics, (4) Extension of concentration compactness to gauge-invariant functionals",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

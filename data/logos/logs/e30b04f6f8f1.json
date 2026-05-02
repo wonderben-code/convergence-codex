@@ -1,0 +1,38 @@
+{
+  "proof_id": "e30b04f6f8f1",
+  "timestamp": "2026-05-02T12:38:19.566431+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "categorical",
+      "alternatives_considered": [
+        "axiomatic - One could axiomatize properties of gauge theories with redundancy, but the categorical approach better captures the functorial relationships between physical observables, gauge-fixed theories, and the auxiliary structures needed for consistency."
+      ],
+      "reasoning": "The convergence describes a universal pattern across gauge theories where unphysical degrees of freedom play an essential structural role. This is best captured by identifying the categorical structure of gauge redundancy, where both QFT and quantum gravity exhibit the same abstract pattern of introducing auxiliary structures to handle quotients by gauge symmetries."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Category theory, Differential geometry, Algebraic structures",
+      "alternatives_considered": [],
+      "reasoning": "Category theory provides the natural framework for formalizing gauge redundancy as morphisms between equivalent physical descriptions, with gauge transformations as natural isomorphisms. Differential geometry is essential for the fiber bundle structure of gauge theories, while algebraic structures (particularly groups and Lie algebras) characterize the gauge symmetries themselves."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof establishes that gauge theories have quotient spaces A/G with singularities requiring gauge-fixing for quantization. This gauge-fixing introduces Faddeev-Popov ghosts as unphysical fields necessary for maintaining unitarity through BRST cohomology, showing that any consistent quantization functor must include these auxiliary degrees of freedom.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 15 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3862 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 5280 chars, 23 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This formalization captures the categorical structure and main theorem statement, but most gauge theory concepts (BRST quantization, Faddeev-Popov ghosts, path integrals, etc.) are not available in Mathlib. The proof structure follows the original steps but relies heavily on sorry for domain-specific concepts."
+    }
+  ]
+}

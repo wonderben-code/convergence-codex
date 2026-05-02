@@ -1,0 +1,38 @@
+{
+  "proof_id": "86627f739493",
+  "timestamp": "2026-05-02T12:43:24.917673+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "constraint_logic",
+      "alternatives_considered": [
+        "categorical - One could frame this as a functor from symmetry groups to discrete spectra, but this would miss the essential role of boundary conditions and conservation laws as constraints that generate the discrete structure"
+      ],
+      "reasoning": "The convergence describes how discrete structures (quantum states, transitions) emerge from continuous symmetries subject to boundary conditions and conservation laws. This is fundamentally about how constraints on continuous systems create discrete solutions, making constraint logic the natural framework for capturing this emergence pattern."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Functional analysis, Differential geometry, Algebraic structures",
+      "alternatives_considered": [],
+      "reasoning": "Functional analysis provides the spectral theory of operators on Hilbert spaces needed to formalize quantum states and observables. Differential geometry captures the continuous symmetries as Lie groups acting on manifolds. Algebraic structures (specifically representation theory) connect symmetry groups to conservation laws via Noether's theorem."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "Continuous symmetries imply conserved generators that commute with the Hamiltonian. This shared symmetry forces eigenstates to transform under irreducible representations of the symmetry group. The discreteness emerges from boundary conditions creating a compact resolvent, while selection rules follow from group-theoretic constraints on matrix elements between irreducible representations.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 10 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3491 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 3145 chars, 13 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This proof requires substantial representation theory infrastructure not currently in Mathlib, including Peter-Weyl theorem, Wigner-Eckart theorem, and Clebsch-Gordan coefficients. The basic Hilbert space and operator theory is available, but the Lie group representation theory is largely missing."
+    }
+  ]
+}

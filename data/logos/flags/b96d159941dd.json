@@ -1,0 +1,13 @@
+{
+  "proof_id": "b96d159941dd",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: Rigorous mathematical framework connecting: (1) symmetry breaking in infinite-dimensional field spaces to finite-dimensional Lie group quotients, (2) representation theory of broken symmetries to measurable physics, (3) classical symmetry breaking to quantum vacuum structure",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

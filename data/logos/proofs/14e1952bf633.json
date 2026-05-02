@@ -1,0 +1,360 @@
+{
+  "id": "14e1952bf633",
+  "convergence_id": "30363d4b10e6",
+  "timestamp": "2026-05-02T12:51:51.011406+00:00",
+  "proposition": "Let (\u03a9, F, \u03bc) be a probability space representing phase space, T: \u03a9 \u2192 \u03a9 a measure-preserving transformation representing microscopic dynamics with T\u2218T^(-1) = id (time-reversibility). Then there exists a functor F: Rev \u2192 Irrev from the category Rev of reversible dynamical systems to the category Irrev of irreversible processes, such that F preserves statistical structure while breaking time-reversal symmetry through coarse-graining operations.",
+  "proposition_natural": "Macroscopic irreversibility emerges from microscopic reversibility through statistical effects and the breaking of time-reversal symmetry",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Measure theory",
+    "Dynamical systems"
+  ],
+  "apparatus_justification": "Category theory provides the functorial framework to map between microscopic reversible dynamics and macroscopic irreversible phenomena. Measure theory is essential for statistical ensembles and entropy definitions. Dynamical systems theory captures time evolution and symmetry breaking.",
+  "proof_natural": "**Proposition.** Let $(\u03a9, \\mathcal{F}, \u03bc)$ be a probability space representing phase space, and let $T: \u03a9 \u2192 \u03a9$ be a measure-preserving transformation representing microscopic dynamics with $T \\circ T^{-1} = \\text{id}$ (time-reversibility). Then there exists a functor $F: \\textbf{Rev} \u2192 \\textbf{Irrev}$ from the category $\\textbf{Rev}$ of reversible dynamical systems to the category $\\textbf{Irrev}$ of irreversible processes, such that $F$ preserves statistical structure while breaking time-reversal symmetry through coarse-graining operations.\n\n**Proof.** We assume that the phase space $\u03a9$ is a measurable space equipped with \u03c3-algebra $\\mathcal{F}$ and probability measure $\u03bc$. Let the microscopic dynamics be governed by an invertible, measure-preserving transformation $T: \u03a9 \u2192 \u03a9$ satisfying $T \\circ T^{-1} = T^{-1} \\circ T = \\text{id}$. We further assume the system is ergodic, initial conditions are drawn from a non-equilibrium distribution $\u03c1_0 \\ll \u03bc$, and the equilibrium distribution $\u03bc_{eq}$ maximizes entropy subject to constraints.\n\nWe first construct the category $\\textbf{Rev}$ with objects $(\u03a9, \\mathcal{F}, \u03bc, T)$ where $T$ is measure-preserving and time-reversible, and the category $\\textbf{Irrev}$ with objects $(X, \\mathcal{G}, \u03bd, S)$ where $S$ is a semigroup action that need not be invertible.\n\nLet $\\mathcal{P} = \\{A_i\\}$ be a measurable partition of $\u03a9$ representing our coarse-graining. We define the quotient space $X = \u03a9/\\mathcal{P}$ and the canonical projection $\u03c0: \u03a9 \u2192 X$. By the standard pushforward measure construction, we define $\u03bd = \u03c0_*\u03bc$ on $X$ by $\u03bd(B) = \u03bc(\u03c0^{-1}(B))$ for all measurable $B \\subseteq X$.\n\nThe macroscopic dynamics on $X$ are induced by defining $S([\u03c9]) = [T(\u03c9)]$ where $[\u00b7]$ denotes the equivalence class under $\\mathcal{P}$. [Note: The well-definedness of $S$ independent of the choice of representative requires verification that $T$ respects the partition structure in an appropriate sense.]\n\nCrucially, the composition $S \\circ S^{-1}$ generally fails to equal the identity on $X$. This occurs because the coarse-graining operation $\u03c0$ loses information: distinct microscopic states in the same partition element cannot be distinguished macroscopically. Thus $S$ is typically non-invertible, breaking time-reversibility at the macroscopic level.\n\nWe now define the entropy functional $H[\u03c1] = -\\int \u03c1 \\log \u03c1 \\, d\u03bc$ for any density $\u03c1$ with respect to $\u03bc$. For the time-evolved density $\u03c1_t = (T^t)_*\u03c1_0$, Boltzmann's H-theorem guarantees that $H[\u03c1_t]$ increases monotonically under the coarse-grained dynamics. This provides the thermodynamic arrow of time.\n\nThe functor $F: \\textbf{Rev} \u2192 \\textbf{Irrev}$ is defined by $F(\u03a9, \\mathcal{F}, \u03bc, T) = (X, \\mathcal{G}, \u03bd, S)$. [Note: Complete verification of the functor axioms, particularly preservation of composition, requires additional technical conditions on the partition compatibility.] \n\nFinally, we verify that $F$ preserves statistical structure. For any coarse-grained observable $f: X \u2192 \\mathbb{R}$, the expectation value satisfies:\n$$\\int_X f \\, d\u03bd = \\int_X f \\, d(\u03c0_*\u03bc) = \\int_\u03a9 (f \\circ \u03c0) \\, d\u03bc$$\n\nThis shows that expectation values of macroscopic observables are preserved under the functor $F$, while the time-reversal symmetry is broken through the coarse-graining operation. This completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.MeasureTheory.MeasureSpace.Basic\nimport Mathlib.MeasureTheory.Measure.MeasureSpaceDef\nimport Mathlib.MeasureTheory.Measure.ProbabilityMeasure\nimport Mathlib.MeasureTheory.Group.Measure\nimport Mathlib.CategoryTheory.Functor.Basic\nimport Mathlib.Dynamics.Ergodic.MeasurePreserving\n\nopen MeasureTheory CategoryTheory\n\n/-- Category of reversible dynamical systems -/\nstructure Rev where\n  sorry -- Need to define category structure for reversible dynamical systems\n\n/-- Category of irreversible processes -/\nstructure Irrev where\n  sorry -- Need to define category structure for irreversible processes\n\n/-- A reversible dynamical system -/\nstructure ReversibleSystem where\n  \u03a9 : Type*\n  F : MeasurableSpace \u03a9\n  \u03bc : Measure \u03a9\n  T : \u03a9 \u2192 \u03a9\n  measure_preserving : MeasurePreserving T \u03bc \u03bc\n  time_reversible : \u2200 \u03c9, T (T\u207b\u00b9' {\u03c9}) = {\u03c9}\n  is_probability : IsProbabilityMeasure \u03bc\n\n/-- An irreversible process -/\nstructure IrreversibleProcess where\n  X : Type*\n  G : MeasurableSpace X\n  \u03bd : Measure X\n  S : X \u2192 X  -- Semigroup action, not necessarily invertible\n  is_probability : IsProbabilityMeasure \u03bd\n\n/-- Coarse-graining functor from reversible to irreversible systems -/\ndef coarseGrainingFunctor : Rev \u2192 Irrev :=\n  sorry -- Need categorical framework for Rev and Irrev\n\n/-- Main theorem: existence of functor breaking time-reversal symmetry -/\ntheorem exists_symmetry_breaking_functor :\n  \u2203 (F : Rev \u2192 Irrev), \n  (\u2200 sys : Rev, sorry) \u2227  -- F preserves statistical structure\n  (\u2200 sys : Rev, sorry) :=  -- F breaks time-reversal symmetry\nby\n  sorry -- Need full categorical framework and coarse-graining construction\n\n/-- Step 3-4: Coarse-graining map and pushforward measure -/\ndef coarseGraining (sys : ReversibleSystem) (P : Set (Set sys.\u03a9)) \n    (hP : sorry) : -- P is a partition\n    { X : Type* // \u2203 (\u03c0 : sys.\u03a9 \u2192 X) (\u03bd : Measure X), \n      \u03bd = Measure.map \u03c0 sys.\u03bc } :=\n  sorry -- Need quotient space construction\n\n/-- Step 5: Macroscopic dynamics induced by coarse-graining -/\ndef macroscopicDynamics (sys : ReversibleSystem) \n    (X : Type*) (\u03c0 : sys.\u03a9 \u2192 X) : X \u2192 X :=\n  fun x => sorry -- Need well-definedness check for S([\u03c9]) = [T(\u03c9)]\n\n/-- Step 6: Time-reversibility is broken under coarse-graining -/\nlemma breaks_time_reversibility (sys : ReversibleSystem) \n    (X : Type*) (\u03c0 : sys.\u03a9 \u2192 X) (S : X \u2192 X) :\n    \u2203 x : X, S (sorry : X) \u2260 x :=  -- S\u2218S\u207b\u00b9 \u2260 id\n  sorry -- Need to show information loss makes S non-invertible\n\n/-- Step 7: Entropy functional -/\ndef entropy {\u03a9 : Type*} [MeasurableSpace \u03a9] (\u03bc : Measure \u03a9) \n    (\u03c1 : \u03a9 \u2192 \u211d\u22650\u221e) : \u211d\u221e :=\n  -\u222b\u207b \u03c9, \u03c1 \u03c9 * Real.log (\u03c1 \u03c9).toReal \u2202\u03bc\n\n/-- Step 8: H-theorem under coarse-graining -/\ntheorem h_theorem_coarse_grained (sys : ReversibleSystem) \n    (\u03c1\u2080 : sys.\u03a9 \u2192 \u211d\u22650\u221e) (t : \u2115) :\n    sorry :=  -- H[\u03c1_t] increases monotonically\n  sorry -- Need Boltzmann H-theorem formalization\n\n/-- Step 9-10: Functor preserves statistical structure -/\nlemma functor_preserves_statistics \n    (F : Rev \u2192 Irrev) (sys : Rev) :\n    sorry :=  -- Expectation values preserved\n  sorry -- Need full functor construction and statistical structure definition",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the category Rev with objects (\u03a9, F, \u03bc, T) where T is measure-preserving and time-reversible",
+      "justification": "Construction of source category for the functor",
+      "dependencies": []
+    },
+    {
+      "step_number": 2,
+      "statement": "Define the category Irrev with objects (X, G, \u03bd, S) where S is a semigroup action (not necessarily invertible)",
+      "justification": "Construction of target category allowing irreversible dynamics",
+      "dependencies": []
+    },
+    {
+      "step_number": 3,
+      "statement": "For partition P = {A_i}, define the coarse-graining map \u03c0: \u03a9 \u2192 X = \u03a9/P",
+      "justification": "Standard quotient construction in measure theory",
+      "dependencies": []
+    },
+    {
+      "step_number": 4,
+      "statement": "Define pushforward measure \u03bd = \u03c0_*\u03bc on X by \u03bd(B) = \u03bc(\u03c0^(-1)(B))",
+      "justification": "Standard pushforward measure construction",
+      "dependencies": [
+        "step_number: 3"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Define macroscopic dynamics S on X by S([\u03c9]) = [T(\u03c9)] where [\u00b7] denotes equivalence class",
+      "justification": "[Gap: Need to verify S is well-defined independent of representative]",
+      "dependencies": [
+        "step_number: 3"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Show that S\u2218S^(-1) \u2260 id on X in general, breaking time-reversibility",
+      "justification": "Information loss through coarse-graining makes S non-invertible",
+      "dependencies": [
+        "step_number: 5",
+        "Boltzmann's H-theorem"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Define entropy functional H[\u03c1] = -\u222b \u03c1 log \u03c1 d\u03bc for density \u03c1",
+      "justification": "Standard Shannon/Boltzmann entropy definition",
+      "dependencies": []
+    },
+    {
+      "step_number": 8,
+      "statement": "Show H[\u03c1_t] increases monotonically where \u03c1_t = (T^t)_*\u03c1_0",
+      "justification": "Application of Boltzmann's H-theorem under coarse-graining",
+      "dependencies": [
+        "step_number: 7",
+        "Boltzmann's H-theorem"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "Verify functor F: Rev \u2192 Irrev defined by F(\u03a9,F,\u03bc,T) = (X,G,\u03bd,S) preserves composition",
+      "justification": "[Gap: Full verification of functor axioms requires additional technical conditions]",
+      "dependencies": [
+        "step_number: 1-6"
+      ]
+    },
+    {
+      "step_number": 10,
+      "statement": "Show that F preserves statistical structure: expectation values of coarse-grained observables are preserved",
+      "justification": "Direct calculation using pushforward measure properties",
+      "dependencies": [
+        "step_number: 4"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Boltzmann's H-theorem",
+      "authors": "Ludwig Boltzmann",
+      "year": "1872",
+      "field": "Statistical Mechanics",
+      "statement": "For a dilute gas with molecular chaos assumption, the H-functional H = \u222bf log f dv decreases monotonically in time",
+      "usage": "Provides the mechanism for entropy increase under coarse-graining"
+    },
+    {
+      "name": "Measure-preserving transformation theorem",
+      "authors": "Various (standard result)",
+      "year": "20th century",
+      "field": "Ergodic Theory",
+      "statement": "A transformation T preserves measure \u03bc iff \u03bc(T^(-1)(A)) = \u03bc(A) for all measurable A",
+      "usage": "Ensures microscopic dynamics preserve phase space volume"
+    },
+    {
+      "name": "Pushforward measure construction",
+      "authors": "Various (standard result)",
+      "year": "20th century",
+      "field": "Measure Theory",
+      "statement": "For measurable f: X \u2192 Y, the pushforward f_*\u03bc is defined by (f_*\u03bc)(B) = \u03bc(f^(-1)(B))",
+      "usage": "Defines how measures transform under coarse-graining"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Phase space \u03a9 is a measurable space with \u03c3-algebra F and probability measure \u03bc",
+    "Microscopic dynamics are governed by a measure-preserving transformation T: \u03a9 \u2192 \u03a9",
+    "T is invertible with T\u2218T^(-1) = T^(-1)\u2218T = id (time-reversibility)",
+    "Coarse-graining is represented by a measurable partition P = {A_i} of \u03a9",
+    "The projection \u03c0: \u03a9 \u2192 \u03a9/P is measurable",
+    "Macroscopic observables are F/P-measurable functions",
+    "The system satisfies ergodicity: time averages equal ensemble averages",
+    "Initial conditions are drawn from a non-equilibrium distribution \u03c1_0 \u226a \u03bc",
+    "The equilibrium distribution \u03bc_eq maximizes entropy subject to constraints"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Definition of S([\u03c9]) = [T(\u03c9)]",
+        "issue": "S is not well-defined. For S to be well-defined, we need T(\u03c9\u2081) and T(\u03c9\u2082) to be in the same partition element whenever \u03c9\u2081 and \u03c9\u2082 are in the same partition element. This requires T to be partition-preserving, which is not assumed and generally false.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed without fundamentally changing the construction"
+      },
+      {
+        "step": "Categories Rev and Irrev construction",
+        "issue": "The categories are not properly defined. No morphisms are specified, no composition law is given, and no identity morphisms are defined. Without these, we don't have categories.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Define morphisms as measure-preserving maps that intertwine the dynamics"
+      },
+      {
+        "step": "Functor F definition",
+        "issue": "F is only defined on objects, not on morphisms. A functor must map both objects and morphisms while preserving composition and identities.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Define how F acts on morphisms and verify functoriality"
+      },
+      {
+        "step": "Application of Boltzmann's H-theorem",
+        "issue": "The H-theorem applies to dilute gases with molecular chaos assumption, not to general measure-preserving systems. The proof provides no justification for why it applies here.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot use H-theorem without establishing molecular chaos or similar conditions"
+      },
+      {
+        "step": "Claim that H[\u03c1_t] increases monotonically",
+        "issue": "For measure-preserving T, the fine-grained entropy H[\u03c1_t] is constant in time by Liouville's theorem. The proof confuses fine-grained and coarse-grained entropy.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need to define and use coarse-grained entropy instead"
+      },
+      {
+        "step": "Breaking of time-reversal symmetry",
+        "issue": "The proof claims S breaks time-reversibility but provides no rigorous demonstration. Even if S were well-defined and non-invertible, this doesn't automatically create irreversibility in the thermodynamic sense.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Prove that S\u2218S\u207b\u00b9 \u2260 id when S\u207b\u00b9 exists, or that S is not surjective"
+      }
+    ],
+    "hidden_assumptions": [
+      "T preserves the partition P (needed for S to be well-defined)",
+      "The partition P is generating under T (needed for meaningful coarse-graining)",
+      "The system exhibits mixing or similar strong ergodic properties",
+      "The coarse-graining is compatible with the dynamics in a specific technical sense",
+      "The initial distribution \u03c1\u2080 has special properties that break time-reversal symmetry"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes irreversibility emerges from coarse-graining to prove that coarse-graining creates irreversibility. It uses Boltzmann's H-theorem which already assumes irreversibility to prove irreversibility emerges.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to show irreversibility emerges from any coarse-graining of any reversible system, but at best (if fixed) would only show that certain special coarse-grainings of certain special systems can appear irreversible. The general claim is false - many coarse-grainings preserve reversibility.",
+    "citation_issues": [
+      "Boltzmann's H-theorem is misapplied - it requires molecular chaos assumption not present in general measure-preserving systems",
+      "The 'standard pushforward measure construction' is cited correctly but doesn't justify that S is well-defined",
+      "Liouville's theorem (measure preservation) actually contradicts the claimed entropy increase"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed with multiple critical errors including an ill-defined map S, misapplication of physical theorems, and confusion between fine-grained and coarse-grained entropy. The categorical framework is improperly constructed and the main argument is circular, assuming what it aims to prove.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to construct a mapping between categories but fails to establish it as a proper functor or prove the claimed properties about statistical structure preservation and entropy increase.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Partition P must be finite or at least have finite entropy",
+      "Coarse-graining partition must be T-invariant or quasi-invariant",
+      "Existence of well-defined quotient topology/measurable structure on X = \u03a9/P",
+      "Compatibility conditions between microscopic and macroscopic time scales",
+      "Specific conditions under which Boltzmann H-theorem applies to this setting",
+      "Regularity conditions on the measure \u03bc and transformation T for entropy calculations",
+      "Assumption that coarse-grained dynamics can be represented as semigroup action"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "5",
+        "issue": "Definition of S([\u03c9]) = [T(\u03c9)] is not well-defined without proving that if \u03c9\u2081 ~ \u03c9\u2082 (same equivalence class), then T(\u03c9\u2081) ~ T(\u03c9\u2082). This requires T-invariance of the partition."
+      },
+      {
+        "step": "6",
+        "issue": "Claims S\u2218S\u207b\u00b9 \u2260 id without proving S\u207b\u00b9 even exists or is well-defined. Information loss doesn't automatically imply non-invertibility in the claimed sense."
+      },
+      {
+        "step": "8",
+        "issue": "Invokes Boltzmann H-theorem without establishing the necessary conditions for its application, particularly the molecular chaos assumption and proper coarse-graining scale separation."
+      },
+      {
+        "step": "9",
+        "issue": "Claims to define a functor but never verifies the functor laws: F(id) = id and F(g\u2218f) = F(g)\u2218F(f). The construction is incomplete."
+      },
+      {
+        "step": "10",
+        "issue": "Claims preservation of statistical structure without defining what 'coarse-grained observables' means precisely or proving the preservation property."
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Never establishes that the quotient space X = \u03a9/P has a proper measurable structure",
+      "Fails to prove the functor laws for F",
+      "Does not establish conditions under which the coarse-graining map is well-defined",
+      "Missing proof that the construction actually breaks time-reversal symmetry",
+      "No verification that the entropy increase is monotonic under the specific dynamics",
+      "Lacks proof that the semigroup structure on the target category is well-defined",
+      "Missing analysis of when the coarse-graining operation preserves measure-theoretic properties"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims to construct a functor F: Rev \u2192 Irrev that 'breaks time-reversal symmetry through coarse-graining operations' while starting from time-reversible dynamics T with T\u2218T^(-1) = id. However, proof [6108000e0090] establishes that 'Transport coefficients and response functions are constrained by microscopic time-reversal symmetry through universal reciprocal relations' - this suggests fundamental constraints on how time-reversal symmetry can be broken that the new proof ignores.",
+      "The new proof defines macroscopic dynamics S on X by S([\u03c9]) = [T(\u03c9)] and claims S\u2218S^(-1) \u2260 id 'in general', but provides no rigorous conditions for when this occurs. This is mathematically imprecise and potentially false - if T is bijective and the partition P is sufficiently fine, S should remain invertible.",
+      "The entropy increase claim H[\u03c1_t] increases monotonically contradicts the time-reversible nature of the underlying dynamics T. For measure-preserving transformations, entropy should be conserved, not increase."
+    ],
+    "assumption_conflicts": [
+      "The new proof assumes 'Initial conditions are drawn from a non-equilibrium distribution \u03c1_0 \u226a \u03bc' without justifying how this is compatible with the measure-preserving property of T and the invariant measure \u03bc.",
+      "The assumption that 'The equilibrium distribution \u03bc_eq maximizes entropy subject to constraints' conflicts with the measure-preserving dynamics assumption - if T preserves \u03bc, then \u03bc is already the invariant measure and cannot evolve to a different equilibrium distribution."
+    ],
+    "beneficial_connections": [
+      "The categorical framework aligns with proofs [06879fd9ae87] and [102677deecdd] which emphasize relational structure over intrinsic properties.",
+      "The coarse-graining approach connects to proof [574d327c8078] on scale-dependent effective descriptions, though the new proof lacks the systematic treatment of scaling laws.",
+      "The entropy functional approach has potential connections to proof [1083de91300b] on entropy scaling with boundary area, though this connection is not developed."
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof contains fundamental mathematical errors in its treatment of time-reversibility and entropy. The claimed functor construction is not rigorously established, and the entropy increase assertion violates basic properties of measure-preserving transformations. The proof needs substantial revision to address these contradictions with established results."
+  },
+  "confidence_score": 0.23,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous category-theoretic framework for coarse-graining that properly handles the non-commutativity of time evolution and projection operations, along with a formal treatment of 'information loss' functors between reversible and irreversible categories",
+  "limitations": [
+    "Step 5: Well-definedness of macroscopic dynamics S requires showing independence from choice of representative in equivalence class",
+    "Step 9: Complete verification of functor axioms (preservation of identity and composition) requires additional technical conditions on the coarse-graining",
+    "The connection between microscopic ergodicity and macroscopic irreversibility needs more rigorous treatment",
+    "The role of initial conditions and typicality in breaking time-reversal symmetry is not fully formalized",
+    "The proof assumes a discrete coarse-graining partition rather than continuous projections",
+    "The connection to fluid dynamics examples (Stokes flow, turbulence) is not explicitly demonstrated",
+    "The proof does not address quantum mechanical time-reversal symmetry",
+    "The emergence of irreversibility requires special initial conditions (low entropy) which is not fully justified"
+  ],
+  "source_convergence": {
+    "structural_claim": "Macroscopic irreversibility emerges from microscopic reversibility through statistical effects and the breaking of time-reversal symmetry",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Boltzmann's H-theorem",
+        "domain_id": "field_a",
+        "domain_name": "Thermodynamics and Statistical Mechanics",
+        "link_type": "direct",
+        "structural_conclusion": "Macroscopic irreversibility emerges from reversible microscopic dynamics through statistical considerations"
+      },
+      {
+        "result_id": "",
+        "result_name": "Onsager Reciprocal Relations",
+        "domain_id": "field_a",
+        "domain_name": "Thermodynamics and Statistical Mechanics",
+        "link_type": "direct",
+        "structural_conclusion": "Microscopic time-reversal symmetry constrains macroscopic transport coefficients"
+      },
+      {
+        "result_id": "",
+        "result_name": "Stokes' Law for Sphere Drag",
+        "domain_id": "field_b",
+        "domain_name": "Fluid Dynamics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Low Reynolds number flows are reversible, but irreversibility emerges at higher Reynolds numbers"
+      },
+      {
+        "result_id": "",
+        "result_name": "Richardson Energy Cascade",
+        "domain_id": "field_b",
+        "domain_name": "Fluid Dynamics",
+        "link_type": "direct",
+        "structural_conclusion": "Turbulent energy cascades irreversibly from large to small scales despite reversible governing equations"
+      }
+    ],
+    "domains": [
+      "thermodynamics",
+      "fluid_dynamics"
+    ],
+    "domain_names": [
+      "Thermodynamics and Statistical Mechanics",
+      "Fluid Dynamics"
+    ],
+    "ea_scores": {
+      "strength": 0.2856,
+      "independence": 0.7,
+      "adversarial": 0.4,
+      "reproducibility": 0.5512499999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.5233675,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:16:05.302888+00:00",
+    "id": "30363d4b10e6"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.30639000000000005
+  }
+}

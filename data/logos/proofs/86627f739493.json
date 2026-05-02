@@ -1,0 +1,387 @@
+{
+  "id": "86627f739493",
+  "convergence_id": "196ed07dc88e",
+  "timestamp": "2026-05-02T12:43:24.917657+00:00",
+  "proposition": "Let H be a separable Hilbert space, G a Lie group acting unitarily on H via representation U: G \u2192 U(H), and H\u2080 a self-adjoint operator on H. If [U(g), H\u2080] = 0 for all g \u2208 G (continuous symmetry), then under appropriate boundary conditions, the spectrum \u03c3(H\u2080) is discrete and transition amplitudes \u27e8\u03c8_n|T|\u03c8_m\u27e9 between eigenstates are constrained by selection rules derived from the infinitesimal generators of G.",
+  "proposition_natural": "Discrete quantum states and transitions emerge from continuous symmetries and their associated conservation laws",
+  "formalisation_type": "constraint_logic",
+  "mathematical_apparatus": [
+    "Functional analysis",
+    "Differential geometry",
+    "Algebraic structures"
+  ],
+  "apparatus_justification": "Functional analysis provides the spectral theory of operators on Hilbert spaces needed to formalize quantum states and observables. Differential geometry captures the continuous symmetries as Lie groups acting on manifolds. Algebraic structures (specifically representation theory) connect symmetry groups to conservation laws via Noether's theorem.",
+  "proof_natural": "**Proposition.** Let $H$ be a separable Hilbert space, $G$ a Lie group acting unitarily on $H$ via representation $U: G \\to U(H)$, and $H_0$ a self-adjoint operator on $H$. If $[U(g), H_0] = 0$ for all $g \\in G$ (continuous symmetry), then under appropriate boundary conditions, the spectrum $\\sigma(H_0)$ is discrete and transition amplitudes $\\langle\\psi_n|T|\\psi_m\\rangle$ between eigenstates are constrained by selection rules derived from the infinitesimal generators of $G$.\n\n**Proof.** We assume that $H$ is a separable Hilbert space over $\\mathbb{C}$, $G$ is a connected Lie group with Lie algebra $\\mathfrak{g}$, and $U: G \\to U(H)$ is a strongly continuous unitary representation. Let $H_0$ be a self-adjoint operator on dense domain $D(H_0) \\subset H$ with compact resolvent, ensuring discrete spectrum. We further assume that $[U(g), H_0] = 0$ on $D(H_0)$ for all $g \\in G$, that physical boundary conditions (either $L^2$-integrability or periodicity) are imposed on configuration space, and that the representation $U$ is irreducible on each eigenspace of $H_0$. Let $T$ be a bounded operator on $H$.\n\nSince $[U(g), H_0] = 0$ for all $g \\in G$, the eigenspaces of $H_0$ are invariant under the $G$-action. Indeed, if $H_0\\psi = E\\psi$, then $H_0(U(g)\\psi) = U(g)H_0\\psi = EU(g)\\psi$, so $U(g)\\psi$ remains an eigenstate with eigenvalue $E$.\n\nBy Stone's theorem, for each basis element $\\xi_i$ of the Lie algebra $\\mathfrak{g}$, there exists a self-adjoint generator $X_i$ such that $U(\\exp(t\\xi_i)) = \\exp(itX_i)$. Differentiating the relation $[U(\\exp(t\\xi_i)), H_0] = 0$ at $t = 0$, we obtain $[X_i, H_0] = 0$ on their common dense domain.\n\nThe compact resolvent condition on $H_0$ implies, by the spectral theorem for compact self-adjoint operators, that $\\sigma(H_0)$ consists of isolated eigenvalues with finite multiplicity, accumulating only at infinity. Thus the spectrum is discrete.\n\nEach finite-dimensional eigenspace $E_n$ of $H_0$ carries a representation of $G$. By the Peter-Weyl theorem applied to the compact closure of $G$ acting on $E_n$ [Note: for non-compact $G$, we require additional technical conditions], this representation decomposes into irreducible representations. Consequently, eigenstates can be labeled as $|n,\\alpha,m\\rangle$, where $n$ denotes the energy eigenvalue, $\\alpha$ labels the irreducible representation, and $m$ indexes multiplicity within the irreducible representation.\n\nThe Casimir operators $C_i$ of $G$, being central elements of the universal enveloping algebra $U(\\mathfrak{g})$, commute with all $U(g)$ and hence with $H_0$. Since commuting self-adjoint operators can be simultaneously diagonalized, the eigenstates $|n,\\alpha,m\\rangle$ are simultaneous eigenstates of $H_0$ and all Casimir operators.\n\nFor transition amplitudes $\\langle n',\\alpha',m'|T|n,\\alpha,m\\rangle$, the Wigner-Eckart theorem dictates that these matrix elements vanish unless $T$ transforms as a component of a tensor operator under $G$. Specifically, if $T$ transforms according to representation $\\tau$, then transitions are allowed only when the tensor product $\\alpha' \\otimes \\tau \\otimes \\alpha$ contains the trivial representation, as determined by the Clebsch-Gordan decomposition.\n\nThese group-theoretic constraints constitute the selection rules governing transitions between energy eigenstates, demonstrating that continuous symmetries fundamentally restrict the allowed transitions in quantum systems. This completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.Analysis.InnerProductSpace.Basic\nimport Mathlib.Analysis.InnerProductSpace.Spectrum\nimport Mathlib.Topology.Algebra.Group.Basic\nimport Mathlib.Analysis.NormedSpace.OperatorNorm\nimport Mathlib.Analysis.SpecialFunctions.Exponential\nimport Mathlib.Topology.ContinuousFunction.Bounded\nimport Mathlib.Analysis.InnerProductSpace.Adjoint\n\n/-- A unitary representation of a Lie group G on a Hilbert space H -/\nstructure UnitaryRep (G : Type*) [TopologicalSpace G] [Group G] (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H] where\n  toFun : G \u2192 H \u2192L[\u2102] H\n  unitary : \u2200 g : G, isometryOfNorm (toFun g) (norm_toFun g)\n  group_hom : \u2200 g h : G, toFun (g * h) = toFun g \u2218L toFun h\n  continuous : Continuous toFun\n  norm_toFun : \u2200 g : G, \u2016toFun g\u2016 = 1\n\n/-- Main theorem: Continuous symmetry implies discrete spectrum and selection rules -/\ntheorem symmetry_implies_selection_rules\n  {G H : Type*} [TopologicalSpace G] [Group G] [LieGroup G]\n  [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H] [SeparableSpace H]\n  (U : UnitaryRep G H)\n  (H\u2080 : H \u2192L[\u2102] H)\n  (self_adjoint_H\u2080 : IsSelfAdjoint H\u2080)\n  (commutes : \u2200 g : G, U.toFun g \u2218L H\u2080 = H\u2080 \u2218L U.toFun g)\n  (compact_resolvent : sorry) -- CompactResolvent H\u2080\n  : (\u2203 (spectrum_discrete : sorry) -- Spectrum H\u2080 is discrete\n      (selection_rules : sorry), -- Selection rules for transition amplitudes\n      True) := by\n  -- Step 1: Eigenspaces are G-invariant\n  have eigenspace_invariant : \u2200 (E : \u2102) (\u03c8 : H), H\u2080 \u03c8 = E \u2022 \u03c8 \u2192 \u2200 g : G, H\u2080 (U.toFun g \u03c8) = E \u2022 (U.toFun g \u03c8) := by\n    intros E \u03c8 h\u03c8 g\n    rw [\u2190 commutes g]\n    simp [h\u03c8]\n    sorry -- Need composition properties\n  \n  -- Step 2: Stone's theorem gives generators\n  have stone_generators : sorry := by -- \u2203 generators X_i self-adjoint with U(exp(t\u03be_i)) = exp(itX_i)\n    sorry -- Stone's theorem not fully available\n  \n  -- Step 3: Generators commute with H\u2080\n  have generator_commutes : sorry := by -- [X_i, H\u2080] = 0\n    sorry -- Need infinitesimal generator theory\n  \n  -- Step 4: Discrete spectrum from compact resolvent\n  have discrete_spectrum : sorry := by -- \u03c3(H\u2080) discrete\n    sorry -- Need compact resolvent spectral theory\n  \n  -- Step 5: Peter-Weyl decomposition of eigenspaces\n  have peter_weyl : sorry := by -- Each eigenspace decomposes into irreps\n    sorry -- Peter-Weyl theorem not available\n  \n  -- Step 6: Label eigenstates by (n, \u03b1, m)\n  have eigenstate_labels : sorry := by\n    sorry -- Need representation theory framework\n  \n  -- Step 7: Casimir operators commute\n  have casimir_commutes : sorry := by -- Casimir operators commute with U(g) and H\u2080\n    sorry -- Need Casimir operator theory\n  \n  -- Step 8: Simultaneous eigenstates\n  have simultaneous_eigen : sorry := by\n    sorry -- Need simultaneous diagonalization\n  \n  -- Step 9: Wigner-Eckart theorem\n  have wigner_eckart : sorry := by -- Transition amplitudes vanish unless proper transformation\n    sorry -- Wigner-Eckart theorem not available\n  \n  -- Step 10: Selection rules from Clebsch-Gordan\n  have selection_rules : sorry := by -- \u03b1' \u2297 \u03c4 \u2297 \u03b1 contains trivial rep\n    sorry -- Need Clebsch-Gordan theory\n  \n  exact \u27e8sorry, sorry, trivial\u27e9",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The commutativity [U(g), H\u2080] = 0 implies that eigenspaces of H\u2080 are invariant under G-action",
+      "justification": "If H\u2080\u03c8 = E\u03c8, then H\u2080(U(g)\u03c8) = U(g)H\u2080\u03c8 = EU(g)\u03c8, so U(g)\u03c8 is also an eigenstate with eigenvalue E",
+      "dependencies": [
+        "Assumption 5",
+        "Definition of eigenspace"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "By Stone's theorem, there exist self-adjoint generators X_i such that U(exp(t\u03be_i)) = exp(itX_i) for basis elements \u03be_i of g",
+      "justification": "Stone's theorem for strongly continuous one-parameter unitary groups",
+      "dependencies": [
+        "Assumption 3",
+        "Stone's Theorem"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The generators X_i commute with H\u2080: [X_i, H\u2080] = 0 on their common dense domain",
+      "justification": "Differentiating [U(exp(t\u03be_i)), H\u2080] = 0 at t = 0",
+      "dependencies": [
+        "Step 1",
+        "Step 2",
+        "Assumption 5"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The compact resolvent condition implies \u03c3(H\u2080) consists of isolated eigenvalues with finite multiplicity accumulating only at infinity",
+      "justification": "Standard spectral theorem for compact self-adjoint operators",
+      "dependencies": [
+        "Assumption 6",
+        "Spectral Theorem for Compact Operators"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Each eigenspace E_n of H\u2080 decomposes into irreducible representations of G",
+      "justification": "Peter-Weyl theorem applied to the compact closure of G acting on finite-dimensional E_n",
+      "dependencies": [
+        "Step 1",
+        "Step 4",
+        "Peter-Weyl Theorem",
+        "[Gap: Requires G to be compact or eigenspaces to be finite-dimensional]"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Eigenstates |n,\u03b1,m\u27e9 can be labeled by energy n, irrep \u03b1, and multiplicity index m within the irrep",
+      "justification": "Consequence of the irreducible decomposition in Step 5",
+      "dependencies": [
+        "Step 5",
+        "Assumption 9"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The Casimir operators C_i of G commute with all U(g) and thus with H\u2080",
+      "justification": "Casimir operators are central elements of the universal enveloping algebra U(g)",
+      "dependencies": [
+        "Step 3",
+        "Definition of Casimir operators"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Eigenstates are simultaneous eigenstates of H\u2080 and all Casimir operators",
+      "justification": "Commuting self-adjoint operators can be simultaneously diagonalized",
+      "dependencies": [
+        "Step 3",
+        "Step 7",
+        "Spectral theorem for commuting operators"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "Transition amplitudes \u27e8n',\u03b1',m'|T|n,\u03b1,m\u27e9 vanish unless T transforms as a component of a tensor operator under G",
+      "justification": "Wigner-Eckart theorem for matrix elements between irreducible representations",
+      "dependencies": [
+        "Step 6",
+        "Wigner-Eckart Theorem"
+      ]
+    },
+    {
+      "step_number": 10,
+      "statement": "Selection rules emerge: transitions are allowed only when the tensor product \u03b1' \u2297 \u03c4 \u2297 \u03b1 contains the trivial representation",
+      "justification": "Group-theoretic constraint from Clebsch-Gordan decomposition",
+      "dependencies": [
+        "Step 9",
+        "Clebsch-Gordan Theory"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Stone's Theorem",
+      "authors": "Marshall H. Stone",
+      "year": "1932",
+      "field": "Functional Analysis",
+      "statement": "Every strongly continuous one-parameter unitary group has a unique self-adjoint generator",
+      "usage": "Connects Lie group symmetries to self-adjoint generators"
+    },
+    {
+      "name": "Spectral Theorem for Compact Operators",
+      "authors": "David Hilbert, Frigyes Riesz",
+      "year": "1906-1910",
+      "field": "Functional Analysis",
+      "statement": "Compact self-adjoint operators have discrete spectrum with eigenvectors forming an orthonormal basis",
+      "usage": "Ensures discrete energy levels"
+    },
+    {
+      "name": "Peter-Weyl Theorem",
+      "authors": "Hermann Weyl, Fritz Peter",
+      "year": "1927",
+      "field": "Harmonic Analysis",
+      "statement": "L\u00b2(G) decomposes into irreducible representations for compact groups G",
+      "usage": "Decomposes eigenspaces into irreducible representations"
+    },
+    {
+      "name": "Wigner-Eckart Theorem",
+      "authors": "Eugene Wigner, Carl Eckart",
+      "year": "1930s",
+      "field": "Quantum Mechanics/Group Theory",
+      "statement": "Matrix elements of tensor operators between states of definite angular momentum factor into geometric and reduced matrix elements",
+      "usage": "Derives selection rules from symmetry"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "H is a separable Hilbert space over \u2102",
+    "G is a connected Lie group with Lie algebra g",
+    "U: G \u2192 U(H) is a strongly continuous unitary representation",
+    "H\u2080 is a self-adjoint operator on dense domain D(H\u2080) \u2282 H",
+    "[U(g), H\u2080] = 0 on D(H\u2080) for all g \u2208 G",
+    "H\u2080 has compact resolvent (ensuring discrete spectrum)",
+    "Physical boundary conditions: either L\u00b2-integrability or periodic boundary conditions on configuration space",
+    "Transition operator T is a bounded operator on H",
+    "The representation U is irreducible on each eigenspace of H\u2080"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "Application of Peter-Weyl theorem",
+        "issue": "Peter-Weyl theorem applies only to compact groups, but G is merely assumed to be a Lie group. The proof acknowledges this with a parenthetical note but then proceeds anyway without justification",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Either restrict to compact Lie groups or provide a completely different argument for non-compact cases"
+      },
+      {
+        "step": "Decomposition of eigenspaces into irreducible representations",
+        "issue": "The claim that eigenspaces decompose into irreducible representations requires G to act irreducibly on each eigenspace, but this is stated as an assumption only later. The logic is backwards",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "State the irreducibility assumption before using it, and justify why this assumption is reasonable"
+      },
+      {
+        "step": "Application of Wigner-Eckart theorem",
+        "issue": "Wigner-Eckart theorem is specific to SO(3) or SU(2), not arbitrary Lie groups. The proof incorrectly generalizes it",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Either restrict to rotation groups or cite appropriate generalization with proper conditions"
+      },
+      {
+        "step": "Simultaneous diagonalization of Casimir operators",
+        "issue": "The proof assumes Casimir operators exist and are well-defined for arbitrary Lie groups, which is not always true",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Add conditions on G that ensure existence of sufficient Casimir operators"
+      },
+      {
+        "step": "Differentiating [U(exp(t\u03be\u1d62)), H\u2080] = 0",
+        "issue": "This requires U(exp(t\u03be\u1d62))\u03c8 to be in the domain of H\u2080 for all \u03c8 in D(H\u2080), which is not established",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Add assumption that D(H\u2080) is invariant under the group action"
+      },
+      {
+        "step": "Labeling eigenstates as |n,\u03b1,m\u27e9",
+        "issue": "This labeling scheme assumes eigenspaces have specific structure that hasn't been proven to exist in general",
+        "severity": "minor",
+        "fixable": true,
+        "suggested_fix": "Clarify that this is a choice of basis within each eigenspace"
+      }
+    ],
+    "hidden_assumptions": [
+      "G has a compact closure or appropriate generalization of Peter-Weyl exists",
+      "The domain D(H\u2080) is invariant under the group action",
+      "The Lie algebra representation integrates to the group representation",
+      "Casimir operators exist and provide complete labeling",
+      "The tensor product decomposition theory exists for the given Lie group"
+    ],
+    "circular_reasoning": false,
+    "circular_details": "",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims results for arbitrary Lie groups but actually only works for compact Lie groups with additional structure. The Wigner-Eckart theorem application is particularly egregious as it's specific to angular momentum",
+    "citation_issues": [
+      "Peter-Weyl theorem cited for non-compact groups without justification",
+      "Wigner-Eckart theorem incorrectly generalized from SO(3) to arbitrary Lie groups",
+      "Stone's theorem application needs invariant domain assumption"
+    ],
+    "structural_soundness": 0.4,
+    "overall_assessment": "This proof attempts to generalize well-known results from quantum mechanics of angular momentum to arbitrary Lie groups without proper justification. The core ideas might work for compact groups with significant additional assumptions, but the proof as written contains critical gaps and misapplied theorems.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof establishes that eigenspaces are G-invariant and can be decomposed into irreps, but fails to prove discrete spectrum or derive the claimed selection rules for general transition operators",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "G must be compact for Peter-Weyl theorem application in Step 5",
+      "Transition operator T must transform covariantly under G for selection rules to apply",
+      "Domain compatibility conditions for generators X_i and H\u2080",
+      "Specific boundary conditions that guarantee compact resolvent",
+      "Finite-dimensional eigenspaces assumption for Peter-Weyl application"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "4",
+        "issue": "Compact resolvent is assumed but not proven from boundary conditions - this is circular reasoning since discrete spectrum is part of what needs to be proven"
+      },
+      {
+        "step": "5",
+        "issue": "Peter-Weyl theorem requires G to be compact, but G is only stated to be a connected Lie group. Also assumes eigenspaces are finite-dimensional without justification"
+      },
+      {
+        "step": "7",
+        "issue": "Casimir operators may not exist for all Lie groups, and their commutativity with H\u2080 doesn't follow automatically from being central in U(g)"
+      },
+      {
+        "step": "9",
+        "issue": "Wigner-Eckart theorem application requires T to transform as a tensor operator under G, which is not established"
+      },
+      {
+        "step": "10",
+        "issue": "Selection rules depend on how T transforms under G, which is not specified. The statement about tensor products is meaningless without knowing T's transformation properties"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Never proves discrete spectrum from boundary conditions",
+      "Doesn't establish that boundary conditions imply compact resolvent",
+      "Missing proof that eigenspaces are finite-dimensional",
+      "No verification that G acts irreducibly on eigenspaces",
+      "Transition operator T's transformation properties under G are never established",
+      "Selection rules are stated but not properly derived for general T"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof assumes H\u2080 has compact resolvent ensuring discrete spectrum, but this directly contradicts proof [574d327c8078] which establishes that physical systems have continuous spectra at different scales through universal scaling laws",
+      "The claim that eigenspaces decompose into irreducible representations conflicts with proof [66e4aac2731b] which shows classical behavior emerges through environmental decoherence, implying eigenspaces should be mixed states rather than pure irreducible representations",
+      "The assumption of irreducible representation on each eigenspace contradicts proof [75a7c4c46d4c] which demonstrates that complex systems spontaneously break symmetry, implying reducible rather than irreducible representations"
+    ],
+    "assumption_conflicts": [
+      "Compact resolvent assumption conflicts with scale-dependent descriptions in [574d327c8078] which require continuous spectra",
+      "Separable Hilbert space assumption conflicts with holographic principle in [4dff4e61551e] where boundary degrees of freedom scale with area, not volume",
+      "Strong continuity of unitary representation conflicts with discrete fundamental scales in [37338340b3ed]",
+      "Irreducibility assumption on eigenspaces conflicts with symmetry breaking mechanisms in [6cf918aecf4e] and [f17045616ed2]"
+    ],
+    "beneficial_connections": [
+      "Connects to [19c10dc86a65] through quantum coherence and Hilbert space framework",
+      "Relates to [c21e27c5a63e] through symmetry considerations in physical systems",
+      "Partially supports [d0df80816eef] regarding symmetries and their role in physical systems",
+      "Connects to [e30b04f6f8f1] through gauge symmetry and unitary representations"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof makes several strong assumptions (compact resolvent, irreducibility, discrete spectrum) that are incompatible with established results about scale-dependent physics, environmental decoherence, and symmetry breaking. The mathematical framework is sound but the physical assumptions are too restrictive and contradict fundamental principles established in the corpus."
+  },
+  "confidence_score": 0.27,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A general theory connecting boundary conditions in infinite-dimensional spaces to discreteness of spectra beyond the compact resolvent case. Current proofs rely on case-by-case analysis (hydrogen atom, harmonic oscillator, etc.)",
+  "limitations": [
+    "Step 5 requires either G to be compact or eigenspaces to be finite-dimensional, which is not always guaranteed",
+    "The connection between physical boundary conditions and compact resolvent property is not rigorously established in general",
+    "The proof assumes irreducibility on each eigenspace without proving this emerges from the physics",
+    "Requires compact resolvent assumption which must be verified case-by-case",
+    "Does not explain why physical Hamiltonians tend to have the required properties",
+    "Selection rules derived are necessary but not sufficient conditions for transitions",
+    "Does not address dynamical aspects or transition rates"
+  ],
+  "source_convergence": {
+    "structural_claim": "Discrete quantum states and transitions emerge from continuous symmetries and their associated conservation laws",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Asymptotic freedom in QCD",
+        "domain_id": "field_a",
+        "domain_name": "Particle Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Non-Abelian gauge symmetry creates scale-dependent behavior with discrete regimes"
+      },
+      {
+        "result_id": "",
+        "result_name": "Measurement of the CKM matrix",
+        "domain_id": "field_a",
+        "domain_name": "Particle Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Flavor mixing is constrained by unitarity, creating discrete allowed transition patterns"
+      },
+      {
+        "result_id": "",
+        "result_name": "Schr\u00f6dinger Equation for Hydrogen Atom",
+        "domain_id": "field_b",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Continuous rotational symmetry plus boundary conditions create discrete energy levels"
+      },
+      {
+        "result_id": "",
+        "result_name": "Selection Rules for Atomic Transitions",
+        "domain_id": "field_b",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Angular momentum conservation from rotational symmetry restricts allowed transitions"
+      }
+    ],
+    "domains": [
+      "particle_physics",
+      "atomic_physics"
+    ],
+    "domain_names": [
+      "Particle Physics",
+      "Atomic and Molecular Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.2856,
+      "independence": 0.75,
+      "adversarial": 0.12,
+      "reproducibility": 0.6299999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.49168,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:30:49.690712+00:00",
+    "id": "196ed07dc88e"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.32223
+  }
+}

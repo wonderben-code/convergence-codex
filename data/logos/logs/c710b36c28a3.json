@@ -1,0 +1,38 @@
+{
+  "proof_id": "c710b36c28a3",
+  "timestamp": "2026-05-02T13:27:05.525472+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "categorical - Could frame as a functor from classical theories to quantum theories that maps symmetries to anomaly-constrained symmetries, but this would miss the essential physical content about necessity and consistency"
+      ],
+      "reasoning": "The convergence identifies a shared abstract principle across QFT and GR: quantum effects necessarily impose constraints on classical symmetries through anomalous behavior. This is best captured by axiomatizing the general pattern of 'quantum corrections \u2192 symmetry breaking \u2192 consistency constraints' that manifests differently in each domain."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Differential geometry, Algebraic structures, Functional analysis",
+      "alternatives_considered": [],
+      "reasoning": "Quantum field theory anomalies arise from the failure of classical symmetries to survive quantization, fundamentally a geometric phenomenon involving connections and curvature on principal bundles. Algebraic structures capture the symmetry groups and their representations, while functional analysis provides the operator framework for quantum observables and their commutation relations."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "Classical symmetries of field theory actions may fail to be symmetries of the quantum theory when the path integral measure is not invariant. This non-invariance manifests as anomalies computed via the Fujikawa method, and consistency of gauge theories requires these anomalies to cancel, imposing algebraic constraints on the field content.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 8 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 2863 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 2309 chars, 14 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This proof heavily relies on quantum field theory concepts not available in Mathlib. The formalization captures the logical structure but cannot implement the actual computations without path integrals, functional derivatives, and anomaly theory."
+    }
+  ]
+}

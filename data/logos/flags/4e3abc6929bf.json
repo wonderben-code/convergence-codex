@@ -1,0 +1,13 @@
+{
+  "proof_id": "4e3abc6929bf",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A general theory connecting functional analysis bifurcation theory to pattern selection that: (1) rigorously handles the nonlinear saturation for arbitrary functionals F, (2) proves wavelength selection without assuming specific forms, (3) establishes persistence and stability of periodic patterns beyond weakly nonlinear regime",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

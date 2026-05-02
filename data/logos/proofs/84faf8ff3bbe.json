@@ -1,0 +1,374 @@
+{
+  "id": "84faf8ff3bbe",
+  "convergence_id": "4fc35bc43e57",
+  "timestamp": "2026-05-02T13:04:08.070922+00:00",
+  "proposition": "For any composite quantum system H = H_A \u2297 H_B with dim(H_A), dim(H_B) \u2265 2, there exist entangled states \u03c1 \u2208 D(H) whose correlation structure C(\u03c1) := {\u27e8O_A \u2297 O_B\u27e9_\u03c1 : O_A \u2208 B(H_A), O_B \u2208 B(H_B)} cannot be reproduced by any separable state \u03c3 = \u03a3_i p_i \u03c1_i^A \u2297 \u03c1_i^B, and furthermore, the information-theoretic constraints I(\u03c1) := {S(\u03c1_A), S(\u03c1_B), S(\u03c1), I(A:B)_\u03c1} violate bounds achievable by single-particle product states",
+  "proposition_natural": "Quantum entanglement imposes fundamental constraints on information and correlations that cannot be understood through single-particle physics",
+  "formalisation_type": "constraint_logic",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Information theory",
+    "Functional analysis"
+  ],
+  "apparatus_justification": "Category theory provides the natural framework for formalizing constraints as limits and colimits in appropriate categories of quantum systems and correlations. Information theory is essential for quantifying the information-theoretic constraints imposed by entanglement. Functional analysis provides the operator-algebraic foundation for quantum observables and states.",
+  "proof_natural": "**Proposition.** For any composite quantum system $\\mathcal{H} = \\mathcal{H}_A \\otimes \\mathcal{H}_B$ with $\\dim(\\mathcal{H}_A), \\dim(\\mathcal{H}_B) \\geq 2$, there exist entangled states $\\rho \\in \\mathcal{D}(\\mathcal{H})$ whose correlation structure and information-theoretic constraints cannot be reproduced by any separable state, thereby demonstrating that entanglement enables correlations beyond those achievable in single-particle physics.\n\n*Proof.* We assume that quantum mechanics is described by density operators on Hilbert spaces, with composite systems represented by tensor products. Let the von Neumann entropy $S(\\rho) = -\\text{Tr}(\\rho \\log \\rho)$ measure quantum information, and let correlations be quantified by expectation values of tensor product observables from the bounded operator algebra $\\mathcal{B}(\\mathcal{H})$.\n\nDefine the set of separable states as $\\text{SEP}(\\mathcal{H}_A \\otimes \\mathcal{H}_B) = \\text{conv}\\{\\rho_A \\otimes \\rho_B : \\rho_A \\in \\mathcal{D}(\\mathcal{H}_A), \\rho_B \\in \\mathcal{D}(\\mathcal{H}_B)\\}$, where conv denotes the convex hull. Consider the maximally entangled state $|\\Phi\\rangle = \\frac{1}{\\sqrt{d}}\\sum_{i=1}^d |ii\\rangle$ where $d = \\min(\\dim(\\mathcal{H}_A), \\dim(\\mathcal{H}_B))$.\n\nBy the Schmidt decomposition theorem, we can directly calculate that for this state, $S(\\rho_A) = S(\\rho_B) = \\log d$ while $S(\\rho) = 0$, yielding mutual information $I(A:B)_\\Phi = 2\\log d$. In contrast, for any separable state $\\sigma \\in \\text{SEP}(\\mathcal{H}_A \\otimes \\mathcal{H}_B)$, the Holevo bound constrains the mutual information to $I(A:B)_\\sigma \\leq \\min(2S(\\sigma_A), 2S(\\sigma_B))$. Since any mixed state $\\sigma$ with $S(\\sigma) > 0$ must satisfy $S(\\sigma_A), S(\\sigma_B) < \\log d$, we have established that the maximally entangled state achieves information-theoretic values outside the separable set.\n\nFurthermore, consider the CHSH operator $C = a_0 \\otimes (b_0 + b_1) + a_1 \\otimes (b_0 - b_1)$ for appropriately chosen observables. By Tsirelson's theorem, the maximally entangled state achieves $\\langle C \\rangle_\\Phi = 2\\sqrt{2}$. However, Bell's theorem guarantees that for any separable state $\\sigma$, we have $\\langle C \\rangle_\\sigma \\leq 2$, as separable states admit local hidden variable models.\n\nThe distinction becomes even more pronounced in multipartite systems. The Coffman-Kundu-Wootters monogamy relation shows that for three-qubit systems, the inequality $(C_{AB})^2 + (C_{AC})^2 \\leq 1$ constrains how entanglement can be distributed\u2014a restriction that has no classical analogue.\n\n[Note: While physically well-established, the rigorous mathematical connection between many-body entanglement patterns and emergent topological order remains to be fully axiomatized within this framework.]\n\nWe have thus demonstrated that entangled states exhibit both correlation structures $\\mathcal{C}(\\rho) = \\{\\langle O_A \\otimes O_B \\rangle_\\rho\\}$ and information-theoretic constraints $\\mathcal{I}(\\rho) = \\{S(\\rho_A), S(\\rho_B), S(\\rho), I(A:B)_\\rho\\}$ that lie strictly outside the convex hull of values achievable by separable states. This completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.Analysis.InnerProductSpace.Basic\nimport Mathlib.LinearAlgebra.TensorProduct\nimport Mathlib.Analysis.Convex.Hull\nimport Mathlib.Data.Real.Basic\nimport Mathlib.Topology.Algebra.Module.Basic\n\n/-- Quantum states are positive semidefinite operators with trace 1 -/\ndef QuantumState (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H] : Type* :=\n  sorry -- Need: density operators, positive semidefinite operators with trace 1\n\n/-- The set of bounded operators on a Hilbert space -/\ndef BoundedOp (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H] : Type* :=\n  H \u2192L[\u2102] H\n\n/-- Von Neumann entropy of a quantum state -/\ndef vonNeumannEntropy {H : Type*} [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H]\n  (\u03c1 : QuantumState H) : \u211d :=\n  sorry -- Need: trace, logarithm of operators, eigenvalue decomposition\n\n/-- Partial trace over subsystem B -/\ndef partialTraceB {H_A H_B : Type*} [NormedAddCommGroup H_A] [InnerProductSpace \u2102 H_A] [CompleteSpace H_A]\n  [NormedAddCommGroup H_B] [InnerProductSpace \u2102 H_B] [CompleteSpace H_B]\n  (\u03c1 : QuantumState (H_A \u2297[\u2102] H_B)) : QuantumState H_A :=\n  sorry -- Need: partial trace operation\n\n/-- Partial trace over subsystem A -/\ndef partialTraceA {H_A H_B : Type*} [NormedAddCommGroup H_A] [InnerProductSpace \u2102 H_A] [CompleteSpace H_A]\n  [NormedAddCommGroup H_B] [InnerProductSpace \u2102 H_B] [CompleteSpace H_B]\n  (\u03c1 : QuantumState (H_A \u2297[\u2102] H_B)) : QuantumState H_B :=\n  sorry -- Need: partial trace operation\n\n/-- Separable states are convex combinations of product states -/\ndef SeparableStates {H_A H_B : Type*} [NormedAddCommGroup H_A] [InnerProductSpace \u2102 H_A] [CompleteSpace H_A]\n  [NormedAddCommGroup H_B] [InnerProductSpace \u2102 H_B] [CompleteSpace H_B] : Set (QuantumState (H_A \u2297[\u2102] H_B)) :=\n  convexHull \u211d {\u03c1 : QuantumState (H_A \u2297[\u2102] H_B) | \u2203 (\u03c1_A : QuantumState H_A) (\u03c1_B : QuantumState H_B),\n    sorry} -- Need: tensor product of quantum states\n\n/-- Maximally entangled state -/\ndef maximallyEntangledState {H : Type*} [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H]\n  [FiniteDimensional \u2102 H] (d : \u2115) (hd : d = finrank \u2102 H) : QuantumState (H \u2297[\u2102] H) :=\n  sorry -- Need: construction of maximally entangled state |\u03a6\u27e9 = (1/\u221ad)\u03a3_i |ii\u27e9\n\n/-- Quantum mutual information -/\ndef quantumMutualInfo {H_A H_B : Type*} [NormedAddCommGroup H_A] [InnerProductSpace \u2102 H_A] [CompleteSpace H_A]\n  [NormedAddCommGroup H_B] [InnerProductSpace \u2102 H_B] [CompleteSpace H_B]\n  (\u03c1 : QuantumState (H_A \u2297[\u2102] H_B)) : \u211d :=\n  vonNeumannEntropy (partialTraceB \u03c1) + vonNeumannEntropy (partialTraceA \u03c1) - vonNeumannEntropy \u03c1\n\n/-- CHSH operator -/\ndef CHSHOperator {H_A H_B : Type*} [NormedAddCommGroup H_A] [InnerProductSpace \u2102 H_A] [CompleteSpace H_A]\n  [NormedAddCommGroup H_B] [InnerProductSpace \u2102 H_B] [CompleteSpace H_B]\n  (a\u2080 a\u2081 : BoundedOp H_A) (b\u2080 b\u2081 : BoundedOp H_B) : BoundedOp (H_A \u2297[\u2102] H_B) :=\n  sorry -- Need: tensor product of operators, operator addition\n\n/-- Expectation value of an operator in a state -/\ndef expectationValue {H : Type*} [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H]\n  (O : BoundedOp H) (\u03c1 : QuantumState H) : \u2102 :=\n  sorry -- Need: trace of operator product\n\n/-- Main theorem: Entangled states have correlations not reproducible by separable states -/\ntheorem entangled_states_exceed_separable_bounds\n  {H_A H_B : Type*} [NormedAddCommGroup H_A] [InnerProductSpace \u2102 H_A] [CompleteSpace H_A]\n  [NormedAddCommGroup H_B] [InnerProductSpace \u2102 H_B] [CompleteSpace H_B]\n  [FiniteDimensional \u2102 H_A] [FiniteDimensional \u2102 H_B]\n  (h_dimA : 2 \u2264 finrank \u2102 H_A) (h_dimB : 2 \u2264 finrank \u2102 H_B) :\n  \u2203 (\u03c1 : QuantumState (H_A \u2297[\u2102] H_B)),\n    (\u03c1 \u2209 SeparableStates) \u2227\n    (\u2203 (O_A : BoundedOp H_A) (O_B : BoundedOp H_B),\n      \u2200 (\u03c3 : QuantumState (H_A \u2297[\u2102] H_B)), \u03c3 \u2208 SeparableStates \u2192\n        expectationValue (sorry : BoundedOp (H_A \u2297[\u2102] H_B)) \u03c1 \u2260 expectationValue (sorry : BoundedOp (H_A \u2297[\u2102] H_B)) \u03c3) \u2227\n    (quantumMutualInfo \u03c1 > 0) := by\n  -- Step 1: Define separable states (already done above)\n  \n  -- Step 2: For maximally entangled state, calculate entropies\n  let d := min (finrank \u2102 H_A) (finrank \u2102 H_B)\n  let \u03a6 := maximallyEntangledState d sorry\n  have h_entropy_\u03a6 : vonNeumannEntropy \u03a6 = 0 := sorry -- Need: entropy calculation for pure states\n  have h_entropy_reduced : vonNeumannEntropy (partialTraceB \u03a6) = Real.log d := sorry -- Need: entropy of maximally mixed state\n  \n  -- Step 3: Holevo bound for separable states\n  have h_holevo : \u2200 \u03c3 \u2208 SeparableStates, quantumMutualInfo \u03c3 \u2264 \n    min (2 * vonNeumannEntropy (partialTraceB \u03c3)) (2 * vonNeumannEntropy (partialTraceA \u03c3)) := \n    sorry -- Need: Holevo bound theorem\n  \n  -- Step 4: Mutual information for maximally entangled state\n  have h_mutual_info_\u03a6 : quantumMutualInfo \u03a6 = 2 * Real.log d := sorry -- Need: calculation from Step 2\n  \n  -- Step 5: CHSH operator achieves Tsirelson's bound\n  have h_tsirelson : \u2203 (a\u2080 a\u2081 : BoundedOp H_A) (b\u2080 b\u2081 : BoundedOp H_B),\n    expectationValue (CHSHOperator a\u2080 a\u2081 b\u2080 b\u2081) \u03a6 = 2 * Real.sqrt 2 := \n    sorry -- Need: Tsirelson's theorem\n  \n  -- Step 6: Bell-CHSH inequality for separable states\n  have h_bell : \u2200 (a\u2080 a\u2081 : BoundedOp H_A) (b\u2080 b\u2081 : BoundedOp H_B) (\u03c3 : QuantumState (H_A \u2297[\u2102] H_B)),\n    \u03c3 \u2208 SeparableStates \u2192 Complex.abs (expectationValue (CHSHOperator a\u2080 a\u2081 b\u2080 b\u2081) \u03c3) \u2264 2 := \n    sorry -- Need: Bell inequality theorem\n  \n  -- Step 7: Monogamy inequality\n  -- This step involves three-qubit systems, skipping for this two-party case\n  \n  -- Step 8: Gap - connection to topological order\n  -- Not formalizable without additional framework\n  \n  -- Step 9: Synthesis - construct the witness\n  use \u03a6\n  constructor\n  \u00b7 -- \u03a6 is not separable\n    sorry -- Need: proof that maximally entangled states are not separable\n  constructor\n  \u00b7 -- Correlation structure witness\n    obtain \u27e8a\u2080, a\u2081, b\u2080, b\u2081, h_chsh\u27e9 := h_tsirelson\n    use a\u2080, b\u2080\n    intro \u03c3 h\u03c3\n    sorry -- Need: show CHSH value differs\n  \u00b7 -- Information theoretic witness\n    rw [h_mutual_info_\u03a6]\n    norm_num\n    sorry -- Need: show 2 * log d > 0 when d \u2265 2",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the set of separable states SEP(H_A \u2297 H_B) = conv{\u03c1_A \u2297 \u03c1_B : \u03c1_A \u2208 D(H_A), \u03c1_B \u2208 D(H_B)}",
+      "justification": "Definition of separable states as convex hull of product states",
+      "dependencies": []
+    },
+    {
+      "step_number": 2,
+      "statement": "For the maximally entangled state |\u03a6\u27e9 = (1/\u221ad)\u03a3_i |ii\u27e9 where d = min(dim(H_A), dim(H_B)), we have S(\u03c1_A) = S(\u03c1_B) = log d while S(\u03c1) = 0",
+      "justification": "Direct calculation using Schmidt decomposition and entropy formula",
+      "dependencies": [
+        "Schmidt decomposition theorem"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "For any separable state \u03c3 \u2208 SEP(H_A \u2297 H_B), the mutual information I(A:B)_\u03c3 = S(\u03c3_A) + S(\u03c3_B) - S(\u03c3) \u2264 min(2S(\u03c3_A), 2S(\u03c3_B))",
+      "justification": "Application of Holevo bound to classical-quantum states",
+      "dependencies": [
+        "Holevo bound",
+        "Step 1"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "For the maximally entangled state |\u03a6\u27e9, I(A:B)_\u03a6 = 2 log d > min(2S(\u03c3_A), 2S(\u03c3_B)) for any \u03c3 with S(\u03c3) > 0",
+      "justification": "Direct calculation from Step 2",
+      "dependencies": [
+        "Step 2"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The CHSH operator C = a\u2080\u2297(b\u2080+b\u2081) + a\u2081\u2297(b\u2080-b\u2081) achieves \u27e8C\u27e9_\u03a6 = 2\u221a2 for appropriate choice of observables",
+      "justification": "Tsirelson's bound calculation for maximally entangled states",
+      "dependencies": [
+        "Tsirelson's theorem"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "For any separable state \u03c3, \u27e8C\u27e9_\u03c3 \u2264 2",
+      "justification": "Bell-CHSH inequality for local hidden variable models",
+      "dependencies": [
+        "Bell's theorem",
+        "Step 1"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The monogamy inequality (C_AB)\u00b2 + (C_AC)\u00b2 \u2264 1 for three-qubit systems cannot be satisfied by classical correlations",
+      "justification": "Coffman-Kundu-Wootters monogamy relation",
+      "dependencies": [
+        "Monogamy of entanglement theorem"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "[Gap: Rigorous connection between many-body entanglement structure and emergent topological order]",
+      "justification": "While physically established, the mathematical framework connecting entanglement patterns to topological phases requires axiomatization",
+      "dependencies": [
+        "Laughlin wavefunction properties"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "Therefore, entangled states exhibit correlation structures C(\u03c1) and information constraints I(\u03c1) that lie outside the convex hull of single-particle achievable values",
+      "justification": "Synthesis of Steps 4, 6, and 7",
+      "dependencies": [
+        "Step 4",
+        "Step 6",
+        "Step 7"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Schmidt decomposition theorem",
+      "authors": "Schmidt, E.",
+      "year": "1907",
+      "field": "Mathematics/Quantum Theory",
+      "statement": "Any pure state of a bipartite system can be written as |\u03c8\u27e9 = \u03a3_i \u221a\u03bb_i |i\u27e9_A |i\u27e9_B",
+      "usage": "Used to calculate entropies of reduced density matrices"
+    },
+    {
+      "name": "Holevo bound",
+      "authors": "Holevo, A.S.",
+      "year": "1973",
+      "field": "Quantum Information Theory",
+      "statement": "The accessible information in an ensemble of quantum states is bounded by the von Neumann entropy",
+      "usage": "Constrains mutual information for separable states"
+    },
+    {
+      "name": "Tsirelson's theorem",
+      "authors": "Tsirelson, B.S.",
+      "year": "1980",
+      "field": "Quantum Foundations",
+      "statement": "The maximum quantum violation of the CHSH inequality is 2\u221a2",
+      "usage": "Establishes quantum correlations exceed classical bounds"
+    },
+    {
+      "name": "Bell's theorem",
+      "authors": "Bell, J.S.",
+      "year": "1964",
+      "field": "Quantum Foundations",
+      "statement": "No local hidden variable theory can reproduce all quantum mechanical predictions",
+      "usage": "Proves separable states satisfy classical correlation bounds"
+    },
+    {
+      "name": "Monogamy of entanglement",
+      "authors": "Coffman, V., Kundu, J., Wootters, W.K.",
+      "year": "2000",
+      "field": "Quantum Information Theory",
+      "statement": "Quantum entanglement cannot be freely shared: (C_AB)\u00b2 + (C_AC)\u00b2 \u2264 (C_A(BC))\u00b2",
+      "usage": "Shows multipartite entanglement constraints have no classical analog"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Quantum mechanics is described by density operators on Hilbert spaces",
+    "Composite systems are described by tensor products of Hilbert spaces",
+    "Von Neumann entropy S(\u03c1) = -Tr(\u03c1 log \u03c1) is the appropriate measure of quantum information",
+    "Correlations are measured by expectation values of tensor product observables",
+    "Single-particle physics corresponds to separable (non-entangled) states",
+    "The partial trace operation TrB correctly describes subsystem states",
+    "Bounded operators B(H) form the appropriate observable algebra",
+    "The strong subadditivity of entropy holds for quantum systems"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "Define the set of separable states as SEP(H_A \u2297 H_B) = conv{\u03c1_A \u2297 \u03c1_B}",
+        "issue": "This is the definition of product states, not separable states. Separable states are convex combinations \u03a3_i p_i \u03c1_i^A \u2297 \u03c1_i^B, not just the convex hull of product states.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Define SEP = {\u03a3_i p_i \u03c1_i^A \u2297 \u03c1_i^B : p_i \u2265 0, \u03a3_i p_i = 1}"
+      },
+      {
+        "step": "Since any mixed state \u03c3 with S(\u03c3) > 0 must satisfy S(\u03c3_A), S(\u03c3_B) < log d",
+        "issue": "This is false. A separable mixed state can have marginal entropies equal to log d. Consider the maximally mixed separable state.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "This claim needs to be removed or completely reworked"
+      },
+      {
+        "step": "Holevo bound constrains the mutual information to I(A:B)_\u03c3 \u2264 min(2S(\u03c3_A), 2S(\u03c3_B))",
+        "issue": "The Holevo bound concerns accessible information in quantum communication, not mutual information of arbitrary states. This is a misapplication.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Use the correct bound: for separable states, I(A:B) \u2264 min(2S(\u03c1_A), 2S(\u03c1_B)) follows from subadditivity"
+      },
+      {
+        "step": "By Tsirelson's theorem, the maximally entangled state achieves \u27e8C\u27e9_\u03a6 = 2\u221a2",
+        "issue": "The proof doesn't specify what a_0, a_1, b_0, b_1 are. Without specifying these observables, the claim is meaningless.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Explicitly define the observables as Pauli matrices or specify their properties"
+      },
+      {
+        "step": "Bell's theorem guarantees that for any separable state \u03c3, we have \u27e8C\u27e9_\u03c3 \u2264 2",
+        "issue": "Bell's theorem is about local hidden variable theories, not directly about separable states. The connection needs to be established.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Prove that separable states admit local hidden variable models, then apply Bell's theorem"
+      },
+      {
+        "step": "The Coffman-Kundu-Wootters monogamy relation shows that for three-qubit systems, the inequality (C_AB)\u00b2 + (C_AC)\u00b2 \u2264 1",
+        "issue": "The notation C_AB is undefined. Is this concurrence? Correlation? The monogamy inequality is stated incorrectly.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Define C_AB as concurrence and state the correct monogamy relation"
+      }
+    ],
+    "hidden_assumptions": [
+      "That the convex hull of product states equals the set of separable states",
+      "That all entangled states violate Bell inequalities",
+      "That mutual information bounds for separable states follow from Holevo's theorem",
+      "That the CHSH operator is well-defined for arbitrary dimensional systems",
+      "That monogamy of entanglement has 'no classical analogue' without defining what this means"
+    ],
+    "circular_reasoning": false,
+    "circular_details": "",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to show entanglement enables correlations beyond single-particle physics for all composite systems with dim \u2265 2, but only proves it for maximally entangled states in specific scenarios. It doesn't establish this for general entangled states or general correlation structures.",
+    "citation_issues": [
+      "Holevo bound is about accessible information in quantum communication protocols, not general mutual information bounds",
+      "Tsirelson's theorem gives the bound but doesn't guarantee any particular state achieves it without proper construction",
+      "The monogamy relation is misstated and uses undefined notation"
+    ],
+    "structural_soundness": 0.4,
+    "overall_assessment": "This proof contains multiple critical errors including incorrect definitions, misapplied theorems, and unjustified claims. While the general intuition that entanglement enables non-classical correlations is correct, the mathematical execution is severely flawed and would require substantial revision to be rigorous.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "Proves only that specific entangled states (maximally entangled) have correlation structures and information measures that differ from separable states, but does not establish the general claim for 'any composite quantum system' or that these violations cannot be reproduced by 'any separable state'",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Tsirelson's bound applies to the specific observables chosen",
+      "The CHSH observables a\u2080, a\u2081, b\u2080, b\u2081 exist and are properly defined for the given Hilbert spaces",
+      "The maximally entangled state exists for arbitrary dimensions (requires d \u2265 2)",
+      "The Holevo bound applies to the specific decomposition used in Step 3",
+      "Three-qubit systems are relevant to the general proposition about arbitrary composite systems",
+      "The connection between correlation violations and information-theoretic violations is valid"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "3",
+        "issue": "The Holevo bound application is incorrect - the bound I(A:B) \u2264 min(2S(\u03c3_A), 2S(\u03c3_B)) is not generally true for separable states, and the justification conflates classical-quantum channels with separable states"
+      },
+      {
+        "step": "4",
+        "issue": "The inequality I(A:B)_\u03a6 > min(2S(\u03c3_A), 2S(\u03c3_B)) for any \u03c3 with S(\u03c3) > 0 is not established since Step 3's bound is invalid"
+      },
+      {
+        "step": "5",
+        "issue": "No verification that the specific observables achieving Tsirelson's bound exist for the given Hilbert space dimensions"
+      },
+      {
+        "step": "7",
+        "issue": "Introduces three-qubit monogamy without establishing relevance to the general bipartite proposition, and the inequality form is stated without proper definition of C_AB, C_AC"
+      },
+      {
+        "step": "9",
+        "issue": "The synthesis is invalid because it relies on flawed steps and doesn't establish the general claim about 'any composite system' from specific examples"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Only considers maximally entangled states, not general entangled states",
+      "No proof that violations hold for arbitrary dimensions beyond d \u2265 2",
+      "Step 8 explicitly acknowledges a gap in connecting entanglement to topological order",
+      "No demonstration that the specific examples generalize to all composite systems",
+      "Missing rigorous definition of what constitutes 'single-particle product states' versus general separable states"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The claim that maximally entangled state |\u03a6\u27e9 has S(\u03c1) = 0 while S(\u03c1_A) = S(\u03c1_B) = log d is incorrect - this violates strong subadditivity which is assumed in the proof itself",
+      "The mutual information bound I(A:B)_\u03c3 \u2264 min(2S(\u03c3_A), 2S(\u03c3_B)) for separable states is incorrectly stated - the correct bound is I(A:B)_\u03c3 \u2264 min(S(\u03c3_A), S(\u03c3_B))",
+      "The CHSH inequality violation claim \u27e8C\u27e9_\u03a6 = 2\u221a2 > 2 uses an incorrectly normalized CHSH operator - the standard CHSH operator gives maximum value 2\u221a2 \u2248 2.83, not exactly 2\u221a2",
+      "The monogamy inequality (C_AB)\u00b2 + (C_AC)\u00b2 \u2264 1 is stated without proper definition of C_AB and appears to confuse concurrence with CHSH correlations"
+    ],
+    "assumption_conflicts": [
+      "Strong subadditivity assumption conflicts with the entropy calculations presented for maximally entangled states",
+      "The definition of separable states as conv{\u03c1_A \u2297 \u03c1_B} conflicts with the standard definition which includes convex combinations of product states",
+      "The claim about 'single-particle product states' is imprecise and conflicts with the rigorous treatment of separable states in quantum information theory"
+    ],
+    "beneficial_connections": [
+      "Connects to proof [19c10dc86a65] on quantum coherence and interference effects",
+      "Relates to proof [23f022368edb] on entanglement-geometry correspondence",
+      "Supports proof [2cc2431e06a6] on quantum thresholds creating discrete classes of outcomes",
+      "Complements proof [06d6ace265c2] on quantum-classical boundary through environmental decoherence"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof attempts to establish important results about entanglement vs separability but contains multiple mathematical errors in entropy calculations, inequality bounds, and operator definitions. The core intuition about entanglement creating non-classical correlations is sound but the technical execution is severely flawed."
+  },
+  "confidence_score": 0.27999999999999997,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.29999999999999993
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.29999999999999993
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous categorical framework connecting entanglement witnesses to topological invariants in many-body systems. Current approaches use physical intuition rather than mathematical axiomatization. Need formal theory of 'emergent constraints' from entanglement patterns.",
+  "limitations": [
+    "The connection between microscopic entanglement structure and macroscopic topological order lacks complete mathematical formalization",
+    "The proof does not fully characterize ALL constraints imposed by entanglement, only demonstrates existence",
+    "The relationship between information-theoretic constraints and physical observables needs more rigorous treatment",
+    "Proof focuses on bipartite systems; multipartite case requires additional machinery",
+    "Does not quantify the full space of entanglement-imposed constraints",
+    "Connection to condensed matter examples remains at physical rather than mathematical level",
+    "Assumes finite-dimensional Hilbert spaces"
+  ],
+  "source_convergence": {
+    "structural_claim": "Quantum entanglement imposes fundamental constraints on information and correlations that cannot be understood through single-particle physics",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Monogamy of Entanglement",
+        "domain_id": "quantum_foundations",
+        "domain_name": "Quantum Foundations",
+        "link_type": "direct",
+        "structural_conclusion": "Quantum entanglement cannot be freely shared among multiple parties, imposing fundamental constraints on multipartite correlations"
+      },
+      {
+        "result_id": "",
+        "result_name": "No-Cloning Theorem",
+        "domain_id": "quantum_foundations",
+        "domain_name": "Quantum Foundations",
+        "link_type": "direct",
+        "structural_conclusion": "Quantum states cannot be perfectly duplicated, revealing fundamental constraints on quantum information"
+      },
+      {
+        "result_id": "",
+        "result_name": "Fractional Quantum Hall Effect",
+        "domain_id": "condensed_matter",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Strongly correlated electrons form incompressible quantum fluids that cannot be understood through single-particle physics"
+      },
+      {
+        "result_id": "",
+        "result_name": "Laughlin Wavefunction",
+        "domain_id": "condensed_matter",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Topological order emerges from specific quantum entanglement patterns in the many-body wavefunction"
+      }
+    ],
+    "domains": [
+      "quantum_foundations",
+      "condensed_matter"
+    ],
+    "domain_names": [
+      "Quantum Foundations",
+      "Condensed Matter Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.476,
+      "independence": 0.8,
+      "adversarial": 0.6,
+      "reproducibility": 0.6299999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.6573,
+      "confidence_category": "supported"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:12:25.802377+00:00",
+    "id": "4fc35bc43e57"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.33238500000000004
+  }
+}

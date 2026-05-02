@@ -1,0 +1,312 @@
+{
+  "id": "6190bf57a2c0",
+  "convergence_id": "29bf1ab92bd2",
+  "timestamp": "2026-05-02T12:51:12.520891+00:00",
+  "proposition": "Let L be a linear differential operator on L\u00b2(\u211d\u207f) with periodic potential V(x) = V(x + R) for all R in a Bravais lattice \u039b. Then the spectrum \u03c3(L) has a band structure: \u03c3(L) = \u22c3\u1d62 B\u1d62 where each B\u1d62 is a closed interval, and there exist open intervals (a\u2c7c, b\u2c7c) \u2282 \u211d with (a\u2c7c, b\u2c7c) \u2229 \u03c3(L) = \u2205 (spectral gaps).",
+  "proposition_natural": "Periodic spatial structures create forbidden frequency/energy bands through wave interference",
+  "formalisation_type": "isomorphism",
+  "mathematical_apparatus": [
+    "Functional analysis",
+    "Algebraic structures",
+    "Topology"
+  ],
+  "apparatus_justification": "Functional analysis provides the spectral theory of operators needed to formalize band structures and forbidden frequencies. Algebraic structures capture the periodicity through group actions on lattices. Topology is essential for continuity of dispersion relations and compactness of Brillouin zones.",
+  "proof_natural": "**Proposition.** Let L be a linear differential operator on L\u00b2(\u211d\u207f) with periodic potential V(x) = V(x + R) for all R in a Bravais lattice \u039b. Then the spectrum \u03c3(L) has a band structure: \u03c3(L) = \u22c3\u1d62 B\u1d62 where each B\u1d62 is a closed interval, and there exist open intervals (a\u2c7c, b\u2c7c) \u2282 \u211d with (a\u2c7c, b\u2c7c) \u2229 \u03c3(L) = \u2205 (spectral gaps).\n\n**Proof.** We assume that the potential V is bounded and measurable with V \u2208 L\u221e\u2097\u2092c(\u211d\u207f), the lattice \u039b is a discrete subgroup of \u211d\u207f spanning \u211d\u207f with fundamental domain \u03a9 of finite measure, and the operator L = -\u0394 + V(x) is self-adjoint on an appropriate domain. We further assume that L has discrete spectrum when restricted to L\u00b2(\u03a9) with periodic boundary conditions.\n\nBy the Floquet-Bloch theorem applied to periodic differential operators, any eigenfunction of L can be expressed in the form \u03c8\u2096(x) = e\u2071\u1d4f\u00b7\u02e3u\u2096(x), where u\u2096(x) possesses the periodicity of the lattice \u039b. This decomposition allows us to reduce the spectral problem on all of \u211d\u207f to a family of problems parametrized by the quasimomentum k.\n\nFor each fixed k in the first Brillouin zone B, we consider the operator L\u2096 = e\u207b\u2071\u1d4f\u00b7\u02e3Le\u2071\u1d4f\u00b7\u02e3 acting on L\u00b2(\u03a9) with periodic boundary conditions. Since L\u2096 is self-adjoint on the compact domain \u03a9 with periodic boundary conditions, it possesses a discrete spectrum {E\u2099(k)}\u2099\u208c\u2081^\u221e, where the eigenvalues are ordered such that E\u2081(k) \u2264 E\u2082(k) \u2264 ... for each k.\n\nBy the Kato-Rellich theorem on the continuous dependence of eigenvalues of self-adjoint operators, each function k \u21a6 E\u2099(k) is continuous over the compact Brillouin zone B. Since B is compact and connected, and the continuous image of a compact set is compact while the continuous image of a connected set is connected, it follows that the nth band B\u2099 = {E\u2099(k) : k \u2208 B} forms a closed interval.\n\nThe Floquet-Bloch decomposition provides a complete spectral characterization, yielding \u03c3(L) = \u22c3\u2096\u2208B \u22c3\u2099 {E\u2099(k)} = \u22c3\u2099 B\u2099. This establishes the band structure of the spectrum.\n\nWhen max(B\u2099) < min(B\u2099\u208a\u2081) for some n, the open interval (max(B\u2099), min(B\u2099\u208a\u2081)) constitutes a spectral gap, as it lies outside \u03c3(L) by construction.\n\n[Note: The existence of such gaps is not universal and depends on specific conditions on the potential V, including its strength and detailed form. Without additional assumptions on V, we cannot guarantee that spectral gaps exist, only that the spectrum has a band structure.]\n\nThis completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.MeasureTheory.Function.L2Space\nimport Mathlib.Analysis.InnerProductSpace.Spectrum\nimport Mathlib.Topology.Basic\nimport Mathlib.Topology.Algebra.Order.Compact\nimport Mathlib.Data.Set.Intervals.Basic\nimport Mathlib.Data.Set.Lattice\n\n/-- A Bravais lattice in \u211d\u207f -/\nstructure BravaisLattice (n : \u2115) where\n  /-- The lattice as a subgroup of \u211d\u207f -/\n  lattice : AddSubgroup (Fin n \u2192 \u211d)\n  /-- The lattice is discrete -/\n  discrete : sorry -- Need discrete subgroup structure\n\n/-- A periodic potential with respect to a Bravais lattice -/\nstructure PeriodicPotential (n : \u2115) (\u039b : BravaisLattice n) where\n  V : (Fin n \u2192 \u211d) \u2192 \u211d\n  periodic : \u2200 (x : Fin n \u2192 \u211d) (R : \u039b.lattice), V (x + R) = V x\n\n/-- Linear differential operator with periodic potential -/\nstructure PeriodicDifferentialOperator (n : \u2115) (\u039b : BravaisLattice n) where\n  /-- The operator on L\u00b2(\u211d\u207f) -/\n  L : L\u00b2(Fin n \u2192 \u211d) \u2192L[\u211d] L\u00b2(Fin n \u2192 \u211d)\n  /-- The periodic potential -/\n  potential : PeriodicPotential n \u039b\n  /-- L is self-adjoint -/\n  self_adjoint : sorry -- Need self-adjoint operator definition\n\n/-- The first Brillouin zone -/\ndef BrillouinZone (n : \u2115) (\u039b : BravaisLattice n) : Set (Fin n \u2192 \u211d) :=\n  sorry -- Need reciprocal lattice and Brillouin zone construction\n\n/-- Floquet-Bloch eigenfunction -/\nstructure FloquetBlochEigenfunction (n : \u2115) (\u039b : BravaisLattice n) where\n  k : Fin n \u2192 \u211d\n  u : (Fin n \u2192 \u211d) \u2192 \u2102\n  periodic : sorry -- u has lattice periodicity\n  eigenfunction : sorry -- \u03c8_k(x) = e^(ik\u00b7x)u(x) is eigenfunction\n\n/-- The k-dependent operator L_k -/\ndef BlochOperator (n : \u2115) (\u039b : BravaisLattice n) (L : PeriodicDifferentialOperator n \u039b) \n    (k : Fin n \u2192 \u211d) : sorry :=\n  sorry -- Need L_k = e^(-ik\u00b7x)Le^(ik\u00b7x) on periodic domain\n\n/-- Energy bands as functions of k -/\ndef EnergyBand (n : \u2115) (\u039b : BravaisLattice n) (L : PeriodicDifferentialOperator n \u039b) \n    (band_index : \u2115) : (Fin n \u2192 \u211d) \u2192 \u211d :=\n  sorry -- Need eigenvalue E_n(k) of L_k\n\n/-- The nth spectral band -/\ndef SpectralBand (n : \u2115) (\u039b : BravaisLattice n) (L : PeriodicDifferentialOperator n \u039b) \n    (band_index : \u2115) : Set \u211d :=\n  {E | \u2203 k \u2208 BrillouinZone n \u039b, E = EnergyBand n \u039b L band_index k}\n\n/-- Main theorem: Band structure of periodic operators -/\ntheorem band_structure_theorem (n : \u2115) (\u039b : BravaisLattice n) \n    (L : PeriodicDifferentialOperator n \u039b) :\n    \u2203 (bands : \u2115 \u2192 Set \u211d),\n      (\u2200 i, \u2203 (a b : \u211d), bands i = Icc a b) \u2227 \n      spectrum \u211d L.L = \u22c3 i, bands i \u2227\n      \u2203 (gaps : Set (\u211d \u00d7 \u211d)), \u2200 (a b) \u2208 gaps, \n        Ioo a b \u2229 spectrum \u211d L.L = \u2205 := by\n  -- Step 1: Floquet-Bloch decomposition\n  have floquet_bloch : sorry := sorry -- Need Floquet's theorem\n  \n  -- Step 2: Discrete spectrum for fixed k\n  have discrete_spectrum : \u2200 k \u2208 BrillouinZone n \u039b, \n    sorry := sorry -- Need spectrum of L_k is discrete\n  \n  -- Step 3: Continuity of E_n(k)\n  have energy_continuous : \u2200 i, Continuous (EnergyBand n \u039b L i) := \n    sorry -- Need perturbation theory\n  \n  -- Step 4: Each band is a closed interval\n  have band_interval : \u2200 i, \u2203 (a b : \u211d), SpectralBand n \u039b L i = Icc a b := by\n    intro i\n    sorry -- Need: continuous image of compact connected set\n  \n  -- Step 5: Spectrum is union of bands\n  have spectrum_union : spectrum \u211d L.L = \u22c3 i, SpectralBand n \u039b L i := \n    sorry -- Need Floquet-Bloch spectral decomposition\n  \n  -- Step 6: Gaps between bands\n  have gaps_exist : \u2203 (gaps : Set (\u211d \u00d7 \u211d)), \u2200 (a b) \u2208 gaps, \n    Ioo a b \u2229 spectrum \u211d L.L = \u2205 := by\n    sorry -- Need gap conditions on potential\n  \n  use SpectralBand n \u039b L\n  constructor\n  \u00b7 exact band_interval\n  constructor\n  \u00b7 exact spectrum_union\n  \u00b7 exact gaps_exist",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "By Floquet-Bloch theory, eigenfunctions of L can be written as \u03c8\u2096(x) = e\u2071\u1d4f\u00b7\u02e3u\u2096(x) where u\u2096 has the periodicity of the lattice",
+      "justification": "Application of Floquet's theorem to periodic differential operators",
+      "dependencies": [
+        "Floquet's theorem (1883)"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "For fixed k \u2208 B (first Brillouin zone), the operator L\u2096 = e\u207b\u2071\u1d4f\u00b7\u02e3Le\u2071\u1d4f\u00b7\u02e3 on L\u00b2(\u03a9) with periodic boundary conditions has discrete spectrum {E\u2099(k)}\u2099\u208c\u2081^\u221e",
+      "justification": "L\u2096 is self-adjoint on compact domain \u03a9 with periodic boundary conditions",
+      "dependencies": [
+        "Spectral theorem for compact self-adjoint operators"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Each E\u2099(k) is continuous in k over the compact Brillouin zone B",
+      "justification": "Perturbation theory for isolated eigenvalues of self-adjoint operators",
+      "dependencies": [
+        "Kato-Rellich theorem",
+        "Step 2"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The nth band is B\u2099 = {E\u2099(k) : k \u2208 B}, which is a closed interval by continuity and compactness",
+      "justification": "Continuous image of compact set is compact; connected image of connected set is connected",
+      "dependencies": [
+        "Step 3",
+        "Basic topology"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The spectrum \u03c3(L) = \u22c3\u2096\u2208B \u22c3\u2099 {E\u2099(k)} = \u22c3\u2099 B\u2099",
+      "justification": "Floquet-Bloch decomposition gives complete spectral characterization",
+      "dependencies": [
+        "Step 1",
+        "Step 4",
+        "Floquet-Bloch theorem"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "If max(B\u2099) < min(B\u2099\u208a\u2081) for some n, then (max(B\u2099), min(B\u2099\u208a\u2081)) is a spectral gap",
+      "justification": "Direct consequence of the band structure",
+      "dependencies": [
+        "Step 5"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "[Gap: Existence of gaps requires specific conditions on V that are not universally true]",
+      "justification": "Gap opening depends on strength and form of periodic potential",
+      "dependencies": [
+        "Physical considerations"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Floquet's theorem",
+      "authors": "Gaston Floquet",
+      "year": "1883",
+      "field": "Differential equations",
+      "statement": "Solutions to linear ODEs with periodic coefficients can be written as e^(\u03bct)p(t) where p(t) is periodic",
+      "usage": "Extended to PDEs to decompose eigenfunctions in periodic potentials"
+    },
+    {
+      "name": "Kato-Rellich theorem",
+      "authors": "Tosio Kato, Franz Rellich",
+      "year": "1950s",
+      "field": "Functional analysis",
+      "statement": "Eigenvalues of self-adjoint operators depend continuously on parameters under suitable conditions",
+      "usage": "Establishes continuity of E\u2099(k) with respect to k"
+    },
+    {
+      "name": "Spectral theorem for self-adjoint operators",
+      "authors": "David Hilbert, John von Neumann",
+      "year": "1920s-1930s",
+      "field": "Functional analysis",
+      "statement": "Self-adjoint operators on Hilbert spaces have real spectrum and spectral decomposition",
+      "usage": "Guarantees discrete spectrum for L\u2096 on compact domain"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The potential V is bounded and measurable",
+    "The lattice \u039b is a discrete subgroup of \u211d\u207f spanning \u211d\u207f",
+    "The operator L = -\u0394 + V(x) is self-adjoint on appropriate domain",
+    "The fundamental domain of \u039b has finite measure",
+    "V \u2208 L\u221e\u2097\u2092c(\u211d\u207f)",
+    "The operator L has discrete spectrum when restricted to L\u00b2(\u03a9) with periodic boundary conditions, where \u03a9 is a fundamental domain"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.4,
+    "gaps": [
+      {
+        "step": "Application of Floquet-Bloch theorem",
+        "issue": "The proof claims 'any eigenfunction of L can be expressed in the form \u03c8\u2096(x) = e\u2071\u1d4f\u00b7\u02e3u\u2096(x)' but this is false. Floquet-Bloch gives a decomposition of L\u00b2(\u211d\u207f) into a direct integral, not a statement about individual eigenfunctions. L may not even have eigenfunctions in L\u00b2(\u211d\u207f).",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "State the Floquet-Bloch decomposition correctly as L\u00b2(\u211d\u207f) = \u222b\u2295_{B} L\u00b2(\u03a9) dk and explain how this leads to the spectral decomposition."
+      },
+      {
+        "step": "Definition of L\u2096",
+        "issue": "The operator L\u2096 = e\u207b\u2071\u1d4f\u00b7\u02e3Le\u2071\u1d4f\u00b7\u02e3 is not well-defined on L\u00b2(\u03a9) with periodic boundary conditions. The conjugation by e^{ik\u00b7x} doesn't preserve periodicity.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Define L\u2096 properly as (-i\u2207 + k)\u00b2 + V(x) acting on periodic functions, or work with the correct fiber decomposition."
+      },
+      {
+        "step": "Discreteness of spectrum for L\u2096",
+        "issue": "The claim that L\u2096 has discrete spectrum is unjustified. Even with periodic boundary conditions on a compact domain, this requires V to satisfy stronger conditions than just L\u221e\u2097\u2092c.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Add assumption that V is relatively compact with respect to -\u0394, or that -\u0394 + V has compact resolvent on L\u00b2(\u03a9)."
+      },
+      {
+        "step": "Application of Kato-Rellich theorem",
+        "issue": "The Kato-Rellich theorem concerns perturbations, not parameter dependence. The correct result needed is about analytic families of operators or the continuity of eigenvalues for type (A) analytic families.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Cite the correct theorem about continuity of eigenvalues for analytic families of self-adjoint operators."
+      },
+      {
+        "step": "Completeness of spectral characterization",
+        "issue": "The equality \u03c3(L) = \u22c3\u2096\u2208B \u22c3\u2099 {E\u2099(k)} is stated without justification. This requires proving that the Floquet-Bloch decomposition gives the complete spectrum.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Prove that the spectrum is exactly the union of spectra of fiber operators, using the direct integral decomposition."
+      },
+      {
+        "step": "Band structure claim",
+        "issue": "The proof shows each B\u2099 is a closed interval but doesn't address whether the indexing is well-defined globally or whether bands can overlap completely.",
+        "severity": "minor",
+        "fixable": true,
+        "suggested_fix": "Clarify that bands may overlap and the indexing n may not be globally consistent across all k."
+      }
+    ],
+    "hidden_assumptions": [
+      "L has no continuous spectrum",
+      "Eigenvalues E\u2099(k) can be labeled consistently across all k",
+      "The domain of L is precisely specified to ensure self-adjointness",
+      "V is real-valued (needed for self-adjointness)",
+      "The Brillouin zone B is compact and connected",
+      "The operator family k \u2192 L\u2096 forms an analytic family"
+    ],
+    "circular_reasoning": false,
+    "circular_details": "",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to establish band structure for any periodic potential V \u2208 L\u221e\u2097\u2092c, but the arguments require stronger conditions on V. Also claims existence of gaps without proving they actually occur.",
+    "citation_issues": [
+      "Floquet-Bloch theorem is misstated - it's about decomposition of the Hilbert space, not individual eigenfunctions",
+      "Kato-Rellich theorem is about perturbations, not the parameter dependence needed here",
+      "No citation for the direct integral decomposition actually needed"
+    ],
+    "structural_soundness": 0.3,
+    "overall_assessment": "The proof contains several critical errors in applying Floquet-Bloch theory and confuses the decomposition of L\u00b2(\u211d\u207f) with statements about eigenfunctions. The operator L\u2096 is incorrectly defined, and key steps lack justification. While the general strategy could work, the execution is deeply flawed.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "Proves that the spectrum has a band structure under additional unstated assumptions, but does not prove the existence of spectral gaps which is part of the stated proposition",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The Brillouin zone B is well-defined and compact",
+      "The operator L has compact resolvent when restricted to periodic boundary conditions",
+      "The eigenvalues E_n(k) are ordered: E_1(k) \u2264 E_2(k) \u2264 ...",
+      "The bands B_n are actually intervals (not just compact connected sets)",
+      "The dimension n and specific form of the Bravais lattice",
+      "Regularity conditions on V beyond L^\u221e_loc needed for Floquet theory",
+      "Domain conditions for self-adjointness of L on L\u00b2(\u211d\u207f)"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 4",
+        "issue": "Continuous image of compact connected set is compact and connected, but not necessarily an interval. Need additional argument that B_n has no holes."
+      },
+      {
+        "step": "Step 5",
+        "issue": "The equality \u03c3(L) = \u22c3_n B_n requires proof that this union captures the entire spectrum and that there are no additional spectral points."
+      },
+      {
+        "step": "Step 7",
+        "issue": "Acknowledges gaps may not exist but the proposition claims they do exist. This contradicts the stated proposition."
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No proof that spectral gaps actually exist",
+      "Missing justification that bands are intervals rather than arbitrary compact connected sets",
+      "No verification that the Floquet-Bloch decomposition is complete",
+      "Missing analysis of band ordering and potential band crossings",
+      "No treatment of essential spectrum vs discrete spectrum distinction"
+    ],
+    "internal_score": 0.3
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": false,
+    "contradiction_details": [],
+    "assumption_conflicts": [],
+    "beneficial_connections": [
+      "Connects to [61a7f96a6f26] on topological band structures - the band structure proven here provides the foundation for topological invariants in that proof",
+      "Relates to [574d327c8078] on scale-dependent descriptions - the Brillouin zone construction represents a scale-dependent effective description of the periodic system",
+      "Supports [6c42cb5c51b2] on topological robustness - spectral gaps in band structures are topologically protected features that persist under perturbations",
+      "Complements [4aa47cb7a004] on topological constraints - the lattice periodicity represents a fundamental topological constraint on the system evolution"
+    ],
+    "consistency_score": 0.85,
+    "notes": "The proof is mathematically sound but incomplete - it correctly establishes band structure existence but fails to prove spectral gaps always exist. The gap between bands requires additional conditions on the potential V that are not universally satisfied. The Floquet-Bloch theory application is standard and well-established. No contradictions with existing proofs found, and several beneficial connections to topological and constraint-based proofs identified."
+  },
+  "confidence_score": 0.4375,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.4,
+    "internal": 0.3,
+    "cross_proof": 0.85,
+    "calibration": 0.6
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.4,
+    "internal": 0.3,
+    "cross_proof": 0.85,
+    "calibration": 0.6
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": true,
+  "new_mathematics_needed": "",
+  "limitations": [
+    "The proof does not establish that gaps necessarily exist, only that the spectrum has band structure",
+    "Specific conditions on V for gap opening are not characterized",
+    "The connection to wave interference mentioned in the proposition is implicit through Floquet-Bloch decomposition but not explicitly proven",
+    "Applies only to perfectly periodic structures",
+    "Requires bounded potentials",
+    "Does not quantify gap sizes",
+    "Does not address finite-size effects",
+    "The isomorphism between electronic and photonic cases requires separate Maxwell equation analysis"
+  ],
+  "source_convergence": {
+    "structural_claim": "Periodic spatial structures create forbidden frequency/energy bands through wave interference",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Topological Band Theory",
+        "domain_id": "field_a",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Electronic band structures are characterized by topological invariants that determine quantized response functions"
+      },
+      {
+        "result_id": "",
+        "result_name": "Photonic Band Gap Theory",
+        "domain_id": "field_b",
+        "domain_name": "Optics and Photonics",
+        "link_type": "direct",
+        "structural_conclusion": "Periodic dielectric structures create forbidden frequency bands for photons analogous to electronic band gaps"
+      }
+    ],
+    "domains": [
+      "condensed_matter",
+      "optics"
+    ],
+    "domain_names": [
+      "Condensed Matter Physics",
+      "Optics and Photonics"
+    ],
+    "ea_scores": {
+      "strength": 0.238,
+      "independence": 0.7,
+      "adversarial": 0.12,
+      "reproducibility": 0.42,
+      "depth_consistency": 1.0,
+      "confidence": 0.4334,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:17:38.669067+00:00",
+    "id": "29bf1ab92bd2"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.26691
+  }
+}

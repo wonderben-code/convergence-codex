@@ -1,0 +1,38 @@
+{
+  "proof_id": "087da119976b",
+  "timestamp": "2026-05-02T12:52:47.744669+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "constraint_logic was considered since these are equilibrium/stability problems, but the emphasis on symmetry-breaking and threshold conditions makes an axiomatic approach more natural for capturing the universal pattern."
+      ],
+      "reasoning": "The convergence identifies a shared abstract principle across domains: systems undergo symmetry-breaking transitions when driving forces exceed dissipation thresholds. This is best captured by axioms characterizing threshold conditions, symmetry groups, and order parameter emergence that both optical and fluid systems satisfy."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Dynamical systems, Functional analysis, Differential geometry",
+      "alternatives_considered": [],
+      "reasoning": "Dynamical systems provides the framework for bifurcation theory and stability analysis needed to formalize symmetry breaking transitions. Functional analysis supplies the operator theory for linearization around equilibria and spectral analysis of stability. Differential geometry handles the manifold structure of phase spaces and symmetry groups."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof establishes that when driving forces exceed a critical threshold \u03bb*, the linearized system develops unstable modes that grow exponentially. These modes respect the symmetry group but select specific directions in the group orbit, breaking symmetry. The main gaps involve rigorously connecting linear instability to nonlinear pattern formation and proving persistence of these patterns.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 8 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3537 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 2467 chars, 8 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "The formalization captures the basic structure but requires substantial development of dynamical systems theory in Lean. Key missing pieces include: (1) proper definition of G-equivariant dynamical systems on measure spaces, (2) spectral theory for parameter-dependent operators, (3) invariant manifold theory, and (4) bifurcation theory. The symmetry-breaking aspect is particularly challenging to formalize without a developed theory of equivariant dynamics."
+    }
+  ]
+}

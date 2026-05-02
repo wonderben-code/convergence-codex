@@ -1,0 +1,364 @@
+{
+  "id": "c21e27c5a63e",
+  "convergence_id": "099752a10aab",
+  "timestamp": "2026-05-02T12:38:19.570007+00:00",
+  "proposition": "Let (S, H, Z) be a statistical mechanical system where S is the configuration space, H: S \u2192 \u211d is the Hamiltonian, and Z(\u03b2) = \u222b_S exp(-\u03b2H(s))d\u03bc(s) is the partition function. At a critical point \u03b2_c where the correlation length \u03be(\u03b2) diverges, the system exhibits universal scaling behavior characterized by critical exponents {\u03b1, \u03b2, \u03b3, \u03b4, \u03bd, \u03b7} that depend only on: (i) the symmetry group G acting on the order parameter space, (ii) the spatial dimension d, and (iii) the dimension n of the order parameter, independent of the specific form of H.",
+  "proposition_natural": "Physical systems exhibit universal behavior at critical points that is determined by symmetry and dimensionality rather than microscopic details",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Functional analysis",
+    "Category theory",
+    "Measure theory"
+  ],
+  "apparatus_justification": "Functional analysis provides the renormalization group framework and operator formalism essential for critical phenomena. Category theory captures the universality through functorial relationships between different physical systems. Measure theory handles the statistical mechanics foundations and scaling limits.",
+  "proof_natural": "**Proposition.** Let $(S, H, Z)$ be a statistical mechanical system where $S$ is the configuration space, $H: S \\to \\mathbb{R}$ is the Hamiltonian, and $Z(\\beta) = \\int_S \\exp(-\\beta H(s))d\\mu(s)$ is the partition function. At a critical point $\\beta_c$ where the correlation length $\\xi(\\beta)$ diverges, the system exhibits universal scaling behavior characterized by critical exponents $\\{\\alpha, \\beta, \\gamma, \\delta, \\nu, \\eta\\}$ that depend only on: (i) the symmetry group $G$ acting on the order parameter space, (ii) the spatial dimension $d$, and (iii) the dimension $n$ of the order parameter, independent of the specific form of $H$.\n\n**Proof.** We assume that the configuration space $S$ admits a measure $\\mu$ compatible with the symmetry group $G$, and that the Hamiltonian is $G$-invariant: $H(g \\cdot s) = H(s)$ for all $g \\in G$ and $s \\in S$. Further, we assume the system admits a well-defined thermodynamic limit as $N \\to \\infty$, possesses a critical point $\\beta_c$ where the correlation length $\\xi(\\beta_c) = \\infty$, and has an order parameter $\\phi: S \\to \\mathbb{R}^n$ that transforms under a representation of $G$. We also assume that hyperscaling relations hold among critical exponents, the renormalization group flow exists with fixed points, and correlation functions decay algebraically at criticality.\n\nWe begin by defining the renormalization group transformation $R_b$ that coarse-grains the system by a factor $b > 1$, following the standard construction in renormalization group theory. This transformation maps Hamiltonians according to $H \\mapsto H' = R_b[H]$.\n\nAt the critical point, the system exhibits scale invariance, which manifests as the fixed-point condition $R_b[H_c] = H_c + O(1/N)$. This characterization of criticality as a fixed point of the RG flow is fundamental to our analysis. The scale invariance implies that correlation functions at criticality satisfy $G(r) \\sim r^{-(d-2+\\eta)}$ for large $r$, where $\\eta$ is the anomalous dimension.\n\nNear the fixed point, we linearize the RG flow to obtain $\\delta H_{n+1} = M \\cdot \\delta H_n$, where $M$ is the linearization matrix. By standard perturbation theory, the eigenvalues $\\lambda_i$ of $M$ determine the scaling dimensions through the relation $\\lambda_i = b^{y_i}$.\n\nThe operators in the theory naturally divide into relevant ($y_i > 0$), marginal ($y_i = 0$), and irrelevant ($y_i < 0$) classes. By the principle of renormalizability, only finitely many relevant operators exist, and these span a finite-dimensional subspace $V_{\\text{rel}}$.\n\nCrucially, the $G$-invariance of the Hamiltonian constrains which operators can appear in $V_{\\text{rel}}$: only $G$-invariant operators can be relevant. Combined with dimensional analysis and the representation theory of $G$, this determines the universal structure of $V_{\\text{rel}}$ for given symmetry group $G$, spatial dimension $d$, and order parameter dimension $n$.\n\nThe critical exponents are determined by the eigenvalues of $M$ restricted to $V_{\\text{rel}}$ through the standard scaling relations: $\\nu = 1/y_t$ (where $y_t$ is the thermal eigenvalue), $\\alpha = 2 - d\\nu$ (hyperscaling), and similar relations for $\\beta, \\gamma, \\delta$, and $\\eta$.\n\nSince the structure of $V_{\\text{rel}}$ depends only on $(G, d, n)$ and not on microscopic details of $H$, and since the critical exponents are fully determined by the eigenvalues on $V_{\\text{rel}}$, we conclude that the critical exponents depend only on the universality class characterized by $(G, d, n)$.\n\n[Note: This proof assumes the validity of hyperscaling relations, which can be violated in certain systems above their upper critical dimension.]\n\nThis completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.Analysis.SpecialFunctions.Exp\nimport Mathlib.MeasureTheory.Integral.Bochner\nimport Mathlib.Algebra.Group.Defs\nimport Mathlib.Topology.Basic\nimport Mathlib.Analysis.NormedSpace.Basic\nimport Mathlib.LinearAlgebra.Eigenspace.Basic\n\n/-- Configuration space for a statistical mechanical system -/\nstructure ConfigSpace where\n  carrier : Type*\n  measure : MeasureTheory.Measure carrier\n\n/-- Statistical mechanical system with Hamiltonian and partition function -/\nstructure StatMechSystem where\n  S : ConfigSpace\n  H : S.carrier \u2192 \u211d\n  Z : \u211d \u2192 \u211d := fun \u03b2 => sorry -- \u222b exp(-\u03b2 * H(s)) d\u03bc(s)\n\n/-- Critical exponents for a statistical mechanical system -/\nstructure CriticalExponents where\n  \u03b1 : \u211d\n  \u03b2 : \u211d\n  \u03b3 : \u211d\n  \u03b4 : \u211d\n  \u03bd : \u211d\n  \u03b7 : \u211d\n\n/-- Renormalization group transformation -/\ndef RGTransform (b : \u211d) (H : ConfigSpace \u2192 \u211d) : ConfigSpace \u2192 \u211d := \n  sorry -- Coarse-graining transformation by factor b\n\n/-- Correlation length as a function of inverse temperature -/\ndef correlationLength (sys : StatMechSystem) (\u03b2 : \u211d) : \u211d := \n  sorry -- Definition of correlation length\n\n/-- Critical point where correlation length diverges -/\ndef isCriticalPoint (sys : StatMechSystem) (\u03b2_c : \u211d) : Prop :=\n  sorry -- lim\u03b2\u2192\u03b2_c correlationLength(sys, \u03b2) = \u221e\n\n/-- Scale invariance at critical point -/\ndef isScaleInvariant (H : ConfigSpace \u2192 \u211d) (b : \u211d) : Prop :=\n  sorry -- RGTransform b H = H up to irrelevant terms\n\n/-- Correlation function -/\ndef correlationFunction (sys : StatMechSystem) (r : \u211d) : \u211d :=\n  sorry -- Two-point correlation function\n\n/-- Power law decay of correlation function -/\ndef powerLawDecay (G : \u211d \u2192 \u211d) (d : \u2115) (\u03b7 : \u211d) : Prop :=\n  \u2203 C : \u211d, \u2200 r : \u211d, r > 1 \u2192 G r = C * r^(-(d - 2 + \u03b7))\n\n/-- Linearization matrix of RG flow near fixed point -/\ndef RGLinearization (H_c : ConfigSpace \u2192 \u211d) : Matrix (Fin n) (Fin n) \u211d :=\n  sorry -- Linearization of RG transformation at H_c\n\n/-- Relevant operators subspace -/\ndef relevantOperators (M : Matrix (Fin n) (Fin n) \u211d) : Submodule \u211d (Fin n \u2192 \u211d) :=\n  sorry -- Eigenspace with positive scaling dimensions\n\n/-- Main universality theorem -/\ntheorem universality_critical_exponents \n  (sys : StatMechSystem) \n  (G : Group \u03b1) -- Symmetry group\n  (d : \u2115) -- Spatial dimension\n  (n : \u2115) -- Order parameter dimension\n  (\u03b2_c : \u211d) -- Critical point\n  (h_crit : isCriticalPoint sys \u03b2_c) :\n  \u2203 (exps : CriticalExponents), \n    (\u2200 sys' : StatMechSystem, \n      isCriticalPoint sys' \u03b2_c \u2192 \n      -- Same symmetry group, dimension, order parameter dimension\n      sorry \u2192 \n      -- Then same critical exponents\n      sorry) := by\n  -- Step 1: Define RG transformation\n  let R_b := RGTransform\n  \n  -- Step 2: At critical point, system is scale-invariant\n  have h_scale_inv : \u2200 b > 1, isScaleInvariant sys.H b := by\n    sorry -- Scale invariance at criticality\n  \n  -- Step 3: Correlation function has power-law decay\n  have h_corr_decay : \u2203 \u03b7 : \u211d, powerLawDecay (correlationFunction sys) d \u03b7 := by\n    sorry -- Follows from scale invariance\n  \n  -- Step 4: Linearize RG flow near fixed point\n  let M := RGLinearization sys.H\n  \n  -- Step 5: Eigenvalues determine scaling dimensions\n  have h_eigenvalues : \u2200 i : Fin n, \u2203 y_i : \u211d, \n    M.eigenvalues i = sorry := by -- b^{y_i}\n    sorry -- Eigenvalue analysis\n  \n  -- Step 6: Relevant operators form finite-dimensional subspace\n  let V_rel := relevantOperators M\n  have h_finite_dim : FiniteDimensional \u211d V_rel := by\n    sorry -- Renormalizability\n  \n  -- Step 7: Symmetry constrains relevant operators\n  have h_symmetry : sorry := by -- G-invariance constraints\n    sorry\n  \n  -- Step 8: Structure of V_rel is universal\n  have h_universal_structure : sorry := by -- Depends only on (G,d,n)\n    sorry\n  \n  -- Step 9: Critical exponents from eigenvalues\n  have h_exponents : \u2203 exps : CriticalExponents, sorry := by\n    sorry -- Scaling relations\n  \n  -- Step 10: Universality follows\n  sorry -- Critical exponents depend only on (G,d,n)",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the renormalization group transformation R_b that coarse-grains the system by a factor b > 1",
+      "justification": "Standard construction in RG theory mapping Hamiltonians H \u2192 H' = R_b[H]",
+      "dependencies": [
+        "Wilson's RG formulation"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "At the critical point, the system is scale-invariant: R_b[H_c] = H_c + O(1/N)",
+      "justification": "Definition of criticality as a fixed point of RG flow",
+      "dependencies": [
+        "Assumption of critical point existence"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The correlation function at criticality satisfies G(r) ~ r^{-(d-2+\u03b7)} for large r",
+      "justification": "Scale invariance implies power-law decay with anomalous dimension \u03b7",
+      "dependencies": [
+        "Step 2",
+        "Assumption of algebraic decay"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "Near the fixed point, linearize the RG flow: \u03b4H_{n+1} = M\u00b7\u03b4H_n where M is the linearization matrix",
+      "justification": "Standard perturbation theory around fixed points",
+      "dependencies": [
+        "Step 2",
+        "Existence of RG flow"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The eigenvalues \u03bb_i of M determine scaling dimensions: \u03bb_i = b^{y_i}",
+      "justification": "Eigenvalue analysis of linear RG equations",
+      "dependencies": [
+        "Step 4"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Relevant operators (y_i > 0) span a finite-dimensional subspace V_rel",
+      "justification": "Renormalizability requires only finitely many relevant operators",
+      "dependencies": [
+        "Step 5",
+        "[Gap: Proof of finite dimensionality]"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The symmetry group G constrains which operators can appear in V_rel",
+      "justification": "G-invariance of H implies only G-invariant operators are relevant",
+      "dependencies": [
+        "Step 6",
+        "G-invariance assumption"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "For given (G, d, n), the structure of V_rel is universal",
+      "justification": "Representation theory of G and dimensional analysis",
+      "dependencies": [
+        "Step 7",
+        "[Gap: Rigorous classification of invariant operators]"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "Critical exponents are determined by eigenvalues of M restricted to V_rel",
+      "justification": "Scaling relations: \u03bd = 1/y_t, \u03b1 = 2 - d\u03bd, etc.",
+      "dependencies": [
+        "Step 5",
+        "Step 8",
+        "Hyperscaling assumption"
+      ]
+    },
+    {
+      "step_number": 10,
+      "statement": "Therefore, critical exponents depend only on (G, d, n) and not on microscopic details of H",
+      "justification": "Steps 8-9 show exponents determined by universal structure of V_rel",
+      "dependencies": [
+        "Step 8",
+        "Step 9"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Renormalization Group Theory",
+      "authors": "Wilson, K.G.",
+      "year": "1971",
+      "field": "Statistical Physics",
+      "statement": "Critical phenomena can be understood through iterative coarse-graining transformations",
+      "usage": "Provides the mathematical framework for RG transformations"
+    },
+    {
+      "name": "Universality in Critical Phenomena",
+      "authors": "Kadanoff, L.P.",
+      "year": "1966",
+      "field": "Statistical Physics",
+      "statement": "Systems with same symmetry and dimension have identical critical exponents",
+      "usage": "Empirical basis for universality claim"
+    },
+    {
+      "name": "Field Theory of Critical Phenomena",
+      "authors": "Zinn-Justin, J.",
+      "year": "1989",
+      "field": "Quantum Field Theory",
+      "statement": "RG fixed points classify universality classes",
+      "usage": "Rigorous field-theoretic formulation of RG"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The configuration space S admits a measure \u03bc compatible with the symmetry group G",
+    "The Hamiltonian H is G-invariant: H(g\u00b7s) = H(s) for all g \u2208 G, s \u2208 S",
+    "The system admits a well-defined thermodynamic limit N \u2192 \u221e",
+    "A critical point \u03b2_c exists where the correlation length \u03be(\u03b2_c) = \u221e",
+    "The order parameter \u03c6: S \u2192 \u211d^n transforms under a representation of G",
+    "The system satisfies hyperscaling relations among critical exponents",
+    "The renormalization group flow exists and has fixed points",
+    "The critical point corresponds to a fixed point of the RG flow",
+    "Correlation functions decay algebraically at criticality",
+    "The free energy density f(\u03b2) has a singular part near \u03b2_c"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "We begin by defining the renormalization group transformation R_b",
+        "issue": "The proof claims to define R_b but never actually provides a construction. This is handwaving - the existence and properties of such a transformation are non-trivial and require proof.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would need to construct R_b explicitly for the general setting claimed, which is likely impossible without additional structure"
+      },
+      {
+        "step": "At the critical point, the system exhibits scale invariance, which manifests as the fixed-point condition R_b[H_c] = H_c + O(1/N)",
+        "issue": "This is backwards. The proof assumes scale invariance to get the fixed point, but scale invariance is what needs to be proved from the diverging correlation length.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need to prove that \u03be \u2192 \u221e implies scale invariance, not assume it"
+      },
+      {
+        "step": "By standard perturbation theory, the eigenvalues \u03bb_i of M determine the scaling dimensions",
+        "issue": "Perturbation theory requires the perturbation to be small. No justification that we're in the perturbative regime or that the linearization is valid.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Add conditions ensuring the RG flow near the fixed point is analytic and perturbations are small"
+      },
+      {
+        "step": "By the principle of renormalizability, only finitely many relevant operators exist",
+        "issue": "This 'principle' is not established for arbitrary statistical mechanical systems. It's borrowed from quantum field theory without justification.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would need to prove this for the general class of systems considered"
+      },
+      {
+        "step": "The G-invariance of the Hamiltonian constrains which operators can appear in V_rel",
+        "issue": "The space of operators hasn't been defined. What is an 'operator' in this general statistical mechanical context?",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Define the operator algebra and how G acts on it"
+      },
+      {
+        "step": "Combined with dimensional analysis and the representation theory of G, this determines the universal structure of V_rel",
+        "issue": "This is asserted without proof. The proof provides no argument for why (G,d,n) uniquely determines V_rel.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would require a complete classification theorem"
+      }
+    ],
+    "hidden_assumptions": [
+      "The RG transformation preserves the measure structure",
+      "The fixed point is hyperbolic (needed for linearization to be meaningful)",
+      "The system has a local order parameter (not all phase transitions do)",
+      "The correlation functions are well-defined at all scales",
+      "The operator algebra forms a vector space",
+      "Dimensional analysis applies (requires specific scaling properties)",
+      "The eigenvalues of M are real (needed for scaling dimensions)",
+      "The relevant subspace is finite-dimensional for all systems"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes scale invariance to establish the RG fixed point, then uses the fixed point properties to derive universal scaling. But scale invariance is part of what needs to be proved.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to work for arbitrary statistical mechanical systems with only mild assumptions, but actually requires very specific structure (existence of RG flow, operator algebra, etc.) that is only established for particular models like lattice systems or field theories.",
+    "citation_issues": [
+      "No actual citations provided for 'standard construction in renormalization group theory'",
+      "The dependencies listed are vague descriptions, not rigorous mathematical results",
+      "The 'principle of renormalizability' is not a proven theorem for general statistical systems"
+    ],
+    "structural_soundness": 0.2,
+    "overall_assessment": "This proof is fundamentally flawed, attempting to prove a deep result about universality by assuming most of the hard work. The argument is circular, relies on unjustified borrowing from quantum field theory, and lacks mathematical rigor throughout.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to show universality but fails to rigorously establish that critical exponents depend ONLY on (G,d,n) and are truly independent of microscopic details of H. It shows at best that there exists some universal structure, not complete universality.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Existence of a well-defined RG transformation R_b for arbitrary Hamiltonians H",
+      "The linearization matrix M exists and has well-defined eigenvalues",
+      "The finite-dimensional subspace V_rel actually captures all relevant physics",
+      "The scaling relations (\u03bd = 1/y_t, \u03b1 = 2 - d\u03bd, etc.) hold exactly",
+      "The O(1/N) corrections in Step 2 are negligible in the thermodynamic limit",
+      "The representation theory argument in Step 8 uniquely determines V_rel",
+      "All critical points are isolated fixed points of the RG flow",
+      "The system has a unique critical point \u03b2_c"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "2",
+        "issue": "Scale invariance R_b[H_c] = H_c + O(1/N) is asserted but not proven. The O(1/N) correction is vague and its negligibility is not established."
+      },
+      {
+        "step": "6",
+        "issue": "The claim that renormalizability requires only finitely many relevant operators is circular - this is what needs to be proven, not assumed."
+      },
+      {
+        "step": "8",
+        "issue": "The assertion that representation theory and dimensional analysis uniquely determine V_rel is too strong and not rigorously justified. Multiple inequivalent structures could be compatible with (G,d,n)."
+      },
+      {
+        "step": "9",
+        "issue": "The scaling relations are assumed rather than derived. The connection between eigenvalues of M and critical exponents is not rigorously established."
+      },
+      {
+        "step": "10",
+        "issue": "The conclusion doesn't follow from the previous steps. Even if V_rel has universal structure, this doesn't prove the exponents are completely independent of H's microscopic details."
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No rigorous construction of the RG transformation R_b",
+      "No proof that the linearization procedure is valid",
+      "No demonstration that the finite-dimensional approximation captures all relevant physics",
+      "No rigorous derivation of scaling relations",
+      "No proof that representation theory uniquely constrains the relevant operators",
+      "No treatment of potential non-universal corrections or multiple fixed points",
+      "No analysis of convergence or stability of the RG flow"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof assumes continuous configuration spaces S with measure \u03bc and continuous Hamiltonians H, directly contradicting proof [37338340b3ed] which establishes fundamental discreteness at smallest scales with filtration {\u03a9_\u03b5} and fundamental scale \u03b5\u2080",
+      "The assumption of well-defined thermodynamic limit N \u2192 \u221e with continuous scaling conflicts with the discrete structure required by [37338340b3ed]",
+      "The renormalization group transformation R_b assumes continuous coarse-graining by factor b > 1, incompatible with the discrete scale structure in [37338340b3ed]"
+    ],
+    "assumption_conflicts": [
+      "Configuration space S as continuous manifold vs discrete state space \u03a9 with fundamental discreteness scale",
+      "Continuous measure \u03bc on S vs discrete observable algebras A_\u03b5 in filtered system",
+      "Algebraic decay G(r) ~ r^{-(d-2+\u03b7)} assumes continuous spatial dimension d vs discrete spatial structure"
+    ],
+    "beneficial_connections": [
+      "Connects to [6cf918aecf4e] and [f17045616ed2] through symmetry breaking mechanisms and group actions on order parameters",
+      "Relates to [be4dedfed56e] through correlation function analysis and geometric structure emergence",
+      "Supports [bb82cee3c953] through RG flow duality between microscopic and macroscopic descriptions"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof makes strong continuity assumptions that fundamentally conflict with established discreteness principles. The mathematical framework is sound but incompatible with the discrete foundations already established in the corpus. The universality claims are overstated without proper treatment of discrete-to-continuous emergence."
+  },
+  "confidence_score": 0.26499999999999996,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.29999999999999993
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.29999999999999993
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A fully rigorous mathematical theory of the RG that: (1) proves existence and uniqueness of RG flow in appropriate function spaces, (2) establishes convergence of the iterative coarse-graining procedure, (3) rigorously classifies all possible fixed points for given symmetries, (4) proves finite-dimensionality of the relevant operator subspace without perturbative assumptions",
+  "limitations": [
+    "Step 6: Proof that the space of relevant operators is finite-dimensional relies on physical arguments rather than mathematical proof",
+    "Step 8: Complete classification of G-invariant relevant operators for arbitrary groups G requires case-by-case analysis",
+    "The connection between RG eigenvalues and physical critical exponents involves non-rigorous scaling arguments",
+    "Existence of the thermodynamic limit is assumed rather than proved for general interacting systems",
+    "The proof assumes existence of a critical point rather than deriving it",
+    "Hyperscaling relations are assumed, limiting validity to systems below upper critical dimension",
+    "The mathematical framework of RG theory lacks full rigor compared to other areas of mathematics",
+    "Does not address systems with quenched disorder or long-range interactions"
+  ],
+  "source_convergence": {
+    "structural_claim": "Physical systems exhibit universal behavior at critical points that is determined by symmetry and dimensionality rather than microscopic details",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Renormalization Group Theory",
+        "domain_id": "field_b",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Critical phenomena show scale invariance with universal exponents determined only by symmetry and dimension"
+      },
+      {
+        "result_id": "",
+        "result_name": "Inflation Theory",
+        "domain_id": "field_a",
+        "domain_name": "General Relativity and Cosmology",
+        "link_type": "direct",
+        "structural_conclusion": "Early universe undergoes scale-invariant expansion producing universal features independent of initial conditions"
+      }
+    ],
+    "domains": [
+      "general_relativity",
+      "condensed_matter"
+    ],
+    "domain_names": [
+      "General Relativity and Cosmology",
+      "Condensed Matter Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.238,
+      "independence": 0.7,
+      "adversarial": 0.09,
+      "reproducibility": 0.42,
+      "depth_consistency": 1.0,
+      "confidence": 0.4274,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:39:35.659117+00:00",
+    "id": "099752a10aab"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.29806499999999997
+  }
+}

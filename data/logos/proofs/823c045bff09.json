@@ -1,0 +1,375 @@
+{
+  "id": "823c045bff09",
+  "convergence_id": "4ae99c51b1aa",
+  "timestamp": "2026-05-02T13:01:54.257406+00:00",
+  "proposition": "Let T be the category of physical theories with morphisms given by RG flow transformations. There exists a functor F: T \u2192 T such that for any high-energy theory T_H, the sequence {F^n(T_H)} converges to a low-energy effective theory T_L in the appropriate topology, where convergence preserves the essential physical observables up to irrelevant corrections suppressed by powers of E/\u039b (E = energy scale, \u039b = UV cutoff).",
+  "proposition_natural": "Physical theories organize hierarchically through renormalization group flow, with low-energy effective descriptions systematically emerging from high-energy fundamental structures",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Functional analysis",
+    "Order theory"
+  ],
+  "apparatus_justification": "Category theory captures the hierarchical organization through functors between categories of theories at different energy scales, with natural transformations encoding the RG flow. Functional analysis provides the operator formalism for quantum field theories and their scaling limits. Order theory formalizes the partial ordering of theories by energy scale and fixed-point structure.",
+  "proof_natural": "**Proposition.** Let $\\mathcal{T}$ be the category of physical theories with morphisms given by renormalization group (RG) flow transformations. There exists a functor $F: \\mathcal{T} \\to \\mathcal{T}$ such that for any high-energy theory $T_H$, the sequence $\\{F^n(T_H)\\}$ converges to a low-energy effective theory $T_L$ in the appropriate topology, where convergence preserves the essential physical observables up to irrelevant corrections suppressed by powers of $E/\\Lambda$ (where $E$ is the energy scale and $\\Lambda$ is the UV cutoff).\n\n*Proof.* We assume that physical theories can be represented as objects in a category $\\mathcal{T}$ with well-defined composition of RG transformations, and that the space of theories admits a topology compatible with the notion of closeness of physical predictions. Let the renormalization group flow be functorial, and assume there exists a well-defined classification of operators as relevant, marginal, or irrelevant. We further assume the UV cutoff $\\Lambda$ is finite and well-defined, physical observables can be computed as functionals on the theory space, and the effective action formalism is valid with well-defined path integral measures after regularization.\n\nWe begin by defining the category $\\mathcal{T}$ of physical theories where objects are quantum field theories and morphisms are RG transformations $R_\\mu: T(\\Lambda) \\to T(\\mu)$ for energy scales $\\mu < \\Lambda$. The RG transformations satisfy the semigroup property: $R_{\\mu_2} \\circ R_{\\mu_1} = R_{\\mu_2}$ for $\\mu_2 < \\mu_1 < \\Lambda$, which ensures that morphisms compose properly.\n\nThe RG flow defines a functor $F: \\mathcal{T} \\to \\mathcal{T}$ by setting $F(T(\\Lambda)) = T(\\mu)$ for some fixed ratio $\\mu/\\Lambda < 1$. Functoriality follows immediately from the composition property of RG transformations and the preservation of identity morphisms.\n\nFollowing Wilson's renormalization group framework, we decompose any theory $T$ into relevant $(r)$, marginal $(m)$, and irrelevant $(i)$ operator subspaces: $T = T_r \\oplus T_m \\oplus T_i$. This decomposition arises from the eigenspace structure under linearized RG flow near fixed points. Under iteration of $F$, operators in $T_i$ are suppressed by factors of $(\\mu/\\Lambda)^{d_i-d}$ where $d_i > d$ is the scaling dimension, following standard scaling analysis near fixed points. [Note: A rigorous proof that RG flow contracts the irrelevant subspace is needed here.]\n\nPhysical observables $\\mathcal{O}[T]$ vary continuously under RG flow, satisfying $|\\mathcal{O}[F(T)] - \\mathcal{O}[T]| \\leq C(E/\\Lambda)^\\delta$ for some $\\delta > 0$. [Note: This requires a proof of continuity of observables under theory deformation.] Given this continuity and the exponential suppression of irrelevant operators, the sequence $\\{F^n(T_H)\\}$ forms a Cauchy sequence in the theory space topology induced by observable differences.\n\n[Note: We must assume completeness of the theory space.] By completeness, this Cauchy sequence converges to some limit theory $T_L$. By construction, $T_L$ retains only relevant and marginal operators, making it an effective theory valid at low energies $E \\ll \\Lambda$ with corrections suppressed by powers of $E/\\Lambda$.\n\nThis establishes that the RG flow functor $F$ systematically produces convergent sequences from high-energy theories to low-energy effective theories, with controlled approximation errors. The proof relies crucially on Polchinski's exact RG equations for the functional form of the flow and the effective field theory framework for the systematic organization of low-energy physics. This completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.CategoryTheory.Category.Basic\nimport Mathlib.CategoryTheory.Functor.Basic\nimport Mathlib.Topology.MetricSpace.Basic\nimport Mathlib.Topology.UniformSpace.Cauchy\nimport Mathlib.Analysis.NormedSpace.Basic\nimport Mathlib.Order.Basic\n\n/-- A physical theory characterized by its energy scale and operator content -/\nstructure PhysicalTheory where\n  energyScale : \u211d\n  -- sorry: need representation of quantum field theory operators\n  operators : Type*\n  energyScale_pos : 0 < energyScale\n\n/-- Renormalization group transformation between theories at different energy scales -/\nstructure RGTransformation (T\u2081 T\u2082 : PhysicalTheory) where\n  scale_decrease : T\u2082.energyScale < T\u2081.energyScale\n  -- sorry: need transformation of operators under RG flow\n  transform : T\u2081.operators \u2192 T\u2082.operators\n\n/-- The category of physical theories with RG transformations as morphisms -/\ninstance : Category PhysicalTheory where\n  Hom := RGTransformation\n  id T := sorry -- sorry: need identity RG transformation\n  comp := sorry -- sorry: need composition of RG transformations\n  id_comp := sorry -- sorry: need proof of identity law\n  comp_id := sorry -- sorry: need proof of identity law\n  assoc := sorry -- sorry: need proof of associativity\n\n/-- Decomposition of theory into relevant, marginal, and irrelevant operators -/\nstructure OperatorDecomposition (T : PhysicalTheory) where\n  relevant : Type*\n  marginal : Type*\n  irrelevant : Type*\n  -- sorry: need decomposition map\n  decompose : T.operators \u2243 relevant \u00d7 marginal \u00d7 irrelevant\n\n/-- Physical observable as a functional on theories -/\nstructure Observable where\n  -- sorry: need mathematical representation of observables\n  evaluate : PhysicalTheory \u2192 \u211d\n  continuous : sorry -- sorry: need continuity condition\n\n/-- The RG flow functor -/\ndef RGFlowFunctor (ratio : \u211d) (h : 0 < ratio \u2227 ratio < 1) : PhysicalTheory \u2964 PhysicalTheory where\n  obj T := \u27e8ratio * T.energyScale, sorry, sorry\u27e9 -- sorry: need transformed operators and positivity proof\n  map := sorry -- sorry: need functor action on morphisms\n  map_id := sorry -- sorry: need proof that functor preserves identity\n  map_comp := sorry -- sorry: need proof that functor preserves composition\n\n/-- Topology on theory space induced by observable differences -/\ndef theorySpaceMetric : MetricSpace PhysicalTheory := sorry -- sorry: need metric from observable differences\n\n/-- Main theorem: RG flow converges to low-energy effective theory -/\ntheorem rg_flow_convergence (T_H : PhysicalTheory) (ratio : \u211d) (h : 0 < ratio \u2227 ratio < 1) :\n  \u2203 (T_L : PhysicalTheory),\n    let F := RGFlowFunctor ratio h\n    let seq := fun n => (F^[n]).obj T_H\n    (\u2200 \u03b5 > 0, \u2203 N, \u2200 n \u2265 N, dist (seq n) T_L < \u03b5) \u2227\n    (\u2200 (O : Observable) (E : \u211d) (h_E : E < T_H.energyScale),\n      \u2203 (C \u03b4 : \u211d) (h_C : 0 < C) (h_\u03b4 : 0 < \u03b4),\n        |O.evaluate T_L - O.evaluate T_H| \u2264 C * (E / T_H.energyScale) ^ \u03b4) := by\n  sorry -- sorry: need completeness of theory space and RG flow properties",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the category T of physical theories where objects are quantum field theories and morphisms are RG transformations R_\u03bc: T(\u039b) \u2192 T(\u03bc) for energy scales \u03bc < \u039b",
+      "justification": "Definition based on standard RG formalism",
+      "dependencies": [
+        "Wilson's formulation of renormalization group"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Show that RG transformations compose: R_\u03bc\u2082 \u2218 R_\u03bc\u2081 = R_\u03bc\u2082 for \u03bc\u2082 < \u03bc\u2081 < \u039b",
+      "justification": "Semigroup property of RG flow",
+      "dependencies": [
+        "Step 1",
+        "Polchinski's exact RG equations"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Establish that the RG flow defines a functor F: T \u2192 T by F(T(\u039b)) = T(\u03bc) for some fixed ratio \u03bc/\u039b < 1",
+      "justification": "Functoriality follows from composition property and preservation of identity",
+      "dependencies": [
+        "Step 2"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "Decompose any theory T into relevant (r), marginal (m), and irrelevant (i) operator subspaces: T = T_r \u2295 T_m \u2295 T_i",
+      "justification": "Eigenspace decomposition under linearized RG flow near fixed points",
+      "dependencies": [
+        "Assumption about operator classification"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "[Gap: Need rigorous proof that RG flow contracts the irrelevant subspace] Under iteration of F, operators in T_i are suppressed by factors of (\u03bc/\u039b)^(d_i-d) where d_i > d is the scaling dimension",
+      "justification": "Standard scaling analysis near fixed points",
+      "dependencies": [
+        "Step 4",
+        "Dimensional analysis"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Show that physical observables O[T] vary continuously under RG flow: |O[F(T)] - O[T]| \u2264 C(E/\u039b)^\u03b4 for some \u03b4 > 0",
+      "justification": "[Gap: Requires proof of continuity of observables under theory deformation]",
+      "dependencies": [
+        "Step 5",
+        "Assumption about observable functionals"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Prove that the sequence {F^n(T_H)} is Cauchy in the theory space topology induced by observable differences",
+      "justification": "Follows from exponential suppression of irrelevant operators and continuity of observables",
+      "dependencies": [
+        "Steps 5, 6"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "[Gap: Completeness assumption needed] By completeness of the theory space, the Cauchy sequence converges to some T_L",
+      "justification": "Requires theory space to be complete metric space",
+      "dependencies": [
+        "Step 7",
+        "Unproven completeness assumption"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "The limit theory T_L is an effective theory valid at low energies E << \u039b with corrections suppressed by powers of E/\u039b",
+      "justification": "By construction, T_L retains only relevant and marginal operators",
+      "dependencies": [
+        "Steps 4, 8"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Wilson's Renormalization Group",
+      "authors": "Kenneth Wilson",
+      "year": "1974",
+      "field": "Quantum Field Theory",
+      "statement": "Physical theories flow under change of energy scale according to RG equations",
+      "usage": "Foundational framework for RG flow"
+    },
+    {
+      "name": "Polchinski's Exact RG Equations",
+      "authors": "Joseph Polchinski",
+      "year": "1984",
+      "field": "Quantum Field Theory",
+      "statement": "Exact functional differential equations governing RG flow of the effective action",
+      "usage": "Establishes semigroup property of RG transformations"
+    },
+    {
+      "name": "Effective Field Theory Framework",
+      "authors": "Weinberg, Georgi, Manohar",
+      "year": "1979-1990s",
+      "field": "Quantum Field Theory",
+      "statement": "Low-energy physics can be systematically described by integrating out high-energy modes",
+      "usage": "Justifies emergence of effective theories"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Physical theories can be represented as objects in a category T with well-defined composition of RG transformations",
+    "The space of theories admits a topology compatible with the notion of 'closeness' of physical predictions",
+    "Renormalization group flow is functorial (preserves composition and identities)",
+    "There exists a well-defined notion of 'relevant', 'marginal', and 'irrelevant' operators in the theory space",
+    "The UV cutoff \u039b is finite and well-defined",
+    "Physical observables can be computed as functionals on the theory space",
+    "The effective action formalism is valid for the theories under consideration",
+    "Quantum corrections can be systematically organized by loop expansion or similar",
+    "The path integral measure is well-defined after regularization"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Definition of category T",
+        "issue": "The category of 'physical theories' is not well-defined. What precisely constitutes an object? QFTs? Lattice theories? String theories? The morphisms are claimed to be RG transformations but RG flow is not generally invertible, violating category axioms.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed without completely redefining the mathematical framework"
+      },
+      {
+        "step": "Semigroup property R_\u03bc2 \u2218 R_\u03bc1 = R_\u03bc2",
+        "issue": "This equation is nonsensical. The composition should give R_\u03bc2/\u03bc1 or similar, not just R_\u03bc2. This shows fundamental misunderstanding of RG composition.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Correct to proper semigroup composition law"
+      },
+      {
+        "step": "Decomposition T = T_r \u2295 T_m \u2295 T_i",
+        "issue": "Theory space is not a vector space in general. Direct sum decomposition is unjustified. Operators mix under RG flow, especially away from fixed points.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Requires complete reformulation using proper operator mixing formalism"
+      },
+      {
+        "step": "Cauchy sequence convergence",
+        "issue": "No metric or topology on theory space has been defined. Cannot discuss Cauchy sequences without a metric. The 'topology induced by observable differences' is hand-waving.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Define explicit metric on theory space"
+      },
+      {
+        "step": "Completeness assumption",
+        "issue": "Assumes without justification that theory space is complete. This is a massive assumption that may not hold for physical theories.",
+        "severity": "major",
+        "fixable": false,
+        "suggested_fix": "Would require proving completeness or working in completion"
+      },
+      {
+        "step": "Exponential suppression formula",
+        "issue": "Claims operators suppressed by (\u03bc/\u039b)^(d_i-d) but this only holds near fixed points, not along general RG trajectories.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Restrict to neighborhood of fixed points or prove more general suppression"
+      }
+    ],
+    "hidden_assumptions": [
+      "RG flow has fixed points",
+      "Theory space has vector space structure",
+      "All theories have well-defined effective actions",
+      "Linearization of RG flow is valid globally",
+      "Observable functionals are continuous",
+      "RG flow preserves unitarity and other physical requirements",
+      "The same topology works for all types of theories",
+      "Irrelevant operators decouple cleanly"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes RG flow converges to effective theories to prove that RG flow converges to effective theories. The existence of the limit theory T_L is assumed via completeness rather than proven.",
+    "over_generalisation": true,
+    "over_generalisation_details": "Claims to work for all physical theories but arguments only potentially valid near fixed points of specific QFTs. Does not handle theories without fixed points, strongly coupled theories, or non-local theories.",
+    "citation_issues": [
+      "Wilson's RG does not guarantee functorial structure",
+      "Polchinski's equations are for specific scalar field theories, not general",
+      "EFT framework does not imply convergence of RG flow"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed, conflating physical intuition with mathematical rigor. The categorical framework is ill-defined, basic composition laws are stated incorrectly, and convergence is assumed rather than proven. The proof would not survive even cursory review.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to show that RG flow defines a functor and that iterating this functor produces a convergent sequence, but fails to establish the key claims about convergence topology, preservation of observables, or the specific form of corrections.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Theory space forms a complete metric space",
+      "RG flow has well-defined fixed points",
+      "Linearized RG analysis is valid globally",
+      "Observable functionals are Lipschitz continuous",
+      "Scaling dimensions are well-defined for all operators",
+      "The decomposition T = T_r \u2295 T_m \u2295 T_i is unique and well-defined",
+      "The topology on theory space is metrizable",
+      "RG transformations are continuous in the theory space topology",
+      "The functor F preserves the categorical structure exactly"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "2",
+        "issue": "Claims R_\u03bc\u2082 \u2218 R_\u03bc\u2081 = R_\u03bc\u2082 but this should be R_\u03bc\u2082 \u2218 R_\u03bc\u2081 = R_\u03bc\u2082 only when \u03bc\u2081 is intermediate scale, not generally"
+      },
+      {
+        "step": "3",
+        "issue": "Functoriality does not follow automatically from composition - requires proof that morphisms are preserved under the mapping"
+      },
+      {
+        "step": "4",
+        "issue": "Eigenspace decomposition only exists near fixed points, not for arbitrary theories"
+      },
+      {
+        "step": "6",
+        "issue": "No justification provided for continuity bound - this is a major gap marked in the proof itself"
+      },
+      {
+        "step": "7",
+        "issue": "Cannot conclude Cauchy property without establishing the metric structure and proving the continuity bound from step 6"
+      },
+      {
+        "step": "8",
+        "issue": "Completeness is assumed without justification - this is explicitly marked as a gap"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Step 5 gap: No proof that RG flow contracts irrelevant subspace",
+      "Step 6 gap: No proof of continuity of observables under theory deformation",
+      "Step 8 gap: Completeness assumption not justified",
+      "No definition of the topology on theory space",
+      "No proof that the proposed functor actually satisfies functoriality axioms",
+      "No verification that the convergence preserves essential physical observables as claimed",
+      "No proof that corrections have the specific form E/\u039b as stated in proposition"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof assumes physical theories form a well-behaved category with functorial RG flow, but proof [06879fd9ae87] establishes that physical properties are fundamentally contextual and cannot possess predetermined values independent of measurement framework. This contradicts the assumption that theories can be treated as fixed objects with well-defined morphisms.",
+      "The proof assumes a topology on theory space where 'closeness' corresponds to similarity of physical predictions, but proof [2cc2431e06a6] shows quantum effects create fundamental thresholds that bifurcate outcomes into discrete classes, making continuous topology problematic.",
+      "The assumption of well-defined composition of RG transformations conflicts with proof [06d6ace265c2] which shows the quantum-classical boundary emerges through environmental decoherence rather than scale-dependent transformations."
+    ],
+    "assumption_conflicts": [
+      "Assumption of functorial RG flow conflicts with contextuality established in [06879fd9ae87]",
+      "Well-defined theory space topology conflicts with discrete quantum thresholds from [2cc2431e06a6]",
+      "Fixed UV cutoff assumption conflicts with emergent scale boundaries from [06d6ace265c2]",
+      "Systematic loop expansion assumption may conflict with non-perturbative effects implied by topological constraints in [139ee0499c9e] and [1b27ca45ba4e]"
+    ],
+    "beneficial_connections": [
+      "Could potentially connect to [37338340b3ed] regarding scale-dependent discreteness if the gaps about irrelevant operator suppression were properly filled",
+      "Might relate to [2373a9c1ee2d] on symmetry breaking and emergent modes if RG flow is viewed as spontaneous symmetry breaking",
+      "Could complement [1083de91300b] on holographic principles if effective theories encode boundary information"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof has significant gaps (acknowledged by the authors) and makes strong assumptions about category theory structure that conflict with established results on quantum contextuality and discrete thresholds. The mathematical framework assumes classical notions of continuity and functoriality that are incompatible with fundamental quantum properties established in existing proofs."
+  },
+  "confidence_score": 0.24000000000000002,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.29999999999999993
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.29999999999999993
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "Rigorous mathematical framework for: (1) Topology on space of quantum field theories compatible with physical equivalence, (2) Proof of completeness of theory space under RG flow, (3) Continuity theorems for physical observables under theory deformation, (4) Convergence theorems for RG flow in infinite-dimensional spaces",
+  "limitations": [
+    "Rigorous proof that RG flow contracts irrelevant operator subspace",
+    "Proof of continuity of physical observables under theory deformation",
+    "Completeness of theory space in appropriate topology",
+    "Well-defined measure on path integral for general interacting theories",
+    "Treatment of anomalies and non-perturbative effects",
+    "Proof assumes perturbative framework - non-perturbative effects not rigorously controlled",
+    "Requires UV cutoff - not applicable to UV-complete theories without modification",
+    "Category-theoretic structure of theory space not fully developed",
+    "Convergence may fail near phase transitions or non-trivial fixed points",
+    "Does not address emergent symmetries or topological properties"
+  ],
+  "source_convergence": {
+    "structural_claim": "Physical theories organize hierarchically through renormalization group flow, with low-energy effective descriptions systematically emerging from high-energy fundamental structures",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Renormalization Group",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Field Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Physical theories form a flow in theory space under energy scale changes, with low-energy physics determined by relevant operators"
+      },
+      {
+        "result_id": "",
+        "result_name": "Effective Field Theory",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Field Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Low-energy physics emerges systematically by integrating out high-energy degrees of freedom"
+      },
+      {
+        "result_id": "",
+        "result_name": "Emergent Spacetime from Entanglement",
+        "domain_id": "field_b",
+        "domain_name": "Quantum Gravity",
+        "link_type": "direct",
+        "structural_conclusion": "Classical spacetime emerges as a low-energy effective description from fundamental quantum information structures"
+      },
+      {
+        "result_id": "",
+        "result_name": "Causal Dynamical Triangulations",
+        "domain_id": "field_b",
+        "domain_name": "Quantum Gravity",
+        "link_type": "direct",
+        "structural_conclusion": "Four-dimensional spacetime emerges at large scales from microscopic discrete quantum geometries"
+      }
+    ],
+    "domains": [
+      "quantum_field_theory",
+      "quantum_gravity"
+    ],
+    "domain_names": [
+      "Quantum Field Theory",
+      "Quantum Gravity"
+    ],
+    "ea_scores": {
+      "strength": 0.476,
+      "independence": 0.7,
+      "adversarial": 0.4,
+      "reproducibility": 0.6299999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.5922999999999999,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:24:29.064436+00:00",
+    "id": "4ae99c51b1aa"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.295275
+  }
+}

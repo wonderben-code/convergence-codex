@@ -1,0 +1,350 @@
+{
+  "id": "dfbd7efa4489",
+  "convergence_id": "4ce76010ff36",
+  "timestamp": "2026-05-02T13:03:00.135272+00:00",
+  "proposition": "Let (M, g) be a Riemannian manifold with boundary \u2202M, and let L be a linear differential operator on M generating elementary excitations. Then the spectrum \u03c3(L) and the decay rates \u0393_n = -Im(\u03bb_n) for \u03bb_n \u2208 \u03c3(L) depend non-trivially on: (i) the boundary conditions B imposed on \u2202M, and (ii) the metric structure g of M.",
+  "proposition_natural": "Boundary conditions and environmental structure fundamentally alter the dynamics and decay rates of elementary excitations",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Functional analysis",
+    "Differential geometry",
+    "Dynamical systems"
+  ],
+  "apparatus_justification": "Functional analysis provides the spectral theory needed to analyze decay rates of excitations as eigenvalue problems in appropriate function spaces. Differential geometry captures how boundary conditions modify the underlying space structure. Dynamical systems theory formalizes how environmental perturbations affect stability and decay.",
+  "proof_natural": "**Proposition.** Let $(M, g)$ be a Riemannian manifold with boundary $\\partial M$, and let $L$ be a linear differential operator on $M$ generating elementary excitations. Then the spectrum $\\sigma(L)$ and the decay rates $\\Gamma_n = -\\text{Im}(\\lambda_n)$ for $\\lambda_n \\in \\sigma(L)$ depend non-trivially on: (i) the boundary conditions $B$ imposed on $\\partial M$, and (ii) the metric structure $g$ of $M$.\n\n**Proof.** We assume that $M$ is a smooth, connected Riemannian manifold with non-empty boundary $\\partial M$, equipped with a $C^\\infty$ metric $g$ that is complete on the interior of $M$. Let $L$ be a second-order elliptic differential operator with smooth coefficients, subject to linear boundary conditions $B$ that satisfy the Shapiro-Lopatinskii condition. We further assume that the operator $L$ with boundary conditions $B$ has discrete spectrum in some region of the complex plane, that elementary excitations are represented by eigenfunctions of $L$, and that $M$ has finite volume or appropriate growth conditions at infinity.\n\nBy standard spectral theory for elliptic operators with boundary conditions, the resolvent operator $R_\\lambda = (L - \\lambda I)^{-1}$ exists for $\\lambda \\notin \\sigma(L)$ and depends on both the metric $g$ and the boundary conditions $B$. The associated Green's function $G(x,y;\\lambda) = \\langle\\delta_x, R_\\lambda \\delta_y\\rangle$ inherits this dependence and satisfies the boundary conditions determined by $B$.\n\nWe demonstrate the non-trivial dependence through two physical examples. First, consider the Purcell effect where $L = -c^2\\nabla^2$ represents the electromagnetic wave operator. By Weyl's law with boundary corrections, the density of states $\\rho(\\omega) = \\sum_n \\delta(\\omega - \\omega_n)$ depends explicitly on the cavity geometry through both $g$ and $B$. The boundary correction terms in Weyl's law show that the asymptotic distribution of eigenvalues is modified by the boundary geometry and the specific boundary conditions imposed. Applying Fermi's golden rule to cavity quantum electrodynamics, the spontaneous emission rate takes the form $\\Gamma_{sp} \\propto \\int \\rho(\\omega)|\\langle f|d\\cdot E_n\\rangle|^2 d\\omega$, where the mode structure $E_n$ is determined by the eigenfunctions of $L$ subject to $(g,B)$.\n\nSecond, in neoclassical transport theory, consider a toroidal geometry where $M = T^3$ with toroidal metric $g_{tor}$, and $L = -\\nabla\\cdot(D\\nabla)$ represents the diffusion operator. The non-trivial topology and metric structure create closed field lines, leading to the existence of trapped particle eigenmodes. [Note: While physical arguments show that the effective diffusion coefficient scales as $D_{eff} \\sim D_{classical} \\times \\varepsilon^{3/2}$ where $\\varepsilon$ is the inverse aspect ratio, a complete mathematical derivation of this scaling requires the full machinery of kinetic theory, which lies beyond the scope of this proof.]\n\nBy the perturbation theory of linear operators, the spectrum $\\sigma(L)$ varies continuously under continuous deformations of $g$ or $B$, with possible bifurcations at critical parameter values. Since we have shown explicit examples where the spectrum and decay rates depend on the geometric and boundary data, and since this dependence persists under small perturbations, we conclude that both $\\sigma(L)$ and the decay rates $\\Gamma_n = -\\text{Im}(\\lambda_n)$ depend non-trivially on the metric structure $g$ and boundary conditions $B$.\n\nThis completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.Geometry.RiemannianGeometry.Basic\nimport Mathlib.Analysis.InnerProductSpace.Spectrum\nimport Mathlib.Topology.MetricSpace.Basic\nimport Mathlib.Analysis.Calculus.FDeriv.Basic\nimport Mathlib.Geometry.Manifold.Instances.Real\nimport Mathlib.Analysis.SpecialFunctions.Complex.Log\n\n/-- A Riemannian manifold with boundary -/\nstructure RiemannianManifoldWithBoundary (n : \u2115) where\n  M : Type*\n  [inst1 : TopologicalSpace M]\n  [inst2 : ChartedSpace (EuclideanSpace \u211d (Fin n)) M]\n  [inst3 : SmoothManifoldWithCorners (modelWithCornersSelf \u211d (EuclideanSpace \u211d (Fin n))) M]\n  g : MetricTensor M\n  boundary : Set M\n  is_boundary : sorry -- \"Need definition of manifold boundary\"\n\n/-- Boundary conditions for a differential operator -/\nstructure BoundaryConditions (M : Type*) [TopologicalSpace M] where\n  condition : sorry -- \"Need formalization of boundary condition types (Dirichlet, Neumann, etc.)\"\n\n/-- Linear differential operator on a manifold -/\nstructure LinearDifferentialOperator (M : Type*) [TopologicalSpace M] where\n  op : sorry -- \"Need unbounded operator formalism on manifolds\"\n  order : \u2115\n\n/-- Elementary excitations generated by an operator -/\ndef ElementaryExcitations (L : LinearDifferentialOperator M) : Type* :=\n  sorry -- \"Need formalization of elementary excitation concept\"\n\n/-- Spectrum of a differential operator with boundary conditions -/\ndef spectrum_with_bc {n : \u2115} (RMB : RiemannianManifoldWithBoundary n) \n  (L : LinearDifferentialOperator RMB.M) (B : BoundaryConditions RMB.M) : Set \u2102 :=\n  sorry -- \"Need spectrum definition for unbounded operators with boundary conditions\"\n\n/-- Decay rate from eigenvalue -/\ndef decay_rate (\u03bb : \u2102) : \u211d := -\u03bb.im\n\n/-- Main theorem: spectrum and decay rates depend on boundary conditions and metric -/\ntheorem spectrum_depends_on_boundary_and_metric {n : \u2115} \n  (RMB : RiemannianManifoldWithBoundary n)\n  (L : LinearDifferentialOperator RMB.M) :\n  \u2203 (B\u2081 B\u2082 : BoundaryConditions RMB.M) (g\u2081 g\u2082 : MetricTensor RMB.M),\n    (spectrum_with_bc \u27e8RMB.M, RMB.inst1, RMB.inst2, RMB.inst3, g\u2081, RMB.boundary, RMB.is_boundary\u27e9 L B\u2081 \u2260 \n     spectrum_with_bc \u27e8RMB.M, RMB.inst1, RMB.inst2, RMB.inst3, g\u2082, RMB.boundary, RMB.is_boundary\u27e9 L B\u2082) \u2227\n    (\u2203 \u03bb\u2081 \u2208 spectrum_with_bc \u27e8RMB.M, RMB.inst1, RMB.inst2, RMB.inst3, g\u2081, RMB.boundary, RMB.is_boundary\u27e9 L B\u2081,\n     \u2203 \u03bb\u2082 \u2208 spectrum_with_bc \u27e8RMB.M, RMB.inst1, RMB.inst2, RMB.inst3, g\u2082, RMB.boundary, RMB.is_boundary\u27e9 L B\u2082,\n       decay_rate \u03bb\u2081 \u2260 decay_rate \u03bb\u2082) := by\n  -- Step 1: Resolvent operator exists and depends on g and B\n  have resolvent_exists : \u2200 \u03bb \u2209 spectrum_with_bc RMB L B, \n    \u2203 R_\u03bb, R_\u03bb = sorry := sorry -- \"Need resolvent operator definition and spectral theory for elliptic operators\"\n  \n  -- Step 2: Green's function satisfies boundary conditions\n  have green_function_bc : \u2200 \u03bb \u2209 spectrum_with_bc RMB L B,\n    \u2203 G, sorry := sorry -- \"Need Green's function formalism and its boundary behavior\"\n  \n  -- Step 3: Density of states for Purcell effect\n  have purcell_dos : sorry := sorry -- \"Need Weyl's law with boundary corrections\"\n  \n  -- Step 4: Spontaneous emission rate depends on mode structure\n  have spontaneous_emission : sorry := sorry -- \"Need Fermi's golden rule and cavity QED formalism\"\n  \n  -- Step 5: Trapped particle modes in toroidal geometry\n  have trapped_modes : sorry := sorry -- \"Need toroidal geometry setup and trapped particle analysis\"\n  \n  -- Step 6: Gap - connection to diffusion coefficient\n  have diffusion_modification : sorry := sorry -- \"Requires kinetic theory beyond current scope\"\n  \n  -- Step 7: Spectrum bifurcates under deformation\n  have spectrum_bifurcation : sorry := sorry -- \"Need perturbation theory for unbounded self-adjoint operators\"\n  \n  -- Step 8: Synthesis showing non-trivial dependence\n  sorry -- \"Need to construct explicit examples showing dependence\"\n\n/-- Corollary: Decay rates are geometry-dependent -/\ncorollary decay_rates_geometry_dependent {n : \u2115}\n  (RMB : RiemannianManifoldWithBoundary n)\n  (L : LinearDifferentialOperator RMB.M)\n  (B : BoundaryConditions RMB.M) :\n  \u2203 (g\u2081 g\u2082 : MetricTensor RMB.M),\n    \u2203 \u03bb\u2081 \u2208 spectrum_with_bc \u27e8RMB.M, RMB.inst1, RMB.inst2, RMB.inst3, g\u2081, RMB.boundary, RMB.is_boundary\u27e9 L B,\n    \u2203 \u03bb\u2082 \u2208 spectrum_with_bc \u27e8RMB.M, RMB.inst1, RMB.inst2, RMB.inst3, g\u2082, RMB.boundary, RMB.is_boundary\u27e9 L B,\n      decay_rate \u03bb\u2081 \u2260 decay_rate \u03bb\u2082 := by\n  sorry -- \"Follows from main theorem\"",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The resolvent operator R_\u03bb = (L - \u03bbI)^{-1} exists for \u03bb \u2209 \u03c3(L) and depends on both g and B",
+      "justification": "Standard spectral theory for elliptic operators with boundary conditions",
+      "dependencies": [
+        "Assumption of L being elliptic",
+        "Shapiro-Lopatinskii condition"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "The Green's function G(x,y;\u03bb) = \u27e8\u03b4_x, R_\u03bb \u03b4_y\u27e9 satisfies boundary conditions determined by B",
+      "justification": "Definition of Green's function and properties of the resolvent",
+      "dependencies": [
+        "Step 1"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "For the Purcell effect case: L = -c\u00b2\u2207\u00b2 (electromagnetic wave operator), the density of states \u03c1(\u03c9) = \u03a3_n \u03b4(\u03c9 - \u03c9_n) depends on cavity geometry through g and B",
+      "justification": "Weyl's law with boundary corrections",
+      "dependencies": [
+        "Weyl (1911)",
+        "Ivrii (1980)"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The spontaneous emission rate \u0393_sp \u221d \u222b \u03c1(\u03c9)|\u27e8f|d\u00b7E_n\u27e9|\u00b2 d\u03c9 depends on the mode structure E_n determined by (g,B)",
+      "justification": "Fermi's golden rule applied to cavity QED",
+      "dependencies": [
+        "Step 3",
+        "Weisskopf-Wigner theory"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "For neoclassical transport: In toroidal geometry (M = T\u00b3 with metric g_tor), the operator L = -\u2207\u00b7(D\u2207) has trapped particle eigenmodes",
+      "justification": "Existence of closed field lines in toroidal geometry creates bound states",
+      "dependencies": [
+        "Assumption of toroidal metric"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "[Gap: Rigorous connection between trapped particle fraction and modified diffusion coefficient]",
+      "justification": "Physical arguments show D_eff ~ D_classical \u00d7 \u03b5^{3/2} but full mathematical derivation requires kinetic theory",
+      "dependencies": [
+        "Step 5"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The spectrum \u03c3(L) bifurcates under continuous deformation of g or B",
+      "justification": "Perturbation theory for self-adjoint operators with boundary conditions",
+      "dependencies": [
+        "Kato (1966)",
+        "Steps 1-2"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Therefore, both \u03c3(L) and \u0393_n = -Im(\u03bb_n) depend non-trivially on (g,B)",
+      "justification": "Synthesis of steps 3-7 showing explicit dependence in both example systems",
+      "dependencies": [
+        "Steps 3-7"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Weyl's Law",
+      "authors": "Hermann Weyl",
+      "year": "1911",
+      "field": "Mathematical Physics",
+      "statement": "The number of eigenvalues less than \u03bb for the Laplacian on a domain is asymptotically proportional to the volume times \u03bb^{d/2}",
+      "usage": "Establishes that eigenvalue density depends on domain geometry"
+    },
+    {
+      "name": "Boundary corrections to Weyl's law",
+      "authors": "V. Ivrii",
+      "year": "1980",
+      "field": "Microlocal Analysis",
+      "statement": "The second term in the eigenvalue counting function depends on the boundary geometry and boundary conditions",
+      "usage": "Shows explicit boundary dependence of spectrum"
+    },
+    {
+      "name": "Perturbation Theory of Linear Operators",
+      "authors": "T. Kato",
+      "year": "1966",
+      "field": "Functional Analysis",
+      "statement": "Eigenvalues of self-adjoint operators depend continuously on parameters under suitable conditions",
+      "usage": "Justifies that spectrum changes with metric and boundary conditions"
+    },
+    {
+      "name": "Weisskopf-Wigner Theory",
+      "authors": "V. Weisskopf, E. Wigner",
+      "year": "1930",
+      "field": "Quantum Mechanics",
+      "statement": "Spontaneous emission rates are proportional to the density of final states",
+      "usage": "Connects decay rates to mode structure"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "M is a smooth, connected Riemannian manifold with non-empty boundary \u2202M",
+    "The metric g is C^\u221e and complete on the interior of M",
+    "L is a second-order elliptic differential operator with smooth coefficients",
+    "Boundary conditions B are linear and satisfy the Shapiro-Lopatinskii condition",
+    "The operator L with boundary conditions B has discrete spectrum in some region of the complex plane",
+    "Elementary excitations are represented by eigenfunctions of L",
+    "Decay rates are well-defined through the imaginary parts of eigenvalues",
+    "The manifold M has finite volume or appropriate growth conditions at infinity"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "Definition of 'non-trivial dependence'",
+        "issue": "The proof never defines what constitutes 'non-trivial' dependence. This is the central claim but remains undefined throughout.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Define non-trivial dependence precisely (e.g., the map (g,B) \u2192 \u03c3(L) is not locally constant)"
+      },
+      {
+        "step": "Spectrum discreteness assumption",
+        "issue": "Assumes discrete spectrum 'in some region' without specifying which region or proving discreteness follows from the stated conditions",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Either prove discreteness from ellipticity and boundary conditions or restrict to compact manifolds"
+      },
+      {
+        "step": "Definition of decay rates",
+        "issue": "Defines \u0393_n = -Im(\u03bb_n) but many elliptic operators have real spectrum. The proof doesn't establish when eigenvalues have non-zero imaginary parts.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Complete reformulation needed - either restrict to non-self-adjoint operators or redefine decay rates"
+      },
+      {
+        "step": "Purcell effect example",
+        "issue": "Claims L = -c\u00b2\u2207\u00b2 'represents the electromagnetic wave operator' but Maxwell's equations require a system, not a scalar operator",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Use the full Maxwell system or explicitly state this is a scalar approximation"
+      },
+      {
+        "step": "Weyl's law application",
+        "issue": "Weyl's law gives asymptotic eigenvalue distribution, not individual eigenvalue dependence on (g,B). The logical connection is missing.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Need to connect asymptotic distribution changes to individual eigenvalue changes"
+      },
+      {
+        "step": "Toroidal example",
+        "issue": "Admits inability to derive the claimed scaling law, undermining the example's validity as proof",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Either provide the derivation or remove this example"
+      },
+      {
+        "step": "Perturbation theory conclusion",
+        "issue": "Claims continuous variation proves non-trivial dependence, but continuous can include constant functions",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Must show the dependence is non-constant, not just continuous"
+      }
+    ],
+    "hidden_assumptions": [
+      "Elementary excitations are always described by eigenfunction expansion",
+      "The operator L generates time evolution (never stated)",
+      "Boundary conditions can be varied independently of the metric",
+      "The Shapiro-Lopatinskii condition ensures well-posedness (not always true)",
+      "Physical examples constitute mathematical proof",
+      "Decay rates are physically meaningful for all operators considered"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes elementary excitations are eigenfunctions of L, then uses properties of these eigenfunctions to prove claims about elementary excitations. The connection between the abstract operator L and physical excitations is never established.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof shows at best that some specific physical operators in specific geometries have spectrum depending on geometry. It claims this proves a general result for all elliptic operators on all Riemannian manifolds with boundary.",
+    "citation_issues": [
+      "Weyl's law is cited incorrectly - it doesn't directly imply individual eigenvalue dependence",
+      "Fermi's golden rule applies to quantum transitions, not classical wave operators",
+      "Perturbation theory for continuous dependence doesn't imply non-trivial dependence",
+      "No citation for Shapiro-Lopatinskii condition or its implications"
+    ],
+    "structural_soundness": 0.2,
+    "overall_assessment": "This proof is fundamentally flawed, relying on undefined concepts, physical intuition instead of mathematical rigor, and examples that don't support the general claim. The central notion of 'non-trivial dependence' is never defined, and the proof conflates continuous dependence with non-trivial dependence.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to show dependence on boundary conditions and metric through specific examples, but fails to establish the general proposition for arbitrary linear differential operators L generating elementary excitations.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "L must be self-adjoint or normal for eigenvalues to have well-defined imaginary parts as decay rates",
+      "The spectrum must contain eigenvalues with non-zero imaginary parts for decay rates to be meaningful",
+      "The operator L must actually generate elementary excitations (not defined rigorously)",
+      "The boundary \u2202M must be sufficiently regular for the Shapiro-Lopatinskii condition to apply",
+      "The manifold M must support the specific physics described in the examples"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 3",
+        "issue": "Weyl's law applies to self-adjoint operators with real eigenvalues, but the proposition claims decay rates \u0393_n = -Im(\u03bb_n), implying complex eigenvalues. This is contradictory."
+      },
+      {
+        "step": "Step 4",
+        "issue": "Fermi's golden rule derivation requires specific quantum mechanical assumptions not established for general linear differential operator L"
+      },
+      {
+        "step": "Step 6",
+        "issue": "Explicitly acknowledged gap with no rigorous mathematical justification provided"
+      },
+      {
+        "step": "Step 7",
+        "issue": "Bifurcation theory for self-adjoint operators typically preserves real spectrum, contradicting the claim about complex eigenvalues with imaginary parts"
+      },
+      {
+        "step": "Step 8",
+        "issue": "Synthesis is invalid because it relies on contradictory assumptions about spectrum being both real (Steps 3,7) and complex (proposition statement)"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No rigorous definition of 'elementary excitations' or how they relate to eigenfunctions of L",
+      "No proof that general linear differential operator L has the required spectral properties",
+      "Missing connection between specific examples and general proposition",
+      "Fundamental contradiction between real eigenvalue assumptions and complex decay rate claims",
+      "No treatment of operators that might not have discrete spectrum",
+      "Gap in Step 6 acknowledged but not resolved"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof assumes discrete spectrum for operator L, but existing proof [2cc2431e06a6] establishes that quantum effects create fundamental thresholds that bifurcate outcomes into discrete classes - this creates a circular dependency where discreteness is both assumed and derived",
+      "The proof claims non-trivial dependence on boundary conditions, but existing proof [06879fd9ae87] shows physical properties are fundamentally contextual and cannot possess predetermined values independent of measurement framework - this contradicts the assumption that eigenvalues have well-defined imaginary parts representing decay rates",
+      "The Purcell effect analysis assumes electromagnetic modes E_n are determined by (g,B), but existing proof [21fcf0926d92] establishes that vacuum is an active medium whose properties fundamentally shape physical processes - this contradicts treating the cavity as passive boundary conditions"
+    ],
+    "assumption_conflicts": [
+      "Assumes L has discrete spectrum 'in some region' without rigorous justification, conflicting with the categorical approach in [06879fd9ae87] that rejects predetermined spectral properties",
+      "Assumes decay rates are 'well-defined through imaginary parts' but [19c10dc86a65] shows quantum coherence fundamentally alters system properties beyond classical predictions",
+      "The finite volume assumption conflicts with [21fcf0926d92]'s treatment of vacuum as active medium extending throughout spacetime"
+    ],
+    "beneficial_connections": [
+      "Connects to [139ee0499c9e] on topological constraints determining dynamical system evolution through the role of boundary topology in spectral properties",
+      "Relates to [1f680e11fff8] on local singularities determining global properties through boundary-induced spectral modifications",
+      "Extends [2373a9c1ee2d] on symmetry breaking and emergent modes by showing how boundary conditions break spatial symmetries to create cavity modes"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof contains significant gaps, particularly the admitted lack of rigorous connection between trapped particle fraction and diffusion coefficient in neoclassical transport. The spectral bifurcation claim is stated without proof. The treatment of boundary conditions as external constraints conflicts with several existing proofs that emphasize contextuality and active vacuum effects."
+  },
+  "confidence_score": 0.27,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A unified framework for boundary-dependent spectral theory that encompasses both dissipative (non-self-adjoint) operators in optics and transport operators in non-simply connected geometries. Current spectral theory treats these cases separately.",
+  "limitations": [
+    "Rigorous derivation of neoclassical transport scaling from first principles",
+    "Precise characterization of how boundary topology (not just geometry) affects decay rates",
+    "Extension to non-elliptic operators relevant for some plasma modes",
+    "Proof relies on ellipticity which may not hold for all relevant physical operators",
+    "Connection between mathematical spectrum and physical decay rates assumes weak coupling",
+    "Toroidal geometry example uses physical intuition rather than complete mathematical derivation"
+  ],
+  "source_convergence": {
+    "structural_claim": "Boundary conditions and environmental structure fundamentally alter the dynamics and decay rates of elementary excitations",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Purcell Effect",
+        "domain_id": "field_a",
+        "domain_name": "Optics and Photonics",
+        "link_type": "direct",
+        "structural_conclusion": "The electromagnetic environment modifies spontaneous emission rates, showing that vacuum fluctuations depend on boundary conditions"
+      },
+      {
+        "result_id": "",
+        "result_name": "Neoclassical Transport Theory",
+        "domain_id": "field_b",
+        "domain_name": "Plasma Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Toroidal geometry fundamentally alters collision-driven transport through trapped particle effects, revealing that magnetic topology determines transport scaling"
+      }
+    ],
+    "domains": [
+      "optics",
+      "plasma_physics"
+    ],
+    "domain_names": [
+      "Optics and Photonics",
+      "Plasma Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.1428,
+      "independence": 0.85,
+      "adversarial": 0.09,
+      "reproducibility": 0.42,
+      "depth_consistency": 1.0,
+      "confidence": 0.43634000000000006,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:42:30.204672+00:00",
+    "id": "4ce76010ff36"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.28449
+  }
+}

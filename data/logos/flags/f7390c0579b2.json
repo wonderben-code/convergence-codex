@@ -1,0 +1,15 @@
+{
+  "proof_id": "f7390c0579b2",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous category-theoretic framework unifying scale transformations across physics domains, including: (1) A universal category of scale-dependent systems with morphisms preserving physical content, (2) Functorial relationships between RG flow in QFT and gravitational clustering in cosmology, (3) Precise characterization of 'hierarchical flow' as a categorical property",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

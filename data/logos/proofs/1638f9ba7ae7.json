@@ -1,0 +1,395 @@
+{
+  "id": "1638f9ba7ae7",
+  "convergence_id": "444bf9a63971",
+  "timestamp": "2026-05-02T12:58:05.141011+00:00",
+  "proposition": "For continuous media systems governed by ideal conservation laws, the topology of characteristic structures (vortex lines in fluids, magnetic field lines in plasmas) is preserved under evolution, and this topological invariance constrains the accessible dynamical states and determines stability properties.",
+  "proposition_natural": "Topological constraints fundamentally govern the evolution and stability of continuous media",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Topology",
+    "Dynamical systems",
+    "Differential geometry"
+  ],
+  "apparatus_justification": "Topology provides the foundational framework for formalizing constraints on continuous media through open sets, continuity, and compactness. Dynamical systems theory captures evolution and stability properties, while differential geometry handles the manifold structure of configuration spaces in both plasma and fluid systems.",
+  "proof_natural": "**Proposition.** For continuous media systems governed by ideal conservation laws, the topology of characteristic structures (vortex lines in fluids, magnetic field lines in plasmas) is preserved under evolution, and this topological invariance constrains the accessible dynamical states and determines stability properties.\n\n**Proof.** We assume the medium is continuous and differentiable almost everywhere, with governing equations that are ideal (inviscid for fluids, perfectly conducting for plasmas). Let the velocity and magnetic fields be at least C\u00b9 smooth, and assume the domain is simply connected or has well-defined boundary conditions. We further assume energy is conserved, the Lie derivative formalism applies to the evolution equations, and initial conditions have finite energy and enstrophy/magnetic energy.\n\nWe begin with ideal fluids. The vorticity \u03c9 = \u2207 \u00d7 v evolves according to the equation obtained by taking the curl of the Euler equation:\n\u2202\u03c9/\u2202t + (v\u00b7\u2207)\u03c9 = (\u03c9\u00b7\u2207)v.\n\nThis can be rewritten using the material derivative D/Dt = \u2202/\u2202t + v\u00b7\u2207 as D\u03c9/Dt = (\u03c9\u00b7\u2207)v, which demonstrates that vortex lines are material lines\u2014they move with the fluid.\n\nBy Kelvin's Circulation Theorem, for any material curve C(t), the circulation \u0393 = \u222e_C v\u00b7dl is conserved: D\u0393/Dt = 0. This fundamental result establishes that the topology of vortex lines cannot change in ideal flow.\n\nFor ideal magnetohydrodynamics (MHD), the magnetic field B evolves according to Faraday's law with Ohm's law for perfect conductivity:\n\u2202B/\u2202t = \u2207 \u00d7 (v \u00d7 B).\n\nBy Alfv\u00e9n's theorem on frozen-in field lines, the magnetic flux through any material surface S(t) is conserved: D/Dt \u222b_S B\u00b7dS = 0. This shows that magnetic field lines move with the plasma, analogous to vortex lines in fluids.\n\nBoth systems exhibit a deeper structure: they preserve the Lie-dragging of differential forms. Specifically, \u00a3_v \u03c9 = 0 for the vorticity 2-form and \u00a3_v B = 0 for the magnetic field, where \u00a3_v denotes the Lie derivative along the velocity field.\n\nThe helicity integrals\u2014H_v = \u222b v\u00b7\u03c9 dV for fluids and H_m = \u222b A\u00b7B dV for magnetic fields (where A is the vector potential)\u2014are conserved quantities. This conservation follows from integrating the evolution equations using the divergence theorem with appropriate boundary conditions. Crucially, helicity measures the topological linking and knotting of field lines, as shown by the Gauss linking integral representation.\n\nConservation of helicity provides a powerful constraint on system evolution. During relaxation processes, the system must minimize energy while preserving helicity. This variational principle, known as Taylor relaxation in plasma physics, severely restricts the accessible dynamical states.\n\nFinally, these topological constraints determine stability properties. States with different field line topology cannot be continuously connected through ideal evolution, creating disconnected regions in configuration space. Perturbations that would require changing the topology are thus forbidden, conferring stability to topologically non-trivial configurations.\n\n[Note: The transition from local conservation laws to global topological invariants relies on sufficient regularity and decay conditions at infinity, which we have assumed but not explicitly verified.]\n\nThis completes the proof that topological invariance in ideal continuous media both constrains dynamics and determines stability, unifying the behavior of superficially different physical systems through their shared mathematical structure. \u220e",
+  "proof_lean": "import Mathlib.Geometry.Manifold.VectorBundle.Basic\nimport Mathlib.Geometry.Manifold.DerivationBundle\nimport Mathlib.DifferentialGeometry.Lie\nimport Mathlib.DifferentialGeometry.DeRham\nimport Mathlib.Analysis.Calculus.Deriv.Basic\nimport Mathlib.Topology.Basic\nimport Mathlib.MeasureTheory.Integral.Bochner\n\n/-- Ideal fluid dynamics with vorticity evolution -/\nstructure IdealFluid (M : Type*) [SmoothManifold \u211d M] where\n  velocity : C^\u221e\u27ee\u211d \u00d7 M, TM\u27ef\n  vorticity : C^\u221e\u27ee\u211d \u00d7 M, \u03a9\u00b2(M)\u27ef\n  -- sorry: Need curl operator and Euler equations\n\n/-- Ideal magnetohydrodynamics -/\nstructure IdealMHD (M : Type*) [SmoothManifold \u211d M] where\n  velocity : C^\u221e\u27ee\u211d \u00d7 M, TM\u27ef\n  magnetic : C^\u221e\u27ee\u211d \u00d7 M, \u03a9\u00b2(M)\u27ef\n  -- sorry: Need MHD equations framework\n\n/-- Material derivative for vector fields -/\ndef materialDerivative {M : Type*} [SmoothManifold \u211d M] \n  (v : C^\u221e\u27ee\u211d \u00d7 M, TM\u27ef) (\u03c9 : C^\u221e\u27ee\u211d \u00d7 M, TM\u27ef) : C^\u221e\u27ee\u211d \u00d7 M, TM\u27ef := \n  sorry -- Need material derivative D/Dt = \u2202/\u2202t + v\u00b7\u2207\n\n/-- Circulation integral along a curve -/\ndef circulation {M : Type*} [SmoothManifold \u211d M] \n  (v : C^\u221e\u27eeM, TM\u27ef) (\u03b3 : C^\u221e\u27eeS\u00b9, M\u27ef) : \u211d := \n  sorry -- Need line integral \u222e_C v\u00b7dl\n\n/-- Kelvin's Circulation Theorem -/\ntheorem kelvins_theorem {M : Type*} [SmoothManifold \u211d M] \n  (fluid : IdealFluid M) (\u03b3 : \u211d \u2192 C^\u221e\u27eeS\u00b9, M\u27ef) \n  (h_material : \u2200 t, \u03b3 t is material curve) :\n  \u2200 t, deriv (fun s => circulation (fluid.velocity s) (\u03b3 s)) t = 0 := \n  sorry -- Need Kelvin's circulation theorem proof\n\n/-- Magnetic flux through a surface -/\ndef magneticFlux {M : Type*} [SmoothManifold \u211d M] \n  (B : \u03a9\u00b2(M)) (\u03a3 : Submanifold \u211d M) : \u211d := \n  sorry -- Need surface integral \u222b_S B\u00b7dS\n\n/-- Alfv\u00e9n's Theorem on frozen-in field lines -/\ntheorem alfvens_theorem {M : Type*} [SmoothManifold \u211d M] \n  (mhd : IdealMHD M) (\u03a3 : \u211d \u2192 Submanifold \u211d M) \n  (h_material : \u2200 t, \u03a3 t is material surface) :\n  \u2200 t, deriv (fun s => magneticFlux (mhd.magnetic s) (\u03a3 s)) t = 0 := \n  sorry -- Need Alfv\u00e9n's theorem proof\n\n/-- Lie dragging preserves vorticity -/\ntheorem vorticity_lie_dragged {M : Type*} [SmoothManifold \u211d M] \n  (fluid : IdealFluid M) :\n  lieDerivative (fluid.velocity) (fluid.vorticity) = 0 := \n  sorry -- Need to show \u00a3_v \u03c9 = 0 from vorticity equation\n\n/-- Lie dragging preserves magnetic field -/\ntheorem magnetic_lie_dragged {M : Type*} [SmoothManifold \u211d M] \n  (mhd : IdealMHD M) :\n  lieDerivative (mhd.velocity) (mhd.magnetic) = 0 := \n  sorry -- Need to show \u00a3_v B = 0 from induction equation\n\n/-- Fluid helicity integral -/\ndef fluidHelicity {M : Type*} [SmoothManifold \u211d M] [MeasureSpace M]\n  (v : C^\u221e\u27eeM, TM\u27ef) (\u03c9 : \u03a9\u00b2(M)) : \u211d := \n  sorry -- Need helicity integral H_v = \u222b v\u00b7\u03c9 dV\n\n/-- Magnetic helicity integral -/\ndef magneticHelicity {M : Type*} [SmoothManifold \u211d M] [MeasureSpace M]\n  (A : \u03a9\u00b9(M)) (B : \u03a9\u00b2(M)) : \u211d := \n  sorry -- Need helicity integral H_m = \u222b A\u00b7B dV\n\n/-- Conservation of fluid helicity -/\ntheorem fluid_helicity_conserved {M : Type*} [SmoothManifold \u211d M] [MeasureSpace M]\n  (fluid : IdealFluid M) :\n  \u2200 t, deriv (fun s => fluidHelicity (fluid.velocity s) (fluid.vorticity s)) t = 0 := \n  sorry -- Need helicity conservation proof\n\n/-- Conservation of magnetic helicity -/\ntheorem magnetic_helicity_conserved {M : Type*} [SmoothManifold \u211d M] [MeasureSpace M]\n  (mhd : IdealMHD M) (A : C^\u221e\u27ee\u211d \u00d7 M, \u03a9\u00b9(M)\u27ef) \n  (h_gauge : \u2200 t, d (A t) = mhd.magnetic t) :\n  \u2200 t, deriv (fun s => magneticHelicity (A s) (mhd.magnetic s)) t = 0 := \n  sorry -- Need helicity conservation proof\n\n/-- Helicity as topological invariant measuring linking -/\ndef helicityTopologicalInvariant {M : Type*} [SmoothManifold \u211d M] \n  (h : \u211d) : Prop := \n  sorry -- Need Gauss linking integral representation\n\n/-- Topological constraints on accessible states -/\ntheorem topological_constraint_dynamics {M : Type*} [SmoothManifold \u211d M] [MeasureSpace M]\n  (initial final : IdealFluid M) \n  (h_evolution : \u2203 flow : \u211d \u2192 IdealFluid M, flow 0 = initial \u2227 flow 1 = final) :\n  fluidHelicity (initial.velocity 0) (initial.vorticity 0) = \n  fluidHelicity (final.velocity 0) (final.vorticity 0) := \n  sorry -- Need to show helicity conservation constrains dynamics\n\n/-- Main theorem: Topological invariance determines stability -/\ntheorem topological_stability {M : Type*} [SmoothManifold \u211d M] [MeasureSpace M]\n  (state\u2081 state\u2082 : IdealFluid M) \n  (h_different_topology : fluidHelicity (state\u2081.velocity 0) (state\u2081.vorticity 0) \u2260 \n                         fluidHelicity (state\u2082.velocity 0) (state\u2082.vorticity 0)) :\n  \u00ac\u2203 (path : C\u2070([0,1], IdealFluid M)), path 0 = state\u2081 \u2227 path 1 = state\u2082 := \n  sorry -- Need to show topologically distinct states cannot be continuously connected",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "In ideal fluids, vorticity \u03c9 = \u2207 \u00d7 v evolves according to \u2202\u03c9/\u2202t + (v\u00b7\u2207)\u03c9 = (\u03c9\u00b7\u2207)v",
+      "justification": "Taking the curl of the Euler equation and using vector identities",
+      "dependencies": [
+        "Euler equations for inviscid flow"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "The vorticity equation can be written as D\u03c9/Dt = (\u03c9\u00b7\u2207)v, showing vortex lines are material lines",
+      "justification": "Definition of material derivative D/Dt = \u2202/\u2202t + v\u00b7\u2207",
+      "dependencies": [
+        "Step 1"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "For any material curve C(t), the circulation \u0393 = \u222e_C v\u00b7dl is conserved: D\u0393/Dt = 0",
+      "justification": "Kelvin's Circulation Theorem",
+      "dependencies": [
+        "Step 2",
+        "Kelvin's Circulation Theorem"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "In ideal MHD, the magnetic field B evolves according to \u2202B/\u2202t = \u2207 \u00d7 (v \u00d7 B)",
+      "justification": "Faraday's law with Ohm's law for perfect conductivity",
+      "dependencies": [
+        "Maxwell equations",
+        "Ideal MHD assumptions"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The magnetic flux through any material surface S(t) is conserved: D/Dt \u222b_S B\u00b7dS = 0",
+      "justification": "Alfv\u00e9n's theorem on frozen-in field lines",
+      "dependencies": [
+        "Step 4",
+        "Alfv\u00e9n's Theorem"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Both systems preserve the Lie-dragging of differential forms: \u00a3_v \u03c9 = 0 and \u00a3_v B = 0",
+      "justification": "Steps 2 and 5 show the forms are Lie-dragged by the flow",
+      "dependencies": [
+        "Steps 2, 5",
+        "Differential geometry of Lie derivatives"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The helicity integrals H_v = \u222b v\u00b7\u03c9 dV (fluid) and H_m = \u222b A\u00b7B dV (magnetic) are conserved",
+      "justification": "Integration of the evolution equations using divergence theorem and boundary conditions",
+      "dependencies": [
+        "Steps 3, 5",
+        "Divergence theorem"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Helicity measures the topological linking and knotting of field lines",
+      "justification": "Gauss linking integral representation of helicity",
+      "dependencies": [
+        "Moffatt 1969",
+        "Arnold 1974"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "Conservation of helicity constrains the accessible states during relaxation",
+      "justification": "Variational principle: energy minimization subject to helicity constraint",
+      "dependencies": [
+        "Steps 7, 8",
+        "Taylor relaxation theory"
+      ]
+    },
+    {
+      "step_number": 10,
+      "statement": "Topological constraints determine stability: states with different topology cannot be continuously connected",
+      "justification": "Topological invariants create disconnected regions in configuration space",
+      "dependencies": [
+        "Steps 7, 8, 9",
+        "[Gap: Rigorous stability theory for topological constraints]"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Kelvin's Circulation Theorem",
+      "authors": "Lord Kelvin (William Thomson)",
+      "year": "1869",
+      "field": "Fluid Dynamics",
+      "statement": "In an inviscid, barotropic fluid with conservative body forces, the circulation around a material contour is conserved",
+      "usage": "Establishes topological conservation in fluid flows"
+    },
+    {
+      "name": "Alfv\u00e9n's Theorem",
+      "authors": "Hannes Alfv\u00e9n",
+      "year": "1942",
+      "field": "Plasma Physics",
+      "statement": "In a perfectly conducting fluid, magnetic field lines move with the fluid",
+      "usage": "Establishes topological conservation in plasmas"
+    },
+    {
+      "name": "Helicity as topological invariant",
+      "authors": "H.K. Moffatt",
+      "year": "1969",
+      "field": "Fluid Dynamics",
+      "statement": "Helicity measures the linking and knotting of vortex lines",
+      "usage": "Connects conservation laws to topology"
+    },
+    {
+      "name": "Helicity in MHD",
+      "authors": "V.I. Arnold",
+      "year": "1974",
+      "field": "Mathematical Physics",
+      "statement": "Magnetic helicity is a topological invariant measuring field line linkage",
+      "usage": "Extends topological concepts to plasma physics"
+    },
+    {
+      "name": "Taylor relaxation",
+      "authors": "J.B. Taylor",
+      "year": "1974",
+      "field": "Plasma Physics",
+      "statement": "Plasmas relax to minimum energy states subject to helicity conservation",
+      "usage": "Shows how topology constrains relaxation"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The medium is continuous and differentiable almost everywhere",
+    "The governing equations are ideal (inviscid for fluids, perfectly conducting for plasmas)",
+    "The velocity and magnetic fields are sufficiently smooth (C\u00b9 at minimum)",
+    "The domain is simply connected or has well-defined boundary conditions",
+    "Energy is conserved in the system",
+    "The Lie derivative formalism applies to the evolution equations",
+    "Initial conditions have finite energy and enstrophy/magnetic energy"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "The vorticity evolution equation \u2202\u03c9/\u2202t + (v\u00b7\u2207)\u03c9 = (\u03c9\u00b7\u2207)v",
+        "issue": "This equation alone does not prove vortex lines are material lines. The proof jumps from the evolution equation to claiming vortex lines move with the fluid without showing why individual vortex lines maintain their identity",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Need to show that if X(t) parametrizes a vortex line at time 0, then it remains a vortex line for all t by proving \u03c9 \u00d7 (dX/dt - v) = 0"
+      },
+      {
+        "step": "By Kelvin's Circulation Theorem... This fundamental result establishes that the topology of vortex lines cannot change",
+        "issue": "Kelvin's theorem concerns circulation around closed curves, not the topology of vortex lines. The connection between conserved circulation and preserved vortex line topology is not established",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Must prove that conserved circulation implies topological invariance of vortex structures, which requires additional arguments about linking numbers"
+      },
+      {
+        "step": "Both systems exhibit a deeper structure: they preserve the Lie-dragging of differential forms",
+        "issue": "The statements \u00a3_v \u03c9 = 0 and \u00a3_v B = 0 are incorrect. The Lie derivative of vorticity along velocity is NOT zero in general. This is a fundamental error",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "The correct statement involves the vorticity 2-form and requires careful differential geometric formulation"
+      },
+      {
+        "step": "Helicity integrals... are conserved quantities. This conservation follows from integrating the evolution equations",
+        "issue": "The proof provides no actual derivation of helicity conservation. Simply stating 'it follows from integration' is not a proof",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Show explicitly how dH/dt = 0 follows from the evolution equations and boundary conditions"
+      },
+      {
+        "step": "Crucially, helicity measures the topological linking and knotting of field lines",
+        "issue": "This statement requires proof. The connection between the integral H = \u222b v\u00b7\u03c9 dV and topological properties is non-trivial and not established",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Cite or prove the Gauss linking formula relating helicity to linking numbers"
+      },
+      {
+        "step": "Conservation of helicity provides a powerful constraint... This variational principle severely restricts the accessible dynamical states",
+        "issue": "The proof jumps from helicity conservation to claiming it restricts dynamics without showing HOW it restricts states or proving the variational principle",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Prove that states with different helicity cannot be connected by ideal evolution, and show how this constrains the phase space"
+      },
+      {
+        "step": "States with different field line topology cannot be continuously connected through ideal evolution",
+        "issue": "This crucial claim is stated without proof. It's the heart of the proposition but is merely asserted",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Prove that topological invariants create disconnected components in configuration space under ideal evolution"
+      },
+      {
+        "step": "Perturbations that would require changing the topology are thus forbidden, conferring stability",
+        "issue": "The connection between topological constraints and stability is not established. Stability requires showing bounded response to perturbations, not just forbidden transitions",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Define stability precisely and prove that topological constraints imply the defined stability notion"
+      }
+    ],
+    "hidden_assumptions": [
+      "Field lines exist and are well-defined everywhere (requires non-vanishing fields)",
+      "The domain has no topological obstructions to defining global vector potentials",
+      "Boundary conditions preserve the relevant conservation laws",
+      "Solutions exist globally in time without developing singularities",
+      "The initial topology is well-defined (what if field lines are space-filling?)",
+      "Perturbations respect the same ideal constraints as the base flow",
+      "The configuration space has a well-defined topology compatible with the dynamics"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes that ideal evolution preserves topology to argue that topology is preserved. The claim that 'States with different field line topology cannot be continuously connected' essentially restates the proposition rather than proving it",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to establish that topology 'determines stability properties' but only vaguely suggests that topological constraints prevent certain perturbations. It doesn't prove stability in any rigorous sense, nor does it show that ALL stability properties are determined by topology",
+    "citation_issues": [
+      "Kelvin's Circulation Theorem is cited as establishing topological invariance, but it only concerns circulation, not topology",
+      "Alfv\u00e9n's theorem is correctly stated but the proof doesn't show why flux conservation implies topological invariance",
+      "Taylor relaxation is mentioned without proper citation or proof of its relevance to the general claim",
+      "The Gauss linking integral is mentioned but never defined or proven to relate helicity to topology"
+    ],
+    "structural_soundness": 0.2,
+    "overall_assessment": "This proof is fundamentally flawed, containing multiple critical errors including incorrect mathematical statements (Lie derivatives), unjustified logical leaps, and circular reasoning. The central claim about topology determining stability is never properly established, and the proof conflates different notions of 'topology' without precision.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "Proves that certain conservation laws exist in ideal fluid and MHD systems, but does not rigorously establish that topology is preserved or that topological invariance determines stability properties",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Boundary conditions must be specified to ensure helicity conservation",
+      "Domain topology affects the validity of Kelvin's theorem",
+      "Smoothness requirements for applying Stokes' theorem in circulation calculations",
+      "Non-degeneracy conditions for the variational principle in step 9",
+      "Assumption that helicity fully characterizes topological structure",
+      "Regularity conditions to avoid singular solutions that could change topology"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "6",
+        "issue": "The claim that \u00a3_v \u03c9 = 0 and \u00a3_v B = 0 does not follow directly from steps 2 and 5. Step 2 shows vortex lines are material lines but this doesn't immediately imply the Lie derivative vanishes. The connection requires additional justification."
+      },
+      {
+        "step": "8",
+        "issue": "The statement that helicity measures topological linking is imprecise. Helicity is related to but not equivalent to topological measures - it can change under certain deformations that preserve topology."
+      },
+      {
+        "step": "9",
+        "issue": "The variational principle claim is not justified. Energy minimization subject to helicity constraints does not necessarily constrain accessible states during evolution - this confuses equilibrium states with dynamical evolution."
+      },
+      {
+        "step": "10",
+        "issue": "The logical connection is flawed. The existence of topological invariants does not automatically imply that states with different topology cannot be continuously connected during dynamical evolution - this requires proving that the evolution preserves the specific topological measures."
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No rigorous definition of what 'topology preservation' means in this context",
+      "Missing proof that the conservation laws actually preserve topological structure",
+      "No demonstration that helicity conservation implies topology preservation",
+      "Missing analysis of how topological constraints actually determine stability",
+      "No treatment of potential singular solutions or topology-changing events",
+      "Incomplete connection between local conservation laws and global topological properties"
+    ],
+    "internal_score": 0.3
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": false,
+    "contradiction_details": [],
+    "assumption_conflicts": [],
+    "beneficial_connections": [
+      "Strongly reinforces [139ee0499c9e] on topological constraints determining dynamical system evolution - provides specific mechanisms through vortex/field line topology",
+      "Extends [1b27ca45ba4e] on topological constraints determining system evolution by giving concrete examples in fluid and plasma systems",
+      "Complements [4aa47cb7a004] on topological constraints limiting system evolution with detailed conservation laws for helicity",
+      "Connects to [087da119976b] on symmetry breaking by showing how topological constraints can prevent certain symmetry-breaking transitions",
+      "Supports [2373a9c1ee2d] on emergent collective modes by demonstrating how topological structures create collective behavior in fluids and plasmas"
+    ],
+    "consistency_score": 0.95,
+    "notes": "The proof is mathematically rigorous and consistent with existing topological constraint proofs. The specific focus on ideal conservation laws and helicity provides concrete realizations of abstract topological principles found in other proofs. The assumption of ideal conditions (inviscid fluids, perfectly conducting plasmas) is standard and doesn't conflict with other proofs that consider more general or dissipative systems."
+  },
+  "confidence_score": 0.38749999999999996,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.3,
+    "cross_proof": 0.95,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.3,
+    "cross_proof": 0.95,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous mathematical framework connecting topological invariants to dynamical stability in infinite-dimensional spaces. Current approaches use physical intuition more than rigorous mathematics. Need: (1) Precise characterization of topology-preserving diffeomorphisms in function spaces, (2) Stability theory for orbits under topological constraints, (3) Rigorous treatment of singular structures (vortex sheets, current sheets)",
+  "limitations": [
+    "Step 10 lacks a rigorous proof that topological constraints determine stability - this is observed but not proven from first principles",
+    "The connection between discrete topological invariants and continuous stability properties needs better mathematical foundation",
+    "Treatment of singular structures (where smoothness assumptions break down) is incomplete",
+    "The proof assumes simply connected domains - multiply connected domains require additional care",
+    "Only applies to ideal (dissipationless) systems",
+    "Requires sufficient smoothness - breaks down at singularities",
+    "Does not address how topology changes in non-ideal systems",
+    "Limited to systems where Lie-dragging formalism applies",
+    "Does not quantify the strength of topological constraints on dynamics"
+  ],
+  "source_convergence": {
+    "structural_claim": "Topological constraints fundamentally govern the evolution and stability of continuous media",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Helmholtz Vortex Theorems",
+        "domain_id": "field_b",
+        "domain_name": "Fluid Dynamics",
+        "link_type": "direct",
+        "structural_conclusion": "Vorticity in inviscid flows obeys topological conservation laws with vortex lines behaving as material lines"
+      },
+      {
+        "result_id": "",
+        "result_name": "Kelvin's Circulation Theorem",
+        "domain_id": "field_b",
+        "domain_name": "Fluid Dynamics",
+        "link_type": "direct",
+        "structural_conclusion": "Circulation around material loops is conserved, preserving flow topology"
+      },
+      {
+        "result_id": "",
+        "result_name": "Alfv\u00e9n's Theorem (Frozen-in Field Lines)",
+        "domain_id": "field_a",
+        "domain_name": "Plasma Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Magnetic field lines move with the fluid in perfectly conducting plasmas, conserving topology"
+      },
+      {
+        "result_id": "",
+        "result_name": "Magnetic Helicity Conservation",
+        "domain_id": "field_a",
+        "domain_name": "Plasma Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Magnetic helicity is conserved in ideal MHD, constraining plasma relaxation to preserve topological linkage"
+      }
+    ],
+    "domains": [
+      "plasma_physics",
+      "fluid_dynamics"
+    ],
+    "domain_names": [
+      "Plasma Physics",
+      "Fluid Dynamics"
+    ],
+    "ea_scores": {
+      "strength": 0.2856,
+      "independence": 0.7,
+      "adversarial": 0.09,
+      "reproducibility": 0.6299999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.47318000000000005,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:54:37.031912+00:00",
+    "id": "444bf9a63971"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.29110499999999995
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "proof_id": "8339ece9da14",
+  "timestamp": "2026-05-02T13:46:45.207798+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "categorical",
+      "alternatives_considered": [
+        "axiomatic - One could axiomatize properties of symmetry-breaking control systems, but this would miss the functorial relationships between how fields act on different physical systems"
+      ],
+      "reasoning": "The convergence describes a universal pattern where external fields serve as morphisms that break symmetries and create control handles across different physical domains. This is best captured by identifying the categorical structure where symmetry-breaking fields form a category of control operations, with natural transformations between the atomic and nuclear realizations."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Category theory, Functional analysis, Algebraic structures",
+      "alternatives_considered": [],
+      "reasoning": "Category theory captures the structural pattern of symmetry breaking across domains via functors between categories of symmetric/broken states. Functional analysis provides the spectral theory for degenerate eigenspaces and their perturbations. Algebraic structures (representation theory) encode how external fields act as symmetry-breaking operators."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof shows that G-symmetric Hamiltonians have degenerate eigenspaces carrying group representations. External fields that break G-symmetry lift these degeneracies through first-order perturbation theory, creating distinguishable energy levels. This splitting provides addressable quantum states that can be coherently controlled through field parameters, establishing a functorial relationship between symmetric and controllable quantum states.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 9 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3591 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 5126 chars, 14 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "The formalization captures the mathematical structure but requires significant quantum mechanics machinery not available in Mathlib. The key missing pieces are representation theory for operator algebras, perturbation theory, and the adiabatic theorem. The category-theoretic aspects are partially supported but need custom definitions for the specific quantum categories."
+    }
+  ]
+}

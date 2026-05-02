@@ -1,0 +1,375 @@
+{
+  "id": "630939bd300e",
+  "convergence_id": "79cd16932ee9",
+  "timestamp": "2026-05-02T13:30:10.868338+00:00",
+  "proposition": "Let (X, G, \u03bc) be a measure space with symmetry group G acting measurably. Let F: X \u2192 X be a G-equivariant dynamical system with potential V: X \u2192 \u211d. If V has a unique G-invariant critical point x\u2080 that becomes unstable at parameter \u03bb = \u03bbc, then for \u03bb > \u03bbc, the system evolves to a state in X\u209b \u2282 X where X\u209b = {x \u2208 X : Stab_G(x) \u228a G}, and the orbit space X\u209b/G exhibits discrete structure with respect to the quotient topology.",
+  "proposition_natural": "Symmetry breaking spontaneously generates ordered structures from symmetric initial conditions, creating discrete patterns from continuous systems",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Dynamical systems",
+    "Algebraic structures"
+  ],
+  "apparatus_justification": "Category theory provides the abstract framework to formalize structural convergence across domains through functors and natural transformations. Dynamical systems theory captures the temporal evolution and bifurcation phenomena central to symmetry breaking. Algebraic structures (specifically group theory) are essential for formalizing symmetries and their breaking.",
+  "proof_natural": "**Proposition.** Let $(X, G, \\mu)$ be a measure space with symmetry group $G$ acting measurably. Let $F: X \\to X$ be a $G$-equivariant dynamical system with potential $V: X \\to \\mathbb{R}$. If $V$ has a unique $G$-invariant critical point $x_0$ that becomes unstable at parameter $\\lambda = \\lambda_c$, then for $\\lambda > \\lambda_c$, the system evolves to a state in $X_s \\subset X$ where $X_s = \\{x \\in X : \\text{Stab}_G(x) \\subsetneq G\\}$, and the orbit space $X_s/G$ exhibits discrete structure with respect to the quotient topology.\n\n**Proof.** We assume that $X$ is a Polish space with Borel $\\sigma$-algebra, $G$ is a compact Lie group acting continuously on $X$, and $\\mu$ is a $G$-invariant probability measure. Let $F$ be continuous and $G$-equivariant, satisfying $F(g \\cdot x) = g \\cdot F(x)$ for all $g \\in G$ and $x \\in X$. We further assume that $V$ is $C^2$ and $G$-invariant with $V(g \\cdot x) = V(x)$, the Hessian $D^2V(x_0)$ has discrete spectrum, and the system admits a Lyapunov function.\n\nAt the critical parameter $\\lambda = \\lambda_c$, the lowest eigenvalue of $D^2V(x_0)$ crosses zero from positive to negative, marking the instability threshold for gradient systems. Since $V$ is $G$-invariant, the Hessian $D^2V(x_0)$ commutes with the $G$-action, and consequently its eigenspaces carry representations of $G$. The eigenspace $E_0$ corresponding to the zero eigenvalue transforms according to a non-trivial irreducible representation $\\rho$ of $G$.\n\nFor $\\lambda > \\lambda_c$, by continuity of eigenvalues with respect to parameters, there exist directions $v \\in E_0$ with $\\langle D^2V(x_0)v, v\\rangle < 0$. [Note: We require that the representation $\\rho$ has fixed points under proper subgroups, which depends on the specific structure of $G$ and $\\rho$.] The orbit $G \\cdot v \\subset E_0$ contains points with non-trivial stabilizer subgroups.\n\nBy the Center Manifold Theorem for equivariant dynamical systems, solutions starting near $x_0 + \\varepsilon v$ for small $\\varepsilon > 0$ evolve away from $x_0$ along the unstable manifold. The Equivariant Normal Form Theorem ensures that dynamics on the center manifold near $x_0$ is governed by $\\dot{x} = f(x, \\lambda)$ where $f$ commutes with the $G$-action.\n\n[Note: A transversality argument, requiring careful analysis of the stratification of $X$ by isotropy type, shows that generic equivariant vector fields have isolated zeros with isotropy subgroups $H \\subsetneq G$.] The flow converges to fixed points $x_H$ with $\\text{Stab}_G(x_H) = H \\subsetneq G$. [Note: This requires proving existence of a Lyapunov function compatible with the symmetry and showing all trajectories converge.]\n\nBy the Slice Theorem, near any orbit of the group action, the space has the structure $G \\times_H V$ where $H$ is the stabilizer. Fixed points with different isotropy types lie in different orbits, and orbits with the same isotropy form discrete sets generically. Therefore, the set of fixed points $\\{x_H\\}$ projects to isolated points in $X/G$.\n\nSince the image of $X_s$ in $X/G$ consists of isolated points corresponding to orbits of fixed points, the orbit space $X_s/G$ exhibits discrete structure with respect to the quotient topology. This completes the proof. \u25a1",
+  "proof_lean": "",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "At \u03bb = \u03bbc, the lowest eigenvalue of D\u00b2V(x\u2080) crosses zero from positive to negative",
+      "justification": "Definition of instability threshold for gradient systems",
+      "dependencies": [
+        "Assumption: V is C\u00b2 with discrete spectrum"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "The eigenspace E\u2080 corresponding to the zero eigenvalue at \u03bbc transforms according to a non-trivial irreducible representation \u03c1 of G",
+      "justification": "Since D\u00b2V(x\u2080) commutes with the G-action (by G-invariance of V), its eigenspaces carry representations of G",
+      "dependencies": [
+        "Step 1",
+        "Schur's lemma",
+        "Assumption: G-invariance of V"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "For \u03bb > \u03bbc, there exist directions v \u2208 E\u2080 with \u27e8D\u00b2V(x\u2080)v, v\u27e9 < 0",
+      "justification": "Continuity of eigenvalues with respect to parameters",
+      "dependencies": [
+        "Step 1",
+        "Perturbation theory for linear operators"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The orbit G\u00b7v \u2282 E\u2080 contains points with non-trivial stabilizer subgroups",
+      "justification": "[Gap: This requires showing that the representation \u03c1 has fixed points under proper subgroups, which depends on the specific group G and representation]",
+      "dependencies": [
+        "Step 2",
+        "Representation theory of compact Lie groups"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Solutions starting near x\u2080 + \u03b5v for small \u03b5 > 0 evolve away from x\u2080 along the unstable manifold",
+      "justification": "Center manifold theorem for equivariant dynamical systems",
+      "dependencies": [
+        "Step 3",
+        "Golubitsky-Stewart equivariant bifurcation theory"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "The dynamics on the center manifold near x\u2080 is governed by the equivariant normal form \u1e8b = f(x, \u03bb) where f commutes with the G-action",
+      "justification": "Equivariant normal form theorem",
+      "dependencies": [
+        "Step 5",
+        "Golubitsky-Schaeffer normal form theory"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Generic equivariant vector fields have isolated zeros with isotropy subgroups H \u228a G",
+      "justification": "[Gap: This is a transversality argument that requires careful analysis of the stratification of X by isotropy type]",
+      "dependencies": [
+        "Step 6",
+        "Equivariant transversality theory"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "The flow converges to fixed points x\u2095 with Stab_G(x\u2095) = H \u228a G",
+      "justification": "[Gap: Requires proving existence of a Lyapunov function compatible with the symmetry and showing all trajectories converge]",
+      "dependencies": [
+        "Step 7",
+        "Assumption: System admits Lyapunov function"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "The set of fixed points {x\u2095} projects to isolated points in X/G",
+      "justification": "Fixed points with different isotropy types lie in different orbits, and orbits with the same isotropy form discrete sets generically",
+      "dependencies": [
+        "Step 8",
+        "Slice theorem for group actions"
+      ]
+    },
+    {
+      "step_number": 10,
+      "statement": "The orbit space X\u209b/G exhibits discrete structure",
+      "justification": "The image of X\u209b in X/G consists of isolated points corresponding to orbits of fixed points",
+      "dependencies": [
+        "Step 9",
+        "Assumption: X/G admits measurable structure"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Equivariant Bifurcation Theory",
+      "authors": "Golubitsky, Stewart, Schaeffer",
+      "year": "1988",
+      "field": "Dynamical Systems",
+      "statement": "Symmetry-breaking bifurcations in equivariant systems lead to solutions with reduced symmetry",
+      "usage": "Provides framework for analyzing symmetry-breaking in dynamical systems"
+    },
+    {
+      "name": "Center Manifold Theorem",
+      "authors": "Carr",
+      "year": "1981",
+      "field": "Dynamical Systems",
+      "statement": "Near a non-hyperbolic fixed point, dynamics reduces to a lower-dimensional invariant manifold",
+      "usage": "Reduces infinite-dimensional problem to finite-dimensional analysis"
+    },
+    {
+      "name": "Slice Theorem",
+      "authors": "Palais",
+      "year": "1961",
+      "field": "Differential Geometry",
+      "statement": "Near any orbit of a proper Lie group action, the space looks like G \u00d7_H V where H is the stabilizer",
+      "usage": "Describes local structure of orbit spaces"
+    },
+    {
+      "name": "Equivariant Transversality",
+      "authors": "Field",
+      "year": "1980",
+      "field": "Differential Topology",
+      "statement": "Generic equivariant maps are transverse to orbit type strata",
+      "usage": "Justifies genericity arguments in presence of symmetry"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "X is a Polish space with Borel \u03c3-algebra",
+    "G is a compact Lie group acting continuously on X",
+    "\u03bc is a G-invariant probability measure on X",
+    "F is continuous and G-equivariant: F(g\u00b7x) = g\u00b7F(x) for all g \u2208 G, x \u2208 X",
+    "V is C\u00b2 and G-invariant: V(g\u00b7x) = V(x)",
+    "The Hessian D\u00b2V(x\u2080) exists and has discrete spectrum",
+    "Linear stability analysis is valid near x\u2080",
+    "The system admits a Lyapunov function",
+    "Perturbations respect the measure class of \u03bc",
+    "The quotient X/G admits a measurable structure"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "While basic measure theory, group actions, and topology are available, the specialized equivariant dynamical systems theory, bifurcation theory, and differential topology required for this proof are largely missing from Mathlib. The Center Manifold Theorem and Slice Theorem would need substantial development. The proof involves advanced concepts at the intersection of differential topology, dynamical systems, and equivariant theory that would require extensive foundational work.",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "For \u03bb > \u03bbc, by continuity of eigenvalues with respect to parameters, there exist directions v \u2208 E\u2080 with \u27e8D\u00b2V(x\u2080)v, v\u27e9 < 0",
+        "issue": "E\u2080 was defined as the eigenspace for eigenvalue zero at \u03bb = \u03bbc. For \u03bb > \u03bbc, this eigenspace no longer exists as defined. The proof conflates eigenspaces at different parameter values.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need to properly track how eigenspaces evolve with the parameter"
+      },
+      {
+        "step": "The flow converges to fixed points x_H with Stab_G(x_H) = H \u228a G",
+        "issue": "No proof that such fixed points exist, that the flow converges, or that convergence is to points with proper stabilizers rather than to infinity or limit cycles",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Requires complete existence and convergence analysis"
+      },
+      {
+        "step": "Solutions starting near x\u2080 + \u03b5v for small \u03b5 > 0 evolve away from x\u2080 along the unstable manifold",
+        "issue": "The unstable manifold may not exist globally, and even locally, solutions may not remain on it. Also assumes v is in the tangent space at x\u2080 without justification.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Restrict to local analysis and justify tangent space identification"
+      },
+      {
+        "step": "Fixed points with different isotropy types lie in different orbits, and orbits with the same isotropy form discrete sets generically",
+        "issue": "The word 'generically' is undefined and this claim needs proof. The discreteness claim is unjustified.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Define generic precisely and prove the discreteness claim"
+      },
+      {
+        "step": "Since the image of Xs in X/G consists of isolated points corresponding to orbits of fixed points",
+        "issue": "This assumes all points in Xs are fixed points of F, which was never established. Xs was defined as points with proper stabilizers, not as fixed points.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need to prove relationship between Xs and fixed point set"
+      }
+    ],
+    "hidden_assumptions": [
+      "The parameter \u03bb appears in the potential V in a specific way that preserves all stated properties",
+      "The dynamical system F is the gradient flow of V (never stated explicitly)",
+      "The representation \u03c1 has the specific property that it has fixed points under proper subgroups",
+      "The unstable manifold exists globally and solutions remain on it",
+      "All trajectories converge to fixed points (not to infinity or cycles)",
+      "The stratification by isotropy type is well-behaved enough for transversality arguments",
+      "The system has isolated fixed points after bifurcation"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes the system evolves to states in Xs (points with proper stabilizers) to prove that it evolves to states in Xs. The connection between instability at x\u2080 and evolution to Xs is never established.",
+    "over_generalisation": true,
+    "over_generalisation_details": "Even if all gaps were fixed, the proof would at best show that some trajectories starting near x\u2080 might converge to fixed points with reduced symmetry. It doesn't prove all trajectories do this, nor that the orbit space has discrete structure in any meaningful sense.",
+    "citation_issues": [
+      "Center Manifold Theorem requires non-hyperbolic fixed point, but x\u2080 becomes hyperbolic for \u03bb > \u03bbc",
+      "Equivariant Normal Form Theorem application is vague - what is the specific normal form?",
+      "Slice Theorem is cited but its relevance to discreteness of orbit space is unclear",
+      "Equivariant Transversality is mentioned in a note but never properly applied"
+    ],
+    "structural_soundness": 0.2,
+    "overall_assessment": "This proof has fundamental logical gaps and relies heavily on unstated assumptions. The central argument connecting instability of x\u2080 to evolution toward reduced symmetry states is missing, and the claimed discreteness of the orbit space is completely unjustified. The proof reads more like a sketch of ideas than a rigorous argument.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to show that after symmetry breaking, the system evolves to states with reduced symmetry and that the orbit space has discrete structure, but fails to establish the key claim that the system 'evolves to a state in X\u209b'",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The potential V is a Lyapunov function for the dynamical system F",
+      "The dynamical system F is gradient-like with respect to V",
+      "The representation \u03c1 in Step 2 has the property that G\u00b7v contains points with non-trivial stabilizers",
+      "Generic conditions hold for the equivariant vector field",
+      "Transversality conditions for isotropy stratification",
+      "Convergence assumptions for the flow",
+      "Compactness or properness conditions for orbit closures",
+      "Non-degeneracy conditions for the bifurcation"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "4",
+        "issue": "The justification explicitly acknowledges this is a gap. The claim that G\u00b7v contains points with non-trivial stabilizers depends entirely on the specific representation \u03c1, which could be the trivial representation or have no fixed points under proper subgroups"
+      },
+      {
+        "step": "7",
+        "issue": "The justification acknowledges this is a gap requiring transversality analysis. Generic conditions are not established and may not hold"
+      },
+      {
+        "step": "8",
+        "issue": "The justification acknowledges this is a gap. No proof is given that trajectories converge to fixed points rather than other attractors, or that a compatible Lyapunov function exists"
+      },
+      {
+        "step": "2",
+        "issue": "The claim that E\u2080 carries a non-trivial irreducible representation is not justified. The eigenspace could carry the trivial representation"
+      },
+      {
+        "step": "9",
+        "issue": "The claim that orbits with the same isotropy form discrete sets 'generically' is not proven and depends on unstated transversality conditions"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Multiple acknowledged gaps in Steps 4, 7, and 8",
+      "No connection established between the dynamical system F and the potential V beyond G-equivariance",
+      "No proof that the instability of x\u2080 leads to evolution toward X\u209b rather than other regions",
+      "Missing analysis of what happens when the representation in Step 2 is trivial",
+      "No treatment of degenerate cases where generic conditions fail",
+      "Incomplete justification for why the discrete structure claim follows from the preceding steps"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims that for \u03bb > \u03bbc, the system 'evolves to a state in X\u209b' where all points have non-trivial stabilizers, but this contradicts proof [087da119976b] which shows symmetry breaking creates ordered patterns - the new proof's claim that ALL evolved states have proper stabilizers is too strong and conflicts with the possibility of complete symmetry breaking to trivial stabilizers",
+      "The claim that 'orbit space X\u209b/G exhibits discrete structure' contradicts the general framework in [1318ecd2c25c] where phase transitions can lead to continuous order parameter spaces, not necessarily discrete quotient structures",
+      "The assumption that 'generic equivariant vector fields have isolated zeros with isotropy subgroups H \u228a G' conflicts with [08b6405556dd] which allows for more general symmetry-preserving solutions where the full symmetry group can be maintained"
+    ],
+    "assumption_conflicts": [
+      "The assumption that the system admits a Lyapunov function conflicts with the general dynamical framework in [139ee0499c9e] which allows for more complex topological constraints that may not admit global Lyapunov functions",
+      "The requirement that 'perturbations respect the measure class of \u03bc' is unnecessarily restrictive compared to the measure-theoretic frameworks in proofs [06d1b829563e] and [14e1952bf633] which allow for more general measure-theoretic evolution",
+      "The assumption of 'discrete spectrum' for the Hessian conflicts with the continuous spectrum possibilities inherent in the infinite-dimensional settings considered in proofs [148d85f6c7b4] and [0a36ee9b1a6b]"
+    ],
+    "beneficial_connections": [
+      "Connects well with [087da119976b] on spontaneous symmetry breaking mechanisms, though the new proof is more restrictive",
+      "Extends the symmetry-breaking framework from [1318ecd2c25c] by providing specific dynamical mechanisms for the transition",
+      "Complements [08b6405556dd] by giving concrete conditions for when symmetry constraints lead to pattern formation"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof makes overly strong claims about the universality of non-trivial stabilizers in the evolved state and the discrete nature of the quotient space. The mathematical framework is sound but the conclusions are too restrictive and conflict with established results on symmetry breaking that allow for complete symmetry breaking to trivial stabilizers."
+  },
+  "confidence_score": 0.33,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.5,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.5,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A unified framework combining measure-theoretic dynamics with equivariant bifurcation theory that works for both finite and infinite-dimensional systems. Current equivariant bifurcation theory is primarily developed for finite-dimensional ODEs, while applications to PDEs and field theories require infinite-dimensional generalizations that are not fully developed.",
+  "limitations": [
+    "Step 4: Proving existence of fixed points for subgroup actions requires detailed representation theory analysis specific to each case",
+    "Step 7: Transversality arguments in infinite dimensions require additional functional analytic machinery",
+    "Step 8: Convergence to fixed points is not guaranteed without additional compactness or dissipation assumptions",
+    "The connection between the abstract symmetry-breaking mechanism and specific physical realizations (Higgs mechanism, fluid instabilities) requires additional modeling assumptions",
+    "Proof assumes compact Lie group; non-compact groups require different techniques",
+    "Assumes gradient-like dynamics; general non-gradient systems may exhibit more complex behavior",
+    "Does not address the selection mechanism when multiple symmetry-broken states are possible",
+    "The measure-theoretic aspects are not fully integrated with the dynamical analysis",
+    "Does not quantify the 'discreteness' of resulting patterns"
+  ],
+  "source_convergence": {
+    "structural_claim": "Symmetry breaking spontaneously generates ordered structures from symmetric initial conditions, creating discrete patterns from continuous systems",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Spontaneous Symmetry Breaking (Higgs Mechanism)",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Field Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Symmetric laws produce asymmetric ground states, with gauge bosons acquiring mass through interaction with a field whose vacuum expectation value breaks the symmetry"
+      },
+      {
+        "result_id": "",
+        "result_name": "Taylor-Couette Instability",
+        "domain_id": "field_b",
+        "domain_name": "Fluid Dynamics",
+        "link_type": "direct",
+        "structural_conclusion": "Symmetric rotating flow spontaneously breaks into discrete vortex patterns through instability"
+      },
+      {
+        "result_id": "",
+        "result_name": "Rayleigh-B\u00e9nard Convection",
+        "domain_id": "field_b",
+        "domain_name": "Fluid Dynamics",
+        "link_type": "direct",
+        "structural_conclusion": "Uniform thermal gradient spontaneously breaks into discrete convection cells when critical threshold is exceeded"
+      }
+    ],
+    "domains": [
+      "quantum_field_theory",
+      "fluid_dynamics"
+    ],
+    "domain_names": [
+      "Quantum Field Theory",
+      "Fluid Dynamics"
+    ],
+    "ea_scores": {
+      "strength": 0.21419999999999997,
+      "independence": 0.85,
+      "adversarial": 0.12,
+      "reproducibility": 0.5249999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.47951,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:38:06.694530+00:00",
+    "id": "79cd16932ee9"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.32110500000000003
+  }
+}

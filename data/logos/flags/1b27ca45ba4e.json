@@ -1,0 +1,15 @@
+{
+  "proof_id": "1b27ca45ba4e",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A unified mathematical framework that rigorously connects topological invariants to physical conservation laws across different domains. Current approaches are domain-specific and lack a general categorical formulation that would make the cross-domain convergence mathematically precise.",
+    "Difficulty assessed as challenging",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

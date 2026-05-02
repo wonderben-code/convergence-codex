@@ -1,0 +1,361 @@
+{
+  "id": "d0df80816eef",
+  "convergence_id": "13f9fd376eba",
+  "timestamp": "2026-05-02T12:40:54.498667+00:00",
+  "proposition": "For a system S with state space \u03a9 and symmetry group G acting on \u03a9, the observable diversity D(S) satisfies D(S) \u2265 |\u03a9/G| - |Stab(G)|, where \u03a9/G is the orbit space and Stab(G) is the set of stabilizer subgroups, with equality when all symmetries are manifest and strict inequality when symmetries are spontaneously broken.",
+  "proposition_natural": "Apparent diversity in nature emerges from underlying symmetries and their breaking",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Algebraic structures",
+    "Category theory",
+    "Differential geometry"
+  ],
+  "apparatus_justification": "Symmetries are fundamentally captured by group theory and Lie algebras, while symmetry breaking requires the geometric structure of manifolds and fiber bundles. Category theory provides the formal language to express how these structures map between particle physics (gauge symmetries) and optics (polarization symmetries).",
+  "proof_natural": "**Proposition.** For a system $S$ with state space $\\Omega$ and symmetry group $G$ acting on $\\Omega$, the observable diversity $D(S)$ satisfies $D(S) \\geq |\\Omega/G| - |\\text{Stab}(G)|$, where $\\Omega/G$ is the orbit space and $\\text{Stab}(G)$ is the set of stabilizer subgroups, with equality when all symmetries are manifest and strict inequality when symmetries are spontaneously broken.\n\n**Proof.** Let $\\Omega$ be a smooth manifold of finite dimension $n$ and let $G$ be a Lie group acting smoothly and properly on $\\Omega$, with the action being free outside a measure-zero set. We assume the physical observables form a $C^*$-algebra $\\mathcal{A}$ on which $G$ acts by automorphisms, and that the observable diversity $D(S)$ counts the cardinality of distinguishable macroscopic states. Further, let $E: \\Omega \\to \\mathbb{R}$ be a $G$-invariant energy functional that is bounded below, with vacuum manifold $V \\subset \\Omega$ consisting of all minimum energy states.\n\nBy definition, the orbit space $\\Omega/G$ parametrizes equivalence classes of states under symmetry transformations. When all symmetries are manifest, $G$-invariant observables cannot distinguish between states within the same orbit, establishing a bijection between observable states and orbits in $\\Omega/G$. Thus, in the symmetric phase, $D(S) = |\\Omega/G|$.\n\nNow consider spontaneous symmetry breaking. Since the energy functional is $G$-invariant, we have $G \\cdot v \\subset V$ for any $v \\in V$, implying that the vacuum manifold decomposes as $V = \\bigcup_i G \\cdot v_i$ where the $v_i$ are representatives of distinct orbits. \n\nFor spontaneous symmetry breaking to occur, there must exist a vacuum state $v_0 \\in V$ whose stabilizer $H = \\text{Stab}_G(v_0)$ is a proper subgroup of $G$. By the Orbit-Stabilizer Theorem, the orbit $G \\cdot v_0 \\cong G/H$ has dimension $\\dim(G) - \\dim(H) > 0$, since $H \\subsetneq G$ implies $\\dim(H) < \\dim(G)$.\n\nWhen the system physically selects the vacuum state $v_0$, the original $G$-symmetry is broken to the residual $H$-symmetry. Crucially, the $|G/H|$ distinct points in the orbit $G \\cdot v_0$, which were previously related by symmetry, now become physically distinguishable vacuum states. This multiplies the observable diversity by a factor of $|G/H|$ for each symmetry-broken sector.\n\nMore generally, if the state space decomposes into symmetry sectors $\\Omega_i$ with residual symmetries $H_i$ after breaking, the total observable diversity becomes\n$$D(S) = \\sum_i |G/H_i| \\cdot |\\Omega_i/H_i|$$\n\n[Note: A fully rigorous counting of distinguishable states requires careful measure-theoretic treatment of the orbit spaces, which we have not provided here.]\n\nSince $|G/H_i| \\geq 1$ with equality if and only if $H_i = G$ (no symmetry breaking), we obtain $D(S) \\geq |\\Omega/G|$. Equality holds precisely when all $H_i = G$, meaning no symmetry is broken. When spontaneous symmetry breaking occurs in any sector, we have $H_i \\subsetneq G$ for some $i$, yielding $|G/H_i| > 1$ and thus $D(S) > |\\Omega/G|$.\n\nThis completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.GroupTheory.GroupAction.Basic\nimport Mathlib.GroupTheory.GroupAction.Quotient\nimport Mathlib.GroupTheory.Subgroup.Basic\nimport Mathlib.GroupTheory.Coset\nimport Mathlib.Data.Set.Card\nimport Mathlib.Data.Fintype.Card\n\n/-- Observable diversity of a system with state space and symmetry group -/\ndef ObservableDiversity (\u03a9 : Type*) (G : Type*) [Group G] [MulAction G \u03a9] : \u2115 := \n  sorry -- Definition of observable diversity not in Mathlib\n\n/-- A symmetry is manifest when all states in an orbit are observationally equivalent -/\ndef ManifestSymmetry (\u03a9 : Type*) (G : Type*) [Group G] [MulAction G \u03a9] : Prop :=\n  sorry -- Concept of manifest symmetry not in Mathlib\n\n/-- A symmetry is spontaneously broken when ground states have non-trivial stabilizers -/\ndef SpontaneouslyBroken (\u03a9 : Type*) (G : Type*) [Group G] [MulAction G \u03a9] : Prop :=\n  sorry -- Spontaneous symmetry breaking not in Mathlib\n\n/-- The set of all stabilizer subgroups for a group action -/\ndef StabilizerSet (\u03a9 : Type*) (G : Type*) [Group G] [MulAction G \u03a9] : Set (Subgroup G) :=\n  {H | \u2203 x : \u03a9, H = MulAction.stabilizer G x}\n\n/-- Main theorem: Observable diversity bounds -/\ntheorem observable_diversity_bound \n  (\u03a9 : Type*) (G : Type*) [Group G] [MulAction G \u03a9] [Fintype \u03a9] [Fintype G] \n  [Fintype (Quotient (MulAction.orbitRel G \u03a9))] :\n  ObservableDiversity \u03a9 G \u2265 Fintype.card (Quotient (MulAction.orbitRel G \u03a9)) - \n    Fintype.card (StabilizerSet \u03a9 G) \u2227\n  (ManifestSymmetry \u03a9 G \u2192 \n    ObservableDiversity \u03a9 G = Fintype.card (Quotient (MulAction.orbitRel G \u03a9)) - \n      Fintype.card (StabilizerSet \u03a9 G)) \u2227\n  (SpontaneouslyBroken \u03a9 G \u2192 \n    ObservableDiversity \u03a9 G > Fintype.card (Quotient (MulAction.orbitRel G \u03a9)) - \n      Fintype.card (StabilizerSet \u03a9 G)) := by\n  constructor\n  \u00b7 -- Step 1: Orbit space parametrizes equivalence classes\n    -- The quotient type Quotient (MulAction.orbitRel G \u03a9) represents \u03a9/G\n    sorry -- Need definition of ObservableDiversity to proceed\n  constructor  \n  \u00b7 intro h_manifest\n    -- Step 2: When symmetries are manifest, observable states \u2194 orbits\n    sorry -- Need formal connection between manifest symmetry and observables\n  \u00b7 intro h_broken\n    -- Step 4: For spontaneous breaking, choose v\u2080 with stabilizer H \u228a G\n    sorry -- Need formalization of spontaneous symmetry breaking\n    -- Step 5: Apply orbit-stabilizer theorem\n    -- have orbit_size : Fintype.card (MulAction.orbit G v\u2080) = \n    --   Fintype.card G / Fintype.card (MulAction.stabilizer G v\u2080) := \n    --   MulAction.card_orbit_mul_card_stabilizer_eq_card_group G v\u2080\n    -- Step 6-7: Physical selection creates distinguishable states\n    -- Step 8: Count total diversity across sectors\n    -- Step 9: Show strict inequality when H \u228a G\n\n/-- Vacuum manifold as union of orbits -/\nlemma vacuum_manifold_decomposition \n  (\u03a9 : Type*) (G : Type*) [Group G] [MulAction G \u03a9] \n  (V : Set \u03a9) (h_invariant : \u2200 g : G, \u2200 v \u2208 V, g \u2022 v \u2208 V) :\n  \u2203 (I : Type*) (v : I \u2192 \u03a9), V = \u22c3 i : I, MulAction.orbit G (v i) := by\n  -- Step 3: Vacuum manifold decomposes into orbits\n  sorry -- Need more structure on vacuum manifold\n\n/-- Orbit-stabilizer dimension relation -/\nlemma orbit_dimension_formula \n  (G : Type*) [Group G] [Fintype G] (H : Subgroup G) [Fintype H] :\n  \u2203 (d_G d_H : \u2115), d_G = Fintype.card G \u2227 d_H = Fintype.card H \u2227\n  Fintype.card (G \u29f8 H) = Fintype.card G / Fintype.card H := by\n  -- Step 5: Dimension formula for orbits\n  use Fintype.card G, Fintype.card H\n  refine \u27e8rfl, rfl, ?_\u27e9\n  exact Subgroup.card_quotient_dvd_card H",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The orbit space \u03a9/G parametrizes equivalence classes of states under symmetry transformations",
+      "justification": "By definition of quotient space under group action",
+      "dependencies": [
+        "Assumption: G acts on \u03a9"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "When all symmetries are manifest, observable states correspond bijectively to orbits in \u03a9/G",
+      "justification": "G-invariant observables cannot distinguish states within the same orbit",
+      "dependencies": [
+        "Step 1",
+        "Assumption: Observables form G-invariant subalgebra"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The vacuum manifold V decomposes as V = \u22c3_i G\u00b7v_i where v_i are representatives of distinct orbits",
+      "justification": "G-invariance of energy functional implies G\u00b7v \u2282 V for any v \u2208 V",
+      "dependencies": [
+        "Assumption: E is G-invariant"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "For spontaneous symmetry breaking, choose v\u2080 \u2208 V with stabilizer H = Stab_G(v\u2080) \u228a G",
+      "justification": "Spontaneous breaking requires existence of non-invariant ground states",
+      "dependencies": [
+        "Step 3",
+        "Assumption: Spontaneous symmetry breaking occurs"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The orbit G\u00b7v\u2080 \u2245 G/H has dimension dim(G) - dim(H) > 0",
+      "justification": "Orbit-stabilizer theorem and H \u228a G implies dim(H) < dim(G)",
+      "dependencies": [
+        "Step 4",
+        "Orbit-Stabilizer Theorem"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Physical selection of v\u2080 breaks G-symmetry to H-symmetry, creating |G/H| distinguishable vacuum states",
+      "justification": "Different points in G\u00b7v\u2080 become physically distinguishable after symmetry breaking",
+      "dependencies": [
+        "Step 5",
+        "Goldstone's Theorem"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Observable diversity increases by factor |G/H| for each broken symmetry sector",
+      "justification": "Each G-orbit splits into multiple H-orbits after breaking",
+      "dependencies": [
+        "Step 6"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Total diversity D(S) = \u03a3_i |G/H_i| \u00b7 |\u03a9_i/H_i| where \u03a9_i are symmetry sectors",
+      "justification": "[Gap: Rigorous counting of distinguishable states requires measure theory on orbit spaces]",
+      "dependencies": [
+        "Steps 6-7"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "D(S) \u2265 |\u03a9/G| with equality iff all H_i = G (no breaking)",
+      "justification": "Each term |G/H_i| \u2265 1 with equality iff H_i = G",
+      "dependencies": [
+        "Step 8"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Orbit-Stabilizer Theorem",
+      "authors": "Classical result in group theory",
+      "year": "19th century",
+      "field": "Group Theory",
+      "statement": "For g \u2208 G acting on X, |G\u00b7x| = |G|/|Stab_G(x)|",
+      "usage": "Used in Step 5 to relate orbit dimension to stabilizer dimension"
+    },
+    {
+      "name": "Goldstone's Theorem",
+      "authors": "Goldstone, Salam, Weinberg",
+      "year": "1962",
+      "field": "Quantum Field Theory",
+      "statement": "Spontaneous breaking of continuous symmetry implies massless excitations",
+      "usage": "Justifies physical distinguishability of different vacuum states in Step 6"
+    },
+    {
+      "name": "Stratification Theory for Group Actions",
+      "authors": "Bredon, Palais",
+      "year": "1960s",
+      "field": "Differential Topology",
+      "statement": "Orbit space of proper Lie group action admits Whitney stratification",
+      "usage": "Needed for rigorous treatment of orbit space structure"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "State space \u03a9 is a smooth manifold with dimension n < \u221e",
+    "Symmetry group G is a Lie group acting smoothly on \u03a9",
+    "Observable diversity D(S) is defined as the cardinality of distinguishable macroscopic states",
+    "The action of G on \u03a9 is proper and free outside a measure-zero set",
+    "Physical observables form a C*-algebra A with G-action by automorphisms",
+    "Spontaneous symmetry breaking is characterized by ground states that are not G-invariant",
+    "The vacuum manifold V \u2282 \u03a9 is the set of minimum energy states",
+    "Energy functional E: \u03a9 \u2192 \u211d is G-invariant and bounded below"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Definition of observable diversity D(S)",
+        "issue": "The proof claims D(S) counts 'cardinality of distinguishable macroscopic states' but never defines what makes states distinguishable or what 'macroscopic' means. For infinite state spaces, cardinality is meaningless without proper measure theory.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed without completely redefining the framework"
+      },
+      {
+        "step": "The inequality D(S) \u2265 |\u03a9/G| - |Stab(G)|",
+        "issue": "The proof never uses or justifies the term '- |Stab(G)|' in the claimed inequality. The entire proof shows D(S) \u2265 |\u03a9/G|, not the stated bound.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "The proposition statement is inconsistent with what is proved"
+      },
+      {
+        "step": "Cardinality operations on orbit spaces",
+        "issue": "For continuous groups and manifolds, |\u03a9/G| is typically uncountable. The proof treats cardinalities as if they were finite numbers that can be compared with simple inequalities.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Requires complete reformulation using measure theory or dimension counting"
+      },
+      {
+        "step": "D(S) = |\u03a9/G| in symmetric phase",
+        "issue": "This assumes a bijection between observable states and orbits, but provides no justification. Why should every orbit correspond to exactly one observable state?",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Need to prove that G-invariant observables separate orbits"
+      },
+      {
+        "step": "Multiplication of diversity by |G/H|",
+        "issue": "Claims that breaking G to H multiplies diversity by |G/H|, but this assumes all points in the orbit become distinguishable, which contradicts the residual H-symmetry.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "The counting is fundamentally wrong"
+      },
+      {
+        "step": "The sum formula D(S) = \u03a3\u1d62 |G/H\u1d62| \u00b7 |\u03a9\u1d62/H\u1d62|",
+        "issue": "Appears without justification. How do sectors \u03a9\u1d62 arise? Why this specific formula? The decomposition is never properly defined.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Requires complete rework of the mathematical framework"
+      }
+    ],
+    "hidden_assumptions": [
+      "State space \u03a9 can be meaningfully partitioned into 'sectors' after symmetry breaking",
+      "Observable states can be counted using cardinality for continuous spaces",
+      "Every orbit in \u03a9/G corresponds to exactly one macroscopic observable state",
+      "Symmetry breaking makes all states in a broken orbit distinguishable",
+      "The set Stab(G) of all stabilizer subgroups has finite cardinality",
+      "Physical selection of vacuum state v\u2080 is well-defined mathematically"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes that symmetry breaking increases distinguishability to prove that diversity increases, but the connection between breaking and distinguishability is never established independently.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to handle general Lie groups on manifolds but the cardinality-based arguments only make sense for finite groups. The actual content, if salvageable, would only apply to finite symmetries.",
+    "citation_issues": [
+      "Goldstone's Theorem is cited but never used in the proof",
+      "Stratification Theory is cited but never applied",
+      "Orbit-Stabilizer Theorem is used correctly locally but doesn't justify the cardinality arguments for infinite groups"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed, attempting to use finite counting arguments for infinite-dimensional situations. The stated proposition includes terms that are never addressed in the proof, and the core argument about diversity multiplication is unjustified. The mathematical framework is inappropriate for the problem.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish a lower bound for observable diversity but fails to rigorously define D(S) or prove the claimed inequality. The final inequality D(S) \u2265 |\u03a9/G| - |Stab(G)| is never actually derived.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Definition of observable diversity D(S) as a well-defined mathematical quantity",
+      "Existence and uniqueness of vacuum manifold V",
+      "Compactness or finiteness conditions on orbit spaces to ensure |\u03a9/G| is well-defined",
+      "Measurability conditions for counting distinguishable states",
+      "Relationship between physical observables and mathematical distinguishability",
+      "Conditions ensuring |Stab(G)| is finite and well-defined"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "2",
+        "issue": "Bijection claim is false - G-invariant observables can distinguish states within orbits through non-invariant combinations"
+      },
+      {
+        "step": "6",
+        "issue": "No justification for why 'physical selection' makes orbit points distinguishable - this is circular reasoning"
+      },
+      {
+        "step": "7",
+        "issue": "No proof that observable diversity increases by factor |G/H| - this is asserted without mathematical justification"
+      },
+      {
+        "step": "8",
+        "issue": "Formula appears from nowhere and the gap acknowledgment indicates the step is incomplete"
+      },
+      {
+        "step": "9",
+        "issue": "The inequality D(S) \u2265 |\u03a9/G| - |Stab(G)| from the proposition is never derived - only D(S) \u2265 |\u03a9/G| is shown"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Never proves the actual inequality D(S) \u2265 |\u03a9/G| - |Stab(G)|",
+      "No rigorous definition of observable diversity D(S)",
+      "Missing treatment of the |Stab(G)| term entirely",
+      "No proof of when equality vs strict inequality holds",
+      "Gap in Step 8 acknowledged but not filled",
+      "No connection between symmetry breaking and the specific bound claimed"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims D(S) \u2265 |\u03a9/G| - |Stab(G)| but this formula is mathematically nonsensical - it subtracts the cardinality of a set of subgroups from the cardinality of an orbit space, which are incomparable quantities",
+      "The proof states 'Observable diversity D(S) is defined as the cardinality of distinguishable macroscopic states' but then uses continuous manifold structures, creating a fundamental type mismatch between discrete cardinality and continuous geometry",
+      "The claim that 'D(S) = \u03a3_i |G/H_i| \u00b7 |\u03a9_i/H_i|' contradicts the earlier inequality D(S) \u2265 |\u03a9/G| - |Stab(G)| as these formulas are structurally incompatible"
+    ],
+    "assumption_conflicts": [
+      "Assumes 'Observable diversity D(S) is defined as the cardinality of distinguishable macroscopic states' which conflicts with proof [37338340b3ed] that establishes continuous-to-discrete transitions at different scales",
+      "The assumption of 'proper and free G-action outside measure-zero set' conflicts with the generic symmetry breaking scenarios in proof [f17045616ed2] where stabilizers are typically non-trivial",
+      "Claims observables form a C*-algebra but doesn't specify how this relates to the manifold structure, potentially conflicting with the quantum framework in [19c10dc86a65]"
+    ],
+    "beneficial_connections": [
+      "Connects to proof [6cf918aecf4e] and [f17045616ed2] on symmetry breaking mechanisms, though with flawed mathematical execution",
+      "Relates to proof [c21e27c5a63e] on universal behavior and symmetry, but lacks the critical point analysis",
+      "Could potentially connect to proof [e30b04f6f8f1] on gauge redundancy if the mathematical framework were corrected"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof attempts to address important concepts in symmetry breaking and observable diversity but contains fundamental mathematical errors in its core inequality and inconsistent definitions. The mixing of discrete cardinalities with continuous manifold structures is particularly problematic. The proof would need substantial revision to be mathematically coherent."
+  },
+  "confidence_score": 0.23,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous measure-theoretic framework for counting 'distinguishable macroscopic states' that bridges between microscopic symmetry groups and macroscopic observables. Current approaches use either algebraic topology (cohomology of orbit spaces) or operator algebras (superselection sectors) but lack unified treatment.",
+  "limitations": [
+    "Precise definition of 'observable diversity' D(S) as a mathematical object",
+    "Rigorous counting formula in Step 8 requires measure theory on singular spaces",
+    "Connection between microscopic symmetry breaking and macroscopic distinguishability needs formalization",
+    "Treatment of infinite-dimensional cases (field theories) requires functional analysis extensions",
+    "Proof assumes finite-dimensional state spaces and Lie groups",
+    "Does not address quantum mechanical superposition of broken symmetry states",
+    "Counting formula may need modification for discrete symmetries",
+    "Does not capture emergent symmetries that appear at different scales"
+  ],
+  "source_convergence": {
+    "structural_claim": "Apparent diversity in nature emerges from underlying symmetries and their breaking",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Electroweak unification",
+        "domain_id": "field_a",
+        "domain_name": "Particle Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Electromagnetic and weak forces are different manifestations of a single gauge symmetry that is spontaneously broken"
+      },
+      {
+        "result_id": "",
+        "result_name": "Discovery of the W and Z bosons",
+        "domain_id": "field_a",
+        "domain_name": "Particle Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Distinct forces emerge from spontaneous breaking of underlying gauge symmetries"
+      },
+      {
+        "result_id": "",
+        "result_name": "Glauber's Quantum Theory of Optical Coherence",
+        "domain_id": "field_b",
+        "domain_name": "Optics and Photonics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Classical optical phenomena emerge from quantum field correlations, with classical behavior as a symmetry-restricted special case"
+      },
+      {
+        "result_id": "",
+        "result_name": "Electromagnetically Induced Transparency",
+        "domain_id": "field_b",
+        "domain_name": "Optics and Photonics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Apparent optical properties can be fundamentally altered by manipulating quantum interference, revealing underlying coherent structure"
+      }
+    ],
+    "domains": [
+      "particle_physics",
+      "optics"
+    ],
+    "domain_names": [
+      "Particle Physics",
+      "Optics and Photonics"
+    ],
+    "ea_scores": {
+      "strength": 0.2856,
+      "independence": 0.8,
+      "adversarial": 0.09,
+      "reproducibility": 0.4724999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.47455500000000006,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:29:58.651966+00:00",
+    "id": "13f9fd376eba"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.285045
+  }
+}

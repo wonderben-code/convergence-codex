@@ -1,0 +1,356 @@
+{
+  "id": "4e3abc6929bf",
+  "convergence_id": "9b8228eead9b",
+  "timestamp": "2026-05-02T13:49:54.131253+00:00",
+  "proposition": "Let (X, d) be a complete metric space with a continuous evolution operator T_t: X \u2192 X parameterized by t \u2208 \u211d\u207a. Let F: X \u2192 \u211d be a free energy functional with competing terms F = F\u2081 - F\u2082 where F\u2081, F\u2082 \u2265 0. Then there exists a critical threshold \u03bb_c > 0 such that for \u03bb = F\u2082/F\u2081 > \u03bb_c, the uniform steady state x\u2080 becomes linearly unstable and the system evolves to a state x* \u2208 X exhibiting discrete spatial periodicity with characteristic wavelength k* determined by the balance \u2202\u00b2F\u2081/\u2202k\u00b2 = \u2202\u00b2F\u2082/\u2202k\u00b2.",
+  "proposition_natural": "Continuous systems spontaneously organize into discrete, periodic structures through symmetry-breaking instabilities when competing forces reach critical thresholds",
+  "formalisation_type": "constraint_logic",
+  "mathematical_apparatus": [
+    "Dynamical systems",
+    "Functional analysis",
+    "Differential geometry"
+  ],
+  "apparatus_justification": "Dynamical systems theory provides the bifurcation and stability analysis needed to formalize symmetry-breaking instabilities and critical thresholds. Functional analysis supplies the infinite-dimensional operator theory for continuous systems (PDEs), while differential geometry handles the symmetry groups and their breaking.",
+  "proof_natural": "**Proposition.** Let $(X, d)$ be a complete metric space with a continuous evolution operator $T_t: X \\to X$ parameterized by $t \\in \\mathbb{R}^+$. Let $F: X \\to \\mathbb{R}$ be a free energy functional with competing terms $F = F_1 - F_2$ where $F_1, F_2 \\geq 0$. Then there exists a critical threshold $\\lambda_c > 0$ such that for $\\lambda = F_2/F_1 > \\lambda_c$, the uniform steady state $x_0$ becomes linearly unstable and the system evolves to a state $x^* \\in X$ exhibiting discrete spatial periodicity with characteristic wavelength $k^*$ determined by the balance $\\partial^2 F_1/\\partial k^2 = \\partial^2 F_2/\\partial k^2$.\n\n**Proof.** We assume that $X$ is a complete metric space, typically a Sobolev space $H^s(\\Omega)$ for some domain $\\Omega$, and that $T_t$ forms a strongly continuous semigroup on $X$. Let $F$ be twice Fr\u00e9chet differentiable on $X$, where $F_1$ represents a stabilizing force (such as viscosity or surface tension) and $F_2$ represents a destabilizing force (such as buoyancy or centrifugal force). We further assume that the uniform state $x_0$ is a critical point of $F$ when $\\lambda < \\lambda_c$, that the linearized operator $L = D^2F(x_0)$ is self-adjoint with discrete spectrum satisfying $\\mu_n \\to -\\infty$, and that the system satisfies gradient flow dynamics $\\partial x/\\partial t = -\\nabla F(x)$ with periodic boundary conditions or on an infinite domain.\n\nBy standard linear stability analysis for gradient flows, the stability of $x_0$ is determined by the spectrum of the linearized operator $L = D^2F(x_0)$. Performing a Fourier decomposition and applying Taylor expansion to the dispersion relation for typical physical operators, we find that in Fourier space, $L$ has eigenvalues \n$$\\mu(k) = \\alpha_1|k|^2 - \\alpha_2|k|^4 + O(|k|^6)$$\nwhere $\\alpha_1 \\propto F_1$ and $\\alpha_2 \\propto F_2$.\n\nElementary calculus shows that the maximum eigenvalue occurs at $k^* = \\sqrt{\\alpha_1/2\\alpha_2}$. Setting $d\\mu/dk = 0$ yields $2\\alpha_1|k| - 4\\alpha_2|k|^3 = 0$, giving the critical wavenumber, and verification that $d^2\\mu/dk^2 < 0$ at this point confirms it is indeed a maximum. The corresponding maximum eigenvalue is $\\mu_{\\max} = \\alpha_1^2/4\\alpha_2$.\n\nLinear instability occurs when $\\mu_{\\max} > 0$, which yields the critical threshold $\\lambda_c = 4\\alpha_2^2/\\alpha_1$. For $\\lambda > \\lambda_c$, any eigenvalue with positive real part implies exponential growth of perturbations according to the linearized dynamics. Specifically, the most unstable mode with wavenumber $k^*$ grows as $\\delta x(t) \\sim e^{\\mu(k^*)t}e^{ik^* \\cdot x}$.\n\n[Note: The following requires weakly nonlinear analysis or center manifold reduction, which we do not rigorously establish here.] The exponentially growing mode eventually saturates due to nonlinear terms in the dynamics, forming a stable periodic pattern. By the Center Manifold Theorem, near the bifurcation point the dynamics reduce to a finite-dimensional center manifold. Amplitude equation analysis near threshold suggests that the final pattern has wavelength $2\\pi/k^*$ up to $O(\\varepsilon)$ corrections, where $\\varepsilon = \\lambda - \\lambda_c$.\n\n[Note: The precise selection mechanism and the stability of the final periodic state require additional analysis through the Ginzburg-Landau formalism, which is not universally rigorous for all systems in the stated generality.]\n\nThis establishes that for $\\lambda > \\lambda_c$, the uniform state loses stability to periodic perturbations with characteristic wavelength determined by the balance between stabilizing and destabilizing forces, completing the proof. \u220e",
+  "proof_lean": "import Mathlib.Topology.MetricSpace.Complete\nimport Mathlib.Analysis.Calculus.Deriv\nimport Mathlib.Analysis.SpecialFunctions.Pow.Real\nimport Mathlib.Data.Real.Basic\nimport Mathlib.Topology.ContinuousFunction.Basic\n\n/-- Evolution operator parameterized by time -/\nstructure EvolutionOperator (X : Type*) [MetricSpace X] where\n  T : \u211d\u22650 \u2192 X \u2192 X\n  continuous_T : \u2200 t : \u211d\u22650, Continuous (T t)\n\n/-- Free energy functional with competing terms -/\nstructure FreeEnergyFunctional (X : Type*) [MetricSpace X] where\n  F : X \u2192 \u211d\n  F\u2081 : X \u2192 \u211d\n  F\u2082 : X \u2192 \u211d\n  decomposition : \u2200 x, F x = F\u2081 x - F\u2082 x\n  F\u2081_nonneg : \u2200 x, 0 \u2264 F\u2081 x\n  F\u2082_nonneg : \u2200 x, 0 \u2264 F\u2082 x\n\n/-- Linear stability operator (placeholder) -/\ndef linearStabilityOperator {X : Type*} [NormedAddCommGroup X] [InnerProductSpace \u211d X]\n  (F : FreeEnergyFunctional X) (x\u2080 : X) : X \u2192L[\u211d] X :=\n  sorry -- \"Second derivative of F at x\u2080 - requires Fr\u00e9chet derivative machinery\"\n\n/-- Fourier space eigenvalue function -/\ndef fourierEigenvalue (\u03b1\u2081 \u03b1\u2082 : \u211d) (k : \u211d) : \u211d :=\n  \u03b1\u2081 * k^2 - \u03b1\u2082 * k^4\n\n/-- Critical wavenumber -/\ndef criticalWavenumber (\u03b1\u2081 \u03b1\u2082 : \u211d) (h\u03b1\u2081 : 0 < \u03b1\u2081) (h\u03b1\u2082 : 0 < \u03b1\u2082) : \u211d :=\n  Real.sqrt (\u03b1\u2081 / (2 * \u03b1\u2082))\n\n/-- Maximum eigenvalue -/\ndef maxEigenvalue (\u03b1\u2081 \u03b1\u2082 : \u211d) (h\u03b1\u2082 : 0 < \u03b1\u2082) : \u211d :=\n  \u03b1\u2081^2 / (4 * \u03b1\u2082)\n\n/-- Main theorem on pattern formation instability -/\ntheorem pattern_formation_instability\n  {X : Type*} [CompleteSpace X] [MetricSpace X] [NormedAddCommGroup X] [InnerProductSpace \u211d X]\n  (T : EvolutionOperator X)\n  (F : FreeEnergyFunctional X)\n  (x\u2080 : X) -- uniform steady state\n  (hsteady : \u2200 t : \u211d\u22650, T.T t x\u2080 = x\u2080) :\n  \u2203 (\u03bb_c : \u211d) (h\u03bbc : 0 < \u03bb_c),\n    \u2200 \u03bb : \u211d, (\u2200 x, F.F\u2082 x / F.F\u2081 x = \u03bb) \u2192\n    \u03bb > \u03bb_c \u2192\n    \u2203 (x_star : X) (k_star : \u211d),\n      sorry := by\n  -- Step 1: Linear stability analysis\n  sorry -- \"Linear stability operator L = D\u00b2F(x\u2080) - requires Fr\u00e9chet derivatives\"\n  \n  -- Step 2: Fourier space eigenvalues\n  sorry -- \"Fourier transform and dispersion relation - not in Mathlib\"\n  \n  -- Step 3: Find critical wavenumber\n  sorry -- \"Optimization of \u03bc(k) in Fourier space\"\n  \n  -- Step 4: Critical threshold\n  sorry -- \"\u03bb_c = 4\u03b1\u2082\u00b2/\u03b1\u2081 from eigenvalue condition\"\n  \n  -- Step 5: Exponential growth of unstable mode\n  sorry -- \"Solution to linearized evolution equation\"\n  \n  -- Step 6: Nonlinear saturation\n  sorry -- \"Weakly nonlinear analysis or center manifold reduction\"\n  \n  -- Step 7: Pattern selection\n  sorry -- \"Amplitude equation analysis near threshold\"\n\n/-- Auxiliary lemma: Critical wavenumber optimizes eigenvalue -/\nlemma critical_wavenumber_optimizes (\u03b1\u2081 \u03b1\u2082 : \u211d) (h\u03b1\u2081 : 0 < \u03b1\u2081) (h\u03b1\u2082 : 0 < \u03b1\u2082) :\n  let k_star := criticalWavenumber \u03b1\u2081 \u03b1\u2082 h\u03b1\u2081 h\u03b1\u2082\n  let \u03bc := fourierEigenvalue \u03b1\u2081 \u03b1\u2082\n  (\u2200 k : \u211d, \u03bc k \u2264 \u03bc k_star) \u2227 \u03bc k_star = maxEigenvalue \u03b1\u2081 \u03b1\u2082 h\u03b1\u2082 := by\n  sorry -- \"Elementary calculus verification\"",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The linearized stability of x\u2080 is determined by the spectrum of L = D\u00b2F(x\u2080)",
+      "justification": "Standard linear stability analysis for gradient flows",
+      "dependencies": [
+        "Assumption of gradient flow dynamics",
+        "Fr\u00e9chet differentiability of F"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "In Fourier space, L has eigenvalues \u03bc(k) = \u03b1\u2081|k|\u00b2 - \u03b1\u2082|k|\u2074 + O(|k|\u2076) where \u03b1\u2081 \u221d F\u2081, \u03b1\u2082 \u221d F\u2082",
+      "justification": "Taylor expansion of dispersion relation for typical physical operators",
+      "dependencies": [
+        "Periodic boundary conditions",
+        "Self-adjointness of L"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The maximum eigenvalue occurs at k* = \u221a(\u03b1\u2081/2\u03b1\u2082) with \u03bc_max = \u03b1\u2081\u00b2/4\u03b1\u2082",
+      "justification": "Elementary calculus: setting d\u03bc/dk = 0 and verifying d\u00b2\u03bc/dk\u00b2 < 0",
+      "dependencies": [
+        "Step 2"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "Linear instability occurs when \u03bc_max > 0, giving critical threshold \u03bb_c = 4\u03b1\u2082\u00b2/\u03b1\u2081",
+      "justification": "Eigenvalue with positive real part implies exponential growth of perturbations",
+      "dependencies": [
+        "Step 3",
+        "Spectral theory of linear operators"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "For \u03bb > \u03bb_c, the most unstable mode with wavenumber k* grows exponentially",
+      "justification": "Solution to linearized equation: \u03b4x(t) ~ e^(\u03bc(k*)t)e^(ik*\u00b7x)",
+      "dependencies": [
+        "Step 4",
+        "Theory of linear ODEs"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "[Gap: Nonlinear saturation] The growing mode saturates due to nonlinear terms, forming a periodic pattern",
+      "justification": "Requires weakly nonlinear analysis or center manifold reduction",
+      "dependencies": [
+        "Step 5",
+        "Nonexistent general theory for arbitrary F"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "[Gap: Selection mechanism] The final pattern has wavelength 2\u03c0/k* up to O(\u03b5) corrections",
+      "justification": "Amplitude equation analysis near threshold (not rigorous for all systems)",
+      "dependencies": [
+        "Step 6",
+        "Ginzburg-Landau formalism"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Linear Stability Theory for PDEs",
+      "authors": "Various (see Chandrasekhar 1961)",
+      "year": "1961",
+      "field": "Applied Mathematics",
+      "statement": "Linearization around steady states determines local stability through spectral properties",
+      "usage": "Justifies steps 1-5 of the proof"
+    },
+    {
+      "name": "Center Manifold Theorem",
+      "authors": "Carr, J.",
+      "year": "1981",
+      "field": "Dynamical Systems",
+      "statement": "Near bifurcation points, dynamics reduce to finite-dimensional center manifold",
+      "usage": "Would justify step 6 if applicable conditions could be verified"
+    },
+    {
+      "name": "Amplitude Equation Formalism",
+      "authors": "Newell and Whitehead",
+      "year": "1969",
+      "field": "Pattern Formation",
+      "statement": "Near onset, pattern amplitude obeys Ginzburg-Landau equation",
+      "usage": "Partially justifies step 7 but lacks full rigor"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "X is a complete metric space (typically a Sobolev space H^s(\u03a9) for some domain \u03a9)",
+    "T_t forms a strongly continuous semigroup on X",
+    "F is twice Fr\u00e9chet differentiable on X",
+    "F\u2081 represents a stabilizing force (e.g., viscosity, surface tension)",
+    "F\u2082 represents a destabilizing force (e.g., buoyancy, centrifugal force)",
+    "The uniform state x\u2080 is a critical point of F when \u03bb < \u03bb_c",
+    "The linearized operator L = D\u00b2F(x\u2080) is self-adjoint",
+    "The spectrum of L is discrete with eigenvalues \u03bc\u2099 \u2192 -\u221e",
+    "Periodic boundary conditions or infinite domain",
+    "The system satisfies a gradient flow dynamics \u2202x/\u2202t = -\u2207F(x)"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Fourier decomposition and dispersion relation",
+        "issue": "The proof jumps from abstract metric space X to Fourier analysis without justifying that X admits Fourier decomposition. Not all complete metric spaces have this structure.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed without restricting X to specific function spaces with Fourier structure"
+      },
+      {
+        "step": "Dispersion relation \u03bc(k) = \u03b1\u2081|k|\u00b2 - \u03b1\u2082|k|\u2074",
+        "issue": "This specific form is assumed without derivation. The claim that 'typical physical operators' have this form is unjustified and overly restrictive.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Derive the dispersion relation from specific assumptions about F\u2081 and F\u2082, or restrict the theorem to operators with this specific form"
+      },
+      {
+        "step": "Relationship between F\u2081, F\u2082 and \u03b1\u2081, \u03b1\u2082",
+        "issue": "The proof states \u03b1\u2081 \u221d F\u2081 and \u03b1\u2082 \u221d F\u2082 without defining what this means. F\u2081, F\u2082 are functionals while \u03b1\u2081, \u03b1\u2082 are scalars.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "This conflates functionals with their coefficients in a specific expansion"
+      },
+      {
+        "step": "Critical threshold \u03bbc = 4\u03b1\u2082\u00b2/\u03b1\u2081",
+        "issue": "This formula is dimensionally inconsistent with \u03bb = F\u2082/F\u2081 and the proportionality claims",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Clarify the precise relationship between functionals and expansion coefficients"
+      },
+      {
+        "step": "Nonlinear saturation and pattern formation",
+        "issue": "The proof admits this is not rigorously established but still claims the result. This is a critical gap.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot claim pattern formation without establishing nonlinear dynamics"
+      },
+      {
+        "step": "Wavelength selection k* from balance condition",
+        "issue": "The stated balance \u2202\u00b2F\u2081/\u2202k\u00b2 = \u2202\u00b2F\u2082/\u2202k\u00b2 makes no sense - functionals F\u2081, F\u2082 don't have k-derivatives",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "This should refer to the dispersion relation coefficients, not the functionals"
+      }
+    ],
+    "hidden_assumptions": [
+      "X must be a function space over a spatial domain to support Fourier analysis",
+      "The evolution operator T_t must be generated by -\u2207F for gradient flow to apply",
+      "The domain must support periodic patterns (contradicts general metric space)",
+      "F\u2081 and F\u2082 must have specific forms leading to the claimed dispersion relation",
+      "The system must be translation-invariant for Fourier modes to be eigenmodes",
+      "Higher-order terms in the dispersion relation must be negligible",
+      "The bifurcation must be supercritical for stable patterns to form"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes the existence of a uniform steady state x\u2080 that is a critical point when \u03bb < \u03bbc, but \u03bbc is defined in terms of the stability of x\u2080. This is circular.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims results for general complete metric spaces and general functionals F = F\u2081 - F\u2082, but actually only applies to translation-invariant PDEs on specific domains with very particular dispersion relations. The actual result is about a narrow class of reaction-diffusion or fluid systems.",
+    "citation_issues": [
+      "Center Manifold Theorem requires finite-dimensional reduction near bifurcation, but this isn't established for the infinite-dimensional setting",
+      "Ginzburg-Landau formalism is mentioned but not properly applied or justified",
+      "Linear stability theory for PDEs requires specific functional analytic setup not provided"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof attempts to prove a general pattern formation result but conflates abstract mathematical structures with specific physical systems. The proof contains numerous critical gaps, dimensional inconsistencies, and unjustified leaps that render it essentially invalid as stated.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof only establishes linear instability and exponential growth of perturbations, but fails to prove existence of the claimed periodic steady state x* or its wavelength properties",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Existence and uniqueness of solutions to the evolution equation",
+      "Regularity assumptions on F\u2081 and F\u2082 beyond twice differentiability",
+      "Specific form of operators giving the claimed Fourier eigenvalue structure",
+      "Boundedness of nonlinear terms for global existence",
+      "Conditions ensuring the linearization captures the full dynamics",
+      "Translation invariance of the system",
+      "Assumptions needed for the balance condition \u2202\u00b2F\u2081/\u2202k\u00b2 = \u2202\u00b2F\u2082/\u2202k\u00b2 to determine wavelength"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "2",
+        "issue": "The claimed eigenvalue form \u03bc(k) = \u03b1\u2081|k|\u00b2 - \u03b1\u2082|k|\u2074 + O(|k|\u2076) is asserted without justification for general F\u2081, F\u2082. The proportionality \u03b1\u2081 \u221d F\u2081, \u03b1\u2082 \u221d F\u2082 is vague and unsubstantiated"
+      },
+      {
+        "step": "4",
+        "issue": "The formula \u03bb_c = 4\u03b1\u2082\u00b2/\u03b1\u2081 appears incorrect. If \u03bb = F\u2082/F\u2081 and \u03bc_max = \u03b1\u2081\u00b2/4\u03b1\u2082 with \u03b1\u2081 \u221d F\u2081, \u03b1\u2082 \u221d F\u2082, the dimensional analysis doesn't work"
+      },
+      {
+        "step": "6",
+        "issue": "Claims nonlinear saturation without any analysis. No justification that saturation leads to a steady periodic state rather than chaos or other dynamics"
+      },
+      {
+        "step": "7",
+        "issue": "The wavelength selection mechanism is completely unjustified. The balance condition \u2202\u00b2F\u2081/\u2202k\u00b2 = \u2202\u00b2F\u2082/\u2202k\u00b2 determining k* is stated in the proposition but never derived or used in the proof"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No proof of existence of the periodic steady state x*",
+      "No proof that the system actually reaches this state",
+      "No derivation of the wavelength selection condition \u2202\u00b2F\u2081/\u2202k\u00b2 = \u2202\u00b2F\u2082/\u2202k\u00b2",
+      "No analysis of nonlinear dynamics beyond linear instability",
+      "No proof that the pattern has discrete spatial periodicity",
+      "Missing rigorous connection between linear instability and final pattern formation"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims discrete spatial periodicity emerges from continuous dynamics, but existing proof [139ee0499c9e] establishes that topological constraints determine evolution through conservation laws that persist except at singular structures - the claimed periodic pattern formation lacks proper topological justification",
+      "The proof assumes gradient flow dynamics \u2202x/\u2202t = -\u2207F(x) but fails to establish that the evolution operator T_t is consistent with this gradient structure, contradicting the general framework in [087da119976b] which requires proper symmetry-breaking mechanisms",
+      "The linear stability analysis assumes eigenvalues \u03bc(k) = \u03b1\u2081|k|\u00b2 - \u03b1\u2082|k|\u2074 + O(|k|\u2076) without justification for this specific form, conflicting with the general spectral theory requirements in existing proofs"
+    ],
+    "assumption_conflicts": [
+      "Assumes discrete spectrum of linearized operator L without proving compactness of resolvent, conflicting with spectral assumptions in [0178ff46c5ee]",
+      "Claims self-adjointness of L = D\u00b2F(x\u2080) without establishing proper domain and boundary conditions, inconsistent with operator theory in existing proofs",
+      "Assumes periodic boundary conditions or infinite domain without specifying which, creating ambiguity that conflicts with the precise geometric assumptions in [139ee0499c9e] and [08b6405556dd]"
+    ],
+    "beneficial_connections": [
+      "Connects to [087da119976b] on spontaneous symmetry breaking and pattern formation, though the connection is incomplete due to missing nonlinear analysis",
+      "Relates to [1318ecd2c25c] on phase transitions and symmetry-breaking, but lacks the universal scaling law analysis",
+      "Could extend [0e664bd264b4] on hierarchical structure formation if the gaps in nonlinear saturation were properly addressed"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof has significant gaps in the nonlinear analysis and pattern selection mechanism. The linear stability analysis is standard but incomplete. The claimed result about discrete periodicity requires much stronger topological and analytical foundations to be consistent with existing rigorous proofs in the corpus."
+  },
+  "confidence_score": 0.24500000000000002,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A general theory connecting functional analysis bifurcation theory to pattern selection that: (1) rigorously handles the nonlinear saturation for arbitrary functionals F, (2) proves wavelength selection without assuming specific forms, (3) establishes persistence and stability of periodic patterns beyond weakly nonlinear regime",
+  "limitations": [
+    "Nonlinear saturation mechanism is not proven rigorously for general F",
+    "Wavelength selection only established near threshold using formal asymptotics",
+    "No proof that periodic pattern is the global attractor",
+    "Connection between different physical systems (Taylor-Couette, Rayleigh-B\u00e9nard, etc.) relies on analogical reasoning rather than unified framework",
+    "Proof only covers onset of instability, not fully developed patterns",
+    "Assumes gradient flow structure which may not hold for all systems",
+    "Requires self-adjoint linearization which excludes many fluid systems",
+    "Does not address competition between multiple unstable modes",
+    "Cannot predict pattern type (rolls, hexagons, squares) without additional analysis"
+  ],
+  "source_convergence": {
+    "structural_claim": "Continuous systems spontaneously organize into discrete, periodic structures through symmetry-breaking instabilities when competing forces reach critical thresholds",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Taylor-Couette Instability",
+        "domain_id": "field_a",
+        "domain_name": "Fluid Dynamics",
+        "link_type": "direct",
+        "structural_conclusion": "Rotating flows spontaneously break symmetry to form discrete vortex structures when centrifugal forces overcome viscous damping"
+      },
+      {
+        "result_id": "",
+        "result_name": "Rayleigh-B\u00e9nard Convection",
+        "domain_id": "field_a",
+        "domain_name": "Fluid Dynamics",
+        "link_type": "direct",
+        "structural_conclusion": "Thermal convection self-organizes into discrete cellular patterns when buoyancy forces overcome viscous damping"
+      },
+      {
+        "result_id": "",
+        "result_name": "von K\u00e1rm\u00e1n Vortex Street",
+        "domain_id": "field_a",
+        "domain_name": "Fluid Dynamics",
+        "link_type": "direct",
+        "structural_conclusion": "Wake flows spontaneously organize into periodic vortex patterns with specific spacing ratios"
+      },
+      {
+        "result_id": "",
+        "result_name": "Bloch's Theorem for Periodic Media",
+        "domain_id": "field_b",
+        "domain_name": "Acoustics and Wave Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Wave propagation in periodic structures naturally organizes into discrete bands and gaps"
+      },
+      {
+        "result_id": "",
+        "result_name": "Acoustic Levitation",
+        "domain_id": "field_b",
+        "domain_name": "Acoustics and Wave Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Standing waves create discrete potential wells through interference patterns"
+      }
+    ],
+    "domains": [
+      "fluid_dynamics",
+      "acoustics"
+    ],
+    "domain_names": [
+      "Fluid Dynamics",
+      "Acoustics and Wave Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.357,
+      "independence": 0.75,
+      "adversarial": 0.09,
+      "reproducibility": 0.7,
+      "depth_consistency": 1.0,
+      "confidence": 0.5176,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T22:07:57.256461+00:00",
+    "id": "9b8228eead9b"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.29979
+  }
+}

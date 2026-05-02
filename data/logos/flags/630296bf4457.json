@@ -1,0 +1,15 @@
+{
+  "proof_id": "630296bf4457",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: Rigorous non-perturbative quantization of gauge theories on topologically non-trivial spaces; mathematical framework for nonlinear gravitational structure formation preserving topological information; category-theoretic unification of finite and infinite-dimensional configuration spaces",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

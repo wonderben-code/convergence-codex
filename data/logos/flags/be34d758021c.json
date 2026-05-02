@@ -1,0 +1,13 @@
+{
+  "proof_id": "be34d758021c",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A unified framework connecting soliton theory across different physical contexts (optics, fluids) with precise conditions on when nonlinearity balances dispersion. Current theory is domain-specific and lacks cross-domain formalization.",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "proof_id": "6c42cb5c51b2",
+  "timestamp": "2026-05-02T12:48:59.441882+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "categorical - Could frame this as a functor from perturbations to invariant properties, but the convergence is more about the shared principle of topological protection than categorical relationships"
+      ],
+      "reasoning": "The convergence identifies a shared abstract principle across domains: that topological properties provide robustness to perturbations. This is best captured by axiomatizing what it means for a property to be 'topologically protected' and showing both quantum gravity and acoustic systems satisfy these axioms."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Topology, Differential geometry, Functional analysis",
+      "alternatives_considered": [],
+      "reasoning": "Topology directly captures persistence under continuous deformations via homeomorphisms and homotopy invariants. Differential geometry is needed for quantum gravity's spacetime manifolds and curvature. Functional analysis provides the framework for wave equations in acoustics and spectral properties."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof uses uniform continuity on compact spaces to show that small perturbations in the domain lead to small changes in function values. The stability theorem for persistent homology then bounds the change in topological features, though a gap remains in showing complete invariance of discrete invariants.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 8 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3239 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 3299 chars, 8 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "The formalization captures the structure of the proof but requires significant algebraic topology and persistent homology theory that is not yet in Mathlib. The key missing pieces are: (1) homology groups and their functoriality, (2) persistent homology and persistence diagrams, (3) stability theorems for persistence diagrams, and (4) the full Heine-Cantor theorem. The code uses continuous functions C(X,Y) from Mathlib which automatically handle continuity of compositions."
+    }
+  ]
+}

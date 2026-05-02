@@ -1,0 +1,331 @@
+{
+  "id": "4aa47cb7a004",
+  "convergence_id": "1f5f5ea96085",
+  "timestamp": "2026-05-02T12:46:55.283672+00:00",
+  "proposition": "Let (X, \u03c4) be a topological space representing the configuration space of a physical system, and let \u03c6: X \u00d7 \u211d \u2192 X be a continuous flow representing the system's time evolution. If there exists a topological invariant I: X \u2192 Y (where Y is a discrete space) such that I(\u03c6(x,t)) = I(x) for all x \u2208 X and t \u2208 \u211d, then the system cannot evolve between configurations in different level sets I\u207b\u00b9(y), and any relaxation process is confined to connected components of these level sets.",
+  "proposition_natural": "Topological constraints fundamentally limit the evolution and relaxation of physical systems",
+  "formalisation_type": "constraint_logic",
+  "mathematical_apparatus": [
+    "Topology",
+    "Dynamical systems",
+    "Order theory"
+  ],
+  "apparatus_justification": "Topology provides the fundamental language for constraints as closed/open sets and continuity restrictions. Dynamical systems captures evolution and relaxation through flows and stability. Order theory formalizes constraint hierarchies and fixed-point behavior in relaxation processes.",
+  "proof_natural": "**Proposition.** Let $(X, \\tau)$ be a topological space representing the configuration space of a physical system, and let $\\varphi: X \\times \\mathbb{R} \\to X$ be a continuous flow representing the system's time evolution. If there exists a topological invariant $I: X \\to Y$ (where $Y$ is a discrete space) such that $I(\\varphi(x,t)) = I(x)$ for all $x \\in X$ and $t \\in \\mathbb{R}$, then the system cannot evolve between configurations in different level sets $I^{-1}(y)$, and any relaxation process is confined to connected components of these level sets.\n\n**Proof.** We assume that the configuration space $X$ admits a well-defined topology $\\tau$ where open sets correspond to experimentally distinguishable configurations, the time evolution is representable as a continuous flow $\\varphi: X \\times \\mathbb{R} \\to X$, physical observables correspond to continuous functions on $X$, and energy functionals $E: X \\to \\mathbb{R}$ are continuous with relaxation processes following gradient flows or similar energy-minimizing dynamics. We further assume that topological invariants can be represented as continuous maps to discrete spaces, where $Y$ carries the discrete topology.\n\nSince $Y$ has the discrete topology, every singleton $\\{y\\}$ is open. By continuity of $I$, each level set $I^{-1}(y)$ is open. Moreover, since $Y \\setminus \\{y\\}$ is also open, we have $I^{-1}(Y \\setminus \\{y\\}) = X \\setminus I^{-1}(y)$ is open, making $I^{-1}(y)$ closed. Thus each level set is clopen (both open and closed).\n\nThe invariance condition $I(\\varphi(x,t)) = I(x)$ immediately implies that $\\varphi(I^{-1}(y) \\times \\mathbb{R}) \\subseteq I^{-1}(y)$ for each $y \\in Y$. Indeed, if $x \\in I^{-1}(y)$, then $I(x) = y$, and by invariance, $I(\\varphi(x,t)) = I(x) = y$ for all $t$, so $\\varphi(x,t) \\in I^{-1}(y)$.\n\nSince each level set $I^{-1}(y)$ is clopen, it must be a union of connected components of $X$. Furthermore, the flow $\\varphi$ preserves these connected components: for any connected component $C \\subseteq I^{-1}(y)$, the image $\\varphi(C \\times [0,t])$ is connected (being the continuous image of a connected set) and contained in $I^{-1}(y)$.\n\nCrucially, no continuous path in $X$ can connect points in different level sets. If $\\gamma: [0,1] \\to X$ were continuous with $\\gamma(0) \\in I^{-1}(y_1)$ and $\\gamma(1) \\in I^{-1}(y_2)$ where $y_1 \\neq y_2$, then $I \\circ \\gamma: [0,1] \\to Y$ would be a continuous function from the connected space $[0,1]$ to the discrete space $Y$ taking distinct values, contradicting the fundamental theorem that continuous functions from connected spaces to discrete spaces must be constant.\n\nConsequently, any energy minimization process within a level set $I^{-1}(y)$ is constrained to the connected component containing the initial configuration, as gradient flows and energy-minimizing paths must be continuous. The minimum energy configuration within each connected component represents a topologically constrained equilibrium. [Note: The existence of such minima requires compactness or coercivity conditions not stated in our assumptions.]\n\nThis result provides a rigorous foundation for understanding topological constraints in physical systems, encompassing phenomena such as Alfv\u00e9n's theorem in ideal magnetohydrodynamics (where magnetic field line topology is preserved), magnetic helicity conservation, and color confinement in quantum chromodynamics. In each case, the topological invariant partitions the configuration space into dynamically isolated sectors, fundamentally constraining the system's evolution and equilibrium states.\n\nThis completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.Topology.Basic\nimport Mathlib.Topology.Constructions\nimport Mathlib.Topology.Connected\nimport Mathlib.Topology.DiscreteSpace\nimport Mathlib.Data.Set.Basic\nimport Mathlib.Logic.Function.Basic\nimport Mathlib.Topology.ContinuousFunction.Basic\n\n/-- A continuous flow on a topological space X -/\nstructure ContinuousFlow (X : Type*) [TopologicalSpace X] where\n  \u03c6 : X \u00d7 \u211d \u2192 X\n  continuous_\u03c6 : Continuous \u03c6\n\n/-- A topological invariant preserved by a flow -/\nstructure PreservedInvariant {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y] \n  (flow : ContinuousFlow X) where\n  I : X \u2192 Y\n  continuous_I : Continuous I\n  preserved : \u2200 x : X, \u2200 t : \u211d, I (flow.\u03c6 (x, t)) = I x\n\n/-- Main theorem: Topological invariants constrain system evolution -/\ntheorem topological_constraint_on_evolution \n  {X Y : Type*} [TopologicalSpace X] [DiscreteTopology Y]\n  (flow : ContinuousFlow X) (inv : PreservedInvariant flow) :\n  (\u2200 y : Y, IsClopen (inv.I \u207b\u00b9' {y})) \u2227 \n  (\u2200 y : Y, \u2200 x \u2208 inv.I \u207b\u00b9' {y}, \u2200 t : \u211d, flow.\u03c6 (x, t) \u2208 inv.I \u207b\u00b9' {y}) \u2227\n  (\u2200 x\u2081 x\u2082 : X, inv.I x\u2081 \u2260 inv.I x\u2082 \u2192 \n    \u00ac\u2203 \u03b3 : Path x\u2081 x\u2082, True) \u2227\n  (\u2200 y : Y, \u2200 C : Set X, IsConnected C \u2192 C \u2286 inv.I \u207b\u00b9' {y} \u2192 \n    \u2200 t : \u211d, IsConnected (flow.\u03c6 '' (C \u00d7\u02e2 (Set.Icc 0 t)))) := by\n  constructor\n  \u00b7 -- Step 1: Level sets are clopen\n    intro y\n    constructor\n    \u00b7 -- Open\n      exact isOpen_discrete _\n    \u00b7 -- Closed\n      rw [\u2190 isOpen_compl_iff]\n      have : (inv.I \u207b\u00b9' {y})\u1d9c = inv.I \u207b\u00b9' ({y}\u1d9c) := by\n        ext x\n        simp [Set.mem_preimage, Set.mem_compl_iff, Set.mem_singleton_iff]\n      rw [this]\n      exact isOpen_discrete _\n  \n  constructor\n  \u00b7 -- Step 2: Flow preserves level sets\n    intro y x hx t\n    simp [Set.mem_preimage, Set.mem_singleton_iff] at hx \u22a2\n    rw [\u2190 hx]\n    exact inv.preserved x t\n  \n  constructor\n  \u00b7 -- Step 5: No continuous path between different level sets\n    intro x\u2081 x\u2082 h_neq\n    push_neg\n    intro \u03b3\n    -- If such a path existed, I\u2218\u03b3 would be a continuous path in discrete Y\n    have : Continuous (inv.I \u2218 \u03b3.extend) := by\n      apply Continuous.comp inv.continuous_I\n      exact \u03b3.continuous_extend\n    -- But in discrete space, only constant functions are continuous from [0,1]\n    have h_const : \u2200 s t : unitInterval, (inv.I \u2218 \u03b3.extend) s = (inv.I \u2218 \u03b3.extend) t := by\n      sorry -- Need: continuous functions from connected space to discrete space are constant\n    -- This contradicts that endpoints map to different values\n    have : inv.I x\u2081 = inv.I x\u2082 := by\n      have h1 : (inv.I \u2218 \u03b3.extend) 0 = inv.I x\u2081 := by simp [Path.extend_zero]\n      have h2 : (inv.I \u2218 \u03b3.extend) 1 = inv.I x\u2082 := by simp [Path.extend_one]  \n      rw [\u2190 h1, h_const 0 1, h2]\n    exact h_neq this\n  \n  \u00b7 -- Step 4: Flow preserves connectivity within level sets\n    intro y C hC hCy t\n    apply IsConnected.image\n    \u00b7 exact hC.prod (isConnected_Icc (le_refl 0))\n    \u00b7 exact Continuous.continuousOn flow.continuous_\u03c6",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "For any topological invariant I: X \u2192 Y with Y discrete, the level sets I\u207b\u00b9(y) are both open and closed in X",
+      "justification": "Since Y has the discrete topology, every singleton {y} is open. By continuity of I, I\u207b\u00b9(y) is open. Since Y\\{y} is also open, I\u207b\u00b9(Y\\{y}) = X\\I\u207b\u00b9(y) is open, making I\u207b\u00b9(y) closed",
+      "dependencies": [
+        "Definition of continuous function",
+        "Properties of discrete topology"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "The invariance condition I(\u03c6(x,t)) = I(x) implies \u03c6(I\u207b\u00b9(y) \u00d7 \u211d) \u2286 I\u207b\u00b9(y) for each y \u2208 Y",
+      "justification": "If x \u2208 I\u207b\u00b9(y), then I(x) = y. By invariance, I(\u03c6(x,t)) = I(x) = y for all t, so \u03c6(x,t) \u2208 I\u207b\u00b9(y)",
+      "dependencies": [
+        "Step 1",
+        "Definition of topological invariant"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Each level set I\u207b\u00b9(y) is a union of connected components of X",
+      "justification": "From Step 1, I\u207b\u00b9(y) is clopen. Any clopen set in a topological space is a union of connected components",
+      "dependencies": [
+        "Step 1",
+        "Standard result in point-set topology"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The flow \u03c6 preserves connected components within each level set",
+      "justification": "For any connected component C \u2286 I\u207b\u00b9(y), the image \u03c6(C \u00d7 [0,t]) is connected (as the continuous image of a connected set) and contained in I\u207b\u00b9(y) by Step 2",
+      "dependencies": [
+        "Step 2",
+        "Step 3",
+        "Continuity of \u03c6"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "No continuous path in X can connect points in different level sets",
+      "justification": "If \u03b3: [0,1] \u2192 X is continuous with \u03b3(0) \u2208 I\u207b\u00b9(y\u2081) and \u03b3(1) \u2208 I\u207b\u00b9(y\u2082) where y\u2081 \u2260 y\u2082, then I\u2218\u03b3: [0,1] \u2192 Y would be continuous with I\u2218\u03b3(0) = y\u2081 and I\u2218\u03b3(1) = y\u2082, contradicting the discreteness of Y",
+      "dependencies": [
+        "Step 1",
+        "Intermediate Value Theorem for discrete-valued functions"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Energy minimization within a level set I\u207b\u00b9(y) is constrained to its connected components",
+      "justification": "Any gradient flow or energy-minimizing path must be continuous. By Step 5, such paths cannot leave the connected component of the starting point",
+      "dependencies": [
+        "Step 5",
+        "Assumption about relaxation following continuous paths"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The minimum energy configuration within each connected component represents a topologically constrained equilibrium",
+      "justification": "[Gap: This requires showing that minima exist within each component, which depends on compactness or coercivity conditions not stated in assumptions]",
+      "dependencies": [
+        "Step 6",
+        "Continuity of energy functional"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Alfv\u00e9n's Theorem",
+      "authors": "Hannes Alfv\u00e9n",
+      "year": "1942",
+      "field": "Plasma Physics",
+      "statement": "In ideal MHD, magnetic field lines move with the plasma flow, preserving field line topology",
+      "usage": "Provides physical example where magnetic flux through loops is the topological invariant I"
+    },
+    {
+      "name": "Magnetic Helicity Conservation",
+      "authors": "Woltjer, Taylor",
+      "year": "1958, 1974",
+      "field": "Plasma Physics",
+      "statement": "In ideal MHD, magnetic helicity \u222bA\u00b7B dV is conserved, constraining relaxation",
+      "usage": "Example where helicity serves as topological invariant constraining plasma evolution"
+    },
+    {
+      "name": "Confinement in QCD",
+      "authors": "Various (Wilson, 't Hooft, Polyakov)",
+      "year": "1970s",
+      "field": "Nuclear Physics",
+      "statement": "Color charge is confined; isolated quarks cannot exist",
+      "usage": "Example where color charge topology constrains particle states"
+    },
+    {
+      "name": "Properties of discrete-valued continuous functions",
+      "authors": "Standard topology texts",
+      "year": "Classical",
+      "field": "Mathematics",
+      "statement": "A continuous function from a connected space to a discrete space is constant",
+      "usage": "Essential for Step 5 of the proof"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The configuration space X admits a well-defined topology \u03c4",
+    "The time evolution is representable as a continuous flow \u03c6: X \u00d7 \u211d \u2192 X",
+    "Physical observables correspond to continuous functions on X",
+    "Topological invariants of the system can be represented as continuous maps to discrete spaces",
+    "The topology on X is physically meaningful (open sets correspond to experimentally distinguishable configurations)",
+    "Energy functionals E: X \u2192 \u211d are continuous",
+    "Relaxation processes follow gradient flows or similar energy-minimizing dynamics",
+    "The discrete space Y has the discrete topology"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "Since Y has the discrete topology, every singleton {y} is open. By continuity of I, each level set I^{-1}(y) is open.",
+        "issue": "This is backwards. If Y has discrete topology and I is continuous, then I^{-1}(y) is CLOSED, not open. The preimage of a closed set under a continuous map is closed, and in discrete topology, singletons are closed (they're also open, but that's not what gives openness of preimages).",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "The entire argument about level sets being clopen is flawed from the start"
+      },
+      {
+        "step": "Since each level set I^{-1}(y) is clopen, it must be a union of connected components of X",
+        "issue": "Even if level sets were clopen (which they're not necessarily), this doesn't follow. A clopen set need not be a union of connected components unless X is locally connected.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Add assumption that X is locally connected"
+      },
+      {
+        "step": "The minimum energy configuration within each connected component represents a topologically constrained equilibrium",
+        "issue": "The proof admits in brackets that existence of minima requires unstated compactness/coercivity conditions. This is a critical gap - without these conditions, minima may not exist at all.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "State proper conditions for existence of energy minima"
+      },
+      {
+        "step": "Relaxation processes follow gradient flows or similar energy-minimizing dynamics",
+        "issue": "This assumption is too vague. What exactly are 'similar energy-minimizing dynamics'? Without precision, the confinement to connected components doesn't follow rigorously.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Precisely define what constitutes an allowable relaxation process"
+      },
+      {
+        "step": "Physical observables correspond to continuous functions on X",
+        "issue": "This assumption is used nowhere in the proof, suggesting either the proof is incomplete or the assumption is unnecessary.",
+        "severity": "minor",
+        "fixable": true,
+        "suggested_fix": "Remove if unnecessary or use it properly"
+      }
+    ],
+    "hidden_assumptions": [
+      "That the discrete space Y is non-empty",
+      "That the invariant I is surjective (otherwise some y \u2208 Y might have empty preimage)",
+      "That the flow \u03c6 actually exists for all times (completeness of the flow)",
+      "That X is non-empty",
+      "That gradient flows remain within connected components (requires additional topological conditions)",
+      "That the topology on X is Hausdorff or has other separation properties"
+    ],
+    "circular_reasoning": false,
+    "circular_details": "",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to establish confinement to connected components of level sets, but actually only shows confinement to level sets themselves. The connected component analysis is flawed due to the incorrect clopen argument.",
+    "citation_issues": [
+      "The 'fundamental theorem that continuous functions from connected spaces to discrete spaces must be constant' is cited correctly but applied to a situation that was incorrectly set up due to the flawed clopen argument",
+      "The physical examples (Alfv\u00e9n's theorem, etc.) are mentioned but no rigorous connection is made showing they satisfy the hypotheses of this theorem"
+    ],
+    "structural_soundness": 0.4,
+    "overall_assessment": "This proof contains critical errors in basic topology, particularly confusing properties of discrete spaces and continuous preimages. The main result about confinement to level sets is correct but trivial, while the stronger claim about connected components is unsupported. The proof would need major restructuring to be salvageable.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof establishes that level sets are clopen and flow-invariant, and that continuous paths cannot connect different level sets, but fails to prove the full proposition about relaxation processes being confined to connected components due to incomplete reasoning about energy minimization.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Existence of energy functionals on X",
+      "Compactness or coercivity conditions for energy minimization",
+      "Connection between the continuous flow \u03c6 and relaxation/energy-minimizing dynamics",
+      "Well-definedness of gradient flows on X",
+      "Existence of minima within connected components"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "4",
+        "issue": "The justification claims \u03c6(C \u00d7 [0,t]) is connected, but C \u00d7 [0,t] is not necessarily connected when C is just a connected component. The correct statement should be about \u03c6(C \u00d7 {t}) for fixed t, or about individual trajectories \u03c6({x} \u00d7 [0,t])."
+      },
+      {
+        "step": "6",
+        "issue": "The step assumes gradient flows exist and are continuous, but this requires additional structure (Riemannian metric, differentiability) not present in the assumptions. Also conflates the given flow \u03c6 with energy-minimizing dynamics without justification."
+      },
+      {
+        "step": "7",
+        "issue": "Explicitly acknowledges a gap regarding existence of minima, making this step invalid. The justification is incomplete and the step cannot be considered proven."
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Step 7 has an acknowledged gap about existence of energy minima",
+      "No connection established between the given flow \u03c6 and relaxation/energy-minimizing processes",
+      "Missing proof that energy functionals have the required properties for minimization",
+      "No treatment of the case where connected components might be non-compact"
+    ],
+    "internal_score": 0.3
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": false,
+    "contradiction_details": [],
+    "assumption_conflicts": [],
+    "beneficial_connections": [
+      "Directly extends proof [1b27ca45ba4e] which establishes topological constraints determine system evolution - the new proof provides specific mechanisms through invariant level sets",
+      "Complements proof [7562124710df] on topological constraints creating robust phenomena by showing how invariants confine dynamics to connected components",
+      "Strengthens proof [75a7c4c46d4c] on symmetry breaking by providing topological framework for understanding how broken symmetries create disconnected configuration spaces",
+      "Supports proof [6cf918aecf4e] on symmetry breaking mechanisms by showing how topological invariants preserve symmetry classes during evolution",
+      "Connects to proof [4e16485f588b] on external field control by providing topological foundation for understanding how fields can manipulate system states within invariant constraints"
+    ],
+    "consistency_score": 0.95,
+    "notes": "The proof is mathematically sound and consistent with existing topological constraint frameworks. The assumption that Y has discrete topology is crucial but well-motivated. The proof provides valuable mechanistic detail for how topological constraints actually operate through invariant preservation. Minor concern: the proof assumes continuous flows exist, which may not hold for all physical systems, but this is clearly stated in assumptions."
+  },
+  "confidence_score": 0.4174999999999999,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.3,
+    "cross_proof": 0.95,
+    "calibration": 0.49999999999999994
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.3,
+    "cross_proof": 0.95,
+    "calibration": 0.49999999999999994
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": true,
+  "new_mathematics_needed": "",
+  "limitations": [
+    "The proof does not establish existence of energy minima within connected components without additional compactness assumptions",
+    "The connection between abstract topological invariants and specific physical conservation laws (helicity, color charge) requires field-specific formalization",
+    "The proof assumes gradient flow dynamics but doesn't prove all physical relaxations follow such flows",
+    "Requires configuration space to have well-defined topology matching physical distinguishability",
+    "Assumes perfect conservation of topological invariants (no dissipation or quantum tunneling)",
+    "Does not address finite-time relaxation rates within topological sectors",
+    "Does not handle approximate or 'almost-conserved' topological quantities"
+  ],
+  "source_convergence": {
+    "structural_claim": "Topological constraints fundamentally limit the evolution and relaxation of physical systems",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Alfv\u00e9n's Theorem (Frozen-in Field Lines)",
+        "domain_id": "field_a",
+        "domain_name": "Plasma Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Magnetic field line topology is conserved in ideal plasmas, constraining evolution"
+      },
+      {
+        "result_id": "",
+        "result_name": "Magnetic Helicity Conservation",
+        "domain_id": "field_a",
+        "domain_name": "Plasma Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Topological linkage of field lines constrains plasma relaxation to specific minimum energy states"
+      },
+      {
+        "result_id": "",
+        "result_name": "Confinement in QCD",
+        "domain_id": "field_b",
+        "domain_name": "Nuclear Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Color charge confinement creates topological constraint preventing isolation of quarks"
+      },
+      {
+        "result_id": "",
+        "result_name": "Chiral Symmetry Breaking",
+        "domain_id": "field_b",
+        "domain_name": "Nuclear Physics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Vacuum structure creates topological constraint that generates constituent quark masses"
+      }
+    ],
+    "domains": [
+      "plasma_physics",
+      "nuclear_physics"
+    ],
+    "domain_names": [
+      "Plasma Physics",
+      "Nuclear Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.2856,
+      "independence": 0.85,
+      "adversarial": 0.09,
+      "reproducibility": 0.5512499999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.4988675,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:54:08.429373+00:00",
+    "id": "1f5f5ea96085"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.301665
+  }
+}

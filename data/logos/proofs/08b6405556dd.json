@@ -1,0 +1,340 @@
+{
+  "id": "08b6405556dd",
+  "convergence_id": "5b63e9342957",
+  "timestamp": "2026-05-02T13:10:33.682814+00:00",
+  "proposition": "Let (M, g) be a manifold with metric g admitting a Lie group G of isometries. Then: (1) For any dynamical system on M with Lagrangian L invariant under G, there exists a conserved quantity J_\u03be for each generator \u03be of the Lie algebra g of G via Noether's theorem; (2) The form of any G-invariant interaction Hamiltonian H or Lagrangian L is constrained to lie in the G-invariant subspace of functions on M; (3) The equations of motion preserve the orbit structure of the G-action.",
+  "proposition_natural": "Symmetry principles dictate the structure of interactions and constrain the possible dynamics, with the symmetry group determining both conserved quantities and the form of the governing equations",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Algebraic structures",
+    "Differential geometry",
+    "Category theory"
+  ],
+  "apparatus_justification": "The core claim concerns how symmetry groups determine dynamics and conservation laws, making group theory and Lie algebras essential. Differential geometry provides the manifold structure for field configurations and phase spaces. Category theory captures the functorial relationship between symmetries and dynamics across both domains.",
+  "proof_natural": "**Proposition.** Let $(M, g)$ be a manifold with metric $g$ admitting a Lie group $G$ of isometries. Then: (1) For any dynamical system on $M$ with Lagrangian $L$ invariant under $G$, there exists a conserved quantity $J_\\xi$ for each generator $\\xi$ of the Lie algebra $\\mathfrak{g}$ of $G$ via Noether's theorem; (2) The form of any $G$-invariant interaction Hamiltonian $H$ or Lagrangian $L$ is constrained to lie in the $G$-invariant subspace of functions on $M$; (3) The equations of motion preserve the orbit structure of the $G$-action.\n\n**Proof.** Let $M$ be a smooth manifold equipped with a metric $g$, and let $G$ be a Lie group acting smoothly on $M$ by isometries. We assume that the action of $G$ is effective, that is, the kernel of the action is trivial. Consider a dynamical system on $M$ with smooth Lagrangian $L: TM \\to \\mathbb{R}$ that is $G$-invariant. We further assume that the action of $G$ lifts naturally to the tangent bundle $TM$ and cotangent bundle $T^*M$.\n\nFor each one-parameter subgroup $\\exp(t\\xi) \\subset G$ with generator $\\xi \\in \\mathfrak{g}$, the associated flow $\\phi_t$ preserves the Lagrangian, that is, $L \\circ d\\phi_t = L$. This follows directly from the definition of $G$-invariance of $L$ and the fact that $G$ acts by isometries. The vector field $X_\\xi$ on $M$ induced by $\\xi$ lifts to a vector field $\\tilde{X}_\\xi$ on $TM$. Since the lift of isometries to $TM$ preserves the tangent bundle structure and $L$ is $G$-invariant, we have $\\mathcal{L}_{\\tilde{X}_\\xi}L = 0$.\n\nBy Noether's theorem, for each continuous symmetry of the action, there exists a corresponding conservation law. Specifically, for each generator $\\xi \\in \\mathfrak{g}$, there exists a conserved quantity $J_\\xi = \\langle\\partial L/\\partial\\dot{x}, X_\\xi\\rangle$ along solutions of the Euler-Lagrange equations. This establishes claim (1).\n\nThe space of $G$-invariant functions on $M$ forms a subalgebra $C^\\infty(M)^G \\subset C^\\infty(M)$, as $G$-invariant functions are closed under pointwise addition and multiplication. Consequently, any $G$-invariant Hamiltonian $H$ must belong to $C^\\infty(T^*M)^G$, which constrains its functional form. This establishes claim (2).\n\nFor a $G$-invariant Hamiltonian $H$, the associated Hamiltonian vector field $X_H$ satisfies $[X_H, X_\\xi] = 0$ for all $\\xi \\in \\mathfrak{g}$. This follows from the fact that $G$-invariance of $H$ implies $\\{H, J_\\xi\\} = 0$, where $J_\\xi$ generates the lifted $G$-action on $T^*M$. Since commuting flows preserve each other's integral manifolds, the flow of $X_H$ preserves the orbit foliation of the $G$-action on phase space.\n\nBy the Orbit-Stabilizer theorem, the orbits of the $G$-action have natural manifold structures. In local coordinates adapted to the $G$-action, the equations of motion decouple into evolution along and transverse to group orbits. This geometric structure is preserved by the dynamics, establishing claim (3).\n\n[Note: The proof assumes classical mechanics throughout, with no quantum effects considered. The finite-dimensionality of $M$ ensures all constructions are well-defined.]\n\nThis completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.Geometry.Manifold.SmoothManifoldWithCorners\nimport Mathlib.Geometry.RiemannianGeometry.Basic\nimport Mathlib.Geometry.Manifold.Algebra.LieGroup\nimport Mathlib.GroupTheory.GroupAction.Basic\nimport Mathlib.GroupTheory.GroupAction.Quotient\n\n/-- A dynamical system on a manifold with a Lagrangian -/\nstructure LagrangianSystem {\ud835\udd5c : Type*} [NontriviallyNormedField \ud835\udd5c]\n  {E : Type*} [NormedAddCommGroup E] [NormedSpace \ud835\udd5c E]\n  {H : Type*} [TopologicalSpace H] (I : ModelWithCorners \ud835\udd5c E H)\n  (M : Type*) [TopologicalSpace M] [ChartedSpace H M] [SmoothManifoldWithCorners I M] where\n  L : C^\u221e\u27eeI.tangent, TangentBundle I M; \ud835\udd5c\u27ef\n\n/-- Noether's theorem: continuous symmetries give conserved quantities -/\ndef noetherConservedQuantity {\ud835\udd5c : Type*} [NontriviallyNormedField \ud835\udd5c]\n  {E : Type*} [NormedAddCommGroup E] [NormedSpace \ud835\udd5c E]\n  {H : Type*} [TopologicalSpace H] {I : ModelWithCorners \ud835\udd5c E H}\n  {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [SmoothManifoldWithCorners I M]\n  {G : Type*} [LieGroup I G] (g : LieAlgebra \ud835\udd5c G)\n  (sys : LagrangianSystem I M) (\u03be : g) : C^\u221e\u27eeI.tangent, TangentBundle I M; \ud835\udd5c\u27ef :=\n  sorry -- Noether's theorem not formalized in Mathlib\n\n/-- The space of G-invariant smooth functions on a manifold -/\ndef smoothInvariantFunctions {\ud835\udd5c : Type*} [NontriviallyNormedField \ud835\udd5c]\n  {E : Type*} [NormedAddCommGroup E] [NormedSpace \ud835\udd5c E]\n  {H : Type*} [TopologicalSpace H] {I : ModelWithCorners \ud835\udd5c E H}\n  {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [SmoothManifoldWithCorners I M]\n  {G : Type*} [Group G] [MulAction G M] : Subalgebra \ud835\udd5c C^\u221e\u27eeI, M; \ud835\udd5c\u27ef :=\n  sorry -- G-invariant functions as subalgebra not formalized\n\n/-- Main theorem about symmetries in dynamical systems -/\ntheorem symmetry_constraints_dynamics {\ud835\udd5c : Type*} [NontriviallyNormedField \ud835\udd5c]\n  {E : Type*} [NormedAddCommGroup E] [NormedSpace \ud835\udd5c E] [CompleteSpace E]\n  {H : Type*} [TopologicalSpace H] {I : ModelWithCorners \ud835\udd5c E H}\n  {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [SmoothManifoldWithCorners I M]\n  [RiemannianManifold I M]\n  {G : Type*} [LieGroup I G] [MulAction G M]\n  (h_isom : \u2200 g : G, Isometry (fun x : M => g \u2022 x))\n  (sys : LagrangianSystem I M)\n  (h_inv : \u2200 g : G, sys.L = sys.L \u2218 (tangentMap I I (fun x => g \u2022 x))) :\n  (\u2200 \u03be : LieAlgebra \ud835\udd5c G, \u2203 J : C^\u221e\u27eeI.tangent, TangentBundle I M; \ud835\udd5c\u27ef,\n    sorry) \u2227 -- J is conserved along solutions\n  (\u2200 H : C^\u221e\u27eeI.tangent, T*Bundle I M; \ud835\udd5c\u27ef,\n    (\u2200 g : G, H = H \u2218 (cotangentMap I I (fun x => g \u2022 x))) \u2192\n    H \u2208 sorry) \u2227 -- H lies in G-invariant subspace\n  sorry -- equations of motion preserve orbit structure\n  := by\n  constructor\n  \u00b7 -- Part 1: Noether's theorem gives conserved quantities\n    intro \u03be\n    use noetherConservedQuantity (LieAlgebra \ud835\udd5c G) sys \u03be\n    sorry -- Conservation property requires Euler-Lagrange equations\n  constructor\n  \u00b7 -- Part 2: G-invariant Hamiltonians are constrained\n    intro H h_H_inv\n    sorry -- Requires formalization of G-invariant functions on cotangent bundle\n  \u00b7 -- Part 3: Orbit structure preservation\n    sorry -- Requires formalization of Hamiltonian flow and orbit foliations",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "For each one-parameter subgroup exp(t\u03be) \u2282 G with generator \u03be \u2208 g, the flow \u03c6_t preserves the Lagrangian: L \u2218 d\u03c6_t = L",
+      "justification": "Definition of G-invariance of L and the fact that G acts by isometries",
+      "dependencies": [
+        "Assumption of G-invariant Lagrangian"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "The vector field X_\u03be on M induced by \u03be lifts to a vector field X\u0303_\u03be on TM satisfying \u00a3_{X\u0303_\u03be}L = 0",
+      "justification": "The lift of isometries to TM preserves the tangent bundle structure and G-invariance of L",
+      "dependencies": [
+        "Step 1",
+        "Standard construction of lifted action"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "By Noether's theorem, there exists a conserved quantity J_\u03be = \u27e8\u2202L/\u2202\u1e8b, X_\u03be\u27e9 along solutions of the Euler-Lagrange equations",
+      "justification": "Direct application of Noether's theorem for continuous symmetries",
+      "dependencies": [
+        "Step 2",
+        "Noether's theorem (1918)"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The space of G-invariant functions on M forms a subalgebra C^\u221e(M)^G \u2282 C^\u221e(M)",
+      "justification": "G-invariant functions are closed under pointwise addition and multiplication",
+      "dependencies": [
+        "Basic algebra of functions"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Any G-invariant Hamiltonian H must satisfy H \u2208 C^\u221e(T*M)^G, constraining its functional form",
+      "justification": "By assumption of G-invariance and Step 4",
+      "dependencies": [
+        "Step 4",
+        "Definition of G-invariant Hamiltonian"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "The Hamiltonian vector field X_H satisfies [X_H, X_\u03be] = 0 for all \u03be \u2208 g when H is G-invariant",
+      "justification": "G-invariance of H implies {H, J_\u03be} = 0, and J_\u03be generates the lifted G-action on T*M",
+      "dependencies": [
+        "Step 3",
+        "Step 5",
+        "Poisson bracket properties"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The flow of X_H preserves the orbit foliation of the G-action on phase space",
+      "justification": "Commuting flows preserve each other's integral manifolds",
+      "dependencies": [
+        "Step 6",
+        "Frobenius theorem"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "In local coordinates adapted to the G-action, the equations of motion decouple into evolution along and transverse to group orbits",
+      "justification": "The orbit-stabilizer theorem provides local slice coordinates where G-invariance manifests as coordinate independence",
+      "dependencies": [
+        "Step 7",
+        "Orbit-stabilizer theorem",
+        "[Gap: Precise coordinate construction]"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Noether's Theorem",
+      "authors": "Emmy Noether",
+      "year": "1918",
+      "field": "Mathematical Physics",
+      "statement": "For every continuous symmetry of the action of a physical system, there exists a corresponding conservation law",
+      "usage": "Establishes conserved quantities from symmetry generators"
+    },
+    {
+      "name": "Frobenius Theorem",
+      "authors": "Ferdinand Georg Frobenius",
+      "year": "1877",
+      "field": "Differential Geometry",
+      "statement": "An involutive distribution is integrable, yielding a foliation",
+      "usage": "Guarantees orbit foliation is preserved by dynamics"
+    },
+    {
+      "name": "Orbit-Stabilizer Theorem",
+      "authors": "Classical result in group theory",
+      "year": "19th century",
+      "field": "Group Theory/Differential Geometry",
+      "statement": "For a group action, orbits have natural manifold structure with dimension dim(G) - dim(stabilizer)",
+      "usage": "Provides local coordinate systems adapted to symmetry"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "M is a smooth manifold with metric g",
+    "G is a Lie group acting smoothly on M by isometries",
+    "The Lagrangian L: TM \u2192 \u211d is smooth and G-invariant",
+    "The action of G lifts to the tangent bundle TM and cotangent bundle T*M",
+    "All dynamical systems considered are deterministic and governed by variational principles",
+    "The symmetry group G acts effectively on M (kernel of action is trivial)",
+    "All fields and interactions are classical (no quantum effects)",
+    "The manifold M is finite-dimensional"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "The vector field X_\u03be on M induced by \u03be lifts to a vector field X\u0303_\u03be on TM",
+        "issue": "The proof assumes without justification that the lift exists and is unique. The natural lift of a vector field to TM requires additional structure beyond just having a group action.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Explicitly construct the complete lift using the tangent functor and verify it preserves the required properties"
+      },
+      {
+        "step": "By Noether's theorem... J_\u03be = \u27e8\u2202L/\u2202\u1e8b, X_\u03be\u27e9",
+        "issue": "This formula is wrong. X_\u03be is a vector field on M, but \u2202L/\u2202\u1e8b lives in T*Q. The pairing doesn't make sense without proper lifting. The correct formula involves the momentum map.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Use the correct formula J_\u03be = p_i(X_\u03be)^i where p = \u2202L/\u2202q\u0307 and (X_\u03be)^i are components of the lifted vector field"
+      },
+      {
+        "step": "For a G-invariant Hamiltonian H, the associated Hamiltonian vector field X_H satisfies [X_H, X_\u03be] = 0",
+        "issue": "This is false in general. G-invariance of H implies {H, J_\u03be} = 0, but this doesn't imply the vector fields commute. The proof confuses conservation with commutativity.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "This claim needs to be removed or substantially weakened"
+      },
+      {
+        "step": "In local coordinates adapted to the G-action, the equations of motion decouple",
+        "issue": "No justification that such adapted coordinates exist globally or even locally. The existence of slice coordinates requires additional assumptions about the group action.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Invoke the slice theorem for proper group actions and restrict claims to tubular neighborhoods of orbits"
+      },
+      {
+        "step": "The flow of X_H preserves the orbit foliation",
+        "issue": "Even if the previous steps were correct, preservation of individual orbits doesn't follow. The proof would only show infinitesimal preservation.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Use the fact that J_\u03be are constants of motion to show orbit preservation directly"
+      }
+    ],
+    "hidden_assumptions": [
+      "The group action is proper (needed for slice theorem)",
+      "The Lagrangian is regular (needed for Legendre transform)",
+      "The lifted action to TM is the complete/natural lift (never defined)",
+      "The momentum map exists and is equivariant",
+      "The orbit space M/G has reasonable structure",
+      "All vector fields are complete"
+    ],
+    "circular_reasoning": false,
+    "circular_details": "",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims results for arbitrary G-actions and arbitrary invariant Lagrangians, but the arguments only work for free and proper actions with regular Lagrangians. Claim (3) is far too strong as stated.",
+    "citation_issues": [
+      "Noether's theorem is misstated - the conserved quantity formula is incorrect",
+      "Frobenius theorem is cited but never actually used in the proof",
+      "The Orbit-Stabilizer theorem doesn't directly give the manifold structure claimed"
+    ],
+    "structural_soundness": 0.2,
+    "overall_assessment": "This proof contains multiple critical errors including incorrect formulas, false claims about commutativity, and unjustified assertions about coordinate systems. The general strategy could work but requires substantial revision with proper hypotheses and correct applications of the cited theorems.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof establishes some properties of G-invariant systems but fails to prove all three parts of the proposition. It shows existence of conserved quantities and some constraints on G-invariant functions, but doesn't rigorously establish the orbit structure preservation claim.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The Lagrangian is regular (non-degenerate Hessian with respect to velocities)",
+      "The manifold M is complete with respect to the metric g",
+      "The G-action on M is proper",
+      "The lift of the G-action to TM and T*M is well-defined and smooth",
+      "Solutions to the Euler-Lagrange equations exist and are unique",
+      "The momentum map is well-defined",
+      "Local slice coordinates exist for the G-action"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 2",
+        "issue": "The claim that X\u0303_\u03be satisfies \u00a3_{X\u0303_\u03be}L = 0 doesn't follow directly from the lift preserving tangent bundle structure. This requires the complete lift construction and careful analysis of how the Lagrangian transforms."
+      },
+      {
+        "step": "Step 3",
+        "issue": "The formula J_\u03be = \u27e8\u2202L/\u2202\u1e8b, X_\u03be\u27e9 is stated without proving it's actually conserved. Noether's theorem requires showing d/dt(J_\u03be) = 0 along solutions, which isn't demonstrated."
+      },
+      {
+        "step": "Step 6",
+        "issue": "The equivalence between {H, J_\u03be} = 0 and [X_H, X_\u03be] = 0 is asserted without justification. This requires the relationship between Poisson brackets and Lie brackets of Hamiltonian vector fields."
+      },
+      {
+        "step": "Step 8",
+        "issue": "The orbit-stabilizer theorem doesn't directly provide local slice coordinates. This requires additional assumptions about the G-action being proper and free, and the existence of slice theorems."
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Part (3) about orbit structure preservation is not rigorously proven - only asserted through coordinate arguments",
+      "The connection between Lagrangian and Hamiltonian formulations is assumed but not established",
+      "No verification that the conserved quantities J_\u03be actually correspond to the momentum map",
+      "Missing proof that G-invariant functions form the correct constraint space",
+      "No treatment of potential singularities or degeneracies in the G-action"
+    ],
+    "internal_score": 0.3
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": false,
+    "contradiction_details": [],
+    "assumption_conflicts": [],
+    "beneficial_connections": [
+      "Connects to [087da119976b] on symmetry breaking - the new proof shows how G-invariant systems preserve symmetry structure, complementing the analysis of when symmetries are broken",
+      "Relates to [1318ecd2c25c] on phase transitions and symmetry - provides the mathematical framework for understanding how symmetry groups constrain phase transition dynamics",
+      "Extends [139ee0499c9e] on topological constraints in dynamical systems - adds the specific case where constraints arise from Lie group symmetries and their conservation laws",
+      "Complements [1b27ca45ba4e] on topological constraints determining system evolution - provides concrete realization through group orbit structure preservation",
+      "Strengthens [2373a9c1ee2d] on symmetry breaking and collective modes - gives precise mathematical conditions under which symmetries are preserved vs broken"
+    ],
+    "consistency_score": 0.95,
+    "notes": "The proof is mathematically sound and consistent with existing corpus. It provides a classical geometric framework that complements quantum and statistical treatments of symmetry in other proofs. The assumption of classical deterministic dynamics is clearly stated and doesn't conflict with quantum proofs that operate in different regimes. The effective action assumption is standard and well-motivated."
+  },
+  "confidence_score": 0.4174999999999999,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.3,
+    "cross_proof": 0.95,
+    "calibration": 0.49999999999999994
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.3,
+    "cross_proof": 0.95,
+    "calibration": 0.49999999999999994
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": true,
+  "new_mathematics_needed": "",
+  "limitations": [
+    "Step 8 requires explicit construction of slice coordinates which depends on the specific group G and manifold M",
+    "The proof assumes classical mechanics - extending to quantum field theory requires additional machinery (BRST cohomology, gauge fixing)",
+    "The connection to specific examples (Yang-Mills, MHD) requires showing their Lagrangians/Hamiltonians have the required symmetries",
+    "Proof is for classical systems only - quantum systems require operator formalism",
+    "Assumes global symmetries - local gauge symmetries require fiber bundle formalism",
+    "Does not address spontaneous symmetry breaking",
+    "Finite-dimensional assumption excludes field theories without additional work",
+    "Does not prove uniqueness of dynamics from symmetry alone"
+  ],
+  "source_convergence": {
+    "structural_claim": "Symmetry principles dictate the structure of interactions and constrain the possible dynamics, with the symmetry group determining both conserved quantities and the form of the governing equations",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Yang-Mills Theory",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Field Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Local gauge symmetry uniquely determines the form of fundamental interactions through the requirement of local symmetry invariance"
+      },
+      {
+        "result_id": "",
+        "result_name": "Standard Model of Particle Physics",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Field Theory",
+        "link_type": "direct",
+        "structural_conclusion": "All fundamental forces arise from a single gauge principle based on symmetry groups"
+      },
+      {
+        "result_id": "",
+        "result_name": "MHD Equilibrium (Grad-Shafranov Equation)",
+        "domain_id": "field_b",
+        "domain_name": "Plasma Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Axisymmetry reduces the three-dimensional equilibrium problem to a single two-dimensional equation through symmetry constraints"
+      },
+      {
+        "result_id": "",
+        "result_name": "Gyrokinetic Theory",
+        "domain_id": "field_b",
+        "domain_name": "Plasma Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Gyro-symmetry allows averaging over fast timescales while preserving essential physics, with the symmetry determining the reduced description"
+      }
+    ],
+    "domains": [
+      "quantum_field_theory",
+      "plasma_physics"
+    ],
+    "domain_names": [
+      "Quantum Field Theory",
+      "Plasma Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.2856,
+      "independence": 0.75,
+      "adversarial": 0.12,
+      "reproducibility": 0.6299999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.49168,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:36:46.024413+00:00",
+    "id": "5b63e9342957"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.290565
+  }
+}

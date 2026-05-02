@@ -1,0 +1,38 @@
+{
+  "proof_id": "1050c80b4013",
+  "timestamp": "2026-05-02T12:44:58.732872+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "constraint_logic",
+      "alternatives_considered": [
+        "categorical - One could model phase transitions as morphisms in a category of thermodynamic states, but this would miss the essential role of constraint optimization in determining which phase is realized under given conditions"
+      ],
+      "reasoning": "The convergence describes phase transitions that occur when matter reaches critical density/temperature thresholds, where the system finds new equilibrium states with different fundamental degrees of freedom. This is fundamentally about constraint satisfaction: the system minimizes free energy subject to extreme density/temperature constraints, leading to transitions between different stable configurations (hadronic matter vs quark-gluon plasma)."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Category theory, Order theory, Dynamical systems",
+      "alternatives_considered": [],
+      "reasoning": "Category theory captures the structural transformation between particle descriptions via functors between categories of composite and elementary states. Order theory formalizes the density parameter space and phase boundaries. Dynamical systems theory provides the framework for critical phenomena and transitions."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof uses renormalization group arguments to show that increasing density drives the system to stronger coupling. At a critical coupling strength, bound states become unstable and the system's degrees of freedom change from composite to constituent particles, inducing a phase transition characterized by non-analytic behavior in thermodynamic quantities.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 7 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3693 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 3676 chars, 16 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This formalization requires extensive quantum field theory machinery not available in Mathlib. The proof structure follows the given steps but most technical content requires QFT-specific definitions and theorems. The critical aspects like Wilsonian RG, Bethe-Salpeter equations, and proper Hilbert space formulations for composite/constituent states are all marked with sorry."
+    }
+  ]
+}

@@ -1,0 +1,357 @@
+{
+  "id": "988b09d0b7b8",
+  "convergence_id": "49d5f6b6a62d",
+  "timestamp": "2026-05-02T13:01:21.803132+00:00",
+  "proposition": "For a Schwarzschild black hole in (3+1)-dimensional spacetime with event horizon H, the entropy S satisfies S = kc\u00b3A/(4G\u210f) where A is the area of H, demonstrating that the maximum entropy in a region scales with boundary area rather than bulk volume, thus establishing the holographic principle.",
+  "proposition_natural": "Black hole entropy is proportional to surface area rather than volume, revealing a fundamental holographic principle in gravitational physics",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Differential geometry",
+    "Information theory",
+    "Measure theory"
+  ],
+  "apparatus_justification": "Differential geometry provides the mathematical framework for spacetime manifolds, event horizons, and area calculations in general relativity. Information theory formalizes entropy concepts, while measure theory bridges geometric areas to entropic quantities through integration on manifolds.",
+  "proof_natural": "**Proposition.** For a Schwarzschild black hole in (3+1)-dimensional spacetime with event horizon H, the entropy S satisfies S = kc\u00b3A/(4G\u210f) where A is the area of H, demonstrating that the maximum entropy in a region scales with boundary area rather than bulk volume, thus establishing the holographic principle.\n\n**Proof.** Let (M,g) be a 4-dimensional Lorentzian manifold satisfying Einstein's field equations. We assume the black hole is in thermodynamic equilibrium, described by the Schwarzschild solution, and that quantum field theory in curved spacetime remains valid near the horizon. We further assume the generalized second law of thermodynamics holds for black hole systems, information is conserved in quantum gravitational processes, and the no-hair theorem applies. The semi-classical approximation is taken to be valid with \u210f corrections small but non-zero.\n\nConsider the Schwarzschild metric ds\u00b2 = -(1-2GM/rc\u00b2)c\u00b2dt\u00b2 + (1-2GM/rc\u00b2)^(-1)dr\u00b2 + r\u00b2d\u03a9\u00b2. Direct calculation reveals a coordinate singularity at r = 2GM/c\u00b2, which defines the event horizon H. The area of this horizon is obtained by integrating the area element on the 2-sphere of radius r_s = 2GM/c\u00b2, yielding A = 4\u03c0(2GM/c\u00b2)\u00b2 = 16\u03c0G\u00b2M\u00b2/c\u2074.\n\nBy the Bardeen-Carter-Hawking theorems, black holes obey four laws of mechanics analogous to the laws of thermodynamics. In particular, the surface gravity \u03ba = c\u2074/(4GM) plays a role analogous to temperature. Hawking's seminal result from quantum field theory in curved spacetime demonstrates that black holes emit thermal radiation at temperature T_H = \u210f\u03ba/(2\u03c0kc) = \u210fc\u00b3/(8\u03c0GMk).\n\nFrom the first law of black hole mechanics, dM = (\u03ba/8\u03c0G)dA. Thermodynamic consistency with the identification T_H = \u210f\u03ba/(2\u03c0kc) requires the existence of an entropy S such that dM = T_H dS. Solving this differential equation yields S = kc\u00b3A/(4G\u210f), the Bekenstein-Hawking entropy formula.\n\nCrucially, this entropy scales as A \u221d R\u00b2 for horizon radius R, rather than as volume V \u221d R\u00b3. [Note: While we lack a complete microscopic derivation, both string theory and loop quantum gravity calculations suggest this entropy counts quantum gravitational microstates residing on the horizon, with S = ln(\u03a9) where \u03a9 is the number of such states.]\n\nThe Bekenstein bound and spherical entropy bound, derived from gedanken experiments involving information absorption by black holes, establish that the maximum entropy in any region of size R is bounded by S_max \u2264 kc\u00b3A_boundary/(4G\u210f), where A_boundary is the area of the region's boundary. Since the information content I = S/k scales with boundary area rather than bulk volume, we have established the holographic principle: the information content of a spatial region is encoded on its boundary.\n\nThis completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.MeasureTheory.Measure.Lebesgue.Basic\nimport Mathlib.Geometry.Manifold.SmoothManifoldWithCorners\nimport Mathlib.Geometry.RiemannianGeometry.Basic\nimport Mathlib.Information.Entropy.Basic\n\n/-- Physical constants needed for black hole thermodynamics -/\nstructure PhysicalConstants where\n  G : \u211d  -- Gravitational constant\n  c : \u211d  -- Speed of light\n  \u210f : \u211d  -- Reduced Planck constant\n  k : \u211d  -- Boltzmann constant\n  G_pos : 0 < G\n  c_pos : 0 < c\n  \u210f_pos : 0 < \u210f\n  k_pos : 0 < k\n\n/-- Schwarzschild black hole with mass M -/\nstructure SchwarzschildBlackHole (pc : PhysicalConstants) where\n  M : \u211d  -- Mass of black hole\n  M_pos : 0 < M\n\n/-- Event horizon of a Schwarzschild black hole -/\ndef eventHorizon (pc : PhysicalConstants) (bh : SchwarzschildBlackHole pc) : Set (\u211d \u00d7 \u211d\u00b3) :=\n  sorry -- Missing: Lorentzian manifold structure and causal structure\n\n/-- Schwarzschild radius -/\ndef schwarzschildRadius (pc : PhysicalConstants) (bh : SchwarzschildBlackHole pc) : \u211d :=\n  2 * pc.G * bh.M / (pc.c ^ 2)\n\n/-- Area of the event horizon -/\ndef horizonArea (pc : PhysicalConstants) (bh : SchwarzschildBlackHole pc) : \u211d :=\n  4 * Real.pi * (schwarzschildRadius pc bh) ^ 2\n\n/-- Surface gravity at the event horizon -/\ndef surfaceGravity (pc : PhysicalConstants) (bh : SchwarzschildBlackHole pc) : \u211d :=\n  pc.c ^ 4 / (4 * pc.G * bh.M)\n\n/-- Hawking temperature of the black hole -/\ndef hawkingTemperature (pc : PhysicalConstants) (bh : SchwarzschildBlackHole pc) : \u211d :=\n  pc.\u210f * pc.c ^ 3 / (8 * Real.pi * pc.G * bh.M * pc.k)\n\n/-- Bekenstein-Hawking entropy of the black hole -/\ndef blackHoleEntropy (pc : PhysicalConstants) (bh : SchwarzschildBlackHole pc) : \u211d :=\n  pc.k * pc.c ^ 3 * horizonArea pc bh / (4 * pc.G * pc.\u210f)\n\n/-- The holographic principle: maximum entropy in a region scales with boundary area -/\ntheorem holographic_principle (pc : PhysicalConstants) (bh : SchwarzschildBlackHole pc) :\n  \u2203 (S : \u211d), S = blackHoleEntropy pc bh \u2227\n  S = pc.k * pc.c ^ 3 * horizonArea pc bh / (4 * pc.G * pc.\u210f) \u2227\n  \u2203 (R : \u211d), R = schwarzschildRadius pc bh \u2227\n  horizonArea pc bh = 4 * Real.pi * R ^ 2 \u2227\n  (\u2200 (region : Set \u211d\u00b3) (boundary_area : \u211d),\n    sorry) := by  -- Missing: Bekenstein bound and spherical entropy bound\n  -- Step 1: Event horizon at Schwarzschild radius\n  sorry -- Missing: Schwarzschild metric and coordinate singularity analysis\n  \n  -- Step 2: Calculate horizon area\n  have h_area : horizonArea pc bh = 16 * Real.pi * pc.G ^ 2 * bh.M ^ 2 / pc.c ^ 4 := by\n    unfold horizonArea schwarzschildRadius\n    ring\n  \n  -- Step 3: Surface gravity from black hole mechanics\n  sorry -- Missing: Bardeen-Carter-Hawking theorems\n  \n  -- Step 4: Hawking temperature from quantum field theory\n  sorry -- Missing: Quantum field theory in curved spacetime\n  \n  -- Step 5: First law and entropy derivation\n  sorry -- Missing: Black hole thermodynamics first law\n  \n  -- Step 6: Area scaling\n  use blackHoleEntropy pc bh\n  constructor\n  \u00b7 rfl\n  constructor\n  \u00b7 rfl\n  use schwarzschildRadius pc bh\n  constructor\n  \u00b7 rfl\n  constructor\n  \u00b7 unfold horizonArea schwarzschildRadius\n    ring\n  \n  -- Step 7: Microscopic interpretation\n  sorry -- Missing: Quantum gravity microstate counting\n  \n  -- Step 8 & 9: Bekenstein bound and holographic principle\n  sorry -- Missing: Bekenstein bound and information-theoretic interpretation",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The Schwarzschild metric has a coordinate singularity at r = 2GM/c\u00b2 defining the event horizon H",
+      "justification": "Direct calculation from ds\u00b2 = -(1-2GM/rc\u00b2)c\u00b2dt\u00b2 + (1-2GM/rc\u00b2)^(-1)dr\u00b2 + r\u00b2d\u03a9\u00b2",
+      "dependencies": [
+        "Schwarzschild solution to Einstein equations"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "The area of the event horizon is A = 4\u03c0(2GM/c\u00b2)\u00b2 = 16\u03c0G\u00b2M\u00b2/c\u2074",
+      "justification": "Integration of area element on 2-sphere of radius r_s = 2GM/c\u00b2",
+      "dependencies": [
+        "Step 1",
+        "Standard differential geometry"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Black holes obey the four laws of black hole mechanics with surface gravity \u03ba = c\u2074/(4GM)",
+      "justification": "Bardeen-Carter-Hawking theorems establishing mechanical laws analogous to thermodynamics",
+      "dependencies": [
+        "Bardeen-Carter-Hawking 1973"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The Hawking temperature is T_H = \u210f\u03ba/(2\u03c0kc) = \u210fc\u00b3/(8\u03c0GMk)",
+      "justification": "Quantum field theory in curved spacetime shows thermal radiation at horizon",
+      "dependencies": [
+        "Hawking 1975",
+        "Unruh effect",
+        "Step 3"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "From the first law dM = (\u03ba/8\u03c0G)dA and T_H = \u210f\u03ba/(2\u03c0kc), we get dM = T_H dS with S = kc\u00b3A/(4G\u210f)",
+      "justification": "Thermodynamic consistency requires entropy S such that dE = TdS",
+      "dependencies": [
+        "Step 3",
+        "Step 4",
+        "First law of thermodynamics"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "The entropy S = kc\u00b3A/(4G\u210f) scales as A \u221d R\u00b2 for horizon radius R, not as volume V \u221d R\u00b3",
+      "justification": "Direct substitution of A = 4\u03c0r_s\u00b2 into entropy formula",
+      "dependencies": [
+        "Step 2",
+        "Step 5"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "[Gap: Microscopic derivation] The entropy counts quantum gravitational microstates on the horizon",
+      "justification": "String theory and loop quantum gravity calculations suggest S = ln(\u03a9) where \u03a9 counts horizon states",
+      "dependencies": [
+        "Strominger-Vafa 1996",
+        "Ashtekar et al. 1998"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "The maximum entropy in a region of size R is bounded by S_max \u2264 kc\u00b3A_boundary/(4G\u210f)",
+      "justification": "Bekenstein bound and spherical entropy bound from gedanken experiments",
+      "dependencies": [
+        "Bekenstein 1981",
+        "Step 6"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "Information content I = S/k scales with boundary area, establishing holographic principle",
+      "justification": "Information-theoretic interpretation of entropy as missing information",
+      "dependencies": [
+        "Step 6",
+        "Step 8",
+        "Shannon information theory"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Schwarzschild Solution",
+      "authors": "K. Schwarzschild",
+      "year": "1916",
+      "field": "General Relativity",
+      "statement": "Unique spherically symmetric vacuum solution to Einstein equations",
+      "usage": "Provides metric structure for black hole spacetime"
+    },
+    {
+      "name": "Laws of Black Hole Mechanics",
+      "authors": "J.M. Bardeen, B. Carter, S.W. Hawking",
+      "year": "1973",
+      "field": "General Relativity",
+      "statement": "Four laws governing black hole dynamics analogous to thermodynamics",
+      "usage": "Establishes surface gravity and area increase theorem"
+    },
+    {
+      "name": "Hawking Radiation",
+      "authors": "S.W. Hawking",
+      "year": "1975",
+      "field": "Quantum Field Theory in Curved Spacetime",
+      "statement": "Black holes emit thermal radiation at temperature T_H = \u210f\u03ba/(2\u03c0kc)",
+      "usage": "Provides temperature for thermodynamic interpretation"
+    },
+    {
+      "name": "Bekenstein Bound",
+      "authors": "J.D. Bekenstein",
+      "year": "1981",
+      "field": "Black Hole Thermodynamics",
+      "statement": "Maximum entropy in region bounded by S \u2264 2\u03c0kER/(\u210fc)",
+      "usage": "Establishes area scaling of maximum entropy"
+    },
+    {
+      "name": "Black Hole Microstate Counting",
+      "authors": "A. Strominger, C. Vafa",
+      "year": "1996",
+      "field": "String Theory",
+      "statement": "D-brane calculations reproduce Bekenstein-Hawking entropy",
+      "usage": "Provides microscopic origin of entropy (not rigorous in 4D)"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Spacetime is a 4-dimensional Lorentzian manifold (M,g) satisfying Einstein's field equations",
+    "The black hole is in thermodynamic equilibrium (Schwarzschild solution)",
+    "Quantum field theory in curved spacetime is valid near the horizon",
+    "The generalized second law of thermodynamics holds for black hole systems",
+    "Information is conserved in quantum gravitational processes",
+    "The no-hair theorem applies (black holes characterized only by M, Q, J)",
+    "Semi-classical approximation is valid (\u210f corrections small but non-zero)",
+    "The equivalence principle holds locally",
+    "Euclidean path integral formulation of quantum gravity is well-defined",
+    "The partition function Z = Tr(e^(-\u03b2H)) exists for gravitational systems"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "From the first law of black hole mechanics, dM = (\u03ba/8\u03c0G)dA. Thermodynamic consistency with the identification T_H = \u210f\u03ba/(2\u03c0kc) requires the existence of an entropy S such that dM = T_H dS.",
+        "issue": "The proof assumes thermodynamic consistency without justification. Why must black hole mechanics be thermodynamically consistent? This is precisely what needs to be proven, not assumed.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed without circular reasoning - this is the core of what needs to be established"
+      },
+      {
+        "step": "Solving this differential equation yields S = kc\u00b3A/(4G\u210f)",
+        "issue": "The differential equation integration is not shown. The constant of integration is arbitrarily set to zero without justification. Why should entropy vanish when area vanishes?",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Show the integration explicitly and justify why S(A=0) = 0"
+      },
+      {
+        "step": "Since the information content I = S/k scales with boundary area rather than bulk volume, we have established the holographic principle",
+        "issue": "Massive logical leap. Showing one specific case (black holes) has area-scaling entropy does not establish a universal principle for all regions of spacetime.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would need to prove this holds for arbitrary regions, not just black holes"
+      },
+      {
+        "step": "The Bekenstein bound and spherical entropy bound...establish that the maximum entropy in any region of size R is bounded by S_max \u2264 kc\u00b3A_boundary/(4G\u210f)",
+        "issue": "These bounds are derived assuming the black hole entropy formula is correct. Using them to prove the holographic principle is circular.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need independent derivation of these bounds"
+      },
+      {
+        "step": "Note: While we lack a complete microscopic derivation...",
+        "issue": "Admits the proof lacks microscopic justification, undermining the claim to have 'established' anything fundamental",
+        "severity": "major",
+        "fixable": false,
+        "suggested_fix": "Cannot claim to establish a principle without understanding its microscopic basis"
+      }
+    ],
+    "hidden_assumptions": [
+      "Black hole thermodynamics is actual thermodynamics, not just an analogy",
+      "The semi-classical approximation remains valid at the Planck scale where quantum gravity effects dominate",
+      "Information and entropy are equivalent concepts in quantum gravity",
+      "The holographic principle follows from black hole entropy alone",
+      "Hawking radiation calculation remains valid despite the information paradox",
+      "The generalized second law can be applied without a complete theory of quantum gravity"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes thermodynamic consistency to derive the entropy formula, then uses bounds derived from that formula to 'prove' the holographic principle. The Bekenstein bound already assumes the area law for entropy.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof shows (with gaps) that Schwarzschild black holes have area-proportional entropy. It claims this establishes a universal holographic principle for all regions of spacetime, which is a massive and unjustified extrapolation.",
+    "citation_issues": [
+      "Bardeen-Carter-Hawking theorems state analogies to thermodynamics, not that black holes ARE thermodynamic systems",
+      "Hawking radiation derivation assumes free field theory near horizon - validity questionable in strong gravity regime",
+      "String theory and LQG calculations are mentioned but not properly cited or shown to be consistent"
+    ],
+    "structural_soundness": 0.2,
+    "overall_assessment": "This proof contains multiple critical flaws including circular reasoning, unjustified assumptions about thermodynamic consistency, and a massive over-generalization from black holes to all spacetime regions. The argument essentially assumes what it seeks to prove and lacks rigorous mathematical justification for key steps.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "Derives the Bekenstein-Hawking entropy formula and claims it establishes the holographic principle, but only shows area scaling without proving maximality or general holographic encoding",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Black hole complementarity or information paradox resolution",
+      "Validity of thermodynamic analogy for gravitational systems",
+      "Existence of a well-defined notion of 'region' and its 'boundary' in curved spacetime",
+      "Bekenstein bound applies universally to all physical systems",
+      "Quantum gravity admits a holographic dual description",
+      "Entropy formula applies to non-equilibrium and dynamical situations",
+      "Semi-classical approximation remains valid for entropy calculations",
+      "No firewall or other horizon modifications"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "5",
+        "issue": "Circular reasoning: assumes thermodynamic first law to derive entropy, then uses that entropy to justify thermodynamic interpretation"
+      },
+      {
+        "step": "7",
+        "issue": "Explicitly marked as gap with no actual derivation provided, relies on unproven string theory and LQG results"
+      },
+      {
+        "step": "8",
+        "issue": "Bekenstein bound is not rigorously proven and gedanken experiments are not mathematical proofs"
+      },
+      {
+        "step": "9",
+        "issue": "Non sequitur: area scaling of one system's entropy does not establish general holographic principle about information encoding"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No proof that black hole entropy is actually maximal for a given region",
+      "No demonstration that information can be encoded on boundaries generally",
+      "Missing rigorous connection between area scaling and holographic encoding",
+      "No proof that the holographic principle follows from this single example",
+      "Gap in Step 7 acknowledged but not filled",
+      "No consideration of quantum corrections to the classical area calculation",
+      "No proof that the thermodynamic analogy is mathematically justified rather than merely suggestive"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": false,
+    "contradiction_details": [],
+    "assumption_conflicts": [],
+    "beneficial_connections": [
+      "Directly supports [1083de91300b] which establishes the same holographic principle for black holes and thermodynamic systems with area-scaling entropy",
+      "Connects to [21fcf0926d92] through quantum field theory in curved spacetime assumptions and vacuum state considerations",
+      "Relates to [19c10dc86a65] through quantum coherence effects in the derivation of Hawking radiation and black hole thermodynamics",
+      "Supports [37338340b3ed] by demonstrating how discrete quantum gravitational microstates on the horizon give rise to continuous thermodynamic behavior",
+      "Complements [14e1952bf633] by showing how microscopic quantum information processes lead to macroscopic thermodynamic irreversibility in black hole evaporation"
+    ],
+    "consistency_score": 0.85,
+    "notes": "The proof is largely consistent with existing corpus but contains a significant gap in the microscopic derivation of entropy from quantum gravitational microstates. The holographic principle conclusion relies on this unproven step. The semi-classical approximation assumption may also be questionable near the Planck scale where the entropy formula is derived."
+  },
+  "confidence_score": 0.3625,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.85,
+    "calibration": 0.29999999999999993
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.85,
+    "calibration": 0.29999999999999993
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "Rigorous non-perturbative formulation of quantum gravity, well-defined path integral measure for gravitational fields, mathematical framework for counting quantum gravitational microstates, rigorous treatment of information in quantum field theory on curved spacetime",
+  "limitations": [
+    "No rigorous microscopic derivation of black hole entropy in 4D",
+    "Path integral formulation of quantum gravity lacks mathematical rigor",
+    "Information-theoretic interpretation requires better mathematical foundation",
+    "Euclidean quantum gravity has unresolved convergence issues",
+    "No proof that semi-classical approximation captures all relevant physics",
+    "Proof relies on semi-classical approximation",
+    "Only applies to equilibrium (Schwarzschild) black holes",
+    "Does not address information paradox",
+    "Microscopic origin of entropy not rigorously established in 4D",
+    "Holographic principle inference is suggestive rather than deductive"
+  ],
+  "source_convergence": {
+    "structural_claim": "Black hole entropy is proportional to surface area rather than volume, revealing a fundamental holographic principle in gravitational physics",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Black Hole Thermodynamics",
+        "domain_id": "field_a",
+        "domain_name": "General Relativity and Cosmology",
+        "link_type": "direct",
+        "structural_conclusion": "Black holes have entropy proportional to horizon area A/4, establishing thermodynamic properties emerge from pure geometry"
+      },
+      {
+        "result_id": "",
+        "result_name": "Bekenstein-Hawking Entropy Formula",
+        "domain_id": "field_b",
+        "domain_name": "Quantum Gravity",
+        "link_type": "direct",
+        "structural_conclusion": "Quantum gravitational degrees of freedom scale with boundary area, not bulk volume, indicating information is fundamentally holographic"
+      }
+    ],
+    "domains": [
+      "general_relativity",
+      "quantum_gravity"
+    ],
+    "domain_names": [
+      "General Relativity and Cosmology",
+      "Quantum Gravity"
+    ],
+    "ea_scores": {
+      "strength": 0.238,
+      "independence": 0.2,
+      "adversarial": 0.7,
+      "reproducibility": 0.42,
+      "depth_consistency": 1.0,
+      "confidence": 0.4244,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:38:52.159242+00:00",
+    "id": "49d5f6b6a62d"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.28728000000000004
+  }
+}

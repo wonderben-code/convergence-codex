@@ -1,0 +1,340 @@
+{
+  "id": "3f0bc99f45de",
+  "convergence_id": "1d484976b03f",
+  "timestamp": "2026-05-02T12:44:19.907033+00:00",
+  "proposition": "Let H be a Hilbert space representing a quantum many-body system with symmetry group G. Then collective phenomena emerge through dynamical selection of subspaces V \u2282 H that correspond to irreducible representations of broken symmetry subgroups H \u2282 G, where the selection mechanism is environmental decoherence acting on the reduced density matrix \u03c1_S.",
+  "proposition_natural": "Collective phenomena emerge from quantum many-body systems through the selection of preferred modes that break underlying symmetries",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Functional analysis",
+    "Algebraic structures"
+  ],
+  "apparatus_justification": "Category theory provides the natural framework for formalizing structural convergences across domains through functors and natural transformations. Functional analysis is essential for quantum many-body systems via Hilbert spaces and operators. Algebraic structures capture symmetry breaking through group actions and representations.",
+  "proof_natural": "**Proposition.** Let $H$ be a Hilbert space representing a quantum many-body system with symmetry group $G$. Then collective phenomena emerge through dynamical selection of subspaces $V \\subset H$ that correspond to irreducible representations of broken symmetry subgroups $H \\subset G$, where the selection mechanism is environmental decoherence acting on the reduced density matrix $\\rho_S$.\n\n**Proof.** We assume that the quantum many-body system is described by a separable Hilbert space $H = \\otimes_i H_i$, where a symmetry group $G$ acts unitarily on $H$. Let the system couple to an environment $E$ through an interaction Hamiltonian $H_{\\text{int}}$, such that the total system-environment evolution is unitary: $U(t) = \\exp(-iH_{\\text{total}} t/\\hbar)$. We further assume that the reduced density matrix $\\rho_S(t) = \\text{Tr}_E[U(t)\\rho(0)U^\\dagger(t)]$ is well-defined, that decoherence functionals exist and satisfy consistency conditions, and that the symmetry breaking pattern $G \\to H$ is spontaneous rather than explicit. Finally, we assume that collective modes can be identified with specific subspaces of $H$, and that the pointer basis selected by decoherence coincides with symmetry-breaking modes.\n\nBy the Peter-Weyl theorem for compact groups acting on Hilbert spaces, the Hilbert space $H$ decomposes under the action of symmetry group $G$ as:\n$$H = \\bigoplus_\\alpha V_\\alpha \\otimes W_\\alpha$$\nwhere $V_\\alpha$ are irreducible representations of $G$.\n\nFollowing Zurek's einselection principle, environmental coupling induces superselection rules that restrict coherent superpositions to within each $V_\\alpha$. This occurs because the interaction Hamiltonian $H_{\\text{int}}$ commutes with observables that define pointer states, thereby selecting preferred subspaces through environment-induced decoherence.\n\nThe effective dynamics within selected subspaces $V_\\alpha$ exhibits broken symmetry when $\\dim(V_\\alpha)$ corresponds to representations of a proper subgroup $H \\subset G$. This follows from the restriction of the $G$-action to an invariant subspace, which yields an $H$-action on that subspace.\n\nCollective modes emerge as the lowest-energy excitations within these symmetry-broken sectors $V_\\alpha$. [Note: A complete proof requires demonstrating that symmetry-breaking necessarily implies collective behavior, which involves showing that the broken symmetry generators produce coherent excitations across the system.]\n\nIn the thermodynamic limit, the pointer basis selected by decoherence coincides with the collective mode basis. [Note: This coincidence requires proof that the decoherence mechanism selects the same basis as that determined by symmetry breaking, which depends on the specific form of the system-environment coupling.]\n\nThe emergence of collective phenomena thus proceeds through a two-stage process: first, environmental decoherence dynamically selects subspaces $V_\\alpha$ corresponding to broken symmetry sectors through einselection; second, within these sectors, collective modes arise as the natural low-energy excitations consistent with the reduced symmetry $H \\subset G$. This mechanism, combining quantum Darwinism's redundant environmental encoding with spontaneous symmetry breaking, provides a dynamical foundation for the emergence of classical collective behavior from quantum many-body systems.\n\nThis completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.Analysis.InnerProductSpace.Basic\nimport Mathlib.RepresentationTheory.Basic\nimport Mathlib.GroupTheory.GroupAction.Basic\nimport Mathlib.LinearAlgebra.TensorProduct\nimport Mathlib.Topology.Algebra.Module.Basic\n\n/-- A quantum many-body system with symmetry group G -/\nstructure QuantumManyBodySystem (G : Type*) [Group G] where\n  H : Type*\n  [inst : InnerProductSpace \u2102 H]\n  [inst' : TopologicalSpace H]\n  action : G \u2192* (H \u2192\u2097[\u2102] H)\n\n/-- Environmental decoherence mechanism (placeholder) -/\nstructure EnvironmentalDecoherence (H : Type*) [InnerProductSpace \u2102 H] where\n  -- sorry: Need density matrices and reduced density matrix formalism\n  decohere : Unit\n\n/-- Collective phenomena emergence through symmetry breaking -/\ntheorem collective_phenomena_emergence\n  {G : Type*} [Group G] [TopologicalSpace G] [TopologicalGroup G]\n  (QMB : QuantumManyBodySystem G)\n  (decoherence : EnvironmentalDecoherence QMB.H) :\n  \u2203 (subspaces : Set (Submodule \u2102 QMB.H)),\n    (\u2200 V \u2208 subspaces, \u2203 (H_sub : Subgroup G),\n      H_sub < G \u2227 \n      -- V corresponds to irrep of H_sub\n      sorry) \u2227\n    -- Environmental decoherence selects these subspaces\n    sorry :=\nby\n  -- Step 1: Decompose H under G action (Peter-Weyl theorem)\n  -- sorry: Peter-Weyl theorem not available in Mathlib\n  have peter_weyl : \u2203 (decomp : Set (Submodule \u2102 QMB.H \u00d7 Submodule \u2102 QMB.H)),\n    sorry := sorry\n  \n  -- Step 2: Environmental coupling induces superselection rules\n  -- sorry: Zurek's einselection principle not formalized\n  have einselection : \u2200 (V : Submodule \u2102 QMB.H),\n    sorry := sorry\n  \n  -- Step 3: Effective dynamics exhibits broken symmetry\n  -- sorry: Need formalization of symmetry breaking in quantum systems\n  have broken_symmetry : \u2200 (V : Submodule \u2102 QMB.H),\n    \u2203 (H_sub : Subgroup G), H_sub < G \u2227 sorry := sorry\n  \n  -- Step 4: Collective modes emerge as lowest-energy excitations\n  -- sorry: Gap - need to show symmetry-breaking implies collective behavior\n  have collective_modes : sorry := sorry\n  \n  -- Step 5: Pointer basis coincides with collective mode basis\n  -- sorry: Gap - requires proof that decoherence selects same basis\n  have basis_coincidence : sorry := sorry\n  \n  sorry\n\n/-- Irreducible representation of a group (placeholder for missing functionality) -/\ndef IrreducibleRep (G : Type*) [Group G] (V : Type*) [AddCommGroup V] [Module \u2102 V] :=\n  -- sorry: Need proper irreducible representation theory\n  sorry\n\n/-- Reduced density matrix (placeholder) -/\nstructure ReducedDensityMatrix (H : Type*) [InnerProductSpace \u2102 H] where\n  -- sorry: Density matrices not in Mathlib\n  \u03c1_S : Unit",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The Hilbert space H decomposes under the action of symmetry group G as H = \u2295_\u03b1 V_\u03b1 \u2297 W_\u03b1 where V_\u03b1 are irreducible representations",
+      "justification": "Peter-Weyl theorem for compact groups acting on Hilbert spaces",
+      "dependencies": [
+        "Peter-Weyl theorem",
+        "Assumption of unitary G-action"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Environmental coupling induces superselection rules that restrict coherent superpositions to within each V_\u03b1",
+      "justification": "Zurek's einselection principle: H_int commutes with observables that define pointer states",
+      "dependencies": [
+        "Step 1",
+        "Decoherence theory",
+        "Assumption of H_int structure"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The effective dynamics within selected subspaces V_\u03b1 exhibits broken symmetry if dim(V_\u03b1) corresponds to representations of proper subgroup H \u2282 G",
+      "justification": "Restriction of G-action to invariant subspace yields H-action",
+      "dependencies": [
+        "Step 2",
+        "Representation theory of subgroups"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "Collective modes emerge as the lowest-energy excitations within symmetry-broken sectors V_\u03b1",
+      "justification": "[Gap: Need to show that symmetry-breaking implies collective behavior]",
+      "dependencies": [
+        "Step 3",
+        "Goldstone theorem analogue"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The pointer basis selected by decoherence coincides with collective mode basis in the thermodynamic limit",
+      "justification": "[Gap: Requires proof that decoherence selects same basis as symmetry breaking]",
+      "dependencies": [
+        "Steps 2-4",
+        "Quantum Darwinism",
+        "Thermodynamic limit"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Peter-Weyl Theorem",
+      "authors": "Peter, H. and Weyl, H.",
+      "year": "1927",
+      "field": "Representation Theory",
+      "statement": "Any unitary representation of a compact group decomposes into direct sum of irreducibles",
+      "usage": "Decompose Hilbert space under symmetry action"
+    },
+    {
+      "name": "Einselection Principle",
+      "authors": "Zurek, W.H.",
+      "year": "1981",
+      "field": "Quantum Foundations",
+      "statement": "Environment-induced superselection dynamically selects preferred pointer states",
+      "usage": "Justify emergence of preferred subspaces"
+    },
+    {
+      "name": "Goldstone Theorem",
+      "authors": "Goldstone, J.",
+      "year": "1961",
+      "field": "Quantum Field Theory",
+      "statement": "Spontaneous breaking of continuous symmetry implies massless excitations",
+      "usage": "Connect symmetry breaking to collective modes"
+    },
+    {
+      "name": "Quantum Darwinism",
+      "authors": "Zurek, W.H.",
+      "year": "2009",
+      "field": "Quantum Foundations",
+      "statement": "Classical objectivity emerges through redundant environmental encoding",
+      "usage": "Explain selection of collective modes as objective"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The quantum many-body system is described by a separable Hilbert space H = \u2297_i H_i",
+    "There exists a symmetry group G acting unitarily on H",
+    "The system couples to an environment E with interaction Hamiltonian H_int",
+    "The total system-environment evolution is unitary: U(t) = exp(-iH_total t/\u210f)",
+    "The reduced density matrix \u03c1_S(t) = Tr_E[U(t)\u03c1(0)U\u2020(t)] is well-defined",
+    "Decoherence functionals exist and satisfy consistency conditions",
+    "The symmetry breaking pattern G \u2192 H is spontaneous, not explicit",
+    "Collective modes can be identified with specific subspaces of H",
+    "The pointer basis selected by decoherence coincides with symmetry-breaking modes"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Application of Peter-Weyl theorem",
+        "issue": "Peter-Weyl requires G to be compact, but this is never stated or proven. Many physically relevant symmetry groups (e.g., Poincar\u00e9 group) are non-compact.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Restrict to compact groups explicitly or use different decomposition theorem"
+      },
+      {
+        "step": "Einselection restricts coherent superpositions to within each V_\u03b1",
+        "issue": "No proof that environmental coupling respects the G-representation structure. Why should decoherence respect mathematical decomposition?",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need explicit form of H_int and proof it preserves representation structure"
+      },
+      {
+        "step": "Effective dynamics exhibits broken symmetry when dim(V_\u03b1) corresponds to representations of H\u2282G",
+        "issue": "This makes no sense. Dimension of a representation doesn't determine which subgroup it corresponds to. A 3-dimensional rep of SU(2) doesn't automatically become a rep of U(1).",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Complete reconceptualization needed"
+      },
+      {
+        "step": "Collective modes emerge as lowest-energy excitations",
+        "issue": "No Hamiltonian specified, no energy analysis performed. How can we discuss 'lowest-energy' without defining energy?",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Specify system Hamiltonian and prove energy spectrum structure"
+      },
+      {
+        "step": "Pointer basis coincides with collective mode basis in thermodynamic limit",
+        "issue": "This is assumed, not proven. The proof admits this in brackets but then uses it as fact.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "This requires a separate theorem with specific conditions on H_int"
+      }
+    ],
+    "hidden_assumptions": [
+      "G is a compact Lie group",
+      "The interaction Hamiltonian H_int has very specific form that respects G-action",
+      "The environment is effectively infinite-dimensional",
+      "The initial state \u03c1(0) has specific properties",
+      "There exists a well-defined thermodynamic limit",
+      "Spontaneous symmetry breaking actually occurs",
+      "The system has a ground state",
+      "Decoherence happens faster than other dynamical processes"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes collective modes can be identified with specific subspaces, then concludes that collective phenomena emerge through selection of these subspaces. It also assumes the pointer basis coincides with symmetry-breaking modes, which is essentially assuming the conclusion.",
+    "over_generalisation": true,
+    "over_generalisation_details": "Even if all gaps were fixed, this would at best prove something for specific compact groups with specific Hamiltonians and specific environmental couplings. The claim of a general mechanism for ALL collective phenomena is vastly overstated.",
+    "citation_issues": [
+      "Peter-Weyl theorem applies only to compact groups, not stated",
+      "Einselection principle doesn't guarantee the specific selection claimed here",
+      "Goldstone theorem is cited but never used in the proof",
+      "Quantum Darwinism mentioned but its connection to symmetry breaking is assumed, not proven"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This 'proof' is a collection of physics intuitions masquerading as mathematics. It conflates representation theory with physical dynamics, assumes its conclusion in multiple places, and makes unjustified leaps between mathematical structures and physical phenomena. The fundamental error is trying to prove a vague physics statement using pure representation theory without any actual dynamics.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish a connection between symmetry breaking and collective phenomena through decoherence, but fails to prove that collective phenomena actually emerge or that the selection mechanism works as claimed",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The environment E has specific properties that ensure einselection works",
+      "The thermodynamic limit exists and is well-defined for the system",
+      "The interaction Hamiltonian H_int has the required commutation properties with pointer observables",
+      "The system exhibits spontaneous symmetry breaking in the first place",
+      "The energy spectrum has the required gap structure",
+      "The decoherence timescales are appropriate relative to symmetry-breaking timescales",
+      "The reduced density matrix evolution leads to definite pointer states",
+      "Collective modes are the lowest-energy excitations (this is assumed, not proven)"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "1",
+        "issue": "Peter-Weyl theorem applies to compact groups acting on finite-dimensional spaces or L\u00b2(G), not general quantum many-body Hilbert spaces. The decomposition H = \u2295_\u03b1 V_\u03b1 \u2297 W_\u03b1 is not justified for infinite-dimensional spaces"
+      },
+      {
+        "step": "2",
+        "issue": "Zurek's einselection principle requires specific conditions on H_int that are not established. The claim that H_int commutes with pointer observables is circular - the pointer observables are what we're trying to determine"
+      },
+      {
+        "step": "3",
+        "issue": "The restriction argument is incomplete. Just because dim(V_\u03b1) corresponds to representations of H \u2282 G doesn't mean the dynamics exhibits broken symmetry - this confuses representation theory with physical symmetry breaking"
+      },
+      {
+        "step": "4",
+        "issue": "Explicitly marked as having a gap - no justification provided for why symmetry-breaking implies collective behavior"
+      },
+      {
+        "step": "5",
+        "issue": "Explicitly marked as having a gap - no proof that decoherence selects the same basis as symmetry breaking, and the thermodynamic limit is invoked without justification"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Steps 4 and 5 have acknowledged gaps with no justification provided",
+      "No proof that collective phenomena actually emerge",
+      "No demonstration that the proposed selection mechanism actually works",
+      "Missing connection between mathematical decomposition and physical collective behavior",
+      "No proof that pointer states correspond to collective modes",
+      "Thermodynamic limit is invoked but not rigorously treated",
+      "The entire causal chain from symmetry \u2192 decoherence \u2192 collective phenomena is not established"
+    ],
+    "internal_score": 0.1
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof assumes 'The pointer basis selected by decoherence coincides with symmetry-breaking modes' but provides no justification for this highly non-trivial claim. Existing proof [66e4aac2731b] shows decoherence selects pointer states based on environmental coupling strength, not symmetry considerations.",
+      "Claims that 'collective modes emerge as the lowest-energy excitations within symmetry-broken sectors' contradicts the general principle in [75a7c4c46d4c] that symmetry breaking can occur at any energy scale depending on competing interactions.",
+      "The assertion that 'environmental coupling induces superselection rules that restrict coherent superpositions to within each V_\u03b1' is stated without proof and conflicts with the general decoherence framework in [66e4aac2731b] where superselection emerges from information dispersal, not representation theory."
+    ],
+    "assumption_conflicts": [
+      "Assumes 'The pointer basis selected by decoherence coincides with collective mode basis in the thermodynamic limit' without justification, while [66e4aac2731b] shows pointer basis depends on system-environment coupling structure",
+      "Assumes 'Collective modes can be identified with specific subspaces of H' but provides no operational definition of what constitutes a 'collective mode'",
+      "The assumption of 'spontaneous symmetry breaking G \u2192 H' lacks the thermodynamic limit conditions required by [c21e27c5a63e] and [75a7c4c46d4c]"
+    ],
+    "beneficial_connections": [
+      "Connects to [6cf918aecf4e] on symmetry breaking mechanisms, though the connection is superficial",
+      "Relates to [66e4aac2731b] on environmental decoherence, but the new proof makes unjustified claims about the relationship between decoherence and symmetry",
+      "Could potentially strengthen [86627f739493] on discrete states from continuous symmetries if the mathematical gaps were filled"
+    ],
+    "consistency_score": 0.2,
+    "notes": "This proof makes several unjustified leaps, particularly the central claim that decoherence-selected pointer states coincide with symmetry-breaking modes. The mathematical framework is incomplete - no explicit construction of the claimed decomposition H = \u2295_\u03b1 V_\u03b1 \u2297 W_\u03b1 is provided, and the connection between representation theory and decoherence dynamics is asserted rather than proven. The proof lacks rigor in defining 'collective phenomena' and provides no quantitative criteria for when such phenomena emerge."
+  },
+  "confidence_score": 0.21000000000000002,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.1,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.1,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous categorical framework connecting decoherence functionals to symmetry-breaking order parameters, and a proof that environmentally-selected pointer states coincide with collective modes in many-body systems",
+  "limitations": [
+    "Step 4: The connection between symmetry breaking and collective behavior is asserted but not proven rigorously",
+    "Step 5: The coincidence of decoherence-selected basis and collective mode basis lacks rigorous justification",
+    "Missing: Explicit construction of the functor from symmetry-breaking patterns to emergent collective phenomena",
+    "Missing: Proof that nuclear collective modes (e.g., giant dipole resonance) fit this framework",
+    "Assumes compact symmetry groups; non-compact groups require different treatment",
+    "Thermodynamic limit may not be well-defined for finite nuclei",
+    "Decoherence timescales may not separate cleanly from collective mode timescales",
+    "Framework may not capture all types of emergent collective phenomena"
+  ],
+  "source_convergence": {
+    "structural_claim": "Collective phenomena emerge from quantum many-body systems through the selection of preferred modes that break underlying symmetries",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Decoherence Theory",
+        "domain_id": "quantum_foundations",
+        "domain_name": "Quantum Foundations",
+        "link_type": "direct",
+        "structural_conclusion": "Environmental entanglement dynamically selects preferred pointer states, explaining the emergence of classical behavior"
+      },
+      {
+        "result_id": "",
+        "result_name": "Quantum Darwinism",
+        "domain_id": "quantum_foundations",
+        "domain_name": "Quantum Foundations",
+        "link_type": "direct",
+        "structural_conclusion": "Classical objectivity emerges through redundant encoding of selected information in the environment"
+      },
+      {
+        "result_id": "",
+        "result_name": "Giant Dipole Resonance",
+        "domain_id": "nuclear_physics",
+        "domain_name": "Nuclear Physics",
+        "link_type": "direct",
+        "structural_conclusion": "All nuclei exhibit a collective oscillation mode where protons and neutrons oscillate against each other, demonstrating that nuclei behave as quantum fluids with collective degrees of freedom"
+      },
+      {
+        "result_id": "",
+        "result_name": "Chiral Symmetry Breaking",
+        "domain_id": "nuclear_physics",
+        "domain_name": "Nuclear Physics",
+        "link_type": "direct",
+        "structural_conclusion": "The QCD vacuum spontaneously breaks chiral symmetry, generating constituent quark masses"
+      }
+    ],
+    "domains": [
+      "quantum_foundations",
+      "nuclear_physics"
+    ],
+    "domain_names": [
+      "Quantum Foundations",
+      "Nuclear Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.2856,
+      "independence": 0.85,
+      "adversarial": 0.09,
+      "reproducibility": 0.6299999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.51068,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:22:52.301362+00:00",
+    "id": "1d484976b03f"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.253065
+  }
+}

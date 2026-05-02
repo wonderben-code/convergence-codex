@@ -1,0 +1,13 @@
+{
+  "proof_id": "129df8406d52",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A general theorem connecting symmetry-breaking perturbations to the non-degeneracy of the perturbation matrix M restricted to degenerate eigenspaces. This would require developing a systematic theory relating group representations, their characters, and the spectral properties of symmetry-breaking operators.",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "proof_id": "545b51664443",
+  "timestamp": "2026-05-02T13:01:15.166873+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "isomorphism",
+      "alternatives_considered": [
+        "equivalence - rejected because the mathematical structures are not merely similar but literally the same; both use identical Bloch wavefunctions \u03c8(r) = e^(ik\u00b7r)u(r) and band structure calculations"
+      ],
+      "reasoning": "Both domains describe wave propagation in periodic media governed by identical mathematical structures: the same Bloch theorem, same band structure formalism, and same mathematical machinery (Floquet theory, reciprocal space analysis). The only difference is the physical interpretation of the wave equation - electrons vs acoustic/electromagnetic waves - but the mathematical structure is identical."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Functional analysis, Algebraic structures, Differential geometry",
+      "alternatives_considered": [],
+      "reasoning": "Functional analysis provides spectral theory for operators on periodic domains, which directly captures band gaps and eigenmode structure. Algebraic structures (specifically group theory) formalizes the periodicity via translation groups. Differential geometry handles the manifold structure of Brillouin zones where Bloch wavefunctions live."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof exploits commutation of the differential operator with lattice translations to apply Floquet-Bloch theory, decomposing eigenfunctions into Bloch waves. The spectrum is then analyzed via the family of operators L\u2096 on the fundamental domain, showing it consists of continuous bands that may be separated by gaps.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 7 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3026 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 3143 chars, 11 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This proof heavily relies on concepts from mathematical physics (Floquet-Bloch theory, Brillouin zones, band structure) that are not yet formalized in Mathlib. The basic spectral theory and operator framework is available, but the specific tools for periodic differential operators and their spectral decomposition are missing."
+    }
+  ]
+}

@@ -1,0 +1,329 @@
+{
+  "id": "b52e12212429",
+  "convergence_id": "66662a91052a",
+  "timestamp": "2026-05-02T13:13:31.322946+00:00",
+  "proposition": "For categories C and D with a duality functor F: C^op \u2192 D and G: D^op \u2192 C, if F and G form an adjoint equivalence, then for every object X in C and Y in D, the hom-sets Hom_C(X, G(Y)) and Hom_D(F(X), Y) are naturally isomorphic, and the information content encoded by the internal structure of C is preserved and reflected in D through this duality.",
+  "proposition_natural": "Deep dualities exist where complementary mathematical structures encode identical information through reciprocal relationships.",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Topology",
+    "Algebraic structures"
+  ],
+  "apparatus_justification": "Category theory provides the natural framework for formalizing dualities as adjunctions or equivalences of categories. Topology and algebraic structures are needed as the concrete categories where these dualities manifest (e.g., Stone duality, Pontryagin duality).",
+  "proof_natural": "**Proposition.** Let $\\mathcal{C}$ and $\\mathcal{D}$ be categories with functors $F: \\mathcal{C}^{\\text{op}} \\to \\mathcal{D}$ and $G: \\mathcal{D}^{\\text{op}} \\to \\mathcal{C}$ forming an adjoint equivalence. Then for every object $X$ in $\\mathcal{C}$ and $Y$ in $\\mathcal{D}$, the hom-sets $\\text{Hom}_{\\mathcal{C}}(X, G(Y))$ and $\\text{Hom}_{\\mathcal{D}}(F(X), Y)$ are naturally isomorphic, and the information content encoded by the internal structure of $\\mathcal{C}$ is preserved and reflected in $\\mathcal{D}$ through this duality.\n\n**Proof.** We assume that $\\mathcal{C}$ and $\\mathcal{D}$ are locally small categories, ensuring that all relevant hom-sets exist. Let $F: \\mathcal{C}^{\\text{op}} \\to \\mathcal{D}$ and $G: \\mathcal{D}^{\\text{op}} \\to \\mathcal{C}$ be functors forming an adjoint equivalence $F \\dashv G$, with unit $\\eta: 1_{\\mathcal{C}} \\to GF$ and counit $\\varepsilon: FG \\to 1_{\\mathcal{D}}$ satisfying the triangle identities. We formalize \"information content\" as the categorical structure comprising objects, morphisms, and their compositions.\n\nSince $F \\dashv G$ forms an adjunction, by the definition of adjoint functors, we have natural isomorphisms\n$$\\varphi_{X,Y}: \\text{Hom}_{\\mathcal{C}}(X, G(Y)) \\cong \\text{Hom}_{\\mathcal{D}}(F(X), Y)$$\nfor all objects $X \\in \\text{Ob}(\\mathcal{C})$ and $Y \\in \\text{Ob}(\\mathcal{D})$.\n\nMoreover, since $F$ and $G$ form an equivalence of categories (not merely an adjunction), the unit $\\eta$ and counit $\\varepsilon$ are natural isomorphisms. This stronger condition ensures that both functors are fully faithful and essentially surjective.\n\nTo establish naturality, consider any morphism $f: X \\to X'$ in $\\mathcal{C}$. The naturality square\n$$\\begin{array}{ccc}\n\\text{Hom}_{\\mathcal{C}}(X', G(Y)) & \\xrightarrow{\\varphi_{X',Y}} & \\text{Hom}_{\\mathcal{D}}(F(X'), Y) \\\\\n\\downarrow f^* & & \\downarrow F(f)^* \\\\\n\\text{Hom}_{\\mathcal{C}}(X, G(Y)) & \\xrightarrow{\\varphi_{X,Y}} & \\text{Hom}_{\\mathcal{D}}(F(X), Y)\n\\end{array}$$\ncommutes by the naturality of the adjunction isomorphism.\n\nThe full faithfulness of $F$ implies that $F$ preserves and reflects the morphism structure: for any $g, h: X \\to X'$ in $\\mathcal{C}$, we have $g = h$ if and only if $F(g) = F(h)$. By essential surjectivity, every object $Y$ in $\\mathcal{D}$ is isomorphic to $F(X)$ for some $X$ in $\\mathcal{C}$.\n\n[Note: The precise formalization of \"information content\" as categorical invariants requires further specification. We interpret this as the preservation of categorical structure, but specific information-theoretic measures would require additional framework.]\n\nThe composition $GF \\cong 1_{\\mathcal{C}}$ (via the unit isomorphism) ensures that all categorical data in $\\mathcal{C}$ is preserved through the round-trip functor. Similarly, $FG \\cong 1_{\\mathcal{D}}$ guarantees the same for $\\mathcal{D}$. This establishes that the duality functor $F$ creates a perfect correspondence between the categorical structures of $\\mathcal{C}$ and $\\mathcal{D}$.\n\n[Note: To connect this abstract framework to specific dualities such as Poincar\u00e9 duality or Serre duality, one must verify that these classical dualities can be formulated as instances of categorical equivalence between appropriate opposite categories. This requires separate verification for each case.]\n\nTherefore, the adjoint equivalence between $F$ and $G$ establishes a natural isomorphism between the relevant hom-sets and ensures that the categorical structure (our formalization of information content) is preserved and reflected through the duality. This completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.CategoryTheory.Category.Basic\nimport Mathlib.CategoryTheory.Functor.Basic\nimport Mathlib.CategoryTheory.Opposites\nimport Mathlib.CategoryTheory.Adjunction.Basic\nimport Mathlib.CategoryTheory.Equivalence\nimport Mathlib.CategoryTheory.Yoneda\nimport Mathlib.CategoryTheory.FullyFaithful\n\nopen CategoryTheory\n\nvariable {C D : Type*} [Category C] [Category D]\n\n/-- A duality between categories C and D consists of functors F: C^op \u2192 D and G: D^op \u2192 C\n    that form an adjoint equivalence. -/\nstructure Duality (C D : Type*) [Category C] [Category D] where\n  F : C\u1d52\u1d56 \u2964 D\n  G : D\u1d52\u1d56 \u2964 C\n  adj : F.op \u22a3 G.op\n  is_equivalence : IsEquivalence F\n\n/-- The main theorem: duality functors preserve information content through natural isomorphisms -/\ntheorem duality_preserves_information (dual : Duality C D) :\n  (\u2200 (X : C) (Y : D), (X \u27f6 dual.G.obj (op Y)) \u2243 (dual.F.obj (op X) \u27f6 Y)) \u2227\n  (\u2200 (X : C), \u2203 (Y : D), Nonempty (dual.G.obj (op Y) \u2245 X)) \u2227\n  (\u2200 (Y : D), \u2203 (X : C), Nonempty (dual.F.obj (op X) \u2245 Y)) := by\n  constructor\n  \u00b7 -- Step 1: Natural isomorphism of hom-sets from adjunction\n    intro X Y\n    -- The adjunction gives us the required bijection\n    exact (dual.adj.homEquiv (op X) (op Y)).symm\n  \n  constructor\n  \u00b7 -- Steps 4-5: Essential surjectivity in C\n    intro X\n    -- Since F is an equivalence, G is also an equivalence\n    have G_equiv : IsEquivalence dual.G := by\n      sorry -- Need to show that G is also an equivalence when F is\n    -- Use essential surjectivity of G\n    obtain \u27e8Y, \u27e8iso\u27e9\u27e9 := G_equiv.essSurj.mem_essImage X\n    exact \u27e8Y.unop, \u27e8iso\u27e9\u27e9\n  \n  \u00b7 -- Steps 4-5: Essential surjectivity in D\n    intro Y\n    -- Use essential surjectivity of F\n    obtain \u27e8X, \u27e8iso\u27e9\u27e9 := dual.is_equivalence.essSurj.mem_essImage Y\n    exact \u27e8X.unop, \u27e8iso\u27e9\u27e9\n\n/-- The unit and counit are natural isomorphisms for an equivalence -/\nlemma duality_unit_counit_iso (dual : Duality C D) :\n  IsIso dual.adj.unit \u2227 IsIso dual.adj.counit := by\n  -- Step 2: For equivalences, unit and counit are isomorphisms\n  constructor\n  \u00b7 sorry -- Need to extract from equivalence that unit is iso\n  \u00b7 sorry -- Need to extract from equivalence that counit is iso\n\n/-- Naturality of the hom-set isomorphism -/\nlemma duality_naturality (dual : Duality C D) \n  (f : X' \u27f6 X) (Y : D) :\n  \u2200 (g : X \u27f6 dual.G.obj (op Y)),\n  dual.adj.homEquiv (op X) (op Y) (f \u226b g) = \n  dual.F.map f.op \u226b dual.adj.homEquiv (op X') (op Y) g := by\n  -- Step 3: This follows from naturality of adjunction\n  intro g\n  exact (dual.adj.homEquiv_naturality_left f.op g).symm\n\n/-- F and G are fully faithful -/\nlemma duality_fully_faithful (dual : Duality C D) :\n  FullyFaithful dual.F \u2227 FullyFaithful dual.G := by\n  -- Step 4: Equivalences have fully faithful functors\n  constructor\n  \u00b7 exact dual.is_equivalence.toAdjunction.toEquivalence.fullyFaithfulFunctor\n  \u00b7 sorry -- Need to show G is also fully faithful\n\n/-- Information content preservation (categorical invariants) -/\ndef preserves_information (F : C\u1d52\u1d56 \u2964 D) : Prop :=\n  sorry -- Step 6: Need formal definition of information content\n\n/-- The composition GF preserves categorical data -/\nlemma composition_preserves_data (dual : Duality C D) :\n  \u2200 (X : C), Nonempty ((dual.G.op \u22d9 dual.F).obj X \u2245 X) := by\n  -- Step 7: GF \u2245 1_C from equivalence\n  intro X\n  sorry -- Need to use that GF \u2245 1_C\n\n/-- Connection to specific dualities -/\ndef realizes_specific_duality (dual : Duality C D) (name : String) : Prop :=\n  sorry -- Step 8: Need specific duality definitions",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "By the adjoint equivalence F \u22a3 G, we have natural isomorphisms \u03c6_{X,Y}: Hom_C(X, G(Y)) \u2245 Hom_D(F(X), Y) for all X \u2208 Ob(C), Y \u2208 Ob(D)",
+      "justification": "Definition of adjoint functors",
+      "dependencies": [
+        "Assumption of F \u22a3 G"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "The unit \u03b7: 1_C \u2192 GF and counit \u03b5: FG \u2192 1_D are natural isomorphisms",
+      "justification": "F and G form an equivalence of categories, not just an adjunction",
+      "dependencies": [
+        "Assumption of adjoint equivalence"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "For any morphism f: X \u2192 X' in C, the diagram commutes: Hom_C(X', G(Y)) \u2192 Hom_C(X, G(Y)) \u2192 Hom_D(F(X), Y) \u2192 Hom_D(F(X'), Y)",
+      "justification": "Naturality of the adjunction isomorphism",
+      "dependencies": [
+        "Step 1",
+        "Functoriality of F"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The functor F preserves and reflects the categorical structure: F is fully faithful",
+      "justification": "For an equivalence of categories, both functors are fully faithful",
+      "dependencies": [
+        "Step 2",
+        "Standard theorem on equivalences"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Every object Y in D is isomorphic to F(X) for some X in C (up to isomorphism)",
+      "justification": "Essential surjectivity follows from equivalence",
+      "dependencies": [
+        "Step 2",
+        "Definition of equivalence of categories"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "[Gap: Formalization of 'information content' as categorical invariants]",
+      "justification": "The notion of information content needs precise categorical formulation",
+      "dependencies": [
+        "Conceptual framework for information in categories"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The composition GF \u2245 1_C preserves all categorical data in C",
+      "justification": "Natural isomorphism preserves objects and morphisms up to isomorphism",
+      "dependencies": [
+        "Step 2"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "[Gap: Connection to specific dualities like Poincar\u00e9 and Serre requires showing they instantiate this categorical framework]",
+      "justification": "Each specific duality needs its own proof of fitting this framework",
+      "dependencies": [
+        "Specific formulations of each duality"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Theory of Adjoint Functors",
+      "authors": "Kan, Daniel M.",
+      "year": "1958",
+      "field": "Category Theory",
+      "statement": "Adjoint functors provide a formal framework for universal constructions",
+      "usage": "Foundation for understanding categorical dualities"
+    },
+    {
+      "name": "Categories for the Working Mathematician",
+      "authors": "Mac Lane, Saunders",
+      "year": "1971",
+      "field": "Category Theory",
+      "statement": "Comprehensive treatment of equivalence of categories and adjoint functors",
+      "usage": "Steps 1-5 rely on standard results from Chapter IV"
+    },
+    {
+      "name": "Poincar\u00e9 Duality Theorem",
+      "authors": "Poincar\u00e9, Henri",
+      "year": "1895",
+      "field": "Topology",
+      "statement": "For closed oriented n-manifold M, H^k(M) \u2245 H_{n-k}(M)",
+      "usage": "Example of duality, but needs categorical reformulation"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "C and D are locally small categories",
+    "F: C^op \u2192 D and G: D^op \u2192 C are functors",
+    "F and G form an adjoint equivalence (F \u22a3 G)",
+    "Natural transformations \u03b7: 1_C \u2192 GF and \u03b5: FG \u2192 1_D exist satisfying triangle identities",
+    "All categories involved have sufficient structure for the relevant hom-sets to exist",
+    "The notion of 'information content' is formalized as the categorical structure (objects, morphisms, and their compositions)",
+    "The examples (Poincar\u00e9 duality, Serre duality, etc.) can be formulated as instances of categorical duality"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "Since F \u22a3 G forms an adjunction, by the definition of adjoint functors, we have natural isomorphisms \u03c6_{X,Y}: Hom_C(X, G(Y)) \u2245 Hom_D(F(X), Y)",
+        "issue": "This is incorrect. F: C^op \u2192 D and G: D^op \u2192 C cannot form an adjunction in the usual sense because they go between different categories (C^op to D vs D^op to C). The standard adjunction would require F: C \u2192 D and G: D \u2192 C.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "The entire setup is flawed. You cannot have an adjunction between functors going in these directions."
+      },
+      {
+        "step": "Moreover, since F and G form an equivalence of categories (not merely an adjunction)",
+        "issue": "The proof conflates adjunction with equivalence. Even if the adjunction issue were fixed, an adjunction is not automatically an equivalence. This requires additional conditions (unit and counit being natural isomorphisms).",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Must prove separately that the adjunction is an equivalence, not just assert it."
+      },
+      {
+        "step": "We formalize 'information content' as the categorical structure comprising objects, morphisms, and their compositions",
+        "issue": "This is vague and circular. The proof claims to show information content is preserved, but defines it as exactly what functors preserve by definition. This makes the claim vacuous.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Either remove claims about 'information content' or provide a precise, non-trivial definition."
+      },
+      {
+        "step": "The naturality square... commutes by the naturality of the adjunction isomorphism",
+        "issue": "The naturality square is written incorrectly. For a morphism f: X \u2192 X' in C, we need F(f^op): F(X') \u2192 F(X) in D, not F(f). The contravariance is ignored.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Correct the naturality square to account for the contravariant nature of F."
+      },
+      {
+        "step": "By essential surjectivity, every object Y in D is isomorphic to F(X) for some X in C",
+        "issue": "This doesn't follow from what's given. Essential surjectivity of F: C^op \u2192 D means every Y in D is isomorphic to F(X^op) for some X in C, not F(X).",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Be precise about objects in opposite categories."
+      }
+    ],
+    "hidden_assumptions": [
+      "That adjunctions can exist between functors F: C^op \u2192 D and G: D^op \u2192 C",
+      "That 'adjoint equivalence' is a well-defined notion for functors between opposite categories",
+      "That the composition GF makes sense (it doesn't: F goes to D, G requires input from D^op)",
+      "That preserving categorical structure is a non-trivial claim (it's essentially the definition of a functor)"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof defines 'information content' as categorical structure, then proves functors preserve categorical structure, which is true by definition of functors. The main claim becomes tautological.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to establish a general principle about dualities preserving 'information content', but actually just restates basic properties of functors. The connection to specific dualities like Poincar\u00e9 duality is hand-waved without justification.",
+    "citation_issues": [
+      "Poincar\u00e9 duality is cited but never connected to the categorical framework",
+      "The proof claims these classical dualities are instances of categorical equivalence but provides no evidence",
+      "Categories for the Working Mathematician doesn't support the specific construction claimed here"
+    ],
+    "structural_soundness": 0.2,
+    "overall_assessment": "This proof is fundamentally flawed from the start due to a misunderstanding of adjunctions between functors on opposite categories. The main construction F \u22a3 G doesn't make sense as stated, and the proof conflates adjunctions with equivalences while making vacuous claims about 'information content'.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "Proves only that adjoint equivalences give natural isomorphisms of hom-sets, but fails to establish what 'information content' means or that it's preserved",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Definition of 'information content' as categorical invariants",
+      "Specification of which categorical invariants constitute 'information content'",
+      "Assumption that preservation of categorical structure equals preservation of 'information content'",
+      "Assumption that the duality functors actually preserve the relevant structure beyond just being an equivalence"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 6",
+        "issue": "Acknowledges gap but doesn't fill it - 'information content' remains undefined"
+      },
+      {
+        "step": "Step 7",
+        "issue": "Claims GF \u2245 1_C preserves 'all categorical data' but this is circular - what constitutes 'categorical data' is undefined"
+      },
+      {
+        "step": "Step 8",
+        "issue": "Acknowledges gap for specific dualities but doesn't address it - the connection to concrete examples is missing"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No definition of 'information content'",
+      "No proof that the claimed preservation actually occurs",
+      "No connection established between abstract categorical equivalence and concrete duality examples",
+      "Missing proof that 'reflection' of information content occurs",
+      "The naturality claim in Step 3 is stated but the actual commutative diagram is not properly constructed"
+    ],
+    "internal_score": 0.3
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims F and G form an adjoint equivalence with F: C^op \u2192 D and G: D^op \u2192 C, but then states F \u22a3 G. This is inconsistent - if F: C^op \u2192 D, then for an adjunction we need G: D \u2192 C^op, not G: D^op \u2192 C",
+      "The proof claims 'unit \u03b7: 1_C \u2192 GF and counit \u03b5: FG \u2192 1_D are natural isomorphisms' but this contradicts the domain/codomain setup - if F: C^op \u2192 D and G: D^op \u2192 C, then GF: C^op \u2192 C, not C \u2192 C",
+      "The natural isomorphism \u03c6_{X,Y}: Hom_C(X, G(Y)) \u2245 Hom_D(F(X), Y) is stated incorrectly given the functor directions - G(Y) would not be in C if G: D^op \u2192 C"
+    ],
+    "assumption_conflicts": [
+      "The categorical framework assumptions conflict with existing proof [102677deecdd] which requires functors to preserve composition and identities - the stated functor directions make this impossible",
+      "The claim about 'information content preservation' conflicts with [1c543cc8a5d8] which establishes fundamental limits on information preservation in extreme regimes"
+    ],
+    "beneficial_connections": [
+      "Could potentially connect to [18b9ea79f26d] regarding mathematical structures being determined by relationships and morphisms",
+      "The categorical duality framework might relate to [102677deecdd]'s relational structure principle if the technical errors were corrected"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof contains fundamental categorical errors in functor directions and adjunction setup. The gaps in formalizing 'information content' and connecting to specific dualities are acknowledged but not addressed. The mathematical framework is internally inconsistent before even considering compatibility with existing proofs."
+  },
+  "confidence_score": 0.275,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.3,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.3,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A formal categorical framework for 'information content' that can measure when two categories encode 'identical information' beyond mere equivalence. Also needed: systematic categorical reformulations of classical dualities (Poincar\u00e9, Serre, Langlands) to verify they fit this framework.",
+  "limitations": [
+    "Precise formalization of 'information content' in categorical terms",
+    "Proof that specific dualities (Poincar\u00e9, Serre, quadratic reciprocity, Langlands) are instances of this categorical framework",
+    "Definition of 'complementary structures' beyond opposite categories",
+    "Quantification of what 'identical information' means categorically",
+    "The proof establishes categorical equivalence but doesn't capture the deeper notion of 'encoding identical information'",
+    "Connection to number-theoretic dualities like quadratic reciprocity requires significant additional machinery",
+    "The framework doesn't distinguish between trivial and deep dualities",
+    "No metric for measuring the 'depth' of a duality"
+  ],
+  "source_convergence": {
+    "structural_claim": "Deep dualities exist where complementary mathematical structures encode identical information through reciprocal relationships.",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Poincar\u00e9 Duality",
+        "domain_id": "field_a",
+        "domain_name": "Topology and Geometry",
+        "link_type": "direct",
+        "structural_conclusion": "Homology and cohomology provide dual algebraic structures encoding the same geometric information"
+      },
+      {
+        "result_id": "",
+        "result_name": "Serre Duality",
+        "domain_id": "field_a",
+        "domain_name": "Topology and Geometry",
+        "link_type": "direct",
+        "structural_conclusion": "Coherent sheaf cohomology groups exhibit fundamental duality relating local and global properties"
+      },
+      {
+        "result_id": "",
+        "result_name": "Quadratic Reciprocity Law",
+        "domain_id": "field_b",
+        "domain_name": "Number Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Solvability of quadratic congruences exhibits reciprocal symmetry between primes"
+      },
+      {
+        "result_id": "",
+        "result_name": "Langlands Reciprocity Conjecture",
+        "domain_id": "field_b",
+        "domain_name": "Number Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Galois representations and automorphic representations form dual structures encoding the same arithmetic information"
+      }
+    ],
+    "domains": [
+      "topology",
+      "number_theory"
+    ],
+    "domain_names": [
+      "Topology and Geometry",
+      "Number Theory"
+    ],
+    "ea_scores": {
+      "strength": 0.23519999999999996,
+      "independence": 0.6,
+      "adversarial": 0.4,
+      "reproducibility": 0.6299999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.49505999999999994,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_275ec92f734f",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T18:23:31.992930+00:00",
+    "id": "66662a91052a"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.29769
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "proof_id": "d0df80816eef",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous measure-theoretic framework for counting 'distinguishable macroscopic states' that bridges between microscopic symmetry groups and macroscopic observables. Current approaches use either algebraic topology (cohomology of orbit spaces) or operator algebras (superselection sectors) but lack unified treatment.",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

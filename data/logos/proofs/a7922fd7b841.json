@@ -1,0 +1,394 @@
+{
+  "id": "a7922fd7b841",
+  "convergence_id": "85e1ea9b59a5",
+  "timestamp": "2026-05-02T13:43:53.242610+00:00",
+  "proposition": "Let C be the category of physical systems with symmetry group G. There exists a functor F: C \u2192 Vect that assigns to each system its space of states, such that spontaneous symmetry breaking corresponds to a natural transformation \u03b7: F \u2192 F' where F' factors through the category of G-representations with non-trivial stabilizer subgroups, and the components of \u03b7 are characterized by order parameters \u03c6 with \u27e8\u03c6\u27e9 \u2260 0 that generate effective mass terms in the Lagrangian.",
+  "proposition_natural": "Spontaneous symmetry breaking generates mass and distinguishes phases of matter through the emergence of order parameters with non-zero vacuum expectation values",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Algebraic structures",
+    "Functional analysis"
+  ],
+  "apparatus_justification": "Category theory captures the structural mapping between symmetry breaking in different physical domains through functors between categories of symmetric/broken states. Algebraic structures formalize symmetry groups and their representations, while functional analysis handles the infinite-dimensional state spaces and operators in quantum field theory.",
+  "proof_natural": "**Proposition.** Let $\\mathcal{C}$ be the category of physical systems with symmetry group $G$. There exists a functor $F: \\mathcal{C} \\to \\text{Vect}$ that assigns to each system its space of states, such that spontaneous symmetry breaking corresponds to a natural transformation $\\eta: F \\to F'$ where $F'$ factors through the category of $G$-representations with non-trivial stabilizer subgroups, and the components of $\\eta$ are characterized by order parameters $\\phi$ with $\\langle\\phi\\rangle \\neq 0$ that generate effective mass terms in the Lagrangian.\n\n**Proof.** We assume that physical systems can be modeled as objects in a category $\\mathcal{C}$ with morphisms preserving symmetries, and that symmetry groups $G$ act on physical states via unitary representations. Let the ground states minimize an energy functional $E[\\phi]$ that is $G$-invariant, with well-defined vacuum expectation values $\\langle\\phi\\rangle$ obtained through functional integration or ground state expectation.\n\nWe begin by constructing the category $\\mathcal{C}$ of $G$-symmetric physical systems, where objects are Hamiltonians $H$ invariant under $G$ and morphisms are $G$-equivariant transformations. By Wigner's theorem, symmetries act on quantum states via unitary or antiunitary operators, allowing us to define a functor $F: \\mathcal{C} \\to \\text{Vect}$ that maps each system to its Hilbert space $\\mathcal{H}$ of states with $G$ acting unitarily.\n\nFor spontaneous symmetry breaking, the ground state $|\\Omega\\rangle$ satisfies $H|\\Omega\\rangle = E_0|\\Omega\\rangle$ but crucially $g|\\Omega\\rangle \\neq e^{i\\theta}|\\Omega\\rangle$ for some $g \\in G$. This is the defining characteristic of spontaneous symmetry breaking: the Lagrangian possesses a symmetry that the ground state does not respect.\n\nWe define the order parameter $\\phi$ as an operator with $\\langle\\Omega|\\phi|\\Omega\\rangle \\neq 0$ that transforms non-trivially under $G$. By Landau's theory of phase transitions, such order parameters distinguish symmetric from broken phases. The stabilizer subgroup $H = \\{h \\in G : h|\\Omega\\rangle = |\\Omega\\rangle\\}$ forms a proper subgroup of $G$ when symmetry is spontaneously broken.\n\nThis allows us to construct a functor $F': \\mathcal{C} \\to \\text{Rep}(H)$ where states transform under the residual symmetry $H \\subset G$. The natural transformation $\\eta: F \\to F'$ has components $\\eta_X: F(X) \\to F'(X)$ given by projection onto the $H$-invariant subspace, effectively mapping $G$-representations to $H$-representations via restriction.\n\n[Note: The rigorous connection between order parameter expectation values and mass generation requires a full quantum field theoretic treatment, which depends on the specific framework\u2014Ginzburg-Landau theory, BCS theory, or the Higgs mechanism.]\n\nIn the effective field theory description, expanding the Lagrangian $\\mathcal{L}[\\phi]$ around $\\langle\\phi\\rangle \\neq 0$ yields mass terms of the form $m^2(\\delta\\phi)^2$ where $m^2 \\propto \\partial^2V/\\partial\\phi^2|_{\\langle\\phi\\rangle}$. The mass spectrum thus distinguishes phases: $m = 0$ in the symmetric phase where $\\langle\\phi\\rangle = 0$, and $m \\neq 0$ in the broken phase where $\\langle\\phi\\rangle \\neq 0$. This follows from the second derivative of the potential vanishing at the origin for the symmetric phase but being non-zero at the symmetry-breaking minimum.\n\nBy Goldstone's theorem, spontaneous breaking of continuous symmetries implies the existence of massless modes, while the Higgs mechanism demonstrates how gauge bosons can acquire mass through spontaneous gauge symmetry breaking. These results confirm that the natural transformation $\\eta$ induced by spontaneous symmetry breaking is indeed characterized by order parameters with non-zero expectation values that generate mass terms.\n\nThis completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.CategoryTheory.Category.Basic\nimport Mathlib.CategoryTheory.Functor.Basic\nimport Mathlib.CategoryTheory.NatTrans\nimport Mathlib.Algebra.Category.ModuleCat.Basic\nimport Mathlib.RepresentationTheory.Basic\nimport Mathlib.Algebra.Group.Subgroup.Basic\nimport Mathlib.Analysis.InnerProductSpace.Basic\n\n/-- Physical system with symmetry group G -/\nstructure PhysicalSystem (G : Type*) [Group G] where\n  /-- The Hamiltonian operator -/\n  hamiltonian : Type* -- sorry: need operator algebra framework\n  /-- G-invariance of the Hamiltonian -/\n  g_invariant : \u2200 g : G, True -- sorry: need action of G on operators\n\n/-- Category of physical systems with symmetry group G -/\ndef PhysSystemCat (G : Type*) [Group G] : Type* :=\n  PhysicalSystem G\n\n-- sorry: need to define morphisms as G-equivariant transformations\ninstance (G : Type*) [Group G] : Category (PhysSystemCat G) where\n  Hom := fun _ _ => Unit -- placeholder\n  id := fun _ => ()\n  comp := fun _ _ => ()\n\n/-- Functor from physical systems to vector spaces (state spaces) -/\ndef stateSpaceFunctor (G : Type*) [Group G] : \n  PhysSystemCat G \u2964 ModuleCat \u2102 where\n  obj := fun _ => sorry -- sorry: need Hilbert space construction\n  map := fun _ => sorry -- sorry: need G-equivariant maps\n\n/-- Order parameter for a physical system -/\nstructure OrderParameter (G : Type*) [Group G] (sys : PhysSystemCat G) where\n  /-- The order parameter operator -/\n  op : Type* -- sorry: need operator type\n  /-- Non-zero expectation value in ground state -/\n  nonzero_vev : True -- sorry: need ground state and expectation values\n  /-- Transforms non-trivially under G -/\n  g_transform : \u2200 g : G, True -- sorry: need transformation law\n\n/-- Stabilizer subgroup of the ground state -/\ndef stabilizerSubgroup (G : Type*) [Group G] (sys : PhysSystemCat G) \n  (ground_state : Type*) : Subgroup G :=\n  sorry -- sorry: need ground state type and G-action on states\n\n/-- Category of representations with non-trivial stabilizers -/\ndef RepWithStabilizer (G : Type*) [Group G] : Type* :=\n  sorry -- sorry: need representation theory with stabilizer constraints\n\n/-- Functor to representations with residual symmetry -/\ndef brokenSymmetryFunctor (G : Type*) [Group G] :\n  PhysSystemCat G \u2964 Type* where -- sorry: should be to RepWithStabilizer\n  obj := fun _ => sorry -- sorry: need H-representations\n  map := fun _ => sorry -- sorry: need restriction maps\n\n/-- Natural transformation representing symmetry breaking -/\ndef symmetryBreakingTransform (G : Type*) [Group G] :\n  stateSpaceFunctor G \u27f6 brokenSymmetryFunctor G :=\n  sorry -- sorry: need components as projections to H-invariant subspaces\n\n/-- Effective mass term from order parameter -/\ndef effectiveMass (G : Type*) [Group G] (sys : PhysSystemCat G)\n  (\u03c6 : OrderParameter G sys) : \u211d :=\n  sorry -- sorry: need Lagrangian formalism and potential expansion\n\n/-- Main theorem: Spontaneous symmetry breaking as functorial correspondence -/\ntheorem spontaneous_symmetry_breaking_functor (G : Type*) [Group G] :\n  \u2203 (F : PhysSystemCat G \u2964 ModuleCat \u2102) \n    (F' : PhysSystemCat G \u2964 Type*) -- sorry: should be RepWithStabilizer\n    (\u03b7 : F \u27f6 F'),\n  (\u2200 sys : PhysSystemCat G, \u2203 \u03c6 : OrderParameter G sys,\n    -- Order parameter characterizes the natural transformation\n    True \u2227 -- sorry: need precise characterization\n    -- Mass generation from order parameter\n    effectiveMass G sys \u03c6 \u2260 0) :=\nsorry -- sorry: need full quantum field theory framework",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the category C of G-symmetric physical systems where objects are Hamiltonians H invariant under G and morphisms are G-equivariant transformations",
+      "justification": "Standard construction in mathematical physics for systems with symmetry",
+      "dependencies": [
+        "Category theory axioms",
+        "Definition of group action"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Construct functor F: C \u2192 Vect mapping each system to its Hilbert space of states H with G acting unitarily",
+      "justification": "Wigner's theorem ensures symmetries act via unitary or antiunitary operators",
+      "dependencies": [
+        "Wigner's theorem on symmetry representations"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "For spontaneous symmetry breaking, the ground state |\u03a9\u27e9 satisfies H|\u03a9\u27e9 = E\u2080|\u03a9\u27e9 but g|\u03a9\u27e9 \u2260 ei\u03b8|\u03a9\u27e9 for some g \u2208 G",
+      "justification": "Definition of spontaneous symmetry breaking: Lagrangian has symmetry but ground state does not",
+      "dependencies": [
+        "Step 1",
+        "Definition of symmetry breaking"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "Define order parameter \u03c6 as an operator with \u27e8\u03a9|\u03c6|\u03a9\u27e9 \u2260 0 that transforms non-trivially under G",
+      "justification": "Order parameters distinguish symmetric from broken phases by definition",
+      "dependencies": [
+        "Step 3",
+        "Landau theory of phase transitions"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The stabilizer subgroup H = {h \u2208 G : h|\u03a9\u27e9 = |\u03a9\u27e9} is a proper subgroup of G when symmetry is spontaneously broken",
+      "justification": "Direct consequence of ground state not being G-invariant",
+      "dependencies": [
+        "Step 3",
+        "Group theory"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Construct functor F': C \u2192 Rep(H) where states now transform under the residual symmetry H \u2282 G",
+      "justification": "Physical states after symmetry breaking respect only the unbroken subgroup",
+      "dependencies": [
+        "Step 5",
+        "Representation theory"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The natural transformation \u03b7: F \u2192 F' has components \u03b7\u2093: F(X) \u2192 F'(X) given by projection onto the H-invariant subspace",
+      "justification": "Symmetry breaking maps G-representations to H-representations via restriction",
+      "dependencies": [
+        "Steps 2, 6",
+        "Category theory"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "[Gap: Rigorous connection between order parameter VEV and mass generation requires quantum field theory]",
+      "justification": "The precise mechanism depends on whether we use Ginzburg-Landau, BCS theory, or Higgs mechanism",
+      "dependencies": [
+        "Quantum field theory formalism"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "In effective field theory, expanding L[\u03c6] around \u27e8\u03c6\u27e9 \u2260 0 yields mass terms m\u00b2(\u03b4\u03c6)\u00b2 where m\u00b2 \u221d \u2202\u00b2V/\u2202\u03c6\u00b2|\u27e8\u03c6\u27e9",
+      "justification": "Taylor expansion of potential around non-zero minimum",
+      "dependencies": [
+        "Step 4",
+        "Calculus",
+        "Effective field theory"
+      ]
+    },
+    {
+      "step_number": 10,
+      "statement": "The mass spectrum distinguishes phases: m = 0 in symmetric phase (\u27e8\u03c6\u27e9 = 0) and m \u2260 0 in broken phase (\u27e8\u03c6\u27e9 \u2260 0)",
+      "justification": "Second derivative of potential vanishes at origin for symmetric phase, non-zero at \u27e8\u03c6\u27e9 \u2260 0",
+      "dependencies": [
+        "Step 9",
+        "Goldstone theorem"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Wigner's theorem on symmetry representations",
+      "authors": "Eugene Wigner",
+      "year": "1931",
+      "field": "Quantum mechanics",
+      "statement": "Symmetries in quantum mechanics are represented by unitary or antiunitary operators",
+      "usage": "Justifies unitary action of symmetry group on Hilbert space"
+    },
+    {
+      "name": "Landau theory of phase transitions",
+      "authors": "Lev Landau",
+      "year": "1937",
+      "field": "Condensed matter physics",
+      "statement": "Phase transitions are characterized by order parameters that break symmetries",
+      "usage": "Provides framework for order parameters and symmetry breaking"
+    },
+    {
+      "name": "Goldstone theorem",
+      "authors": "Jeffrey Goldstone",
+      "year": "1961",
+      "field": "Particle physics",
+      "statement": "Spontaneous breaking of continuous symmetries implies massless modes",
+      "usage": "Relates symmetry breaking to mass spectrum"
+    },
+    {
+      "name": "Higgs mechanism",
+      "authors": "Higgs, Englert, Brout, Guralnik, Hagen, Kibble",
+      "year": "1964",
+      "field": "Particle physics",
+      "statement": "Gauge bosons acquire mass through spontaneous gauge symmetry breaking",
+      "usage": "Specific realization of mass generation via symmetry breaking"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Physical systems can be modeled as objects in a category C with morphisms preserving symmetries",
+    "Symmetry groups G act on physical states via unitary representations",
+    "Ground states minimize an energy functional E[\u03c6] that is G-invariant",
+    "The vacuum expectation value \u27e8\u03c6\u27e9 is well-defined as a functional integral or ground state expectation",
+    "Mass terms in effective Lagrangians arise from quadratic terms in field fluctuations",
+    "Phase transitions correspond to changes in ground state symmetry",
+    "Order parameters are observables that distinguish phases",
+    "The path integral formulation or canonical quantization provides a well-defined vacuum state"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Construction of category C",
+        "issue": "The category C is never properly defined. What are the objects precisely? What are the morphisms? The proof claims objects are 'Hamiltonians invariant under G' but doesn't specify the mathematical structure. Are these operators on a fixed Hilbert space? Self-adjoint operators? The morphisms are called 'G-equivariant transformations' but between what spaces?",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Define C precisely: objects could be pairs (H,\u03c1) where H is a self-adjoint operator on a Hilbert space and \u03c1:G\u2192U(H) is a unitary representation with [H,\u03c1(g)]=0 for all g\u2208G. Morphisms need careful definition."
+      },
+      {
+        "step": "Definition of functor F",
+        "issue": "The functor F is claimed to map systems to their 'Hilbert space of states' but this is ill-defined. Different Hamiltonians can act on different Hilbert spaces. How does F act on morphisms? This is never specified.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "The entire categorical framework needs rethinking. A functor requires specification on both objects AND morphisms."
+      },
+      {
+        "step": "Definition of spontaneous symmetry breaking",
+        "issue": "The condition g|\u03a9\u27e9 \u2260 e^{i\u03b8}|\u03a9\u27e9 is imprecise. This should be: there exists g\u2208G such that g|\u03a9\u27e9 is not a scalar multiple of |\u03a9\u27e9. Moreover, this definition only works for pure states, not mixed states or degenerate ground states.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Use proper definition: H\u228aG where H is the stabilizer subgroup, and handle degenerate ground states explicitly."
+      },
+      {
+        "step": "Construction of functor F'",
+        "issue": "F' is claimed to map to Rep(H), but H depends on the specific ground state which varies between objects in C. So F' cannot be a single functor - it would need to be a different functor for each object.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "The categorical framework fundamentally doesn't work as stated."
+      },
+      {
+        "step": "Natural transformation \u03b7",
+        "issue": "The components \u03b7_X are defined as 'projection onto H-invariant subspace' but this makes no sense. F(X) is a vector space, F'(X) is an H-representation. These are objects in different categories. You cannot have a projection between them.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "The entire categorical setup is flawed."
+      },
+      {
+        "step": "Order parameter definition",
+        "issue": "The order parameter \u03c6 is introduced as 'an operator' but its domain, codomain, and mathematical properties are unspecified. Is it a field? An observable? How does it relate to the Hilbert space?",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Define \u03c6 as a self-adjoint operator on the Hilbert space that transforms in a non-trivial representation of G."
+      },
+      {
+        "step": "Mass generation mechanism",
+        "issue": "The proof jumps from abstract category theory to specific field theory without establishing the connection. The Lagrangian L[\u03c6] appears without explanation of how it relates to the Hamiltonian H or the categorical framework.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "This requires a complete rewrite connecting the abstract and concrete frameworks."
+      }
+    ],
+    "hidden_assumptions": [
+      "All physical systems have a well-defined Hilbert space (false for field theories without cutoff)",
+      "Ground states are unique up to phase (false for degenerate ground states)",
+      "The stabilizer subgroup H is the same for all ground states (false in general)",
+      "Order parameters are always well-defined operators (problematic in infinite dimensions)",
+      "The category Vect is appropriate for quantum field theories (it isn't - need appropriate topological vector spaces)",
+      "Spontaneous symmetry breaking always involves a single symmetry group G (ignores gauge symmetries)",
+      "The vacuum state exists and is normalizable (false in many QFTs)"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes spontaneous symmetry breaking creates a natural transformation to prove that spontaneous symmetry breaking corresponds to a natural transformation. The definition of F' already assumes the symmetry is broken to H\u2282G.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to cover all physical systems with symmetry group G, but actually only addresses quantum mechanical systems with discrete spectra. Field theories, gauge theories, systems with continuous spectra, and thermodynamic systems are not covered despite the broad claim.",
+    "citation_issues": [
+      "Wigner's theorem is about symmetry transformations, not about functors between categories",
+      "Landau theory is phenomenological and doesn't provide the mathematical rigor claimed here",
+      "Goldstone's theorem has specific assumptions (Lorentz invariance, etc.) not verified here",
+      "The Higgs mechanism specifically applies to gauge theories, not general symmetries"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof attempts to force physical concepts into an ill-suited categorical framework without proper mathematical definitions or rigorous connections. The categorical structures are incorrectly defined, the functors don't make mathematical sense, and the jump from abstract categories to concrete physics is unjustified. The proof would need complete reconstruction to be salvageable.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof sketches a framework for describing symmetry breaking but fails to rigorously establish the existence of the claimed functor F or the natural transformation \u03b7 with the specified properties",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The category C is well-defined (morphisms between Hamiltonians need precise definition)",
+      "Functor F is well-defined on morphisms (not just objects)",
+      "Ground states exist and are unique",
+      "Order parameters form a well-defined mathematical structure",
+      "The stabilizer subgroup construction yields a valid category Rep(H)",
+      "Natural transformation components are well-defined morphisms",
+      "Effective field theory expansion is mathematically rigorous",
+      "Path integral or canonical quantization converges"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "1",
+        "issue": "Morphisms between Hamiltonians are not properly defined - what constitutes a G-equivariant transformation between different Hamiltonians?"
+      },
+      {
+        "step": "2",
+        "issue": "Functor F is only defined on objects, not morphisms - how does F map morphisms in C to linear maps in Vect?"
+      },
+      {
+        "step": "6",
+        "issue": "Functor F' construction is incomplete - no proof that this yields a valid functor to Rep(H)"
+      },
+      {
+        "step": "7",
+        "issue": "Projection onto H-invariant subspace may not be well-defined or functorial without additional structure"
+      },
+      {
+        "step": "9",
+        "issue": "Taylor expansion assumes smoothness and existence of derivatives that are not established"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Step 8 explicitly acknowledges a gap in connecting order parameters to mass generation",
+      "No proof that the constructed functors satisfy the categorical axioms",
+      "No verification that \u03b7 is actually a natural transformation",
+      "Missing rigorous connection between mathematical framework and physical mass terms",
+      "No proof of existence or uniqueness of ground states",
+      "Transition between quantum mechanics (Hilbert spaces) and field theory (Lagrangians) is not justified"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof treats spontaneous symmetry breaking as a natural transformation between functors, but existing proof [087da119976b] establishes that symmetry breaking occurs when driving forces overcome dissipation in dynamical systems - these are fundamentally different mechanisms",
+      "The categorical treatment assumes well-defined vacuum states and order parameters, but existing proof [06879fd9ae87] demonstrates that physical properties are fundamentally contextual and cannot possess predetermined values independent of measurement framework",
+      "The proof assumes G-invariant Hamiltonians with well-defined ground states, but existing proof [06d6ace265c2] shows that quantum-classical boundaries emerge through environmental decoherence, not through predetermined ground state properties"
+    ],
+    "assumption_conflicts": [
+      "Assumes well-defined vacuum expectation values \u27e8\u03c6\u27e9 as functionals, conflicts with contextuality assumptions in [06879fd9ae87]",
+      "Assumes G-invariant energy functionals with unique ground states, conflicts with environmental decoherence framework in [06d6ace265c2]",
+      "Assumes categorical morphisms preserve symmetries exactly, conflicts with approximate/statistical symmetry breaking in [087da119976b]",
+      "The assumption of unitary G-representations conflicts with the measurement-dependent nature of quantum properties established in [06879fd9ae87]"
+    ],
+    "beneficial_connections": [
+      "Connects to [1318ecd2c25c] on phase transitions as symmetry-breaking events, though the categorical formulation could strengthen the universality claims",
+      "Relates to [08b6405556dd] on symmetry principles constraining dynamics, extending the framework to categorical settings",
+      "Could complement [102677deecdd] on relational structure determination by providing concrete physical examples of categorical relationships"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof has a critical gap acknowledged by the authors regarding the rigorous connection between order parameter VEV and mass generation. The categorical framework is mathematically sophisticated but conflicts with fundamental contextuality and decoherence principles established in existing proofs. The treatment of symmetry breaking as a natural transformation is novel but incompatible with established dynamical and environmental mechanisms."
+  },
+  "confidence_score": 0.255,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.29999999999999993
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.29999999999999993
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A fully rigorous categorical framework for quantum field theory that handles: (1) infinite-dimensional representations, (2) regularization and renormalization categorically, (3) path integral measures as morphisms, (4) vacuum states in interacting theories",
+  "limitations": [
+    "The connection between order parameter VEVs and mass generation is stated but not rigorously derived from first principles",
+    "The functor F' construction assumes well-defined restriction to stabilizer subgroup without addressing domain issues",
+    "The natural transformation \u03b7 requires careful treatment of infinite-dimensional spaces",
+    "Different physical realizations (Ginzburg-Landau vs Higgs mechanism) are conflated without unified treatment",
+    "The proof sketch works for finite-dimensional systems but requires substantial technical machinery for field theories",
+    "Does not address gauge symmetries which require BRST formalism or similar",
+    "Assumes existence of well-defined ground states without proving it",
+    "The categorical framework obscures some physical intuition about the mechanism"
+  ],
+  "source_convergence": {
+    "structural_claim": "Spontaneous symmetry breaking generates mass and distinguishes phases of matter through the emergence of order parameters with non-zero vacuum expectation values",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Landau Theory of Phase Transitions",
+        "domain_id": "condensed_matter",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Phase transitions occur through spontaneous symmetry breaking characterized by order parameters"
+      },
+      {
+        "result_id": "",
+        "result_name": "Ginzburg-Landau Theory",
+        "domain_id": "condensed_matter",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Superconductivity emerges from spontaneous gauge symmetry breaking with a complex order parameter"
+      },
+      {
+        "result_id": "",
+        "result_name": "Discovery of the Higgs boson",
+        "domain_id": "particle_physics",
+        "domain_name": "Particle Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Fundamental particle masses arise from spontaneous electroweak symmetry breaking via a scalar field with non-zero vacuum expectation value"
+      },
+      {
+        "result_id": "",
+        "result_name": "Electroweak unification",
+        "domain_id": "particle_physics",
+        "domain_name": "Particle Physics",
+        "link_type": "direct",
+        "structural_conclusion": "The distinction between electromagnetic and weak forces emerges from spontaneous breaking of SU(2)\u00d7U(1) symmetry"
+      }
+    ],
+    "domains": [
+      "condensed_matter",
+      "particle_physics"
+    ],
+    "domain_names": [
+      "Condensed Matter Physics",
+      "Particle Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.476,
+      "independence": 0.7,
+      "adversarial": 0.12,
+      "reproducibility": 0.6299999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.5363,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:16:54.207828+00:00",
+    "id": "85e1ea9b59a5"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.320925
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "proof_id": "523a76365e87",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A general theory of 'physical functors' that systematically relate topological categories to categories of conservation laws across different physical domains. This would require: (1) A universal characterization of what makes a topological structure 'physical', (2) A systematic construction of conservation law categories from symmetry principles, (3) Proof that such functors exist and are unique up to natural isomorphism",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

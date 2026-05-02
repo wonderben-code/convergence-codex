@@ -1,0 +1,13 @@
+{
+  "proof_id": "67ff6be7fc2a",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A formal framework connecting sheaf-theoretic local-global principles with abstract categorical structures, possibly requiring higher topos theory or a synthetic approach like homotopy type theory to properly formalize 'universal construction principles'",
+    "7 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

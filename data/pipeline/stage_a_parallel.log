@@ -1,0 +1,645 @@
+[12:38:19] ============================================================
+[12:38:19]   STAGE A — Pipeline Validation (Parallel)
+[12:38:19] ============================================================
+[12:38:19]   Gnosis data: /Users/ekramalam/gnosis-ai/results/test-3-auto
+[12:38:19]   Workers: 8
+[12:38:19]   Max cost: $200.00 (Logos: $160.00, Synthesis: $40.00)
+[12:38:19]   Log file: /Users/ekramalam/convergence-codex/data/pipeline/stage_a_20260502_123819.log
+[12:38:19]   Started: 2026-05-02T12:38:19.298328+00:00
+[12:38:19]   Loaded: 266 convergences, 26 findings
+[12:38:19] 
+============================================================
+[12:38:19]   LOGOS — Formalisation (8 workers)
+[12:38:19] ============================================================
+[12:38:19] Logos: 266 total, 5 already done, 261 remaining, 8 workers
+[12:38:19]   [9/266] 09c62bf6ce83 — Quantum Field Theory, Optics and Photonics
+[12:38:19]   [11/266] 0b80682150fe — Quantum Gravity, Condensed Matter Physics
+[12:38:19]   [13/266] 10d955c14c46 — Quantum Field Theory, Quantum Gravity
+[12:38:19]   [7/266] 09848a818911 — Particle Physics, Astrophysics
+[12:38:19]   [10/266] 0af0988f685d — Category Theory, Analysis
+[12:38:19]   [12/266] 0d52e4eee76b — Topology and Geometry, Category Theory
+[12:38:19]   [6/266] 09364dc014d0 — Topology and Geometry, Algebraic Geometry
+[12:38:19]   [8/266] 099752a10aab — General Relativity and Cosmology, Condensed Matter Physics
+[12:39:23]     [09848a818911] Type: axiomatic | Apparatus: Category theory, Algebraic structures | Steps: 7
+[12:39:24]     [09364dc014d0] Type: categorical | Apparatus: Category theory, Topology | Steps: 7
+[12:39:29]     [0b80682150fe] Type: categorical | Apparatus: Topology, Category theory | Steps: 7
+[12:39:31]     [0d52e4eee76b] Type: categorical | Apparatus: Category theory, Topology | Steps: 8
+[12:39:39]     [099752a10aab] Type: axiomatic | Apparatus: Functional analysis, Category theory | Steps: 10
+[12:39:39]     [0af0988f685d] Type: categorical | Apparatus: Category theory, Functional analysis | Steps: 12
+[12:39:46]     [09c62bf6ce83] Type: axiomatic | Apparatus: Functional analysis, Category theory | Steps: 8
+[12:40:02]     [10d955c14c46] Type: categorical | Apparatus: Category theory, Differential geometry | Steps: 15
+[12:40:39]     [09848a818911] Confidence: 0.21 (low)
+[12:40:39]     [09848a818911] Done: 140s, $0.44 (total: $0.44)
+[12:40:39]   [14/266] 11e34e34a739 — Quantum Gravity, Thermodynamics and Statistical Mechanics
+[12:40:46]     [09364dc014d0] Confidence: 0.24 (low)
+[12:40:46]     [09364dc014d0] Done: 147s, $0.50 (total: $0.94)
+[12:40:46]   [15/266] 121a3762703d — Nuclear Physics, Fluid Dynamics
+[12:40:50]     [0af0988f685d] Confidence: 0.51 (medium)
+[12:40:50]     [0af0988f685d] Done: 151s, $0.57 (total: $1.51)
+[12:40:50]   [16/266] 1325896b7cf2 — Condensed Matter Physics, Plasma Physics
+[12:40:54]     [0b80682150fe] Confidence: 0.26 (low)
+[12:40:54]     [0b80682150fe] Done: 155s, $0.55 (total: $2.06)
+[12:40:54]   [17/266] 13f9fd376eba — Particle Physics, Optics and Photonics
+[12:41:02]     [0d52e4eee76b] Confidence: 0.18 (low)
+[12:41:02]     [0d52e4eee76b] Done: 163s, $0.53 (total: $2.59)
+[12:41:02]   [18/266] 1573e7729d42 — Thermodynamics and Statistical Mechanics, Plasma Physics
+[12:41:24]     [09c62bf6ce83] Confidence: 0.41 (low)
+[12:41:24]     [09c62bf6ce83] Done: 185s, $0.71 (total: $3.30)
+[12:41:24]   [19/266] 1596b6c20819 — Atomic and Molecular Physics, Fluid Dynamics
+[12:41:26]     [099752a10aab] Confidence: 0.26 (low)
+[12:41:26]     [099752a10aab] Done: 187s, $0.61 (total: $3.91)
+[12:41:26]   [20/266] 1742439d8e73 — Quantum Field Theory, Fluid Dynamics
+[12:41:54]     [11e34e34a739] Type: categorical | Apparatus: Category theory, Information theory | Steps: 9
+[12:41:56]     [10d955c14c46] Confidence: 0.25 (low)
+[12:41:56]     [10d955c14c46] Done: 217s, $0.74 (total: $4.65)
+[12:41:56]   [21/266] 1751c46bb4da — Thermodynamics and Statistical Mechanics, Fluid Dynamics
+[12:42:05]     [1325896b7cf2] Type: categorical | Apparatus: Category theory, Topology | Steps: 8
+[12:42:08]     [121a3762703d] Type: constraint_logic | Apparatus: Dynamical systems, Category theory | Steps: 8
+[12:42:11]     [13f9fd376eba] Type: axiomatic | Apparatus: Algebraic structures, Category theory | Steps: 9
+[12:42:11]     [1573e7729d42] Type: constraint_logic | Apparatus: Topology, Dynamical systems | Steps: 8
+[12:42:43]     [1596b6c20819] Type: axiomatic | Apparatus: Functional analysis, Dynamical systems | Steps: 6
+[12:43:05]     [1751c46bb4da] Type: categorical | Apparatus: Category theory, Dynamical systems | Steps: 8
+[12:43:07]     [1742439d8e73] Type: categorical | Apparatus: Category theory, Functional analysis | Steps: 9
+[12:43:22]     [11e34e34a739] Confidence: 0.26 (low)
+[12:43:22]     [11e34e34a739] Done: 163s, $0.57 (total: $5.22)
+[12:43:22]   [22/266] 189a4a3708ca — Topology and Geometry, Category Theory
+[12:43:24]     [1325896b7cf2] Confidence: 0.26 (low)
+[12:43:24]     [1325896b7cf2] Done: 154s, $0.51 (total: $5.73)
+[12:43:24]   [23/266] 196ed07dc88e — Particle Physics, Atomic and Molecular Physics
+[12:43:39]     [1573e7729d42] Confidence: 0.33 (low)
+[12:43:39]     [1573e7729d42] Done: 157s, $0.50 (total: $6.23)
+[12:43:39]   [24/266] 1bb5d38f34e4 — Topology and Geometry, Analysis
+[12:43:49]     [13f9fd376eba] Confidence: 0.23 (low)
+[12:43:49]     [13f9fd376eba] Done: 175s, $0.58 (total: $6.81)
+[12:43:49]   [25/266] 1bc1c9e16dea — Thermodynamics and Statistical Mechanics, Condensed Matter Physics
+[12:43:51]     [121a3762703d] Confidence: 0.31 (low)
+[12:43:51]     [121a3762703d] Done: 185s, $0.63 (total: $7.43)
+[12:43:51]   [26/266] 1d260de6cfc3 — Algebraic Geometry, Category Theory
+[12:44:19]     [1596b6c20819] Confidence: 0.26 (low)
+[12:44:19]     [1596b6c20819] Done: 175s, $0.60 (total: $8.03)
+[12:44:19]   [27/266] 1d484976b03f — Quantum Foundations, Nuclear Physics
+[12:44:35]     [189a4a3708ca] Type: categorical | Apparatus: Category theory, Topology | Steps: 13
+[12:44:42]     [1bb5d38f34e4] Type: categorical | Apparatus: Category theory, Topology | Steps: 7
+[12:44:49]     [196ed07dc88e] Type: constraint_logic | Apparatus: Functional analysis, Differential geometry | Steps: 10
+[12:44:52]     [1742439d8e73] Confidence: 0.23 (low)
+[12:44:52]     [1742439d8e73] Done: 206s, $0.69 (total: $8.72)
+[12:44:52]   [28/266] 1d617e501aaf — Quantum Gravity, Nuclear Physics
+[12:44:58]     [1751c46bb4da] Confidence: 0.32 (low)
+[12:44:58]     [1751c46bb4da] Done: 182s, $0.57 (total: $9.29)
+[12:44:58]   [29/266] 1e4135222b37 — Astrophysics, Nuclear Physics
+[12:45:02]     [1d260de6cfc3] Type: categorical | Apparatus: Category theory, Algebraic structures | Steps: 8
+[12:45:25]     [1d484976b03f] Type: categorical | Apparatus: Category theory, Functional analysis | Steps: 5
+[12:45:26]     [1bc1c9e16dea] Type: constraint_logic | Apparatus: Dynamical systems, Measure theory | Steps: 12
+[12:45:42]     [189a4a3708ca] Confidence: 0.53 (medium)
+[12:45:42]     [189a4a3708ca] Done: 140s, $0.49 (total: $9.79)
+[12:45:42]   [30/266] 1e4f66a7710c — Quantum Field Theory, Astrophysics
+[12:46:04]     [1d617e501aaf] Type: categorical | Apparatus: Category theory, Functional analysis | Steps: 7
+[12:46:06]     [1bb5d38f34e4] Confidence: 0.20 (low)
+[12:46:06]     [1bb5d38f34e4] Done: 147s, $0.48 (total: $10.27)
+[12:46:06]   [31/266] 1f0cf160b250 — Quantum Foundations, Nuclear Physics
+[12:46:14]     [1e4135222b37] Type: constraint_logic | Apparatus: Category theory, Order theory | Steps: 7
+[12:46:21]     [196ed07dc88e] Confidence: 0.27 (low)
+[12:46:21]     [196ed07dc88e] Done: 176s, $0.60 (total: $10.87)
+[12:46:21]   [32/266] 1f1713b5fa03 — Quantum Gravity, Nuclear Physics
+[12:46:39]     [1d260de6cfc3] Confidence: 0.27 (low)
+[12:46:39]     [1d260de6cfc3] Done: 168s, $0.58 (total: $11.45)
+[12:46:39]   [33/266] 1f447a68b8be — Condensed Matter Physics, Nuclear Physics
+[12:46:55]     [1d484976b03f] Confidence: 0.21 (low)
+[12:46:55]     [1d484976b03f] Done: 155s, $0.50 (total: $11.95)
+[12:46:55]   [34/266] 1f5f5ea96085 — Plasma Physics, Nuclear Physics
+[12:47:05]     [1e4f66a7710c] Type: categorical | Apparatus: Category theory, Measure theory | Steps: 10
+[12:47:07]     [1bc1c9e16dea] Confidence: 0.26 (low)
+[12:47:07]     [1bc1c9e16dea] Done: 198s, $0.71 (total: $12.67)
+[12:47:07]   [35/266] 20b1c27e4643 — Topology and Geometry, Number Theory
+[12:47:26]     [1f0cf160b250] Type: axiomatic | Apparatus: Category theory, Measure theory | Steps: 9
+[12:47:32]     [1f1713b5fa03] Type: axiomatic | Apparatus: Differential geometry, Measure theory | Steps: 8
+[12:47:43]     [1d617e501aaf] Confidence: 0.25 (low)
+[12:47:43]     [1d617e501aaf] Done: 171s, $0.56 (total: $13.23)
+[12:47:43]   [36/266] 213526ee75a4 — Quantum Field Theory, Nuclear Physics
+[12:47:56]     [1e4135222b37] Confidence: 0.26 (low)
+[12:47:56]     [1e4135222b37] Done: 178s, $0.59 (total: $13.82)
+[12:47:56]   [37/266] 21b1931aa133 — Quantum Foundations, Thermodynamics and Statistical Mechanics
+[12:48:15]     [1f5f5ea96085] Type: constraint_logic | Apparatus: Topology, Dynamical systems | Steps: 7
+[12:48:16]     [1f447a68b8be] Type: categorical | Apparatus: Category theory, Functional analysis | Steps: 10
+[12:48:24]     [20b1c27e4643] Type: categorical | Apparatus: Category theory, Algebraic structures | Steps: 10
+[12:48:42]     [1e4f66a7710c] Confidence: 0.21 (low)
+[12:48:42]     [1e4f66a7710c] Done: 179s, $0.58 (total: $14.40)
+[12:48:42]   [38/266] 2314521ff3a6 — Thermodynamics and Statistical Mechanics, Nuclear Physics
+[12:48:59]     [1f1713b5fa03] Confidence: 0.23 (low)
+[12:48:59]     [1f1713b5fa03] Done: 158s, $0.52 (total: $14.92)
+[12:48:59]   [39/266] 23258f63a41f — Quantum Gravity, Acoustics and Wave Physics
+[12:49:11]     [1f0cf160b250] Confidence: 0.48 (medium)
+[12:49:11]     [1f0cf160b250] Done: 185s, $0.69 (total: $15.60)
+[12:49:11]   [40/266] 25728564e261 — Thermodynamics and Statistical Mechanics, Astrophysics
+[12:49:20]     [213526ee75a4] Type: axiomatic | Apparatus: Algebraic structures, Differential geometry | Steps: 10
+[12:49:33]     [21b1931aa133] Type: categorical | Apparatus: Category theory, Functional analysis | Steps: 10
+[12:49:37]     [1f5f5ea96085] Confidence: 0.42 (low)
+[12:49:37]     [1f5f5ea96085] Done: 162s, $0.57 (total: $16.17)
+[12:49:37]   [41/266] 2674bcdafb4c — Topology and Geometry, Algebraic Geometry
+[12:50:00]     [1f447a68b8be] Confidence: 0.35 (low)
+[12:50:00]     [1f447a68b8be] Done: 201s, $0.67 (total: $16.84)
+[12:50:00]   [42/266] 2730394d987a — Plasma Physics, Acoustics and Wave Physics
+[12:50:03]     [20b1c27e4643] Confidence: 0.20 (low)
+[12:50:03]     [20b1c27e4643] Done: 176s, $0.60 (total: $17.44)
+[12:50:03]   [43/266] 27cfe68d3fe5 — Condensed Matter Physics, Acoustics and Wave Physics
+[12:50:04]     [23258f63a41f] Type: axiomatic | Apparatus: Topology, Differential geometry | Steps: 8
+[12:50:05]     [2314521ff3a6] Type: categorical | Apparatus: Category theory, Functional analysis | Steps: 9
+[12:50:21]     [25728564e261] Type: axiomatic | Apparatus: Differential geometry, Information theory | Steps: 7
+[12:50:52]     [2674bcdafb4c] Type: categorical | Apparatus: Category theory, Algebraic structures | Steps: 7
+[12:51:10]     [2730394d987a] Type: constraint_logic | Apparatus: Differential geometry, Topology | Steps: 8
+[12:51:12]     [213526ee75a4] Confidence: 0.29 (low)
+[12:51:12]     [213526ee75a4] Done: 209s, $0.72 (total: $18.16)
+[12:51:12]   [44/266] 29bf1ab92bd2 — Condensed Matter Physics, Optics and Photonics
+[12:51:12]     [21b1931aa133] Confidence: 0.25 (low)
+[12:51:12]     [21b1931aa133] Done: 197s, $0.65 (total: $18.81)
+[12:51:12]   [45/266] 2c6775787544 — Quantum Field Theory, Particle Physics
+[12:51:31]     [27cfe68d3fe5] Type: categorical | Apparatus: Topology, Category theory | Steps: 10
+[12:51:35]     [23258f63a41f] Confidence: 0.21 (low)
+[12:51:35]     [23258f63a41f] Done: 157s, $0.55 (total: $19.36)
+[12:51:35]   [46/266] 2d8ecc875890 — Quantum Foundations, Quantum Gravity
+[12:51:50]     [25728564e261] Confidence: 0.34 (low)
+[12:51:50]     [25728564e261] Done: 159s, $0.54 (total: $19.90)
+[12:51:51]   [47/266] 30363d4b10e6 — Thermodynamics and Statistical Mechanics, Fluid Dynamics
+[12:51:51]     [2314521ff3a6] Confidence: 0.25 (low)
+[12:51:51]     [2314521ff3a6] Done: 189s, $0.62 (total: $20.53)
+[12:51:51]   [48/266] 305e67b23abc — Condensed Matter Physics, Particle Physics
+[12:52:21]     [29bf1ab92bd2] Type: isomorphism | Apparatus: Functional analysis, Algebraic structures | Steps: 7
+[12:52:31]     [2674bcdafb4c] Confidence: 0.29 (low)
+[12:52:31]     [2674bcdafb4c] Done: 174s, $0.57 (total: $21.09)
+[12:52:31]   [49/266] 3120ac96b9c7 — Fluid Dynamics, Acoustics and Wave Physics
+[12:52:34]     [2c6775787544] Type: categorical | Apparatus: Differential geometry, Category theory | Steps: 7
+[12:52:46]     [2d8ecc875890] Type: categorical | Apparatus: Category theory, Functional analysis | Steps: 10
+[12:52:47]     [2730394d987a] Confidence: 0.23 (low)
+[12:52:47]     [2730394d987a] Done: 167s, $0.55 (total: $21.64)
+[12:52:47]   [50/266] 326e57db5033 — Optics and Photonics, Fluid Dynamics
+[12:53:02]     [305e67b23abc] Type: categorical | Apparatus: Topology, Category theory | Steps: 6
+[12:53:13]     [27cfe68d3fe5] Confidence: 0.37 (low)
+[12:53:13]     [27cfe68d3fe5] Done: 190s, $0.64 (total: $22.28)
+[12:53:13]   [51/266] 340e2880a1f7 — Plasma Physics, Atomic and Molecular Physics
+[12:53:13]     [30363d4b10e6] Type: categorical | Apparatus: Category theory, Measure theory | Steps: 10
+[12:53:43]     [3120ac96b9c7] Type: categorical | Apparatus: Topology, Category theory | Steps: 8
+[12:54:00]     [29bf1ab92bd2] Confidence: 0.44 (low)
+[12:54:00]     [29bf1ab92bd2] Done: 168s, $0.59 (total: $22.87)
+[12:54:00]   [52/266] 3445c7ccc030 — Nuclear Physics, Acoustics and Wave Physics
+[12:54:09]     [2c6775787544] Confidence: 0.27 (low)
+[12:54:09]     [2c6775787544] Done: 176s, $0.58 (total: $23.45)
+[12:54:09]   [53/266] 374b50ba703b — Plasma Physics, Nuclear Physics
+[12:54:12]     [326e57db5033] Type: axiomatic | Apparatus: Dynamical systems, Functional analysis | Steps: 8
+[12:54:22]     [2d8ecc875890] Confidence: 0.23 (low)
+[12:54:22]     [2d8ecc875890] Done: 167s, $0.52 (total: $23.97)
+[12:54:22]   [54/266] 38360ebb8e60 — Quantum Foundations, Astrophysics
+[12:54:28]     [305e67b23abc] Confidence: 0.26 (low)
+[12:54:28]     [305e67b23abc] Done: 157s, $0.52 (total: $24.50)
+[12:54:28]   [55/266] 386a86d7e78d — Quantum Gravity, Astrophysics
+[12:54:41]     [340e2880a1f7] Type: categorical | Apparatus: Functional analysis, Measure theory | Steps: 9
+[12:54:56]     [30363d4b10e6] Confidence: 0.23 (low)
+[12:54:56]     [30363d4b10e6] Done: 185s, $0.60 (total: $25.10)
+[12:54:56]   [56/266] 3b28a6d5ebe1 — Quantum Field Theory, Optics and Photonics
+[12:55:07]     [3120ac96b9c7] Confidence: 0.20 (low)
+[12:55:07]     [3120ac96b9c7] Done: 156s, $0.52 (total: $25.62)
+[12:55:07]   [57/266] 3d00ef14a0f4 — Quantum Field Theory, Atomic and Molecular Physics
+[12:55:18]     [374b50ba703b] Type: constraint_logic | Apparatus: Dynamical systems, Measure theory | Steps: 8
+[12:55:24]     [3445c7ccc030] Type: axiomatic | Apparatus: Functional analysis, Algebraic structures | Steps: 8
+[12:55:42]     [38360ebb8e60] Type: categorical | Apparatus: Category theory, Information theory | Steps: 7
+[12:55:44]     [386a86d7e78d] Type: axiomatic | Apparatus: Differential geometry, Information theory | Steps: 8
+[12:55:52]     [326e57db5033] Confidence: 0.25 (low)
+[12:55:52]     [326e57db5033] Done: 185s, $0.62 (total: $26.24)
+[12:55:52]   [58/266] 3e2766378934 — Quantum Gravity, Condensed Matter Physics
+[12:56:22]     [340e2880a1f7] Confidence: 0.23 (low)
+[12:56:22]     [340e2880a1f7] Done: 189s, $0.63 (total: $26.87)
+[12:56:22]   [59/266] 3e6c192eaa88 — Astrophysics, Acoustics and Wave Physics
+[12:56:23]     [3b28a6d5ebe1] Type: axiomatic | Apparatus: Functional analysis, Measure theory | Steps: 7
+[12:56:29]     [3d00ef14a0f4] Type: constraint_logic | Apparatus: Functional analysis, Measure theory | Steps: 8
+[12:56:46]     [374b50ba703b] Confidence: 0.21 (low)
+[12:56:46]     [374b50ba703b] Done: 158s, $0.53 (total: $27.41)
+[12:56:46]   [60/266] 3f628048c0f8 — Quantum Field Theory, Acoustics and Wave Physics
+[12:56:58]     [3445c7ccc030] Confidence: 0.29 (low)
+[12:56:58]     [3445c7ccc030] Done: 178s, $0.58 (total: $27.98)
+[12:56:58]   [61/266] 41597df84a00 — Astrophysics, Nuclear Physics
+[12:57:18]     [3e2766378934] Type: categorical | Apparatus: Category theory, Differential geometry | Steps: 9
+[12:57:19]     [386a86d7e78d] Confidence: 0.30 (low)
+[12:57:19]     [386a86d7e78d] Done: 170s, $0.56 (total: $28.55)
+[12:57:19]   [62/266] 419306a5645b — Plasma Physics, Acoustics and Wave Physics
+[12:57:24]     [38360ebb8e60] Confidence: 0.24 (low)
+[12:57:24]     [38360ebb8e60] Done: 182s, $0.58 (total: $29.13)
+[12:57:24]   [63/266] 429668cdc9ad — Astrophysics, Atomic and Molecular Physics
+[12:57:39]     [3e6c192eaa88] Type: axiomatic | Apparatus: Dynamical systems, Measure theory | Steps: 8
+[12:58:05]     [3b28a6d5ebe1] Confidence: 0.24 (low)
+[12:58:05]     [3b28a6d5ebe1] Done: 189s, $0.63 (total: $29.76)
+[12:58:05]   [64/266] 444bf9a63971 — Plasma Physics, Fluid Dynamics
+[12:58:07]     [3d00ef14a0f4] Confidence: 0.26 (low)
+[12:58:07]     [3d00ef14a0f4] Done: 180s, $0.60 (total: $30.36)
+[12:58:07]   [65/266] 452ccd66ee86 — Optics and Photonics, Plasma Physics
+[12:58:09]     [3f628048c0f8] Type: axiomatic | Apparatus: Category theory, Algebraic structures | Steps: 10
+[12:58:13]     [41597df84a00] Type: constraint_logic | Apparatus: Category theory, Dynamical systems | Steps: 8
+[12:58:33]     [419306a5645b] Type: axiomatic | Apparatus: Functional analysis, Differential geometry | Steps: 10
+[12:58:53]     [429668cdc9ad] Type: axiomatic | Apparatus: Functional analysis, Measure theory | Steps: 10
+[12:58:59]     [3e2766378934] Confidence: 0.23 (low)
+[12:58:59]     [3e2766378934] Done: 187s, $0.60 (total: $30.96)
+[12:58:59]   [66/266] 45d28c5e83f3 — Plasma Physics, Nuclear Physics
+[12:59:16]     [3e6c192eaa88] Confidence: 0.23 (low)
+[12:59:16]     [3e6c192eaa88] Done: 174s, $0.57 (total: $31.54)
+[12:59:16]   [67/266] 45e501884916 — Quantum Field Theory, Particle Physics
+[12:59:19]     [41597df84a00] Confidence: 0.30 (low)
+[12:59:19]     [41597df84a00] Done: 141s, $0.39 (total: $31.93)
+[12:59:19]   [68/266] 45fd8160d52e — Quantum Gravity, Atomic and Molecular Physics
+[12:59:29]     [444bf9a63971] Type: axiomatic | Apparatus: Topology, Dynamical systems | Steps: 10
+[12:59:34]     [452ccd66ee86] Type: axiomatic | Apparatus: Functional analysis, Category theory | Steps: 10
+[12:59:53]     [3f628048c0f8] Confidence: 0.25 (low)
+[12:59:53]     [3f628048c0f8] Done: 187s, $0.62 (total: $32.54)
+[12:59:53]   [69/266] 4657b3e09b24 — Quantum Field Theory, Astrophysics
+[13:00:10]     [419306a5645b] Confidence: 0.38 (low)
+[13:00:10]     [419306a5645b] Done: 172s, $0.61 (total: $33.15)
+[13:00:10]   [70/266] 465a50b0bd99 — Quantum Foundations, Quantum Gravity
+[13:00:25]     [45fd8160d52e] Type: constraint_logic | Apparatus: Functional analysis, Differential geometry | Steps: 6
+[13:00:28]     [45d28c5e83f3] Type: axiomatic | Apparatus: Dynamical systems, Measure theory | Steps: 9
+[13:00:32]     [45e501884916] Type: axiomatic | Apparatus: Differential geometry, Functional analysis | Steps: 9
+[13:00:33]     [429668cdc9ad] Confidence: 0.28 (low)
+[13:00:33]     [429668cdc9ad] Done: 189s, $0.67 (total: $33.82)
+[13:00:33]   [71/266] 4814b4fcc743 — Plasma Physics, Fluid Dynamics
+[13:01:12]     [4657b3e09b24] Type: categorical | Apparatus: Topology, Category theory | Steps: 10
+[13:01:15]     [452ccd66ee86] Confidence: 0.39 (low)
+[13:01:15]     [452ccd66ee86] Done: 187s, $0.70 (total: $34.52)
+[13:01:15]   [72/266] 497bf62e6c3b — Condensed Matter Physics, Acoustics and Wave Physics
+[13:01:21]     [444bf9a63971] Confidence: 0.39 (low)
+[13:01:21]     [444bf9a63971] Done: 197s, $0.67 (total: $35.19)
+[13:01:21]   [73/266] 49d5f6b6a62d — General Relativity and Cosmology, Quantum Gravity
+[13:01:23]     [45e501884916] Confidence: 0.59 (medium)
+[13:01:23]     [45e501884916] Done: 127s, $0.43 (total: $35.62)
+[13:01:23]   [74/266] 49f27aad9ff0 — Quantum Field Theory, Plasma Physics
+[13:01:25]     [465a50b0bd99] Type: equivalence | Apparatus: Category theory, Differential geometry | Steps: 7
+[13:01:54]     [45fd8160d52e] Confidence: 0.25 (low)
+[13:01:54]     [45fd8160d52e] Done: 155s, $0.49 (total: $36.11)
+[13:01:54]   [75/266] 4ae99c51b1aa — Quantum Field Theory, Quantum Gravity
+[13:02:06]     [45d28c5e83f3] Confidence: 0.23 (low)
+[13:02:06]     [45d28c5e83f3] Done: 187s, $0.62 (total: $36.73)
+[13:02:06]   [76/266] 4bbd9425a42b — Quantum Foundations, General Relativity and Cosmology
+[13:02:20]     [4814b4fcc743] Type: axiomatic | Apparatus: Dynamical systems, Functional analysis | Steps: 13
+[13:02:29]     [497bf62e6c3b] Type: isomorphism | Apparatus: Functional analysis, Algebraic structures | Steps: 7
+[13:02:40]     [49d5f6b6a62d] Type: categorical | Apparatus: Differential geometry, Information theory | Steps: 9
+[13:02:44]     [49f27aad9ff0] Type: categorical | Apparatus: Category theory, Functional analysis | Steps: 7
+[13:03:00]     [4657b3e09b24] Confidence: 0.23 (low)
+[13:03:00]     [4657b3e09b24] Done: 186s, $0.59 (total: $37.32)
+[13:03:00]   [77/266] 4ce76010ff36 — Optics and Photonics, Plasma Physics
+[13:03:11]     [465a50b0bd99] Confidence: 0.22 (low)
+[13:03:11]     [465a50b0bd99] Done: 181s, $0.59 (total: $37.91)
+[13:03:11]   [78/266] 4cf2ed250ca7 — Quantum Field Theory, Atomic and Molecular Physics
+[13:03:16]     [4ae99c51b1aa] Type: categorical | Apparatus: Category theory, Functional analysis | Steps: 9
+[13:03:25]     [4bbd9425a42b] Type: axiomatic | Apparatus: Information theory, Category theory | Steps: 10
+[13:04:01]     [497bf62e6c3b] Confidence: 0.44 (low)
+[13:04:01]     [497bf62e6c3b] Done: 167s, $0.56 (total: $38.47)
+[13:04:01]   [79/266] 4e3222368d20 — Particle Physics, Astrophysics
+[13:04:08]     [4814b4fcc743] Confidence: 0.36 (low)
+[13:04:08]     [4814b4fcc743] Done: 214s, $0.76 (total: $39.23)
+[13:04:08]   [80/266] 4e69dcb51f84 — Condensed Matter Physics, Plasma Physics
+[13:04:08]     [49d5f6b6a62d] Confidence: 0.36 (low)
+[13:04:08]     [49d5f6b6a62d] Done: 166s, $0.56 (total: $39.79)
+[13:04:08]   [81/266] 4fc35bc43e57 — Quantum Foundations, Condensed Matter Physics
+[13:04:19]     [4ce76010ff36] Type: axiomatic | Apparatus: Functional analysis, Differential geometry | Steps: 8
+[13:04:28]     [4cf2ed250ca7] Type: axiomatic | Apparatus: Category theory, Algebraic structures | Steps: 7
+[13:04:28]     [49f27aad9ff0] Confidence: 0.23 (low)
+[13:04:28]     [49f27aad9ff0] Done: 185s, $0.59 (total: $40.38)
+[13:04:28]   [82/266] 4fd476d245bb — Thermodynamics and Statistical Mechanics, Condensed Matter Physics
+[13:04:53]     [4ae99c51b1aa] Confidence: 0.24 (low)
+[13:04:53]     [4ae99c51b1aa] Done: 179s, $0.56 (total: $40.94)
+[13:04:53]   [83/266] 51ac2935ce77 — Thermodynamics and Statistical Mechanics, Optics and Photonics
+[13:04:53]     [4bbd9425a42b] Confidence: 0.24 (low)
+[13:04:53]     [4bbd9425a42b] Done: 166s, $0.54 (total: $41.48)
+[13:04:53]   [84/266] 530f33b12007 — Algebraic Geometry, Analysis
+[13:05:14]     [4e69dcb51f84] Type: categorical | Apparatus: Topology, Category theory | Steps: 8
+[13:05:16]     [4e3222368d20] Type: axiomatic | Apparatus: Differential geometry, Algebraic structures | Steps: 7
+[13:05:36]     [4fc35bc43e57] Type: constraint_logic | Apparatus: Category theory, Information theory | Steps: 9
+[13:05:57]     [4fd476d245bb] Type: categorical | Apparatus: Category theory, Measure theory | Steps: 8
+[13:06:01]     [530f33b12007] Type: categorical | Apparatus: Category theory, Topology | Steps: 9
+[13:06:01]     [51ac2935ce77] Type: axiomatic | Apparatus: Measure theory, Dynamical systems | Steps: 6
+[13:06:02]     [4cf2ed250ca7] Confidence: 0.22 (low)
+[13:06:02]     [4cf2ed250ca7] Done: 170s, $0.58 (total: $42.06)
+[13:06:02]   [85/266] 5411b8cce612 — Condensed Matter Physics, Atomic and Molecular Physics
+[13:06:02]     [4ce76010ff36] Confidence: 0.27 (low)
+[13:06:02]     [4ce76010ff36] Done: 182s, $0.61 (total: $42.67)
+[13:06:02]   [86/266] 54565b59b833 — Astrophysics, Plasma Physics
+[13:06:45]     [4e69dcb51f84] Confidence: 0.24 (low)
+[13:06:45]     [4e69dcb51f84] Done: 157s, $0.51 (total: $43.18)
+[13:06:45]   [87/266] 567dc078431a — Quantum Gravity, Fluid Dynamics
+[13:06:48]     [4e3222368d20] Confidence: 0.23 (low)
+[13:06:48]     [4e3222368d20] Done: 167s, $0.53 (total: $43.71)
+[13:06:48]   [88/266] 57544238b145 — Condensed Matter Physics, Astrophysics
+[13:07:16]     [5411b8cce612] Type: constraint_logic | Apparatus: Topology, Category theory | Steps: 7
+[13:07:30]     [51ac2935ce77] Confidence: 0.24 (low)
+[13:07:30]     [51ac2935ce77] Done: 157s, $0.56 (total: $44.27)
+[13:07:30]   [89/266] 58d65d5acae1 — Quantum Field Theory, Condensed Matter Physics
+[13:07:31]     [530f33b12007] Confidence: 0.18 (low)
+[13:07:31]     [530f33b12007] Done: 159s, $0.50 (total: $44.77)
+[13:07:31]   [90/266] 592971ed0dd7 — Quantum Foundations, Condensed Matter Physics
+[13:07:35]     [4fd476d245bb] Confidence: 0.28 (low)
+[13:07:35]     [4fd476d245bb] Done: 187s, $0.61 (total: $45.38)
+[13:07:35]   [91/266] 5979307c13fb — Atomic and Molecular Physics, Nuclear Physics
+[13:07:37]     [4fc35bc43e57] Confidence: 0.28 (low)
+[13:07:37]     [4fc35bc43e57] Done: 209s, $0.75 (total: $46.14)
+[13:07:37]   [92/266] 5a19b2c55cd2 — Astrophysics, Fluid Dynamics
+[13:07:38]     [54565b59b833] Type: categorical | Apparatus: Category theory, Dynamical systems | Steps: 10
+[13:07:52]     [567dc078431a] Type: categorical | Apparatus: Category theory, Dynamical systems | Steps: 8
+[13:07:58]     [57544238b145] Type: categorical | Apparatus: Topology, Category theory | Steps: 10
+[13:08:45]     [5411b8cce612] Confidence: 0.26 (low)
+[13:08:45]     [5411b8cce612] Done: 164s, $0.56 (total: $46.70)
+[13:08:45]   [93/266] 5a91b0a55182 — Fluid Dynamics, Acoustics and Wave Physics
+[13:08:51]     [5979307c13fb] Type: categorical | Apparatus: Category theory, Dynamical systems | Steps: 9
+[13:08:54]     [58d65d5acae1] Type: categorical | Apparatus: Category theory, Algebraic structures | Steps: 10
+[13:09:00]     [592971ed0dd7] Type: categorical | Apparatus: Category theory, Functional analysis | Steps: 12
+[13:09:00]     [5a19b2c55cd2] Type: axiomatic | Apparatus: Measure theory, Functional analysis | Steps: 8
+[13:09:18]     [567dc078431a] Confidence: 0.21 (low)
+[13:09:18]     [567dc078431a] Done: 153s, $0.49 (total: $47.19)
+[13:09:18]   [94/266] 5aa17b0cef85 — Quantum Field Theory, Condensed Matter Physics
+[13:09:23]     [54565b59b833] Confidence: 0.23 (low)
+[13:09:23]     [54565b59b833] Done: 201s, $0.67 (total: $47.86)
+[13:09:23]   [95/266] 5aadf154d2e7 — Category Theory, Analysis
+[13:09:28]     [57544238b145] Confidence: 0.21 (low)
+[13:09:28]     [57544238b145] Done: 160s, $0.52 (total: $48.38)
+[13:09:28]   [96/266] 5b242c7bacc1 — General Relativity and Cosmology, Optics and Photonics
+[13:09:57]     [5a91b0a55182] Type: axiomatic | Apparatus: Dynamical systems, Measure theory | Steps: 7
+[13:10:29]     [5aadf154d2e7] Type: categorical | Apparatus: Category theory, Functional analysis | Steps: 7
+[13:10:33]     [5979307c13fb] Confidence: 0.26 (low)
+[13:10:33]     [5979307c13fb] Done: 178s, $0.62 (total: $49.00)
+[13:10:33]   [97/266] 5b63e9342957 — Quantum Field Theory, Plasma Physics
+[13:10:34]     [5aa17b0cef85] Type: categorical | Apparatus: Category theory, Functional analysis | Steps: 8
+[13:10:37]     [58d65d5acae1] Confidence: 0.26 (low)
+[13:10:37]     [58d65d5acae1] Done: 187s, $0.60 (total: $49.60)
+[13:10:37]   [98/266] 5d5524330f6d — General Relativity and Cosmology, Particle Physics
+[13:10:41]     [5a19b2c55cd2] Confidence: 0.25 (low)
+[13:10:41]     [5a19b2c55cd2] Done: 184s, $0.61 (total: $50.22)
+[13:10:41]   [99/266] 5de3709b7f19 — Particle Physics, Fluid Dynamics
+[13:10:44]     [592971ed0dd7] Confidence: 0.24 (low)
+[13:10:44]     [592971ed0dd7] Done: 192s, $0.65 (total: $50.87)
+[13:10:44]   [100/266] 5ea93024fd55 — Quantum Foundations, Acoustics and Wave Physics
+[13:10:49]     [5b242c7bacc1] Type: axiomatic | Apparatus: Information theory, Differential geometry | Steps: 8
+[13:11:47]     [5a91b0a55182] Confidence: 0.25 (low)
+[13:11:47]     [5a91b0a55182] Done: 181s, $0.59 (total: $51.46)
+[13:11:47]   [101/266] 5f489082bc0c — Number Theory, Analysis
+[13:11:50]     [5b63e9342957] Type: axiomatic | Apparatus: Algebraic structures, Differential geometry | Steps: 8
+[13:11:53]     [5d5524330f6d] Type: axiomatic | Apparatus: Differential geometry, Algebraic structures | Steps: 7
+[13:11:55]     [5aadf154d2e7] Confidence: 0.21 (low)
+[13:11:55]     [5aadf154d2e7] Done: 152s, $0.49 (total: $51.95)
+[13:11:55]   [102/266] 5f4fdd5cde71 — Optics and Photonics, Acoustics and Wave Physics
+[13:11:56]     [5de3709b7f19] Type: axiomatic | Apparatus: Dynamical systems, Group theory | Steps: 8
+[13:12:00]     [5ea93024fd55] Type: categorical | Apparatus: Topology, Category theory | Steps: 8
+[13:12:18]     [5aa17b0cef85] Confidence: 0.24 (low)
+[13:12:18]     [5aa17b0cef85] Done: 180s, $0.56 (total: $52.51)
+[13:12:18]   [103/266] 618b9cd70968 — Thermodynamics and Statistical Mechanics, Particle Physics
+[13:12:23]     [5b242c7bacc1] Confidence: 0.21 (low)
+[13:12:23]     [5b242c7bacc1] Done: 175s, $0.53 (total: $53.04)
+[13:12:23]   [104/266] 65c24ba601da — Nuclear Physics, Acoustics and Wave Physics
+[13:12:53]     [5f489082bc0c] Type: axiomatic | Apparatus: Topology, Category theory | Steps: 7
+[13:13:03]     [5f4fdd5cde71] Type: axiomatic | Apparatus: Functional analysis, Algebraic structures | Steps: 8
+[13:13:17]     [5b63e9342957] Confidence: 0.42 (low)
+[13:13:18]     [5b63e9342957] Done: 164s, $0.57 (total: $53.61)
+[13:13:18]   [105/266] 66414d51d22b — Condensed Matter Physics, Optics and Photonics
+[13:13:31]     [5de3709b7f19] Confidence: 0.23 (low)
+[13:13:31]     [5de3709b7f19] Done: 170s, $0.56 (total: $54.17)
+[13:13:31]   [106/266] 66662a91052a — Topology and Geometry, Number Theory
+[13:13:35]     [5d5524330f6d] Confidence: 0.27 (low)
+[13:13:35]     [5d5524330f6d] Done: 178s, $0.58 (total: $54.75)
+[13:13:35]   [107/266] 6718606b81b9 — Category Theory, Number Theory
+[13:13:37]     [5ea93024fd55] Confidence: 0.22 (low)
+[13:13:37]     [5ea93024fd55] Done: 174s, $0.59 (total: $55.34)
+[13:13:37]   [108/266] 6b0b91dcff77 — Category Theory, Analysis
+[13:13:38]     [65c24ba601da] Type: axiomatic | Apparatus: Dynamical systems, Measure theory | Steps: 8
+[13:13:45]     [618b9cd70968] Type: axiomatic | Apparatus: Category theory, Algebraic structures | Steps: 9
+[13:14:20]     [5f489082bc0c] Confidence: 0.26 (low)
+[13:14:20]     [5f489082bc0c] Done: 153s, $0.50 (total: $55.84)
+[13:14:20]   [109/266] 6b5aca297a34 — Quantum Foundations, Plasma Physics
+[13:14:32]     [5f4fdd5cde71] Confidence: 0.33 (low)
+[13:14:32]     [5f4fdd5cde71] Done: 158s, $0.57 (total: $56.41)
+[13:14:32]   [110/266] 6b8346deaa39 — Quantum Field Theory, Optics and Photonics
+[13:14:38]     [66414d51d22b] Type: axiomatic | Apparatus: Dynamical systems, Functional analysis | Steps: 8
+[13:14:48]     [6718606b81b9] Type: categorical | Apparatus: Category theory, Type theory | Steps: 8
+[13:14:49]     [6b0b91dcff77] Type: categorical | Apparatus: Category theory, Topology | Steps: 7
+[13:14:49]     [66662a91052a] Type: categorical | Apparatus: Category theory, Topology | Steps: 8
+[13:15:11]     [618b9cd70968] Confidence: 0.38 (low)
+[13:15:11]     [618b9cd70968] Done: 174s, $0.59 (total: $56.99)
+[13:15:11]   [111/266] 6caa85e0f2fc — Thermodynamics and Statistical Mechanics, Atomic and Molecular Physics
+[13:15:17]     [65c24ba601da] Confidence: 0.21 (low)
+[13:15:17]     [65c24ba601da] Done: 173s, $0.55 (total: $57.54)
+[13:15:17]   [112/266] 6e51c6148c26 — Optics and Photonics, Nuclear Physics
+[13:15:41]     [6b5aca297a34] Type: axiomatic | Apparatus: Category theory, Measure theory | Steps: 10
+[13:16:02]     [6b8346deaa39] Type: axiomatic | Apparatus: Functional analysis, Dynamical systems | Steps: 9
+[13:27:05]     [6b0b91dcff77] Confidence: 0.31 (low)
+[13:27:05]     [6b0b91dcff77] Done: 807s, $0.50 (total: $58.04)
+[13:27:05]   [113/266] 6ed82b50ddd5 — Condensed Matter Physics, Acoustics and Wave Physics
+[13:27:05]     [6caa85e0f2fc] ERROR: The read operation timed out
+[13:27:05]     [6caa85e0f2fc] Done: 714s, $0.05 (total: $58.09)
+[13:27:05]     [66414d51d22b] Confidence: 0.31 (low)
+[13:27:05]     [66414d51d22b] Done: 828s, $0.58 (total: $58.67)
+[13:27:05]     [6e51c6148c26] ERROR: The read operation timed out
+[13:27:05]     [6e51c6148c26] Done: 708s, $0.05 (total: $58.73)
+[13:27:05]   [114/266] 7073c927133c — Quantum Field Theory, General Relativity and Cosmology
+[13:27:05]   [115/266] 732fdc8113c2 — Atomic and Molecular Physics, Nuclear Physics
+[13:27:05]   [116/266] 734d22d53d5d — Atomic and Molecular Physics, Acoustics and Wave Physics
+[13:27:16]     [6718606b81b9] Confidence: 0.29 (low)
+[13:27:16]     [6718606b81b9] Done: 822s, $0.54 (total: $59.26)
+[13:27:16]   [117/266] 752b6b49f5ae — Quantum Field Theory, General Relativity and Cosmology
+[13:27:18]     [66662a91052a] Confidence: 0.28 (low)
+[13:27:18]     [66662a91052a] Done: 828s, $0.60 (total: $59.86)
+[13:27:18]   [118/266] 753539f1fd90 — Topology and Geometry, Analysis
+[13:27:56]     [6b5aca297a34] Confidence: 0.37 (low)
+[13:27:56]     [6b5aca297a34] Done: 816s, $0.42 (total: $60.28)
+[13:27:56]   [119/266] 753720955bd8 — General Relativity and Cosmology, Atomic and Molecular Physics
+[13:28:06]     [6b8346deaa39] Confidence: 0.31 (low)
+[13:28:06]     [6b8346deaa39] Done: 814s, $0.48 (total: $60.76)
+[13:28:06]   [120/266] 77310ae01757 — Particle Physics, Nuclear Physics
+[13:28:21]     [7073c927133c] Type: axiomatic | Apparatus: Differential geometry, Algebraic structures | Steps: 8
+[13:28:27]     [734d22d53d5d] Type: categorical | Apparatus: Functional analysis, Category theory | Steps: 10
+[13:28:30]     [6ed82b50ddd5] Type: isomorphism | Apparatus: Functional analysis, Measure theory | Steps: 7
+[13:28:33]     [753539f1fd90] Type: categorical | Apparatus: Category theory, Topology | Steps: 6
+[13:28:34]     [752b6b49f5ae] Type: categorical | Apparatus: Category theory, Topology | Steps: 7
+[13:28:36]     [732fdc8113c2] Type: axiomatic | Apparatus: Functional analysis, Algebraic structures | Steps: 10
+[13:29:08]     [753720955bd8] Type: constraint_logic | Apparatus: Dynamical systems, Information theory | Steps: 6
+[13:29:39]     [77310ae01757] Type: axiomatic | Apparatus: Algebraic structures, Differential geometry | Steps: 10
+[13:29:49]     [7073c927133c] Confidence: 0.27 (low)
+[13:29:49]     [7073c927133c] Done: 164s, $0.52 (total: $61.28)
+[13:29:49]   [121/266] 77eced705e6f — Quantum Field Theory, General Relativity and Cosmology
+[13:29:55]     [734d22d53d5d] Confidence: 0.32 (low)
+[13:29:55]     [734d22d53d5d] Done: 170s, $0.59 (total: $61.87)
+[13:29:55]   [122/266] 798982b510ad — Algebraic Geometry, Category Theory
+[13:29:57]     [6ed82b50ddd5] Confidence: 0.39 (low)
+[13:29:57]     [6ed82b50ddd5] Done: 172s, $0.60 (total: $62.47)
+[13:29:57]   [123/266] 79ac9abf1097 — Atomic and Molecular Physics, Acoustics and Wave Physics
+[13:30:10]     [753539f1fd90] Confidence: 0.24 (low)
+[13:30:10]     [753539f1fd90] Done: 172s, $0.55 (total: $63.02)
+[13:30:10]   [124/266] 79cd16932ee9 — Quantum Field Theory, Fluid Dynamics
+[13:30:23]     [752b6b49f5ae] Confidence: 0.23 (low)
+[13:30:23]     [752b6b49f5ae] Done: 186s, $0.60 (total: $63.62)
+[13:30:23]   [125/266] 7a1361fc00b6 — Particle Physics, Acoustics and Wave Physics
+[13:30:24]     [732fdc8113c2] Confidence: 0.35 (low)
+[13:30:24]     [732fdc8113c2] Done: 199s, $0.70 (total: $64.32)
+[13:30:24]   [126/266] 7a3990a897bc — Condensed Matter Physics, Atomic and Molecular Physics
+[13:30:49]     [753720955bd8] Confidence: 0.23 (low)
+[13:30:49]     [753720955bd8] Done: 173s, $0.58 (total: $64.91)
+[13:30:49]   [127/266] 7bab6955b821 — Quantum Foundations, Astrophysics
+[13:31:04]     [798982b510ad] Type: categorical | Apparatus: Category theory, Algebraic structures | Steps: 8
+[13:31:21]     [77310ae01757] Confidence: 0.36 (low)
+[13:31:21]     [77310ae01757] Done: 195s, $0.68 (total: $65.59)
+[13:31:21]   [128/266] 7c730e976a88 — Quantum Gravity, Particle Physics
+[13:31:25]     [77eced705e6f] Type: axiomatic | Apparatus: Category theory, Differential geometry | Steps: 10
+[13:31:25]     [79ac9abf1097] Type: axiomatic | Apparatus: Functional analysis, Differential geometry | Steps: 10
+[13:31:36]     [7a1361fc00b6] Type: axiomatic | Apparatus: Functional analysis, Differential geometry | Steps: 7
+[13:31:38]     [79cd16932ee9] Type: axiomatic | Apparatus: Category theory, Dynamical systems | Steps: 10
+[13:31:43]     [7a3990a897bc] Type: axiomatic | Apparatus: Algebraic structures, Category theory | Steps: 8
+[13:42:55]     [7bab6955b821] ERROR: The read operation timed out
+[13:42:55]     [7bab6955b821] Done: 726s, $0.24 (total: $65.83)
+[13:42:55]   [129/266] 7cfb76ee151f — Atomic and Molecular Physics, Acoustics and Wave Physics
+[13:42:55]     [7c730e976a88] ERROR: The read operation timed out
+[13:42:55]     [7c730e976a88] Done: 695s, $0.05 (total: $65.88)
+[13:42:55]   [130/266] 7d97ad12b337 — Thermodynamics and Statistical Mechanics, Nuclear Physics
+[13:43:06]     [798982b510ad] Confidence: 0.42 (low)
+[13:43:06]     [798982b510ad] Done: 791s, $0.48 (total: $66.36)
+[13:43:06]   [131/266] 81ae609fc3d5 — Quantum Gravity, Thermodynamics and Statistical Mechanics
+[13:43:48]     [7a1361fc00b6] Confidence: 0.47 (medium)
+[13:43:48]     [7a1361fc00b6] Done: 805s, $0.42 (total: $66.77)
+[13:43:48]   [132/266] 8392ef388e6c — Condensed Matter Physics, Particle Physics
+[13:43:50]     [79ac9abf1097] Confidence: 0.32 (low)
+[13:43:50]     [79ac9abf1097] Done: 833s, $0.46 (total: $67.23)
+[13:43:50]   [133/266] 852d39a4b59a — Optics and Photonics, Fluid Dynamics
+[13:43:53]     [7a3990a897bc] Confidence: 0.32 (low)
+[13:43:53]     [7a3990a897bc] Done: 808s, $0.43 (total: $67.67)
+[13:43:53]   [134/266] 85e1ea9b59a5 — Condensed Matter Physics, Particle Physics
+[13:43:57]     [79cd16932ee9] Confidence: 0.33 (low)
+[13:43:57]     [79cd16932ee9] Done: 827s, $0.48 (total: $68.14)
+[13:43:57]   [135/266] 8715fa784f21 — Quantum Foundations, Thermodynamics and Statistical Mechanics
+[13:44:04]     [77eced705e6f] Confidence: 0.29 (low)
+[13:44:04]     [77eced705e6f] Done: 855s, $0.50 (total: $68.65)
+[13:44:04]   [136/266] 88de46ba7ae4 — Particle Physics, Nuclear Physics
+[13:44:06]     [7cfb76ee151f] Type: axiomatic | Apparatus: Functional analysis, Algebraic structures | Steps: 7
+[13:44:25]     [81ae609fc3d5] Type: categorical | Apparatus: Category theory, Information theory | Steps: 8
+[13:44:30]     [7d97ad12b337] Type: axiomatic | Apparatus: Functional analysis, Information theory | Steps: 11
+[13:44:59]     [852d39a4b59a] Type: axiomatic | Apparatus: Functional analysis, Dynamical systems | Steps: 5
+[13:45:06]     [8392ef388e6c] Type: categorical | Apparatus: Category theory, Functional analysis | Steps: 8
+[13:45:14]     [8715fa784f21] Type: axiomatic | Apparatus: Category theory, Measure theory | Steps: 9
+[13:45:20]     [85e1ea9b59a5] Type: categorical | Apparatus: Category theory, Algebraic structures | Steps: 10
+[13:45:22]     [88de46ba7ae4] Type: axiomatic | Apparatus: Differential geometry, Functional analysis | Steps: 10
+[13:45:43]     [7cfb76ee151f] Confidence: 0.41 (low)
+[13:45:43]     [7cfb76ee151f] Done: 169s, $0.57 (total: $69.22)
+[13:45:43]   [137/266] 8a830c1897b9 — Condensed Matter Physics, Astrophysics
+[13:45:55]     [81ae609fc3d5] Confidence: 0.23 (low)
+[13:45:55]     [81ae609fc3d5] Done: 169s, $0.55 (total: $69.77)
+[13:45:55]   [138/266] 8b006a38b9ed — Quantum Field Theory, Astrophysics
+[13:46:20]     [7d97ad12b337] Confidence: 0.31 (low)
+[13:46:20]     [7d97ad12b337] Done: 204s, $0.64 (total: $70.41)
+[13:46:20]   [139/266] 8bde681e0eb1 — Quantum Foundations, Atomic and Molecular Physics
+[13:46:22]     [852d39a4b59a] Confidence: 0.32 (low)
+[13:46:22]     [852d39a4b59a] Done: 153s, $0.48 (total: $70.89)
+[13:46:22]   [140/266] 8cd7e2db9b26 — Algebraic Geometry, Number Theory
+[13:46:22]     [88de46ba7ae4] Confidence: 0.34 (low)
+[13:46:22]     [88de46ba7ae4] Done: 139s, $0.45 (total: $71.34)
+[13:46:22]   [141/266] 8e5e4b3144f5 — General Relativity and Cosmology, Plasma Physics
+[13:46:45]     [8392ef388e6c] Confidence: 0.26 (low)
+[13:46:45]     [8392ef388e6c] Done: 177s, $0.59 (total: $71.93)
+[13:46:45]   [142/266] 8f8094b33b51 — Atomic and Molecular Physics, Nuclear Physics
+[13:46:48]     [8715fa784f21] Confidence: 0.23 (low)
+[13:46:48]     [8715fa784f21] Done: 171s, $0.57 (total: $72.50)
+[13:46:48]   [143/266] 8fe71ec0c481 — Condensed Matter Physics, Atomic and Molecular Physics
+[13:46:56]     [8a830c1897b9] Type: categorical | Apparatus: Category theory, Topology | Steps: 8
+[13:47:09]     [85e1ea9b59a5] Confidence: 0.26 (low)
+[13:47:09]     [85e1ea9b59a5] Done: 196s, $0.63 (total: $73.14)
+[13:47:09]   [144/266] 9008a3a49dab — Quantum Foundations, Quantum Field Theory
+[13:47:23]     [8b006a38b9ed] Type: categorical | Apparatus: Category theory, Dynamical systems | Steps: 8
+[13:47:32]     [8cd7e2db9b26] Type: categorical | Apparatus: Category theory, Algebraic structures | Steps: 7
+[13:47:41]     [8bde681e0eb1] Type: axiomatic | Apparatus: Functional analysis, Category theory | Steps: 12
+[13:48:02]     [8e5e4b3144f5] Type: axiomatic | Apparatus: Differential geometry, Dynamical systems | Steps: 9
+[13:48:06]     [8f8094b33b51] Type: categorical | Apparatus: Category theory, Functional analysis | Steps: 9
+[13:48:11]     [8fe71ec0c481] Type: categorical | Apparatus: Functional analysis, Category theory | Steps: 8
+[13:48:23]     [9008a3a49dab] Type: categorical | Apparatus: Category theory, Functional analysis | Steps: 9
+[13:48:33]     [8a830c1897b9] Confidence: 0.26 (low)
+[13:48:33]     [8a830c1897b9] Done: 170s, $0.56 (total: $73.70)
+[13:48:33]   [145/266] 928bed19a7d2 — Quantum Field Theory, Condensed Matter Physics
+[13:48:55]     [8cd7e2db9b26] Confidence: 0.20 (low)
+[13:48:55]     [8cd7e2db9b26] Done: 152s, $0.48 (total: $74.17)
+[13:48:55]   [146/266] 936b8912b424 — Optics and Photonics, Atomic and Molecular Physics
+[13:48:57]     [8b006a38b9ed] Confidence: 0.23 (low)
+[13:48:57]     [8b006a38b9ed] Done: 182s, $0.58 (total: $74.75)
+[13:48:57]   [147/266] 94ed6cc962e2 — General Relativity and Cosmology, Nuclear Physics
+[13:49:13]     [8bde681e0eb1] Confidence: 0.51 (medium)
+[13:49:13]     [8bde681e0eb1] Done: 174s, $0.60 (total: $75.36)
+[13:49:13]   [148/266] 9660fa6a0d31 — Topology and Geometry, Analysis
+[13:49:45]     [8fe71ec0c481] Confidence: 0.22 (low)
+[13:49:45]     [8fe71ec0c481] Done: 177s, $0.61 (total: $75.96)
+[13:49:45]   [149/266] 972e8755e315 — Thermodynamics and Statistical Mechanics, Atomic and Molecular Physics
+[13:49:54]     [8e5e4b3144f5] Confidence: 0.21 (low)
+[13:49:54]     [8e5e4b3144f5] Done: 211s, $0.69 (total: $76.66)
+[13:49:54]   [150/266] 9b8228eead9b — Fluid Dynamics, Acoustics and Wave Physics
+[13:49:57]     [9008a3a49dab] Confidence: 0.34 (low)
+[13:49:57]     [9008a3a49dab] Done: 168s, $0.57 (total: $77.22)
+[13:49:57]   [151/266] 9c32f5c1e1ce — Condensed Matter Physics, Fluid Dynamics
+[13:49:58]     [928bed19a7d2] Type: categorical | Apparatus: Topology, Category theory | Steps: 8
+[13:50:03]     [8f8094b33b51] Confidence: 0.26 (low)
+[13:50:03]     [8f8094b33b51] Done: 199s, $0.69 (total: $77.91)
+[13:50:03]   [152/266] 9c9420851979 — General Relativity and Cosmology, Astrophysics
+[13:50:14]     [9660fa6a0d31] Type: categorical | Apparatus: Category theory, Topology | Steps: 7
+[13:50:18]     [94ed6cc962e2] Type: axiomatic | Apparatus: Dynamical systems, Measure theory | Steps: 8
+[13:50:30]     [936b8912b424] Type: axiomatic | Apparatus: Functional analysis, Differential geometry | Steps: 10
+[13:51:04]     [972e8755e315] Type: axiomatic | Apparatus: Measure theory, Dynamical systems | Steps: 8
+[13:51:17]     [9b8228eead9b] Type: constraint_logic | Apparatus: Dynamical systems, Functional analysis | Steps: 7
+[13:51:27]     [9c9420851979] Type: axiomatic | Apparatus: Differential geometry, Dynamical systems | Steps: 9
+[13:51:31]     [928bed19a7d2] Confidence: 0.23 (low)
+[13:51:31]     [9c32f5c1e1ce] Type: axiomatic | Apparatus: Functional analysis, Measure theory | Steps: 11
+[13:51:31]     [928bed19a7d2] Done: 178s, $0.60 (total: $78.51)
+[13:51:31]   [153/266] 9ec5c86272d9 — Thermodynamics and Statistical Mechanics, Particle Physics
+[13:51:42]     [9660fa6a0d31] Confidence: 0.24 (low)
+[13:51:42]     [9660fa6a0d31] Done: 149s, $0.48 (total: $78.99)
+[13:51:42]   [154/266] 9f35bba0f660 — Astrophysics, Nuclear Physics
+[13:52:12]     [94ed6cc962e2] Confidence: 0.23 (low)
+[13:52:12]     [94ed6cc962e2] Done: 194s, $0.66 (total: $79.66)
+[13:52:12]   [155/266] 9f9b09ab56c4 — General Relativity and Cosmology, Condensed Matter Physics
+[13:52:19]     [936b8912b424] Confidence: 0.29 (low)
+[13:52:19]     [936b8912b424] Done: 204s, $0.71 (total: $80.36)
+[13:52:19]   [156/266] a09f505946db — Quantum Gravity, Condensed Matter Physics
+[13:52:40]     [972e8755e315] Confidence: 0.32 (low)
+[13:52:40]     [972e8755e315] Done: 175s, $0.60 (total: $80.97)
+[13:52:40]   [157/266] a123fca120b5 — Particle Physics, Optics and Photonics
+[13:52:56]     [9b8228eead9b] Confidence: 0.25 (low)
+[13:52:56]     [9b8228eead9b] Done: 182s, $0.60 (total: $81.57)
+[13:52:56]   [158/266] a17fc42c9753 — Quantum Gravity, Acoustics and Wave Physics
+[13:53:01]     [9c9420851979] Confidence: 0.40 (low)
+[13:53:01]     [9c9420851979] Done: 177s, $0.63 (total: $82.20)
+[13:53:01]   [159/266] a213716a757c — Plasma Physics, Fluid Dynamics
+[13:53:10]     [9ec5c86272d9] Type: categorical | Apparatus: Category theory, Measure theory | Steps: 14
+[13:53:15]     [9f35bba0f660] Type: axiomatic | Apparatus: Measure theory, Dynamical systems | Steps: 10
+[13:53:17]     [9c32f5c1e1ce] Confidence: 0.23 (low)
+[13:53:17]     [9c32f5c1e1ce] Done: 200s, $0.64 (total: $82.84)
+[13:53:17]   [160/266] a2570479f9c8 — Atomic and Molecular Physics, Acoustics and Wave Physics
+[13:53:27]     [9f9b09ab56c4] Type: axiomatic | Apparatus: Functional analysis, Differential geometry | Steps: 8
+[13:53:45]     [a09f505946db] Type: categorical | Apparatus: Category theory, Algebraic structures | Steps: 9
+[13:54:02]     [a123fca120b5] Type: axiomatic | Apparatus: Functional analysis, Differential geometry | Steps: 8
+[13:54:17]     [a17fc42c9753] Type: categorical | Apparatus: Category theory, Information theory | Steps: 10
+[13:54:35]     [a2570479f9c8] Type: axiomatic | Apparatus: Functional analysis, Algebraic structures | Steps: 7
+[13:54:37]     [a213716a757c] Type: categorical | Apparatus: Measure theory, Category theory | Steps: 10
+[13:55:01]     [9ec5c86272d9] Confidence: 0.27 (low)
+[13:55:01]     [9ec5c86272d9] Done: 210s, $0.69 (total: $83.53)
+[13:55:01]   [161/266] a460661485e2 — Quantum Field Theory, Acoustics and Wave Physics
+[13:55:06]     [9f35bba0f660] Confidence: 0.21 (low)
+[13:55:06]     [9f35bba0f660] Done: 204s, $0.66 (total: $84.19)
+[13:55:06]   [162/266] a84696ce790c — Particle Physics, Plasma Physics
+[13:55:08]     [9f9b09ab56c4] Confidence: 0.31 (low)
+[13:55:08]     [9f9b09ab56c4] Done: 177s, $0.60 (total: $84.79)
+[13:55:08]   [163/266] a994a9ae48e7 — Quantum Field Theory, Atomic and Molecular Physics
+[13:55:30]     [a09f505946db] Confidence: 0.24 (low)
+[13:55:30]     [a09f505946db] Done: 191s, $0.61 (total: $85.40)
+[13:55:30]   [164/266] aab6f6a0a6a3 — General Relativity and Cosmology, Fluid Dynamics
+[13:55:45]     [a17fc42c9753] Confidence: 0.23 (low)
+[13:55:45]     [a17fc42c9753] Done: 169s, $0.57 (total: $85.97)
+[13:55:45]   [165/266] aad7d05ff162 — Complexity Theory, Thermodynamics and Statistical Mechanics
+[13:55:56]     [a123fca120b5] Confidence: 0.24 (low)
+[13:55:56]     [a123fca120b5] Done: 196s, $0.69 (total: $86.67)
+[13:55:56]   [166/266] ab640b64a8b5 — General Relativity and Cosmology, Condensed Matter Physics
+[13:55:58]     [a2570479f9c8] Confidence: 0.27 (low)
+[13:55:58]     [a2570479f9c8] Done: 161s, $0.57 (total: $87.23)
+[13:55:58]   [167/266] ac7529cc7225 — Optics and Photonics, Atomic and Molecular Physics
+[13:56:05]     [a460661485e2] ERROR: Failed to parse JSON from API response: {
+  "proposition_formal": "Let H: U → L(V) be a holomorphic family of linear operators on a finite-dimensional complex vector space V, where U ⊆ ℂⁿ is an open set. If H(z) is non-Hermitian for z ∈ U, 
+[13:56:05]     [a460661485e2] Done: 63s, $0.22 (total: $87.45)
+[13:56:05]   [168/266] ad81fc77c666 — Number Theory, Analysis
+[13:56:25]     [a213716a757c] Confidence: 0.21 (low)
+[13:56:25]     [a213716a757c] Done: 204s, $0.64 (total: $88.10)
+[13:56:25]   [169/266] afc9825611af — General Relativity and Cosmology, Particle Physics
+[13:56:34]     [a994a9ae48e7] Type: categorical | Apparatus: Category theory, Functional analysis | Steps: 10
+[13:56:37]     [a84696ce790c] Type: constraint_logic | Apparatus: Differential geometry, Algebraic structures | Steps: 8
+[13:56:52]     [aab6f6a0a6a3] Type: axiomatic | Apparatus: Dynamical systems, Measure theory | Steps: 9

@@ -1,0 +1,382 @@
+{
+  "id": "087da119976b",
+  "convergence_id": "326e57db5033",
+  "timestamp": "2026-05-02T12:52:47.744652+00:00",
+  "proposition": "Let (X, G, \u03bc) be a measure space with symmetry group G, and let F: X \u2192 X be a G-equivariant dynamical system with dissipation operator D and driving force operator P. If there exists \u03bb* > 0 such that the largest eigenvalue of the linearized operator L = P - D satisfies Re(\u03c3(L)) > 0 for ||P|| > \u03bb*, then there exists a G-invariant subspace V \u2282 X and a time T > 0 such that for almost all initial conditions x\u2080 \u2208 X, the orbit F^t(x\u2080) converges to a measure supported on V^c with \u03bc(V^c \u2229 gV^c) = 0 for some g \u2208 G\\{e}.",
+  "proposition_natural": "Systems spontaneously break symmetry to create ordered patterns when driving forces overcome dissipation",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Dynamical systems",
+    "Functional analysis",
+    "Differential geometry"
+  ],
+  "apparatus_justification": "Dynamical systems provides the framework for bifurcation theory and stability analysis needed to formalize symmetry breaking transitions. Functional analysis supplies the operator theory for linearization around equilibria and spectral analysis of stability. Differential geometry handles the manifold structure of phase spaces and symmetry groups.",
+  "proof_natural": "**Proposition.** Let $(X, G, \\mu)$ be a measure space with symmetry group $G$, and let $F: X \\to X$ be a $G$-equivariant dynamical system with dissipation operator $D$ and driving force operator $P$. If there exists $\\lambda^* > 0$ such that the largest eigenvalue of the linearized operator $L = P - D$ satisfies $\\text{Re}(\\sigma(L)) > 0$ for $\\|P\\| > \\lambda^*$, then there exists a $G$-invariant subspace $V \\subset X$ and a time $T > 0$ such that for almost all initial conditions $x_0 \\in X$, the orbit $F^t(x_0)$ converges to a measure supported on $V^c$ with $\\mu(V^c \\cap gV^c) = 0$ for some $g \\in G\\setminus\\{e\\}$.\n\n**Proof.** We assume that $X$ is a separable Banach space with norm $\\|\\cdot\\|$, $G$ is a compact Lie group acting continuously on $X$, and $\\mu$ is a $G$-invariant Borel probability measure on $X$. Let $F: X \\to X$ be $C^2$ and $G$-equivariant, satisfying $F(gx) = gF(x)$ for all $g \\in G$ and $x \\in X$. We further assume that $D: X \\to X$ is a bounded linear dissipation operator with $\\text{Re}(\\sigma(D)) < 0$, $P: X \\to X$ is a bounded linear driving force operator, and the spectrum of the linearization is discrete with eigenfunctions forming a complete basis for $X$.\n\nConsider an equilibrium point $x_0$ satisfying $F(x_0) = x_0$. By Taylor expansion of $F$ around $x_0$, the linearized dynamics satisfy $\\dot{x} = Lx$ where $L = P - D$ is the linearization at $x_0$.\n\nFor $\\|P\\| < \\lambda^*$, the dissipation dominates the driving force. Since $\\text{Re}(\\sigma(D)) < 0$ and $P$ is bounded, all eigenvalues of $L$ satisfy $\\text{Re}(\\lambda_i) < 0$, ensuring local stability of the equilibrium.\n\nBy continuity of eigenvalues with respect to parameters (following from perturbation theory for linear operators), at the critical threshold $\\|P\\| = \\lambda^*$, there exists at least one eigenvalue $\\lambda_0$ with $\\text{Re}(\\lambda_0) = 0$.\n\nThe $G$-equivariance of $F$ implies that $L$ commutes with the group action: $[L, g] = 0$ for all $g \\in G$. Consequently, the eigenspace $E_0$ corresponding to $\\lambda_0$ is $G$-invariant, as $g(E_0) \\subseteq E_0$ for all $g \\in G$.\n\nFor $\\|P\\| > \\lambda^*$, we have $\\text{Re}(\\lambda_0) > 0$. By the Stable Manifold Theorem, there exists an unstable manifold $W^u$ tangent to $E_0$ at $x_0$, on which perturbations grow exponentially.\n\n[Note: The connection between linear instability and nonlinear pattern formation requires center manifold reduction and normal form analysis, which we assume here without full justification.]\n\nThe nonlinear dynamics on $W^u$ generically select a subset of the $G$-orbit that breaks the original symmetry. [Note: This step requires showing that nonlinear terms generically break the isotropy subgroup, which depends on the specific form of the nonlinearity.]\n\nBy equivariant bifurcation theory, when eigenspaces have nontrivial isotropy subgroups, symmetry-breaking bifurcations occur generically. The bifurcated solution corresponds to a $G$-invariant subspace $V$ such that trajectories converge to states in $V^c$, where the symmetry is broken in the sense that $\\mu(V^c \\cap gV^c) = 0$ for some non-identity element $g \\in G$.\n\n[Note: The persistence of the symmetry-broken state as an attractor for $t \\to \\infty$ requires proving structural stability of the bifurcated solution, which we assume here.]\n\nTherefore, for almost all initial conditions in the basin of attraction of the bifurcated state, the dynamics converge to a symmetry-broken configuration supported on $V^c$. This completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.MeasureTheory.MeasureSpace\nimport Mathlib.Analysis.NormedSpace.Basic\nimport Mathlib.LinearAlgebra.Eigenspace.Basic\nimport Mathlib.Topology.Basic\nimport Mathlib.GroupTheory.GroupAction.Basic\n\n/-- A G-equivariant dynamical system on a measure space -/\nstructure EquivariantDynamicalSystem (X : Type*) (G : Type*) [MeasurableSpace X] [Group G] [MulAction G X] where\n  F : X \u2192 X\n  equivariant : \u2200 (g : G) (x : X), F (g \u2022 x) = g \u2022 F x\n  -- sorry: Need measurability conditions\n\n/-- Dissipation operator (placeholder) -/\nstructure DissipationOperator (X : Type*) [NormedAddCommGroup X] [NormedSpace \u211d X] where\n  D : X \u2192L[\u211d] X\n  dissipative : sorry -- Need: All eigenvalues have negative real part\n\n/-- Driving force operator (placeholder) -/\nstructure DrivingForceOperator (X : Type*) [NormedAddCommGroup X] [NormedSpace \u211d X] where\n  P : X \u2192L[\u211d] X\n\n/-- Main theorem on symmetry breaking in driven-dissipative systems -/\ntheorem symmetry_breaking_bifurcation\n  {X G : Type*} [MeasurableSpace X] [Group G] [MulAction G X]\n  [NormedAddCommGroup X] [NormedSpace \u211d X] [CompleteSpace X]\n  (\u03bc : Measure X) [IsFiniteMeasure \u03bc]\n  (F : EquivariantDynamicalSystem X G)\n  (D : DissipationOperator X)\n  (P : DrivingForceOperator X)\n  (\u03bb_star : \u211d) (h\u03bb_pos : 0 < \u03bb_star)\n  (h_eigenvalue : \u2200 \u03bb > \u03bb_star, \u2203 \u03bc\u2080 : \u2102, \u03bc\u2080 \u2208 spectrum \u211d (P.P - D.D) \u2227 0 < \u03bc\u2080.re) :\n  \u2203 (V : Set X) (T : \u211d),\n    (\u2200 g : G, g \u2022 V = V) \u2227  -- V is G-invariant\n    (0 < T) \u2227\n    (\u2200\u1d50 x\u2080 \u2202\u03bc, \u2203 (\u03bd : Measure X), \n      sorry) -- Need: Orbit convergence and symmetry breaking condition\n  := by\n  -- Step 1: Linearization at equilibrium\n  sorry -- Need: Definition of equilibrium and linearization for this system\n  \n  -- Step 2: Eigenvalue analysis for small forcing\n  have h_small_forcing : \u2200 \u03bb < \u03bb_star, \u2200 \u03bc \u2208 spectrum \u211d (P.P - D.D), \u03bc.re < 0 := by\n    sorry -- Need: Spectral perturbation theory\n  \n  -- Step 3: Critical eigenvalue at threshold\n  have h_critical : \u2203 \u03bc\u2080 \u2208 spectrum \u211d (P.P - D.D), \u03bc\u2080.re = 0 := by\n    sorry -- Need: Continuity of spectrum and intermediate value theorem\n  \n  -- Step 4: G-invariance of eigenspace\n  obtain \u27e8\u03bc\u2080, h\u03bc\u2080_spec, h\u03bc\u2080_re\u27e9 := h_critical\n  have h_eigenspace_invariant : \u2200 g : G, sorry := by\n    sorry -- Need: Commutation of linearized operator with group action\n  \n  -- Step 5: Unstable manifold growth\n  sorry -- Need: Stable manifold theorem\n  \n  -- Steps 6-8: Nonlinear dynamics and pattern selection\n  sorry -- Need: Center manifold reduction and bifurcation theory",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "At equilibrium x\u2080 with F(x\u2080) = x\u2080, the linearized dynamics satisfy \u1e8b = Lx where L = P - D",
+      "justification": "Taylor expansion of F around x\u2080 and definition of linearization",
+      "dependencies": [
+        "Assumption: F is C\u00b2"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "For ||P|| < \u03bb*, all eigenvalues of L satisfy Re(\u03bb\u1d62) < 0",
+      "justification": "Since Re(\u03c3(D)) < 0 and P is bounded, for small ||P|| the dissipation dominates",
+      "dependencies": [
+        "Assumption: Re(\u03c3(D)) < 0",
+        "Perturbation theory for linear operators"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "At ||P|| = \u03bb*, there exists at least one eigenvalue \u03bb\u2080 with Re(\u03bb\u2080) = 0",
+      "justification": "Definition of critical threshold and continuity of eigenvalues with respect to parameters",
+      "dependencies": [
+        "Step 2",
+        "Assumption: spectrum is discrete"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The eigenspace E\u2080 corresponding to \u03bb\u2080 is G-invariant",
+      "justification": "G-equivariance of F implies [L, g] = 0 for all g \u2208 G, so g(E\u2080) \u2286 E\u2080",
+      "dependencies": [
+        "Assumption: F is G-equivariant",
+        "Step 3"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "For ||P|| > \u03bb*, the unstable manifold W^u tangent to E\u2080 grows exponentially",
+      "justification": "Stable manifold theorem applied to the linearization",
+      "dependencies": [
+        "Step 3",
+        "Stable Manifold Theorem"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "[Gap: Connection between linear instability and nonlinear pattern formation]",
+      "justification": "Standard bifurcation theory assumes this but full justification requires center manifold reduction and normal form analysis",
+      "dependencies": [
+        "Step 5",
+        "Center Manifold Theorem"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The nonlinear dynamics on W^u select a subset of the G-orbit that breaks symmetry",
+      "justification": "[Gap: This requires showing that nonlinear terms generically break the isotropy subgroup]",
+      "dependencies": [
+        "Step 6",
+        "Equivariant Bifurcation Theory"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "The symmetry-broken state persists as an attractor for t \u2192 \u221e",
+      "justification": "[Gap: Requires proving structural stability of the bifurcated solution]",
+      "dependencies": [
+        "Step 7",
+        "Assumption: suitable dissipation ensures bounded orbits"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Stable Manifold Theorem",
+      "authors": "Hadamard, Perron",
+      "year": "1920s",
+      "field": "Dynamical Systems",
+      "statement": "Near a hyperbolic fixed point, there exist stable and unstable manifolds tangent to the corresponding eigenspaces",
+      "usage": "Justifies existence of invariant manifolds in Step 5"
+    },
+    {
+      "name": "Center Manifold Theorem",
+      "authors": "Pliss, Kelley",
+      "year": "1960s",
+      "field": "Dynamical Systems",
+      "statement": "Near a non-hyperbolic fixed point, dynamics can be reduced to a lower-dimensional center manifold",
+      "usage": "Needed for dimension reduction in Step 6"
+    },
+    {
+      "name": "Equivariant Bifurcation Theory",
+      "authors": "Golubitsky, Stewart, Schaeffer",
+      "year": "1988",
+      "field": "Dynamical Systems",
+      "statement": "Symmetry-breaking bifurcations occur generically when eigenspaces have nontrivial isotropy subgroups",
+      "usage": "Framework for understanding symmetry breaking in Step 7"
+    },
+    {
+      "name": "Perturbation Theory for Linear Operators",
+      "authors": "Kato",
+      "year": "1966",
+      "field": "Functional Analysis",
+      "statement": "Eigenvalues of linear operators depend continuously on parameters under suitable conditions",
+      "usage": "Justifies eigenvalue crossing in Steps 2-3"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "X is a separable Banach space with norm ||\u00b7||",
+    "G is a compact Lie group acting continuously on X",
+    "\u03bc is a G-invariant Borel probability measure on X",
+    "F: X \u2192 X is C\u00b2 and G-equivariant: F(gx) = gF(x) for all g \u2208 G, x \u2208 X",
+    "D: X \u2192 X is a bounded linear dissipation operator with Re(\u03c3(D)) < 0",
+    "P: X \u2192 X is a bounded linear driving force operator",
+    "The linearization L = DF(x\u2080) exists at equilibrium points x\u2080",
+    "The spectrum \u03c3(L) is discrete",
+    "The eigenfunctions of L form a complete basis for X",
+    "Perturbations grow according to linear stability analysis for small amplitudes",
+    "The system admits a center manifold reduction near bifurcation points"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Consider an equilibrium point x\u2080 satisfying F(x\u2080) = x\u2080",
+        "issue": "No proof that such equilibrium points exist. For a general G-equivariant map F, equilibria need not exist.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Add existence theorem for fixed points or assume existence explicitly"
+      },
+      {
+        "step": "By Taylor expansion of F around x\u2080, the linearized dynamics satisfy \u1e8b = Lx where L = P - D",
+        "issue": "F is a discrete map but \u1e8b = Lx describes continuous-time dynamics. The linearization of a discrete map F would be x_{n+1} = DF(x\u2080)x_n, not a differential equation.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Complete reformulation needed - either work with discrete dynamics or define a continuous flow"
+      },
+      {
+        "step": "L = P - D is the linearization at x\u2080",
+        "issue": "P and D are introduced as operators associated with F, but their relationship to DF(x\u2080) is never established. Why would DF(x\u2080) = P - D?",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Define P and D properly in terms of F or its linearization"
+      },
+      {
+        "step": "The G-equivariance of F implies that L commutes with the group action: [L,g] = 0",
+        "issue": "This is false. G-equivariance of F implies gDF(x\u2080)g\u207b\u00b9 = DF(gx\u2080), not that L commutes with g. Commutation only holds if x\u2080 is a G-fixed point.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Either assume x\u2080 is G-invariant or work with the correct equivariance relation"
+      },
+      {
+        "step": "By the Stable Manifold Theorem, there exists an unstable manifold W^u",
+        "issue": "The Stable Manifold Theorem applies to hyperbolic fixed points. At the bifurcation point where Re(\u03bb\u2080) = 0, the fixed point is non-hyperbolic.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Use Center Manifold Theorem for non-hyperbolic points"
+      },
+      {
+        "step": "The nonlinear dynamics on W^u generically select a subset of the G-orbit that breaks the original symmetry",
+        "issue": "This is asserted without proof. The connection between linear instability and symmetry breaking requires detailed normal form analysis.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Provide rigorous normal form analysis or cite specific theorem"
+      },
+      {
+        "step": "trajectories converge to states in V^c, where the symmetry is broken in the sense that \u03bc(V^c \u2229 gV^c) = 0",
+        "issue": "The measure condition \u03bc(V^c \u2229 gV^c) = 0 doesn't capture symmetry breaking. It just says two sets have measure-zero intersection, not that states lack symmetry.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Define symmetry breaking properly in terms of isotropy subgroups"
+      },
+      {
+        "step": "for almost all initial conditions in the basin of attraction",
+        "issue": "No proof that the basin of attraction has positive measure, or even that it exists.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Prove existence and measure properties of basin of attraction"
+      }
+    ],
+    "hidden_assumptions": [
+      "The dynamical system has a global attractor",
+      "The bifurcation at \u03bb* is of pitchfork type leading to symmetry breaking",
+      "The measure \u03bc is ergodic with respect to F",
+      "The nonlinear terms in F have specific symmetry-breaking properties",
+      "The spectrum of L determines the long-time behavior of the nonlinear system",
+      "The bifurcated solutions are stable",
+      "X has sufficient regularity for all constructions to make sense"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes symmetry breaking will occur (via 'generic' selection) to prove that symmetry breaking occurs. The mechanism by which linear instability leads to symmetry breaking is never established.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims a general result for any G-equivariant system with the stated spectral condition, but actually requires very specific bifurcation structure and nonlinear terms. At best, it might work for specific normal forms near certain bifurcations.",
+    "citation_issues": [
+      "Stable Manifold Theorem cited incorrectly - doesn't apply at non-hyperbolic points",
+      "Equivariant Bifurcation Theory reference is too vague - specific theorems needed",
+      "Center Manifold reduction mentioned but not properly applied",
+      "Perturbation theory for eigenvalues needs regularity conditions not verified"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed, conflating discrete and continuous dynamics, misunderstanding equivariance, and making unjustified leaps from linear instability to nonlinear symmetry breaking. The mathematical framework is incoherent and the logical structure relies on wishful thinking rather than rigorous analysis.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish conditions for symmetry-breaking bifurcations but fails to prove the specific measure-theoretic conclusion about convergence to a set with zero intersection measure",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Existence and uniqueness of equilibrium points",
+      "Compactness or proper embedding assumptions for convergence",
+      "Regularity conditions on the group action for measure theory",
+      "Assumptions about the relationship between linear and nonlinear dynamics",
+      "Conditions ensuring the center manifold reduction is valid",
+      "Structural stability assumptions for the bifurcated solutions",
+      "Measure-theoretic assumptions about the support of limiting measures"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 1",
+        "issue": "Assumes equilibrium exists without justification and conflates discrete-time map F with continuous-time flow \u1e8b"
+      },
+      {
+        "step": "Step 4",
+        "issue": "G-equivariance F(gx) = gF(x) does not imply [L,g] = 0; this requires L to be the generator of a G-equivariant flow, not just any linearization"
+      },
+      {
+        "step": "Step 5",
+        "issue": "Stable manifold theorem applies to hyperbolic fixed points, but Step 3 establishes \u03bb\u2080 has Re(\u03bb\u2080) = 0, making the point non-hyperbolic"
+      },
+      {
+        "step": "Step 6",
+        "issue": "Explicitly acknowledges gap - connection between linear instability and nonlinear pattern formation is not established"
+      },
+      {
+        "step": "Step 7",
+        "issue": "Explicitly acknowledges gap - no proof that nonlinear terms break isotropy subgroup"
+      },
+      {
+        "step": "Step 8",
+        "issue": "Explicitly acknowledges gap - structural stability not proven, and no connection to the measure-theoretic conclusion"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No proof of existence of equilibrium points",
+      "No justification for transition from discrete map F to continuous flow",
+      "Critical gaps acknowledged in Steps 6, 7, 8 regarding nonlinear analysis",
+      "No connection established between symmetry-breaking and the specific measure-theoretic conclusion \u03bc(V^c \u2229 gV^c) = 0",
+      "No proof that orbits actually converge to the claimed set",
+      "Missing analysis of the complement V^c and its properties",
+      "No justification for 'almost all initial conditions' claim"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims G-equivariant dynamics can break symmetry and converge to asymmetric attractors, but proof [3f0bc99f45de] establishes that collective phenomena emerge through symmetry breaking in quantum many-body systems with specific quantum mechanisms. The new proof lacks quantum framework but claims similar symmetry breaking.",
+      "The proof assumes discrete spectrum \u03c3(L) and complete eigenbasis, but this contradicts the general framework in [574d327c8078] where scale-dependent descriptions emerge systematically - the linearization assumption may not hold across scales.",
+      "The claim that 'symmetry-broken state persists as an attractor for t \u2192 \u221e' conflicts with [139ee0499c9e] which shows topological constraints determine stability through conservation laws - the new proof provides no topological analysis of constraint preservation."
+    ],
+    "assumption_conflicts": [
+      "Assumes separable Banach space X with discrete spectrum, but [37338340b3ed] establishes fundamental discreteness at smallest scales with continuous appearance at macroscopic scales - the scale-independence assumption is problematic.",
+      "G-invariant measure \u03bc assumption conflicts with [14e1952bf633] framework where measure-preserving transformations govern irreversibility - the new proof doesn't address measure evolution under symmetry breaking.",
+      "Linear stability analysis assumption contradicts [4aa47cb7a004] and [523a76365e87] which show topological constraints fundamentally limit evolution - linearization may miss topological obstructions."
+    ],
+    "beneficial_connections": [
+      "Could extend [49891606b8f0] on spontaneous symmetry breaking by providing dynamical mechanism for symmetry breaking in classical systems.",
+      "Connects to [4e16485f588b] on external field control by showing how driving force P can manipulate system states through bifurcations.",
+      "Relates to [1b27ca45ba4e] on topological constraints if the G-invariant subspace V has topological significance."
+    ],
+    "consistency_score": 0.3,
+    "notes": "Major gap identified: the proof jumps from linear instability to nonlinear pattern formation without rigorous justification. The center manifold reduction is assumed but not proven. The proof lacks analysis of topological constraints that existing proofs show are fundamental to system evolution. The G-equivariance assumption may be too strong given the claimed symmetry breaking outcome."
+  },
+  "confidence_score": 0.24500000000000002,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous theory connecting linear instability analysis to nonlinear pattern formation in infinite-dimensional spaces with symmetry. Current approaches rely on formal expansions and center manifold reductions that are not fully justified for PDEs. Additionally, a general framework for proving persistence and structural stability of symmetry-broken states in dissipative systems is needed.",
+  "limitations": [
+    "The transition from linear instability to nonlinear pattern formation is not rigorously justified in general infinite-dimensional settings",
+    "The generic symmetry-breaking property of nonlinear terms requires case-by-case analysis",
+    "Structural stability and persistence of patterns for all time is assumed rather than proved",
+    "The measure-theoretic statement about 'almost all initial conditions' requires ergodic theory machinery not developed here",
+    "Proof assumes discrete spectrum, which excludes many PDE systems with continuous spectra",
+    "Compact symmetry group assumption excludes important cases like translational symmetry",
+    "Linear stability analysis may not capture all pattern-forming mechanisms",
+    "The framework doesn't address systems with multiple competing instabilities",
+    "No quantitative bounds on the basin of attraction of symmetry-broken states"
+  ],
+  "source_convergence": {
+    "structural_claim": "Systems spontaneously break symmetry to create ordered patterns when driving forces overcome dissipation",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Laser Threshold Condition",
+        "domain_id": "field_a",
+        "domain_name": "Optics and Photonics",
+        "link_type": "direct",
+        "structural_conclusion": "Coherent light emerges when gain exceeds loss, breaking the symmetry of spontaneous emission"
+      },
+      {
+        "result_id": "",
+        "result_name": "Rayleigh-B\u00e9nard Convection",
+        "domain_id": "field_b",
+        "domain_name": "Fluid Dynamics",
+        "link_type": "direct",
+        "structural_conclusion": "Convection cells emerge when buoyancy forces overcome viscous damping, breaking translational symmetry"
+      },
+      {
+        "result_id": "",
+        "result_name": "Taylor-Couette Instability",
+        "domain_id": "field_b",
+        "domain_name": "Fluid Dynamics",
+        "link_type": "direct",
+        "structural_conclusion": "Rotating flows spontaneously generate ordered structures through symmetry-breaking instabilities"
+      }
+    ],
+    "domains": [
+      "optics",
+      "fluid_dynamics"
+    ],
+    "domain_names": [
+      "Optics and Photonics",
+      "Fluid Dynamics"
+    ],
+    "ea_scores": {
+      "strength": 0.21419999999999997,
+      "independence": 0.85,
+      "adversarial": 0.09,
+      "reproducibility": 0.5249999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.47351,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:43:46.068891+00:00",
+    "id": "326e57db5033"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.31920000000000004
+  }
+}

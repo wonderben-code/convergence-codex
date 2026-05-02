@@ -1,0 +1,38 @@
+{
+  "proof_id": "d4b12b5d3253",
+  "timestamp": "2026-05-02T13:12:18.117542+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "categorical - Could frame as a universal property of systems minimizing free energy/action, but the convergence emphasizes the shared principle rather than categorical characterization"
+      ],
+      "reasoning": "The convergence identifies symmetry breaking as a shared abstract principle across thermodynamics and particle physics, where systems spontaneously select lower-symmetry states. This is best captured by axiomatizing the general properties of symmetry breaking (existence of symmetric potential, spontaneous selection of ground state, emergence of order parameters) that both domains satisfy as models."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Category theory, Algebraic structures, Order theory",
+      "alternatives_considered": [],
+      "reasoning": "Category theory provides the abstract framework to capture symmetry breaking as a functor between categories of symmetric and broken-symmetry states, with natural transformations encoding the breaking process. Algebraic structures (groups) formalize symmetries, while order theory captures the partial ordering of symmetry subgroups and energy landscapes."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof establishes that when a G-invariant energy functional has a ground state s\u2080 whose stabilizer H is a proper subgroup of G, the ground states form a degenerate manifold G/H. This degeneracy implies the existence of an order parameter that distinguishes different ground states, and Goldstone modes corresponding to the broken symmetry generators in g/h.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 9 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 2438 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 3026 chars, 2 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "The formalization captures the group-theoretic aspects (orbit-stabilizer theorem, ground state degeneracy) but cannot fully formalize the differential geometric aspects (tangent spaces, normal bundles) or the quantum field theory aspects (Goldstone's theorem). The proof shows that ground states form an orbit isomorphic to G/H, establishing the degeneracy when H is a proper subgroup."
+    }
+  ]
+}

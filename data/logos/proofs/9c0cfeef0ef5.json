@@ -1,0 +1,349 @@
+{
+  "id": "9c0cfeef0ef5",
+  "convergence_id": "1f0cf160b250",
+  "timestamp": "2026-05-02T12:46:06.836193+00:00",
+  "proposition": "For any quantum system S with Hilbert space H, measurement operator M, and state |\u03c8\u27e9 \u2208 H, the post-measurement state |\u03c8'\u27e9 is not uniquely determined by the pre-measurement state |\u03c8\u27e9 alone, but depends on the measurement outcome m \u2208 \u03c3(M), where \u03c3(M) denotes the spectrum of M, and the measurement process induces a non-unitary transformation that cannot be reversed to recover |\u03c8\u27e9 from |\u03c8'\u27e9 without additional information.",
+  "proposition_natural": "Measurement fundamentally alters the system being measured, selecting from multiple possible outcomes rather than revealing pre-existing properties",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Measure theory",
+    "Functional analysis"
+  ],
+  "apparatus_justification": "Category theory captures the structural transformation of measurement as functors between categories of states and outcomes, with natural transformations encoding the non-deterministic selection process. Measure theory provides the probabilistic framework for quantum states and measurement outcomes, while functional analysis supplies the operator formalism for observables and state spaces.",
+  "proof_natural": "**Proposition.** For any quantum system S with Hilbert space H, measurement operator M, and state |\u03c8\u27e9 \u2208 H, the post-measurement state |\u03c8'\u27e9 is not uniquely determined by the pre-measurement state |\u03c8\u27e9 alone, but depends on the measurement outcome m \u2208 \u03c3(M), where \u03c3(M) denotes the spectrum of M, and the measurement process induces a non-unitary transformation that cannot be reversed to recover |\u03c8\u27e9 from |\u03c8'\u27e9 without additional information.\n\n**Proof.** We assume that quantum systems are described by separable Hilbert spaces, measurements are represented by self-adjoint operators, and the Born rule governs measurement probabilities. We further assume that post-measurement states are given by the projection postulate, and that no hidden variables determine measurement outcomes, as established by the Kochen-Specker theorem.\n\nLet M be a measurement operator with spectral decomposition M = \u03a3\u1d62 \u03bb\u1d62P\u1d62, where P\u1d62 are orthogonal projectors and \u03bb\u1d62 are the corresponding eigenvalues. By the Spectral Theorem for self-adjoint operators, this decomposition exists and is unique. The completeness of the eigenbasis allows us to expand the pre-measurement state as |\u03c8\u27e9 = \u03a3\u1d62 c\u1d62|\u03bb\u1d62\u27e9, where |\u03bb\u1d62\u27e9 are the eigenstates of M and c\u1d62 = \u27e8\u03bb\u1d62|\u03c8\u27e9.\n\nBy the Born rule, the probability of obtaining measurement outcome \u03bb\u1d62 is p(\u03bb\u1d62) = |c\u1d62|\u00b2 = |\u27e8\u03bb\u1d62|\u03c8\u27e9|\u00b2. Upon obtaining outcome \u03bb\u1d62, the projection postulate dictates that the post-measurement state becomes |\u03c8'\u27e9 = |\u03bb\u1d62\u27e9.\n\nNow consider any state |\u03c8\u27e9 with at least two non-zero coefficients c\u1d62 and c\u2c7c where i \u2260 j. Since both p(\u03bb\u1d62) and p(\u03bb\u2c7c) are non-zero, either |\u03bb\u1d62\u27e9 or |\u03bb\u2c7c\u27e9 could be the post-measurement state, each with positive probability. This establishes that the post-measurement state is not uniquely determined by |\u03c8\u27e9 alone.\n\nFurthermore, the Kochen-Specker theorem guarantees that in any Hilbert space of dimension at least 3, there exists no assignment of predetermined values to all observables consistent with quantum predictions. This precludes any interpretation where measurement merely reveals pre-existing properties.\n\nThe transformation |\u03c8\u27e9 \u2192 |\u03bb\u1d62\u27e9 is manifestly non-unitary for generic |\u03c8\u27e9. Unitary transformations preserve inner products, yet \u27e8\u03c8|\u03c8\u27e9 = 1 while \u27e8\u03c8|\u03bb\u1d62\u27e9 = c\u1d62 with |c\u1d62| < 1 in general. This non-unitarity implies irreversible information loss: multiple distinct states |\u03c8\u27e9 and |\u03c6\u27e9 satisfying \u27e8\u03bb\u1d62|\u03c8\u27e9 \u2260 0 and \u27e8\u03bb\u1d62|\u03c6\u27e9 \u2260 0 both project to the same post-measurement state |\u03bb\u1d62\u27e9 with non-zero probability.\n\nThe combination of outcome-dependence, contextuality from Kochen-Specker, and information loss through non-unitary evolution establishes that measurement fundamentally alters the quantum state in an irreversible, non-deterministic manner that depends on the specific outcome obtained.\n\n[Note: The connection to the EMC effect in nuclear physics, wherein quark distributions in nucleons are modified when bound in nuclei, would require a formal quantum chromodynamics treatment to establish that nuclear binding effects on parton distributions follow analogous non-unitary dynamics.]\n\nThis completes the proof. \u220e",
+  "proof_lean": "import Mathlib.Analysis.InnerProductSpace.Spectrum\nimport Mathlib.Analysis.InnerProductSpace.Projection\nimport Mathlib.MeasureTheory.Measure.ProbabilityMeasure\nimport Mathlib.Topology.Algebra.Module.Basic\n\n/-- A quantum measurement operator on a Hilbert space -/\nstructure MeasurementOperator (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H] where\n  op : H \u2192L[\u2102] H\n  self_adjoint : IsSelfAdjoint op\n\n/-- The spectrum of a measurement operator -/\ndef spectrum (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H] \n  (M : MeasurementOperator H) : Set \u2102 := sorry -- \"Need definition of spectrum for bounded operators\"\n\n/-- Post-measurement state given pre-measurement state and outcome -/\ndef postMeasurementState (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H]\n  (M : MeasurementOperator H) (\u03c8 : H) (m : \u2102) (hm : m \u2208 spectrum H M) : H := \n  sorry -- \"Need quantum measurement postulate formalism\"\n\n/-- Spectral decomposition of a measurement operator -/\nstructure SpectralDecomposition (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H]\n  (M : MeasurementOperator H) where\n  eigenvalues : Finset \u2102\n  projectors : \u2102 \u2192 H \u2192L[\u2102] H\n  orthogonal : \u2200 i j \u2208 eigenvalues, i \u2260 j \u2192 projectors i \u2218L projectors j = 0\n  complete : \u2211 i in eigenvalues, projectors i = 1\n  decomposition : M.op = \u2211 i in eigenvalues, i \u2022 projectors i\n\n/-- Born rule probability -/\ndef bornProbability (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H]\n  (\u03c8 : H) (P : H \u2192L[\u2102] H) : \u211d := \n  \u2016P \u03c8\u2016^2\n\n/-- Main theorem: Post-measurement state depends on outcome and transformation is non-unitary -/\ntheorem measurement_non_uniqueness_and_irreversibility \n  (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H]\n  (M : MeasurementOperator H) (\u03c8 : H) (h\u03c8 : \u2016\u03c8\u2016 = 1) :\n  (\u2203 m\u2081 m\u2082 : \u2102, m\u2081 \u2208 spectrum H M \u2227 m\u2082 \u2208 spectrum H M \u2227 m\u2081 \u2260 m\u2082 \u2227 \n    postMeasurementState H M \u03c8 m\u2081 (by assumption) \u2260 postMeasurementState H M \u03c8 m\u2082 (by assumption)) \u2227\n  (\u2200 m \u2208 spectrum H M, \u00ac\u2203 U : H \u2192L[\u2102] H, IsometryOn U.toFun Set.univ \u2227 \n    \u2200 \u03c6 : H, \u2016\u03c6\u2016 = 1 \u2192 U (postMeasurementState H M \u03c6 m (by assumption)) = \u03c6) := by\n  sorry -- \"Need quantum measurement postulate and Kochen-Specker theorem\"\n\n/-- Step 1: Spectral expansion of pre-measurement state -/\nlemma spectral_expansion (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H]\n  (M : MeasurementOperator H) (SD : SpectralDecomposition H M) (\u03c8 : H) :\n  \u2203 c : \u2102 \u2192 \u2102, \u03c8 = \u2211 i in SD.eigenvalues, c i \u2022 (SD.projectors i \u03c8) := by\n  sorry -- \"Need spectral theorem for self-adjoint operators on Hilbert spaces\"\n\n/-- Step 2: Born rule for measurement probabilities -/\nlemma born_rule_probability (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H]\n  (\u03c8 : H) (P : H \u2192L[\u2102] H) (hP : IsOrthogonalProjection P) :\n  bornProbability H \u03c8 P = \u2016\u27eaP \u03c8, \u03c8\u27eb_\u2102\u2016^2 := by\n  sorry -- \"Need properties of orthogonal projections\"\n\n/-- Step 3: Projection postulate -/\nlemma projection_postulate (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H]\n  (M : MeasurementOperator H) (SD : SpectralDecomposition H M) (\u03c8 : H) (\u03bb\u1d62 : \u2102) \n  (h\u03bb : \u03bb\u1d62 \u2208 SD.eigenvalues) :\n  postMeasurementState H M \u03c8 \u03bb\u1d62 (by sorry) = SD.projectors \u03bb\u1d62 \u03c8 / \u2016SD.projectors \u03bb\u1d62 \u03c8\u2016 := by\n  sorry -- \"Need quantum measurement postulate\"\n\n/-- Step 4: Multiple possible outcomes -/\nlemma multiple_outcomes (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H]\n  (M : MeasurementOperator H) (SD : SpectralDecomposition H M) (\u03c8 : H)\n  (h : \u2203 i j \u2208 SD.eigenvalues, i \u2260 j \u2227 SD.projectors i \u03c8 \u2260 0 \u2227 SD.projectors j \u03c8 \u2260 0) :\n  \u2203 m\u2081 m\u2082 : \u2102, m\u2081 \u2260 m\u2082 \u2227 bornProbability H \u03c8 (SD.projectors m\u2081) > 0 \u2227 \n    bornProbability H \u03c8 (SD.projectors m\u2082) > 0 := by\n  sorry -- \"Follows from Born rule and hypothesis\"\n\n/-- Step 5: Kochen-Specker theorem placeholder -/\naxiom kochen_specker_theorem : \n  \u2200 (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H]\n    (dim_ge_3 : Module.rank \u2102 H \u2265 3),\n  \u00ac\u2203 (value_assignment : (H \u2192L[\u2102] H) \u2192 H \u2192 \u2102),\n    \u2200 (A B : H \u2192L[\u2102] H) (\u03c8 : H), \n      IsSelfAdjoint A \u2192 IsSelfAdjoint B \u2192 A \u2218L B = B \u2218L A \u2192 \n      value_assignment (A + B) \u03c8 = value_assignment A \u03c8 + value_assignment B \u03c8\n\n/-- Step 6: Non-unitarity of measurement -/\nlemma measurement_non_unitary (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H]\n  (\u03c8 : H) (P : H \u2192L[\u2102] H) (hP : IsOrthogonalProjection P) \n  (h : P \u03c8 \u2260 0 \u2227 P \u03c8 \u2260 \u03c8) :\n  \u00ac\u2203 U : H \u2192L[\u2102] H, IsometryOn U.toFun Set.univ \u2227 U \u03c8 = P \u03c8 / \u2016P \u03c8\u2016 := by\n  sorry -- \"Need to show norm preservation fails\"\n\n/-- Step 7: Information loss in measurement -/\nlemma information_loss (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H]\n  (P : H \u2192L[\u2102] H) (hP : IsOrthogonalProjection P) :\n  \u2203 \u03c8 \u03c6 : H, \u03c8 \u2260 \u03c6 \u2227 P \u03c8 \u2260 0 \u2227 P \u03c6 \u2260 0 \u2227 P \u03c8 / \u2016P \u03c8\u2016 = P \u03c6 / \u2016P \u03c6\u2016 := by\n  sorry -- \"Multiple states can project to same eigenstate\"\n\n/-- Step 8: Measurement cannot reveal pre-existing property -/\nlemma no_preexisting_property (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H]\n  (M : MeasurementOperator H) (dim_ge_3 : Module.rank \u2102 H \u2265 3) :\n  \u00ac\u2203 (hidden_value : H \u2192 spectrum H M), \n    \u2200 \u03c8 : H, postMeasurementState H M \u03c8 (hidden_value \u03c8) (by sorry) = \n      postMeasurementState H M \u03c8 (hidden_value \u03c8) (by sorry) := by\n  sorry -- \"Follows from Kochen-Specker theorem and contextuality\"\n\n/-- Step 9: Connection to EMC effect (placeholder) -/\n-- sorry: \"EMC effect requires QCD formalism not available in Mathlib\"",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "For measurement operator M with spectral decomposition M = \u03a3\u1d62 \u03bb\u1d62P\u1d62, where P\u1d62 are orthogonal projectors, the pre-measurement state |\u03c8\u27e9 can be expanded as |\u03c8\u27e9 = \u03a3\u1d62 c\u1d62|\u03bb\u1d62\u27e9 where |\u03bb\u1d62\u27e9 are eigenstates of M",
+      "justification": "Spectral theorem for self-adjoint operators and completeness of eigenbasis",
+      "dependencies": [
+        "Spectral theorem",
+        "Assumption: M is self-adjoint"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "The probability of obtaining outcome \u03bb\u1d62 is p(\u03bb\u1d62) = |c\u1d62|\u00b2 = |\u27e8\u03bb\u1d62|\u03c8\u27e9|\u00b2",
+      "justification": "Born rule",
+      "dependencies": [
+        "Assumption: Born rule governs probabilities"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Upon obtaining outcome \u03bb\u1d62, the post-measurement state is |\u03c8'\u27e9 = |\u03bb\u1d62\u27e9",
+      "justification": "Projection postulate",
+      "dependencies": [
+        "Assumption: Projection postulate"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "For any |\u03c8\u27e9 with at least two non-zero coefficients c\u1d62, c\u2c7c (i\u2260j), there exist multiple possible post-measurement states",
+      "justification": "Direct consequence of steps 2 and 3: both |\u03bb\u1d62\u27e9 and |\u03bb\u2c7c\u27e9 have non-zero probability",
+      "dependencies": [
+        "Step 2",
+        "Step 3"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "By the Kochen-Specker theorem, there exists no assignment of predetermined values to all observables consistent with quantum predictions",
+      "justification": "Kochen-Specker theorem",
+      "dependencies": [
+        "Kochen-Specker theorem",
+        "Assumption: No hidden variables"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "The transformation |\u03c8\u27e9 \u2192 |\u03bb\u1d62\u27e9 is non-unitary for generic |\u03c8\u27e9",
+      "justification": "Unitary transformations preserve inner products, but \u27e8\u03c8|\u03c8\u27e9 = 1 while \u27e8\u03c8|\u03bb\u1d62\u27e9 = c\u1d62 with |c\u1d62| < 1 in general",
+      "dependencies": [
+        "Step 1",
+        "Step 3"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Information is lost in the measurement process: multiple distinct states |\u03c8\u27e9, |\u03c6\u27e9 can yield the same post-measurement state |\u03bb\u1d62\u27e9",
+      "justification": "Any two states with \u27e8\u03bb\u1d62|\u03c8\u27e9 \u2260 0 and \u27e8\u03bb\u1d62|\u03c6\u27e9 \u2260 0 both project to |\u03bb\u1d62\u27e9 with non-zero probability",
+      "dependencies": [
+        "Step 3"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "The measurement process cannot be modeled as revealing a pre-existing property",
+      "justification": "Combination of non-determinism (Step 4), contextuality (Step 5), and information loss (Step 7)",
+      "dependencies": [
+        "Step 4",
+        "Step 5",
+        "Step 7"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "[Gap: Connection to nuclear physics EMC effect requires showing that quark distribution modifications in nuclei follow analogous non-unitary dynamics]",
+      "justification": "Would require formal QCD treatment of nuclear binding effects on parton distributions",
+      "dependencies": [
+        "EMC effect experimental data"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Kochen-Specker Theorem",
+      "authors": "S. Kochen and E.P. Specker",
+      "year": "1967",
+      "field": "Quantum Foundations",
+      "statement": "In any Hilbert space of dimension \u22653, there is no value assignment to all quantum observables that preserves functional relationships between commuting observables",
+      "usage": "Establishes that measurement outcomes cannot be predetermined properties"
+    },
+    {
+      "name": "Spectral Theorem",
+      "authors": "von Neumann, Stone",
+      "year": "1930s",
+      "field": "Functional Analysis",
+      "statement": "Every self-adjoint operator on a Hilbert space has a unique spectral decomposition",
+      "usage": "Allows decomposition of measurement operators into projectors"
+    },
+    {
+      "name": "Projection Postulate",
+      "authors": "von Neumann",
+      "year": "1932",
+      "field": "Quantum Mechanics",
+      "statement": "After measuring observable A and obtaining eigenvalue a, the system is in the corresponding eigenstate",
+      "usage": "Specifies post-measurement state evolution"
+    },
+    {
+      "name": "EMC Effect",
+      "authors": "European Muon Collaboration",
+      "year": "1983",
+      "field": "Nuclear Physics",
+      "statement": "Quark momentum distributions in nucleons are modified when bound in nuclei",
+      "usage": "Provides nuclear physics example of measurement-induced modification"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Quantum systems are described by separable Hilbert spaces",
+    "Measurements are represented by self-adjoint operators on the Hilbert space",
+    "The Born rule governs measurement probabilities",
+    "Measurement outcomes correspond to eigenvalues of the measurement operator",
+    "Post-measurement states are given by the projection postulate",
+    "The measurement process is instantaneous and complete",
+    "No hidden variables determine measurement outcomes (per Kochen-Specker)",
+    "The system-apparatus interaction can be modeled within standard quantum mechanics",
+    "Decoherence effects can be incorporated into the measurement formalism"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.7,
+    "gaps": [
+      {
+        "step": "Let M be a measurement operator with spectral decomposition M = \u03a3\u1d62 \u03bb\u1d62P\u1d62",
+        "issue": "The proof assumes discrete spectrum without justification. Many observables have continuous spectra, and the argument fails for these cases.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Either restrict the proposition to observables with discrete spectra or extend the proof to handle continuous spectra using spectral measures."
+      },
+      {
+        "step": "The completeness of the eigenbasis allows us to expand the pre-measurement state as |\u03c8\u27e9 = \u03a3\u1d62 c\u1d62|\u03bb\u1d62\u27e9",
+        "issue": "This assumes the measurement operator has a complete set of eigenvectors, which is not true for all self-adjoint operators (e.g., those with continuous spectrum).",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Use the spectral theorem properly with spectral measures for the general case."
+      },
+      {
+        "step": "Upon obtaining outcome \u03bb\u1d62, the projection postulate dictates that the post-measurement state becomes |\u03c8'\u27e9 = |\u03bb\u1d62\u27e9",
+        "issue": "This is only true for projective measurements. The proof conflates general measurements with projective measurements.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Either restrict to projective measurements or use the general POVM formalism where post-measurement states are given by Kraus operators."
+      },
+      {
+        "step": "The transformation |\u03c8\u27e9 \u2192 |\u03bb\u1d62\u27e9 is manifestly non-unitary for generic |\u03c8\u27e9",
+        "issue": "The proof compares inner products incorrectly. It states \u27e8\u03c8|\u03c8\u27e9 = 1 while \u27e8\u03c8|\u03bb\u1d62\u27e9 = c\u1d62, but these are different types of inner products. The correct comparison would be ||U|\u03c8\u27e9|| vs |||\u03c8\u27e9||.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Show non-unitarity by demonstrating that the transformation is not surjective or that it doesn't preserve orthogonality."
+      },
+      {
+        "step": "Furthermore, the Kochen-Specker theorem guarantees...",
+        "issue": "The invocation of Kochen-Specker is largely irrelevant to the main claim about post-measurement states and non-unitarity. It's used as a hand-wave without clear logical connection.",
+        "severity": "minor",
+        "fixable": true,
+        "suggested_fix": "Remove this paragraph or clearly establish its relevance to the proposition."
+      }
+    ],
+    "hidden_assumptions": [
+      "The measurement is projective (von Neumann measurement) rather than general POVM",
+      "The measurement operator has discrete spectrum",
+      "The measurement operator has non-degenerate eigenvalues",
+      "The Hilbert space is finite-dimensional or the operator has pure point spectrum",
+      "The measurement process can be idealized as instantaneous"
+    ],
+    "circular_reasoning": false,
+    "circular_details": "",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof only establishes the result for projective measurements with discrete non-degenerate spectra, but claims it for 'any measurement operator M'. The proposition is stated too broadly given what the proof actually demonstrates.",
+    "citation_issues": [
+      "The Kochen-Specker theorem is cited but not properly connected to the argument",
+      "The EMC effect mention is completely disconnected and adds nothing to the proof",
+      "The projection postulate is assumed rather than cited as an assumption"
+    ],
+    "structural_soundness": 0.6,
+    "overall_assessment": "The proof contains several critical flaws, most notably the unjustified restriction to discrete spectra and projective measurements while claiming generality. The argument's core idea is sound but the execution is sloppy, with improper use of mathematical formalism and unnecessary invocation of advanced theorems that don't strengthen the argument.",
+    "verdict": "major_revision"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "Proves basic facts about quantum measurement theory but fails to establish the complete proposition due to incomplete treatment and irrelevant tangent about nuclear physics",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Assumption that measurement operator M has discrete spectrum",
+      "Assumption that eigenstates form a complete orthonormal basis",
+      "Assumption that degenerate eigenvalues are handled properly",
+      "Assumption about what constitutes 'additional information' for state recovery",
+      "Assumption that the measurement is projective (von Neumann measurement)",
+      "Assumption that the system is isolated during measurement"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "1",
+        "issue": "Assumes discrete spectrum without justification; spectral theorem doesn't guarantee eigenstates form basis for general self-adjoint operators"
+      },
+      {
+        "step": "5",
+        "issue": "Kochen-Specker theorem is irrelevant to the proposition being proved; it concerns contextuality, not measurement irreversibility"
+      },
+      {
+        "step": "6",
+        "issue": "Confuses preservation of norm with preservation of inner products; the argument is garbled and doesn't establish non-unitarity properly"
+      },
+      {
+        "step": "8",
+        "issue": "Non sequitur; the conclusion doesn't follow from the premises, and 'pre-existing property' is not defined in relation to the proposition"
+      },
+      {
+        "step": "9",
+        "issue": "Completely irrelevant tangent about nuclear physics that has no connection to the stated proposition"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Never defines what 'additional information' means for state recovery",
+      "Doesn't prove that recovery is impossible even with additional information",
+      "Fails to address degenerate eigenvalue cases",
+      "Step 9 introduces unrelated nuclear physics without justification",
+      "Doesn't establish the dependence on measurement outcome m formally",
+      "Missing treatment of continuous spectrum case"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": false,
+    "contradiction_details": [],
+    "assumption_conflicts": [],
+    "beneficial_connections": [
+      "Connects to [19c10dc86a65] on quantum coherence and interference - both address fundamental quantum measurement processes",
+      "Relates to [66e4aac2731b] on classical behavior emergence through environmental interaction - measurement can be viewed as environmental coupling",
+      "Links to [6cf918aecf4e] on symmetry breaking - measurement breaks the superposition symmetry of quantum states",
+      "Connects to [86627f739493] on discrete quantum states from continuous symmetries - measurement produces discrete outcomes from continuous state spaces",
+      "Relates to [92b4e9b2b977] on emergent collective modes - measurement represents a transition between microscopic quantum and macroscopic classical descriptions"
+    ],
+    "consistency_score": 0.85,
+    "notes": "The proof is mathematically sound within standard quantum mechanics framework. The gap noted regarding nuclear physics EMC effect connection is significant and weakens the overall argument. The assumptions are standard and well-accepted in quantum mechanics. No direct contradictions with existing proofs, though the proof would benefit from addressing the noted gap to strengthen its completeness."
+  },
+  "confidence_score": 0.48250000000000004,
+  "confidence_category": "medium",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.7,
+    "internal": 0.2,
+    "cross_proof": 0.85,
+    "calibration": 0.49999999999999994
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.7,
+    "internal": 0.2,
+    "cross_proof": 0.85,
+    "calibration": 0.49999999999999994
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": true,
+  "new_mathematics_needed": "",
+  "limitations": [
+    "Rigorous connection between quantum measurement formalism and nuclear structure modifications requires QCD-based derivation not provided here",
+    "Treatment of measurement apparatus and decoherence is not fully formalized",
+    "Continuous spectrum measurements require measure-theoretic treatment not fully developed here",
+    "Proof relies on standard quantum formalism which itself has interpretational ambiguities",
+    "Does not address relativistic or field-theoretic extensions",
+    "Nuclear physics connection remains at phenomenological level",
+    "Does not treat weak measurements or generalized measurement schemes"
+  ],
+  "source_convergence": {
+    "structural_claim": "Measurement fundamentally alters the system being measured, selecting from multiple possible outcomes rather than revealing pre-existing properties",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Kochen-Specker Theorem",
+        "domain_id": "quantum_foundations",
+        "domain_name": "Quantum Foundations",
+        "link_type": "direct",
+        "structural_conclusion": "Quantum observables cannot possess predetermined values independent of measurement context"
+      },
+      {
+        "result_id": "",
+        "result_name": "Quantum Zeno Effect",
+        "domain_id": "quantum_foundations",
+        "domain_name": "Quantum Foundations",
+        "link_type": "direct",
+        "structural_conclusion": "Frequent measurements can freeze quantum evolution, revealing measurement as an active process that fundamentally alters system dynamics"
+      },
+      {
+        "result_id": "",
+        "result_name": "EMC Effect",
+        "domain_id": "nuclear_physics",
+        "domain_name": "Nuclear Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Quark distributions in nucleons are modified when bound in nuclei, revealing that nuclear structure emerges from QCD degrees of freedom and that nucleons lose their individual identity in the nuclear medium"
+      }
+    ],
+    "domains": [
+      "quantum_foundations",
+      "nuclear_physics"
+    ],
+    "domain_names": [
+      "Quantum Foundations",
+      "Nuclear Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.21419999999999997,
+      "independence": 0.85,
+      "adversarial": 0.3,
+      "reproducibility": 0.5249999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.51551,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:22:52.301266+00:00",
+    "id": "1f0cf160b250"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.30978
+  }
+}

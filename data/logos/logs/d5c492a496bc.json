@@ -1,0 +1,38 @@
+{
+  "proof_id": "d5c492a496bc",
+  "timestamp": "2026-05-02T13:07:30.213728+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "categorical",
+      "alternatives_considered": [
+        "axiomatic - One could axiomatize properties of symmetry breaking (existence of degenerate ground states, order parameters, etc.) but this misses the deeper structural unity that category theory can capture through universal properties of bundle structures and their automorphisms."
+      ],
+      "reasoning": "The convergence describes a universal mechanism that manifests differently across domains - gauge fields acquiring mass in QFT versus superconducting order parameters in condensed matter. This is best captured by identifying the categorical structure (likely involving fiber bundles and principal bundles) that characterizes symmetry breaking across both contexts."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Category theory, Algebraic structures, Differential geometry",
+      "alternatives_considered": [],
+      "reasoning": "Category theory captures the structural preservation across domains through functors between categories of symmetry groups and their representations. Algebraic structures formalize the group actions and broken symmetries, while differential geometry provides the manifold structure of order parameter spaces and gauge fields."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "We construct a categorical framework where symmetry breaking corresponds to choosing a section of a quotient object, with the original symmetry group acting transitively on all possible sections. The chosen section (vacuum) breaks G to a subgroup H, generating an order parameter, while observables see only H-invariant structure. The G-symmetry remains in the space of all vacua but is hidden in any particular choice.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 10 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3961 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 3557 chars, 11 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This formalization attempts to capture the categorical structure of spontaneous symmetry breaking, but most physics-specific constructions (order parameters, physical observables, mass generation) are not available in Mathlib. The proof structure follows the given steps but requires extensive development of physics-oriented category theory."
+    }
+  ]
+}

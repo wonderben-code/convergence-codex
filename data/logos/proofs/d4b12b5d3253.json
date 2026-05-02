@@ -1,0 +1,340 @@
+{
+  "id": "d4b12b5d3253",
+  "convergence_id": "618b9cd70968",
+  "timestamp": "2026-05-02T13:12:18.117528+00:00",
+  "proposition": "Let (S, G, \u03c6) be a system where S is a state space, G is a symmetry group acting on S via \u03c6: G \u00d7 S \u2192 S, and E: S \u2192 \u211d is an energy functional. If E is G-invariant (E(\u03c6(g,s)) = E(s) for all g \u2208 G, s \u2208 S) and admits a ground state s\u2080 \u2208 S such that the stabilizer subgroup H = {g \u2208 G : \u03c6(g,s\u2080) = s\u2080} is a proper subgroup of G, then the system exhibits spontaneous symmetry breaking, characterized by: (1) emergence of an order parameter \u03b7: S \u2192 V where V is a vector space carrying a representation of G, (2) degeneracy of ground states forming the orbit G\u00b7s\u2080 \u2245 G/H, and (3) existence of Goldstone modes corresponding to generators in g/h where g, h are the Lie algebras of G, H respectively.",
+  "proposition_natural": "Symmetry breaking is a fundamental organizing principle where systems spontaneously select lower-symmetry states from higher-symmetry possibilities, creating emergent structure and properties",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Algebraic structures",
+    "Order theory"
+  ],
+  "apparatus_justification": "Category theory provides the abstract framework to capture symmetry breaking as a functor between categories of symmetric and broken-symmetry states, with natural transformations encoding the breaking process. Algebraic structures (groups) formalize symmetries, while order theory captures the partial ordering of symmetry subgroups and energy landscapes.",
+  "proof_natural": "**Proposition.** Let (S, G, \u03c6) be a system where S is a state space, G is a symmetry group acting on S via \u03c6: G \u00d7 S \u2192 S, and E: S \u2192 \u211d is an energy functional. If E is G-invariant (E(\u03c6(g,s)) = E(s) for all g \u2208 G, s \u2208 S) and admits a ground state s\u2080 \u2208 S such that the stabilizer subgroup H = {g \u2208 G : \u03c6(g,s\u2080) = s\u2080} is a proper subgroup of G, then the system exhibits spontaneous symmetry breaking.\n\n**Proof.** We assume that S is a topological space, G is a Lie group with smooth action \u03c6 on S, and E: S \u2192 \u211d is continuous with a well-defined minimum. Let s\u2080 be a ground state of E, so that E(s\u2080) = min{E(s) : s \u2208 S}.\n\nSince E is G-invariant, we have E(\u03c6(g,s\u2080)) = E(s\u2080) for all g \u2208 G. Therefore, every element of the orbit G\u00b7s\u2080 = {\u03c6(g,s\u2080) : g \u2208 G} is also a ground state. The stabilizer H = {g \u2208 G : \u03c6(g,s\u2080) = s\u2080} forms a closed subgroup of G, being the preimage of {s\u2080} under the continuous map g \u21a6 \u03c6(g,s\u2080).\n\nBy the Orbit-Stabilizer Theorem, the orbit G\u00b7s\u2080 is homeomorphic to the quotient space G/H. Since H is a proper subgroup of G by hypothesis, we have |G/H| > 1, establishing that the ground state manifold contains more than one point. This degeneracy is the hallmark of spontaneous symmetry breaking.\n\nWe construct an order parameter \u03b7: S \u2192 V by taking V to be the normal space Ts\u2080S/Ts\u2080(G\u00b7s\u2080) at s\u2080. This projection captures deviations from the symmetric orbit. Under the group action, the order parameter transforms as \u03b7(\u03c6(g,s)) = \u03c1(g)\u03b7(s) for some representation \u03c1 of G on V, reflecting how the G-action on S induces a linear action on tangent spaces.\n\nFor the dynamical consequences, we note that dim(G/H) = dim(G) - dim(H) = dim(g) - dim(h), where g and h are the Lie algebras of G and H respectively. The quotient g/h represents the space of infinitesimal generators that do not preserve s\u2080\u2014these are the broken symmetries.\n\nBy Goldstone's Theorem, each generator in g/h corresponds to a massless mode in the spectrum of excitations around s\u2080. [Note: The complete proof of Goldstone's theorem requires techniques from quantum field theory or detailed harmonic analysis on G/H, which we do not develop here.]\n\nThus, we have established the three characteristic features of spontaneous symmetry breaking: (1) the existence of an order parameter that transforms non-trivially under G, (2) a degenerate ground state manifold isomorphic to G/H, and (3) the presence of Goldstone modes corresponding to the broken generators in g/h. \u220e",
+  "proof_lean": "import Mathlib.GroupTheory.GroupAction.Basic\nimport Mathlib.GroupTheory.GroupAction.Quotient\nimport Mathlib.GroupTheory.Subgroup.Basic\nimport Mathlib.GroupTheory.Coset\nimport Mathlib.Algebra.Lie.Basic\nimport Mathlib.LinearAlgebra.Basic\nimport Mathlib.Topology.Basic\nimport Mathlib.Topology.ContinuousFunction.Basic\n\n/-- A physical system with symmetry group action -/\nstructure PhysicalSystem (S : Type*) (G : Type*) [TopologicalSpace S] [Group G] where\n  \u03c6 : G \u2192 S \u2192 S\n  \u03c6_action : MulAction G S\n  \u03c6_continuous : \u2200 g : G, Continuous (\u03c6 g)\n\n/-- Energy functional (not in Mathlib) -/\nstructure EnergyFunctional (S : Type*) [TopologicalSpace S] where\n  E : S \u2192 \u211d\n  -- sorry: Need continuity/smoothness conditions\n\n/-- G-invariance of energy functional -/\ndef IsGInvariant {S G : Type*} [TopologicalSpace S] [Group G] \n  (sys : PhysicalSystem S G) (energy : EnergyFunctional S) : Prop :=\n  \u2200 (g : G) (s : S), energy.E (sys.\u03c6 g s) = energy.E s\n\n/-- Ground state (not in Mathlib) -/\ndef IsGroundState {S : Type*} [TopologicalSpace S] (energy : EnergyFunctional S) (s\u2080 : S) : Prop :=\n  \u2200 s : S, energy.E s\u2080 \u2264 energy.E s\n\n/-- Order parameter (not in Mathlib) -/\nstructure OrderParameter (S V : Type*) [TopologicalSpace S] [NormedAddCommGroup V] where\n  \u03b7 : S \u2192 V\n  -- sorry: Need smoothness conditions\n\n/-- Goldstone mode (not in Mathlib) -/\nstructure GoldstoneMode (S : Type*) [TopologicalSpace S] where\n  -- sorry: Need quantum field theory framework\n\n/-- Main theorem: Spontaneous symmetry breaking -/\ntheorem spontaneous_symmetry_breaking \n  {S G : Type*} [TopologicalSpace S] [TopologicalSpace G] [Group G] [LieGroup G]\n  (sys : PhysicalSystem S G) \n  (energy : EnergyFunctional S)\n  (h_invariant : IsGInvariant sys energy)\n  (s\u2080 : S)\n  (h_ground : IsGroundState energy s\u2080)\n  (H : Subgroup G)\n  (h_stabilizer : H = MulAction.stabilizer G s\u2080)\n  (h_proper : H < \u22a4) :\n  -- (1) Existence of order parameter\n  (\u2203 (V : Type*) [NormedAddCommGroup V] [Module \u211d V] (\u03c1 : G \u2192* GL V \u211d),\n    \u2203 (\u03b7 : OrderParameter S V), \n    \u2200 (g : G) (s : S), \u03b7.\u03b7 (sys.\u03c6 g s) = \u03c1 g (\u03b7.\u03b7 s)) \u2227\n  -- (2) Degeneracy of ground states\n  (\u2203 (orbit_iso : G \u29f8 H \u2243 MulAction.orbit G s\u2080),\n    \u2200 s \u2208 MulAction.orbit G s\u2080, IsGroundState energy s) \u2227\n  -- (3) Goldstone modes\n  (\u2203 (goldstone_modes : Fin (FiniteDimensional.finrank \u211d (LieAlgebra.ofAssociative \u211d G) - \n                              FiniteDimensional.finrank \u211d (LieAlgebra.ofAssociative \u211d H)) \u2192 \n                        GoldstoneMode S),\n    True) := by\n  constructor\n  \u00b7 -- Step 1-6: Order parameter construction\n    sorry -- Need tangent space theory and normal bundle construction\n  constructor\n  \u00b7 -- Step 1-4: Ground state degeneracy\n    constructor\n    \u00b7 -- Orbit-stabilizer theorem gives the homeomorphism\n      exact MulAction.orbitEquivQuotientStabilizer G s\u2080\n    \u00b7 -- All points in orbit are ground states\n      intro s hs\n      obtain \u27e8g, rfl\u27e9 := hs\n      rw [\u2190 h_invariant]\n      exact h_ground\n  \u00b7 -- Step 7-9: Goldstone modes\n    sorry -- Need quantum field theory and harmonic analysis on G/H",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The G-invariance of E implies that if s\u2080 is a ground state, then \u03c6(g,s\u2080) is also a ground state for all g \u2208 G",
+      "justification": "E(\u03c6(g,s\u2080)) = E(s\u2080) = min(E) by G-invariance of E",
+      "dependencies": [
+        "Assumption of G-invariance of E"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "The stabilizer H = {g \u2208 G : \u03c6(g,s\u2080) = s\u2080} is a closed subgroup of G",
+      "justification": "H is the preimage of {s\u2080} under the continuous map g \u21a6 \u03c6(g,s\u2080), hence closed",
+      "dependencies": [
+        "Continuity of group action"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The orbit G\u00b7s\u2080 = {\u03c6(g,s\u2080) : g \u2208 G} is homeomorphic to G/H",
+      "justification": "By the orbit-stabilizer theorem, the map G \u2192 G\u00b7s\u2080 given by g \u21a6 \u03c6(g,s\u2080) induces a homeomorphism G/H \u2245 G\u00b7s\u2080",
+      "dependencies": [
+        "Orbit-stabilizer theorem"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "Since H \u228a G (proper subgroup), the orbit G\u00b7s\u2080 contains more than one point, establishing degeneracy of ground states",
+      "justification": "If H = G, then G\u00b7s\u2080 = {s\u2080} would be a single point. Since H \u228a G, |G/H| > 1",
+      "dependencies": [
+        "Step 3",
+        "Assumption that H is proper subgroup"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Define the order parameter \u03b7: S \u2192 V where V = Ts\u2080S/Ts\u2080(G\u00b7s\u2080) (normal space to the orbit at s\u2080)",
+      "justification": "The projection onto the normal space captures deviations from the symmetric orbit",
+      "dependencies": [
+        "Existence of tangent spaces",
+        "[Gap: Rigorous construction of V depends on S being a manifold]"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "The order parameter \u03b7 transforms non-trivially under G: \u03b7(\u03c6(g,s)) = \u03c1(g)\u03b7(s) for some representation \u03c1 of G on V",
+      "justification": "The G-action on S induces a linear action on tangent/normal spaces",
+      "dependencies": [
+        "Step 5",
+        "Differential structure of S"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "For Lie groups, dim(G/H) = dim(G) - dim(H) = dim(g) - dim(h) where g, h are respective Lie algebras",
+      "justification": "Standard result from Lie group theory",
+      "dependencies": [
+        "Lie group structure"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Infinitesimal generators in g/h correspond to broken symmetries (those not preserving s\u2080)",
+      "justification": "Elements of h are infinitesimal symmetries of s\u2080, while g/h represents broken generators",
+      "dependencies": [
+        "Step 7",
+        "Definition of Lie algebra action"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "Goldstone's theorem: For each generator in g/h, there exists a massless mode (Goldstone boson) in the spectrum of excitations around s\u2080",
+      "justification": "[Gap: Full proof requires quantum field theory or detailed harmonic analysis on G/H]",
+      "dependencies": [
+        "Step 8",
+        "Goldstone's theorem (physics)",
+        "[Gap: Rigorous mathematical formulation needed]"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Orbit-Stabilizer Theorem",
+      "authors": "Standard result in group theory",
+      "year": "Classical",
+      "field": "Group Theory",
+      "statement": "For a group G acting on a set X, and x \u2208 X, the orbit G\u00b7x is in bijection with G/G\u2093 where G\u2093 is the stabilizer of x",
+      "usage": "Used to establish the structure of degenerate ground states"
+    },
+    {
+      "name": "Goldstone's Theorem",
+      "authors": "Goldstone, Salam, Weinberg",
+      "year": "1962",
+      "field": "Quantum Field Theory",
+      "statement": "Spontaneous breaking of a continuous symmetry implies the existence of massless excitations",
+      "usage": "Establishes connection between broken symmetries and low-energy excitations"
+    },
+    {
+      "name": "Landau Theory of Phase Transitions",
+      "authors": "L.D. Landau",
+      "year": "1937",
+      "field": "Statistical Physics",
+      "statement": "Phase transitions can be classified by symmetry breaking and order parameters",
+      "usage": "Provides physical context and motivation for the mathematical framework"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "S is a topological space (typically a manifold or function space)",
+    "G is a Lie group with smooth action \u03c6 on S",
+    "E: S \u2192 \u211d is continuous (typically smooth)",
+    "The energy functional E has a well-defined minimum (ground state exists)",
+    "The action \u03c6 preserves the energy: E(\u03c6(g,s)) = E(s) for all g \u2208 G, s \u2208 S",
+    "The system dynamics respects the symmetry group G",
+    "Perturbations are small enough to remain in the basin of attraction of a chosen ground state",
+    "For Goldstone modes: G and H are Lie groups with well-defined Lie algebras",
+    "The state space S admits a suitable measure for statistical mechanics applications",
+    "Temperature or other parameters can drive the system to select a particular ground state"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "Construction of order parameter \u03b7: S \u2192 V by taking V to be the normal space Ts\u2080S/Ts\u2080(G\u00b7s\u2080)",
+        "issue": "This construction assumes S is a manifold with tangent spaces, but only states S is a topological space. The normal space construction is undefined for general topological spaces. Moreover, even if S is a manifold, the proof doesn't establish that G\u00b7s\u2080 is a submanifold to make this quotient well-defined.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Require S to be a smooth manifold and prove that G\u00b7s\u2080 is an embedded submanifold"
+      },
+      {
+        "step": "Under the group action, the order parameter transforms as \u03b7(\u03c6(g,s)) = \u03c1(g)\u03b7(s)",
+        "issue": "This transformation law is asserted without proof. The proof doesn't show how the G-action on tangent spaces induces this specific representation \u03c1, nor that this gives a well-defined order parameter.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Derive the transformation law from the differential of the group action and verify equivariance"
+      },
+      {
+        "step": "By Goldstone's Theorem, each generator in g/h corresponds to a massless mode",
+        "issue": "The proof admits it doesn't prove Goldstone's theorem, yet relies on it as a black box. The connection between abstract Lie algebra elements and physical excitation modes is never established.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Either prove Goldstone's theorem in this context or remove claims about dynamics"
+      },
+      {
+        "step": "The stabilizer H forms a closed subgroup of G",
+        "issue": "This requires the action \u03c6 to be continuous, which is assumed but not stated in the proposition statement itself",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Add continuity of \u03c6 to the proposition statement"
+      },
+      {
+        "step": "dim(G/H) = dim(G) - dim(H)",
+        "issue": "This dimension formula assumes H is a closed Lie subgroup, not just any closed subgroup. The proof doesn't verify H has Lie group structure.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Prove H is a Lie subgroup or add this as an assumption"
+      }
+    ],
+    "hidden_assumptions": [
+      "S is actually a smooth manifold, not just a topological space",
+      "The action \u03c6 is smooth, not just continuous",
+      "The orbit G\u00b7s\u2080 forms an embedded submanifold of S",
+      "The state space has sufficient structure for tangent spaces and normal bundles",
+      "There exists a natural representation of G on the 'normal space' V",
+      "The system has dynamics (never defined) that respect symmetry",
+      "Physical excitations exist and can be associated with Lie algebra elements"
+    ],
+    "circular_reasoning": false,
+    "circular_details": "",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to establish 'spontaneous symmetry breaking' with three characteristics, but only proves ground state degeneracy. The order parameter construction is ill-defined for general topological spaces, and Goldstone modes are merely asserted via an unproven theorem.",
+    "citation_issues": [
+      "Goldstone's Theorem is cited but explicitly not proven, yet the main result depends on it",
+      "The proof cites 'techniques from quantum field theory' for Goldstone's theorem but this is a general mathematical setting with no QFT structure",
+      "Landau Theory is listed as a dependency but never used in the proof"
+    ],
+    "structural_soundness": 0.4,
+    "overall_assessment": "This proof attempts to establish a general mathematical framework for spontaneous symmetry breaking but conflates topological, smooth, and physical structures without proper justification. The construction of the order parameter is fundamentally flawed for the stated generality, and the dynamical claims about Goldstone modes are unsupported assertions rather than proven consequences.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "Proves only that G-invariant energy functionals with proper stabilizer subgroups lead to degenerate ground states and defines an order parameter, but fails to rigorously establish Goldstone modes or complete the characterization of spontaneous symmetry breaking",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "S must be a smooth manifold for tangent space constructions in Step 5",
+      "E must be twice differentiable for Hessian analysis needed for Goldstone modes",
+      "The action \u03c6 must be smooth/differentiable, not just continuous",
+      "S must have appropriate geometric structure for normal space decomposition",
+      "Ground state s\u2080 must be a critical point of E (\u2207E(s\u2080) = 0)",
+      "Hessian of E at s\u2080 must have specific spectral properties",
+      "The representation \u03c1 in Step 6 must be well-defined and non-trivial",
+      "Compactness or proper action assumptions for orbit-stabilizer theorem application"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "5",
+        "issue": "Definition \u03b7: S \u2192 V where V = Ts\u2080S/Ts\u2080(G\u00b7s\u2080) is problematic - this quotient space may not be well-defined without additional geometric structure, and the map \u03b7 is not properly constructed"
+      },
+      {
+        "step": "6",
+        "issue": "Claims \u03b7 transforms as \u03b7(\u03c6(g,s)) = \u03c1(g)\u03b7(s) but provides no construction of \u03c1 or proof that this transformation law holds for the specific \u03b7 defined in Step 5"
+      },
+      {
+        "step": "9",
+        "issue": "Explicitly acknowledges gap in proof - Goldstone's theorem requires detailed spectral analysis of the Hessian of E, which is completely omitted"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No rigorous construction of the order parameter \u03b7",
+      "No proof that the defined order parameter actually detects symmetry breaking",
+      "Missing proof of Goldstone's theorem - the core claim about massless modes",
+      "No verification that the representation \u03c1 is non-trivial",
+      "No analysis of the spectrum of excitations around s\u2080",
+      "No connection between broken generators and actual physical modes"
+    ],
+    "internal_score": 0.3
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": false,
+    "contradiction_details": [],
+    "assumption_conflicts": [],
+    "beneficial_connections": [
+      "Directly extends proof [087da119976b] on spontaneous symmetry breaking by providing more rigorous mathematical framework with Lie group structure and Goldstone modes",
+      "Complements proof [08b6405556dd] on symmetry principles by showing how symmetry breaking creates new dynamics and conserved quantities",
+      "Connects to proof [1318ecd2c25c] on phase transitions as symmetry-breaking events by providing the mathematical mechanism through order parameters and ground state degeneracy",
+      "Supports proof [139ee0499c9e] on topological constraints by showing how symmetry groups impose topological structure on ground state manifolds",
+      "Relates to proof [1b27ca45ba4e] on topological constraints determining equilibrium states through the orbit structure G/H"
+    ],
+    "consistency_score": 0.85,
+    "notes": "The proof is mathematically sound and consistent with existing framework. However, the Goldstone theorem claim requires additional assumptions about the spectrum of excitations and massless modes that are not fully justified in the given assumptions. The connection between broken generators and massless modes needs more rigorous treatment of the Hamiltonian spectrum."
+  },
+  "confidence_score": 0.38249999999999995,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.3,
+    "cross_proof": 0.85,
+    "calibration": 0.29999999999999993
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.3,
+    "cross_proof": 0.85,
+    "calibration": 0.29999999999999993
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A fully rigorous treatment requires: (1) A category-theoretic framework that unifies the different manifestations of symmetry breaking across domains, (2) Rigorous mathematical formulation of Goldstone's theorem that works in both classical and quantum settings, (3) Precise characterization of 'spontaneous' selection mechanisms in deterministic systems, (4) Mathematical framework for emergent properties that bridges microscopic symmetries and macroscopic order",
+  "limitations": [
+    "The construction of the order parameter space V requires S to be a manifold, which may not hold for all physical systems",
+    "The proof of Goldstone modes existence relies on physics arguments not fully formalized mathematically",
+    "The mechanism of 'spontaneous' selection of a particular ground state requires statistical or dynamical considerations not captured in the static framework",
+    "The connection between abstract symmetry breaking and specific physical phenomena (mass generation, phase transitions) requires domain-specific additional structure",
+    "The framework assumes continuous symmetries (Lie groups) but discrete symmetries also exhibit breaking",
+    "Does not address the dynamics of how symmetry breaking occurs in time",
+    "The role of fluctuations and finite-size effects is not captured",
+    "Quantum effects are not fully incorporated in this classical treatment",
+    "The proof does not establish when symmetry breaking will occur, only its consequences when it does"
+  ],
+  "source_convergence": {
+    "structural_claim": "Symmetry breaking is a fundamental organizing principle where systems spontaneously select lower-symmetry states from higher-symmetry possibilities, creating emergent structure and properties",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Landau Theory of Phase Transitions",
+        "domain_id": "field_a",
+        "domain_name": "Thermodynamics and Statistical Mechanics",
+        "link_type": "direct",
+        "structural_conclusion": "Phase transitions are symmetry-breaking events where order parameters emerge, with symmetry as the fundamental organizing principle"
+      },
+      {
+        "result_id": "",
+        "result_name": "Discovery of the W and Z bosons",
+        "domain_id": "field_b",
+        "domain_name": "Particle Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Electroweak symmetry is spontaneously broken, generating massive gauge bosons from a symmetric theory"
+      },
+      {
+        "result_id": "",
+        "result_name": "Discovery of the Higgs boson",
+        "domain_id": "field_b",
+        "domain_name": "Particle Physics",
+        "link_type": "direct",
+        "structural_conclusion": "A scalar field with non-zero vacuum expectation value breaks electroweak symmetry and generates mass"
+      }
+    ],
+    "domains": [
+      "thermodynamics",
+      "particle_physics"
+    ],
+    "domain_names": [
+      "Thermodynamics and Statistical Mechanics",
+      "Particle Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.357,
+      "independence": 0.7,
+      "adversarial": 0.12,
+      "reproducibility": 0.5249999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.48485,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:05:28.073976+00:00",
+    "id": "618b9cd70968"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.31278
+  }
+}

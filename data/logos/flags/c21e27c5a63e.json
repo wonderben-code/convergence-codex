@@ -1,0 +1,15 @@
+{
+  "proof_id": "c21e27c5a63e",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A fully rigorous mathematical theory of the RG that: (1) proves existence and uniqueness of RG flow in appropriate function spaces, (2) establishes convergence of the iterative coarse-graining procedure, (3) rigorously classifies all possible fixed points for given symmetries, (4) proves finite-dimensionality of the relevant operator subspace without perturbative assumptions",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

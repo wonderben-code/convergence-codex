@@ -1,0 +1,13 @@
+{
+  "proof_id": "1638f9ba7ae7",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous mathematical framework connecting topological invariants to dynamical stability in infinite-dimensional spaces. Current approaches use physical intuition more than rigorous mathematics. Need: (1) Precise characterization of topology-preserving diffeomorphisms in function spaces, (2) Stability theory for orbits under topological constraints, (3) Rigorous treatment of singular structures (vortex sheets, current sheets)",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "proof_id": "4ebc2bf6d116",
+  "timestamp": "2026-05-02T13:28:06.770787+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "equivalence - This was rejected because while both involve symmetry breaking, the mathematical structures (gauge symmetry vs chiral symmetry) and mechanisms (Higgs mechanism vs dynamical breaking) are sufficiently different that a functorial correspondence would be forced and artificial."
+      ],
+      "reasoning": "Both domains involve spontaneous symmetry breaking as a mechanism for mass generation and vacuum structure determination. The convergence identifies shared abstract principles (symmetry breaking, vacuum expectation values, mass generation) that manifest differently in electroweak theory versus QCD, making an axiomatic approach most suitable for capturing these common structural features."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Algebraic structures, Differential geometry, Functional analysis",
+      "alternatives_considered": [],
+      "reasoning": "Symmetry breaking is fundamentally about group representations and their reduction, requiring algebraic structures. The vacuum manifold and gauge field configurations need differential geometry. Functional analysis provides the rigorous framework for quantum field operators and their vacuum expectation values."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof shows that when a G-invariant potential has degenerate minima, the vacuum manifold forms a homogeneous space G/H where H is the unbroken symmetry. Fluctuations tangent to this manifold are massless (Goldstone modes) while orthogonal fluctuations are massive, with the vacuum topology characterized by \u03c0_n(G/H).",
+      "alternatives_considered": [],
+      "reasoning": "Generated 10 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3732 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 4124 chars, 11 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This formalization captures the group-theoretic aspects of spontaneous symmetry breaking but lacks the physics-specific machinery for Lagrangians, mass matrices, and quantum states. The connection between homotopy groups and physical defects also requires domain-specific formalization."
+    }
+  ]
+}

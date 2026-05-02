@@ -1,0 +1,13 @@
+{
+  "proof_id": "ac4dffe94cbb",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous categorical framework for measuring and comparing 'information content' across different mathematical structures. This would require developing: (1) A functor from arbitrary categories to a category of information structures, (2) A precise notion of information equivalence that generalizes across different mathematical contexts, (3) Theorems about when duality functors preserve this information equivalence",
+    "7 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

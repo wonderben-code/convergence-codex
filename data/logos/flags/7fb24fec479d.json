@@ -1,0 +1,15 @@
+{
+  "proof_id": "7fb24fec479d",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A unified framework connecting local-global principles across different mathematical domains. Current category theory and topos theory provide partial tools, but a complete theory of 'rigidity functors' that captures the interplay between local properties and global constraints across number theory, analysis, and topology does not yet exist.",
+    "Difficulty assessed as challenging",
+    "7 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

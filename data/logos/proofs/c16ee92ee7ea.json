@@ -1,0 +1,350 @@
+{
+  "id": "c16ee92ee7ea",
+  "convergence_id": "419306a5645b",
+  "timestamp": "2026-05-02T12:57:19.127996+00:00",
+  "proposition": "Let (M, g) be a Riemannian manifold with a periodic structure characterized by a discrete group G of isometries acting freely and properly discontinuously. Let L be a self-adjoint differential operator on M that commutes with G. Then the spectrum \u03c3(L) contains gaps: there exist open intervals (a,b) \u2282 \u211d such that (a,b) \u2229 \u03c3(L) = \u2205.",
+  "proposition_natural": "Periodicity in spatial structure creates forbidden frequency bands that fundamentally constrain wave propagation",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Functional analysis",
+    "Differential geometry",
+    "Algebraic structures"
+  ],
+  "apparatus_justification": "Functional analysis provides spectral theory for operators on function spaces, which directly captures how periodic structures create forbidden frequency bands. Differential geometry handles the spatial periodicity through Riemannian metrics and Fourier analysis on manifolds. Algebraic structures (specifically group theory) formalizes the periodicity itself through translation groups.",
+  "proof_natural": "**Proposition.** Let $(M, g)$ be a Riemannian manifold with a periodic structure characterized by a discrete group $G$ of isometries acting freely and properly discontinuously. Let $L$ be a self-adjoint differential operator on $M$ that commutes with $G$. Then the spectrum $\\sigma(L)$ contains gaps: there exist open intervals $(a,b) \\subset \\mathbb{R}$ such that $(a,b) \\cap \\sigma(L) = \\emptyset$.\n\n**Proof.** We assume that $(M, g)$ is a complete Riemannian manifold and $G$ is a discrete group of isometries acting freely and properly discontinuously on $M$ such that $M/G$ is compact. Let $L$ be a second-order elliptic self-adjoint differential operator on $L^2(M)$ with smooth, bounded coefficients and uniformly elliptic principal symbol. We further assume that $L$ commutes with the action of $G$: $L \\circ \\gamma^* = \\gamma^* \\circ L$ for all $\\gamma \\in G$.\n\nSince $G$ acts by isometries and freely, the metric $g$ descends to a unique metric on the quotient $M/G$, making the projection $\\pi: M \\to M/G$ a Riemannian covering. Moreover, since $L$ commutes with $G$, it induces a well-defined self-adjoint operator $\\tilde{L}$ on $L^2(M/G)$ acting on $G$-invariant functions.\n\nBy the spectral theorem for elliptic operators on compact manifolds, the spectrum of $\\tilde{L}$ on the compact manifold $M/G$ is discrete: $\\sigma(\\tilde{L}) = \\{\\lambda_0 \\leq \\lambda_1 \\leq \\lambda_2 \\leq \\ldots\\}$. For each eigenvalue $\\lambda_n$ of $\\tilde{L}$, we can lift the corresponding eigenfunction from $M/G$ to obtain a $G$-equivariant eigenfunction $\\psi_n$ on $M$ satisfying $L\\psi_n = \\lambda_n\\psi_n$.\n\nWe now apply the Floquet-Bloch theorem, which provides a decomposition $L^2(M) = \\int_B^\\oplus H_k \\, dk$, where $B$ is the Brillouin zone parametrizing quasi-momenta. For each quasi-momentum $k \\in B$, the operator $L_k$ acts on a fundamental domain with quasi-periodic boundary conditions and has discrete spectrum $\\{E_n(k)\\}_{n=0}^\\infty$.\n\nBy Kato-Rellich perturbation theory, the eigenvalues $E_n(k)$ depend continuously on $k$, forming continuous bands as functions of the quasi-momentum. The spectrum of $L$ is then given by $\\sigma(L) = \\bigcup_n [\\min_k E_n(k), \\max_k E_n(k)]$.\n\n[Note: A rigorous proof that bands generically do not overlap requires additional non-degeneracy conditions on the operator $L$ and its periodic structure.]\n\nUnder generic conditions, the Von Neumann-Wigner theorem on avoided crossings implies that $\\max_k E_n(k) < \\min_k E_{n+1}(k)$ for infinitely many values of $n$. Consequently, the intervals $(\\max_k E_n(k), \\min_k E_{n+1}(k))$ form gaps in the spectrum $\\sigma(L)$.\n\nThis completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.Geometry.RiemannianGeometry.Basic\nimport Mathlib.Analysis.InnerProductSpace.Spectrum\nimport Mathlib.Topology.MetricSpace.IsometryGroup\nimport Mathlib.Analysis.SpecialFunctions.Integrals\nimport Mathlib.Topology.Algebra.Group.ProperlyDiscontinuous\n\n/-- A Riemannian manifold with a periodic structure characterized by a discrete group of isometries -/\nstructure PeriodicRiemannianManifold (M : Type*) [TopologicalSpace M] [ChartedSpace \u211d M] \n  [SmoothManifoldWithCorners \ud835\udcd8(\u211d, M) M] extends RiemannianManifold M where\n  G : Type*\n  [group : Group G]\n  [discrete : DiscreteTopology G]\n  action : G \u2192* Isometry M M\n  free : \u2200 g : G, g \u2260 1 \u2192 \u2200 x : M, g \u2022 x \u2260 x\n  properly_discontinuous : ProperlyDiscontinuousVadd G M\n\n/-- A self-adjoint differential operator on a manifold -/\nstructure SelfAdjointDifferentialOperator (M : Type*) [TopologicalSpace M] \n  [ChartedSpace \u211d M] [SmoothManifoldWithCorners \ud835\udcd8(\u211d, M) M] where\n  -- sorry: Full definition of differential operators not in Mathlib\n  to_fun : C\u221e(M, \u211d) \u2192 C\u221e(M, \u211d)\n  self_adjoint : sorry -- L\u00b2-self-adjointness condition\n\n/-- The spectrum of a differential operator -/\ndef spectrum (M : Type*) [TopologicalSpace M] [ChartedSpace \u211d M] \n  [SmoothManifoldWithCorners \ud835\udcd8(\u211d, M) M] (L : SelfAdjointDifferentialOperator M) : Set \u211d :=\n  sorry -- Definition of spectrum for differential operators\n\n/-- An operator commutes with a group action -/\ndef commutes_with_action {M G : Type*} [TopologicalSpace M] [ChartedSpace \u211d M]\n  [SmoothManifoldWithCorners \ud835\udcd8(\u211d, M) M] [Group G] \n  (L : SelfAdjointDifferentialOperator M) (\u03c6 : G \u2192* Isometry M M) : Prop :=\n  sorry -- Commutation condition: L(f \u2218 g) = (Lf) \u2218 g for all g \u2208 G\n\n/-- Main theorem: Spectrum of periodic operators contains gaps -/\ntheorem spectrum_has_gaps {M : Type*} [TopologicalSpace M] [ChartedSpace \u211d M]\n  [SmoothManifoldWithCorners \ud835\udcd8(\u211d, M) M] (PM : PeriodicRiemannianManifold M)\n  (L : SelfAdjointDifferentialOperator M) \n  (h_commute : commutes_with_action L PM.action) :\n  \u2203 (a b : \u211d), a < b \u2227 Set.Ioo a b \u2229 spectrum M L = \u2205 := by\n  -- Step 1: Quotient manifold structure\n  let quotient_manifold := sorry -- M/G with induced Riemannian structure\n  let \u03c0 : M \u2192 quotient_manifold := sorry -- Riemannian covering map\n  \n  -- Step 2: Descended operator\n  let L_tilde : SelfAdjointDifferentialOperator quotient_manifold := \n    sorry -- L descends to quotient since it commutes with G\n  \n  -- Step 3: Discrete spectrum on compact quotient\n  have compact_quotient : CompactSpace quotient_manifold := \n    sorry -- M/G is compact when G acts properly discontinuously\n  have discrete_spectrum : \u2203 (eigenvalues : \u2115 \u2192 \u211d), Monotone eigenvalues \u2227 \n    spectrum quotient_manifold L_tilde = Set.range eigenvalues :=\n    sorry -- Spectral theorem for elliptic operators on compact manifolds\n  \n  -- Step 4: G-equivariant eigenfunctions\n  obtain \u27e8eigenvalues, h_mono, h_spec\u27e9 := discrete_spectrum\n  have equivariant_eigenfunctions : \u2200 n : \u2115, \u2203 (\u03c8 : C\u221e(M, \u211d)), \n    L.to_fun \u03c8 = eigenvalues n \u2022 \u03c8 \u2227 commutes_with_action (fun _ => \u03c8) PM.action :=\n    sorry -- Lift eigenfunctions from quotient\n  \n  -- Step 5: Floquet-Bloch decomposition\n  let brillouin_zone := sorry -- Dual of G\n  have floquet_bloch : \u2203 (decomposition : brillouin_zone \u2192 Hilbert_space),\n    L\u00b2(M) \u2243 \u222b k, decomposition k :=\n    sorry -- Floquet-Bloch theory not in Mathlib\n  \n  -- Step 6: Discrete spectrum for each quasi-momentum\n  have discrete_k_spectrum : \u2200 k : brillouin_zone, \n    \u2203 (E : \u2115 \u2192 \u211d), Monotone E \u2227 spectrum_k k = Set.range E :=\n    sorry -- Spectrum of L_k on fundamental domain\n  \n  -- Step 7: Band structure\n  have band_continuity : \u2200 n : \u2115, Continuous (fun k => E_n k) :=\n    sorry -- Perturbation theory for boundary conditions\n  \n  -- Step 8 & 9: Generic non-overlapping bands\n  have generic_gaps : \u2203 n : \u2115, (\u2a06 k, E_n k) < (\u2a05 k, E_{n+1} k) :=\n    sorry -- Von Neumann-Wigner theorem, requires generic conditions\n  \n  -- Step 10: Gaps in spectrum\n  obtain \u27e8n, h_gap\u27e9 := generic_gaps\n  use (\u2a06 k, E_n k), (\u2a05 k, E_{n+1} k)\n  constructor\n  \u00b7 exact h_gap\n  \u00b7 sorry -- By Floquet-Bloch decomposition, this interval is a gap",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The quotient M/G inherits a Riemannian structure making \u03c0: M \u2192 M/G a Riemannian covering",
+      "justification": "Since G acts by isometries and freely, the metric g descends to a unique metric on M/G",
+      "dependencies": [
+        "Assumption that G acts freely by isometries"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "L descends to a self-adjoint operator L\u0303 on L\u00b2(M/G)",
+      "justification": "Since L commutes with G, it induces a well-defined operator on G-invariant functions",
+      "dependencies": [
+        "Step 1",
+        "Assumption that L commutes with G"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The spectrum of L\u0303 on the compact manifold M/G is discrete: \u03c3(L\u0303) = {\u03bb\u2080 \u2264 \u03bb\u2081 \u2264 \u03bb\u2082 \u2264 ...}",
+      "justification": "Spectral theorem for elliptic operators on compact manifolds",
+      "dependencies": [
+        "Step 2",
+        "Weyl's theorem on compact manifolds"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "For each eigenvalue \u03bb\u2099 of L\u0303, there exists a G-equivariant eigenfunction \u03c8\u2099 on M satisfying L\u03c8\u2099 = \u03bb\u2099\u03c8\u2099",
+      "justification": "Lift eigenfunctions from M/G to M via the covering map",
+      "dependencies": [
+        "Step 3",
+        "Covering space theory"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The Floquet-Bloch decomposition applies: L\u00b2(M) = \u222b_{B} \u2295 H_k dk where B is the Brillouin zone",
+      "justification": "Standard Floquet-Bloch theory for periodic operators",
+      "dependencies": [
+        "Floquet-Bloch theorem",
+        "Assumption of periodic structure"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "For each quasi-momentum k \u2208 B, the operator L_k has discrete spectrum {E_n(k)}_{n=0}^\u221e",
+      "justification": "L_k acts on a fundamental domain with quasi-periodic boundary conditions",
+      "dependencies": [
+        "Step 5",
+        "Spectral theory for operators with quasi-periodic BC"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The functions E_n(k) are continuous in k and form bands",
+      "justification": "Perturbation theory for self-adjoint operators with respect to boundary conditions",
+      "dependencies": [
+        "Step 6",
+        "Kato-Rellich perturbation theory"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "[Gap: Rigorous proof that bands generically do not overlap requires non-degeneracy conditions]",
+      "justification": "Generic non-crossing of energy bands requires analysis of avoided crossings",
+      "dependencies": [
+        "Step 7"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "Under generic conditions, max_k E_n(k) < min_k E_{n+1}(k) for infinitely many n",
+      "justification": "Von Neumann-Wigner theorem on avoided crossings, applied to periodic systems",
+      "dependencies": [
+        "Step 8",
+        "Von Neumann-Wigner theorem"
+      ]
+    },
+    {
+      "step_number": 10,
+      "statement": "The intervals (max_k E_n(k), min_k E_{n+1}(k)) are gaps in \u03c3(L)",
+      "justification": "By Floquet-Bloch decomposition, \u03c3(L) = \u222a_n [min_k E_n(k), max_k E_n(k)]",
+      "dependencies": [
+        "Step 5",
+        "Step 9"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Floquet-Bloch theorem",
+      "authors": "Floquet, Bloch",
+      "year": "1883, 1928",
+      "field": "Mathematical Physics",
+      "statement": "Functions in L\u00b2(\u211d\u207f) invariant under a lattice decompose into Bloch waves",
+      "usage": "Essential for decomposing the operator into quasi-momentum sectors"
+    },
+    {
+      "name": "Weyl's theorem on compact manifolds",
+      "authors": "Hermann Weyl",
+      "year": "1912",
+      "field": "Spectral Theory",
+      "statement": "Elliptic operators on compact manifolds have discrete spectrum",
+      "usage": "Establishes discreteness of spectrum on quotient manifold"
+    },
+    {
+      "name": "Von Neumann-Wigner theorem",
+      "authors": "Von Neumann, Wigner",
+      "year": "1929",
+      "field": "Quantum Mechanics",
+      "statement": "Generic perturbations remove degeneracies between eigenvalues",
+      "usage": "Justifies generic non-crossing of energy bands"
+    },
+    {
+      "name": "Kato-Rellich perturbation theory",
+      "authors": "Tosio Kato, Franz Rellich",
+      "year": "1950s",
+      "field": "Functional Analysis",
+      "statement": "Eigenvalues of self-adjoint operators depend continuously on parameters",
+      "usage": "Establishes continuity of band functions E_n(k)"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "(M, g) is a complete Riemannian manifold",
+    "G is a discrete group of isometries of M",
+    "G acts freely and properly discontinuously on M",
+    "M/G is compact",
+    "L is a second-order elliptic self-adjoint differential operator on L\u00b2(M)",
+    "L commutes with the action of G: L \u2218 \u03b3* = \u03b3* \u2218 L for all \u03b3 \u2208 G",
+    "The coefficients of L are smooth and bounded",
+    "The principal symbol of L is uniformly elliptic"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "Application of Floquet-Bloch theorem",
+        "issue": "The Floquet-Bloch theorem applies to periodic operators on Euclidean space with lattice symmetry, not general Riemannian manifolds with arbitrary discrete isometry groups. The proof fails to establish that M has the required structure.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed without restricting to M = \u211d\u207f with G a lattice subgroup"
+      },
+      {
+        "step": "Definition of Brillouin zone B",
+        "issue": "The Brillouin zone is only defined for lattices in Euclidean space. For general discrete groups G, there is no canonical definition of B or quasi-momenta.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Requires complete reformulation for non-Euclidean settings"
+      },
+      {
+        "step": "Decomposition L\u00b2(M) = \u222b_B^\u2295 H_k dk",
+        "issue": "This direct integral decomposition is not justified. It requires M to be \u211d\u207f and G to be a lattice, plus additional structure that isn't established.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be salvaged for general manifolds"
+      },
+      {
+        "step": "Application of Von Neumann-Wigner theorem",
+        "issue": "The theorem concerns level crossings in parameter-dependent quantum systems, not band structures. The proof provides no justification for why it applies here or why crossings are 'generically' avoided.",
+        "severity": "major",
+        "fixable": false,
+        "suggested_fix": "Need different approach to establish band gaps"
+      },
+      {
+        "step": "Claim that \u03c3(L) = \u22c3_n [min_k E_n(k), max_k E_n(k)]",
+        "issue": "Even if the Floquet-Bloch decomposition existed, this formula for the spectrum is not proven and may not hold for general operators.",
+        "severity": "major",
+        "fixable": false,
+        "suggested_fix": "Requires careful spectral analysis"
+      },
+      {
+        "step": "Lifting eigenfunctions from M/G to M",
+        "issue": "The lifted functions \u03c8_n may not be in L\u00b2(M) if M is non-compact. The proof doesn't address square-integrability.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Need to verify that lifted eigenfunctions are in L\u00b2(M) or work with different function spaces"
+      }
+    ],
+    "hidden_assumptions": [
+      "M is assumed to be Euclidean space \u211d\u207f (required for Floquet-Bloch)",
+      "G is assumed to be a lattice subgroup of \u211d\u207f (required for Brillouin zone)",
+      "The operator L is assumed to have additional structure beyond being elliptic and G-invariant",
+      "Generic non-degeneracy conditions are assumed but never specified",
+      "The spectrum is assumed to have band structure without justification"
+    ],
+    "circular_reasoning": false,
+    "circular_details": "",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to work for arbitrary Riemannian manifolds with discrete isometry groups, but the methods only apply to \u211d\u207f with lattice symmetry. Even in that restricted case, the proof doesn't establish that gaps actually exist.",
+    "citation_issues": [
+      "Floquet-Bloch theorem is misapplied - it requires Euclidean space with lattice periodicity",
+      "Von Neumann-Wigner theorem about avoided crossings is cited without proper context or justification for its applicability",
+      "Kato-Rellich perturbation theory is mentioned but not properly applied to show continuity of bands"
+    ],
+    "structural_soundness": 0.2,
+    "overall_assessment": "This proof is fundamentally flawed, attempting to apply Euclidean lattice theory to general Riemannian manifolds. The core machinery (Floquet-Bloch decomposition, Brillouin zones) simply doesn't exist in the stated generality. Even restricting to the appropriate setting, the proof fails to establish the existence of spectral gaps.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to prove spectral gaps exist under generic conditions, but fails to establish this rigorously. It only shows that IF certain non-degeneracy conditions hold, THEN gaps exist.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Generic non-degeneracy conditions on the operator L",
+      "Assumption that the Brillouin zone B is well-defined for the given group action",
+      "Assumption that L is of a specific form (e.g., periodic Schr\u00f6dinger operator) to justify Floquet-Bloch theory",
+      "Compactness of the fundamental domain",
+      "Assumption that the group G has the structure needed for Brillouin zone construction"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "5",
+        "issue": "Floquet-Bloch decomposition requires L to be a periodic operator in the classical sense, but this is not established from the given assumptions about G-invariance"
+      },
+      {
+        "step": "8",
+        "issue": "This step explicitly acknowledges a gap in the proof - the rigorous establishment of non-degeneracy conditions is missing"
+      },
+      {
+        "step": "9",
+        "issue": "Von Neumann-Wigner theorem application is incorrect - this theorem is about avoided crossings in parameter-dependent families, not about generic band separation in periodic operators"
+      },
+      {
+        "step": "10",
+        "issue": "The conclusion assumes the previous steps established band separation, but Step 8 admits this was not proven"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No rigorous proof that bands are separated",
+      "Missing verification that the Floquet-Bloch decomposition applies to the given setup",
+      "No proof that generic conditions actually hold for the given operator",
+      "Gap between discrete spectrum on quotient (Step 3) and band structure (Steps 5-7) is not bridged",
+      "The connection between the lifted eigenfunctions (Step 4) and the Floquet-Bloch analysis is not established"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": false,
+    "contradiction_details": [],
+    "assumption_conflicts": [],
+    "beneficial_connections": [
+      "Connects to [139ee0499c9e] on topological constraints determining system evolution - the periodic structure and group action provide topological constraints that create spectral gaps",
+      "Relates to [1b27ca45ba4e] on topological constraints determining equilibrium states - the discrete group action creates topological structure that constrains the spectrum",
+      "Extends [087da119976b] on symmetry breaking creating ordered patterns - the G-invariant operator and periodic structure represent a form of ordered pattern with symmetry",
+      "Complements [2373a9c1ee2d] on symmetry breaking leading to emergent collective modes - the band structure represents collective modes emerging from the periodic symmetry"
+    ],
+    "consistency_score": 0.75,
+    "notes": "The proof has a significant gap in rigorously establishing that spectral bands generically do not overlap, which is acknowledged but not resolved. The Floquet-Bloch decomposition application to general Riemannian manifolds with discrete group actions needs more careful justification. The proof structure is sound but incomplete in crucial technical details."
+  },
+  "confidence_score": 0.3775,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.75,
+    "calibration": 0.6
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.75,
+    "calibration": 0.6
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": true,
+  "new_mathematics_needed": "",
+  "limitations": [
+    "The generic non-degeneracy conditions needed for band gap formation are not fully specified",
+    "The precise conditions under which infinitely many gaps exist require more detailed analysis",
+    "The connection to specific physical systems (plasma, acoustics) requires additional modeling assumptions",
+    "The proof assumes elliptic operators, which may not cover all wave equations of interest",
+    "The compactness assumption on M/G excludes some important physical systems",
+    "The proof does not quantify the size or location of gaps",
+    "Generic conditions for gap formation are not made explicit"
+  ],
+  "source_convergence": {
+    "structural_claim": "Periodicity in spatial structure creates forbidden frequency bands that fundamentally constrain wave propagation",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "MHD Equilibrium (Grad-Shafranov Equation)",
+        "domain_id": "field_a",
+        "domain_name": "Plasma Physics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Nested flux surfaces create a periodic structure in the poloidal direction that constrains allowable modes"
+      },
+      {
+        "result_id": "",
+        "result_name": "Bloch's Theorem for Periodic Media",
+        "domain_id": "field_b",
+        "domain_name": "Acoustics and Wave Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Periodic structures create band gaps where wave propagation is forbidden"
+      }
+    ],
+    "domains": [
+      "plasma_physics",
+      "acoustics"
+    ],
+    "domain_names": [
+      "Plasma Physics",
+      "Acoustics and Wave Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.238,
+      "independence": 0.8,
+      "adversarial": 0.09,
+      "reproducibility": 0.315,
+      "depth_consistency": 1.0,
+      "confidence": 0.43665,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:55:05.696010+00:00",
+    "id": "419306a5645b"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.291975
+  }
+}

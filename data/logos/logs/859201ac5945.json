@@ -1,0 +1,38 @@
+{
+  "proof_id": "859201ac5945",
+  "timestamp": "2026-05-02T13:42:55.932079+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "equivalence - This could capture structural similarity between the propagation bounds, but was rejected because the physical mechanisms are fundamentally different (quantum correlations vs particle exchange), making a direct structural correspondence inappropriate."
+      ],
+      "reasoning": "Both domains exhibit finite-speed information propagation leading to effective locality, but through different mechanisms (quantum many-body interactions vs massive mediator exchange). The convergence identifies a shared abstract principle about speed-limited propagation creating locality constraints, making an axiomatic approach most suitable for capturing this common structure."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Functional analysis, Information theory, Order theory",
+      "alternatives_considered": [],
+      "reasoning": "Functional analysis provides the operator algebraic framework for quantum many-body systems via C*-algebras and Lieb-Robinson bounds. Information theory formalizes propagation speed limits through mutual information growth rates. Order theory captures locality constraints via partially ordered causal structures."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof establishes that quantum information propagation has finite speed by showing that commutators between spatially separated observables grow at most exponentially in time, with the exponent depending on distance. This is achieved by analyzing how local Hamiltonian terms can create correlations between regions, leading to a differential inequality whose solution exhibits an effective light cone with exponentially small leakage outside.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 11 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3447 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 3289 chars, 13 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This proof requires extensive quantum many-body theory on lattices which is not available in Mathlib. The formalization provides the theorem statement and proof structure, but all quantum-specific machinery must be marked as sorry. The proof would require developing a full theory of quantum lattice systems, local observables, time evolution, and the technical machinery for Lieb-Robinson bounds."
+    }
+  ]
+}

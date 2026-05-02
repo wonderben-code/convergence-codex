@@ -1,0 +1,334 @@
+{
+  "id": "102677deecdd",
+  "convergence_id": "0af0988f685d",
+  "timestamp": "2026-05-02T12:38:19.567338+00:00",
+  "proposition": "For any category C, an object X \u2208 Ob(C) is uniquely determined up to isomorphism by the functor Hom_C(-, X): C^op \u2192 Set, and for any Hilbert space H, a vector v \u2208 H is uniquely determined by the functional \u03c6_v: H \u2192 \u2102 defined by \u03c6_v(w) = \u27e8w, v\u27e9",
+  "proposition_natural": "Mathematical objects are fundamentally determined by their relational structure rather than their intrinsic properties.",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Functional analysis"
+  ],
+  "apparatus_justification": "Category theory directly formalizes the claim that objects are determined by morphisms and functorial relationships. Functional analysis provides concrete examples through operator algebras and spectral theory, where operators are characterized by their action on other objects rather than intrinsic properties.",
+  "proof_natural": "**Proposition.** For any category $\\mathcal{C}$, an object $X \\in \\mathrm{Ob}(\\mathcal{C})$ is uniquely determined up to isomorphism by the functor $\\mathrm{Hom}_\\mathcal{C}(-, X): \\mathcal{C}^{\\mathrm{op}} \\to \\mathbf{Set}$. Similarly, for any Hilbert space $H$, a vector $v \\in H$ is uniquely determined by the functional $\\varphi_v: H \\to \\mathbb{C}$ defined by $\\varphi_v(w) = \\langle w, v \\rangle$.\n\n*Proof.* We work within ZFC set theory and assume that all categories are locally small, so that hom-sets are indeed sets rather than proper classes. We further assume that the Yoneda embedding is fully faithful.\n\nWe begin with the categorical portion. Let $\\mathcal{C}$ be a category and let $X, X' \\in \\mathrm{Ob}(\\mathcal{C})$. For any object $X$, the contravariant hom-functor $\\mathrm{Hom}_\\mathcal{C}(-, X): \\mathcal{C}^{\\mathrm{op}} \\to \\mathbf{Set}$ sends each object $Y$ to the hom-set $\\mathrm{Hom}_\\mathcal{C}(Y, X)$ and each morphism $f: Z \\to Y$ to the composition map $\\mathrm{Hom}_\\mathcal{C}(Y, X) \\to \\mathrm{Hom}_\\mathcal{C}(Z, X)$ given by $g \\mapsto g \\circ f$.\n\nSuppose that $\\mathrm{Hom}_\\mathcal{C}(-, X) \\cong \\mathrm{Hom}_\\mathcal{C}(-, X')$ as functors. By the Yoneda Lemma, there exists a natural bijection between natural transformations $\\mathrm{Nat}(\\mathrm{Hom}_\\mathcal{C}(-, X), \\mathrm{Hom}_\\mathcal{C}(-, X'))$ and morphisms in $\\mathrm{Hom}_\\mathcal{C}(X, X')$. Since we have a natural isomorphism between the functors, there exist natural transformations $\\alpha: \\mathrm{Hom}_\\mathcal{C}(-, X) \\to \\mathrm{Hom}_\\mathcal{C}(-, X')$ and $\\beta: \\mathrm{Hom}_\\mathcal{C}(-, X') \\to \\mathrm{Hom}_\\mathcal{C}(-, X)$ such that $\\beta \\circ \\alpha = \\mathrm{id}$ and $\\alpha \\circ \\beta = \\mathrm{id}$.\n\nBy the Yoneda bijection, $\\alpha$ corresponds to some morphism $f: X \\to X'$ and $\\beta$ corresponds to some morphism $g: X' \\to X$. Since the Yoneda embedding is fully faithful, it preserves composition, and thus the equations $\\beta \\circ \\alpha = \\mathrm{id}$ and $\\alpha \\circ \\beta = \\mathrm{id}$ imply that $g \\circ f = \\mathrm{id}_X$ and $f \\circ g = \\mathrm{id}_{X'}$. Therefore, $X \\cong X'$ in $\\mathcal{C}$.\n\nWe now turn to the Hilbert space case. Let $H$ be a Hilbert space over $\\mathbb{C}$ and let $v \\in H$. Define the functional $\\varphi_v: H \\to \\mathbb{C}$ by $\\varphi_v(w) = \\langle w, v \\rangle$. This functional is linear by the properties of the inner product. Moreover, by the Cauchy-Schwarz inequality, $|\\varphi_v(w)| \\leq \\|v\\| \\cdot \\|w\\|$, which establishes that $\\varphi_v$ is continuous.\n\nSuppose $\\varphi_v = \\varphi_{v'}$ for some $v' \\in H$. Then $\\langle w, v \\rangle = \\langle w, v' \\rangle$ for all $w \\in H$. By linearity of the inner product in the second argument, this implies $\\langle w, v - v' \\rangle = 0$ for all $w \\in H$. Taking $w = v - v'$, we obtain $\\|v - v'\\|^2 = \\langle v - v', v - v' \\rangle = 0$. By positive definiteness of the inner product, this implies $v = v'$.\n\n[Note: The converse direction, showing that distinct vectors yield distinct functionals, follows immediately from the above argument.]\n\nBoth results demonstrate how objects in their respective structures are uniquely characterized by their relationships to all other objects\u2014morphisms in the categorical case, and inner products in the Hilbert space case. This completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.CategoryTheory.Yoneda\nimport Mathlib.CategoryTheory.Functor.Basic\nimport Mathlib.CategoryTheory.NatIso\nimport Mathlib.Analysis.InnerProductSpace.Basic\nimport Mathlib.Analysis.InnerProductSpace.Dual\nimport Mathlib.Topology.ContinuousFunction.Basic\n\nopen CategoryTheory\n\n/-- For any category C, an object X is uniquely determined up to isomorphism by its hom-functor -/\ntheorem yoneda_embedding_reflects_isos {C : Type*} [Category C] (X X' : C) :\n  (yoneda.obj X \u2245 yoneda.obj X') \u2192 (X \u2245 X') := by\n  intro h\n  -- Step 1: The contravariant hom-functor is defined by Yoneda\n  -- Step 2: By Yoneda lemma, natural transformations correspond to morphisms\n  -- Step 3: h gives us natural transformations in both directions\n  let \u03b1 := h.hom\n  let \u03b2 := h.inv\n  -- Step 4: Apply Yoneda bijection\n  let f := yoneda.preimage \u03b1\n  let g := yoneda.preimage \u03b2\n  -- Step 5: Since \u03b2 \u2218 \u03b1 = id and \u03b1 \u2218 \u03b2 = id\n  have hfg : g \u226b f = \ud835\udfd9 X := by\n    rw [\u2190 yoneda.map_injective]\n    simp [f, g]\n    exact h.inv_hom_id\n  have hgf : f \u226b g = \ud835\udfd9 X' := by\n    rw [\u2190 yoneda.map_injective]\n    simp [f, g]\n    exact h.hom_inv_id\n  -- Step 6: Therefore X \u2245 X'\n  exact \u27e8f, g, hgf, hfg\u27e9\n\n/-- For any Hilbert space H, a vector v is uniquely determined by its associated functional -/\ntheorem riesz_representation_unique {H : Type*} [NormedAddCommGroup H] [InnerProductSpace \u2102 H]\n  [CompleteSpace H] (v v' : H) :\n  (\u2200 w : H, \u27eaw, v\u27eb = \u27eaw, v'\u27eb) \u2192 v = v' := by\n  intro h\n  -- Step 7: Define \u03c6_v(w) = \u27e8w, v\u27e9 (this is the definition)\n  -- Step 8: \u03c6_v is continuous linear (follows from Cauchy-Schwarz)\n  -- Step 9: Riesz representation theorem (available in Mathlib)\n  -- Step 10: If \u03c6_v = \u03c6_v', then \u27e8w, v\u27e9 = \u27e8w, v'\u27e9 for all w\n  -- Step 11: This implies \u27e8w, v - v'\u27e9 = 0 for all w\n  have h' : \u2200 w : H, \u27eaw, v - v'\u27eb = 0 := by\n    intro w\n    rw [inner_sub_right]\n    rw [h w]\n    simp\n  -- Step 12: Taking w = v - v', we get ||v - v'||\u00b2 = 0\n  have : \u27eav - v', v - v'\u27eb = 0 := h' (v - v')\n  have : \u2016v - v'\u2016 = 0 := by\n    rw [\u2190 inner_self_eq_zero] at this\n    exact norm_eq_zero.mpr this\n  exact sub_eq_zero.mp (norm_eq_zero.mp this)",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "For any object X in category C, the contravariant hom-functor Hom_C(-, X): C^op \u2192 Set sends each object Y to Hom_C(Y, X) and each morphism f: Z \u2192 Y to the composition map Hom_C(Y, X) \u2192 Hom_C(Z, X)",
+      "justification": "Definition of the contravariant hom-functor",
+      "dependencies": [
+        "Definition of functor",
+        "Definition of opposite category"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "By the Yoneda Lemma, for objects X, X' in C, there is a bijection between natural transformations Nat(Hom_C(-, X), Hom_C(-, X')) and morphisms Hom_C(X, X')",
+      "justification": "Direct application of the Yoneda Lemma",
+      "dependencies": [
+        "Yoneda Lemma"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "If Hom_C(-, X) \u2245 Hom_C(-, X') as functors, then there exist natural transformations \u03b1: Hom_C(-, X) \u2192 Hom_C(-, X') and \u03b2: Hom_C(-, X') \u2192 Hom_C(-, X) such that \u03b2 \u2218 \u03b1 = id and \u03b1 \u2218 \u03b2 = id",
+      "justification": "Definition of natural isomorphism between functors",
+      "dependencies": [
+        "Step 1",
+        "Definition of natural isomorphism"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "By Step 2, \u03b1 corresponds to some morphism f: X \u2192 X' and \u03b2 corresponds to some morphism g: X' \u2192 X",
+      "justification": "Application of the Yoneda bijection to the natural transformations",
+      "dependencies": [
+        "Step 2",
+        "Step 3"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Since \u03b2 \u2218 \u03b1 = id, we have g \u2218 f = id_X, and since \u03b1 \u2218 \u03b2 = id, we have f \u2218 g = id_X'",
+      "justification": "The Yoneda embedding is fully faithful, preserving composition",
+      "dependencies": [
+        "Step 4",
+        "Yoneda embedding fully faithful"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Therefore X \u2245 X' in C",
+      "justification": "Definition of isomorphism in a category",
+      "dependencies": [
+        "Step 5"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "For a Hilbert space H and vector v \u2208 H, define \u03c6_v: H \u2192 \u2102 by \u03c6_v(w) = \u27e8w, v\u27e9",
+      "justification": "Definition using the inner product structure",
+      "dependencies": [
+        "Assumption about Hilbert spaces"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "\u03c6_v is a continuous linear functional on H",
+      "justification": "Cauchy-Schwarz inequality ensures |\u03c6_v(w)| \u2264 ||v|| \u00b7 ||w||, giving continuity; linearity follows from properties of inner product",
+      "dependencies": [
+        "Step 7",
+        "Properties of inner product"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "By the Riesz Representation Theorem, every continuous linear functional \u03c6 on H has the form \u03c6(w) = \u27e8w, u\u27e9 for a unique u \u2208 H",
+      "justification": "Direct application of Riesz Representation Theorem",
+      "dependencies": [
+        "Riesz Representation Theorem"
+      ]
+    },
+    {
+      "step_number": 10,
+      "statement": "If \u03c6_v = \u03c6_v', then \u27e8w, v\u27e9 = \u27e8w, v'\u27e9 for all w \u2208 H",
+      "justification": "Equality of functionals means equality on all inputs",
+      "dependencies": [
+        "Step 7"
+      ]
+    },
+    {
+      "step_number": 11,
+      "statement": "This implies \u27e8w, v - v'\u27e9 = 0 for all w \u2208 H",
+      "justification": "Linearity of inner product in second argument",
+      "dependencies": [
+        "Step 10"
+      ]
+    },
+    {
+      "step_number": 12,
+      "statement": "Taking w = v - v', we get ||v - v'||\u00b2 = 0, hence v = v'",
+      "justification": "Positive definiteness of inner product",
+      "dependencies": [
+        "Step 11"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Yoneda Lemma",
+      "authors": "Nobuo Yoneda",
+      "year": "1954",
+      "field": "Category Theory",
+      "statement": "For any category C and object X \u2208 C, there is a natural bijection between natural transformations from Hom_C(-, A) to any functor F: C^op \u2192 Set and elements of F(A)",
+      "usage": "Used to establish that isomorphic hom-functors imply isomorphic objects"
+    },
+    {
+      "name": "Riesz Representation Theorem",
+      "authors": "Frigyes Riesz",
+      "year": "1907",
+      "field": "Functional Analysis",
+      "statement": "Every continuous linear functional on a Hilbert space H can be represented as an inner product with a unique vector in H",
+      "usage": "Used to show vectors are uniquely determined by their induced linear functionals"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "We work within ZFC set theory",
+    "Categories are locally small (hom-sets are sets, not proper classes)",
+    "Functors between categories preserve composition and identities",
+    "Hilbert spaces are complete inner product spaces over \u2102",
+    "The Riesz representation theorem holds for Hilbert spaces",
+    "Natural transformations between functors form a well-defined notion",
+    "The Yoneda embedding is fully faithful"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.7,
+    "gaps": [
+      {
+        "step": "Suppose that Hom_C(-, X) \u2245 Hom_C(-, X') as functors",
+        "issue": "The proof assumes this is the only condition needed, but the proposition claims X is uniquely determined by the functor. The proof should start by assuming two objects have the same hom-functor and prove they are isomorphic.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Rewrite: 'Suppose Hom_C(-, X) = Hom_C(-, X') as functors. We will show X \u2245 X'.'"
+      },
+      {
+        "step": "We further assume that the Yoneda embedding is fully faithful",
+        "issue": "This is not an assumption - it's a theorem that needs to be proven or properly cited. The Yoneda embedding being fully faithful is precisely what needs to be established.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Either prove that the Yoneda embedding is fully faithful or cite the precise theorem."
+      },
+      {
+        "step": "Since the Yoneda embedding is fully faithful, it preserves composition",
+        "issue": "Being fully faithful means bijection on hom-sets, not preservation of composition. All functors preserve composition by definition.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Use the correct implication of fully faithful: bijection between Hom(X,X') and natural transformations."
+      },
+      {
+        "step": "By linearity of the inner product in the second argument",
+        "issue": "The inner product is conjugate-linear (antilinear) in the second argument for complex Hilbert spaces, not linear.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Replace with 'By conjugate-linearity of the inner product in the second argument' or use linearity in the first argument."
+      },
+      {
+        "step": "The converse direction, showing that distinct vectors yield distinct functionals, follows immediately",
+        "issue": "The proof never actually shows that v determines \u03c6_v uniquely. It only shows that \u03c6_v determines v uniquely.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Add explicit proof that v \u2260 v' implies \u03c6_v \u2260 \u03c6_v'."
+      }
+    ],
+    "hidden_assumptions": [
+      "The Yoneda embedding exists and is well-defined",
+      "Natural isomorphisms between functors correspond to isomorphisms in the category",
+      "The inner product is linear/antilinear in the appropriate arguments",
+      "The Hilbert space is over \u2102 specifically (though this is stated, the proof technique depends on it)"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes the Yoneda embedding is fully faithful to prove the categorical part, but this is essentially what needs to be proven. The statement that X is uniquely determined by Hom_C(-,X) is equivalent to saying the Yoneda embedding is faithful.",
+    "over_generalisation": false,
+    "over_generalisation_details": "The proof claims what it proves, though with gaps",
+    "citation_issues": [
+      "The Yoneda Lemma is correctly stated but the proof conflates it with the Yoneda embedding being fully faithful",
+      "The Riesz Representation Theorem is cited in dependencies but never used in the proof",
+      "No citation for the claim that the Yoneda embedding is fully faithful"
+    ],
+    "structural_soundness": 0.6,
+    "overall_assessment": "The proof has the right general structure but contains critical gaps, particularly in assuming rather than proving that the Yoneda embedding is fully faithful. The Hilbert space portion has a significant gap in only proving one direction and contains a technical error about linearity of the inner product.",
+    "verdict": "major_revision"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof proves two separate statements: (1) objects in a category are determined up to isomorphism by their contravariant hom-functors, and (2) vectors in a Hilbert space are uniquely determined by their associated linear functionals. However, the proposition claims both statements are about 'unique determination up to isomorphism' when the second is about actual equality.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The Yoneda embedding preserves and reflects isomorphisms",
+      "Composition of natural transformations corresponds to composition of morphisms under Yoneda bijection",
+      "Inner product is conjugate-linear in the second argument (or linear, depending on convention)",
+      "Hilbert spaces are over the complex numbers \u2102"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "5",
+        "issue": "The justification claims the Yoneda embedding is fully faithful and preserves composition, but doesn't establish that composition of natural transformations corresponds to composition of morphisms under the Yoneda bijection. This requires additional argument."
+      },
+      {
+        "step": "11",
+        "issue": "Claims linearity of inner product in second argument, but this depends on the convention used. Many texts use conjugate-linearity in the second argument."
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "The proposition claims vectors are determined 'up to isomorphism' but the proof shows actual equality - there's a mismatch between what's claimed and what's proven",
+      "No connection is established between the two parts of the proposition",
+      "The proof doesn't address what 'isomorphism' would mean for vectors in a Hilbert space context"
+    ],
+    "internal_score": 0.3
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": false,
+    "contradiction_details": [],
+    "assumption_conflicts": [],
+    "beneficial_connections": [
+      "The categorical framework using locally small categories aligns with proofs 66e4aac2731b, 6cf918aecf4e, be4dedfed56e, and f275c612d4cc which all employ categorical methods",
+      "The use of functors and natural transformations provides foundational tools that could support the categorical approaches in existing proofs about symmetry breaking and emergent structure",
+      "The Hilbert space component could potentially connect to quantum mechanical aspects mentioned in proof 66e4aac2731b about quantum-classical transitions",
+      "The uniqueness results established could provide mathematical foundations for the information encoding principles in proof f275c612d4cc"
+    ],
+    "consistency_score": 0.85,
+    "notes": "The proof establishes fundamental mathematical results (Yoneda lemma application and Riesz representation) that are orthogonal to the physical theories in existing proofs. However, the proof appears incomplete - it states a proposition about both categories and Hilbert spaces but only proves the categorical part fully. The Hilbert space portion stops at step 10 without completing the uniqueness argument. The mathematical foundations are sound but the proof structure suggests it may be conflating two separate results."
+  },
+  "confidence_score": 0.5125,
+  "confidence_category": "medium",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.7,
+    "internal": 0.3,
+    "cross_proof": 0.85,
+    "calibration": 0.6
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.7,
+    "internal": 0.3,
+    "cross_proof": 0.85,
+    "calibration": 0.6
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": true,
+  "new_mathematics_needed": "",
+  "limitations": [
+    "[Gap: The proof establishes the principle separately in two different contexts (categories and Hilbert spaces) but does not provide a unified framework that encompasses both]",
+    "[Gap: No formal connection is made between the categorical and analytic examples beyond structural analogy]",
+    "[Gap: The notion of 'relational structure' is not formally defined in a way that applies to both contexts]",
+    "The proof demonstrates the principle in specific contexts rather than establishing a general meta-theorem",
+    "The connection between category-theoretic and analytic examples remains at the level of analogy",
+    "Does not address whether all mathematical objects can be characterized relationally",
+    "Limited to objects in categories and vectors in Hilbert spaces"
+  ],
+  "source_convergence": {
+    "structural_claim": "Mathematical objects are fundamentally determined by their relational structure rather than their intrinsic properties.",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Yoneda Lemma",
+        "domain_id": "field_a",
+        "domain_name": "Category Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Objects are completely determined by their morphisms to all other objects, establishing relational rather than intrinsic characterization"
+      },
+      {
+        "result_id": "",
+        "result_name": "Riesz Representation Theorem",
+        "domain_id": "field_b",
+        "domain_name": "Analysis",
+        "link_type": "direct",
+        "structural_conclusion": "Continuous linear functionals are completely determined by inner product relationships, showing geometric structure emerges from relational properties"
+      },
+      {
+        "result_id": "",
+        "result_name": "Tannaka-Krein Duality",
+        "domain_id": "field_a",
+        "domain_name": "Category Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Algebraic structures are completely reconstructed from their representation categories, showing objects are determined by how they act relationally"
+      }
+    ],
+    "domains": [
+      "category_theory",
+      "analysis"
+    ],
+    "domain_names": [
+      "Category Theory",
+      "Analysis"
+    ],
+    "ea_scores": {
+      "strength": 0.294,
+      "independence": 0.7,
+      "adversarial": 0.09,
+      "reproducibility": 0.5249999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.45994999999999997,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_275ec92f734f",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T18:25:14.375948+00:00",
+    "id": "0af0988f685d"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.329295
+  }
+}

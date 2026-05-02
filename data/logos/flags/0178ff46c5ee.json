@@ -1,0 +1,13 @@
+{
+  "proof_id": "0178ff46c5ee",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A fully rigorous proof requires: (1) General theorems connecting non-analyticity of free energy to symmetry breaking that work for all models, not case-by-case; (2) Mathematical framework for renormalization group that doesn't rely on physical intuition; (3) Rigorous derivation of universality from first principles without perturbative assumptions",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

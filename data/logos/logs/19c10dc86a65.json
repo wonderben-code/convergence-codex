@@ -1,0 +1,38 @@
+{
+  "proof_id": "19c10dc86a65",
+  "timestamp": "2026-05-02T12:38:19.561011+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "categorical - One could try to capture this via a functor from classical to quantum systems that fails to preserve certain properties, but the convergence is more about identifying when quantum effects emerge rather than relating category structures"
+      ],
+      "reasoning": "The convergence identifies a shared abstract principle across quantum systems: that quantum coherence and interference produce effects that violate classical predictions. This is best captured by axiomatizing the conditions under which quantum interference emerges and showing both QFT anomalies and optical interference effects satisfy these axioms."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Functional analysis, Category theory, Measure theory",
+      "alternatives_considered": [],
+      "reasoning": "Functional analysis provides the Hilbert space formalism and operator theory essential for quantum mechanics, while category theory captures the structural mappings between quantum and optical domains. Measure theory is needed for probability amplitudes and Born rule formalization."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof shows that coherent quantum superpositions produce interference terms 2Re(\u03b1*\u03b2\u27e8\u03c8\u2081|O|\u03c8\u2082\u27e9) in expectation values that are absent in classical probabilistic mixtures. By constructing an observable O with non-zero off-diagonal matrix elements between component states, we demonstrate that quantum and classical predictions necessarily differ. The connections to QFT anomalies and photonic interference provide physical instantiations of this mathematical structure.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 8 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 2833 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 3828 chars, 10 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "The formalization captures the mathematical structure of the quantum vs classical distinction but requires substantial quantum mechanics infrastructure not present in Mathlib. The key mathematical content (inner products, operators, complex numbers) is available, but quantum-specific concepts like density operators, trace-class operators, and the Born rule need to be developed."
+    }
+  ]
+}

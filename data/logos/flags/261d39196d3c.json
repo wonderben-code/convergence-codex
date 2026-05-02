@@ -1,0 +1,15 @@
+{
+  "proof_id": "261d39196d3c",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A categorical framework that: (1) unifies quantum and classical phase transitions, (2) captures temporal/dynamical aspects of spontaneous emergence, (3) relates geometric discreteness in quantum gravity to pattern formation in fluids, (4) formalizes 'spontaneous' as opposed to externally imposed discretization",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

@@ -1,0 +1,314 @@
+{
+  "id": "f94ad9e25cd8",
+  "convergence_id": "7cfb76ee151f",
+  "timestamp": "2026-05-02T13:42:55.409205+00:00",
+  "proposition": "Let H be a self-adjoint operator on a Hilbert space L\u00b2(\u211d\u207f) with H = -\u0394 + V where V is a periodic potential with period lattice \u039b. Then the spectrum \u03c3(H) consists of closed intervals [E\u2081, E\u2082], [E\u2083, E\u2084], ... (bands) separated by open intervals (E\u2082, E\u2083), (E\u2084, E\u2085), ... (gaps) where no eigenvalues or continuous spectrum exist.",
+  "proposition_natural": "Periodic structures create band gaps that forbid certain frequencies/energies from propagating",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Functional analysis",
+    "Algebraic structures",
+    "Topology"
+  ],
+  "apparatus_justification": "Band gaps are fundamentally about spectral properties of periodic operators (Schr\u00f6dinger, wave operators), which requires spectral theory from functional analysis. The periodic structure induces translation symmetry captured by group actions, while topological properties of the spectrum (gaps as open sets) are essential.",
+  "proof_natural": "**Proposition.** Let $H$ be a self-adjoint operator on the Hilbert space $L^2(\\mathbb{R}^n)$ with $H = -\\Delta + V$ where $V$ is a periodic potential with period lattice $\\Lambda$. Then the spectrum $\\sigma(H)$ consists of closed intervals $[E_1, E_2], [E_3, E_4], \\ldots$ (bands) separated by open intervals $(E_2, E_3), (E_4, E_5), \\ldots$ (gaps) where no eigenvalues or continuous spectrum exist.\n\n**Proof.** We assume that the potential $V: \\mathbb{R}^n \\to \\mathbb{R}$ is measurable and locally $L^2$, satisfying $V(x + R) = V(x)$ for all $x \\in \\mathbb{R}^n$ and $R \\in \\Lambda$, where $\\Lambda$ is a discrete lattice of full rank in $\\mathbb{R}^n$. We further assume that $V$ is relatively bounded with respect to $-\\Delta$ with relative bound less than 1, ensuring that $H$ is essentially self-adjoint on $C_0^\\infty(\\mathbb{R}^n)$ with domain $H^2(\\mathbb{R}^n)$.\n\nBy Floquet-Bloch theory, eigenfunctions of $H$ can be written in the form $\\psi(x) = e^{ik \\cdot x}u_k(x)$, where $u_k$ possesses the periodicity of the lattice. This is a direct application of Floquet's theorem to periodic differential operators, which guarantees that solutions to linear differential equations with periodic coefficients can be expressed as products of exponential and periodic functions.\n\nFor each quasimomentum $k$ in the first Brillouin zone $B$, we obtain a discrete eigenvalue problem $H_k u_k = E_n(k) u_k$ on the fundamental domain, where $H_k$ is the restriction of $H$ with Bloch boundary conditions. Since $H_k$ is self-adjoint with compact resolvent on $L^2$ of the fundamental domain, its spectrum is discrete and consists of eigenvalues $\\{E_n(k)\\}_{n=1}^\\infty$ ordered as $E_1(k) \\leq E_2(k) \\leq \\cdots$.\n\nBy Kato's perturbation theory for isolated eigenvalues of self-adjoint operators, each $E_n(k)$ is a continuous function of $k \\in B$. This continuity is crucial for understanding the structure of the spectrum.\n\nUsing the direct integral decomposition of $H$ over the Brillouin zone, we establish that the spectrum of $H$ is precisely $\\sigma(H) = \\bigcup_{n=1}^\\infty \\{E_n(k) : k \\in B\\}$. This decomposition shows that all spectral values arise from the energy bands.\n\nSince each function $E_n$ is continuous and the Brillouin zone $B$ is compact, the image $B_n = \\{E_n(k) : k \\in B\\}$ forms a closed interval $[\\min_k E_n(k), \\max_k E_n(k)]$ by the extreme value theorem. These are the energy bands.\n\nFinally, if $\\max_k E_n(k) < \\min_k E_{n+1}(k)$ for some $n$, then the open interval $(\\max_k E_n(k), \\min_k E_{n+1}(k))$ contains no spectrum of $H$. This follows directly from our characterization of $\\sigma(H)$ as the union of the bands $B_n$. These open intervals constitute the spectral gaps.\n\nThis completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.Analysis.InnerProductSpace.Spectrum\nimport Mathlib.Analysis.InnerProductSpace.l2Space\nimport Mathlib.Topology.Algebra.Module.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic\nimport Mathlib.Algebra.Module.LinearMap\nimport Mathlib.Topology.ContinuousFunction.Compact\n\n/-- A periodic potential on \u211d\u207f with period lattice \u039b -/\nstructure PeriodicPotential (n : \u2115) where\n  V : \u211d\u207f \u2192 \u211d\n  \u039b : Set (\u211d\u207f)\n  is_lattice : sorry -- \u039b is a lattice\n  is_periodic : \u2200 x \u2208 \u039b, \u2200 y : \u211d\u207f, V (y + x) = V y\n\n/-- The Schr\u00f6dinger operator H = -\u0394 + V on L\u00b2(\u211d\u207f) -/\ndef SchrodingerOperator {n : \u2115} (pot : PeriodicPotential n) : \n  L2.space (\u211d\u207f) \u2192L[\u211d] L2.space (\u211d\u207f) := sorry -- Definition of -\u0394 + V operator\n\n/-- The first Brillouin zone associated to a lattice -/\ndef BrillouinZone {n : \u2115} (\u039b : Set (\u211d\u207f)) : Set (\u211d\u207f) := sorry -- First Brillouin zone construction\n\n/-- Bloch eigenfunction with quasimomentum k -/\nstructure BlochEigenfunction {n : \u2115} (k : \u211d\u207f) where\n  u : \u211d\u207f \u2192 \u2102\n  periodic : sorry -- u has the periodicity of the lattice\n\n/-- The reduced operator H_k on the fundamental domain -/\ndef ReducedOperator {n : \u2115} (pot : PeriodicPotential n) (k : \u211d\u207f) :\n  sorry := sorry -- H_k operator on L\u00b2(fundamental domain)\n\n/-- Band function E_n(k) giving the n-th eigenvalue for quasimomentum k -/\ndef BandFunction {n : \u2115} (pot : PeriodicPotential n) (band_index : \u2115) : \n  BrillouinZone pot.\u039b \u2192 \u211d := sorry -- n-th eigenvalue as function of k\n\n/-- The n-th energy band -/\ndef EnergyBand {n : \u2115} (pot : PeriodicPotential n) (band_index : \u2115) : Set \u211d :=\n  {E | \u2203 k \u2208 BrillouinZone pot.\u039b, E = BandFunction pot band_index \u27e8k, sorry\u27e9}\n\ntheorem spectrum_band_structure {n : \u2115} (pot : PeriodicPotential n) \n  (h_selfadj : IsSelfAdjoint (SchrodingerOperator pot)) :\n  \u2203 (bands : \u2115 \u2192 Set \u211d), \n    (\u2200 n, \u2203 a b, a \u2264 b \u2227 bands n = Set.Icc a b) \u2227 \n    (spectrum \u211d (SchrodingerOperator pot) = \u22c3 n, bands n) \u2227\n    (\u2200 n, \u2203 a b c d, bands n = Set.Icc a b \u2227 bands (n+1) = Set.Icc c d \u2227 b < c \u2192 \n      Set.Ioo b c \u2229 spectrum \u211d (SchrodingerOperator pot) = \u2205) := by\n  -- Step 1: Apply Floquet-Bloch theory\n  have floquet_bloch : sorry := sorry -- Floquet's theorem for periodic operators\n  \n  -- Step 2: Reduce to fundamental domain for each k\n  have reduction : \u2200 k \u2208 BrillouinZone pot.\u039b, sorry := sorry -- Reduction via Bloch boundary conditions\n  \n  -- Step 3: Discrete spectrum for each H_k\n  have discrete_spectrum : \u2200 k \u2208 BrillouinZone pot.\u039b, sorry := sorry -- H_k has discrete spectrum\n  \n  -- Step 4: Continuity of band functions\n  have band_continuous : \u2200 n, Continuous (BandFunction pot n) := sorry -- Perturbation theory\n  \n  -- Step 5: Spectrum decomposition\n  have spectrum_decomp : spectrum \u211d (SchrodingerOperator pot) = \n    \u22c3 n, EnergyBand pot n := sorry -- Direct integral decomposition\n  \n  -- Step 6: Each band is a closed interval\n  have band_interval : \u2200 n, \u2203 a b, a \u2264 b \u2227 EnergyBand pot n = Set.Icc a b := by\n    intro n\n    have compact_B : IsCompact (BrillouinZone pot.\u039b) := sorry -- Brillouin zone is compact\n    have cont := band_continuous n\n    sorry -- Continuous image of compact set is closed interval\n  \n  -- Step 7: Gaps contain no spectrum\n  use EnergyBand pot\n  constructor\n  \u00b7 exact band_interval\n  constructor\n  \u00b7 exact spectrum_decomp\n  \u00b7 intro n a b c d h_band_n h_band_n1 h_gap\n    sorry -- By spectrum decomposition, gaps contain no spectrum",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "By Floquet-Bloch theory, eigenfunctions of H can be written as \u03c8(x) = e^{ik\u00b7x}u_k(x) where u_k has the periodicity of the lattice",
+      "justification": "Application of Floquet's theorem to periodic differential operators",
+      "dependencies": [
+        "Floquet's theorem (1883)"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "For each quasimomentum k in the first Brillouin zone B, we obtain a discrete eigenvalue problem H_k u_k = E_n(k) u_k on the fundamental domain",
+      "justification": "Reduction to unit cell via Bloch boundary conditions",
+      "dependencies": [
+        "Step 1",
+        "Bloch's theorem (1929)"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "For fixed k \u2208 B, the operator H_k has discrete spectrum {E_n(k)}_{n=1}^\u221e with E_1(k) \u2264 E_2(k) \u2264 ...",
+      "justification": "H_k is self-adjoint with compact resolvent on L\u00b2(fundamental domain)",
+      "dependencies": [
+        "Spectral theorem for compact self-adjoint operators"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "Each E_n(k) is a continuous function of k \u2208 B",
+      "justification": "Perturbation theory for isolated eigenvalues of self-adjoint operators",
+      "dependencies": [
+        "Kato's perturbation theory",
+        "Step 3"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The spectrum of H is \u03c3(H) = \u22c3_{n=1}^\u221e {E_n(k) : k \u2208 B}",
+      "justification": "Direct integral decomposition of H over the Brillouin zone",
+      "dependencies": [
+        "Steps 2-4",
+        "Direct integral theory"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Each band B_n = {E_n(k) : k \u2208 B} is a closed interval [min_k E_n(k), max_k E_n(k)]",
+      "justification": "Continuous image of compact set B under continuous function E_n",
+      "dependencies": [
+        "Step 4",
+        "Compactness of Brillouin zone"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "If max_k E_n(k) < min_k E_{n+1}(k), then the open interval (max_k E_n(k), min_k E_{n+1}(k)) contains no spectrum of H",
+      "justification": "By Step 5, all spectrum comes from the bands B_n",
+      "dependencies": [
+        "Steps 5, 6"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Floquet's theorem",
+      "authors": "Gaston Floquet",
+      "year": "1883",
+      "field": "Differential equations",
+      "statement": "Solutions to linear ODEs with periodic coefficients can be written as e^{\u03bct}p(t) where p is periodic",
+      "usage": "Extended to PDEs to decompose eigenfunctions into Bloch waves"
+    },
+    {
+      "name": "Bloch's theorem",
+      "authors": "Felix Bloch",
+      "year": "1929",
+      "field": "Quantum mechanics",
+      "statement": "Eigenstates of a periodic Hamiltonian can be written as Bloch waves \u03c8_k(x) = e^{ik\u00b7x}u_k(x)",
+      "usage": "Fundamental decomposition allowing reduction to unit cell"
+    },
+    {
+      "name": "Kato's perturbation theory",
+      "authors": "Tosio Kato",
+      "year": "1966",
+      "field": "Functional analysis",
+      "statement": "Isolated eigenvalues of self-adjoint operators depend continuously on parameters",
+      "usage": "Ensures E_n(k) is continuous in k"
+    },
+    {
+      "name": "Direct integral theory",
+      "authors": "von Neumann",
+      "year": "1949",
+      "field": "Functional analysis",
+      "statement": "Certain operators can be decomposed as integrals of simpler operators",
+      "usage": "Relates spectrum of H to spectra of H_k"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The potential V: \u211d\u207f \u2192 \u211d is measurable and locally L\u00b2",
+    "V(x + R) = V(x) for all x \u2208 \u211d\u207f and R \u2208 \u039b where \u039b is a discrete lattice",
+    "V is relatively bounded with respect to -\u0394 with relative bound < 1",
+    "The domain of H is the Sobolev space H\u00b2(\u211d\u207f)",
+    "The operator H is essentially self-adjoint on C\u2080^\u221e(\u211d\u207f)",
+    "The dimension n is finite",
+    "The lattice \u039b has full rank in \u211d\u207f"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "Application of Floquet-Bloch theory",
+        "issue": "The proof incorrectly applies Floquet's theorem (which is for ODEs) to a PDE problem. Bloch's theorem is what should be used, but the proof conflates the two and doesn't establish that all eigenfunctions have Bloch form.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Properly state and apply Bloch's theorem for periodic Schr\u00f6dinger operators, not Floquet's theorem for ODEs"
+      },
+      {
+        "step": "Spectrum characterization via direct integral",
+        "issue": "The proof asserts \u03c3(H) = \u222a_n {E_n(k) : k \u2208 B} without proving this equality. This requires showing that every point in the spectrum comes from some E_n(k) and vice versa.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Provide the full direct integral decomposition and prove both inclusions for the spectrum equality"
+      },
+      {
+        "step": "Discreteness of H_k spectrum",
+        "issue": "The claim that H_k has compact resolvent on the fundamental domain is unjustified. This requires proving that the fundamental domain with Bloch boundary conditions gives a compact embedding.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Prove compactness of the resolvent using Rellich-Kondrachov theorem with periodic boundary conditions"
+      },
+      {
+        "step": "Continuity of eigenvalues E_n(k)",
+        "issue": "Kato's perturbation theory requires isolated eigenvalues, but the proof doesn't establish that eigenvalues E_n(k) remain isolated as k varies, especially at points where bands may touch.",
+        "severity": "major",
+        "fixable": false,
+        "suggested_fix": "Need to handle potential eigenvalue crossings and degeneracies carefully"
+      },
+      {
+        "step": "Band structure conclusion",
+        "issue": "The proof assumes bands are intervals without proving they are connected. E_n(k) being continuous doesn't immediately imply the range is an interval - it could be disconnected.",
+        "severity": "minor",
+        "fixable": true,
+        "suggested_fix": "Apply intermediate value theorem after establishing that B is connected"
+      }
+    ],
+    "hidden_assumptions": [
+      "All eigenfunctions of H are Bloch waves (excludes possible bound states)",
+      "The spectrum consists only of essential spectrum (no discrete eigenvalues outside bands)",
+      "Eigenvalue branches E_n(k) can be globally labeled and don't cross",
+      "The Brillouin zone B is connected",
+      "The fundamental domain choice doesn't affect the analysis"
+    ],
+    "circular_reasoning": false,
+    "circular_details": "",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to characterize the full spectrum but only analyzes Bloch eigenstates. It doesn't rule out discrete eigenvalues in gaps or prove that all spectrum comes from Bloch states. The conclusion about band-gap structure is only partially justified.",
+    "citation_issues": [
+      "Floquet's theorem is for ODEs with periodic coefficients, not PDEs - should cite Bloch's theorem",
+      "Kato's perturbation theory application needs more careful justification regarding isolated vs. embedded eigenvalues",
+      "Direct integral decomposition is mentioned but not properly constructed or cited"
+    ],
+    "structural_soundness": 0.4,
+    "overall_assessment": "The proof has the right general idea but contains critical gaps in rigor, particularly in establishing the spectrum characterization and ruling out non-Bloch eigenstates. The conflation of Floquet and Bloch theorems suggests conceptual confusion, and key technical steps are asserted without justification.",
+    "verdict": "major_revision"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "Proves that the spectrum consists of bands that are closed intervals, but does not prove that gaps necessarily exist or that they are open intervals where no spectrum exists",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The Brillouin zone B is compact",
+      "The functions E_n(k) are well-defined for all k in B",
+      "The eigenvalues E_n(k) do not cross (no band touching)",
+      "The potential V ensures that H_k has compact resolvent",
+      "The direct integral decomposition is valid for this specific operator"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "3",
+        "issue": "Claims H_k has compact resolvent without justification - this requires specific conditions on V and the domain that are not verified"
+      },
+      {
+        "step": "4",
+        "issue": "Perturbation theory for isolated eigenvalues requires that eigenvalues remain isolated, but this is not guaranteed - eigenvalues could coalesce"
+      },
+      {
+        "step": "6",
+        "issue": "Claims each band is a closed interval [min, max] but this assumes E_n(k) achieves its minimum and maximum on B, which requires compactness arguments not provided"
+      },
+      {
+        "step": "7",
+        "issue": "The existence of gaps (max E_n < min E_{n+1}) is assumed rather than proven - this is actually a non-trivial result that depends on the specific potential"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Does not prove that gaps actually exist between bands",
+      "Does not establish that bands cannot overlap",
+      "Missing verification that the direct integral decomposition applies",
+      "No proof that the band functions E_n(k) are well-defined and continuous everywhere on B",
+      "Does not address potential degeneracies or band crossings"
+    ],
+    "internal_score": 0.3
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": false,
+    "contradiction_details": [],
+    "assumption_conflicts": [],
+    "beneficial_connections": [
+      "Connects to [08b6405556dd] on symmetry principles - the periodic potential V respects lattice symmetry group, and Floquet-Bloch theory exploits this symmetry structure",
+      "Relates to [1318ecd2c25c] on phase transitions - spectral gaps in band structure can correspond to quantum phase transitions when parameters are varied",
+      "Complements [19c10dc86a65] on quantum coherence - Bloch waves are coherent quantum states that demonstrate interference effects across the periodic lattice",
+      "Extends [139ee0499c9e] on topological constraints - band topology (Chern numbers, Berry phases) provides topological invariants that constrain spectral properties"
+    ],
+    "consistency_score": 0.85,
+    "notes": "The proof is mathematically sound but incomplete. Critical gaps: (1) No proof that bands are actually closed intervals rather than just connected sets, (2) Missing rigorous justification for continuity of E_n(k) at Brillouin zone boundary, (3) Assumes without proof that H_k has discrete spectrum for each k, (4) No verification that relative boundedness condition is preserved under Floquet decomposition, (5) Boundary conditions at fundamental domain edges not properly addressed. The band structure conclusion requires additional compactness arguments."
+  },
+  "confidence_score": 0.4125,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.3,
+    "cross_proof": 0.85,
+    "calibration": 0.6
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.3,
+    "cross_proof": 0.85,
+    "calibration": 0.6
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": true,
+  "new_mathematics_needed": "",
+  "limitations": [
+    "The proof assumes without justification that bands B_n are connected sets (they need not be)",
+    "No explicit construction of the direct integral decomposition is provided",
+    "The relative boundedness condition on V could be weakened but requires more technical machinery",
+    "Does not guarantee that gaps actually exist - bands may overlap",
+    "Does not provide estimates on gap sizes",
+    "Assumes infinite periodic structure - finite systems require different analysis",
+    "Does not address the case of quasiperiodic or disordered potentials"
+  ],
+  "source_convergence": {
+    "structural_claim": "Periodic structures create band gaps that forbid certain frequencies/energies from propagating",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Optical Lattices and Band Structure",
+        "domain_id": "field_a",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Periodic optical potentials create band structures with forbidden energy ranges for atoms"
+      },
+      {
+        "result_id": "",
+        "result_name": "Bloch's Theorem for Periodic Media",
+        "domain_id": "field_b",
+        "domain_name": "Acoustics and Wave Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Periodic acoustic structures create frequency band gaps where waves cannot propagate"
+      }
+    ],
+    "domains": [
+      "atomic_physics",
+      "acoustics"
+    ],
+    "domain_names": [
+      "Atomic and Molecular Physics",
+      "Acoustics and Wave Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.238,
+      "independence": 0.7,
+      "adversarial": 0.12,
+      "reproducibility": 0.42,
+      "depth_consistency": 1.0,
+      "confidence": 0.4334,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:56:26.304834+00:00",
+    "id": "7cfb76ee151f"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.277125
+  }
+}

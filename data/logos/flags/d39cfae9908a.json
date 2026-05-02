@@ -1,0 +1,13 @@
+{
+  "proof_id": "d39cfae9908a",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous mathematical framework for taking thermodynamic limits of quantum systems while preserving symmetry-breaking information. Current approaches using C*-algebraic methods are incomplete for general interacting systems.",
+    "7 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

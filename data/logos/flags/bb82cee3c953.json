@@ -1,0 +1,15 @@
+{
+  "proof_id": "bb82cee3c953",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A meta-categorical framework that provides a universal notion of duality applicable to all mathematical structures. This would require: (1) A formal definition of 'mathematical structure' that encompasses all domains, (2) A universal duality construction that specializes to known dualities, (3) Proof that information preservation holds in full generality",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

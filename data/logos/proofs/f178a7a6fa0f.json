@@ -1,0 +1,343 @@
+{
+  "id": "f178a7a6fa0f",
+  "convergence_id": "374b50ba703b",
+  "timestamp": "2026-05-02T12:54:09.177899+00:00",
+  "proposition": "Let (\u03a9, \u03bc) be a measure space representing a physical system with state space \u03a9 and measure \u03bc. Let L\u2081, L\u2082: \u03a9 \u2192 \u211d\u208a be measurable functions representing competing length scales, and E\u2081, E\u2082: \u03a9 \u2192 \u211d\u208a be measurable functions representing competing energy scales. Define the ratio functions R_L = L\u2081/L\u2082 and R_E = E\u2081/E\u2082. Then there exists a critical set C \u2282 \u211d\u208a \u00d7 \u211d\u208a such that the system undergoes a phase transition if and only if (R_L(\u03c9), R_E(\u03c9)) \u2208 C for a set of states \u03c9 with positive measure.",
+  "proposition_natural": "Phase transitions in matter occur when competing length scales or energy scales cross critical thresholds",
+  "formalisation_type": "constraint_logic",
+  "mathematical_apparatus": [
+    "Dynamical systems",
+    "Measure theory",
+    "Order theory"
+  ],
+  "apparatus_justification": "Phase transitions are fundamentally about system behavior changing qualitatively at critical points, which is the core subject of dynamical systems theory. Measure theory provides the rigorous foundation for defining competing scales and their statistical properties. Order theory captures the threshold-crossing behavior and partial ordering of phases.",
+  "proof_natural": "**Proposition.** Let (\u03a9, \u03bc) be a measure space representing a physical system with state space \u03a9 and measure \u03bc. Let L\u2081, L\u2082: \u03a9 \u2192 \u211d\u208a be measurable functions representing competing length scales, and E\u2081, E\u2082: \u03a9 \u2192 \u211d\u208a be measurable functions representing competing energy scales. Define the ratio functions R_L = L\u2081/L\u2082 and R_E = E\u2081/E\u2082. Then there exists a critical set C \u2282 \u211d\u208a \u00d7 \u211d\u208a such that the system undergoes a phase transition if and only if (R_L(\u03c9), R_E(\u03c9)) \u2208 C for a set of states \u03c9 with positive measure.\n\n**Proof.** We assume that physical systems can be represented as measure spaces (\u03a9, \u03bc) where \u03a9 is the state space, and that length scales and energy scales are positive real-valued measurable functions on this space. We further assume that phase transitions are characterized by discontinuous changes in order parameters, that the ratio of competing scales determines system behavior, and that phase transitions occur on sets of positive measure rather than isolated points.\n\nLet \u03c6: \u03a9 \u2192 {0,1} be the phase indicator function, where \u03c6(\u03c9) = 1 if the system is in phase A at state \u03c9 and \u03c6(\u03c9) = 0 if in phase B. This function is measurable by construction.\n\nSince phase transitions are characterized by discontinuous changes in order parameters, there exists a discontinuity set D \u2282 \u03a9 where \u03c6 is discontinuous. This follows directly from our assumption about the nature of phase transitions.\n\nDefine the mapping F: \u03a9 \u2192 \u211d\u208a \u00d7 \u211d\u208a by F(\u03c9) = (R_L(\u03c9), R_E(\u03c9)). Since the composition of measurable functions is measurable, and both R_L and R_E are ratios of measurable functions, F is measurable.\n\n[Note: At this stage, we require a general theory connecting microscopic scale ratios to macroscopic phase behavior. Such a theory would establish that discontinuities in \u03c6 correspond to specific values of F. This represents a significant gap in the general formulation, as the connection between scale ratios and phase behavior is typically system-specific.]\n\nAssuming this correspondence exists, we define the critical set C = F(D) as the image of the discontinuity set under F. This is the set of all scale ratio pairs that correspond to states where phase transitions occur.\n\n[Note: The structure and geometry of C in \u211d\u208a \u00d7 \u211d\u208a depends on the specific physics of each system. In practice, critical sets often form curves or surfaces determined by the system's universality class and symmetries.]\n\nBy construction, the phase indicator function \u03c6 is discontinuous at state \u03c9 if and only if F(\u03c9) \u2208 C. Since phase transitions occur exactly at those states where \u03c6 is discontinuous, we conclude that the system undergoes a phase transition at state \u03c9 if and only if (R_L(\u03c9), R_E(\u03c9)) \u2208 C.\n\nThe existence of such a critical set C follows from our construction, though its specific form requires detailed knowledge of the system's physics. This completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.MeasureTheory.Measure.MeasureSpace\nimport Mathlib.MeasureTheory.Function.AEEqOfIntegral\nimport Mathlib.Topology.Basic\nimport Mathlib.Data.Real.NNReal\nimport Mathlib.MeasureTheory.Constructions.BorelSpace.Basic\n\n/-- A measure space representing a physical system with competing length and energy scales -/\nstructure PhysicalSystem (\u03a9 : Type*) [MeasurableSpace \u03a9] where\n  \u03bc : Measure \u03a9\n  L\u2081 : \u03a9 \u2192 \u211d\u22650  -- First length scale\n  L\u2082 : \u03a9 \u2192 \u211d\u22650  -- Second length scale\n  E\u2081 : \u03a9 \u2192 \u211d\u22650  -- First energy scale\n  E\u2082 : \u03a9 \u2192 \u211d\u22650  -- Second energy scale\n  L\u2081_meas : Measurable L\u2081\n  L\u2082_meas : Measurable L\u2082\n  E\u2081_meas : Measurable E\u2081\n  E\u2082_meas : Measurable E\u2082\n  L\u2082_pos : \u2200 \u03c9, L\u2082 \u03c9 > 0\n  E\u2082_pos : \u2200 \u03c9, E\u2082 \u03c9 > 0\n\nvariable {\u03a9 : Type*} [MeasurableSpace \u03a9] (sys : PhysicalSystem \u03a9)\n\n/-- The ratio of length scales -/\ndef R_L (sys : PhysicalSystem \u03a9) : \u03a9 \u2192 \u211d\u22650 :=\n  fun \u03c9 => sys.L\u2081 \u03c9 / sys.L\u2082 \u03c9\n\n/-- The ratio of energy scales -/\ndef R_E (sys : PhysicalSystem \u03a9) : \u03a9 \u2192 \u211d\u22650 :=\n  fun \u03c9 => sys.E\u2081 \u03c9 / sys.E\u2082 \u03c9\n\n/-- Phase indicator function: 1 for phase A, 0 for phase B -/\ndef phaseIndicator : \u03a9 \u2192 Fin 2 := sorry\n-- Missing: Formal definition of phases in a physical system\n\n/-- The set of discontinuity points of the phase indicator function -/\ndef discontinuitySet : Set \u03a9 := sorry\n-- Missing: Theory of discontinuities for measurable functions on general measure spaces\n\n/-- The mapping from state space to ratio space -/\ndef F (sys : PhysicalSystem \u03a9) : \u03a9 \u2192 \u211d\u22650 \u00d7 \u211d\u22650 :=\n  fun \u03c9 => (R_L sys \u03c9, R_E sys \u03c9)\n\nlemma F_measurable (sys : PhysicalSystem \u03a9) : Measurable (F sys) := by\n  apply Measurable.prod\n  \u00b7 unfold F R_L\n    apply Measurable.div\n    \u00b7 exact sys.L\u2081_meas\n    \u00b7 exact sys.L\u2082_meas\n    \u00b7 exact sys.L\u2082_pos\n  \u00b7 unfold F R_E\n    apply Measurable.div\n    \u00b7 exact sys.E\u2081_meas\n    \u00b7 exact sys.E\u2082_meas\n    \u00b7 exact sys.E\u2082_pos\n\n/-- The critical set in ratio space where phase transitions occur -/\ndef criticalSet (sys : PhysicalSystem \u03a9) : Set (\u211d\u22650 \u00d7 \u211d\u22650) :=\n  F sys '' discontinuitySet\n\n/-- Main theorem: Phase transitions occur if and only if the ratio point lies in the critical set -/\ntheorem phase_transition_characterization (sys : PhysicalSystem \u03a9) :\n  \u2203 (C : Set (\u211d\u22650 \u00d7 \u211d\u22650)), \u2200 \u03c9 : \u03a9,\n    (\u03c9 \u2208 discontinuitySet) \u2194 ((R_L sys \u03c9, R_E sys \u03c9) \u2208 C) :=\nby\n  use criticalSet sys\n  intro \u03c9\n  constructor\n  \u00b7 intro h\n    unfold criticalSet\n    use \u03c9\n    constructor\n    \u00b7 exact h\n    \u00b7 rfl\n  \u00b7 intro h\n    unfold criticalSet at h\n    sorry\n    -- Missing: Need to establish that discontinuities in phase indicator\n    -- correspond to specific values of F, which requires a theory connecting\n    -- microscopic scale ratios to macroscopic phase behavior\n\n/-- The system undergoes a phase transition for a set of positive measure -/\ntheorem positive_measure_transition (sys : PhysicalSystem \u03a9)\n  (h_trans : sys.\u03bc discontinuitySet > 0) :\n  sys.\u03bc (F sys \u207b\u00b9' (criticalSet sys)) > 0 :=\nby\n  sorry\n  -- Missing: Requires measurable selection theorem and properties of\n  -- critical sets for dynamical systems",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the phase indicator function \u03c6: \u03a9 \u2192 {0,1} where \u03c6(\u03c9) = 1 if the system is in phase A at state \u03c9 and \u03c6(\u03c9) = 0 if in phase B",
+      "justification": "Definition of a measurable function to characterize phases",
+      "dependencies": []
+    },
+    {
+      "step_number": 2,
+      "statement": "By the assumption that phase transitions are characterized by discontinuous changes, there exists a discontinuity set D \u2282 \u03a9 where \u03c6 is discontinuous",
+      "justification": "Direct consequence of the definition of phase transitions",
+      "dependencies": [
+        "Assumption 3"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Define the mapping F: \u03a9 \u2192 \u211d\u208a \u00d7 \u211d\u208a by F(\u03c9) = (R_L(\u03c9), R_E(\u03c9))",
+      "justification": "Composition of measurable functions is measurable",
+      "dependencies": [
+        "Step 1",
+        "Measurability of L\u2081, L\u2082, E\u2081, E\u2082"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "[Gap: Need to establish that discontinuities in \u03c6 correspond to specific values of F]",
+      "justification": "This requires a theory connecting microscopic scale ratios to macroscopic phase behavior that doesn't exist in general form",
+      "dependencies": [
+        "Steps 2, 3"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Assuming step 4, define C = F(D) as the image of the discontinuity set under F",
+      "justification": "Direct image of a set under a measurable function",
+      "dependencies": [
+        "Step 4"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "[Gap: Need to prove C has the required structure in \u211d\u208a \u00d7 \u211d\u208a]",
+      "justification": "Requires specific physics of each system to determine the geometry of critical surfaces",
+      "dependencies": [
+        "Step 5"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "By construction, \u03c6 is discontinuous at \u03c9 if and only if F(\u03c9) \u2208 C",
+      "justification": "Definition of C as the image of the discontinuity set",
+      "dependencies": [
+        "Steps 5, 6"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Therefore, the system undergoes a phase transition at state \u03c9 if and only if (R_L(\u03c9), R_E(\u03c9)) \u2208 C",
+      "justification": "Phase transitions occur exactly where \u03c6 is discontinuous",
+      "dependencies": [
+        "Steps 2, 7"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Measurable Selection Theorem",
+      "authors": "Kuratowski and Ryll-Nardzewski",
+      "year": "1965",
+      "field": "Measure Theory",
+      "statement": "Under appropriate conditions, there exist measurable selections of set-valued mappings",
+      "usage": "Would be needed to rigorously construct the phase indicator function from physical observables"
+    },
+    {
+      "name": "Theory of Critical Phenomena",
+      "authors": "Wilson, Fisher, Kadanoff",
+      "year": "1970s",
+      "field": "Statistical Physics",
+      "statement": "Phase transitions are characterized by diverging correlation lengths and universal scaling behavior",
+      "usage": "Provides physical justification for the role of length scales but lacks general mathematical formulation"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Physical systems can be represented as measure spaces (\u03a9, \u03bc) where \u03a9 is the state space",
+    "Length scales and energy scales are positive real-valued measurable functions on the state space",
+    "Phase transitions are characterized by discontinuous changes in order parameters",
+    "The ratio of competing scales determines system behavior",
+    "The critical set C is measurable in \u211d\u208a \u00d7 \u211d\u208a",
+    "Phase transitions occur on sets of positive measure rather than isolated points",
+    "The mapping from scale ratios to phase behavior is deterministic",
+    "All relevant physics is captured by the two pairs of competing scales"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Definition of phase indicator function \u03c6: \u03a9 \u2192 {0,1}",
+        "issue": "The proof assumes a binary phase classification exists without justifying why all phase transitions can be reduced to two phases, ignoring multi-phase systems, continuous phase transitions, and critical points",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed without completely reformulating the proposition to handle general phase transitions"
+      },
+      {
+        "step": "Existence of discontinuity set D where \u03c6 is discontinuous",
+        "issue": "The proof claims D exists 'by assumption' but never proves \u03c6 must have discontinuities. Many phase transitions are continuous (second-order transitions)",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "The entire framework fails for continuous phase transitions"
+      },
+      {
+        "step": "Definition of critical set C = F(D)",
+        "issue": "The proof admits in a note that it requires 'a general theory connecting microscopic scale ratios to macroscopic phase behavior' which doesn't exist. This is not a minor gap - it's the entire core of the proof",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "No general theory exists; this connection is system-specific"
+      },
+      {
+        "step": "Measurability of R_L and R_E",
+        "issue": "Division by L\u2082 and E\u2082 is undefined when these functions are zero, which is not addressed",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Restrict domain to {\u03c9: L\u2082(\u03c9) > 0, E\u2082(\u03c9) > 0}"
+      },
+      {
+        "step": "F is measurable because composition of measurable functions is measurable",
+        "issue": "This requires L\u2082 and E\u2082 to be non-zero almost everywhere, which is assumed without justification",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Add assumption that L\u2082, E\u2082 > 0 \u03bc-almost everywhere"
+      },
+      {
+        "step": "Phase transitions occur on sets of positive measure",
+        "issue": "This excludes first-order phase transitions that can occur on measure-zero boundaries between phases",
+        "severity": "major",
+        "fixable": false,
+        "suggested_fix": "Reformulate to handle phase boundaries properly"
+      }
+    ],
+    "hidden_assumptions": [
+      "All phase transitions are between exactly two phases",
+      "Phase transitions are always characterized by discontinuities (excludes continuous transitions)",
+      "The state space \u03a9 has sufficient structure for discontinuities to be well-defined",
+      "Scale ratios uniquely determine phase behavior (ignores history dependence, metastability)",
+      "The measure \u03bc is compatible with physical observables",
+      "Length and energy scales are the only relevant variables for phase transitions",
+      "The system is in thermodynamic equilibrium"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes phase transitions are characterized by discontinuities in order parameters, then uses this to define where transitions occur, then concludes transitions occur at these discontinuities. The existence of the critical set C is assumed rather than proven.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to handle all phase transitions in all physical systems using only two scale ratios, but at best could only apply to specific equilibrium systems with binary phases and discontinuous transitions. It cannot handle continuous transitions, multi-phase systems, non-equilibrium transitions, or systems where other variables matter.",
+    "citation_issues": [
+      "Measurable Selection Theorem is cited but never actually used in the proof",
+      "Theory of Critical Phenomena is cited but contradicts the proof's framework - critical phenomena involve continuous transitions with power-law scaling, not discontinuous jumps"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed, attempting to prove a universal result about all phase transitions while only considering a narrow special case. The core step requiring a 'general theory connecting scale ratios to phase behavior' is admitted to not exist, making the entire proof vacuous. The framework cannot handle continuous phase transitions, which are central to critical phenomena.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish a tautological relationship by defining the critical set C as the image of discontinuity points, but fails to prove the existence of such a set with the required properties or establish the fundamental connection between scale ratios and phase transitions.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The phase indicator function \u03c6 is well-defined and unique",
+      "Discontinuity sets D exist and are measurable",
+      "The image F(D) has positive measure in \u211d\u208a \u00d7 \u211d\u208a",
+      "The mapping F is surjective onto its image",
+      "Phase transitions are binary (only two phases)",
+      "The system has a well-defined notion of 'competing' scales",
+      "Scale ratios uniquely determine phase behavior",
+      "The measure space (\u03a9, \u03bc) has appropriate topological structure for defining discontinuity"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "2",
+        "issue": "Assumes discontinuity sets exist without proving they are non-empty or measurable, and conflates physical phase transitions with mathematical discontinuity"
+      },
+      {
+        "step": "4",
+        "issue": "Explicitly acknowledges a gap but proceeds anyway - no justification provided for the fundamental connection between scale ratios and discontinuities"
+      },
+      {
+        "step": "6",
+        "issue": "Another acknowledged gap - fails to establish that C has any meaningful structure or properties"
+      },
+      {
+        "step": "7",
+        "issue": "Creates a circular definition - C is defined as F(D), so this step is tautological rather than proving a meaningful relationship"
+      },
+      {
+        "step": "8",
+        "issue": "Conclusion doesn't follow because the fundamental connection between scale ratios and phase transitions was never established"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Never establishes the existence of the critical set C with required properties",
+      "Fails to prove the fundamental hypothesis that scale ratios determine phase behavior",
+      "No proof that discontinuity sets are non-empty or measurable",
+      "Missing analysis of the measure-theoretic properties of the critical set",
+      "No consideration of degenerate cases where ratios are undefined",
+      "Circular reasoning in defining C and then claiming the if-and-only-if relationship"
+    ],
+    "internal_score": 0.1
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof assumes deterministic mapping from scale ratios to phase behavior, contradicting proof [2cc2431e06a6] which establishes quantum effects create fundamental thresholds that bifurcate outcomes into discrete classes",
+      "The assumption that 'all relevant physics is captured by two pairs of competing scales' conflicts with proof [37338340b3ed] which shows physical systems exhibit fundamental discreteness requiring scale filtrations {\u03a9_\u03b5}",
+      "The characterization of phase transitions as purely discontinuous changes contradicts proof [087da119976b] which shows symmetry breaking creates ordered patterns through continuous processes when driving forces overcome dissipation"
+    ],
+    "assumption_conflicts": [
+      "Measure space representation conflicts with categorical quantum system representations in [06879fd9ae87] and [19c10dc86a65]",
+      "Deterministic scale-ratio mapping contradicts quantum measurement contextuality in [06879fd9ae87]",
+      "Simple ratio-based phase transitions ignore topological constraints established in [139ee0499c9e], [1b27ca45ba4e], and [523a76365e87]",
+      "Binary phase indicator function \u03c6: \u03a9 \u2192 {0,1} oversimplifies compared to continuous symmetry breaking in [49891606b8f0]"
+    ],
+    "beneficial_connections": [
+      "Measure space framework aligns with [14e1952bf633] statistical mechanics approach",
+      "Scale competition concept relates to [574d327c8078] scale-dependent effective descriptions",
+      "Critical set approach has structural similarity to threshold concepts in [2cc2431e06a6]"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof contains fundamental gaps in steps 4 and 6, lacks rigor in defining discontinuity sets, and oversimplifies phase transition physics by ignoring quantum effects, topological constraints, and symmetry considerations established in multiple existing proofs. The binary phase classification is particularly problematic."
+  },
+  "confidence_score": 0.21000000000000002,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.1,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.1,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A general mathematical framework connecting microscopic scale competition to macroscopic phase behavior. This would require: (1) A rigorous definition of 'competing scales' beyond simple ratios, (2) A theory of how scale competition induces discontinuities in macroscopic observables, (3) A characterization of the geometry of critical sets in scale-ratio space for general systems",
+  "limitations": [
+    "No general proof that discontinuities in phase indicators correspond to specific scale ratio values",
+    "No characterization of the structure of the critical set C beyond existence",
+    "No proof that the critical set is the same for all relevant order parameters",
+    "Missing connection between measure-theoretic formulation and physical observables",
+    "The proof assumes only two pairs of competing scales, but real systems may have many",
+    "The deterministic mapping from scale ratios to phases ignores fluctuations and finite-size effects",
+    "The measure-theoretic framework may not capture quantum phase transitions",
+    "The proof doesn't establish universality classes or critical exponents"
+  ],
+  "source_convergence": {
+    "structural_claim": "Phase transitions in matter occur when competing length scales or energy scales cross critical thresholds",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Sweet-Parker Reconnection",
+        "domain_id": "field_a",
+        "domain_name": "Plasma Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Magnetic topology changes occur when resistive scales compete with ideal MHD scales"
+      },
+      {
+        "result_id": "",
+        "result_name": "Ballooning Mode Theory",
+        "domain_id": "field_a",
+        "domain_name": "Plasma Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Instabilities emerge when pressure gradient scales compete with magnetic field curvature scales"
+      },
+      {
+        "result_id": "",
+        "result_name": "Quark-Gluon Plasma Discovery",
+        "domain_id": "field_b",
+        "domain_name": "Nuclear Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Nuclear matter undergoes phase transition when thermal energy scale exceeds confinement scale"
+      },
+      {
+        "result_id": "",
+        "result_name": "Nuclear Pasta Phases",
+        "domain_id": "field_b",
+        "domain_name": "Nuclear Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Complex structures form when nuclear force range competes with Coulomb screening length"
+      }
+    ],
+    "domains": [
+      "plasma_physics",
+      "nuclear_physics"
+    ],
+    "domain_names": [
+      "Plasma Physics",
+      "Nuclear Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.2856,
+      "independence": 0.85,
+      "adversarial": 0.3,
+      "reproducibility": 0.6299999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.55268,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:54:08.429335+00:00",
+    "id": "374b50ba703b"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.26031
+  }
+}

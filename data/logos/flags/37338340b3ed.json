@@ -1,0 +1,15 @@
+{
+  "proof_id": "37338340b3ed",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous theory of scale-dependent measure spaces with consistent coarse-graining maps, including criteria for when discrete measures converge to continuous ones under repeated coarse-graining. Also needed: a categorical framework relating observable algebras at different scales.",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

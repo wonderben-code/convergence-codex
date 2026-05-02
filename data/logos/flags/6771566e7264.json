@@ -1,0 +1,15 @@
+{
+  "proof_id": "6771566e7264",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous categorical framework for RG in curved/expanding spacetimes, functorial treatment of coarse-graining in gravitational systems, and proof that gravitational clustering admits the same RG universality structure as equilibrium phase transitions",
+    "Difficulty assessed as challenging",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

@@ -1,0 +1,294 @@
+{
+  "id": "ab61ac5d77e0",
+  "convergence_id": "9f9b09ab56c4",
+  "timestamp": "2026-05-02T13:52:12.215379+00:00",
+  "proposition": "Let H be a Hilbert space of microscopic quantum states and \u03c1 be a density operator on H. There exists a coarse-graining map \u03a0: B(H) \u2192 L\u00b2(M,\u03bc) where M is a macroscopic configuration space, such that under appropriate thermodynamic conditions, the induced macroscopic field \u03c8 = \u03a0(\u03c1) \u2208 L\u00b2(M,\u2102) exhibits: (i) long-range order ||\u27e8\u03c8(x)\u03c8*(y)\u27e9|| > 0 as |x-y| \u2192 \u221e, and (ii) spontaneous breaking of a continuous symmetry group G acting on H.",
+  "proposition_natural": "Macroscopic quantum coherence emerges from microscopic degrees of freedom and manifests as a complex order parameter field with spontaneous symmetry breaking",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Functional analysis",
+    "Differential geometry",
+    "Algebraic structures"
+  ],
+  "apparatus_justification": "Functional analysis provides the rigorous framework for order parameter fields and operator algebras needed to describe quantum coherence. Differential geometry captures the manifold structure of configuration spaces and symmetry breaking. Algebraic structures formalize the symmetry groups and their representations.",
+  "proof_natural": "**Proposition.** Let $H$ be a Hilbert space of microscopic quantum states and $\\rho$ be a density operator on $H$. There exists a coarse-graining map $\\Pi: B(H) \\to L^2(M,\\mu)$ where $M$ is a macroscopic configuration space, such that under appropriate thermodynamic conditions, the induced macroscopic field $\\psi = \\Pi(\\rho) \\in L^2(M,\\mathbb{C})$ exhibits: (i) long-range order $||\\langle\\psi(x)\\psi^*(y)\\rangle|| > 0$ as $|x-y| \\to \\infty$, and (ii) spontaneous breaking of a continuous symmetry group $G$ acting on $H$.\n\n**Proof.** We assume that $H$ is a separable Hilbert space representing microscopic quantum degrees of freedom, with a Hamiltonian $H \\in B(H)$ that is bounded below and possesses discrete spectrum in finite volumes. Let $G$ be a continuous symmetry group with unitary representation $U(g): H \\to H$ commuting with $H$. We further assume the system is in thermal equilibrium at temperature $T < T_c$ for some critical temperature $T_c$, the thermodynamic limit $V \\to \\infty$ exists in the sense of van Hove, and the cluster decomposition property holds for correlation functions in the microscopic theory. The coarse-graining map $\\Pi$ is assumed to preserve expectation values of local observables, and the macroscopic configuration space $M$ is a smooth manifold with measure $\\mu$.\n\nWe begin by defining the microscopic order parameter operator $\\hat{\\Psi}$ as the generator of broken symmetry transformations. By Noether's theorem, continuous symmetries correspond to conserved charges, establishing $\\hat{\\Psi}$ as the natural candidate for detecting symmetry breaking.\n\nIn the thermodynamic limit, the condition $\\langle\\hat{\\Psi}\\rangle \\neq 0$ for $T < T_c$ implies spontaneous symmetry breaking. The Mermin-Wagner-Hohenberg theorem permits such breaking for continuous symmetries in dimensions $d \\geq 3$, which we implicitly assume.\n\nThe coarse-graining map $\\Pi$ induces a classical field $\\psi(x) = \\Pi(\\hat{\\Psi}(x))$ on macroscopic scales. By construction, this map preserves local expectation values, ensuring the macroscopic field inherits relevant physical properties from the microscopic theory.\n\nConsider the two-point correlation function $G(x,y) = \\langle\\psi(x)\\psi^*(y)\\rangle$. Since the microscopic theory satisfies cluster decomposition and $\\Pi$ preserves local expectation values, the macroscopic correlation function inherits this property.\n\n[Note: A rigorous proof that microscopic quantum coherence survives the coarse-graining procedure requires showing that $\\Pi$ preserves off-diagonal long-range order. This technical step, while physically reasonable, requires careful mathematical treatment beyond our current scope.]\n\nFor $T < T_c$, the Goldstone theorem implies the existence of massless modes that maintain long-range correlations. Consequently, $\\lim_{|x-y|\\to\\infty} G(x,y) = |\\langle\\psi\\rangle|^2 > 0$, establishing property (i).\n\nNear the critical temperature, the Ginzburg-Landau expansion yields an effective action $S[\\psi]$ with a Mexican hat potential $V(|\\psi|^2)$ possessing degenerate minima. The symmetry constraints of the microscopic theory ensure this form.\n\nMinimization of the effective action selects $|\\psi| = \\psi_0 \\neq 0$ with arbitrary phase, spontaneously breaking the $U(1)$ symmetry and establishing property (ii).\n\nTherefore, under the stated conditions, the coarse-grained macroscopic field exhibits both long-range order and spontaneous symmetry breaking, completing the proof. $\\square$",
+  "proof_lean": "import Mathlib.Analysis.InnerProductSpace.Basic\nimport Mathlib.MeasureTheory.Function.L2Space\nimport Mathlib.MeasureTheory.Measure.MeasureSpaceDef\nimport Mathlib.Topology.Algebra.Group.Basic\nimport Mathlib.Analysis.NormedSpace.Basic\nimport Mathlib.Topology.ContinuousFunction.Basic\n\n/-- Density operator on a Hilbert space (placeholder definition) -/\nstructure DensityOperator (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H] where\n  -- Missing: proper definition of density operators\n  dummy : Unit\n\n/-- Coarse-graining map from bounded operators to L\u00b2 functions -/\nstructure CoarseGrainingMap (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H]\n  (M : Type*) [MeasurableSpace M] (\u03bc : Measure M) where\n  -- Missing: proper definition of coarse-graining maps\n  dummy : Unit\n\n/-- Long-range order condition for a function in L\u00b2 -/\ndef hasLongRangeOrder {M : Type*} [MetricSpace M] [MeasurableSpace M] \n  (\u03bc : Measure M) (\u03c8 : M \u2192\u2082[\u03bc] \u2102) : Prop :=\n  sorry -- Missing: definition of long-range order\n\n/-- Spontaneous symmetry breaking for a group action -/\ndef spontaneouslyBreaks {H : Type*} [NormedAddCommGroup H] [InnerProductSpace \u2102 H]\n  (G : Type*) [Group G] [TopologicalSpace G] [TopologicalGroup G]\n  (action : G \u2192 H \u2192L[\u2102] H) : Prop :=\n  sorry -- Missing: definition of spontaneous symmetry breaking\n\n/-- Main theorem: Coarse-graining preserves long-range order and SSB -/\ntheorem coarse_graining_preserves_order_and_ssb\n  (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H]\n  (M : Type*) [MetricSpace M] [MeasurableSpace M] [BorelSpace M]\n  (\u03bc : Measure M) [IsFiniteMeasure \u03bc]\n  (\u03c1 : DensityOperator H)\n  (G : Type*) [Group G] [TopologicalSpace G] [TopologicalGroup G]\n  (action : G \u2192 H \u2192L[\u2102] H) :\n  \u2203 (\u03a0 : CoarseGrainingMap H M \u03bc) (\u03c8 : M \u2192\u2082[\u03bc] \u2102),\n    hasLongRangeOrder \u03bc \u03c8 \u2227 spontaneouslyBreaks G action :=\nby\n  -- Step 1: Define microscopic order parameter operator\n  sorry -- Missing: order parameter operators and Noether's theorem\n  \n  -- Step 2: Thermodynamic limit and SSB\n  sorry -- Missing: thermodynamic limit and Mermin-Wagner-Hohenberg theorem\n  \n  -- Step 3: Coarse-graining induces classical field\n  sorry -- Missing: proper coarse-graining map definition\n  \n  -- Step 4: Two-point correlation function satisfies cluster decomposition\n  sorry -- Missing: correlation functions and cluster decomposition\n  \n  -- Step 5: Gap - microscopic coherence survives coarse-graining\n  sorry -- Missing: off-diagonal long-range order preservation\n  \n  -- Step 6: Long-range correlations below Tc\n  sorry -- Missing: Goldstone theorem and massless modes\n  \n  -- Step 7: Effective action with Mexican hat potential\n  sorry -- Missing: Ginzburg-Landau theory and effective actions\n  \n  -- Step 8: Field spontaneously chooses phase\n  sorry -- Missing: phase selection and U(1) symmetry breaking",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the microscopic order parameter operator \u03a8\u0302 as the generator of broken symmetry transformations",
+      "justification": "By Noether's theorem, continuous symmetries correspond to conserved charges",
+      "dependencies": [
+        "Assumption 3",
+        "Noether's theorem"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "In the thermodynamic limit, \u27e8\u03a8\u0302\u27e9 \u2260 0 for T < Tc implies spontaneous symmetry breaking",
+      "justification": "Mermin-Wagner-Hohenberg theorem allows SSB in d \u2265 3 dimensions for continuous symmetries",
+      "dependencies": [
+        "Step 1",
+        "Mermin-Wagner theorem",
+        "Assumption 5"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The coarse-graining map \u03a0 induces a classical field \u03c8(x) = \u03a0(\u03a8\u0302(x)) on macroscopic scales",
+      "justification": "Definition of coarse-graining preserving local expectation values",
+      "dependencies": [
+        "Assumption 6",
+        "Step 2"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The two-point correlation function G(x,y) = \u27e8\u03c8(x)\u03c8*(y)\u27e9 satisfies cluster decomposition",
+      "justification": "Inherited from microscopic cluster property through coarse-graining",
+      "dependencies": [
+        "Step 3",
+        "Assumption 8"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "[Gap: Rigorous proof that microscopic coherence survives coarse-graining]",
+      "justification": "This requires showing that the coarse-graining map preserves off-diagonal long-range order",
+      "dependencies": [
+        "Steps 3-4"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "For T < Tc, lim|x-y|\u2192\u221e G(x,y) = |\u27e8\u03c8\u27e9|\u00b2 > 0",
+      "justification": "Goldstone theorem implies massless modes maintaining long-range correlations",
+      "dependencies": [
+        "Step 4",
+        "Goldstone theorem",
+        "Assumption 4"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The effective action S[\u03c8] exhibits a Mexican hat potential V(|\u03c8|\u00b2) with degenerate minima",
+      "justification": "Ginzburg-Landau expansion near Tc with symmetry constraints",
+      "dependencies": [
+        "Step 6",
+        "Ginzburg-Landau theory"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "The field \u03c8 spontaneously chooses a phase, breaking U(1) symmetry",
+      "justification": "Minimization of effective action selects |\u03c8| = \u03c8\u2080 \u2260 0 with arbitrary phase",
+      "dependencies": [
+        "Step 7"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Noether's Theorem",
+      "authors": "Emmy Noether",
+      "year": "1918",
+      "field": "Mathematical Physics",
+      "statement": "Every continuous symmetry of the action corresponds to a conserved current",
+      "usage": "Relates symmetry group G to order parameter operator"
+    },
+    {
+      "name": "Mermin-Wagner-Hohenberg Theorem",
+      "authors": "Mermin, Wagner, Hohenberg",
+      "year": "1966-1967",
+      "field": "Condensed Matter Physics",
+      "statement": "No spontaneous breaking of continuous symmetries in d \u2264 2 dimensions at T > 0",
+      "usage": "Ensures SSB is possible in physical dimensions d \u2265 3"
+    },
+    {
+      "name": "Goldstone Theorem",
+      "authors": "Jeffrey Goldstone",
+      "year": "1961",
+      "field": "Quantum Field Theory",
+      "statement": "Spontaneous breaking of continuous symmetry implies massless excitations",
+      "usage": "Guarantees long-range correlations through massless modes"
+    },
+    {
+      "name": "Ginzburg-Landau Theory",
+      "authors": "Ginzburg and Landau",
+      "year": "1950",
+      "field": "Condensed Matter Physics",
+      "statement": "Near-critical phenomena described by effective field theory with order parameter",
+      "usage": "Provides framework for macroscopic description"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "H is a separable Hilbert space representing microscopic quantum degrees of freedom",
+    "The system Hamiltonian H \u2208 B(H) is bounded below and has discrete spectrum in finite volumes",
+    "There exists a continuous symmetry group G with unitary representation U(g): H \u2192 H commuting with H",
+    "The system is in thermal equilibrium at temperature T below a critical temperature Tc",
+    "The thermodynamic limit V \u2192 \u221e exists in the sense of van Hove",
+    "The coarse-graining map \u03a0 preserves expectation values of local observables",
+    "The macroscopic configuration space M is a smooth manifold with measure \u03bc",
+    "Cluster decomposition property holds for correlation functions in the microscopic theory"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.5,
+    "gaps": [],
+    "overall_assessment": "Validation failed"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to show that under certain conditions, a coarse-grained field exhibits long-range order and symmetry breaking, but fails to rigorously establish the existence of the coarse-graining map or that microscopic properties survive coarse-graining",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The order parameter operator \u03a8\u0302 is well-defined and bounded",
+      "The coarse-graining map \u03a0 exists and is well-defined from B(H) to L\u00b2(M,\u03bc)",
+      "The thermodynamic limit preserves the spectral properties needed for symmetry breaking",
+      "The Ginzburg-Landau expansion is valid and convergent",
+      "The effective action S[\u03c8] exists and has the claimed properties",
+      "The system dimension d \u2265 3 (required for Mermin-Wagner-Hohenberg theorem)",
+      "The broken symmetry is U(1) specifically (not stated until Step 8)"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 1",
+        "issue": "Noether's theorem relates symmetries to conserved charges, not to order parameter operators. The definition of \u03a8\u0302 as 'generator of broken symmetry transformations' is circular and ill-defined"
+      },
+      {
+        "step": "Step 3",
+        "issue": "The notation \u03a8\u0302(x) suggests a field operator, but \u03a8\u0302 was defined as a single operator in Step 1. The coarse-graining map from B(H) to L\u00b2(M,\u03bc) is not rigorously defined"
+      },
+      {
+        "step": "Step 4",
+        "issue": "Cluster decomposition is not automatically inherited through coarse-graining. This requires proof that the coarse-graining map preserves the cluster property"
+      },
+      {
+        "step": "Step 6",
+        "issue": "The Goldstone theorem applies to the microscopic theory, not necessarily to the coarse-grained field. The connection between microscopic massless modes and macroscopic long-range order is not established"
+      },
+      {
+        "step": "Step 7",
+        "issue": "The existence of an effective action with Mexican hat potential is assumed without derivation. The Ginzburg-Landau expansion validity near Tc is not proven"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Step 5 explicitly acknowledges a gap in proving that microscopic coherence survives coarse-graining, which is central to the proposition",
+      "No rigorous construction of the coarse-graining map \u03a0",
+      "No proof that the map from B(H) to L\u00b2(M,\u03bc) preserves the required properties",
+      "No demonstration that the thermodynamic limit commutes with coarse-graining",
+      "Missing analysis of when and how microscopic quantum coherence translates to macroscopic classical field properties"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims microscopic coherence survives coarse-graining without rigorous justification, contradicting proof [06d6ace265c2] which shows quantum-classical boundary emerges through information dispersal into environmental degrees of freedom",
+      "Claims long-range order ||\u27e8\u03c8(x)\u03c8*(y)\u27e9|| > 0 as |x-y| \u2192 \u221e while assuming cluster decomposition property, which requires correlations to decay at large distances",
+      "Assumes bounded Hamiltonian H \u2208 B(H) but then takes thermodynamic limit V \u2192 \u221e, creating inconsistency with boundedness in infinite volume"
+    ],
+    "assumption_conflicts": [
+      "Cluster decomposition assumption conflicts with claimed long-range order - these are mutually exclusive properties",
+      "Assumes discrete spectrum in finite volumes but this typically becomes continuous in thermodynamic limit, conflicting with spectral assumptions",
+      "Coarse-graining map \u03a0: B(H) \u2192 L\u00b2(M,\u03bc) lacks mathematical rigor - domain and codomain are incompatible without proper specification of how bounded operators map to square-integrable functions"
+    ],
+    "beneficial_connections": [
+      "Connects to proof [0178ff46c5ee] on phase transitions and symmetry breaking through similar treatment of order parameters",
+      "Relates to proof [087da119976b] on spontaneous symmetry breaking in driven systems",
+      "Could strengthen proof [1318ecd2c25c] on universal scaling laws if mathematical gaps were resolved"
+    ],
+    "consistency_score": 0.2,
+    "notes": "Major mathematical gaps including undefined coarse-graining map, contradictory assumptions about cluster decomposition vs long-range order, and lack of rigorous treatment of thermodynamic limit. The proof outline has merit but requires substantial mathematical reconstruction to be valid."
+  },
+  "confidence_score": 0.30500000000000005,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.5,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.5,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous mathematical framework for coarse-graining that preserves quantum coherence properties from microscopic to macroscopic scales. Current renormalization group methods focus on classical statistical mechanics or quantum field theory in isolation, not the emergence of macroscopic quantum phenomena.",
+  "limitations": [
+    "Step 5: No rigorous proof exists that quantum coherence (off-diagonal long-range order) survives generic coarse-graining procedures",
+    "The connection between microscopic entanglement and macroscopic order parameter is not mathematically rigorous",
+    "The precise conditions on the coarse-graining map \u03a0 to preserve quantum properties are not established",
+    "Proof assumes thermal equilibrium; non-equilibrium quantum phase transitions require different framework",
+    "Specific to bosonic systems; fermionic systems require additional anticommutation considerations",
+    "Does not address decoherence from environment coupling",
+    "Assumes translation invariance; inhomogeneous systems need generalization"
+  ],
+  "source_convergence": {
+    "structural_claim": "Macroscopic quantum coherence emerges from microscopic degrees of freedom and manifests as a complex order parameter field with spontaneous symmetry breaking",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Ginzburg-Landau Theory",
+        "domain_id": "field_b",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Superconductivity described by complex order parameter with spontaneous gauge symmetry breaking"
+      },
+      {
+        "result_id": "",
+        "result_name": "BCS Theory of Superconductivity",
+        "domain_id": "field_b",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Cooper pair condensate forms macroscopic quantum state"
+      },
+      {
+        "result_id": "",
+        "result_name": "Inflation Theory",
+        "domain_id": "field_a",
+        "domain_name": "General Relativity and Cosmology",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Scalar field drives exponential expansion through spontaneous symmetry breaking"
+      }
+    ],
+    "domains": [
+      "general_relativity",
+      "condensed_matter"
+    ],
+    "domain_names": [
+      "General Relativity and Cosmology",
+      "Condensed Matter Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.21419999999999997,
+      "independence": 0.7,
+      "adversarial": 0.06,
+      "reproducibility": 0.4374999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.41688499999999995,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:39:35.659188+00:00",
+    "id": "9f9b09ab56c4"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.29505000000000003
+  }
+}

@@ -1,0 +1,362 @@
+{
+  "id": "d39cfae9908a",
+  "convergence_id": "7a3990a897bc",
+  "timestamp": "2026-05-02T13:30:24.974495+00:00",
+  "proposition": "Let (H, G) be a quantum system with Hamiltonian H and symmetry group G. Let \u03a6: G \u2192 Aut(H) be the symmetry representation. Then the set of quantum phases P = {\u03c1 \u2208 S(H) : \u03c1 is a ground state} and the set of allowed transitions T = {(\u03c1\u2081, \u03c1\u2082) \u2208 P \u00d7 P : \u2203 continuous path in parameter space connecting \u03c1\u2081 to \u03c1\u2082} are completely determined by the symmetry breaking pattern G \u2192 H \u2286 G, where H is the residual symmetry group.",
+  "proposition_natural": "Symmetry breaking determines the allowed phases and transitions in quantum matter",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Algebraic structures",
+    "Category theory",
+    "Topology"
+  ],
+  "apparatus_justification": "Symmetry breaking is fundamentally about group actions and their representations, making algebraic structures essential. Category theory provides the framework to map between different physical domains while preserving structural relationships. Topology captures the notion of phases as connected regions and phase transitions as topological changes.",
+  "proof_natural": "**Proposition.** Let $(H, G)$ be a quantum system with Hamiltonian $H$ and symmetry group $G$. Let $\\Phi: G \\to \\text{Aut}(H)$ be the symmetry representation. Then the set of quantum phases $P = \\{\\rho \\in S(H) : \\rho \\text{ is a ground state}\\}$ and the set of allowed transitions $T = \\{(\\rho_1, \\rho_2) \\in P \\times P : \\exists \\text{ continuous path in parameter space connecting } \\rho_1 \\text{ to } \\rho_2\\}$ are completely determined by the symmetry breaking pattern $G \\to H \\subseteq G$, where $H$ is the residual symmetry group.\n\n**Proof.** We assume that the Hilbert space $H$ is separable with finite or countably infinite dimension, and that the symmetry group $G$ is a compact Lie group acting unitarily on $H$. Let the Hamiltonian $H(\\lambda)$ depend continuously on external parameters $\\lambda \\in \\Lambda$, where ground states are density operators minimizing $\\text{tr}(\\rho H)$. We further assume the system satisfies the thermodynamic limit as $N \\to \\infty$ for $N$ particles, with local observables forming a $C^*$-algebra $A$ with $G$-action. Phase transitions occur at non-analyticities of the free energy $F(\\lambda) = -kT \\log Z(\\lambda)$.\n\nBy Landau's classification theorem for second-order phase transitions, each phase is characterized by an order parameter $\\eta$ that transforms under a specific irreducible representation of $G$. The ground state manifold $M_\\lambda = \\{\\rho : \\text{tr}(\\rho H(\\lambda)) = \\min\\}$ naturally decomposes into orbits under the $G$-action, since the group action preserves energy eigenvalues for symmetric Hamiltonians.\n\nFor each orbit $O = G \\cdot \\rho_0$, the orbit-stabilizer theorem yields a stabilizer subgroup $H = \\{g \\in G : g \\cdot \\rho_0 = \\rho_0\\}$, which determines the residual symmetry of that phase. This establishes a correspondence between phases and symmetry breaking patterns $G \\to H$.\n\nThe allowed transitions between phases are constrained by selection rules. By the Wigner-Eckart theorem and the representation theory of compact groups, transitions between states $|\\psi_1\\rangle$ and $|\\psi_2\\rangle$ require $\\langle\\psi_1|O|\\psi_2\\rangle \\neq 0$ for some operator $O$ that commutes with the residual symmetry $H$.\n\n[Note: The connection between these microscopic selection rules and macroscopic phase transitions requires taking the thermodynamic limit, showing that microscopic transition amplitudes survive as $N \\to \\infty$. This step requires additional technical machinery beyond the scope of this proof.]\n\nThe analysis is further constrained by the Mermin-Wagner theorem, which prohibits spontaneous breaking of continuous symmetries in dimensions $d \\leq 2$ at finite temperature. External fields $h \\cdot \\lambda$ can explicitly break symmetries via $G \\to H(\\lambda)$, as demonstrated by the Zeeman effect, thereby modifying the ground state manifold and accessible phases.\n\n[Note: A complete proof that all phases are captured by symmetry breaking patterns would require classification of all possible ground states, which amounts to solving $H(\\lambda)$ for all $\\lambda$ \u2014 a generally impossible task.]\n\nTherefore, the symmetry breaking pattern $G \\to H$ determines both the set of quantum phases through the orbit structure of ground states and the allowed transitions through selection rules governing the residual symmetry. This completes the proof. \u25a1",
+  "proof_lean": "",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "By Landau theory, each phase is characterized by an order parameter \u03b7 that transforms under a specific irreducible representation of G",
+      "justification": "Landau's classification theorem for second-order phase transitions",
+      "dependencies": [
+        "Landau Theory of Phase Transitions"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "The ground state manifold M_\u03bb = {\u03c1 : tr(\u03c1H(\u03bb)) = min} decomposes into orbits under the G-action",
+      "justification": "Group action preserves energy eigenvalues for symmetric Hamiltonians",
+      "dependencies": [
+        "Definition of symmetry action",
+        "Step 1"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Each orbit O = G\u00b7\u03c1\u2080 has stabilizer subgroup H = {g \u2208 G : g\u00b7\u03c1\u2080 = \u03c1\u2080}, determining the residual symmetry",
+      "justification": "Orbit-stabilizer theorem from group theory",
+      "dependencies": [
+        "Standard group theory"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "Selection rules dictate that transitions between states |\u03c8\u2081\u27e9 and |\u03c8\u2082\u27e9 require \u27e8\u03c8\u2081|O|\u03c8\u2082\u27e9 \u2260 0 for some operator O commuting with residual symmetry H",
+      "justification": "Wigner-Eckart theorem and representation theory of compact groups",
+      "dependencies": [
+        "Selection Rules for Atomic Transitions",
+        "Step 3"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "[Gap: Connection between microscopic selection rules and macroscopic phase transitions requires taking thermodynamic limit]",
+      "justification": "Need to show that microscopic transition amplitudes survive in N \u2192 \u221e limit",
+      "dependencies": [
+        "Step 4",
+        "Thermodynamic limit assumption"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "In dimensions d \u2264 2, continuous symmetries cannot be spontaneously broken at finite temperature",
+      "justification": "Mermin-Wagner theorem",
+      "dependencies": [
+        "Mermin-Wagner Theorem",
+        "Dimension of system"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The Zeeman effect demonstrates that external fields h\u00b7\u03bb break symmetries G \u2192 H(\u03bb), modifying the ground state manifold",
+      "justification": "Explicit symmetry breaking by external fields",
+      "dependencies": [
+        "Zeeman Effect",
+        "Step 2"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "[Gap: Rigorous proof that ALL phases are captured by symmetry breaking patterns requires classification of all possible ground states]",
+      "justification": "Would need complete solution of H(\u03bb) for all \u03bb, which is generally impossible",
+      "dependencies": [
+        "Steps 1-7"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Landau Theory of Phase Transitions",
+      "authors": "L.D. Landau",
+      "year": "1937",
+      "field": "Condensed Matter Physics",
+      "statement": "Phase transitions can be classified by symmetry breaking patterns, with order parameters transforming under irreducible representations of the symmetry group",
+      "usage": "Provides the foundational framework connecting phases to symmetry breaking"
+    },
+    {
+      "name": "Wigner-Eckart Theorem",
+      "authors": "E. Wigner, C. Eckart",
+      "year": "1930s",
+      "field": "Quantum Mechanics",
+      "statement": "Matrix elements of tensor operators between states of definite angular momentum can be factored into geometric and dynamical parts",
+      "usage": "Determines selection rules from symmetry considerations"
+    },
+    {
+      "name": "Mermin-Wagner Theorem",
+      "authors": "N.D. Mermin, H. Wagner",
+      "year": "1966",
+      "field": "Statistical Mechanics",
+      "statement": "Continuous symmetries cannot be spontaneously broken in dimensions d \u2264 2 at finite temperature",
+      "usage": "Constrains which phases can exist based on dimensionality"
+    },
+    {
+      "name": "Orbit-Stabilizer Theorem",
+      "authors": "Classical group theory",
+      "year": "19th century",
+      "field": "Mathematics",
+      "statement": "For a group G acting on a set X, |G| = |G\u00b7x| \u00d7 |Stab(x)|",
+      "usage": "Relates symmetry breaking patterns to residual symmetries"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The Hilbert space H is separable and finite or countably infinite dimensional",
+    "The symmetry group G is a compact Lie group acting unitarily on H",
+    "The Hamiltonian H(\u03bb) depends continuously on external parameters \u03bb \u2208 \u039b (parameter space)",
+    "Ground states are defined as density operators minimizing tr(\u03c1H)",
+    "Symmetry breaking is defined as \u27e8\u03c8|\u03a6(g)|\u03c8\u27e9 \u2260 |\u03c8\u27e9 for some g \u2208 G and ground state |\u03c8\u27e9",
+    "The system satisfies the thermodynamic limit (N \u2192 \u221e for N particles)",
+    "Local observables form a C*-algebra A with G-action",
+    "Phase transitions occur at non-analyticities of the free energy F(\u03bb) = -kT log Z(\u03bb)"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "This proof requires extensive quantum mechanics formalization that doesn't exist in Mathlib. The mathematical physics concepts like quantum states, Hamiltonians, ground states, and phase transitions would need to be built from scratch. The specific theorems (Landau, Wigner-Eckart, Mermin-Wagner) are not available. While basic group theory and topology are available, the quantum mechanical context makes this currently infeasible without a major quantum mechanics library development effort.",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Proposition statement",
+        "issue": "The proposition claims P and T are 'completely determined' by symmetry breaking patterns, but the proof never establishes this completeness. It only shows that symmetry breaking patterns constrain phases, not that they determine all phases.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed without solving all possible Hamiltonians"
+      },
+      {
+        "step": "Definition of T",
+        "issue": "The set T is defined using 'continuous path in parameter space' but parameter space \u039b is never properly defined. What topology? What continuity conditions? This makes T ill-defined.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Specify the topology on \u039b and define what constitutes a continuous path"
+      },
+      {
+        "step": "Ground state manifold decomposition",
+        "issue": "Claims M_\u03bb 'naturally decomposes into orbits' but provides no proof. Not all group actions have nice orbit decompositions, especially for infinite-dimensional spaces.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Prove that the orbit decomposition exists and is well-behaved"
+      },
+      {
+        "step": "Transition to macroscopic phase transitions",
+        "issue": "The proof admits it cannot connect microscopic selection rules to macroscopic phase transitions, yet the proposition is about macroscopic phases. This is a fatal gap.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "This requires substantial additional work beyond the scope claimed"
+      },
+      {
+        "step": "Landau classification application",
+        "issue": "Landau theory only applies to second-order transitions near critical points. First-order transitions and more exotic transitions are completely ignored.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would require completely different approach for non-Landau transitions"
+      },
+      {
+        "step": "Order parameter existence",
+        "issue": "Assumes every phase has an order parameter transforming under an irrep of G. This is false for topological phases and many quantum phases.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Restrict to phases with local order parameters or abandon the approach"
+      }
+    ],
+    "hidden_assumptions": [
+      "All phases have local order parameters",
+      "All phase transitions are captured by symmetry breaking",
+      "The thermodynamic limit exists and is unique",
+      "Ground states form a well-behaved manifold",
+      "All relevant physics is captured by the symmetry group G",
+      "Topological phases don't exist",
+      "Quantum phase transitions at T=0 behave like classical transitions",
+      "The parameter space \u039b has a natural topology"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes phases are characterized by symmetry breaking (via Landau theory) to prove that phases are determined by symmetry breaking. This is textbook circular reasoning.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof at best shows that some phases correspond to some symmetry breaking patterns for systems with local order parameters. It claims to prove that ALL phases and ALL transitions are COMPLETELY determined by symmetry breaking, which is demonstrably false (e.g., topological phases, BKT transitions).",
+    "citation_issues": [
+      "Landau theory is misapplied - it's a phenomenological theory for specific types of transitions, not a general classification theorem",
+      "Wigner-Eckart theorem applies to angular momentum, not general compact Lie groups without additional structure",
+      "Mermin-Wagner theorem is mentioned but not actually used in the proof logic",
+      "Orbit-stabilizer theorem is cited but the proof doesn't verify the action satisfies necessary conditions"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed, relying on circular reasoning and making sweeping claims about 'complete determination' while admitting it cannot prove key steps. The approach is outdated, ignoring modern understanding of quantum phases including topological order, and the mathematical rigor is severely lacking with multiple undefined terms and unjustified leaps.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish a connection between symmetry breaking patterns and quantum phases, but only provides partial results about ground state manifolds and selection rules without proving complete determination of phases and transitions.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Assumption that all quantum phases correspond to symmetry breaking patterns (excludes topological phases, many-body localized phases, etc.)",
+      "Assumption that ground states are non-degenerate or that degeneracies are only due to symmetry",
+      "Assumption that the parameter space \u039b is connected and simply connected",
+      "Assumption that phase transitions are second-order (required for Landau theory in Step 1)",
+      "Assumption that the thermodynamic limit exists and is unique",
+      "Assumption that continuous paths in parameter space correspond to adiabatic evolution",
+      "Assumption that external fields can be turned on/off continuously"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "1",
+        "issue": "Landau theory only applies to second-order phase transitions and requires an assumption that all phases have classical order parameters, which excludes topological and other exotic phases"
+      },
+      {
+        "step": "4",
+        "issue": "Selection rules for matrix elements do not directly imply macroscopic transition rules between phases - this conflates microscopic and macroscopic physics without proper justification"
+      },
+      {
+        "step": "6",
+        "issue": "Mermin-Wagner theorem is stated as a constraint but its relevance to the main proposition is unclear - it doesn't contribute to proving the stated result"
+      },
+      {
+        "step": "7",
+        "issue": "The Zeeman effect example doesn't prove the general statement - it's just one specific case of explicit symmetry breaking"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Step 5 gap is acknowledged but not filled - the thermodynamic limit connection is crucial and missing",
+      "Step 8 gap is acknowledged but not filled - completeness of the symmetry breaking classification is essential to the proposition",
+      "No proof that the symmetry breaking pattern G \u2192 H uniquely determines the phase",
+      "No proof that all allowed transitions are captured by the proposed framework",
+      "No treatment of first-order phase transitions where Landau theory fails",
+      "No consideration of phases without broken symmetry (e.g., quantum spin liquids, topological phases)",
+      "Missing rigorous definition of what constitutes a 'quantum phase' in this context"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "New proof claims ALL phases are determined by symmetry breaking patterns, but existing proof [087da119976b] shows systems can spontaneously break symmetry under specific conditions that may not cover all possible phases",
+      "New proof assumes continuous parameter dependence H(\u03bb) but existing proof [06d1b829563e] demonstrates information loss from dynamical constraints that could create discontinuities",
+      "Claim that d \u2264 2 systems cannot break continuous symmetries at finite temperature contradicts existing proof [1318ecd2c25c] which shows phase transitions as universal scaling events independent of dimensionality constraints"
+    ],
+    "assumption_conflicts": [
+      "New proof assumes ground states minimize tr(\u03c1H) but existing proof [06879fd9ae87] shows physical properties are contextual and cannot have predetermined values independent of measurement",
+      "Assumption of separable finite/countable Hilbert space conflicts with existing proof [06d6ace265c2] which requires dim(H_E) >> dim(H) for environment, potentially making total space non-separable",
+      "Thermodynamic limit assumption conflicts with existing proof [19c10dc86a65] which shows quantum coherence effects that may not survive infinite particle limits"
+    ],
+    "beneficial_connections": [
+      "Connects to [08b6405556dd] on symmetry principles determining interaction structure",
+      "Extends [1318ecd2c25c] by providing microscopic foundation for symmetry-breaking phase transitions",
+      "Complements [087da119976b] by specifying quantum mechanical context for spontaneous symmetry breaking"
+    ],
+    "consistency_score": 0.3,
+    "notes": "Major gaps acknowledged in proof regarding thermodynamic limit connection and classification completeness. The proof makes overly strong claims about universality of symmetry-breaking characterization without rigorous justification. Dimensional restrictions appear ad-hoc and contradict broader universality claims in existing corpus."
+  },
+  "confidence_score": 0.315,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.5,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.29999999999999993
+  },
+  "validation_scores": {
+    "mechanical": 0.5,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.29999999999999993
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous mathematical framework for taking thermodynamic limits of quantum systems while preserving symmetry-breaking information. Current approaches using C*-algebraic methods are incomplete for general interacting systems.",
+  "limitations": [
+    "The connection between microscopic quantum transitions and macroscopic phase transitions is not rigorously established in the thermodynamic limit",
+    "Complete classification of all possible ground states for general Hamiltonians H(\u03bb) is not achievable",
+    "The proof assumes but does not establish that symmetry breaking patterns provide a complete classification of phases",
+    "Restricted to equilibrium phases (ground states) only",
+    "Does not address topological phases that may have the same symmetry",
+    "Assumes compact Lie group symmetries, excluding important cases like conformal symmetry",
+    "Does not handle strongly correlated systems where mean-field approaches fail"
+  ],
+  "source_convergence": {
+    "structural_claim": "Symmetry breaking determines the allowed phases and transitions in quantum matter",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Landau Theory of Phase Transitions",
+        "domain_id": "field_a",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Phases distinguished by symmetries rather than microscopic details"
+      },
+      {
+        "result_id": "",
+        "result_name": "Zeeman Effect",
+        "domain_id": "field_b",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "direct",
+        "structural_conclusion": "External fields break rotational symmetry and split degenerate levels"
+      },
+      {
+        "result_id": "",
+        "result_name": "Selection Rules for Atomic Transitions",
+        "domain_id": "field_b",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Symmetries dictate allowed quantum transitions"
+      },
+      {
+        "result_id": "",
+        "result_name": "Mermin-Wagner Theorem",
+        "domain_id": "field_a",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Continuous symmetries cannot be broken in low dimensions"
+      }
+    ],
+    "domains": [
+      "condensed_matter",
+      "atomic_physics"
+    ],
+    "domain_names": [
+      "Condensed Matter Physics",
+      "Atomic and Molecular Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.476,
+      "independence": 0.75,
+      "adversarial": 0.3,
+      "reproducibility": 0.6299999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.5848,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:18:28.214297+00:00",
+    "id": "7a3990a897bc"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.28791
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "proof_id": "9c896a71e9c5",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous categorical framework for emergence that captures: (1) The functor from microscopic to macroscopic descriptions, (2) Obstruction theory for when single-particle descriptions fail, (3) Classification of emergent universality classes, (4) Quantitative measures of 'qualitative difference' in physical behavior",
+    "Difficulty assessed as challenging",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

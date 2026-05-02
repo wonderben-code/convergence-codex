@@ -1,0 +1,13 @@
+{
+  "proof_id": "b572c2b81bfa",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: Rigorous categorical framework for RG flows in infinite-dimensional spaces, including: (1) Proper treatment of UV divergences in categorical language, (2) Proof of spectral properties of RG operators being determined by symmetry alone, (3) Categorical characterization of universality classes as equivalence classes of fixed points",
+    "10 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

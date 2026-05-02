@@ -1,0 +1,15 @@
+{
+  "proof_id": "75a7c4c46d4c",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous framework for infinite-dimensional equivariant bifurcation theory with measure-theoretic foundations, including: (1) Extension of center manifold theory to measure spaces with continuous symmetries, (2) Spectral theory for linearized Fokker-Planck operators with symmetry constraints, (3) Rigorous perturbation theory for invariant measures of symmetric systems",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

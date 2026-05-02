@@ -1,0 +1,15 @@
+{
+  "proof_id": "823c045bff09",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: Rigorous mathematical framework for: (1) Topology on space of quantum field theories compatible with physical equivalence, (2) Proof of completeness of theory space under RG flow, (3) Continuity theorems for physical observables under theory deformation, (4) Convergence theorems for RG flow in infinite-dimensional spaces",
+    "Difficulty assessed as challenging",
+    "10 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

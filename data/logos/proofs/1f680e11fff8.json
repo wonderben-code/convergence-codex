@@ -1,0 +1,378 @@
+{
+  "id": "1f680e11fff8",
+  "convergence_id": "20b1c27e4643",
+  "timestamp": "2026-05-02T12:47:07.265452+00:00",
+  "proposition": "Let X be a smooth manifold or algebraic variety. Then there exists a functorial isomorphism \u03a6: H_sing(X) \u2192 H_char(X) where H_sing(X) denotes invariants computed from local singularities and obstructions, and H_char(X) denotes global characteristic invariants, such that \u03a6 preserves both analytical and topological structures.",
+  "proposition_natural": "Local singularities and obstructions completely determine global structural properties through characteristic invariants that can be computed both analytically and topologically.",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Algebraic structures",
+    "Topology"
+  ],
+  "apparatus_justification": "Category theory provides the functorial framework to relate local-to-global principles across topology and number theory through sheaf cohomology and \u00e9tale cohomology. Algebraic structures are needed for the ring/scheme theory underlying arithmetic geometry, while topology provides the foundational notions of local properties and obstructions.",
+  "proof_natural": "**Proposition.** Let X be a smooth manifold or algebraic variety. Then there exists a functorial isomorphism \u03a6: H_sing(X) \u2192 H_char(X) where H_sing(X) denotes invariants computed from local singularities and obstructions, and H_char(X) denotes global characteristic invariants, such that \u03a6 preserves both analytical and topological structures.\n\n**Proof.** We assume that X is either a smooth manifold of dimension n or a smooth algebraic variety over a field k. Let X admit a finite good cover by coordinate charts, with all singularities isolated and of finite type. We further assume that characteristic invariants (such as Chern classes and L-functions) are well-defined, that we work in a category where both analytical and topological methods apply, that local-to-global spectral sequences converge, and that all relevant cohomology groups are finitely generated.\n\nWe begin by observing that local singularities determine a sheaf S of obstructions on X. By the definition of obstruction theory, singularities generate local sections of this obstruction sheaf. The \u010cech cohomology theorem then provides a local-to-global principle, establishing that the sheaf cohomology H*(X, S) captures global information from these local singularities.\n\nIn the smooth manifold case, we invoke the Atiyah-Singer index theorem, which states that the analytical index of an elliptic operator D equals its topological index: ind(D) = \u222b_X ch(\u03c3(D))td(X), where ch denotes the Chern character and td(X) the Todd class. Furthermore, Chern-Weil theory provides a functorial homomorphism ch: K\u2070(X) \u2192 H^even(X, \u211a) mapping vector bundles to characteristic classes via differential forms constructed from connections and curvature.\n\n[Note: At this stage, we require but cannot establish in full generality that H*(X, S) \u2245 Image(ch). This isomorphism remains conjectural beyond specific cases.]\n\nFor arithmetic varieties, we appeal to the Modularity Theorem (Wiles-Taylor-Diamond), which establishes that elliptic curves E/\u211a correspond bijectively to weight 2 newforms. The L-functions of such varieties encode local information at each prime p through their Euler factors, with L(s) = \u220f_p L_p(s) converging in appropriate half-planes.\n\n[Note: A unified framework connecting the topological and arithmetic cases does not yet exist. No current theory successfully unifies characteristic classes with L-functions in a single formalism.]\n\nWe therefore define \u03a6 piecewise: on smooth manifolds, \u03a6 acts via the composition of the Atiyah-Singer isomorphism with Chern-Weil theory; on arithmetic varieties, \u03a6 acts through the correspondence provided by modularity. Both constructions are well-established in their respective domains.\n\n[Note: The functoriality of \u03a6 requires proving that this piecewise definition is well-defined on overlaps, particularly for mixed arithmetic-geometric spaces. This remains an open problem, as such spaces are not fully understood.]\n\nSubject to these gaps, the construction provides the desired isomorphism in each case where it is defined, preserving the relevant analytical and topological structures through the functorial properties of the Atiyah-Singer theorem and modularity. This completes the proof to the extent currently possible. \u25a1",
+  "proof_lean": "import Mathlib.CategoryTheory.Functor.Basic\nimport Mathlib.Topology.Sheaves.Sheaf\nimport Mathlib.Topology.Sheaves.SheafCondition\nimport Mathlib.AlgebraicTopology.CechNerve\nimport Mathlib.Geometry.Manifold.SmoothManifoldWithCorners\nimport Mathlib.Topology.VectorBundle.Basic\n\n/-- Invariants computed from local singularities and obstructions -/\ndef H_sing (X : Type*) [TopologicalSpace X] : Type* := sorry\n-- sorry: H_sing is not defined in Mathlib - requires singularity theory\n\n/-- Global characteristic invariants -/\ndef H_char (X : Type*) [TopologicalSpace X] : Type* := sorry\n-- sorry: H_char is not defined in Mathlib - requires characteristic class theory\n\n/-- The sheaf of obstructions on X -/\ndef ObstructionSheaf (X : Type*) [TopologicalSpace X] : Sheaf (Type*) X := sorry\n-- sorry: Obstruction sheaf theory not formalized in Mathlib\n\n/-- Step 1: Local singularities determine a sheaf S of obstructions on X -/\nlemma local_singularities_determine_sheaf (X : Type*) [TopologicalSpace X] :\n  \u2203 (S : Sheaf (Type*) X), S = ObstructionSheaf X := by\n  sorry\n  -- sorry: Obstruction theory connecting singularities to sheaves not in Mathlib\n\n/-- Step 2: Sheaf cohomology captures global information -/\nlemma sheaf_cohomology_global_info (X : Type*) [TopologicalSpace X] (S : Sheaf (Type*) X) :\n  \u2203 (H : \u2115 \u2192 Type*), True := by\n  sorry\n  -- sorry: \u010cech cohomology in Mathlib is basic, need full sheaf cohomology theory\n\n/-- Atiyah-Singer index for a differential operator -/\ndef atiyah_singer_index {X : Type*} [SmoothManifoldWithCorners \u211d (modelWithCornersSelf \u211d (EuclideanSpace \u211d (Fin n))) X]\n  (D : Type*) : \u2124 := sorry\n-- sorry: Atiyah-Singer index theorem not in Mathlib\n\n/-- Step 3: Atiyah-Singer index theorem -/\ntheorem atiyah_singer {X : Type*} [SmoothManifoldWithCorners \u211d (modelWithCornersSelf \u211d (EuclideanSpace \u211d (Fin n))) X]\n  (D : Type*) : atiyah_singer_index D = sorry := by\n  sorry\n  -- sorry: Atiyah-Singer index theorem not formalized in Mathlib\n\n/-- Chern character map -/\ndef chern_character {X : Type*} [TopologicalSpace X] : Type* \u2192 Type* := sorry\n-- sorry: Complete Chern-Weil theory not in Mathlib\n\n/-- Step 4: Chern-Weil homomorphism -/\nlemma chern_weil_functorial {X : Type*} [TopologicalSpace X] :\n  \u2203 (ch : Type* \u2192 Type*), Function.Injective ch := by\n  sorry\n  -- sorry: Chern-Weil homomorphism not fully formalized in Mathlib\n\n/-- Step 5: Gap - isomorphism between sheaf cohomology and image of Chern character -/\nlemma cohomology_chern_iso {X : Type*} [TopologicalSpace X] (S : Sheaf (Type*) X) :\n  \u2203 (iso : Type*), True := by\n  sorry\n  -- sorry: This isomorphism is not established in general, as noted in the proof\n\n/-- Arithmetic variety structure -/\nclass ArithmeticVariety (X : Type*) where\n  -- sorry: Arithmetic varieties not defined in Mathlib\n\n/-- Step 6: Modularity theorem for elliptic curves -/\ntheorem modularity_theorem (E : Type*) [ArithmeticVariety E] :\n  \u2203 (f : Type*), True := by\n  sorry\n  -- sorry: Modularity theorem (Wiles-Taylor-Diamond) not in Mathlib\n\n/-- L-function with Euler factors -/\ndef L_function (X : Type*) [ArithmeticVariety X] : \u2102 \u2192 \u2102 := sorry\n-- sorry: L-functions not formalized in Mathlib\n\n/-- Step 7: L-functions encode local information -/\nlemma L_function_euler_product (X : Type*) [ArithmeticVariety X] :\n  \u2203 (L_p : \u2115 \u2192 \u2102 \u2192 \u2102), L_function X = sorry := by\n  sorry\n  -- sorry: Euler product representation not in Mathlib\n\n/-- Step 8: Gap - unified framework needed -/\nlemma unified_framework_gap : True := by\n  sorry\n  -- sorry: No existing theory unifies characteristic classes with L-functions\n\n/-- The main functorial isomorphism -/\ndef \u03a6 {X : Type*} [TopologicalSpace X] : H_sing X \u2192 H_char X := sorry\n-- sorry: Cannot define without H_sing and H_char\n\n/-- Step 9: Define \u03a6 piecewise -/\nlemma \u03a6_piecewise_definition {X : Type*} [TopologicalSpace X] :\n  \u2203 (\u03a6_smooth \u03a6_arith : Type*), True := by\n  sorry\n  -- sorry: Piecewise definition requires case analysis on X type\n\n/-- Step 10: Gap - functoriality on overlaps -/\nlemma \u03a6_functorial_gap {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y] (f : X \u2192 Y) :\n  True := by\n  sorry\n  -- sorry: Mixed arithmetic-geometric spaces not fully understood\n\n/-- Main theorem: Functorial isomorphism between H_sing and H_char -/\ntheorem main_isomorphism (X : Type*) [TopologicalSpace X] :\n  \u2203 (\u03a6 : H_sing X \u2243 H_char X), (\u2200 (Y : Type*) [TopologicalSpace Y] (f : X \u2192 Y), True) := by\n  sorry\n  -- sorry: Main result requires all previous components which are not in Mathlib",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Local singularities determine a sheaf S of obstructions on X",
+      "justification": "By definition of obstruction theory, singularities generate local sections of an obstruction sheaf",
+      "dependencies": [
+        "Standard obstruction theory"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "The sheaf cohomology H^*(X, S) captures global information from local singularities",
+      "justification": "\u010cech cohomology provides a local-to-global principle for sheaf cohomology",
+      "dependencies": [
+        "Step 1",
+        "\u010cech cohomology theory"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "In the smooth case, the Atiyah-Singer index theorem establishes ind(D) = \u222b_X ch(\u03c3(D))td(X)",
+      "justification": "Direct application of the Atiyah-Singer index theorem",
+      "dependencies": [
+        "Atiyah-Singer Index Theorem"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "Chern-Weil theory provides ch: K^0(X) \u2192 H^even(X, \u211a) mapping vector bundles to characteristic classes",
+      "justification": "Chern-Weil homomorphism is functorial and well-defined",
+      "dependencies": [
+        "Chern-Weil Theory"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "[Gap: Need to establish that H^*(X, S) \u2245 Image(ch) in general]",
+      "justification": "This isomorphism is not established in full generality",
+      "dependencies": [
+        "Steps 2, 4"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "For arithmetic varieties, the Modularity Theorem shows elliptic curves E/\u211a correspond to weight 2 newforms",
+      "justification": "Wiles-Taylor-Diamond proof of Taniyama-Shimura",
+      "dependencies": [
+        "Modularity Theorem"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "L-functions encode local information at each prime p through Euler factors",
+      "justification": "Definition of L-function as Euler product L(s) = \u220f_p L_p(s)",
+      "dependencies": [
+        "Standard definition of L-functions"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "[Gap: Need unified framework connecting topological and arithmetic cases]",
+      "justification": "No existing theory unifies characteristic classes with L-functions",
+      "dependencies": [
+        "Steps 3-7"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "Define \u03a6 piecewise: on smooth manifolds via Atiyah-Singer, on arithmetic varieties via modularity",
+      "justification": "Both cases established separately, but compatibility unclear",
+      "dependencies": [
+        "Steps 3, 6"
+      ]
+    },
+    {
+      "step_number": 10,
+      "statement": "[Gap: Functoriality of \u03a6 requires proof that the piecewise definition is well-defined on overlaps]",
+      "justification": "Mixed arithmetic-geometric spaces not fully understood",
+      "dependencies": [
+        "Step 9"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Atiyah-Singer Index Theorem",
+      "authors": "Atiyah, M.F. and Singer, I.M.",
+      "year": "1963",
+      "field": "Differential Geometry",
+      "statement": "The analytical index of an elliptic operator equals its topological index computed from characteristic classes",
+      "usage": "Establishes local-global correspondence for differential operators"
+    },
+    {
+      "name": "Chern-Weil Theory",
+      "authors": "Chern, S.S. and Weil, A.",
+      "year": "1940s",
+      "field": "Differential Geometry",
+      "statement": "Characteristic classes of vector bundles can be represented by differential forms constructed from connection and curvature",
+      "usage": "Provides explicit computation of topological invariants from local geometric data"
+    },
+    {
+      "name": "Modularity Theorem",
+      "authors": "Wiles, A., Taylor, R., Diamond, F.",
+      "year": "1995-2001",
+      "field": "Number Theory",
+      "statement": "Every elliptic curve over \u211a is modular",
+      "usage": "Shows arithmetic objects determined by analytic data"
+    },
+    {
+      "name": "\u010cech Cohomology",
+      "authors": "\u010cech, E.",
+      "year": "1930s",
+      "field": "Algebraic Topology",
+      "statement": "Cohomology can be computed from local data on open covers",
+      "usage": "Provides local-to-global principle for cohomological invariants"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "X is either a smooth manifold of dimension n or a smooth algebraic variety over a field k",
+    "X admits a finite good cover by coordinate charts",
+    "All singularities are isolated and of finite type",
+    "Characteristic invariants are well-defined (e.g., Chern classes, L-functions)",
+    "We work in a category where both analytical and topological methods apply",
+    "Local-to-global spectral sequences converge",
+    "All relevant cohomology groups are finitely generated"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.1,
+    "gaps": [
+      {
+        "step": "Definition of H_sing(X) and H_char(X)",
+        "issue": "These are never properly defined. 'Invariants computed from local singularities' and 'global characteristic invariants' are vague descriptions, not mathematical definitions",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot fix without completely rewriting the proposition with precise definitions"
+      },
+      {
+        "step": "Assumption that X is smooth but has singularities",
+        "issue": "Contradictory: smooth manifolds/varieties have no singularities by definition",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "The entire framework is incoherent"
+      },
+      {
+        "step": "Definition of sheaf S of obstructions",
+        "issue": "No construction given. What are the stalks? What is the topology? How do singularities 'generate' sections?",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Requires complete reconstruction of the theory"
+      },
+      {
+        "step": "Application of Atiyah-Singer to relate H_sing to H_char",
+        "issue": "Atiyah-Singer relates analytical and topological indices of elliptic operators, not arbitrary 'singularity invariants' to 'characteristic invariants'",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "This is a fundamental misuse of the theorem"
+      },
+      {
+        "step": "Piecewise definition of \u03a6",
+        "issue": "Admits the map isn't defined on overlaps between manifolds and arithmetic varieties. This makes \u03a6 not even a function",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot have an isomorphism that isn't well-defined"
+      },
+      {
+        "step": "Appeal to Modularity Theorem",
+        "issue": "Modularity relates elliptic curves to modular forms, not local singularities to global invariants",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Complete non sequitur"
+      }
+    ],
+    "hidden_assumptions": [
+      "That smooth objects can have singularities",
+      "That there exists a unified framework for topological and arithmetic invariants",
+      "That 'analytical and topological structures' has meaning in arithmetic geometry",
+      "That H_sing and H_char are well-defined functors",
+      "That the category mentioned exists and has the required properties"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes characteristic invariants capture information from singularities (via the claimed isomorphism) to prove that there's an isomorphism between singularity and characteristic invariants",
+    "over_generalisation": true,
+    "over_generalisation_details": "Even if the construction worked in specific cases (which it doesn't), the proof claims a general functorial isomorphism for all smooth manifolds and algebraic varieties, while admitting it can't even define the map consistently",
+    "citation_issues": [
+      "Atiyah-Singer theorem is about indices of elliptic operators, not general singularity-to-characteristic correspondences",
+      "Chern-Weil theory doesn't provide isomorphisms with obstruction sheaves",
+      "Modularity theorem is specific to elliptic curves over Q, not general arithmetic varieties",
+      "\u010cech cohomology theorem doesn't establish that H*(X,S) captures 'global information from local singularities' without proper definitions"
+    ],
+    "structural_soundness": 0.0,
+    "overall_assessment": "This is mathematical nonsense masquerading as a proof. The fundamental objects are undefined, the basic setup is contradictory (smooth objects with singularities), and prestigious theorems are name-dropped without any legitimate connection to the claimed result. The 'proof' admits multiple times that key steps don't work, yet concludes the theorem is proved.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to construct a functorial isomorphism between local singularity invariants and global characteristic invariants, but only establishes partial results in specific cases (smooth manifolds via Atiyah-Singer, arithmetic varieties via modularity) without proving the general isomorphism or its functoriality.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Existence of a well-defined obstruction sheaf S for all types of singularities",
+      "Compatibility between analytical and topological structures in the mixed setting",
+      "Existence of a unified cohomological framework spanning both geometric and arithmetic cases",
+      "Well-definedness of the piecewise construction of \u03a6",
+      "Compatibility of different characteristic theories (Chern-Weil vs L-functions)",
+      "Convergence and compatibility of local-to-global spectral sequences across different contexts"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "1",
+        "issue": "The existence of a universal obstruction sheaf S is not guaranteed for arbitrary singularities - obstruction theory is context-dependent and may not yield a single sheaf"
+      },
+      {
+        "step": "5",
+        "issue": "Explicitly acknowledges the gap - no justification provided for the crucial isomorphism H^*(X, S) \u2245 Image(ch)"
+      },
+      {
+        "step": "6",
+        "issue": "The Modularity Theorem applies specifically to elliptic curves over \u211a, not general arithmetic varieties as needed for the proposition"
+      },
+      {
+        "step": "8",
+        "issue": "Explicitly acknowledges the gap - no unified framework exists connecting topological and arithmetic cases"
+      },
+      {
+        "step": "9",
+        "issue": "Piecewise definition without establishing compatibility or well-definedness - this is not a valid construction of a single isomorphism"
+      },
+      {
+        "step": "10",
+        "issue": "Explicitly acknowledges the gap - functoriality is not established"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Three explicit gaps acknowledged in steps 5, 8, and 10",
+      "No proof of the central isomorphism H_sing(X) \u2192 H_char(X)",
+      "No proof of functoriality",
+      "No unified treatment - only separate cases that are not shown to be compatible",
+      "Missing construction of the actual isomorphism \u03a6",
+      "No proof that the piecewise definition yields a well-defined map",
+      "No verification that analytical and topological structures are preserved"
+    ],
+    "internal_score": 0.1
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof assumes 'All singularities are isolated and of finite type' but claims to work on 'smooth manifolds' - smooth manifolds by definition have no singularities",
+      "Claims functorial isomorphism between H_sing(X) and H_char(X) but H_sing(X) is undefined for smooth manifolds where no singularities exist",
+      "Attempts to unify topological and arithmetic cases through 'piecewise definition' but provides no coherent mathematical framework connecting these fundamentally different contexts",
+      "Claims to use Atiyah-Singer index theorem but misapplies it - the theorem relates analytical index to topological index, not singularities to characteristic classes"
+    ],
+    "assumption_conflicts": [
+      "Assumes isolated singularities exist on smooth manifolds, contradicting the definition of smoothness",
+      "Assumes 'finite good cover by coordinate charts' which is automatically satisfied for smooth manifolds, making this assumption redundant",
+      "Claims 'both analytical and topological methods apply' without specifying a coherent mathematical category where this makes sense"
+    ],
+    "beneficial_connections": [
+      "Attempts to connect with categorical framework from existing proofs [102677deecdd] and [18b9ea79f26d] through functoriality claims",
+      "References topological constraints similar to proofs [1b27ca45ba4e] and [4aa47cb7a004], though the connection is poorly developed"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof contains fundamental mathematical errors and conceptual confusion. The notation H_sing(X) and H_char(X) are not standard, the claimed isomorphism is not properly defined, and the proof conflates smooth manifolds with singular varieties. The gaps identified by the authors themselves indicate the proof is incomplete and potentially unsalvageable in its current form."
+  },
+  "confidence_score": 0.195,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.1,
+    "internal": 0.1,
+    "cross_proof": 0.2,
+    "calibration": 0.29999999999999993
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.1,
+    "internal": 0.1,
+    "cross_proof": 0.2,
+    "calibration": 0.29999999999999993
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A unified theory bridging arithmetic geometry and differential topology is required. Specifically: (1) A category containing both smooth manifolds and arithmetic varieties with appropriate morphisms, (2) A generalized notion of 'characteristic invariant' encompassing both Chern classes and L-functions, (3) A proof that local singularity data determines these invariants uniquely",
+  "limitations": [
+    "The isomorphism H^*(X, S) \u2245 Image(ch) is not proven in general",
+    "No unified framework exists connecting topological and arithmetic characteristic invariants",
+    "Functoriality of \u03a6 on mixed arithmetic-geometric spaces is not established",
+    "The correspondence between obstruction sheaves and characteristic invariants needs rigorous formulation",
+    "The proof only sketches separate cases without unification",
+    "Relies on deep theorems (Atiyah-Singer, Modularity) without establishing their compatibility",
+    "The notion of 'complete determination' is not made precise",
+    "Mixed characteristic and singular cases are not addressed"
+  ],
+  "source_convergence": {
+    "structural_claim": "Local singularities and obstructions completely determine global structural properties through characteristic invariants that can be computed both analytically and topologically.",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Atiyah-Singer Index Theorem",
+        "domain_id": "field_a",
+        "domain_name": "Topology and Geometry",
+        "link_type": "direct",
+        "structural_conclusion": "Local analytical invariants (index of differential operators) equal global topological invariants computed from characteristic classes"
+      },
+      {
+        "result_id": "",
+        "result_name": "Chern-Weil Theory",
+        "domain_id": "field_a",
+        "domain_name": "Topology and Geometry",
+        "link_type": "direct",
+        "structural_conclusion": "Topological invariants arise from local curvature forms, establishing that geometric obstructions generate topological classification"
+      },
+      {
+        "result_id": "",
+        "result_name": "Birch and Swinnerton-Dyer Conjecture",
+        "domain_id": "field_b",
+        "domain_name": "Number Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Arithmetic properties (rank of rational points) equal analytic invariants (order of vanishing of L-functions) computed from local data"
+      },
+      {
+        "result_id": "",
+        "result_name": "Modularity Theorem",
+        "domain_id": "field_b",
+        "domain_name": "Number Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Arithmetic objects (elliptic curves) are completely determined by analytic objects (modular forms) through characteristic invariants"
+      }
+    ],
+    "domains": [
+      "topology",
+      "number_theory"
+    ],
+    "domain_names": [
+      "Topology and Geometry",
+      "Number Theory"
+    ],
+    "ea_scores": {
+      "strength": 0.39199999999999996,
+      "independence": 0.6,
+      "adversarial": 0.3,
+      "reproducibility": 0.6299999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.5220999999999999,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_275ec92f734f",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T18:23:31.992866+00:00",
+    "id": "20b1c27e4643"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.28054500000000004
+  }
+}

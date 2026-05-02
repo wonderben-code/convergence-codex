@@ -1,0 +1,15 @@
+{
+  "proof_id": "8bc7d30a19d8",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A categorical version of the extreme value theorem that applies to functors between categories with appropriate structure. Also needed: precise formulation of how topological compactness on a site translates to finiteness conditions on sheaves and their determination.",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

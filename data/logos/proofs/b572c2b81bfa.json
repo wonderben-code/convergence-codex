@@ -1,0 +1,341 @@
+{
+  "id": "b572c2b81bfa",
+  "convergence_id": "5aa17b0cef85",
+  "timestamp": "2026-05-02T13:09:18.277601+00:00",
+  "proposition": "Let C be the category of physical systems with morphisms given by RG transformations. There exists a functor F: C \u2192 Fix(C) to the subcategory of fixed points, where objects in Fix(C) exhibit universal critical behavior characterized by functorial invariants (critical exponents, scaling dimensions) that depend only on symmetry group G and spatial dimension d, independent of microscopic Hamiltonian details.",
+  "proposition_natural": "Physical systems exhibit universal behavior at critical points determined by symmetry and dimensionality rather than microscopic details, with the renormalization group providing a systematic framework for understanding how physics at different scales relates",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Functional analysis",
+    "Order theory"
+  ],
+  "apparatus_justification": "Category theory captures the functorial nature of renormalization group transformations and the universal properties of critical phenomena. Functional analysis provides the infinite-dimensional spaces needed for field theories and operator formalism. Order theory handles the scaling hierarchies and fixed-point structure central to RG flow.",
+  "proof_natural": "**Proposition.** Let $\\mathcal{C}$ be the category of physical systems with morphisms given by renormalization group (RG) transformations. There exists a functor $F: \\mathcal{C} \\to \\text{Fix}(\\mathcal{C})$ to the subcategory of fixed points, where objects in $\\text{Fix}(\\mathcal{C})$ exhibit universal critical behavior characterized by functorial invariants (critical exponents, scaling dimensions) that depend only on symmetry group $G$ and spatial dimension $d$, independent of microscopic Hamiltonian details.\n\n**Proof.** We assume that physical systems can be represented as objects in a category $\\mathcal{C}$ with well-defined composition of RG transformations, that RG transformations preserve physical equivalence classes, and that fixed points under RG flow exist and are isolated in the appropriate function space. We further assume the space of Hamiltonians has sufficient regularity for RG transformations to be continuous, and that a suitable UV regularization scheme is available.\n\nWe begin by constructing the category $\\mathcal{C}$. Let objects be equivalence classes $[H]$ of Hamiltonians under RG transformations. The morphisms are given by RG transformations $R_\\lambda: [H] \\to [H']$, which compose according to the semigroup property $R_{\\lambda_2} \\circ R_{\\lambda_1} = R_{\\lambda_1\\lambda_2}$, as guaranteed by the Wilson-Kogut recursion relations.\n\nFixed points $H^*$ satisfying $R_\\lambda(H^*) = H^*$ for all $\\lambda$ form a full subcategory $\\text{Fix}(\\mathcal{C})$. Near such fixed points, we can linearize the RG flow to obtain\n$$R_\\lambda(H^* + \\delta H) \\approx H^* + \\sum_i \\lambda^{y_i} \\delta H_i$$\nwhere $y_i$ are the scaling dimensions, obtained as eigenvalues of the linearized RG operator. By the Spectral Theorem for compact operators, this operator has a discrete spectrum with eigenvector basis.\n\n[Note: A rigorous proof that the scaling dimensions $y_i$ depend only on $(G,d)$ requires showing that the spectrum of the RG operator is fully determined by symmetry and dimension. This gap represents a key technical challenge.]\n\nWe define the functor $F: \\mathcal{C} \\to \\text{Fix}(\\mathcal{C})$ by mapping each equivalence class $[H]$ to its corresponding fixed point $[H^*]$ under RG flow. This is well-defined provided RG flows have unique attracting fixed points within each universality class.\n\nThe critical exponents $\\alpha, \\beta, \\gamma, \\ldots$ emerge as functorial invariants: they are preserved under morphisms in $\\text{Fix}(\\mathcal{C})$ since they are defined through scaling relations at fixed points and remain invariant under RG transformations. By the Kadanoff scaling hypothesis, these exponents characterize the scale-invariant behavior at criticality.\n\n[Note: Proving that these exponents depend only on $(G,d)$ requires establishing that all fixed points with the same symmetry group $G$ in dimension $d$ share the same spectrum of scaling dimensions. This universality statement necessitates proving uniqueness of the fixed point, up to redundant operators, for given symmetry constraints.]\n\nSubject to these technical gaps, we have constructed a functor from physical systems to their fixed points, with critical behavior characterized by invariants depending only on symmetry and dimension. This completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.CategoryTheory.Category.Basic\nimport Mathlib.CategoryTheory.Functor.Basic\nimport Mathlib.CategoryTheory.FullSubcategory\nimport Mathlib.Analysis.NormedSpace.Basic\nimport Mathlib.Analysis.NormedSpace.LinearIsometry\nimport Mathlib.LinearAlgebra.Eigenspace.Basic\nimport Mathlib.Topology.Algebra.Group.Basic\n\n/-- Physical systems category with RG transformations -/\nstructure PhysicalSystemsCategory where\n  /-- Symmetry group -/\n  G : Type*\n  [group : Group G]\n  /-- Spatial dimension -/\n  d : \u2115\n  /-- Hamiltonian space (placeholder for actual physical Hamiltonians) -/\n  HamiltonianSpace : Type*\n  [normed : NormedAddCommGroup HamiltonianSpace]\n  [complete : CompleteSpace HamiltonianSpace]\n\nvariable {C : PhysicalSystemsCategory}\n\n/-- RG transformation with scale parameter \u03bb -/\nstructure RGTransformation (C : PhysicalSystemsCategory) where\n  \u03bb : \u211d\n  h\u03bb_pos : 0 < \u03bb\n  /-- The transformation map (placeholder for actual RG implementation) -/\n  transform : C.HamiltonianSpace \u2192 C.HamiltonianSpace\n  -- sorry: Need Wilson-Kogut recursion relations\n\n/-- Category of physical systems under RG transformations -/\ninstance : Category C.HamiltonianSpace where\n  Hom H H' := { f : RGTransformation C // f.transform H = H' }\n  id H := sorry -- sorry: Need identity RG transformation\n  comp f g := sorry -- sorry: Need composition R_\u03bb\u2082 \u2218 R_\u03bb\u2081 = R_\u03bb\u2081\u03bb\u2082\n\n/-- Fixed point of RG transformation -/\nstructure RGFixedPoint (C : PhysicalSystemsCategory) where\n  H_star : C.HamiltonianSpace\n  is_fixed : \u2200 (R : RGTransformation C), R.transform H_star = H_star\n\n/-- Subcategory of fixed points -/\ndef FixedPointSubcategory (C : PhysicalSystemsCategory) : Type* :=\n  FullSubcategory (fun H : C.HamiltonianSpace => \u2203 fp : RGFixedPoint C, fp.H_star = H)\n\n/-- Scaling dimension at a fixed point -/\nstructure ScalingDimension (C : PhysicalSystemsCategory) (fp : RGFixedPoint C) where\n  /-- Eigenvalue index -/\n  i : \u2115\n  /-- Scaling dimension value -/\n  y_i : \u211d\n  /-- Eigenvector direction -/\n  \u03b4H_i : C.HamiltonianSpace\n  /-- Linearized RG flow property -/\n  scaling_property : \u2200 (R : RGTransformation C),\n    sorry -- sorry: Need linearized RG operator and eigenvalue decomposition\n\n/-- Critical exponents as functorial invariants -/\nstructure CriticalExponents (C : PhysicalSystemsCategory) where\n  \u03b1 : \u211d\n  \u03b2 : \u211d\n  \u03b3 : \u211d\n  /-- Exponents depend only on symmetry group G and dimension d -/\n  universality : sorry -- sorry: Need proof that exponents depend only on (G,d)\n\n/-- Functor from physical systems to fixed points -/\ndef RGFunctor (C : PhysicalSystemsCategory) : \n  C.HamiltonianSpace \u2964 FixedPointSubcategory C where\n  obj H := \u27e8sorry, sorry\u27e9 -- sorry: Need RG flow and unique attracting fixed point\n  map f := sorry -- sorry: Need to show morphisms preserve fixed points\n  map_id := sorry -- sorry: Need to verify functor laws\n  map_comp := sorry -- sorry: Need to verify functor laws\n\n/-- Main theorem: Functor to fixed points with universal critical behavior -/\ntheorem universal_critical_behavior (C : PhysicalSystemsCategory) :\n  \u2203 (F : C.HamiltonianSpace \u2964 FixedPointSubcategory C),\n  \u2200 (fp : RGFixedPoint C),\n  \u2203 (exps : CriticalExponents C),\n  (\u2200 (H : C.HamiltonianSpace), F.obj H = \u27e8fp.H_star, sorry\u27e9 \u2192 \n    sorry) -- sorry: Need to show critical exponents are functorial invariants\n  := by\n  use RGFunctor C\n  intro fp\n  sorry -- sorry: Need construction of critical exponents and universality proof",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the category C with objects as equivalence classes of Hamiltonians [H] under RG transformations",
+      "justification": "Standard categorical construction where objects are equivalence classes under a specified relation",
+      "dependencies": []
+    },
+    {
+      "step_number": 2,
+      "statement": "RG transformations R_\u03bb: [H] \u2192 [H'] form morphisms in C with composition R_\u03bb\u2082 \u2218 R_\u03bb\u2081 = R_\u03bb\u2081\u03bb\u2082",
+      "justification": "Semigroup property of RG transformations under scale parameter multiplication",
+      "dependencies": [
+        "Wilson-Kogut recursion relations"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Fixed points H* satisfy R_\u03bb(H*) = H* for all \u03bb, forming full subcategory Fix(C)",
+      "justification": "Definition of RG fixed point and standard subcategory construction",
+      "dependencies": [
+        "Step 1",
+        "Step 2"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "Near fixed points, linearized RG flow gives R_\u03bb(H* + \u03b4H) \u2248 H* + \u03bb^{y_i}\u03b4H_i where y_i are scaling dimensions",
+      "justification": "Taylor expansion around fixed point with eigenvalue decomposition of linearized RG operator",
+      "dependencies": [
+        "Step 3",
+        "Functional analysis spectral theorem"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "[Gap: Rigorous proof that scaling dimensions y_i depend only on (G,d) requires showing RG operator spectrum is determined by symmetry]",
+      "justification": "This step requires proving that the linearized RG operator's spectrum is fully constrained by symmetry and dimension",
+      "dependencies": [
+        "Step 4"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Define functor F: C \u2192 Fix(C) by F([H]) = [H*] where H* is the fixed point in the RG flow of H",
+      "justification": "Well-defined if RG flows have unique attracting fixed points in each universality class",
+      "dependencies": [
+        "Step 3",
+        "Assumption about fixed point uniqueness"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Critical exponents \u03b1, \u03b2, \u03b3, ... are functorial invariants: they are preserved under morphisms in Fix(C)",
+      "justification": "Critical exponents are defined via scaling relations at fixed points, invariant under RG",
+      "dependencies": [
+        "Step 4",
+        "Step 6"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "[Gap: Proving exponents depend only on (G,d) requires showing all (G,d)-symmetric fixed points have same spectrum]",
+      "justification": "This universality statement requires proving uniqueness of fixed point (up to redundant operators) for given symmetry",
+      "dependencies": [
+        "Step 5",
+        "Step 7"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Wilson-Kogut Recursion Relations",
+      "authors": "K. Wilson, J. Kogut",
+      "year": "1974",
+      "field": "Quantum Field Theory",
+      "statement": "RG transformations satisfy semigroup property R_b \u2218 R_a = R_{ab} for scale factors a,b",
+      "usage": "Establishes morphism composition law in Step 2"
+    },
+    {
+      "name": "Spectral Theorem for Compact Operators",
+      "authors": "Hilbert, von Neumann",
+      "year": "1920s",
+      "field": "Functional Analysis",
+      "statement": "Compact self-adjoint operators have discrete spectrum with eigenvector basis",
+      "usage": "Justifies eigenvalue decomposition in Step 4"
+    },
+    {
+      "name": "Kadanoff Scaling Hypothesis",
+      "authors": "L. Kadanoff",
+      "year": "1966",
+      "field": "Condensed Matter Physics",
+      "statement": "Critical phenomena exhibit scale invariance with universal exponents",
+      "usage": "Physical motivation for universality claim"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Physical systems can be represented as objects in a category C with well-defined composition of RG transformations",
+    "RG transformations form morphisms that preserve physical equivalence classes",
+    "Fixed points under RG flow exist and are isolated in the appropriate function space",
+    "The notion of 'universal behavior' can be formalized as functorial invariants",
+    "Symmetry groups act on the space of Hamiltonians in a way compatible with RG flow",
+    "Critical exponents and scaling dimensions are well-defined at fixed points",
+    "The space of Hamiltonians has sufficient regularity for RG transformations to be continuous",
+    "Dimensional regularization or equivalent UV regularization scheme is available"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Construction of category C",
+        "issue": "The proof claims objects are 'equivalence classes [H] of Hamiltonians under RG transformations' but never defines what this equivalence relation is. Are two Hamiltonians equivalent if they flow to the same fixed point? If they're related by a single RG transformation? This is circular since the equivalence relation seems to depend on the RG flow we're trying to categorify.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need to define equivalence relation precisely without reference to RG flow outcomes"
+      },
+      {
+        "step": "Morphism composition",
+        "issue": "Claims RG transformations compose according to R_\u03bb\u2082 \u2218 R_\u03bb\u2081 = R_\u03bb\u2081\u03bb\u2082 but this assumes RG transformations form a one-parameter semigroup indexed by scale factor. Many RG schemes don't have this property - block spin RG, momentum shell RG etc. have discrete steps not continuous parameters.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Restrict to specific RG schemes with semigroup property or redefine morphisms"
+      },
+      {
+        "step": "Definition of functor F",
+        "issue": "F maps [H] to [H*] but this assumes every equivalence class has a unique fixed point it flows to. What about marginal flows? What about systems that flow to limit cycles? What about systems with no fixed points?",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Restrict domain to systems with unique attractive fixed points"
+      },
+      {
+        "step": "Linearization near fixed points",
+        "issue": "Uses Spectral Theorem for compact operators but never proves the linearized RG operator is compact. In infinite-dimensional spaces (field theories), this is generally false.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Add compactness proof or restrict to finite-dimensional truncations"
+      },
+      {
+        "step": "Critical exponents as functorial invariants",
+        "issue": "Claims exponents are 'preserved under morphisms in Fix(C)' but morphisms between fixed points aren't defined. Fixed points have no non-trivial morphisms to themselves by definition.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Fundamental conceptual error - need different categorical structure"
+      },
+      {
+        "step": "Universality claim",
+        "issue": "The proof admits it cannot show scaling dimensions depend only on (G,d) - this is the core claim! Without this, there's no universality.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "This is the hard part of proving universality, not a minor gap"
+      }
+    ],
+    "hidden_assumptions": [
+      "RG flow converges to fixed points (not true for all systems)",
+      "Fixed points are isolated (not true with marginal operators)",
+      "RG transformations preserve symmetry group G exactly",
+      "The space of Hamiltonians forms a manifold where linearization makes sense",
+      "Critical exponents can be extracted from linearized flow (requires hyperscaling relations)",
+      "All physically relevant operators are included in the RG flow",
+      "The same RG scheme works for all systems in the category"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The construction of equivalence classes [H] appears to depend on knowing which Hamiltonians flow to the same fixed point, but the functor F is supposed to determine which fixed point a system flows to. The proof assumes what it's trying to construct.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to establish universal critical behavior for all physical systems, but at best (if gaps were fixed) would only apply to systems with unique attractive fixed points under a specific RG scheme. Many critical phenomena (BKT transition, glassy systems, etc.) don't fit this framework.",
+    "citation_issues": [
+      "Wilson-Kogut recursion relations don't guarantee semigroup property for all RG schemes",
+      "Spectral Theorem requires compactness which isn't established",
+      "Kadanoff scaling hypothesis is about physical scaling, not mathematical properties of RG operators"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof attempts to formalize RG universality using category theory but fails at fundamental levels. The categorical structure is ill-defined, the functor F cannot be constructed as claimed, and the core universality statement is admitted as unproven. The proof confuses mathematical formalism with physical content.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to construct a categorical framework for RG theory but fails to establish the key claims about universality and functorial invariants. It only shows that fixed points can be organized categorically, not that critical exponents depend only on (G,d).",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Existence and uniqueness of RG flows for all Hamiltonians",
+      "Convergence of RG flows to fixed points",
+      "Well-definedness of equivalence classes under RG transformations",
+      "Existence of linearization around fixed points",
+      "Finite-dimensional relevant operator spaces",
+      "Compatibility of symmetry actions with RG flow",
+      "Measurability/continuity properties of the RG map",
+      "Absence of limit cycles or chaotic behavior in RG flow",
+      "Well-definedness of critical exponents from scaling relations",
+      "Universality classes are in bijection with (G,d) pairs"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 1",
+        "issue": "Equivalence classes under RG transformations are not well-defined without proving RG transformations form an equivalence relation, which requires reflexivity, symmetry, and transitivity"
+      },
+      {
+        "step": "Step 2",
+        "issue": "RG transformations do not generally form a semigroup - composition R_\u03bb\u2082 \u2218 R_\u03bb\u2081 = R_\u03bb\u2081\u03bb\u2082 assumes commutativity and associativity that must be proven, not assumed"
+      },
+      {
+        "step": "Step 6",
+        "issue": "Functor F is not well-defined without proving that every RG flow converges to a unique fixed point, and that this assignment respects morphisms in C"
+      },
+      {
+        "step": "Step 7",
+        "issue": "Critical exponents being 'functorial invariants' is asserted without proof that they are preserved under the morphisms of Fix(C)"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Steps 5 and 8 explicitly acknowledge gaps in proving the main universality claims",
+      "No proof that scaling dimensions depend only on (G,d)",
+      "No proof that critical exponents depend only on (G,d)",
+      "No construction of the actual functor morphism mappings",
+      "No verification of functor laws (identity and composition preservation)",
+      "No proof that Fix(C) is actually a subcategory",
+      "No demonstration that the categorical structure captures physical universality"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof assumes RG transformations form well-defined morphisms with composition R_\u03bb\u2082 \u2218 R_\u03bb\u2081 = R_\u03bb\u2081\u03bb\u2082, but this contradicts the fundamental non-commutativity of RG flows in many physical systems",
+      "Claims that critical exponents depend only on (G,d) contradicts known examples where microscopic details affect universality classes even with same symmetry and dimension",
+      "The assumption that fixed points are isolated contradicts marginal operators and continuous families of fixed points known in conformal field theories",
+      "The categorical framework assumes equivalence classes [H] under RG transformations are well-defined, but RG flows can have complex basin structures that don't respect this equivalence"
+    ],
+    "assumption_conflicts": [
+      "Conflicts with [1318ecd2c25c] which treats phase transitions as symmetry-breaking events - the new proof assumes symmetry determines universality but ignores that symmetry breaking itself affects critical behavior",
+      "Contradicts [148d85f6c7b4] on energy cascades - RG transformations don't generally preserve the energy cascade structure assumed in that proof",
+      "Conflicts with [087da119976b] on spontaneous symmetry breaking - the categorical treatment of RG flows doesn't account for the dynamical symmetry breaking mechanisms"
+    ],
+    "beneficial_connections": [
+      "Connects to [102677deecdd] and [18b9ea79f26d] on relational structure determination, extending categorical thinking to RG theory",
+      "Relates to [1318ecd2c25c] on universal scaling laws, though with significant conceptual differences",
+      "Could potentially strengthen [2373a9c1ee2d] on emergent collective modes by providing categorical framework for scale separation"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof has fundamental mathematical gaps in proving that scaling dimensions depend only on (G,d), and the categorical framework oversimplifies the complex structure of RG flows. The composition law for RG transformations is incorrectly stated and the treatment of fixed points ignores known counterexamples from conformal field theory."
+  },
+  "confidence_score": 0.24000000000000002,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.29999999999999993
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.29999999999999993
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "Rigorous categorical framework for RG flows in infinite-dimensional spaces, including: (1) Proper treatment of UV divergences in categorical language, (2) Proof of spectral properties of RG operators being determined by symmetry alone, (3) Categorical characterization of universality classes as equivalence classes of fixed points",
+  "limitations": [
+    "Step 5: Proving scaling dimensions depend only on symmetry and dimension",
+    "Step 8: Proving uniqueness of fixed points within symmetry class",
+    "Rigorous treatment of infinite-dimensional aspects and regularization",
+    "Precise categorical formulation of 'universal behavior'",
+    "Proof that RG flows converge to fixed points for generic starting points",
+    "Assumes existence and uniqueness of fixed points without proof",
+    "Does not address multicritical points or crossover phenomena",
+    "Categorical framework may obscure computational aspects",
+    "Does not handle systems with quenched disorder",
+    "Assumes sufficient regularity for all operations"
+  ],
+  "source_convergence": {
+    "structural_claim": "Physical systems exhibit universal behavior at critical points determined by symmetry and dimensionality rather than microscopic details, with the renormalization group providing a systematic framework for understanding how physics at different scales relates",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Renormalization Group",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Field Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Physical theories flow under changes of energy scale with fixed points corresponding to scale-invariant theories"
+      },
+      {
+        "result_id": "",
+        "result_name": "Renormalization Group Theory",
+        "domain_id": "field_b",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Physical systems exhibit scale invariance at critical points with universal behavior determined by symmetry and dimensionality"
+      }
+    ],
+    "domains": [
+      "quantum_field_theory",
+      "condensed_matter"
+    ],
+    "domain_names": [
+      "Quantum Field Theory",
+      "Condensed Matter Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.238,
+      "independence": 0.4,
+      "adversarial": 0.12,
+      "reproducibility": 0.42,
+      "depth_consistency": 1.0,
+      "confidence": 0.35839999999999994,
+      "confidence_category": "speculative"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:25:20.311934+00:00",
+    "id": "5aa17b0cef85"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.26865
+  }
+}

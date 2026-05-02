@@ -1,0 +1,38 @@
+{
+  "proof_id": "0c1797de78e2",
+  "timestamp": "2026-05-02T13:50:03.777672+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "constraint_logic was considered since this involves optimizing cosmological parameters to fit observations, but axiomatic is more appropriate as the convergence fundamentally asserts shared empirical axioms rather than optimization problems"
+      ],
+      "reasoning": "This convergence identifies shared observational constraints (accelerating expansion, ~70% dark energy) that both cosmological models must satisfy. The claim is not about structural equivalence between theories but about empirical requirements any successful model must meet."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Differential geometry, Dynamical systems, Measure theory",
+      "alternatives_considered": [],
+      "reasoning": "Differential geometry provides the mathematical framework for general relativity through pseudo-Riemannian manifolds, Einstein field equations, and the Friedmann-Lema\u00eetre-Robertson-Walker metric. Dynamical systems theory captures the evolution of scale factor and energy densities. Measure theory handles the integration of energy density over spacetime volumes."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof derives the Friedmann acceleration equation from general relativity, then shows that observational constraints from Type Ia supernovae require a dominant dark energy component with \u03a9\u039b \u2248 0.7. This value, combined with the negative pressure equation of state of dark energy, yields \u00e4 > 0 in the acceleration equation, establishing accelerated expansion.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 9 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 2701 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 3562 chars, 11 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This proof requires extensive cosmological machinery not available in Mathlib. The formalization captures the logical structure but relies on axiomatizing the observational result from supernovae. The key mathematical content about differential equations and calculus is available, but the physics-specific definitions and derivations are missing."
+    }
+  ]
+}

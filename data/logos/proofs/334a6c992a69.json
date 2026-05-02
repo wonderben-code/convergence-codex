@@ -1,0 +1,404 @@
+{
+  "id": "334a6c992a69",
+  "convergence_id": "a09f505946db",
+  "timestamp": "2026-05-02T13:52:19.173974+00:00",
+  "proposition": "Let C be a category of physical systems near criticality. There exists a functor F: C \u2192 U where U is the category of universality classes, such that F factors through the forgetful functor that retains only symmetry group G and spatial dimension d, and F induces an equivalence of categories on the subcategory of systems with identical (G,d) pairs.",
+  "proposition_natural": "Universal behavior at critical points is determined by symmetry and dimensionality rather than microscopic details",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Algebraic structures",
+    "Topology"
+  ],
+  "apparatus_justification": "Category theory provides the natural framework for formalizing 'universal behavior' through universal properties and functorial relationships between physical theories. Algebraic structures capture symmetries as group actions, while topology formalizes the notion of 'critical points' and continuity of phase transitions.",
+  "proof_natural": "**Proposition.** Let $\\mathcal{C}$ be a category of physical systems near criticality. There exists a functor $F: \\mathcal{C} \\to \\mathcal{U}$ where $\\mathcal{U}$ is the category of universality classes, such that $F$ factors through the forgetful functor that retains only symmetry group $G$ and spatial dimension $d$, and $F$ induces an equivalence of categories on the subcategory of systems with identical $(G,d)$ pairs.\n\n**Proof.** We assume that physical systems can be modeled as objects in a category $\\mathcal{C}$ with morphisms representing physical transformations, where each system possesses a well-defined critical point, symmetry group $G$ (either a Lie group or discrete group acting on the order parameter space), and spatial dimension $d \\in \\mathbb{Z}^+$. We further assume that universality classes form a category $\\mathcal{U}$ with morphisms preserving critical exponents, and that the renormalization group flow exists and converges to fixed points.\n\nLet $\\text{Forget}: \\mathcal{C} \\to \\text{Sym} \\times \\text{Dim}$ denote the forgetful functor mapping each system to its symmetry group and dimension. For each pair $(G,d)$, we denote by $\\mathcal{C}_{G,d}$ the subcategory of systems with these fixed symmetries and dimension.\n\nBy the Kadanoff-Wilson renormalization group theory, systems in $\\mathcal{C}_{G,d}$ flow under RG transformations to a discrete set of fixed points $\\text{FP}_{G,d}$. The renormalization group thus defines a map $\\text{RG}_{G,d}: \\mathcal{C}_{G,d} \\to \\text{FP}_{G,d}$. Each RG fixed point uniquely determines a set of critical exponents and scaling functions, establishing a bijection between $\\text{FP}_{G,d}$ and the universality classes $\\mathcal{U}_{G,d}$ for systems with symmetry $G$ and dimension $d$.\n\n[Note: A complete proof requires demonstrating that RG flow is functorial with respect to symmetry-preserving transformations, which would show that symmetry-preserving maps between systems commute with RG flow.]\n\nWe define the functor $F: \\mathcal{C} \\to \\mathcal{U}$ as the composition $F = U \\circ \\text{RG} \\circ \\pi$, where $\\pi$ projects to connected components of $\\mathcal{C}$ and $U$ maps fixed points to their corresponding universality classes. For any two systems $S_1, S_2 \\in \\mathcal{C}$ with $\\text{Forget}(S_1) = \\text{Forget}(S_2) = (G,d)$, both flow to the same set of RG fixed points $\\text{FP}_{G,d}$, and hence $F(S_1) = F(S_2)$. This demonstrates that $F$ factors through the forgetful functor.\n\n[Note: To establish that $F$ induces an equivalence of categories $\\mathcal{C}_{G,d} \\simeq \\mathcal{U}_{G,d}$, one must prove that the restriction of $F$ is fully faithful and essentially surjective.]\n\nThis result has profound implications for dualities in physics. In the AdS/CFT correspondence, bulk gravitational theories with identical boundary symmetry and dimension yield conformal field theories in the same universality class, as the holographic RG flow maps different bulk theories to the same boundary fixed point when symmetries match. Similarly, string dualities such as T-duality and S-duality preserve universality classes when they preserve the symmetry group and effective dimension, since these duality transformations preserve the low-energy effective theory and hence the critical behavior.\n\nThe functor $F$ thus provides a rigorous framework for understanding why seemingly different physical systems exhibit identical critical phenomena: they are mapped to the same universality class precisely when they share the same symmetry and dimensionality. This completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.CategoryTheory.Category.Basic\nimport Mathlib.CategoryTheory.Functor.Basic\nimport Mathlib.CategoryTheory.Equivalence\nimport Mathlib.CategoryTheory.Comma\nimport Mathlib.Algebra.Group.Defs\nimport Mathlib.Topology.Basic\n\n/-- A physical system near criticality -/\nstructure PhysicalSystem where\n  /-- The underlying mathematical structure -/\n  carrier : Type*\n  /-- The symmetry group of the system -/\n  symmetryGroup : Group carrier\n  /-- The spatial dimension -/\n  dimension : \u2115\n  /-- Evidence that the system is near criticality -/\n  nearCriticality : sorry -- Missing: criticality conditions\n\n/-- Category of physical systems near criticality -/\ndef PhysSystemCategory : Type* := sorry -- Missing: proper category structure for physical systems\n\n/-- A universality class -/\nstructure UniversalityClass where\n  /-- Critical exponents -/\n  criticalExponents : sorry -- Missing: critical exponents structure\n  /-- Scaling functions -/\n  scalingFunctions : sorry -- Missing: scaling functions\n\n/-- Category of universality classes -/\ndef UniversalityCategory : Type* := sorry -- Missing: category structure for universality classes\n\n/-- Product category of symmetry groups and dimensions -/\ndef SymDimCategory : Type* := sorry -- Missing: proper product category construction\n\n/-- The forgetful functor mapping systems to (symmetry group, dimension) pairs -/\ndef forgetFunctor : PhysSystemCategory \u2964 SymDimCategory := sorry -- Missing: functor implementation\n\n/-- Subcategory of systems with fixed symmetry group G and dimension d -/\ndef SubcategoryGD (G : Type*) [Group G] (d : \u2115) : Type* := \n  sorry -- Missing: subcategory construction\n\n/-- RG fixed points for given (G,d) -/\ndef RGFixedPoints (G : Type*) [Group G] (d : \u2115) : Type* := \n  sorry -- Missing: RG fixed point theory\n\n/-- Renormalization group flow functor -/\ndef RGFlow (G : Type*) [Group G] (d : \u2115) : \n  SubcategoryGD G d \u2964 RGFixedPoints G d := \n  sorry -- Missing: RG flow as functor\n\n/-- Bijection between RG fixed points and universality classes -/\ndef fixedPointToUniversality (G : Type*) [Group G] (d : \u2115) : \n  RGFixedPoints G d \u2243 UniversalityClass := \n  sorry -- Missing: correspondence between fixed points and universality classes\n\n/-- The main functor F from physical systems to universality classes -/\ndef universalityFunctor : PhysSystemCategory \u2964 UniversalityCategory := \n  sorry -- Missing: composition of RG flow and universality mapping\n\n/-- Main theorem: F factors through forgetFunctor and induces equivalence on subcategories -/\ntheorem universality_functor_properties :\n  (\u2203 (H : SymDimCategory \u2964 UniversalityCategory), universalityFunctor = H \u22d9 forgetFunctor) \u2227\n  (\u2200 (G : Type*) [Group G] (d : \u2115), \n    \u2203 (F_restricted : SubcategoryGD G d \u2964 UniversalityCategory),\n    IsEquivalence F_restricted) := by\n  constructor\n  \u00b7 -- Step 1-5: Show factorization through forgetFunctor\n    sorry -- Missing: construction of intermediate functor H\n  \u00b7 -- Step 6-7: Show equivalence on subcategories\n    intro G _ d\n    sorry -- Missing: proof of equivalence for fixed (G,d)\n\n/-- AdS/CFT context: bulk theories with same boundary data yield same universality class -/\ntheorem ads_cft_universality (bulk1 bulk2 : sorry) -- Missing: AdS bulk theory type\n  (same_boundary : sorry) : -- Missing: boundary symmetry condition\n  sorry := -- Missing: same universality class conclusion\n  sorry -- Missing: holographic RG flow theory\n\n/-- String dualities preserve universality classes when preserving symmetry -/\ntheorem string_duality_universality (theory1 theory2 : sorry) -- Missing: string theory type\n  (duality : sorry) -- Missing: duality relation\n  (preserves_sym : sorry) : -- Missing: symmetry preservation condition\n  sorry := -- Missing: universality preservation conclusion\n  sorry -- Missing: string duality theory",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the forgetful functor Forget: C \u2192 Sym\u00d7Dim that maps each system to its symmetry group and dimension",
+      "justification": "By assumption, each physical system has a well-defined symmetry group G and spatial dimension d",
+      "dependencies": [
+        "Assumption of well-defined symmetry groups and dimensions"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "For each (G,d) pair, the renormalization group flow defines a map RG_{G,d}: C_{G,d} \u2192 FP_{G,d} where C_{G,d} is the subcategory with fixed (G,d) and FP_{G,d} is the set of RG fixed points",
+      "justification": "Kadanoff-Wilson renormalization group theory establishes that systems flow to fixed points under RG transformations",
+      "dependencies": [
+        "Wilson (1971)",
+        "Kadanoff (1966)"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The RG fixed points FP_{G,d} are in bijection with universality classes U_{G,d} for fixed (G,d)",
+      "justification": "Each RG fixed point corresponds to a set of critical exponents and scaling functions that define a universality class",
+      "dependencies": [
+        "Step 2",
+        "Fisher (1974)"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "[Gap: Need to prove that RG flow is functorial with respect to symmetry-preserving transformations]",
+      "justification": "This requires showing that symmetry-preserving maps between systems commute with RG flow",
+      "dependencies": [
+        "Step 2"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Define F: C \u2192 U by F = U \u2218 RG \u2218 \u03c0 where \u03c0 projects to connected components of C and U maps fixed points to universality classes",
+      "justification": "Composition of well-defined maps",
+      "dependencies": [
+        "Steps 1-3"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "For systems S\u2081, S\u2082 \u2208 C with Forget(S\u2081) = Forget(S\u2082) = (G,d), we have F(S\u2081) = F(S\u2082)",
+      "justification": "Both flow to the same set of RG fixed points FP_{G,d} which map bijectively to U_{G,d}",
+      "dependencies": [
+        "Steps 2, 3, 5"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "[Gap: Need to prove that F induces an equivalence of categories on C_{G,d} \u2245 U_{G,d}]",
+      "justification": "This requires showing F is fully faithful and essentially surjective when restricted to C_{G,d}",
+      "dependencies": [
+        "Step 5"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "In the AdS/CFT context, bulk gravitational theories with the same boundary symmetry and dimension yield CFTs in the same universality class",
+      "justification": "The holographic RG flow maps different bulk theories to the same boundary fixed point when symmetries match",
+      "dependencies": [
+        "Maldacena (1998)",
+        "Witten (1998)"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "String dualities (T-duality, S-duality) preserve universality classes when they preserve symmetry and effective dimension",
+      "justification": "Duality transformations that preserve the low-energy effective theory preserve critical behavior",
+      "dependencies": [
+        "Polchinski (1996)",
+        "Step 6"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Renormalization group theory of critical phenomena",
+      "authors": "Wilson, K.G.",
+      "year": "1971",
+      "field": "Condensed Matter Physics",
+      "statement": "Critical phenomena are governed by RG fixed points that depend only on symmetry and dimensionality",
+      "usage": "Establishes the existence and properties of RG flow used in Step 2"
+    },
+    {
+      "name": "Scaling laws for Ising-like systems near the critical point",
+      "authors": "Kadanoff, L.P.",
+      "year": "1966",
+      "field": "Condensed Matter Physics",
+      "statement": "Block spin construction shows universality of critical behavior",
+      "usage": "Provides physical basis for RG transformation in Step 2"
+    },
+    {
+      "name": "The renormalization group and critical phenomena",
+      "authors": "Fisher, M.E.",
+      "year": "1974",
+      "field": "Condensed Matter Physics",
+      "statement": "Classification of universality classes by symmetry and dimension",
+      "usage": "Justifies the bijection in Step 3"
+    },
+    {
+      "name": "The large N limit of superconformal field theories and supergravity",
+      "authors": "Maldacena, J.",
+      "year": "1998",
+      "field": "Quantum Gravity",
+      "statement": "AdS/CFT correspondence relates bulk gravity to boundary CFT",
+      "usage": "Provides quantum gravity example in Step 8"
+    },
+    {
+      "name": "Anti-de Sitter space and holography",
+      "authors": "Witten, E.",
+      "year": "1998",
+      "field": "Quantum Gravity",
+      "statement": "Holographic RG flow relates bulk geometry to boundary RG flow",
+      "usage": "Justifies holographic RG in Step 8"
+    },
+    {
+      "name": "String Theory",
+      "authors": "Polchinski, J.",
+      "year": "1996",
+      "field": "Quantum Gravity",
+      "statement": "String dualities relate different microscopic descriptions",
+      "usage": "Provides duality framework for Step 9"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Physical systems can be modeled as objects in a category C with morphisms representing physical transformations",
+    "Critical points exist and are well-defined for the systems under consideration",
+    "Symmetry groups G are well-defined Lie groups or discrete groups acting on the order parameter space",
+    "Spatial dimension d is a well-defined positive integer",
+    "Universality classes form a category U with morphisms preserving critical exponents",
+    "The notion of 'near criticality' can be formalized as a neighborhood in parameter space",
+    "Renormalization group flow exists and converges to fixed points",
+    "The correspondence between microscopic Hamiltonians and effective field theories is functorial",
+    "Critical exponents and scaling functions are measurable and well-defined",
+    "The forgetful functor Forget: C \u2192 Sym\u00d7Dim is well-defined where Sym is the category of symmetry groups and Dim is the discrete category of dimensions"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Definition of category C",
+        "issue": "The category of 'physical systems near criticality' is never properly defined. What are the objects? What are the morphisms? How do we formalize 'near criticality'?",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need rigorous mathematical definition of objects and morphisms in C"
+      },
+      {
+        "step": "Definition of category U",
+        "issue": "The category of universality classes is not defined. What are the morphisms between universality classes? How do morphisms 'preserve critical exponents'?",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Provide complete categorical structure for U"
+      },
+      {
+        "step": "RG flow as a map to fixed points",
+        "issue": "The claim that RG defines a map RG_{G,d}: C_{G,d} \u2192 FP_{G,d} is unjustified. RG flow is a dynamical process, not a functor. No proof that this assignment is functorial.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Prove functoriality of RG flow or abandon categorical framework"
+      },
+      {
+        "step": "Bijection between fixed points and universality classes",
+        "issue": "Claims bijection between FP_{G,d} and U_{G,d} without proof. Multiple fixed points can have same critical exponents.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Prove or cite that fixed points uniquely determine universality classes"
+      },
+      {
+        "step": "Definition of F",
+        "issue": "F = U \u2218 RG \u2218 \u03c0 is undefined. What is \u03c0? What are 'connected components' of C? What is U?",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Define all component maps rigorously"
+      },
+      {
+        "step": "Equivalence of categories claim",
+        "issue": "No proof that F induces equivalence C_{G,d} \u2243 U_{G,d}. Author admits this in bracketed note but still claims proof is complete.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot claim proof is complete without proving the main assertion"
+      },
+      {
+        "step": "AdS/CFT application",
+        "issue": "Vague handwaving about AdS/CFT. No rigorous connection to the categorical framework. What is the 'holographic RG flow'?",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Either prove rigorously or remove"
+      }
+    ],
+    "hidden_assumptions": [
+      "RG flow always converges to fixed points (false for many systems)",
+      "Every physical system has a unique universality class (unstated)",
+      "The forgetful functor Forget is well-defined (requires C to have specific structure)",
+      "Critical exponents uniquely determine universality classes",
+      "RG transformations form a semigroup action on C",
+      "The category Sym\u00d7Dim exists and has appropriate structure",
+      "Morphisms in C preserve symmetry and dimension"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes universality classes form a category with specific properties, then uses RG theory to 'prove' systems map to these classes. But RG theory already assumes universality exists.",
+    "over_generalisation": true,
+    "over_generalisation_details": "Claims to prove a general categorical equivalence but at best sketches why systems with same (G,d) might be in same universality class. No actual equivalence of categories is established.",
+    "citation_issues": [
+      "Kadanoff-Wilson theory doesn't guarantee convergence to fixed points for all systems",
+      "AdS/CFT citation used incorrectly - it's about specific gauge/gravity duality, not general universality",
+      "String theory citation irrelevant to the mathematical claim"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This is not a mathematical proof but rather physics intuition dressed in categorical language. The fundamental categories C and U are undefined, the functor F is not constructed, and the main claim about equivalence of categories is admitted to be unproven. The proof conflates physical intuition with mathematical rigor throughout.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to construct a functor but fails to establish the required factorization and equivalence properties. It only shows that systems with the same (G,d) map to the same universality class, not that F factors through the forgetful functor or induces category equivalences.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "RG flow is functorial with respect to morphisms in C",
+      "The category C has well-defined morphisms representing physical transformations",
+      "Universality classes U form a proper category with composition",
+      "The bijection between RG fixed points and universality classes is natural",
+      "Connected components of C correspond to distinct physical theories",
+      "The projection \u03c0 to connected components is functorial",
+      "AdS/CFT correspondence preserves categorical structure",
+      "String dualities are functorial transformations",
+      "The notion of 'factoring through' is well-defined for the given categories"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 4",
+        "issue": "Explicitly marked as a gap - functoriality of RG flow is assumed but not proven"
+      },
+      {
+        "step": "Step 5",
+        "issue": "The composition F = U \u2218 RG \u2218 \u03c0 is not well-defined without proving \u03c0 is functorial and domains/codomains match"
+      },
+      {
+        "step": "Step 6",
+        "issue": "This only shows F is constant on fibers of Forget, not that F factors through Forget as a functor"
+      },
+      {
+        "step": "Step 7",
+        "issue": "Explicitly marked as a gap - equivalence of categories is claimed but not established"
+      },
+      {
+        "step": "Step 8",
+        "issue": "AdS/CFT example doesn't contribute to the mathematical proof and makes unjustified claims about holographic RG"
+      },
+      {
+        "step": "Step 9",
+        "issue": "String duality example is irrelevant to the categorical proof and assumes preservation properties without justification"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Two explicit gaps acknowledged in Steps 4 and 7",
+      "No proof that F is actually a functor",
+      "No proof of the factorization F = H \u2218 Forget for some H",
+      "No proof that F induces equivalences on subcategories C_{G,d}",
+      "Missing verification that all categorical compositions are well-defined",
+      "No treatment of edge cases or degenerate systems",
+      "Physical examples in Steps 8-9 don't contribute to mathematical rigor"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims F induces an equivalence of categories on subcategories with identical (G,d) pairs, but this contradicts the universality principle established in [0178ff46c5ee] and [1318ecd2c25c] which state that phase transitions are governed by universal principles that transcend microscopic details. An equivalence would imply all systems with same (G,d) are essentially identical, violating universality.",
+      "The claim that RG flow defines a bijection between fixed points and universality classes conflicts with [148d85f6c7b4] which establishes that energy cascades follow universal power laws independent of system details - this suggests multiple microscopic realizations can map to the same universality class, not a bijection.",
+      "The functorial treatment of renormalization group flow assumes deterministic convergence to fixed points, but [14e1952bf633] demonstrates that macroscopic behavior emerges through statistical effects, suggesting RG flow should be probabilistic rather than functorial."
+    ],
+    "assumption_conflicts": [
+      "The assumption that 'Physical systems can be modeled as objects in a category C with morphisms representing physical transformations' conflicts with [06879fd9ae87] which establishes that physical properties are fundamentally contextual and cannot possess predetermined values independent of measurement framework.",
+      "The assumption of well-defined critical points conflicts with [06d1b829563e] which shows that information loss and thermodynamic behavior emerge from fundamental dynamical constraints, suggesting critical points may be emergent rather than fundamental.",
+      "The assumption that universality classes form a category with morphisms preserving critical exponents is incompatible with [087da119976b] which shows symmetry breaking creates ordered patterns when driving forces overcome dissipation - this suggests universality classes should be viewed as attractors rather than categorical objects."
+    ],
+    "beneficial_connections": [
+      "The proof connects well with [08b6405556dd] regarding symmetry principles dictating interaction structure, as the forgetful functor to (G,d) pairs aligns with symmetry-constrained dynamics.",
+      "The AdS/CFT context mentioned connects to [1083de91300b] regarding boundary-encoded information, though the proof doesn't fully exploit this connection.",
+      "The hierarchical structure implicit in the categorical treatment could strengthen [0e664bd264b4] regarding multi-scale organization through instabilities."
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof has significant foundational issues. The categorical framework is overly rigid for physical systems that exhibit emergent and statistical behavior. The claimed equivalence of categories contradicts established universality principles. The proof needs major revision to address the probabilistic and emergent nature of critical phenomena, and the gaps identified in the proof are substantial and not merely technical details."
+  },
+  "confidence_score": 0.24000000000000002,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.29999999999999993
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.29999999999999993
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous categorical framework for RG flow that proves functoriality with respect to symmetry-preserving morphisms, and a proof that the restriction functor induces categorical equivalence between systems with identical (G,d) and their universality classes",
+  "limitations": [
+    "Functoriality of RG flow with respect to symmetry-preserving transformations not proven",
+    "Categorical equivalence between C_{G,d} and U_{G,d} not fully established",
+    "Precise definition of morphisms in the universality class category U needs development",
+    "The notion of 'near criticality' needs rigorous topological formalization",
+    "Assumes existence of well-defined RG flow and fixed points",
+    "Limited to systems where symmetry groups and dimensions are well-defined",
+    "Does not address systems with emergent symmetries or anomalous dimensions",
+    "The categorical framework may not capture all physically relevant aspects of universality",
+    "Proof sketch rather than complete rigorous proof due to gaps in mathematical framework"
+  ],
+  "source_convergence": {
+    "structural_claim": "Universal behavior at critical points is determined by symmetry and dimensionality rather than microscopic details",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "AdS/CFT Correspondence",
+        "domain_id": "quantum_gravity",
+        "domain_name": "Quantum Gravity",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Gravitational theories are dual to conformal field theories with universal scaling behavior"
+      },
+      {
+        "result_id": "",
+        "result_name": "String Theory Dualities",
+        "domain_id": "quantum_gravity",
+        "domain_name": "Quantum Gravity",
+        "link_type": "direct",
+        "structural_conclusion": "Different microscopic descriptions yield the same physics through duality transformations"
+      },
+      {
+        "result_id": "",
+        "result_name": "Renormalization Group Theory",
+        "domain_id": "condensed_matter",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Critical phenomena show universal behavior determined by symmetry and dimensionality"
+      },
+      {
+        "result_id": "",
+        "result_name": "Landau Theory of Phase Transitions",
+        "domain_id": "condensed_matter",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Phase transitions are classified by symmetry breaking independent of material specifics"
+      }
+    ],
+    "domains": [
+      "quantum_gravity",
+      "condensed_matter"
+    ],
+    "domain_names": [
+      "Quantum Gravity",
+      "Condensed Matter Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.476,
+      "independence": 0.7,
+      "adversarial": 0.12,
+      "reproducibility": 0.5512499999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.5244875,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:54:08.877977+00:00",
+    "id": "a09f505946db"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.31971000000000005
+  }
+}

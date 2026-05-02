@@ -1,0 +1,38 @@
+{
+  "proof_id": "c16ee92ee7ea",
+  "timestamp": "2026-05-02T12:57:19.128012+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "equivalence - This would require showing a functorial relationship between MHD equilibria and acoustic periodic media, but the physical mechanisms are too different despite the shared spectral phenomenon"
+      ],
+      "reasoning": "Both domains exhibit the same abstract principle: periodic spatial structures create forbidden frequency bands. This is best captured by identifying axioms about periodic operators and their spectral properties that both plasma MHD modes and acoustic waves satisfy, rather than claiming the structures themselves are equivalent."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Functional analysis, Differential geometry, Algebraic structures",
+      "alternatives_considered": [],
+      "reasoning": "Functional analysis provides spectral theory for operators on function spaces, which directly captures how periodic structures create forbidden frequency bands. Differential geometry handles the spatial periodicity through Riemannian metrics and Fourier analysis on manifolds. Algebraic structures (specifically group theory) formalizes the periodicity itself through translation groups."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof uses Floquet-Bloch theory to decompose the periodic operator into a family of operators on a fundamental domain parameterized by quasi-momentum. Each operator has discrete spectrum forming continuous bands, and generic non-degeneracy conditions ensure these bands do not overlap, creating spectral gaps.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 10 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 2652 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 4104 chars, 14 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This formalization requires substantial theory not yet in Mathlib, including differential operators on manifolds, Floquet-Bloch theory, and spectral gap analysis. The structure captures the main ideas but most technical details require sorry."
+    }
+  ]
+}

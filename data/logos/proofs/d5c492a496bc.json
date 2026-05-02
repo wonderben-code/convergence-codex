@@ -1,0 +1,381 @@
+{
+  "id": "d5c492a496bc",
+  "convergence_id": "58d65d5acae1",
+  "timestamp": "2026-05-02T13:07:30.213710+00:00",
+  "proposition": "Let C be a category with objects representing physical systems and morphisms representing symmetry-preserving transformations. For any object X with symmetry group G acting on it via a functor F: G \u2192 Aut(X), spontaneous symmetry breaking corresponds to a choice of morphism \u03c6: X \u2192 X/H where H \u2282 G is the residual symmetry subgroup, such that: (1) The quotient X/H admits a non-zero invariant section \u03c3: 1 \u2192 X/H (order parameter), (2) The pullback of \u03c3 along \u03c6 generates a G-orbit in X, (3) Physical observables correspond to H-invariant functionals on X/H, and (4) The original G-symmetry is preserved in the space of all possible sections but hidden in any particular choice.",
+  "proposition_natural": "Spontaneous symmetry breaking provides a universal mechanism for generating mass and order, with the broken symmetry hidden rather than destroyed",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Algebraic structures",
+    "Differential geometry"
+  ],
+  "apparatus_justification": "Category theory captures the structural preservation across domains through functors between categories of symmetry groups and their representations. Algebraic structures formalize the group actions and broken symmetries, while differential geometry provides the manifold structure of order parameter spaces and gauge fields.",
+  "proof_natural": "**Proposition.** Let $\\mathcal{C}$ be a category with objects representing physical systems and morphisms representing symmetry-preserving transformations. For any object $X$ with symmetry group $G$ acting on it via a functor $F: G \\to \\text{Aut}(X)$, spontaneous symmetry breaking corresponds to a choice of morphism $\\varphi: X \\to X/H$ where $H \\subset G$ is the residual symmetry subgroup, such that: (1) The quotient $X/H$ admits a non-zero invariant section $\\sigma: 1 \\to X/H$ (order parameter), (2) The pullback of $\\sigma$ along $\\varphi$ generates a $G$-orbit in $X$, (3) Physical observables correspond to $H$-invariant functionals on $X/H$, and (4) The original $G$-symmetry is preserved in the space of all possible sections but hidden in any particular choice.\n\n**Proof.** We assume that physical systems form objects in a well-defined category $\\mathcal{C}$ with appropriate limits and colimits, that symmetry groups $G$ act on physical systems via group homomorphisms to automorphism groups, and that $\\mathcal{C}$ admits quotients by group actions. We further assume that physical states correspond to sections of appropriate bundles, observables form a commutative algebra of functionals, and that order parameters can be identified with non-zero sections of quotient objects.\n\nWe begin by constructing the symmetry breaking functor $\\text{SB}: \\text{Sym}(\\mathcal{C}) \\to \\text{Ord}(\\mathcal{C})$, where $\\text{Sym}(\\mathcal{C})$ denotes the category of symmetric objects and $\\text{Ord}(\\mathcal{C})$ the category of ordered objects. This provides the categorical framework for our analysis.\n\nFor an object $X$ with $G$-action, we form the orbit category $X//G$ whose objects are points of $X$ and whose morphisms are $G$-transformations between them. The crucial step in spontaneous symmetry breaking is the choice of vacuum state $|0\\rangle$, which corresponds to selecting a functor $V: 1 \\to X//G$ that picks out a particular orbit. This selection breaks the symmetry by distinguishing one state among many equivalent possibilities.\n\nThe stabilizer subgroup $H = \\text{Stab}_G(V(1)) \\subset G$ consists of all group elements that preserve the chosen vacuum. By the universal property of quotients, the quotient map $\\varphi: X \\to X/H$ factors through $X//G \\to X/H$. We define the order parameter $\\sigma: 1 \\to X/H$ as the image of the vacuum under the quotient map, that is, $\\sigma = \\varphi \\circ V$. Since $V$ picks a non-trivial orbit, $\\sigma$ defines a non-zero section.\n\n[Note: The rigorous connection between categorical quotients and physical mass generation requires additional axiomatization beyond our current framework.]\n\nThe space $\\Gamma(X/H)$ of all sections forms a $G$-module via the induced action $(g \\cdot \\sigma)(x) = g \\cdot (\\sigma(g^{-1} \\cdot x))$. Physical observables $O: X \\to \\mathbb{R}$ that are $G$-invariant descend to functionals $\\bar{O}: X/H \\to \\mathbb{R}$ by the universal property of quotients for $G$-invariant maps.\n\nThe key insight is that while the original $G$-symmetry acts transitively on the space of vacuum choices, it is hidden in any particular choice. Specifically, $G$ acts on $\\Gamma(X/H)$ transitively on the orbit of $\\sigma$, but any fixed $\\sigma$ breaks $G$ to $H$. This demonstrates how the symmetry remains in the theory's structure while being spontaneously broken in any particular realization.\n\nBy the Orbit-Stabilizer Theorem, we have $|G| = |\\text{Orbit}| \\times |\\text{Stabilizer}|$, confirming the relationship between the original symmetry group and its residual subgroup. This construction, when applied to gauge theories, yields the Higgs mechanism whereby gauge bosons acquire mass through coupling to scalar fields with non-zero vacuum expectation values. Moreover, by Goldstone's Theorem, the spontaneous breaking of continuous symmetries implies the existence of massless excitations corresponding to the broken generators.\n\nThis completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.CategoryTheory.Category.Basic\nimport Mathlib.CategoryTheory.Functor.Basic\nimport Mathlib.CategoryTheory.Quotient\nimport Mathlib.CategoryTheory.Limits.Shapes.Pullbacks\nimport Mathlib.GroupTheory.GroupAction.Basic\nimport Mathlib.GroupTheory.GroupAction.Quotient\nimport Mathlib.GroupTheory.Subgroup.Basic\nimport Mathlib.Algebra.Group.Action.Defs\n\n/-- Category of physical systems with symmetry-preserving transformations -/\n-- sorry: Physical system objects not in Mathlib\nstructure PhysicalSystemCategory where\n  -- Placeholder for physical system category\n  \n/-- Category of symmetric objects -/\n-- sorry: Symmetric objects category not in Mathlib  \nstructure SymmetricObjectCategory (C : Type*) [Category C] where\n  -- Placeholder for symmetric objects\n  \n/-- Category of ordered objects -/\n-- sorry: Ordered objects category not in Mathlib\nstructure OrderedObjectCategory (C : Type*) [Category C] where\n  -- Placeholder for ordered objects\n\nvariable {C : Type*} [Category C]\nvariable (X : C) (G : Type*) [Group G]\nvariable (F : G \u2964 Aut X) -- Functor from G to automorphisms of X\n\n/-- Symmetry breaking functor from symmetric to ordered objects -/\n-- Step 1: Define the symmetry breaking functor\ndef symmetryBreakingFunctor : SymmetricObjectCategory C \u2964 OrderedObjectCategory C :=\n  sorry -- Symmetry breaking functor construction not in Mathlib\n\n/-- Orbit category construction for object with G-action -/\n-- Step 2: Orbit category X//G\ndef orbitCategory (X : C) (G : Type*) [Group G] (F : G \u2964 Aut X) : Type* :=\n  sorry -- Orbit category construction not in Mathlib\n\n/-- Vacuum state selection functor -/\n-- Step 3: Choice of vacuum state\ndef vacuumSelection (X : C) (G : Type*) [Group G] (F : G \u2964 Aut X) : \n  (Unit : Type*) \u2964 orbitCategory X G F :=\n  sorry -- Vacuum selection functor not in Mathlib\n\n/-- Stabilizer subgroup of the vacuum -/\n-- Step 4: Stabilizer subgroup H\ndef stabilizerSubgroup (X : C) (G : Type*) [Group G] (F : G \u2964 Aut X) \n  (V : Unit \u2964 orbitCategory X G F) : Subgroup G :=\n  sorry -- Stabilizer computation in categorical context not in Mathlib\n\n/-- Quotient morphism by stabilizer -/\n-- Step 5: Quotient map \u03c6: X \u2192 X/H\ndef quotientMorphism (X : C) (G : Type*) [Group G] (F : G \u2964 Aut X)\n  (H : Subgroup G) : X \u27f6 sorry :=\n  sorry -- Categorical quotient by subgroup action not in Mathlib\n\n/-- Order parameter as invariant section -/\n-- Step 6: Order parameter \u03c3: 1 \u2192 X/H\ndef orderParameter (X : C) (G : Type*) [Group G] (F : G \u2964 Aut X)\n  (H : Subgroup G) : Unit \u27f6 sorry :=\n  sorry -- Order parameter construction not in Mathlib\n\n/-- Theorem: Spontaneous symmetry breaking in categorical framework -/\ntheorem spontaneous_symmetry_breaking \n  (X : C) (G : Type*) [Group G] (F : G \u2964 Aut X) :\n  \u2203 (H : Subgroup G) (\u03c6 : X \u27f6 sorry) (\u03c3 : Unit \u27f6 sorry),\n  -- (1) The quotient X/H admits a non-zero invariant section\n  (\u03c3 \u2260 0) \u2227\n  -- (2) The pullback of \u03c3 along \u03c6 generates a G-orbit in X\n  sorry \u2227\n  -- (3) Physical observables correspond to H-invariant functionals\n  sorry \u2227\n  -- (4) Original G-symmetry preserved in space of sections but hidden in choice\n  sorry :=\nbegin\n  -- Step 7: Gap - connection to physical mass generation\n  sorry, -- Physical mass generation correspondence not formalizable\n  \n  -- Step 8: G-module structure on sections\n  -- sorry: G-invariant sections not in Mathlib\n  \n  -- Step 9: Descent of G-invariant observables\n  -- sorry: Physical observables as functionals not in Mathlib\n  \n  -- Step 10: Hidden symmetry in vacuum choice\n  -- sorry: Transitive action on vacuum choices not in Mathlib\nend",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the symmetry breaking functor SB: Sym(C) \u2192 Ord(C) where Sym(C) is the category of symmetric objects and Ord(C) is the category of ordered objects",
+      "justification": "Construction of the categorical framework for symmetry breaking",
+      "dependencies": [
+        "Assumption that C admits appropriate subcategories"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "For object X with G-action, the orbit category X//G has objects as points of X and morphisms as G-transformations",
+      "justification": "Standard construction of orbit categories",
+      "dependencies": [
+        "Category theory fundamentals"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The choice of vacuum state |0\u27e9 corresponds to selecting a functor V: 1 \u2192 X//G picking out a particular orbit",
+      "justification": "Vacuum selection breaks the symmetry by choosing a particular state",
+      "dependencies": [
+        "Steps 1-2",
+        "Assumption about vacuum characterization"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The stabilizer subgroup H = Stab_G(V(1)) \u2282 G preserves the chosen vacuum",
+      "justification": "Definition of stabilizer subgroup",
+      "dependencies": [
+        "Step 3",
+        "Group theory"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The quotient map \u03c6: X \u2192 X/H factors through X//G \u2192 X/H",
+      "justification": "Universal property of quotients",
+      "dependencies": [
+        "Steps 2-4"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "The order parameter \u03c3: 1 \u2192 X/H is the image of the vacuum under the quotient map",
+      "justification": "\u03c3 = \u03c6 \u2218 V defines a non-zero section since V picks a non-trivial orbit",
+      "dependencies": [
+        "Steps 3-5"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "[Gap: Rigorous connection between categorical quotients and physical mass generation]",
+      "justification": "The correspondence between mathematical structures and physical mass requires additional axiomatization",
+      "dependencies": [
+        "Physical interpretation"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "The space \u0393(X/H) of all sections forms a G-module via induced action",
+      "justification": "G acts on sections by (g\u00b7\u03c3)(x) = g\u00b7(\u03c3(g^{-1}\u00b7x))",
+      "dependencies": [
+        "Steps 5-6",
+        "Representation theory"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "Physical observables O: X \u2192 \u211d that are G-invariant descend to functionals \u014c: X/H \u2192 \u211d",
+      "justification": "Universal property of quotients for G-invariant maps",
+      "dependencies": [
+        "Step 5",
+        "Assumption about observables"
+      ]
+    },
+    {
+      "step_number": 10,
+      "statement": "The original G-symmetry acts transitively on the space of vacuum choices but is hidden in any particular choice",
+      "justification": "G acts on \u0393(X/H) transitively on the orbit of \u03c3, but any fixed \u03c3 breaks G to H",
+      "dependencies": [
+        "Steps 6-8"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Goldstone's Theorem",
+      "authors": "Goldstone, Salam, Weinberg",
+      "year": "1962",
+      "field": "Quantum Field Theory",
+      "statement": "Spontaneous breaking of a continuous symmetry implies massless excitations",
+      "usage": "Provides physical interpretation of broken generators"
+    },
+    {
+      "name": "Higgs Mechanism",
+      "authors": "Higgs, Englert, Brout, Guralnik, Hagen, Kibble",
+      "year": "1964",
+      "field": "Quantum Field Theory",
+      "statement": "Gauge bosons acquire mass through coupling to scalar field with non-zero VEV",
+      "usage": "Exemplifies mass generation through symmetry breaking"
+    },
+    {
+      "name": "Orbit-Stabilizer Theorem",
+      "authors": "Classical group theory",
+      "year": "19th century",
+      "field": "Mathematics",
+      "statement": "|G| = |Orbit| \u00d7 |Stabilizer|",
+      "usage": "Relates symmetry group to residual symmetry"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Physical systems form objects in a well-defined category C with appropriate limits and colimits",
+    "Symmetry groups G act on physical systems via group homomorphisms to automorphism groups",
+    "The category C admits quotients by group actions",
+    "Physical states correspond to sections of appropriate bundles",
+    "Observables form a commutative algebra of functionals",
+    "The notion of 'mass' can be formalized as eigenvalues of appropriate operators",
+    "Order parameters can be identified with non-zero sections of quotient objects",
+    "The vacuum/ground state can be characterized categorically"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Construction of symmetry breaking functor SB: Sym(C) \u2192 Ord(C)",
+        "issue": "The categories Sym(C) and Ord(C) are never defined. The functor SB is introduced but never actually constructed or used in the proof",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Either properly define these categories and construct the functor, or remove this irrelevant machinery"
+      },
+      {
+        "step": "Formation of orbit category X//G",
+        "issue": "The orbit category construction is non-standard. Objects are points of X but X is a categorical object, not a set. The notion of 'points' requires additional structure",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Define X as an object in a concrete category or specify what 'points' means categorically"
+      },
+      {
+        "step": "Choice of vacuum state |0\u27e9 as functor V: 1 \u2192 X//G",
+        "issue": "The notation |0\u27e9 suggests quantum states but is never connected to the categorical framework. The functor V is poorly defined - what is the domain category 1?",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Clarify the relationship between physical vacuum states and categorical constructions"
+      },
+      {
+        "step": "Definition of order parameter \u03c3 = \u03c6 \u2218 V",
+        "issue": "V maps to X//G but \u03c6 maps from X, not X//G. The composition is ill-defined",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "The entire construction needs to be rethought with proper categorical mappings"
+      },
+      {
+        "step": "Quotient X/H admits non-zero invariant section",
+        "issue": "The proof assumes this exists but never proves it. This is part of what needs to be proven",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "This cannot be assumed - it's part of the proposition"
+      },
+      {
+        "step": "Physical observables descend to functionals",
+        "issue": "The proof assumes observables are G-invariant, but many physical observables are not. The descent is only valid for H-invariant observables",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Restrict to H-invariant observables from the start"
+      },
+      {
+        "step": "Application to gauge theories and Higgs mechanism",
+        "issue": "No connection is established between the abstract categorical framework and actual gauge field theory. The claim about mass generation is completely unjustified",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "This requires substantial additional work to connect categories to field theory"
+      }
+    ],
+    "hidden_assumptions": [
+      "X has enough structure to define 'points' and form orbit categories",
+      "The quotient X/H exists in the category C",
+      "Sections of categorical objects are well-defined",
+      "The vacuum state exists and is unique up to symmetry",
+      "The stabilizer subgroup H is a proper subgroup of G",
+      "The category C has a terminal object 1",
+      "Functionals on objects form a commutative algebra",
+      "The G-action on X extends to an action on sections"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes the existence of a non-zero invariant section \u03c3 (part of what needs to be proven) to construct the order parameter, then uses this construction to claim the existence of such a section",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to establish a general categorical framework for all spontaneous symmetry breaking, including connections to the Higgs mechanism and Goldstone's theorem, but actually only sketches a vague construction for an undefined class of categories without proving any of the claimed properties",
+    "citation_issues": [
+      "Goldstone's Theorem is cited but its categorical formulation is not established",
+      "The Higgs Mechanism is mentioned without any rigorous connection to the categorical framework",
+      "Orbit-Stabilizer Theorem is used for categories where it may not apply (requires finite groups or additional structure)"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed, mixing physical intuition with half-baked category theory without proper definitions or rigorous arguments. The central constructions are ill-defined, key steps assume what needs to be proven, and the connection to actual physics is merely asserted without justification.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to construct a categorical framework for symmetry breaking but fails to establish the key claims about order parameters, physical observables, and the relationship between mathematical quotients and physical phenomena",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The category C has a monoidal structure to make sense of tensor products and sections",
+      "The functor F: G \u2192 Aut(X) is faithful and preserves relevant categorical structure",
+      "The quotient X/H exists as a categorical quotient and not just a set-theoretic one",
+      "The orbit category X//G is well-defined in the categorical sense",
+      "Sections 1 \u2192 X/H correspond to physical states in a meaningful way",
+      "The pullback construction in condition (2) is well-defined categorically",
+      "H-invariant functionals on X/H actually correspond to physical observables",
+      "The notion of 'non-zero' section makes sense in the categorical context"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 1",
+        "issue": "The functor SB: Sym(C) \u2192 Ord(C) is declared but never defined or used in the proof"
+      },
+      {
+        "step": "Step 2",
+        "issue": "The orbit category construction X//G is not properly defined - objects should be G-torsors over points, not points themselves"
+      },
+      {
+        "step": "Step 3",
+        "issue": "A functor V: 1 \u2192 X//G doesn't 'pick out an orbit' - it picks out an object in the orbit category, which is different"
+      },
+      {
+        "step": "Step 5",
+        "issue": "The factorization X//G \u2192 X/H is asserted without proof that this map exists or is well-defined"
+      },
+      {
+        "step": "Step 6",
+        "issue": "The composition \u03c6 \u2218 V doesn't make sense type-wise - V goes to X//G while \u03c6 starts from X"
+      },
+      {
+        "step": "Step 8",
+        "issue": "The formula (g\u00b7\u03c3)(x) = g\u00b7(\u03c3(g^{-1}\u00b7x)) assumes X/H has a G-action, which contradicts it being a quotient by H"
+      },
+      {
+        "step": "Step 10",
+        "issue": "Claims G acts transitively on \u0393(X/H) without establishing this space or the action"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Step 7 explicitly acknowledges a gap in connecting categorical quotients to physical mass generation",
+      "No proof that the order parameter \u03c3 is actually non-zero",
+      "No verification that condition (2) about G-orbits is satisfied",
+      "No proof that H-invariant functionals correspond to physical observables",
+      "No demonstration that the original G-symmetry is 'preserved but hidden' as claimed in condition (4)",
+      "The relationship between the categorical construction and actual physical symmetry breaking is never established",
+      "Missing verification that the quotient X/H admits the required invariant section"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof treats symmetry breaking as a categorical quotient construction X \u2192 X/H, but existing proof [087da119976b] establishes symmetry breaking through dynamical instability criteria in Banach spaces with G-invariant measures. These are fundamentally different mechanisms.",
+      "The new proof assumes 'Physical states correspond to sections of appropriate bundles' but provides no rigorous connection to the Hilbert space formalism used in proofs [19c10dc86a65] and [21fcf0926d92] where states are vectors or density operators.",
+      "The claim that 'mass generation' follows from categorical quotients contradicts the established understanding in [21fcf0926d92] where vacuum properties and field dynamics determine mass through Hamiltonian eigenvalues."
+    ],
+    "assumption_conflicts": [
+      "Assumes 'Physical systems form objects in a well-defined category C' but doesn't specify how this relates to the Hilbert space structures assumed in [19c10dc86a65], [21fcf0926d92], and [06d6ace265c2]",
+      "Assumes 'The notion of mass can be formalized as eigenvalues of appropriate operators' without defining these operators or connecting to established quantum field theory in [21fcf0926d92]",
+      "The assumption that 'Physical states correspond to sections of appropriate bundles' conflicts with the standard quantum mechanical assumption that states are elements of Hilbert spaces"
+    ],
+    "beneficial_connections": [
+      "Connects to [1318ecd2c25c] by providing a categorical framework for phase transitions and symmetry breaking",
+      "Extends [2373a9c1ee2d] by offering a more structured categorical approach to symmetry breaking with explicit quotient constructions",
+      "Potentially unifies with [102677deecdd] and [18b9ea79f26d] by emphasizing relational/morphism-based structure in physics"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof contains a significant gap acknowledged by the authors regarding 'Rigorous connection between categorical quotients and physical mass generation.' The categorical approach is mathematically interesting but lacks proper grounding in established physical frameworks. The orbit category construction X//G is not rigorously defined, and the connection between categorical sections and physical states is unclear."
+  },
+  "confidence_score": 0.255,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.29999999999999993
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.29999999999999993
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous categorical framework connecting physical concepts (mass, vacuum states, observables) to mathematical structures. Specifically needed: (1) Categorical characterization of 'mass' as a functor property, (2) Formalization of the relationship between symmetry breaking and eigenvalue generation, (3) Precise categorical treatment of vacuum manifolds and their tangent structures",
+  "limitations": [
+    "The connection between categorical quotients and physical mass generation is not rigorously established",
+    "The notion of 'order' in Ord(C) requires precise categorical definition",
+    "The relationship between hidden symmetry and observable consequences needs formal characterization",
+    "The universality claim requires proof across all relevant categories",
+    "The proof is schematic rather than fully rigorous due to gaps in mathematical foundations",
+    "Physical concepts like 'mass' and 'vacuum' are not given complete categorical definitions",
+    "The universality is demonstrated structurally but not proven for all possible physical systems",
+    "The categorical framework may not capture all quantum mechanical subtleties"
+  ],
+  "source_convergence": {
+    "structural_claim": "Spontaneous symmetry breaking provides a universal mechanism for generating mass and order, with the broken symmetry hidden rather than destroyed",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Spontaneous Symmetry Breaking (Higgs Mechanism)",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Field Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Gauge bosons acquire mass through interaction with a scalar field whose vacuum expectation value breaks the symmetry spontaneously"
+      },
+      {
+        "result_id": "",
+        "result_name": "Ginzburg-Landau Theory",
+        "domain_id": "field_b",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Superconductivity emerges from spontaneous gauge symmetry breaking described by a complex order parameter field"
+      },
+      {
+        "result_id": "",
+        "result_name": "Landau Theory of Phase Transitions",
+        "domain_id": "field_b",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Phase transitions are classified by symmetry breaking and order parameters"
+      }
+    ],
+    "domains": [
+      "quantum_field_theory",
+      "condensed_matter"
+    ],
+    "domain_names": [
+      "Quantum Field Theory",
+      "Condensed Matter Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.357,
+      "independence": 0.7,
+      "adversarial": 0.12,
+      "reproducibility": 0.5249999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.48485,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:25:20.312015+00:00",
+    "id": "58d65d5acae1"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.302835
+  }
+}

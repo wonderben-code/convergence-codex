@@ -1,0 +1,13 @@
+{
+  "proof_id": "2c6eb7138df0",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous category-theoretic framework connecting representation theory to physical observables that works uniformly across classical and quantum systems, including proper treatment of infinite-dimensional representations and continuous spectra",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

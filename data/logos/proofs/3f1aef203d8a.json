@@ -1,0 +1,369 @@
+{
+  "id": "3f1aef203d8a",
+  "convergence_id": "8392ef388e6c",
+  "timestamp": "2026-05-02T13:43:48.562602+00:00",
+  "proposition": "For any quantum field theory with UV cutoff \u039b and IR scale \u03bc << \u039b, there exists a functor F: QFT(\u039b) \u2192 EFT(\u03bc) such that: (1) F preserves correlation functions up to O((\u03bc/\u039b)^n) corrections, (2) The image Im(F) is characterized by finitely many renormalized parameters, (3) The kernel Ker(F) contains all operators with dimension > d_c(\u03bc) for some critical dimension d_c",
+  "proposition_natural": "Effective field theories capture emergent phenomena at low energies through renormalized parameters, with high-energy details becoming irrelevant",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Functional analysis",
+    "Order theory"
+  ],
+  "apparatus_justification": "Category theory provides the natural framework for formalizing renormalization group flows as functors between categories of theories at different energy scales, with natural transformations capturing the irrelevance of high-energy details. Functional analysis is needed to handle the operator algebras and spectral properties that arise in both condensed matter and particle physics. Order theory provides the lattice structure for comparing theories at different scales and establishing fixed points.",
+  "proof_natural": "**Proposition.** For any quantum field theory with UV cutoff \u039b and IR scale \u03bc \u226a \u039b, there exists a functor F: QFT(\u039b) \u2192 EFT(\u03bc) such that: (1) F preserves correlation functions up to O((\u03bc/\u039b)\u207f) corrections, (2) the image Im(F) is characterized by finitely many renormalized parameters, and (3) the kernel Ker(F) contains all operators with dimension > d_c(\u03bc) for some critical dimension d_c.\n\n**Proof.** We assume that quantum field theories form a category QFT with morphisms given by RG flow, and that effective field theories form a subcategory EFT \u2282 QFT. Let correlation functions form a contravariant functor C: QFT \u2192 Vect. We further assume there exists a well-defined notion of operator dimension, the path integral measure is regularizable with cutoff \u039b, locality is preserved under RG flow, the theory admits a Wilsonian action S[\u03c6; \u039b], perturbation theory converges in the regime \u03bc \u226a \u039b, and the space of couplings forms a finite-dimensional manifold at scale \u03bc.\n\nBy Wilson's construction, integrating out high-energy modes between scales \u039b and \u039be^(-t) defines a Wilsonian RG transformation, which yields a semigroup action R_t: QFT(\u039b) \u2192 QFT(\u039be^(-t)) on the space of actions. The semigroup property ensures that R_{t\u2081} \u2218 R_{t\u2082} = R_{t\u2081+t\u2082}.\n\nFor t = log(\u039b/\u03bc), the map R_t factors through the projection \u03c0: QFT(\u039b) \u2192 QFT(\u03bc). By the RG Eigenvalue Theorem, operators O transform under RG with eigenvalues \u03bb\u1d62 = b^{y\u1d62} where y\u1d62 = [O\u1d62] - d, with d the spatial dimension. Power counting then shows that operators with dimension [O] > d_c = d + z (where z is the dynamical exponent) are irrelevant under RG flow, as their contributions scale as (\u03bc/\u039b)^{[O]-d_c} \u2192 0 as \u039b \u2192 \u221e.\n\nThe space of relevant and marginal operators V_rel \u2282 V_ops, consisting of those with [O] \u2264 d_c, is finite-dimensional. [Note: This requires proof that only finitely many operators satisfy the dimension bound, which holds in all known examples but lacks a general proof.]\n\nWe now define F = \u03c0_rel \u2218 R_t, where \u03c0_rel projects onto V_rel. This composition of well-defined maps yields our desired functor. By construction, F preserves correlation functions up to corrections from irrelevant operators: |C(F(S)) - C(S)|/|C(S)| = O((\u03bc/\u039b)\u207f) for some n > 0, establishing property (1).\n\nSince F maps into the finite-dimensional space V_rel, the image Im(F) is parametrized by finitely many coordinates\u2014the renormalized couplings\u2014establishing property (2). Finally, by definition of \u03c0_rel and the irrelevance criterion, Ker(F) = span{O : [O] > d_c} contains precisely the high-dimension operators, establishing property (3).\n\nThis completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.CategoryTheory.Functor.Basic\nimport Mathlib.CategoryTheory.Limits.Shapes.Kernels\nimport Mathlib.CategoryTheory.Limits.Shapes.Images\nimport Mathlib.Analysis.Asymptotics.Asymptotics\nimport Mathlib.Order.Filter.Basic\nimport Mathlib.Topology.Algebra.Module.Basic\n\n/-- Quantum field theory with UV cutoff \u039b -/\nstructure QFT (\u039b : \u211d) where\n  -- sorry: QFT structure not formalized in Mathlib\n  mk :: \n\n/-- Effective field theory at scale \u03bc -/\nstructure EFT (\u03bc : \u211d) where\n  -- sorry: EFT structure not formalized in Mathlib\n  mk ::\n\n/-- Correlation functions for a QFT -/\ndef correlationFunction (\u039b : \u211d) (qft : QFT \u039b) : \u211d := \n  sorry -- Correlation functions not formalized\n\n/-- Operator dimension in QFT -/\ndef operatorDimension (O : Type*) : \u211d := \n  sorry -- Operator dimensions not formalized\n\n/-- Critical dimension depending on scale -/\ndef criticalDimension (\u03bc : \u211d) : \u211d := \n  sorry -- Critical dimension formula not formalized\n\n/-- Wilsonian RG transformation -/\ndef wilsonianRG (t : \u211d) : QFT \u039b \u2192 QFT (\u039b * Real.exp (-t)) := \n  sorry -- Wilsonian RG not formalized\n\n/-- Space of operators in QFT -/\ndef OperatorSpace (\u039b : \u211d) : Type* := \n  sorry -- Operator space not formalized\n\n/-- Relevant and marginal operators subspace -/\ndef RelevantMarginalSpace (\u03bc : \u211d) : Submodule \u211d (OperatorSpace \u03bc) := \n  sorry -- Relevant/marginal operator space not formalized\n\n/-- Main theorem: Existence of functor from QFT to EFT preserving physics -/\ntheorem qft_to_eft_functor (\u039b \u03bc : \u211d) (h : \u03bc < \u039b) : \n  \u2203 (F : QFT \u039b \u2192 EFT \u03bc),\n  (\u2200 (S : QFT \u039b), \u2203 (n : \u2115), \n    |correlationFunction \u03bc (sorry : EFT \u03bc) - correlationFunction \u039b S| / |correlationFunction \u039b S| = O((fun x => (\u03bc/\u039b)^n) \u039b)) \u2227\n  (\u2203 (finiteParams : Finset \u211d), sorry) \u2227 -- Image characterized by finite parameters\n  (\u2200 (O : OperatorSpace \u039b), operatorDimension O > criticalDimension \u03bc \u2192 sorry) -- Kernel contains high-dim operators\n  := by\n  -- Step 1: Wilsonian RG defines semigroup action\n  have rg_semigroup : \u2200 (t\u2081 t\u2082 : \u211d), wilsonianRG t\u2081 \u2218 wilsonianRG t\u2082 = wilsonianRG (t\u2081 + t\u2082) := \n    sorry -- RG semigroup property not proven\n  \n  -- Step 2: RG factors through projection at t = log(\u039b/\u03bc)\n  let t := Real.log (\u039b / \u03bc)\n  have rg_factors : \u2203 (\u03c0 : QFT \u039b \u2192 QFT \u03bc), wilsonianRG t = sorry := \n    sorry -- Factorization not formalized\n  \n  -- Step 3: High dimension operators are irrelevant\n  have irrelevant_ops : \u2200 (O : OperatorSpace \u039b), \n    operatorDimension O > criticalDimension \u03bc \u2192 \n    sorry -- Contribution scales as (\u03bc/\u039b)^{[O]-d_c}\n    := sorry -- Power counting argument not formalized\n  \n  -- Step 4: Relevant/marginal operators form finite-dimensional space\n  have finite_dim_relevant : FiniteDimensional \u211d (RelevantMarginalSpace \u03bc) := \n    sorry -- Finiteness of relevant operators not proven generally\n  \n  -- Step 5: Define F as composition\n  let F : QFT \u039b \u2192 EFT \u03bc := sorry -- Cannot construct without QFT/EFT definitions\n  \n  -- Step 6: F preserves correlation functions\n  have preserves_corr : \u2200 (S : QFT \u039b), \u2203 (n : \u2115),\n    |correlationFunction \u03bc (F S) - correlationFunction \u039b S| / |correlationFunction \u039b S| = O((fun x => (\u03bc/\u039b)^n) \u039b) := \n    sorry -- Asymptotic bound not proven\n  \n  -- Step 7: Image parametrized by finite couplings\n  have finite_image : \u2203 (finiteParams : Finset \u211d), sorry := \n    sorry -- Parametrization not formalized\n  \n  -- Step 8: Kernel contains high-dimension operators  \n  have kernel_highdim : \u2200 (O : OperatorSpace \u039b), \n    operatorDimension O > criticalDimension \u03bc \u2192 sorry := \n    sorry -- Kernel characterization not formalized\n  \n  use F\n  exact \u27e8preserves_corr, finite_image, kernel_highdim\u27e9",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The Wilsonian RG transformation defines a semigroup action R_t: QFT(\u039b) \u2192 QFT(\u039be^{-t})",
+      "justification": "By Wilson's construction, integrating out high-energy modes between \u039b and \u039be^{-t} defines a map on the space of actions",
+      "dependencies": [
+        "Wilson RG formalism"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "For t = log(\u039b/\u03bc), the map R_t factors through the projection \u03c0: QFT(\u039b) \u2192 QFT(\u03bc)",
+      "justification": "Composition of RG transformations: R_{t_1} \u2218 R_{t_2} = R_{t_1+t_2}",
+      "dependencies": [
+        "Step 1",
+        "Semigroup property of RG"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Operators O with dimension [O] > d_c = d + z (d=spatial dimension, z=dynamical exponent) are irrelevant under RG flow",
+      "justification": "Power counting: contributions scale as (\u03bc/\u039b)^{[O]-d_c} \u2192 0 as \u039b \u2192 \u221e",
+      "dependencies": [
+        "Dimensional analysis",
+        "RG eigenvalue theorem"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The space of relevant and marginal operators V_rel \u2282 V_ops is finite-dimensional",
+      "justification": "[Gap: Requires proof that only finitely many operators satisfy [O] \u2264 d_c, true in known examples but not proven generally]",
+      "dependencies": [
+        "Step 3",
+        "Assumption about operator spectrum"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Define F = \u03c0_rel \u2218 R_t where \u03c0_rel projects onto V_rel",
+      "justification": "Composition of well-defined maps",
+      "dependencies": [
+        "Steps 2, 4"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "F preserves correlation functions: |C(F(S)) - C(S)|/|C(S)| = O((\u03bc/\u039b)^n) for some n > 0",
+      "justification": "Irrelevant operators contribute suppressed corrections by Step 3",
+      "dependencies": [
+        "Steps 3, 5",
+        "Perturbative expansion convergence"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Im(F) is parametrized by coordinates on V_rel, giving finitely many renormalized couplings",
+      "justification": "F maps to finite-dimensional space V_rel by construction",
+      "dependencies": [
+        "Steps 4, 5"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Ker(F) = span{O : [O] > d_c} contains all high-dimension operators",
+      "justification": "By definition of \u03c0_rel and irrelevance criterion",
+      "dependencies": [
+        "Steps 3, 5"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Wilsonian Renormalization Group",
+      "authors": "K.G. Wilson",
+      "year": "1971",
+      "field": "Particle Physics/Statistical Physics",
+      "statement": "High-energy degrees of freedom can be systematically integrated out, yielding effective actions at lower scales",
+      "usage": "Provides the mathematical framework for defining the RG transformation R_t"
+    },
+    {
+      "name": "RG Eigenvalue Theorem",
+      "authors": "Wilson, Kogut",
+      "year": "1974",
+      "field": "Statistical Physics",
+      "statement": "Operators transform under RG with eigenvalues \u03bb_i = b^{y_i} where y_i = [O_i] - d",
+      "usage": "Justifies the relevance/irrelevance classification in Step 3"
+    },
+    {
+      "name": "Asymptotic Freedom",
+      "authors": "Gross, Wilczek, Politzer",
+      "year": "1973",
+      "field": "Particle Physics",
+      "statement": "In non-Abelian gauge theories, coupling constants decrease at high energy",
+      "usage": "Provides concrete example where high-energy decoupling occurs"
+    },
+    {
+      "name": "Fermi Liquid Theory",
+      "authors": "L.D. Landau",
+      "year": "1956",
+      "field": "Condensed Matter Physics",
+      "statement": "Interacting fermion systems can be described by weakly interacting quasiparticles with renormalized parameters",
+      "usage": "Exemplifies emergence of effective low-energy description"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Quantum field theories form a category QFT with morphisms given by RG flow",
+    "Effective field theories form a subcategory EFT \u2282 QFT",
+    "Correlation functions form a contravariant functor C: QFT \u2192 Vect",
+    "There exists a well-defined notion of operator dimension in the theory",
+    "The path integral measure is regularizable with cutoff \u039b",
+    "Locality is preserved under RG flow",
+    "The theory admits a Wilsonian action S[\u03c6; \u039b]",
+    "Perturbation theory converges in the regime \u03bc << \u039b",
+    "The space of couplings forms a finite-dimensional manifold at scale \u03bc"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "Assuming QFT forms a category with RG flow as morphisms",
+        "issue": "No proof that RG flow satisfies morphism composition laws. RG transformations are typically semigroup actions, not category morphisms. The identity morphism is unclear.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would need complete reformulation using semigroup actions instead of category theory"
+      },
+      {
+        "step": "Definition of functor F: QFT(\u039b) \u2192 EFT(\u03bc)",
+        "issue": "The codomain EFT(\u03bc) is never properly defined. What distinguishes an EFT from a QFT categorically? The proof treats EFT as a subcategory but never establishes this.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need rigorous definition of EFT as a category and proof it's a subcategory"
+      },
+      {
+        "step": "F = \u03c0_rel \u2218 R_t construction",
+        "issue": "\u03c0_rel is defined as projection onto V_rel, but V_rel is a space of operators, not theories. The composition doesn't type-check: R_t maps theories to theories, \u03c0_rel maps operators to operators.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Complete reformulation needed with proper type matching"
+      },
+      {
+        "step": "Correlation function preservation estimate",
+        "issue": "No actual calculation shown. The O((\u03bc/\u039b)^n) estimate is asserted without proof. Which n? Depends on operator dimensions? No bounds derived.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Provide explicit perturbative calculation showing power suppression"
+      },
+      {
+        "step": "Finite-dimensionality of V_rel",
+        "issue": "Admits this 'holds in all known examples but lacks a general proof' - this is a critical gap for a general theorem",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Either prove finite-dimensionality or restrict theorem to specific theories"
+      },
+      {
+        "step": "Well-defined operator dimension",
+        "issue": "In strongly coupled theories, operator dimensions mix and become anomalous. No discussion of scheme dependence or anomalous dimensions.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Restrict to weakly coupled theories or carefully handle anomalous dimensions"
+      }
+    ],
+    "hidden_assumptions": [
+      "Wilsonian RG can be made mathematically rigorous for all QFTs",
+      "Operator product expansion converges",
+      "Theory has a local Lagrangian description at all scales",
+      "Perturbation theory adequately captures non-perturbative effects",
+      "Critical dimension d_c is scale-independent",
+      "RG flow preserves unitarity and causality"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes EFT is characterized by finitely many parameters (assumption 9) to prove property (2) that Im(F) is characterized by finitely many parameters. Also assumes finite-dimensionality of coupling space to prove finite parametrization.",
+    "over_generalisation": true,
+    "over_generalisation_details": "Claims to work for 'any QFT' but requires convergent perturbation theory, local Lagrangian description, and well-defined operator dimensions - excludes strongly coupled theories, topological theories, and conformal field theories",
+    "citation_issues": [
+      "RG Eigenvalue Theorem cited but applies only to fixed points, not general RG flow",
+      "Asymptotic Freedom and Fermi Liquid Theory cited but never used in proof",
+      "Wilsonian RG cited without specifying which formulation or addressing mathematical rigor"
+    ],
+    "structural_soundness": 0.2,
+    "overall_assessment": "This proof attempts to formalize Wilson's physical insights but fails catastrophically on mathematical rigor. The categorical framework is improperly constructed, key objects are undefined or type-mismatched, and critical steps rely on unproven assertions. The proof would need complete reformulation to be salvageable.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to construct a functor but fails to establish functoriality, only defines a map. It also doesn't prove the specific error bounds claimed in condition (1).",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Existence of a critical dimension d_c for all quantum field theories",
+      "Universality of the dynamical exponent z across different theories",
+      "Convergence of the RG flow to a fixed point or limit cycle",
+      "Existence of a well-defined category structure on QFT with RG morphisms",
+      "Compatibility of the cutoff regularization with categorical structure",
+      "Existence of a canonical projection \u03c0_rel that preserves relevant structure",
+      "Measurability/continuity assumptions on correlation functions under RG flow"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 2",
+        "issue": "The factorization claim is unjustified. The semigroup property R_{t_1} \u2218 R_{t_2} = R_{t_1+t_2} doesn't imply factorization through projection \u03c0"
+      },
+      {
+        "step": "Step 3",
+        "issue": "The formula d_c = d + z assumes a specific form that isn't universal. Different theories can have different critical dimensions not following this pattern"
+      },
+      {
+        "step": "Step 4",
+        "issue": "Explicitly acknowledges the gap - finite-dimensionality of relevant operators is assumed, not proven"
+      },
+      {
+        "step": "Step 5",
+        "issue": "Doesn't establish that F is actually a functor - no proof of functoriality (preservation of composition and identities)"
+      },
+      {
+        "step": "Step 6",
+        "issue": "The specific error bound O((\u03bc/\u039b)^n) is asserted without derivation. The exponent n is not determined or related to the theory parameters"
+      },
+      {
+        "step": "Step 8",
+        "issue": "The characterization of Ker(F) is incomplete - it may contain additional operators beyond just high-dimension ones due to the projection \u03c0_rel"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No proof that the construction yields a functor (functoriality conditions)",
+      "Missing derivation of the specific error scaling in condition (1)",
+      "No proof of finite-dimensionality of relevant operator space",
+      "Missing analysis of edge cases where d_c is not well-defined",
+      "No treatment of theories without clear separation of scales",
+      "Incomplete characterization of the kernel"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof assumes 'The space of couplings forms a finite-dimensional manifold at scale \u03bc' which directly contradicts the infinite-dimensional nature of quantum field theories established in existing proofs",
+      "Claims that correlation functions are preserved up to O((\u03bc/\u039b)^n) corrections, but provides no rigorous definition of what 'preserved' means or proof that such bounds exist",
+      "The assertion that operators with dimension > d_c are 'irrelevant' conflicts with known examples where marginally irrelevant operators can have logarithmic corrections that don't vanish",
+      "The claim that F preserves correlation functions contradicts proof [06d6ace265c2] which shows quantum-classical boundaries emerge through information dispersal, not simple dimensional analysis"
+    ],
+    "assumption_conflicts": [
+      "Assumes 'Perturbation theory converges in the regime \u03bc << \u039b' which is known to fail for many QFTs due to asymptotic series",
+      "The assumption of 'well-defined operator dimension' conflicts with anomalous dimensions that run with scale",
+      "Assumes locality is preserved under RG flow, but this fails near fixed points and phase transitions as shown in existing proofs about symmetry breaking",
+      "The categorical structure assumed for QFT contradicts the non-categorical nature of renormalization schemes"
+    ],
+    "beneficial_connections": [
+      "Connects to proof [0049536ae81a] regarding separation of scales, though the connection is superficial",
+      "Relates to hierarchical structure formation in proof [0e664bd264b4], but fails to address the non-trivial aspects of scale separation"
+    ],
+    "consistency_score": 0.2,
+    "notes": "This proof contains fundamental mathematical errors including undefined functors, unproven convergence claims, and categorical structures that don't exist for QFT. The dimensional analysis is oversimplified and ignores anomalous dimensions, beta functions, and the non-trivial structure of the renormalization group. The proof appears to confuse Wilsonian and continuum renormalization schemes."
+  },
+  "confidence_score": 0.255,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "Rigorous mathematical framework for: (1) The space of all possible QFTs as a category, (2) Convergence criteria for Wilsonian RG in non-perturbative regime, (3) General proof that operator spectrum has only finitely many relevant/marginal operators, (4) Precise characterization of 'emergence' in categorical terms",
+  "limitations": [
+    "Step 4: Finiteness of relevant operator space not proven in general, only verified case-by-case",
+    "Convergence of perturbation theory assumed but not proven",
+    "Precise error bounds on correlation function approximation not derived",
+    "Category-theoretic structure of QFT space not fully formalized",
+    "Proof assumes perturbative regime \u03bc << \u039b",
+    "Does not handle non-local operators or non-local field theories",
+    "Assumes existence of a local Wilsonian action",
+    "Does not address phase transitions where EFT description changes",
+    "Categorical framework for QFT not yet rigorously established"
+  ],
+  "source_convergence": {
+    "structural_claim": "Effective field theories capture emergent phenomena at low energies through renormalized parameters, with high-energy details becoming irrelevant",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Renormalization Group Theory",
+        "domain_id": "condensed_matter",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Physical systems exhibit universal behavior at critical points independent of microscopic details"
+      },
+      {
+        "result_id": "",
+        "result_name": "Fermi Liquid Theory",
+        "domain_id": "condensed_matter",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Interacting fermions behave as weakly interacting quasiparticles with renormalized parameters"
+      },
+      {
+        "result_id": "",
+        "result_name": "Asymptotic freedom in QCD",
+        "domain_id": "particle_physics",
+        "domain_name": "Particle Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Coupling constants run with energy scale, with high-energy behavior decoupling from low-energy physics"
+      },
+      {
+        "result_id": "",
+        "result_name": "Measurement of the strong coupling constant",
+        "domain_id": "particle_physics",
+        "domain_name": "Particle Physics",
+        "link_type": "direct",
+        "structural_conclusion": "The strong force is characterized by a running coupling that changes with energy scale"
+      }
+    ],
+    "domains": [
+      "condensed_matter",
+      "particle_physics"
+    ],
+    "domain_names": [
+      "Condensed Matter Physics",
+      "Particle Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.2856,
+      "independence": 0.7,
+      "adversarial": 0.12,
+      "reproducibility": 0.6299999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.47918000000000005,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:16:54.207913+00:00",
+    "id": "8392ef388e6c"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.290445
+  }
+}

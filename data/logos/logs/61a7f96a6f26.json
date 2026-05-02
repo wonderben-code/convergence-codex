@@ -1,0 +1,38 @@
+{
+  "proof_id": "61a7f96a6f26",
+  "timestamp": "2026-05-02T12:50:03.471861+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "categorical",
+      "alternatives_considered": [
+        "axiomatic - One could axiomatize the properties of topological band structures, but this misses the deeper categorical structure where edge states emerge functorially from bulk topology"
+      ],
+      "reasoning": "The convergence is about a universal property: topological invariants guarantee the existence of protected edge states across different physical domains. This is best captured by showing that systems with certain topological invariants form a category where edge states arise as a functorial construction, with the protection property following from categorical constraints."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Topology, Category theory, Functional analysis",
+      "alternatives_considered": [],
+      "reasoning": "Topology provides the framework for topological invariants and their classification via K-theory and Chern numbers. Category theory captures the functorial relationship between band structures and edge states across different physical domains. Functional analysis is needed for spectral properties of Hamiltonians and wave operators."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof establishes that bulk band structures with non-zero topological invariants necessarily host gapless edge states via the bulk-boundary correspondence. These edge states are topologically protected because the discrete topological invariant cannot change under small perturbations that preserve the bulk gap. The quantized edge current follows from the TKNN formula relating conductance to the topological invariant.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 10 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3806 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 3616 chars, 9 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This formalization captures the structure of the theorem but most physics-specific concepts (band theory, topological invariants, edge states) are not available in Mathlib. The proof would require extensive development of condensed matter physics formalism in Lean."
+    }
+  ]
+}

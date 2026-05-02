@@ -1,0 +1,362 @@
+{
+  "id": "1c543cc8a5d8",
+  "convergence_id": "5b242c7bacc1",
+  "timestamp": "2026-05-02T13:09:28.451496+00:00",
+  "proposition": "Let (M, g) be a spacetime manifold and (E, \u03c9) be an electromagnetic field configuration. For any information-theoretic measure I: States \u2192 \u211d\u22650, there exist critical parameter regimes Rc \u2282 Parameter Space such that: (1) The classical field equations admit solutions but fail to preserve I, or (2) The preservation of I requires non-classical corrections to the dynamics, where 'classical' refers to Einstein-Maxwell equations for (M, g) and Maxwell equations for (E, \u03c9).",
+  "proposition_natural": "Information loss or preservation in extreme regimes reveals fundamental limits where classical descriptions break down",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Information theory",
+    "Differential geometry",
+    "Measure theory"
+  ],
+  "apparatus_justification": "Information theory provides the formal framework for quantifying information loss/preservation through entropy and channel capacity. Differential geometry captures the geometric structure of spacetime in GR and phase space in optics. Measure theory bridges these by providing the rigorous foundation for entropy in both continuous manifolds and probability spaces.",
+  "proof_natural": "**Proposition.** Let $(M, g)$ be a spacetime manifold and $(E, \\omega)$ be an electromagnetic field configuration. For any information-theoretic measure $I: \\text{States} \\to \\mathbb{R}_{\\geq 0}$, there exist critical parameter regimes $R_c \\subset \\text{Parameter Space}$ such that either: (1) the classical field equations admit solutions but fail to preserve $I$, or (2) the preservation of $I$ requires non-classical corrections to the dynamics.\n\n*Proof.* We assume that $(M, g)$ is a 4-dimensional Lorentzian manifold satisfying Einstein's equations, and that the electromagnetic field $(E, \\omega)$ satisfies Maxwell's equations in curved spacetime. Let $I$ be a continuous information measure satisfying subadditivity: $I(A \\cup B) \\leq I(A) + I(B)$. We take information preservation to mean $dI/dt = 0$ along dynamical trajectories.\n\nWe construct the critical parameter regimes $R_c$ by examining two fundamental domains where classical physics encounters information-theoretic limitations.\n\nFirst, consider gravitational collapse to black holes. The Israel-Carter No-Hair Theorem establishes that stationary black holes are uniquely characterized by only three parameters: mass $M$, charge $Q$, and angular momentum $J$. Thus, in the regime $R_{c,\\text{grav}} = \\{\\text{parameters where } R_s \\to 2GM/c^2\\}$, all other information about the collapsing matter is classically lost. However, the Bekenstein-Hawking entropy formula $S = A/4$ (where $A$ is the horizon area) suggests that information is not destroyed but rather encoded in microscopic degrees of freedom. The resolution of this apparent paradox\u2014preserving unitarity and hence information\u2014requires quantum corrections to the classical Einstein-Maxwell dynamics.\n\nSecond, in optical systems, quantum effects demonstrate analogous breakdowns of classical information processing. The Quantum Zeno Effect shows that in the limit of measurement rate $\\tau \\to 0$, repeated projective measurements freeze unitary evolution, preventing information transfer through classical channels. Similarly, electromagnetically induced transparency creates coherent superposition states that preserve information while remaining invisible to classical electromagnetic measurements. We thus define the optical critical regime as $R_{c,\\text{opt}} = \\{\\text{parameters where } \\hbar\\omega \\approx kT \\text{ or } \\Gamma\\tau \\to 0\\}$, where quantum coherence effects dominate.\n\n[Note: A rigorous proof of information measure behavior across these regimes would require a unified quantum-gravitational framework, which current mathematics lacks. We cannot yet formally connect information measures across quantum and gravitational domains with complete mathematical rigor.]\n\nBy construction, $R_c = R_{c,\\text{grav}} \\cup R_{c,\\text{opt}}$ represents parameter regimes where classical descriptions\u2014the Einstein-Maxwell equations for $(M, g)$ and Maxwell equations for $(E, \\omega)$\u2014fail to preserve or properly account for information. In these regimes, either information appears to be lost (violating conservation principles) or its preservation requires explicitly non-classical corrections to the dynamics.\n\nThis completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.Geometry.Manifold.SmoothManifoldWithCorners\nimport Mathlib.MeasureTheory.Measure.MeasureSpace\nimport Mathlib.Topology.Basic\nimport Mathlib.Data.Real.NNReal\nimport Mathlib.Data.Set.Basic\n\n/-- A spacetime manifold with metric tensor -/\nstructure SpacetimeManifold where\n  -- sorry: need proper definition of Lorentzian manifold\n  sorry_spacetime : Unit\n\n/-- An electromagnetic field configuration -/\nstructure ElectromagneticField where\n  -- sorry: need electromagnetic field tensor and symplectic form\n  sorry_em_field : Unit\n\n/-- Information-theoretic measure on states -/\nabbrev InfoMeasure := Unit \u2192 \u211d\u22650  -- sorry: placeholder for States \u2192 \u211d\u22650\n\n/-- Parameter space for field theories -/\nabbrev ParameterSpace := Unit  -- sorry: need proper parameter space definition\n\n/-- Critical parameter regime -/\nabbrev CriticalRegime := Set ParameterSpace\n\n/-- Classical field equations admit solutions -/\ndef classicalSolutions (M : SpacetimeManifold) (E : ElectromagneticField) (R : CriticalRegime) : Prop :=\n  sorry  -- Einstein-Maxwell and Maxwell equations not available\n\n/-- Information preservation under classical dynamics -/\ndef preservesInfoClassically (I : InfoMeasure) (R : CriticalRegime) : Prop :=\n  sorry  -- need classical evolution and information preservation definition\n\n/-- Non-classical corrections required -/\ndef requiresNonClassical (I : InfoMeasure) (R : CriticalRegime) : Prop :=\n  sorry  -- need quantum corrections framework\n\n/-- Gravitational critical regime near Schwarzschild radius -/\ndef R_c_grav : CriticalRegime :=\n  sorry  -- need Rs \u2192 2GM/c\u00b2 characterization\n\n/-- Optical critical regime where quantum effects dominate -/\ndef R_c_opt : CriticalRegime :=\n  sorry  -- need \u210f\u03c9 \u2248 kT or \u0393\u03c4 \u2192 0 characterization\n\n/-- Main theorem: Critical regimes exist where classical physics fails to preserve information -/\ntheorem critical_regimes_information_loss \n  (M : SpacetimeManifold) (g : Unit) -- sorry: g should be metric on M\n  (E : ElectromagneticField) (\u03c9 : Unit) -- sorry: \u03c9 should be symplectic form on E\n  (I : InfoMeasure) :\n  \u2203 (R_c : CriticalRegime), \n    (classicalSolutions M E R_c \u2227 \u00acpreservesInfoClassically I R_c) \u2228\n    (requiresNonClassical I R_c) := by\n  -- Step 1: No-Hair theorem application\n  have no_hair : \u2203 R, classicalSolutions M E R \u2227 \u00acpreservesInfoClassically I R := by\n    sorry  -- No-Hair theorem not formalized\n  \n  -- Step 2: Bekenstein-Hawking entropy requires quantum description\n  have bh_entropy : \u2203 R, requiresNonClassical I R := by\n    sorry  -- Black hole thermodynamics not formalized\n  \n  -- Step 3: Define gravitational critical regime\n  let R_grav := R_c_grav\n  \n  -- Step 4: Quantum Zeno effect\n  have qzeno : \u2203 R, requiresNonClassical I R := by\n    sorry  -- Quantum Zeno effect not formalized\n  \n  -- Step 5: Electromagnetically induced transparency\n  have eit : \u2203 R, requiresNonClassical I R := by\n    sorry  -- EIT not formalized\n  \n  -- Step 6: Define optical critical regime\n  let R_opt := R_c_opt\n  \n  -- Step 7: Gap - unified framework needed\n  -- sorry: rigorous connection between quantum and gravitational information measures\n  \n  -- Step 8: Union of critical regimes\n  use R_grav \u222a R_opt\n  sorry  -- need to show union satisfies the disjunction",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "In gravitational collapse to black holes, the No-Hair theorem establishes that all information except M, Q, J is lost classically",
+      "justification": "Direct application of Israel-Carter No-Hair theorem",
+      "dependencies": [
+        "No-Hair Theorem (Israel 1967, Carter 1971)"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "The Bekenstein-Hawking entropy S = A/4 suggests information is preserved but requires non-classical (quantum) description",
+      "justification": "Black hole thermodynamics requires quantum corrections to preserve unitarity",
+      "dependencies": [
+        "Bekenstein bound",
+        "Hawking radiation"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Define critical regime Rc,grav = {parameters where Rs \u2192 2GM/c\u00b2}",
+      "justification": "Definition of gravitational critical regime as approach to Schwarzschild radius",
+      "dependencies": [
+        "Step 1",
+        "Step 2"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "In optical systems, the quantum Zeno effect shows that measurement rate \u03c4 \u2192 0 freezes evolution",
+      "justification": "Repeated projective measurements prevent unitary evolution",
+      "dependencies": [
+        "Quantum Zeno Effect (Misra & Sudarshan 1977)"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Electromagnetically induced transparency demonstrates information can be preserved in coherent superpositions invisible to classical measurements",
+      "justification": "Quantum coherence effects require non-classical field descriptions",
+      "dependencies": [
+        "EIT theory (Harris et al. 1990)"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Define critical regime Rc,opt = {parameters where \u210f\u03c9 \u2248 kT or \u0393\u03c4 \u2192 0}",
+      "justification": "Definition of optical critical regime where quantum effects dominate",
+      "dependencies": [
+        "Step 4",
+        "Step 5"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "[Gap: Rigorous proof of information measure behavior across regimes requires unified quantum-gravitational framework]",
+      "justification": "Current mathematics lacks tools to rigorously connect information measures across quantum and gravitational domains",
+      "dependencies": [
+        "Steps 1-6"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "By construction, Rc = Rc,grav \u222a Rc,opt represents regimes where classical descriptions fail to preserve/account for information",
+      "justification": "Union of critical regimes from both domains",
+      "dependencies": [
+        "Step 3",
+        "Step 6"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "No-Hair Theorem",
+      "authors": "Israel, W.; Carter, B.",
+      "year": "1967-1971",
+      "field": "General Relativity",
+      "statement": "Stationary black holes are uniquely characterized by mass, charge, and angular momentum",
+      "usage": "Establishes information loss in gravitational collapse"
+    },
+    {
+      "name": "Black Hole Thermodynamics",
+      "authors": "Bekenstein, J.D.; Hawking, S.W.",
+      "year": "1973-1975",
+      "field": "General Relativity/Quantum Field Theory",
+      "statement": "Black holes have entropy S = A/4 and temperature T = \u210fc\u00b3/8\u03c0GMk",
+      "usage": "Suggests information preservation requires quantum description"
+    },
+    {
+      "name": "Quantum Zeno Effect",
+      "authors": "Misra, B.; Sudarshan, E.C.G.",
+      "year": "1977",
+      "field": "Quantum Mechanics",
+      "statement": "Frequent measurements can freeze quantum evolution",
+      "usage": "Shows measurement-induced breakdown of unitary evolution"
+    },
+    {
+      "name": "Electromagnetically Induced Transparency",
+      "authors": "Harris, S.E.; Field, J.E.; Imamo\u011flu, A.",
+      "year": "1990",
+      "field": "Quantum Optics",
+      "statement": "Quantum interference can make medium transparent while preserving information",
+      "usage": "Demonstrates non-classical information storage mechanisms"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Spacetime (M, g) is a 4-dimensional Lorentzian manifold satisfying Einstein's equations",
+    "Electromagnetic field (E, \u03c9) satisfies Maxwell's equations in curved spacetime",
+    "Information measure I is continuous and satisfies subadditivity: I(A\u222aB) \u2264 I(A) + I(B)",
+    "Parameter space includes at least: curvature scales, field intensities, and measurement timescales",
+    "Classical descriptions are defined by Einstein-Maxwell and Maxwell equations respectively",
+    "Information preservation means dI/dt = 0 along dynamical trajectories",
+    "Extreme regimes are characterized by at least one parameter approaching a critical value",
+    "The notion of 'breakdown' is formalized as either mathematical inconsistency or empirical inadequacy"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Definition of information measure I",
+        "issue": "The domain 'States' is never defined. What states? Quantum states? Classical field configurations? Phase space points? The proof cannot proceed without specifying what I acts on.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Precisely define the state space and ensure it's compatible with both classical and quantum descriptions"
+      },
+      {
+        "step": "Information preservation condition dI/dt = 0",
+        "issue": "This assumes I can be differentiated along dynamical trajectories, but no smoothness conditions are imposed. Also, which dynamics? Classical or quantum?",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Specify the dynamical flow and prove I is differentiable along it"
+      },
+      {
+        "step": "Construction of R_c",
+        "issue": "The proof merely asserts existence by example rather than proving existence for arbitrary I. It shows specific regimes for specific physics, not for any information measure.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would need to prove existence for arbitrary I satisfying the given conditions"
+      },
+      {
+        "step": "Black hole information loss argument",
+        "issue": "The proof conflates classical information loss with failure of classical equations. The Einstein-Maxwell equations still have solutions during collapse - they don't 'fail'.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Clarify what 'fail to preserve I' means mathematically"
+      },
+      {
+        "step": "Quantum Zeno effect application",
+        "issue": "The proof jumps from a quantum phenomenon to claiming classical Maxwell equations fail. Maxwell equations don't include measurement, so this comparison is meaningless.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot use quantum measurement effects to prove things about classical field equations"
+      },
+      {
+        "step": "Definition of R_c,opt",
+        "issue": "The condition '\u210f\u03c9 \u2248 kT or \u0393\u03c4 \u2192 0' is vague. What is \u0393? What is \u03c4? Approximate equality has no mathematical meaning without error bounds.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Define all parameters and use precise mathematical conditions"
+      }
+    ],
+    "hidden_assumptions": [
+      "Information measures defined on classical states can be meaningfully compared to quantum information",
+      "The parameter space is well-defined and includes quantum parameters like \u210f",
+      "Classical field equations should preserve arbitrary information measures",
+      "Information preservation is a necessary condition for physical validity",
+      "The Israel-Carter theorem applies to dynamical collapse, not just stationary states",
+      "Quantum corrections are the only possible non-classical corrections"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes quantum effects demonstrate classical failure, but the proposition asks to prove that preservation of I requires non-classical corrections. It uses the conclusion (need for quantum corrections) to prove itself.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof shows at most that specific physical scenarios involve information-theoretic subtleties. It doesn't prove anything for arbitrary information measures I, only discusses black holes and quantum optics.",
+    "citation_issues": [
+      "Israel-Carter theorem is about stationary black holes, not dynamical collapse",
+      "Bekenstein-Hawking entropy is not proven to represent the information measure I",
+      "Quantum Zeno effect is about quantum systems, not classical electromagnetic fields",
+      "No citation provided for the claim that EIT preserves information while being invisible to classical measurements"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed, conflating classical and quantum domains without justification, and failing to establish its claims for arbitrary information measures. The author admits mid-proof that 'rigorous proof would require a unified quantum-gravitational framework, which current mathematics lacks,' essentially conceding the proof cannot be completed.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to show that certain physical regimes exist where classical descriptions are inadequate, but fails to establish the specific logical structure claimed in the proposition regarding information measures and their preservation",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Assumption that No-Hair theorem implies information loss rather than information inaccessibility",
+      "Assumption that Bekenstein-Hawking entropy formula applies to arbitrary information measures I",
+      "Assumption that quantum Zeno effect is relevant to electromagnetic field evolution",
+      "Assumption that electromagnetically induced transparency preserves information in the sense of measure I",
+      "Assumption that critical regimes from different physical domains can be meaningfully unified",
+      "Assumption about the domain and codomain of the information measure I",
+      "Assumption about what constitutes 'States' in the domain of I"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "1",
+        "issue": "No-Hair theorem concerns asymptotic states of black holes, not information loss during collapse process"
+      },
+      {
+        "step": "2",
+        "issue": "Bekenstein-Hawking entropy does not directly imply that arbitrary information measures I are preserved"
+      },
+      {
+        "step": "4",
+        "issue": "Quantum Zeno effect applies to quantum state evolution, not classical electromagnetic field dynamics"
+      },
+      {
+        "step": "5",
+        "issue": "EIT does not demonstrate information preservation in the sense required by the proposition"
+      },
+      {
+        "step": "8",
+        "issue": "Union of regimes does not establish the disjunctive claim in the proposition about either classical failure or non-classical requirements"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Step 7 explicitly acknowledges a gap in the proof without resolution",
+      "No rigorous definition of when classical field equations 'fail to preserve I'",
+      "No demonstration that preservation of I actually requires non-classical corrections",
+      "No proof that the critical regimes Rc actually satisfy either condition (1) or (2)",
+      "Missing connection between physical examples and the abstract information measure I"
+    ],
+    "internal_score": 0.1
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims classical Einstein-Maxwell equations 'fail to preserve information' in black hole collapse, but existing proof [1083de91300b] establishes that black holes possess well-defined entropy S_BH = kA_H/4l_p^2, which is a form of information accounting",
+      "The claim that 'all information except M, Q, J is lost classically' contradicts proof [06d6ace265c2] which shows quantum-classical boundary emerges through environmental decoherence, not fundamental information loss",
+      "The assertion that information preservation 'requires non-classical corrections' conflicts with proof [06879fd9ae87] showing physical properties are contextual - information may not have predetermined values independent of measurement framework"
+    ],
+    "assumption_conflicts": [
+      "New proof assumes information measure I satisfies dI/dt = 0 as a preservation criterion, but proof [06879fd9ae87] shows observables cannot possess predetermined values independent of measurement context",
+      "The assumption that 'classical descriptions fail' conflicts with proof [14e1952bf633] showing macroscopic irreversibility emerges from microscopic reversibility through statistical effects, not fundamental breakdown",
+      "Critical regime definition Rc,opt = {\u210f\u03c9 \u2248 kT or \u0393\u03c4 \u2192 0} assumes quantum-classical boundary at energy scales, contradicting proof [06d6ace265c2] showing boundary emerges through information dispersal"
+    ],
+    "beneficial_connections": [
+      "Connects to proof [1083de91300b] on black hole entropy and area scaling laws",
+      "Relates to proof [19c10dc86a65] on quantum coherence effects beyond classical predictions",
+      "Links to proof [21fcf0926d92] on vacuum as active medium affecting physical processes"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof contains a fundamental gap acknowledged by the authors - lack of 'unified quantum-gravitational framework' - making the central claims unverifiable. The information preservation criterion dI/dt = 0 is poorly motivated and conflicts with contextual nature of quantum observables established in existing proofs. The examples given (black holes, quantum Zeno effect) are cherry-picked without rigorous mathematical treatment of the claimed information measures."
+  },
+  "confidence_score": 0.21000000000000002,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.1,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.1,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous mathematical framework for information measures that applies consistently across classical, quantum, and gravitational regimes. Current approaches either use von Neumann entropy (quantum) or coarse-grained entropy (classical/gravitational) without rigorous connection principles.",
+  "limitations": [
+    "No rigorous definition of information measure I that applies uniformly across quantum and gravitational domains",
+    "Lack of mathematical framework to prove information conservation/loss without assuming specific quantum gravity theory",
+    "The connection between optical and gravitational critical regimes is phenomenological rather than derived from first principles",
+    "The notion of 'classical breakdown' needs more precise mathematical characterization beyond case-by-case examples",
+    "Proof relies on specific examples rather than general mathematical structure",
+    "Cannot quantify the precise nature of information transformation in critical regimes",
+    "Depends on interpretations of quantum measurement and black hole information paradox",
+    "Does not establish uniqueness of critical regimes or completeness of the classification"
+  ],
+  "source_convergence": {
+    "structural_claim": "Information loss or preservation in extreme regimes reveals fundamental limits where classical descriptions break down",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "No-Hair Theorem",
+        "domain_id": "field_a",
+        "domain_name": "General Relativity and Cosmology",
+        "link_type": "direct",
+        "structural_conclusion": "Gravitational collapse erases all information except mass, charge, and angular momentum"
+      },
+      {
+        "result_id": "",
+        "result_name": "Black Hole Thermodynamics",
+        "domain_id": "field_a",
+        "domain_name": "General Relativity and Cosmology",
+        "link_type": "direct",
+        "structural_conclusion": "Black holes have entropy proportional to area, suggesting information is preserved but encoded non-locally"
+      },
+      {
+        "result_id": "",
+        "result_name": "Quantum Zeno Effect in Optics",
+        "domain_id": "field_b",
+        "domain_name": "Optics and Photonics",
+        "link_type": "direct",
+        "structural_conclusion": "Measurement fundamentally alters dynamics by projecting systems into eigenstates, showing information extraction changes evolution"
+      },
+      {
+        "result_id": "",
+        "result_name": "Electromagnetically Induced Transparency",
+        "domain_id": "field_b",
+        "domain_name": "Optics and Photonics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Quantum coherence can make information 'invisible' to certain measurements while preserving it in the system"
+      }
+    ],
+    "domains": [
+      "general_relativity",
+      "optics"
+    ],
+    "domain_names": [
+      "General Relativity and Cosmology",
+      "Optics and Photonics"
+    ],
+    "ea_scores": {
+      "strength": 0.2856,
+      "independence": 0.85,
+      "adversarial": 0.09,
+      "reproducibility": 0.5512499999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.4988675,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:51:25.319506+00:00",
+    "id": "5b242c7bacc1"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.27069
+  }
+}

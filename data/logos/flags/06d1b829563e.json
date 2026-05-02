@@ -1,0 +1,15 @@
+{
+  "proof_id": "06d1b829563e",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous mathematical framework connecting abstract dynamical entropy (Kolmogorov-Sinai) with physical thermodynamic entropy production. Current approaches rely on physical arguments rather than pure mathematical derivation. Additionally, a general theory of coarse-graining in dynamical systems that preserves thermodynamic structure is needed.",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

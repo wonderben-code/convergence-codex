@@ -1,0 +1,406 @@
+{
+  "id": "abbce3e9461b",
+  "convergence_id": "9c32f5c1e1ce",
+  "timestamp": "2026-05-02T13:49:57.449208+00:00",
+  "proposition": "Let (X, d, \u03bc) be a measure space with a one-parameter family of transformations T_\u03bb : X \u2192 X exhibiting a critical point at \u03bb = \u03bb_c. Then there exist universal exponents \u03b1, \u03b2, \u03b3, \u03b4 and scaling functions f, g such that for observables O : X \u2192 \u211d satisfying appropriate regularity conditions, the correlation length \u03be(\u03bb) ~ |\u03bb - \u03bb_c|^(-\u03bd), the order parameter m(\u03bb) ~ |\u03bb - \u03bb_c|^\u03b2 for \u03bb < \u03bb_c, and the n-point correlation functions G_n scale as G_n(r_1,...,r_n; \u03bb) = |\u03bb - \u03bb_c|^(\u03b3_n) F_n(r_1/\u03be(\u03bb),...,r_n/\u03be(\u03bb)) where the exponents depend only on the universality class determined by symmetry group and spatial dimension d.",
+  "proposition_natural": "Universal scaling laws emerge near critical points independent of microscopic details",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Functional analysis",
+    "Measure theory",
+    "Dynamical systems"
+  ],
+  "apparatus_justification": "Functional analysis provides the renormalization group framework and fixed-point theorems essential for proving universality. Measure theory handles the statistical mechanics formulation and scaling limits. Dynamical systems theory captures the flow toward fixed points that generates universal behavior.",
+  "proof_natural": "**Proposition.** Let $(X, d, \\mu)$ be a measure space with a one-parameter family of transformations $T_\\lambda : X \\to X$ exhibiting a critical point at $\\lambda = \\lambda_c$. Then there exist universal exponents $\\alpha, \\beta, \\gamma, \\delta$ and scaling functions $f, g$ such that for observables $O : X \\to \\mathbb{R}$ satisfying appropriate regularity conditions, the correlation length $\\xi(\\lambda) \\sim |\\lambda - \\lambda_c|^{-\\nu}$, the order parameter $m(\\lambda) \\sim |\\lambda - \\lambda_c|^\\beta$ for $\\lambda < \\lambda_c$, and the $n$-point correlation functions $G_n$ scale as $G_n(r_1,\\ldots,r_n; \\lambda) = |\\lambda - \\lambda_c|^{\\gamma_n} F_n(r_1/\\xi(\\lambda),\\ldots,r_n/\\xi(\\lambda))$ where the exponents depend only on the universality class determined by symmetry group and spatial dimension $d$.\n\n**Proof.** We assume that the system admits a well-defined thermodynamic limit with translation-invariant measure $\\mu$, the free energy $F(\\lambda)$ is analytic away from $\\lambda_c$, correlation functions $G_n$ exist and are measurable, and the system exhibits a diverging correlation length $\\xi(\\lambda)$ as $\\lambda \\to \\lambda_c$. Furthermore, we assume that observables belong to an appropriate Banach space, the renormalization group transformation $R$ exists with a fixed point at criticality, and its linearization has discrete spectrum.\n\nFollowing Wilson's construction, we define the renormalization group transformation $R$ on the space of Hamiltonians by integrating out short-wavelength modes. By the Schauder fixed point theorem applied to the appropriate function space of Hamiltonians, there exists a fixed point $H^*$ such that $R(H^*) = H^*$.\n\nWe linearize $R$ around $H^*$ to obtain the derivative operator $DR|_{H^*}$ with eigenvalues $\\lambda_i$ and eigenvectors $\\phi_i$. The eigenvalues naturally classify into relevant ($\\lambda_i > 1$), marginal ($\\lambda_i = 1$), and irrelevant ($\\lambda_i < 1$) operators according to their behavior under renormalization flow.\n\nNear criticality, we expand $H = H^* + \\sum_i u_i \\phi_i$ where $u_i$ are the scaling fields. Under $n$ iterations of the linearized renormalization group flow, these fields transform as $u_i \\to \\lambda_i^n u_i$.\n\nThe correlation length transforms under coarse-graining as $\\xi(R^n(H)) = b^{-n} \\xi(H)$ where $b$ is the spatial rescaling factor. At criticality, where $\\xi \\to \\infty$, scale invariance implies:\n$$\\xi(u_1, u_2, \\ldots) = b^n \\xi(\\lambda_1^n u_1, \\lambda_2^n u_2, \\ldots)$$\n\nIdentifying $u_1$ with the reduced temperature $t = (\\lambda - \\lambda_c)/\\lambda_c$ and choosing $n = -\\log|t|/\\log \\lambda_1$, we solve this functional equation to obtain $\\xi(t) \\sim |t|^{-\\nu}$ with the critical exponent $\\nu = \\log b/\\log \\lambda_1$.\n\nApplying this analysis to other observables yields the remaining critical exponents, each expressible as ratios of logarithms of eigenvalues. The scaling functions $F_n$ are determined by the fixed point action $H^*$, which depends only on the symmetry group and spatial dimension $d$, not on microscopic details. This follows from the universality hypothesis: all microscopic information flows to irrelevant operators under repeated renormalization.\n\n[Note: The rigorous construction of $R$ and proof of differentiability at $H^*$ require additional technical conditions on the space of Hamiltonians that we have not fully specified here.]\n\nTherefore, all systems within a given universality class\u2014characterized by symmetry and dimension\u2014exhibit identical critical exponents and scaling functions, establishing the universal scaling behavior at critical points. This completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.MeasureTheory.MeasureSpace\nimport Mathlib.Analysis.NormedSpace.Basic\nimport Mathlib.Topology.MetricSpace.Basic\nimport Mathlib.Analysis.Calculus.FDeriv.Basic\nimport Mathlib.LinearAlgebra.Eigenspace.Basic\n\n/-- A measure space with a one-parameter family of transformations -/\nstructure MeasureSpaceWithTransformations (X : Type*) [MeasurableSpace X] where\n  \u03bc : Measure X\n  T : \u211d \u2192 X \u2192 X\n  measurable_T : \u2200 \u03bb, Measurable (T \u03bb)\n\n/-- Renormalization group transformation (placeholder) -/\nstructure RGTransformation (H : Type*) [NormedAddCommGroup H] [NormedSpace \u211d H] where\n  R : H \u2192 H\n  continuous_R : Continuous R\n\n/-- Correlation length function (placeholder) -/\ndef correlationLength {X : Type*} [MeasurableSpace X] (H : Type*) : \u211d := sorry\n\n/-- Order parameter (placeholder) -/\ndef orderParameter {X : Type*} [MeasurableSpace X] (\u03bb : \u211d) : \u211d := sorry\n\n/-- n-point correlation function (placeholder) -/\ndef correlationFunction {X : Type*} [MeasurableSpace X] (n : \u2115) \n  (points : Fin n \u2192 X) (\u03bb : \u211d) : \u211d := sorry\n\n/-- Universal scaling exponents -/\nstructure UniversalExponents where\n  \u03b1 : \u211d\n  \u03b2 : \u211d\n  \u03b3 : \u211d\n  \u03b4 : \u211d\n  \u03bd : \u211d\n\n/-- Main theorem: Universal critical exponents -/\ntheorem universal_critical_exponents \n  {X : Type*} [MeasurableSpace X] [MetricSpace X]\n  (M : MeasureSpaceWithTransformations X)\n  (\u03bb_c : \u211d) -- critical point\n  (H : Type*) [NormedAddCommGroup H] [NormedSpace \u211d H] [CompleteSpace H]\n  (RG : RGTransformation H)\n  (observable : X \u2192 \u211d) :\n  \u2203 (exps : UniversalExponents) \n    (f g : \u211d \u2192 \u211d) \n    (F : \u2200 n : \u2115, (Fin n \u2192 \u211d) \u2192 \u211d),\n    -- Correlation length scaling\n    (\u2200 \u03bb \u2260 \u03bb_c, correlationLength H \u223c |\u03bb - \u03bb_c|^(-exps.\u03bd)) \u2227\n    -- Order parameter scaling\n    (\u2200 \u03bb < \u03bb_c, orderParameter \u03bb \u223c |\u03bb - \u03bb_c|^exps.\u03b2) \u2227\n    -- n-point correlation scaling\n    (\u2200 n : \u2115, \u2200 (r : Fin n \u2192 X) (\u03bb : \u211d),\n      correlationFunction n r \u03bb = |\u03bb - \u03bb_c|^(sorry : \u211d) * \n        F n (fun i => dist (r i) (r 0) / correlationLength H)) := by\n  -- Step 1: Define renormalization group transformation\n  sorry -- Need: Formal definition of RG transformation on space of Hamiltonians\n  \n  -- Step 2: Show existence of fixed point\n  sorry -- Need: Schauder fixed point theorem for infinite-dimensional spaces\n  \n  -- Step 3: Linearize around fixed point\n  sorry -- Need: Fr\u00e9chet derivative at fixed point and spectral theory\n  \n  -- Step 4: Classify eigenvalues\n  sorry -- Need: Spectral decomposition for compact operators\n  \n  -- Step 5: Expand near criticality\n  sorry -- Need: Taylor expansion in eigenbasis\n  \n  -- Step 6: Evolution under RG\n  sorry -- Need: Dynamics of linearized RG flow\n  \n  -- Step 7: Correlation length transformation\n  sorry -- Need: Definition of correlation length under coarse-graining\n  \n  -- Step 8: Scale invariance at criticality\n  sorry -- Need: Functional equation for correlation length\n  \n  -- Step 9: Derive critical exponent \u03bd\n  sorry -- Need: Solution of scaling equations\n  \n  -- Step 10: Other observables\n  sorry -- Need: Extension to magnetization, specific heat, etc.\n  \n  -- Step 11: Universality\n  sorry -- Need: Proof that exponents depend only on symmetry and dimension",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the renormalization group transformation R on the space of Hamiltonians/actions",
+      "justification": "Following Wilson's construction, we coarse-grain degrees of freedom by integrating out short-wavelength modes",
+      "dependencies": [
+        "Wilson (1971) renormalization group formulation"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Show that R has a fixed point H* such that R(H*) = H*",
+      "justification": "By the Schauder fixed point theorem applied to the appropriate function space",
+      "dependencies": [
+        "Schauder fixed point theorem",
+        "[Gap: Compactness of R on the space of Hamiltonians]"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Linearize R around H* to obtain DR|_{H*} with eigenvalues \u03bb_i and eigenvectors \u03c6_i",
+      "justification": "R is assumed differentiable in a neighborhood of H*",
+      "dependencies": [
+        "Step 2",
+        "[Gap: Differentiability of R]"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "Classify eigenvalues as relevant (\u03bb_i > 1), marginal (\u03bb_i = 1), or irrelevant (\u03bb_i < 1)",
+      "justification": "Standard spectral decomposition of linear operators",
+      "dependencies": [
+        "Step 3",
+        "Spectral theorem for compact operators"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Show that near criticality, H = H* + \u03a3_i u_i \u03c6_i where u_i are scaling fields",
+      "justification": "Taylor expansion in the eigenbasis of DR|_{H*}",
+      "dependencies": [
+        "Steps 3, 4"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Under n iterations of R, u_i \u2192 \u03bb_i^n u_i for the linearized flow",
+      "justification": "Direct application of eigenvalue equation DR|_{H*} \u03c6_i = \u03bb_i \u03c6_i",
+      "dependencies": [
+        "Steps 4, 5"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Correlation length transforms as \u03be(R^n(H)) = b^{-n} \u03be(H) where b is the spatial rescaling factor",
+      "justification": "Definition of correlation length under coarse-graining",
+      "dependencies": [
+        "Definition of R"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "At criticality where \u03be \u2192 \u221e, we have \u03be(u_1, u_2,...) = b^n \u03be(\u03bb_1^n u_1, \u03bb_2^n u_2,...)",
+      "justification": "Combining steps 6 and 7 with scale invariance at criticality",
+      "dependencies": [
+        "Steps 6, 7"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "Setting u_1 = t (reduced temperature) and taking n = -log|t|/log \u03bb_1 gives \u03be(t) ~ |t|^{-\u03bd} with \u03bd = log b/log \u03bb_1",
+      "justification": "Solving the functional equation from step 8",
+      "dependencies": [
+        "Step 8"
+      ]
+    },
+    {
+      "step_number": 10,
+      "statement": "Similar analysis for other observables yields universal exponents depending only on eigenvalue ratios",
+      "justification": "Repeating steps 7-9 for magnetization, specific heat, etc.",
+      "dependencies": [
+        "Steps 7-9 applied to different observables"
+      ]
+    },
+    {
+      "step_number": 11,
+      "statement": "Scaling functions F_n are determined by the fixed point action H* which depends only on symmetry and dimension",
+      "justification": "The universality hypothesis: all microscopic details flow to irrelevant operators",
+      "dependencies": [
+        "Step 4",
+        "[Gap: Rigorous proof of universality hypothesis]"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Renormalization group theory",
+      "authors": "Wilson, K.G.",
+      "year": "1971",
+      "field": "Condensed Matter Physics",
+      "statement": "Phase transitions can be understood through iterative coarse-graining transformations with fixed points corresponding to critical behavior",
+      "usage": "Provides the conceptual and mathematical framework for the entire proof"
+    },
+    {
+      "name": "Schauder fixed point theorem",
+      "authors": "Schauder, J.",
+      "year": "1930",
+      "field": "Functional Analysis",
+      "statement": "A continuous mapping of a convex compact subset of a Banach space into itself has a fixed point",
+      "usage": "Guarantees existence of RG fixed point (with appropriate compactness assumptions)"
+    },
+    {
+      "name": "Spectral theorem for compact operators",
+      "authors": "Hilbert, D., Schmidt, E.",
+      "year": "1904-1907",
+      "field": "Functional Analysis",
+      "statement": "Compact self-adjoint operators have discrete spectrum with eigenvectors forming an orthonormal basis",
+      "usage": "Justifies eigenvalue decomposition of linearized RG transformation"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The system admits a well-defined thermodynamic limit X with measure \u03bc",
+    "There exists a one-parameter family of transformations T_\u03bb with a critical point at \u03bb_c",
+    "The free energy F(\u03bb) is analytic away from \u03bb_c",
+    "Correlation functions G_n exist and are measurable",
+    "The system exhibits a diverging correlation length \u03be(\u03bb) as \u03bb \u2192 \u03bb_c",
+    "Observables O belong to an appropriate Banach space with norm ||\u00b7||",
+    "The renormalization group transformation R exists and has a fixed point at criticality",
+    "The linearization of R at the fixed point has a discrete spectrum",
+    "Scaling functions F_n are universal within each universality class",
+    "The measure \u03bc is translation-invariant",
+    "Boundary conditions become irrelevant in the thermodynamic limit"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Definition of renormalization group transformation R",
+        "issue": "The proof claims to 'define' R by 'integrating out short-wavelength modes' but provides no actual construction. This is handwaving, not mathematics.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Requires complete functional analytic framework specifying the space of Hamiltonians, the precise integration procedure, and proof that R is well-defined"
+      },
+      {
+        "step": "Application of Schauder fixed point theorem",
+        "issue": "No verification that the space of Hamiltonians forms a convex compact subset of a Banach space, nor that R is continuous. The theorem's hypotheses are completely unchecked.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Must specify the Banach space, prove compactness and convexity of the relevant subset, and establish continuity of R"
+      },
+      {
+        "step": "Linearization of R at H*",
+        "issue": "No proof that R is differentiable at the fixed point. The existence of DR|_{H*} is assumed without justification.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Requires proof of Fr\u00e9chet differentiability in the specified Banach space"
+      },
+      {
+        "step": "Eigenvalue classification",
+        "issue": "No proof that the linearization has discrete spectrum. The spectral theorem cited applies to compact self-adjoint operators, but no proof that DR|_{H*} is compact or self-adjoint.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Must prove compactness and self-adjointness, or use different spectral theory"
+      },
+      {
+        "step": "Correlation length transformation equation",
+        "issue": "The equation \u03be(R^n(H)) = b^{-n}\u03be(H) is stated without proof. This is a crucial dynamical property that requires justification.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Requires proof from first principles or clear statement as an additional assumption"
+      },
+      {
+        "step": "Identification of u_1 with reduced temperature",
+        "issue": "No justification for why the first eigenfunction corresponds to temperature. The ordering and physical interpretation of eigenfunctions is assumed without proof.",
+        "severity": "major",
+        "fixable": false,
+        "suggested_fix": "Requires physical argument or additional assumptions about the nature of the critical point"
+      },
+      {
+        "step": "Solution of functional equation",
+        "issue": "The functional equation for \u03be is 'solved' by assertion. No actual derivation of the power law form is given.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Apply standard homogeneous function theory to derive the solution properly"
+      },
+      {
+        "step": "Extension to other observables",
+        "issue": "Claims 'applying this analysis to other observables yields the remaining critical exponents' without any actual analysis. Pure handwaving.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Each observable requires its own transformation analysis under RG flow"
+      }
+    ],
+    "hidden_assumptions": [
+      "The space of Hamiltonians has a natural Banach space structure",
+      "The RG transformation preserves essential physical properties",
+      "The fixed point H* is unique or at least isolated",
+      "The eigenspaces of DR|_{H*} span the tangent space",
+      "Physical observables can be expressed in terms of scaling fields u_i",
+      "The RG flow commutes with observable evaluation",
+      "The spatial rescaling factor b is well-defined and constant",
+      "The critical point corresponds to a second-order phase transition"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes the existence of universal scaling behavior (through the RG framework) to prove universal scaling behavior. The entire RG construction presupposes the scaling structure it claims to derive.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to establish universal scaling for any measure space with transformations T_\u03bb, but the entire argument is specific to statistical mechanical systems with Hamiltonians. It proves nothing about general measure spaces.",
+    "citation_issues": [
+      "Schauder fixed point theorem requires compact convex sets - compactness never established",
+      "Spectral theorem for compact operators requires self-adjointness - never verified for DR|_{H*}",
+      "Wilson's construction is referenced but not actually implemented - this is name-dropping, not mathematics"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This is physics masquerading as mathematics. The 'proof' is a sequence of unjustified assertions strung together with renormalization group folklore. Nearly every critical step lacks rigorous justification, and the mathematical framework is so poorly specified that the statements aren't even well-defined.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to derive scaling relations and critical exponents using renormalization group theory, but fails to establish the existence of universal exponents or prove the specific scaling forms claimed in the proposition.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Existence of a well-defined renormalization group transformation R on the space of Hamiltonians",
+      "Differentiability of R in a neighborhood of the fixed point",
+      "Existence of appropriate function space where Schauder fixed point theorem applies",
+      "Regularity conditions on observables O are never specified",
+      "Assumption that eigenvalues of DR are real and positive",
+      "Assumption that the relevant eigenvalue \u03bb\u2081 corresponds to temperature scaling",
+      "Existence of a spatial rescaling factor b > 1",
+      "Assumption that correlation length has the specific transformation property under R",
+      "Assumption that the functional equation in step 8 has a unique solution",
+      "Assumption that all microscopic details flow to irrelevant operators"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "2",
+        "issue": "Schauder fixed point theorem requires compactness and continuity conditions that are not established for the renormalization group transformation on Hamiltonian space"
+      },
+      {
+        "step": "7",
+        "issue": "The transformation property \u03be(R^n(H)) = b^{-n} \u03be(H) is assumed without proof - this is a non-trivial claim about how correlation length behaves under coarse-graining"
+      },
+      {
+        "step": "8",
+        "issue": "The equation \u03be(u\u2081, u\u2082,...) = b^n \u03be(\u03bb\u2081^n u\u2081, \u03bb\u2082^n u\u2082,...) does not follow from combining steps 6 and 7 - this requires additional assumptions about how \u03be depends on the scaling fields"
+      },
+      {
+        "step": "9",
+        "issue": "The choice n = -log|t|/log \u03bb\u2081 is not justified, and the derivation of \u03be(t) ~ |t|^{-\u03bd} from the functional equation is incomplete"
+      },
+      {
+        "step": "11",
+        "issue": "The claim that scaling functions are determined solely by the fixed point action is not proven - this requires showing that all other parameters flow to irrelevant directions"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Never proves that the exponents \u03b1, \u03b2, \u03b3, \u03b4 actually exist",
+      "Never establishes the specific scaling forms for n-point correlation functions",
+      "Never proves universality - that exponents depend only on symmetry and dimension",
+      "Never shows that the regularity conditions on observables O are sufficient",
+      "Never proves that the scaling functions f, g exist",
+      "Missing rigorous treatment of the thermodynamic limit",
+      "No proof that the critical point \u03bbc actually exists",
+      "No demonstration that the measure space framework is appropriate for the physical system"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims universal exponents depend only on symmetry group and spatial dimension, but provides no rigorous definition of 'universality class' or proof that such classes exist",
+      "Claims correlation length \u03be(\u03bb) ~ |\u03bb - \u03bb_c|^(-\u03bd) without establishing that \u03be(\u03bb) is well-defined or finite away from criticality",
+      "Asserts existence of renormalization group transformation R without proving it exists or is well-defined on the claimed space of Hamiltonians",
+      "Claims linearization DR has discrete spectrum without justification - this is a strong functional analytic assumption that requires proof"
+    ],
+    "assumption_conflicts": [
+      "Assumes 'appropriate regularity conditions' for observables without specification, conflicting with the precise functional analytic assumptions in existing proofs",
+      "Claims measure \u03bc is translation-invariant but works on general measure space (X,d,\u03bc) - translation invariance requires additional structure not assumed",
+      "Assumes thermodynamic limit exists without proving convergence, while existing proof [1050c80b4013] carefully establishes thermodynamic equilibrium conditions",
+      "Claims boundary conditions become irrelevant without proof, contradicting the careful boundary analysis in existing proofs"
+    ],
+    "beneficial_connections": [
+      "Connects to [0178ff46c5ee] and [1318ecd2c25c] on phase transitions and symmetry breaking, but lacks their mathematical rigor",
+      "Relates to [087da119976b] on symmetry breaking in Banach spaces, but fails to establish the required functional analytic framework",
+      "Could complement [148d85f6c7b4] on universal scaling laws if the mathematical foundations were properly established"
+    ],
+    "consistency_score": 0.2,
+    "notes": "This proof reads more like a physics textbook summary than a rigorous mathematical proof. It makes numerous unsubstantiated claims about existence and properties of mathematical objects (RG transformation, fixed points, eigenvalue spectra) without proof. The assumptions are vague and the key claims lack mathematical precision. The scaling relations are asserted rather than derived. A complete rewrite with proper mathematical foundations would be required for this to constitute a valid proof."
+  },
+  "confidence_score": 0.23,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "Rigorous functional analytic framework for the space of Hamiltonians/actions with appropriate topology making R continuous and compact. Proof that microscopic differences only affect irrelevant operators. Mathematical formulation of 'universality classes' as equivalence classes under RG flow.",
+  "limitations": [
+    "Compactness of renormalization group transformation R on the space of Hamiltonians",
+    "Differentiability of R near fixed points",
+    "Rigorous proof that microscopic details only contribute to irrelevant operators",
+    "Convergence of the RG flow for finite systems to the fixed point behavior",
+    "Treatment of marginal operators and logarithmic corrections",
+    "Assumes existence of a sensible RG transformation which is not always constructible",
+    "Limited to systems with a single relevant scaling field (more complex critical points exist)",
+    "Does not address systems with quenched disorder where universality can break down",
+    "Assumes thermodynamic limit exists; finite-size effects not addressed",
+    "Does not prove universality from first principles, rather assumes it via the RG hypothesis"
+  ],
+  "source_convergence": {
+    "structural_claim": "Universal scaling laws emerge near critical points independent of microscopic details",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Renormalization Group Theory",
+        "domain_id": "condensed_matter",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Critical phenomena exhibit universal scaling determined by symmetry and dimensionality alone"
+      },
+      {
+        "result_id": "",
+        "result_name": "Onsager's Exact Solution of 2D Ising Model",
+        "domain_id": "condensed_matter",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Phase transitions exhibit power-law scaling with universal critical exponents"
+      },
+      {
+        "result_id": "",
+        "result_name": "Kolmogorov -5/3 Law",
+        "domain_id": "fluid_dynamics",
+        "domain_name": "Fluid Dynamics",
+        "link_type": "direct",
+        "structural_conclusion": "Turbulent energy spectra follow universal power laws in the inertial range"
+      },
+      {
+        "result_id": "",
+        "result_name": "Reynolds Number Similarity",
+        "domain_id": "fluid_dynamics",
+        "domain_name": "Fluid Dynamics",
+        "link_type": "direct",
+        "structural_conclusion": "Flow transitions occur at universal values of dimensionless parameters"
+      }
+    ],
+    "domains": [
+      "condensed_matter",
+      "fluid_dynamics"
+    ],
+    "domain_names": [
+      "Condensed Matter Physics",
+      "Fluid Dynamics"
+    ],
+    "ea_scores": {
+      "strength": 0.2856,
+      "independence": 0.75,
+      "adversarial": 0.12,
+      "reproducibility": 0.6299999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.49168,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:28:52.834337+00:00",
+    "id": "9c32f5c1e1ce"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.326625
+  }
+}

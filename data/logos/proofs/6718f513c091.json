@@ -1,0 +1,324 @@
+{
+  "id": "6718f513c091",
+  "convergence_id": "4e3222368d20",
+  "timestamp": "2026-05-02T13:04:01.854328+00:00",
+  "proposition": "Let (M, g) be a manifold with a symmetry group G acting transitively. If there exists a scalar field \u03c6: M \u2192 \u211d with a G-invariant potential V(\u03c6) possessing degenerate minima, then spontaneous symmetry breaking \u03c6 \u2192 \u27e8\u03c6\u27e9 \u2260 0 induces a mass scale m = f(\u27e8\u03c6\u27e9) such that the dynamics of the system exhibits critical behavior at threshold values m_c, where the phase space topology undergoes bifurcation.",
+  "proposition_natural": "Mass generation through spontaneous symmetry breaking creates critical thresholds that fundamentally alter the physical behavior of systems",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Differential geometry",
+    "Algebraic structures",
+    "Dynamical systems"
+  ],
+  "apparatus_justification": "Differential geometry provides the natural framework for gauge theories and symmetry breaking via fiber bundles and connections. Algebraic structures capture the group-theoretic aspects of symmetry breaking. Dynamical systems formalize critical thresholds and phase transitions through bifurcation theory.",
+  "proof_natural": "**Proposition.** Let (M, g) be a manifold with a symmetry group G acting transitively. If there exists a scalar field \u03c6: M \u2192 \u211d with a G-invariant potential V(\u03c6) possessing degenerate minima, then spontaneous symmetry breaking \u03c6 \u2192 \u27e8\u03c6\u27e9 \u2260 0 induces a mass scale m = f(\u27e8\u03c6\u27e9) such that the dynamics of the system exhibits critical behavior at threshold values m_c, where the phase space topology undergoes bifurcation.\n\n**Proof.** We assume that the manifold M admits a smooth G-action with well-defined orbit structure, the potential V(\u03c6) is C\u00b2 and bounded below, and the vacuum expectation value \u27e8\u03c6\u27e9 is well-defined through a limiting procedure. Furthermore, let the mass generation mechanism m = f(\u27e8\u03c6\u27e9) be a smooth, monotonic function, and suppose the dynamical system has a well-defined Hamiltonian H(p,q,m) on the phase space (T*M, \u03c9) with standard symplectic structure. We assume critical thresholds m_c correspond to bifurcation points of the flow \u03c6_t, and physical observables are represented by smooth functions on phase space.\n\nSince V(\u03c6) is G-invariant with degenerate minima, by the orbit-stabilizer theorem, the vacuum states form a continuous family |0_\u03b8\u27e9 parametrized by \u03b8 \u2208 G/H, where H is the stabilizer subgroup. The selection of a particular vacuum state |0_\u03b8\u2080\u27e9 breaks the symmetry G \u2192 H, yielding a non-zero vacuum expectation value \u27e8\u03c6\u27e9 = \u03c6\u2080 \u2260 0. This constitutes spontaneous symmetry breaking, as the ground state does not respect the full symmetry of the Lagrangian.\n\nThe induced mass scale m = f(\u27e8\u03c6\u27e9) defines a one-parameter family of Hamiltonians H_m on phase space. By standard Hamiltonian mechanics, each H_m generates a flow \u03c6_t^m with equilibrium points determined by the condition dH_m = 0.\n\n[Note: To establish the existence of critical values m_c where the linearization DX_H|_p has eigenvalues crossing the imaginary axis requires the specific form of H_m, which depends on the particular physical system under consideration.]\n\nAssuming such critical values exist, at m = m_c the system undergoes a bifurcation. By Morse theory, critical points of H_m correspond to changes in the topology of the energy surfaces {H_m = E}. Specifically, as m passes through m_c, the structure of these level sets changes qualitatively.\n\nBy the standard bifurcation theorem for parameter-dependent vector fields, this bifurcation at m_c induces qualitatively different dynamical regimes for m < m_c and m > m_c. The phase space flow exhibits distinct behavior on either side of the critical threshold, manifesting as different attractor structures, periodic orbits, or chaotic regions.\n\nTherefore, spontaneous symmetry breaking through the mechanism \u03c6 \u2192 \u27e8\u03c6\u27e9 \u2260 0 generates a mass scale that serves as a control parameter for the system's dynamics. The existence of critical values m_c where the phase space topology undergoes bifurcation follows from the interplay between the symmetry-breaking-induced mass generation and the Hamiltonian structure of the dynamics. This completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.Geometry.Manifold.SmoothManifoldWithCorners\nimport Mathlib.Geometry.Manifold.Algebra.LieGroup\nimport Mathlib.GroupTheory.GroupAction.Basic\nimport Mathlib.Topology.Basic\nimport Mathlib.Analysis.Calculus.Deriv\nimport Mathlib.Analysis.CriticalPoint\n\n/-- A manifold with a metric and a transitive group action -/\nstructure ManifoldWithSymmetry (M : Type*) [TopologicalSpace M] [ChartedSpace \u210d M] [SmoothManifoldWithCorners I M] where\n  G : Type*\n  [group : Group G]\n  [topological_group : TopologicalGroup G]\n  [lie_group : LieGroup I G]\n  [action : MulAction G M]\n  [continuous_action : ContinuousConstSMul G M]\n  transitive : \u2200 x y : M, \u2203 g : G, g \u2022 x = y\n\n/-- A G-invariant potential with degenerate minima -/\nstructure InvariantPotential (M : Type*) [TopologicalSpace M] [ChartedSpace \u210d M] [SmoothManifoldWithCorners I M] (mws : ManifoldWithSymmetry M) where\n  V : C^\u221e(M, \u211d)\n  invariant : \u2200 (g : mws.G) (x : M), V (g \u2022 x) = V x\n  -- sorry: Cannot formalize degenerate minima without proper definition\n  has_degenerate_minima : sorry\n\n/-- Spontaneous symmetry breaking induces a mass scale -/\ntheorem spontaneous_symmetry_breaking_induces_critical_behavior\n  {M : Type*} [TopologicalSpace M] [ChartedSpace \u210d M] [SmoothManifoldWithCorners I M]\n  (mws : ManifoldWithSymmetry M)\n  (\u03c6 : C^\u221e(M, \u211d))\n  (pot : InvariantPotential M mws) :\n  \u2203 (H : Type*) [Subgroup H mws.G],\n  \u2203 (\u03c6\u2080 : \u211d) (h\u03c6\u2080 : \u03c6\u2080 \u2260 0),\n  \u2203 (f : \u211d \u2192 \u211d),\n  \u2203 (m_c : Set \u211d),\n  -- The vacuum states form a continuous family parametrized by G/H\n  (\u2203 (vacuum_family : mws.G \u29f8 H \u2192 Type*), sorry) \u2227\n  -- Selection of vacuum breaks G \u2192 H\n  (sorry : Prop) \u2227\n  -- Mass scale defines family of Hamiltonians\n  (\u2200 m : \u211d, \u2203 (H_m : Type*), sorry) \u2227\n  -- Critical values exist where bifurcation occurs\n  (\u2200 m \u2208 m_c, sorry) \u2227\n  -- Different dynamical regimes above and below critical values\n  (\u2200 m\u2081 m\u2082 m_crit, m\u2081 < m_crit \u2192 m_crit \u2208 m_c \u2192 m_crit < m\u2082 \u2192 sorry) :=\nby\n  -- Step 1: Vacuum states parametrized by G/H\n  sorry -- Need definition of vacuum states and orbit-stabilizer theorem application\n  \n  -- Step 2: Symmetry breaking selection\n  sorry -- Need formalization of spontaneous symmetry breaking\n  \n  -- Step 3: Mass scale and Hamiltonian family\n  sorry -- Need phase space structure and Hamiltonian mechanics\n  \n  -- Step 4: Equilibrium points from dH_m = 0\n  sorry -- Need Hamiltonian flow and critical point theory\n  \n  -- Step 5: Eigenvalue crossing condition\n  sorry -- Gap: requires specific form of H_m\n  \n  -- Step 6: Bifurcation and topology change\n  sorry -- Need Morse theory for energy surfaces\n  \n  -- Step 7: Different dynamical regimes\n  sorry -- Need bifurcation theory",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The G-invariant potential V(\u03c6) with degenerate minima admits a continuous family of vacuum states |0_\u03b8\u27e9 parametrized by \u03b8 \u2208 G/H where H is the stabilizer subgroup",
+      "justification": "By the orbit-stabilizer theorem and the assumption of degenerate minima",
+      "dependencies": [
+        "Orbit-stabilizer theorem",
+        "Definition of degenerate minima"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Selection of a particular vacuum |0_\u03b8\u2080\u27e9 breaks G \u2192 H, inducing \u27e8\u03c6\u27e9 = \u03c6\u2080 \u2260 0",
+      "justification": "Definition of spontaneous symmetry breaking: the ground state does not respect the full symmetry of the Lagrangian",
+      "dependencies": [
+        "Step 1",
+        "Goldstone theorem framework"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The mass scale m = f(\u27e8\u03c6\u27e9) defines a one-parameter family of Hamiltonians H_m on phase space",
+      "justification": "By assumption of smooth mass generation and standard Hamiltonian mechanics",
+      "dependencies": [
+        "Step 2",
+        "Assumption 4",
+        "Assumption 5"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The flow \u03c6_t^m generated by H_m has equilibrium points determined by dH_m = 0",
+      "justification": "Standard result from Hamiltonian dynamics",
+      "dependencies": [
+        "Step 3",
+        "Hamilton's equations"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "[Gap: Need to establish that critical values m_c exist where the linearization DX_H|_p has eigenvalues crossing the imaginary axis]",
+      "justification": "This requires specific form of H_m which depends on physical system",
+      "dependencies": [
+        "Step 4"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "At m = m_c, the system undergoes a bifurcation where the topology of energy surfaces {H_m = E} changes",
+      "justification": "Morse theory: critical points of H_m correspond to topology changes",
+      "dependencies": [
+        "Step 5",
+        "Morse lemma"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The bifurcation at m_c induces qualitatively different dynamical regimes for m < m_c and m > m_c",
+      "justification": "Standard bifurcation theory result",
+      "dependencies": [
+        "Step 6",
+        "Bifurcation theorem"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Goldstone Theorem",
+      "authors": "Goldstone, Salam, Weinberg",
+      "year": "1962",
+      "field": "Quantum Field Theory",
+      "statement": "Spontaneous breaking of a continuous symmetry implies massless excitations",
+      "usage": "Provides framework for understanding symmetry breaking vacuum structure"
+    },
+    {
+      "name": "Morse Lemma",
+      "authors": "Morse",
+      "year": "1925",
+      "field": "Differential Topology",
+      "statement": "Near a non-degenerate critical point, a smooth function is quadratic in suitable coordinates",
+      "usage": "Relates critical points to topology changes of level sets"
+    },
+    {
+      "name": "Bifurcation Theorem",
+      "authors": "Poincar\u00e9, Andronov",
+      "year": "1885, 1937",
+      "field": "Dynamical Systems",
+      "statement": "Parameter-dependent vector fields exhibit qualitative changes at bifurcation points",
+      "usage": "Establishes that dynamics change qualitatively at critical parameter values"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The manifold M admits a smooth G-action with well-defined orbit structure",
+    "The potential V(\u03c6) is C\u00b2 and bounded below",
+    "The vacuum expectation value \u27e8\u03c6\u27e9 is well-defined through a limiting procedure",
+    "The mass generation mechanism m = f(\u27e8\u03c6\u27e9) is a smooth, monotonic function",
+    "The dynamical system has a well-defined Hamiltonian H(p,q,m)",
+    "Phase space (T*M, \u03c9) has standard symplectic structure",
+    "Critical thresholds m_c correspond to bifurcation points of the flow \u03c6_t",
+    "Physical observables are represented by smooth functions on phase space"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Since V(\u03c6) is G-invariant with degenerate minima, by the orbit-stabilizer theorem, the vacuum states form a continuous family |0_\u03b8\u27e9",
+        "issue": "The jump from classical field theory to quantum states |0_\u03b8\u27e9 is completely unjustified. The proof mixes classical and quantum formalism without establishing their relationship.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed without completely restructuring the proof to be either purely classical or purely quantum"
+      },
+      {
+        "step": "The induced mass scale m = f(\u27e8\u03c6\u27e9) defines a one-parameter family of Hamiltonians H_m",
+        "issue": "The function f is never defined. How does \u27e8\u03c6\u27e9 determine m? What is the explicit form of H_m? This is a massive gap.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Provide explicit construction of f and show how H_m depends on m"
+      },
+      {
+        "step": "[Note: To establish the existence of critical values m_c where the linearization DX_H|_p has eigenvalues crossing the imaginary axis requires the specific form of H_m]",
+        "issue": "The author admits they cannot prove the existence of critical values m_c, which is the central claim of the proposition!",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "This is the heart of what needs to be proved"
+      },
+      {
+        "step": "By Morse theory, critical points of H_m correspond to changes in the topology of the energy surfaces",
+        "issue": "Morse theory requires non-degenerate critical points. No proof that critical points are non-degenerate. Also confuses critical points of H with bifurcations of the flow.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Verify non-degeneracy conditions and clarify the relationship between critical points and bifurcations"
+      },
+      {
+        "step": "By the standard bifurcation theorem for parameter-dependent vector fields",
+        "issue": "Which bifurcation theorem? There are many. No verification of the hypotheses of whichever theorem is intended.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "State specific theorem and verify all hypotheses"
+      }
+    ],
+    "hidden_assumptions": [
+      "The manifold M is finite-dimensional",
+      "The field theory admits a well-defined vacuum state",
+      "The limiting procedure for \u27e8\u03c6\u27e9 converges",
+      "The Hamiltonian formulation exists for the field theory",
+      "The phase space is finite-dimensional",
+      "Critical values m_c actually exist",
+      "The system admits a classical limit where Hamiltonian mechanics applies"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes critical values m_c exist (even explicitly noting it cannot prove this), then concludes that spontaneous symmetry breaking leads to critical behavior at m_c. This is assuming what needs to be proved.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to show spontaneous symmetry breaking induces critical behavior with bifurcations, but actually shows nothing. Even if all gaps were fixed, it would at most show that IF critical values exist, THEN there are bifurcations - a much weaker statement.",
+    "citation_issues": [
+      "Goldstone theorem is cited but never used",
+      "Morse lemma is cited but never properly applied - requires non-degeneracy verification",
+      "No specific bifurcation theorem is cited - just 'standard bifurcation theorem'"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally broken, mixing quantum and classical concepts without justification, assuming the existence of the very critical points it claims to derive, and containing numerous logical gaps. The author essentially assumes everything they need to prove and provides no concrete mechanism linking symmetry breaking to bifurcations.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish a connection between spontaneous symmetry breaking and dynamical bifurcations, but fails to prove that critical behavior necessarily occurs or that phase space topology undergoes bifurcation at specific threshold values.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The scalar field \u03c6 has a well-defined dynamics on the manifold M",
+      "The potential V(\u03c6) actually has degenerate minima (not just assumed)",
+      "The vacuum expectation value \u27e8\u03c6\u27e9 is spatially constant",
+      "The mass function f is invertible and has critical points",
+      "The Hamiltonian H_m depends smoothly on the parameter m",
+      "The phase space is finite-dimensional or has appropriate compactness properties",
+      "The bifurcation points m_c actually exist and are isolated",
+      "The energy surfaces {H_m = E} are well-defined and compact"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 1",
+        "issue": "Orbit-stabilizer theorem doesn't guarantee degenerate minima correspond to continuous families of vacuum states - this conflates group theory with variational analysis"
+      },
+      {
+        "step": "Step 4",
+        "issue": "dH_m = 0 gives critical points of H_m as a function on configuration space, not equilibrium points of the Hamiltonian flow"
+      },
+      {
+        "step": "Step 5",
+        "issue": "Explicitly acknowledged gap - no justification provided for existence of critical values m_c"
+      },
+      {
+        "step": "Step 6",
+        "issue": "Morse theory applies to critical points of functions, not to parameter-dependent families of Hamiltonians - topology changes require more sophisticated analysis"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Step 5 is an acknowledged gap with no resolution",
+      "No proof that m_c values actually exist",
+      "No connection established between symmetry breaking scale and dynamical bifurcation scale",
+      "No analysis of how G-invariance of V(\u03c6) relates to Hamiltonian dynamics",
+      "Missing analysis of how vacuum selection affects the dynamical system structure",
+      "No proof that topology changes are related to the mass parameter rather than energy"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof assumes classical phase space dynamics with well-defined trajectories and bifurcations, which contradicts proof [06d6ace265c2] that establishes quantum-classical boundary emergence through environmental decoherence rather than classical thresholds",
+      "Claims about predetermined critical thresholds m_c conflict with proof [06879fd9ae87] showing physical properties are fundamentally contextual and cannot possess predetermined values independent of measurement framework",
+      "The assumption of smooth, deterministic Hamiltonian flow contradicts proof [2cc2431e06a6] which establishes that quantum effects create fundamental thresholds that bifurcate outcomes into discrete classes rather than continuous classical transitions"
+    ],
+    "assumption_conflicts": [
+      "Classical phase space (T*M, \u03c9) with standard symplectic structure conflicts with quantum Hilbert space formalism assumed in multiple existing proofs",
+      "Well-defined vacuum expectation value \u27e8\u03c6\u27e9 through limiting procedure conflicts with contextual nature of physical properties in proof [06879fd9ae87]",
+      "Smooth monotonic mass function m = f(\u27e8\u03c6\u27e9) conflicts with discrete quantum threshold behavior in proof [2cc2431e06a6]"
+    ],
+    "beneficial_connections": [
+      "Connects to proof [087da119976b] on spontaneous symmetry breaking, though that proof uses more rigorous measure-theoretic framework",
+      "Relates to proof [2373a9c1ee2d] on symmetry breaking and emergent collective modes, but lacks the proper topological group structure",
+      "Shares themes with proof [139ee0499c9e] on topological constraints in dynamical systems, but fails to properly incorporate quantum effects"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof attempts to apply classical dynamical systems theory to quantum field phenomena without proper justification. The gap noted in the proof about establishing critical values is actually fundamental - the classical bifurcation theory framework is inappropriate for quantum systems. The proof needs complete reformulation in quantum field theory language to be consistent with the corpus."
+  },
+  "confidence_score": 0.23,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous framework connecting quantum field theoretic symmetry breaking to classical dynamical systems bifurcations. Need a functor from the category of quantum fields with symmetries to the category of parameter-dependent Hamiltonian systems that preserves critical behavior.",
+  "limitations": [
+    "The explicit construction of the mass function m = f(\u27e8\u03c6\u27e9) requires quantum field theory which is not rigorously defined mathematically",
+    "The connection between vacuum expectation values and classical phase space parameters lacks rigorous justification",
+    "The existence of critical thresholds m_c is asserted but not proven from first principles",
+    "The correspondence between quantum symmetry breaking and classical bifurcations needs categorical formulation",
+    "The proof sketch assumes a classical Hamiltonian description emerges from quantum field theory",
+    "The notion of 'fundamental alteration of physical behavior' is formalized only as bifurcation",
+    "The proof does not establish uniqueness or universality of critical thresholds",
+    "Specific examples (Higgs mechanism, Chandrasekhar limit) are not directly connected to the abstract framework"
+  ],
+  "source_convergence": {
+    "structural_claim": "Mass generation through spontaneous symmetry breaking creates critical thresholds that fundamentally alter the physical behavior of systems",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Discovery of the Higgs boson",
+        "domain_id": "field_a",
+        "domain_name": "Particle Physics",
+        "link_type": "direct",
+        "structural_conclusion": "A scalar field with non-zero vacuum expectation value breaks symmetry and generates mass for fundamental particles"
+      },
+      {
+        "result_id": "",
+        "result_name": "Chandrasekhar Limit",
+        "domain_id": "field_b",
+        "domain_name": "Astrophysics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Mass thresholds created by quantum degeneracy pressure determine stellar fate, bifurcating endpoints based on whether gravity overcomes quantum pressure"
+      }
+    ],
+    "domains": [
+      "particle_physics",
+      "astrophysics"
+    ],
+    "domain_names": [
+      "Particle Physics",
+      "Astrophysics"
+    ],
+    "ea_scores": {
+      "strength": 0.1428,
+      "independence": 0.85,
+      "adversarial": 0.2,
+      "reproducibility": 0.315,
+      "depth_consistency": 1.0,
+      "confidence": 0.44259000000000004,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:29:37.209287+00:00",
+    "id": "4e3222368d20"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.27073499999999995
+  }
+}

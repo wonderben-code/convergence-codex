@@ -1,0 +1,35 @@
+[12:30:28] ============================================================
+[12:30:28]   STAGE A — Pipeline Validation
+[12:30:28] ============================================================
+[12:30:28]   Gnosis data: /Users/ekramalam/gnosis-ai/results/test-3-auto
+[12:30:28]   Max cost: $200.00 (Logos: $160.00, Synthesis: $40.00)
+[12:30:28]   Log file: /Users/ekramalam/convergence-codex/data/pipeline/stage_a_20260502_123028.log
+[12:30:28]   Started: 2026-05-02T12:30:28.835835+00:00
+[12:30:28]   Loaded: 266 convergences, 26 findings
+[12:30:28] 
+============================================================
+[12:30:28]   LOGOS — Formalisation
+[12:30:28] ============================================================
+[12:30:29] Logos: 266 total, 3 already done, 263 remaining
+[12:30:29] 
+  [4/266] 06620f4f8a46
+[12:30:29]     Claim: Symmetry breaking mechanisms generate emergent structure from more fundamental s...
+[12:30:29]     Domains: Quantum Gravity, Particle Physics
+[12:31:45]     Type: axiomatic | Apparatus: Category theory, Algebraic structures
+[12:31:45]     Steps: 8
+[12:32:27]     Lean: code=True
+[12:33:21]     Confidence: 0.23 (low)
+[12:33:21]     Time: 172.9s | Cost: $0.58 | Calls: 9
+[12:33:21] 
+  [5/266] 083202784dd6
+[12:33:21]     Claim: Entanglement and correlation patterns encode and determine the effective geometr...
+[12:33:21]     Domains: Quantum Gravity, Atomic and Molecular Physics
+[12:34:52]     Type: categorical | Apparatus: Category theory, Differential geometry
+[12:34:52]     Steps: 11
+[12:35:28]     Lean: code=True
+[12:36:23]     Confidence: 0.25 (low)
+[12:36:23]     Time: 181.4s | Cost: $1.17 | Calls: 18
+[12:36:23] 
+  [6/266] 09364dc014d0
+[12:36:23]     Claim: Geometric objects are classified not by individual properties but by equivalence...
+[12:36:23]     Domains: Topology and Geometry, Algebraic Geometry

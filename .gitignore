@@ -7,4 +7,3 @@ dist/
 build/
 .env
 *.ots.bak
-data/logos/

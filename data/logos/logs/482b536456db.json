@@ -1,0 +1,38 @@
+{
+  "proof_id": "482b536456db",
+  "timestamp": "2026-05-02T13:46:48.298984+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "categorical",
+      "alternatives_considered": [
+        "axiomatic - One could axiomatize the properties shared by systems exhibiting macroscopic quantum coherence, but this would miss the dynamic aspect of how these states emerge through phase transitions and the universal scaling behavior near critical points."
+      ],
+      "reasoning": "The convergence describes how microscopic quantum systems give rise to macroscopic quantum phenomena through phase transitions. This is fundamentally about emergence and universality - how different microscopic systems (superconductors, BEC) lead to the same type of macroscopic behavior through a universal mechanism. This is best captured by categorical structures that characterize the universal properties of phase transitions and order parameter emergence."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Functional analysis, Category theory, Measure theory",
+      "alternatives_considered": [],
+      "reasoning": "Functional analysis provides the rigorous framework for quantum mechanics through Hilbert spaces and operator theory, including spectral theory for phase transitions. Category theory captures the structural mapping between microscopic and macroscopic descriptions as functors between categories of quantum systems. Measure theory is essential for thermodynamic limits and statistical mechanics formulations."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof establishes that macroscopic quantum coherence emerges when the largest eigenvalue of the single-particle density matrix remains O(1) in the thermodynamic limit, corresponding to macroscopic occupation of a single quantum state. This occurs through a phase transition at critical parameter \u03bb_c, characterized by spontaneous symmetry breaking and the emergence of a non-zero order parameter. The macroscopic coherence manifests as off-diagonal long-range order in correlation functions.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 8 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3808 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 2690 chars, 14 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This proof requires extensive quantum many-body theory that is not yet formalized in Mathlib. While basic Hilbert space theory is available, the specific quantum mechanical constructs (density matrices, occupation numbers, phase transitions) are missing. The structure follows the proof steps but each requires domain-specific formalizations."
+    }
+  ]
+}

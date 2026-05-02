@@ -1,0 +1,370 @@
+{
+  "id": "d67b9ff9a720",
+  "convergence_id": "8715fa784f21",
+  "timestamp": "2026-05-02T13:43:57.666462+00:00",
+  "proposition": "For any physical system S with observable algebra A(S), there exists no assignment v: A(S) \u2192 \u211d of predetermined values that is both (i) consistent with quantum predictions for all measurement contexts C \u2208 Context(S), and (ii) context-independent, where Context(S) denotes the category of measurement contexts with morphisms preserving compatibility relations.",
+  "proposition_natural": "Observable properties cannot possess predetermined values independent of measurement context, requiring fundamentally contextual descriptions",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Measure theory",
+    "Order theory"
+  ],
+  "apparatus_justification": "Category theory provides the natural framework for contextuality through presheaves and the Kochen-Specker theorem's categorical formulation. Measure theory is essential for probability spaces in both quantum measurements and statistical mechanics. Order theory captures the partial order structure of measurement contexts and their relationships.",
+  "proof_natural": "**Proposition.** For any physical system S with observable algebra A(S), there exists no assignment v: A(S) \u2192 \u211d of predetermined values that is both (i) consistent with quantum predictions for all measurement contexts C \u2208 Context(S), and (ii) context-independent, where Context(S) denotes the category of measurement contexts with morphisms preserving compatibility relations.\n\n**Proof.** Let S be a physical system described by an observable algebra A(S), which we take to be either a C*-algebra or von Neumann algebra. We assume that measurement contexts form a category Context(S) whose objects are commuting sets of observables and whose morphisms preserve commutativity relations. Further assume that quantum predictions are given by states \u03c9: A(S) \u2192 \u2102 satisfying positivity and normalization, that the algebra A(S) contains sufficiently many observables to exhibit non-trivial commutation relations, and that the associated Hilbert space H has dimension at least 3.\n\nWe begin by constructing the category Context(S) precisely: its objects are the maximal commutative subalgebras of A(S), and its morphisms are inclusion-preserving maps. This is the standard construction in categorical quantum mechanics.\n\nFor dim(H) \u2265 3, the Kochen-Specker theorem establishes that there exists no value assignment v: P(H) \u2192 {0,1} on the projection operators that is both non-contextual and consistent with quantum predictions. By the spectral theorem, any value assignment on the full observable algebra A(S) induces a value assignment on projections through spectral decomposition. Therefore, the non-existence of a non-contextual value assignment for projections implies the same for general observables.\n\nWe now extend our analysis to thermodynamic systems. Define measurement contexts operationally as different measurement protocols, distinguishing between equilibrium and non-equilibrium measurements. The Jarzynski equality states that \u27e8e^{-\u03b2W}\u27e9 = e^{-\u03b2\u0394F}, where W is the work performed and \u0394F is the free energy difference. This equality reveals that while the free energy difference \u0394F is protocol-independent, the work W\u2014and hence its distribution\u2014depends essentially on the measurement protocol. This constitutes thermodynamic contextuality.\n\nFurthermore, the fluctuation-dissipation theorem relates response functions \u03c7(\u03c9) to equilibrium correlation functions through \u03c7''(\u03c9) = (\u03b2\u03c9/2)S(\u03c9), making observable responses explicitly dependent on whether they are measured via external perturbation or spontaneous fluctuation.\n\n[Note: To complete the unification, we require a functorial relationship F: Context_QM(S) \u2192 Context_TD(S) between quantum and thermodynamic context categories. While the existence of such a functor is physically plausible, its rigorous construction remains an open problem.]\n\nAssuming the existence of this functorial correspondence, contextuality in the quantum domain necessarily implies contextuality in the thermodynamic domain, as functors preserve categorical structure including incompatibility relations. The combination of quantum contextuality (via Kochen-Specker) and thermodynamic contextuality (via Jarzynski and fluctuation-dissipation) then establishes that no context-independent value assignment exists that reproduces both quantum and thermodynamic predictions.\n\nTherefore, any attempt to assign predetermined values to observables in A(S) must either violate quantum predictions in some measurement context or fail to be context-independent. This completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.CategoryTheory.Category.Basic\nimport Mathlib.CategoryTheory.Functor.Basic\nimport Mathlib.Analysis.InnerProductSpace.Spectrum\nimport Mathlib.MeasureTheory.Integral.Average\nimport Mathlib.Order.CompleteLattice\nimport Mathlib.Topology.Algebra.Module.Basic\n\n/-- Observable algebra of a physical system -/\nstructure ObservableAlgebra (S : Type*) where\n  -- sorry: Need quantum observable algebra structure\n  mk :: (dummy : Unit)\n\n/-- Measurement context as maximal commutative subalgebra -/\nstructure MeasurementContext (S : Type*) where\n  -- sorry: Need commutative subalgebra structure\n  mk :: (dummy : Unit)\n\n/-- Category of measurement contexts -/\ndef ContextCategory (S : Type*) : Type* := \n  -- sorry: Need to define category with compatibility-preserving morphisms\n  sorry\n\ninstance (S : Type*) : Category (ContextCategory S) := \n  -- sorry: Category instance for measurement contexts\n  sorry\n\n/-- Value assignment function -/\ndef ValueAssignment (S : Type*) := ObservableAlgebra S \u2192 \u211d\n\n/-- Predicate for context-independent value assignment -/\ndef isContextIndependent (S : Type*) (v : ValueAssignment S) : Prop :=\n  -- sorry: Need formal definition of context independence\n  sorry\n\n/-- Predicate for consistency with quantum predictions -/\ndef consistentWithQuantum (S : Type*) (v : ValueAssignment S) : Prop :=\n  -- sorry: Need quantum measurement theory\n  sorry\n\n/-- Kochen-Specker theorem for projections -/\ntheorem kochenSpecker {H : Type*} [NormedAddCommGroup H] [InnerProductSpace \u211d H] \n  (h : 3 \u2264 Module.rank \u211d H) : \n  \u00ac\u2203 (v : (H \u2192L[\u211d] H) \u2192 Fin 2), \n    (\u2200 p : H \u2192L[\u211d] H, IsIdempotentElem p \u2192 v p \u2208 ({0, 1} : Set (Fin 2))) \u2227 \n    -- sorry: Need non-contextuality and quantum consistency conditions\n    True := \n  sorry\n\n/-- Extension from projections to general observables via spectral decomposition -/\nlemma valueAssignmentExtension (S : Type*) (H : Type*) \n  [NormedAddCommGroup H] [InnerProductSpace \u211d H] :\n  (ObservableAlgebra S \u2192 \u211d) \u2192 ((H \u2192L[\u211d] H) \u2192 Fin 2) :=\n  -- sorry: Need spectral theorem application\n  sorry\n\n/-- Thermodynamic measurement context -/\nstructure ThermodynamicContext (S : Type*) where\n  -- sorry: Need equilibrium/non-equilibrium protocol structure\n  mk :: (dummy : Unit)\n\n/-- Jarzynski equality -/\ntheorem jarzynskiEquality {S : Type*} (\u03b2 : \u211d) (W : \u211d) (\u0394F : \u211d) :\n  -- sorry: Need statistical mechanics framework\n  True := sorry\n\n/-- Fluctuation-dissipation theorem -/\ntheorem fluctuationDissipation {S : Type*} (\u03b2 : \u211d) (\u03c9 : \u211d) \n  (\u03c7 : \u211d \u2192 \u2102) (S_corr : \u211d \u2192 \u211d) :\n  -- sorry: Need response function and correlation function definitions\n  True := sorry\n\n/-- Functor from quantum to thermodynamic contexts -/\ndef contextFunctor (S : Type*) : \n  ContextCategory S \u2964 ThermodynamicContext S :=\n  -- sorry: Gap in proof - need to establish this correspondence\n  sorry\n\n/-- Main theorem: No context-independent value assignment exists -/\ntheorem no_context_independent_assignment (S : Type*) \n  (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u211d H]\n  (h_dim : 3 \u2264 Module.rank \u211d H) :\n  \u00ac\u2203 (v : ValueAssignment S), \n    consistentWithQuantum S v \u2227 isContextIndependent S v := by\n  intro \u27e8v, hv_quantum, hv_context\u27e9\n  -- Step 2: Apply Kochen-Specker theorem\n  have h_ks := kochenSpecker h_dim\n  -- Step 3: Extend to general observables\n  have v_proj := valueAssignmentExtension S H v\n  -- Step 5: Apply Jarzynski equality\n  have h_jarz := jarzynskiEquality\n  -- Step 6: Apply fluctuation-dissipation theorem  \n  have h_fluct := fluctuationDissipation\n  -- Step 8: Use functor to transfer contextuality\n  have F := contextFunctor S\n  -- sorry: Need to complete the proof using the functor and combining quantum/thermodynamic contextuality\n  sorry",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the category Context(S) with objects being maximal commutative subalgebras of A(S) and morphisms being inclusion-preserving maps",
+      "justification": "Standard construction in categorical quantum mechanics",
+      "dependencies": [
+        "Assumption 2",
+        "Assumption 3"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "For dim(H) \u2265 3, by Kochen-Specker theorem, there exists no value assignment v: P(H) \u2192 {0,1} on projections that is non-contextual and preserves quantum predictions",
+      "justification": "Direct application of Kochen-Specker theorem",
+      "dependencies": [
+        "Kochen-Specker Theorem",
+        "Assumption 9"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Extend to general observables: any value assignment on A(S) induces a value assignment on projections via spectral decomposition",
+      "justification": "Spectral theorem for self-adjoint operators",
+      "dependencies": [
+        "Step 2",
+        "Spectral Theorem"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "In thermodynamic systems, define measurement contexts as different protocols (equilibrium vs non-equilibrium measurements)",
+      "justification": "Operational definition of measurement in statistical mechanics",
+      "dependencies": [
+        "Assumption 1",
+        "Thermodynamic formalism"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "By Jarzynski equality, \u27e8e^{-\u03b2W}\u27e9 = e^{-\u03b2\u0394F}, showing that work W depends on the measurement protocol while \u0394F is protocol-independent",
+      "justification": "Direct application of Jarzynski equality",
+      "dependencies": [
+        "Jarzynski Equality",
+        "Step 4"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "The fluctuation-dissipation theorem relates response functions \u03c7(\u03c9) to correlation functions via \u03c7''(\u03c9) = (\u03b2\u03c9/2)S(\u03c9), making observable responses context-dependent on measurement type",
+      "justification": "Application of fluctuation-dissipation theorem",
+      "dependencies": [
+        "Fluctuation-Dissipation Theorem",
+        "Step 4"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "[Gap: Need to establish functorial relationship between quantum and thermodynamic context categories]",
+      "justification": "Required to unify quantum and thermodynamic contextuality",
+      "dependencies": [
+        "Steps 1-6"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Assuming functorial correspondence F: Context_QM(S) \u2192 Context_TD(S), contextuality in quantum domain implies contextuality in thermodynamic domain",
+      "justification": "Functors preserve categorical structure including incompatibility",
+      "dependencies": [
+        "Step 7",
+        "Category theory"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "Therefore, no context-independent value assignment exists that reproduces both quantum and thermodynamic predictions",
+      "justification": "Combination of quantum contextuality (Steps 2-3) and thermodynamic contextuality (Steps 5-6) via assumed functor",
+      "dependencies": [
+        "Steps 2, 3, 5, 6, 8"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Kochen-Specker Theorem",
+      "authors": "S. Kochen and E.P. Specker",
+      "year": "1967",
+      "field": "Quantum Foundations",
+      "statement": "In Hilbert spaces of dimension \u2265 3, there is no value assignment to all projections that is non-contextual and consistent with quantum predictions",
+      "usage": "Establishes quantum contextuality as fundamental limitation on predetermined values"
+    },
+    {
+      "name": "Jarzynski Equality",
+      "authors": "C. Jarzynski",
+      "year": "1997",
+      "field": "Statistical Mechanics",
+      "statement": "For any process, \u27e8exp(-\u03b2W)\u27e9 = exp(-\u03b2\u0394F) where W is work done and \u0394F is free energy difference",
+      "usage": "Shows that work measurements depend on protocol while free energy difference does not"
+    },
+    {
+      "name": "Fluctuation-Dissipation Theorem",
+      "authors": "H.B. Callen and T.A. Welton",
+      "year": "1951",
+      "field": "Statistical Mechanics",
+      "statement": "Linear response functions are related to equilibrium correlation functions of spontaneous fluctuations",
+      "usage": "Demonstrates that observable responses depend on whether system is measured or fluctuating freely"
+    },
+    {
+      "name": "Spectral Theorem",
+      "authors": "J. von Neumann",
+      "year": "1932",
+      "field": "Functional Analysis",
+      "statement": "Self-adjoint operators have unique spectral decomposition into projections",
+      "usage": "Allows extension from projections to general observables"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Physical systems can be described by observable algebras A(S) (C*-algebras or von Neumann algebras)",
+    "Measurement contexts form a category Context(S) with objects being commuting sets of observables",
+    "Morphisms in Context(S) preserve commutativity relations",
+    "Quantum predictions are given by states \u03c9: A(S) \u2192 \u2102 satisfying positivity and normalization",
+    "Observable values must be real numbers when measured",
+    "The algebra A(S) contains sufficiently many observables to exhibit non-trivial commutation relations",
+    "Measurement outcomes must reproduce quantum statistical predictions",
+    "The system admits at least one pure state",
+    "The dimension of the Hilbert space is at least 3 (for Kochen-Specker applicability)"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Construction of Context(S) as maximal commutative subalgebras",
+        "issue": "The proof claims this is 'the standard construction' but provides no justification that maximal commutative subalgebras form a category with the claimed properties. Not all collections form categories.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Prove that composition of morphisms is well-defined and associative, and that identity morphisms exist"
+      },
+      {
+        "step": "Extension from projections to general observables via spectral theorem",
+        "issue": "The proof assumes every value assignment on A(S) induces one on projections, but doesn't prove the converse - that non-existence for projections implies non-existence for general observables",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Prove that any value assignment on observables uniquely determines values on projections via spectral decomposition"
+      },
+      {
+        "step": "Definition of thermodynamic contexts",
+        "issue": "The proof suddenly shifts to 'thermodynamic systems' without establishing that the original system S has thermodynamic properties or that A(S) contains thermodynamic observables",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "This appears to be proving a different theorem entirely"
+      },
+      {
+        "step": "Application of Jarzynski equality",
+        "issue": "The Jarzynski equality applies to specific non-equilibrium processes, not general quantum measurements. The connection to quantum contextuality is completely unjustified",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed without completely restructuring the proof"
+      },
+      {
+        "step": "Functorial relationship assumption",
+        "issue": "The proof explicitly admits this functor's existence is unproven, then proceeds to use it as if it exists. This is assuming what needs to be proved",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot assume existence of unproven mathematical objects"
+      },
+      {
+        "step": "Final conclusion",
+        "issue": "Even if all previous steps were valid, the proof hasn't shown that thermodynamic contextuality is necessary for the original proposition about A(S)",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "The thermodynamic portion appears entirely disconnected from the stated proposition"
+      }
+    ],
+    "hidden_assumptions": [
+      "That all physical systems have both quantum and thermodynamic descriptions",
+      "That Context(S) morphisms are inclusion-preserving (stated without justification)",
+      "That value assignments must respect spectral decomposition",
+      "That thermodynamic observables are elements of A(S)",
+      "That quantum contextuality implies thermodynamic contextuality",
+      "That the system admits work and free energy as observables"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes a functorial correspondence between quantum and thermodynamic contexts exists, then uses this to prove contextuality, but the existence of such a functor would already encode the contextuality being proved",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof actually shows (poorly) that IF a system is both quantum and thermodynamic, AND IF a certain functor exists, then contextuality holds. It claims to prove contextuality for any physical system with observable algebra A(S)",
+    "citation_issues": [
+      "Kochen-Specker theorem is correctly stated but the connection to general observables is not rigorously established",
+      "Jarzynski equality is about work in non-equilibrium thermodynamics, not general quantum measurements",
+      "Fluctuation-dissipation theorem application assumes the system is in thermal equilibrium, which contradicts the non-equilibrium context",
+      "No citation provided for the claim about 'standard construction in categorical quantum mechanics'"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed, attempting to prove a quantum result by making an unjustified excursion through thermodynamics. The proof admits a critical gap (the unproven functor) then proceeds as if it doesn't exist. The connection between quantum and thermodynamic contextuality is assumed rather than proven.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to prove contextuality for quantum systems and makes unsupported claims about thermodynamic contextuality, but fails to establish the general proposition about all physical systems due to fundamental gaps and invalid reasoning.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "All physical systems can be described by C*-algebras or von Neumann algebras",
+      "All physical systems have Hilbert space dimension \u2265 3",
+      "Thermodynamic systems are quantum mechanical systems",
+      "The Jarzynski equality and fluctuation-dissipation theorem imply contextuality in the same sense as quantum contextuality",
+      "There exists a meaningful functor between quantum and thermodynamic context categories",
+      "Work W and response functions \u03c7(\u03c9) are observables in the algebra A(S)",
+      "Measurement protocols constitute measurement contexts in the categorical sense"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "4",
+        "issue": "Defines thermodynamic measurement contexts without establishing they form a category or relate to the quantum context category defined in Step 1"
+      },
+      {
+        "step": "5",
+        "issue": "Jarzynski equality shows protocol-dependence of work, but this is not the same as contextuality in the quantum sense - it's about different physical processes, not incompatible measurements"
+      },
+      {
+        "step": "6",
+        "issue": "Fluctuation-dissipation theorem relates equilibrium quantities to response functions, but this doesn't establish contextuality - different measurement types are not incompatible observables"
+      },
+      {
+        "step": "7",
+        "issue": "Explicitly acknowledges a gap but provides no justification for why such a functor should exist or what it would look like"
+      },
+      {
+        "step": "8",
+        "issue": "Assumes without proof that a functor exists and that it preserves the relevant notion of contextuality, which is circular reasoning"
+      },
+      {
+        "step": "9",
+        "issue": "Conclusion relies on the invalid steps 5-8 and conflates different types of context-dependence"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No proof that all physical systems are quantum mechanical",
+      "No establishment of the claimed functor between quantum and thermodynamic contexts",
+      "No proof that thermodynamic protocol-dependence constitutes contextuality in the quantum sense",
+      "No consideration of classical physical systems",
+      "Gap in Step 7 is acknowledged but never filled",
+      "No proof that work W and response functions are observables in the relevant algebra"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims to establish contextuality for 'any physical system S' but then restricts to dim(H) \u2265 3 for Kochen-Specker applicability, creating an inconsistent scope",
+      "The proof attempts to extend quantum contextuality to thermodynamic systems via an undefined 'functorial correspondence F: Context_QM(S) \u2192 Context_TD(S)' without establishing this correspondence exists or is well-defined",
+      "The thermodynamic examples (Jarzynski equality, fluctuation-dissipation theorem) demonstrate protocol-dependence, not contextuality in the quantum mechanical sense - these are distinct concepts being conflated"
+    ],
+    "assumption_conflicts": [
+      "Assumes 'Observable values must be real numbers when measured' which conflicts with the complex-valued quantum predictions \u03c9: A(S) \u2192 \u2102 in the same proof",
+      "The assumption that thermodynamic measurement contexts can be categorically equivalent to quantum measurement contexts lacks justification and conflicts with the different mathematical structures involved",
+      "Claims about 'maximal commutative subalgebras' as context objects conflicts with the stated assumption that contexts are 'commuting sets of observables' - these are not equivalent"
+    ],
+    "beneficial_connections": [
+      "Connects to proof [06879fd9ae87] which also establishes contextuality of physical properties, providing potential reinforcement",
+      "The categorical approach aligns with proofs [102677deecdd] and [18b9ea79f26d] emphasizing relational structure over intrinsic properties",
+      "Could potentially strengthen the connection between quantum mechanics and thermodynamics if the gap in functorial correspondence were properly addressed"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof contains a critical gap where it assumes without proof that quantum and thermodynamic context categories are functorially related. The thermodynamic examples demonstrate measurement protocol dependence rather than true contextuality. The scope inconsistency between 'any physical system' and 'dim(H) \u2265 3' undermines the generality claim. The mathematical framework mixing C*-algebras with thermodynamic quantities lacks rigorous foundation."
+  },
+  "confidence_score": 0.23,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous categorical framework connecting quantum measurement contexts to thermodynamic measurement protocols, including: (1) Formal definition of morphisms between Context_QM and Context_TD categories, (2) Proof of functorial relationship preserving contextuality structure, (3) Unified treatment of incompatibility/commutativity across domains",
+  "limitations": [
+    "The functorial relationship between quantum and thermodynamic context categories is assumed but not proven",
+    "The precise categorical structure of thermodynamic measurement contexts needs formal development",
+    "The preservation of contextuality under the proposed functor requires proof",
+    "Proof relies on dimension \u2265 3 for quantum systems (Kochen-Specker requirement)",
+    "Thermodynamic contextuality shown only for specific observables (work, response functions)",
+    "The unification of quantum and thermodynamic contextuality requires new mathematical framework",
+    "Does not address classical systems where contextuality may not apply"
+  ],
+  "source_convergence": {
+    "structural_claim": "Observable properties cannot possess predetermined values independent of measurement context, requiring fundamentally contextual descriptions",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Kochen-Specker Theorem",
+        "domain_id": "quantum_foundations",
+        "domain_name": "Quantum Foundations",
+        "link_type": "direct",
+        "structural_conclusion": "Quantum observables cannot possess predetermined values independent of measurement context"
+      },
+      {
+        "result_id": "",
+        "result_name": "Fluctuation-Dissipation Theorem",
+        "domain_id": "thermodynamics",
+        "domain_name": "Thermodynamics and Statistical Mechanics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Response to external perturbations and spontaneous fluctuations are universally related, making observables context-dependent on whether system is being measured or fluctuating freely"
+      },
+      {
+        "result_id": "",
+        "result_name": "Jarzynski Equality",
+        "domain_id": "thermodynamics",
+        "domain_name": "Thermodynamics and Statistical Mechanics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Equilibrium properties can be extracted from non-equilibrium processes, showing that thermodynamic observables depend on measurement protocol"
+      }
+    ],
+    "domains": [
+      "quantum_foundations",
+      "thermodynamics"
+    ],
+    "domain_names": [
+      "Quantum Foundations",
+      "Thermodynamics and Statistical Mechanics"
+    ],
+    "ea_scores": {
+      "strength": 0.21419999999999997,
+      "independence": 0.85,
+      "adversarial": 0.09,
+      "reproducibility": 0.3499999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.44726,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:11:54.205575+00:00",
+    "id": "8715fa784f21"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.28271999999999997
+  }
+}

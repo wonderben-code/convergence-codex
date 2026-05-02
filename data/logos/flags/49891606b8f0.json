@@ -1,0 +1,13 @@
+{
+  "proof_id": "49891606b8f0",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: Rigorous mathematical framework for: (1) Path integral measure under symmetry breaking, (2) Non-perturbative definition of vacuum in interacting theories, (3) Mathematical treatment of gauge fixing procedures, (4) Convergence of perturbation series around broken vacuum",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

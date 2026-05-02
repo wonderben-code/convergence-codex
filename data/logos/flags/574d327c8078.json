@@ -1,0 +1,15 @@
+{
+  "proof_id": "574d327c8078",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous categorical framework for scale-dependent systems that: (1) Formalizes the notion of 'integrating out' degrees of freedom categorically, (2) Provides a precise characterization of when coarse-graining maps preserve scaling dimensions, (3) Develops a cohomology theory for RG flows to classify obstructions to scale-invariance",
+    "Difficulty assessed as challenging",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

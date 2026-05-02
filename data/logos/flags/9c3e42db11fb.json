@@ -1,0 +1,15 @@
+{
+  "proof_id": "9c3e42db11fb",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A general theory of structural embeddings of arbitrary categories into topoi that preserves specified classes of properties; a formal theory of 'essential structural properties' that is domain-independent; a classification theorem for structural relationships between mathematical domains",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

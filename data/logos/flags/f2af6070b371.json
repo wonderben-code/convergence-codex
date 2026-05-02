@@ -1,0 +1,13 @@
+{
+  "proof_id": "f2af6070b371",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A formal framework unifying categorical and analytic notions of duality is needed. Specifically: (1) A precise definition of 'organizational principle' in mathematical terms, (2) A theorem showing that adjunction data determines categorical structure up to equivalence, (3) A bridge between abstract categorical duality and concrete analytic duality",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

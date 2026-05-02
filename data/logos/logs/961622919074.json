@@ -1,0 +1,38 @@
+{
+  "proof_id": "961622919074",
+  "timestamp": "2026-05-02T12:56:22.468490+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "equivalence - This could capture the structural correspondence between gravitational and wave instabilities, but the domains differ too much in their physical mechanisms and mathematical details for a functorial relationship"
+      ],
+      "reasoning": "Both domains describe structure formation through instability-driven growth of perturbations in random fields, where local fluctuations evolve into global patterns according to statistical laws. The convergence identifies shared abstract principles: hierarchical growth from seeds, statistical determination of final structure, and network formation through instability mechanisms."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Dynamical systems, Measure theory, Functional analysis",
+      "alternatives_considered": [],
+      "reasoning": "Dynamical systems provides the framework for analyzing how perturbations evolve into patterns through instability mechanisms. Measure theory captures the statistical properties of initial fluctuations. Functional analysis provides the operator theory needed to study linear stability analysis and spectral properties of perturbation operators."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof establishes that Gaussian initial conditions evolve under gravitational or wave dynamics to create hierarchical structures whose statistics are determined by the initial field. Both systems exhibit threshold phenomena where structures form at extrema of the evolved field, leading to similar network topologies when properly rescaled.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 8 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3295 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 2741 chars, 8 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "The formalization captures the high-level structure but requires substantial mathematical infrastructure not currently in Mathlib, particularly for stochastic PDEs, random field theory, and the specific physics models (Press-Schechter, Anderson localization)."
+    }
+  ]
+}

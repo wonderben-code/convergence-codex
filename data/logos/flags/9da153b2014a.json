@@ -1,0 +1,13 @@
+{
+  "proof_id": "9da153b2014a",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: Rigorous mathematical framework for: (1) Quantum fields on curved spacetime beyond free fields, (2) Non-perturbative renormalization in interacting theories, (3) Measure-theoretic foundation for path integrals in curved space",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

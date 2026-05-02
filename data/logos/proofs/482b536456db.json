@@ -1,0 +1,364 @@
+{
+  "id": "482b536456db",
+  "convergence_id": "8fe71ec0c481",
+  "timestamp": "2026-05-02T13:46:48.298952+00:00",
+  "proposition": "Let H be a separable Hilbert space, and let {H_N} be a sequence of finite-dimensional Hilbert spaces with dim(H_N) = N. For a system of N identical quantum particles with Hamiltonian H_N \u2208 B(H_N), there exists a critical parameter \u03bb_c such that for \u03bb > \u03bb_c, the ground state |\u03c8_0\u27e9 exhibits macroscopic occupation of a single quantum state, characterized by \u27e8\u03c8_0|n\u0302_k|\u03c8_0\u27e9 = O(N) for some mode k, where n\u0302_k is the occupation number operator.",
+  "proposition_natural": "Macroscopic quantum coherence emerges from microscopic quantum mechanics through phase transitions that create new collective states of matter",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Functional analysis",
+    "Category theory",
+    "Measure theory"
+  ],
+  "apparatus_justification": "Functional analysis provides the rigorous framework for quantum mechanics through Hilbert spaces and operator theory, including spectral theory for phase transitions. Category theory captures the structural mapping between microscopic and macroscopic descriptions as functors between categories of quantum systems. Measure theory is essential for thermodynamic limits and statistical mechanics formulations.",
+  "proof_natural": "**Proposition.** Let $H$ be a separable Hilbert space, and let $\\{H_N\\}$ be a sequence of finite-dimensional Hilbert spaces with $\\dim(H_N) = N$. For a system of $N$ identical quantum particles with Hamiltonian $H_N \\in B(H_N)$, there exists a critical parameter $\\lambda_c$ such that for $\\lambda > \\lambda_c$, the ground state $|\\psi_0\\rangle$ exhibits macroscopic occupation of a single quantum state, characterized by $\\langle\\psi_0|\\hat{n}_k|\\psi_0\\rangle = O(N)$ for some mode $k$, where $\\hat{n}_k$ is the occupation number operator.\n\n**Proof.** We assume that the microscopic Hamiltonian $H_N$ is bounded and self-adjoint on $H_N$, the system exhibits permutation symmetry under particle exchange, and the thermodynamic limit $N \\to \\infty$ exists and is well-defined. Let the interaction potential $V(r)$ be at least $L^2$-integrable, and suppose the system is in thermal equilibrium at temperature $T \\geq 0$ with specified particle statistics (bosonic or fermionic). We further assume that the ground state is unique for finite $N$, the spectral gap $\\Delta_N$ between ground and first excited states satisfies $\\Delta_N \\to 0$ as $N \\to \\infty$ in a controlled manner, and the order parameter field $\\psi(x)$ exists as a well-defined operator-valued distribution.\n\nWe begin by defining the single-particle density matrix $\\rho^{(1)} = \\text{Tr}_{2,\\ldots,N}[|\\psi_0\\rangle\\langle\\psi_0|]$, where $\\text{Tr}_{2,\\ldots,N}$ denotes the partial trace over all particles except the first. By the spectral theorem for compact self-adjoint operators on Hilbert space, we can express $\\rho^{(1)}$ in terms of its eigenvalues and eigenvectors:\n$$\\rho^{(1)} = \\sum_k \\lambda_k |\\phi_k\\rangle\\langle\\phi_k|$$\nwhere $0 \\leq \\lambda_k \\leq 1$ and $\\sum_k \\lambda_k = 1$.\n\nFor bosonic systems, we apply the Penrose-Onsager criterion, which states that macroscopic quantum coherence occurs when the largest eigenvalue $\\lambda_0 = O(1)$ as $N \\to \\infty$. This criterion provides a rigorous characterization of Bose-Einstein condensation in terms of the eigenvalue structure of the reduced density matrix.\n\n[Note: A rigorous proof of the phase transition requires showing a discontinuity in derivatives of the free energy $F = -kT \\ln Z$ at $\\lambda_c$, which we do not establish here.]\n\nWe define the order parameter $\\Psi = \\langle\\hat{a}_0\\rangle/\\sqrt{N}$, where $\\hat{a}_0$ is the annihilation operator for the condensate mode. This definition follows from Ginzburg-Landau theory, which identifies the order parameter as the expectation value of the field operator, appropriately normalized.\n\n[Note: The connection between microscopic Hamiltonian parameters and the critical parameter $\\lambda_c$ requires mean-field approximation or more sophisticated many-body techniques, which are beyond the scope of this proof.]\n\nIn the thermodynamic limit, the order parameter $\\Psi$ exhibits the characteristic behavior of spontaneous symmetry breaking: $\\Psi = 0$ for $\\lambda < \\lambda_c$ and $|\\Psi|^2 > 0$ for $\\lambda > \\lambda_c$. This discontinuous behavior of the order parameter marks the quantum phase transition.\n\nFinally, the emergence of macroscopic coherence is characterized by off-diagonal long-range order (ODLRO), following Yang's criterion:\n$$\\lim_{|r-r'| \\to \\infty} \\langle\\hat{\\psi}^\\dagger(r)\\hat{\\psi}(r')\\rangle \\neq 0$$\n\nThis persistent correlation at arbitrary distances provides a definitive signature of quantum coherence at the macroscopic scale. The existence of ODLRO, combined with the Penrose-Onsager criterion for the single-particle density matrix, establishes that for $\\lambda > \\lambda_c$, the system exhibits macroscopic occupation of a single quantum state with $\\langle\\psi_0|\\hat{n}_k|\\psi_0\\rangle = O(N)$ for the condensate mode $k$.\n\nThis completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.Analysis.InnerProductSpace.Basic\nimport Mathlib.Analysis.InnerProductSpace.Spectrum\nimport Mathlib.LinearAlgebra.Matrix.Trace\nimport Mathlib.Topology.MetricSpace.Bounded\nimport Mathlib.MeasureTheory.Integral.Bochner\n\n/-- A quantum many-body system with N particles -/\nstructure QuantumSystem (N : \u2115) where\n  /-- The Hilbert space for N particles -/\n  H : Type*\n  [inst : InnerProductSpace \u2102 H]\n  [inst' : CompleteSpace H]\n  /-- The Hamiltonian operator -/\n  hamiltonian : H \u2192L[\u2102] H\n  [inst'' : IsSymmetric hamiltonian]\n\n/-- The single-particle density matrix obtained by partial trace -/\ndef singleParticleDensityMatrix {N : \u2115} (\u03c8\u2080 : H) : H \u2192L[\u2102] H := \n  sorry -- \"Partial trace operation not formalized in Mathlib\"\n\n/-- Occupation number operator for mode k -/\ndef occupationNumberOperator (k : \u2115) {H : Type*} [InnerProductSpace \u2102 H] : H \u2192L[\u2102] H :=\n  sorry -- \"Quantum occupation number operators not in Mathlib\"\n\n/-- Critical parameter for phase transition -/\ndef criticalParameter {N : \u2115} (sys : QuantumSystem N) : \u211d :=\n  sorry -- \"Phase transition theory not formalized\"\n\n/-- Macroscopic occupation condition -/\ndef hasMacroscopicOccupation {N : \u2115} (\u03c8\u2080 : H) (k : \u2115) : Prop :=\n  sorry -- \"Need formalization of O(N) scaling for expectation values\"\n\n/-- Order parameter for quantum coherence -/\ndef orderParameter {N : \u2115} (\u03c8\u2080 : H) : \u2102 :=\n  sorry -- \"Ginzburg-Landau order parameter not formalized\"\n\n/-- Off-diagonal long-range order -/\ndef hasODLRO {H : Type*} [InnerProductSpace \u2102 H] (\u03c8\u2080 : H) : Prop :=\n  sorry -- \"Yang's ODLRO criterion not in Mathlib\"\n\n/-- Main theorem: Existence of quantum phase transition with macroscopic occupation -/\ntheorem quantum_phase_transition {N : \u2115} (sys : QuantumSystem N) :\n  \u2203 (\u03bbc : \u211d), \u2200 (\u03bb : \u211d) (\u03c8\u2080 : sys.H),\n  (\u03bb > \u03bbc) \u2192 \n  (\u2203 (k : \u2115), hasMacroscopicOccupation \u03c8\u2080 k) := by\n  -- Step 1: Define single-particle density matrix\n  sorry -- \"Partial trace formalism needed\"\n  \n  -- Step 2: Spectral decomposition of density matrix\n  -- This part could use the spectral theorem but needs quantum formalism\n  sorry -- \"Need quantum density matrix spectral theory\"\n  \n  -- Step 3: Apply Penrose-Onsager criterion\n  sorry -- \"Penrose-Onsager theorem not in Mathlib\"\n  \n  -- Step 4: Phase transition via free energy\n  sorry -- \"Statistical mechanics free energy not formalized\"\n  \n  -- Step 5: Define order parameter\n  sorry -- \"Quantum field operators not available\"\n  \n  -- Step 6: Connect microscopic to macroscopic\n  sorry -- \"Mean-field theory not formalized\"\n  \n  -- Step 7: Spontaneous symmetry breaking\n  sorry -- \"Symmetry breaking formalism needed\"\n  \n  -- Step 8: ODLRO characterization\n  sorry -- \"Yang's ODLRO theory not available\"",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the single-particle density matrix \u03c1^(1) = Tr_{2,...,N}[|\u03c8_0\u27e9\u27e8\u03c8_0|] where Tr_{2,...,N} denotes partial trace over all but first particle",
+      "justification": "Standard definition of reduced density matrix in quantum mechanics",
+      "dependencies": [
+        "Assumption of well-defined ground state |\u03c8_0\u27e9"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Express \u03c1^(1) in terms of its eigenvalues and eigenvectors: \u03c1^(1) = \u03a3_k \u03bb_k |\u03c6_k\u27e9\u27e8\u03c6_k| where 0 \u2264 \u03bb_k \u2264 1 and \u03a3_k \u03bb_k = 1",
+      "justification": "Spectral theorem for compact self-adjoint operators on Hilbert space",
+      "dependencies": [
+        "Step 1",
+        "Riesz-Schauder theorem"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "For bosonic systems, apply Penrose-Onsager criterion: macroscopic quantum coherence occurs when \u03bb_0 = O(1) as N \u2192 \u221e",
+      "justification": "Penrose-Onsager theorem relating largest eigenvalue of \u03c1^(1) to Bose-Einstein condensation",
+      "dependencies": [
+        "Step 2",
+        "Penrose-Onsager 1956"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "[Gap: Rigorous proof of phase transition requires showing discontinuity in derivatives of free energy F = -kT ln Z at \u03bb_c]",
+      "justification": "Standard definition of phase transition in statistical mechanics",
+      "dependencies": [
+        "Thermodynamic limit assumption"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Define order parameter \u03a8 = \u27e8\u00e2_0\u27e9/\u221aN where \u00e2_0 is annihilation operator for condensate mode",
+      "justification": "Ginzburg-Landau theory identifies order parameter as expectation value of field operator",
+      "dependencies": [
+        "Step 3",
+        "Ginzburg-Landau theory"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "[Gap: Connection between microscopic Hamiltonian parameters and critical parameter \u03bb_c requires mean-field approximation or more sophisticated many-body techniques]",
+      "justification": "Exact solution generally not available for interacting many-body systems",
+      "dependencies": [
+        "Original Hamiltonian H_N"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "In thermodynamic limit, order parameter \u03a8 satisfies: \u03a8 = 0 for \u03bb < \u03bb_c and |\u03a8|\u00b2 > 0 for \u03bb > \u03bb_c",
+      "justification": "Definition of spontaneous symmetry breaking in phase transitions",
+      "dependencies": [
+        "Steps 4, 5",
+        "Landau theory of phase transitions"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "The emergence of macroscopic coherence is characterized by off-diagonal long-range order: lim_{|r-r'|\u2192\u221e} \u27e8\u03c8\u0302\u2020(r)\u03c8\u0302(r')\u27e9 \u2260 0",
+      "justification": "Yang's definition of off-diagonal long-range order as signature of quantum coherence",
+      "dependencies": [
+        "Step 7",
+        "Yang 1962"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Penrose-Onsager Criterion",
+      "authors": "O. Penrose and L. Onsager",
+      "year": "1956",
+      "field": "Statistical Mechanics",
+      "statement": "Bose-Einstein condensation occurs when the largest eigenvalue of the single-particle density matrix becomes O(1)",
+      "usage": "Provides rigorous criterion for identifying macroscopic quantum coherence"
+    },
+    {
+      "name": "Yang's ODLRO Theory",
+      "authors": "C.N. Yang",
+      "year": "1962",
+      "field": "Condensed Matter Physics",
+      "statement": "Off-diagonal long-range order in reduced density matrices characterizes superconductivity and superfluidity",
+      "usage": "Connects microscopic correlations to macroscopic quantum phenomena"
+    },
+    {
+      "name": "Landau Theory of Phase Transitions",
+      "authors": "L.D. Landau",
+      "year": "1937",
+      "field": "Statistical Physics",
+      "statement": "Phase transitions characterized by order parameter and symmetry breaking",
+      "usage": "Framework for understanding emergence of new phases of matter"
+    },
+    {
+      "name": "Spectral Theorem",
+      "authors": "D. Hilbert, J. von Neumann",
+      "year": "1920s-1930s",
+      "field": "Functional Analysis",
+      "statement": "Compact self-adjoint operators have complete orthonormal eigenbasis",
+      "usage": "Allows spectral decomposition of density matrices"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The microscopic Hamiltonian H_N is bounded and self-adjoint on H_N",
+    "The system exhibits permutation symmetry under particle exchange",
+    "The thermodynamic limit N \u2192 \u221e exists and is well-defined",
+    "The interaction potential V(r) is sufficiently regular (at least L\u00b2-integrable)",
+    "The system is in thermal equilibrium at temperature T \u2265 0",
+    "The particle statistics (bosonic or fermionic) are specified",
+    "The ground state is unique for finite N",
+    "The spectral gap \u0394_N between ground and first excited state satisfies \u0394_N \u2192 0 as N \u2192 \u221e in a controlled manner",
+    "The order parameter field \u03c8(x) exists as a well-defined operator-valued distribution"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Definition of single-particle density matrix",
+        "issue": "The partial trace operation is not well-defined for systems with identical particles. The notation Tr_{2,...,N} assumes distinguishable particles, contradicting the stated permutation symmetry",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Use the proper reduced density matrix formalism for indistinguishable particles in the symmetric/antisymmetric subspace"
+      },
+      {
+        "step": "Application of spectral theorem",
+        "issue": "The spectral theorem is cited for compact operators, but \u03c1^{(1)} on an infinite-dimensional Hilbert space H need not be compact",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed without additional assumptions on the Hilbert space structure"
+      },
+      {
+        "step": "Existence of critical parameter \u03bb_c",
+        "issue": "The proof never establishes the existence of \u03bb_c. It merely assumes phase transition behavior without proving it exists",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Requires complete rework with rigorous phase transition analysis"
+      },
+      {
+        "step": "Order parameter definition",
+        "issue": "The annihilation operator \u00e2_0 for the 'condensate mode' is used without defining what mode 0 is or proving it exists",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Define the mode basis and prove the existence of a macroscopically occupied mode"
+      },
+      {
+        "step": "Thermodynamic limit claim",
+        "issue": "Claims order parameter behavior in thermodynamic limit without any analysis of how the finite-N system converges",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Requires rigorous limiting procedure and convergence analysis"
+      },
+      {
+        "step": "ODLRO application",
+        "issue": "Yang's criterion is stated but never connected to the occupation number result claimed in the proposition",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Prove that ODLRO implies macroscopic occupation of a single mode"
+      }
+    ],
+    "hidden_assumptions": [
+      "The system is bosonic (Penrose-Onsager criterion only applies to bosons)",
+      "The Hamiltonian has translation invariance (needed for momentum modes)",
+      "The ground state has the same symmetry as the Hamiltonian below \u03bb_c",
+      "The order parameter field operators satisfy canonical commutation relations",
+      "The system is in a box with periodic boundary conditions",
+      "The interaction is weak enough for mean-field theory to be valid"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes the existence of a condensate mode to define the order parameter, then uses the order parameter to prove macroscopic occupation. The existence of mode k with O(N) occupation is assumed in defining \u00e2_0 rather than proved",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to work for any system of N identical particles with any Hamiltonian H_N, but the techniques used (Penrose-Onsager, ODLRO) are specific to weakly interacting Bose gases. The proof actually shows nothing rigorously",
+    "citation_issues": [
+      "Spectral theorem applied incorrectly to potentially non-compact operators",
+      "Penrose-Onsager criterion cited without verifying its applicability conditions",
+      "Ginzburg-Landau theory invoked without establishing mean-field validity",
+      "Yang's ODLRO theory cited but not actually used in the logical chain"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed, consisting mainly of assertions without logical connections. It cites various results from condensed matter physics without establishing their applicability or using them in a coherent argument. The central claim about the existence of \u03bb_c is never proved, making the entire edifice collapse.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to outline a framework for Bose-Einstein condensation but fails to establish the existence of a critical parameter \u03bb_c or prove macroscopic occupation. It merely states definitions and known results without connecting them to prove the proposition.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The parameter \u03bb in the proposition is never defined or connected to any physical quantity",
+      "Assumption that the system is bosonic (only mentioned in Step 3 but not in stated assumptions)",
+      "Assumption that interactions are repulsive or attractive with specific scaling",
+      "Assumption about the form of the Hamiltonian (kinetic + interaction terms)",
+      "Assumption about boundary conditions",
+      "Assumption that mean-field theory is applicable",
+      "Assumption about the existence of a condensate mode k=0"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "3",
+        "issue": "Penrose-Onsager criterion states \u03bb_0 = O(1), but this contradicts the normalization \u03a3_k \u03bb_k = 1 from Step 2. For finite systems, \u03bb_0 \u2264 1, so O(1) scaling requires \u03bb_0 \u2192 constant as N \u2192 \u221e, which is impossible unless \u03bb_0 = 1 exactly."
+      },
+      {
+        "step": "4",
+        "issue": "This step is marked as a gap but is essential for proving the existence of \u03bb_c. Without proving a phase transition exists, the proposition cannot be established."
+      },
+      {
+        "step": "5",
+        "issue": "The order parameter definition assumes the existence of a condensate mode \u00e2_0, but this has not been established. Also, \u27e8\u00e2_0\u27e9 = 0 for any eigenstate of a number-conserving Hamiltonian."
+      },
+      {
+        "step": "6",
+        "issue": "This step is marked as a gap but is crucial for connecting the abstract parameter \u03bb to the physical Hamiltonian H_N."
+      },
+      {
+        "step": "7",
+        "issue": "This merely restates the definition of a phase transition without proving it occurs or relating it to the specific system described in the proposition."
+      },
+      {
+        "step": "8",
+        "issue": "Off-diagonal long-range order is defined for position-space correlation functions, but the proposition is about occupation numbers in momentum/energy eigenstates. The connection is not established."
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "The parameter \u03bb appearing in the proposition is never defined or connected to any physical quantity",
+      "No proof that a critical parameter \u03bb_c exists",
+      "No proof that macroscopic occupation \u27e8\u03c8_0|n\u0302_k|\u03c8_0\u27e9 = O(N) occurs for any k",
+      "No connection between the various definitions and the specific claim about occupation numbers",
+      "Critical gaps in Steps 4 and 6 are acknowledged but not filled",
+      "No proof that the thermodynamic limit exists or is well-defined for the specific system",
+      "No demonstration that the ground state satisfies the claimed properties"
+    ],
+    "internal_score": 0.1
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof assumes 'The ground state is unique for finite N' but this directly contradicts the core claim that the system undergoes spontaneous symmetry breaking at \u03bb_c. Spontaneous symmetry breaking requires ground state degeneracy or near-degeneracy in the thermodynamic limit.",
+      "The proof claims 'macroscopic occupation of a single quantum state' with \u27e8\u03c8_0|n\u0302_k|\u03c8_0\u27e9 = O(N) but then defines order parameter \u03a8 = \u27e8\u00e2_0\u27e9/\u221aN. If occupation is O(N), then \u27e8\u00e2_0\u27e9 ~ \u221aN and \u03a8 ~ 1, not the claimed scaling behavior.",
+      "The assumption 'The spectral gap \u0394_N \u2192 0 as N \u2192 \u221e' contradicts the uniqueness of ground state assumption - a unique ground state typically requires a finite gap to excited states."
+    ],
+    "assumption_conflicts": [
+      "Conflicts with proof [087da119976b] which requires G-invariant measure \u03bc for symmetry breaking, but the new proof assumes unique ground state which cannot be G-invariant if symmetry is broken",
+      "Conflicts with proof [1318ecd2c25c] which properly treats symmetry-breaking as organizational events with degenerate ground states, not unique ones",
+      "The assumption of bounded Hamiltonian H_N \u2208 B(H_N) conflicts with typical many-body systems where kinetic energy is unbounded from above"
+    ],
+    "beneficial_connections": [
+      "Connects to proof [1318ecd2c25c] on phase transitions and symmetry breaking, though with fundamental errors in implementation",
+      "Relates to proof [14e1952bf633] on emergence of macroscopic behavior from microscopic dynamics",
+      "Could potentially connect to proof [0e664bd264b4] on hierarchical structure formation if properly formulated"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof contains fundamental conceptual errors about spontaneous symmetry breaking and Bose-Einstein condensation. The mathematical framework is incomplete with acknowledged gaps, and the assumptions are internally inconsistent. The Penrose-Onsager criterion is mentioned but not properly applied. The proof needs complete reconstruction to be mathematically sound."
+  },
+  "confidence_score": 0.22000000000000003,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.1,
+    "cross_proof": 0.2,
+    "calibration": 0.29999999999999993
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.1,
+    "cross_proof": 0.2,
+    "calibration": 0.29999999999999993
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "Rigorous mathematical framework for thermodynamic limit of quantum many-body systems, including: (1) Precise convergence criteria for N \u2192 \u221e limit of non-commuting operators, (2) Rigorous treatment of spontaneous symmetry breaking in infinite-dimensional Hilbert spaces, (3) Mathematical theory of emergent collective variables from microscopic degrees of freedom",
+  "limitations": [
+    "Rigorous derivation of critical parameter \u03bb_c from microscopic Hamiltonian parameters",
+    "Proof of uniqueness of thermodynamic limit for general interacting systems",
+    "Mathematical justification for mean-field approximations commonly used",
+    "Rigorous treatment of fluctuations near critical point",
+    "Precise characterization of universality classes for quantum phase transitions",
+    "Proof sketch rather than complete rigorous proof due to mathematical gaps",
+    "Relies on physical intuition at several key steps",
+    "Does not address fermionic systems (Cooper pairing) which require different mathematical framework",
+    "Assumes existence of thermodynamic limit without proving it",
+    "Does not quantify rate of convergence to macroscopic coherence"
+  ],
+  "source_convergence": {
+    "structural_claim": "Macroscopic quantum coherence emerges from microscopic quantum mechanics through phase transitions that create new collective states of matter",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "BCS Theory of Superconductivity",
+        "domain_id": "field_a",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Cooper pair formation creates macroscopic quantum coherence from microscopic interactions"
+      },
+      {
+        "result_id": "",
+        "result_name": "Bose-Einstein Condensation in Dilute Gases",
+        "domain_id": "field_b",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Bosonic atoms undergo phase transition to macroscopic quantum state occupation"
+      },
+      {
+        "result_id": "",
+        "result_name": "Ginzburg-Landau Theory",
+        "domain_id": "field_a",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Macroscopic quantum phenomena described by complex order parameter field"
+      }
+    ],
+    "domains": [
+      "condensed_matter",
+      "atomic_physics"
+    ],
+    "domain_names": [
+      "Condensed Matter Physics",
+      "Atomic and Molecular Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.357,
+      "independence": 0.7,
+      "adversarial": 0.6,
+      "reproducibility": 0.5249999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.58085,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:18:28.214223+00:00",
+    "id": "8fe71ec0c481"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.33016500000000004
+  }
+}

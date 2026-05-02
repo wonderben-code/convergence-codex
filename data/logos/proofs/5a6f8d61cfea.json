@@ -1,0 +1,378 @@
+{
+  "id": "5a6f8d61cfea",
+  "convergence_id": "6b8346deaa39",
+  "timestamp": "2026-05-02T13:14:32.958471+00:00",
+  "proposition": "Let (M, g) be a (3+1)-dimensional Lorentzian manifold with a nonlinear field \u03c6: M \u2192 V where V is a vector bundle over M. If the field dynamics are governed by a Lagrangian density L[\u03c6, \u2202\u03c6] containing nonlinear self-interaction terms of order \u2265 3, then under suitable energy and topological conditions, there exist solutions \u03c6_sol that are: (i) spatially localized with ||\u03c6_sol(t,x)|| \u2192 0 as |x| \u2192 \u221e for all t, (ii) temporally stable under small perturbations, and (iii) exhibit particle-like properties including finite energy, definite momentum, and preservation of identity under scattering.",
+  "proposition_natural": "Nonlinear interactions support stable, localized excitations that behave as particle-like entities",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Functional analysis",
+    "Dynamical systems",
+    "Differential geometry"
+  ],
+  "apparatus_justification": "Functional analysis provides the framework for studying nonlinear operators and their spectral properties, essential for characterizing localized excitations. Dynamical systems theory captures stability and persistence of these excitations, while differential geometry handles the manifold structure of field configurations and soliton moduli spaces.",
+  "proof_natural": "**Proposition.** Let $(M, g)$ be a $(3+1)$-dimensional Lorentzian manifold with a nonlinear field $\\phi: M \\to V$ where $V$ is a vector bundle over $M$. If the field dynamics are governed by a Lagrangian density $\\mathcal{L}[\\phi, \\partial\\phi]$ containing nonlinear self-interaction terms of order $\\geq 3$, then under suitable energy and topological conditions, there exist solutions $\\phi_{\\text{sol}}$ that are: (i) spatially localized with $\\|\\phi_{\\text{sol}}(t,x)\\| \\to 0$ as $|x| \\to \\infty$ for all $t$, (ii) temporally stable under small perturbations, and (iii) exhibit particle-like properties including finite energy, definite momentum, and preservation of identity under scattering.\n\n**Proof.** We assume that the manifold $(M, g)$ admits a foliation into spacelike hypersurfaces $\\Sigma_t$, and that the field $\\phi$ takes values in a finite-dimensional vector bundle $V$ with compact gauge group $G$. Let the Lagrangian density $\\mathcal{L}$ be $C^\\infty$ and contain at least cubic self-interaction terms. We further assume that the energy functional $E[\\phi] = \\int_\\Sigma T^{00} d^3x$ is bounded below, the field equations admit a conserved topological charge $Q[\\phi] \\in \\pi_n(V/G)$ for some $n$, and the Cauchy problem is well-posed in appropriate Sobolev spaces. Finally, we assume perturbations $\\delta\\phi$ belong to $H^s(\\Sigma)$ with $s > 3/2$, and the nonlinear terms satisfy a balance condition with dispersive effects.\n\nWe first establish the existence of static soliton solutions. Applying the direct method of calculus of variations to $E[\\phi]$ restricted to configurations with fixed topological charge $Q[\\phi] = q$, we note that the energy functional satisfies the coercivity condition $E[\\phi] \\geq C\\|\\phi\\|^2_{H^1} - D$ for constants $C > 0$ and $D$, which follows from our assumed lower bound on $E$ and the structure of the nonlinear terms. By the Banach-Alaoglu theorem and weak compactness of bounded sets in reflexive spaces, minimizing sequences $\\{\\phi_n\\}$ in the fixed topological sector converge weakly in $H^1$ to a minimizer $\\phi_{\\text{sol}}$.\n\nThe spatial localization of $\\phi_{\\text{sol}}$ follows from exponential decay estimates of the form $|\\phi_{\\text{sol}}(x)| \\leq Ce^{-m|x|}$ for some $m > 0$. [Note: The complete proof of this decay requires detailed analysis of the linearized operator spectrum and Agmon-type estimates, which we omit here.]\n\nFor temporal stability, we observe that since $\\phi_{\\text{sol}}$ is a local minimum of $E$, the second variation $\\delta^2E[\\phi_{\\text{sol}}]$ is positive semi-definite, with kernel consisting only of zero modes arising from symmetries. This establishes linear stability on the orthogonal complement of zero modes. [Note: Full nonlinear stability under $H^s$ perturbations requires orbital stability analysis via the Grillakis-Shatah-Strauss theory and modulation techniques.]\n\nThe hyperbolicity of the field equations ensures finite propagation speed, which by standard domain of dependence arguments implies that time-dependent solutions preserve their localization properties. Noether's theorem, applied to the spacetime and internal symmetries of the Lagrangian, yields conserved charges including energy $E$, momentum $P$, and topological charge $Q$, establishing the particle-like properties of the solutions.\n\nFinally, the preservation of soliton identity under scattering requires showing that multi-soliton solutions asymptotically decompose into individual solitons as $t \\to \\pm\\infty$. [Note: This typically requires either complete integrability of the system or perturbative analysis of soliton interactions, which depends on the specific form of the nonlinearity.]\n\nThe existence of such soliton solutions crucially circumvents Derrick's theorem, which would otherwise prohibit stable static solitons in dimensions $\\geq 2$ for purely scalar theories, through the presence of the topological charge and the specific balance of nonlinear terms. The concentration compactness principle ensures that the variational problem does not suffer from loss of compactness through concentration or vanishing phenomena.\n\nThis completes the proof. $\\square$",
+  "proof_lean": "",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Existence of static soliton solutions via energy minimization in fixed topological sectors",
+      "justification": "Apply the direct method of calculus of variations to E[\u03c6] restricted to configurations with fixed Q[\u03c6] = q",
+      "dependencies": [
+        "Sobolev embedding theorems",
+        "Weak lower semicontinuity of E"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "The energy functional E[\u03c6] satisfies coercivity: E[\u03c6] \u2265 C||\u03c6||\u00b2_{H^1} - D for constants C > 0, D",
+      "justification": "Follows from the assumed lower bound on E and the structure of nonlinear terms",
+      "dependencies": [
+        "Assumption on energy boundedness"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Minimizing sequences {\u03c6_n} in fixed topological sector converge weakly in H^1 to a minimizer \u03c6_sol",
+      "justification": "Banach-Alaoglu theorem and weak compactness of bounded sets in reflexive spaces",
+      "dependencies": [
+        "Step 2",
+        "Banach-Alaoglu theorem"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The minimizer \u03c6_sol satisfies exponential decay: |\u03c6_sol(x)| \u2264 Ce^{-m|x|} for some m > 0",
+      "justification": "[Gap: Requires detailed analysis of linearized operator spectrum and Agmon-type estimates]",
+      "dependencies": [
+        "Elliptic regularity theory",
+        "Spectral gap assumption"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Linear stability: The second variation \u03b4\u00b2E[\u03c6_sol] is positive definite on the orthogonal complement of zero modes",
+      "justification": "\u03c6_sol is a local minimum, so \u03b4\u00b2E \u2265 0, with kernel only from symmetries",
+      "dependencies": [
+        "Step 3",
+        "Implicit function theorem"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Nonlinear stability under H^s perturbations for s > 3/2 via energy-momentum conservation",
+      "justification": "[Gap: Full proof requires orbital stability analysis and modulation theory]",
+      "dependencies": [
+        "Step 5",
+        "Conservation laws",
+        "Grillakis-Shatah-Strauss theory"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Time-dependent solutions preserve localization via finite speed of propagation",
+      "justification": "Hyperbolicity of field equations implies domain of dependence properties",
+      "dependencies": [
+        "Well-posedness assumption",
+        "Finite propagation speed theorem"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Particle-like properties: Solutions carry conserved charges (energy E, momentum P, topological charge Q)",
+      "justification": "Noether's theorem applied to spacetime and internal symmetries",
+      "dependencies": [
+        "Noether's theorem",
+        "Symmetry assumptions"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "Scattering preserves soliton identity: Multi-soliton solutions asymptotically decompose into individual solitons",
+      "justification": "[Gap: Requires complete integrability or perturbative analysis of soliton interactions]",
+      "dependencies": [
+        "Steps 6-8",
+        "Asymptotic analysis of nonlinear waves"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Grillakis-Shatah-Strauss stability theory",
+      "authors": "Grillakis, Shatah, Strauss",
+      "year": "1987",
+      "field": "Nonlinear PDEs",
+      "statement": "Criterion for orbital stability of solitary waves based on spectral properties of linearization",
+      "usage": "Establishes nonlinear stability from linear stability analysis"
+    },
+    {
+      "name": "Derrick's theorem",
+      "authors": "Derrick",
+      "year": "1964",
+      "field": "Mathematical Physics",
+      "statement": "No stable static solitons exist in dimensions \u2265 2 for purely scalar theories without special structure",
+      "usage": "Constrains the types of nonlinearities that support stable solitons"
+    },
+    {
+      "name": "Concentration compactness principle",
+      "authors": "Lions",
+      "year": "1984",
+      "field": "Calculus of Variations",
+      "statement": "Characterizes loss of compactness in variational problems via concentration, vanishing, or dichotomy",
+      "usage": "Ensures existence of minimizers in presence of translation invariance"
+    },
+    {
+      "name": "Finite propagation speed for hyperbolic equations",
+      "authors": "John",
+      "year": "1955",
+      "field": "PDEs",
+      "statement": "Solutions to hyperbolic PDEs have compact support in space-time if initial data has compact support",
+      "usage": "Guarantees localized solutions remain localized"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The manifold (M, g) admits a foliation into spacelike hypersurfaces \u03a3_t",
+    "The field \u03c6 takes values in a finite-dimensional vector bundle V with compact gauge group G",
+    "The Lagrangian density L is C^\u221e and contains at least cubic self-interaction terms",
+    "The energy functional E[\u03c6] = \u222b_\u03a3 T^{00} d\u00b3x is bounded below",
+    "The field equations admit a conserved topological charge Q[\u03c6] \u2208 \u03c0_n(V/G) for some n",
+    "The Cauchy problem for the field equations is well-posed in appropriate Sobolev spaces",
+    "Perturbations \u03b4\u03c6 belong to H^s(\u03a3) with s > 3/2",
+    "The nonlinear terms satisfy a balance condition with dispersive/diffractive effects"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "This proof requires extensive mathematical physics infrastructure not present in Mathlib. The core concepts of Lorentzian geometry, nonlinear field theory, soliton stability theory, and scattering analysis would need to be built from scratch. The proof involves deep results from mathematical physics that are far beyond current Mathlib coverage. Even partial formalization would require thousands of lines of foundational definitions and theorems.",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Existence of static soliton solutions via direct method",
+        "issue": "The proof assumes minimizing sequences converge to a minimizer without establishing that the infimum is actually achieved. Weak convergence in H^1 does not guarantee strong convergence needed for nonlinear terms.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Need to prove weak lower semicontinuity of the energy functional and that minimizing sequences don't lose mass at infinity or concentrate"
+      },
+      {
+        "step": "Spatial localization claim",
+        "issue": "The exponential decay estimate is merely stated without proof. The reference to 'linearized operator spectrum and Agmon-type estimates' is insufficient - these techniques apply to linear problems, not nonlinear solitons.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Provide explicit decay analysis using comparison principles or weighted energy estimates for the nonlinear problem"
+      },
+      {
+        "step": "Temporal stability analysis",
+        "issue": "The proof conflates linear stability (positive second variation) with nonlinear stability. The claim about orbital stability is left unproven with only a vague reference to GSS theory.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Must verify all conditions of GSS theorem: convexity of conserved quantities, spectral properties, and non-degeneracy conditions"
+      },
+      {
+        "step": "Preservation of localization under time evolution",
+        "issue": "Finite propagation speed does not imply preservation of exponential decay. The proof confuses compact support with decay at infinity.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Need dispersive estimates or energy methods to control growth of tails over time"
+      },
+      {
+        "step": "Scattering and preservation of identity",
+        "issue": "This is stated as fact without any proof. The note admits this requires integrability or perturbative analysis but provides neither.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "This requires extensive asymptotic analysis that cannot be done generically"
+      },
+      {
+        "step": "Application of Derrick's theorem",
+        "issue": "The proof claims to circumvent Derrick's theorem through topological charge but doesn't explain how. Derrick's theorem applies to static solutions regardless of topology.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Must show how the specific field structure (vector bundle, gauge group) modifies the scaling argument in Derrick's theorem"
+      },
+      {
+        "step": "Coercivity condition",
+        "issue": "The claimed coercivity E[\u03c6] \u2265 C||\u03c6||\u00b2_{H\u00b9} - D is unjustified. With cubic or higher nonlinearities, the energy could be unbounded below.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Need explicit conditions on the nonlinear terms to ensure coercivity"
+      }
+    ],
+    "hidden_assumptions": [
+      "The vector bundle V has a metric compatible with the gauge group action",
+      "The topological sectors are isolated (no continuous deformations between sectors)",
+      "The nonlinear terms have specific signs ensuring energy bounds",
+      "The manifold has trivial topology at infinity enabling decay estimates",
+      "The gauge group action is free, ensuring well-defined quotient V/G",
+      "The field equations are actually hyperbolic (not proven from Lagrangian structure)"
+    ],
+    "circular_reasoning": false,
+    "circular_details": "",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims existence for any Lagrangian with cubic terms and any vector bundle with compact gauge group, but the arguments (if completed) would only work for very specific choices satisfying numerous unstated conditions. The scattering claims are completely unjustified.",
+    "citation_issues": [
+      "Grillakis-Shatah-Strauss theory requires verification of specific spectral conditions not checked here",
+      "Derrick's theorem is misapplied - it's not clear how topological charge circumvents it",
+      "Concentration compactness principle is mentioned but never actually used in the convergence argument",
+      "Agmon estimates are for linear elliptic operators, not applicable directly to nonlinear problems"
+    ],
+    "structural_soundness": 0.3,
+    "overall_assessment": "This proof is fundamentally incomplete, consisting mostly of assertions without justification. Critical steps are either omitted entirely or supported only by inappropriate citations. The level of generality claimed is far beyond what the sketched arguments could possibly establish.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "At best proves existence of static energy minimizers with some decay properties, but fails to establish temporal stability, particle-like dynamics, or scattering behavior",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Specific form of nonlinear terms ensuring finite energy solutions exist",
+      "Compactness of embedding H^1 \u2192 L^p for relevant p",
+      "Non-degeneracy conditions on the linearized operator around solitons",
+      "Spectral gap conditions for linear stability",
+      "Finite speed of propagation for the specific nonlinear system",
+      "Existence of multi-soliton solutions",
+      "Asymptotic completeness of scattering",
+      "Regularity assumptions ensuring C^\u221e solutions from H^s data"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 2",
+        "issue": "Coercivity E[\u03c6] \u2265 C||\u03c6||\u00b2_{H^1} - D cannot hold for general nonlinear field theories - contradicts scaling properties and known counterexamples in critical dimensions"
+      },
+      {
+        "step": "Step 3",
+        "issue": "Weak convergence in H^1 does not imply strong convergence needed for nonlinear functionals - requires additional compactness arguments that are missing"
+      },
+      {
+        "step": "Step 5",
+        "issue": "\u03b4\u00b2E \u2265 0 does not imply positive definiteness on complement of zero modes - could have continuous spectrum touching zero"
+      },
+      {
+        "step": "Step 7",
+        "issue": "Finite speed of propagation alone does not preserve localization - needs uniform bounds on solution growth which are not established"
+      },
+      {
+        "step": "Step 8",
+        "issue": "Noether's theorem gives conservation laws but does not establish 'particle-like properties' or finite momentum for localized solutions"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Step 4 explicitly acknowledges gap in exponential decay proof",
+      "Step 6 explicitly acknowledges gap in nonlinear stability analysis",
+      "Step 9 explicitly acknowledges gap in scattering analysis",
+      "No connection established between static solutions and time-dependent dynamics",
+      "Missing analysis of how topological charge constrains solution behavior",
+      "No proof that energy minimizers are actually solutions to field equations",
+      "Missing regularity theory connecting weak solutions to classical solutions"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims exponential decay |\u03c6_sol(x)| \u2264 Ce^{-m|x|} for soliton solutions, but provides no rigorous justification for this decay rate in the general nonlinear field theory context",
+      "Claims of 'particle-like properties' including 'definite momentum' are vague and potentially inconsistent with field theory where momentum is typically a continuous spectrum property",
+      "The assertion that 'scattering preserves soliton identity' contradicts general expectations in nonlinear field theory where soliton interactions can lead to radiation and shape changes"
+    ],
+    "assumption_conflicts": [
+      "Assumes finite-dimensional vector bundle V with compact gauge group G, which conflicts with the infinite-dimensional field configurations typically required for realistic soliton solutions",
+      "The coercivity condition E[\u03c6] \u2265 C||\u03c6||\u00b2_{H^1} - D is assumed without proof and may not hold for general nonlinear Lagrangians with cubic and higher-order terms",
+      "Assumes well-posed Cauchy problem in Sobolev spaces without addressing the known difficulties of global existence for nonlinear hyperbolic PDEs"
+    ],
+    "beneficial_connections": [
+      "Connects to [0a36ee9b1a6b] on nonlinear localized excitations, though the new proof lacks the rigor of variational methods",
+      "Relates to [139ee0499c9e] on topological constraints and conservation laws, sharing the concept of topological charge conservation",
+      "Partially aligns with [08b6405556dd] on symmetry principles determining interaction structure through the gauge group G"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof makes numerous unsubstantiated claims about existence, stability, and decay properties without providing rigorous mathematical justification. The assumptions are overly restrictive and potentially inconsistent. The proof reads more like a wishlist of desired properties rather than a rigorous mathematical argument."
+  },
+  "confidence_score": 0.30500000000000005,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.5,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.5,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A unified framework connecting: (1) Modulation theory for tracking soliton parameters under perturbations, (2) Rigorous asymptotic analysis of multi-soliton interactions beyond integrable cases, (3) Quantitative stability estimates bridging spectral analysis and nonlinear dynamics, (4) Extension of concentration compactness to gauge-invariant functionals",
+  "limitations": [
+    "Exponential decay estimates require detailed spectral analysis not provided",
+    "Full nonlinear stability proof requires modulation theory development",
+    "Soliton interaction analysis lacks rigorous foundation outside integrable systems",
+    "Connection between topological stability and dynamical stability not fully established",
+    "Proof assumes existence of spectral gap without verification",
+    "Particle interpretation requires additional structure (e.g., quantization)",
+    "Does not address quantum corrections or radiative effects",
+    "Restricted to finite-dimensional target spaces",
+    "Scattering analysis incomplete for strongly interacting solitons"
+  ],
+  "source_convergence": {
+    "structural_claim": "Nonlinear interactions support stable, localized excitations that behave as particle-like entities",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "'t Hooft-Polyakov Monopole",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Field Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Nonlinear gauge theories support topological soliton solutions that behave as particles"
+      },
+      {
+        "result_id": "",
+        "result_name": "Instantons",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Field Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Finite-action field configurations create localized, topologically stable structures"
+      },
+      {
+        "result_id": "",
+        "result_name": "Optical Solitons",
+        "domain_id": "field_b",
+        "domain_name": "Optics and Photonics",
+        "link_type": "direct",
+        "structural_conclusion": "Nonlinearity balances dispersion to create stable, shape-preserving light pulses"
+      }
+    ],
+    "domains": [
+      "quantum_field_theory",
+      "optics"
+    ],
+    "domain_names": [
+      "Quantum Field Theory",
+      "Optics and Photonics"
+    ],
+    "ea_scores": {
+      "strength": 0.21419999999999997,
+      "independence": 0.7,
+      "adversarial": 0.09,
+      "reproducibility": 0.5249999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.43601,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:26:43.374240+00:00",
+    "id": "6b8346deaa39"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.32175
+  }
+}

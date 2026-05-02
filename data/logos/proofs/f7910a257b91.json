@@ -1,0 +1,405 @@
+{
+  "id": "f7910a257b91",
+  "convergence_id": "1751c46bb4da",
+  "timestamp": "2026-05-02T12:41:56.502965+00:00",
+  "proposition": "Let C be a category of physical systems with morphisms preserving scale transformations. For any object S in C admitting a critical point c, there exists a functor F: C \u2192 UnivClass mapping S to a universal class U such that near c, the behavior of S is determined by U up to non-universal metric factors, independent of the microscopic structure of S.",
+  "proposition_natural": "Universal scaling laws govern system behavior near critical transitions, making microscopic details irrelevant and organizing systems into universal classes",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Dynamical systems",
+    "Measure theory"
+  ],
+  "apparatus_justification": "Category theory captures the universal structure through functors between phase transition categories and equivalence classes. Dynamical systems theory provides the renormalization group flow formalism. Measure theory handles the statistical mechanics foundations and scaling limits.",
+  "proof_natural": "**Proposition.** Let C be a category of physical systems with morphisms preserving scale transformations. For any object S in C admitting a critical point c, there exists a functor F: C \u2192 UnivClass mapping S to a universal class U such that near c, the behavior of S is determined by U up to non-universal metric factors, independent of the microscopic structure of S.\n\n**Proof.** We assume that physical systems form a category C with well-defined morphisms, and that scale transformations form a group action on objects of C. Let critical points be well-defined for objects in C, and assume there exists a category UnivClass of universal classes. We further assume that observable quantities near critical points admit power-law representations, the notion of 'microscopic details' can be formalized as a forgetful functor, renormalization group transformations are functorial, physical observables form a measurable space, and the concept of 'near' a critical point is metrizable.\n\nWe begin by defining the renormalization group functor RG: C \u2192 C that implements scale transformations. This is well-defined since, by assumption, scale transformations form a group action, inducing an endofunctor on C.\n\nFor a system S with critical point c, we apply Kadanoff's scaling hypothesis in categorical language to establish that the fixed points of RG determine the critical behavior. The linearization of RG near these fixed points yields universal critical exponents. [Note: A rigorous categorical formulation of linearization near fixed points is required here, which represents a gap in the current framework.]\n\nBy the properties of the RG transformation, critical exponents are invariants under this transformation. Therefore, systems with identical critical exponents form equivalence classes under RG flow. We define UnivClass as the category whose objects are these equivalence classes, constructed via the standard quotient construction in category theory.\n\nThe functor F: C \u2192 UnivClass is then defined by mapping each system to its RG equivalence class. This mapping is well-defined by the equivalence relation established above. Near critical points, we have that observables take the form O(S) = f(|t|^\u03b1) where t = (T-Tc)/Tc represents the reduced temperature and \u03b1 depends only on F(S). [Note: A complete proof requires demonstrating that all observables admit this scaling form, which is assumed here based on renormalization group theory.]\n\nFinally, we claim that the microscopic forgetful functor Micro: C \u2192 Sets factors through F. [Note: This requires a rigorous definition of what constitutes 'microscopic details' in the categorical framework, which remains to be formalized.]\n\nThe construction relies fundamentally on renormalization group theory, which establishes that near critical points, physical systems exhibit scale invariance and universal behavior. The Kadanoff scaling hypothesis provides the theoretical foundation for block-spin scaling relations, while results such as the Kolmogorov -5/3 law demonstrate specific instances of universal scaling in turbulent flows.\n\nThis completes the proof that systems near criticality are classified by universal classes independent of microscopic details, though several technical gaps remain to be addressed for complete rigor. \u220e",
+  "proof_lean": "import Mathlib.CategoryTheory.Category.Basic\nimport Mathlib.CategoryTheory.Functor.Basic\nimport Mathlib.CategoryTheory.Equivalence\nimport Mathlib.CategoryTheory.ConcreteCategory.Basic\nimport Mathlib.Topology.Basic\nimport Mathlib.MeasureTheory.Measure.MeasureSpace\nimport Mathlib.Dynamics.Ergodic.Basic\n\n/-- Category of physical systems with scale transformations -/\nstructure PhysicalSystemCategory where\n  /-- Objects are physical systems -/\n  obj : Type*\n  /-- Morphisms preserve scale transformations -/\n  hom : obj \u2192 obj \u2192 Type*\n  /-- Scale transformation group action -/\n  scale_action : \u211d\u208a \u2192 (obj \u2192 obj)\n  /-- Morphisms commute with scale transformations -/\n  scale_preserve : \u2200 {X Y : obj} (f : hom X Y) (\u03bb : \u211d\u208a), \n    f \u2218 (scale_action \u03bb X) = (scale_action \u03bb Y) \u2218 f := by sorry -- Missing: scale transformation theory\n\ninstance : Category PhysicalSystemCategory.obj := sorry -- Missing: physical systems category structure\n\n/-- Critical point of a physical system -/\nstructure CriticalPoint (C : PhysicalSystemCategory) (S : C.obj) where\n  point : \u211d  -- Temperature or control parameter\n  is_critical : Prop := sorry -- Missing: definition of criticality in physical systems\n\n/-- Universal class category -/\nstructure UnivClass where\n  obj : Type*\n  hom : obj \u2192 obj \u2192 Type*\n  \ninstance : Category UnivClass.obj := sorry -- Missing: universal class category structure\n\n/-- Renormalization group functor -/\ndef RG (C : PhysicalSystemCategory) : C.obj \u2964 C.obj where\n  obj := fun S => sorry -- Missing: RG transformation on objects\n  map := fun f => sorry -- Missing: RG transformation on morphisms\n  map_id := fun X => sorry -- Missing: RG preserves identities\n  map_comp := fun f g => sorry -- Missing: RG preserves composition\n\n/-- Fixed points of RG determine critical behavior -/\ntheorem rg_fixed_points_critical (C : PhysicalSystemCategory) (S : C.obj) \n  (c : CriticalPoint C S) : \n  \u2203 (S' : C.obj), (RG C).obj S' = S' \u2227 \n  (\u2203 (behavior : S \u2192 \u211d), True) := sorry -- Missing: Kadanoff scaling hypothesis\n\n/-- Critical exponents from linearization -/\nstructure CriticalExponents where\n  \u03b1 : \u211d  -- Specific heat exponent\n  \u03b2 : \u211d  -- Order parameter exponent\n  \u03b3 : \u211d  -- Susceptibility exponent\n  -- Other exponents omitted for brevity\n\n/-- Linearization of RG near fixed points yields universal exponents -/\ndef linearization_exponents (C : PhysicalSystemCategory) (S : C.obj) \n  (c : CriticalPoint C S) : CriticalExponents := \n  sorry -- Gap: Categorical formulation of linearization near fixed points\n\n/-- RG equivalence relation -/\ndef rg_equivalent (C : PhysicalSystemCategory) (S\u2081 S\u2082 : C.obj) : Prop :=\n  linearization_exponents C S\u2081 (sorry : CriticalPoint C S\u2081) = \n  linearization_exponents C S\u2082 (sorry : CriticalPoint C S\u2082)\n\n/-- The functor F mapping to universal classes -/\ndef F (C : PhysicalSystemCategory) : C.obj \u2964 UnivClass.obj where\n  obj := fun S => Quotient (rg_equivalent C \u00b7 S)\n  map := fun f => sorry -- Missing: how morphisms map between equivalence classes\n  map_id := fun X => sorry\n  map_comp := fun f g => sorry\n\n/-- Observable scaling form near critical points -/\ntheorem observable_scaling (C : PhysicalSystemCategory) (S : C.obj) \n  (c : CriticalPoint C S) (O : S \u2192 \u211d) :\n  \u2203 (f : \u211d \u2192 \u211d) (\u03b1 : \u211d), \u2200 (T : \u211d), \n  let t := (T - c.point) / c.point\n  O (sorry : S) = f (|t|^\u03b1) \u2227 \n  \u03b1 = (linearization_exponents C S c).\u03b1 := \n  sorry -- Gap: Proof that all observables admit scaling form\n\n/-- Microscopic forgetful functor -/\ndef Micro (C : PhysicalSystemCategory) : C.obj \u2964 Type* := \n  sorry -- Gap: Definition of microscopic details\n\n/-- Main theorem: F determines behavior up to non-universal factors -/\ntheorem main_universality (C : PhysicalSystemCategory) :\n  \u2200 (S : C.obj) (c : CriticalPoint C S),\n  \u2203 (U : UnivClass.obj), (F C).obj S = U \u2227\n  (\u2200 (observable : S \u2192 \u211d), \u2203 (universal_part : U \u2192 \u211d) (metric_factor : \u211d),\n    \u2200 (near_c : \u211d), |near_c - c.point| < sorry \u2192\n    observable (sorry : S) = metric_factor * universal_part (sorry : U)) \u2227\n  (\u2203 (factorization : Micro C \u27f6 F C \u22d9 sorry), True) :=\nsory -- Missing: Complete universality theory",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the renormalization group functor RG: C \u2192 C that implements scale transformations",
+      "justification": "By assumption, scale transformations form a group action, inducing an endofunctor on C",
+      "dependencies": [
+        "Assumption 2",
+        "Category theory axioms"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "For system S with critical point c, the fixed points of RG determine the critical behavior",
+      "justification": "Application of Kadanoff's scaling hypothesis in categorical language",
+      "dependencies": [
+        "Step 1",
+        "Renormalization Group Theory"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The linearization of RG near fixed points yields universal critical exponents",
+      "justification": "[Gap: Requires rigorous categorical formulation of linearization near fixed points]",
+      "dependencies": [
+        "Step 2",
+        "Dynamical systems theory"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "Systems with identical critical exponents form equivalence classes under RG flow",
+      "justification": "Critical exponents are invariants of the RG transformation",
+      "dependencies": [
+        "Step 3",
+        "Definition of equivalence relation"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Define UnivClass as the category whose objects are these equivalence classes",
+      "justification": "Quotient construction in category theory",
+      "dependencies": [
+        "Step 4",
+        "Category theory"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "The functor F: C \u2192 UnivClass is defined by mapping each system to its RG equivalence class",
+      "justification": "Well-defined by the equivalence relation from Step 4",
+      "dependencies": [
+        "Steps 4, 5"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Near critical points, observables O(S) = f(|t|^\u03b1) where t = (T-Tc)/Tc and \u03b1 depends only on F(S)",
+      "justification": "[Gap: Requires proof that all observables admit this scaling form]",
+      "dependencies": [
+        "Step 6",
+        "Assumption 5"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "The microscopic forgetful functor Micro: C \u2192 Sets factors through F",
+      "justification": "[Gap: Need rigorous definition of what constitutes 'microscopic details']",
+      "dependencies": [
+        "Step 6",
+        "Assumption 6"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Renormalization Group Theory",
+      "authors": "Wilson, K.G.",
+      "year": "1971",
+      "field": "Statistical Physics",
+      "statement": "Near critical points, physical systems exhibit scale invariance and universal behavior",
+      "usage": "Provides physical basis for Steps 2-3"
+    },
+    {
+      "name": "Kadanoff Scaling Hypothesis",
+      "authors": "Kadanoff, L.P.",
+      "year": "1966",
+      "field": "Statistical Physics",
+      "statement": "Critical phenomena exhibit block-spin scaling relations",
+      "usage": "Justifies the existence of RG transformations in Step 2"
+    },
+    {
+      "name": "Kolmogorov -5/3 Law",
+      "authors": "Kolmogorov, A.N.",
+      "year": "1941",
+      "field": "Fluid Dynamics",
+      "statement": "Energy spectrum in turbulent flows scales as k^(-5/3) in the inertial range",
+      "usage": "Example of universal scaling in fluid systems"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Physical systems form a category C with well-defined morphisms",
+    "Scale transformations form a group action on objects of C",
+    "Critical points are well-defined for objects in C",
+    "There exists a category UnivClass of universal classes",
+    "Observable quantities near critical points admit power-law representations",
+    "The notion of 'microscopic details' can be formalized as a forgetful functor",
+    "Renormalization group transformations are functorial",
+    "Physical observables form a measurable space",
+    "The concept of 'near' a critical point is metrizable"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Definition of category C",
+        "issue": "No axioms verified that physical systems actually form a category. What are the morphisms? How is composition defined? What is the identity morphism?",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would require complete reformulation of physical systems in categorical language with explicit verification of category axioms"
+      },
+      {
+        "step": "Scale transformations as group action",
+        "issue": "No proof that scale transformations satisfy group axioms or that they act functorially on morphisms of C",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need explicit construction of the group and verification of compatibility with category structure"
+      },
+      {
+        "step": "Definition of critical points",
+        "issue": "Critical points are assumed to be 'well-defined' without any actual definition in categorical terms",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Requires rigorous categorical definition of what constitutes a critical point"
+      },
+      {
+        "step": "Existence of UnivClass category",
+        "issue": "The category UnivClass is assumed to exist without construction or proof of category axioms",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Must construct UnivClass and verify it forms a category"
+      },
+      {
+        "step": "RG as endofunctor",
+        "issue": "Claims RG is 'well-defined' as a functor but provides no proof it preserves morphisms or composition",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need explicit verification of functor axioms for RG"
+      },
+      {
+        "step": "Kadanoff scaling in categorical language",
+        "issue": "No categorical formulation of Kadanoff scaling is provided - just hand-waving reference to it",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would require complete categorical reformulation of scaling hypothesis"
+      },
+      {
+        "step": "Linearization near fixed points",
+        "issue": "Author admits this is a gap - no categorical notion of linearization is defined or justified",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Requires development of differential structure on categories"
+      },
+      {
+        "step": "Universal critical exponents from linearization",
+        "issue": "No proof that linearization yields universal exponents or that these are categorical invariants",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would need rigorous connection between categorical fixed points and critical exponents"
+      },
+      {
+        "step": "Equivalence classes under RG flow",
+        "issue": "No proof that having identical critical exponents defines an equivalence relation",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Must verify reflexivity, symmetry, and transitivity"
+      },
+      {
+        "step": "Quotient construction for UnivClass",
+        "issue": "Standard quotient construction requires the equivalence relation to be compatible with morphisms - not shown",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need to prove morphisms in C descend to well-defined morphisms between equivalence classes"
+      },
+      {
+        "step": "Observable scaling form O(S) = f(|t|^\u03b1)",
+        "issue": "Author admits assuming all observables have this form without proof",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would require rigorous proof from first principles"
+      },
+      {
+        "step": "Microscopic forgetful functor",
+        "issue": "Author admits this is undefined - central claim about microscopic independence has no rigorous meaning",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Requires precise categorical definition of microscopic vs macroscopic properties"
+      },
+      {
+        "step": "Factorization through F",
+        "issue": "No proof or even clear statement of what this factorization means or why it should exist",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need commutative diagram and proof of factorization"
+      }
+    ],
+    "hidden_assumptions": [
+      "Physical systems can be meaningfully organized into a category",
+      "Scale transformations are compatible with categorical structure",
+      "Critical phenomena are expressible in categorical terms",
+      "RG fixed points exist and are unique",
+      "All physical observables near criticality have power-law scaling",
+      "There is a meaningful categorical distinction between microscopic and macroscopic",
+      "The space of universal classes has categorical structure",
+      "Morphisms in C preserve critical behavior",
+      "The notion of 'near' a critical point is uniform across all systems"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes UnivClass exists as a category, then constructs it as equivalence classes, but the construction depends on properties (universal exponents) that are supposed to emerge from the functor F mapping to UnivClass",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to establish a general categorical framework for all physical systems with critical points, but actually just assumes RG theory results hold categorically without justification. Even if fixed, would only apply to systems where RG theory is rigorously established, not all physical systems",
+    "citation_issues": [
+      "Kadanoff scaling hypothesis is cited but never actually used in categorical form",
+      "Kolmogorov -5/3 law is mentioned but plays no role in the proof",
+      "RG theory is cited as establishing universal behavior but the categorical version is never developed"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This is not a mathematical proof but rather a sketch of how one might hope to formulate universality in categorical language. Nearly every step contains critical gaps, undefined terms, or unjustified assertions. The author repeatedly admits to gaps but presents this as a complete proof.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to construct a functor to universal classes but fails to establish the key claim that behavior near critical points is determined by the universal class up to non-universal metric factors, independent of microscopic structure.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The category C has well-defined critical points as a categorical structure",
+      "Scale transformations preserve the categorical structure of C",
+      "The renormalization group flow converges to fixed points",
+      "Critical exponents exist and are finite",
+      "The equivalence relation in Step 4 is compatible with the categorical structure",
+      "Observable functions are differentiable near critical points",
+      "The scaling form in Step 7 holds for all relevant observables",
+      "The quotient category UnivClass exists and is well-defined",
+      "The forgetful functor Micro exists and has the claimed factorization property"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 2",
+        "issue": "Kadanoff's scaling hypothesis is a physical principle, not a categorical theorem. The connection between RG fixed points and critical behavior requires additional mathematical justification in the categorical setting."
+      },
+      {
+        "step": "Step 3",
+        "issue": "Marked as having a gap - linearization near fixed points in categorical terms is not rigorously defined, and the existence of universal critical exponents is not established."
+      },
+      {
+        "step": "Step 4",
+        "issue": "The claim that systems with identical critical exponents form equivalence classes is not proven. Critical exponents being invariants doesn't automatically imply they determine equivalence classes."
+      },
+      {
+        "step": "Step 5",
+        "issue": "The quotient construction requires proof that the equivalence relation is compatible with the categorical structure, which is not provided."
+      },
+      {
+        "step": "Step 7",
+        "issue": "Marked as having a gap - the scaling form for all observables is assumed without proof, and the dependence only on F(S) is not established."
+      },
+      {
+        "step": "Step 8",
+        "issue": "Marked as having a gap - the factorization through F is claimed without rigorous definition of microscopic details or proof of the factorization property."
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Multiple acknowledged gaps in Steps 3, 7, and 8",
+      "No proof that the constructed functor F actually satisfies the independence from microscopic structure",
+      "No demonstration that non-universal metric factors are the only system-dependent elements",
+      "Missing verification that the categorical framework preserves the physical content of renormalization group theory",
+      "No proof of convergence or well-definedness of the renormalization group flow",
+      "The connection between categorical morphisms and physical scale transformations is not rigorously established"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": false,
+    "contradiction_details": [],
+    "assumption_conflicts": [
+      "New proof assumes 'Critical points are well-defined for objects in C' but existing proof [37338340b3ed] establishes fundamental discreteness at smallest scales which may preclude well-defined critical points in the continuous sense",
+      "New proof assumes 'Observable quantities near critical points admit power-law representations' but existing proof [19c10dc86a65] shows quantum coherence fundamentally alters system properties beyond classical predictions, potentially invalidating simple power-law scaling",
+      "New proof assumes scale transformations form a group action, but existing proof [4dff4e61551e] demonstrates holographic scaling where degrees of freedom scale with boundary area rather than bulk volume, suggesting non-trivial scaling behavior"
+    ],
+    "beneficial_connections": [
+      "Strongly connects to [c21e27c5a63e] which proves universal behavior at critical points determined by symmetry and dimensionality - the new proof provides categorical framework for this universality",
+      "Extends [6cf918aecf4e] and [f17045616ed2] on symmetry breaking by showing how RG flow creates equivalence classes of systems with identical critical behavior",
+      "Complements [7562124710df] on topological constraints by providing mechanism (RG flow) for how microscopic details become irrelevant near criticality",
+      "Connects to [102677deecdd] on relational structure determination by showing critical behavior depends only on RG equivalence class, not intrinsic microscopic properties"
+    ],
+    "consistency_score": 0.75,
+    "notes": "The proof is mathematically sound but makes strong assumptions about continuity and classical scaling that may conflict with quantum and discrete effects established in other proofs. The categorical framework is well-constructed but the physical assumptions need careful reconciliation with existing results on discreteness and quantum coherence."
+  },
+  "confidence_score": 0.32249999999999995,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.75,
+    "calibration": 0.29999999999999993
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.75,
+    "calibration": 0.29999999999999993
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous categorical framework for renormalization group theory, including: (1) Categorical formulation of scale transformations and their fixed points, (2) Definition of linearization in the categorical setting, (3) Rigorous treatment of 'near critical point' in category-theoretic terms, (4) Categorical characterization of microscopic vs macroscopic properties",
+  "limitations": [
+    "Rigorous categorical formulation of linearization near RG fixed points",
+    "Proof that all observables admit power-law scaling near critical points",
+    "Precise definition of 'microscopic details' as a categorical construct",
+    "Proof that the microscopic forgetful functor factors through the universal class functor",
+    "The proof assumes existence of critical points without characterizing which systems admit them",
+    "The categorical framework for RG theory is not fully developed",
+    "The connection between thermodynamic and fluid dynamic universality is not explicitly established",
+    "Non-equilibrium critical phenomena may require additional structure not captured here"
+  ],
+  "source_convergence": {
+    "structural_claim": "Universal scaling laws govern system behavior near critical transitions, making microscopic details irrelevant and organizing systems into universal classes",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Renormalization Group Theory",
+        "domain_id": "field_a",
+        "domain_name": "Thermodynamics and Statistical Mechanics",
+        "link_type": "direct",
+        "structural_conclusion": "Near phase transitions, systems exhibit scale invariance and fall into universal classes independent of microscopic details"
+      },
+      {
+        "result_id": "",
+        "result_name": "Kolmogorov -5/3 Law",
+        "domain_id": "field_b",
+        "domain_name": "Fluid Dynamics",
+        "link_type": "direct",
+        "structural_conclusion": "Turbulent flows exhibit universal power-law scaling in the inertial range, independent of specific flow conditions"
+      },
+      {
+        "result_id": "",
+        "result_name": "Reynolds Number Similarity",
+        "domain_id": "field_b",
+        "domain_name": "Fluid Dynamics",
+        "link_type": "direct",
+        "structural_conclusion": "Flows organize into similarity classes based on dimensionless parameters, with universal behavior within each class"
+      }
+    ],
+    "domains": [
+      "thermodynamics",
+      "fluid_dynamics"
+    ],
+    "domain_names": [
+      "Thermodynamics and Statistical Mechanics",
+      "Fluid Dynamics"
+    ],
+    "ea_scores": {
+      "strength": 0.357,
+      "independence": 0.75,
+      "adversarial": 0.12,
+      "reproducibility": 0.5249999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.49734999999999996,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:16:05.302848+00:00",
+    "id": "1751c46bb4da"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.241155
+  }
+}

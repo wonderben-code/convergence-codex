@@ -1,0 +1,353 @@
+{
+  "id": "f406aeea9e5f",
+  "convergence_id": "2c6775787544",
+  "timestamp": "2026-05-02T12:51:12.928847+00:00",
+  "proposition": "Let (M, g) be a 4-dimensional pseudo-Riemannian manifold with metric signature (-,+,+,+), and let G be a Lie group acting on a principal G-bundle P \u2192 M. Then the requirement that the Lagrangian density L be invariant under local gauge transformations g: M \u2192 G uniquely determines the form of the gauge connection A \u2208 \u03a9\u00b9(M, g) and its associated curvature F = dA + \u00bd[A, A], where g is the Lie algebra of G.",
+  "proposition_natural": "Gauge symmetries dictate the form of fundamental interactions, with forces arising from the requirement of local symmetry invariance",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Differential geometry",
+    "Category theory",
+    "Algebraic structures"
+  ],
+  "apparatus_justification": "Gauge theories are fundamentally about principal bundles and connections on manifolds, making differential geometry essential. Category theory captures the functorial relationships between gauge transformations and field configurations. Algebraic structures (Lie groups/algebras) encode the symmetry groups themselves.",
+  "proof_natural": "**Proposition.** Let $(M, g)$ be a 4-dimensional pseudo-Riemannian manifold with metric signature $(-,+,+,+)$, and let $G$ be a Lie group acting on a principal $G$-bundle $P \\to M$. Then the requirement that the Lagrangian density $\\mathcal{L}$ be invariant under local gauge transformations $g: M \\to G$ uniquely determines the form of the gauge connection $A \\in \\Omega^1(M, \\mathfrak{g})$ and its associated curvature $F = dA + \\frac{1}{2}[A, A]$, where $\\mathfrak{g}$ is the Lie algebra of $G$.\n\n**Proof.** We assume that spacetime $M$ is a smooth 4-dimensional manifold with Lorentzian metric $g$, and that $G$ is a compact Lie group with Lie algebra $\\mathfrak{g}$. Let $\\pi: P \\to M$ be a principal $G$-bundle, and suppose matter fields $\\psi$ are sections of associated vector bundles $E = P \\times_\\rho V$ for some representation $\\rho: G \\to GL(V)$. We further assume that the action functional $S[\\psi, A] = \\int_M \\mathcal{L}(\\psi, D\\psi, F) \\, d^4x$ exists and is differentiable, where local gauge transformations act as $\\psi \\mapsto g \\cdot \\psi$ and $A \\mapsto gAg^{-1} + g(dg^{-1})$.\n\nTo establish gauge invariance, we first observe that the ordinary derivative $\\partial_\\mu \\psi$ does not transform covariantly under local gauge transformations. We therefore introduce a covariant derivative $D_\\mu = \\partial_\\mu + A_\\mu$, where $A_\\mu$ takes values in $\\mathfrak{g}$. The requirement that $D_\\mu \\psi$ transform covariantly\u2014that is, $D_\\mu \\psi \\mapsto g \\cdot (D_\\mu \\psi)$ when $\\psi \\mapsto g \\cdot \\psi$\u2014uniquely determines the transformation law $A_\\mu \\mapsto gA_\\mu g^{-1} + g(\\partial_\\mu g^{-1})$.\n\nFrom this transformation law, we can verify by direct calculation that the gauge field strength $F_{\\mu\\nu} = \\partial_\\mu A_\\nu - \\partial_\\nu A_\\mu + [A_\\mu, A_\\nu]$ transforms covariantly: $F_{\\mu\\nu} \\mapsto gF_{\\mu\\nu}g^{-1}$. This covariant transformation property is essential for constructing gauge-invariant terms in the Lagrangian.\n\nTo build a kinetic term for the gauge fields, we require a gauge-invariant scalar constructed from $F_{\\mu\\nu}$. At lowest order in derivatives, any such scalar must employ an invariant bilinear form on $\\mathfrak{g}$. For compact Lie groups, all such forms are proportional to the Killing form, yielding the unique gauge-invariant kinetic term $\\text{Tr}(F_{\\mu\\nu}F^{\\mu\\nu})$.\n\nThe principle of minimal coupling dictates that gauge invariance in the matter sector is achieved solely through the substitution $\\partial_\\mu \\mapsto D_\\mu$ in the matter Lagrangian. Any additional coupling terms would either violate gauge invariance or introduce higher derivatives, contradicting the minimal coupling prescription.\n\nCombining these results, the full gauge-invariant Lagrangian takes the form\n$$\\mathcal{L} = -\\frac{1}{4}\\text{Tr}(F_{\\mu\\nu}F^{\\mu\\nu}) + \\mathcal{L}_{\\text{matter}}(\\psi, D_\\mu\\psi).$$\n\nApplication of the Euler-Lagrange equations to the action $S = \\int \\mathcal{L} \\, d^4x$ yields the Yang-Mills equation $D_\\mu F^{\\mu\\nu} = J^\\nu$, where $J^\\nu$ is the conserved Noether current associated with the global $G$-symmetry.\n\n[Note: The physical interpretation that $A_\\mu$ mediates forces between charged matter fields requires perturbative expansion and Feynman diagram analysis, which lies beyond the scope of this formal construction.]\n\nThus, the requirement of local gauge invariance uniquely determines both the form of the gauge connection and its dynamics, establishing the mathematical foundation of Yang-Mills theory. This completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.Geometry.Manifold.SmoothManifoldWithCorners\nimport Mathlib.Geometry.Manifold.Algebra.LieGroup\nimport Mathlib.Topology.FiberBundle.Basic\nimport Mathlib.Algebra.Lie.Basic\nimport Mathlib.Analysis.InnerProductSpace.Basic\nimport Mathlib.Geometry.Manifold.VectorBundle\n\n/-- A 4-dimensional pseudo-Riemannian manifold with signature (-,+,+,+) -/\nstructure PseudoRiemannianManifold4 (M : Type*) [TopologicalSpace M] [ChartedSpace \u211d\u2074 M] [SmoothManifoldWithCorners \ud835\udcd8(\u211d, \u211d\u2074) M] where\n  metric : M \u2192 BilinForm \u211d (TangentSpace \ud835\udcd8(\u211d, \u211d\u2074) M)\n  signature_correct : sorry -- The metric has signature (-,+,+,+)\n\n/-- A gauge connection on a principal G-bundle -/\nstructure GaugeConnection {M : Type*} {G : Type*} [TopologicalSpace M] [ChartedSpace \u211d\u2074 M] \n  [SmoothManifoldWithCorners \ud835\udcd8(\u211d, \u211d\u2074) M] [LieGroup G] (P : Bundle G M) where\n  connection : sorry -- Connection 1-form with values in Lie algebra of G\n  \n/-- The curvature form F = dA + \u00bd[A, A] -/\ndef curvature {M : Type*} {G : Type*} [TopologicalSpace M] [ChartedSpace \u211d\u2074 M]\n  [SmoothManifoldWithCorners \ud835\udcd8(\u211d, \u211d\u2074) M] [LieGroup G] (P : Bundle G M) \n  (A : GaugeConnection P) : sorry := sorry -- 2-form with values in Lie algebra\n\n/-- Local gauge transformation -/\ndef localGaugeTransform {M : Type*} {G : Type*} [TopologicalSpace M] [ChartedSpace \u211d\u2074 M]\n  [SmoothManifoldWithCorners \ud835\udcd8(\u211d, \u211d\u2074) M] [LieGroup G] : (M \u2192 G) \u2192 sorry := sorry\n\n/-- Lagrangian density for gauge theory -/\nstructure LagrangianDensity {M : Type*} {G : Type*} [TopologicalSpace M] [ChartedSpace \u211d\u2074 M]\n  [SmoothManifoldWithCorners \ud835\udcd8(\u211d, \u211d\u2074) M] [LieGroup G] where\n  density : sorry -- Density on M\n  gauge_invariant : sorry -- Invariant under local gauge transformations\n\n/-- The main theorem: gauge invariance uniquely determines the connection and curvature -/\ntheorem gauge_invariance_determines_connection \n  {M : Type*} {G : Type*} [TopologicalSpace M] [ChartedSpace \u211d\u2074 M]\n  [SmoothManifoldWithCorners \ud835\udcd8(\u211d, \u211d\u2074) M] [LieGroup G]\n  (g_metric : PseudoRiemannianManifold4 M) (P : Bundle G M)\n  (L : LagrangianDensity) :\n  \u2203! (A : GaugeConnection P), \n    let F := curvature P A\n    -- Step 1: Covariant derivative uniquely determined\n    (\u2200 (\u03c8 : sorry) (g : M \u2192 G), sorry) \u2227 \n    -- Step 2: Field strength transforms covariantly  \n    (\u2200 (g : M \u2192 G), sorry) \u2227\n    -- Step 3: Kinetic term must be Tr(F_\u03bc\u03bd F^\u03bc\u03bd)\n    (sorry) \u2227\n    -- Step 4: Minimal coupling prescription\n    (sorry) \u2227\n    -- Step 5: Full Lagrangian form\n    (sorry) \u2227\n    -- Step 6: Euler-Lagrange equations\n    (sorry) \u2227\n    -- Step 7: Gauge field mediates forces\n    (sorry) := by\n  sorry -- Proof requires Yang-Mills theory, gauge transformations, and variational calculus",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The covariant derivative D_\u03bc = \u2202_\u03bc + A_\u03bc is uniquely determined by requiring D_\u03bc\u03c8 to transform covariantly under local gauge transformations",
+      "justification": "For \u03c8 \u2192 g\u00b7\u03c8, we need D_\u03bc\u03c8 \u2192 g\u00b7(D_\u03bc\u03c8). This requires A_\u03bc \u2192 gA_\u03bcg\u207b\u00b9 + g(\u2202_\u03bcg\u207b\u00b9)",
+      "dependencies": [
+        "Definition of covariant derivative",
+        "Transformation law for matter fields"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "The gauge field strength F_\u03bc\u03bd = \u2202_\u03bcA_\u03bd - \u2202_\u03bdA_\u03bc + [A_\u03bc, A_\u03bd] transforms covariantly: F_\u03bc\u03bd \u2192 gF_\u03bc\u03bdg\u207b\u00b9",
+      "justification": "Direct calculation using the transformation law for A_\u03bc from step 1",
+      "dependencies": [
+        "Step 1",
+        "Leibniz rule",
+        "Jacobi identity for Lie algebra"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The kinetic term for gauge fields must be of the form Tr(F_\u03bc\u03bd F^\u03bc\u03bd) to be gauge invariant",
+      "justification": "Any gauge-invariant scalar built from F_\u03bc\u03bd at lowest order in derivatives must use an invariant bilinear form on g, which for compact G is proportional to the Killing form",
+      "dependencies": [
+        "Step 2",
+        "Cartan's theorem on invariant bilinear forms"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The minimal coupling prescription \u2202_\u03bc \u2192 D_\u03bc in the matter Lagrangian is uniquely determined by gauge invariance",
+      "justification": "Any other coupling would either break gauge invariance or involve higher derivatives, violating the principle of minimal coupling",
+      "dependencies": [
+        "Step 1",
+        "Assumption of renormalizability"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The full gauge-invariant Lagrangian has the form L = -\u00bcTr(F_\u03bc\u03bd F^\u03bc\u03bd) + L_matter(\u03c8, D_\u03bc\u03c8)",
+      "justification": "Combines the unique gauge-invariant kinetic term (step 3) with minimally coupled matter (step 4)",
+      "dependencies": [
+        "Step 3",
+        "Step 4"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "The Euler-Lagrange equations yield D_\u03bcF^\u03bc\u03bd = J^\u03bd, where J^\u03bd is the conserved Noether current",
+      "justification": "Standard variational calculus applied to the action S = \u222bL d\u2074x",
+      "dependencies": [
+        "Step 5",
+        "Principle of stationary action"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The gauge field A_\u03bc mediates forces between matter fields carrying the charge associated with G-symmetry",
+      "justification": "[Gap: This requires perturbative expansion and Feynman diagram analysis, showing that A_\u03bc propagators generate interaction terms]",
+      "dependencies": [
+        "Step 6",
+        "Perturbation theory",
+        "LSZ reduction formula"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Noether's Theorem",
+      "authors": "Emmy Noether",
+      "year": "1918",
+      "field": "Mathematical Physics",
+      "statement": "Every continuous symmetry of the action corresponds to a conserved current",
+      "usage": "Establishes connection between gauge symmetry and conserved charges"
+    },
+    {
+      "name": "Yang-Mills Theory",
+      "authors": "C.N. Yang and R.L. Mills",
+      "year": "1954",
+      "field": "Theoretical Physics",
+      "statement": "Non-abelian gauge theories based on local SU(N) symmetry",
+      "usage": "Provides the mathematical framework for non-abelian gauge fields"
+    },
+    {
+      "name": "Fiber Bundle Theory",
+      "authors": "Ehresmann, Steenrod",
+      "year": "1940s-1950s",
+      "field": "Differential Geometry",
+      "statement": "Mathematical theory of principal bundles and connections",
+      "usage": "Provides rigorous geometric foundation for gauge fields"
+    },
+    {
+      "name": "BRST Quantization",
+      "authors": "Becchi, Rouet, Stora, Tyutin",
+      "year": "1974-1975",
+      "field": "Quantum Field Theory",
+      "statement": "Gauge-invariant quantization procedure for gauge theories",
+      "usage": "Required for quantum consistency but not explicitly used in classical derivation"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Spacetime M is a smooth 4-dimensional manifold with Lorentzian metric g",
+    "G is a compact Lie group with Lie algebra g",
+    "There exists a principal G-bundle \u03c0: P \u2192 M",
+    "Matter fields \u03c8 are sections of associated vector bundles E = P \u00d7_\u03c1 V for some representation \u03c1: G \u2192 GL(V)",
+    "The action functional S[\u03c8, A] = \u222b_M L(\u03c8, D\u03c8, F) d\u2074x exists and is differentiable",
+    "Local gauge transformations act as \u03c8 \u2192 g\u00b7\u03c8 and A \u2192 gAg\u207b\u00b9 + g(dg\u207b\u00b9)",
+    "The vacuum is invariant under global G-symmetry",
+    "The Lagrangian density L is a smooth function of fields and their derivatives"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Proposition statement",
+        "issue": "The proposition claims that gauge invariance 'uniquely determines' the form of A and F, but uniqueness is never proven. The proof only shows one possible form, not that it's the only form.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "The entire proposition needs reformulation - it should claim existence, not uniqueness"
+      },
+      {
+        "step": "Introduction of covariant derivative",
+        "issue": "The proof assumes D_\u03bc = \u2202_\u03bc + A_\u03bc without justification. Why this specific form? Why not D_\u03bc = \u2202_\u03bc + f(A_\u03bc) for some function f?",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Need to derive this form from first principles or cite appropriate theorem"
+      },
+      {
+        "step": "Gauge transformation law",
+        "issue": "The transformation A_\u03bc \u2192 gA_\u03bcg^(-1) + g(\u2202_\u03bcg^(-1)) is stated as following from covariance requirement, but the derivation is omitted",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Include the actual calculation showing this is the unique transformation law"
+      },
+      {
+        "step": "Killing form claim",
+        "issue": "Claims all invariant bilinear forms on g are proportional to Killing form. This is false for semisimple Lie algebras with multiple simple factors.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Restrict to simple Lie groups or acknowledge multiple invariant forms exist"
+      },
+      {
+        "step": "Minimal coupling principle",
+        "issue": "Invokes 'principle of minimal coupling' without definition or justification. This is not a mathematical principle but a physics heuristic.",
+        "severity": "major",
+        "fixable": false,
+        "suggested_fix": "Cannot fix without changing the entire approach"
+      },
+      {
+        "step": "Yang-Mills equation derivation",
+        "issue": "Claims Euler-Lagrange equations yield D_\u03bcF^(\u03bc\u03bd) = J^\u03bd but provides no calculation. The current J^\u03bd appears from nowhere.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Show the variational calculation explicitly"
+      }
+    ],
+    "hidden_assumptions": [
+      "The connection A is assumed to be a 1-form with values in g, but why not a more general tensor?",
+      "Assumes matter fields transform in a linear representation of G",
+      "Assumes the Lagrangian depends only on fields and first derivatives",
+      "Assumes the base manifold M is orientable (needed for integration)",
+      "Assumes gauge transformations are continuously connected to identity",
+      "Assumes the principal bundle P admits a connection at all"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes the form of the covariant derivative D_\u03bc = \u2202_\u03bc + A_\u03bc to derive properties of A, but this form itself needs justification from gauge invariance requirements",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof at best shows one possible gauge-invariant construction, not uniqueness. It also claims to work for any Lie group G but uses properties specific to compact groups.",
+    "citation_issues": [
+      "Noether's theorem is cited but never actually used in the proof",
+      "BRST quantization is listed as a dependency but is irrelevant to the classical construction",
+      "No citation for the claim about Killing form being unique invariant form"
+    ],
+    "structural_soundness": 0.3,
+    "overall_assessment": "This proof is fundamentally flawed, conflating physical intuition with mathematical rigor. The central claim of uniqueness is never established, and the argument relies on unjustified assumptions about the form of covariant derivatives and minimal coupling that amount to assuming what needs to be proved.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof shows that gauge invariance constrains the form of gauge connections and field strengths, but does not prove uniqueness as claimed in the proposition",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Existence of a connection on the principal bundle",
+      "Choice of local trivialization for the bundle",
+      "Regularity conditions on gauge transformations",
+      "Assumption that G acts effectively",
+      "Compactness of G (mentioned in step 3 but not in assumptions)",
+      "Non-degeneracy of the Killing form",
+      "Existence of matter fields (\u03c8 appears without definition)",
+      "Specific form of gauge transformation law for connection"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "1",
+        "issue": "The transformation law A_\u03bc \u2192 gA_\u03bcg\u207b\u00b9 + g(\u2202_\u03bcg\u207b\u00b9) is asserted without derivation and assumes a specific gauge choice"
+      },
+      {
+        "step": "3",
+        "issue": "Claims uniqueness of kinetic term form but only shows it's one possible gauge-invariant form; other invariants like Tr(F \u2227 *F) exist"
+      },
+      {
+        "step": "4",
+        "issue": "Minimal coupling is not uniquely determined by gauge invariance - higher derivative couplings can also be gauge invariant"
+      },
+      {
+        "step": "6",
+        "issue": "Claims J^\u03bd is the Noether current without proving current conservation or deriving its explicit form"
+      },
+      {
+        "step": "7",
+        "issue": "Explicitly acknowledges gap in justification and makes claims about force mediation without proof"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No proof of uniqueness - only shows existence of gauge-invariant forms",
+      "Missing derivation of connection transformation law",
+      "No demonstration that the proposed forms are the only possible ones",
+      "Gap in step 7 acknowledged but not filled",
+      "No proof that gauge invariance alone determines the connection",
+      "Missing analysis of topological constraints from bundle structure"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims gauge invariance 'uniquely determines' the form of gauge connection and curvature, but this is mathematically false. Gauge transformations form an equivalence class - there are infinitely many gauge-equivalent connections that yield the same physics.",
+      "The transformation law A \u2192 gAg\u207b\u00b9 + g(dg\u207b\u00b9) is incorrect for gauge fields. The correct transformation is A \u2192 g\u207b\u00b9Ag + g\u207b\u00b9dg, not the stated form.",
+      "The curvature formula F = dA + \u00bd[A, A] uses incorrect coefficients. For matrix-valued forms, it should be F = dA + A \u2227 A without the factor of \u00bd.",
+      "Claims D_\u03bcF^\u03bc\u03bd = J^\u03bd as Euler-Lagrange equations, but this is the Bianchi identity, not the field equations. The actual field equations are D_\u03bcF^\u03bc\u03bd = J^\u03bd only after applying the covariant derivative to the field strength."
+    ],
+    "assumption_conflicts": [
+      "Assumes gauge transformations 'uniquely determine' structures, conflicting with proof [18b9ea79f26d] which establishes that mathematical structures are determined by relationships and morphisms, not unique representations.",
+      "The claim of unique determination conflicts with the categorical principle from [102677deecdd] that objects are determined by relational structure rather than intrinsic properties."
+    ],
+    "beneficial_connections": [
+      "Connects to [49891606b8f0] on spontaneous symmetry breaking through gauge field mass generation mechanisms",
+      "Relates to [4e16485f588b] on external field control through gauge field manipulation",
+      "Links to [139ee0499c9e] regarding topological constraints in gauge theory through bundle topology"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof contains fundamental mathematical errors in gauge theory formulation. The transformation laws, curvature definitions, and uniqueness claims are incorrect. While the general framework of gauge theory is sound, the specific mathematical statements are flawed and would not pass peer review."
+  },
+  "confidence_score": 0.27,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.6
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.6
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": true,
+  "new_mathematics_needed": "",
+  "limitations": [
+    "The transition from classical gauge fields to quantum force mediators requires perturbative quantization, which is not rigorously justified",
+    "The existence and uniqueness of solutions to the Yang-Mills equations on general 4-manifolds is an open problem (Yang-Mills existence and mass gap)",
+    "The proof assumes but does not demonstrate that the perturbative expansion converges",
+    "The connection between virtual particle exchange and classical forces requires effective field theory arguments not made explicit",
+    "The proof is essentially classical and does not address quantum corrections",
+    "Applies only to gauge theories with compact Lie groups",
+    "Does not address spontaneous symmetry breaking which modifies the force structure",
+    "Assumes flat spacetime; coupling to gravity requires additional structure",
+    "Does not prove uniqueness beyond the assumptions made"
+  ],
+  "source_convergence": {
+    "structural_claim": "Gauge symmetries dictate the form of fundamental interactions, with forces arising from the requirement of local symmetry invariance",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Yang-Mills Theory",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Field Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Local gauge invariance mathematically determines the structure of force-mediating fields"
+      },
+      {
+        "result_id": "",
+        "result_name": "Discovery of the W and Z bosons",
+        "domain_id": "field_b",
+        "domain_name": "Particle Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Experimental confirmation that weak forces are mediated by gauge bosons arising from local symmetry"
+      },
+      {
+        "result_id": "",
+        "result_name": "Electroweak unification",
+        "domain_id": "field_b",
+        "domain_name": "Particle Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Electromagnetic and weak forces unified through gauge principle based on SU(2)\u00d7U(1) symmetry"
+      }
+    ],
+    "domains": [
+      "quantum_field_theory",
+      "particle_physics"
+    ],
+    "domain_names": [
+      "Quantum Field Theory",
+      "Particle Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.357,
+      "independence": 0.4,
+      "adversarial": 0.6,
+      "reproducibility": 0.5249999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.50585,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:25:50.597845+00:00",
+    "id": "2c6775787544"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.30756
+  }
+}

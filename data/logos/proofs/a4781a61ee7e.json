@@ -1,0 +1,354 @@
+{
+  "id": "a4781a61ee7e",
+  "convergence_id": "1d260de6cfc3",
+  "timestamp": "2026-05-02T12:43:51.483889+00:00",
+  "proposition": "For any category C with sufficient structure, there exists a duality functor D: C^op \u2192 C such that the pair (F, G) of functors forms an adjunction if and only if there exists a natural isomorphism \u03b7: Hom_C(F(X), Y) \u2245 Hom_C(X, G(Y)), and this adjunction induces a complete characterization of objects in C through their dual representations.",
+  "proposition_natural": "Duality principles are fundamental to mathematical structure, with complementary perspectives providing complete characterizations of mathematical objects.",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Algebraic structures"
+  ],
+  "apparatus_justification": "Category theory provides the natural framework for formalizing duality through contravariant functors, adjunctions, and the Yoneda lemma. Algebraic structures are needed to characterize the specific dualities in algebraic geometry (e.g., Spec-Global sections adjunction).",
+  "proof_natural": "**Proposition.** For any category C with sufficient structure, there exists a duality functor D: C^op \u2192 C such that the pair (F, G) of functors forms an adjunction if and only if there exists a natural isomorphism \u03b7: Hom_C(F(X), Y) \u2245 Hom_C(X, G(Y)), and this adjunction induces a complete characterization of objects in C through their dual representations.\n\n**Proof.** Let C be a category with finite limits and colimits, equipped with a symmetric monoidal structure (\u2297, I). We assume that every object X in C has a dual object X* with appropriate evaluation and coevaluation morphisms, that C is enriched over the category of abelian groups, that Hom-sets in C form representable functors, and that the duality functor preserves the monoidal structure up to natural isomorphism.\n\nWe begin by defining the duality functor D: C^op \u2192 C by setting D(X) = X* for objects and D(f^op) = f* for morphisms, where f*: Y* \u2192 X* is the dual morphism induced by the monoidal structure. This defines a contravariant functor by the properties of dual objects.\n\nFor any adjunction (F, G) with F: C \u2192 D and G: D \u2192 C, the defining property of adjoint functors provides a natural bijection \u03c6_{X,Y}: Hom_D(F(X), Y) \u2192 Hom_C(X, G(Y)). The unit \u03b7: Id_C \u2192 GF and counit \u03b5: FG \u2192 Id_D of this adjunction necessarily satisfy the triangle identities by the Adjoint Functor Theorem.\n\nThe duality functor D induces a natural isomorphism Hom_C(X, Y) \u2245 Hom_C(Y*, X*), which follows from the properties of dual objects in monoidal categories. When restricted to the full subcategory of reflexive objects (those satisfying X \u2245 X**), the functor D induces an equivalence of categories. This is a consequence of Tannaka-Krein reconstruction applied to our monoidal structure.\n\nAs a concrete instance, for schemes X over a base S, the duality between coherent sheaves and Cartier divisors yields D(F) = Hom(F, O_X). The Grothendieck-Riemann-Roch theorem establishes this duality for proper morphisms, providing geometric content to our abstract framework.\n\n[Note: The notion of 'complete characterization' requires formal clarification to make the final claim rigorous.]\n\nIf we define complete characterization as the property that X \u2245 Y if and only if Hom(Z, X) \u2245 Hom(Z, Y) and Hom(X, Z) \u2245 Hom(Y, Z) for all objects Z, then the Yoneda lemma ensures this property holds. Indeed, the Yoneda lemma states that natural transformations between representable functors correspond bijectively to morphisms between the representing objects, thus ensuring that objects are completely determined by their morphism structure.\n\nTherefore, the duality functor D, together with the adjunction structure and the Yoneda embedding, provides a complete characterization of objects in C through their dual representations. This completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.CategoryTheory.Category.Basic\nimport Mathlib.CategoryTheory.Functor.Basic\nimport Mathlib.CategoryTheory.NatTrans\nimport Mathlib.CategoryTheory.Adjunction.Basic\nimport Mathlib.CategoryTheory.Yoneda\nimport Mathlib.CategoryTheory.Opposites\n\n/-- A category with sufficient structure for duality -/\nclass HasDualityStructure (C : Type*) [Category C] where\n  dual : C \u2192 C\n  dualMorphism : \u2200 {X Y : C}, (X \u27f6 Y) \u2192 (dual Y \u27f6 dual X)\n  dualityIso : \u2200 {X Y : C}, (X \u27f6 Y) \u2243 (dual Y \u27f6 dual X)\n\nvariable {C D : Type*} [Category C] [Category D] [HasDualityStructure C]\n\n/-- The duality functor D: C^op \u2192 C -/\ndef dualityFunctor : C\u1d52\u1d56 \u2964 C where\n  obj X := HasDualityStructure.dual X.unop\n  map f := HasDualityStructure.dualMorphism f.unop\n  map_id := sorry -- Need axioms about dualMorphism preserving identity\n  map_comp := sorry -- Need axioms about dualMorphism preserving composition\n\n/-- Complete characterization property for objects -/\ndef CompleteCharacterization (C : Type*) [Category C] : Prop :=\n  \u2200 (X Y : C), (\u2200 Z : C, (Z \u27f6 X) \u2243 (Z \u27f6 Y)) \u2192 (\u2200 Z : C, (X \u27f6 Z) \u2243 (Y \u27f6 Z)) \u2192 (X \u2245 Y)\n\n/-- Main theorem: Adjunction characterization and duality -/\ntheorem adjunction_duality_characterization\n  (F : C \u2964 D) (G : D \u2964 C) :\n  (F \u22a3 G) \u2194 (\u2200 X Y, (F.obj X \u27f6 Y) \u2243 (X \u27f6 G.obj Y)) :=\nby\n  constructor\n  \u00b7 intro adj X Y\n    exact adj.homEquiv X Y\n  \u00b7 intro h\n    apply Adjunction.mkOfHomEquiv\n    exact \u27e8h, sorry\u27e9 -- Need to prove naturality conditions\n\n/-- The unit and counit satisfy triangle identities -/\nlemma triangle_identities (F : C \u2964 D) (G : D \u2964 C) (adj : F \u22a3 G) :\n  (\u2200 X, F.map (adj.unit.app X) \u226b adj.counit.app (F.obj X) = \ud835\udfd9 (F.obj X)) \u2227\n  (\u2200 Y, adj.unit.app (G.obj Y) \u226b G.map (adj.counit.app Y) = \ud835\udfd9 (G.obj Y)) :=\n\u27e8adj.left_triangle, adj.right_triangle\u27e9\n\n/-- Natural isomorphism for duality functor -/\nlemma duality_hom_iso (X Y : C) :\n  (X \u27f6 Y) \u2243 (HasDualityStructure.dual Y \u27f6 HasDualityStructure.dual X) :=\nHasDualityStructure.dualityIso\n\n/-- Reflexive objects where X \u2245 X** -/\ndef IsReflexive (X : C) : Prop :=\n  X \u2245 HasDualityStructure.dual (HasDualityStructure.dual X)\n\n/-- The duality functor induces equivalence on reflexive objects -/\ntheorem duality_equivalence_reflexive :\n  sorry -- Requires Tannaka-Krein reconstruction theory\n\n/-- Concrete instance for schemes (placeholder) -/\ntheorem schemes_duality_example :\n  sorry -- Requires Grothendieck-Riemann-Roch theorem\n\n/-- Complete characterization via Yoneda -/\ntheorem yoneda_complete_characterization (C : Type*) [Category C] :\n  CompleteCharacterization C :=\nfun X Y hom_equiv_left hom_equiv_right => by\n  -- Apply Yoneda lemma\n  have h1 : yoneda.obj X \u2245 yoneda.obj Y := by\n    apply NatIso.ofComponents\n    intro Z\n    exact hom_equiv_left Z\n    sorry -- Need to verify naturality\n  -- Extract isomorphism from Yoneda embedding\n  exact yoneda.map_injective h1\n\n/-- Main theorem combining all results -/\ntheorem main_duality_theorem (C : Type*) [Category C] [HasDualityStructure C] :\n  (\u2203 (D : C\u1d52\u1d56 \u2964 C), D = dualityFunctor) \u2227\n  (\u2200 (F : C \u2964 D) (G : D \u2964 C), (F \u22a3 G) \u2194 (\u2200 X Y, (F.obj X \u27f6 Y) \u2243 (X \u27f6 G.obj Y))) \u2227\n  CompleteCharacterization C :=\n\u27e8\u27e8dualityFunctor, rfl\u27e9, adjunction_duality_characterization, yoneda_complete_characterization C\u27e9",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the duality functor D: C^op \u2192 C by D(X) = X* for objects and D(f^op) = f* for morphisms, where f*: Y* \u2192 X* is the dual morphism",
+      "justification": "Definition of contravariant functor using the assumed dual object structure",
+      "dependencies": [
+        "Assumption of dual objects existing in C"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "For any adjunction (F, G) with F: C \u2192 D and G: D \u2192 C, there exists a natural bijection \u03c6_{X,Y}: Hom_D(F(X), Y) \u2192 Hom_C(X, G(Y))",
+      "justification": "Definition of adjoint functors",
+      "dependencies": [
+        "Standard category theory definition"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The unit \u03b7: Id_C \u2192 GF and counit \u03b5: FG \u2192 Id_D of the adjunction satisfy the triangle identities",
+      "justification": "Adjoint Functor Theorem requirements",
+      "dependencies": [
+        "Adjoint Functor Theorem",
+        "Step 2"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "For the duality functor D, we have a natural isomorphism Hom_C(X, Y) \u2245 Hom_C(Y*, X*)",
+      "justification": "Properties of dual objects in monoidal categories",
+      "dependencies": [
+        "Assumption of symmetric monoidal structure"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The functor D induces an equivalence of categories when restricted to the full subcategory of reflexive objects (where X \u2245 X**)",
+      "justification": "Tannaka-Krein reconstruction applied to the monoidal structure",
+      "dependencies": [
+        "Tannaka-Krein Duality",
+        "Step 4"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "For schemes X over a base S, the duality between coherent sheaves and Cartier divisors provides a concrete instance where D(F) = Hom(F, O_X)",
+      "justification": "Grothendieck-Riemann-Roch theorem establishes this duality for proper morphisms",
+      "dependencies": [
+        "Grothendieck-Riemann-Roch Theorem",
+        "Algebraic geometry machinery"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "[Gap: The notion of 'complete characterization' requires a formal definition of when dual perspectives jointly determine an object up to isomorphism]",
+      "justification": "This step requires formalizing what 'complete characterization' means in arbitrary categories",
+      "dependencies": [
+        "Steps 1-6"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "If we define complete characterization as the property that X \u2245 Y if and only if Hom(Z, X) \u2245 Hom(Z, Y) and Hom(X, Z) \u2245 Hom(Y, Z) for all Z, then the Yoneda lemma ensures this holds",
+      "justification": "Yoneda lemma states that natural transformations between representable functors correspond to morphisms",
+      "dependencies": [
+        "Yoneda lemma",
+        "Step 7"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Adjoint Functor Theorem",
+      "authors": "Freyd, P.",
+      "year": "1964",
+      "field": "Category Theory",
+      "statement": "A functor G: D \u2192 C has a left adjoint if and only if it preserves all limits and satisfies the solution set condition",
+      "usage": "Establishes the fundamental relationship between adjunctions and universal properties"
+    },
+    {
+      "name": "Tannaka-Krein Duality",
+      "authors": "Tannaka, T.; Krein, M.",
+      "year": "1939-1949",
+      "field": "Category Theory/Representation Theory",
+      "statement": "A compact group can be reconstructed from its category of finite-dimensional representations",
+      "usage": "Provides the framework for reconstructing objects from their representation categories"
+    },
+    {
+      "name": "Grothendieck-Riemann-Roch Theorem",
+      "authors": "Grothendieck, A.",
+      "year": "1957",
+      "field": "Algebraic Geometry",
+      "statement": "For a proper morphism f: X \u2192 Y, the Chern character provides a natural transformation between K-theory and cohomology",
+      "usage": "Establishes duality between topological and algebraic invariants"
+    },
+    {
+      "name": "Yoneda Lemma",
+      "authors": "Yoneda, N.",
+      "year": "1954",
+      "field": "Category Theory",
+      "statement": "For any functor F: C \u2192 Set and object X in C, natural transformations from Hom(X,-) to F are in bijection with F(X)",
+      "usage": "Ensures that objects are determined by their morphism structure"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "C is a category with finite limits and colimits",
+    "C has a symmetric monoidal structure with tensor product \u2297 and unit object I",
+    "Every object in C has a dual object X* with evaluation and coevaluation morphisms",
+    "The category C is enriched over the category of abelian groups",
+    "Hom-sets in C form representable functors",
+    "The duality functor D preserves the monoidal structure up to natural isomorphism",
+    "Objects in C admit a notion of 'complete characterization' via their morphism structure"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Initial proposition statement",
+        "issue": "The phrase 'sufficient structure' is completely undefined. The proof later assumes specific structures (monoidal, limits/colimits, enrichment) but these are not implied by 'sufficient structure'",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Replace 'sufficient structure' with the explicit list of required structures"
+      },
+      {
+        "step": "Definition of duality functor D",
+        "issue": "The proof assumes every object has a dual X* but this is false even in many monoidal categories. Not all objects in arbitrary monoidal categories have duals",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Restrict to compact closed categories or rigid monoidal categories"
+      },
+      {
+        "step": "Adjunction characterization",
+        "issue": "The proof states the adjunction property as if proving it, but this is just the definition of adjunction. No actual proof is given for the 'if and only if' claim",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Actually prove both directions of the equivalence"
+      },
+      {
+        "step": "Application of Adjoint Functor Theorem",
+        "issue": "The Adjoint Functor Theorem is cited but never actually used. The proof doesn't verify the solution set condition or limit preservation",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Either use the theorem properly or remove the citation"
+      },
+      {
+        "step": "Tannaka-Krein reconstruction claim",
+        "issue": "Tannaka-Krein duality is about reconstructing groups from their representations, not about equivalences in arbitrary monoidal categories. This is a complete misapplication",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Remove this claim entirely or cite appropriate categorical duality theorems"
+      },
+      {
+        "step": "Grothendieck-Riemann-Roch example",
+        "issue": "GRR is about Chern characters and K-theory, not about duality of coherent sheaves and Cartier divisors. This example is irrelevant and incorrectly stated",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Use Serre duality or remove the geometric example"
+      },
+      {
+        "step": "Complete characterization definition",
+        "issue": "The definition given is just the statement that the Yoneda embedding is faithful, not a 'complete characterization through dual representations' as claimed",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Define what 'complete characterization through dual representations' actually means"
+      }
+    ],
+    "hidden_assumptions": [
+      "That the duality functor D exists for all categories with the stated structure",
+      "That F and G in the adjunction statement have anything to do with the duality functor D",
+      "That 'dual morphism f*' is well-defined without specifying how it's constructed",
+      "That reflexive objects form a full subcategory",
+      "That the enrichment over abelian groups is compatible with the monoidal structure"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes the existence of a duality functor with specific properties to prove the existence of a duality functor with those properties",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to work for 'any category C with sufficient structure' but actually requires very specific structures (rigid monoidal, abelian enriched). Even then, it doesn't prove what it claims about complete characterization",
+    "citation_issues": [
+      "Adjoint Functor Theorem is cited but not used",
+      "Tannaka-Krein duality is completely misapplied - it's about compact groups, not general categories",
+      "Grothendieck-Riemann-Roch is about K-theory and Chern characters, not coherent sheaf duality",
+      "Yoneda lemma is used correctly but doesn't prove what the author claims"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed, containing multiple critical errors including undefined terms, misapplied theorems, and circular reasoning. The central claim about duality functors and complete characterization is never actually proven, and the relationship between the various parts is unclear.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish properties of duality functors and adjunctions separately, but fails to prove the claimed equivalence between adjunctions and natural isomorphisms, and never establishes what 'complete characterization' means or that it follows from the duality",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "C is a rigid monoidal category (required for dual objects to exist for all objects)",
+      "The category D in Step 2 is well-defined and related to the duality functor",
+      "Proper morphisms assumption for Grothendieck-Riemann-Roch application",
+      "C has enough structure for Tannaka-Krein reconstruction to apply",
+      "The monoidal structure is closed (required for internal homs to exist)"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "2",
+        "issue": "Introduces category D without defining it or relating it to the duality functor D from Step 1, creating confusion between two different uses of D"
+      },
+      {
+        "step": "4",
+        "issue": "Claims natural isomorphism Hom_C(X,Y) \u2245 Hom_C(Y*,X*) but this reverses both arguments, which is not generally true for duality functors"
+      },
+      {
+        "step": "5",
+        "issue": "Tannaka-Krein reconstruction applies to specific contexts (like representation theory) and requires additional structure not established"
+      },
+      {
+        "step": "6",
+        "issue": "Grothendieck-Riemann-Roch is about characteristic classes, not about duality between coherent sheaves and Cartier divisors; this appears to confuse different dualities"
+      },
+      {
+        "step": "8",
+        "issue": "The definition given is just the Yoneda embedding being faithful, not a 'complete characterization' via duality, and doesn't use the duality functor at all"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Never proves the claimed equivalence between adjunctions (F,G) and natural isomorphisms involving duality",
+      "Step 7 acknowledges the gap in defining 'complete characterization' but Step 8 doesn't actually fill this gap",
+      "No connection established between the duality functor D and the adjunction (F,G)",
+      "The proposition claims a characterization 'through dual representations' but this is never formalized or proven"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims 'complete characterization of objects in C through their dual representations' but fails to provide a rigorous definition until the very end, making the main proposition vacuous",
+      "The proof conflates adjunctions between arbitrary categories with duality functors D: C^op \u2192 C, which are fundamentally different concepts - adjunctions don't require duality structure",
+      "Claims that D(f^op) = f* for morphisms without establishing that dual morphisms exist for all morphisms in C, only for objects with duals",
+      "The concrete example about schemes and Cartier divisors is incorrect - Hom(F, O_X) doesn't generally provide a duality functor in the claimed sense"
+    ],
+    "assumption_conflicts": [
+      "Assumes every object has a dual object X* with evaluation/coevaluation morphisms, which contradicts the generality claimed in existing proofs [102677deecdd] and [18b9ea79f26d] about arbitrary categories",
+      "Requires symmetric monoidal structure which is much stronger than the 'sufficient structure' claimed in the proposition",
+      "The enrichment over abelian groups assumption is unnecessarily restrictive and conflicts with the categorical generality of existing proofs"
+    ],
+    "beneficial_connections": [
+      "Connects to [ac4dffe94cbb] and [bb82cee3c953] on duality principles, though with significant technical gaps",
+      "Relates to the Yoneda lemma applications in [102677deecdd] regarding object characterization through morphisms",
+      "Could potentially strengthen [ac4dffe94cbb] if the technical issues were resolved and the scope properly restricted"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof contains fundamental category theory errors and makes claims that are either false or trivial. The gap about 'complete characterization' is acknowledged but not properly addressed. The proposition tries to connect adjunctions with duality in a way that doesn't make mathematical sense. Needs complete restructuring to be viable."
+  },
+  "confidence_score": 0.27,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.6
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.6
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": true,
+  "new_mathematics_needed": "",
+  "limitations": [
+    "The precise meaning of 'complete characterization' in arbitrary categories needs formal definition",
+    "The connection between the abstract categorical duality and specific dualities in algebraic geometry requires more detailed bridging",
+    "The conditions under which a category admits a satisfactory duality functor are not fully specified",
+    "The proof assumes existence of dual objects without constructing them",
+    "The relationship between different types of dualities (categorical, algebraic-geometric) is established by example rather than general principle",
+    "The proof does not address non-reflexive objects where X \u2260 X**"
+  ],
+  "source_convergence": {
+    "structural_claim": "Duality principles are fundamental to mathematical structure, with complementary perspectives providing complete characterizations of mathematical objects.",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Grothendieck-Riemann-Roch Theorem",
+        "domain_id": "field_a",
+        "domain_name": "Algebraic Geometry",
+        "link_type": "direct",
+        "structural_conclusion": "Topological and algebraic invariants are fundamentally connected through characteristic classes, establishing geometric-algebraic duality"
+      },
+      {
+        "result_id": "",
+        "result_name": "Adjoint Functor Theorem",
+        "domain_id": "field_b",
+        "domain_name": "Category Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Adjunctions capture fundamental mathematical dualities where optimization problems and solutions form universal complementary patterns"
+      },
+      {
+        "result_id": "",
+        "result_name": "Tannaka-Krein Duality",
+        "domain_id": "field_b",
+        "domain_name": "Category Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Algebraic structures can be completely reconstructed from their representation categories, establishing object-representation duality"
+      }
+    ],
+    "domains": [
+      "algebraic_geometry",
+      "category_theory"
+    ],
+    "domain_names": [
+      "Algebraic Geometry",
+      "Category Theory"
+    ],
+    "ea_scores": {
+      "strength": 0.294,
+      "independence": 0.7,
+      "adversarial": 0.3,
+      "reproducibility": 0.5249999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.50195,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_275ec92f734f",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T18:24:03.502410+00:00",
+    "id": "1d260de6cfc3"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.278325
+  }
+}

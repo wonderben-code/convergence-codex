@@ -1,0 +1,13 @@
+{
+  "proof_id": "e6bd8cc29b5a",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: Rigorous treatment of operator-valued distributions on curved spacetime, regularization of infinite vacuum energy, and mathematical framework for spontaneous symmetry breaking in infinite-dimensional Hilbert spaces",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

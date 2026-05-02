@@ -1,0 +1,38 @@
+{
+  "proof_id": "5531d4bca0db",
+  "timestamp": "2026-05-02T12:59:16.873247+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "categorical - This could capture the universal property of renormalization group flow, but the convergence is fundamentally about a shared behavioral axiom rather than a categorical characterization"
+      ],
+      "reasoning": "The convergence identifies a shared principle (asymptotic freedom) that manifests in both the mathematical formalism of QFT and experimental particle physics. The claim is about a common behavior pattern - coupling strength decreasing with energy - rather than structural equivalence between mathematical objects."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Differential geometry, Functional analysis, Algebraic structures",
+      "alternatives_considered": [],
+      "reasoning": "Non-Abelian gauge theories are fundamentally about connections on principal bundles over spacetime manifolds, requiring differential geometry. The renormalization group flow analysis for asymptotic freedom requires functional analysis of operators on infinite-dimensional spaces. The gauge group structure and Lie algebras necessitate algebraic structures."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof calculates the one-loop quantum corrections to the gauge coupling in a non-Abelian gauge theory, showing that the beta function governing the running of the coupling is negative. This negative beta function implies that the coupling decreases logarithmically with increasing energy scale, establishing asymptotic freedom.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 9 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 2821 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "skipped",
+      "alternatives_considered": [],
+      "reasoning": "Lean formalisation not feasible: This proof requires extensive quantum field theory and gauge theory infrastructure that is completely absent from Mathlib. The mathematical objects (gauge fields, coupling constants, beta functions, renormalization) and physical concepts (asymptotic freedom, running couplings) would need to be built from scratch. The proof relies on deep results from theoretical physics that have no formal mathematical foundation in Mathlib's current scope."
+    }
+  ]
+}

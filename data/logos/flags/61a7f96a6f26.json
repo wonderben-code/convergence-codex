@@ -1,0 +1,15 @@
+{
+  "proof_id": "61a7f96a6f26",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A unified mathematical framework treating electronic and classical wave systems on equal footing is needed. Current proofs rely on physical arguments (Kubo formula, scattering theory) that need rigorous mathematical formulation. The extension from quantum to classical systems requires new mathematical structures beyond standard quantum mechanics.",
+    "Difficulty assessed as challenging",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

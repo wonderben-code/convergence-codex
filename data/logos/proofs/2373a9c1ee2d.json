@@ -1,0 +1,368 @@
+{
+  "id": "2373a9c1ee2d",
+  "convergence_id": "3f628048c0f8",
+  "timestamp": "2026-05-02T12:56:46.875279+00:00",
+  "proposition": "Let (G, \u00b7) be a group acting on a space X with a G-invariant measure \u03bc. If there exists a measurable subset A \u2282 X such that g\u00b7A \u2260 A for some g \u2208 G (symmetry breaking), then the space L\u00b2(X/G, \u03bc\u0303) of square-integrable functions on the quotient admits collective modes {\u03c8\u2099} whose spectral properties differ fundamentally from those of L\u00b2(X, \u03bc).",
+  "proposition_natural": "Symmetry breaking leads to emergent collective modes with properties fundamentally different from the underlying constituents",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Algebraic structures",
+    "Functional analysis"
+  ],
+  "apparatus_justification": "Category theory provides the natural framework for formalizing structural convergences across domains through functors and natural transformations. Algebraic structures capture symmetry breaking via group actions and quotient structures, while functional analysis provides the spectral theory needed to characterize emergent collective modes in both quantum fields and acoustic waves.",
+  "proof_natural": "**Proposition.** Let $(G, \\cdot)$ be a group acting on a space $X$ with a $G$-invariant measure $\\mu$. If there exists a measurable subset $A \\subset X$ such that $g \\cdot A \\neq A$ for some $g \\in G$ (symmetry breaking), then the space $L^2(X/G, \\tilde{\\mu})$ of square-integrable functions on the quotient admits collective modes $\\{\\psi_n\\}$ whose spectral properties differ fundamentally from those of $L^2(X, \\mu)$.\n\n**Proof.** We assume that $G$ is a locally compact topological group acting measurably on a measurable space $X$ with $\\sigma$-algebra $\\Sigma$. Let $\\mu$ be a $G$-invariant measure on $X$, and suppose the quotient $X/G$ admits a measurable structure with well-defined quotient measure $\\tilde{\\mu}$. We further assume that the symmetry breaking is spontaneous, meaning the ground state does not respect the full symmetry of the system.\n\nThe $G$-invariance of $\\mu$ induces a unitary representation $U_g: L^2(X, \\mu) \\to L^2(X, \\mu)$ defined by $(U_g f)(x) = f(g^{-1} \\cdot x)$. Before symmetry breaking, the Hamiltonian $H_0$ commutes with all $U_g$, that is, $[H_0, U_g] = 0$ for all $g \\in G$. By the Peter-Weyl theorem for compact groups (or its generalization for locally compact groups), the spectrum of $H_0$ decomposes into irreducible representations: $L^2(X, \\mu) = \\bigoplus_\\alpha V_\\alpha$, where each $V_\\alpha$ carries an irreducible representation of $G$.\n\nSymmetry breaking introduces a perturbation $V$ such that $[V, U_g] \\neq 0$ for some $g \\in G$. Consequently, the perturbed Hamiltonian $H = H_0 + V$ no longer commutes with the full group action. [Note: A complete proof requires establishing that the ground state $|\\Omega\\rangle$ of $H$ satisfies $U_g|\\Omega\\rangle \\neq |\\Omega\\rangle$ for some $g$, which typically follows from effective potential analysis showing the symmetric state is unstable.]\n\nBy the orbit-stabilizer theorem, the quotient space $X/G_\\Omega$, where $G_\\Omega = \\{g \\in G : U_g|\\Omega\\rangle = |\\Omega\\rangle\\}$ is the stabilizer subgroup, parametrizes the degenerate ground states. Collective modes arise as excitations connecting different points in this quotient space, with creation operators $a^\\dagger(k)$ generating states $|k\\rangle = a^\\dagger(k)|\\Omega\\rangle$.\n\nThe crucial distinction emerges in the dispersion relations. By Goldstone's theorem, spontaneous breaking of a continuous symmetry implies the existence of massless excitations. [Note: A rigorous proof that $\\omega(k) \\to 0$ as $k \\to 0$ for these Goldstone modes requires detailed analysis of the effective action.] The collective modes exhibit a dispersion relation $\\omega(k) \\sim |k|$ for small $k$, fundamentally different from single-particle excitations which typically satisfy $\\omega(k) \\sim \\sqrt{k^2 + m^2}$ for massive particles.\n\nTherefore, the collective modes in $L^2(X/G, \\tilde{\\mu})$ possess spectral properties\u2014specifically, their linear dispersion relation and massless character\u2014that differ fundamentally from the constituent excitations in $L^2(X, \\mu)$. This completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.MeasureTheory.Group.Action\nimport Mathlib.MeasureTheory.Function.L2Space\nimport Mathlib.GroupTheory.GroupAction.Quotient\nimport Mathlib.Analysis.InnerProductSpace.Basic\nimport Mathlib.RepresentationTheory.Basic\n\n/-- A group action on a measurable space with an invariant measure -/\nstructure InvariantAction (G X : Type*) [Group G] [MeasurableSpace X] extends\n  MulAction G X where\n  \u03bc : Measure X\n  measure_invariant : \u2200 g : G, Measure.map (fun x => g \u2022 x) \u03bc = \u03bc\n\n/-- Unitary representation induced by measure-preserving group action -/\ndef unitaryRep {G X : Type*} [Group G] [MeasurableSpace X] \n  (act : InvariantAction G X) : G \u2192 L\u00b2(X, act.\u03bc) \u2192L[\u2102] L\u00b2(X, act.\u03bc) :=\n  sorry -- Need construction of unitary operators from measure-preserving actions\n\n/-- A Hamiltonian operator on L\u00b2(X, \u03bc) -/\nstructure Hamiltonian (X : Type*) [MeasurableSpace X] (\u03bc : Measure X) where\n  op : L\u00b2(X, \u03bc) \u2192L[\u2102] L\u00b2(X, \u03bc)\n  selfAdjoint : IsSelfAdjoint op\n\n/-- G-symmetric Hamiltonian -/\ndef isGSymmetric {G X : Type*} [Group G] [MeasurableSpace X]\n  (act : InvariantAction G X) (H : Hamiltonian X act.\u03bc) : Prop :=\n  \u2200 g : G, H.op \u2218L (unitaryRep act g) = (unitaryRep act g) \u2218L H.op\n\n/-- Symmetry breaking perturbation -/\nstructure SymmetryBreaking {G X : Type*} [Group G] [MeasurableSpace X]\n  (act : InvariantAction G X) where\n  V : L\u00b2(X, act.\u03bc) \u2192L[\u2102] L\u00b2(X, act.\u03bc)\n  breaks_symmetry : \u2203 g : G, V \u2218L (unitaryRep act g) \u2260 (unitaryRep act g) \u2218L V\n\n/-- Ground state of a Hamiltonian -/\nstructure GroundState {X : Type*} [MeasurableSpace X] {\u03bc : Measure X}\n  (H : Hamiltonian X \u03bc) where\n  state : L\u00b2(X, \u03bc)\n  eigenstate : H.op state = E \u2022 state\n  E : \u2102\n  minimal_energy : \u2200 \u03c8 : L\u00b2(X, \u03bc), \u2200 \u03bb : \u2102, H.op \u03c8 = \u03bb \u2022 \u03c8 \u2192 E.re \u2264 \u03bb.re\n\n/-- Stabilizer subgroup of the ground state -/\ndef groundStateStabilizer {G X : Type*} [Group G] [MeasurableSpace X]\n  {act : InvariantAction G X} {H : Hamiltonian X act.\u03bc}\n  (\u03a9 : GroundState H) : Subgroup G :=\n  { carrier := {g : G | unitaryRep act g \u03a9.state = \u03a9.state}\n    mul_mem' := sorry -- Follows from group properties\n    one_mem' := sorry -- Identity preserves the state\n    inv_mem' := sorry } -- Inverse property\n\n/-- Collective modes on quotient space -/\nstructure CollectiveMode {G X : Type*} [Group G] [MeasurableSpace X]\n  {act : InvariantAction G X} {H : Hamiltonian X act.\u03bc}\n  (\u03a9 : GroundState H) where\n  -- Quotient by stabilizer subgroup\n  quotient_space : Type* := G \u29f8 (groundStateStabilizer \u03a9)\n  -- Creation operators indexed by momentum\n  creation_op : \u211d \u2192 L\u00b2(X, act.\u03bc) \u2192L[\u2102] L\u00b2(X, act.\u03bc)\n  -- Dispersion relation\n  dispersion : \u211d \u2192 \u211d\n  -- Goldstone property: \u03c9(k) \u2192 0 as k \u2192 0\n  goldstone_limit : Filter.Tendsto dispersion (\ud835\udcdd 0) (\ud835\udcdd 0)\n\n/-- Main theorem: Symmetry breaking leads to collective modes with different spectral properties -/\ntheorem symmetry_breaking_collective_modes\n  {G X : Type*} [Group G] [MeasurableSpace X]\n  (act : InvariantAction G X)\n  (H\u2080 : Hamiltonian X act.\u03bc)\n  (h_symmetric : isGSymmetric act H\u2080)\n  (V : SymmetryBreaking act)\n  (A : Set X) (hA : MeasurableSet A)\n  (h_breaks : \u2203 g : G, (fun x => g \u2022 x) '' A \u2260 A) :\n  let H := \u27e8H\u2080.op + V.V, sorry\u27e9 -- Perturbed Hamiltonian\n  \u2203 (\u03a9 : GroundState H) (modes : CollectiveMode \u03a9),\n    -- The quotient space is non-trivial\n    (\u2203 g : G, g \u2209 groundStateStabilizer \u03a9) \u2227\n    -- Collective modes have different spectral properties\n    (\u2200 k : \u211d, k \u2260 0 \u2192 modes.dispersion k \u2260 k^2 + 1) := by\n  sorry -- Main proof requires:\n        -- 1. Peter-Weyl decomposition (not in Mathlib)\n        -- 2. Proof that symmetric ground state is unstable\n        -- 3. Construction of Goldstone modes\n        -- 4. Rigorous derivation of dispersion relation",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The G-invariance of \u03bc induces a unitary representation U_g: L\u00b2(X, \u03bc) \u2192 L\u00b2(X, \u03bc) by (U_g f)(x) = f(g\u207b\u00b9\u00b7x)",
+      "justification": "Standard construction from measure-preserving group actions",
+      "dependencies": [
+        "Assumption of G-invariant measure"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Before symmetry breaking, the Hamiltonian H\u2080 commutes with all U_g, i.e., [H\u2080, U_g] = 0 for all g \u2208 G",
+      "justification": "Definition of G-symmetric Hamiltonian",
+      "dependencies": [
+        "Physical interpretation of symmetry"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The spectrum of H\u2080 decomposes into irreducible representations of G: L\u00b2(X, \u03bc) = \u2295_\u03b1 V_\u03b1 where each V_\u03b1 carries an irrep of G",
+      "justification": "Peter-Weyl theorem for compact groups, generalized decomposition for locally compact groups",
+      "dependencies": [
+        "Step 2",
+        "Representation theory of locally compact groups"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "Symmetry breaking introduces a perturbation V such that [V, U_g] \u2260 0 for some g \u2208 G",
+      "justification": "Mathematical characterization of symmetry breaking",
+      "dependencies": [
+        "Definition of symmetry breaking"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The perturbed Hamiltonian H = H\u2080 + V no longer commutes with the full group action",
+      "justification": "Direct calculation from non-commutativity of V with U_g",
+      "dependencies": [
+        "Steps 2, 4"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "[Gap: Need to establish that the ground state |\u03a9\u27e9 of H satisfies U_g|\u03a9\u27e9 \u2260 |\u03a9\u27e9 for some g]",
+      "justification": "This requires proving that the symmetric state is unstable - typically shown via effective potential analysis",
+      "dependencies": [
+        "Spontaneous symmetry breaking mechanism"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The quotient space X/G_\u03a9 where G_\u03a9 = {g \u2208 G : U_g|\u03a9\u27e9 = |\u03a9\u27e9} parametrizes degenerate ground states",
+      "justification": "Orbit-stabilizer theorem applied to the ground state",
+      "dependencies": [
+        "Step 6",
+        "Group theory"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Collective modes arise as excitations connecting different points in X/G_\u03a9, with creation operators a\u2020(k) creating states |k\u27e9 = a\u2020(k)|\u03a9\u27e9",
+      "justification": "Standard construction of Goldstone modes in quantum field theory",
+      "dependencies": [
+        "Step 7",
+        "Goldstone theorem"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "[Gap: Rigorous proof that \u03c9(k) \u2192 0 as k \u2192 0 for Goldstone modes requires detailed analysis of the effective action]",
+      "justification": "This is the key property distinguishing collective modes from constituent excitations",
+      "dependencies": [
+        "Goldstone theorem",
+        "Effective field theory"
+      ]
+    },
+    {
+      "step_number": 10,
+      "statement": "The dispersion relation \u03c9(k) of collective modes differs fundamentally from single-particle excitations: typically \u03c9(k) \u223c |k| for Goldstone modes vs \u03c9(k) \u223c k\u00b2 + m\u00b2 for massive particles",
+      "justification": "Comparison of spectral properties",
+      "dependencies": [
+        "Step 9",
+        "Single particle spectrum analysis"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Peter-Weyl Theorem",
+      "authors": "Peter, H. and Weyl, H.",
+      "year": "1927",
+      "field": "Representation Theory",
+      "statement": "The matrix coefficients of irreducible unitary representations form an orthonormal basis for L\u00b2(G) for compact groups G",
+      "usage": "Decomposition of Hilbert space into irreducible representations"
+    },
+    {
+      "name": "Goldstone Theorem",
+      "authors": "Goldstone, J.",
+      "year": "1961",
+      "field": "Quantum Field Theory",
+      "statement": "Spontaneous breaking of a continuous symmetry implies the existence of massless excitations",
+      "usage": "Existence and properties of collective modes"
+    },
+    {
+      "name": "Orbit-Stabilizer Theorem",
+      "authors": "Classical group theory",
+      "year": "19th century",
+      "field": "Group Theory",
+      "statement": "For a group action, |G| = |Orb(x)| \u00d7 |Stab(x)|",
+      "usage": "Characterizing the space of degenerate ground states"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "G is a locally compact topological group",
+    "X is a measurable space with \u03c3-algebra \u03a3",
+    "The action G \u00d7 X \u2192 X is measurable",
+    "\u03bc is a G-invariant measure on X",
+    "The quotient X/G admits a measurable structure",
+    "The quotient measure \u03bc\u0303 on X/G is well-defined",
+    "Collective modes are identified with eigenfunctions of relevant self-adjoint operators",
+    "Fundamental difference in properties means distinct spectral characteristics",
+    "The symmetry breaking is spontaneous (ground state does not respect full symmetry)"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Quotient measure construction",
+        "issue": "The proof assumes X/G admits a measurable structure with well-defined quotient measure \u03bc\u0303 without establishing when this is possible. For non-free actions, the quotient may not even be a manifold, let alone admit a natural measure.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need to restrict to free and proper actions or provide explicit construction of quotient measure"
+      },
+      {
+        "step": "Peter-Weyl decomposition",
+        "issue": "Peter-Weyl theorem applies to compact groups, but proof only assumes locally compact. The generalization mentioned is not standard Peter-Weyl and requires different machinery (Plancherel theorem).",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Either restrict to compact groups or properly cite and use Plancherel theorem for locally compact groups"
+      },
+      {
+        "step": "Definition of collective modes",
+        "issue": "The proof never rigorously defines what 'collective modes' are or how they relate to functions on X/G. The creation operators a\u2020(k) appear without definition or construction.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Provide rigorous mathematical definition of collective modes and their relationship to L\u00b2(X/G,\u03bc\u0303)"
+      },
+      {
+        "step": "Goldstone theorem application",
+        "issue": "Goldstone's theorem is a physics result about quantum field theories, not a mathematical theorem about general group actions. Its application here lacks mathematical rigor.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Replace with rigorous mathematical analysis or restrict to specific physical systems where Goldstone theorem applies"
+      },
+      {
+        "step": "Dispersion relation claim",
+        "issue": "The proof claims \u03c9(k) ~ |k| without defining what \u03c9 and k are mathematically. These appear to be physics notation without mathematical meaning in the general context.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Define dispersion relations mathematically in terms of spectral properties of operators"
+      },
+      {
+        "step": "Connection between L\u00b2(X,\u03bc) and L\u00b2(X/G,\u03bc\u0303)",
+        "issue": "The proof never establishes any mathematical relationship between these two spaces or explains how functions on the quotient relate to the original space.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Establish proper mathematical connection via quotient maps and induced representations"
+      }
+    ],
+    "hidden_assumptions": [
+      "The group action is free and proper (needed for quotient to be well-behaved)",
+      "The Hamiltonian H\u2080 exists as a self-adjoint operator on L\u00b2(X,\u03bc)",
+      "The perturbation V is bounded or at least H\u2080+V remains self-adjoint",
+      "The ground state |\u03a9\u27e9 exists and is unique up to symmetry",
+      "Physical concepts like 'dispersion relation' and 'massless excitations' have mathematical meaning",
+      "The stabilizer subgroup G_\u03a9 is closed in G",
+      "The quotient X/G_\u03a9 is homeomorphic to a subset of X/G"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes collective modes exist on L\u00b2(X/G,\u03bc\u0303) to prove that L\u00b2(X/G,\u03bc\u0303) admits collective modes. The existence of these modes is never established independently.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to work for any locally compact group acting on any measurable space with any symmetry breaking, but the arguments (Goldstone theorem, dispersion relations) only apply to specific physical systems with continuous symmetries.",
+    "citation_issues": [
+      "Peter-Weyl theorem doesn't apply to general locally compact groups as claimed",
+      "Goldstone theorem is not a mathematical theorem applicable to abstract group actions",
+      "Orbit-stabilizer theorem formula |G| = |Orb(x)| \u00d7 |Stab(x)| only holds for finite groups, not general locally compact groups"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof attempts to translate physics intuition about symmetry breaking into mathematical language but fails catastrophically. It conflates physical concepts with mathematical ones, assumes the existence of structures it should construct, and applies theorems outside their domains of validity.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish a framework for symmetry breaking and collective modes but fails to prove that spectral properties of L\u00b2(X/G, \u03bc\u0303) differ fundamentally from those of L\u00b2(X, \u03bc). It mostly discusses the original space L\u00b2(X, \u03bc) and its decomposition.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "H\u2080 is a self-adjoint operator on L\u00b2(X, \u03bc)",
+      "The perturbation V is a bounded or relatively bounded operator",
+      "H = H\u2080 + V is self-adjoint with domain issues resolved",
+      "The ground state |\u03a9\u27e9 exists and is unique (or has finite degeneracy)",
+      "The quotient space X/G has a well-defined Hilbert space structure",
+      "The collective modes {\u03c8\u2099} actually live in L\u00b2(X/G, \u03bc\u0303)",
+      "G acts properly on X to ensure quotient measurability",
+      "The measure \u03bc\u0303 is \u03c3-finite",
+      "Spectral theory applies to operators on L\u00b2(X/G, \u03bc\u0303)"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "3",
+        "issue": "Peter-Weyl theorem applies only to compact groups, and the generalization to locally compact groups requires additional conditions (unimodular, Type I, etc.) that are not verified"
+      },
+      {
+        "step": "4",
+        "issue": "The existence of perturbation V with [V, U_g] \u2260 0 doesn't follow from the existence of a set A with g\u00b7A \u2260 A. The connection between geometric symmetry breaking and operator non-commutativity is not established"
+      },
+      {
+        "step": "7",
+        "issue": "The orbit-stabilizer theorem doesn't directly imply that X/G_\u03a9 parametrizes degenerate ground states. This requires proving the ground state manifold has the claimed structure"
+      },
+      {
+        "step": "8",
+        "issue": "The construction of collective modes as excitations connecting different points in X/G_\u03a9 is not rigorous. The creation operators a\u2020(k) are introduced without proper definition or domain specification"
+      },
+      {
+        "step": "10",
+        "issue": "The dispersion relations \u03c9(k) \u223c |k| vs \u03c9(k) \u223c k\u00b2 + m\u00b2 are asserted without proof and don't establish fundamental differences in L\u00b2(X/G, \u03bc\u0303) vs L\u00b2(X, \u03bc)"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Never establishes that collective modes {\u03c8\u2099} actually belong to L\u00b2(X/G, \u03bc\u0303)",
+      "Fails to define what 'fundamental difference in spectral properties' means precisely",
+      "Steps 6 and 9 are explicitly marked as gaps and never filled",
+      "No rigorous connection between symmetry breaking in X and spectral properties of the quotient space",
+      "Missing proof that the quotient space L\u00b2(X/G, \u03bc\u0303) is well-defined as a Hilbert space",
+      "No demonstration that the collective modes have different spectral characteristics than functions in L\u00b2(X, \u03bc)"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims collective modes arise from symmetry breaking with dispersion \u03c9(k) ~ |k| for Goldstone modes, but existing proof [3f0bc99f45de] already establishes that collective phenomena emerge from quantum many-body systems through selection of preferred modes that break symmetries. The new proof doesn't acknowledge this existing framework.",
+      "The proof assumes spontaneous symmetry breaking creates fundamentally different spectral properties, but existing proof [49891606b8f0] already covers spontaneous symmetry breaking in quantum field theory with mass generation. The new proof's claims about 'fundamental differences' may conflict with established spectral theory.",
+      "The proof's treatment of quotient spaces X/G and collective modes overlaps significantly with existing proof [087da119976b] which covers spontaneous symmetry breaking with G-invariant measures on separable Banach spaces, but uses different mathematical frameworks without establishing compatibility."
+    ],
+    "assumption_conflicts": [
+      "The new proof assumes 'collective modes are identified with eigenfunctions of relevant self-adjoint operators' but doesn't specify which operators, while existing proofs use specific Hamiltonians and Lagrangians",
+      "The assumption that 'fundamental difference in properties means distinct spectral characteristics' is vague and potentially conflicts with rigorous spectral theory established in existing proofs",
+      "The proof assumes measurable structure on quotient X/G without proving it exists, while existing proofs are more careful about topological and measure-theoretic foundations"
+    ],
+    "beneficial_connections": [
+      "Could strengthen existing proof [3f0bc99f45de] by providing more detailed analysis of collective mode dispersion relations",
+      "Connects to proof [087da119976b] by extending symmetry breaking analysis to quotient spaces",
+      "Relates to proof [49891606b8f0] by providing alternative perspective on symmetry breaking consequences",
+      "Could complement proof [1b27ca45ba4e] by showing how topological constraints affect collective modes"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof contains significant gaps (explicitly acknowledged by the authors) and makes claims that overlap substantially with existing work without proper attribution or differentiation. The mathematical rigor is insufficient - key steps like proving \u03c9(k) \u2192 0 for Goldstone modes are left as gaps. The proof needs major revision to establish its novelty and avoid contradicting established results."
+  },
+  "confidence_score": 0.24500000000000002,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous category-theoretic framework connecting symmetry breaking functors to spectral properties of induced operators on quotient spaces. Specifically, we need: (1) A functor from the category of G-spaces with broken symmetry to the category of Hilbert spaces with anomalous spectral properties, (2) Rigorous characterization of 'fundamental difference' in spectral properties as a categorical invariant, (3) Extension of Goldstone theorem to general topological groups beyond Lie groups",
+  "limitations": [
+    "Proof that ground state spontaneously breaks symmetry (Step 6)",
+    "Rigorous derivation of gapless spectrum for Goldstone modes (Step 9)",
+    "General conditions under which symmetry breaking is spontaneous vs explicit",
+    "Precise categorical characterization of 'fundamentally different properties'",
+    "Proof assumes continuous symmetries; discrete symmetry breaking may not produce Goldstone modes",
+    "Requires infinite volume limit for true spontaneous symmetry breaking",
+    "Does not address finite-size effects or boundary conditions",
+    "Limited to equilibrium systems; non-equilibrium symmetry breaking may behave differently"
+  ],
+  "source_convergence": {
+    "structural_claim": "Symmetry breaking leads to emergent collective modes with properties fundamentally different from the underlying constituents",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Spontaneous Symmetry Breaking (Higgs Mechanism)",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Field Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Gauge bosons acquire mass through interaction with a field whose vacuum expectation value breaks the symmetry, creating massive collective excitations from massless constituents"
+      },
+      {
+        "result_id": "",
+        "result_name": "Phonon Theory of Lattice Vibrations",
+        "domain_id": "field_b",
+        "domain_name": "Acoustics and Wave Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Collective vibrations of atoms in a lattice create quasiparticle excitations (phonons) with properties distinct from individual atomic motion"
+      },
+      {
+        "result_id": "",
+        "result_name": "Acoustic Metamaterials with Negative Index",
+        "domain_id": "field_b",
+        "domain_name": "Acoustics and Wave Physics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Engineered structures create effective material properties impossible in natural materials through collective behavior of subwavelength elements"
+      }
+    ],
+    "domains": [
+      "quantum_field_theory",
+      "acoustics"
+    ],
+    "domain_names": [
+      "Quantum Field Theory",
+      "Acoustics and Wave Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.21419999999999997,
+      "independence": 0.75,
+      "adversarial": 0.12,
+      "reproducibility": 0.4374999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.441385,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:38:36.493430+00:00",
+    "id": "3f628048c0f8"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.305025
+  }
+}

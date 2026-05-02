@@ -1,0 +1,38 @@
+{
+  "proof_id": "49891606b8f0",
+  "timestamp": "2026-05-02T12:47:43.306858+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "equivalence - This was rejected because while both involve symmetry breaking, the mathematical frameworks (gauge theory vs QCD) and the specific mechanisms (Higgs field vs quark condensates) are sufficiently different that a functorial correspondence would be forced and artificial."
+      ],
+      "reasoning": "Both spontaneous symmetry breaking in QFT and chiral symmetry breaking in nuclear physics share the abstract principle of a system selecting a particular ground state from a symmetric set of possibilities, breaking the original symmetry. The convergence identifies shared abstract principles about how symmetries relate to vacuum structure and mass generation, rather than claiming the mathematical structures are identical or functorially related."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Algebraic structures, Differential geometry, Functional analysis",
+      "alternatives_considered": [],
+      "reasoning": "Spontaneous symmetry breaking is fundamentally about group representations and their breaking patterns, requiring algebraic structures. The vacuum manifold requires differential geometry to characterize degenerate ground states. Functional analysis provides the rigorous framework for quantum field operators and their vacuum expectation values."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof establishes that when a scalar field acquires a non-zero vacuum expectation value that breaks symmetry group G to subgroup H, the Goldstone theorem generates massless modes equal to broken generators. In gauged theories, these modes are absorbed as longitudinal components of gauge bosons via the Higgs mechanism, giving them mass proportional to g\u27e8\u03c6\u27e9\u2080. The vacuum state structure reflects this breaking as broken generators do not annihilate it.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 10 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3597 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 5134 chars, 11 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "The formalization captures the mathematical structure of spontaneous symmetry breaking but cannot fully formalize quantum field theory aspects. Key missing components include: Lagrangian formalism, quantum operators, vacuum states, Goldstone theorem, gauge fixing procedures, and non-perturbative QCD methods. The proof structure follows the original steps where possible, using group theory and linear algebra from Mathlib."
+    }
+  ]
+}

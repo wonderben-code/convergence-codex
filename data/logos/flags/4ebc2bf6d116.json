@@ -1,0 +1,13 @@
+{
+  "proof_id": "4ebc2bf6d116",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: Rigorous mathematical framework for: (1) Infinite-dimensional field spaces and their symmetry groups, (2) Path integral measures that respect symmetries, (3) Non-perturbative definition of vacuum states in QFT, (4) Mathematical treatment of anomalies and quantum symmetry breaking",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

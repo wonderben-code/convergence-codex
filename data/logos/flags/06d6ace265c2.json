@@ -1,0 +1,15 @@
+{
+  "proof_id": "06d6ace265c2",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous category-theoretic framework for information flow in infinite-dimensional open quantum systems, including: (1) Well-defined information measures for continuous spectra, (2) Categorical characterization of decoherence functors, (3) Convergence theorems for information dispersal in the thermodynamic limit",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

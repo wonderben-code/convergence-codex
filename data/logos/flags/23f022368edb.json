@@ -1,0 +1,15 @@
+{
+  "proof_id": "23f022368edb",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous theory of continuum limits for tensor networks, a functorial correspondence between Hilbert space factorizations and manifold foliations, and a generalization of the Ryu-Takayanagi formula beyond AdS/CFT with proper measure-theoretic foundations",
+    "Difficulty assessed as challenging",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

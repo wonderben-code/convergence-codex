@@ -1,0 +1,15 @@
+{
+  "proof_id": "6718f513c091",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous framework connecting quantum field theoretic symmetry breaking to classical dynamical systems bifurcations. Need a functor from the category of quantum fields with symmetries to the category of parameter-dependent Hamiltonian systems that preserves critical behavior.",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

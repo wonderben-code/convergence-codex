@@ -1,0 +1,357 @@
+{
+  "id": "92b4e9b2b977",
+  "convergence_id": "1d617e501aaf",
+  "timestamp": "2026-05-02T12:44:52.201663+00:00",
+  "proposition": "Let H be a Hilbert space of quantum states, and let C be a category with objects as quantum systems and morphisms as quantum operations. There exists a functor F: C \u2192 Meas that maps quantum systems to measure spaces of macroscopic observables, such that: (1) Collective modes arise as eigenspaces of emergent operators in F(H), and (2) Phase transitions correspond to non-analytic points in the free energy functional on F(H).",
+  "proposition_natural": "Physical systems exhibit emergent collective modes and phase transitions that arise from underlying microscopic quantum degrees of freedom",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Functional analysis",
+    "Measure theory"
+  ],
+  "apparatus_justification": "Category theory provides the natural framework for formalizing emergence as functors between microscopic and macroscopic categories, with phase transitions as natural transformations. Functional analysis is essential for operator algebras in quantum systems and their thermodynamic limits. Measure theory handles the probabilistic aspects of statistical mechanics and phase space integration.",
+  "proof_natural": "**Proposition.** Let $H$ be a Hilbert space of quantum states, and let $\\mathcal{C}$ be a category with objects as quantum systems and morphisms as quantum operations. There exists a functor $F: \\mathcal{C} \\to \\mathbf{Meas}$ that maps quantum systems to measure spaces of macroscopic observables, such that: (1) Collective modes arise as eigenspaces of emergent operators in $F(H)$, and (2) Phase transitions correspond to non-analytic points in the free energy functional on $F(H)$.\n\n**Proof.** We assume that quantum systems are described by separable Hilbert spaces with observable algebras forming von Neumann algebras. Let the thermodynamic limit $N \\to \\infty$ exist for particle number $N$, and assume all Hamiltonian operators are self-adjoint and bounded below. We further assume that trace class density operators exist for all thermal states, the renormalization group flow is well-defined on the space of effective Hamiltonians, and the measure spaces of macroscopic observables are Polish spaces.\n\nWe begin by defining the category $\\mathcal{C}$ of quantum systems, where objects are Hilbert spaces $H_i$ and morphisms are completely positive trace-preserving maps. This is the standard construction in quantum information theory. We then construct the functor $F: \\mathcal{C} \\to \\mathbf{Meas}$ by setting $F(H) = M(\\mathcal{A}(H))$, where $\\mathcal{A}(H)$ is the C*-algebra of observables and $M$ denotes the state space equipped with the weak* topology. By the Gelfand-Naimark-Segal construction, these state spaces are indeed measure spaces.\n\nFor an $N$-particle system $H^{\\otimes N}$, we define collective operators $Q_k = \\frac{1}{\\sqrt{N}}\\sum_{i=1}^N q_k^{(i)}$, where $q_k^{(i)}$ acts on the $i$-th particle. By the Quantum Central Limit Theorem, these operators $Q_k$ converge to classical random variables as $N \\to \\infty$.\n\n[Note: A rigorous proof that collective modes emerge as eigenspaces of these operators requires controlling operator norm convergence in the thermodynamic limit. Standard proofs employ mean-field approximations that are not fully rigorous in the general case.]\n\nWe define the partition function $Z_N(\\beta) = \\text{Tr}_{H^{\\otimes N}}(e^{-\\beta H_N})$ and the free energy density $f(\\beta) = \\lim_{N \\to \\infty} -\\frac{1}{N}\\log Z_N(\\beta)$. The existence of this thermodynamic limit is assumed but not proven in full generality. Phase transitions occur at critical values $\\beta_c$ where $f(\\beta)$ becomes non-analytic. The Lee-Yang theorem guarantees this characterization for certain models, though a general proof requires case-by-case analysis.\n\n[Note: The connection between non-analyticity in $f(\\beta)$ and the emergence of new collective modes has been established only for specific models. A general proof would require a universal theory of critical phenomena, which remains elusive.]\n\nThe construction relies fundamentally on the Stinespring Dilation Theorem, which ensures that every completely positive map between C*-algebras can be realized as a compression of a *-homomorphism, and the GNS Construction, which guarantees that every C*-algebra is isomorphic to an algebra of operators on some Hilbert space.\n\nThus, we have constructed a functor $F$ mapping quantum systems to classical measure spaces, where collective modes and phase transitions emerge through the thermodynamic limit, subject to the noted gaps in full mathematical rigor. This completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.CategoryTheory.Functor.Basic\nimport Mathlib.MeasureTheory.MeasurableSpace.Basic\nimport Mathlib.Analysis.InnerProductSpace.Basic\nimport Mathlib.Analysis.SpecialFunctions.Exponential\nimport Mathlib.Topology.Algebra.InfiniteSum\nimport Mathlib.LinearAlgebra.Eigenspace.Basic\n\n/-- Category of quantum systems with Hilbert spaces as objects and quantum operations as morphisms -/\nstructure QuantumCategory where\n  /-- Objects are Hilbert spaces -/\n  obj : Type* \u2192 Prop\n  obj_hilbert : \u2200 H, obj H \u2192 InnerProductSpace \u2102 H\n  /-- Morphisms are completely positive trace-preserving maps -/\n  hom : \u2200 {H K : Type*}, obj H \u2192 obj K \u2192 Type*\n  -- sorry: need formalization of quantum operations\n  hom_cptp : sorry\n\n/-- Functor from quantum systems to measure spaces -/\ndef quantumToMeasure (C : QuantumCategory) : sorry := sorry\n-- sorry: need C*-algebra formalization and GNS construction\n\n/-- Collective operator for N-particle system -/\ndef collectiveOperator {H : Type*} [InnerProductSpace \u2102 H] (N : \u2115) \n  (q : H \u2192L[\u2102] H) : (Fin N \u2192 H) \u2192L[\u2102] (Fin N \u2192 H) := sorry\n-- sorry: need tensor product formalization for Hilbert spaces\n\n/-- Partition function for N-particle quantum system -/\ndef partitionFunction {H : Type*} [InnerProductSpace \u2102 H] \n  (N : \u2115) (\u03b2 : \u211d) (H_N : (Fin N \u2192 H) \u2192L[\u2102] (Fin N \u2192 H)) : \u2102 := sorry\n-- sorry: need trace formalization for operators\n\n/-- Free energy density in thermodynamic limit -/\ndef freeEnergyDensity {H : Type*} [InnerProductSpace \u2102 H]\n  (\u03b2 : \u211d) (H_seq : \u2115 \u2192 ((n : \u2115) \u2192 (Fin n \u2192 H) \u2192L[\u2102] (Fin n \u2192 H))) : \u211d := sorry\n-- sorry: need thermodynamic limit formalization\n\n/-- Main theorem: Functor maps quantum systems to measure spaces with emergent collective modes -/\ntheorem quantum_emergence_functor (C : QuantumCategory) :\n  \u2203 (F : sorry), -- sorry: need proper functor type C \u2192 Meas\n  (\u2200 H, C.obj H \u2192 \u2203 (collectiveModes : Set (Submodule \u2102 H)), \n    sorry) \u2227 -- sorry: need eigenspace emergence formalization\n  (\u2200 H \u03b2, C.obj H \u2192 \n    sorry) -- sorry: need phase transition characterization\n  := by\n  sorry -- sorry: full proof requires quantum formalization framework\n\n/-- Step 1: Define quantum category -/\ndef quantumCat : QuantumCategory := {\n  obj := fun H => \u2203 (_ : InnerProductSpace \u2102 H), True\n  obj_hilbert := sorry -- sorry: need to extract InnerProductSpace instance\n  hom := sorry -- sorry: need CPTP map formalization\n  hom_cptp := sorry\n}\n\n/-- Step 2: Construct functor to measure spaces -/\ndef functorToMeas : sorry := sorry\n-- sorry: need C*-algebra and state space formalization\n\n/-- Step 3: Define collective operators for N particles -/\ndef collectiveOp {H : Type*} [InnerProductSpace \u2102 H] (N : \u2115) (k : \u2115)\n  (q_k : H \u2192L[\u2102] H) : (Fin N \u2192 H) \u2192L[\u2102] (Fin N \u2192 H) := sorry\n-- sorry: need tensor product and sum formalization\n\n/-- Step 4: Gap - collective modes as eigenspaces -/\nlemma collective_modes_eigenspaces : sorry := sorry\n-- sorry: requires operator norm convergence in thermodynamic limit\n\n/-- Step 5: Define partition function and free energy -/\ndef partitionFn {H : Type*} [InnerProductSpace \u2102 H] (N : \u2115) (\u03b2 : \u211d)\n  (H_N : (Fin N \u2192 H) \u2192L[\u2102] (Fin N \u2192 H)) : \u2102 := sorry\n-- sorry: need trace of exponential operator\n\ndef freeEnergy (\u03b2 : \u211d) : \u211d := sorry  \n-- sorry: need thermodynamic limit existence\n\n/-- Step 6: Phase transitions at non-analytic points -/\nlemma phase_transition_nonanalytic (\u03b2_c : \u211d) : \n  sorry := sorry\n-- sorry: need Lee-Yang theorem formalization\n\n/-- Step 7: Gap - connection between non-analyticity and collective modes -/\nlemma nonanalytic_collective_emergence : sorry := sorry\n-- sorry: requires universal critical phenomena theory",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the category C of quantum systems with objects as Hilbert spaces H_i and morphisms as completely positive trace-preserving maps",
+      "justification": "Standard construction in quantum information theory",
+      "dependencies": [
+        "Stinespring dilation theorem"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Construct the functor F: C \u2192 Meas by F(H) = M(A(H)) where A(H) is the C*-algebra of observables and M denotes the state space with weak* topology",
+      "justification": "Gelfand-Naimark-Segal construction ensures state spaces are measure spaces",
+      "dependencies": [
+        "GNS construction",
+        "Riesz representation theorem"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "For N-particle system H^\u2297N, define collective operators Q_k = (1/\u221aN)\u2211_i q_k^(i) where q_k^(i) acts on i-th particle",
+      "justification": "Central limit theorem ensures Q_k converge to classical random variables as N \u2192 \u221e",
+      "dependencies": [
+        "Quantum central limit theorem",
+        "Step 2"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "[Gap: Rigorous proof that collective modes emerge as eigenspaces requires controlling operator norm convergence in thermodynamic limit]",
+      "justification": "Standard proofs use mean-field approximations that are not fully rigorous",
+      "dependencies": [
+        "Step 3"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Define partition function Z_N(\u03b2) = Tr_{H^\u2297N}(e^{-\u03b2H_N}) and free energy f(\u03b2) = lim_{N\u2192\u221e} -(1/N)log Z_N(\u03b2)",
+      "justification": "Existence of thermodynamic limit assumed but not proven in general",
+      "dependencies": [
+        "Assumption of thermodynamic limit existence"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Phase transitions occur at \u03b2_c where f(\u03b2) is non-analytic",
+      "justification": "Lee-Yang theorem guarantees this for certain models, but general proof requires case-by-case analysis",
+      "dependencies": [
+        "Lee-Yang theorem",
+        "Step 5"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "[Gap: Connection between non-analyticity in f(\u03b2) and emergence of new collective modes is established only for specific models]",
+      "justification": "General proof would require universal theory of critical phenomena",
+      "dependencies": [
+        "Steps 4, 6"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Stinespring Dilation Theorem",
+      "authors": "W.F. Stinespring",
+      "year": "1955",
+      "field": "Functional Analysis",
+      "statement": "Every completely positive map between C*-algebras can be realized as compression of *-homomorphism",
+      "usage": "Justifies morphisms in quantum category"
+    },
+    {
+      "name": "GNS Construction",
+      "authors": "Gelfand, Naimark, Segal",
+      "year": "1943-1947",
+      "field": "Functional Analysis",
+      "statement": "Every C*-algebra is isomorphic to algebra of operators on some Hilbert space",
+      "usage": "Ensures observable algebras have concrete representation"
+    },
+    {
+      "name": "Quantum Central Limit Theorem",
+      "authors": "Cushen, Hudson",
+      "year": "1971",
+      "field": "Quantum Probability",
+      "statement": "Sums of independent quantum observables converge to classical Gaussian",
+      "usage": "Justifies emergence of classical collective variables"
+    },
+    {
+      "name": "Lee-Yang Theorem",
+      "authors": "T.D. Lee, C.N. Yang",
+      "year": "1952",
+      "field": "Statistical Mechanics",
+      "statement": "Zeros of partition function determine phase transition points",
+      "usage": "Characterizes non-analyticities in free energy"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Quantum systems are described by separable Hilbert spaces",
+    "Observable algebras form von Neumann algebras",
+    "Thermodynamic limit N \u2192 \u221e exists for particle number N",
+    "Hamiltonian operators are self-adjoint and bounded below",
+    "Trace class density operators exist for all thermal states",
+    "Renormalization group flow is well-defined on the space of effective Hamiltonians",
+    "Measure spaces of macroscopic observables are Polish spaces",
+    "Free energy functionals are defined via partition functions Z = Tr(e^{-\u03b2H})",
+    "Collective modes correspond to low-energy excitations above ground state",
+    "Phase transitions are characterized by non-analyticities in thermodynamic potentials"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Definition of functor F",
+        "issue": "The construction F(H) = M(A(H)) is ill-defined. The state space M(A(H)) is not a measure space but a topological space. The functor lands in Meas (measure spaces) but no measure is specified.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed without completely redefining the functor"
+      },
+      {
+        "step": "Collective operators definition",
+        "issue": "The operators Q_k are defined for finite N but their limit as N\u2192\u221e is not rigorously constructed. The proof admits this gap but continues anyway.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Restrict to specific models where convergence can be proven"
+      },
+      {
+        "step": "Thermodynamic limit existence",
+        "issue": "The existence of lim_{N\u2192\u221e} -1/N log Z_N(\u03b2) is assumed but not proven. This limit fails to exist for many quantum systems.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed in general; requires case-by-case analysis"
+      },
+      {
+        "step": "Connection to collective modes",
+        "issue": "No proof is given that collective modes arise as eigenspaces of emergent operators in F(H). The statement is not even well-defined since F(H) is claimed to be a measure space.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "The entire framework needs restructuring"
+      },
+      {
+        "step": "Phase transitions characterization",
+        "issue": "The proof assumes phase transitions correspond to non-analytic points but provides no mechanism for how this emerges from the functor F.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Requires a complete theory connecting the functor to thermodynamic properties"
+      },
+      {
+        "step": "Application of Quantum Central Limit Theorem",
+        "issue": "QCLT requires specific conditions on observables and states that are not verified. The convergence is also to classical random variables on a probability space, not elements of F(H).",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "State and verify QCLT conditions explicitly"
+      }
+    ],
+    "hidden_assumptions": [
+      "That M(A(H)) can be naturally equipped with a measure",
+      "That the thermodynamic limit commutes with the functor F",
+      "That collective modes have a well-defined meaning in the image F(H)",
+      "That all quantum systems admit a thermodynamic description",
+      "That the functor F preserves enough structure to capture phase transitions",
+      "That eigenspaces make sense in measure spaces"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes collective modes and phase transitions exist in F(H) to prove that F maps to spaces where these exist. The functor F is constructed specifically to have these properties without proving it actually does.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to work for all quantum systems in category C, but the constructions only make sense for very specific models. Even the authors admit the proofs only work case-by-case, contradicting the general claim.",
+    "citation_issues": [
+      "Stinespring and GNS theorems are cited but never actually used in the proof",
+      "Quantum Central Limit Theorem is misapplied - it produces classical random variables, not operators in F(H)",
+      "Lee-Yang theorem only applies to specific models, not general quantum systems"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed from the outset. The functor F is not well-defined, mapping to measure spaces without specifying measures. The entire argument is circular and the main claims about collective modes and phase transitions are never actually proven.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish a framework for connecting quantum systems to measure spaces but fails to rigorously prove either (1) that collective modes arise as eigenspaces of emergent operators in F(H), or (2) that phase transitions correspond to non-analytic points in the free energy functional on F(H). It only provides partial constructions with acknowledged gaps.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Existence of thermodynamic limit for all quantum systems in category C",
+      "Convergence of collective operators in operator norm topology",
+      "Existence of ground states for all Hamiltonians",
+      "Validity of mean-field approximations",
+      "Existence of renormalization group fixed points",
+      "Compactness properties of state spaces",
+      "Measurability of collective mode eigenspaces",
+      "Continuity of the functor F with respect to appropriate topologies",
+      "Existence of critical points \u03b2_c for general systems"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 2",
+        "issue": "GNS construction does not guarantee that state spaces are measure spaces in the required sense - it produces representations, not measure spaces of macroscopic observables"
+      },
+      {
+        "step": "Step 3",
+        "issue": "Central limit theorem application is invalid - quantum operators do not satisfy classical CLT conditions, and convergence to classical random variables is not established"
+      },
+      {
+        "step": "Step 5",
+        "issue": "Existence of thermodynamic limit is assumed without proof and does not hold for general quantum systems"
+      },
+      {
+        "step": "Step 6",
+        "issue": "Lee-Yang theorem applies only to specific models with particular symmetries, not to general quantum systems as claimed"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Step 4 explicitly acknowledges gap in proving collective modes emerge as eigenspaces",
+      "Step 7 explicitly acknowledges gap in connecting non-analyticity to collective mode emergence",
+      "No rigorous construction of the functor F is provided",
+      "No proof that F maps to the correct category Meas",
+      "No verification that the constructed objects satisfy the required categorical properties",
+      "Missing proof of functoriality (preservation of composition and identities)",
+      "No demonstration that eigenspaces of emergent operators exist or are well-defined",
+      "No proof that phase transitions actually occur at non-analytic points for general systems"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof assumes 'Hamiltonian operators are self-adjoint and bounded below' but existing proof [19c10dc86a65] only requires 'Observables are self-adjoint operators in B(H)' without boundedness constraints, creating a potential inconsistency in the treatment of unbounded operators",
+      "The functor F: C \u2192 Meas maps to measure spaces, but the construction F(H) = M(A(H)) actually maps to state spaces with weak* topology, not measure spaces - this is a category-theoretic error",
+      "The proof claims collective modes emerge as eigenspaces but provides no rigorous connection between the collective operators Q_k = (1/\u221aN)\u2211_i q_k^(i) and actual eigenspace decomposition"
+    ],
+    "assumption_conflicts": [
+      "Assumes 'Measure spaces of macroscopic observables are Polish spaces' but provides no justification for why M(A(H)) with weak* topology is Polish",
+      "Requires 'Renormalization group flow is well-defined' but gives no construction of this flow on the purported measure spaces",
+      "The assumption that 'Free energy functionals are defined via partition functions Z = Tr(e^{-\u03b2H})' conflicts with the bounded-below Hamiltonian assumption when combined with trace class requirements"
+    ],
+    "beneficial_connections": [
+      "Connects to [3f0bc99f45de] on collective phenomena emergence from quantum many-body systems through symmetry breaking",
+      "Relates to [574d327c8078] on scale-dependent effective descriptions and universal scaling laws",
+      "Builds on [66e4aac2731b] regarding classical behavior emergence from quantum systems",
+      "Extends [6cf918aecf4e] on symmetry breaking mechanisms generating emergent structure"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof contains significant mathematical gaps and category-theoretic errors. The functor construction is ill-defined, the connection between collective operators and eigenspaces is unproven, and the relationship between measure spaces and state spaces is confused. The thermodynamic limit analysis lacks rigor."
+  },
+  "confidence_score": 0.24500000000000002,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous mathematical framework for emergence that: (1) Controls operator convergence in infinite-dimensional limits, (2) Proves existence of thermodynamic limits for general interacting quantum systems, (3) Establishes universal connection between microscopic entanglement and macroscopic phase transitions",
+  "limitations": [
+    "Rigorous control of operator norm convergence in thermodynamic limit",
+    "General proof of thermodynamic limit existence beyond exactly solvable models",
+    "Universal characterization of emergence of collective modes from microscopic dynamics",
+    "Precise categorical formulation of renormalization group flow",
+    "Proof sketch rather than complete proof due to mathematical gaps",
+    "Relies on unproven existence of thermodynamic limits",
+    "Connection between quantum and classical is established only in special cases",
+    "Does not address non-equilibrium phase transitions",
+    "Category-theoretic framework may be unnecessarily abstract for physical applications"
+  ],
+  "source_convergence": {
+    "structural_claim": "Physical systems exhibit emergent collective modes and phase transitions that arise from underlying microscopic quantum degrees of freedom",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Emergent Spacetime from Entanglement",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Gravity",
+        "link_type": "direct",
+        "structural_conclusion": "Classical spacetime emerges from quantum entanglement patterns, with Einstein's equations arising as constraints on entanglement entropy"
+      },
+      {
+        "result_id": "",
+        "result_name": "AdS/CFT Correspondence",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Gravity",
+        "link_type": "direct",
+        "structural_conclusion": "Gravitational physics in bulk emerges from quantum field theory on boundary"
+      },
+      {
+        "result_id": "",
+        "result_name": "Quark-Gluon Plasma Discovery",
+        "domain_id": "field_b",
+        "domain_name": "Nuclear Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Nuclear matter undergoes phase transition to deconfined quark-gluon state above critical temperature"
+      },
+      {
+        "result_id": "",
+        "result_name": "Giant Dipole Resonance",
+        "domain_id": "field_b",
+        "domain_name": "Nuclear Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Nuclei exhibit collective oscillation modes demonstrating quantum fluid behavior"
+      }
+    ],
+    "domains": [
+      "quantum_gravity",
+      "nuclear_physics"
+    ],
+    "domain_names": [
+      "Quantum Gravity",
+      "Nuclear Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.2856,
+      "independence": 0.85,
+      "adversarial": 0.09,
+      "reproducibility": 0.6299999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.51068,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:03:55.891250+00:00",
+    "id": "1d617e501aaf"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.27453
+  }
+}

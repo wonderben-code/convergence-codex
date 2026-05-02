@@ -1,0 +1,311 @@
+{
+  "id": "73b5e32cc2a7",
+  "convergence_id": "51ac2935ce77",
+  "timestamp": "2026-05-02T13:04:53.033468+00:00",
+  "proposition": "Let (\u03a9, F, \u03bc) be a probability space representing phase space with Hamiltonian dynamics \u03c6_t : \u03a9 \u2192 \u03a9 preserving \u03bc. For macroscopic observables f : \u03a9 \u2192 \u211d with suitable regularity, there exists a coarse-graining operator \u03a0 such that H[\u03a0(\u03c1_t)] is non-decreasing for almost all initial conditions \u03c1_0, where H is the Boltzmann entropy functional and \u03c1_t = \u03c6_t(\u03c1_0).",
+  "proposition_natural": "Macroscopic irreversibility emerges from reversible microscopic dynamics through statistical considerations",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Measure theory",
+    "Dynamical systems",
+    "Information theory"
+  ],
+  "apparatus_justification": "Measure theory provides the rigorous foundation for probability spaces and statistical ensembles needed to formalize the emergence of macroscopic irreversibility. Dynamical systems theory captures the reversible microscopic evolution and phase space flows. Information theory formalizes entropy and the statistical considerations that bridge microscopic and macroscopic descriptions.",
+  "proof_natural": "**Proposition.** Let (\u03a9, F, \u03bc) be a probability space representing phase space with Hamiltonian dynamics \u03c6_t : \u03a9 \u2192 \u03a9 preserving \u03bc. For macroscopic observables f : \u03a9 \u2192 \u211d with suitable regularity, there exists a coarse-graining operator \u03a0 such that H[\u03a0(\u03c1_t)] is non-decreasing for almost all initial conditions \u03c1_0, where H is the Boltzmann entropy functional and \u03c1_t = \u03c6_t(\u03c1_0).\n\n**Proof.** We assume that the phase space \u03a9 is a smooth manifold equipped with a symplectic structure, and that the Hamiltonian H : \u03a9 \u2192 \u211d is C\u00b2 and generates the flow \u03c6_t via Hamilton's equations. Let the Liouville measure \u03bc be preserved by \u03c6_t, as guaranteed by Liouville's theorem. We further assume that macroscopic observables form a finite-dimensional subspace of L\u00b2(\u03a9, \u03bc), and that the coarse-graining operator \u03a0 : L\u00b2(\u03a9, \u03bc) \u2192 L\u00b2(\u03a9, \u03bc) is a projection onto these macroscopic observables. We require that the system satisfies the ergodic hypothesis on relevant timescales, that initial conditions are drawn from a measure absolutely continuous with respect to \u03bc, and that the Boltzmann entropy H[\u03c1] = -\u222b \u03c1 log \u03c1 d\u03bc is well-defined for densities in the image of \u03a0.\n\nWe begin by observing that the microscopic evolution preserves fine-grained entropy. By Liouville's theorem, \u03bc(\u03c6_t(A)) = \u03bc(A) for all measurable sets A, which implies that the evolved density \u03c1_t = \u03c1_0 \u2218 \u03c6_{-t} satisfies H[\u03c1_t] = H[\u03c1_0] for all t. Thus the fine-grained entropy remains constant under Hamiltonian evolution.\n\nNext, we establish that the coarse-graining operator increases entropy. Since \u03a0 acts as a conditional expectation operator, Jensen's inequality applied to the convex function -x log x yields H[\u03a0(\u03c1)] \u2265 H[\u03c1] for all densities \u03c1. This inequality is strict unless \u03c1 already lies in the image of \u03a0.\n\nDefine the coarse-grained entropy S(t) = H[\u03a0(\u03c1_t)]. We claim that S(0) \u2264 S(t) for typical trajectories. [Note: A complete proof of this monotonicity requires showing that \u03a0 and \u03c6_t do not commute in a way that systematically decreases coarse-grained entropy. This involves detailed analysis of the mixing properties of the dynamics.]\n\nFor ergodic systems, Birkhoff's ergodic theorem ensures that time averages of macroscopic observables converge to their phase space averages. Consequently, \u03a0(\u03c1_t) converges weakly as t \u2192 \u221e to the microcanonical distribution on the energy surface determined by the initial energy.\n\nBy the maximum entropy principle, the microcanonical distribution maximizes entropy among all distributions satisfying the given macroscopic constraints, particularly the energy constraint. If \u03a9_E denotes the volume of the constant-energy surface, then this maximum entropy equals S_eq = log|\u03a9_E|.\n\nTherefore, S(t) approaches its maximum value S_eq as t \u2192 \u221e. [Note: The strict monotonicity of S(t) requires additional assumptions about the approach to equilibrium that depend on the specific mixing properties of the system.]\n\nWe conclude that for almost all initial conditions drawn from our assumed measure, the coarse-grained entropy H[\u03a0(\u03c1_t)] is non-decreasing in time and approaches the equilibrium value S_eq. This completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.MeasureTheory.Measure.ProbabilityMeasure\nimport Mathlib.MeasureTheory.Function.ConditionalExpectation.Basic\nimport Mathlib.Analysis.Convex.Jensen\nimport Mathlib.Dynamics.Ergodic.MeasurePreserving\n\n/-- A probability space with Hamiltonian dynamics -/\nstructure HamiltonianSystem where\n  \u03a9 : Type*\n  F : MeasurableSpace \u03a9\n  \u03bc : Measure \u03a9\n  prob : IsProbabilityMeasure \u03bc\n  \u03c6 : \u211d \u2192 \u03a9 \u2192 \u03a9\n  measurable_\u03c6 : \u2200 t, Measurable (\u03c6 t)\n  measure_preserving : \u2200 t, MeasurePreserving (\u03c6 t) \u03bc \u03bc\n  -- Missing: group property \u03c6 (s + t) = \u03c6 s \u2218 \u03c6 t\n\n/-- Boltzmann entropy functional (not in Mathlib for general measures) -/\nnoncomputable def boltzmannEntropy {\u03a9 : Type*} [MeasurableSpace \u03a9] \n  (\u03bc : Measure \u03a9) (\u03c1 : \u03a9 \u2192 \u211d\u22650\u221e) : \u211d := sorry -- Need: -\u222b \u03c1 * log \u03c1 d\u03bc\n\n/-- Coarse-graining operator (not in Mathlib) -/\nstructure CoarseGraining (\u03a9 : Type*) [MeasurableSpace \u03a9] (\u03bc : Measure \u03a9) where\n  \u03a0 : (\u03a9 \u2192 \u211d\u22650\u221e) \u2192 (\u03a9 \u2192 \u211d\u22650\u221e)\n  measurable : \u2200 \u03c1, Measurable \u03c1 \u2192 Measurable (\u03a0 \u03c1)\n  preserves_integral : \u2200 \u03c1, \u222b \u03a0 \u03c1 d\u03bc = \u222b \u03c1 d\u03bc\n  jensen_property : \u2200 \u03c1, boltzmannEntropy \u03bc (\u03a0 \u03c1) \u2265 boltzmannEntropy \u03bc \u03c1\n\n/-- Time evolution of density under Hamiltonian flow -/\nnoncomputable def evolvedDensity (sys : HamiltonianSystem) (\u03c1\u2080 : sys.\u03a9 \u2192 \u211d\u22650\u221e) \n  (t : \u211d) : sys.\u03a9 \u2192 \u211d\u22650\u221e := \n  fun \u03c9 => \u03c1\u2080 (sys.\u03c6 (-t) \u03c9)\n\n/-- Main theorem: Coarse-grained entropy is non-decreasing -/\ntheorem entropy_increase (sys : HamiltonianSystem) \n  (cg : CoarseGraining sys.\u03a9 sys.\u03bc)\n  (f : sys.\u03a9 \u2192 \u211d) (hf : Measurable f) -- macroscopic observable\n  (\u03c1\u2080 : sys.\u03a9 \u2192 \u211d\u22650\u221e) (h\u03c1\u2080 : Measurable \u03c1\u2080) :\n  \u2200 t \u2265 0, boltzmannEntropy sys.\u03bc (cg.\u03a0 (evolvedDensity sys \u03c1\u2080 t)) \u2265 \n           boltzmannEntropy sys.\u03bc (cg.\u03a0 \u03c1\u2080) := by\n  intro t ht\n  \n  -- Step 1: Microscopic evolution preserves fine-grained entropy\n  have h1 : boltzmannEntropy sys.\u03bc (evolvedDensity sys \u03c1\u2080 t) = \n            boltzmannEntropy sys.\u03bc \u03c1\u2080 := by\n    sorry -- Need: Liouville's theorem for entropy preservation\n  \n  -- Step 2: Coarse-graining increases entropy (given by jensen_property)\n  have h2 : \u2200 \u03c1, boltzmannEntropy sys.\u03bc (cg.\u03a0 \u03c1) \u2265 boltzmannEntropy sys.\u03bc \u03c1 := \n    cg.jensen_property\n  \n  -- Step 3: Define S(t) and show S(0) \u2264 S(t)\n  let S := fun s => boltzmannEntropy sys.\u03bc (cg.\u03a0 (evolvedDensity sys \u03c1\u2080 s))\n  \n  -- Gap: Need to show \u03a0 and \u03c6_t don't commute in a way that decreases entropy\n  sorry -- This is the main gap in the proof\n  \n  -- Step 4: For ergodic systems, convergence to microcanonical\n  -- sorry -- Need: Birkhoff's ergodic theorem formalization\n  \n  -- Step 5: Microcanonical maximizes entropy\n  -- sorry -- Need: Maximum entropy principle\n  \n  -- Step 6: S(t) approaches maximum\n  -- sorry -- Need: Approach to equilibrium theory",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The microscopic evolution preserves fine-grained entropy: H[\u03c1_t] = H[\u03c1_0] for all t",
+      "justification": "Liouville's theorem ensures \u03bc(\u03c6_t(A)) = \u03bc(A) for all measurable A, hence \u03c1_t = \u03c1_0 \u2218 \u03c6_{-t} preserves the entropy integral",
+      "dependencies": [
+        "Liouville's theorem",
+        "Change of variables formula"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "The coarse-graining operator \u03a0 increases entropy: H[\u03a0(\u03c1)] \u2265 H[\u03c1] for all densities \u03c1",
+      "justification": "Jensen's inequality applied to the convex function -x log x and the fact that \u03a0 is a conditional expectation operator",
+      "dependencies": [
+        "Jensen's inequality",
+        "Properties of conditional expectation"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Define S(t) = H[\u03a0(\u03c1_t)]. Then S(0) \u2264 S(t) for typical trajectories",
+      "justification": "[Gap: This requires showing that \u03a0 and \u03c6_t do not commute in a way that systematically decreases coarse-grained entropy]",
+      "dependencies": [
+        "Steps 1-2",
+        "Ergodic hypothesis"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "For ergodic systems, lim_{t\u2192\u221e} \u03a0(\u03c1_t) converges weakly to the microcanonical distribution on the energy surface",
+      "justification": "Birkhoff's ergodic theorem applied to the time average of macroscopic observables",
+      "dependencies": [
+        "Birkhoff's ergodic theorem",
+        "Ergodic hypothesis"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The microcanonical distribution maximizes entropy among all distributions with fixed macroscopic constraints",
+      "justification": "Maximum entropy principle: the microcanonical distribution has maximum entropy subject to energy constraint",
+      "dependencies": [
+        "Maximum entropy principle",
+        "Lagrange multiplier method"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Therefore S(t) is non-decreasing and approaches its maximum value S_eq = log|\u03a9_E| where \u03a9_E is the energy surface volume",
+      "justification": "[Gap: The monotonicity requires additional assumptions about the approach to equilibrium that are not fully formalized]",
+      "dependencies": [
+        "Steps 3-5"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Liouville's Theorem",
+      "authors": "Joseph Liouville",
+      "year": "1838",
+      "field": "Classical Mechanics",
+      "statement": "The phase space volume element is preserved under Hamiltonian flow",
+      "usage": "Establishes conservation of fine-grained entropy"
+    },
+    {
+      "name": "Birkhoff's Ergodic Theorem",
+      "authors": "George David Birkhoff",
+      "year": "1931",
+      "field": "Ergodic Theory",
+      "statement": "Time averages equal space averages for ergodic systems",
+      "usage": "Justifies convergence to equilibrium distribution"
+    },
+    {
+      "name": "Jensen's Inequality",
+      "authors": "Johan Jensen",
+      "year": "1906",
+      "field": "Mathematical Analysis",
+      "statement": "For convex functions, the function of an expectation is less than or equal to the expectation of the function",
+      "usage": "Proves entropy increase under coarse-graining"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Phase space \u03a9 is a smooth manifold with symplectic structure",
+    "Hamiltonian H : \u03a9 \u2192 \u211d is C\u00b2 and generates flow \u03c6_t via Hamilton's equations",
+    "Liouville measure \u03bc is preserved by \u03c6_t (Liouville's theorem)",
+    "Macroscopic observables form a finite-dimensional subspace of L\u00b2(\u03a9, \u03bc)",
+    "Coarse-graining operator \u03a0 : L\u00b2(\u03a9, \u03bc) \u2192 L\u00b2(\u03a9, \u03bc) is a projection onto macroscopic observables",
+    "System satisfies ergodic hypothesis on relevant timescales",
+    "Initial conditions are drawn from a measure absolutely continuous with respect to \u03bc",
+    "Boltzmann entropy H[\u03c1] = -\u222b \u03c1 log \u03c1 d\u03bc is well-defined for densities in the image of \u03a0"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Define the coarse-grained entropy S(t) = H[\u03a0(\u03c1_t)]. We claim that S(0) \u2264 S(t) for typical trajectories.",
+        "issue": "This is the central claim that needs to be proved, but it's merely asserted with a note that 'complete proof requires showing that \u03a0 and \u03c6_t do not commute.' This is not a proof - it's an admission that the key step is missing.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed without fundamentally new arguments about the non-commutativity of coarse-graining and time evolution"
+      },
+      {
+        "step": "For ergodic systems, Birkhoff's ergodic theorem ensures that time averages of macroscopic observables converge to their phase space averages.",
+        "issue": "Birkhoff's theorem applies to individual trajectories, not to evolving probability densities. The connection between time averages and the evolution of \u03a0(\u03c1_t) is not established.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would need to reformulate entirely in terms of individual trajectories rather than density evolution"
+      },
+      {
+        "step": "Consequently, \u03a0(\u03c1_t) converges weakly as t \u2192 \u221e to the microcanonical distribution",
+        "issue": "This does not follow from Birkhoff's theorem. The convergence of time averages does not imply convergence of coarse-grained densities.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Requires a completely different approach to establish convergence of densities"
+      },
+      {
+        "step": "Therefore, S(t) approaches its maximum value S_eq as t \u2192 \u221e",
+        "issue": "Even if \u03a0(\u03c1_t) converges to microcanonical, this doesn't prove monotonicity of S(t). The entropy could oscillate or decrease before eventually approaching S_eq.",
+        "severity": "major",
+        "fixable": false,
+        "suggested_fix": "Need to prove monotonicity, not just eventual convergence"
+      },
+      {
+        "step": "Initial conditions are drawn from a measure absolutely continuous with respect to \u03bc",
+        "issue": "The proof treats \u03c1_0 as a density but also talks about 'initial conditions' as if they were points. The relationship between the initial measure and individual trajectories is confused.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Clarify whether proving for individual trajectories or density evolution"
+      }
+    ],
+    "hidden_assumptions": [
+      "The coarse-graining operator \u03a0 is assumed to be time-independent",
+      "The system is assumed to exhibit mixing behavior beyond mere ergodicity",
+      "The relevant timescales for ergodicity are assumed to be shorter than observation times",
+      "The macroscopic observables are assumed to be 'good' in some unspecified sense",
+      "The initial density \u03c1_0 is assumed to be far from equilibrium"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes that coarse-grained entropy increases (by claiming S(0) \u2264 S(t) for typical trajectories) in order to prove that coarse-grained entropy increases. The central claim is stated without proof.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to establish monotonicity of coarse-grained entropy for 'almost all initial conditions' but at best shows eventual approach to equilibrium. It claims a general existence result for coarse-graining operators but provides no construction.",
+    "citation_issues": [
+      "Birkhoff's ergodic theorem is misapplied - it concerns time averages along trajectories, not evolution of probability densities",
+      "Jensen's inequality is correctly stated but insufficient - it only shows H[\u03a0(\u03c1)] \u2265 H[\u03c1], not that H[\u03a0(\u03c1_t)] increases with t",
+      "The maximum entropy principle is invoked without proper justification of its applicability to this dynamical context"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof has a fatal flaw: it assumes what it needs to prove by claiming without justification that S(0) \u2264 S(t). The attempted connection to ergodic theory is fundamentally confused, mixing concepts about individual trajectories with density evolution. The proof provides no actual mechanism for entropy increase.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to show entropy increase but fails to establish the key claim that H[\u03a0(\u03c1_t)] is non-decreasing. It only shows that coarse-graining increases entropy at each instant and that ergodic systems approach equilibrium, but not monotonic increase along trajectories.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Non-commutativity condition between \u03a0 and \u03c6_t that ensures systematic entropy increase",
+      "Specific regularity conditions on the coarse-graining operator \u03a0 beyond being a projection",
+      "Assumption that the system approaches equilibrium monotonically rather than through fluctuations",
+      "Conditions ensuring that 'almost all initial conditions' excludes pathological cases",
+      "Assumption that the energy surface has finite measure for the microcanonical distribution to be well-defined",
+      "Conditions on the macroscopic observables that make them suitable for defining meaningful coarse-graining"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "3",
+        "issue": "The justification explicitly acknowledges a gap - there is no proof that \u03a0 and \u03c6_t interact in a way that ensures S(t) \u2265 S(0). The non-commutativity argument is incomplete."
+      },
+      {
+        "step": "6",
+        "issue": "The justification admits another gap - monotonicity is assumed rather than proven. The step conflates eventual approach to equilibrium with monotonic increase, which are distinct properties."
+      },
+      {
+        "step": "4",
+        "issue": "Birkhoff's theorem gives time averages, but the step claims weak convergence of \u03a0(\u03c1_t) itself, which requires additional assumptions about the relationship between time averages and pointwise convergence."
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Critical gap in Step 3: no mechanism provided for why coarse-graining and time evolution combine to increase entropy",
+      "Critical gap in Step 6: monotonicity is assumed rather than derived",
+      "Missing analysis of how the projection operator \u03a0 interacts with the Hamiltonian flow \u03c6_t",
+      "No treatment of exceptional initial conditions or measure-zero sets where the result might fail",
+      "Missing rigorous connection between ergodic convergence and monotonic entropy increase"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims H[\u03a0(\u03c1)] \u2265 H[\u03c1] for all densities \u03c1, but this is mathematically false. Coarse-graining (projection) operators generally decrease entropy by discarding information, not increase it. The correct inequality is H[\u03a0(\u03c1)] \u2264 H[\u03c1].",
+      "The proof assumes Boltzmann entropy H[\u03c1] = -\u222b \u03c1 log \u03c1 d\u03bc but then claims this increases under coarse-graining, which violates the data processing inequality from information theory.",
+      "The claim that S(t) = H[\u03a0(\u03c1_t)] is non-decreasing contradicts Poincar\u00e9 recurrence theorem for finite measure spaces, which would require S(t) to return arbitrarily close to S(0) infinitely often."
+    ],
+    "assumption_conflicts": [
+      "Conflicts with [14e1952bf633] which correctly states that macroscopic irreversibility emerges from microscopic reversibility through statistical effects, not through entropy-increasing coarse-graining operators.",
+      "The ergodic hypothesis assumption conflicts with the mathematical rigor expected in measure-preserving dynamical systems theory used in existing proofs."
+    ],
+    "beneficial_connections": [
+      "Connects to [14e1952bf633] in attempting to explain irreversibility from reversible dynamics",
+      "Relates to [087da119976b] in discussing symmetry breaking and ordered patterns",
+      "Shares phase space formalism with several existing dynamical systems proofs"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof contains fundamental mathematical errors in entropy inequalities and misunderstands the relationship between coarse-graining and entropy. The core claim violates well-established results in information theory and statistical mechanics. While the motivation to explain irreversibility is sound, the mathematical execution is severely flawed."
+  },
+  "confidence_score": 0.24000000000000002,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.29999999999999993
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.29999999999999993
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous theory of coarse-graining that preserves the mathematical structure while capturing physical intuition about macroscopic observables. The non-commutativity of \u03a0 and \u03c6_t needs careful analysis to prove monotonicity without circularity.",
+  "limitations": [
+    "The proof that S(t) is monotonically non-decreasing requires showing that typical trajectories explore phase space in a way that increases coarse-grained entropy",
+    "The connection between mathematical ergodicity and physical irreversibility is assumed rather than proven",
+    "The choice of coarse-graining operator \u03a0 is not uniquely determined by the mathematics",
+    "Requires ergodic hypothesis which may not hold for all physical systems",
+    "Time scales for approach to equilibrium are not specified",
+    "Does not address Poincar\u00e9 recurrence and its implications for true irreversibility",
+    "The proof is statistical in nature and does not apply to individual trajectories"
+  ],
+  "source_convergence": {
+    "structural_claim": "Macroscopic irreversibility emerges from reversible microscopic dynamics through statistical considerations",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Boltzmann's H-theorem",
+        "domain_id": "field_a",
+        "domain_name": "Thermodynamics and Statistical Mechanics",
+        "link_type": "direct",
+        "structural_conclusion": "Macroscopic irreversibility emerges from reversible microscopic dynamics through statistical considerations"
+      },
+      {
+        "result_id": "",
+        "result_name": "Cavity Quantum Electrodynamics Strong Coupling",
+        "domain_id": "field_b",
+        "domain_name": "Optics and Photonics",
+        "link_type": "direct",
+        "structural_conclusion": "Light-matter interaction becomes a reversible quantum process, demonstrating reversible microscopic dynamics that lead to irreversible macroscopic behavior through decoherence"
+      },
+      {
+        "result_id": "",
+        "result_name": "Optical Bloch Equations",
+        "domain_id": "field_b",
+        "domain_name": "Optics and Photonics",
+        "link_type": "direct",
+        "structural_conclusion": "Coherent quantum dynamics are fundamentally reversible but lead to irreversible behavior through environmental coupling"
+      }
+    ],
+    "domains": [
+      "thermodynamics",
+      "optics"
+    ],
+    "domain_names": [
+      "Thermodynamics and Statistical Mechanics",
+      "Optics and Photonics"
+    ],
+    "ea_scores": {
+      "strength": 0.357,
+      "independence": 0.7,
+      "adversarial": 0.4,
+      "reproducibility": 0.5249999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.5408499999999999,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:06:13.527503+00:00",
+    "id": "51ac2935ce77"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.27549
+  }
+}

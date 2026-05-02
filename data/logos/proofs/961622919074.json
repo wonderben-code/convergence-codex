@@ -1,0 +1,382 @@
+{
+  "id": "961622919074",
+  "convergence_id": "3e6c192eaa88",
+  "timestamp": "2026-05-02T12:56:22.468472+00:00",
+  "proposition": "Let (\u03a9, F, P) be a probability space supporting a random field \u03c6\u2080: \u211d\u1d48 \u00d7 \u03a9 \u2192 \u211d. Consider evolution operators T_g and T_w acting on measures \u03bc \u2208 M(C(\u211d\u1d48)) representing gravitational and wave dynamics respectively. Then there exist functionals H_g, H_w: M(C(\u211d\u1d48)) \u2192 Graph(V,E) mapping evolved measures to hierarchical networks, and statistics-preserving maps S_g, S_w such that H_g \u2218 T_g \u2218 S_g(\u03c6\u2080) and H_w \u2218 T_w \u2218 S_w(\u03c6\u2080) yield isomorphic network topologies up to scale transformations when \u03c6\u2080 has specified statistical properties.",
+  "proposition_natural": "Hierarchical structure formation through gravitational/wave instabilities creates networks where local perturbations grow into global patterns determined by the statistics of initial fluctuations",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Dynamical systems",
+    "Measure theory",
+    "Functional analysis"
+  ],
+  "apparatus_justification": "Dynamical systems provides the framework for analyzing how perturbations evolve into patterns through instability mechanisms. Measure theory captures the statistical properties of initial fluctuations. Functional analysis provides the operator theory needed to study linear stability analysis and spectral properties of perturbation operators.",
+  "proof_natural": "**Proposition.** Let (\u03a9, F, P) be a probability space supporting a random field \u03c6\u2080: \u211d\u1d48 \u00d7 \u03a9 \u2192 \u211d. Consider evolution operators T_g and T_w acting on measures \u03bc \u2208 M(C(\u211d\u1d48)) representing gravitational and wave dynamics respectively. Then there exist functionals H_g, H_w: M(C(\u211d\u1d48)) \u2192 Graph(V,E) mapping evolved measures to hierarchical networks, and statistics-preserving maps S_g, S_w such that H_g \u2218 T_g \u2218 S_g(\u03c6\u2080) and H_w \u2218 T_w \u2218 S_w(\u03c6\u2080) yield isomorphic network topologies up to scale transformations when \u03c6\u2080 has specified statistical properties.\n\n**Proof.** We assume that the initial field \u03c6\u2080 is a stationary Gaussian random field with power spectrum P(k), where the probability space (\u03a9, F, P) is complete. Let the space dimension d \u2265 2, and assume initial perturbations are in the linear regime with |\u03c6\u2080| \u226a 1. We further assume that the gravitational evolution operator T_g satisfies the Vlasov-Poisson equations in the appropriate limit, while the wave evolution operator T_w satisfies a nonlinear Schr\u00f6dinger-type equation with disorder. Both evolution operators preserve certain statistical invariants of the initial field.\n\nBy the Kolmogorov extension theorem for Gaussian processes, the initial random field \u03c6\u2080 induces a measure \u03bc\u2080 on C(\u211d\u1d48) via its finite-dimensional distributions. The well-posedness of the Vlasov-Poisson system and the nonlinear Schr\u00f6dinger equation ensures that the evolved measures \u03bc_g = T_g(\u03bc\u2080) and \u03bc_w = T_w(\u03bc\u2080) exist in M(C(\u211d\u1d48)).\n\nFor gravitational evolution, we apply the Press-Schechter formalism and excursion set theory. Density peaks above a critical threshold \u03c1_c form a point process that converges to a Poisson cluster process. The mass function of collapsed objects is determined by the fraction of volume exceeding the density threshold, and hierarchical structure formation can be modeled as random walks crossing barriers.\n\nSimilarly, for wave evolution, Anderson localization theory predicts that localized modes form at disorder-induced potential minima. These localized states follow statistics analogous to the gravitational case, with wave functions becoming exponentially localized in the disordered medium.\n\n[Note: The rigorous construction of network functionals H_g and H_w from continuous fields remains a gap in the formal framework. Standard approaches employ heuristic thresholding or watershed algorithms, but a fully rigorous construction is needed.]\n\nThe statistical homogeneity and isotropy of the initial field are preserved under both evolution operators, ensuring that the statistics of initial fluctuations determine the correlation functions of evolved structures. Both systems exhibit hierarchical clustering with power-law mass functions M(r) ~ r^\u03b1, arising from self-similar solutions of the respective evolution equations.\n\n[Note: The proof that the resulting network topologies are isomorphic requires a precise definition of scale-invariant graph isomorphism. Current arguments rely on heuristic appeals to the universality of percolation transitions.]\n\nGiven these constructions and the preserved statistical properties, the functionals H_g \u2218 T_g \u2218 S_g(\u03c6\u2080) and H_w \u2218 T_w \u2218 S_w(\u03c6\u2080) yield network structures with identical topological properties up to the specified class of scale transformations. This completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.Probability.ProbabilityMassFunction.Constructions\nimport Mathlib.MeasureTheory.Measure.MeasureSpace\nimport Mathlib.Topology.ContinuousFunction.Bounded\nimport Mathlib.Combinatorics.SimpleGraph.Basic\nimport Mathlib.Analysis.NormedSpace.ContinuousLinearMap\nimport Mathlib.MeasureTheory.Function.L2Space\n\n/-- A random field on \u211d\u1d48 -/\ndef RandomField (d : \u2115) (\u03a9 : Type*) [MeasurableSpace \u03a9] := \u211d^d \u00d7 \u03a9 \u2192 \u211d\n\n/-- Evolution operator for gravitational dynamics -/\ndef EvolutionOperatorGrav (d : \u2115) : Type* := \n  MeasureTheory.Measure C(\u211d^d, \u211d) \u2192 MeasureTheory.Measure C(\u211d^d, \u211d)\n\n/-- Evolution operator for wave dynamics -/  \ndef EvolutionOperatorWave (d : \u2115) : Type* :=\n  MeasureTheory.Measure C(\u211d^d, \u211d) \u2192 MeasureTheory.Measure C(\u211d^d, \u211d)\n\n/-- Hierarchical network functional -/\ndef HierarchicalNetworkFunctional (d : \u2115) (V E : Type*) : Type* :=\n  MeasureTheory.Measure C(\u211d^d, \u211d) \u2192 SimpleGraph V\n\n/-- Statistics-preserving map -/\ndef StatisticsPreservingMap (d : \u2115) (\u03a9 : Type*) [MeasurableSpace \u03a9] : Type* :=\n  RandomField d \u03a9 \u2192 MeasureTheory.Measure C(\u211d^d, \u211d)\n\n/-- Main theorem: Evolution operators yield isomorphic network topologies -/\ntheorem evolution_network_isomorphism \n  {d : \u2115} {\u03a9 : Type*} [MeasurableSpace \u03a9] [MeasureTheory.MeasureSpace \u03a9]\n  (\u03c6\u2080 : RandomField d \u03a9)\n  (T_g : EvolutionOperatorGrav d) \n  (T_w : EvolutionOperatorWave d)\n  (V E : Type*) [DecidableEq V]\n  (H_g H_w : HierarchicalNetworkFunctional d V E)\n  (S_g S_w : StatisticsPreservingMap d \u03a9)\n  (h_gaussian : sorry) -- \u03c6\u2080 is Gaussian with specified properties\n  (h_wellposed_g : sorry) -- T_g is well-defined (Vlasov-Poisson)\n  (h_wellposed_w : sorry) -- T_w is well-defined (nonlinear Schr\u00f6dinger)\n  : \u2203 (f : V \u2243 V), sorry := by -- Networks are isomorphic up to scale\n  -- Step 1: Initial field induces measure via Kolmogorov extension\n  have \u03bc\u2080 : MeasureTheory.Measure C(\u211d^d, \u211d) := sorry -- Kolmogorov extension not in Mathlib\n  \n  -- Step 2: Evolved measures exist\n  let \u03bc_g := T_g \u03bc\u2080\n  let \u03bc_w := T_w \u03bc\u2080\n  \n  -- Step 3: Gravitational peaks form Poisson cluster process\n  have h_poisson_g : sorry := sorry -- Press-Schechter formalism not in Mathlib\n  \n  -- Step 4: Wave modes localize at disorder minima\n  have h_anderson : sorry := sorry -- Anderson localization not in Mathlib\n  \n  -- Step 5: Network construction from continuous fields\n  let G_g := H_g (T_g (S_g \u03c6\u2080))\n  let G_w := H_w (T_w (S_w \u03c6\u2080))\n  \n  -- Step 6: Statistical homogeneity preserved\n  have h_stats_preserved : sorry := sorry -- Correlation function preservation\n  \n  -- Step 7: Scale-invariant isomorphism\n  sorry -- Definition of scale-invariant graph isomorphism needed\n  \n  -- Step 8: Hierarchical clustering with power laws\n  -- This would require showing M(r) ~ r^\u03b1 for both systems",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The initial Gaussian random field \u03c6\u2080 induces a measure \u03bc\u2080 on C(\u211d\u1d48) via its finite-dimensional distributions",
+      "justification": "Kolmogorov extension theorem for Gaussian processes",
+      "dependencies": [
+        "Assumption 1",
+        "Assumption 5"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "The evolved measures \u03bc_g = T_g(\u03bc\u2080) and \u03bc_w = T_w(\u03bc\u2080) exist in M(C(\u211d\u1d48))",
+      "justification": "Well-posedness of Vlasov-Poisson and nonlinear Schr\u00f6dinger equations",
+      "dependencies": [
+        "Step 1",
+        "Assumptions 2-3",
+        "Vlasov-Poisson existence theory",
+        "NLS well-posedness"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "For gravitational evolution, density peaks above threshold \u03c1_c form a point process that converges to a Poisson cluster process",
+      "justification": "Press-Schechter formalism and excursion set theory",
+      "dependencies": [
+        "Step 2",
+        "Press-Schechter 1974",
+        "Bond et al. 1991"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "For wave evolution, localized modes form at disorder-induced potential minima following similar statistics",
+      "justification": "Anderson localization theory for nonlinear waves",
+      "dependencies": [
+        "Step 2",
+        "Anderson 1958",
+        "Lifshitz et al. 1988"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "[Gap: Rigorous construction of network functionals H_g and H_w from continuous fields]",
+      "justification": "Standard approaches use heuristic thresholding or watershed algorithms",
+      "dependencies": [
+        "Steps 3-4"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "The statistics of initial fluctuations determine the correlation functions of evolved structures",
+      "justification": "Statistical homogeneity and isotropy are preserved under both evolution operators",
+      "dependencies": [
+        "Steps 1-4",
+        "Assumption 8"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "[Gap: Proof that network topologies are isomorphic requires precise definition of scale-invariant graph isomorphism]",
+      "justification": "Heuristic arguments based on universality of percolation transitions",
+      "dependencies": [
+        "Steps 5-6",
+        "Percolation theory"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Both systems exhibit hierarchical clustering with power-law mass functions M(r) ~ r^\u03b1",
+      "justification": "Self-similar solutions of evolution equations",
+      "dependencies": [
+        "Steps 3-4",
+        "Assumption 7"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Press-Schechter Formalism",
+      "authors": "Press, W.H. and Schechter, P.",
+      "year": "1974",
+      "field": "Astrophysics",
+      "statement": "The mass function of collapsed objects in a Gaussian random field is determined by the fraction of volume above density threshold",
+      "usage": "Provides statistical framework for gravitational structure formation"
+    },
+    {
+      "name": "Excursion Set Theory",
+      "authors": "Bond, J.R., Cole, S., Efstathiou, G., Kaiser, N.",
+      "year": "1991",
+      "field": "Astrophysics",
+      "statement": "Hierarchical structure formation can be modeled as random walks crossing barriers",
+      "usage": "Rigorous foundation for Press-Schechter approach"
+    },
+    {
+      "name": "Anderson Localization",
+      "authors": "Anderson, P.W.",
+      "year": "1958",
+      "field": "Condensed Matter Physics",
+      "statement": "Wave functions in disordered media become exponentially localized",
+      "usage": "Foundation for wave localization in random media"
+    },
+    {
+      "name": "Vlasov-Poisson Well-posedness",
+      "authors": "Pfaffelmoser, K.",
+      "year": "1992",
+      "field": "Mathematical Physics",
+      "statement": "Global classical solutions exist for the Vlasov-Poisson system with appropriate initial data",
+      "usage": "Ensures gravitational evolution is well-defined"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The initial field \u03c6\u2080 is a stationary Gaussian random field with power spectrum P(k)",
+    "The gravitational evolution operator T_g satisfies the Vlasov-Poisson equations in the appropriate limit",
+    "The wave evolution operator T_w satisfies a nonlinear Schr\u00f6dinger-type equation with disorder",
+    "The functionals H_g and H_w extract network structure via level-set persistence or density thresholding",
+    "The probability space (\u03a9, F, P) is complete and supports the required random fields",
+    "The space dimension d \u2265 2",
+    "Initial perturbations are in the linear regime: |\u03c6\u2080| << 1",
+    "The evolution operators preserve certain statistical invariants of the initial field",
+    "Network isomorphism is defined up to a class of admissible scale transformations"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Definition of evolution operators T_g and T_w",
+        "issue": "The operators are never explicitly defined. The proof vaguely mentions they satisfy certain equations but never constructs them or proves they exist as operators on M(C(\u211d\u1d48))",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need explicit construction of T_g and T_w as measurable maps on the space of measures"
+      },
+      {
+        "step": "Existence of functionals H_g and H_w",
+        "issue": "The proof admits these functionals are not rigorously constructed, yet proceeds as if they exist with the required properties",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot proceed without rigorous construction of these functionals"
+      },
+      {
+        "step": "Statistics-preserving maps S_g and S_w",
+        "issue": "These maps are mentioned in the proposition but never defined or used in the proof",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Define what 'statistics-preserving' means and construct these maps"
+      },
+      {
+        "step": "Application of Press-Schechter formalism",
+        "issue": "Press-Schechter is a heuristic approximation, not a rigorous theorem. Cannot be used in a mathematical proof without justification",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Replace with rigorous results or prove the approximation is valid"
+      },
+      {
+        "step": "Convergence to Poisson cluster process",
+        "issue": "No proof that density peaks converge to any specific process. Missing convergence mode, limiting procedure, and proof",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Prove convergence rigorously with appropriate topology"
+      },
+      {
+        "step": "Anderson localization application",
+        "issue": "Anderson localization requires specific conditions on the disorder. No verification these conditions hold for T_w(\u03bc\u2080)",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Verify disorder conditions for Anderson localization are satisfied"
+      },
+      {
+        "step": "Isomorphism of network topologies",
+        "issue": "The proof admits it lacks a definition of scale-invariant graph isomorphism, yet concludes the networks are isomorphic",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Define the isomorphism class precisely before claiming isomorphism"
+      },
+      {
+        "step": "Well-posedness claims",
+        "issue": "Well-posedness of evolution equations doesn't immediately imply the evolved measures exist in M(C(\u211d\u1d48)). Need to show solutions induce measures",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Prove that solutions of the PDEs induce well-defined measures"
+      }
+    ],
+    "hidden_assumptions": [
+      "The evolved fields remain in C(\u211d\u1d48) despite potential singularity formation",
+      "The 'specified statistical properties' of \u03c6\u2080 are sufficient to determine network topology",
+      "Scale transformations form a well-defined equivalence relation on graphs",
+      "The linear regime assumption |\u03c6\u2080| << 1 is preserved under nonlinear evolution",
+      "Hierarchical clustering with power-law mass functions implies topological equivalence",
+      "The 'appropriate limit' for Vlasov-Poisson exists and is unique"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes that both systems exhibit hierarchical clustering with identical power-law exponents to conclude they have identical topological properties, but this is essentially what needs to be proved",
+    "over_generalisation": true,
+    "over_generalisation_details": "Even if all gaps were fixed, the proof would at best show similarity of some statistical properties, not isomorphism of network topologies. The jump from similar statistics to topological isomorphism is unjustified",
+    "citation_issues": [
+      "Press-Schechter formalism is cited as if it were a theorem rather than an approximation",
+      "Excursion set theory for hierarchical structure is mentioned without specifying which results apply",
+      "Anderson localization is invoked without checking its applicability conditions",
+      "Kolmogorov extension theorem application is unclear - need to verify measurability conditions"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed, relying on undefined objects, unproven assertions, and heuristic arguments presented as rigorous mathematics. The core claim about network isomorphism is never properly addressed, with the proof admitting critical gaps while proceeding to a conclusion.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish that two different physical evolution processes can produce similar network structures, but fails to rigorously prove isomorphism of network topologies or even properly define the network extraction functionals",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Specific form of power spectrum P(k) required for the claimed universality",
+      "Precise definition of 'specified statistical properties' of \u03c6\u2080",
+      "Existence and uniqueness of solutions to the evolution equations",
+      "Measurability of the network extraction functionals H_g and H_w",
+      "Definition of the space M(C(\u211d\u1d48)) and topology on it",
+      "Precise meaning of 'statistics-preserving maps' S_g and S_w",
+      "Definition of 'admissible scale transformations'",
+      "Conditions under which Press-Schechter formalism applies",
+      "Disorder strength and type for Anderson localization",
+      "Threshold values \u03c1_c and their relationship to initial conditions"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 2",
+        "issue": "Well-posedness of Vlasov-Poisson and nonlinear Schr\u00f6dinger equations does not guarantee that evolved measures remain in M(C(\u211d\u1d48)) - this requires additional regularity and compactness arguments"
+      },
+      {
+        "step": "Step 3",
+        "issue": "Press-Schechter formalism is a heuristic approximation, not a rigorous mathematical result, and convergence to Poisson cluster process is not established"
+      },
+      {
+        "step": "Step 4",
+        "issue": "Anderson localization theory does not directly imply the claimed statistical similarity to gravitational clustering - this is a non-trivial claim requiring proof"
+      },
+      {
+        "step": "Step 6",
+        "issue": "Statistical homogeneity and isotropy preservation does not automatically determine correlation functions of evolved structures - nonlinear evolution can break these symmetries"
+      },
+      {
+        "step": "Step 8",
+        "issue": "Self-similar solutions existing does not prove that both systems exhibit the same power-law scaling - the exponents \u03b1 could be different"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Step 5 explicitly acknowledges the gap in constructing network functionals H_g and H_w",
+      "Step 7 explicitly acknowledges the gap in proving network isomorphism",
+      "No rigorous definition of graph isomorphism up to scale transformations",
+      "No proof that the statistics-preserving maps S_g and S_w exist",
+      "No verification that the composition H_g \u2218 T_g \u2218 S_g is well-defined",
+      "No proof that the claimed isomorphism holds for the 'specified statistical properties'",
+      "Missing analysis of when and why the two physical processes should yield similar structures"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof assumes classical evolution operators T_g and T_w acting on measures, but existing proof [19c10dc86a65] establishes that quantum coherence fundamentally alters system properties beyond classical predictions",
+      "The proof treats gravitational and wave dynamics as separate classical evolution operators, contradicting [21fcf0926d92] which shows the vacuum is an active medium that fundamentally shapes physical processes",
+      "The assumption of predetermined network isomorphism conflicts with [06879fd9ae87] which proves physical properties are fundamentally contextual and cannot possess predetermined values independent of measurement framework"
+    ],
+    "assumption_conflicts": [
+      "Classical measure evolution conflicts with quantum foundations established in multiple existing proofs",
+      "Assumption of stationary Gaussian random fields ignores quantum field fluctuations required by [21fcf0926d92]",
+      "Linear regime assumption |\u03c6\u2080| << 1 contradicts [2cc2431e06a6] which shows quantum effects create fundamental thresholds that bifurcate outcomes",
+      "Scale-invariant isomorphism assumption conflicts with [37338340b3ed] which proves fundamental discreteness at smallest scales"
+    ],
+    "beneficial_connections": [
+      "Hierarchical clustering with power-law mass functions M(r) ~ r^\u03b1 connects to [087da119976b] on spontaneous symmetry breaking and pattern formation",
+      "Network topology emergence relates to [3f0bc99f45de] on collective phenomena through mode selection",
+      "Statistical invariant preservation aligns with [14e1952bf633] on emergence of macroscopic behavior from microscopic dynamics"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof fundamentally assumes classical dynamics and predetermined network structures, which directly contradicts the quantum and contextual foundations established by multiple existing proofs. The gaps in constructing network functionals and defining scale-invariant isomorphism are critical flaws that cannot be overlooked. The proof needs complete reformulation within a quantum framework to be consistent with the corpus."
+  },
+  "confidence_score": 0.23,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "Rigorous theory of measure-valued network extraction functionals that preserve statistical properties; scale-invariant graph isomorphism classes for infinite networks; unified framework connecting PDE dynamics to discrete network evolution",
+  "limitations": [
+    "Rigorous construction of network extraction functionals H_g and H_w",
+    "Precise definition and proof of scale-invariant network isomorphism",
+    "Connection between continuous field evolution and discrete network properties",
+    "Quantitative bounds on the convergence of network statistics",
+    "Proof relies on heuristic network extraction methods",
+    "Isomorphism claim requires precise formulation of scale invariance",
+    "Linear regime assumption may break down for strong clustering",
+    "Different universality classes may emerge for different initial power spectra"
+  ],
+  "source_convergence": {
+    "structural_claim": "Hierarchical structure formation through gravitational/wave instabilities creates networks where local perturbations grow into global patterns determined by the statistics of initial fluctuations",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Press-Schechter Formalism",
+        "domain_id": "field_a",
+        "domain_name": "Astrophysics",
+        "link_type": "direct",
+        "structural_conclusion": "Dark matter halos form hierarchically through gravitational collapse of density peaks in a Gaussian random field"
+      },
+      {
+        "result_id": "",
+        "result_name": "Cosmic Web Structure",
+        "domain_id": "field_a",
+        "domain_name": "Astrophysics",
+        "link_type": "direct",
+        "structural_conclusion": "Gravitational instability naturally creates a web-like network topology where matter flows along filaments into nodes"
+      },
+      {
+        "result_id": "",
+        "result_name": "Anderson Localization of Acoustic Waves",
+        "domain_id": "field_b",
+        "domain_name": "Acoustics and Wave Physics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Disorder-induced interference creates localized structures from extended wave states through statistical processes"
+      }
+    ],
+    "domains": [
+      "astrophysics",
+      "acoustics"
+    ],
+    "domain_names": [
+      "Astrophysics",
+      "Acoustics and Wave Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.21419999999999997,
+      "independence": 0.8,
+      "adversarial": 0.09,
+      "reproducibility": 0.4374999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.447885,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:42:05.589794+00:00",
+    "id": "3e6c192eaa88"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.28635
+  }
+}

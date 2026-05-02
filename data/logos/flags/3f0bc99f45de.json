@@ -1,0 +1,15 @@
+{
+  "proof_id": "3f0bc99f45de",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous categorical framework connecting decoherence functionals to symmetry-breaking order parameters, and a proof that environmentally-selected pointer states coincide with collective modes in many-body systems",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

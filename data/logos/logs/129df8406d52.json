@@ -1,0 +1,38 @@
+{
+  "proof_id": "129df8406d52",
+  "timestamp": "2026-05-02T13:53:17.662670+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "equivalence - This would require showing a functorial relationship between quantum mechanical Hamiltonians and acoustic wave operators, but the mathematical structures (Hermitian vs non-Hermitian operators) are fundamentally different despite sharing the symmetry-breaking behavior."
+      ],
+      "reasoning": "Both phenomena involve external perturbations breaking symmetries and lifting degeneracies in their respective systems. The convergence identifies shared abstract principles: (1) systems with degenerate states/modes due to symmetry, (2) external fields that break this symmetry, (3) resulting splitting of degeneracies. These are best captured as axioms about symmetry-breaking rather than claiming the structures themselves are equivalent."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Functional analysis, Algebraic structures",
+      "alternatives_considered": [],
+      "reasoning": "Functional analysis provides spectral theory for operators on Hilbert spaces, which captures both quantum mechanical Hamiltonians and wave operators. Algebraic structures (specifically group theory) formalizes the symmetries that get broken. The convergence centers on how perturbations lift degeneracies in eigenspaces."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof uses the fact that symmetry constrains the degeneracy through group representations on eigenspaces. When an external field breaks this symmetry, it cannot commute with the symmetry operations, which via Schur's lemma implies the perturbation matrix on the degenerate subspace has non-trivial structure, leading to distinct eigenvalue corrections in perturbation theory.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 7 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3220 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 2882 chars, 6 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "The formalization captures the structure of the theorem but cannot complete the proof due to missing representation theory and perturbation theory machinery in Mathlib. The key mathematical concepts like discrete spectrum, Schur's lemma for infinite-dimensional representations, and the Kato-Rellich theorem would need to be developed first."
+    }
+  ]
+}

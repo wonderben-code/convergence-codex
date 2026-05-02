@@ -1,0 +1,13 @@
+{
+  "proof_id": "630939bd300e",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A unified framework combining measure-theoretic dynamics with equivariant bifurcation theory that works for both finite and infinite-dimensional systems. Current equivariant bifurcation theory is primarily developed for finite-dimensional ODEs, while applications to PDEs and field theories require infinite-dimensional generalizations that are not fully developed.",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

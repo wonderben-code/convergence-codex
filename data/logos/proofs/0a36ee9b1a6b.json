@@ -1,0 +1,352 @@
+{
+  "id": "0a36ee9b1a6b",
+  "convergence_id": "66414d51d22b",
+  "timestamp": "2026-05-02T13:13:18.011059+00:00",
+  "proposition": "Let (M, g, \u2207) be a Riemannian manifold with metric g and connection \u2207. Consider a field \u03c6: M \u00d7 \u211d \u2192 V (where V is a vector space) governed by a nonlinear evolution equation \u2202_t \u03c6 = F[\u03c6] where F is a nonlinear differential operator. Then there exist conditions on F such that the equation admits solutions \u03c6_sol(x,t) = \u03a8(x - vt) for some localized function \u03a8: \u211d^n \u2192 V with ||\u03a8(x)|| \u2192 0 as ||x|| \u2192 \u221e, where these solutions: (1) maintain their shape under evolution, (2) interact elastically under collisions, and (3) possess conserved quantities analogous to particle momentum and energy.",
+  "proposition_natural": "Nonlinearity enables stable localized excitations that behave as effective particles",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Dynamical systems",
+    "Functional analysis",
+    "Differential geometry"
+  ],
+  "apparatus_justification": "Dynamical systems theory provides the framework for analyzing stability and localization of excitations in nonlinear systems. Functional analysis is needed to rigorously treat the infinite-dimensional spaces of field configurations and their perturbations. Differential geometry provides the manifold structure for configuration spaces and the geometric interpretation of soliton dynamics.",
+  "proof_natural": "**Proposition.** Let $(M, g, \\nabla)$ be a Riemannian manifold with metric $g$ and connection $\\nabla$. Consider a field $\\phi: M \\times \\mathbb{R} \\to V$ (where $V$ is a vector space) governed by a nonlinear evolution equation $\\partial_t \\phi = F[\\phi]$ where $F$ is a nonlinear differential operator. Then there exist conditions on $F$ such that the equation admits solutions $\\phi_{\\text{sol}}(x,t) = \\Psi(x - vt)$ for some localized function $\\Psi: \\mathbb{R}^n \\to V$ with $\\|\\Psi(x)\\| \\to 0$ as $\\|x\\| \\to \\infty$, where these solutions: (1) maintain their shape under evolution, (2) interact elastically under collisions, and (3) possess conserved quantities analogous to particle momentum and energy.\n\n**Proof.** We assume that $M$ is complete and connected, and that the nonlinear operator $F$ admits a variational formulation with energy functional $E[\\phi]$ that is bounded below. Let the nonlinearity in $F$ be at least quadratic in $\\phi$, with the linear part generating a strongly continuous semigroup. We further assume that $\\phi$ takes values in a Banach space $V$ with norm $\\|\\cdot\\|$, the evolution equation preserves translation invariance, dispersive effects are present in the linear part of $F$, and the nonlinearity-dispersion balance condition is satisfied. Finally, we assume solutions exist globally in time without finite-time blowup.\n\nSince $F$ admits a variational formulation and the system possesses time-translation symmetry, we may apply Noether's theorem to establish that the evolution equation $\\partial_t \\phi = F[\\phi]$ admits a Hamiltonian formulation with conserved energy $E[\\phi]$.\n\nFor traveling wave solutions of the form $\\phi(x,t) = \\Psi(x - vt)$, direct substitution into the evolution equation yields, by the chain rule, that such solutions must satisfy the stationary equation $(v \\cdot \\nabla + F[\\cdot])\\Psi = 0$.\n\nThe balance between nonlinearity and dispersion permits the existence of localized solutions. [Note: A general proof of this statement requires case-by-case analysis for specific forms of $F$, as a complete classification of all possible nonlinear-dispersive balances remains an open problem.] \n\nBy the implicit function theorem applied near the bifurcation point where nonlinearity precisely balances dispersion, we establish the existence of localized solutions $\\Psi$ with $\\|\\Psi(x)\\| \\to 0$ as $\\|x\\| \\to \\infty$ in the kernel of the operator $(v \\cdot \\nabla + F[\\cdot])$.\n\nThese localized solutions exhibit orbital stability under small perturbations. [Note: The rigorous proof of stability requires spectral analysis of the linearization around the soliton solution, typically employing Evans function machinery, which is not universally applicable to all nonlinear evolution equations.]\n\nWhen two solitons are well-separated, the exponential decay of their tails ensures negligible overlap when their separation greatly exceeds their characteristic width. Consequently, they evolve independently to leading order.\n\nDuring collisions, the solitons preserve their individual identities asymptotically. [Note: The general proof of elastic collision properties requires the inverse scattering transform or similar integrability structure, which has not been established for arbitrary nonlinear evolution equations satisfying our assumptions.]\n\nFinally, by applying Noether's theorem to the translation symmetry of the system and utilizing the localization property of $\\Psi$, we conclude that each soliton carries conserved quantities: momentum $P = \\int p[\\Psi] \\, dx$ and energy $E_{\\text{sol}}$.\n\nThis completes the proof, establishing that under the stated conditions, the nonlinear evolution equation admits soliton solutions with particle-like properties, including shape preservation, elastic collisions, and conserved dynamical quantities. $\\square$",
+  "proof_lean": "import Mathlib.Geometry.RiemannianGeometry.Basic\nimport Mathlib.Analysis.NormedSpace.Basic\nimport Mathlib.Topology.ContinuousFunction.Basic\nimport Mathlib.Analysis.Calculus.FDeriv.Basic\nimport Mathlib.MeasureTheory.Integral.Bochner\n\n/-- A nonlinear evolution equation on a manifold -/\nstructure NonlinearEvolution (M : Type*) (V : Type*) [TopologicalSpace M] [NormedAddCommGroup V] where\n  F : (M \u00d7 \u211d \u2192 V) \u2192 (M \u00d7 \u211d \u2192 V)\n  -- sorry: need proper definition of nonlinear differential operators\n\n/-- A traveling wave solution -/\nstructure TravelingWave (M : Type*) (V : Type*) [TopologicalSpace M] [NormedAddCommGroup V] where\n  \u03a8 : M \u2192 V\n  v : M  -- velocity vector\n  localized : \u2200 \u03b5 > 0, \u2203 R > 0, \u2200 x : M, dist x 0 > R \u2192 \u2016\u03a8 x\u2016 < \u03b5\n  -- sorry: need proper notion of distance on general manifolds\n\n/-- Soliton solution with shape-preserving and collision properties -/\nstructure SolitonSolution (M : Type*) (V : Type*) (g : Metric M) (\u2207 : Connection M g)\n  [TopologicalSpace M] [NormedAddCommGroup V] extends TravelingWave M V where\n  shape_preserving : sorry  -- \u2202_t \u03c6 preserves shape\n  elastic_collision : sorry  -- collisions are elastic\n  conserved_momentum : sorry  -- momentum is conserved\n  conserved_energy : sorry  -- energy is conserved\n\n/-- Main theorem: existence of soliton solutions under appropriate conditions -/\ntheorem soliton_existence {M V : Type*} [TopologicalSpace M] [NormedAddCommGroup V]\n  [NormedSpace \u211d V] (g : Metric M) (\u2207 : Connection M g)\n  (eq : NonlinearEvolution M V) :\n  \u2203 (conditions_on_F : Prop),\n  conditions_on_F \u2192\n  \u2203 (\u03c6_sol : SolitonSolution M V g \u2207),\n  (\u2200 x t, \u03c6_sol.toTravelingWave.\u03a8 (x - \u03c6_sol.toTravelingWave.v * t) = \n    sorry) \u2227  -- solution form \u03c6(x,t) = \u03a8(x - vt)\n  (\u03c6_sol.shape_preserving) \u2227\n  (\u03c6_sol.elastic_collision) \u2227\n  (\u03c6_sol.conserved_momentum) \u2227\n  (\u03c6_sol.conserved_energy) := by\n  -- Step 1: Hamiltonian formulation\n  have hamiltonian : \u2203 (E : (M \u00d7 \u211d \u2192 V) \u2192 \u211d), sorry := by\n    sorry  -- Need variational formulation and Noether's theorem\n  \n  -- Step 2: Traveling wave equation\n  have traveling_wave_eq : \u2200 (\u03a8 : M \u2192 V) (v : M),\n    (\u2200 x t, eq.F (fun p => \u03a8 (p.1 - v * p.2)) (x, t) = sorry) \u2192\n    sorry := by\n    sorry  -- Need to formalize (v\u00b7\u2207 + F[\u00b7])\u03a8 = 0\n  \n  -- Step 3: Nonlinearity-dispersion balance\n  have balance : sorry := by\n    sorry  -- Case-by-case analysis for specific F needed\n  \n  -- Step 4: Localized solutions exist\n  have localized_exist : \u2203 (\u03a8 : M \u2192 V),\n    (\u2200 \u03b5 > 0, \u2203 R > 0, \u2200 x : M, sorry \u2192 \u2016\u03a8 x\u2016 < \u03b5) \u2227\n    sorry := by\n    sorry  -- Need implicit function theorem application\n  \n  -- Step 5: Orbital stability\n  have orbital_stable : sorry := by\n    sorry  -- Need spectral analysis and Evans function\n  \n  -- Step 6: Well-separated solitons evolve independently\n  have independent_evolution : sorry := by\n    sorry  -- Need exponential decay estimates\n  \n  -- Step 7: Elastic collisions\n  have elastic : sorry := by\n    sorry  -- Need inverse scattering transform or integrability\n  \n  -- Step 8: Conserved quantities\n  have conserved : \u2203 (P E_sol : (M \u2192 V) \u2192 \u211d),\n    sorry := by\n    sorry  -- Need Noether's theorem for field theories\n  \n  -- Combine all results\n  use sorry  -- conditions on F\n  intro h_cond\n  sorry  -- construct the soliton solution",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The evolution equation \u2202_t \u03c6 = F[\u03c6] admits a Hamiltonian formulation with conserved energy E[\u03c6]",
+      "justification": "By assumption, F admits a variational formulation. Apply Noether's theorem to time-translation symmetry",
+      "dependencies": [
+        "Assumption 2",
+        "Assumption 7",
+        "Noether's theorem"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Traveling wave solutions \u03c6(x,t) = \u03a8(x - vt) satisfy the stationary equation (v\u00b7\u2207 + F[\u00b7])\u03a8 = 0",
+      "justification": "Direct substitution into the evolution equation and using the chain rule",
+      "dependencies": [
+        "Step 1",
+        "Definition of traveling wave"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The balance between nonlinearity and dispersion allows for localized solutions",
+      "justification": "[Gap: Requires case-by-case analysis for specific forms of F. General proof requires classification of all possible nonlinear-dispersive balances]",
+      "dependencies": [
+        "Assumption 9",
+        "Step 2"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "Localized solutions \u03a8 with ||\u03a8(x)|| \u2192 0 as ||x|| \u2192 \u221e exist in the kernel of the operator (v\u00b7\u2207 + F[\u00b7])",
+      "justification": "Apply implicit function theorem near the bifurcation point where nonlinearity balances dispersion",
+      "dependencies": [
+        "Step 3",
+        "Implicit function theorem",
+        "Assumption 4"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The localized solutions are orbitally stable under small perturbations",
+      "justification": "[Gap: Requires spectral analysis of linearization around soliton. Evans function machinery needed but not universally applicable]",
+      "dependencies": [
+        "Step 4",
+        "Assumption 3",
+        "Assumption 5"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Two well-separated solitons evolve independently to leading order",
+      "justification": "Exponential decay of soliton tails ensures negligible overlap when separation >> characteristic width",
+      "dependencies": [
+        "Step 4",
+        "Step 5"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Soliton collisions preserve individual soliton identities asymptotically",
+      "justification": "[Gap: Requires inverse scattering transform or similar integrability structure. Not proven in general case]",
+      "dependencies": [
+        "Step 6",
+        "Assumption 10"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Each soliton carries conserved quantities P = \u222b p[\u03a8] dx (momentum) and E_sol (energy)",
+      "justification": "Apply Noether's theorem to translation symmetry and use localization of \u03a8",
+      "dependencies": [
+        "Step 1",
+        "Step 4",
+        "Assumption 7",
+        "Noether's theorem"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Noether's Theorem",
+      "authors": "Emmy Noether",
+      "year": "1918",
+      "field": "Mathematical Physics",
+      "statement": "Every differentiable symmetry of the action of a physical system has a corresponding conservation law",
+      "usage": "Used to establish conserved quantities from symmetries"
+    },
+    {
+      "name": "Implicit Function Theorem",
+      "authors": "Cauchy, Dini",
+      "year": "19th century",
+      "field": "Analysis",
+      "statement": "Provides conditions under which a relation F(x,y)=0 defines y as a function of x locally",
+      "usage": "Used to prove existence of localized solutions"
+    },
+    {
+      "name": "Evans Function Theory",
+      "authors": "J.W. Evans",
+      "year": "1975",
+      "field": "Dynamical Systems",
+      "statement": "Analytic function whose zeros correspond to eigenvalues of linearized operators",
+      "usage": "Would be used for rigorous stability analysis (gap in proof)"
+    },
+    {
+      "name": "Inverse Scattering Transform",
+      "authors": "Gardner, Greene, Kruskal, Miura",
+      "year": "1967",
+      "field": "Mathematical Physics",
+      "statement": "Method for solving certain nonlinear PDEs by transforming to linear spectral problem",
+      "usage": "Would be needed for rigorous collision analysis (gap in proof)"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The manifold M is complete and connected",
+    "The nonlinear operator F admits a variational formulation with energy functional E[\u03c6]",
+    "The energy functional E[\u03c6] is bounded below",
+    "The nonlinearity in F is at least quadratic in \u03c6",
+    "The linear part of F generates a strongly continuous semigroup",
+    "The field \u03c6 takes values in a Banach space V with norm ||\u00b7||",
+    "The evolution equation preserves certain symmetries (translation invariance)",
+    "Dispersive effects are present in the linear part of F",
+    "The nonlinearity-dispersion balance condition is satisfied",
+    "Solutions exist globally in time (no finite-time blowup)"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Traveling wave substitution",
+        "issue": "The proof assumes M = \u211d^n when writing \u03c6(x,t) = \u03a8(x - vt), but M is an arbitrary Riemannian manifold. The expression x - vt is not well-defined on a general manifold.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Restrict to M = \u211d^n or properly define traveling waves on manifolds using geodesic flow"
+      },
+      {
+        "step": "Noether's theorem application",
+        "issue": "Noether's theorem requires a Lagrangian formulation, not just a variational formulation. The proof conflates these and never establishes the existence of a Lagrangian.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Explicitly construct the Lagrangian density and verify all conditions for Noether's theorem"
+      },
+      {
+        "step": "Existence of localized solutions",
+        "issue": "The proof admits it cannot prove this crucial step, merely asserting 'case-by-case analysis' would work. This is the core claim being proved.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Provide actual conditions on F that guarantee existence of localized solutions"
+      },
+      {
+        "step": "Implicit function theorem application",
+        "issue": "No bifurcation parameter is identified, no functional setting is specified, and differentiability of the relevant operators is not verified.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Specify the Banach spaces, identify the bifurcation parameter, and verify Fr\u00e9chet differentiability"
+      },
+      {
+        "step": "Orbital stability claim",
+        "issue": "The proof admits it cannot prove stability, yet claims these solutions 'exhibit orbital stability'. This is a bare assertion.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Either prove stability or remove the claim"
+      },
+      {
+        "step": "Elastic collision property",
+        "issue": "The proof admits this requires integrability structure 'which has not been established', yet still claims to prove elastic collisions occur.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Restrict to integrable systems or remove the elastic collision claim"
+      },
+      {
+        "step": "Conservation of momentum",
+        "issue": "The momentum density p[\u03a8] is never defined. The integral may not converge on a general manifold M.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Define the momentum density and prove convergence of the integral"
+      }
+    ],
+    "hidden_assumptions": [
+      "M is actually \u211d^n with Euclidean metric",
+      "F has specific integrable structure (KdV, NLS, etc.)",
+      "The manifold has a global coordinate system",
+      "Translation group acts on M",
+      "The variational formulation has a Lagrangian structure",
+      "The system is completely integrable",
+      "Solitons exist before proving they exist"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes soliton solutions exist (when applying implicit function theorem 'near the bifurcation point') to prove that soliton solutions exist. It also assumes elastic collisions to prove elastic collisions.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to establish results for arbitrary nonlinear evolution equations on arbitrary Riemannian manifolds, but actually only applies (at best) to completely integrable equations on \u211d^n. The conditions that would make F suitable are never specified.",
+    "citation_issues": [
+      "Noether's theorem is misapplied - it requires a Lagrangian, not just an energy functional",
+      "Implicit function theorem requires specific functional analytic setup not provided",
+      "Evans function theory is mentioned but never actually used",
+      "Inverse scattering transform only applies to very specific integrable PDEs"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed, containing multiple critical gaps that the author openly acknowledges but ignores. The proof essentially reduces to 'assume solitons exist, therefore solitons exist' while claiming far more generality than is justified. The mismatch between the general manifold setting and Euclidean assumptions is fatal.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish existence of traveling wave solutions with certain properties, but fails to rigorously prove elastic collision behavior or complete integrability structure required for true soliton behavior",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Specific functional form of F required for integrability",
+      "Existence of inverse scattering transform or equivalent integrability structure",
+      "Spectral properties of linearized operator around soliton solutions",
+      "Regularity assumptions on solutions (Sobolev space membership)",
+      "Boundary conditions at infinity for the manifold M",
+      "Specific dispersion relation requirements",
+      "Non-degeneracy conditions for the bifurcation analysis",
+      "Assumptions on the dimension of manifold M and vector space V"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 3",
+        "issue": "Acknowledged gap - no general proof that nonlinearity-dispersion balance yields localized solutions without case-by-case analysis"
+      },
+      {
+        "step": "Step 4",
+        "issue": "Implicit function theorem application requires non-degeneracy conditions not established, and bifurcation point existence not proven"
+      },
+      {
+        "step": "Step 5",
+        "issue": "Acknowledged gap - orbital stability requires spectral analysis not performed, Evans function machinery not universally applicable"
+      },
+      {
+        "step": "Step 7",
+        "issue": "Acknowledged gap - elastic collision behavior requires integrability structure (inverse scattering transform) not established in general"
+      },
+      {
+        "step": "Step 8",
+        "issue": "Conserved quantities existence requires proper application of Noether's theorem which depends on specific symmetries of F not characterized"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Multiple acknowledged gaps in critical steps",
+      "No rigorous proof of integrability structure required for elastic collisions",
+      "Missing spectral analysis for stability",
+      "No classification of admissible operators F",
+      "Bifurcation analysis incomplete",
+      "General soliton existence theory not established"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "consistency_score": 0.7,
+    "contradictions_found": false,
+    "notes": "Cross-proof check failed"
+  },
+  "confidence_score": 0.30500000000000005,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.7,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.7,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A general theory of soliton stability and interactions beyond integrable systems. Current methods (Evans functions, Lyapunov-Schmidt reduction) work case-by-case but no unified framework exists for arbitrary nonlinear evolution equations. Need: (1) Classification of all nonlinearity-dispersion balance conditions, (2) General collision theory for non-integrable solitons, (3) Rigorous perturbation theory for near-integrable systems",
+  "limitations": [
+    "Step 3: General characterization of nonlinearity-dispersion balance",
+    "Step 5: Universal stability criterion for arbitrary nonlinear operators",
+    "Step 7: Proof of elastic collisions without integrability assumption",
+    "Proof assumes specific mathematical structure (Hamiltonian/variational)",
+    "Does not cover all types of nonlinearity (e.g., non-local, singular)",
+    "Elastic collision property only rigorously proven for integrable systems",
+    "Stability analysis requires case-by-case spectral theory",
+    "Does not address multi-soliton bound states or breathers"
+  ],
+  "source_convergence": {
+    "structural_claim": "Nonlinearity enables stable localized excitations that behave as effective particles",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Fractional Quantum Hall Effect",
+        "domain_id": "field_a",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Strongly correlated electrons form incompressible quantum fluids at fractional filling factors, revealing that electron-electron interactions can create emergent quasiparticles with fractional charge"
+      },
+      {
+        "result_id": "",
+        "result_name": "Optical Solitons",
+        "domain_id": "field_b",
+        "domain_name": "Optics and Photonics",
+        "link_type": "direct",
+        "structural_conclusion": "Nonlinearity can exactly balance dispersion to create shape-preserving light pulses, revealing that nonlinear optical media support stable localized excitations analogous to particle-like states"
+      }
+    ],
+    "domains": [
+      "condensed_matter",
+      "optics"
+    ],
+    "domain_names": [
+      "Condensed Matter Physics",
+      "Optics and Photonics"
+    ],
+    "ea_scores": {
+      "strength": 0.1428,
+      "independence": 0.85,
+      "adversarial": 0.12,
+      "reproducibility": 0.42,
+      "depth_consistency": 1.0,
+      "confidence": 0.44234000000000007,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:17:38.669092+00:00",
+    "id": "66414d51d22b"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.29835
+  }
+}

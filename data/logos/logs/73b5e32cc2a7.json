@@ -1,0 +1,38 @@
+{
+  "proof_id": "73b5e32cc2a7",
+  "timestamp": "2026-05-02T13:04:53.033485+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "categorical - One could frame this as a functor from microscopic to macroscopic descriptions with irreversibility emerging from the functor's properties, but the axiomatic approach better captures the statistical/environmental mechanism that is central to the claim."
+      ],
+      "reasoning": "The convergence identifies a shared abstract principle across domains: reversible microscopic dynamics giving rise to irreversible macroscopic behavior through statistical/environmental considerations. This is best captured by axiomatizing the conditions under which microscopic reversibility leads to macroscopic irreversibility, with both thermodynamics and quantum optics providing models of these axioms."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Measure theory, Dynamical systems, Information theory",
+      "alternatives_considered": [],
+      "reasoning": "Measure theory provides the rigorous foundation for probability spaces and statistical ensembles needed to formalize the emergence of macroscopic irreversibility. Dynamical systems theory captures the reversible microscopic evolution and phase space flows. Information theory formalizes entropy and the statistical considerations that bridge microscopic and macroscopic descriptions."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof shows that while microscopic dynamics preserve fine-grained entropy through Liouville's theorem, coarse-graining increases entropy via Jensen's inequality. Under ergodic assumptions, the system explores phase space such that coarse-grained entropy increases monotonically toward its maximum value at equilibrium.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 6 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3127 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 2664 chars, 3 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "The proof structure follows the given steps but encounters fundamental gaps. The main mathematical gap is in Step 3 where we need to show the coarse-grained entropy is non-decreasing, which requires additional assumptions about the relationship between the coarse-graining operator and the dynamics. Steps 4-6 about ergodicity and approach to equilibrium are also not fully formalizable without significant additional machinery."
+    }
+  ]
+}

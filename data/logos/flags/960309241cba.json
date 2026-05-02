@@ -1,0 +1,15 @@
+{
+  "proof_id": "960309241cba",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous framework connecting microscopic Hamiltonian dynamics to macroscopic kinetic equations with uniform-in-time error bounds. Current propagation of chaos results typically hold only for finite time intervals. Additionally, a general theory of collective mode emergence from spectral properties of linearized kinetic operators is needed.",
+    "Difficulty assessed as challenging",
+    "10 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

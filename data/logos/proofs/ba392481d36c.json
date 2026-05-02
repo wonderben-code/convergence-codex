@@ -1,0 +1,380 @@
+{
+  "id": "ba392481d36c",
+  "convergence_id": "3e2766378934",
+  "timestamp": "2026-05-02T12:55:52.918960+00:00",
+  "proposition": "Let H be a Hilbert space, \u03c1 \u2208 B(H) a density operator, and E: B(H) \u2192 R a von Neumann entropy functional. There exists a functor F: EntCat \u2192 GeomCat from the category of entanglement patterns to the category of geometric structures such that: (1) For quantum gravity systems, F maps entanglement entropy S(\u03c1_A) to bulk geometric area A/4G_N, and (2) For condensed matter systems, F maps entanglement patterns to emergent topological order and quasiparticle statistics.",
+  "proposition_natural": "Entanglement patterns directly determine emergent geometric and physical properties",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Differential geometry",
+    "Functional analysis"
+  ],
+  "apparatus_justification": "Category theory provides the natural framework for formalizing structural convergences between domains through functors and natural transformations. Differential geometry is essential for the geometric properties emerging from entanglement, while functional analysis provides the rigorous treatment of quantum states and observables in both quantum gravity and condensed matter systems.",
+  "proof_natural": "**Proposition.** Let $H$ be a Hilbert space, $\\rho \\in B(H)$ a density operator, and $E: B(H) \\to \\mathbb{R}$ a von Neumann entropy functional. There exists a functor $F: \\text{EntCat} \\to \\text{GeomCat}$ from the category of entanglement patterns to the category of geometric structures such that: (1) For quantum gravity systems, $F$ maps entanglement entropy $S(\\rho_A)$ to bulk geometric area $A/4G_N$, and (2) For condensed matter systems, $F$ maps entanglement patterns to emergent topological order and quasiparticle statistics.\n\n**Proof.** We assume that $H$ is a separable Hilbert space, either finite or infinite dimensional. Let density operators satisfy $\\text{tr}(\\rho) = 1$ and $\\rho \\geq 0$, with von Neumann entropy $S(\\rho) = -\\text{tr}(\\rho \\log \\rho)$ well-defined. We further assume the holographic correspondence applies in the quantum gravity sector, the thermodynamic limit exists for condensed matter systems, and that entanglement patterns can be characterized by reduced density matrices and correlation functions.\n\nWe begin by constructing the category $\\text{EntCat}$ with objects as quantum states $|\\psi\\rangle \\in H$ and morphisms as local operations and classical communication (LOCC) that preserve entanglement monotones. This is a standard construction in quantum information theory. Similarly, we define $\\text{GeomCat}$ with objects as tuples $(M, g, T)$ where $M$ is a manifold, $g$ a metric, and $T$ topological data, following standard differential geometry.\n\nFor the quantum gravity sector, we invoke the Ryu-Takayanagi formula, which states that the entanglement entropy $S_A = \\text{Area}(\\gamma_A)/(4G_N)$ where $\\gamma_A$ is the minimal surface in the bulk anchored to the boundary of region $A$. This established holographic result allows us to define $F$ on quantum gravity objects as $F(\\rho_A) = (M_{\\text{bulk}}, g_{\\text{bulk}}, \\emptyset)$ where $g_{\\text{bulk}}$ satisfies the Einstein equations with boundary conditions determined by $\\rho_A$. This construction follows from the AdS/CFT correspondence and bulk reconstruction theorems.\n\n[Note: The functoriality of $F$ requires showing that LOCC operations map to bulk diffeomorphisms preserving the geometric structure. While this is expected from holographic duality, a complete proof of morphism preservation remains an open problem.]\n\nFor the condensed matter sector, we consider the Laughlin wavefunction $\\Psi_m = \\prod_{i<j}(z_i - z_j)^m \\exp(-\\sum|z_i|^2/4l^2)$, which encodes a specific entanglement pattern characteristic of fractional quantum Hall states. The functor $F$ maps this state to an effective Chern-Simons theory with level $k = 1/m$, yielding emergent anyonic quasiparticles with fractional statistics. This mapping is justified by the established Chern-Simons/FQHE correspondence.\n\n[Note: The general construction of $F$ for arbitrary condensed matter entanglement patterns beyond specific examples like the Laughlin state would require a universal entanglement-to-geometry dictionary, which has not been fully established.]\n\nThe functor $F$ preserves information-theoretic quantities in both sectors: mutual information $I(A:B)$ maps to geometric and topological invariants, maintaining consistency with known dualities. In the quantum gravity case, this preservation manifests through the holographic entanglement entropy formula, while in condensed matter it appears through topological entanglement entropy and quantum dimensions of anyons.\n\nThis construction demonstrates that entanglement patterns systematically encode geometric and topological structure across distinct physical domains, providing a unified categorical framework for understanding emergent geometry from quantum information. This completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.Analysis.InnerProductSpace.Basic\nimport Mathlib.Analysis.NormedSpace.OperatorNorm\nimport Mathlib.CategoryTheory.Functor.Basic\nimport Mathlib.Geometry.Manifold.SmoothManifoldWithCorners\nimport Mathlib.Topology.Basic\n\n/-- Density operator on a Hilbert space -/\nstructure DensityOperator (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u211d H] where\n  op : H \u2192L[\u211d] H\n  -- Additional properties would be needed: positive, trace 1\n\n/-- von Neumann entropy functional -/\ndef vonNeumannEntropy (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u211d H] \n  (\u03c1 : DensityOperator H) : \u211d := sorry -- Missing: trace and logarithm of operators\n\n/-- Category of entanglement patterns -/\nstructure EntCat where\n  /-- Objects are quantum states in a Hilbert space -/\n  obj : Type*\n  /-- Morphisms are LOCC operations preserving entanglement monotones -/\n  hom : obj \u2192 obj \u2192 Type*\n  -- Category axioms would need to be added\n\n/-- Geometric structure tuple -/\nstructure GeomStructure where\n  M : Type*\n  [inst : TopologicalSpace M]\n  [inst' : ChartedSpace \u211d M]\n  g : sorry -- Metric tensor on M\n  T : sorry -- Topological data\n\n/-- Category of geometric structures -/\nstructure GeomCat where\n  obj : Type* := GeomStructure\n  hom : obj \u2192 obj \u2192 Type*\n  -- Category axioms would need to be added\n\n/-- Ryu-Takayanagi formula for entanglement entropy -/\ndef RyuTakayanagi (A : Type*) (G_N : \u211d) : \u211d := \n  sorry -- S_A = Area(\u03b3_A)/(4G_N) where \u03b3_A is minimal surface\n\n/-- Laughlin wavefunction for fractional quantum Hall effect -/\ndef LaughlinWavefunction (m : \u2115) (z : Fin n \u2192 \u2102) (l : \u211d) : \u2102 :=\n  sorry -- \u220f_{i<j}(z_i - z_j)^m * exp(-\u03a3|z_i|\u00b2/4l\u00b2)\n\n/-- Main functor from entanglement patterns to geometric structures -/\ndef F : EntCat \u2192 GeomCat := {\n  obj := fun ent_obj => sorry, -- Map quantum states to geometric structures\n  map := fun f => sorry, -- Map LOCC operations to geometric morphisms\n  -- Functoriality axioms\n  map_id := sorry, -- Preservation of identity morphisms\n  map_comp := sorry -- Preservation of composition\n}\n\n/-- Theorem: Functor F maps entanglement to geometry in both quantum gravity and condensed matter -/\ntheorem entanglement_geometry_correspondence \n  (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u211d H]\n  (\u03c1 : DensityOperator H) (E : DensityOperator H \u2192 \u211d) :\n  \u2203 (F : EntCat \u2192 GeomCat),\n  (\u2200 (\u03c1_A : DensityOperator H) (G_N : \u211d), \n    -- Quantum gravity: entanglement entropy maps to bulk area\n    sorry) \u2227 -- S(\u03c1_A) = Area/4G_N via F\n  (\u2200 (m : \u2115) (z : Fin n \u2192 \u2102) (l : \u211d),\n    -- Condensed matter: entanglement patterns map to topological order\n    sorry) := by -- Laughlin state maps to Chern-Simons theory\n  -- Step 1: Define EntCat with quantum states and LOCC morphisms\n  sorry -- Need full category structure for entanglement patterns\n  \n  -- Step 2: Define GeomCat with manifolds, metrics, and topological data  \n  sorry -- Need full category structure for geometric objects\n  \n  -- Step 3: Apply Ryu-Takayanagi formula for quantum gravity\n  sorry -- Need holographic correspondence machinery\n  \n  -- Step 4: Define F on quantum gravity objects via bulk reconstruction\n  sorry -- Need AdS/CFT correspondence and Einstein equations\n  \n  -- Step 5: [Gap] Verify functoriality between LOCC and diffeomorphisms\n  sorry -- Morphism preservation not fully established\n  \n  -- Step 6: Laughlin wavefunction encodes entanglement pattern\n  sorry -- Need FQHE theory formalization\n  \n  -- Step 7: Map Laughlin state to Chern-Simons theory\n  sorry -- Need Chern-Simons theory and anyonic statistics\n  \n  -- Step 8: [Gap] General construction for arbitrary condensed matter systems\n  sorry -- Universal entanglement-to-geometry dictionary not available\n  \n  -- Step 9: F preserves information-theoretic quantities\n  sorry -- Need mutual information and geometric invariants",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the category EntCat with objects as quantum states |\u03c8\u27e9 \u2208 H and morphisms as LOCC operations preserving entanglement monotones",
+      "justification": "Standard construction in quantum information theory",
+      "dependencies": [
+        "Nielsen & Chuang (2000) quantum information framework"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Define GeomCat with objects as tuples (M, g, T) where M is a manifold, g a metric, and T topological data",
+      "justification": "Standard differential geometry construction",
+      "dependencies": [
+        "Category theory axioms",
+        "Differential geometry foundations"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "For quantum gravity sector: Apply Ryu-Takayanagi formula S_A = Area(\u03b3_A)/(4G_N) where \u03b3_A is minimal surface",
+      "justification": "Established holographic result",
+      "dependencies": [
+        "Ryu-Takayanagi (2006)",
+        "Step 1"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "Define F on quantum gravity objects: F(\u03c1_A) = (M_bulk, g_bulk, \u2205) where g_bulk satisfies Einstein equations with boundary conditions from \u03c1_A",
+      "justification": "AdS/CFT correspondence and bulk reconstruction",
+      "dependencies": [
+        "Step 3",
+        "Maldacena (1997)",
+        "Van Raamsdonk (2010)"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "[Gap: Functoriality of F requires showing morphism preservation between LOCC operations and bulk diffeomorphisms]",
+      "justification": "Required for categorical structure but full proof not established",
+      "dependencies": [
+        "Steps 1-4"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "For condensed matter sector: Laughlin wavefunction \u03a8_m = \u220f_{i<j}(z_i - z_j)^m exp(-\u03a3|z_i|\u00b2/4l\u00b2) encodes entanglement pattern",
+      "justification": "Established result in FQHE theory",
+      "dependencies": [
+        "Laughlin (1983)",
+        "Step 1"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "F maps Laughlin state to Chern-Simons effective theory with level k = 1/m and emergent anyonic quasiparticles",
+      "justification": "Chern-Simons/FQHE correspondence",
+      "dependencies": [
+        "Step 6",
+        "Zhang-Hansson-Kivelson (1989)"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "[Gap: General construction of F for arbitrary condensed matter entanglement patterns beyond specific examples]",
+      "justification": "Would require universal entanglement-to-geometry dictionary",
+      "dependencies": [
+        "Steps 6-7"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "F preserves information-theoretic quantities: mutual information I(A:B) maps to geometric/topological invariants",
+      "justification": "Consistency with known dualities",
+      "dependencies": [
+        "Steps 3-8",
+        "Information-geometry correspondence"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Ryu-Takayanagi Formula",
+      "authors": "Ryu, S. and Takayanagi, T.",
+      "year": "2006",
+      "field": "Quantum Gravity",
+      "statement": "Entanglement entropy in CFT equals area of minimal surface in AdS bulk divided by 4G_N",
+      "usage": "Establishes entanglement-geometry correspondence in holographic systems"
+    },
+    {
+      "name": "AdS/CFT Correspondence",
+      "authors": "Maldacena, J.",
+      "year": "1997",
+      "field": "String Theory/Quantum Gravity",
+      "statement": "Quantum gravity in AdS space is dual to CFT on boundary",
+      "usage": "Provides framework for bulk reconstruction from boundary entanglement"
+    },
+    {
+      "name": "Laughlin Wavefunction",
+      "authors": "Laughlin, R.B.",
+      "year": "1983",
+      "field": "Condensed Matter Physics",
+      "statement": "Trial wavefunction for fractional quantum Hall states at \u03bd = 1/m",
+      "usage": "Exemplifies how specific entanglement patterns create topological order"
+    },
+    {
+      "name": "Chern-Simons Effective Theory",
+      "authors": "Zhang, S.C., Hansson, T.H., and Kivelson, S.",
+      "year": "1989",
+      "field": "Condensed Matter Physics",
+      "statement": "FQHE states described by Chern-Simons gauge theory",
+      "usage": "Shows emergence of topological field theory from quantum Hall entanglement"
+    },
+    {
+      "name": "Entanglement and Geometry",
+      "authors": "Van Raamsdonk, M.",
+      "year": "2010",
+      "field": "Quantum Gravity",
+      "statement": "Spacetime connectivity emerges from entanglement structure",
+      "usage": "Conceptual foundation for entanglement determining geometry"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Hilbert space H is separable and finite or infinite dimensional",
+    "Density operators satisfy tr(\u03c1) = 1 and \u03c1 \u2265 0",
+    "Von Neumann entropy S(\u03c1) = -tr(\u03c1 log \u03c1) is well-defined",
+    "EntCat has objects as quantum states with morphisms preserving entanglement structure",
+    "GeomCat has objects as geometric/topological spaces with structure-preserving morphisms",
+    "Holographic correspondence applies in the quantum gravity sector",
+    "Thermodynamic limit exists for condensed matter systems",
+    "Entanglement patterns can be characterized by reduced density matrices and correlation functions",
+    "Geometric emergence is defined via observable quantities (areas, curvatures, topological invariants)"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Construction of EntCat",
+        "issue": "The category EntCat is not properly defined. Objects are claimed to be quantum states |\u03c8\u27e9, but morphisms are LOCC operations. LOCC operations don't form morphisms between pure states - they map density operators to density operators. The proof conflates pure states and mixed states.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Complete reconstruction needed with proper categorical structure"
+      },
+      {
+        "step": "Definition of functor F",
+        "issue": "The functor F is never explicitly defined. The proof gives examples in specific cases but never provides the general construction required by the proposition.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would require explicit construction of F on all objects and morphisms"
+      },
+      {
+        "step": "Quantum gravity mapping",
+        "issue": "The mapping F(\u03c1_A) = (M_bulk, g_bulk, \u2205) is ill-defined. Given a boundary density matrix \u03c1_A, there is no unique bulk geometry - bulk reconstruction is highly non-unique and requires additional data.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed without resolving fundamental issues in holography"
+      },
+      {
+        "step": "Functoriality claim",
+        "issue": "The proof admits functoriality is unproven ('morphism preservation remains an open problem') yet still claims to have constructed a functor. This is a contradiction.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot claim functor exists without proving functoriality"
+      },
+      {
+        "step": "Condensed matter mapping",
+        "issue": "Only provides mapping for one specific example (Laughlin state) but claims general result for all condensed matter systems. No construction given for general entanglement patterns.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would require universal entanglement-geometry dictionary which doesn't exist"
+      }
+    ],
+    "hidden_assumptions": [
+      "Assumes AdS/CFT correspondence holds for general quantum gravity systems, not just AdS",
+      "Assumes all entanglement patterns correspond to some geometric structure",
+      "Assumes LOCC operations correspond to geometric transformations",
+      "Assumes bulk reconstruction from boundary data is functorial",
+      "Assumes all condensed matter entanglement patterns have geometric interpretation",
+      "Assumes von Neumann entropy functional E is the standard entropy (notation suggests general functional)"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes geometric structures emerge from entanglement (via undefined functor F) to prove that geometric structures emerge from entanglement. The existence of F is assumed rather than constructed.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof shows at most that specific examples (RT formula in AdS/CFT, Laughlin states) have geometric interpretations. It claims a general functor exists for all quantum systems and all entanglement patterns, which is vastly beyond what is shown.",
+    "citation_issues": [
+      "Ryu-Takayanagi formula only applies in AdS/CFT context, not general quantum gravity",
+      "Bulk reconstruction theorems don't guarantee unique bulk geometry from boundary data",
+      "Chern-Simons/FQHE correspondence is for specific states, not general entanglement patterns",
+      "No citation for claimed preservation of information-theoretic quantities under F"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed, attempting to prove an extremely general statement by citing specific examples without constructing the required functor. The categorical framework is improperly defined, the functor F is never constructed, and the proof admits critical gaps while still claiming success. This is closer to a research proposal than a proof.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof sketches two separate correspondences (holographic and Chern-Simons/FQHE) but fails to construct a unified functor F with the claimed properties. It proves at most that specific entanglement-geometry correspondences exist in isolated contexts.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Existence of a well-defined category EntCat with LOCC morphisms",
+      "Compatibility between quantum gravity and condensed matter sectors under a single functor",
+      "Existence of bulk reconstruction from arbitrary boundary states",
+      "Well-definedness of the thermodynamic limit for all relevant condensed matter systems",
+      "Measurability and computability of all relevant entanglement monotones",
+      "Existence of a universal entanglement-to-geometry dictionary",
+      "Compatibility of different geometric structures (Riemannian vs topological) under the same functor"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "1",
+        "issue": "LOCC operations do not generally preserve all entanglement monotones, contradicting the morphism definition"
+      },
+      {
+        "step": "4",
+        "issue": "Bulk reconstruction from arbitrary boundary states \u03c1_A is not established for general cases, only specific highly symmetric situations"
+      },
+      {
+        "step": "5",
+        "issue": "Acknowledged gap - no proof that LOCC operations map to bulk diffeomorphisms, which is essential for functoriality"
+      },
+      {
+        "step": "7",
+        "issue": "The mapping from Laughlin states to Chern-Simons theory is not functorial - it's a correspondence between specific physical systems, not a categorical construction"
+      },
+      {
+        "step": "8",
+        "issue": "Acknowledged gap - no general construction beyond specific examples"
+      },
+      {
+        "step": "9",
+        "issue": "No proof that F preserves information-theoretic quantities - this is assumed based on 'consistency with known dualities' which is circular reasoning"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No construction of the functor F - only examples in special cases",
+      "No proof of functoriality (morphism preservation)",
+      "No demonstration that quantum gravity and condensed matter sectors can be unified under a single functor",
+      "No proof that the categorical structures EntCat and GeomCat are well-defined",
+      "No verification that the proposed functor satisfies the categorical axioms",
+      "Missing treatment of how different geometric structures (Riemannian vs topological) coexist in the codomain"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims to construct a functor F from entanglement patterns to geometric structures, but fails to prove functoriality - specifically that F preserves morphisms between LOCC operations and bulk diffeomorphisms. This is acknowledged as a gap but renders the central claim invalid.",
+      "The proof assumes a universal functor F works for both quantum gravity and condensed matter systems, but provides no rigorous construction for the general condensed matter case beyond the Laughlin wavefunction example.",
+      "The claim that F maps entanglement entropy to bulk geometric area via Ryu-Takayanagi formula assumes holographic correspondence applies generally, but this is only established for specific AdS/CFT scenarios, not arbitrary quantum gravity systems."
+    ],
+    "assumption_conflicts": [
+      "Assumes holographic correspondence applies broadly to 'quantum gravity systems' without specifying the geometric constraints required (conflicts with the specificity needed in proof [1083de91300b] about black hole entropy)",
+      "Assumes EntCat morphisms are LOCC operations preserving entanglement monotones, but doesn't establish that these form a well-defined category with proper composition",
+      "Claims thermodynamic limit exists for condensed matter systems without specifying the scaling conditions or interaction strengths required"
+    ],
+    "beneficial_connections": [
+      "Connects to proof [1083de91300b] on area-scaling entropy by attempting to formalize the holographic principle categorically",
+      "Relates to proof [4dff4e61551e] on boundary-bulk correspondence by providing a potential categorical framework",
+      "Could strengthen proof [3f0bc99f45de] on collective quantum phenomena by providing geometric interpretation of emergent order"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof contains fundamental gaps that invalidate its main claims. The functoriality is not established, the construction is incomplete for general cases, and the assumptions are too broad without proper mathematical foundations. The core idea has merit but requires substantial additional work to be rigorous."
+  },
+  "confidence_score": 0.23,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A complete categorical framework for entanglement-to-geometry functors that: (1) Rigorously defines morphism preservation between quantum operations and geometric transformations, (2) Provides universal construction beyond specific examples, (3) Establishes continuity/smoothness conditions for the functor, (4) Develops homological algebra for entanglement categories",
+  "limitations": [
+    "Functoriality of F not fully established - morphism preservation needs rigorous proof",
+    "General construction of F beyond specific examples (RT formula, Laughlin states) is missing",
+    "Precise characterization of which entanglement patterns lead to which geometric structures",
+    "Mathematical framework for 'emergence' needs formalization beyond examples",
+    "Proof relies heavily on specific well-studied examples rather than general principles",
+    "Category-theoretic structure is sketched rather than rigorously constructed",
+    "Connection between quantum gravity and condensed matter cases through unified F is conjectural",
+    "Does not address dynamical aspects - how entanglement evolution drives geometric evolution"
+  ],
+  "source_convergence": {
+    "structural_claim": "Entanglement patterns directly determine emergent geometric and physical properties",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Ryu-Takayanagi Formula",
+        "domain_id": "quantum_gravity",
+        "domain_name": "Quantum Gravity",
+        "link_type": "direct",
+        "structural_conclusion": "Entanglement entropy in boundary theory equals geometric area in bulk spacetime"
+      },
+      {
+        "result_id": "",
+        "result_name": "Emergent Spacetime from Entanglement",
+        "domain_id": "quantum_gravity",
+        "domain_name": "Quantum Gravity",
+        "link_type": "direct",
+        "structural_conclusion": "Spacetime connectivity emerges from quantum entanglement patterns"
+      },
+      {
+        "result_id": "",
+        "result_name": "Laughlin Wavefunction",
+        "domain_id": "condensed_matter",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Topological order in fractional quantum Hall states emerges from specific entanglement patterns"
+      },
+      {
+        "result_id": "",
+        "result_name": "Fractional Quantum Hall Effect",
+        "domain_id": "condensed_matter",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Strongly correlated quantum fluids emerge from entanglement creating fractional quasiparticles"
+      }
+    ],
+    "domains": [
+      "quantum_gravity",
+      "condensed_matter"
+    ],
+    "domain_names": [
+      "Quantum Gravity",
+      "Condensed Matter Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.2856,
+      "independence": 0.75,
+      "adversarial": 0.12,
+      "reproducibility": 0.6299999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.49168,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:54:08.877954+00:00",
+    "id": "3e2766378934"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.31400999999999996
+  }
+}

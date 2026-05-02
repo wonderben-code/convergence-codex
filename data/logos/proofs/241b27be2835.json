@@ -1,0 +1,338 @@
+{
+  "id": "241b27be2835",
+  "convergence_id": "65c24ba601da",
+  "timestamp": "2026-05-02T13:12:23.734615+00:00",
+  "proposition": "Let (\u03a9, F, \u03bc) be a measure space representing a physical system with parameter space P \u2286 \u211d\u207f. Let {L\u1d62: P \u2192 \u211d\u208a}\u1d62\u2208I be a collection of characteristic length/energy scales, and let \u03a6: P \u2192 M be a measurable function mapping parameters to organizational structures in metric space (M, d). Then there exists a critical manifold C \u2282 P such that for any continuous path \u03b3: [0,1] \u2192 P with \u03b3(0) \u2208 P\\C and \u03b3(1) \u2208 P\\C but \u03b3(t\u2080) \u2208 C for some t\u2080, the function \u03a6\u2218\u03b3 is discontinuous at t\u2080.",
+  "proposition_natural": "Phase transitions occur when competing length scales or energy scales cross critical thresholds, fundamentally altering the system's organizational structure",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Dynamical systems",
+    "Measure theory",
+    "Functional analysis"
+  ],
+  "apparatus_justification": "Phase transitions are fundamentally about qualitative changes in system behavior at critical parameter values, which is precisely what bifurcation theory in dynamical systems formalizes. Measure theory provides the rigorous foundation for describing statistical ensembles and probability distributions that change across transitions. Functional analysis supplies the operator framework needed for wave physics and spectral analysis of critical phenomena.",
+  "proof_natural": "**Proposition.** Let $(\u03a9, F, \u03bc)$ be a measure space representing a physical system with parameter space $P \u2286 \u211d^n$. Let $\\{L_i: P \u2192 \u211d_+\\}_{i\u2208I}$ be a collection of characteristic length/energy scales, and let $\u03a6: P \u2192 M$ be a measurable function mapping parameters to organizational structures in metric space $(M, d)$. Then there exists a critical manifold $C \u2282 P$ such that for any continuous path $\u03b3: [0,1] \u2192 P$ with $\u03b3(0) \u2208 P\\setminus C$ and $\u03b3(1) \u2208 P\\setminus C$ but $\u03b3(t_0) \u2208 C$ for some $t_0$, the function $\u03a6\u2218\u03b3$ is discontinuous at $t_0$.\n\n**Proof.** We assume that physical systems can be represented as measure spaces $(\u03a9, F, \u03bc)$ with parameters forming a subset $P$ of finite-dimensional Euclidean space. Let the characteristic scales $L_i$ be positive real-valued functions on $P$, and assume the organizational structures form a metric space $M$ with the mapping $\u03a6: P \u2192 M$ being measurable. We further assume that phase transitions correspond to discontinuities in the structure mapping, and that competing scales exist\u2014that is, at least two scales $L_i, L_j$ have non-parallel gradients.\n\nWe begin by defining the ratio functions $R_{ij}(p) = L_i(p)/L_j(p)$ for all pairs $i,j \u2208 I$ with $i\u2260j$. These dimensionless ratios characterize the competition between scales. The critical manifold $C$ contains the set $C_0 = \\{p \u2208 P : R_{ij}(p) = 1 \\text{ for some } i\u2260j\\}$, as the equality of competing scales signals criticality.\n\nTo illustrate the universality of this framework, consider two physical examples. For nuclear systems undergoing quark-gluon plasma transitions, we identify $L_1$ as the thermal energy scale $kT$ and $L_2$ as the QCD confinement scale $\u039b_{QCD}$. For acoustic systems exhibiting Anderson localization, we take $L_1$ as the mean free path and $L_2$ as the localization length $\u03be$.\n\n[Note: A complete proof requires demonstrating that $\u03a6$ is indeed discontinuous on $C$, not merely asserting it. This would involve showing that the organizational structure undergoes a qualitative change when crossing the critical manifold.]\n\nBy Thom's catastrophe theory, generic discontinuities in parameter-dependent systems occur on codimension-1 manifolds. This provides the mathematical framework for understanding discontinuous transitions in our setting. The classification theorem for structurally stable singularities (the ADE classification) characterizes the possible types of transitions.\n\n[Note: To apply Thom's theorem rigorously, we must verify that our systems satisfy the required genericity and non-degeneracy conditions. Additionally, establishing that the empirically observed phase transitions in nuclear and acoustic systems correspond precisely to our mathematically defined critical manifold requires detailed system-specific analysis.]\n\nThe Landau theory of phase transitions supports our framework by characterizing transitions through order parameters that change discontinuously or have discontinuous derivatives at critical points. This connects our abstract formulation to the physical understanding of phase transitions.\n\nTherefore, under the stated assumptions and pending the verification of the noted gaps, we have established that systems with competing characteristic scales exhibit phase transitions on critical manifolds where these scales become comparable, with the organizational structure mapping $\u03a6$ experiencing discontinuities precisely on these manifolds. \u220e",
+  "proof_lean": "import Mathlib.MeasureTheory.MeasurableSpace\nimport Mathlib.Topology.MetricSpace.Basic\nimport Mathlib.Topology.ContinuousFunction.Basic\nimport Mathlib.Topology.Connected.PathConnected\nimport Mathlib.MeasureTheory.Measure.MeasureSpace\n\n/-- A measure space representing a physical system with parameter space -/\nstructure PhysicalSystem (n : \u2115) where\n  \u03a9 : Type*\n  F : MeasurableSpace \u03a9\n  \u03bc : Measure \u03a9\n  P : Set (Fin n \u2192 \u211d)\n  P_measurable : MeasurableSet P\n\n/-- Organizational structure in a metric space -/\nstructure OrganizationalStructure (M : Type*) [MetricSpace M] where\n  -- This would need domain-specific formalization\n  dummy : Unit\n\nvariable {n : \u2115} {M : Type*} [MetricSpace M]\nvariable (sys : PhysicalSystem n)\nvariable {I : Type*} [Fintype I]\n\n/-- Collection of characteristic length/energy scales -/\ndef CharacteristicScales := I \u2192 (sys.P \u2192 \u211d)\n\n/-- Ratio functions between scales -/\ndef ratioFunction (L : CharacteristicScales) (i j : I) (h : i \u2260 j) : sys.P \u2192 \u211d :=\n  fun p => L i p / L j p\n\n/-- The critical manifold where scales become equal -/\ndef criticalManifold (L : CharacteristicScales) : Set sys.P :=\n  {p \u2208 sys.P | \u2203 (i j : I) (h : i \u2260 j), ratioFunction L i j h p = 1}\n\n/-- Main theorem: discontinuity of organizational structure at critical manifold -/\ntheorem critical_manifold_discontinuity\n  (L : CharacteristicScales)\n  (\u03a6 : sys.P \u2192 M)\n  (h\u03a6 : Measurable \u03a6)\n  (hL : \u2200 i, \u2200 p \u2208 sys.P, L i p > 0) :\n  \u2203 (C : Set sys.P), C \u2286 criticalManifold L \u2227\n  \u2200 (\u03b3 : C([0,1], sys.P)),\n  (\u03b3 0 \u2208 sys.P \\ C) \u2192 (\u03b3 1 \u2208 sys.P \\ C) \u2192\n  (\u2203 t\u2080 \u2208 (Set.Icc 0 1), \u03b3 t\u2080 \u2208 C) \u2192\n  \u2203 t\u2080 \u2208 (Set.Icc 0 1), \u00acContinuousAt (\u03a6 \u2218 \u03b3) t\u2080 := by\n  -- Step 1: Ratio functions are already defined above\n  -- Step 2: Critical manifold contains points where scales are equal\n  use criticalManifold L\n  constructor\n  \u00b7 -- C \u2286 criticalManifold L\n    rfl\n  \u00b7 -- Discontinuity proof\n    intro \u03b3 h_start h_end h_cross\n    -- Step 5: Need to prove actual discontinuity\n    sorry -- Requires showing organizational structure changes discontinuously at critical points\n\n/-- Nuclear system example with thermal and confinement scales -/\ndef nuclearScales : CharacteristicScales (sys := sys) (I := Fin 2) :=\n  fun i => match i with\n  | 0 => fun p => sorry -- kT thermal energy scale\n  | 1 => fun p => sorry -- \u039b_QCD confinement scale\n\n/-- Acoustic system example with mean free path and localization length -/\ndef acousticScales : CharacteristicScales (sys := sys) (I := Fin 2) :=\n  fun i => match i with\n  | 0 => fun p => sorry -- mean free path\n  | 1 => fun p => sorry -- localization length \u03be\n\n/-- Connection to Thom's catastrophe theory -/\ntheorem catastrophe_theory_connection\n  (L : CharacteristicScales)\n  (\u03a6 : sys.P \u2192 M)\n  (h\u03a6 : Measurable \u03a6)\n  (h_generic : sorry) -- Genericity conditions for catastrophe theory\n  : \u2203 (C : Set sys.P), C \u2286 criticalManifold L \u2227\n    sorry -- C is a codimension-1 manifold where discontinuities occur\n    := by\n  -- Step 7: Apply Thom's catastrophe theory\n  sorry -- Thom's Classification Theorem not in Mathlib\n\n/-- Verification of genericity conditions -/\nlemma verify_genericity_conditions\n  (L : CharacteristicScales)\n  (\u03a6 : sys.P \u2192 M) :\n  sorry -- Non-degeneracy conditions for catastrophe theory\n  := by\n  -- Step 8: Verify genericity\n  sorry -- Requires formalization of Thom's genericity conditions",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the ratio functions R\u1d62\u2c7c(p) = L\u1d62(p)/L\u2c7c(p) for all pairs i,j \u2208 I, i\u2260j",
+      "justification": "Definition of scale competition via dimensionless ratios",
+      "dependencies": []
+    },
+    {
+      "step_number": 2,
+      "statement": "The critical manifold C contains the set C\u2080 = {p \u2208 P : R\u1d62\u2c7c(p) = 1 for some i\u2260j}",
+      "justification": "When scales become equal, their competition reaches criticality",
+      "dependencies": [
+        "step 1"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "For nuclear systems, define L\u2081 as thermal energy scale kT and L\u2082 as confinement scale \u039b_QCD",
+      "justification": "Application to quark-gluon plasma transition",
+      "dependencies": [
+        "Quark-Gluon Plasma Discovery"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "For acoustic systems, define L\u2081 as mean free path and L\u2082 as localization length \u03be",
+      "justification": "Application to Anderson localization",
+      "dependencies": [
+        "Anderson Localization of Acoustic Waves"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "[Gap: Need to prove that \u03a6 is actually discontinuous on C, not just assert it]",
+      "justification": "This requires showing the organizational structure changes discontinuously",
+      "dependencies": [
+        "step 2"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "[Gap: Need to establish that the empirical phase transitions correspond to our mathematical critical manifold]",
+      "justification": "Requires detailed analysis of each physical system",
+      "dependencies": [
+        "steps 3, 4"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "By Thom's catastrophe theory, generic discontinuities in parameter-dependent systems occur on codimension-1 manifolds",
+      "justification": "Provides mathematical framework for discontinuous transitions",
+      "dependencies": [
+        "Thom's Classification Theorem"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "[Gap: Need to verify that our systems satisfy the genericity conditions for catastrophe theory]",
+      "justification": "Thom's theorem requires non-degeneracy conditions",
+      "dependencies": [
+        "step 7"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Thom's Classification Theorem",
+      "authors": "Ren\u00e9 Thom",
+      "year": "1972",
+      "field": "Catastrophe Theory",
+      "statement": "Generic smooth families of functions have structurally stable singularities classified by ADE singularities",
+      "usage": "Provides framework for understanding discontinuous changes in parameter-dependent systems"
+    },
+    {
+      "name": "Landau Theory of Phase Transitions",
+      "authors": "L.D. Landau",
+      "year": "1937",
+      "field": "Statistical Physics",
+      "statement": "Phase transitions can be characterized by order parameters that change discontinuously or have discontinuous derivatives",
+      "usage": "Would provide connection between abstract discontinuities and physical phase transitions"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Physical systems can be represented as measure spaces (\u03a9, F, \u03bc)",
+    "System parameters form a subset P of finite-dimensional Euclidean space",
+    "Length/energy scales are positive real-valued functions on parameter space",
+    "Organizational structures form a metric space M",
+    "The mapping from parameters to structures is measurable",
+    "Critical manifolds are well-defined subsets of parameter space",
+    "Phase transitions correspond to discontinuities in the structure mapping",
+    "Competing scales means at least two scales L\u1d62, L\u2c7c exist with non-parallel gradients",
+    "The intersection condition L\u1d62(p) = L\u2c7c(p) for some i\u2260j defines (part of) the critical manifold"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Definition of critical manifold C",
+        "issue": "The proof only defines C_0 as points where R_ij(p) = 1, then vaguely states C 'contains' C_0. The actual critical manifold C is never properly defined, yet the entire proposition is about C.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot fix without completely redefining what constitutes the critical manifold"
+      },
+      {
+        "step": "Existence claim",
+        "issue": "The proposition claims 'there exists a critical manifold C' but the proof never establishes existence, only attempts to characterize properties of an assumed C.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need to prove C exists before discussing its properties"
+      },
+      {
+        "step": "Discontinuity of \u03a6\u2218\u03b3 at t_0",
+        "issue": "The proof admits in brackets that it never demonstrates \u03a6 is discontinuous on C, which is the core claim of the proposition.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "This is the main result - cannot be left unproven"
+      },
+      {
+        "step": "Application of Thom's catastrophe theory",
+        "issue": "The proof invokes Thom's theory without verifying any of its hypotheses (smoothness, genericity, finite determinacy). The connection between 'generic discontinuities' and the specific \u03a6 is never established.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Must verify all conditions for Thom's theorem and show how it applies to this specific setting"
+      },
+      {
+        "step": "Measurability of \u03a6",
+        "issue": "The proof assumes \u03a6 is measurable but then needs it to have discontinuities. The relationship between measurability and the claimed discontinuity structure is never addressed.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Clarify what \u03c3-algebras are involved and how measurability relates to discontinuity"
+      },
+      {
+        "step": "Examples section",
+        "issue": "The nuclear and acoustic examples are presented without any verification that they satisfy the framework's assumptions or that their transitions occur at R_ij = 1.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Either remove examples or provide rigorous verification"
+      }
+    ],
+    "hidden_assumptions": [
+      "The scales L_i are differentiable (needed for 'non-parallel gradients')",
+      "The index set I has at least two elements",
+      "The critical manifold C is actually a manifold (smoothness never established)",
+      "Physical phase transitions always correspond to mathematical discontinuities",
+      "The ratio R_ij = 1 is meaningful (requires L_j never zero)",
+      "The organizational structure space M has sufficient structure to detect phase transitions",
+      "Competing scales with equal values necessarily induce transitions"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes phase transitions correspond to discontinuities in \u03a6 (stated in assumptions), then uses this to conclude \u03a6 is discontinuous at critical points. The core claim is essentially assumed.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to establish discontinuity for ANY system with competing scales, but actually only suggests (without proof) that some systems might have discontinuities when scales are equal. No universal mechanism is demonstrated.",
+    "citation_issues": [
+      "Thom's catastrophe theory requires smooth families and generic conditions - neither verified here",
+      "ADE classification mentioned but never used",
+      "Landau theory describes specific types of phase transitions, not all discontinuities in abstract metric spaces"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This is not a proof but rather a sketch of ideas with fatal gaps. The main claim about discontinuity is never proven, only asserted. The mathematical framework is too vague and the connection to physical examples is unjustified.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish a framework for identifying critical manifolds but fails to prove that \u03a6\u2218\u03b3 is discontinuous at t\u2080. It only defines some components and references catastrophe theory without completing the argument.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The length/energy scales L\u1d62 are continuous functions on P",
+      "The metric space (M, d) has appropriate topological properties for discontinuity analysis",
+      "The parameter space P has sufficient regularity (e.g., manifold structure)",
+      "The collection I is finite or has appropriate convergence properties",
+      "The functions L\u1d62 are nowhere zero on P (to ensure R\u1d62\u2c7c is well-defined)",
+      "The critical manifold C is actually a manifold (not just a set)",
+      "Thom's catastrophe theory applies to the specific function \u03a6",
+      "The organizational structures in M can actually capture physical phase transitions",
+      "The measure \u03bc is relevant to the discontinuity analysis"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "2",
+        "issue": "Claims C contains C\u2080 without justification. Why should equality of scales imply criticality? This is an assertion, not a logical consequence."
+      },
+      {
+        "step": "5",
+        "issue": "Explicitly acknowledges the gap - no proof that \u03a6 is discontinuous on C. This is the core claim of the proposition."
+      },
+      {
+        "step": "6",
+        "issue": "Explicitly acknowledges the gap - no connection established between mathematical critical manifold and physical phase transitions."
+      },
+      {
+        "step": "7",
+        "issue": "Misapplies catastrophe theory. Thom's theorem doesn't directly imply that discontinuities occur on codimension-1 manifolds for arbitrary functions \u03a6."
+      },
+      {
+        "step": "8",
+        "issue": "Explicitly acknowledges the gap - no verification of genericity conditions required for catastrophe theory."
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No proof that \u03a6 is discontinuous at points in C",
+      "No connection between mathematical framework and actual physical systems",
+      "No verification that the critical manifold C is well-defined or has the claimed properties",
+      "No proof that paths crossing C must encounter discontinuities",
+      "Multiple acknowledged gaps in steps 5, 6, and 8",
+      "No analysis of the continuity properties of \u03a6 outside of C",
+      "No justification for why scale equality should imply structural discontinuity"
+    ],
+    "internal_score": 0.1
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof assumes phase transitions correspond to discontinuities in structure mapping, but proof [06d6ace265c2] establishes that quantum-classical transitions are continuous through environmental decoherence rather than discontinuous",
+      "The proof assumes organizational structures form a metric space M, but proof [06879fd9ae87] demonstrates physical properties are fundamentally contextual and cannot be predetermined, contradicting the existence of well-defined organizational structures independent of measurement",
+      "The claim that critical manifolds are codimension-1 contradicts proof [1f680e11fff8] which shows that singularities can have various codimensions and are not generically codimension-1"
+    ],
+    "assumption_conflicts": [
+      "Assumes measurable mapping \u03a6: P \u2192 M exists, conflicts with contextuality principle in [06879fd9ae87]",
+      "Assumes phase transitions are discontinuous, conflicts with continuous decoherence model in [06d6ace265c2]",
+      "Assumes generic catastrophe theory applies without verifying genericity conditions, conflicts with rigorous singularity analysis in [1f680e11fff8]",
+      "Assumes physical systems can be universally represented as measure spaces, but [102677deecdd] and [18b9ea79f26d] establish that mathematical structures are determined by morphisms, not intrinsic properties"
+    ],
+    "beneficial_connections": [
+      "Connects to [1318ecd2c25c] on phase transitions and symmetry breaking, though with conflicting discontinuity assumptions",
+      "Relates to [087da119976b] on spontaneous symmetry breaking, but needs reconciliation with continuity requirements",
+      "Could complement [148d85f6c7b4] on energy cascades if the discontinuity claims were removed"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof has fundamental gaps including unproven discontinuity claims, unverified catastrophe theory conditions, and conflicts with established continuity results. The mathematical framework assumes predetermined organizational structures that contradict quantum contextuality principles. Major revision needed to address these contradictions."
+  },
+  "confidence_score": 0.21000000000000002,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.1,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.1,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous theory connecting: (1) Scale competition in abstract parameter spaces to discontinuities in structure mappings, (2) Measure-theoretic formulation of 'organizational structure' that captures both nuclear and acoustic phenomena, (3) Proof that empirically observed phase transitions correspond to mathematical critical manifolds defined by scale crossings",
+  "limitations": [
+    "Cannot prove \u03a6 is discontinuous on C without explicit construction of the structure space M and mapping \u03a6",
+    "Missing rigorous connection between scale equality/crossing and structural discontinuity",
+    "Need to verify genericity conditions for catastrophe theory application",
+    "Lack unified mathematical framework encompassing both quantum (nuclear) and classical (acoustic) systems",
+    "The proof sketch relies on catastrophe theory which may not apply to all phase transitions",
+    "The measure-theoretic formulation may be too abstract to capture specific physical mechanisms",
+    "Different fields may require different mathematical frameworks that resist unification",
+    "The notion of 'organizational structure' remains mathematically vague"
+  ],
+  "source_convergence": {
+    "structural_claim": "Phase transitions occur when competing length scales or energy scales cross critical thresholds, fundamentally altering the system's organizational structure",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Quark-Gluon Plasma Discovery",
+        "domain_id": "field_a",
+        "domain_name": "Nuclear Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Nuclear matter undergoes phase transition to deconfined state when thermal energy exceeds confinement scale"
+      },
+      {
+        "result_id": "",
+        "result_name": "Nuclear Pasta Phases",
+        "domain_id": "field_a",
+        "domain_name": "Nuclear Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Competition between nuclear attraction and Coulomb repulsion creates complex phases with different geometries"
+      },
+      {
+        "result_id": "",
+        "result_name": "Anderson Localization of Acoustic Waves",
+        "domain_id": "field_b",
+        "domain_name": "Acoustics and Wave Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Wave propagation undergoes transition from extended to localized states when disorder strength exceeds critical threshold"
+      }
+    ],
+    "domains": [
+      "nuclear_physics",
+      "acoustics"
+    ],
+    "domain_names": [
+      "Nuclear Physics",
+      "Acoustics and Wave Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.21419999999999997,
+      "independence": 0.85,
+      "adversarial": 0.09,
+      "reproducibility": 0.5249999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.47351,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:57:13.863761+00:00",
+    "id": "65c24ba601da"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.266955
+  }
+}

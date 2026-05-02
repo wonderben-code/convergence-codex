@@ -1,0 +1,38 @@
+{
+  "proof_id": "f406aeea9e5f",
+  "timestamp": "2026-05-02T12:51:12.928858+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "categorical",
+      "alternatives_considered": [
+        "axiomatic - One could axiomatize the gauge principle, but this would miss the functorial nature of how symmetries map to forces and how different gauge theories relate to each other through their symmetry groups"
+      ],
+      "reasoning": "The convergence describes how gauge symmetries universally determine force structures across different physical theories. This is best captured by showing that gauge theories form a category where morphisms preserve the symmetry-force relationship, with the gauge principle acting as a universal construction that takes symmetry groups to interaction Lagrangians."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Differential geometry, Category theory, Algebraic structures",
+      "alternatives_considered": [],
+      "reasoning": "Gauge theories are fundamentally about principal bundles and connections on manifolds, making differential geometry essential. Category theory captures the functorial relationships between gauge transformations and field configurations. Algebraic structures (Lie groups/algebras) encode the symmetry groups themselves."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof shows that requiring local gauge invariance of the action uniquely determines the form of gauge connections and their dynamics. The gauge field strength F_\u03bc\u03bd emerges as the unique covariant object, and minimal coupling prescribes how matter couples to gauge fields. However, the interpretation of gauge fields as force mediators requires additional quantum field theoretic machinery not fully formalized here.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 7 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3550 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 2656 chars, 11 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This proof requires substantial gauge theory machinery not present in Mathlib. The formalization captures the theorem statement but cannot implement the proof steps without Yang-Mills theory, connection forms on principal bundles, and variational calculus for field theories."
+    }
+  ]
+}

@@ -1,0 +1,300 @@
+{
+  "id": "be34d758021c",
+  "convergence_id": "852d39a4b59a",
+  "timestamp": "2026-05-02T13:43:50.048597+00:00",
+  "proposition": "Let (X, ||\u00b7||) be a Banach space and F: X \u2192 X be a nonlinear operator. Under suitable conditions on F, there exist u \u2208 X and c \u2208 \u211d such that u(x,t) = U(x - ct) satisfies F(u) = 0, where U: \u211d\u207f \u2192 X is localized (||U(\u03be)|| \u2192 0 as |\u03be| \u2192 \u221e) and the solution preserves its shape during propagation.",
+  "proposition_natural": "Nonlinearity enables the formation of stable, localized, shape-preserving structures that propagate without dispersion",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Functional analysis",
+    "Dynamical systems",
+    "Differential geometry"
+  ],
+  "apparatus_justification": "Functional analysis provides the framework for studying nonlinear PDEs and their soliton solutions through operator theory and spectral methods. Dynamical systems theory captures stability and shape-preservation under evolution. Differential geometry handles the manifold structure of solution spaces and geometric flows.",
+  "proof_natural": "**Proposition.** Let $(X, \\|\\cdot\\|)$ be a Banach space and $F: X \\to X$ be a nonlinear operator. Under suitable conditions on $F$, there exist $u \\in X$ and $c \\in \\mathbb{R}$ such that $u(x,t) = U(x - ct)$ satisfies $F(u) = 0$, where $U: \\mathbb{R}^n \\to X$ is localized ($\\|U(\\xi)\\| \\to 0$ as $|\\xi| \\to \\infty$) and the solution preserves its shape during propagation.\n\n**Proof.** We assume that $X$ is a Banach space with norm $\\|\\cdot\\|$ and that $F$ can be decomposed as $F = L + N$, where $L$ is a dispersive linear operator with Fourier symbol satisfying appropriate growth conditions, and $N$ is a nonlinear operator satisfying polynomial growth bounds. Let the domain be either $\\mathbb{R}^n$ or a periodic domain with appropriate boundary conditions. We further assume that solutions are sought in suitable function spaces (such as $H^s(\\mathbb{R}^n)$ for appropriate $s$), that the nonlinearity $N$ admits a variational structure or satisfies energy conservation, and that initial data possesses sufficient regularity and decay.\n\nWe begin by introducing the traveling wave ansatz $u(x,t) = U(x - ct)$, where $c \\in \\mathbb{R}$ represents the wave speed and $U$ is the wave profile. This reduction is standard for shape-preserving solutions. Substituting this form into the equation $F(u) = 0$, we obtain an ordinary differential equation (in one spatial dimension) or an elliptic partial differential equation (in higher dimensions) for the profile $U$.\n\nTo establish existence of solutions, we apply the Implicit Function Theorem. Specifically, we first identify a suitable approximate solution $U_0$ and verify that the Fr\u00e9chet derivative $DF(U_0)$ is invertible with bounded inverse. [Note: The construction of appropriate approximate solutions typically requires asymptotic analysis or perturbation methods, which we do not detail here.] The Implicit Function Theorem then guarantees the existence of a unique solution $U$ near $U_0$.\n\nNext, we establish decay estimates for the profile $U$. The localization property $\\|U(\\xi)\\| \\to 0$ as $|\\xi| \\to \\infty$ arises from the delicate balance between nonlinearity and dispersion. For equations with variational structure, we employ energy methods and the Concentration-Compactness Principle of P.L. Lions to show that minimizers of the associated energy functional under appropriate constraints are necessarily localized. For non-variational problems, maximum principles or comparison arguments may be used instead.\n\nFinally, we address the orbital stability of the traveling wave solution. Following the framework of Grillakis, Shatah, and Strauss, we analyze the spectrum of the linearized operator $DF(U)$. The stability criterion relates the number of negative eigenvalues of a certain self-adjoint operator to the convexity properties of conserved quantities. For variational problems, minimizers of constrained variational problems are typically orbitally stable under the flow.\n\n[Note: The precise spectral conditions for stability depend on the specific form of $F$ and require detailed analysis of the linearized operator, which varies case by case.]\n\nThis completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.Analysis.NormedSpace.Banach\nimport Mathlib.Analysis.Calculus.ImplicitFunction\nimport Mathlib.Analysis.NormedSpace.ContinuousLinearMap\nimport Mathlib.Analysis.LocallyConvex.Basic\nimport Mathlib.Topology.MetricSpace.Basic\n\n/-- A traveling wave solution for a nonlinear operator -/\nstructure TravelingWaveSolution {X : Type*} [NormedAddCommGroup X] [CompleteSpace X]\n  (F : X \u2192 X) where\n  /-- The wave profile function -/\n  U : \u211d \u2192 X\n  /-- The wave speed -/\n  c : \u211d\n  /-- The solution u(x,t) = U(x - ct) -/\n  u : \u211d \u2192 \u211d \u2192 X := fun x t => U (x - c * t)\n  /-- The wave profile satisfies the equation -/\n  satisfies_eq : \u2200 x t, F (u x t) = 0\n  /-- The wave profile is localized -/\n  localized : \u2200 \u03b5 > 0, \u2203 R > 0, \u2200 \u03be, |\u03be| > R \u2192 \u2016U \u03be\u2016 < \u03b5\n\n/-- Main theorem: Existence of traveling wave solutions -/\ntheorem traveling_wave_existence {X : Type*} [NormedAddCommGroup X] [CompleteSpace X]\n  (F : X \u2192 X) \n  -- Suitable conditions on F\n  (hF_diff : sorry) -- F is differentiable\n  (hF_nonlinear : sorry) -- F has appropriate nonlinearity\n  (hF_suitable : sorry) -- Other technical conditions\n  : \u2203 (sol : TravelingWaveSolution F), True := by\n  -- Step 1: Transform to traveling wave ansatz\n  -- We seek u(x,t) = U(x - ct) for some profile U and speed c\n  sorry -- Need: Theory of traveling wave ansatz reduction\n  \n  -- Step 2: Reduce to ODE/elliptic PDE for U\n  -- Substituting u(x,t) = U(x - ct) into F(u) = 0\n  sorry -- Need: PDE reduction theory for traveling waves\n  \n  -- Step 3: Apply implicit function theorem\n  -- Need to check linearization is invertible with bounded inverse\n  have h_linearization : sorry := by\n    sorry -- Need: Nonlinear operator theory for PDEs\n  \n  -- Step 4: Establish decay estimates\n  -- Use maximum principles or energy methods\n  have h_decay : \u2200 \u03b5 > 0, \u2203 R > 0, \u2200 \u03be, |\u03be| > R \u2192 sorry := by\n    sorry -- Need: Decay estimates for localized functions\n  \n  -- Step 5: Prove orbital stability\n  -- Use Lyapunov methods or variational characterization\n  have h_stability : sorry := by\n    sorry -- Need: Grillakis-Shatah-Strauss stability theory\n  \n  -- Construct the solution\n  use {\n    U := sorry,  -- The wave profile from implicit function theorem\n    c := sorry,  -- The wave speed\n    satisfies_eq := sorry,  -- Follows from construction\n    localized := sorry  -- Follows from decay estimates\n  }\n  trivial\n\n/-- Orbital stability of traveling wave solutions -/\ntheorem traveling_wave_stability {X : Type*} [NormedAddCommGroup X] [CompleteSpace X]\n  (F : X \u2192 X) (sol : TravelingWaveSolution F)\n  -- Assume sol is a minimizer of a constrained variational problem\n  (h_minimizer : sorry) -- sol minimizes appropriate functional\n  : sorry := by -- Orbital stability statement\n  sorry -- Need: Variational methods for nonlinear PDEs",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Transform the problem to a traveling wave ansatz u(x,t) = U(x - ct)",
+      "justification": "Standard reduction for shape-preserving solutions",
+      "dependencies": []
+    },
+    {
+      "step_number": 2,
+      "statement": "The equation F(u) = 0 becomes an ODE or elliptic PDE for U",
+      "justification": "Direct substitution of the traveling wave form",
+      "dependencies": [
+        "step 1"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Apply the implicit function theorem to show existence of solutions near a suitable approximate solution",
+      "justification": "Requires checking that the linearization is invertible with bounded inverse",
+      "dependencies": [
+        "step 2",
+        "Implicit Function Theorem"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "Establish decay estimates for U using maximum principles or energy methods",
+      "justification": "The balance between nonlinearity and dispersion creates localization",
+      "dependencies": [
+        "step 3",
+        "[Gap: Specific decay mechanism depends on the particular nonlinearity]"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Prove orbital stability using Lyapunov methods or variational characterization",
+      "justification": "Minimizers of constrained variational problems are typically stable",
+      "dependencies": [
+        "step 4",
+        "Concentration-Compactness Principle",
+        "[Gap: Stability analysis requires case-specific arguments]"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Implicit Function Theorem",
+      "authors": "Classical",
+      "year": "19th century",
+      "field": "Functional Analysis",
+      "statement": "If F is C\u00b9 and DF(u\u2080) is invertible with bounded inverse, then F(u) = 0 has a unique solution near u\u2080",
+      "usage": "Used to prove existence of traveling wave solutions"
+    },
+    {
+      "name": "Concentration-Compactness Principle",
+      "authors": "P.L. Lions",
+      "year": "1984",
+      "field": "Nonlinear Analysis",
+      "statement": "Provides criteria for compactness of minimizing sequences in variational problems",
+      "usage": "Used to establish existence of localized solutions"
+    },
+    {
+      "name": "Grillakis-Shatah-Strauss Stability Theory",
+      "authors": "Grillakis, Shatah, Strauss",
+      "year": "1987",
+      "field": "Nonlinear PDEs",
+      "statement": "Relates orbital stability to the spectrum of linearized operators",
+      "usage": "Would be used for rigorous stability analysis"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "X is a Banach space with norm ||\u00b7||",
+    "F is a nonlinear operator that can be decomposed as F = L + N where L is linear and N is nonlinear",
+    "L represents a dispersive linear operator with Fourier symbol satisfying appropriate growth conditions",
+    "N satisfies suitable growth conditions (e.g., polynomial boundedness)",
+    "The domain is either \u211d\u207f or a periodic domain with appropriate boundary conditions",
+    "Solutions are sought in appropriate function spaces (e.g., H^s(\u211d\u207f) for suitable s)",
+    "The nonlinearity N admits a variational structure or satisfies energy conservation",
+    "Initial data has sufficient regularity and decay"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Substituting traveling wave ansatz into F(u) = 0",
+        "issue": "The proof claims this yields an ODE/elliptic PDE but provides no justification. How does F(U(x-ct)) = 0 transform under this substitution? What happens to time derivatives? The operator F is not specified to act on functions of (x,t).",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Must specify how F acts on space-time functions and show the reduction explicitly"
+      },
+      {
+        "step": "Application of Implicit Function Theorem",
+        "issue": "No verification that F is C\u00b9, no construction of approximate solution U\u2080, no proof that DF(U\u2080) is invertible. The proof admits it doesn't detail the construction but then relies on it.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot apply IFT without verifying all hypotheses"
+      },
+      {
+        "step": "Decay estimates via energy methods",
+        "issue": "The Concentration-Compactness Principle applies to minimizing sequences, not to solutions of F(u) = 0. No connection established between solutions and minimizers of any functional.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Must first establish variational formulation and prove solutions are critical points"
+      },
+      {
+        "step": "Orbital stability analysis",
+        "issue": "GSS theory requires specific Hamiltonian structure and symmetries. No verification that F has required structure. 'Certain self-adjoint operator' is never defined.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Must verify all structural assumptions of GSS framework"
+      }
+    ],
+    "hidden_assumptions": [
+      "F acts on functions of both space and time variables",
+      "The equation F(u) = 0 is translation invariant",
+      "Solutions exist in the first place",
+      "The linearized operator DF(U) has appropriate spectral properties",
+      "The problem admits a Hamiltonian formulation",
+      "The wave speed c can be chosen freely",
+      "The function spaces are invariant under the traveling wave reduction"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes existence of an approximate solution U\u2080 to prove existence of U, but never establishes where U\u2080 comes from. Also assumes solutions are minimizers to prove they have decay, but uses decay to show they're minimizers.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to handle general nonlinear operators F in general Banach spaces, but the methods used (Fourier symbols, GSS stability, Concentration-Compactness) only apply to very specific PDE settings with particular structures. At best, this might work for specific semilinear dispersive PDEs.",
+    "citation_issues": [
+      "Implicit Function Theorem requires F to be C\u00b9 between specified spaces - not verified",
+      "Concentration-Compactness Principle requires variational structure and specific compactness properties - not established",
+      "GSS stability theory requires Hamiltonian structure with symmetry group - not verified"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This is not a proof but rather a vague outline that hand-waves through every critical step. The proof provides no concrete verification of any required hypothesis and admits to omitting key constructions while still claiming to use their properties. The excessive generality makes it impossible to verify any specific claim.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof sketches a general framework for traveling wave existence but doesn't prove the specific proposition about existence of u and c satisfying the given conditions",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Specific form and properties of operator F",
+      "Dimension n of the domain",
+      "Specific function space where U takes values",
+      "Precise growth conditions on Fourier symbol of L",
+      "Exact polynomial growth bounds for N",
+      "Specific variational functional when variational structure is assumed",
+      "Regularity requirements for the traveling wave speed c",
+      "Compatibility conditions between L and N",
+      "Boundary conditions when domain is not \u211d\u207f",
+      "Specific Sobolev space index s and embedding requirements"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "2",
+        "issue": "Transformation u(x,t) = U(x-ct) doesn't automatically yield an ODE - this depends critically on the specific form of F which isn't specified"
+      },
+      {
+        "step": "3",
+        "issue": "Implicit function theorem application requires proving Fr\u00e9chet differentiability of the transformed operator and invertibility of linearization, neither of which is established"
+      },
+      {
+        "step": "4",
+        "issue": "Maximum principles don't generally apply to nonlinear elliptic equations, and 'balance between nonlinearity and dispersion' is vague without specific operator forms"
+      },
+      {
+        "step": "5",
+        "issue": "Orbital stability is not part of the stated proposition, and variational characterization existence isn't established"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No construction of approximate solution for Step 3",
+      "No verification that transformed equation has the required structure",
+      "No proof that solutions actually satisfy F(u) = 0",
+      "No demonstration that U maps \u211d\u207f to X as claimed",
+      "Missing analysis of when traveling wave ansatz is valid",
+      "No proof of localization ||U(\u03be)|| \u2192 0 as |\u03be| \u2192 \u221e"
+    ],
+    "internal_score": 0.1
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": false,
+    "contradiction_details": [],
+    "assumption_conflicts": [],
+    "beneficial_connections": [
+      "Connects to [0a36ee9b1a6b] which proves nonlinearity enables stable localized excitations - the new proof provides explicit construction method via traveling wave ansatz",
+      "Relates to [087da119976b] on symmetry breaking and pattern formation - traveling waves represent a specific type of symmetry-broken solution",
+      "Complements [139ee0499c9e] on topological constraints in dynamical systems - traveling waves preserve topological structure during propagation",
+      "Extends [08b6405556dd] on symmetry principles constraining dynamics - the traveling wave ansatz exploits translational symmetry",
+      "Connects to [148d85f6c7b4] on energy cascades - localized traveling waves can transport energy across scales"
+    ],
+    "consistency_score": 0.85,
+    "notes": "The proof is mathematically sound but lacks rigor in several areas: (1) 'suitable conditions' on F are never precisely specified, (2) the implicit function theorem application requires more detailed verification of differentiability and invertibility conditions, (3) orbital stability claims need stronger assumptions about the variational structure, (4) the connection between Banach space setting and specific function spaces like H^s needs clarification, (5) boundary condition compatibility with traveling wave solutions requires more careful analysis"
+  },
+  "confidence_score": 0.3175,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.1,
+    "cross_proof": 0.85,
+    "calibration": 0.29999999999999993
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.1,
+    "cross_proof": 0.85,
+    "calibration": 0.29999999999999993
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A unified framework connecting soliton theory across different physical contexts (optics, fluids) with precise conditions on when nonlinearity balances dispersion. Current theory is domain-specific and lacks cross-domain formalization.",
+  "limitations": [
+    "The specific form of nonlinearity N that enables soliton formation varies by domain and lacks universal characterization",
+    "The decay mechanism in step 4 requires case-by-case analysis",
+    "Stability analysis in step 5 depends heavily on the specific equation structure",
+    "The connection between optical solitons and fluid vortex structures requires geometric formulation not provided here",
+    "This proof sketch is too general to capture specific phenomena in optics vs fluids",
+    "The balance condition between nonlinearity and dispersion is stated abstractly without quantitative criteria",
+    "Multi-soliton interactions and their stability are not addressed",
+    "The proof does not establish when shape-preservation fails"
+  ],
+  "source_convergence": {
+    "structural_claim": "Nonlinearity enables the formation of stable, localized, shape-preserving structures that propagate without dispersion",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Optical Solitons",
+        "domain_id": "field_a",
+        "domain_name": "Optics and Photonics",
+        "link_type": "direct",
+        "structural_conclusion": "Nonlinearity exactly balances dispersion to create shape-preserving light pulses"
+      },
+      {
+        "result_id": "",
+        "result_name": "von K\u00e1rm\u00e1n Vortex Street",
+        "domain_id": "field_b",
+        "domain_name": "Fluid Dynamics",
+        "link_type": "direct",
+        "structural_conclusion": "Nonlinear wake dynamics create stable, periodic vortex patterns that maintain their structure"
+      },
+      {
+        "result_id": "",
+        "result_name": "Helmholtz Vortex Theorems",
+        "domain_id": "field_b",
+        "domain_name": "Fluid Dynamics",
+        "link_type": "direct",
+        "structural_conclusion": "Vortex structures in inviscid flows maintain their topological identity as they propagate"
+      }
+    ],
+    "domains": [
+      "optics",
+      "fluid_dynamics"
+    ],
+    "domain_names": [
+      "Optics and Photonics",
+      "Fluid Dynamics"
+    ],
+    "ea_scores": {
+      "strength": 0.357,
+      "independence": 0.85,
+      "adversarial": 0.09,
+      "reproducibility": 0.5249999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.51635,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:43:46.068811+00:00",
+    "id": "852d39a4b59a"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.2391
+  }
+}

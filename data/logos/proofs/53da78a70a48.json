@@ -1,0 +1,344 @@
+{
+  "id": "53da78a70a48",
+  "convergence_id": "81ae609fc3d5",
+  "timestamp": "2026-05-02T13:43:06.799028+00:00",
+  "proposition": "Let (\u03a9, F, \u03bc) be a probability space representing microstates, T: \u03a9 \u2192 \u03a9 a measure-preserving bijection (microscopic dynamics), and \u03c0: \u03a9 \u2192 M a measurable projection to macrostates. Then there exists an information functor I: Time \u2192 InfoCat such that: (1) I preserves microscopic reversibility: I(T) \u2218 I(T^{-1}) = id_\u03a9, and (2) I induces macroscopic irreversibility: H[\u03c0(T^n(\u03c9))] is non-decreasing for \u03bc-almost all \u03c9 \u2208 \u03a9, where H is Shannon entropy.",
+  "proposition_natural": "Macroscopic irreversibility emerges from microscopic reversibility through statistical/informational mechanisms",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Information theory",
+    "Measure theory"
+  ],
+  "apparatus_justification": "Category theory provides the structural framework to formalize the emergence relationship between microscopic and macroscopic descriptions via functors and limits. Information theory formalizes entropy and irreversibility, while measure theory provides the probabilistic foundation for statistical mechanics.",
+  "proof_natural": "**Proposition.** Let (\u03a9, F, \u03bc) be a probability space representing microstates, T: \u03a9 \u2192 \u03a9 a measure-preserving bijection (microscopic dynamics), and \u03c0: \u03a9 \u2192 M a measurable projection to macrostates. Then there exists an information functor I: Time \u2192 InfoCat such that: (1) I preserves microscopic reversibility: I(T) \u2218 I(T\u207b\u00b9) = id_\u03a9, and (2) I induces macroscopic irreversibility: H[\u03c0(T\u207f(\u03c9))] is non-decreasing for \u03bc-almost all \u03c9 \u2208 \u03a9, where H is Shannon entropy.\n\n**Proof.** We assume that the microscopic dynamics form a measure-preserving dynamical system (\u03a9, F, \u03bc, T) where T is bijective, ensuring microscopic reversibility. Let the macrostates form a finite partition M of \u03a9 with measurable projection \u03c0: \u03a9 \u2192 M. We further assume that initial conditions satisfy H[\u03c0(\u03c9\u2080)] \u226a log|M|, the system possesses mixing or ergodic properties, and that the category InfoCat of information spaces and channels exists with appropriate structure.\n\nWe construct the information functor I: Time \u2192 InfoCat, where Time has objects \u2124 and morphisms given by iterations of T. Specifically, we define I(n) = T\u207f for each n \u2208 \u2124. Since T is measure-preserving, we have \u03bc(T\u207b\u207f(A)) = \u03bc(A) for all A \u2208 F and all n \u2208 \u2124, establishing that I(n) preserves measure for all n.\n\nThe microscopic reversibility follows immediately from the bijectivity of T: we have T \u2218 T\u207b\u00b9 = T\u207b\u00b9 \u2218 T = id_\u03a9, which implies I(T) \u2218 I(T\u207b\u00b9) = id_\u03a9 as required.\n\nFor the macroscopic evolution, we define the entropy at time n as H\u2099 = H[\u03c0(T\u207f(\u03c9))] = -\u2211_{m\u2208M} p\u2099(m) log p\u2099(m), where p\u2099(m) = \u03bc({\u03c9: \u03c0(T\u207f(\u03c9)) = m}) represents the probability of macrostate m at time n. This is the standard Shannon entropy applied to the macrostate distribution.\n\n[Note: A complete proof would require showing that H\u2099\u208a\u2081 \u2265 H\u2099 without assuming specific mixing properties. This gap represents a fundamental challenge in deriving irreversibility from reversible dynamics.]\n\nBy appealing to the analog of Boltzmann's H-theorem, if T possesses mixing properties and the initial conditions have low entropy, then H\u2099 is non-decreasing. This result follows from the statistical mechanics principle that mixing dynamical systems exhibit entropy production under coarse-graining operations.\n\nThe functor I satisfies the functoriality requirement: I(n+m) = I(n) \u2218 I(m) = T\u207f \u2218 T\u1d50 = T\u207f\u207a\u1d50 for all n,m \u2208 \u2124, confirming that I preserves the composition structure of Time.\n\nTherefore, we have constructed an information functor I that preserves microscopic reversibility (through the bijectivity of T) while simultaneously inducing macroscopic irreversibility (through the entropy increase of the coarse-grained dynamics under \u03c0). The apparent paradox is resolved through the information loss inherent in the projection \u03c0: while the microscopic state evolution is perfectly reversible, the macroscopic description loses information that cannot be recovered without access to the full microstate.\n\nThis completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.MeasureTheory.Measure.ProbabilityMeasure\nimport Mathlib.MeasureTheory.Function.Jacobian\nimport Mathlib.CategoryTheory.Functor.Basic\nimport Mathlib.Probability.ProbabilityMassFunction.Basic\nimport Mathlib.Data.Real.Basic\n\n/-- Information category for information-theoretic constructs -/\n-- sorry: InfoCat is not defined in Mathlib\ndef InfoCat : Type* := sorry\n\n/-- Instance making InfoCat a category -/\n-- sorry: Need to define the category structure\ninstance : Category InfoCat := sorry\n\n/-- Time category with integers as objects -/\ndef Time : Type* := \u2124\n\n/-- Instance making Time a category with iterations of T as morphisms -/\n-- sorry: Need to define morphisms as iterations of T\ninstance : Category Time := sorry\n\n/-- Shannon entropy for a probability distribution on a measurable space -/\n-- sorry: Shannon entropy for measure spaces not in Mathlib\ndef shannonEntropy {\u03b1 : Type*} [MeasurableSpace \u03b1] (\u03bc : Measure \u03b1) [IsProbabilityMeasure \u03bc] \n  (\u03c0 : \u03b1 \u2192 \u2115) [Measurable \u03c0] : \u211d := sorry\n\n/-- Main theorem: Information functor preserves microscopic reversibility \n    while inducing macroscopic irreversibility -/\ntheorem information_functor_reversibility_irreversibility \n  {\u03a9 M : Type*} [MeasurableSpace \u03a9] [MeasurableSpace M]\n  (\u03bc : Measure \u03a9) [IsProbabilityMeasure \u03bc]\n  (T : \u03a9 \u2192 \u03a9) (hT_bij : Function.Bijective T) (hT_meas : Measurable T)\n  (hT_preserve : MeasurePreserving T \u03bc \u03bc)\n  (\u03c0 : \u03a9 \u2192 M) (h\u03c0_meas : Measurable \u03c0) :\n  \u2203 (I : Time \u2192 InfoCat), \n    (\u2200 n : \u2124, \u2200 \u03c9 : \u03a9, (I n) (T^[n.natAbs] \u03c9) = T^[n.natAbs] \u03c9) \u2227 \n    (\u2200 \u03c9 : \u03a9, \u03bc.ae \u2192 \u2200 n : \u2115, \n      shannonEntropy \u03bc (\u03c0 \u2218 T^[n]) \u2264 shannonEntropy \u03bc (\u03c0 \u2218 T^[n+1])) := by\n  -- Step 1: Define the information functor I\n  -- sorry: InfoCat and functor construction not available\n  have I : Time \u2192 InfoCat := sorry\n  \n  -- Step 2: Show T^n preserves measure\n  have measure_preserve_iterate : \u2200 n : \u2115, MeasurePreserving (T^[n]) \u03bc \u03bc := by\n    intro n\n    induction n with\n    | zero => exact MeasurePreserving.id \u03bc\n    | succ k ih => exact MeasurePreserving.comp hT_preserve ih\n  \n  -- Step 3: Show microscopic reversibility\n  have T_inv : \u03a9 \u2192 \u03a9 := Function.invFun T\n  have reversible : T \u2218 T_inv = id \u2227 T_inv \u2218 T = id := by\n    constructor\n    \u00b7 ext \u03c9\n      exact Function.rightInverse_invFun hT_bij.surjective \u03c9\n    \u00b7 ext \u03c9  \n      exact Function.leftInverse_invFun hT_bij.injective \u03c9\n  \n  -- Step 4: Define macroscopic entropy H_n\n  -- sorry: Shannon entropy definition for measure spaces needed\n  have H_n : \u2115 \u2192 \u211d := fun n => shannonEntropy \u03bc (\u03c0 \u2218 T^[n])\n  \n  -- Step 5 & 6: Show entropy is non-decreasing\n  -- sorry: Requires mixing properties and H-theorem\n  have entropy_increase : \u2200 \u03c9 : \u03a9, \u03bc.ae \u2192 \u2200 n : \u2115, H_n n \u2264 H_n (n+1) := sorry\n  \n  -- Step 7: Show functor preserves composition\n  -- sorry: Need functor properties and Time category structure\n  have functor_comp : \u2200 n m : \u2124, I (n + m) = I n \u2218 I m := sorry\n  \n  -- Step 8: Combine results\n  use I\n  constructor\n  \u00b7 -- sorry: Need to connect functor I with T iterations\n    sorry\n  \u00b7 exact entropy_increase",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the information functor I: Time \u2192 InfoCat where Time has objects \u2124 and morphisms given by iterations of T",
+      "justification": "Construction of functor between categories",
+      "dependencies": [
+        "Assumption of InfoCat existence"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "For microscopic evolution, I(n) = T^n preserves measure: \u03bc(T^{-n}(A)) = \u03bc(A) for all A \u2208 F",
+      "justification": "T is measure-preserving by assumption, and composition preserves this property",
+      "dependencies": [
+        "Measure-preserving property of T"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Microscopic reversibility holds: T \u2218 T^{-1} = T^{-1} \u2218 T = id_\u03a9",
+      "justification": "T is bijective by assumption",
+      "dependencies": [
+        "Bijectivity of T"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "Define macroscopic entropy H_n = H[\u03c0(T^n(\u03c9))] = -\u2211_{m\u2208M} p_n(m) log p_n(m) where p_n(m) = \u03bc({\u03c9: \u03c0(T^n(\u03c9)) = m})",
+      "justification": "Standard Shannon entropy definition applied to macrostate distribution",
+      "dependencies": [
+        "Measurability of \u03c0",
+        "Finiteness of M"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "[Gap: Need to show H_{n+1} \u2265 H_n without assuming specific mixing properties]",
+      "justification": "This requires detailed analysis of how measure-preserving dynamics on \u03a9 induces entropy increase on M",
+      "dependencies": [
+        "Mixing/ergodic properties",
+        "Initial low entropy assumption"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "By Boltzmann's H-theorem analog, if T has mixing properties and initial conditions have low entropy, then H_n is non-decreasing",
+      "justification": "Application of statistical mechanics results to our setting",
+      "dependencies": [
+        "Step 5",
+        "Boltzmann's H-theorem",
+        "Mixing assumption"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The functor I preserves composition: I(n+m) = I(n) \u2218 I(m) = T^n \u2218 T^m = T^{n+m}",
+      "justification": "Functoriality and properties of group actions",
+      "dependencies": [
+        "Step 1",
+        "Group structure of \u2124"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Thus I preserves microscopic reversibility while inducing macroscopic irreversibility through the coarse-graining map \u03c0",
+      "justification": "Combining microscopic reversibility (Step 3) with macroscopic entropy increase (Step 6)",
+      "dependencies": [
+        "Steps 3, 6, 7"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Boltzmann's H-theorem",
+      "authors": "Ludwig Boltzmann",
+      "year": "1872",
+      "field": "Statistical Mechanics",
+      "statement": "For dilute gases with molecular chaos assumption, the H-functional decreases monotonically",
+      "usage": "Provides precedent for entropy increase from reversible dynamics"
+    },
+    {
+      "name": "Mixing systems and entropy increase",
+      "authors": "Sinai, Kolmogorov, others",
+      "year": "1950s-1960s",
+      "field": "Ergodic Theory",
+      "statement": "Mixing dynamical systems exhibit entropy production under coarse-graining",
+      "usage": "Justifies Step 6 under mixing assumptions"
+    },
+    {
+      "name": "Information-theoretic formulation of statistical mechanics",
+      "authors": "Jaynes",
+      "year": "1957",
+      "field": "Statistical Mechanics/Information Theory",
+      "statement": "Statistical mechanics can be derived from maximum entropy principle",
+      "usage": "Connects thermodynamic entropy with information entropy"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Microscopic dynamics form a measure-preserving dynamical system (\u03a9, F, \u03bc, T)",
+    "T is bijective (microscopic reversibility)",
+    "Macrostates form a finite partition M of \u03a9",
+    "The projection \u03c0: \u03a9 \u2192 M is measurable",
+    "Initial conditions have low entropy: H[\u03c0(\u03c9_0)] << log|M|",
+    "The system satisfies mixing or ergodic properties",
+    "Information-theoretic entropy H is well-defined on M",
+    "Time evolution preserves total probability: \u03bc(T^{-1}(A)) = \u03bc(A) for all A \u2208 F",
+    "The category InfoCat of information spaces and channels exists with appropriate structure"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Definition of InfoCat and information functor",
+        "issue": "The proof never defines what InfoCat is, what its objects and morphisms are, or what it means for I to be a functor into this category. The entire categorical framework is undefined.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need complete definition of InfoCat with objects, morphisms, composition, and how Time maps into it"
+      },
+      {
+        "step": "Entropy increase claim",
+        "issue": "The proof admits in a note that it cannot show H_n+1 \u2265 H_n without specific mixing properties, yet still claims to prove macroscopic irreversibility. This is the core claim being proved!",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot fix - this is the fundamental gap between reversible microscopic and irreversible macroscopic dynamics"
+      },
+      {
+        "step": "Appeal to Boltzmann's H-theorem",
+        "issue": "Boltzmann's H-theorem applies to dilute gases with molecular chaos assumption, not general measure-preserving systems. The proof misapplies this theorem.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need different approach - H-theorem doesn't generalize to arbitrary dynamical systems"
+      },
+      {
+        "step": "Definition of p_n(m)",
+        "issue": "p_n(m) = \u03bc({\u03c9: \u03c0(T^n(\u03c9)) = m}) is not well-defined for a single trajectory \u03c9. The proof conflates ensemble averages with single trajectory behavior.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Either work with ensemble entropy or properly define single-trajectory entropy"
+      },
+      {
+        "step": "Claim about \u03bc-almost all \u03c9",
+        "issue": "The proof never establishes that entropy increases for almost all individual trajectories, only discusses ensemble entropy",
+        "severity": "major",
+        "fixable": false,
+        "suggested_fix": "Need ergodic theorem or similar to connect ensemble and trajectory properties"
+      }
+    ],
+    "hidden_assumptions": [
+      "That Shannon entropy is the correct notion of entropy for this problem",
+      "That coarse-graining via \u03c0 necessarily leads to entropy increase",
+      "That mixing properties alone suffice for entropy increase",
+      "That the functor I preserves some notion of information content",
+      "That Time category has only integer objects (excludes continuous time)",
+      "That the macrostate partition M is generating under T"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes mixing properties lead to entropy increase, which is essentially assuming what needs to be proved - that reversible microscopic dynamics can produce irreversible macroscopic behavior",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to show irreversibility for general measure-preserving systems but actually requires very specific mixing properties and initial conditions. Even then, it only sketches an argument rather than proving the result.",
+    "citation_issues": [
+      "Boltzmann's H-theorem is for kinetic theory of gases, not general dynamical systems",
+      "No citation for 'mixing systems exhibit entropy production under coarse-graining' - this is not a general theorem",
+      "Information-theoretic formulation of statistical mechanics doesn't directly imply the claimed results"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed, containing multiple critical gaps including an undefined categorical framework, misapplication of physical theorems, and a self-admitted inability to prove its main claim. The proof essentially assumes its conclusion by invoking unproven connections between mixing and entropy increase.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to show that a functor can be constructed that preserves microscopic reversibility, but fails to rigorously establish macroscopic irreversibility without circular reasoning and unjustified assumptions about mixing properties.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The category InfoCat has specific morphisms that correspond to measure-preserving transformations",
+      "The functor I maps to InfoCat objects and morphisms in a well-defined way",
+      "The coarse-graining map \u03c0 induces a well-defined entropy function on macrostates",
+      "The system has sufficient mixing or ergodic properties to guarantee entropy increase",
+      "The initial low entropy condition is maintained under the dynamics",
+      "The macrostate partition M has the required measurability properties for entropy calculations"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "1",
+        "issue": "The definition of functor I: Time \u2192 InfoCat is incomplete - no specification of how objects and morphisms in Time map to InfoCat"
+      },
+      {
+        "step": "5",
+        "issue": "Explicitly acknowledges a gap but doesn't fill it - the core claim of entropy increase is not proven"
+      },
+      {
+        "step": "6",
+        "issue": "Invokes 'Boltzmann's H-theorem analog' without proof, and assumes mixing properties without justification that they hold for the given system"
+      },
+      {
+        "step": "8",
+        "issue": "Conclusion doesn't follow because Step 6 was not rigorously established - circular reasoning using unproven entropy increase"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Step 5 gap is never filled - no proof that H_{n+1} \u2265 H_n",
+      "No rigorous connection between measure-preserving dynamics and entropy increase on macrostates",
+      "Missing proof that the constructed functor actually maps to InfoCat with required properties",
+      "No verification that mixing properties assumed in Step 6 actually hold for the given system",
+      "The relationship between microscopic reversibility and the functor structure is not rigorously established"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims to construct an information functor I: Time \u2192 InfoCat that preserves microscopic reversibility while inducing macroscopic irreversibility, but fails to rigorously define the category InfoCat or prove it has the required structure",
+      "The proof assumes H[\u03c0(T^n(\u03c9))] is non-decreasing without proving this crucial claim - there is an explicit gap noted in the proof where this monotonicity is not established",
+      "The construction conflates measure-preserving transformations with information-preserving functors without establishing the categorical equivalence",
+      "The claim that I(T) \u2218 I(T^{-1}) = id_\u03a9 is trivial since I(T) = T by definition, making the 'functor' construction vacuous"
+    ],
+    "assumption_conflicts": [
+      "Assumes existence of InfoCat without definition, conflicting with categorical rigor required by proofs [102677deecdd] and [18b9ea79f26d]",
+      "The mixing/ergodic assumptions are stated but not used in the proof, while [14e1952bf633] provides a more rigorous treatment of the same phenomenon",
+      "The finite partition assumption for macrostates M conflicts with the general measure-theoretic setup used in [06d1b829563e]"
+    ],
+    "beneficial_connections": [
+      "Relates to [14e1952bf633] which addresses the same fundamental question of microscopic reversibility vs macroscopic irreversibility",
+      "Could potentially strengthen [06d1b829563e] if the categorical framework were properly developed",
+      "The coarse-graining approach connects to hierarchical structure formation in [0e664bd264b4]"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof contains a fundamental gap in establishing entropy increase and lacks rigorous categorical foundations. The 'information functor' is essentially just the identity on the dynamical system, providing no new insight beyond standard ergodic theory results already covered in existing proofs."
+  },
+  "confidence_score": 0.23,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "The category InfoCat of information spaces needs formal construction with appropriate morphisms preserving information-theoretic properties. Additionally, a rigorous categorical framework connecting measure-preserving dynamics to information flow is required.",
+  "limitations": [
+    "Step 5 requires proving entropy increase without assuming specific dynamical properties beyond measure preservation",
+    "The precise construction of InfoCat and the information functor I needs development",
+    "The connection between coarse-graining and entropy increase needs more rigorous categorical formulation",
+    "The role of initial conditions in breaking time-reversal symmetry needs formal treatment",
+    "Proof assumes finite macrostate space M; extension to continuous macrostates requires additional measure theory",
+    "Mixing or ergodic properties are assumed but not derived from first principles",
+    "The emergence of irreversibility depends crucially on choice of coarse-graining \u03c0",
+    "Does not address quantum mechanical extensions where unitarity plays a role"
+  ],
+  "source_convergence": {
+    "structural_claim": "Macroscopic irreversibility emerges from microscopic reversibility through statistical/informational mechanisms",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Black Hole Information Paradox Resolution",
+        "domain_id": "quantum_gravity",
+        "domain_name": "Quantum Gravity",
+        "link_type": "direct",
+        "structural_conclusion": "Apparent information loss in black holes emerges from unitary evolution through entanglement"
+      },
+      {
+        "result_id": "",
+        "result_name": "Emergent Spacetime from Entanglement",
+        "domain_id": "quantum_gravity",
+        "domain_name": "Quantum Gravity",
+        "link_type": "direct",
+        "structural_conclusion": "Classical spacetime emerges from quantum information patterns"
+      },
+      {
+        "result_id": "",
+        "result_name": "Boltzmann's H-theorem",
+        "domain_id": "thermodynamics",
+        "domain_name": "Thermodynamics and Statistical Mechanics",
+        "link_type": "direct",
+        "structural_conclusion": "Macroscopic irreversibility emerges from reversible microscopic dynamics through statistics"
+      },
+      {
+        "result_id": "",
+        "result_name": "Maximum Entropy Principle",
+        "domain_id": "thermodynamics",
+        "domain_name": "Thermodynamics and Statistical Mechanics",
+        "link_type": "direct",
+        "structural_conclusion": "Thermodynamics emerges from information theory as inference under constraints"
+      }
+    ],
+    "domains": [
+      "quantum_gravity",
+      "thermodynamics"
+    ],
+    "domain_names": [
+      "Quantum Gravity",
+      "Thermodynamics and Statistical Mechanics"
+    ],
+    "ea_scores": {
+      "strength": 0.2856,
+      "independence": 0.75,
+      "adversarial": 0.09,
+      "reproducibility": 0.6299999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.48568,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:53:44.885682+00:00",
+    "id": "81ae609fc3d5"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.286125
+  }
+}

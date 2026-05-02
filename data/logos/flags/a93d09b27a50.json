@@ -1,0 +1,13 @@
+{
+  "proof_id": "a93d09b27a50",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: Rigorous quantum field theory in curved spacetime, particularly near horizons where curvature diverges; mathematical framework for information in quantum gravity; precise formulation of holographic principle",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

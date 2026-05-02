@@ -1,0 +1,345 @@
+{
+  "id": "1050c80b4013",
+  "convergence_id": "1e4135222b37",
+  "timestamp": "2026-05-02T12:44:58.732837+00:00",
+  "proposition": "For a system of interacting particles with density parameter \u03c1 and interaction strength g, there exists a critical density \u03c1_c such that: (1) For \u03c1 < \u03c1_c, the system's effective degrees of freedom are composite states |\u03c8_composite\u27e9 \u2208 H_composite; (2) For \u03c1 > \u03c1_c, the system undergoes a phase transition where the effective degrees of freedom become constituent states |\u03c8_constituent\u27e9 \u2208 H_constituent; (3) The transition is characterized by a non-analytic change in the free energy density f(\u03c1,T) at \u03c1 = \u03c1_c.",
+  "proposition_natural": "Matter undergoes phase transitions at extreme densities where the fundamental degrees of freedom change from composite particles to their constituents",
+  "formalisation_type": "constraint_logic",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Order theory",
+    "Dynamical systems"
+  ],
+  "apparatus_justification": "Category theory captures the structural transformation between particle descriptions via functors between categories of composite and elementary states. Order theory formalizes the density parameter space and phase boundaries. Dynamical systems theory provides the framework for critical phenomena and transitions.",
+  "proof_natural": "**Proposition.** For a system of interacting particles with density parameter \u03c1 and interaction strength g, there exists a critical density \u03c1_c such that: (1) For \u03c1 < \u03c1_c, the system's effective degrees of freedom are composite states |\u03c8_composite\u27e9 \u2208 H_composite; (2) For \u03c1 > \u03c1_c, the system undergoes a phase transition where the effective degrees of freedom become constituent states |\u03c8_constituent\u27e9 \u2208 H_constituent; (3) The transition is characterized by a non-analytic change in the free energy density f(\u03c1,T) at \u03c1 = \u03c1_c.\n\n**Proof.** Let the system consist of strongly interacting particles described by a Hamiltonian H = H_kinetic + H_interaction, where the interaction potential V(r) exhibits hard core repulsion at short distances and an attractive component at intermediate distances. We assume the system is in thermodynamic equilibrium at temperature T, and we work in the thermodynamic limit where N \u2192 \u221e and V \u2192 \u221e with \u03c1 = N/V fixed. Further, we assume the partition function Z = Tr[exp(-\u03b2H)] exists and is well-defined, yielding an extensive free energy F = -kT ln Z. We require that there exists a well-defined mapping between composite and constituent degrees of freedom, that the strong coupling constant g runs with energy scale according to some \u03b2-function, and that quantum field theory provides a valid description at all relevant energy scales.\n\nWe begin by defining the density-dependent effective Hamiltonian H_eff(\u03c1) through a coarse-graining procedure. By the Wilsonian renormalization group formalism, we systematically integrate out high-energy modes to obtain an effective theory at the characteristic energy scale set by the inter-particle separation.\n\nNext, we establish that the running coupling g_eff(\u03c1) increases monotonically with density. As density increases, the typical inter-particle separation r decreases, accessing energy scales where the coupling is stronger. This follows from the running of the coupling constant with energy scale, analogous to asymptotic freedom in QCD but with opposite sign.\n\nFor g_eff < g_c, we show that bound states exist as stable excitations. The Bethe-Salpeter equation, which describes relativistic bound states in quantum field theory, possesses normalizable solutions when the coupling is sufficiently weak. These solutions correspond to composite states that are energetically stable against decay.\n\nConversely, for g_eff > g_c, these bound states become unstable. As g approaches g_c from below, the binding energy E_binding \u2192 0, indicating that the composite states can spontaneously dissociate into their constituents with no energy cost.\n\nBy the monotonicity of g_eff(\u03c1) established earlier and the intermediate value theorem, there exists a critical density \u03c1_c such that g_eff(\u03c1_c) = g_c. This defines the phase transition point.\n\nThe non-analyticity of the free energy density at \u03c1 = \u03c1_c follows from the fundamental change in the system's degrees of freedom. Below \u03c1_c, the Fock space is constructed from composite states, while above \u03c1_c, it is built from constituent states. This reconstruction induces a discontinuity in the entropy density s = -\u2202f/\u2202T, as the counting of microstates changes abruptly. [Note: A rigorous proof of this discontinuity requires detailed analysis of the partition function near the transition, which depends on the specific form of the interaction potential.]\n\nFinally, we establish that for \u03c1 < \u03c1_c, the effective Hamiltonian H_eff acts on the Hilbert space H_composite of composite states, while for \u03c1 > \u03c1_c, it acts on H_constituent. This follows from the Fock space reconstruction based on the stable excitations identified at each density regime.\n\nThis completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic\nimport Mathlib.Analysis.Calculus.FDeriv.Basic\nimport Mathlib.Analysis.Analytic.Basic\nimport Mathlib.Order.Monotone.Basic\nimport Mathlib.Topology.ContinuousFunction.Basic\nimport Mathlib.Analysis.InnerProductSpace.Basic\nimport Mathlib.CategoryTheory.Category.Basic\n\n/-- Density parameter type -/\ndef DensityParam := {\u03c1 : \u211d // 0 \u2264 \u03c1}\n\n/-- Interaction strength type -/\ndef InteractionStrength := {g : \u211d // 0 \u2264 g}\n\n/-- Composite Hilbert space -/\ndef HilbertComposite := sorry -- \"Need quantum field theory Hilbert space formalism\"\n\n/-- Constituent Hilbert space -/\ndef HilbertConstituent := sorry -- \"Need quantum field theory Hilbert space formalism\"\n\n/-- Effective Hamiltonian depending on density -/\ndef EffectiveHamiltonian (\u03c1 : DensityParam) : Type := sorry -- \"Need Wilsonian RG formalism for density-dependent Hamiltonians\"\n\n/-- Running coupling as function of density -/\ndef runningCoupling (g : InteractionStrength) (\u03c1 : DensityParam) : InteractionStrength := \n  sorry -- \"Need RG flow equations for coupling evolution with density\"\n\n/-- Critical coupling constant -/\ndef criticalCoupling : InteractionStrength := sorry -- \"Need Bethe-Salpeter equation analysis for bound state stability\"\n\n/-- Free energy density function -/\ndef freeEnergyDensity (\u03c1 : DensityParam) (T : \u211d) : \u211d := sorry -- \"Need statistical mechanics formulation\"\n\n/-- Main theorem: Phase transition at critical density -/\ntheorem phase_transition_critical_density \n  (g : InteractionStrength) :\n  \u2203 (\u03c1_c : DensityParam), \n    (\u2200 \u03c1 < \u03c1_c, \u2203 (H : EffectiveHamiltonian \u03c1), sorry) \u2227 -- \"Need formalism for H acting on composite states\"\n    (\u2200 \u03c1 > \u03c1_c, \u2203 (H : EffectiveHamiltonian \u03c1), sorry) \u2227 -- \"Need formalism for H acting on constituent states\"\n    (\u00ac AnalyticAt \u211d (fun \u03c1 => freeEnergyDensity \u27e8\u03c1, sorry\u27e9 1) \u03c1_c.val) := by\n  -- Step 1: Define density-dependent effective Hamiltonian via coarse-graining\n  have h1 : \u2200 \u03c1 : DensityParam, \u2203 H_eff : EffectiveHamiltonian \u03c1, sorry := \n    sorry -- \"Need Wilsonian RG coarse-graining procedure\"\n  \n  -- Step 2: Show running coupling increases monotonically with density\n  have h2 : Monotone (fun \u03c1 : DensityParam => (runningCoupling g \u03c1).val) := \n    sorry -- \"Need RG analysis showing g_eff increases with decreasing length scale\"\n  \n  -- Step 3: For g_eff < g_c, bound states exist as stable excitations\n  have h3 : \u2200 g_eff : InteractionStrength, g_eff.val < criticalCoupling.val \u2192 \n    sorry := -- \"Need Bethe-Salpeter equation solutions for bound states\"\n    sorry\n  \n  -- Step 4: For g_eff > g_c, bound states unstable\n  have h4 : \u2200 g_eff : InteractionStrength, g_eff.val > criticalCoupling.val \u2192 \n    sorry := -- \"Need binding energy analysis showing E_binding \u2192 0\"\n    sorry\n  \n  -- Step 5: Existence of critical density where g_eff(\u03c1_c) = g_c\n  have h5 : \u2203 \u03c1_c : DensityParam, (runningCoupling g \u03c1_c).val = criticalCoupling.val := by\n    sorry -- \"Need intermediate value theorem with proper continuity conditions\"\n  \n  -- Step 6: Non-analyticity of free energy at critical point\n  obtain \u27e8\u03c1_c, h\u03c1_c\u27e9 := h5\n  have h6 : \u00ac AnalyticAt \u211d (fun \u03c1 => freeEnergyDensity \u27e8\u03c1, sorry\u27e9 1) \u03c1_c.val := \n    sorry -- \"Need entropy discontinuity analysis at phase transition\"\n  \n  -- Step 7: Effective Hamiltonian acts on appropriate Hilbert space\n  have h7_composite : \u2200 \u03c1 < \u03c1_c, \u2203 (H : EffectiveHamiltonian \u03c1), sorry := \n    sorry -- \"Need Fock space reconstruction for composite degrees of freedom\"\n  have h7_constituent : \u2200 \u03c1 > \u03c1_c, \u2203 (H : EffectiveHamiltonian \u03c1), sorry := \n    sorry -- \"Need Fock space reconstruction for constituent degrees of freedom\"\n  \n  exact \u27e8\u03c1_c, h7_composite, h7_constituent, h6\u27e9",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the density-dependent effective Hamiltonian H_eff(\u03c1) via coarse-graining procedure",
+      "justification": "Wilsonian renormalization group allows systematic integration of high-energy modes",
+      "dependencies": [
+        "Wilson RG formalism"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Show that the running coupling g_eff(\u03c1) increases monotonically with density",
+      "justification": "Higher density implies smaller inter-particle separation r, accessing stronger coupling regime",
+      "dependencies": [
+        "Assumption about V(r)",
+        "RG flow equations"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Establish that for g_eff < g_c, bound states exist as stable excitations",
+      "justification": "Bethe-Salpeter equation has normalizable solutions for sufficiently weak coupling",
+      "dependencies": [
+        "Step 2",
+        "Bethe-Salpeter formalism"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "Show that for g_eff > g_c, bound states become unstable against decay into constituents",
+      "justification": "The binding energy E_binding \u2192 0 as g \u2192 g_c from below",
+      "dependencies": [
+        "Step 3",
+        "[Gap: Rigorous proof of binding energy behavior]"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Demonstrate that \u03c1_c exists such that g_eff(\u03c1_c) = g_c",
+      "justification": "Monotonicity of g_eff(\u03c1) from Step 2 and intermediate value theorem",
+      "dependencies": [
+        "Step 2",
+        "Step 4"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Prove non-analyticity of free energy density at \u03c1 = \u03c1_c",
+      "justification": "Change in degrees of freedom induces discontinuity in entropy density s = -\u2202f/\u2202T",
+      "dependencies": [
+        "Step 5",
+        "[Gap: Rigorous connection between DOF change and entropy]"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Establish that for \u03c1 < \u03c1_c, H_eff acts on H_composite while for \u03c1 > \u03c1_c, H_eff acts on H_constituent",
+      "justification": "Fock space reconstruction based on stable excitations of the system",
+      "dependencies": [
+        "Steps 3-5",
+        "[Gap: Formal Fock space construction]"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Wilsonian Renormalization Group",
+      "authors": "K.G. Wilson",
+      "year": "1974",
+      "field": "Theoretical Physics",
+      "statement": "Systematic procedure for integrating out high-energy degrees of freedom to obtain effective theories",
+      "usage": "Provides framework for density-dependent effective Hamiltonian"
+    },
+    {
+      "name": "Bethe-Salpeter Equation",
+      "authors": "H. Bethe, E. Salpeter",
+      "year": "1951",
+      "field": "Quantum Field Theory",
+      "statement": "Relativistic equation describing bound states in quantum field theory",
+      "usage": "Determines existence and stability of composite states"
+    },
+    {
+      "name": "Asymptotic Freedom in QCD",
+      "authors": "D. Gross, F. Wilczek; H.D. Politzer",
+      "year": "1973",
+      "field": "Particle Physics",
+      "statement": "Coupling constant decreases at high energy (small distance) scales",
+      "usage": "Provides physical example of running coupling behavior"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The system consists of strongly interacting particles described by a Hamiltonian H = H_kinetic + H_interaction",
+    "The interaction potential V(r) has a hard core repulsion at short distances and attractive component at intermediate distances",
+    "The system is in thermodynamic equilibrium at temperature T",
+    "The number of particles N \u2192 \u221e and volume V \u2192 \u221e with \u03c1 = N/V fixed (thermodynamic limit)",
+    "The partition function Z = Tr[exp(-\u03b2H)] exists and is well-defined",
+    "The free energy F = -kT ln Z is extensive",
+    "There exists a well-defined mapping between composite and constituent degrees of freedom",
+    "The strong coupling constant g runs with energy scale according to some \u03b2-function",
+    "Quantum field theory provides valid description at all relevant energy scales"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Defining density-dependent effective Hamiltonian H_eff(\u03c1)",
+        "issue": "No explicit construction of H_eff(\u03c1) is given. The proof merely states it exists through 'coarse-graining' without showing how density enters the effective Hamiltonian or proving this procedure is well-defined",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Provide explicit construction of H_eff(\u03c1) showing how density dependence arises from the coarse-graining procedure"
+      },
+      {
+        "step": "Monotonicity of g_eff(\u03c1)",
+        "issue": "The proof claims g_eff increases with \u03c1 because 'typical inter-particle separation r decreases.' This conflates spatial separation with energy scale and assumes without justification that smaller r implies stronger coupling",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Derive the density dependence of g_eff from first principles using the actual \u03b2-function"
+      },
+      {
+        "step": "Application of Bethe-Salpeter equation",
+        "issue": "The Bethe-Salpeter equation is a relativistic field theory tool, but nothing in the setup indicates this is a relativistic system. The proof inappropriately borrows QFT machinery without establishing its applicability",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Either establish relativistic nature of the system or use appropriate non-relativistic bound state formalism"
+      },
+      {
+        "step": "Existence of critical coupling g_c",
+        "issue": "The proof assumes without justification that there exists a sharp critical coupling where bound states transition from stable to unstable. Many-body systems typically have continuous crossovers, not sharp transitions",
+        "severity": "major",
+        "fixable": false,
+        "suggested_fix": "Prove existence of g_c or acknowledge this as an assumption"
+      },
+      {
+        "step": "Non-analyticity of free energy",
+        "issue": "The proof admits in brackets it cannot prove the discontinuity, yet this is claim (3) of the proposition. The handwaving about 'Fock space reconstruction' is not a proof",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Either provide rigorous proof of non-analyticity or remove this claim from the proposition"
+      },
+      {
+        "step": "Hilbert space transition",
+        "issue": "The claim that H_eff 'acts on' different Hilbert spaces above and below \u03c1_c is meaningless. An operator cannot suddenly change which Hilbert space it acts on based on a parameter value",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Clarify what is meant by 'effective degrees of freedom' without invoking different Hilbert spaces"
+      }
+    ],
+    "hidden_assumptions": [
+      "The system has only two-body interactions (needed for Bethe-Salpeter applicability)",
+      "The \u03b2-function has a specific sign that makes coupling increase at smaller distances",
+      "Bound states are the only relevant composite degrees of freedom",
+      "The mapping between composite and constituent states is one-to-one",
+      "Quantum fluctuations don't destroy the sharp transition",
+      "The coarse-graining procedure preserves thermodynamic properties",
+      "The system exhibits confinement below \u03c1_c and deconfinement above"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes bound states exist for g < g_c and uses this to define the phase transition, but the existence of the phase transition was what needed to be proved. The monotonicity of g_eff(\u03c1) is assumed based on an analogy with QCD rather than derived.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to establish a universal phase transition for any system with the stated properties, but at best shows that IF various unproven assumptions hold, then something resembling a crossover might occur. The sharp phase transition with non-analytic free energy is not established.",
+    "citation_issues": [
+      "Wilsonian RG is cited but not properly applied - no actual RG flow equations are written or solved",
+      "Bethe-Salpeter equation is for relativistic QFT but applied to a general many-body system",
+      "QCD asymptotic freedom analogy is used backwards without justification"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed, mixing relativistic QFT concepts with non-relativistic many-body physics without justification. The core claims about phase transitions and non-analyticity are asserted rather than proven, and the mathematical framework is incoherent.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish a phase transition based on coupling strength but fails to rigorously connect this to density-dependent composite/constituent state transitions or prove the required non-analyticity",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Existence of a well-defined coarse-graining procedure that preserves thermodynamic properties",
+      "Validity of Bethe-Salpeter equation in the many-body context",
+      "Assumption that bound state stability determines effective degrees of freedom",
+      "Continuity and differentiability of g_eff(\u03c1) except possibly at transition points",
+      "Assumption that Fock space reconstruction is unique and well-defined",
+      "Validity of treating composite and constituent states as living in distinct Hilbert spaces",
+      "Assumption that entropy discontinuity implies free energy non-analyticity"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "2",
+        "issue": "Monotonicity of g_eff(\u03c1) is asserted without proof - higher density could lead to screening effects that reduce effective coupling"
+      },
+      {
+        "step": "3",
+        "issue": "Bethe-Salpeter equation applies to two-body problems, not many-body systems with collective effects"
+      },
+      {
+        "step": "4",
+        "issue": "Binding energy approaching zero does not necessarily imply instability - could indicate marginal stability"
+      },
+      {
+        "step": "6",
+        "issue": "Entropy discontinuity does not automatically imply free energy non-analyticity - the connection requires additional thermodynamic relations that aren't established"
+      },
+      {
+        "step": "7",
+        "issue": "Fock space reconstruction is not rigorously defined - no proof that stable excitations uniquely determine the effective Hilbert space"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No rigorous definition of composite vs constituent states",
+      "Missing proof that the phase transition is thermodynamic rather than crossover",
+      "No demonstration that H_composite and H_constituent are actually distinct spaces",
+      "Missing analysis of finite-size effects and approach to thermodynamic limit",
+      "No proof that the coarse-graining procedure is consistent",
+      "Missing verification that the effective theory captures all relevant physics"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof assumes quantum field theory provides valid description at all energy scales, but existing proof [37338340b3ed] establishes fundamental discreteness at smallest scales, creating a direct contradiction about the nature of physics at fundamental scales",
+      "The proof claims a sharp phase transition with non-analytic free energy change, but existing proof [574d327c8078] demonstrates scale-dependent effective descriptions with universal scaling laws that would typically produce analytic crossovers rather than sharp transitions",
+      "The assumption of well-defined partition function Z = Tr[exp(-\u03b2H)] existing for all densities conflicts with the claimed phase transition - if the transition involves changing Hilbert spaces (H_composite to H_constituent), the trace operation becomes ill-defined across the transition"
+    ],
+    "assumption_conflicts": [
+      "Assumption of quantum field theory validity at all scales conflicts with discreteness assumptions in [37338340b3ed]",
+      "The thermodynamic limit assumption (N \u2192 \u221e, V \u2192 \u221e) may conflict with holographic principles in [4dff4e61551e] where degrees of freedom scale with boundary area",
+      "Strong coupling running with \u03b2-function assumes continuous field theory, contradicting fundamental discreteness claims",
+      "Well-defined mapping between composite and constituent degrees of freedom assumes fixed mathematical structure, conflicting with categorical structure-dependence in [102677deecdd] and [18b9ea79f26d]"
+    ],
+    "beneficial_connections": [
+      "Connects to symmetry breaking mechanisms in [6cf918aecf4e] and [75a7c4c46d4c] through the phase transition between different effective descriptions",
+      "Relates to scale-dependent descriptions in [574d327c8078] through the density-dependent effective Hamiltonian",
+      "Connects to collective phenomena emergence in [3f0bc99f45de] through the transition between composite and constituent degrees of freedom",
+      "Links to environmental decoherence in [66e4aac2731b] through the coarse-graining procedure that defines H_eff(\u03c1)"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof contains fundamental mathematical inconsistencies regarding the nature of the phase transition and Hilbert space changes. The assumption set is internally contradictory and conflicts with established results about discreteness and scaling. The physical picture may be reasonable but requires major mathematical reformulation to be consistent with existing proofs."
+  },
+  "confidence_score": 0.255,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.29999999999999993
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.29999999999999993
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "Rigorous mathematical framework for: (1) Phase transitions in infinite-dimensional Hilbert spaces with changing basis states, (2) Non-perturbative RG flow for strongly coupled systems, (3) Formal treatment of emergent degrees of freedom in many-body quantum systems",
+  "limitations": [
+    "Rigorous proof that binding energy vanishes at critical coupling",
+    "Formal connection between change in degrees of freedom and thermodynamic non-analyticity",
+    "Mathematical construction of Fock space that smoothly interpolates between composite and constituent bases",
+    "Non-perturbative treatment of strongly coupled regime where standard QFT methods fail",
+    "Proof assumes existence of well-defined constituent particles at all densities",
+    "Neglects potential intermediate phases between hadronic and quark matter",
+    "Assumes thermodynamic equilibrium which may not hold in dynamic astrophysical contexts",
+    "Does not account for finite-size effects relevant for actual neutron stars",
+    "Relies on effective field theory framework which may break down at extreme densities"
+  ],
+  "source_convergence": {
+    "structural_claim": "Matter undergoes phase transitions at extreme densities where the fundamental degrees of freedom change from composite particles to their constituents",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Quark-Gluon Plasma Discovery",
+        "domain_id": "field_b",
+        "domain_name": "Nuclear Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Nuclear matter transitions to deconfined quarks and gluons above critical temperature/density"
+      },
+      {
+        "result_id": "",
+        "result_name": "Neutron Star Equation of State Constraints",
+        "domain_id": "field_a",
+        "domain_name": "Astrophysics",
+        "link_type": "direct",
+        "structural_conclusion": "Ultra-dense matter in neutron star cores may undergo phase transitions to quark matter"
+      },
+      {
+        "result_id": "",
+        "result_name": "Nuclear Equation of State",
+        "domain_id": "field_b",
+        "domain_name": "Nuclear Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Nuclear forces create matter with universal saturation density that constrains neutron star structure"
+      }
+    ],
+    "domains": [
+      "astrophysics",
+      "nuclear_physics"
+    ],
+    "domain_names": [
+      "Astrophysics",
+      "Nuclear Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.357,
+      "independence": 0.7,
+      "adversarial": 0.6,
+      "reproducibility": 0.5249999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.58085,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:41:26.920930+00:00",
+    "id": "1e4135222b37"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.273735
+  }
+}

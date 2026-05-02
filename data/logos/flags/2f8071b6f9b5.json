@@ -1,0 +1,13 @@
+{
+  "proof_id": "2f8071b6f9b5",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous mathematical framework for: (1) Extracting nuclear wavefunctions and transition matrix elements from the QCD Hamiltonian, (2) Proving ergodicity of stellar populations over cosmic timescales, (3) Deriving the IMF from first principles",
+    "10 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

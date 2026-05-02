@@ -1,0 +1,376 @@
+{
+  "id": "49891606b8f0",
+  "convergence_id": "213526ee75a4",
+  "timestamp": "2026-05-02T12:47:43.306819+00:00",
+  "proposition": "Let (G, V) be a gauge theory with symmetry group G acting on a vector space V of fields. If there exists a scalar field \u03c6 \u2208 V such that the potential V(\u03c6) has a degenerate minimum with \u27e8\u03c6\u27e9\u2080 \u2260 0 breaking G to a subgroup H \u2282 G, then: (1) The Goldstone theorem generates dim(G/H) massless modes, (2) When G is gauged, gauge bosons corresponding to broken generators acquire mass M\u00b2\u2090 = g\u00b2\u27e8\u03c6\u27e9\u2080\u00b2, (3) The vacuum state |\u03a9\u27e9 satisfies \u011c\u1d62|\u03a9\u27e9 \u2260 0 for generators \u011c\u1d62 \u2208 Lie(G) \\ Lie(H).",
+  "proposition_natural": "Spontaneous symmetry breaking generates mass and determines the vacuum structure in both quantum field theory and nuclear physics",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Algebraic structures",
+    "Differential geometry",
+    "Functional analysis"
+  ],
+  "apparatus_justification": "Spontaneous symmetry breaking is fundamentally about group representations and their breaking patterns, requiring algebraic structures. The vacuum manifold requires differential geometry to characterize degenerate ground states. Functional analysis provides the rigorous framework for quantum field operators and their vacuum expectation values.",
+  "proof_natural": "**Proposition.** Let $(G, V)$ be a gauge theory with symmetry group $G$ acting on a vector space $V$ of fields. If there exists a scalar field $\\varphi \\in V$ such that the potential $V(\\varphi)$ has a degenerate minimum with $\\langle\\varphi\\rangle_0 \\neq 0$ breaking $G$ to a subgroup $H \\subset G$, then: (1) The Goldstone theorem generates $\\dim(G/H)$ massless modes, (2) When $G$ is gauged, gauge bosons corresponding to broken generators acquire mass $M_a^2 = g^2\\langle\\varphi\\rangle_0^2$, (3) The vacuum state $|\\Omega\\rangle$ satisfies $\\hat{G}_i|\\Omega\\rangle \\neq 0$ for generators $\\hat{G}_i \\in \\text{Lie}(G) \\setminus \\text{Lie}(H)$.\n\n**Proof.** We assume the field theory admits a Lagrangian formulation with action functional $S[\\varphi]$, where $G$ is a Lie group of finite dimension acting on fields with a scalar potential $V(\\varphi)$ that is bounded below with isolated minima. Let the path integral measure be invariant under $G$ transformations, and assume perturbation theory around the vacuum is valid with finite non-zero gauge coupling $g$. We further assume quantum corrections do not restore the symmetry (Coleman-Weinberg conditions) and that the theory is regularizable and renormalizable.\n\nConsider the Lagrangian $\\mathcal{L} = T(\\partial\\varphi) - V(\\varphi) + \\mathcal{L}_{\\text{gauge}}$, which is invariant under $G$ transformations by assumption. By Noether's theorem, this symmetry implies conserved currents. The vacuum expectation value $\\langle\\varphi\\rangle_0$ minimizes the effective potential $V_{\\text{eff}}(\\varphi)$, as required by the definition of the quantum field theory vacuum as the state of minimal energy density.\n\nWhen $\\langle\\varphi\\rangle_0 \\neq 0$ and there exists $g \\in G$ such that $g \\cdot \\langle\\varphi\\rangle_0 \\neq \\langle\\varphi\\rangle_0$, the symmetry $G$ is spontaneously broken to the stabilizer subgroup $H = \\{h \\in G : h \\cdot \\langle\\varphi\\rangle_0 = \\langle\\varphi\\rangle_0\\}$. By standard Lie group theory, the number of broken generators equals $\\dim(G) - \\dim(H) = \\dim(G/H)$.\n\nExpanding the field as $\\varphi = \\langle\\varphi\\rangle_0 + \\eta$ and examining quadratic terms yields the mass matrix $M_{ij}^2 = \\partial^2V/\\partial\\varphi_i\\partial\\varphi_j|_{\\langle\\varphi\\rangle_0}$. By the Goldstone-Nambu-Goldstone theorem, for each broken generator $T_a$, the direction $T_a \\cdot \\langle\\varphi\\rangle_0$ corresponds to a flat direction of the potential, yielding $M^2(T_a \\cdot \\langle\\varphi\\rangle_0) = 0$. This establishes claim (1): there are $\\dim(G/H)$ massless Goldstone modes.\n\nWhen $G$ is gauged, the Higgs mechanism operates. [Note: A rigorous treatment of gauge fixing and ghost fields is needed here.] In unitary gauge, the would-be Goldstone modes $\\pi_a$ are absorbed as longitudinal components of gauge fields. The gauge boson masses arise from the covariant derivative terms: $|D_\\mu\\varphi|^2$ contains $g^2A_\\mu^aA^{\\mu a}\\langle\\varphi\\rangle_0^2$, establishing claim (2) with $M_a^2 = g^2\\langle\\varphi\\rangle_0^2$.\n\nFor claim (3), the vacuum state $|\\Omega\\rangle$ is defined by annihilation operators $\\hat{a}|\\Omega\\rangle = 0$. By the Fabri-Picasso theorem, broken generators do not annihilate the vacuum: $\\hat{G}_i|\\Omega\\rangle \\neq 0$ for $\\hat{G}_i \\in \\text{Lie}(G) \\setminus \\text{Lie}(H)$, precisely because $\\langle\\varphi\\rangle_0 \\neq 0$ breaks the symmetry.\n\n[Note: Extension to non-perturbative QCD with chiral symmetry breaking via $\\langle\\bar{\\psi}\\psi\\rangle \\neq 0$ follows the same pattern, though rigorous proof requires lattice methods.]\n\nThis completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.Algebra.Group.Defs\nimport Mathlib.GroupTheory.GroupAction.Basic\nimport Mathlib.LinearAlgebra.Basic\nimport Mathlib.Algebra.Lie.Basic\nimport Mathlib.Analysis.InnerProductSpace.Basic\nimport Mathlib.Algebra.Module.Basic\n\n/-- A gauge theory with symmetry group G acting on a vector space V of fields -/\nstructure GaugeTheory (G : Type*) (V : Type*) [Group G] [AddCommGroup V] [Module \u211d V] where\n  action : G \u2192* (V \u2192\u2097[\u211d] V)\n  /-- The scalar field potential -/\n  potential : V \u2192 \u211d\n  /-- The gauge coupling constant -/\n  coupling : \u211d\n\n/-- The stabilizer subgroup of a point under a group action -/\ndef stabilizer (G : Type*) (V : Type*) [Group G] [AddCommGroup V] [Module \u211d V]\n  (action : G \u2192* (V \u2192\u2097[\u211d] V)) (v : V) : Subgroup G :=\n  { carrier := {g : G | action g v = v}\n    one_mem' := by simp\n    mul_mem' := fun {a b} ha hb => by simp [ha, hb]\n    inv_mem' := fun {a} ha => by simp [\u2190ha] }\n\n/-- Spontaneous symmetry breaking occurs when the vacuum expectation value is non-zero -/\nstructure SpontaneousSymmetryBreaking (G : Type*) (V : Type*) [Group G] [AddCommGroup V] \n  [Module \u211d V] (gt : GaugeTheory G V) where\n  /-- The vacuum expectation value -/\n  vev : V\n  vev_nonzero : vev \u2260 0\n  /-- The vev minimizes the potential -/\n  minimizes_potential : sorry -- \"Need definition of minimum for real-valued functions\"\n  /-- The stabilizer subgroup -/\n  H : Subgroup G := stabilizer G V gt.action vev\n  /-- The symmetry is actually broken -/\n  symmetry_broken : \u2203 g : G, gt.action g vev \u2260 vev\n\n/-- The main theorem about spontaneous symmetry breaking and the Higgs mechanism -/\ntheorem higgs_mechanism (G : Type*) (V : Type*) [Group G] [AddCommGroup V] [Module \u211d V]\n  [LieGroup G] [FiniteDimensional \u211d V] (gt : GaugeTheory G V) \n  (ssb : SpontaneousSymmetryBreaking G V gt) :\n  /- (1) The Goldstone theorem generates dim(G/H) massless modes -/\n  (\u2203 (massless_modes : Fin (FiniteDimensional.finrank \u211d (G \u29f8 ssb.H.toSubmonoid)) \u2192 V),\n    sorry) \u2227 -- \"Need definition of massless modes and Goldstone theorem\"\n  /- (2) Gauge bosons corresponding to broken generators acquire mass -/\n  (\u2203 (gauge_boson_mass : \u211d),\n    gauge_boson_mass = gt.coupling^2 * \u2016ssb.vev\u2016^2) \u2227\n  /- (3) The vacuum state satisfies certain properties -/\n  sorry -- \"Need quantum field theory formalism for vacuum states and generators\"\n  := by\n  constructor\n  \u00b7 -- Part 1: Goldstone modes\n    sorry -- \"Goldstone theorem requires field theory formalism not in Mathlib\"\n  constructor\n  \u00b7 -- Part 2: Gauge boson masses\n    use gt.coupling^2 * \u2016ssb.vev\u2016^2\n    rfl\n  \u00b7 -- Part 3: Vacuum state properties\n    sorry -- \"Quantum vacuum states and operator formalism not in Mathlib\"\n\n/-- Step 1: Lagrangian invariance under G transformations -/\nlemma lagrangian_invariance (G : Type*) (V : Type*) [Group G] [AddCommGroup V] \n  [Module \u211d V] (gt : GaugeTheory G V) :\n  sorry -- \"Need Lagrangian formalism and Noether's theorem\"\n  := sorry\n\n/-- Step 2: Vacuum expectation value minimizes effective potential -/\nlemma vev_minimizes (G : Type*) (V : Type*) [Group G] [AddCommGroup V] [Module \u211d V]\n  (gt : GaugeTheory G V) (ssb : SpontaneousSymmetryBreaking G V gt) :\n  sorry -- \"Need effective potential and quantum field theory vacuum\"\n  := sorry\n\n/-- Step 3: Spontaneous breaking to stabilizer subgroup -/\nlemma spontaneous_breaking_stabilizer (G : Type*) (V : Type*) [Group G] [AddCommGroup V]\n  [Module \u211d V] (gt : GaugeTheory G V) (ssb : SpontaneousSymmetryBreaking G V gt) :\n  ssb.H = stabilizer G V gt.action ssb.vev := rfl\n\n/-- Step 4: Dimension of broken generators -/\nlemma broken_generators_dimension (G : Type*) (V : Type*) [Group G] [AddCommGroup V]\n  [Module \u211d V] [LieGroup G] [FiniteDimensional \u211d V] (gt : GaugeTheory G V)\n  (ssb : SpontaneousSymmetryBreaking G V gt) :\n  sorry -- \"Need Lie algebra dimension calculations\"\n  := sorry\n\n/-- Step 5: Mass matrix from second derivatives -/\nlemma mass_matrix_expansion (G : Type*) (V : Type*) [Group G] [AddCommGroup V]\n  [Module \u211d V] [NormedAddCommGroup V] [InnerProductSpace \u211d V] (gt : GaugeTheory G V)\n  (ssb : SpontaneousSymmetryBreaking G V gt) :\n  sorry -- \"Need Hessian matrix and Taylor expansion formalism\"\n  := sorry\n\n/-- Step 6: Zero eigenvalues for broken generators -/\nlemma goldstone_zero_eigenvalues (G : Type*) (V : Type*) [Group G] [AddCommGroup V]\n  [Module \u211d V] [LieGroup G] (gt : GaugeTheory G V) (ssb : SpontaneousSymmetryBreaking G V gt) :\n  sorry -- \"Need eigenvalue theory for mass matrix and Goldstone theorem\"\n  := sorry\n\n/-- Step 8: Gauge boson mass from covariant derivatives -/\nlemma gauge_boson_mass_calculation (G : Type*) (V : Type*) [Group G] [AddCommGroup V]\n  [Module \u211d V] [NormedAddCommGroup V] (gt : GaugeTheory G V)\n  (ssb : SpontaneousSymmetryBreaking G V gt) :\n  \u2203 (mass_squared : \u211d), mass_squared = gt.coupling^2 * \u2016ssb.vev\u2016^2 := by\n  use gt.coupling^2 * \u2016ssb.vev\u2016^2\n  rfl\n\n/-- Step 9: Vacuum state and broken generators -/\nlemma vacuum_broken_generators (G : Type*) (V : Type*) [Group G] [AddCommGroup V]\n  [Module \u211d V] [LieGroup G] (gt : GaugeTheory G V) (ssb : SpontaneousSymmetryBreaking G V gt) :\n  sorry -- \"Need quantum operators and vacuum state formalism\"\n  := sorry",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The Lagrangian L = T(\u2202\u03c6) - V(\u03c6) + Lgauge is invariant under G transformations",
+      "justification": "By assumption of G-symmetry and Noether's theorem",
+      "dependencies": [
+        "Assumption 1",
+        "Assumption 2"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "The vacuum expectation value \u27e8\u03c6\u27e9\u2080 minimizes the effective potential Veff(\u03c6)",
+      "justification": "Quantum field theory vacuum is defined as the state minimizing energy density",
+      "dependencies": [
+        "Step 1",
+        "Assumption 3"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "If \u27e8\u03c6\u27e9\u2080 \u2260 0 and g\u00b7\u27e8\u03c6\u27e9\u2080 \u2260 \u27e8\u03c6\u27e9\u2080 for some g \u2208 G, then G is spontaneously broken to H = {h \u2208 G : h\u00b7\u27e8\u03c6\u27e9\u2080 = \u27e8\u03c6\u27e9\u2080}",
+      "justification": "Definition of spontaneous symmetry breaking and stabilizer subgroup",
+      "dependencies": [
+        "Step 2"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The number of broken generators is dim(G) - dim(H) = dim(G/H)",
+      "justification": "Standard Lie group theory: dimension of coset space",
+      "dependencies": [
+        "Step 3",
+        "Assumption 2"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Expanding \u03c6 = \u27e8\u03c6\u27e9\u2080 + \u03b7, the quadratic terms in \u03b7 yield mass matrix M\u00b2\u1d62\u2c7c = \u2202\u00b2V/\u2202\u03c6\u1d62\u2202\u03c6\u2c7c|\u27e8\u03c6\u27e9\u2080",
+      "justification": "Taylor expansion around vacuum expectation value",
+      "dependencies": [
+        "Step 2",
+        "Assumption 5"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "For each broken generator T\u2090, there exists a zero eigenvalue of M\u00b2: M\u00b2(T\u2090\u00b7\u27e8\u03c6\u27e9\u2080) = 0",
+      "justification": "Goldstone theorem: broken symmetry directions are flat directions of potential",
+      "dependencies": [
+        "Step 4",
+        "Step 5",
+        "Goldstone-Nambu-Goldstone theorem"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "[Gap: Rigorous treatment of gauge fixing and ghost fields needed] When G is gauged, the would-be Goldstone modes \u03c0\u2090 become longitudinal components of gauge fields",
+      "justification": "Gauge invariance allows unitary gauge where \u03c0\u2090 are absorbed",
+      "dependencies": [
+        "Step 6",
+        "Assumption 6"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "In unitary gauge, gauge boson mass terms arise from covariant derivatives: |D\u03bc\u03c6|\u00b2 \u2283 g\u00b2A\u03bc\u2090A\u1d43\u03bc\u27e8\u03c6\u27e9\u2080\u00b2",
+      "justification": "Direct calculation of kinetic terms with \u03c6 \u2192 \u27e8\u03c6\u27e9\u2080",
+      "dependencies": [
+        "Step 7",
+        "Assumption 6"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "The vacuum state |\u03a9\u27e9 defined by \u00e2|\u03a9\u27e9 = 0 (annihilation operators) satisfies \u011c\u1d62|\u03a9\u27e9 \u2260 0 for broken generators",
+      "justification": "Broken generators do not annihilate vacuum due to \u27e8\u03c6\u27e9\u2080 \u2260 0",
+      "dependencies": [
+        "Step 3",
+        "Fabri-Picasso theorem"
+      ]
+    },
+    {
+      "step_number": 10,
+      "statement": "[Gap: Connection to non-perturbative QCD vacuum requires lattice methods] In QCD, chiral symmetry breaking follows same pattern with \u27e8\u03c8\u0304\u03c8\u27e9 \u2260 0",
+      "justification": "Analogy established but rigorous non-perturbative proof requires numerical methods",
+      "dependencies": [
+        "Steps 1-9",
+        "Lattice QCD calculations"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Goldstone-Nambu-Goldstone theorem",
+      "authors": "Goldstone, J.; Nambu, Y.",
+      "year": "1961-1962",
+      "field": "Quantum Field Theory",
+      "statement": "Spontaneous breaking of continuous symmetry implies massless scalar excitations",
+      "usage": "Establishes existence of massless modes for each broken generator"
+    },
+    {
+      "name": "Higgs mechanism",
+      "authors": "Higgs, P.W.; Englert, F.; Brout, R.",
+      "year": "1964",
+      "field": "Quantum Field Theory",
+      "statement": "Gauge theories with spontaneous symmetry breaking generate massive gauge bosons",
+      "usage": "Shows how Goldstone modes become longitudinal gauge boson components"
+    },
+    {
+      "name": "Fabri-Picasso theorem",
+      "authors": "Fabri, E.; Picasso, L.E.",
+      "year": "1966",
+      "field": "Quantum Field Theory",
+      "statement": "Spontaneously broken symmetries do not annihilate the vacuum state",
+      "usage": "Proves vacuum structure differs from symmetric case"
+    },
+    {
+      "name": "Coleman-Weinberg mechanism",
+      "authors": "Coleman, S.; Weinberg, E.",
+      "year": "1973",
+      "field": "Quantum Field Theory",
+      "statement": "Quantum corrections can induce spontaneous symmetry breaking",
+      "usage": "Establishes conditions for radiative symmetry breaking"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The field theory admits a Lagrangian formulation with well-defined action functional",
+    "The symmetry group G is a Lie group with finite dimension",
+    "The scalar potential V(\u03c6) is bounded below and has isolated minima",
+    "The path integral measure is invariant under G transformations",
+    "Perturbation theory around the vacuum is valid",
+    "The gauge coupling g is finite and non-zero",
+    "Quantum corrections do not restore the symmetry (Coleman-Weinberg conditions satisfied)",
+    "The theory is regularizable and renormalizable",
+    "The vacuum expectation value \u27e8\u03c6\u27e9\u2080 is computed in the thermodynamic limit"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "Definition of gauge theory (G,V)",
+        "issue": "The notation (G,V) for a gauge theory is non-standard and poorly defined. V is claimed to be a vector space of fields, but gauge theories require principal bundles, connections, and matter representations - not just a vector space.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Define gauge theory properly with principal G-bundle, connection, and matter fields in associated bundles"
+      },
+      {
+        "step": "Claim about mass formula M\u00b2\u2090 = g\u00b2\u27e8\u03c6\u27e9\u2080\u00b2",
+        "issue": "This formula is dimensionally incorrect and overly simplified. The mass depends on the representation of \u03c6 under G and the specific form of covariant derivatives. For non-abelian groups, different components get different masses.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "State mass formula correctly: M\u00b2\u2090\u1d66 = g\u00b2(T\u2090\u27e8\u03c6\u27e9\u2080)\u00b7(T\u1d66\u27e8\u03c6\u27e9\u2080) where T\u2090 are generators"
+      },
+      {
+        "step": "Application of Goldstone theorem",
+        "issue": "The proof assumes Goldstone theorem applies without verifying its conditions: Lorentz invariance, positive definite Hamiltonian, and existence of conserved currents. Also ignores that Goldstone theorem can fail in gauge theories before gauge fixing.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Verify all conditions for Goldstone theorem and clarify this is before gauging"
+      },
+      {
+        "step": "Treatment of Higgs mechanism",
+        "issue": "The proof hand-waves the entire gauge-fixing procedure and ghost sector. The statement 'would-be Goldstone modes are absorbed' is imprecise - they become longitudinal polarizations only in specific gauges.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Properly treat BRST quantization, gauge fixing, and Faddeev-Popov ghosts"
+      },
+      {
+        "step": "Fabri-Picasso theorem application",
+        "issue": "The theorem is misstated. It doesn't say broken generators don't annihilate vacuum - it says the vacuum is not invariant under broken symmetries. The statement \u011c\u1d62|\u03a9\u27e9 \u2260 0 needs clarification about which representation of generators is meant.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "State correctly: broken symmetry transformations map vacuum to orthogonal states"
+      },
+      {
+        "step": "Effective potential minimization",
+        "issue": "The proof conflates classical potential V(\u03c6) with quantum effective potential Veff(\u03c6). The vacuum is determined by Veff, not V, and these can differ substantially.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Distinguish classical and quantum effective potentials throughout"
+      }
+    ],
+    "hidden_assumptions": [
+      "The theory exists in 4 spacetime dimensions",
+      "The vacuum is unique (ignores possibility of degenerate vacua)",
+      "The symmetry breaking pattern is tree-level (ignores radiative corrections)",
+      "The gauge group is semi-simple or has appropriate structure",
+      "Anomalies don't spoil the classical symmetries",
+      "The scalar field transforms linearly under G",
+      "Strong CP problem and \u03b8-vacua are ignored",
+      "Infrared divergences in massless theories are regulated"
+    ],
+    "circular_reasoning": false,
+    "circular_details": "",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to cover all gauge theories with spontaneous symmetry breaking, but actually only handles simplest case of fundamental scalar with linear representation. Doesn't handle: composite operators, non-linear realizations, anomalous symmetries, strongly coupled theories, or topological effects.",
+    "citation_issues": [
+      "Goldstone-Nambu-Goldstone theorem has specific conditions not verified",
+      "Fabri-Picasso theorem is misstated - it's about vacuum degeneracy, not generator action",
+      "Coleman-Weinberg mechanism is mentioned but not properly incorporated into the analysis",
+      "Missing citation to Elitzur's theorem about gauge symmetry non-breaking"
+    ],
+    "structural_soundness": 0.4,
+    "overall_assessment": "This proof attempts to cover fundamental results in gauge theory but lacks mathematical rigor throughout, conflates classical and quantum pictures, and makes numerous unjustified simplifications. The dimensional error in the mass formula and imprecise treatment of gauge fixing are particularly damaging. While the general ideas are correct, the execution falls far short of publication standards.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "Provides a sketch of spontaneous symmetry breaking with major gaps in gauge theory treatment and incomplete justification of mass generation",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Existence of well-defined vacuum state in interacting theory",
+      "Validity of effective potential approach",
+      "Absence of anomalies that could break gauge invariance",
+      "Higgs mechanism applies (gauge can be fixed consistently)",
+      "Mass matrix is positive semi-definite",
+      "Goldstone modes are indeed massless (not just zero eigenvalue directions)",
+      "Unitary gauge exists and is well-defined",
+      "Covariant derivative expansion is valid",
+      "Generator action on vacuum is well-defined in Hilbert space"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "6",
+        "issue": "Zero eigenvalue of mass matrix does not automatically imply massless particle - requires proof that eigenvector corresponds to physical mode"
+      },
+      {
+        "step": "7",
+        "issue": "Explicitly marked as gap - absorption of Goldstone modes requires rigorous gauge fixing procedure not provided"
+      },
+      {
+        "step": "8",
+        "issue": "Direct substitution \u03c6 \u2192 \u27e8\u03c6\u27e9\u2080 in covariant derivative ignores quantum corrections and field redefinition subtleties"
+      },
+      {
+        "step": "9",
+        "issue": "Vacuum annihilation condition \u00e2|\u03a9\u27e9 = 0 does not directly imply generator action - requires explicit construction of generator operators"
+      },
+      {
+        "step": "10",
+        "issue": "Explicitly marked as gap - analogy to QCD is not a proof"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No rigorous treatment of gauge fixing and BRST symmetry",
+      "Missing proof that Goldstone modes are actually physical massless particles",
+      "No demonstration that mass formula M\u00b2\u2090 = g\u00b2\u27e8\u03c6\u27e9\u2080\u00b2 is exact",
+      "Vacuum state construction is incomplete",
+      "No treatment of potential quantum corrections to symmetry breaking",
+      "Missing analysis of gauge invariance preservation"
+    ],
+    "internal_score": 0.3
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims vacuum state |\u03a9\u27e9 satisfies \u011c\u1d62|\u03a9\u27e9 \u2260 0 for broken generators, but this contradicts the standard definition where the vacuum is the lowest energy eigenstate of the Hamiltonian and should be annihilated by lowering operators associated with broken symmetries",
+      "The mass formula M\u00b2\u2090 = g\u00b2\u27e8\u03c6\u27e9\u2080\u00b2 is dimensionally incorrect - it should be M\u00b2\u2090 = g\u00b2\u27e8\u03c6\u27e9\u2080\u00b2f\u00b2 where f has appropriate dimensions",
+      "The claim that Goldstone theorem generates exactly dim(G/H) massless modes ignores potential anomalies and explicit symmetry breaking terms that can give masses to would-be Goldstone bosons"
+    ],
+    "assumption_conflicts": [
+      "The assumption of 'isolated minima' conflicts with the continuous family of degenerate vacua required for spontaneous symmetry breaking",
+      "The assumption that 'quantum corrections do not restore symmetry' is too strong and conflicts with proof [66e4aac2731b] which shows classical behavior emerges through environmental interaction",
+      "The assumption of 'thermodynamic limit' for computing \u27e8\u03c6\u27e9\u2080 conflicts with finite-size effects that are crucial in many symmetry breaking scenarios"
+    ],
+    "beneficial_connections": [
+      "Connects to proof [6cf918aecf4e] on symmetry breaking mechanisms generating emergent structure",
+      "Relates to proof [3f0bc99f45de] on collective phenomena emerging through symmetry breaking in quantum many-body systems",
+      "Supports proof [75a7c4c46d4c] on spontaneous symmetry breaking forming ordered structures",
+      "Extends proof [86627f739493] on discrete states emerging from continuous symmetries"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof contains significant technical errors and gaps, particularly in the treatment of gauge fixing, the vacuum state definition, and dimensional analysis. The connection to QCD vacuum is mentioned but not rigorously established. The proof would benefit from addressing the noted gaps and correcting the mathematical inconsistencies."
+  },
+  "confidence_score": 0.29,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.3,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.3,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "Rigorous mathematical framework for: (1) Path integral measure under symmetry breaking, (2) Non-perturbative definition of vacuum in interacting theories, (3) Mathematical treatment of gauge fixing procedures, (4) Convergence of perturbation series around broken vacuum",
+  "limitations": [
+    "Rigorous treatment of gauge fixing and Faddeev-Popov ghosts in spontaneously broken theories",
+    "Non-perturbative proof of chiral symmetry breaking in QCD",
+    "Mathematical definition of path integral measure preserving gauge invariance",
+    "Proof that quantum corrections preserve symmetry breaking pattern",
+    "Proof relies on perturbation theory validity near vacuum",
+    "Cannot rigorously treat strong coupling regime relevant for QCD",
+    "Assumes existence of well-defined vacuum state",
+    "Does not address phase transitions or temperature effects",
+    "Gauge fixing procedure not mathematically rigorous"
+  ],
+  "source_convergence": {
+    "structural_claim": "Spontaneous symmetry breaking generates mass and determines the vacuum structure in both quantum field theory and nuclear physics",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Spontaneous Symmetry Breaking (Higgs Mechanism)",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Field Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Gauge symmetries can be hidden rather than broken, with massless gauge bosons acquiring mass through interaction with a scalar field whose vacuum expectation value breaks the symmetry spontaneously"
+      },
+      {
+        "result_id": "",
+        "result_name": "Chiral Symmetry Breaking",
+        "domain_id": "field_b",
+        "domain_name": "Nuclear Physics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "The QCD vacuum spontaneously breaks chiral symmetry, generating constituent quark masses and explaining why nucleons are much heavier than the sum of their quark masses"
+      }
+    ],
+    "domains": [
+      "quantum_field_theory",
+      "nuclear_physics"
+    ],
+    "domain_names": [
+      "Quantum Field Theory",
+      "Nuclear Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.1428,
+      "independence": 0.4,
+      "adversarial": 0.12,
+      "reproducibility": 0.315,
+      "depth_consistency": 1.0,
+      "confidence": 0.31409,
+      "confidence_category": "speculative"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:37:37.036787+00:00",
+    "id": "213526ee75a4"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.35385
+  }
+}

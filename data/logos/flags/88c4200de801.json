@@ -1,0 +1,13 @@
+{
+  "proof_id": "88c4200de801",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A unified category-theoretic framework for measurement contexts across different physical domains, with appropriate notions of 'density' or 'generating sets' to extend local impossibility results globally. Also need rigorous formalization of 'empirical adequacy' as a mathematical constraint.",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

@@ -1,0 +1,357 @@
+{
+  "id": "f947e3c087c0",
+  "convergence_id": "8bde681e0eb1",
+  "timestamp": "2026-05-02T13:46:20.347940+00:00",
+  "proposition": "For any quantum system S with Hilbert space H, there exists no function v: O \u2192 \u211d that assigns predetermined values to all observables O \u2208 B(H) such that: (1) v(A) \u2208 \u03c3(A) for all A \u2208 O, and (2) for any orthonormal basis {|\u03c8\u1d62\u27e9} spanning a subspace, if A = \u03a3\u1d62 a\u1d62|\u03c8\u1d62\u27e9\u27e8\u03c8\u1d62|, then exactly one v(|\u03c8\u1d62\u27e9\u27e8\u03c8\u1d62|) = 1",
+  "proposition_natural": "Quantum properties cannot possess predetermined values independent of measurement context",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Functional analysis",
+    "Category theory",
+    "Measure theory"
+  ],
+  "apparatus_justification": "Functional analysis provides the Hilbert space formalism and spectral theory needed to model quantum observables and their context-dependent values. Category theory captures the structural relationships between measurement contexts through functorial mappings. Measure theory formalizes the probabilistic aspects of quantum measurements.",
+  "proof_natural": "**Proposition.** For any quantum system S with Hilbert space H, there exists no function v: O \u2192 \u211d that assigns predetermined values to all observables O \u2208 B(H) such that: (1) v(A) \u2208 \u03c3(A) for all A \u2208 O, and (2) for any orthonormal basis {|\u03c8\u1d62\u27e9} spanning a subspace, if A = \u03a3\u1d62 a\u1d62|\u03c8\u1d62\u27e9\u27e8\u03c8\u1d62|, then exactly one v(|\u03c8\u1d62\u27e9\u27e8\u03c8\u1d62|) = 1.\n\n*Proof.* We assume that quantum systems are described by complex Hilbert spaces H with dim(H) \u2265 3, observables are self-adjoint operators in B(H), and measurement outcomes must lie in the spectrum \u03c3(A) of observable A. Let v be a hypothetical value assignment function defined on all observables simultaneously, and suppose that for any complete set of orthogonal projectors {P\u1d62} with \u03a3\u1d62P\u1d62 = I, exactly one projector has value 1.\n\nConsider a 3-dimensional subspace of H with orthonormal basis {|e\u2081\u27e9, |e\u2082\u27e9, |e\u2083\u27e9}. Such a subspace exists since dim(H) \u2265 3. Define the projectors P\u1d62 = |e\u1d62\u27e9\u27e8e\u1d62| for i = 1,2,3.\n\nWe now invoke the Kochen-Specker theorem, which provides an explicit construction of 117 vectors in \u211d\u00b3 with specific orthogonality relations. Map each Kochen-Specker vector v\u1d62 \u2208 \u211d\u00b3 to a quantum state |\u03c8\u1d62\u27e9 = \u03a3\u2c7c v\u1d62\u2c7c|e\u2c7c\u27e9 via the natural linear isomorphism between \u211d\u00b3 and span{|e\u2081\u27e9, |e\u2082\u27e9, |e\u2083\u27e9}. This mapping preserves inner products: \u27e8\u03c8\u1d62|\u03c8\u2c7c\u27e9 = v\u1d62\u00b7v\u2c7c, so each orthogonal triple in the Kochen-Specker configuration maps to mutually orthogonal quantum states.\n\nFor each orthogonal triple {|\u03c8\u1d62\u27e9, |\u03c8\u2c7c\u27e9, |\u03c8\u2096\u27e9}, the corresponding projectors P\u1d62 = |\u03c8\u1d62\u27e9\u27e8\u03c8\u1d62|, P\u2c7c = |\u03c8\u2c7c\u27e9\u27e8\u03c8\u2c7c|, P\u2096 = |\u03c8\u2096\u27e9\u27e8\u03c8\u2096| satisfy P\u1d62 + P\u2c7c + P\u2096 = I\u2083 by the completeness relation for orthonormal bases in the 3-dimensional subspace. By our assumption, exactly one of v(P\u1d62), v(P\u2c7c), v(P\u2096) must equal 1 for each such triple.\n\nThe crucial property of the Kochen-Specker configuration is that it contains overlapping triples\u2014certain vectors appear in multiple orthogonal triples. When we attempt to assign values 0 or 1 to each projector consistent with the constraint that exactly one projector in each triple has value 1, the overlapping structure leads to a contradiction. The Kochen-Specker theorem guarantees that no consistent assignment exists.\n\nTherefore, no value assignment function v can exist satisfying our requirements. This theoretical impossibility is corroborated by experimental observations: the Zeeman effect demonstrates that atomic energy levels split differently depending on magnetic field orientation, while the Stark effect shows that electric fields mix atomic states with observable properties depending on field configuration. These phenomena exemplify the context-dependence that our proof establishes must exist.\n\nThis completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.Analysis.InnerProductSpace.Basic\nimport Mathlib.Analysis.InnerProductSpace.Projection\nimport Mathlib.LinearAlgebra.Basis\nimport Mathlib.Topology.Algebra.Module.Basic\nimport Mathlib.Analysis.NormedSpace.BoundedLinearMaps\n\n/-- A value assignment function for quantum observables -/\ndef ValueAssignment (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H] :=\n  (H \u2192L[\u2102] H) \u2192 \u211d\n\n/-- The spectrum of a bounded linear operator (placeholder) -/\ndef spectrum {H : Type*} [NormedAddCommGroup H] [InnerProductSpace \u2102 H] \n  (A : H \u2192L[\u2102] H) : Set \u211d := sorry -- \"Spectrum of operators not in Mathlib\"\n\n/-- Projection operator from a unit vector -/\ndef projector {H : Type*} [NormedAddCommGroup H] [InnerProductSpace \u2102 H]\n  (\u03c8 : H) (h\u03c8 : \u2016\u03c8\u2016 = 1) : H \u2192L[\u2102] H := sorry -- \"Projection operators not formalized in Mathlib\"\n\n/-- The Kochen-Specker configuration (placeholder) -/\ndef KochenSpeckerConfig : Set (Fin 3 \u2192 \u211d) := sorry -- \"KS configuration not in Mathlib\"\n\n/-- Property that KS config contains orthogonal triples -/\ndef hasOrthogonalTriples (S : Set (Fin 3 \u2192 \u211d)) : Prop := sorry -- \"KS properties not formalized\"\n\n/-- No consistent 0-1 assignment exists for KS configuration -/\ndef noConsistentAssignment (S : Set (Fin 3 \u2192 \u211d)) : Prop := sorry -- \"KS theorem not in Mathlib\"\n\ntheorem no_value_assignment_exists \n  {H : Type*} [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H]\n  (hdim : FiniteDimensional.finrank \u2102 H \u2265 3) :\n  \u00ac\u2203 (v : ValueAssignment H),\n    (\u2200 A : H \u2192L[\u2102] H, v A \u2208 spectrum A) \u2227\n    (\u2200 (S : Set H) (hS : IsOrthonormal \u2102 (fun x : S => (x : H)))\n      (hspan : Submodule.span \u2102 S = \u22a4),\n      \u2203! \u03c8 : S, v (projector \u03c8 (sorry : \u2016(\u03c8 : H)\u2016 = 1)) = 1) := by\n  intro \u27e8v, hv_spectrum, hv_unique\u27e9\n  \n  -- Step 1: Get 3-dimensional subspace\n  obtain \u27e8V, hV_dim\u27e9 : \u2203 V : Submodule \u2102 H, FiniteDimensional.finrank \u2102 V = 3 := \n    sorry -- \"Existence of 3D subspace from dimension assumption\"\n  \n  -- Step 2: Get orthonormal basis\n  obtain \u27e8e\u2081, e\u2082, e\u2083, he_ortho, he_span\u27e9 : \n    \u2203 e\u2081 e\u2082 e\u2083 : V, IsOrthonormal \u2102 ![e\u2081, e\u2082, e\u2083] \u2227 \n    Submodule.span \u2102 {e\u2081, e\u2082, e\u2083} = \u22a4 := sorry -- \"Existence of orthonormal basis\"\n  \n  -- Step 3: KS configuration\n  have hKS : hasOrthogonalTriples KochenSpeckerConfig := \n    sorry -- \"KS configuration properties\"\n  \n  -- Step 4-5: Map KS vectors to quantum states\n  let \u03c8_map : (Fin 3 \u2192 \u211d) \u2192 V := fun v => \n    v 0 \u2022 e\u2081 + v 1 \u2022 e\u2082 + v 2 \u2022 e\u2083\n  \n  -- Step 6-7: Each orthogonal triple gives constraint\n  have h_constraints : \u2200 (triple : Finset (Fin 3 \u2192 \u211d)),\n    triple \u2286 KochenSpeckerConfig \u2192 triple.card = 3 \u2192 \n    (\u2200 u v \u2208 triple, u \u2260 v \u2192 \u27ea\u03c8_map u, \u03c8_map v\u27eb_\u2102 = 0) \u2192\n    \u2203! w \u2208 triple, v (projector (\u03c8_map w) sorry) = 1 := \n    sorry -- \"Application of value assignment uniqueness property\"\n  \n  -- Step 8-9: KS theorem gives contradiction\n  have h_no_assign : noConsistentAssignment KochenSpeckerConfig := \n    sorry -- \"KS theorem statement\"\n  \n  -- Step 10: Derive contradiction\n  apply h_no_assign\n  sorry -- \"Connection between KS theorem and our constraints\"\n  \n  -- Steps 11-12: Zeeman and Stark effects are empirical observations\n  -- not part of the mathematical proof",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Consider a 3-dimensional subspace of H with orthonormal basis {|e\u2081\u27e9, |e\u2082\u27e9, |e\u2083\u27e9}",
+      "justification": "Any Hilbert space with dim(H) \u2265 3 contains such a subspace",
+      "dependencies": [
+        "Assumption 1"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Define projectors P\u1d62 = |e\u1d62\u27e9\u27e8e\u1d62| for i = 1,2,3",
+      "justification": "Standard construction of projection operators from orthonormal vectors",
+      "dependencies": [
+        "Step 1",
+        "Definition of projection operators"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Construct the Kochen-Specker configuration of 117 vectors in \u211d\u00b3",
+      "justification": "Kochen-Specker theorem provides explicit construction",
+      "dependencies": [
+        "Kochen-Specker Theorem"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "Map each KS vector v\u1d62 \u2208 \u211d\u00b3 to a quantum state |\u03c8\u1d62\u27e9 = \u03a3\u2c7c v\u1d62\u2c7c|e\u2c7c\u27e9",
+      "justification": "Linear isomorphism between \u211d\u00b3 and span{|e\u2081\u27e9, |e\u2082\u27e9, |e\u2083\u27e9}",
+      "dependencies": [
+        "Steps 1, 3"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Each orthogonal triple in the KS configuration maps to mutually orthogonal quantum states",
+      "justification": "The mapping preserves inner products: \u27e8\u03c8\u1d62|\u03c8\u2c7c\u27e9 = v\u1d62\u00b7v\u2c7c",
+      "dependencies": [
+        "Step 4",
+        "Properties of inner product"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "For each orthogonal triple {|\u03c8\u1d62\u27e9, |\u03c8\u2c7c\u27e9, |\u03c8\u2096\u27e9}, the projectors P\u1d62 = |\u03c8\u1d62\u27e9\u27e8\u03c8\u1d62| satisfy P\u1d62 + P\u2c7c + P\u2096 = I\u2083",
+      "justification": "Completeness relation for orthonormal bases in 3D subspace",
+      "dependencies": [
+        "Step 5",
+        "Completeness of orthonormal bases"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "By assumption 4, exactly one of v(P\u1d62), v(P\u2c7c), v(P\u2096) must equal 1 for each triple",
+      "justification": "Direct application of the assumption about complete orthogonal sets",
+      "dependencies": [
+        "Step 6",
+        "Assumption 4"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "The KS configuration contains overlapping triples sharing common projectors",
+      "justification": "Property of the KS configuration - certain vectors appear in multiple orthogonal triples",
+      "dependencies": [
+        "Step 3",
+        "Kochen-Specker Theorem"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "The constraints from Step 7 applied to all triples lead to a contradiction",
+      "justification": "The KS theorem proves no consistent 0-1 assignment exists satisfying all constraints",
+      "dependencies": [
+        "Steps 7, 8",
+        "Kochen-Specker Theorem"
+      ]
+    },
+    {
+      "step_number": 10,
+      "statement": "Therefore, no value assignment function v exists satisfying our requirements",
+      "justification": "Contradiction establishes non-existence",
+      "dependencies": [
+        "Step 9"
+      ]
+    },
+    {
+      "step_number": 11,
+      "statement": "The Zeeman effect demonstrates context-dependence empirically: atomic energy levels split differently depending on magnetic field orientation",
+      "justification": "Experimental observation showing measurement context affects observable values",
+      "dependencies": [
+        "Zeeman Effect"
+      ]
+    },
+    {
+      "step_number": 12,
+      "statement": "The Stark effect shows electric fields mix atomic states, with observable properties depending on field configuration",
+      "justification": "Experimental observation of measurement configuration affecting state properties",
+      "dependencies": [
+        "Stark Effect"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Kochen-Specker Theorem",
+      "authors": "Simon Kochen and Ernst Specker",
+      "year": "1967",
+      "field": "Quantum Foundations",
+      "statement": "In any Hilbert space of dimension \u2265 3, there exist finite sets of projection operators for which no non-contextual hidden variable theory can reproduce quantum predictions",
+      "usage": "Provides the explicit construction of 117 vectors and proves impossibility of consistent value assignment"
+    },
+    {
+      "name": "Zeeman Effect",
+      "authors": "Pieter Zeeman",
+      "year": "1896",
+      "field": "Atomic and Molecular Physics",
+      "statement": "Spectral lines of atoms split into multiple components in the presence of a magnetic field, with splitting pattern depending on field orientation",
+      "usage": "Empirical demonstration that measurement context (field orientation) affects observable values"
+    },
+    {
+      "name": "Stark Effect",
+      "authors": "Johannes Stark",
+      "year": "1913",
+      "field": "Atomic and Molecular Physics",
+      "statement": "Electric fields cause splitting and shifting of spectral lines, with the effect depending on field strength and orientation relative to the atom",
+      "usage": "Additional empirical evidence that measurement configuration determines observable properties"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Quantum systems are described by complex Hilbert spaces H with dim(H) \u2265 3",
+    "Observables are self-adjoint operators in B(H)",
+    "Measurement outcomes must lie in the spectrum \u03c3(A) of observable A",
+    "For any complete set of orthogonal projectors {P\u1d62} with \u03a3\u1d62P\u1d62 = I, exactly one projector has value 1",
+    "The value assignment function v must be defined on all observables simultaneously",
+    "Standard axioms of ZFC set theory",
+    "Standard axioms of functional analysis on Hilbert spaces"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.7,
+    "gaps": [
+      {
+        "step": "Define the projectors P\u1d62 = |e\u1d62\u27e9\u27e8e\u1d62| for i = 1,2,3",
+        "issue": "The proof restricts to a 3-dimensional subspace but the proposition claims to apply to all observables in B(H). The proof never addresses observables outside this subspace or shows why proving the result for a subspace suffices for the general case.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed without fundamentally restructuring the argument to address all of B(H)"
+      },
+      {
+        "step": "Map each Kochen-Specker vector v\u1d62 \u2208 \u211d\u00b3 to a quantum state |\u03c8\u1d62\u27e9",
+        "issue": "The mapping from real vectors to quantum states is not properly justified. The proof assumes without justification that the Kochen-Specker configuration in \u211d\u00b3 translates directly to the quantum setting while preserving all necessary properties.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Provide explicit verification that the quantum projectors inherit the required orthogonality and overlap structure from the classical Kochen-Specker configuration"
+      },
+      {
+        "step": "By our assumption, exactly one of v(P\u1d62), v(P\u2c7c), v(P\u2096) must equal 1",
+        "issue": "The assumption in the proposition only states this for 'any orthonormal basis spanning a subspace' but doesn't specify which subspace. The proof assumes this applies to all orthonormal triples in the 3D subspace without justification.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Clarify the scope of the assumption and verify it applies to all relevant triples"
+      },
+      {
+        "step": "The Kochen-Specker theorem guarantees that no consistent assignment exists",
+        "issue": "The proof doesn't verify that the specific constraints of this problem (v(A) \u2208 \u03c3(A) and the basis constraint) match the constraints in the Kochen-Specker theorem. The KS theorem concerns 0-1 assignments to projectors, but this needs explicit connection to the stated constraints.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Explicitly show that the constraints in the proposition reduce to the KS constraints"
+      }
+    ],
+    "hidden_assumptions": [
+      "That proving the result for projectors in a 3D subspace suffices for all observables in B(H)",
+      "That the value assignment function must assign 0 or 1 to all projectors (not just those in complete orthonormal sets)",
+      "That the Kochen-Specker configuration properties transfer directly from \u211d\u00b3 to the quantum Hilbert space",
+      "That constraint (2) applies to all orthonormal bases in any subspace, not just complete bases of H"
+    ],
+    "circular_reasoning": false,
+    "circular_details": "",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof only addresses projectors in a 3D subspace but claims to prove nonexistence of v for all observables in B(H). It also doesn't address non-projector observables at all.",
+    "citation_issues": [
+      "The Kochen-Specker theorem is stated too vaguely - it should specify it concerns non-contextual value assignments to projection operators",
+      "The Zeeman and Stark effects are mentioned as 'corroboration' but add nothing to the mathematical proof and seem included merely for decoration"
+    ],
+    "structural_soundness": 0.6,
+    "overall_assessment": "The proof contains a reasonable core idea of reducing to the Kochen-Specker theorem, but fails to properly connect the general problem to the specific 3D subspace case. The restriction to a subspace is never justified, and the proof ignores non-projector observables entirely, making it incomplete for the stated proposition.",
+    "verdict": "major_revision"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "Proves that no 0-1 value assignment exists for projectors in a 3-dimensional subspace satisfying KS constraints, but fails to establish the full proposition about all observables in B(H)",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The mapping from R\u00b3 vectors to quantum states preserves orthogonality relations",
+      "The KS configuration actually contains the claimed overlapping structure",
+      "The contradiction in Step 9 actually occurs (not demonstrated)",
+      "All observables in B(H) can be reduced to the 3D projector case",
+      "The experimental observations in Steps 11-12 are relevant to the mathematical proposition"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "4",
+        "issue": "Claims linear isomorphism between R\u00b3 and quantum states but doesn't establish that KS vectors are unit vectors or that the mapping preserves the required structure"
+      },
+      {
+        "step": "6",
+        "issue": "Assumes Pi + Pj + Pk = I\u2083 but this only holds if the three states span the entire 3D subspace, which isn't established"
+      },
+      {
+        "step": "7",
+        "issue": "Misapplies assumption 4 - the assumption refers to 'any orthonormal basis spanning a subspace' but doesn't specify that exactly one projector has value 1"
+      },
+      {
+        "step": "9",
+        "issue": "Claims contradiction exists but provides no actual demonstration of the contradiction - this is the critical step that is completely hand-waved"
+      },
+      {
+        "step": "10",
+        "issue": "Concludes about all observables in B(H) based only on analysis of specific 3D projectors"
+      },
+      {
+        "step": "11",
+        "issue": "Zeeman effect observation is irrelevant to the mathematical proposition about value assignments"
+      },
+      {
+        "step": "12",
+        "issue": "Stark effect observation is irrelevant to the mathematical proposition about value assignments"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Never actually demonstrates the contradiction claimed in Step 9",
+      "Fails to connect the 3D projector case to general observables in B(H)",
+      "Doesn't establish that the KS configuration maps correctly to quantum projectors",
+      "Missing the bridge from specific projector constraints to impossibility for all observables",
+      "Steps 11-12 are completely irrelevant experimental observations that don't contribute to the mathematical proof"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": false,
+    "contradiction_details": [],
+    "assumption_conflicts": [],
+    "beneficial_connections": [
+      "Directly supports proof [06879fd9ae87] which establishes contextuality of physical properties - the new proof provides a specific mathematical demonstration of this principle",
+      "Complements proof [06d6ace265c2] on quantum-classical boundary by showing fundamental limitations of classical value assignments in quantum systems",
+      "Aligns with proof [102677deecdd] on relational structure by demonstrating that quantum observables cannot have intrinsic predetermined values independent of measurement context",
+      "Strengthens proof [18b9ea79f26d] on mathematical structures being determined by relationships rather than intrinsic properties"
+    ],
+    "consistency_score": 0.95,
+    "notes": "The proof is mathematically sound and uses the standard Kochen-Specker theorem construction. However, the proof presentation lacks rigor in several areas: (1) The mapping from KS vectors to quantum states is not explicitly verified to preserve orthogonality relationships, (2) The contradiction derivation is stated but not shown in detail, (3) The assumption that 'exactly one projector has value 1' for complete orthogonal sets needs justification beyond measurement theory. Despite these presentation issues, the core result is well-established and consistent with existing quantum foundations work."
+  },
+  "confidence_score": 0.5075000000000001,
+  "confidence_category": "medium",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.7,
+    "internal": 0.2,
+    "cross_proof": 0.95,
+    "calibration": 0.6
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.7,
+    "internal": 0.2,
+    "cross_proof": 0.95,
+    "calibration": 0.6
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": true,
+  "new_mathematics_needed": "",
+  "limitations": [
+    "The connection between the abstract KS theorem and the physical Zeeman/Stark effects requires additional formalization of how measurement contexts in the theorem correspond to physical field configurations",
+    "The proof assumes the KS construction without reproducing it in full detail",
+    "The proof applies only to Hilbert spaces of dimension \u2265 3",
+    "The impossibility result assumes non-contextual value assignments; contextual hidden variable theories are not ruled out",
+    "The proof does not address continuous observables, only those with discrete spectra in finite-dimensional subspaces"
+  ],
+  "source_convergence": {
+    "structural_claim": "Quantum properties cannot possess predetermined values independent of measurement context",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Kochen-Specker Theorem",
+        "domain_id": "quantum_foundations",
+        "domain_name": "Quantum Foundations",
+        "link_type": "direct",
+        "structural_conclusion": "Quantum observables cannot possess predetermined values independent of measurement context"
+      },
+      {
+        "result_id": "",
+        "result_name": "Zeeman Effect",
+        "domain_id": "atomic_molecular_physics",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Atomic energy levels and their splitting depend on the measurement basis defined by external magnetic fields"
+      },
+      {
+        "result_id": "",
+        "result_name": "Stark Effect",
+        "domain_id": "atomic_molecular_physics",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Electric fields mix atomic states, showing that observable properties depend on the measurement configuration"
+      }
+    ],
+    "domains": [
+      "quantum_foundations",
+      "atomic_physics"
+    ],
+    "domain_names": [
+      "Quantum Foundations",
+      "Atomic and Molecular Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.357,
+      "independence": 0.75,
+      "adversarial": 0.4,
+      "reproducibility": 0.5249999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.55335,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:14:07.253956+00:00",
+    "id": "8bde681e0eb1"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.31464000000000003
+  }
+}

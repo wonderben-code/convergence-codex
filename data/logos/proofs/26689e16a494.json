@@ -1,0 +1,379 @@
+{
+  "id": "26689e16a494",
+  "convergence_id": "94ed6cc962e2",
+  "timestamp": "2026-05-02T13:48:57.792733+00:00",
+  "proposition": "Let (\u03a9, \u2131, \u03bc) be a measure space representing a physical system with microscopic states \u03c9 \u2208 \u03a9. Let H: \u03a9 \u2192 \u211d be a Hamiltonian and \u03b2 \u2208 \u211d\u207a be inverse temperature. Define the partition function Z(\u03b2) = \u222b_\u03a9 exp(-\u03b2H(\u03c9))d\u03bc(\u03c9) and free energy F(\u03b2) = -\u03b2\u207b\u00b9log Z(\u03b2). Then there exist critical values \u03b2_c where F is non-analytic, corresponding to phase transitions where the system's macroscopic observables O: \u03a9 \u2192 \u211d exhibit discontinuous behavior in their thermal averages \u27e8O\u27e9_\u03b2 = Z(\u03b2)\u207b\u00b9\u222b_\u03a9 O(\u03c9)exp(-\u03b2H(\u03c9))d\u03bc(\u03c9).",
+  "proposition_natural": "Physical systems exhibit phase transitions where collective behavior emerges from microscopic interactions, fundamentally altering the system's properties and creating new states of matter",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Dynamical systems",
+    "Measure theory",
+    "Functional analysis"
+  ],
+  "apparatus_justification": "Phase transitions are fundamentally about qualitative changes in system behavior as parameters vary, which is precisely captured by bifurcation theory in dynamical systems. Measure theory provides the rigorous foundation for statistical mechanics and thermodynamic limits, while functional analysis supplies the operator formalism needed for quantum phase transitions and renormalization group methods.",
+  "proof_natural": "**Proposition.** Let (\u03a9, \u2131, \u03bc) be a measure space representing a physical system with microscopic states \u03c9 \u2208 \u03a9. Let H: \u03a9 \u2192 \u211d be a Hamiltonian and \u03b2 \u2208 \u211d\u207a be inverse temperature. Define the partition function Z(\u03b2) = \u222b_\u03a9 exp(-\u03b2H(\u03c9))d\u03bc(\u03c9) and free energy F(\u03b2) = -\u03b2\u207b\u00b9log Z(\u03b2). Then there exist critical values \u03b2_c where F is non-analytic, corresponding to phase transitions where the system's macroscopic observables O: \u03a9 \u2192 \u211d exhibit discontinuous behavior in their thermal averages \u27e8O\u27e9_\u03b2 = Z(\u03b2)\u207b\u00b9\u222b_\u03a9 O(\u03c9)exp(-\u03b2H(\u03c9))d\u03bc(\u03c9).\n\n**Proof.** We assume that the microscopic state space \u03a9 admits a \u03c3-algebra \u2131 and measure \u03bc, with H measurable and \u222b_\u03a9 exp(-\u03b2H(\u03c9))d\u03bc(\u03c9) < \u221e for all \u03b2 > 0. Let the system be in thermal equilibrium described by the Gibbs measure, and assume the thermodynamic limit exists. We further assume that observable functions O are measurable and bounded.\n\nWe begin by establishing that the free energy F(\u03b2) is convex in \u03b2. By H\u00f6lder's inequality applied to the partition function integral, for any \u03bb \u2208 [0,1] and \u03b2\u2081, \u03b2\u2082 > 0, we have Z(\u03bb\u03b2\u2081 + (1-\u03bb)\u03b2\u2082) \u2264 Z(\u03b2\u2081)^\u03bb Z(\u03b2\u2082)^(1-\u03bb), which immediately implies the convexity of F.\n\nFor finite systems, F(\u03b2) is analytic in \u03b2, as the partition function reduces to a finite sum of analytic functions exp(-\u03b2E_i) over discrete energy levels E_i. However, in the thermodynamic limit, non-analyticities can emerge. This follows from the classical result that the limit of a sequence of analytic functions need not be analytic, as demonstrated by the Weierstrass approximation theorem.\n\nAt points \u03b2_c where F becomes non-analytic, the thermal average of the Hamiltonian \u2202F/\u2202\u03b2 = -\u27e8H\u27e9_\u03b2 necessarily exhibits discontinuous behavior. This is a direct consequence of the loss of analyticity and the fundamental relation between free energy and thermal averages.\n\nThe correlation length \u03be(\u03b2) = lim_{|x|\u2192\u221e} |x|/(-log|\u27e8\u03c3(0)\u03c3(x)\u27e9_\u03b2|) diverges as \u03b2 approaches \u03b2_c. [Note: A complete proof of this statement requires the full machinery of critical scaling theory, which is beyond our current scope.] Near \u03b2_c, collective modes emerge with correlation functions exhibiting power-law decay rather than exponential decay. [Note: The rigorous connection between correlation length divergence and collective behavior requires renormalization group analysis.]\n\nThe order parameter m(\u03b2) = lim_{h\u21920} \u2202F/\u2202h|_h=0, where h represents an external field conjugate to the order parameter, exhibits discontinuous behavior at \u03b2_c. This follows directly from the non-analyticity of F and the definition of the order parameter through differentiation.\n\nThe emergence of distinct phases corresponds to different minima in an effective potential V_eff(m). [Note: The connection between the statistical mechanical formulation and effective field theory descriptions requires additional mathematical machinery not fully developed here.]\n\nOur analysis relies on several fundamental results: the Yang-Lee Circle Theorem establishes that zeros of the partition function in the complex fugacity plane determine phase transition locations; Renormalization Group Theory reveals universal behavior through scale transformations near critical points; and the Mermin-Wagner Theorem constrains spontaneous symmetry breaking in low dimensions.\n\nTherefore, we have established that non-analyticities in the free energy F(\u03b2) at critical values \u03b2_c correspond to phase transitions characterized by discontinuous changes in macroscopic observables. This completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.MeasureTheory.Integral.Bochner\nimport Mathlib.Analysis.Convex.Function\nimport Mathlib.Analysis.SpecialFunctions.Log.Basic\nimport Mathlib.Analysis.SpecialFunctions.Exp\nimport Mathlib.Analysis.Calculus.Deriv\nimport Mathlib.Analysis.Analytic.Basic\n\n/-- A physical system with Hamiltonian and partition function -/\nstructure PhysicalSystem (\u03a9 : Type*) [MeasurableSpace \u03a9] where\n  \u03bc : Measure \u03a9\n  H : \u03a9 \u2192 \u211d\n  H_measurable : Measurable H\n  H_integrable : \u2200 \u03b2 > 0, Integrable (fun \u03c9 => Real.exp (-\u03b2 * H \u03c9)) \u03bc\n\n/-- The partition function Z(\u03b2) -/\ndef partitionFunction {\u03a9 : Type*} [MeasurableSpace \u03a9] (sys : PhysicalSystem \u03a9) (\u03b2 : \u211d) : \u211d :=\n  if h : \u03b2 > 0 then \u222b \u03c9, Real.exp (-\u03b2 * sys.H \u03c9) \u2202sys.\u03bc else 0\n\n/-- The free energy F(\u03b2) -/\ndef freeEnergy {\u03a9 : Type*} [MeasurableSpace \u03a9] (sys : PhysicalSystem \u03a9) (\u03b2 : \u211d) : \u211d :=\n  if h : \u03b2 > 0 \u2227 partitionFunction sys \u03b2 > 0 then\n    -\u03b2\u207b\u00b9 * Real.log (partitionFunction sys \u03b2)\n  else 0\n\n/-- Thermal average of an observable -/\ndef thermalAverage {\u03a9 : Type*} [MeasurableSpace \u03a9] (sys : PhysicalSystem \u03a9) \n    (O : \u03a9 \u2192 \u211d) (O_measurable : Measurable O) (\u03b2 : \u211d) : \u211d :=\n  if h : \u03b2 > 0 \u2227 partitionFunction sys \u03b2 > 0 then\n    (partitionFunction sys \u03b2)\u207b\u00b9 * \u222b \u03c9, O \u03c9 * Real.exp (-\u03b2 * sys.H \u03c9) \u2202sys.\u03bc\n  else 0\n\n/-- Main theorem: Phase transitions occur at non-analytic points of free energy -/\ntheorem phase_transition_theorem {\u03a9 : Type*} [MeasurableSpace \u03a9] (sys : PhysicalSystem \u03a9) :\n    \u2203 (critical_points : Set \u211d), \n    (\u2200 \u03b2 \u2208 critical_points, \u03b2 > 0) \u2227\n    (\u2200 \u03b2 \u2208 critical_points, \u00acAnalyticAt \u211d (freeEnergy sys) \u03b2) \u2227\n    (\u2200 \u03b2 \u2208 critical_points, \u2200 O : \u03a9 \u2192 \u211d, Measurable O \u2192 \n      \u00acContinuousAt (thermalAverage sys O (sorry : Measurable O)) \u03b2) := by\n  sorry -- Missing: Full phase transition theory\n\n/-- Step 1: Free energy is convex -/\nlemma free_energy_convex {\u03a9 : Type*} [MeasurableSpace \u03a9] (sys : PhysicalSystem \u03a9) :\n    ConvexOn \u211d (Set.Ioi 0) (freeEnergy sys) := by\n  sorry -- Missing: H\u00f6lder's inequality application to partition function\n\n/-- Step 2: For finite systems, free energy is analytic -/\nlemma finite_system_analytic {\u03a9 : Type*} [MeasurableSpace \u03a9] [Finite \u03a9] \n    (sys : PhysicalSystem \u03a9) (\u03b2 : \u211d) (h\u03b2 : \u03b2 > 0) :\n    AnalyticAt \u211d (freeEnergy sys) \u03b2 := by\n  sorry -- Missing: Finite sum of analytic functions theory\n\n/-- Step 3: Thermodynamic limit can introduce non-analyticities -/\nlemma thermodynamic_limit_non_analytic :\n    \u2203 (sys_n : \u2115 \u2192 PhysicalSystem (Fin n)) (\u03b2_c : \u211d),\n    (\u2200 n, AnalyticOn \u211d (freeEnergy (sys_n n)) (Set.Ioi 0)) \u2227\n    (\u2203 F_limit : \u211d \u2192 \u211d, (\u2200 \u03b2 > 0, Tendsto (fun n => freeEnergy (sys_n n) \u03b2) atTop (\ud835\udcdd (F_limit \u03b2)))) \u2227\n    \u00acAnalyticAt \u211d F_limit \u03b2_c := by\n  sorry -- Missing: Weierstrass example construction\n\n/-- Step 4: Non-analyticity implies discontinuity in energy -/\nlemma non_analytic_implies_discontinuous {\u03a9 : Type*} [MeasurableSpace \u03a9] \n    (sys : PhysicalSystem \u03a9) (\u03b2_c : \u211d) (h\u03b2c : \u03b2_c > 0)\n    (h_non_analytic : \u00acAnalyticAt \u211d (freeEnergy sys) \u03b2_c) :\n    \u00acContinuousAt (fun \u03b2 => thermalAverage sys sys.H sys.H_measurable \u03b2) \u03b2_c := by\n  sorry -- Missing: Connection between free energy derivative and thermal average\n\n/-- Step 5: Correlation length divergence (placeholder) -/\ndef correlationLength {\u03a9 : Type*} [MeasurableSpace \u03a9] (sys : PhysicalSystem \u03a9) \n    (\u03c3 : \u03a9 \u2192 \u211d \u2192 \u211d) (\u03b2 : \u211d) : \u211d :=\n  sorry -- Missing: Correlation function theory\n\nlemma correlation_length_diverges {\u03a9 : Type*} [MeasurableSpace \u03a9] \n    (sys : PhysicalSystem \u03a9) (\u03c3 : \u03a9 \u2192 \u211d \u2192 \u211d) (\u03b2_c : \u211d) \n    (h_critical : \u00acAnalyticAt \u211d (freeEnergy sys) \u03b2_c) :\n    Tendsto (correlationLength sys \u03c3) (\ud835\udcdd[<] \u03b2_c) atTop := by\n  sorry -- Missing: Critical scaling theory\n\n/-- Step 6: Power-law decay of correlations -/\nlemma power_law_correlations {\u03a9 : Type*} [MeasurableSpace \u03a9] \n    (sys : PhysicalSystem \u03a9) (\u03b2_c : \u211d) (h_critical : \u00acAnalyticAt \u211d (freeEnergy sys) \u03b2_c) :\n    \u2203 (\u03b1 : \u211d) (C : \u211d), \u2200 x : \u211d, x \u2260 0 \u2192 \n    sorry := by -- Missing: Correlation function definition and power law characterization\n  sorry\n\n/-- Step 7: Order parameter discontinuity -/\ndef orderParameter {\u03a9 : Type*} [MeasurableSpace \u03a9] (sys : PhysicalSystem \u03a9) \n    (h : \u211d) (\u03b2 : \u211d) : \u211d :=\n  sorry -- Missing: Order parameter definition with external field\n\nlemma order_parameter_discontinuous {\u03a9 : Type*} [MeasurableSpace \u03a9] \n    (sys : PhysicalSystem \u03a9) (\u03b2_c : \u211d) \n    (h_critical : \u00acAnalyticAt \u211d (freeEnergy sys) \u03b2_c) :\n    \u00acContinuousAt (orderParameter sys 0) \u03b2_c := by\n  sorry -- Missing: Order parameter theory\n\n/-- Step 8: Effective potential and phase structure -/\ndef effectivePotential {\u03a9 : Type*} [MeasurableSpace \u03a9] \n    (sys : PhysicalSystem \u03a9) (\u03b2 : \u211d) (m : \u211d) : \u211d :=\n  sorry -- Missing: Effective field theory connection\n\nlemma phase_structure_minima {\u03a9 : Type*} [MeasurableSpace \u03a9] \n    (sys : PhysicalSystem \u03a9) (\u03b2_c : \u211d) :\n    \u2203 (m\u2081 m\u2082 : \u211d), m\u2081 \u2260 m\u2082 \u2227 \n    IsLocalMin (effectivePotential sys \u03b2_c) m\u2081 \u2227\n    IsLocalMin (effectivePotential sys \u03b2_c) m\u2082 := by\n  sorry -- Missing: Effective potential theory",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The free energy F(\u03b2) is convex in \u03b2",
+      "justification": "By H\u00f6lder's inequality applied to the partition function integral",
+      "dependencies": [
+        "H\u00f6lder's inequality",
+        "Definition of partition function"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "For finite systems, F(\u03b2) is analytic in \u03b2",
+      "justification": "The partition function is a finite sum of analytic functions exp(-\u03b2E_i) for discrete energy levels E_i",
+      "dependencies": [
+        "Analyticity of exponential function",
+        "Finite dimensionality assumption"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "In the thermodynamic limit, non-analyticities can emerge",
+      "justification": "The limit of analytic functions need not be analytic (Weierstrass example)",
+      "dependencies": [
+        "Step 2",
+        "Theory of uniform convergence"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "At points \u03b2_c where F is non-analytic, \u2202F/\u2202\u03b2 = -\u27e8H\u27e9_\u03b2 exhibits discontinuity",
+      "justification": "Direct consequence of non-analyticity and the relation between F and thermal averages",
+      "dependencies": [
+        "Step 3",
+        "Thermodynamic relations"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The correlation length \u03be(\u03b2) = lim_{|x|\u2192\u221e} |x|/(-log|\u27e8\u03c3(0)\u03c3(x)\u27e9_\u03b2|) diverges as \u03b2 \u2192 \u03b2_c",
+      "justification": "[Gap: Requires proof of critical scaling theory]",
+      "dependencies": [
+        "Ornstein-Zernike theory",
+        "Renormalization group results"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Near \u03b2_c, collective modes emerge with correlation functions exhibiting power-law decay",
+      "justification": "[Gap: Requires rigorous connection between correlation length divergence and collective behavior]",
+      "dependencies": [
+        "Step 5",
+        "Critical phenomena theory"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The order parameter m(\u03b2) = lim_{h\u21920} \u2202F/\u2202h|_h=0 exhibits discontinuous behavior at \u03b2_c",
+      "justification": "Follows from non-analyticity of F and definition of order parameter",
+      "dependencies": [
+        "Step 4",
+        "Landau theory of phase transitions"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "The emergence of new phases corresponds to different minima in the effective potential V_eff(m)",
+      "justification": "[Gap: Connection between statistical mechanics and effective field theory not fully rigorous]",
+      "dependencies": [
+        "Step 7",
+        "Mean field theory"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Yang-Lee Circle Theorem",
+      "authors": "C.N. Yang and T.D. Lee",
+      "year": "1952",
+      "field": "Statistical Mechanics",
+      "statement": "Zeros of the partition function in complex fugacity plane determine phase transition locations",
+      "usage": "Establishes rigorous foundation for phase transition theory"
+    },
+    {
+      "name": "Renormalization Group Theory",
+      "authors": "K. Wilson",
+      "year": "1971",
+      "field": "Statistical Physics",
+      "statement": "Scale transformations near critical points reveal universal behavior",
+      "usage": "Explains emergence of collective behavior and critical scaling"
+    },
+    {
+      "name": "Mermin-Wagner Theorem",
+      "authors": "N.D. Mermin and H. Wagner",
+      "year": "1966",
+      "field": "Statistical Mechanics",
+      "statement": "No spontaneous breaking of continuous symmetries in d\u22642 dimensions at finite temperature",
+      "usage": "Constrains possible phase transitions in low dimensions"
+    },
+    {
+      "name": "Lattice QCD Phase Diagram",
+      "authors": "Various (see Fodor & Katz 2004)",
+      "year": "2004",
+      "field": "Nuclear Physics",
+      "statement": "QCD exhibits phase transitions between confined and deconfined phases",
+      "usage": "Provides concrete example of phase transition in nuclear matter"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The microscopic state space \u03a9 admits a \u03c3-algebra \u2131 and measure \u03bc",
+    "The Hamiltonian H is measurable and \u222b_\u03a9 exp(-\u03b2H(\u03c9))d\u03bc(\u03c9) < \u221e for all \u03b2 > 0",
+    "The system is in thermal equilibrium described by the Gibbs measure",
+    "The thermodynamic limit exists (infinite volume limit with fixed density)",
+    "Interactions between microscopic degrees of freedom are encoded in H",
+    "Observable functions O are measurable and bounded",
+    "The measure \u03bc represents the appropriate statistical ensemble",
+    "Quantum effects can be incorporated through appropriate choice of \u03bc and H"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Proposition statement",
+        "issue": "Claims existence of critical values \u03b2_c without any conditions on H or \u03bc. Not all systems have phase transitions.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Add conditions on H (e.g., interactions, dimensionality) that guarantee phase transitions exist"
+      },
+      {
+        "step": "Convexity implies non-analyticity in thermodynamic limit",
+        "issue": "The proof jumps from 'F is convex' and 'limit of analytic functions need not be analytic' to 'non-analyticities can emerge'. This is not a logical deduction.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need explicit construction showing how non-analyticities arise in specific models"
+      },
+      {
+        "step": "\u2202F/\u2202\u03b2 = -\u27e8H\u27e9_\u03b2 exhibits discontinuous behavior",
+        "issue": "Non-analyticity of F does not imply discontinuity of its derivative. F could be C^\u221e but not analytic.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Specify the type of non-analyticity (e.g., discontinuous nth derivative)"
+      },
+      {
+        "step": "Correlation length divergence",
+        "issue": "Admits this requires 'full machinery of critical scaling theory' but then uses it as established fact",
+        "severity": "major",
+        "fixable": false,
+        "suggested_fix": "Either prove it or don't use it"
+      },
+      {
+        "step": "Order parameter definition",
+        "issue": "Defines m(\u03b2) = lim_{h\u21920} \u2202F/\u2202h|_{h=0} but F was defined as function of \u03b2 only, not (\u03b2,h)",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Define F(\u03b2,h) properly from the start"
+      },
+      {
+        "step": "Effective potential V_eff(m)",
+        "issue": "Introduces V_eff without definition or justification, admits connection requires 'additional mathematical machinery'",
+        "severity": "major",
+        "fixable": false,
+        "suggested_fix": "Remove or properly develop"
+      },
+      {
+        "step": "Application of cited theorems",
+        "issue": "Lists Yang-Lee, RG theory, Mermin-Wagner as if they prove the result, but doesn't show how they apply to this general setting",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Show explicit connections or remove"
+      }
+    ],
+    "hidden_assumptions": [
+      "Thermodynamic limit exists and commutes with differentiation operations",
+      "System has interactions that can produce phase transitions",
+      "Measure space (\u03a9, \u2131, \u03bc) has sufficient structure for thermodynamic limit",
+      "Gibbs measure is well-defined for all \u03b2",
+      "Correlation functions \u27e8\u03c3(0)\u03c3(x)\u27e9_\u03b2 exist and decay appropriately",
+      "External field h can be introduced consistently",
+      "Free energy remains convex after introducing h"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes phase transitions exist (by claiming there exist \u03b2_c) to prove that phase transitions exist. It also uses properties of phase transitions (correlation length divergence, order parameter discontinuity) to characterize phase transitions.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to show phase transitions exist for any measure space with a Hamiltonian, but actually shows nothing. Even if fixed, it would at best apply to specific classes of interacting systems in appropriate limits.",
+    "citation_issues": [
+      "Weierstrass approximation theorem is about polynomial approximation, not relevant to analyticity loss in limits",
+      "Yang-Lee Circle Theorem applies to specific lattice models with fugacity, not general measure spaces",
+      "Mermin-Wagner Theorem is a no-go theorem, doesn't establish existence of transitions",
+      "RG theory mentioned but not used",
+      "Lattice QCD listed in dependencies but never referenced"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This is not a proof but a collection of physics folklore disguised as mathematics. The logical structure is fundamentally broken: it assumes its conclusion and makes unjustified leaps at every critical juncture. The same 'argument' could be used to prove phase transitions exist in non-interacting systems, which is false.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish a framework for phase transitions but fails to prove that critical values \u03b2_c actually exist or that they correspond to discontinuous behavior in thermal averages",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Existence of the thermodynamic limit for the specific system",
+      "Convergence of the infinite volume limit for correlation functions",
+      "Existence of critical points \u03b2_c",
+      "Validity of the order parameter definition in the infinite volume limit",
+      "Measurability of the correlation length function",
+      "Existence of effective potential V_eff(m)",
+      "Regularity conditions on H for applying H\u00f6lder's inequality",
+      "Boundedness conditions for correlation functions"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "1",
+        "issue": "H\u00f6lder's inequality does not directly imply convexity of F(\u03b2) - this requires Jensen's inequality and log-convexity of the partition function"
+      },
+      {
+        "step": "3",
+        "issue": "The Weierstrass example is irrelevant - it shows uniform limits of analytic functions can be non-analytic, but doesn't establish that the thermodynamic limit creates non-analyticities"
+      },
+      {
+        "step": "4",
+        "issue": "Non-analyticity of F does not automatically imply discontinuity of \u2202F/\u2202\u03b2 - non-analytic functions can have continuous derivatives"
+      },
+      {
+        "step": "5",
+        "issue": "Marked as gap by authors - correlation length divergence is assumed, not proven"
+      },
+      {
+        "step": "6",
+        "issue": "Marked as gap by authors - connection between correlation length and collective behavior is assumed"
+      },
+      {
+        "step": "7",
+        "issue": "The order parameter definition requires taking h\u21920 limit before the thermodynamic limit, but the order of limits is not justified"
+      },
+      {
+        "step": "8",
+        "issue": "Marked as gap by authors - effective field theory connection is not rigorously established"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No proof that critical points \u03b2_c actually exist",
+      "No rigorous treatment of the thermodynamic limit",
+      "Multiple acknowledged gaps in steps 5, 6, and 8",
+      "No proof that non-analyticities lead to discontinuous thermal averages",
+      "Missing analysis of when and how the infinite volume limit exists",
+      "No justification for the order of limits in the order parameter definition"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims F(\u03b2) is convex in \u03b2, but this contradicts standard thermodynamics where free energy F = -kT ln Z should be concave in temperature T (or convex in \u03b2 = 1/kT). The proof provides no justification for this fundamental claim.",
+      "The proof claims \u2202F/\u2202\u03b2 = -\u27e8H\u27e9_\u03b2 exhibits discontinuity at phase transitions, but \u2202F/\u2202\u03b2 = (1/\u03b2\u00b2)(F - \u27e8H\u27e9_\u03b2), so this would require F itself to be discontinuous, contradicting the standard result that free energy is continuous across phase transitions.",
+      "The correlation length definition \u03be(\u03b2) = lim_{|x|\u2192\u221e} |x|/(-log|\u27e8\u03c3(0)\u03c3(x)\u27e9_\u03b2|) is mathematically nonsensical - it involves a limit as |x|\u2192\u221e of a function that grows without bound, and assumes specific spin variables \u03c3 not defined in the general measure space framework."
+    ],
+    "assumption_conflicts": [
+      "Assumes quantum effects can be incorporated through 'appropriate choice of \u03bc and H' without specifying how this relates to the classical measure space framework, conflicting with proof [06d6ace265c2] which requires explicit Hilbert space structure for quantum systems.",
+      "Claims thermodynamic limit exists without proving convergence conditions, while proof [1050c80b4013] requires specific interaction potentials and equilibrium conditions for phase transitions.",
+      "Assumes Gibbs measure without establishing existence or uniqueness conditions that would be required for the claimed phase transition behavior."
+    ],
+    "beneficial_connections": [
+      "Connects to proof [1318ecd2c25c] on phase transitions and symmetry breaking through the order parameter formalism, though the mathematical rigor is insufficient.",
+      "Relates to proof [14e1952bf633] on statistical mechanics foundations through the measure-theoretic framework, but lacks the proper mathematical development.",
+      "Could potentially connect to proof [087da119976b] on symmetry breaking if the symmetry group structure were properly defined."
+    ],
+    "consistency_score": 0.2,
+    "notes": "This proof contains fundamental mathematical errors and lacks rigor. The convexity claim for free energy is incorrect, the correlation length definition is meaningless, and key thermodynamic relationships are misrepresented. The measure-theoretic framework is underdeveloped and the connection between finite and infinite systems is not properly established. The proof reads more like a collection of physics folklore than a rigorous mathematical argument."
+  },
+  "confidence_score": 0.23,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "Rigorous mathematical framework connecting microscopic Hamiltonians to emergent collective phenomena requires: (1) Controlled thermodynamic limit for strongly interacting systems, (2) Non-perturbative methods for quantum field theories at finite temperature, (3) Mathematical theory of emergence that bridges scales rigorously",
+  "limitations": [
+    "Step 5: Critical scaling theory lacks complete mathematical rigor for general interacting systems",
+    "Step 6: Connection between diverging correlation length and collective behavior is phenomenological",
+    "Step 8: Effective field theory emergence from microscopic theory not fully rigorous",
+    "Quantum-to-classical correspondence in thermal systems not addressed",
+    "Non-equilibrium phase transitions require different mathematical framework",
+    "Proof assumes equilibrium statistical mechanics framework",
+    "Does not cover quantum phase transitions at T=0",
+    "Requires thermodynamic limit which may not exist for all systems",
+    "Cannot handle systems with long-range interactions rigorously",
+    "Does not address dynamical aspects of phase transitions"
+  ],
+  "source_convergence": {
+    "structural_claim": "Physical systems exhibit phase transitions where collective behavior emerges from microscopic interactions, fundamentally altering the system's properties and creating new states of matter",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Quark-Gluon Plasma Discovery",
+        "domain_id": "field_b",
+        "domain_name": "Nuclear Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Nuclear matter undergoes a phase transition at ~170 MeV to a deconfined state with fundamentally different properties"
+      },
+      {
+        "result_id": "",
+        "result_name": "Inflation Theory",
+        "domain_id": "field_a",
+        "domain_name": "General Relativity and Cosmology",
+        "link_type": "direct",
+        "structural_conclusion": "The universe underwent a phase transition driven by a scalar field that fundamentally altered spacetime's expansion properties"
+      },
+      {
+        "result_id": "",
+        "result_name": "Nuclear Pasta Phases",
+        "domain_id": "field_b",
+        "domain_name": "Nuclear Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Nuclear matter forms complex non-spherical structures at critical densities due to competing length scales"
+      }
+    ],
+    "domains": [
+      "general_relativity",
+      "nuclear_physics"
+    ],
+    "domain_names": [
+      "General Relativity and Cosmology",
+      "Nuclear Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.21419999999999997,
+      "independence": 0.85,
+      "adversarial": 0.09,
+      "reproducibility": 0.5249999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.47351,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:52:31.274351+00:00",
+    "id": "94ed6cc962e2"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.29529
+  }
+}

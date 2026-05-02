@@ -1,0 +1,15 @@
+{
+  "proof_id": "7f06bbabf602",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous category-theoretic framework connecting topological invariants to dynamical constraints across different physical domains. Specifically: (1) A functor from the category of topological spaces with dynamics to a category of constrained observables, (2) A stability theory for topological invariants under perturbations in the space of flows, (3) A unified treatment of 'robustness' that applies to both quantum correlations and acoustic edge modes.",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

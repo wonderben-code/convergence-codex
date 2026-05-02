@@ -1,0 +1,355 @@
+{
+  "id": "c710b36c28a3",
+  "convergence_id": "7073c927133c",
+  "timestamp": "2026-05-02T13:27:05.525441+00:00",
+  "proposition": "Let S be a classical symmetry of a field theory action S[\u03c6]. Upon quantization via path integral Z = \u222bD\u03c6 exp(iS[\u03c6]/\u210f), if the measure D\u03c6 is not invariant under S, then: (1) The symmetry S is anomalous with anomaly coefficient A \u2260 0, and (2) Consistency of the quantum theory requires constraints on the field content and coupling constants such that all gauge anomalies cancel.",
+  "proposition_natural": "Quantum effects necessarily modify classical symmetries through anomalies that constrain consistent theories",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Differential geometry",
+    "Algebraic structures",
+    "Functional analysis"
+  ],
+  "apparatus_justification": "Quantum field theory anomalies arise from the failure of classical symmetries to survive quantization, fundamentally a geometric phenomenon involving connections and curvature on principal bundles. Algebraic structures capture the symmetry groups and their representations, while functional analysis provides the operator framework for quantum observables and their commutation relations.",
+  "proof_natural": "**Proposition.** Let $S$ be a classical symmetry of a field theory action $S[\\phi]$. Upon quantization via path integral $Z = \\int D\\phi \\exp(iS[\\phi]/\\hbar)$, if the measure $D\\phi$ is not invariant under $S$, then: (1) The symmetry $S$ is anomalous with anomaly coefficient $A \\neq 0$, and (2) Consistency of the quantum theory requires constraints on the field content and coupling constants such that all gauge anomalies cancel.\n\n**Proof.** We assume the classical action $S[\\phi]$ admits a continuous symmetry group $G$, with the path integral measure $D\\phi$ well-defined. Let the theory contain chiral fermions coupled to gauge fields on a spacetime manifold $M$ admitting a spin structure, where the gauge group is compact and semi-simple. We further assume all fields have finite-dimensional representations under $G$, and the effective action $\\Gamma[\\phi] = -i\\hbar \\ln Z[J]$ exists and is differentiable.\n\nConsider an infinitesimal symmetry transformation $\\delta\\phi = \\varepsilon T^a \\phi$. By definition of a classical symmetry, we have $\\delta S = 0$. However, under this transformation, the path integral measure transforms as $D\\phi \\to D\\phi' = J[\\phi]D\\phi$, where $J[\\phi]$ is the Jacobian of the transformation.\n\nFor chiral transformations, Fujikawa's method yields $J[\\phi] = \\exp(i\\varepsilon\\int d^4x A(x))$, where $A(x)$ is the anomaly density. This non-trivial Jacobian modifies the Ward identity, giving $\\partial_\\mu\\langle j^\\mu_a\\rangle = A_a \\neq 0$, establishing that the symmetry is anomalous.\n\nUsing heat kernel regularization, we can explicitly compute the anomaly for gauge symmetries:\n$$A_a = \\frac{1}{16\\pi^2}\\text{Tr}[T_a\\{T_b,T_c\\}]\\varepsilon^{\\mu\\nu\\rho\\sigma}F^b_{\\mu\\nu}F^c_{\\rho\\sigma}$$\n\nThis result generalizes the Adler-Bell-Jackiw anomaly for triangle diagrams.\n\nFor the quantum theory to be consistent, gauge invariance of the path integral requires $\\sum_i A^i_a = 0$ for all generators $T_a$, where the sum runs over all fermion species. This imposes the algebraic constraints:\n$$\\sum_i \\text{Tr}[T_a\\{T_b,T_c\\}]_i = 0$$\n\nThese constraints, which must hold for all combinations of generators, severely restrict the possible fermion representations and their multiplicities. The anomalies must also satisfy the Wess-Zumino consistency conditions $\\delta_a A_b - \\delta_b A_a = f^c_{ab}A_c$, ensuring the integrability of the anomalous Ward identities.\n\n[Note: The regularization scheme is assumed to preserve gauge invariance where possible, though the precise implementation details depend on the specific theory under consideration.]\n\nTherefore, we have shown that non-invariance of the path integral measure under a classical symmetry leads to quantum anomalies, and consistency of gauge theories requires precise cancellation conditions that constrain the theory's field content. This completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.Geometry.Manifold.SmoothManifoldWithCorners\nimport Mathlib.Geometry.Manifold.VectorBundle\nimport Mathlib.Algebra.Lie.Basic\nimport Mathlib.MeasureTheory.Integral.Bochner\nimport Mathlib.Analysis.NormedSpace.Exponential\nimport Mathlib.Topology.Algebra.InfiniteSum\n\n/-- A field theory action functional -/\nstructure FieldTheoryAction where\n  -- sorry: Path integral formulation not in Mathlib\n  action : sorry\n\n/-- A classical symmetry transformation -/\nstructure ClassicalSymmetry where\n  -- sorry: Field transformations not formalized\n  transform : sorry\n  preserves_action : sorry\n\n/-- Path integral measure -/\nstructure PathIntegralMeasure where\n  -- sorry: Functional measures not in Mathlib\n  measure : sorry\n\n/-- Anomaly coefficient for a symmetry -/\nstructure AnomalyCoefficient where\n  -- sorry: Anomaly theory not formalized\n  coefficient : \u211d\n  nonzero : coefficient \u2260 0\n\n/-- Main theorem: Non-invariant measure implies anomalous symmetry with cancellation constraints -/\ntheorem anomalous_symmetry_requires_cancellation\n  (S : FieldTheoryAction)\n  (sym : ClassicalSymmetry)\n  (D\u03c6 : PathIntegralMeasure)\n  (h_not_invariant : \u00ac sorry) -- sorry: Measure invariance not formalizable\n  : \u2203 (A : AnomalyCoefficient),\n    (sorry : Type) \u2227 -- sorry: Consistency constraints type\n    (sorry : Type) := by\n  -- Step 1: Classical action invariance\n  have h_classical : sorry := sorry -- sorry: \u03b4S = 0 under symmetry\n  \n  -- Step 2: Measure transformation with Jacobian\n  have h_jacobian : \u2203 J, sorry := sorry -- sorry: D\u03c6' = J[\u03c6]D\u03c6\n  \n  -- Step 3: Fujikawa's method for chiral transformations\n  have h_fujikawa : sorry := sorry -- sorry: J[\u03c6] = exp(i\u03b5\u222bA(x))\n  \n  -- Step 4: Anomalous Ward identity\n  have h_ward : sorry := sorry -- sorry: \u2202_\u03bc\u27e8j^\u03bc_a\u27e9 = A_a \u2260 0\n  \n  -- Step 5: Explicit anomaly form for gauge symmetries\n  have h_gauge_anomaly : sorry := sorry -- sorry: Heat kernel computation\n  \n  -- Step 6: Gauge invariance requirement\n  have h_gauge_inv : sorry := sorry -- sorry: \u2211_i A^i_a = 0\n  \n  -- Step 7: Algebraic constraints from cancellation\n  have h_constraints : sorry := sorry -- sorry: Trace constraints\n  \n  -- Step 8: Representation restrictions\n  have h_reps : sorry := sorry -- sorry: Fermion representation constraints\n  \n  sorry -- sorry: Complete proof requires QFT framework",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Under infinitesimal symmetry transformation \u03b4\u03c6 = \u03b5T^a \u03c6, the classical action transforms as \u03b4S = 0",
+      "justification": "Definition of classical symmetry",
+      "dependencies": []
+    },
+    {
+      "step_number": 2,
+      "statement": "The path integral measure transforms as D\u03c6 \u2192 D\u03c6' = J[\u03c6]D\u03c6 where J[\u03c6] is the Jacobian",
+      "justification": "Change of variables in functional integral",
+      "dependencies": [
+        "Step 1"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "For chiral transformations, J[\u03c6] = exp(i\u03b5\u222bd^4x A(x)) where A(x) is the anomaly density",
+      "justification": "Fujikawa's method for computing Jacobians",
+      "dependencies": [
+        "Step 2",
+        "Fujikawa 1979"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The Ward identity becomes \u2202_\u03bc\u27e8j^\u03bc_a\u27e9 = A_a \u2260 0",
+      "justification": "Path integral derivation of Ward identities with non-invariant measure",
+      "dependencies": [
+        "Step 3"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "For gauge symmetries, A_a = (1/16\u03c0\u00b2)Tr[T_a{T_b,T_c}]\u03b5^{\u03bc\u03bd\u03c1\u03c3}F^b_{\u03bc\u03bd}F^c_{\u03c1\u03c3}",
+      "justification": "Explicit computation using heat kernel regularization",
+      "dependencies": [
+        "Step 4",
+        "Alvarez-Gaum\u00e9 & Ginsparg 1984"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Gauge invariance requires \u2211_i A^i_a = 0 for all generators T_a",
+      "justification": "Consistency of gauge-fixed path integral",
+      "dependencies": [
+        "Step 5",
+        "Wess-Zumino consistency conditions"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "This imposes algebraic constraints: \u2211_i Tr[T_a{T_b,T_c}]_i = 0",
+      "justification": "Direct consequence of anomaly cancellation requirement",
+      "dependencies": [
+        "Step 6"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "These constraints restrict possible fermion representations and multiplicities",
+      "justification": "Representation theory of Lie algebras",
+      "dependencies": [
+        "Step 7"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Fujikawa Method",
+      "authors": "K. Fujikawa",
+      "year": "1979",
+      "field": "Quantum Field Theory",
+      "statement": "The Jacobian of fermionic measure under chiral transformation equals exp(i\u222bd^4x A(x)) where A(x) is computable via heat kernel",
+      "usage": "Essential for computing anomalies from path integral measure"
+    },
+    {
+      "name": "Heat Kernel Regularization",
+      "authors": "L. Alvarez-Gaum\u00e9, P. Ginsparg",
+      "year": "1984",
+      "field": "Quantum Field Theory",
+      "statement": "Anomalies can be computed as Tr[\u03b3\u2085 exp(-D\u00b2/M\u00b2)] in the limit M\u2192\u221e",
+      "usage": "Provides explicit formula for anomaly coefficients"
+    },
+    {
+      "name": "Wess-Zumino Consistency Conditions",
+      "authors": "J. Wess, B. Zumino",
+      "year": "1971",
+      "field": "Quantum Field Theory",
+      "statement": "Anomalies must satisfy integrability conditions \u03b4_aA_b - \u03b4_bA_a = f^c_{ab}A_c",
+      "usage": "Constrains possible anomaly structures"
+    },
+    {
+      "name": "Adler-Bell-Jackiw Anomaly",
+      "authors": "S. Adler, J. Bell, R. Jackiw",
+      "year": "1969",
+      "field": "Quantum Field Theory",
+      "statement": "Triangle diagram gives \u2202_\u03bcj^\u03bc_5 = (e\u00b2/16\u03c0\u00b2)\u03b5^{\u03bc\u03bd\u03c1\u03c3}F_{\u03bc\u03bd}F_{\u03c1\u03c3}",
+      "usage": "Prototype calculation showing quantum breaking of classical symmetry"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The classical action S[\u03c6] admits a continuous symmetry group G",
+    "The path integral measure D\u03c6 exists and is well-defined",
+    "The regularization scheme preserves gauge invariance where possible",
+    "The theory contains chiral fermions coupled to gauge fields",
+    "The spacetime manifold M admits a spin structure",
+    "The gauge group is compact and semi-simple",
+    "All fields have finite-dimensional representations under G",
+    "The effective action \u0393[\u03c6] = -i\u210f ln Z[J] exists and is differentiable"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "Consider an infinitesimal symmetry transformation \u03b4\u03c6 = \u03b5 T^a \u03c6",
+        "issue": "The proof assumes all fields transform linearly under symmetry, but gauge fields transform with inhomogeneous terms \u03b4A_\u03bc = D_\u03bc\u03b1. The notation conflates matter fields and gauge fields.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Separate treatment of matter fields and gauge fields, properly accounting for gauge transformation laws"
+      },
+      {
+        "step": "For chiral transformations, Fujikawa's method yields J[\u03c6] = exp(i\u03b5\u222bd^4x A(x))",
+        "issue": "This jumps from general symmetry S to specifically chiral transformations without justification. The proposition claims to be about general classical symmetries, not just chiral ones.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Restrict the proposition to chiral symmetries or prove the general case"
+      },
+      {
+        "step": "Using heat kernel regularization, we can explicitly compute the anomaly for gauge symmetries",
+        "issue": "The proof conflates gauge anomalies with general anomalies. The formula given is specifically for non-abelian gauge anomalies, not general symmetry anomalies.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Clarify which type of anomaly is being computed and ensure consistency with the proposition"
+      },
+      {
+        "step": "For the quantum theory to be consistent, gauge invariance of the path integral requires \u03a3_i A^i_a = 0",
+        "issue": "This assumes the symmetry S is a gauge symmetry, but the proposition starts with any classical symmetry. Global symmetries can be anomalous without threatening consistency.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "The entire second part of the proposition needs to be restricted to gauge symmetries only"
+      },
+      {
+        "step": "The anomalies must also satisfy the Wess-Zumino consistency conditions",
+        "issue": "These conditions are stated but never used in the proof. Their relevance to the conclusion is unclear.",
+        "severity": "minor",
+        "fixable": true,
+        "suggested_fix": "Either use the consistency conditions in the argument or remove them"
+      }
+    ],
+    "hidden_assumptions": [
+      "The path integral measure can be meaningfully defined for all field theories under consideration",
+      "The Jacobian J[\u03c6] is well-defined and finite",
+      "The theory is in 4 spacetime dimensions (used in anomaly formula without stating)",
+      "The regularization scheme exists that preserves all non-anomalous symmetries",
+      "Chiral fermions are the only source of anomalies",
+      "The effective action \u0393[\u03c6] has a well-defined functional derivative"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes gauge invariance must be preserved (in stating consistency requires anomaly cancellation) while trying to prove that non-invariance of the measure leads to constraints. It presupposes what needs to be demonstrated.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof actually shows that chiral gauge anomalies in 4D require cancellation for consistency. It claims to prove this for any classical symmetry S and any non-invariant measure, which is far broader than what's demonstrated.",
+    "citation_issues": [
+      "Fujikawa's method is cited for general transformations but only applies to fermionic path integrals with chiral transformations",
+      "The heat kernel regularization result is stated without proper context - it specifically applies to chiral fermions in even dimensions",
+      "The Adler-Bell-Jackiw result is for QED triangle diagrams, not general non-abelian gauge theories as implied"
+    ],
+    "structural_soundness": 0.2,
+    "overall_assessment": "The proof conflates different types of symmetries (general vs gauge vs chiral) and makes unjustified leaps between them. The argument essentially only addresses chiral gauge anomalies in 4D but claims to prove a much more general result about arbitrary classical symmetries and measures.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof establishes conditions for anomalous symmetries and anomaly cancellation, but fails to prove that non-invariant measures necessarily imply anomalous symmetries or that consistency requires anomaly cancellation constraints.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The symmetry transformation is implemented unitarily in the quantum theory",
+      "The regularization procedure is well-defined and finite",
+      "The path integral converges",
+      "The anomaly coefficient is regularization-independent",
+      "The theory is renormalizable",
+      "Fujikawa's method applies to the specific field content",
+      "The heat kernel expansion converges",
+      "The gauge-fixing procedure is consistent",
+      "The effective action has the required functional properties"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "3",
+        "issue": "Claims Fujikawa's method applies without verifying the specific field content satisfies the required conditions for chiral fermions"
+      },
+      {
+        "step": "4",
+        "issue": "The derivation of Ward identities from path integrals requires additional assumptions about operator ordering and regularization that are not justified"
+      },
+      {
+        "step": "5",
+        "issue": "The explicit form assumes specific field content and gauge group structure without proving this is the general case"
+      },
+      {
+        "step": "6",
+        "issue": "The claim that gauge invariance requires anomaly cancellation is asserted without proof - this is a major result that needs demonstration"
+      },
+      {
+        "step": "7",
+        "issue": "The algebraic constraint form assumes the anomaly has the specific structure from step 5, which was not proven generally"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No proof that non-invariant measure necessarily implies non-zero anomaly",
+      "No demonstration that consistency actually requires anomaly cancellation",
+      "Missing analysis of when Fujikawa's method is applicable",
+      "No proof of the specific anomaly formula claimed",
+      "No consideration of non-chiral or non-gauge symmetries",
+      "Missing discussion of regularization dependence",
+      "No proof that the constraints are sufficient for consistency"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims gauge anomalies must cancel for consistency, but existing proof [08b6405556dd] states symmetry principles dictate interaction structure without mentioning anomaly cancellation requirements",
+      "The new proof assumes chiral fermions necessarily create anomalies, but existing proof [087da119976b] shows systems can spontaneously break symmetry without pathological consequences",
+      "The measure transformation J[\u03c6] = exp(i\u03b5\u222bd^4x A(x)) assumes specific 4D spacetime structure, conflicting with the general manifold assumptions in [139ee0499c9e] and [1638f9ba7ae7]"
+    ],
+    "assumption_conflicts": [
+      "Assumes compact semi-simple gauge groups, but [102677deecdd] and [18b9ea79f26d] emphasize relational structure over intrinsic properties like compactness",
+      "Requires finite-dimensional representations under G, conflicting with the infinite-dimensional Hilbert spaces assumed in [19c10dc86a65] and [06d6ace265c2]",
+      "Assumes well-defined path integral measure D\u03c6, but [06879fd9ae87] shows physical properties are contextual and measurement-dependent, questioning the existence of universal measures"
+    ],
+    "beneficial_connections": [
+      "Connects to [087da119976b] through symmetry breaking mechanisms, though with different conclusions about pathological behavior",
+      "Relates to [08b6405556dd] in emphasizing symmetry constraints on dynamics, but adds quantum corrections",
+      "Extends [1318ecd2c25c] by providing quantum field theory context for symmetry-breaking phase transitions"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof makes overly restrictive assumptions about gauge groups and representations that conflict with categorical approaches in existing proofs. The anomaly cancellation requirement is presented as universal but lacks justification for why this constraint is fundamental rather than theory-specific. The 4D spacetime assumption is unnecessarily limiting given the general manifold treatments in the corpus."
+  },
+  "confidence_score": 0.27,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "Rigorous mathematical foundation for: (1) Path integral measures on infinite-dimensional spaces, (2) Well-defined regularization procedures that preserve all necessary properties, (3) Convergence proofs for functional determinants",
+  "limitations": [
+    "Path integral measure D\u03c6 not rigorously defined for interacting theories",
+    "Regularization dependence not fully controlled mathematically",
+    "Fujikawa Jacobian calculation assumes specific regularization",
+    "Heat kernel expansion convergence not proven for all cases",
+    "Proof assumes perturbative regime",
+    "Non-perturbative anomalies not covered",
+    "Gravitational anomalies require additional machinery",
+    "Global anomalies need different mathematical tools"
+  ],
+  "source_convergence": {
+    "structural_claim": "Quantum effects necessarily modify classical symmetries through anomalies that constrain consistent theories",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Adler-Bell-Jackiw Anomaly",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Field Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Classical symmetries broken by quantum effects constrain possible matter content"
+      },
+      {
+        "result_id": "",
+        "result_name": "Chiral Anomaly",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Field Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Axial current conservation necessarily violated by quantum effects in gauge theories"
+      },
+      {
+        "result_id": "",
+        "result_name": "Hawking Radiation",
+        "domain_id": "field_b",
+        "domain_name": "General Relativity and Cosmology",
+        "link_type": "direct",
+        "structural_conclusion": "Quantum effects near horizons necessarily lead to particle creation and black hole evaporation"
+      },
+      {
+        "result_id": "",
+        "result_name": "Black Hole Thermodynamics",
+        "domain_id": "field_b",
+        "domain_name": "General Relativity and Cosmology",
+        "link_type": "direct",
+        "structural_conclusion": "Quantum considerations force black holes to have entropy and temperature"
+      }
+    ],
+    "domains": [
+      "quantum_field_theory",
+      "general_relativity"
+    ],
+    "domain_names": [
+      "Quantum Field Theory",
+      "General Relativity and Cosmology"
+    ],
+    "ea_scores": {
+      "strength": 0.2856,
+      "independence": 0.7,
+      "adversarial": 0.06,
+      "reproducibility": 0.6299999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.46718000000000004,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:24:05.980187+00:00",
+    "id": "7073c927133c"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.275445
+  }
+}

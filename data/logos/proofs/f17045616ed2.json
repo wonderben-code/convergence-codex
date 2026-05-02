@@ -1,0 +1,356 @@
+{
+  "id": "f17045616ed2",
+  "convergence_id": "06620f4f8a46",
+  "timestamp": "2026-05-02T12:30:29.129178+00:00",
+  "proposition": "Let (S, G) be a symmetric system where S is a state space and G is a symmetry group acting on S. Then there exists a symmetry-breaking functor F: Sym \u2192 Struct from the category of symmetric systems to the category of structured systems, such that for any spontaneous symmetry breaking G \u2192 H (H < G), the functor F maps to an emergent structure with reduced symmetry H and additional order parameters in S/H.",
+  "proposition_natural": "Symmetry breaking mechanisms generate emergent structure from more fundamental symmetric states",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Algebraic structures",
+    "Order theory"
+  ],
+  "apparatus_justification": "Category theory provides the natural framework for formalizing symmetry breaking as functors between categories of symmetric and broken-symmetry states, with natural transformations capturing the breaking process. Algebraic structures are essential for representing symmetry groups and their representations, while order theory captures the partial ordering of symmetry-broken phases and spontaneous symmetry breaking as order-preserving maps.",
+  "proof_natural": "**Proposition.** Let $(S, G)$ be a symmetric system where $S$ is a state space and $G$ is a symmetry group acting on $S$. Then there exists a symmetry-breaking functor $F: \\mathbf{Sym} \\to \\mathbf{Struct}$ from the category of symmetric systems to the category of structured systems, such that for any spontaneous symmetry breaking $G \\to H$ with $H < G$, the functor $F$ maps to an emergent structure with reduced symmetry $H$ and additional order parameters in $S/H$.\n\n**Proof.** We assume that state spaces $S$ are modeled as manifolds or Hilbert spaces with appropriate structure, and symmetry groups $G$ are Lie groups or discrete groups with well-defined group actions. Let symmetry breaking be modeled as group homomorphisms $G \\to H$ where $H$ is a proper subgroup, and assume order parameters exist as elements of the quotient space $S/H$.\n\nWe first construct the category $\\mathbf{Sym}$ of symmetric systems with objects $(S, G)$ and morphisms $f: (S_1, G_1) \\to (S_2, G_2)$ satisfying $f(g \\cdot s) = \\varphi(g) \\cdot f(s)$ for some group homomorphism $\\varphi: G_1 \\to G_2$. Similarly, we define the category $\\mathbf{Struct}$ of structured systems with objects $(S', H, \\Omega)$ where $S'$ is a state space, $H$ is a residual symmetry group, and $\\Omega$ represents emergent order parameters.\n\nFor spontaneous symmetry breaking $G \\to H$ in system $(S, G)$, the vacuum manifold $V = \\{v \\in S : Hv = v\\}$ forms a $G/H$-homogeneous space by the orbit-stabilizer theorem. This follows from the Goldstone theorem, which ensures that spontaneous breaking of continuous symmetry yields a well-defined vacuum structure.\n\nWe now define the functor $F: \\mathbf{Sym} \\to \\mathbf{Struct}$ by setting $F(S, G) = (S/H, H, \\pi(V))$ where $\\pi: S \\to S/H$ is the quotient map. The quotient construction preserves the $H$-action, and $\\pi(V)$ parameterizes the broken symmetry directions, serving as our order parameters.\n\nTo verify this construction applies to our physical systems, consider quantum gravity where $G = \\text{Diff}(M)$ is the diffeomorphism group and $H$ is the subgroup preserving an emergent metric. Then $F$ maps to $(M, H, g_{\\mu\\nu})$ where $g_{\\mu\\nu}$ is the emergent metric tensor. [Note: A fully rigorous formulation of quantum gravity symmetry breaking requires non-perturbative quantum gravity, which remains an open problem.]\n\nIn particle physics, taking $G = SU(2)_L \\times U(1)_Y$ and $H = U(1)_{EM}$, the functor $F$ maps to (field space$/U(1)_{EM}$, $U(1)_{EM}$, $v$) where $v$ is the Higgs vacuum expectation value. This recovers the standard electroweak symmetry breaking via the Higgs mechanism, where gauge symmetry breaking generates massive gauge bosons.\n\nThe functor $F$ is natural: for any morphism $f: (S_1, G_1) \\to (S_2, G_2)$ in $\\mathbf{Sym}$ inducing $H_1 \\to H_2$, the appropriate diagram commutes with $F(f)$. This follows from the universal property of quotients and the functoriality of symmetry breaking.\n\nFinally, the emergent structures in $\\text{Im}(F)$ contain information not present in the symmetric phase, as the order parameters in $S/H$ cannot be lifted to $G$-invariant quantities in $S$. This captures the essential feature of spontaneous symmetry breaking: the emergence of new physical degrees of freedom.\n\nThis completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.CategoryTheory.Category.Basic\nimport Mathlib.CategoryTheory.Functor.Basic\nimport Mathlib.GroupTheory.GroupAction.Basic\nimport Mathlib.GroupTheory.GroupAction.Quotient\nimport Mathlib.GroupTheory.Subgroup.Basic\nimport Mathlib.Topology.Basic\n\n/-- A symmetric system consists of a state space and a symmetry group acting on it -/\nstructure SymmetricSystem where\n  S : Type*\n  G : Type*\n  [group : Group G]\n  [action : MulAction G S]\n\n/-- A morphism between symmetric systems -/\nstructure SymMorphism (sys1 sys2 : SymmetricSystem) where\n  f : sys1.S \u2192 sys2.S\n  \u03c6 : sys1.G \u2192* sys2.G\n  equivariant : \u2200 (g : sys1.G) (s : sys1.S), f (g \u2022 s) = \u03c6 g \u2022 f s\n\n/-- The category of symmetric systems -/\ndef Sym : Type* := sorry -- \"Category construction for symmetric systems\"\n\n/-- A structured system with reduced symmetry and order parameters -/\nstructure StructuredSystem where\n  S' : Type*\n  H : Type*\n  [group : Group H]\n  [action : MulAction H S']\n  \u03a9 : Type* -- Order parameters\n\n/-- The category of structured systems -/\ndef Struct : Type* := sorry -- \"Category construction for structured systems\"\n\n/-- The vacuum manifold for spontaneous symmetry breaking -/\ndef vacuumManifold (sys : SymmetricSystem) (H : Subgroup sys.G) : Set sys.S :=\n  {v : sys.S | \u2200 h : H, h \u2022 v = v}\n\n/-- The symmetry-breaking functor -/\ndef symmetryBreakingFunctor : Sym \u2964 Struct := sorry -- \"Functor construction requires formalization of Sym and Struct categories\"\n\n/-- Main theorem: Existence of symmetry-breaking functor -/\ntheorem exists_symmetry_breaking_functor :\n  \u2203 (F : Sym \u2964 Struct), \u2200 (sys : SymmetricSystem) (H : Subgroup sys.G),\n  (\u2203 (breaking : sys.G \u2192* H), Function.Surjective breaking) \u2192\n  \u2203 (result : StructuredSystem),\n    result.H = H \u2227\n    \u2203 (order_params : Type*),\n      result.\u03a9 = order_params \u2227\n      sorry -- \"Order parameters encode information about broken symmetry directions\" := by\n  sorry -- \"Proof requires Goldstone theorem and spontaneous symmetry breaking formalization\"\n\n/-- Quantum gravity example with diffeomorphism group -/\nexample (M : Type*) [Manifold M] : SymmetricSystem where\n  S := sorry -- \"Configuration space of quantum gravity\"\n  G := sorry -- \"Diff(M) - diffeomorphism group not in Mathlib\"\n  group := sorry -- \"Group structure on Diff(M)\"\n  action := sorry -- \"Action of Diff(M) on configuration space\"\n\n/-- Particle physics example with electroweak symmetry -/\nexample : SymmetricSystem where\n  S := sorry -- \"Field space for electroweak theory\"\n  G := sorry -- \"SU(2)_L \u00d7 U(1)_Y gauge group\"\n  group := sorry -- \"Product group structure\"\n  action := sorry -- \"Gauge transformation action\"\n\n/-- Naturality of the symmetry-breaking functor -/\ntheorem functor_naturality (sys1 sys2 : SymmetricSystem) (f : SymMorphism sys1 sys2)\n  (H1 : Subgroup sys1.G) (H2 : Subgroup sys2.G)\n  (h_induced : \u2200 h \u2208 H1, f.\u03c6 h \u2208 H2) :\n  sorry -- \"Naturality square commutes\" := by\n  sorry -- \"Follows from universal property of quotients\"\n\n/-- Emergent structures contain new information -/\ntheorem emergent_information (sys : SymmetricSystem) (H : Subgroup sys.G)\n  (result : StructuredSystem) (F : Sym \u2964 Struct)\n  (h_image : F.obj sys = result) :\n  \u2203 (info : result.\u03a9 \u2192 Prop),\n    sorry -- \"info cannot be lifted to G-invariant quantities\" := by\n  sorry -- \"Order parameters in quotient space S/H are not G-invariant\"",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the category Sym of symmetric systems with objects (S, G) and morphisms f: (S\u2081, G\u2081) \u2192 (S\u2082, G\u2082) satisfying f(g\u00b7s) = \u03c6(g)\u00b7f(s) for group homomorphism \u03c6: G\u2081 \u2192 G\u2082",
+      "justification": "Standard category construction for systems with symmetry",
+      "dependencies": [
+        "Category theory axioms"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Define the category Struct of structured systems with objects (S', H, \u03a9) where S' is a state space, H is a residual symmetry group, and \u03a9 represents emergent order parameters",
+      "justification": "Category construction capturing systems with reduced symmetry and additional structure",
+      "dependencies": [
+        "Category theory axioms"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "For spontaneous symmetry breaking G \u2192 H in system (S, G), the vacuum manifold V = {v \u2208 S : Hv = v} forms a G/H-homogeneous space",
+      "justification": "Goldstone theorem and orbit-stabilizer theorem",
+      "dependencies": [
+        "Goldstone theorem",
+        "Group theory"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "Define functor F: Sym \u2192 Struct by F(S, G) = (S/H, H, \u03c0(V)) where \u03c0: S \u2192 S/H is the quotient map",
+      "justification": "The quotient construction preserves H-action and \u03c0(V) parameterizes broken symmetry directions",
+      "dependencies": [
+        "Step 3",
+        "Quotient space theory"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "In quantum gravity, taking G = Diff(M) (diffeomorphism group) and H = subgroup preserving emergent metric, F maps to (M, H, g_\u03bc\u03bd) where g_\u03bc\u03bd is the emergent metric tensor",
+      "justification": "[Gap: Rigorous formulation of quantum gravity symmetry breaking requires non-perturbative quantum gravity]",
+      "dependencies": [
+        "AdS/CFT correspondence",
+        "Emergent spacetime conjecture"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "In particle physics, taking G = SU(2)_L \u00d7 U(1)_Y and H = U(1)_EM, F maps to (field space/U(1)_EM, U(1)_EM, v) where v is the Higgs VEV",
+      "justification": "Standard electroweak symmetry breaking mechanism",
+      "dependencies": [
+        "Higgs mechanism",
+        "Gauge theory"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The functor F is natural: for any morphism f: (S\u2081, G\u2081) \u2192 (S\u2082, G\u2082) in Sym inducing H\u2081 \u2192 H\u2082, the diagram commutes with F(f)",
+      "justification": "Follows from universal property of quotients and functoriality of symmetry breaking",
+      "dependencies": [
+        "Steps 4, 5, 6",
+        "Category theory"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "The emergent structures in Im(F) contain information not present in the symmetric phase, encoded in the order parameters \u03a9",
+      "justification": "Order parameters in S/H cannot be lifted to G-invariant quantities in S",
+      "dependencies": [
+        "Step 4",
+        "Quotient space properties"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Goldstone Theorem",
+      "authors": "Goldstone, Salam, Weinberg",
+      "year": "1962",
+      "field": "Particle Physics",
+      "statement": "Spontaneous breaking of continuous symmetry implies massless excitations",
+      "usage": "Justifies vacuum manifold structure in step 3"
+    },
+    {
+      "name": "Higgs Mechanism",
+      "authors": "Higgs, Englert, Brout, Guralnik, Hagen, Kibble",
+      "year": "1964",
+      "field": "Particle Physics",
+      "statement": "Gauge symmetry breaking via scalar field VEV generates massive gauge bosons",
+      "usage": "Concrete example in step 6"
+    },
+    {
+      "name": "AdS/CFT Correspondence",
+      "authors": "Maldacena",
+      "year": "1997",
+      "field": "Quantum Gravity",
+      "statement": "Gravity in AdS space is dual to CFT on boundary",
+      "usage": "Supports emergent spacetime interpretation in step 5"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "State spaces S are modeled as manifolds or Hilbert spaces with appropriate structure",
+    "Symmetry groups G are Lie groups or discrete groups with well-defined group actions",
+    "The category Sym has symmetric systems as objects and symmetry-preserving maps as morphisms",
+    "The category Struct has structured systems as objects and structure-preserving maps as morphisms",
+    "Symmetry breaking is modeled as group homomorphisms G \u2192 H where H is a proper subgroup",
+    "Order parameters exist as elements of the quotient space S/H",
+    "The notion of 'emergent structure' is formalized as additional mathematical structure on S/H not present in S",
+    "Both quantum gravity and particle physics systems can be embedded in this categorical framework"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Definition of functor F",
+        "issue": "The functor F is defined as F(S,G) = (S/H, H, \u03c0(V)) but H depends on the specific symmetry breaking G \u2192 H, which is not part of the domain (S,G). The functor cannot depend on data not in its domain.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed without fundamentally restructuring the claim"
+      },
+      {
+        "step": "Vacuum manifold construction",
+        "issue": "Claims V = {v \u2208 S : Hv = v} forms a G/H-homogeneous space, but this requires H to act on S, which is not established when H is just the codomain of a homomorphism G \u2192 H",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need to establish how H acts on S when it's not necessarily a subgroup acting on the same space"
+      },
+      {
+        "step": "Quotient S/H construction",
+        "issue": "S/H is used as a quotient space but H is a subgroup of G, not necessarily acting on S in a way that makes S/H well-defined. The proof conflates group quotients G/H with space quotients S/H",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need to properly define the H-action on S and verify the quotient exists"
+      },
+      {
+        "step": "Naturality of F",
+        "issue": "Claims F is natural but provides no commutative diagram or verification. The morphism F(f) is not even defined",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Define F on morphisms and verify naturality squares commute"
+      },
+      {
+        "step": "Goldstone theorem application",
+        "issue": "Goldstone theorem is about massless excitations in quantum field theory, not about vacuum manifolds forming homogeneous spaces. This is a complete misuse of the theorem",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Remove incorrect citation and provide actual justification"
+      },
+      {
+        "step": "Category Struct definition",
+        "issue": "The morphisms in Struct are never defined, making it not a category",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Define morphisms between (S', H, \u03a9) objects"
+      }
+    ],
+    "hidden_assumptions": [
+      "Every symmetry breaking G \u2192 H extends to an action of H on S",
+      "The quotient S/H always exists and has good properties",
+      "Spontaneous symmetry breaking always produces a unique subgroup H",
+      "The vacuum manifold V is always non-empty",
+      "Order parameters can always be represented as elements of S/H",
+      "The functor F is independent of the choice of symmetry breaking"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes order parameters exist in S/H to define F, then concludes that F produces order parameters in S/H",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to work for ANY symmetric system and ANY spontaneous symmetry breaking, but the construction fundamentally breaks down because F cannot be defined on objects (S,G) alone - it needs the symmetry breaking data",
+    "citation_issues": [
+      "Goldstone theorem is about massless bosons, not vacuum manifold geometry",
+      "AdS/CFT correspondence is cited in dependencies but never used",
+      "Higgs mechanism is mentioned but the proof doesn't actually verify the claimed example works"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed at its core - the proposed functor F cannot be defined as claimed because it requires symmetry breaking data not present in its domain. The mathematical formalism is sloppy with multiple undefined terms, misused theorems, and conflation of different quotient constructions.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to construct a functor but fails to prove its existence rigorously. It only shows how such a functor might be defined in specific cases without establishing the general construction or proving functoriality.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The quotient S/H exists and has appropriate topological/geometric structure",
+      "The group action of G on S is free or at least proper",
+      "The stabilizer subgroups are well-behaved (e.g., closed subgroups)",
+      "The vacuum manifold V is non-empty and well-defined",
+      "The quotient map \u03c0 preserves relevant structure",
+      "Morphisms in Struct are well-defined and compose properly",
+      "The symmetry breaking G \u2192 H is realized by a specific mechanism",
+      "Order parameters \u03a9 have well-defined mathematical structure",
+      "The categorical constructions satisfy coherence conditions"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "3",
+        "issue": "V = {v \u2208 S : Hv = v} is the fixed point set of H, not necessarily related to spontaneous symmetry breaking or vacuum manifolds. The connection to Goldstone theorem is not established."
+      },
+      {
+        "step": "4",
+        "issue": "The functor definition F(S, G) = (S/H, H, \u03c0(V)) is circular - H is not determined by (S, G) alone but depends on the specific symmetry breaking, which is not part of the input."
+      },
+      {
+        "step": "5",
+        "issue": "The gap is acknowledged but fatal - without rigorous quantum gravity formulation, this step is purely speculative."
+      },
+      {
+        "step": "7",
+        "issue": "Naturality is claimed but not proven. The commutativity of the diagram is asserted without showing how F(f) is constructed or that it preserves the required structure."
+      },
+      {
+        "step": "8",
+        "issue": "The claim about information content is vague and not rigorously established. What constitutes 'information not present in the symmetric phase' is not mathematically defined."
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No proof that the functor F is well-defined on all objects of Sym",
+      "No proof that F preserves morphisms (functoriality)",
+      "No proof of naturality beyond assertion",
+      "No treatment of how symmetry breaking is encoded in the categorical structure",
+      "No proof that the construction works for arbitrary symmetric systems",
+      "Missing verification that Struct is actually a category with proper composition",
+      "No proof that the examples in steps 5-6 actually fit the general framework"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof assumes symmetry breaking can be modeled as group homomorphisms G \u2192 H, but this is mathematically incorrect - symmetry breaking involves subgroup embeddings H \u2282 G, not homomorphisms from G to H",
+      "The definition of functor F maps (S, G) to (S/H, H, \u03c0(V)) but H is not defined for the input object (S, G) - the functor definition is circular and ill-formed",
+      "The claim that vacuum manifold V = {v \u2208 S : Hv = v} forms a G/H-homogeneous space is false without additional structure - this requires V to be non-empty and G-invariant, which is not guaranteed",
+      "The naturality claim for functor F cannot hold as stated because the morphisms in Sym and Struct categories are incompatibly defined"
+    ],
+    "assumption_conflicts": [
+      "Conflicts with [6cf918aecf4e] which correctly models symmetry breaking through automorphism groups and faithful functors, while this proof uses incorrect homomorphism formulation",
+      "The categorical framework assumptions are incompatible with the rigorous categorical approach in [66e4aac2731b] - the morphism definitions in Sym category are not well-defined for general symmetry-preserving maps"
+    ],
+    "beneficial_connections": [
+      "Attempts to connect with [6cf918aecf4e] on symmetry breaking and emergent structure, but the execution is flawed",
+      "The goal of formalizing symmetry breaking categorically aligns with the systematic approach in existing proofs"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof contains fundamental mathematical errors in its categorical construction. The functor definition is circular, the symmetry breaking model is backwards, and the naturality claims are unsubstantiated. The core idea has merit but requires complete reconstruction with proper mathematical foundations."
+  },
+  "confidence_score": 0.23,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous mathematical framework for quantum gravity that allows precise formulation of diffeomorphism symmetry breaking and emergent spacetime. Current approaches (string theory, loop quantum gravity) provide partial frameworks but lack complete mathematical rigor for this specific mechanism.",
+  "limitations": [
+    "Step 5 requires non-perturbative quantum gravity formalism not yet rigorously established",
+    "The precise mathematical meaning of 'emergent spacetime from entanglement' needs axiomatization",
+    "The functor F may not be fully faithful - some symmetric structures might not arise from symmetry breaking",
+    "The proof assumes symmetry breaking is spontaneous - explicit breaking requires different treatment",
+    "The categorical framework may be too restrictive for some physical systems",
+    "Quantum effects and anomalies are not fully captured in this classical symmetry breaking picture"
+  ],
+  "source_convergence": {
+    "structural_claim": "Symmetry breaking mechanisms generate emergent structure from more fundamental symmetric states",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Emergent Spacetime from Entanglement",
+        "domain_id": "quantum_gravity",
+        "domain_name": "Quantum Gravity",
+        "link_type": "direct",
+        "structural_conclusion": "Classical spacetime geometry emerges from quantum entanglement patterns"
+      },
+      {
+        "result_id": "",
+        "result_name": "AdS/CFT Correspondence",
+        "domain_id": "quantum_gravity",
+        "domain_name": "Quantum Gravity",
+        "link_type": "direct",
+        "structural_conclusion": "Gravitational spacetime emerges as an effective description of quantum field theory dynamics"
+      },
+      {
+        "result_id": "",
+        "result_name": "Discovery of the Higgs boson",
+        "domain_id": "particle_physics",
+        "domain_name": "Particle Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Particle masses emerge from spontaneous breaking of electroweak symmetry"
+      },
+      {
+        "result_id": "",
+        "result_name": "Electroweak unification",
+        "domain_id": "particle_physics",
+        "domain_name": "Particle Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Distinct electromagnetic and weak forces emerge from breaking of unified gauge symmetry"
+      }
+    ],
+    "domains": [
+      "quantum_gravity",
+      "particle_physics"
+    ],
+    "domain_names": [
+      "Quantum Gravity",
+      "Particle Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.2856,
+      "independence": 0.7,
+      "adversarial": 0.09,
+      "reproducibility": 0.6299999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.47318000000000005,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:54:29.363226+00:00",
+    "id": "06620f4f8a46"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.292845
+  }
+}

@@ -1,0 +1,357 @@
+{
+  "id": "017d9bcb893f",
+  "convergence_id": "79ac9abf1097",
+  "timestamp": "2026-05-02T13:29:57.149368+00:00",
+  "proposition": "For any wave equation \u2202\u00b2u/\u2202t\u00b2 = c\u00b2\u2207\u00b2u on a domain \u03a9 \u2286 \u211d\u207f with wave speed c and wavelength \u03bb, there exists a family of engineered structures {S\u2091}\u2091>\u2080 with characteristic length scale \u03b5 < \u03bb/2 such that the effective wave propagation through S\u2091 can be described by a modified wave equation with designer coefficients, and the solutions converge in H\u00b9(\u03a9) norm as \u03b5 \u2192 0 to solutions of a target wave equation with prescribed dispersion relation.",
+  "proposition_natural": "Wave phenomena can be coherently controlled through engineered structures at subwavelength scales",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Functional analysis",
+    "Differential geometry",
+    "Measure theory"
+  ],
+  "apparatus_justification": "Wave phenomena require operator theory and spectral analysis from functional analysis to characterize propagation and resonances. Differential geometry provides the framework for describing wave behavior on curved interfaces and metamaterial geometries. Measure theory is essential for handling the limiting behavior at subwavelength scales and homogenization.",
+  "proof_natural": "**Proposition.** For any wave equation $\\partial^2 u/\\partial t^2 = c^2\\nabla^2 u$ on a domain $\\Omega \\subseteq \\mathbb{R}^n$ with wave speed $c$ and wavelength $\\lambda$, there exists a family of engineered structures $\\{S_\\varepsilon\\}_{\\varepsilon > 0}$ with characteristic length scale $\\varepsilon < \\lambda/2$ such that the effective wave propagation through $S_\\varepsilon$ can be described by a modified wave equation with designer coefficients, and the solutions converge in $H^1(\\Omega)$ norm as $\\varepsilon \\to 0$ to solutions of a target wave equation with prescribed dispersion relation.\n\n**Proof.** We assume the wave equation is linear and time-harmonic with frequency $\\omega$, the domain $\\Omega$ is bounded with smooth boundary $\\partial\\Omega$, and the engineered structures $S_\\varepsilon$ are periodic with period $\\varepsilon$. Let the material parameters in $S_\\varepsilon$ satisfy $0 < \\alpha \\leq \\rho(x), \\kappa(x) \\leq \\beta < \\infty$, and assume the homogenization limit exists as $\\varepsilon \\to 0$. We further assume the target dispersion relation $\\omega^2(k)$ is continuous and satisfies causality, energy conservation holds throughout the domain, and the wave field $u \\in H^2(\\Omega)$ with appropriate boundary conditions.\n\nWe begin by expressing the wave equation in the engineered structure $S_\\varepsilon$ as the Helmholtz equation\n$$-\\omega^2 \\rho_\\varepsilon(x) u = \\nabla \\cdot (\\kappa_\\varepsilon(x) \\nabla u),$$\nwhere $\\rho_\\varepsilon, \\kappa_\\varepsilon$ are $\\varepsilon$-periodic material parameters.\n\nFollowing the standard homogenization procedure, we apply a two-scale asymptotic expansion:\n$$u_\\varepsilon(x) = u_0(x, x/\\varepsilon) + \\varepsilon u_1(x, x/\\varepsilon) + \\varepsilon^2 u_2(x, x/\\varepsilon) + O(\\varepsilon^3).$$\n\nSubstituting this expansion into the wave equation and collecting terms by powers of $\\varepsilon$, we obtain at order $\\varepsilon^{-2}$:\n$$\\nabla_y \\cdot (\\kappa(y) \\nabla_y u_0) = 0,$$\nwhere $y = x/\\varepsilon$ represents the fast variable.\n\nThe solution to this cell problem takes the form $u_0(x,y) = U(x) + \\sum_j \\chi_j(y) \\partial U/\\partial x_j$, where $\\chi_j$ are $Y$-periodic solutions to the cell problems and $U(x)$ represents the macroscopic wave field.\n\n[Note: A complete proof would require demonstrating that the designer coefficients $\\kappa^{\\text{eff}}_{ij} = \\int_Y \\kappa(y)(\\delta_{ij} + \\partial\\chi_i/\\partial y_j)dy$ can achieve arbitrary positive definite tensors through inverse homogenization, which remains an open problem in the general case.]\n\nBy the homogenization theorem for elliptic operators, the effective wave equation becomes\n$$-\\omega^2 \\rho^{\\text{eff}} U = \\nabla \\cdot (\\kappa^{\\text{eff}} \\nabla U),$$\nwhere $\\rho^{\\text{eff}}$ and $\\kappa^{\\text{eff}}$ are the homogenized material parameters.\n\n[Note: The proof that the subwavelength condition $\\varepsilon < \\lambda/2$ ensures validity of the homogenization approximation requires careful estimates on higher-order terms that depend on the ratio $\\omega/c$, which we omit here.]\n\nBy the corrector theorem for periodic homogenization, we establish the $H^1$ convergence:\n$$\\|u_\\varepsilon - U\\|_{H^1(\\Omega)} \\leq C\\varepsilon,$$\nwhere $C$ depends on $\\|U\\|_{H^3(\\Omega)}$ and the bounds on the material parameters.\n\n[Note: The connection to coherent control, specifically showing that phase and amplitude can be independently controlled through the engineered structures, requires consideration of complex-valued effective parameters, which extends beyond standard homogenization theory.]\n\nTherefore, we have shown that engineered periodic structures with subwavelength features can modify wave propagation according to designer specifications, with solutions converging to those of an effective medium equation as $\\varepsilon \\to 0$. This completes the proof. \u25a1",
+  "proof_lean": "",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Express the wave equation in the engineered structure S\u2091 as -\u03c9\u00b2\u03c1\u2091(x)u = \u2207\u00b7(\u03ba\u2091(x)\u2207u) where \u03c1\u2091, \u03ba\u2091 are \u03b5-periodic material parameters",
+      "justification": "Standard form of the Helmholtz equation for time-harmonic waves with spatially varying material properties",
+      "dependencies": [
+        "Time-harmonic ansatz u(x,t) = Re(u(x)e^{-i\u03c9t})"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Apply two-scale asymptotic expansion: u\u2091(x) = u\u2080(x,x/\u03b5) + \u03b5u\u2081(x,x/\u03b5) + \u03b5\u00b2u\u2082(x,x/\u03b5) + O(\u03b5\u00b3)",
+      "justification": "Standard homogenization ansatz for periodic media",
+      "dependencies": [
+        "Allaire (1992) - Homogenization and two-scale convergence"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Substitute expansion into wave equation and collect terms by powers of \u03b5",
+      "justification": "Taylor expansion of differential operators with chain rule",
+      "dependencies": [
+        "Step 1",
+        "Step 2"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "At O(\u03b5\u207b\u00b2): \u2207\u1d67\u00b7(\u03ba(y)\u2207\u1d67u\u2080) = 0 where y = x/\u03b5",
+      "justification": "Leading order term in the asymptotic expansion",
+      "dependencies": [
+        "Step 3"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Solve cell problem: u\u2080(x,y) = U(x) + \u03a3\u2c7c \u03c7\u2c7c(y)\u2202U/\u2202x\u2c7c where \u03c7\u2c7c are Y-periodic solutions",
+      "justification": "Standard form of homogenization cell problem solution",
+      "dependencies": [
+        "Step 4",
+        "Bensoussan-Lions-Papanicolaou theorem"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "[Gap: Proof that designer coefficients \u03ba\u1d49\u1da0\u1da0\u1d62\u2c7c = \u222b_Y \u03ba(y)(\u03b4\u1d62\u2c7c + \u2202\u03c7\u1d62/\u2202y\u2c7c)dy can achieve arbitrary positive definite tensors]",
+      "justification": "This requires inverse homogenization theory which is not fully developed",
+      "dependencies": [
+        "Step 5"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Show that effective wave equation becomes -\u03c9\u00b2\u03c1\u1d49\u1da0\u1da0U = \u2207\u00b7(\u03ba\u1d49\u1da0\u1da0\u2207U)",
+      "justification": "Standard homogenization result after averaging",
+      "dependencies": [
+        "Step 5",
+        "Step 6"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "[Gap: Prove that subwavelength condition \u03b5 < \u03bb/2 ensures validity of homogenization]",
+      "justification": "Requires estimates on higher-order terms that depend on \u03c9/c ratio",
+      "dependencies": [
+        "Wavelength \u03bb = 2\u03c0c/\u03c9"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "Establish H\u00b9 convergence: ||u\u2091 - U||_{H\u00b9(\u03a9)} \u2264 C\u03b5 where C depends on ||U||_{H\u00b3(\u03a9)}",
+      "justification": "Standard homogenization convergence result",
+      "dependencies": [
+        "Allaire-Briane corrector theorem",
+        "Steps 1-7"
+      ]
+    },
+    {
+      "step_number": 10,
+      "statement": "[Gap: Connection to coherent control requires showing phase and amplitude can be independently controlled]",
+      "justification": "This requires complex-valued effective parameters which standard homogenization doesn't fully address",
+      "dependencies": [
+        "Step 7"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Two-scale convergence and homogenization",
+      "authors": "G. Allaire",
+      "year": "1992",
+      "field": "Applied Mathematics",
+      "statement": "Weak convergence method for periodic homogenization yielding effective equations",
+      "usage": "Provides mathematical framework for deriving effective wave equations"
+    },
+    {
+      "name": "Homogenization of elliptic problems",
+      "authors": "A. Bensoussan, J.L. Lions, G. Papanicolaou",
+      "year": "1978",
+      "field": "Applied Mathematics",
+      "statement": "Cell problem formulation and convergence theorems for periodic media",
+      "usage": "Justifies the cell problem approach and convergence estimates"
+    },
+    {
+      "name": "Corrector results for homogenization",
+      "authors": "G. Allaire, M. Briane",
+      "year": "1996",
+      "field": "Applied Mathematics",
+      "statement": "Sharp estimates for convergence rates in periodic homogenization",
+      "usage": "Provides the H\u00b9 convergence rate estimate"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The wave equation is linear and time-harmonic with frequency \u03c9",
+    "The domain \u03a9 is bounded with smooth boundary \u2202\u03a9",
+    "The engineered structures S\u2091 are periodic with period \u03b5",
+    "The material parameters in S\u2091 are bounded: 0 < \u03b1 \u2264 \u03c1(x), \u03ba(x) \u2264 \u03b2 < \u221e",
+    "The homogenization limit \u03b5 \u2192 0 exists",
+    "The target dispersion relation \u03c9\u00b2(k) is continuous and satisfies causality",
+    "Energy conservation holds throughout the domain",
+    "The wave field u \u2208 H\u00b2(\u03a9) with appropriate boundary conditions"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "While basic functional analysis and PDE foundations exist in Mathlib, the specialized homogenization theory, two-scale convergence, and metamaterial engineering concepts are entirely missing. The proof relies heavily on advanced homogenization techniques that would require substantial development of new theory. The engineering aspects of 'designer structures' are particularly challenging to formalize as they involve physical intuition about wave propagation in structured media.",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "Proposition statement",
+        "issue": "The proposition claims existence of structures achieving ANY prescribed dispersion relation, but provides no constraints on what dispersion relations are achievable",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Specify the class of achievable dispersion relations based on physical constraints and homogenization theory limitations"
+      },
+      {
+        "step": "Two-scale expansion substitution",
+        "issue": "The proof jumps directly to the O(\u03b5^{-2}) equation without showing the substitution or verifying that higher order terms can be neglected",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Show the full substitution and justify why O(\u03b5^{-1}) terms vanish"
+      },
+      {
+        "step": "Cell problem solution form",
+        "issue": "The form u_0(x,y) = U(x) + \u03a3 \u03c7_j(y) \u2202U/\u2202x_j is stated without justification or proof of existence/uniqueness of \u03c7_j",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Prove existence and uniqueness of cell problems and justify the solution form"
+      },
+      {
+        "step": "Designer coefficients achievability",
+        "issue": "The proof admits in a note that inverse homogenization for arbitrary positive definite tensors is an open problem, completely undermining the main claim",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot fix without solving the open problem or restricting the claim significantly"
+      },
+      {
+        "step": "Subwavelength condition validity",
+        "issue": "The proof admits omitting crucial estimates showing \u03b5 < \u03bb/2 ensures homogenization validity",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Provide rigorous estimates relating \u03b5, \u03bb, and \u03c9/c"
+      },
+      {
+        "step": "H^1 convergence rate",
+        "issue": "The corrector theorem is cited but the specific conditions for its applicability are not verified",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Verify regularity assumptions and boundary conditions required for the corrector theorem"
+      },
+      {
+        "step": "Connection to prescribed dispersion relation",
+        "issue": "The proof never shows how the homogenized parameters \u03ba^eff and \u03c1^eff relate to the target dispersion relation \u03c9\u00b2(k)",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Derive the dispersion relation from the homogenized equation and show how to achieve target relations"
+      }
+    ],
+    "hidden_assumptions": [
+      "The engineered structures can be manufactured with arbitrary precision",
+      "The periodic assumption is sufficient for all desired dispersion relations",
+      "The homogenization process preserves all relevant wave phenomena",
+      "The target dispersion relation is realizable by some material configuration",
+      "Boundary effects can be neglected in the homogenization process",
+      "The wave equation remains valid at all relevant scales"
+    ],
+    "circular_reasoning": false,
+    "circular_details": "",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof at best shows convergence to some homogenized equation for periodic structures, but claims to achieve any prescribed dispersion relation through 'designer coefficients' without proving this is possible",
+    "citation_issues": [
+      "Homogenization theorems are cited generically without specifying which specific results apply",
+      "The corrector theorem conditions are not verified",
+      "No citation for the claimed connection between homogenized parameters and dispersion relations"
+    ],
+    "structural_soundness": 0.4,
+    "overall_assessment": "This proof has critical gaps, particularly the admission that inverse homogenization for arbitrary coefficients is an open problem, which directly contradicts the main claim. The proof structure follows standard homogenization theory but fails to connect it to the ambitious claims about designer dispersion relations. Multiple key steps are either omitted or acknowledged as incomplete.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish homogenization convergence for periodic wave structures but fails to prove that arbitrary dispersion relations can be achieved or that designer coefficients can be realized",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Existence of periodic microstructures that realize arbitrary effective tensors",
+      "Validity of two-scale expansion for wave equations (requires separation of scales)",
+      "Regularity assumptions on \u03c7\u2c7c solutions to cell problems",
+      "Boundedness of effective coefficients independent of \u03b5",
+      "Assumption that target dispersion relation is realizable through effective medium theory",
+      "Non-degeneracy conditions on the cell problems",
+      "Compatibility between subwavelength condition and homogenization validity"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 6",
+        "issue": "Claims arbitrary positive definite tensors can be achieved without proof - this is a major open problem in inverse homogenization"
+      },
+      {
+        "step": "Step 8",
+        "issue": "The subwavelength condition \u03b5 < \u03bb/2 is stated but not proven sufficient for homogenization validity - requires detailed analysis of remainder terms"
+      },
+      {
+        "step": "Step 9",
+        "issue": "H\u00b9 convergence estimate assumes H\u00b3 regularity of U without justification, and the constant C may blow up as \u03b5 \u2192 0"
+      },
+      {
+        "step": "Step 10",
+        "issue": "Connection to prescribed dispersion relation is completely missing - no mechanism shown to achieve target \u03c9\u00b2(k)"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No proof that designer coefficients can be realized by actual microstructures",
+      "Missing rigorous justification of two-scale expansion validity for wave equations",
+      "No demonstration that target dispersion relations are achievable",
+      "Gap between effective medium theory and actual wave propagation control",
+      "No analysis of boundary layer effects or boundary condition compatibility",
+      "Missing proof that the family of structures {S\u2091} actually exists"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof assumes linear wave equations with classical material parameters \u03c1(x), \u03ba(x), but proof [19c10dc86a65] establishes that quantum coherence fundamentally alters system properties beyond classical predictions. For subwavelength structures (\u03b5 < \u03bb/2), quantum effects become dominant and classical homogenization fails.",
+      "The proof assumes energy conservation throughout the domain, but proof [06d1b829563e] shows that information loss and thermodynamic behavior emerge from fundamental dynamical constraints, contradicting perfect energy conservation in engineered structures.",
+      "The claim that arbitrary positive definite tensors \u03ba\u1d49\u1da0\u1da0\u1d62\u2c7c can be achieved contradicts proof [139ee0499c9e] which shows topological constraints fundamentally determine evolution - not all tensor configurations are topologically realizable."
+    ],
+    "assumption_conflicts": [
+      "Assumes classical wave propagation while [19c10dc86a65] requires quantum treatment for coherent systems",
+      "Assumes perfect periodicity and boundedness of material parameters, conflicting with [14e1952bf633] which shows macroscopic irreversibility emerges from microscopic dynamics",
+      "The subwavelength condition \u03b5 < \u03bb/2 conflicts with [06d6ace265c2] which shows quantum-classical boundary emerges through environmental information dispersal, not scale thresholds"
+    ],
+    "beneficial_connections": [
+      "Connects to [148d85f6c7b4] energy cascade theory - the hierarchical scale separation could follow universal power laws",
+      "Relates to [1318ecd2c25c] phase transition theory - the homogenization limit \u03b5 \u2192 0 represents a symmetry-breaking organizational event",
+      "Links to [0e664bd264b4] hierarchical structure formation - engineered structures create multi-scale systems"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof has fundamental gaps in justifying designer coefficient realizability and ignores quantum effects at subwavelength scales. The homogenization approach is mathematically sound but physically incomplete for the claimed parameter regime."
+  },
+  "confidence_score": 0.31500000000000006,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.5,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.5,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "Inverse homogenization theory for complex-valued tensors with constraints from causality and passivity. Framework for proving phase/amplitude decoupling in effective media. Rigorous connection between subwavelength scale and homogenization validity for wave equations.",
+  "limitations": [
+    "Proof that arbitrary effective parameters can be achieved through microstructure design",
+    "Rigorous justification of subwavelength validity condition",
+    "Mathematical framework for coherent control (phase and amplitude independence)",
+    "Proof assumes periodic structures; random or quasiperiodic structures need different approach",
+    "Linear waves only; nonlinear effects not considered",
+    "Assumes lossless media; dissipation requires complex-valued framework",
+    "Does not address fabrication constraints on achievable microstructures",
+    "Time-domain transient behavior not analyzed"
+  ],
+  "source_convergence": {
+    "structural_claim": "Wave phenomena can be coherently controlled through engineered structures at subwavelength scales",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Stark Effect",
+        "domain_id": "field_a",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Electric fields mix atomic states to coherently manipulate wavefunctions"
+      },
+      {
+        "result_id": "",
+        "result_name": "Acoustic Metamaterials with Negative Index",
+        "domain_id": "field_b",
+        "domain_name": "Acoustics and Wave Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Subwavelength structures engineer effective properties to control wave propagation"
+      }
+    ],
+    "domains": [
+      "atomic_physics",
+      "acoustics"
+    ],
+    "domain_names": [
+      "Atomic and Molecular Physics",
+      "Acoustics and Wave Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.1428,
+      "independence": 0.8,
+      "adversarial": 0.12,
+      "reproducibility": 0.42,
+      "depth_consistency": 1.0,
+      "confidence": 0.42984,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:56:26.304916+00:00",
+    "id": "79ac9abf1097"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.316215
+  }
+}

@@ -1,0 +1,29 @@
+[12:28:56] ============================================================
+[12:28:56]   STAGE A — Pipeline Validation
+[12:28:56] ============================================================
+[12:28:56]   Gnosis data: /Users/ekramalam/gnosis-ai/results/test-3-auto
+[12:28:56]   Max cost: $200.00 (Logos: $160.00, Synthesis: $40.00)
+[12:28:56]   Log file: /Users/ekramalam/convergence-codex/data/pipeline/stage_a_20260502_122856.log
+[12:28:56]   Started: 2026-05-02T12:28:56.295004+00:00
+[12:28:56]   Loaded: 266 convergences, 26 findings
+[12:28:56] 
+============================================================
+[12:28:56]   LOGOS — Formalisation
+[12:28:56] ============================================================
+[12:28:56] Logos: 266 total, 3 already done, 263 remaining
+[12:28:56] 
+  [4/266] 06620f4f8a46
+[12:28:56]     Claim: Symmetry breaking mechanisms generate emergent structure from more fundamental s...
+[12:28:56]     Domains: Quantum Gravity, Particle Physics
+[12:30:06]     Type: categorical | Apparatus: Category theory, Algebraic structures
+[12:30:06]     Steps: 6
+[12:30:38]     Lean: code=True
+[12:31:28]     Confidence: 0.18 (low)
+[12:31:28]     Time: 152.1s | Cost: $0.50 | Calls: 9
+[12:31:28] 
+  [5/266] 083202784dd6
+[12:31:28]     Claim: Entanglement and correlation patterns encode and determine the effective geometr...
+[12:31:28]     Domains: Quantum Gravity, Atomic and Molecular Physics
+[12:32:51]     Type: categorical | Apparatus: Category theory, Information theory
+[12:32:51]     Steps: 9
+[12:33:23]     Lean: code=True

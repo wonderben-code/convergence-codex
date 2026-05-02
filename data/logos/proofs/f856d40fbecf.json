@@ -1,0 +1,387 @@
+{
+  "id": "f856d40fbecf",
+  "convergence_id": "340e2880a1f7",
+  "timestamp": "2026-05-02T12:53:13.524179+00:00",
+  "proposition": "Let (X,\u03bc) be a measure space representing phase space, f: X \u00d7 \u211d \u2192 \u211d\u208a a time-dependent distribution function, and H: L\u00b2(X,\u03bc) \u2192 L\u00b2(X,\u03bc) a single-particle Hamiltonian. Then there exists a critical measure \u03bcc > 0 such that for \u222b_X f(x,t)d\u03bc(x) > \u03bcc, the system dynamics is governed by a collective Hamiltonian H_coll \u2260 H \u2295 H \u2295 ... (direct sum), where H_coll emerges from resonant interactions R: L\u00b2(X,\u03bc) \u00d7 L\u00b2(X,\u03bc) \u2192 L\u00b2(X,\u03bc) satisfying \u27e8\u03c6,R(\u03c8,\u03c7)\u27e9 \u2260 0 only when \u03c9(\u03c6) = \u03c9(\u03c8) \u00b1 \u03c9(\u03c7) for some frequency operator \u03c9.",
+  "proposition_natural": "Collective phenomena emerge from microscopic distribution functions through resonant interactions that fundamentally alter system dynamics beyond single-particle descriptions",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Functional analysis",
+    "Measure theory",
+    "Dynamical systems"
+  ],
+  "apparatus_justification": "Functional analysis provides the operator framework for evolution of distribution functions and spectral theory for resonant interactions. Measure theory handles the microscopic distribution functions rigorously. Dynamical systems theory captures the emergent collective behavior and bifurcations from single-particle to collective regimes.",
+  "proof_natural": "**Proposition.** Let $(X,\\mu)$ be a measure space representing phase space, $f: X \\times \\mathbb{R} \\to \\mathbb{R}_+$ a time-dependent distribution function, and $H: L^2(X,\\mu) \\to L^2(X,\\mu)$ a single-particle Hamiltonian. Then there exists a critical measure $\\mu_c > 0$ such that for $\\int_X f(x,t)d\\mu(x) > \\mu_c$, the system dynamics is governed by a collective Hamiltonian $H_{\\text{coll}} \\neq H \\oplus H \\oplus \\cdots$, where $H_{\\text{coll}}$ emerges from resonant interactions.\n\n**Proof.** We assume that $X$ is a locally compact Hausdorff space with $\\sigma$-finite measure $\\mu$, the distribution function $f$ is measurable with $\\int_X f(x,t)d\\mu(x) < \\infty$ for all $t$, and the single-particle Hamiltonian $H$ is self-adjoint with discrete spectrum. Let the system admit a mean-field approximation valid as $N \\to \\infty$, and assume Liouville's theorem holds.\n\nWe begin by constructing the $N$-particle Hilbert space $\\mathcal{H}_N = L^2(X^N, \\mu^{\\otimes N})$ with appropriate symmetrization. The $N$-particle Hamiltonian decomposes as\n$$H_N = \\sum_{i=1}^N h(x_i) + \\sum_{i<j} V(x_i,x_j),$$\nwhere $h$ denotes the single-particle Hamiltonian and $V$ induces resonant interactions satisfying $\\langle\\phi, R(\\psi,\\chi)\\rangle \\neq 0$ only when $\\omega(\\phi) = \\omega(\\psi) \\pm \\omega(\\chi)$ for some frequency operator $\\omega$.\n\nApplying the BBGKY hierarchy, we derive the evolution equation for the reduced single-particle density matrix $\\rho_1(x,x',t)$. [Note: A rigorous derivation of the resonance condition from the interaction potential $V$ requires showing that $V(x,y)$ admits a Fourier decomposition selecting only resonant triads.]\n\nIn the mean-field limit where $N \\to \\infty$ with $gN = \\text{const}$, the reduced density matrix evolves according to the nonlinear equation\n$$\\partial_t \\rho_1 = [h,\\rho_1] + N\\int [V(\\cdot,y), \\rho_1(y,y)]dy.$$\nThe mean-field scaling ensures the interaction term remains $O(1)$ in the thermodynamic limit.\n\nLinearizing around a homogeneous state $f_0$, we obtain a dispersion relation $\\omega(k)$ that reveals collective modes distinct from single-particle excitations. [Note: The proof of existence of a critical density $\\mu_c$ where collective modes become unstable requires detailed analysis of the dispersion relation's zeros and growth rates.]\n\nFor $\\int_X f\\,d\\mu > \\mu_c$, the effective dynamics cannot be expressed as a direct sum $H_{\\text{eff}} = \\bigoplus_i h(x_i)$, since collective modes possess fundamentally different dispersion relations than single-particle modes. The emergent collective Hamiltonian $H_{\\text{coll}}$ generates dynamics that cannot be decomposed into independent single-particle evolutions. [Note: A complete construction of $H_{\\text{coll}}$ from the emergent modes requires showing it generates the same dynamics as the full $N$-body system in the thermodynamic limit.]\n\nTherefore, above the critical density $\\mu_c$, the system exhibits genuinely collective behavior governed by $H_{\\text{coll}}$, which emerges from resonant interactions and cannot be reduced to a direct sum of single-particle Hamiltonians. This completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.MeasureTheory.Measure.MeasureSpace\nimport Mathlib.MeasureTheory.Function.L2Space\nimport Mathlib.Analysis.InnerProductSpace.Basic\nimport Mathlib.Analysis.SpecialFunctions.Pow.Real\nimport Mathlib.Topology.Algebra.Module.Basic\nimport Mathlib.Analysis.NormedSpace.OperatorNorm\n\nopen MeasureTheory\n\nvariable {X : Type*} [MeasurableSpace X] (\u03bc : Measure X) [IsFiniteMeasure \u03bc]\n\n/-- Time-dependent distribution function on phase space -/\ndef DistributionFunction := X \u00d7 \u211d \u2192 \u211d\u22650\n\n/-- Single-particle Hamiltonian operator -/\ndef SingleParticleHamiltonian := L\u00b2(X, \u03bc) \u2192L[\u2102] L\u00b2(X, \u03bc)\n\n/-- Frequency operator (missing from Mathlib) -/\ndef FrequencyOperator := sorry -- \"Need frequency operator definition\"\n\n/-- Resonant interaction operator satisfying resonance condition -/\ndef ResonantInteraction (\u03c9 : FrequencyOperator) := \n  sorry -- \"Need resonant interaction operator with condition \u03c9(\u03c6) = \u03c9(\u03c8) \u00b1 \u03c9(\u03c7)\"\n\n/-- Collective Hamiltonian emerging from many-body interactions -/\ndef CollectiveHamiltonian := sorry -- \"Need collective Hamiltonian construction\"\n\n/-- N-particle Hilbert space with appropriate symmetrization -/\ndef NParticleHilbertSpace (N : \u2115) := sorry -- \"Need symmetrized tensor product L\u00b2(X^N, \u03bc^\u2297N)\"\n\n/-- BBGKY hierarchy evolution (missing from Mathlib) -/\ndef BBGKYEvolution := sorry -- \"Need BBGKY hierarchy formulation\"\n\n/-- Critical measure threshold for collective behavior -/\ndef CriticalMeasure (f : DistributionFunction) (H : SingleParticleHamiltonian) : \u211d\u22650 := \n  sorry -- \"Need critical density calculation from dispersion relation\"\n\n/-- Main theorem: Existence of critical measure for collective dynamics -/\ntheorem collective_dynamics_critical_measure \n  (f : DistributionFunction) \n  (H : SingleParticleHamiltonian) :\n  \u2203 (\u03bcc : \u211d\u22650), \n    (\u222b x, f (x, t) \u2202\u03bc > \u03bcc) \u2192 \n    \u2203 (H_coll : CollectiveHamiltonian) (R : ResonantInteraction (sorry : FrequencyOperator)),\n      H_coll \u2260 sorry \u2227 -- \"Need direct sum \u2295\u1d62 H representation\"\n      sorry -- \"Need to show H_coll emerges from R with resonance condition\" := by\n  sorry -- \"Full proof requires BBGKY hierarchy and mean-field limit machinery\"\n\n/-- Step 1: N-particle Hilbert space construction -/\nlemma step1_nparticle_space (N : \u2115) : \n  \u2203 (H_N : Type*), H_N = NParticleHilbertSpace N := by\n  sorry -- \"Need symmetrized tensor product construction\"\n\n/-- Step 2: N-particle Hamiltonian decomposition -/\nlemma step2_hamiltonian_decomposition (N : \u2115) :\n  \u2203 (H_N : NParticleHilbertSpace N \u2192L[\u2102] NParticleHilbertSpace N),\n    sorry -- \"Need H_N = \u03a3\u1d62 h(x\u1d62) + \u03a3\u1d62<\u2c7c V(x\u1d62,x\u2c7c) representation\" := by\n  sorry -- \"Need many-body Hamiltonian construction\"\n\n/-- Step 3: BBGKY hierarchy application -/\nlemma step3_bbgky_evolution :\n  \u2203 (\u03c1\u2081 : X \u00d7 X \u00d7 \u211d \u2192 \u2102), \n    sorry -- \"Need evolution equation from BBGKY hierarchy\" := by\n  sorry -- \"BBGKY hierarchy not in Mathlib\"\n\n/-- Step 5: Mean-field limit -/\nlemma step5_mean_field_limit (N : \u2115) (g : \u211d) (h_scaling : g * N = 1) :\n  sorry -- \"Need nonlinear evolution \u2202\u209c\u03c1\u2081 = [h,\u03c1\u2081] + N\u222b [V(\u00b7,y), \u03c1\u2081(y,y)]dy\" := by\n  sorry -- \"Mean-field limit theory not in Mathlib\"\n\n/-- Step 6: Linearization and dispersion relation -/\nlemma step6_dispersion_relation (f\u2080 : X \u2192 \u211d\u22650) :\n  \u2203 (\u03c9 : \u211d \u2192 \u2102), sorry -- \"Need dispersion relation with collective modes\" := by\n  sorry -- \"Linear stability analysis of kinetic equations not in Mathlib\"\n\n/-- Step 8: Non-decomposability of effective dynamics -/\nlemma step8_non_decomposable (\u03bcc : \u211d\u22650) (h_above : \u222b x, f (x, t) \u2202\u03bc > \u03bcc) :\n  \u00ac\u2203 (H_eff : SingleParticleHamiltonian), \n    sorry -- \"Need H_eff \u2260 \u2295\u1d62 h(x\u1d62)\" := by\n  sorry -- \"Collective mode analysis not in Mathlib\"",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the N-particle Hilbert space H_N = L\u00b2(X^N, \u03bc^\u2297N) with appropriate symmetrization for bosons/fermions",
+      "justification": "Standard construction in many-body quantum mechanics",
+      "dependencies": [
+        "Assumption 1",
+        "Reed-Simon Vol. II"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Express the N-particle Hamiltonian as H_N = \u03a3\u1d62 h(x\u1d62) + \u03a3\u1d62<\u2c7c V(x\u1d62,x\u2c7c) where V induces resonant interactions",
+      "justification": "Standard decomposition into single-particle and interaction terms",
+      "dependencies": [
+        "Step 1",
+        "Assumption 3"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Apply the BBGKY hierarchy to derive evolution equation for reduced density matrix \u03c1\u2081(x,x',t)",
+      "justification": "Standard kinetic theory procedure to obtain single-particle dynamics from N-body system",
+      "dependencies": [
+        "Step 2",
+        "Bogoliubov 1946",
+        "Born-Green 1946"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "[Gap: Rigorous derivation of resonance condition from interaction potential V]",
+      "justification": "Need to show V(x,y) has Fourier decomposition selecting only resonant triads \u03c9\u2081 = \u03c9\u2082 \u00b1 \u03c9\u2083",
+      "dependencies": [
+        "Assumption 4",
+        "Assumption 5"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "In mean-field limit N \u2192 \u221e with gN = const, show \u03c1\u2081 evolves according to nonlinear equation \u2202\u209c\u03c1\u2081 = [h,\u03c1\u2081] + N\u222b [V(\u00b7,y), \u03c1\u2081(y,y)]dy",
+      "justification": "Mean-field scaling makes interaction term O(1) in thermodynamic limit",
+      "dependencies": [
+        "Step 3",
+        "Assumption 6",
+        "Spohn 1980"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Linearize around homogeneous state f\u2080 to obtain dispersion relation \u03c9(k) with collective modes",
+      "justification": "Standard linear stability analysis of kinetic equations",
+      "dependencies": [
+        "Step 5",
+        "Landau 1946 for plasma case"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "[Gap: Prove existence of critical density \u03bcc where collective modes become unstable]",
+      "justification": "Requires detailed analysis of dispersion relation zeros and growth rates",
+      "dependencies": [
+        "Step 6"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Show that for \u222bf d\u03bc > \u03bcc, the effective dynamics cannot be written as H_eff = \u2295\u1d62 h(x\u1d62)",
+      "justification": "Collective modes have different dispersion than single-particle modes",
+      "dependencies": [
+        "Step 6",
+        "Step 7"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "[Gap: Rigorous construction of collective Hamiltonian H_coll from emergent modes]",
+      "justification": "Need to show H_coll generates same dynamics as full N-body system in thermodynamic limit",
+      "dependencies": [
+        "Step 8",
+        "Assumption 7"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "BBGKY Hierarchy",
+      "authors": "Bogoliubov, Born, Green, Kirkwood, Yvon",
+      "year": "1946",
+      "field": "Statistical Mechanics",
+      "statement": "Exact hierarchy of equations relating n-particle distribution functions",
+      "usage": "Derive single-particle dynamics from many-body system"
+    },
+    {
+      "name": "Landau Damping",
+      "authors": "L. Landau",
+      "year": "1946",
+      "field": "Plasma Physics",
+      "statement": "Collisionless damping of plasma waves via resonant wave-particle interactions",
+      "usage": "Prototype of collective phenomenon emerging from distribution function"
+    },
+    {
+      "name": "Mean-Field Limits",
+      "authors": "H. Spohn",
+      "year": "1980",
+      "field": "Mathematical Physics",
+      "statement": "Rigorous derivation of Vlasov equation from N-body dynamics",
+      "usage": "Justify mean-field approximation in Step 5"
+    },
+    {
+      "name": "Spectral Theory of Self-Adjoint Operators",
+      "authors": "Reed & Simon",
+      "year": "1975",
+      "field": "Mathematical Physics",
+      "statement": "Complete spectral theorem for self-adjoint operators on Hilbert space",
+      "usage": "Ensure Hamiltonian has well-defined spectrum and dynamics"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Phase space X is a locally compact Hausdorff space with \u03c3-finite measure \u03bc",
+    "Distribution function f is measurable and \u222b_X f(x,t)d\u03bc(x) < \u221e for all t",
+    "Single-particle Hamiltonian H is self-adjoint with discrete spectrum",
+    "Resonant interaction operator R is bilinear and continuous",
+    "Frequency operator \u03c9: L\u00b2(X,\u03bc) \u2192 \u211d exists and is well-defined on eigenstates of H",
+    "The system admits a mean-field approximation valid for N \u2192 \u221e",
+    "Collective modes can be represented as coherent superpositions in L\u00b2(X,\u03bc)",
+    "Time evolution preserves total measure (Liouville's theorem holds)"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Construction of N-particle Hilbert space with 'appropriate symmetrization'",
+        "issue": "Never specifies whether dealing with bosons, fermions, or distinguishable particles. The symmetrization fundamentally changes the space and dynamics.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Explicitly state particle statistics and construct the appropriate symmetric/antisymmetric subspace"
+      },
+      {
+        "step": "Existence of frequency operator \u03c9",
+        "issue": "No construction or proof that such an operator exists. For general H, eigenstates may not have well-defined frequencies.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would require complete rework - frequency operator only exists for specific forms of H"
+      },
+      {
+        "step": "Derivation of evolution equation via BBGKY",
+        "issue": "Jumps from BBGKY hierarchy to a specific evolution equation without showing the derivation or closure approximation used",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Show full BBGKY derivation and explicitly state closure approximation"
+      },
+      {
+        "step": "Mean-field limit N\u2192\u221e with gN=const",
+        "issue": "Never defines g or justifies this specific scaling. Different scalings lead to different limits.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Define coupling constant g and prove this scaling leads to non-trivial limit"
+      },
+      {
+        "step": "Linearization around homogeneous state f\u2080",
+        "issue": "Never proves f\u2080 exists or is stable. Linearization may not be valid.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Prove existence of homogeneous steady state and justify linearization"
+      },
+      {
+        "step": "Existence of critical density \u03bcc",
+        "issue": "Merely asserts existence without proof. No characterization of \u03bcc given.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Requires complete analysis of dispersion relation and stability"
+      },
+      {
+        "step": "Construction of H_coll",
+        "issue": "Never actually constructs H_coll, just claims it exists and has certain properties",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Explicitly construct H_coll and prove it generates the claimed dynamics"
+      }
+    ],
+    "hidden_assumptions": [
+      "Interaction potential V is weak enough for perturbation theory",
+      "System is in thermodynamic equilibrium or close to it",
+      "Collective modes are linearly independent from single-particle modes",
+      "The measure \u03bc has sufficient regularity for all integrals to converge",
+      "The resonance condition uniquely determines the interaction",
+      "Mean-field approximation captures all collective effects"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes collective modes exist (via linearization) to prove that collective behavior emerges. It uses the existence of H_coll to argue for its existence.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to show emergence of collective behavior for any measure space and any self-adjoint H with discrete spectrum, but the argument only works (if at all) for very specific physical systems with particular interaction forms.",
+    "citation_issues": [
+      "BBGKY hierarchy citation used incorrectly - the hierarchy alone doesn't give the stated evolution equation without additional approximations",
+      "Landau damping is cited but never used in the proof",
+      "Mean-field limits reference doesn't justify the specific gN scaling used",
+      "Spectral theory citation doesn't support existence of frequency operator for general self-adjoint H"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed, containing multiple critical gaps, unjustified leaps, and circular reasoning. It reads more like a physics argument sketch than a mathematical proof, asserting results without establishing them rigorously.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to show emergence of collective dynamics but fails to rigorously establish the existence of a critical measure \u03bcc or construct the collective Hamiltonian H_coll. It only sketches a mean-field approach without completing the key steps.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Interaction potential V has specific form enabling resonant decomposition",
+      "Mean-field approximation is valid and controllable in the N \u2192 \u221e limit",
+      "BBGKY hierarchy truncation is justified",
+      "Linearization around homogeneous state is valid",
+      "Collective modes remain stable under perturbations",
+      "Thermodynamic limit exists and is well-defined",
+      "Dispersion relation \u03c9(k) has the required analytical properties",
+      "Phase space X supports the required spectral theory",
+      "Measure \u03bc is translation-invariant or has required symmetries"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 4",
+        "issue": "Completely missing - no derivation of resonance condition from V(x,y)"
+      },
+      {
+        "step": "Step 5",
+        "issue": "Mean-field limit requires rigorous justification of BBGKY truncation and scaling assumptions"
+      },
+      {
+        "step": "Step 7",
+        "issue": "Completely missing - no proof of existence of critical density \u03bcc"
+      },
+      {
+        "step": "Step 8",
+        "issue": "Logic gap - showing collective modes have different dispersion doesn't prove H_eff \u2260 \u2295\u1d62 h(x\u1d62)"
+      },
+      {
+        "step": "Step 9",
+        "issue": "Completely missing - no construction of H_coll"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Three major gaps explicitly acknowledged but not filled",
+      "No rigorous connection between resonance condition and frequency operator \u03c9",
+      "Missing proof that collective Hamiltonian H_coll actually exists",
+      "No demonstration that H_coll \u2260 H \u2295 H \u2295 ...",
+      "Critical measure \u03bcc existence is assumed, not proven",
+      "No verification that the constructed dynamics preserve the stated properties"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims collective Hamiltonian H_coll \u2260 H \u2295 H \u2295 ... emerges above critical density \u03bcc, but proof [3f0bc99f45de] already establishes collective phenomena emerge through symmetry breaking in quantum many-body systems with different mathematical framework",
+      "The resonance condition \u03c9(\u03c6) = \u03c9(\u03c8) \u00b1 \u03c9(\u03c7) assumes a well-defined frequency operator \u03c9 on L\u00b2(X,\u03bc), but this conflicts with the general framework in [19c10dc86a65] where quantum observables are self-adjoint operators without requiring frequency decomposition",
+      "The mean-field limit N \u2192 \u221e with gN = const assumes classical phase space X, but this is incompatible with the quantum Hilbert space framework assumed in multiple existing proofs"
+    ],
+    "assumption_conflicts": [
+      "Assumes classical phase space X as locally compact Hausdorff space, conflicts with quantum Hilbert space assumptions in proofs [19c10dc86a65], [3f0bc99f45de]",
+      "Assumes Liouville's theorem holds for time evolution, which is classical mechanics, conflicts with quantum unitary evolution in existing quantum proofs",
+      "The distribution function f: X \u00d7 \u211d \u2192 \u211d\u208a assumes classical probability distributions, incompatible with quantum density operators in [19c10dc86a65]"
+    ],
+    "beneficial_connections": [
+      "Connects to [087da119976b] on spontaneous symmetry breaking through the critical density threshold \u03bcc",
+      "Relates to [3f0bc99f45de] on collective phenomena in many-body systems, though with different mathematical approach",
+      "Shares theme with [14e1952bf633] on emergence of macroscopic behavior from microscopic dynamics"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof has fundamental mathematical gaps (marked as [Gap:] in the proof) and mixes classical and quantum frameworks inconsistently. The BBGKY hierarchy derivation and mean-field limit are not rigorously established. The existence of critical density \u03bcc is asserted without proof. The construction of collective Hamiltonian H_coll is incomplete."
+  },
+  "confidence_score": 0.23,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "Rigorous mathematical framework for emergent collective Hamiltonians from microscopic dynamics. Current kinetic theory provides equations of motion but not a systematic Hamiltonian formulation of collective phenomena. Need: (1) Precise characterization of resonance conditions in general phase spaces, (2) Construction of effective Hamiltonians for collective modes that captures non-additive dynamics, (3) Rigorous proof of critical density thresholds for collective behavior.",
+  "limitations": [
+    "Rigorous derivation of resonance condition from general interaction potentials",
+    "Proof of existence and uniqueness of critical density \u03bcc",
+    "Construction of collective Hamiltonian H_coll with proper mathematical foundation",
+    "Connection between resonant interactions R and emergent collective dynamics needs formalization",
+    "Proof assumes mean-field validity which breaks down for strong correlations",
+    "Resonance condition \u03c9\u2081 = \u03c9\u2082 \u00b1 \u03c9\u2083 assumed rather than derived from first principles",
+    "Does not address quantum coherence effects in Bose-Einstein condensation case",
+    "Critical density \u03bcc existence shown only implicitly through linearization",
+    "No treatment of finite-size effects or fluctuations beyond mean-field"
+  ],
+  "source_convergence": {
+    "structural_claim": "Collective phenomena emerge from microscopic distribution functions through resonant interactions that fundamentally alter system dynamics beyond single-particle descriptions",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Landau Damping",
+        "domain_id": "field_a",
+        "domain_name": "Plasma Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Wave damping emerges from velocity distribution function structure through resonant particle-wave interactions without collisions"
+      },
+      {
+        "result_id": "",
+        "result_name": "Vlasov Equation",
+        "domain_id": "field_a",
+        "domain_name": "Plasma Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Plasma dynamics is fundamentally described by phase space distribution evolution"
+      },
+      {
+        "result_id": "",
+        "result_name": "Bose-Einstein Condensation in Dilute Gases",
+        "domain_id": "field_b",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Macroscopic quantum state emerges from microscopic distribution when particles occupy the same quantum state"
+      },
+      {
+        "result_id": "",
+        "result_name": "Pauli Exclusion Principle",
+        "domain_id": "field_b",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Fermionic distribution constraints fundamentally determine allowed collective states"
+      }
+    ],
+    "domains": [
+      "plasma_physics",
+      "atomic_physics"
+    ],
+    "domain_names": [
+      "Plasma Physics",
+      "Atomic and Molecular Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.2856,
+      "independence": 0.75,
+      "adversarial": 0.09,
+      "reproducibility": 0.5512499999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.4738675,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:53:38.712132+00:00",
+    "id": "340e2880a1f7"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.32055
+  }
+}

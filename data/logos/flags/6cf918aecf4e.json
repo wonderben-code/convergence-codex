@@ -1,0 +1,15 @@
+{
+  "proof_id": "6cf918aecf4e",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous categorical framework for 'emergent structure' that can distinguish between properties definable in the original category C versus those only definable in the target category D. This likely requires a formal theory of relative expressiveness between categories, possibly using logical frameworks or topos theory.",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

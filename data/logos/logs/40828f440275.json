@@ -1,0 +1,38 @@
+{
+  "proof_id": "40828f440275",
+  "timestamp": "2026-05-02T13:44:04.338520+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "equivalence - This was rejected because the convergence isn't claiming two different structures have similar properties, but rather that the same QCD principle explains phenomena in both domains"
+      ],
+      "reasoning": "This convergence identifies a shared principle (asymptotic freedom) that manifests in both particle physics and nuclear physics contexts. The claim is about both domains satisfying the same underlying QCD axioms regarding coupling strength behavior at different energy scales, making an axiomatic treatment most appropriate."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Differential geometry, Functional analysis, Algebraic structures",
+      "alternatives_considered": [],
+      "reasoning": "Asymptotic freedom requires the renormalization group flow on coupling space, naturally formulated as vector fields on manifolds. The running coupling is a connection on a principal bundle, with beta functions as curvature. Functional analysis provides the operator formalism for quantum field theory, while algebraic structures capture gauge symmetry."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "We establish asymptotic freedom by computing the one-loop QCD beta function, showing it is negative for small coupling. This implies the coupling runs to zero at high energies and diverges at low energies near \u039b_QCD. While we cannot rigorously prove confinement follows from strong coupling, we connect the same running coupling to nuclear physics scales where effective theories describe nuclear binding.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 10 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3138 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "skipped",
+      "alternatives_considered": [],
+      "reasoning": "Lean formalisation not feasible: This proof requires extensive quantum field theory and gauge theory formalization that does not exist in Mathlib. The mathematical objects (QCD coupling, beta function, Wilson loops, confinement) are deeply rooted in physics and would require formalizing the entire framework of quantum chromodynamics, renormalization theory, and gauge field theory from scratch. The physical interpretation and connection to nuclear physics makes this unsuitable for pure mathematical formalization in current Mathlib."
+    }
+  ]
+}

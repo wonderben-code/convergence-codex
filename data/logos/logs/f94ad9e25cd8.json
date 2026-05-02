@@ -1,0 +1,38 @@
+{
+  "proof_id": "f94ad9e25cd8",
+  "timestamp": "2026-05-02T13:42:55.409220+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "equivalence was considered since both involve Bloch's theorem and band structure theory, but was rejected because the physical mechanisms differ significantly (quantum mechanical vs classical wave propagation), making a functorial correspondence less natural than identifying shared axioms"
+      ],
+      "reasoning": "Both domains exhibit the same abstract principle: periodic structures creating forbidden frequency/energy ranges. The convergence identifies shared mathematical properties (periodicity leading to band gaps) that can be captured by a common set of axioms about wave propagation in periodic media, with both optical lattices and acoustic structures serving as different physical models of these axioms."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Functional analysis, Algebraic structures, Topology",
+      "alternatives_considered": [],
+      "reasoning": "Band gaps are fundamentally about spectral properties of periodic operators (Schr\u00f6dinger, wave operators), which requires spectral theory from functional analysis. The periodic structure induces translation symmetry captured by group actions, while topological properties of the spectrum (gaps as open sets) are essential."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof uses Floquet-Bloch theory to decompose the periodic operator into a family of operators H_k parameterized by quasimomentum k. Each H_k has discrete spectrum, and the continuous dependence on k creates bands. Gaps arise when consecutive bands do not overlap.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 7 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 2755 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 3360 chars, 13 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This formalization captures the structure of the band theory proof but requires significant spectral theory machinery not currently in Mathlib, particularly for differential operators, Floquet-Bloch theory, and direct integral decompositions. The core mathematical objects (periodic Schr\u00f6dinger operators, Brillouin zones, band functions) all need proper definitions."
+    }
+  ]
+}

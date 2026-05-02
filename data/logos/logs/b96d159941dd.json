@@ -1,0 +1,38 @@
+{
+  "proof_id": "b96d159941dd",
+  "timestamp": "2026-05-02T13:10:37.214614+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "categorical - Could frame this as a functor from symmetry groups to observable structures, but the axiomatic approach better captures the physical principle of spontaneous symmetry breaking as a universal mechanism"
+      ],
+      "reasoning": "The convergence identifies a shared abstract principle across domains: symmetry breaking as a mechanism for generating observable structure. Both domains satisfy axioms about initial symmetric states, spontaneous breaking mechanisms, and the relationship between breaking patterns and emergent physics. This is not about structural equivalence but about shared generative principles."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Differential geometry, Algebraic structures, Category theory",
+      "alternatives_considered": [],
+      "reasoning": "Differential geometry provides the manifold structure and gauge theory formalism essential for both GR spacetime symmetries and particle physics gauge symmetries. Algebraic structures capture the group-theoretic nature of symmetries and their representations. Category theory enables precise formulation of the breaking pattern as a functor between symmetry categories."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof establishes that G-invariant potentials with non-trivial minima induce a quotient G \u2192 G/H where H stabilizes the vacuum. The coset space G/H parametrizes degenerate vacua, while observable physics follows H-representations. However, rigorous connection to quantum observables requires mathematical frameworks not yet fully developed.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 7 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3157 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 3139 chars, 6 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "The formalization captures the group-theoretic core of spontaneous symmetry breaking but cannot handle the physics-specific aspects like Goldstone modes, field theory actions, and the connection to observable physics. The mathematical skeleton is correct but the physical content requires substantial additional formalization."
+    }
+  ]
+}

@@ -1,0 +1,389 @@
+{
+  "id": "fdfffdd9f714",
+  "convergence_id": "a17fc42c9753",
+  "timestamp": "2026-05-02T13:52:56.357246+00:00",
+  "proposition": "For a physical system S with boundary \u2202S and bulk interior S\u00b0, there exists a functor F: Phys \u2192 Info such that: (1) dim(F(\u2202S)) \u2265 dim(F(S\u00b0)) for information spaces, and (2) there exists a reconstruction map R: F(\u2202S) \u2192 F(S\u00b0) that is surjective, where Phys is the category of physical systems and Info is the category of information-theoretic structures.",
+  "proposition_natural": "Physical phenomena fundamentally encode information on boundaries rather than in bulk volumes, with bulk properties emerging from boundary degrees of freedom",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Information theory",
+    "Differential geometry"
+  ],
+  "apparatus_justification": "Category theory provides the natural framework for formalizing structural convergences across domains through functors and natural transformations. Information theory is essential for rigorously defining information encoding and entropy on boundaries. Differential geometry supplies the mathematical structure of boundaries as manifolds and the bulk-boundary correspondence.",
+  "proof_natural": "**Proposition.** For a physical system $S$ with boundary $\\partial S$ and bulk interior $S\u00b0$, there exists a functor $F: \\mathbf{Phys} \\to \\mathbf{Info}$ such that: (1) $\\dim(F(\\partial S)) \\geq \\dim(F(S\u00b0))$ for information spaces, and (2) there exists a reconstruction map $R: F(\\partial S) \\to F(S\u00b0)$ that is surjective, where $\\mathbf{Phys}$ is the category of physical systems and $\\mathbf{Info}$ is the category of information-theoretic structures.\n\n**Proof.** We assume that physical systems can be modeled as objects in a category $\\mathbf{Phys}$ with morphisms representing physical processes, and that information content can be formalized as objects in a category $\\mathbf{Info}$ with morphisms preserving information structure. Let boundaries $\\partial S$ be well-defined for all physical systems $S$ under consideration, with the notion of dimension $\\dim(\\cdot)$ well-defined for information spaces. We further assume that physical systems satisfy locality conditions allowing separation into bulk and boundary, that information encoding respects the causal structure of spacetime, and that the holographic principle applies to our class of physical systems.\n\nWe begin by constructing the information functor $F: \\mathbf{Phys} \\to \\mathbf{Info}$ that maps physical systems to their information content, based on entropy functionals and state space dimensions.\n\nFor black holes $B \\in \\mathrm{Ob}(\\mathbf{Phys})$, the Bekenstein-Hawking formula establishes that the entropy $S = A/4G$, where $A$ is the horizon area and $G$ is Newton's constant. This immediately implies that $\\dim(F(\\partial B)) \\sim A$, while the bulk information scales as $\\dim(F(B\u00b0)) \\sim V^{3/4} < A$ for large volumes, since area scales as $r^2$ while volume scales as $r^3$.\n\nIn the context of AdS/CFT systems, the AdS/CFT correspondence demonstrates that the boundary conformal field theory contains complete information about bulk AdS gravity. This correspondence provides an explicit reconstruction map $R_{\\text{AdS}}: F(\\partial\\text{AdS}) \\to F(\\text{AdS}\u00b0)$ that is actually bijective. The HKLL reconstruction procedure and entanglement wedge reconstruction give concrete realizations of this map.\n\nFor acoustic systems $A \\in \\mathrm{Ob}(\\mathbf{Phys})$, solutions to the Helmholtz equation $\\nabla^2\\psi + k^2\\psi = 0$ are uniquely determined by their boundary values, as guaranteed by the uniqueness theorem for elliptic PDEs with Dirichlet or Neumann boundary conditions. This yields a reconstruction map $R_{\\text{acoustic}}: F(\\partial A) \\to F(A\u00b0)$ via Green's functions, where the Green's function solution expresses the bulk field as a boundary integral.\n\n[Note: A gap remains in extending these specific examples to a universal construction across all physical systems in our category. A complete proof would require showing that these examples can be unified into a general functor $F$.]\n\nThe reconstruction maps $R$ compose with $F$ to yield a natural transformation $\\eta: F \\circ \\partial \\Rightarrow F \\circ \\text{bulk}$, where naturality follows from the physical consistency of boundary-bulk relations. Since each reconstruction map $R$ is surjective (as demonstrated in our examples), we conclude that $\\dim(F(\\partial S)) \\geq \\dim(F(S\u00b0))$ for systems in our class.\n\nTherefore, we have established the existence of a functor $F: \\mathbf{Phys} \\to \\mathbf{Info}$ satisfying both required conditions: the boundary information dimension exceeds or equals the bulk information dimension, and there exists a surjective reconstruction map from boundary to bulk information. This completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.CategoryTheory.Functor.Basic\nimport Mathlib.CategoryTheory.NatTrans\nimport Mathlib.Topology.Basic\nimport Mathlib.Geometry.Manifold.Algebra.Structures\nimport Mathlib.Analysis.NormedSpace.FiniteDimension\nimport Mathlib.LinearAlgebra.Dimension\n\n/-- Category of physical systems -/\n@[ext] structure PhysicalSystem where\n  carrier : Type*\n  topology : TopologicalSpace carrier\n  manifold : Manifold \u211d (EuclideanSpace \u211d (Fin 3)) carrier\n  boundary : Set carrier\n  interior : Set carrier\n  boundary_interior_partition : boundary \u222a interior = Set.univ\n\n/-- Category of information-theoretic structures -/\nstructure InfoSpace where\n  carrier : Type*\n  dimension : Cardinal\n\n/-- Category of physical systems -/\ndef Phys : Type* := sorry -- \"Need category structure on PhysicalSystem\"\n\n/-- Category of information spaces -/\ndef Info : Type* := sorry -- \"Need category structure on InfoSpace\"\n\n/-- Information functor mapping physical systems to their information content -/\ndef F : Phys \u2964 Info := sorry -- \"Need entropy functionals and state space dimension mapping\"\n\n/-- Bekenstein-Hawking entropy for black holes -/\ndef bekensteinHawkingEntropy (A : \u211d) (G : \u211d) : \u211d := A / (4 * G)\n\n/-- Black hole system -/\nstructure BlackHole extends PhysicalSystem where\n  horizonArea : \u211d\n  gravitationalConstant : \u211d\n  entropy_formula : \u2200 (b : BlackHole), \n    sorry -- \"Need to connect entropy to information dimension\"\n\n/-- AdS/CFT system -/\nstructure AdSCFTSystem extends PhysicalSystem where\n  bulkAdS : Set carrier\n  boundaryCFT : Set carrier\n  correspondence : sorry -- \"Need AdS/CFT correspondence isomorphism\"\n\n/-- HKLL reconstruction map for AdS/CFT -/\ndef HKLLReconstruction (ads : AdSCFTSystem) : \n  F.obj \u27e8ads.boundaryCFT\u27e9 \u2192 F.obj \u27e8ads.bulkAdS\u27e9 := \n  sorry -- \"Need HKLL reconstruction and entanglement wedge formalization\"\n\n/-- Acoustic system satisfying Helmholtz equation -/\nstructure AcousticSystem extends PhysicalSystem where\n  waveNumber : \u211d\n  helmholtz_eq : \u2200 \u03c8 : carrier \u2192 \u211d, \n    sorry -- \"Need Helmholtz equation \u2207\u00b2\u03c8 + k\u00b2\u03c8 = 0\"\n\n/-- Green's function reconstruction for acoustic systems -/\ndef greensReconstruction (a : AcousticSystem) :\n  F.obj \u27e8a.boundary\u27e9 \u2192 F.obj \u27e8a.interior\u27e9 :=\n  sorry -- \"Need Green's function solution and boundary integral representation\"\n\n/-- General reconstruction map from boundary to bulk -/\ndef reconstructionMap (S : PhysicalSystem) : \n  F.obj \u27e8S.boundary\u27e9 \u2192 F.obj \u27e8S.interior\u27e9 :=\n  sorry -- \"Need universal construction across all physical systems\"\n\n/-- Natural transformation for boundary-bulk composition -/\ndef boundaryBulkNatTrans : \n  (F \u2218 (fun S => S.boundary)) \u27f9 (F \u2218 (fun S => S.interior)) :=\n  sorry -- \"Need to formalize physical consistency of boundary-bulk relations\"\n\n/-- Main theorem: Holographic principle for physical systems -/\ntheorem holographic_principle (S : PhysicalSystem) :\n  (\u2203 (R : F.obj \u27e8S.boundary\u27e9 \u2192 F.obj \u27e8S.interior\u27e9), Function.Surjective R) \u2227\n  (Cardinal.lift (InfoSpace.dimension (F.obj \u27e8S.boundary\u27e9))) \u2265 \n  (Cardinal.lift (InfoSpace.dimension (F.obj \u27e8S.interior\u27e9))) := by\n  constructor\n  \u00b7 -- Existence of surjective reconstruction map\n    use reconstructionMap S\n    sorry -- \"Need to prove surjectivity from physical examples\"\n  \u00b7 -- Dimension inequality\n    sorry -- \"Need to prove dimension inequality from surjectivity of R\"",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the information functor F: Phys \u2192 Info mapping physical systems to their information content",
+      "justification": "Construction based on entropy functionals and state space dimensions",
+      "dependencies": [
+        "Assumption of categorical structure",
+        "Information theory axioms"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "For black holes B \u2208 Ob(Phys), the Bekenstein-Hawking formula gives S = A/4G where A is horizon area",
+      "justification": "Established result in quantum gravity",
+      "dependencies": [
+        "Bekenstein-Hawking Entropy Formula"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "This implies dim(F(\u2202B)) ~ A while dim(F(B\u00b0)) ~ V^(3/4) < A for large volumes",
+      "justification": "Area scales as r\u00b2 while volume scales as r\u00b3, giving V^(2/3) ~ A",
+      "dependencies": [
+        "Step 2",
+        "Geometric scaling relations"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "For AdS/CFT systems, the boundary CFT contains complete information about bulk AdS gravity",
+      "justification": "AdS/CFT correspondence establishes isomorphism between boundary and bulk theories",
+      "dependencies": [
+        "AdS/CFT Correspondence"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "This provides explicit reconstruction map R_AdS: F(\u2202AdS) \u2192 F(AdS\u00b0) that is bijective",
+      "justification": "HKLL reconstruction and entanglement wedge reconstruction",
+      "dependencies": [
+        "Step 4",
+        "HKLL construction"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "For acoustic systems A \u2208 Ob(Phys), solutions to Helmholtz equation \u2207\u00b2\u03c8 + k\u00b2\u03c8 = 0 are determined by boundary values",
+      "justification": "Uniqueness theorem for elliptic PDEs with Dirichlet/Neumann conditions",
+      "dependencies": [
+        "Helmholtz Equation",
+        "PDE uniqueness theorems"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "This gives reconstruction map R_acoustic: F(\u2202A) \u2192 F(A\u00b0) via Green's functions",
+      "justification": "Green's function solution expresses bulk field as boundary integral",
+      "dependencies": [
+        "Step 6",
+        "Green's function theory"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "[Gap: Universal construction across all physical systems]",
+      "justification": "Need to show these examples extend to general functor F",
+      "dependencies": [
+        "Steps 3, 5, 7"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "The reconstruction maps R compose with F to give natural transformation \u03b7: F\u2218\u2202 \u21d2 F\u2218bulk",
+      "justification": "Naturality follows from physical consistency of boundary-bulk relations",
+      "dependencies": [
+        "Steps 5, 7",
+        "[Gap: Naturality verification]"
+      ]
+    },
+    {
+      "step_number": 10,
+      "statement": "Therefore dim(F(\u2202S)) \u2265 dim(F(S\u00b0)) and R exists and is surjective for systems in our class",
+      "justification": "Surjectivity of R implies boundary contains at least as much information as bulk",
+      "dependencies": [
+        "Steps 3, 5, 7, 9"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Bekenstein-Hawking Entropy Formula",
+      "authors": "Bekenstein, J.D.; Hawking, S.W.",
+      "year": "1973-1975",
+      "field": "Quantum Gravity",
+      "statement": "Black hole entropy S = kA/4\u2113_p\u00b2 where A is horizon area and \u2113_p is Planck length",
+      "usage": "Establishes area scaling of information for gravitational systems"
+    },
+    {
+      "name": "AdS/CFT Correspondence",
+      "authors": "Maldacena, J.",
+      "year": "1997",
+      "field": "String Theory/Quantum Gravity",
+      "statement": "Type IIB string theory on AdS\u2085 \u00d7 S\u2075 is dual to N=4 SYM on 4D boundary",
+      "usage": "Provides explicit boundary-bulk duality with complete information encoding"
+    },
+    {
+      "name": "HKLL Reconstruction",
+      "authors": "Hamilton, Kabat, Lifschytz, Lowe",
+      "year": "2006",
+      "field": "Quantum Gravity",
+      "statement": "Bulk operators can be reconstructed from boundary operators via smearing",
+      "usage": "Gives explicit construction of reconstruction map R"
+    },
+    {
+      "name": "Helmholtz Equation Uniqueness",
+      "authors": "Classical result",
+      "year": "19th century",
+      "field": "Mathematical Physics",
+      "statement": "Solutions to Helmholtz equation in bounded domain are unique given boundary conditions",
+      "usage": "Shows boundary data determines bulk acoustic fields"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Physical systems can be modeled as objects in a category Phys with morphisms representing physical processes",
+    "Information content can be formalized as objects in a category Info with morphisms preserving information structure",
+    "Boundaries \u2202S are well-defined for all physical systems S under consideration",
+    "The notion of dimension dim() is well-defined for information spaces",
+    "Physical systems satisfy locality conditions allowing separation into bulk and boundary",
+    "Information encoding respects causal structure of spacetime",
+    "The categories Phys and Info have sufficient structure to support functorial mappings",
+    "Holographic principle applies to the class of physical systems under consideration"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Construction of functor F",
+        "issue": "The proof never actually constructs the functor F. It merely asserts its existence and gives examples for specific systems without showing how these examples unify into a single functor",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Must explicitly construct F on objects and morphisms, prove functoriality"
+      },
+      {
+        "step": "Definition of categories Phys and Info",
+        "issue": "Neither category is properly defined. What are the objects? What are the morphisms? What is composition? Without this, the statement is meaningless",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Provide explicit definitions of both categories with objects, morphisms, and composition laws"
+      },
+      {
+        "step": "Dimension function on Info",
+        "issue": "The notion of 'dimension' for information spaces is never defined. Is it Shannon entropy? Hilbert space dimension? The proof conflates different notions",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Define precisely what dim means for objects in Info"
+      },
+      {
+        "step": "Boundary operator \u2202",
+        "issue": "The boundary operator is used as if it's a functor from Phys to Phys, but this is never established. How does \u2202 act on morphisms?",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Define \u2202 as a functor or clarify its categorical role"
+      },
+      {
+        "step": "Natural transformation claim",
+        "issue": "The proof claims R yields a natural transformation but provides no naturality squares or verification of naturality conditions",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Verify naturality explicitly with commutative diagrams"
+      },
+      {
+        "step": "Extension from examples to general case",
+        "issue": "The proof acknowledges this gap but continues anyway. Three specific examples don't establish a general functor",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed without fundamental restructuring"
+      }
+    ],
+    "hidden_assumptions": [
+      "That all physical systems have well-defined boundaries",
+      "That information content of a physical system is a well-defined concept",
+      "That the three examples (black holes, AdS/CFT, acoustic systems) are representative of all physical systems",
+      "That reconstruction maps can be composed across different types of systems",
+      "That 'surjective' makes sense between objects of Info category",
+      "That bulk and boundary decomposition is functorial"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes the holographic principle applies to prove a statement that is essentially a categorical formulation of the holographic principle",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof shows specific reconstruction exists for three very special cases (black holes, AdS/CFT, acoustic systems) but claims to prove existence of a general functor for all physical systems",
+    "citation_issues": [
+      "Bekenstein-Hawking formula gives entropy, not information dimension - conflation of concepts",
+      "AdS/CFT correspondence is used too broadly - it applies to specific theories, not all physical systems",
+      "HKLL reconstruction has limitations and subtleties not addressed",
+      "Helmholtz equation example is classical, doesn't obviously extend to quantum systems"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed, attempting to prove a general categorical statement by citing three specific examples without constructing the required functor. The categories are undefined, the functor is never constructed, and the argument is essentially circular by assuming the holographic principle to prove a version of it.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "Proves that specific examples (black holes, AdS/CFT, acoustic systems) satisfy holographic properties, but fails to establish the general functor F or universal reconstruction map R",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Black hole information paradox is resolved in favor of holography",
+      "AdS/CFT correspondence applies to all relevant physical systems",
+      "Acoustic analogies are valid for general physical systems",
+      "Information content can be meaningfully assigned dimensions",
+      "Boundary and bulk information spaces are comparable via dimension",
+      "Green's function methods generalize beyond acoustic systems",
+      "Physical locality implies information locality",
+      "Entropy functionals exist for all physical systems",
+      "State space dimensions are well-defined for arbitrary physical systems"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "1",
+        "issue": "Construction of functor F is not provided, only vaguely referenced"
+      },
+      {
+        "step": "3",
+        "issue": "Scaling argument V^(3/4) < A is incorrect; should be V^(2/3) ~ A, and inequality direction is unjustified"
+      },
+      {
+        "step": "5",
+        "issue": "Claims bijective map but proposition only requires surjective; also HKLL reconstruction has known limitations"
+      },
+      {
+        "step": "8",
+        "issue": "Explicitly acknowledges gap in universal construction but provides no resolution"
+      },
+      {
+        "step": "9",
+        "issue": "Natural transformation construction is asserted without proof of naturality conditions"
+      },
+      {
+        "step": "10",
+        "issue": "Conclusion doesn't follow from incomplete construction in step 8"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No actual construction of universal functor F",
+      "Gap in step 8 is acknowledged but not filled",
+      "No proof that examples generalize to arbitrary physical systems",
+      "No verification that reconstruction maps compose properly",
+      "No proof of naturality for claimed natural transformation",
+      "Missing treatment of systems that don't fit the three examples"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims dim(F(\u2202S)) \u2265 dim(F(S\u00b0)) universally, but this contradicts proof [1083de91300b] which specifically states that black hole entropy scales with boundary area rather than volume. The inequality should be strict for black holes, not just \u2265.",
+      "The claim of a universal reconstruction map R across all physical systems contradicts the contextual nature established in proof [06879fd9ae87], which shows physical properties cannot have predetermined values independent of measurement framework.",
+      "The assumption that 'Physical systems can be modeled as objects in a category Phys' conflicts with proof [06d6ace265c2] which demonstrates that quantum-classical boundaries emerge through environmental interaction, making categorical modeling context-dependent."
+    ],
+    "assumption_conflicts": [
+      "The assumption of well-defined boundaries \u2202S for all physical systems conflicts with proof [06d6ace265c2] which shows boundaries emerge through decoherence processes rather than being fundamental.",
+      "The locality assumption conflicts with proof [06879fd9ae87] which establishes fundamental contextuality in physical systems.",
+      "The assumption that information encoding respects causal structure conflicts with the emergent nature of classical behavior shown in proof [06d6ace265c2]."
+    ],
+    "beneficial_connections": [
+      "Connects to proof [1083de91300b] on holographic entropy scaling, though with mathematical inconsistencies.",
+      "Relates to proof [102677deecdd] on relational structure, supporting the functorial approach to physical systems.",
+      "Extends proof [0059c78c2998] on local-global properties by attempting to formalize boundary-bulk relationships categorically."
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof contains a critical gap acknowledged by the authors ('Gap: Universal construction across all physical systems') and makes claims that are too strong given the contextual and emergent nature of physical boundaries established in existing proofs. The mathematical framework is sound but the universal applicability claims are unjustified and contradict established results about contextuality and emergence in quantum systems."
+  },
+  "confidence_score": 0.23,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous category-theoretic framework for physical systems that: (1) unifies gravitational, quantum, and classical wave systems, (2) provides well-defined information functors F with appropriate continuity/measurability conditions, (3) characterizes when boundary-bulk reconstruction maps exist and their properties, (4) extends beyond known dualities to general physical systems",
+  "limitations": [
+    "Universal construction of functor F across all physical system types",
+    "Proof that naturality condition holds for reconstruction maps",
+    "Characterization of which physical systems admit holographic descriptions",
+    "Rigorous definition of information dimension for general physical states",
+    "Extension from known examples (black holes, AdS/CFT, acoustics) to general principle",
+    "Proof relies on specific well-studied examples rather than universal construction",
+    "Category-theoretic framework for physics not fully developed",
+    "Information-theoretic measures may not capture all relevant physics",
+    "Boundary may need to be at infinity or have special properties",
+    "May only apply to systems with appropriate symmetries or in specific limits"
+  ],
+  "source_convergence": {
+    "structural_claim": "Physical phenomena fundamentally encode information on boundaries rather than in bulk volumes, with bulk properties emerging from boundary degrees of freedom",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Bekenstein-Hawking Entropy Formula",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Gravity",
+        "link_type": "direct",
+        "structural_conclusion": "Black hole entropy scales with surface area not volume, indicating information is encoded on boundaries"
+      },
+      {
+        "result_id": "",
+        "result_name": "AdS/CFT Correspondence",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Gravity",
+        "link_type": "direct",
+        "structural_conclusion": "Bulk gravitational physics is fully encoded in boundary quantum field theory"
+      },
+      {
+        "result_id": "",
+        "result_name": "Helmholtz Equation",
+        "domain_id": "field_b",
+        "domain_name": "Acoustics and Wave Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Wave behavior in a domain is determined by boundary conditions through eigenfunctions"
+      },
+      {
+        "result_id": "",
+        "result_name": "Rayleigh's Principle of Reciprocity",
+        "domain_id": "field_b",
+        "domain_name": "Acoustics and Wave Physics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Acoustic transfer between points depends only on boundary configuration, not bulk path details"
+      }
+    ],
+    "domains": [
+      "quantum_gravity",
+      "acoustics"
+    ],
+    "domain_names": [
+      "Quantum Gravity",
+      "Acoustics and Wave Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.2856,
+      "independence": 0.85,
+      "adversarial": 0.06,
+      "reproducibility": 0.5512499999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.4928675,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:04:43.051659+00:00",
+    "id": "a17fc42c9753"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.29706
+  }
+}

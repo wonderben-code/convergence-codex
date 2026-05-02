@@ -1,0 +1,38 @@
+{
+  "proof_id": "eb3cc3f97d56",
+  "timestamp": "2026-05-02T13:48:55.047847+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "equivalence - This was rejected because while both effects stem from vacuum activity, the mathematical structures (mode density modifications vs energy level corrections) are not sufficiently similar to establish a functorial relationship or natural transformation between them."
+      ],
+      "reasoning": "Both the Purcell Effect and Lamb Shift are manifestations of vacuum fluctuations affecting physical systems, but through different mechanisms (boundary conditions vs quantum field fluctuations). An axiomatic approach can capture the shared principle that the vacuum acts as an active medium with measurable effects, while allowing for the different mathematical implementations in each domain."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Functional analysis, Differential geometry, Measure theory",
+      "alternatives_considered": [],
+      "reasoning": "Functional analysis provides the operator formalism for quantum field theory in curved spacetime, capturing vacuum fluctuations through spectral properties. Differential geometry handles the spacetime metric affecting light propagation. Measure theory formalizes the probabilistic aspects of vacuum fluctuations."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof establishes that the quantum electromagnetic vacuum has observable effects by showing that vacuum field fluctuations \u27e80|A_\u03bcA_\u03bd|0\u27e9 \u2260 0 lead to both mechanical forces (Casimir effect) through the stress-energy tensor and atomic energy shifts (Lamb shift) through the interaction Hamiltonian. The key insight is that while \u27e80|A_\u03bc|0\u27e9 = 0, the two-point function is non-zero, leading to measurable second-order effects after appropriate regularization and renormalization procedures.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 10 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 4042 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 4285 chars, 11 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This formalization captures the mathematical structure but cannot fully implement the proof due to missing QFT foundations in Mathlib. The Casimir force formula and Lamb shift value are partially formalized as concrete results."
+    }
+  ]
+}

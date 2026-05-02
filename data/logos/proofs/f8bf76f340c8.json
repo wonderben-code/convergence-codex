@@ -1,0 +1,361 @@
+{
+  "id": "f8bf76f340c8",
+  "convergence_id": "928bed19a7d2",
+  "timestamp": "2026-05-02T13:48:33.883924+00:00",
+  "proposition": "Let (M, g) be a smooth manifold with metric g, and let H be a Hilbert space of physical states. For any topological invariant \u03c4: \u03c0_n(M) \u2192 \u2124 and any physical observable O: H \u2192 H satisfying [O, H] = 0 where H is the Hamiltonian, there exists a quantization map Q: \u03c4(\u03c0_n(M)) \u2192 Spec(O) such that: (1) Q is independent of the metric g, (2) Q is invariant under continuous deformations \u03c6_t: M \u2192 M with \u03c6_0 = id, and (3) Im(Q) \u2282 \u2124 \u00b7 q_0 for some fundamental quantum q_0 \u2208 \u211d.",
+  "proposition_natural": "Topological invariants determine quantized physical observables independent of material details or continuous deformations",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Topology",
+    "Category theory",
+    "Differential geometry"
+  ],
+  "apparatus_justification": "Topology provides the core invariants (homology, homotopy groups) that remain unchanged under continuous deformations. Category theory formalizes the functorial relationship between topological spaces and their invariants, while differential geometry bridges to the smooth manifold structure of physical phase spaces where observables live.",
+  "proof_natural": "**Proposition.** Let $(M, g)$ be a smooth manifold with metric $g$, and let $H$ be a Hilbert space of physical states. For any topological invariant $\\tau: \\pi_n(M) \\to \\mathbb{Z}$ and any physical observable $O: H \\to H$ satisfying $[O, H] = 0$ where $H$ is the Hamiltonian, there exists a quantization map $Q: \\tau(\\pi_n(M)) \\to \\text{Spec}(O)$ such that: (1) $Q$ is independent of the metric $g$, (2) $Q$ is invariant under continuous deformations $\\phi_t: M \\to M$ with $\\phi_0 = \\text{id}$, and (3) $\\text{Im}(Q) \\subset \\mathbb{Z} \\cdot q_0$ for some fundamental quantum $q_0 \\in \\mathbb{R}$.\n\n**Proof.** We assume that $M$ is a compact smooth manifold without boundary equipped with a Riemannian metric $g$. Let the physical system be described by a fiber bundle $E \\to M$ with connection $\\nabla$, and assume the Hilbert space $H$ admits a well-defined Hamiltonian operator $H$ with non-degenerate ground state $|\\Omega\\rangle$ that is gapped from excited states. We further assume that the observable $O$ is self-adjoint with discrete spectrum, and that the adiabatic theorem applies for slow parameter variations.\n\nBy the Chern-Weil theorem, the topological invariant $\\tau$ can be expressed as an integral of characteristic classes over cycles in $M$. Specifically, for any cycle $\\gamma \\in \\pi_n(M)$, we have $\\tau(\\gamma) = \\int_\\gamma \\text{ch}_n(F)$, where $F = d\\nabla + \\nabla \\wedge \\nabla$ is the curvature of the connection. Since the Chern character $\\text{ch}_n(F)$ represents a cohomology class that is independent of the choice of connection by the Chern-Weil homomorphism, the integral $\\int_\\gamma \\text{ch}_n(F)$ depends only on the topology of $M$ and not on the metric $g$.\n\nConsider now the adiabatic transport of the ground state around the cycle $\\gamma$. By the Berry phase theorem, the accumulated geometric phase is given by $\\gamma_B = i\\oint_\\gamma \\langle\\Omega(s)|d|\\Omega(s)\\rangle$. This integral equals the flux of the Berry curvature through any surface bounded by $\\gamma$, which by construction equals $2\\pi \\cdot \\tau(\\gamma)$ modulo $2\\pi$.\n\n[Note: The precise connection between the Berry phase and the spectrum of the observable $O$ requires additional structure beyond standard quantum mechanics. We proceed under the assumption that such a connection exists in the linear response regime.]\n\nInvoking the Kubo formula in the linear response regime, the expectation value of the observable $O$ is related to the topological invariant by $\\langle O \\rangle = (e^2/h) \\cdot \\tau(\\gamma)$. This relationship, exemplified by the TKNN formula for Hall conductance in two dimensions where $\\sigma_{xy} = (e^2/h) \\times \\text{Chern number}$, provides the necessary link between topology and quantization.\n\nWe therefore define the quantization map $Q: \\tau(\\pi_n(M)) \\to \\text{Spec}(O)$ by $Q(k) = k \\cdot (e^2/h)$ for $k \\in \\mathbb{Z}$. Since $\\tau$ takes only integer values, we have $\\text{Im}(Q) \\subset \\mathbb{Z} \\cdot (e^2/h)$, establishing property (3) with fundamental quantum $q_0 = e^2/h$.\n\nProperty (1) follows immediately from the topological nature of characteristic classes: since $\\tau$ depends only on the topology of $M$ and not on the metric $g$, the map $Q$ inherits this metric independence.\n\nFor property (2), let $\\phi_t: M \\to M$ be a continuous deformation with $\\phi_0 = \\text{id}$. By the homotopy invariance of cohomology, we have $\\tau(\\phi_t(\\gamma)) = \\tau(\\gamma)$ for all $t$. Consequently, $Q(\\tau(\\phi_t(\\gamma))) = Q(\\tau(\\gamma))$, establishing invariance under continuous deformations.\n\nThis completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.Topology.Homotopy.HomotopyGroup\nimport Mathlib.Analysis.InnerProductSpace.Basic\nimport Mathlib.LinearAlgebra.Eigenspace.Basic\nimport Mathlib.Geometry.Manifold.SmoothManifoldWithCorners\nimport Mathlib.Geometry.RiemannianGeometry.Basic\nimport Mathlib.Topology.ContinuousFunction.Basic\n\n/-- A topological invariant from homotopy groups to integers -/\ndef TopologicalInvariant (M : Type*) [TopologicalSpace M] (n : \u2115) :=\n  HomotopyGroup n M \u2192 \u2124\n\n/-- A physical observable as a self-adjoint operator on a Hilbert space -/\nstructure PhysicalObservable (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u211d H] where\n  toLinearMap : H \u2192L[\u211d] H\n  selfAdjoint : \u2200 x y, \u27eatoLinearMap x, y\u27eb = \u27eax, toLinearMap y\u27eb\n\n/-- The Hamiltonian operator -/\nstructure Hamiltonian (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u211d H] extends\n  PhysicalObservable H\n\n/-- Commutator bracket for operators -/\ndef commutator {H : Type*} [NormedAddCommGroup H] [InnerProductSpace \u211d H]\n  (A B : H \u2192L[\u211d] H) : H \u2192L[\u211d] H :=\n  sorry -- \"Commutator bracket not in Mathlib\"\n\n/-- A quantization map from topological invariants to spectrum -/\ndef QuantizationMap {M H : Type*} [TopologicalSpace M] [NormedAddCommGroup H]\n  [InnerProductSpace \u211d H] (n : \u2115) (\u03c4 : TopologicalInvariant M n)\n  (O : PhysicalObservable H) :=\n  \u03c4.range \u2192 spectrum \u211d O.toLinearMap\n\n/-- Main theorem: Topological quantization of observables -/\ntheorem topological_quantization\n  {M H : Type*} [TopologicalSpace M] [ChartedSpace (EuclideanSpace \u211d (Fin n)) M]\n  [SmoothManifoldWithCorners (\ud835\udce1 n) M] [NormedAddCommGroup H] [InnerProductSpace \u211d H]\n  [CompleteSpace H] (g : Metric M) (n : \u2115) (\u03c4 : TopologicalInvariant M n)\n  (O : PhysicalObservable H) (Ham : Hamiltonian H)\n  (h_commute : commutator O.toLinearMap Ham.toLinearMap = 0) :\n  \u2203 (Q : QuantizationMap n \u03c4 O) (q\u2080 : \u211d),\n    (\u2200 g' : Metric M, Q = Q) \u2227  -- metric independence\n    (\u2200 (\u03c6 : C(I \u00d7 M, M)) (h_deform : \u2200 x, \u03c6 (0, x) = x),\n      Q = Q) \u2227  -- deformation invariance\n    (\u2200 k \u2208 \u03c4.range, \u2203 m : \u2124, Q k = m \u2022 q\u2080) := by\n  -- Step 1: Express topological invariant as integral of characteristic classes\n  sorry -- \"Chern-Weil theorem not in Mathlib\"\n  \n  -- Step 2: Show integral is independent of connection choice\n  sorry -- \"Chern character and connection independence not in Mathlib\"\n  \n  -- Step 3: Relate Berry phase to topological invariant\n  sorry -- \"Berry phase formula not in Mathlib\"\n  \n  -- Step 4: Gap - connection between Berry phase and spectrum\n  sorry -- \"Relationship between geometric phases and quantized observables requires additional structure\"\n  \n  -- Step 5: Apply Kubo formula in linear response regime\n  sorry -- \"Kubo formula not in Mathlib\"\n  \n  -- Step 6: Define quantization map\n  use sorry -- \"Construction of Q using e\u00b2/h normalization\"\n  use sorry -- \"Fundamental quantum q\u2080 = e\u00b2/h\"\n  \n  constructor\n  \u00b7 -- Metric independence\n    sorry -- \"Topological invariants are metric independent by definition\"\n  \n  constructor\n  \u00b7 -- Deformation invariance\n    sorry -- \"Homotopy invariance of cohomology not fully formalized\"\n  \n  \u00b7 -- Quantization condition\n    sorry -- \"Integer spectrum property follows from topological invariant taking integer values\"",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The topological invariant \u03c4 can be expressed as an integral of characteristic classes over cycles in M",
+      "justification": "By the Chern-Weil theorem, characteristic classes of the bundle E \u2192 M can be represented by differential forms constructed from the curvature F = d\u2207 + \u2207 \u2227 \u2207",
+      "dependencies": [
+        "Chern-Weil theorem",
+        "Definition of characteristic classes"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "For any cycle \u03b3 \u2208 \u03c0_n(M), the integral \u222b_\u03b3 ch_n(F) is independent of the choice of connection \u2207",
+      "justification": "The Chern character ch_n(F) is a closed form, and its cohomology class is independent of the connection by the Chern-Weil homomorphism",
+      "dependencies": [
+        "Step 1",
+        "Chern-Weil homomorphism"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The Berry phase \u03b3_B accumulated during adiabatic transport around \u03b3 equals 2\u03c0 \u00b7 \u03c4(\u03b3) modulo 2\u03c0",
+      "justification": "By the geometric phase formula, \u03b3_B = i\u222e_\u03b3 \u27e8\u03a9(s)|d|\u03a9(s)\u27e9, which equals the integral of the Berry curvature over any surface bounded by \u03b3",
+      "dependencies": [
+        "Berry phase theorem",
+        "Stokes' theorem"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "[Gap: Connection between Berry phase and observable spectrum]",
+      "justification": "The relationship between geometric phases and quantized observables requires additional structure beyond standard quantum mechanics",
+      "dependencies": [
+        "Step 3"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Under the assumption of a linear response regime, the observable O has expectation value \u27e8O\u27e9 = (e\u00b2/h) \u00b7 \u03c4(\u03b3) for appropriate normalization",
+      "justification": "Kubo formula relates response functions to topological invariants in the linear response regime",
+      "dependencies": [
+        "Kubo formula",
+        "TKNN formula for Hall conductance"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "The quantization map Q: \u03c4(\u03c0_n(M)) \u2192 Spec(O) is given by Q(k) = k \u00b7 (e\u00b2/h) for k \u2208 \u2124",
+      "justification": "Since \u03c4 takes integer values and the linear response formula gives the proportionality constant",
+      "dependencies": [
+        "Step 5",
+        "Integer-valuedness of topological invariants"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Q is independent of metric g because topological invariants depend only on the topology of M",
+      "justification": "Characteristic classes are topological invariants by definition",
+      "dependencies": [
+        "Step 2",
+        "Definition of topological invariant"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Q is invariant under continuous deformations \u03c6_t because homotopy-equivalent cycles give the same topological invariant",
+      "justification": "Homotopy invariance of cohomology ensures \u03c4(\u03c6_t(\u03b3)) = \u03c4(\u03b3) for all t",
+      "dependencies": [
+        "Homotopy invariance of cohomology"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Chern-Weil theorem",
+      "authors": "Chern, S.S. and Weil, A.",
+      "year": "1940s",
+      "field": "Differential geometry",
+      "statement": "Characteristic classes of a vector bundle can be represented by differential forms constructed from the curvature of any connection",
+      "usage": "Establishes that topological invariants can be computed from local geometric data"
+    },
+    {
+      "name": "Berry phase theorem",
+      "authors": "Berry, M.V.",
+      "year": "1984",
+      "field": "Quantum mechanics",
+      "statement": "Cyclic adiabatic evolution of a quantum system accumulates a geometric phase independent of the dynamical phase",
+      "usage": "Connects parameter space topology to quantum phases"
+    },
+    {
+      "name": "TKNN formula",
+      "authors": "Thouless, Kohmoto, Nightingale, den Nijs",
+      "year": "1982",
+      "field": "Condensed matter physics",
+      "statement": "Hall conductance in 2D is quantized as \u03c3_xy = (e\u00b2/h) \u00d7 Chern number",
+      "usage": "Provides explicit example of topological quantization"
+    },
+    {
+      "name": "Kubo formula",
+      "authors": "Kubo, R.",
+      "year": "1957",
+      "field": "Statistical mechanics",
+      "statement": "Linear response functions are given by equilibrium correlation functions",
+      "usage": "Relates measurable quantities to microscopic properties"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "M is a compact smooth manifold without boundary",
+    "The metric g is Riemannian and smooth",
+    "The Hilbert space H admits a well-defined Hamiltonian operator H",
+    "The observable O is a self-adjoint operator with discrete spectrum",
+    "The physical system admits a fiber bundle description E \u2192 M with connection \u2207",
+    "The topological invariant \u03c4 is computed from characteristic classes of E",
+    "The ground state |\u03a9\u27e9 is non-degenerate and gapped from excited states",
+    "The adiabatic theorem applies for slow parameter variations",
+    "Berry phase is well-defined for cyclic adiabatic evolution"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Connection between Berry phase and spectrum of O",
+        "issue": "The proof admits in brackets that 'the precise connection between the Berry phase and the spectrum of the observable O requires additional structure beyond standard quantum mechanics' but then proceeds assuming this connection exists without establishing it",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed without fundamentally restructuring the argument to establish this connection rigorously"
+      },
+      {
+        "step": "Application of Kubo formula",
+        "issue": "The Kubo formula relates linear response coefficients to correlation functions, not directly to topological invariants. The jump from Berry phase to expectation value via Kubo formula is unjustified",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would require proving that the specific observable O has the required properties to connect its spectrum to topological invariants"
+      },
+      {
+        "step": "Definition of Q",
+        "issue": "The map Q is defined as Q(k) = k\u00b7(e\u00b2/h), but this assumes all elements of \u03c4(\u03c0_n(M)) are in \u2124 and that this specific quantization applies to arbitrary observables O",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "The definition is too specific and assumes the conclusion"
+      },
+      {
+        "step": "TKNN formula application",
+        "issue": "TKNN formula is specific to Hall conductance in 2D systems, not a general principle connecting arbitrary topological invariants to arbitrary observables",
+        "severity": "major",
+        "fixable": false,
+        "suggested_fix": "Cannot generalize from this specific example to all observables and topological invariants"
+      },
+      {
+        "step": "Spectrum inclusion claim",
+        "issue": "No proof that Q actually maps into Spec(O). The construction assumes O has the right spectrum without verification",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would need constraints on O to ensure its spectrum contains the required values"
+      }
+    ],
+    "hidden_assumptions": [
+      "The observable O is specifically related to transport coefficients or response functions",
+      "The system is in a regime where linear response theory applies",
+      "The topological invariant \u03c4 is specifically a Chern number or similar characteristic class",
+      "The observable O has spectrum that includes integer multiples of e\u00b2/h",
+      "There exists a universal relationship between topological invariants and quantum observables",
+      "The fiber bundle E and its connection are physically related to the Hilbert space H and observable O"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes the existence of a quantization map with specific properties (particularly the e\u00b2/h quantization) to prove the existence of such a map. The definition of Q presupposes the quantization structure it claims to establish.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof actually shows nothing beyond restating the TKNN formula for a specific case. It claims to prove existence of a quantization map for arbitrary topological invariants and arbitrary commuting observables, but only considers one specific example without establishing why this should generalize.",
+    "citation_issues": [
+      "Chern-Weil theorem is correctly stated but its relevance to the physical observable O is never established",
+      "Berry phase theorem is correctly cited but the connection to spectrum of O is missing",
+      "TKNN formula is specific to Hall conductance, not a general principle",
+      "Kubo formula doesn't directly connect topological invariants to observable spectra"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed, attempting to prove a general statement by citing one specific example (TKNN/Hall conductance) without establishing why this example should generalize. The critical gap between topology and observable spectrum is acknowledged but never addressed, making the entire argument circular and vacuous.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish a connection between topological invariants and observable spectra but fails to rigorously construct the required quantization map or prove its properties",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The observable O must have topological origin (e.g., Hall conductivity)",
+      "The system must be in a topological phase with quantized response",
+      "The fiber bundle E must be the relevant bundle for the physical observable O",
+      "The Berry phase must be related to the specific observable O being quantized",
+      "The linear response regime assumption requires specific conditions on external fields",
+      "The connection \u2207 must be the physical gauge connection relevant to O",
+      "The manifold M must represent the parameter space of the physical system"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 1",
+        "issue": "No bundle E is specified in the proposition, so invoking Chern-Weil theorem is unjustified"
+      },
+      {
+        "step": "Step 3",
+        "issue": "Berry phase formula requires a specific quantum state |\u03a9(s)\u27e9, but no connection to the topological invariant \u03c4 is established"
+      },
+      {
+        "step": "Step 4",
+        "issue": "Explicitly acknowledged gap - no justification provided for connecting Berry phase to observable spectrum"
+      },
+      {
+        "step": "Step 5",
+        "issue": "Kubo formula application requires specific conditions and the factor e\u00b2/h assumes Hall conductivity without justification"
+      },
+      {
+        "step": "Step 6",
+        "issue": "The map Q(k) = k\u00b7(e\u00b2/h) is not proven to map into Spec(O) - this is a critical unjustified leap"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Step 4 gap is never filled - no rigorous connection between geometric phases and observable spectra",
+      "No proof that Q actually maps to the spectrum of O",
+      "No verification that Im(Q) \u2282 \u2124\u00b7q\u2080 as required",
+      "No proof that the constructed Q satisfies the three required properties simultaneously",
+      "Missing analysis of when the linear response regime applies",
+      "No justification for why e\u00b2/h is the correct quantization unit for arbitrary observables"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The proof claims Q is independent of metric g because 'topological invariants depend only on topology', but then uses Berry phase which explicitly depends on the connection \u2207 and metric structure",
+      "Claims Berry phase equals 2\u03c0\u00b7\u03c4(\u03b3) modulo 2\u03c0, but Berry phases are generally U(1)-valued and not necessarily quantized in integer multiples of 2\u03c0 without additional constraints",
+      "The quantization map Q(k) = k\u00b7(e\u00b2/h) assumes a specific physical context (likely quantum Hall effect) but the proposition is stated for arbitrary manifolds and observables",
+      "Claims [O,H] = 0 implies O has discrete spectrum, but this is not generally true - commutativity doesn't guarantee discreteness of spectrum"
+    ],
+    "assumption_conflicts": [
+      "Assumes Berry phase is well-defined for all cycles, conflicting with proof [06879fd9ae87] which shows physical properties are contextual and measurement-dependent",
+      "Assumes linear response regime without justification, while proof [087da119976b] shows nonlinear effects are fundamental in symmetry breaking",
+      "The fiber bundle connection \u2207 assumption conflicts with the claim of metric independence"
+    ],
+    "beneficial_connections": [
+      "Connects to proof [139ee0499c9e] on topological constraints in dynamical systems",
+      "Relates to proof [08b6405556dd] on symmetry principles constraining dynamics",
+      "Could extend proof [06d6ace265c2] on quantum-classical boundary through adiabatic evolution"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof contains a fundamental gap between Berry phase calculation and observable spectrum, makes unjustified assumptions about quantization, and conflates topological independence with metric independence. The mathematical framework is internally inconsistent."
+  },
+  "confidence_score": 0.23,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous categorical framework connecting fiber bundle topology to operator spectra in infinite-dimensional Hilbert spaces, including: (1) Functorial relationship between topological K-theory and operator K-theory, (2) Spectral flow invariants for families of operators parametrized by manifolds, (3) Index theorems for non-elliptic operators arising in physics",
+  "limitations": [
+    "The connection between Berry phase and observable spectrum (Step 4) requires additional axioms beyond standard quantum mechanics",
+    "The proof assumes linear response regime without proving when this approximation is valid",
+    "The relationship between topological invariants of parameter space and spectrum of observables lacks a general theorem",
+    "The proof does not establish when the adiabatic approximation is valid",
+    "Restricted to observables that commute with the Hamiltonian",
+    "Requires existence of a spectral gap",
+    "Limited to linear response regime",
+    "Does not cover all types of topological invariants (e.g., non-abelian Berry phases)",
+    "Assumes compact manifolds without boundary"
+  ],
+  "source_convergence": {
+    "structural_claim": "Topological invariants determine quantized physical observables independent of material details or continuous deformations",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "'t Hooft-Polyakov Monopole",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Field Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Topological soliton solutions arise necessarily from the topology of the vacuum manifold"
+      },
+      {
+        "result_id": "",
+        "result_name": "Instantons",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Field Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Topologically distinct vacua lead to non-perturbative quantum effects"
+      },
+      {
+        "result_id": "",
+        "result_name": "Integer Quantum Hall Effect",
+        "domain_id": "field_b",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Hall conductance is quantized due to topological invariants of filled Landau levels"
+      },
+      {
+        "result_id": "",
+        "result_name": "Topological Band Theory",
+        "domain_id": "field_b",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Electronic band structures are characterized by topological invariants that determine quantized response functions"
+      }
+    ],
+    "domains": [
+      "quantum_field_theory",
+      "condensed_matter"
+    ],
+    "domain_names": [
+      "Quantum Field Theory",
+      "Condensed Matter Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.2856,
+      "independence": 0.75,
+      "adversarial": 0.12,
+      "reproducibility": 0.6299999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.49168,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:25:20.312032+00:00",
+    "id": "928bed19a7d2"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.3174
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "proof_id": "d39cfae9908a",
+  "timestamp": "2026-05-02T13:30:24.974544+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "categorical - This could capture the universal nature of symmetry breaking, but the convergence is more about shared principles than universal properties or functorial relationships"
+      ],
+      "reasoning": "The convergence identifies symmetry breaking as a shared abstract principle governing phase transitions across different physical domains. Both condensed matter systems and atomic/molecular systems satisfy axioms about how symmetries constrain possible states and transitions, making an axiomatic framework most appropriate for capturing this universal principle."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Algebraic structures, Category theory, Topology",
+      "alternatives_considered": [],
+      "reasoning": "Symmetry breaking is fundamentally about group actions and their representations, making algebraic structures essential. Category theory provides the framework to map between different physical domains while preserving structural relationships. Topology captures the notion of phases as connected regions and phase transitions as topological changes."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof establishes that symmetry breaking patterns G \u2192 H classify quantum phases by showing that ground states form orbits under the symmetry group action, with each orbit characterized by its stabilizer subgroup. Selection rules derived from representation theory then constrain allowed transitions between phases. However, rigorous connection between microscopic and macroscopic descriptions remains incomplete.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 8 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3356 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "failed",
+      "alternatives_considered": [],
+      "reasoning": "The read operation timed out"
+    }
+  ]
+}

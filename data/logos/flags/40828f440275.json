@@ -1,0 +1,13 @@
+{
+  "proof_id": "40828f440275",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: Rigorous non-perturbative proof of confinement from first principles; analytical derivation of nuclear forces from QCD in strong coupling regime; mathematical framework for controlled approximations bridging perturbative and non-perturbative regimes",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

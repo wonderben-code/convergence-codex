@@ -1,0 +1,15 @@
+{
+  "proof_id": "bdddec3dc0f5",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous categorical framework connecting information-theoretic redundancy measures to operational definitions of classicality. Specifically: (1) A category-theoretic formulation of quantum-to-classical transitions that preserves compositional structure, (2) Rigorous mathematical definitions of 'classical behavior' and 'objectivity' in terms of information-theoretic quantities, (3) A formal framework for limits of infinite environmental degrees of freedom that avoids mathematical pathologies",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

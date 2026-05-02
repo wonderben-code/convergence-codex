@@ -1,0 +1,327 @@
+{
+  "id": "5531d4bca0db",
+  "convergence_id": "45e501884916",
+  "timestamp": "2026-05-02T12:59:16.873233+00:00",
+  "proposition": "For a non-Abelian gauge theory with gauge group G and coupling constant g(\u03bc), the beta function \u03b2(g) = \u03bc\u2202g/\u2202\u03bc is negative for small g, implying that the running coupling g(\u03bc) decreases as the energy scale \u03bc increases, with g(\u03bc) \u2192 0 as \u03bc \u2192 \u221e",
+  "proposition_natural": "Non-Abelian gauge theories exhibit asymptotic freedom where interactions weaken at high energies",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Differential geometry",
+    "Functional analysis",
+    "Algebraic structures"
+  ],
+  "apparatus_justification": "Non-Abelian gauge theories are fundamentally about connections on principal bundles over spacetime manifolds, requiring differential geometry. The renormalization group flow analysis for asymptotic freedom requires functional analysis of operators on infinite-dimensional spaces. The gauge group structure and Lie algebras necessitate algebraic structures.",
+  "proof_natural": "**Proposition.** For a non-Abelian gauge theory with gauge group G and coupling constant g(\u03bc), the beta function \u03b2(g) = \u03bc\u2202g/\u2202\u03bc is negative for small g, implying that the running coupling g(\u03bc) decreases as the energy scale \u03bc increases, with g(\u03bc) \u2192 0 as \u03bc \u2192 \u221e.\n\n**Proof.** Let G be a compact, semi-simple Lie group, and assume the theory is renormalizable in four spacetime dimensions. We assume perturbation theory is valid for small coupling g, the path integral formulation is well-defined, and dimensional regularization can be consistently applied. Further, we assume the theory admits a Lagrangian formulation with gauge-invariant kinetic terms, gauge fixing can be performed consistently via the Faddeev-Popov procedure, the renormalization group equations are valid, and loop integrals converge after regularization.\n\nWe begin with the gauge-invariant Lagrangian density L = -\u00bcF^a_{\u03bc\u03bd}F^{a\u03bc\u03bd}, where the field strength tensor is given by F^a_{\u03bc\u03bd} = \u2202_\u03bcA^a_\u03bd - \u2202_\u03bdA^a_\u03bc + gf^{abc}A^b_\u03bcA^c_\u03bd, with f^{abc} the structure constants of the Lie algebra of G.\n\nAfter gauge fixing and including Faddeev-Popov ghosts, the generating functional takes the form Z[J] = \u222bDA Dc\u0304 Dc exp(iS[A,c\u0304,c] + i\u222bJ\u00b7A), following the standard Faddeev-Popov quantization procedure.\n\nComputing the one-loop contribution to the gauge field self-energy via Feynman diagrams in dimensional regularization, we find divergences proportional to log(\u039b/\u03bc), where \u039b is the UV cutoff. Through renormalization of the coupling constant and extraction of the coefficient of log(\u03bc) terms, we obtain the one-loop beta function:\n\n\u03b2^{(1)}(g) = -g\u00b3/(16\u03c0\u00b2)[11/3 C_A - 4/3 T_F n_f],\n\nwhere C_A is the Casimir of the adjoint representation, T_F is the Dynkin index, and n_f is the number of fermion flavors.\n\nFor the specific case of gauge group SU(N), group theory calculations yield C_A = N and T_F = \u00bd, giving:\n\n\u03b2^{(1)}(g) = -g\u00b3/(16\u03c0\u00b2)[11N/3 - 2n_f/3].\n\nProvided n_f < 11N/2, we have \u03b2^{(1)}(g) < 0 for g > 0. Since the beta function governs the running of the coupling via dg/d log \u03bc = \u03b2(g), a negative beta function implies g(\u03bc\u2082) < g(\u03bc\u2081) for \u03bc\u2082 > \u03bc\u2081.\n\nIntegrating the one-loop beta function yields:\n\ng\u00b2(\u03bc) = g\u00b2(\u03bc\u2080)/[1 + b\u2080g\u00b2(\u03bc\u2080)log(\u03bc/\u03bc\u2080)/(2\u03c0)],\n\nwhere b\u2080 = (11N-2n_f)/12. Asymptotic analysis of this solution shows that as \u03bc \u2192 \u221e, the coupling g\u00b2(\u03bc) \u2192 0 like 1/log(\u03bc/\u039b_QCD), where \u039b_QCD is the dynamical scale of the theory.\n\n[Note: This proof relies on the validity of perturbation theory, which breaks down at low energies where g becomes large. The full non-perturbative behavior requires additional techniques beyond the scope of this proof.]\n\nTherefore, we have established that the running coupling g(\u03bc) decreases with increasing energy scale \u03bc and vanishes asymptotically, demonstrating the property of asymptotic freedom in non-Abelian gauge theories. \u220e",
+  "proof_lean": "",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The gauge-invariant Lagrangian density is L = -1/4 F^a_{\u03bc\u03bd}F^{a\u03bc\u03bd} where F^a_{\u03bc\u03bd} = \u2202_\u03bcA^a_\u03bd - \u2202_\u03bdA^a_\u03bc + gf^{abc}A^b_\u03bcA^c_\u03bd",
+      "justification": "Definition of non-Abelian gauge theory Lagrangian with structure constants f^{abc} of the Lie algebra",
+      "dependencies": [
+        "Assumption of gauge group G",
+        "Assumption of Lagrangian formulation"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "After gauge fixing and including Faddeev-Popov ghosts, the generating functional is Z[J] = \u222bDA Dc\u0304 Dc exp(iS[A,c\u0304,c] + i\u222bJ\u00b7A)",
+      "justification": "Standard Faddeev-Popov quantization procedure for gauge theories",
+      "dependencies": [
+        "Step 1",
+        "Assumption of path integral formulation",
+        "Faddeev-Popov (1967)"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The one-loop contribution to the gauge field self-energy contains divergences proportional to log(\u039b/\u03bc) where \u039b is the UV cutoff",
+      "justification": "Calculation of Feynman diagrams in dimensional regularization",
+      "dependencies": [
+        "Step 2",
+        "Assumption of dimensional regularization",
+        "[Gap: Full calculation of loop integrals]"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The one-loop beta function is \u03b2^{(1)}(g) = -g\u00b3/(16\u03c0\u00b2)[11/3 C_A - 4/3 T_F n_f] where C_A is the Casimir of the adjoint representation and T_F is the Dynkin index",
+      "justification": "Renormalization of the coupling constant and extraction of the coefficient of log(\u03bc) terms",
+      "dependencies": [
+        "Step 3",
+        "Gross-Wilczek (1973)",
+        "Politzer (1973)"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "For gauge group SU(N), C_A = N and T_F = 1/2, giving \u03b2^{(1)}(g) = -g\u00b3/(16\u03c0\u00b2)[11N/3 - 2n_f/3]",
+      "justification": "Group theory calculation for SU(N) representations",
+      "dependencies": [
+        "Step 4",
+        "Properties of SU(N) Lie algebra"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "For n_f < 11N/2, we have \u03b2^{(1)}(g) < 0 for g > 0",
+      "justification": "Direct algebraic inequality from the expression in Step 5",
+      "dependencies": [
+        "Step 5"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The solution to dg/d log \u03bc = \u03b2(g) with \u03b2(g) < 0 gives g(\u03bc\u2082) < g(\u03bc\u2081) for \u03bc\u2082 > \u03bc\u2081",
+      "justification": "Standard solution of first-order differential equation with negative derivative",
+      "dependencies": [
+        "Step 6",
+        "Assumption of validity of RG equations"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "At one-loop order, g\u00b2(\u03bc) = g\u00b2(\u03bc\u2080)/[1 + b\u2080g\u00b2(\u03bc\u2080)log(\u03bc/\u03bc\u2080)/(2\u03c0)] where b\u2080 = (11N-2n_f)/12",
+      "justification": "Integration of the one-loop beta function",
+      "dependencies": [
+        "Step 7",
+        "Step 5"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "As \u03bc \u2192 \u221e, g\u00b2(\u03bc) \u2192 0 asymptotically like 1/log(\u03bc/\u039b_QCD) where \u039b_QCD is the dynamical scale",
+      "justification": "Asymptotic analysis of the solution in Step 8",
+      "dependencies": [
+        "Step 8"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Asymptotic Freedom in Non-Abelian Gauge Theories",
+      "authors": "D. Gross and F. Wilczek",
+      "year": "1973",
+      "field": "Quantum Field Theory",
+      "statement": "The beta function for non-Abelian gauge theories is negative at one-loop order",
+      "usage": "Provides the explicit calculation of the one-loop beta function coefficient"
+    },
+    {
+      "name": "Reliable Perturbative Results for Strong Interactions",
+      "authors": "H.D. Politzer",
+      "year": "1973",
+      "field": "Quantum Field Theory",
+      "statement": "Independent derivation of asymptotic freedom in Yang-Mills theory",
+      "usage": "Confirms the one-loop calculation and extends to higher orders"
+    },
+    {
+      "name": "Quantization of Gauge Fields",
+      "authors": "L.D. Faddeev and V.N. Popov",
+      "year": "1967",
+      "field": "Quantum Field Theory",
+      "statement": "Consistent quantization procedure for gauge theories using ghost fields",
+      "usage": "Justifies the path integral formulation in Step 2"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The gauge group G is a compact, semi-simple Lie group",
+    "The theory is renormalizable in 4 spacetime dimensions",
+    "Perturbation theory is valid for small coupling g",
+    "The path integral formulation of quantum field theory is well-defined",
+    "Dimensional regularization can be consistently applied",
+    "The theory admits a Lagrangian formulation with gauge-invariant kinetic terms",
+    "Gauge fixing can be performed consistently (e.g., via Faddeev-Popov procedure)",
+    "The renormalization group equations are valid",
+    "Loop integrals converge after regularization"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "This proof requires extensive quantum field theory and gauge theory infrastructure that is completely absent from Mathlib. The mathematical objects (gauge fields, coupling constants, beta functions, renormalization) and physical concepts (asymptotic freedom, running couplings) would need to be built from scratch. The proof relies on deep results from theoretical physics that have no formal mathematical foundation in Mathlib's current scope.",
+  "adversarial_result": {
+    "proof_soundness": 0.7,
+    "gaps": [
+      {
+        "step": "Computing the one-loop contribution to the gauge field self-energy",
+        "issue": "The proof jumps directly from stating the need to compute Feynman diagrams to presenting the final beta function formula without showing any actual calculation. The entire derivation of the one-loop correction is missing.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Include the explicit calculation of the relevant Feynman diagrams (gauge boson loop, ghost loop, and fermion loop contributions) with proper momentum integrals and regularization procedure."
+      },
+      {
+        "step": "Through renormalization of the coupling constant and extraction of the coefficient of log(\u03bc) terms",
+        "issue": "The renormalization scheme is not specified. Different schemes (MS, MS\u0304, on-shell) yield different beta function coefficients. The proof assumes a specific scheme without stating which one.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Explicitly state the renormalization scheme being used (likely MS\u0304) and show how the beta function is scheme-independent at one-loop order."
+      },
+      {
+        "step": "Integrating the one-loop beta function yields",
+        "issue": "The integration assumes the one-loop approximation remains valid throughout the entire energy range, but this breaks down when g\u00b2log(\u03bc/\u03bc\u2080) becomes O(1).",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Clearly state the domain of validity: the solution is only trustworthy when g\u00b2(\u03bc\u2080)log(\u03bc/\u03bc\u2080) << 1."
+      },
+      {
+        "step": "g\u00b2(\u03bc) \u2192 0 like 1/log(\u03bc/\u039b_QCD)",
+        "issue": "The dynamical scale \u039b_QCD appears without definition or derivation. Its relationship to the initial parameters is not established.",
+        "severity": "minor",
+        "fixable": true,
+        "suggested_fix": "Define \u039b_QCD as the scale where the perturbative coupling would diverge when evolved downward, relating it to \u03bc\u2080 and g(\u03bc\u2080)."
+      }
+    ],
+    "hidden_assumptions": [
+      "The gauge group must have a non-trivial Casimir in the adjoint representation (excludes U(1))",
+      "The regularization preserves gauge invariance (not automatic for all regularization schemes)",
+      "Ghost contributions are properly included in the beta function calculation",
+      "No anomalies are present that would invalidate the quantization procedure",
+      "The theory contains no additional scalar fields that would contribute to the beta function",
+      "Higher-loop corrections don't change the sign of the beta function for small g"
+    ],
+    "circular_reasoning": false,
+    "circular_details": "",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to establish asymptotic freedom for all non-Abelian gauge theories, but only explicitly calculates for SU(N). Other semi-simple groups need separate verification. Additionally, the proof only establishes perturbative asymptotic freedom, not the full non-perturbative result.",
+    "citation_issues": [
+      "The citations are given as titles only without proper references to specific equations or theorems",
+      "The proof doesn't specify which results from the cited papers are being used",
+      "No citation is provided for the Faddeev-Popov procedure or dimensional regularization"
+    ],
+    "structural_soundness": 0.6,
+    "overall_assessment": "The proof provides a correct outline of asymptotic freedom but lacks mathematical rigor in key derivations. The jump from the Lagrangian to the beta function formula omits all substantive calculations, making it impossible to verify the claimed result independently.",
+    "verdict": "major_revision"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "Proves that the one-loop beta function is negative for small g when n_f < 11N/2, but does not establish asymptotic freedom (g \u2192 0 as \u03bc \u2192 \u221e) since higher-loop corrections are ignored and the analysis is restricted to one-loop order",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The number of fermion flavors n_f satisfies n_f < 11N/2",
+      "Higher-loop corrections do not change the sign of the beta function",
+      "The one-loop approximation remains valid throughout the entire energy range \u03bc \u2192 \u221e",
+      "The theory does not develop Landau poles or other singularities",
+      "The renormalization scheme independence of the beta function sign",
+      "Absence of non-perturbative effects that could modify the running"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "6",
+        "issue": "The condition n_f < 11N/2 is used without being stated as an assumption, making this step conditional rather than general"
+      },
+      {
+        "step": "9",
+        "issue": "Claims asymptotic behavior g(\u03bc) \u2192 0 as \u03bc \u2192 \u221e based only on one-loop analysis, but higher-loop corrections could change this conclusion and are not addressed"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Does not address higher-loop corrections to the beta function",
+      "Does not prove that the one-loop result extends to all orders",
+      "Missing analysis of the validity range of perturbation theory",
+      "No discussion of potential Landau poles or breakdown of perturbative expansion",
+      "The constraint n_f < 11N/2 is applied without justification that it holds for the theory in question"
+    ],
+    "internal_score": 0.3
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": false,
+    "contradiction_details": [],
+    "assumption_conflicts": [],
+    "beneficial_connections": [
+      "Connects to [49891606b8f0] on spontaneous symmetry breaking in quantum field theory - asymptotic freedom provides the energy scale dependence that complements symmetry breaking mechanisms",
+      "Relates to [21fcf0926d92] on vacuum properties - the running coupling describes how vacuum fluctuations affect gauge interactions at different energy scales",
+      "Supports [2f8071b6f9b5] on QCD governing microscopic structure - asymptotic freedom is fundamental to QCD's role in determining nuclear and hadronic physics",
+      "Complements [3f0bc99f45de] on quantum many-body collective phenomena - gauge theories with asymptotic freedom exhibit collective behavior through confinement at low energies",
+      "Extends [19c10dc86a65] on quantum coherence effects - the beta function describes quantum corrections that fundamentally alter classical gauge theory predictions"
+    ],
+    "consistency_score": 0.95,
+    "notes": "The proof is technically sound and consistent with existing quantum field theory proofs. The mathematical framework (path integrals, renormalization group) aligns with other QFT proofs in the corpus. The only minor concern is that the proof focuses specifically on pure gauge theory (no matter fields explicitly considered in the main calculation) while some related proofs discuss more general field theories, but this is a specialization rather than a contradiction."
+  },
+  "confidence_score": 0.5874999999999999,
+  "confidence_category": "medium",
+  "confidence_breakdown": {
+    "mechanical": 0.5,
+    "adversarial": 0.7,
+    "internal": 0.3,
+    "cross_proof": 0.95,
+    "calibration": 0.6
+  },
+  "validation_scores": {
+    "mechanical": 0.5,
+    "adversarial": 0.7,
+    "internal": 0.3,
+    "cross_proof": 0.95,
+    "calibration": 0.6
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": true,
+  "new_mathematics_needed": "",
+  "limitations": [
+    "Full explicit calculation of all Feynman diagrams contributing to the one-loop beta function",
+    "Rigorous proof that perturbation theory remains valid for the range of couplings considered",
+    "Mathematical rigor in the path integral formulation (measure theory issues)",
+    "Proof of convergence of the perturbative series beyond leading order",
+    "The proof is perturbative and only valid for small coupling g",
+    "Higher-loop corrections modify the quantitative behavior but not the qualitative asymptotic freedom",
+    "Non-perturbative effects are not captured by this analysis",
+    "The proof assumes the number of fermion flavors is below the conformal window threshold"
+  ],
+  "source_convergence": {
+    "structural_claim": "Non-Abelian gauge theories exhibit asymptotic freedom where interactions weaken at high energies",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Asymptotic Freedom",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Field Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Mathematical proof that non-Abelian gauge couplings decrease at high energy"
+      },
+      {
+        "result_id": "",
+        "result_name": "Asymptotic freedom in QCD",
+        "domain_id": "field_b",
+        "domain_name": "Particle Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Theoretical derivation of decreasing coupling in strong interactions"
+      },
+      {
+        "result_id": "",
+        "result_name": "Measurement of the strong coupling constant",
+        "domain_id": "field_b",
+        "domain_name": "Particle Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Experimental confirmation of logarithmic decrease of coupling with energy"
+      }
+    ],
+    "domains": [
+      "quantum_field_theory",
+      "particle_physics"
+    ],
+    "domain_names": [
+      "Quantum Field Theory",
+      "Particle Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.357,
+      "independence": 0.2,
+      "adversarial": 0.09,
+      "reproducibility": 0.5249999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.35385,
+      "confidence_category": "speculative"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:25:50.597975+00:00",
+    "id": "45e501884916"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.299205
+  }
+}

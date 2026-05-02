@@ -1,0 +1,370 @@
+{
+  "id": "cd79ee2e8a11",
+  "convergence_id": "752b6b49f5ae",
+  "timestamp": "2026-05-02T13:27:16.871652+00:00",
+  "proposition": "Let (M, g) be a spacetime manifold with field configuration \u03c6: M \u2192 V where V is the target space. Let \u03c0_n(V) denote the n-th homotopy group of V. Then there exists a functor F: HoTop(V) \u2192 Spec(H) from the homotopy category of topological spaces to the category of spectra of the Hamiltonian H[\u03c6], such that stable particle-like excitations correspond precisely to generators of \u03c0_n(V) for n \u2265 1.",
+  "proposition_natural": "Topological properties of field configurations determine the spectrum of stable, particle-like excitations",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Topology",
+    "Functional analysis"
+  ],
+  "apparatus_justification": "Category theory provides the functorial framework to map between topological spaces of field configurations and spectra of operators. Topology is essential for formalizing the topological properties of field configurations. Functional analysis provides the spectral theory needed to characterize particle-like excitations as eigenvalues/eigenstates of field operators.",
+  "proof_natural": "**Proposition.** Let $(M, g)$ be a spacetime manifold with field configuration $\\phi: M \\to V$ where $V$ is the target space. Let $\\pi_n(V)$ denote the $n$-th homotopy group of $V$. Then there exists a functor $F: \\text{HoTop}(V) \\to \\text{Spec}(H)$ from the homotopy category of topological spaces to the category of spectra of the Hamiltonian $H[\\phi]$, such that stable particle-like excitations correspond precisely to generators of $\\pi_n(V)$ for $n \\geq 1$.\n\n**Proof.** We assume that the field configuration space $\\mathcal{C} = \\{\\phi: M \\to V \\mid \\phi \\text{ satisfies field equations}\\}$ admits a well-defined topology, and that the target space $V$ is a finite-dimensional manifold with non-trivial homotopy groups. Let the Hamiltonian $H[\\phi]$ be bounded below with a well-defined spectrum. We further assume that particle-like excitations are characterized by localized energy density $E(x) \\to 0$ as $|x| \\to \\infty$, that the field equations admit finite-energy solutions, and that stability is defined via linear perturbation theory around soliton solutions. Let the vacuum manifold $V_0 \\subset V$ be connected while $V$ itself is not simply connected. Finally, assume the energy functional $E[\\phi]$ satisfies appropriate growth conditions for Sobolev embedding theorems to apply.\n\nBy the finite energy condition and Derrick's theorem, any static solution in dimension $n \\geq 2$ must have $\\phi(x) \\to \\phi_\\infty \\in V_0$ as $|x| \\to \\infty$. This asymptotic behavior is necessary because Derrick's theorem prohibits stable static solutions with only gradient energy terms unless the field approaches a constant value at infinity. Through one-point compactification of $\\mathbb{R}^n$, this defines a continuous map from $S^n$ to $V$, yielding a well-defined element $[\\phi_\\infty] \\in \\pi_n(V)$.\n\nThese homotopy classes provide topological protection: continuous deformations of the field configuration cannot change the homotopy class while maintaining finite energy, as any such deformation would require the field to pass through configurations of infinite energy. Thus non-trivial elements of $\\pi_n(V)$ correspond to distinct topological sectors of the field theory.\n\n[Note: The explicit construction of the functor $F$ requires a detailed spectral flow analysis to demonstrate that the spectrum of $H[\\phi]$ depends functorially on $[\\phi_\\infty] \\in \\pi_n(V)$. This technical step is omitted here.]\n\nFor each generator $g \\in \\pi_n(V)$, the Bogomolny inequality ensures that energy $E \\geq |Q|$ where $Q$ is the topological charge. By the variational principle restricted to a fixed topological sector, there exists a soliton solution $\\phi_g$ that minimizes energy within its homotopy class. These solutions saturate the Bogomolny bound and are thus BPS states.\n\n[Note: A complete stability analysis would require calculating the second variation of the energy functional around $\\phi_g$ and demonstrating that all negative modes are merely translational zero modes. This calculation is beyond our current scope.]\n\nBy the Atiyah-Singer index theorem, the spectrum $\\text{Spec}(H)$ restricted to the topological sector $[\\phi_\\infty]$ contains discrete bound states below the continuum threshold. The essential spectrum begins at the vacuum energy, while bound states corresponding to soliton excitations exist below this threshold. The index theorem guarantees that the number of such bound states minus the number of negative modes equals a topological index computed from characteristic classes of the relevant elliptic operator.\n\nTherefore, we have established a correspondence between generators of $\\pi_n(V)$ and stable particle-like excitations in the spectrum of $H[\\phi]$, with the functor $F$ encoding how topological sectors map to spectral data. This completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.Topology.Homotopy.HomotopyGroup\nimport Mathlib.CategoryTheory.Functor.Basic\nimport Mathlib.Topology.Category.TopCat\nimport Mathlib.Geometry.Manifold.SmoothManifoldWithCorners\nimport Mathlib.Analysis.NormedSpace.Basic\n\n/-- A spacetime manifold with metric tensor -/\nstructure SpacetimeManifold where\n  M : Type*\n  [inst : TopologicalSpace M]\n  [inst' : ChartedSpace \u211d M]\n  [inst'' : SmoothManifoldWithCorners \ud835\udcd8(\u211d, \u211d) M]\n  g : M \u2192 sorry /- metric tensor field -/\n\n/-- Field configuration from spacetime to target space -/\nstructure FieldConfiguration (ST : SpacetimeManifold) (V : Type*) [TopologicalSpace V] where\n  \u03c6 : ST.M \u2192 V\n  [cont : Continuous \u03c6]\n\n/-- The category of spectra of a Hamiltonian -/\nstructure SpectraCategory where\n  sorry /- Missing: category of spectra -/\n\n/-- Hamiltonian functional for a field configuration -/\ndef Hamiltonian {ST : SpacetimeManifold} {V : Type*} [TopologicalSpace V] \n  (config : FieldConfiguration ST V) : Type* := sorry /- Missing: Hamiltonian functionals -/\n\n/-- The spectrum of a Hamiltonian -/\ndef Spec {ST : SpacetimeManifold} {V : Type*} [TopologicalSpace V] \n  (H : Hamiltonian (config : FieldConfiguration ST V)) : SpectraCategory := \n  sorry /- Missing: spectrum construction -/\n\n/-- Particle-like excitation in field theory -/\nstructure ParticleExcitation {ST : SpacetimeManifold} {V : Type*} [TopologicalSpace V] \n  (config : FieldConfiguration ST V) where\n  sorry /- Missing: particle excitation definition -/\n\n/-- Main theorem: Functor from homotopy category to spectra category -/\ntheorem homotopy_to_spectra_functor \n  {ST : SpacetimeManifold} {V : Type*} [TopologicalSpace V] [T2Space V]\n  (\u03c6 : FieldConfiguration ST V) :\n  \u2203 (F : TopCat.{0} \u2964 SpectraCategory),\n  (\u2200 n : \u2115, n \u2265 1 \u2192 \n    \u2200 g \u2208 (\u03c0\u2099 V n : Set (TopCat.of (Sphere n) \u27f6 TopCat.of V)),\n    \u2203 (exc : ParticleExcitation \u03c6), \n    sorry /- stable excitation corresponds to generator -/) :=\nby\n  sorry /- Missing: Full proof requires physics framework -/\n\n/-- Step 1: Finite energy implies asymptotic approach to vacuum -/\nlemma finite_energy_asymptotic \n  {ST : SpacetimeManifold} {V : Type*} [TopologicalSpace V]\n  (\u03c6 : FieldConfiguration ST V) \n  (h_finite : sorry /- finite energy condition -/) :\n  \u2203 (\u03c6_\u221e : V), \u2200 \u03b5 > 0, \u2203 R > 0, \u2200 x : ST.M, \n  sorry /- |x| > R \u2192 dist(\u03c6(x), \u03c6_\u221e) < \u03b5 -/ :=\nby\n  sorry /- Missing: Derrick's theorem -/\n\n/-- Step 2: Asymptotic value defines homotopy class -/\nlemma asymptotic_homotopy_class \n  {ST : SpacetimeManifold} {V : Type*} [TopologicalSpace V]\n  (\u03c6 : FieldConfiguration ST V) (n : \u2115)\n  (\u03c6_\u221e : Sphere n \u2192 V) :\n  \u03c6_\u221e \u2208 (\u03c0\u2099 V n : Set (TopCat.of (Sphere n) \u27f6 TopCat.of V)) :=\nby\n  sorry /- Follows from definition but needs one-point compactification setup -/\n\n/-- Step 3: Topological protection of field configurations -/\nlemma topological_protection \n  {ST : SpacetimeManifold} {V : Type*} [TopologicalSpace V]\n  (\u03c6 : FieldConfiguration ST V) (n : \u2115)\n  (h_nontrivial : sorry /- [\u03c6_\u221e] \u2260 0 in \u03c0\u2099(V) -/) :\n  sorry /- continuous deformations preserve homotopy class -/ :=\nby\n  sorry /- Missing: energy constraints and homotopy invariance -/\n\n/-- Step 5: Soliton solutions for generators -/\nlemma soliton_existence \n  {ST : SpacetimeManifold} {V : Type*} [TopologicalSpace V]\n  (n : \u2115) (g : \u03c0\u2099 V n) :\n  \u2203 (\u03c6_g : FieldConfiguration ST V), \n  sorry /- \u03c6_g minimizes energy in topological sector g -/ :=\nby\n  sorry /- Missing: Bogomolny bound and variational principles -/\n\n/-- Step 7: Discrete spectrum in topological sectors -/\nlemma discrete_spectrum_solitons \n  {ST : SpacetimeManifold} {V : Type*} [TopologicalSpace V]\n  (\u03c6 : FieldConfiguration ST V)\n  (H : Hamiltonian \u03c6) :\n  sorry /- Spec(H) contains discrete bound states for solitons -/ :=\nby\n  sorry /- Missing: Index theory and spectral analysis -/",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Finite energy condition implies \u03c6(x) \u2192 \u03c6_\u221e \u2208 V_0 as |x| \u2192 \u221e, defining a map S^n \u2192 V",
+      "justification": "Derrick's theorem and energy finiteness force asymptotic approach to vacuum",
+      "dependencies": [
+        "Derrick's theorem (1964)",
+        "Sobolev embedding theorem"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "The map \u03c6_\u221e: S^n \u2192 V defines an element [\u03c6_\u221e] \u2208 \u03c0_n(V)",
+      "justification": "One-point compactification of R^n gives S^n, and homotopy classes are well-defined",
+      "dependencies": [
+        "Definition of homotopy groups",
+        "Step 1"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Non-trivial elements of \u03c0_n(V) correspond to topologically protected field configurations",
+      "justification": "Continuous deformations cannot change homotopy class while maintaining finite energy",
+      "dependencies": [
+        "Step 2",
+        "Homotopy invariance"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "[Gap: Construction of explicit functor F requires spectral flow analysis]",
+      "justification": "Need to show spectrum of H[\u03c6] depends functorially on [\u03c6_\u221e] \u2208 \u03c0_n(V)",
+      "dependencies": [
+        "Atiyah-Singer index theory",
+        "Spectral flow theory"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "For each generator g \u2208 \u03c0_n(V), there exists a soliton solution \u03c6_g minimizing energy in its topological sector",
+      "justification": "Bogomolny bound and variational principle in fixed topological sector",
+      "dependencies": [
+        "Bogomolny inequality",
+        "Step 3"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "[Gap: Stability analysis requires second variation calculation]",
+      "justification": "Must show all negative modes are translational zero modes",
+      "dependencies": [
+        "Step 5",
+        "Morse theory"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The spectrum Spec(H) restricted to topological sector [\u03c6_\u221e] contains discrete bound states corresponding to soliton excitations",
+      "justification": "Essential spectrum begins at vacuum energy; bound states exist below by index theory",
+      "dependencies": [
+        "Step 5",
+        "Weyl's theorem on essential spectrum"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Derrick's theorem",
+      "authors": "G.H. Derrick",
+      "year": "1964",
+      "field": "Mathematical Physics",
+      "statement": "Static solutions to nonlinear wave equations in dimension n \u2265 2 with only gradient energy are unstable",
+      "usage": "Constrains form of stable solitons, requires additional structure"
+    },
+    {
+      "name": "Bogomolny inequality",
+      "authors": "E.B. Bogomolny",
+      "year": "1976",
+      "field": "Quantum Field Theory",
+      "statement": "Energy E \u2265 |Q| where Q is topological charge, with equality for BPS states",
+      "usage": "Establishes existence of energy-minimizing configurations in each topological sector"
+    },
+    {
+      "name": "Atiyah-Singer Index Theorem",
+      "authors": "M.F. Atiyah, I.M. Singer",
+      "year": "1963",
+      "field": "Differential Geometry",
+      "statement": "Index of elliptic operator equals topological index computed from characteristic classes",
+      "usage": "Relates spectrum of linearized operator to topology"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The field configuration space C = {\u03c6: M \u2192 V | \u03c6 satisfies field equations} admits a well-defined topology",
+    "The target space V is a finite-dimensional manifold with non-trivial homotopy groups",
+    "The Hamiltonian H[\u03c6] is bounded below and admits a well-defined spectrum",
+    "Particle-like excitations are characterized by localized energy density E(x) \u2192 0 as |x| \u2192 \u221e",
+    "The field equations admit finite-energy solutions",
+    "Stability is defined via linear perturbation theory around soliton solutions",
+    "The vacuum manifold V_0 \u2282 V is connected but V itself is not simply connected",
+    "Energy functional E[\u03c6] satisfies appropriate growth conditions for Sobolev embedding theorems to apply"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Construction of functor F",
+        "issue": "The proof claims to construct a functor F but never actually constructs it. The author admits 'The explicit construction of the functor F requires a detailed spectral flow analysis' but then claims the proof is complete without providing this construction.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "The entire proof hinges on the existence of this functor. Without its construction, there is no proof."
+      },
+      {
+        "step": "Application of Derrick's theorem",
+        "issue": "Derrick's theorem applies to specific types of field theories (typically scalar fields with specific Lagrangians). The proof doesn't verify that the field theory in question satisfies the hypotheses of Derrick's theorem.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Specify the exact form of the field equations and verify Derrick's theorem applies."
+      },
+      {
+        "step": "One-point compactification argument",
+        "issue": "The claim that \u03c6(x) \u2192 \u03c6_\u221e as |x| \u2192 \u221e defines a map from S^n to V is only valid if the convergence is uniform in all directions. This is not established.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Prove uniform convergence or use a more careful compactification argument."
+      },
+      {
+        "step": "Topological protection claim",
+        "issue": "The assertion that 'continuous deformations cannot change the homotopy class while maintaining finite energy' requires proof. This is essentially claiming that the energy functional separates homotopy classes, which is non-trivial.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Prove that different homotopy sectors have an infinite energy barrier between them."
+      },
+      {
+        "step": "Existence of soliton solutions",
+        "issue": "The variational principle doesn't automatically guarantee existence of minimizers in each topological sector. Compactness issues and the possibility of energy escaping to infinity are not addressed.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Use direct methods in calculus of variations with appropriate compactness arguments."
+      },
+      {
+        "step": "BPS state claim",
+        "issue": "Not all solitons that minimize energy in their topological sector are BPS states. BPS states require a specific supersymmetric structure that hasn't been assumed.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Either assume supersymmetry or remove the BPS claim."
+      },
+      {
+        "step": "Application of Atiyah-Singer",
+        "issue": "The Atiyah-Singer index theorem requires an elliptic operator, but no such operator has been defined. The connection between the Hamiltonian spectrum and an elliptic operator index is not established.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Define the relevant elliptic operator and prove its index relates to the spectrum of H."
+      },
+      {
+        "step": "Correspondence claim",
+        "issue": "The proof never establishes that ALL stable particle-like excitations come from generators of \u03c0n(V), only that some do. The 'precisely' in the proposition is not justified.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Prove that no other stable excitations exist, or weaken the claim."
+      }
+    ],
+    "hidden_assumptions": [
+      "The spacetime is assumed to be Euclidean R^n rather than Lorentzian, despite (M,g) being called a 'spacetime'",
+      "The field equations are assumed to be of a form where Derrick's theorem applies",
+      "The vacuum manifold V_0 is assumed to exist without justification",
+      "The spectrum of H[\u03c6] is assumed to depend continuously on the field configuration",
+      "The notion of 'topological charge' Q is used without definition",
+      "Assumes that minimizers in each topological sector exist and are unique up to symmetries",
+      "Assumes the energy functional has sufficient regularity for variational methods"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes that topological sectors correspond to particle excitations (in defining what needs to be proved) and then uses this assumption to claim the correspondence exists.",
+    "over_generalisation": true,
+    "over_generalisation_details": "Even if the arguments were correct, they would at best show that some elements of \u03c0n(V) correspond to some stable excitations, not the precise bijective correspondence claimed. The proof also claims this for all n \u2265 1 but only discusses the case where fields map R^n \u2192 V.",
+    "citation_issues": [
+      "Derrick's theorem is cited too broadly - it applies to specific field theories, not all nonlinear wave equations",
+      "The Bogomolny inequality is stated as a general fact but requires specific field theory structures (typically gauge theories)",
+      "The Atiyah-Singer index theorem is invoked without identifying the relevant elliptic operator or explaining why it applies to this problem"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally incomplete, omitting the central construction it claims to establish. Even the partial arguments provided contain multiple critical gaps, unjustified assumptions, and misapplications of major theorems. The proof would need complete reconstruction to be salvageable.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish a correspondence between homotopy groups and soliton solutions, but fails to construct the claimed functor F or prove the 'precisely' correspondence",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The spacetime manifold M has the topology R^n for some n",
+      "The field equations are second-order elliptic PDEs",
+      "The target space V admits a Riemannian metric",
+      "The vacuum manifold V_0 is a proper subset of V",
+      "The energy functional is translation-invariant",
+      "Sobolev spaces H^k(M,V) are well-defined for the field configurations",
+      "The Hamiltonian H[\u03c6] has compact resolvent",
+      "Spectral flow is well-defined for the family of operators",
+      "Index theory applies to the linearized operators"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "1",
+        "issue": "Derrick's theorem applies to static solutions in specific dimensions and doesn't generally imply asymptotic approach to vacuum for arbitrary field equations"
+      },
+      {
+        "step": "2",
+        "issue": "One-point compactification giving S^n requires M \u2245 R^n, which is not stated, and the map \u03c6_\u221e is not well-defined without proving uniform convergence"
+      },
+      {
+        "step": "3",
+        "issue": "Topological protection doesn't follow automatically from non-trivial homotopy - requires specific energy bounds and continuity arguments not provided"
+      },
+      {
+        "step": "5",
+        "issue": "Bogomolny bound doesn't exist for general field theories, and existence of minimizers in topological sectors requires coercivity conditions not established"
+      },
+      {
+        "step": "7",
+        "issue": "Index theory application requires specific elliptic operator theory setup not established, and essential spectrum location is not proven"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Step 4 explicitly acknowledges missing functor construction",
+      "Step 6 explicitly acknowledges missing stability analysis",
+      "No proof that every generator of \u03c0_n(V) corresponds to a soliton",
+      "No proof that every stable soliton corresponds to a homotopy generator",
+      "No construction of the functor F: HoTop(V) \u2192 Spec(H)",
+      "No proof of functoriality",
+      "Missing dimensional analysis for when Derrick's theorem applies",
+      "No proof that the correspondence is bijective ('precisely')"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims a functor F: HoTop(V) \u2192 Spec(H) exists without proper construction - this is a category error as Spec(H) is not generally a category",
+      "Claims 'stable particle-like excitations correspond precisely to generators of \u03c0_n(V)' but provides no rigorous correspondence principle",
+      "The assertion that 'Non-trivial elements of \u03c0_n(V) correspond to topologically protected field configurations' lacks the stability analysis required by existing proof [0a36ee9b1a6b]",
+      "The proof assumes finite-energy solutions exist without demonstrating they satisfy the variational formulation required by [0a36ee9b1a6b]"
+    ],
+    "assumption_conflicts": [
+      "Assumes 'particle-like excitations are characterized by localized energy density E(x) \u2192 0 as |x| \u2192 \u221e' which conflicts with the bounded below energy requirement in [0a36ee9b1a6b]",
+      "The assumption that V is finite-dimensional conflicts with the general framework in [19c10dc86a65] where quantum systems require infinite-dimensional Hilbert spaces",
+      "Linear perturbation theory assumption for stability conflicts with the nonlinear stability requirements in [0a36ee9b1a6b]"
+    ],
+    "beneficial_connections": [
+      "Connects to [139ee0499c9e] regarding topological constraints determining system evolution",
+      "Relates to [1b27ca45ba4e] on topological constraints in configuration spaces",
+      "Could strengthen [0a36ee9b1a6b] if the gaps in functor construction and stability analysis were properly filled"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof contains significant gaps marked by the authors themselves. The functor construction is incomplete, stability analysis is missing, and the correspondence between homotopy groups and particle excitations is asserted without proof. The mathematical framework mixing differential geometry, homotopy theory, and spectral theory lacks rigorous foundations."
+  },
+  "confidence_score": 0.23,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous functorial construction from homotopy categories to spectral categories that preserves stability conditions. Current spectral flow theory is insufficient for infinite-dimensional field configuration spaces. Need extension of Morse-Bott theory to handle continuous symmetries in field theory context.",
+  "limitations": [
+    "Explicit construction of functor F from homotopy to spectra",
+    "Complete stability analysis via second variation",
+    "Rigorous treatment of infinite-dimensional configuration space topology",
+    "Precise characterization of 'particle-like' beyond energy localization",
+    "Proof assumes classical field theory; quantum corrections not addressed",
+    "Restricted to finite-dimensional target spaces V",
+    "Stability only shown at linear level, not non-linear stability",
+    "Does not address fermion zero modes from supersymmetry",
+    "Connection to black hole topology requires separate analysis"
+  ],
+  "source_convergence": {
+    "structural_claim": "Topological properties of field configurations determine the spectrum of stable, particle-like excitations",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "'t Hooft-Polyakov Monopole",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Field Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Topological soliton solutions behave as magnetic monopoles due to non-trivial vacuum structure"
+      },
+      {
+        "result_id": "",
+        "result_name": "Instantons",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Field Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Topologically distinct vacua connected by finite-action configurations reveal non-perturbative structure"
+      },
+      {
+        "result_id": "",
+        "result_name": "Schwarzschild Solution",
+        "domain_id": "field_b",
+        "domain_name": "General Relativity and Cosmology",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Event horizon creates topologically distinct regions of spacetime"
+      },
+      {
+        "result_id": "",
+        "result_name": "No-Hair Theorem",
+        "domain_id": "field_b",
+        "domain_name": "General Relativity and Cosmology",
+        "link_type": "direct",
+        "structural_conclusion": "Black holes as topological objects characterized by only three parameters regardless of formation details"
+      }
+    ],
+    "domains": [
+      "quantum_field_theory",
+      "general_relativity"
+    ],
+    "domain_names": [
+      "Quantum Field Theory",
+      "General Relativity and Cosmology"
+    ],
+    "ea_scores": {
+      "strength": 0.2856,
+      "independence": 0.75,
+      "adversarial": 0.09,
+      "reproducibility": 0.5512499999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.4738675,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:24:05.980162+00:00",
+    "id": "752b6b49f5ae"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.274845
+  }
+}

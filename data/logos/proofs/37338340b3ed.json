@@ -1,0 +1,358 @@
+{
+  "id": "37338340b3ed",
+  "convergence_id": "005d29e11597",
+  "timestamp": "2026-05-02T12:18:39.889660+00:00",
+  "proposition": "For a physical system S with state space \u03a9 and dynamics governed by a measure \u03bc, there exists a scale parameter \u03b5\u2080 > 0 such that: (1) For scales \u03b5 < \u03b5\u2080, the system admits only a discrete spectrum of observables with measure \u03bc_d supported on a countable set, and (2) For scales \u03b5 \u226b \u03b5\u2080, the effective dynamics is described by a continuous measure \u03bc_c that is the weak limit of coarse-grained discrete measures.",
+  "proposition_natural": "Physical systems exhibit fundamental discreteness at the smallest scales while appearing continuous at macroscopic scales",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Measure theory",
+    "Category theory",
+    "Functional analysis"
+  ],
+  "apparatus_justification": "Measure theory provides the rigorous framework for handling discrete-to-continuous transitions through limiting processes and integration. Category theory captures the structural relationships between discrete and continuous descriptions as functors. Functional analysis supplies the operator formalism needed for quantum systems and plasma collective modes.",
+  "proof_natural": "**Proposition.** For a physical system S with state space \u03a9 and dynamics governed by a measure \u03bc, there exists a scale parameter \u03b5\u2080 > 0 such that: (1) For scales \u03b5 < \u03b5\u2080, the system admits only a discrete spectrum of observables with measure \u03bc_d supported on a countable set, and (2) For scales \u03b5 \u226b \u03b5\u2080, the effective dynamics is described by a continuous measure \u03bc_c that is the weak limit of coarse-grained discrete measures.\n\n**Proof.** Let \u03a9 be a state space admitting a filtration {\u03a9_\u03b5}_{\u03b5>0} indexed by scale parameter \u03b5. We assume there exists a fundamental scale \u03b5\u2080 > 0 below which discreteness manifests, and that the observable algebras A_\u03b5 form a directed system with respect to scale. Further, we assume the dynamics preserves the scale hierarchy: for \u03b5\u2081 < \u03b5\u2082, the map \u03c0_{\u03b5\u2082,\u03b5\u2081}: A_{\u03b5\u2081} \u2192 A_{\u03b5\u2082} is a morphism. The measures \u03bc_\u03b5 on \u03a9_\u03b5 satisfy the consistency condition \u03c0_{\u03b5\u2082,\u03b5\u2081}*\u03bc_{\u03b5\u2081} = \u03bc_{\u03b5\u2082}, where the coarse-graining map \u03c0_{\u03b5\u2082,\u03b5\u2081} is measure-preserving and surjective.\n\nFor scales \u03b5 < \u03b5\u2080, by our assumption of discrete spectrum and the Spectral Theorem for self-adjoint operators, the measure \u03bc_\u03b5 is purely atomic with support on a countable set D_\u03b5 \u2282 \u03a9_\u03b5. This establishes the first part of our proposition.\n\nTo prove the second part, we define the coarse-graining operator R_\u03b5: L\u00b2(\u03a9_{\u03b5/n}, \u03bc_{\u03b5/n}) \u2192 L\u00b2(\u03a9_\u03b5, \u03bc_\u03b5) for integer n > 1. The scale hierarchy and consistency condition ensure this operator is well-defined. \n\nFor any bounded continuous function f on \u03a9_\u03b5 with \u03b5 > \u03b5\u2080, the consistency condition combined with the Dominated Convergence Theorem implies there exists a sequence of discrete measures \u03bc_n supported on D_{\u03b5/n} such that \u222bf d\u03bc_n \u2192 \u222bf d\u03bc_\u03b5 as n \u2192 \u221e.\n\n[Note: To establish that the limiting measure \u03bc_\u03b5 for \u03b5 \u226b \u03b5\u2080 has continuous support requires additional structure on how discrete points accumulate under coarse-graining. This represents a gap in the current formulation.]\n\nBy Prokhorov's Theorem, the weak limit lim_{n\u2192\u221e} R_n*\u03bc_{\u03b5\u2080/n} exists (at least along subsequences) and defines a measure \u03bc_\u221e. The tightness required for Prokhorov's Theorem follows from the measure-preserving property of the coarse-graining maps.\n\nFor scales \u03b5 \u226b \u03b5\u2080, the Stone-Weierstrass Theorem ensures that observables in the C*-algebra A_\u03b5 can be approximated arbitrarily well by continuous functions. Therefore, the effective dynamics at scale \u03b5 \u226b \u03b5\u2080 is governed by the continuous measure \u03bc_c := \u03bc_\u221e, which is obtained as the weak limit of coarse-grained discrete measures.\n\nThis completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.MeasureTheory.Measure.MeasureSpace\nimport Mathlib.MeasureTheory.Integral.Bochner\nimport Mathlib.MeasureTheory.Measure.Portmanteau\nimport Mathlib.Analysis.SpecialFunctions.Pow.Real\nimport Mathlib.Topology.ContinuousFunction.StoneWeierstrass\nimport Mathlib.Analysis.NormedSpace.OperatorNorm\nimport Mathlib.MeasureTheory.Measure.ProbabilityMeasure\n\n/-- A physical system with scale-dependent dynamics -/\nstructure PhysicalSystem where\n  /-- The state space -/\n  \u03a9 : Type*\n  [inst : MeasurableSpace \u03a9]\n  [top : TopologicalSpace \u03a9]\n  /-- Scale-dependent state spaces -/\n  \u03a9_scale : \u211d \u2192 Type*\n  [inst_scale : \u2200 \u03b5, MeasurableSpace (\u03a9_scale \u03b5)]\n  [top_scale : \u2200 \u03b5, TopologicalSpace (\u03a9_scale \u03b5)]\n  /-- Scale-dependent measures -/\n  \u03bc_scale : \u2200 \u03b5, Measure (\u03a9_scale \u03b5)\n  /-- Critical scale parameter -/\n  \u03b5\u2080 : \u211d\n  \u03b5\u2080_pos : 0 < \u03b5\u2080\n\n/-- Coarse-graining operator between scales -/\ndef CoarseGrainOperator (S : PhysicalSystem) (\u03b5\u2081 \u03b5\u2082 : \u211d) : Type* :=\n  sorry -- Need formalization of operators between scale-dependent spaces\n\n/-- Discrete spectrum property for small scales -/\ndef HasDiscreteSpectrum (S : PhysicalSystem) (\u03b5 : \u211d) : Prop :=\n  \u03b5 < S.\u03b5\u2080 \u2192 \u2203 (D : Set (S.\u03a9_scale \u03b5)), Countable D \u2227 S.\u03bc_scale \u03b5 = S.\u03bc_scale \u03b5.restrict D\n\n/-- Main theorem: Scale-dependent transition from discrete to continuous dynamics -/\ntheorem scale_dependent_dynamics (S : PhysicalSystem)\n    [\u2200 \u03b5, CompactSpace (S.\u03a9_scale \u03b5)]\n    [\u2200 \u03b5, MetrizableSpace (S.\u03a9_scale \u03b5)]\n    [\u2200 \u03b5, IsFiniteMeasure (S.\u03bc_scale \u03b5)] :\n    (\u2200 \u03b5 < S.\u03b5\u2080, HasDiscreteSpectrum S \u03b5) \u2227\n    (\u2203 \u03bc_c : Measure (S.\u03a9_scale (2 * S.\u03b5\u2080)), \n      \u2200 \u03b5 > S.\u03b5\u2080, \u2203 (\u03bc_n : \u2115 \u2192 Measure (S.\u03a9_scale \u03b5)),\n        (\u2200 n, \u2203 D_n : Set (S.\u03a9_scale \u03b5), Countable D_n \u2227 \u03bc_n n = (\u03bc_n n).restrict D_n) \u2227\n        TendstoInDistribution \u03bc_n \u03bc_c atTop) := by\n  constructor\n  \n  -- Step 1: For \u03b5 < \u03b5\u2080, measure is purely atomic\n  \u00b7 intro \u03b5 h\u03b5\n    sorry -- Need spectral theorem application for discrete spectrum\n  \n  -- Steps 2-7: Construction of continuous limit\n  \u00b7 use sorry -- Need to construct the limiting continuous measure\n    intro \u03b5 h\u03b5\n    \n    -- Step 2: Define coarse-graining operators\n    sorry -- Need formalization of coarse-graining between scales\n    \n    -- Step 3: Sequence of discrete measures\n    use fun n => sorry -- Need construction of approximating discrete measures\n    constructor\n    \u00b7 intro n\n      use sorry -- Need the discrete support set\n      constructor\n      \u00b7 sorry -- Need to prove countability\n      \u00b7 sorry -- Need to prove measure restriction property\n    \n    -- Step 4: Gap - establishing continuous support of limit\n    sorry -- Missing: accumulation properties under coarse-graining\n    \n    -- Step 5: Weak limit exists by Prokhorov\n    sorry -- Need to apply Prokhorov's theorem with scale structure\n    \n    -- Step 6: Observable approximation by continuous functions\n    sorry -- Need Stone-Weierstrass for scale-dependent observables\n    \n    -- Step 7: Effective dynamics is continuous\n    sorry -- Need to connect weak limit to effective dynamics",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "For \u03b5 < \u03b5\u2080, the measure \u03bc_\u03b5 is purely atomic with support on a countable set D_\u03b5 \u2282 \u03a9_\u03b5",
+      "justification": "By assumption of discrete spectrum at small scales and spectral theorem for self-adjoint operators",
+      "dependencies": [
+        "Assumption 8",
+        "Spectral Theorem"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Define the coarse-graining operator R_\u03b5: L\u00b2(\u03a9_{\u03b5/n}, \u03bc_{\u03b5/n}) \u2192 L\u00b2(\u03a9_\u03b5, \u03bc_\u03b5) for integer n > 1",
+      "justification": "The scale hierarchy and consistency condition ensure this operator is well-defined",
+      "dependencies": [
+        "Assumptions 4, 5, 6"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "For any bounded continuous function f on \u03a9_\u03b5 with \u03b5 > \u03b5\u2080, there exists a sequence of discrete measures \u03bc_n supported on D_{\u03b5/n} such that \u222bf d\u03bc_n \u2192 \u222bf d\u03bc_\u03b5 as n \u2192 \u221e",
+      "justification": "By the consistency condition and dominated convergence theorem",
+      "dependencies": [
+        "Step 1",
+        "Assumption 5",
+        "Dominated Convergence Theorem"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "[Gap: Need to establish that the limiting measure \u03bc_\u03b5 for \u03b5 \u226b \u03b5\u2080 has continuous support]",
+      "justification": "This requires additional structure on how discrete points accumulate under coarse-graining",
+      "dependencies": [
+        "Steps 1-3"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The weak limit lim_{n\u2192\u221e} R_n*\u03bc_{\u03b5\u2080/n} exists and defines a measure \u03bc_\u221e with continuous support",
+      "justification": "Prokhorov's theorem guarantees existence of weakly convergent subsequence; uniqueness requires additional work",
+      "dependencies": [
+        "Steps 2-3",
+        "Prokhorov's Theorem",
+        "[Gap: uniqueness argument]"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "For scales \u03b5 \u226b \u03b5\u2080, observables in A_\u03b5 can be approximated arbitrarily well by continuous functions",
+      "justification": "Stone-Weierstrass theorem applied to the C*-algebra of observables",
+      "dependencies": [
+        "Assumption 7",
+        "Stone-Weierstrass Theorem"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The effective dynamics at scale \u03b5 \u226b \u03b5\u2080 is governed by the continuous measure \u03bc_c := \u03bc_\u221e",
+      "justification": "By construction of the weak limit and the approximation property",
+      "dependencies": [
+        "Steps 5, 6"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Spectral Theorem for Self-Adjoint Operators",
+      "authors": "von Neumann, J.",
+      "year": "1932",
+      "field": "Functional Analysis",
+      "statement": "Every self-adjoint operator on a Hilbert space has a unique spectral decomposition",
+      "usage": "Used to characterize discrete spectrum at small scales"
+    },
+    {
+      "name": "Prokhorov's Theorem",
+      "authors": "Prokhorov, Y.V.",
+      "year": "1956",
+      "field": "Probability Theory",
+      "statement": "A family of probability measures on a complete separable metric space is relatively compact in the weak topology if and only if it is tight",
+      "usage": "Guarantees existence of weak limit of coarse-grained measures"
+    },
+    {
+      "name": "Stone-Weierstrass Theorem",
+      "authors": "Stone, M.H.",
+      "year": "1937",
+      "field": "Functional Analysis",
+      "statement": "Continuous functions can uniformly approximate elements of certain subalgebras of C(X)",
+      "usage": "Shows continuous functions approximate observables at large scales"
+    },
+    {
+      "name": "Dominated Convergence Theorem",
+      "authors": "Lebesgue, H.",
+      "year": "1902",
+      "field": "Measure Theory",
+      "statement": "For a sequence of measurable functions converging pointwise and dominated by an integrable function, the limit of integrals equals the integral of the limit",
+      "usage": "Justifies interchange of limits in Step 3"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The state space \u03a9 admits a filtration {\u03a9_\u03b5}_{\u03b5>0} indexed by scale parameter \u03b5",
+    "There exists a fundamental scale \u03b5\u2080 > 0 below which discreteness manifests",
+    "Observable algebras A_\u03b5 form a directed system with respect to scale",
+    "The dynamics preserves the scale hierarchy: if \u03b5\u2081 < \u03b5\u2082, then \u03c0_{\u03b5\u2082,\u03b5\u2081}: A_{\u03b5\u2081} \u2192 A_{\u03b5\u2082} is a morphism",
+    "Measures \u03bc_\u03b5 on \u03a9_\u03b5 satisfy a consistency condition: \u03c0_{\u03b5\u2082,\u03b5\u2081}*\u03bc_{\u03b5\u2081} = \u03bc_{\u03b5\u2082}",
+    "The coarse-graining map \u03c0_{\u03b5\u2082,\u03b5\u2081} is measure-preserving and surjective",
+    "Physical observables are elements of the C*-algebra A_\u03b5 at scale \u03b5",
+    "The spectrum of observables at scale \u03b5 < \u03b5\u2080 is discrete (point spectrum only)",
+    "Weak convergence of measures is defined with respect to bounded continuous functions"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Definition of filtration {\u03a9_\u03b5}_{\u03b5>0}",
+        "issue": "No specification of what this filtration is, how spaces relate to each other, or what topology/measure structure they carry",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need complete specification of the filtration structure and how it relates to the physical system"
+      },
+      {
+        "step": "Existence of fundamental scale \u03b5\u2080",
+        "issue": "This is assumed without justification. The entire proof hinges on this unproven existence claim",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Must prove existence of \u03b5\u2080 from first principles or state as hypothesis in proposition"
+      },
+      {
+        "step": "Application of Spectral Theorem",
+        "issue": "Spectral Theorem requires self-adjoint operators on Hilbert spaces, but no Hilbert space structure or operators are defined",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Define Hilbert space structure and relevant operators before invoking Spectral Theorem"
+      },
+      {
+        "step": "Definition of coarse-graining operator R_\u03b5",
+        "issue": "Operator is introduced without definition. Its properties and action are never specified",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Provide explicit construction of R_\u03b5 and prove it has claimed properties"
+      },
+      {
+        "step": "Application of Dominated Convergence Theorem",
+        "issue": "No dominating function is provided, and convergence of \u03bc_n is asserted without proof",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Construct explicit dominating function and prove pointwise convergence"
+      },
+      {
+        "step": "Application of Prokhorov's Theorem",
+        "issue": "Requires complete separable metric space, but no metric structure on \u03a9_\u03b5 is defined. Also requires probability measures, but \u03bc_\u03b5 may not be probability measures",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Define metric structure and prove measures are probability measures"
+      },
+      {
+        "step": "Continuity of limiting measure",
+        "issue": "Proof admits this is a gap but provides no resolution. Weak limits of discrete measures need not be continuous",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "This may be false without additional strong assumptions"
+      },
+      {
+        "step": "Definition of \u03bc_\u221e and \u03bc_c",
+        "issue": "\u03bc_\u221e is defined as a limit along subsequences, making it non-unique. The equality \u03bc_c := \u03bc_\u221e is then meaningless",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Prove full sequence convergence or handle non-uniqueness explicitly"
+      }
+    ],
+    "hidden_assumptions": [
+      "State spaces \u03a9_\u03b5 have compatible topological/measurable structures",
+      "Measures \u03bc_\u03b5 are finite (required for pushforward to be well-defined)",
+      "Observable algebras A_\u03b5 are C*-algebras with compatible norms",
+      "The map \u03c0_{\u03b5\u2082,\u03b5\u2081} exists and is unique for all \u03b5\u2081 < \u03b5\u2082",
+      "The discrete spectrum assumption implies purely atomic measures",
+      "Coarse-graining preserves measure-theoretic properties",
+      "The scale parameter \u03b5 has physical meaning related to observation resolution"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes existence of a fundamental scale \u03b5\u2080 where discreteness manifests, then uses this to prove discreteness for \u03b5 < \u03b5\u2080. The existence of \u03b5\u2080 with the required properties is what needs to be proven.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to establish a universal result for any 'physical system S' but provides no characterization of what constitutes a physical system. Even if the technical gaps were fixed, the result would only apply to systems satisfying numerous unstated mathematical conditions.",
+    "citation_issues": [
+      "Spectral Theorem requires self-adjoint operators on Hilbert spaces - none are defined here",
+      "Prokhorov's Theorem requires complete separable metric spaces and probability measures - neither condition is verified",
+      "Stone-Weierstrass Theorem application is vague - which subalgebra is being approximated?",
+      "Dominated Convergence Theorem requires a dominating integrable function - none is provided"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed, relying on undefined objects, unproven assumptions, and misapplied theorems. The central claim about discrete-to-continuous transitions may be salvageable in specific contexts, but the current formulation is far too vague and technically deficient to constitute a valid mathematical proof.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish a scale-dependent transition from discrete to continuous measures, but fails to prove the specific claims about discrete spectrum for \u03b5 < \u03b5\u2080 and continuous limit for \u03b5 \u226b \u03b5\u2080",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Compactness or tightness conditions for the family of measures {\u03bc_\u03b5}",
+      "Specific relationship between scale parameter \u03b5 and spectral properties",
+      "Existence and properties of the coarse-graining operators R_\u03b5",
+      "Convergence properties of the sequence \u03bc_{\u03b5/n}",
+      "Topological structure on state spaces \u03a9_\u03b5",
+      "Relationship between C*-algebra structure and measure support",
+      "Conditions ensuring uniqueness of weak limits"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 1",
+        "issue": "The spectral theorem for self-adjoint operators does not directly imply that the measure \u03bc_\u03b5 is purely atomic - this conflates spectral measures with state space measures"
+      },
+      {
+        "step": "Step 2",
+        "issue": "The coarse-graining operator R_\u03b5 is defined without establishing that the domain and codomain spaces are well-defined or that the operator exists"
+      },
+      {
+        "step": "Step 3",
+        "issue": "The dominated convergence theorem requires a dominating function, which is not established, and the consistency condition alone does not guarantee this convergence"
+      },
+      {
+        "step": "Step 5",
+        "issue": "Prokhorov's theorem requires tightness of the measure sequence, which is not established, and the notation R_n*\u03bc_{\u03b5\u2080/n} is undefined since R_n was not properly defined"
+      },
+      {
+        "step": "Step 6",
+        "issue": "Stone-Weierstrass theorem applies to algebras of continuous functions on compact spaces, but the connection to observables A_\u03b5 and their approximation properties is not established"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Step 4 explicitly acknowledges a gap in establishing continuous support",
+      "No proof that \u03b5\u2080 actually exists as a critical scale",
+      "No demonstration that discrete measures can actually converge to continuous ones under the given conditions",
+      "Missing connection between spectral properties and measure support",
+      "No verification that the weak limit \u03bc_\u221e actually governs the dynamics",
+      "Undefined notation and operators used throughout"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "consistency_score": 0.9,
+    "contradictions_found": false,
+    "notes": "No existing proofs to check against"
+  },
+  "confidence_score": 0.3350000000000001,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.9,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.9,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous theory of scale-dependent measure spaces with consistent coarse-graining maps, including criteria for when discrete measures converge to continuous ones under repeated coarse-graining. Also needed: a categorical framework relating observable algebras at different scales.",
+  "limitations": [
+    "Step 4: Proof that limiting measure has continuous support requires additional structure",
+    "Step 5: Uniqueness of the weak limit needs to be established",
+    "Missing: Explicit construction of the scale filtration {\u03a9_\u03b5} for general physical systems",
+    "Missing: Proof that coarse-graining preserves physical dynamics (not just measures)",
+    "The proof assumes existence of a fundamental scale \u03b5\u2080 without deriving it",
+    "The transition from discrete to continuous is shown for measures but not for dynamics",
+    "The proof doesn't specify how to construct the coarse-graining maps \u03c0_{\u03b5\u2082,\u03b5\u2081}",
+    "No quantitative bounds on how large \u03b5 must be relative to \u03b5\u2080 for continuum approximation"
+  ],
+  "source_convergence": {
+    "structural_claim": "Physical systems exhibit fundamental discreteness at the smallest scales while appearing continuous at macroscopic scales",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Loop Quantum Gravity Area Spectrum",
+        "domain_id": "quantum_gravity",
+        "domain_name": "Quantum Gravity",
+        "link_type": "direct",
+        "structural_conclusion": "Spacetime area has discrete eigenvalues at Planck scale, with continuum emerging at larger scales"
+      },
+      {
+        "result_id": "",
+        "result_name": "Causal Set Hauptvermutung",
+        "domain_id": "quantum_gravity",
+        "domain_name": "Quantum Gravity",
+        "link_type": "direct",
+        "structural_conclusion": "Spacetime emerges from discrete causal elements, with continuum approximation valid only at large scales"
+      },
+      {
+        "result_id": "",
+        "result_name": "Vlasov Equation",
+        "domain_id": "plasma_physics",
+        "domain_name": "Plasma Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Plasma is fundamentally discrete particles in phase space, but collective behavior produces fluid-like continuum dynamics"
+      },
+      {
+        "result_id": "",
+        "result_name": "Gyrokinetic Theory",
+        "domain_id": "plasma_physics",
+        "domain_name": "Plasma Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Fast discrete particle gyro-motion can be averaged to yield continuum-like slow dynamics"
+      }
+    ],
+    "domains": [
+      "quantum_gravity",
+      "plasma_physics"
+    ],
+    "domain_names": [
+      "Quantum Gravity",
+      "Plasma Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.2856,
+      "independence": 0.85,
+      "adversarial": 0.09,
+      "reproducibility": 0.6299999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.51068,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:03:18.253761+00:00",
+    "id": "005d29e11597"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.289605
+  }
+}

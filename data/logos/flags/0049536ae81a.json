@@ -1,0 +1,15 @@
+{
+  "proof_id": "0049536ae81a",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous categorical framework for multi-scale quantum systems that defines functors between time scale categories and quantum system categories, including proper treatment of tensor product structures and completely positive maps in this context",
+    "Difficulty assessed as challenging",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

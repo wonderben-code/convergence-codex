@@ -1,0 +1,13 @@
+{
+  "proof_id": "73b5e32cc2a7",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous theory of coarse-graining that preserves the mathematical structure while capturing physical intuition about macroscopic observables. The non-commutativity of \u03a0 and \u03c6_t needs careful analysis to prove monotonicity without circularity.",
+    "7 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

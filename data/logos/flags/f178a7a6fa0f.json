@@ -1,0 +1,13 @@
+{
+  "proof_id": "f178a7a6fa0f",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A general mathematical framework connecting microscopic scale competition to macroscopic phase behavior. This would require: (1) A rigorous definition of 'competing scales' beyond simple ratios, (2) A theory of how scale competition induces discontinuities in macroscopic observables, (3) A characterization of the geometry of critical sets in scale-ratio space for general systems",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}
