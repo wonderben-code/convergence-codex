@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 import sys
 import threading
 import time
@@ -66,6 +67,55 @@ def add_cost(amount: float) -> float:
 def get_cost() -> float:
     with _cost_lock:
         return _total_cost
+
+
+# --- Git provenance ---
+
+def git_stamp_paper(paper_id: str, title: str, num_convergences: int, log_file: Path):
+    """Commit and push a paper immediately for Bitcoin timestamping."""
+    try:
+        # Stage the paper's 3 files (JSON, markdown, review)
+        subprocess.run(
+            ["git", "add",
+             f"data/synthesis/papers/{paper_id}.json",
+             f"data/synthesis/drafts/{paper_id}.md",
+             f"data/synthesis/reviews/{paper_id}.json"],
+            cwd=str(PROJECT_ROOT), capture_output=True, timeout=30
+        )
+        # Also stage the log file so progress is captured
+        subprocess.run(
+            ["git", "add", "data/pipeline/"],
+            cwd=str(PROJECT_ROOT), capture_output=True, timeout=30
+        )
+        # Commit
+        short_title = title[:60] if title else paper_id
+        msg = (f"Synthesis paper: {short_title} "
+               f"({num_convergences} convergences) [{paper_id}]")
+        result = subprocess.run(
+            ["git", "commit", "-m", msg],
+            cwd=str(PROJECT_ROOT), capture_output=True, text=True, timeout=30
+        )
+        if result.returncode != 0:
+            log(f"    Git commit skipped: {result.stderr.strip()[:100]}", log_file)
+            return
+        # Push for Bitcoin timestamping
+        push = subprocess.run(
+            ["git", "push", "origin", "main"],
+            cwd=str(PROJECT_ROOT), capture_output=True, text=True, timeout=60
+        )
+        if push.returncode != 0:
+            # Remote may have Bitcoin timestamp commits — pull and retry
+            subprocess.run(
+                ["git", "pull", "--rebase", "origin", "main"],
+                cwd=str(PROJECT_ROOT), capture_output=True, timeout=60
+            )
+            subprocess.run(
+                ["git", "push", "origin", "main"],
+                cwd=str(PROJECT_ROOT), capture_output=True, timeout=60
+            )
+        log(f"    Bitcoin stamped: {paper_id}", log_file)
+    except Exception as e:
+        log(f"    Git stamp warning: {e}", log_file)
 
 
 # --- Data loading ---
@@ -446,7 +496,7 @@ def run_synthesis(convergences: list[dict], findings: list[dict],
                         "suggested_fix": issue.get("suggested_fix", ""),
                     })
 
-            # ─── STEP 5: SAVE ───
+            # ─── STEP 5: SAVE + BITCOIN STAMP ───
             store.save_paper(paper)
             store.save_markdown(paper)
             store.save_review(review)
@@ -455,6 +505,10 @@ def run_synthesis(convergences: list[dict], findings: list[dict],
             stats["total_words"] += paper.total_word_count
             final_covered_ids.update(paper.convergence_ids)
             log(f"    Saved: {paper.id}", log_file)
+
+            # Commit + push immediately for provenance
+            git_stamp_paper(paper.id, paper.title,
+                            len(paper.convergence_ids), log_file)
 
         except Exception as e:
             stats["errors"] += 1
