@@ -1,0 +1,38 @@
+{
+  "proof_id": "00f62716e74a",
+  "timestamp": "2026-05-02T14:01:20.274411+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "constraint_logic was considered since both domains involve fundamental constraints on information processing, but the convergence is more about identifying common axioms than about structures arising from constraint satisfaction"
+      ],
+      "reasoning": "The convergence identifies shared abstract principles about information constraints across quantum and classical domains. Both domains satisfy axioms about non-copyability/non-shareability of information under certain conditions, but the mathematical structures (quantum states vs thermodynamic entropy) are too different for isomorphism or categorical equivalence."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Category theory, Information theory, Measure theory",
+      "alternatives_considered": [],
+      "reasoning": "Category theory provides the natural framework for formalizing structural constraints across domains through functors that preserve or fail to preserve certain properties. Information theory gives the formal notion of information copying and entropy, while measure theory provides the probabilistic foundations needed to distinguish quantum from classical information regimes."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof establishes that quantum information cannot be copied (no-cloning theorem) or freely shared (monogamy of entanglement), while classical information can be copied but only with thermodynamic cost (Landauer's principle). This creates a fundamental dichotomy in information processing capabilities that distinguishes microscopic (quantum) from macroscopic (classical) regimes.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 8 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3472 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 3519 chars, 8 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "The formalization captures the categorical structure and the distinction between quantum and classical information types. However, the core quantum information theoretic results (no-cloning, monogamy of entanglement) and thermodynamic principles (Landauer's principle) are not available in Mathlib, requiring extensive use of sorry. The connection between information-theoretic and thermodynamic entropy also remains unformalized."
+    }
+  ]
+}

@@ -1,0 +1,336 @@
+{
+  "id": "c7553b45406b",
+  "convergence_id": "bdca42d32872",
+  "timestamp": "2026-05-02T14:01:44.096264+00:00",
+  "proposition": "For a system of N identical bosonic particles with single-particle Hamiltonian H\u2080 and interaction potential V, there exists a critical temperature Tc > 0 such that for T < Tc, the one-particle density matrix \u03c1\u2081(r,r') exhibits off-diagonal long-range order, with lim_{|r-r'|\u2192\u221e} \u03c1\u2081(r,r') = n\u2080 > 0, where n\u2080/N = O(1), corresponding to macroscopic occupation of a single quantum state.",
+  "proposition_natural": "Phase transitions can occur where macroscopic numbers of particles collectively occupy the same quantum state, creating new forms of matter",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Functional analysis",
+    "Measure theory",
+    "Dynamical systems"
+  ],
+  "apparatus_justification": "Functional analysis provides the rigorous framework for quantum states as vectors in Hilbert spaces and operators for observables, while measure theory handles the statistical mechanics of particle distributions. Dynamical systems theory captures the critical behavior and bifurcations at phase transitions.",
+  "proof_natural": "**Proposition.** For a system of N identical bosonic particles with single-particle Hamiltonian H\u2080 and interaction potential V, there exists a critical temperature Tc > 0 such that for T < Tc, the one-particle density matrix \u03c1\u2081(r,r') exhibits off-diagonal long-range order, with lim_{|r-r'|\u2192\u221e} \u03c1\u2081(r,r') = n\u2080 > 0, where n\u2080/N = O(1), corresponding to macroscopic occupation of a single quantum state.\n\n**Proof.** We assume that the system consists of N identical bosonic particles in a volume V with periodic boundary conditions. Let the single-particle Hamiltonian be H\u2080 = -\u210f\u00b2\u2207\u00b2/2m, which is bounded below, and let the interaction potential V(r) be repulsive, short-range, and satisfy \u222b|V(r)|dr < \u221e. We further assume that the system is in thermal equilibrium at temperature T, that the thermodynamic limit N,V \u2192 \u221e with N/V = \u03c1 fixed exists, and that the grand canonical ensemble is well-defined with chemical potential \u03bc < 0. The one-particle density matrix \u03c1\u2081(r,r') = \u27e8\u03c8\u2020(r)\u03c8(r')\u27e9 exists as a trace-class operator, where the quantum field operators \u03c8(r), \u03c8\u2020(r) satisfy canonical commutation relations [\u03c8(r),\u03c8\u2020(r')] = \u03b4(r-r').\n\nWe begin by considering the non-interacting case. From standard quantum statistical mechanics, the one-particle density matrix in momentum space takes the form \u03c1\u2081(k) = \u27e8a\u2020\u2096a\u2096\u27e9 = 1/(exp(\u03b2(\u03b5\u2096-\u03bc))-1), where \u03b2 = 1/k\u1d66T and \u03b5\u2096 = \u210f\u00b2k\u00b2/2m. As the temperature approaches a critical value Tc from below, the chemical potential \u03bc approaches 0\u207b. For the k = 0 mode, we have \u03b5\u2080 = 0, yielding n\u2080 = \u03c1\u2081(k=0) = 1/(exp(-\u03b2\u03bc)-1) \u2248 -1/\u03b2\u03bc, which diverges as V \u2192 \u221e.\n\nThe critical temperature for the ideal Bose gas is determined by the condition \u03c1\u03bb\u00b3\u209c\u2095 = \u03b6(3/2), where \u03bb\u209c\u2095 = h/\u221a(2\u03c0mk\u1d66T) is the thermal de Broglie wavelength and \u03b6 denotes the Riemann zeta function. This follows from equating the total particle number to the sum over excited states when the ground state begins to acquire macroscopic occupation.\n\n[Note: The extension to the interacting case requires additional machinery.] For weakly interacting bosons with repulsive interactions, Bogoliubov theory predicts that the condensate persists with a modified excitation spectrum. The Bogoliubov approximation replaces the operators a\u2080, a\u2020\u2080 with c-numbers \u221aN\u2080, yielding a spectrum E(k) = \u221a(\u03b5\u00b2\u2096 + 2g\u03c1\u2080\u03b5\u2096), where g characterizes the interaction strength and \u03c1\u2080 is the condensate density.\n\nBy the spectral decomposition theorem, the one-particle density matrix in position space can be written as \u03c1\u2081(r,r') = n\u2080\u03c6\u2080*(r)\u03c6\u2080(r') + \u03c1\u2081,excited(r,r'), where \u03c6\u2080(r) is the condensate wavefunction and the second term represents contributions from excited states. The presence of the macroscopic eigenvalue n\u2080 implies off-diagonal long-range order according to the Penrose-Onsager criterion.\n\n[Note: A rigorous proof of the phase transition for interacting systems would require establishing infrared bounds on correlation functions and proving spontaneous symmetry breaking.] For T < Tc, convexity arguments and the extensive nature of the free energy ensure that the condensate fraction n\u2080/N remains O(1) in the thermodynamic limit. Recent rigorous results by Lieb and Seiringer have established the existence of BEC in dilute Bose gases with positive scattering length in trapped geometries.\n\nTherefore, below the critical temperature Tc, the system exhibits Bose-Einstein condensation characterized by off-diagonal long-range order in the one-particle density matrix, with a macroscopic fraction of particles occupying a single quantum state. This completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.Analysis.InnerProductSpace.Basic\nimport Mathlib.Analysis.SpecialFunctions.Pow.Real\nimport Mathlib.MeasureTheory.Integral.Bochner\nimport Mathlib.Topology.MetricSpace.Basic\nimport Mathlib.Analysis.NormedSpace.OperatorNorm\n\n/-- Bosonic Fock space (placeholder) -/\nsorry -- Need: Definition of bosonic Fock space with creation/annihilation operators\n\n/-- One-particle density matrix -/\nsorry -- Need: Definition of one-particle density matrix \u03c1\u2081(r,r')\n\n/-- Off-diagonal long-range order (ODLRO) -/\ndef has_ODLRO (\u03c1\u2081 : \u211d \u00d7 \u211d \u2192 \u2102) : Prop :=\n  \u2203 n\u2080 > 0, Filter.Tendsto (fun d => \u03c1\u2081 (0, d)) Filter.atTop (\ud835\udcdd n\u2080)\n\n/-- Critical temperature for Bose-Einstein condensation -/\nnoncomputable def critical_temperature (m : \u211d) (\u03c1 : \u211d) : \u211d :=\n  sorry -- Need: Formula involving \u03b6(3/2) and thermal de Broglie wavelength\n\n/-- Main theorem: Existence of Bose-Einstein condensation -/\ntheorem bose_einstein_condensation \n  (N : \u2115) -- Number of particles\n  (H\u2080 : \u211d \u2192 \u211d) -- Single-particle Hamiltonian\n  (V : \u211d \u00d7 \u211d \u2192 \u211d) -- Interaction potential\n  (m : \u211d) -- Particle mass\n  (hm : m > 0) :\n  \u2203 (Tc : \u211d) (hTc : Tc > 0),\n    \u2200 T < Tc,\n    \u2203 (\u03c1\u2081 : \u211d \u00d7 \u211d \u2192 \u2102) (n\u2080 : \u211d),\n      has_ODLRO \u03c1\u2081 \u2227 \n      n\u2080 > 0 \u2227\n      n\u2080 / N = O(1) := by\n  sorry -- Need: Full quantum many-body framework\n\n/-- Step 1: Momentum space density matrix for ideal Bose gas -/\nlemma ideal_gas_momentum_density \n  (\u03b2 : \u211d) (\u03bc : \u211d) (\u03b5 : \u211d \u2192 \u211d) (k : \u211d) :\n  sorry -- Need: Definition of expectation value \u27e8a\u2020\u2096a\u2096\u27e9 = 1/(exp(\u03b2(\u03b5\u2096-\u03bc))-1)\n\n/-- Step 2: Divergence of k=0 mode occupation -/\nlemma zero_mode_divergence \n  (\u03b2 : \u211d) (\u03bc : \u211d) (h\u03b2 : \u03b2 > 0) (h\u03bc : \u03bc < 0) :\n  Filter.Tendsto (fun \u03bc => -1 / (\u03b2 * \u03bc)) (\ud835\udcdd[<] 0) Filter.atTop := by\n  sorry -- Need: Limit calculation as \u03bc \u2192 0\u207b\n\n/-- Step 3: Critical temperature formula for ideal gas -/\nlemma critical_temp_ideal_gas \n  (m : \u211d) (\u03c1 : \u211d) (hm : m > 0) (h\u03c1 : \u03c1 > 0) :\n  \u2203 Tc > 0, \u03c1 * (Real.sqrt (2 * Real.pi * m * Tc))^3 = sorry := by\n  sorry -- Need: Riemann zeta function \u03b6(3/2)\n\n/-- Step 4: Bogoliubov approximation (placeholder) -/\nsorry -- Need: Bogoliubov transformation theory for weakly interacting bosons\n\n/-- Step 5: Spectral decomposition of density matrix -/\nlemma density_matrix_decomposition \n  (\u03c1\u2081 : \u211d \u00d7 \u211d \u2192 \u2102) (n\u2080 : \u211d) (\u03c6\u2080 : \u211d \u2192 \u2102) :\n  sorry -- Need: \u03c1\u2081(r,r') = n\u2080\u03c6\u2080*(r)\u03c6\u2080(r') + \u03c1\u2081,excited(r,r')\n\n/-- Step 6: Phase transition proof (placeholder) -/\nsorry -- Need: Infrared bounds and spontaneous symmetry breaking\n\n/-- Step 7: Condensate fraction remains O(1) -/\nlemma condensate_fraction_extensive \n  (N : \u2115) (n\u2080 : \u211d) (T Tc : \u211d) (hT : T < Tc) :\n  \u2203 C > 0, n\u2080 / N \u2264 C := by\n  sorry -- Need: Thermodynamic limit and convexity arguments",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The one-particle density matrix in momentum space is \u03c1\u2081(k) = \u27e8a\u2020\u2096a\u2096\u27e9 = 1/(exp(\u03b2(\u03b5\u2096-\u03bc))-1) for non-interacting bosons",
+      "justification": "Standard result from quantum statistical mechanics for ideal Bose gas",
+      "dependencies": [
+        "Assumption of thermal equilibrium",
+        "Canonical commutation relations"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "For the ideal gas, as T \u2192 Tc from below, the k=0 mode occupation n\u2080 = \u03c1\u2081(k=0) diverges as V\u2192\u221e",
+      "justification": "Setting \u03bc \u2192 0\u207b and \u03b5\u2096\u208c\u2080 = 0 gives n\u2080 = 1/(exp(-\u03b2\u03bc)-1) \u2248 -1/\u03b2\u03bc \u2192 \u221e",
+      "dependencies": [
+        "Step 1",
+        "Thermodynamic limit assumption"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The critical temperature for the ideal gas is given by \u03c1\u03bb\u00b3\u209c\u2095 = \u03b6(3/2) where \u03bb\u209c\u2095 = h/\u221a(2\u03c0mk\u1d66T)",
+      "justification": "Standard derivation equating total particle number to sum over excited states",
+      "dependencies": [
+        "Step 2",
+        "Riemann zeta function \u03b6(3/2) \u2248 2.612"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "[Gap: Extension to interacting case] For weakly interacting bosons with repulsive interactions, Bogoliubov theory predicts the condensate persists with modified excitation spectrum",
+      "justification": "Bogoliubov approximation replaces a\u2080, a\u2020\u2080 with c-numbers \u221aN\u2080",
+      "dependencies": [
+        "Bogoliubov 1947",
+        "Assumption of weak interactions"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The one-particle density matrix in position space exhibits ODLRO: \u03c1\u2081(r,r') = n\u2080\u03c6\u2080*(r)\u03c6\u2080(r') + \u03c1\u2081,excited(r,r')",
+      "justification": "Spectral decomposition with macroscopic eigenvalue n\u2080",
+      "dependencies": [
+        "Step 4",
+        "Penrose-Onsager criterion for BEC"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "[Gap: Rigorous proof of phase transition] The existence of a sharp phase transition with ODLRO for interacting systems requires rigorous bounds",
+      "justification": "Would need infrared bounds on correlation functions and proof of spontaneous symmetry breaking",
+      "dependencies": [
+        "Lieb-Seiringer-Yngvason 2005 for trapped gases"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "For T < Tc, the condensate fraction n\u2080/N remains O(1) in the thermodynamic limit",
+      "justification": "Follows from extensive nature of free energy and convexity arguments",
+      "dependencies": [
+        "Step 6",
+        "Thermodynamic stability"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Bogoliubov Theory of Weakly Interacting Bose Gas",
+      "authors": "N. N. Bogoliubov",
+      "year": "1947",
+      "field": "Quantum Statistical Mechanics",
+      "statement": "For weakly interacting Bose gas, the ground state exhibits BEC with modified excitation spectrum E(k) = \u221a(\u03b5\u00b2\u2096 + 2g\u03c1\u2080\u03b5\u2096)",
+      "usage": "Justifies persistence of condensation in interacting case"
+    },
+    {
+      "name": "Penrose-Onsager Criterion",
+      "authors": "O. Penrose and L. Onsager",
+      "year": "1956",
+      "field": "Quantum Statistical Mechanics",
+      "statement": "BEC occurs when the largest eigenvalue of the one-particle density matrix is O(N)",
+      "usage": "Provides mathematical definition of macroscopic quantum state occupation"
+    },
+    {
+      "name": "Rigorous Proof of BEC in Dilute Gases",
+      "authors": "E. H. Lieb, R. Seiringer, J. Yngvason",
+      "year": "2005",
+      "field": "Mathematical Physics",
+      "statement": "For dilute Bose gas with positive scattering length in a trap, BEC occurs for sufficiently low temperature",
+      "usage": "Provides rigorous foundation for interacting case in trapped geometry"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The system consists of N identical bosonic particles in a volume V with periodic boundary conditions",
+    "The single-particle Hamiltonian H\u2080 = -\u210f\u00b2\u2207\u00b2/2m is bounded below",
+    "The interaction potential V(r) is repulsive, short-range, and satisfies \u222b|V(r)|dr < \u221e",
+    "The system is in thermal equilibrium at temperature T",
+    "The thermodynamic limit N,V \u2192 \u221e with N/V = \u03c1 fixed exists",
+    "The grand canonical ensemble is well-defined with chemical potential \u03bc < 0",
+    "The one-particle density matrix \u03c1\u2081(r,r') = \u27e8\u03c8\u2020(r)\u03c8(r')\u27e9 exists as a trace-class operator",
+    "Quantum field operators \u03c8(r), \u03c8\u2020(r) satisfy canonical commutation relations [\u03c8(r),\u03c8\u2020(r')] = \u03b4(r-r')"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "Transition from ideal to interacting case",
+        "issue": "The proof establishes BEC for the ideal gas, then hand-waves the extension to interacting systems with '[Note: The extension to the interacting case requires additional machinery.]' This is the core of what needs to be proven!",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed without a complete rigorous treatment of the interacting case"
+      },
+      {
+        "step": "Application of Bogoliubov theory",
+        "issue": "Bogoliubov approximation is only valid for weak interactions and assumes a condensate already exists. Using it to prove condensation is circular.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need a non-perturbative approach that doesn't assume the existence of BEC"
+      },
+      {
+        "step": "Thermodynamic limit for interacting system",
+        "issue": "The existence of the thermodynamic limit is assumed but not proven for the interacting case. This is highly non-trivial.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Cite rigorous results on thermodynamic limit existence for the specific class of interactions considered"
+      },
+      {
+        "step": "Chemical potential \u03bc < 0 assumption",
+        "issue": "For interacting systems, ensuring \u03bc < 0 throughout the phase transition is non-trivial and requires proof",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Prove that the chemical potential remains negative for the interacting system"
+      },
+      {
+        "step": "Spectral decomposition application",
+        "issue": "The decomposition \u03c1\u2081(r,r') = n\u2080\u03c6\u2080*(r)\u03c6\u2080(r') + \u03c1\u2081,excited(r,r') assumes the existence of a macroscopic eigenvalue without proving it for the interacting case",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "This is what needs to be proven, not assumed"
+      },
+      {
+        "step": "Appeal to convexity arguments",
+        "issue": "The proof mentions 'convexity arguments' ensure n\u2080/N remains O(1) but provides no details or justification",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Provide explicit convexity arguments or cite appropriate theorems"
+      },
+      {
+        "step": "Citation of Lieb-Seiringer results",
+        "issue": "The Lieb-Seiringer results are for trapped geometries, not periodic boundary conditions. The proof conflates different setups.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Either change the setup to match Lieb-Seiringer or cite appropriate results for periodic BC"
+      }
+    ],
+    "hidden_assumptions": [
+      "The ground state is unique (not stated but required for BEC)",
+      "The interaction preserves the U(1) symmetry (needed for ODLRO)",
+      "The system is translation invariant (implicit in the use of momentum space)",
+      "The free energy is differentiable at the phase transition",
+      "The one-particle density matrix has discrete spectrum",
+      "Excited state contributions to \u03c1\u2081 decay sufficiently fast"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof uses Bogoliubov theory which assumes the existence of a condensate to prove the existence of a condensate. The spectral decomposition step also assumes what needs to be proven.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof actually only establishes BEC for the ideal gas. The interacting case is not proven but merely asserted with hand-waving references to Bogoliubov theory and unspecified 'convexity arguments'.",
+    "citation_issues": [
+      "Bogoliubov theory is cited as if it proves BEC, but it assumes BEC exists",
+      "Lieb-Seiringer results are for trapped systems, not periodic BC as assumed here",
+      "The 'rigorous proof' mentioned doesn't match the setup of this proposition"
+    ],
+    "structural_soundness": 0.2,
+    "overall_assessment": "This proof is fundamentally flawed, establishing results only for the ideal gas case while claiming to prove the interacting case. The transition from ideal to interacting systems is handled with hand-waving and circular reasoning, making this more of a physics argument than a mathematical proof.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof only establishes Bose-Einstein condensation for the ideal gas case and makes unsupported claims about the interacting case without rigorous justification",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Assumption that Bogoliubov theory is valid for the given interaction strength",
+      "Assumption that the thermodynamic limit commutes with the low-temperature limit",
+      "Assumption that the grand canonical and canonical ensembles are equivalent",
+      "Assumption that the interaction does not destroy the condensate",
+      "Assumption that the system remains stable under interactions",
+      "Assumption that \u03bc approaches 0 from below as T approaches Tc"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "2",
+        "issue": "The divergence argument is circular - it assumes \u03bc \u2192 0\u207b without justification, and the volume V\u2192\u221e limit is conflated with the occupation number divergence"
+      },
+      {
+        "step": "4",
+        "issue": "Bogoliubov theory is only valid for weak interactions and low depletion, but no bounds are given on interaction strength or verification that these conditions hold"
+      },
+      {
+        "step": "5",
+        "issue": "The spectral decomposition assumes the existence of a macroscopic eigenvalue without proving it exists for interacting systems"
+      },
+      {
+        "step": "7",
+        "issue": "Claims the result follows from 'convexity arguments' but provides no actual proof or reference to specific theorems"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No rigorous treatment of the interacting case beyond perturbative Bogoliubov theory",
+      "Missing proof that ODLRO actually occurs in interacting systems",
+      "No demonstration that the phase transition is sharp rather than a crossover",
+      "Missing analysis of finite-size effects and approach to thermodynamic limit",
+      "No proof that the critical temperature exists for interacting systems",
+      "Gap between ideal gas results and interacting system claims is not bridged rigorously"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof assumes \u03bc < 0 (chemical potential negative) which contradicts standard Bose-Einstein condensation theory where \u03bc \u2192 0\u207b at the critical point but can be positive below Tc",
+      "Claims \u03c1\u2081(k) = 1/(exp(\u03b2(\u03b5\u2096-\u03bc))-1) for interacting bosons, but this is only valid for non-interacting systems - interactions modify the single-particle spectrum",
+      "States 'k=0 mode occupation diverges as V\u2192\u221e' but this is physically incorrect - the occupation number n\u2080 grows as N, not diverging",
+      "The critical temperature formula \u03c1\u03bb\u00b3\u209c\u2095 = \u03b6(3/2) is only valid for ideal gas, not interacting systems as claimed"
+    ],
+    "assumption_conflicts": [
+      "Conflicts with [1050c80b4013] which properly treats strongly interacting systems with modified degrees of freedom",
+      "Contradicts [0178ff46c5ee] phase transition framework by incorrectly applying ideal gas results to interacting systems",
+      "Violates thermodynamic consistency required by [087da119976b] symmetry breaking principles"
+    ],
+    "beneficial_connections": [
+      "Connects to [0178ff46c5ee] regarding phase transitions and symmetry breaking",
+      "Relates to [087da119976b] spontaneous symmetry breaking mechanisms",
+      "Links to [052632f8abba] multi-scale dynamics from microscopic to macroscopic behavior"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof contains fundamental errors in applying ideal gas formulas to interacting systems, incorrect statements about divergences, and gaps in rigorously establishing the phase transition for interacting bosons. The mathematical framework is sound but the physical claims are largely incorrect."
+  },
+  "confidence_score": 0.255,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "Rigorous treatment of the thermodynamic limit for interacting quantum many-body systems, including: (1) Convergence of reduced density matrices in trace norm, (2) Proof of spontaneous U(1) symmetry breaking in 3D, (3) Control of quantum fluctuations uniformly in system size",
+  "limitations": [
+    "Step 4: Bogoliubov theory is not rigorous for finite interaction strength",
+    "Step 6: Full rigorous proof of sharp phase transition for homogeneous interacting gas still incomplete",
+    "Extension to strongly correlated systems and non-equilibrium dynamics not addressed",
+    "Connection to astrophysical systems (neutron stars) requires relativistic quantum field theory",
+    "Proof sketch focuses on weakly interacting case",
+    "Does not address fermions or exotic quantum phases beyond simple BEC",
+    "Thermodynamic limit may not apply to mesoscopic systems",
+    "Does not prove uniqueness of condensate wavefunction",
+    "Finite-size effects and fluctuations not quantified"
+  ],
+  "source_convergence": {
+    "structural_claim": "Phase transitions can occur where macroscopic numbers of particles collectively occupy the same quantum state, creating new forms of matter",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Bose-Einstein Condensation in Dilute Gases",
+        "domain_id": "field_b",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Below a critical temperature, bosonic atoms undergo a phase transition where a macroscopic fraction occupies the same quantum state"
+      },
+      {
+        "result_id": "",
+        "result_name": "Neutron Star Equation of State Constraints",
+        "domain_id": "field_a",
+        "domain_name": "Astrophysics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Ultra-dense matter in neutron stars may form exotic quantum phases including quark matter or color superconductors"
+      }
+    ],
+    "domains": [
+      "astrophysics",
+      "atomic_physics"
+    ],
+    "domain_names": [
+      "Astrophysics",
+      "Atomic and Molecular Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.1428,
+      "independence": 0.8,
+      "adversarial": 0.3,
+      "reproducibility": 0.315,
+      "depth_consistency": 1.0,
+      "confidence": 0.45009,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:41:03.170645+00:00",
+    "id": "bdca42d32872"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.31155
+  }
+}

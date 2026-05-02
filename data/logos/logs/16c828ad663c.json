@@ -1,0 +1,38 @@
+{
+  "proof_id": "16c828ad663c",
+  "timestamp": "2026-05-02T14:01:33.366859+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "equivalence - This was rejected because the Onsager relations and Rayleigh reciprocity operate in fundamentally different mathematical spaces (transport coefficients vs. wave transfer functions), making a functorial relationship between the structures themselves unlikely."
+      ],
+      "reasoning": "Both domains exhibit reciprocity relations that arise from time-reversal symmetry, suggesting they satisfy a common set of axioms about how microscopic reversibility constrains macroscopic behavior. The convergence identifies shared abstract principles (time-reversal symmetry leading to reciprocity) rather than claiming the mathematical structures themselves are identical or equivalent."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Functional analysis, Dynamical systems, Measure theory",
+      "alternatives_considered": [],
+      "reasoning": "Functional analysis provides the operator theory framework needed to formalize time-reversal operators and their spectral properties. Dynamical systems theory captures the time evolution and reversibility conditions, while measure theory handles the statistical mechanics ensemble averages and phase space integration required for reciprocity relations."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof uses the time-reversal involution \u03b8 to transform the correlation function C_{fg}(t), exploiting the fact that \u03b8 intertwines forward and backward time evolution. Under appropriate conditions on how observables transform under \u03b8, this yields the reciprocity relation C_{fg}(t) = C_{gf}(-t), which underlies both Onsager relations and acoustic reciprocity.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 7 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 2911 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 2258 chars, 5 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "The formalization captures the structure of the proof but is incomplete due to missing definitions for integer powers of transformations and cross-correlation functions. The key gap is in steps 5-7 where additional assumptions about how observables transform under time reversal are needed."
+    }
+  ]
+}

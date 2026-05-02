@@ -1,0 +1,38 @@
+{
+  "proof_id": "c7553b45406b",
+  "timestamp": "2026-05-02T14:01:44.096281+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "constraint_logic was considered since both involve equilibrium states under extreme conditions, but the core claim is about shared quantum mechanical principles rather than optimization or constraint satisfaction"
+      ],
+      "reasoning": "Both domains describe phase transitions where macroscopic occupation of a single quantum state emerges under specific conditions (temperature/density). The convergence identifies shared abstract principles: critical parameters, collective quantum behavior, and emergence of novel phases of matter with distinct properties."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Functional analysis, Measure theory, Dynamical systems",
+      "alternatives_considered": [],
+      "reasoning": "Functional analysis provides the rigorous framework for quantum states as vectors in Hilbert spaces and operators for observables, while measure theory handles the statistical mechanics of particle distributions. Dynamical systems theory captures the critical behavior and bifurcations at phase transitions."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof establishes that below a critical temperature, the one-particle density matrix of a bosonic system develops a macroscopic eigenvalue, corresponding to O(N) particles occupying the same quantum state. This proceeds by first showing the phenomenon in ideal gases, then arguing via Bogoliubov theory that weak repulsive interactions preserve the condensate while modifying its properties. The key mathematical signature is off-diagonal long-range order in the density matrix.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 7 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3525 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 2642 chars, 10 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This formalization captures the mathematical structure but lacks the quantum many-body physics framework. Key missing pieces include second quantization formalism, Fock spaces, creation/annihilation operators, and statistical mechanics of quantum systems. The proof structure follows the original steps but most quantum-specific content requires sorry."
+    }
+  ]
+}

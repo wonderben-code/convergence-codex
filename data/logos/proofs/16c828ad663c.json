@@ -1,0 +1,301 @@
+{
+  "id": "16c828ad663c",
+  "convergence_id": "bb9b0797d262",
+  "timestamp": "2026-05-02T14:01:33.366845+00:00",
+  "proposition": "Let (\u03a9, F, P) be a probability space with a measure-preserving dynamical system T: \u03a9 \u2192 \u03a9. If T admits a time-reversal involution \u03b8: \u03a9 \u2192 \u03a9 such that T\u2218\u03b8 = \u03b8\u2218T^(-1) and \u03b8 preserves the measure P, then for any observables f, g \u2208 L\u00b2(\u03a9, P), the cross-correlation functions satisfy C_{fg}(t) = C_{gf}(-t), where C_{fg}(t) = \u222b_\u03a9 f(T^t(\u03c9))g(\u03c9)dP(\u03c9).",
+  "proposition_natural": "Reciprocity relations emerge from time-reversal symmetry at the microscopic level",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Functional analysis",
+    "Dynamical systems",
+    "Measure theory"
+  ],
+  "apparatus_justification": "Functional analysis provides the operator theory framework needed to formalize time-reversal operators and their spectral properties. Dynamical systems theory captures the time evolution and reversibility conditions, while measure theory handles the statistical mechanics ensemble averages and phase space integration required for reciprocity relations.",
+  "proof_natural": "**Proposition.** Let (\u03a9, F, P) be a probability space with a measure-preserving dynamical system T: \u03a9 \u2192 \u03a9. If T admits a time-reversal involution \u03b8: \u03a9 \u2192 \u03a9 such that T\u2218\u03b8 = \u03b8\u2218T^(-1) and \u03b8 preserves the measure P, then for any observables f, g \u2208 L\u00b2(\u03a9, P), the cross-correlation functions satisfy C_{fg}(t) = C_{gf}(-t), where C_{fg}(t) = \u222b_\u03a9 f(T^t(\u03c9))g(\u03c9)dP(\u03c9).\n\n**Proof.** We assume that (\u03a9, F, P) is a probability space equipped with a \u03c3-algebra F and probability measure P. Let T: \u03a9 \u2192 \u03a9 be an invertible measure-preserving transformation, so that P(T^(-1)(A)) = P(A) for all A \u2208 F, with measurable inverse T^(-1). We further assume that the system admits a time-reversal involution \u03b8: \u03a9 \u2192 \u03a9 satisfying \u03b8\u2218\u03b8 = id, which is also measure-preserving: P(\u03b8^(-1)(A)) = P(A) for all A \u2208 F. The crucial time-reversal symmetry condition is that T\u2218\u03b8 = \u03b8\u2218T^(-1). We consider square-integrable observables f, g \u2208 L\u00b2(\u03a9, P) and assume that T^t is well-defined for all t \u2208 \u211d, giving us a continuous-time evolution.\n\nBeginning with the definition of the cross-correlation function, we have\nC_{fg}(t) = \u222b_\u03a9 f(T^t(\u03c9))g(\u03c9)dP(\u03c9).\n\nWe perform a change of variables by setting \u03c9 = \u03b8(\u03c9'). Since \u03b8 is an involution, we have \u03b8^(-1) = \u03b8, and since \u03b8 is measure-preserving, the Jacobian of this transformation is unity. This yields\nC_{fg}(t) = \u222b_\u03a9 f(T^t(\u03b8(\u03c9')))g(\u03b8(\u03c9'))dP(\u03c9').\n\nThe time-reversal symmetry condition T\u2218\u03b8 = \u03b8\u2218T^(-1) can be iterated to show that T^t\u2218\u03b8 = \u03b8\u2218T^(-t) for any t \u2208 \u211d. Applying this relation, we obtain\nC_{fg}(t) = \u222b_\u03a9 f(\u03b8(T^(-t)(\u03c9')))g(\u03b8(\u03c9'))dP(\u03c9').\n\nRewriting the composition of functions, this becomes\nC_{fg}(t) = \u222b_\u03a9 (f\u2218\u03b8)(T^(-t)(\u03c9'))(g\u2218\u03b8)(\u03c9')dP(\u03c9').\n\n[Note: At this point, the general proof requires additional structure. The relationship between C_{fg}(t) and C_{gf}(-t) depends critically on how the observables f and g transform under time reversal.]\n\nIn the special case where both observables are time-reversal even, that is, f\u2218\u03b8 = f and g\u2218\u03b8 = g, the expression simplifies to\nC_{fg}(t) = \u222b_\u03a9 f(T^(-t)(\u03c9'))g(\u03c9')dP(\u03c9') = \u222b_\u03a9 g(\u03c9')f(T^(-t)(\u03c9'))dP(\u03c9') = C_{gf}(-t),\nwhere the last equality follows from the definition of C_{gf}(-t).\n\n[Note: For general observables, one would need to decompose f and g into their time-reversal even and odd parts: f = f_+ + f_- where f_\u00b1 = (f \u00b1 f\u2218\u03b8)/2, and similarly for g. The cross-correlation would then split into four terms, each requiring separate analysis.]\n\nThis result connects to fundamental principles in statistical mechanics. The Onsager reciprocal relations state that for systems near equilibrium with time-reversal symmetry, phenomenological coefficients relating fluxes to forces satisfy L_{ij} = L_{ji}. Our result provides a microscopic foundation for such macroscopic symmetries through the behavior of correlation functions.\n\nUnder the assumption of time-reversal even observables, we have established that C_{fg}(t) = C_{gf}(-t). This completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.MeasureTheory.Measure.MeasureSpace\nimport Mathlib.MeasureTheory.Function.L2Space\nimport Mathlib.MeasureTheory.Integral.Bochner\nimport Mathlib.Dynamics.Ergodic.MeasurePreserving\n\n/-- A measure-preserving dynamical system with time-reversal involution -/\nstructure TimeReversibleSystem (\u03a9 : Type*) [MeasurableSpace \u03a9] (\u03bc : Measure \u03a9) where\n  T : \u03a9 \u2192 \u03a9\n  \u03b8 : \u03a9 \u2192 \u03a9\n  T_measurable : Measurable T\n  \u03b8_measurable : Measurable \u03b8\n  T_measure_preserving : MeasurePreserving T \u03bc \u03bc\n  \u03b8_measure_preserving : MeasurePreserving \u03b8 \u03bc \u03bc\n  \u03b8_involution : \u2200 \u03c9, \u03b8 (\u03b8 \u03c9) = \u03c9\n  time_reversal_property : \u2200 \u03c9, T (\u03b8 \u03c9) = \u03b8 (T\u207b\u00b9 \u03c9)\n  T_bijective : Function.Bijective T\n\n/-- Cross-correlation function for observables in a dynamical system -/\ndef crossCorrelation {\u03a9 : Type*} [MeasurableSpace \u03a9] (\u03bc : Measure \u03a9)\n  (T : \u03a9 \u2192 \u03a9) (f g : \u03a9 \u2192 \u211d) (t : \u2124) : \u211d :=\n  sorry -- Need: Definition of T^t for integer powers and integration\n\n/-- Main theorem: Time-reversal symmetry of cross-correlation functions -/\ntheorem time_reversal_cross_correlation\n  {\u03a9 : Type*} [MeasurableSpace \u03a9] {\u03bc : Measure \u03a9} [IsProbabilityMeasure \u03bc]\n  (sys : TimeReversibleSystem \u03a9 \u03bc)\n  (f g : \u03a9 \u2192\u2082[\u03bc] \u211d) :\n  \u2200 t : \u2124, crossCorrelation \u03bc sys.T f g t = crossCorrelation \u03bc sys.T g f (-t) := by\n  intro t\n  -- Step 1: Definition of cross-correlation\n  have h1 : crossCorrelation \u03bc sys.T f g t = \u222b \u03c9, f (sys.T^[t] \u03c9) * g \u03c9 \u2202\u03bc := by\n    sorry -- Need: Proper definition of crossCorrelation and T^t\n  \n  -- Step 2: Change of variables using \u03b8\n  have h2 : \u222b \u03c9, f (sys.T^[t] \u03c9) * g \u03c9 \u2202\u03bc = \n            \u222b \u03c9', f (sys.T^[t] (sys.\u03b8 \u03c9')) * g (sys.\u03b8 \u03c9') \u2202\u03bc := by\n    sorry -- Need: Change of variables theorem for measure-preserving maps\n  \n  -- Step 3: Apply time-reversal property\n  have h3 : \u222b \u03c9', f (sys.T^[t] (sys.\u03b8 \u03c9')) * g (sys.\u03b8 \u03c9') \u2202\u03bc =\n            \u222b \u03c9', f (sys.\u03b8 (sys.T^[-t] \u03c9')) * g (sys.\u03b8 \u03c9') \u2202\u03bc := by\n    sorry -- Need: Extension of time_reversal_property to integer powers\n  \n  -- Step 4: Rewrite as composition\n  have h4 : \u222b \u03c9', f (sys.\u03b8 (sys.T^[-t] \u03c9')) * g (sys.\u03b8 \u03c9') \u2202\u03bc =\n            \u222b \u03c9', (f \u2218 sys.\u03b8) (sys.T^[-t] \u03c9') * (g \u2218 sys.\u03b8) \u03c9' \u2202\u03bc := by\n    rfl\n  \n  -- Step 5-7: Gap - need additional assumptions\n  sorry -- Need: Either assumption that f\u2218\u03b8 = f and g\u2218\u03b8 = g, or decomposition into even/odd parts",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "C_{fg}(t) = \u222b_\u03a9 f(T^t(\u03c9))g(\u03c9)dP(\u03c9)",
+      "justification": "Definition of cross-correlation function",
+      "dependencies": []
+    },
+    {
+      "step_number": 2,
+      "statement": "C_{fg}(t) = \u222b_\u03a9 f(T^t(\u03b8(\u03c9')))g(\u03b8(\u03c9'))dP(\u03c9')",
+      "justification": "Change of variables \u03c9 = \u03b8(\u03c9'), using \u03b8 is measure-preserving and \u03b8^(-1) = \u03b8",
+      "dependencies": [
+        "step 1",
+        "assumption: \u03b8 measure-preserving",
+        "assumption: \u03b8 involution"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "C_{fg}(t) = \u222b_\u03a9 f(\u03b8(T^(-t)(\u03c9')))g(\u03b8(\u03c9'))dP(\u03c9')",
+      "justification": "Using T^t\u2218\u03b8 = \u03b8\u2218T^(-t) (derived from T\u2218\u03b8 = \u03b8\u2218T^(-1) by iteration)",
+      "dependencies": [
+        "step 2",
+        "assumption: time-reversal symmetry"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "C_{fg}(t) = \u222b_\u03a9 (f\u2218\u03b8)(T^(-t)(\u03c9'))(g\u2218\u03b8)(\u03c9')dP(\u03c9')",
+      "justification": "Rewriting composition of functions",
+      "dependencies": [
+        "step 3"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "[Gap: Need to establish that f\u2218\u03b8 and g\u2218\u03b8 have specific properties that allow interchange]",
+      "justification": "This step requires additional assumptions about how observables transform under time reversal",
+      "dependencies": [
+        "step 4"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "If f\u2218\u03b8 = f and g\u2218\u03b8 = g (time-reversal even observables), then C_{fg}(t) = C_{gf}(-t)",
+      "justification": "Under this assumption, step 4 becomes \u222b_\u03a9 f(T^(-t)(\u03c9'))g(\u03c9')dP(\u03c9') = \u222b_\u03a9 g(\u03c9')f(T^(-t)(\u03c9'))dP(\u03c9') = C_{gf}(-t)",
+      "dependencies": [
+        "step 4",
+        "definition of C_{gf}"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "[Gap: General case requires decomposition into time-reversal even and odd parts]",
+      "justification": "For general observables, need to decompose f = f_+ + f_- where f_\u00b1 = (f \u00b1 f\u2218\u03b8)/2",
+      "dependencies": [
+        "step 5"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Onsager Reciprocal Relations",
+      "authors": "Lars Onsager",
+      "year": "1931",
+      "field": "Statistical Mechanics",
+      "statement": "For a system near equilibrium with time-reversal symmetry, the matrix of phenomenological coefficients L_{ij} relating fluxes to forces satisfies L_{ij} = L_{ji}",
+      "usage": "Provides physical motivation and specific instance of reciprocity from microscopic reversibility"
+    },
+    {
+      "name": "Fluctuation-Dissipation Theorem",
+      "authors": "Callen and Welton",
+      "year": "1951",
+      "field": "Statistical Mechanics",
+      "statement": "Response functions and correlation functions are related through R(t) = -\u03b2(dC(t)/dt)\u0398(t) where \u03b2 = 1/kT",
+      "usage": "Connects equilibrium fluctuations to linear response, another manifestation of time-reversal symmetry"
+    },
+    {
+      "name": "Rayleigh's Reciprocity Principle",
+      "authors": "Lord Rayleigh",
+      "year": "1873",
+      "field": "Acoustics",
+      "statement": "In a linear acoustic system, the transfer function from point A to B equals that from B to A",
+      "usage": "Specific instance in wave physics that follows from time-reversal invariance of wave equation"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "(\u03a9, F, P) is a probability space with \u03c3-algebra F and probability measure P",
+    "T: \u03a9 \u2192 \u03a9 is a measure-preserving transformation (P(T^(-1)(A)) = P(A) for all A \u2208 F)",
+    "T is invertible with measurable inverse T^(-1)",
+    "\u03b8: \u03a9 \u2192 \u03a9 is an involution (\u03b8\u2218\u03b8 = id)",
+    "\u03b8 is measure-preserving (P(\u03b8^(-1)(A)) = P(A) for all A \u2208 F)",
+    "T\u2218\u03b8 = \u03b8\u2218T^(-1) (time-reversal symmetry condition)",
+    "f, g \u2208 L\u00b2(\u03a9, P) (square-integrable observables)",
+    "The system is ergodic (time averages equal ensemble averages)",
+    "T^t is well-defined for all t \u2208 \u211d (continuous-time evolution)"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "T^t is well-defined for all t \u2208 \u211d (continuous-time evolution)",
+        "issue": "The proof assumes continuous-time evolution without justification. If T is just a measure-preserving transformation, T^t for non-integer t is not defined. The proof needs to establish that T generates a flow or is embedded in a one-parameter group.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Either restrict to discrete time (t \u2208 \u2124) or properly establish that T is the time-1 map of a flow {\u03c6^t}_{t\u2208\u211d}"
+      },
+      {
+        "step": "T^t\u2218\u03b8 = \u03b8\u2218T^(-t) for any t \u2208 \u211d",
+        "issue": "This iteration of the time-reversal condition is stated without proof. For non-integer t, this requires additional structure that hasn't been established.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Prove this relation holds for the flow, not just assert it"
+      },
+      {
+        "step": "Change of variables \u03c9 = \u03b8(\u03c9')",
+        "issue": "The claim that 'the Jacobian of this transformation is unity' is meaningless in abstract measure spaces. The correct statement involves the pushforward measure \u03b8_*P = P.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Use proper measure-theoretic language: \u222b_\u03a9 h dP = \u222b_\u03a9 (h\u2218\u03b8) dP for measure-preserving \u03b8"
+      },
+      {
+        "step": "The proof admits it only works for time-reversal even observables",
+        "issue": "The proposition claims the result for ANY observables f, g \u2208 L\u00b2(\u03a9, P), but the proof only establishes it for the special case where f\u2218\u03b8 = f and g\u2218\u03b8 = g. This is a massive gap between claim and proof.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Either prove the general case or modify the proposition to only claim the special case"
+      },
+      {
+        "step": "Ergodicity assumption",
+        "issue": "Ergodicity is listed in assumptions but never used in the proof. Either it's unnecessary or there's a missing step.",
+        "severity": "minor",
+        "fixable": true,
+        "suggested_fix": "Remove the assumption or explain its role"
+      }
+    ],
+    "hidden_assumptions": [
+      "T generates a continuous-time flow (not just a discrete map)",
+      "The observables f and g are time-reversal even (f\u2218\u03b8 = f, g\u2218\u03b8 = g)",
+      "The measure space has sufficient structure for continuous-time dynamics",
+      "The correlation functions C_{fg}(t) are well-defined for all t \u2208 \u211d"
+    ],
+    "circular_reasoning": false,
+    "circular_details": "",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof only establishes C_{fg}(t) = C_{gf}(-t) for time-reversal even observables, but claims it for all f, g \u2208 L\u00b2(\u03a9, P). The author acknowledges this gap but doesn't fix it.",
+    "citation_issues": [
+      "The cited dependencies (Onsager relations, Fluctuation-Dissipation theorem, Rayleigh's principle) are never used in the proof and seem included only for context",
+      "The connection to Onsager relations is asserted without demonstrating how this microscopic result actually implies the macroscopic relations"
+    ],
+    "structural_soundness": 0.4,
+    "overall_assessment": "The proof contains critical gaps between its claims and what it establishes. Most severely, it only proves the result for time-reversal even observables while claiming it for all L\u00b2 functions. The treatment of continuous-time dynamics is also fundamentally flawed without proper setup.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "Only proves the result for time-reversal even observables, not for general observables f, g \u2208 L\u00b2(\u03a9, P)",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "\u03b8 is measurable",
+      "\u03b8^(-1) is measurable",
+      "f\u2218\u03b8 and g\u2218\u03b8 are measurable",
+      "The integrals in the cross-correlation function are well-defined",
+      "T^t is measurable for all t",
+      "Fubini's theorem conditions for interchanging integrals"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 6",
+        "issue": "The equality \u222b_\u03a9 f(T^(-t)(\u03c9'))g(\u03c9')dP(\u03c9') = \u222b_\u03a9 g(\u03c9')f(T^(-t)(\u03c9'))dP(\u03c9') = C_{gf}(-t) is incorrect. The second integral should be \u222b_\u03a9 g(T^t(\u03c9'))f(\u03c9')dP(\u03c9') to equal C_{gf}(-t), but this requires an additional change of variables that is not justified"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Step 5 explicitly identifies a gap but provides no resolution",
+      "Step 7 identifies the need for decomposition into even/odd parts but doesn't execute it",
+      "No proof provided for the general case where f\u2218\u03b8 \u2260 f or g\u2218\u03b8 \u2260 g",
+      "Missing justification for the final equality in Step 6",
+      "No verification that the time-reversal even assumption is sufficient or necessary"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The proof assumes continuous-time evolution T^t for all t \u2208 \u211d without justification, but existing proof [06d1b829563e] works with discrete dynamical systems T: X \u2192 X",
+      "The proof claims C_{fg}(t) = C_{gf}(-t) holds generally but only proves it for the special case where f\u2218\u03b8 = f and g\u2218\u03b8 = g, leaving the general case with acknowledged gaps",
+      "The time-reversal symmetry condition T\u2218\u03b8 = \u03b8\u2218T^(-1) is assumed without proving T is invertible in continuous time, contradicting the discrete setting of similar proofs"
+    ],
+    "assumption_conflicts": [
+      "Assumes continuous-time dynamical system T^t while existing ergodic theory proofs work with discrete transformations",
+      "Assumes time-reversal involution \u03b8 exists without proving compatibility with measure-preservation and ergodicity",
+      "Claims ergodicity assumption but doesn't use it in the proof, suggesting unnecessary or conflicting assumptions"
+    ],
+    "beneficial_connections": [
+      "Connects to [06d1b829563e] on information loss and thermodynamic behavior through measure-preserving dynamics",
+      "Relates to [08b6405556dd] on symmetry principles constraining dynamics through the time-reversal symmetry condition",
+      "Could strengthen [087da119976b] on symmetry breaking by providing correlation function analysis tools"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof has fundamental gaps in the general case and makes unjustified assumptions about continuous-time evolution. The claimed result C_{fg}(t) = C_{gf}(-t) is only proven for time-reversal even observables, not generally. The continuous-time assumption conflicts with standard ergodic theory frameworks used in existing proofs."
+  },
+  "confidence_score": 0.31,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.6
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.6
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": true,
+  "new_mathematics_needed": "",
+  "limitations": [
+    "The proof assumes continuous-time evolution T^t without establishing the group property rigorously",
+    "The transformation properties of general observables under time reversal need more careful treatment",
+    "The connection between abstract measure-preserving systems and specific physical systems (thermodynamic, acoustic) requires additional structure not formalized here",
+    "The proof only establishes reciprocity for correlation functions, not general transport coefficients",
+    "Requires time-reversal invariance at microscopic level, which may be broken by magnetic fields or certain interactions",
+    "Limited to equilibrium or near-equilibrium systems where correlation functions are well-defined",
+    "Does not address quantum mechanical systems where time reversal is anti-unitary",
+    "The ergodic hypothesis may not hold for all physical systems of interest"
+  ],
+  "source_convergence": {
+    "structural_claim": "Reciprocity relations emerge from time-reversal symmetry at the microscopic level",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Onsager Reciprocal Relations",
+        "domain_id": "field_a",
+        "domain_name": "Thermodynamics and Statistical Mechanics",
+        "link_type": "direct",
+        "structural_conclusion": "Time-reversal symmetry imposes universal constraints on transport coefficients"
+      },
+      {
+        "result_id": "",
+        "result_name": "Rayleigh's Principle of Reciprocity",
+        "domain_id": "field_b",
+        "domain_name": "Acoustics and Wave Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Source and receiver can be interchanged without affecting transfer function due to time-reversal invariance"
+      }
+    ],
+    "domains": [
+      "thermodynamics",
+      "acoustics"
+    ],
+    "domain_names": [
+      "Thermodynamics and Statistical Mechanics",
+      "Acoustics and Wave Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.238,
+      "independence": 0.8,
+      "adversarial": 0.6,
+      "reproducibility": 0.42,
+      "depth_consistency": 1.0,
+      "confidence": 0.5544,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:16:24.932877+00:00",
+    "id": "bb9b0797d262"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.308565
+  }
+}

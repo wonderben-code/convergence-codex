@@ -1,0 +1,15 @@
+{
+  "proof_id": "c7553b45406b",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: Rigorous treatment of the thermodynamic limit for interacting quantum many-body systems, including: (1) Convergence of reduced density matrices in trace norm, (2) Proof of spontaneous U(1) symmetry breaking in 3D, (3) Control of quantum fluctuations uniformly in system size",
+    "Difficulty assessed as challenging",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

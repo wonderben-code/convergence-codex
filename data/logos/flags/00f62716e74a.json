@@ -1,0 +1,15 @@
+{
+  "proof_id": "00f62716e74a",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous categorical framework unifying quantum and classical information theory with explicit functors between information-theoretic and thermodynamic categories, including precise axiomatization of the relationship between Shannon and thermodynamic entropy",
+    "Difficulty assessed as challenging",
+    "6 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}
