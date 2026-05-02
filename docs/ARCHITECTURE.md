@@ -289,14 +289,43 @@ Target: 70-100+ fields. Additions to consider:
    Phase 6: Everything through Logos → Synthesis → papers → Zenodo
    → Bitcoin-stamp EVERYTHING
 
-7. WEBSITE — Convergence Codex Wing (on infinitography.com)
-   → The three AIs + pipeline architecture
-   → The full possibility space explained
-   → All papers with DOIs
-   → Interactive explorer (every level of discovery)
-   → Novel contributions catalogue
+7. STAGE C — Fixed Point Formalisation
+   → Take the terminal fixed points from the recursive cascade
+   → Deep formalisation: rigorous machine-verified proofs (Lean 4)
+   → Identify what the fixed points say about the structure of
+     physical law, mathematics, and scientific knowledge
+   → Formal statement of structural principles (not proof sketches
+     — fully closed proofs where possible)
+   → Collaboration with domain experts for verification
+   → Publish as standalone papers with DOIs
 
-8. QC + STAMP + SHIP
+8. STAGE D — Testable Predictions
+   → Derive specific, falsifiable predictions from Stage C principles
+   → For each fixed point: "If this principle is true, then X should
+     be observable/measurable in domain Y"
+   → Cross-check predictions against existing experimental literature
+   → Identify experiments that would confirm or refute each prediction
+   → Publish prediction papers (pre-registration of predictions)
+   → Bitcoin-stamp predictions BEFORE any experimental confirmation
+
+9. STAGE E — ToE Integration
+   → Map Stage B discoveries against Paper 15 (ToE proposal)
+   → Where Stage B confirms Paper 15: strengthen with formal proofs
+   → Where Stage B contradicts Paper 15: revise the framework
+   → Where Stage B reveals structure Paper 15 didn't predict: extend
+   → Produce an updated ToE informed by empirical computational evidence
+   → This is the feedback loop: theory → computational evidence → theory
+   → Publish as major revision of the ToE with full Codex evidence base
+
+10. WEBSITE — Convergence Codex Wing (on infinitography.com)
+    → The three AIs + pipeline architecture
+    → The full possibility space explained
+    → All papers with DOIs
+    → Interactive explorer (every level of discovery)
+    → Novel contributions catalogue
+    → Fixed points + predictions visualised
+
+11. QC + STAMP + SHIP
 ```
 
 ---
@@ -370,7 +399,93 @@ The main event. Run the complete pipeline across ALL fields.
 
 ---
 
-## 8. Repos
+## 8. Stage C — Fixed Point Formalisation
+
+**Purpose:** Take the terminal principles from the recursive cascade and produce rigorous, machine-verified formal proofs. Stage B gives us proof sketches; Stage C closes the gaps.
+
+**Inputs:** Fixed points from Stage B recursive cascade (Level 3+).
+
+**Process:**
+1. Identify the terminal fixed points (the principles at the bottom of the cascade)
+2. For each fixed point, assess what it claims about the structure of reality/mathematics
+3. Produce deep formalisations — NOT Logos's auto-generated proofs, but rigorous, gap-closed proofs
+4. Machine-verify in Lean 4 where possible (install Lean + Mathlib, write proper formalisations)
+5. For proofs that can't be machine-verified: identify EXACTLY what new mathematics is needed
+6. Seek domain expert review of the strongest results
+7. Publish as standalone papers on Zenodo
+
+**What we're looking for:**
+- "The recursive cascade across 81 fields converges to principle P. Here is a rigorous proof that P holds, with these specific assumptions."
+- "P implies that conservation laws, phase transitions, and information bounds share structural feature F. Here is the formal proof."
+- "The convergence of P is NOT an artefact of shared mathematical language — here is the independence verification."
+
+**Success criteria:**
+- At least one fixed point is machine-verified in Lean 4
+- At least three fixed points have gap-closed natural-language proofs reviewed by domain experts
+- Clear formal statement of what each fixed point says about reality
+
+**Estimated cost: ~$500-1,000** (deep Opus calls for rigorous proof completion)
+
+---
+
+## 9. Stage D — Testable Predictions
+
+**Purpose:** Derive specific, falsifiable predictions from the Stage C principles, and identify experiments that would confirm or refute them.
+
+**Process:**
+1. For each verified fixed point: "If this principle is true, what should we observe?"
+2. Derive SPECIFIC predictions — not "everything is connected" but "system X in domain Y should exhibit property Z with value in range R"
+3. Cross-check predictions against existing experimental literature
+   - Already confirmed? → cite the evidence (the principle predicted something already known)
+   - Not yet tested? → describe the experiment needed
+   - Contradicted by evidence? → the principle needs revision (honest about failures)
+4. Publish prediction papers BEFORE seeking experimental confirmation
+5. Bitcoin-stamp predictions to prove temporal priority
+
+**Types of predictions:**
+- **Retrodictions:** "This principle predicts that [known experimental result] should hold" — confirms the principle matches reality
+- **Novel predictions:** "This principle predicts that [specific untested phenomenon] should be observable" — these are the high-value targets
+- **Cross-domain predictions:** "If principle P holds in physics AND biology, then [specific biological system] should exhibit [specific physical property]" — these are the most surprising and most valuable
+
+**Why this matters:** A formal principle without predictions is philosophy. A formal principle with confirmed predictions is science. A formal principle that predicts something nobody expected and it turns out to be true — that's a discovery.
+
+**Bitcoin-stamping predictions before confirmation is CRITICAL.** If a prediction is later confirmed, the timestamp proves you predicted it. This is the mechanism by which priority is established.
+
+**Estimated cost: ~$300-600** (prediction derivation + literature cross-check)
+
+---
+
+## 10. Stage E — ToE Integration
+
+**Purpose:** Map the Codex's empirical computational evidence against Paper 15 (the ToE proposal from Infinitography), and produce an updated Theory of Everything informed by actual cross-domain data.
+
+**Paper 15 proposed** a theoretical framework for structural unity across science. The Convergence Codex TESTS that framework computationally. This is the feedback loop:
+
+```
+Paper 15 (theory) → Codex Stage B (computational evidence) → Stage E (updated theory)
+```
+
+**Process:**
+1. Map every Stage B fixed point against Paper 15's claims
+   - Where confirmed: cite Codex evidence as computational support
+   - Where contradicted: revise the framework honestly
+   - Where the Codex found structure Paper 15 didn't predict: extend the framework
+2. Identify which aspects of Paper 15 are now SUPPORTED by formal proofs (not just informal arguments)
+3. Produce an updated ToE paper:
+   - "Paper 15 proposed X. The Convergence Codex, after exhaustive cross-domain analysis of 81 fields and N thousand convergences, finds evidence that supports/refines/extends X as follows..."
+4. This is potentially the most important paper in the entire project
+5. Publish on Zenodo, Bitcoin-stamp, seek expert review
+
+**Success criteria:**
+- Clear mapping between Paper 15 claims and Codex evidence (confirmed, contradicted, extended)
+- Updated framework that is STRONGER than Paper 15 because it's backed by computational evidence
+- Honest scope: where the evidence is strong vs. where it's suggestive
+
+**Estimated cost: ~$200-400** (one deep synthesis paper)
+
+---
+
+## 12. Repos
 
 | Repo | What | License | Status |
 |------|------|---------|--------|
@@ -382,7 +497,7 @@ All repos Bitcoin-timestamped via GitHub Actions + OpenTimestamps.
 
 ---
 
-## 9. Website Wing
+## 13. Website Wing
 
 A new wing on infinitography.com for the Convergence Codex. Single wing, multiple sections:
 
@@ -399,7 +514,7 @@ Gnosis AI keeps its existing wing (`/gnosis`). The Codex wing is the umbrella pr
 
 ---
 
-## 10. Cost Estimates
+## 14. Cost Estimates
 
 | Component | Estimated Cost |
 |-----------|---------------|
@@ -412,13 +527,16 @@ Gnosis AI keeps its existing wing (`/gnosis`). The Codex wing is the umbrella pr
 | Stage B — Codex Analysis + Cascade | ~$300-600 |
 | Stage B — Logos formalisation | ~$500-1,000 |
 | Stage B — Synthesis paper writing | ~$200-400 |
-| **Total** | **~$2,500-4,000** |
+| Stage C — Fixed Point Formalisation | ~$500-1,000 |
+| Stage D — Testable Predictions | ~$300-600 |
+| Stage E — ToE Integration | ~$200-400 |
+| **Total (all stages)** | **~$3,500-6,000** |
 
-The world's first systematic mapping of structural relationships across all of science, for under $4,000.
+The world's first systematic mapping of structural relationships across all of science, with rigorous formalisation, testable predictions, and ToE integration — for under $6,000.
 
 ---
 
-## 11. Paper Publication
+## 15. Paper Publication
 
 - All papers published on Zenodo with DOIs
 - Synthesis auto-detects paper boundaries (we don't pre-decide)
@@ -429,7 +547,7 @@ The world's first systematic mapping of structural relationships across all of s
 
 ---
 
-## 12. Where This Fits in the Master Roadmap
+## 16. Where This Fits in the Master Roadmap
 
 The Convergence Codex is **Stage 3b** in the master roadmap:
 
@@ -449,7 +567,7 @@ ALL Codex work completes before outreach.
 
 ---
 
-## 13. What This Supersedes
+## 17. What This Supersedes
 
 - Gnosis AI Steps 8-11 (v1.1, reproducibility, extended runs, grand synthesis) → replaced by Codex pipeline
 - Checkpoint Omega ("just an idea") → now real as Stage B
@@ -458,7 +576,7 @@ ALL Codex work completes before outreach.
 
 ---
 
-## 14. Key Design Decisions
+## 18. Key Design Decisions
 
 1. **Cross-domain is the PRIMARY use case** — 93% of pairwise comparisons are cross-category, and that's where the most valuable discoveries are
 2. **Gnosis v2 comes BEFORE Stage B** — otherwise we explore only 7% of the space
@@ -473,7 +591,7 @@ ALL Codex work completes before outreach.
 
 ---
 
-## 15. The Combinatorial Analysis
+## 19. The Combinatorial Analysis
 
 ### Level 1 (80 fields)
 
@@ -508,7 +626,7 @@ Fixed cost for mapping all of science: under $4,000
 
 ---
 
-## 16. Creator and Attribution
+## 20. Creator and Attribution
 
 **Creator:** Mark E. Mala (pen name of Ekram Alam) — serial founder, YC alum, Forbes Technology Council.
 **GitHub:** wonderben-code (NEVER ekramalam)
