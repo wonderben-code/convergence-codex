@@ -364,7 +364,19 @@ Target: 70-100+ fields. Additions to consider:
     → Novel contributions catalogue
     → Fixed points + predictions visualised
 
-11. QC + STAMP + SHIP
+11. REPO SCRUB — Public Repo QC/QA                ← BEFORE GO-LIVE
+    → Remove ALL hardcoded local paths (/Users/ekramalam/...)
+    → Remove any API keys, tokens, or credentials from code, logs, configs
+    → Remove internal notes, TODOs, debug comments not meant for public
+    → Audit git history for accidentally committed secrets
+    → Clean up data/ directories (no raw API responses with keys)
+    → README quality pass (all 3 repos: convergence-codex, gnosis-ai, infinitography-website)
+    → Verify all .gitignore files exclude sensitive patterns
+    → Check no internal docs reference private infrastructure
+    → Applies to: convergence-codex, gnosis-ai, AND infinitography-website
+    → DO THIS BEFORE website goes live or outreach begins
+
+12. QC + STAMP + SHIP
 ```
 
 ---
@@ -697,7 +709,42 @@ A Theory of Everything that has been TESTED computationally against every field 
 
 ---
 
-## 12. Repos
+## 12. Repo Scrub — Public Repo QC/QA (Before Go-Live)
+
+**Purpose:** Before the website goes live or outreach begins, ALL public repos must be scrubbed of internal artifacts. People WILL look at the code. It must be clean.
+
+**Applies to:**
+- `wonderben-code/convergence-codex` (PUBLIC, MIT)
+- `wonderben-code/gnosis-ai` (PUBLIC, MIT)
+- `wonderben-code/infinitography-website` (PRIVATE, but check anyway)
+
+**Checklist:**
+
+| Check | What To Look For |
+|-------|-----------------|
+| Hardcoded paths | `/Users/ekramalam/...` in any source file, config, script, or doc |
+| API keys/tokens | Anthropic API keys, Zenodo tokens, any credentials in code or logs |
+| Data directory cleanup | Raw API responses, debug logs, test outputs with sensitive content |
+| Internal notes | TODOs referencing private context, debug comments, internal planning notes |
+| Git history audit | `git log --all -p` search for accidentally committed secrets (use `git filter-repo` if needed) |
+| .gitignore review | Ensure `.env`, `*.key`, API response caches, and local config files are excluded |
+| README quality | Each repo has a clear, professional README explaining what it is and how to use it |
+| License files | MIT license present and correct in all public repos |
+| Config files | Default configs should work without local paths (use env vars or relative paths) |
+| Documentation | Internal docs (session notes, planning docs) removed or moved to private storage |
+
+**Process:**
+1. Run automated scan: `grep -r "/Users/" --include="*.py" --include="*.ts" --include="*.json" --include="*.md"`
+2. Run secret scan: `grep -r "sk-ant-" --include="*.py" --include="*.json" --include="*.log"`
+3. Manual review of all config files and default values
+4. Test that a fresh clone + install works without any local dependencies
+5. Review all markdown docs for internal references
+
+**Timing:** After website is built (Step 10), BEFORE go-live and outreach. This is a gate — nothing ships until this passes.
+
+---
+
+## 13. Repos
 
 | Repo | What | License | Status |
 |------|------|---------|--------|
@@ -709,7 +756,7 @@ All repos Bitcoin-timestamped via GitHub Actions + OpenTimestamps.
 
 ---
 
-## 13. Website Wing
+## 14. Website Wing
 
 A new wing on infinitography.com for the Convergence Codex. Single wing, multiple sections:
 
@@ -726,7 +773,7 @@ Gnosis AI keeps its existing wing (`/gnosis`). The Codex wing is the umbrella pr
 
 ---
 
-## 14. Cost Estimates
+## 15. Cost Estimates
 
 | Component | Estimated Cost |
 |-----------|---------------|
@@ -748,7 +795,7 @@ The world's first systematic mapping of structural relationships across all of s
 
 ---
 
-## 15. Paper Publication — The Full Corpus
+## 16. Paper Publication — The Full Corpus
 
 **Every convergence, every formalisation, every meta-convergence is a publishable formal conjecture.** The Codex doesn't just produce a few summary papers about fixed points — it produces a CORPUS of hundreds of individually formalised claims, each with mathematical apparatus, proof steps, validation scores, and identified gaps.
 
@@ -785,7 +832,7 @@ The fixed-point papers from Stage C are DIFFERENT from the corpus papers. The co
 
 ---
 
-## 16. Where This Fits in the Master Roadmap
+## 17. Where This Fits in the Master Roadmap
 
 The Convergence Codex is **Stage 3b** in the master roadmap:
 
@@ -805,7 +852,7 @@ ALL Codex work completes before outreach.
 
 ---
 
-## 17. What This Supersedes
+## 18. What This Supersedes
 
 - Gnosis AI Steps 8-11 (v1.1, reproducibility, extended runs, grand synthesis) → replaced by Codex pipeline
 - Checkpoint Omega ("just an idea") → now real as Stage B
@@ -814,7 +861,7 @@ ALL Codex work completes before outreach.
 
 ---
 
-## 18. Key Design Decisions
+## 19. Key Design Decisions
 
 1. **Cross-domain is the PRIMARY use case** — 93% of pairwise comparisons are cross-category, and that's where the most valuable discoveries are
 2. **Gnosis v2 comes BEFORE Stage B** — otherwise we explore only 7% of the space
@@ -829,7 +876,7 @@ ALL Codex work completes before outreach.
 
 ---
 
-## 19. The Combinatorial Analysis
+## 20. The Combinatorial Analysis
 
 ### Level 1 (80 fields)
 
@@ -864,7 +911,7 @@ Fixed cost for mapping all of science: under $4,000
 
 ---
 
-## 20. Creator and Attribution
+## 21. Creator and Attribution
 
 **Creator:** Mark E. Mala (pen name of Ekram Alam) — serial founder, YC alum, Forbes Technology Council.
 **GitHub:** wonderben-code (NEVER ekramalam)
