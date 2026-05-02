@@ -911,3 +911,37 @@
 [14:43:26]     [def76666e152] Done: 178s, $0.59 (total: $125.99)
 [14:43:26]   [238/266] e8aed9f08fad — General Relativity and Cosmology, Quantum Gravity
 [14:43:49]     [e1751c93e263] Type: constraint_logic | Apparatus: Dynamical systems, Functional analysis | Steps: 7
+[14:44:03]     [e2db433c424e] Type: categorical | Apparatus: Measure theory, Category theory | Steps: 10
+[14:44:03]     [e2ebe04a8ee8] Type: axiomatic | Apparatus: Functional analysis, Dynamical systems | Steps: 10
+[14:44:23]     [e5f66a68ee2b] Type: axiomatic | Apparatus: Functional analysis, Differential geometry | Steps: 8
+[14:44:26]     [e41cf431da10] Type: axiomatic | Apparatus: Differential geometry, Topology | Steps: 9
+[14:44:31]     [e77ae6e8b95d] Type: categorical | Apparatus: Differential geometry, Dynamical systems | Steps: 10
+[14:44:41]     [e757f85e91b4] Type: axiomatic | Apparatus: Differential geometry, Functional analysis | Steps: 8
+[14:44:51]     [e8aed9f08fad] Type: equivalence | Apparatus: Category theory, Differential geometry | Steps: 10
+[14:45:18]     [e1751c93e263] Confidence: 0.31 (low)
+[14:45:18]     [e1751c93e263] Done: 159s, $0.51 (total: $126.50)
+[14:45:18]   [239/266] eb3d324c4c7c — General Relativity and Cosmology, Astrophysics
+[14:45:44]     [e2ebe04a8ee8] Confidence: 0.26 (low)
+[14:45:44]     [e2ebe04a8ee8] Done: 177s, $0.58 (total: $127.08)
+[14:45:44]   [240/266] eb831013c6d2 — Quantum Foundations, Fluid Dynamics
+[14:45:51]     [e2db433c424e] Confidence: 0.24 (low)
+[14:45:51]     [e2db433c424e] Done: 189s, $0.65 (total: $127.72)
+[14:45:51]   [241/266] ecbe8bb02fa7 — Thermodynamics and Statistical Mechanics, Acoustics and Wave Physics
+[14:46:05]     [e41cf431da10] Confidence: 0.21 (low)
+[14:46:05]     [e41cf431da10] Done: 180s, $0.61 (total: $128.33)
+[14:46:05]   [242/266] ede5fbc54d04 — General Relativity and Cosmology, Astrophysics
+[14:46:06]     [e5f66a68ee2b] Confidence: 0.23 (low)
+[14:46:06]     [e5f66a68ee2b] Done: 180s, $0.59 (total: $128.92)
+[14:46:06]   [243/266] ee03db334b85 — Number Theory, Analysis
+[14:46:15]     [e77ae6e8b95d] Confidence: 0.23 (low)
+[14:46:15]     [e77ae6e8b95d] Done: 184s, $0.61 (total: $129.53)
+[14:46:15]   [244/266] ee1fac93eb37 — Quantum Field Theory, Acoustics and Wave Physics
+[14:46:23]     [e757f85e91b4] Confidence: 0.23 (low)
+[14:46:23]     [e757f85e91b4] Done: 195s, $0.66 (total: $130.18)
+[14:46:23]   [245/266] ee3f9f04054a — Condensed Matter Physics, Acoustics and Wave Physics
+[14:46:34]     [e8aed9f08fad] Confidence: 0.25 (low)
+[14:46:34]     [e8aed9f08fad] Done: 188s, $0.63 (total: $130.81)
+[14:46:34]   [246/266] eee7388eaffc — Topology and Geometry, Algebraic Geometry
+[14:46:55]     [eb3d324c4c7c] Type: constraint_logic | Apparatus: Differential geometry, Measure theory | Steps: 9
+[14:47:03]     [ecbe8bb02fa7] Type: axiomatic | Apparatus: Functional analysis, Measure theory | Steps: 8
+[14:47:17]     [ee03db334b85] Type: categorical | Apparatus: Category theory, Order theory | Steps: 7

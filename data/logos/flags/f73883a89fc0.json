@@ -1,0 +1,15 @@
+{
+  "proof_id": "f73883a89fc0",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: Rigorous theory connecting continuous instabilities to discrete structure formation, including: (1) Proof that nonlinear evolution of unstable modes leads to isolated structures rather than turbulence, (2) Mathematical definition of hierarchical organization in dynamical systems, (3) Convergence theorems for infinite-dimensional gradient flows with non-convex energies",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

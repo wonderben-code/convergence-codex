@@ -1,0 +1,13 @@
+{
+  "proof_id": "f5b2530cee0f",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A complete theory of the inverse problem for wave operators with general boundary conditions. Specifically: (1) Characterization of the range of the map \u03a6: (g, B, L) \u2192 S in appropriate function space topologies, (2) Constructive methods for solving the inverse problem within physical constraints, (3) Quantitative continuity estimates for the dependence of Green's functions on material parameters and boundary conditions",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

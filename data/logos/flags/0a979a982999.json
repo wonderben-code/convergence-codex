@@ -1,0 +1,15 @@
+{
+  "proof_id": "0a979a982999",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous theory of geometric-dynamical coupling that: (1) Provides explicit construction of the coupling functional \u03a6 for general systems, (2) Proves that curvature-induced perturbations necessarily destabilize certain modes when gradients are present, (3) Establishes quantitative bounds on the coupling strength C for different physical systems",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

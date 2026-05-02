@@ -1,0 +1,38 @@
+{
+  "proof_id": "dc4563b712ab",
+  "timestamp": "2026-05-02T14:42:47.966690+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "equivalence - rejected because the physical substrates (nuclear matter vs crystal lattices) and governing equations (quantum chromodynamics vs classical/quantum mechanics) are too different for a functorial correspondence"
+      ],
+      "reasoning": "Both systems exhibit collective oscillation modes with coherent motion of constituents, suggesting they satisfy common abstract principles about many-body dynamics and wave phenomena. The convergence identifies shared behavioral patterns rather than identical structures or categorical relationships."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Functional analysis, Dynamical systems, Differential geometry",
+      "alternatives_considered": [],
+      "reasoning": "Functional analysis provides the spectral theory needed to characterize oscillation modes as eigenvalues/eigenvectors of operators on function spaces. Dynamical systems theory captures the temporal evolution and stability of these modes. Differential geometry handles the configuration spaces of many-body systems."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof linearizes the many-body dynamics near equilibrium and applies spectral decomposition to identify normal modes. Translational symmetry guarantees zero-frequency modes, while the remaining modes oscillate with frequencies determined by the Hessian eigenvalues. The key gap is rigorously connecting these mathematical modes to physical collective motion.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 10 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3483 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 2525 chars, 9 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "The formalization captures the mathematical structure of the spectral decomposition but cannot fully express the physical interpretation of collective modes, coherent motion, and the connection to many-body physics. The manifold structure and measure-theoretic aspects are partially supported but the dynamical systems theory is largely missing from Mathlib."
+    }
+  ]
+}

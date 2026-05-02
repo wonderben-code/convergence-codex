@@ -1,0 +1,13 @@
+{
+  "proof_id": "dc4563b712ab",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous theory connecting spectral properties of many-body Hamiltonians to physical collective modes. Specifically: (1) Criteria for when eigenmodes represent coherent collective motion rather than incoherent superpositions, (2) Mathematical framework for 'coherence' in many-body oscillations, (3) Extension to quantum many-body systems where operators replace classical phase space",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

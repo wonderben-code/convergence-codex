@@ -1,0 +1,358 @@
+{
+  "id": "0a979a982999",
+  "convergence_id": "e77ae6e8b95d",
+  "timestamp": "2026-05-02T14:43:11.227058+00:00",
+  "proposition": "Let (M, g) be a Riemannian manifold representing a physical system's configuration space, and let F: M \u00d7 \u211d \u2192 TM be a dynamical vector field. For any stability functional S: M \u2192 \u211d satisfying certain regularity conditions, there exists a coupling operator K such that the instability growth rate \u03bb(p) at point p \u2208 M satisfies \u03bb(p) \u2265 C\u00b7|\u03ba(p)|\u00b7|\u2207S(p)|, where \u03ba(p) is the sectional curvature at p and C > 0 is a system-dependent constant.",
+  "proposition_natural": "Geometric curvature couples directly to instability mechanisms, creating localized regions where system breakdown preferentially occurs",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Differential geometry",
+    "Dynamical systems",
+    "Functional analysis"
+  ],
+  "apparatus_justification": "Differential geometry provides the rigorous framework for curvature and its coupling to tensor fields. Dynamical systems theory captures instability mechanisms and bifurcations. Functional analysis bridges the infinite-dimensional spaces in both plasma and acoustic wave equations.",
+  "proof_natural": "**Proposition.** Let $(M, g)$ be a Riemannian manifold representing a physical system's configuration space, and let $F: M \\times \\mathbb{R} \\to TM$ be a dynamical vector field. For any stability functional $S: M \\to \\mathbb{R}$ satisfying certain regularity conditions, there exists a coupling operator $K$ such that the instability growth rate $\\lambda(p)$ at point $p \\in M$ satisfies $\\lambda(p) \\geq C \\cdot |\\kappa(p)| \\cdot |\\nabla S(p)|$, where $\\kappa(p)$ is the sectional curvature at $p$ and $C > 0$ is a system-dependent constant.\n\n**Proof.** We assume that $M$ is a smooth, finite-dimensional Riemannian manifold with metric $g$ of class $C^2$. Let the dynamical vector field $F$ be locally Lipschitz continuous, and suppose the system admits a linear stability analysis around equilibria. We further assume that the stability functional $S$ exists and is $C^2$ differentiable, the curvature tensor is bounded on compact subsets of $M$, perturbations remain in the linear regime, and the system possesses a well-defined energy or action functional with time evolution preserving the manifold structure locally.\n\nWe begin by defining the linearized evolution operator $L_p$ at point $p \\in M$ as $L_p = DF(p) + \\nabla^2 S(p)$, where $DF$ denotes the Jacobian of $F$. This follows from the standard linearization procedure for dynamical systems around equilibrium points.\n\nThe geometric structure of $M$ enters through the Levi-Civita connection. We express the covariant derivative $\\nabla_X Y$ in terms of the Christoffel symbols $\\Gamma_{ij}^k$, which depend on the metric derivatives. The Riemann curvature tensor is then given by $R(X,Y)Z = \\nabla_X\\nabla_Y Z - \\nabla_Y\\nabla_X Z - \\nabla_{[X,Y]} Z$.\n\nFor a geodesic deviation vector $J$ along a geodesic $\\gamma$, the classical Jacobi equation yields\n$$\\frac{D^2J}{dt^2} + R(J,\\gamma')\\gamma' = 0.$$\n\nThis equation governs how nearby geodesics separate, providing a geometric measure of instability.\n\n[Note: At this point, we require a rigorous connection between geodesic deviation and dynamical instability. This mapping between geometric and dynamical frameworks is not standard and represents a gap in the formal structure.]\n\nWe assume the existence of a coupling functional $\\Phi: TM \\times \\mathbb{R} \\to \\mathbb{R}$ that measures the interaction between velocity and curvature. [Note: This functional must be constructed explicitly for each physical system, which limits the generality of our result.]\n\nBy standard linear stability theory, the eigenvalues $\\lambda$ of $L_p$ determine local stability, with $\\text{Re}(\\lambda) > 0$ indicating instability. Applying first-order perturbation theory for linear operators, when $\\kappa(p) \\neq 0$, the eigenvalues shift by $\\delta\\lambda \\propto \\kappa(p) \\cdot \\langle\\psi|\\partial L/\\partial\\kappa|\\psi\\rangle$, where $\\psi$ denotes the eigenvectors.\n\n[Note: To complete the proof, we need to establish that this perturbation always increases the real part of at least one eigenvalue when $|\\nabla S(p)| > 0$. This requires specific properties of the coupling that are system-dependent.]\n\nGiven these considerations, and assuming the gaps can be filled with appropriate system-specific constructions, there exists a constant $C > 0$ such that $\\max(\\text{Re}(\\lambda)) \\geq C \\cdot |\\kappa(p)| \\cdot |\\nabla S(p)|$ when both factors are non-zero.\n\nThis completes the proof, modulo the identified gaps in establishing the geometric-dynamical correspondence and the explicit form of the coupling functional. \u25a1",
+  "proof_lean": "import Mathlib.Geometry.RiemannianGeometry.Basic\nimport Mathlib.Geometry.Manifold.VectorBundle.Tangent\nimport Mathlib.Analysis.InnerProductSpace.Basic\nimport Mathlib.Geometry.RiemannianGeometry.SectionalCurvature\nimport Mathlib.Analysis.Calculus.FDeriv.Basic\nimport Mathlib.Analysis.Calculus.ContDiff.Basic\n\n/-- A dynamical vector field on a manifold with time parameter -/\ndef DynamicalVectorField (M : Type*) [TopologicalSpace M] [ChartedSpace \u210d M] [SmoothManifoldWithCorners I M] :=\n  M \u00d7 \u211d \u2192 TangentBundle I M\n\n/-- A stability functional on a manifold -/\ndef StabilityFunctional (M : Type*) [TopologicalSpace M] [ChartedSpace \u210d M] [SmoothManifoldWithCorners I M] :=\n  M \u2192 \u211d\n\n/-- The linearized evolution operator at a point -/\ndef LinearizedEvolutionOperator (M : Type*) [TopologicalSpace M] [ChartedSpace \u210d M] [SmoothManifoldWithCorners I M]\n  [RiemannianManifold I M] (F : DynamicalVectorField M) (S : StabilityFunctional M) (p : M) : \n  TangentSpace I p \u2192L[\u211d] TangentSpace I p := \n  sorry -- Need: Jacobian of F plus Hessian of S\n\n/-- Instability growth rate at a point -/\ndef InstabilityGrowthRate (M : Type*) [TopologicalSpace M] [ChartedSpace \u210d M] [SmoothManifoldWithCorners I M]\n  [RiemannianManifold I M] (F : DynamicalVectorField M) (S : StabilityFunctional M) (p : M) : \u211d :=\n  sorry -- Need: Maximum real part of eigenvalues of linearized operator\n\n/-- Coupling operator for the system -/\nstructure CouplingOperator (M : Type*) [TopologicalSpace M] [ChartedSpace \u210d M] [SmoothManifoldWithCorners I M]\n  [RiemannianManifold I M] where\n  operator : M \u2192 \u211d\n  system_constant : \u211d\n  constant_pos : 0 < system_constant\n\n/-- Main theorem: Instability growth rate is bounded below by curvature times gradient magnitude -/\ntheorem instability_curvature_bound {M : Type*} [TopologicalSpace M] [ChartedSpace \u210d M] \n  [SmoothManifoldWithCorners I M] [RiemannianManifold I M] [FiniteDimensional \u211d (TangentSpace I (Classical.arbitrary M))]\n  (F : DynamicalVectorField M) (S : StabilityFunctional M) \n  (hF : ContDiff I \ud835\udcd8(\u211d, \u211d \u00d7 M) 1 F) (hS : ContDiff I \ud835\udcd8(\u211d) 2 S) :\n  \u2203 (K : CouplingOperator M), \u2200 (p : M), \n    InstabilityGrowthRate M F S p \u2265 K.system_constant * |sectionalCurvature (RiemannianManifold.toMetricSpace.toPseudoMetricSpace) p| * \n    \u2016(grad S) p\u2016 := by\n  -- Step 1: Define linearized evolution operator\n  sorry -- Need: Construction of L_p = DF(p) + \u2207\u00b2S(p)\n  \n  -- Step 2: Express covariant derivative using Christoffel symbols\n  sorry -- Need: Explicit Christoffel symbol computation\n  \n  -- Step 3: Riemann curvature tensor definition\n  -- This is available in Mathlib but we need to connect it to our context\n  \n  -- Step 4: Jacobi equation for geodesic deviation\n  sorry -- Need: Jacobi field theory not in Mathlib\n  \n  -- Step 5: Connection between geodesic deviation and dynamical instability\n  sorry -- Gap: Non-standard mapping between geometric and dynamical frameworks\n  \n  -- Step 6: Coupling functional construction\n  sorry -- Gap: System-dependent functional needs explicit construction\n  \n  -- Step 7: Eigenvalue stability criterion\n  sorry -- Need: Linear stability theory for manifold operators\n  \n  -- Step 8: Perturbation theory for eigenvalues\n  sorry -- Need: Perturbation theory on manifolds\n  \n  -- Step 9: Prove perturbation increases instability\n  sorry -- Gap: System-dependent property\n  \n  -- Step 10: Final bound\n  sorry -- Follows from previous steps once gaps are filled",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the linearized evolution operator L_p at point p \u2208 M as L_p = DF(p) + \u2207\u00b2S(p), where DF is the Jacobian of F",
+      "justification": "Standard linearization of dynamical systems around equilibrium points",
+      "dependencies": [
+        "Assumption of linear stability analysis"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Express the covariant derivative \u2207_X Y in terms of the Christoffel symbols \u0393\u1d62\u2c7c\u1d4f, which depend on the metric derivatives",
+      "justification": "Definition of Levi-Civita connection on Riemannian manifolds",
+      "dependencies": [
+        "Riemannian geometry framework"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The Riemann curvature tensor R(X,Y)Z can be written as R(X,Y)Z = \u2207_X\u2207_Y Z - \u2207_Y\u2207_X Z - \u2207_[X,Y] Z",
+      "justification": "Standard definition of curvature tensor",
+      "dependencies": [
+        "Step 2"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "For a geodesic deviation vector J along a geodesic \u03b3, the Jacobi equation gives D\u00b2J/dt\u00b2 + R(J,\u03b3')\u03b3' = 0",
+      "justification": "Classical result in differential geometry",
+      "dependencies": [
+        "Step 3",
+        "Jacobi field theory"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "[Gap: Need to establish rigorous connection between geodesic deviation and dynamical instability]",
+      "justification": "This requires a formal mapping between geometric and dynamical frameworks that is not standard",
+      "dependencies": [
+        "Steps 1-4"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Assume the existence of a coupling functional \u03a6: TM \u00d7 \u211d \u2192 \u211d such that \u03a6(v, \u03ba) measures the interaction between velocity v and curvature \u03ba",
+      "justification": "[Gap: This functional needs to be constructed explicitly for each physical system]",
+      "dependencies": [
+        "Physical interpretation"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The eigenvalues \u03bb of L_p determine local stability, with Re(\u03bb) > 0 indicating instability",
+      "justification": "Standard linear stability theory",
+      "dependencies": [
+        "Step 1",
+        "Linear stability analysis"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "By perturbation theory, if \u03ba(p) \u2260 0, the eigenvalues shift by \u03b4\u03bb \u221d \u03ba(p)\u00b7\u27e8\u03c8|\u2202L/\u2202\u03ba|\u03c8\u27e9 where \u03c8 are eigenvectors",
+      "justification": "First-order perturbation theory for linear operators",
+      "dependencies": [
+        "Step 7",
+        "Perturbation theory"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "[Gap: Need to prove that the perturbation always increases the real part of at least one eigenvalue when |\u2207S(p)| > 0]",
+      "justification": "This requires specific properties of the coupling that are system-dependent",
+      "dependencies": [
+        "Steps 6-8"
+      ]
+    },
+    {
+      "step_number": 10,
+      "statement": "Therefore, there exists C > 0 such that max(Re(\u03bb)) \u2265 C\u00b7|\u03ba(p)|\u00b7|\u2207S(p)| when both factors are non-zero",
+      "justification": "Follows from steps 8-9 if the gap in step 9 can be filled",
+      "dependencies": [
+        "Steps 8-9"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Jacobi Field Theory",
+      "authors": "do Carmo, M.",
+      "year": "1992",
+      "field": "Differential Geometry",
+      "statement": "Geodesic deviation is governed by the Jacobi equation involving the Riemann curvature tensor",
+      "usage": "Provides geometric framework for understanding how curvature affects nearby trajectories"
+    },
+    {
+      "name": "Linear Stability Theory",
+      "authors": "Guckenheimer, J. and Holmes, P.",
+      "year": "1983",
+      "field": "Dynamical Systems",
+      "statement": "Stability of equilibria is determined by eigenvalues of the linearized system",
+      "usage": "Standard framework for analyzing local stability"
+    },
+    {
+      "name": "Perturbation Theory for Linear Operators",
+      "authors": "Kato, T.",
+      "year": "1966",
+      "field": "Functional Analysis",
+      "statement": "Eigenvalues of perturbed operators shift continuously with perturbation parameter",
+      "usage": "Justifies eigenvalue shift calculation in step 8"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "M is a smooth, finite-dimensional Riemannian manifold",
+    "The metric g is at least C\u00b2 differentiable",
+    "The dynamical vector field F is locally Lipschitz continuous",
+    "The system admits a linear stability analysis around equilibria",
+    "The stability functional S exists and is C\u00b2 differentiable",
+    "The curvature tensor is bounded on compact subsets of M",
+    "Perturbations are small enough to remain in the linear regime",
+    "The system possesses a well-defined energy or action functional",
+    "Time evolution preserves the manifold structure locally"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Definition of linearized evolution operator L_p = DF(p) + \u2207\u00b2S(p)",
+        "issue": "This addition makes no sense dimensionally or mathematically. DF(p) is the Jacobian of a vector field (a linear map TM \u2192 TM), while \u2207\u00b2S(p) is the Hessian of a scalar function (a bilinear form). These cannot be added without additional structure.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need to completely reformulate the linearization approach with proper mathematical objects"
+      },
+      {
+        "step": "Connection between geodesic deviation and dynamical instability",
+        "issue": "The proof admits this is a gap but then proceeds as if it's established. The Jacobi equation describes geodesic separation, not general dynamical system evolution. No justification for why geodesic instability relates to dynamical instability.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would require proving that dynamical trajectories can be meaningfully related to geodesics, which is generally false"
+      },
+      {
+        "step": "Existence of coupling functional \u03a6",
+        "issue": "The proof assumes existence without construction or proof. The functional is never used after being introduced, making its role unclear.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Must explicitly construct \u03a6 and show how it enters the analysis"
+      },
+      {
+        "step": "Perturbation theory application \u03b4\u03bb \u221d \u03ba(p)\u00b7\u27e8\u03c8|\u2202L/\u2202\u03ba|\u03c8\u27e9",
+        "issue": "L was defined without any \u03ba dependence, so \u2202L/\u2202\u03ba = 0. The curvature \u03ba appears nowhere in the definition of L_p.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "The entire perturbation theory approach is nonsensical as formulated"
+      },
+      {
+        "step": "Definition of sectional curvature \u03ba(p)",
+        "issue": "Sectional curvature is defined on 2-planes in T_pM, not at points. The notation |\u03ba(p)| is meaningless without specifying which 2-plane.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Must specify which sectional curvature or use a scalar curvature invariant"
+      },
+      {
+        "step": "Final inequality \u03bb(p) \u2265 C\u00b7|\u03ba(p)|\u00b7|\u2207S(p)|",
+        "issue": "Never proved that the perturbation increases instability rather than decreases it. The direction of the inequality is unjustified.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Requires complete rework of the argument"
+      }
+    ],
+    "hidden_assumptions": [
+      "Equilibria exist for the dynamical system",
+      "The dynamical vector field F preserves some relationship with the metric structure",
+      "The stability functional S is related to the dynamics in some unspecified way",
+      "Instability growth rate \u03bb(p) is well-defined at non-equilibrium points",
+      "The system can be meaningfully linearized at arbitrary points, not just equilibria",
+      "There exists a unique maximal eigenvalue with real part",
+      "The coupling between geometry and dynamics is monotonic"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes a coupling between curvature and instability exists (via \u03a6 and the perturbation theory), then uses this assumed coupling to prove the inequality. The existence of the coupling is what needs to be proved.",
+    "over_generalisation": true,
+    "over_generalisation_details": "Even if the gaps were filled, the proof would at best establish the result for specific systems with particular coupling structures, not for arbitrary Riemannian manifolds with arbitrary dynamics and stability functionals.",
+    "citation_issues": [
+      "Jacobi field theory is correctly stated but irrelevantly applied - it governs geodesics, not general dynamical trajectories",
+      "Linear stability theory applies at equilibria, but the proof tries to use it at arbitrary points",
+      "Perturbation theory for linear operators is misapplied - the operator L has no \u03ba dependence"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed at multiple levels, mixing incompatible mathematical objects, assuming its conclusion, and containing numerous critical gaps that the author acknowledges but ignores. The mathematical formalism is incoherent and the logical structure is circular.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish a connection between curvature and instability but fails to prove the specific inequality \u03bb(p) \u2265 C\u00b7|\u03ba(p)|\u00b7|\u2207S(p)| due to multiple gaps and invalid reasoning",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The coupling operator K mentioned in the proposition is never defined or constructed",
+      "The relationship between the linearized operator L_p and the actual instability growth rate \u03bb(p) is assumed without justification",
+      "The perturbation theory assumes the curvature acts as a small parameter, which is not stated",
+      "The existence of eigenvectors \u03c8 with the required properties for the perturbation calculation",
+      "The assumption that geodesic deviation is relevant to dynamical instability in arbitrary dynamical systems",
+      "The assumption that the stability functional S is related to equilibrium points of the dynamical system F"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "1",
+        "issue": "The linearized operator L_p = DF(p) + \u2207\u00b2S(p) is defined without justification for why the Hessian of S should be added to the Jacobian of F"
+      },
+      {
+        "step": "5",
+        "issue": "Explicitly acknowledges a gap - no rigorous connection established between geodesic deviation and dynamical instability"
+      },
+      {
+        "step": "6",
+        "issue": "Assumes existence of coupling functional \u03a6 without construction, and this functional is never used in subsequent steps"
+      },
+      {
+        "step": "8",
+        "issue": "Applies perturbation theory treating curvature as a perturbation parameter, but curvature is an intrinsic geometric property, not a perturbation"
+      },
+      {
+        "step": "9",
+        "issue": "Explicitly acknowledges a gap - no proof that perturbation increases real part of eigenvalues"
+      },
+      {
+        "step": "10",
+        "issue": "Claims the result follows from previous steps despite acknowledged gaps in steps 5 and 9"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "The coupling operator K from the proposition statement is never defined or constructed",
+      "No rigorous connection established between geometric curvature and dynamical instability",
+      "The perturbation analysis in step 8 lacks proper justification for treating curvature as a perturbation parameter",
+      "Missing proof that the perturbation always increases instability when |\u2207S(p)| > 0",
+      "No verification that the constant C > 0 actually exists or how it depends on the system",
+      "The relationship between the abstract linearized operator L_p and the actual growth rate \u03bb(p) is never established"
+    ],
+    "internal_score": 0.1
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims a universal lower bound \u03bb(p) \u2265 C\u00b7|\u03ba(p)|\u00b7|\u2207S(p)| for instability growth rates, but this contradicts proof [087da119976b] which shows systems can spontaneously break symmetry to create ordered patterns - implying stable configurations can exist even with non-zero curvature and gradients",
+      "The assumption that perturbations always increase eigenvalue real parts when |\u2207S(p)| > 0 contradicts the stability analysis framework in proof [0a36ee9b1a6b] where nonlinearity enables stable localized excitations",
+      "The claimed universal coupling between geometric curvature and dynamical instability conflicts with proof [08b6405556dd] where symmetry principles can constrain dynamics to preserve stability regardless of underlying manifold curvature"
+    ],
+    "assumption_conflicts": [
+      "The assumption of linear stability analysis conflicts with proof [0a36ee9b1a6b] which explicitly requires nonlinear operators for stable localized excitations",
+      "The requirement that F is locally Lipschitz continuous may be too restrictive compared to the more general dynamical frameworks in proofs [052632f8abba] and [0e664bd264b4]",
+      "The assumption of bounded curvature tensor conflicts with the general relativity framework in proof [0c1797de78e2] where curvature can diverge at singularities"
+    ],
+    "beneficial_connections": [
+      "The geometric approach using Riemannian manifolds aligns well with the spacetime geometry framework in proof [03445cd603f4]",
+      "The stability functional S could connect to the energy functionals used in proofs [0a36ee9b1a6b] and [0e664bd264b4]",
+      "The multi-scale perspective implicit in the curvature-stability coupling relates to the hierarchical structure formation in proof [0e664bd264b4]"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof contains significant gaps and makes unjustified claims about universal instability bounds. The connection between geodesic deviation and dynamical instability is not rigorously established. The perturbation theory argument lacks mathematical rigor and the claimed universal constant C is not properly justified. The proof would need substantial revision to address these fundamental issues."
+  },
+  "confidence_score": 0.225,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.1,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.1,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous theory of geometric-dynamical coupling that: (1) Provides explicit construction of the coupling functional \u03a6 for general systems, (2) Proves that curvature-induced perturbations necessarily destabilize certain modes when gradients are present, (3) Establishes quantitative bounds on the coupling strength C for different physical systems",
+  "limitations": [
+    "The connection between geodesic deviation (geometric instability) and dynamical instability is assumed but not rigorously established",
+    "The coupling functional \u03a6 is postulated but not constructed",
+    "The proof that curvature always enhances instability (rather than potentially stabilizing) requires additional assumptions about the system's structure",
+    "The proof sketch assumes small perturbations (linear regime)",
+    "The constant C is system-dependent and not universally bounded",
+    "The result only provides a lower bound, not an exact relationship",
+    "Requires existence of a stability functional S, which may not exist for all systems",
+    "Does not address global stability or finite-amplitude effects"
+  ],
+  "source_convergence": {
+    "structural_claim": "Geometric curvature couples directly to instability mechanisms, creating localized regions where system breakdown preferentially occurs",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Ballooning Mode Theory",
+        "domain_id": "field_a",
+        "domain_name": "Plasma Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Instabilities localize to regions of bad magnetic field curvature where pressure gradients and geometry couple"
+      },
+      {
+        "result_id": "",
+        "result_name": "Exceptional Points in Non-Hermitian Acoustics",
+        "domain_id": "field_b",
+        "domain_name": "Acoustics and Wave Physics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Parameter space exhibits singular points where eigenvalues coalesce, creating regions of extreme sensitivity"
+      }
+    ],
+    "domains": [
+      "plasma_physics",
+      "acoustics"
+    ],
+    "domain_names": [
+      "Plasma Physics",
+      "Acoustics and Wave Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.1428,
+      "independence": 0.85,
+      "adversarial": 0.09,
+      "reproducibility": 0.315,
+      "depth_consistency": 1.0,
+      "confidence": 0.42059,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:55:05.695992+00:00",
+    "id": "e77ae6e8b95d"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.300495
+  }
+}

@@ -1,0 +1,356 @@
+{
+  "id": "f5b2530cee0f",
+  "convergence_id": "e5f66a68ee2b",
+  "timestamp": "2026-05-02T14:43:06.214439+00:00",
+  "proposition": "Let (M, g) be a Riemannian manifold with boundary \u2202M, and let L be a linear wave operator on M. For any wave equation Lu = 0, the solution space S = {u \u2208 C\u00b2(M) : Lu = 0} is uniquely determined by: (i) the metric g, (ii) the boundary conditions B: C\u00b2(\u2202M) \u2192 C\u00b2(\u2202M), and (iii) the material parameters encoded in L. Furthermore, for any desired wave behavior characterized by a target solution space S*, there exists a choice of (g, B, L) such that S \u2248 S* in an appropriate function space topology.",
+  "proposition_natural": "The environment and boundary conditions fundamentally modify wave behavior and can be engineered to control propagation",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Functional analysis",
+    "Differential geometry",
+    "Dynamical systems"
+  ],
+  "apparatus_justification": "Wave propagation in both optics and acoustics is fundamentally governed by differential operators on function spaces, making functional analysis essential for studying boundary conditions and spectral properties. Differential geometry provides the framework for describing wave propagation on curved interfaces and through inhomogeneous media. Dynamical systems theory captures how boundary conditions create stable propagation modes and control mechanisms.",
+  "proof_natural": "**Proposition.** Let $(M, g)$ be a Riemannian manifold with boundary $\\partial M$, and let $L$ be a linear wave operator on $M$. For any wave equation $Lu = 0$, the solution space $S = \\{u \\in C^2(M) : Lu = 0\\}$ is uniquely determined by: (i) the metric $g$, (ii) the boundary conditions $B: C^2(\\partial M) \\to C^2(\\partial M)$, and (iii) the material parameters encoded in $L$. Furthermore, for any desired wave behavior characterized by a target solution space $S^*$, there exists a choice of $(g, B, L)$ such that $S \\approx S^*$ in an appropriate function space topology.\n\n**Proof.** We assume that $M$ is compact with smooth boundary $\\partial M$, the metric $g$ is $C^\\infty$ and Riemannian, and the wave operator $L$ is second-order and linear. Let the boundary conditions be given by a linear operator $B$ satisfying appropriate regularity conditions, and assume the material parameters in $L$ are bounded and measurable. We work in the Sobolev space $H^s(M)$ for appropriate $s$, and understand approximation in the sense of Hausdorff distance.\n\nConsider the boundary value problem $Lu = 0$ with $Bu|_{\\partial M} = 0$. By standard elliptic or hyperbolic PDE theory, depending on the nature of $L$, this defines a well-posed problem in appropriate function spaces. The solution space $S$ forms a closed subspace of $H^2(M)$, as it is the kernel of the continuous linear operator $u \\mapsto (Lu, Bu|_{\\partial M})$.\n\nThe Green's function $G(x,y)$ for the operator pair $(L,B)$ exists by the Fredholm alternative for elliptic operators or Duhamel's principle for hyperbolic operators. This Green's function completely encodes the solution space $S$, as any solution can be represented through $G$ via integral representations.\n\nBy perturbation theory for linear operators, $G(x,y)$ depends continuously on the coefficients of $L$ and the boundary operator $B$. Since the metric $g$ determines the principal symbol of $L$ and affects the boundary conditions through the induced metric on $\\partial M$, we obtain that the map $\\Phi: (g, B, L) \\to S$ is continuous in appropriate topologies.\n\nThe physical realizability of this framework is supported by the Purcell effect, which demonstrates experimentally and through quantum electrodynamics calculations that boundary conditions modify the electromagnetic density of states. Similarly, acoustic and electromagnetic metamaterial designs have shown that effective material parameters can be engineered at subwavelength scales, as rigorously justified by homogenization theory.\n\nFor the inverse problem, we seek to show that given a target solution space $S^*$, there exist parameters $(g, B, L)$ such that $\\Phi(g, B, L) \\approx S^*$. [Note: The proof of surjectivity or density of the range of $\\Phi$ remains a gap in this argument. While transformation optics and acoustics provide coordinate transformation techniques that can be implemented via material parameters, a complete proof would require showing that the range of $\\Phi$ is dense in the space of all possible solution spaces.]\n\nDespite this gap in the inverse problem, the forward map from physical parameters to solution spaces is well-defined and continuous, establishing the fundamental relationship between geometry, boundary conditions, material properties, and wave behavior. This completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.Geometry.RiemannianGeometry.Basic\nimport Mathlib.Analysis.NormedSpace.ContinuousLinearMap\nimport Mathlib.Topology.ContinuousFunction.Bounded\nimport Mathlib.Analysis.Calculus.ContDiff\nimport Mathlib.Topology.MetricSpace.Basic\nimport Mathlib.Analysis.InnerProductSpace.Basic\n\n/-- A linear wave operator on a manifold -/\nstructure WaveOperator (M : Type*) [SmoothManifoldWithCorners \u211d (EuclideanSpace \u211d (Fin n)) M] where\n  -- Wave operator definition missing from Mathlib\n  sorry_wave_op : Unit\n\n/-- Boundary conditions operator -/\nstructure BoundaryOperator (M : Type*) [SmoothManifoldWithCorners \u211d (EuclideanSpace \u211d (Fin n)) M] where\n  -- Boundary operator definition missing from Mathlib\n  sorry_boundary_op : Unit\n\n/-- Solution space for wave equation -/\ndef SolutionSpace (M : Type*) [SmoothManifoldWithCorners \u211d (EuclideanSpace \u211d (Fin n)) M]\n  (L : WaveOperator M) : Set (M \u2192 \u211d) :=\n  sorry -- Wave equation solution space not in Mathlib\n\n/-- Main theorem: Wave behavior is determined by metric, boundary conditions, and material parameters -/\ntheorem wave_behavior_determination\n  {n : \u2115} (M : Type*) [SmoothManifoldWithCorners \u211d (EuclideanSpace \u211d (Fin n)) M]\n  [RiemannianManifold M] (g : Metric M) (B : BoundaryOperator M) (L : WaveOperator M) :\n  \u2203! (S : Set (M \u2192 \u211d)), S = SolutionSpace M L \u2227\n  (\u2200 (S_target : Set (M \u2192 \u211d)), \u2203 (g' : Metric M) (B' : BoundaryOperator M) (L' : WaveOperator M),\n    SolutionSpace M L' \u2248 S_target) :=\nby\n  sorry -- Full proof requires wave equation theory not in Mathlib\n  \n/-- Step 1: Well-posed boundary value problem -/\nlemma well_posed_bvp {n : \u2115} (M : Type*) \n  [SmoothManifoldWithCorners \u211d (EuclideanSpace \u211d (Fin n)) M]\n  (L : WaveOperator M) (B : BoundaryOperator M) :\n  \u2203 (unique_sol : Prop), unique_sol :=\nby\n  sorry -- PDE well-posedness theory for manifolds with boundary not in Mathlib\n\n/-- Step 2: Solution space is closed subspace -/\nlemma solution_space_closed {n : \u2115} (M : Type*)\n  [SmoothManifoldWithCorners \u211d (EuclideanSpace \u211d (Fin n)) M]\n  (L : WaveOperator M) :\n  IsClosed (SolutionSpace M L) :=\nby\n  sorry -- Requires H\u00b2 space on manifolds and kernel closedness\n\n/-- Step 3: Green's function existence -/\nlemma greens_function_exists {n : \u2115} (M : Type*)\n  [SmoothManifoldWithCorners \u211d (EuclideanSpace \u211d (Fin n)) M]\n  (L : WaveOperator M) (B : BoundaryOperator M) :\n  \u2203 (G : M \u00d7 M \u2192 \u211d), True :=\nby\n  sorry -- Green's function theory for wave operators not in Mathlib\n\n/-- Step 4: Continuous dependence on parameters -/\nlemma continuous_dependence {n : \u2115} (M : Type*)\n  [SmoothManifoldWithCorners \u211d (EuclideanSpace \u211d (Fin n)) M]\n  (L : WaveOperator M) (B : BoundaryOperator M) :\n  Continuous (fun (L, B) => SolutionSpace M L) :=\nby\n  sorry -- Perturbation theory for operators on manifolds not in Mathlib\n\n/-- Step 5: Map from parameters to solution space is continuous -/\nlemma parameter_map_continuous {n : \u2115} (M : Type*)\n  [SmoothManifoldWithCorners \u211d (EuclideanSpace \u211d (Fin n)) M]\n  [RiemannianManifold M] :\n  \u2203 (\u03a6 : (Metric M \u00d7 BoundaryOperator M \u00d7 WaveOperator M) \u2192 Set (M \u2192 \u211d)),\n    Continuous \u03a6 :=\nby\n  sorry -- Function space topology for wave solutions not in Mathlib\n\n/-- Step 6: Purcell effect -/\nlemma purcell_effect {n : \u2115} (M : Type*)\n  [SmoothManifoldWithCorners \u211d (EuclideanSpace \u211d (Fin n)) M]\n  (B : BoundaryOperator M) :\n  \u2203 (density_modification : Prop), density_modification :=\nby\n  sorry -- Purcell effect and QED calculations not in Mathlib\n\n/-- Step 7: Metamaterial parameter engineering -/\nlemma metamaterial_engineering {n : \u2115} (M : Type*)\n  [SmoothManifoldWithCorners \u211d (EuclideanSpace \u211d (Fin n)) M] :\n  \u2203 (effective_params : Prop), effective_params :=\nby\n  sorry -- Metamaterial theory and homogenization not in Mathlib\n\n/-- Step 8: Inverse problem solvability -/\nlemma inverse_problem_solvable {n : \u2115} (M : Type*)\n  [SmoothManifoldWithCorners \u211d (EuclideanSpace \u211d (Fin n)) M]\n  [RiemannianManifold M] (S_target : Set (M \u2192 \u211d)) :\n  \u2203 (g : Metric M) (B : BoundaryOperator M) (L : WaveOperator M),\n    SolutionSpace M L \u2248 S_target :=\nby\n  sorry -- Inverse problem theory and surjectivity proof not available",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The wave equation Lu = 0 with boundary conditions Bu|\u2202M = 0 defines a well-posed boundary value problem",
+      "justification": "Standard elliptic/hyperbolic PDE theory with appropriate function spaces",
+      "dependencies": [
+        "Assumption of L being elliptic/hyperbolic",
+        "Regularity of boundary conditions"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "The solution space S forms a closed subspace of H\u00b2(M)",
+      "justification": "The kernel of a continuous linear operator is closed",
+      "dependencies": [
+        "Step 1",
+        "Continuity of L in Sobolev spaces"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The Green's function G(x,y) for the operator (L,B) exists and encodes all information about S",
+      "justification": "Fredholm alternative for elliptic operators / Duhamel's principle for hyperbolic",
+      "dependencies": [
+        "Step 1",
+        "Compactness of M"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "G(x,y) depends continuously on the coefficients of L and the boundary operator B",
+      "justification": "Perturbation theory for linear operators",
+      "dependencies": [
+        "Step 3",
+        "[Gap: Need precise continuity estimates]"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The map \u03a6: (g, B, L) \u2192 S is continuous in appropriate topologies",
+      "justification": "Composition of continuous maps from Steps 3-4",
+      "dependencies": [
+        "Step 3",
+        "Step 4"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "For acoustic/electromagnetic waves, the Purcell effect demonstrates that boundary conditions modify the density of states",
+      "justification": "Experimental verification and QED calculations",
+      "dependencies": [
+        "Purcell Effect literature"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Metamaterial designs show that effective material parameters can be engineered at subwavelength scales",
+      "justification": "Homogenization theory and experimental demonstrations",
+      "dependencies": [
+        "Acoustic Metamaterials literature",
+        "Acoustic Cloaking literature"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "The inverse problem: given S*, find (g, B, L) such that \u03a6(g, B, L) \u2248 S*, has solutions",
+      "justification": "[Gap: This requires proving surjectivity or density of the range of \u03a6]",
+      "dependencies": [
+        "Step 5",
+        "Step 7",
+        "[Gap: Inverse problem theory]"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Purcell Effect",
+      "authors": "E.M. Purcell",
+      "year": "1946",
+      "field": "Quantum Optics",
+      "statement": "The spontaneous emission rate of an atom is modified by its electromagnetic environment",
+      "usage": "Provides physical evidence that boundary conditions fundamentally alter wave phenomena"
+    },
+    {
+      "name": "Acoustic Metamaterials Theory",
+      "authors": "Liu et al., Fang et al.",
+      "year": "2000-2006",
+      "field": "Acoustics",
+      "statement": "Subwavelength structures can create effective negative index materials",
+      "usage": "Demonstrates engineerability of wave propagation through material design"
+    },
+    {
+      "name": "Transformation Optics/Acoustics",
+      "authors": "Pendry, Leonhardt, Cummer",
+      "year": "2006-2008",
+      "field": "Optics/Acoustics",
+      "statement": "Coordinate transformations can be implemented via material parameters to control waves",
+      "usage": "Provides systematic approach to inverse design problem"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The manifold M is compact with smooth boundary \u2202M",
+    "The metric g is C\u221e and Riemannian (positive definite)",
+    "The wave operator L is second-order, linear, and elliptic/hyperbolic depending on context",
+    "Boundary conditions B are linear operators satisfying appropriate regularity conditions",
+    "The material parameters in L (permittivity, permeability, density, etc.) are bounded and measurable",
+    "We work in appropriate Sobolev spaces H^s(M) for well-posedness",
+    "The approximation S \u2248 S* is understood in the sense of Hausdorff distance in H^s(M)",
+    "The inverse design problem has solutions within physically realizable parameter ranges"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Existence of Green's function",
+        "issue": "The proof claims Green's function exists 'by the Fredholm alternative for elliptic operators or Duhamel's principle for hyperbolic operators' but these are fundamentally different types of operators requiring different theory. The proof conflates elliptic and hyperbolic cases without specifying which applies when.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Separate the elliptic and hyperbolic cases completely, prove existence of Green's function for each case with appropriate conditions"
+      },
+      {
+        "step": "Well-posedness claim",
+        "issue": "The proof asserts 'well-posed problem in appropriate function spaces' without proving well-posedness. For hyperbolic problems, well-posedness requires specific conditions on B (e.g., Lopatinski conditions) which are not verified.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Prove well-posedness explicitly, especially boundary conditions compatibility"
+      },
+      {
+        "step": "Continuity of map \u03a6",
+        "issue": "The proof claims \u03a6: (g, B, L) \u2192 S is continuous without defining the topologies on the domain and codomain spaces. The space of all possible solution spaces S needs a topology, which is not specified.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Define precise topologies on the space of metrics, boundary operators, differential operators, and solution spaces"
+      },
+      {
+        "step": "Inverse problem",
+        "issue": "The proof admits this is a gap but still claims to complete the proof. The entire second half of the proposition (existence of parameters for any S*) is unproven.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Remove the inverse claim from the proposition or provide actual proof"
+      },
+      {
+        "step": "Definition of wave operator L",
+        "issue": "The proof never defines what constitutes a 'wave operator'. Is it hyperbolic? Elliptic? Schr\u00f6dinger-type? The vagueness makes the entire proof meaningless.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Precisely define the class of operators L under consideration"
+      },
+      {
+        "step": "Boundary operator B definition",
+        "issue": "B is defined as B: C\u00b2(\u2202M) \u2192 C\u00b2(\u2202M) but boundary conditions typically map functions to lower regularity spaces or scalars. This definition is non-standard and possibly incorrect.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Clarify what boundary conditions are meant - Dirichlet, Neumann, Robin, or more general?"
+      }
+    ],
+    "hidden_assumptions": [
+      "The solution space S has a natural topology inherited from H\u00b2(M)",
+      "The Green's function uniquely determines the solution space",
+      "The map from Green's functions to solution spaces is bijective",
+      "Physical realizability constraints don't restrict the mathematical possibilities",
+      "The space of all possible solution spaces forms a reasonable topological space",
+      "Perturbation theory applies uniformly across all parameter variations"
+    ],
+    "circular_reasoning": false,
+    "circular_details": "",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims results for arbitrary 'wave operators' and 'boundary conditions' but only establishes (poorly) results for specific well-posed elliptic/hyperbolic problems. The inverse problem is claimed but not proven at all.",
+    "citation_issues": [
+      "Fredholm alternative applies to compact perturbations of identity, not general elliptic operators",
+      "Duhamel's principle gives solution formulas but doesn't guarantee Green's function existence",
+      "Purcell effect and metamaterials are physical phenomena - their citation doesn't constitute mathematical proof",
+      "No actual theorems are properly cited with precise statements"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed, conflating different types of PDEs, lacking precise definitions, and admitting to not proving half of its main claim. The mathematical rigor is severely lacking with vague appeals to 'standard theory' replacing actual arguments.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish that solution spaces are determined by the given parameters and that inverse design is possible, but fails to prove either claim rigorously. It only establishes basic well-posedness and some continuity properties.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Compactness of the parameter space for (g, B, L)",
+      "Specific regularity requirements for the boundary operator B",
+      "Boundedness assumptions on the coefficients of L",
+      "Injectivity conditions for the map \u03a6 to ensure unique determination",
+      "Density or surjectivity assumptions for the range of \u03a6",
+      "Compatibility conditions between metric g and operator L",
+      "Specific function space topologies for the approximation S \u2248 S*",
+      "Physical realizability constraints on material parameters"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "1",
+        "issue": "Wave equations are hyperbolic, not elliptic. The justification conflates two different types of PDEs with different well-posedness theories."
+      },
+      {
+        "step": "3",
+        "issue": "Green's functions for hyperbolic wave equations do not exist in the same sense as for elliptic operators. The Fredholm alternative does not apply to hyperbolic equations."
+      },
+      {
+        "step": "5",
+        "issue": "Continuity of \u03a6 is not established. Steps 3-4 do not provide sufficient justification for continuity of the map from parameters to solution spaces."
+      },
+      {
+        "step": "6",
+        "issue": "The Purcell effect is a quantum electrodynamics phenomenon that does not directly justify claims about classical wave equation solution spaces."
+      },
+      {
+        "step": "7",
+        "issue": "Metamaterial homogenization does not establish that arbitrary solution spaces can be achieved, only that effective parameters can be engineered within limits."
+      },
+      {
+        "step": "8",
+        "issue": "Explicitly acknowledges the gap - no proof of surjectivity or density is provided, making the inverse design claim unsubstantiated."
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No proof that the map \u03a6 is injective (for unique determination)",
+      "No proof that the range of \u03a6 is dense or surjective (for inverse design)",
+      "Missing rigorous treatment of function space topologies",
+      "No analysis of when the inverse problem has solutions",
+      "Confusion between elliptic and hyperbolic theory throughout",
+      "No verification that physical constraints are compatible with mathematical requirements"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims that for ANY desired wave behavior S*, there exists a choice of (g, B, L) such that S \u2248 S*. This is an impossibly strong claim that violates fundamental physical constraints and mathematical limitations.",
+      "The proof assumes the inverse design problem 'has solutions' without any existence proof, while claiming universal controllability which contradicts known limitations in wave control.",
+      "The claim that material parameters can be 'engineered at subwavelength scales' to achieve arbitrary wave behaviors conflicts with causality constraints and dispersion relations that limit achievable effective parameters."
+    ],
+    "assumption_conflicts": [
+      "Assumes 'physically realizable parameter ranges' but then claims arbitrary wave behavior is achievable, which is contradictory",
+      "The assumption that L can be 'elliptic/hyperbolic depending on context' is mathematically incoherent for a single operator",
+      "Claims material parameters are 'bounded and measurable' but then invokes metamaterial designs that typically require unbounded or singular parameters for extreme behaviors",
+      "The Hausdorff distance approximation S \u2248 S* in H^s(M) is not well-defined without specifying the metric structure on the space of solution spaces"
+    ],
+    "beneficial_connections": [
+      "Connects to proof [017d9bcb893f] on wave control through engineered structures, though the new proof makes much stronger and likely false claims",
+      "Relates to proof [10f57fdaae83] on environmental modification of quantum processes through boundary conditions"
+    ],
+    "consistency_score": 0.2,
+    "notes": "This proof makes several fundamental mathematical and physical errors. The universal controllability claim is almost certainly false and would violate conservation laws, causality, and known limitations in inverse problems. The mathematical framework is poorly defined with inconsistent assumptions about operator types and parameter constraints."
+  },
+  "confidence_score": 0.23,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A complete theory of the inverse problem for wave operators with general boundary conditions. Specifically: (1) Characterization of the range of the map \u03a6: (g, B, L) \u2192 S in appropriate function space topologies, (2) Constructive methods for solving the inverse problem within physical constraints, (3) Quantitative continuity estimates for the dependence of Green's functions on material parameters and boundary conditions",
+  "limitations": [
+    "Precise continuity estimates for Green's functions under parameter variations",
+    "Proof of surjectivity or density for the forward map \u03a6",
+    "Characterization of physically realizable parameter spaces",
+    "Rigorous homogenization limits for metamaterial structures",
+    "The proof sketch assumes linear wave equations; nonlinear effects require separate treatment",
+    "Physical realizability constraints are not rigorously incorporated",
+    "The approximation S \u2248 S* may require very exotic materials or geometries",
+    "Frequency dependence and dispersion are not explicitly addressed"
+  ],
+  "source_convergence": {
+    "structural_claim": "The environment and boundary conditions fundamentally modify wave behavior and can be engineered to control propagation",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Purcell Effect",
+        "domain_id": "field_a",
+        "domain_name": "Optics and Photonics",
+        "link_type": "direct",
+        "structural_conclusion": "Electromagnetic environment modifies spontaneous emission rates through altered vacuum fluctuations"
+      },
+      {
+        "result_id": "",
+        "result_name": "Acoustic Metamaterials with Negative Index",
+        "domain_id": "field_b",
+        "domain_name": "Acoustics and Wave Physics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Engineered subwavelength structures produce effective material properties that control wave behavior"
+      },
+      {
+        "result_id": "",
+        "result_name": "Acoustic Cloaking",
+        "domain_id": "field_b",
+        "domain_name": "Acoustics and Wave Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Material properties can be designed to arbitrarily control wave propagation paths"
+      }
+    ],
+    "domains": [
+      "optics",
+      "acoustics"
+    ],
+    "domain_names": [
+      "Optics and Photonics",
+      "Acoustics and Wave Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.21419999999999997,
+      "independence": 0.7,
+      "adversarial": 0.09,
+      "reproducibility": 0.4374999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.42288499999999996,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:53:15.551792+00:00",
+    "id": "e5f66a68ee2b"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.27012
+  }
+}

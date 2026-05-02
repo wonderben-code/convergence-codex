@@ -1,0 +1,368 @@
+{
+  "id": "dc4563b712ab",
+  "convergence_id": "e2ebe04a8ee8",
+  "timestamp": "2026-05-02T14:42:47.966673+00:00",
+  "proposition": "Let (X, H, \u03bc) be a many-body system where X is a configuration space, H: X \u2192 \u211d is a Hamiltonian, and \u03bc is an invariant measure. Then there exists a decomposition of the tangent space T\u2093X at each x \u2208 X into orthogonal subspaces corresponding to collective modes {V\u1d62}, such that the linearized dynamics restricted to each V\u1d62 exhibits coherent oscillatory motion with characteristic frequency \u03c9\u1d62 > 0.",
+  "proposition_natural": "Many-body systems exhibit collective oscillation modes that represent coherent motion of constituents against each other",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Functional analysis",
+    "Dynamical systems",
+    "Differential geometry"
+  ],
+  "apparatus_justification": "Functional analysis provides the spectral theory needed to characterize oscillation modes as eigenvalues/eigenvectors of operators on function spaces. Dynamical systems theory captures the temporal evolution and stability of these modes. Differential geometry handles the configuration spaces of many-body systems.",
+  "proof_natural": "**Proposition.** Let $(X, H, \\mu)$ be a many-body system where $X$ is a configuration space, $H: X \\to \\mathbb{R}$ is a Hamiltonian, and $\\mu$ is an invariant measure. Then there exists a decomposition of the tangent space $T_xX$ at each $x \\in X$ into orthogonal subspaces corresponding to collective modes $\\{V_i\\}$, such that the linearized dynamics restricted to each $V_i$ exhibits coherent oscillatory motion with characteristic frequency $\\omega_i > 0$.\n\n**Proof.** We assume that the configuration space $X$ is a finite-dimensional smooth manifold, the Hamiltonian $H$ is $C^2$ and bounded below, and the system admits a stable equilibrium configuration $x_0 \\in X$ where the Hessian $\\nabla^2H(x_0)$ is positive definite. Let the invariant measure $\\mu$ be absolutely continuous with respect to Lebesgue measure. We further assume the many-body interaction potential $V(x) = H(x) - \\sum_i T(p_i)$ separates into kinetic and potential terms, the system exhibits translational invariance $H(x + a) = H(x)$ for constant shifts $a$, the number of constituents $N$ is finite with $N \\geq 2$, and constituents interact through pairwise potentials that are $C^2$ and decay sufficiently fast at infinity.\n\nConsider the Hessian matrix $M = \\nabla^2H(x_0)$ at equilibrium. Since $H$ is $C^2$ by assumption, and the Hessian of a $C^2$ function is symmetric, $M$ defines a self-adjoint operator on $T_{x_0}X$. By the Spectral Theorem for finite-dimensional self-adjoint operators, $M$ admits an orthonormal eigenbasis $\\{v_i\\}$ with real eigenvalues $\\lambda_i$. Moreover, since $\\nabla^2H(x_0)$ is positive definite by assumption, all eigenvalues satisfy $\\lambda_i > 0$.\n\nThe linearized equations of motion near $x_0$ are obtained by Taylor expansion of Hamilton's equations to first order, yielding $\\ddot{x} = -M(x - x_0)$. Introducing the eigenbasis coordinates $y_i = \\langle x - x_0, v_i \\rangle$, the equations decouple into independent oscillators: $\\ddot{y}_i = -\\lambda_i y_i$. Each mode therefore evolves as $y_i(t) = A_i\\cos(\\omega_i t + \\phi_i)$ where $\\omega_i = \\sqrt{\\lambda_i}$, establishing the oscillatory nature of the linearized dynamics.\n\n[Note: At this stage, we have established mathematical normal modes but have not yet shown these correspond to physically meaningful collective coordinates. This connection requires additional analysis of the eigenvector structure.]\n\nBy Noether's Theorem applied to the translational symmetry of the system, there exist $N$ zero-frequency modes corresponding to center-of-mass motion. The remaining $3N - N$ non-zero frequency modes, by dimension counting and orthogonality to the translational modes, represent relative motion of constituents.\n\n[Note: To complete the proof rigorously, one would need to demonstrate that the eigenvectors possess specific structure reflecting collective behavior of the many-body system, rather than arbitrary linear combinations of individual particle motions. This requires showing that the eigenmodes correspond to coherent motion patterns, which depends on the specific form of the interaction potentials.]\n\nSubject to these noted gaps, we have shown that the tangent space at equilibrium decomposes into orthogonal subspaces spanned by eigenvectors of the Hessian, with dynamics on each subspace exhibiting harmonic oscillation at characteristic frequency $\\omega_i = \\sqrt{\\lambda_i} > 0$. This establishes the existence of the claimed decomposition and completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.Analysis.InnerProductSpace.Spectrum\nimport Mathlib.Analysis.Calculus.ContDiff\nimport Mathlib.LinearAlgebra.Matrix.Spectrum\nimport Mathlib.Geometry.Manifold.Tangent\nimport Mathlib.MeasureTheory.Measure.MeasureSpace\n\n/-- A many-body system with configuration space, Hamiltonian, and invariant measure -/\nstructure ManyBodySystem where\n  X : Type*\n  [inst_man : Manifold \u211d X]\n  [inst_smooth : SmoothManifoldWithCorners \ud835\udcd8(\u211d, X) X]\n  H : X \u2192 \u211d\n  [inst_smooth_H : ContDiff \u211d 2 H]\n  \u03bc : MeasureTheory.Measure X\n  -- sorry: invariant measure property not formalized\n  invariant : sorry\n\n/-- Collective mode decomposition theorem for many-body systems -/\ntheorem collective_mode_decomposition (S : ManyBodySystem) (x\u2080 : S.X) \n  (h_eq : \u2200 y : TangentSpace \ud835\udcd8(\u211d, S.X) x\u2080, (fderiv \u211d S.H x\u2080) y = 0) -- equilibrium condition\n  (h_pd : \u2200 y : TangentSpace \ud835\udcd8(\u211d, S.X) x\u2080, y \u2260 0 \u2192 \n    (fderiv \u211d (fderiv \u211d S.H) x\u2080) y y > 0) -- positive definite Hessian\n  : \u2203 (n : \u2115) (V : Fin n \u2192 Submodule \u211d (TangentSpace \ud835\udcd8(\u211d, S.X) x\u2080)) \n    (\u03c9 : Fin n \u2192 \u211d),\n    (\u2200 i, 0 < \u03c9 i) \u2227 \n    (\u2a06 i, V i = \u22a4) \u2227\n    (\u2200 i j, i \u2260 j \u2192 V i \u22a5 V j) \u2227\n    -- sorry: coherent oscillatory motion property\n    sorry := by\n  -- Step 1: The Hessian defines a self-adjoint operator\n  let M := fderiv \u211d (fderiv \u211d S.H) x\u2080\n  -- sorry: need to show M is self-adjoint\n  have h_self_adjoint : sorry := sorry\n  \n  -- Step 2: Apply spectral theorem\n  -- sorry: spectral theorem application to get eigenbasis\n  have h_spectral : \u2203 (n : \u2115) (v : Fin n \u2192 TangentSpace \ud835\udcd8(\u211d, S.X) x\u2080) \n    (\u03bb : Fin n \u2192 \u211d),\n    (\u2200 i j, i \u2260 j \u2192 \u27eav i, v j\u27eb = 0) \u2227\n    (\u2200 i, \u27eav i, v i\u27eb = 1) \u2227\n    (\u2200 i, M (v i) = \u03bb i \u2022 v i) := sorry\n  \n  -- Step 3: All eigenvalues are positive\n  obtain \u27e8n, v, \u03bb, h_ortho, h_norm, h_eigen\u27e9 := h_spectral\n  have h_pos : \u2200 i, 0 < \u03bb i := by\n    intro i\n    -- sorry: use positive definiteness\n    sorry\n  \n  -- Step 4-6: Define collective modes and frequencies\n  use n\n  use fun i => Submodule.span \u211d {v i}\n  use fun i => Real.sqrt (\u03bb i)\n  \n  constructor\n  \u00b7 -- All frequencies positive\n    intro i\n    exact Real.sqrt_pos.mpr (h_pos i)\n  \n  constructor\n  \u00b7 -- Span entire tangent space\n    -- sorry: completeness of eigenbasis\n    sorry\n    \n  constructor\n  \u00b7 -- Orthogonality of subspaces\n    intro i j hij\n    -- sorry: orthogonality from eigenvector orthogonality\n    sorry\n    \n  -- Step 7-10: Physical interpretation gaps\n  -- sorry: connection to collective coordinates\n  -- sorry: translational invariance and zero modes\n  -- sorry: coherent motion structure\n  sorry",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The Hessian matrix M = \u2207\u00b2H(x\u2080) at equilibrium defines a self-adjoint operator on T\u2093X",
+      "justification": "H is C\u00b2 by assumption, and the Hessian of a C\u00b2 function is symmetric, hence self-adjoint in finite dimensions",
+      "dependencies": [
+        "Assumption: H is C\u00b2",
+        "Standard calculus theorem on symmetry of mixed partials"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "By the spectral theorem, M admits an orthonormal eigenbasis {v\u1d62} with real eigenvalues \u03bb\u1d62",
+      "justification": "Spectral theorem for finite-dimensional self-adjoint operators",
+      "dependencies": [
+        "Step 1",
+        "Spectral Theorem (finite-dimensional case)"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "All eigenvalues \u03bb\u1d62 > 0 since \u2207\u00b2H(x\u2080) is positive definite",
+      "justification": "Definition of positive definite matrix",
+      "dependencies": [
+        "Step 2",
+        "Assumption: \u2207\u00b2H(x\u2080) is positive definite"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The linearized equations of motion near x\u2080 take the form \u1e8d = -M(x - x\u2080)",
+      "justification": "Taylor expansion of Hamilton's equations to first order",
+      "dependencies": [
+        "Hamilton's equations",
+        "Step 1"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "In the eigenbasis coordinates y\u1d62 = \u27e8x - x\u2080, v\u1d62\u27e9, the equations decouple: \u00ff\u1d62 = -\u03bb\u1d62y\u1d62",
+      "justification": "Change of basis using orthonormal eigenvectors",
+      "dependencies": [
+        "Step 2",
+        "Step 4"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Each mode evolves as y\u1d62(t) = A\u1d62cos(\u03c9\u1d62t + \u03c6\u1d62) where \u03c9\u1d62 = \u221a\u03bb\u1d62",
+      "justification": "General solution of simple harmonic oscillator equation",
+      "dependencies": [
+        "Step 3",
+        "Step 5",
+        "ODE theory"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "[Gap: Need to show that eigenmodes correspond to physically meaningful collective coordinates]",
+      "justification": "This requires connecting the mathematical eigenmodes to physical collective motion patterns",
+      "dependencies": [
+        "Physical interpretation"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Due to translational invariance, there exist N zero-frequency modes corresponding to center-of-mass motion",
+      "justification": "Noether's theorem applied to translational symmetry",
+      "dependencies": [
+        "Assumption: translational invariance",
+        "Noether's theorem"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "The remaining 3N-N non-zero frequency modes represent relative motion of constituents",
+      "justification": "Dimension counting and orthogonality to translational modes",
+      "dependencies": [
+        "Step 8",
+        "Linear algebra"
+      ]
+    },
+    {
+      "step_number": 10,
+      "statement": "[Gap: Coherence of motion requires showing that eigenvectors have specific structure reflecting collective behavior]",
+      "justification": "Need to prove that eigenvectors correspond to coherent motion patterns, not arbitrary linear combinations",
+      "dependencies": [
+        "Physical interpretation of eigenvectors"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Spectral Theorem for Self-Adjoint Operators",
+      "authors": "von Neumann, J.",
+      "year": "1932",
+      "field": "Functional Analysis",
+      "statement": "Every self-adjoint operator on a finite-dimensional Hilbert space has an orthonormal basis of eigenvectors with real eigenvalues",
+      "usage": "Used in Step 2 to decompose the Hessian matrix"
+    },
+    {
+      "name": "Noether's Theorem",
+      "authors": "Noether, E.",
+      "year": "1918",
+      "field": "Mathematical Physics",
+      "statement": "Every continuous symmetry of the action corresponds to a conservation law",
+      "usage": "Used in Step 8 to identify zero-frequency modes from translational symmetry"
+    },
+    {
+      "name": "Theory of Small Oscillations",
+      "authors": "Goldstein, H.",
+      "year": "1950",
+      "field": "Classical Mechanics",
+      "statement": "Near stable equilibrium, multi-particle systems exhibit normal modes of oscillation",
+      "usage": "General framework for analyzing oscillations near equilibrium"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The configuration space X is a finite-dimensional smooth manifold",
+    "The Hamiltonian H is C\u00b2 and bounded below",
+    "The system admits a stable equilibrium configuration x\u2080 \u2208 X",
+    "The Hessian \u2207\u00b2H(x\u2080) is positive definite",
+    "The invariant measure \u03bc is absolutely continuous with respect to Lebesgue measure",
+    "The many-body interaction potential V(x) = H(x) - \u03a3\u1d62 T(p\u1d62) separates into kinetic and potential terms",
+    "The system exhibits translational invariance: H(x + a) = H(x) for constant shifts a",
+    "The number of constituents N is finite but N \u2265 2",
+    "Constituents interact through pairwise potentials that are C\u00b2 and decay sufficiently fast at infinity"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "Initial setup",
+        "issue": "The proof assumes existence of a stable equilibrium x\u2080 but many-body systems may have no equilibria, only metastable states or continuous symmetries preventing isolated equilibria",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed without fundamentally restricting the class of systems considered"
+      },
+      {
+        "step": "Linearization validity",
+        "issue": "The proof only analyzes linearized dynamics near equilibrium, but the proposition claims existence of collective modes for the full nonlinear system on all of X, not just near x\u2080",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "The proposition would need to be reformulated to only claim local results near equilibria"
+      },
+      {
+        "step": "Measure invariance usage",
+        "issue": "The invariant measure \u03bc is introduced but never used in the proof. The dynamics preserving \u03bc places strong constraints on possible Hamiltonians that are ignored",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Either remove \u03bc from the statement or properly incorporate measure-theoretic constraints"
+      },
+      {
+        "step": "Translational invariance application",
+        "issue": "Claims H(x+a)=H(x) but this is impossible for a Hamiltonian bounded below unless H is constant. The proof confuses invariance under particle permutations with spatial translations",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot maintain both boundedness below and full translational invariance"
+      },
+      {
+        "step": "Noether's theorem application",
+        "issue": "Noether's theorem requires a Lagrangian formulation and continuous symmetries of the action, not just Hamiltonian invariance. The proof provides neither",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Properly set up the Lagrangian framework and verify symmetry conditions"
+      },
+      {
+        "step": "Dimension counting",
+        "issue": "Claims N zero modes from translational symmetry but earlier assumed full translational invariance H(x+a)=H(x), which would make all modes zero modes",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "The translational symmetry assumption is fundamentally incompatible with the analysis"
+      },
+      {
+        "step": "Collective mode identification",
+        "issue": "The proof admits it hasn't shown eigenmodes correspond to collective coordinates, which is the core claim of the proposition",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "This is the main content that needs proving and is entirely missing"
+      },
+      {
+        "step": "Global decomposition claim",
+        "issue": "The decomposition is only shown at x\u2080, but the proposition claims it exists at each x\u2208X. No argument for extending beyond equilibrium is given",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would require completely different techniques to handle non-equilibrium points"
+      }
+    ],
+    "hidden_assumptions": [
+      "Assumes configuration space has Euclidean structure to define translations x+a",
+      "Assumes all constituents have equal mass (implicit in symmetry arguments)",
+      "Assumes no constraints on configuration space despite many-body systems often having constraints",
+      "Assumes eigenvectors of Hessian automatically give physically meaningful modes",
+      "Assumes small oscillation theory applies globally, not just locally"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes the system has well-defined collective modes (by assuming their frequencies \u03c9\u1d62 > 0 exist) while trying to prove these modes exist",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof at best shows harmonic oscillator behavior of linearized dynamics near one equilibrium point, but claims global decomposition into collective modes with coherent oscillatory motion throughout X",
+    "citation_issues": [
+      "Spectral theorem is correctly stated but only applies at equilibrium, not globally",
+      "Noether's theorem is misapplied - requires Lagrangian formulation and action principle not provided",
+      "Theory of small oscillations explicitly only applies near equilibrium, contradicting global claims"
+    ],
+    "structural_soundness": 0.2,
+    "overall_assessment": "This proof is fundamentally flawed, analyzing only linearized dynamics at a possibly non-existent equilibrium while claiming results about global nonlinear dynamics and collective behavior. The mathematical incompatibility between translational invariance and bounded Hamiltonians alone invalidates the entire approach. The core claim about collective modes is acknowledged as unproven.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof only establishes that linearized dynamics near equilibrium can be decomposed into normal modes with harmonic oscillations, but fails to prove these modes are 'collective' or physically meaningful beyond being mathematical eigenmodes.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The system is Hamiltonian with canonical coordinates and momenta",
+      "Hamilton's equations apply in the form used in Step 4",
+      "The equilibrium x\u2080 is actually an equilibrium point (\u2207H(x\u2080) = 0)",
+      "The configuration space has the structure needed for the Hessian to be well-defined",
+      "The tangent space has an inner product structure for orthogonality",
+      "The system has exactly 3N degrees of freedom as implied in Step 9"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "3",
+        "issue": "Claims all eigenvalues are positive, but this contradicts Step 8 which requires zero eigenvalues for translational modes. Cannot have both positive definiteness and zero modes."
+      },
+      {
+        "step": "4",
+        "issue": "The form \u1e8d = -M(x - x\u2080) assumes specific Hamiltonian structure that wasn't established. For general Hamiltonian H, the equations of motion are not necessarily of this simple form."
+      },
+      {
+        "step": "8",
+        "issue": "Claims N zero-frequency modes but doesn't specify what N represents. Also contradicts Step 3's claim of positive definiteness."
+      },
+      {
+        "step": "9",
+        "issue": "Dimension counting '3N-N' is meaningless without defining what N represents, and the total dimension wasn't established."
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Steps 7 and 10 explicitly acknowledge gaps in proving the modes are 'collective'",
+      "No proof that eigenmodes correspond to physically meaningful collective motion",
+      "No connection established between mathematical eigenvectors and actual collective behavior",
+      "Contradiction between positive definiteness (Step 3) and zero modes (Step 8) is never resolved",
+      "The invariant measure \u03bc is assumed but never used in the proof"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims translational invariance H(x + a) = H(x) for constant shifts a, which would imply ALL eigenvalues of the Hessian are zero (not just N modes). This contradicts the assumption that \u2207\u00b2H(x\u2080) is positive definite.",
+      "The proof states there are N zero-frequency modes due to translational invariance, but for a system with N particles in 3D space, translational invariance should produce exactly 3 zero modes (one for each spatial direction), not N modes.",
+      "The claim that remaining modes are '3N-N' is dimensionally incorrect. For N particles in 3D, there should be 3N total degrees of freedom, with 3 translational modes and 3N-3 vibrational modes (assuming no rotational symmetry)."
+    ],
+    "assumption_conflicts": [
+      "Conflicts with proof [08b6405556dd] which correctly handles symmetry constraints - translational invariance should produce exactly dim(translation group) zero modes, not N modes",
+      "The assumption of positive definite Hessian conflicts with the claimed translational invariance, as true translational invariance would force some eigenvalues to be exactly zero",
+      "The separation V(x) = H(x) - \u03a3\u1d62 T(p\u1d62) assumes kinetic energy can be subtracted from total energy, but H should be total energy including kinetic terms"
+    ],
+    "beneficial_connections": [
+      "Connects to [087da119976b] on symmetry breaking and ordered patterns, though the symmetry analysis is flawed",
+      "Relates to [0e664bd264b4] on hierarchical structure formation through collective instabilities",
+      "Could strengthen [052632f8abba] on multi-scale dynamics if the collective mode analysis were corrected"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof contains fundamental errors in symmetry analysis and dimensional counting. The mathematical framework is sound but incorrectly applied. The gaps identified by the authors are actually symptoms of deeper conceptual errors rather than missing steps."
+  },
+  "confidence_score": 0.255,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous theory connecting spectral properties of many-body Hamiltonians to physical collective modes. Specifically: (1) Criteria for when eigenmodes represent coherent collective motion rather than incoherent superpositions, (2) Mathematical framework for 'coherence' in many-body oscillations, (3) Extension to quantum many-body systems where operators replace classical phase space",
+  "limitations": [
+    "The connection between mathematical eigenmodes and physical collective motion is assumed rather than proved",
+    "The notion of 'coherent motion' lacks precise mathematical definition",
+    "The proof only addresses linearized dynamics near equilibrium, not the full nonlinear system",
+    "Quantum many-body systems require operator formalism not addressed here",
+    "Only valid near stable equilibrium points",
+    "Requires finite-dimensional configuration space",
+    "Does not address anharmonic effects or mode coupling",
+    "Classical treatment only - quantum effects not included",
+    "Assumes separable Hamiltonian structure"
+  ],
+  "source_convergence": {
+    "structural_claim": "Many-body systems exhibit collective oscillation modes that represent coherent motion of constituents against each other",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Giant Dipole Resonance",
+        "domain_id": "field_a",
+        "domain_name": "Nuclear Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Nuclei exhibit collective oscillations where protons and neutrons move coherently against each other as quantum fluids"
+      },
+      {
+        "result_id": "",
+        "result_name": "Phonon Theory of Lattice Vibrations",
+        "domain_id": "field_b",
+        "domain_name": "Acoustics and Wave Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Lattice vibrations manifest as collective modes where atoms oscillate coherently, creating quantized vibrational states"
+      }
+    ],
+    "domains": [
+      "nuclear_physics",
+      "acoustics"
+    ],
+    "domain_names": [
+      "Nuclear Physics",
+      "Acoustics and Wave Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.1428,
+      "independence": 0.7,
+      "adversarial": 0.09,
+      "reproducibility": 0.42,
+      "depth_consistency": 1.0,
+      "confidence": 0.39884,
+      "confidence_category": "speculative"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:57:13.863700+00:00",
+    "id": "e2ebe04a8ee8"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.2943
+  }
+}

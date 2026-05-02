@@ -1,0 +1,38 @@
+{
+  "proof_id": "ac06996788b7",
+  "timestamp": "2026-05-02T14:43:05.363484+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "constraint_logic was considered since both domains involve constraints on topological evolution, but was rejected because the core claim is about shared principles of topological conservation rather than structures arising from constraint satisfaction"
+      ],
+      "reasoning": "The convergence identifies shared abstract principles about topological conservation and singular surfaces across two distinct physical domains. Both systems satisfy axioms about topology being preserved under 'regular' evolution and changing only at singular structures, making an axiomatic framework most appropriate for capturing these common structural principles."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Differential geometry, Topology, Dynamical systems",
+      "alternatives_considered": [],
+      "reasoning": "Differential geometry provides the framework for spacetime manifolds in GR and magnetic field configurations in plasma physics. Topology captures the invariant structures and their changes at singularities. Dynamical systems theory formalizes evolution and stability."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof establishes that flows on manifolds preserve topology at regular points via diffeomorphism invariance, while topological changes can only occur at singular surfaces where the flow map degenerates. Conservation laws arising from topological invariants then constrain the system evolution, with violations possible only at these singular surfaces.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 9 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3238 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 3343 chars, 9 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This formalization captures the structure of the theorem but requires significant mathematical machinery not yet in Mathlib, particularly around bifurcation theory, catastrophe theory, and the connection between topological invariants and conservation laws. The proof structure follows the original steps but many technical details require advanced differential topology and dynamical systems theory."
+    }
+  ]
+}

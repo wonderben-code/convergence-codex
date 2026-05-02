@@ -1,0 +1,13 @@
+{
+  "proof_id": "c79dd5c05100",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A fully rigorous categorical framework for statistical mechanics that properly handles: (1) the passage from finite to infinite systems, (2) the categorical structure of coarse-graining operations, (3) the precise sense in which functors preserve dynamics 'up to fluctuations', and (4) the categorical formulation of universality classes and RG flows",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}
