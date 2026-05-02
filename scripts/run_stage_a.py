@@ -546,6 +546,269 @@ def run_synthesis(convergences: list[dict], findings: list[dict],
     return stats
 
 
+# --- Capstone runner ---
+
+def git_stamp_capstone(paper_id: str, title: str, tier: str, log_file: Path):
+    """Commit and push a capstone paper for Bitcoin timestamping."""
+    try:
+        subprocess.run(
+            ["git", "add",
+             f"data/synthesis/capstone/papers/{paper_id}.json",
+             f"data/synthesis/capstone/drafts/{paper_id}.md",
+             f"data/synthesis/capstone/reviews/{paper_id}.json"],
+            cwd=str(PROJECT_ROOT), capture_output=True, timeout=30
+        )
+        subprocess.run(
+            ["git", "add", "data/pipeline/"],
+            cwd=str(PROJECT_ROOT), capture_output=True, timeout=30
+        )
+        short_title = title[:60] if title else paper_id
+        msg = f"Capstone [{tier}]: {short_title} [{paper_id}]"
+        result = subprocess.run(
+            ["git", "commit", "-m", msg],
+            cwd=str(PROJECT_ROOT), capture_output=True, text=True, timeout=30
+        )
+        if result.returncode != 0:
+            log(f"    Git commit skipped: {result.stderr.strip()[:100]}", log_file)
+            return
+        push = subprocess.run(
+            ["git", "push", "origin", "main"],
+            cwd=str(PROJECT_ROOT), capture_output=True, text=True, timeout=60
+        )
+        if push.returncode != 0:
+            subprocess.run(
+                ["git", "pull", "--rebase", "origin", "main"],
+                cwd=str(PROJECT_ROOT), capture_output=True, timeout=60
+            )
+            subprocess.run(
+                ["git", "push", "origin", "main"],
+                cwd=str(PROJECT_ROOT), capture_output=True, timeout=60
+            )
+        log(f"    Bitcoin stamped: {paper_id}", log_file)
+    except Exception as e:
+        log(f"    Git stamp warning: {e}", log_file)
+
+
+def git_stamp_predictions(log_file: Path):
+    """Separately timestamp the predictions register."""
+    try:
+        subprocess.run(
+            ["git", "add",
+             "data/synthesis/capstone/predictions.json",
+             "data/synthesis/capstone/PREDICTIONS_REGISTER.md"],
+            cwd=str(PROJECT_ROOT), capture_output=True, timeout=30
+        )
+        result = subprocess.run(
+            ["git", "commit", "-m",
+             "Capstone: Predictions Register (separately timestamped)"],
+            cwd=str(PROJECT_ROOT), capture_output=True, text=True, timeout=30
+        )
+        if result.returncode != 0:
+            log(f"    Predictions commit skipped: {result.stderr.strip()[:100]}", log_file)
+            return
+        push = subprocess.run(
+            ["git", "push", "origin", "main"],
+            cwd=str(PROJECT_ROOT), capture_output=True, text=True, timeout=60
+        )
+        if push.returncode != 0:
+            subprocess.run(
+                ["git", "pull", "--rebase", "origin", "main"],
+                cwd=str(PROJECT_ROOT), capture_output=True, timeout=60
+            )
+            subprocess.run(
+                ["git", "push", "origin", "main"],
+                cwd=str(PROJECT_ROOT), capture_output=True, timeout=60
+            )
+        log(f"    Predictions register Bitcoin stamped", log_file)
+    except Exception as e:
+        log(f"    Predictions stamp warning: {e}", log_file)
+
+
+def run_capstone(gnosis_dir: Path, proofs_dir: Path, max_cost: float, log_file: Path) -> dict:
+    """Run the Capstone pipeline — Nobel-grade papers from cascade data."""
+    from synthesis.config import SynthesisConfig
+    from synthesis.api import ClaudeAPI
+    from synthesis.capstone import CapstoneComposer
+    from synthesis.models import CapstoneRun
+
+    config = SynthesisConfig.load()
+    config.max_cost_usd = max_cost
+    api = ClaudeAPI(config)
+
+    capstone_dir = PROJECT_ROOT / "data" / "synthesis" / "capstone"
+    synthesis_papers_dir = config.papers_dir  # Standard Synthesis papers
+
+    composer = CapstoneComposer(
+        api=api,
+        capstone_dir=capstone_dir,
+        gnosis_dir=gnosis_dir,
+        proofs_dir=proofs_dir,
+        synthesis_papers_dir=synthesis_papers_dir,
+    )
+
+    run = CapstoneRun()
+
+    # ─── STAGE 1: DATA CENSUS ───
+    log("\n  Stage 1: Data Census (deterministic)...", log_file)
+    ctx = composer.census()
+    run.census_convergences = ctx.total_convergences
+    run.census_proofs = ctx.total_proofs
+    run.census_findings = ctx.total_findings
+    run.census_fixed_points = len(ctx.fixed_points)
+
+    log(f"    Convergences: {ctx.total_convergences}", log_file)
+    log(f"    Proofs: {ctx.total_proofs}", log_file)
+    log(f"    Findings: {ctx.total_findings} (across {len(ctx.cascade_levels)} levels)", log_file)
+    log(f"    Fixed points: {len(ctx.fixed_points)}", log_file)
+    log(f"    Synthesis papers: {len(ctx.synthesis_papers)}", log_file)
+    log(f"    Cross-domain hubs: {', '.join(ctx.cross_domain_hubs[:5])}", log_file)
+    log(f"    Independence clusters: {len(ctx.independence_clusters)}", log_file)
+    log(f"    Cascade: {ctx.cascade_dag.get('reduction', '')}", log_file)
+
+    # ─── STAGE 2: CLAIM FORMULATION ───
+    log("\n  Stage 2: Claim Formulation (cascade-driven)...", log_file)
+    claims = composer.generate_claims(ctx)
+    run.candidates_generated = len(claims)
+
+    log(f"    Claims formulated: {len(claims)}", log_file)
+    for claim in claims:
+        log(f"      [{claim.tier}] L{claim.source_finding_level} "
+            f"({claim.num_source_convergences} convs): {claim.coined_term or claim.claim_text[:50]}", log_file)
+
+    # ─── STAGE 3: PAPER PLANNING ───
+    log("\n  Stage 3: Paper Planning (quality-filtered)...", log_file)
+    plans = composer.plan_papers(claims, ctx)
+    run.papers_planned = len(plans)
+
+    log(f"    Papers planned: {len(plans)}", log_file)
+    for plan in plans:
+        log(f"      [{plan.tier}] {plan.title} ({len(plan.convergence_ids)} convs)", log_file)
+
+    # ─── STAGE 4 + 5: COMPOSE + REVIEW ───
+    log(f"\n  Stage 4+5: Composition & Review ({len(plans)} papers)...", log_file)
+
+    # Resume support: check which papers are already done
+    completed_ids = composer.list_completed_paper_ids()
+    if completed_ids:
+        log(f"    Resume: {len(completed_ids)} papers already completed", log_file)
+
+    all_papers = composer.load_completed_papers()
+    skipped = 0
+
+    for i, plan in enumerate(plans):
+        if plan.id in completed_ids:
+            skipped += 1
+            log(f"\n    [{i+1}/{len(plans)}] SKIP (already completed): {plan.title}", log_file)
+            continue
+
+        log(f"\n    [{i+1}/{len(plans)}] Composing: {plan.title}", log_file)
+        log(f"      Tier: {plan.tier}, Convergences: {len(plan.convergence_ids)}", log_file)
+
+        try:
+            # Compose
+            paper = composer.compose_paper(plan, ctx)
+            log(f"      Words: {paper.total_word_count}", log_file)
+
+            # Review
+            review = composer.review_capstone(paper)
+            verdict = review.get("verdict", "unknown")
+            quality = review.get("overall_quality", 0)
+            drift = review.get("nobel_model_scores", review.get("capstone_scores", {})).get("drift_detection", 0)
+            log(f"      Review: quality={quality:.2f}, drift={drift:.2f}, verdict={verdict}", log_file)
+
+            # Unsupported claims warning
+            unsupported = review.get("unsupported_claims", [])
+            if unsupported:
+                log(f"      WARNING: {len(unsupported)} unsupported claims detected!", log_file)
+                for uc in unsupported[:3]:
+                    log(f"        - {uc[:80]}", log_file)
+
+            # Revise if needed
+            issues = review.get("issues", [])
+            critical_major = [i for i in issues if i.get("severity") in ("critical", "major")]
+            if critical_major:
+                log(f"      Revising: {len(critical_major)} critical/major issues...", log_file)
+                paper = composer.revise_capstone(paper, review, plan, ctx)
+
+                # Second review
+                review2 = composer.review_capstone(paper)
+                log(f"      Post-revision: quality={review2.get('overall_quality', 0):.2f}", log_file)
+                review = review2  # Use latest review
+
+            # Save
+            composer.save_paper(paper)
+            composer.save_markdown(paper)
+            composer.save_review(paper.id, review)
+
+            run.papers_composed += 1
+            run.total_word_count += paper.total_word_count
+            run.paper_ids.append(paper.id)
+            all_papers.append(paper)
+
+            log(f"      Saved: {paper.id}", log_file)
+
+            # Bitcoin stamp immediately
+            git_stamp_capstone(paper.id, paper.title,
+                               plan.tier, log_file)
+
+        except Exception as e:
+            log(f"      ERROR: {e}", log_file)
+
+        # Cost check
+        if api.stats.cost_usd >= max_cost:
+            log(f"\n    COST LIMIT: ${api.stats.cost_usd:.2f}", log_file)
+            break
+
+    if skipped:
+        log(f"\n    Resume: {skipped} skipped, {run.papers_composed} new", log_file)
+
+    # ─── STAGE 5b: CROSS-PAPER CHECK ───
+    if len(all_papers) >= 2:
+        log("\n  Stage 5b: Cross-paper consistency check...", log_file)
+        try:
+            consistency = composer.cross_paper_check(all_papers)
+            contradictions = consistency.get("contradictions", [])
+            redundancies = consistency.get("redundancies", [])
+            log(f"    Contradictions: {len(contradictions)}", log_file)
+            log(f"    Redundancies: {len(redundancies)}", log_file)
+            for c in contradictions:
+                log(f"      CONTRADICTION: {c.get('paper_a')} vs {c.get('paper_b')}: "
+                    f"{c.get('contradiction', '')[:80]}", log_file)
+
+            # Save consistency report
+            consistency_path = capstone_dir / "consistency_report.json"
+            consistency_path.write_text(json.dumps(consistency, indent=2, default=str))
+        except Exception as e:
+            log(f"    Consistency check error: {e}", log_file)
+
+    # ─── STAGE 6: PREDICTION EXTRACTION ───
+    if all_papers:
+        log("\n  Stage 6: Prediction extraction & timestamping...", log_file)
+        register = composer.extract_predictions(all_papers)
+        run.total_predictions = register.get("total_predictions", 0)
+        log(f"    Predictions extracted: {run.total_predictions}", log_file)
+
+        # Bitcoin stamp predictions separately
+        git_stamp_predictions(log_file)
+
+    # ─── FINAL STATS ───
+    run.total_cost_usd = api.stats.cost_usd
+    run.total_api_calls = api.stats.calls
+    run.papers_completed = run.papers_composed
+    run.complete()
+
+    # Save run
+    run_path = capstone_dir / "runs" / f"{run.id}.json"
+    from dataclasses import asdict as _asdict
+    run_path.write_text(json.dumps(_asdict(run), indent=2, default=str))
+
+    log(f"\n  Capstone complete: {run.papers_completed} papers, "
+        f"{run.total_word_count} words, {run.total_predictions} predictions, "
+        f"${run.total_cost_usd:.2f}", log_file)
+
+    return _asdict(run)
+
+
 # --- Main ---
 
 def main():
@@ -563,6 +826,9 @@ def main():
                         help="Only run Logos (skip Synthesis)")
     parser.add_argument("--synthesis-only", action="store_true",
                         help="Only run Synthesis (requires prior Logos run)")
+    parser.add_argument("--capstone", action="store_true",
+                        help="Run Capstone mode — Nobel-grade papers from cascade data. "
+                             "Skips Logos and standard Synthesis.")
     parser.add_argument("--logos-max-cost", type=float, default=None,
                         help="Max cost for Logos stage (defaults to 80%% of --max-cost)")
     parser.add_argument("--synthesis-max-cost", type=float, default=None,
@@ -574,6 +840,30 @@ def main():
                 f"stage_a_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}.log")
     log_file.parent.mkdir(parents=True, exist_ok=True)
 
+    proofs_dir = PROJECT_ROOT / "data" / "logos" / "proofs"
+
+    # ─── CAPSTONE MODE ───
+    if args.capstone:
+        log("=" * 60, log_file)
+        log("  CAPSTONE — Nobel-Grade Paper Generation", log_file)
+        log("=" * 60, log_file)
+        log(f"  Gnosis data: {gnosis_dir}", log_file)
+        log(f"  Max cost: ${args.max_cost:.2f}", log_file)
+        log(f"  Log file: {log_file}", log_file)
+        log(f"  Started: {now_iso()}", log_file)
+
+        capstone_stats = run_capstone(gnosis_dir, proofs_dir, args.max_cost, log_file)
+
+        log("\n" + "=" * 60, log_file)
+        log("  CAPSTONE COMPLETE", log_file)
+        log(f"  Papers: {capstone_stats.get('papers_completed', 0)}", log_file)
+        log(f"  Predictions: {capstone_stats.get('total_predictions', 0)}", log_file)
+        log(f"  Cost: ${capstone_stats.get('total_cost_usd', 0):.2f}", log_file)
+        log(f"  Finished: {now_iso()}", log_file)
+        log("=" * 60, log_file)
+        return
+
+    # ─── STANDARD MODE ───
     logos_max = args.logos_max_cost or args.max_cost * 0.8
     synthesis_max = args.synthesis_max_cost or args.max_cost * 0.2
 
@@ -591,8 +881,6 @@ def main():
     convergences = load_convergences(gnosis_dir)
     findings = load_findings(gnosis_dir)
     log(f"  Loaded: {len(convergences)} convergences, {len(findings)} findings", log_file)
-
-    proofs_dir = PROJECT_ROOT / "data" / "logos" / "proofs"
 
     # Run Logos (parallel)
     if not args.synthesis_only:
