@@ -1044,3 +1044,19 @@
 [14:58:25]     [ff8eba52e6d8] Done: 177s, $0.62 (total: $146.56)
 [14:58:49]     [ff6aacc05449] Confidence: 0.28 (low)
 [14:58:49]     [ff6aacc05449] Done: 211s, $0.69 (total: $147.25)
+[15:02:28]     [f31bff1bcd4d] Confidence: 0.27 (low)
+[15:02:28]     [f31bff1bcd4d] Done: 770s, $0.39 (total: $147.65)
+[15:02:28] 
+Logos run stats saved to /Users/ekramalam/convergence-codex/data/logos/runs/stage_a_logos_20260502_150228.json
+[15:02:28] 
+  Logos summary: 250 completed, 11 errors, $147.65
+[15:02:28] 
+============================================================
+[15:02:28]   SYNTHESIS — Paper Composition
+[15:02:28] ============================================================
+[15:02:28] 
+Synthesis: 266 convergences, 256 proofs, 26 findings
+[15:02:28]   Detecting paper boundaries...
+[15:02:28]   Papers to generate: 70
+[15:02:28] 
+  [1/70] Paper — 5 convergences, 5 proofs

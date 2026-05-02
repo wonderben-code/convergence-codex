@@ -1,0 +1,15 @@
+{
+  "started": "2026-05-02T12:38:19.310585+00:00",
+  "total": 266,
+  "already_done": 5,
+  "workers": 8,
+  "completed": 250,
+  "errors": 11,
+  "high_confidence": 0,
+  "medium_confidence": 6,
+  "low_confidence": 244,
+  "flagged": 250,
+  "lean_code_generated": 238,
+  "completed_at": "2026-05-02T15:02:28.703267+00:00",
+  "total_cost": 147.645117
+}

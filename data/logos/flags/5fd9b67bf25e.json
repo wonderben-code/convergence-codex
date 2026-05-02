@@ -1,0 +1,15 @@
+{
+  "proof_id": "5fd9b67bf25e",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A unified categorical framework for quantum and classical field theories that allows precise formulation of bulk reconstruction functors across different physical domains. This would need to incorporate both operator algebras (for quantum systems) and function spaces (for classical fields) in a common categorical language.",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}
