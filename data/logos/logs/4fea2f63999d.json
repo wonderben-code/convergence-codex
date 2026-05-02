@@ -1,0 +1,38 @@
+{
+  "proof_id": "4fea2f63999d",
+  "timestamp": "2026-05-02T14:10:28.286090+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "constraint_logic was considered since both involve optimization/equilibrium principles (energy minimization in QCD, energy cascade in turbulence), but axiomatic better captures the universal principles governing scale-dependent behavior across fundamentally different physical systems."
+      ],
+      "reasoning": "The convergence identifies shared abstract principles about how scaling laws emerge from competing forces across multiple scales. Both domains exhibit universal scaling behavior (logarithmic in QCD, power law in turbulence) that arises from the interplay of forces at different scales, suggesting a common axiomatic framework rather than identical structures."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Dynamical systems, Measure theory, Functional analysis",
+      "alternatives_considered": [],
+      "reasoning": "Scaling laws arise from renormalization group flows (dynamical systems), with measure theory needed to handle scale-invariant measures and functional analysis for operator formulations of scaling transformations. The competing forces manifest as fixed points and their stability in the dynamical flow."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof uses renormalization group theory to show that near fixed points, observables must scale homogeneously with a universal function of the dimensionless ratio of competing forces. The key insight is that scale invariance at the fixed point, combined with dimensional analysis, constrains the functional form of observables to O(\u03bb) = \u03bb^\u03b1 f(F\u2081/F\u2082).",
+      "alternatives_considered": [],
+      "reasoning": "Generated 8 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 2961 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 2789 chars, 5 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "The formalization captures the basic structure of the proof but lacks the physics-specific machinery of renormalization group theory. Key concepts like RG flow, fixed points, and universality classes would need substantial development to complete the proof."
+    }
+  ]
+}

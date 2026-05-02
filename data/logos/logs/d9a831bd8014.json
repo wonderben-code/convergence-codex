@@ -1,0 +1,38 @@
+{
+  "proof_id": "d9a831bd8014",
+  "timestamp": "2026-05-02T14:10:27.275580+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "categorical",
+      "alternatives_considered": [
+        "constraint_logic was considered since the claim is about topological constraints, but categorical is better because we need to capture the functorial relationship between topology and dynamics rather than just constraint satisfaction"
+      ],
+      "reasoning": "The convergence describes how topological properties impose constraints on dynamics across different physical domains. This is best captured by a categorical framework where we can express how topological invariants functor into dynamical constraints, with natural transformations describing how perturbations preserve these relationships."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Topology, Dynamical systems, Category theory",
+      "alternatives_considered": [],
+      "reasoning": "Topology directly captures the notion of 'topological constraints' and provides the machinery for studying global properties that persist under perturbations (via continuity and compactness). Dynamical systems theory is essential for formalizing 'local dynamics' and their evolution. Category theory provides the framework for establishing structural convergence across the two domains through functorial relationships."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof attempts to show that non-trivial topological invariants of a manifold create obstructions that persist under small perturbations of dynamics. The key insight is that cohomology classes cannot be continuously deformed away, implying certain dynamical transitions remain forbidden. However, the rigorous connection between topology and dynamics remains a significant gap.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 8 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3322 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 2811 chars, 9 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "The proof structure follows the given steps but encounters fundamental gaps in Mathlib: (1) No formalization of dynamical systems theory for flows, (2) Missing connection between topology and dynamics, (3) C\u221e topology on function spaces not available. The mathematical content requires significant new theory development."
+    }
+  ]
+}

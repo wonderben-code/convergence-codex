@@ -1,0 +1,357 @@
+{
+  "id": "5898b4f4dd31",
+  "convergence_id": "ce865d3eeb13",
+  "timestamp": "2026-05-02T14:10:50.299928+00:00",
+  "proposition": "Let (H, \u27e8\u00b7,\u00b7\u27e9) be a separable Hilbert space representing a quantum system with Hamiltonian H: H \u2192 H. Let G be a Lie group acting unitarily on H via \u03c1: G \u2192 U(H). If H possesses a G-invariant ground state |\u03a9\u27e9 with spectral gap \u0394 > 0, and if there exists a local order parameter field \u03c6: H \u2192 C such that \u27e8\u03a9|\u03c6|\u03a9\u27e9 = 0 but inf_{|\u03c8\u27e9\u2208H_0} |\u27e8\u03c8|\u03c6|\u03c8\u27e9| > 0 for some G-orbit H_0 \u2282 H, then the system exhibits macroscopic quantum coherence characterized by long-range correlations lim_{|x-y|\u2192\u221e} \u27e8\u03c6(x)\u03c6*(y)\u27e9 \u2260 0.",
+  "proposition_natural": "Macroscopic quantum coherence emerges from microscopic interactions through spontaneous symmetry breaking, creating new collective phenomena",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Functional analysis",
+    "Order theory"
+  ],
+  "apparatus_justification": "Category theory captures the structural mappings between microscopic and macroscopic descriptions via functors, with symmetry breaking as natural transformations. Functional analysis provides the operator formalism for quantum states and observables, while order theory handles the partial ordering of phases and spontaneous symmetry breaking as order parameter emergence.",
+  "proof_natural": "**Proposition.** Let $(H, \\langle\\cdot,\\cdot\\rangle)$ be a separable Hilbert space representing a quantum system with Hamiltonian $H: H \\to H$. Let $G$ be a Lie group acting unitarily on $H$ via $\\rho: G \\to U(H)$. If $H$ possesses a $G$-invariant ground state $|\\Omega\\rangle$ with spectral gap $\\Delta > 0$, and if there exists a local order parameter field $\\phi: H \\to \\mathbb{C}$ such that $\\langle\\Omega|\\phi|\\Omega\\rangle = 0$ but $\\inf_{|\\psi\\rangle \\in H_0} |\\langle\\psi|\\phi|\\psi\\rangle| > 0$ for some $G$-orbit $H_0 \\subset H$, then the system exhibits macroscopic quantum coherence characterized by long-range correlations $\\lim_{|x-y| \\to \\infty} \\langle\\phi(x)\\phi^*(y)\\rangle \\neq 0$.\n\n**Proof.** We assume that the Hilbert space $H$ is separable and represents states of a quantum many-body system with self-adjoint, bounded-below Hamiltonian $H$. Let $G$ be a compact Lie group with continuous unitary representation on $H$, and assume the ground state $|\\Omega\\rangle$ exists and is unique up to degeneracy, with spectral gap $\\Delta > 0$ separating it from the first excited state. We further assume that the order parameter field $\\phi$ is densely defined on $H$, that the thermodynamic limit $N \\to \\infty$ exists and is well-defined, that local interactions decay at least exponentially with distance, and that the system is in thermal equilibrium at temperature $T < T_c$ for some critical temperature $T_c$.\n\nBy the spectral decomposition theorem for self-adjoint operators, the $G$-invariant ground state satisfies $H|\\Omega\\rangle = E_0|\\Omega\\rangle$ and $\\rho(g)|\\Omega\\rangle = |\\Omega\\rangle$ for all $g \\in G$. The condition that $\\langle\\Omega|\\phi|\\Omega\\rangle = 0$ while $\\inf_{|\\psi\\rangle \\in H_0} |\\langle\\psi|\\phi|\\psi\\rangle| > 0$ for some $G$-orbit $H_0$ indicates that the ground state does not realize the full symmetry of the Hamiltonian, implying spontaneous symmetry breaking.\n\nDefine the two-point correlation function in the thermodynamic limit as $C(x,y) = \\langle\\Omega|\\phi(x)\\phi^*(y)|\\Omega\\rangle$, following standard quantum field theory conventions. \n\n[Note: A rigorous connection between symmetry breaking and long-range order requires establishing the failure of the cluster decomposition property, which we assume here without full proof.]\n\nBy the Goldstone theorem, spontaneous breaking of a continuous symmetry guarantees the existence of massless excitations (Goldstone modes) in the low-energy spectrum. These modes dominate the long-distance behavior of correlation functions.\n\n[Note: The rigorous derivation of a macroscopic wavefunction from microscopic quantum degrees of freedom requires a detailed renormalization group analysis, which we omit here.]\n\nIn dimensions $d > 2$, the Mermin-Wagner theorem permits spontaneous symmetry breaking at finite temperature. The presence of Goldstone modes then leads to power-law decay of correlations rather than exponential decay. Specifically, the massless nature of these excitations ensures that $\\lim_{|x-y| \\to \\infty} C(x,y) \\neq 0$, establishing the existence of long-range correlations.\n\nTherefore, the system exhibits macroscopic quantum coherence characterized by non-vanishing long-range correlations, completing the proof. \u25a1",
+  "proof_lean": "import Mathlib.Analysis.InnerProductSpace.Basic\nimport Mathlib.Analysis.InnerProductSpace.Spectrum\nimport Mathlib.Topology.Algebra.Group.Basic\nimport Mathlib.Algebra.Lie.Basic\nimport Mathlib.Analysis.Complex.Basic\nimport Mathlib.Topology.UniformSpace.UniformConvergenceTopology\nimport Mathlib.Analysis.NormedSpace.OperatorNorm\n\n/-- A quantum system with Hamiltonian and symmetry group action -/\nstructure QuantumSystem (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H] where\n  /-- The Hamiltonian operator -/\n  hamiltonian : H \u2192L[\u2102] H\n  /-- The Hamiltonian is self-adjoint -/\n  hamiltonian_selfadjoint : IsSelfAdjoint hamiltonian\n  /-- The symmetry group -/\n  G : Type*\n  [group : Group G]\n  [lie_group : LieGroup \ud835\udcd8(\u2102) G]\n  /-- The unitary representation -/\n  \u03c1 : G \u2192 H \u2192L[\u2102] H\n  /-- Each \u03c1(g) is unitary -/\n  \u03c1_unitary : \u2200 g : G, \u2203 (U : H \u2243\u2097\u1d62[\u2102] H), \u03c1 g = U.toContinuousLinearMap\n  /-- \u03c1 is a group homomorphism -/\n  \u03c1_hom : \u2200 g h : G, \u03c1 (g * h) = \u03c1 g \u2218L \u03c1 h\n\n/-- Ground state with spectral gap -/\nstructure GroundState {H : Type*} [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H]\n  (qs : QuantumSystem H) where\n  /-- The ground state vector -/\n  \u03a9 : H\n  /-- Normalized -/\n  \u03a9_norm : \u2016\u03a9\u2016 = 1\n  /-- Ground state energy -/\n  E\u2080 : \u211d\n  /-- Eigenstate equation -/\n  eigen_eq : qs.hamiltonian \u03a9 = E\u2080 \u2022 \u03a9\n  /-- Spectral gap -/\n  \u0394 : \u211d\n  \u0394_pos : \u0394 > 0\n  /-- Spectral gap property -/\n  spectral_gap : sorry -- \"Need spectral theory for unbounded operators\"\n  /-- G-invariance -/\n  G_invariant : \u2200 g : qs.G, qs.\u03c1 g \u03a9 = \u03a9\n\n/-- Local order parameter field -/\nstructure OrderParameter {H : Type*} [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H]\n  (qs : QuantumSystem H) where\n  /-- The field operator -/\n  \u03c6 : H \u2192L[\u2102] \u2102\n  /-- Locality condition -/\n  local : sorry -- \"Need spatial structure and locality\"\n\n/-- Correlation function -/\ndef correlationFunction {H : Type*} [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H]\n  (qs : QuantumSystem H) (gs : GroundState qs) (\u03c6 : OrderParameter qs) (x y : \u211d \u00d7 \u211d \u00d7 \u211d) : \u2102 :=\n  sorry -- \"Need position-dependent field operators \u03c6(x)\"\n\n/-- Main theorem: Macroscopic quantum coherence from symmetry breaking -/\ntheorem macroscopic_quantum_coherence\n  {H : Type*} [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H] [SeparableSpace H]\n  (qs : QuantumSystem H) (gs : GroundState qs) (\u03c6 : OrderParameter qs)\n  (h_zero : \u27eags.\u03a9, \u03c6.\u03c6 gs.\u03a9\u27eb_\u2102 = 0)\n  (H\u2080 : Set H) (h_orbit : sorry) -- \"Need G-orbit structure\"\n  (h_nonzero : \u2203 c > 0, \u2200 \u03c8 \u2208 H\u2080, |\u27ea\u03c8, \u03c6.\u03c6 \u03c8\u27eb_\u2102| \u2265 c) :\n  \u2203 C > 0, \u2200 \u03b5 > 0, \u2203 R > 0, \u2200 x y : \u211d \u00d7 \u211d \u00d7 \u211d, \u2016x - y\u2016 > R \u2192 \n    |correlationFunction qs gs \u03c6 x y| \u2265 C - \u03b5 := by\n  -- Step 1: Ground state properties\n  have h_eigen : qs.hamiltonian gs.\u03a9 = gs.E\u2080 \u2022 gs.\u03a9 := gs.eigen_eq\n  have h_invariant : \u2200 g : qs.G, qs.\u03c1 g gs.\u03a9 = gs.\u03a9 := gs.G_invariant\n  \n  -- Step 2: Spontaneous symmetry breaking\n  sorry -- \"Need formalization of spontaneous symmetry breaking\"\n  \n  -- Step 3: Define correlation function (already defined above)\n  \n  -- Step 4: Connection to cluster decomposition\n  sorry -- \"Need cluster decomposition property and its failure\"\n  \n  -- Step 5: Goldstone modes\n  sorry -- \"Need Goldstone theorem and effective field theory\"\n  \n  -- Step 6: Macroscopic wavefunction emergence\n  sorry -- \"Need renormalization group methods\"\n  \n  -- Step 7: Long-range correlations from Goldstone modes\n  sorry -- \"Need connection between massless modes and correlation decay\"",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The G-invariant ground state |\u03a9\u27e9 satisfies H|\u03a9\u27e9 = E_0|\u03a9\u27e9 and \u03c1(g)|\u03a9\u27e9 = |\u03a9\u27e9 for all g \u2208 G",
+      "justification": "Definition of G-invariant ground state and spectral decomposition of self-adjoint operators",
+      "dependencies": [
+        "Assumption of G-invariance",
+        "Spectral theorem for self-adjoint operators"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "The existence of non-zero \u27e8\u03c8|\u03c6|\u03c8\u27e9 for states |\u03c8\u27e9 in some G-orbit implies spontaneous symmetry breaking",
+      "justification": "If \u27e8\u03a9|\u03c6|\u03a9\u27e9 = 0 but \u03c6 has non-zero expectation in nearby states, the ground state does not realize the full symmetry",
+      "dependencies": [
+        "Step 1",
+        "Definition of spontaneous symmetry breaking"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Define the correlation function C(x,y) = \u27e8\u03a9|\u03c6(x)\u03c6*(y)|\u03a9\u27e9 in the thermodynamic limit",
+      "justification": "Standard definition of two-point correlation function in quantum field theory",
+      "dependencies": [
+        "Existence of thermodynamic limit"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "[Gap: Rigorous connection between symmetry breaking and long-range order requires cluster decomposition property]",
+      "justification": "The proof that spontaneous symmetry breaking implies long-range order requires showing that cluster decomposition fails",
+      "dependencies": [
+        "Mermin-Wagner theorem",
+        "Goldstone theorem"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Apply effective field theory methods to show that low-energy excitations are Goldstone modes",
+      "justification": "Goldstone theorem guarantees massless excitations for continuous symmetry breaking",
+      "dependencies": [
+        "Step 2",
+        "Goldstone theorem",
+        "Effective field theory formalism"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "[Gap: Rigorous derivation of macroscopic wavefunction from microscopic degrees of freedom]",
+      "justification": "The emergence of a macroscopic order parameter from microscopic quantum mechanics requires renormalization group analysis",
+      "dependencies": [
+        "Wilson renormalization group",
+        "Kadanoff block spin transformation"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The long-range correlations lim_{|x-y|\u2192\u221e} C(x,y) \u2260 0 follow from the existence of Goldstone modes",
+      "justification": "Massless excitations lead to power-law decay of correlations in d > 2 dimensions",
+      "dependencies": [
+        "Step 5",
+        "Infrared divergence analysis"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Goldstone Theorem",
+      "authors": "Goldstone, Salam, Weinberg",
+      "year": "1962",
+      "field": "Quantum Field Theory",
+      "statement": "Spontaneous breaking of a continuous symmetry implies existence of massless excitations",
+      "usage": "Establishes connection between symmetry breaking and long-range correlations"
+    },
+    {
+      "name": "Mermin-Wagner Theorem",
+      "authors": "Mermin, Wagner",
+      "year": "1966",
+      "field": "Statistical Mechanics",
+      "statement": "No spontaneous breaking of continuous symmetries in d \u2264 2 dimensions at finite temperature",
+      "usage": "Constrains the conditions under which macroscopic coherence can emerge"
+    },
+    {
+      "name": "BCS Theory",
+      "authors": "Bardeen, Cooper, Schrieffer",
+      "year": "1957",
+      "field": "Condensed Matter Physics",
+      "statement": "Microscopic theory of superconductivity via Cooper pair formation",
+      "usage": "Provides concrete example of emergence of macroscopic quantum coherence"
+    },
+    {
+      "name": "Spectral Theorem",
+      "authors": "von Neumann",
+      "year": "1932",
+      "field": "Functional Analysis",
+      "statement": "Self-adjoint operators have complete orthonormal eigenbasis",
+      "usage": "Justifies spectral decomposition of Hamiltonian"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The Hilbert space H is separable and represents states of a quantum many-body system",
+    "The Hamiltonian H is self-adjoint and bounded below",
+    "The symmetry group G is a compact Lie group with continuous unitary representation",
+    "The ground state |\u03a9\u27e9 exists and is unique up to degeneracy",
+    "There exists a spectral gap \u0394 > 0 between ground and first excited states",
+    "The order parameter field \u03c6 is a densely defined operator on H",
+    "The thermodynamic limit N \u2192 \u221e exists and is well-defined",
+    "Local interactions decay sufficiently fast (at least exponentially) with distance",
+    "The system is in thermal equilibrium at temperature T < T_c for some critical temperature T_c"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Definition of \u03c6 as both H \u2192 C and \u03c6(x)",
+        "issue": "The proof conflates \u03c6 as an operator on H with \u03c6(x) as a spatially-dependent field operator. These are fundamentally different objects and the notation is never clarified.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Complete rewrite needed to properly define field operators in position space"
+      },
+      {
+        "step": "Define the two-point correlation function C(x,y) = \u27e8\u03a9|\u03c6(x)\u03c6*(y)|\u03a9\u27e9",
+        "issue": "\u03c6(x) is never defined. The proof jumps from abstract operators to position-dependent fields without any construction or justification.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need to construct local field operators from the abstract Hilbert space formalism"
+      },
+      {
+        "step": "The condition... indicates spontaneous symmetry breaking",
+        "issue": "This is asserted without proof. The connection between the given conditions and SSB is not established.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Prove that the conditions imply existence of degenerate ground states transforming under G"
+      },
+      {
+        "step": "By the Goldstone theorem...",
+        "issue": "The Goldstone theorem requires specific conditions (continuous symmetry, local interactions, etc.) that are not verified for this system.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Verify all conditions of Goldstone theorem explicitly"
+      },
+      {
+        "step": "The massless nature... ensures that lim C(x,y) \u2260 0",
+        "issue": "This is false. Massless excitations typically lead to power-law decay, not non-zero asymptotic values. The proof confuses slow decay with non-zero limit.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "The conclusion is fundamentally wrong and needs complete revision"
+      },
+      {
+        "step": "In dimensions d > 2, the Mermin-Wagner theorem permits...",
+        "issue": "The system dimension d is never defined or related to the abstract Hilbert space H.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Define spatial dimension and relate to the Hilbert space structure"
+      }
+    ],
+    "hidden_assumptions": [
+      "The system has a well-defined spatial structure with position operators",
+      "The Hilbert space factorizes over spatial regions",
+      "The ground state is pure (not mixed)",
+      "The symmetry group G is continuous (required for Goldstone)",
+      "The order parameter transforms non-trivially under G",
+      "The system is translation invariant",
+      "Correlation functions are well-defined in the thermodynamic limit"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes spontaneous symmetry breaking to apply Goldstone theorem, but SSB is what supposedly leads to the long-range order being proved. The existence of long-range correlations is essentially assumed via the Goldstone modes.",
+    "over_generalisation": true,
+    "over_generalisation_details": "Even if corrected, the proof would at best show power-law decay of correlations in d>2, not non-vanishing asymptotic correlations. The claimed result lim|x-y|\u2192\u221e C(x,y) \u2260 0 is simply false for typical quantum systems.",
+    "citation_issues": [
+      "Goldstone theorem is misapplied - it gives massless modes, not long-range order",
+      "Mermin-Wagner theorem is about absence of SSB in d\u22642, not presence in d>2",
+      "BCS theory is cited but never used",
+      "Spectral theorem usage is trivial and doesn't justify the citation"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed, conflating abstract operators with spatial fields, misunderstanding the implications of Goldstone modes, and making numerous unjustified leaps. The central claim about non-vanishing asymptotic correlations is mathematically incorrect.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish a connection between symmetry breaking and long-range correlations but fails to rigorously prove either the existence of macroscopic quantum coherence or the specific form of long-range correlations claimed",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The order parameter field \u03c6(x) is spatially indexed and well-defined in the thermodynamic limit",
+      "The system has translation invariance to define spatial correlations",
+      "The dimension d > 2 for the Goldstone mode argument to apply",
+      "The symmetry breaking is continuous (required for Goldstone theorem)",
+      "The ground state degeneracy structure is specified",
+      "Cluster decomposition property holds or fails as needed",
+      "The G-orbit H_0 is properly embedded in the full Hilbert space",
+      "The infimum over H_0 is actually achieved"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "2",
+        "issue": "The logic is circular - the conclusion that there is spontaneous symmetry breaking is assumed rather than proven from the given conditions"
+      },
+      {
+        "step": "3",
+        "issue": "The spatial indexing \u03c6(x) is introduced without justification, and the thermodynamic limit of the correlation function is not rigorously defined"
+      },
+      {
+        "step": "5",
+        "issue": "Goldstone theorem application requires proof that the symmetry is continuous and spontaneously broken, which hasn't been established"
+      },
+      {
+        "step": "7",
+        "issue": "The connection between Goldstone modes and non-zero long-range correlations is asserted without proof, and the dimensional requirements are not verified"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Steps 4 and 6 explicitly acknowledge gaps that are never filled",
+      "No rigorous proof that the given conditions imply spontaneous symmetry breaking",
+      "No proof that symmetry breaking leads to the specific form of long-range correlations claimed",
+      "Missing analysis of the relationship between the G-orbit H_0 and the ground state manifold",
+      "No verification that the order parameter field satisfies the requirements for Goldstone theorem",
+      "The connection between local order parameter and macroscopic quantum coherence is not established"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims G-invariant ground state |\u03a9\u27e9 satisfies \u03c1(g)|\u03a9\u27e9 = |\u03a9\u27e9 for all g \u2208 G, but then claims spontaneous symmetry breaking occurs. This is logically inconsistent - if the ground state is truly G-invariant, symmetry cannot be spontaneously broken.",
+      "The proof assumes \u27e8\u03a9|\u03c6|\u03a9\u27e9 = 0 for the G-invariant ground state but claims inf_{|\u03c8\u27e9\u2208H_0} |\u27e8\u03c8|\u03c6|\u03c8\u27e9| > 0 for some G-orbit. This contradicts the fundamental principle that spontaneous symmetry breaking requires degenerate ground states, not a unique G-invariant one.",
+      "The claim of long-range correlations lim_{|x-y|\u2192\u221e} \u27e8\u03c6(x)\u03c6*(y)\u27e9 \u2260 0 contradicts the cluster decomposition property that should hold for gapped systems with unique ground states."
+    ],
+    "assumption_conflicts": [
+      "Conflicts with [087da119976b] which correctly requires breaking of G-invariance for spontaneous symmetry breaking, while new proof assumes G-invariant ground state",
+      "Conflicts with [0178ff46c5ee] which properly characterizes phase transitions as symmetry-breaking events requiring ground state degeneracy",
+      "The assumption of unique G-invariant ground state conflicts with the general principle in quantum many-body theory that spontaneous symmetry breaking requires degenerate ground states"
+    ],
+    "beneficial_connections": [
+      "Connects to [0178ff46c5ee] on phase transitions and symmetry breaking, but with fundamental errors",
+      "Relates to [087da119976b] on spontaneous symmetry breaking, but contradicts its correct formulation",
+      "Could potentially connect to [08b6405556dd] on symmetry principles, but the mathematical framework is flawed"
+    ],
+    "consistency_score": 0.1,
+    "notes": "The proof contains fundamental mathematical errors in its treatment of spontaneous symmetry breaking. The assumption of a unique G-invariant ground state is incompatible with spontaneous symmetry breaking, which requires ground state degeneracy. The proof also contains acknowledged gaps in critical steps and lacks rigorous derivations for key claims about Goldstone modes and macroscopic wavefunctions."
+  },
+  "confidence_score": 0.215,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.1,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.1,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "Rigorous mathematical framework for thermodynamic limit in quantum many-body systems, particularly for operators and correlation functions. Category-theoretic formulation of emergence and renormalization group flow. Mathematical theory of spontaneous symmetry breaking in infinite-dimensional Hilbert spaces.",
+  "limitations": [
+    "Rigorous proof of cluster decomposition failure in symmetry-broken phases",
+    "Mathematical derivation of effective macroscopic wavefunction from microscopic quantum states",
+    "Precise conditions for thermodynamic limit to preserve quantum coherence",
+    "Rigorous treatment of infrared divergences in correlation functions",
+    "Proof assumes existence of spectral gap which may close at phase transition",
+    "Thermodynamic limit procedures are not fully rigorous for quantum systems",
+    "Connection between microscopic and macroscopic descriptions involves uncontrolled approximations",
+    "Proof does not address finite-size effects or decoherence mechanisms"
+  ],
+  "source_convergence": {
+    "structural_claim": "Macroscopic quantum coherence emerges from microscopic interactions through spontaneous symmetry breaking, creating new collective phenomena",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Ginzburg-Landau Theory",
+        "domain_id": "field_b",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Superconductivity described by complex order parameter field with spontaneous gauge symmetry breaking"
+      },
+      {
+        "result_id": "",
+        "result_name": "BCS Theory of Superconductivity",
+        "domain_id": "field_b",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Macroscopic quantum coherence arises from microscopic attractive interactions forming Cooper pairs"
+      },
+      {
+        "result_id": "",
+        "result_name": "Landau Theory of Phase Transitions",
+        "domain_id": "field_a",
+        "domain_name": "Thermodynamics and Statistical Mechanics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Order parameters emerge through symmetry breaking, establishing new macroscopic organization"
+      },
+      {
+        "result_id": "",
+        "result_name": "Yang-Lee Circle Theorem",
+        "domain_id": "field_a",
+        "domain_name": "Thermodynamics and Statistical Mechanics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Phase transitions emerge from analytic structure of partition function, revealing collective phenomena from microscopic statistics"
+      }
+    ],
+    "domains": [
+      "thermodynamics",
+      "condensed_matter"
+    ],
+    "domain_names": [
+      "Thermodynamics and Statistical Mechanics",
+      "Condensed Matter Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.2856,
+      "independence": 0.7,
+      "adversarial": 0.09,
+      "reproducibility": 0.4724999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.44955500000000004,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:05:11.490794+00:00",
+    "id": "ce865d3eeb13"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.301365
+  }
+}

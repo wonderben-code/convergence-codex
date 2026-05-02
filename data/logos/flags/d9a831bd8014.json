@@ -1,0 +1,15 @@
+{
+  "proof_id": "d9a831bd8014",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous framework connecting cohomological obstructions to dynamical accessibility. This would require developing a 'topological dynamics' that formally relates H*(M) to the space of accessible trajectories under perturbations. Current dynamical systems theory lacks sufficient tools to make this connection rigorous.",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

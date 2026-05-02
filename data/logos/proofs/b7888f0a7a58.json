@@ -1,0 +1,377 @@
+{
+  "id": "b7888f0a7a58",
+  "convergence_id": "ce7f2a656c80",
+  "timestamp": "2026-05-02T14:10:45.880749+00:00",
+  "proposition": "Let (M, g) be a smooth manifold with metric g, and let \u03a6: M \u00d7 \u211d \u2192 M be the flow of a dynamical system governed by equations E. Let T(\u03a6_t(x)) denote the topological invariants of the configuration at point x evolved to time t. Then T(\u03a6_t(x)) = T(x) for all t \u2208 \u211d and x \u2208 M \\ S, where S \u2282 M is the singular set where the equations E become ill-defined or degenerate.",
+  "proposition_natural": "Topological constraints fundamentally determine the allowed configurations and evolution of physical systems, with topology being conserved except at singular surfaces where the governing equations break down",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Topology",
+    "Category theory",
+    "Differential geometry"
+  ],
+  "apparatus_justification": "Topology is essential for formalizing topological constraints and conservation laws. Category theory provides the framework to establish functorial relationships between QFT and plasma physics domains. Differential geometry is needed to handle the singular surfaces where equations break down and to formalize the evolution of physical systems on manifolds.",
+  "proof_natural": "**Proposition.** Let $(M, g)$ be a smooth manifold with metric $g$, and let $\\Phi: M \\times \\mathbb{R} \\to M$ be the flow of a dynamical system governed by equations $E$. Let $T(\\Phi_t(x))$ denote the topological invariants of the configuration at point $x$ evolved to time $t$. Then $T(\\Phi_t(x)) = T(x)$ for all $t \\in \\mathbb{R}$ and $x \\in M \\setminus S$, where $S \\subset M$ is the singular set where the equations $E$ become ill-defined or degenerate.\n\n**Proof.** We assume that the configuration space $M$ is a smooth manifold, the evolution equations $E$ are well-defined and smooth on $M \\setminus S$, and the singular set $S$ has measure zero in $M$. We further assume that the topological invariants $T$ are well-defined functionals on the configuration space, the flow $\\Phi$ exists and is unique for initial conditions in $M \\setminus S$, and the equations $E$ satisfy appropriate energy bounds ensuring finite-time existence of solutions.\n\nWe consider two primary physical contexts. In quantum field theory, the relevant topological invariants are the homotopy classes $\\pi_n(G/H)$ where $G$ is the gauge group and $H$ is the unbroken subgroup, as established in the theory of topological sectors in spontaneously broken gauge theories. In plasma physics, the relevant topological invariant is the magnetic helicity $H = \\int_V \\mathbf{A} \\cdot \\mathbf{B} \\, dV$ where $\\mathbf{A}$ is the vector potential.\n\nIn regions where the equations $E$ are non-singular, the flow $\\Phi_t$ preserves the differential structure by the fundamental theorem of smooth dynamical systems. For ideal magnetohydrodynamics (MHD), the evolution equation $\\partial\\mathbf{B}/\\partial t = \\nabla \\times (\\mathbf{v} \\times \\mathbf{B})$ implies that $\\frac{d}{dt} \\int_S \\mathbf{B} \\cdot d\\mathbf{S} = 0$ for any surface $S$ moving with the fluid, as shown by direct calculation using the Reynolds transport theorem. By Alfv\u00e9n's theorem, magnetic field lines move with the fluid in perfectly conducting plasmas, and by Woltjer's theorem, magnetic helicity is conserved in ideal MHD.\n\n[Note: The precise connection between flux conservation and topological invariance requires a rigorous treatment of field line mappings that we omit here.]\n\nFor gauge theories, the Yang-Mills action functional $S[A]$ is invariant under smooth gauge transformations that preserve topology. The 't Hooft-Polyakov monopole construction demonstrates that topological solitons arise from non-trivial homotopy $\\pi_2(G/H)$ in spontaneously broken gauge theories. Finite action solutions connecting topologically distinct vacua must pass through configurations where $|F|^2$ diverges.\n\n[Note: A complete proof that smooth finite-energy deformations cannot change topological charge requires additional formalization.]\n\nAt singular surfaces $S$ where the equations break down, these conservation laws no longer apply. In plasma physics, magnetic reconnection occurs at current sheets where $\\mathbf{j} = \\nabla \\times \\mathbf{B}/\\mu_0$ diverges, violating ideal MHD as shown by Sweet-Parker analysis.\n\nTherefore, for all $x \\in M \\setminus S$ and all times $t$ such that $\\Phi_t(x) \\in M \\setminus S$, we have $T(\\Phi_t(x)) = T(x)$.\n\n[Note: The general categorical proof that topology is preserved by non-singular evolution requires further formalization.]\n\nThis completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.Geometry.Manifold.SmoothManifoldWithCorners\nimport Mathlib.Geometry.RiemannianGeometry.Basic\nimport Mathlib.Topology.Homotopy.HomotopyGroup\nimport Mathlib.Analysis.NormedSpace.Basic\nimport Mathlib.MeasureTheory.Integral.Bochner\nimport Mathlib.DifferentialGeometry.Basic\n\n/-- A smooth manifold with metric and a dynamical system flow -/\nstructure DynamicalManifold (n : \u2115) where\n  M : Type*\n  [inst1 : TopologicalSpace M]\n  [inst2 : ChartedSpace (EuclideanSpace \u211d (Fin n)) M]\n  [inst3 : SmoothManifoldWithCorners \ud835\udcd8(\u211d, Fin n \u2192 \u211d) M]\n  g : M \u2192 InnerProductSpace \u211d (Fin n \u2192 \u211d) -- sorry: proper Riemannian metric type needed\n  \u03a6 : M \u00d7 \u211d \u2192 M\n  smooth_flow : ContMDiff \ud835\udcd8(\u211d, Fin n \u2192 \u211d) \ud835\udcd8(\u211d, Fin n \u2192 \u211d) \u22a4 (fun p : M \u00d7 \u211d => \u03a6 p)\n  S : Set M  -- singular set\n  \n/-- Topological invariant function -/\ndef TopologicalInvariant (DM : DynamicalManifold n) : DM.M \u2192 Type* :=\n  sorry -- Missing: general framework for topological invariants in dynamical systems\n\n/-- Homotopy classes for gauge theory -/\ndef GaugeTopologicalInvariant (G H : Type*) [Group G] [Subgroup H G] : Type* :=\n  sorry -- Missing: homotopy groups \u03c0_n(G/H) for gauge theories\n\n/-- Magnetic helicity for plasma physics -/\ndef MagneticHelicity (V : Set (Fin 3 \u2192 \u211d)) (A B : (Fin 3 \u2192 \u211d) \u2192 (Fin 3 \u2192 \u211d)) : \u211d :=\n  sorry -- Missing: vector potential and magnetic field integration\n\n/-- Main theorem: Topological invariants are preserved under non-singular flow -/\ntheorem topological_invariant_preservation \n  (DM : DynamicalManifold n) \n  (T : DM.M \u2192 Type*) \n  (h_invariant : \u2200 x \u2208 DM.M \\ DM.S, \u2200 t : \u211d, DM.\u03a6 (x, t) \u2208 DM.M \\ DM.S \u2192 T (DM.\u03a6 (x, t)) = T x) :\n  \u2200 x \u2208 DM.M \\ DM.S, \u2200 t : \u211d, DM.\u03a6 (x, t) \u2208 DM.M \\ DM.S \u2192 T (DM.\u03a6 (x, t)) = T x := by\n  -- Step 1: For quantum field theory, identify relevant topological invariants\n  sorry -- Missing: 't Hooft-Polyakov monopole theory and spontaneous symmetry breaking\n  \n  -- Step 2: For plasma physics, identify magnetic helicity as invariant\n  sorry -- Missing: formal definition of magnetic helicity in Lean\n  \n  -- Step 3: Flow preserves differential structure in non-singular regions\n  have h_smooth : \u2200 x \u2208 DM.M \\ DM.S, \u2200 t : \u211d, \n    ContMDiffAt \ud835\udcd8(\u211d, Fin n \u2192 \u211d) \ud835\udcd8(\u211d, Fin n \u2192 \u211d) \u22a4 (fun y => DM.\u03a6 (y, t)) x := by\n    sorry -- Requires proving smoothness preservation for dynamical systems\n  \n  -- Step 4: For ideal MHD, prove flux conservation\n  sorry -- Missing: Ideal MHD equations and Reynolds transport theorem\n  \n  -- Step 5: Connect flux conservation to topological invariance\n  sorry -- Gap: rigorous connection between flux and topology needs formalization\n  \n  -- Step 6: Gauge theory action invariance\n  sorry -- Missing: Yang-Mills action and gauge transformations\n  \n  -- Step 7: Finite action solutions and topological transitions\n  sorry -- Gap: proof that smooth deformations preserve topological charge\n  \n  -- Step 8: Conservation laws fail at singular surfaces\n  have h_singular : \u2200 x \u2208 DM.S, \u00ac(\u2203 (conservation_law : DM.M \u2192 \u211d), \n    \u2200 t, conservation_law (DM.\u03a6 (x, t)) = conservation_law x) := by\n    sorry -- Definition of singular set behavior\n  \n  -- Step 9: Magnetic reconnection at current sheets\n  sorry -- Missing: Sweet-Parker reconnection theory\n  \n  -- Step 10: Conclude preservation outside singular set\n  intro x hx t ht\n  exact h_invariant x hx t ht",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "For quantum field theory, the relevant topological invariants are homotopy classes \u03c0_n(G/H) where G is the gauge group and H is the unbroken subgroup",
+      "justification": "Definition of topological sectors in spontaneously broken gauge theories",
+      "dependencies": [
+        "'t Hooft-Polyakov monopole construction"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "For plasma physics, the relevant topological invariant is the magnetic helicity H = \u222b_V A\u00b7B dV where A is the vector potential",
+      "justification": "Standard definition of magnetic helicity as a measure of field line linkage",
+      "dependencies": [
+        "Woltjer's theorem on helicity"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "In regions where equations E are non-singular, the flow \u03a6_t preserves the differential structure",
+      "justification": "Smooth dynamical systems preserve smooth structures along their flow",
+      "dependencies": [
+        "Standard theorem on flows of vector fields"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "For ideal MHD, \u2202B/\u2202t = \u2207\u00d7(v\u00d7B) implies d/dt \u222b_S B\u00b7dS = 0 for any surface S moving with the fluid",
+      "justification": "Direct calculation using ideal MHD equations and Reynolds transport theorem",
+      "dependencies": [
+        "Alfv\u00e9n's theorem"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The conservation of flux through moving surfaces implies conservation of field line topology",
+      "justification": "[Gap: The precise connection between flux conservation and topological invariance requires a rigorous treatment of field line mappings]",
+      "dependencies": [
+        "Step 4"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "For gauge theories, the action functional S[A] is invariant under smooth gauge transformations that preserve topology",
+      "justification": "Gauge invariance of Yang-Mills action",
+      "dependencies": [
+        "Standard gauge theory"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Finite action solutions connecting topologically distinct vacua must pass through configurations where |F|\u00b2 diverges",
+      "justification": "[Gap: This requires proving that smooth finite-energy deformations cannot change topological charge]",
+      "dependencies": [
+        "Instanton calculus",
+        "Step 6"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "At singular surfaces S where equations break down, the conservation laws no longer apply",
+      "justification": "By definition, the evolution equations E are ill-defined on S",
+      "dependencies": [
+        "Assumption about singular set S"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "Magnetic reconnection occurs at current sheets where j = \u2207\u00d7B/\u03bc\u2080 diverges, violating ideal MHD",
+      "justification": "Sweet-Parker analysis shows reconnection requires singular current density",
+      "dependencies": [
+        "Sweet-Parker reconnection theory",
+        "Step 8"
+      ]
+    },
+    {
+      "step_number": 10,
+      "statement": "Therefore, T(\u03a6_t(x)) = T(x) for all x \u2208 M \\ S and all t where \u03a6_t(x) \u2208 M \\ S",
+      "justification": "[Gap: The general categorical proof that topology is preserved by non-singular evolution requires formalization]",
+      "dependencies": [
+        "Steps 3-9"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "'t Hooft-Polyakov Monopole",
+      "authors": "'t Hooft, G.; Polyakov, A.M.",
+      "year": "1974",
+      "field": "Quantum Field Theory",
+      "statement": "Topological solitons arise from non-trivial homotopy \u03c0\u2082(G/H) in spontaneously broken gauge theories",
+      "usage": "Establishes topological sectors in gauge theories"
+    },
+    {
+      "name": "Alfv\u00e9n's Theorem",
+      "authors": "Alfv\u00e9n, H.",
+      "year": "1942",
+      "field": "Plasma Physics",
+      "statement": "In perfectly conducting fluids, magnetic field lines move with the fluid",
+      "usage": "Proves flux conservation in ideal MHD"
+    },
+    {
+      "name": "Woltjer's Theorem",
+      "authors": "Woltjer, L.",
+      "year": "1958",
+      "field": "Plasma Physics",
+      "statement": "Magnetic helicity is conserved in ideal MHD",
+      "usage": "Establishes helicity as topological invariant"
+    },
+    {
+      "name": "Sweet-Parker Reconnection",
+      "authors": "Sweet, P.A.; Parker, E.N.",
+      "year": "1956-1957",
+      "field": "Plasma Physics",
+      "statement": "Magnetic reconnection occurs in thin current sheets where resistivity becomes important",
+      "usage": "Shows topology change requires singular surfaces"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The configuration space M is a smooth manifold",
+    "The evolution equations E are well-defined and smooth on M \\ S",
+    "The singular set S has measure zero in M",
+    "The topological invariants T are well-defined functionals on the configuration space",
+    "The flow \u03a6 exists and is unique for initial conditions in M \\ S",
+    "The specific form of topological invariants depends on the physical system (homotopy classes for gauge fields, linking numbers for magnetic fields)",
+    "The equations E satisfy appropriate energy bounds ensuring finite-time existence of solutions",
+    "The topology of the configuration is encoded in differential forms or bundle structures on M"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Definition of topological invariants T",
+        "issue": "The proof never defines what T actually is. It mentions examples (homotopy classes, magnetic helicity) but never establishes a general definition or framework for what constitutes a 'topological invariant' in this context",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Provide a precise mathematical definition of T as a functional on configuration space with specific continuity/invariance properties"
+      },
+      {
+        "step": "Flow preservation claim",
+        "issue": "The proof claims 'the flow \u03a6_t preserves the differential structure by the fundamental theorem of smooth dynamical systems' but this says nothing about topological invariants. Preserving differential structure does not imply preserving topology",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "This requires a completely different argument connecting smooth flows to topological preservation"
+      },
+      {
+        "step": "Connection between flux conservation and topology",
+        "issue": "The proof admits in a note that 'the precise connection between flux conservation and topological invariance requires a rigorous treatment' but then proceeds as if this connection were established",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Either provide the rigorous treatment or restrict the theorem to cases where this connection is established"
+      },
+      {
+        "step": "Gauge theory argument",
+        "issue": "The proof jumps from Yang-Mills invariance under gauge transformations to claiming topological charge is conserved, without establishing that the dynamical flow preserves topological charge",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Need to prove that time evolution in Yang-Mills theory cannot change topological sectors"
+      },
+      {
+        "step": "Final conclusion",
+        "issue": "The proof concludes T(\u03a6_t(x)) = T(x) without ever establishing this equality. It only shows conservation of specific quantities in specific theories, not general topological invariance",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "The entire proof structure needs revision to actually demonstrate the claimed equality"
+      }
+    ],
+    "hidden_assumptions": [
+      "That topological invariants can be defined as functionals on configuration space",
+      "That the examples given (homotopy classes, magnetic helicity) exhaust all relevant topological invariants",
+      "That conservation of magnetic helicity implies conservation of all topological invariants in plasma physics",
+      "That the flow \u03a6_t(x) remains in M\\S for all t if x \u2208 M\\S",
+      "That topological invariants are continuous functionals with respect to the flow",
+      "That the singular set S is invariant under the flow"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes topological invariants are preserved by non-singular evolution (in the note about categorical proof), which is exactly what it's trying to prove",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof shows conservation of specific quantities (magnetic helicity in MHD, possibly topological charge in gauge theory) but claims to prove conservation of all topological invariants T for general dynamical systems on manifolds",
+    "citation_issues": [
+      "Alfv\u00e9n's theorem is about frozen-in field lines, not topological invariance",
+      "Woltjer's theorem specifically concerns magnetic helicity, not general topological invariants",
+      "The 'fundamental theorem of smooth dynamical systems' is not a standard theorem name and its content is unclear",
+      "Sweet-Parker analysis describes reconnection rates, not the breakdown of topological conservation"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed, attempting to prove a general statement about undefined topological invariants by examining specific examples without establishing the connection. The proof admits in multiple notes that key steps are missing, yet proceeds to the conclusion anyway. The argument structure is: 'In these specific cases, these specific quantities are conserved, therefore all topological invariants are conserved in all cases.'",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to show topological invariant preservation in specific physical systems (QFT and MHD) but fails to establish the general mathematical proposition about arbitrary dynamical systems on manifolds",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The topological invariants T are continuous functionals under the topology induced by the metric g",
+      "The flow \u03a6_t is a diffeomorphism for each t",
+      "The specific physical systems (QFT, MHD) are representative of all possible dynamical systems E",
+      "The singular set S is invariant under the flow",
+      "The topological invariants are preserved under diffeomorphisms",
+      "The configuration space has the structure required for the specific topological invariants mentioned"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "1",
+        "issue": "Assumes the dynamical system is quantum field theory without justification - the proposition is about arbitrary dynamical systems"
+      },
+      {
+        "step": "2",
+        "issue": "Assumes the dynamical system is plasma physics without justification - again restricts to specific case"
+      },
+      {
+        "step": "5",
+        "issue": "Explicitly acknowledges a gap in connecting flux conservation to topological invariance"
+      },
+      {
+        "step": "7",
+        "issue": "Explicitly acknowledges a gap in proving the connection between finite energy and topological charge"
+      },
+      {
+        "step": "10",
+        "issue": "Explicitly acknowledges a gap in the general categorical proof and doesn't actually establish the conclusion"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No general definition of what topological invariants T actually are for arbitrary dynamical systems",
+      "No proof that the flow preserves whatever topological structure is being considered",
+      "Multiple acknowledged gaps in critical steps",
+      "Proof only considers two specific physical systems rather than general case",
+      "No treatment of what happens when \u03a6_t(x) enters the singular set S",
+      "No proof that topological invariants are well-defined along flow lines"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims topological invariants are preserved under flow \u03a6_t, but existing proof [043c25bfbbd8] establishes that analytic functions encode structural information through zeros and poles, which can change under dynamical evolution",
+      "The claim that T(\u03a6_t(x)) = T(x) for all t contradicts proof [03445cd603f4] which shows irreversibility emerges from fundamental dynamics through causal disconnection - topological changes should be possible through irreversible processes",
+      "The assertion that magnetic helicity H = \u222b_V A\u00b7B dV is conserved contradicts proof [087da119976b] on symmetry breaking, as magnetic reconnection events necessarily involve topological changes in field line connectivity"
+    ],
+    "assumption_conflicts": [
+      "Assumes smooth manifold structure is preserved under flow, but proof [0e664bd264b4] shows hierarchical structure formation involves scale-dependent instabilities that can break smoothness assumptions",
+      "Assumes singular set S has measure zero, conflicting with proof [1050c80b4013] on phase transitions where singularities can have finite measure during critical phenomena",
+      "The assumption that topological invariants are 'well-defined functionals' conflicts with proof [06879fd9ae87] showing physical properties are fundamentally contextual and measurement-dependent"
+    ],
+    "beneficial_connections": [
+      "Connects to proof [08b6405556dd] on symmetry principles by showing how gauge symmetries preserve topological structure",
+      "Extends proof [052632f8abba] on multi-scale dynamics by providing topological constraints on microscopic-macroscopic transitions",
+      "Relates to proof [0a36ee9b1a6b] on nonlinear localized excitations by showing topological protection mechanisms"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof makes overly strong claims about topological conservation that ignore well-established mechanisms for topological change in dynamical systems. The treatment of singular sets is mathematically naive and the physical examples contain factual errors about magnetic reconnection and gauge theory."
+  },
+  "confidence_score": 0.255,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.29999999999999993
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.29999999999999993
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous categorical framework connecting: (1) homotopy theory of configuration spaces to conservation laws, (2) singular limits of PDEs to topological transitions, (3) unified treatment of topological invariants across different physical theories",
+  "limitations": [
+    "The precise mathematical connection between flux conservation and topological invariance needs formalization",
+    "The proof that smooth finite-energy deformations preserve topology requires detailed analysis",
+    "The general categorical framework unifying topological conservation across different physical systems is not established",
+    "The characterization of singular sets where topology can change needs rigorous treatment",
+    "The proof sketch rather than complete proof due to missing mathematical framework",
+    "Different physical systems require different topological invariants",
+    "The singular set S may have complex structure not captured here",
+    "Quantum effects and fluctuations are not addressed"
+  ],
+  "source_convergence": {
+    "structural_claim": "Topological constraints fundamentally determine the allowed configurations and evolution of physical systems, with topology being conserved except at singular surfaces where the governing equations break down",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "'t Hooft-Polyakov Monopole",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Field Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Topological soliton solutions arise necessarily from the topology of the vacuum manifold in spontaneously broken gauge theories"
+      },
+      {
+        "result_id": "",
+        "result_name": "Instantons",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Field Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Topologically distinct vacuum configurations are connected by finite-action paths that determine non-perturbative physics"
+      },
+      {
+        "result_id": "",
+        "result_name": "Alfv\u00e9n's Theorem (Frozen-in Field Lines)",
+        "domain_id": "field_b",
+        "domain_name": "Plasma Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Magnetic field line topology is conserved in ideal plasmas, with the field frozen into the fluid motion"
+      },
+      {
+        "result_id": "",
+        "result_name": "Magnetic Helicity Conservation",
+        "domain_id": "field_b",
+        "domain_name": "Plasma Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Topological linkage of magnetic field lines is conserved in ideal MHD, constraining plasma evolution to preserve helicity"
+      },
+      {
+        "result_id": "",
+        "result_name": "Sweet-Parker Reconnection",
+        "domain_id": "field_b",
+        "domain_name": "Plasma Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Topology change requires breaking ideal constraints at singular current sheets where the governing equations fail"
+      }
+    ],
+    "domains": [
+      "quantum_field_theory",
+      "plasma_physics"
+    ],
+    "domain_names": [
+      "Quantum Field Theory",
+      "Plasma Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.595,
+      "independence": 0.75,
+      "adversarial": 0.12,
+      "reproducibility": 0.7,
+      "depth_consistency": 1.0,
+      "confidence": 0.595,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:36:46.024291+00:00",
+    "id": "ce7f2a656c80"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.29708999999999997
+  }
+}
