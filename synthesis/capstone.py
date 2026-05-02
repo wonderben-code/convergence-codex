@@ -790,6 +790,40 @@ class CapstoneComposer:
             "coined_term": claim.get("coined_term", ""),
         }
 
+        # Generation log — audit trail of how this paper was built
+        paper.generation_log = [
+            {
+                "stage": "claim_formulation",
+                "source_finding_id": claim.get("source_finding_id", ""),
+                "claim_text": claim_text,
+                "claim_too_broad": claim.get("claim_too_broad", ""),
+                "claim_too_narrow": claim.get("claim_too_narrow", ""),
+                "mathematical_sketch": claim.get("mathematical_sketch", "")[:500],
+                "falsification_criterion": claim.get("falsification_criterion", ""),
+                "predictions": claim.get("predictions", []),
+                "mean_confidence": claim.get("mean_confidence", 0),
+                "independence_score": claim.get("independence_score", 0),
+            },
+            {
+                "stage": "evidence_assembly",
+                "convergence_ids": [c.get("id", "") for c in supporting_convs],
+                "proof_ids": [p.get("id", "") for p in supporting_proofs],
+                "num_convergences_shown_to_ai": min(len(supporting_convs), 30),
+                "num_proofs_shown_to_ai": min(len(supporting_proofs), 30),
+                "num_convergences_in_appendix": len(supporting_convs),
+                "scope_guard_active": bool(scope_guard),
+            },
+            {
+                "stage": "composition",
+                "sections_composed": [s.get("section", "") for s in sections],
+                "ai_sections": [s.get("section", "") for s in sections
+                                if s.get("section", "") not in ("appendix_a", "appendix_b")],
+                "deterministic_sections": ["appendix_a", "appendix_b"],
+                "total_word_count": sum(s.get("word_count", 0) for s in sections),
+                "paper_hash": paper_hash,
+            },
+        ]
+
         return paper
 
     # ─── STAGE 5: ADVERSARIAL REVIEW (enhanced for capstone) ───
