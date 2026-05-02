@@ -1,0 +1,15 @@
+{
+  "proof_id": "c7226c0360ba",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous framework for: (1) Quantum field theory on dynamical horizons that properly accounts for backreaction, (2) Mathematical proof of holographic dimension counting for generic horizons/confinement, (3) Rigorous treatment of information flow across causal boundaries in quantum systems",
+    "Difficulty assessed as challenging",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "proof_id": "f26bac7c24f8",
+  "timestamp": "2026-05-02T13:55:58.772916+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "isomorphism",
+      "alternatives_considered": [
+        "equivalence - rejected because the mathematical framework is not merely similar but identical: both use Bloch's theorem, both yield dispersion relations with gaps, and the mapping between photonic and atomic cases preserves all structural features"
+      ],
+      "reasoning": "Both domains describe wave propagation in periodic media where interference creates forbidden frequency bands - the mathematical structure is identical. The wave equation in periodic potentials yields the same band structure mathematics whether for electromagnetic waves in dielectric lattices or matter waves in optical potentials."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Functional analysis, Algebraic structures, Topology",
+      "alternatives_considered": [],
+      "reasoning": "Functional analysis provides spectral theory for operators on function spaces, which directly captures how periodic structures create eigenvalue gaps. Algebraic structures (particularly group theory) handle the periodicity via translation operators, while topology ensures proper treatment of continuity and compactness needed for spectral gaps."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof exploits translation symmetry to decompose the problem via Bloch's theorem, reducing it to a family of bounded-domain problems parametrized by quasi-momentum k. Each fixed-k problem has discrete spectrum forming continuous bands as k varies, with gaps arising between bands under suitable conditions on the periodic potential.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 8 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3119 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 4057 chars, 11 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This formalization captures the mathematical structure but requires substantial development of quantum mechanical operator theory, Bloch-Floquet theory, and spectral analysis of periodic differential operators. The proof structure follows the given steps but many fundamental concepts from mathematical physics are not yet available in Mathlib."
+    }
+  ]
+}

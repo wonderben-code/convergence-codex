@@ -1,0 +1,356 @@
+{
+  "id": "4fc61609e96e",
+  "convergence_id": "b748590b8b40",
+  "timestamp": "2026-05-02T13:59:12.264803+00:00",
+  "proposition": "Let (M, g, \u2207) be a Riemannian manifold with metric g and connection \u2207. For a field \u03c6: M \u00d7 \u211d \u2192 V (where V is a Banach space), there exist nonlinear evolution equations F[\u03c6, \u2202\u03c6/\u2202t, \u2207\u03c6, \u2207\u00b2\u03c6, ...] = 0 admitting solutions \u03c6(x,t) that are: (i) spatially localized: ||\u03c6(\u00b7,t)||_{L^\u221e(M\\B_R(x_0))} < \u03b5 for some R > 0, \u03b5 > 0, x_0 \u2208 M; (ii) temporally stable: ||\u03c6(\u00b7,t) - \u03c4_{v(t)}\u03c6(\u00b7,0)||_X < \u03b4 for all t \u2208 \u211d, where \u03c4_v denotes translation by v(t) and X is an appropriate norm; (iii) the stability arises from exact cancellation between at least two competing effects in F.",
+  "proposition_natural": "Nonlinearity enables stable, localized, particle-like excitations in continuous media that preserve their structure through exact balance of competing effects",
+  "formalisation_type": "constraint_logic",
+  "mathematical_apparatus": [
+    "Functional analysis",
+    "Dynamical systems",
+    "Differential geometry"
+  ],
+  "apparatus_justification": "Functional analysis provides the framework for studying nonlinear operators and their fixed points in infinite-dimensional spaces, which is essential for analyzing soliton solutions. Dynamical systems theory captures the stability and evolution aspects, while differential geometry handles the manifold structure of the solution space and the geometric nature of balance conditions.",
+  "proof_natural": "**Proposition.** Let $(M, g, \\nabla)$ be a Riemannian manifold with metric $g$ and connection $\\nabla$. For a field $\\phi: M \\times \\mathbb{R} \\to V$ where $V$ is a Banach space, there exist nonlinear evolution equations $F[\\phi, \\partial\\phi/\\partial t, \\nabla\\phi, \\nabla^2\\phi, \\ldots] = 0$ admitting solutions $\\phi(x,t)$ that are spatially localized, temporally stable, and whose stability arises from exact cancellation between competing effects in $F$.\n\n**Proof.** We assume that $M$ is a complete Riemannian manifold with bounded geometry, $V$ is a reflexive Banach space with continuous embeddings $V \\hookrightarrow L^p_{\\text{loc}}(M)$ for appropriate $p$, and the nonlinear operator $F$ is at least $C^2$ in its arguments with variational formulation given by energy functional $E[\\phi]$. Further, we assume the linearization of $F$ around the trivial solution has continuous spectrum extending to zero, there exists a symmetry group $G$ acting on solutions, and the competing effects in $F$ can be identified with distinct differential operators of different orders.\n\nWe begin by establishing that the linearization $L = DF[0]$ around $\\phi = 0$ has continuous spectrum $\\sigma(L)$ with $\\inf \\sigma(L) = 0$. This follows from our assumption on the linearization combined with the spectral theory of differential operators on complete manifolds.\n\nThe variational formulation yields an energy functional of the form\n$$E[\\phi] = \\int_M \\left[\\frac{1}{2}\\langle L_1\\phi, \\phi\\rangle + \\frac{1}{2}\\langle L_2\\phi, \\phi\\rangle + N[\\phi]\\right] d\\mu_g$$\nwhere $L_1, L_2$ are the competing linear operators and $N[\\phi]$ represents the nonlinear contributions. The interplay between these terms creates an effective potential well in the energy landscape.\n\nBy constrained variational calculus, we seek critical points of $E[\\phi]$ subject to conserved quantities $Q[\\phi] = c$. The Euler-Lagrange condition $\\delta E[\\phi] = \\lambda \\delta Q[\\phi]$ for some Lagrange multiplier $\\lambda$ guarantees the existence of nontrivial critical points $\\phi_c \\neq 0$, provided the Mountain Pass Theorem's geometric conditions are satisfied.\n\n[Note: The spatial localization of these critical points requires decay estimates that depend on the specific form of $F$. While physically expected, rigorous proof of exponential or algebraic decay requires additional technical assumptions.]\n\nBy Noether's theorem, the symmetry group $G$ generates null directions in the Hessian $D^2E[\\phi_c]$. Specifically, the Hessian has exactly $\\dim(G)$ zero eigenvalues corresponding to symmetry directions, with all other eigenvalues positive by the minimality properties of $\\phi_c$ within its symmetry class.\n\nOrbital stability follows from Lyapunov stability theory. Using $E[\\phi] - E[\\phi_c]$ as a Lyapunov function (modulo symmetry directions), we apply the orbital stability theory for Hamiltonian systems. Solutions starting near the orbit $\\text{Orb}(\\phi_c) = \\{g\\phi_c : g \\in G\\}$ remain close to the orbit provided the stability criterion $\\frac{d^2}{dc^2}[E(\\phi_c) + \\lambda(c)Q(\\phi_c)] > 0$ holds.\n\n[Note: The exact cancellation between competing effects requires showing $\\langle L_1\\phi_c, \\psi\\rangle + \\langle L_2\\phi_c, \\psi\\rangle + \\langle DN[\\phi_c], \\psi\\rangle = 0$ for all test functions $\\psi$, with individual terms non-zero. This delicate balance is equation-specific and cannot be established in full generality.]\n\nFinally, if the equation admits Galilean or Lorentz boost symmetry, static solutions $\\phi_c(x)$ generate traveling wave solutions $\\phi_c(x - vt)$ for appropriate velocity $v$. The temporal stability established for the static solution transfers to the traveling wave through the symmetry group action.\n\nThis completes the proof of existence of spatially localized, temporally stable solutions arising from competing effects, subject to the noted technical gaps that require case-specific analysis. \u25a1",
+  "proof_lean": "import Mathlib.Geometry.RiemannianGeometry.Basic\nimport Mathlib.Analysis.NormedSpace.Banach\nimport Mathlib.Analysis.SpecialFunctions.Integrals\nimport Mathlib.Analysis.Calculus.FDeriv\nimport Mathlib.MeasureTheory.Integral.Bochner\nimport Mathlib.Topology.MetricSpace.Basic\n\n/-- Nonlinear evolution equations on Riemannian manifolds admitting stable localized solutions -/\ntheorem stable_localized_solutions_on_manifolds\n  {M : Type*} [SmoothManifoldWithCorners \ud835\udcd8(\u211d, M) M] [RiemannianManifold \ud835\udcd8(\u211d, M) M]\n  {V : Type*} [NormedAddCommGroup V] [NormedSpace \u211d V] [CompleteSpace V]\n  (\u03c6 : M \u00d7 \u211d \u2192 V)\n  (F : (M \u00d7 \u211d \u2192 V) \u2192 (M \u00d7 \u211d \u2192 V))\n  (h_evolution : F \u03c6 = 0)\n  (L : (M \u2192 V) \u2192L[\u211d] (M \u2192 V)) -- linearization around \u03c6 = 0\n  (h_spectrum : \u2203 (\u03c3 : Set \u211d), IsContinuous (fun \u03bb => (L - \u03bb \u2022 (1 : (M \u2192 V) \u2192L[\u211d] (M \u2192 V)))\u207b\u00b9) \u2227 sInf \u03c3 = 0) :\n  \u2203 (x\u2080 : M) (R \u03b5 \u03b4 : \u211d) (hR : R > 0) (h\u03b5 : \u03b5 > 0) (h\u03b4 : \u03b4 > 0)\n    (v : \u211d \u2192 M) (X : Type*) [NormedAddCommGroup X] [NormedSpace \u211d X],\n    (\u2200 t : \u211d, \u2016fun x => \u03c6 (x, t)\u2016_[\u221e, {x : M | dist x x\u2080 > R}] < \u03b5) \u2227\n    (\u2200 t : \u211d, \u2203 (\u03c4_v : (M \u2192 V) \u2192 (M \u2192 V)), \u2016(fun x => \u03c6 (x, t)) - \u03c4_v (fun x => \u03c6 (x, 0))\u2016_[X] < \u03b4) \u2227\n    (\u2203 (effect\u2081 effect\u2082 : (M \u00d7 \u211d \u2192 V) \u2192 \u211d), effect\u2081 \u03c6 + effect\u2082 \u03c6 = 0 \u2227 effect\u2081 \u03c6 \u2260 0 \u2227 effect\u2082 \u03c6 \u2260 0) := by\n  -- Step 1: Establish continuous spectrum with inf = 0\n  obtain \u27e8\u03c3, h_cont, h_inf\u27e9 := h_spectrum\n  \n  -- Step 2: Energy functional with competing effects\n  -- Define energy functional (requires variational formulation)\n  sorry -- Mountain Pass Theorem and variational formulation not in Mathlib\n  \n  -- Step 3: Critical points via constrained variational calculus\n  -- Need Lagrange multiplier theory for infinite-dimensional spaces\n  sorry -- Constrained critical point theory on manifolds not in Mathlib\n  \n  -- Step 4: Spatial localization of critical points\n  -- Requires decay estimates specific to the form of F\n  sorry -- Spatial localization theory for fields on manifolds not in Mathlib\n  \n  -- Step 5: Hessian analysis and symmetry null directions\n  -- Need Noether's theorem for field theories\n  sorry -- Noether's theorem and Hessian analysis for field theories not in Mathlib\n  \n  -- Step 6: Orbital stability via Lyapunov theory\n  -- Requires orbital stability theory for Hamiltonian systems\n  sorry -- Orbital stability theory not in Mathlib\n  \n  -- Step 7: Exact cancellation between competing effects\n  -- Need to show individual terms are non-zero but sum to zero\n  sorry -- Exact cancellation mechanisms in PDEs not formalized\n  \n  -- Step 8: Traveling wave solutions from symmetry\n  -- Galilean/Lorentz boost symmetry generates traveling solutions\n  sorry -- Symmetry-generated traveling wave solutions not in Mathlib",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Establish that the linearization L = DF[0] around \u03c6 = 0 has continuous spectrum \u03c3(L) with inf \u03c3(L) = 0",
+      "justification": "By assumption on the linearization and spectral theory of differential operators on complete manifolds",
+      "dependencies": [
+        "Assumption 5",
+        "Reed-Simon Vol. IV Theorem XIII.16"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Show that the nonlinearity creates an effective potential well in the energy landscape E[\u03c6]",
+      "justification": "The variational formulation gives E[\u03c6] = \u222b_M [\u00bd\u27e8L\u2081\u03c6, \u03c6\u27e9 + \u00bd\u27e8L\u2082\u03c6, \u03c6\u27e9 + N[\u03c6]] d\u03bc_g where L\u2081, L\u2082 are the competing linear operators and N[\u03c6] is the nonlinear part",
+      "dependencies": [
+        "Assumption 4",
+        "Assumption 7"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Prove existence of critical points \u03c6_c \u2260 0 of E[\u03c6] subject to conserved quantities Q[\u03c6] = c",
+      "justification": "Apply constrained variational calculus: \u03b4E[\u03c6] = \u03bb\u03b4Q[\u03c6] for Lagrange multiplier \u03bb",
+      "dependencies": [
+        "Step 2",
+        "Mountain Pass Theorem (Ambrosetti-Rabinowitz)"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "[Gap: Rigorously establish that critical points are spatially localized]",
+      "justification": "Standard techniques require decay estimates that depend on specific form of F",
+      "dependencies": [
+        "Step 3"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Show that the Hessian D\u00b2E[\u03c6_c] has exactly dim(G) zero eigenvalues corresponding to symmetry directions",
+      "justification": "Noether's theorem implies symmetries generate null directions; all other directions have positive eigenvalues by construction",
+      "dependencies": [
+        "Step 3",
+        "Assumption 6",
+        "Noether's Theorem"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Establish orbital stability: solutions starting near Orb(\u03c6_c) = {g\u03c6_c : g \u2208 G} remain close to the orbit",
+      "justification": "Apply Lyapunov stability theory using E[\u03c6] - E[\u03c6_c] as Lyapunov function, modulo symmetry directions",
+      "dependencies": [
+        "Step 5",
+        "Grillakis-Shatah-Strauss stability theory"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "[Gap: Prove exact cancellation between competing effects]",
+      "justification": "Requires showing \u27e8L\u2081\u03c6_c, \u03c8\u27e9 + \u27e8L\u2082\u03c6_c, \u03c8\u27e9 + \u27e8DN[\u03c6_c], \u03c8\u27e9 = 0 for all test functions \u03c8, with individual terms non-zero",
+      "dependencies": [
+        "Step 3",
+        "Assumption 7"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Conclude that \u03c6_c(x - vt) solves the evolution equation for appropriate velocity v",
+      "justification": "Galilean/Lorentz boost symmetry of the equation allows static solutions to generate traveling solutions",
+      "dependencies": [
+        "Steps 3, 6",
+        "Assumption 6"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Mountain Pass Theorem",
+      "authors": "Ambrosetti, A. and Rabinowitz, P.H.",
+      "year": "1973",
+      "field": "Variational Analysis",
+      "statement": "If E \u2208 C\u00b9(X,\u211d) satisfies Palais-Smale condition and geometric conditions, then E has a critical point",
+      "usage": "Guarantees existence of non-trivial critical points in Step 3"
+    },
+    {
+      "name": "Orbital Stability Theory for Hamiltonian Systems",
+      "authors": "Grillakis, M., Shatah, J., and Strauss, W.",
+      "year": "1987",
+      "field": "Dynamical Systems",
+      "statement": "Solitary waves are orbitally stable if d\u00b2/dc\u00b2[E(\u03c6_c) + \u03bb(c)Q(\u03c6_c)] > 0",
+      "usage": "Provides framework for proving stability in Step 6"
+    },
+    {
+      "name": "Spectral Theory of Self-Adjoint Operators",
+      "authors": "Reed, M. and Simon, B.",
+      "year": "1978",
+      "field": "Mathematical Physics",
+      "statement": "Complete classification of spectrum for self-adjoint operators on Hilbert spaces",
+      "usage": "Justifies spectral properties in Step 1"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "M is a complete Riemannian manifold with bounded geometry",
+    "V is a reflexive Banach space with continuous embeddings V \u21aa L^p_{loc}(M) for appropriate p",
+    "The nonlinear operator F is at least C\u00b2 in its arguments",
+    "F admits a variational formulation with energy functional E[\u03c6]",
+    "The linearization of F around the trivial solution \u03c6 = 0 has continuous spectrum extending to zero",
+    "There exists a symmetry group G acting on solutions preserving the equation F[\u03c6] = 0",
+    "The competing effects in F can be identified with distinct differential operators of different orders",
+    "Solutions exist globally in time in appropriate function spaces"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Establishing continuous spectrum with inf \u03c3(L) = 0",
+        "issue": "The proof claims this 'follows from our assumption' but provides no actual argument. The spectral properties of differential operators on complete manifolds are highly non-trivial and depend crucially on the specific form of L, the geometry of M, and boundary conditions at infinity.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would require explicit construction of L and detailed spectral analysis"
+      },
+      {
+        "step": "Energy functional form E[\u03c6]",
+        "issue": "The decomposition into L\u2081, L\u2082 as 'competing linear operators' is completely unjustified. Why should F admit such a decomposition? What ensures L\u2081 and L\u2082 are even well-defined operators on the same domain?",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed without specifying the actual equation F"
+      },
+      {
+        "step": "Application of Mountain Pass Theorem",
+        "issue": "No verification of Palais-Smale condition, no verification of geometric conditions (E(0)=0, existence of e with E(e)<0, inf over paths > 0). These are non-trivial conditions that often fail.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Requires explicit verification for specific F"
+      },
+      {
+        "step": "Existence of conserved quantities Q[\u03c6]",
+        "issue": "The proof assumes conserved quantities exist without justification. Not all evolution equations have conserved quantities.",
+        "severity": "major",
+        "fixable": false,
+        "suggested_fix": "Must derive from symmetries via Noether's theorem"
+      },
+      {
+        "step": "Spatial localization claim",
+        "issue": "The proof admits in a note that this 'requires decay estimates that depend on the specific form of F' but then claims to have proven localization. This is a complete logical gap.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot prove localization without specific F"
+      },
+      {
+        "step": "Hessian analysis at critical points",
+        "issue": "Claims all non-symmetry eigenvalues are positive 'by minimality properties' but \u03c6_c was found via Mountain Pass, which gives saddle points, not minima.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Mountain Pass critical points are generically unstable"
+      },
+      {
+        "step": "Orbital stability via Lyapunov function",
+        "issue": "Using E[\u03c6] - E[\u03c6_c] as Lyapunov function requires showing it decreases along trajectories, which isn't established. Also assumes solutions exist globally in time.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Must verify energy conservation and global existence"
+      },
+      {
+        "step": "Stability criterion d\u00b2/dc\u00b2[E(\u03c6_c) + \u03bb(c)Q(\u03c6_c)] > 0",
+        "issue": "This criterion is stated without proof or justification. The connection to actual dynamical stability is not established.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Cite Grillakis-Shatah-Strauss theory properly with all conditions"
+      }
+    ],
+    "hidden_assumptions": [
+      "Solutions to F[\u03c6] = 0 exist globally in time",
+      "The variational formulation E[\u03c6] exists and is coercive",
+      "Critical points of E correspond to solutions of F = 0",
+      "The symmetry group G is finite-dimensional",
+      "The manifold M has no boundary",
+      "The Banach space V has sufficient regularity for all operations",
+      "Boost symmetry exists and preserves the equation"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes the existence of solutions with the desired properties (via variational methods) to prove the existence of solutions with those properties. The Mountain Pass construction assumes the energy landscape has the right geometry, which would follow from having the solutions we're trying to prove exist.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to establish existence for arbitrary nonlinear evolution equations F on arbitrary complete Riemannian manifolds, but the argument (even if correct) would only apply to very special variational equations with symmetries, conserved quantities, and the right spectral properties. The actual scope is perhaps 0.01% of what's claimed.",
+    "citation_issues": [
+      "Mountain Pass Theorem requires Palais-Smale condition which is never verified",
+      "Orbital stability theory citation is too vague - different theories apply to different contexts",
+      "Spectral theory citation doesn't justify the specific claim about continuous spectrum extending to zero"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed, attempting to prove an impossibly general result by assuming most of what needs to be proven. The argument is circular, contains numerous critical gaps, and would prove false statements if applied consistently. It reads more like a wishful outline than a rigorous proof.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to establish existence of static critical points of an energy functional, but fails to prove they satisfy the original evolution equation F[\u03c6, \u2202\u03c6/\u2202t, \u2207\u03c6, \u2207\u00b2\u03c6, ...] = 0 or that they have the required temporal stability properties",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "F must be derivable from a variational principle (not stated but required for energy functional approach)",
+      "The symmetry group G must act transitively to generate traveling solutions",
+      "The manifold M must admit Galilean/Lorentz boost symmetries (required for Step 8)",
+      "Specific functional analytic properties of the spaces involved for constrained variational problems",
+      "Regularity assumptions ensuring critical points are classical solutions",
+      "Assumptions on the relationship between static and time-dependent solutions"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 1",
+        "issue": "inf \u03c3(L) = 0 does not follow from 'assumption on linearization' - this is a very specific spectral property that requires proof"
+      },
+      {
+        "step": "Step 3",
+        "issue": "Existence of critical points under constraints requires verification of constraint qualification, compactness, and coercivity conditions not established"
+      },
+      {
+        "step": "Step 5",
+        "issue": "Claims 'all other directions have positive eigenvalues by construction' but this is not established - could have negative eigenvalues"
+      },
+      {
+        "step": "Step 6",
+        "issue": "Lyapunov stability theory application is invalid when the Hessian has zero eigenvalues - requires more sophisticated analysis"
+      },
+      {
+        "step": "Step 8",
+        "issue": "Static solutions \u03c6_c do not automatically generate solutions to the evolution equation F[\u03c6, \u2202\u03c6/\u2202t, \u2207\u03c6, \u2207\u00b2\u03c6, ...] = 0 - this requires \u03c6_c to satisfy F[\u03c6_c, 0, \u2207\u03c6_c, \u2207\u00b2\u03c6_c, ...] = 0 which is not proven"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Step 4 gap: No proof of spatial localization",
+      "Step 7 gap: No proof of exact cancellation between competing effects",
+      "No connection established between static critical points and solutions of the evolution equation",
+      "No proof that temporal stability property (ii) holds",
+      "No verification that the constructed solutions actually satisfy the original PDE F[\u03c6, \u2202\u03c6/\u2202t, \u2207\u03c6, \u2207\u00b2\u03c6, ...] = 0"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims to establish spatially localized solutions but explicitly marks this as a gap in the proof structure",
+      "The proof claims exact cancellation between competing effects but also marks this as a gap, making the core claim unsubstantiated",
+      "The assumption that 'inf \u03c3(L) = 0' for the linearization contradicts standard spectral theory for elliptic operators on complete manifolds, which typically have spectral gaps",
+      "The claim of global existence in time conflicts with the general theory of nonlinear PDEs where blowup is common without additional structural constraints"
+    ],
+    "assumption_conflicts": [
+      "The assumption of continuous spectrum extending to zero conflicts with proof [129df8406d52] which assumes discrete spectrum for self-adjoint operators",
+      "The bounded geometry assumption may conflict with the complete manifold requirement when combined with localization claims",
+      "The variational formulation assumption conflicts with the claimed continuous spectrum, as variational problems typically yield discrete spectra"
+    ],
+    "beneficial_connections": [
+      "Connects to proof [0a36ee9b1a6b] on nonlinear localized excitations, sharing similar energy functional approaches",
+      "Relates to proof [08b6405556dd] on symmetry principles and conserved quantities through the symmetry group G",
+      "Shares orbital stability concepts with proof [087da119976b] on symmetry breaking and pattern formation"
+    ],
+    "consistency_score": 0.2,
+    "notes": "This proof contains fundamental gaps in its two most critical claims (spatial localization and exact cancellation) and makes contradictory assumptions about spectral properties. The mathematical framework is sound but the execution is severely incomplete."
+  },
+  "confidence_score": 0.24000000000000002,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.29999999999999993
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.29999999999999993
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A general theory connecting the algebraic structure of nonlinear terms to spatial localization properties of solutions. Current proofs are case-by-case using specific ans\u00e4tze (e.g., sech\u00b2 profiles for KdV). Also needed: rigorous framework for 'exact balance' between operators of different orders in infinite dimensions.",
+  "limitations": [
+    "Step 4: Spatial localization requires case-specific decay estimates",
+    "Step 7: Exact cancellation statement needs precise formulation depending on specific operators",
+    "Global existence assumption may fail for certain nonlinearities",
+    "Connection between variational critical points and dynamical solutions requires additional regularity",
+    "Proof assumes variational structure which not all soliton equations possess",
+    "Stability proven is only orbital (up to symmetry), not asymptotic",
+    "Framework doesn't capture all soliton phenomena (e.g., completely integrable cases)",
+    "Requires complete Riemannian manifold setting; some physical systems are on domains with boundaries"
+  ],
+  "source_convergence": {
+    "structural_claim": "Nonlinearity enables stable, localized, particle-like excitations in continuous media that preserve their structure through exact balance of competing effects",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Optical Solitons",
+        "domain_id": "field_a",
+        "domain_name": "Optics and Photonics",
+        "link_type": "direct",
+        "structural_conclusion": "Nonlinearity exactly balances dispersion to create shape-preserving light pulses that propagate as stable localized excitations"
+      },
+      {
+        "result_id": "",
+        "result_name": "Magnetic Helicity Conservation",
+        "domain_id": "field_b",
+        "domain_name": "Plasma Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Nonlinear plasma relaxation preserves topological constraints while reaching minimum energy states, creating stable localized magnetic structures"
+      }
+    ],
+    "domains": [
+      "optics",
+      "plasma_physics"
+    ],
+    "domain_names": [
+      "Optics and Photonics",
+      "Plasma Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.238,
+      "independence": 0.85,
+      "adversarial": 0.09,
+      "reproducibility": 0.42,
+      "depth_consistency": 1.0,
+      "confidence": 0.4649,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:42:30.204585+00:00",
+    "id": "b748590b8b40"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.32350500000000004
+  }
+}

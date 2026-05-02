@@ -1,0 +1,381 @@
+{
+  "id": "6ece88fe0148",
+  "convergence_id": "a994a9ae48e7",
+  "timestamp": "2026-05-02T13:55:08.953218+00:00",
+  "proposition": "For physical systems described by Hamiltonians H(p,q,\u03bb) where \u03bb represents a scale separation parameter, there exists a functor F: PhysSys \u2192 EffTheory from the category of physical systems to the category of effective theories, such that F preserves the hierarchical structure induced by energy scale ordering and commutes with the renormalization group flow.",
+  "proposition_natural": "Physical systems exhibit hierarchical organization where high-energy/short-distance physics can be systematically integrated out to yield effective low-energy descriptions",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Functional analysis",
+    "Order theory"
+  ],
+  "apparatus_justification": "Category theory captures the hierarchical structure through functors between categories of physical theories at different scales, with renormalization group flow as morphisms. Functional analysis provides the rigorous framework for operator algebras and spectral theory needed for quantum systems. Order theory formalizes the partial ordering of energy scales and the systematic integration procedure.",
+  "proof_natural": "**Proposition.** For physical systems described by Hamiltonians $H(p,q,\\lambda)$ where $\\lambda$ represents a scale separation parameter, there exists a functor $F: \\textbf{PhysSys} \\to \\textbf{EffTheory}$ from the category of physical systems to the category of effective theories, such that $F$ preserves the hierarchical structure induced by energy scale ordering and commutes with the renormalization group flow.\n\n**Proof.** We assume that physical systems admit Hamiltonian descriptions $H(p,q,\\lambda)$ in appropriate phase spaces, where the scale separation parameter satisfies $\\lambda \\ll 1$ (for instance, $m_e/M$ for electron-nuclear mass ratios). Let the energy eigenvalues be ordered as $E_0 < E_1 < \\cdots$ with gaps $\\Delta_i = E_{i+1} - E_i$. We further assume that Hilbert spaces are separable, operators are densely defined, physical observables form a C*-algebra with appropriate continuity properties, and renormalization group transformations form a semigroup under composition. We require that effective theories are well-defined in the sense of having finite correlation functions, and that path integral measures can be rigorously defined for the systems under consideration.\n\nWe begin by constructing the category $\\textbf{PhysSys}$ with objects as triples $(H, \\Lambda, \\mathcal{O})$ where $H$ is a Hamiltonian, $\\Lambda$ is an energy cutoff, and $\\mathcal{O}$ is the observable algebra. Morphisms in $\\textbf{PhysSys}$ are energy-scale preserving maps $\\varphi: (H_1, \\Lambda_1, \\mathcal{O}_1) \\to (H_2, \\Lambda_2, \\mathcal{O}_2)$ where $\\Lambda_1 \\geq \\Lambda_2$, respecting the partial order induced by energy scales.\n\nSimilarly, we define the category $\\textbf{EffTheory}$ with objects as effective Hamiltonians $H_{\\text{eff}}(\\Lambda)$ and morphisms as renormalization group flow maps. The functor $F$ is constructed by defining $F(H, \\Lambda, \\mathcal{O}) = H_{\\text{eff}}(\\Lambda)$, where $H_{\\text{eff}}$ is obtained by integrating out degrees of freedom with $E > \\Lambda$ following the Wilsonian effective action formalism.\n\n[Note: The rigorous definition of the path integral measure and the precise integration procedure remains a mathematical challenge beyond current frameworks.]\n\nTo verify that $F$ is indeed a functor, we must show it preserves composition and identity. For composable morphisms $\\varphi_1$ and $\\varphi_2$, we have $F(\\varphi_2 \\circ \\varphi_1) = F(\\varphi_2) \\circ F(\\varphi_1)$ by the semigroup property of renormalization group transformations established in the Wilson-Kogut recursion relations. The preservation of identity morphisms follows immediately: $F(\\text{id}_{(H,\\Lambda,\\mathcal{O})}) = \\text{id}_{F(H,\\Lambda,\\mathcal{O})}$, as the trivial RG transformation at fixed scale is the identity.\n\nAs a concrete application, the Born-Oppenheimer approximation emerges when $F$ is applied to molecular Hamiltonians with $\\lambda = m_e/M$. Here, electronic degrees of freedom have characteristic energies of order Rydberg, while nuclear vibrational energies are much smaller, justifying the scale separation. By the Born-Huang expansion theorem, molecular wavefunctions can be expanded in products of electronic and nuclear parts with error $O(m_e/M)$.\n\n[Note: The proof of uniform convergence of the Born-Oppenheimer expansion over nuclear configuration space requires careful analysis using singular perturbation theory and remains to be fully established.]\n\nFinally, we establish the commutativity with renormalization group flow. Let $\\text{RG}_{\\Lambda \\to \\Lambda'}$ denote the renormalization group transformation from scale $\\Lambda$ to $\\Lambda'$. By Polchinski's exact RG equations and the Wegner-Houghton flow equations, which govern the differential flow of effective Hamiltonians under infinitesimal RG transformations, we have:\n$$F \\circ \\text{RG}_{\\Lambda \\to \\Lambda'} = \\text{RG}'_{\\Lambda \\to \\Lambda'} \\circ F$$\nwhere $\\text{RG}'$ denotes the corresponding transformation in $\\textbf{EffTheory}$. This commutativity reflects the fundamental consistency of scale reduction operations.\n\nTherefore, the functor $F$ provides a rigorous categorical framework connecting physical systems with their effective descriptions, preserving both the hierarchical energy scale structure and the renormalization group flow. This completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.CategoryTheory.Category.Basic\nimport Mathlib.CategoryTheory.Functor.Basic\nimport Mathlib.Order.Hom.Basic\nimport Mathlib.Analysis.NormedSpace.Basic\nimport Mathlib.Topology.Basic\n\n/-- A physical system characterized by Hamiltonian, energy cutoff, and observables -/\nstructure PhysicalSystem where\n  /-- The Hamiltonian function -/\n  hamiltonian : \u211d \u2192 \u211d \u2192 \u211d \u2192 \u211d  -- H(p,q,\u03bb)\n  /-- Energy cutoff scale -/\n  cutoff : \u211d\n  /-- Observable algebra (simplified as functions for now) -/\n  observables : Set (\u211d \u2192 \u211d \u2192 \u211d)\n  cutoff_pos : 0 < cutoff\n\n/-- Morphisms between physical systems that preserve energy scale ordering -/\nstructure PhysSystemMorphism (sys1 sys2 : PhysicalSystem) where\n  /-- The underlying map between systems -/\n  map : sys1.observables \u2192 sys2.observables\n  /-- Energy scale preservation: source cutoff \u2265 target cutoff -/\n  scale_preserving : sys1.cutoff \u2265 sys2.cutoff\n\n/-- Category of physical systems with scale structure -/\ninstance : Category PhysicalSystem where\n  Hom := PhysSystemMorphism\n  id sys := \u27e8id, le_refl _\u27e9\n  comp f g := \u27e8g.map \u2218 f.map, le_trans f.scale_preserving g.scale_preserving\u27e9\n  id_comp := sorry  -- Requires showing function composition properties\n  comp_id := sorry  -- Requires showing function composition properties\n  assoc := sorry    -- Requires showing function composition properties\n\n/-- An effective theory characterized by scale-dependent Hamiltonian -/\nstructure EffectiveTheory where\n  /-- Scale-dependent effective Hamiltonian -/\n  hamiltonian_eff : \u211d \u2192 (\u211d \u2192 \u211d \u2192 \u211d)  -- H_eff(\u039b)(p,q)\n  /-- Domain of validity (energy scales) -/\n  valid_scales : Set \u211d\n  scales_nonempty : valid_scales.Nonempty\n\n/-- RG flow maps between effective theories -/\nstructure RGFlowMap (eff1 eff2 : EffectiveTheory) where\n  /-- The flow map between Hamiltonians -/\n  flow : \u2200 \u039b \u2208 eff1.valid_scales, eff1.hamiltonian_eff \u039b \u2192 eff2.hamiltonian_eff \u039b\n  /-- Flow preserves scale ordering -/\n  scale_compatible : eff1.valid_scales \u2286 eff2.valid_scales\n\n/-- Category of effective theories -/\ninstance : Category EffectiveTheory where\n  Hom := RGFlowMap\n  id eff := \u27e8fun \u039b _ => id, subset_refl _\u27e9\n  comp := sorry  -- Requires composition of RG flow maps\n  id_comp := sorry\n  comp_id := sorry\n  assoc := sorry\n\n/-- The functor from physical systems to effective theories -/\ndef physSysToEffTheory : PhysicalSystem \u2964 EffectiveTheory where\n  obj sys := {\n    hamiltonian_eff := fun \u039b => sorry  -- Integrate out DOF with E > \u039b\n    valid_scales := Set.Ioo 0 sys.cutoff\n    scales_nonempty := sorry  -- Follows from cutoff_pos\n  }\n  map f := {\n    flow := fun \u039b h\u039b => sorry  -- RG flow induced by morphism\n    scale_compatible := sorry  -- Follows from f.scale_preserving\n  }\n  map_id := sorry  -- F preserves identity morphisms\n  map_comp := sorry  -- F preserves composition\n\n/-- Renormalization group flow on physical systems -/\ndef rgFlowPhysSys (\u039b \u039b' : \u211d) (h : \u039b \u2265 \u039b') : PhysicalSystem \u2192 PhysicalSystem :=\n  sorry  -- RG transformation on physical systems\n\n/-- Renormalization group flow on effective theories -/\ndef rgFlowEffTheory (\u039b \u039b' : \u211d) (h : \u039b \u2265 \u039b') : EffectiveTheory \u2192 EffectiveTheory :=\n  sorry  -- RG transformation on effective theories\n\n/-- Main theorem: Functor preserves hierarchical structure and commutes with RG flow -/\ntheorem functor_preserves_structure_and_commutes_with_rg :\n  \u2200 (\u039b \u039b' : \u211d) (h : \u039b \u2265 \u039b') (sys : PhysicalSystem),\n  physSysToEffTheory.obj (rgFlowPhysSys \u039b \u039b' h sys) = \n  rgFlowEffTheory \u039b \u039b' h (physSysToEffTheory.obj sys) := by\n  sorry  -- Requires proving commutativity of diagram\n\n/-- Born-Oppenheimer approximation as special case -/\ndef bornOppenheimerSystem (me M : \u211d) (h : me < M) : PhysicalSystem :=\n  sorry  -- Molecular Hamiltonian with mass ratio parameter\n\n/-- Born-Oppenheimer emerges from the functor -/\ntheorem born_oppenheimer_from_functor (me M : \u211d) (h : me < M) :\n  \u2203 (eff : EffectiveTheory), \n  physSysToEffTheory.obj (bornOppenheimerSystem me M h) = eff \u2227\n  sorry  -- eff represents Born-Oppenheimer approximation\n  := by sorry",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the category PhysSys with objects as triples (H, \u039b, O) where H is a Hamiltonian, \u039b is an energy cutoff, and O is the observable algebra",
+      "justification": "Standard categorical construction for physical systems with scale structure",
+      "dependencies": []
+    },
+    {
+      "step_number": 2,
+      "statement": "Define morphisms in PhysSys as energy-scale preserving maps \u03c6: (H\u2081, \u039b\u2081, O\u2081) \u2192 (H\u2082, \u039b\u2082, O\u2082) where \u039b\u2081 \u2265 \u039b\u2082",
+      "justification": "Morphisms must respect the partial order induced by energy scales",
+      "dependencies": [
+        "step 1"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Define the category EffTheory with objects as effective Hamiltonians H_eff(\u039b) and morphisms as RG flow maps",
+      "justification": "Effective theories are characterized by their scale-dependent Hamiltonians",
+      "dependencies": []
+    },
+    {
+      "step_number": 4,
+      "statement": "Construct the functor F by defining F(H, \u039b, O) = H_eff(\u039b) where H_eff is obtained by integrating out degrees of freedom with E > \u039b",
+      "justification": "Wilsonian effective action formalism",
+      "dependencies": [
+        "step 1",
+        "step 3",
+        "Wilson-Kogut recursion relations"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "[Gap: Rigorous definition of path integral measure and integration procedure]",
+      "justification": "Path integral formulation requires mathematical rigor beyond current frameworks",
+      "dependencies": [
+        "step 4"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Show F preserves composition: F(\u03c6\u2082 \u2218 \u03c6\u2081) = F(\u03c6\u2082) \u2218 F(\u03c6\u2081) for composable morphisms",
+      "justification": "Semigroup property of RG transformations",
+      "dependencies": [
+        "step 2",
+        "step 4",
+        "Polchinski's exact RG equations"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Verify F preserves identity morphisms: F(id_(H,\u039b,O)) = id_F(H,\u039b,O)",
+      "justification": "Trivial RG transformation at fixed scale is identity",
+      "dependencies": [
+        "step 4"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Show Born-Oppenheimer approximation emerges as F applied to molecular Hamiltonians with \u03bb = me/M",
+      "justification": "Electronic degrees of freedom have characteristic energy ~Ry while nuclear have ~\u210f\u03c9_vib \u226a Ry",
+      "dependencies": [
+        "step 4",
+        "Born-Huang expansion theorem"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "[Gap: Prove convergence of Born-Oppenheimer expansion uniformly in nuclear configuration space]",
+      "justification": "Requires careful analysis of singular perturbation theory",
+      "dependencies": [
+        "step 8"
+      ]
+    },
+    {
+      "step_number": 10,
+      "statement": "Establish commutativity: F \u2218 RG_\u039b\u2192\u039b' = RG'_\u039b\u2192\u039b' \u2218 F where RG denotes renormalization group flow",
+      "justification": "Both operations implement scale reduction consistently",
+      "dependencies": [
+        "step 4",
+        "step 6",
+        "Wegner-Houghton flow equations"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Wilson-Kogut recursion relations",
+      "authors": "K.G. Wilson and J. Kogut",
+      "year": "1974",
+      "field": "Quantum Field Theory",
+      "statement": "Renormalization group transformations satisfy recursion relations that preserve partition function",
+      "usage": "Justifies the functorial construction of effective theories"
+    },
+    {
+      "name": "Polchinski's exact RG equations",
+      "authors": "J. Polchinski",
+      "year": "1984",
+      "field": "Quantum Field Theory",
+      "statement": "Exact differential equations governing the flow of effective action under scale changes",
+      "usage": "Ensures composition property of RG transformations"
+    },
+    {
+      "name": "Born-Huang expansion theorem",
+      "authors": "M. Born and K. Huang",
+      "year": "1954",
+      "field": "Molecular Physics",
+      "statement": "Molecular wavefunctions can be expanded in products of electronic and nuclear parts with error O(me/M)",
+      "usage": "Connects abstract functor to concrete molecular physics example"
+    },
+    {
+      "name": "Wegner-Houghton flow equations",
+      "authors": "F.J. Wegner and A. Houghton",
+      "year": "1973",
+      "field": "Statistical Physics",
+      "statement": "Differential flow equations for effective Hamiltonians under infinitesimal RG transformations",
+      "usage": "Establishes commutativity of scale reduction operations"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Physical systems admit Hamiltonian descriptions H(p,q,\u03bb) in appropriate phase spaces",
+    "Scale separation parameter \u03bb satisfies \u03bb \u226a 1 (e.g., me/M for electron/nuclear mass ratio)",
+    "Energy eigenvalues can be ordered: E\u2080 < E\u2081 < ... with gaps \u0394\u1d62 = E\u1d62\u208a\u2081 - E\u1d62",
+    "Hilbert spaces are separable and operators are densely defined",
+    "Physical observables form a C*-algebra with appropriate continuity properties",
+    "Renormalization group transformations form a semigroup under composition",
+    "Effective theories are well-defined in the sense of having finite correlation functions",
+    "Path integral measures can be rigorously defined for the systems under consideration"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Construction of category PhysSys",
+        "issue": "The category is not properly defined. No verification that morphisms compose associatively, no proof that identity morphisms exist, and the condition 'energy-scale preserving' is vague and undefined",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Provide explicit definitions of morphism composition, verify associativity, define what 'energy-scale preserving' means mathematically"
+      },
+      {
+        "step": "Construction of category EffTheory",
+        "issue": "Category is barely defined at all. Objects are stated but morphisms are only vaguely described as 'renormalization group flow maps' without mathematical definition",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Explicitly define morphisms, their composition, and verify category axioms"
+      },
+      {
+        "step": "Definition of functor F",
+        "issue": "The construction F(H,\u039b,O) = H_eff(\u039b) is circular - it assumes the existence of a well-defined effective Hamiltonian construction procedure, which is what the proposition claims to establish",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed without completely restructuring the proof"
+      },
+      {
+        "step": "Functor preserves composition",
+        "issue": "The proof jumps from semigroup property to functoriality without showing how morphisms in PhysSys map to morphisms in EffTheory",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Explicitly define F on morphisms and verify the functorial equation"
+      },
+      {
+        "step": "Commutativity with RG flow",
+        "issue": "The equation F \u2218 RG = RG' \u2218 F is meaningless as written - RG acts on one category and RG' on another, so the compositions are ill-defined",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Properly define the diagram and what commutativity means in this context"
+      },
+      {
+        "step": "Path integral integration procedure",
+        "issue": "The proof admits this is undefined but then proceeds to use it anyway",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot proceed without rigorous path integral measure"
+      }
+    ],
+    "hidden_assumptions": [
+      "Existence of a canonical way to integrate out high-energy degrees of freedom",
+      "That all physical systems have discrete energy spectra with well-defined gaps",
+      "That the Wilsonian effective action formalism applies to all Hamiltonian systems",
+      "That RG transformations can be defined for arbitrary Hamiltonian systems",
+      "That effective theories form a category with the same objects as claimed",
+      "That there exists a unique effective Hamiltonian for each cutoff scale"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes the existence of a well-defined procedure to construct H_eff from H, which is essentially assuming what needs to be proved - that there exists a systematic functor from physical systems to effective theories",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to work for all Hamiltonian systems but only gives one example (Born-Oppenheimer), and even that example is admitted to lack rigorous convergence proof. The general claim requires much stronger conditions than stated",
+    "citation_issues": [
+      "Wilson-Kogut recursion relations are for lattice gauge theories, not general Hamiltonian systems",
+      "Polchinski's equations are for quantum field theories with specific structure, not arbitrary Hamiltonians",
+      "Born-Huang expansion theorem applicability conditions not verified",
+      "Wegner-Houghton equations apply to specific statistical mechanical systems, not general Hamiltonians"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed, relying on circular reasoning and undefined constructions. The categorical framework is improperly developed, with neither category fully defined, and the functor construction assumes its own conclusion. The attempt to connect diverse physical frameworks through vague categorical language obscures rather than clarifies the mathematical content.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to construct a functor between categories but fails to establish the key properties claimed. It sketches a construction without proving functoriality, hierarchical structure preservation, or RG commutativity.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Existence of well-defined path integral measures for all systems in PhysSys",
+      "Convergence of the Wilsonian effective action procedure",
+      "Well-definedness of the integration over high-energy modes",
+      "Existence of appropriate topologies on morphism spaces",
+      "Regularity conditions ensuring RG flows are well-defined",
+      "Conditions under which effective theories remain in EffTheory category",
+      "Measurability assumptions for the integration procedure",
+      "Boundedness conditions on Hamiltonians to ensure finite partition functions"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "2",
+        "issue": "Energy-scale preserving maps are not properly defined. What does it mean for a map between triples to preserve energy scales? The condition \u039b\u2081 \u2265 \u039b\u2082 is necessary but not sufficient."
+      },
+      {
+        "step": "4",
+        "issue": "The construction F(H, \u039b, O) = H_eff(\u039b) ignores the observable algebra O entirely, making this not a proper functor from the defined category PhysSys."
+      },
+      {
+        "step": "6",
+        "issue": "Cannot verify functoriality without explicit construction of F on morphisms. The justification assumes what needs to be proven."
+      },
+      {
+        "step": "8",
+        "issue": "Born-Oppenheimer approximation is presented as an example without proving it actually arises from the functor F as constructed."
+      },
+      {
+        "step": "10",
+        "issue": "Commutativity claim is stated without proof. The notation RG'_\u039b\u2192\u039b' is undefined and the relationship between different RG flows is not established."
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Step 5 explicitly acknowledges a gap in defining path integral measures rigorously",
+      "Step 9 explicitly acknowledges a gap in proving convergence of Born-Oppenheimer expansion",
+      "No actual construction of F on morphisms is provided",
+      "No proof that the constructed F is actually a functor",
+      "No definition of what 'hierarchical structure' means mathematically",
+      "No proof that this structure is preserved",
+      "Missing verification that effective theories form a proper category",
+      "No proof of the claimed commutativity with RG flow"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof assumes 'Path integral measures can be rigorously defined' but provides no construction, while existing proof [06d6ace265c2] shows quantum-classical boundary emerges through environmental decoherence, not path integral formalism",
+      "Claims F preserves hierarchical structure but fails to prove the functor is well-defined - the 'integration procedure' for degrees of freedom E > \u039b is left as an explicit gap",
+      "The Born-Oppenheimer emergence claim contradicts the rigorous treatment in [0049536ae81a] which requires tensor product decomposition H = H_fast \u2297 H_slow, but new proof doesn't establish this decomposition exists for general molecular Hamiltonians"
+    ],
+    "assumption_conflicts": [
+      "Assumes 'Physical observables form a C*-algebra' conflicts with [06879fd9ae87] which shows observables are fundamentally contextual and cannot have predetermined algebraic structure",
+      "Assumes 'Renormalization group transformations form a semigroup' but [1318ecd2c25c] shows phase transitions involve symmetry breaking that can destroy semigroup structure",
+      "Scale separation parameter \u03bb \u226a 1 assumption conflicts with [052632f8abba] which requires \u03b5 = l_micro/L_macro << 1 but doesn't guarantee this translates to mass ratios"
+    ],
+    "beneficial_connections": [
+      "Connects to [0049536ae81a] on hierarchical structure in composite quantum systems",
+      "Relates to [052632f8abba] on multi-scale dynamics emergence",
+      "Could strengthen [0e664bd264b4] on hierarchical structure formation if gaps were filled"
+    ],
+    "consistency_score": 0.2,
+    "notes": "Proof contains fundamental gaps in construction of the functor F and fails to rigorously define key operations. The Born-Oppenheimer convergence gap is particularly problematic as it's central to the main claim. Mathematical rigor is insufficient for categorical framework claims."
+  },
+  "confidence_score": 0.23,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "Rigorous mathematical framework for path integral measures in infinite dimensions, convergence theory for singular perturbation expansions in unbounded operators, and categorical formulation of scale-dependent operator algebras",
+  "limitations": [
+    "Rigorous definition of path integral integration over high-energy modes",
+    "Proof of uniform convergence of Born-Oppenheimer expansion",
+    "Mathematical characterization of 'integrating out' degrees of freedom in general Hilbert spaces",
+    "Precise conditions under which effective theories are well-defined",
+    "Proof assumes existence of well-defined path integral measures which is not established in general",
+    "Convergence of effective theory expansions not proven, only assumed",
+    "Categorical framework may be too rigid for some physical systems with anomalies",
+    "Does not address systems without clear scale separation"
+  ],
+  "source_convergence": {
+    "structural_claim": "Physical systems exhibit hierarchical organization where high-energy/short-distance physics can be systematically integrated out to yield effective low-energy descriptions",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Renormalization Group",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Field Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Physical theories flow under energy scale changes, with low-energy physics determined by relevant operators"
+      },
+      {
+        "result_id": "",
+        "result_name": "Effective Field Theory",
+        "domain_id": "field_a",
+        "domain_name": "Quantum Field Theory",
+        "link_type": "direct",
+        "structural_conclusion": "High-energy degrees of freedom can be systematically integrated out, yielding effective low-energy theories"
+      },
+      {
+        "result_id": "",
+        "result_name": "Born-Oppenheimer Approximation",
+        "domain_id": "field_b",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Fast electronic motion can be separated from slow nuclear motion due to mass hierarchy"
+      },
+      {
+        "result_id": "",
+        "result_name": "Franck-Condon Principle",
+        "domain_id": "field_b",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Electronic transitions occur on timescales much faster than nuclear motion, creating an effective separation of scales"
+      }
+    ],
+    "domains": [
+      "quantum_field_theory",
+      "atomic_physics"
+    ],
+    "domain_names": [
+      "Quantum Field Theory",
+      "Atomic and Molecular Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.2856,
+      "independence": 0.75,
+      "adversarial": 0.6,
+      "reproducibility": 0.6299999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.58768,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:37:15.028910+00:00",
+    "id": "a994a9ae48e7"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.31998
+  }
+}

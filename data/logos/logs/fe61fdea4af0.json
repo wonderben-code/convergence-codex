@@ -1,0 +1,38 @@
+{
+  "proof_id": "fe61fdea4af0",
+  "timestamp": "2026-05-02T13:58:25.458034+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "categorical",
+      "alternatives_considered": [
+        "axiomatic - One could axiomatize the properties of effective theories (locality, power counting, etc.), but this misses the crucial structural relationship between UV and IR theories that makes EFT systematic."
+      ],
+      "reasoning": "The convergence describes a systematic framework that appears across different physical domains, where high-energy degrees of freedom are 'integrated out' to yield effective low-energy descriptions. This is best captured as a functor or natural transformation between categories of theories at different energy scales, with the 'integrating out' process as a morphism."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Category theory, Functional analysis, Order theory",
+      "alternatives_considered": [],
+      "reasoning": "Category theory captures the systematic renormalization group flow between energy scales as functors, with natural transformations encoding the running of couplings. Functional analysis provides the operator formalism for field theories and their truncations. Order theory formalizes the partial ordering of theories by energy scale and the systematic approximation structure."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof constructs a functor from physical theories to effective theories via Wilsonian integration of high-energy modes, shows that low-energy observables are preserved up to power-suppressed corrections, and identifies the systematic nature with the dimensional organization of the operator expansion.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 9 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3347 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 2911 chars, 11 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "The formalization captures the categorical structure but requires extensive physics-specific definitions. The main gaps are: (1) formalizing physical theories as a category, (2) functional integration machinery, (3) Wilson-Polchinski RG framework, and (4) precise characterization of 'systematic' approximation. The proof structure follows the original steps but most physics content requires domain-specific formalization beyond current Mathlib."
+    }
+  ]
+}

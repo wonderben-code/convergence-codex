@@ -1,0 +1,349 @@
+{
+  "id": "a6d4787ecca9",
+  "convergence_id": "ab640b64a8b5",
+  "timestamp": "2026-05-02T13:55:56.398273+00:00",
+  "proposition": "For a system S with boundary \u2202S and associated Hilbert space H, if S admits a well-defined notion of horizon or boundary with finite area A(\u2202S), then the entanglement entropy S_E between the interior and exterior regions scales as S_E \u221d A(\u2202S) rather than the volume V(S), provided the system satisfies either: (i) holographic duality conditions, or (ii) exhibits topological order with boundary modes.",
+  "proposition_natural": "Entropy is fundamentally connected to area rather than volume in systems with horizons or boundaries",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Differential geometry",
+    "Measure theory",
+    "Information theory"
+  ],
+  "apparatus_justification": "Differential geometry provides the framework for horizons as codimension-1 surfaces in spacetime manifolds, while measure theory formalizes area measures on these surfaces. Information theory gives the rigorous definition of entropy needed to state the area-entropy relationship.",
+  "proof_natural": "**Proposition.** For a system $S$ with boundary $\\partial S$ and associated Hilbert space $\\mathcal{H}$, if $S$ admits a well-defined notion of horizon or boundary with finite area $A(\\partial S)$, then the entanglement entropy $S_E$ between the interior and exterior regions scales as $S_E \\propto A(\\partial S)$ rather than the volume $V(S)$, provided the system satisfies either: (i) holographic duality conditions, or (ii) exhibits topological order with boundary modes.\n\n**Proof.** Let $S$ be a system embedded in a manifold $M$ with well-defined metric $g$. We assume the boundary $\\partial S$ has finite area $A(\\partial S) = \\int_{\\partial S} \\sqrt{h} \\, d^{d-1}x$ where $h$ is the induced metric. Further assume that the Hilbert space $\\mathcal{H}$ admits a tensor product decomposition $\\mathcal{H} = \\mathcal{H}_{\\text{in}} \\otimes \\mathcal{H}_{\\text{out}}$, and that the density matrix $\\rho$ of the system is well-defined with finite von Neumann entropy. The entanglement entropy $S_E = -\\text{Tr}(\\rho_{\\text{in}} \\log \\rho_{\\text{in}})$ where $\\rho_{\\text{in}} = \\text{Tr}_{\\text{out}}(\\rho)$ is assumed finite. We assume UV and IR cutoffs $\\Lambda_{UV}$ and $\\Lambda_{IR}$ exist such that all quantities are regularized.\n\nBy definition, the entanglement entropy requires a bipartition of the Hilbert space. This bipartition of the spatial region into $A \\cup B = S$ with $A \\cap B = \\emptyset$ induces a codimension-1 hypersurface $\\Sigma = \\partial A$.\n\nWe now consider the two cases separately.\n\n**Case (i): Holographic systems.** Assume the system admits a holographic dual description with emergent radial dimension. By the Ryu-Takayanagi formula in AdS/CFT correspondence, the entanglement entropy is given by $S_E = \\text{Area}(\\gamma_A)/(4G_N)$, where $\\gamma_A$ is the minimal surface in the bulk homologous to the boundary region $A$. The area of this minimal surface scales with the boundary area $A(\\partial A)$. [Note: A complete proof requires detailed analysis of minimal surface equations in specific bulk geometries, which depends on the particular holographic model.]\n\n**Case (ii): Topological systems.** Assume the system exhibits topological order characterized by a finite-dimensional topological quantum field theory (TQFT). In such systems, the Hilbert space decomposes as $\\mathcal{H} = \\mathcal{H}_{\\text{bulk}} \\otimes \\mathcal{H}_{\\text{edge}}$. The key insight is that topological order implies bulk states are locally indistinguishable, so the entanglement entropy is localized at boundaries.\n\nThe dimension of the edge mode Hilbert space scales with the boundary area: the number of edge modes $N_{\\text{edge}} \\propto L^{d-1}/a^{d-1}$ where $a$ is the lattice spacing and $L$ is the linear dimension of the boundary. Since the maximum entropy of the edge modes is bounded by the logarithm of the Hilbert space dimension, we have $S_E \\leq \\log(\\dim \\mathcal{H}_{\\text{edge}}) \\propto A(\\partial A)$.\n\nIn both cases, the entanglement entropy exhibits area law scaling: $S_E = \\alpha A(\\partial A)/\\varepsilon^{d-2} + \\text{subleading terms}$, where $\\alpha$ is a non-universal constant and $\\varepsilon$ is the UV cutoff. [Note: Proving the universality of the area law across different systems requires a complete renormalization group analysis that is not fully developed for all cases.]\n\nThis area law behavior contrasts sharply with generic quantum systems, which typically exhibit volume law scaling. The result connects to the Bekenstein-Hawking formula for black hole entropy $S = A/(4\\ell_p^2)$, suggesting a deep relationship between entanglement, geometry, and information. This completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.Analysis.InnerProductSpace.Basic\nimport Mathlib.MeasureTheory.Measure.Hausdorff\nimport Mathlib.Topology.Basic\nimport Mathlib.Geometry.Manifold.SmoothManifoldWithCorners\nimport Mathlib.Analysis.Calculus.FDeriv.Basic\n\n/-- A system with boundary and associated Hilbert space -/\nstructure SystemWithBoundary where\n  S : Type*\n  [inst : TopologicalSpace S]\n  boundary : Set S\n  H : Type*\n  [hilb : InnerProductSpace \u2102 H]\n\n/-- Entanglement entropy between two subsystems -/\ndef entanglementEntropy (\u03c1_A : sorry) : \u211d := sorry -- Need density matrix type and trace\n\n/-- Holographic duality conditions -/\nclass HolographicSystem (sys : SystemWithBoundary) where\n  satisfiesAdSCFT : Prop := sorry -- Need AdS/CFT correspondence\n\n/-- Topological order with boundary modes -/\nclass TopologicalSystem (sys : SystemWithBoundary) where\n  hasTopologicalOrder : Prop := sorry -- Need topological order definition\n  boundaryModes : Type* := sorry -- Need edge mode Hilbert space\n\n/-- Area of a boundary -/\ndef boundaryArea {n : \u2115} (boundary : Set (EuclideanSpace \u211d (Fin n))) : \u211d := \n  sorry -- Need Hausdorff measure for codimension-1 surfaces\n\n/-- Main theorem: Area law for entanglement entropy -/\ntheorem area_law_entanglement_entropy \n  (sys : SystemWithBoundary) \n  (hfinite : boundaryArea sys.boundary < \u221e)\n  (h : HolographicSystem sys \u2228 TopologicalSystem sys) :\n  \u2203 (\u03b1 : \u211d) (\u03b1_pos : 0 < \u03b1), \n    \u2200 (A B : Set sys.S) (hpartition : A \u222a B = Set.univ \u2227 A \u2229 B = \u2205),\n    let \u03c1_A := sorry -- reduced density matrix for region A\n    entanglementEntropy \u03c1_A = \u03b1 * boundaryArea (A \u2229 sys.boundary) + sorry := by\n  sorry -- Main proof\n  \n/-- Step 1: Bipartition induces tensor product decomposition -/\nlemma bipartition_tensor_product \n  (sys : SystemWithBoundary) \n  (A B : Set sys.S) \n  (hpartition : A \u222a B = Set.univ \u2227 A \u2229 B = \u2205) :\n  \u2203 (H_A H_B : Type*) [InnerProductSpace \u2102 H_A] [InnerProductSpace \u2102 H_B],\n    sys.H \u2243\u2097\u1d62[\u2102] (H_A \u2297[\u2102] H_B) := by\n  sorry -- Need tensor product of Hilbert spaces\n\n/-- Step 2: Bipartition induces codimension-1 surface -/\nlemma bipartition_surface {n : \u2115}\n  (A B : Set (EuclideanSpace \u211d (Fin n)))\n  (hpartition : A \u222a B = Set.univ \u2227 A \u2229 B = \u2205)\n  (hopen : IsOpen A \u2227 IsOpen B) :\n  \u2203 (\u03a3 : Set (EuclideanSpace \u211d (Fin n))), \n    \u03a3 = frontier A \u2227 sorry := by -- Need codimension-1 property\n  sorry\n\n/-- Step 3: Ryu-Takayanagi formula for holographic systems -/\nlemma ryu_takayanagi_formula \n  (sys : SystemWithBoundary) \n  [HolographicSystem sys]\n  (A : Set sys.S) :\n  \u2203 (\u03b3_A : Set sorry) (G_N : \u211d), -- Need bulk manifold type\n    entanglementEntropy sorry = boundaryArea \u03b3_A / (4 * G_N) := by\n  sorry -- Ryu-Takayanagi formula not in Mathlib\n\n/-- Step 5: Topological systems have bulk-edge decomposition -/\nlemma topological_bulk_edge_decomposition\n  (sys : SystemWithBoundary)\n  [TopologicalSystem sys] :\n  \u2203 (H_bulk H_edge : Type*) [InnerProductSpace \u2102 H_bulk] [InnerProductSpace \u2102 H_edge],\n    sys.H \u2243\u2097\u1d62[\u2102] (H_bulk \u2297[\u2102] H_edge) := by\n  sorry -- Need topological order theory\n\n/-- Step 6: Edge mode dimension scales with boundary -/\nlemma edge_mode_scaling {d : \u2115}\n  (sys : SystemWithBoundary)\n  [TopologicalSystem sys]\n  (boundary : Set (EuclideanSpace \u211d (Fin d))) :\n  \u2203 (c : \u211d) (a : \u211d), -- lattice spacing\n    FiniteDimensional.finrank \u2102 sorry = c * (boundaryArea boundary / a^(d-1)) := by\n  sorry -- Need edge mode counting\n\n/-- Step 7: Entropy bounded by log dimension -/\nlemma entropy_dimension_bound\n  (H_edge : Type*) [InnerProductSpace \u2102 H_edge] [FiniteDimensional \u2102 H_edge]\n  (\u03c1 : sorry) : -- Need density operator\n  entanglementEntropy \u03c1 \u2264 Real.log (FiniteDimensional.finrank \u2102 H_edge) := by\n  sorry -- Need von Neumann entropy properties",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Establish that entanglement entropy requires a bipartition of the Hilbert space",
+      "justification": "By definition, entanglement entropy S_E = -Tr(\u03c1_A log \u03c1_A) requires decomposition H = H_A \u2297 H_B",
+      "dependencies": [
+        "Definition of entanglement entropy"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Show that the bipartition induces a codimension-1 surface \u03a3 = \u2202A",
+      "justification": "The spatial partition A \u222a B = S with A \u2229 B = \u2205 implies \u2202A is a codimension-1 hypersurface",
+      "dependencies": [
+        "Step 1",
+        "Manifold structure assumption"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "For holographic systems, apply the Ryu-Takayanagi formula",
+      "justification": "In AdS/CFT, S_E = Area(\u03b3_A)/(4G_N) where \u03b3_A is the minimal surface homologous to A",
+      "dependencies": [
+        "Ryu-Takayanagi 2006",
+        "Holographic duality assumption"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "Show that \u03b3_A area scales with boundary area A(\u2202A)",
+      "justification": "[Gap: Requires detailed analysis of minimal surface equations in specific geometries]",
+      "dependencies": [
+        "Step 3",
+        "Specific bulk geometry"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "For topological systems, decompose H = H_bulk \u2297 H_edge",
+      "justification": "Topological order implies bulk states are locally indistinguishable, entropy localized at boundaries",
+      "dependencies": [
+        "Kitaev-Preskill 2006",
+        "Topological order assumption"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Show edge mode Hilbert space dimension scales with boundary length/area",
+      "justification": "Number of edge modes N_edge \u221d L^(d-1)/a^(d-1) where a is lattice spacing",
+      "dependencies": [
+        "Step 5",
+        "Lattice regularization"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Establish S_E \u2264 log(dim H_edge) \u221d A(\u2202A)",
+      "justification": "Maximum entropy of edge modes bounded by log of Hilbert space dimension",
+      "dependencies": [
+        "Step 6",
+        "Entropy bounds"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Unify both cases: S_E = \u03b1 A(\u2202A)/\u03b5^(d-2) + subleading",
+      "justification": "[Gap: Proving universality of area law requires renormalization group analysis not fully developed]",
+      "dependencies": [
+        "Steps 3-7",
+        "UV cutoff \u03b5"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Ryu-Takayanagi Formula",
+      "authors": "Ryu, S. and Takayanagi, T.",
+      "year": "2006",
+      "field": "High Energy Physics",
+      "statement": "In AdS/CFT, entanglement entropy equals area of minimal surface in bulk",
+      "usage": "Establishes area law in holographic systems"
+    },
+    {
+      "name": "Topological Entanglement Entropy",
+      "authors": "Kitaev, A. and Preskill, J.",
+      "year": "2006",
+      "field": "Condensed Matter Physics",
+      "statement": "Topological phases have universal subleading correction -\u03b3 to area law",
+      "usage": "Shows area law holds in topological phases"
+    },
+    {
+      "name": "Black Hole Entropy",
+      "authors": "Bekenstein, J. D.",
+      "year": "1973",
+      "field": "General Relativity",
+      "statement": "Black hole entropy S = A/(4l_p^2) where A is horizon area",
+      "usage": "Original example of area-entropy relation"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The system S is embedded in a manifold M with well-defined metric g",
+    "The boundary \u2202S has finite area A(\u2202S) = \u222b_\u2202S \u221ah d^(d-1)x where h is the induced metric",
+    "The Hilbert space H admits a tensor product decomposition H = H_in \u2297 H_out",
+    "The density matrix \u03c1 of the system is well-defined and has finite von Neumann entropy",
+    "The entanglement entropy S_E = -Tr(\u03c1_in log \u03c1_in) where \u03c1_in = Tr_out(\u03c1) is finite",
+    "For case (i): The system admits a holographic dual description with emergent radial dimension",
+    "For case (ii): The system exhibits topological order characterized by a finite-dimensional TQFT",
+    "UV and IR cutoffs \u039b_UV and \u039b_IR exist such that all quantities are regularized"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "Hilbert space decomposition H = H_in \u2297 H_out",
+        "issue": "This tensor product decomposition is assumed without justification. For interacting quantum systems, especially those with long-range entanglement, the Hilbert space generally cannot be factorized this way. This is a fundamental flaw that undermines the entire proof.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed without completely restructuring the argument to handle non-factorizable Hilbert spaces"
+      },
+      {
+        "step": "Case (i) - Application of Ryu-Takayanagi formula",
+        "issue": "The RT formula applies specifically to static spacetimes in AdS/CFT with specific boundary conditions. The proof provides no justification that the general 'holographic systems' satisfy these stringent requirements. Additionally, the formula gives the entanglement entropy of a boundary region, not of interior vs exterior of a bulk system.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would need to restrict to very specific AdS/CFT setups and clarify what 'interior' and 'exterior' mean in this context"
+      },
+      {
+        "step": "Case (ii) - H = H_bulk \u2297 H_edge decomposition",
+        "issue": "This factorization is unjustified and generally false for topological systems. Edge modes are not independent of bulk modes; they are constrained by bulk-boundary correspondence. The proof confuses the mathematical structure of TQFT with the physical Hilbert space.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Requires complete reformulation using proper TQFT bulk-boundary correspondence"
+      },
+      {
+        "step": "S_E \u2264 log(dim H_edge) \u221d A(\u2202A)",
+        "issue": "The scaling dim H_edge \u221d A(\u2202A) is claimed without proof. For many topological systems, the edge mode dimension scales exponentially with linear dimension, giving volume-like scaling, not area scaling.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Need to specify which topological phases and prove the scaling for those specific cases"
+      },
+      {
+        "step": "Definition of 'interior' and 'exterior' regions",
+        "issue": "The proof conflates spatial bipartition (A and B) with interior/exterior of a system with boundary. These are fundamentally different concepts. The entanglement entropy of a spatial bipartition is not the same as entanglement between a system and its environment.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need to clearly define what interior/exterior means and how it relates to the bipartition"
+      }
+    ],
+    "hidden_assumptions": [
+      "The system is in a pure state (required for the tensor product decomposition)",
+      "The boundary \u2202S coincides with the entanglement cut (never justified)",
+      "All holographic systems satisfy AdS/CFT requirements",
+      "Topological order implies area law (false in general)",
+      "The UV cutoff \u03b5 is the same for both holographic and topological cases",
+      "The minimal surface \u03b3_A exists and is unique",
+      "Edge modes form an independent subsystem"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes area law scaling in the topological case (by claiming edge modes scale with area) to prove area law scaling. Additionally, it assumes factorizable Hilbert spaces which already encode the locality structure that leads to area laws.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to establish area law for any system with either holographic duality OR topological order, but actually only addresses very specific examples within narrow parameter regimes. Many topological systems exhibit volume law scaling, and 'holographic duality conditions' are left completely unspecified.",
+    "citation_issues": [
+      "Ryu-Takayanagi formula is misapplied - it relates boundary region entanglement to bulk minimal surfaces, not interior/exterior entanglement",
+      "No citation provided for the claim that topological systems have H = H_bulk \u2297 H_edge",
+      "The connection to Bekenstein-Hawking entropy is superficial and provides no logical support"
+    ],
+    "structural_soundness": 0.2,
+    "overall_assessment": "This proof contains multiple critical flaws including unjustified factorization assumptions, misapplication of holographic results, and confusion between different types of entanglement. The argument would equally 'prove' that all quantum systems exhibit area law scaling, which is known to be false.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to show area law scaling exists in two specific cases but fails to establish the general proposition or prove the scaling is A(\u2202S) rather than volume V(S)",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Ground state assumption (area law typically applies to ground states, not arbitrary states)",
+      "Locality assumption for the Hamiltonian",
+      "Assumption that the boundary \u2202A coincides with \u2202S",
+      "Assumption that minimal surfaces in holographic case actually minimize area",
+      "Assumption that topological gap is finite and non-zero",
+      "Assumption that edge modes are gapless",
+      "Assumption that bulk-boundary correspondence holds",
+      "Assumption of translation invariance for lattice spacing argument"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "2",
+        "issue": "\u2202A is not necessarily equal to \u2202S - the proof conflates the entanglement boundary with the system boundary"
+      },
+      {
+        "step": "4",
+        "issue": "Marked as gap by authors - no justification provided for why minimal surface area scales with boundary area"
+      },
+      {
+        "step": "5",
+        "issue": "Decomposition H = H_bulk \u2297 H_edge is not generally valid - topological systems don't necessarily have this tensor product structure"
+      },
+      {
+        "step": "6",
+        "issue": "Scaling N_edge \u221d L^(d-1)/a^(d-1) assumes uniform edge mode density which is not established"
+      },
+      {
+        "step": "7",
+        "issue": "Uses inequality S_E \u2264 log(dim H_edge) but needs equality or tight bound to prove the scaling law"
+      },
+      {
+        "step": "8",
+        "issue": "Marked as gap by authors - unification requires renormalization group analysis that is not provided"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Two major gaps explicitly acknowledged by authors in steps 4 and 8",
+      "No proof that volume scaling is excluded",
+      "No treatment of systems that satisfy neither holographic nor topological conditions",
+      "No proof of universality of the area law coefficient",
+      "Missing analysis of subleading corrections",
+      "No consideration of finite temperature or excited states"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims S_E \u221d A(\u2202S) universally for both holographic and topological systems, but existing proof [1083de91300b] specifically states that area scaling applies to 'gapped local Hamiltonians in their ground states' - this is more restrictive than the new proof's general claims about topological order",
+      "The new proof assumes tensor product decomposition H = H_in \u2297 H_out is always well-defined, but existing proof [06d6ace265c2] shows that quantum-classical boundaries emerge through environmental decoherence, suggesting such clean bipartitions may not exist in realistic systems",
+      "The claim that topological systems satisfy S_E \u2264 log(dim H_edge) \u221d A(\u2202A) contradicts the physical understanding that topological entanglement entropy should have universal, topology-dependent corrections that are independent of boundary area"
+    ],
+    "assumption_conflicts": [
+      "New proof assumes 'well-defined notion of horizon or boundary' but existing proof [06879fd9ae87] establishes that physical properties are fundamentally contextual - the notion of boundary may depend on measurement framework",
+      "The assumption of finite von Neumann entropy conflicts with systems described in [0049536ae81a] where fast-slow decomposition may lead to infinite entanglement in the thermodynamic limit",
+      "UV/IR cutoff assumptions conflict with the scale-free nature implied by existing proof [052632f8abba] about multi-scale dynamics"
+    ],
+    "beneficial_connections": [
+      "Connects to [1083de91300b] by extending area law scaling beyond black holes to quantum many-body systems",
+      "Relates to [0178ff46c5ee] and [1318ecd2c25c] by showing how entanglement structure reflects symmetry-breaking patterns at boundaries",
+      "Extends [0e664bd264b4] hierarchical structure formation by showing how entanglement creates multi-scale organization",
+      "Complements [06d1b829563e] by providing specific mechanism for information organization at boundaries"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof makes overly broad claims about area law scaling that ignore known exceptions and subtleties. The holographic case is better established than the topological case, which contains several technical errors about edge mode scaling and topological entanglement entropy."
+  },
+  "confidence_score": 0.27999999999999997,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.29999999999999993
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.29999999999999993
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous mathematical framework for: (1) Proving universality of area laws across different physical systems, (2) Establishing precise conditions under which volume laws transition to area laws, (3) Categorical formulation linking boundary data to bulk entropy that works across domains",
+  "limitations": [
+    "Step 4: Proving minimal surface area scales with boundary area requires case-by-case geometric analysis",
+    "Step 8: Universal coefficient \u03b1 and subleading corrections not rigorously derived",
+    "Missing: Precise characterization of which systems exhibit area vs volume scaling",
+    "Missing: Treatment of systems with multiple boundaries or non-trivial topology",
+    "Proof covers only two specific cases (holographic and topological), not all systems with boundaries",
+    "Does not address dynamical horizons or time-dependent boundaries",
+    "Requires UV regularization without specifying regularization scheme dependence",
+    "Does not prove area law is fundamental rather than emergent"
+  ],
+  "source_convergence": {
+    "structural_claim": "Entropy is fundamentally connected to area rather than volume in systems with horizons or boundaries",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Black Hole Thermodynamics",
+        "domain_id": "field_a",
+        "domain_name": "General Relativity and Cosmology",
+        "link_type": "direct",
+        "structural_conclusion": "Black hole entropy is proportional to horizon area, not volume"
+      },
+      {
+        "result_id": "",
+        "result_name": "AdS/CFT Correspondence",
+        "domain_id": "field_a",
+        "domain_name": "General Relativity and Cosmology",
+        "link_type": "direct",
+        "structural_conclusion": "Bulk gravitational physics encoded on lower-dimensional boundary"
+      },
+      {
+        "result_id": "",
+        "result_name": "Topological Insulators",
+        "domain_id": "field_b",
+        "domain_name": "Condensed Matter Physics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "Bulk topology enforces conducting boundary states with entropy scaling with boundary area"
+      }
+    ],
+    "domains": [
+      "general_relativity",
+      "condensed_matter"
+    ],
+    "domain_names": [
+      "General Relativity and Cosmology",
+      "Condensed Matter Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.357,
+      "independence": 0.75,
+      "adversarial": 0.3,
+      "reproducibility": 0.4374999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.5202249999999999,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:39:35.659206+00:00",
+    "id": "ab640b64a8b5"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.292005
+  }
+}

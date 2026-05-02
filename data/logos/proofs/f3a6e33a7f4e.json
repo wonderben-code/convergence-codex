@@ -1,0 +1,367 @@
+{
+  "id": "f3a6e33a7f4e",
+  "convergence_id": "a84696ce790c",
+  "timestamp": "2026-05-02T13:55:06.218192+00:00",
+  "proposition": "Let (M, g, S) be a physical system where M is a manifold, g is a metric structure, and S: C(M) \u2192 \u211d is an action functional on the configuration space C(M). If S possesses a continuous symmetry group G acting on C(M), then energy minimization E[\u03c6] = \u222b_M L[\u03c6, \u2202\u03c6] d\u03bc_g can select configurations \u03c6_0 \u2208 C(M) where G_\u03c6\u2080 \u228a G (proper subgroup), with the quotient space G/G_\u03c6\u2080 parametrizing physically distinct but energetically degenerate states.",
+  "proposition_natural": "Spontaneous symmetry breaking is a fundamental mechanism where systems lower their energy by selecting specific states from symmetric possibilities, with the broken symmetry manifesting as new physical phenomena",
+  "formalisation_type": "constraint_logic",
+  "mathematical_apparatus": [
+    "Differential geometry",
+    "Algebraic structures",
+    "Dynamical systems"
+  ],
+  "apparatus_justification": "Symmetry breaking fundamentally involves smooth manifolds of states with group actions (differential geometry), the symmetry groups themselves and their representations (algebraic structures), and the energy minimization dynamics that select specific states (dynamical systems). These three frameworks capture the essential structure: the state space geometry, the symmetries acting on it, and the selection mechanism.",
+  "proof_natural": "**Proposition.** Let $(M, g, S)$ be a physical system where $M$ is a manifold, $g$ is a metric structure, and $S: C(M) \\to \\mathbb{R}$ is an action functional on the configuration space $C(M)$. If $S$ possesses a continuous symmetry group $G$ acting on $C(M)$, then energy minimization $E[\\phi] = \\int_M L[\\phi, \\partial\\phi] d\\mu_g$ can select configurations $\\phi_0 \\in C(M)$ where $G_{\\phi_0} \\subsetneq G$ (proper subgroup), with the quotient space $G/G_{\\phi_0}$ parametrizing physically distinct but energetically degenerate states.\n\n**Proof.** We assume that the configuration space $C(M)$ is a Fr\u00e9chet manifold with smooth structure, the action functional $S$ is differentiable and bounded below, and the symmetry group $G$ acts smoothly and freely on $C(M)$. Further, we assume that the energy functional $E[\\phi]$ admits critical points, the measure $d\\mu_g$ is $G$-invariant, physical observables are represented by $G$-equivariant functions on $C(M)$, the system admits a ground state, and the orbit space $C(M)/G$ has a well-defined differential structure.\n\nSince the symmetry group $G$ preserves both the measure $d\\mu_g$ and the Lagrangian density $L$, we have $E[g \\cdot \\phi] = E[\\phi]$ for all $g \\in G$ and $\\phi \\in C(M)$. By differentiating this identity and applying the chain rule, we obtain $g_* \\cdot (\\delta E/\\delta\\phi) = \\delta E/\\delta\\phi$, which implies that critical points of $E$ form $G$-invariant subsets. Specifically, if $\\delta E/\\delta\\phi|_{\\phi_0} = 0$, then $\\delta E/\\delta\\phi|_{g \\cdot \\phi_0} = 0$ for all $g \\in G$.\n\nThe crucial observation is that the potential $V[\\phi] = \\int_M V(\\phi(x)) d\\mu_g$ need not have its minimum at a $G$-invariant configuration. Consider the paradigmatic Mexican hat potential $V(\\phi) = \\lambda(|\\phi|^2 - v^2)^2$, which achieves its minimum on the circle $|\\phi| = v$ rather than at the symmetric point $\\phi = 0$. Thus, energy minimization can select a configuration $\\phi_0$ whose stabilizer $G_{\\phi_0} = \\{g \\in G : g \\cdot \\phi_0 = \\phi_0\\}$ is a proper subgroup of $G$.\n\nBy the Orbit-Stabilizer Theorem, the orbit $G \\cdot \\phi_0 = \\{g \\cdot \\phi_0 : g \\in G\\}$ forms a homogeneous space diffeomorphic to the quotient $G/G_{\\phi_0}$. The $G$-invariance of $E$ ensures that all points in this orbit have the same energy: $E[g \\cdot \\phi_0] = E[\\phi_0]$ for all $g \\in G$. Consequently, the physical selection of a specific $\\phi_0$ from the orbit $G \\cdot \\phi_0$ spontaneously breaks the symmetry from $G$ to $G_{\\phi_0}$, as the vacuum state $|\\phi_0\\rangle$ is not invariant under the coset $G \\setminus G_{\\phi_0}$.\n\nBy Goldstone's Theorem, the broken generators $\\{T_a\\} \\subset \\text{Lie}(G)$ satisfying $T_a \\cdot \\phi_0 \\neq 0$ correspond to massless Goldstone modes. The observable consequences of this symmetry breaking manifest through mass generation via $\\phi_0 \\neq 0$, the appearance of Goldstone bosons, and topological defects classified by the homotopy groups $\\pi_n(G/G_{\\phi_0})$ according to the Kibble mechanism.\n\n[Note: The connection to the Grad-Shafranov equation for axisymmetric MHD equilibria, while listed in the dependencies, is not directly utilized in this proof and would require additional structure relating plasma physics to the general framework.]\n\nThis completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.Geometry.Manifold.SmoothManifoldWithCorners\nimport Mathlib.Geometry.RiemannianGeometry.Metric\nimport Mathlib.GroupTheory.GroupAction.Basic\nimport Mathlib.GroupTheory.GroupAction.Quotient\nimport Mathlib.GroupTheory.Coset\nimport Mathlib.MeasureTheory.Integral.Bochner\nimport Mathlib.Topology.ContinuousFunction.Basic\n\n/-- Configuration space of fields on a manifold -/\ndef ConfigurationSpace (M : Type*) [TopologicalSpace M] [ChartedSpace \u211d M] [SmoothManifoldWithCorners \ud835\udcd8(\u211d, \u211d) M] : Type* := sorry -- Need: Space of smooth sections/fields\n\n/-- Action functional on configuration space -/\ndef ActionFunctional (M : Type*) [TopologicalSpace M] [ChartedSpace \u211d M] [SmoothManifoldWithCorners \ud835\udcd8(\u211d, \u211d) M] : ConfigurationSpace M \u2192 \u211d := sorry -- Need: Functional on field configurations\n\n/-- Energy functional derived from Lagrangian -/\ndef EnergyFunctional (M : Type*) [TopologicalSpace M] [ChartedSpace \u211d M] [SmoothManifoldWithCorners \ud835\udcd8(\u211d, \u211d) M] [MeasureSpace M] : ConfigurationSpace M \u2192 \u211d := sorry -- Need: Energy functional definition\n\n/-- Lagrangian density depending on field and derivatives -/\ndef LagrangianDensity (M : Type*) [TopologicalSpace M] [ChartedSpace \u211d M] [SmoothManifoldWithCorners \ud835\udcd8(\u211d, \u211d) M] : Type* := sorry -- Need: Lagrangian density structure\n\n/-- Critical point of a functional -/\ndef IsCriticalPoint {X : Type*} [NormedAddCommGroup X] [NormedSpace \u211d X] (f : X \u2192 \u211d) (x : X) : Prop := sorry -- Need: Variational derivative vanishes\n\n/-- Goldstone mode arising from broken symmetry -/\ndef GoldstoneMode (G : Type*) [Group G] (M : Type*) [TopologicalSpace M] : Type* := sorry -- Need: Goldstone boson definition\n\ntheorem symmetry_breaking_energy_minimization\n  (M : Type*) [TopologicalSpace M] [ChartedSpace \u211d M] [SmoothManifoldWithCorners \ud835\udcd8(\u211d, \u211d) M]\n  [MeasureSpace M] [IsLocallyFiniteMeasure (volume : Measure M)]\n  (g_metric : Metric M) -- Riemannian metric\n  (S : ActionFunctional M)\n  (G : Type*) [Group G]\n  (\u03c1 : G \u2192 ConfigurationSpace M \u2192 ConfigurationSpace M) -- Group action\n  [MulAction G (ConfigurationSpace M)]\n  (E : EnergyFunctional M)\n  (h_invariant : \u2200 (g : G) (\u03c6 : ConfigurationSpace M), E (\u03c1 g \u03c6) = E \u03c6) :\n  \u2203 (\u03c6\u2080 : ConfigurationSpace M),\n    (\u2203 (g : G), \u03c1 g \u03c6\u2080 \u2260 \u03c6\u2080) \u2227 -- Symmetry is broken\n    IsCriticalPoint E \u03c6\u2080 \u2227 -- \u03c6\u2080 minimizes energy\n    (\u2200 (g : G), E (\u03c1 g \u03c6\u2080) = E \u03c6\u2080) := by\n  -- Step 1: G-invariance of energy is given by hypothesis h_invariant\n  \n  -- Step 2: Critical points form G-invariant sets\n  have critical_invariant : \u2200 (\u03c6 : ConfigurationSpace M),\n    IsCriticalPoint E \u03c6 \u2192 \u2200 (g : G), IsCriticalPoint E (\u03c1 g \u03c6) := by\n    sorry -- Need: Chain rule for variational derivatives\n  \n  -- Step 3: Construct potential with non-invariant minima (Mexican hat)\n  sorry -- Need: Explicit construction of Mexican hat potential\n  \n  -- Step 4: Apply orbit-stabilizer theorem\n  -- For \u03c6\u2080 with proper stabilizer, orbit \u2245 G/Stab(\u03c6\u2080)\n  sorry -- Need: Connection to orbit-stabilizer for infinite-dimensional spaces\n  \n  -- Step 5: Energy constant on orbits (follows from h_invariant)\n  \n  -- Step 6: Physical selection breaks symmetry\n  sorry -- Need: Vacuum state formalism\n  \n  -- Step 7: Goldstone modes from broken generators\n  sorry -- Need: Goldstone's theorem\n  \n  -- Step 8: Observable consequences\n  sorry -- Need: Mass generation, topological defects",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The symmetry group G acts on C(M) preserving the energy functional: E[g\u00b7\u03c6] = E[\u03c6] for all g \u2208 G, \u03c6 \u2208 C(M)",
+      "justification": "By assumption of G-invariance of the measure and the Lagrangian density L",
+      "dependencies": [
+        "Assumption 5",
+        "Definition of symmetry action"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Critical points of E form G-invariant subsets: if \u03b4E/\u03b4\u03c6|_\u03c6\u2080 = 0, then \u03b4E/\u03b4\u03c6|_{g\u00b7\u03c6\u2080} = 0 for all g \u2208 G",
+      "justification": "Chain rule applied to E[g\u00b7\u03c6] = E[\u03c6] yields g*\u00b7(\u03b4E/\u03b4\u03c6) = \u03b4E/\u03b4\u03c6",
+      "dependencies": [
+        "Step 1",
+        "Functional derivative chain rule"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The potential V[\u03c6] = \u222b_M V(\u03c6(x)) d\u03bc_g can have minima at non-invariant points \u03c6\u2080 where G_\u03c6\u2080 = {g \u2208 G : g\u00b7\u03c6\u2080 = \u03c6\u2080} \u2260 G",
+      "justification": "Mexican hat potential example: V(\u03c6) = \u03bb(|\u03c6|\u00b2 - v\u00b2)\u00b2 has minimum circle |\u03c6| = v, not at symmetric point \u03c6 = 0",
+      "dependencies": [
+        "Explicit construction",
+        "Assumption 7"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The orbit G\u00b7\u03c6\u2080 = {g\u00b7\u03c6\u2080 : g \u2208 G} forms a homogeneous space diffeomorphic to G/G_\u03c6\u2080",
+      "justification": "Orbit-stabilizer theorem from Lie group theory",
+      "dependencies": [
+        "Step 3",
+        "Orbit-stabilizer theorem"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "All points in the orbit G\u00b7\u03c6\u2080 have the same energy: E[g\u00b7\u03c6\u2080] = E[\u03c6\u2080] for all g \u2208 G",
+      "justification": "Direct consequence of G-invariance of E",
+      "dependencies": [
+        "Step 1",
+        "Step 4"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Physical selection of a specific \u03c6\u2080 from G\u00b7\u03c6\u2080 breaks the symmetry from G to G_\u03c6\u2080",
+      "justification": "The vacuum state |\u03c6\u2080\u27e9 is not invariant under G\\G_\u03c6\u2080, though the Lagrangian is",
+      "dependencies": [
+        "Step 3",
+        "Step 5",
+        "Definition of symmetry breaking"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The broken generators {T_a} \u2282 Lie(G) with T_a\u00b7\u03c6\u2080 \u2260 0 correspond to massless Goldstone modes",
+      "justification": "Goldstone's theorem: continuous symmetries broken by ground state yield massless excitations",
+      "dependencies": [
+        "Step 6",
+        "Goldstone's theorem"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Observable consequences manifest through: (i) mass generation via \u03c6\u2080 \u2260 0, (ii) Goldstone bosons, (iii) topological defects",
+      "justification": "Standard consequences of SSB in field theory",
+      "dependencies": [
+        "Steps 6-7",
+        "Kibble mechanism",
+        "Effective field theory"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Orbit-Stabilizer Theorem",
+      "authors": "Standard result in Lie theory",
+      "year": "Classical",
+      "field": "Mathematics - Lie Groups",
+      "statement": "For a group G acting on a set X, the orbit G\u00b7x is in bijection with G/G_x where G_x is the stabilizer",
+      "usage": "Establishes structure of degenerate vacuum manifold in Step 4"
+    },
+    {
+      "name": "Goldstone's Theorem",
+      "authors": "Goldstone, Salam, Weinberg",
+      "year": "1962",
+      "field": "Particle Physics",
+      "statement": "Spontaneous breaking of a continuous symmetry implies existence of massless scalar particles",
+      "usage": "Connects broken symmetry generators to physical excitations in Step 7"
+    },
+    {
+      "name": "Kibble Mechanism",
+      "authors": "Kibble",
+      "year": "1976",
+      "field": "Cosmology/Condensed Matter",
+      "statement": "Phase transitions with symmetry breaking produce topological defects classified by \u03c0_n(G/H)",
+      "usage": "Explains topological consequences mentioned in Step 8"
+    },
+    {
+      "name": "Grad-Shafranov Equation",
+      "authors": "Grad, Shafranov",
+      "year": "1958",
+      "field": "Plasma Physics",
+      "statement": "Axisymmetric MHD equilibria satisfy \u0394*\u03c8 = -\u03bc\u2080R\u00b2dp/d\u03c8 - F(dF/d\u03c8)",
+      "usage": "Example of symmetry breaking from 3D to 2D in plasma equilibria"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The configuration space C(M) is a Fr\u00e9chet manifold with smooth structure",
+    "The action functional S is differentiable and bounded below",
+    "The symmetry group G acts smoothly and freely on C(M)",
+    "The energy functional E[\u03c6] admits critical points",
+    "The measure d\u03bc_g is G-invariant",
+    "Physical observables are represented by G-equivariant functions on C(M)",
+    "The system admits a ground state (global minimum of E)",
+    "The orbit space C(M)/G has a well-defined differential structure"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "Since the symmetry group G preserves both the measure d\u03bc_g and the Lagrangian density L",
+        "issue": "The proof never established that G preserves L. The proposition only states G is a symmetry of S, not E. These are different functionals and symmetries of one don't automatically transfer to the other.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need to prove that symmetries of the action S are also symmetries of the energy E, which requires additional conditions on the relationship between S and E."
+      },
+      {
+        "step": "By differentiating this identity and applying the chain rule, we obtain g_* \u00b7 (\u03b4E/\u03b4\u03c6) = \u03b4E/\u03b4\u03c6",
+        "issue": "This equation is nonsensical. The left side involves a pushforward acting on a functional derivative (which lives in the dual space), but the notation and meaning are undefined. The proof conflates different mathematical objects.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Properly define the action of G on the cotangent space and use correct functional analysis notation."
+      },
+      {
+        "step": "The crucial observation is that the potential V[\u03c6] = \u222b_M V(\u03c6(x)) d\u03bc_g need not have its minimum at a G-invariant configuration",
+        "issue": "The potential V is introduced without definition or relation to the energy E or Lagrangian L. The proof suddenly switches from discussing E to discussing V without establishing their relationship.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Define V properly and show how it relates to E. Establish that minimizing E is equivalent to minimizing V under appropriate conditions."
+      },
+      {
+        "step": "Consider the paradigmatic Mexican hat potential V(\u03c6) = \u03bb(|\u03c6|\u00b2 - v\u00b2)\u00b2",
+        "issue": "This example assumes \u03c6 is complex-valued, but nothing in the setup specified the nature of the configuration space C(M). The proof jumps to a specific example without establishing it satisfies all the general assumptions.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Either work in full generality or explicitly restrict to the case where this example applies."
+      },
+      {
+        "step": "By the Orbit-Stabilizer Theorem, the orbit G\u00b7\u03c6\u2080 = {g\u00b7\u03c6\u2080 : g \u2208 G} forms a homogeneous space diffeomorphic to the quotient G/G_\u03c6\u2080",
+        "issue": "The Orbit-Stabilizer theorem gives a bijection, not a diffeomorphism. To get a diffeomorphism requires additional smoothness conditions that weren't verified.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Invoke the proper theorem about smooth group actions to get diffeomorphism, not just bijection."
+      },
+      {
+        "step": "Consequently, the physical selection of a specific \u03c6\u2080 from the orbit G\u00b7\u03c6\u2080 spontaneously breaks the symmetry",
+        "issue": "The proof hasn't established what 'physical selection' means or why nature would select a specific point from the orbit. This is a crucial physical claim presented without justification.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "This requires additional physical principles beyond energy minimization to explain symmetry breaking."
+      },
+      {
+        "step": "By Goldstone's Theorem, the broken generators {T_a} \u2282 Lie(G) satisfying T_a\u00b7\u03c6\u2080 \u2260 0 correspond to massless Goldstone modes",
+        "issue": "Goldstone's theorem applies to quantum field theory, but nothing in the setup indicates this is a quantum system. The proof conflates classical and quantum concepts.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Either restrict to quantum systems from the start or remove claims about Goldstone bosons."
+      }
+    ],
+    "hidden_assumptions": [
+      "The energy functional E is derived from the action S via some unspecified procedure",
+      "The configuration space consists of fields (not stated explicitly)",
+      "The system is quantum mechanical (required for Goldstone's theorem)",
+      "The group G is a Lie group (required for Lie algebra generators)",
+      "The action of G on C(M) extends to an action on observables",
+      "Energy minimization is the correct principle for determining physical states",
+      "The measure d\u03bc_g exists and is well-defined on the infinite-dimensional space C(M)"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes that symmetry breaking occurs (by introducing the Mexican hat example) to prove that symmetry breaking can occur. It doesn't derive symmetry breaking from first principles but rather assumes a potential that exhibits it.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to show that energy minimization 'can' select symmetry-breaking configurations for general physical systems, but only demonstrates this for one specific type of potential. It doesn't establish conditions under which this happens or prove it's possible in the general setting.",
+    "citation_issues": [
+      "Goldstone's Theorem is cited but applies only to quantum field theory, not the general classical setting",
+      "The Kibble Mechanism is mentioned but never actually used in the proof",
+      "The Grad-Shafranov Equation is listed as a dependency but completely irrelevant to the proof",
+      "The Orbit-Stabilizer Theorem is misquoted as giving diffeomorphisms rather than bijections"
+    ],
+    "structural_soundness": 0.2,
+    "overall_assessment": "This proof is fundamentally flawed, mixing classical and quantum concepts, introducing undefined objects mid-proof, and relying on a specific example rather than general argumentation. The mathematical formalism is sloppy with incorrect use of functional derivatives and group actions. The proof fails to establish its main claim in any rigorous sense.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof establishes that symmetry-breaking configurations can exist and have certain properties, but does not prove that energy minimization can actually select such configurations over symmetric ones",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The symmetric configuration \u03c6 = 0 is not a global minimum",
+      "The potential V has the specific Mexican hat form or similar structure",
+      "The energy functional E decomposes as kinetic plus potential terms",
+      "The manifold M is compact or has appropriate boundary conditions",
+      "The Goldstone theorem applies in this geometric setting",
+      "The orbit space has no singularities at the chosen configuration"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 2",
+        "issue": "The chain rule justification g*\u00b7(\u03b4E/\u03b4\u03c6) = \u03b4E/\u03b4\u03c6 is incorrect notation and the argument is circular - it assumes what needs to be proven about the pushforward of the functional derivative"
+      },
+      {
+        "step": "Step 3",
+        "issue": "Mexican hat example is insufficient justification - this assumes a specific potential form not established in the general setting, and doesn't prove energy minimization selects the broken state"
+      },
+      {
+        "step": "Step 7",
+        "issue": "Goldstone's theorem application is unjustified - the theorem applies to quantum field theory with specific assumptions about vacuum states and particle interpretations not established here"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No proof that energy minimization actually selects symmetry-breaking configurations over symmetric ones",
+      "No analysis of when the symmetric point is unstable",
+      "No treatment of boundary conditions or global vs local minima",
+      "Missing rigorous connection between geometric setup and physical field theory",
+      "No proof that the orbit space structure is well-behaved at the selected configuration"
+    ],
+    "internal_score": 0.3
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof assumes G acts freely on C(M), but then claims stabilizer subgroups G_\u03c6\u2080 can be proper subgroups of G. Free group actions require trivial stabilizers (G_\u03c6\u2080 = {e}), making this mathematically inconsistent.",
+      "Claims that orbit space C(M)/G has well-defined differential structure while simultaneously asserting free group action, but then describes non-trivial stabilizers which would make the quotient singular.",
+      "The assumption that 'physical observables are G-equivariant functions' conflicts with the claim that symmetry breaking selects specific configurations, as equivariant observables cannot distinguish between orbit points."
+    ],
+    "assumption_conflicts": [
+      "Conflicts with [087da119976b] which properly handles symmetry breaking with compact Lie groups and invariant measures without assuming free actions",
+      "Contradicts [08b6405556dd] which correctly describes symmetry principles and Noether's theorem without the mathematical inconsistency of free actions with non-trivial stabilizers",
+      "Incompatible with [129df8406d52] which properly treats symmetry breaking in Hilbert spaces with unitary group actions"
+    ],
+    "beneficial_connections": [
+      "Conceptually aligns with [0178ff46c5ee] and [1318ecd2c25c] regarding phase transitions as symmetry-breaking events",
+      "Shares themes with [087da119976b] about spontaneous symmetry breaking creating ordered patterns",
+      "Could potentially connect to [08b6405556dd] if the mathematical inconsistencies were resolved"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof contains fundamental mathematical errors in its treatment of group actions. The assumption of free group action is incompatible with the existence of non-trivial stabilizer subgroups. The Fr\u00e9chet manifold structure assumption is also questionable without proper functional analytic foundations. The physical intuition about Goldstone modes is correct, but the mathematical framework is flawed."
+  },
+  "confidence_score": 0.285,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.3,
+    "cross_proof": 0.2,
+    "calibration": 0.29999999999999993
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.3,
+    "cross_proof": 0.2,
+    "calibration": 0.29999999999999993
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "Rigorous infinite-dimensional manifold theory for configuration spaces of fields, well-defined measures on function spaces, and convergence theory for functional integrals. The orbit space C(M)/G may not have a smooth structure without additional assumptions.",
+  "limitations": [
+    "Step 3 uses specific example rather than general existence theorem for symmetry-breaking minima",
+    "Transition from classical field configuration to quantum vacuum state |\u03c6\u2080\u27e9 in Step 6 requires full quantum field theory",
+    "Step 8 claims about topological defects require detailed analysis of homotopy groups \u03c0_n(G/G_\u03c6\u2080)",
+    "Connection between particle physics Higgs mechanism and plasma MHD equilibria requires unified geometric framework not developed here",
+    "Proof assumes classical field theory; full quantum treatment requires path integral formulation",
+    "Finite-dimensional Lie group theory results may not extend to gauge groups without care",
+    "Plasma physics applications involve additional constraints (ideal MHD assumptions) not captured in general framework",
+    "Does not address dynamical selection mechanism for which vacuum is chosen from degenerate manifold"
+  ],
+  "source_convergence": {
+    "structural_claim": "Spontaneous symmetry breaking is a fundamental mechanism where systems lower their energy by selecting specific states from symmetric possibilities, with the broken symmetry manifesting as new physical phenomena",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Discovery of the Higgs boson",
+        "domain_id": "field_a",
+        "domain_name": "Particle Physics",
+        "link_type": "direct",
+        "structural_conclusion": "The Higgs field spontaneously breaks electroweak symmetry through a non-zero vacuum expectation value, generating mass for particles"
+      },
+      {
+        "result_id": "",
+        "result_name": "Electroweak unification",
+        "domain_id": "field_a",
+        "domain_name": "Particle Physics",
+        "link_type": "direct",
+        "structural_conclusion": "The SU(2)\u00d7U(1) gauge symmetry is spontaneously broken to U(1)_EM, explaining the mass difference between photons and W/Z bosons"
+      },
+      {
+        "result_id": "",
+        "result_name": "MHD Equilibrium (Grad-Shafranov Equation)",
+        "domain_id": "field_b",
+        "domain_name": "Plasma Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Axisymmetric plasma equilibria spontaneously break 3D symmetry to 2D, selecting specific flux surface configurations that minimize energy"
+      },
+      {
+        "result_id": "",
+        "result_name": "Magnetic Helicity Conservation",
+        "domain_id": "field_b",
+        "domain_name": "Plasma Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Plasmas relax to minimum energy states while preserving topological constraints, spontaneously selecting specific field configurations from symmetric possibilities"
+      }
+    ],
+    "domains": [
+      "particle_physics",
+      "plasma_physics"
+    ],
+    "domain_names": [
+      "Particle Physics",
+      "Plasma Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.476,
+      "independence": 0.85,
+      "adversarial": 0.09,
+      "reproducibility": 0.6299999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.5678,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:30:28.569252+00:00",
+    "id": "a84696ce790c"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.32805
+  }
+}

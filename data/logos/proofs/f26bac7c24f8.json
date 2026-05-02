@@ -1,0 +1,343 @@
+{
+  "id": "f26bac7c24f8",
+  "convergence_id": "ac7529cc7225",
+  "timestamp": "2026-05-02T13:55:58.772905+00:00",
+  "proposition": "Let L be a d-dimensional lattice with basis vectors {a_i}_{i=1}^d and V: \u211d^d \u2192 \u211d be a periodic potential satisfying V(r + R) = V(r) for all R \u2208 L. Then the spectrum \u03c3(H) of the Hamiltonian H = -\u2207\u00b2 + V(r) has band structure: \u03c3(H) = \u22c3_{n=1}^\u221e B_n where each B_n is a closed interval and there exist open intervals (E_i, E_{i+1}) \u2282 \u211d \\ \u03c3(H) (spectral gaps).",
+  "proposition_natural": "Periodic spatial structures create forbidden frequency/energy bands through wave interference",
+  "formalisation_type": "isomorphism",
+  "mathematical_apparatus": [
+    "Functional analysis",
+    "Algebraic structures",
+    "Topology"
+  ],
+  "apparatus_justification": "Functional analysis provides spectral theory for operators on function spaces, which directly captures how periodic structures create eigenvalue gaps. Algebraic structures (particularly group theory) handle the periodicity via translation operators, while topology ensures proper treatment of continuity and compactness needed for spectral gaps.",
+  "proof_natural": "**Proposition.** Let $L$ be a $d$-dimensional lattice with basis vectors $\\{a_i\\}_{i=1}^d$ and $V: \\mathbb{R}^d \\to \\mathbb{R}$ be a periodic potential satisfying $V(r + R) = V(r)$ for all $R \\in L$. Then the spectrum $\\sigma(H)$ of the Hamiltonian $H = -\\nabla^2 + V(r)$ has band structure: $\\sigma(H) = \\bigcup_{n=1}^{\\infty} B_n$ where each $B_n$ is a closed interval, and there exist open intervals $(E_i, E_{i+1}) \\subset \\mathbb{R} \\setminus \\sigma(H)$ (spectral gaps).\n\n**Proof.** We assume that $L$ is a discrete subgroup of $\\mathbb{R}^d$ with $d \\in \\{1,2,3\\}$, the potential $V$ is measurable and locally $L^2$-integrable with $V(r + R) = V(r)$ for all $r \\in \\mathbb{R}^d$ and $R \\in L$. The Hamiltonian $H = -\\nabla^2 + V$ acts on $L^2(\\mathbb{R}^d)$ with domain $H^2(\\mathbb{R}^d)$, the Sobolev space of order 2. We further assume that $V$ is relatively bounded with respect to $-\\nabla^2$ with relative bound less than 1, ensuring that $H$ is self-adjoint. We work in units where $\\hbar = 2m = 1$.\n\nFirst, we establish that $H$ commutes with the translation operators $T_R$ for all $R \\in L$. For any $\\psi \\in H^2(\\mathbb{R}^d)$, we have\n$$(T_R H \\psi)(r) = H(\\psi(r-R)) = -\\nabla^2\\psi(r-R) + V(r)\\psi(r-R).$$\nSince $V(r) = V(r-R)$ by periodicity, this equals $-\\nabla^2\\psi(r-R) + V(r-R)\\psi(r-R) = (H T_R \\psi)(r)$, establishing that $[H, T_R] = 0$.\n\nBy Bloch's theorem, since $H$ commutes with all lattice translations, its eigenfunctions can be written in the form $\\psi_{n,k}(r) = e^{ik \\cdot r}u_{n,k}(r)$ where $u_{n,k}$ is $L$-periodic and $k$ lies in the first Brillouin zone. This follows from the fact that translation eigenvalues must satisfy $T_R \\psi = e^{ik \\cdot R} \\psi$ for some quasi-momentum $k$.\n\nFor fixed $k$, we consider the reduced Hamiltonian $H_k = e^{-ik \\cdot r}He^{ik \\cdot r} = (p + k)^2 + V(r)$, which acts on $L^2(\\Omega)$ where $\\Omega$ is the fundamental domain of the lattice. Direct calculation shows that $H_k$ has periodic boundary conditions on $\\Omega$.\n\nSince $H_k$ is self-adjoint on the bounded domain $\\Omega$ with periodic boundary conditions, it has compact resolvent. By the spectral theorem for compact operators, $H_k$ has discrete spectrum $\\{E_n(k)\\}_{n=1}^{\\infty}$ with $E_n(k) \\to \\infty$ as $n \\to \\infty$.\n\nBy Kato's perturbation theory, each eigenvalue $E_n(k)$ depends continuously on $k$, as the operator $H_k$ depends continuously on $k$ in the norm-resolvent sense. Since the Brillouin zone is compact and $E_n(k)$ is continuous, the $n$th band $B_n = \\{E_n(k) : k \\in \\text{BZ}\\}$ forms a closed interval.\n\nSpectral gaps occur when $\\max_{k \\in \\text{BZ}} E_n(k) < \\min_{k \\in \\text{BZ}} E_{n+1}(k)$ for some $n$. [Note: The general conditions guaranteeing the existence of such gaps require detailed analysis of specific potentials and cannot be established in full generality.]\n\nFinally, by the Floquet-Bloch decomposition, every eigenvalue of $H$ arises as $E_n(k)$ for some band index $n$ and quasi-momentum $k$. Therefore, the spectrum of $H$ is precisely $\\sigma(H) = \\bigcup_{n=1}^{\\infty} B_n$.\n\nThis completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.Analysis.InnerProductSpace.Basic\nimport Mathlib.Analysis.Fourier.FourierTransform\nimport Mathlib.Topology.ContinuousFunction.Bounded\nimport Mathlib.Topology.Algebra.Module.Basic\nimport Mathlib.LinearAlgebra.FiniteDimensional\nimport Mathlib.Topology.Compactness.Compact\nimport Mathlib.Order.Interval.Set.Basic\n\n/-- A d-dimensional lattice in \u211d^d -/\nstructure Lattice (d : \u2115) where\n  basis : Fin d \u2192 (Fin d \u2192 \u211d)\n  linearlyIndependent : LinearIndependent \u211d basis\n\n/-- The lattice as a subset of \u211d^d -/\ndef Lattice.asSet {d : \u2115} (L : Lattice d) : Set (Fin d \u2192 \u211d) :=\n  {x | \u2203 (n : Fin d \u2192 \u2124), x = \u2211 i, (n i : \u211d) \u2022 L.basis i}\n\n/-- A periodic potential with respect to a lattice -/\nstructure PeriodicPotential {d : \u2115} (L : Lattice d) where\n  V : (Fin d \u2192 \u211d) \u2192 \u211d\n  continuous : Continuous V\n  periodic : \u2200 (r : Fin d \u2192 \u211d) (R \u2208 L.asSet), V (r + R) = V r\n\n/-- Translation operator by R -/\ndef translationOperator {d : \u2115} (R : Fin d \u2192 \u211d) : ((Fin d \u2192 \u211d) \u2192 \u2102) \u2192 ((Fin d \u2192 \u211d) \u2192 \u2102) :=\n  fun \u03c8 r => \u03c8 (r - R)\n\n/-- The Hamiltonian operator H = -\u2207\u00b2 + V -/\ndef hamiltonian {d : \u2115} {L : Lattice d} (V : PeriodicPotential L) : \n  ((Fin d \u2192 \u211d) \u2192 \u2102) \u2192 ((Fin d \u2192 \u211d) \u2192 \u2102) := \n  sorry -- Need: Laplacian operator and proper domain specification\n\n/-- Bloch function form -/\nstructure BlochFunction {d : \u2115} {L : Lattice d} where\n  k : Fin d \u2192 \u211d\n  n : \u2115\n  u : (Fin d \u2192 \u211d) \u2192 \u2102\n  periodic : \u2200 (r : Fin d \u2192 \u211d) (R \u2208 L.asSet), u (r + R) = u r\n  \n/-- The Brillouin zone -/\ndef brillouinZone {d : \u2115} (L : Lattice d) : Set (Fin d \u2192 \u211d) :=\n  sorry -- Need: Reciprocal lattice and first Brillouin zone construction\n\n/-- Energy bands -/\ndef energyBand {d : \u2115} {L : Lattice d} (V : PeriodicPotential L) (n : \u2115) : Set \u211d :=\n  sorry -- Need: E_n(k) for k in Brillouin zone\n\n/-- Spectrum of the Hamiltonian -/\ndef spectrum {d : \u2115} {L : Lattice d} (V : PeriodicPotential L) : Set \u211d :=\n  sorry -- Need: Spectral theory for unbounded operators\n\n/-- Main theorem: Band structure of periodic Hamiltonians -/\ntheorem band_structure_theorem {d : \u2115} (L : Lattice d) (V : PeriodicPotential L) :\n  -- The spectrum has band structure\n  (spectrum V = \u22c3 n : \u2115, energyBand V n) \u2227 \n  -- Each band is a closed interval\n  (\u2200 n : \u2115, \u2203 (a b : \u211d), energyBand V n = Set.Icc a b) \u2227\n  -- Spectral gaps exist\n  (\u2203 (gaps : Set (\u211d \u00d7 \u211d)), \u2200 (E\u2081, E\u2082) \u2208 gaps, \n    Set.Ioo E\u2081 E\u2082 \u2286 (spectrum V)\u1d9c \u2227 E\u2081 < E\u2082) := by\n  constructor\n  \u00b7 -- Step 1: H commutes with translation operators\n    have h_commute : \u2200 R \u2208 L.asSet, \n      hamiltonian V \u2218 translationOperator R = translationOperator R \u2218 hamiltonian V :=\n      sorry -- Need: Operator composition and commutation relations\n    \n    -- Step 2: Apply Bloch's theorem\n    have bloch : \u2200 \u03c8 \u2208 spectrum V, \u2203 (bf : BlochFunction), \n      hamiltonian V (fun r => Complex.exp (Complex.I * \u27e8bf.k, r\u27e9) * bf.u r) = \n      \u03c8 \u2022 (fun r => Complex.exp (Complex.I * \u27e8bf.k, r\u27e9) * bf.u r) :=\n      sorry -- Need: Bloch's theorem\n    \n    -- Step 3: Reduced Hamiltonian on fundamental domain\n    have h_reduced : \u2200 k \u2208 brillouinZone L, \n      \u2203 (H_k : ((Fin d \u2192 \u211d) \u2192 \u2102) \u2192 ((Fin d \u2192 \u211d) \u2192 \u2102)), \n      sorry -- Need: Reduced Hamiltonian construction\n    \n    -- Step 4: Discrete spectrum for H_k\n    have h_discrete : \u2200 k \u2208 brillouinZone L, \n      \u2203 (E : \u2115 \u2192 \u211d), StrictMono E \u2227 Filter.Tendsto E Filter.atTop Filter.atTop :=\n      sorry -- Need: Spectral theory for compact operators\n    \n    -- Step 8: Spectrum is union of bands\n    sorry -- Need: Complete the proof using Bloch decomposition\n    \n  constructor\n  \u00b7 -- Each band is a closed interval\n    intro n\n    -- Step 5: Continuity of E_n(k)\n    have h_continuous : Continuous (fun k => sorry : (Fin d \u2192 \u211d) \u2192 \u211d) :=\n      sorry -- Need: Perturbation theory\n    \n    -- Step 6: Band as image of continuous function on compact set\n    have h_compact : IsCompact (brillouinZone L) :=\n      sorry -- Need: Brillouin zone compactness\n    \n    sorry -- Need: Image of compact set under continuous function is closed interval\n    \n  \u00b7 -- Spectral gaps exist\n    -- Step 7: Gap condition\n    sorry -- Need: Specific conditions for gap existence",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "H commutes with translation operators T_R for R \u2208 L",
+      "justification": "For \u03c8 \u2208 H\u00b2(\u211d^d), (T_R H \u03c8)(r) = H(\u03c8(r-R)) = -\u2207\u00b2\u03c8(r-R) + V(r)\u03c8(r-R) = -\u2207\u00b2\u03c8(r-R) + V(r-R)\u03c8(r-R) = (H T_R \u03c8)(r) since V(r) = V(r-R)",
+      "dependencies": [
+        "Assumption of V periodicity"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "By Bloch's theorem, eigenfunctions of H have the form \u03c8_{n,k}(r) = e^{ik\u00b7r}u_{n,k}(r) where u_{n,k} is L-periodic",
+      "justification": "Since [H, T_R] = 0, simultaneous eigenfunctions exist. Translation eigenvalues must satisfy T_R \u03c8 = e^{ik\u00b7R} \u03c8 for some k in the Brillouin zone",
+      "dependencies": [
+        "Step 1",
+        "Bloch's theorem"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "For fixed k, the reduced Hamiltonian H_k = e^{-ik\u00b7r}He^{ik\u00b7r} = (p + k)\u00b2 + V(r) acts on L\u00b2(\u03a9) where \u03a9 is the fundamental domain",
+      "justification": "Direct calculation shows H_k has periodic boundary conditions on \u03a9",
+      "dependencies": [
+        "Step 2",
+        "Definition of reduced Hamiltonian"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "H_k has discrete spectrum {E_n(k)}_{n=1}^\u221e with E_n(k) \u2192 \u221e as n \u2192 \u221e",
+      "justification": "H_k is self-adjoint on L\u00b2(\u03a9) with compact resolvent due to periodic boundary conditions on bounded domain",
+      "dependencies": [
+        "Step 3",
+        "Spectral theorem for compact operators"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Each E_n(k) is continuous in k",
+      "justification": "By perturbation theory, eigenvalues depend continuously on parameters when the operator depends continuously on parameters in the norm-resolvent sense",
+      "dependencies": [
+        "Step 4",
+        "Kato's perturbation theory"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "The nth band is B_n = {E_n(k) : k \u2208 BZ} where BZ is the Brillouin zone",
+      "justification": "By continuity of E_n(k) and compactness of BZ, each B_n is a closed interval",
+      "dependencies": [
+        "Step 5",
+        "Compactness of Brillouin zone"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Spectral gaps exist when max_{k\u2208BZ} E_n(k) < min_{k\u2208BZ} E_{n+1}(k) for some n",
+      "justification": "[Gap: General conditions guaranteeing gap existence require detailed analysis of specific potentials]",
+      "dependencies": [
+        "Step 6"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "The spectrum of H is \u03c3(H) = \u22c3_{n=1}^\u221e B_n",
+      "justification": "By Bloch decomposition, every eigenvalue of H arises as E_n(k) for some n and k",
+      "dependencies": [
+        "Steps 2, 6",
+        "Floquet-Bloch theory"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Bloch's theorem",
+      "authors": "Felix Bloch",
+      "year": "1928",
+      "field": "Quantum Mechanics",
+      "statement": "Eigenfunctions of a Hamiltonian with periodic potential can be written as \u03c8(r) = e^{ik\u00b7r}u(r) where u has the periodicity of the potential",
+      "usage": "Essential for decomposing the problem into k-dependent sectors"
+    },
+    {
+      "name": "Floquet-Bloch theory",
+      "authors": "Gaston Floquet, Felix Bloch",
+      "year": "1883, 1928",
+      "field": "Mathematical Physics",
+      "statement": "Solutions to periodic differential equations can be decomposed using quasi-momentum",
+      "usage": "Provides the mathematical framework for band structure"
+    },
+    {
+      "name": "Kato's perturbation theory",
+      "authors": "Tosio Kato",
+      "year": "1966",
+      "field": "Functional Analysis",
+      "statement": "Eigenvalues of self-adjoint operators depend continuously on parameters under suitable conditions",
+      "usage": "Ensures continuity of band functions E_n(k)"
+    },
+    {
+      "name": "Spectral theorem for compact operators",
+      "authors": "David Hilbert, Frigyes Riesz",
+      "year": "1906-1910",
+      "field": "Functional Analysis",
+      "statement": "Compact self-adjoint operators have discrete spectrum with eigenvalues accumulating only at zero",
+      "usage": "Guarantees discrete spectrum for H_k"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The lattice L is a discrete subgroup of \u211d^d with d \u2208 {1,2,3}",
+    "The potential V is measurable and locally L\u00b2-integrable",
+    "V(r + R) = V(r) for all r \u2208 \u211d^d and R \u2208 L",
+    "The Hamiltonian H = -\u2207\u00b2 + V acts on L\u00b2(\u211d^d)",
+    "V is relatively bounded with respect to -\u2207\u00b2 with relative bound less than 1",
+    "The domain of H is the Sobolev space H\u00b2(\u211d^d)",
+    "We work in units where \u210f = 2m = 1"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "For fixed k, we consider the reduced Hamiltonian H_k = e^{-ik\u00b7r}He^{ik\u00b7r} = (p + k)\u00b2 + V(r)",
+        "issue": "The equality H_k = (p + k)\u00b2 + V(r) is incorrect. The conjugation e^{-ik\u00b7r}He^{ik\u00b7r} does not yield this form. The correct form involves -i\u2207 + k, not p + k, and the calculation is not shown.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Show the explicit calculation: e^{-ik\u00b7r}(-\u2207\u00b2)e^{ik\u00b7r} = (-i\u2207 + k)\u00b2 and define H_k properly on L\u00b2(\u03a9) with appropriate boundary conditions."
+      },
+      {
+        "step": "Since H_k is self-adjoint on the bounded domain \u03a9 with periodic boundary conditions, it has compact resolvent",
+        "issue": "The claim that H_k has compact resolvent is not justified. Compactness of resolvent requires more than just a bounded domain - it needs the embedding H\u00b2(\u03a9) \u2192 L\u00b2(\u03a9) to be compact, which is true but not stated.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Invoke Rellich's theorem for the compactness of the embedding H\u00b2(\u03a9) \u2192 L\u00b2(\u03a9) on bounded domains."
+      },
+      {
+        "step": "By the spectral theorem for compact operators, H_k has discrete spectrum",
+        "issue": "The spectral theorem for compact operators applies to compact operators, not operators with compact resolvent. The correct statement involves the spectral theorem for self-adjoint operators with compact resolvent.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "State correctly: 'Since H_k has compact resolvent, its spectrum is discrete and consists only of eigenvalues with finite multiplicity.'"
+      },
+      {
+        "step": "By Kato's perturbation theory, each eigenvalue E_n(k) depends continuously on k",
+        "issue": "The application of Kato's perturbation theory is not justified. Which specific theorem? Under what topology does H_k depend continuously on k? The norm-resolvent continuity claim needs proof.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Prove that k \u2192 H_k is continuous in the norm-resolvent sense, then cite the specific perturbation theorem for eigenvalues of self-adjoint operators."
+      },
+      {
+        "step": "Since the Brillouin zone is compact and E_n(k) is continuous, the nth band B_n = {E_n(k) : k \u2208 BZ} forms a closed interval",
+        "issue": "The continuous image of a compact set is compact, but not necessarily an interval. The bands could be disconnected sets. This is a fundamental error.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed without additional assumptions. In general, bands can overlap and need not be intervals."
+      },
+      {
+        "step": "Spectral gaps occur when max E_n(k) < min E_{n+1}(k)",
+        "issue": "The proof admits it cannot establish the existence of gaps in general, yet the proposition claims gaps exist. This contradicts the stated result.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Either prove gaps exist under the given assumptions or weaken the proposition to not claim their existence."
+      },
+      {
+        "step": "By the Floquet-Bloch decomposition, every eigenvalue of H arises as E_n(k)",
+        "issue": "This assumes H has only point spectrum, which is not proven. The proof hasn't excluded continuous spectrum.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Prove that the spectrum of H consists only of the union of spectra of H_k over all k, and that H has no continuous spectrum."
+      }
+    ],
+    "hidden_assumptions": [
+      "The Brillouin zone is well-defined and compact",
+      "The eigenvalues E_n(k) can be ordered consistently for all k",
+      "The spectrum of H consists entirely of point spectrum",
+      "The domain of H_k on L\u00b2(\u03a9) is properly defined with periodic boundary conditions",
+      "The fundamental domain \u03a9 exists and is bounded"
+    ],
+    "circular_reasoning": false,
+    "circular_details": "",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims bands are closed intervals and gaps exist, but actually shows neither. At best, it shows the spectrum is the union of compact sets B_n, which need not be intervals and need not have gaps between them.",
+    "citation_issues": [
+      "Bloch's theorem is stated imprecisely - it requires proof that eigenfunctions can be chosen with the stated form",
+      "Kato's perturbation theory is cited vaguely without specifying which theorem or verifying its hypotheses",
+      "The spectral theorem for compact operators is misapplied - should reference operators with compact resolvent"
+    ],
+    "structural_soundness": 0.4,
+    "overall_assessment": "This proof contains multiple critical errors including incorrect calculations, unjustified compactness claims, and a fundamental misunderstanding that bands must be intervals. The proof fails to establish its main claims about band structure and the existence of gaps, making it unsuitable for publication in its current form.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof establishes band structure under additional unstated assumptions but fails to prove spectral gaps exist in general",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "V must be bounded or satisfy specific growth conditions for H to be self-adjoint",
+      "The relative bound condition needs V \u2208 L\u00b2_loc + L^\u221e_loc or similar regularity",
+      "Compactness of the Brillouin zone requires proper topology definition",
+      "Gap existence requires non-degeneracy conditions or specific potential properties",
+      "The domain H\u00b2(\u211d^d) may not be the correct domain for H = -\u2207\u00b2 + V without additional conditions"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "Step 1",
+        "issue": "The calculation V(r) = V(r-R) is incorrect; should be V(r-R) = V(r-R) by periodicity, not V(r) = V(r-R)"
+      },
+      {
+        "step": "Step 4",
+        "issue": "Compact resolvent claim requires proof that H_k has compact resolvent, which needs additional assumptions on V beyond what's stated"
+      },
+      {
+        "step": "Step 6",
+        "issue": "Continuity alone doesn't guarantee B_n is an interval; needs connectedness of the Brillouin zone and additional analysis"
+      },
+      {
+        "step": "Step 7",
+        "issue": "Explicitly acknowledges gap in proof - gap existence is not established"
+      },
+      {
+        "step": "Step 8",
+        "issue": "The union \u22c3_{n=1}^\u221e B_n may have overlapping bands, contradicting the claimed band structure with gaps"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No proof that spectral gaps actually exist",
+      "Missing verification that bands are disjoint intervals",
+      "No proof that the spectrum equals exactly the union of bands",
+      "Missing analysis of essential spectrum vs point spectrum",
+      "No verification that H is self-adjoint under the given assumptions"
+    ],
+    "internal_score": 0.3
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": false,
+    "contradiction_details": [],
+    "assumption_conflicts": [],
+    "beneficial_connections": [
+      "Connects to [129df8406d52] on symmetry breaking and degeneracy splitting - periodic potentials break translational symmetry creating band gaps",
+      "Relates to [08b6405556dd] on symmetry principles constraining dynamics - lattice symmetry determines Bloch wave structure",
+      "Links to [087da119976b] on symmetry breaking creating ordered patterns - band structure represents ordered energy spectrum",
+      "Complements [0a36ee9b1a6b] on localized excitations - band gaps can support localized states at interfaces",
+      "Extends [017d9bcb893f] on wave control through engineered structures - periodic potentials are paradigmatic engineered structures"
+    ],
+    "consistency_score": 0.85,
+    "notes": "The proof is mathematically sound but lacks rigor in several key steps. The claim that H_k has discrete spectrum requires proof that the fundamental domain has finite measure. The assertion that E_n(k) are continuous needs justification via perturbation theory. The existence of spectral gaps is stated as conditional but not proven. The relative boundedness assumption with bound < 1 is standard but should be verified for the specific potential class. Overall consistent with existing framework but would benefit from more detailed technical arguments."
+  },
+  "confidence_score": 0.4125,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.3,
+    "cross_proof": 0.85,
+    "calibration": 0.6
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.3,
+    "cross_proof": 0.85,
+    "calibration": 0.6
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": true,
+  "new_mathematics_needed": "",
+  "limitations": [
+    "Step 7 requires specific analysis of the potential V to guarantee gap existence - general conditions are known but complex",
+    "The proof assumes V is sufficiently regular but doesn't specify precise regularity conditions",
+    "Extension to photonic crystals requires Maxwell equations rather than Schr\u00f6dinger equation, though the mathematical structure is analogous",
+    "The proof is for scalar wave equations - vector waves (electromagnetic) require matrix operators",
+    "Assumes infinite periodic structure - finite size effects not addressed",
+    "Does not provide explicit conditions for gap formation",
+    "The isomorphism between quantum and photonic cases requires separate justification"
+  ],
+  "source_convergence": {
+    "structural_claim": "Periodic spatial structures create forbidden frequency/energy bands through wave interference",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Photonic Band Gap Theory",
+        "domain_id": "field_a",
+        "domain_name": "Optics and Photonics",
+        "link_type": "direct",
+        "structural_conclusion": "Periodic dielectric structures create forbidden frequency bands for photons"
+      },
+      {
+        "result_id": "",
+        "result_name": "Optical Lattices and Band Structure",
+        "domain_id": "field_b",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Periodic optical potentials create band structures for atoms"
+      }
+    ],
+    "domains": [
+      "optics",
+      "atomic_physics"
+    ],
+    "domain_names": [
+      "Optics and Photonics",
+      "Atomic and Molecular Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.238,
+      "independence": 0.7,
+      "adversarial": 0.09,
+      "reproducibility": 0.42,
+      "depth_consistency": 1.0,
+      "confidence": 0.4274,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:42:55.291829+00:00",
+    "id": "ac7529cc7225"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.325575
+  }
+}

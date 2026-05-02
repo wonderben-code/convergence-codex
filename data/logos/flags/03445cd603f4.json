@@ -1,0 +1,15 @@
+{
+  "proof_id": "03445cd603f4",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous category-theoretic framework for information dynamics on curved spacetime is needed. Specifically: (1) A well-defined category of information structures on spacetime regions with appropriate morphisms, (2) A precise formulation of information retrieval functors that works in both quantum and classical contexts, (3) A unified treatment of coarse-graining that applies to both gravitational and thermodynamic systems",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

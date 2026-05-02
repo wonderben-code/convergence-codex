@@ -1,0 +1,38 @@
+{
+  "proof_id": "03445cd603f4",
+  "timestamp": "2026-05-02T13:58:19.307547+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "categorical",
+      "alternatives_considered": [
+        "axiomatic - One could axiomatize properties of 'irreversibility-generating systems', but the categorical approach better captures the dynamic process of how causal boundaries emerge from underlying dynamics rather than just static properties they satisfy."
+      ],
+      "reasoning": "The convergence describes how irreversibility emerges through the creation of causal boundaries in both domains - a universal characterization of how certain dynamical processes generate 'information-trapping' regions. This is best captured by identifying the categorical structure common to both event horizons and entropy increase, likely involving functors between categories of causal structures and information-theoretic objects."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Category theory, Information theory, Differential geometry",
+      "alternatives_considered": [],
+      "reasoning": "Category theory provides the framework to formalize structural convergence between domains through functors mapping causal structures in GR to information-theoretic irreversibility in thermodynamics. Information theory formalizes entropy and information loss, while differential geometry provides the mathematical structure of spacetime and causal boundaries."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof constructs a functor from dynamical systems to causal structures that maps entropy-increasing processes to causal boundaries. By showing that both black hole horizons and thermodynamic coarse-graining create regions where information retrieval functors lack inverses, we establish that irreversibility emerges from causal disconnection in both gravitational and statistical mechanical contexts.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 9 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3806 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 3487 chars, 23 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This formalization requires significant infrastructure not present in Mathlib, including spacetime manifolds with Lorentzian metrics, information-theoretic categories, causal structures, and the connection between entropy and causality. The proof structure follows the given steps but most content requires new definitions."
+    }
+  ]
+}

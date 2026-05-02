@@ -1,0 +1,15 @@
+{
+  "proof_id": "f3a6e33a7f4e",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: Rigorous infinite-dimensional manifold theory for configuration spaces of fields, well-defined measures on function spaces, and convergence theory for functional integrals. The orbit space C(M)/G may not have a smooth structure without additional assumptions.",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

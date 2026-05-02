@@ -1,0 +1,13 @@
+{
+  "proof_id": "562fb090ae7a",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A complete categorical framework establishing functorial isomorphism between the category of quantum information-theoretic operations (channels, measurements, encodings) and the category of thermodynamic processes (work extraction, heat engines, refrigeration cycles). This would require extending current quantum resource theories to include full dynamical correspondences.",
+    "7 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

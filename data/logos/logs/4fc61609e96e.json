@@ -1,0 +1,38 @@
+{
+  "proof_id": "4fc61609e96e",
+  "timestamp": "2026-05-02T13:59:12.264822+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "constraint_logic",
+      "alternatives_considered": [
+        "axiomatic - This could capture the shared principles of balance and stability, but constraint_logic better captures the dynamical aspect where structures arise from optimization/equilibrium rather than just satisfying static axioms"
+      ],
+      "reasoning": "Both optical solitons and magnetic helicity structures arise as equilibrium solutions where competing effects (dispersion vs nonlinearity, magnetic energy vs topological constraints) exactly balance. These are fundamentally constraint satisfaction problems where the structures emerge as fixed points or minima under specific conservation laws."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Functional analysis, Dynamical systems, Differential geometry",
+      "alternatives_considered": [],
+      "reasoning": "Functional analysis provides the framework for studying nonlinear operators and their fixed points in infinite-dimensional spaces, which is essential for analyzing soliton solutions. Dynamical systems theory captures the stability and evolution aspects, while differential geometry handles the manifold structure of the solution space and the geometric nature of balance conditions."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof establishes that nonlinear terms create an effective potential in the energy landscape with non-trivial critical points. These critical points, when they exist and are localized, generate stable particle-like solutions through the balance of competing effects, with stability following from the variational structure modulo symmetries.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 8 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3930 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 2676 chars, 7 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "The formalization captures the theorem statement but cannot complete the proof due to missing advanced PDE and geometric analysis tools. The L^\u221e norm notation and translation operators \u03c4_v are represented abstractly as they require specific definitions for manifolds."
+    }
+  ]
+}

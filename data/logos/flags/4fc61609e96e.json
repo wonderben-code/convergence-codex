@@ -1,0 +1,13 @@
+{
+  "proof_id": "4fc61609e96e",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A general theory connecting the algebraic structure of nonlinear terms to spatial localization properties of solutions. Current proofs are case-by-case using specific ans\u00e4tze (e.g., sech\u00b2 profiles for KdV). Also needed: rigorous framework for 'exact balance' between operators of different orders in infinite dimensions.",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

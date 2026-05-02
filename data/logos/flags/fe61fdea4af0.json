@@ -1,0 +1,15 @@
+{
+  "proof_id": "fe61fdea4af0",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous mathematical framework for path integral measures in infinite dimensions, convergence criteria for operator expansions in general interacting theories, and a metric structure on the space of quantum field theories",
+    "Difficulty assessed as challenging",
+    "7 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

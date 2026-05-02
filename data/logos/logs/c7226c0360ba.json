@@ -1,0 +1,38 @@
+{
+  "proof_id": "c7226c0360ba",
+  "timestamp": "2026-05-02T13:56:25.582127+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "categorical - This could capture the universal property of horizon-induced thermodynamics, but the convergence is more about identifying common principles than characterizing a universal construction"
+      ],
+      "reasoning": "The convergence identifies shared abstract principles about information loss and thermodynamic behavior across different physical systems with horizons. Both black holes and confined quarks satisfy similar axioms regarding information encoding on boundaries, entropy-area relationships, and the emergence of thermodynamic properties from underlying dynamics."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Differential geometry, Information theory, Dynamical systems",
+      "alternatives_considered": [],
+      "reasoning": "Differential geometry provides the mathematical structure for horizons in GR (event horizons, cosmological horizons) and confinement surfaces in particle physics. Information theory formalizes entropy and information loss, while dynamical systems capture the time evolution and thermalization behavior near these boundaries."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "Systems with horizons or confinement scales naturally partition into accessible and inaccessible degrees of freedom. Tracing over the inaccessible sector produces entropy proportional to the boundary area (via holographic arguments), while generic dynamics causes information to flow across the boundary, leading to apparent information loss and thermalization of the accessible sector with temperature determined by the horizon's surface gravity or confinement strength.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 8 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3143 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 3514 chars, 7 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This formalization captures the structure of the proof but requires significant quantum mechanical machinery not available in Mathlib. The key missing pieces are quantum density matrices, partial trace operations, the holographic principle, and the Unruh effect calculation. The proof structure follows the given steps but most substantive claims require physics-specific results."
+    }
+  ]
+}

@@ -643,3 +643,8 @@
 [13:56:34]     [a994a9ae48e7] Type: categorical | Apparatus: Category theory, Functional analysis | Steps: 10
 [13:56:37]     [a84696ce790c] Type: constraint_logic | Apparatus: Differential geometry, Algebraic structures | Steps: 8
 [13:56:52]     [aab6f6a0a6a3] Type: axiomatic | Apparatus: Dynamical systems, Measure theory | Steps: 9
+[13:57:14]     [aad7d05ff162] Type: isomorphism | Apparatus: Functional analysis, Information theory | Steps: 7
+[13:57:15]     [ab640b64a8b5] Type: categorical | Apparatus: Differential geometry, Measure theory | Steps: 8
+[13:57:16]     [ad81fc77c666] Type: equivalence | Apparatus: Category theory, Functional analysis | Steps: 8
+[13:57:23]     [ac7529cc7225] Type: isomorphism | Apparatus: Functional analysis, Algebraic structures | Steps: 8
+[13:57:42]     [afc9825611af] Type: axiomatic | Apparatus: Differential geometry, Information theory | Steps: 8

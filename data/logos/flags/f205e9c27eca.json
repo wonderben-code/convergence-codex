@@ -1,0 +1,13 @@
+{
+  "proof_id": "f205e9c27eca",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous mathematical framework connecting: (1) measurement contexts in quantum mechanics with energy scales in QFT, (2) finite-dimensional contextuality results with infinite-dimensional QFT observables, (3) category-theoretic unification of different notions of 'context' across physics",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}
