@@ -1,7 +1,7 @@
 # Master Roadmap — All Projects
 
 **Creator:** Mark E. Mala (Ekram Alam)
-**Last updated:** 2 May 2026
+**Last updated:** 2 May 2026 (capstone progress update)
 **This is THE canonical roadmap. One file. All projects. Always consult this first.**
 
 ---
@@ -24,7 +24,7 @@
 - `wonderben-code/gnosis-ai` — Gnosis AI product (MIT)
 - `wonderben-code/convergence-codex` — The Convergence Codex: Logos, Synthesis, orchestrator, data (PUBLIC, MIT)
 
-**Published:** 35 papers on Zenodo with DOIs. All Bitcoin-timestamped.
+**Published:** 35 papers on Zenodo with DOIs. All Bitcoin-timestamped. 8 capstone papers composed (awaiting Zenodo publication).
 
 ---
 
@@ -160,9 +160,13 @@ Not just pairwise comparisons — combinatorial at EVERY level:
 | 2 | **Logos AI** — 2,162 lines, 14 files, Lean 4 formalisation, 5-layer adversarial validation | **DONE** |
 | 3 | **Synthesis AI** — 1,448 lines, 11 files, publication-quality paper generation | **DONE** |
 | 4 | **Pipeline Orchestrator** — 479 lines, 3 files, thin coordination, human checkpoints | **DONE** |
-| 5 | **Stage A** — 266 existing convergences through Logos → Synthesis | **RUNNING** (2 May) |
-| 5b | **Stage A PUBLICATION** — ~70 domain-pair papers, ~256 formal conjectures → Zenodo with DOIs | NOT DONE |
-| 5c | **Stage A CAPSTONE** — ~15-25 papers across all cascade levels (L5→L1). Nobel-format: genuine ontological claims about reality (Einstein/Higgs model), precisely scoped, with predictions extending into untested domains. 6-stage pipeline built (census → claim formulation → planning → composition → 18-point review → prediction extraction). Anti-over-generalisation enforced via scope boundaries. Predictions register Bitcoin-timestamped separately. | NOT DONE |
+| 5 | **Stage A** — 266 existing convergences through Logos → Synthesis | **DONE** (256/266 proofs, 2 May) |
+| 5c | **Stage A CAPSTONE** — 22 Nobel-format papers across all cascade levels (L5→L1). Genuine ontological claims about reality (Einstein/Higgs model), precisely scoped, with predictions extending into untested domains. 6-stage pipeline: census → claim formulation → planning → composition → 18-point review → prediction extraction. Anti-hallucination enforced (real convergence IDs only, deterministic provenance, no fake DOIs). | **8/22 DONE** (2 May) |
+| 5c-i | Clean up 8 completed capstone papers for Zenodo publication | **DONE** (fixed fake IDs, DOIs, headers) |
+| 5c-ii | Publish 8 capstone papers to Zenodo with DOIs | NOT DONE |
+| 5c-iii | Compose remaining 14 capstone papers (resume from paper 9/22) | NOT DONE |
+| 5c-iv | Publish remaining 14 capstone papers to Zenodo with DOIs | NOT DONE |
+| 5b | **Stage A STANDARD** — ~70 domain-pair papers from 256 formal conjectures → Zenodo with DOIs | NOT DONE |
 | 6 | **Stage B** — full Codex across 81 fields (6 phases) | NOT DONE |
 | 6b | **Stage B PUBLICATION** — ~300-500 papers, thousands of conjectures → Zenodo | NOT DONE |
 | 6c | **Stage B CAPSTONE** — updated fixed points with full 81-field evidence base. Do the Stage A fixed points hold? Strengthen/revise/discover new ones. The "Nobel paper" for Stage B. | NOT DONE |
@@ -370,9 +374,12 @@ NOW ━━━━━━ STAGE 3b: THE CONVERGENCE CODEX ━━━━━━━━�
   ✅ Logos AI (2,162 lines, Lean 4 formalisation, 5-layer adversarial validation)
   ✅ Synthesis AI (1,448 lines, publication-quality papers, auto boundaries)
   ✅ Pipeline Orchestrator (479 lines, thin coordination, checkpoints)
-  ▶  Stage A — RUNNING (266 convergences through Logos, 2 May 2026)
-     Stage A PUBLICATION — ~70 domain-pair papers → Zenodo with DOIs
-     Stage A CAPSTONE — 1-3 "Nobel papers": terminal fixed points, meta-cascade, predictions
+  ✅ Stage A — DONE (256/266 proofs through Logos)
+  ▶  Stage A CAPSTONE — 8/22 Nobel-format papers DONE + cleaned (2 May 2026)
+     → Publish 8 to Zenodo
+     → Compose remaining 14 capstone papers (~$60-80)
+     → Publish remaining 14 to Zenodo
+     Stage A STANDARD — ~70 domain-pair papers → Zenodo with DOIs
      Stage B — Full Codex across 81 fields (6 phases)
      Stage B PUBLICATION — ~300-500 papers → Zenodo
      Stage B CAPSTONE — updated fixed points with full evidence base
