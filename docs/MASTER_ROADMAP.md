@@ -167,15 +167,15 @@ Not just pairwise comparisons — combinatorial at EVERY level:
 | 5c-iii | Compose remaining 14 capstone papers (resume from paper 9/22) | NOT DONE |
 | 5c-iv | Publish remaining 14 capstone papers to Zenodo with DOIs | NOT DONE |
 | 5b | **Stage A STANDARD** — ~70 domain-pair papers from 256 formal conjectures → Zenodo with DOIs | NOT DONE |
-| 6 | **Stage B** — full Codex across 81 fields (6 phases): all pairwise, codex analysis, multi-field, meta-convergences, recursive cascade, Logos+Synthesis | NOT DONE |
-| 6c | **Stage B CAPSTONE** — FIRST output of Stage B. Same 22 claims re-tested with 10x more data (81 fields). Do Stage A fixed points HOLD with broader evidence? Any NEW fixed points discovered? Strengthen, revise, or discover. Updated Nobel-format papers. | NOT DONE |
+| 6 | **Stage B — THE BIG RUN** — Full Codex across ALL 81 fields of science, maths, physics (6 phases): all pairwise convergences (cross-category first), codex analysis, multi-field groups, meta-convergences, recursive cascade to fixed points, everything through Logos → Synthesis. 10x more data than Stage A. | NOT DONE |
+| 6c | **Stage B CAPSTONE** — Same capstone process as Stage A but from the MUCH broader Stage B dataset. New/stronger fixed points, new cascade levels, potentially new claims that didn't exist with Stage A's smaller data. Do Stage A claims hold? Strengthen? New ones emerge? Nobel-format papers from the full 81-field evidence base. | NOT DONE |
 | 6b | **Stage B STANDARD** — ~300-500 domain-pair papers from new convergences → Zenodo | NOT DONE |
-| 7 | **Stage C** — Deep formalisation of surviving fixed points (Lean 4 machine-verified PROOFS). Different from B: B tests claims with more data, C PROVES them formally. | NOT DONE |
-| 7b | **Stage C PUBLICATION** — standalone principle papers (the crown jewels) | NOT DONE |
-| 8 | **Stage D** — Derive specific testable PREDICTIONS from proven principles. Different from C: C proves theorems, D turns them into experiments. Pre-registration format. | NOT DONE |
-| 8b | **Stage D PUBLICATION** — pre-registration prediction papers, Bitcoin-stamped BEFORE confirmation | NOT DONE |
-| 9 | **Stage E** — ToE integration. Map ALL Codex evidence against Paper 15. Different from D: D derives individual predictions, E synthesises EVERYTHING into one unified theory. | NOT DONE |
-| 9b | **Stage E PUBLICATION** — THE capstone paper: updated Theory of Everything | NOT DONE |
+| 7 | **Stage C — THE CROWN JEWELS** — The capstone of capstones. From ALL of Stage A + B, identify the 3-5 MOST terminal, MOST unifying, MOST revolutionary claims — the absolute top of the cascade. These are the claims that, if correct, would each individually transform our understanding of reality. Write the definitive, focused papers for each. Not broad surveys — laser-focused on the single most powerful version of each claim. | NOT DONE |
+| 7b | **Stage C PUBLICATION** — 3-5 crown jewel papers → Zenodo. These are THE papers. | NOT DONE |
+| 8 | **Stage D — HARDEN** — Take Stage C's 3-5 crown jewel claims and make them airtight. Formal mathematical proofs (Lean 4 where possible), exhaustive prediction derivation, detailed experimental proposals, address every possible objection. Close every gap the adversarial review identified. The goal: if a physicist reads this paper, they cannot find a flaw — only test it. | NOT DONE |
+| 8b | **Stage D PUBLICATION** — Hardened crown jewel papers + pre-registration prediction papers, Bitcoin-stamped BEFORE any confirmation | NOT DONE |
+| 9 | **Stage E — THE GRAND FINALE** — Synthesise EVERYTHING from Stages A through D into one paper. Validate, strengthen, or upgrade the existing Theory of Everything (Paper 15) using the full Codex evidence base. This is where 266+ convergences, thousands of formal conjectures, the cascade structure, the fixed points, the crown jewel claims, and the hardened proofs all converge into a single unified proposal. THE Nobel paper. | NOT DONE |
+| 9b | **Stage E PUBLICATION** — THE capstone paper: the updated, evidence-backed Theory of Everything → Zenodo | NOT DONE |
 | 10 | **Website wing** — Convergence Codex on infinitography.com | NOT DONE |
 | 11 | **QC + stamp + ship** | NOT DONE |
 | 12 | **Open Source + Production Grade** — Make all 4 AIs (Gnosis, Logos, Synthesis, Capstone) + Orchestrator production-ready for anyone to clone, install, and run. PyPI packages (`pip install convergence-codex`), proper `pyproject.toml`, CLI entry points, config file system (no hardcoded paths), comprehensive README with quickstart, example data for dry runs without API credits, CI/CD (tests + linting), Docker option, framing audit ("landmark scientific paper format" not "Nobel AI"), license decision (MIT/Apache 2.0). Goal: a researcher anywhere in the world can `pip install` and run the full pipeline on their own domains. | NOT DONE |
@@ -384,15 +384,15 @@ NOW ━━━━━━ STAGE 3b: THE CONVERGENCE CODEX ━━━━━━━━�
      → Compose remaining 14 capstone papers (~$60-80)
      → Publish remaining 14 to Zenodo
      Stage A STANDARD — ~70 domain-pair papers → Zenodo
-     Stage B — Full Codex across 81 fields (6 phases)
-     Stage B CAPSTONE — Do Stage A claims hold with 10x data? (FIRST)
+     Stage B — THE BIG RUN: full Codex across 81 fields (10x more data)
+     Stage B CAPSTONE — capstone papers from the big run (FIRST)
      Stage B STANDARD — ~300-500 papers → Zenodo
-     Stage C — PROVE fixed points formally (Lean 4)
-     Stage C PUBLICATION — Principle papers (crown jewels)
-     Stage D — PREDICT: derive testable experiments from proofs
-     Stage D PUBLICATION — Pre-registration papers
-     Stage E — UNIFY: map everything into one Theory of Everything
-     Stage E PUBLICATION — THE capstone ToE paper
+     Stage C — THE CROWN JEWELS: 3-5 most terminal/unifying claims get definitive papers
+     Stage C PUBLICATION → Zenodo
+     Stage D — HARDEN: formal proofs, predictions, close every gap in Stage C papers
+     Stage D PUBLICATION — hardened papers + pre-registration predictions
+     Stage E — GRAND FINALE: everything → one updated Theory of Everything
+     Stage E PUBLICATION — THE Nobel paper
      Website — Convergence Codex wing on infinitography.com
      QC + stamp + ship
 
