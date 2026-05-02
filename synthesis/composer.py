@@ -1,11 +1,12 @@
 """The Composer — core Synthesis engine.
 
 Takes a bundle of discoveries + proofs and produces a publication-quality paper draft.
-Stages: boundary detection → section composition → assembly → review → output.
+Stages: boundary detection → section composition → assembly → review → REVISION → output.
 """
 
 from __future__ import annotations
 
+import json
 from dataclasses import asdict
 from datetime import datetime, timezone
 from pathlib import Path
@@ -22,7 +23,7 @@ from synthesis.prompts.compose import (
     CONCLUSION_PROMPT, REFERENCES_PROMPT,
 )
 from synthesis.prompts.boundary import BOUNDARY_PROMPT
-from synthesis.prompts.review import REVIEW_PROMPT
+from synthesis.prompts.review import REVIEW_PROMPT, REVISION_PROMPT
 
 
 class Composer:
@@ -80,22 +81,66 @@ class Composer:
 
         # Build bundles from boundary decision
         conv_by_id = {c.get("id", ""): c for c in convergences}
-        proof_by_id = {p.get("id", ""): p for p in proofs}
+        proof_by_conv = {}
+        for p in proofs:
+            cid = p.get("convergence_id", "")
+            proof_by_conv[cid] = p
         finding_by_id = {f.get("id", ""): f for f in findings}
 
         bundles = []
+        assigned_conv_ids = set()
+
         for paper_spec in data.get("papers", []):
+            paper_convs = [conv_by_id[cid] for cid in paper_spec.get("convergence_ids", []) if cid in conv_by_id]
+            # Auto-match proofs to convergences (don't rely on Claude listing proof IDs)
+            paper_proofs = [proof_by_conv[c.get("id", "")] for c in paper_convs if c.get("id", "") in proof_by_conv]
+            paper_findings = [finding_by_id[fid] for fid in paper_spec.get("finding_ids", []) if fid in finding_by_id]
+
             bundle = PaperBundle(
-                convergences=[conv_by_id[cid] for cid in paper_spec.get("convergence_ids", []) if cid in conv_by_id],
-                proofs=[proof_by_id[pid] for pid in paper_spec.get("proof_ids", []) if pid in proof_by_id],
-                findings=[finding_by_id[fid] for fid in paper_spec.get("finding_ids", []) if fid in finding_by_id],
+                convergences=paper_convs,
+                proofs=paper_proofs,
+                findings=paper_findings,
                 theme=paper_spec.get("theme", ""),
                 target_structure=paper_spec.get("title_suggestion", ""),
             )
             if bundle.convergences:
                 bundles.append(bundle)
+                for c in paper_convs:
+                    assigned_conv_ids.add(c.get("id", ""))
 
-        return bundles if bundles else [PaperBundle(convergences=convergences, proofs=proofs, findings=findings)]
+        # ─── COMPLETENESS GUARANTEE ───
+        # Any convergence NOT assigned to a paper gets collected into remainder bundles.
+        # This prevents silent data loss from Claude missing IDs in boundary detection.
+        all_conv_ids = set(conv_by_id.keys())
+        missed_ids = all_conv_ids - assigned_conv_ids
+        if missed_ids:
+            missed_convs = [conv_by_id[cid] for cid in missed_ids]
+            missed_proofs = [proof_by_conv[cid] for cid in missed_ids if cid in proof_by_conv]
+
+            # Group missed convergences into papers of ~8 each
+            chunk_size = 8
+            for i in range(0, len(missed_convs), chunk_size):
+                chunk = missed_convs[i:i + chunk_size]
+                chunk_ids = {c.get("id", "") for c in chunk}
+                chunk_proofs = [p for p in missed_proofs if p.get("convergence_id", "") in chunk_ids]
+
+                domains = set()
+                for c in chunk:
+                    for d in c.get("domain_names", c.get("domains", [])):
+                        domains.add(d)
+
+                bundles.append(PaperBundle(
+                    convergences=chunk,
+                    proofs=chunk_proofs,
+                    findings=[],  # Findings assigned to main papers
+                    theme=f"Additional convergences: {', '.join(sorted(domains)[:4])}",
+                    target_structure="",
+                ))
+
+        if not bundles:
+            return [PaperBundle(convergences=convergences, proofs=proofs, findings=findings)]
+
+        return bundles
 
     def compose(self, bundle: PaperBundle) -> tuple[PaperDraft, ReviewRequest]:
         """Compose a complete paper from a bundle."""
@@ -196,11 +241,34 @@ class Composer:
         return paper, review
 
     def review_paper(self, paper: PaperDraft) -> dict:
-        """Run adversarial review on a paper draft."""
+        """Run adversarial review on a paper draft.
+
+        Reviews the FULL paper body (not truncated). Appendices are summarised
+        to keep within context limits while still being assessed.
+        """
+        # Build review text: full body + appendix summary (not truncated body)
+        body_sections = [s for s in paper.sections
+                         if not s.get("section", "").startswith("appendix")]
+        body_text = "\n\n".join(
+            f"## {s.get('title', '')}\n\n{s.get('content', '')}"
+            for s in body_sections
+        )
+
+        # Appendix summary — enough to assess quality without full data dump
+        appendix_summary = "\n\n[APPENDICES PRESENT — summarised for review]\n"
+        for s in paper.sections:
+            if s.get("section", "").startswith("appendix"):
+                title = s.get("title", "")
+                wc = s.get("word_count", 0)
+                # Include just the "How to Read" section (first ~500 chars)
+                content_preview = s.get("content", "")[:500]
+                appendix_summary += f"\n### {title} ({wc} words)\n{content_preview}...\n"
+
+        review_text = body_text + appendix_summary
 
         prompt = REVIEW_PROMPT.format(
             title=paper.title,
-            full_text=paper.full_markdown[:15000],  # Limit for context
+            full_text=review_text,
         )
 
         data = self.api.query_deep_json(prompt, system=SECTION_SYSTEM, max_tokens=4096)
@@ -211,6 +279,107 @@ class Composer:
         paper.confidence_category = PaperConfidence.from_score(overall).value
 
         return data
+
+    def revise_paper(self, paper: PaperDraft, review_result: dict, bundle: PaperBundle) -> PaperDraft:
+        """Revise a paper based on review feedback.
+
+        Takes the review issues, rewrites affected sections, and reassembles.
+        Only rewrites sections with critical or major issues.
+        """
+        issues = review_result.get("issues", [])
+        if not issues:
+            return paper
+
+        # Identify sections needing revision
+        sections_to_revise = set()
+        for issue in issues:
+            severity = issue.get("severity", "minor")
+            if severity in ("critical", "major"):
+                sections_to_revise.add(issue.get("section", ""))
+
+        if not sections_to_revise:
+            return paper
+
+        # Build revision context
+        issues_text = "\n".join(
+            f"- [{issue.get('severity', 'unknown')}] {issue.get('section', '?')}: "
+            f"{issue.get('issue', '')} → Fix: {issue.get('suggested_fix', '')}"
+            for issue in issues
+            if issue.get("severity") in ("critical", "major")
+        )
+
+        # Revise each flagged section
+        for i, section in enumerate(paper.sections):
+            section_name = section.get("section", "")
+            if section_name not in sections_to_revise:
+                continue
+            if section_name.startswith("appendix"):
+                continue  # Appendices are structured data, not AI-revised
+
+            original_content = section.get("content", "")
+
+            prompt = REVISION_PROMPT.format(
+                section_title=section.get("title", ""),
+                section_content=original_content,
+                review_issues=issues_text,
+                paper_title=paper.title,
+            )
+
+            revised = self.api.query_deep(prompt, system=SECTION_SYSTEM, max_tokens=4096).strip()
+            if revised and len(revised) > 100:  # Sanity check — don't replace with garbage
+                paper.sections[i]["content"] = revised
+                paper.sections[i]["word_count"] = len(revised.split())
+
+        # Reassemble markdown
+        paper.total_word_count = sum(s["word_count"] for s in paper.sections)
+        paper.full_markdown = self._assemble_markdown(paper)
+
+        return paper
+
+    def verify_completeness(self, bundles: list[PaperBundle],
+                            all_convergences: list[dict],
+                            all_proofs: list[dict]) -> dict:
+        """Verify that ALL convergences and proofs are covered across all bundles.
+
+        Returns a manifest showing coverage. Raises no exceptions — just reports.
+        """
+        all_conv_ids = {c.get("id", "") for c in all_convergences}
+        all_proof_conv_ids = {p.get("convergence_id", "") for p in all_proofs}
+
+        covered_conv_ids = set()
+        covered_proof_ids = set()
+        paper_assignments = []
+
+        for i, bundle in enumerate(bundles):
+            bundle_conv_ids = {c.get("id", "") for c in bundle.convergences}
+            bundle_proof_ids = {p.get("id", "") for p in bundle.proofs}
+            covered_conv_ids |= bundle_conv_ids
+            covered_proof_ids |= bundle_proof_ids
+
+            paper_assignments.append({
+                "paper_index": i,
+                "theme": bundle.theme,
+                "convergences": len(bundle.convergences),
+                "proofs": len(bundle.proofs),
+                "convergence_ids": sorted(bundle_conv_ids),
+            })
+
+        missed_convs = all_conv_ids - covered_conv_ids
+        orphan_proofs = all_proof_conv_ids - covered_conv_ids
+
+        manifest = {
+            "total_convergences": len(all_conv_ids),
+            "covered_convergences": len(covered_conv_ids),
+            "missed_convergences": sorted(missed_convs),
+            "total_proofs": len(all_proofs),
+            "covered_proofs": len(covered_proof_ids),
+            "orphan_proof_convergences": sorted(orphan_proofs),
+            "total_papers": len(bundles),
+            "paper_assignments": paper_assignments,
+            "complete": len(missed_convs) == 0,
+        }
+
+        return manifest
 
     # ─── Private composition methods ───
 
@@ -406,16 +575,33 @@ class Composer:
         return "\n".join(lines) or "No proofs available."
 
     def _load_corpus_context(self) -> str:
-        """Load summaries of existing corpus papers for context."""
+        """Load summaries of existing corpus papers for context.
+
+        Reads both pre-existing corpus papers AND papers generated earlier in
+        this same run, so each new paper is aware of what came before it.
+        """
         if not self.corpus_papers_dir or not self.corpus_papers_dir.exists():
             return "No prior corpus papers available."
 
         papers = []
         for path in sorted(self.corpus_papers_dir.glob("*.md")):
             content = path.read_text()
-            # Extract first few lines as summary
-            lines = content.split("\n")[:5]
-            papers.append(f"- {path.stem}: {' '.join(lines)[:150]}")
+            # Extract title (first H1) and abstract
+            title = ""
+            abstract = ""
+            in_abstract = False
+            for line in content.split("\n"):
+                if line.startswith("# ") and not title:
+                    title = line[2:].strip()
+                elif "abstract" in line.lower() and line.startswith("##"):
+                    in_abstract = True
+                elif in_abstract and line.startswith("##"):
+                    in_abstract = False
+                elif in_abstract:
+                    abstract += line + " "
+
+            summary = abstract.strip()[:300] if abstract.strip() else " ".join(content.split("\n")[:5])[:300]
+            papers.append(f"- **{title or path.stem}**: {summary}")
 
         return "\n".join(papers) if papers else "No prior corpus papers available."
 

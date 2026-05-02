@@ -1,0 +1,13 @@
+{
+  "proof_id": "94529326f1f1",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous category-theoretic framework connecting topological invariants to conservation laws across different physical domains. This would require developing functors between the category of topological spaces with invariants and the category of dynamical systems with conservation laws.",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

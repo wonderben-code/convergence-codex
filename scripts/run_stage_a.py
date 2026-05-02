@@ -339,26 +339,47 @@ def run_synthesis(convergences: list[dict], findings: list[dict],
     bundles = composer.detect_boundaries(convergences, proofs, findings)
     log(f"  Papers to generate: {len(bundles)}", log_file)
 
+    # ─── COMPLETENESS VERIFICATION ───
+    manifest = composer.verify_completeness(bundles, convergences, proofs)
+    log(f"  Completeness: {manifest['covered_convergences']}/{manifest['total_convergences']} "
+        f"convergences covered", log_file)
+    if manifest["missed_convergences"]:
+        log(f"  WARNING: {len(manifest['missed_convergences'])} convergences not assigned to any paper!", log_file)
+        log(f"  Missed IDs: {manifest['missed_convergences'][:10]}...", log_file)
+    else:
+        log(f"  All convergences assigned to papers.", log_file)
+
+    # Save manifest
+    manifest_path = config.runs_dir / f"manifest_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}.json"
+    manifest_path.write_text(json.dumps(manifest, indent=2))
+    log(f"  Manifest saved: {manifest_path}", log_file)
+
     stats = {
         "started": now_iso(),
         "bundles": len(bundles),
         "completed": 0,
         "errors": 0,
         "total_words": 0,
+        "completeness": manifest["complete"],
     }
+
+    # Track which convergences end up in final papers
+    final_covered_ids = set()
 
     for i, bundle in enumerate(bundles):
         log(f"\n  [{i+1}/{len(bundles)}] Paper — {len(bundle.convergences)} convergences, "
             f"{len(bundle.proofs)} proofs", log_file)
 
         try:
+            # ─── STEP 1: COMPOSE (first draft) ───
             paper, review = composer.compose(bundle)
             log(f"    Title: {paper.title[:60]}...", log_file)
             log(f"    Words: {paper.total_word_count}", log_file)
 
-            # Review
+            # ─── STEP 2: REVIEW (adversarial) ───
             review_result = composer.review_paper(paper)
-            log(f"    Review: {paper.confidence_score:.2f} ({paper.confidence_category})", log_file)
+            verdict = review_result.get("verdict", "unknown")
+            log(f"    Review: {paper.confidence_score:.2f} ({paper.confidence_category}) — {verdict}", log_file)
 
             # Build review items from issues
             issues = review_result.get("issues", [])
@@ -370,13 +391,34 @@ def run_synthesis(convergences: list[dict], findings: list[dict],
                     "suggested_fix": issue.get("suggested_fix", ""),
                 })
 
-            # Save
+            # ─── STEP 3: REVISE (if review found critical/major issues) ───
+            critical_or_major = [iss for iss in issues if iss.get("severity") in ("critical", "major")]
+            if critical_or_major:
+                log(f"    Revising: {len(critical_or_major)} critical/major issues to fix...", log_file)
+                paper = composer.revise_paper(paper, review_result, bundle)
+                log(f"    Revised: {paper.total_word_count} words", log_file)
+
+                # ─── STEP 4: SECOND REVIEW (verify fixes) ───
+                review_result_2 = composer.review_paper(paper)
+                log(f"    Post-revision review: {paper.confidence_score:.2f} ({paper.confidence_category})", log_file)
+
+                # Merge any remaining issues into review
+                for issue in review_result_2.get("issues", []):
+                    review.sections_to_review.append({
+                        "section": issue.get("section", ""),
+                        "reason": f"[POST-REVISION] {issue.get('issue', '')}",
+                        "priority": issue.get("severity", "minor"),
+                        "suggested_fix": issue.get("suggested_fix", ""),
+                    })
+
+            # ─── STEP 5: SAVE ───
             store.save_paper(paper)
             store.save_markdown(paper)
             store.save_review(review)
 
             stats["completed"] += 1
             stats["total_words"] += paper.total_word_count
+            final_covered_ids.update(paper.convergence_ids)
             log(f"    Saved: {paper.id}", log_file)
 
         except Exception as e:
@@ -390,6 +432,17 @@ def run_synthesis(convergences: list[dict], findings: list[dict],
     stats["completed_at"] = now_iso()
     stats["total_cost"] = api.stats.cost_usd
     stats["total_calls"] = api.stats.calls
+
+    # ─── FINAL COMPLETENESS CHECK ───
+    all_input_ids = {c.get("id", "") for c in convergences}
+    final_missed = all_input_ids - final_covered_ids
+    stats["convergences_in_papers"] = len(final_covered_ids)
+    stats["convergences_missed"] = len(final_missed)
+    if final_missed:
+        stats["missed_ids"] = sorted(final_missed)
+        log(f"\n  WARNING: {len(final_missed)} convergences NOT in any final paper!", log_file)
+    else:
+        log(f"\n  All {len(all_input_ids)} convergences covered in final papers.", log_file)
 
     # Save run stats
     stats_path = config.runs_dir / f"stage_a_synthesis_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}.json"

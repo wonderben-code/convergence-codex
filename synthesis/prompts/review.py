@@ -53,3 +53,33 @@ Return JSON:
   "verdict": "accept" | "minor_revision" | "major_revision"
 }}
 """
+
+REVISION_PROMPT = """You are revising a section of a Convergence Codex paper based on expert review feedback.
+
+## Paper Title
+{paper_title}
+
+## Section to Revise
+### {section_title}
+
+{section_content}
+
+## Review Issues to Address
+
+{review_issues}
+
+## Instructions
+
+Rewrite this section to address ALL of the issues listed above. Your revision must:
+
+1. Fix every critical and major issue identified
+2. Preserve all factual content and data — do NOT remove or alter any evidence, scores, or claims
+3. Maintain the same overall structure unless the review specifically criticises it
+4. Keep the same level of detail (don't make it shorter to avoid issues — fix the issues)
+5. Improve clarity, readability, and interdisciplinary accessibility wherever possible
+6. If the review says something is unclear or jargon-heavy, add explanations
+7. If the review says there's over-claiming, soften the language to match the evidence
+8. If the review says a connection is unexplained, explain it
+
+Return the COMPLETE revised section text (markdown). Not a diff — the full rewritten section.
+"""

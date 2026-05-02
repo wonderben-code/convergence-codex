@@ -1,0 +1,15 @@
+{
+  "proof_id": "8597ba2a0bd3",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A unified category-theoretic framework that can simultaneously handle quantum measurement contexts (commutative subalgebras) and relativistic reference frames (coordinate charts) as objects in the same category, with appropriate morphisms preserving the relevant structure",
+    "Difficulty assessed as challenging",
+    "7 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

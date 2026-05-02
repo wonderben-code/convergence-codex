@@ -1,0 +1,13 @@
+{
+  "proof_id": "ef45974d5d75",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A unified framework for constraint-induced spectral shifts across different operator classes (Maxwell, Navier-Stokes, etc.) that goes beyond case-by-case analysis. Current spectral perturbation theory is not general enough for nonlinear operators with mixed boundary conditions.",
+    "7 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

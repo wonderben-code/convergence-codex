@@ -1,0 +1,380 @@
+{
+  "id": "9982321a885c",
+  "convergence_id": "dc69dd3eb66f",
+  "timestamp": "2026-05-02T14:40:11.713990+00:00",
+  "proposition": "Let C be a category of fundamental mathematical objects. Then there exists a functor F: C \u2192 Set such that for objects X, Y in C, the classification of X is determined by the equivalence relation ~_F where X ~_F Y if and only if F(X) \u2245 F(Y), and F encodes essential structural relationships and obstructions rather than individual object properties.",
+  "proposition_natural": "Fundamental mathematical objects are classified not by individual properties but by equivalence relations that capture essential structural relationships and obstructions.",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Topology",
+    "Algebraic structures"
+  ],
+  "apparatus_justification": "Category theory provides the natural framework for formalizing equivalence relations and structural relationships across domains through functors and natural isomorphisms. Topology and algebraic structures are needed to instantiate the specific classification theorems in each domain (fundamental groups, homology groups in topology; ideal class groups, Galois groups in number theory).",
+  "proof_natural": "**Proposition.** Let C be a category of fundamental mathematical objects. Then there exists a functor F: C \u2192 Set such that for objects X, Y in C, the classification of X is determined by the equivalence relation ~_F where X ~_F Y if and only if F(X) \u2245 F(Y), and F encodes essential structural relationships and obstructions rather than individual object properties.\n\n**Proof.** We assume the framework of category theory with standard axioms (ZFC or equivalent), where fundamental mathematical objects can be formalized as objects in appropriate categories. We further assume that classification means determining objects up to an appropriate notion of equivalence, that structural relationships can be encoded as morphisms, and that obstructions can be formalized as elements of cohomology groups or similar invariants. All categories under consideration are assumed to be locally small, and relevant functors preserve the essential structure we wish to classify.\n\nWe establish this proposition by examining three fundamental examples from different areas of mathematics.\n\nFirst, consider the category Mfd^n of smooth n-manifolds with smooth maps. Following Thom's construction, we define the functor \u03a9: Mfd^n \u2192 AbGrp sending each manifold M to its cobordism group \u03a9_n(M). Two manifolds M and N are cobordant if and only if there exists a manifold W with boundary \u2202W = M \u2294 (-N). This relation satisfies reflexivity, symmetry, and transitivity, thus defining an equivalence relation. By Thom's theorem, the cobordism groups satisfy \u03a9_n \u2245 \u03c0_n(MO) for appropriate n, where MO is the Thom spectrum. This establishes that manifolds are classified by stable homotopy-theoretic invariants rather than by their intrinsic geometric properties.\n\nSecond, for vector bundles, we consider the category VectBun(X) of vector bundles over a space X. The Chern character provides a functor ch: VectBun(X) \u2192 H^*(X;Q) into the rational cohomology ring. Two vector bundles E and F over X are stably isomorphic if E \u2295 \u03b5^k \u2245 F \u2295 \u03b5^l for some trivial bundles \u03b5^k and \u03b5^l. The fundamental theorem of K-theory establishes that vector bundles up to stable isomorphism are classified by the group K^0(X). Moreover, by the splitting principle, characteristic classes provide complete invariants for complex vector bundles. Thus, the classification is achieved through cohomological obstructions rather than bundle-specific data.\n\nThird, in algebraic number theory, let NF denote the category of number fields with field homomorphisms. We define the functor Cl: NF \u2192 AbGrp by mapping each number field K to its ideal class group Cl(K). The main theorem of class field theory establishes that abelian extensions of K are classified by subgroups of the idele class group C_K through the Artin reciprocity isomorphism. This demonstrates that field extensions are classified by group-theoretic invariants encoding arithmetic obstructions.\n\nIn each case, we observe that objects are classified not by their intrinsic properties but by functorial invariants that detect structural obstructions. The cobordism groups detect differential-topological obstructions, characteristic classes detect vector bundle obstructions, and class groups detect arithmetic obstructions.\n\n[Note: A gap remains in establishing a general categorical framework that encompasses all these examples. While each specific case demonstrates the principle, a unified notion of \"classification functor\" that applies across all categories of fundamental mathematical objects does not yet exist in full generality. The pattern is clear from these examples, but a rigorous general proof requires new mathematical machinery.]\n\nDespite this gap, the examples strongly support the proposition that fundamental mathematical objects across diverse fields are classified by functorial invariants encoding obstructions rather than by object-specific properties. This completes our partial proof, pending the development of a more general framework. \u25a1",
+  "proof_lean": "import Mathlib.CategoryTheory.Category.Basic\nimport Mathlib.CategoryTheory.Functor.Basic\nimport Mathlib.CategoryTheory.Types\nimport Mathlib.CategoryTheory.Iso\nimport Mathlib.Logic.Equiv.Basic\nimport Mathlib.Algebra.Group.Basic\nimport Mathlib.Topology.Basic\n\n/-- A classification functor from a category to Set that determines equivalence via isomorphism -/\nstructure ClassificationFunctor (C : Type*) [Category C] where\n  F : C \u2964 Type*\n  classifies : \u2200 (X Y : C), (F.obj X \u2245 F.obj Y) \u2192 (X \u2248 Y)\n  where X \u2248 Y represents some equivalence relation on objects\n\n/-- The category of smooth n-manifolds -/\ndef Mfd (n : \u2115) : Type* := sorry -- \"Smooth n-manifolds not formalized in Mathlib\"\n\ninstance : Category (Mfd n) := sorry -- \"Category structure for manifolds not in Mathlib\"\n\n/-- The cobordism group functor -/\ndef \u03a9 (n : \u2115) : Mfd n \u2964 AddCommGroup := sorry -- \"Cobordism groups not formalized in Mathlib\"\n\n/-- Two manifolds are cobordant -/\ndef cobordant {n : \u2115} (M N : Mfd n) : Prop := \n  sorry -- \"Cobordism relation: \u2203 W with \u2202W = M \u2294 (-N), not in Mathlib\"\n\n/-- Cobordism is an equivalence relation -/\nlemma cobordant_equiv (n : \u2115) : Equivalence (@cobordant n) := \n  sorry -- \"Proof that cobordism satisfies reflexivity, symmetry, transitivity not in Mathlib\"\n\n/-- Thom's cobordism classification theorem -/\ntheorem thom_classification (n : \u2115) : \n  sorry -- \"\u03a9_n \u2245 \u03c0_n(MO) where MO is Thom spectrum, not in Mathlib\"\n\n/-- Category of vector bundles over a space X -/\ndef VectBun (X : Type*) [TopologicalSpace X] : Type* := \n  sorry -- \"Vector bundles not fully formalized in Mathlib\"\n\ninstance (X : Type*) [TopologicalSpace X] : Category (VectBun X) := \n  sorry -- \"Category structure for vector bundles not in Mathlib\"\n\n/-- The Chern character functor -/\ndef ch {X : Type*} [TopologicalSpace X] : VectBun X \u2964 Type* := \n  sorry -- \"Chern character ch: VectBun(X) \u2192 H^*(X;Q) not in Mathlib\"\n\n/-- Stable isomorphism of vector bundles -/\ndef stably_isomorphic {X : Type*} [TopologicalSpace X] (E F : VectBun X) : Prop :=\n  sorry -- \"E \u2295 \u03b5^k \u2245 F \u2295 \u03b5^l for trivial bundles, K-theory not complete in Mathlib\"\n\n/-- K-theory classification of vector bundles -/\ntheorem k_theory_classification {X : Type*} [TopologicalSpace X] :\n  sorry -- \"Classification via K^0(X) and characteristic classes, not in Mathlib\"\n\n/-- Category of number fields -/\ndef NF : Type* := sorry -- \"Number fields as a category not formalized\"\n\ninstance : Category NF := sorry -- \"Category structure for number fields not in Mathlib\"\n\n/-- The ideal class group functor -/\ndef Cl : NF \u2964 AddCommGroup := sorry -- \"Ideal class group functor not in Mathlib\"\n\n/-- Class field theory main theorem -/\ntheorem class_field_theory (K : NF) :\n  sorry -- \"Abelian extensions classified by subgroups of idele class group, not in Mathlib\"\n\n/-- General classification theorem (partial formalization) -/\ntheorem classification_by_functors (C : Type*) [Category C] :\n  \u2203 (F : C \u2964 Type*), \u2200 (X Y : C), \n    (F.obj X \u2245 F.obj Y) \u2192 sorry := by\n  sorry -- \"General framework for classification functors not yet developed\"\n\n/-- Objects are classified by obstructions rather than intrinsic properties -/\nlemma classification_by_obstructions (C : Type*) [Category C] \n  (F : ClassificationFunctor C) : \n  sorry -- \"Formal statement about obstruction theory not available\"",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "For manifolds, define the category Mfd^n of smooth n-manifolds with smooth maps, and the functor \u03a9: Mfd^n \u2192 AbGrp sending M to its cobordism group \u03a9_n(M)",
+      "justification": "Standard construction in differential topology following Thom's work",
+      "dependencies": [
+        "Thom 1954"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Two manifolds M, N are cobordant if and only if there exists W with \u2202W = M \u2294 (-N), which defines an equivalence relation",
+      "justification": "Definition of cobordism and verification that it satisfies reflexivity, symmetry, and transitivity",
+      "dependencies": [
+        "Step 1",
+        "Basic manifold theory"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The cobordism classification theorem states that \u03a9_n \u2245 \u03c0_n(MO) for appropriate n, where MO is the Thom spectrum",
+      "justification": "Thom's theorem relating cobordism groups to stable homotopy groups",
+      "dependencies": [
+        "Thom 1954",
+        "Pontryagin-Thom construction"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "For vector bundles, define VectBun(X) as the category of vector bundles over X, and the functor ch: VectBun(X) \u2192 H^*(X;Q) given by the Chern character",
+      "justification": "Standard construction in K-theory and characteristic class theory",
+      "dependencies": [
+        "Chern 1946",
+        "Hirzebruch-Riemann-Roch theorem"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "Two vector bundles E, F over X are stably isomorphic if E \u2295 \u03b5^k \u2245 F \u2295 \u03b5^l for trivial bundles \u03b5^k, \u03b5^l",
+      "justification": "Definition of stable equivalence in K-theory",
+      "dependencies": [
+        "Step 4",
+        "Basic bundle theory"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "The classification of vector bundles up to stable isomorphism is given by K^0(X), and characteristic classes provide complete invariants for complex bundles",
+      "justification": "Fundamental theorem of K-theory and the splitting principle",
+      "dependencies": [
+        "Atiyah-Hirzebruch 1961",
+        "Step 5"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "For number fields, let NF be the category of number fields with field homomorphisms, and define Cl: NF \u2192 AbGrp by K \u21a6 Cl(K), the ideal class group",
+      "justification": "Standard construction in algebraic number theory",
+      "dependencies": [
+        "Dedekind domain theory",
+        "Basic algebraic number theory"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Class field theory establishes that abelian extensions of K are classified by subgroups of the idele class group C_K",
+      "justification": "Main theorem of class field theory providing the Artin reciprocity isomorphism",
+      "dependencies": [
+        "Artin 1927",
+        "Takagi 1920",
+        "Step 7"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "[Gap: A general categorical framework encompassing all these examples requires a notion of 'classification functor' that doesn't yet exist in full generality]",
+      "justification": "While each example works, unifying them requires new mathematics",
+      "dependencies": [
+        "Steps 1-8"
+      ]
+    },
+    {
+      "step_number": 10,
+      "statement": "In each case, objects are classified by functorial invariants that detect obstructions rather than by intrinsic properties",
+      "justification": "Observation from the specific examples, but lacking a general proof",
+      "dependencies": [
+        "Steps 3, 6, 8"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Cobordism Theory",
+      "authors": "Ren\u00e9 Thom",
+      "year": "1954",
+      "field": "Differential Topology",
+      "statement": "Cobordism groups of manifolds are isomorphic to stable homotopy groups of Thom spaces",
+      "usage": "Provides the foundational example of classification by equivalence relation"
+    },
+    {
+      "name": "K-theory",
+      "authors": "Michael Atiyah, Friedrich Hirzebruch",
+      "year": "1961",
+      "field": "Algebraic Topology",
+      "statement": "Vector bundles up to stable isomorphism form the K-theory group K^0(X)",
+      "usage": "Shows how bundles are classified by K-theoretic invariants"
+    },
+    {
+      "name": "Class Field Theory",
+      "authors": "Emil Artin, Teiji Takagi",
+      "year": "1920-1927",
+      "field": "Algebraic Number Theory",
+      "statement": "Abelian extensions of number fields correspond to subgroups of idele class groups",
+      "usage": "Demonstrates classification of field extensions by group-theoretic data"
+    },
+    {
+      "name": "Chern Classes",
+      "authors": "Shiing-Shen Chern",
+      "year": "1946",
+      "field": "Differential Geometry",
+      "statement": "Characteristic classes provide cohomological invariants of vector bundles",
+      "usage": "Shows how topological obstructions classify geometric objects"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "We work within the framework of category theory with standard axioms (ZFC or equivalent)",
+    "The notion of 'fundamental mathematical object' can be formalized as objects in an appropriate category",
+    "The concept of 'classification' means determining objects up to an appropriate notion of equivalence",
+    "Structural relationships can be encoded as morphisms in the category",
+    "Obstructions can be formalized as elements of cohomology groups or similar invariants",
+    "The categories under consideration are locally small",
+    "The relevant functors preserve the essential structure we wish to classify"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Initial proposition statement",
+        "issue": "The category C of 'fundamental mathematical objects' is completely undefined. What constitutes a fundamental mathematical object? Without this definition, the entire proposition is meaningless.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed without a precise mathematical definition of 'fundamental mathematical objects'"
+      },
+      {
+        "step": "Existence claim for functor F",
+        "issue": "The proof never constructs a general functor F. It only provides three specific examples with different functors (\u03a9, ch, Cl) that have nothing in common.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would require constructing an actual functor that works for all objects in C"
+      },
+      {
+        "step": "Definition of 'essential structural relationships'",
+        "issue": "The phrase 'essential structural relationships and obstructions rather than individual object properties' is mathematically meaningless without precise definitions.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Provide rigorous mathematical definitions distinguishing 'structural relationships' from 'individual properties'"
+      },
+      {
+        "step": "Cobordism example",
+        "issue": "The claim that cobordism groups classify manifolds is false. Cobordism is one equivalence relation among many, not THE classification.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Clarify that this is one possible classification, not the unique classification"
+      },
+      {
+        "step": "Vector bundle example",
+        "issue": "The proof conflates stable isomorphism with isomorphism. The Chern character does not determine vector bundles up to isomorphism.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Be precise about which equivalence relation is being used"
+      },
+      {
+        "step": "Transition from examples to general case",
+        "issue": "The proof admits there is no general framework but then claims to have established the proposition. This is a direct contradiction.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot claim to prove a general statement while admitting no general framework exists"
+      }
+    ],
+    "hidden_assumptions": [
+      "That there exists a universal notion of 'classification' applicable to all mathematical objects",
+      "That functorial invariants are somehow more 'essential' than other properties",
+      "That the three examples are representative of all fundamental mathematical objects",
+      "That a pattern observed in three examples constitutes a proof of a general principle",
+      "That 'obstructions' have a uniform meaning across different mathematical contexts"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes that classification should be done via functorial invariants encoding 'structural relationships' rather than 'individual properties', then uses examples where this happens to be true to 'prove' the general principle. The conclusion is built into the selection of examples.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof shows that three specific mathematical structures have functorial invariants that provide certain classifications. It claims this proves a universal principle about all 'fundamental mathematical objects' despite admitting no general framework exists.",
+    "citation_issues": [
+      "Thom's theorem is cited incorrectly - it establishes that unoriented cobordism groups are isomorphic to homotopy groups of MO, not that this classifies all manifolds",
+      "The 'fundamental theorem of K-theory' is not a standard name and the statement given is imprecise",
+      "Class field theory is misrepresented - it classifies abelian extensions, not all number fields"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This is not a proof but rather a collection of examples masquerading as a general theorem. The proposition itself is too vague to be mathematical, and the 'proof' consists of cherry-picked examples followed by an admission that no general framework exists. The logical structure is fundamentally flawed.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof provides three disconnected examples of classification functors in specific mathematical contexts but fails to establish the existence of a general functor F: C \u2192 Set for arbitrary categories C of fundamental mathematical objects.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "What constitutes a 'category of fundamental mathematical objects' is never defined",
+      "The notion of 'essential structural relationships' is undefined",
+      "What qualifies as 'obstructions' is not formalized beyond vague references to cohomology",
+      "The equivalence relation ~_F is not properly defined for general categories",
+      "Assumption that all relevant categories admit classification functors",
+      "Assumption that F(X) \u2245 F(Y) is well-defined for arbitrary functors F: C \u2192 Set"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "1",
+        "issue": "\u03a9: Mfd^n \u2192 AbGrp sends manifolds to cobordism groups, but cobordism groups are not functorially assigned to individual manifolds - they classify manifolds up to cobordism"
+      },
+      {
+        "step": "3",
+        "issue": "The isomorphism \u03a9_n \u2245 \u03c0_n(MO) relates cobordism groups to homotopy groups, but this doesn't establish a functor from manifolds to sets as required by the proposition"
+      },
+      {
+        "step": "4",
+        "issue": "The Chern character ch: VectBun(X) \u2192 H^*(X;Q) is not a functor to Set but to graded Q-vector spaces"
+      },
+      {
+        "step": "9",
+        "issue": "Explicitly acknowledges the gap but doesn't resolve it - the general framework doesn't exist"
+      },
+      {
+        "step": "10",
+        "issue": "This is an unsupported generalization from three specific examples with no proof of the general claim"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No definition of what constitutes a 'category of fundamental mathematical objects'",
+      "No construction of the claimed general functor F: C \u2192 Set",
+      "No proof that such a functor exists for arbitrary categories C",
+      "No verification that the equivalence relation ~_F is well-defined",
+      "No proof that F 'encodes essential structural relationships and obstructions'",
+      "The three examples don't even target Set as the codomain category",
+      "Step 9 explicitly admits the proof is incomplete"
+    ],
+    "internal_score": 0.1
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims objects are classified by functorial invariants that detect obstructions rather than intrinsic properties, but existing proof [102677deecdd] already establishes that mathematical objects are fundamentally determined by their relational structure rather than intrinsic properties - this is redundant and the new proof adds no novel insight",
+      "The cobordism classification claim \u03a9_n \u2245 \u03c0_n(MO) is stated without proof and the connection between cobordism groups and stable homotopy theory requires sophisticated machinery not established in the assumptions",
+      "The claim about vector bundle classification via K-theory and Chern character is incomplete - the Chern character is not injective in general and does not provide complete classification without additional structure"
+    ],
+    "assumption_conflicts": [
+      "The assumption that 'fundamental mathematical objects' can be formalized as objects in an appropriate category is circular and lacks rigor compared to the precise categorical frameworks in existing proofs",
+      "The notion of 'classification functor' is acknowledged as non-existent in the gap, making the entire framework hypothetical rather than established mathematics",
+      "The assumption about obstructions being formalizable as cohomology elements conflicts with the generality claimed - many obstructions cannot be captured by cohomological methods"
+    ],
+    "beneficial_connections": [
+      "Connects to [102677deecdd] on relational structure determining mathematical objects, though redundantly",
+      "Relates to categorical approaches in [0049536ae81a], [0059c78c2998], and [043c25bfbbd8] by using functorial methods",
+      "The emphasis on structural relationships aligns with the categorical perspective in multiple existing proofs"
+    ],
+    "consistency_score": 0.3,
+    "notes": "This proof is fundamentally flawed due to its reliance on non-existent general theory, circular definitions, and incomplete mathematical claims. The examples given are either well-known results stated without proof or contain mathematical errors. The acknowledged gap about the non-existence of the general framework undermines the entire proposition."
+  },
+  "confidence_score": 0.225,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.1,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.1,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A general theory of 'classification functors' that captures when a functor F: C \u2192 D provides a complete invariant for objects up to an appropriate equivalence relation. This would need to formalize notions of 'detecting obstructions' and 'essential structural relationships' in a category-theoretic framework.",
+  "limitations": [
+    "The general categorical framework for classification functors does not yet exist",
+    "The notion of 'fundamental mathematical object' is not precisely defined",
+    "The relationship between 'obstructions' and 'equivalence relations' needs formalization",
+    "The proof shows examples but lacks a general theorem encompassing all cases",
+    "The proof is by example rather than establishing a general principle",
+    "Different areas of mathematics use different notions of classification",
+    "The connection between cohomological obstructions and equivalence relations is not made rigorous",
+    "The categorical framework would need significant development to be complete"
+  ],
+  "source_convergence": {
+    "structural_claim": "Fundamental mathematical objects are classified not by individual properties but by equivalence relations that capture essential structural relationships and obstructions.",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Cobordism Theory",
+        "domain_id": "field_a",
+        "domain_name": "Topology and Geometry",
+        "link_type": "direct",
+        "structural_conclusion": "Manifolds are classified by boundary relations rather than individual geometric properties"
+      },
+      {
+        "result_id": "",
+        "result_name": "Pontryagin Classes",
+        "domain_id": "field_a",
+        "domain_name": "Topology and Geometry",
+        "link_type": "direct",
+        "structural_conclusion": "Vector bundles are classified by cohomological invariants that detect topological obstructions"
+      },
+      {
+        "result_id": "",
+        "result_name": "Class Field Theory",
+        "domain_id": "field_b",
+        "domain_name": "Number Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Number field extensions are classified by ideal class groups rather than individual field properties"
+      },
+      {
+        "result_id": "",
+        "result_name": "Chebotarev Density Theorem",
+        "domain_id": "field_b",
+        "domain_name": "Number Theory",
+        "link_type": "direct",
+        "structural_conclusion": "Primes are classified by their splitting behavior in Galois groups rather than individual prime properties"
+      }
+    ],
+    "domains": [
+      "topology",
+      "number_theory"
+    ],
+    "domain_names": [
+      "Topology and Geometry",
+      "Number Theory"
+    ],
+    "ea_scores": {
+      "strength": 0.23519999999999996,
+      "independence": 0.75,
+      "adversarial": 0.09,
+      "reproducibility": 0.6299999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.47056,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_275ec92f734f",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T18:23:31.992915+00:00",
+    "id": "dc69dd3eb66f"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.300915
+  }
+}

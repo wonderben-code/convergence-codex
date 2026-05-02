@@ -1,0 +1,13 @@
+{
+  "proof_id": "9be16e6b21d6",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous mathematical framework connecting classical fluctuation observables to quantum operator spectra across different physical domains. Current formulation relies on physical correspondence principles rather than pure mathematical derivation.",
+    "7 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

@@ -1,0 +1,387 @@
+{
+  "id": "94529326f1f1",
+  "convergence_id": "def76666e152",
+  "timestamp": "2026-05-02T14:40:28.176221+00:00",
+  "proposition": "Let (M, g) be a smooth manifold with metric g, and let \u03a6: M \u00d7 \u211d \u2192 M be a flow preserving a topological invariant I. If I changes value, then there exists t\u2080 \u2208 \u211d and a neighborhood U \u2282 M such that the flow \u03a6 violates at least one ideal conservation law in U \u00d7 {t\u2080}.",
+  "proposition_natural": "Topological constraints fundamentally limit how systems can evolve, with changes in topology requiring singular events that break ideal conservation laws",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Topology",
+    "Differential geometry",
+    "Dynamical systems"
+  ],
+  "apparatus_justification": "Topology provides the core framework for formalizing topological constraints and singular events (via continuity breaking). Differential geometry captures the smooth evolution between singular events on manifolds. Dynamical systems theory formalizes conservation laws and their breaking at bifurcations.",
+  "proof_natural": "**Proposition.** Let $(M, g)$ be a smooth manifold with metric $g$, and let $\\Phi: M \\times \\mathbb{R} \\to M$ be a flow preserving a topological invariant $I$. If $I$ changes value, then there exists $t_0 \\in \\mathbb{R}$ and a neighborhood $U \\subset M$ such that the flow $\\Phi$ violates at least one ideal conservation law in $U \\times \\{t_0\\}$.\n\n**Proof.** Let $M$ be a smooth manifold with metric $g$, and let $\\Phi: M \\times \\mathbb{R} \\to M$ be a smooth flow on $M$. We assume that $I: M \\to \\mathbb{Z}$ is a topological invariant that is integer-valued and locally constant on connected components. Further, we assume the system admits a set of ideal conservation laws $\\{C_i\\}$ expressible as continuity equations $\\partial\\rho_i/\\partial t + \\nabla \\cdot J_i = 0$, all of which are satisfied in the ideal regime. We also assume that the topological invariant $I$ is related to the conserved quantities through a cohomological relationship, and that $M$ admits a foliation compatible with the level sets of $I$.\n\nSince $I$ changes value under the flow, there exist points $p, q \\in M$ and times $t_1 < t_2$ such that $I(\\Phi(p,t_1)) \\neq I(\\Phi(q,t_2))$. As $I$ is a topological invariant and therefore locally constant on connected components, any change in $I$ necessarily requires the flow to cross between different connected components of level sets.\n\nBy the Implicit Function Theorem, the level sets $I^{-1}(c)$ for regular values $c$ form codimension-1 submanifolds of $M$. The transition between different values of $I$ must occur where the flow crosses a separatrix between these level sets. By Morse theory, such topological changes occur at critical points where $\\nabla I$ is either undefined or vanishes.\n\n[Note: At this stage, a rigorous connection between the topological invariant $I$ and the conservation laws $\\{C_i\\}$ requires a cohomological framework that depends on the specific physical system under consideration.]\n\nTo illustrate the mechanism concretely, consider the case of ideal magnetohydrodynamics (MHD). By Woltjer's theorem, the magnetic helicity $H = \\int A \\cdot B \\, dV$ is conserved in ideal MHD, where $A$ is the vector potential and $B$ is the magnetic field. However, changes in magnetic field line topology require local violation of Faraday's law in its ideal form, specifically $\\nabla \\times E \\neq -\\partial B/\\partial t$. This follows from Alfv\u00e9n's theorem, which states that magnetic field lines are frozen into the plasma in the ideal limit.\n\nAt sites where magnetic reconnection occurs and topology changes, the ideal Ohm's law $E + v \\times B = 0$ must be violated, necessitating $E \\cdot B \\neq 0$ locally. This result, established by Schindler, Hesse, and Birn (1988) in their analysis of reconnection physics, demonstrates that topological change requires departure from ideal behavior.\n\n[Note: The generalization from the specific MHD case to arbitrary topological systems requires a category-theoretic framework establishing a functorial relationship between topological invariants and conservation laws.]\n\nSynthesizing these results, we conclude that changes in the topological invariant $I$ necessitate local violation of at least one ideal conservation law in the neighborhood of the critical points where the topology changes. This completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.Geometry.Manifold.SmoothManifoldWithCorners\nimport Mathlib.Geometry.RiemannianGeometry.Basic\nimport Mathlib.Topology.Basic\nimport Mathlib.Topology.ContinuousFunction.Basic\nimport Mathlib.Analysis.Calculus.Implicit\nimport Mathlib.Topology.MetricSpace.Basic\n\n/-- A topological invariant for a flow on a manifold -/\ndef TopologicalInvariant {\ud835\udd5c : Type*} [NontriviallyNormedField \ud835\udd5c]\n  {E : Type*} [NormedAddCommGroup E] [NormedSpace \ud835\udd5c E]\n  {H : Type*} [TopologicalSpace H] (I : ModelWithCorners \ud835\udd5c E H)\n  (M : Type*) [TopologicalSpace M] [ChartedSpace H M] [SmoothManifoldWithCorners I M] :=\n  M \u2192 \u2124\n\n/-- An ideal conservation law (placeholder definition) -/\ndef IdealConservationLaw {\ud835\udd5c : Type*} [NontriviallyNormedField \ud835\udd5c]\n  {E : Type*} [NormedAddCommGroup E] [NormedSpace \ud835\udd5c E]\n  {H : Type*} [TopologicalSpace H] (I : ModelWithCorners \ud835\udd5c E H)\n  (M : Type*) [TopologicalSpace M] [ChartedSpace H M] [SmoothManifoldWithCorners I M] :=\n  sorry -- Need: Definition of conservation laws in terms of differential forms or vector fields\n\n/-- Main theorem: If a topological invariant changes under a flow, then some ideal conservation law is violated -/\ntheorem topological_change_implies_conservation_violation\n  {\ud835\udd5c : Type*} [NontriviallyNormedField \ud835\udd5c] [CompleteSpace \ud835\udd5c]\n  {E : Type*} [NormedAddCommGroup E] [NormedSpace \ud835\udd5c E] [FiniteDimensional \ud835\udd5c E]\n  {H : Type*} [TopologicalSpace H] (I : ModelWithCorners \ud835\udd5c E H)\n  {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [SmoothManifoldWithCorners I M]\n  [SecondCountableTopology M] [T2Space M] [MetricSpace M]\n  (g : M \u2192 (E \u2192L[\ud835\udd5c] E \u2192L[\ud835\udd5c] \ud835\udd5c))\n  (\u03a6 : M \u00d7 \u211d \u2192 M)\n  (h\u03a6_smooth : ContDiff \ud835\udd5c \u22a4 \u03a6)\n  (h\u03a6_flow : \u2200 p : M, \u2200 s t : \u211d, \u03a6 (\u03a6 (p, s), t) = \u03a6 (p, s + t))\n  (I_inv : TopologicalInvariant I M)\n  (h_locally_const : \u2200 p : M, \u2203 U \u2208 \ud835\udcdd p, \u2200 q \u2208 U, I_inv q = I_inv p)\n  (h_changes : \u2203 p q : M, \u2203 t\u2081 t\u2082 : \u211d, t\u2081 < t\u2082 \u2227 I_inv (\u03a6 (p, t\u2081)) \u2260 I_inv (\u03a6 (q, t\u2082))) :\n  \u2203 t\u2080 : \u211d, \u2203 U : Set M, IsOpen U \u2227 \n  \u2203 (law : IdealConservationLaw I M), sorry := by\n  -- Step 1: Extract witnesses from h_changes\n  obtain \u27e8p, q, t\u2081, t\u2082, ht_order, h_neq\u27e9 := h_changes\n  \n  -- Step 2: Use local constancy to establish level set structure\n  have h_level_sets : \u2200 c : \u2124, IsClosed (I_inv \u207b\u00b9' {c}) := by\n    intro c\n    sorry -- Need: Proof that preimage of singleton under locally constant function is closed\n  \n  -- Step 3: Apply implicit function theorem to level sets\n  -- This step requires more structure on I_inv than just being locally constant\n  sorry -- Need: Implicit function theorem for integer-valued functions\n  \n  -- Step 4: Identify critical points where topology changes\n  sorry -- Need: Morse theory for discrete-valued functions\n  \n  -- Step 5: Gap - connection to conservation laws\n  sorry -- Need: Cohomological framework relating topological invariants to conservation laws\n  \n  -- Step 6-8: MHD specific arguments\n  sorry -- Need: MHD framework, Woltjer's theorem, Alfv\u00e9n's theorem, reconnection theory\n  \n  -- Step 9: Gap - generalization\n  sorry -- Need: Category-theoretic framework for general case\n  \n  -- Step 10: Conclusion\n  sorry -- Need: Synthesis of previous steps",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "If I changes value, there exist points p, q \u2208 M and times t\u2081 < t\u2082 such that I(\u03a6(p,t\u2081)) \u2260 I(\u03a6(q,t\u2082))",
+      "justification": "Direct consequence of I changing value under the flow",
+      "dependencies": []
+    },
+    {
+      "step_number": 2,
+      "statement": "Since I is locally constant (being topological), any change in I requires crossing between different connected components of level sets",
+      "justification": "Topological invariants are locally constant on connected components",
+      "dependencies": [
+        "Definition of topological invariant"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "By the Implicit Function Theorem, level sets I\u207b\u00b9(c) for regular values c form codimension-1 submanifolds",
+      "justification": "Standard application of Implicit Function Theorem to integer-valued functions",
+      "dependencies": [
+        "Implicit Function Theorem"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The change in I requires the flow to cross a separatrix between level sets, which occurs at critical points where \u2207I is undefined or zero",
+      "justification": "Morse theory: changes in topology occur at critical points",
+      "dependencies": [
+        "Morse Theory",
+        "Step 3"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "[Gap: Need to establish rigorous connection between topological invariant I and conservation laws C\u1d62]",
+      "justification": "This requires a cohomological relationship that depends on the specific physical system",
+      "dependencies": [
+        "Physical interpretation of mathematical structures"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "In ideal MHD, magnetic helicity H = \u222b A\u00b7B dV is conserved, where A is vector potential and B is magnetic field",
+      "justification": "Woltjer's theorem on helicity conservation in ideal MHD",
+      "dependencies": [
+        "Woltjer (1958)"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Magnetic field line topology changes require \u2207\u00d7E \u2260 -\u2202B/\u2202t locally, violating Faraday's law in ideal form",
+      "justification": "Alfv\u00e9n's theorem: field lines frozen in ideal plasma",
+      "dependencies": [
+        "Alfv\u00e9n's Theorem",
+        "Step 6"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "At reconnection sites, the ideal Ohm's law E + v\u00d7B = 0 must be violated, requiring E\u00b7B \u2260 0",
+      "justification": "Schindler, Hesse & Birn (1988) analysis of reconnection physics",
+      "dependencies": [
+        "Step 7",
+        "Schindler et al. (1988)"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "[Gap: Generalization from specific MHD case to general topological systems requires category-theoretic framework]",
+      "justification": "Need functorial relationship between topological invariants and conservation laws",
+      "dependencies": [
+        "Category theory of physical systems"
+      ]
+    },
+    {
+      "step_number": 10,
+      "statement": "Therefore, changes in topological invariant I necessitate local violation of at least one ideal conservation law",
+      "justification": "Synthesis of steps 4, 7, 8, acknowledging gaps in steps 5, 9",
+      "dependencies": [
+        "Steps 4, 7, 8"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Alfv\u00e9n's Theorem",
+      "authors": "Hannes Alfv\u00e9n",
+      "year": "1942",
+      "field": "Plasma Physics",
+      "statement": "In perfectly conducting fluids, magnetic field lines are frozen into the plasma",
+      "usage": "Establishes topological constraint in ideal MHD"
+    },
+    {
+      "name": "Woltjer's Theorem",
+      "authors": "Lodewijk Woltjer",
+      "year": "1958",
+      "field": "Plasma Physics",
+      "statement": "Magnetic helicity is conserved in ideal MHD",
+      "usage": "Provides specific topological invariant for plasma systems"
+    },
+    {
+      "name": "Morse Theory",
+      "authors": "Marston Morse",
+      "year": "1925",
+      "field": "Mathematics",
+      "statement": "Topology of manifolds changes at critical points of smooth functions",
+      "usage": "Explains where topological changes must occur"
+    },
+    {
+      "name": "Reconnection Theory",
+      "authors": "Schindler, Hesse, Birn",
+      "year": "1988",
+      "field": "Plasma Physics",
+      "statement": "Magnetic reconnection requires violation of ideal Ohm's law",
+      "usage": "Connects topology change to conservation law violation"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "M is a smooth manifold with metric g",
+    "\u03a6: M \u00d7 \u211d \u2192 M is a smooth flow on M",
+    "I: M \u2192 \u2124 is a topological invariant (integer-valued, locally constant on connected components)",
+    "The system admits a set of ideal conservation laws {C\u1d62} expressible as continuity equations \u2202\u03c1\u1d62/\u2202t + \u2207\u00b7J\u1d62 = 0",
+    "In the 'ideal' regime, all conservation laws {C\u1d62} are satisfied",
+    "The topological invariant I is related to the conserved quantities through a cohomological relationship",
+    "The manifold M admits a foliation compatible with the level sets of I"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Definition of topological invariant I",
+        "issue": "The proof never defines what constitutes a 'topological invariant' in this general context. Being 'integer-valued and locally constant on connected components' is insufficient - this could describe any locally constant integer function, not necessarily one with topological significance.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need rigorous definition of what makes I specifically 'topological' in the context of flows on manifolds"
+      },
+      {
+        "step": "Assumption of cohomological relationship",
+        "issue": "The proof assumes but never establishes that 'the topological invariant I is related to the conserved quantities through a cohomological relationship'. This is a massive unstated assumption that the entire argument depends on.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Must prove this relationship exists or make it an explicit hypothesis"
+      },
+      {
+        "step": "Application of Implicit Function Theorem",
+        "issue": "The proof assumes I has regular values to apply IFT, but never establishes that the values where topology changes are regular values. In fact, the next paragraph suggests they occur at critical points where \u2207I vanishes - contradicting regularity.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Need to handle both regular and critical values separately"
+      },
+      {
+        "step": "Morse theory application",
+        "issue": "The proof claims 'by Morse theory, such topological changes occur at critical points' but Morse theory doesn't say this. Morse theory relates critical points to homology changes of sublevel sets, not to changes in arbitrary topological invariants.",
+        "severity": "major",
+        "fixable": false,
+        "suggested_fix": "Cannot use Morse theory this way without establishing I is a Morse function and relating its critical points to the specific topology being measured"
+      },
+      {
+        "step": "Jump from MHD example to general case",
+        "issue": "The proof provides a specific MHD example then claims to 'synthesize these results' for the general case, but never establishes why the MHD mechanism generalizes. The note about 'category-theoretic framework' is hand-waving, not proof.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Must prove the general case directly, not by example"
+      },
+      {
+        "step": "Definition of 'ideal conservation law'",
+        "issue": "The proof never defines what makes a conservation law 'ideal' versus non-ideal in the general setting. The MHD example has a specific meaning, but this doesn't generalize obviously.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Define precisely what distinguishes ideal from non-ideal conservation laws in general"
+      },
+      {
+        "step": "Connection between topology change and conservation violation",
+        "issue": "The core claim that topology changes require conservation law violations is never proven in general - only asserted based on one specific example.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "This is the main theorem - it needs actual proof, not examples"
+      }
+    ],
+    "hidden_assumptions": [
+      "That I is differentiable (needed for \u2207I)",
+      "That the flow preserves some structure that makes I meaningful",
+      "That 'ideal' conservation laws form a complete set in some sense",
+      "That the MHD reconnection mechanism is representative of all topological changes",
+      "That there exists a general framework relating topological invariants to conservation laws",
+      "That the manifold has sufficient structure for the cohomological relationship to exist"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes a cohomological relationship between I and conservation laws, then uses this to conclude that changes in I require conservation law violations. But this relationship is exactly what needs to be proven.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof actually shows (poorly) that in MHD, magnetic reconnection requires violation of ideal Ohm's law. It claims to prove that ANY topological invariant change in ANY flow requires SOME ideal conservation law violation.",
+    "citation_issues": [
+      "Morse theory is misapplied - it doesn't say what the proof claims",
+      "The Schindler, Hesse, and Birn result is specific to MHD reconnection and doesn't generalize",
+      "Alfv\u00e9n's theorem is about MHD specifically, not general flows"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed, attempting to prove a general abstract theorem by presenting one specific example from MHD and hand-waving the generalization. The core logical connection between topological invariants and conservation laws is assumed rather than proven, and key terms are poorly defined.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to show a connection between topological changes and conservation law violations in MHD systems, but fails to establish the general proposition for arbitrary smooth manifolds with topological invariants",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The topological invariant I must be differentiable enough to apply the Implicit Function Theorem",
+      "The flow \u03a6 must be generated by a vector field with appropriate regularity",
+      "The manifold M must have appropriate boundary conditions or compactness properties",
+      "The conservation laws must be expressible in differential form on the manifold",
+      "The system must be a physical system where ideal conservation laws have meaning",
+      "The cohomological relationship between I and conservation laws must exist and be well-defined"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "1",
+        "issue": "The logic is flawed - if I is a topological invariant preserved by the flow, then I(\u03a6(p,t)) = I(p) for all p,t, so I cannot change value under the flow by definition"
+      },
+      {
+        "step": "3",
+        "issue": "The Implicit Function Theorem cannot be applied to integer-valued functions as stated - integer-valued functions are not smooth and don't have well-defined gradients in the classical sense"
+      },
+      {
+        "step": "4",
+        "issue": "The concept of 'separatrix' and 'critical points where \u2207I is undefined' is meaningless for integer-valued topological invariants"
+      },
+      {
+        "step": "6-8",
+        "issue": "These steps assume we are working in MHD context, but the proposition is stated for general smooth manifolds - this is an unjustified specialization"
+      },
+      {
+        "step": "10",
+        "issue": "The synthesis fails because it relies on invalid earlier steps and doesn't address the fundamental contradiction in step 1"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Fundamental logical contradiction: topological invariants preserved by flow cannot change value",
+      "No rigorous definition of what constitutes an 'ideal conservation law' in the general manifold setting",
+      "Missing proof of the claimed cohomological relationship between topological invariants and conservation laws",
+      "No justification for why violation of conservation laws is necessary rather than just sufficient",
+      "The gaps in steps 5 and 9 are acknowledged but never filled",
+      "No consideration of trivial cases where the topological invariant is constant"
+    ],
+    "internal_score": 0.1
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims topological invariants I: M \u2192 \u2124 are 'locally constant on connected components' but then argues they can 'change value' under flow \u03a6. This is contradictory - if I is truly topological and locally constant, it cannot change under any continuous flow.",
+      "The proof invokes the Implicit Function Theorem for level sets I\u207b\u00b9(c) but topological invariants are discrete-valued (\u2124), making this application invalid since the IFT requires smooth real-valued functions.",
+      "Claims that 'changes in topological invariant I necessitate local violation of at least one ideal conservation law' but provides no rigorous mathematical connection between discrete topological invariants and continuous conservation laws."
+    ],
+    "assumption_conflicts": [
+      "Conflicts with [08b6405556dd] which establishes that symmetry principles and conserved quantities are fundamentally linked through Noether's theorem - the new proof's casual assertion about conservation law violations lacks this rigorous foundation.",
+      "Contradicts [102677deecdd] regarding relational structure - the proof treats topological invariants as having 'intrinsic' changing values rather than relational properties.",
+      "Conflicts with [06d1b829563e] on information loss and dynamical constraints - the new proof's mechanism for conservation law violation is not grounded in fundamental dynamical principles."
+    ],
+    "beneficial_connections": [
+      "Could potentially connect to [0e664bd264b4] on hierarchical structure formation if the topological changes were properly formulated as instabilities.",
+      "Might relate to [087da119976b] on symmetry breaking if the conservation law violations were framed as symmetry-breaking events rather than arbitrary violations."
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof contains fundamental mathematical errors: confusing discrete topological invariants with continuous functions, misapplying the Implicit Function Theorem, and making unjustified leaps between topological changes and conservation law violations. The MHD example is the only concrete part but lacks generalization. The proof needs complete reconstruction with proper mathematical foundations."
+  },
+  "confidence_score": 0.21000000000000002,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.1,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.1,
+    "cross_proof": 0.2,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous category-theoretic framework connecting topological invariants to conservation laws across different physical domains. This would require developing functors between the category of topological spaces with invariants and the category of dynamical systems with conservation laws.",
+  "limitations": [
+    "Rigorous general connection between topological invariants and conservation laws",
+    "Proof of necessity (not just sufficiency) of conservation law violation",
+    "Extension from specific physical examples to general mathematical framework",
+    "Precise characterization of which conservation laws must be violated for given topological changes",
+    "Proof relies heavily on specific physical examples rather than pure mathematical derivation",
+    "The relationship between topology and conservation is assumed rather than derived",
+    "Does not quantify the 'amount' of conservation law violation required",
+    "Limited to smooth manifolds and flows, excluding more general topological spaces"
+  ],
+  "source_convergence": {
+    "structural_claim": "Topological constraints fundamentally limit how systems can evolve, with changes in topology requiring singular events that break ideal conservation laws",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "CP violation in the kaon system",
+        "domain_id": "field_a",
+        "domain_name": "Particle Physics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "The discrete symmetries C and P can be violated, but only through specific weak interaction processes that change the fundamental quantum numbers"
+      },
+      {
+        "result_id": "",
+        "result_name": "Observation of direct CP violation",
+        "domain_id": "field_a",
+        "domain_name": "Particle Physics",
+        "link_type": "analogical_extension",
+        "structural_conclusion": "CP symmetry breaking occurs through specific interaction vertices, not just mixing, showing that symmetry violation requires particular dynamic processes"
+      },
+      {
+        "result_id": "",
+        "result_name": "Alfv\u00e9n's Theorem (Frozen-in Field Lines)",
+        "domain_id": "field_b",
+        "domain_name": "Plasma Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Magnetic field topology is conserved in ideal plasmas, with field lines frozen into the fluid motion"
+      },
+      {
+        "result_id": "",
+        "result_name": "Sweet-Parker Reconnection",
+        "domain_id": "field_b",
+        "domain_name": "Plasma Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Magnetic topology can only change through resistive processes in thin current sheets where ideal MHD breaks down"
+      },
+      {
+        "result_id": "",
+        "result_name": "Magnetic Helicity Conservation",
+        "domain_id": "field_b",
+        "domain_name": "Plasma Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Magnetic helicity (a topological invariant) is conserved in ideal MHD, constraining possible field evolution"
+      }
+    ],
+    "domains": [
+      "particle_physics",
+      "plasma_physics"
+    ],
+    "domain_names": [
+      "Particle Physics",
+      "Plasma Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.357,
+      "independence": 0.85,
+      "adversarial": 0.09,
+      "reproducibility": 0.5599999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.5216,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:30:28.569321+00:00",
+    "id": "def76666e152"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.292005
+  }
+}

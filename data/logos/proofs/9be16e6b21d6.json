@@ -1,0 +1,331 @@
+{
+  "id": "9be16e6b21d6",
+  "convergence_id": "db63730761e8",
+  "timestamp": "2026-05-02T14:40:02.045289+00:00",
+  "proposition": "Let (\u03a9, F, P) be a probability space and X: \u03a9 \u2192 H be a random variable taking values in a separable Hilbert space H. If X represents a physical observable with underlying discrete spectrum {\u03bbn}n\u2208N, then the variance Var[X] = E[||X - E[X]||\u00b2] > 0 implies the existence of a discrete orthonormal basis {en}n\u2208N of H such that X = \u03a3n \u03bbn |en\u27e9\u27e8en| P-almost surely.",
+  "proposition_natural": "Fluctuations reveal the discrete quantum nature of the underlying microscopic structure",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Measure theory",
+    "Functional analysis",
+    "Information theory"
+  ],
+  "apparatus_justification": "Measure theory provides the rigorous foundation for probability spaces needed to formalize fluctuations and their statistical properties. Functional analysis supplies the operator formalism for quantum observables and spectral decomposition. Information theory quantifies the information content revealed by fluctuations about the underlying discrete structure.",
+  "proof_natural": "**Proposition.** Let $(\u03a9, \\mathcal{F}, P)$ be a probability space and $X: \u03a9 \u2192 H$ be a random variable taking values in a separable Hilbert space $H$. If $X$ represents a physical observable with underlying discrete spectrum $\\{\u03bb_n\\}_{n\u2208\u2115}$, then the variance $\\text{Var}[X] = E[||X - E[X]||^2] > 0$ implies the existence of a discrete orthonormal basis $\\{e_n\\}_{n\u2208\u2115}$ of $H$ such that $X = \\sum_n \u03bb_n |e_n\u27e9\u27e8e_n|$ $P$-almost surely.\n\n*Proof.* We assume that the physical system admits a probabilistic description via $(\u03a9, \\mathcal{F}, P)$, where observables are represented as self-adjoint operators on the separable Hilbert space $H$. Let $X$ be such an observable with discrete spectrum $\\{\u03bb_n\\}_{n\u2208\u2115}$ and assume that the variance $\\text{Var}[X]$ is well-defined and finite. We further assume that fluctuations are characterized by non-zero variance and that the correspondence principle holds.\n\nBy the spectral theorem for self-adjoint operators on separable Hilbert spaces, $X$ admits a unique spectral decomposition\n$$X = \\sum_n \u03bb_n P_n$$\nwhere $P_n$ are orthogonal projections onto the eigenspaces corresponding to eigenvalues $\u03bb_n$.\n\nLet $\u03c1$ denote the density operator of the system. By the Born rule and the trace formula for expectation values in quantum mechanics, we can express the variance as\n$$\\text{Var}[X] = E[||X - E[X]||^2] = \\sum_n p_n(\u03bb_n - \u03bc)^2$$\nwhere $p_n = \\text{Tr}(\u03c1P_n)$ represents the probability of measuring eigenvalue $\u03bb_n$, and $\u03bc = E[X] = \\sum_n p_n\u03bb_n$ is the expectation value.\n\nNow suppose $\\text{Var}[X] > 0$. Then there must exist at least two distinct indices $i,j$ such that $p_i > 0$, $p_j > 0$, and $\u03bb_i \u2260 \u03bb_j$. Indeed, if all $p_n = 0$ except for a single index $k$, or if all eigenvalues $\u03bb_n$ are equal, then the variance would vanish.\n\nThe existence of multiple populated eigenvalues with $p_n > 0$ reveals the discrete granular structure of the observable. Each eigenvalue $\u03bb_n$ corresponds to a distinct quantum state, and the non-zero probabilities for multiple states demonstrate the inherent discreteness of the spectrum.\n\nIn the thermodynamic limit as $N \u2192 \u221e$, where $N$ represents the number of particles or degrees of freedom, the central limit theorem applied to sums of independent quantum measurements yields relative fluctuations $\u03c3/\u03bc \\sim N^{-1/2} \u2192 0$, while absolute fluctuations $\u03c3 \\sim N^{1/2} \u2192 \u221e$. This scaling behavior further reveals the underlying discrete structure, as the growing absolute fluctuations arise from the accumulation of discrete quantum jumps.\n\n[Note: The connection between the Einstein fluctuation formula $\u27e8(\u0394E)^2\u27e9 = k_BT^2(\u2202E/\u2202T)_V$ and the quantum mechanical variance requires additional thermodynamic assumptions not fully specified here.]\n\nSince the projections $P_n$ are orthogonal and sum to the identity operator, we can construct an orthonormal basis $\\{e_n\\}_{n\u2208\u2115}$ from the eigenvectors of $X$, yielding the representation $X = \\sum_n \u03bb_n |e_n\u27e9\u27e8e_n|$ $P$-almost surely. The non-zero variance guarantees that this sum involves multiple terms with non-zero coefficients, confirming the discrete structure.\n\nThis completes the proof. \u25a1",
+  "proof_lean": "import Mathlib.Probability.ProbabilityMassFunction.Constructions\nimport Mathlib.Analysis.InnerProductSpace.Spectrum\nimport Mathlib.Analysis.InnerProductSpace.l2Space\nimport Mathlib.MeasureTheory.Integral.Bochner\nimport Mathlib.Probability.Variance\n\n/-- A random variable taking values in a separable Hilbert space H representing a physical observable with discrete spectrum -/\nstructure QuantumObservable (\u03a9 : Type*) (H : Type*) [MeasurableSpace \u03a9] [NormedAddCommGroup H] [InnerProductSpace \u211d H] [CompleteSpace H] [SeparableSpace H] where\n  X : \u03a9 \u2192 H\n  measurable : Measurable X\n  discrete_spectrum : Set \u211d\n  countable_spectrum : Set.Countable discrete_spectrum\n  -- sorry: need quantum mechanical interpretation of observables\n  \n/-- The main proposition: positive variance implies discrete orthonormal basis representation -/\ntheorem variance_implies_discrete_basis \n  {\u03a9 H : Type*} [MeasurableSpace \u03a9] [NormedAddCommGroup H] [InnerProductSpace \u211d H] \n  [CompleteSpace H] [SeparableSpace H] (P : Measure \u03a9) [IsProbabilityMeasure P]\n  (obs : QuantumObservable \u03a9 H) \n  (integrable : Integrable obs.X P)\n  (sq_integrable : Integrable (fun \u03c9 => \u2016obs.X \u03c9 - \u222b x, obs.X x \u2202P\u2016^2) P)\n  (h_var_pos : (\u222b \u03c9, \u2016obs.X \u03c9 - \u222b x, obs.X x \u2202P\u2016^2 \u2202P) > 0) :\n  \u2203 (B : Set H) (hB : Orthonormal \u211d (fun x : B => (x : H))) (hB_basis : \u22a4 \u2264 Submodule.span \u211d (B : Set H))\n    (\u03bb : B \u2192 \u211d), \u2200\u1d50 \u03c9 \u2202P, obs.X \u03c9 = sorry := by\n  -- Step 1: Apply spectral theorem\n  -- sorry: need spectral theorem for random variables, not just operators\n  sorry\n  \n/-- Step 2: Variance decomposition in terms of eigenvalues -/\nlemma variance_spectral_decomposition \n  {\u03a9 H : Type*} [MeasurableSpace \u03a9] [NormedAddCommGroup H] [InnerProductSpace \u211d H] \n  [CompleteSpace H] [SeparableSpace H] (P : Measure \u03a9) [IsProbabilityMeasure P]\n  (obs : QuantumObservable \u03a9 H) (integrable : Integrable obs.X P) :\n  \u222b \u03c9, \u2016obs.X \u03c9 - \u222b x, obs.X x \u2202P\u2016^2 \u2202P = sorry := by\n  -- sorry: need Born rule and density operator formalism\n  sorry\n  \n/-- Step 3: Positive variance implies multiple distinct eigenvalues -/\nlemma positive_variance_multiple_eigenvalues \n  {\u03a9 H : Type*} [MeasurableSpace \u03a9] [NormedAddCommGroup H] [InnerProductSpace \u211d H] \n  [CompleteSpace H] [SeparableSpace H] (P : Measure \u03a9) [IsProbabilityMeasure P]\n  (obs : QuantumObservable \u03a9 H) \n  (h_var_pos : (\u222b \u03c9, \u2016obs.X \u03c9 - \u222b x, obs.X x \u2202P\u2016^2 \u2202P) > 0) :\n  \u2203 (\u03bb\u2081 \u03bb\u2082 : \u211d) (h_neq : \u03bb\u2081 \u2260 \u03bb\u2082), \u03bb\u2081 \u2208 obs.discrete_spectrum \u2227 \u03bb\u2082 \u2208 obs.discrete_spectrum \u2227 \n    sorry := by\n  -- sorry: need probability weights pn = Tr(\u03c1Pn) formalism\n  sorry\n  \n/-- Step 4: Multiple populated eigenvalues reveal discrete structure -/\nlemma populated_eigenvalues_discrete_structure \n  {\u03a9 H : Type*} [MeasurableSpace \u03a9] [NormedAddCommGroup H] [InnerProductSpace \u211d H] \n  [CompleteSpace H] [SeparableSpace H] (P : Measure \u03a9) [IsProbabilityMeasure P]\n  (obs : QuantumObservable \u03a9 H) \n  (h_multiple : \u2203 (\u03bb\u2081 \u03bb\u2082 : \u211d) (h_neq : \u03bb\u2081 \u2260 \u03bb\u2082), \u03bb\u2081 \u2208 obs.discrete_spectrum \u2227 \u03bb\u2082 \u2208 obs.discrete_spectrum) :\n  sorry := by\n  -- sorry: need quantum state correspondence and measurement theory\n  sorry\n  \n/-- Step 5: Thermodynamic limit behavior -/\nlemma thermodynamic_limit_fluctuations (N : \u2115) (hN : N > 0) :\n  \u2203 (\u03c3 \u03bc : \u211d \u2192 \u211d), (\u2200 n, \u03c3 n / \u03bc n = n^(-(1/2 : \u211d))) \u2227 \n    (Filter.Tendsto (fun n => \u03c3 n / \u03bc n) Filter.atTop (\ud835\udcdd 0)) \u2227\n    (Filter.Tendsto \u03c3 Filter.atTop Filter.atTop) := by\n  -- sorry: need Einstein fluctuation formula and CLT for quantum measurements\n  sorry",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "By the spectral theorem for self-adjoint operators on separable Hilbert spaces, X admits a unique spectral decomposition X = \u03a3n \u03bbn Pn where Pn are orthogonal projections",
+      "justification": "Spectral theorem for compact self-adjoint operators",
+      "dependencies": [
+        "Assumption that X is self-adjoint with discrete spectrum"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "The variance Var[X] = E[||X - E[X]||\u00b2] = \u03a3n pn(\u03bbn - \u03bc)\u00b2 where pn = Tr(\u03c1Pn), \u03c1 is the density operator, and \u03bc = E[X] = \u03a3n pn\u03bbn",
+      "justification": "Born rule and trace formula for expectation values in quantum mechanics",
+      "dependencies": [
+        "Step 1",
+        "Born statistical interpretation"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "If Var[X] > 0, then there exist at least two distinct indices i,j such that pi > 0, pj > 0, and \u03bbi \u2260 \u03bbj",
+      "justification": "If all pi = 0 except for one index k, or if all \u03bbn are equal, then Var[X] = 0",
+      "dependencies": [
+        "Step 2",
+        "Basic properties of variance"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "The existence of multiple populated eigenvalues {\u03bbn} with pn > 0 implies the discrete granular structure of the observable",
+      "justification": "Each eigenvalue corresponds to a discrete quantum state; non-zero probabilities for multiple states reveal discreteness",
+      "dependencies": [
+        "Step 3"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "In the thermodynamic limit N \u2192 \u221e, relative fluctuations \u03c3/\u03bc ~ N^(-1/2) \u2192 0, but absolute fluctuations \u03c3 ~ N^(1/2) \u2192 \u221e reveal discreteness",
+      "justification": "Central limit theorem applied to sums of independent quantum measurements",
+      "dependencies": [
+        "Step 4",
+        "Central limit theorem"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Spectral Theorem for Self-Adjoint Operators",
+      "authors": "von Neumann, J.",
+      "year": "1932",
+      "field": "Functional Analysis/Quantum Mechanics",
+      "statement": "Every self-adjoint operator on a separable Hilbert space has a unique spectral decomposition",
+      "usage": "Provides the mathematical foundation for decomposing observables into discrete eigenvalues"
+    },
+    {
+      "name": "Born Statistical Interpretation",
+      "authors": "Born, M.",
+      "year": "1926",
+      "field": "Quantum Mechanics",
+      "statement": "The probability of measuring eigenvalue \u03bbn is given by |\u27e8\u03c8|en\u27e9|\u00b2 or Tr(\u03c1Pn)",
+      "usage": "Connects quantum operators to measurable probabilities and hence fluctuations"
+    },
+    {
+      "name": "Einstein Fluctuation Formula",
+      "authors": "Einstein, A.",
+      "year": "1905",
+      "field": "Statistical Mechanics",
+      "statement": "\u27e8(\u0394E)\u00b2\u27e9 = kBT\u00b2(\u2202E/\u2202T)V",
+      "usage": "Shows how macroscopic fluctuations reveal microscopic discreteness"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "The physical system admits a probabilistic description via (\u03a9, F, P)",
+    "Observables are represented as self-adjoint operators on a separable Hilbert space H",
+    "The observable X has discrete spectrum with eigenvalues {\u03bbn}n\u2208N",
+    "The variance Var[X] is well-defined and finite",
+    "The spectral theorem applies to X",
+    "Fluctuations are characterized by non-zero variance",
+    "The correspondence principle holds: classical fluctuations emerge from quantum uncertainties in appropriate limits"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Definition of X as random variable",
+        "issue": "X is defined as a random variable X: \u03a9 \u2192 H, but later treated as a self-adjoint operator. These are fundamentally different mathematical objects. A random variable takes values in H, while an operator acts on H.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Complete reconceptualization needed. Either X: \u03a9 \u2192 L(H) (bounded operators) or clarify the measurable structure."
+      },
+      {
+        "step": "Spectral decomposition X = \u03a3n \u03bbn Pn",
+        "issue": "This assumes X is a self-adjoint operator, but X was defined as a random variable. The spectral theorem cannot be applied to random variables.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need to properly define what mathematical object X actually is."
+      },
+      {
+        "step": "Variance formula Var[X] = E[||X - E[X]||\u00b2]",
+        "issue": "The norm ||\u00b7|| is undefined. For operators, multiple norms exist. For random variables in H, this would be the Hilbert space norm. The mixing of concepts makes this meaningless.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Clarify whether dealing with operator norms or Hilbert space norms."
+      },
+      {
+        "step": "Born rule application with density operator \u03c1",
+        "issue": "The density operator \u03c1 appears without definition or justification. Its existence and properties are assumed without proof.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Define \u03c1 and prove it exists with required properties."
+      },
+      {
+        "step": "Variance equals \u03a3n pn(\u03bbn - \u03bc)\u00b2",
+        "issue": "This quantum mechanical formula is asserted without proof. The connection to the previously defined variance E[||X - E[X]||\u00b2] is not established.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Prove this equality rigorously from the definitions."
+      },
+      {
+        "step": "Thermodynamic limit discussion",
+        "issue": "Completely irrelevant to the proposition. The CLT scaling and thermodynamic limit have no bearing on the existence of an orthonormal basis.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Remove this entire section as it adds nothing to the proof."
+      },
+      {
+        "step": "Construction of orthonormal basis {en}",
+        "issue": "The proof claims to construct a basis from eigenvectors but never actually constructs it. It merely asserts existence without showing the eigenvectors span H or form a basis.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Actually prove that eigenvectors form a complete orthonormal basis of H."
+      },
+      {
+        "step": "Final representation X = \u03a3n \u03bbn |en\u27e9\u27e8en|",
+        "issue": "The notation |en\u27e9\u27e8en| is physicist's bra-ket notation for rank-one projections, but this was never defined. The sum convergence is not addressed.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Define notation properly and prove convergence of the series."
+      }
+    ],
+    "hidden_assumptions": [
+      "X is simultaneously a random variable and a self-adjoint operator",
+      "The spectrum {\u03bbn} is countable",
+      "All eigenspaces are finite-dimensional",
+      "The spectral decomposition converges in some topology",
+      "A density operator \u03c1 exists for the system",
+      "The trace Tr(\u03c1Pn) is well-defined and finite",
+      "Eigenvectors of X form a complete basis",
+      "The physical interpretation justifies mathematical steps"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes X has a spectral decomposition with orthonormal eigenvectors to prove that X has a representation in terms of an orthonormal basis. This is essentially assuming what needs to be proved.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to show existence of an orthonormal basis from variance properties, but actually just invokes the spectral theorem. The variance condition is essentially unused except to claim multiple eigenvalues have positive probability.",
+    "citation_issues": [
+      "Spectral theorem is cited but applied to the wrong type of object (random variable vs operator)",
+      "Born rule is invoked without establishing the quantum mechanical framework",
+      "Einstein fluctuation formula is mentioned but never actually used in the proof",
+      "Correspondence principle is stated as an assumption but never utilized"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed due to confusion between random variables and operators. The mathematical framework is incoherent, mixing probabilistic and operator-theoretic concepts without proper definitions. The actual argument reduces to invoking the spectral theorem, making the variance condition and most of the proof irrelevant.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to show that variance > 0 implies discrete spectrum, but actually assumes discrete spectrum from the start and then discusses its consequences",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "X is a self-adjoint operator",
+      "X is compact or has compact resolvent",
+      "The density operator \u03c1 exists and is trace-class",
+      "The Born rule applies to this probability space",
+      "The quantum mechanical framework is valid for this random variable",
+      "The thermodynamic limit interpretation is applicable",
+      "Independence of quantum measurements in Step 5"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "1",
+        "issue": "Assumes X is a self-adjoint operator without justification, and spectral theorem for compact operators requires compactness assumption not established"
+      },
+      {
+        "step": "2",
+        "issue": "Introduces quantum mechanical concepts (density operator, Born rule) without justification for why a general random variable should follow quantum mechanics"
+      },
+      {
+        "step": "4",
+        "issue": "Circular reasoning - assumes discrete spectrum to prove discrete spectrum exists"
+      },
+      {
+        "step": "5",
+        "issue": "Introduces thermodynamic limit and central limit theorem without establishing their relevance or applicability to the original problem"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Never establishes that X is actually an operator rather than just a function",
+      "Never proves the connection between variance > 0 and discrete spectrum",
+      "Missing the actual construction of the orthonormal basis {en}",
+      "No proof that X = \u03a3n \u03bbn |en\u27e9\u27e8en| almost surely",
+      "Conflates random variables on probability spaces with quantum observables without justification"
+    ],
+    "internal_score": 0.1
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims that non-zero variance implies discrete granular structure, but proof [06d6ace265c2] establishes that quantum-classical boundary emerges through information dispersal, not through discrete spectrum properties",
+      "The correspondence principle claim about classical fluctuations emerging from quantum uncertainties contradicts proof [06879fd9ae87] which establishes that physical properties are fundamentally contextual and cannot possess predetermined values",
+      "The thermodynamic limit claim \u03c3/\u03bc ~ N^(-1/2) \u2192 0 contradicts proof [052632f8abba] which shows multi-scale dynamics where microscopic distributions determine macroscopic behavior without such simple scaling"
+    ],
+    "assumption_conflicts": [
+      "Assumes observables are self-adjoint operators with discrete spectrum, but proof [06879fd9ae87] shows physical properties are contextual and measurement-dependent",
+      "Assumes classical fluctuations emerge from quantum uncertainties, conflicting with proof [00f62716e74a] which distinguishes quantum from classical information fundamentally",
+      "The variance-discreteness connection conflicts with proof [06d1b829563e] where information loss emerges from dynamical constraints, not spectral properties"
+    ],
+    "beneficial_connections": [
+      "Connects to proof [0049536ae81a] through Hilbert space decomposition and self-adjoint operators",
+      "Relates to proof [08b6405556dd] through spectral theorem application to symmetric operators",
+      "Shares mathematical framework with proof [087da119976b] regarding separable spaces and probability measures"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof makes several unjustified leaps: (1) variance > 0 does not necessarily imply discrete granular structure - continuous spectra can have non-zero variance, (2) the correspondence principle claim is imprecise and conflicts with contextuality results, (3) the thermodynamic limit scaling assumes specific statistical behavior not proven, (4) conflates mathematical spectral decomposition with physical discreteness without justification"
+  },
+  "confidence_score": 0.225,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.1,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.1,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A rigorous mathematical framework connecting classical fluctuation observables to quantum operator spectra across different physical domains. Current formulation relies on physical correspondence principles rather than pure mathematical derivation.",
+  "limitations": [
+    "The connection between classical fluctuations (variance of macroscopic observables) and quantum discreteness (eigenvalue spectrum) requires physical interpretation beyond pure mathematics",
+    "The proof assumes the validity of the quantum-classical correspondence principle without mathematical derivation",
+    "The transition from quantum to classical fluctuations in Step 5 requires thermodynamic limit arguments that are not fully formalized",
+    "Applies only to observables with discrete spectra",
+    "Requires pre-existing quantum mechanical framework",
+    "Does not derive quantum mechanics from fluctuations, only shows consistency",
+    "The proof is domain-specific despite claiming cross-domain validity"
+  ],
+  "source_convergence": {
+    "structural_claim": "Fluctuations reveal the discrete quantum nature of the underlying microscopic structure",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Einstein-Smoluchowski Fluctuation Theory",
+        "domain_id": "field_a",
+        "domain_name": "Thermodynamics and Statistical Mechanics",
+        "link_type": "direct",
+        "structural_conclusion": "Thermal fluctuations reveal the discrete molecular nature of matter"
+      },
+      {
+        "result_id": "",
+        "result_name": "Squeezed States of Light",
+        "domain_id": "field_b",
+        "domain_name": "Optics and Photonics",
+        "link_type": "direct",
+        "structural_conclusion": "Quantum noise fluctuations reveal the discrete photonic nature of light"
+      },
+      {
+        "result_id": "",
+        "result_name": "Hong-Ou-Mandel Effect",
+        "domain_id": "field_b",
+        "domain_name": "Optics and Photonics",
+        "link_type": "direct",
+        "structural_conclusion": "Photon bunching statistics reveal the quantum granular structure of light"
+      }
+    ],
+    "domains": [
+      "thermodynamics",
+      "optics"
+    ],
+    "domain_names": [
+      "Thermodynamics and Statistical Mechanics",
+      "Optics and Photonics"
+    ],
+    "ea_scores": {
+      "strength": 0.21419999999999997,
+      "independence": 0.8,
+      "adversarial": 0.12,
+      "reproducibility": 0.5249999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.46701000000000004,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:06:13.527607+00:00",
+    "id": "db63730761e8"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.263205
+  }
+}

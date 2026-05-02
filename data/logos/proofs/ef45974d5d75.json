@@ -1,0 +1,361 @@
+{
+  "id": "ef45974d5d75",
+  "convergence_id": "da6cbe024359",
+  "timestamp": "2026-05-02T14:40:01.966041+00:00",
+  "proposition": "Let (X, \u03c4, D) be a dynamical system where X is the state space, \u03c4: X \u00d7 \u211d \u2192 X is the flow, and D is the dynamics operator. Let B \u2286 \u2202X be boundary conditions and C: X \u2192 \u211d\u207f be environmental constraints. Then the constrained system (X_B,C, \u03c4_B,C, D_B,C) has fundamentally different topology, spectrum of D_B,C, and accessible state manifolds compared to (X, \u03c4, D).",
+  "proposition_natural": "Boundary conditions and environmental constraints fundamentally alter the dynamics and available states of the system",
+  "formalisation_type": "constraint_logic",
+  "mathematical_apparatus": [
+    "Dynamical systems",
+    "Category theory",
+    "Topology"
+  ],
+  "apparatus_justification": "Dynamical systems theory directly captures how boundary conditions and constraints alter system evolution and state spaces. Category theory provides the framework to map structural correspondences between optical and fluid systems. Topology is essential for formalizing boundary conditions and continuity properties in both domains.",
+  "proof_natural": "**Proposition.** Let $(X, \\tau, D)$ be a dynamical system where $X$ is the state space, $\\tau: X \\times \\mathbb{R} \\to X$ is the flow, and $D$ is the dynamics operator. Let $B \\subseteq \\partial X$ be boundary conditions and $C: X \\to \\mathbb{R}^n$ be environmental constraints. Then the constrained system $(X_{B,C}, \\tau_{B,C}, D_{B,C})$ has fundamentally different topology, spectrum of $D_{B,C}$, and accessible state manifolds compared to $(X, \\tau, D)$.\n\n**Proof.** We assume that $X$ is a smooth manifold with boundary $\\partial X$, that $\\tau$ is a smooth flow satisfying the group property, and that $D$ is a differential operator generating the dynamics. Let $B$ represent measurable boundary conditions (Dirichlet, Neumann, or mixed) and $C$ represent holonomic constraints defining a submanifold of $X$. We further assume that the constrained state space $X_{B,C} = \\{x \\in X : x|_{\\partial X} \\in B, C(x) = 0\\}$ is non-empty and that appropriate function spaces exist for our operators.\n\nFirst, we establish that $X_{B,C}$ forms a proper submanifold of $X$ with different topological properties. By the Regular Value Theorem, if $0$ is a regular value of $C$, then $C^{-1}(0)$ is a submanifold of $X$. The intersection with boundary conditions yields $X_{B,C} = C^{-1}(0) \\cap \\{x : x|_{\\partial X} \\in B\\}$, which inherits the submanifold structure while respecting the boundary constraints.\n\nThe tangent bundle $TX_{B,C}$ is necessarily a proper subbundle of $TX|_{X_{B,C}}$. At each point $p \\in X_{B,C}$, the tangent space $T_pX_{B,C} = \\ker(DC_p) \\cap T_p(\\text{boundary compatible vectors})$, which forms a proper subspace whenever the constraints are active. This dimensional reduction fundamentally alters the dynamics.\n\nThe constrained dynamics operator $D_{B,C}$ must have restricted domain $\\text{Dom}(D_{B,C}) = \\{f \\in \\text{Dom}(D) : f|_{X_{B,C}}, Df|_{X_{B,C}} \\text{ satisfy boundary and constraint compatibility}\\}$. This restriction is necessary to ensure the flow preserves both the constraint manifold and boundary conditions.\n\nFor self-adjoint extensions of $D$, we claim that generically $\\sigma(D_{B,C}) \\neq \\sigma(D)$. By Weyl's theorem on eigenvalue perturbation and the min-max principle, boundary conditions shift eigenvalues. This is rigorously established for Sturm-Liouville operators, where Dirichlet conditions increase eigenvalues while Neumann conditions decrease them. [Note: The general non-self-adjoint case requires more careful spectral analysis.]\n\nThe constrained flow $\\tau_{B,C}$ exhibits different recurrence properties and invariant measures than $\\tau$. By the Poincar\u00e9 Recurrence Theorem, the measure-preserving flow on $X_{B,C}$ (having smaller volume) has different recurrence times. The ergodic decomposition changes due to new dynamical barriers imposed by constraints.\n\nThese abstract results have concrete physical manifestations. In cavity quantum electrodynamics, where $X$ represents electromagnetic field configurations, $B$ perfect conductor boundaries, and $D$ the Maxwell operator, the Purcell effect emerges directly: the modified eigenmode density $\\rho(\\omega)$ due to the altered spectrum $\\sigma(D_{B,C})$ changes spontaneous emission rates according to Fermi's Golden Rule, $\\Gamma \\propto \\rho(\\omega)$.\n\nSimilarly, in fluid dynamics with $X$ as velocity fields, $B$ no-slip conditions, and $D$ the Navier-Stokes operator, boundary layers emerge as eigenfunctions of $D_{B,C}$ concentrate near $\\partial X$, with exponential decay scale $\\delta \\sim \\text{Re}^{-1/2}$ following from matched asymptotic analysis.\n\nTherefore, constraints and boundaries fundamentally alter the topology, spectral properties, and accessible dynamics of the system, with the constrained system $(X_{B,C}, \\tau_{B,C}, D_{B,C})$ exhibiting qualitatively different behavior from the unconstrained system $(X, \\tau, D)$. This completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.Topology.Basic\nimport Mathlib.Topology.ContinuousFunction.Basic\nimport Mathlib.Geometry.Manifold.SmoothManifoldWithCorners\nimport Mathlib.Analysis.InnerProductSpace.Spectrum\nimport Mathlib.Analysis.Calculus.Tangent\n\n/-- A dynamical system consists of a state space, flow, and dynamics operator -/\nstructure DynamicalSystem (X : Type*) [TopologicalSpace X] where\n  \u03c4 : X \u00d7 \u211d \u2192 X  -- flow\n  D : sorry  -- dynamics operator (missing: unbounded operators on manifolds)\n  flow_continuous : Continuous (fun p : X \u00d7 \u211d => \u03c4 p) := by sorry\n\n/-- Constrained dynamical system with boundary conditions and environmental constraints -/\nstructure ConstrainedDynamicalSystem (X : Type*) [TopologicalSpace X] [Manifold \u211d X] extends DynamicalSystem X where\n  B : Set X  -- boundary conditions\n  C : X \u2192 Fin n \u2192 \u211d  -- environmental constraints\n  X_BC : Set X := {x : X | C x = 0 \u2227 x \u2208 B}\n  \u03c4_BC : X_BC \u00d7 \u211d \u2192 X_BC  -- restricted flow\n  D_BC : sorry  -- restricted dynamics operator\n\n/-- Main theorem: Constrained systems have fundamentally different properties -/\ntheorem constrained_system_different_properties\n  {X : Type*} [TopologicalSpace X] [SmoothManifoldWithCorners \u211d X]\n  (sys : DynamicalSystem X)\n  (B : Set (frontier X))  -- boundary conditions on \u2202X\n  (C : X \u2192 Fin n \u2192 \u211d) [Smooth \u211d C]  -- smooth constraints\n  (h_regular : \u2200 x \u2208 C\u207b\u00b9' {0}, sorry)  -- 0 is regular value (missing: Regular Value Theorem)\n  : \u2203 (csys : ConstrainedDynamicalSystem X),\n    (csys.X_BC \u2260 Set.univ) \u2227  -- proper subset\n    sorry  -- spectrum different (missing: spectrum theory for dynamics operators)\n    \u2227 sorry  -- accessible manifolds different (missing: accessible state manifolds)\n    := by\n  sorry  -- Step 1: X_BC forms proper submanifold (missing: Regular Value Theorem)\n  sorry  -- Step 2: Tangent bundle is proper subbundle (missing: constrained tangent bundles)\n  sorry  -- Step 3: Domain restriction of dynamics operator (missing: unbounded operator domains)\n  sorry  -- Step 4: Spectrum changes (missing: Weyl's theorem, spectral perturbation)\n  sorry  -- Step 5: Different recurrence properties (missing: Poincar\u00e9 recurrence)\n  sorry  -- Complete construction\n\n/-- Application to cavity QED -/\nstructure CavityQED where\n  X : Type* := sorry  -- electromagnetic field configurations (missing: field theory spaces)\n  B : Set X := sorry  -- perfect conductor boundaries\n  D : sorry  -- Maxwell operator (missing: Maxwell operator definition)\n  purcell_effect : sorry  -- Purcell effect (missing: spontaneous emission rates)\n\n/-- Application to fluid dynamics -/\nstructure FluidDynamics where\n  X : Type* := sorry  -- velocity fields (missing: Sobolev spaces for fluids)\n  B : Set X := sorry  -- no-slip conditions\n  D : sorry  -- Navier-Stokes operator (missing: NS operator)\n  boundary_layer : \u2200 (Re : \u211d), Re > 0 \u2192 \u2203 \u03b4 : \u211d, \u03b4 \u223c Re^(-1/2) := by sorry",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "The constrained state space X_B,C forms a proper submanifold of X with different topological properties",
+      "justification": "By the Regular Value Theorem, if 0 is a regular value of C, then C\u207b\u00b9(0) is a submanifold. Combined with boundary conditions B, X_B,C = C\u207b\u00b9(0) \u2229 {x: x|\u2202X \u2208 B}",
+      "dependencies": [
+        "Regular Value Theorem",
+        "Definition of submanifold with boundary"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "The tangent bundle TX_B,C is a proper subbundle of TX|X_B,C",
+      "justification": "At each point p \u2208 X_B,C, the tangent space T_pX_B,C = ker(DC_p) \u2229 T_p(boundary compatible vectors), which is a proper subspace when constraints are active",
+      "dependencies": [
+        "Step 1",
+        "Definition of tangent bundle of submanifold"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "The dynamics operator D_B,C has domain Dom(D_B,C) = {f \u2208 Dom(D) : f|X_B,C, Df|X_B,C satisfy boundary and constraint compatibility}",
+      "justification": "The operator must respect both the boundary conditions and preserve the constraint manifold, requiring restriction of domain",
+      "dependencies": [
+        "Definition of differential operator on manifold with boundary"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "For self-adjoint extensions of D, the spectrum \u03c3(D_B,C) \u2260 \u03c3(D) generically",
+      "justification": "By Weyl's theorem on eigenvalue perturbation and the min-max principle, boundary conditions shift eigenvalues. This is proven rigorously for Sturm-Liouville operators",
+      "dependencies": [
+        "Weyl's eigenvalue perturbation theorem",
+        "Min-max principle",
+        "Sturm-Liouville theory"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "The flow \u03c4_B,C has different recurrence properties and invariant measures than \u03c4",
+      "justification": "By Poincar\u00e9 recurrence theorem, the measure-preserving flow on X_B,C (smaller volume) has different recurrence times. Ergodic decomposition changes due to new barriers",
+      "dependencies": [
+        "Step 1",
+        "Poincar\u00e9 recurrence theorem",
+        "Ergodic decomposition theorem"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Application to Optics: In cavity QED, X = electromagnetic field configurations, B = perfect conductor boundaries, D = Maxwell operator",
+      "justification": "The Purcell effect follows as eigenmode density \u03c1(\u03c9) changes due to modified spectrum \u03c3(D_B,C), altering spontaneous emission rates \u0393 \u221d \u03c1(\u03c9)",
+      "dependencies": [
+        "Step 4",
+        "Fermi's golden rule",
+        "Mode density calculation"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "Application to Fluids: X = velocity fields, B = no-slip conditions, D = Navier-Stokes operator",
+      "justification": "Boundary layers emerge as eigenfunctions of D_B,C concentrate near \u2202X, with exponential decay scale \u03b4 ~ Re^(-1/2) from matched asymptotic analysis",
+      "dependencies": [
+        "Step 4",
+        "Matched asymptotic expansions",
+        "Orr-Sommerfeld analysis"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Regular Value Theorem",
+      "authors": "Milnor, Guillemin & Pollack",
+      "year": "1960s",
+      "field": "Differential Topology",
+      "statement": "If f: M \u2192 N is smooth and y is a regular value, then f\u207b\u00b9(y) is a submanifold",
+      "usage": "Establishes constraint surfaces as submanifolds"
+    },
+    {
+      "name": "Weyl's Eigenvalue Perturbation",
+      "authors": "Hermann Weyl",
+      "year": "1912",
+      "field": "Spectral Theory",
+      "statement": "Eigenvalues vary continuously with self-adjoint perturbations",
+      "usage": "Shows spectrum changes with boundary conditions"
+    },
+    {
+      "name": "Poincar\u00e9 Recurrence Theorem",
+      "authors": "Henri Poincar\u00e9",
+      "year": "1890",
+      "field": "Dynamical Systems",
+      "statement": "Measure-preserving systems return arbitrarily close to initial conditions",
+      "usage": "Different recurrence on constrained vs unconstrained spaces"
+    },
+    {
+      "name": "Fermi's Golden Rule",
+      "authors": "Enrico Fermi",
+      "year": "1927",
+      "field": "Quantum Mechanics",
+      "statement": "Transition rate proportional to density of final states",
+      "usage": "Links spectral changes to emission rate modifications"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "X is a smooth manifold with boundary \u2202X",
+    "\u03c4 is a smooth flow satisfying the group property",
+    "D is a linear or nonlinear differential operator generating the dynamics",
+    "B represents measurable boundary conditions (Dirichlet, Neumann, or mixed)",
+    "C represents holonomic constraints defining a submanifold of X",
+    "The constrained state space X_B,C = {x \u2208 X : x|\u2202X \u2208 B, C(x) = 0} is non-empty",
+    "Appropriate function spaces (Sobolev, H\u00f6lder) exist for the operators",
+    "The spectrum of D is well-defined (self-adjoint or with appropriate extensions)"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "First paragraph establishing X_B,C as proper submanifold",
+        "issue": "The proof assumes 0 is a regular value of C without justification. Also, the intersection with boundary conditions is treated trivially - the resulting space may not be a manifold at all, could be empty, or have corners/singularities",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need transversality conditions and careful analysis of boundary-constraint intersection"
+      },
+      {
+        "step": "Definition of constrained dynamics operator D_B,C",
+        "issue": "The domain restriction is vaguely defined. 'Boundary and constraint compatibility' is not mathematically precise. How does D_B,C act? Is it just restriction of D or a different operator?",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Precisely define D_B,C using projection operators or Lagrange multiplier formalism"
+      },
+      {
+        "step": "Spectral comparison claim",
+        "issue": "Jumps from self-adjoint case to general case with just a bracketed note. Weyl's theorem doesn't apply to constrained operators on submanifolds. Min-max principle requires variational formulation not established",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Complete rework needed with proper functional analysis framework"
+      },
+      {
+        "step": "Poincar\u00e9 Recurrence argument",
+        "issue": "Assumes measure-preserving flow without justification. Constraints typically break conservation laws. Also assumes X_B,C has finite measure without proof",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Establish when constrained flow preserves measure, or use different recurrence results"
+      },
+      {
+        "step": "Physical examples",
+        "issue": "Examples don't follow from the abstract theory. Purcell effect involves mode density changes, not proven from spectral shifts. Boundary layer analysis uses matched asymptotics, unrelated to the abstract framework",
+        "severity": "major",
+        "fixable": false,
+        "suggested_fix": "Either prove connection rigorously or remove examples"
+      }
+    ],
+    "hidden_assumptions": [
+      "C is smooth with 0 as regular value everywhere",
+      "X_B,C inherits smooth manifold structure",
+      "Constrained flow exists and is unique",
+      "D has well-defined spectrum (requires specific function spaces)",
+      "Constraints preserve measure (false in general)",
+      "D_B,C is well-defined as an operator",
+      "Boundary and bulk constraints interact nicely"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes constrained dynamics exist with certain properties to prove they have different properties. The existence and well-definedness of \u03c4_B,C and D_B,C are used to prove they differ from \u03c4 and D",
+    "over_generalisation": true,
+    "over_generalisation_details": "Proof claims 'fundamentally different' topology, spectrum, and dynamics for ALL constrained systems. Actually only shows (poorly) that some properties might differ in specific cases. No quantification of 'fundamental' difference",
+    "citation_issues": [
+      "Regular Value Theorem applied incorrectly - doesn't handle boundary intersection",
+      "Weyl's theorem is for bounded perturbations, not domain restrictions",
+      "Poincar\u00e9 Recurrence requires measure preservation, not established",
+      "Fermi's Golden Rule connection to abstract spectrum not proven"
+    ],
+    "structural_soundness": 0.2,
+    "overall_assessment": "This proof is fundamentally flawed, mixing vague physical intuition with incomplete mathematical arguments. The central objects (constrained operators and flows) are poorly defined, and the main claims about spectral and topological differences are asserted rather than proven. The proof would need complete reconstruction with proper functional analytic foundations.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to show that constrained systems have different properties, but fails to prove 'fundamentally different' topology, spectrum, and accessible manifolds in a rigorous sense. It shows some differences exist but not their fundamental nature.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "Regularity conditions for the Regular Value Theorem to apply",
+      "Compatibility conditions between boundary conditions B and constraints C",
+      "Existence and uniqueness of solutions to the constrained dynamics",
+      "Appropriate boundary regularity for boundary layer analysis",
+      "Specific function space assumptions for each operator type",
+      "Measure-theoretic assumptions for Poincar\u00e9 recurrence theorem",
+      "Self-adjointness or spectral assumptions for D",
+      "Smoothness requirements for the flow \u03c4",
+      "Non-degeneracy conditions for constraint gradients"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "1",
+        "issue": "Regular Value Theorem requires 0 to be a regular value of C, but this is not verified. The intersection with boundary conditions may not preserve the submanifold structure."
+      },
+      {
+        "step": "2",
+        "issue": "The characterization of tangent space as ker(DC_p) \u2229 boundary compatible vectors is imprecise and may not be a proper subspace if constraints are degenerate."
+      },
+      {
+        "step": "4",
+        "issue": "Weyl's theorem and min-max principle apply to specific operator classes. The claim 'generically' is unsubstantiated without specifying the generic set."
+      },
+      {
+        "step": "5",
+        "issue": "Poincar\u00e9 recurrence theorem requires measure-preserving flows, but this property is not established for \u03c4_B,C. The volume comparison argument is invalid without proper measure theory."
+      },
+      {
+        "step": "6",
+        "issue": "The connection between eigenmode density changes and the Purcell effect is stated without rigorous derivation of the proportionality \u0393 \u221d \u03c1(\u03c9)."
+      },
+      {
+        "step": "7",
+        "issue": "Boundary layer analysis requires specific Reynolds number scaling and matched asymptotics, but the exponential decay scale \u03b4 ~ Re^(-1/2) is asserted without derivation."
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "No rigorous definition of 'fundamentally different' properties",
+      "Missing analysis of when constraints are compatible with boundary conditions",
+      "No treatment of degenerate cases where constraints fail to define submanifolds",
+      "Incomplete spectral analysis - only mentions eigenvalue shifts, not spectral type changes",
+      "No quantitative bounds on the differences claimed",
+      "Applications lack rigorous connection to the abstract framework"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims constrained systems have 'fundamentally different topology' but existing proof [0059c78c2998] establishes that local properties with structural constraints produce global regularity - this suggests constraints preserve rather than fundamentally alter topological structure",
+      "Claims about spectrum \u03c3(D_B,C) \u2260 \u03c3(D) being 'generic' contradict the principle in [08b6405556dd] that symmetry principles dictate interaction structure - boundary conditions are symmetry constraints that should preserve spectral relationships",
+      "The assertion that flow \u03c4_B,C has 'different recurrence properties' conflicts with [06d1b829563e] which shows information loss emerges from dynamical constraints while preserving measure-theoretic properties"
+    ],
+    "assumption_conflicts": [
+      "Assumes boundary conditions B are 'measurable' but doesn't specify compatibility with the smooth manifold structure assumed for X",
+      "Claims holonomic constraints C define a submanifold but doesn't ensure this is compatible with the boundary \u2202X structure",
+      "Assumes 'appropriate function spaces exist' without specifying how these relate to the constraint compatibility conditions",
+      "The assumption that constrained state space X_B,C is non-empty conflicts with generic transversality requirements for constraint manifolds"
+    ],
+    "beneficial_connections": [
+      "Connects to [0049536ae81a] through hierarchical structure creation via constraints, though the mechanism differs",
+      "Relates to [10f57fdaae83] in showing how boundary conditions modify available states",
+      "Supports [087da119976b] by providing a framework for how constraints break symmetry in dynamical systems"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof makes overly strong claims about 'fundamental differences' without proper mathematical justification. The applications to optics and fluids are mentioned but not rigorously developed. The proof would benefit from weakening claims to 'modified' rather than 'fundamentally different' properties and providing explicit compatibility conditions between constraints and manifold structure."
+  },
+  "confidence_score": 0.27,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.2,
+    "cross_proof": 0.3,
+    "calibration": 0.19999999999999996
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A unified framework for constraint-induced spectral shifts across different operator classes (Maxwell, Navier-Stokes, etc.) that goes beyond case-by-case analysis. Current spectral perturbation theory is not general enough for nonlinear operators with mixed boundary conditions.",
+  "limitations": [
+    "Step 4 relies on self-adjoint extensions which don't always exist for the full nonlinear operators",
+    "The connection between topological changes and spectral changes is stated but not proven in full generality",
+    "Ergodic properties in Step 5 are only rigorously established for specific systems, not the general case",
+    "Proof assumes sufficient regularity that may not hold for all physical systems",
+    "Nonlinear effects in constraints are not fully captured",
+    "The 'fundamental' nature of changes is shown through examples rather than universal bounds",
+    "Quantitative estimates for spectral shifts are system-specific"
+  ],
+  "source_convergence": {
+    "structural_claim": "Boundary conditions and environmental constraints fundamentally alter the dynamics and available states of the system",
+    "convergence_type": "structural_analogy",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Purcell Effect",
+        "domain_id": "field_a",
+        "domain_name": "Optics and Photonics",
+        "link_type": "direct",
+        "structural_conclusion": "Electromagnetic environment modifies spontaneous emission rates through boundary conditions"
+      },
+      {
+        "result_id": "",
+        "result_name": "Photonic Band Gap Theory",
+        "domain_id": "field_a",
+        "domain_name": "Optics and Photonics",
+        "link_type": "direct",
+        "structural_conclusion": "Periodic boundaries create forbidden frequency bands that control light propagation"
+      },
+      {
+        "result_id": "",
+        "result_name": "Prandtl Boundary Layer Theory",
+        "domain_id": "field_b",
+        "domain_name": "Fluid Dynamics",
+        "link_type": "direct",
+        "structural_conclusion": "Solid boundaries create distinct dynamical zones that fundamentally alter flow structure"
+      },
+      {
+        "result_id": "",
+        "result_name": "Orr-Sommerfeld Equation",
+        "domain_id": "field_b",
+        "domain_name": "Fluid Dynamics",
+        "link_type": "direct",
+        "structural_conclusion": "Boundary conditions determine stability eigenvalues and thus flow evolution"
+      }
+    ],
+    "domains": [
+      "optics",
+      "fluid_dynamics"
+    ],
+    "domain_names": [
+      "Optics and Photonics",
+      "Fluid Dynamics"
+    ],
+    "ea_scores": {
+      "strength": 0.2856,
+      "independence": 0.85,
+      "adversarial": 0.09,
+      "reproducibility": 0.6299999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.51068,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:43:46.068921+00:00",
+    "id": "da6cbe024359"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.31660499999999997
+  }
+}
