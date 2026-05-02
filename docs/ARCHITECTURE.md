@@ -23,7 +23,7 @@ The pipeline runs across ALL established fields of science, mathematics, and phy
 
 ## 2. The Three AIs
 
-### 2.1 Gnosis AI (the Discoverer) — EXISTS, NEEDS v2 UPGRADE
+### 2.1 Gnosis AI (the Discoverer) — BUILT (v2 complete)
 
 **Current state:** v1 built, tested, operational. Open source at `wonderben-code/gnosis-ai` (MIT).
 - 3 modes: Guided, Exploration, Auto
@@ -36,7 +36,7 @@ The pipeline runs across ALL established fields of science, mathematics, and phy
 
 **v2 upgrade is BUILD STEP 1. Details in `docs/GNOSIS_V2_SPEC.md`.**
 
-### 2.2 Logos AI (the Formaliser) — TO BUILD
+### 2.2 Logos AI (the Formaliser) — BUILT
 
 Takes structured discoveries (from Gnosis or any source) and produces formal mathematical proofs.
 
@@ -51,7 +51,7 @@ Key capabilities:
 
 **Full specification in `docs/LOGOS_SPEC.md`.**
 
-### 2.3 Synthesis AI (the Communicator) — TO BUILD
+### 2.3 Synthesis AI (the Communicator) — BUILT
 
 Takes discoveries + proofs and produces publication-quality paper drafts.
 
@@ -65,7 +65,7 @@ Key capabilities:
 
 **Full specification in `docs/SYNTHESIS_SPEC.md`.**
 
-### 2.4 Pipeline Orchestrator — TO BUILD
+### 2.4 Pipeline Orchestrator — BUILT
 
 Thin coordination layer (NOT a fourth AI):
 - Runs Gnosis → Logos → Synthesis end-to-end
@@ -244,31 +244,36 @@ Target: 70-100+ fields. Additions to consider:
 ```
 ━━━━ THE CONVERGENCE CODEX ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-1. GNOSIS v2                                    ← FIRST
+1. GNOSIS v2                                    ✅ DONE
    → Unified comparison engine (any field set size)
    → Search strategy engine (cross-domain priority)
    → Convergence corpus manager
    → Recursive cascade engine
-   → Expanded taxonomy (70-100+ fields)
+   → Expanded taxonomy (81 fields, 11 categories)
    → Cross-category Auto mode
-   → Open source, Bitcoin-stamp, Zenodo paper
+   → Open source, Bitcoin-stamped
 
-2. LOGOS AI                                     ← SECOND
-   → Lean 4 + Mathlib formalisation
+2. LOGOS AI                                     ✅ DONE
+   → 2,162 lines, 14 files
+   → Type detection → apparatus selection → proof generation
    → 5-layer adversarial validation
-   → Open source, Bitcoin-stamp, Zenodo paper
+   → Lean 4 bridge (graceful without lean binary)
+   → Open source, Bitcoin-stamped
 
-3. SYNTHESIS AI                                 ← THIRD
+3. SYNTHESIS AI                                 ✅ DONE
+   → 1,448 lines, 11 files
    → Publication-quality paper generation
    → Auto paper boundary detection
-   → Open source, Bitcoin-stamp, Zenodo paper
+   → Section-by-section composition with adversarial review
+   → Open source, Bitcoin-stamped
 
-4. PIPELINE ORCHESTRATOR                        ← FOURTH
+4. PIPELINE ORCHESTRATOR                        ✅ DONE
+   → 479 lines, 3 files
    → Gnosis v2 → Logos → Synthesis coordination
    → Human-in-the-loop checkpoints
-   → Standardised JSON handoff
+   → Provenance chain (papers → proofs → convergences)
 
-5. STAGE A — Pipeline Validation
+5. STAGE A — Pipeline Validation                ← NEXT
    → Existing 266 convergences through Logos → Synthesis
    → Small-scale Gnosis v2 test (few cross-category pairs + one triplet)
    → Legitimate papers (not just test output)

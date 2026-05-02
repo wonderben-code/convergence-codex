@@ -18,6 +18,8 @@ dependencies = [
 
 [project.scripts]
 logos = "logos.cli:main"
+synthesis = "synthesis.cli:main"
+codex-pipeline = "orchestrator.cli:main"
 
 [project.optional-dependencies]
 dev = ["pytest>=7.0", "ruff>=0.1"]
