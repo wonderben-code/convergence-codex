@@ -273,11 +273,16 @@ Target: 70-100+ fields. Additions to consider:
    → Human-in-the-loop checkpoints
    → Provenance chain (papers → proofs → convergences)
 
-5. STAGE A — Pipeline Validation                ← NEXT
+5. STAGE A — Pipeline Validation                ← RUNNING
    → Existing 266 convergences through Logos → Synthesis
    → Small-scale Gnosis v2 test (few cross-category pairs + one triplet)
    → Legitimate papers (not just test output)
-   → Publish on Zenodo, Bitcoin-stamp
+
+5b. STAGE A PUBLICATION — First Corpus Release    ← AFTER 5
+   → ~10-25 papers covering 266 convergences across 19 fields
+   → Every formalised convergence = a publishable formal conjecture
+   → Human review → Zenodo with DOIs → Bitcoin-stamp
+   → THIS IS THE FIRST BATCH OF NOVEL CONTRIBUTIONS
 
 6. STAGE B — The Full Codex
    Phase 1: All pairwise (CROSS-CATEGORY FIRST, then within-category)
@@ -286,8 +291,15 @@ Target: 70-100+ fields. Additions to consider:
    Phase 3: Multi-field on promising groups (cross-category first)
    Phase 4: Level 2 meta-convergences (multiple groupings, combinatorial)
    Phase 5: Level 3+ recursive cascade
-   Phase 6: Everything through Logos → Synthesis → papers → Zenodo
-   → Bitcoin-stamp EVERYTHING
+   Phase 6: Everything through Logos → Synthesis
+
+6b. STAGE B PUBLICATION — The Full Corpus         ← AFTER 6
+   → ~300-500 papers covering thousands of convergences across 81 fields
+   → Every convergence, every meta-convergence, every formalisation
+   → Papers at EVERY level of the cascade (not just fixed points)
+   → Human review → Zenodo with DOIs → Bitcoin-stamp
+   → THE LARGEST CORPUS OF FORMAL CROSS-DOMAIN CONJECTURES
+     EVER PUBLISHED
 
 7. STAGE C — Fixed Point Formalisation
    → Take the terminal fixed points from the recursive cascade
@@ -353,6 +365,17 @@ Target: 70-100+ fields. Additions to consider:
 
 **This produces REAL papers.** Stage A output is legitimate scientific contribution, not just validation.
 
+**Publication output:**
+- ~10-25 papers (Synthesis auto-detects boundaries based on domain clustering)
+- Each paper contains multiple formally stated convergences with proofs
+- ~266 individual formal conjectures total, each with:
+  - Formalisation type + mathematical apparatus
+  - Step-by-step proof (or proof sketch with identified gaps)
+  - 5-layer adversarial validation scores
+  - Lean 4 code (where possible)
+  - Flagging for human review where needed
+- Published on Zenodo with DOIs, Bitcoin-stamped
+
 ---
 
 ## 7. Stage B — The Full Codex
@@ -388,14 +411,22 @@ The main event. Run the complete pipeline across ALL fields.
 - Continue until fixed points or diminishing returns
 - Cross-level comparisons at every stage
 
-### Phase 6: Formalisation and Publication
-- ALL convergences through Logos
-- ALL through Synthesis
+### Phase 6: Formalisation
+- ALL convergences at ALL levels through Logos (formal proofs)
+- ALL through Synthesis (paper generation)
 - Human review at every checkpoint
-- Publish on Zenodo
-- Bitcoin-stamp everything
 
-**Estimated total cost for Stage B: ~$2,500-4,000**
+### Post-Stage B: Full Corpus Publication (Stage 6b in Build Order)
+- ~300-500 papers covering the ENTIRE output of Stage B
+- Every pairwise convergence, every multi-field convergence, every meta-convergence
+- Every level of the recursive cascade — not just the terminal fixed points
+- Each paper: full mathematical treatment with validation
+- Total formal conjectures: potentially thousands
+- All published on Zenodo with DOIs
+- All Bitcoin-stamped
+- THIS IS A SEPARATE, EXPLICIT STEP — not a footnote in Phase 6
+
+**Estimated total cost for Stage B (including publication): ~$2,500-4,000**
 
 ---
 
@@ -425,6 +456,13 @@ STAGE A ────── ✦ CHECKPOINT 1: First Systematic Survey
                Precedent: Ramanujan's notebooks (conjectures without proofs
                that drove decades of mathematics).
 
+STAGE A PUB ── ✦ CHECKPOINT 1b: First Corpus Published
+               ~10-25 papers, ~266 formal conjectures on Zenodo with DOIs.
+               Every individual convergence formally stated with
+               mathematical apparatus, proof steps, and identified gaps.
+               These are NOVEL mathematical claims, not reviews.
+               Each one is Bitcoin-stamped. Each one establishes priority.
+
 STAGE B ────── ✦ CHECKPOINT 2: The Full Map + Fixed Points
                Thousands of formal conjectures across 81 fields.
                Recursive cascade to fixed-point principles.
@@ -433,6 +471,15 @@ STAGE B ────── ✦ CHECKPOINT 2: The Full Map + Fixed Points
                claims about the structure of reality.
                Precedent: HGP (Nobel-enabling infrastructure),
                Hopfield/Hinton 2024 (methodology Nobel).
+
+STAGE B PUB ── ✦ CHECKPOINT 2b: The Full Corpus Published
+               ~300-500 papers, potentially thousands of formal
+               conjectures covering ALL levels of the cascade.
+               The largest corpus of cross-domain formal mathematical
+               conjectures ever published. Every single one Bitcoin-
+               stamped. This corpus IS the systematic map of structural
+               relationships across all of science.
+               Precedent: Human Genome Project (the map IS the prize).
 
 STAGE C ────── ✦ CHECKPOINT 3: Rigorous Formalisation
                Even with gaps: precisely stated principles about
@@ -623,14 +670,40 @@ The world's first systematic mapping of structural relationships across all of s
 
 ---
 
-## 15. Paper Publication
+## 15. Paper Publication — The Full Corpus
 
-- All papers published on Zenodo with DOIs
-- Synthesis auto-detects paper boundaries (we don't pre-decide)
-- Stage A: legitimate papers from existing data
-- Stage B: corpus of papers covering all fields, all levels
-- Human review required before any publication
-- All Bitcoin-timestamped
+**Every convergence, every formalisation, every meta-convergence is a publishable formal conjecture.** The Codex doesn't just produce a few summary papers about fixed points — it produces a CORPUS of hundreds of individually formalised claims, each with mathematical apparatus, proof steps, validation scores, and identified gaps.
+
+### Stage A Corpus (~10-25 papers)
+- 266 convergences across 19 fields, formalised by Logos
+- Synthesis auto-detects paper boundaries (groups related convergences)
+- Each paper: full mathematical treatment, confidence scores, EA validation
+- Every convergence within each paper is an individually stated formal conjecture
+- **Total novel formal conjectures: ~266** (one per convergence)
+
+### Stage B Corpus (~300-500 papers)
+- Thousands of convergences across 81 fields at multiple cascade levels
+- Level 1 convergences (pairwise)
+- Level 2 meta-convergences (convergences of convergences)
+- Level 3+ recursive cascade results
+- Multi-field convergences (triplets, quadruplets, etc.)
+- **Total novel formal conjectures: potentially thousands**
+
+### Why This Matters
+Each formal conjecture is a claim that "structural pattern X in domain A is isomorphic/equivalent/analogous to structural pattern Y in domain B, and here is the mathematical formalisation." These are NOT summaries or reviews — they are NOVEL mathematical claims about the structure of reality, each Bitcoin-stamped for priority.
+
+Even if only 1% of these conjectures are later proved correct and non-trivial, that's still dozens of novel mathematical results discovered by autonomous AI and formally stated before any human proved them. The Bitcoin timestamps make the priority inarguable.
+
+### Publication Process
+1. Logos formalises every convergence (type detection → apparatus → proof → validation)
+2. Synthesis groups convergences into coherent papers (auto-detected boundaries)
+3. Human review at paper level (approve/revise/reject)
+4. Publish on Zenodo with DOIs
+5. Bitcoin-stamp everything (GitHub Actions + OpenTimestamps)
+6. All data (proofs, logs, flags, reviews) preserved in convergence-codex repo
+
+### Stage C Papers (separate from corpus)
+The fixed-point papers from Stage C are DIFFERENT from the corpus papers. The corpus covers everything at every level. Stage C focuses specifically on the terminal fixed points with deeper formalisation. Both are published. They're complementary, not redundant.
 
 ---
 
