@@ -3,7 +3,7 @@
 **Author:** Mark E. Mala
 **Date:** 2026-05-02
 **Paper ID:** capstone_24daa8681063
-**Mode:** Capstone (Nobel-grade claim)
+**Mode:** Capstone
 
 ---
 
@@ -68,7 +68,7 @@ Following formalisations 57f3d4cc16d6 and f947e3c087c0, we define:
 
 **A1** (Quantum Formalism). Physical systems admit description via Hilbert spaces with standard quantum mechanical formalism.
 
-**A2** (Context Category). Measurement contexts form a category with morphisms preserving compatibility, per formalisation d67b9ff9a720.
+**A2** (Context Category). Measurement contexts form a category with morphisms preserving compatibility. Observable properties cannot possess predetermined values independent of measurement context, requiring fundamentally contextual descriptions (see Appendix A for supporting formalisations).
 
 **A3** (No Context-Independent Values). There exists no function v: B(H) → ℝ assigning predetermined values independent of measurement context, consistent with formalisations 57f3d4cc16d6, f947e3c087c0, and 88c4200de801.
 
@@ -385,77 +385,84 @@ The discovery, formalisation, and composition pipelines are deterministic given 
 
 ## Appendix A: Complete Evidence Table
 
-The following table lists every convergence supporting the central claim, with formalisation confidence scores and adversarial review verdicts.
+The following table documents every convergence from the Convergence Codex that supports this paper's central claim. Each row represents a formally identified structural parallel between two domains of physics or mathematics, discovered autonomously by Gnosis AI and formalised by Logos AI.
 
-| # | Convergence ID | Domain Pair | Confidence | Adversarial Verdict | Proof Complete | Mathematical Apparatus |
-|---|---------------|-------------|------------|--------------------|----|----------------------|
-| 1 | 9008a3a49dab | Quantum Foundations × Quantum Field Theory | 0.34 | reject | No | Category theory, Functional analysis, Measure theory |
-| 2 | dbeece51fd4d | Quantum Foundations × General Relativity and Cosmology | 0.34 | reject | No | Category theory, Functional analysis, Differential geometry |
-| 3 | 2d8ecc875890 | Quantum Foundations × Quantum Gravity | 0.23 | reject | No | Category theory, Functional analysis, Order theory |
-| 4 | 8715fa784f21 | Quantum Foundations × Thermodynamics and Statistical Mechanics | 0.23 | reject | No | Category theory, Measure theory, Order theory |
-| 5 | b276016277bc | Quantum Foundations × Particle Physics | 0.31 | reject | No | Category theory, Mathematical logic, Measure theory |
-| 6 | 6b5aca297a34 | Quantum Foundations × Plasma Physics | 0.37 | reject | No | Category theory, Measure theory, Order theory |
-| 7 | 8bde681e0eb1 | Quantum Foundations × Atomic and Molecular Physics | 0.51 | major_revision | No | Functional analysis, Category theory, Measure theory |
-| 8 | c648f2f3e82e | Quantum Foundations × Atomic and Molecular Physics | 0.39 | reject | No | Category theory, Functional analysis, Order theory |
-| 9 | 1f0cf160b250 | Quantum Foundations × Nuclear Physics | 0.48 | major_revision | No | Category theory, Measure theory, Functional analysis |
-| 10 | d141c9d3ff25 | Quantum Foundations × Acoustics and Wave Physics | 0.25 | reject | No | Category theory, Measure theory, Order theory |
-| 11 | d0f65ba32126 | Quantum Foundations × Particle Physics | 0.25 | reject | No | Category theory, Algebraic structures, Topology |
-| 12 | eb831013c6d2 | Quantum Foundations × Fluid Dynamics | 0.23 | reject | No | Category theory, Dynamical systems, Order theory |
-| 13 | f760d26129e8 | Quantum Field Theory × Thermodynamics and Statistical Mechanics | 0.21 | reject | No | Category theory, Algebraic structures, Order theory |
-| 14 | 58d65d5acae1 | Quantum Field Theory × Condensed Matter Physics | 0.26 | reject | No | Category theory, Algebraic structures, Differential geometry |
-| 15 | d6ba7da99d8a | Quantum Field Theory × Particle Physics | 0.00 | unknown | No | — |
-| 16 | 618b9cd70968 | Thermodynamics and Statistical Mechanics × Particle Physics | 0.38 | reject | No | Category theory, Algebraic structures, Order theory |
-| 17 | d8c8132ec561 | Thermodynamics and Statistical Mechanics × Fluid Dynamics | 0.00 | unknown | No | — |
-| 18 | cf19aa53852b | Thermodynamics and Statistical Mechanics × Acoustics and Wave Physics | 0.24 | reject | No | Category theory, Algebraic structures, Order theory |
-| 19 | 85e1ea9b59a5 | Condensed Matter Physics × Particle Physics | 0.26 | reject | No | Category theory, Algebraic structures, Functional analysis |
-| 20 | c295cef91f7b | Condensed Matter Physics × Fluid Dynamics | 0.31 | reject | No | Category theory, Order theory, Dynamical systems |
-| 21 | 5de3709b7f19 | Particle Physics × Fluid Dynamics | 0.23 | reject | No | Dynamical systems, Group theory, Measure theory |
-| 22 | 79cd16932ee9 | Quantum Field Theory × Fluid Dynamics | 0.33 | reject | No | Category theory, Dynamical systems, Algebraic structures |
-| 23 | a84696ce790c | Particle Physics × Plasma Physics | 0.28 | reject | No | Differential geometry, Algebraic structures, Dynamical systems |
-| 24 | 77310ae01757 | Particle Physics × Nuclear Physics | 0.36 | reject | No | Algebraic structures, Differential geometry, Functional analysis |
-| 25 | b75d3e72ccd6 | Quantum Field Theory × Thermodynamics and Statistical Mechanics | 0.28 | reject | No | Category theory, Functional analysis, Measure theory |
-| 26 | 5aa17b0cef85 | Quantum Field Theory × Condensed Matter Physics | 0.24 | reject | No | Category theory, Functional analysis, Order theory |
-| 27 | 099752a10aab | General Relativity and Cosmology × Condensed Matter Physics | 0.26 | reject | No | Functional analysis, Category theory, Measure theory |
-| 28 | a09f505946db | Quantum Gravity × Condensed Matter Physics | 0.24 | reject | No | Category theory, Algebraic structures, Topology |
-| 29 | 9ec5c86272d9 | Thermodynamics and Statistical Mechanics × Particle Physics | 0.27 | reject | No | Category theory, Measure theory, Topology |
-| 30 | cc03090674cc | Thermodynamics and Statistical Mechanics × Astrophysics | 0.23 | reject | No | Measure theory, Functional analysis, Dynamical systems |
-| 31 | beb05b87d060 | Thermodynamics and Statistical Mechanics × Plasma Physics | 0.30 | reject | No | Functional analysis, Measure theory, Category theory |
-| 32 | 1751c46bb4da | Thermodynamics and Statistical Mechanics × Fluid Dynamics | 0.32 | reject | No | Category theory, Dynamical systems, Measure theory |
-| 33 | 8a830c1897b9 | Condensed Matter Physics × Astrophysics | 0.26 | reject | No | Category theory, Topology, Measure theory |
-| 34 | d2b6b2c11b0f | Condensed Matter Physics × Nuclear Physics | 0.28 | reject | No | Category theory, Functional analysis, Algebraic structures |
-| 35 | 9c32f5c1e1ce | Condensed Matter Physics × Fluid Dynamics | 0.23 | reject | No | Functional analysis, Measure theory, Dynamical systems |
-| 36 | aab6f6a0a6a3 | General Relativity and Cosmology × Fluid Dynamics | 0.23 | reject | No | Dynamical systems, Measure theory, Functional analysis |
-| 37 | f9ab553e2ff2 | Quantum Foundations × Condensed Matter Physics | 0.23 | reject | No | Topology, Category theory, Algebraic structures |
-| 38 | c013baee269e | Quantum Foundations × Plasma Physics | 0.23 | reject | No | Topology, Category theory, Order theory |
-| 39 | 5ea93024fd55 | Quantum Foundations × Acoustics and Wave Physics | 0.22 | reject | No | Topology, Category theory, Functional analysis |
-| 40 | 752b6b49f5ae | Quantum Field Theory × General Relativity and Cosmology | 0.23 | reject | No | Category theory, Topology, Functional analysis |
-| 41 | 928bed19a7d2 | Quantum Field Theory × Condensed Matter Physics | 0.23 | reject | No | Topology, Category theory, Differential geometry |
-| 42 | ce7f2a656c80 | Quantum Field Theory × Plasma Physics | 0.26 | reject | No | Topology, Category theory, Differential geometry |
-| 43 | ff8eba52e6d8 | Quantum Field Theory × Fluid Dynamics | 0.21 | reject | No | Differential geometry, Category theory, Topology |
-| 44 | e41cf431da10 | General Relativity and Cosmology × Plasma Physics | 0.21 | reject | No | Differential geometry, Topology, Dynamical systems |
-| 45 | 0b80682150fe | Quantum Gravity × Condensed Matter Physics | 0.26 | reject | No | Topology, Category theory, Differential geometry |
-| 46 | 1325896b7cf2 | Condensed Matter Physics × Plasma Physics | 0.26 | reject | No | Category theory, Topology, Order theory |
-| 47 | dc4f6e2a8aac | Quantum Gravity × Plasma Physics | 0.23 | reject | No | Differential geometry, Topology, Dynamical systems |
-| 48 | ca9ed4a6fb61 | Condensed Matter Physics × Fluid Dynamics | 0.27 | reject | No | Topology, Category theory, Algebraic structures |
-| 49 | 27cfe68d3fe5 | Condensed Matter Physics × Acoustics and Wave Physics | 0.37 | reject | No | Topology, Category theory, Functional analysis |
-| 50 | def76666e152 | Particle Physics × Plasma Physics | 0.21 | reject | No | Topology, Differential geometry, Dynamical systems |
-| 51 | fdea44ecf6f9 | Astrophysics × Plasma Physics | 0.21 | reject | No | Topology, Dynamical systems, Differential geometry |
-| 52 | 1f5f5ea96085 | Plasma Physics × Nuclear Physics | 0.42 | reject | No | Topology, Dynamical systems, Order theory |
-| 53 | 2730394d987a | Plasma Physics × Acoustics and Wave Physics | 0.23 | reject | No | Differential geometry, Topology, Dynamical systems |
-| 54 | 021ce8f4a064 | Quantum Foundations × Quantum Field Theory | 0.23 | reject | No | Category theory, Functional analysis, Information theory |
-| 55 | 21b1931aa133 | Quantum Foundations × Thermodynamics and Statistical Mechanics | 0.25 | reject | No | Category theory, Functional analysis, Information theory |
-| 56 | 38360ebb8e60 | Quantum Foundations × Astrophysics | 0.24 | reject | No | Category theory, Information theory, Functional analysis |
-| 57 | 4bbd9425a42b | Quantum Foundations × General Relativity and Cosmology | 0.24 | reject | No | Information theory, Category theory, Measure theory |
-| 58 | d3202942e8cd | Quantum Foundations × Quantum Gravity | 0.32 | reject | No | Category theory, Information theory, Functional analysis |
-| 59 | b983347d94e2 | Quantum Foundations × Thermodynamics and Statistical Mechanics | 0.24 | reject | No | Category theory, Information theory, Measure theory |
-| 60 | 49d5f6b6a62d | General Relativity and Cosmology × Quantum Gravity | 0.36 | reject | No | Differential geometry, Information theory, Measure theory |
-| 61 | d6cd176c6c9a | General Relativity and Cosmology × Thermodynamics and Statistical Mechanics | 0.00 | unknown | No | — |
-| 62 | ab640b64a8b5 | General Relativity and Cosmology × Condensed Matter Physics | 0.28 | reject | No | Differential geometry, Measure theory, Information theory |
-| 63 | 11e34e34a739 | Quantum Gravity × Thermodynamics and Statistical Mechanics | 0.26 | reject | No | Category theory, Information theory, Differential geometry |
-| 64 | 25728564e261 | Thermodynamics and Statistical Mechanics × Astrophysics | 0.34 | reject | No | Differential geometry, Information theory, Measure theory |
-| 65 | a17fc42c9753 | Quantum Gravity × Acoustics and Wave Physics | 0.23 | reject | No | Category theory, Information theory, Differential geometry |
-| 66 | 1f1713b5fa03 | Quantum Gravity × Nuclear Physics | 0.23 | reject | No | Differential geometry, Measure theory, Information theory |
-| 67 | f31bff1bcd4d | Quantum Gravity × Fluid Dynamics | 0.27 | reject | No | Category theory, Differential geometry, Functional analysis |
+**Column definitions:**
+- **Convergence ID:** Unique 12-character hex identifier in the Codex
+- **Domain Pair:** The two scientific fields where the structural parallel was found
+- **Confidence:** Formalisation confidence score (0–1), reflecting how completely the mathematical bridge between domains was established
+- **Verdict:** Adversarial review outcome — "major_revision" indicates the formalisation passed with required improvements; "reject" indicates formal gaps remain but the structural insight holds; "unknown" indicates review was not completed
+
+
+| # | Convergence ID | Domain Pair | Confidence | Verdict |
+|---|---------------|-------------|------------|---------|
+| 1 | 9008a3a49dab | Quantum Foundations × Quantum Field Theory | 0.34 | reject |
+| 2 | dbeece51fd4d | Quantum Foundations × General Relativity and Cosmology | 0.34 | reject |
+| 3 | 2d8ecc875890 | Quantum Foundations × Quantum Gravity | 0.23 | reject |
+| 4 | 8715fa784f21 | Quantum Foundations × Thermodynamics and Statistical Mechanics | 0.23 | reject |
+| 5 | b276016277bc | Quantum Foundations × Particle Physics | 0.31 | reject |
+| 6 | 6b5aca297a34 | Quantum Foundations × Plasma Physics | 0.37 | reject |
+| 7 | 8bde681e0eb1 | Quantum Foundations × Atomic and Molecular Physics | 0.51 | major_revision |
+| 8 | c648f2f3e82e | Quantum Foundations × Atomic and Molecular Physics | 0.39 | reject |
+| 9 | 1f0cf160b250 | Quantum Foundations × Nuclear Physics | 0.48 | major_revision |
+| 10 | d141c9d3ff25 | Quantum Foundations × Acoustics and Wave Physics | 0.25 | reject |
+| 11 | d0f65ba32126 | Quantum Foundations × Particle Physics | 0.25 | reject |
+| 12 | eb831013c6d2 | Quantum Foundations × Fluid Dynamics | 0.23 | reject |
+| 13 | f760d26129e8 | Quantum Field Theory × Thermodynamics and Statistical Mechanics | 0.21 | reject |
+| 14 | 58d65d5acae1 | Quantum Field Theory × Condensed Matter Physics | 0.26 | reject |
+| 15 | d6ba7da99d8a | Quantum Field Theory × Particle Physics | 0.00 | unknown |
+| 16 | 618b9cd70968 | Thermodynamics and Statistical Mechanics × Particle Physics | 0.38 | reject |
+| 17 | d8c8132ec561 | Thermodynamics and Statistical Mechanics × Fluid Dynamics | 0.00 | unknown |
+| 18 | cf19aa53852b | Thermodynamics and Statistical Mechanics × Acoustics and Wave Physics | 0.24 | reject |
+| 19 | 85e1ea9b59a5 | Condensed Matter Physics × Particle Physics | 0.26 | reject |
+| 20 | c295cef91f7b | Condensed Matter Physics × Fluid Dynamics | 0.31 | reject |
+| 21 | 5de3709b7f19 | Particle Physics × Fluid Dynamics | 0.23 | reject |
+| 22 | 79cd16932ee9 | Quantum Field Theory × Fluid Dynamics | 0.33 | reject |
+| 23 | a84696ce790c | Particle Physics × Plasma Physics | 0.28 | reject |
+| 24 | 77310ae01757 | Particle Physics × Nuclear Physics | 0.36 | reject |
+| 25 | b75d3e72ccd6 | Quantum Field Theory × Thermodynamics and Statistical Mechanics | 0.28 | reject |
+| 26 | 5aa17b0cef85 | Quantum Field Theory × Condensed Matter Physics | 0.24 | reject |
+| 27 | 099752a10aab | General Relativity and Cosmology × Condensed Matter Physics | 0.26 | reject |
+| 28 | a09f505946db | Quantum Gravity × Condensed Matter Physics | 0.24 | reject |
+| 29 | 9ec5c86272d9 | Thermodynamics and Statistical Mechanics × Particle Physics | 0.27 | reject |
+| 30 | cc03090674cc | Thermodynamics and Statistical Mechanics × Astrophysics | 0.23 | reject |
+| 31 | beb05b87d060 | Thermodynamics and Statistical Mechanics × Plasma Physics | 0.30 | reject |
+| 32 | 1751c46bb4da | Thermodynamics and Statistical Mechanics × Fluid Dynamics | 0.32 | reject |
+| 33 | 8a830c1897b9 | Condensed Matter Physics × Astrophysics | 0.26 | reject |
+| 34 | d2b6b2c11b0f | Condensed Matter Physics × Nuclear Physics | 0.28 | reject |
+| 35 | 9c32f5c1e1ce | Condensed Matter Physics × Fluid Dynamics | 0.23 | reject |
+| 36 | aab6f6a0a6a3 | General Relativity and Cosmology × Fluid Dynamics | 0.23 | reject |
+| 37 | f9ab553e2ff2 | Quantum Foundations × Condensed Matter Physics | 0.23 | reject |
+| 38 | c013baee269e | Quantum Foundations × Plasma Physics | 0.23 | reject |
+| 39 | 5ea93024fd55 | Quantum Foundations × Acoustics and Wave Physics | 0.22 | reject |
+| 40 | 752b6b49f5ae | Quantum Field Theory × General Relativity and Cosmology | 0.23 | reject |
+| 41 | 928bed19a7d2 | Quantum Field Theory × Condensed Matter Physics | 0.23 | reject |
+| 42 | ce7f2a656c80 | Quantum Field Theory × Plasma Physics | 0.26 | reject |
+| 43 | ff8eba52e6d8 | Quantum Field Theory × Fluid Dynamics | 0.21 | reject |
+| 44 | e41cf431da10 | General Relativity and Cosmology × Plasma Physics | 0.21 | reject |
+| 45 | 0b80682150fe | Quantum Gravity × Condensed Matter Physics | 0.26 | reject |
+| 46 | 1325896b7cf2 | Condensed Matter Physics × Plasma Physics | 0.26 | reject |
+| 47 | dc4f6e2a8aac | Quantum Gravity × Plasma Physics | 0.23 | reject |
+| 48 | ca9ed4a6fb61 | Condensed Matter Physics × Fluid Dynamics | 0.27 | reject |
+| 49 | 27cfe68d3fe5 | Condensed Matter Physics × Acoustics and Wave Physics | 0.37 | reject |
+| 50 | def76666e152 | Particle Physics × Plasma Physics | 0.21 | reject |
+| 51 | fdea44ecf6f9 | Astrophysics × Plasma Physics | 0.21 | reject |
+| 52 | 1f5f5ea96085 | Plasma Physics × Nuclear Physics | 0.42 | reject |
+| 53 | 2730394d987a | Plasma Physics × Acoustics and Wave Physics | 0.23 | reject |
+| 54 | 021ce8f4a064 | Quantum Foundations × Quantum Field Theory | 0.23 | reject |
+| 55 | 21b1931aa133 | Quantum Foundations × Thermodynamics and Statistical Mechanics | 0.25 | reject |
+| 56 | 38360ebb8e60 | Quantum Foundations × Astrophysics | 0.24 | reject |
+| 57 | 4bbd9425a42b | Quantum Foundations × General Relativity and Cosmology | 0.24 | reject |
+| 58 | d3202942e8cd | Quantum Foundations × Quantum Gravity | 0.32 | reject |
+| 59 | b983347d94e2 | Quantum Foundations × Thermodynamics and Statistical Mechanics | 0.24 | reject |
+| 60 | 49d5f6b6a62d | General Relativity and Cosmology × Quantum Gravity | 0.36 | reject |
+| 61 | d6cd176c6c9a | General Relativity and Cosmology × Thermodynamics and Statistical Mechanics | 0.00 | unknown |
+| 62 | ab640b64a8b5 | General Relativity and Cosmology × Condensed Matter Physics | 0.28 | reject |
+| 63 | 11e34e34a739 | Quantum Gravity × Thermodynamics and Statistical Mechanics | 0.26 | reject |
+| 64 | 25728564e261 | Thermodynamics and Statistical Mechanics × Astrophysics | 0.34 | reject |
+| 65 | a17fc42c9753 | Quantum Gravity × Acoustics and Wave Physics | 0.23 | reject |
+| 66 | 1f1713b5fa03 | Quantum Gravity × Nuclear Physics | 0.23 | reject |
+| 67 | f31bff1bcd4d | Quantum Gravity × Fluid Dynamics | 0.27 | reject |
 
 **Total convergences:** 67
 **Mean formalisation confidence:** 0.276

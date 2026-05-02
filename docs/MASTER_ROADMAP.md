@@ -1,7 +1,7 @@
 # Master Roadmap — All Projects
 
 **Creator:** Mark E. Mala (Ekram Alam)
-**Last updated:** 2 May 2026 (capstone progress update)
+**Last updated:** 3 May 2026 (capstone quality + catalogue strategy)
 **This is THE canonical roadmap. One file. All projects. Always consult this first.**
 
 ---
@@ -163,13 +163,15 @@ Not just pairwise comparisons — combinatorial at EVERY level:
 | 5 | **Stage A** — 266 existing convergences through Logos → Synthesis | **DONE** (256/266 proofs, 2 May) |
 | 5c | **Stage A CAPSTONE** — 22 Nobel-format papers across all cascade levels (L5→L1). Genuine ontological claims about reality (Einstein/Higgs model), precisely scoped, with predictions extending into untested domains. 6-stage pipeline: census → claim formulation → planning → composition → 18-point review → prediction extraction. Anti-hallucination enforced (real convergence IDs only, deterministic provenance, no fake DOIs). | **8/22 DONE** (2 May) |
 | 5c-i | Clean up 8 completed capstone papers for Zenodo publication | **DONE** (fixed fake IDs, DOIs, headers) |
-| 5c-ii | Publish 8 capstone papers to Zenodo with DOIs | **DONE** (2 May) |
-| 5c-iii | Compose remaining 14 capstone papers (resume from paper 9/22) | NOT DONE |
-| 5c-iv | Publish remaining 14 capstone papers to Zenodo with DOIs | NOT DONE |
-| 5b | **Stage A STANDARD** — ~70 domain-pair papers from 256 formal conjectures → Zenodo with DOIs | NOT DONE |
+| 5c-ii | Publish 8 capstone papers to Zenodo with DOIs (v2 with PDFs) | **DONE** (3 May) |
+| 5c-v | **PROOFREAD all 8 capstone papers to top 0.00001% quality** — Remove all inline hex IDs from body text, write actual formalisation mathematics into papers (not just database references), fix fake Codex DOIs in references, ensure each paper stands alone as a publishable scientific document. One-by-one manual review with AI. | **NEXT** |
+| 5c-vi | Publish v3 of 8 proofread capstone papers to Zenodo | NOT DONE |
+| 5c-iii | Compose remaining 14 capstone papers (resume from paper 9/22) — fix pipeline prompts FIRST so new papers don't have inline hex IDs, include formalisation mathematics in composition, no fake DOIs | NOT DONE |
+| 5c-iv | Proofread + publish remaining 14 capstone papers to Zenodo | NOT DONE |
+| 5d | **Stage A FORMALISATION CATALOGUE** — Instead of ~70 individual papers, create ONE comprehensive catalogue document listing ALL 256 formalisations with their mathematical propositions, proof sketches, confidence scores, adversarial verdicts, and domain pairs. Published as a single Zenodo deposit. Much more useful as a reference work than hundreds of thin papers. AI-composed (no API cost). | NOT DONE |
 | 6 | **Stage B — THE BIG RUN** — Full Codex across ALL 81 fields of science, maths, physics (6 phases): all pairwise convergences (cross-category first), codex analysis, multi-field groups, meta-convergences, recursive cascade to fixed points, everything through Logos → Synthesis. 10x more data than Stage A. | NOT DONE |
 | 6c | **Stage B CAPSTONE** — Same capstone process as Stage A but from the MUCH broader Stage B dataset. New/stronger fixed points, new cascade levels, potentially new claims that didn't exist with Stage A's smaller data. Do Stage A claims hold? Strengthen? New ones emerge? Nobel-format papers from the full 81-field evidence base. | NOT DONE |
-| 6b | **Stage B STANDARD** — ~300-500 domain-pair papers from new convergences → Zenodo | NOT DONE |
+| 6d | **Stage B FORMALISATION CATALOGUE** — Same as Stage A: ONE comprehensive catalogue of all new formalisations from the 81-field run, not hundreds of individual papers. AI-composed (no API cost). | NOT DONE |
 | 7 | **Stage C — THE CROWN JEWELS** — The capstone of capstones. From ALL of Stage A + B, identify the 3-5 MOST terminal, MOST unifying, MOST revolutionary claims — the absolute top of the cascade. These are the claims that, if correct, would each individually transform our understanding of reality. Write the definitive, focused papers for each. Not broad surveys — laser-focused on the single most powerful version of each claim. | NOT DONE |
 | 7b | **Stage C PUBLICATION** — 3-5 crown jewel papers → Zenodo. These are THE papers. | NOT DONE |
 | 8 | **Stage D — HARDEN** — Take Stage C's 3-5 crown jewel claims and make them airtight. Formal mathematical proofs (Lean 4 where possible), exhaustive prediction derivation, detailed experimental proposals, address every possible objection. Close every gap the adversarial review identified. The goal: if a physicist reads this paper, they cannot find a flaw — only test it. | NOT DONE |
@@ -180,7 +182,7 @@ Not just pairwise comparisons — combinatorial at EVERY level:
 | 11 | **QC + stamp + ship** | NOT DONE |
 | 12 | **Open Source + Production Grade** — Make all 4 AIs (Gnosis, Logos, Synthesis, Capstone) + Orchestrator production-ready for anyone to clone, install, and run. PyPI packages (`pip install convergence-codex`), proper `pyproject.toml`, CLI entry points, config file system (no hardcoded paths), comprehensive README with quickstart, example data for dry runs without API credits, CI/CD (tests + linting), Docker option, framing audit ("landmark scientific paper format" not "Nobel AI"), license decision (MIT/Apache 2.0). Goal: a researcher anywhere in the world can `pip install` and run the full pipeline on their own domains. | NOT DONE |
 
-**Every convergence, every formalisation, every meta-convergence is a publishable formal conjecture.** The corpus from Stages A+B alone could be 300-500+ papers with thousands of novel formal mathematical conjectures, all Bitcoin-stamped for priority.
+**Strategy pivot (3 May 2026):** Instead of publishing 300-500+ individual formalisation papers, publish ONE comprehensive Formalisation Catalogue per stage — a reference work listing every formal conjecture with its mathematical proposition, proof sketch, confidence score, adversarial verdict, and domain pair. Capstone papers remain individually composed + manually proofread to top 0.00001% quality. Each capstone paper gets manual AI proofreading (no API cost) to ensure it stands alone as a publishable scientific document with actual mathematics, not database references. This produces ~40-50 high-quality papers instead of hundreds of thin ones.
 
 **Stage B Phases:**
 1. All pairwise (cross-category FIRST)
@@ -379,14 +381,16 @@ NOW ━━━━━━ STAGE 3b: THE CONVERGENCE CODEX ━━━━━━━━�
   ✅ Synthesis AI (1,448 lines, publication-quality papers, auto boundaries)
   ✅ Pipeline Orchestrator (479 lines, thin coordination, checkpoints)
   ✅ Stage A — DONE (256/266 proofs through Logos)
-  ▶  Stage A CAPSTONE — 8/22 Nobel-format papers DONE + cleaned (2 May 2026)
-     → Publish 8 to Zenodo
+  ▶  Stage A CAPSTONE — 8/22 papers DONE, v2 PDFs on Zenodo (3 May 2026)
+     → NEXT: Proofread all 8 papers to top 0.00001% (manual AI, no API cost)
+     → Publish v3 proofread versions to Zenodo
+     → Fix pipeline prompts (no inline hex IDs, include formalisation maths)
      → Compose remaining 14 capstone papers (~$60-80)
-     → Publish remaining 14 to Zenodo
-     Stage A STANDARD — ~70 domain-pair papers → Zenodo
+     → Proofread + publish remaining 14 to Zenodo
+     Stage A FORMALISATION CATALOGUE — ONE document with all 256 formalisations (no API cost)
      Stage B — THE BIG RUN: full Codex across 81 fields (10x more data)
-     Stage B CAPSTONE — capstone papers from the big run (FIRST)
-     Stage B STANDARD — ~300-500 papers → Zenodo
+     Stage B CAPSTONE — capstone papers from the big run (manual proofread each)
+     Stage B FORMALISATION CATALOGUE — ONE document with all new formalisations (no API cost)
      Stage C — THE CROWN JEWELS: 3-5 most terminal/unifying claims get definitive papers
      Stage C PUBLICATION → Zenodo
      Stage D — HARDEN: formal proofs, predictions, close every gap in Stage C papers
