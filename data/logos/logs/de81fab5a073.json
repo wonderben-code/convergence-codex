@@ -1,0 +1,38 @@
+{
+  "proof_id": "de81fab5a073",
+  "timestamp": "2026-05-02T14:08:15.594552+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "constraint_logic",
+      "alternatives_considered": [
+        "categorical - One could frame this as a universal property about minimal/canonical objects in constrained subcategories, but the essence is about constraint-induced rigidity rather than categorical characterization"
+      ],
+      "reasoning": "The convergence explicitly claims that additional constraints create rigidity leading to canonical forms. This is fundamentally about how constraint satisfaction forces structures into specific configurations, as seen in all three examples where combined constraints (smoothness, simple connectivity + analyticity, boundedness + analyticity) eliminate degrees of freedom."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Category theory, Algebraic structures, Order theory",
+      "alternatives_considered": [],
+      "reasoning": "Category theory provides the natural framework for formalizing how constraints functor into rigidity across domains. Algebraic structures are needed to characterize the constraint spaces and canonical forms. Order theory captures the rigidity ordering and fixed-point behavior of constraint systems."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof shows that k \u2265 dim(Aut(G)) independent constraints force the moduli space of G-structures to have non-positive dimension after quotienting by automorphisms. Since varieties of non-positive dimension are discrete, only finitely many isomorphism classes remain, corresponding to canonical forms.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 7 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 3317 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "Generated 3569 chars, 10 sorry(s)",
+      "alternatives_considered": [],
+      "reasoning": "This proof requires substantial algebraic geometry and moduli space theory that is not yet in Mathlib. The formalization provides the basic structure and theorem statement, but most steps require advanced mathematical machinery that would need to be developed from scratch."
+    }
+  ]
+}

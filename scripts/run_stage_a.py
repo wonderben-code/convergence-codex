@@ -309,6 +309,28 @@ def run_synthesis(convergences: list[dict], findings: list[dict],
             except (json.JSONDecodeError, Exception):
                 continue
 
+    # Enrich proofs with reasoning logs (so Synthesis appendices have full methodology)
+    logs_dir = proofs_dir.parent / "logs"
+    if logs_dir.exists():
+        for p in proofs:
+            log_path = logs_dir / f"{p.get('convergence_id', p.get('id', ''))}.json"
+            if log_path.exists():
+                try:
+                    p["_reasoning_log"] = json.loads(log_path.read_text())
+                except (json.JSONDecodeError, Exception):
+                    pass
+
+    # Enrich proofs with flag data (so Synthesis appendices have review status)
+    flags_dir = proofs_dir.parent / "flags"
+    if flags_dir.exists():
+        for p in proofs:
+            flag_path = flags_dir / f"{p.get('convergence_id', p.get('id', ''))}.json"
+            if flag_path.exists():
+                try:
+                    p["_flag_data"] = json.loads(flag_path.read_text())
+                except (json.JSONDecodeError, Exception):
+                    pass
+
     log(f"\nSynthesis: {len(convergences)} convergences, {len(proofs)} proofs, "
         f"{len(findings)} findings", log_file)
 

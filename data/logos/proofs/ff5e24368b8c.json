@@ -1,0 +1,320 @@
+{
+  "id": "ff5e24368b8c",
+  "convergence_id": "c70fba21943c",
+  "timestamp": "2026-05-02T14:06:41.314422+00:00",
+  "proposition": "Let H be a Hilbert space, G a symmetry group with unitary representation U: G \u2192 U(H), and \u03c1, \u03c3 \u2208 D(H) density operators. If [U(g), \u03c1] = 0 for all g \u2208 G, then for any quantum channel \u03a6: D(H) \u2192 D(H) that commutes with the symmetry action (\u03a6 \u2218 Ad_{U(g)} = Ad_{U(g)} \u2218 \u03a6), we have: (i) \u03a6(\u03c1) commutes with U(g) for all g \u2208 G, and (ii) the correlation function Tr(\u03a6(\u03c1)\u03c3) = 0 whenever \u03c3 transforms non-trivially under G.",
+  "proposition_natural": "Symmetries impose fundamental constraints on allowed quantum transitions and correlations",
+  "formalisation_type": "axiomatic",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Algebraic structures",
+    "Functional analysis"
+  ],
+  "apparatus_justification": "Category theory captures symmetries as automorphisms and transitions as morphisms, with natural transformations encoding constraints. Algebraic structures (groups, representations) formalize quantum symmetries, while functional analysis provides the Hilbert space framework for quantum states and observables.",
+  "proof_natural": "**Proposition.** Let $H$ be a Hilbert space, $G$ a symmetry group with unitary representation $U: G \\to \\mathcal{U}(H)$, and $\\rho, \\sigma \\in \\mathcal{D}(H)$ density operators. If $[U(g), \\rho] = 0$ for all $g \\in G$, then for any quantum channel $\\Phi: \\mathcal{D}(H) \\to \\mathcal{D}(H)$ that commutes with the symmetry action ($\\Phi \\circ \\text{Ad}_{U(g)} = \\text{Ad}_{U(g)} \\circ \\Phi$), we have: (i) $\\Phi(\\rho)$ commutes with $U(g)$ for all $g \\in G$, and (ii) the correlation function $\\text{Tr}(\\Phi(\\rho)\\sigma) = 0$ whenever $\\sigma$ transforms non-trivially under $G$.\n\n**Proof.** We assume that $H$ is a separable Hilbert space and $G$ is a locally compact topological group with strongly continuous unitary representation $U: G \\to \\mathcal{U}(H)$. Let $\\mathcal{D}(H)$ denote the space of density operators on $H$, and let $\\Phi$ be a completely positive trace-preserving (CPTP) map. The group acts on density operators via the adjoint action $\\text{Ad}_{U(g)}(\\rho) = U(g)\\rho U(g)^\\dagger$.\n\nFirst, we establish that $\\rho$ is $G$-invariant. Since $[U(g), \\rho] = 0$ for all $g \\in G$, we have $U(g)\\rho = \\rho U(g)$. Therefore,\n$$\\text{Ad}_{U(g)}(\\rho) = U(g)\\rho U(g)^\\dagger = \\rho U(g) U(g)^\\dagger = \\rho,$$\nconfirming that $\\rho$ is invariant under the group action.\n\nNext, we show that $\\Phi(\\rho)$ inherits this invariance. By the equivariance property of $\\Phi$, we have\n$$\\text{Ad}_{U(g)}(\\Phi(\\rho)) = \\Phi(\\text{Ad}_{U(g)}(\\rho)) = \\Phi(\\rho),$$\nwhere the second equality follows from the $G$-invariance of $\\rho$ established above. This invariance immediately implies that $[U(g), \\Phi(\\rho)] = 0$ for all $g \\in G$, establishing part (i).\n\nFor part (ii), we decompose the Hilbert space as $H = H_{\\text{inv}} \\oplus H_{\\text{var}}$, where $H_{\\text{inv}} = \\{\\psi \\in H : U(g)\\psi = \\psi \\text{ for all } g \\in G\\}$ is the subspace of $G$-invariant vectors, and $H_{\\text{var}} = H_{\\text{inv}}^\\perp$ is its orthogonal complement. This decomposition is standard for unitary representations.\n\nSince $\\Phi(\\rho)$ commutes with all $U(g)$, it belongs to the commutant of the representation. By Schur's lemma, when restricted to irreducible subrepresentations, such operators must be scalar multiples of the identity. This implies that $\\Phi(\\rho)$ has a block-diagonal structure with respect to the decomposition $H = H_{\\text{inv}} \\oplus H_{\\text{var}}$.\n\nIf $\\sigma$ transforms non-trivially under $G$, then there exists $g \\in G$ such that $\\text{Ad}_{U(g)}(\\sigma) \\neq \\sigma$. This implies that $\\sigma$ cannot be supported entirely on $H_{\\text{inv}}$ and must have non-zero support on $H_{\\text{var}}$.\n\n[Note: To complete the proof of part (ii), we would need to show that when $\\rho$ is $G$-invariant, the operator $\\Phi(\\rho)$ has no support on $H_{\\text{var}}$. This requires additional assumptions about the structure of the channel $\\Phi$ or the representation $U$, which are not provided in the current formulation.]\n\nSubject to this gap, the correlation $\\text{Tr}(\\Phi(\\rho)\\sigma)$ would vanish due to the orthogonality of the supports of $\\Phi(\\rho)$ and $\\sigma$ in the decomposition of $H$. This would complete the proof of the proposition. $\\square$",
+  "proof_lean": "import Mathlib.Analysis.InnerProductSpace.Basic\nimport Mathlib.LinearAlgebra.Trace\nimport Mathlib.Algebra.Group.Defs\nimport Mathlib.CategoryTheory.Functor.Basic\nimport Mathlib.Analysis.NormedSpace.OperatorNorm\n\n/-- Density operator on a Hilbert space -/\nstructure DensityOperator (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H] where\n  /-- The underlying operator -/\n  toOperator : H \u2192L[\u2102] H\n  /-- Positive semidefinite condition -/\n  positive : sorry -- \"Positive semidefinite operators not formalized\"\n  /-- Trace equals 1 -/\n  trace_one : sorry -- \"Trace class operators not formalized\"\n\n/-- Unitary representation of a group on a Hilbert space -/\nstructure UnitaryRep (G H : Type*) [Group G] [NormedAddCommGroup H] [InnerProductSpace \u2102 H] where\n  /-- The representation map -/\n  toFun : G \u2192 (H \u2192L[\u2102] H)\n  /-- Each operator is unitary -/\n  unitary : \u2200 g : G, sorry -- \"Unitary operators not formalized\"\n  /-- Group homomorphism property -/\n  map_mul : \u2200 g h : G, toFun (g * h) = toFun g * toFun h\n\n/-- Quantum channel between density operators -/\nstructure QuantumChannel (H : Type*) [NormedAddCommGroup H] [InnerProductSpace \u2102 H] where\n  /-- The channel map -/\n  toFun : DensityOperator H \u2192 DensityOperator H\n  /-- Completely positive property -/\n  completely_positive : sorry -- \"Complete positivity not formalized\"\n  /-- Trace preserving property -/\n  trace_preserving : sorry -- \"Trace preservation not formalized\"\n\n/-- Adjoint action of a unitary operator -/\ndef adjointAction {H : Type*} [NormedAddCommGroup H] [InnerProductSpace \u2102 H]\n  (U : H \u2192L[\u2102] H) (\u03c1 : DensityOperator H) : DensityOperator H :=\n  sorry -- \"Adjoint action U \u03c1 U\u2020 not formalized\"\n\n/-- A density operator commutes with a unitary representation -/\ndef commutes_with_rep {G H : Type*} [Group G] [NormedAddCommGroup H] [InnerProductSpace \u2102 H]\n  (U : UnitaryRep G H) (\u03c1 : DensityOperator H) : Prop :=\n  \u2200 g : G, sorry -- \"Commutator [U(g), \u03c1] = 0 not formalized\"\n\n/-- A quantum channel is equivariant with respect to a group action -/\ndef is_equivariant {G H : Type*} [Group G] [NormedAddCommGroup H] [InnerProductSpace \u2102 H]\n  (\u03a6 : QuantumChannel H) (U : UnitaryRep G H) : Prop :=\n  \u2200 g : G, \u2200 \u03c1 : DensityOperator H,\n    \u03a6.toFun (adjointAction (U.toFun g) \u03c1) = adjointAction (U.toFun g) (\u03a6.toFun \u03c1)\n\n/-- A density operator transforms non-trivially under a group action -/\ndef transforms_nontrivially {G H : Type*} [Group G] [NormedAddCommGroup H] [InnerProductSpace \u2102 H]\n  (U : UnitaryRep G H) (\u03c3 : DensityOperator H) : Prop :=\n  \u2203 g : G, adjointAction (U.toFun g) \u03c3 \u2260 \u03c3\n\n/-- Main theorem about symmetry-preserving quantum channels -/\ntheorem symmetry_preserving_channel_correlation\n  {G H : Type*} [Group G] [NormedAddCommGroup H] [InnerProductSpace \u2102 H] [CompleteSpace H]\n  (U : UnitaryRep G H) (\u03c1 \u03c3 : DensityOperator H) (\u03a6 : QuantumChannel H)\n  (h_commute : commutes_with_rep U \u03c1)\n  (h_equivariant : is_equivariant \u03a6 U) :\n  (\u2200 g : G, commutes_with_rep U (\u03a6.toFun \u03c1)) \u2227\n  (transforms_nontrivially U \u03c3 \u2192 sorry) := by\n  constructor\n  \u00b7 -- Part (i): \u03a6(\u03c1) commutes with U(g) for all g \u2208 G\n    intro g\n    -- Step 1: \u03c1 is G-invariant under adjoint action\n    have h_inv : \u2200 g : G, adjointAction (U.toFun g) \u03c1 = \u03c1 := by\n      sorry -- \"Follows from commutation but adjoint action not fully formalized\"\n    -- Step 2: \u03a6(\u03c1) is G-invariant by equivariance\n    have h_phi_inv : \u2200 g : G, adjointAction (U.toFun g) (\u03a6.toFun \u03c1) = \u03a6.toFun \u03c1 := by\n      intro g\n      rw [\u2190 h_equivariant g \u03c1, h_inv g]\n    -- Step 3: G-invariance implies commutation\n    sorry -- \"Conversion from invariance to commutation not formalized\"\n  \u00b7 -- Part (ii): Tr(\u03a6(\u03c1)\u03c3) = 0 when \u03c3 transforms non-trivially\n    intro h_nontrivial\n    -- Step 4: Define invariant and variant subspaces\n    sorry -- \"Decomposition H = H_inv \u2295 H_var and subsequent analysis not formalized\"",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "If [U(g), \u03c1] = 0 for all g \u2208 G, then \u03c1 is G-invariant under the adjoint action",
+      "justification": "Direct calculation: Ad_{U(g)}(\u03c1) = U(g)\u03c1U(g)^\u2020 = \u03c1U(g)U(g)^\u2020 = \u03c1",
+      "dependencies": [
+        "Assumption that [U(g), \u03c1] = 0",
+        "Definition of adjoint action"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "For a G-equivariant channel \u03a6, if \u03c1 is G-invariant, then \u03a6(\u03c1) is G-invariant",
+      "justification": "Ad_{U(g)}(\u03a6(\u03c1)) = \u03a6(Ad_{U(g)}(\u03c1)) = \u03a6(\u03c1) by equivariance and step 1",
+      "dependencies": [
+        "Step 1",
+        "Assumption of channel equivariance"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "G-invariance of \u03a6(\u03c1) implies [U(g), \u03a6(\u03c1)] = 0 for all g \u2208 G",
+      "justification": "Ad_{U(g)}(\u03a6(\u03c1)) = \u03a6(\u03c1) means U(g)\u03a6(\u03c1)U(g)^\u2020 = \u03a6(\u03c1), which gives U(g)\u03a6(\u03c1) = \u03a6(\u03c1)U(g)",
+      "dependencies": [
+        "Step 2",
+        "Definition of commutator"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "Define the G-invariant and G-variant subspaces: H_inv = {\u03c8 \u2208 H : U(g)\u03c8 = \u03c8 \u2200g} and H_var = H_inv^\u22a5",
+      "justification": "Standard decomposition for unitary representations",
+      "dependencies": [
+        "Peter-Weyl theorem for compact groups",
+        "[Gap: requires compactness or suitable generalization]"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "If \u03c3 transforms non-trivially under G, then \u03c3 has support on H_var",
+      "justification": "Non-trivial transformation means \u2203g: Ad_{U(g)}(\u03c3) \u2260 \u03c3, which implies \u03c3 cannot be supported only on H_inv",
+      "dependencies": [
+        "Step 4",
+        "Spectral theory of self-adjoint operators"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Since \u03a6(\u03c1) commutes with all U(g), it has block-diagonal form with respect to H = H_inv \u2295 H_var",
+      "justification": "Schur's lemma applied to the commutant of the representation",
+      "dependencies": [
+        "Step 3",
+        "Schur's lemma",
+        "[Gap: requires irreducibility assumptions on G-representation]"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "The correlation Tr(\u03a6(\u03c1)\u03c3) vanishes when \u03c3 transforms non-trivially",
+      "justification": "[Gap: This requires showing that \u03a6(\u03c1) has no support on H_var when \u03c1 is G-invariant, which needs additional structure]",
+      "dependencies": [
+        "Steps 5, 6",
+        "[Gap: Missing connection between invariant states and invariant support]"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Peter-Weyl Theorem",
+      "authors": "Peter, F. and Weyl, H.",
+      "year": "1927",
+      "field": "Representation Theory",
+      "statement": "Any unitary representation of a compact group decomposes into a direct sum of finite-dimensional irreducible representations",
+      "usage": "Used to decompose Hilbert space into invariant and variant subspaces"
+    },
+    {
+      "name": "Schur's Lemma",
+      "authors": "Schur, I.",
+      "year": "1905",
+      "field": "Representation Theory",
+      "statement": "An operator commuting with all operators in an irreducible representation is a scalar multiple of the identity",
+      "usage": "Used to establish block-diagonal structure of G-invariant operators"
+    },
+    {
+      "name": "Stinespring Dilation Theorem",
+      "authors": "Stinespring, W.F.",
+      "year": "1955",
+      "field": "Operator Algebras",
+      "statement": "Any completely positive map has a representation involving an isometry to a larger Hilbert space",
+      "usage": "Could be used to analyze structure of equivariant channels"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "H is a separable Hilbert space",
+    "G is a locally compact topological group",
+    "U: G \u2192 U(H) is a strongly continuous unitary representation",
+    "D(H) denotes the space of density operators (positive trace-class operators with trace 1)",
+    "Quantum channels are completely positive trace-preserving (CPTP) maps",
+    "Ad_{U(g)}(\u03c1) = U(g)\u03c1U(g)^\u2020 denotes the adjoint action",
+    "The group action on D(H) is given by g\u00b7\u03c1 = Ad_{U(g)}(\u03c1)",
+    "Symmetry commutation means \u03a6(Ad_{U(g)}(\u03c1)) = Ad_{U(g)}(\u03a6(\u03c1)) for all g \u2208 G, \u03c1 \u2208 D(H)"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.3,
+    "gaps": [
+      {
+        "step": "Decomposition H = H_inv \u2295 H_var",
+        "issue": "This decomposition is not generally valid. H_inv may not be closed, and even if it is, the orthogonal complement may not capture all non-invariant vectors in the way claimed.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need to work with the spectral decomposition of the group representation or restrict to compact groups"
+      },
+      {
+        "step": "Application of Schur's lemma",
+        "issue": "Schur's lemma applies to irreducible representations, but the proof hasn't established that H decomposes into irreducibles. For non-compact groups, this decomposition may not exist.",
+        "severity": "critical",
+        "fixable": true,
+        "suggested_fix": "Restrict to compact groups and invoke Peter-Weyl theorem, or work with direct integral decomposition for general groups"
+      },
+      {
+        "step": "Claim that \u03a6(\u03c1) has block-diagonal structure",
+        "issue": "This doesn't follow from Schur's lemma without proper decomposition into irreducibles. The commutant structure is more complex for general representations.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Need to properly analyze the commutant algebra and its action on density operators"
+      },
+      {
+        "step": "Proof of part (ii)",
+        "issue": "The proof admits it cannot establish that \u03a6(\u03c1) has no support on H_var, which is essential for the conclusion. This is a complete failure to prove the stated result.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "The statement itself may be false without additional assumptions"
+      },
+      {
+        "step": "Definition of non-trivial transformation",
+        "issue": "The proof conflates '\u03c3 transforms non-trivially' with '\u03c3 has support on H_var'. These are different concepts and the implication is not justified.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Precisely define what 'transforms non-trivially' means and prove the claimed implication"
+      }
+    ],
+    "hidden_assumptions": [
+      "The subspace H_inv of invariant vectors is closed",
+      "The representation decomposes nicely (into irreducibles or has good spectral properties)",
+      "The commutant algebra has a simple structure",
+      "Operators in the commutant preserve the invariant/variant decomposition in a specific way",
+      "The channel \u03a6 preserves support properties related to the group action"
+    ],
+    "circular_reasoning": false,
+    "circular_details": "",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims results for arbitrary groups and representations, but the techniques used (Schur's lemma, orthogonal decomposition) only work for specific classes. Even for those classes, part (ii) is not established.",
+    "citation_issues": [
+      "Peter-Weyl theorem only applies to compact groups, not general locally compact groups",
+      "Schur's lemma is cited but cannot be applied without proper irreducible decomposition",
+      "Stinespring dilation is cited but never used in the proof"
+    ],
+    "structural_soundness": 0.2,
+    "overall_assessment": "The proof has fundamental structural flaws, particularly in its treatment of representation theory for general groups and its complete failure to establish part (ii). The approach via invariant subspaces is poorly executed and relies on properties that don't hold in the stated generality.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "Only proves part (i) that \u03a6(\u03c1) commutes with U(g). Part (ii) about correlation functions is not established.",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The representation U decomposes H into irreducible subspaces",
+      "The G-invariant subspace H_inv is non-trivial",
+      "Schur's lemma applies to this infinite-dimensional setting",
+      "The notion of 'support' for density operators is well-defined in this context",
+      "G-invariant density operators are supported only on H_inv"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "5",
+        "issue": "Non-trivial transformation does not imply \u03c3 has support on H_var. A density operator can transform non-trivially while having components in both H_inv and H_var."
+      },
+      {
+        "step": "6",
+        "issue": "Schur's lemma application is incorrect. Commuting with all U(g) doesn't guarantee block-diagonal form without additional assumptions about irreducibility of the representation."
+      },
+      {
+        "step": "7",
+        "issue": "The justification explicitly acknowledges a gap. The claim that \u03a6(\u03c1) has no support on H_var is unproven and likely false - G-invariant operators can have support on H_var."
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Step 7 contains an acknowledged gap that is never filled",
+      "No proof that G-invariant density operators are supported only on H_inv",
+      "Missing analysis of how quantum channels interact with the subspace decomposition",
+      "No consideration of mixed states that are G-invariant but supported on both subspaces"
+    ],
+    "internal_score": 0.3
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The proof claims that if \u03c3 transforms non-trivially under G, then \u03c3 has support on H_var = H_inv^\u22a5. This is mathematically incorrect - a density operator that transforms non-trivially can have support on both H_inv and H_var components.",
+      "The claim that Tr(\u03a6(\u03c1)\u03c3) = 0 whenever \u03c3 transforms non-trivially is false. The trace of a product of operators depends on their matrix elements, not just their transformation properties under the group action.",
+      "The decomposition H = H_inv \u2295 H_var assumes G has a trivial representation on H_inv, but this is not generally true for arbitrary locally compact groups with strongly continuous representations."
+    ],
+    "assumption_conflicts": [
+      "Conflicts with [08b6405556dd] which correctly states that symmetry groups determine conserved quantities and interaction forms, but does not make the erroneous claim about correlation functions vanishing",
+      "Conflicts with [087da119976b] regarding G-invariant measures and symmetry breaking - the new proof oversimplifies how symmetry acts on density operators"
+    ],
+    "beneficial_connections": [
+      "Correctly identifies the relationship between G-equivariant channels and invariant states, connecting to [08b6405556dd]'s symmetry principles",
+      "The G-invariance preservation property aligns with [087da119976b]'s treatment of G-invariant measures"
+    ],
+    "consistency_score": 0.3,
+    "notes": "The proof contains fundamental mathematical errors in its treatment of group representations on Hilbert spaces and incorrectly claims that correlation functions must vanish based solely on transformation properties. The block-diagonal argument is flawed and the support characterization of non-trivially transforming operators is incorrect."
+  },
+  "confidence_score": 0.29999999999999993,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.3,
+    "cross_proof": 0.3,
+    "calibration": 0.29999999999999993
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.3,
+    "internal": 0.3,
+    "cross_proof": 0.3,
+    "calibration": 0.29999999999999993
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A complete theory of equivariant quantum channels that connects symmetry constraints on input states to support properties of output states. Specifically, we need theorems relating G-invariance of density operators to their spectral support on irreducible representation spaces.",
+  "limitations": [
+    "Step 4 assumes compact group or suitable generalization without justification",
+    "Step 6 requires irreducibility assumptions not stated in the proposition",
+    "Step 7 is incomplete - the connection between invariant states and vanishing correlations with variant states is not rigorously established",
+    "The proof does not handle the case of continuous symmetry groups rigorously",
+    "The proof sketch assumes more structure than stated in the proposition",
+    "The result as stated may be too strong without additional assumptions on the symmetry group",
+    "The connection between symmetry and correlation constraints requires spectral analysis not fully developed here",
+    "Selection rules typically require specific group representations, not arbitrary symmetries"
+  ],
+  "source_convergence": {
+    "structural_claim": "Symmetries impose fundamental constraints on allowed quantum transitions and correlations",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Monogamy of Entanglement",
+        "domain_id": "quantum_foundations",
+        "domain_name": "Quantum Foundations",
+        "link_type": "direct",
+        "structural_conclusion": "Quantum entanglement cannot be freely shared among multiple parties due to fundamental constraints"
+      },
+      {
+        "result_id": "",
+        "result_name": "Selection Rules for Atomic Transitions",
+        "domain_id": "atomic_molecular_physics",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Conservation laws impose strict constraints on which quantum transitions can occur"
+      },
+      {
+        "result_id": "",
+        "result_name": "Pauli Exclusion Principle",
+        "domain_id": "atomic_molecular_physics",
+        "domain_name": "Atomic and Molecular Physics",
+        "link_type": "direct",
+        "structural_conclusion": "Fermionic antisymmetry fundamentally constrains how particles can share quantum states"
+      }
+    ],
+    "domains": [
+      "quantum_foundations",
+      "atomic_physics"
+    ],
+    "domain_names": [
+      "Quantum Foundations",
+      "Atomic and Molecular Physics"
+    ],
+    "ea_scores": {
+      "strength": 0.357,
+      "independence": 0.75,
+      "adversarial": 0.09,
+      "reproducibility": 0.5249999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.49134999999999995,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T20:14:07.254043+00:00",
+    "id": "c70fba21943c"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.318075
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "proof_id": "c5c3603845d9",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: Rigorous mathematical framework for: (1) Regularization and renormalization of \u27e8T_\u03bc\u03bd\u27e9 on arbitrary curved spacetimes without ambiguities, (2) Well-defined operator products at coincident points, (3) Backreaction problem beyond perturbation theory, (4) Unified treatment connecting QFT in curved spacetime with cavity QED boundary effects",
+    "10 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "proof_id": "7e1d454fd9e4",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A rigorous categorical framework for physical topological phases that: (1) formalizes the passage from Hilbert spaces to topological categories, (2) provides functorial descriptions of physical observables that respect topological structure, (3) handles singular configurations (vortices, defects) categorically",
+    "Difficulty assessed as challenging",
+    "7 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

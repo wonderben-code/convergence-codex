@@ -161,6 +161,22 @@ class Composer:
         sections.append({"section": "references", "title": "References", "content": references_text,
                         "word_count": len(references_text.split()), "confidence": 0.7, "flags": []})
 
+        # Appendices — complete data from Gnosis + Logos (no data loss)
+        appendix_a = self._build_appendix_discoveries(bundle)
+        sections.append({"section": "appendix_a", "title": "Appendix A: Complete Discovery Data",
+                        "content": appendix_a, "word_count": len(appendix_a.split()),
+                        "confidence": 1.0, "flags": []})
+
+        appendix_b = self._build_appendix_formalisations(bundle)
+        sections.append({"section": "appendix_b", "title": "Appendix B: Complete Formalisation Data",
+                        "content": appendix_b, "word_count": len(appendix_b.split()),
+                        "confidence": 1.0, "flags": []})
+
+        appendix_c = self._build_appendix_validation(bundle)
+        sections.append({"section": "appendix_c", "title": "Appendix C: Validation and Methodology Log",
+                        "content": appendix_c, "word_count": len(appendix_c.split()),
+                        "confidence": 1.0, "flags": []})
+
         paper.sections = sections
         paper.total_word_count = sum(s["word_count"] for s in sections)
 
@@ -415,3 +431,295 @@ class Composer:
         keywords.add("cross-domain convergence")
         keywords.add("Convergence Codex")
         return sorted(keywords)[:10]
+
+    # ─── Appendix builders (structured data, not AI-generated) ───
+
+    def _build_appendix_discoveries(self, bundle: PaperBundle) -> str:
+        """Appendix A: Complete Gnosis discovery data — nothing truncated."""
+        parts = [
+            "*This appendix contains the complete discovery data from Gnosis AI for every "
+            "convergence in this paper. No data has been truncated or summarised.*\n"
+        ]
+
+        for i, c in enumerate(bundle.convergences):
+            cid = c.get("id", "unknown")
+            domains = ", ".join(c.get("domain_names", c.get("domains", [])))
+            ea = c.get("ea_scores", {})
+
+            parts.append(f"### A.{i+1} Convergence `{cid}`\n")
+            parts.append(f"**Domains:** {domains}")
+            parts.append(f"**Type:** {c.get('convergence_type', 'N/A')}")
+            parts.append(f"**Discovery level:** {c.get('discovered_at_level', 'N/A')}")
+            parts.append(f"**Discovered in run:** {c.get('discovered_in_run', 'N/A')}")
+            parts.append(f"**Timestamp:** {c.get('timestamp', 'N/A')}\n")
+
+            # Full structural claim — NOT truncated
+            parts.append(f"**Structural Claim:**\n> {c.get('structural_claim', 'N/A')}\n")
+
+            # Full EA scores — all 5 dimensions
+            if ea:
+                parts.append("**EA Validation Scores:**")
+                parts.append(f"| Dimension | Score |")
+                parts.append(f"|-----------|-------|")
+                for dim in ["strength", "independence", "adversarial", "reproducibility", "depth_consistency"]:
+                    score = ea.get(dim, "N/A")
+                    if isinstance(score, float):
+                        parts.append(f"| {dim} | {score:.3f} |")
+                    else:
+                        parts.append(f"| {dim} | {score} |")
+                parts.append(f"| **Overall confidence** | **{ea.get('confidence', 'N/A')}** ({ea.get('confidence_category', 'N/A')}) |")
+                parts.append("")
+
+            # Full supporting results — every one, not truncated
+            results = c.get("supporting_results", [])
+            if results:
+                parts.append(f"**Supporting Results ({len(results)}):**\n")
+                for j, r in enumerate(results):
+                    domain = r.get("domain_name", r.get("domain_id", "unknown"))
+                    parts.append(f"**{j+1}. [{domain}] {r.get('result_name', 'unnamed')}**")
+                    parts.append(f"- Conclusion: {r.get('structural_conclusion', 'N/A')}")
+                    parts.append(f"- Epistemic status: {r.get('epistemic_status', 'N/A')}")
+                    if r.get("mathematical_structure"):
+                        parts.append(f"- Mathematical structure: {r.get('mathematical_structure')}")
+                    parts.append("")
+
+            parts.append("---\n")
+
+        return "\n".join(parts)
+
+    def _build_appendix_formalisations(self, bundle: PaperBundle) -> str:
+        """Appendix B: Complete Logos formalisation data — proofs, Lean code, everything."""
+        parts = [
+            "*This appendix contains the complete formalisation data from Logos AI for every "
+            "proof in this paper, including formal propositions, proof steps, Lean 4 code, "
+            "assumptions, limitations, and literature dependencies.*\n"
+        ]
+
+        for i, p in enumerate(bundle.proofs):
+            pid = p.get("id", "unknown")
+            cid = p.get("convergence_id", "unknown")
+
+            parts.append(f"### B.{i+1} Proof `{pid}` (Convergence `{cid}`)\n")
+            parts.append(f"**Formalisation type:** {p.get('formalisation_type', 'N/A')}")
+            parts.append(f"**Mathematical apparatus:** {', '.join(p.get('mathematical_apparatus', []))}")
+            parts.append(f"**Apparatus justification:** {p.get('apparatus_justification', 'N/A')}")
+            parts.append(f"**Verification status:** {p.get('verification_status', 'N/A')}")
+            parts.append(f"**Confidence:** {p.get('confidence_score', 'N/A')} ({p.get('confidence_category', 'N/A')})")
+            parts.append(f"**Within standard mathematics:** {p.get('within_standard_mathematics', 'N/A')}\n")
+
+            if p.get("new_mathematics_needed"):
+                parts.append(f"**New mathematics needed:** {p['new_mathematics_needed']}\n")
+
+            # Formal proposition
+            if p.get("proposition"):
+                parts.append(f"**Formal Proposition:**\n```\n{p['proposition']}\n```\n")
+
+            # Natural language proposition
+            if p.get("proposition_natural"):
+                parts.append(f"**Natural Language Proposition:**\n> {p['proposition_natural']}\n")
+
+            # Assumptions
+            assumptions = p.get("assumptions", [])
+            if assumptions:
+                parts.append(f"**Assumptions ({len(assumptions)}):**")
+                for a in assumptions:
+                    parts.append(f"- {a}")
+                parts.append("")
+
+            # Full proof steps
+            steps = p.get("proof_steps", [])
+            if steps:
+                parts.append(f"**Proof Steps ({len(steps)}):**\n")
+                for s in steps:
+                    num = s.get("step_number", "?")
+                    parts.append(f"**Step {num}:** {s.get('statement', '')}")
+                    if s.get("justification"):
+                        parts.append(f"  *Justification:* {s['justification']}")
+                    if s.get("dependencies"):
+                        deps = s["dependencies"]
+                        if isinstance(deps, list):
+                            parts.append(f"  *Dependencies:* {', '.join(str(d) for d in deps)}")
+                    parts.append("")
+
+            # Natural language proof
+            if p.get("proof_natural"):
+                parts.append(f"**Natural Language Proof:**\n\n{p['proof_natural']}\n")
+
+            # Lean 4 code
+            if p.get("proof_lean"):
+                parts.append(f"**Lean 4 Code:**\n```lean\n{p['proof_lean']}\n```\n")
+                if p.get("lean_verified"):
+                    parts.append("*Status: Machine-verified*\n")
+                elif p.get("lean_partial"):
+                    parts.append("*Status: Partially verified (contains sorry)*\n")
+                else:
+                    reason = p.get("lean_failure_reason", "Lean 4 not available for verification")
+                    parts.append(f"*Status: Unverified — {reason}*\n")
+
+            # Literature dependencies
+            deps = p.get("dependencies_literature", [])
+            if deps:
+                parts.append(f"**Literature Dependencies ({len(deps)}):**")
+                for d in deps:
+                    parts.append(f"- {d.get('name', 'unnamed')}: {d.get('statement', '')}")
+                    if d.get("authors"):
+                        parts.append(f"  Authors: {d['authors']}, {d.get('year', '')}")
+                parts.append("")
+
+            # Limitations and gaps
+            limitations = p.get("limitations", [])
+            if limitations:
+                parts.append(f"**Limitations and Gaps ({len(limitations)}):**")
+                for lim in limitations:
+                    if isinstance(lim, dict):
+                        parts.append(f"- [{lim.get('severity', 'unknown')}] {lim.get('description', str(lim))}")
+                    else:
+                        parts.append(f"- {lim}")
+                parts.append("")
+
+            parts.append("---\n")
+
+        return "\n".join(parts)
+
+    def _build_appendix_validation(self, bundle: PaperBundle) -> str:
+        """Appendix C: Validation results and methodology reasoning log."""
+        parts = [
+            "*This appendix contains the complete adversarial validation results and "
+            "the Logos AI reasoning log showing how each formalisation decision was made. "
+            "This provides full methodological transparency.*\n"
+        ]
+
+        for i, p in enumerate(bundle.proofs):
+            pid = p.get("id", "unknown")
+            cid = p.get("convergence_id", "unknown")
+
+            parts.append(f"### C.{i+1} Validation for Proof `{pid}` (Convergence `{cid}`)\n")
+
+            # 5-layer confidence breakdown
+            breakdown = p.get("confidence_breakdown", {})
+            if breakdown:
+                parts.append("**5-Layer Confidence Breakdown:**")
+                parts.append("| Layer | Weight | Score |")
+                parts.append("|-------|--------|-------|")
+                weights = {"mechanical": 0.30, "adversarial": 0.25, "internal": 0.20,
+                          "cross_proof": 0.15, "calibration": 0.10}
+                for layer in ["mechanical", "adversarial", "internal", "cross_proof", "calibration"]:
+                    score = breakdown.get(layer, "N/A")
+                    w = weights.get(layer, "?")
+                    if isinstance(score, float):
+                        parts.append(f"| {layer} | {w} | {score:.3f} |")
+                    else:
+                        parts.append(f"| {layer} | {w} | {score} |")
+                parts.append(f"| **Overall** | **1.00** | **{p.get('confidence_score', 'N/A')}** |")
+                parts.append("")
+
+            # Adversarial attack results
+            adv = p.get("adversarial_result", {})
+            if adv:
+                parts.append("**Adversarial Review (Layer 2):**")
+                parts.append(f"- Proof soundness: {adv.get('proof_soundness', 'N/A')}")
+                parts.append(f"- Overall assessment: {adv.get('overall_assessment', 'N/A')}")
+                parts.append(f"- Verdict: {adv.get('verdict', 'N/A')}")
+                gaps = adv.get("gaps", [])
+                if gaps:
+                    parts.append(f"- Gaps found ({len(gaps)}):")
+                    for g in gaps:
+                        if isinstance(g, dict):
+                            parts.append(f"  - [{g.get('severity', '?')}] {g.get('description', str(g))}")
+                        else:
+                            parts.append(f"  - {g}")
+                strengths = adv.get("strengths", [])
+                if strengths:
+                    parts.append(f"- Strengths noted ({len(strengths)}):")
+                    for s in strengths:
+                        parts.append(f"  - {s}")
+                parts.append("")
+
+            # Internal consistency
+            internal = p.get("internal_consistency", {})
+            if internal:
+                parts.append("**Internal Consistency (Layer 3):**")
+                parts.append(f"- Score: {internal.get('internal_score', 'N/A')}")
+                parts.append(f"- Proves stated proposition: {internal.get('proves_stated_proposition', 'N/A')}")
+                if internal.get("issues"):
+                    parts.append(f"- Issues: {internal['issues']}")
+                parts.append("")
+
+            # Cross-proof consistency
+            cross = p.get("cross_proof_consistency", {})
+            if cross:
+                parts.append("**Cross-Proof Consistency (Layer 4):**")
+                parts.append(f"- Score: {cross.get('consistency_score', 'N/A')}")
+                parts.append(f"- Contradictions found: {cross.get('contradictions_found', 'N/A')}")
+                if cross.get("notes"):
+                    parts.append(f"- Notes: {cross['notes']}")
+                parts.append("")
+
+            parts.append("---\n")
+
+        # Reasoning logs (from Logos formaliser — how/why each decision was made)
+        has_logs = any(p.get("_reasoning_log") for p in bundle.proofs)
+        if has_logs:
+            parts.append("## Formaliser Reasoning Logs\n")
+            parts.append("*Complete decision log from Logos AI showing how each formalisation "
+                        "decision was made, including alternatives considered and reasons for rejection.*\n")
+
+            for i, p in enumerate(bundle.proofs):
+                rlog = p.get("_reasoning_log", {})
+                decisions = rlog.get("decisions", [])
+                if not decisions:
+                    continue
+
+                pid = p.get("id", "unknown")
+                parts.append(f"### Proof `{pid}` — {len(decisions)} decisions\n")
+
+                for d in decisions:
+                    parts.append(f"**{d.get('step', 'unknown')}**")
+                    parts.append(f"- Choice: {d.get('choice', 'N/A')}")
+                    if d.get("reasoning"):
+                        parts.append(f"- Reasoning: {d['reasoning']}")
+                    alts = d.get("alternatives_considered", [])
+                    if alts:
+                        parts.append(f"- Alternatives considered:")
+                        for alt in alts:
+                            if alt:
+                                parts.append(f"  - {alt}")
+                    parts.append("")
+
+                parts.append("---\n")
+
+        # Flag data (human review requirements)
+        has_flags = any(p.get("_flag_data") for p in bundle.proofs)
+        if has_flags:
+            parts.append("## Human Review Flags\n")
+            for i, p in enumerate(bundle.proofs):
+                flag = p.get("_flag_data", {})
+                if not flag or not flag.get("requires_human_review"):
+                    continue
+
+                pid = p.get("id", "unknown")
+                parts.append(f"**Proof `{pid}`:** Review priority: {flag.get('review_priority', 'N/A')}")
+                for reason in flag.get("review_reasons", []):
+                    parts.append(f"- {reason}")
+                expertise = flag.get("suggested_expertise", [])
+                if expertise:
+                    parts.append(f"- Suggested expertise: {', '.join(expertise)}")
+                parts.append("")
+
+        # Methodology notes
+        parts.append("## Methodology Notes\n")
+        parts.append("**Discovery Pipeline:** Gnosis AI (Convergence Intelligence engine + "
+                     "Epistemic Assurance engine) → Logos AI (formalisation + 5-layer validation) "
+                     "→ Synthesis AI (paper composition + adversarial review)\n")
+        parts.append("**Models used:** Claude Opus 4 for deep reasoning (type detection, proof "
+                     "generation, adversarial review), Claude Sonnet 4 for supporting operations\n")
+
+        for p in bundle.proofs[:1]:  # Show metadata from first proof
+            meta = p.get("run_metadata", {})
+            if meta:
+                parts.append(f"**Run metadata (sample):** Model deep: {meta.get('model_deep', 'N/A')}, "
+                           f"Model fast: {meta.get('model_fast', 'N/A')}, "
+                           f"API calls: {meta.get('api_calls', 'N/A')}, "
+                           f"Cost: ${meta.get('cost_usd', 0):.2f}")
+
+        return "\n".join(parts)

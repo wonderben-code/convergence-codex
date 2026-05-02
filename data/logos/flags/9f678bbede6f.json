@@ -1,0 +1,15 @@
+{
+  "proof_id": "9f678bbede6f",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A complete theory of functorial representations of open quantum systems with explicit boundary condition dependence, including: (1) Rigorous construction of boundary-dependent functors preserving quantum structure, (2) Continuity theory for functionals on categories of quantum systems, (3) Natural transformation theory adapted to quantum channels with environmental coupling",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

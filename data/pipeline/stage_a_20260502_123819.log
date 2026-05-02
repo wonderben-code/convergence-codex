@@ -769,3 +769,47 @@
 [14:08:32]   [200/266] ca9ed4a6fb61 — Condensed Matter Physics, Fluid Dynamics
 [14:08:40]     [c7af5b55681e] Type: categorical | Apparatus: Category theory, Functional analysis | Steps: 10
 [14:08:47]     [c81d03cc93ad] Type: categorical | Apparatus: Category theory, Measure theory | Steps: 8
+[14:09:05]     [c537405edd84] Confidence: 0.26 (low)
+[14:09:05]     [c537405edd84] Done: 226s, $0.77 (total: $107.43)
+[14:09:05]   [201/266] cc03090674cc — Thermodynamics and Statistical Mechanics, Astrophysics
+[14:09:23]     [ca9c730a5da3] Type: constraint_logic | Apparatus: Category theory, Algebraic structures | Steps: 7
+[14:09:30]     [c70fba21943c] Confidence: 0.30 (low)
+[14:09:30]     [c70fba21943c] Done: 169s, $0.62 (total: $108.05)
+[14:09:30]   [202/266] cd2e5df8960a — Nuclear Physics, Fluid Dynamics
+[14:09:36]     [c95ba7d016a4] Type: axiomatic | Apparatus: Functional analysis, Measure theory | Steps: 9
+[14:09:43]     [ca9ed4a6fb61] Type: categorical | Apparatus: Topology, Category theory | Steps: 8
+[14:10:00]     [c7755e5944cb] Confidence: 0.26 (low)
+[14:10:00]     [c7755e5944cb] Done: 169s, $0.60 (total: $108.65)
+[14:10:00]   [203/266] cd3531916734 — Thermodynamics and Statistical Mechanics, Optics and Photonics
+[14:10:27]     [c7af5b55681e] Confidence: 0.23 (low)
+[14:10:27]     [c7af5b55681e] Done: 185s, $0.65 (total: $109.30)
+[14:10:27]   [204/266] cd6d35db9299 — Astrophysics, Acoustics and Wave Physics
+[14:10:28]     [c81d03cc93ad] Confidence: 0.26 (low)
+[14:10:28]     [c81d03cc93ad] Done: 173s, $0.57 (total: $109.86)
+[14:10:28]   [205/266] ce3c4f147fde — Particle Physics, Fluid Dynamics
+[14:10:29]     [cc03090674cc] Type: axiomatic | Apparatus: Measure theory, Functional analysis | Steps: 12
+[14:10:45]     [c95ba7d016a4] Confidence: 0.27 (low)
+[14:10:45]     [c95ba7d016a4] Done: 157s, $0.48 (total: $110.35)
+[14:10:45]   [206/266] ce7f2a656c80 — Quantum Field Theory, Plasma Physics
+[14:10:50]     [ca9c730a5da3] Confidence: 0.25 (low)
+[14:10:50]     [ca9c730a5da3] Done: 155s, $0.53 (total: $110.88)
+[14:10:50]   [207/266] ce865d3eeb13 — Thermodynamics and Statistical Mechanics, Condensed Matter Physics
+[14:11:04]     [cd2e5df8960a] Type: axiomatic | Apparatus: Functional analysis, Measure theory | Steps: 13
+[14:11:05]     [ca9ed4a6fb61] Confidence: 0.27 (low)
+[14:11:05]     [ca9ed4a6fb61] Done: 153s, $0.51 (total: $111.39)
+[14:11:05]   [208/266] cf19aa53852b — Thermodynamics and Statistical Mechanics, Acoustics and Wave Physics
+[14:11:31]     [cd3531916734] Type: categorical | Apparatus: Category theory, Functional analysis | Steps: 11
+[14:11:42]     [ce3c4f147fde] Type: axiomatic | Apparatus: Dynamical systems, Measure theory | Steps: 8
+[14:11:44]     [cd6d35db9299] Type: categorical | Apparatus: Topology, Dynamical systems | Steps: 8
+[14:12:05]     [ce7f2a656c80] Type: categorical | Apparatus: Topology, Category theory | Steps: 10
+[14:12:06]     [ce865d3eeb13] Type: categorical | Apparatus: Category theory, Functional analysis | Steps: 7
+[14:12:11]     [cc03090674cc] Confidence: 0.23 (low)
+[14:12:11]     [cc03090674cc] Done: 186s, $0.61 (total: $112.00)
+[14:12:11]   [209/266] d0f65ba32126 — Quantum Foundations, Particle Physics
+[14:12:23]     [cf19aa53852b] Type: axiomatic | Apparatus: Category theory, Algebraic structures | Steps: 9
+[14:12:58]     [cd2e5df8960a] Confidence: 0.25 (low)
+[14:12:58]     [cd2e5df8960a] Done: 208s, $0.68 (total: $112.68)
+[14:12:58]   [210/266] d141c9d3ff25 — Quantum Foundations, Acoustics and Wave Physics
+[14:13:04]     [cd3531916734] Confidence: 0.24 (low)
+[14:13:04]     [cd3531916734] Done: 184s, $0.59 (total: $113.27)
+[14:13:04]   [211/266] d2b6b2c11b0f — Condensed Matter Physics, Nuclear Physics

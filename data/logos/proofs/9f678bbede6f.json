@@ -1,0 +1,380 @@
+{
+  "id": "9f678bbede6f",
+  "convergence_id": "cd3531916734",
+  "timestamp": "2026-05-02T14:10:00.542444+00:00",
+  "proposition": "Let C be the category of quantum systems with morphisms as quantum channels. For any object Q \u2208 C representing a quantum system with Hilbert space H, and any functor E: C \u2192 C representing environmental coupling with boundary conditions B, there exists a natural transformation \u03b7: IdC \u2192 E such that the dynamics D(Q) and observable properties O(Q) satisfy ||D(E(Q)) - D(Q)|| \u2265 \u03b5 and ||O(E(Q)) - O(Q)|| \u2265 \u03b4 for some \u03b5, \u03b4 > 0 dependent on B.",
+  "proposition_natural": "Environmental boundary conditions fundamentally alter the dynamics and properties of quantum systems",
+  "formalisation_type": "categorical",
+  "mathematical_apparatus": [
+    "Category theory",
+    "Functional analysis",
+    "Dynamical systems"
+  ],
+  "apparatus_justification": "Category theory provides the natural framework for formalizing structural convergences across domains through functors between categories of quantum systems and their boundary conditions. Functional analysis is essential for rigorously treating quantum observables and states as operators on Hilbert spaces, while dynamical systems theory captures how boundary conditions alter system evolution.",
+  "proof_natural": "**Proposition.** Let $\\mathcal{C}$ be the category of quantum systems with morphisms as quantum channels. For any object $Q \\in \\mathcal{C}$ representing a quantum system with Hilbert space $\\mathcal{H}$, and any functor $E: \\mathcal{C} \\to \\mathcal{C}$ representing environmental coupling with boundary conditions $B$, there exists a natural transformation $\\eta: \\text{Id}_\\mathcal{C} \\to E$ such that the dynamics $D(Q)$ and observable properties $O(Q)$ satisfy $\\|D(E(Q)) - D(Q)\\| \\geq \\varepsilon$ and $\\|O(E(Q)) - O(Q)\\| \\geq \\delta$ for some $\\varepsilon, \\delta > 0$ dependent on $B$.\n\n**Proof.** We assume that quantum systems admit a categorical representation with well-defined Hilbert spaces, that environmental coupling can be represented as an endofunctor, and that system dynamics and observables are continuous functionals with well-defined norms.\n\nFollowing the Abramsky-Coecke framework, we construct the category $\\mathcal{C}$ where objects are pairs $(\\mathcal{H}, \\rho)$ with $\\mathcal{H}$ a Hilbert space and $\\rho$ a density operator, and morphisms are completely positive trace-preserving (CPTP) maps. The environmental coupling functor $E$ is defined by $E(\\mathcal{H}, \\rho) = (\\mathcal{H} \\otimes \\mathcal{H}_E, \\text{Tr}_E(U(\\rho \\otimes \\rho_E)U^\\dagger))$, where $\\mathcal{H}_E$ is the environment Hilbert space, $\\rho_E$ is the environment state, and the unitary operator $U$ encodes the boundary conditions $B$. [Note: The verification that $E$ preserves morphism composition under partial trace requires additional technical conditions on the CPTP maps.]\n\nFor the dynamics, we define the functional $D(\\mathcal{H}, \\rho) = -i[H_{\\text{eff}}, \\rho]$ following the von Neumann equation. When we consider the Gibbs ensemble case, the environmental coupling introduces dissipative terms. By the standard derivation of the Lindblad master equation from microscopic Hamiltonians, we have\n$$D(E(Q)) = -i[H_{\\text{eff}}, \\rho] + \\sum_k \\left(L_k \\rho L_k^\\dagger - \\frac{1}{2}\\{L_k^\\dagger L_k, \\rho\\}\\right),$$\nwhere the Lindblad operators $L_k$ arise from the system-environment interaction encoded in $U$.\n\nBy the triangle inequality and the positivity of the dissipative contribution, we obtain\n$$\\|D(E(Q)) - D(Q)\\| \\geq \\left\\|\\sum_k \\left(L_k \\rho L_k^\\dagger - \\frac{1}{2}\\{L_k^\\dagger L_k, \\rho\\}\\right)\\right\\| = \\varepsilon > 0$$\nfor non-trivial Lindblad operators.\n\nFor observable properties, we examine the Purcell effect. Let $O(Q) = \\Gamma_0$ be the spontaneous emission rate of an isolated atom. The functor $E$ maps this to a cavity-coupled system described by the Jaynes-Cummings model. By Fermi's golden rule with the modified density of states, we have $O(E(Q)) = \\Gamma_0 \\cdot F(\\omega)$, where $F(\\omega)$ is the Purcell factor determined by the cavity boundary conditions. Thus,\n$$\\|O(E(Q)) - O(Q)\\| = |\\Gamma_0||F(\\omega) - 1| = \\delta > 0$$\nfor non-trivial cavity modes.\n\nThe natural transformation $\\eta: \\text{Id}_\\mathcal{C} \\to E$ has components $\\eta_Q: Q \\to E(Q)$ given by the embedding maps. [Note: The verification of naturality requires showing that the appropriate squares commute for all morphisms in $\\mathcal{C}$.] The bounds $\\varepsilon$ and $\\delta$ depend on the boundary conditions $B$ through the unitary $U$ and cavity parameters. [Note: Establishing the precise continuity of this dependence requires an explicit parametrization of $B$.]\n\nThis completes the proof. $\\square$",
+  "proof_lean": "import Mathlib.CategoryTheory.Category.Basic\nimport Mathlib.CategoryTheory.Functor.Basic\nimport Mathlib.CategoryTheory.NatTrans\nimport Mathlib.Analysis.InnerProductSpace.Basic\nimport Mathlib.Analysis.NormedSpace.BoundedLinearMaps\nimport Mathlib.Topology.MetricSpace.Basic\n\n/-- A quantum system as an object in our category -/\nstructure QuantumSystem where\n  H : Type*\n  [inst : InnerProductSpace \u2102 H]\n  \u03c1 : H \u2192L[\u2102] H\n  -- sorry: density operator properties (positive, trace 1)\n\n/-- Morphisms in the category of quantum systems -/\nstructure QuantumChannel (Q\u2081 Q\u2082 : QuantumSystem) where\n  map : Q\u2081.H \u2192L[\u2102] Q\u2082.H\n  -- sorry: CPTP properties\n\n/-- The category of quantum systems -/\ndef QuantumCat : Type* := sorry -- Category structure for quantum systems\n\n/-- Environmental coupling functor -/\ndef EnvCoupling (B : Type*) : QuantumCat \u2964 QuantumCat := sorry -- Environmental coupling functor\n\n/-- Dynamics functional -/\ndef dynamics (Q : QuantumSystem) : \u211d := sorry -- Quantum dynamics operator norm\n\n/-- Observable properties functional -/\ndef observable (Q : QuantumSystem) : \u211d := sorry -- Observable properties\n\n/-- Main theorem: Environmental coupling changes dynamics and observables -/\ntheorem environmental_coupling_theorem (B : Type*) :\n  \u2203 (\u03b7 : \ud835\udfed QuantumCat \u27f6 EnvCoupling B) (\u03b5 \u03b4 : \u211d),\n    \u03b5 > 0 \u2227 \u03b4 > 0 \u2227\n    \u2200 (Q : QuantumCat),\n      |dynamics (EnvCoupling B).obj Q - dynamics Q| \u2265 \u03b5 \u2227\n      |observable (EnvCoupling B).obj Q - observable Q| \u2265 \u03b4 := by\n  sorry -- Step 1: Define category C properly\n  sorry -- Step 2: Construct environmental coupling functor\n  sorry -- Step 3: Verify functor properties\n  sorry -- Step 4: Define dynamics functional with effective Hamiltonian\n  sorry -- Step 5: Show Lindblad terms for Gibbs ensemble\n  sorry -- Step 6: Compute dynamics difference bound\n  sorry -- Step 7: Define observable for Purcell effect\n  sorry -- Step 8: Show Purcell factor modification\n  sorry -- Step 9: Establish observable difference bound\n  sorry -- Step 10: Construct natural transformation\n  sorry -- Step 11: Show continuous dependence on boundary conditions",
+  "proof_steps": [
+    {
+      "step_number": 1,
+      "statement": "Define the category C of quantum systems where objects are pairs (H, \u03c1) with H a Hilbert space and \u03c1 a density operator, and morphisms are completely positive trace-preserving maps",
+      "justification": "Standard construction in categorical quantum mechanics following Abramsky-Coecke framework",
+      "dependencies": [
+        "Abramsky-Coecke 2004"
+      ]
+    },
+    {
+      "step_number": 2,
+      "statement": "Construct the environmental coupling functor E by E(H, \u03c1) = (H \u2297 HE, TrE(U(\u03c1 \u2297 \u03c1E)U\u2020)) where HE is the environment Hilbert space and U encodes boundary conditions B",
+      "justification": "Standard open quantum systems formalism with unitary evolution on composite system",
+      "dependencies": [
+        "Nielsen-Chuang 2000",
+        "Step 1"
+      ]
+    },
+    {
+      "step_number": 3,
+      "statement": "Show E is indeed a functor by verifying E(id) = id and E(f \u2218 g) = E(f) \u2218 E(g) for morphisms f, g",
+      "justification": "[Gap: Full verification requires showing compatibility with CPTP map composition under partial trace]",
+      "dependencies": [
+        "Step 2"
+      ]
+    },
+    {
+      "step_number": 4,
+      "statement": "Define dynamics functional D(H, \u03c1) = -i[H_eff, \u03c1] where H_eff is the effective Hamiltonian",
+      "justification": "Von Neumann equation for quantum dynamics",
+      "dependencies": [
+        "Von Neumann 1932"
+      ]
+    },
+    {
+      "step_number": 5,
+      "statement": "For Gibbs ensemble case, show D(E(Q)) includes dissipative terms \u03a3k(Lk\u03c1Lk\u2020 - \u00bd{Lk\u2020Lk, \u03c1}) from boundary coupling",
+      "justification": "Lindblad master equation derivation from microscopic Hamiltonian",
+      "dependencies": [
+        "Lindblad 1976",
+        "Steps 2, 4"
+      ]
+    },
+    {
+      "step_number": 6,
+      "statement": "Compute ||D(E(Q)) - D(Q)|| \u2265 ||\u03a3k(Lk\u03c1Lk\u2020 - \u00bd{Lk\u2020Lk, \u03c1})|| = \u03b5 > 0 for non-trivial Lindblad operators",
+      "justification": "Triangle inequality and positivity of dissipative contribution",
+      "dependencies": [
+        "Step 5"
+      ]
+    },
+    {
+      "step_number": 7,
+      "statement": "For Purcell effect, define O(Q) = \u03930 (spontaneous emission rate) and show E maps to modified cavity system",
+      "justification": "Jaynes-Cummings model in cavity QED",
+      "dependencies": [
+        "Jaynes-Cummings 1963"
+      ]
+    },
+    {
+      "step_number": 8,
+      "statement": "Show O(E(Q)) = \u03930 \u00b7 F(\u03c9) where F(\u03c9) is the Purcell factor dependent on cavity boundary conditions",
+      "justification": "Fermi's golden rule with modified density of states",
+      "dependencies": [
+        "Purcell 1946",
+        "Step 7"
+      ]
+    },
+    {
+      "step_number": 9,
+      "statement": "Establish ||O(E(Q)) - O(Q)|| = |\u03930||F(\u03c9) - 1| = \u03b4 > 0 for non-trivial cavity modes",
+      "justification": "Direct calculation from Purcell factor formula",
+      "dependencies": [
+        "Step 8"
+      ]
+    },
+    {
+      "step_number": 10,
+      "statement": "Construct natural transformation \u03b7: IdC \u2192 E with components \u03b7Q: Q \u2192 E(Q) as the embedding maps",
+      "justification": "[Gap: Need to verify naturality squares commute for all morphisms in C]",
+      "dependencies": [
+        "Steps 1, 2"
+      ]
+    },
+    {
+      "step_number": 11,
+      "statement": "Show \u03b5 and \u03b4 depend continuously on boundary conditions B encoded in U and cavity parameters",
+      "justification": "[Gap: Requires explicit parametrization of B and continuity analysis]",
+      "dependencies": [
+        "Steps 6, 9"
+      ]
+    }
+  ],
+  "dependencies_literature": [
+    {
+      "name": "Categorical Quantum Mechanics",
+      "authors": "Abramsky, S. and Coecke, B.",
+      "year": "2004",
+      "field": "Quantum Information Theory",
+      "statement": "Quantum mechanics admits a categorical formulation where quantum processes are morphisms",
+      "usage": "Provides the categorical framework for representing quantum systems"
+    },
+    {
+      "name": "Lindblad Master Equation",
+      "authors": "Lindblad, G.",
+      "year": "1976",
+      "field": "Quantum Physics",
+      "statement": "General form of Markovian quantum dynamics preserving complete positivity",
+      "usage": "Justifies the dissipative terms arising from environmental coupling"
+    },
+    {
+      "name": "Purcell Effect",
+      "authors": "Purcell, E.M.",
+      "year": "1946",
+      "field": "Quantum Optics",
+      "statement": "Spontaneous emission rate is modified by the electromagnetic environment",
+      "usage": "Provides concrete example of boundary conditions altering quantum properties"
+    },
+    {
+      "name": "Jaynes-Cummings Model",
+      "authors": "Jaynes, E.T. and Cummings, F.W.",
+      "year": "1963",
+      "field": "Quantum Optics",
+      "statement": "Exact solution for two-level atom interacting with single cavity mode",
+      "usage": "Framework for analyzing cavity-modified atomic dynamics"
+    }
+  ],
+  "dependencies_logos": [],
+  "assumptions": [
+    "Quantum systems can be represented as objects in a category C with well-defined Hilbert spaces",
+    "Environmental coupling can be represented as an endofunctor E: C \u2192 C",
+    "Boundary conditions B can be encoded in the functor E",
+    "System dynamics D and observable properties O are continuous functionals on objects of C",
+    "The norms ||\u00b7|| are well-defined on the spaces of dynamics and observables",
+    "The environmental coupling preserves the categorical structure (E is indeed a functor)",
+    "Natural transformations between IdC and E exist",
+    "The bounds \u03b5 and \u03b4 are measurable and depend continuously on B"
+  ],
+  "lean_verified": false,
+  "lean_partial": false,
+  "lean_failure_reason": "",
+  "adversarial_result": {
+    "proof_soundness": 0.2,
+    "gaps": [
+      {
+        "step": "Definition of environmental coupling functor E",
+        "issue": "The functor E is not well-defined. The partial trace operation Tr_E does not generally preserve morphism composition, so E fails to be a functor. The proof acknowledges this in a note but provides no resolution.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot be fixed without completely restructuring the categorical framework or restricting to a subcategory where this works"
+      },
+      {
+        "step": "Definition of dynamics functional D",
+        "issue": "D is defined on objects but the proof requires it to be defined on E(Q). The notation D(H,\u03c1) = -i[H_eff,\u03c1] is ill-defined because H_eff is not specified for arbitrary objects in C.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need to specify how H_eff is determined from the categorical data"
+      },
+      {
+        "step": "Natural transformation \u03b7 construction",
+        "issue": "The 'embedding maps' \u03b7_Q: Q \u2192 E(Q) are not defined. There is no canonical way to embed (H,\u03c1) into (H\u2297H_E, Tr_E(U(\u03c1\u2297\u03c1_E)U\u2020))",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Cannot construct such maps without additional structure"
+      },
+      {
+        "step": "Norm definitions",
+        "issue": "The norms ||D(E(Q)) - D(Q)|| and ||O(E(Q)) - O(Q)|| are undefined. D and O map to different spaces for Q and E(Q), so subtraction is meaningless.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Would need to define how to compare dynamics on different Hilbert spaces"
+      },
+      {
+        "step": "Lindblad derivation",
+        "issue": "The jump from von Neumann equation to Lindblad form assumes weak coupling and Markov approximation without justification. This is not general for arbitrary E.",
+        "severity": "major",
+        "fixable": true,
+        "suggested_fix": "Restrict to weak coupling regime explicitly"
+      },
+      {
+        "step": "Observable properties definition",
+        "issue": "O is never properly defined as a functional on objects. The example of spontaneous emission rate is not general to all quantum systems.",
+        "severity": "critical",
+        "fixable": false,
+        "suggested_fix": "Need a general definition of O for arbitrary objects in C"
+      }
+    ],
+    "hidden_assumptions": [
+      "Every quantum system has a well-defined effective Hamiltonian H_eff",
+      "Environmental coupling always leads to Markovian dynamics",
+      "All quantum systems have spontaneous emission as an observable",
+      "The environment state \u03c1_E is fixed and known",
+      "The unitary U encoding boundary conditions exists and is unique",
+      "Dynamics and observables can be meaningfully compared across different Hilbert spaces",
+      "The category C has sufficient structure to support all required operations"
+    ],
+    "circular_reasoning": true,
+    "circular_details": "The proof assumes environmental coupling changes dynamics (via Lindblad terms) to prove that environmental coupling changes dynamics. The existence of non-zero \u03b5 and \u03b4 is assumed in the construction rather than derived.",
+    "over_generalisation": true,
+    "over_generalisation_details": "The proof claims to work for any quantum system and any environmental coupling, but only demonstrates specific examples (Lindblad dynamics, Purcell effect). It proves at most that some specific couplings change some specific properties.",
+    "citation_issues": [
+      "Abramsky-Coecke framework does not guarantee the specific functor E is well-defined",
+      "Lindblad master equation derivation has specific validity conditions not verified here",
+      "Purcell effect applies only to atoms with dipole transitions, not general quantum systems",
+      "Jaynes-Cummings model assumptions (two-level system, single mode) are too restrictive"
+    ],
+    "structural_soundness": 0.1,
+    "overall_assessment": "This proof is fundamentally flawed at multiple levels. The categorical framework is improperly constructed, key objects are undefined, and the argument reduces to asserting what it claims to prove. The proof conflates specific examples with general statements and lacks mathematical rigor throughout.",
+    "verdict": "reject"
+  },
+  "internal_consistency": {
+    "proves_stated_proposition": false,
+    "proves_what_instead": "The proof attempts to show that environmental coupling changes dynamics and observables, but fails to establish the existence of a natural transformation with the required properties or prove the categorical structure claims",
+    "all_assumptions_listed": false,
+    "missing_assumptions": [
+      "The category C is well-defined with proper composition and identity morphisms",
+      "The partial trace operation preserves the categorical structure",
+      "The effective Hamiltonian H_eff exists and is well-defined for all objects",
+      "The Lindblad operators L_k are non-zero and well-defined",
+      "The Purcell factor F(\u03c9) \u2260 1 for the specific boundary conditions",
+      "The norms on dynamics and observables spaces are compatible with the categorical structure",
+      "The embedding maps \u03b7Q exist and are morphisms in C",
+      "The boundary conditions B have a well-defined encoding in unitary operators"
+    ],
+    "steps_valid": false,
+    "invalid_steps": [
+      {
+        "step": "3",
+        "issue": "Explicitly marked as incomplete - functor verification is missing the crucial compatibility proof with CPTP map composition under partial trace"
+      },
+      {
+        "step": "4",
+        "issue": "Defines dynamics as commutator with effective Hamiltonian but doesn't establish that this is well-defined on category objects or compatible with morphisms"
+      },
+      {
+        "step": "6",
+        "issue": "Uses triangle inequality incorrectly - the norm of a sum is not necessarily greater than or equal to the norm of individual terms"
+      },
+      {
+        "step": "10",
+        "issue": "Explicitly marked as incomplete - naturality condition verification is missing"
+      },
+      {
+        "step": "11",
+        "issue": "Explicitly marked as incomplete - lacks the required continuity analysis and parametrization"
+      }
+    ],
+    "proof_complete": false,
+    "completeness_issues": [
+      "Functor verification is incomplete (Step 3)",
+      "Natural transformation existence and naturality not proven (Step 10)",
+      "Continuity dependence on boundary conditions not established (Step 11)",
+      "No proof that the constructed objects actually satisfy the categorical requirements",
+      "Missing verification that the dynamics and observables functionals are well-defined on the category",
+      "No proof that \u03b5 and \u03b4 are always positive for non-trivial boundary conditions"
+    ],
+    "internal_score": 0.2
+  },
+  "cross_proof_consistency": {
+    "contradictions_found": true,
+    "contradiction_details": [
+      "The new proof claims environmental coupling ALWAYS increases differences in dynamics and observables (||D(E(Q)) - D(Q)|| \u2265 \u03b5 > 0), but proof [10f57fdaae83] establishes that environment can be an 'active participant' that modifies processes in ways that could potentially reduce differences in some cases",
+      "The construction of natural transformation \u03b7: IdC \u2192 E with embedding maps \u03b7Q: Q \u2192 E(Q) is mathematically incoherent - natural transformations require functors with the same domain and codomain, but here IdC and E both map C \u2192 C yet the components are claimed to be 'embedding maps' which suggests a categorical inclusion rather than a natural transformation",
+      "The functor verification E(id) = id is false by construction since E(H,\u03c1) = (H\u2297HE, TrE(U(\u03c1\u2297\u03c1E)U\u2020)) clearly maps (H,\u03c1) to a different object in a larger Hilbert space"
+    ],
+    "assumption_conflicts": [
+      "Assumes environmental coupling preserves categorical structure as a functor, but the construction E(H,\u03c1) = (H\u2297HE, TrE(...)) fundamentally changes the objects, conflicting with proof [06d6ace265c2] which treats environment coupling as partial trace operations that don't preserve object structure",
+      "Claims dynamics D and observables O are 'continuous functionals' without specifying topology, conflicting with the discrete categorical framework assumed in multiple existing proofs",
+      "Assumes natural transformations exist between IdC and E without justification, when the construction shows these are different functors with incompatible codomains"
+    ],
+    "beneficial_connections": [
+      "Connects to proof [06d6ace265c2] on quantum-classical boundary through environmental coupling, though with mathematical errors",
+      "Relates to proof [10f57fdaae83] on environment as active participant in quantum processes",
+      "Attempts to formalize environmental effects in categorical framework similar to proof [0049536ae81a] on hierarchical structure"
+    ],
+    "consistency_score": 0.2,
+    "notes": "The proof contains fundamental mathematical errors in categorical construction and makes unjustified claims about functor properties. The natural transformation construction is particularly problematic as it violates basic categorical definitions."
+  },
+  "confidence_score": 0.24000000000000002,
+  "confidence_category": "low",
+  "confidence_breakdown": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.29999999999999993
+  },
+  "validation_scores": {
+    "mechanical": 0.3,
+    "adversarial": 0.2,
+    "internal": 0.2,
+    "cross_proof": 0.2,
+    "calibration": 0.29999999999999993
+  },
+  "verification_status": "natural_language_only",
+  "within_standard_mathematics": false,
+  "new_mathematics_needed": "A complete theory of functorial representations of open quantum systems with explicit boundary condition dependence, including: (1) Rigorous construction of boundary-dependent functors preserving quantum structure, (2) Continuity theory for functionals on categories of quantum systems, (3) Natural transformation theory adapted to quantum channels with environmental coupling",
+  "limitations": [
+    "Full verification that E preserves functorial properties under partial trace operations",
+    "Explicit proof of naturality for the transformation \u03b7",
+    "Rigorous parametrization of boundary conditions B and continuity analysis",
+    "General theory connecting categorical quantum mechanics to open systems dynamics",
+    "Proof relies on specific examples (Gibbs ensemble, Purcell effect) rather than fully general argument",
+    "The categorical framework for open quantum systems is not fully developed",
+    "Continuity of \u03b5 and \u03b4 with respect to B is asserted rather than proven",
+    "The connection between different types of boundary conditions (thermodynamic vs electromagnetic) is not formalized"
+  ],
+  "source_convergence": {
+    "structural_claim": "Environmental boundary conditions fundamentally alter the dynamics and properties of quantum systems",
+    "convergence_type": "formal",
+    "supporting_results": [
+      {
+        "result_id": "",
+        "result_name": "Gibbs Ensemble Theory",
+        "domain_id": "field_a",
+        "domain_name": "Thermodynamics and Statistical Mechanics",
+        "link_type": "direct",
+        "structural_conclusion": "Thermodynamic properties emerge from probability distributions that depend on ensemble boundary conditions"
+      },
+      {
+        "result_id": "",
+        "result_name": "Purcell Effect",
+        "domain_id": "field_b",
+        "domain_name": "Optics and Photonics",
+        "link_type": "direct",
+        "structural_conclusion": "The electromagnetic environment modifies spontaneous emission rates through boundary conditions"
+      },
+      {
+        "result_id": "",
+        "result_name": "Photonic Band Gap Theory",
+        "domain_id": "field_b",
+        "domain_name": "Optics and Photonics",
+        "link_type": "direct",
+        "structural_conclusion": "Engineered spatial periodicity creates forbidden frequency bands through boundary conditions"
+      }
+    ],
+    "domains": [
+      "thermodynamics",
+      "optics"
+    ],
+    "domain_names": [
+      "Thermodynamics and Statistical Mechanics",
+      "Optics and Photonics"
+    ],
+    "ea_scores": {
+      "strength": 0.357,
+      "independence": 0.85,
+      "adversarial": 0.09,
+      "reproducibility": 0.5249999999999999,
+      "depth_consistency": 1.0,
+      "confidence": 0.51635,
+      "confidence_category": "preliminary"
+    },
+    "discovered_in_run": "run_e28e0d543729",
+    "discovered_at_level": 0,
+    "timestamp": "2026-04-16T21:06:13.527632+00:00",
+    "id": "cd3531916734"
+  },
+  "run_metadata": {
+    "model_fast": "claude-sonnet-4-20250514",
+    "model_deep": "claude-opus-4-20250514",
+    "api_calls": 4,
+    "cost_usd": 0.329025
+  }
+}

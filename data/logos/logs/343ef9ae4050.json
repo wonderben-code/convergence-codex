@@ -1,0 +1,38 @@
+{
+  "proof_id": "343ef9ae4050",
+  "timestamp": "2026-05-02T14:08:08.901815+00:00",
+  "decisions": [
+    {
+      "step": "detect_formalisation_type",
+      "choice": "axiomatic",
+      "alternatives_considered": [
+        "categorical - Could frame this as a universal property about scale-dependent transitions, but the convergence is more about identifying shared principles of quantum emergence rather than characterizing a universal construction"
+      ],
+      "reasoning": "The convergence identifies a shared abstract principle: quantum mechanics creates qualitatively new physics at extreme scales where classical descriptions fail. This is best captured by axiomatizing the conditions under which quantum effects dominate and classical approximations break down, with both astrophysical and optical systems serving as models of these axioms."
+    },
+    {
+      "step": "select_mathematical_apparatus",
+      "choice": "Functional analysis, Measure theory, Differential geometry",
+      "alternatives_considered": [],
+      "reasoning": "Functional analysis provides the Hilbert space formalism and operator theory essential for quantum mechanics. Measure theory handles probability amplitudes and observables. Differential geometry captures the geometric structure of phase spaces and configuration manifolds where classical-quantum transitions occur."
+    },
+    {
+      "step": "generate_proof",
+      "choice": "The proof demonstrates through four paradigmatic examples that when a system's characteristic action approaches \u210f, quantum predictions diverge catastrophically from classical ones. While each example rigorously shows unbounded deviation, a general proof requires new mathematics to unify these disparate phenomena under a single scaling principle.",
+      "alternatives_considered": [],
+      "reasoning": "Generated 9 proof steps"
+    },
+    {
+      "step": "generate_natural_language_proof",
+      "choice": "Generated 2991 characters",
+      "alternatives_considered": [],
+      "reasoning": "Natural-language rendering of structured proof"
+    },
+    {
+      "step": "lean_generation",
+      "choice": "skipped",
+      "alternatives_considered": [],
+      "reasoning": "Lean formalisation not feasible: This proposition appears to be mixing physical concepts without rigorous mathematical definitions. The statement lacks precise mathematical formulation - terms like 'physical system', 'characteristic action', 'observable properties' are not mathematically defined. The claimed theorems (Chandrasekhar Limit, Hawking Radiation, etc.) are physics results not available in Mathlib and would require extensive physics formalization. The proposition itself seems to make claims about quantum-classical transitions that are not standard mathematical results but rather physical interpretations."
+    }
+  ]
+}

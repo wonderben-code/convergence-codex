@@ -1,0 +1,13 @@
+{
+  "proof_id": "d43bbe9b24d2",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: Rigorous mathematical foundation for RG transformations in infinite-dimensional function spaces, including: (1) Proper definition of space of Hamiltonians with suitable topology, (2) Proof of existence and uniqueness of RG fixed points, (3) Spectral theory for linearized RG operator in infinite dimensions, (4) Convergence theorems for RG flows starting from arbitrary microscopic Hamiltonians",
+    "9 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}

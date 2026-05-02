@@ -1,0 +1,15 @@
+{
+  "proof_id": "de81fab5a073",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A general theory of moduli spaces for arbitrary geometric structures G, including existence theorems and dimension formulas. Current moduli space theory primarily covers specific cases (curves, vector bundles, etc.) rather than arbitrary geometric structures.",
+    "Difficulty assessed as challenging",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts",
+    "relevant mathematical domain experts"
+  ]
+}

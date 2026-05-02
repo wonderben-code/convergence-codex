@@ -1,0 +1,13 @@
+{
+  "proof_id": "ff5e24368b8c",
+  "requires_human_review": true,
+  "review_reasons": [
+    "Requires new mathematics: A complete theory of equivariant quantum channels that connects symmetry constraints on input states to support properties of output states. Specifically, we need theorems relating G-invariance of density operators to their spectral support on irreducible representation spaces.",
+    "8 gaps/limitations identified in proof"
+  ],
+  "review_priority": "critical",
+  "suggested_expertise": [
+    "mathematical foundations",
+    "relevant domain experts"
+  ]
+}
