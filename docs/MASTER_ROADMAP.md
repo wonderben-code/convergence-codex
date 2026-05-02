@@ -272,6 +272,15 @@ These were originally part of Stage 3 but should happen AFTER the Codex and Pans
 - agentciv-creator: pip install → real campaigns
 - agentciv-engine: pip install → all presets, Max Plan + API
 - agentciv-sim: pip install → configs, chronicler
+- **Convergence Codex AIs (Gnosis + Logos + Synthesis + Capstone):** Full open-source readiness pass:
+  - Remove hardcoded paths from runners (replace with CLI args / env vars / config file)
+  - Add `requirements.txt` / `pyproject.toml` with all dependencies
+  - Add comprehensive README: setup instructions, API key config, example runs, expected output
+  - Verify clean `git clone → pip install → run` on a fresh machine
+  - Ensure all 4 AIs (Gnosis, Logos, Synthesis standard, Synthesis capstone) can run independently
+  - Framing check: "Nobel-grade" language → "landmark scientific paper format" (see 5D)
+  - Add example output / sample data so users can verify their setup without burning API credits
+  - License file (decide: MIT / Apache 2.0 / custom research license)
 
 **5C. Repo + Infrastructure:**
 - ORCID populated with all DOIs
