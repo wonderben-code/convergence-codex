@@ -1,0 +1,89 @@
+\usepackage{fontspec}
+\usepackage{unicode-math}
+\usepackage{newunicodechar}
+\setmainfont{STIX Two Text}
+\setmathfont{STIX Two Math}
+
+% Map Unicode math symbols to LaTeX math mode equivalents
+% Arrows
+\newunicodechar{→}{$\rightarrow$}
+\newunicodechar{←}{$\leftarrow$}
+\newunicodechar{↔}{$\leftrightarrow$}
+
+% Set/logic operators
+\newunicodechar{∈}{$\in$}
+\newunicodechar{∉}{$\notin$}
+\newunicodechar{⊂}{$\subset$}
+\newunicodechar{⊆}{$\subseteq$}
+\newunicodechar{⊊}{$\subsetneq$}
+\newunicodechar{∩}{$\cap$}
+\newunicodechar{∪}{$\cup$}
+\newunicodechar{⊔}{$\sqcup$}
+\newunicodechar{∅}{$\emptyset$}
+\newunicodechar{∃}{$\exists$}
+\newunicodechar{∀}{$\forall$}
+\newunicodechar{∧}{$\wedge$}
+\newunicodechar{∨}{$\vee$}
+
+% Relations
+\newunicodechar{≠}{$\neq$}
+\newunicodechar{≥}{$\geq$}
+\newunicodechar{≤}{$\leq$}
+\newunicodechar{≅}{$\cong$}
+\newunicodechar{≈}{$\approx$}
+\newunicodechar{∝}{$\propto$}
+\newunicodechar{≡}{$\equiv$}
+
+% Calculus/operators
+\newunicodechar{∂}{$\partial$}
+\newunicodechar{∇}{$\nabla$}
+\newunicodechar{∘}{$\circ$}
+\newunicodechar{∫}{$\int$}
+\newunicodechar{∮}{$\oint$}
+\newunicodechar{∞}{$\infty$}
+
+% Letterlike symbols
+\newunicodechar{ℝ}{$\mathbb{R}$}
+\newunicodechar{ℏ}{$\hbar$}
+\newunicodechar{ℋ}{$\mathcal{H}$}
+
+% Greek lowercase
+\newunicodechar{α}{$\alpha$}
+\newunicodechar{β}{$\beta$}
+\newunicodechar{γ}{$\gamma$}
+\newunicodechar{δ}{$\delta$}
+\newunicodechar{ε}{$\varepsilon$}
+\newunicodechar{η}{$\eta$}
+\newunicodechar{κ}{$\kappa$}
+\newunicodechar{λ}{$\lambda$}
+\newunicodechar{π}{$\pi$}
+\newunicodechar{ρ}{$\rho$}
+\newunicodechar{σ}{$\sigma$}
+\newunicodechar{φ}{$\varphi$}
+
+% Greek uppercase
+\newunicodechar{Δ}{$\Delta$}
+\newunicodechar{Λ}{$\Lambda$}
+\newunicodechar{Σ}{$\Sigma$}
+\newunicodechar{Ω}{$\Omega$}
+\newunicodechar{Ф}{$\Phi$}
+
+% Subscript digits
+\newunicodechar{₀}{$_0$}
+\newunicodechar{₁}{$_1$}
+\newunicodechar{₂}{$_2$}
+\newunicodechar{₃}{$_3$}
+
+% Subscript letters
+\newunicodechar{ᵢ}{$_i$}
+\newunicodechar{ₙ}{$_n$}
+
+% Brackets
+\newunicodechar{⟨}{$\langle$}
+\newunicodechar{⟩}{$\rangle$}
+
+% Cyrillic used as math (occasionally in papers)
+\newunicodechar{а}{\textit{a}}
+\newunicodechar{з}{\textit{z}}
+\newunicodechar{и}{\textit{i}}
+\newunicodechar{к}{\textit{k}}
