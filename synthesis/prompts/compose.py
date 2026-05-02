@@ -15,6 +15,17 @@ SECTION_SYSTEM = (
     "self-contained: a reader should not need to read any other Codex paper to "
     "understand this one. "
     "\n\n"
+    "CRITICAL TERMINOLOGY: The Logos AI formalisations are Level 3-4 mathematical "
+    "formalisations — formal conjectures (precisely stated propositions) with structured "
+    "supporting arguments (proof sketches with identified gaps). They are NOT complete "
+    "proofs. NEVER use the word 'proof' or 'prove' to describe what Logos AI has produced. "
+    "Use: 'formalisation', 'formal argument', 'formal conjecture', 'mathematical proposition "
+    "with structured argument', 'proof sketch'. The word 'proof' should ONLY appear when "
+    "discussing the aspiration (future work to close gaps) or when referencing established "
+    "mathematical theorems from the literature. This is not a weakness to hide — 256 formal "
+    "conjectures across 19 fields is a genuinely novel contribution. Frame it with pride "
+    "and honesty."
+    "\n\n"
     "Voice: authoritative but not arrogant. The tone of a researcher presenting "
     "genuinely surprising findings with appropriate excitement AND appropriate caution. "
     "Never invent citations or claim more than the evidence supports. When a result is "
@@ -28,13 +39,13 @@ Theme: {theme}
 Key discoveries:
 {discoveries_summary}
 
-Key proofs:
+Key formalisations:
 {proofs_summary}
 
 The abstract should be 200-300 words. It must:
 1. Open with a sentence that ANY scientist can understand — the core insight in plain language
 2. State what was discovered and across which domains (2-3 sentences)
-3. State how it was formalised and what the formal result establishes (1-2 sentences)
+3. State how it was formalised — each convergence was expressed as a precise mathematical proposition with a structured argument (1-2 sentences)
 4. State the significance — why should a researcher care? (1-2 sentences)
 5. Close with an honest confidence statement (e.g. "supported at high confidence" or "preliminary but structurally robust")
 6. A non-specialist should be able to read the abstract and understand the main contribution
@@ -58,10 +69,10 @@ The Introduction should:
 1. Open with a motivating question or observation that connects to the reader's intuition — why might these domains be structurally related?
 2. Define "cross-domain structural convergence" in plain language with a concrete analogy (e.g. how the same differential equation governs both predator-prey dynamics and chemical oscillations)
 3. Briefly introduce EACH domain involved, assuming the reader is expert in at most one of them. A topologist needs a one-sentence primer on quantum decoherence; a physicist needs a one-sentence primer on category theory
-4. Preview what this paper discovers, what it proves formally, and why it matters
+4. Preview what this paper discovers, how it formalises those discoveries (precise propositions + mathematical arguments), and why it matters
 5. Situate within the Convergence Codex corpus — what has been established before, what this paper adds
 6. Be 500-800 words
-7. The reader should finish the introduction thinking "I understand what they found, I understand why it matters, and I want to see the proof"
+7. The reader should finish the introduction thinking "I understand what they found, I understand why it matters, and I want to see the formal argument"
 
 Return the section text only (markdown), no JSON.
 """
@@ -72,7 +83,7 @@ This paper's discoveries were produced by:
 - Gnosis AI (autonomous knowledge discovery system)
 - Discovery method: {discovery_method}
 - Validation: EA Engine (5-dimensional adversarial validation)
-- Formalisation: Logos AI (formal mathematical proof generation)
+- Formalisation: Logos AI (formal mathematical proposition and argument generation)
 
 Formalisation details:
 {formalisation_details}
@@ -86,7 +97,7 @@ The Methods section should:
    - Depth-consistency (does the parallel hold at deeper levels of analysis?)
    Explain each dimension in one sentence so the reader understands the validation rigour.
 
-2. **Formalisation pipeline**: Explain how Logos AI formalises discoveries: type detection (what kind of mathematical relationship is this?), apparatus selection (what mathematical tools are needed?), proof generation (natural language + Lean 4 where possible), and 5-layer validation (mechanical verification, adversarial review, internal consistency, cross-proof consistency, calibration).
+2. **Formalisation pipeline**: Explain how Logos AI formalises discoveries: type detection (what kind of mathematical relationship is this?), apparatus selection (what mathematical tools are needed?), formal argument generation (precise proposition statement + structured mathematical argument + Lean 4 scaffolding where possible), and 5-layer validation (mechanical verification, adversarial review, internal consistency, cross-proof consistency, calibration). Be precise about what "formalisation" means here: Logos takes an informal structural observation and produces a precise mathematical proposition with a structured argument — these are formal conjectures with supporting arguments (Level 3-4 formalisation), not complete proofs (Level 5-6). This distinction must be stated clearly.
 
 3. **Honest methodology note**: This is an AI-driven pipeline. State this clearly. Explain what this means for reproducibility (fully deterministic given the same model and parameters) and what it means for trust (all reasoning logs and intermediate steps are preserved in the appendices for human audit).
 
@@ -97,16 +108,16 @@ Return the section text only (markdown), no JSON.
 
 RESULTS_PROMPT = """Write the Results section for this paper.
 
-The discoveries and their proofs:
+The discoveries and their formalisations:
 {results_text}
 
 The Results section should:
 1. Present each convergence as a narrative, not a data dump. For each:
    a. State the convergence in plain language first — "We find that X in domain A shares the same formal structure as Y in domain B"
    b. Explain what this means for EACH domain — why is this interesting to a specialist in domain A? Why to a specialist in domain B?
-   c. Present the formal proof — state the proposition, walk through the key proof steps in natural language, then reference the formal notation
+   c. Present the formalisation — state the proposition precisely, walk through the key argument steps in natural language, then reference the formal notation. Call these "formal arguments" or "formalisations", NOT "proofs" — they are precise mathematical propositions with structured supporting arguments and identified gaps, not complete proofs.
    d. Interpret the confidence score — don't just say "0.74", say "supported at moderate-to-high confidence (0.74), with the strongest signal in structural independence (0.82) and the weakest in reproducibility (0.59), suggesting the result is robust but would benefit from independent verification"
-   e. State the verification status honestly
+   e. State the verification status honestly — most formalisations are adversarially reviewed but contain identified gaps; state what those gaps are
 2. Use mathematical notation where appropriate (LaTeX-compatible), but ALWAYS accompany it with a plain-language interpretation on the same line or immediately after
 3. Present results in a logical order — either strongest first, or thematically grouped if there is a natural narrative arc
 4. If multiple convergences share a theme, draw that connection explicitly
@@ -125,10 +136,10 @@ Key themes: {themes}
 
 The Discussion should:
 1. **What do these convergences mean?** — Not just "we found structural parallels" but WHY might these domains share this structure? Is there a deeper organising principle? Or is it a mathematical coincidence (the same equation can describe unrelated phenomena)?
-2. **Implications for each domain** — What does a topologist learn from knowing their structure appears in quantum mechanics? What does a biologist gain from a formal proof that their population dynamics mirror thermodynamic phase transitions? Be specific and concrete.
+2. **Implications for each domain** — What does a topologist learn from knowing their structure appears in quantum mechanics? What does a biologist gain from a formal argument that their population dynamics mirror thermodynamic phase transitions? Be specific and concrete.
 3. **The broader pattern** — If multiple convergences in this paper point to the same underlying structure, name it. If they don't, say that too.
 4. **Connection to existing literature** — Where do these results connect to known mathematical unification efforts (e.g. category theory as a unifying language, renormalisation group universality, topological data analysis)?
-5. **Open questions** — What would it take to move these from "structural convergence" to "proven deep connection"? What experiments or proofs would confirm or refute the deeper claim?
+5. **Open questions** — What would it take to move these from "formal conjecture" to "complete proof"? What specific gaps in the formalisations need to be closed? What experiments or independent mathematical work would confirm or refute the deeper claim?
 6. **What this does NOT mean** — Explicitly guard against over-interpretation. A structural parallel between two domains does not mean they are "the same thing."
 7. Be 500-900 words
 
@@ -158,7 +169,7 @@ The Novel Contributions section MUST:
 
 2. **Distinguish discovery from formalisation** — Some contributions are the discovery
    itself (Gnosis AI identified this convergence), others are the formalisation
-   (Logos AI proved it formally). State which is which.
+   (Logos AI expressed it as a precise mathematical proposition with a structured argument). State which is which.
 
 3. **Note any partial precedents** — If a convergence is related to known work (e.g.
    "the connection between X and Y has been noted informally by [Author, Year], but
@@ -190,15 +201,18 @@ Proof verification status:
 {verification_status}
 
 The Honest Scope section MUST:
-1. **What IS established** — List each result with its confidence level, stated plainly. e.g. "Convergence C1 between topology and quantum mechanics is supported at high confidence (0.84). The formal proof is logically sound and has been adversarially tested."
-2. **What is NOT established** — Be specific. e.g. "This paper does NOT prove that topology and quantum mechanics share a common foundation. It proves that a specific structural parallel exists and can be formally stated. The deeper causal question remains open."
-3. **Methodology limitations** — This is an AI-driven discovery pipeline. State clearly:
+1. **What IS established** — List each result with its confidence level, stated plainly. e.g. "Convergence C1 between topology and quantum mechanics has been formalised as a precise mathematical proposition with a structured supporting argument, at confidence 0.42."
+2. **What these formalisations ARE** — Be precise about the level of formalisation. These are Level 3-4 formalisations: formal conjectures (precisely stated mathematical propositions) with structured heuristic arguments (proof sketches with identified gaps). They are NOT complete proofs. The gap between "formal conjecture with supporting argument" and "complete proof" is significant — closing it would require independent mathematical work, potentially years of effort for each result. State this clearly and without embarrassment — well-stated formal conjectures are genuinely valuable contributions to mathematics.
+3. **What is NOT established** — Be specific. e.g. "This paper does NOT prove that topology and quantum mechanics share a common foundation. It formalises a specific structural parallel as a precise mathematical proposition and presents a structured argument with identified gaps. The proposition remains a formal conjecture."
+4. **Methodology limitations** — This is an AI-driven pipeline. State clearly:
    - The pipeline can find structural parallels that a human might miss, but it can also find spurious patterns
-   - Natural-language proofs have been adversarially reviewed but NOT independently verified by human mathematicians (unless machine-verified via Lean 4 — state which proofs have been)
+   - Formalisations have been adversarially reviewed but contain identified gaps — they are structured arguments, not complete proofs
+   - No formalisations have been independently verified by human mathematicians
+   - Lean 4 scaffolding was generated but contains `sorry` placeholders — it defines types and states theorems but does not provide machine-verified proofs
    - Confidence scores are calibrated against the pipeline's own standards, not against an external benchmark
-4. **What would change our conclusions** — What kind of evidence would strengthen or weaken these results?
-5. Be 300-500 words
-6. The reader should finish this section thinking "these authors are being completely honest with me"
+5. **What would change our conclusions** — What kind of evidence would strengthen or weaken these results? What specific gaps need to be closed?
+6. Be 300-500 words
+7. The reader should finish this section thinking "these authors are being completely honest with me"
 
 Return the section text only (markdown), no JSON.
 """
@@ -211,9 +225,9 @@ Key results:
 
 The Conclusion should:
 1. Restate the main contribution in one clear sentence that a non-specialist can understand
-2. State what is now formally established that was not before
+2. State what is now formally established that was not before — precise mathematical propositions with structured arguments (formal conjectures, not complete proofs)
 3. State the most important implication for each domain involved
-4. Point to the most promising direction for future work — be specific (not "further research is needed" but "a Lean 4 formalisation of Theorem 2 would elevate this from natural-language proof to machine-verified result")
+4. Point to the most promising direction for future work — be specific (e.g. "closing the identified gap in Proposition 2 regarding [specific step] would elevate this from formal conjecture to complete proof" or "independent verification by a specialist in [domain] would strengthen confidence")
 5. End with a sentence that captures WHY this matters — the vision, not just the result
 6. Be 200-350 words
 
