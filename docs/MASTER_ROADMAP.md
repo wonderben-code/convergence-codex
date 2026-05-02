@@ -158,19 +158,20 @@ Not just pairwise comparisons — combinatorial at EVERY level:
 |------|------|--------|
 | 1 | **Gnosis v2** — cross-domain, multi-field, recursive cascade, 81 fields | **DONE** |
 | 2 | **Logos AI** — 2,162 lines, 14 files, Lean 4 formalisation, 5-layer adversarial validation | **DONE** |
-| 3 | **Synthesis AI** — 1,448 lines, 11 files, publication-quality paper generation | **DONE** |
+| 3 | **Synthesis AI** — 1,448 lines, 11 files, publication-quality paper generation | **RETIRED** (see note below) |
 | 4 | **Pipeline Orchestrator** — 479 lines, 3 files, thin coordination, human checkpoints | **DONE** |
-| 5 | **Stage A** — 266 existing convergences through Logos → Synthesis | **DONE** (256/266 proofs, 2 May) |
-| 5c | **Stage A CAPSTONE** — 22 Nobel-format papers across all cascade levels (L5→L1). Genuine ontological claims about reality (Einstein/Higgs model), precisely scoped, with predictions extending into untested domains. 6-stage pipeline: census → claim formulation → planning → composition → 18-point review → prediction extraction. Anti-hallucination enforced (real convergence IDs only, deterministic provenance, no fake DOIs). | **8/22 DONE** (2 May) |
+| 5 | **Stage A** — 266 existing convergences through Logos | **DONE** (256/266 proofs, 2 May) |
+| 5c | **Stage A CAPSTONE** — 22 papers across all cascade levels (L5→L1). Genuine ontological claims about reality, precisely scoped, with predictions extending into untested domains. **Papers composed manually with AI (Claude Code) — NOT Synthesis AI.** Each paper individually proofread to top 0.00001% quality. | **8/22 DONE** (2 May) |
 | 5c-i | Clean up 8 completed capstone papers for Zenodo publication | **DONE** (fixed fake IDs, DOIs, headers) |
 | 5c-ii | Publish 8 capstone papers to Zenodo with DOIs (v2 with PDFs) | **DONE** (3 May) |
-| 5c-v | **PROOFREAD all 8 capstone papers to top 0.00001% quality** — Remove all inline hex IDs from body text, write actual formalisation mathematics into papers (not just database references), fix fake Codex DOIs in references, ensure each paper stands alone as a publishable scientific document. One-by-one manual review with AI. | **NEXT** |
+| 5c-0 | **PAPER QUALITY BIBLE** — Write the definitive reference document for capstone paper quality. Covers: paper structure (exact sections + requirements), mathematical standards (formalisations written out, LaTeX, theorem formatting), evidence standards (cite by domain pair not hex ID, honest confidence), prediction format, provenance, reference format (no fake DOIs), anti-drift rules, prose standards (standalone scientific paper), 20+ point final checklist. Every paper measured against this before publication. | **FIRST** |
+| 5c-v | **PROOFREAD all 8 capstone papers to top 0.00001% quality** — Using the Paper Quality Bible. Remove all inline hex IDs, write actual formalisation mathematics, fix fake Codex DOIs, ensure standalone publishable quality. One-by-one manual review with AI. | **NEXT** |
 | 5c-vi | Publish v3 of 8 proofread capstone papers to Zenodo | NOT DONE |
-| 5c-iii | Compose remaining 14 capstone papers (resume from paper 9/22) — fix pipeline prompts FIRST so new papers don't have inline hex IDs, include formalisation mathematics in composition, no fake DOIs | NOT DONE |
+| 5c-iii | Compose remaining 14 capstone papers manually with AI (Claude Code) — use cached claims + plans, write each paper directly with actual formalisation mathematics, no Synthesis AI | NOT DONE |
 | 5c-iv | Proofread + publish remaining 14 capstone papers to Zenodo | NOT DONE |
 | 5d | **Stage A FORMALISATION CATALOGUE** — Instead of ~70 individual papers, create ONE comprehensive catalogue document listing ALL 256 formalisations with their mathematical propositions, proof sketches, confidence scores, adversarial verdicts, and domain pairs. Published as a single Zenodo deposit. Much more useful as a reference work than hundreds of thin papers. AI-composed (no API cost). | NOT DONE |
-| 6 | **Stage B — THE BIG RUN** — Full Codex across ALL 81 fields of science, maths, physics (6 phases): all pairwise convergences (cross-category first), codex analysis, multi-field groups, meta-convergences, recursive cascade to fixed points, everything through Logos → Synthesis. 10x more data than Stage A. | NOT DONE |
-| 6c | **Stage B CAPSTONE** — Same capstone process as Stage A but from the MUCH broader Stage B dataset. New/stronger fixed points, new cascade levels, potentially new claims that didn't exist with Stage A's smaller data. Do Stage A claims hold? Strengthen? New ones emerge? Nobel-format papers from the full 81-field evidence base. | NOT DONE |
+| 6 | **Stage B — THE BIG RUN** — Full Codex across ALL 81 fields of science, maths, physics (6 phases): all pairwise convergences (cross-category first), codex analysis, multi-field groups, meta-convergences, recursive cascade to fixed points, everything through Logos (NOT Synthesis). 10x more data than Stage A. | NOT DONE |
+| 6c | **Stage B CAPSTONE** — Capstone papers from the broader Stage B dataset, composed manually with AI (Claude Code). Each paper individually proofread. Do Stage A claims hold? Strengthen? New ones emerge? | NOT DONE |
 | 6d | **Stage B FORMALISATION CATALOGUE** — Same as Stage A: ONE comprehensive catalogue of all new formalisations from the 81-field run, not hundreds of individual papers. AI-composed (no API cost). | NOT DONE |
 | 7 | **Stage C — THE CROWN JEWELS** — The capstone of capstones. From ALL of Stage A + B, identify the 3-5 MOST terminal, MOST unifying, MOST revolutionary claims — the absolute top of the cascade. These are the claims that, if correct, would each individually transform our understanding of reality. Write the definitive, focused papers for each. Not broad surveys — laser-focused on the single most powerful version of each claim. | NOT DONE |
 | 7b | **Stage C PUBLICATION** — 3-5 crown jewel papers → Zenodo. These are THE papers. | NOT DONE |
@@ -180,9 +181,14 @@ Not just pairwise comparisons — combinatorial at EVERY level:
 | 9b | **Stage E PUBLICATION** — THE capstone paper: the updated, evidence-backed Theory of Everything → Zenodo | NOT DONE |
 | 10 | **Website wing** — Convergence Codex on infinitography.com | NOT DONE |
 | 11 | **QC + stamp + ship** | NOT DONE |
-| 12 | **Open Source + Production Grade** — Make all 4 AIs (Gnosis, Logos, Synthesis, Capstone) + Orchestrator production-ready for anyone to clone, install, and run. PyPI packages (`pip install convergence-codex`), proper `pyproject.toml`, CLI entry points, config file system (no hardcoded paths), comprehensive README with quickstart, example data for dry runs without API credits, CI/CD (tests + linting), Docker option, framing audit ("landmark scientific paper format" not "Nobel AI"), license decision (MIT/Apache 2.0). Goal: a researcher anywhere in the world can `pip install` and run the full pipeline on their own domains. | NOT DONE |
+| 12 | **Open Source + Production Grade** — Release **Gnosis AI + Logos AI only** (NOT Synthesis — it added more problems than value; papers are better composed manually). Make both AIs production-ready: PyPI packages, proper `pyproject.toml`, CLI entry points, config file system (no hardcoded paths), comprehensive README with quickstart, example data for dry runs without API credits, CI/CD (tests + linting), Docker option, framing audit, license decision (MIT/Apache 2.0). Goal: a researcher anywhere in the world can `pip install` and run Gnosis (discovery) + Logos (formalisation) on their own domains, then write their own papers from the output. | NOT DONE |
 
-**Strategy pivot (3 May 2026):** Instead of publishing 300-500+ individual formalisation papers, publish ONE comprehensive Formalisation Catalogue per stage — a reference work listing every formal conjecture with its mathematical proposition, proof sketch, confidence score, adversarial verdict, and domain pair. Capstone papers remain individually composed + manually proofread to top 0.00001% quality. Each capstone paper gets manual AI proofreading (no API cost) to ensure it stands alone as a publishable scientific document with actual mathematics, not database references. This produces ~40-50 high-quality papers instead of hundreds of thin ones.
+**Strategy pivot (3 May 2026) — Synthesis AI RETIRED from workflow:**
+- **Problem:** Synthesis AI ($60-120 per run) produced papers with raw database hex IDs in body text, fake DOIs, missing actual mathematics, duplicate headers, and fabricated convergence IDs. Every run required extensive manual cleanup that cost more time than writing from scratch.
+- **Solution:** All papers now composed manually with AI (Claude Code) — no API cost, better quality, actual formalisation mathematics included. Synthesis AI code remains in repo for reference but is NOT used and NOT included in open source release.
+- **What we release open source:** Gnosis AI (discovery) + Logos AI (formalisation) only. These are the two engines that actually work well. Researchers run Gnosis + Logos on their own domains, then write their own papers from the structured output.
+- **Formalisation Catalogues:** Instead of 300-500+ individual papers, publish ONE comprehensive catalogue per stage. Much more useful as a reference work.
+- **Net effect:** ~40-50 high-quality papers + 2 comprehensive catalogues instead of hundreds of thin AI-generated papers with errors. Better science, zero API cost for paper composition.
 
 **Stage B Phases:**
 1. All pairwise (cross-category FIRST)
@@ -382,7 +388,8 @@ NOW ━━━━━━ STAGE 3b: THE CONVERGENCE CODEX ━━━━━━━━�
   ✅ Pipeline Orchestrator (479 lines, thin coordination, checkpoints)
   ✅ Stage A — DONE (256/266 proofs through Logos)
   ▶  Stage A CAPSTONE — 8/22 papers DONE, v2 PDFs on Zenodo (3 May 2026)
-     → NEXT: Proofread all 8 papers to top 0.00001% (manual AI, no API cost)
+     → FIRST: Write Paper Quality Bible (reference doc for every paper)
+     → NEXT: Proofread all 8 papers against the Bible to top 0.00001% (manual AI, no API cost)
      → Publish v3 proofread versions to Zenodo
      → Fix pipeline prompts (no inline hex IDs, include formalisation maths)
      → Compose remaining 14 capstone papers (~$60-80)
