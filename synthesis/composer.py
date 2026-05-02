@@ -438,7 +438,27 @@ class Composer:
         """Appendix A: Complete Gnosis discovery data — nothing truncated."""
         parts = [
             "*This appendix contains the complete discovery data from Gnosis AI for every "
-            "convergence in this paper. No data has been truncated or summarised.*\n"
+            "convergence in this paper. No data has been truncated or summarised.*\n",
+            "## How to Read This Appendix\n",
+            "Each convergence entry below contains:\n",
+            "- **Structural Claim**: The specific structural parallel discovered between two or more domains. "
+            "This is the core finding — the claim that domain A and domain B share a common mathematical structure.\n",
+            "- **EA Validation Scores**: The Epistemic Assurance (EA) engine tests every discovery across 5 independent "
+            "dimensions before it enters the pipeline. Scores range from 0.0 (no evidence) to 1.0 (overwhelming evidence):\n",
+            "  - *Strength*: How strong is the structural parallel? (Do the mathematical structures genuinely correspond, "
+            "or is the similarity superficial?)\n",
+            "  - *Independence*: Could this parallel arise by coincidence? (A low score means it might be a mathematical "
+            "artefact; a high score means the parallel is unlikely to be coincidental.)\n",
+            "  - *Adversarial*: Does the convergence survive deliberate attack? (The EA engine tries to disprove it.)\n",
+            "  - *Reproducibility*: Would a different analysis find the same result? (Tests robustness to methodological "
+            "variation.)\n",
+            "  - *Depth-consistency*: Does the parallel hold at deeper levels of analysis, or only at the surface?\n",
+            "  - *Overall confidence*: Weighted aggregate. Categories: **high** (>0.7), **medium** (0.4-0.7), "
+            "**preliminary** (0.2-0.4), **speculative** (<0.2).\n",
+            "- **Supporting Results**: The specific results from each domain that underpin the convergence. "
+            "Each shows the domain, the specific result, its structural conclusion, and its epistemic status "
+            "(how well-established it is within its own field).\n",
+            "---\n",
         ]
 
         for i, c in enumerate(bundle.convergences):
@@ -492,7 +512,25 @@ class Composer:
         parts = [
             "*This appendix contains the complete formalisation data from Logos AI for every "
             "proof in this paper, including formal propositions, proof steps, Lean 4 code, "
-            "assumptions, limitations, and literature dependencies.*\n"
+            "assumptions, limitations, and literature dependencies.*\n",
+            "## How to Read This Appendix\n",
+            "Each proof entry below takes a discovery from Appendix A and attempts to establish it formally. "
+            "The formalisation process involves:\n",
+            "1. **Type detection**: What kind of mathematical relationship is this? (e.g. categorical equivalence, "
+            "topological homeomorphism, algebraic isomorphism, information-theoretic bound)\n",
+            "2. **Apparatus selection**: What mathematical tools are needed? (e.g. category theory, differential "
+            "geometry, spectral theory) — with justification for why this apparatus was chosen\n",
+            "3. **Proof generation**: A formal proposition is stated, then proved in natural language "
+            "(step-by-step with justifications) and, where possible, in Lean 4 (a machine-verifiable proof language)\n",
+            "4. **Verification**: Each proof step is checked for logical soundness\n",
+            "\n**Reading the Lean 4 code**: Lean 4 is a formal proof assistant. Code beginning with `theorem` or "
+            "`lemma` states what is being proved. Lines beginning with `sorry` indicate steps that the system could "
+            "not yet formalise — this is honest incompleteness, not an error. If a proof compiles without `sorry`, "
+            "it has been machine-verified to be logically sound.\n",
+            "\n**Confidence levels**: Each proof carries a confidence score (0.0-1.0) reflecting the strength of "
+            "the formalisation. A high score means the proof is logically sound and well-supported; a lower score "
+            "means the proof has gaps or relies on assumptions that need further justification.\n",
+            "---\n",
         ]
 
         for i, p in enumerate(bundle.proofs):
@@ -586,7 +624,31 @@ class Composer:
         parts = [
             "*This appendix contains the complete adversarial validation results and "
             "the Logos AI reasoning log showing how each formalisation decision was made. "
-            "This provides full methodological transparency.*\n"
+            "This provides full methodological transparency.*\n",
+            "## How to Read This Appendix\n",
+            "This appendix serves two purposes: **validation evidence** and **methodological transparency**.\n",
+            "### Validation Evidence\n",
+            "Each proof undergoes a 5-layer validation pipeline. The layers are independent and weighted:\n",
+            "| Layer | Weight | What It Tests |\n",
+            "|-------|--------|---------------|\n",
+            "| Mechanical (Layer 1) | 30% | Does each proof step follow logically from the previous? Are there gaps in reasoning? |\n",
+            "| Adversarial (Layer 2) | 25% | A separate AI deliberately tries to break the proof. What attacks succeed? |\n",
+            "| Internal consistency (Layer 3) | 20% | Does the proof actually prove what it claims to prove? |\n",
+            "| Cross-proof consistency (Layer 4) | 15% | Do multiple proofs in the same paper contradict each other? |\n",
+            "| Calibration (Layer 5) | 10% | Are the confidence scores well-calibrated against the actual evidence? |\n",
+            "\nThe overall confidence score is the weighted sum. **High** (>0.7) means the proof is robust; "
+            "**medium** (0.4-0.7) means it is plausible but has identifiable gaps; **low** (<0.4) means "
+            "significant issues remain.\n",
+            "### Methodological Transparency\n",
+            "The **Formaliser Reasoning Logs** show every decision the AI made during formalisation — what "
+            "type of proof to attempt, which mathematical apparatus to use, which proof strategy to follow — "
+            "along with the alternatives it considered and why they were rejected. This allows human reviewers "
+            "to audit not just the final proof but the entire reasoning process that produced it.\n",
+            "### Human Review Flags\n",
+            "Some proofs are automatically flagged for human review. Reasons include: low confidence, novel "
+            "mathematical claims, high complexity, or adversarial review concerns. Each flag includes the "
+            "specific reason and suggested domain expertise for the reviewer.\n",
+            "---\n",
         ]
 
         for i, p in enumerate(bundle.proofs):
