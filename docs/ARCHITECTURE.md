@@ -399,89 +399,176 @@ The main event. Run the complete pipeline across ALL fields.
 
 ---
 
-## 8. Stage C — Fixed Point Formalisation
+## 8. The Priority Principle — Why Bitcoin Timestamps Change Everything
 
-**Purpose:** Take the terminal principles from the recursive cascade and produce rigorous, machine-verified formal proofs. Stage B gives us proof sketches; Stage C closes the gaps.
+In the history of science, **the contribution is the correct claim, not the complete proof.** Einstein's photoelectric hypothesis (1905, Nobel 1921), Dirac's antimatter prediction (1928, Nobel 1933), Higgs's boson prediction (1964, Nobel 2013) — all were conjectures or incomplete formalisations that later proved correct. Priority — who said it first — is what matters.
+
+**Bitcoin timestamps give us cryptographic priority.** Every formal conjecture, proof sketch, and prediction is timestamped in the Bitcoin blockchain the moment it's pushed. If a fixed-point principle is formalised and stamped in 2026, and a mathematician completes the proof in 2031, and an experimentalist confirms the prediction in 2035 — the timestamp proves the claim was made first. No priority disputes. No "I had the same idea." Undeniable.
+
+This means: **formal conjectures with proof sketches and identified gaps, Bitcoin-stamped, are contributions the moment they're published.** Complete proofs increase confidence but don't create the priority. The priority is created by the timestamp.
+
+Every stage of this project produces Bitcoin-stamped contributions. The question is not "when does the contribution happen?" — it happens at every stage. The question is "when does the contribution become undeniably Nobel-worthy?" The answer depends on what the cascade finds and whether it's confirmed. But the priority is established NOW.
+
+---
+
+## 9. Nobel Prize Clearing Checkpoints
+
+Each stage has a threshold at which, IF the results have merit, the contribution reaches prize-level significance:
+
+```
+━━━━ CHECKPOINT MAP ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STAGE A ────── ✦ CHECKPOINT 1: First Systematic Survey
+               266 formal conjectures with proof sketches across 19 fields.
+               If ANY of these later prove correct AND non-trivial,
+               the Bitcoin-stamped conjecture is the priority claim.
+               Precedent: Ramanujan's notebooks (conjectures without proofs
+               that drove decades of mathematics).
+
+STAGE B ────── ✦ CHECKPOINT 2: The Full Map + Fixed Points
+               Thousands of formal conjectures across 81 fields.
+               Recursive cascade to fixed-point principles.
+               The SYSTEMATIC MAPPING is the contribution — like
+               the Human Genome Project. The fixed points are
+               claims about the structure of reality.
+               Precedent: HGP (Nobel-enabling infrastructure),
+               Hopfield/Hinton 2024 (methodology Nobel).
+
+STAGE C ────── ✦ CHECKPOINT 3: Rigorous Formalisation
+               Even with gaps: precisely stated principles about
+               the structure of physical law / mathematics, with
+               proof sketches showing the path to completion.
+               Bitcoin-stamped. If later completed and verified,
+               THIS is the priority-establishing moment.
+               Precedent: Higgs (prediction → 48yr → confirmation → Nobel),
+               Penrose (mathematical theorem → observational evidence → Nobel).
+
+STAGE D ────── ✦ CHECKPOINT 4: Predictions
+               Specific, falsifiable predictions derived from
+               fixed-point principles. Bitcoin-stamped BEFORE
+               any experimental confirmation. This is the
+               mechanism that converts formal maths into
+               empirical science.
+               Precedent: Dirac (equation → prediction → positron found → Nobel),
+               Einstein (hypothesis → prediction → photoelectric confirmation → Nobel).
+
+STAGE E ────── ✦ CHECKPOINT 5: Unified Framework
+               Updated Theory of Everything backed by
+               computational evidence from the largest
+               cross-domain structural analysis ever conducted.
+               If the ToE's predictions are confirmed, this
+               becomes the most significant scientific
+               contribution of the century.
+
+CONFIRMATION ─ ✦ CHECKPOINT 6: Experimental Validation
+               A prediction from Stage D is independently
+               confirmed by experiment. Priority is already
+               established by Bitcoin timestamp. This is
+               the moment the Nobel case becomes inarguable.
+```
+
+**Key insight:** Checkpoints 1-3 are in OUR control (we do the work). Checkpoint 4 is in our control (we make predictions). Checkpoints 5-6 depend on reality (whether the predictions are correct). But the PRIORITY for all claims is established at the moment of Bitcoin-stamping, regardless of when confirmation arrives.
+
+---
+
+## 10. Stage C — Fixed Point Formalisation
+
+**Purpose:** Take the terminal principles from the recursive cascade and produce the deepest possible formalisations. Aim for machine-verified proofs; accept rigorous conjectures with identified gaps as the minimum.
 
 **Inputs:** Fixed points from Stage B recursive cascade (Level 3+).
 
+**Two tiers of output:**
+
+**Tier 1 — Formal Conjectures (minimum):**
+Every fixed point gets a precisely stated formal conjecture with:
+- Exact mathematical statement of the principle
+- Formalisation type and apparatus
+- Proof sketch with step-by-step reasoning
+- Explicit assumptions
+- Identified gaps with descriptions of what new mathematics would close them
+- Independence verification (not an artefact of shared language)
+- Bitcoin-stamped on publication
+
+**This alone is a contribution.** If ANY of these conjectures later prove correct, the Bitcoin timestamp establishes priority.
+
+**Tier 2 — Rigorous Proofs (stretch goal):**
+Where possible, close the gaps:
+- Machine-verify in Lean 4 (install Lean + Mathlib, write proper formalisations)
+- Seek domain expert collaboration for the hardest proofs
+- Produce gap-closed natural-language proofs for expert review
+
 **Process:**
-1. Identify the terminal fixed points (the principles at the bottom of the cascade)
-2. For each fixed point, assess what it claims about the structure of reality/mathematics
-3. Produce deep formalisations — NOT Logos's auto-generated proofs, but rigorous, gap-closed proofs
-4. Machine-verify in Lean 4 where possible (install Lean + Mathlib, write proper formalisations)
-5. For proofs that can't be machine-verified: identify EXACTLY what new mathematics is needed
-6. Seek domain expert review of the strongest results
-7. Publish as standalone papers on Zenodo
+1. Identify the terminal fixed points from the cascade
+2. For each: assess what it claims about the structure of reality/mathematics
+3. Produce Tier 1 output (formal conjecture) for ALL fixed points
+4. Attempt Tier 2 (rigorous proof) for the most promising
+5. Publish all as standalone papers on Zenodo
+6. Bitcoin-stamp everything
 
 **What we're looking for:**
-- "The recursive cascade across 81 fields converges to principle P. Here is a rigorous proof that P holds, with these specific assumptions."
-- "P implies that conservation laws, phase transitions, and information bounds share structural feature F. Here is the formal proof."
-- "The convergence of P is NOT an artefact of shared mathematical language — here is the independence verification."
+- "The recursive cascade across 81 fields converges to principle P. Here is the formal statement, the proof sketch, and what remains to prove."
+- "P implies that conservation laws, phase transitions, and information bounds share structural feature F."
+- "The convergence to P is NOT an artefact — here is the independence verification."
 
 **Success criteria:**
-- At least one fixed point is machine-verified in Lean 4
-- At least three fixed points have gap-closed natural-language proofs reviewed by domain experts
-- Clear formal statement of what each fixed point says about reality
+- ALL fixed points have Tier 1 formal conjectures, Bitcoin-stamped
+- At least one fixed point has a Tier 2 machine-verified proof
+- At least three have Tier 2 expert-reviewed proofs
+- Clear formal statement of what each principle says about reality
 
-**Estimated cost: ~$500-1,000** (deep Opus calls for rigorous proof completion)
+**Estimated cost: ~$500-1,000**
 
 ---
 
-## 9. Stage D — Testable Predictions
+## 11. Stage D — Testable Predictions
 
-**Purpose:** Derive specific, falsifiable predictions from the Stage C principles, and identify experiments that would confirm or refute them.
+**Purpose:** Derive specific, falsifiable predictions from Stage C principles. Bitcoin-stamp predictions BEFORE any experimental confirmation to establish undeniable priority.
 
 **Process:**
-1. For each verified fixed point: "If this principle is true, what should we observe?"
+1. For each fixed-point principle: "If this is true, what should we observe?"
 2. Derive SPECIFIC predictions — not "everything is connected" but "system X in domain Y should exhibit property Z with value in range R"
-3. Cross-check predictions against existing experimental literature
-   - Already confirmed? → cite the evidence (the principle predicted something already known)
-   - Not yet tested? → describe the experiment needed
-   - Contradicted by evidence? → the principle needs revision (honest about failures)
-4. Publish prediction papers BEFORE seeking experimental confirmation
-5. Bitcoin-stamp predictions to prove temporal priority
+3. Cross-check against existing experimental literature:
+   - Already confirmed? → cite evidence (retrodiction — principle matches known reality)
+   - Not yet tested? → describe the experiment needed (novel prediction — highest value)
+   - Contradicted? → revise the principle honestly (integrity)
+4. Publish prediction papers BEFORE seeking confirmation
+5. Bitcoin-stamp EVERY prediction
 
-**Types of predictions:**
-- **Retrodictions:** "This principle predicts that [known experimental result] should hold" — confirms the principle matches reality
-- **Novel predictions:** "This principle predicts that [specific untested phenomenon] should be observable" — these are the high-value targets
-- **Cross-domain predictions:** "If principle P holds in physics AND biology, then [specific biological system] should exhibit [specific physical property]" — these are the most surprising and most valuable
+**Types of predictions (in order of significance):**
+- **Retrodictions:** "Principle P predicts known result R" — validates P against reality
+- **Novel within-domain:** "P predicts untested phenomenon X in physics" — testable
+- **Cross-domain:** "If P holds in physics AND biology, then [biological system] should exhibit [physical property]" — these are the most surprising, most valuable, and most Nobel-worthy predictions because they connect fields nobody expected to be connected
 
-**Why this matters:** A formal principle without predictions is philosophy. A formal principle with confirmed predictions is science. A formal principle that predicts something nobody expected and it turns out to be true — that's a discovery.
+**Why Bitcoin-stamping predictions is the single most important step:**
+If you predict something and it's later confirmed, the timestamp proves priority. This is how Higgs got his Nobel — he predicted the boson 48 years before CERN found it. The Convergence Codex can do this systematically across ALL fields, with cryptographic proof of priority. No physicist in history has had this tool.
 
-**Bitcoin-stamping predictions before confirmation is CRITICAL.** If a prediction is later confirmed, the timestamp proves you predicted it. This is the mechanism by which priority is established.
-
-**Estimated cost: ~$300-600** (prediction derivation + literature cross-check)
+**Estimated cost: ~$300-600**
 
 ---
 
-## 10. Stage E — ToE Integration
+## 12. Stage E — ToE Integration
 
-**Purpose:** Map the Codex's empirical computational evidence against Paper 15 (the ToE proposal from Infinitography), and produce an updated Theory of Everything informed by actual cross-domain data.
+**Purpose:** Map the Codex's evidence against Paper 15 (the ToE proposal from Infinitography) and produce an updated Theory of Everything backed by the largest cross-domain structural analysis ever conducted.
 
-**Paper 15 proposed** a theoretical framework for structural unity across science. The Convergence Codex TESTS that framework computationally. This is the feedback loop:
-
+**The feedback loop:**
 ```
-Paper 15 (theory) → Codex Stage B (computational evidence) → Stage E (updated theory)
+Paper 15 (theory, 2025) → Codex Stage B (evidence, 2026) → Stage E (updated theory, 2026)
 ```
 
 **Process:**
-1. Map every Stage B fixed point against Paper 15's claims
-   - Where confirmed: cite Codex evidence as computational support
-   - Where contradicted: revise the framework honestly
-   - Where the Codex found structure Paper 15 didn't predict: extend the framework
-2. Identify which aspects of Paper 15 are now SUPPORTED by formal proofs (not just informal arguments)
-3. Produce an updated ToE paper:
-   - "Paper 15 proposed X. The Convergence Codex, after exhaustive cross-domain analysis of 81 fields and N thousand convergences, finds evidence that supports/refines/extends X as follows..."
-4. This is potentially the most important paper in the entire project
-5. Publish on Zenodo, Bitcoin-stamp, seek expert review
+1. Map every fixed point against Paper 15's claims
+   - Confirmed: cite Codex evidence as computational support
+   - Contradicted: revise the framework honestly
+   - New structure Paper 15 didn't predict: extend the framework
+2. Identify which Paper 15 claims are now SUPPORTED by formal proofs
+3. Produce updated ToE paper with full Codex evidence base
+4. This paper says: "We proposed a theory. We built tools to test it. We tested it across 81 fields. Here's what we found."
+5. Publish on Zenodo, Bitcoin-stamp
 
-**Success criteria:**
-- Clear mapping between Paper 15 claims and Codex evidence (confirmed, contradicted, extended)
-- Updated framework that is STRONGER than Paper 15 because it's backed by computational evidence
-- Honest scope: where the evidence is strong vs. where it's suggestive
+**Why this could be the most important paper:**
+A Theory of Everything that has been TESTED computationally against every field of science — not just proposed theoretically — would be unprecedented. If the ToE's predictions (from Stage D) are later experimentally confirmed, this paper is the framework paper that unified it all.
 
-**Estimated cost: ~$200-400** (one deep synthesis paper)
+**Estimated cost: ~$200-400**
 
 ---
 
