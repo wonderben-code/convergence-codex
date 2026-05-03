@@ -10,7 +10,7 @@ from pathlib import Path
 import click
 
 from logos.config import LogosConfig
-from logos.api import ClaudeAPI
+from logos.api import ClaudeAPI, MaxPlanAPI, create_api
 from logos.store import ProofStore
 from logos.models import LogosRun, ProofConfidence
 from logos.formaliser import Formaliser
@@ -19,10 +19,13 @@ from logos.lean_bridge import LeanBridge
 
 
 @click.group()
+@click.option("--max-plan", is_flag=True, default=False,
+              help="Use Claude Code CLI (Max plan) instead of API — $0 cost")
 @click.pass_context
-def cli(ctx):
+def cli(ctx, max_plan: bool):
     """Logos AI — the Formaliser. Produces formal mathematical proofs from discoveries."""
     ctx.ensure_object(dict)
+    ctx.obj["use_max_plan"] = max_plan
 
 
 @cli.command()
@@ -37,17 +40,20 @@ def prove(ctx, convergence_path, output, skip_lean, skip_validation, max_cost):
 
     config = LogosConfig.load()
     config.max_cost_usd = max_cost
+    use_max_plan = ctx.obj.get("use_max_plan", False)
 
     convergence = _load_convergence(convergence_path)
 
     click.echo(f"\n{'=' * 60}")
     click.echo("  LOGOS AI — Formalisation")
+    if use_max_plan:
+        click.echo("  Mode: Max Plan (Claude Code CLI — $0 cost)")
     click.echo(f"{'=' * 60}")
     click.echo(f"\n  Convergence: {convergence.get('structural_claim', '')[:80]}...")
     click.echo(f"  Domains: {', '.join(convergence.get('domain_names', convergence.get('domains', [])))}")
     click.echo(f"  Type: {convergence.get('convergence_type', 'unknown')}")
 
-    api = ClaudeAPI(config)
+    api = create_api(config, use_max_plan=use_max_plan)
     store = ProofStore(config)
 
     # Stage 1-4: Formalise
@@ -126,6 +132,7 @@ def batch(ctx, convergences_dir, output_dir, filter_expr, skip_lean, skip_valida
 
     config = LogosConfig.load()
     config.max_cost_usd = max_cost
+    use_max_plan = ctx.obj.get("use_max_plan", False)
 
     convergences_path = Path(convergences_dir)
     convergence_files = sorted(convergences_path.glob("*.json"))
@@ -146,11 +153,13 @@ def batch(ctx, convergences_dir, output_dir, filter_expr, skip_lean, skip_valida
 
     click.echo(f"\n{'=' * 60}")
     click.echo("  LOGOS AI — Batch Formalisation")
+    if use_max_plan:
+        click.echo("  Mode: Max Plan (Claude Code CLI — $0 cost)")
     click.echo(f"{'=' * 60}")
     click.echo(f"\n  Convergences: {len(convergences)} (of {len(convergence_files)} total)")
     click.echo(f"  Max cost: ${max_cost:.2f}")
 
-    api = ClaudeAPI(config)
+    api = create_api(config, use_max_plan=use_max_plan)
     store = ProofStore(config)
     formaliser = Formaliser(api)
     lean = LeanBridge(api, config) if not skip_lean else None
@@ -251,7 +260,7 @@ def validate(ctx, proof_path, max_cost):
     from logos.models import ProofRecord
     proof = ProofRecord(**data)
 
-    api = ClaudeAPI(config)
+    api = create_api(config, use_max_plan=ctx.obj.get("use_max_plan", False))
     store = ProofStore(config)
     validator = ProofValidator(api, store)
 

@@ -1,9 +1,19 @@
-"""Claude API wrapper for Logos AI — mirrors gnosis-ai pattern."""
+"""Claude API wrapper for Logos AI — mirrors gnosis-ai pattern.
+
+Provides two backends:
+  - ClaudeAPI: Uses the Anthropic API directly (requires API key, costs money)
+  - MaxPlanAPI: Uses the Claude Code CLI (`claude -p`) via Max plan subscription ($0 cost)
+
+Both expose the same interface: query(), query_json(), query_deep(), query_deep_json().
+Use create_api(config, use_max_plan=False) to get the right one.
+"""
 
 from __future__ import annotations
 
 import json
+import os
 import random
+import subprocess
 import time
 from dataclasses import dataclass
 from typing import Optional
@@ -18,6 +28,14 @@ PRICING = {
     "claude-sonnet-4-6": {"input": 3.0, "output": 15.0},
     "claude-opus-4-20250514": {"input": 15.0, "output": 75.0},
     "claude-opus-4-6": {"input": 15.0, "output": 75.0},
+}
+
+# Map full model IDs to CLI-friendly aliases
+MODEL_CLI_ALIASES = {
+    "claude-opus-4-20250514": "opus",
+    "claude-opus-4-6": "opus",
+    "claude-sonnet-4-20250514": "sonnet",
+    "claude-sonnet-4-6": "sonnet",
 }
 
 
@@ -181,3 +199,204 @@ class ClaudeAPI:
     def query_deep_json(self, prompt: str, system: str = "", max_tokens: int = 8192) -> dict | list:
         """Query deep model and parse as JSON."""
         return self.query_json(prompt, system=system, model=self.config.model_deep, max_tokens=max_tokens)
+
+
+class MaxPlanAPI:
+    """Drop-in replacement for ClaudeAPI using Claude Code CLI (`claude -p`).
+
+    Runs queries through the user's Max plan subscription instead of the
+    Anthropic API, making all calls effectively free. Same interface as
+    ClaudeAPI: query(), query_json(), query_deep(), query_deep_json().
+
+    Requires `claude` CLI to be installed and the user to be authenticated
+    with a Max plan subscription.
+    """
+
+    def __init__(self, config: LogosConfig):
+        self.config = config
+        self.stats = APIStats()
+
+        # Verify claude CLI is available
+        try:
+            result = subprocess.run(
+                ["claude", "--version"],
+                capture_output=True, text=True, timeout=10,
+                env=self._clean_env(),
+            )
+            if result.returncode != 0:
+                raise FileNotFoundError
+        except (FileNotFoundError, subprocess.TimeoutExpired):
+            raise RuntimeError(
+                "Claude Code CLI not found. Install it to use Max plan mode:\n\n"
+                "  npm install -g @anthropic-ai/claude-code\n\n"
+                "Then authenticate with: claude auth login"
+            )
+
+    @staticmethod
+    def _clean_env() -> dict:
+        """Return env dict with CLAUDECODE unset (allows nested invocation)."""
+        env = os.environ.copy()
+        env.pop("CLAUDECODE", None)
+        env.pop("CLAUDE_CODE_ENTRYPOINT", None)
+        return env
+
+    def _run_cli(self, prompt: str, system: str = "", model: str | None = None) -> str:
+        """Execute a single Claude CLI call and return the text response."""
+        if model is None:
+            model = self.config.model_fast
+
+        # Map full model ID to CLI alias
+        cli_model = MODEL_CLI_ALIASES.get(model, model)
+
+        cmd = [
+            "claude", "-p",
+            "--model", cli_model,
+            "--output-format", "json",
+            "--no-session-persistence",
+            "--tools", "",
+        ]
+
+        if system:
+            cmd.extend(["--system-prompt", system])
+
+        # Pipe prompt via stdin to avoid argument length limits
+        for attempt in range(self.config.max_retries):
+            try:
+                result = subprocess.run(
+                    cmd,
+                    input=prompt,
+                    capture_output=True,
+                    text=True,
+                    timeout=600,
+                    env=self._clean_env(),
+                )
+
+                if result.returncode != 0:
+                    self.stats.errors += 1
+                    stderr = result.stderr.strip()
+                    if attempt < self.config.max_retries - 1:
+                        time.sleep(2 ** attempt)
+                        continue
+                    raise RuntimeError(
+                        f"Claude CLI failed (exit {result.returncode}): {stderr[:500]}"
+                    )
+
+                # Parse JSON output
+                output = json.loads(result.stdout)
+
+                if output.get("is_error", False):
+                    self.stats.errors += 1
+                    if attempt < self.config.max_retries - 1:
+                        time.sleep(2 ** attempt)
+                        continue
+                    raise RuntimeError(
+                        f"Claude CLI error: {output.get('result', 'unknown error')}"
+                    )
+
+                text = output.get("result", "")
+                self.stats.calls += 1
+                # Cost is $0 on Max plan — track call count only
+                return text
+
+            except subprocess.TimeoutExpired:
+                self.stats.errors += 1
+                if attempt < self.config.max_retries - 1:
+                    continue
+                raise RuntimeError("Claude CLI timed out after 600s")
+
+            except json.JSONDecodeError as e:
+                self.stats.errors += 1
+                if attempt < self.config.max_retries - 1:
+                    time.sleep(2 ** attempt)
+                    continue
+                raise RuntimeError(
+                    f"Failed to parse Claude CLI JSON output: {e}\n"
+                    f"Raw output: {result.stdout[:500]}"
+                )
+
+        raise RuntimeError("Claude CLI failed after all retries")
+
+    def query(
+        self,
+        prompt: str,
+        system: str = "",
+        model: Optional[str] = None,
+        max_tokens: int = 8192,
+        temperature: float = 0.2,
+    ) -> str:
+        """Send a query via Claude CLI and return the text response."""
+        return self._run_cli(prompt, system=system, model=model)
+
+    def query_json(
+        self,
+        prompt: str,
+        system: str = "",
+        model: Optional[str] = None,
+        max_tokens: int = 8192,
+    ) -> dict | list:
+        """Query via CLI and parse response as JSON."""
+        full_prompt = (
+            prompt
+            + "\n\nRespond with valid JSON only. No markdown fencing, no explanation — just the JSON."
+        )
+
+        text = self.query(full_prompt, system=system, model=model, max_tokens=max_tokens)
+
+        # Strip markdown fencing if present
+        text = text.strip()
+        if text.startswith("```"):
+            lines = text.split("\n")
+            lines = [l for l in lines if not l.strip().startswith("```")]
+            text = "\n".join(lines)
+
+        try:
+            return json.loads(text)
+        except json.JSONDecodeError:
+            for start_char, end_char in [("{", "}"), ("[", "]")]:
+                start = text.find(start_char)
+                end = text.rfind(end_char) + 1
+                if start >= 0 and end > start:
+                    try:
+                        return json.loads(text[start:end])
+                    except json.JSONDecodeError:
+                        continue
+
+            raise ValueError(
+                f"Failed to parse JSON from CLI response. "
+                f"Response starts with: {text[:200]}"
+            )
+
+    def query_deep(
+        self,
+        prompt: str,
+        system: str = "",
+        max_tokens: int = 8192,
+    ) -> str:
+        """Query using the deep/powerful model (Opus) via CLI."""
+        return self.query(
+            prompt, system=system, model=self.config.model_deep, max_tokens=max_tokens
+        )
+
+    def query_deep_json(
+        self,
+        prompt: str,
+        system: str = "",
+        max_tokens: int = 8192,
+    ) -> dict | list:
+        """Query deep model via CLI and parse as JSON."""
+        return self.query_json(
+            prompt, system=system, model=self.config.model_deep, max_tokens=max_tokens
+        )
+
+
+def create_api(config: LogosConfig, use_max_plan: bool = False) -> ClaudeAPI | MaxPlanAPI:
+    """Factory: return MaxPlanAPI (free via CLI) or ClaudeAPI (paid via API).
+
+    Args:
+        config: Logos configuration.
+        use_max_plan: If True, use Claude Code CLI with Max plan subscription.
+                      If False, use the standard Anthropic API.
+    """
+    if use_max_plan:
+        return MaxPlanAPI(config)
+    return ClaudeAPI(config)

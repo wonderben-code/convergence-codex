@@ -165,10 +165,11 @@ def get_completed_convergence_ids(proofs_dir: Path) -> set[str]:
 # --- Worker function (runs in thread) ---
 
 def process_one_convergence(conv: dict, index: int, total: int,
-                            config_template, log_file: Path) -> dict:
+                            config_template, log_file: Path,
+                            use_max_plan: bool = False) -> dict:
     """Process a single convergence through Logos. Each call creates its own API client."""
     from logos.config import LogosConfig
-    from logos.api import ClaudeAPI
+    from logos.api import create_api
     from logos.store import ProofStore
     from logos.formaliser import Formaliser
     from logos.validator import ProofValidator
@@ -177,7 +178,7 @@ def process_one_convergence(conv: dict, index: int, total: int,
     # Each worker gets its own API client (thread-safe)
     config = LogosConfig.load()
     config.max_cost_usd = 999  # per-worker limit disabled; global cost tracked separately
-    api = ClaudeAPI(config)
+    api = create_api(config, use_max_plan=use_max_plan)
     store = ProofStore(config)
     formaliser = Formaliser(api)
     validator = ProofValidator(api, store)
@@ -246,7 +247,8 @@ def process_one_convergence(conv: dict, index: int, total: int,
 # --- Logos parallel runner ---
 
 def run_logos_parallel(convergences: list[dict], max_cost: float,
-                       workers: int, log_file: Path) -> dict:
+                       workers: int, log_file: Path,
+                       use_max_plan: bool = False) -> dict:
     """Run Logos on all convergences in parallel."""
     from logos.config import LogosConfig
 
@@ -287,7 +289,7 @@ def run_logos_parallel(convergences: list[dict], max_cost: float,
         for i, conv in enumerate(remaining):
             future = executor.submit(
                 process_one_convergence, conv, start_index + i, total_count,
-                config, log_file
+                config, log_file, use_max_plan=use_max_plan
             )
             futures[future] = conv
 
@@ -889,6 +891,8 @@ def main():
                         help="Max cost for Logos stage (defaults to 80%% of --max-cost)")
     parser.add_argument("--synthesis-max-cost", type=float, default=None,
                         help="Max cost for Synthesis stage (defaults to 20%% of --max-cost)")
+    parser.add_argument("--max-plan", action="store_true",
+                        help="Use Claude Code CLI (Max plan) instead of API — $0 cost")
     args = parser.parse_args()
 
     gnosis_dir = Path(args.gnosis_dir)
@@ -898,12 +902,16 @@ def main():
 
     proofs_dir = PROJECT_ROOT / "data" / "logos" / "proofs"
 
+    use_max_plan = args.max_plan
+    mode_label = "Max Plan (Claude Code CLI — $0 cost)" if use_max_plan else "API"
+
     # ─── CAPSTONE MODE ───
     if args.capstone:
         log("=" * 60, log_file)
         log("  CAPSTONE — Nobel-Grade Paper Generation", log_file)
         log("=" * 60, log_file)
         log(f"  Gnosis data: {gnosis_dir}", log_file)
+        log(f"  Backend: {mode_label}", log_file)
         log(f"  Max cost: ${args.max_cost:.2f}", log_file)
         log(f"  Log file: {log_file}", log_file)
         log(f"  Started: {now_iso()}", log_file)
@@ -927,6 +935,7 @@ def main():
     log("  STAGE A — Pipeline Validation (Parallel)", log_file)
     log("=" * 60, log_file)
     log(f"  Gnosis data: {gnosis_dir}", log_file)
+    log(f"  Backend: {mode_label}", log_file)
     log(f"  Workers: {args.workers}", log_file)
     log(f"  Max cost: ${args.max_cost:.2f} (Logos: ${logos_max:.2f}, "
         f"Synthesis: ${synthesis_max:.2f})", log_file)
@@ -943,7 +952,8 @@ def main():
         log("\n" + "=" * 60, log_file)
         log(f"  LOGOS — Formalisation ({args.workers} workers)", log_file)
         log("=" * 60, log_file)
-        logos_stats = run_logos_parallel(convergences, logos_max, args.workers, log_file)
+        logos_stats = run_logos_parallel(convergences, logos_max, args.workers, log_file,
+                                         use_max_plan=use_max_plan)
         log(f"\n  Logos summary: {logos_stats['completed']} completed, "
             f"{logos_stats['errors']} errors, ${logos_stats.get('total_cost', 0):.2f}", log_file)
 

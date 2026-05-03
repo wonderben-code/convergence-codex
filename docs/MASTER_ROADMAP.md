@@ -181,7 +181,7 @@ Not just pairwise comparisons — combinatorial at EVERY level:
 | 9b | **Stage E PUBLICATION** — THE capstone paper: the updated, evidence-backed Theory of Everything → Zenodo | NOT DONE |
 | 10 | **Website wing** — Convergence Codex on infinitography.com | NOT DONE |
 | 11 | **QC + stamp + ship** | NOT DONE |
-| 12 | **Open Source + Production Grade** — Release **Gnosis AI + Logos AI only** (NOT Synthesis — it added more problems than value; papers are better composed manually). Make both AIs production-ready: PyPI packages, proper `pyproject.toml`, CLI entry points, config file system (no hardcoded paths), comprehensive README with quickstart, example data for dry runs without API credits, CI/CD (tests + linting), Docker option, framing audit, license decision (MIT/Apache 2.0). Goal: a researcher anywhere in the world can `pip install` and run Gnosis (discovery) + Logos (formalisation) on their own domains, then write their own papers from the output. | NOT DONE |
+| 12 | **Open Source + Production Grade** — Release **Gnosis AI + Logos AI only** (NOT Synthesis). Make both AIs production-ready: PyPI packages, `pyproject.toml`, CLI entry points, config file system (no hardcoded paths), comprehensive README with quickstart, example data for dry runs without API credits, CI/CD (tests + linting), Docker option, framing audit, license decision (MIT/Apache 2.0). **Dual-mode backend: `--max-plan` flag uses Claude Code CLI (free via Max plan subscription) alongside standard API mode.** World-class dev tool UI/UX polish (rich output, progress bars, clear error messages, beautiful CLI experience). Goal: a researcher anywhere can `pip install` and run Gnosis + Logos on their own domains. | NOT DONE |
 
 **Strategy pivot (3 May 2026) — Synthesis AI RETIRED from workflow:**
 - **Problem:** Synthesis AI ($60-120 per run) produced papers with raw database hex IDs in body text, fake DOIs, missing actual mathematics, duplicate headers, and fabricated convergence IDs. Every run required extensive manual cleanup that cost more time than writing from scratch.
@@ -189,6 +189,12 @@ Not just pairwise comparisons — combinatorial at EVERY level:
 - **What we release open source:** Gnosis AI (discovery) + Logos AI (formalisation) only. These are the two engines that actually work well. Researchers run Gnosis + Logos on their own domains, then write their own papers from the structured output.
 - **Formalisation Catalogues:** Instead of 300-500+ individual papers, publish ONE comprehensive catalogue per stage. Much more useful as a reference work.
 - **Net effect:** ~40-50 high-quality papers + 2 comprehensive catalogues instead of hundreds of thin AI-generated papers with errors. Better science, zero API cost for paper composition.
+
+**MaxPlanAPI (3 May 2026) — $0 cost backend for Gnosis + Logos:**
+- Both Gnosis AI and Logos AI now support `--max-plan` flag: runs queries via Claude Code CLI (`claude -p`) using Max plan subscription instead of Anthropic API.
+- Drop-in replacement: same interface (`query`, `query_json`, `query_deep`, `query_deep_json`), same retry logic, same model selection.
+- API mode kept for open source users who don't have Max plan. Dual mode: `--max-plan` for us, default API for everyone else.
+- Stage B can now run entirely free (previously estimated $3,500-6,000 in API costs).
 
 **Stage B Phases:**
 1. All pairwise (cross-category FIRST)
