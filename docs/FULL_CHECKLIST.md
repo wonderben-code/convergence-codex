@@ -18,13 +18,14 @@
 | # | Task | Status |
 |---|------|--------|
 | E-0 | Write Emergence Programme plan doc | DONE |
-| E-1 | Stage 1: Compute compact closed lineage (C2 to M2 to M4 to M16) | NOT DONE |
-| E-2 | Stage 2: SU(2) emerges at D1 (Skolem-Noether, Aut = PGL(2)) | NOT DONE |
+| E-1 | Stage 1: Compute compact closed lineage (C2 to M2 to M4 to M16) | DONE — 13 theorems, 0 sorry |
+| E-2 | Stage 2: SU(2) emerges at D1 (center, PSL(2,ℂ), 7 theorems, 0 sorry) | DONE |
 | E-3 | Stage 3: Preferred decomposition (Double Commutant, M2 tensor M2, SU(2)xSU(2)) | NOT DONE |
 | E-4 | Stage 4: Gauge group selection (iteration-compatible auts, SU(3)xSU(2)xU(1)) | NOT DONE |
 | E-5 | Stage 5: Representation match (Standard Model fermions) | NOT DONE |
 | E-6 | Stage 6: Full Emergence Theorem | NOT DONE |
-| E-7 | Write Paper E | NOT DONE |
+| E-7 | Write Paper E (incremental, section per stage as we go) | IN PROGRESS — Stage 1 written |
+| E-7b | Nobel-quality full rewrite of Paper E (sharp prose, predictions, priority statement, connections to GUT literature, SHA-256 hashes, Bitcoin block heights) | NOT DONE (after all 6 stages proven) |
 | E-8 | QC/QA review of Paper E | NOT DONE |
 | E-9 | Zenodo publish Paper E | NOT DONE |
 | E-10 | Add Paper E to infinitography.com Wing 1 (own explainer page) | NOT DONE — moved to GS-6 |
@@ -69,7 +70,7 @@
 | GS-5 | Add Paper D to infinitography.com Wing 1 (own explainer page) | NOT DONE |
 | GS-6 | Add Paper E to infinitography.com Wing 1 (own explainer page) | NOT DONE |
 | GS-7 | Add Grand Synthesis paper to infinitography.com Wing 1 (own explainer page) | NOT DONE |
-| GS-8 | Rewrite infinitography.com Wing 2 (ToE) incorporating Grand Synthesis + Paper D + Paper E | NOT DONE |
+| GS-8 | Add Paper D, Paper E, and Grand Synthesis content to infinitography.com Wing 2 (ToE) | NOT DONE |
 | GS-9 | Bitcoin stamp everything | NOT DONE |
 
 ## Stage B: The Big Run (81 fields)

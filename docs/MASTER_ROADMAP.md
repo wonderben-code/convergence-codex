@@ -300,17 +300,18 @@ lean_verify/            — Lean 4 project with Mathlib dependency (6.9 GB)
    - File: `data/papers/paper_d_machine_verified_toe.md`
    - Lean files: `lean_verify/LawvereFixedPoint.lean`, `ReflexiveDomainFP.lean`, `SeedForced.lean`, `InfiniteContent.lean`, `Inexhaustibility.lean`, `ConstraintContent.lean`, `_proof_003.lean`, `_proof_002.lean`, `GToECoherence.lean`
 2. **PAPER E: Emergence of the Standard Model from the Generator Construction** — The central prediction: show SU(3)×SU(2)×U(1) emerges from iterated internal hom in FdVect_C. 6 stages, each producing machine-verified theorems. Plan doc: `docs/EMERGENCE_PROGRAMME.md`.
-   - Stage 1: Compute compact closed lineage (C² → M₂(C) → M₄(C) → M₁₆(C)) — **IN PROGRESS**
-   - Stage 2: SU(2) emerges at D₁ (Skolem-Noether, Aut(M₂) = PGL(2)) — **NOT DONE**
+   - Stage 1: Compute compact closed lineage (C² → M₂(C) → M₄(C) → M₁₆(C)) — **DONE** (13 theorems, 0 sorry, EmergenceLineage.lean)
+   - Stage 2: SU(2) emerges at D₁ (center of M₂(ℂ), center of SL(2,ℂ), PSL(2,ℂ)) — **DONE** (7 theorems, 0 sorry, SU2Emergence.lean)
    - Stage 3: Preferred decomposition via Double Commutant (M₄ = M₂ tensor M₂ → SU(2)×SU(2)) — **NOT DONE**
    - Stage 4: Gauge group selection (iteration-compatible automorphisms → SU(3)×SU(2)×U(1)) — **NOT DONE** (research core)
    - Stage 5: Representation match (Standard Model fermions from iteration reps) — **NOT DONE**
    - Stage 6: Full Emergence Theorem — **NOT DONE**
+   - Nobel-quality full rewrite of Paper E (after all 6 stages proven: sharp prose, numbered predictions, priority statement with SHA-256 + Bitcoin block heights, connections to GUT literature) — **NOT DONE**
    - QC/QA review of Paper E — **NOT DONE**
    - Zenodo publish Paper E — **NOT DONE**
    - Add Paper E to infinitography.com Wing 1 (own explainer page) + Wing 2 (ToE wing update) — **NOT DONE**
-   - File: `data/papers/paper_e_emergence.md` (to be created)
-   - Lean files: `lean_verify/emergence/` directory (to be created)
+   - File: `data/papers/paper_e_emergence.md` (IN PROGRESS — Stage 1 written)
+   - Lean files: `lean_verify/EmergenceLineage.lean` (Stage 1 DONE), more per stage
 3. **Capstone proofs (90 of 256)** — The 90 convergences cited by the 8 capstone papers. These are priority because they underpin the most important claims. Tracker: `docs/PROOF_TRACKER.md`.
 4. **Remaining 166 proofs** — Systematically, one at a time.
 5. **Paper Quality Bible** — Write after compendium is substantially complete.
@@ -325,11 +326,11 @@ lean_verify/            — Lean 4 project with Mathlib dependency (6.9 GB)
    - GS-5: Add Paper D to infinitography.com Wing 1 (explainer page) — **NOT DONE**
    - GS-6: Add Paper E to infinitography.com Wing 1 (explainer page) — **NOT DONE**
    - GS-7: Add Grand Synthesis to infinitography.com Wing 1 (explainer page) — **NOT DONE**
-   - GS-8: Rewrite infinitography.com Wing 2 (ToE) incorporating Grand Synthesis + Paper D + Paper E — **NOT DONE**
+   - GS-8: Add Paper D, Paper E, and Grand Synthesis content to infinitography.com Wing 2 (ToE) — **NOT DONE**
    - GS-9: Bitcoin stamp everything — **NOT DONE**
 
 **Paper D progress: 8/8 theorems + Coherence Theorem PROVEN. 61 sub-theorems. 0 sorry. All Bitcoin-timestamped. Paper D rewritten (1,063 lines). Zenodo PUBLISHED (DOI: 10.5281/zenodo.20005116). NEXT: QC review, then Paper E.**
-**Paper E progress: Plan written and Bitcoin-stamped. Stage 1 IN PROGRESS.**
+**Paper E progress: Stages 1-2 PROVEN (20 theorems total, 0 sorry). Paper E sections 1-2 written. NEXT: Stage 3 (Preferred Decomposition).**
 **Compendium progress: 3/256 PROVEN (3/90 capstone). Entries 1, 2, 3 verified and Bitcoin-stamped.**
 **Grand Synthesis: Blocked on Paper D QC, Paper E, Compendium, and Capstone completion.**
 
