@@ -128,6 +128,41 @@
   "lean_verified": false,
   "lean_partial": false,
   "lean_failure_reason": "",
+  "z3_verified": false,
+  "z3_result": {
+    "verified": false,
+    "reason": "not_feasible",
+    "feasibility": {
+      "feasible": false,
+      "partial": false,
+      "difficulty": "unknown",
+      "notes": "Feasibility assessment failed"
+    }
+  },
+  "sympy_verified": false,
+  "sympy_result": {
+    "verified": false,
+    "reason": "not_feasible",
+    "feasibility": {
+      "feasible": false,
+      "partial": false,
+      "difficulty": "unknown",
+      "notes": "Feasibility assessment failed"
+    }
+  },
+  "numerical_consistent": false,
+  "numerical_result": {
+    "consistent": false,
+    "applicable": false,
+    "reason": "not_applicable"
+  },
+  "multi_tool_consensus": {
+    "tools_verified": [],
+    "total_tools_verified": 0,
+    "verification_tier": "rigorous_argument",
+    "coverage_percentage": 0.0,
+    "back_translation_aligned": true
+  },
   "adversarial_result": {
     "proof_soundness": 0.2,
     "gaps": [
@@ -280,6 +315,8 @@
     "calibration": 0.29999999999999993
   },
   "verification_status": "natural_language_only",
+  "verification_tier": "rigorous_argument",
+  "verification_tier_reason": "Structured NL proof, no tool could verify",
   "within_standard_mathematics": false,
   "new_mathematics_needed": "A rigorous categorical framework for multi-scale quantum systems that defines functors between time scale categories and quantum system categories, including proper treatment of tensor product structures and completely positive maps in this context",
   "limitations": [
@@ -293,6 +330,16 @@
     "Does not address non-Markovian effects or memory kernels",
     "Assumes tensor product structure which may not hold for strongly correlated systems"
   ],
+  "back_translation_alignment": {
+    "overall_alignment": 0.5,
+    "reason": "back_translation_failed",
+    "is_aligned": true
+  },
+  "coverage_percentage": 0.0,
+  "coverage_detail": {
+    "steps_total": 9,
+    "steps_machine_verified": 0
+  },
   "source_convergence": {
     "structural_claim": "Separation of fast and slow degrees of freedom creates hierarchical structure in composite quantum systems",
     "convergence_type": "formal",
