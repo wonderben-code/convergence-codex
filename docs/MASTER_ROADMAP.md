@@ -302,7 +302,7 @@ lean_verify/            — Lean 4 project with Mathlib dependency (6.9 GB)
 2. **PAPER E: Emergence of the Standard Model from the Generator Construction** — The central prediction: show SU(3)×SU(2)×U(1) emerges from iterated internal hom in FdVect_C. 6 stages, each producing machine-verified theorems. Plan doc: `docs/EMERGENCE_PROGRAMME.md`.
    - Stage 1: Compute compact closed lineage (C² → M₂(C) → M₄(C) → M₁₆(C)) — **DONE** (13 theorems, 0 sorry, EmergenceLineage.lean)
    - Stage 2: SU(2) emerges at D₁ (center of M₂(ℂ), center of SL(2,ℂ), PSL(2,ℂ)) — **DONE** (7 theorems, 0 sorry, SU2Emergence.lean)
-   - Stage 3: Preferred decomposition via Double Commutant (M₄ = M₂ tensor M₂ → SU(2)×SU(2)) — **NOT DONE**
+   - Stage 3: Preferred decomposition (Kronecker, transpose, M₂⊗M₂≅M₄) — **DONE** (8 theorems, 0 sorry, PreferredDecomposition.lean)
    - Stage 4: Gauge group selection (iteration-compatible automorphisms → SU(3)×SU(2)×U(1)) — **NOT DONE** (research core)
    - Stage 5: Representation match (Standard Model fermions from iteration reps) — **NOT DONE**
    - Stage 6: Full Emergence Theorem — **NOT DONE**
@@ -330,7 +330,7 @@ lean_verify/            — Lean 4 project with Mathlib dependency (6.9 GB)
    - GS-9: Bitcoin stamp everything — **NOT DONE**
 
 **Paper D progress: 8/8 theorems + Coherence Theorem PROVEN. 61 sub-theorems. 0 sorry. All Bitcoin-timestamped. Paper D rewritten (1,063 lines). Zenodo PUBLISHED (DOI: 10.5281/zenodo.20005116). NEXT: QC review, then Paper E.**
-**Paper E progress: Stages 1-2 PROVEN (20 theorems total, 0 sorry). Paper E sections 1-2 written. NEXT: Stage 3 (Preferred Decomposition).**
+**Paper E progress: Stages 1-3 PROVEN (28 theorems total, 0 sorry). Paper E sections 1-3 written. NEXT: Stage 4 (Gauge Group Selection — the research core).**
 **Compendium progress: 3/256 PROVEN (3/90 capstone). Entries 1, 2, 3 verified and Bitcoin-stamped.**
 **Grand Synthesis: Blocked on Paper D QC, Paper E, Compendium, and Capstone completion.**
 
