@@ -302,9 +302,10 @@ A section WITHIN the compendium that explains how it was built and what the vali
   1. Find convergences between fields — not just pairwise, but ANY number of fields simultaneously (2-way, 3-way, n-way)
   2. Iterate the convergences toward fixed points — apply the convergence operation recursively to its own outputs at any depth
   3. Apply formal mathematical proof to the objects produced at any stage
-  4. Any permutation of the above: vary the number of fields compared, the iteration depth, the verification method, the domain selection strategy, the grouping strategy at each level
+  4. **Combinatorial explosion at each level** — at every level of the cascade, you can combinatorially explode: compare all pairs of objects at that level, all triples, all n-tuples. Not just at Level 1 (fields) but at Level 2 (meta-convergences), Level 3 (themes), etc. Each level has its own combinatorial space of possible comparisons.
+  5. Any permutation of the above: vary the number of fields compared, the iteration depth, the verification method, the domain selection strategy, the grouping strategy at each level, the comparison arity at each level
 
-  What we actually DID (Gnosis + Logos) is ONE instantiation of this general methodology. The full possibility space includes: different starting field sets, different comparison arities (pairwise, triplewise, n-wise), different iteration strategies (breadth-first, depth-first, selective), different formalisation targets (Lean, Coq, Isabelle, pen-and-paper), different stopping criteria.
+  What we actually DID (Gnosis + Logos) is ONE instantiation of this general methodology. The full possibility space includes: different starting field sets, different comparison arities (pairwise, triplewise, n-wise) **at each cascade level independently**, combinatorial explosion at any or all levels, different iteration strategies (breadth-first, depth-first, selective), different formalisation targets (Lean, Coq, Isabelle, pen-and-paper), different stopping criteria.
 
   **The compendium must:**
   - Give this general methodology a NAME (covering the entire possibility space)
