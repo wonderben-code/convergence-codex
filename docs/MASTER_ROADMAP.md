@@ -304,8 +304,11 @@ lean_verify/            — Lean 4 project with Mathlib dependency (6.9 GB)
    - Stage 2: SU(2) emerges at D₁ (center of M₂(ℂ), center of SL(2,ℂ), PSL(2,ℂ)) — **DONE** (7 theorems, 0 sorry, SU2Emergence.lean)
    - Stage 3: Preferred decomposition (Kronecker, transpose, M₂⊗M₂≅M₄) — **DONE** (8 theorems, 0 sorry, PreferredDecomposition.lean)
    - Stage 4: Gauge group selection (Pati-Salam via asymmetric decomposition, automorphism transport) — **DONE** (15 theorems, 0 sorry, GaugeGroupSelection.lean)
-   - Stage 5: Representation match (Standard Model fermions from iteration reps) — **NOT DONE**
+   - Stage 5: Representation match (column module ℂ¹⁶ ≅ ℂ⁴⊗ℂ²⊗ℂ², SM fermion counting) — **DONE** (26 theorems, 0 sorry, StandardModelReps.lean)
    - Stage 6: Full Emergence Theorem — **NOT DONE**
+   - Stage 7: Master Coherence Theorem (all stages cohere) — **NOT DONE**
+   - Stage 8: Gravity from the Seed (SL(2,ℂ) ≅ Spin(1,3), geometric lineage from ℂ²) — **NOT DONE**
+   - Stage 9: Quantum Mechanics from the Seed (quantum lineage from ℂ²) — **NOT DONE**
    - Nobel-quality full rewrite of Paper E (after all 6 stages proven: sharp prose, numbered predictions, priority statement with SHA-256 + Bitcoin block heights, connections to GUT literature) — **NOT DONE**
    - QC/QA review of Paper E — **NOT DONE**
    - Zenodo publish Paper E — **NOT DONE**
@@ -330,7 +333,7 @@ lean_verify/            — Lean 4 project with Mathlib dependency (6.9 GB)
    - GS-9: Bitcoin stamp everything — **NOT DONE**
 
 **Paper D progress: 8/8 theorems + Coherence Theorem PROVEN. 61 sub-theorems. 0 sorry. All Bitcoin-timestamped. Paper D rewritten (1,063 lines). Zenodo PUBLISHED (DOI: 10.5281/zenodo.20005116). NEXT: QC review, then Paper E.**
-**Paper E progress: Stages 1-4 PROVEN (43 theorems total, 0 sorry). Paper E sections 1-4 written. Pati-Salam gauge group emerges at D₃ via asymmetric decomposition. NEXT: Stage 5 (Representation Match — Standard Model fermions).**
+**Paper E progress: Stages 0-5 PROVEN (85 theorems total, 0 sorry). Paper E sections 0-4 written. Column module ℂ¹⁶ ≅ ℂ⁴⊗ℂ²⊗ℂ² matches one generation of SM fermions (16 Weyl spinors). NEXT: Stage 6 (Full Emergence Theorem), then Stages 7-9 (coherence, gravity, quantum).**
 **Compendium progress: 3/256 PROVEN (3/90 capstone). Entries 1, 2, 3 verified and Bitcoin-stamped.**
 **Grand Synthesis: Blocked on Paper D QC, Paper E, Compendium, and Capstone completion.**
 
