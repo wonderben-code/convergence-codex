@@ -172,8 +172,125 @@ class LeanBridge:
                 "errors": [str(e)],
             }
 
+    def count_sorrys(self, lean_code: str) -> int:
+        """Count sorry occurrences in Lean code."""
+        import re
+        return len(re.findall(r'\bsorry\b', lean_code))
+
+    def eliminate_sorrys(self, proof: ProofRecord, log: LogRecord, max_iterations: int = 3) -> int:
+        """Iteratively attempt to fill sorry gaps in Lean code.
+
+        Each iteration:
+        1. Identify sorrys in the code
+        2. Ask Claude to fill them
+        3. Re-run Lean to verify
+        4. Keep improvements, revert failures
+
+        With Max Plan this is $0. Returns number of sorrys eliminated.
+
+        Args:
+            proof: ProofRecord with proof_lean code containing sorrys
+            log: LogRecord for decision tracking
+            max_iterations: Maximum attempts (default 3)
+
+        Returns:
+            Number of sorrys eliminated
+        """
+        if not proof.proof_lean or not self._lean_available:
+            return 0
+
+        initial_sorrys = self.count_sorrys(proof.proof_lean)
+        if initial_sorrys == 0:
+            return 0
+
+        current_code = proof.proof_lean
+        current_sorrys = initial_sorrys
+
+        for iteration in range(max_iterations):
+            if current_sorrys == 0:
+                break
+
+            # Ask Claude to fill sorrys
+            prompt = (
+                f"This Lean 4 code has {current_sorrys} sorry gap(s). "
+                f"Replace as many sorrys as possible with actual proofs. "
+                f"Keep the code structure intact. If a sorry genuinely cannot be "
+                f"filled (e.g., requires results not in Mathlib), leave it.\n\n"
+                f"```lean\n{current_code}\n```\n\n"
+                f"Return JSON:\n"
+                f'{{"lean_code": "the complete updated Lean code", '
+                f'"sorrys_filled": N, "notes": "explanation"}}'
+            )
+
+            try:
+                data = self.api.query_deep_json(prompt, system=SYSTEM_PROMPT, max_tokens=8192)
+                new_code = data.get("lean_code", "")
+                if not new_code:
+                    break
+
+                new_sorrys = self.count_sorrys(new_code)
+                if new_sorrys >= current_sorrys:
+                    # No improvement
+                    log.add_decision(
+                        step=f"sorry_elimination_iter_{iteration+1}",
+                        choice="no_improvement",
+                        alternatives=[],
+                        reasoning=f"Still {new_sorrys} sorrys after attempt",
+                    )
+                    break
+
+                # Verify the new code type-checks
+                result = self.verify_lean(new_code)
+                if result.get("verified") or result.get("partial"):
+                    # Improvement accepted
+                    current_code = new_code
+                    eliminated = current_sorrys - new_sorrys
+                    current_sorrys = new_sorrys
+                    log.add_decision(
+                        step=f"sorry_elimination_iter_{iteration+1}",
+                        choice=f"eliminated_{eliminated}_sorrys",
+                        alternatives=[],
+                        reasoning=f"{current_sorrys} sorrys remaining. {data.get('notes', '')}",
+                    )
+                else:
+                    # New code doesn't type-check — revert
+                    log.add_decision(
+                        step=f"sorry_elimination_iter_{iteration+1}",
+                        choice="reverted",
+                        alternatives=[],
+                        reasoning=f"Filled code failed type-check: {result.get('errors', [])[:2]}",
+                    )
+
+            except Exception as e:
+                log.add_decision(
+                    step=f"sorry_elimination_iter_{iteration+1}",
+                    choice="error",
+                    alternatives=[],
+                    reasoning=str(e),
+                )
+                break
+
+        # Update proof with best code
+        total_eliminated = initial_sorrys - current_sorrys
+        if total_eliminated > 0:
+            proof.proof_lean = current_code
+            # Re-verify
+            result = self.verify_lean(current_code)
+            proof.lean_verified = result.get("verified", False)
+            proof.lean_partial = result.get("partial", False)
+
+            log.add_decision(
+                step="sorry_elimination_final",
+                choice=f"eliminated_{total_eliminated}_of_{initial_sorrys}",
+                alternatives=[],
+                reasoning=f"Final: {current_sorrys} sorrys remaining. "
+                          f"Lean verified={proof.lean_verified}, partial={proof.lean_partial}",
+            )
+
+        return total_eliminated
+
     def process(self, proof: ProofRecord, log: LogRecord) -> None:
-        """Full Lean pipeline: assess feasibility → generate → verify.
+        """Full Lean pipeline: assess feasibility → generate → verify → eliminate sorrys.
 
         Modifies proof in place with Lean results.
         """
@@ -197,6 +314,10 @@ class LeanBridge:
 
         if not proof.lean_verified and not proof.lean_partial:
             proof.lean_failure_reason = "; ".join(result.get("errors", ["Unknown"]))
+
+        # Sorry elimination — push partial proofs toward full verification
+        if proof.lean_partial and self.count_sorrys(lean_code) > 0:
+            self.eliminate_sorrys(proof, log)
 
         # Set verification status
         if proof.lean_verified:

@@ -18,7 +18,8 @@ from logos.lean_bridge import LeanBridge
 from logos.z3_bridge import Z3Bridge
 from logos.sympy_bridge import SymPyBridge
 from logos.numerical_bridge import NumericalBridge
-from logos.models import ProofRecord, LogRecord
+from logos.back_translation import BackTranslator
+from logos.models import ProofRecord, LogRecord, VerificationTier
 
 
 # Tool weights for consensus scoring
@@ -52,6 +53,7 @@ class MultiVerifier:
         self.z3 = Z3Bridge(api)
         self.sympy = SymPyBridge(api)
         self.numerical = NumericalBridge(api)
+        self.back_translator = BackTranslator(api)
 
     def verify(self, proof: ProofRecord, log: LogRecord) -> dict:
         """Run all applicable verification tools and compute consensus.
@@ -189,11 +191,38 @@ class MultiVerifier:
                 reasoning=str(e),
             )
 
+        # ─── BACK-TRANSLATION ALIGNMENT ───
+        log.add_decision(
+            step="back_translation",
+            choice="starting",
+            alternatives=[],
+            reasoning="Checking proposition-claim alignment via back-translation",
+        )
+        try:
+            self.back_translator.check_alignment(proof, log)
+        except Exception as e:
+            log.add_decision(
+                step="back_translation",
+                choice="error",
+                alternatives=[],
+                reasoning=str(e),
+            )
+
         # ─── CONSENSUS SCORING ───
         consensus_score = self._compute_consensus(tool_scores)
         verification_level = self._determine_level(
             tools_verified, tools_partial, tools_run
         )
+
+        # ─── TIERED FORMALISATION ───
+        tier = VerificationTier.from_proof(proof)
+        proof.verification_tier = tier.value
+        proof.verification_tier_reason = self._tier_reason(proof, tier)
+
+        # ─── COVERAGE METRICS ───
+        coverage = self._compute_coverage(proof, tools_verified, tools_partial)
+        proof.coverage_percentage = coverage["coverage_percentage"]
+        proof.coverage_detail = coverage
 
         consensus = {
             "tools_run": tools_run,
@@ -204,8 +233,11 @@ class MultiVerifier:
             "tool_scores": tool_scores,
             "consensus_score": round(consensus_score, 3),
             "verification_level": verification_level,
+            "verification_tier": tier.value,
             "total_tools_attempted": len(tools_run),
             "total_tools_verified": len(tools_verified),
+            "coverage": coverage,
+            "back_translation_aligned": proof.back_translation_alignment.get("is_aligned", True),
         }
 
         proof.multi_tool_consensus = consensus
@@ -222,13 +254,15 @@ class MultiVerifier:
 
         log.add_decision(
             step="multi_verify_consensus",
-            choice=f"level={verification_level}, score={consensus_score:.3f}, "
+            choice=f"tier={tier.value}, level={verification_level}, "
+                   f"score={consensus_score:.3f}, coverage={coverage['coverage_percentage']:.0f}%, "
                    f"verified={len(tools_verified)}/{len(tools_run)}",
             alternatives=[],
             reasoning=f"Tools verified: {tools_verified}. "
                        f"Partial: {tools_partial}. "
                        f"Failed: {tools_failed}. "
-                       f"Skipped: {tools_skipped}.",
+                       f"Skipped: {tools_skipped}. "
+                       f"Tier reason: {proof.verification_tier_reason}",
         )
 
         return consensus
@@ -256,15 +290,7 @@ class MultiVerifier:
         partial: list[str],
         run: list[str],
     ) -> str:
-        """Determine the verification level from tool results.
-
-        Levels (highest to lowest):
-          - fully_verified: All 4 tools verified
-          - multi_tool_verified: 2+ tools verified
-          - single_tool_verified: 1 tool verified
-          - partially_verified: At least one partial
-          - natural_language_only: No external verification
-        """
+        """Determine the verification level from tool results."""
         n_verified = len(verified)
         n_partial = len(partial)
 
@@ -278,3 +304,89 @@ class MultiVerifier:
             return "partially_verified"
         else:
             return "natural_language_only"
+
+    def _compute_coverage(
+        self, proof: ProofRecord,
+        tools_verified: list[str], tools_partial: list[str],
+    ) -> dict:
+        """Compute what percentage of the proof is machine-verified.
+
+        Considers how many proof steps each tool checked and computes
+        a combined unique coverage percentage.
+        """
+        total_steps = len(proof.proof_steps) or 1
+        steps_covered = set()
+
+        # Lean: if verified/partial, consider all steps covered by Lean
+        if "lean" in tools_verified:
+            steps_covered.update(range(total_steps))
+        elif "lean" in tools_partial:
+            # Partial — estimate coverage from sorry count
+            sorrys = proof.proof_lean.lower().count("sorry") if proof.proof_lean else 0
+            covered = max(0, total_steps - sorrys)
+            steps_covered.update(range(covered))
+
+        # Z3: check which steps were encoded
+        z3_steps = proof.z3_result.get("output", "")
+        for i in range(total_steps):
+            if f"STEP {i+1}: PASSED" in z3_steps:
+                steps_covered.add(i)
+
+        # SymPy: check which steps were encoded
+        sympy_steps = proof.sympy_result.get("output", "")
+        for i in range(total_steps):
+            if f"STEP {i+1}: PASSED" in sympy_steps:
+                steps_covered.add(i)
+
+        # Numerical: if consistent, adds weak coverage to all steps
+        # (doesn't add to steps_covered — numerical isn't proof)
+
+        coverage_pct = round(100 * len(steps_covered) / total_steps, 1)
+
+        return {
+            "coverage_percentage": coverage_pct,
+            "steps_total": total_steps,
+            "steps_machine_verified": len(steps_covered),
+            "steps_covered_by": {
+                "lean": "lean" in tools_verified or "lean" in tools_partial,
+                "z3": "z3" in tools_verified,
+                "sympy": "sympy" in tools_verified,
+                "numerical": proof.numerical_consistent,
+            },
+        }
+
+    def _tier_reason(self, proof: ProofRecord, tier: VerificationTier) -> str:
+        """Explain why the proof is at this tier and not higher."""
+        if tier == VerificationTier.PROVEN:
+            return "Full Lean 4 proof with 0 sorry gaps — machine verified"
+
+        reasons = []
+        if tier != VerificationTier.PROVEN:
+            if proof.lean_partial:
+                sorrys = proof.proof_lean.lower().count("sorry") if proof.proof_lean else 0
+                reasons.append(f"Lean: {sorrys} sorry gap(s) remain")
+            elif proof.lean_failure_reason:
+                reasons.append(f"Lean: {proof.lean_failure_reason[:80]}")
+            elif not proof.proof_lean:
+                reasons.append("Lean: not feasible for this proof type")
+
+        if tier == VerificationTier.PROOF_WITH_GAPS:
+            return "; ".join(reasons) or "Lean type-checks but sorry gaps remain"
+
+        if tier == VerificationTier.FORMALLY_VERIFIED:
+            verified_by = []
+            if proof.z3_verified:
+                verified_by.append("Z3")
+            if proof.sympy_verified:
+                verified_by.append("SymPy")
+            return f"Verified by {', '.join(verified_by)}. {'; '.join(reasons)}"
+
+        if tier == VerificationTier.NUMERICALLY_CONFIRMED:
+            reasons.append("No formal tool could verify, but numerical tests pass")
+            return "; ".join(reasons)
+
+        if tier == VerificationTier.RIGOROUS_ARGUMENT:
+            reasons.append("Structured proof generated but no external tool could verify")
+            return "; ".join(reasons)
+
+        return "No proof generated"

@@ -35,6 +35,35 @@ class VerificationStatus(str, Enum):
     UNVERIFIED = "unverified"
 
 
+class VerificationTier(str, Enum):
+    """Tiered formalisation level — every proof gets the highest achievable tier.
+
+    Not all-or-nothing. A proof that can't get Lean verification still gets
+    the highest tier it CAN achieve. Nothing gets "nothing."
+    """
+    PROVEN = "proven"                            # Lean 0 sorrys — fully machine-verified
+    PROOF_WITH_GAPS = "proof_with_gaps"          # Lean type-checks but has sorry gaps
+    FORMALLY_VERIFIED = "formally_verified"      # Z3 or SymPy verified the formal structure
+    NUMERICALLY_CONFIRMED = "numerically_confirmed"  # Numerical tests all pass
+    RIGOROUS_ARGUMENT = "rigorous_argument"      # Structured NL proof with explicit steps
+    CONJECTURE = "conjecture"                    # Stated but no proof generated
+
+    @classmethod
+    def from_proof(cls, proof: ProofRecord) -> VerificationTier:
+        """Determine the highest tier achieved by this proof."""
+        if proof.lean_verified:
+            return cls.PROVEN
+        if proof.lean_partial:
+            return cls.PROOF_WITH_GAPS
+        if proof.z3_verified or proof.sympy_verified:
+            return cls.FORMALLY_VERIFIED
+        if proof.numerical_consistent and proof.numerical_result.get("applicable"):
+            return cls.NUMERICALLY_CONFIRMED
+        if proof.proof_natural or proof.proof_steps:
+            return cls.RIGOROUS_ARGUMENT
+        return cls.CONJECTURE
+
+
 class ProofConfidence(str, Enum):
     """Calibrated confidence in the proof."""
     HIGH = "high"          # >= 0.75
@@ -158,9 +187,18 @@ class ProofRecord:
 
     # Epistemic transparency
     verification_status: str = "natural_language_only"
+    verification_tier: str = "rigorous_argument"  # VerificationTier value
+    verification_tier_reason: str = ""  # Why this tier and not higher
     within_standard_mathematics: bool = True
     new_mathematics_needed: str = ""
     limitations: list[str] = field(default_factory=list)
+
+    # Back-translation alignment (proposition ↔ convergence claim)
+    back_translation_alignment: dict = field(default_factory=dict)
+
+    # Coverage metrics
+    coverage_percentage: float = 0.0  # % of proof steps machine-verified
+    coverage_detail: dict = field(default_factory=dict)
 
     # Provenance
     source_convergence: dict = field(default_factory=dict)
