@@ -21,7 +21,7 @@
 | E-1 | Stage 1: Compute compact closed lineage (C2 to M2 to M4 to M16) | DONE — 13 theorems, 0 sorry |
 | E-2 | Stage 2: SU(2) emerges at D1 (center, PSL(2,ℂ), 7 theorems, 0 sorry) | DONE |
 | E-3 | Stage 3: Preferred decomposition (Kronecker, transpose, M₂⊗M₂≅M₄, 8 theorems, 0 sorry) | DONE |
-| E-4 | Stage 4: Gauge group selection (iteration-compatible auts, SU(3)xSU(2)xU(1)) | NOT DONE |
+| E-4 | Stage 4: Gauge group selection (Pati-Salam via asymmetric decomposition, 15 theorems, 0 sorry) | DONE |
 | E-5 | Stage 5: Representation match (Standard Model fermions) | NOT DONE |
 | E-6 | Stage 6: Full Emergence Theorem | NOT DONE |
 | E-7 | Write Paper E (incremental, section per stage as we go) | IN PROGRESS — Stage 1 written |
