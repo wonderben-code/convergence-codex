@@ -24,7 +24,7 @@
 - `wonderben-code/gnosis-ai` — Gnosis AI product (MIT)
 - `wonderben-code/convergence-codex` — The Convergence Codex: Logos, Synthesis, orchestrator, data (PUBLIC, MIT)
 
-**Published:** 43 papers on Zenodo with DOIs. All Bitcoin-timestamped. (35 original + 8 Stage A Capstone)
+**Published:** 44 papers on Zenodo with DOIs. All Bitcoin-timestamped. (35 original + 8 Stage A Capstone + Paper D)
 
 ---
 
@@ -293,7 +293,7 @@ lean_verify/            — Lean 4 project with Mathlib dependency (6.9 GB)
    - b. Read Papers A, B, C in full — **DONE** (master key vs key generator, 7 structural facts, 3 terminal characterisations)
    - c. Write Master Coherence Theorem (GToECoherence.lean) — **DONE** (commit 3635ac1)
    - d. Full Paper D rewrite (1,063 lines, Key Generator Principle, 6 Criteria, honest scope) — **DONE**
-   - e. **Zenodo publish Paper D** (PDF + MD, both artifacts) — **NOT DONE**
+   - e. **Zenodo publish Paper D** (PDF + MD, both artifacts) — **DONE** (DOI: 10.5281/zenodo.20005116)
    - f. **QC/QA review of Paper D** (proofread, improve, check all maths) — **NOT DONE**
    - g. **Add Paper D to infinitography.com Wing 1** (own Anthropic-style explainer page) — **NOT DONE**
    - h. **Add Paper D to infinitography.com Wing 2** (ToE wing update with new content) — **NOT DONE**
@@ -317,7 +317,7 @@ lean_verify/            — Lean 4 project with Mathlib dependency (6.9 GB)
 6. **Proofread 8 capstone papers** — Using the Bible, citing PROVEN formalisations.
 7. **Compose remaining 14 capstone papers** — Citing PROVEN formalisations.
 
-**Paper D progress: 8/8 theorems + Coherence Theorem PROVEN. 61 sub-theorems. 0 sorry. All Bitcoin-timestamped. Paper D rewritten (1,063 lines). NEXT: Zenodo publish, then Paper E.**
+**Paper D progress: 8/8 theorems + Coherence Theorem PROVEN. 61 sub-theorems. 0 sorry. All Bitcoin-timestamped. Paper D rewritten (1,063 lines). Zenodo PUBLISHED (DOI: 10.5281/zenodo.20005116). NEXT: QC review, then Paper E.**
 **Paper E progress: Plan written and Bitcoin-stamped. Stage 1 IN PROGRESS.**
 **Compendium progress: 3/256 PROVEN (3/90 capstone). Entries 1, 2, 3 verified and Bitcoin-stamped.**
 
@@ -635,7 +635,7 @@ NOW ━━━━━━ STAGE 3b: THE CONVERGENCE CODEX ━━━━━━━━�
 
   ▶▶ PAPER D — Machine-Verified ToE (WRITTEN, NEEDS ZENODO PUBLISH)
      8 theorems + Coherence Theorem. 61 sub-theorems. 0 sorry. 1,063 lines.
-     NEXT: Zenodo publish (PDF + MD) → QC review → infinitography.com updates
+     Zenodo PUBLISHED (DOI: 10.5281/zenodo.20005116). NEXT: QC review → infinitography.com updates
 
   ▶▶ PAPER E — Emergence of the Standard Model (IN PROGRESS)
      Show SU(3)×SU(2)×U(1) emerges from Generator construction in FdVect_C.

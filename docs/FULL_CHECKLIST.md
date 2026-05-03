@@ -9,7 +9,7 @@
 | D-2 | Read Papers A, B, C in full (master key vs key generator, 7 structural facts) | DONE |
 | D-3 | Write Master Coherence Theorem (GToECoherence.lean) | DONE |
 | D-4 | Full Paper D rewrite (1,063 lines) | DONE |
-| D-5 | Zenodo publish Paper D (PDF + MD) | NOT DONE |
+| D-5 | Zenodo publish Paper D (PDF + MD) | DONE — DOI: 10.5281/zenodo.20005116 |
 | D-6 | QC/QA review of Paper D (proofread, improve all maths) | NOT DONE |
 | D-7 | Add Paper D to infinitography.com Wing 1 (own explainer page) | NOT DONE |
 | D-8 | Add Paper D to infinitography.com Wing 2 (ToE wing update) | NOT DONE |
