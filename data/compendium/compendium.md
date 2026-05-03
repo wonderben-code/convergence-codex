@@ -368,8 +368,8 @@ The Lean formalisation captures the order-theoretic and lattice-theoretic core o
 | Field | Value |
 |-------|-------|
 | Convergence ID | 6b0b91dcff77 |
-| Git commit | [committed below] |
-| Commit timestamp | [committed below] |
+| Git commit | cec73d77ab110ff8384f0777cd601a13e4eb1bd8 |
+| Commit timestamp | 2026-05-03T12:06:17+01:00 |
 | Repository | github.com/wonderben-code/convergence-codex |
 | Proof file | data/logos/proofs/0059c78c2998.json |
 

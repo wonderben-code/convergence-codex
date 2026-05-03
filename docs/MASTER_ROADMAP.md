@@ -1,7 +1,7 @@
 # Master Roadmap — All Projects
 
 **Creator:** Mark E. Mala (Ekram Alam)
-**Last updated:** 3 May 2026 (Gnosis v3 knowledge verification + Logos v2 multi-tool formalisation + Kerygma outreach AI)
+**Last updated:** 3 May 2026 (Compendium of Formally Verified Convergences — Lean 4 proofs + Bitcoin provenance)
 **This is THE canonical roadmap. One file. All projects. Always consult this first.**
 
 ---
@@ -170,9 +170,9 @@ Not just pairwise comparisons — combinatorial at EVERY level:
 | 5c-iii | Compose remaining 14 capstone papers manually with AI (Claude Code) — use cached claims + plans, write each paper directly with actual formalisation mathematics, no Synthesis AI | NOT DONE |
 | 5c-iv | Proofread + publish remaining 14 capstone papers to Zenodo | NOT DONE |
 | 5d | **Stage A FORMALISATION CATALOGUE** — Instead of ~70 individual papers, create ONE comprehensive catalogue document listing ALL 256 formalisations with their mathematical propositions, proof sketches, confidence scores, adversarial verdicts, and domain pairs. Published as a single Zenodo deposit. Much more useful as a reference work than hundreds of thin papers. AI-composed (no API cost). | NOT DONE |
-| 5e | **GNOSIS v3 — VERIFIED KNOWLEDGE** — Upgrade Gnosis AI from parametric-only (Claude's training data) to externally verified knowledge. Every surveyed result cross-referenced against multiple academic databases. Zero hazy knowledge. Zero unestablished claims. Only verified, peer-reviewed, established science. See BUILD PLAN below. | NOT DONE |
-| 5f | **LOGOS v2 — MULTI-TOOL FORMALISATION** — Upgrade Logos from Lean-only (which was never installed) to multi-tool verification: Lean 4 (now installed v4.29.1), Z3 SMT solver (now installed v4.16.0), SymPy symbolic math (now installed v1.14.0). Maximise machine-verified formalisations. Re-run all 256 proofs through new verification stack. See BUILD PLAN below. | NOT DONE |
-| 5g | **Re-run Stage A proofs through Logos v2** — Take all 256 existing formalisations and run them through the new multi-tool verification stack. Triage results: Tier 1 (machine-verified), Tier 2 (partially verified), Tier 3 (unverifiable by current tools). Update proof records with verification results. | NOT DONE |
+| 5e | **GNOSIS v3 — VERIFIED KNOWLEDGE** — Lean version: one Semantic Scholar check per surveyed result (catches hallucinations, fast). Full 5-checkpoint system built but too slow for Stage B scale. Code simplified 3 May 2026. See BUILD PLAN below. | **DONE** (code built, simplified) |
+| 5f | **LOGOS v2 — LEAN-FIRST FORMALISATION** — Lean 4 local verification (gold standard, runs in seconds) + sorry elimination (1-2 Claude calls). Z3/SymPy/Numerical available as optional post-hoc tools but NOT in main pipeline (too slow: 5-10 min per proof, most say "not feasible"). Code simplified 3 May 2026. See BUILD PLAN below. | **DONE** (code built, simplified) |
+| 5g | **Re-run Stage A proofs through Logos v2** — Regenerate Lean code for current Mathlib (v1 code has 42% broken imports from Mathlib refactoring), verify locally, sorry elimination on partials. ~1 Claude call per proof + local verification in seconds. | **IN PROGRESS** |
 | 6 | **Stage B — THE BIG RUN** — Full Codex across ALL 81 fields of science, maths, physics (6 phases): all pairwise convergences (cross-category first), codex analysis, multi-field groups, meta-convergences, recursive cascade to fixed points, everything through Logos v2 (multi-tool verification, NOT Synthesis). 10x more data than Stage A. Uses Gnosis v3 (verified knowledge only). | NOT DONE |
 | 6c | **Stage B CAPSTONE** — Capstone papers from the broader Stage B dataset, composed manually with AI (Claude Code). Each paper individually proofread. Do Stage A claims hold? Strengthen? New ones emerge? | NOT DONE |
 | 6d | **Stage B FORMALISATION CATALOGUE** — Same as Stage A: ONE comprehensive catalogue of all new formalisations from the 81-field run, not hundreds of individual papers. AI-composed (no API cost). | NOT DONE |
@@ -260,78 +260,32 @@ For each surveyed result:
 
 ---
 
-#### BUILD PLAN: Logos v2 — Multi-Tool Formalisation (Step 5f)
+#### BUILD PLAN: Logos v2 — Lean-First Formalisation (Step 5f) — SIMPLIFIED 3 May 2026
 
-**Problem:** Logos v1 generates Lean 4 code but Lean was never installed (zero verifications). Even with Lean installed (now v4.29.1), many proofs fail because they reference Mathlib theories that don't exist yet or address open mathematical problems. Result: 0/256 machine-verified proofs.
+**Problem:** Logos v1 generated Lean 4 code but never verified it (0/256 machine-verified). The multi-tool approach (Lean + Z3 + SymPy + Numerical) was built but proved too slow: 5-10 minutes per proof with 2+ Claude calls each, most returning "not feasible." Z3/SymPy/Numerical code remains in repo but is NOT in the main pipeline.
 
-**Solution:** Multi-tool verification stack. Instead of Lean-only, use 4 complementary tools — each covering different mathematical domains. Even if Lean can't verify a proposition, Z3, SymPy, or computational checks might.
+**Solution:** Lean-only. Generate fresh Lean 4 code → verify locally with `lake env lean` (seconds) → sorry elimination (1-2 Claude calls if needed). Simple, fast, gold standard.
 
-**Tools now installed:**
-- Lean 4 v4.29.1 (interactive theorem prover, Mathlib library)
-- Z3 v4.16.0 (SMT solver — automated logical/algebraic proofs)
-- SymPy v1.14.0 (symbolic mathematics — algebraic verification)
-- NumPy/SciPy (numerical computation — sanity checks)
-
-**Architecture (~300-400 lines, extending existing Logos):**
+**Architecture (simplified):**
 ```
 logos/
-  lean_bridge.py        — (existing, update PATH to ~/.elan/bin)
-  z3_bridge.py          — NEW: translate propositions to Z3, auto-prove
-  sympy_bridge.py       — NEW: verify algebraic identities/equivalences
-  numerical_bridge.py   — NEW: Monte Carlo / numerical sanity checks
-  multi_verifier.py     — NEW: orchestrate all tools, consensus scoring
+  lean_bridge.py        — Lean 4 generation + local verification via lake env lean
+  multi_verifier.py     — Lean-only wrapper (same interface, Z3/SymPy/Numerical removed)
+  z3_bridge.py          — KEPT but not in pipeline (optional post-hoc)
+  sympy_bridge.py       — KEPT but not in pipeline (optional post-hoc)
+  numerical_bridge.py   — KEPT but not in pipeline (optional post-hoc)
+lean_verify/            — Lean 4 project with Mathlib dependency (6.9 GB)
 ```
 
-**Verification Tiers:**
+**Verification Tiers (3-tier, not 6):**
 
-| Tier | Tool(s) | What It Proves | Coverage |
-|------|---------|---------------|----------|
-| **T1: Full Proof** | Lean 4 + Mathlib | Complete formal verification, machine-checkable | ~10-20% of propositions |
-| **T2: Automated Proof** | Z3 SMT solver | Logical satisfiability, algebraic constraints, first-order logic | ~25-35% of propositions |
-| **T3: Symbolic Verification** | SymPy | Algebraic identity, equation equivalence, simplification | ~15-25% of propositions |
-| **T4: Numerical Sanity** | NumPy/SciPy | Monte Carlo sampling, numerical consistency (not proof, but catches nonsense) | ~80% of propositions |
-| **T5: Consensus** | Multiple tools agree | If Z3 + SymPy + numerical all agree → strong evidence | Derived |
+| Tier | Meaning | Lean Status |
+|------|---------|-------------|
+| **PROVEN** | Full formal proof, 0 sorry gaps. Machine verified. | Type-checks, 0 sorry |
+| **PROOF_WITH_GAPS** | Partial proof. Core verified, some steps use sorry. | Type-checks, N sorry |
+| **RIGOROUS_ARGUMENT** | Lean code could not type-check. Natural language proof only. | Does not type-check |
 
-**Z3 Bridge Strategy:**
-Many convergence propositions can be expressed as logical formulas. Z3 is an *automated* theorem prover — unlike Lean, it doesn't need manual proof construction. If we can translate a proposition into Z3's input language, it proves or disproves it automatically.
-
-Example: "The constraint structure in domain A is isomorphic to domain B" → Express as: ∃f: A→B such that f preserves structure ∧ f is bijective → Z3 checks satisfiability.
-
-**SymPy Bridge Strategy:**
-For algebraic propositions ("Expression X = Expression Y"), SymPy can verify symbolically:
-```python
-from sympy import simplify, symbols
-x = symbols('x')
-assert simplify(expr_a - expr_b) == 0  # Algebraic equivalence
-```
-
-**Iterative Lean Proving (Claude Code approach):**
-Instead of generating Lean code in one shot (which fails), use Claude Code (Max Plan, $0) to iteratively construct proofs:
-1. Generate initial Lean proof sketch
-2. Run `lean --run proof.lean`
-3. Read error messages
-4. Fix errors and regenerate
-5. Repeat until verified or give up after N iterations
-
-This mirrors how human mathematicians actually write Lean proofs.
-
-**Multi-Verifier Consensus:**
-```
-For each formalisation:
-  1. Try Lean 4 → if verified: T1 (strongest)
-  2. Try Z3 → if proved: T2
-  3. Try SymPy → if verified: T3
-  4. Run numerical checks → if consistent: T4
-
-  Consensus score:
-    4 tools agree = 1.0 (machine-verified)
-    3 tools agree = 0.85
-    2 tools agree = 0.70
-    1 tool only   = 0.50
-    0 tools       = 0.30 (natural language proof only)
-```
-
-**Expected improvement:** From 0/256 machine-verified to estimated 80-130/256 with at least one tool verification.
+**The Compendium approach (3 May 2026):** Instead of running a script, each proof is verified manually with Claude Code (Opus). This gives highest quality: real-time error fixing, iterative improvement, honest write-up. Each entry immediately committed and Bitcoin-stamped. Format: `data/compendium/compendium.md`, reference: `docs/COMPENDIUM_FORMAT.md`.
 
 ---
 
@@ -638,23 +592,30 @@ INFINITOGRAPHY WEBSITE — Wings 1-4 DONE (Discovery, ToE, New Contributions, Gn
 NOW ━━━━━━ STAGE 3b: THE CONVERGENCE CODEX ━━━━━━━━━━━━━━━━━
 
   ✅ Gnosis v2 (cross-domain, multi-field, recursive cascade, 81 fields)
-  ✅ Logos AI (2,162 lines, Lean 4 formalisation, 5-layer adversarial validation)
-  ✅ Synthesis AI (1,448 lines, publication-quality papers, auto boundaries)
+  ✅ Logos AI — SIMPLIFIED to Lean-first (3 May 2026). Z3/SymPy/Numerical removed from pipeline.
+  ✅ Synthesis AI (RETIRED — all papers composed manually with Claude Code)
   ✅ Pipeline Orchestrator (479 lines, thin coordination, checkpoints)
   ✅ Stage A — DONE (256/266 proofs through Logos)
-  ▶  Stage A CAPSTONE — 8/22 papers DONE, v2 PDFs on Zenodo (3 May 2026)
-     → FIRST: Write Paper Quality Bible (reference doc for every paper)
-     → NEXT: Proofread all 8 papers against the Bible to top 0.00001% (manual AI, no API cost)
-     → Publish v3 proofread versions to Zenodo
-     → Fix pipeline prompts (no inline hex IDs, include formalisation maths)
-     → Compose remaining 14 capstone papers (~$60-80)
-     → Proofread + publish remaining 14 to Zenodo
-     Stage A FORMALISATION CATALOGUE — ONE document with all 256 formalisations (no API cost)
-     GNOSIS v3 — Verified Knowledge (5 external verification checkpoints, domain audit, cull hazy fields)
-     LOGOS v2 — Multi-Tool Formalisation (Lean 4 + Z3 + SymPy + numerical, re-run all 256 proofs)
-     Stage B — THE BIG RUN: full Codex across 81 fields (10x more data, using Gnosis v3 + Logos v2)
+  ✅ Gnosis v3 — 5 external verification checkpoints, code simplified, Bitcoin-stamped
+  ✅ Logos v2 — Lean-first, lake env lean with Mathlib, auto-detect, Bitcoin-stamped
+
+  ▶▶ THE COMPENDIUM — Formally Verified Cross-Domain Convergences (IN PROGRESS)
+     All 256 formalisations getting fresh Lean 4 code + local verification.
+     Each proof: generate Lean → verify with Mathlib → sorry elimination →
+     write up in compendium → Bitcoin stamp. One at a time, manually with AI.
+     Format: data/compendium/compendium.md (Nobel/Fields Medal provenance format)
+     Reference doc: docs/COMPENDIUM_FORMAT.md
+     Progress: 2/256 PROVEN (3 May 2026)
+     THIS IS THE FORMALISATION CATALOGUE — machine-verified, not just listed.
+
+  NEXT: Paper Quality Bible (reference doc for capstone paper quality)
+  THEN: Proofread 8 existing capstone papers (now citing PROVEN formalisations)
+  THEN: Publish v3 proofread capstone papers to Zenodo
+  THEN: Compose remaining 14 capstone papers (citing PROVEN formalisations)
+  THEN: Proofread + publish remaining 14 to Zenodo
+     Stage B — THE BIG RUN: full Codex across 81 fields (10x more data, Gnosis v3 + Logos v2)
      Stage B CAPSTONE — capstone papers from the big run (manual proofread each)
-     Stage B FORMALISATION CATALOGUE — ONE document with all new formalisations (no API cost)
+     Stage B COMPENDIUM — same format, all new formalisations machine-verified
      Stage C — THE CROWN JEWELS: 3-5 most terminal/unifying claims get definitive papers
      Stage C PUBLICATION → Zenodo
      Stage D — HARDEN: formal proofs, predictions, close every gap in Stage C papers
