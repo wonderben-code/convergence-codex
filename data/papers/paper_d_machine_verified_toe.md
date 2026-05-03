@@ -422,7 +422,7 @@ theorem seed_is_forced :
 | Lean 4 type-checks | Yes (Lean 4.29.1 + Mathlib) |
 | Theorems verified | 12 |
 | File | `lean_verify/SeedForced.lean` |
-| Git commit | PENDING_COMMIT |
+| Git commit | 7bb9b6e |
 
 ---
 
