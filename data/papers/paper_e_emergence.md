@@ -900,7 +900,7 @@ The Generator Theory of Everything, its mathematical formalisation, and the dire
 | 6-13 April 2026 | Publication of Papers 1-15 on Zenodo — full theoretical framework |
 | 13 April 2026 | Papers 13-15 published: The Generator Thesis, The Root Equation, The Theory of Everything and the Origin of Reality — core ToE papers |
 | 3 May 2026 | Paper D: Machine-verified categorical foundation (DOI: 10.5281/zenodo.20005116) |
-| 3 May 2026 | Paper E (this paper): Three lineages from one seed — 206 machine-verified theorems |
+| 3 May 2026 | Paper E (this paper): Three lineages from one seed — 206 machine-verified theorems (DOI: 10.5281/zenodo.20011468) |
 
 ### 13.3 Verification and Provenance
 
