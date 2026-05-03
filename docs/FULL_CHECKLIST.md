@@ -25,10 +25,10 @@
 | E-5 | Stage 5: Representation match (column module ℂ¹⁶ ≅ ℂ⁴⊗ℂ²⊗ℂ², SM fermion counting, 26 theorems, 0 sorry) | DONE |
 | E-6 | Stage 6: Full Emergence Theorem (self-contained, all stages combined, 26 theorems, 0 sorry) | DONE |
 | E-6b | ~~Stage 7: Master Coherence~~ MERGED INTO Stage 6 | DONE (merged) |
-| E-6c | Stage 8: Gravity lineage — SL(2,ℂ) on ℂ² → Spin(1,3) → Lorentz → (Lovelock) → Einstein's equations. Partial Lean (SL(2,ℂ) action, Lie algebra), rest cited | NOT DONE |
-| E-6d | Stage 9: Quantum lineage — ℂ² Hilbert space → inner product → (Gleason) → Born rule → (Stone) → Schrödinger → (Wigner) → unitary evolution. Partial Lean (Hilbert space, inner product), rest cited | NOT DONE |
-| E-6e | Stage 10: SM completeness — anomaly cancellation (Lean-provable arithmetic), gauge Lagrangian uniqueness (classification theorem, cited), Higgs mechanism (rep theory, partial Lean), Yukawa structure | NOT DONE |
-| E-6f | Stage 11: Dynamics from symmetry — master completeness argument: symmetry determines dynamics citing Lovelock, Coleman-Mandula, Gleason, Stone, Wigner, gauge theory classification. Shows that deriving symmetries = deriving the theory (up to coupling constants) | NOT DONE |
+| E-6c | Stage 8: **GRAVITY FORCED FROM SEED** — Prove gravity is FORCED to emerge from ℂ² via canonical operations: ℂ² →[Aut] GL(2,ℂ) →[ker det] SL(2,ℂ) →[adjoint] preserves Minkowski metric → SL(2,ℂ)/{±I} ≅ SO⁺(1,3) →[Lovelock] Einstein. Every step canonical. Lean: faithful action, center=2, det preservation, Lie algebra dims, spacetime dim. File: `GravityLineage.lean` | NOT DONE |
+| E-6d | Stage 9: **QM FORCED FROM SEED** — Prove quantum mechanics is FORCED to emerge from ℂ² via canonical operations: ℂ² has canonical inner product →[isometry] U(2) → Gleason → Born rule → Stone → Schrödinger → Wigner → unitarity. Lean: inner product, isometry group, dimensions. Cited: Gleason (1957), Stone (1932), Wigner (1931). File: `QuantumLineage.lean` | NOT DONE |
+| E-6e | Stage 10: **SM COMPLETENESS** — Beyond gauge groups: anomaly cancellation (Lean arithmetic), Lagrangian uniqueness (gauge invariance + renormalizability, cited), Higgs mechanism, Yukawa. File: `SMCompleteness.lean` | NOT DONE |
+| E-6f | Stage 11: **THREE LINEAGES MASTER THEOREM** — One seed ℂ², three canonical operations (End, Aut/ker, ⟨·,·⟩), three pillars (SM, Gravity, QM). All forced. Master theorem combining all stages. Unprecedented: no one has shown all three pillars emerge from a single mathematical object via canonical constructions. File: `ThreeLineages.lean` | NOT DONE |
 | E-7 | Write Paper E (incremental, section per stage as we go) | IN PROGRESS — Stages 0-6 written |
 | E-7b | **NOBEL-QUALITY FULL REWRITE OF PAPER E — THE COMPLETE PAPER.** See PAPER E BIBLE below. | NOT DONE (after all stages proven) |
 | E-8 | QC/QA review of Paper E | NOT DONE |
