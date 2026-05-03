@@ -223,7 +223,7 @@ theorem structural_fixed_point {D : Type*}
 | Lean 4 type-checks | Yes (Lean 4.29.1 + Mathlib) |
 | Theorems verified | 8 |
 | File | `lean_verify/LawvereFixedPoint.lean` |
-| Git commit | PENDING_COMMIT |
+| Git commit | 812f9dd |
 
 ---
 
