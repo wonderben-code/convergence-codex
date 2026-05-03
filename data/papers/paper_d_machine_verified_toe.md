@@ -320,7 +320,7 @@ theorem reflexive_domain_lfp_induction {D : Type*}
 | Lean 4 type-checks | Yes (Lean 4.29.1 + Mathlib) |
 | Theorems verified | 11 |
 | File | `lean_verify/ReflexiveDomainFP.lean` |
-| Git commit | PENDING_COMMIT |
+| Git commit | 2ec7556 |
 
 ---
 
