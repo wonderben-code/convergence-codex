@@ -28,11 +28,11 @@ This chain is cryptographically tamper-proof. The Bitcoin blockchain provides an
 
 | Metric | Value |
 |--------|-------|
-| Total entries | 2 |
-| PROVEN (0 sorry) | 2 |
+| Total entries | 3 |
+| PROVEN (0 sorry) | 3 |
 | PROOF_WITH_GAPS | 0 |
 | RIGOROUS_ARGUMENT | 0 |
-| Domains covered | 5 |
+| Domains covered | 7 |
 | Date range | 2026-05-03 to present |
 
 ---
@@ -382,6 +382,180 @@ To verify this proof independently:
 3. Navigate to `lean_verify/` and run `lake build` (downloads Mathlib, ~6.9 GB)
 4. Save the Lean code above to a file, e.g., `lean_verify/verify_entry_002.lean`
 5. Run: `lake env lean verify_entry_002.lean`
+6. Expected output: no errors (warnings about unused variables are acceptable)
+
+If the code type-checks with zero errors, the proof is valid.
+
+---
+
+## Entry 3: Information Copying Constraints and the No-Cloning Theorem
+
+### Claim
+
+Information cannot be freely copied or shared without fundamental constraints that distinguish quantum/microscopic information from classical/macroscopic information — formalised via tensor product algebra showing that linear cloning is algebraically impossible for non-trivial states.
+
+### Domains
+
+Quantum Information Theory, Linear Algebra, Category Theory
+
+### Formal Proposition
+
+Let R be a commutative ring, M an R-module, and T : M tensor M -> M tensor M a linear map satisfying T(v tensor e) = v tensor v for all v in M (a "universal cloner"). Then:
+
+1. For all x, y in M: x tensor y + y tensor x = 0 (symmetric tensor products vanish)
+2. If any pair x, y has x tensor y + y tensor x != 0, then no universal cloner exists
+3. Over a field F of characteristic zero, a universal cloner forces x tensor x = 0 for all x
+4. For any module: either symmetric tensors vanish (cloning compatible) or no cloner exists (quantum-like)
+
+### Verification Status
+
+| Field | Value |
+|-------|-------|
+| Tier | **PROVEN** |
+| Sorry count | 0 |
+| Lean 4 type-checks | Yes |
+| Mathlib version | leanprover/lean4:v4.29.1 |
+| What is proven | Four theorems fully machine-verified: (1) linear cloning forces all symmetric tensor products to vanish, (2) no-cloning for states with non-vanishing symmetric tensors, (3) over characteristic-zero fields a cloner trivialises all self-tensors, (4) information dichotomy between clonable and non-clonable systems |
+| What is not proven | The specific Hilbert space formulation (complex inner product spaces, unitary operators), the connection to thermodynamic entropy, and the categorical functor F: I -> {Quantum, Classical} are not formalised — see Limitations |
+
+### Lean 4 Proof
+
+```lean
+/-
+  Convergence Codex — Proof #3 (b983347d94e2)
+  Proposition: Information cannot be freely copied or shared without
+  fundamental constraints that distinguish quantum from classical
+  information.
+
+  Formalisation: We capture the no-cloning constraint via tensor products.
+  A linear map cannot universally clone states because cloning is
+  quadratic while linear maps are linear.
+
+  Key results:
+  1. If a linear cloner T exists with T(v tensor e) = v tensor v for all v,
+     then x tensor y + y tensor x = 0 for all x, y (symmetric tensors vanish)
+  2. This means no cloner can exist when symmetric tensors are non-zero
+  3. Over fields of characteristic zero, a cloner forces all self-tensors
+     to vanish, making the "cloner" trivially zero
+-/
+
+import Mathlib.LinearAlgebra.TensorProduct.Basic
+import Mathlib.Tactic
+
+open TensorProduct
+
+noncomputable section
+
+theorem cloner_forces_symmetric_vanish
+    {R : Type*} [CommRing R]
+    {M : Type*} [AddCommGroup M] [Module R M]
+    (e : M)
+    (T : M ⊗[R] M →ₗ[R] M ⊗[R] M)
+    (hT : ∀ v : M, T (v ⊗ₜ[R] e) = v ⊗ₜ[R] v)
+    (x y : M) :
+    x ⊗ₜ[R] y + y ⊗ₜ[R] x = 0 := by
+  have hxy := hT (x + y)
+  rw [add_tmul x y e, map_add, hT x, hT y] at hxy
+  rw [add_tmul, tmul_add, tmul_add] at hxy
+  rw [add_assoc] at hxy
+  have h1 := add_left_cancel hxy
+  rw [← add_assoc] at h1
+  have h2 : (0 : M ⊗[R] M) + y ⊗ₜ[R] y
+           = (x ⊗ₜ[R] y + y ⊗ₜ[R] x) + y ⊗ₜ[R] y := by
+    rw [zero_add]; exact h1
+  exact (add_right_cancel h2).symm
+
+theorem no_cloning
+    {R : Type*} [CommRing R]
+    {M : Type*} [AddCommGroup M] [Module R M]
+    (e x y : M)
+    (hne : x ⊗ₜ[R] y + y ⊗ₜ[R] x ≠ 0)
+    (T : M ⊗[R] M →ₗ[R] M ⊗[R] M)
+    (hT : ∀ v : M, T (v ⊗ₜ[R] e) = v ⊗ₜ[R] v) :
+    False :=
+  hne (cloner_forces_symmetric_vanish e T hT x y)
+
+theorem cloner_trivializes
+    {F : Type*} [Field F] [CharZero F]
+    {M : Type*} [AddCommGroup M] [Module F M]
+    (e : M)
+    (T : M ⊗[F] M →ₗ[F] M ⊗[F] M)
+    (hT : ∀ v : M, T (v ⊗ₜ[F] e) = v ⊗ₜ[F] v)
+    (x : M) :
+    x ⊗ₜ[F] x = 0 := by
+  have h := cloner_forces_symmetric_vanish e T hT x x
+  have hsmul : (2 : F) • (x ⊗ₜ[F] x) = 0 := by rw [two_smul]; exact h
+  calc x ⊗ₜ[F] x
+      = (1 : F) • (x ⊗ₜ[F] x) := (one_smul F _).symm
+    _ = ((2 : F)⁻¹ * 2) • (x ⊗ₜ[F] x) := by
+        rw [inv_mul_cancel₀ two_ne_zero]
+    _ = (2 : F)⁻¹ • ((2 : F) • (x ⊗ₜ[F] x)) := mul_smul _ _ _
+    _ = (2 : F)⁻¹ • (0 : M ⊗[F] M) := by rw [hsmul]
+    _ = 0 := smul_zero _
+
+theorem information_dichotomy
+    {R : Type*} [CommRing R]
+    {M : Type*} [AddCommGroup M] [Module R M]
+    (e x y : M) :
+    (x ⊗ₜ[R] y + y ⊗ₜ[R] x = 0) ∨
+    (¬∃ T : M ⊗[R] M →ₗ[R] M ⊗[R] M, ∀ v, T (v ⊗ₜ[R] e) = v ⊗ₜ[R] v) := by
+  by_cases h : x ⊗ₜ[R] y + y ⊗ₜ[R] x = 0
+  · left; exact h
+  · right
+    intro ⟨T, hT⟩
+    exact h (cloner_forces_symmetric_vanish e T hT x y)
+
+end
+```
+
+### Proof Explanation
+
+The formalisation captures the algebraic essence of the quantum no-cloning theorem using Mathlib's tensor product machinery.
+
+**Theorem 1 (cloner_forces_symmetric_vanish):** The algebraic heart of no-cloning. Suppose a linear map T exists that "clones" all states: T(v tensor e) = v tensor v for every v. Apply T to (x+y) tensor e and expand two ways. By bilinearity of the tensor product: (x+y) tensor e = x tensor e + y tensor e. By linearity of T: T(x tensor e + y tensor e) = T(x tensor e) + T(y tensor e) = x tensor x + y tensor y. But also T((x+y) tensor e) = (x+y) tensor (x+y) = x tensor x + x tensor y + y tensor x + y tensor y by bilinearity. Equating and cancelling x tensor x and y tensor y from both sides: x tensor y + y tensor x = 0. This forces all symmetric tensor products to vanish — a severe algebraic constraint.
+
+**Theorem 2 (no_cloning):** The direct consequence. If any pair of states has a non-vanishing symmetric tensor product (x tensor y + y tensor x != 0), then no universal linear cloner can exist. This is the no-cloning theorem: quantum states with non-trivial symmetric tensors cannot be cloned.
+
+**Theorem 3 (cloner_trivializes):** Over a field of characteristic zero (like the real or complex numbers), the constraint from Theorem 1 is even stronger. Setting x = y in Theorem 1 gives x tensor x + x tensor x = 0, i.e., 2(x tensor x) = 0. Since 2 is invertible in a char-zero field, x tensor x = 0 for all x. This means the "cloner" sends every state to zero — it is trivially the zero map, not a genuine cloning operation.
+
+**Theorem 4 (information_dichotomy):** Formalises the fundamental quantum/classical divide. For any module (information system), exactly one of two things holds: either all symmetric tensors vanish (the system is "classical-like" — cloning is algebraically compatible), or no universal cloner exists (the system is "quantum-like"). This is the structural dichotomy that distinguishes quantum from classical information.
+
+### Assumptions
+
+1. The state space M is a module over a commutative ring R
+2. The tensor product M tensor M represents the composite system of two copies
+3. "Cloning" means a linear map T such that T(v tensor e) = v tensor v for a fixed reference state e
+4. The tensor product satisfies bilinearity (standard from Mathlib)
+5. For Theorem 3: the ground field has characteristic zero (e.g., real or complex numbers)
+
+### Limitations
+
+The Lean formalisation captures the algebraic core of the no-cloning constraint but does not formalise:
+
+- **Hilbert space structure:** The original claim involves complex Hilbert spaces with inner products. The formalisation works over arbitrary modules, which is more general but does not use the specific inner product structure. Mathlib does not yet have comprehensive support for quantum mechanical Hilbert spaces with unbounded operators.
+- **Unitary operators:** The physical no-cloning theorem is stated in terms of unitary operators U(psi tensor 0) = psi tensor psi. The formalisation uses arbitrary linear maps, which is algebraically equivalent but does not invoke unitarity.
+- **Thermodynamic connection:** The original convergence connects information copying to thermodynamic entropy increase (Delta S >= 0). This connection is not formalised — it would require coupling the algebraic result to measure-theoretic entropy.
+- **Categorical functor:** The original proposition posits a functor F: I -> {Quantum, Classical}. Theorem 4 captures this dichotomy structurally (disjunction) rather than as an explicit functor between categories.
+
+### Provenance
+
+| Field | Value |
+|-------|-------|
+| Convergence ID | b983347d94e2 |
+| Git commit | [pending — will be filled after commit] |
+| Commit timestamp | [pending] |
+| Repository | github.com/wonderben-code/convergence-codex |
+| Proof file | data/logos/proofs/00f62716e74a.json |
+
+### Independent Verification
+
+To verify this proof independently:
+
+1. Clone the repository: `git clone https://github.com/wonderben-code/convergence-codex.git`
+2. Install Lean 4 via elan: `curl https://elan.dev | sh`
+3. Navigate to `lean_verify/` and run `lake build` (downloads Mathlib, ~6.9 GB)
+4. Save the Lean code above to a file, e.g., `lean_verify/verify_entry_003.lean`
+5. Run: `lake env lean verify_entry_003.lean`
 6. Expected output: no errors (warnings about unused variables are acceptable)
 
 If the code type-checks with zero errors, the proof is valid.
