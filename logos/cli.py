@@ -15,7 +15,7 @@ from logos.store import ProofStore
 from logos.models import LogosRun, ProofConfidence
 from logos.formaliser import Formaliser
 from logos.validator import ProofValidator
-from logos.lean_bridge import LeanBridge
+from logos.multi_verifier import MultiVerifier
 
 
 @click.group()
@@ -64,21 +64,23 @@ def prove(ctx, convergence_path, output, skip_lean, skip_validation, max_cost):
     click.echo(f"         Apparatus: {', '.join(proof.mathematical_apparatus)}")
     click.echo(f"         Steps: {len(proof.proof_steps)}")
 
-    # Stage 5: Lean
+    # Stage 5: Multi-tool verification (Lean + Z3 + SymPy + Numerical)
     if not skip_lean:
-        click.echo("\n  [2/4] Lean 4 bridge...")
-        lean = LeanBridge(api, config)
-        lean.process(proof, log)
-        if proof.lean_verified:
-            click.echo("         Lean: VERIFIED")
-        elif proof.lean_partial:
-            click.echo("         Lean: Partially verified (has sorry)")
-        elif proof.proof_lean:
-            click.echo(f"         Lean: Generated but unverified ({proof.lean_failure_reason[:60]})")
-        else:
-            click.echo(f"         Lean: Not feasible ({proof.lean_failure_reason[:60]})")
+        click.echo("\n  [2/4] Multi-tool verification (Lean + Z3 + SymPy + Numerical)...")
+        mv = MultiVerifier(api, config)
+        consensus = mv.verify(proof, log)
+        n_verified = consensus.get("total_tools_verified", 0)
+        level = consensus.get("verification_level", "unknown")
+        click.echo(f"         Level: {level}")
+        click.echo(f"         Tools verified: {n_verified}/4")
+        for tool in consensus.get("tools_verified", []):
+            click.echo(f"           {tool}: VERIFIED")
+        for tool in consensus.get("tools_partial", []):
+            click.echo(f"           {tool}: PARTIAL")
+        for tool in consensus.get("tools_failed", []):
+            click.echo(f"           {tool}: FAILED")
     else:
-        click.echo("\n  [2/4] Lean 4 bridge... SKIPPED")
+        click.echo("\n  [2/4] Multi-tool verification... SKIPPED")
 
     # Stage 6: Validation
     if not skip_validation:
@@ -162,7 +164,7 @@ def batch(ctx, convergences_dir, output_dir, filter_expr, skip_lean, skip_valida
     api = create_api(config, use_max_plan=use_max_plan)
     store = ProofStore(config)
     formaliser = Formaliser(api)
-    lean = LeanBridge(api, config) if not skip_lean else None
+    mv = MultiVerifier(api, config) if not skip_lean else None
     validator = ProofValidator(api, store) if not skip_validation else None
 
     run = LogosRun()
@@ -178,9 +180,9 @@ def batch(ctx, convergences_dir, output_dir, filter_expr, skip_lean, skip_valida
             # Formalise
             proof, log, flag = formaliser.formalise(conv)
 
-            # Lean
-            if lean:
-                lean.process(proof, log)
+            # Multi-tool verification
+            if mv:
+                mv.verify(proof, log)
 
             # Validate
             if validator:

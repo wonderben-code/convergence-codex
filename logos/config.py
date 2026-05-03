@@ -70,10 +70,15 @@ class LogosConfig:
         if env_key and not cfg.api_key:
             cfg.api_key = env_key
 
-        # Auto-detect Lean
+        # Auto-detect Lean (check PATH and common install locations)
         if not cfg.lean_binary:
             import shutil
             lean_path = shutil.which("lean")
+            if not lean_path:
+                # Check elan default install location
+                elan_lean = Path.home() / ".elan" / "bin" / "lean"
+                if elan_lean.exists():
+                    lean_path = str(elan_lean)
             if lean_path:
                 cfg.lean_binary = lean_path
 

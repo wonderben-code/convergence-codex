@@ -173,7 +173,7 @@ def process_one_convergence(conv: dict, index: int, total: int,
     from logos.store import ProofStore
     from logos.formaliser import Formaliser
     from logos.validator import ProofValidator
-    from logos.lean_bridge import LeanBridge
+    from logos.multi_verifier import MultiVerifier
 
     # Each worker gets its own API client (thread-safe)
     config = LogosConfig.load()
@@ -182,7 +182,7 @@ def process_one_convergence(conv: dict, index: int, total: int,
     store = ProofStore(config)
     formaliser = Formaliser(api)
     validator = ProofValidator(api, store)
-    lean = LeanBridge(api, config)
+    verifier = MultiVerifier(api, config)
 
     conv_id = conv.get("id", "unknown")
     claim = conv.get("structural_claim", "")[:70]
@@ -212,9 +212,11 @@ def process_one_convergence(conv: dict, index: int, total: int,
             f"Apparatus: {', '.join(proof.mathematical_apparatus[:2])} | "
             f"Steps: {len(proof.proof_steps)}", log_file)
 
-        # Lean
-        lean.process(proof, proof_log)
+        # Multi-tool verification (Lean + Z3 + SymPy + Numerical)
+        verifier.verify(proof, proof_log)
         result["lean_code"] = bool(proof.proof_lean)
+        result["tools_verified"] = proof.multi_tool_consensus.get("total_tools_verified", 0)
+        result["verification_level"] = proof.multi_tool_consensus.get("verification_level", "unknown")
 
         # Validate
         val_result = validator.validate(proof)

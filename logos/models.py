@@ -125,10 +125,27 @@ class ProofRecord:
     dependencies_logos: list[str] = field(default_factory=list)
     assumptions: list[str] = field(default_factory=list)
 
-    # Validation
+    # Validation — Lean
     lean_verified: bool = False
     lean_partial: bool = False
     lean_failure_reason: str = ""
+
+    # Validation — Z3 SMT solver
+    z3_verified: bool = False
+    z3_result: dict = field(default_factory=dict)
+
+    # Validation — SymPy algebraic
+    sympy_verified: bool = False
+    sympy_result: dict = field(default_factory=dict)
+
+    # Validation — Numerical sanity
+    numerical_consistent: bool = False
+    numerical_result: dict = field(default_factory=dict)
+
+    # Multi-tool consensus
+    multi_tool_consensus: dict = field(default_factory=dict)
+
+    # Adversarial & consistency
     adversarial_result: dict = field(default_factory=dict)
     internal_consistency: dict = field(default_factory=dict)
     cross_proof_consistency: dict = field(default_factory=dict)

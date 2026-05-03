@@ -91,25 +91,43 @@ class ProofValidator:
         )
 
     def _verify_mechanical(self, proof: ProofRecord) -> float:
-        """Layer 1: Lean type-check verification."""
+        """Layer 1: Multi-tool mechanical verification.
 
+        Uses consensus from all verification tools (Lean, Z3, SymPy, Numerical)
+        if available, falls back to Lean-only assessment.
+        """
+        # Use multi-tool consensus if available
+        consensus = proof.multi_tool_consensus
+        if consensus and consensus.get("consensus_score", 0) > 0:
+            # Scale consensus (0-1) to mechanical score range
+            base = consensus["consensus_score"]
+            level = consensus.get("verification_level", "natural_language_only")
+            if level == "fully_verified":
+                return min(1.0, base * 1.1)  # Slight boost for full verification
+            elif level == "multi_tool_verified":
+                return max(0.6, base)
+            elif level == "single_tool_verified":
+                return max(0.4, base * 0.9)
+            elif level == "partially_verified":
+                return max(0.3, base * 0.7)
+            return base
+
+        # Fallback: Lean-only (legacy path)
         if proof.lean_verified:
             return 1.0
         if proof.lean_partial:
             return 0.6
         if proof.proof_lean:
-            # Has Lean code but unverified
             return 0.3
 
-        # No Lean code — score based on proof structure
+        # No mechanical verification — score based on proof structure
         steps = proof.proof_steps
         if not steps:
             return 0.1
 
-        # More steps with justifications = more structured = higher base score
         justified = sum(1 for s in steps if s.get("justification"))
         ratio = justified / len(steps) if steps else 0
-        return 0.2 + ratio * 0.3  # 0.2 to 0.5
+        return 0.2 + ratio * 0.3
 
     def _adversarial_scan(self, proof: ProofRecord) -> dict:
         """Layer 2: Frontier LLM as antagonistic reviewer."""
@@ -206,8 +224,17 @@ class ProofValidator:
         # Calibration heuristics
         calibration = 0.7  # Base
 
-        # Boost for machine verification
-        if proof.lean_verified:
+        # Boost for machine verification (multi-tool aware)
+        consensus = proof.multi_tool_consensus
+        if consensus:
+            n_verified = consensus.get("total_tools_verified", 0)
+            if n_verified >= 3:
+                calibration += 0.25
+            elif n_verified >= 2:
+                calibration += 0.2
+            elif n_verified >= 1:
+                calibration += 0.15
+        elif proof.lean_verified:
             calibration += 0.2
         elif proof.lean_partial:
             calibration += 0.1

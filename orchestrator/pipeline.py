@@ -210,7 +210,7 @@ class Pipeline:
         from logos.store import ProofStore
         from logos.formaliser import Formaliser
         from logos.validator import ProofValidator
-        from logos.lean_bridge import LeanBridge
+        from logos.multi_verifier import MultiVerifier
         from logos.cli import _passes_filter
 
         stage = PipelineStage(name="logos", status="running")
@@ -228,7 +228,7 @@ class Pipeline:
         store = ProofStore(config)
         formaliser = Formaliser(api)
         validator = ProofValidator(api, store)
-        lean = LeanBridge(api, config)
+        verifier = MultiVerifier(api, config)
 
         filtered = [c for c in convergences if _passes_filter(c, filter_expr or None)]
         stage.items_in = len(filtered)
@@ -237,7 +237,7 @@ class Pipeline:
         for conv in filtered:
             try:
                 proof, log, flag = formaliser.formalise(conv)
-                lean.process(proof, log)
+                verifier.verify(proof, log)
                 validator.validate(proof)
                 store.save_proof(proof)
                 store.save_log(log)
