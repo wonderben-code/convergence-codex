@@ -542,8 +542,8 @@ The Lean formalisation captures the algebraic core of the no-cloning constraint 
 | Field | Value |
 |-------|-------|
 | Convergence ID | b983347d94e2 |
-| Git commit | [pending — will be filled after commit] |
-| Commit timestamp | [pending] |
+| Git commit | 9071aa2a1eae8e87e409db5d9b33f6ea4148b24f |
+| Commit timestamp | 2026-05-03T12:35:49+01:00 |
 | Repository | github.com/wonderben-code/convergence-codex |
 | Proof file | data/logos/proofs/00f62716e74a.json |
 

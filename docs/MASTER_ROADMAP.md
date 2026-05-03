@@ -287,6 +287,15 @@ lean_verify/            — Lean 4 project with Mathlib dependency (6.9 GB)
 
 **The Compendium approach (3 May 2026):** Instead of running a script, each proof is verified manually with Claude Code (Opus). This gives highest quality: real-time error fixing, iterative improvement, honest write-up. Each entry immediately committed and Bitcoin-stamped. Format: `data/compendium/compendium.md`, reference: `docs/COMPENDIUM_FORMAT.md`.
 
+**Execution order (3 May 2026):**
+1. **Capstone proofs first (90 of 256)** — The 90 convergences cited by the 8 capstone papers. These are priority because they underpin the most important claims. Tracker: `docs/PROOF_TRACKER.md`.
+2. **Remaining 166 proofs** — Systematically, one at a time.
+3. **Paper Quality Bible** — Write after compendium is substantially complete.
+4. **Proofread 8 capstone papers** — Using the Bible, citing PROVEN formalisations.
+5. **Compose remaining 14 capstone papers** — Citing PROVEN formalisations.
+
+**Progress: 3/256 PROVEN (3/90 capstone). Entries 1, 2, 3 verified and Bitcoin-stamped.**
+
 ---
 
 #### BUILD PLAN: Kerygma AI — Automated Research Outreach (Stage 6a)
