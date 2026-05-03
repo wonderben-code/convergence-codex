@@ -239,8 +239,25 @@ class SymPyBridge:
         except Exception as e:
             return {"verified": False, "reason": "error", "output": str(e)}
 
+    def _retry_script(self, script: str, error: str, proof: ProofRecord, log: LogRecord) -> str:
+        """Ask Claude to fix a broken script given the error message."""
+        prompt = (
+            f"This SymPy verification script failed with an error. Fix it.\n\n"
+            f"ORIGINAL SCRIPT:\n```python\n{script}\n```\n\n"
+            f"ERROR:\n{error[:1000]}\n\n"
+            f"PROPOSITION BEING VERIFIED:\n{proof.proposition or proof.proposition_natural}\n\n"
+            f"Fix the script so it runs without errors. Keep the same verification logic.\n"
+            f"Return JSON:\n"
+            f'{{"sympy_script": "the fixed Python script", "fix_notes": "what was wrong"}}'
+        )
+        try:
+            data = self.api.query_json(prompt, system=SYSTEM_PROMPT)
+            return data.get("sympy_script", "")
+        except Exception:
+            return ""
+
     def process(self, proof: ProofRecord, log: LogRecord) -> None:
-        """Full SymPy pipeline: assess → generate → verify.
+        """Full SymPy pipeline: assess → generate → verify → retry if script errors.
 
         Modifies proof in place with SymPy results.
         """
@@ -257,6 +274,20 @@ class SymPyBridge:
             return
 
         result = self.run_sympy_script(script)
+
+        # Retry once if script had a runtime error
+        if result.get("reason") == "script_error" and (result.get("stderr") or result.get("output")):
+            error_msg = result.get("stderr", "") or result.get("output", "")
+            log.add_decision(
+                step="sympy_retry",
+                choice="retrying",
+                alternatives=[],
+                reasoning=f"Script error: {error_msg[:200]}",
+            )
+            fixed_script = self._retry_script(script, error_msg, proof, log)
+            if fixed_script:
+                result = self.run_sympy_script(fixed_script)
+
         proof.sympy_verified = result.get("verified", False)
         proof.sympy_result = result
 

@@ -235,8 +235,25 @@ class Z3Bridge:
         except Exception as e:
             return {"verified": False, "reason": "error", "output": str(e)}
 
+    def _retry_script(self, script: str, error: str, proof: ProofRecord) -> str:
+        """Ask Claude to fix a broken Z3 script given the error message."""
+        prompt = (
+            f"This Z3-Py verification script failed with an error. Fix it.\n\n"
+            f"ORIGINAL SCRIPT:\n```python\n{script}\n```\n\n"
+            f"ERROR:\n{error[:1000]}\n\n"
+            f"PROPOSITION BEING VERIFIED:\n{proof.proposition or proof.proposition_natural}\n\n"
+            f"Fix the script so it runs without errors. Keep the same verification logic.\n"
+            f"Return JSON:\n"
+            f'{{"z3_script": "the fixed Python script", "fix_notes": "what was wrong"}}'
+        )
+        try:
+            data = self.api.query_json(prompt, system=SYSTEM_PROMPT)
+            return data.get("z3_script", "")
+        except Exception:
+            return ""
+
     def process(self, proof: ProofRecord, log: LogRecord) -> None:
-        """Full Z3 pipeline: assess → generate → verify.
+        """Full Z3 pipeline: assess → generate → verify → retry if script errors.
 
         Modifies proof in place with Z3 results.
         """
@@ -253,6 +270,20 @@ class Z3Bridge:
             return
 
         result = self.run_z3_script(script)
+
+        # Retry once if script had a runtime error
+        if result.get("reason") == "script_error" and (result.get("stderr") or result.get("output")):
+            error_msg = result.get("stderr", "") or result.get("output", "")
+            log.add_decision(
+                step="z3_retry",
+                choice="retrying",
+                alternatives=[],
+                reasoning=f"Script error: {error_msg[:200]}",
+            )
+            fixed_script = self._retry_script(script, error_msg, proof)
+            if fixed_script:
+                result = self.run_z3_script(fixed_script)
+
         proof.z3_verified = result.get("verified", False)
         proof.z3_result = result
 

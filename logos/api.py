@@ -234,10 +234,15 @@ class MaxPlanAPI:
 
     @staticmethod
     def _clean_env() -> dict:
-        """Return env dict with CLAUDECODE unset (allows nested invocation)."""
+        """Return env dict with CLAUDECODE unset (allows nested invocation).
+
+        Also removes ANTHROPIC_API_KEY so the CLI uses Max plan auth
+        instead of a potentially invalid API key from the environment.
+        """
         env = os.environ.copy()
         env.pop("CLAUDECODE", None)
         env.pop("CLAUDE_CODE_ENTRYPOINT", None)
+        env.pop("ANTHROPIC_API_KEY", None)
         return env
 
     def _run_cli(self, prompt: str, system: str = "", model: str | None = None) -> str:
@@ -253,7 +258,6 @@ class MaxPlanAPI:
             "--model", cli_model,
             "--output-format", "json",
             "--no-session-persistence",
-            "--tools", "",
         ]
 
         if system:
@@ -267,7 +271,7 @@ class MaxPlanAPI:
                     input=prompt,
                     capture_output=True,
                     text=True,
-                    timeout=600,
+                    timeout=180,
                     env=self._clean_env(),
                 )
 
@@ -302,7 +306,7 @@ class MaxPlanAPI:
                 self.stats.errors += 1
                 if attempt < self.config.max_retries - 1:
                     continue
-                raise RuntimeError("Claude CLI timed out after 600s")
+                raise RuntimeError("Claude CLI timed out after 180s")
 
             except json.JSONDecodeError as e:
                 self.stats.errors += 1

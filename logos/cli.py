@@ -64,23 +64,24 @@ def prove(ctx, convergence_path, output, skip_lean, skip_validation, max_cost):
     click.echo(f"         Apparatus: {', '.join(proof.mathematical_apparatus)}")
     click.echo(f"         Steps: {len(proof.proof_steps)}")
 
-    # Stage 5: Multi-tool verification (Lean + Z3 + SymPy + Numerical)
+    # Stage 5: Lean verification
     if not skip_lean:
-        click.echo("\n  [2/4] Multi-tool verification (Lean + Z3 + SymPy + Numerical)...")
+        click.echo("\n  [2/4] Lean 4 verification...")
         mv = MultiVerifier(api, config)
         consensus = mv.verify(proof, log)
-        n_verified = consensus.get("total_tools_verified", 0)
         level = consensus.get("verification_level", "unknown")
+        tier = consensus.get("verification_tier", "unknown")
+        click.echo(f"         Tier: {tier}")
         click.echo(f"         Level: {level}")
-        click.echo(f"         Tools verified: {n_verified}/4")
-        for tool in consensus.get("tools_verified", []):
-            click.echo(f"           {tool}: VERIFIED")
-        for tool in consensus.get("tools_partial", []):
-            click.echo(f"           {tool}: PARTIAL")
-        for tool in consensus.get("tools_failed", []):
-            click.echo(f"           {tool}: FAILED")
+        if proof.lean_verified:
+            click.echo(f"         Lean: VERIFIED (0 sorry)")
+        elif proof.lean_partial:
+            sorrys = proof.proof_lean.lower().count("sorry") if proof.proof_lean else 0
+            click.echo(f"         Lean: PARTIAL ({sorrys} sorry)")
+        else:
+            click.echo(f"         Lean: {proof.lean_failure_reason or 'failed'}")
     else:
-        click.echo("\n  [2/4] Multi-tool verification... SKIPPED")
+        click.echo("\n  [2/4] Lean verification... SKIPPED")
 
     # Stage 6: Validation
     if not skip_validation:
