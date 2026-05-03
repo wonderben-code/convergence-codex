@@ -1055,3 +1055,9 @@ For full transparency, the following claims of the GToE are NOT yet machine-veri
 4. **The specific physics.** Whether Aut(D_infinity^C) contains SU(3)×SU(2)×U(1), whether 3+1 dimensions emerge, whether coupling constants are computable — these are open problems.
 
 These gaps are stated here for completeness. None undermines the verified claims. The verified theorems establish: IF D satisfies D = [D, D], THEN the consequences proven in this paper hold. The gap is between the IF and reality — a gap that is, by design, falsifiable by experiment.
+
+---
+
+## About the Author
+
+Mark E. Mala is the pen name of Ekram Alam. The Infinitography research programme and Gnosis AI were created as part of a broader investigation into the fundamental nature of reality, conducted independently with AI assistance.
