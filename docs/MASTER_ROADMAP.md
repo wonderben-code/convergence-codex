@@ -301,7 +301,7 @@ lean_verify/            — Lean 4 project with Mathlib dependency (6.9 GB)
 5. **Proofread 8 capstone papers** — Using the Bible, citing PROVEN formalisations.
 6. **Compose remaining 14 capstone papers** — Citing PROVEN formalisations.
 
-**Paper D progress: 3/8 theorems PROVEN (Lawvere 812f9dd, No-Cloning 9071aa2, Local-to-Global cec73d7). 5 remaining.**
+**Paper D progress: 8/8 theorems PROVEN. 57 sub-theorems. 0 sorry. All Bitcoin-timestamped. NEXT: Read Papers A/B/C deeply, polish Paper D, Zenodo publish.**
 **Compendium progress: 3/256 PROVEN (3/90 capstone). Entries 1, 2, 3 verified and Bitcoin-stamped.**
 
 ---

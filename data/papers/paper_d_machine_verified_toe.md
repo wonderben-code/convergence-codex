@@ -495,7 +495,7 @@ theorem infinite_content {D : Type*} (φ : D ≃ (D → D)) :
 | Lean 4 type-checks | Yes (Lean 4.29.1 + Mathlib) |
 | Theorems verified | 10 |
 | File | `lean_verify/InfiniteContent.lean` |
-| Git commit | PENDING_COMMIT |
+| Git commit | 7b8509b |
 
 ---
 
@@ -573,7 +573,7 @@ theorem inexhaustibility {D : Type*} :
 | Lean 4 type-checks | Yes (Lean 4.29.1 + Mathlib) |
 | Theorems verified | 6 |
 | File | `lean_verify/Inexhaustibility.lean` |
-| Git commit | PENDING_COMMIT |
+| Git commit | 7b8509b |
 
 ---
 
@@ -655,7 +655,7 @@ theorem grand_constraint {D : Type*} (φ : D ≃ (D → D)) :
 | Lean 4 type-checks | Yes (Lean 4.29.1 + Mathlib) |
 | Theorems verified | 6 |
 | File | `lean_verify/ConstraintContent.lean` |
-| Git commit | PENDING_COMMIT |
+| Git commit | 7b8509b |
 
 ---
 
