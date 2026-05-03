@@ -306,9 +306,11 @@ lean_verify/            — Lean 4 project with Mathlib dependency (6.9 GB)
    - Stage 4: Gauge group selection (Pati-Salam via asymmetric decomposition, automorphism transport) — **DONE** (15 theorems, 0 sorry, GaugeGroupSelection.lean)
    - Stage 5: Representation match (column module ℂ¹⁶ ≅ ℂ⁴⊗ℂ²⊗ℂ², SM fermion counting) — **DONE** (26 theorems, 0 sorry, StandardModelReps.lean)
    - Stage 6: Full Emergence Theorem (self-contained, all stages in one proof) — **DONE** (26 theorems, 0 sorry, EmergenceTheorem.lean)
-   - Stage 7: Master Coherence Theorem (all stages cohere) — **NOT DONE**
-   - Stage 8: Gravity from the Seed (SL(2,ℂ) ≅ Spin(1,3), geometric lineage from ℂ²) — **NOT DONE**
-   - Stage 9: Quantum Mechanics from the Seed (quantum lineage from ℂ²) — **NOT DONE**
+   - ~~Stage 7: Master Coherence~~ — **MERGED INTO Stage 6**
+   - Stage 8: Gravity lineage (SL(2,ℂ) → Spin(1,3) → Lorentz → Lovelock → Einstein's equations) — **NOT DONE**
+   - Stage 9: Quantum lineage (Hilbert space → Gleason → Born rule → Stone → Schrödinger → Wigner → unitarity) — **NOT DONE**
+   - Stage 10: SM completeness (anomaly cancellation, Lagrangian uniqueness, Higgs mechanism, Yukawa) — **NOT DONE**
+   - Stage 11: Dynamics from symmetry (master completeness: Lovelock, Coleman-Mandula, Gleason, Stone, Wigner) — **NOT DONE**
    - Nobel-quality full rewrite of Paper E (after all 6 stages proven: sharp prose, numbered predictions, priority statement with SHA-256 + Bitcoin block heights, connections to GUT literature) — **NOT DONE**
    - QC/QA review of Paper E — **NOT DONE**
    - Zenodo publish Paper E — **NOT DONE**
@@ -333,7 +335,7 @@ lean_verify/            — Lean 4 project with Mathlib dependency (6.9 GB)
    - GS-9: Bitcoin stamp everything — **NOT DONE**
 
 **Paper D progress: 8/8 theorems + Coherence Theorem PROVEN. 61 sub-theorems. 0 sorry. All Bitcoin-timestamped. Paper D rewritten (1,063 lines). Zenodo PUBLISHED (DOI: 10.5281/zenodo.20005116). NEXT: QC review, then Paper E.**
-**Paper E progress: Stages 0-6 PROVEN (111 theorems total, 0 sorry). Full Emergence Theorem assembles all stages into one self-contained proof: ∅ → I → ℂ² → M₂ → M₄ → M₁₆ → Pati-Salam → SM fermions. NEXT: Stage 7 (Master Coherence), then Stages 8-9 (gravity lineage, quantum lineage).**
+**Paper E progress: Stages 0-6 PROVEN (111 theorems total, 0 sorry). Full Emergence Theorem assembles all stages: ∅ → I → ℂ² → M₂ → M₄ → M₁₆ → Pati-Salam → SM fermions. NEXT: Stage 8 (gravity), Stage 9 (QM), Stage 10 (SM completeness), Stage 11 (dynamics from symmetry). Nobel rewrite (E-7b) has full PAPER E BIBLE in FULL_CHECKLIST.md — 10-section spec covering complete ToE proposal, all three physics pillars (SM+GR+QM) derived in full, predictions, novelty, provenance. User will share Papers A/B/C content for incorporation.**
 **Compendium progress: 3/256 PROVEN (3/90 capstone). Entries 1, 2, 3 verified and Bitcoin-stamped.**
 **Grand Synthesis: Blocked on Paper D QC, Paper E, Compendium, and Capstone completion.**
 
