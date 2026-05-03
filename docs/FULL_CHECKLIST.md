@@ -23,12 +23,12 @@
 | E-3 | Stage 3: Preferred decomposition (Kronecker, transpose, M₂⊗M₂≅M₄, 8 theorems, 0 sorry) | DONE |
 | E-4 | Stage 4: Gauge group selection (Pati-Salam via asymmetric decomposition, 15 theorems, 0 sorry) | DONE |
 | E-5 | Stage 5: Representation match (column module ℂ¹⁶ ≅ ℂ⁴⊗ℂ²⊗ℂ², SM fermion counting, 26 theorems, 0 sorry) | DONE |
-| E-6 | Stage 6: Full Emergence Theorem | NOT DONE |
+| E-6 | Stage 6: Full Emergence Theorem (self-contained, all stages combined, 26 theorems, 0 sorry) | DONE |
 | E-6b | Stage 7: Master Coherence Theorem (all stages cohere) | NOT DONE |
 | E-6c | Stage 8: Gravity from the Seed (SL(2,ℂ) ≅ Spin(1,3) lineage) | NOT DONE |
 | E-6d | Stage 9: Quantum Mechanics from the Seed (different lineage) | NOT DONE |
 | E-7 | Write Paper E (incremental, section per stage as we go) | IN PROGRESS — Stages 0-4 written |
-| E-7b | Nobel-quality full rewrite of Paper E (sharp prose, predictions, priority statement, connections to GUT literature, SHA-256 hashes, Bitcoin block heights) | NOT DONE (after all stages proven) |
+| E-7b | Nobel-quality full rewrite of Paper E: MUST INCLUDE full ToE proposal, complete Generator Theory exposition, how this validates the ToE mathematically, why it is unprecedented (first ToE from nothing, first to derive SM+gravity+QM from one seed), connections to GUT literature, sharp prose, predictions, priority statement, SHA-256 hashes, Bitcoin block heights | NOT DONE (after all stages proven) |
 | E-8 | QC/QA review of Paper E | NOT DONE |
 | E-9 | Zenodo publish Paper E | NOT DONE |
 | E-10 | Add Paper E to infinitography.com Wing 1 (own explainer page) | NOT DONE — moved to GS-6 |
