@@ -295,6 +295,26 @@ A section WITHIN the compendium that explains how it was built and what the vali
   - Logos AI then formally articulates and machine-verifies what Gnosis discovers.
 - **DEFINE X (what Y discovers):** Cross-domain structural unity — that independent mathematical and scientific fields share formal structure which can be autonomously identified, formally stated, and machine-verified. The deeper discovery (from iterative convergence): this shared structure ITSELF has structure — it cascades, contracts, and terminates at reflexive fixed points.
 - **THE CLAIM: Y discovered X.** The compendium proves this. Methodologies (1) and (2) discovered cross-domain structural unity, and the compendium's verification chain (Steps 2a–2d) validates that both the discoveries AND the methodologies are mathematically sound. The methodologies are novel, the discoveries are novel, and the compendium is the proof of both.
+- **NAME AND DEFINE THE FULL METHODOLOGY (provenance claim):**
+  The compendium must define, name, and claim provenance over the ENTIRE possibility space of this type of methodology. Not just the two specific instances we used (pairwise convergence + iterative convergence), but the full generalised framework:
+
+  **The general method (needs a name — define in compendium):**
+  1. Find convergences between fields — not just pairwise, but ANY number of fields simultaneously (2-way, 3-way, n-way)
+  2. Iterate the convergences toward fixed points — apply the convergence operation recursively to its own outputs at any depth
+  3. Apply formal mathematical proof to the objects produced at any stage
+  4. Any permutation of the above: vary the number of fields compared, the iteration depth, the verification method, the domain selection strategy, the grouping strategy at each level
+
+  What we actually DID (Gnosis + Logos) is ONE instantiation of this general methodology. The full possibility space includes: different starting field sets, different comparison arities (pairwise, triplewise, n-wise), different iteration strategies (breadth-first, depth-first, selective), different formalisation targets (Lean, Coq, Isabelle, pen-and-paper), different stopping criteria.
+
+  **The compendium must:**
+  - Give this general methodology a NAME (covering the entire possibility space)
+  - Define it formally (what the operations are, what the parameters are, what the space of possible instantiations is)
+  - State that convergence and iterative convergence (as used by Gnosis) are specific instantiations
+  - Claim provenance over the general framework via Bitcoin timestamp
+  - Note: some sub-methods already named (convergence, iterative convergence) — the compendium EXPANDS to name the umbrella methodology encompassing all permutations
+
+  This is important because anyone could later do "4-way convergence with Coq verification" or "convergence with different iteration strategy" — all of these fall under the methodology we are defining and timestamping here.
+
 - **Honest limitations:** verification rate (what % of 256 succeeded?), which convergences could NOT be verified (and why), where Gnosis's cascade structure diverged from what formal proofs showed.
 - **Reproducibility:** Tools are open source. Anyone can run Gnosis + Logos on their own domains.
 
