@@ -317,9 +317,21 @@ lean_verify/            — Lean 4 project with Mathlib dependency (6.9 GB)
 6. **Proofread 8 capstone papers** — Using the Bible, citing PROVEN formalisations.
 7. **Compose remaining 14 capstone papers** — Citing PROVEN formalisations.
 
+8. **STAGE A GRAND SYNTHESIS: The Complete ToE Paper** — After Paper D, Paper E, Compendium, and Capstone papers are all done, write ONE mega paper that combines ALL evidence into the most robust possible case for the ToE. Sources: Paper D (machine-verified backbone), Paper E (SM emergence), Papers A/B/C (original ToE), Proposal doc, 200+ formalisations from Compendium, 22 capstone papers. This paper either validates or upgrades the ToE based on all evidence. If Stage B never happens, this paper alone is the definitive artifact.
+   - GS-1: Collect all evidence (Paper D, E, A/B/C, Proposal, 200+ formalisations, capstone papers, compendium) — **NOT DONE**
+   - GS-2: Write Grand Synthesis paper — **NOT DONE**
+   - GS-3: QC/QA review — **NOT DONE**
+   - GS-4: Zenodo publish Grand Synthesis — **NOT DONE**
+   - GS-5: Add Paper D to infinitography.com Wing 1 (explainer page) — **NOT DONE**
+   - GS-6: Add Paper E to infinitography.com Wing 1 (explainer page) — **NOT DONE**
+   - GS-7: Add Grand Synthesis to infinitography.com Wing 1 (explainer page) — **NOT DONE**
+   - GS-8: Rewrite infinitography.com Wing 2 (ToE) incorporating Grand Synthesis + Paper D + Paper E — **NOT DONE**
+   - GS-9: Bitcoin stamp everything — **NOT DONE**
+
 **Paper D progress: 8/8 theorems + Coherence Theorem PROVEN. 61 sub-theorems. 0 sorry. All Bitcoin-timestamped. Paper D rewritten (1,063 lines). Zenodo PUBLISHED (DOI: 10.5281/zenodo.20005116). NEXT: QC review, then Paper E.**
 **Paper E progress: Plan written and Bitcoin-stamped. Stage 1 IN PROGRESS.**
 **Compendium progress: 3/256 PROVEN (3/90 capstone). Entries 1, 2, 3 verified and Bitcoin-stamped.**
+**Grand Synthesis: Blocked on Paper D QC, Paper E, Compendium, and Capstone completion.**
 
 ---
 

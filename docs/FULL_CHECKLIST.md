@@ -11,8 +11,8 @@
 | D-4 | Full Paper D rewrite (1,063 lines) | DONE |
 | D-5 | Zenodo publish Paper D (PDF + MD) | DONE — DOI: 10.5281/zenodo.20005116 |
 | D-6 | QC/QA review of Paper D (proofread, improve all maths) | NOT DONE |
-| D-7 | Add Paper D to infinitography.com Wing 1 (own explainer page) | NOT DONE |
-| D-8 | Add Paper D to infinitography.com Wing 2 (ToE wing update) | NOT DONE |
+| D-7 | Add Paper D to infinitography.com Wing 1 (own explainer page) | NOT DONE — moved to GS-5 |
+| D-8 | Add Paper D to infinitography.com Wing 2 (ToE wing update) | NOT DONE — moved to GS-8 |
 
 ## Paper E: Emergence of the Standard Model
 | # | Task | Status |
@@ -27,8 +27,8 @@
 | E-7 | Write Paper E | NOT DONE |
 | E-8 | QC/QA review of Paper E | NOT DONE |
 | E-9 | Zenodo publish Paper E | NOT DONE |
-| E-10 | Add Paper E to infinitography.com Wing 1 (own explainer page) | NOT DONE |
-| E-11 | Add Paper E to infinitography.com Wing 2 (ToE wing update) | NOT DONE |
+| E-10 | Add Paper E to infinitography.com Wing 1 (own explainer page) | NOT DONE — moved to GS-6 |
+| E-11 | Add Paper E to infinitography.com Wing 2 (ToE wing update) | NOT DONE — moved to GS-8 |
 
 ## Compendium: Machine-Verified Convergences
 | # | Task | Status |
@@ -58,6 +58,19 @@
 | GL-6 | Gnosis v3 (5 external verification checkpoints) | DONE (code built) |
 | GL-7 | Logos v2 (Lean-first, lake env lean) | DONE (code built) |
 | GL-8 | Re-run Stage A proofs through Logos v2 | IN PROGRESS |
+
+## Stage A Grand Synthesis: The Complete ToE Paper
+| # | Task | Status |
+|---|------|--------|
+| GS-1 | Collect all evidence: Paper D (machine-verified backbone), Paper E (SM emergence), Papers A/B/C (original ToE), Proposal doc, 200+ formalisations, 22 capstone papers, compendium | NOT DONE |
+| GS-2 | Write Grand Synthesis paper — one mega paper combining ALL ToE evidence, upgrading the ToE where needed | NOT DONE |
+| GS-3 | QC/QA review of Grand Synthesis paper | NOT DONE |
+| GS-4 | Zenodo publish Grand Synthesis paper | NOT DONE |
+| GS-5 | Add Paper D to infinitography.com Wing 1 (own explainer page) | NOT DONE |
+| GS-6 | Add Paper E to infinitography.com Wing 1 (own explainer page) | NOT DONE |
+| GS-7 | Add Grand Synthesis paper to infinitography.com Wing 1 (own explainer page) | NOT DONE |
+| GS-8 | Rewrite infinitography.com Wing 2 (ToE) incorporating Grand Synthesis + Paper D + Paper E | NOT DONE |
+| GS-9 | Bitcoin stamp everything | NOT DONE |
 
 ## Stage B: The Big Run (81 fields)
 | # | Task | Status |
@@ -152,6 +165,8 @@
 | QA-10 | ORCID populated with all DOIs | NOT DONE |
 | QA-11 | OTS upgrade verification (all stamps finalized) | NOT DONE |
 | QA-12 | Repo hygiene (remove internal docs from public repos) | NOT DONE |
+| QA-13 | Convergence Codex repo cleanup (remove internal docs, sensitive files, tidy structure) | NOT DONE |
+| QA-14 | Make convergence-codex repo PUBLIC on GitHub | NOT DONE (after QA-13) |
 
 ## Stage 6: Outreach (Kerygma AI)
 | # | Task | Status |
