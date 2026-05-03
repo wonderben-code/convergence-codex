@@ -1,7 +1,7 @@
 # Master Roadmap — All Projects
 
 **Creator:** Mark E. Mala (Ekram Alam)
-**Last updated:** 3 May 2026 (capstone quality + catalogue strategy)
+**Last updated:** 3 May 2026 (Gnosis v3 knowledge verification + Logos v2 multi-tool formalisation + Kerygma outreach AI)
 **This is THE canonical roadmap. One file. All projects. Always consult this first.**
 
 ---
@@ -170,7 +170,10 @@ Not just pairwise comparisons — combinatorial at EVERY level:
 | 5c-iii | Compose remaining 14 capstone papers manually with AI (Claude Code) — use cached claims + plans, write each paper directly with actual formalisation mathematics, no Synthesis AI | NOT DONE |
 | 5c-iv | Proofread + publish remaining 14 capstone papers to Zenodo | NOT DONE |
 | 5d | **Stage A FORMALISATION CATALOGUE** — Instead of ~70 individual papers, create ONE comprehensive catalogue document listing ALL 256 formalisations with their mathematical propositions, proof sketches, confidence scores, adversarial verdicts, and domain pairs. Published as a single Zenodo deposit. Much more useful as a reference work than hundreds of thin papers. AI-composed (no API cost). | NOT DONE |
-| 6 | **Stage B — THE BIG RUN** — Full Codex across ALL 81 fields of science, maths, physics (6 phases): all pairwise convergences (cross-category first), codex analysis, multi-field groups, meta-convergences, recursive cascade to fixed points, everything through Logos (NOT Synthesis). 10x more data than Stage A. | NOT DONE |
+| 5e | **GNOSIS v3 — VERIFIED KNOWLEDGE** — Upgrade Gnosis AI from parametric-only (Claude's training data) to externally verified knowledge. Every surveyed result cross-referenced against multiple academic databases. Zero hazy knowledge. Zero unestablished claims. Only verified, peer-reviewed, established science. See BUILD PLAN below. | NOT DONE |
+| 5f | **LOGOS v2 — MULTI-TOOL FORMALISATION** — Upgrade Logos from Lean-only (which was never installed) to multi-tool verification: Lean 4 (now installed v4.29.1), Z3 SMT solver (now installed v4.16.0), SymPy symbolic math (now installed v1.14.0). Maximise machine-verified formalisations. Re-run all 256 proofs through new verification stack. See BUILD PLAN below. | NOT DONE |
+| 5g | **Re-run Stage A proofs through Logos v2** — Take all 256 existing formalisations and run them through the new multi-tool verification stack. Triage results: Tier 1 (machine-verified), Tier 2 (partially verified), Tier 3 (unverifiable by current tools). Update proof records with verification results. | NOT DONE |
+| 6 | **Stage B — THE BIG RUN** — Full Codex across ALL 81 fields of science, maths, physics (6 phases): all pairwise convergences (cross-category first), codex analysis, multi-field groups, meta-convergences, recursive cascade to fixed points, everything through Logos v2 (multi-tool verification, NOT Synthesis). 10x more data than Stage A. Uses Gnosis v3 (verified knowledge only). | NOT DONE |
 | 6c | **Stage B CAPSTONE** — Capstone papers from the broader Stage B dataset, composed manually with AI (Claude Code). Each paper individually proofread. Do Stage A claims hold? Strengthen? New ones emerge? | NOT DONE |
 | 6d | **Stage B FORMALISATION CATALOGUE** — Same as Stage A: ONE comprehensive catalogue of all new formalisations from the 81-field run, not hundreds of individual papers. AI-composed (no API cost). | NOT DONE |
 | 7 | **Stage C — THE CROWN JEWELS** — The capstone of capstones. From ALL of Stage A + B, identify the 3-5 MOST terminal, MOST unifying, MOST revolutionary claims — the absolute top of the cascade. These are the claims that, if correct, would each individually transform our understanding of reality. Write the definitive, focused papers for each. Not broad surveys — laser-focused on the single most powerful version of each claim. | NOT DONE |
@@ -196,6 +199,246 @@ Not just pairwise comparisons — combinatorial at EVERY level:
 - API mode kept for open source users who don't have Max plan. Dual mode: `--max-plan` for us, default API for everyone else.
 - Stage B can now run entirely free (previously estimated $3,500-6,000 in API costs).
 
+---
+
+#### BUILD PLAN: Gnosis v3 — Verified Knowledge (Step 5e)
+
+**Problem:** Gnosis v1/v2 relies 100% on Claude's parametric knowledge. No external verification. No fact-checking. Paper 19 acknowledges: "We do not know the false positive or false negative rates." Some domains may include unestablished, speculative, or hallucinated results.
+
+**Solution:** Multi-source external verification. Every surveyed result must pass through 5 independent checkpoints before it enters the pipeline. Anything that fails verification is culled.
+
+**Architecture (~400-500 lines):**
+```
+gnosis/verification/
+  __init__.py
+  semantic_scholar.py   — Semantic Scholar API (200M+ papers, citation counts)
+  crossref.py          — CrossRef DOI verification (verify citations exist)
+  openalex.py          — OpenAlex API (250M+ works, concept mapping, open access)
+  arxiv.py             — arXiv API (preprints, maths/physics)
+  wikipedia.py         — Wikipedia/Wikidata notability check
+  verifier.py          — Orchestrator: runs all sources, produces verdict
+  domain_audit.py      — Taxonomy-level quality audit
+```
+
+**The 5 External Checkpoints:**
+
+| # | Source | What It Checks | API | Cost |
+|---|--------|---------------|-----|------|
+| 1 | **Semantic Scholar** | Paper exists, citation count, influential citations, abstract match | `api.semanticscholar.org` | Free (100 req/s) |
+| 2 | **CrossRef** | DOI exists, metadata matches (authors, year, journal) | `api.crossref.org` | Free |
+| 3 | **OpenAlex** | Independent verification, concept tags, institution data | `api.openalex.org` | Free (no key needed) |
+| 4 | **arXiv** | Preprint exists (maths/physics), category classification | `export.arxiv.org/api` | Free |
+| 5 | **Wikipedia/Wikidata** | Result is notable enough to be documented; structured data | `en.wikipedia.org/api` | Free |
+
+**Verification Logic:**
+```
+For each surveyed result:
+  1. Search Semantic Scholar by title + author → get paper_id, citation_count
+  2. If found: verify DOI via CrossRef → confirm metadata
+  3. Cross-check in OpenAlex → independent confirmation
+  4. For maths/physics: search arXiv → verify preprint exists
+  5. Check Wikipedia for named theorem/result → notability signal
+
+  VERDICT:
+    VERIFIED (3+ sources confirm)      → Include in pipeline
+    PARTIALLY_VERIFIED (1-2 sources)   → Include but flag for review
+    UNVERIFIED (0 sources confirm)     → CULL from pipeline
+    SUSPICIOUS (contradictory data)    → CULL + log warning
+```
+
+**Citation Threshold:** Results with <50 citations get flagged. Results with <10 citations in any database are culled unless they're very recent (<2 years old).
+
+**Domain Quality Audit:** Before Stage B, audit all 81 fields in taxonomy:
+- **Tier 1 (rock solid):** QM, GR, group theory, topology, thermodynamics, number theory — keep all
+- **Tier 2 (established):** evolutionary biology, genomics, condensed matter — keep all
+- **Tier 3 (speculative):** consciousness studies, emergence theory — CULL or mark as "speculative domain"
+- Each domain gets a `verification_rate` after running: what % of Claude's surveyed results were externally verified? Domains with <60% verification rate get flagged for manual review or removal.
+
+**Integration with Surveyor:** After Claude surveys a domain, the Verifier runs automatically. The pipeline only proceeds with verified results. Unverified results are saved to a separate `culled/` directory for transparency.
+
+**Net effect:** Gnosis goes from "Claude's opinion about science" to "Claude's analysis of independently verified science." Every result in the pipeline can be traced to a real paper with a real DOI and real citations.
+
+---
+
+#### BUILD PLAN: Logos v2 — Multi-Tool Formalisation (Step 5f)
+
+**Problem:** Logos v1 generates Lean 4 code but Lean was never installed (zero verifications). Even with Lean installed (now v4.29.1), many proofs fail because they reference Mathlib theories that don't exist yet or address open mathematical problems. Result: 0/256 machine-verified proofs.
+
+**Solution:** Multi-tool verification stack. Instead of Lean-only, use 4 complementary tools — each covering different mathematical domains. Even if Lean can't verify a proposition, Z3, SymPy, or computational checks might.
+
+**Tools now installed:**
+- Lean 4 v4.29.1 (interactive theorem prover, Mathlib library)
+- Z3 v4.16.0 (SMT solver — automated logical/algebraic proofs)
+- SymPy v1.14.0 (symbolic mathematics — algebraic verification)
+- NumPy/SciPy (numerical computation — sanity checks)
+
+**Architecture (~300-400 lines, extending existing Logos):**
+```
+logos/
+  lean_bridge.py        — (existing, update PATH to ~/.elan/bin)
+  z3_bridge.py          — NEW: translate propositions to Z3, auto-prove
+  sympy_bridge.py       — NEW: verify algebraic identities/equivalences
+  numerical_bridge.py   — NEW: Monte Carlo / numerical sanity checks
+  multi_verifier.py     — NEW: orchestrate all tools, consensus scoring
+```
+
+**Verification Tiers:**
+
+| Tier | Tool(s) | What It Proves | Coverage |
+|------|---------|---------------|----------|
+| **T1: Full Proof** | Lean 4 + Mathlib | Complete formal verification, machine-checkable | ~10-20% of propositions |
+| **T2: Automated Proof** | Z3 SMT solver | Logical satisfiability, algebraic constraints, first-order logic | ~25-35% of propositions |
+| **T3: Symbolic Verification** | SymPy | Algebraic identity, equation equivalence, simplification | ~15-25% of propositions |
+| **T4: Numerical Sanity** | NumPy/SciPy | Monte Carlo sampling, numerical consistency (not proof, but catches nonsense) | ~80% of propositions |
+| **T5: Consensus** | Multiple tools agree | If Z3 + SymPy + numerical all agree → strong evidence | Derived |
+
+**Z3 Bridge Strategy:**
+Many convergence propositions can be expressed as logical formulas. Z3 is an *automated* theorem prover — unlike Lean, it doesn't need manual proof construction. If we can translate a proposition into Z3's input language, it proves or disproves it automatically.
+
+Example: "The constraint structure in domain A is isomorphic to domain B" → Express as: ∃f: A→B such that f preserves structure ∧ f is bijective → Z3 checks satisfiability.
+
+**SymPy Bridge Strategy:**
+For algebraic propositions ("Expression X = Expression Y"), SymPy can verify symbolically:
+```python
+from sympy import simplify, symbols
+x = symbols('x')
+assert simplify(expr_a - expr_b) == 0  # Algebraic equivalence
+```
+
+**Iterative Lean Proving (Claude Code approach):**
+Instead of generating Lean code in one shot (which fails), use Claude Code (Max Plan, $0) to iteratively construct proofs:
+1. Generate initial Lean proof sketch
+2. Run `lean --run proof.lean`
+3. Read error messages
+4. Fix errors and regenerate
+5. Repeat until verified or give up after N iterations
+
+This mirrors how human mathematicians actually write Lean proofs.
+
+**Multi-Verifier Consensus:**
+```
+For each formalisation:
+  1. Try Lean 4 → if verified: T1 (strongest)
+  2. Try Z3 → if proved: T2
+  3. Try SymPy → if verified: T3
+  4. Run numerical checks → if consistent: T4
+
+  Consensus score:
+    4 tools agree = 1.0 (machine-verified)
+    3 tools agree = 0.85
+    2 tools agree = 0.70
+    1 tool only   = 0.50
+    0 tools       = 0.30 (natural language proof only)
+```
+
+**Expected improvement:** From 0/256 machine-verified to estimated 80-130/256 with at least one tool verification.
+
+---
+
+#### BUILD PLAN: Kerygma AI — Automated Research Outreach (Stage 6a)
+
+**"Kerygma"** (Greek: κήρυγμα, "proclamation") — the AI that proclaims our discoveries to the people who need to hear them.
+
+**What it does:** Discovers relevant researchers, profiles them from their publications, matches our work to their interests, composes personalised correspondence, sends it, and tracks responses. Each email references the recipient's specific work and links to the exact relevant paper/finding from our body of work.
+
+**Architecture (~1,000-1,200 lines):**
+```
+kerygma/
+  __init__.py
+  discovery.py        — Find researchers via Semantic Scholar, OpenAlex, faculty pages
+  profiler.py         — Build recipient profiles from their publications
+  matcher.py          — Match our papers/findings to each recipient's interests
+  composer.py         — Generate personalised emails via Claude (Max Plan, $0)
+  sender.py           — Email delivery via SendGrid with rate limiting
+  tracker.py          — Track sends, opens, replies, bounces
+  compliance.py       — CAN-SPAM/GDPR compliance, unsubscribe handling
+  cli.py              — CLI interface
+  config.py           — API keys, email settings, sending domain
+  templates/
+    base.html         — Email HTML template (clean, academic)
+    plaintext.txt     — Plain text fallback
+```
+
+**The 6-Stage Pipeline:**
+
+**Stage 1: Discovery** (~150 lines)
+- Input: research topics, keywords, fields (e.g., "convergent evolution," "category theory," "mathematical physics")
+- Sources: Semantic Scholar API (search by topic → get authors), OpenAlex (concepts → researchers), Google Scholar profiles (via scraping), conference speaker lists, university faculty pages
+- Output: `Candidate` objects with name, institution, email, h-index, recent papers, research topics
+- Target: 2,000-5,000 candidates → filtered to 500-1,000
+
+**Stage 2: Profiling** (~150 lines)
+- For each candidate, pull their 5 most recent + 5 most cited papers
+- Extract: research focus areas, methodological approach, which of our domains they work in
+- Classify: theorist vs experimentalist, senior vs early-career, which specific sub-topic
+- Output: `RecipientProfile` with interest_tags, relevance_score, best_contact_angle
+
+**Stage 3: Matching** (~200 lines)
+- Cross-reference each recipient's profile against our 43+ papers and 266+ convergences
+- For each recipient, identify: the 1-3 most relevant papers, the specific convergence that connects to their work, the exact finding that would interest them
+- Rank by match quality — only send to people where we have a genuine, specific connection
+- Output: `Match` objects with paper_ids, convergence_ids, hook_text (why this matters to THEM)
+
+**Stage 4: Composition** (~200 lines)
+- Use Claude (Max Plan, $0) to compose each email
+- Prompt includes: recipient profile, their recent paper abstracts, our matched findings, the specific connection
+- Structure: (1) Reference their work specifically, (2) The connection to our finding, (3) Link to the specific paper, (4) Clear, honest framing (AI-assisted discovery, open source, seeking feedback)
+- Anti-spam: no hype, no sales language, genuine research correspondence tone
+- Each email is unique — not a template with name swapped in
+
+**Stage 5: Sending** (~150 lines)
+- Email service: SendGrid (free tier: 100/day) or Amazon SES ($0.10 per 1,000)
+- Rate limiting: start at 20/day, ramp to 100/day over 2 weeks (warm-up)
+- Proper SPF/DKIM/DMARC on sending domain
+- Unsubscribe link in every email (CAN-SPAM compliance)
+- Bounce handling: auto-remove invalid addresses
+
+**Stage 6: Tracking** (~100 lines)
+- Track: sent, delivered, opened, replied, bounced, unsubscribed
+- Dashboard: response rate by field, by match quality, by paper referenced
+- Follow-up queue: people who opened but didn't reply → single polite follow-up after 7 days
+- Export: CSV of all contacts for CRM or manual follow-up
+
+**Tiered Quality:**
+
+| Tier | Count | Quality | Review |
+|------|-------|---------|--------|
+| **1 (VIP)** | 50-100 | Hand-composed by Kerygma + reviewed by you before send | Dana Scott, key physicists, major labs |
+| **2 (High)** | 200-500 | Fully automated, high match quality | Researchers whose work directly connects |
+| **3 (Broad)** | 500-1000 | Lighter touch, still personalised | Broader field researchers |
+
+**Example output (Tier 1):**
+```
+Subject: Structural convergence between [their field] and [our finding] — open source data
+
+Dear Professor [Name],
+
+Your 2024 paper on [specific paper title] identified [specific result] —
+particularly the finding that [specific structural conclusion from their work].
+
+We've been running an autonomous cross-domain analysis (Gnosis AI, open source)
+across 52 scientific fields, and one of the strongest convergences we found
+connects directly to your result: [specific convergence claim], supported by
+independent findings from [domain pair]. The formal mathematical relationship
+is detailed in our paper "[paper title]" (DOI: [zenodo DOI]).
+
+All 266 convergences, 256 formal proofs, and the full cascade analysis are
+available at [link]. The discovery tools are open source (MIT license).
+
+We'd value your perspective — particularly on whether the [specific structural
+claim] holds under [specific condition from their work].
+
+Best regards,
+Mark E. Mala
+[links]
+```
+
+**Dependencies:** Semantic Scholar API (free), OpenAlex API (free), SendGrid (free tier), Claude Max Plan ($0)
+
+**Total cost per 1,000 emails:** ~$1-5 (SendGrid charges only)
+
+---
+
 **Stage B Phases:**
 1. All pairwise (cross-category FIRST)
 2. Codex Analysis (fingerprints, clustering, transitivity, hubs)
@@ -204,7 +447,7 @@ Not just pairwise comparisons — combinatorial at EVERY level:
 5. Level 3+ recursive cascade
 6. Everything through Logos → Synthesis
 
-**Estimated total cost (all stages): ~$3,500-6,000**
+**Estimated total cost (all stages): ~$0-50 with Max Plan** (was $3,500-6,000 before MaxPlanAPI). Only costs: SendGrid for Kerygma emails (~$5).
 
 #### Repos
 
@@ -312,12 +555,16 @@ These were originally part of Stage 3 but should happen AFTER the Codex and Pans
 
 ---
 
-### Stage 6: Outreach — NOT STARTED
+### Stage 6: Outreach (Kerygma AI) — NOT STARTED
 
-- **6a. AgentCiv** — AI researchers, MAS labs, frontier labs, 70+
-- **6b. Infinitography/Gnosis** — mathematicians, physicists, philosophers, 200+
-- **6c. Combined narrative** — for people spanning both
-- **6d. Logistics** — tracking, disclaimers, follow-ups
+**Kerygma AI** (Greek: "proclamation") — automated outreach system. Replaces manual 40-person email list with a system that discovers, profiles, matches, composes, and sends personalised research correspondence at scale. See BUILD PLAN below.
+
+- **6a. Build Kerygma AI** — Discovery + Profiling + Matching + Composition + Sending + Tracking
+- **6b. AgentCiv outreach** — AI researchers, MAS labs, frontier labs, 100+
+- **6c. Infinitography/Gnosis outreach** — mathematicians, physicists, philosophers, 500+
+- **6d. Combined narrative** — for people spanning both domains
+- **6e. Scale run** — 1000+ personalised research correspondences
+- **6f. Logistics** — deliverability, compliance, follow-ups, tracking
 
 ---
 
@@ -347,6 +594,8 @@ These were originally part of Stage 3 but should happen AFTER the Codex and Pans
 | Recursive Triad | Recursive (VISION) | — |
 | The Colony | Capstone | Commercial |
 | Gnosis AI | Knowledge discovery | MIT |
+| Logos AI | Formal verification | MIT |
+| Kerygma AI | Automated research outreach | MIT |
 | Infinitography website | Research programme | — |
 
 ---
@@ -401,7 +650,9 @@ NOW ━━━━━━ STAGE 3b: THE CONVERGENCE CODEX ━━━━━━━━�
      → Compose remaining 14 capstone papers (~$60-80)
      → Proofread + publish remaining 14 to Zenodo
      Stage A FORMALISATION CATALOGUE — ONE document with all 256 formalisations (no API cost)
-     Stage B — THE BIG RUN: full Codex across 81 fields (10x more data)
+     GNOSIS v3 — Verified Knowledge (5 external verification checkpoints, domain audit, cull hazy fields)
+     LOGOS v2 — Multi-Tool Formalisation (Lean 4 + Z3 + SymPy + numerical, re-run all 256 proofs)
+     Stage B — THE BIG RUN: full Codex across 81 fields (10x more data, using Gnosis v3 + Logos v2)
      Stage B CAPSTONE — capstone papers from the big run (manual proofread each)
      Stage B FORMALISATION CATALOGUE — ONE document with all new formalisations (no API cost)
      Stage C — THE CROWN JEWELS: 3-5 most terminal/unifying claims get definitive papers
@@ -425,7 +676,7 @@ THEN    Stage 3d — Remaining Infinitography website
 THEN    Stage 2 remainder (AgentCiv: 4a-4c, dogfood, papers 5+6)
 THEN    Stage 4 (Polish both projects + Gnosis AI trademark)
 THEN    Stage 5 (QA/QC — the big pre-outreach audit)
-THEN    Stage 6 (Outreach — AgentCiv + Infinitography + Convergence Codex)
+THEN    Stage 6 (Kerygma AI — automated research outreach at scale)
 LATER   Stages 7-9 (Recursive Loop, Colony, Full Stack)
 SEPARATE    Exponential Atlas (unblocked by integrity audit)
 ```
