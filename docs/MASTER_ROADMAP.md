@@ -288,13 +288,21 @@ lean_verify/            — Lean 4 project with Mathlib dependency (6.9 GB)
 **The Compendium approach (3 May 2026):** Instead of running a script, each proof is verified manually with Claude Code (Opus). This gives highest quality: real-time error fixing, iterative improvement, honest write-up. Each entry immediately committed and Bitcoin-stamped. Format: `data/compendium/compendium.md`, reference: `docs/COMPENDIUM_FORMAT.md`.
 
 **Execution order (3 May 2026):**
-1. **Capstone proofs first (90 of 256)** — The 90 convergences cited by the 8 capstone papers. These are priority because they underpin the most important claims. Tracker: `docs/PROOF_TRACKER.md`.
-2. **Remaining 166 proofs** — Systematically, one at a time.
-3. **Paper Quality Bible** — Write after compendium is substantially complete.
-4. **Proofread 8 capstone papers** — Using the Bible, citing PROVEN formalisations.
-5. **Compose remaining 14 capstone papers** — Citing PROVEN formalisations.
+1. **PAPER D: Machine-Verified ToE** — Standalone Nobel-grade paper establishing mathematical provenance for the Generator Theory of Everything. 8 core theorems, falsifiable predictions, Bitcoin-timestamped. If the ToE is later confirmed, this paper alone establishes priority.
+   - a. Prove all 8 theorems in Lean 4 (3/8 PROVEN: Lawvere FPT, No-Cloning, Local-to-Global)
+   - b. Read Papers A, B, C in full to understand complete ToE picture (master key vs key generator, ontological claims)
+   - c. Polish Paper D into comprehensive standalone ToE paper (all maths, all predictions, honest limitations)
+   - d. Zenodo publish Paper D
+   - e. Add Paper D to infinitography.com: Wing 1 (own explainer page) + Wing 2 (ToE wing update)
+   - File: `data/papers/paper_d_machine_verified_toe.md`
+2. **Capstone proofs first (90 of 256)** — The 90 convergences cited by the 8 capstone papers. These are priority because they underpin the most important claims. Tracker: `docs/PROOF_TRACKER.md`.
+3. **Remaining 166 proofs** — Systematically, one at a time.
+4. **Paper Quality Bible** — Write after compendium is substantially complete.
+5. **Proofread 8 capstone papers** — Using the Bible, citing PROVEN formalisations.
+6. **Compose remaining 14 capstone papers** — Citing PROVEN formalisations.
 
-**Progress: 3/256 PROVEN (3/90 capstone). Entries 1, 2, 3 verified and Bitcoin-stamped.**
+**Paper D progress: 3/8 theorems PROVEN (Lawvere 812f9dd, No-Cloning 9071aa2, Local-to-Global cec73d7). 5 remaining.**
+**Compendium progress: 3/256 PROVEN (3/90 capstone). Entries 1, 2, 3 verified and Bitcoin-stamped.**
 
 ---
 
