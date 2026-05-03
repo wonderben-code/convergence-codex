@@ -1,7 +1,7 @@
 # Master Roadmap — All Projects
 
 **Creator:** Mark E. Mala (Ekram Alam)
-**Last updated:** 3 May 2026 (Compendium of Formally Verified Convergences — Lean 4 proofs + Bitcoin provenance)
+**Last updated:** 3 May 2026 (Paper D complete, Paper E Emergence Programme started, roadmap updated with full pipeline)
 **This is THE canonical roadmap. One file. All projects. Always consult this first.**
 
 ---
@@ -288,20 +288,37 @@ lean_verify/            — Lean 4 project with Mathlib dependency (6.9 GB)
 **The Compendium approach (3 May 2026):** Instead of running a script, each proof is verified manually with Claude Code (Opus). This gives highest quality: real-time error fixing, iterative improvement, honest write-up. Each entry immediately committed and Bitcoin-stamped. Format: `data/compendium/compendium.md`, reference: `docs/COMPENDIUM_FORMAT.md`.
 
 **Execution order (3 May 2026):**
-1. **PAPER D: Machine-Verified ToE** — Standalone Nobel-grade paper establishing mathematical provenance for the Generator Theory of Everything. 8 core theorems, falsifiable predictions, Bitcoin-timestamped. If the ToE is later confirmed, this paper alone establishes priority.
-   - a. Prove all 8 theorems in Lean 4 (3/8 PROVEN: Lawvere FPT, No-Cloning, Local-to-Global)
-   - b. Read Papers A, B, C in full to understand complete ToE picture (master key vs key generator, ontological claims)
-   - c. Polish Paper D into comprehensive standalone ToE paper (all maths, all predictions, honest limitations)
-   - d. Zenodo publish Paper D
-   - e. Add Paper D to infinitography.com: Wing 1 (own explainer page) + Wing 2 (ToE wing update)
+1. **PAPER D: Machine-Verified ToE** — Standalone paper establishing mathematical provenance for the Generator Theory of Everything. 8 core theorems + Master Coherence Theorem, falsifiable predictions, Bitcoin-timestamped. If the ToE is later confirmed, this paper alone establishes priority.
+   - a. Prove all 8 theorems in Lean 4 — **DONE** (8/8 PROVEN, 61 sub-theorems, 0 sorry)
+   - b. Read Papers A, B, C in full — **DONE** (master key vs key generator, 7 structural facts, 3 terminal characterisations)
+   - c. Write Master Coherence Theorem (GToECoherence.lean) — **DONE** (commit 3635ac1)
+   - d. Full Paper D rewrite (1,063 lines, Key Generator Principle, 6 Criteria, honest scope) — **DONE**
+   - e. **Zenodo publish Paper D** (PDF + MD, both artifacts) — **NOT DONE**
+   - f. **QC/QA review of Paper D** (proofread, improve, check all maths) — **NOT DONE**
+   - g. **Add Paper D to infinitography.com Wing 1** (own Anthropic-style explainer page) — **NOT DONE**
+   - h. **Add Paper D to infinitography.com Wing 2** (ToE wing update with new content) — **NOT DONE**
    - File: `data/papers/paper_d_machine_verified_toe.md`
-2. **Capstone proofs first (90 of 256)** — The 90 convergences cited by the 8 capstone papers. These are priority because they underpin the most important claims. Tracker: `docs/PROOF_TRACKER.md`.
-3. **Remaining 166 proofs** — Systematically, one at a time.
-4. **Paper Quality Bible** — Write after compendium is substantially complete.
-5. **Proofread 8 capstone papers** — Using the Bible, citing PROVEN formalisations.
-6. **Compose remaining 14 capstone papers** — Citing PROVEN formalisations.
+   - Lean files: `lean_verify/LawvereFixedPoint.lean`, `ReflexiveDomainFP.lean`, `SeedForced.lean`, `InfiniteContent.lean`, `Inexhaustibility.lean`, `ConstraintContent.lean`, `_proof_003.lean`, `_proof_002.lean`, `GToECoherence.lean`
+2. **PAPER E: Emergence of the Standard Model from the Generator Construction** — The central prediction: show SU(3)×SU(2)×U(1) emerges from iterated internal hom in FdVect_C. 6 stages, each producing machine-verified theorems. Plan doc: `docs/EMERGENCE_PROGRAMME.md`.
+   - Stage 1: Compute compact closed lineage (C² → M₂(C) → M₄(C) → M₁₆(C)) — **IN PROGRESS**
+   - Stage 2: SU(2) emerges at D₁ (Skolem-Noether, Aut(M₂) = PGL(2)) — **NOT DONE**
+   - Stage 3: Preferred decomposition via Double Commutant (M₄ = M₂ tensor M₂ → SU(2)×SU(2)) — **NOT DONE**
+   - Stage 4: Gauge group selection (iteration-compatible automorphisms → SU(3)×SU(2)×U(1)) — **NOT DONE** (research core)
+   - Stage 5: Representation match (Standard Model fermions from iteration reps) — **NOT DONE**
+   - Stage 6: Full Emergence Theorem — **NOT DONE**
+   - QC/QA review of Paper E — **NOT DONE**
+   - Zenodo publish Paper E — **NOT DONE**
+   - Add Paper E to infinitography.com Wing 1 (own explainer page) + Wing 2 (ToE wing update) — **NOT DONE**
+   - File: `data/papers/paper_e_emergence.md` (to be created)
+   - Lean files: `lean_verify/emergence/` directory (to be created)
+3. **Capstone proofs (90 of 256)** — The 90 convergences cited by the 8 capstone papers. These are priority because they underpin the most important claims. Tracker: `docs/PROOF_TRACKER.md`.
+4. **Remaining 166 proofs** — Systematically, one at a time.
+5. **Paper Quality Bible** — Write after compendium is substantially complete.
+6. **Proofread 8 capstone papers** — Using the Bible, citing PROVEN formalisations.
+7. **Compose remaining 14 capstone papers** — Citing PROVEN formalisations.
 
-**Paper D progress: 8/8 theorems PROVEN. 57 sub-theorems. 0 sorry. All Bitcoin-timestamped. NEXT: Read Papers A/B/C deeply, polish Paper D, Zenodo publish.**
+**Paper D progress: 8/8 theorems + Coherence Theorem PROVEN. 61 sub-theorems. 0 sorry. All Bitcoin-timestamped. Paper D rewritten (1,063 lines). NEXT: Zenodo publish, then Paper E.**
+**Paper E progress: Plan written and Bitcoin-stamped. Stage 1 IN PROGRESS.**
 **Compendium progress: 3/256 PROVEN (3/90 capstone). Entries 1, 2, 3 verified and Bitcoin-stamped.**
 
 ---
@@ -616,16 +633,26 @@ NOW ━━━━━━ STAGE 3b: THE CONVERGENCE CODEX ━━━━━━━━�
   ✅ Gnosis v3 — 5 external verification checkpoints, code simplified, Bitcoin-stamped
   ✅ Logos v2 — Lean-first, lake env lean with Mathlib, auto-detect, Bitcoin-stamped
 
-  ▶▶ THE COMPENDIUM — Formally Verified Cross-Domain Convergences (IN PROGRESS)
+  ▶▶ PAPER D — Machine-Verified ToE (WRITTEN, NEEDS ZENODO PUBLISH)
+     8 theorems + Coherence Theorem. 61 sub-theorems. 0 sorry. 1,063 lines.
+     NEXT: Zenodo publish (PDF + MD) → QC review → infinitography.com updates
+
+  ▶▶ PAPER E — Emergence of the Standard Model (IN PROGRESS)
+     Show SU(3)×SU(2)×U(1) emerges from Generator construction in FdVect_C.
+     Plan: docs/EMERGENCE_PROGRAMME.md (Bitcoin-stamped)
+     Stage 1 (lineage computation) IN PROGRESS.
+     Each stage produces machine-verified Lean proofs.
+     THIS IS THE CENTRAL PREDICTION OF THE ToE.
+
+  THEN: THE COMPENDIUM — Formally Verified Cross-Domain Convergences
      All 256 formalisations getting fresh Lean 4 code + local verification.
      Each proof: generate Lean → verify with Mathlib → sorry elimination →
      write up in compendium → Bitcoin stamp. One at a time, manually with AI.
-     Format: data/compendium/compendium.md (Nobel/Fields Medal provenance format)
+     Format: data/compendium/compendium.md
      Reference doc: docs/COMPENDIUM_FORMAT.md
      Progress: 2/256 PROVEN (3 May 2026)
-     THIS IS THE FORMALISATION CATALOGUE — machine-verified, not just listed.
 
-  NEXT: Paper Quality Bible (reference doc for capstone paper quality)
+  THEN: Paper Quality Bible (reference doc for capstone paper quality)
   THEN: Proofread 8 existing capstone papers (now citing PROVEN formalisations)
   THEN: Publish v3 proofread capstone papers to Zenodo
   THEN: Compose remaining 14 capstone papers (citing PROVEN formalisations)
