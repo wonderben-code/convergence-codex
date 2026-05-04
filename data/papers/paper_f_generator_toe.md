@@ -2,9 +2,9 @@
 
 **Author:** Mark E. Mala (Ekram Alam)
 **Status:** LIVING DOCUMENT (updated as results are proven)
-**Version:** 1.7 (4 May 2026)
+**Version:** 1.8 (4 May 2026)
 **Repository:** github.com/wonderben-code/convergence-codex
-**Builds on:** Papers D + E (233 theorems) + Paper F results (299 theorems)
+**Builds on:** Papers D + E (233 theorems) + Paper F results (314 theorems)
 **Bitcoin provenance:** Each addition committed + pushed for timestamping
 
 ---
@@ -1469,10 +1469,11 @@ The cross-lineage interaction space has dimension N_B × N_F × N_grav = 52 × 9
 | F3.8c: Newton's constant via RG | `F3_8c_NewtonsConstant.lean` | 17 | ✅ 0 sorry |
 | F3.8d: Cosmological constant (L1) | `F3_8d_CosmologicalConstant.lean` | 15 | ✅ 0 sorry |
 | F3.8d-ii: SSB vacuum shifts (L2) + cumulative | `F3_8d_ii_SSBVacuumShifts.lean` | 17 | ✅ 0 sorry |
+| F3.8d-iii: RG running of vacuum energy (L3) | `F3_8d_iii_RGRunningVacuumEnergy.lean` | 15 | ✅ 0 sorry |
 | F3.8d-iv: Cross-lineage interference (L4) | `F3_8d_iv_CrossLineageInterference.lean` | 14 | ✅ 0 sorry |
-| **F3.8 TOTAL** | **7 files** | **113** | **✅ ALL PROVEN** |
+| **F3.8 TOTAL** | **8 files** | **128** | **✅ ALL PROVEN** |
 
-**Paper F running total: 299 theorems, 0 sorry.** (206 Papers D+E + 299 Paper F = 505 total)
+**Paper F running total: 314 theorems, 0 sorry.** (206 Papers D+E + 314 Paper F = 520 total)
 
 ### 9.25 Additional Predictions from F3.8d
 
@@ -1509,7 +1510,7 @@ Within the three lineages already established (End, ⟨·,·⟩, Aut), there are
 |-------|---------|-------------------|--------|
 | L1 | Coarse DOF counting (N_B=52, N_F=96) | End + ⟨·,·⟩ lineages | ✅ F3.8d (10¹²⁰ → 10¹¹⁰) |
 | L2 | Symmetry breaking vacuum shifts (PS→SM, EW) | F1.6 + F3.2 (already proven forced) | ✅ F3.8d-ii (monotonic, well-ordered) |
-| L3 | RG running of vacuum energy through mass thresholds | F3.8c (beta coefficients proven) | Planned |
+| L3 | RG running of vacuum energy through mass thresholds | F3.8c (beta coefficients proven) | ✅ F3.8d-iii (UV-dominated, sign change) |
 | L4 | Cross-lineage interference terms in product geometry M×F | Spectral triple structure | ✅ F3.8d-iv (Λ⁴ exact, cross-term = 0) |
 | L5 | Higher-order spectral action corrections O(Λ⁻²) | Heat kernel expansion | Planned |
 | L6 | Non-perturbative topological contributions | Clifford/Spin structure at D₂ | Open |
@@ -1630,6 +1631,37 @@ And the leading Seeley-DeWitt coefficient factorises:
 
 **Prediction F3.8-18.** The CC resolution, when found within the cascade framework, will involve sub-leading spectral terms (Λ² or below) or non-perturbative topology — NOT additional Λ⁴ particle content. The factorisation proves the Λ⁴ sector is closed.
 *Falsification:* If the CC is resolved by a Λ⁴-level mechanism (e.g., new particle species contributing at leading order not in the cascade).
+
+### 9.29 Layer 3 Results: RG Running of Vacuum Energy (F3.8d-iii)
+
+The vacuum energy is not a single number — it RUNS with energy scale as particles decouple at their mass thresholds. The cascade determines the complete particle spectrum and therefore the complete running.
+
+**13 mass thresholds, all cascade-determined.** Starting from N_B = 52, N_F = 96 at the PS scale, particles decouple in order: 9 leptoquarks at M_X ~ 10¹⁶ GeV, top quark at 173 GeV, Higgs at 125 GeV, Z at 91 GeV, W± at 80 GeV, bottom at 4.2 GeV, tau at 1.8 GeV, charm at 1.3 GeV, and continuing to lighter particles. At each threshold, the effective N_B or N_F decreases by a definite, cascade-determined amount (12 per quark flavour, 4 per lepton, 3 per massive gauge boson).
+
+**DOF tracking through major thresholds:**
+
+| Scale | Threshold | N_B | N_F | Asymmetry (N_F − N_B) |
+|-------|-----------|-----|-----|----------------------|
+| Λ_PS | Full spectrum | 52 | 96 | 44 |
+| M_X | Leptoquarks decouple | 34 | 96 | 62 |
+| m_t | Top quark decouples | 34 | 84 | 50 |
+| m_H | Higgs decouples | 33 | 84 | 51 |
+| m_Z | Z boson decouples | 30 | 84 | 54 |
+| m_W | W± decouple | 24 | 84 | 60 |
+| m_b | Bottom decouples | 24 | 72 | 48 |
+| m_τ | Tau decouples | 24 | 68 | 44 |
+| m_c | Charm decouples | 24 | 56 | 32 |
+| Deep IR | All massive decoupled | 4 | 0 | −4 (bosonic!) |
+
+**Three structural results:**
+
+1. **UV dominance.** The vacuum energy is dominated by the UV cutoff (Λ_PS). The EW-scale correction is suppressed by (m_t/Λ_PS)⁴ ~ 10⁻⁵⁵ — utterly negligible. Layer 1's constant-coefficient approximation is correct to 55 decimal places.
+
+2. **UV-to-IR sign change.** The vacuum energy coefficient changes sign from −44 (fermionic dominance, negative ρ, AdS-like) in the UV to +4 (bosonic dominance, positive ρ, dS-like) in the deep IR. The observed CC is POSITIVE. The sign change is cascade-forced: it follows from the specific particle content.
+
+3. **Complete scale dependence.** The cascade determines not just the leading CC term but the ENTIRE energy-dependent structure of vacuum energy — every threshold, every DOF change, every interval. The running is well-defined and computable at each scale.
+
+**Numerical impact:** Layer 3 does NOT significantly change the CC prediction (~10⁻⁵⁵ correction). But it provides crucial structural understanding: the vacuum energy has rich scale dependence, all cascade-determined, including a topological sign change.
 
 ---
 
@@ -1976,4 +2008,4 @@ Coverage: Stages 0–11 (Seed → Cascade → SU(2) → Tensor decomposition →
 ---
 
 *This is a living document. Each addition is Bitcoin-timestamped via git commit.*
-*Last updated: 4 May 2026 — v1.7: F3.8d-iv Cross-Lineage Interference in Product Geometry (14 theorems). CC Layer 4: proves product D² = D_M² ⊗ 1 + 1 ⊗ D_F² (cross-term vanishes because {D_M, γ₅} = 0 in 4D, cascade-forced). Λ⁴ answer is EXACT after L1. Cross-lineage effects enter at Λ² (28 orders below). CC resolution constrained to sub-leading terms or new physics. Combined F3.8: 113 theorems across 7 files. 299 total Paper F theorems. 505 total with Papers D+E.*
+*Last updated: 4 May 2026 — v1.8: F3.8d-iii RG Running of Vacuum Energy (15 theorems). CC Layer 3: 13 mass thresholds all cascade-determined, UV-dominated (corrections ~10⁻⁵⁵), UV-to-IR sign change (−44 → +4, fermionic to bosonic). F3.8d-iv Cross-Lineage Interference (14 theorems). CC Layer 4: product D² factors, Λ⁴ exact. Combined F3.8: 128 theorems across 8 files. 314 total Paper F theorems. 520 total with Papers D+E.*
