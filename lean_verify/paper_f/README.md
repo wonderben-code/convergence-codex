@@ -22,6 +22,7 @@ Files are named `F{tier}_{number}_{short_name}.lean` matching the roadmap items.
 | `F1_7c_SpacetimeFinalClosure.lean` | F1.7c — Final closure: Re(q²) canonicity, VEV construction, D₂ forced | 18 | PROVEN |
 | `F3_8a_QuantumGravityFoundations.lean` | F3.8a — Quantum gravity foundations: C*-algebra, observables, spectral triple | 18 | PROVEN |
 | `F3_8e_GravitonFromFluctuations.lean` | F3.8e — Graviton from D-fluctuations: all forces from one mechanism | 14 | PROVEN |
+| `F3_8b_SpectralActionComputation.lean` | F3.8b — Spectral action coefficients: G, g², sin²θ_W from cascade | 18 | PROVEN |
 
 ## Relationship to Paper E Proofs
 
