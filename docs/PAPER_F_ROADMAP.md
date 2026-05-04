@@ -127,7 +127,7 @@ These machine-verified results from Papers D+E form Paper F's base. They go stra
 | | **CC MOONSHOT — Track A: Known physics, uncaptured pressures** | | |
 | F3.8d-ii | ✅ CC Layer 2: SSB vacuum shifts (16 theorems, series well-ordered) | Builds on F1.6 + F3.2 | PROVEN |
 | F3.8d-iii | CC Layer 3: RG running of vacuum energy through thresholds | Builds on F3.8c beta coefficients | Planned |
-| F3.8d-iv | CC Layer 4: Cross-lineage interference in product geometry M×F | Spectral triple cross-terms | Planned |
+| F3.8d-iv | ✅ CC Layer 4: Cross-lineage interference (product D² factors, Λ⁴ exact) | 14 theorems, 0 sorry | PROVEN |
 | F3.8d-v | CC Layer 5: Higher-order spectral action corrections O(Λ⁻²) | Heat kernel higher terms | Planned |
 | F3.8d-vi | CC Layer 6: Non-perturbative topological contributions | Clifford/Spin at D₂ | Open |
 | | **CC MOONSHOT — Track B: New physics from the seed** | | |

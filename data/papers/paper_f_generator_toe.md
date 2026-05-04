@@ -2,9 +2,9 @@
 
 **Author:** Mark E. Mala (Ekram Alam)
 **Status:** LIVING DOCUMENT (updated as results are proven)
-**Version:** 1.6 (4 May 2026)
+**Version:** 1.7 (4 May 2026)
 **Repository:** github.com/wonderben-code/convergence-codex
-**Builds on:** Papers D + E (233 theorems) + Paper F results (285 theorems)
+**Builds on:** Papers D + E (233 theorems) + Paper F results (299 theorems)
 **Bitcoin provenance:** Each addition committed + pushed for timestamping
 
 ---
@@ -33,7 +33,7 @@ The central results are:
 
 **F3.8c (§9).** Newton's constant is derived from the cascade via RG running. The one-loop beta coefficients b₃ = −7, b₂ = −19/6, b₁ = +41/10 are entirely cascade-determined (3 generations from F3.1, ℂ⁴ representations, su(4) gauge structure from F1.6). Running the SM couplings from M_Z ≈ 91 GeV gives the Pati-Salam unification scale Λ_PS ~ 10^{15-17} GeV with unified coupling α_GUT ≈ 1/47. Newton's constant G = 3π/(f₂·Λ²_PS) is consistent with the observed G_N for f₂ ~ 10⁷ (determined, not free). The gravity hierarchy (~10⁻³³ at M_Z) matches observation. Proton decay lifetime τ_p ~ 10^{35-36} years is just above the current Super-Kamiokande bound (10³⁴ years) and testable by Hyper-Kamiokande within the next decade. (17 theorems, 0 sorry.)
 
-**F3.8d (§9).** The cosmological constant is addressed via the multi-lineage hypothesis: the vacuum energy is not a property of any single sector but the interference pattern of ALL THREE lineages from the common seed ℂ². This constitutes a new theoretical model for the CC — the first parameter-free, first-principles derivation of vacuum energy structure from zero inputs. The cascade determines: N_B = 52 bosonic degrees of freedom (End lineage), N_F = 96 fermionic degrees of freedom (⟨·,·⟩ lineage), and 6 gravitational DOF (Aut lineage). The boson-fermion asymmetry N_F − N_B = 44 is CASCADE-DETERMINED — it cannot be tuned. The leading vacuum energy is NEGATIVE (fermionic dominates). The cascade reduces the CC problem from 10¹²⁰ to ~10¹¹⁰ — a 10 order-of-magnitude improvement over the only comparable parameter-free calculation (naive QFT). The remaining ~10¹¹⁰ gap is expected: it represents cascade-derived physics not yet factored into the computation — additional lineage sub-structures, symmetry breaking shifts, RG running, and cross-lineage interference terms. A two-track programme (§9.26) systematically computes these contributions, with each addition expected to monotonically close the gap. The discrepancy is not a failure of the model but a measure of how much cascade physics remains to be computed. (15 theorems, 0 sorry.)
+**F3.8d (§9).** The cosmological constant is addressed via the multi-lineage hypothesis: the vacuum energy is not a property of any single sector but the interference pattern of ALL THREE lineages from the common seed ℂ². This constitutes a new theoretical model for the CC — the first parameter-free, first-principles derivation of vacuum energy structure from zero inputs. The cascade determines: N_B = 52 bosonic degrees of freedom (End lineage), N_F = 96 fermionic degrees of freedom (⟨·,·⟩ lineage), and 6 gravitational DOF (Aut lineage). The boson-fermion asymmetry N_F − N_B = 44 is CASCADE-DETERMINED — it cannot be tuned. The leading vacuum energy is NEGATIVE (fermionic dominates). The cascade reduces the CC problem from 10¹²⁰ to ~10¹¹⁰ — a 10 order-of-magnitude improvement over the only comparable parameter-free calculation (naive QFT). The remaining ~10¹¹⁰ gap is expected: it represents cascade-derived physics not yet factored into the computation — additional lineage sub-structures, symmetry breaking shifts, RG running, and cross-lineage interference terms. A two-track programme (§9.26) systematically computes these contributions, with each addition expected to monotonically close the gap. The discrepancy is not a failure of the model but a measure of how much cascade physics remains to be computed. Layer 2 (F3.8d-ii, §9.27) proves SSB vacuum shifts are well-ordered and monotonic. Layer 4 (F3.8d-iv, §9.28) proves the product geometry M × F factorises cleanly — the cross-term vanishes because γ₅ anticommutes with D_M in 4D (cascade-forced) — confirming the Λ⁴ answer is EXACT and constraining the CC resolution to sub-leading orders or new physics. (46 theorems across 3 CC files, 0 sorry.)
 
 Paper F is a living document: results are added as they are proven, each Bitcoin-timestamped at the moment of discovery.
 
@@ -1469,9 +1469,10 @@ The cross-lineage interaction space has dimension N_B × N_F × N_grav = 52 × 9
 | F3.8c: Newton's constant via RG | `F3_8c_NewtonsConstant.lean` | 17 | ✅ 0 sorry |
 | F3.8d: Cosmological constant (L1) | `F3_8d_CosmologicalConstant.lean` | 15 | ✅ 0 sorry |
 | F3.8d-ii: SSB vacuum shifts (L2) + cumulative | `F3_8d_ii_SSBVacuumShifts.lean` | 17 | ✅ 0 sorry |
-| **F3.8 TOTAL** | **6 files** | **99** | **✅ ALL PROVEN** |
+| F3.8d-iv: Cross-lineage interference (L4) | `F3_8d_iv_CrossLineageInterference.lean` | 14 | ✅ 0 sorry |
+| **F3.8 TOTAL** | **7 files** | **113** | **✅ ALL PROVEN** |
 
-**Paper F running total: 285 theorems, 0 sorry.** (206 Papers D+E + 285 Paper F = 491 total)
+**Paper F running total: 299 theorems, 0 sorry.** (206 Papers D+E + 299 Paper F = 505 total)
 
 ### 9.25 Additional Predictions from F3.8d
 
@@ -1509,7 +1510,7 @@ Within the three lineages already established (End, ⟨·,·⟩, Aut), there are
 | L1 | Coarse DOF counting (N_B=52, N_F=96) | End + ⟨·,·⟩ lineages | ✅ F3.8d (10¹²⁰ → 10¹¹⁰) |
 | L2 | Symmetry breaking vacuum shifts (PS→SM, EW) | F1.6 + F3.2 (already proven forced) | ✅ F3.8d-ii (monotonic, well-ordered) |
 | L3 | RG running of vacuum energy through mass thresholds | F3.8c (beta coefficients proven) | Planned |
-| L4 | Cross-lineage interference terms in product geometry M×F | Spectral triple structure | Planned |
+| L4 | Cross-lineage interference terms in product geometry M×F | Spectral triple structure | ✅ F3.8d-iv (Λ⁴ exact, cross-term = 0) |
 | L5 | Higher-order spectral action corrections O(Λ⁻²) | Heat kernel expansion | Planned |
 | L6 | Non-perturbative topological contributions | Clifford/Spin structure at D₂ | Open |
 
@@ -1591,6 +1592,44 @@ The L2 improvement (additional partial cancellation) is small in magnitude (<1 o
 
 **Prediction F3.8-17.** The PS-scale vacuum energy shift is simultaneously testable via proton decay: the same 9 leptoquark bosons determine both Δρ_PS and τ_p. Observation of proton decay at τ_p ~ 10^{35-36} years (F3.8c) would confirm M_X and therefore the L2 vacuum shift.
 *Falsification:* If proton decay rate is inconsistent with M_X implied by the vacuum shift.
+
+### 9.28 Layer 4 Results: Cross-Lineage Interference in Product Geometry (F3.8d-iv)
+
+The full spectral geometry is a product M × F where M is 4D spacetime (cascade-forced, F1.7) and F is the internal finite spectral triple (96-dimensional, cascade-determined). The Dirac operator on the product is:
+
+  D = D_M ⊗ 1_F + γ₅ ⊗ D_F
+
+**The key identity.** In 4D, the chirality operator γ₅ = iγ⁰γ¹γ²γ³ ANTICOMMUTES with the spacetime Dirac operator: {D_M, γ₅} = 0. This is because γ₅ anticommutes with each γ^μ (d−1 = 3 is odd), and D_M = −iγ^μ∂_μ is built from γ^μ. This is CASCADE-FORCED: the dimension 4 comes from F1.7.
+
+**Consequence for D².** Expanding (D_M ⊗ 1 + γ₅ ⊗ D_F)²:
+- Term 1: D_M² ⊗ 1 (spacetime kinetic energy)
+- Term 2: γ₅² ⊗ D_F² = 1 ⊗ D_F² (internal mass terms, since γ₅² = 1 in even d)
+- Term 3: {D_M, γ₅} ⊗ D_F = **0** (the cross-term VANISHES)
+
+Therefore D² = D_M² ⊗ 1 + 1 ⊗ D_F² with no cross-terms. The operators on different tensor factors commute, so the heat kernel FACTORS:
+
+  Tr(e^{−tD²}) = Tr_M(e^{−tD_M²}) · Tr_F(e^{−tD_F²})
+
+And the leading Seeley-DeWitt coefficient factorises:
+
+  a₀(D²) = a₀(D_M²) · a₀(D_F²) = (Vol(M)/16π²) · 4 · 96
+
+**What this means for the CC:**
+
+1. **The Λ⁴ term is EXACT after Layer 1.** The factorisation proves there are NO hidden Λ⁴ corrections from M × F cross-coupling. The N_B = 52, N_F = 96 counting is the COMPLETE Λ⁴ answer.
+
+2. **Sub-leading hierarchy.** Cross-lineage effects enter through the a₂ coefficient (Λ² terms), which includes curvature couplings between M and F. These are suppressed by 28 orders of magnitude relative to Λ⁴:
+   - Λ⁴ contributions: ~10⁶³ GeV⁴ (Layer 1, now confirmed EXACT)
+   - Λ² contributions: ~10³⁵ GeV⁴ (where cross-lineage coupling lives)
+   - Λ⁰ contributions: ~10¹² GeV⁴ (SSB vacuum shifts, Layer 2)
+   - Observed: ~10⁻⁴⁷ GeV⁴
+
+3. **Constraints on CC resolution.** The 10¹¹⁰ gap CANNOT be closed by Λ⁴ corrections (there are none). The resolution must come from: (a) the convergent sub-leading series (Layers 3, 5, 6), (b) non-perturbative effects (instantons, topology), or (c) new cascade physics (Track B).
+
+**The a₂ cross-lineage coupling.** At the Λ² level, M and F DO couple. The scalar curvature R of spacetime multiplies dim(H_F) = 96, producing the Einstein-Hilbert term with G = 3π/(f₂·Λ²) — this is Newton's constant (already derived in F3.8c). The full interaction space has dimension 384² = 147,456 (384 = 4 × 96 total Hilbert space dimension), but most cross-terms vanish by selection rules. The nonzero ones are the Standard Model interactions (QED, QCD vertices) — already known physics at Λ² level.
+
+**Prediction F3.8-18.** The CC resolution, when found within the cascade framework, will involve sub-leading spectral terms (Λ² or below) or non-perturbative topology — NOT additional Λ⁴ particle content. The factorisation proves the Λ⁴ sector is closed.
+*Falsification:* If the CC is resolved by a Λ⁴-level mechanism (e.g., new particle species contributing at leading order not in the cascade).
 
 ---
 
@@ -1937,4 +1976,4 @@ Coverage: Stages 0–11 (Seed → Cascade → SU(2) → Tensor decomposition →
 ---
 
 *This is a living document. Each addition is Bitcoin-timestamped via git commit.*
-*Last updated: 4 May 2026 — v1.6: F3.8d-ii SSB Vacuum Shifts + Cumulative Additive Proof (17 theorems). CC Layer 2 + proof that L1+L2 are simultaneous/additive. Cumulative improvement from generic QFT: 9 orders of magnitude (10^{119} → 10^{110}) from zero inputs. PS shift partially cancels L1 (monotonic). Series well-ordered. Combined F3.8: 99 theorems across 6 files. 285 total Paper F theorems. 491 total with Papers D+E.*
+*Last updated: 4 May 2026 — v1.7: F3.8d-iv Cross-Lineage Interference in Product Geometry (14 theorems). CC Layer 4: proves product D² = D_M² ⊗ 1 + 1 ⊗ D_F² (cross-term vanishes because {D_M, γ₅} = 0 in 4D, cascade-forced). Λ⁴ answer is EXACT after L1. Cross-lineage effects enter at Λ² (28 orders below). CC resolution constrained to sub-leading terms or new physics. Combined F3.8: 113 theorems across 7 files. 299 total Paper F theorems. 505 total with Papers D+E.*
