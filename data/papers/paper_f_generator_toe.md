@@ -43,19 +43,20 @@ Paper F is a living document: results are added as they are proven, each Bitcoin
 
 **STATUS: PLACEHOLDER — to be written during formal publication.**
 
-This chapter will contain the single most important narrative in the programme: the complete chain from ∅ to all of known physics, told in one place, referencing every machine-verified theorem.
+This chapter will contain the single most important narrative in the programme: the complete chain from the universal construction through the seed to all of known physics, told in one place, referencing every machine-verified theorem.
 
 **Sections planned:**
 
-0.1. **The Seed** — Why ℂ² is the unique minimal fertile object (F0.1, 16 theorems)
-0.2. **The Cascade** — ℂ² → M₂(ℂ) → M₄(ℂ) → M₁₆(ℂ) via internal hom (F0.2, 13 theorems)
-0.3. **Three Lineages** — End → gauge, Aut → spacetime, ⟨·,·⟩ → QM (F0.9–F0.11, 59 theorems)
-0.4. **The Standard Model — Uniquely Forced** — Gauge group (F1.6), chirality (F2.3), Higgs (F3.2), three generations (F3.1+F3.1b), fermion reps (F0.6) — 151 theorems
-0.5. **Spacetime — Derived, Not Assumed** — 4D Lorentzian, unconditional (F1.7+F1.7b+F1.7c, 61 theorems)
-0.6. **Quantum Gravity — Unified** — Spectral triple, graviton, Newton's constant (F3.8a–c+F3.8e, 67 theorems)
-0.7. **The Cosmological Constant — A Convergent Series** — 5 layers of structural understanding (F3.8d+layers, 76 theorems)
-0.8. **The Categorical Foundation** — Lawvere fixed point, reflexive domains, inexhaustibility (F0.12–F0.17)
-0.9. **What This Means** — 535+ theorems, 0 sorry, 0 free parameters, 0 observational inputs, all Bitcoin-timestamped
+0.1. **The Construction** — The universal framework that operates in ANY symmetric monoidal closed category (SMCC). The internal hom cascade D₀, D₁ = [D₀, D₀], D₂ = [D₁, D₁], ... is a canonical operation available in every SMCC. The Lawvere fixed-point theorem guarantees that reflexive objects D ≅ [D, D] generate unbounded content. The construction is not specific to physics — it is pure mathematics. ℂ² is one instantiation; Bool = 1+1 in Cartesian closed categories is another. The construction generates content from structure in ANY sufficiently rich category. (F0.12–F0.17: Lawvere fixed point, reflexive domains, inexhaustibility, infinite content, constraint content)
+0.2. **The Seed** — In the specific category FdVect_ℂ (finite-dimensional complex vector spaces), ℂ² is the UNIQUE minimal fertile object. ∅ is sterile (no endomorphisms). ℂ is sterile (End(ℂ) ≅ ℂ, a fixed point). ℂ² is the first object where End(ℂ²) = M₂(ℂ) ≠ ℂ² — the cascade begins. This is proven, not assumed. Other categories have other seeds; FdVect_ℂ gives us physics. (F0.1, 16 theorems)
+0.3. **The Cascade** — ℂ² → M₂(ℂ) → M₄(ℂ) → M₁₆(ℂ) via internal hom. Dimension formula: 2^(2^n). Each level is the endomorphism algebra of the previous. (F0.2, 13 theorems)
+0.4. **Three Lineages** — End → gauge, Aut → spacetime, ⟨·,·⟩ → QM. Three canonical operations on the same object produce three independent lineages that converge to give the three pillars of physics. (F0.9–F0.11, 59 theorems)
+0.5. **The Standard Model — Uniquely Forced** — Gauge group (F1.6), chirality (F2.3), Higgs (F3.2), three generations (F3.1+F3.1b), fermion reps (F0.6) — 151 theorems
+0.6. **Spacetime — Derived, Not Assumed** — 4D Lorentzian, unconditional (F1.7+F1.7b+F1.7c, 61 theorems)
+0.7. **Quantum Gravity — Unified** — Spectral triple, graviton, Newton's constant (F3.8a–c+F3.8e, 67 theorems)
+0.8. **The Cosmological Constant — A Convergent Series** — 5 layers of structural understanding (F3.8d+layers, 76 theorems)
+0.9. **Beyond FdVect_ℂ** — The construction is not limited to one category. Cartesian closed categories give classical computation (Scott D∞, F2.6). Linear categories may give anyonic/topological physics (F3.7). The universality metatheorem (F3.4, planned) would show the construction produces a fixed point in EVERY SMCC. ℂ² → physics is one instance of a universal mathematical phenomenon.
+0.10. **What This Means** — 535+ theorems, 0 sorry, 0 free parameters, 0 observational inputs, all Bitcoin-timestamped. The construction is universal; the seed is canonical; the physics is forced.
 
 **Format:** Each section in three layers: verbal (plain English) → mathematical (standard notation) → machine verification (Lean file + theorem name). A reader who reads ONLY this chapter should understand the complete claim and be able to verify every step.
 

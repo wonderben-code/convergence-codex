@@ -264,26 +264,29 @@ This covers all ~206 Paper E theorems and all Paper D categorical results, organ
 
 **Status:** TO DO (critical — must be written before or alongside the appendix)
 
-The single most important piece of writing in the entire programme. A standalone chapter (likely §1 or §2 of the final Paper F) that tells the COMPLETE narrative in one place: how the seed ℂ² generates all of known physics, with every step referenced to its machine-verified theorem.
+The single most important piece of writing in the entire programme. A standalone chapter (§0 of Paper F) that tells the COMPLETE narrative in one place: how the universal construction, instantiated with the seed ℂ², generates all of known physics, with every step referenced to its machine-verified theorem.
 
-**Why this is needed:** Currently the full story is spread across Papers D (categorical backbone), E (existence: cascade produces SM+GR+QM), and F (uniqueness: cascade forces everything). No single place tells the complete chain. A reader must mentally assemble three papers. This chapter removes that burden.
+**Why this is needed:** Currently the full story is spread across Papers D (categorical backbone + universal construction), E (existence: cascade produces SM+GR+QM), and F (uniqueness: cascade forces everything). No single place tells the complete chain. A reader must mentally assemble three papers. This chapter removes that burden.
+
+**Critical framing:** The story starts BEFORE the seed. The construction (internal hom cascade + Lawvere fixed-point structure) is a universal mathematical framework that operates in ANY symmetric monoidal closed category. ℂ² in FdVect_ℂ is one instantiation — the one that gives physics. Other categories give other seeds and other content (Bool in CCC → classical computation, etc.). The universality of the construction is itself a proven result.
 
 **Structure:**
 
-1. **The Seed** — Why ℂ² is the unique minimal fertile object in FdVect_ℂ (F0.1, 16 theorems)
-2. **The Cascade** — ℂ² → M₂(ℂ) → M₄(ℂ) → M₁₆(ℂ) via internal hom (F0.2, 13 theorems)
-3. **Three Lineages from One Object** — End → gauge, Aut → spacetime, ⟨·,·⟩ → QM (F0.9-F0.11, 59 theorems)
-4. **The Standard Model — Uniquely Forced**
+1. **The Construction** — The universal framework: internal hom cascade in any SMCC, Lawvere fixed-point theorem, reflexive objects D ≅ [D,D], unbounded content generation from finite structure. This is pure mathematics, not specific to physics. ℂ² is one seed form; others exist. (F0.12–F0.17)
+2. **The Seed** — In FdVect_ℂ specifically: ∅ sterile, ℂ sterile, ℂ² unique minimal fertile. The seed is canonical within its category but the construction admits many categories and many seeds. (F0.1, 16 theorems)
+3. **The Cascade** — ℂ² → M₂(ℂ) → M₄(ℂ) → M₁₆(ℂ) via internal hom (F0.2, 13 theorems)
+4. **Three Lineages from One Object** — End → gauge, Aut → spacetime, ⟨·,·⟩ → QM (F0.9-F0.11, 59 theorems)
+5. **The Standard Model — Uniquely Forced**
    - Gauge group: Pati-Salam, the ONLY possibility (F1.6, 20 theorems)
    - Chirality: left-handed coupling derived, not assumed (F2.3, 20 theorems)
    - Higgs: the unique colour-singlet scalar (F3.2, 32 theorems)
    - Three generations: quaternionic structure, fourth excluded (F3.1 + F3.1b, 53 theorems)
    - Fermion representations: all 16 per generation matched (F0.6, 26 theorems)
-5. **Spacetime — Derived, Not Assumed** — 4D Lorentzian, unconditionally (F1.7 + F1.7b + F1.7c, 61 theorems)
-6. **Quantum Gravity — Unified** — Spectral triple, graviton from D-fluctuations, Newton's constant (F3.8a-c + F3.8e, 67 theorems)
-7. **The Cosmological Constant — A Convergent Series** — 5 layers of structural understanding, best parameter-free prediction (F3.8d + layers, 76 theorems)
-8. **The Categorical Foundation** — Lawvere fixed point, reflexive domains, inexhaustibility (F0.12-F0.17)
-9. **What This Means** — Summary: 535+ theorems, 0 sorry, 0 free parameters, 0 observational inputs. Everything from ℂ². Bitcoin-timestamped priority.
+6. **Spacetime — Derived, Not Assumed** — 4D Lorentzian, unconditionally (F1.7 + F1.7b + F1.7c, 61 theorems)
+7. **Quantum Gravity — Unified** — Spectral triple, graviton from D-fluctuations, Newton's constant (F3.8a-c + F3.8e, 67 theorems)
+8. **The Cosmological Constant — A Convergent Series** — 5 layers of structural understanding, best parameter-free prediction (F3.8d + layers, 76 theorems)
+9. **Beyond FdVect_ℂ** — The construction in other categories: CCC → Scott D∞ → classical computation (F2.6), linear categories → anyonic physics (F3.7), universality metatheorem (F3.4, planned). ℂ² → physics is one instance of a universal phenomenon.
+10. **What This Means** — 535+ theorems, 0 sorry, 0 free parameters, 0 observational inputs. The construction is universal; the seed is canonical; the physics is forced. Bitcoin-timestamped priority.
 
 **Format:** Each section follows the three-layer format:
 - **Verbal:** What happens and why it matters (accessible to non-specialists)
