@@ -1584,6 +1584,19 @@ The cascade may generate physics we have not yet identified. The seed ℂ² prod
 
 **The key insight:** Track B is open-ended by design. The cascade is a mathematical object with finite content at each level but unbounded structure as we look more carefully. Each new structure discovered is a potential new term in the CC series. The programme does not require knowing all the terms in advance — it requires a methodology for discovering them and computing their contributions.
 
+#### Track C: Dynamical and nonlinear effects
+
+Tracks A and B compute vacuum energy contributions on a STATIC spacetime with INDEPENDENT lineages. But the cascade produces a DYNAMICAL spacetime (time from Aut lineage, F1.7) and INTERACTING lineages (shared ℂ² origin). Track C captures these effects.
+
+| # | Effect | Physics | Why it could be transformative for CC |
+|---|--------|---------|---------------------------------------|
+| C1 | **Time evolution of vacuum energy** | Time emerges from Aut lineage (F1.7). The spectral action is computed on static spacetime, but the universe EXPANDS (Friedmann equations from F3.8b). If the effective cutoff Λ runs with cosmic expansion — Λ(t) ~ H(t) or ~ 1/a(t) — then ρ_vac(t_now) ≪ ρ_vac(t_Planck). The expansion factor since Planck time is ~10³⁰, giving Λ⁴ → Λ⁴/10¹²⁰. This is the right ballpark to close the ENTIRE gap. | The dynamical running of Λ with cosmic time is cascade-determined: time is from F1.7, expansion from F3.8b, H(t) from Friedmann. Potentially the single largest CC effect. |
+| C2 | **Lineage-lineage backreaction** | Lineages don't just press on CC individually — they press on EACH OTHER, amplifying downstream effects. End (gauge) curves spacetime (Aut) → modified gravity → modified vacuum energy. Aut curvature modifies quantum fields (⟨·,·⟩) → modified condensates → modified gauge breaking. The coupled system may have cancellations invisible to the uncoupled analysis. | The backreaction is CASCADE-CONSTRAINED: all three lineages share origin ℂ², so their coupling is not arbitrary. The self-consistent solution may differ dramatically from the sum of independent contributions. |
+| C3 | **Full additive structure theorem** | Extend L1+L2 additivity (F3.8d-ii) to ALL layers. Prove contributions stack simultaneously OR identify where nonlinearity enters (from C2 backreaction). | Mathematical foundation for the entire convergent series. If nonlinear corrections exist, they change the CC prediction. |
+| C4 | **Time × backreaction synthesis** | Combined: time evolution (C1) of the coupled lineage system (C2). The self-consistent dynamical vacuum energy of the expanding cascade universe. | This is the FULL CC computation — the complete answer from the cascade. |
+
+**Why Track C could be decisive:** Tracks A and B are perturbative corrections to a static, uncoupled calculation. Track C addresses the two biggest approximations in the current analysis: (1) treating spacetime as static when the cascade itself produces time and expansion, and (2) treating lineages as independent when they share a common origin and physically interact. Either effect alone could close many orders of the gap. Together, they could resolve the CC entirely.
+
 #### Combined falsification and convergence
 
 **The falsification criterion is clean and progressive:**
