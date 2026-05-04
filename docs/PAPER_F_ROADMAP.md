@@ -143,8 +143,14 @@ These machine-verified results from Papers D+E form Paper F's base. They go stra
 | F3.8d-xv | ✅ **TIME × BACKREACTION SYNTHESIS** — Self-consistent dynamical vacuum energy. C2 negligible (10⁻⁵¹⁵) → C1 IS the answer. Definitive prediction: ρ ≈ +10⁻⁵⁰ GeV⁴, gap 10³, sign correct. Error budget: Λ precision, IR DOF, spectral moments. 116 orders better than QFT. | 10 theorems, 0 sorry | PROVEN |
 | F3.8d-xvi | ✅ **CC GAP CLOSURE** — All 6 specialist-identified gaps mathematically closed: (1) conformal covariance forces unique redshift Λ(t₀) = Λ_PS/a(t₀); (2) seesaw neutrino mass cascade-derived, m_ν ~ 10⁻² eV > Λ(t₀) ~ 10⁻⁴ eV → decoupled; (3) IR DOF forced: N_B=4 (γ+graviton), N_F=0, no alternatives; (4) subleading terms 10⁻¹⁰³, 49 orders below leading; (5) backreaction 10⁻⁵¹⁵ confirmed; (6) coefficient 1/(64π²) is fixed mathematical constant from ∫d⁴k, f-independent. Honest tightened gap: ~10⁷ (112 orders better than QFT). | 12 theorems, 0 sorry | PROVEN |
 | F3.8d-* | (open-ended: new items added as cascade structures discovered) | | |
-| | **F3.8 remaining** | | |
+| | **F3.8 remaining — NCG connection** | | |
 | F3.8f | Full Connes NCG connection with derived inputs | All 7 axioms, KO-dimension | Planned |
+| | **QUANTUM GRAVITY COMPLETION — the programme that would close QG** | | |
+| F3.8g | **Higher-loop quantum corrections** — The spectral action Tr(f(D²/Λ²)) is defined non-perturbatively as a trace; the Seeley-DeWitt expansion (F3.8b) is the perturbative approximation. Compute beyond one-loop: two-loop, three-loop, and identify whether the series truncates or converges. The full answer already exists in closed form — we need to extract it. Connects to F3.8f (Connes NCG). | Spectral action trace → heat kernel → higher Seeley-DeWitt coefficients a₆, a₈, ... | Tier 3 — Planned |
+| F3.8h | **Background independence** — The spectral triple (A, H, D) uses a manifold M, but Connes's reconstruction theorem proves the ALGEBRA determines the manifold. So M₄(ℂ) acting on ℂ⁴ with D may already BE the background-independent formulation — the manifold is recovered from the algebra, not assumed. Prove that the cascade spectral triple is background-independent: the algebra (from End lineage) encodes the geometry without presupposing a manifold. This would show the cascade dissolves the background-dependence problem rather than solving it. | Connes reconstruction theorem + cascade algebra → manifold recovery | Tier 2-3 — Planned |
+| F3.8i | **Black hole entropy and singularity resolution** — Derive Bekenstein-Hawking entropy S = A/(4G) from the cascade spectral action on a black hole background. G is already cascade-determined (F3.8c), A is the horizon area. The spectral action on Schwarzschild/Kerr backgrounds should give S directly from the a₂ Seeley-DeWitt coefficient. Singularity resolution: the spectral action trace is finite by construction (bounded function f of D²/Λ²) — prove this UV finiteness implies singularity-free black hole interiors. | Spectral action on curved backgrounds + F3.8c (G derived) → S = A/4G + singularity resolution | Tier 3-4 — Planned |
+| F3.8j | **Graviton scattering amplitudes** — We have the graviton (F3.8e: D-fluctuation in spin(3,1) ⊂ su(4)), the action (F3.8b: spectral action), and the coupling (F3.8c: G from RG). Compute tree-level graviton-graviton scattering by expanding the spectral action around the fluctuated Dirac operator D → D + A + JAJ⁻¹. This gives the first cascade-derived S-matrix elements for quantum gravity. Compare with standard GR tree-level amplitudes to verify consistency. | D-fluctuations (F3.8e) + spectral action expansion → tree-level amplitudes → S-matrix | Tier 3 — Planned |
+| F3.8k | **Non-perturbative quantisation** — Define and prove well-definedness of the path integral over Dirac operators: ∫𝒟D exp(−Tr(f(D²/Λ²))). The spectral action is already non-perturbative (a trace, not a perturbative expansion). The question is whether the measure 𝒟D exists and the integral converges. Connects to constructive QFT. If well-defined, this IS the complete non-perturbative quantum theory of gravity + SM, from the cascade. The hardest item in the QG completion programme. | Constructive QFT + spectral action measure → path integral well-definedness | Tier 4 — Planned |
 
 ---
 
@@ -157,7 +163,7 @@ These machine-verified results from Papers D+E form Paper F's base. They go stra
 | F4.3 | CKM matrix / neutrino mixing | Cascade → flavour structure → mixing angles | No chain currently developed |
 | F4.4 | ~~Cosmological constant Λ~~ | **PROMOTED to F3.8d programme** — convergent series approach via progressive cascade layers | Active under F3.8d-ii through F3.8d-vi |
 | F4.5 | Cosmological perturbation predictions | Seed-cascade ↔ inflation mapping | No worked chain yet |
-| F4.6 | Black hole entropy from cascade | Holographic structure → Bekenstein-Hawking | Suggestive but no derivation |
+| F4.6 | ~~Black hole entropy from cascade~~ | **PROMOTED to F3.8i** — spectral action on black hole backgrounds | Active under QG Completion programme |
 | F4.7 | Dark matter identification | Unexplored lineage branches → dark sector | Need systematic exploration |
 | F4.8 | Neutrino sector specifics | Hierarchy + Dirac/Majorana from cascade | Connected to F2.3 + F3.1 |
 
@@ -206,7 +212,14 @@ F1.6: Pati-Salam UNIQUELY forced (end-to-end from ∅)
                │       (dynamical: additive → time evolution → backreaction → synthesis → gap closure)
                │       RESULT: ρ ≈ 10⁻⁵⁵ GeV⁴, gap ~10⁷, 112 orders better than QFT
                │
-               └── F3.8f: Full Connes NCG connection (NEXT)
+               ├── F3.8f: Full Connes NCG connection (NEXT)
+               │
+               └── QG COMPLETION (the programme that would close quantum gravity)
+                   ├── F3.8g: Higher-loop corrections (beyond one-loop Seeley-DeWitt)
+                   ├── F3.8h: Background independence (Connes reconstruction)
+                   ├── F3.8i: Black hole entropy + singularity resolution
+                   ├── F3.8j: Graviton scattering amplitudes (tree-level S-matrix)
+                   └── F3.8k: Non-perturbative quantisation (path integral over D)
 ```
 
 ---
@@ -235,7 +248,7 @@ The following were considered but excluded because they are not mathematically t
 | Paper F proven (F1.6–F3.8d-xvi) | 22 files (384 theorems) |
 | Tier 1 (weeks-months) | 7 problems |
 | Tier 2 (months-year) | 10 problems |
-| Tier 3 (years, open maths) | 8 problems + 13 F3.8 sub-problems (incl. CC moonshot) |
+| Tier 3 (years, open maths) | 8 problems + 18 F3.8 sub-problems (CC moonshot + QG completion) |
 | Tier 4 (moonshots) | 7 problems (F4.4 promoted to F3.8d programme) |
 | **Total mathematical programme** | **62+ items (CC programme is open-ended)** |
 
