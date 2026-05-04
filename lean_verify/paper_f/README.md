@@ -17,6 +17,7 @@ Files are named `F{tier}_{number}_{short_name}.lean` matching the roadmap items.
 | `F3_2_HiggsForced.lean` | F3.2 — Higgs mechanism forced by cascade | 32 | PROVEN |
 | `F3_1_ThreeGenerations.lean` | F3.1 — Three generations forced (quaternionic structure) | 27 | PROVEN |
 | `F3_1b_ModuleSpectral.lean` | F3.1b — Module-level, spectral, and completeness strengthening | 26 | PROVEN |
+| `F1_7_SpacetimeForced.lean` | F1.7 — 4D Lorentzian spacetime forced by cascade | 24 | PROVEN |
 
 ## Relationship to Paper E Proofs
 
