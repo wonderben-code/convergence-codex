@@ -33,6 +33,7 @@ Files are named `F{tier}_{number}_{short_name}.lean` matching the roadmap items.
 | `F3_8d_xii_TimeEvolution.lean` | F3.8d-xii — CC Track C1: time evolution of vacuum energy, cutoff running, CC gap 10¹¹⁰→10³ | 12 | PROVEN |
 | `F3_8d_xiii_Backreaction.lean` | F3.8d-xiii — CC Track C2: lineage-lineage backreaction, 10⁻⁵¹⁵ at present, negligible | 11 | PROVEN |
 | `F3_8d_xv_Synthesis.lean` | F3.8d-xv — CC Track C4: full synthesis, definitive prediction ρ ≈ +10⁻⁵⁰ GeV⁴ | 10 | PROVEN |
+| `F3_8d_xvi_CCClosure.lean` | F3.8d-xvi — CC Gap Closure: all 6 specialist gaps mathematically closed | 12 | PROVEN |
 
 ## Relationship to Paper E Proofs
 

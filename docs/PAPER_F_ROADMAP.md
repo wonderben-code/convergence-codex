@@ -141,6 +141,7 @@ These machine-verified results from Papers D+E form Paper F's base. They go stra
 | F3.8d-xiii | ✅ **LINEAGE-LINEAGE BACKREACTION** — Full loop characterised: End→Aut (10⁻⁸⁸), Aut→⟨·,·⟩ (10⁻⁷⁵), ⟨·,·⟩→End (10⁻³⁵²). Total per iteration: 10⁻⁵¹⁵. Fixed point in 1 iteration. Negligible at present epoch. Early-universe backreaction captured by C1's redshift. | 11 theorems, 0 sorry | PROVEN |
 | F3.8d-xiv | ✅ **FULL ADDITIVE STRUCTURE THEOREM** — All 5 layers additive (stress-energy, Seeley-DeWitt, spectral expansion). Nonlinearity enters via backreaction (~10⁻⁹ per iteration) and Friedmann time evolution (α ~ 10³⁰ → CC gap 10¹¹⁰ → 10¹⁰). | 10 theorems, 0 sorry | PROVEN |
 | F3.8d-xv | ✅ **TIME × BACKREACTION SYNTHESIS** — Self-consistent dynamical vacuum energy. C2 negligible (10⁻⁵¹⁵) → C1 IS the answer. Definitive prediction: ρ ≈ +10⁻⁵⁰ GeV⁴, gap 10³, sign correct. Error budget: Λ precision, IR DOF, spectral moments. 116 orders better than QFT. | 10 theorems, 0 sorry | PROVEN |
+| F3.8d-xvi | ✅ **CC GAP CLOSURE** — All 6 specialist-identified gaps mathematically closed: (1) conformal covariance forces unique redshift Λ(t₀) = Λ_PS/a(t₀); (2) seesaw neutrino mass cascade-derived, m_ν ~ 10⁻² eV > Λ(t₀) ~ 10⁻⁴ eV → decoupled; (3) IR DOF forced: N_B=4 (γ+graviton), N_F=0, no alternatives; (4) subleading terms 10⁻¹⁰³, 49 orders below leading; (5) backreaction 10⁻⁵¹⁵ confirmed; (6) coefficient 1/(64π²) is fixed mathematical constant from ∫d⁴k, f-independent. Honest tightened gap: ~10⁷ (112 orders better than QFT). | 12 theorems, 0 sorry | PROVEN |
 | F3.8d-* | (open-ended: new items added as cascade structures discovered) | | |
 | | **F3.8 remaining** | | |
 | F3.8f | Full Connes NCG connection with derived inputs | All 7 axioms, KO-dimension | Planned |
@@ -228,7 +229,7 @@ The following were considered but excluded because they are not mathematically t
 | Category | Count |
 |----------|-------|
 | Already proven (Stage 0) | 17 results (206+ theorems) |
-| Paper F proven (F1.6–F3.8d-xv) | 21 files (372 theorems) |
+| Paper F proven (F1.6–F3.8d-xvi) | 22 files (384 theorems) |
 | Tier 1 (weeks-months) | 7 problems |
 | Tier 2 (months-year) | 10 problems |
 | Tier 3 (years, open maths) | 8 problems + 13 F3.8 sub-problems (incl. CC moonshot) |
