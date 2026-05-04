@@ -1138,6 +1138,9 @@ The construction recovers 50+ years of particle physics (gauge groups, fermion r
 - Skolem-Noether: all automorphisms of Mₙ(ℂ) are inner (Skolem 1927, Noether 1929)
 - Pati-Salam → SM via maximal subalgebra embedding (Pati & Salam 1974)
 
+### Prose–Lean alignment audit (PLANNED):
+The machine-verified Lean content is arithmetic/dimensional (e.g., `4 - 1 = 3`, `2^2 = 4`). The structural isomorphisms (e.g., M₄(ℂ) ≅ M₂(ℍ) ⊗ ℂ, Cl(1,3) ≅ M₂(ℍ)) are cited as established results, not machine-verified. A systematic proof-read is needed to ensure: (1) every prose "derives" or "proves" accurately reflects what is Lean-verified vs cited; (2) no master theorem header over-claims what the arithmetic content establishes; (3) the abstract and claims section precisely distinguish machine-verified from cited. By Artin-Wedderburn, dimension matching IS sufficient for these specific central simple algebra isomorphisms — but the "central simple" part is the cited structural claim. This audit is a polish item, not a correctness issue (all cited results are standard).
+
 ### Weakest assumption:
 The construction operates in **FdVect**_ℂ. The choice of base field ℂ is not derived from the framework (see F3.5 for the general categorification programme that addresses this).
 
@@ -1319,6 +1322,7 @@ See `docs/PAPER_F_ROADMAP.md` for the full 50-item programme across 4 tiers.
 - F1.1: Falsification conditions as Lean propositions (easy)
 - F1.2: Lawvere subsumes Cantor/Gödel/Turing/Tarski/Russell (easy)
 - F4.2: Fermion mass ratios from quaternionic mixing (moonshot)
+- AUDIT: Prose–Lean alignment proof-read (polish, not blocking)
 
 ---
 
