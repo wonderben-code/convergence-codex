@@ -125,7 +125,7 @@ These machine-verified results from Papers D+E form Paper F's base. They go stra
 | F3.8c | ✅ Newton's constant: RG running, Λ_PS, α_GUT, proton decay | 17 theorems, 0 sorry | PROVEN |
 | F3.8d | ✅ CC multi-lineage vacuum energy (Layer 1: coarse DOF) | 15 theorems, 0 sorry | PROVEN |
 | | **CC MOONSHOT — Track A: Known physics, uncaptured pressures** | | |
-| F3.8d-ii | CC Layer 2: Symmetry breaking vacuum shifts (PS→SM, EW) | Builds on F1.6 + F3.2 | **NEXT** |
+| F3.8d-ii | ✅ CC Layer 2: SSB vacuum shifts (16 theorems, series well-ordered) | Builds on F1.6 + F3.2 | PROVEN |
 | F3.8d-iii | CC Layer 3: RG running of vacuum energy through thresholds | Builds on F3.8c beta coefficients | Planned |
 | F3.8d-iv | CC Layer 4: Cross-lineage interference in product geometry M×F | Spectral triple cross-terms | Planned |
 | F3.8d-v | CC Layer 5: Higher-order spectral action corrections O(Λ⁻²) | Heat kernel higher terms | Planned |

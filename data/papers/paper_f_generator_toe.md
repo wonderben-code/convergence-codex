@@ -2,9 +2,9 @@
 
 **Author:** Mark E. Mala (Ekram Alam)
 **Status:** LIVING DOCUMENT (updated as results are proven)
-**Version:** 1.5 (4 May 2026)
+**Version:** 1.6 (4 May 2026)
 **Repository:** github.com/wonderben-code/convergence-codex
-**Builds on:** Papers D + E (233 theorems) + Paper F results (268 theorems)
+**Builds on:** Papers D + E (233 theorems) + Paper F results (284 theorems)
 **Bitcoin provenance:** Each addition committed + pushed for timestamping
 
 ---
@@ -1459,7 +1459,7 @@ This is NEGATIVE (fermionic dominates), consistent with the sign structure neede
 
 The cross-lineage interaction space has dimension N_B × N_F × N_grav = 52 × 96 × 6 = 29,952. The cancellation mechanism must operate within this space — this is where the remaining 10¹¹⁰ factor reduction must come from.
 
-### 9.24 Machine Verification Summary for F3.8 (Updated with F3.8d)
+### 9.24 Machine Verification Summary for F3.8 (Updated with F3.8d-ii)
 
 | Sub-problem | File | Theorems | Status |
 |-------------|------|----------|--------|
@@ -1467,10 +1467,11 @@ The cross-lineage interaction space has dimension N_B × N_F × N_grav = 52 × 9
 | F3.8e: Graviton from fluctuations | `F3_8e_GravitonFromFluctuations.lean` | 14 | ✅ 0 sorry |
 | F3.8b: Spectral action coefficients | `F3_8b_SpectralActionComputation.lean` | 18 | ✅ 0 sorry |
 | F3.8c: Newton's constant via RG | `F3_8c_NewtonsConstant.lean` | 17 | ✅ 0 sorry |
-| F3.8d: Cosmological constant | `F3_8d_CosmologicalConstant.lean` | 15 | ✅ 0 sorry |
-| **F3.8 TOTAL** | **5 files** | **82** | **✅ ALL PROVEN** |
+| F3.8d: Cosmological constant (L1) | `F3_8d_CosmologicalConstant.lean` | 15 | ✅ 0 sorry |
+| F3.8d-ii: SSB vacuum shifts (L2) | `F3_8d_ii_SSBVacuumShifts.lean` | 16 | ✅ 0 sorry |
+| **F3.8 TOTAL** | **6 files** | **98** | **✅ ALL PROVEN** |
 
-**Paper F running total: 268 theorems, 0 sorry.** (206 Papers D+E + 268 Paper F = 474 total)
+**Paper F running total: 284 theorems, 0 sorry.** (206 Papers D+E + 284 Paper F = 490 total)
 
 ### 9.25 Additional Predictions from F3.8d
 
@@ -1506,7 +1507,7 @@ Within the three lineages already established (End, ⟨·,·⟩, Aut), there are
 | Layer | Physics | Source in cascade | Status |
 |-------|---------|-------------------|--------|
 | L1 | Coarse DOF counting (N_B=52, N_F=96) | End + ⟨·,·⟩ lineages | ✅ F3.8d (10¹²⁰ → 10¹¹⁰) |
-| L2 | Symmetry breaking vacuum shifts (PS→SM, EW) | F1.6 + F3.2 (already proven forced) | NEXT |
+| L2 | Symmetry breaking vacuum shifts (PS→SM, EW) | F1.6 + F3.2 (already proven forced) | ✅ F3.8d-ii (monotonic, well-ordered) |
 | L3 | RG running of vacuum energy through mass thresholds | F3.8c (beta coefficients proven) | Planned |
 | L4 | Cross-lineage interference terms in product geometry M×F | Spectral triple structure | Planned |
 | L5 | Higher-order spectral action corrections O(Λ⁻²) | Heat kernel expansion | Planned |
@@ -1543,6 +1544,41 @@ The cascade may generate physics we have not yet identified. The seed ℂ² prod
 **Why partial progress is meaningful.** Even if the full CC is not resolved, getting closer than any other theory is significant — because it would demonstrate that the cascade's structure reflects the actual structure of vacuum energy. A framework that produces 10¹²⁰ → 10¹¹⁰ → 10⁹⁵ → 10⁷⁰ → ... is doing something right, even before reaching 10⁰. The directionality is the evidence.
 
 **Why the gap should close.** The observed CC is a *single number* — 10⁻¹²² in Planck units. It is the net vacuum energy of the actual universe, which contains all the physics the cascade generates. If the cascade is correct, then the CC is the sum of ALL cascade-derived vacuum energy contributions. We are computing that sum term by term. Each term we add accounts for physics that was previously missing from the calculation. The gap between our prediction and observation represents *physics we haven't yet factored in from the cascade* — not a fundamental shortcoming. As we factor in more, the gap must shrink, unless the cascade is wrong about what physics exists.
+
+### 9.27 Layer 2 Results: Symmetry Breaking Vacuum Shifts (F3.8d-ii)
+
+The cascade forces exactly two symmetry breaking stages, each shifting the vacuum energy:
+
+**Stage 1: Pati-Salam → Standard Model** at Λ_PS ~ 10^{16} GeV.
+- Broken generators: dim(PS) − dim(SM) = 21 − 12 = 9
+- These produce 9 massive leptoquark bosons (X, Y bosons)
+- Vacuum shift: Δρ_PS ~ +9 · M_X⁴/(64π²) ~ +10^{62} GeV⁴
+- Sign: POSITIVE (bosonic), partially cancelling the NEGATIVE L1 term
+
+**Stage 2: Electroweak → U(1)_em** at v = 246 GeV.
+- Broken generators: dim(SU(2)_L × U(1)_Y) − dim(U(1)_em) = 4 − 1 = 3
+- These produce W⁺, W⁻, Z⁰
+- Vacuum shift: Δρ_EW ~ −2 · v⁴/(64π²) ~ −10^{7} GeV⁴ (fermion-dominated: 12 top DOF > 10 boson DOF)
+- Negligible: suppressed by 10^{-64} relative to L1
+
+**Series status after L2:**
+
+| Layer | Contribution | Sign | Magnitude | Gap |
+|-------|-------------|------|-----------|-----|
+| Generic QFT | Λ⁴ (unconstrained DOF) | + | 10^{72} | 10^{119} |
+| L1 (F3.8d) | −44 · Λ⁴/(64π²) | − | 10^{70} | 10^{117} |
+| L2 PS shift | +27 · Λ_PS⁴/(64π²) | + | 10^{62} | 10^{117} (partial cancellation) |
+| L2 EW shift | −2 · v⁴/(64π²) | − | 10^{7} | negligible |
+
+**Key findings:**
+1. The series is **well-ordered**: |ρ_L1| ≫ |Δρ_PS| ≫ |Δρ_EW| (separated by 10^{8} and 10^{55})
+2. **Monotonicity holds**: the PS shift (positive) partially cancels L1 (negative) — right direction
+3. All 12 broken generators, 54 gauge DOF, and both scales are cascade-determined
+4. The PS vacuum shift is **testable via proton decay**: the same 9 leptoquarks mediate both
+5. L2 alone does not dramatically close the gap — SSB shifts are subleading to L1
+
+**Prediction F3.8-17.** The PS-scale vacuum energy shift is simultaneously testable via proton decay: the same 9 leptoquark bosons determine both Δρ_PS and τ_p. Observation of proton decay at τ_p ~ 10^{35-36} years (F3.8c) would confirm M_X and therefore the L2 vacuum shift.
+*Falsification:* If proton decay rate is inconsistent with M_X implied by the vacuum shift.
 
 ---
 
@@ -1846,11 +1882,12 @@ See `docs/PAPER_F_ROADMAP.md` for the full 50-item programme across 4 tiers.
 - ✅ F3.8b: Spectral action computation — G, g², sin²θ_W, parameter reduction 19→3 (18 theorems)
 - ✅ F3.8c: Newton's constant — RG running, Λ_PS ~ 10^{15-17} GeV, α_GUT ≈ 1/47, proton decay (17 theorems)
 - ✅ F3.8d: Cosmological constant — multi-lineage vacuum energy, 10¹²⁰→10¹¹⁰ reduction (15 theorems)
+- ✅ F3.8d-ii: CC Layer 2 — SSB vacuum shifts, series well-ordered, monotonic (16 theorems)
 
 **CC Moonshot Programme (F3.8d extended):**
 
 *Track A — Known physics, uncaptured pressures:*
-- F3.8d-ii: Layer 2 — Symmetry breaking vacuum shifts (PS→SM, EW). Builds on F1.6 + F3.2.
+- ~~F3.8d-ii: Layer 2 — Symmetry breaking vacuum shifts (PS→SM, EW). Builds on F1.6 + F3.2.~~ ✅ DONE
 - F3.8d-iii: Layer 3 — RG running of vacuum energy through mass thresholds. Builds on F3.8c.
 - F3.8d-iv: Layer 4 — Cross-lineage interference terms in product geometry M×F
 - F3.8d-v: Layer 5 — Higher-order spectral action corrections O(Λ⁻²)
@@ -1888,4 +1925,4 @@ Coverage: Stages 0–11 (Seed → Cascade → SU(2) → Tensor decomposition →
 ---
 
 *This is a living document. Each addition is Bitcoin-timestamped via git commit.*
-*Last updated: 4 May 2026 — v1.5: F3.8d Cosmological Constant (15 theorems). Multi-lineage vacuum energy: N_B=52, N_F=96, asymmetry=44 cascade-determined. Leading vacuum energy NEGATIVE. CC problem reduced from 10¹²⁰ to ~10¹¹⁰ (10 orders of magnitude). Honest partial result — cross-lineage cancellation identified as key to full resolution. Combined F3.8: 82 theorems across 5 files. 268 total Paper F theorems.*
+*Last updated: 4 May 2026 — v1.6: F3.8d-ii SSB Vacuum Shifts (16 theorems). CC Layer 2: both cascade-forced symmetry breakings computed (PS→SM: 9 broken generators, EW: 3). Series well-ordered and monotonic. PS shift (positive/bosonic) partially cancels L1 (negative/fermionic). Testable via proton decay. Combined F3.8: 98 theorems across 6 files. 284 total Paper F theorems. 490 total with Papers D+E.*
