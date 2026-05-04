@@ -14,6 +14,7 @@ Files are named `F{tier}_{number}_{short_name}.lean` matching the roadmap items.
 |------|-------------|----------|--------|
 | `F1_6_PatiSalamForced.lean` | F1.6 — Pati-Salam uniquely forced | 27 | PROVEN |
 | `F2_3_ChiralityForced.lean` | F2.3 — Chirality forced (why left-handed) | 24 | PROVEN |
+| `F3_2_HiggsForced.lean` | F3.2 — Higgs mechanism forced by cascade | 32 | PROVEN |
 
 ## Relationship to Paper E Proofs
 

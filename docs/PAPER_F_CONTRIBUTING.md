@@ -62,13 +62,23 @@ cd lean_verify
 
 Must produce: no errors, no sorry, ideally no warnings.
 
-### Step 3: Update the Paper F draft
+### Step 3: Update the Paper F draft (FULL MATHEMATICS)
 
-Add a new section or extend an existing one in `data/papers/paper_f_generator_toe.md`:
-- State the theorem in natural language
-- Give the proof structure
-- List machine-verified components
-- Note any established results invoked
+Add a new section or extend an existing one in `data/papers/paper_f_generator_toe.md`.
+
+**Every new result must be written in three layers:**
+
+1. **Verbal explanation** — What is being proved, why it matters, what it means physically. A non-specialist should follow the narrative.
+
+2. **Traditional mathematical notation** — Full Definition/Theorem/Proof format as a working mathematician would write it. Use standard symbols (∅, ℂ², ⊗, ≅, ∀, ∃, etc.). State hypotheses explicitly. Give proof sketches with enough detail that a mathematician can reconstruct the argument WITHOUT reading Lean.
+
+3. **Machine verification** — Lean theorem name, file path, compilation status. This is CONFIRMATION, not the primary presentation.
+
+**The test:** A mathematician who has never seen Lean should be able to read the section and fully understand the result, its proof, and its significance. The Lean reference at the end tells them "and a computer checked all of this."
+
+Additional requirements:
+- State any established results invoked (e.g., Wedderburn, Skolem-Noether) explicitly
+- Note what is machine-verified vs what is cited from the literature
 - Update the theorem count in the abstract
 
 ### Step 4: Update the README

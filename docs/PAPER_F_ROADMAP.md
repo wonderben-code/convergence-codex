@@ -201,6 +201,36 @@ The following were considered but excluded because they are not mathematically t
 
 ---
 
+## Paper F Write-Up Milestones
+
+### Appendix: Papers D & E — Full Mathematical Exposition
+
+**Status:** TO DO (during formal Paper F publication writeup)
+
+Paper F's appendix will contain the complete mathematics from Papers D and E, written in three layers:
+
+1. **Verbal explanation** — What is being proved and why it matters, in plain language
+2. **Traditional mathematical notation** — Definitions, theorems, and proof sketches as a working mathematician would write them (no Lean knowledge required)
+3. **Machine verification reference** — Lean file, theorem name, and compilation status
+
+This covers all ~206 Paper E theorems and all Paper D categorical results, organised by stage:
+- Stage 0: From Nothing to the Seed (F0.1)
+- Stage 1: The Endomorphism Cascade (F0.2)
+- Stage 2: SU(2) Emergence (F0.3)
+- Stage 3: Tensor Decomposition (F0.4)
+- Stage 4: Gauge Group Selection (F0.5)
+- Stage 5: Fermion Representations (F0.6)
+- Stage 6: Full Emergence Theorem (F0.7)
+- Stage 7: SM Completeness — Anomalies, Weinberg angle (F0.8)
+- Stage 8: Gravity Lineage (F0.9)
+- Stage 9: Quantum Lineage (F0.10)
+- Stage 10: Three Lineages Master Theorem (F0.11)
+- Paper D: Categorical Backbone — Lawvere, Reflexive Domains, Inexhaustibility (F0.12–F0.17)
+
+**NOT** the same as the separate Mathematical Compendium. This is specifically the appendix to Paper F, providing full mathematical context so Paper F is self-contained.
+
+---
+
 ## Publishing Strategy
 
 - Publish periodically as tiers are completed (Paper F v1 after Tier 1, v2 after Tier 2, etc.)
