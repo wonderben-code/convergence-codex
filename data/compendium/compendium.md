@@ -28,11 +28,11 @@ This chain is cryptographically tamper-proof. The Bitcoin blockchain provides an
 
 | Metric | Value |
 |--------|-------|
-| Total entries | 3 |
-| PROVEN (0 sorry) | 3 |
+| Total entries | 4 |
+| PROVEN (0 sorry) | 4 |
 | PROOF_WITH_GAPS | 0 |
 | RIGOROUS_ARGUMENT | 0 |
-| Domains covered | 7 |
+| Domains covered | 9 |
 | Date range | 2026-05-03 to present |
 
 ---
@@ -656,6 +656,200 @@ To verify this proof independently:
 3. Navigate to `lean_verify/` and run `lake build` (downloads Mathlib, ~6.9 GB)
 4. Save the Lean code above to a file, e.g., `lean_verify/verify_entry_003.lean`
 5. Run: `lake env lean verify_entry_003.lean`
+6. Expected output: no errors (warnings about unused variables are acceptable)
+
+If the code type-checks with zero errors, the proof is valid.
+
+---
+
+## Entry 4: Symmetry Breaking and Phase Transitions via the Landau Potential
+
+### Claim
+
+Phase transitions represent symmetry-breaking events where macroscopic order emerges through collective behavior, governed by universal principles that transcend microscopic details — formalised via the Landau quartic potential exhibiting a sharp Z₂ symmetry-breaking bifurcation at a critical parameter value.
+
+### Domains
+
+Thermodynamics, Atomic Physics, Statistical Mechanics
+
+### Formal Proposition
+
+Let V(β, x) = x⁴ - βx² be the Landau potential with control parameter β ∈ ℝ. Then:
+
+1. V is Z₂-symmetric: V(β, -x) = V(β, x) for all β, x
+2. V(β, 0) = 0 for all β (the symmetric fixed point exists at all parameter values)
+3. For β ≤ 0 (subcritical): V(β, x) ≥ 0 for all x, so x = 0 is the global minimum (symmetric phase preserved)
+4. For β > 0 (supercritical): ∃ x ≠ 0 with V(β, x) < 0 (minimum shifts away from origin, symmetry broken)
+5. The critical threshold β_c = 0 is sharp: it exactly separates the symmetric and broken regimes
+
+### Mathematical Proof
+
+**Definition.** The *Landau potential* is V : ℝ × ℝ → ℝ defined by V(β, x) = x⁴ − βx².
+
+This is the simplest polynomial potential with Z₂ symmetry that exhibits a bifurcation. It is the universal normal form for pitchfork bifurcations in systems with reflection symmetry — the mathematical backbone of Landau's theory of second-order phase transitions.
+
+**Theorem 1** (Z₂ Symmetry). For all β, x ∈ ℝ: V(β, −x) = V(β, x).
+
+*Proof.* V(β, −x) = (−x)⁴ − β(−x)² = x⁴ − βx² = V(β, x), since (−x)²ⁿ = x²ⁿ for all n. ∎
+
+**Theorem 2** (Symmetric Fixed Point). For all β ∈ ℝ: V(β, 0) = 0.
+
+*Proof.* V(β, 0) = 0⁴ − β · 0² = 0. ∎
+
+**Theorem 3** (Subcritical Regime — Symmetric Phase). For β ≤ 0 and all x ∈ ℝ: V(β, x) ≥ 0.
+
+*Proof.* Write V(β, x) = x⁴ − βx² = x⁴ + |β| · x². Since x⁴ ≥ 0 and |β| · x² ≥ 0 (both terms are non-negative when β ≤ 0, because −β ≥ 0), their sum is non-negative. ∎
+
+Combined with Theorem 2: V(β, 0) = 0 ≤ V(β, x) for all x, so x = 0 is the global minimum. The Z₂-symmetric state is energetically preferred.
+
+**Theorem 4** (Supercritical Regime — Broken Phase). For β > 0: ∃ x₀ ∈ ℝ with x₀ ≠ 0 and V(β, x₀) < 0.
+
+*Proof.* Take x₀ = √(β/2). Since β > 0, we have β/2 > 0, so x₀ = √(β/2) > 0, hence x₀ ≠ 0.
+
+Compute: x₀² = β/2 and x₀⁴ = (x₀²)² = (β/2)² = β²/4.
+
+Therefore: V(β, x₀) = β²/4 − β · (β/2) = β²/4 − β²/2 = −β²/4 < 0 (since β > 0 implies β² > 0). ∎
+
+Since V(β, 0) = 0 > −β²/4 = V(β, x₀), the minimum has shifted away from the origin. The minimizer x₀ ≠ 0 is NOT invariant under x ↦ −x (since −x₀ ≠ x₀), so Z₂ symmetry is spontaneously broken.
+
+**Theorem 5** (Sharp Critical Threshold). β_c = 0 separates the symmetric phase (β ≤ 0, minimum at origin) from the broken phase (β > 0, minimum away from origin).
+
+*Proof.* Combine Theorems 3 and 4: for β ≤ 0 the symmetric state is globally optimal (Theorem 3), and for β > 0 it is not (Theorem 4). The transition is sharp at β_c = 0. ∎
+
+**Physical significance:** This captures the mathematical content of Landau theory — the universal mechanism behind second-order phase transitions in ferromagnets, superconductors, superfluids, and the electroweak symmetry breaking in particle physics. The parameter β plays the role of (T_c − T)/T_c. Above the critical temperature (β ≤ 0), the disordered symmetric state is stable. Below it (β > 0), order emerges spontaneously.
+
+### Verification Status
+
+| Field | Value |
+|-------|-------|
+| Tier | **PROVEN** |
+| Sorry count | 0 |
+| Lean 4 type-checks | Yes |
+| Mathlib version | leanprover/lean4:v4.29.1 |
+| What is proven | Five theorems fully machine-verified: (1) Z₂ symmetry of potential, (2) symmetric fixed point at origin, (3) global minimum at origin for β ≤ 0, (4) existence of broken-symmetry state for β > 0 with V < 0, (5) sharp critical threshold combining both regimes |
+| What is not proven | The full statistical mechanics (Gibbs measures, partition functions, renormalization group, critical exponents, universality classes) is not formalised — see Limitations |
+
+### Lean 4 Proof
+
+```lean
+/-
+  Convergence Codex — Proof #4 (972e8755e315)
+  Proposition: Phase transitions represent symmetry-breaking events where
+  macroscopic order emerges through collective behavior, governed by
+  universal principles that transcend microscopic details.
+
+  Formalisation: We model the Landau theory of symmetry breaking via
+  the quartic potential V(β, x) = x⁴ - β·x². We prove:
+  1. The potential is Z₂-symmetric: V(β, -x) = V(β, x)
+  2. Subcritical regime (β ≤ 0): x = 0 is the global minimum (symmetric phase)
+  3. Supercritical regime (β > 0): the minimum is NOT at x = 0 (broken phase)
+  4. The critical threshold is sharp: β = 0 separates the two regimes
+-/
+
+import Mathlib.Tactic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+
+noncomputable section
+
+-- The Landau potential: V(β, x) = x⁴ - β·x²
+def landau (β x : ℝ) : ℝ := x ^ 4 - β * x ^ 2
+
+-- Theorem 1: Z₂ symmetry — the potential is invariant under x ↦ -x
+theorem landau_Z2_symmetric (β x : ℝ) :
+    landau β (-x) = landau β x := by
+  unfold landau; ring
+
+-- Theorem 2: V(β, 0) = 0 for all β (the symmetric point always exists)
+theorem landau_at_origin (β : ℝ) : landau β 0 = 0 := by
+  unfold landau; ring
+
+-- Theorem 3: Subcritical regime — for β ≤ 0, x = 0 is the global minimum
+-- i.e., V(β, x) ≥ 0 = V(β, 0) for all x
+theorem landau_subcritical (β x : ℝ) (hβ : β ≤ 0) :
+    0 ≤ landau β x := by
+  unfold landau
+  nlinarith [sq_nonneg x, sq_nonneg (x ^ 2)]
+
+-- Theorem 4: Supercritical regime — for β > 0, the minimum is NOT at x = 0
+-- i.e., there exists x ≠ 0 with V(β, x) < 0 = V(β, 0)
+theorem landau_supercritical (β : ℝ) (hβ : 0 < β) :
+    ∃ x : ℝ, x ≠ 0 ∧ landau β x < 0 := by
+  use Real.sqrt (β / 2)
+  refine ⟨?_, ?_⟩
+  · exact ne_of_gt (Real.sqrt_pos.mpr (by linarith))
+  · unfold landau
+    have h1 : Real.sqrt (β / 2) ^ 2 = β / 2 :=
+      Real.sq_sqrt (by linarith : (0 : ℝ) ≤ β / 2)
+    have h2 : Real.sqrt (β / 2) ^ 4 = (β / 2) ^ 2 := by
+      have : Real.sqrt (β / 2) ^ 4 = (Real.sqrt (β / 2) ^ 2) ^ 2 := by ring
+      rw [this, h1]
+    rw [h2, h1]
+    nlinarith [sq_nonneg β]
+
+-- Theorem 5: Sharp critical threshold — the transition occurs exactly at β = 0
+theorem landau_critical_threshold :
+    (∀ β ≤ (0 : ℝ), ∀ x : ℝ, 0 ≤ landau β x) ∧
+    (∀ β > (0 : ℝ), ∃ x : ℝ, x ≠ 0 ∧ landau β x < 0) := by
+  exact ⟨fun β hβ x => landau_subcritical β x hβ,
+         fun β hβ => landau_supercritical β hβ⟩
+
+end
+```
+
+### Proof Explanation
+
+The formalisation captures the mathematical core of Landau's theory of symmetry-breaking phase transitions through real analysis of a quartic potential.
+
+**Definition (landau):** Defines the potential V(β, x) = x⁴ − βx² as a function ℝ → ℝ → ℝ. This is the universal normal form for Z₂-symmetric bifurcations.
+
+**Theorem 1 (landau_Z2_symmetric):** Proves V(β, −x) = V(β, x) by ring arithmetic. The potential respects the discrete Z₂ symmetry x ↦ −x at all parameter values — even after symmetry breaking, the *laws* are symmetric; only the *state* breaks symmetry.
+
+**Theorem 2 (landau_at_origin):** Proves V(β, 0) = 0. The symmetric fixed point exists at all parameter values.
+
+**Theorem 3 (landau_subcritical):** For β ≤ 0, proves V(β, x) ≥ 0 for all x using `nlinarith` with the non-negativity of x² and x⁴. When β ≤ 0, both terms x⁴ and −βx² are non-negative, so V ≥ 0. Combined with V(β, 0) = 0, the origin is the global minimum.
+
+**Theorem 4 (landau_supercritical):** For β > 0, constructs the explicit witness x₀ = √(β/2) and proves V(β, x₀) < 0. The proof uses `Real.sq_sqrt` to establish x₀² = β/2, then computes x₀⁴ = (β/2)² and shows V = (β/2)² − β·(β/2) = −β²/4 < 0 via `nlinarith`.
+
+**Theorem 5 (landau_critical_threshold):** Combines Theorems 3 and 4 into a single statement: β_c = 0 exactly separates the symmetric phase from the broken phase.
+
+### Assumptions
+
+1. The potential V(β, x) = x⁴ − βx² is the correct effective potential for the system (Landau theory approximation)
+2. The control parameter β is real-valued and corresponds physically to (T_c − T)/T_c
+3. The system has exact Z₂ symmetry (no explicit symmetry-breaking field)
+4. Equilibrium corresponds to the global minimum of V
+5. The one-dimensional formulation captures the essential symmetry-breaking mechanism (higher dimensions give the same qualitative picture)
+
+### Limitations
+
+The Lean formalisation captures the mathematical core of symmetry-breaking bifurcation but does not formalise:
+
+- **Statistical mechanics:** The full theory requires Gibbs measures μ_β ∝ exp(−βH), partition functions Z_β, and the thermodynamic limit. These require measure theory on Polish spaces beyond what's tractable in current Lean.
+- **Universality and critical exponents:** The renormalization group argument (Wilson 1971) showing that microscopic details are irrelevant near the critical point is not formalised. This would require proving existence of RG fixed points.
+- **Many-body collective behavior:** The original claim asserts emergence through *collective* behavior of many particles. The Landau potential is the effective single-variable description after coarse-graining — the collective mechanism is assumed, not derived.
+- **Higher-order transitions:** First-order phase transitions (discontinuous jumps) and more complex symmetry groups (continuous groups like SO(3) for magnets) are not covered by this Z₂ model.
+
+What IS captured: the fundamental mathematical mechanism — a parameterized potential with exact symmetry undergoes a sharp bifurcation where the energetically preferred state transitions from symmetric to asymmetric. This is the structural skeleton underlying all symmetry-breaking phase transitions.
+
+### Provenance
+
+| Field | Value |
+|-------|-------|
+| Convergence ID | 972e8755e315 |
+| Git commit | [TO BE FILLED AFTER COMMIT] |
+| Commit timestamp | [TO BE FILLED AFTER COMMIT] |
+| Repository | github.com/wonderben-code/convergence-codex |
+| Proof file | data/logos/proofs/0178ff46c5ee.json |
+
+### Independent Verification
+
+To verify this proof independently:
+
+1. Clone the repository: `git clone https://github.com/wonderben-code/convergence-codex.git`
+2. Install Lean 4 via elan: `curl https://elan.dev | sh`
+3. Navigate to `lean_verify/` and run `lake build` (downloads Mathlib, ~6.9 GB)
+4. The proof file is `lean_verify/_proof_004.lean`
+5. Run: `lake env lean _proof_004.lean`
 6. Expected output: no errors (warnings about unused variables are acceptable)
 
 If the code type-checks with zero errors, the proof is valid.
