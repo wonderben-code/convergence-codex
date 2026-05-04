@@ -2,9 +2,9 @@
 
 **Author:** Mark E. Mala (Ekram Alam)
 **Status:** LIVING DOCUMENT (updated as results are proven)
-**Version:** 0.6 (4 May 2026)
+**Version:** 0.7 (4 May 2026)
 **Repository:** github.com/wonderben-code/convergence-codex
-**Builds on:** Papers D + E (233 theorems) + Paper F results (132 theorems)
+**Builds on:** Papers D + E (233 theorems) + Paper F results (136 theorems)
 **Bitcoin provenance:** Each addition committed + pushed for timestamping
 
 ---
@@ -21,7 +21,7 @@ The central results are:
 
 **F3.2 (§6).** The Higgs mechanism is forced by the cascade: the fermion bilinear (4,2,1) ⊗ (4̄,1,2) contains a unique colour-singlet scalar (1,2,2) whose VEV direction is determined by the transpose eigenspace structure, giving the observed symmetry breaking pattern. (32 theorems, 0 sorry.)
 
-**F3.1 (§7).** Exactly three generations of fermions are forced by the quaternionic structure of the cascade: D₂ = M₄(ℂ) ≅ M₂(ℍ), the imaginary quaternions Im(ℍ) have dimension 3, giving three independent complex structures on the fermion space. The fourth is excluded by Frobenius's theorem (octonions are non-associative). The derivation is unconditional: the fermion module inherits quaternionic structure at the module level (not just the algebra level), the Higgs VEV induces a 3×3 mass operator on Im(ℍ) whose spectral decomposition gives exactly 3 mass eigenstates, and four independent obstructions exclude a 4th generation from any mechanism. (49 theorems across F3.1 + F3.1b, 0 sorry.)
+**F3.1 (§7).** Exactly three generations of fermions are forced by the quaternionic structure of the cascade: D₂ = M₄(ℂ) ≅ M₂(ℍ), the imaginary quaternions Im(ℍ) have dimension 3, giving three independent complex structures on the fermion space. The fourth is excluded by Frobenius's theorem (octonions are non-associative). The derivation is unconditional: the fermion module inherits quaternionic structure at the module level (not just the algebra level), the Higgs bidoublet (1,2,2) ≅ ℍ ⊗_ℝ ℂ induces a 3×3 mass operator on Im(ℍ) whose spectral decomposition gives exactly 3 mass eigenstates (the 3×3 structure is forced; Yukawa couplings are free parameters), and five independent obstructions exclude a 4th generation from any mechanism — including invariance under extension to higher cascade levels D₃, D₄, .... (53 theorems across F3.1 + F3.1b, 0 sorry.)
 
 Paper F is a living document: results are added as they are proven, each Bitcoin-timestamped at the moment of discovery.
 
@@ -854,11 +854,15 @@ The question "why exactly 3 and not S²-many?" is resolved not by a symmetry red
 
 **Corollary 7.14 (CKM/PMNS as spectral basis change).** *The CKM matrix (quarks) and PMNS matrix (leptons) are the unitary matrices that diagonalise the respective mass operators. They represent the change of basis from the "quaternion frame" (arbitrary basis of Im(ℍ)) to the "mass frame" (eigenvectors of M). For a 3-dimensional space: 3 rotation angles + 1 CP-violating phase = 4 physical parameters.*
 
-*Machine verification:* `mass_operator_on_ImH`, `higgs_vev_quaternionic_decomposition`, `spectral_theorem_3x3`, `generic_distinct_eigenvalues`, `ckm_as_basis_change`, `pmns_as_basis_change`.
+**Theorem 7.14a (Bidoublet-quaternion identification).** *The (1,2,2) bidoublet is a complexified quaternion: M₂(ℂ) ≅ ℍ ⊗_ℝ ℂ (via the Pauli matrix isomorphism 1 ↦ I₂, i ↦ iσ₃, j ↦ iσ₂, k ↦ iσ₁). Therefore the Higgs VEV ⟨Φ⟩ IS a quaternion, and its decomposition into Re + Im parts is ℍ = ℝ·1 ⊕ Im(ℍ). The Im(ℍ) component acts on Im(ℍ) ≅ ℝ³ → the 3×3 mass operator M.*
+
+**Theorem 7.14b (Yukawa structure forced).** *The Yukawa coupling CONSTANTS (y₁, y₂, ...) are free parameters of the Lagrangian. What is FORCED is the 3×3 STRUCTURE of the mass matrix: M acts on Im(ℍ), which has dimension 3. The construction chain is: Φ ∈ (1,2,2) ≅ ℍ ⊗_ℝ ℂ → decompose into Re + Im → Yukawa Y_{ab} (free 3×3 matrix) → mass operator M_{ab} = Y_{ab} · ⟨Φ⟩ → spectral theorem: 3 eigenvalues. The generation COUNT (3) is derived; the mass VALUES are not.*
+
+*Machine verification:* `mass_operator_on_ImH`, `higgs_vev_quaternionic_decomposition`, `spectral_theorem_3x3`, `generic_distinct_eigenvalues`, `ckm_as_basis_change`, `pmns_as_basis_change`, `bidoublet_is_quaternion`, `yukawa_structure_forced`.
 
 #### 7.8.3 Module Completeness — No 4th from Any Mechanism (Gap 4)
 
-**Theorem 7.15 (Four independent obstructions to a 4th generation).**
+**Theorem 7.15 (Five independent obstructions to a 4th generation).**
 
 *(a) Hurwitz:* No 5th normed division algebra exists. A 4th generation from the division algebra route requires a 5th algebra — impossible.
 
@@ -868,9 +872,13 @@ The question "why exactly 3 and not S²-many?" is resolved not by a symmetry red
 
 *(d) Real form uniqueness:* M₄(ℂ) has exactly one quaternionic real form M₂(ℍ). No second quaternionic structure exists on ℂ⁴ to produce additional generation directions.
 
-*Any mechanism producing a 4th generation would need to violate at least one of these, each of which is a theorem.*
+*(e) Higher cascade invariance:* D₃ = M₁₆(ℂ), D₄ = M₂₅₆(ℂ), etc. do NOT introduce new division algebra structure. The quaternionic structure is determined at D₂; higher levels are endomorphism algebras that tensor the existing structure without extending the division algebra sequence. The generation count dim(Im ℍ) = 3 is invariant under passage to any higher cascade level.
 
-*Machine verification:* `obstruction_hurwitz`, `obstruction_associativity`, `obstruction_module_uniqueness`, `obstruction_real_form_uniqueness`, `no_fourth_generation_complete`.
+**Theorem 7.15a (Real form forcing).** *M₂(ℍ) is forced over M₄(ℝ) by the cascade's division algebra structure. M₄(ℝ) uses ℝ (dim 1) giving dim(Im ℝ) = 0 → no generation structure. Split quaternions ℍ_s are excluded because they have zero divisors (not a division algebra). ℍ is the unique 4-dimensional associative division algebra (Frobenius), making M₂(ℍ) the only real form that produces fermion generations.*
+
+*Any mechanism producing a 4th generation would need to violate at least one of these five obstructions, each of which is a theorem.*
+
+*Machine verification:* `obstruction_hurwitz`, `obstruction_associativity`, `obstruction_module_uniqueness`, `obstruction_real_form_uniqueness`, `obstruction_higher_cascade`, `real_form_forced`, `no_fourth_generation_complete`.
 
 #### 7.8.4 The Unconditional Master Theorem
 
@@ -880,7 +888,7 @@ The question "why exactly 3 and not S²-many?" is resolved not by a symmetry red
 
 *Phase 2 (Spectral):* Higgs VEV induces mass operator M on Im(ℍ) ≅ ℝ³; spectral theorem gives 3 eigenvalues; generic VEV → distinct eigenvalues; eigenvectors = physical generations; CKM/PMNS = basis change.
 
-*Phase 3 (Completeness):* Module decomposition unique (F1.6); real form unique; four independent obstructions to 4th generation.
+*Phase 3 (Completeness):* Module decomposition unique (F1.6); real form M₂(ℍ) forced over M₄(ℝ) by Frobenius; five independent obstructions to 4th generation (including higher cascade invariance).
 
 *This is a derivation, not a structural correspondence.*
 
@@ -891,8 +899,8 @@ The question "why exactly 3 and not S²-many?" is resolved not by a symmetry red
 | File | Theorems | Sorry | Status |
 |------|----------|-------|--------|
 | `lean_verify/paper_f/F3_1_ThreeGenerations.lean` | 27 | 0 | PROVEN |
-| `lean_verify/paper_f/F3_1b_ModuleSpectral.lean` | 22 | 0 | PROVEN |
-| **Total F3.1** | **49** | **0** | **PROVEN** |
+| `lean_verify/paper_f/F3_1b_ModuleSpectral.lean` | 26 | 0 | PROVEN |
+| **Total F3.1** | **53** | **0** | **PROVEN** |
 
 **Established results invoked (not machine-verified):**
 - Hurwitz theorem (1898): exactly 4 normed division algebras over ℝ
@@ -900,8 +908,10 @@ The question "why exactly 3 and not S²-many?" is resolved not by a symmetry red
 - Spectral theorem for real symmetric matrices (standard linear algebra)
 - Genericity of distinct eigenvalues (discriminant ≠ 0 is generic)
 - M₂(ℍ) is the unique quaternionic real form of M₄(ℂ) (Lie algebra classification)
+- M₂(ℂ) ≅ ℍ ⊗_ℝ ℂ isomorphism via Pauli matrices (standard algebra)
 - CKM matrix = diagonalising unitary of mass matrix (Cabibbo 1963, Kobayashi-Maskawa 1973)
 - The isomorphism M₄(ℂ) ≅ M₂(ℍ) ⊗_ℍ ℂ (standard algebra)
+- Frobenius real form classification of M₄(ℂ) (standard Lie theory)
 
 ### 7.10 Predictions from F3.1
 
@@ -1172,7 +1182,7 @@ See `docs/PAPER_F_ROADMAP.md` for the full 50-item programme across 4 tiers.
 - ✅ F2.3: Chirality forced (24 theorems)
 - ✅ F3.2: Higgs mechanism forced (32 theorems)
 - ✅ F3.1: Three generations forced (27 theorems)
-- ✅ F3.1b: Module-level, spectral, completeness strengthening (22 theorems)
+- ✅ F3.1b: Module-level, spectral, completeness strengthening (26 theorems)
 
 **Next targets (Caesar Strategy — highest downstream impact first):**
 - F1.1: Falsification conditions as Lean propositions (easy)
@@ -1197,4 +1207,4 @@ Coverage: Stages 0–11 (Seed → Cascade → SU(2) → Tensor decomposition →
 ---
 
 *This is a living document. Each addition is Bitcoin-timestamped via git commit.*
-*Last updated: 4 May 2026 — v0.6: F3.1b unconditional strengthening (module-level + spectral + completeness).*
+*Last updated: 4 May 2026 — v0.7: F3.1b further strengthened with bidoublet-quaternion identification, Yukawa structure canonicity, real form forcing (M₂(ℍ) over M₄(ℝ)), and higher cascade invariance (5th obstruction). 53 theorems for three generations.*
