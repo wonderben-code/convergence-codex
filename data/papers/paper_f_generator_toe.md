@@ -1487,7 +1487,7 @@ The cross-lineage interaction space has dimension N_B × N_F × N_grav = 52 × 9
 
 F3.8d establishes something methodologically unprecedented: a **convergent series approach** to the cosmological constant where each term is derivable from the cascade seed ℂ².
 
-**The core observation.** The cascade ℂ² → M₂ → M₄ → M₁₆ generates multiple distinct physics from a single seed. Each physics exerts its own "pressure" on the vacuum energy. F3.8d modelled three coarse contributions (End/bosonic, ⟨·,·⟩/fermionic, Aut/gravitational) and achieved a 10 order-of-magnitude reduction (10¹²⁰ → 10¹¹⁰). But the cascade generates **additional sub-structures** we have not yet factored in. Each sub-structure is cascade-derived, its vacuum energy contribution is computable, and adding it should move the prediction closer to observation.
+**The core observation.** The cascade ℂ² → M₂ → M₄ → M₁₆ generates multiple distinct physics from a single seed. Each physics exerts its own "pressure" on the vacuum energy. F3.8d modelled three coarse contributions (End/bosonic, ⟨·,·⟩/fermionic, Aut/gravitational) and achieved a 10 order-of-magnitude reduction (10¹²⁰ → 10¹¹⁰). But the cascade generates **additional physics** — both within the known lineages and potentially from structures we have not yet explored — that we have not yet factored in. Each such physics is cascade-derived, its vacuum energy contribution is computable, and adding it should move the prediction closer to observation.
 
 **Why this is unique.** No other framework has a convergent series for the CC:
 - **Pure QFT:** One calculation, one answer (10¹²⁰ off). No series to improve.
@@ -1497,7 +1497,11 @@ F3.8d establishes something methodologically unprecedented: a **convergent serie
 
 The cascade is the only framework where the CC is addressed by a **structured sequence of contributions**, each provable from the seed, each reducing the gap.
 
-**The identified sub-structures (progressive layers):**
+**The programme has two tracks:**
+
+#### Track A: Known physics, uncaptured pressures
+
+Within the three lineages already established (End, ⟨·,·⟩, Aut), there are vacuum energy contributions we have identified but not yet computed. These are sub-structures whose existence is already proven; the remaining work is computing their specific CC contribution and showing it reduces the gap.
 
 | Layer | Physics | Source in cascade | Status |
 |-------|---------|-------------------|--------|
@@ -1508,17 +1512,37 @@ The cascade is the only framework where the CC is addressed by a **structured se
 | L5 | Higher-order spectral action corrections O(Λ⁻²) | Heat kernel expansion | Planned |
 | L6 | Non-perturbative topological contributions | Clifford/Spin structure at D₂ | Open |
 
+#### Track B: New physics from the seed
+
+The cascade may generate physics we have not yet identified. The seed ℂ² produces the three named lineages, but the algebraic structures at each cascade level contain sub-structures that may constitute additional, independent sources of vacuum energy pressure. Track B is the systematic exploration of the cascade for such structures, and the computation of their CC contributions as they are discovered.
+
+**Identified candidates for new cascade physics:**
+
+| # | Structure | Where in cascade | Why it might matter for CC |
+|---|-----------|-----------------|---------------------------|
+| B1 | Sub-lineage structures (centers, quotients, derived objects) | Z(Mₙ), PSL, PGL at each level | Each quotient structure has its own representation theory and vacuum content |
+| B2 | Cross-level morphisms (kernels, images, derived functors of Dₙ → Dₙ₊₁) | The maps between cascade levels | The *transitions* between levels carry algebraic content distinct from the levels themselves |
+| B3 | Known SM physics not yet derived from cascade | QCD confinement, strong CP, seesaw mechanism, baryogenesis | Each is known to exist, each has vacuum energy implications, none yet explicitly traced to the seed |
+| B4 | Dark sector | Unexplored branches of cascade decomposition | If the cascade produces dark matter (as it should, since it produces the SM which requires it), that sector contributes to vacuum energy |
+| B5 | Unknown structures | Systematic algebraic exploration of Mₙ(ℂ) | The cascade at D₃ = M₁₆(ℂ) has dim = 256 — we have explored a small fraction of its internal structure. What else lives there? |
+
+**The key insight:** Track B is open-ended by design. The cascade is a mathematical object with finite content at each level but unbounded structure as we look more carefully. Each new structure discovered is a potential new term in the CC series. The programme does not require knowing all the terms in advance — it requires a methodology for discovering them and computing their contributions.
+
+#### Combined falsification and convergence
+
 **The falsification criterion is clean and progressive:**
-- If adding layer Lₖ moves the prediction CLOSER to observation: the cascade is on the right track.
-- If adding layer Lₖ moves the prediction FURTHER from observation: that specific sub-structure is wrong, or the framework has a problem at that level.
-- **Monotonic improvement** across layers would be strong evidence that the cascade captures the actual structure of vacuum energy.
-- **Any worsening** at any layer is a concrete falsification signal — not of the whole framework, but of the specific sub-structure's contribution, enabling targeted investigation.
+- If adding a contribution from either track moves the prediction CLOSER to observation: the cascade is on the right track.
+- If adding a contribution moves the prediction FURTHER from observation: that specific sub-structure is wrong, or the framework has a problem at that level.
+- **Monotonic improvement** across contributions from both tracks would be strong evidence that the cascade captures the actual structure of vacuum energy.
+- **Any worsening** is a concrete falsification signal — not of the whole framework, but of the specific contribution, enabling targeted investigation.
 
-**Prediction F3.8-16 (the convergent series prediction).** As additional cascade-derived physics layers (L2–L6) are computed and added to the CC calculation, the discrepancy between predicted and observed cosmological constant will monotonically decrease. Each layer's contribution is independently derivable from the cascade and independently testable for sign and magnitude.
+**Prediction F3.8-16 (the convergent series prediction).** As additional cascade-derived physics — both from Track A (known pressures within established lineages) and Track B (newly discovered cascade structures) — are computed and added to the CC calculation, the discrepancy between predicted and observed cosmological constant will monotonically decrease. Each contribution is independently derivable from the cascade and independently testable for sign and magnitude.
 
-*Falsification:* If two or more successive layers worsen the prediction, the multi-lineage approach to the CC is falsified.
+*Falsification:* If two or more successive contributions from independent sources worsen the prediction, the multi-lineage approach to the CC is falsified.
 
 **Why partial progress is meaningful.** Even if the full CC is not resolved, getting closer than any other theory is significant — because it would demonstrate that the cascade's structure reflects the actual structure of vacuum energy. A framework that produces 10¹²⁰ → 10¹¹⁰ → 10⁹⁵ → 10⁷⁰ → ... is doing something right, even before reaching 10⁰. The directionality is the evidence.
+
+**Why the gap should close.** The observed CC is a *single number* — 10⁻¹²² in Planck units. It is the net vacuum energy of the actual universe, which contains all the physics the cascade generates. If the cascade is correct, then the CC is the sum of ALL cascade-derived vacuum energy contributions. We are computing that sum term by term. Each term we add accounts for physics that was previously missing from the calculation. The gap between our prediction and observation represents *physics we haven't yet factored in from the cascade* — not a fundamental shortcoming. As we factor in more, the gap must shrink, unless the cascade is wrong about what physics exists.
 
 ---
 
@@ -1822,12 +1846,24 @@ See `docs/PAPER_F_ROADMAP.md` for the full 50-item programme across 4 tiers.
 - ✅ F3.8c: Newton's constant — RG running, Λ_PS ~ 10^{15-17} GeV, α_GUT ≈ 1/47, proton decay (17 theorems)
 - ✅ F3.8d: Cosmological constant — multi-lineage vacuum energy, 10¹²⁰→10¹¹⁰ reduction (15 theorems)
 
-**Next targets (Caesar Strategy — highest downstream impact first):**
-- F3.8d-ii: CC Layer 2 — Symmetry breaking vacuum shifts (PS→SM, EW). Builds on F1.6 + F3.2.
-- F3.8d-iii: CC Layer 3 — RG running of vacuum energy through mass thresholds. Builds on F3.8c.
-- F3.8d-iv: CC Layer 4 — Cross-lineage interference terms in product geometry M×F
-- F3.8d-v: CC Layer 5 — Higher-order spectral action corrections O(Λ⁻²)
-- F3.8d-vi: CC Layer 6 — Non-perturbative topological contributions (Clifford/Spin at D₂)
+**CC Moonshot Programme (F3.8d extended):**
+
+*Track A — Known physics, uncaptured pressures:*
+- F3.8d-ii: Layer 2 — Symmetry breaking vacuum shifts (PS→SM, EW). Builds on F1.6 + F3.2.
+- F3.8d-iii: Layer 3 — RG running of vacuum energy through mass thresholds. Builds on F3.8c.
+- F3.8d-iv: Layer 4 — Cross-lineage interference terms in product geometry M×F
+- F3.8d-v: Layer 5 — Higher-order spectral action corrections O(Λ⁻²)
+- F3.8d-vi: Layer 6 — Non-perturbative topological contributions (Clifford/Spin at D₂)
+
+*Track B — New physics from the seed:*
+- F3.8d-vii: Sub-lineage vacuum contributions (centers, quotients, PSL/PGL at each Dₙ)
+- F3.8d-viii: Cross-level morphism content (Dₙ → Dₙ₊₁ kernels, images, derived functors)
+- F3.8d-ix: Known SM physics not yet derived from cascade (QCD confinement, seesaw, baryogenesis) → CC
+- F3.8d-x: Dark sector from cascade decomposition → CC contribution
+- F3.8d-xi: Systematic exploration of D₃ = M₁₆(ℂ) internal structure (dim 256, mostly unexplored)
+- F3.8d-*: (open-ended — new items added as cascade structures are discovered)
+
+**Other next targets:**
 - F3.8f: Full Connes NCG connection with derived inputs
 - F1.1: Falsification conditions as Lean propositions (easy)
 - F1.2: Lawvere subsumes Cantor/Gödel/Turing/Tarski/Russell (easy)

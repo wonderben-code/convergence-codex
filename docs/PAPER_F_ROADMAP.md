@@ -124,11 +124,20 @@ These machine-verified results from Papers D+E form Paper F's base. They go stra
 | F3.8b | ✅ Spectral action: G, g², sin²θ_W, 19→3 parameters | 18 theorems, 0 sorry | PROVEN |
 | F3.8c | ✅ Newton's constant: RG running, Λ_PS, α_GUT, proton decay | 17 theorems, 0 sorry | PROVEN |
 | F3.8d | ✅ CC multi-lineage vacuum energy (Layer 1: coarse DOF) | 15 theorems, 0 sorry | PROVEN |
+| | **CC MOONSHOT — Track A: Known physics, uncaptured pressures** | | |
 | F3.8d-ii | CC Layer 2: Symmetry breaking vacuum shifts (PS→SM, EW) | Builds on F1.6 + F3.2 | **NEXT** |
 | F3.8d-iii | CC Layer 3: RG running of vacuum energy through thresholds | Builds on F3.8c beta coefficients | Planned |
 | F3.8d-iv | CC Layer 4: Cross-lineage interference in product geometry M×F | Spectral triple cross-terms | Planned |
 | F3.8d-v | CC Layer 5: Higher-order spectral action corrections O(Λ⁻²) | Heat kernel higher terms | Planned |
 | F3.8d-vi | CC Layer 6: Non-perturbative topological contributions | Clifford/Spin at D₂ | Open |
+| | **CC MOONSHOT — Track B: New physics from the seed** | | |
+| F3.8d-vii | Sub-lineage vacuum contributions (centers, quotients, PSL/PGL) | Algebraic sub-structures at each Dₙ | Open |
+| F3.8d-viii | Cross-level morphism content (Dₙ → Dₙ₊₁ kernels/images) | Transition maps between cascade levels | Open |
+| F3.8d-ix | Known SM physics → CC (QCD confinement, seesaw, baryogenesis) | Derive from cascade, compute vacuum shift | Open |
+| F3.8d-x | Dark sector from cascade → CC contribution | Unexplored decomposition branches | Open |
+| F3.8d-xi | Systematic exploration of M₁₆(ℂ) internal structure | D₃ has dim 256 — most unexplored | Open |
+| F3.8d-* | (open-ended: new items added as cascade structures discovered) | | |
+| | **F3.8 remaining** | | |
 | F3.8f | Full Connes NCG connection with derived inputs | All 7 axioms, KO-dimension | Planned |
 
 ---
@@ -182,8 +191,11 @@ F1.6: Pati-Salam UNIQUELY forced (end-to-end from ∅)
                │
                ├── F3.8a ✅ → F3.8e ✅ → F3.8b ✅ → F3.8c ✅ → F3.8d ✅ (82 theorems)
                │
-               ├── F3.8d-ii → F3.8d-iii → F3.8d-iv → F3.8d-v → F3.8d-vi
-               │   (CC convergent series: each layer closes the gap)
+               ├── CC MOONSHOT (convergent series — gap closes as terms added)
+               │   ├── Track A: F3.8d-ii → iii → iv → v → vi
+               │   │   (known pressures within established lineages)
+               │   └── Track B: F3.8d-vii → viii → ix → x → xi → *
+               │       (new physics from seed: sub-lineages, cross-level, dark sector, unexplored D₃)
                │
                └── F3.8f: Full Connes NCG connection
 ```
@@ -214,9 +226,9 @@ The following were considered but excluded because they are not mathematically t
 | Paper F proven (F1.6–F3.8d) | 13 files (268 theorems) |
 | Tier 1 (weeks-months) | 7 problems |
 | Tier 2 (months-year) | 10 problems |
-| Tier 3 (years, open maths) | 8 problems + 7 F3.8 sub-problems |
-| Tier 4 (moonshots) | 7 problems (F4.4 promoted to F3.8d) |
-| **Total mathematical programme** | **56 items** |
+| Tier 3 (years, open maths) | 8 problems + 13 F3.8 sub-problems (incl. CC moonshot) |
+| Tier 4 (moonshots) | 7 problems (F4.4 promoted to F3.8d programme) |
+| **Total mathematical programme** | **62+ items (CC programme is open-ended)** |
 
 ---
 
