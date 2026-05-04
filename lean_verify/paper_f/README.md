@@ -18,6 +18,7 @@ Files are named `F{tier}_{number}_{short_name}.lean` matching the roadmap items.
 | `F3_1_ThreeGenerations.lean` | F3.1 — Three generations forced (quaternionic structure) | 27 | PROVEN |
 | `F3_1b_ModuleSpectral.lean` | F3.1b — Module-level, spectral, and completeness strengthening | 26 | PROVEN |
 | `F1_7_SpacetimeForced.lean` | F1.7 — 4D Lorentzian spacetime forced by cascade | 24 | PROVEN |
+| `F1_7b_SpacetimeUnconditional.lean` | F1.7b — Unconditional signature, convergence, unification, invariance | 19 | PROVEN |
 
 ## Relationship to Paper E Proofs
 
