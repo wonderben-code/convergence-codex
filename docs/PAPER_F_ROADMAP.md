@@ -15,6 +15,39 @@ Nothing in this programme requires experimental data. Nothing contradicts the To
 
 ---
 
+## Problem-Solving Principles
+
+Two methodological principles govern how we attack problems in this programme:
+
+### 1. The Caesar Strategy (Strategic Sequencing)
+
+Not all problems are equal. Some problems, once conquered, cause 3-4 other problems to fall easily — like taking a strategic position that unlocks territory in every direction.
+
+**Before attacking any problem, ask:** "If I solve this, what else becomes trivial or significantly easier?"
+
+Example: F1.6 (Pati-Salam uniqueness) was the first target because once the gauge structure is LOCKED IN as unique, chirality (F2.3), Higgs mechanism (F3.2), and three generations (F3.1) all have a fixed foundation to work from. Solving F1.6 first was a strategic conquest — it made the entire critical path accessible.
+
+**When planning work sessions:** Look at the dependency graph. Identify the nodes with the most downstream connections. Attack those first.
+
+### 2. The Key Generator Approach (Intermediate Pathways)
+
+If a problem requires getting from A to B — DO NOT assume it's a straight line.
+
+A might generate intermediaries, or lead to intermediate mathematical objects, which then generate the next thing, which eventually reaches B. Our job is FINDING THE PATHWAY, not assuming a direct road.
+
+This is the theory applied to itself: the same principle that generates physics from ∅ (via intermediate key generators like M₂, M₄, SL₂) also generates proofs from what we already have.
+
+**For any hard problem:**
+1. What does the starting point A GENERATE via canonical operations?
+2. Do any of those generated objects have properties closer to B?
+3. Can we chain: A → X → Y → B where each step is a canonical operation?
+
+Example: "Three generations from the cascade" (F3.1) looks impossible directly. But the cascade generates division algebras at each stage (ℝ at D₀, ℂ at D₁, ℍ at D₂). The exclusion of 𝕆 (octonions don't form an associative algebra) might be the intermediate that forces exactly 3. The path isn't ℂ² → 3 generations. It's ℂ² → division algebra sequence → associativity constraint → exactly 3.
+
+**Never stare at a problem directly. Ask what the current structure generates, and follow the pathway.**
+
+---
+
 ## STAGE 0 — ALREADY PROVEN (Foundations)
 
 These machine-verified results from Papers D+E form Paper F's base. They go straight in.
