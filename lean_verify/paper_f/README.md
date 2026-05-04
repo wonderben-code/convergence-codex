@@ -20,6 +20,7 @@ Files are named `F{tier}_{number}_{short_name}.lean` matching the roadmap items.
 | `F1_7_SpacetimeForced.lean` | F1.7 — 4D Lorentzian spacetime forced by cascade | 24 | PROVEN |
 | `F1_7b_SpacetimeUnconditional.lean` | F1.7b — Unconditional signature, convergence, unification, invariance | 19 | PROVEN |
 | `F1_7c_SpacetimeFinalClosure.lean` | F1.7c — Final closure: Re(q²) canonicity, VEV construction, D₂ forced | 18 | PROVEN |
+| `F3_8a_QuantumGravityFoundations.lean` | F3.8a — Quantum gravity foundations: C*-algebra, observables, spectral triple | 18 | PROVEN |
 
 ## Relationship to Paper E Proofs
 
