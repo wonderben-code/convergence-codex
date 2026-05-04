@@ -198,12 +198,15 @@ F1.6: Pati-Salam UNIQUELY forced (end-to-end from ∅)
                ├── F3.8a ✅ → F3.8e ✅ → F3.8b ✅ → F3.8c ✅ → F3.8d ✅ (82 theorems)
                │
                ├── CC MOONSHOT (convergent series — gap closes as terms added)
-               │   ├── Track A: F3.8d-ii → iii → iv → v → vi
+               │   ├── Track A: F3.8d-ii ✅ → iii ✅ → iv ✅ → v ✅ → vi (open)
                │   │   (known pressures within established lineages)
-               │   └── Track B: F3.8d-vii → viii → ix → x → xi → *
-               │       (new physics from seed: sub-lineages, cross-level, dark sector, unexplored D₃)
+               │   ├── Track B: F3.8d-vii → viii → ix → x → xi → *
+               │   │   (new physics from seed: sub-lineages, cross-level, dark sector, unexplored D₃)
+               │   └── Track C: F3.8d-xiv ✅ → xii ✅ → xiii ✅ → xv ✅ → xvi ✅
+               │       (dynamical: additive → time evolution → backreaction → synthesis → gap closure)
+               │       RESULT: ρ ≈ 10⁻⁵⁵ GeV⁴, gap ~10⁷, 112 orders better than QFT
                │
-               └── F3.8f: Full Connes NCG connection
+               └── F3.8f: Full Connes NCG connection (NEXT)
 ```
 
 ---
