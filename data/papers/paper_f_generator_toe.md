@@ -39,6 +39,32 @@ Paper F is a living document: results are added as they are proven, each Bitcoin
 
 ---
 
+## 0. The Complete Picture: From Seed to Everything
+
+**STATUS: PLACEHOLDER — to be written during formal publication.**
+
+This chapter will contain the single most important narrative in the programme: the complete chain from ∅ to all of known physics, told in one place, referencing every machine-verified theorem.
+
+**Sections planned:**
+
+0.1. **The Seed** — Why ℂ² is the unique minimal fertile object (F0.1, 16 theorems)
+0.2. **The Cascade** — ℂ² → M₂(ℂ) → M₄(ℂ) → M₁₆(ℂ) via internal hom (F0.2, 13 theorems)
+0.3. **Three Lineages** — End → gauge, Aut → spacetime, ⟨·,·⟩ → QM (F0.9–F0.11, 59 theorems)
+0.4. **The Standard Model — Uniquely Forced** — Gauge group (F1.6), chirality (F2.3), Higgs (F3.2), three generations (F3.1+F3.1b), fermion reps (F0.6) — 151 theorems
+0.5. **Spacetime — Derived, Not Assumed** — 4D Lorentzian, unconditional (F1.7+F1.7b+F1.7c, 61 theorems)
+0.6. **Quantum Gravity — Unified** — Spectral triple, graviton, Newton's constant (F3.8a–c+F3.8e, 67 theorems)
+0.7. **The Cosmological Constant — A Convergent Series** — 5 layers of structural understanding (F3.8d+layers, 76 theorems)
+0.8. **The Categorical Foundation** — Lawvere fixed point, reflexive domains, inexhaustibility (F0.12–F0.17)
+0.9. **What This Means** — 535+ theorems, 0 sorry, 0 free parameters, 0 observational inputs, all Bitcoin-timestamped
+
+**Format:** Each section in three layers: verbal (plain English) → mathematical (standard notation) → machine verification (Lean file + theorem name). A reader who reads ONLY this chapter should understand the complete claim and be able to verify every step.
+
+**Estimated length:** 15–25 pages.
+
+*Full specification: `docs/PAPER_F_ROADMAP.md` → "Chapter 0: The Complete Picture"*
+
+---
+
 ## 1. The Problem
 
 The Generator Theory of Everything (Papers D + E) establishes that:
