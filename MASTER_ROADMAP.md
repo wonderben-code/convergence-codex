@@ -364,10 +364,28 @@ A: Cross-domain structural unity. Specifically: that independent, established ma
 
 | Wing | What Goes On It | Depends On | Status |
 |------|----------------|-----------|--------|
-| **Wing 1** (Discovery) | Add explainer pages for Paper D, Paper E, Grand ToE | Phase 1 | NOT DONE |
+| **Wing 1** (Discovery) | Add explainer pages for Paper D, Paper E, Grand ToE. **Add attribution note on landing page:** "Papers G16-G19 and convergence data were produced using Gnosis v1. A significantly upgraded version now exists. See Gnosis AI wing for details." | Phase 1 | NOT DONE |
 | **Wing 2** (ToE) | Extended content from Papers D, E, Grand ToE | Phase 1 | NOT DONE |
 | **Pansophia** (NEW wing) | Own wing — concept paper (DOI: 10.5281/zenodo.19974680), vision for autonomous knowledge integration at civilisational scale, architecture explanation | Pansophia paper (DONE) | NOT DONE |
-| **Convergence Codex** (NEW wing) | Compendium (browsable), 22 capstone papers (browsable), methodology, future plan (Stage B as research direction), open source links to Gnosis + Logos | Phase 1 | NOT DONE |
+| **Gnosis AI** (NEW wing) | Own wing for Gnosis as a product. See GNOSIS WING STEPS below. | Nothing (can build anytime) | NOT DONE |
+| **Logos AI** (NEW wing) | Own wing for Logos as a product. What it is (formalisation engine), how it works, what it produced (256 formalisations), version history, open source link. | Nothing (can build anytime) | NOT DONE |
+| **Convergence Codex** (NEW wing) | Compendium (browsable), 22 capstone papers (browsable), methodology, future plan (Stage B). **"How This Was Made" section:** Gnosis v1 discovered convergences, Logos formalised them, Lean 4 verified. Explicit: newer Gnosis version available. Links to Gnosis wing + Logos wing. | Phase 1 | NOT DONE |
+
+#### GNOSIS WING STEPS
+
+| # | Page | What It Covers |
+|---|------|---------------|
+| G1 | **Landing page** | Product pitch + version timeline (v1 → v2). What Gnosis IS, how it works, open source link, pip install. |
+| G2 | **v1 results & impact page** | Show test run results (266 convergences, browsable). List everything v1 contributed to: Compendium data, Papers G16-G19, and any other papers that used test run outputs. "Here's what v1 did and where its outputs appear across the programme." |
+| G3 | **v2 upgrades page** | All improvements over v1. Frame as: "v1 had these weaknesses → v2 addresses them with X, Y, Z." Honest: built, not yet deployed on full dataset. Stage B will use this. |
+
+#### CROSS-LINKS (enforce during build)
+
+- Gnosis wing ↔ Convergence Codex wing (tool ↔ results)
+- Gnosis wing ↔ Logos wing (discovery ↔ formalisation)
+- Wing 1 Gnosis papers → Gnosis wing (attribution)
+- Convergence Codex wing → Gnosis wing + Logos wing ("how this was made")
+- All version-explicit: wherever Gnosis outputs appear, state WHICH version produced them.
 
 ---
 
