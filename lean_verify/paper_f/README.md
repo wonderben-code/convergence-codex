@@ -31,6 +31,7 @@ Files are named `F{tier}_{number}_{short_name}.lean` matching the roadmap items.
 | `F3_8d_v_SpectralCorrections.lean` | F3.8d-v — CC Layer 5: higher-order spectral corrections (Λ², Λ⁰ hierarchy) | 15 | PROVEN |
 | `F3_8d_xiv_AdditiveStructure.lean` | F3.8d-xiv — CC Track C3: full additive structure theorem, nonlinearity identification | 10 | PROVEN |
 | `F3_8d_xii_TimeEvolution.lean` | F3.8d-xii — CC Track C1: time evolution of vacuum energy, cutoff running, CC gap 10¹¹⁰→10³ | 12 | PROVEN |
+| `F3_8d_xiii_Backreaction.lean` | F3.8d-xiii — CC Track C2: lineage-lineage backreaction, 10⁻⁵¹⁵ at present, negligible | 11 | PROVEN |
 
 ## Relationship to Paper E Proofs
 

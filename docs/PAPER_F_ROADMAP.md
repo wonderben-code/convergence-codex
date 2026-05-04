@@ -138,7 +138,7 @@ These machine-verified results from Papers D+E form Paper F's base. They go stra
 | F3.8d-xi | Systematic exploration of M₁₆(ℂ) internal structure | D₃ has dim 256 — most unexplored | Open |
 | | **CC MOONSHOT — Track C: Dynamical & nonlinear effects** | | |
 | F3.8d-xii | ✅ **TIME EVOLUTION OF VACUUM ENERGY** — Cutoff redshifts from Λ_PS ~ 10¹⁶ to Λ(t₀) ~ 10⁻¹² GeV. CC gap closes from 10¹¹⁰ to ~10³. Sign flips UV→IR (AdS→dS), matching observation. Three mechanisms converge. | 12 theorems, 0 sorry | PROVEN |
-| F3.8d-xiii | **LINEAGE-LINEAGE BACKREACTION** — Lineages don't just press on CC individually; they press on EACH OTHER, amplifying downstream CC effects. End (gauge) curves Aut (spacetime) → modified gravity → modified vacuum energy. Aut curvature affects ⟨·,·⟩ (QM) → modified fermion condensates → modified gauge breaking. Compute the coupled/self-consistent system. The backreaction is CASCADE-CONSTRAINED (shared ℂ² origin). | Semiclassical backreaction in spectral action framework | Open |
+| F3.8d-xiii | ✅ **LINEAGE-LINEAGE BACKREACTION** — Full loop characterised: End→Aut (10⁻⁸⁸), Aut→⟨·,·⟩ (10⁻⁷⁵), ⟨·,·⟩→End (10⁻³⁵²). Total per iteration: 10⁻⁵¹⁵. Fixed point in 1 iteration. Negligible at present epoch. Early-universe backreaction captured by C1's redshift. | 11 theorems, 0 sorry | PROVEN |
 | F3.8d-xiv | ✅ **FULL ADDITIVE STRUCTURE THEOREM** — All 5 layers additive (stress-energy, Seeley-DeWitt, spectral expansion). Nonlinearity enters via backreaction (~10⁻⁹ per iteration) and Friedmann time evolution (α ~ 10³⁰ → CC gap 10¹¹⁰ → 10¹⁰). | 10 theorems, 0 sorry | PROVEN |
 | F3.8d-xv | **TIME × BACKREACTION SYNTHESIS** — Combined effect: time evolution (F3.8d-xii) of the coupled lineage system (F3.8d-xiii). The self-consistent dynamical vacuum energy of the expanding cascade universe. This is the FULL CC computation. | Combines xii + xiii | Open (requires xii + xiii) |
 | F3.8d-* | (open-ended: new items added as cascade structures discovered) | | |
@@ -228,7 +228,7 @@ The following were considered but excluded because they are not mathematically t
 | Category | Count |
 |----------|-------|
 | Already proven (Stage 0) | 17 results (206+ theorems) |
-| Paper F proven (F1.6–F3.8d-xiv) | 19 files (351 theorems) |
+| Paper F proven (F1.6–F3.8d-xv) | 20 files (362 theorems) |
 | Tier 1 (weeks-months) | 7 problems |
 | Tier 2 (months-year) | 10 problems |
 | Tier 3 (years, open maths) | 8 problems + 13 F3.8 sub-problems (incl. CC moonshot) |
