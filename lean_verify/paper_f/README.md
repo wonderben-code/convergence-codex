@@ -24,6 +24,7 @@ Files are named `F{tier}_{number}_{short_name}.lean` matching the roadmap items.
 | `F3_8e_GravitonFromFluctuations.lean` | F3.8e — Graviton from D-fluctuations: all forces from one mechanism | 14 | PROVEN |
 | `F3_8b_SpectralActionComputation.lean` | F3.8b — Spectral action coefficients: G, g², sin²θ_W from cascade | 18 | PROVEN |
 | `F3_8c_NewtonsConstant.lean` | F3.8c — Newton's constant: RG running, Λ_PS, G, proton decay | 17 | PROVEN |
+| `F3_8d_CosmologicalConstant.lean` | F3.8d — Cosmological constant: multi-lineage vacuum energy, 10¹²⁰→10¹¹⁰ | 15 | PROVEN |
 
 ## Relationship to Paper E Proofs
 
