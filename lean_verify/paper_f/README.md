@@ -10,9 +10,10 @@ Machine-verified proofs for the **Paper F Mathematical Programme**.
 
 Files are named `F{tier}_{number}_{short_name}.lean` matching the roadmap items.
 
-| File | Roadmap Item | Status |
-|------|-------------|--------|
-| `F1_6_PatiSalamForced.lean` | F1.6 — Pati-Salam uniquely forced | Active |
+| File | Roadmap Item | Theorems | Status |
+|------|-------------|----------|--------|
+| `F1_6_PatiSalamForced.lean` | F1.6 — Pati-Salam uniquely forced | 27 | PROVEN |
+| `F2_3_ChiralityForced.lean` | F2.3 — Chirality forced (why left-handed) | 24 | PROVEN |
 
 ## Relationship to Paper E Proofs
 
