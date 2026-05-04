@@ -2,9 +2,9 @@
 
 **Author:** Mark E. Mala (Ekram Alam)
 **Status:** LIVING DOCUMENT (updated as results are proven)
-**Version:** 1.8 (4 May 2026)
+**Version:** 1.9 (4 May 2026)
 **Repository:** github.com/wonderben-code/convergence-codex
-**Builds on:** Papers D + E (233 theorems) + Paper F results (314 theorems)
+**Builds on:** Papers D + E (233 theorems) + Paper F results (329 theorems)
 **Bitcoin provenance:** Each addition committed + pushed for timestamping
 
 ---
@@ -1471,9 +1471,10 @@ The cross-lineage interaction space has dimension N_B × N_F × N_grav = 52 × 9
 | F3.8d-ii: SSB vacuum shifts (L2) + cumulative | `F3_8d_ii_SSBVacuumShifts.lean` | 17 | ✅ 0 sorry |
 | F3.8d-iii: RG running of vacuum energy (L3) | `F3_8d_iii_RGRunningVacuumEnergy.lean` | 15 | ✅ 0 sorry |
 | F3.8d-iv: Cross-lineage interference (L4) | `F3_8d_iv_CrossLineageInterference.lean` | 14 | ✅ 0 sorry |
-| **F3.8 TOTAL** | **8 files** | **128** | **✅ ALL PROVEN** |
+| F3.8d-v: Spectral corrections (L5) | `F3_8d_v_SpectralCorrections.lean` | 15 | ✅ 0 sorry |
+| **F3.8 TOTAL** | **9 files** | **143** | **✅ ALL PROVEN** |
 
-**Paper F running total: 314 theorems, 0 sorry.** (206 Papers D+E + 314 Paper F = 520 total)
+**Paper F running total: 329 theorems, 0 sorry.** (206 Papers D+E + 329 Paper F = 535 total)
 
 ### 9.25 Additional Predictions from F3.8d
 
@@ -1512,7 +1513,7 @@ Within the three lineages already established (End, ⟨·,·⟩, Aut), there are
 | L2 | Symmetry breaking vacuum shifts (PS→SM, EW) | F1.6 + F3.2 (already proven forced) | ✅ F3.8d-ii (monotonic, well-ordered) |
 | L3 | RG running of vacuum energy through mass thresholds | F3.8c (beta coefficients proven) | ✅ F3.8d-iii (UV-dominated, sign change) |
 | L4 | Cross-lineage interference terms in product geometry M×F | Spectral triple structure | ✅ F3.8d-iv (Λ⁴ exact, cross-term = 0) |
-| L5 | Higher-order spectral action corrections O(Λ⁻²) | Heat kernel expansion | Planned |
+| L5 | Higher-order spectral action corrections (Λ², Λ⁰) | Heat kernel expansion | ✅ F3.8d-v (full hierarchy characterised) |
 | L6 | Non-perturbative topological contributions | Clifford/Spin structure at D₂ | Open |
 
 #### Track B: New physics from the seed
@@ -1662,6 +1663,37 @@ The vacuum energy is not a single number — it RUNS with energy scale as partic
 3. **Complete scale dependence.** The cascade determines not just the leading CC term but the ENTIRE energy-dependent structure of vacuum energy — every threshold, every DOF change, every interval. The running is well-defined and computable at each scale.
 
 **Numerical impact:** Layer 3 does NOT significantly change the CC prediction (~10⁻⁵⁵ correction). But it provides crucial structural understanding: the vacuum energy has rich scale dependence, all cascade-determined, including a topological sign change.
+
+### 9.30 Layer 5 Results: Higher-Order Spectral Corrections (F3.8d-v)
+
+The spectral action Tr(f(D²/Λ²)) has a heat kernel expansion with three leading terms. Layer 5 characterises all of them for the cascade spectral triple.
+
+**The a₂ coefficient (Λ² term) has two parts:**
+
+1. **Einstein-Hilbert term:** a₂(D_M²) × a₀(D_F²) = (R/6) × 384. This IS gravity — Newton's constant G = 3π/(f₂Λ²) with the factor 3 = 12/4 cascade-determined (F3.8c). The SAME coefficient that gives gravity also gives a Λ² vacuum energy correction.
+
+2. **Mass-dependent term:** a₀(D_M²) × a₂(D_F²) = Vol(M)/(4π²) × Tr(D_F²). Here Tr(D_F²) = Σ mᵢ² summed over all particles. The top quark dominates (~81% of the total), contributing 12 × (173 GeV)² = 359,148 GeV². The total mass-squared sum: ~438,000 GeV² (bosonic: ~79,000; fermionic: ~359,000 — fermionic dominates by factor ~4.6).
+
+**The Λ² vacuum energy correction:**
+- Magnitude: ρ_Λ² ~ f₂ × 10³⁵ GeV⁴ ~ 10⁴² GeV⁴ (with f₂ ~ 10⁷)
+- Suppressed by ~10²⁷ relative to the Λ⁴ term
+- Same sign as Λ⁴ (fermionic dominates → negative)
+- Gap from observation: 10⁴²/10⁻⁴⁷ = 10⁸⁹ (21 orders closer than Λ⁴ gap of 10¹¹⁰)
+
+**The a₄ coefficient (Λ⁰ term):** Gives the Yang-Mills action + mass⁴ terms. The mass⁴ contribution is dominated by the top quark: 12 × (173)⁴ ≈ 10¹⁰ GeV⁴. This matches the SSB vacuum shift scale from Layer 2. The Λ⁰ gap from observation: 10¹⁰/10⁻⁴⁷ = 10⁵⁷.
+
+**The spectral hierarchy is rapidly convergent:**
+
+| Order | Term | Magnitude (GeV⁴) | Gap from observation |
+|-------|------|-------------------|---------------------|
+| Λ⁴ | a₀ (DOF counting) | ~10⁶³ | 10¹¹⁰ |
+| Λ² | a₂ (mass terms) | ~10⁴² | 10⁸⁹ |
+| Λ⁰ | a₄ (gauge + mass⁴) | ~10¹⁰ | 10⁵⁷ |
+| Observed | ρ_CC | ~10⁻⁴⁷ | — |
+
+Each order is suppressed by 20+ orders relative to the previous. The perturbative spectral expansion is now COMPLETELY characterised. Higher orders (a₆ at Λ⁻², etc.) are negligible.
+
+**Conclusion:** The perturbative spectral action alone cannot resolve the CC — the series is convergent but dominated by Λ⁴. The resolution must involve either non-perturbative topology (Layer 6) or new cascade physics (Track B). The complete perturbative characterisation is itself a result: it proves WHERE the resolution does and does not live.
 
 ---
 
@@ -2008,4 +2040,4 @@ Coverage: Stages 0–11 (Seed → Cascade → SU(2) → Tensor decomposition →
 ---
 
 *This is a living document. Each addition is Bitcoin-timestamped via git commit.*
-*Last updated: 4 May 2026 — v1.8: F3.8d-iii RG Running of Vacuum Energy (15 theorems). CC Layer 3: 13 mass thresholds all cascade-determined, UV-dominated (corrections ~10⁻⁵⁵), UV-to-IR sign change (−44 → +4, fermionic to bosonic). F3.8d-iv Cross-Lineage Interference (14 theorems). CC Layer 4: product D² factors, Λ⁴ exact. Combined F3.8: 128 theorems across 8 files. 314 total Paper F theorems. 520 total with Papers D+E.*
+*Last updated: 4 May 2026 — v1.9: F3.8d-v Higher-Order Spectral Corrections (15 theorems). CC Layer 5: complete perturbative spectral hierarchy (Λ⁴ > Λ² > Λ⁰), a₂ mass term computed (top dominates 81%), Λ² correction ~10⁴² GeV⁴. Track A: 5 of 6 layers proven. Combined F3.8: 143 theorems across 9 files. 329 total Paper F theorems. 535 total with Papers D+E.*

@@ -128,7 +128,7 @@ These machine-verified results from Papers D+E form Paper F's base. They go stra
 | F3.8d-ii | ✅ CC Layer 2: SSB vacuum shifts (16 theorems, series well-ordered) | Builds on F1.6 + F3.2 | PROVEN |
 | F3.8d-iii | ✅ CC Layer 3: RG running through 13 mass thresholds, UV-dominated, sign change | 15 theorems, 0 sorry | PROVEN |
 | F3.8d-iv | ✅ CC Layer 4: Cross-lineage interference (product D² factors, Λ⁴ exact) | 14 theorems, 0 sorry | PROVEN |
-| F3.8d-v | CC Layer 5: Higher-order spectral action corrections O(Λ⁻²) | Heat kernel higher terms | Planned |
+| F3.8d-v | ✅ CC Layer 5: Spectral hierarchy Λ⁴>Λ²>Λ⁰, a₂ mass term, top dominance | 15 theorems, 0 sorry | PROVEN |
 | F3.8d-vi | CC Layer 6: Non-perturbative topological contributions | Clifford/Spin at D₂ | Open |
 | | **CC MOONSHOT — Track B: New physics from the seed** | | |
 | F3.8d-vii | Sub-lineage vacuum contributions (centers, quotients, PSL/PGL) | Algebraic sub-structures at each Dₙ | Open |

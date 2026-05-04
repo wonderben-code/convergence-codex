@@ -28,6 +28,7 @@ Files are named `F{tier}_{number}_{short_name}.lean` matching the roadmap items.
 | `F3_8d_ii_SSBVacuumShifts.lean` | F3.8d-ii — CC Layer 2: SSB vacuum shifts + cumulative additive proof | 17 | PROVEN |
 | `F3_8d_iii_RGRunningVacuumEnergy.lean` | F3.8d-iii — CC Layer 3: RG running of vacuum energy through mass thresholds | 15 | PROVEN |
 | `F3_8d_iv_CrossLineageInterference.lean` | F3.8d-iv — CC Layer 4: cross-lineage interference in product geometry M × F | 14 | PROVEN |
+| `F3_8d_v_SpectralCorrections.lean` | F3.8d-v — CC Layer 5: higher-order spectral corrections (Λ², Λ⁰ hierarchy) | 15 | PROVEN |
 
 ## Relationship to Paper E Proofs
 
