@@ -133,6 +133,28 @@ If the code type-checks with zero errors, the proof is valid.
 ---
 ```
 
+### CRITICAL RULE: Formalisation First, Verification Second
+
+The compendium is a catalogue of FORMALISATIONS, not proofs. Each entry
+contains the FULL Logos output — the complete mathematical formalisation
+of the claim. Our job is to try to upgrade the verification level where
+possible (fix sorries in Lean), but NEVER to strip substance from the
+formalisation just to achieve a higher verification tier.
+
+**What this means in practice:**
+- Take the FULL Logos output (proposition, natural language proof, Lean code, all steps)
+- Put ALL of it in the compendium as-is
+- Try to fix sorries where Mathlib supports it
+- What we CANNOT verify stays in the compendium unchanged
+- NEVER replace a rich formalisation with a simpler proof just to get 0 sorry
+- A RIGOROUS_ARGUMENT with full substance is MORE VALUABLE than a
+  PROVEN entry that only captures a fraction of the original claim
+
+**Even if a Logos formalisation cannot be machine-verified AT ALL, it is
+still a mathematical formalisation.** Machine verification is a LEVEL OF
+VALIDATION, not what makes something a formalisation. The formalisation
+exists independently in the mathematical language Logos produced.
+
 ### Entry Ordering
 
 Entries are added in verification order (the order we prove them).
