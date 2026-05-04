@@ -39,11 +39,25 @@ Paper F is a living document: results are added as they are proven, each Bitcoin
 
 ---
 
-## 0. The Complete Picture: From Seed to Everything
+## 0. The Complete Picture: From Nothing to Everything
 
 **STATUS: PLACEHOLDER — to be written during formal publication.**
 
-This chapter will contain the single most important narrative in the programme. It begins with NOTHING and ends with everything. Every step is machine-verified. Every claim is traceable to a specific theorem.
+**The construction in one line:**
+
+> ∅ → I → I⊕I → [I⊕I, I⊕I] → [[I⊕I, I⊕I], [I⊕I, I⊕I]] → … → D∞
+
+This is the Generator Theory of Everything expressed as a categorical construction. It operates in ANY symmetric monoidal closed category (SMCC). The internal hom [−,−] is the engine; the coproduct ⊕ provides the first non-trivial object; iteration builds unbounded structure; D∞ is the reflexive fixed point D ≅ [D, D].
+
+**In FdVect_ℂ** (finite-dimensional complex vector spaces), this instantiates as:
+
+> ∅ → ℂ → ℂ² → M₂(ℂ) → M₄(ℂ) → M₁₆(ℂ) → …
+
+where Mₙ(ℂ) = [ℂⁿ, ℂⁿ] = End(ℂⁿ). This specific instantiation produces all of known physics: the Standard Model, General Relativity, Quantum Mechanics, and the structure of vacuum energy — from zero inputs, with zero free parameters in the construction.
+
+**ℂ² is one seed.** Other categories have other seeds (Bool = 1+1 in Cartesian closed categories → classical computation). The construction is universal; the seed is category-specific; the content is forced by the mathematics.
+
+This chapter tells that complete story — from the universal construction through one specific seed to everything we observe — with every step machine-verified and Bitcoin-timestamped.
 
 **Sections planned:**
 

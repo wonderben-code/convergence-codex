@@ -260,11 +260,16 @@ This covers all ~206 Paper E theorems and all Paper D categorical results, organ
 
 **NOT** the same as the separate Mathematical Compendium. This is specifically the appendix to Paper F, providing full mathematical context so Paper F is self-contained.
 
-### Chapter 0: The Complete Picture — From Seed to Everything
+### Chapter 0: The Complete Picture — From Nothing to Everything
 
 **Status:** TO DO (critical — must be written before or alongside the appendix)
 
-The single most important piece of writing in the entire programme. A standalone chapter (§0 of Paper F) that tells the COMPLETE narrative in one place: how the universal construction, instantiated with the seed ℂ², generates all of known physics, with every step referenced to its machine-verified theorem.
+**The construction in one line:**
+> ∅ → I → I⊕I → [I⊕I, I⊕I] → [[I⊕I, I⊕I], [I⊕I, I⊕I]] → … → D∞
+
+In FdVect_ℂ: ∅ → ℂ → ℂ² → M₂(ℂ) → M₄(ℂ) → M₁₆(ℂ) → …
+
+The single most important piece of writing in the entire programme. A standalone chapter (§0 of Paper F) that tells the COMPLETE narrative in one place: from the universal categorical construction (which operates in ANY SMCC), through the specific seed ℂ² in FdVect_ℂ (one instantiation among potentially many), to all of known physics, with every step referenced to its machine-verified theorem.
 
 **Why this is needed:** Currently the full story is spread across Papers D (categorical backbone + universal construction), E (existence: cascade produces SM+GR+QM), and F (uniqueness: cascade forces everything). No single place tells the complete chain. A reader must mentally assemble three papers. This chapter removes that burden.
 
