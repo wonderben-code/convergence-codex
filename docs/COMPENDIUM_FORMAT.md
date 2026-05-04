@@ -52,6 +52,25 @@ Each convergence occupies one entry. Entries are numbered sequentially
 
 [The precise mathematical statement being proved, in standard notation.]
 
+### Mathematical Proof
+
+[A complete, standalone mathematical proof that a working mathematician
+can follow WITHOUT needing to read Lean code. Written in standard
+mathematical notation with full rigour. This should read like a proof
+in a journal paper: state lemmas, give arguments, conclude.
+
+This is NOT a summary or explanation of the Lean code — it is the
+mathematical argument itself, which the Lean code then machine-verifies.
+
+Structure:
+- State each result as a numbered Proposition/Theorem/Lemma
+- Give the proof of each in standard mathematical notation
+- Use ε, ∀, ∃, ∈, ≤, etc. as appropriate
+- A mathematician reading ONLY this section should be fully convinced
+  of the mathematical content without touching a computer.
+
+Length: typically 0.5–2 pages depending on complexity.]
+
 ### Verification Status
 
 | Field | Value |
