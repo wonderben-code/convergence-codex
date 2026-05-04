@@ -118,7 +118,18 @@ These machine-verified results from Papers D+E form Paper F's base. They go stra
 | F3.5 | Characterisation of admitting categories | Which SMCCs have non-trivial cascades? | Makes scope precise while preserving open-dimensionality |
 | F3.6 | Per-category seed canonicity (general) | For each context, unique minimal fertile | Each instance self-contained |
 | F3.7 | Braided lineage closure (anyonic physics) | Modular tensor categories → topological physics | NEW physics domain from framework |
-| F3.8 | Quantum gravity from lineage interaction | Aut/ker (geometry) and ⟨·,·⟩ (QM) MEET at seed | QG lives at the intersection |
+| F3.8 | **Quantum gravity from lineage interaction** | Aut/ker (geometry) and ⟨·,·⟩ (QM) MEET at seed | QG lives at the intersection |
+| F3.8a | ✅ QG foundations: C*-algebra, observables, spectral triple | 18 theorems, 0 sorry | PROVEN |
+| F3.8e | ✅ Graviton from D-fluctuations: all forces from one mechanism | 14 theorems, 0 sorry | PROVEN |
+| F3.8b | ✅ Spectral action: G, g², sin²θ_W, 19→3 parameters | 18 theorems, 0 sorry | PROVEN |
+| F3.8c | ✅ Newton's constant: RG running, Λ_PS, α_GUT, proton decay | 17 theorems, 0 sorry | PROVEN |
+| F3.8d | ✅ CC multi-lineage vacuum energy (Layer 1: coarse DOF) | 15 theorems, 0 sorry | PROVEN |
+| F3.8d-ii | CC Layer 2: Symmetry breaking vacuum shifts (PS→SM, EW) | Builds on F1.6 + F3.2 | **NEXT** |
+| F3.8d-iii | CC Layer 3: RG running of vacuum energy through thresholds | Builds on F3.8c beta coefficients | Planned |
+| F3.8d-iv | CC Layer 4: Cross-lineage interference in product geometry M×F | Spectral triple cross-terms | Planned |
+| F3.8d-v | CC Layer 5: Higher-order spectral action corrections O(Λ⁻²) | Heat kernel higher terms | Planned |
+| F3.8d-vi | CC Layer 6: Non-perturbative topological contributions | Clifford/Spin at D₂ | Open |
+| F3.8f | Full Connes NCG connection with derived inputs | All 7 axioms, KO-dimension | Planned |
 
 ---
 
@@ -129,7 +140,7 @@ These machine-verified results from Papers D+E form Paper F's base. They go stra
 | F4.1 | Fine structure constant α | Cascade → SM content → RG running → α | α runs; "α at unification" more tractable |
 | F4.2 | Fermion mass ratios | Cascade → Yukawa structure → Koide-like relations | Free parameters in ALL frameworks |
 | F4.3 | CKM matrix / neutrino mixing | Cascade → flavour structure → mixing angles | No chain currently developed |
-| F4.4 | Cosmological constant Λ | Cascade → vacuum structure → Λ as structural feature | 120 orders of magnitude; may need reframing |
+| F4.4 | ~~Cosmological constant Λ~~ | **PROMOTED to F3.8d programme** — convergent series approach via progressive cascade layers | Active under F3.8d-ii through F3.8d-vi |
 | F4.5 | Cosmological perturbation predictions | Seed-cascade ↔ inflation mapping | No worked chain yet |
 | F4.6 | Black hole entropy from cascade | Holographic structure → Bekenstein-Hawking | Suggestive but no derivation |
 | F4.7 | Dark matter identification | Unexplored lineage branches → dark sector | Need systematic exploration |
@@ -168,6 +179,13 @@ F1.6: Pati-Salam UNIQUELY forced (end-to-end from ∅)
                │
                ▼
           F3.8: Quantum gravity at lineage intersection
+               │
+               ├── F3.8a ✅ → F3.8e ✅ → F3.8b ✅ → F3.8c ✅ → F3.8d ✅ (82 theorems)
+               │
+               ├── F3.8d-ii → F3.8d-iii → F3.8d-iv → F3.8d-v → F3.8d-vi
+               │   (CC convergent series: each layer closes the gap)
+               │
+               └── F3.8f: Full Connes NCG connection
 ```
 
 ---
@@ -193,11 +211,12 @@ The following were considered but excluded because they are not mathematically t
 | Category | Count |
 |----------|-------|
 | Already proven (Stage 0) | 17 results (206+ theorems) |
+| Paper F proven (F1.6–F3.8d) | 13 files (268 theorems) |
 | Tier 1 (weeks-months) | 7 problems |
 | Tier 2 (months-year) | 10 problems |
-| Tier 3 (years, open maths) | 8 problems |
-| Tier 4 (moonshots) | 8 problems |
-| **Total mathematical programme** | **50 items** |
+| Tier 3 (years, open maths) | 8 problems + 7 F3.8 sub-problems |
+| Tier 4 (moonshots) | 7 problems (F4.4 promoted to F3.8d) |
+| **Total mathematical programme** | **56 items** |
 
 ---
 

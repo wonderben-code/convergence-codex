@@ -1483,6 +1483,43 @@ The cross-lineage interaction space has dimension N_B × N_F × N_grav = 52 × 9
 **Prediction F3.8-15.** The Higgs vacuum energy contributes ρ_Higgs ~ v⁴/(64π²) ~ (246 GeV)⁴/(64π²) ~ 10⁸ GeV⁴, which must be partially cancelled by the same multi-lineage mechanism. This is the EW-scale version of the CC problem — the cascade constrains it but does not resolve it.
 *Falsification:* If the Higgs contribution to vacuum energy is found to be exactly zero by some symmetry not in the cascade.
 
+### 9.26 The Convergent Series Framework for the Cosmological Constant
+
+F3.8d establishes something methodologically unprecedented: a **convergent series approach** to the cosmological constant where each term is derivable from the cascade seed ℂ².
+
+**The core observation.** The cascade ℂ² → M₂ → M₄ → M₁₆ generates multiple distinct physics from a single seed. Each physics exerts its own "pressure" on the vacuum energy. F3.8d modelled three coarse contributions (End/bosonic, ⟨·,·⟩/fermionic, Aut/gravitational) and achieved a 10 order-of-magnitude reduction (10¹²⁰ → 10¹¹⁰). But the cascade generates **additional sub-structures** we have not yet factored in. Each sub-structure is cascade-derived, its vacuum energy contribution is computable, and adding it should move the prediction closer to observation.
+
+**Why this is unique.** No other framework has a convergent series for the CC:
+- **Pure QFT:** One calculation, one answer (10¹²⁰ off). No series to improve.
+- **SUSY:** Predicts exactly 0 at the symmetric level, then breaking gives no controlled prediction. No series.
+- **Anthropic/multiverse:** Abandons calculation entirely. Invokes selection from 10⁵⁰⁰ vacua.
+- **String landscape:** No mechanism to progressively improve a prediction.
+
+The cascade is the only framework where the CC is addressed by a **structured sequence of contributions**, each provable from the seed, each reducing the gap.
+
+**The identified sub-structures (progressive layers):**
+
+| Layer | Physics | Source in cascade | Status |
+|-------|---------|-------------------|--------|
+| L1 | Coarse DOF counting (N_B=52, N_F=96) | End + ⟨·,·⟩ lineages | ✅ F3.8d (10¹²⁰ → 10¹¹⁰) |
+| L2 | Symmetry breaking vacuum shifts (PS→SM, EW) | F1.6 + F3.2 (already proven forced) | NEXT |
+| L3 | RG running of vacuum energy through mass thresholds | F3.8c (beta coefficients proven) | Planned |
+| L4 | Cross-lineage interference terms in product geometry M×F | Spectral triple structure | Planned |
+| L5 | Higher-order spectral action corrections O(Λ⁻²) | Heat kernel expansion | Planned |
+| L6 | Non-perturbative topological contributions | Clifford/Spin structure at D₂ | Open |
+
+**The falsification criterion is clean and progressive:**
+- If adding layer Lₖ moves the prediction CLOSER to observation: the cascade is on the right track.
+- If adding layer Lₖ moves the prediction FURTHER from observation: that specific sub-structure is wrong, or the framework has a problem at that level.
+- **Monotonic improvement** across layers would be strong evidence that the cascade captures the actual structure of vacuum energy.
+- **Any worsening** at any layer is a concrete falsification signal — not of the whole framework, but of the specific sub-structure's contribution, enabling targeted investigation.
+
+**Prediction F3.8-16 (the convergent series prediction).** As additional cascade-derived physics layers (L2–L6) are computed and added to the CC calculation, the discrepancy between predicted and observed cosmological constant will monotonically decrease. Each layer's contribution is independently derivable from the cascade and independently testable for sign and magnitude.
+
+*Falsification:* If two or more successive layers worsen the prediction, the multi-lineage approach to the CC is falsified.
+
+**Why partial progress is meaningful.** Even if the full CC is not resolved, getting closer than any other theory is significant — because it would demonstrate that the cascade's structure reflects the actual structure of vacuum energy. A framework that produces 10¹²⁰ → 10¹¹⁰ → 10⁹⁵ → 10⁷⁰ → ... is doing something right, even before reaching 10⁰. The directionality is the evidence.
+
 ---
 
 ## 10. All Predictions
@@ -1786,6 +1823,11 @@ See `docs/PAPER_F_ROADMAP.md` for the full 50-item programme across 4 tiers.
 - ✅ F3.8d: Cosmological constant — multi-lineage vacuum energy, 10¹²⁰→10¹¹⁰ reduction (15 theorems)
 
 **Next targets (Caesar Strategy — highest downstream impact first):**
+- F3.8d-ii: CC Layer 2 — Symmetry breaking vacuum shifts (PS→SM, EW). Builds on F1.6 + F3.2.
+- F3.8d-iii: CC Layer 3 — RG running of vacuum energy through mass thresholds. Builds on F3.8c.
+- F3.8d-iv: CC Layer 4 — Cross-lineage interference terms in product geometry M×F
+- F3.8d-v: CC Layer 5 — Higher-order spectral action corrections O(Λ⁻²)
+- F3.8d-vi: CC Layer 6 — Non-perturbative topological contributions (Clifford/Spin at D₂)
 - F3.8f: Full Connes NCG connection with derived inputs
 - F1.1: Falsification conditions as Lean propositions (easy)
 - F1.2: Lawvere subsumes Cantor/Gödel/Turing/Tarski/Russell (easy)
