@@ -4,7 +4,7 @@
 **Status:** LIVING DOCUMENT (updated as results are proven)
 **Version:** 0.8 (4 May 2026)
 **Repository:** github.com/wonderben-code/convergence-codex
-**Builds on:** Papers D + E (233 theorems) + Paper F results (160 theorems)
+**Builds on:** Papers D + E (233 theorems) + Paper F results (149 theorems)
 **Bitcoin provenance:** Each addition committed + pushed for timestamping
 
 ---
@@ -1337,4 +1337,4 @@ Coverage: Stages 0–11 (Seed → Cascade → SU(2) → Tensor decomposition →
 ---
 
 *This is a living document. Each addition is Bitcoin-timestamped via git commit.*
-*Last updated: 4 May 2026 — v0.8: F1.7 spacetime forced (24 theorems). D₂ = Cl₄(ℂ) → dim = 4; M₂(ℍ) = Cl(1,3) → Lorentzian signature; SL₂(ℂ) ≅ Spin(3,1) → independent confirmation. Dirac spinor = SU(4) fundamental = ℍ² ⊗_ℍ ℂ triple unification. 160 total Paper F theorems.*
+*Last updated: 4 May 2026 — v0.8: F1.7 spacetime forced (24 theorems). D₂ = Cl₄(ℂ) → dim = 4; M₂(ℍ) = Cl(1,3) → Lorentzian signature; SL₂(ℂ) ≅ Spin(3,1) → independent confirmation. Dirac spinor = SU(4) fundamental = ℍ² ⊗_ℍ ℂ triple unification. 149 total Paper F theorems.*

@@ -12,8 +12,8 @@ Files are named `F{tier}_{number}_{short_name}.lean` matching the roadmap items.
 
 | File | Roadmap Item | Theorems | Status |
 |------|-------------|----------|--------|
-| `F1_6_PatiSalamForced.lean` | F1.6 — Pati-Salam uniquely forced | 27 | PROVEN |
-| `F2_3_ChiralityForced.lean` | F2.3 — Chirality forced (why left-handed) | 24 | PROVEN |
+| `F1_6_PatiSalamForced.lean` | F1.6 — Pati-Salam uniquely forced | 20 | PROVEN |
+| `F2_3_ChiralityForced.lean` | F2.3 — Chirality forced (why left-handed) | 20 | PROVEN |
 | `F3_2_HiggsForced.lean` | F3.2 — Higgs mechanism forced by cascade | 32 | PROVEN |
 | `F3_1_ThreeGenerations.lean` | F3.1 — Three generations forced (quaternionic structure) | 27 | PROVEN |
 | `F3_1b_ModuleSpectral.lean` | F3.1b — Module-level, spectral, and completeness strengthening | 26 | PROVEN |
