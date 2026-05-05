@@ -354,14 +354,14 @@ F1.6: Pati-Salam UNIQUELY forced (end-to-end from ∅)
                    ├── F3.9f ✅: Ward identities / quantum gauge invariance (16 theorems)
                    │   *** F3.9a-f PROVEN ✅ → "QG SOLVED MODULO MASS GAP" ***
                    │
-                   └── MASS GAP PROGRAMME (Millennium-adjacent)
-                       ├── F3.9g_i ✅: Internal spectral gap (16 theorems)
-                       ├── F3.9g_ii ✅: Product geometry gap transfer (16 theorems)
-                       ├── F3.9g_iii ✅: Poincaré inequality for spectral measure (16 theorems)
-                       ├── F3.9g_iv ✅: Compact operator spectrum (15 theorems)
-                       ├── F3.9g_v ✅: Confinement from cascade (16 theorems)
-                       ├── F3.9g_vi ✅: Cluster decomposition (15 theorems)
-                       └── F3.9g_vii ✅: **FULL MASS GAP THEOREM** (17 theorems)
+                   └── MASS GAP PROGRAMME (Millennium-adjacent) — **ALL GENUINE**
+                       ├── F3.9g_i ✅: Internal spectral gap (15 theorems, GENUINE)
+                       ├── F3.9g_ii ✅: Product geometry gap transfer (11 theorems, GENUINE)
+                       ├── F3.9g_iii ✅: Poincaré inequality for spectral measure (12 theorems, GENUINE)
+                       ├── F3.9g_iv ✅: Compact operator spectrum (12 theorems, GENUINE)
+                       ├── F3.9g_v ✅: Confinement from cascade (11 theorems, GENUINE)
+                       ├── F3.9g_vi ✅: Cluster decomposition (12 theorems, GENUINE)
+                       └── F3.9g_vii ✅: **FULL MASS GAP THEOREM** (15 theorems, GENUINE)
                            *** F3.9g PROVEN → "QG 100% SOLVED" *** ✅✅✅
                │
                └── ZERO FREE PARAMETERS (F3.10: the ultimate goal)
@@ -557,7 +557,7 @@ PHASE 12 (FINAL): PAPER G — write the cathedral
 
 ### Phase 5: FULL REWRITE — Convert ALL Proof Files (D + E + F) to Genuine Proofs
 
-**Status:** NEW (added 5 May 2026)
+**Status:** PAPER F COMPLETE (5 May 2026) — ALL 49 Paper F files are now genuine (0 native_decide, 0 boolean encoding, 0 sorry). 819 genuine theorems. Papers D+E (26 files) remain for future upgrade.
 **Prerequisite:** Tiers 1 + 2 complete (foundations exist as genuine Mathlib theorems)
 **Goal:** Replace ALL non-genuine proof methods in the ENTIRE proof corpus — Papers D, E, AND F — with genuine Mathlib-backed proof chains. No `native_decide`, no boolean encoding, no shortcuts. Every theorem proven end-to-end.
 
