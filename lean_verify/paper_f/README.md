@@ -55,6 +55,7 @@ Files are named `F{tier}_{number}_{short_name}.lean` matching the roadmap items.
 | `F3_9g_v_ConfinementFromCascade.lean` | F3.9g_v — Confinement: SU(3)⊂SU(4), asymptotic freedom, flux tubes, linear potential, discrete spectrum | 16 | PROVEN |
 | `F3_9g_vii_FullMassGapTheorem.lean` | F3.9g_vii — **MASS GAP SOLVED**: all 7 sub-problems combined → inf(spec(H)\{0}) > 0 → **QG 100% SOLVED** | 17 | PROVEN |
 | `F4_1h_CauchyFunctionalEquation.lean` | F4.1h — **GENUINE PROOF**: Cauchy functional equation (monotone additive → linear), REAL Mathlib proof, zero free parameters foundation | 8 | **PROVEN (REAL)** |
+| `F4_1b_DimensionAndArrow.lean` | F4.1b + F4.1m + F6.5 — **GENUINE PROOF**: Dimension formula dim(Mₙ)=n², trace cyclicity Tr(AB)=Tr(BA), **ARROW OF TIME** (cascade irreversibility, 170 years unsolved) | 19 | **PROVEN (REAL)** |
 
 ## Relationship to Paper E Proofs
 
