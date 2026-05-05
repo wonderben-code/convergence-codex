@@ -45,6 +45,7 @@ Files are named `F{tier}_{number}_{short_name}.lean` matching the roadmap items.
 | `F3_9g_i_InternalSpectralGap.lean` | F3.9g_i — Internal spectral gap: Bakry-Émery → λ₁ ≥ 2/Λ², Poincaré + log-Sobolev, KEY GENERATOR for mass gap | 16 | PROVEN |
 | `F3_9d_ReflectionPositivity.lean` | F3.9d — Reflection positivity: all 5 OS axioms, reconstruction → Hilbert space + Hamiltonian | 16 | PROVEN |
 | `F3_9b_PhysicalCutoff.lean` | F3.9b — Physical cutoff: Λ = Λ_PS (unification scale), universality, no trans-Planckian problem | 15 | PROVEN |
+| `F3_9f_WardIdentities.lean` | F3.9f — Ward identities: quantum gauge invariance, BRST, Slavnov-Taylor, S-matrix unitarity | 16 | PROVEN |
 
 ## Relationship to Paper E Proofs
 

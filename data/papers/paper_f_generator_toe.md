@@ -4,7 +4,7 @@
 **Status:** LIVING DOCUMENT (updated as results are proven)
 **Version:** 3.1 (5 May 2026)
 **Repository:** github.com/wonderben-code/convergence-codex
-**Builds on:** Papers D + E (233 theorems) + Paper F results (561 theorems)
+**Builds on:** Papers D + E (233 theorems) + Paper F results (577 theorems)
 **Bitcoin provenance:** Each addition committed + pushed for timestamping
 
 ---
@@ -93,7 +93,7 @@ This chapter tells that complete story — from the universal construction throu
 
 0.10. **Beyond FdVect_ℂ — Other Seeds, Other Content** — The construction is not limited to one category. Cartesian closed categories give classical computation (Scott D∞, F2.6). Linear categories may give anyonic/topological physics (F3.7). The universality metatheorem (F3.4, planned) would show the construction produces a fixed point in EVERY SMCC. ℂ² → physics is one instance of a universal mathematical phenomenon. The construction is deeper than any particular seed.
 
-0.11. **What This Means** — 767+ theorems, 0 sorry, 0 free parameters, 0 observational inputs, all Bitcoin-timestamped. Quantum gravity COMPLETE + rigorous closure underway (4/6 proven) + mass gap programme begun (1/7 proven). We began with nothing. The construction is universal. The seed is canonical within its category. The physics is forced. Everything from nothing.
+0.11. **What This Means** — 783+ theorems, 0 sorry, 0 free parameters, 0 observational inputs, all Bitcoin-timestamped. Quantum gravity COMPLETE + rigorous closure underway (5/6 proven) + mass gap programme begun (1/7 proven). We began with nothing. The construction is universal. The seed is canonical within its category. The physics is forced. Everything from nothing.
 
 **Format:** Each section in three layers: verbal (plain English) → mathematical (standard notation) → machine verification (Lean file + theorem name). A reader who reads ONLY this chapter should understand the complete claim and be able to verify every step.
 
@@ -2649,6 +2649,67 @@ At 3Λ: suppression ~ 10^{−4}. At 10Λ: suppression ~ 10^{−43}. High-energy 
 The cascade spectral cutoff is the only known regularisation that is simultaneously physical, symmetry-preserving, non-perturbative, and intrinsically finite.
 
 *Machine verification:* `F3_9b_PhysicalCutoff.lean` — 15 theorems, 0 sorry. Compiles clean in Lean 4.29.1.
+
+---
+
+### 9.47 Ward Identities: Quantum Gauge Invariance Preserved (F3.9f)
+
+This section proves that the classical gauge invariance of the spectral action survives quantisation: Ward-Takahashi identities hold exactly, BRST symmetry structures the physical state space, and the S-matrix is unitary.
+
+**The problem.** Classical gauge invariance does not automatically survive quantisation. Two things can go wrong:
+1. **Anomalies** — quantum effects break the classical symmetry (triangle diagrams)
+2. **Regularisation artifacts** — the cutoff procedure might break gauge invariance
+
+For the cascade, BOTH are resolved: anomalies cancel (F3.9e), and the spectral cutoff preserves gauge invariance (F3.9b). This section derives the consequences.
+
+**Classical gauge invariance of the spectral action.** For U ∈ U(4):
+
+> S[UDU†] = Tr(f((UDU†)²/Λ²)) = Tr(f(UD²U†/Λ²)) = Tr(U f(D²/Λ²) U†) = Tr(f(D²/Λ²)) = S[D]
+
+The last equality uses cyclicity of the trace. This is EXACT — not a perturbative statement. The spectral action is invariant under the FULL gauge group, not just infinitesimal transformations.
+
+**Gauge invariance of the measure.** The path integral measure 𝒟D = d¹⁶D (Lebesgue on Herm₄) is invariant under D ↦ UDU† because unitary conjugation is an orthogonal transformation in the Frobenius inner product: ‖UDU†‖_F = ‖D‖_F. The Jacobian is exactly 1.
+
+Since BOTH the action AND the measure are gauge-invariant, Ward identities are EXACT.
+
+**Ward-Takahashi identities.** For each gauge generator T^a (a = 1, ..., 21 for the Pati-Salam algebra su(4) ⊕ su(2)_L ⊕ su(2)_R):
+
+> ∂_μ ⟨J^{aμ}(x) O₁(x₁)...Oₙ(xₙ)⟩ = Σᵢ δ⁴(x−xᵢ) ⟨O₁...[T^a, Oᵢ]...Oₙ⟩
+
+The right-hand side contains ONLY contact terms (delta functions at coincident points). At separated points: ∂_μ⟨J^{aμ}⟩ = 0 exactly. There are 21 independent Ward identities — one per gauge generator.
+
+**No anomalous corrections.** Anomalies would add a term ∂_μJ^{aμ} = A^a (the anomaly). But F3.9e proves A^a = 0 for ALL generators of the Pati-Salam group:
+- SU(4)³: A = 0 (4 + 4̄ cancellation)
+- SU(2)³: A = 0 (d^{abc} = 0 identically)
+- Mixed: A = 0 (traceless generators)
+- Gauge-gravitational: A = 0 (tracelessness)
+- Witten global: safe (even doublets)
+
+Therefore the Ward identities hold WITHOUT anomalous modifications.
+
+**BRST cohomology.** After gauge fixing (Faddeev-Popov procedure), the theory has a residual BRST symmetry s with s² = 0 (nilpotent). For U(4) gauge group:
+- Ghost fields c^a (a = 1,...,16): fermionic, in adjoint representation
+- Anti-ghost fields c̄^a: fermionic
+- BRST transformations: sA^a = D^{ab}c^b, sc^a = −½f^{abc}c^bc^c, sc̄^a = B^a, sB^a = 0
+
+Physical states are the BRST cohomology: H_phys = Ker(s)/Im(s). This ensures:
+- Unphysical states (ghosts, longitudinal polarisations) decouple
+- Physical gauge bosons have exactly 2 transverse polarisations each
+- 21 gauge bosons × 2 polarisations = 42 physical degrees of freedom
+
+**Slavnov-Taylor identities.** The non-abelian generalisation of Ward identities constrains all vertex functions. They hold exactly because: (1) BRST is exact, (2) no anomalies, (3) the spectral cutoff preserves gauge invariance.
+
+**Transversality.** The gauge boson propagator satisfies k_μΠ^{μν}(k) = 0 in Landau gauge — a direct consequence of the Ward identity for the 2-point function. This ensures massless gauge bosons (gluons, photon) remain massless at all loop orders. Massive gauge bosons (W, Z, leptoquarks) acquire mass only through the Higgs mechanism (F3.2), not through gauge invariance breaking.
+
+**Consequences:**
+1. **21 conserved currents** → 21 conserved charges Q^a = ∫J^{a0}d³x
+2. **No anomalous dimensions** for conserved currents (protected: dim = d−1 = 3 exactly)
+3. **S-matrix unitarity** via optical theorem: Im(M_forward) = Σ_physical |M|² (ghosts excluded)
+4. **Probability conservation** in all scattering processes
+
+**What this means.** The quantum cascade theory respects ALL gauge symmetries at the quantum level. The spectral action's gauge invariance is not broken by quantisation, regularisation, or loop effects. The resulting S-matrix is unitary — scattering probabilities are consistent. This is the penultimate result needed for "QG solved modulo mass gap."
+
+*Machine verification:* `F3_9f_WardIdentities.lean` — 16 theorems, 0 sorry. Compiles clean in Lean 4.29.1.
 
 ---
 
