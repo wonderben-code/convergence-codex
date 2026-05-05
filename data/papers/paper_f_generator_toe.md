@@ -4,7 +4,7 @@
 **Status:** LIVING DOCUMENT (updated as results are proven)
 **Version:** 3.2 (5 May 2026)
 **Repository:** github.com/wonderben-code/convergence-codex
-**Builds on:** Papers D + E (233 theorems) + Paper F results (643 theorems)
+**Builds on:** Papers D + E (233 theorems) + Paper F results (658 theorems)
 **Bitcoin provenance:** Each addition committed + pushed for timestamping
 
 ---
@@ -2976,6 +2976,26 @@ where λ₁^(int) = 2/Λ² (from F3.9g_i) and μ₁^(M) is the first eigenvalue 
 On any compact approximation M_L, the gap exists and equals min(2/Λ², 4π²/L²). The mass gap question is whether lim_{L→∞} gap(L) > 0 — a question about the rate of decrease and whether dynamics intervenes.
 
 *Machine verification:* `F3_9g_ii_ProductGeometryGap.lean` — 16 theorems, 0 sorry. Compiles clean in Lean 4.29.1.
+
+---
+
+### 9.52 Compact Operator Spectrum and Gap Stability (F3.9g_iv)
+
+The spectral action operator e^{-D²/Λ²} is trace-class on compact spacetime, ensuring discrete spectrum and — crucially — that the spectral gap is STABLE under perturbations.
+
+**Trace-class property.** On compact M × F, eigenvalues of D² grow as λₙ ~ n^{1/2} (Weyl's law in 4D). Since e^{-n^{1/2}/Λ²} decays super-polynomially, the sum Tr(e^{-D²/Λ²}) = Σₙ e^{-λₙ/Λ²} converges. Trace-class ⊂ compact ⊂ bounded in the operator hierarchy.
+
+**Discrete spectrum.** The Hamiltonian H has compact resolvent (from Gaussian tails + compact Sobolev embedding), giving purely discrete spectrum: spec(H) = {0 = λ₀ < λ₁ ≤ λ₂ ≤ ... → ∞}, each eigenvalue with finite multiplicity.
+
+**Kato's stability theorem.** The spectral gap λ₁ is an isolated eigenvalue of H — the interval (0, λ₁) is empty. By Kato's perturbation theory, isolated eigenvalues PERSIST under perturbation: for H' = H + V with ‖V‖ < λ₁/2, the gap satisfies gap(H') ≥ gap(H) − 2‖V‖ > 0.
+
+**Analytic dependence.** λ₁(ε) is an analytic function of the coupling constant ε for |ε| < ε₀, where ε₀ ≥ gap/(2‖V‖) ~ 1/g² ~ 40. The gap is not just persistent — it varies smoothly with the interaction strength.
+
+**Non-perturbative stability (KLMN theorem).** Even beyond the radius of convergence: if V is form-bounded with relative bound a < 1, then H + V is self-adjoint and retains a gap. The cascade gauge interaction satisfies this with a ~ g²/(4π) ~ 1/500 << 1.
+
+**Connection to confinement.** On compact M: discrete spectrum = all states are bound states (no scattering). The SU(3) ⊂ SU(4) embedding provides the confining linear potential V(r) ~ σr. For the Hamiltonian −Δ + σ|x|, the spectrum remains discrete even on non-compact space — this is the bridge to F3.9g_v.
+
+*Machine verification:* `F3_9g_iv_CompactOperatorSpectrum.lean` — 15 theorems, 0 sorry. Compiles clean in Lean 4.29.1.
 
 ---
 

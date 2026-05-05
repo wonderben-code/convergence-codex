@@ -50,6 +50,7 @@ Files are named `F{tier}_{number}_{short_name}.lean` matching the roadmap items.
 | `F3_10a_HeatKernelCanonicity.lean` | F3.10a — Heat kernel forced: semigroup → f=e^{-x} → f₀=f₂=f₄=1 → **ZERO FREE PARAMETERS** | 17 | PROVEN |
 | `F3_9g_iii_PoincareSpectralMeasure.lean` | F3.9g_iii — Poincaré inequality: sharp constant C_P = Λ²/2, tensorised product, Bobkov optimal | 16 | PROVEN |
 | `F3_9g_ii_ProductGeometryGap.lean` | F3.9g_ii — Product geometry gap transfer: min(internal, spacetime), Kato-Rellich robust | 16 | PROVEN |
+| `F3_9g_iv_CompactOperatorSpectrum.lean` | F3.9g_iv — Compact operator spectrum: trace-class, gap stability, analytic perturbation, confinement link | 15 | PROVEN |
 
 ## Relationship to Paper E Proofs
 
