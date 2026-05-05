@@ -954,6 +954,56 @@ The current 1,035 theorems are NOT useless. They:
 
 But they are a BLUEPRINT, not a finished building. The finished building is F4.5 + F4.6.
 
+### THE ADJACENT POSSIBLE: Attack Strategy for F4.5 + F4.6
+
+**Core principle:** Hard problems are NOT monoliths. They're dependency graphs where each node, once solved, makes its neighbours tractable. This is Stuart Kauffman's "adjacent possible" — at any moment, certain problems are RIPE because their prerequisites have just fallen.
+
+**The cascade gives us THREE easy entry points that standard Yang-Mills does NOT have:**
+
+```
+ENTRY POINT 1: Bounded action exp(-S) ∈ (0, e^{-16}]
+│
+└─ UNLOCKS: Lattice measure construction (A1) — standard Gibbs measure theory
+   └─ UNLOCKS: Cluster expansion convergence (A3.partial) — uniform bounds
+      └─ UNLOCKS: Thermodynamic limit (A3) — precompactness from uniform bounds
+         └─ UNLOCKS: Infinite-volume correlations — exponential decay persists
+
+ENTRY POINT 2: Finite internal dimension (16)
+│
+└─ UNLOCKS: Bakry-Émery spectral gap — TEXTBOOK finite-dim log-Sobolev
+   └─ UNLOCKS: Internal gap is L-independent — curvature is geometric
+      └─ UNLOCKS: Mass gap for internal modes (A5.partial)
+         └─ UNLOCKS: Yang-Mills subsector inherits gap (B5)
+
+ENTRY POINT 3: Spectral cutoff Λ (UV regularity for free)
+│
+└─ UNLOCKS: No UV divergences at finite cutoff — regularisation built-in
+   └─ UNLOCKS: Continuum limit (A2) becomes REMOVAL of cutoff, not taming divergence
+      └─ UNLOCKS: OS axiom verification (A4) — distributions are well-defined
+         └─ UNLOCKS: Wightman reconstruction — full QFT on Minkowski space
+```
+
+**Why this matters:** In standard Yang-Mills, you attack A1-A5 with NO structural advantages. Every step is maximally hard. The cascade gives you three threads to pull simultaneously, each starting from something tractable.
+
+**The chain of falling dominos:**
+
+| Phase | What falls | What it opens | Difficulty |
+|-------|-----------|---------------|------------|
+| 1 | Bakry-Émery on Herm₄ (finite-dim) | Internal spectral gap, L-independence | Textbook |
+| 2 | Lattice measure with bounded action | Gibbs measure, DLR equations | Standard |
+| 3 | Cluster expansion (bounded action) | Exponential decay, uniform in L | Hard but known techniques |
+| 4 | Thermodynamic limit | Infinite-volume theory exists | Falls from Phase 2+3 |
+| 5 | OS axioms from exponential decay | Reflection positivity, clustering | Needs Phase 3+4 |
+| 6 | Mass gap for cascade theory | Δ > 0 in full theory | Falls from Phase 1+3+4 |
+| 7 | Yang-Mills subsector extraction | SU(3) sector identified in SU(4) | Algebraic, cascade-specific |
+| 8 | Gap inheritance | YM subsector inherits Δ > 0 | Falls from Phase 6+7 |
+| 9 | Continuum limit | Remove cutoff Λ → ∞ | THE hard problem |
+| 10 | Wightman reconstruction | Full Minkowski QFT | Falls from Phase 5+9 |
+
+**Phases 1-2 are genuinely tractable TODAY.** They use existing Mathlib/functional analysis. Each one that falls makes the next row easier. Phase 9 (continuum limit) is still the bottleneck — but even IT is easier than in standard YM because the bounded action and spectral cutoff provide control that other approaches lack.
+
+**The meta-principle:** Don't stare at the hardest problem. Find the easiest piece. Solve it. See what it opens. Repeat. The cascade's structural advantages mean the "easiest pieces" are MUCH easier than in standard approaches — that's the whole point of the framework.
+
 ---
 
 ## F5 — POSTDICTIONS PROGRAMME (Derive All Known Physics)
