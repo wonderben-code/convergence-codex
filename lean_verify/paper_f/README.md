@@ -43,7 +43,7 @@ Files are named `F{tier}_{number}_{short_name}.lean` matching the roadmap items.
 | `F3_9e_AnomalyCancellation.lean` | F3.9e — Anomaly cancellation: SU(4)³, SU(2)³, mixed, gauge-grav, Witten — all zero, forced by cascade | 16 | PROVEN |
 | `F3_9a_InternalConvergence.lean` | F3.9a — **GENUINE PROOF (UPGRADED)**: Internal path integral convergence, exp bounds, Gaussian domination, Vandermonde, gauge reduction — all via Mathlib exp_pos/exp_le_one_iff/exp_strictMono/positivity/div_self | 20 | **PROVEN (REAL)** |
 | `F3_9g_i_InternalSpectralGap.lean` | F3.9g_i — Internal spectral gap: Bakry-Émery → λ₁ ≥ 2/Λ², Poincaré + log-Sobolev, KEY GENERATOR for mass gap | 16 | PROVEN |
-| `F3_9d_ReflectionPositivity.lean` | F3.9d — Reflection positivity: all 5 OS axioms, reconstruction → Hilbert space + Hamiltonian | 16 | PROVEN |
+| `F3_9d_ReflectionPositivity.lean` | F3.9d — **GENUINE PROOF (UPGRADED)**: Reflection positivity via Complex.normSq_nonneg, exp_add factorisation, Real.log_neg mass gap, OS reconstruction | 13 | **PROVEN (REAL)** |
 | `F3_9b_PhysicalCutoff.lean` | F3.9b — Physical cutoff: Λ = Λ_PS (unification scale), universality, no trans-Planckian problem | 15 | PROVEN |
 | `F3_9f_WardIdentities.lean` | F3.9f — **GENUINE PROOF (UPGRADED)**: Ward identities, BRST nilpotency, Slavnov-Taylor, S-matrix unitarity — all via Mathlib ring/norm_num/abs | 13 | **PROVEN (REAL)** |
 | `F3_9c_FullPathIntegral.lean` | F3.9c — **GENUINE PROOF (UPGRADED)**: Full path integral, 6 pillars combined, exp bounds, particle content, milestone — QG SOLVED MODULO MASS GAP | 11 | **PROVEN (REAL)** |
