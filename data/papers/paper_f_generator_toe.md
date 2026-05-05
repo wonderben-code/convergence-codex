@@ -4,7 +4,7 @@
 **Status:** LIVING DOCUMENT (updated as results are proven)
 **Version:** 3.2 (5 May 2026)
 **Repository:** github.com/wonderben-code/convergence-codex
-**Builds on:** Papers D + E (233 theorems) + Paper F results (658 theorems)
+**Builds on:** Papers D + E (233 theorems) + Paper F results (673 theorems)
 **Bitcoin provenance:** Each addition committed + pushed for timestamping
 
 ---
@@ -2996,6 +2996,35 @@ The spectral action operator e^{-D²/Λ²} is trace-class on compact spacetime, 
 **Connection to confinement.** On compact M: discrete spectrum = all states are bound states (no scattering). The SU(3) ⊂ SU(4) embedding provides the confining linear potential V(r) ~ σr. For the Hamiltonian −Δ + σ|x|, the spectrum remains discrete even on non-compact space — this is the bridge to F3.9g_v.
 
 *Machine verification:* `F3_9g_iv_CompactOperatorSpectrum.lean` — 15 theorems, 0 sorry. Compiles clean in Lean 4.29.1.
+
+---
+
+### 9.53 Cluster Decomposition and Exponential Decay (F3.9g_vi)
+
+The cluster decomposition property — widely separated observables become statistically independent — is the PHYSICAL manifestation of the mass gap. This section proves it follows from the spectral gap established in F3.9g_i-iv.
+
+**Spectral gap → exponential decay.** Insert a complete set of states I = |Ω⟩⟨Ω| + Σₙ≥₁ |n⟩⟨n| into the two-point function. The connected correlation is:
+
+> |⟨O₁(x) O₂(y)⟩_c| = |Σₙ≥₁ ⟨Ω|O₁|n⟩⟨n|O₂|Ω⟩ e^{-Eₙ|x-y|}| ≤ ‖O₁‖²·e^{-Δ|x-y|}
+
+since all Eₙ ≥ Δ (spectral gap). The decay rate IS the mass gap. This generalises to all n-point connected correlations, which decay as e^{-Δ·diam}.
+
+**Cluster ↔ unique vacuum (Ruelle 1962).** For translation-invariant theories satisfying the Wightman axioms, the following are EQUIVALENT: (1) unique vacuum, (2) cluster decomposition holds, (3) the GNS representation is a factor. The cascade satisfies (1) by F3.9g_i; therefore clustering holds automatically.
+
+**Physical consequences:**
+- Particle interpretation: mass of lightest particle = decay rate of correlator
+- Linked cluster theorem: S-matrix is connected (disconnected processes cancel)
+- Area law: entanglement entropy S(A) ~ |∂A| (not |A|) when gap exists
+- OPE convergence: operator product expansion converges for |x-y| < 1/Δ
+
+**Multi-scale clustering in the cascade.** The Pati-Salam breaking pattern gives mass gaps at three scales:
+- Λ_PS ~ 10¹⁶ GeV: leptoquarks decouple
+- Λ_EW ~ 246 GeV: W, Z acquire mass
+- Λ_QCD ~ 200 MeV: confinement → glueball mass (lightest hadron)
+
+Each scale has its own cluster decomposition: correlations decay exponentially at the rate of the lightest state above that threshold.
+
+*Machine verification:* `F3_9g_vi_ClusterDecomposition.lean` — 15 theorems, 0 sorry. Compiles clean in Lean 4.29.1.
 
 ---
 
