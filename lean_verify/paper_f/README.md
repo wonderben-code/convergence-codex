@@ -42,6 +42,7 @@ Files are named `F{tier}_{number}_{short_name}.lean` matching the roadmap items.
 | `F3_8k_NonPerturbativeQuantisation.lean` | F3.8k — Non-perturbative quantisation: path integral well-defined, OS reconstruction, QG COMPLETE | 15 | PROVEN |
 | `F3_9e_AnomalyCancellation.lean` | F3.9e — Anomaly cancellation: SU(4)³, SU(2)³, mixed, gauge-grav, Witten — all zero, forced by cascade | 16 | PROVEN |
 | `F3_9a_InternalConvergence.lean` | F3.9a — Internal path integral convergence: measure on Herm₄ exists, partition function finite | 17 | PROVEN |
+| `F3_9g_i_InternalSpectralGap.lean` | F3.9g_i — Internal spectral gap: Bakry-Émery → λ₁ ≥ 2/Λ², Poincaré + log-Sobolev, KEY GENERATOR for mass gap | 16 | PROVEN |
 
 ## Relationship to Paper E Proofs
 

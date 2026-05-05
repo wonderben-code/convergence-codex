@@ -298,7 +298,7 @@ F1.6: Pati-Salam UNIQUELY forced (end-to-end from ∅)
                    │   *** F3.9a-f PROVEN → "QG SOLVED MODULO MASS GAP" ***
                    │
                    └── MASS GAP PROGRAMME (Millennium-adjacent)
-                       ├── F3.9g_i: Internal spectral gap
+                       ├── F3.9g_i ✅: Internal spectral gap (16 theorems)
                        ├── F3.9g_ii: Product geometry gap transfer
                        ├── F3.9g_iii: Poincaré inequality for spectral measure
                        ├── F3.9g_iv: Compact operator spectrum
@@ -331,7 +331,7 @@ The following were considered but excluded because they are not mathematically t
 | Category | Count |
 |----------|-------|
 | Already proven (Stage 0) | 17 results (206+ theorems) |
-| Paper F proven (F1.6–F3.9e) | 30 files (514 theorems) |
+| Paper F proven (F1.6–F3.9g_i) | 31 files (530 theorems) |
 | Tier 1 (weeks-months) | 7 problems |
 | Tier 2 (months-year) | 10 problems |
 | Tier 3 (years, open maths) | 8 problems + 18 F3.8 sub-problems (CC moonshot + QG completion) |
