@@ -2432,7 +2432,67 @@ No free parameters were adjusted to achieve any of these correspondences. No obs
 
 ---
 
-## 15. References
+## 15. The Tree of Physics: An Evolutionary Analogy
+
+**STATUS: PLACEHOLDER — to be expanded during formal publication.**
+
+**Note:** This section presents an ANALOGY. The cascade is a deterministic mathematical construction; biological evolution involves random mutation and natural selection. The analogy is offered as a conceptual scaffold to help readers build intuition about the cascade's structure. Where the analogy breaks down, we say so explicitly.
+
+### 15.1 The Parallel
+
+Evolutionary biology's deepest insight is that the extraordinary diversity of life — millions of species, radically different body plans, disparate ecologies — traces back to a single common ancestor (LUCA, the Last Universal Common Ancestor). The mechanism is simple: replication with variation, iterated over time. From one origin, through branching lineages, emerges everything alive.
+
+The cascade has an analogous structure:
+
+| Evolutionary Biology | Generator Cascade |
+|---|---|
+| Common ancestor (LUCA) | Seed object ℂ² |
+| Replication mechanism (DNA) | Internal hom [−,−] (the engine) |
+| Three domains of life (Bacteria, Archaea, Eukaryota) | Three lineages (End, Aut, ⟨·,·⟩) |
+| Speciation through divergence | Forces/spacetime/QM through functorial operations |
+| Diversity of species | Diversity of physical structures |
+| Shared genetic code (universal across all life) | Shared algebra M₄(ℂ) (universal across all physics) |
+| Convergent evolution (eyes evolved ~40 times independently) | Convergent structure (lineages independently produce compatible results) |
+| Fossil record (evidence of descent) | Theorem chain (machine-verified evidence of derivation) |
+| Phylogenetic tree (branching history) | Cascade DAG (derivation history, Bitcoin-timestamped) |
+
+The core parallel: **diversity from unity through branching.** Just as biology shows that a bacterium and a blue whale share a common ancestor despite their radical differences, the cascade shows that gravity and the strong force share a common algebraic origin despite appearing utterly different.
+
+### 15.2 Where the Analogy Holds
+
+**Common descent.** In biology, shared DNA sequences are evidence of common ancestry. In the cascade, shared algebraic structure (all three lineages operate on the SAME object M₄(ℂ)) is evidence of common origin. The "DNA" of physics is the cascade algebra.
+
+**Branching produces diversity.** In biology, lineages diverge through speciation events. In the cascade, the three canonical operations (End, Aut, ⟨·,·⟩) applied to the same object produce radically different outputs: gauge symmetry, spacetime geometry, quantum structure. Three "species" of physics from one ancestor.
+
+**Constraints from history.** In biology, evolution cannot redesign from scratch — every organism carries the legacy of its evolutionary history (why humans have a recurrent laryngeal nerve that loops around the aortic arch). In the cascade, each level carries the structure of previous levels — D₂ = M₄(ℂ) inherits the quaternionic structure of D₁ = M₂(ℂ), and this inheritance is WHY we have exactly 3 generations (dim Im(ℍ) = 3, from F3.1).
+
+**Convergent evolution as evidence.** When unrelated organisms independently evolve similar structures (eyes, wings, echolocation), it suggests the solution is FORCED by the problem. In the cascade, when unrelated lineages independently produce compatible structures (End gives gauge group, Aut gives spacetime, and they are compatible as substructures of the SAME algebra), it suggests the physics is FORCED by the mathematics.
+
+### 15.3 Where the Analogy Breaks Down
+
+**Determinism vs. randomness.** This is the fundamental disanalogy. Biological evolution involves random mutation — the outcome is contingent (replay the tape of life and you get different species). The cascade is entirely deterministic — replay the mathematics and you get exactly the same physics. There is no "natural selection" in the cascade because there are no alternatives to select among. The physics is FORCED (F1.6: uniqueness), not selected.
+
+**No environment.** Biological evolution requires an environment that provides selection pressures. The cascade has no environment — it operates in pure mathematics. The "fitness landscape" is replaced by mathematical necessity.
+
+**No time.** Biological evolution unfolds over billions of years. The cascade is a timeless mathematical structure — D₂ doesn't "come after" D₁ in any temporal sense. The cascade levels are logical dependencies, not temporal events. (Though intriguingly, the Aut lineage PRODUCES time as an output — §8.)
+
+**No death.** In biology, differential survival drives adaptation. In the cascade, every structure that CAN exist DOES exist — nothing is eliminated. The three lineages don't compete; they coexist and produce complementary physics.
+
+### 15.4 Why the Analogy Is Useful
+
+Despite these differences, the analogy serves three purposes:
+
+1. **Intuition.** The idea that radical diversity can emerge from simple unity is counterintuitive. Evolution made this idea familiar for biology. The cascade asks us to accept the same idea for physics — and the evolutionary precedent makes it easier to grasp.
+
+2. **Structure.** The tree-of-life metaphor — a single trunk branching into major lineages, each branching further — maps directly onto the cascade DAG. Readers who understand phylogenetic trees can immediately understand cascade diagrams.
+
+3. **Expectation calibration.** Evolution teaches us that common ancestry doesn't mean similarity — a bacterium and a whale are both "life" despite sharing almost no macroscopic features. Similarly, gravity and the strong force are both "cascade physics" despite sharing almost no phenomenological features. The analogy prepares readers to accept that apparently unrelated phenomena can share a common mathematical origin.
+
+*Full section with extended analysis, additional parallels, and careful delimitation of the analogy: TO BE WRITTEN during formal publication.*
+
+---
+
+## 16. References
 
 1. Wedderburn, J.H.M. (1907). "On hypercomplex numbers." *Proc. London Math. Soc.* 6, 77–118.
 2. Skolem, T. (1927). "Zur Theorie der assoziativen Zahlensysteme." *Skrifter Videnskapsselskapet i Kristiania* 12.
