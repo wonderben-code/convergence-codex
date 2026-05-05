@@ -220,6 +220,55 @@ M5 (compactness argument) uses tools already in the cascade framework. M4 (funct
 
 ---
 
+## F3.10: ZERO FREE PARAMETERS PROGRAMME
+
+**Goal:** Prove that the 3 spectral moments (f₀, f₂, f₄) are UNIQUELY DETERMINED by the cascade, eliminating the last freedom in the theory.
+
+**Current state:** The cascade determines ALL physics except the spectral function f(x) in Tr(f(D²/Λ²)). Low-energy physics depends on f only through 3 moments:
+- f₄ = f(0) → gauge couplings g²
+- f₂ = ∫₀^∞ xf(x)dx → Newton's constant G = 3π/(f₂Λ²)
+- f₀ = ∫₀^∞ f(x)dx → cosmological constant contribution
+
+If these 3 are uniquely fixed → the theory has ZERO free parameters. Everything from nothing, literally.
+
+**Attackable sub-problems:**
+
+| File | Problem | What to prove | Approach | Difficulty |
+|------|---------|---------------|----------|-----------|
+| F3.10a | Heat kernel canonicity | f(x) = e^{−x} is FORCED by cascade axioms | Show e^{−x} is unique function satisfying: positivity + monotone decay + semigroup property (f(x+y) = f(x)f(y)) + f(0) = 1 | Moderate |
+| F3.10b | Self-consistency fixed point | The vacuum geometry is consistent with the action that defines it | Solve: ρ_vac(f₀,f₂,f₄,Λ) = a₀·f₀·Λ⁴ must equal the CC of the de Sitter space it produces → fixed-point equation for f₀ | Moderate |
+| F3.10c | Partition function constraint | Z = canonical value imposes relation between moments | Compute Z(f₀,f₂,f₄) explicitly on Herm₄ → normalization fixes one moment | Moderate |
+| F3.10d | Spectral self-duality | Scale inversion Λ ↔ c/Λ constrains f | If S[D,Λ] = S[D,c/Λ] for some c → f must be self-dual under Mellin transform → f(x) = e^{−x} forced | Hard |
+| F3.10e | Mass gap constrains f | Spectral gap existence requires specific moment relations | If λ₁(f₀,f₂,f₄) > 0 only for specific parameter ranges → constrains moments | Hard (needs F3.9g) |
+| F3.10f | Moment relations from algebra | Trace identities on M₄(ℂ) relate moments | Casimir operators C₂, C₄ of su(4) give identities Tr(C₂) = f₂·(...), Tr(C₄) = f₄·(...) → relations | Moderate-Hard |
+| F3.10g | Full zero-parameter theorem | Combine a–f → all 3 moments uniquely determined | Requires ≥3 independent constraints from above | Depends on a–f |
+
+**Attack strategies:**
+
+| Strategy | What it tries | Tools needed |
+|----------|--------------|-------------|
+| Z1 | Semigroup axiom: f(x+y) = f(x)f(y) + positivity + f(0)=1 → f = e^{−cx} | Functional equations, cascade axioms |
+| Z2 | Self-consistency loop: CC → geometry → spectral action → CC → fixed point | Spectral geometry, fixed-point theory |
+| Z3 | Algebraic: dim(M₄) = 16, Casimirs of su(4) give 2 independent trace identities → 2 relations among 3 moments | Representation theory, Lie algebras |
+| Z4 | Normalization: require theory to be "properly quantized" (Z = 1 or phase space volume quantized) → 1 relation | Path integral, semiclassical |
+| Z5 | Combine Z3 + Z4: 2 algebraic relations + 1 normalization = 3 equations for 3 unknowns → UNIQUE solution | All above |
+
+**Caesar analysis — recommended attack order:**
+
+1. **F3.10a first** (heat kernel canonicity) — if f(x) = e^{−x} is forced by a semigroup axiom, ALL THREE moments are fixed at once (f₀ = f₂ = f₄ = 1). This is the "one punch" solution.
+
+2. **F3.10f second** (algebraic relations) — Casimir trace identities are computable and might give 2 relations between moments, reducing 3 unknowns to 1.
+
+3. **F3.10c third** (normalization) — if F3.10f gives 2 relations, one normalization condition completes the system.
+
+4. **F3.10b as backup** — self-consistency is conceptually appealing but technically harder.
+
+**Key insight:** The semigroup property f(x+y) = f(x)·f(y) is CASCADE-NATURAL: the endomorphism cascade has M_{2^n} = M_{2^{n-1}} ⊗ M_{2^{n-1}}, which is multiplicative in structure. If the spectral function inherits this multiplicative structure → f MUST be exponential → f(x) = e^{−x} (unique with f(0) = 1, f > 0, f → 0).
+
+**If F3.10 is solved: the Generator Theory of Everything has ZERO free parameters. Everything — every force, every particle, every constant — from ∅.**
+
+---
+
 ## TIER 4 — Moonshots (uncertain tractability, transformative if achieved)
 
 | # | Problem | Candidate Chain | Why Uncertain |
@@ -306,6 +355,16 @@ F1.6: Pati-Salam UNIQUELY forced (end-to-end from ∅)
                        ├── F3.9g_vi: Cluster decomposition
                        └── F3.9g_vii: Full mass gap theorem
                            *** F3.9g PROVEN → "QG 100% SOLVED" ***
+               │
+               └── ZERO FREE PARAMETERS (F3.10: the ultimate goal)
+                   ├── F3.10a: Heat kernel canonicity (semigroup → f = e^{-x})
+                   ├── F3.10f: Algebraic moment relations (Casimir identities)
+                   ├── F3.10c: Partition function normalization
+                   ├── F3.10b: Self-consistency fixed point
+                   ├── F3.10d: Spectral self-duality
+                   ├── F3.10e: Mass gap constrains f
+                   └── F3.10g: Full zero-parameter theorem
+                       *** F3.10 PROVEN → "ZERO FREE PARAMETERS: EVERYTHING FROM ∅" ***
 ```
 
 ---
