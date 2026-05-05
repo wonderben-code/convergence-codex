@@ -48,6 +48,7 @@ Files are named `F{tier}_{number}_{short_name}.lean` matching the roadmap items.
 | `F3_9f_WardIdentities.lean` | F3.9f — Ward identities: quantum gauge invariance, BRST, Slavnov-Taylor, S-matrix unitarity | 16 | PROVEN |
 | `F3_9c_FullPathIntegral.lean` | F3.9c — Full path integral: ALL 6 pillars combined → **QG SOLVED MODULO MASS GAP** | 17 | PROVEN |
 | `F3_10a_HeatKernelCanonicity.lean` | F3.10a — Heat kernel forced: semigroup → f=e^{-x} → f₀=f₂=f₄=1 → **ZERO FREE PARAMETERS** | 17 | PROVEN |
+| `F3_9g_iii_PoincareSpectralMeasure.lean` | F3.9g_iii — Poincaré inequality: sharp constant C_P = Λ²/2, tensorised product, Bobkov optimal | 16 | PROVEN |
 
 ## Relationship to Paper E Proofs
 

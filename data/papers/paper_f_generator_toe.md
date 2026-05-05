@@ -4,7 +4,7 @@
 **Status:** LIVING DOCUMENT (updated as results are proven)
 **Version:** 3.2 (5 May 2026)
 **Repository:** github.com/wonderben-code/convergence-codex
-**Builds on:** Papers D + E (233 theorems) + Paper F results (611 theorems)
+**Builds on:** Papers D + E (233 theorems) + Paper F results (627 theorems)
 **Bitcoin provenance:** Each addition committed + pushed for timestamping
 
 ---
@@ -2898,6 +2898,48 @@ The cascade doesn't just happen to use the heat kernel — the cascade's multipl
 No theory in the history of physics has achieved zero free parameters. The cascade, with the heat kernel canonicity result, derives EVERY physical constant from the empty set. There is no choice at any step. No parameter to adjust. The universe is not fine-tuned — it is the unique mathematical possibility.
 
 *Machine verification:* `F3_10a_HeatKernelCanonicity.lean` — 17 theorems, 0 sorry. Compiles clean in Lean 4.29.1.
+
+---
+
+### 9.50 Poincaré Inequality for the Full Spectral Measure (F3.9g_iii)
+
+With the heat kernel f(x) = e^{-x} now fixed (§9.49), the spectral action measure on Herm₄(ℂ) ≅ ℝ¹⁶ becomes an EXPLICIT Gaussian: dμ = Z⁻¹ exp(−Tr(D²/Λ²)) dD = Z⁻¹ exp(−‖D‖²/Λ²) dD. This is the standard Gaussian N(0, (Λ²/2)·I₁₆). The Poincaré inequality for this measure is known and SHARP.
+
+**The internal Poincaré inequality.**
+
+For the Gaussian measure on ℝ¹⁶ with covariance σ² = Λ²/2:
+
+> **Var_μ(f) ≤ (Λ²/2) · ∫|∇f|² dμ**
+
+The constant C_P = Λ²/2 is SHARP — equality holds for linear functions f(D) = ⟨v, D⟩. This gives the spectral gap λ₁ = 1/C_P = 2/Λ², confirming F3.9g_i with explicit constants.
+
+**Bobkov's theorem (1999).** For isotropic Gaussian measures on ℝⁿ, the Poincaré constant equals the maximum eigenvalue of the covariance matrix. Since our covariance is (Λ²/2)·I₁₆ (isotropic), C_P = Λ²/2 is the OPTIMAL constant — no improvement is possible.
+
+**The spectrum.** The Ornstein-Uhlenbeck operator on ℝ¹⁶ has known eigenvalues:
+- λ₀ = 0, multiplicity 1 (constants — the vacuum)
+- λ₁ = 2/Λ², multiplicity 16 (linear functions — first excitations)
+- λ₂ = 4/Λ², multiplicity 136 (quadratic harmonics)
+- λ₃ = 6/Λ², multiplicity 816 (cubic harmonics)
+
+**Tensorised product inequality.** For the product geometry M × F:
+
+> C_P^(total) = max(C_P^(int), C_P^(M)) = max(Λ²/2, 1/μ₁)
+
+where μ₁ is the first eigenvalue of −Δ_M on compact spacetime M. Since C_P^(M) ~ L² >> C_P^(int) ~ Λ² (infrared >> ultraviolet by ~10⁸⁶), the product Poincaré constant is dominated by the spacetime contribution. The product spectral gap is:
+
+> λ₁^(total) = min(2/Λ², μ₁) = μ₁
+
+This is physically correct: the mass gap is an IR phenomenon, set by the largest scale in the theory.
+
+**The thermodynamic limit.** As spacetime volume V → ∞, the spacetime gap μ₁ → 0 and the free-theory Poincaré constant diverges. This is precisely WHERE the mass gap problem becomes hard: interactions (confinement, F3.9g_v) must prevent the gap from closing. The Poincaré inequality establishes that on compact spacetime, the gap EXISTS with explicit constants — the challenge is taking the infinite-volume limit while preserving it.
+
+**What this enables.** The quantitative Poincaré inequality provides:
+- Variance control: fluctuations bounded by gradient energy
+- Concentration: P(|f − Ef| > t) ≤ 2 exp(−t²/(2C_P · ‖∇f‖²_∞))
+- L² ergodicity: exponential convergence to equilibrium at rate λ₁
+- Explicit constants for F3.9g_ii (product gap transfer)
+
+*Machine verification:* `F3_9g_iii_PoincareSpectralMeasure.lean` — 16 theorems, 0 sorry. Compiles clean in Lean 4.29.1.
 
 ---
 
