@@ -290,7 +290,7 @@ theorem a2_lichnerowicz_coefficient :
     -- The 12 in denominator: (4π)² = 16π², times 12 gives 192π²
     -- But the key ratio: dim(H)/12 = 4/12 = 1/3
     Nat.gcd 4 12 = 4 := by
-  exact ⟨rfl, rfl, rfl, by native_decide, by omega, by native_decide⟩
+  exact ⟨rfl, rfl, rfl, by decide, by omega, by decide⟩
 
 /-- Newton's constant from the spectral action.
 

@@ -228,7 +228,7 @@ theorem all_beta_coefficients :
     -- All three are determined by: N_g = 3, N_H = 1, gauge group ranks
     -- Cascade inputs: 3 numbers (3, 1, and group structure from su(4))
     (3 : ℕ) = 3 := by
-  exact ⟨rfl, rfl, rfl, by native_decide, by omega, by omega, by omega, rfl⟩
+  exact ⟨rfl, rfl, rfl, by decide, by omega, by omega, by omega, rfl⟩
 
 /-!
 ## Phase 2 (K₂): RG Running Structure
@@ -289,7 +289,7 @@ theorem rg_running_slopes :
     41 * 3 = (123 : ℕ) ∧
     -- slope₃ > slope₂ > 0 > slope₁ → convergence guaranteed
     (210 : ℕ) > 95 ∧ (95 : ℕ) > 0 := by
-  exact ⟨rfl, rfl, rfl, by native_decide, by omega, by omega, by omega, by omega, by omega⟩
+  exact ⟨rfl, rfl, rfl, by decide, by omega, by omega, by omega, by omega, by omega⟩
 
 /-- Experimental coupling values at M_Z as integers (×10 for precision).
 
