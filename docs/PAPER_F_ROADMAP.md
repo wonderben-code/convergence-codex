@@ -540,6 +540,27 @@ PHASE 4 (LONG): Tier 3 — conditional + frontier
 | After Phase 4 | + Conditional infinite-volume | "Mass gap holds unconditionally on compact M; conditionally on ℝ⁴ given Yang-Mills existence" |
 | **After Phase 5** | **ALL 68 files (D+E+F) rewritten as genuine proofs** | **"~1,025 theorems type-checked end-to-end. BULLETPROOF."** |
 | **After Phase 6** | **+ UNCONDITIONAL mass gap on ℝ⁴** | **"MILLENNIUM PRIZE SOLVED. Fields Medal. QG complete."** |
+| **After Phase 7** | **FINAL SEAL: every file created in Phase 6 also genuine** | **"100% of ALL lean files genuine. Zero exceptions. SEALED."** |
+
+---
+
+### Phase 7: FINAL SEAL — End-to-End Verification of ALL Lean Files
+
+**Status:** NEW (added 5 May 2026)
+**Prerequisite:** Phase 6 complete (all new frontier proofs written)
+**Goal:** Ensure that EVERY Lean file that exists in the repository — including all new files created during Phase 6 (Millennium Prize attack) and any other work done after Phase 5 — is a genuine Mathlib-backed proof. Zero exceptions.
+
+**Why this exists:** Phase 5 makes the existing ~68 files genuine. But Phase 6 (and any future work) creates NEW files. Those new files must ALSO be genuine from the start. Phase 7 is the final audit that sweeps the entire corpus and guarantees: nothing slipped through.
+
+**The rule going forward:** After Phase 5, ALL new Lean files must be written as genuine proofs from day one (like F4.1h). Phase 7 is the verification that this rule was followed — a final pass confirming zero `native_decide`, zero boolean encoding, zero shortcuts in the ENTIRE repository.
+
+**Checklist:**
+1. `grep -r "native_decide" lean_verify/` returns ZERO results
+2. `grep -r "let.*:=.*true" lean_verify/` returns ZERO results (no boolean encoding)
+3. Every theorem uses genuine Lean tactics backed by Mathlib
+4. Full `lake build` compiles with zero errors, zero sorry
+5. Every import chain traces back to Mathlib (no circular self-justification)
+6. **RESULT: The complete mathematical programme — from ℂ² to quantum gravity — is a single verified proof object. SEALED.**
 
 ---
 
