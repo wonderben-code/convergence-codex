@@ -539,8 +539,8 @@ PHASE 4 (LONG): Tier 3 — conditional + frontier
 | After Phase 3 | + Gap stability & transfer | "Mass gap holds on compact M, stable under perturbation" |
 | After Phase 4 | + Conditional infinite-volume | "Mass gap holds unconditionally on compact M; conditionally on ℝ⁴ given Yang-Mills existence" |
 | **After Phase 5** | **ALL 68 files (D+E+F) rewritten as genuine proofs** | **"~1,025 theorems type-checked end-to-end. BULLETPROOF."** |
-| **After Phase 6** | **+ UNCONDITIONAL mass gap on ℝ⁴** | **"MILLENNIUM PRIZE SOLVED. Fields Medal. QG complete."** |
-| **After Phase 7** | **FINAL SEAL: every file created in Phase 6 also genuine** | **"100% of ALL lean files genuine. Zero exceptions. SEALED."** |
+| **After Phase 6** | **ALL outstanding problems solved (Millennium + CC + QG + everything)** | **"Every problem on the roadmap SOLVED. Nothing outstanding."** |
+| **After Phase 7** | **FINAL SEAL: every file from Phase 6 confirmed genuine** | **"100% of ALL lean files genuine. Zero exceptions. SEALED."** |
 
 ---
 
@@ -573,10 +573,27 @@ PHASE 4 (LONG): Tier 3 — conditional + frontier
 
 ---
 
-### TIER 4 — THE UNCONDITIONAL PROGRAMME (F4.4: Millennium Prize Attack)
+### PHASE 6: SOLVE ALL OUTSTANDING PROBLEMS
 
 **Status:** NEW (added 5 May 2026)
-**Goal:** Remove ALL conditional assumptions. Prove the cascade QFT exists on ℝ⁴ with a mass gap UNCONDITIONALLY — no axioms assumed, no "IF" statements. This IS the Millennium Prize for the cascade's specific gauge group.
+**Prerequisite:** Phase 5 complete (existing corpus is genuine)
+**Goal:** Solve EVERY remaining problem on the roadmap. This includes the Millennium Prize (F4.4), any remaining Tier 2-3 problems not yet tackled, and any new problems identified during the work. After Phase 6, there are NO outstanding problems — everything is solved.
+
+**What Phase 6 covers:**
+- F4.4 (Unconditional Millennium Prize attack) — the biggest single target
+- Any remaining Tier 2 problems not completed during Phase 2-3
+- Any remaining Tier 3 frontier problems
+- Any NEW problems discovered during Phases 1-5
+- Future physics problems (new CC layers, new predictions to derive, etc.)
+- **EVERYTHING. If it's on the roadmap and unsolved, Phase 6 solves it.**
+
+**The rule:** Every new file created during Phase 6 MUST be written as a genuine Mathlib proof from day one (following the F4.1h standard). No native_decide. No boolean encoding. Genuine from birth.
+
+---
+
+#### F4.4: The Unconditional Programme (Millennium Prize Attack)
+
+The centrepiece of Phase 6. Remove ALL conditional assumptions. Prove the cascade QFT exists on ℝ⁴ with a mass gap UNCONDITIONALLY — no axioms assumed, no "IF" statements. This IS the Millennium Prize for the cascade's specific gauge group.
 
 **Why the cascade has a genuine shot (advantages over generic Yang-Mills):**
 
@@ -624,10 +641,10 @@ The cascade's advantage: the action Tr(e^{-D²/Λ²}) is ANALYTIC and the spectr
 1. **From internal gap:** The internal spectral gap 2/Λ² is VOLUME-INDEPENDENT. It persists in any limit. The question is whether it "communicates" to the full theory.
 2. **From confinement:** The SU(3) sector has a confining linear potential. On ℝ³, the operator −Δ + σ|x| has discrete spectrum. If the cluster expansion (F4.4c) gives sufficient control, the confining contribution dominates at large distances and keeps the gap open.
 
-**The attack order for Phase 6:**
+**The attack order for F4.4 (within Phase 6):**
 
 ```
-PHASE 6 (FRONTIER): Tier 4 — unconditional Millennium attack
+F4.4 (FRONTIER): unconditional Millennium attack
     F4.4a (OS on compact M) — most tractable entry point
     ↓ (proves: the theory EXISTS on compact M as a Euclidean QFT)
     F4.4b (uniform bounds) — Gaussian domination + normalization
