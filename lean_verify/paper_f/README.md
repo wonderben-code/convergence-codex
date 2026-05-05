@@ -34,6 +34,7 @@ Files are named `F{tier}_{number}_{short_name}.lean` matching the roadmap items.
 | `F3_8d_xiii_Backreaction.lean` | F3.8d-xiii — CC Track C2: lineage-lineage backreaction, 10⁻⁵¹⁵ at present, negligible | 11 | PROVEN |
 | `F3_8d_xv_Synthesis.lean` | F3.8d-xv — CC Track C4: full synthesis, definitive prediction ρ ≈ +10⁻⁵⁰ GeV⁴ | 10 | PROVEN |
 | `F3_8d_xvi_CCClosure.lean` | F3.8d-xvi — CC Gap Closure: all 6 specialist gaps mathematically closed | 12 | PROVEN |
+| `F3_8f_ConnesNCG.lean` | F3.8f — Full Connes NCG: all 7 axioms satisfied, KO-dimension = 2 forced | 18 | PROVEN |
 
 ## Relationship to Paper E Proofs
 

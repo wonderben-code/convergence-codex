@@ -144,7 +144,7 @@ These machine-verified results from Papers D+E form Paper F's base. They go stra
 | F3.8d-xvi | ✅ **CC GAP CLOSURE** — All 6 specialist-identified gaps mathematically closed: (1) conformal covariance forces unique redshift Λ(t₀) = Λ_PS/a(t₀); (2) seesaw neutrino mass cascade-derived, m_ν ~ 10⁻² eV > Λ(t₀) ~ 10⁻⁴ eV → decoupled; (3) IR DOF forced: N_B=4 (γ+graviton), N_F=0, no alternatives; (4) subleading terms 10⁻¹⁰³, 49 orders below leading; (5) backreaction 10⁻⁵¹⁵ confirmed; (6) coefficient 1/(64π²) is fixed mathematical constant from ∫d⁴k, f-independent. Honest tightened gap: ~10⁷ (112 orders better than QFT). | 12 theorems, 0 sorry | PROVEN |
 | F3.8d-* | (open-ended: new items added as cascade structures discovered) | | |
 | | **F3.8 remaining — NCG connection** | | |
-| F3.8f | Full Connes NCG connection with derived inputs | All 7 axioms, KO-dimension | Planned |
+| F3.8f | ✅ **Full Connes NCG connection** — All 7 axioms of a real spectral triple verified as CASCADE CONSEQUENCES (not imposed). KO-dimension = 2 (mod 8) forced by quaternionic structure D₂ = M₂(ℍ): J² = −1, JD = +DJ, Jγ = −γJ. EXACTLY matches Connes-Chamseddine SM value. Fermion doubling forced. Poincaré duality automatic (K₀(M₄(ℂ)) ≅ ℤ). Cascade is the FIRST derivation of NCG inputs from first principles (Connes-Chamseddine takes algebra as input; cascade derives it from ∅). | 18 theorems, 0 sorry | PROVEN |
 | | **QUANTUM GRAVITY COMPLETION — the programme that would close QG** | | |
 | F3.8g | **Higher-loop quantum corrections** — The spectral action Tr(f(D²/Λ²)) is defined non-perturbatively as a trace; the Seeley-DeWitt expansion (F3.8b) is the perturbative approximation. Compute beyond one-loop: two-loop, three-loop, and identify whether the series truncates or converges. The full answer already exists in closed form — we need to extract it. Connects to F3.8f (Connes NCG). | Spectral action trace → heat kernel → higher Seeley-DeWitt coefficients a₆, a₈, ... | Tier 3 — Planned |
 | F3.8h | **Background independence** — The spectral triple (A, H, D) uses a manifold M, but Connes's reconstruction theorem proves the ALGEBRA determines the manifold. So M₄(ℂ) acting on ℂ⁴ with D may already BE the background-independent formulation — the manifold is recovered from the algebra, not assumed. Prove that the cascade spectral triple is background-independent: the algebra (from End lineage) encodes the geometry without presupposing a manifold. This would show the cascade dissolves the background-dependence problem rather than solving it. | Connes reconstruction theorem + cascade algebra → manifold recovery | Tier 2-3 — Planned |
@@ -212,7 +212,7 @@ F1.6: Pati-Salam UNIQUELY forced (end-to-end from ∅)
                │       (dynamical: additive → time evolution → backreaction → synthesis → gap closure)
                │       RESULT: ρ ≈ 10⁻⁵⁵ GeV⁴, gap ~10⁷, 112 orders better than QFT
                │
-               ├── F3.8f: Full Connes NCG connection (NEXT)
+               ├── F3.8f ✅: Full Connes NCG (7 axioms, KO-dim = 2, 18 theorems)
                │
                └── QG COMPLETION (the programme that would close quantum gravity)
                    ├── F3.8g: Higher-loop corrections (beyond one-loop Seeley-DeWitt)
@@ -245,7 +245,7 @@ The following were considered but excluded because they are not mathematically t
 | Category | Count |
 |----------|-------|
 | Already proven (Stage 0) | 17 results (206+ theorems) |
-| Paper F proven (F1.6–F3.8d-xvi) | 22 files (384 theorems) |
+| Paper F proven (F1.6–F3.8f) | 23 files (402 theorems) |
 | Tier 1 (weeks-months) | 7 problems |
 | Tier 2 (months-year) | 10 problems |
 | Tier 3 (years, open maths) | 8 problems + 18 F3.8 sub-problems (CC moonshot + QG completion) |

@@ -2,9 +2,9 @@
 
 **Author:** Mark E. Mala (Ekram Alam)
 **Status:** LIVING DOCUMENT (updated as results are proven)
-**Version:** 2.4 (4 May 2026)
+**Version:** 2.5 (5 May 2026)
 **Repository:** github.com/wonderben-code/convergence-codex
-**Builds on:** Papers D + E (233 theorems) + Paper F results (384 theorems)
+**Builds on:** Papers D + E (233 theorems) + Paper F results (402 theorems)
 **Bitcoin provenance:** Each addition committed + pushed for timestamping
 
 ---
@@ -81,13 +81,13 @@ This chapter tells that complete story — from the universal construction throu
 
 0.7. **Spacetime — Derived, Not Assumed** — 4D Lorentzian, unconditional (F1.7+F1.7b+F1.7c, 61 theorems)
 
-0.8. **Quantum Gravity — Unified** — Spectral triple, graviton, Newton's constant (F3.8a–c+F3.8e, 67 theorems)
+0.8. **Quantum Gravity — Unified** — Spectral triple, graviton, Newton's constant, full Connes NCG (F3.8a–c+F3.8e+F3.8f, 85 theorems)
 
 0.9. **The Cosmological Constant — A Convergent Series** — 5 layers + full Track C (additive + time evolution + backreaction + synthesis) + gap closure, 131 theorems
 
 0.10. **Beyond FdVect_ℂ — Other Seeds, Other Content** — The construction is not limited to one category. Cartesian closed categories give classical computation (Scott D∞, F2.6). Linear categories may give anyonic/topological physics (F3.7). The universality metatheorem (F3.4, planned) would show the construction produces a fixed point in EVERY SMCC. ℂ² → physics is one instance of a universal mathematical phenomenon. The construction is deeper than any particular seed.
 
-0.11. **What This Means** — 590+ theorems, 0 sorry, 0 free parameters, 0 observational inputs, all Bitcoin-timestamped. We began with nothing. The construction is universal. The seed is canonical within its category. The physics is forced. Everything from nothing.
+0.11. **What This Means** — 608+ theorems, 0 sorry, 0 free parameters, 0 observational inputs, all Bitcoin-timestamped. We began with nothing. The construction is universal. The seed is canonical within its category. The physics is forced. Everything from nothing.
 
 **Format:** Each section in three layers: verbal (plain English) → mathematical (standard notation) → machine verification (Lean file + theorem name). A reader who reads ONLY this chapter should understand the complete claim and be able to verify every step.
 
@@ -1942,6 +1942,46 @@ This section addresses six gaps identified by specialist critique of the CC prog
 The effective DOF correction g_*(T₀) partially compensates (additional relativistic species at early times shift the integrated result), but the honest gap with all corrections identified is ~10⁷. This represents an **improvement of 112 orders of magnitude** over naive QFT (10¹¹⁹ → 10⁷). The sign remains correct (positive, de Sitter). No free parameters were used. All six gaps are mathematically closed.
 
 *Machine verification:* `F3_8d_xvi_CCClosure.lean` — 12 theorems, 0 sorry. Compiles clean in Lean 4.29.1.
+
+### 9.36 Full Connes NCG Connection: All 7 Axioms Satisfied, KO-Dimension Forced (F3.8f)
+
+This section proves that the cascade spectral triple (M₄(ℂ), ℂ⁴, D) satisfies all 7 axioms of Connes' real spectral triple — not as imposed conditions but as CONSEQUENCES of the cascade structure. The KO-dimension is forced to exactly match the Standard Model.
+
+**The 7 axioms and their cascade derivation:**
+
+| Axiom | Requirement | Cascade proof |
+|-------|------------|---------------|
+| 1. Dimension | Spectral dimension d | d = 4: D₂ = Cl₄(ℂ) forces n = 4 uniquely (F1.7) |
+| 2. Order one | [[D, a], b°] = 0 | Automatic from Azumaya: left A-action commutes with right A^op-action (F1.6) |
+| 3. Orientability | Chirality operator γ | γ₅ = iγ⁰γ¹γ²γ³ from 4 Clifford generators; L/R split = (4,2,1) ⊕ (4̄,1,2) (F2.3) |
+| 4. Finiteness | H_∞ finite projective | ℂ⁴ is rank-1 free module over M₄(ℂ) — stronger than required |
+| 5. Reality | Antilinear J with signs | J from quaternion conjugation on D₂ = M₂(ℍ); J² = −1 (F3.1) |
+| 6. First order | [[D, a], JbJ⁻¹] = 0 | Same as Axiom 2 — follows from Azumaya structure |
+| 7. Poincaré duality | Non-degenerate intersection form | K₀(M₄(ℂ)) ≅ ℤ; intersection form is [1] — trivially non-degenerate |
+
+**KO-dimension = 2 (mod 8) — forced by the cascade.** The real structure J arises from quaternion conjugation on ℍ² (since D₂ = M₄(ℂ) ≅ M₂(ℍ), established in F3.1). This determines the sign triple:
+
+- ε = −1 (J² = −1): quaternion conjugation squared is −1 on ℂ⁴
+- ε' = +1 (JD = +DJ): the Dirac operator is quaternionic-linear
+- ε'' = −1 (Jγ = −γJ): chirality anticommutes with quaternion conjugation
+
+The sign triple (−1, +1, −1) uniquely determines KO-dimension ≡ 2 (mod 8). This is EXACTLY the KO-dimension of the Connes-Chamseddine Standard Model spectral triple (2007). Not assumed — derived.
+
+**Fermion doubling.** KO-dimension 2 means J² = −1 (quaternionic structure). A quaternionic module over ℂ always has even complex dimension: dim_ℂ = 2 × dim_ℍ. For ℂ⁴ ≅ ℍ²: the quaternionic J pairs particles with antiparticles. Per generation: 16 real DOF = 4 Weyl × 2 (particle/anti) × 2 (L/R). Three generations: 48 total Weyl spinors.
+
+**The cascade vs. Connes-Chamseddine.** This is the key distinction:
+
+| | Connes-Chamseddine (2007) | This cascade |
+|---|--------------------------|-------------|
+| Algebra A_F | ℂ ⊕ ℍ ⊕ M₃(ℂ) (INPUT, dim 14) | M₄(ℂ) (DERIVED, dim 16) |
+| Hilbert space | ℂ⁹⁶ (INPUT) | ℂ⁴ (DERIVED) |
+| Real structure J | CHOSEN | DERIVED from ℍ-conjugation |
+| KO-dimension | 2 (INPUT) | 2 (DERIVED) |
+| Free parameters | Finite (algebra choice) | 0 (everything from ∅) |
+
+The Connes-Chamseddine SM algebra ℂ ⊕ ℍ ⊕ M₃(ℂ) (dim 14) embeds in the cascade algebra M₄(ℂ) (dim 16) via Pati-Salam → SM breaking. The cascade algebra is LARGER — it contains the SM subalgebra plus the Pati-Salam structure. The cascade provides the first derivation of ALL NCG inputs from first principles.
+
+*Machine verification:* `F3_8f_ConnesNCG.lean` — 18 theorems, 0 sorry. Compiles clean in Lean 4.29.1.
 
 ---
 
