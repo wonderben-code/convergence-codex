@@ -152,6 +152,72 @@ These machine-verified results from Papers D+E form Paper F's base. They go stra
 | F3.8j | ✅ **Graviton scattering amplitudes** — Tree-level 2→2 graviton scattering from cascade spectral action. Graviton field h_μν from spin(3,1) fluctuation (10 components, 2 physical polarisations). Propagator, 3-point vertex, 4-point vertex all derived. Tree amplitude M = κ²s³/(tu)·F(s,t,u;Λ²) reproduces EXACT GR at low energies (F → 1). UV-softened at Λ_PS by spectral form factor (F → 0). No new particles needed (unlike string theory). First derivation of graviton S-matrix from 0 free parameters. | 16 theorems, 0 sorry | PROVEN |
 | F3.8k | ✅ **Non-perturbative quantisation — THE FINAL BOSS** — Path integral Z = ∫𝒟D exp(−Tr(f(D²/Λ²))) PROVEN well-defined. Three structural advantages: (1) FINITE internal space dim(Herm₄) = 16 → finite-dimensional integral; (2) BOUNDED action S ≥ 0 → exp(-S) ≤ 1; (3) SPECTRAL CUTOFF → Weyl's law gives N(Λ) finite modes → total DOF = 16×N(Λ) finite. Gauge group U(4) compact → finite orbit volume. Physical DOF after gauge fixing: 4 eigenvalues on compact flag manifold U(4)/T⁴. Osterwalder-Schrader reconstruction (5 axioms, reflection positivity from spectral invariance) → UNITARY quantum theory with Hilbert space ℋ, Hamiltonian H ≥ 0, unitary evolution e^{-iHt}. Consistent with all perturbative results (F3.8b, F3.8g, F3.8j, F3.8i). Connection to Yang-Mills Millennium Problem: cascade contains SU(4) ⊃ SM gauge theory; if rigorous, provides constructive 4D gauge+gravity. **QG COMPLETION PROGRAMME: ALL 10 ITEMS PROVEN.** | 15 theorems, 0 sorry | PROVEN |
 
+| | **QG RIGOROUS CLOSURE — from "structurally argued" to "rigorously proven"** | | |
+| | *Goal: "Quantum gravity solved modulo the mass gap" — close Gaps 1-6, leaving only Gap 7 (mass gap = Millennium Problem territory)* | | |
+| F3.9a | **Gap 1: Internal path integral convergence** — Prove ∫_{Herm₄(ℂ)} exp(−Tr(f(D²/Λ²))) dD < ∞ rigorously. The integrand is bounded (exp(−S) ≤ 1 for S ≥ 0) and has Gaussian decay (S grows as ||D||² → exp(−S) decays exponentially). Standard result: bounded rapidly-decaying function on ℝ¹⁶ is Lebesgue-integrable. Mathlib has measure theory + Gaussian integrals. Undergraduate-level analysis made machine-formal. | Mathlib measure theory, Gaussian integral bounds on ℝⁿ | Tier 2 — EASY |
+| F3.9b | **Gap 2: Physical cutoff justification** — Prove the spectral cutoff Λ_PS is intrinsic to the cascade, not a removable regulator. The cascade PRODUCES Λ_PS as the Pati-Salam unification scale (F3.8c). The spectral action principle defines physics AT scale Λ. The theory is self-consistent at finite Λ (all F3.8 results hold at finite Λ). No continuum limit needed. Analogy: lattice spacing in a crystal is physical, not an approximation — spectral cutoff is the "Planck-scale lattice" of spacetime. Requires: proof that all observables are well-defined at finite Λ, proof that Λ → ∞ limit is NOT required for consistency. | F3.8c (Λ_PS derived) + spectral action principle + finite-Λ self-consistency | Tier 2 — CONCEPTUAL |
+| F3.9c | **Gap 3: Full spectral cutoff path integral** — Prove that the spectral cutoff reduces the FULL path integral (M × F product geometry) to a convergent finite-dimensional integral. Requires: (i) Weyl's law on compact 4-manifold → N(Λ) finite eigenvalues below cutoff, (ii) truncation to N(Λ) modes is a well-defined approximation with bounded error, (iii) the truncated integral ∫_{ℝ^(16·N(Λ))} exp(−S) dx converges (follows from Gap 1 argument in higher dimension). Standard spectral theory on compact Riemannian manifolds. | Weyl's law (proven) + spectral truncation + Gap 1 generalisation | Tier 2-3 — MODERATE |
+| F3.9d | **Gap 4: Reflection positivity** — Rigorously verify Osterwalder-Schrader axiom OS2 (reflection positivity) for the cascade spectral action. The argument: (i) spectral action depends only on eigenvalues of D² (spectrum is reflection-invariant), (ii) measure 𝒟D on Herm is unitarily invariant (Lebesgue measure invariant under conjugation), (iii) D self-adjoint → D² positive → f(D²/Λ²) positive → S ≥ 0. Together: the Euclidean functional integral satisfies ⟨F, θF⟩ ≥ 0 for all positive-time observables F. OS reconstruction then gives Hilbert space + unitary Hamiltonian. | OS axioms + spectral invariance + unitarily invariant measure | Tier 2-3 — MODERATE |
+| F3.9e | **Gap 5: Anomaly cancellation** — Prove ALL gauge anomalies cancel in the cascade fermion representation. Purely algebraic: compute Tr(T^a {T^b, T^c}) for each gauge factor. For Pati-Salam SU(4) × SU(2)_L × SU(2)_R with fermions in (4,2,1) ⊕ (4̄,1,2): the anomaly polynomial must vanish. This is KNOWN to be true for Pati-Salam (anomaly-free by construction — SU(4) is safe, SU(2) has no anomaly in 4D). But we must DERIVE this from the cascade, not assume it. Critical: if anomalies don't cancel, the theory is INCONSISTENT. This is the most important gap to close. | Trace computations over cascade representations, Dynkin indices | Tier 2 — ALGEBRAIC, Lean-friendly |
+| F3.9f | **Gap 6: Ward identities / quantum gauge invariance** — Prove gauge invariance is preserved at the quantum level (not just classical). The spectral action Tr(f(D²/Λ²)) is gauge-invariant by construction (conjugation-invariant function of D). The path integral measure 𝒟D = dD (Lebesgue on Herm) is unitarily invariant. Together: the partition function Z and all correlation functions are gauge-invariant → Ward-Takahashi identities are automatically satisfied. No Faddeev-Popov ghosts needed (the gauge fixing to eigenvalues is exact). Verify: BRST cohomology is trivial for the spectral formulation. | Gauge invariance of S + measure → Ward identities automatic | Tier 2-3 — MODERATE |
+| | **Gap 7: Vacuum uniqueness / mass gap — THE MILLENNIUM FRONTIER** | | |
+| F3.9g | **Gap 7: Mass gap and vacuum uniqueness** — Prove the cascade quantum theory has a unique vacuum and a positive mass gap: inf(spec(H) \ {0}) > 0. This is the deepest remaining problem. It is related to the Clay Millennium Yang-Mills mass gap problem ($1M prize). The cascade contains SU(4) ⊃ SU(3) gauge theory, so proving a mass gap for the cascade would essentially solve the Millennium Problem for this specific gauge theory. **THIS IS A SEPARATE PROGRAMME — see "Mass Gap Programme" below.** No other approach to quantum gravity has solved this either. If Gaps 1-6 are closed, the cascade is "quantum gravity solved modulo the mass gap." | Constructive QFT, cluster expansion, spectral gap estimates | Tier 4+ — MILLENNIUM-ADJACENT |
+
+---
+
+## MASS GAP PROGRAMME — The Millennium Frontier
+
+**Goal:** Prove the cascade quantum theory has a positive mass gap.
+
+**What this means:** The Hamiltonian H (from OS reconstruction) has spectrum {0} ∪ [m, ∞) where m > 0. The vacuum is the unique state with H|Ω⟩ = 0, and all other states have energy ≥ m. This implies:
+- Confinement (quarks can't exist in isolation — gluon flux tube has energy ∝ distance)
+- Cluster decomposition (correlations decay exponentially at large distances)
+- Physical particle spectrum with positive masses
+
+**Why this is hard:** The Clay Millennium Problem (2000) asks exactly this for pure SU(N) Yang-Mills in 4D. Nobody has solved it for ANY interacting 4D quantum field theory. The best results are:
+- φ⁴ in 2D, 3D: mass gap proven (Glimm-Jaffe, 1970s)
+- φ⁴ in 4D: expected to be TRIVIAL (no interaction → no mass gap question)
+- Yang-Mills in 2D: solved (trivial in 2D, no propagating gluons)
+- Yang-Mills in 3D: partial results (Balaban, 1980s-90s; lattice arguments)
+- Yang-Mills in 4D: OPEN ($1M Clay prize)
+- Quantum gravity in 4D: OPEN (our problem)
+
+**The cascade's advantages for the mass gap:**
+1. FINITE internal space (dim 4) — the internal sector has a TRIVIAL mass gap (finite-dimensional Hilbert space → discrete spectrum → automatic gap)
+2. BOUNDED action — no conformal mode problem (the disease that kills the gravitational path integral in standard approaches)
+3. SPECTRAL CUTOFF — natural regularisation that preserves all symmetries
+4. COMPACT gauge group U(4) — finite gauge orbit volume
+5. EXPLICIT spectral function f — the cutoff function provides control over UV behaviour
+
+**Candidate attack strategies:**
+
+| # | Strategy | Key Idea | Precedent | Difficulty |
+|---|----------|----------|-----------|------------|
+| M1 | Cluster expansion | Expand Z in clusters of local fluctuations, prove convergence | Glimm-Jaffe (φ⁴ in 2-3D) | Very hard |
+| M2 | Spectral gap from finite internal space | Internal Herm₄ has discrete spectrum → gap propagates to full theory via product structure | Unique to cascade | Hard but novel |
+| M3 | Lattice → spectral cutoff correspondence | Map lattice YM results (Wilson, 1974; numerical evidence for mass gap) to spectral cutoff framework | Lattice QCD (strong numerical evidence) | Hard |
+| M4 | Functional inequality approach | Prove Poincaré inequality for spectral action measure: Var(f) ≤ C · ∫|∇f|² dμ → spectral gap | Bakry-Émery theory, log-Sobolev inequalities | Hard but tractable |
+| M5 | Connes trace theorem + compactness | Spectral action Tr(f(D²/Λ²)) is a compact operator → discrete spectrum → gap from compactness | Connes (1994), spectral theory | Moderate-hard |
+| M6 | Supersymmetric structure exploitation | If cascade has hidden SUSY (even approximate), use Witten's SUSY argument for mass gap | Witten (1982) SUSY + mass gap | Speculative |
+
+**Recommended attack order:** M5 → M4 → M2 → M3 → M1 → M6
+
+M5 (compactness argument) uses tools already in the cascade framework. M4 (functional inequality) has the most developed mathematical theory. M2 (finite internal space) is unique to the cascade and could be the breakthrough insight.
+
+**Attackable sub-problems for the mass gap (each a potential Lean file):**
+
+| File | Problem | What to prove |
+|------|---------|---------------|
+| F3.9g_i | Internal spectral gap | Herm₄(ℂ) with spectral action measure has discrete spectrum with gap |
+| F3.9g_ii | Product geometry gap transfer | If internal space has gap AND manifold has gap, product has gap |
+| F3.9g_iii | Poincaré inequality for spectral measure | Var(f) ≤ C·∫|∇f|² for the measure exp(−S)dD on Herm₄ |
+| F3.9g_iv | Compact operator spectrum | Tr(f(D²/Λ²)) as compact operator → discrete spectrum |
+| F3.9g_v | Confinement from cascade | SU(3) ⊂ SU(4) flux tubes → linear potential → confinement |
+| F3.9g_vi | Cluster decomposition | Exponential decay of correlations → unique vacuum |
+| F3.9g_vii | Full mass gap theorem | Combine i-vi → inf(spec(H)\{0}) > 0 |
+
+**If F3.9g_i through F3.9g_vii are proven: the mass gap is solved. Combined with F3.9a-f: quantum gravity is 100% solved.**
+
 ---
 
 ## TIER 4 — Moonshots (uncertain tractability, transformative if achieved)
@@ -221,6 +287,25 @@ F1.6: Pati-Salam UNIQUELY forced (end-to-end from ∅)
                    ├── F3.8j ✅: Graviton scattering (tree-level S-matrix, 16 theorems)
                    └── F3.8k ✅: Non-perturbative quantisation — THE FINAL BOSS (15 theorems)
                        *** QG COMPLETION: ALL 10 ITEMS PROVEN ***
+               │
+               └── QG RIGOROUS CLOSURE (from structural → rigorous)
+                   ├── F3.9a: Internal path integral convergence (EASY)
+                   ├── F3.9b: Physical cutoff justification (CONCEPTUAL)
+                   ├── F3.9c: Full spectral cutoff path integral (MODERATE)
+                   ├── F3.9d: Reflection positivity / OS verification (MODERATE)
+                   ├── F3.9e: Anomaly cancellation (ALGEBRAIC — Lean-ready)
+                   ├── F3.9f: Ward identities / quantum gauge invariance (MODERATE)
+                   │   *** F3.9a-f PROVEN → "QG SOLVED MODULO MASS GAP" ***
+                   │
+                   └── MASS GAP PROGRAMME (Millennium-adjacent)
+                       ├── F3.9g_i: Internal spectral gap
+                       ├── F3.9g_ii: Product geometry gap transfer
+                       ├── F3.9g_iii: Poincaré inequality for spectral measure
+                       ├── F3.9g_iv: Compact operator spectrum
+                       ├── F3.9g_v: Confinement from cascade
+                       ├── F3.9g_vi: Cluster decomposition
+                       └── F3.9g_vii: Full mass gap theorem
+                           *** F3.9g PROVEN → "QG 100% SOLVED" ***
 ```
 
 ---
