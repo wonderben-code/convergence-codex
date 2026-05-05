@@ -211,13 +211,13 @@ private theorem G_sl2_real_dim : 2 * ((2 : ℕ) ^ 2 - 1) = 6 := by omega
 
 /-- dim(so(1,3)) = C(4,2) = 6.
     Antisymmetric 4×4 real matrices: one independent entry per pair of indices. -/
-private theorem G_so13_dim : Nat.choose 4 2 = 6 := by native_decide
+private theorem G_so13_dim : Nat.choose 4 2 = 6 := by decide
 
 /-- **THE LIE ALGEBRA DIMENSION MATCH:**
     dim_ℝ(sl₂(ℂ)) = dim(so(1,3)) = 6.
     This is a necessary condition for sl₂(ℂ) ≅ so(1,3) ⊗ ℂ. -/
 private theorem G_lie_dim_match :
-    2 * ((2 : ℕ) ^ 2 - 1) = Nat.choose 4 2 := by native_decide
+    2 * ((2 : ℕ) ^ 2 - 1) = Nat.choose 4 2 := by decide
 
 /-!
 ## Part 6: Spacetime Dimension — Forced by the Seed
@@ -246,7 +246,7 @@ private theorem G_end_matches_spacetime :
 private theorem G_boost_generators : (2 : ℕ) ^ 2 - 1 = 3 := by omega
 
 /-- Spatial rotations: C(3,2) = 3 rotation generators. -/
-private theorem G_rotation_generators : Nat.choose 3 2 = 3 := by native_decide
+private theorem G_rotation_generators : Nat.choose 3 2 = 3 := by decide
 
 /-- Total Lorentz generators: 3 boosts + 3 rotations = 6. -/
 private theorem G_total_lorentz : 3 + 3 = 6 := by omega

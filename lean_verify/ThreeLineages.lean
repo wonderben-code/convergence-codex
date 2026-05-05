@@ -183,7 +183,7 @@ private theorem T_det_preserved (A : SpecialLinearGroup (Fin 2) ℂ)
 
 /-- Lie algebra dimension match: dim_ℝ(sl₂(ℂ)) = C(4,2) = dim(so(1,3)). -/
 private theorem T_lie_match :
-    2 * ((2 : ℕ) ^ 2 - 1) = Nat.choose 4 2 := by native_decide
+    2 * ((2 : ℕ) ^ 2 - 1) = Nat.choose 4 2 := by decide
 
 /-- Spacetime dimension = n² = 4 (forced by seed). -/
 private theorem T_spacetime : (2 : ℕ) ^ 2 = 4 := by omega

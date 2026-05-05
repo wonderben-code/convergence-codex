@@ -53,16 +53,16 @@ def emergenceDim : ℕ → ℕ
 @[simp] theorem emergenceDim_zero : emergenceDim 0 = 2 := rfl
 
 /-- D₁ = End(ℂ²) = M₂(ℂ) has dimension 4. -/
-theorem emergenceDim_one : emergenceDim 1 = 4 := by native_decide
+theorem emergenceDim_one : emergenceDim 1 = 4 := by decide
 
 /-- D₂ = End(M₂(ℂ)) = M₄(ℂ) has dimension 16. -/
-theorem emergenceDim_two : emergenceDim 2 = 16 := by native_decide
+theorem emergenceDim_two : emergenceDim 2 = 16 := by decide
 
 /-- D₃ = End(M₄(ℂ)) = M₁₆(ℂ) has dimension 256. -/
-theorem emergenceDim_three : emergenceDim 3 = 256 := by native_decide
+theorem emergenceDim_three : emergenceDim 3 = 256 := by decide
 
 /-- D₄ = End(M₁₆(ℂ)) = M₂₅₆(ℂ) has dimension 65536. -/
-theorem emergenceDim_four : emergenceDim 4 = 65536 := by native_decide
+theorem emergenceDim_four : emergenceDim 4 = 65536 := by decide
 
 /-- **Theorem 1.5 (Dimension Formula):** dim(Dₙ) = 2^(2^n).
     The lineage grows doubly-exponentially with no free parameters.
