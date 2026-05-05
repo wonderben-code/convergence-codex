@@ -2,9 +2,9 @@
 
 **Author:** Mark E. Mala (Ekram Alam)
 **Status:** LIVING DOCUMENT (updated as results are proven)
-**Version:** 2.5 (5 May 2026)
+**Version:** 2.6 (5 May 2026)
 **Repository:** github.com/wonderben-code/convergence-codex
-**Builds on:** Papers D + E (233 theorems) + Paper F results (402 theorems)
+**Builds on:** Papers D + E (233 theorems) + Paper F results (417 theorems)
 **Bitcoin provenance:** Each addition committed + pushed for timestamping
 
 ---
@@ -81,13 +81,13 @@ This chapter tells that complete story — from the universal construction throu
 
 0.7. **Spacetime — Derived, Not Assumed** — 4D Lorentzian, unconditional (F1.7+F1.7b+F1.7c, 61 theorems)
 
-0.8. **Quantum Gravity — Unified** — Spectral triple, graviton, Newton's constant, full Connes NCG (F3.8a–c+F3.8e+F3.8f, 85 theorems)
+0.8. **Quantum Gravity — Unified** — Spectral triple, graviton, Newton's constant, full Connes NCG, background independence (F3.8a–c+F3.8e+F3.8f+F3.8h, 100 theorems)
 
 0.9. **The Cosmological Constant — A Convergent Series** — 5 layers + full Track C (additive + time evolution + backreaction + synthesis) + gap closure, 131 theorems
 
 0.10. **Beyond FdVect_ℂ — Other Seeds, Other Content** — The construction is not limited to one category. Cartesian closed categories give classical computation (Scott D∞, F2.6). Linear categories may give anyonic/topological physics (F3.7). The universality metatheorem (F3.4, planned) would show the construction produces a fixed point in EVERY SMCC. ℂ² → physics is one instance of a universal mathematical phenomenon. The construction is deeper than any particular seed.
 
-0.11. **What This Means** — 608+ theorems, 0 sorry, 0 free parameters, 0 observational inputs, all Bitcoin-timestamped. We began with nothing. The construction is universal. The seed is canonical within its category. The physics is forced. Everything from nothing.
+0.11. **What This Means** — 623+ theorems, 0 sorry, 0 free parameters, 0 observational inputs, all Bitcoin-timestamped. We began with nothing. The construction is universal. The seed is canonical within its category. The physics is forced. Everything from nothing.
 
 **Format:** Each section in three layers: verbal (plain English) → mathematical (standard notation) → machine verification (Lean file + theorem name). A reader who reads ONLY this chapter should understand the complete claim and be able to verify every step.
 
@@ -1982,6 +1982,43 @@ The sign triple (−1, +1, −1) uniquely determines KO-dimension ≡ 2 (mod 8).
 The Connes-Chamseddine SM algebra ℂ ⊕ ℍ ⊕ M₃(ℂ) (dim 14) embeds in the cascade algebra M₄(ℂ) (dim 16) via Pati-Salam → SM breaking. The cascade algebra is LARGER — it contains the SM subalgebra plus the Pati-Salam structure. The cascade provides the first derivation of ALL NCG inputs from first principles.
 
 *Machine verification:* `F3_8f_ConnesNCG.lean` — 18 theorems, 0 sorry. Compiles clean in Lean 4.29.1.
+
+### 9.37 Background Independence: The Cascade Dissolves the Problem (F3.8h)
+
+Background independence — the requirement that a theory of quantum gravity does not presuppose a fixed spacetime — has been a central criterion since Einstein. The cascade achieves this in the strongest possible sense: it never assumes a background. It generates one.
+
+**Algebraic priority.** The cascade derives the algebra M₄(ℂ) from the End lineage (F0.2) BEFORE any geometric structure exists. The Hilbert space ℂ⁴ comes from the ⟨·,·⟩ lineage (F0.10). The Dirac operator D comes from the Clifford structure (F1.7). At no point is a manifold, metric, or connection assumed. The spectral triple (M₄(ℂ), ℂ⁴, D) is the complete input — and it is entirely algebraic.
+
+**Connes reconstruction.** Connes' reconstruction theorem (2008) proves that a commutative spectral triple satisfying the 7 axioms (all verified in §9.36) UNIQUELY determines a compact Riemannian spin manifold M. The cascade provides (A, H, D) without mentioning a manifold. The reconstruction theorem then PRODUCES the manifold from this algebraic data:
+
+- **Topology** → from the Gelfand spectrum of the commutative part of A
+- **Smooth structure** → from the regularity of D
+- **Riemannian metric** → from the Connes distance formula: d(x,y) = sup{|f(x)−f(y)| : ‖[D,f]‖ ≤ 1}
+- **Spin structure** → from the real structure J (KO-dimension 2, §9.36)
+- **Connection** → from D-fluctuations (F3.8e)
+- **Dimension** → spectral dimension 4 from Cl₄(ℂ) (F1.7)
+- **Signature** → (1,3) from quaternionic structure (F1.7b)
+
+All 7 levels of geometric structure are DERIVED, not assumed.
+
+**Dynamical metric.** The spectral action Tr(f(D²/Λ²)) makes D the dynamical variable. Varying D produces the Einstein equations (from a₂) and Yang-Mills equations (from a₄). The metric g_μν is derived from D via the Connes distance formula — when D varies, g_μν varies. Even the cutoff Λ runs with cosmic expansion (§9.32, conformal covariance). Truly no fixed structure.
+
+**Forced symmetry.** Diffeomorphism invariance is automatic: Aut(C^∞(M)) = Diff(M). Gauge invariance is automatic: Inn(M₄(ℂ)) = PGL₄(ℂ) (Skolem-Noether — all automorphisms of matrix algebras are inner). The full symmetry group Diff(M) ⋊ Gauge(M) is the symmetry of the Standard Model coupled to gravity — forced by the cascade.
+
+**Comparison with other approaches:**
+
+| Approach | Background-independent? | SM-unified? | First-principles? |
+|----------|----------------------|------------|------------------|
+| GR | Yes (metric dynamical) | No (classical) | No |
+| QFT | No (fixed background) | Yes (SM) | No |
+| String theory | Debated | Partially | No (10⁵⁰⁰ vacua) |
+| LQG | Yes (spin networks) | No | Yes (but no SM) |
+| CDT | Yes (sum over triangulations) | No | Yes (but no SM) |
+| **Cascade NCG** | **Yes (algebra → geometry)** | **Yes (same algebra)** | **Yes (0 parameters)** |
+
+The cascade is the ONLY approach that achieves all three simultaneously. It does not "solve" background independence by modifying an existing theory. It DISSOLVES the problem: there was never a background to begin with. The background is an output.
+
+*Machine verification:* `F3_8h_BackgroundIndependence.lean` — 15 theorems, 0 sorry. Compiles clean in Lean 4.29.1.
 
 ---
 
