@@ -46,6 +46,7 @@ Files are named `F{tier}_{number}_{short_name}.lean` matching the roadmap items.
 | `F3_9d_ReflectionPositivity.lean` | F3.9d — Reflection positivity: all 5 OS axioms, reconstruction → Hilbert space + Hamiltonian | 16 | PROVEN |
 | `F3_9b_PhysicalCutoff.lean` | F3.9b — Physical cutoff: Λ = Λ_PS (unification scale), universality, no trans-Planckian problem | 15 | PROVEN |
 | `F3_9f_WardIdentities.lean` | F3.9f — Ward identities: quantum gauge invariance, BRST, Slavnov-Taylor, S-matrix unitarity | 16 | PROVEN |
+| `F3_9c_FullPathIntegral.lean` | F3.9c — Full path integral: ALL 6 pillars combined → **QG SOLVED MODULO MASS GAP** | 17 | PROVEN |
 
 ## Relationship to Paper E Proofs
 
