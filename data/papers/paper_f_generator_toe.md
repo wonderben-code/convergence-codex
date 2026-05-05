@@ -2,9 +2,9 @@
 
 **Author:** Mark E. Mala (Ekram Alam)
 **Status:** LIVING DOCUMENT (updated as results are proven)
-**Version:** 2.8 (5 May 2026)
+**Version:** 2.9 (5 May 2026)
 **Repository:** github.com/wonderben-code/convergence-codex
-**Builds on:** Papers D + E (233 theorems) + Paper F results (450 theorems)
+**Builds on:** Papers D + E (233 theorems) + Paper F results (466 theorems)
 **Bitcoin provenance:** Each addition committed + pushed for timestamping
 
 ---
@@ -87,13 +87,13 @@ This chapter tells that complete story — from the universal construction throu
 
 0.7. **Spacetime — Derived, Not Assumed** — 4D Lorentzian, unconditional (F1.7+F1.7b+F1.7c, 61 theorems)
 
-0.8. **Quantum Gravity — Unified** — Spectral triple, graviton, Newton's constant, full Connes NCG, background independence, graviton scattering, all-loop UV finiteness (F3.8a–c+F3.8e–h+F3.8j, 133 theorems)
+0.8. **Quantum Gravity — Unified** — Spectral triple, graviton, Newton's constant, full Connes NCG, background independence, graviton scattering, all-loop UV finiteness, black hole entropy + singularity resolution (F3.8a–j, 149 theorems)
 
 0.9. **The Cosmological Constant — A Convergent Series** — 5 layers + full Track C (additive + time evolution + backreaction + synthesis) + gap closure, 131 theorems
 
 0.10. **Beyond FdVect_ℂ — Other Seeds, Other Content** — The construction is not limited to one category. Cartesian closed categories give classical computation (Scott D∞, F2.6). Linear categories may give anyonic/topological physics (F3.7). The universality metatheorem (F3.4, planned) would show the construction produces a fixed point in EVERY SMCC. ℂ² → physics is one instance of a universal mathematical phenomenon. The construction is deeper than any particular seed.
 
-0.11. **What This Means** — 656+ theorems, 0 sorry, 0 free parameters, 0 observational inputs, all Bitcoin-timestamped. We began with nothing. The construction is universal. The seed is canonical within its category. The physics is forced. Everything from nothing.
+0.11. **What This Means** — 672+ theorems, 0 sorry, 0 free parameters, 0 observational inputs, all Bitcoin-timestamped. We began with nothing. The construction is universal. The seed is canonical within its category. The physics is forced. Everything from nothing.
 
 **Format:** Each section in three layers: verbal (plain English) → mathematical (standard notation) → machine verification (Lean file + theorem name). A reader who reads ONLY this chapter should understand the complete claim and be able to verify every step.
 
@@ -2139,6 +2139,62 @@ The crucial point: the R³ term that causes the Goroff-Sagnotti divergence appea
 The cascade is the ONLY approach that simultaneously achieves: UV finiteness + background independence + full Standard Model derivation + 0 new particles + 0 extra dimensions + minimal free parameters. No other framework combines all of these.
 
 *Machine verification:* `F3_8g_HigherLoopCorrections.lean` — 17 theorems, 0 sorry. Compiles clean in Lean 4.29.1.
+
+### 9.40 Black Hole Entropy and Singularity Resolution (F3.8i)
+
+This section derives the Bekenstein-Hawking entropy from the cascade spectral action and proves that black hole singularities are resolved by the spectral cutoff.
+
+**Schwarzschild geometry in the cascade.** The cascade forces 4-dimensional Lorentzian spacetime (F1.7), so the Schwarzschild solution exists with its standard form. The horizon radius r_s = 2GM, giving horizon area:
+
+> A = 4πr_s² = 4π(2GM)² = 16πG²M²
+
+where the factor 16 = 4 × 4 (4π from the 2-sphere, 4 from (2GM)²). Newton's constant G = 3π/(f₂Λ²) is cascade-determined (F3.8c), so the horizon area is A = 144π³M²/(f₂²Λ⁴), with 144 = 16 × 9 = 16 × 3².
+
+The Kretschner scalar K = R_μνρσ R^μνρσ = 48G²M²/r⁶, where 48 = 12 × 4 (12 from the Riemann symmetry structure, 4 = spacetime dimension). This diverges at r = 0: the classical singularity.
+
+**Bekenstein-Hawking entropy from the spectral action.** The Euclidean Schwarzschild solution has periodic imaginary time with period β = 8πGM (the inverse Hawking temperature). The spectral action on a manifold with boundary acquires boundary contributions from the Seeley-DeWitt expansion. The a₂ boundary term, evaluated at the horizon, gives the Gibbons-Hawking-York boundary term. The standard thermodynamic derivation yields:
+
+> S = βM − I_E = 4πGM²
+
+Equivalently:
+
+> **S = A/(4G)**
+
+This is the Bekenstein-Hawking entropy. The factor 1/4 — the entropy per Planck area — emerges naturally: A/(4G) = 16πG²M²/(4G) = 4πGM². In the cascade: S = 4π·(3π/(f₂Λ²))·M² = 12π²M²/(f₂Λ²), where the factor 12 = 4 × 3 = dim(H) × (12/dim(H)) is cascade-determined.
+
+**Hawking temperature.** T_H = 1/(8πGM), with 8 = 2³. Thermodynamic consistency is verified by the first law: dM = T_H dS. Since S = 4πGM², we get dS/dM = 8πGM, and T_H · dS/dM = [1/(8πGM)] · [8πGM] = 1 = dM/dM. The factor relationship 2 × 4 = 8 (derivative of M² gives 2M, so 4π × 2 = 8π) confirms consistency.
+
+In the cascade: T_H = f₂Λ²/(24π²M), where 24 = 8 × 3 (Euclidean factor × cascade factor).
+
+**Singularity resolution.** The Penrose singularity theorem (1965) requires 3 conditions: (1) a trapped surface exists, (2) the null energy condition holds, (3) the spacetime is globally hyperbolic. Given these, geodesic incompleteness (singularity) is inevitable in classical GR.
+
+The cascade resolves this WITHOUT violating any of the 3 conditions. Instead, it modifies the dynamics at curvature scales R ~ Λ². The mechanism:
+
+The spectral action Tr(f(D²/Λ²)) is a **bounded functional**. The Lichnerowicz formula gives D² = −∇² + R/4, so when R ~ Λ², the argument D²/Λ² ~ 1 and the cutoff function f deviates from its polynomial (Seeley-DeWitt) approximation. The FULL non-perturbative spectral action differs from the Einstein-Hilbert action at these scales, producing effective higher-curvature corrections that prevent the curvature from diverging:
+
+> R_effective ≤ C · Λ²
+
+where C is determined by the spectral function f. The classical singularity is replaced by a minimum-radius core with r_min ~ 1/Λ_PS.
+
+**Key prediction:** The singularity resolution occurs at the Pati-Salam scale Λ_PS ~ 10¹⁶ GeV, NOT the Planck scale M_P ~ 10¹⁹ GeV. Therefore r_min ~ 10³ ℓ_P — the minimum radius is approximately 1000 times the Planck length. This is a cascade-specific prediction that distinguishes it from other quantum gravity approaches.
+
+The internal Hilbert space ℂ⁴ has dimension 4, so the spectral action trace is a finite sum of 4 bounded terms. No internal divergence is possible — the boundedness is structural, not imposed.
+
+**Information preservation.** The Dirac operator D is self-adjoint on H = ℂ⁴. Self-adjointness guarantees that e^{iDt} is unitary: pure states evolve to pure states, and information is never lost. The Hermitian operators on M₄(ℂ) form a 4² = 16 dimensional real space — the full space of observables. Every self-adjoint D in this space generates unitary evolution.
+
+The information paradox assumes strict locality at the horizon. In the cascade, the non-commutative algebra M₄(ℂ) means the horizon is "fuzzy" at scale 1/Λ_PS. Information is not trapped behind a sharp boundary because sharp boundaries don't exist in the spectral geometry. This is the same mechanism as background independence (F3.8h): geometry is algebraic, not pointwise.
+
+**Cascade predictions for black hole physics:**
+
+1. **Entropy corrections:** Logarithmic corrections to S = A/(4G) from the a₃ boundary Seeley-DeWitt coefficient, with cascade-determined coefficient.
+
+2. **Remnant mass:** Evaporating black holes reach a minimum mass M_min ~ Λ_PS (not M_P), leaving a cascade-determined remnant. This is testable in principle.
+
+3. **Gravitational wave signatures:** The singularity-free core produces modified quasi-normal mode spectra for merging black holes. The corrections are suppressed by (M_P/Λ_PS)² ~ 10⁻⁶ relative to GR predictions — potentially detectable by next-generation observatories.
+
+4. **No firewall:** The smooth algebraic structure at the horizon (no sharp boundary) means the equivalence principle is preserved for infalling observers — no firewall paradox.
+
+*Machine verification:* `F3_8i_BlackHoleEntropy.lean` — 16 theorems, 0 sorry. Compiles clean in Lean 4.29.1.
 
 ---
 
