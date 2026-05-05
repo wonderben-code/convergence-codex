@@ -369,6 +369,134 @@ F1.6: Pati-Salam UNIQUELY forced (end-to-end from ∅)
 
 ---
 
+## RIGOROUS FOUNDATIONS PROGRAMME (F4: From Outline to Proof)
+
+**Status:** NEW (added 5 May 2026)
+**Goal:** Replace ALL `native_decide` / `let x := true` assertions with genuine Mathlib-backed proofs. Transform the programme from "formalized outline" to "bulletproof mathematics."
+
+The programme is in three tiers by difficulty. Caesar Strategy: Tier 1 first (unlocks credibility for everything), Tier 2 next (makes spectral gap real), Tier 3 last (conditional approach where needed).
+
+### TIER 1 — Provable NOW with Mathlib (algebraic foundations)
+
+These use existing Mathlib infrastructure. Each replaces an assertion-theorem with a real proof.
+
+| ID | Problem | What to prove (Mathlib path) | Unlocks |
+|----|---------|------------------------------|---------|
+| F4.1a | Cascade algebra chain | M₂(ℂ) ⊗ M₂(ℂ) ≅ M₄(ℂ) via `RingTheory.TensorProduct`, `LinearAlgebra.Matrix` | Foundation of everything |
+| F4.1b | Dimension formula | dim(M_{2^n}(ℂ)) = 2^{2n}, prove End(ℂⁿ) ≅ Mₙ(ℂ) | Cascade counting |
+| F4.1c | SU(4) → SU(3)×U(1) decomposition | 15 = 8 + 6 + 1 as Lie algebra reps via branching rules | Pati-Salam → SM |
+| F4.1d | Anomaly cancellation arithmetic | Tr(T^a{T^b,T^c}) = 0 for ℂ⁴⊗ℂ²⊗ℂ² reps (finite computation) | Quantum consistency |
+| F4.1e | Clifford isomorphism | Cl₄(ℂ) ≅ M₄(ℂ) via `RingTheory.Clifford` | Spacetime dimension |
+| F4.1f | Weinberg angle | sin²θ_W = 3/8 from Dynkin index ratio in su(4) ⊃ su(2)×u(1) | Precision prediction |
+| F4.1g | Fermion quantum numbers | Branching ℂ⁴⊗ℂ²⊗ℂ² under SU(3)×SU(2)×U(1) matches SM | Particle content |
+| F4.1h | Cauchy functional equation | f measurable + f(x+y) = f(x)+f(y) → f(x) = cx (Mathlib `Analysis`) | Zero free parameters |
+| F4.1i | Division algebra classification | Frobenius: only ℝ, ℂ, ℍ have finite-dim associative division (Mathlib) | Three generations |
+| F4.1j | Im(ℍ) dimension | dim_ℝ(Im(ℍ)) = 3, 𝕆 non-associative exclusion | Three generations |
+| F4.1k | Vandermonde determinant | Δ(λ) = Π_{i<j}(λᵢ−λⱼ), explicit formula for n=4 | Weyl integration |
+| F4.1l | Gaussian integral on ℝⁿ | ∫exp(−x²/2σ²)dx = σ√(2π), Z = (2πσ²)^{n/2} for n=16 | Partition function |
+| F4.1m | Trace cyclicity | Tr(ABC) = Tr(CAB) for finite-dim matrices | Gauge invariance |
+| F4.1n | Tensor eigenvalue additivity | If Av=λv, Bw=μw then (A⊗I+I⊗B)(v⊗w)=(λ+μ)(v⊗w) | Product gap |
+
+**Estimated effort:** 2-4 weeks of dedicated Lean work. Each is 20-80 lines of real proof.
+**Result:** ~50-100 theorems of GENUINE machine-verified algebra. The cascade's foundational claims become irrefutable.
+
+### TIER 2 — Provable with infrastructure building (functional analysis)
+
+These require building up Lean infrastructure for measure theory, spectral theory, and PDEs. Known mathematics, harder formalization.
+
+| ID | Problem | What to prove | Key Mathlib gaps |
+|----|---------|---------------|-----------------|
+| F4.2a | Gaussian Poincaré inequality | Var_γ(f) ≤ σ²∫|∇f|²dγ on ℝⁿ | Needs Gaussian measure + Sobolev spaces |
+| F4.2b | Bakry-Émery criterion | Hess(V) ≥ κI → spectral gap(−Δ+∇V·∇) ≥ κ | Diffusion semigroup theory |
+| F4.2c | O-U operator spectrum | Eigenvalues = nκ, eigenfunctions = Hermite polynomials | Spectral theory of unbounded operators |
+| F4.2d | Kato-Rellich theorem | A self-adjoint, B A-bounded with bound < 1 → A+B self-adjoint | Operator perturbation theory |
+| F4.2e | Isolated eigenvalue stability | dist(λ, spec(A)\{λ}) > δ, ‖B‖ < δ/2 → A+B has eigenvalue near λ | Resolvent estimates |
+| F4.2f | Weyl's law (compact M) | N(λ) ~ C_d·vol·λ^{d/2} for −Δ on compact manifold | Elliptic PDE theory |
+| F4.2g | Seeley-DeWitt a₂ coefficient | Tr(e^{-tD²}) ~ t^{-d/2}(a₀ + a₂t + a₄t² + ...), a₂ = R/6 | Heat kernel theory |
+| F4.2h | Log-Sobolev inequality | Ent_μ(f²) ≤ (2/κ)∫|∇f|²dμ from Bakry-Émery | Functional inequalities |
+| F4.2i | Compact resolvent → discrete spectrum | (H+1)⁻¹ compact → spec(H) discrete, eigenvalues → ∞ | Spectral theory |
+| F4.2j | Tensor product spectral theorem | spec(A⊗I + I⊗B) = spec(A) + spec(B) for s.a. operators | Tensor product Hilbert spaces |
+| F4.2k | KLMN theorem | V form-bounded rel. H with a < 1 → H+V self-adjoint, gap persists | Quadratic form methods |
+| F4.2l | Trace-class criterion | Σₙ sₙ(T) < ∞ → T trace-class; e^{-tH} trace-class for H with compact resolvent | Schatten classes |
+
+**Estimated effort:** 3-12 months. Requires building spectral theory infrastructure in Lean.
+**Result:** The internal spectral gap (F3.9g_i), Poincaré inequality (F3.9g_iii), product transfer (F3.9g_ii), and gap stability (F3.9g_iv) all become genuine machine-verified analysis. ~80 real theorems.
+
+### TIER 3 — Frontier mathematics (conditional + breakthrough)
+
+These contain genuinely unsolved problems. Strategy: prove CONDITIONAL statements where possible, identify the minimal axioms needed, and attack the solvable sub-cases.
+
+| ID | Problem | Status worldwide | Our approach |
+|----|---------|-----------------|--------------|
+| F4.3a | Yang-Mills measure in 4D | UNSOLVED ($1M Clay Prize) | Conditional: "IF μ_YM exists (Axiom YM), THEN cascade inherits it" |
+| F4.3b | Confinement from first principles | UNSOLVED (50 years of attempts) | Two sub-approaches: (i) Prove for COMPACT M (tractable), (ii) Conditional for ℝ⁴ |
+| F4.3c | Mass gap for SU(3) on ℝ⁴ | UNSOLVED (= Millennium Prize) | Conditional: "IF Axioms YM + CONF, THEN gap = m(0⁺⁺)" |
+| F4.3d | Spectral action = Wightman QFT | NEVER DONE for any spectral triple | Prove OS axioms for finite-dim internal space (tractable sub-case) |
+| F4.3e | Non-perturbative QG path integral | UNSOLVED by all approaches | Our advantage: internal space is FINITE-DIM (16), reduce to finite-dim integral |
+| F4.3f | OS reconstruction for cascade | Prove all 5 OS axioms for the specific cascade path integral | Tractable: finite-dim internal × compact M |
+| F4.3g | Cluster expansion convergence | Prove exp decay of connected functions for cascade action | High-temperature/weak-coupling expansion |
+| F4.3h | Infinite-volume limit exists | lim_{L→∞} ⟨O⟩_L exists for bounded O | Compactness arguments + cluster expansion |
+
+**Conditional theorem approach:**
+```
+-- Instead of: theorem mass_gap : gap > 0
+-- We prove:   theorem mass_gap_conditional (h_ym : YM_measure_exists) (h_conf : SU3_confines) : gap > 0
+```
+
+This is RIGOROUS and HONEST. It says: "the cascade-specific content is proven; the general QFT axioms are separated as explicit assumptions." If someone later proves Yang-Mills existence, our conditional theorem AUTOMATICALLY gives the mass gap for the cascade.
+
+**The tractable sub-cases:**
+- F4.3e is ACTUALLY TRACTABLE for us: the internal space Herm₄ is 16-dimensional. The internal path integral is a FINITE-DIMENSIONAL integral. We can prove its properties rigorously.
+- F4.3f on compact M with finite internal space: all OS axioms become checkable
+- F4.3g at weak coupling (high energy): cluster expansion converges for small g²
+
+**Estimated effort:** 1-5 years for conditional versions. The unconditional Millennium Prize remains open.
+**Result:** Rigorous conditional theorems separating CASCADE-SPECIFIC math from GENERAL QFT axioms. If the general axioms are ever proven, the cascade results follow automatically.
+
+### Attack Order (Caesar Strategy for F4)
+
+```
+PHASE 1 (NOW): Tier 1 — algebraic foundations
+    F4.1h (Cauchy equation) — unlocks zero-parameter claim
+    F4.1a (tensor product) — unlocks cascade chain
+    F4.1e (Clifford) — unlocks spacetime dimension
+    F4.1c (SU(4) decomp) — unlocks gauge group
+    F4.1i (Frobenius) — unlocks three generations
+    → RESULT: "Cascade algebra is proven. Period."
+
+PHASE 2 (NEXT): Tier 2a — Gaussian analysis
+    F4.2a (Gaussian Poincaré) — the key inequality
+    F4.2b (Bakry-Émery) — spectral gap criterion
+    F4.2c (O-U spectrum) — explicit eigenvalues
+    F4.1l (Gaussian integral) — normalization
+    → RESULT: "Internal spectral gap is a genuine theorem."
+
+PHASE 3 (MEDIUM): Tier 2b — operator theory
+    F4.2d (Kato-Rellich) — perturbation theory
+    F4.2e (isolated eigenvalue) — gap stability
+    F4.2i (compact resolvent) — discrete spectrum
+    F4.2j (tensor spectral) — product gap
+    → RESULT: "Gap transfer and stability are genuine theorems."
+
+PHASE 4 (LONG): Tier 3 — conditional + frontier
+    F4.3e (finite-dim internal PI) — tractable!
+    F4.3f (OS for compact × finite) — tractable!
+    F4.3a-c (conditional mass gap) — honest conditional statements
+    → RESULT: "Everything cascade-specific is proven.
+               General QFT axioms are explicit assumptions."
+```
+
+### What "SOLVED" means at each phase completion:
+
+| Phase | What's genuinely proven | Honest claim |
+|-------|------------------------|--------------|
+| After Phase 1 | Algebra, group theory, zero-params | "The cascade structure is mathematically proven" |
+| After Phase 2 | + Gaussian spectral gap | "The internal space has a proven spectral gap" |
+| After Phase 3 | + Gap stability & transfer | "Mass gap holds on compact M, stable under perturbation" |
+| After Phase 4 | + Conditional infinite-volume | "Mass gap holds unconditionally on compact M; conditionally on ℝ⁴ given Yang-Mills existence" |
+
+---
+
 ## Excluded Problems (NOT in Paper F)
 
 The following were considered but excluded because they are not mathematically tractable, require empirical data, or are wrongly framed against the ToE:
@@ -390,12 +518,13 @@ The following were considered but excluded because they are not mathematically t
 | Category | Count |
 |----------|-------|
 | Already proven (Stage 0) | 17 results (206+ theorems) |
-| Paper F proven (F1.6–F3.10a + **MASS GAP SOLVED**) | 42 files (706 theorems) |
-| Tier 1 (weeks-months) | 7 problems |
-| Tier 2 (months-year) | 10 problems |
-| Tier 3 (years, open maths) | 8 problems + 18 F3.8 sub-problems (CC moonshot + QG completion) |
-| Tier 4 (moonshots) | 7 problems (F4.4 promoted to F3.8d programme) |
-| **Total mathematical programme** | **62+ items (CC programme is open-ended)** |
+| Paper F structural proofs (F1.6–F3.10a + mass gap) | 42 files (706 theorems, consistency-verified) |
+| **F4 RIGOROUS FOUNDATIONS** | |
+| → Tier 1: Algebraic (provable NOW) | 14 problems (Mathlib-backed real proofs) |
+| → Tier 2: Functional analysis (months) | 12 problems (spectral theory, measure theory) |
+| → Tier 3: Frontier (conditional + breakthrough) | 8 problems (incl. Millennium Prize) |
+| Original Tiers 1-4 (physics programme) | 32+ problems |
+| **Total mathematical programme** | **100+ items** |
 
 ---
 
