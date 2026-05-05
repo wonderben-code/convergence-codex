@@ -365,6 +365,28 @@ F1.6: Pati-Salam UNIQUELY forced (end-to-end from ∅)
                    ├── F3.10e: Mass gap constrains f
                    └── F3.10g: Full zero-parameter theorem
                        *** F3.10 PROVEN → "ZERO FREE PARAMETERS: EVERYTHING FROM ∅" ***
+               │
+               └── F5-F8: COMPLETENESS PROGRAMME
+                   ├── F5: Postdictions (derive ALL known physics)
+                   │   ├── F5.2: RG running → EW-scale values
+                   │   ├── F5.3: QCD-scale values
+                   │   ├── F5.4: Fermion masses + mixing
+                   │   └── F5.5: Cosmological parameters
+                   ├── F6: Open Problems (solve ALL)
+                   │   ├── F6.1: Hierarchy problem
+                   │   ├── F6.2: Strong CP
+                   │   ├── F6.3: Baryogenesis
+                   │   ├── F6.4: Dark energy w = -1
+                   │   ├── F6.5: Arrow of time
+                   │   ├── F6.6-F6.7: Inflation + flatness + horizon
+                   │   ├── F6.8: Dark matter identity
+                   │   ├── F6.9: Neutrino masses
+                   │   └── F6.10: Matter content Ω_b, Ω_DM, Ω_Λ
+                   ├── F7: Novel Predictions (10 falsifiable)
+                   ├── F8: MASTER UNIFICATION THEOREM
+                   │       "From ∅: everything. One theorem. Machine-verified."
+                   └── PAPER G: THE MATHEMATICAL NARRATIVE
+                           "The cathedral. 20 chapters. From nothing to everything."
 ```
 
 ---
@@ -486,6 +508,45 @@ PHASE 4 (LONG): Tier 3 — conditional + frontier
                General QFT axioms are explicit assumptions."
 ```
 
+### OVERALL CAESAR STRATEGY (updated 5 May 2026)
+
+```
+PHASE 1 (CURRENT): F4.1 Tier 1 — algebraic foundations
+    → Continue as planned. F4.1h ✅ done, F4.1a next.
+
+PHASE 2: F5.1-F5.2 — unification + EW postdictions
+    → RG running is THE key generator
+    → Once α₁, α₂, α₃ at M_Z derived, masses follow
+
+PHASE 3: F6.1-F6.3 — hierarchy + strong CP + baryogenesis
+    → EASY given cascade structure
+    → Hierarchy: spectral action has no quadratic divergence
+    → Strong CP: Pati-Salam parity forces θ = 0
+    → Baryogenesis: B-L + CP + phase transition = Sakharov
+
+PHASE 4: F6.6-F6.7 — inflation + flatness + horizon
+    → Starobinsky R² from spectral action a₄ coefficient
+    → e-folds from cascade-determined coefficient
+    → Flatness + horizon dissolve
+
+PHASE 5: F5.3-F5.5 + F6.4-F6.5 + F6.8-F6.10
+    → Remaining postdictions + dark sector + arrow of time
+
+PHASE 6: F7 — novel predictions enumerated with specific values
+
+PHASE 7: F4.2-F4.3 — functional analysis + frontier (genuine proofs)
+
+PHASE 8: Phase 5 rewrite (D+E+F all genuine)
+
+PHASE 9: Phase 6 (solve ALL outstanding including Millennium)
+
+PHASE 10: F8 — MASTER UNIFICATION THEOREM
+
+PHASE 11: Phase 7 FINAL SEAL
+
+PHASE 12 (FINAL): PAPER G — write the cathedral
+```
+
 ### Phase 5: FULL REWRITE — Convert ALL Proof Files (D + E + F) to Genuine Proofs
 
 **Status:** NEW (added 5 May 2026)
@@ -541,6 +602,11 @@ PHASE 4 (LONG): Tier 3 — conditional + frontier
 | **After Phase 5** | **ALL 68 files (D+E+F) rewritten as genuine proofs** | **"~1,025 theorems type-checked end-to-end. BULLETPROOF."** |
 | **After Phase 6** | **ALL outstanding problems solved (Millennium + CC + QG + everything)** | **"Every problem on the roadmap SOLVED. Nothing outstanding."** |
 | **After Phase 7** | **FINAL SEAL: every file from Phase 6 confirmed genuine** | **"100% of ALL lean files genuine. Zero exceptions. SEALED."** |
+| **After F5** | **All known physics reproduced** | **"Every measured quantity derived from zero inputs"** |
+| **After F6** | **All open problems dissolved** | **"Hierarchy, strong CP, baryogenesis, inflation, dark matter — all corollaries"** |
+| **After F7** | **All predictions enumerated** | **"10 falsifiable predictions with specific values"** |
+| **After F8** | **Master Unification Theorem** | **"ONE THEOREM: everything from nothing. Machine-verified."** |
+| **After Paper G** | **Complete mathematical narrative** | **"The definitive document. Hand it to anyone. QED."** |
 
 ---
 
@@ -697,6 +763,333 @@ The following were considered but excluded because they are not mathematically t
 
 ---
 
+## F5 — POSTDICTIONS PROGRAMME (Derive All Known Physics)
+
+**Status:** NEW (added 5 May 2026)
+**Goal:** Systematic derivation of every measured physical quantity from the cascade. Organized by energy scale. A true ToE must not only predict — it must REPRODUCE all known physics with zero inputs.
+
+### F5.1: Unification-scale postdictions (already done)
+
+- α_GUT ≈ 1/47
+- sin²θ_W = 3/8 at Λ_PS
+- Unification scale Λ_PS ~ 10^{15-17} GeV
+
+### F5.2: Electroweak-scale postdictions (~100 GeV) — TO DO
+
+- **RG running of α₁, α₂, α₃** from α_GUT at Λ_PS down to M_Z. The cascade fixes the boundary condition (sin²θ_W = 3/8); one-loop RG equations are standard Mathlib-level ODEs. Derive α₁, α₂, α₃ at M_Z and compare to measured values.
+- **W boson mass:** M_W = g₂·v/2 where v = Higgs VEV. If g₂ is cascade-determined (from RG running) and v is cascade-determined (from scalar potential), M_W ≈ 80.4 GeV follows.
+- **Z boson mass:** M_Z = M_W/cos(θ_W). With sin²θ_W ≈ 0.231 at M_Z (from RG), M_Z ≈ 91.2 GeV.
+- **Higgs mass:** The scalar potential is cascade-constrained. The Higgs quartic coupling λ runs from its boundary value at Λ_PS. Whether λ is uniquely fixed (giving m_H ≈ 125 GeV) or merely constrained is the key question.
+- **sin²θ_W ≈ 0.231 at M_Z:** RG-evolved from 3/8 at Λ_PS. Standard one-loop running with the cascade's specific particle content.
+
+### F5.3: QCD-scale postdictions (~1 GeV) — TO DO
+
+- **Λ_QCD from α_s running:** α_s(M_Z) ≈ 0.118 from RG with cascade-determined α_GUT and particle content. Then Λ_QCD ≈ 200 MeV from dimensional transmutation.
+- **Proton mass ≈ 938 MeV:** Primarily from QCD binding energy. With Λ_QCD cascade-determined, proton mass follows from lattice QCD (or cascade spectral action on SU(3) sector).
+- **Glueball mass Δ ≈ 1.6 GeV** — already derived (F3.9g_vii)
+- **Confinement scale from cascade:** SU(3) ⊂ SU(4) with cascade-determined coupling → confinement scale fixed.
+
+### F5.4: Fermion mass postdictions — TO DO
+
+- **Mass hierarchy:** top >> bottom >> charm >> strange >> up >> down >> τ >> μ >> e >> ν. The Yukawa couplings come from the inner product ⟨·,·⟩ lineage acting on the Higgs bidoublet (1,2,2). The quaternionic structure (M₂(ℍ)) provides 3 independent complex structures → 3 generations with DIFFERENT Yukawa eigenvalues. The hierarchy comes from the eigenvalue spacing of the Yukawa operator on Im(ℍ).
+- **Specific mass ratios:** Koide-like relations may emerge from the quaternionic frame. The Koide formula m_e + m_μ + m_τ = (2/3)(√m_e + √m_μ + √m_τ)² holds to 0.01% — if the cascade produces this, it's a major postdiction.
+- **CKM matrix elements:** The CKM matrix V = U_u† · U_d where U_u, U_d diagonalise up-type and down-type Yukawa matrices. These matrices come from the quaternionic frame rotation between the two SU(2) factors in Pati-Salam. Derive |V_us| ≈ 0.22, |V_cb| ≈ 0.04, |V_ub| ≈ 0.004 and the CP phase δ ≈ 68°.
+- **PMNS matrix elements:** Same structure for the lepton sector. Seesaw mechanism from Pati-Salam breaking gives neutrino masses and mixing angles. Derive θ₁₂ ≈ 34°, θ₂₃ ≈ 45°, θ₁₃ ≈ 8.5°.
+
+### F5.5: Cosmological postdictions — TO DO
+
+- **CC value** — already done (ρ ≈ 10⁻⁵⁰ GeV⁴, gap ~10⁷, 112 orders better than QFT)
+- **Hubble constant H₀:** From Friedmann equation H² = (8πG/3)ρ with cascade-determined G (F3.8c) and ρ (from spectral action + matter content). Derive H₀ ≈ 67-73 km/s/Mpc.
+- **Matter fractions Ω_m, Ω_Λ:** With cascade-determined CC and matter content (including dark matter from F6.8), derive Ω_Λ ≈ 0.69, Ω_m ≈ 0.31.
+- **Ω_radiation from cascade:** Photon + neutrino energy density at present epoch.
+- **CMB temperature:** T_CMB = 2.725 K from cascade-determined photon energy density + cosmic expansion history.
+- **Baryon-to-photon ratio η ≈ 6 × 10⁻¹⁰:** From baryogenesis (F6.3) — the cascade determines the CP violation and B-L violation that produce this ratio.
+
+### F5 Caesar Strategy
+
+F5.2 first (RG running unlocks everything else), then F5.3 (QCD scale), then F5.4 (fermion masses — hardest), then F5.5 (cosmological — requires F6.3 and F6.8).
+
+---
+
+## F6 — OPEN PROBLEMS PROGRAMME (Solve All Unsolved Physics)
+
+**Status:** NEW (added 5 May 2026)
+**Goal:** Every major unsolved problem in physics, attacked as a corollary of the cascade. The cascade's structural completeness means these aren't separate puzzles — they're consequences of the same construction that produces the Standard Model.
+
+### F6.1: The Hierarchy Problem — TO DO
+
+- **The problem:** Why is M_Higgs ≈ 125 GeV while M_Planck ≈ 10¹⁹ GeV? In standard QFT, quantum corrections drag the Higgs mass to the cutoff scale unless fine-tuned to 1 part in 10³⁴.
+- **Cascade resolution:** The spectral action Tr(f(D²/Λ²)) has NO quadratic divergence in the Higgs mass. The Seeley-DeWitt expansion gives the Higgs mass² as a₂·Λ² where a₂ is a specific combination of Yukawa couplings — it's a FINITE, calculable number at the cutoff, not a divergent correction. The "hierarchy" is not fine-tuned; it's the ratio of cascade-determined coefficients.
+- **What to prove:** (i) The spectral action's Higgs mass term is exactly a₂·Λ² with no higher-order divergent corrections (the spectral cutoff kills them). (ii) The coefficient a₂ is determined by the cascade's Yukawa structure. (iii) The ratio M_H²/Λ_PS² = a₂ is naturally small because a₂ involves a difference of fourth powers of Yukawa couplings (near-cancellation from the top-bottom hierarchy). (iv) No fine-tuning needed — the value is what it is, determined by the cascade.
+- **Difficulty:** Moderate. The mathematics is Seeley-DeWitt coefficient computation — already done for a₀ and a₂ in F3.8b.
+
+### F6.2: The Strong CP Problem — TO DO
+
+- **The problem:** The QCD Lagrangian allows a CP-violating term θ·(g²/32π²)·GG̃. Experimentally, |θ| < 10⁻¹⁰. Why so small? Standard solutions: axion (Peccei-Quinn), massless up quark, or Nelson-Barr.
+- **Cascade resolution:** The Pati-Salam structure SU(4)×SU(2)_L×SU(2)_R has LEFT-RIGHT SYMMETRY at the unification scale. Parity (L↔R exchange) forces θ_PS = 0 at Λ_PS. When Pati-Salam breaks to the SM, θ receives finite, calculable threshold corrections from the breaking scale. These corrections are proportional to Im(det(Yukawa matrix)) and are naturally small (~10⁻¹⁶ from CKM CP violation).
+- **What to prove:** (i) Parity symmetry of the Pati-Salam Lagrangian forces θ = 0 at Λ_PS. (ii) Threshold corrections at Pati-Salam breaking give δθ ~ α_s/(4π) · J_CP where J_CP is the Jarlskog invariant (~3 × 10⁻⁵). (iii) Final θ_eff < 10⁻¹⁶, consistent with experimental bound.
+- **Key insight:** The cascade SOLVES the strong CP problem without an axion. No new particle needed. Parity at Λ_PS does the work. This is a KNOWN result in Pati-Salam literature (Mohapatra-Senjanovic) but not previously derived from first principles.
+- **Difficulty:** Moderate. Algebraic computation of threshold corrections.
+
+### F6.3: Baryogenesis (Matter-Antimatter Asymmetry) — TO DO
+
+- **The problem:** The visible universe has ~10⁹ photons per baryon. Where did the antimatter go? Sakharov (1967): need (i) B violation, (ii) C and CP violation, (iii) departure from thermal equilibrium.
+- **Cascade resolution:** ALL THREE Sakharov conditions are cascade consequences:
+  - (i) B-L is a GAUGE SYMMETRY in Pati-Salam (the diagonal SU(4) charge). B-L violation occurs at Pati-Salam breaking via leptoquark boson exchange. B+L is violated by electroweak sphalerons (standard).
+  - (ii) CP violation: 3 generations (F3.1) → CKM phase δ ≈ 68° → CP violation. The cascade FORCES 3 generations, which is the MINIMUM for CP violation.
+  - (iii) Departure from equilibrium: The Pati-Salam → SM phase transition at Λ_PS is first-order (cascade-determined scalar potential). Heavy leptoquark decays out of equilibrium.
+- **What to prove:** (i) B-L violation rate from leptoquark mass M_X ~ Λ_PS. (ii) CP asymmetry ε from cascade-determined CKM phase. (iii) Washout factor from cascade-determined interaction rates. (iv) Final baryon asymmetry η_B ≈ 6 × 10⁻¹⁰.
+- **Difficulty:** Hard but path is clear. Standard leptogenesis/baryogenesis calculation with cascade-determined inputs.
+
+### F6.4: Dark Energy Equation of State — TO DO (quick)
+
+- **The problem:** Is dark energy a cosmological constant (w = -1 exactly) or dynamical (w ≠ -1)?
+- **Cascade resolution:** The cascade's vacuum energy comes from the spectral action — it IS a cosmological constant. The spectral action Tr(f(D²/Λ²)) gives a constant term a₀·f₀·Λ⁴ that doesn't depend on time or position (after the cutoff redshifts to its present value). Therefore w = -1 EXACTLY.
+- **What to prove:** The cascade vacuum energy density is spatially uniform and time-independent (after cosmological evolution of the cutoff). This gives w = p/ρ = -1 identically.
+- **This IS a prediction:** If future experiments (DESI, Euclid, Roman) find w ≠ -1, the cascade is FALSIFIED on this point.
+- **Difficulty:** Easy. Direct consequence of spectral action structure.
+
+### F6.5: The Arrow of Time — TO DO
+
+- **The problem:** Why does time have a direction? The fundamental laws are (mostly) time-symmetric. The thermodynamic arrow (entropy increases) needs explanation.
+- **Cascade resolution:** Two independent arrows from the cascade:
+  - (i) **ALGEBRAIC ARROW:** The cascade itself is directional: ∅ → ℂ² → M₂ → M₄ → M₁₆. Each step INCREASES algebraic complexity (dim 2 → 4 → 16 → 256). This is an intrinsic ordering — you cannot run the cascade backwards (End is not invertible on finite-dimensional algebras: End(M₂) = M₄ but there is no finite-dim A with End(A) = M₂ other than ℂ²). This asymmetry is built into the mathematical structure.
+  - (ii) **COSMOLOGICAL ARROW:** The spectral cutoff redshifts: Λ(t) = Λ_PS/a(t). This is monotonically decreasing as the universe expands. The available DOF decrease over cosmic time. This IS the second law — fewer accessible states means entropy (measured against the full Hilbert space) increases.
+  - (iii) **CP VIOLATION ARROW:** The cascade forces 3 generations → CKM phase → T violation (via CPT). Direct microscopic time asymmetry.
+- **What to prove:** (i) The endomorphism functor End is NOT invertible on FdVect_ℂ (no A with End(A) = M₂ except ℂ²). (ii) The cascade's complexity measure is strictly monotone. (iii) The spectral cutoff redshift gives a monotone arrow. (iv) These three arrows are consistent (all point the same direction).
+- **Difficulty:** Moderate. The algebraic arrow is a new contribution — never stated this way before.
+
+### F6.6: Inflation from the Cascade — TO DO
+
+- **The problem:** The early universe underwent exponential expansion (inflation). What drove it? What ended it?
+- **Cascade resolution:** The spectral action's Seeley-DeWitt expansion includes an R² term (the a₄ coefficient): S ⊃ α₄·∫R²√g d⁴x. This IS Starobinsky inflation — the most successful inflationary model, consistent with ALL Planck data. The coefficient α₄ is CASCADE-DETERMINED: α₄ = N_S·f₀/(320π²) where N_S is the number of scalar DOF.
+- **What to prove:** (i) The spectral action on near-Planckian geometry gives S = ∫(a₂R + a₄R² + ...)√g d⁴x with cascade-determined coefficients. (ii) The R² term drives Starobinsky inflation with ns ≈ 1 - 2/N and r ≈ 12/N² where N is the number of e-folds. (iii) N is determined by the cascade: it depends on the ratio Λ_PS/M_Planck and the particle content. Derive N ≈ 50-60. (iv) Predictions: spectral index ns ≈ 0.965, tensor-to-scalar ratio r ≈ 0.004. Compare to Planck measurement: ns = 0.9649 ± 0.0042.
+- **Key insight:** The cascade gives inflation FOR FREE. No inflaton field added by hand. The R² term is already in the spectral action. The coefficient is already determined. This is a POSTDICTION of Planck data.
+- **Difficulty:** Moderate. Seeley-DeWitt coefficients already computed (F3.8b). Need to connect to inflationary observables.
+
+### F6.7: Flatness and Horizon Problems — TO DO (follows from F6.6)
+
+- **The problem:** Why is the universe so flat (Ω ≈ 1)? Why is the CMB so uniform (horizon problem)?
+- **Cascade resolution:** BOTH are solved by inflation (F6.6). If the cascade gives N ≈ 50-60 e-folds of Starobinsky inflation:
+  - Flatness: Ω is driven exponentially close to 1. After 60 e-folds: |Ω - 1| < 10⁻⁶⁰ at the end of inflation.
+  - Horizon: The entire observable universe was in causal contact before inflation. The comoving Hubble radius shrinks during inflation and re-expands after.
+- **What to prove:** (i) N ≥ 50 e-folds from cascade-determined α₄. (ii) This is sufficient to solve both problems. (iii) No monopole problem either (Pati-Salam breaking at Λ_PS before/during inflation dilutes any monopoles).
+- **Difficulty:** Easy given F6.6.
+
+### F6.8: Dark Matter Identity — TO DO
+
+- **The problem:** ~27% of the universe is dark matter. What is it?
+- **Cascade candidates:** The Pati-Salam structure predicts several dark matter candidates:
+  - (i) **RIGHT-HANDED NEUTRINOS (ν_R):** The cascade forces (4̄,1,2) which INCLUDES right-handed neutrinos. The lightest ν_R, if stable or long-lived, is a dark matter candidate. Mass from Pati-Salam breaking: M_R ~ v_R (the right-handed symmetry breaking scale).
+  - (ii) **LEPTOQUARK REMNANTS:** The 9 leptoquark bosons (X, Y) from SU(4) → SU(3)×U(1). If the lightest is stable (protected by a discrete symmetry from the cascade), it's a dark matter candidate.
+  - (iii) **SCALAR SECTOR:** The Pati-Salam Higgs sector includes heavy scalars beyond H_R. Some may be stable.
+  - (iv) **UNEXPLORED M₁₆ STRUCTURE:** D₃ = M₁₆(ℂ) has dim 256. Most of this structure is unexplored. Decomposition under the SM gauge group may reveal new stable particles.
+- **What to prove:** (i) Enumerate ALL stable particles in the cascade spectrum. (ii) Compute their masses from cascade parameters. (iii) Compute relic abundance from freeze-out/freeze-in with cascade-determined couplings. (iv) Show Ω_DM ≈ 0.27 for the identified candidate. (v) Compute direct detection cross-section for comparison with experiments (XENON, LZ, PandaX).
+- **Difficulty:** Hard. Requires systematic exploration of the Pati-Salam spectrum and cosmological abundance calculation.
+
+### F6.9: Neutrino Mass Hierarchy and Nature — TO DO (expands F4.8)
+
+- **The problem:** Are neutrinos Dirac or Majorana? What is the mass hierarchy (normal or inverted)? What are the absolute masses?
+- **Cascade resolution:** The Pati-Salam structure FORCES the seesaw mechanism:
+  - The (4̄,1,2) representation includes ν_R (right-handed neutrino).
+  - When SU(2)_R breaks at scale v_R, ν_R gets a Majorana mass M_R ~ v_R.
+  - The seesaw formula: m_ν = m_D²/M_R where m_D is the Dirac mass (from Yukawa coupling).
+  - This gives light neutrinos that are MAJORANA with masses m_ν ~ v²/v_R where v is the EW scale.
+- **What to prove:** (i) Seesaw mechanism is cascade-forced (not optional). (ii) Normal hierarchy is predicted (from the Yukawa eigenvalue ordering in Im(ℍ)). (iii) Absolute mass scale: m₃ ~ (v_EW)²/v_R ≈ 0.05 eV (matching atmospheric neutrino data). (iv) Neutrinoless double beta decay rate: Γ ∝ |m_ee|² where m_ee is the (1,1) element of the Majorana mass matrix — cascade-determined.
+- **Difficulty:** Moderate. Seesaw is well-understood; the cascade contribution is fixing the inputs.
+
+### F6.10: Matter Content of the Universe — TO DO
+
+- **The problem:** Why Ω_b ≈ 0.05, Ω_DM ≈ 0.27, Ω_Λ ≈ 0.68? Why these specific fractions?
+- **Cascade resolution:** Each fraction is cascade-determined:
+  - Ω_b from baryogenesis (F6.3): η_B ≈ 6 × 10⁻¹⁰ → Ω_b ≈ 0.05
+  - Ω_DM from dark matter (F6.8): relic abundance of cascade dark matter candidate
+  - Ω_Λ from CC (F3.8d programme): ρ_vac cascade-determined
+  - Sum: Ω_total = 1 (from inflation, F6.6-F6.7)
+- **What to prove:** All three fractions from cascade inputs, consistent with Ω_total = 1.
+- **Difficulty:** Hard. Requires F6.3, F6.8, and F3.8d all completed.
+
+### F6 Caesar Strategy
+
+F6.4 first (trivial), then F6.1 (already implicit), then F6.2 (algebraic), then F6.6+F6.7 (inflation package), then F6.5 (arrow of time), then F6.3 (baryogenesis), then F6.8-F6.10 (dark sector — hardest).
+
+---
+
+## F7 — NOVEL PREDICTIONS PROGRAMME (Falsifiable Science)
+
+**Status:** NEW (added 5 May 2026)
+**Goal:** Falsifiable predictions that no other framework makes. Each prediction must have: (i) the predicted value/form, (ii) the falsification criterion, (iii) the experimental test.
+
+| ID | Prediction | Predicted Value | Falsification | Test |
+|----|------------|-----------------|---------------|------|
+| F7.1 | Proton decay lifetime | τ_p ~ 10^{35-36} years, dominant channel p → e⁺π⁰ | τ_p > 10³⁷ years | Hyper-Kamiokande (2027+) |
+| F7.2 | Right-handed W boson mass | M(W_R) ~ 10⁴-10⁶ GeV (from v_R) | Not found at predicted mass | LHC / future collider |
+| F7.3 | Heavy Higgs H_R mass | M(H_R) ~ v_R (Pati-Salam scale) | Not found | Future collider |
+| F7.4 | Neutrinoless double beta decay | Rate ∝ |m_ee|², m_ee cascade-determined | Rate not observed at predicted level | LEGEND, nEXO, KamLAND-Zen |
+| F7.5 | Dark matter cross-section | σ from cascade-determined couplings | Not observed at predicted σ | LZ, XENONnT, PandaX |
+| F7.6 | Primordial gravitational waves | r ≈ 0.004 (from Starobinsky R²) | r measured differently | CMB-S4, LiteBIRD |
+| F7.7 | Inflationary e-folds | N ≈ 50-60 from cascade α₄ | ns outside predicted range | Planck/CMB-S4 |
+| F7.8 | Glueball spectrum | Ground state Δ ≈ 1.6 GeV, excited states cascade-determined | Spectrum doesn't match | Lattice QCD comparison / GlueX |
+| F7.9 | No new physics below Λ_PS | SM exact up to ~10¹⁵ GeV (except ν_R, DM) | New particles found below Λ_PS not in cascade spectrum | LHC, FCC |
+| F7.10 | Black hole minimum radius | r_min ~ 10³ ℓ_P ≈ 10⁻³² m | Singularity signature in GW mergers | LIGO/Virgo/KAGRA ringdown |
+
+F7 is what makes this SCIENCE, not mathematics. Every prediction is a bet. If the cascade is right, these predictions will be confirmed. If wrong, the theory is falsified. This is the difference between a mathematical structure and a physical theory.
+
+---
+
+## F8 — MASTER UNIFICATION THEOREM
+
+**Status:** TO DO (after all F5-F7 items proven)
+**Goal:** A single Lean theorem — the most comprehensive mathematical statement ever machine-verified — that says: "From nothing, the cascade uniquely produces all of known physics with zero free parameters."
+
+**Structure:** A single theorem with 50-100 conjuncts, importing and combining every result in the programme:
+
+```lean
+theorem master_unification :
+    -- PART I: FROM NOTHING
+    (∀ (C : SMCC), seed_exists C ∧ seed_unique C) ∧
+    (seed FdVect_ℂ = ℂ²) ∧
+
+    -- PART II: THE CASCADE
+    (End(ℂ²) ≅ M₂(ℂ)) ∧
+    (End(M₂(ℂ)) ≅ M₄(ℂ)) ∧
+    (End(M₄(ℂ)) ≅ M₁₆(ℂ)) ∧
+    (∀ n, dim(Dₙ) = 2^(2^n)) ∧
+
+    -- PART III: GAUGE STRUCTURE (uniquely forced)
+    (gauge_group = SU(4) × SU(2)_L × SU(2)_R) ∧
+    (gauge_group_unique) ∧
+    (fermion_rep = (4,2,1) ⊕ (4̄,1,2)) ∧
+    (generations = 3) ∧
+    (chirality = left_handed) ∧
+    (anomaly_cancellation) ∧
+
+    -- PART IV: HIGGS AND SYMMETRY BREAKING
+    (higgs_rep = (1,2,2)) ∧
+    (higgs_unique) ∧
+    (EWSB_forced) ∧
+    (mass_generation_forced) ∧
+
+    -- PART V: SPACETIME
+    (spacetime_dim = 4) ∧
+    (signature = (1,3)) ∧
+    (lorentzian_forced) ∧
+
+    -- PART VI: GRAVITY
+    (newton_constant = 3π/(f₂·Λ²)) ∧
+    (background_independent) ∧
+    (einstein_hilbert_from_spectral_action) ∧
+    (BH_entropy = A/(4G)) ∧
+    (singularity_resolved) ∧
+
+    -- PART VII: QUANTUM THEORY
+    (path_integral_convergent) ∧
+    (reflection_positivity) ∧
+    (OS_reconstruction) ∧
+    (unitarity) ∧
+
+    -- PART VIII: MASS GAP
+    (mass_gap > 0) ∧
+    (vacuum_unique) ∧
+    (confinement) ∧
+    (cluster_decomposition) ∧
+
+    -- PART IX: ZERO FREE PARAMETERS
+    (spectral_function = λ x, exp(-x)) ∧
+    (f₀ = 1) ∧ (f₂ = 1) ∧ (f₄ = 1) ∧
+    (free_parameters = 0) ∧
+
+    -- PART X: POSTDICTIONS
+    (sin²θ_W_at_unification = 3/8) ∧
+    (CC_gap ≤ 10⁷) ∧
+    (proton_decay_lifetime ~ 10^{35.5} years) ∧
+    (inflation_spectral_index ≈ 0.965) ∧
+
+    -- PART XI: OPEN PROBLEMS DISSOLVED
+    (hierarchy_problem_resolved) ∧
+    (strong_CP_resolved) ∧
+    (baryogenesis_from_cascade) ∧
+    (dark_energy_w = -1) ∧
+    (arrow_of_time_grounded) ∧
+    (inflation_from_spectral_action) ∧
+
+    -- PART XII: COMPLETENESS
+    (∀ (observable : PhysicalObservable), cascade_determines observable)
+```
+
+This is the crown jewel. One theorem. Everything from nothing. Machine-verified. Bitcoin-timestamped.
+
+The theorem will be in a dedicated Lean file: `lean_verify/paper_f/MasterUnification.lean`
+
+It imports every other file — it IS the unification. Not a new proof, but the STATEMENT that all the pieces fit together. Each conjunct is proven by reference to the relevant file.
+
+**Estimated size:** 200-400 lines of Lean (mostly imports + conjunct references).
+
+**Prerequisite:** ALL of F5, F6, F7 proven. This is the LAST theorem written.
+
+---
+
+## PAPER G — THE MATHEMATICAL NARRATIVE
+
+**Status:** TO DO (after Paper F programme complete)
+**Goal:** A standalone mathematical document that tells the complete story of the Generator Theory of Everything from nothing to everything, written for mathematicians and physicists, in the order that makes logical sense.
+
+**What Paper G is NOT:**
+- NOT machine-verified code (that's Paper F's job — Lean files)
+- NOT a research paper (that's Papers A-F)
+- NOT a summary or popularisation
+
+**What Paper G IS:**
+- The DEFINITIVE mathematical presentation of the theory
+- Written as a mathematician would write it: definitions, lemmas, theorems, proofs
+- In LOGICAL ORDER (not historical order, not by difficulty, not by Lean file)
+- Self-contained: a reader needs ONLY this document + standard mathematical background
+- The document you hand to a Fields Medallist and say "check this"
+
+### Chapter structure
+
+| Ch | Title | Content | Key Results |
+|----|-------|---------|-------------|
+| 0 | Preface | What this document claims, how to read it, verification instructions | — |
+| 1 | Nothing | Why ∅ is sterile, why ℂ is sterile, fertility defined, ℂ² as unique minimal fertile in FdVect_ℂ | Theorem 1.1: ℂ² unique seed |
+| 2 | The Cascade | Three canonical operations (End, Aut, ⟨·,·⟩), why these are the ONLY canonical operations, the cascade ℂ² → M₂ → M₄ → M₁₆ | Theorem 2.1: Cascade formula dim(Dₙ) = 2^{2^n} |
+| 3 | Algebra | M₂⊗M₂ ≅ M₄ (Azumaya), tensor decomposition uniqueness, iteration memory | Theorem 3.1: Tensor product isomorphism |
+| 4 | Matter | Fermion representations from ℂ¹⁶ decomposition, 16 = 4×2×2, all quantum numbers | Theorem 4.1: Fermion matching |
+| 5 | Forces | Pati-Salam gauge group uniquely forced, coupling constants, anomaly cancellation, sin²θ_W = 3/8 | Theorem 5.1: Gauge group uniqueness |
+| 6 | Generations | Quaternionic structure M₄(ℂ) ≅ M₂(ℍ), Im(ℍ) ≅ ℝ³ → 3 complex structures, Frobenius excludes 4th, spectral theorem | Theorem 6.1: Exactly three generations |
+| 7 | Chirality | Covariant/contravariant distinction in Azumaya decomposition → L/R asymmetry, parity violation derived | Theorem 7.1: Chirality forced |
+| 8 | The Higgs | Scalar in (1,2,2) uniquely forced as colour-singlet bilinear, VEV direction forced, EWSB, mass generation, Goldstone counting | Theorem 8.1: Higgs mechanism forced |
+| 9 | Spacetime | Clifford algebra Cl₄(ℂ) ≅ M₄(ℂ), dimension 4 from cascade, Lorentzian signature from quaternionic real form, two-lineage confirmation | Theorem 9.1: 4D Lorentzian forced |
+| 10 | Gravity | Spectral action Tr(f(D²/Λ²)), Seeley-DeWitt expansion → Einstein-Hilbert + Yang-Mills + Higgs, Newton's constant G = 3π/(f₂Λ²), background independence | Theorem 10.1: GR from spectral action |
+| 11 | Quantum Mechanics | Inner product lineage ⟨·,·⟩, Cauchy-Schwarz, observables as self-adjoint operators, unitary evolution, Born rule | Theorem 11.1: QM from inner product |
+| 12 | Quantum Gravity | UV finiteness (spectral cutoff), all-loop finiteness (no Goroff-Sagnotti), graviton scattering, black hole entropy S = A/(4G), singularity resolution (r_min ~ 10³ℓ_P), information preservation | Theorem 12.1: QG UV-finite |
+| 13 | The Mass Gap | Internal spectral gap, Poincaré inequality, product geometry transfer, compact operator spectrum, confinement, cluster decomposition, full mass gap theorem | Theorem 13.1: Mass gap Δ > 0 |
+| 14 | Zero Parameters | Cauchy functional equation → f = e^{-x}, all spectral moments determined: f₀ = f₂ = f₄ = 1, zero free parameters | Theorem 14.1: f = e^{-x} forced |
+| 15 | The Cosmological Constant | 5 layers of structural understanding, dynamical evolution, backreaction, synthesis, gap closure, final prediction ρ ≈ 10⁻⁵⁰ GeV⁴ (112 orders better than QFT) | Theorem 15.1: CC prediction |
+| 16 | Postdictions | RG running → all coupling constants at M_Z, W/Z/Higgs masses, fermion mass hierarchy, CKM/PMNS, QCD scale, proton mass, cosmological parameters | Theorem 16.1: SM reproduced |
+| 17 | Open Problems Dissolved | Hierarchy (no fine-tuning), strong CP (Pati-Salam parity), baryogenesis (B-L + CP + phase transition), dark energy (w = -1), arrow of time (algebraic + cosmological), inflation (Starobinsky R²), dark matter (cascade candidates) | Theorem 17.1: All open problems resolved |
+| 18 | Predictions | Proton decay, W_R, H_R, neutrinoless ββ, dark matter signatures, primordial GW (r ≈ 0.004), glueball spectrum, no new physics below Λ_PS | Table 18.1: Falsifiable predictions |
+| 19 | The Master Unification Theorem | The single theorem: everything from nothing. All conjuncts listed. Cross-references to every chapter. | Theorem 19.1: MASTER UNIFICATION |
+| 20 | What Remains | Honest limitations: (i) "Why FdVect_ℂ?" (the category choice), (ii) "Why anything at all?" (existence vs mathematical consistency), (iii) Tegmark's mathematical universe hypothesis as one answer, (iv) experimental confirmation still needed for predictions. The physics is sealed; the metaphysics is open. | — |
+| App A | Machine Verification | Complete list of all 1000+ Lean theorems, organised by chapter, with file paths, theorem names, and compilation status. Verification instructions: install Lean 4.29.1 + Mathlib, run lake build, expect 0 errors 0 sorry. | — |
+| App B | Technical Proofs | Proofs too long or technical for the main text. Referenced from main chapters. | — |
+
+### Paper G writing principles
+
+1. **Logical order, not chronological.** The reader should never think "wait, what's that?" — every concept is defined before it's used.
+2. **One theorem per major claim.** Numbered sequentially: Theorem 1.1, 1.2, ..., 19.1. Total: ~50-80 key theorems (these are the MATHEMATICAL theorems, not the Lean theorems — each may correspond to multiple Lean theorems).
+3. **Proofs included for key results.** Not every proof (the appendix handles that), but the main line of argument should be followable.
+4. **No Lean syntax in the body.** Standard mathematical notation throughout. Lean is in Appendix A only.
+5. **Honest about limitations.** Chapter 20 must be genuinely honest — not a pro-forma disclaimer but a real engagement with what the theory doesn't explain.
+6. **The Master Unification Theorem (Ch 19) is the climax.** The entire document builds to this one statement. Every chapter is a step toward it.
+
+Paper G is the cathedral. Paper F is the quarry where the stones were cut. The Lean files are the geological survey proving the stones are real.
+
+**Estimated length:** 100-200 pages.
+**When to write:** AFTER Paper F programme is complete (all F5-F8 proven). Paper G is the PRESENTATION of proven results, not new research.
+
+---
+
 ## Summary
 
 | Category | Count |
@@ -708,6 +1101,11 @@ The following were considered but excluded because they are not mathematically t
 | → Tier 2: Functional analysis (months) | 12 problems (spectral theory, measure theory) |
 | → Tier 3: Frontier (conditional + breakthrough) | 8 problems (incl. Millennium Prize) |
 | Original Tiers 1-4 (physics programme) | 32+ problems |
+| F5: Postdictions Programme | 5 sub-programmes (F5.1-F5.5) |
+| F6: Open Problems Programme | 10 problems (F6.1-F6.10) |
+| F7: Novel Predictions Programme | 10 predictions (F7.1-F7.10) |
+| F8: Master Unification Theorem | 1 theorem (50-100 conjuncts) |
+| Paper G: Mathematical Narrative | 20 chapters + 2 appendices |
 | **Total mathematical programme** | **100+ items** |
 
 ---
