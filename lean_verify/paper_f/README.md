@@ -40,6 +40,7 @@ Files are named `F{tier}_{number}_{short_name}.lean` matching the roadmap items.
 | `F3_8g_HigherLoopCorrections.lean` | F3.8g — Higher-loop corrections: all-loop UV finiteness, Goroff-Sagnotti resolved | 17 | PROVEN |
 | `F3_8i_BlackHoleEntropy.lean` | F3.8i — Black hole entropy + singularity resolution: S = A/(4G) derived, curvature bounded | 16 | PROVEN |
 | `F3_8k_NonPerturbativeQuantisation.lean` | F3.8k — Non-perturbative quantisation: path integral well-defined, OS reconstruction, QG COMPLETE | 15 | PROVEN |
+| `F3_9e_AnomalyCancellation.lean` | F3.9e — Anomaly cancellation: SU(4)³, SU(2)³, mixed, gauge-grav, Witten — all zero, forced by cascade | 16 | PROVEN |
 
 ## Relationship to Paper E Proofs
 

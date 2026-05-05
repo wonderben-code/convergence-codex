@@ -2,9 +2,9 @@
 
 **Author:** Mark E. Mala (Ekram Alam)
 **Status:** LIVING DOCUMENT (updated as results are proven)
-**Version:** 3.0 (5 May 2026)
+**Version:** 3.1 (5 May 2026)
 **Repository:** github.com/wonderben-code/convergence-codex
-**Builds on:** Papers D + E (233 theorems) + Paper F results (481 theorems)
+**Builds on:** Papers D + E (233 theorems) + Paper F results (497 theorems)
 **Bitcoin provenance:** Each addition committed + pushed for timestamping
 
 ---
@@ -87,13 +87,13 @@ This chapter tells that complete story — from the universal construction throu
 
 0.7. **Spacetime — Derived, Not Assumed** — 4D Lorentzian, unconditional (F1.7+F1.7b+F1.7c, 61 theorems)
 
-0.8. **Quantum Gravity — Unified** — Spectral triple, graviton, Newton's constant, full Connes NCG, background independence, graviton scattering, all-loop UV finiteness, black hole entropy + singularity resolution, non-perturbative quantisation (F3.8a–k, 164 theorems) — **QG COMPLETION: ALL 10 ITEMS PROVEN**
+0.8. **Quantum Gravity — Unified** — Spectral triple, graviton, Newton's constant, full Connes NCG, background independence, graviton scattering, all-loop UV finiteness, black hole entropy + singularity resolution, non-perturbative quantisation (F3.8a–k, 164 theorems) — **QG COMPLETION: ALL 10 ITEMS PROVEN**. Rigorous closure programme begun: anomaly cancellation (F3.9e, 16 theorems).
 
 0.9. **The Cosmological Constant — A Convergent Series** — 5 layers + full Track C (additive + time evolution + backreaction + synthesis) + gap closure, 131 theorems
 
 0.10. **Beyond FdVect_ℂ — Other Seeds, Other Content** — The construction is not limited to one category. Cartesian closed categories give classical computation (Scott D∞, F2.6). Linear categories may give anyonic/topological physics (F3.7). The universality metatheorem (F3.4, planned) would show the construction produces a fixed point in EVERY SMCC. ℂ² → physics is one instance of a universal mathematical phenomenon. The construction is deeper than any particular seed.
 
-0.11. **What This Means** — 687+ theorems, 0 sorry, 0 free parameters, 0 observational inputs, all Bitcoin-timestamped. Quantum gravity COMPLETE. We began with nothing. The construction is universal. The seed is canonical within its category. The physics is forced. Everything from nothing.
+0.11. **What This Means** — 703+ theorems, 0 sorry, 0 free parameters, 0 observational inputs, all Bitcoin-timestamped. Quantum gravity COMPLETE + rigorous closure underway. We began with nothing. The construction is universal. The seed is canonical within its category. The physics is forced. Everything from nothing.
 
 **Format:** Each section in three layers: verbal (plain English) → mathematical (standard notation) → machine verification (Lean file + theorem name). A reader who reads ONLY this chapter should understand the complete claim and be able to verify every step.
 
@@ -2261,6 +2261,95 @@ The non-perturbative path integral CONTAINS all perturbative results and extends
 **The QG Completion Programme (F3.8a–k) is COMPLETE. All 10 items proven.**
 
 *Machine verification:* `F3_8k_NonPerturbativeQuantisation.lean` — 15 theorems, 0 sorry. Compiles clean in Lean 4.29.1.
+
+---
+
+### 9.42 Anomaly Cancellation: Quantum Consistency Forced by the Cascade (F3.9e)
+
+This section proves that the cascade representation content is automatically anomaly-free — all gauge anomalies cancel without adjustment, as a structural consequence of the Pati-Salam embedding forced by F1.6.
+
+**The problem.** A quantum gauge theory is consistent (unitary, renormalisable) only if all gauge anomalies cancel. An anomaly is a classical symmetry violated by quantum effects. The anomaly coefficient for a gauge group factor G with generators T^a is:
+
+> A(R) = Tr_R(T^a {T^b, T^c}) = d^{abc}(R)
+
+If A(R) ≠ 0 for any representation R, the theory is inconsistent at the quantum level. In the Standard Model, anomaly cancellation requires 6 independent conditions to be satisfied — and they ARE satisfied, but this appears "miraculous" with no structural explanation.
+
+**The cascade's answer:** anomaly cancellation is FORCED by the representation theory of SU(4) × SU(2)_L × SU(2)_R, which itself is forced by F1.6.
+
+**SU(4)³ anomaly cancellation.**
+
+The cascade forces exactly the Pati-Salam fermion content per generation:
+
+> (4, 2, 1) ⊕ (4̄, 1, 2)
+
+Under SU(4), the left-handed fermions transform as **4** (the fundamental) and the right-handed fermions as **4̄** (the anti-fundamental). The cubic anomaly coefficient for a representation R is:
+
+> A(R) = ½ Tr_R(T^a {T^b, T^c})
+
+For SU(N), the fundamental has A(N) = +1 and the anti-fundamental has A(N̄) = −1. Therefore:
+
+> A(SU(4)³) = 2 × A(4) + 2 × A(4̄) = 2(+1) + 2(−1) = 0
+
+The factor of 2 arises because (4, 2, 1) has SU(2)_L multiplicity 2 (doublet) giving 2 copies of the 4, and (4̄, 1, 2) has SU(2)_R multiplicity 2 giving 2 copies of 4̄. The cancellation is EXACT — not fine-tuned, not adjusted, but forced by the doublet structure of the Pati-Salam embedding.
+
+**SU(2)³ anomaly cancellation.**
+
+For SU(2), the totally symmetric tensor d^{abc} = 0 identically. This is because SU(2) has only 3 generators (Pauli matrices σ_i), and {σ_i, σ_j} = 2δ_{ij}·I. The anticommutator is proportional to the identity, so:
+
+> Tr(T^a {T^b, T^c}) ∝ Tr(T^a) = 0
+
+This vanishes for ALL representations, not just the cascade content. SU(2)³ anomaly cancellation is **automatic** — a mathematical theorem about the group structure, not a constraint on representations.
+
+**Mixed anomalies.**
+
+There are 6 types of mixed anomaly that must cancel:
+
+| Type | Condition | Why it cancels |
+|------|-----------|----------------|
+| SU(4)²×SU(2)_L | Tr_{SU(2)_L}(T^a) × A₂(4) | Tr(T^a) = 0 (traceless generators) |
+| SU(4)²×SU(2)_R | Tr_{SU(2)_R}(T^a) × A₂(4̄) | Tr(T^a) = 0 (traceless generators) |
+| SU(2)_L²×SU(4) | Tr_{SU(4)}(T^a) × A₂(2) | Tr(T^a) = 0 (traceless generators) |
+| SU(2)_R²×SU(4) | Tr_{SU(4)}(T^a) × A₂(2) | Tr(T^a) = 0 (traceless generators) |
+| SU(2)_L²×SU(2)_R | Tr_{SU(2)_R}(T^a) × A₂(2) | Tr(T^a) = 0 (traceless generators) |
+| SU(4)×SU(2)_L×SU(2)_R | Tr(T^a)·Tr(T^b)·Tr(T^c) | Tr(T^a) = 0 (traceless generators) |
+
+All mixed anomalies vanish because **all gauge generators are traceless** — a property forced by the structure of semisimple Lie algebras. This is not a coincidence; it's a structural theorem.
+
+**Gauge-gravitational anomaly.**
+
+The gauge-gravitational anomaly coefficient is:
+
+> A_grav(G) = Tr_R(T^a) = 0
+
+for all generators T^a of all gauge factors. The Pati-Salam algebra su(4) ⊕ su(2)_L ⊕ su(2)_R has dim = 15 + 3 + 3 = 21 generators, and Tr(T^a) = 0 for ALL 21 because they are generators of a semisimple Lie algebra. Gauge-gravitational anomalies are **structurally impossible** in the cascade.
+
+**Witten's global SU(2) anomaly.**
+
+Beyond perturbative anomalies, Witten (1982) showed that SU(2) gauge theories with an ODD number of fermion doublets are inconsistent non-perturbatively (π₄(SU(2)) = ℤ₂). The cascade content has:
+
+- SU(2)_L: (4, **2**, 1) — the **4** of SU(4) gives 4 doublets per copy × N_gen = 4 × 3 = 12 doublets
+- SU(2)_R: (4̄, 1, **2**) — similarly 4 × 3 = 12 doublets
+
+12 is EVEN → π₄ phase = (−1)^{12} = +1 → no Witten anomaly.
+
+The evenness is forced: the SU(4) fundamental has dimension 4 (even), and any number of generations multiplied by 4 is even. The cascade CANNOT produce a Witten anomaly regardless of the number of generations.
+
+**The structural result.**
+
+Every anomaly cancellation condition is satisfied as a THEOREM about the cascade representation content, not as a constraint that must be imposed. The cascade forces:
+1. Equal numbers of 4 and 4̄ (from the bimodule structure of the Azumaya decomposition)
+2. SU(2) doublets appearing in even multiplicities (from SU(4) dimension = 4, even)
+3. All generators traceless (from semisimplicity, forced by the cascade algebra M₄(ℂ))
+
+**Standard Model verification.** After breaking SU(4) → SU(3) × U(1)_{B-L}, all Standard Model anomaly conditions are inherited:
+
+- 16 fermions per generation (F3.1 gives 3 generations → 48 total)
+- SM fermion content: (3,2,+1/6) + (3̄,1,−2/3) + (3̄,1,+1/3) + (1,2,−1/2) + (1,1,+1) + (1,1,0) = 16 per generation
+- All 6 SM anomaly conditions (SU(3)³, SU(2)³, U(1)³, SU(3)²U(1), SU(2)²U(1), grav²U(1)) satisfied
+
+The cascade derives anomaly cancellation from first principles. The Standard Model's "miraculous" cancellation is explained: it's forced by the Pati-Salam structure, which is forced by the Azumaya decomposition, which is forced by the cascade from ∅.
+
+*Machine verification:* `F3_9e_AnomalyCancellation.lean` — 16 theorems, 0 sorry. Compiles clean in Lean 4.29.1.
 
 ---
 
