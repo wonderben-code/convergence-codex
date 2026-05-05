@@ -747,11 +747,113 @@ F4.4 (FRONTIER): unconditional Millennium attack
 
 Our cascade advantage over ALL of the above: the spectral cutoff is PHYSICAL (not artificial), the action is BOUNDED (not just renormalizable), and the internal space is FINITE-DIMENSIONAL (not infinite). These are genuine structural simplifications that might bypass the obstacles others face.
 
-**If F4.4 is completed:**
-- Millennium Prize for Yang-Mills mass gap (SU(3) specifically): **SOLVED**
-- Fields Medal for new constructive QFT techniques: **EARNED**
-- Nobel Prize: requires experimental confirmation of predictions (proton decay, ν_R)
-- The Generator Theory of Everything: **MATHEMATICALLY COMPLETE AND PROVEN**
+**F4.4a-g STATUS (completed 6 May 2026):** All 7 files built clean, 86 theorems, 0 sorry. These prove arithmetic and exponential identities consistent with the unconditional argument. However, the Lean code verifies **numerical facts** (dimensions, inequalities, exponential properties), not the actual functional analysis. The docstrings describe the full argument; the theorems verify the concrete mathematics within it. **The hard analytical problems (constructive QFT in 4D) remain open — see F4.5 below.**
+
+---
+
+## F4.5 — THE REAL MILLENNIUM PRIZE: Rigorous Constructive QFT
+
+**Status:** OPEN — the actual unsolved problems
+**Honest assessment:** F4.3 (conditional) and F4.4 (unconditional) establish the cascade's structural argument and verify all concrete arithmetic. But the Clay Millennium Prize requires rigorous constructive QFT — functional analysis on infinite-dimensional spaces, measure theory on distributional fields, spectral theory of unbounded operators. These are the problems that remain.
+
+**There are two routes to the Millennium Prize:**
+
+### Route A: Direct Yang-Mills (what Clay literally asks)
+
+Prove that pure Yang-Mills theory with Lagrangian L = −¼ Tr(F_μν F^μν), gauge field A_μ in Lie(G), on ℝ⁴, satisfies Wightman axioms with mass gap.
+
+#### A1: Constructing the Yang-Mills Measure
+
+| ID | Problem | What to prove | State of the art | Difficulty |
+|----|---------|---------------|------------------|------------|
+| F4.5.1 | Configuration space | Rigorously construct the space A of connections on a principal G-bundle over T⁴_L, the gauge group G, and the orbit space A/G with suitable topology | Known (differential geometry) | MODERATE |
+| F4.5.2 | Yang-Mills action | Define S_YM[A] = ¼∫ Tr(F_μν F^μν) d⁴x as a measurable functional. Prove S_YM ≥ 0, gauge-invariant | Known | MODERATE |
+| F4.5.3 | Lattice formulation | Construct Wilson's lattice YM: group elements on links, plaquette action. Prove Z(a,L) > 0 and finite for all a > 0, L < ∞ | SOLVED (Wilson 1974) | DONE |
+| F4.5.4 | Gauge fixing | Rigorous Faddeev-Popov or gauge-invariant formulation. Prove independence of gauge choice | Known in principle, hard rigorously | HARD |
+
+#### A2: The Continuum Limit (the hardest unsolved problem in mathematical physics)
+
+| ID | Problem | What to prove | State of the art | Difficulty |
+|----|---------|---------------|------------------|------------|
+| F4.5.5 | Multi-scale RG control | Prove lattice YM correlators have a limit as lattice spacing a → 0. Requires block-spin decomposition, control of effective action at EVERY scale, uniform bounds on remainders through ALL scales, proof RG flow converges | Balaban did this partially in 3D (1980s). **OPEN in 4D.** | EXTREMELY HARD |
+| F4.5.6 | Non-perturbative AF | Prove rigorously that g(μ) → 0 as μ → ∞ controls ALL UV divergences non-perturbatively (not just finite loop order) | Perturbative proof known. Non-perturbative: **OPEN** | VERY HARD |
+| F4.5.7 | Continuum Schwinger functions | Prove lattice n-point functions S_n^{(a)} converge as a → 0 to distributional limits S_n on ℝ⁴ⁿ | **OPEN in 4D** | FOLLOWS from F4.5.5-6 |
+
+#### A3: Infinite Volume Limit
+
+| ID | Problem | What to prove | State of the art | Difficulty |
+|----|---------|---------------|------------------|------------|
+| F4.5.8 | Uniform correlation bounds | |S_n^{(L)}| ≤ C_n independently of L for the continuum theory | **OPEN** — our Gaussian domination argument is for the spectral action, not standard YM | VERY HARD |
+| F4.5.9 | Cluster expansion or alternative | Prove convergence of cluster/polymer expansion for 4D YM at physical coupling, OR find alternative method to control connected correlations | Only known to converge at weak coupling. **OPEN at physical coupling** | EXTREMELY HARD |
+| F4.5.10 | Thermodynamic limit | Prove lim_{L→∞} S_n^{(L)} exists (compactness + uniqueness) | **OPEN** | FOLLOWS from F4.5.8-9 |
+| F4.5.11 | Uniqueness of limit | Prove the limit is independent of how L → ∞ | **OPEN** | FOLLOWS from clustering |
+
+#### A4: Osterwalder-Schrader Axioms (in the continuum infinite-volume theory)
+
+| ID | Problem | What to prove | State of the art | Difficulty |
+|----|---------|---------------|------------------|------------|
+| F4.5.12 | OS1 — Euclidean covariance | Limiting Schwinger functions invariant under E(4) = SO(4) ⋉ ℝ⁴ | Known for lattice → continuum if limit exists | MODERATE (given F4.5.7) |
+| F4.5.13 | OS2 — Reflection positivity | ⟨Θf, f⟩ ≥ 0 for time reflection Θ. Guarantees physical Hilbert space exists | Known on lattice (Wilson action). Continuum: **OPEN** | HARD |
+| F4.5.14 | OS3 — Symmetry | Schwinger functions symmetric under permutation | Follows from bosonic nature of gauge fields | MODERATE |
+| F4.5.15 | OS4 — Clustering | Factorisation at large separation. Exponential clustering → mass gap directly | **OPEN** — this IS the mass gap in disguise | MILLENNIUM-LEVEL |
+| F4.5.16 | OS5 — Regularity | Schwinger functions are tempered distributions | **OPEN** (requires growth bounds) | HARD |
+
+#### A5: Mass Gap
+
+| ID | Problem | What to prove | State of the art | Difficulty |
+|----|---------|---------------|------------------|------------|
+| F4.5.17 | Hamiltonian construction | From OS2, construct physical Hilbert space H, transfer matrix T = e^{-Ha}, Hamiltonian H | Standard given OS2, but requires rigorous OS2 first | MODERATE (given F4.5.13) |
+| F4.5.18 | Spectral condition | Prove H ≥ 0 (non-negative spectrum) | Follows from reflection positivity | MODERATE (given F4.5.13) |
+| F4.5.19 | **THE MASS GAP** | Prove inf(spec(H) \ {0}) = Δ > 0 | **OPEN — this is the $1M problem.** Numerical evidence from lattice QCD (Δ ≈ 1.6 GeV for SU(3)). No rigorous proof exists in 4D for ANY non-abelian gauge group | THE HARDEST PROBLEM |
+| F4.5.20 | Non-triviality | Prove S-matrix ≠ identity (theory is interacting) | Expected to follow from Δ > 0 + gauge symmetry | MODERATE (given F4.5.19) |
+
+### Route B: Via the Cascade (our framework)
+
+Use the cascade spectral action to solve it. Requires problems A3-A5 above (or cascade equivalents) PLUS:
+
+#### B1: Rigorous Spectral Action Foundation
+
+| ID | Problem | What to prove | State of the art | Difficulty |
+|----|---------|---------------|------------------|------------|
+| F4.5.21 | Formalize spectral triple | Construct (A, H, D) = (C^∞(M) ⊗ M₄(ℂ), L²(S) ⊗ ℂ⁹⁶, D_M ⊗ 1 + γ₅ ⊗ D_F) as actual functional-analytic objects in Lean. Not dim counts — the OBJECTS | Spectral triples well-understood mathematically. Lean formalization: **not started** | HARD |
+| F4.5.22 | Formalize spectral action | Prove Tr(f(D²/Λ²)) is well-defined, finite, computable via Seeley-DeWitt for the specific cascade spectral triple | Known in physics literature. Rigorous: partially done (Connes-Chamseddine). Lean: **not started** | HARD |
+| F4.5.23 | YM content of spectral action | Prove rigorously that the a₄ Seeley-DeWitt coefficient equals c·∫ Tr(F²) d⁴x + gravitational terms, with c > 0 cascade-determined | Known in physics. Rigorous math: known (Connes). Lean: **not started** | MODERATE |
+| F4.5.24 | Cascade path integral measure | Rigorously define Z = ∫ exp(−Tr(f(D²/Λ²))) dD as a measure on Dirac operators. Construct the measure, prove Z > 0 | Internal part: finite-dim integral (known). Full: **OPEN** | HARD |
+
+#### B2: Connecting Cascade to Yang-Mills
+
+| ID | Problem | What to prove | State of the art | Difficulty |
+|----|---------|---------------|------------------|------------|
+| F4.5.25 | Spectral action → YM limit | Prove the spectral action theory has a limit as Λ → ∞ that equals standard Yang-Mills, AND the mass gap survives this limit. OR: prove the spectral action with finite Λ IS an acceptable "quantum Yang-Mills theory" per Clay | **OPEN — major conceptual problem.** The spectral action is a DIFFERENT theory from pure YM. Finite Λ means it's UV-regularized | VERY HARD (possibly impossible) |
+| F4.5.26 | Gap in YM subsector | Prove the cascade's mass gap (from internal space + confinement) implies a gap specifically in the Yang-Mills subsector, not just in the full theory including gravity and internal modes | **OPEN** | VERY HARD |
+
+### Formalization Infrastructure (needed for either route)
+
+| ID | Problem | What exists | What's needed | Difficulty |
+|----|---------|-------------|---------------|------------|
+| F4.5.27 | Hilbert spaces in Lean | Mathlib has inner product spaces, some operator theory | Unbounded operators, spectral theory, operator algebras, von Neumann algebras | LARGE (years of Mathlib work) |
+| F4.5.28 | Infinite-dim measures in Lean | Mathlib has finite-dim measure theory | Gaussian measures on distributional spaces, cylinder set measures, functional integrals | LARGE |
+| F4.5.29 | Distributional QFT in Lean | Nothing | Operator-valued distributions, Wightman functions as distributions on S(ℝ⁴ⁿ), GNS construction | LARGE |
+| F4.5.30 | OS reconstruction in Lean | Nothing | Full Osterwalder-Schrader reconstruction theorem: analytic continuation, reflection positivity → Hilbert space | LARGE |
+
+### Assessment
+
+**Total problems for Route A:** 20 (F4.5.1–F4.5.20)
+**Total problems for Route B:** 26 (F4.5.1–F4.5.20 minus some, plus F4.5.21–F4.5.26)
+**Total formalization infrastructure:** 4 major Mathlib extensions (F4.5.27–F4.5.30)
+
+**The three hardest problems (any route):**
+1. **F4.5.5** — Multi-scale RG control in 4D (continuum limit). Nobody has done this. Balaban's 3D work is ~1000 pages.
+2. **F4.5.19** — The mass gap itself. Open for 50+ years.
+3. **F4.5.25** — Connecting the cascade to standard YM (Route B only). May require new mathematical ideas.
+
+**Cascade advantages that might help:**
+- Bounded action (exp(−S) ≤ exp(−16)) may simplify F4.5.5 and F4.5.9
+- Finite internal dimension (16) may simplify F4.5.8
+- Physical spectral cutoff may eliminate some UV issues in F4.5.5-6
+- Internal spectral gap (2/Λ²) provides a gap source independent of YM dynamics (F4.5.19)
+
+**Honest timeline:** Problems F4.5.5 and F4.5.19 are considered among the hardest open problems in mathematics. The cascade provides structural advantages but does not eliminate the core difficulties. A realistic assessment: this is a multi-decade programme, possibly requiring new mathematical techniques not yet invented.
 
 ---
 
@@ -768,6 +870,89 @@ The following were considered but excluded because they are not mathematically t
 | Independent specialist review | Institutional |
 | Peer-reviewed publication | Institutional |
 | Multi-decade pressure-testing | Time/institutional |
+
+---
+
+## F4.6 — UPGRADING EXISTING THEOREMS: From Arithmetic to Real Proofs
+
+**Status:** OPEN — the gap between what our 1,035 theorems verify and what a genuine ToE proof requires
+**Honest assessment:** Our 1,035 Lean theorems verify arithmetic identities (4×4=16, 11×3−2×6=21), exponential properties (exp(−x)>0, exp(0)=1), and simple inequalities (0<2). The docstrings describe deep physics, but the Lean code proves numerical facts. To be a genuine formal Theory of Everything, the theorems themselves must formalize the actual mathematical structures.
+
+### What "genuine formalization" means
+
+A theorem like `theorem internal_gap : (4 * 4 = (16 : ℕ)) ∧ ((0 : ℝ) < 2)` verifies that 4×4=16 and 0<2. A genuine formalization would instead prove something like:
+
+```lean
+theorem internal_spectral_gap (D_F : Herm₄ → Herm₄) (μ : Measure Herm₄)
+    (hμ : μ = gaussian_measure (2/Λ²)) :
+    ∀ f : Herm₄ → ℝ, ∫ f dμ = 0 →
+    ∫ f^2 dμ ≤ (Λ²/2) * ∫ ‖∇f‖² dμ
+```
+
+This is the Poincaré inequality with sharp constant — the ACTUAL mathematical statement, not just the numerical value of the constant.
+
+### The upgrade programme
+
+| ID | Current theorem | What it actually proves | What the genuine version needs | Mathlib dependency | Difficulty |
+|----|----------------|------------------------|-------------------------------|-------------------|------------|
+| F4.6.1 | Gauge group = SU(4) | 4²−1=15 | Formalize Aut(M₄(ℂ)) ≅ PU(4), prove Lie(PU(4)) = su(4) as actual Lie algebra automorphisms | Lie groups, matrix groups | HARD |
+| F4.6.2 | Fermion rep (4,2,1)⊕(4̄,1,2) | 96>0 | Formalize M₄(ℂ) as bimodule over SU(4)×SU(2)_L×SU(2)_R, decompose into irreps, prove (4,2,1)⊕(4̄,1,2) is the unique decomposition | Representation theory | HARD |
+| F4.6.3 | Three generations | dim(Im(ℍ))=3 | Formalize ℍ as a division algebra, prove Im(ℍ) has dimension 3, prove quaternionic structure on M₂(ℍ)≅M₄(ℂ) induces exactly 3 independent complex structures | Division algebras, quaternions (partially in Mathlib) | MODERATE |
+| F4.6.4 | Chirality | ij≠ji in ℍ | Formalize Azumaya decomposition of M₄(ℂ) as bimodule, prove covariant vs contravariant distinction forces left-right asymmetry | Module theory, Azumaya algebras | HARD |
+| F4.6.5 | Higgs mechanism | (1,2,2) exists | Formalize (4,2,1)⊗(4̄,1,2) as tensor product of representations, decompose into irreps, extract unique colour-singlet scalar | Tensor products of representations | MODERATE |
+| F4.6.6 | Spectral action = EH + YM | Seeley-DeWitt numbers (12, 384, 128) | Formalize the heat kernel expansion Tr(e^{-tD²}) ~ Σ aₙ t^{(n-d)/2}, compute aₙ for the cascade spectral triple, extract Einstein-Hilbert and Yang-Mills terms | Heat kernel theory (NOT in Mathlib) | VERY HARD |
+| F4.6.7 | Gaussian domination | exp(−x)≤1 for x≥0 | Formalize the spectral action measure on Herm₄, prove it is dominated by the Gaussian measure with variance Λ²/2, derive moment bounds | Measure theory, domination | HARD |
+| F4.6.8 | Internal spectral gap | 0<2 | Prove the Bakry-Émery criterion for the spectral action measure on Herm₄: Ric_μ ≥ 2/Λ², derive Poincaré inequality with sharp constant C_P = Λ²/2 | Bakry-Émery theory (NOT in Mathlib) | VERY HARD |
+| F4.6.9 | Reflection positivity | exp(a+b)=exp(a)·exp(b) | Formalize time reflection Θ on the spectral action Hilbert space, prove ⟨Θf,f⟩ ≥ 0 using the spectral action's factorization property | Operator theory, reflection positivity | VERY HARD |
+| F4.6.10 | Mass gap | min(a,b)>0 if a,b>0 | Formalize the Hamiltonian as a self-adjoint operator on the GNS Hilbert space, prove inf(spec(H)\{0}) > 0 using internal gap + confinement | Spectral theory of unbounded operators | EXTREMELY HARD |
+| F4.6.11 | Confinement | b₀=21 | Formalize SU(3)⊂SU(4) as actual Lie group embedding, derive the one-loop beta function from the representation content, prove asymptotic freedom, derive the confining potential from the Wilson loop | Lie groups, gauge theory, Wilson loops | VERY HARD |
+| F4.6.12 | Anomaly cancellation | Tr sums = 0 | Formalize the anomaly polynomial as a characteristic class, prove Tr(T_a{T_b,T_c}) = 0 for the specific cascade representation content using actual representation theory | Characteristic classes, index theory | HARD |
+| F4.6.13 | Background independence | (7:ℕ)=7 | Formalize the Connes reconstruction theorem: commutative C*-algebra A → smooth manifold M(A), spectral triple (A,H,D) → Riemannian geometry | C*-algebras, NCG (NOT in Mathlib) | EXTREMELY HARD |
+| F4.6.14 | Zero free parameters | exp(x+y)=exp(x)·exp(y) | Formalize the Cauchy functional equation on measures (not just on ℝ), prove the unique monotone measurable solution is f(x)=e^{-cx}, derive c=1/Λ² from normalization | Functional equations on measures | MODERATE |
+| F4.6.15 | Wightman axioms | (5:ℕ)=5 | Formalize the Wightman axioms as axioms on operator-valued distributions, prove each axiom holds for the cascade QFT constructed via OS reconstruction | Distributions, operator algebras | EXTREMELY HARD |
+
+### Mathlib extensions required
+
+These are pieces of mathematics that Mathlib does NOT currently have but that we need:
+
+| ID | Mathematical theory | Size estimate | Who might build it | Priority |
+|----|-------------------|---------------|-------------------|----------|
+| F4.6.M1 | Lie group representation theory (beyond basic) | ~5,000 lines | Mathlib community | HIGH |
+| F4.6.M2 | C*-algebras and von Neumann algebras | ~10,000 lines | Partially exists, needs extension | HIGH |
+| F4.6.M3 | Spectral theory of unbounded operators | ~5,000 lines | Partially exists | HIGH |
+| F4.6.M4 | Heat kernel / Seeley-DeWitt expansion | ~8,000 lines | Does not exist | MEDIUM |
+| F4.6.M5 | Noncommutative geometry (Connes axioms) | ~15,000 lines | Does not exist | HIGH |
+| F4.6.M6 | Measure theory on infinite-dimensional spaces | ~8,000 lines | Does not exist | HIGH |
+| F4.6.M7 | Operator-valued distributions (Wightman framework) | ~10,000 lines | Does not exist | MEDIUM |
+| F4.6.M8 | Bakry-Émery theory / log-Sobolev inequalities | ~3,000 lines | Does not exist | MEDIUM |
+| F4.6.M9 | Index theory / Atiyah-Singer | ~15,000 lines | Does not exist | LOW (for our purposes) |
+
+**Total Mathlib extension needed: ~80,000 lines of new formalized mathematics.**
+
+For comparison, all of Mathlib is ~1.5 million lines. We need roughly 5% of Mathlib's total volume in new mathematical theories.
+
+### Strategy
+
+**Phase 1 (achievable now):** Upgrade F4.6.3 (quaternions — Mathlib has ℍ), F4.6.14 (Cauchy equation — mostly done), F4.6.5 (tensor product decomposition — moderate).
+
+**Phase 2 (requires Mathlib extensions M1-M2):** Upgrade F4.6.1 (gauge group), F4.6.2 (fermion reps), F4.6.4 (chirality), F4.6.12 (anomalies).
+
+**Phase 3 (requires M3-M5):** Upgrade F4.6.6 (spectral action), F4.6.8 (spectral gap), F4.6.13 (background independence).
+
+**Phase 4 (requires M6-M8, hardest):** Upgrade F4.6.7 (Gaussian domination), F4.6.9 (reflection positivity), F4.6.10 (mass gap), F4.6.11 (confinement), F4.6.15 (Wightman).
+
+**Honest timeline:** Phase 1: months. Phase 2: 1-2 years. Phase 3: 2-5 years. Phase 4: 5-10+ years (depends on Mathlib community growth and whether the underlying mathematics is actually provable).
+
+### The value of what we have NOW
+
+The current 1,035 theorems are NOT useless. They:
+1. **Verify all concrete arithmetic** in the cascade — dimension counts, group theory numerics, exponential inequalities
+2. **Document the complete argument** — a mathematician can read the docstrings and understand every step
+3. **Establish priority** — Bitcoin-timestamped, the argument structure is on record
+4. **Provide the skeleton** for genuine formalization — each theorem shows WHERE the real proof needs to go
+5. **Demonstrate feasibility** — the argument is internally consistent (no numerical contradictions)
+
+But they are a BLUEPRINT, not a finished building. The finished building is F4.5 + F4.6.
 
 ---
 
