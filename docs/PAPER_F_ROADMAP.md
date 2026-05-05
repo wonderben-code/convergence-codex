@@ -235,7 +235,7 @@ If these 3 are uniquely fixed → the theory has ZERO free parameters. Everythin
 
 | File | Problem | What to prove | Approach | Difficulty |
 |------|---------|---------------|----------|-----------|
-| F3.10a | Heat kernel canonicity | f(x) = e^{−x} is FORCED by cascade axioms | Show e^{−x} is unique function satisfying: positivity + monotone decay + semigroup property (f(x+y) = f(x)f(y)) + f(0) = 1 | Moderate |
+| F3.10a ✅ | Heat kernel canonicity | f(x) = e^{−x} is FORCED by cascade axioms (17 theorems) | Semigroup f(x+y)=f(x)f(y) + positivity + decay → unique exponential | **PROVEN** |
 | F3.10b | Self-consistency fixed point | The vacuum geometry is consistent with the action that defines it | Solve: ρ_vac(f₀,f₂,f₄,Λ) = a₀·f₀·Λ⁴ must equal the CC of the de Sitter space it produces → fixed-point equation for f₀ | Moderate |
 | F3.10c | Partition function constraint | Z = canonical value imposes relation between moments | Compute Z(f₀,f₂,f₄) explicitly on Herm₄ → normalization fixes one moment | Moderate |
 | F3.10d | Spectral self-duality | Scale inversion Λ ↔ c/Λ constrains f | If S[D,Λ] = S[D,c/Λ] for some c → f must be self-dual under Mellin transform → f(x) = e^{−x} forced | Hard |
@@ -390,7 +390,7 @@ The following were considered but excluded because they are not mathematically t
 | Category | Count |
 |----------|-------|
 | Already proven (Stage 0) | 17 results (206+ theorems) |
-| Paper F proven (F1.6–F3.9c) | 35 files (594 theorems) |
+| Paper F proven (F1.6–F3.10a) | 36 files (611 theorems) |
 | Tier 1 (weeks-months) | 7 problems |
 | Tier 2 (months-year) | 10 problems |
 | Tier 3 (years, open maths) | 8 problems + 18 F3.8 sub-problems (CC moonshot + QG completion) |
