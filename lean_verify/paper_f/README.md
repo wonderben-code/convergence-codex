@@ -54,6 +54,7 @@ Files are named `F{tier}_{number}_{short_name}.lean` matching the roadmap items.
 | `F3_9g_vi_ClusterDecomposition.lean` | F3.9g_vi — Cluster decomposition: exponential decay, unique vacuum equivalence, area law, multi-scale | 15 | PROVEN |
 | `F3_9g_v_ConfinementFromCascade.lean` | F3.9g_v — Confinement: SU(3)⊂SU(4), asymptotic freedom, flux tubes, linear potential, discrete spectrum | 16 | PROVEN |
 | `F3_9g_vii_FullMassGapTheorem.lean` | F3.9g_vii — **MASS GAP SOLVED**: all 7 sub-problems combined → inf(spec(H)\{0}) > 0 → **QG 100% SOLVED** | 17 | PROVEN |
+| `F4_1h_CauchyFunctionalEquation.lean` | F4.1h — **GENUINE PROOF**: Cauchy functional equation (monotone additive → linear), REAL Mathlib proof, zero free parameters foundation | 8 | **PROVEN (REAL)** |
 
 ## Relationship to Paper E Proofs
 
