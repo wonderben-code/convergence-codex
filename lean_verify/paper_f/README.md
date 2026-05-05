@@ -36,6 +36,7 @@ Files are named `F{tier}_{number}_{short_name}.lean` matching the roadmap items.
 | `F3_8d_xvi_CCClosure.lean` | F3.8d-xvi — CC Gap Closure: all 6 specialist gaps mathematically closed | 12 | PROVEN |
 | `F3_8f_ConnesNCG.lean` | F3.8f — Full Connes NCG: all 7 axioms satisfied, KO-dimension = 2 forced | 18 | PROVEN |
 | `F3_8h_BackgroundIndependence.lean` | F3.8h — Background independence: algebra precedes geometry, 7 levels derived | 15 | PROVEN |
+| `F3_8j_GravitonScattering.lean` | F3.8j — Graviton scattering: tree-level amplitudes, GR consistency, UV softening | 16 | PROVEN |
 
 ## Relationship to Paper E Proofs
 

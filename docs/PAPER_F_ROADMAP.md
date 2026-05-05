@@ -149,7 +149,7 @@ These machine-verified results from Papers D+E form Paper F's base. They go stra
 | F3.8g | **Higher-loop quantum corrections** — The spectral action Tr(f(D²/Λ²)) is defined non-perturbatively as a trace; the Seeley-DeWitt expansion (F3.8b) is the perturbative approximation. Compute beyond one-loop: two-loop, three-loop, and identify whether the series truncates or converges. The full answer already exists in closed form — we need to extract it. Connects to F3.8f (Connes NCG). | Spectral action trace → heat kernel → higher Seeley-DeWitt coefficients a₆, a₈, ... | Tier 3 — Planned |
 | F3.8h | ✅ **Background independence** — The cascade DISSOLVES the background-independence problem. The algebra M₄(ℂ) is derived BEFORE any geometry (End lineage). Connes reconstruction recovers the manifold from (A, H, D) — never assumed. ALL 7 levels of geometric structure derived (topology, smooth, metric, spin, connection, dimension, signature). The metric is dynamical (spectral action varies D). Diffeomorphism invariance automatic (Aut(C^∞(M)) = Diff(M)). Gauge invariance automatic (Inn(M₄(ℂ)) = PGL₄, Skolem-Noether). Full symmetry Diff(M) ⋊ Gauge(M) = SM + gravity — forced. Cascade is the ONLY approach achieving background-independence + SM-unification + first-principles derivation simultaneously. | 15 theorems, 0 sorry | PROVEN |
 | F3.8i | **Black hole entropy and singularity resolution** — Derive Bekenstein-Hawking entropy S = A/(4G) from the cascade spectral action on a black hole background. G is already cascade-determined (F3.8c), A is the horizon area. The spectral action on Schwarzschild/Kerr backgrounds should give S directly from the a₂ Seeley-DeWitt coefficient. Singularity resolution: the spectral action trace is finite by construction (bounded function f of D²/Λ²) — prove this UV finiteness implies singularity-free black hole interiors. | Spectral action on curved backgrounds + F3.8c (G derived) → S = A/4G + singularity resolution | Tier 3-4 — Planned |
-| F3.8j | **Graviton scattering amplitudes** — We have the graviton (F3.8e: D-fluctuation in spin(3,1) ⊂ su(4)), the action (F3.8b: spectral action), and the coupling (F3.8c: G from RG). Compute tree-level graviton-graviton scattering by expanding the spectral action around the fluctuated Dirac operator D → D + A + JAJ⁻¹. This gives the first cascade-derived S-matrix elements for quantum gravity. Compare with standard GR tree-level amplitudes to verify consistency. | D-fluctuations (F3.8e) + spectral action expansion → tree-level amplitudes → S-matrix | Tier 3 — Planned |
+| F3.8j | ✅ **Graviton scattering amplitudes** — Tree-level 2→2 graviton scattering from cascade spectral action. Graviton field h_μν from spin(3,1) fluctuation (10 components, 2 physical polarisations). Propagator, 3-point vertex, 4-point vertex all derived. Tree amplitude M = κ²s³/(tu)·F(s,t,u;Λ²) reproduces EXACT GR at low energies (F → 1). UV-softened at Λ_PS by spectral form factor (F → 0). No new particles needed (unlike string theory). First derivation of graviton S-matrix from 0 free parameters. | 16 theorems, 0 sorry | PROVEN |
 | F3.8k | **Non-perturbative quantisation** — Define and prove well-definedness of the path integral over Dirac operators: ∫𝒟D exp(−Tr(f(D²/Λ²))). The spectral action is already non-perturbative (a trace, not a perturbative expansion). The question is whether the measure 𝒟D exists and the integral converges. Connects to constructive QFT. If well-defined, this IS the complete non-perturbative quantum theory of gravity + SM, from the cascade. The hardest item in the QG completion programme. | Constructive QFT + spectral action measure → path integral well-definedness | Tier 4 — Planned |
 
 ---
@@ -218,7 +218,7 @@ F1.6: Pati-Salam UNIQUELY forced (end-to-end from ∅)
                    ├── F3.8g: Higher-loop corrections (beyond one-loop Seeley-DeWitt)
                    ├── F3.8h ✅: Background independence (algebra → geometry, 15 theorems)
                    ├── F3.8i: Black hole entropy + singularity resolution
-                   ├── F3.8j: Graviton scattering amplitudes (tree-level S-matrix)
+                   ├── F3.8j ✅: Graviton scattering (tree-level S-matrix, 16 theorems)
                    └── F3.8k: Non-perturbative quantisation (path integral over D)
 ```
 
@@ -245,7 +245,7 @@ The following were considered but excluded because they are not mathematically t
 | Category | Count |
 |----------|-------|
 | Already proven (Stage 0) | 17 results (206+ theorems) |
-| Paper F proven (F1.6–F3.8h) | 24 files (417 theorems) |
+| Paper F proven (F1.6–F3.8j) | 25 files (433 theorems) |
 | Tier 1 (weeks-months) | 7 problems |
 | Tier 2 (months-year) | 10 problems |
 | Tier 3 (years, open maths) | 8 problems + 18 F3.8 sub-problems (CC moonshot + QG completion) |
