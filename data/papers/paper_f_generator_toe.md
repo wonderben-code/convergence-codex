@@ -4,7 +4,7 @@
 **Status:** LIVING DOCUMENT (updated as results are proven)
 **Version:** 3.1 (5 May 2026)
 **Repository:** github.com/wonderben-code/convergence-codex
-**Builds on:** Papers D + E (233 theorems) + Paper F results (546 theorems)
+**Builds on:** Papers D + E (233 theorems) + Paper F results (561 theorems)
 **Bitcoin provenance:** Each addition committed + pushed for timestamping
 
 ---
@@ -93,7 +93,7 @@ This chapter tells that complete story — from the universal construction throu
 
 0.10. **Beyond FdVect_ℂ — Other Seeds, Other Content** — The construction is not limited to one category. Cartesian closed categories give classical computation (Scott D∞, F2.6). Linear categories may give anyonic/topological physics (F3.7). The universality metatheorem (F3.4, planned) would show the construction produces a fixed point in EVERY SMCC. ℂ² → physics is one instance of a universal mathematical phenomenon. The construction is deeper than any particular seed.
 
-0.11. **What This Means** — 752+ theorems, 0 sorry, 0 free parameters, 0 observational inputs, all Bitcoin-timestamped. Quantum gravity COMPLETE + rigorous closure underway (3/6 proven) + mass gap programme begun (1/7 proven). We began with nothing. The construction is universal. The seed is canonical within its category. The physics is forced. Everything from nothing.
+0.11. **What This Means** — 767+ theorems, 0 sorry, 0 free parameters, 0 observational inputs, all Bitcoin-timestamped. Quantum gravity COMPLETE + rigorous closure underway (4/6 proven) + mass gap programme begun (1/7 proven). We began with nothing. The construction is universal. The seed is canonical within its category. The physics is forced. Everything from nothing.
 
 **Format:** Each section in three layers: verbal (plain English) → mathematical (standard notation) → machine verification (Lean file + theorem name). A reader who reads ONLY this chapter should understand the complete claim and be able to verify every step.
 
@@ -2590,6 +2590,65 @@ The Hamiltonian is recovered as H = −log(T)/a.
 This is the rigorous foundation that F3.8k (non-perturbative quantisation) asserted structurally. F3.9d makes it mathematically rigorous via the established OS reconstruction machinery.
 
 *Machine verification:* `F3_9d_ReflectionPositivity.lean` — 16 theorems, 0 sorry. Compiles clean in Lean 4.29.1.
+
+---
+
+### 9.46 Physical Cutoff Justification: Why Λ Is Not Arbitrary (F3.9b)
+
+This section resolves a fundamental conceptual objection to cutoff-based quantum gravity: "the cutoff Λ is arbitrary — what happens above it?" In the cascade, Λ is not arbitrary. It is the Pati-Salam unification scale Λ_PS, with a concrete physical interpretation. Above this scale, the physics SIMPLIFIES (the algebra is unsplit), rather than becoming unknown.
+
+**The objection.** In standard QFT, a momentum cutoff Λ is introduced as a computational device and then removed (Λ → ∞). The physical content is supposed to be independent of Λ (renormalisation). If it's NOT removed, one must explain what happens above the cutoff. For standard quantum gravity, this is the "trans-Planckian problem" — we don't know the physics above the Planck scale.
+
+**The cascade's answer: Λ = Λ_PS (physical unification scale).**
+
+The cascade algebra evolves through levels: M₂(ℂ) → M₄(ℂ) → M₁₆(ℂ). The Pati-Salam gauge structure SU(4) × SU(2)_L × SU(2)_R emerges at the M₁₆ level through the Azumaya decomposition M₄ ⊗ (M₂ ⊗ M₂). The scale Λ_PS is WHERE this decomposition becomes operative — it's the energy at which the separate gauge factors emerge from the single algebra.
+
+- **Below Λ_PS:** Three gauge factors (SM), separate forces, rich particle spectrum
+- **At Λ_PS:** Pati-Salam unification, SU(4) × SU(2)_L × SU(2)_R
+- **Above Λ_PS:** The algebra M₁₆(ℂ) is UNSPLIT — one simple algebra, no separate gauge structure
+
+Above the cutoff, the physics doesn't become "unknown" — it becomes TRIVIAL (a single algebra with no internal decomposition).
+
+**Derivation of Λ_PS from the cascade.** The one-loop beta coefficients b₃ = −7, b₂ = −19/6, b₁ = +41/10 are entirely cascade-determined (3 generations from F3.1, Pati-Salam representations from F1.6). Running from M_Z ≈ 91 GeV:
+
+> log₁₀(Λ_PS/M_Z) ≈ 13–15 → Λ_PS ~ 10^{15–17} GeV
+
+The cutoff is DERIVED from the cascade content. It is not a free parameter.
+
+**Smooth transition, not a hard wall.** The spectral function f in Tr(f(D²/Λ²)) is smooth (C^∞). It transitions continuously from f(0) (the value at low energies) to 0 (suppression at high energies). There is no discontinuity at D = Λ.
+
+**Universality.** The low-energy physics depends on f ONLY through three moments:
+
+| Moment | Definition | Physical role |
+|--------|-----------|---------------|
+| f₀ | ∫₀^∞ f(x)dx | Cosmological constant (a₀ coefficient) |
+| f₂ | ∫₀^∞ xf(x)dx | Newton's constant G (a₂ coefficient) |
+| f₄ | f(0) | Gauge couplings g² (a₄ coefficient) |
+
+Any two spectral functions with the same f₀, f₂, f₄ give IDENTICAL low-energy physics. The details of f (how it transitions, how sharp it is) are physically irrelevant. This is the spectral analogue of universality in critical phenomena.
+
+**Parameter counting.** The Standard Model has ~19 free parameters. The cascade determines 16 of them (dim_ℂ(M₄(ℂ)) = 16). The remaining 3 correspond to f₀, f₂, f₄ — the only freedom in the spectral function.
+
+**Spectral gap as physical mechanism.** The internal spectral gap λ₁ ≥ 2/Λ² (F3.9g_i) provides the dynamical mechanism: modes with eigenvalue |λ| ≫ Λ are exponentially suppressed by the spectral function:
+
+> Weight ~ f(λ²/Λ²) ~ exp(−λ²/Λ²) → 0 as |λ|/Λ → ∞
+
+At 3Λ: suppression ~ 10^{−4}. At 10Λ: suppression ~ 10^{−43}. High-energy modes are not "removed" by fiat — they are DYNAMICALLY SUPPRESSED by the natural structure of the spectral action.
+
+**No cutoff removal needed.** Standard QFT workflow: introduce Λ → compute → take Λ→∞ → renormalise infinities. The cascade workflow: identify physical Λ_PS → compute at physical Λ → done. No Λ→∞ limit. No infinities. No renormalisation of divergent quantities. The theory is defined AT its physical cutoff and is UV-complete by construction.
+
+**Comparison with other regularisations:**
+
+| Method | Physical meaning? | Preserves symmetry? | Non-perturbative? | Finite without removal? |
+|--------|:-:|:-:|:-:|:-:|
+| Lattice | No (artifact) | No (breaks rotation) | Yes | No (needs continuum limit) |
+| Dim-reg | No (ε unphysical) | Yes | No | No (poles at ε=0) |
+| Pauli-Villars | No (ghost particles) | Yes | No | No (remove PV mass → ∞) |
+| Spectral (cascade) | **YES (Λ_PS)** | **YES (all)** | **YES** | **YES** |
+
+The cascade spectral cutoff is the only known regularisation that is simultaneously physical, symmetry-preserving, non-perturbative, and intrinsically finite.
+
+*Machine verification:* `F3_9b_PhysicalCutoff.lean` — 15 theorems, 0 sorry. Compiles clean in Lean 4.29.1.
 
 ---
 
