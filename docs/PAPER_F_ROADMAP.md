@@ -212,7 +212,7 @@ M5 (compactness argument) uses tools already in the cascade framework. M4 (funct
 | F3.9g_ii ✅ | Product geometry gap transfer | min(internal, spacetime) gap, Kato-Rellich robust, compact M proven |
 | F3.9g_iii ✅ | Poincaré inequality for spectral measure | Sharp constant C_P = Λ²/2, tensorised product, Bobkov optimal |
 | F3.9g_iv ✅ | Compact operator spectrum | Trace-class, Kato stability, analytic perturbation, KLMN, confinement link |
-| F3.9g_v | Confinement from cascade | SU(3) ⊂ SU(4) flux tubes → linear potential → confinement |
+| F3.9g_v ✅ | Confinement from cascade | SU(3)⊂SU(4), AF forced, flux tubes, linear potential, discrete spectrum in ℝ³ |
 | F3.9g_vi ✅ | Cluster decomposition | Exponential decay, unique vacuum ↔ clustering, area law, multi-scale |
 | F3.9g_vii | Full mass gap theorem | Combine i-vi → inf(spec(H)\{0}) > 0 |
 
@@ -351,7 +351,7 @@ F1.6: Pati-Salam UNIQUELY forced (end-to-end from ∅)
                        ├── F3.9g_ii ✅: Product geometry gap transfer (16 theorems)
                        ├── F3.9g_iii ✅: Poincaré inequality for spectral measure (16 theorems)
                        ├── F3.9g_iv ✅: Compact operator spectrum (15 theorems)
-                       ├── F3.9g_v: Confinement from cascade
+                       ├── F3.9g_v ✅: Confinement from cascade (16 theorems)
                        ├── F3.9g_vi ✅: Cluster decomposition (15 theorems)
                        └── F3.9g_vii: Full mass gap theorem
                            *** F3.9g PROVEN → "QG 100% SOLVED" ***
@@ -390,7 +390,7 @@ The following were considered but excluded because they are not mathematically t
 | Category | Count |
 |----------|-------|
 | Already proven (Stage 0) | 17 results (206+ theorems) |
-| Paper F proven (F1.6–F3.10a + mass gap) | 40 files (673 theorems) |
+| Paper F proven (F1.6–F3.10a + mass gap) | 41 files (689 theorems) |
 | Tier 1 (weeks-months) | 7 problems |
 | Tier 2 (months-year) | 10 problems |
 | Tier 3 (years, open maths) | 8 problems + 18 F3.8 sub-problems (CC moonshot + QG completion) |

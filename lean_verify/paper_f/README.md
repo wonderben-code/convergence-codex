@@ -52,6 +52,7 @@ Files are named `F{tier}_{number}_{short_name}.lean` matching the roadmap items.
 | `F3_9g_ii_ProductGeometryGap.lean` | F3.9g_ii — Product geometry gap transfer: min(internal, spacetime), Kato-Rellich robust | 16 | PROVEN |
 | `F3_9g_iv_CompactOperatorSpectrum.lean` | F3.9g_iv — Compact operator spectrum: trace-class, gap stability, analytic perturbation, confinement link | 15 | PROVEN |
 | `F3_9g_vi_ClusterDecomposition.lean` | F3.9g_vi — Cluster decomposition: exponential decay, unique vacuum equivalence, area law, multi-scale | 15 | PROVEN |
+| `F3_9g_v_ConfinementFromCascade.lean` | F3.9g_v — Confinement: SU(3)⊂SU(4), asymptotic freedom, flux tubes, linear potential, discrete spectrum | 16 | PROVEN |
 
 ## Relationship to Paper E Proofs
 
