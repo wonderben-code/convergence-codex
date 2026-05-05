@@ -4,7 +4,7 @@
 **Status:** LIVING DOCUMENT (updated as results are proven)
 **Version:** 3.1 (5 May 2026)
 **Repository:** github.com/wonderben-code/convergence-codex
-**Builds on:** Papers D + E (233 theorems) + Paper F results (497 theorems)
+**Builds on:** Papers D + E (233 theorems) + Paper F results (514 theorems)
 **Bitcoin provenance:** Each addition committed + pushed for timestamping
 
 ---
@@ -93,7 +93,7 @@ This chapter tells that complete story — from the universal construction throu
 
 0.10. **Beyond FdVect_ℂ — Other Seeds, Other Content** — The construction is not limited to one category. Cartesian closed categories give classical computation (Scott D∞, F2.6). Linear categories may give anyonic/topological physics (F3.7). The universality metatheorem (F3.4, planned) would show the construction produces a fixed point in EVERY SMCC. ℂ² → physics is one instance of a universal mathematical phenomenon. The construction is deeper than any particular seed.
 
-0.11. **What This Means** — 703+ theorems, 0 sorry, 0 free parameters, 0 observational inputs, all Bitcoin-timestamped. Quantum gravity COMPLETE + rigorous closure underway. We began with nothing. The construction is universal. The seed is canonical within its category. The physics is forced. Everything from nothing.
+0.11. **What This Means** — 720+ theorems, 0 sorry, 0 free parameters, 0 observational inputs, all Bitcoin-timestamped. Quantum gravity COMPLETE + rigorous closure underway (2/6 proven). We began with nothing. The construction is universal. The seed is canonical within its category. The physics is forced. Everything from nothing.
 
 **Format:** Each section in three layers: verbal (plain English) → mathematical (standard notation) → machine verification (Lean file + theorem name). A reader who reads ONLY this chapter should understand the complete claim and be able to verify every step.
 
@@ -2350,6 +2350,90 @@ Every anomaly cancellation condition is satisfied as a THEOREM about the cascade
 The cascade derives anomaly cancellation from first principles. The Standard Model's "miraculous" cancellation is explained: it's forced by the Pati-Salam structure, which is forced by the Azumaya decomposition, which is forced by the cascade from ∅.
 
 *Machine verification:* `F3_9e_AnomalyCancellation.lean` — 16 theorems, 0 sorry. Compiles clean in Lean 4.29.1.
+
+---
+
+### 9.43 Internal Path Integral Convergence: The Measure Exists (F3.9a)
+
+This section proves the foundational result for quantum gravity rigorous closure: the path integral over the internal space Herm₄(ℂ) converges, defining a well-defined probability measure on the space of internal Dirac operators.
+
+**The problem.** Every path integral in quantum field theory requires a well-defined measure. In standard quantum gravity, the path integral over metrics:
+
+> Z = ∫ 𝒟g exp(−S_EH[g])
+
+is ill-defined because: (1) the space of metrics is infinite-dimensional with no natural measure, (2) the Einstein-Hilbert action is unbounded below (conformal mode problem), and (3) no regulator exists that preserves diffeomorphism invariance. These three problems have blocked the definition of quantum gravity for 90 years.
+
+**The cascade resolves all three.**
+
+**Step 1: Finite-dimensional domain.** The internal spectral triple has Dirac operators D_F ∈ Herm₄(ℂ). This space has real dimension:
+
+> dim_ℝ(Herm₄) = n² = 16
+
+Explicitly: 4 real diagonal entries + 6 complex off-diagonal entries (= 12 real parameters) = 16. The path integral is:
+
+> Z_F = ∫_{ℝ¹⁶} exp(−Tr(f(D_F²/Λ²))) dD_F
+
+This is an ordinary finite-dimensional integral. Lebesgue measure on ℝ¹⁶ is the natural measure. Problem (1) is dissolved.
+
+**Step 2: Positivity and coercivity.** The spectral action decomposes over the 4 eigenvalues λ₁,...,λ₄ of D_F:
+
+> S(D_F) = Tr(f(D_F²/Λ²)) = Σᵢ₌₁⁴ f(λᵢ²/Λ²)
+
+Since f ≥ 0 and λᵢ² ≥ 0, we have S ≥ 0, so exp(−S) ∈ (0, 1]. The integrand is bounded above by 1. Problem (2) is dissolved.
+
+Moreover, S is **coercive**: as ‖D_F‖ → ∞, at least one |λᵢ| → ∞ (because ‖D_F‖² = Σᵢ λᵢ²), so f(λᵢ²/Λ²) → ∞, hence S → ∞ and exp(−S) → 0.
+
+**Step 3: Gaussian domination.** For the minimal growth f(x) ≥ x:
+
+> S(D_F) ≥ Σᵢ λᵢ²/Λ² = ‖D_F‖²/Λ²
+
+Therefore:
+
+> exp(−S(D_F)) ≤ exp(−‖D_F‖²/Λ²)
+
+The integral is dominated by a Gaussian:
+
+> Z_F ≤ ∫_{ℝ¹⁶} exp(−‖x‖²/Λ²) d¹⁶x = (πΛ²)⁸
+
+This is FINITE. Problem (3) — no natural cutoff — is dissolved: the spectral function f IS the cutoff, and it's intrinsic to the formalism.
+
+**Step 4: Partition function.** Since exp(−S) > 0 everywhere (exponential is always positive) and the integral is bounded above by (πΛ²)⁸:
+
+> 0 < Z_F < ∞
+
+The partition function exists and is positive.
+
+**Step 5: Probability measure.** Define:
+
+> μ(dD) = exp(−S(D))/Z_F · dD
+
+This is a normalized probability measure on Herm₄(ℂ): ∫ dμ = Z_F/Z_F = 1. The measure μ has sub-Gaussian concentration: μ({‖D‖ > R}) ≤ C·exp(−cR²).
+
+**Step 6: Gauge reduction (Weyl integration formula).** The gauge group U(4) acts on Herm₄ by conjugation D ↦ UDU†. Under diagonalisation, the integral reduces to:
+
+> Z_F = Vol(U(4)/T⁴) × ∫_{ℝ⁴} Π_{i<j}(λᵢ − λⱼ)² · exp(−Σᵢ f(λᵢ²/Λ²)) d⁴λ
+
+where the Vandermonde determinant squared Π_{i<j}(λᵢ − λⱼ)² is the Jacobian (C(4,2) = 6 pairs, total degree 12). This converges because:
+- Vol(U(4)/T⁴) is finite (compact quotient)
+- The Vandermonde is polynomial (degree 12)
+- exp(−Σf(λᵢ²/Λ²)) decays faster than any polynomial
+- Polynomial × exponential-decay is integrable on ℝ⁴
+
+After gauge fixing, the physical degrees of freedom are the 4 eigenvalues of D_F.
+
+**Step 7: Moments and correlations.** All polynomial moments are finite:
+
+> ∫ ‖D‖²ᵏ dμ < ∞ for all k ≥ 0
+
+because exponential decay dominates polynomial growth. Therefore all correlation functions of polynomial observables are well-defined:
+
+> ⟨O₁(D)...Oₙ(D)⟩ = ∫ O₁...Oₙ dμ < ∞
+
+In particular, the propagator G = ⟨Tr(D²)⟩ exists (degree-2 moment).
+
+**What this means.** The cascade path integral over the internal space is a **mathematically rigorous object** — a finite-dimensional integral with exponential decay, defining a probability measure with all moments finite. This is the foundation for everything that follows: spectral gap (F3.9g_i), reflection positivity (F3.9d), Ward identities (F3.9f), and ultimately the full non-perturbative theory. The measure EXISTS. Now we can study its properties.
+
+*Machine verification:* `F3_9a_InternalConvergence.lean` — 17 theorems, 0 sorry. Compiles clean in Lean 4.29.1.
 
 ---
 

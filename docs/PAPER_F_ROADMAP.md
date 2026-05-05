@@ -289,7 +289,7 @@ F1.6: Pati-Salam UNIQUELY forced (end-to-end from ∅)
                        *** QG COMPLETION: ALL 10 ITEMS PROVEN ***
                │
                └── QG RIGOROUS CLOSURE (from structural → rigorous)
-                   ├── F3.9a: Internal path integral convergence (EASY)
+                   ├── F3.9a ✅: Internal path integral convergence (17 theorems)
                    ├── F3.9b: Physical cutoff justification (CONCEPTUAL)
                    ├── F3.9c: Full spectral cutoff path integral (MODERATE)
                    ├── F3.9d: Reflection positivity / OS verification (MODERATE)
@@ -331,7 +331,7 @@ The following were considered but excluded because they are not mathematically t
 | Category | Count |
 |----------|-------|
 | Already proven (Stage 0) | 17 results (206+ theorems) |
-| Paper F proven (F1.6–F3.9e) | 29 files (497 theorems) |
+| Paper F proven (F1.6–F3.9e) | 30 files (514 theorems) |
 | Tier 1 (weeks-months) | 7 problems |
 | Tier 2 (months-year) | 10 problems |
 | Tier 3 (years, open maths) | 8 problems + 18 F3.8 sub-problems (CC moonshot + QG completion) |
