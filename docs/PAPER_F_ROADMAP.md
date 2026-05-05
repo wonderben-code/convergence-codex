@@ -486,23 +486,36 @@ PHASE 4 (LONG): Tier 3 — conditional + frontier
                General QFT axioms are explicit assumptions."
 ```
 
-### Phase 5: FULL REWRITE — Convert 42 Structural Files to Genuine Proofs
+### Phase 5: FULL REWRITE — Convert ALL Proof Files (D + E + F) to Genuine Proofs
 
 **Status:** NEW (added 5 May 2026)
 **Prerequisite:** Tiers 1 + 2 complete (foundations exist as genuine Mathlib theorems)
-**Goal:** Replace ALL `native_decide` assertions in the 42 structural proof files (F1.6–F3.10a) with genuine proof chains using Tier 1-3 foundations.
+**Goal:** Replace ALL non-genuine proof methods in the ENTIRE proof corpus — Papers D, E, AND F — with genuine Mathlib-backed proof chains. No `native_decide`, no boolean encoding, no shortcuts. Every theorem proven end-to-end.
 
-**What this means:** Currently the 42 files encode the logical structure as boolean propositions checked by `native_decide`. Once the foundations are proven genuinely (Tier 1-2), we REWRITE each file to use actual `import`s of the foundation theorems + genuine Lean tactics (`exact`, `apply`, `have`, `calc`, etc.) instead of `native_decide`.
+**Why D+E must be included:** Paper F builds on and imports results from Papers D+E. If D+E remain non-genuine, the full chain is broken at the base. The entire edifice must be bulletproof from the very first theorem to the last.
 
-**Scope:** 42 files, ~706 theorems to rewrite. Each rewrite:
-1. Import the relevant Tier 1/2/3 foundation theorems
-2. Replace `let x := true; native_decide` with actual proof terms
-3. The LOGIC doesn't change (same theorem statements), only the PROOF METHOD changes
-4. Result: every theorem is genuinely type-checked end-to-end
+**Scope:**
+- **Papers D+E:** 26 files, ~311 theorems (`lean_verify/*.lean`)
+- **Paper F:** 42 files, ~714 theorems (`lean_verify/paper_f/*.lean`)
+- **TOTAL: 68 files, ~1,025 theorems to make genuinely bulletproof**
 
-**Effort estimate:** Once Tier 1+2 foundations exist, each file rewrite is mostly mechanical — connecting proven facts. Estimated 1-3 days per file for complex ones (mass gap, QG), hours for simple ones (dimension counting). Total: ~2-4 months of focused work.
+**What this means:** Every theorem rewritten to use:
+1. `import` of relevant Tier 1/2/3 Mathlib-backed foundation theorems
+2. Genuine Lean tactics (`exact`, `apply`, `have`, `calc`, `linarith`, etc.)
+3. No `native_decide` on boolean encodings
+4. No `let x := true` assertions
+5. Result: the ENTIRE proof corpus is type-checked end-to-end against Mathlib
 
-**The 42 files to rewrite:**
+**The rewrite covers:**
+
+*Papers D+E (26 files — the foundation):*
+- Cascade algebra construction (ℂ² → M₂ → M₄ → M₁₆)
+- Gauge group selection and Standard Model emergence
+- Representation content (fermions, bosons)
+- Coupling constant derivations
+- Gravity lineage, quantum lineage, emergence theorem
+
+*Paper F (42 files — uniqueness and completeness):*
 - F1.6 (Pati-Salam uniqueness) — uses: F4.1a, F4.1c, F4.1d
 - F2.3 (Chirality) — uses: F4.1c, F4.1d, F4.1e
 - F3.1 (Three generations) — uses: F4.1i, F4.1j
@@ -511,9 +524,9 @@ PHASE 4 (LONG): Tier 3 — conditional + frontier
 - F3.8a-k (Quantum gravity) — uses: F4.2a-l (spectral analysis)
 - F3.9a-g (QFT rigour) — uses: F4.2 + F4.3 (hardest rewrites)
 - F3.10a (Heat kernel) — uses: F4.1h ✅ (already genuine!)
-- ... all remaining files
+- All remaining files
 
-**After Phase 5:** Every single theorem in Paper F is a GENUINE Lean proof. No `native_decide` anywhere. The entire 714+ theorem edifice is type-checked end-to-end against Mathlib. **UNDENIABLE.**
+**After Phase 5:** Every single theorem across Papers D, E, and F is a GENUINE Lean proof. No `native_decide` anywhere. The entire ~1,025 theorem edifice — from seed ℂ² to mass gap to zero parameters — is type-checked end-to-end against Mathlib. **BULLETPROOF. UNDENIABLE. UNPRECEDENTED.**
 
 ---
 
@@ -525,7 +538,7 @@ PHASE 4 (LONG): Tier 3 — conditional + frontier
 | After Phase 2 | + Gaussian spectral gap | "The internal space has a proven spectral gap" |
 | After Phase 3 | + Gap stability & transfer | "Mass gap holds on compact M, stable under perturbation" |
 | After Phase 4 | + Conditional infinite-volume | "Mass gap holds unconditionally on compact M; conditionally on ℝ⁴ given Yang-Mills existence" |
-| **After Phase 5** | **ALL 42 files rewritten as genuine proofs** | **"Every claim is type-checked end-to-end. UNDENIABLE."** |
+| **After Phase 5** | **ALL 68 files (D+E+F) rewritten as genuine proofs** | **"~1,025 theorems type-checked end-to-end. BULLETPROOF."** |
 | **After Phase 6** | **+ UNCONDITIONAL mass gap on ℝ⁴** | **"MILLENNIUM PRIZE SOLVED. Fields Medal. QG complete."** |
 
 ---
