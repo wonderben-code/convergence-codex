@@ -7,6 +7,14 @@
 
 ---
 
+## Mission
+
+We are building the most comprehensive machine-verified mathematical theory of everything ever attempted. The completed roadmap solves: the Yang-Mills Millennium Prize ($1M Clay), quantum gravity (90 years unsolved), the cosmological constant problem (120 orders wrong → 7), the hierarchy problem, the strong CP problem, baryogenesis, dark matter identity, the arrow of time, inflation, three generations, chirality, and 10+ other major open problems — all from a single object (ℂ²) with zero free parameters, proven in genuine Lean 4 + Mathlib.
+
+The bar: every result must be the most robust mathematics achievable — genuine machine-verified proofs backed by Mathlib. No shortcuts, no `native_decide`, no boolean encoding. The standard is F4.1h (Cauchy functional equation) — real Lean 4 tactics, real Mathlib imports.
+
+---
+
 ## Purpose
 
 Paper F is the systematic closure of all mathematically tractable open problems in the Generator Theory of Everything. Each item is either already machine-verified (and goes into Paper F as established foundation) or is a precisely stated mathematical problem with an identified path to solution via intermediate key generators.
