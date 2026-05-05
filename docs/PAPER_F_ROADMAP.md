@@ -209,7 +209,7 @@ M5 (compactness argument) uses tools already in the cascade framework. M4 (funct
 | File | Problem | What to prove |
 |------|---------|---------------|
 | F3.9g_i ✅ | Internal spectral gap | Herm₄(ℂ) with spectral action measure has discrete spectrum with gap |
-| F3.9g_ii | Product geometry gap transfer | If internal space has gap AND manifold has gap, product has gap |
+| F3.9g_ii ✅ | Product geometry gap transfer | min(internal, spacetime) gap, Kato-Rellich robust, compact M proven |
 | F3.9g_iii ✅ | Poincaré inequality for spectral measure | Sharp constant C_P = Λ²/2, tensorised product, Bobkov optimal |
 | F3.9g_iv | Compact operator spectrum | Tr(f(D²/Λ²)) as compact operator → discrete spectrum |
 | F3.9g_v | Confinement from cascade | SU(3) ⊂ SU(4) flux tubes → linear potential → confinement |
@@ -348,7 +348,7 @@ F1.6: Pati-Salam UNIQUELY forced (end-to-end from ∅)
                    │
                    └── MASS GAP PROGRAMME (Millennium-adjacent)
                        ├── F3.9g_i ✅: Internal spectral gap (16 theorems)
-                       ├── F3.9g_ii: Product geometry gap transfer
+                       ├── F3.9g_ii ✅: Product geometry gap transfer (16 theorems)
                        ├── F3.9g_iii ✅: Poincaré inequality for spectral measure (16 theorems)
                        ├── F3.9g_iv: Compact operator spectrum
                        ├── F3.9g_v: Confinement from cascade
@@ -390,7 +390,7 @@ The following were considered but excluded because they are not mathematically t
 | Category | Count |
 |----------|-------|
 | Already proven (Stage 0) | 17 results (206+ theorems) |
-| Paper F proven (F1.6–F3.10a + mass gap) | 37 files (627 theorems) |
+| Paper F proven (F1.6–F3.10a + mass gap) | 38 files (643 theorems) |
 | Tier 1 (weeks-months) | 7 problems |
 | Tier 2 (months-year) | 10 problems |
 | Tier 3 (years, open maths) | 8 problems + 18 F3.8 sub-problems (CC moonshot + QG completion) |

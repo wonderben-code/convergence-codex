@@ -4,7 +4,7 @@
 **Status:** LIVING DOCUMENT (updated as results are proven)
 **Version:** 3.2 (5 May 2026)
 **Repository:** github.com/wonderben-code/convergence-codex
-**Builds on:** Papers D + E (233 theorems) + Paper F results (627 theorems)
+**Builds on:** Papers D + E (233 theorems) + Paper F results (643 theorems)
 **Bitcoin provenance:** Each addition committed + pushed for timestamping
 
 ---
@@ -2940,6 +2940,42 @@ This is physically correct: the mass gap is an IR phenomenon, set by the largest
 - Explicit constants for F3.9g_ii (product gap transfer)
 
 *Machine verification:* `F3_9g_iii_PoincareSpectralMeasure.lean` — 16 theorems, 0 sorry. Compiles clean in Lean 4.29.1.
+
+---
+
+### 9.51 Product Geometry Gap Transfer (F3.9g_ii)
+
+The full cascade theory lives on the product geometry M × F, where M is 4D spacetime and F = Herm₄(ℂ) is the internal space. This section proves the **gap transfer theorem**: if both factors have spectral gaps, the product has a gap equal to the minimum of the two factor gaps.
+
+**Product Hilbert space.** The total Hilbert space is:
+
+> ℋ_total = L²(M, dvol) ⊗ L²(Herm₄, dμ)
+
+The total Hamiltonian decomposes as H_total = H_M ⊗ I + I ⊗ H_F + V_int, where H_M = −Δ_M (spacetime Laplacian), H_F is the Witten Laplacian (F3.9g_i), and V_int encodes gauge coupling.
+
+**Spectral theory of tensor sums.** For commuting self-adjoint operators A ≥ 0, B ≥ 0:
+
+> spec(A ⊗ I + I ⊗ B) = spec(A) + spec(B) = {λᵢ + μⱼ}
+
+The ground state is Ψ₀ = φ₀ ⊗ ψ₀ with eigenvalue 0, unique because both factor ground states are unique.
+
+**The gap transfer theorem.**
+
+> **inf(spec(H_free) \ {0}) = min(λ₁^(int), μ₁^(M))**
+
+where λ₁^(int) = 2/Λ² (from F3.9g_i) and μ₁^(M) is the first eigenvalue of −Δ_M on compact M. Since μ₁^(M) << 2/Λ² for physical spacetimes, the product gap equals μ₁^(M).
+
+**Robustness (Kato-Rellich).** The interaction V_int is a relatively bounded perturbation of H_free. At weak coupling (g² << 1, guaranteed by asymptotic freedom at Λ_PS), the gap persists and the ground state remains non-degenerate.
+
+**Compact spacetime spectrum.** On compact M, Weyl's law gives N(λ) ~ (vol·π²/2)·λ² in 4D. The first gap satisfies the Lichnerowicz bound μ₁ ≥ 4·Ric_min/3 when Ric ≥ κ > 0. Specific examples:
+- S⁴ of radius R: μ₁ = 4/R²
+- T⁴ of side L: μ₁ = 4π²/L²
+
+**The thermodynamic limit.** As vol(M) → ∞, the spacetime gap μ₁ → 0. The free-theory product gap closes. For the interacting theory to maintain a gap in infinite volume, CONFINEMENT (F3.9g_v) must prevent the gap from reaching zero. This precisely reduces the mass gap problem to: "do interactions keep the gap open as volume diverges?"
+
+On any compact approximation M_L, the gap exists and equals min(2/Λ², 4π²/L²). The mass gap question is whether lim_{L→∞} gap(L) > 0 — a question about the rate of decrease and whether dynamics intervenes.
+
+*Machine verification:* `F3_9g_ii_ProductGeometryGap.lean` — 16 theorems, 0 sorry. Compiles clean in Lean 4.29.1.
 
 ---
 
