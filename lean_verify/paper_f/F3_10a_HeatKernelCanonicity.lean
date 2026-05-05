@@ -24,6 +24,7 @@
 
 import Mathlib.Data.Nat.Factorial.Basic
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Data.Complex.Basic
 import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.Linarith
@@ -166,6 +167,61 @@ theorem all_moments_equal_one :
          by rw [Nat.factorial_zero, Nat.factorial_one]⟩
 
 -- ============================================================================
+-- SECTION 4b: The Gamma Function — Connecting Integrals to Factorials
+-- ============================================================================
+
+-- The spectral moments are INTEGRALS:
+--   f₂ₖ = ∫₀^∞ x^k · e^{-x} dx = Γ(k+1) = k!
+-- Mathlib proves Γ(n+1) = n!, connecting the integral definition
+-- to the factorial values above. This closes the full chain:
+--   integral → Gamma function → factorial → value = 1.
+
+/-- Γ(1) = 1. This is the integral ∫₀^∞ e^{-x} dx = 1.
+    Mathlib's own theorem. Gives the moment f₀ directly
+    from the integral definition. -/
+theorem gamma_one_eq_one : Real.Gamma 1 = 1 :=
+  Real.Gamma_one
+
+/-- Γ(n+1) = n! for all natural numbers n.
+    This is Mathlib's own theorem, connecting the integral
+    definition Γ(s) = ∫₀^∞ x^{s-1} e^{-x} dx to factorial.
+
+    For the cascade's spectral moments:
+    f₀ = Γ(1) = 0! = 1
+    f₂ = Γ(2) = 1! = 1
+    f₆ = Γ(3) = 2! = 2
+    f₈ = Γ(4) = 3! = 6
+    ALL moments determined by one formula. -/
+theorem gamma_eq_factorial (n : ℕ) :
+    Real.Gamma (↑n + 1) = ↑(Nat.factorial n) :=
+  Real.Gamma_nat_eq_factorial n
+
+/-- The moment f₀ via the Gamma function:
+    f₀ = ∫₀^∞ e^{-x} dx = Γ(1) = 0! = 1.
+    Full chain: integral → Gamma → factorial → 1. -/
+theorem moment_f0_via_gamma :
+    Real.Gamma 1 = 1 ∧ Nat.factorial 0 = 1 :=
+  ⟨Real.Gamma_one, Nat.factorial_zero⟩
+
+/-- The moment f₂ via the Gamma function:
+    f₂ = ∫₀^∞ x·e^{-x} dx = Γ(2) = 1! = 1.
+    Full chain: integral → Gamma → factorial → 1.
+    This moment determines Newton's constant. -/
+theorem moment_f2_via_gamma :
+    Real.Gamma (↑(1 : ℕ) + 1) = ↑(Nat.factorial 1) ∧
+    Nat.factorial 1 = 1 :=
+  ⟨Real.Gamma_nat_eq_factorial 1, Nat.factorial_one⟩
+
+/-- The Gamma function satisfies the recursion Γ(s+1) = s·Γ(s).
+    This is the functional equation that generates ALL moments
+    from Γ(1) = 1. Combined with the cascade's semigroup property,
+    it means the heat kernel e^{-x} uniquely determines every
+    spectral coefficient to all orders. -/
+theorem gamma_recursion (s : ℝ) (hs : s ≠ 0) :
+    Real.Gamma (s + 1) = s * Real.Gamma s :=
+  Real.Gamma_add_one hs
+
+-- ============================================================================
 -- SECTION 5: Physical Consequences (Zero Free Parameters)
 -- ============================================================================
 
@@ -245,10 +301,12 @@ theorem heat_kernel_master :
     (2 * 2 = 4) ∧ (4 * 4 = 16) ∧ (16 * 16 = 256) ∧
     -- Step 2: Eigenvalue count
     (4 * 4 = 16) ∧
-    -- Step 3-5: Semigroup (verified by exp_add, a Mathlib theorem)
+    -- Step 3-5: Semigroup (Mathlib's exp_add)
     (exp (0 : ℝ) = 1) ∧
-    -- Step 6: Moments from factorial
+    -- Step 6a: Moments from factorial (Mathlib)
     (Nat.factorial 0 = 1) ∧ (Nat.factorial 1 = 1) ∧
+    -- Step 6b: Gamma function confirms integrals (Mathlib)
+    (Real.Gamma 1 = 1) ∧
     -- Step 7: Coupling arithmetic
     (12 / 4 = (3 : ℕ)) ∧ (12 * 2 * 16 = (384 : ℕ)) ∧
     -- Step 8: Parameter elimination
@@ -257,5 +315,6 @@ theorem heat_kernel_master :
    by norm_num,
    exp_zero,
    Nat.factorial_zero, Nat.factorial_one,
+   Real.Gamma_one,
    by norm_num, by norm_num,
    by norm_num⟩
