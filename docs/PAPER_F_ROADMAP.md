@@ -486,6 +486,37 @@ PHASE 4 (LONG): Tier 3 — conditional + frontier
                General QFT axioms are explicit assumptions."
 ```
 
+### Phase 5: FULL REWRITE — Convert 42 Structural Files to Genuine Proofs
+
+**Status:** NEW (added 5 May 2026)
+**Prerequisite:** Tiers 1 + 2 complete (foundations exist as genuine Mathlib theorems)
+**Goal:** Replace ALL `native_decide` assertions in the 42 structural proof files (F1.6–F3.10a) with genuine proof chains using Tier 1-3 foundations.
+
+**What this means:** Currently the 42 files encode the logical structure as boolean propositions checked by `native_decide`. Once the foundations are proven genuinely (Tier 1-2), we REWRITE each file to use actual `import`s of the foundation theorems + genuine Lean tactics (`exact`, `apply`, `have`, `calc`, etc.) instead of `native_decide`.
+
+**Scope:** 42 files, ~706 theorems to rewrite. Each rewrite:
+1. Import the relevant Tier 1/2/3 foundation theorems
+2. Replace `let x := true; native_decide` with actual proof terms
+3. The LOGIC doesn't change (same theorem statements), only the PROOF METHOD changes
+4. Result: every theorem is genuinely type-checked end-to-end
+
+**Effort estimate:** Once Tier 1+2 foundations exist, each file rewrite is mostly mechanical — connecting proven facts. Estimated 1-3 days per file for complex ones (mass gap, QG), hours for simple ones (dimension counting). Total: ~2-4 months of focused work.
+
+**The 42 files to rewrite:**
+- F1.6 (Pati-Salam uniqueness) — uses: F4.1a, F4.1c, F4.1d
+- F2.3 (Chirality) — uses: F4.1c, F4.1d, F4.1e
+- F3.1 (Three generations) — uses: F4.1i, F4.1j
+- F3.2 (Higgs mechanism) — uses: F4.1c, F4.1f, F4.1k
+- F1.7a-c (Spacetime) — uses: F4.1e (Clifford)
+- F3.8a-k (Quantum gravity) — uses: F4.2a-l (spectral analysis)
+- F3.9a-g (QFT rigour) — uses: F4.2 + F4.3 (hardest rewrites)
+- F3.10a (Heat kernel) — uses: F4.1h ✅ (already genuine!)
+- ... all remaining files
+
+**After Phase 5:** Every single theorem in Paper F is a GENUINE Lean proof. No `native_decide` anywhere. The entire 714+ theorem edifice is type-checked end-to-end against Mathlib. **UNDENIABLE.**
+
+---
+
 ### What "SOLVED" means at each phase completion:
 
 | Phase | What's genuinely proven | Honest claim |
@@ -494,7 +525,8 @@ PHASE 4 (LONG): Tier 3 — conditional + frontier
 | After Phase 2 | + Gaussian spectral gap | "The internal space has a proven spectral gap" |
 | After Phase 3 | + Gap stability & transfer | "Mass gap holds on compact M, stable under perturbation" |
 | After Phase 4 | + Conditional infinite-volume | "Mass gap holds unconditionally on compact M; conditionally on ℝ⁴ given Yang-Mills existence" |
-| **After Phase 5** | **+ UNCONDITIONAL mass gap on ℝ⁴** | **"MILLENNIUM PRIZE SOLVED. Fields Medal. QG complete."** |
+| **After Phase 5** | **ALL 42 files rewritten as genuine proofs** | **"Every claim is type-checked end-to-end. UNDENIABLE."** |
+| **After Phase 6** | **+ UNCONDITIONAL mass gap on ℝ⁴** | **"MILLENNIUM PRIZE SOLVED. Fields Medal. QG complete."** |
 
 ---
 
@@ -549,10 +581,10 @@ The cascade's advantage: the action Tr(e^{-D²/Λ²}) is ANALYTIC and the spectr
 1. **From internal gap:** The internal spectral gap 2/Λ² is VOLUME-INDEPENDENT. It persists in any limit. The question is whether it "communicates" to the full theory.
 2. **From confinement:** The SU(3) sector has a confining linear potential. On ℝ³, the operator −Δ + σ|x| has discrete spectrum. If the cluster expansion (F4.4c) gives sufficient control, the confining contribution dominates at large distances and keeps the gap open.
 
-**The attack order for Phase 5:**
+**The attack order for Phase 6:**
 
 ```
-PHASE 5 (FRONTIER): Tier 4 — unconditional Millennium attack
+PHASE 6 (FRONTIER): Tier 4 — unconditional Millennium attack
     F4.4a (OS on compact M) — most tractable entry point
     ↓ (proves: the theory EXISTS on compact M as a Euclidean QFT)
     F4.4b (uniform bounds) — Gaussian domination + normalization
