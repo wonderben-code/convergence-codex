@@ -494,6 +494,98 @@ PHASE 4 (LONG): Tier 3 — conditional + frontier
 | After Phase 2 | + Gaussian spectral gap | "The internal space has a proven spectral gap" |
 | After Phase 3 | + Gap stability & transfer | "Mass gap holds on compact M, stable under perturbation" |
 | After Phase 4 | + Conditional infinite-volume | "Mass gap holds unconditionally on compact M; conditionally on ℝ⁴ given Yang-Mills existence" |
+| **After Phase 5** | **+ UNCONDITIONAL mass gap on ℝ⁴** | **"MILLENNIUM PRIZE SOLVED. Fields Medal. QG complete."** |
+
+---
+
+### TIER 4 — THE UNCONDITIONAL PROGRAMME (F4.4: Millennium Prize Attack)
+
+**Status:** NEW (added 5 May 2026)
+**Goal:** Remove ALL conditional assumptions. Prove the cascade QFT exists on ℝ⁴ with a mass gap UNCONDITIONALLY — no axioms assumed, no "IF" statements. This IS the Millennium Prize for the cascade's specific gauge group.
+
+**Why the cascade has a genuine shot (advantages over generic Yang-Mills):**
+
+1. **Finite internal space:** Herm₄(ℂ) is 16-dimensional. The internal path integral is a FINITE-DIMENSIONAL integral. It trivially exists.
+2. **Bounded integrand:** exp(−Tr(e^{-D²/Λ²})) ∈ (0, 1] always. No divergences. No renormalization.
+3. **Gaussian domination (F3.9a):** The measure is dominated by a Gaussian. Uniform bounds on all moments.
+4. **Physical spectral cutoff:** Λ = Λ_PS is derived (F3.9b). Only finitely many modes below Λ on compact M (Weyl's law: N(Λ) ~ Λ⁴·vol). The path integral is effectively FINITE-DIMENSIONAL even on spacetime.
+5. **Explicit action:** S = Tr(e^{-D²/Λ²}) is completely determined (F3.10a). No free parameters to tune.
+
+These advantages mean the cascade path integral is BETTER BEHAVED than standard Yang-Mills at every step. The question is whether this is enough to cross the finish line.
+
+**The seven steps:**
+
+| ID | Problem | What to prove | Cascade advantage | Difficulty |
+|----|---------|---------------|-------------------|------------|
+| F4.4a | OS axioms on compact M | All 5 Osterwalder-Schrader axioms for Z = ∫𝒟D exp(−Tr(e^{-D²/Λ²})) on compact M×F | Finite-dim integral (N(Λ) modes), bounded positive integrand | HARD (1-2 years) |
+| F4.4b | Uniform correlation bounds | ‖⟨O₁...Oₙ⟩_M‖ ≤ Cₙ independent of vol(M) | Gaussian domination: every moment bounded by Gaussian moment | VERY HARD |
+| F4.4c | Cluster expansion convergence | Connected n-point functions decay: |⟨O₁...Oₙ⟩_c| ≤ Cₙ·e^{-m·diam} uniformly in vol | Action is sum of exponentials (analytic), spectral cutoff limits modes | EXTREMELY HARD |
+| F4.4d | Thermodynamic limit exists | lim_{vol→∞} ⟨O₁(x₁)...Oₙ(xₙ)⟩_M exists for all bounded local O | Compactness (uniform bounds from F4.4b) + diagonal extraction | FOLLOWS from b,c |
+| F4.4e | Limit satisfies Wightman axioms | The limiting correlation functions define a Wightman QFT | Standard OS reconstruction applied to limit | FOLLOWS from a,d |
+| F4.4f | Mass gap persists in limit | inf(spec(H)\{0}) > 0 in the infinite-volume theory | Internal gap (2/Λ²) + confinement potential + spectral cutoff control | MILLENNIUM-LEVEL |
+| F4.4g | Full unconditional theorem | The cascade defines a Wightman QFT on ℝ⁴ with mass gap Δ > 0 | Synthesis of a-f. NO axioms. NO conditionals. DONE. | SYNTHESIS |
+
+**Detailed strategy for each step:**
+
+**F4.4a (OS axioms on compact M):** The spectral cutoff means the path integral on compact M has finitely many modes (Weyl's law). It's literally a finite-dimensional integral of a bounded positive function. The five OS axioms become:
+- OS0 (Analyticity): bounded integrand → analytic in coupling
+- OS1 (Regularity): smooth cutoff function → smooth correlators
+- OS2 (Euclidean covariance): spectral action is diffeomorphism-invariant
+- OS3 (Reflection positivity): exp(−S) > 0 and S is real → standard result
+- OS4 (Ergodicity): unique minimum of S at D = 0 → unique vacuum
+Each is provable for finite-dimensional integrals with positive bounded integrands. This IS tractable.
+
+**F4.4b (Uniform bounds):** The key estimate:
+|⟨O₁...Oₙ⟩| = |∫O₁...Oₙ · e^{-S} dD / Z| ≤ ‖O₁‖...‖Oₙ‖ · (∫e^{-S}dD / Z) = ‖O₁‖...‖Oₙ‖
+This crude bound is volume-INDEPENDENT (because we normalize by Z). For connected functions, Gaussian domination gives exponentially decaying bounds. The challenge is making these UNIFORM as vol → ∞ while keeping the correct decay rate.
+
+**F4.4c (Cluster expansion):** This is the hardest analytical step. Standard approaches:
+- Polymer expansion (Brydges-Kennedy-Abdesselam-Rivasseau)
+- Multiscale analysis (Balaban, Magnen-Rivasseau-Sénéor)
+- Stochastic quantization (Hairer regularity structures — 4D is frontier)
+The cascade's advantage: the action Tr(e^{-D²/Λ²}) is ANALYTIC and the spectral cutoff means each "block" has finitely many modes. This is closer to a lattice model (where cluster expansion works) than to continuum YM.
+
+**F4.4f (Mass gap in limit):** Two independent arguments converge:
+1. **From internal gap:** The internal spectral gap 2/Λ² is VOLUME-INDEPENDENT. It persists in any limit. The question is whether it "communicates" to the full theory.
+2. **From confinement:** The SU(3) sector has a confining linear potential. On ℝ³, the operator −Δ + σ|x| has discrete spectrum. If the cluster expansion (F4.4c) gives sufficient control, the confining contribution dominates at large distances and keeps the gap open.
+
+**The attack order for Phase 5:**
+
+```
+PHASE 5 (FRONTIER): Tier 4 — unconditional Millennium attack
+    F4.4a (OS on compact M) — most tractable entry point
+    ↓ (proves: the theory EXISTS on compact M as a Euclidean QFT)
+    F4.4b (uniform bounds) — Gaussian domination + normalization
+    ↓ (proves: correlators don't blow up with volume)
+    F4.4c (cluster expansion) — the hard analytical step
+    ↓ (proves: connected correlators decay exponentially)
+    F4.4d (thermo limit) — compactness argument
+    F4.4e (Wightman) — OS reconstruction
+    ↓ (proves: the theory exists on ℝ⁴ as a Wightman QFT)
+    F4.4f (mass gap persists) — confinement + internal gap
+    ↓ (proves: THE MILLENNIUM PRIZE for cascade gauge group)
+    F4.4g (FULL THEOREM) — combine everything
+    → RESULT: "UNCONDITIONAL. NO AXIOMS. QFT EXISTS. GAP > 0.
+               MILLENNIUM PRIZE. FIELDS MEDAL. QG SOLVED."
+```
+
+**Comparison to existing approaches to Yang-Mills mass gap:**
+
+| Approach | Progress | Why stuck |
+|----------|----------|-----------|
+| Lattice → continuum | Gap confirmed numerically | Can't rigorously control continuum limit |
+| Constructive QFT (Balaban) | Partial results in 4D | Renormalization group too complex |
+| Stochastic quantization | Hairer's regularity structures | 4D Yang-Mills not yet reached |
+| Functional integral (Jaffe-Witten) | Problem statement | No approach has worked |
+| **CASCADE (our approach)** | **Structure mapped** | **F4.4c is the bottleneck** |
+
+Our cascade advantage over ALL of the above: the spectral cutoff is PHYSICAL (not artificial), the action is BOUNDED (not just renormalizable), and the internal space is FINITE-DIMENSIONAL (not infinite). These are genuine structural simplifications that might bypass the obstacles others face.
+
+**If F4.4 is completed:**
+- Millennium Prize for Yang-Mills mass gap (SU(3) specifically): **SOLVED**
+- Fields Medal for new constructive QFT techniques: **EARNED**
+- Nobel Prize: requires experimental confirmation of predictions (proton decay, ν_R)
+- The Generator Theory of Everything: **MATHEMATICALLY COMPLETE AND PROVEN**
 
 ---
 
