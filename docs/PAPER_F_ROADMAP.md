@@ -1276,10 +1276,37 @@ It imports every other file — it IS the unification. Not a new proof, but the 
 5. **Honest about limitations.** Chapter 20 must be genuinely honest — not a pro-forma disclaimer but a real engagement with what the theory doesn't explain.
 6. **The Master Unification Theorem (Ch 19) is the climax.** The entire document builds to this one statement. Every chapter is a step toward it.
 
+### Chapter G1: THE FULL THEORY (for physicists)
+
+**This is the most important chapter.** A physicist who reads ONLY G1 must understand the ENTIRE theory — every claim, every derivation, every prediction — in physics language. No Lean. No category theory jargon. Just physics.
+
+**Structure of G1 (sub-sections):**
+
+| § | Topic | What the physicist learns |
+|---|-------|-------------------------|
+| G1.0 | Something from nothing | The founding question: why is there something rather than nothing? The answer: "nothing" is unstable. The empty set ∅ has exactly one map to itself (the identity). But the set {∅} — the set containing nothing — has MORE structure than nothing itself. This is the ur-principle: self-reference creates complexity. In mathematical terms: End(∅) = {id} = {∅}, so "nothing" automatically generates "something." The cascade doesn't start from an arbitrary choice — it starts from the ONLY thing that can exist: the act of nothing referring to itself. This is why ℂ² (the simplest non-trivial algebra over ℂ) is not a choice but a necessity. |
+| G1.1 | The seed | Why ℂ² is special: it's the simplest object whose self-maps are richer than itself. Analogy: a 2-state system is the simplest system that can encode information about itself. |
+| G1.2 | The cascade | Three levels: ℂ² → M₂(ℂ) → M₄(ℂ) → M₁₆(ℂ). Each is "what are the self-maps of the previous?" In physics terms: each level describes the space of transformations of the previous. |
+| G1.3 | Three lineages | From M₄(ℂ), three canonical operations give three pillars of physics: (1) Endomorphisms → gauge symmetry (forces), (2) Automorphisms → spacetime symmetry (geometry), (3) Inner product → quantum mechanics (measurement). These are NOT chosen — they're the only structure-preserving operations. |
+| G1.4 | The gauge group | M₄(ℂ) has automorphism group PU(4), Lie algebra su(4). This decomposes as SU(3)×SU(2)×U(1) — the EXACT gauge group of the Standard Model. Plus 3 extra generators (leptoquarks). Total: Pati-Salam SU(4)×SU(2)_L×SU(2)_R. |
+| G1.5 | Matter content | The defining representation of M₄(ℂ) is ℂ⁴. Under Pati-Salam: ℂ⁴ = (4,2,1) ⊕ (4̄,1,2). This IS one generation of fermions: quarks + leptons, left + right. Exactly 16 Weyl fermions per generation. |
+| G1.6 | Three generations | M₄(ℂ) ≅ M₂(ℍ) where ℍ = quaternions. The imaginary quaternions {i,j,k} span a 3-dimensional space. Each direction gives an independent complex structure → an independent generation. The 4th (octonions) is excluded because octonions aren't associative. Result: exactly 3 generations of matter. |
+| G1.7 | Chirality | The left-right asymmetry of the weak force follows from the covariant/contravariant distinction in the algebra decomposition. (4,2,1) transforms one way; (4̄,1,2) transforms the conjugate way. This is not a choice — it's the algebra's structure. |
+| G1.8 | The Higgs | The tensor product (4,2,1) ⊗ (4̄,1,2) contains exactly one colour-singlet scalar: (1,2,2). This is the Higgs boson. Its VEV breaks SU(2)_L×SU(2)_R → SU(2)_diagonal, giving masses to W, Z, and all fermions. No other scalar exists in the decomposition. |
+| G1.9 | Spacetime | The Clifford algebra Cl₄(ℂ) ≅ M₄(ℂ). This identifies the cascade algebra with 4-dimensional spacetime. The quaternionic real form gives the Lorentzian signature (1,3): one time, three space. The cascade DERIVES dimension and signature — they're not inputs. |
+| G1.10 | Gravity | The spectral action Tr(f(D²/Λ²)) — where D is the Dirac operator and Λ is the unification scale — expands as Einstein-Hilbert (R) + Yang-Mills (F²) + Higgs (|DH|²) + cosmological constant (Λ⁴). Gravity is not separate from the other forces; it's a different sector of the SAME spectral action. Newton's constant G = 3π/(f₂Λ²) is cascade-determined. |
+| G1.11 | Quantum mechanics | The inner product on ℂ⁴ is the Born rule. Observables are self-adjoint operators (Hermitian matrices). Unitary evolution comes from the automorphism group. The measurement postulates are CONSEQUENCES of the algebra, not axioms. |
+| G1.12 | The spectral function | The Boltzmann weight exp(-S) must respect the cascade's multiplicative structure. The Cauchy functional equation f(x+y) = f(x)f(y) has unique monotone solution f(x) = e^{-x}. This fixes ALL free parameters: f₀ = f₂ = f₄ = 1. Zero free parameters. No other theory achieves this. |
+| G1.13 | The mass gap | The spectral action on the internal space (16-dimensional Herm₄) has a curvature of 2/Λ² — this creates a spectral gap. Combined with confinement (SU(3) has asymptotic freedom, b₀ = 21), the theory has massive excitations with minimum mass Δ > 0. |
+| G1.14 | What the theory predicts | Proton decay (τ ~ 10^{35-36} years), right-handed W boson, Majorana neutrinos, primordial gravitational waves (r ≈ 0.004), dark energy equation of state w = -1 exactly, glueball mass Δ ≈ 1.6 GeV. |
+| G1.15 | What remains | The structural argument is complete. The rigorous analytical proof (constructive QFT in 4D) is open — 30 hard problems remain (F4.5). The existing 1,268 theorems verify arithmetic; genuine functional analysis formalization is a multi-decade programme (F4.6). Experimental confirmation is required. |
+
+**Writing principle for G1:** Every sub-section must be understandable by a physicist who has taken graduate QFT and GR. No category theory. No Lean. No "the cascade forces." Instead: "the algebra's structure implies." Use analogies, examples, Feynman diagrams where helpful. Make the PHYSICS vivid.
+
 Paper G is the cathedral. Paper F is the quarry where the stones were cut. The Lean files are the geological survey proving the stones are real.
 
-**Estimated length:** 100-200 pages.
-**When to write:** AFTER Paper F programme is complete (all F5-F8 proven). Paper G is the PRESENTATION of proven results, not new research.
+**Estimated length:** 100-200 pages. G1 alone: 30-50 pages.
+**When to write:** AFTER Paper F programme is substantially complete (F1-F4.4 done, F5-F7 in progress). Paper G is the PRESENTATION of results, not new research.
 
 ---
 
