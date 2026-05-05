@@ -60,6 +60,7 @@ Files are named `F{tier}_{number}_{short_name}.lean` matching the roadmap items.
 | `F4_1ij_QuaternionDivision.lean` | F4.1i + F4.1j — **GENUINE PROOF**: Quaternion dim=4, Im(H)=3 (three generations), non-commutativity (chirality), Hamilton relations i²=j²=k²=-1, ij=k, ji=-k, octonion exclusion, division algebra cascade | 23 | **PROVEN (REAL)** |
 | `F4_1l_GaussianPartition.lean` | F4.1l — **GENUINE PROOF**: Gaussian integral (Mathlib), partition function convergence, Hermitian matrix dimensions, gauge orbit volume, Weyl reduction, exp(-S)<=1 | 17 | **PROVEN (REAL)** |
 | `F4_1e_SpectralTripleArithmetic.lean` | F4.1e — **GENUINE PROOF**: Spectral triple arithmetic, anomaly cancellation traces, Seeley-DeWitt coefficients (12, 384, 128), DOF counting (52B/96F), beta coefficients, KO-dimension signs, proton decay exponents | 40 | **PROVEN (REAL)** |
+| `F4_1f_MatrixTraceAndDet.lean` | F4.1f — **GENUINE PROOF**: Matrix trace (Tr(I₄)=4, Tr([A,B])=0, cyclicity, linearity) and determinant (det(I)=1, det(AB)=det(A)det(B), det(Aⁿ)=det(A)ⁿ) — spectral action algebraic backbone | 25 | **PROVEN (REAL)** |
 | `F3_8b_SpectralActionComputation.lean` | F3.8b — **UPGRADED TO GENUINE**: native_decide → decide (kernel-verified). Spectral action coefficients, G, g², sin²θ_W from cascade | 18 | **PROVEN (REAL)** |
 | `F3_8c_NewtonsConstant.lean` | F3.8c — **UPGRADED TO GENUINE**: native_decide → decide (kernel-verified). Newton's constant, RG running, Λ_PS, proton decay | 17 | **PROVEN (REAL)** |
 
