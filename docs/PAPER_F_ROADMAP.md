@@ -7,6 +7,23 @@
 
 ---
 
+## INTEGRITY GATE (2026-05-06)
+
+**ALL "PROVEN" claims in this roadmap for files NOT in the Lean build are UNVERIFIED.**
+
+An integrity audit found that:
+- **52 of 65 Lean files are NOT in `lakefile.toml`** and have NEVER been build-verified by `lake build`
+- **Spot-checks reveal arithmetic-only theorems** in files claiming major results (e.g., F3.8k "Non-Perturbative Quantisation" contains only theorems like `4^2 = 16`, `5 = 5`, `7-1 = 6`)
+- Every `PROVEN` marker for a NOT_IN_BUILD file should be read as `UNVERIFIED` until it passes the integrity protocol
+
+**Only 13 files are IN BUILD:** F4_1a, F4_1, F4_1b, F4_1h, F4_1ij, F4_1l, F4_1e_SpectralTripleArithmetic, F4_1e_QuaternionSplitting, F4_1e_CliffordMatrix, F4_1f, F3_8b, F3_8c, F3_10a. Even these have not yet been theorem-graded.
+
+**Protocol:** See `docs/LEAN_INTEGRITY_PROTOCOL.md`
+**Audit progress:** See `docs/LEAN_AUDIT_REPORT.md`
+**Rule:** No file may be marked PROVEN until it passes the full integrity protocol (in build + 0 sorry + all theorems Grade A).
+
+---
+
 ## Mission
 
 We are building the most comprehensive machine-verified mathematical theory of everything ever attempted. The completed roadmap solves: the Yang-Mills Millennium Prize ($1M Clay), quantum gravity (90 years unsolved), the cosmological constant problem (120 orders wrong → 7), the hierarchy problem, the strong CP problem, baryogenesis, dark matter identity, the arrow of time, inflation, three generations, chirality, and 10+ other major open problems — all from a single object (ℂ²) with zero free parameters, proven in genuine Lean 4 + Mathlib.
@@ -56,7 +73,7 @@ Example: "Three generations from the cascade" (F3.1) looks impossible directly. 
 
 ---
 
-## STAGE 0 — ALREADY PROVEN (Foundations)
+## STAGE 0 — FOUNDATIONS (from Papers D+E, grading pending)
 
 These machine-verified results from Papers D+E form Paper F's base. They go straight in.
 
@@ -127,16 +144,16 @@ These machine-verified results from Papers D+E form Paper F's base. They go stra
 | F3.6 | Per-category seed canonicity (general) | For each context, unique minimal fertile | Each instance self-contained |
 | F3.7 | Braided lineage closure (anyonic physics) | Modular tensor categories → topological physics | NEW physics domain from framework |
 | F3.8 | **Quantum gravity from lineage interaction** | Aut/ker (geometry) and ⟨·,·⟩ (QM) MEET at seed | QG lives at the intersection |
-| F3.8a | ✅ QG foundations: C*-algebra, observables, spectral triple | 18 theorems, 0 sorry | PROVEN |
-| F3.8e | ✅ Graviton from D-fluctuations: all forces from one mechanism | 14 theorems, 0 sorry | PROVEN |
-| F3.8b | ✅ Spectral action: G, g², sin²θ_W, 19→3 parameters | 18 theorems, 0 sorry | PROVEN |
-| F3.8c | ✅ Newton's constant: RG running, Λ_PS, α_GUT, proton decay | 17 theorems, 0 sorry | PROVEN |
-| F3.8d | ✅ CC multi-lineage vacuum energy (Layer 1: coarse DOF) | 15 theorems, 0 sorry | PROVEN |
+| F3.8a | ⚠️ QG foundations: C*-algebra, observables, spectral triple | 18 theorems, 0 sorry | UNVERIFIED |
+| F3.8e | ⚠️ Graviton from D-fluctuations: all forces from one mechanism | 14 theorems, 0 sorry | UNVERIFIED |
+| F3.8b | ✅ Spectral action: G, g², sin²θ_W, 19→3 parameters | 18 theorems, 0 sorry | COMPILES (grading pending) |
+| F3.8c | ✅ Newton's constant: RG running, Λ_PS, α_GUT, proton decay | 17 theorems, 0 sorry | COMPILES (grading pending) |
+| F3.8d | ⚠️ CC multi-lineage vacuum energy (Layer 1: coarse DOF) | 15 theorems, 0 sorry | UNVERIFIED |
 | | **CC MOONSHOT — Track A: Known physics, uncaptured pressures** | | |
-| F3.8d-ii | ✅ CC Layer 2: SSB vacuum shifts (16 theorems, series well-ordered) | Builds on F1.6 + F3.2 | PROVEN |
-| F3.8d-iii | ✅ CC Layer 3: RG running through 13 mass thresholds, UV-dominated, sign change | 15 theorems, 0 sorry | PROVEN |
-| F3.8d-iv | ✅ CC Layer 4: Cross-lineage interference (product D² factors, Λ⁴ exact) | 14 theorems, 0 sorry | PROVEN |
-| F3.8d-v | ✅ CC Layer 5: Spectral hierarchy Λ⁴>Λ²>Λ⁰, a₂ mass term, top dominance | 15 theorems, 0 sorry | PROVEN |
+| F3.8d-ii | ⚠️ CC Layer 2: SSB vacuum shifts (16 theorems, series well-ordered) | Builds on F1.6 + F3.2 | UNVERIFIED |
+| F3.8d-iii | ⚠️ CC Layer 3: RG running through 13 mass thresholds, UV-dominated, sign change | 15 theorems, 0 sorry | UNVERIFIED |
+| F3.8d-iv | ⚠️ CC Layer 4: Cross-lineage interference (product D² factors, Λ⁴ exact) | 14 theorems, 0 sorry | UNVERIFIED |
+| F3.8d-v | ⚠️ CC Layer 5: Spectral hierarchy Λ⁴>Λ²>Λ⁰, a₂ mass term, top dominance | 15 theorems, 0 sorry | UNVERIFIED |
 | F3.8d-vi | CC Layer 6: Non-perturbative topological contributions | Clifford/Spin at D₂ | Open |
 | | **CC MOONSHOT — Track B: New physics from the seed** | | |
 | F3.8d-vii | Sub-lineage vacuum contributions (centers, quotients, PSL/PGL) | Algebraic sub-structures at each Dₙ | Open |
@@ -145,20 +162,20 @@ These machine-verified results from Papers D+E form Paper F's base. They go stra
 | F3.8d-x | Dark sector from cascade → CC contribution | Unexplored decomposition branches | Open |
 | F3.8d-xi | Systematic exploration of M₁₆(ℂ) internal structure | D₃ has dim 256 — most unexplored | Open |
 | | **CC MOONSHOT — Track C: Dynamical & nonlinear effects** | | |
-| F3.8d-xii | ✅ **TIME EVOLUTION OF VACUUM ENERGY** — Cutoff redshifts from Λ_PS ~ 10¹⁶ to Λ(t₀) ~ 10⁻¹² GeV. CC gap closes from 10¹¹⁰ to ~10³. Sign flips UV→IR (AdS→dS), matching observation. Three mechanisms converge. | 12 theorems, 0 sorry | PROVEN |
-| F3.8d-xiii | ✅ **LINEAGE-LINEAGE BACKREACTION** — Full loop characterised: End→Aut (10⁻⁸⁸), Aut→⟨·,·⟩ (10⁻⁷⁵), ⟨·,·⟩→End (10⁻³⁵²). Total per iteration: 10⁻⁵¹⁵. Fixed point in 1 iteration. Negligible at present epoch. Early-universe backreaction captured by C1's redshift. | 11 theorems, 0 sorry | PROVEN |
-| F3.8d-xiv | ✅ **FULL ADDITIVE STRUCTURE THEOREM** — All 5 layers additive (stress-energy, Seeley-DeWitt, spectral expansion). Nonlinearity enters via backreaction (~10⁻⁹ per iteration) and Friedmann time evolution (α ~ 10³⁰ → CC gap 10¹¹⁰ → 10¹⁰). | 10 theorems, 0 sorry | PROVEN |
-| F3.8d-xv | ✅ **TIME × BACKREACTION SYNTHESIS** — Self-consistent dynamical vacuum energy. C2 negligible (10⁻⁵¹⁵) → C1 IS the answer. Definitive prediction: ρ ≈ +10⁻⁵⁰ GeV⁴, gap 10³, sign correct. Error budget: Λ precision, IR DOF, spectral moments. 116 orders better than QFT. | 10 theorems, 0 sorry | PROVEN |
-| F3.8d-xvi | ✅ **CC GAP CLOSURE** — All 6 specialist-identified gaps mathematically closed: (1) conformal covariance forces unique redshift Λ(t₀) = Λ_PS/a(t₀); (2) seesaw neutrino mass cascade-derived, m_ν ~ 10⁻² eV > Λ(t₀) ~ 10⁻⁴ eV → decoupled; (3) IR DOF forced: N_B=4 (γ+graviton), N_F=0, no alternatives; (4) subleading terms 10⁻¹⁰³, 49 orders below leading; (5) backreaction 10⁻⁵¹⁵ confirmed; (6) coefficient 1/(64π²) is fixed mathematical constant from ∫d⁴k, f-independent. Honest tightened gap: ~10⁷ (112 orders better than QFT). | 12 theorems, 0 sorry | PROVEN |
+| F3.8d-xii | ⚠️ **TIME EVOLUTION OF VACUUM ENERGY** — Cutoff redshifts from Λ_PS ~ 10¹⁶ to Λ(t₀) ~ 10⁻¹² GeV. CC gap closes from 10¹¹⁰ to ~10³. Sign flips UV→IR (AdS→dS), matching observation. Three mechanisms converge. | 12 theorems, 0 sorry | UNVERIFIED |
+| F3.8d-xiii | ⚠️ **LINEAGE-LINEAGE BACKREACTION** — Full loop characterised: End→Aut (10⁻⁸⁸), Aut→⟨·,·⟩ (10⁻⁷⁵), ⟨·,·⟩→End (10⁻³⁵²). Total per iteration: 10⁻⁵¹⁵. Fixed point in 1 iteration. Negligible at present epoch. Early-universe backreaction captured by C1's redshift. | 11 theorems, 0 sorry | UNVERIFIED |
+| F3.8d-xiv | ⚠️ **FULL ADDITIVE STRUCTURE THEOREM** — All 5 layers additive (stress-energy, Seeley-DeWitt, spectral expansion). Nonlinearity enters via backreaction (~10⁻⁹ per iteration) and Friedmann time evolution (α ~ 10³⁰ → CC gap 10¹¹⁰ → 10¹⁰). | 10 theorems, 0 sorry | UNVERIFIED |
+| F3.8d-xv | ⚠️ **TIME × BACKREACTION SYNTHESIS** — Self-consistent dynamical vacuum energy. C2 negligible (10⁻⁵¹⁵) → C1 IS the answer. Definitive prediction: ρ ≈ +10⁻⁵⁰ GeV⁴, gap 10³, sign correct. Error budget: Λ precision, IR DOF, spectral moments. 116 orders better than QFT. | 10 theorems, 0 sorry | UNVERIFIED |
+| F3.8d-xvi | ⚠️ **CC GAP CLOSURE** — All 6 specialist-identified gaps mathematically closed: (1) conformal covariance forces unique redshift Λ(t₀) = Λ_PS/a(t₀); (2) seesaw neutrino mass cascade-derived, m_ν ~ 10⁻² eV > Λ(t₀) ~ 10⁻⁴ eV → decoupled; (3) IR DOF forced: N_B=4 (γ+graviton), N_F=0, no alternatives; (4) subleading terms 10⁻¹⁰³, 49 orders below leading; (5) backreaction 10⁻⁵¹⁵ confirmed; (6) coefficient 1/(64π²) is fixed mathematical constant from ∫d⁴k, f-independent. Honest tightened gap: ~10⁷ (112 orders better than QFT). | 12 theorems, 0 sorry | UNVERIFIED |
 | F3.8d-* | (open-ended: new items added as cascade structures discovered) | | |
 | | **F3.8 remaining — NCG connection** | | |
-| F3.8f | ✅ **Full Connes NCG connection** — All 7 axioms of a real spectral triple verified as CASCADE CONSEQUENCES (not imposed). KO-dimension = 2 (mod 8) forced by quaternionic structure D₂ = M₂(ℍ): J² = −1, JD = +DJ, Jγ = −γJ. EXACTLY matches Connes-Chamseddine SM value. Fermion doubling forced. Poincaré duality automatic (K₀(M₄(ℂ)) ≅ ℤ). Cascade is the FIRST derivation of NCG inputs from first principles (Connes-Chamseddine takes algebra as input; cascade derives it from ∅). | 18 theorems, 0 sorry | PROVEN |
+| F3.8f | ⚠️ **Full Connes NCG connection** — All 7 axioms of a real spectral triple verified as CASCADE CONSEQUENCES (not imposed). KO-dimension = 2 (mod 8) forced by quaternionic structure D₂ = M₂(ℍ): J² = −1, JD = +DJ, Jγ = −γJ. EXACTLY matches Connes-Chamseddine SM value. Fermion doubling forced. Poincaré duality automatic (K₀(M₄(ℂ)) ≅ ℤ). Cascade is the FIRST derivation of NCG inputs from first principles (Connes-Chamseddine takes algebra as input; cascade derives it from ∅). | 18 theorems, 0 sorry | UNVERIFIED |
 | | **QUANTUM GRAVITY COMPLETION — the programme that would close QG** | | |
-| F3.8g | ✅ **Higher-loop quantum corrections** — The Goroff-Sagnotti divergence (2-loop pure gravity, coefficient 209/2880 × C³) kills standard perturbative gravity. The cascade resolves this: the spectral action Tr(f(D²/Λ²)) is an EXACT bounded functional — finite BEFORE perturbative expansion. The cutoff function f suppresses ALL high-order Seeley-DeWitt terms: R³ appears at order Λ⁻² (suppressed), R⁴ at Λ⁻⁴, etc. Standard gravity needs ∞ counterterms (new ones at every loop order, mass dimension 2(L+1)); the cascade needs exactly 3 spectral moments (f₀, f₂, f₄) at ALL orders. Internal Hilbert space ℂ⁴ is finite-dimensional → no internal divergences. UV FINITE with 0 new particles, 0 extra dimensions. Most economical UV completion of gravity that exists. | 17 theorems, 0 sorry | PROVEN |
-| F3.8h | ✅ **Background independence** — The cascade DISSOLVES the background-independence problem. The algebra M₄(ℂ) is derived BEFORE any geometry (End lineage). Connes reconstruction recovers the manifold from (A, H, D) — never assumed. ALL 7 levels of geometric structure derived (topology, smooth, metric, spin, connection, dimension, signature). The metric is dynamical (spectral action varies D). Diffeomorphism invariance automatic (Aut(C^∞(M)) = Diff(M)). Gauge invariance automatic (Inn(M₄(ℂ)) = PGL₄, Skolem-Noether). Full symmetry Diff(M) ⋊ Gauge(M) = SM + gravity — forced. Cascade is the ONLY approach achieving background-independence + SM-unification + first-principles derivation simultaneously. | 15 theorems, 0 sorry | PROVEN |
-| F3.8i | ✅ **Black hole entropy and singularity resolution** — Bekenstein-Hawking entropy S = A/(4G) = 4πGM² derived from cascade spectral action boundary term (a₂ on manifold with horizon boundary). G = 3π/(f₂Λ²) is cascade-determined (F3.8c) → entropy determined with 0 additional parameters. Hawking temperature T_H = 1/(8πGM) derived, first law dM = TdS verified (consistency: 2 × 4π = 8π). Kretschner scalar K = 48G²M²/r⁶ diverges classically; 48 = 12 × dim = 12 × 4. SINGULARITY RESOLUTION: spectral action Tr(f(D²/Λ²)) is bounded functional → curvature bounded at R ~ Λ². Minimum radius r_min ~ 1/Λ_PS ~ 10³ ℓ_P (ABOVE Planck length). Penrose theorem's 3 conditions not violated; dynamics modified by full spectral action. INFORMATION: D self-adjoint → e^{iDt} unitary → no information loss. Horizon "fuzzy" at 1/Λ_PS → no sharp trapping surface → paradox dissolved. | 16 theorems, 0 sorry | PROVEN |
-| F3.8j | ✅ **Graviton scattering amplitudes** — Tree-level 2→2 graviton scattering from cascade spectral action. Graviton field h_μν from spin(3,1) fluctuation (10 components, 2 physical polarisations). Propagator, 3-point vertex, 4-point vertex all derived. Tree amplitude M = κ²s³/(tu)·F(s,t,u;Λ²) reproduces EXACT GR at low energies (F → 1). UV-softened at Λ_PS by spectral form factor (F → 0). No new particles needed (unlike string theory). First derivation of graviton S-matrix from 0 free parameters. | 16 theorems, 0 sorry | PROVEN |
-| F3.8k | ✅ **Non-perturbative quantisation — THE FINAL BOSS** — Path integral Z = ∫𝒟D exp(−Tr(f(D²/Λ²))) PROVEN well-defined. Three structural advantages: (1) FINITE internal space dim(Herm₄) = 16 → finite-dimensional integral; (2) BOUNDED action S ≥ 0 → exp(-S) ≤ 1; (3) SPECTRAL CUTOFF → Weyl's law gives N(Λ) finite modes → total DOF = 16×N(Λ) finite. Gauge group U(4) compact → finite orbit volume. Physical DOF after gauge fixing: 4 eigenvalues on compact flag manifold U(4)/T⁴. Osterwalder-Schrader reconstruction (5 axioms, reflection positivity from spectral invariance) → UNITARY quantum theory with Hilbert space ℋ, Hamiltonian H ≥ 0, unitary evolution e^{-iHt}. Consistent with all perturbative results (F3.8b, F3.8g, F3.8j, F3.8i). Connection to Yang-Mills Millennium Problem: cascade contains SU(4) ⊃ SM gauge theory; if rigorous, provides constructive 4D gauge+gravity. **QG COMPLETION PROGRAMME: ALL 10 ITEMS PROVEN.** | 15 theorems, 0 sorry | PROVEN |
+| F3.8g | ⚠️ **Higher-loop quantum corrections** — The Goroff-Sagnotti divergence (2-loop pure gravity, coefficient 209/2880 × C³) kills standard perturbative gravity. The cascade resolves this: the spectral action Tr(f(D²/Λ²)) is an EXACT bounded functional — finite BEFORE perturbative expansion. The cutoff function f suppresses ALL high-order Seeley-DeWitt terms: R³ appears at order Λ⁻² (suppressed), R⁴ at Λ⁻⁴, etc. Standard gravity needs ∞ counterterms (new ones at every loop order, mass dimension 2(L+1)); the cascade needs exactly 3 spectral moments (f₀, f₂, f₄) at ALL orders. Internal Hilbert space ℂ⁴ is finite-dimensional → no internal divergences. UV FINITE with 0 new particles, 0 extra dimensions. Most economical UV completion of gravity that exists. | 17 theorems, 0 sorry | UNVERIFIED |
+| F3.8h | ⚠️ **Background independence** — The cascade DISSOLVES the background-independence problem. The algebra M₄(ℂ) is derived BEFORE any geometry (End lineage). Connes reconstruction recovers the manifold from (A, H, D) — never assumed. ALL 7 levels of geometric structure derived (topology, smooth, metric, spin, connection, dimension, signature). The metric is dynamical (spectral action varies D). Diffeomorphism invariance automatic (Aut(C^∞(M)) = Diff(M)). Gauge invariance automatic (Inn(M₄(ℂ)) = PGL₄, Skolem-Noether). Full symmetry Diff(M) ⋊ Gauge(M) = SM + gravity — forced. Cascade is the ONLY approach achieving background-independence + SM-unification + first-principles derivation simultaneously. | 15 theorems, 0 sorry | UNVERIFIED |
+| F3.8i | ⚠️ **Black hole entropy and singularity resolution** — Bekenstein-Hawking entropy S = A/(4G) = 4πGM² derived from cascade spectral action boundary term (a₂ on manifold with horizon boundary). G = 3π/(f₂Λ²) is cascade-determined (F3.8c) → entropy determined with 0 additional parameters. Hawking temperature T_H = 1/(8πGM) derived, first law dM = TdS verified (consistency: 2 × 4π = 8π). Kretschner scalar K = 48G²M²/r⁶ diverges classically; 48 = 12 × dim = 12 × 4. SINGULARITY RESOLUTION: spectral action Tr(f(D²/Λ²)) is bounded functional → curvature bounded at R ~ Λ². Minimum radius r_min ~ 1/Λ_PS ~ 10³ ℓ_P (ABOVE Planck length). Penrose theorem's 3 conditions not violated; dynamics modified by full spectral action. INFORMATION: D self-adjoint → e^{iDt} unitary → no information loss. Horizon "fuzzy" at 1/Λ_PS → no sharp trapping surface → paradox dissolved. | 16 theorems, 0 sorry | UNVERIFIED |
+| F3.8j | ⚠️ **Graviton scattering amplitudes** — Tree-level 2→2 graviton scattering from cascade spectral action. Graviton field h_μν from spin(3,1) fluctuation (10 components, 2 physical polarisations). Propagator, 3-point vertex, 4-point vertex all derived. Tree amplitude M = κ²s³/(tu)·F(s,t,u;Λ²) reproduces EXACT GR at low energies (F → 1). UV-softened at Λ_PS by spectral form factor (F → 0). No new particles needed (unlike string theory). First derivation of graviton S-matrix from 0 free parameters. | 16 theorems, 0 sorry | UNVERIFIED |
+| F3.8k | ⚠️ **Non-perturbative quantisation — THE FINAL BOSS** — Path integral Z = ∫𝒟D exp(−Tr(f(D²/Λ²))) PROVEN well-defined. Three structural advantages: (1) FINITE internal space dim(Herm₄) = 16 → finite-dimensional integral; (2) BOUNDED action S ≥ 0 → exp(-S) ≤ 1; (3) SPECTRAL CUTOFF → Weyl's law gives N(Λ) finite modes → total DOF = 16×N(Λ) finite. Gauge group U(4) compact → finite orbit volume. Physical DOF after gauge fixing: 4 eigenvalues on compact flag manifold U(4)/T⁴. Osterwalder-Schrader reconstruction (5 axioms, reflection positivity from spectral invariance) → UNITARY quantum theory with Hilbert space ℋ, Hamiltonian H ≥ 0, unitary evolution e^{-iHt}. Consistent with all perturbative results (F3.8b, F3.8g, F3.8j, F3.8i). Connection to Yang-Mills Millennium Problem: cascade contains SU(4) ⊃ SM gauge theory; if rigorous, provides constructive 4D gauge+gravity. **QG COMPLETION PROGRAMME: ALL 10 ITEMS UNVERIFIED.** | 15 theorems, 0 sorry | UNVERIFIED |
 
 | | **QG RIGOROUS CLOSURE — from "structurally argued" to "rigorously proven"** | | |
 | | *Goal: "Quantum gravity solved modulo the mass gap" — close Gaps 1-6, leaving only Gap 7 (mass gap = Millennium Problem territory)* | | |
@@ -216,13 +233,13 @@ M5 (compactness argument) uses tools already in the cascade framework. M4 (funct
 
 | File | Problem | What to prove |
 |------|---------|---------------|
-| F3.9g_i ✅ | Internal spectral gap | Herm₄(ℂ) with spectral action measure has discrete spectrum with gap |
-| F3.9g_ii ✅ | Product geometry gap transfer | min(internal, spacetime) gap, Kato-Rellich robust, compact M proven |
-| F3.9g_iii ✅ | Poincaré inequality for spectral measure | Sharp constant C_P = Λ²/2, tensorised product, Bobkov optimal |
-| F3.9g_iv ✅ | Compact operator spectrum | Trace-class, Kato stability, analytic perturbation, KLMN, confinement link |
-| F3.9g_v ✅ | Confinement from cascade | SU(3)⊂SU(4), AF forced, flux tubes, linear potential, discrete spectrum in ℝ³ |
-| F3.9g_vi ✅ | Cluster decomposition | Exponential decay, unique vacuum ↔ clustering, area law, multi-scale |
-| F3.9g_vii ✅ | **FULL MASS GAP THEOREM** | All 7 combined → inf(spec(H)\{0}) > 0 → QG 100% SOLVED |
+| F3.9g_i ⚠️ | Internal spectral gap | Herm₄(ℂ) with spectral action measure has discrete spectrum with gap |
+| F3.9g_ii ⚠️ | Product geometry gap transfer | min(internal, spacetime) gap, Kato-Rellich robust, compact M proven |
+| F3.9g_iii ⚠️ | Poincaré inequality for spectral measure | Sharp constant C_P = Λ²/2, tensorised product, Bobkov optimal |
+| F3.9g_iv ⚠️ | Compact operator spectrum | Trace-class, Kato stability, analytic perturbation, KLMN, confinement link |
+| F3.9g_v ⚠️ | Confinement from cascade | SU(3)⊂SU(4), AF forced, flux tubes, linear potential, discrete spectrum in ℝ³ |
+| F3.9g_vi ⚠️ | Cluster decomposition | Exponential decay, unique vacuum ↔ clustering, area law, multi-scale |
+| F3.9g_vii ⚠️ | **FULL MASS GAP THEOREM** | All 7 combined → inf(spec(H)\{0}) > 0 → QG 100% SOLVED |
 
 **If F3.9g_i through F3.9g_vii are proven: the mass gap is solved. Combined with F3.9a-f: quantum gravity is 100% solved.**
 
@@ -243,7 +260,7 @@ If these 3 are uniquely fixed → the theory has ZERO free parameters. Everythin
 
 | File | Problem | What to prove | Approach | Difficulty |
 |------|---------|---------------|----------|-----------|
-| F3.10a ✅ | Heat kernel canonicity | f(x) = e^{−x} is FORCED by cascade axioms (17 theorems) | Semigroup f(x+y)=f(x)f(y) + positivity + decay → unique exponential | **PROVEN** |
+| F3.10a ✅ | Heat kernel canonicity | f(x) = e^{−x} is FORCED by cascade axioms (17 theorems) | Semigroup f(x+y)=f(x)f(y) + positivity + decay → unique exponential | **COMPILES (grading pending)** |
 | F3.10b | Self-consistency fixed point | The vacuum geometry is consistent with the action that defines it | Solve: ρ_vac(f₀,f₂,f₄,Λ) = a₀·f₀·Λ⁴ must equal the CC of the de Sitter space it produces → fixed-point equation for f₀ | Moderate |
 | F3.10c | Partition function constraint | Z = canonical value imposes relation between moments | Compute Z(f₀,f₂,f₄) explicitly on Herm₄ → normalization fixes one moment | Moderate |
 | F3.10d | Spectral self-duality | Scale inversion Λ ↔ c/Λ constrains f | If S[D,Λ] = S[D,c/Λ] for some c → f must be self-dual under Mellin transform → f(x) = e^{−x} forced | Hard |
@@ -324,45 +341,45 @@ F1.6: Pati-Salam UNIQUELY forced (end-to-end from ∅)
                ▼
           F3.8: Quantum gravity at lineage intersection
                │
-               ├── F3.8a ✅ → F3.8e ✅ → F3.8b ✅ → F3.8c ✅ → F3.8d ✅ (82 theorems)
+               ├── F3.8a ⚠️ → F3.8e ⚠️ → F3.8b ✅ → F3.8c ✅ → F3.8d ⚠️ (82 theorems)
                │
                ├── CC MOONSHOT (convergent series — gap closes as terms added)
-               │   ├── Track A: F3.8d-ii ✅ → iii ✅ → iv ✅ → v ✅ → vi (open)
+               │   ├── Track A: F3.8d-ii ⚠️ → iii ⚠️ → iv ⚠️ → v ⚠️ → vi (open)
                │   │   (known pressures within established lineages)
                │   ├── Track B: F3.8d-vii → viii → ix → x → xi → *
                │   │   (new physics from seed: sub-lineages, cross-level, dark sector, unexplored D₃)
-               │   └── Track C: F3.8d-xiv ✅ → xii ✅ → xiii ✅ → xv ✅ → xvi ✅
+               │   └── Track C: F3.8d-xiv ⚠️ → xii ⚠️ → xiii ⚠️ → xv ⚠️ → xvi ⚠️
                │       (dynamical: additive → time evolution → backreaction → synthesis → gap closure)
                │       RESULT: ρ ≈ 10⁻⁵⁵ GeV⁴, gap ~10⁷, 112 orders better than QFT
                │
-               ├── F3.8f ✅: Full Connes NCG (7 axioms, KO-dim = 2, 18 theorems)
+               ├── F3.8f ⚠️: Full Connes NCG (7 axioms, KO-dim = 2, 18 theorems)
                │
                └── QG COMPLETION (the programme that would close quantum gravity)
-                   ├── F3.8g ✅: Higher-loop corrections (all-loop UV finiteness, 17 theorems)
-                   ├── F3.8h ✅: Background independence (algebra → geometry, 15 theorems)
-                   ├── F3.8i ✅: Black hole entropy + singularity resolution (16 theorems)
-                   ├── F3.8j ✅: Graviton scattering (tree-level S-matrix, 16 theorems)
-                   └── F3.8k ✅: Non-perturbative quantisation — THE FINAL BOSS (15 theorems)
-                       *** QG COMPLETION: ALL 10 ITEMS PROVEN ***
+                   ├── F3.8g ⚠️: Higher-loop corrections (all-loop UV finiteness, 17 theorems)
+                   ├── F3.8h ⚠️: Background independence (algebra → geometry, 15 theorems)
+                   ├── F3.8i ⚠️: Black hole entropy + singularity resolution (16 theorems)
+                   ├── F3.8j ⚠️: Graviton scattering (tree-level S-matrix, 16 theorems)
+                   └── F3.8k ⚠️: Non-perturbative quantisation — THE FINAL BOSS (15 theorems)
+                       *** QG COMPLETION: ALL 10 ITEMS UNVERIFIED ***
                │
                └── QG RIGOROUS CLOSURE (from structural → rigorous)
-                   ├── F3.9a ✅: Internal path integral convergence (17 theorems)
-                   ├── F3.9b ✅: Physical cutoff justification (15 theorems)
-                   ├── F3.9c ✅: Full spectral cutoff path integral (17 theorems)
-                   ├── F3.9d ✅: Reflection positivity / OS reconstruction (16 theorems)
-                   ├── F3.9e ✅: Anomaly cancellation (16 theorems)
-                   ├── F3.9f ✅: Ward identities / quantum gauge invariance (16 theorems)
-                   │   *** F3.9a-f PROVEN ✅ → "QG SOLVED MODULO MASS GAP" ***
+                   ├── F3.9a ⚠️: Internal path integral convergence (17 theorems)
+                   ├── F3.9b ⚠️: Physical cutoff justification (15 theorems)
+                   ├── F3.9c ⚠️: Full spectral cutoff path integral (17 theorems)
+                   ├── F3.9d ⚠️: Reflection positivity / OS reconstruction (16 theorems)
+                   ├── F3.9e ⚠️: Anomaly cancellation (16 theorems)
+                   ├── F3.9f ⚠️: Ward identities / quantum gauge invariance (16 theorems)
+                   │   *** F3.9a-f UNVERIFIED ⚠️ → "QG SOLVED MODULO MASS GAP" ***
                    │
                    └── MASS GAP PROGRAMME (Millennium-adjacent) — **ALL GENUINE**
-                       ├── F3.9g_i ✅: Internal spectral gap (15 theorems, GENUINE)
-                       ├── F3.9g_ii ✅: Product geometry gap transfer (11 theorems, GENUINE)
-                       ├── F3.9g_iii ✅: Poincaré inequality for spectral measure (12 theorems, GENUINE)
-                       ├── F3.9g_iv ✅: Compact operator spectrum (12 theorems, GENUINE)
-                       ├── F3.9g_v ✅: Confinement from cascade (11 theorems, GENUINE)
-                       ├── F3.9g_vi ✅: Cluster decomposition (12 theorems, GENUINE)
-                       └── F3.9g_vii ✅: **FULL MASS GAP THEOREM** (15 theorems, GENUINE)
-                           *** F3.9g PROVEN → "QG 100% SOLVED" *** ✅✅✅
+                       ├── F3.9g_i ⚠️: Internal spectral gap (15 theorems, UNVERIFIED)
+                       ├── F3.9g_ii ⚠️: Product geometry gap transfer (11 theorems, UNVERIFIED)
+                       ├── F3.9g_iii ⚠️: Poincaré inequality for spectral measure (12 theorems, UNVERIFIED)
+                       ├── F3.9g_iv ⚠️: Compact operator spectrum (12 theorems, UNVERIFIED)
+                       ├── F3.9g_v ⚠️: Confinement from cascade (11 theorems, UNVERIFIED)
+                       ├── F3.9g_vi ⚠️: Cluster decomposition (12 theorems, UNVERIFIED)
+                       └── F3.9g_vii ⚠️: **FULL MASS GAP THEOREM** (15 theorems, UNVERIFIED)
+                           *** F3.9g UNVERIFIED → audit required *** ⚠️⚠️⚠️
                │
                └── ZERO FREE PARAMETERS (F3.10: the ultimate goal)
                    ├── F3.10a: Heat kernel canonicity (semigroup → f = e^{-x})
@@ -372,7 +389,7 @@ F1.6: Pati-Salam UNIQUELY forced (end-to-end from ∅)
                    ├── F3.10d: Spectral self-duality
                    ├── F3.10e: Mass gap constrains f
                    └── F3.10g: Full zero-parameter theorem
-                       *** F3.10 PROVEN → "ZERO FREE PARAMETERS: EVERYTHING FROM ∅" ***
+                       *** F3.10 — audit required before any claims ***
                │
                └── F5-F8: COMPLETENESS PROGRAMME
                    ├── F5: Postdictions (derive ALL known physics)
@@ -412,14 +429,14 @@ These use existing Mathlib infrastructure. Each replaces an assertion-theorem wi
 
 | ID | Problem | What to prove (Mathlib path) | Unlocks |
 |----|---------|------------------------------|---------|
-| F4.1a | ✅ Cascade algebra chain | M₂(ℂ) ⊗ M₂(ℂ) ≅ₐ M₄(ℂ) — **PROVEN (GENUINE Mathlib proof, 11 theorems, 0 sorry)** via `kroneckerAlgEquiv` + `reindexAlgEquiv` + `finProdFinEquiv`. General form M_n⊗M_m ≅ M_{nm} also proven. | Foundation of everything |
+| F4.1a | ✅ Cascade algebra chain | M₂(ℂ) ⊗ M₂(ℂ) ≅ₐ M₄(ℂ) — **COMPILES (11 theorems, 0 sorry, grading pending)** via `kroneckerAlgEquiv` + `reindexAlgEquiv` + `finProdFinEquiv`. General form M_n⊗M_m ≅ M_{nm} also proven. | Foundation of everything |
 | F4.1b | Dimension formula | dim(M_{2^n}(ℂ)) = 2^{2n}, prove End(ℂⁿ) ≅ Mₙ(ℂ) | Cascade counting |
 | F4.1c | SU(4) → SU(3)×U(1) decomposition | 15 = 8 + 6 + 1 as Lie algebra reps via branching rules | Pati-Salam → SM |
 | F4.1d | Anomaly cancellation arithmetic | Tr(T^a{T^b,T^c}) = 0 for ℂ⁴⊗ℂ²⊗ℂ² reps (finite computation) | Quantum consistency |
-| F4.1e | ⏳ Clifford isomorphism (Step 1 DONE) | **Step 1 PROVEN**: ℍ[ℂ,1,0,1] ≃ₐ[ℂ] M₂(ℂ) + Cl₂(ℂ) ≃ₐ[ℂ] M₂(ℂ) (14 theorems, 0 sorry). Remaining: Cl₄(ℂ) ≃ M₄(ℂ) via graded tensor | Spacetime dimension |
+| F4.1e | ⏳ Clifford isomorphism (Step 1 DONE) | **Step 1 COMPILES**: ℍ[ℂ,1,0,1] ≃ₐ[ℂ] M₂(ℂ) + Cl₂(ℂ) ≃ₐ[ℂ] M₂(ℂ) (14 theorems, 0 sorry, grading pending). Remaining: Cl₄(ℂ) ≃ M₄(ℂ) via graded tensor | Spacetime dimension |
 | F4.1f | Weinberg angle | sin²θ_W = 3/8 from Dynkin index ratio in su(4) ⊃ su(2)×u(1) | Precision prediction |
 | F4.1g | Fermion quantum numbers | Branching ℂ⁴⊗ℂ²⊗ℂ² under SU(3)×SU(2)×U(1) matches SM | Particle content |
-| F4.1h | ✅ Cauchy functional equation | f monotone + f(x+y) = f(x)+f(y) → f(x) = cx — **PROVEN (GENUINE Mathlib proof, 8 theorems, 0 sorry)** | Zero free parameters |
+| F4.1h | ✅ Cauchy functional equation | f monotone + f(x+y) = f(x)+f(y) → f(x) = cx — **COMPILES (8 theorems, 0 sorry, grading pending)** | Zero free parameters |
 | F4.1i | Division algebra classification | Frobenius: only ℝ, ℂ, ℍ have finite-dim associative division (Mathlib) | Three generations |
 | F4.1j | Im(ℍ) dimension | dim_ℝ(Im(ℍ)) = 3, 𝕆 non-associative exclusion | Three generations |
 | F4.1k | Vandermonde determinant | Δ(λ) = Π_{i<j}(λᵢ−λⱼ), explicit formula for n=4 | Weyl integration |
@@ -458,14 +475,14 @@ These contain genuinely unsolved problems. Strategy: prove CONDITIONAL statement
 
 | ID | Problem | Status worldwide | Our approach |
 |----|---------|-----------------|--------------|
-| F4.3a | ✅ Yang-Mills measure in 4D | UNSOLVED ($1M Clay Prize) | **PROVEN (CONDITIONAL):** IF μ_YM exists → cascade inherits. 21 theorems, 0 sorry. Genuine Mathlib. |
-| F4.3b | ✅ Confinement from first principles | UNSOLVED (50 years of attempts) | **PROVEN:** Compact M unconditional; ℝ⁴ conditional. SU(3)⊂SU(4), AF b₀=21. 18 theorems, 0 sorry. |
-| F4.3c | ✅ Mass gap for SU(3) on ℝ⁴ | UNSOLVED (= Millennium Prize) | **PROVEN (CONDITIONAL):** IF YM + CONF → gap = m(0⁺⁺) ~ 1.6 GeV. 16 theorems, 0 sorry. |
-| F4.3d | ✅ Spectral action = Wightman QFT | NEVER DONE for any spectral triple | **PROVEN (CONDITIONAL):** 7 Connes axioms + 5 OS axioms → Wightman QFT. 20 theorems, 0 sorry. |
-| F4.3e | ✅ Non-perturbative QG path integral | UNSOLVED by all approaches | **PROVEN:** 16-dim internal integral + bounded integrand. Compact M unconditional. 15 theorems, 0 sorry. |
-| F4.3f | ✅ OS reconstruction for cascade | Prove all 5 OS axioms for the specific cascade path integral | **PROVEN (CONDITIONAL):** 5 OS axioms → physical Hilbert space (96 DOF). 12 theorems, 0 sorry. |
-| F4.3g | ✅ Cluster expansion convergence | Prove exp decay of connected functions for cascade action | **PROVEN:** High-T convergence unconditional; full coupling conditional. 14 theorems, 0 sorry. |
-| F4.3h | ✅ Infinite-volume limit exists | lim_{L→∞} ⟨O⟩_L exists for bounded O | **PROVEN (CONDITIONAL):** Compactness + GNS → unique vacuum. 14 theorems, 0 sorry. |
+| F4.3a | ⚠️ Yang-Mills measure in 4D | UNSOLVED ($1M Clay Prize) | **UNVERIFIED:** IF μ_YM exists → cascade inherits. 21 theorems, 0 sorry. |
+| F4.3b | ⚠️ Confinement from first principles | UNSOLVED (50 years of attempts) | **UNVERIFIED:** Compact M unconditional; ℝ⁴ conditional. SU(3)⊂SU(4), AF b₀=21. 18 theorems, 0 sorry. |
+| F4.3c | ⚠️ Mass gap for SU(3) on ℝ⁴ | UNSOLVED (= Millennium Prize) | **UNVERIFIED:** IF YM + CONF → gap = m(0⁺⁺) ~ 1.6 GeV. 16 theorems, 0 sorry. |
+| F4.3d | ⚠️ Spectral action = Wightman QFT | NEVER DONE for any spectral triple | **UNVERIFIED:** 7 Connes axioms + 5 OS axioms → Wightman QFT. 20 theorems, 0 sorry. |
+| F4.3e | ⚠️ Non-perturbative QG path integral | UNSOLVED by all approaches | **UNVERIFIED:** 16-dim internal integral + bounded integrand. Compact M unconditional. 15 theorems, 0 sorry. |
+| F4.3f | ⚠️ OS reconstruction for cascade | Prove all 5 OS axioms for the specific cascade path integral | **UNVERIFIED:** 5 OS axioms → physical Hilbert space (96 DOF). 12 theorems, 0 sorry. |
+| F4.3g | ⚠️ Cluster expansion convergence | Prove exp decay of connected functions for cascade action | **UNVERIFIED:** High-T convergence unconditional; full coupling conditional. 14 theorems, 0 sorry. |
+| F4.3h | ⚠️ Infinite-volume limit exists | lim_{L→∞} ⟨O⟩_L exists for bounded O | **UNVERIFIED:** Compactness + GNS → unique vacuum. 14 theorems, 0 sorry. |
 
 **Conditional theorem approach:**
 ```
@@ -683,13 +700,13 @@ These advantages mean the cascade path integral is BETTER BEHAVED than standard 
 
 | ID | Problem | What to prove | Cascade advantage | Difficulty |
 |----|---------|---------------|-------------------|------------|
-| F4.4a | ✅ OS axioms on compact M | All 5 OS axioms verified UNCONDITIONALLY | 16 theorems, exp_add factorisation, internal gap | **PROVEN (16 theorems)** |
-| F4.4b | ✅ Uniform correlation bounds | Gaussian domination → (2n-1)!!·(Λ²/2)^n, uniform in L | 13 theorems, exp_le_one_iff | **PROVEN (13 theorems)** |
-| F4.4c | ✅ Cluster expansion convergence | 5 cascade advantages, effective coupling 16·exp(-16) ≈ 10⁻⁶ | 14 theorems, Kotecký-Preiss | **PROVEN (14 theorems)** |
-| F4.4d | ✅ Thermodynamic limit exists | Bolzano-Weierstrass + diagonal extraction + clustering → unique | 13 theorems, GNS construction | **PROVEN (13 theorems)** |
-| F4.4e | ✅ Wightman axioms satisfied | OS reconstruction → W1-W5 on ℝ⁴, non-trivial (96 DOF, SU(4)) | 13 theorems, all 4 Clay requirements | **PROVEN (13 theorems)** |
-| F4.4f | ✅ Mass gap persists in limit | Internal gap 2/Λ² + confinement Λ_QCD, both L-independent | 13 theorems, 3 protection mechanisms | **PROVEN (13 theorems)** |
-| F4.4g | ✅ Full unconditional theorem | THE MILLENNIUM PRIZE THEOREM — grand synthesis of a-f | 12 theorems, zero axioms | **PROVEN (12 theorems)** |
+| F4.4a | ⚠️ OS axioms on compact M | All 5 OS axioms verified UNCONDITIONALLY | 16 theorems, exp_add factorisation, internal gap | **UNVERIFIED** |
+| F4.4b | ⚠️ Uniform correlation bounds | Gaussian domination → (2n-1)!!·(Λ²/2)^n, uniform in L | 13 theorems, exp_le_one_iff | **UNVERIFIED** |
+| F4.4c | ⚠️ Cluster expansion convergence | 5 cascade advantages, effective coupling 16·exp(-16) ≈ 10⁻⁶ | 14 theorems, Kotecký-Preiss | **UNVERIFIED** |
+| F4.4d | ⚠️ Thermodynamic limit exists | Bolzano-Weierstrass + diagonal extraction + clustering → unique | 13 theorems, GNS construction | **UNVERIFIED** |
+| F4.4e | ⚠️ Wightman axioms satisfied | OS reconstruction → W1-W5 on ℝ⁴, non-trivial (96 DOF, SU(4)) | 13 theorems, all 4 Clay requirements | **UNVERIFIED** |
+| F4.4f | ⚠️ Mass gap persists in limit | Internal gap 2/Λ² + confinement Λ_QCD, both L-independent | 13 theorems, 3 protection mechanisms | **UNVERIFIED** |
+| F4.4g | ⚠️ Full unconditional theorem | THE MILLENNIUM PRIZE THEOREM — grand synthesis of a-f | 12 theorems, zero axioms | **UNVERIFIED** |
 
 **Detailed strategy for each step:**
 
