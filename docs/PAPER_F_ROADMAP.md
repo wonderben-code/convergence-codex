@@ -412,7 +412,7 @@ These use existing Mathlib infrastructure. Each replaces an assertion-theorem wi
 
 | ID | Problem | What to prove (Mathlib path) | Unlocks |
 |----|---------|------------------------------|---------|
-| F4.1a | Cascade algebra chain | M₂(ℂ) ⊗ M₂(ℂ) ≅ M₄(ℂ) via `RingTheory.TensorProduct`, `LinearAlgebra.Matrix` | Foundation of everything |
+| F4.1a | ✅ Cascade algebra chain | M₂(ℂ) ⊗ M₂(ℂ) ≅ₐ M₄(ℂ) — **PROVEN (GENUINE Mathlib proof, 11 theorems, 0 sorry)** via `kroneckerAlgEquiv` + `reindexAlgEquiv` + `finProdFinEquiv`. General form M_n⊗M_m ≅ M_{nm} also proven. | Foundation of everything |
 | F4.1b | Dimension formula | dim(M_{2^n}(ℂ)) = 2^{2n}, prove End(ℂⁿ) ≅ Mₙ(ℂ) | Cascade counting |
 | F4.1c | SU(4) → SU(3)×U(1) decomposition | 15 = 8 + 6 + 1 as Lie algebra reps via branching rules | Pati-Salam → SM |
 | F4.1d | Anomaly cancellation arithmetic | Tr(T^a{T^b,T^c}) = 0 for ℂ⁴⊗ℂ²⊗ℂ² reps (finite computation) | Quantum consistency |
@@ -488,7 +488,7 @@ This is RIGOROUS and HONEST. It says: "the cascade-specific content is proven; t
 ```
 PHASE 1 (NOW): Tier 1 — algebraic foundations
     F4.1h (Cauchy equation) — ✅ DONE (genuine Mathlib proof, 8 theorems)
-    F4.1a (tensor product) — unlocks cascade chain
+    F4.1a (tensor product) — ✅ DONE (genuine Mathlib proof, 11 theorems, 6 May 2026)
     F4.1e (Clifford) — unlocks spacetime dimension
     F4.1c (SU(4) decomp) — unlocks gauge group
     F4.1i (Frobenius) — unlocks three generations
