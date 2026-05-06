@@ -20,4 +20,4 @@ name = "LogosVerify"
 [[lean_lib]]
 name = "PaperF"
 srcDir = "paper_f"
-roots = ["F4_1a_TensorProductIsomorphism", "F4_1_Foundations", "F4_1b_DimensionAndArrow", "F4_1h_CauchyFunctionalEquation", "F4_1ij_QuaternionDivision", "F4_1l_GaussianPartition", "F4_1e_SpectralTripleArithmetic", "F4_1e_QuaternionSplitting", "F4_1f_MatrixTraceAndDet", "F3_8b_SpectralActionComputation", "F3_8c_NewtonsConstant", "F3_10a_HeatKernelCanonicity"]
+roots = ["F4_1a_TensorProductIsomorphism", "F4_1_Foundations", "F4_1b_DimensionAndArrow", "F4_1h_CauchyFunctionalEquation", "F4_1ij_QuaternionDivision", "F4_1l_GaussianPartition", "F4_1e_SpectralTripleArithmetic", "F4_1e_QuaternionSplitting", "F4_1e_CliffordMatrix", "F4_1f_MatrixTraceAndDet", "F3_8b_SpectralActionComputation", "F3_8c_NewtonsConstant", "F3_10a_HeatKernelCanonicity"]
