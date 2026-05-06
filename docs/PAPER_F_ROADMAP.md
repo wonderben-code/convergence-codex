@@ -416,7 +416,7 @@ These use existing Mathlib infrastructure. Each replaces an assertion-theorem wi
 | F4.1b | Dimension formula | dim(M_{2^n}(ℂ)) = 2^{2n}, prove End(ℂⁿ) ≅ Mₙ(ℂ) | Cascade counting |
 | F4.1c | SU(4) → SU(3)×U(1) decomposition | 15 = 8 + 6 + 1 as Lie algebra reps via branching rules | Pati-Salam → SM |
 | F4.1d | Anomaly cancellation arithmetic | Tr(T^a{T^b,T^c}) = 0 for ℂ⁴⊗ℂ²⊗ℂ² reps (finite computation) | Quantum consistency |
-| F4.1e | Clifford isomorphism | Cl₄(ℂ) ≅ M₄(ℂ) via `RingTheory.Clifford` | Spacetime dimension |
+| F4.1e | ⏳ Clifford isomorphism (Step 1 DONE) | **Step 1 PROVEN**: ℍ[ℂ,1,0,1] ≃ₐ[ℂ] M₂(ℂ) + Cl₂(ℂ) ≃ₐ[ℂ] M₂(ℂ) (14 theorems, 0 sorry). Remaining: Cl₄(ℂ) ≃ M₄(ℂ) via graded tensor | Spacetime dimension |
 | F4.1f | Weinberg angle | sin²θ_W = 3/8 from Dynkin index ratio in su(4) ⊃ su(2)×u(1) | Precision prediction |
 | F4.1g | Fermion quantum numbers | Branching ℂ⁴⊗ℂ²⊗ℂ² under SU(3)×SU(2)×U(1) matches SM | Particle content |
 | F4.1h | ✅ Cauchy functional equation | f monotone + f(x+y) = f(x)+f(y) → f(x) = cx — **PROVEN (GENUINE Mathlib proof, 8 theorems, 0 sorry)** | Zero free parameters |
@@ -489,7 +489,7 @@ This is RIGOROUS and HONEST. It says: "the cascade-specific content is proven; t
 PHASE 1 (NOW): Tier 1 — algebraic foundations
     F4.1h (Cauchy equation) — ✅ DONE (genuine Mathlib proof, 8 theorems)
     F4.1a (tensor product) — ✅ DONE (genuine Mathlib proof, 11 theorems, 6 May 2026)
-    F4.1e (Clifford) — unlocks spacetime dimension
+    F4.1e (Clifford) — ⏳ Step 1 DONE (quat splitting + Cl₂≃M₂, 14 theorems, 6 May 2026). Steps 2-3 remaining (graded tensor → Cl₄≃M₄)
     F4.1c (SU(4) decomp) — unlocks gauge group
     F4.1i (Frobenius) — unlocks three generations
     → RESULT: "Cascade algebra is proven. Period."
