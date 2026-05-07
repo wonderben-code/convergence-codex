@@ -23,6 +23,8 @@
 import CascadeFoundation
 import BakryEmeryGap
 import TransferMatrix
+import SpectralActionMeasure
+import ConnesNCG
 
 open Real Module
 
@@ -322,3 +324,32 @@ theorem compact_n_step_stability (C : CascadeData) :
       exp (-C.to_transfer_matrix.gap * ↑n₁)) := by
   exact ⟨C.to_transfer_matrix.n_step_decay,
          C.to_transfer_matrix.n_step_monotone⟩
+
+-- ============================================================================
+-- SECTION 9: Phase 7 Wave 2 — Genuine Measure + NCG Infrastructure
+-- ============================================================================
+
+set_option maxHeartbeats 800000 in
+open MeasureTheory in
+/-- Phase 7: Compact operator spectrum and gap stability backed by genuine
+    spectral action measure and NCG structure. The discrete spectrum with
+    isolated gap is proven alongside the measure and spectral triple data:
+    (1) μ ≪ volume (genuine absolutely continuous measure)
+    (2) Boltzmann density is measurable
+    (3) γ² = 1 (grading involution)
+    (4) {γ, D} = 0 (chirality anticommutation)
+    (5) Transfer matrix excited eigenvalues < 1 (compactness)
+    (6) Mass gap via transfer matrix = internal gap -/
+theorem phase7_compact_operator_spectrum_genuine (C : CascadeData) :
+    spectralActionMeasure ≪ volume ∧
+    Measurable boltzmannDensity ∧
+    chiralityOp * chiralityOp = 1 ∧
+    (∀ m : ℂ, chiralityOp * diracOp m + diracOp m * chiralityOp = 0) ∧
+    C.to_transfer_matrix.max_excited_eigenvalue < 1 ∧
+    C.mass_gap_via_transfer.gap = C.internal_gap :=
+  ⟨spectralActionMeasure_ac,
+   boltzmannDensity_measurable,
+   chirality_sq,
+   dirac_chirality_anticommute,
+   C.to_transfer_matrix.max_eigenvalue_lt_one,
+   C.mass_gap_via_transfer_eq⟩

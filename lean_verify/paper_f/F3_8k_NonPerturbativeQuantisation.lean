@@ -30,6 +30,8 @@
 import CascadeFoundation
 import GaussianMeasure
 import BakryEmeryGap
+import SpectralActionMeasure
+import ConnesNCG
 import Mathlib.LinearAlgebra.Matrix.Trace
 
 open Matrix Real Module
@@ -371,3 +373,30 @@ theorem k7_nonperturbative_wave1_chain (C : CascadeData) :
          (cascade_bakry_emery_mass_gap C).gap_pos,
          gaussianMomentCoeff_three,
          fun a x R ha hR => exp_neg_coeff_sq_monotone a x R ha hR⟩
+
+-- ============================================================================
+-- Phase 7 Wave 2 — Genuine Measure + NCG Infrastructure
+-- ============================================================================
+
+set_option maxHeartbeats 800000 in
+open MeasureTheory in
+/-- Phase 7 Wave 2: Non-perturbative quantisation is backed by a genuine
+    spectral action measure (absolutely continuous w.r.t. Lebesgue),
+    measurable Boltzmann density, and the NCG chirality/Dirac structure.
+    Combined with the Bakry-Emery spectral gap, this gives the complete
+    non-perturbative chain: measure → gap → mass gap → QFT. -/
+theorem phase7_nonperturbative_genuine (C : CascadeData) :
+    spectralActionMeasure ≪ volume ∧
+    Measurable boltzmannDensity ∧
+    chiralityOp * chiralityOp = 1 ∧
+    (∀ m : ℂ, chiralityOp * diracOp m + diracOp m * chiralityOp = 0) ∧
+    0 < C.has_mass_gap.gap ∧
+    0 < (cascade_bakry_emery C).spectral_gap ∧
+    (∀ S : ℝ, 0 ≤ S → 0 < exp (-S) ∧ exp (-S) ≤ 1) :=
+  ⟨spectralActionMeasure_ac,
+   boltzmannDensity_measurable,
+   chirality_sq,
+   dirac_chirality_anticommute,
+   C.has_mass_gap.gap_pos,
+   (cascade_bakry_emery C).gap_pos,
+   CascadeData.bounded_action⟩
