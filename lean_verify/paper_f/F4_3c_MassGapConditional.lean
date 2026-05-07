@@ -27,6 +27,10 @@
 -/
 
 import CascadeFoundation
+import TransferMatrix
+import BakryEmeryGap
+import GaussianMeasure
+import LieAlgebraEmbedding
 
 open Real
 
