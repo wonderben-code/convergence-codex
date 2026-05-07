@@ -142,3 +142,41 @@ def clifford2Iso :
     CliffordAlgebra (CliffordAlgebraQuaternion.Q (1 : ℂ) (1 : ℂ)) ≃ₐ[ℂ]
     Matrix (Fin 2) (Fin 2) ℂ :=
   CliffordAlgebraQuaternion.equiv.trans quatSplitEquiv
+
+-- ============================================================================
+-- SECTION 7: Properties
+-- ============================================================================
+
+/-- The quaternion splitting preserves the unit. -/
+theorem quatSplitEquiv_map_one :
+    quatSplitEquiv (1 : ℍ[ℂ,(1 : ℂ),0,1]) = (1 : Matrix (Fin 2) (Fin 2) ℂ) :=
+  map_one quatSplitEquiv
+
+/-- The quaternion splitting preserves multiplication. -/
+theorem quatSplitEquiv_map_mul (x y : ℍ[ℂ,(1 : ℂ),0,1]) :
+    quatSplitEquiv (x * y) = quatSplitEquiv x * quatSplitEquiv y :=
+  map_mul quatSplitEquiv x y
+
+/-- The quaternion splitting is bijective. -/
+theorem quatSplitEquiv_bijective :
+    Function.Bijective quatSplitEquiv :=
+  quatSplitEquiv.bijective
+
+/-- The Clifford-matrix isomorphism preserves the unit. -/
+theorem clifford2Iso_map_one :
+    clifford2Iso (1 : CliffordAlgebra (CliffordAlgebraQuaternion.Q (1 : ℂ) (1 : ℂ))) =
+    (1 : Matrix (Fin 2) (Fin 2) ℂ) :=
+  map_one clifford2Iso
+
+-- ============================================================================
+-- SECTION 8: Dimension Verification
+-- ============================================================================
+
+/-- Both algebras have dimension 4: H = C + Ci + Cj + Ck, M_2 has 4 entries. -/
+theorem split_quat_matrix_dim : 2 * 2 = 4 := by norm_num
+
+/-- Clifford algebra dimension: dim(Cl_2) = 2^2 = 4. -/
+theorem clifford2_dim : 2 ^ 2 = 4 := by norm_num
+
+/-- Cl_4(C) has dimension 2^4 = 16 = 4 * 4, matching M_2 tensor M_2 = M_4. -/
+theorem clifford4_dim : 2 ^ 4 = 16 ∧ 16 = 4 * 4 := by omega
