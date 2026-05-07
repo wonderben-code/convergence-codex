@@ -26,8 +26,9 @@
 import Mathlib.RingTheory.MatrixAlgebra
 import Mathlib.LinearAlgebra.Matrix.Reindex
 import Mathlib.Data.Complex.Basic
+import Mathlib.LinearAlgebra.FreeModule.Finite.Matrix
 
-open Matrix
+open Matrix Module
 open scoped TensorProduct
 
 /-!
@@ -88,6 +89,10 @@ def fin2_prod_equiv_fin4 : Fin 2 × Fin 2 ≃ Fin 4 :=
 /-- The product index has cardinality 4. -/
 theorem card_fin2_prod : Fintype.card (Fin 2 × Fin 2) = 4 := by
   simp [Fintype.card_prod, Fintype.card_fin]
+
+/-- D₂ = M₄(ℂ) has finrank 4 as a ℂ-vector space of the M₂ factor. -/
+theorem finrank_M2 : Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) = 4 := by
+  simp [Module.finrank_matrix]
 
 /-!
 ## Part 4: Reindexing — M_{Fin 2 × Fin 2}(ℂ) ≅ M₄(ℂ)

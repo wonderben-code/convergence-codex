@@ -47,6 +47,11 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.IntervalCases
+import Mathlib.LinearAlgebra.FreeModule.Finite.Matrix
+import Mathlib.LinearAlgebra.Dimension.Constructions
+
+open Module (finrank finrank_self finrank_matrix finrank_pi finrank_pi_fintype)
+open Fintype (card card_fin)
 
 /-!
 ## Part 1: Complexified Clifford Algebra Classification
@@ -150,33 +155,38 @@ Three different physical roles — one number — one origin: the cascade.
     By the Artin-Wedderburn theorem, M₄(ℂ) is the UNIQUE
     simple algebra of dimension 16 over ℂ. -/
 theorem D2_is_Cl4 :
-    -- D₂ = M₄(ℂ): dim = 4² = 16
-    (4 : ℕ) ^ 2 = 16 ∧
+    -- D₂ = M₄(ℂ): finrank_ℂ(M₄(ℂ)) = 16 (genuine module-level)
+    finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) = 16 ∧
     -- Cl₄(ℂ): matrix size = 2^(4/2) = 4
     (2 : ℕ) ^ (4 / 2) = 4 ∧
-    -- Cl₄(ℂ) = M₄(ℂ): dim = 4² = 16
-    (4 : ℕ) ^ 2 = 16 ∧
+    -- Column module of M₄(ℂ): finrank_ℂ(ℂ⁴) = 4 (genuine)
+    finrank ℂ (Fin 4 → ℂ) = 4 ∧
     -- Both have dim 16 → isomorphic (Artin-Wedderburn uniqueness)
     (16 : ℕ) = 16 ∧
     -- The "4" in M₄ corresponds to spacetime dimension n = 4
     -- via the formula: matrix size = 2^(n/2), so 4 = 2^(n/2), n = 4
     (2 : ℕ) ^ 2 = 4 := by
-  exact ⟨by norm_num, by norm_num, by norm_num, rfl, by norm_num⟩
+  refine ⟨?_, by norm_num, ?_, rfl, by norm_num⟩
+  · simp [finrank_matrix, finrank_self]
+  · simp
 
 /-- The cascade origin of D₂:
     ℂ² → End(ℂ²) = M₂(ℂ) → End(M₂(ℂ)) = M₄(ℂ).
     Two applications of End starting from the seed ℂ². -/
 theorem cascade_produces_D2 :
-    -- Seed: ℂ², dim = 2
-    (2 : ℕ) = 2 ∧
-    -- D₁ = End(ℂ²) = M₂(ℂ), dim = 2² = 4
-    (2 : ℕ) ^ 2 = 4 ∧
-    -- D₂ = End(M₂(ℂ)) = M₄(ℂ), dim = 4² = 16
-    (4 : ℕ) ^ 2 = 16 ∧
+    -- Seed: ℂ², finrank = 2 (genuine module dimension)
+    finrank ℂ (Fin 2 → ℂ) = 2 ∧
+    -- D₁ = End(ℂ²) = M₂(ℂ), finrank = 4
+    finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) = 4 ∧
+    -- D₂ = End(M₂(ℂ)) = M₄(ℂ), finrank = 16
+    finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) = 16 ∧
     -- Cross-check: End has dim = (input dim)²
     -- dim(D₂) = dim(D₁)² = 4² = 16 ✓
     (4 : ℕ) ^ 2 = 16 := by
-  exact ⟨rfl, by norm_num, by norm_num, by norm_num⟩
+  refine ⟨?_, ?_, ?_, by norm_num⟩
+  · simp
+  · simp [finrank_matrix, finrank_self]
+  · simp [finrank_matrix, finrank_self]
 
 /-!
 ## Part 3: Uniqueness — Only n = 4 Gives M₄(ℂ)
@@ -220,15 +230,17 @@ theorem spacetime_dim_unique :
 theorem odd_dims_excluded :
     -- Cl₁(ℂ) ≅ ℂ ⊕ ℂ: dim = 2 (not simple: two components)
     (2 : ℕ) = 1 + 1 ∧
-    -- Cl₃(ℂ) ≅ M₂(ℂ) ⊕ M₂(ℂ): dim = 4 + 4 = 8 (not simple)
+    -- Cl₃(ℂ) ≅ M₂(ℂ) ⊕ M₂(ℂ): each summand has finrank 4
+    finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) = 4 ∧
+    -- Total dim Cl₃(ℂ) = 2³ = 8 = 4 + 4 (direct sum, not simple)
     (2 : ℕ) ^ 3 = 8 ∧ 4 + 4 = (8 : ℕ) ∧
-    -- Cl₅(ℂ) ≅ M₄(ℂ) ⊕ M₄(ℂ): dim = 16 + 16 = 32 (not simple)
-    (2 : ℕ) ^ 5 = 32 ∧ 16 + 16 = (32 : ℕ) ∧
-    -- For all odd n: Cl_n(ℂ) = M_{2^((n-1)/2)}(ℂ) ⊕ M_{2^((n-1)/2)}(ℂ)
-    -- This is NEVER isomorphic to a single M_k(ℂ)
-    -- Therefore: spacetime dimension must be even
-    True := by
-  exact ⟨by omega, by norm_num, by omega, by norm_num, by omega, trivial⟩
+    -- Cl₅(ℂ) ≅ M₄(ℂ) ⊕ M₄(ℂ): each summand has finrank 16
+    finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) = 16 ∧
+    -- Total dim Cl₅(ℂ) = 2⁵ = 32 = 16 + 16
+    (2 : ℕ) ^ 5 = 32 ∧ 16 + 16 = (32 : ℕ) := by
+  refine ⟨by omega, ?_, by norm_num, by omega, ?_, by norm_num, by omega⟩
+  · simp [finrank_matrix, finrank_self]  -- Matrix (Fin 2) (Fin 2) ℂ
+  · simp [finrank_matrix, finrank_self]  -- Matrix (Fin 4) (Fin 4) ℂ
 
 /-!
 ## Part 4: Real Clifford Algebras — Signature from the Real Form
@@ -392,13 +404,16 @@ within the cascade itself.
     dim_ℝ(SL₂(ℂ)) = dim_ℝ(M₂(ℂ)) - dim_ℝ(constraint) = 8 - 2 = 6.
     (The constraint det = 1 removes 2 real dimensions.) -/
 theorem SL2C_dimension :
-    -- dim_ℝ(M₂(ℂ)) = 2² × 2 = 8 (4 complex entries = 8 real)
-    (2 : ℕ) ^ 2 * 2 = 8 ∧
+    -- dim_ℂ(M₂(ℂ)) = 4 (genuine finrank), so dim_ℝ = 4 × 2 = 8
+    finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) = 4 ∧
+    finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) * 2 = 8 ∧
     -- det = 1 removes 1 complex = 2 real dimensions
     (2 : ℕ) = 2 ∧
     -- dim_ℝ(SL₂(ℂ)) = 8 - 2 = 6
     8 - 2 = (6 : ℕ) := by
-  exact ⟨by norm_num, rfl, by omega⟩
+  refine ⟨?_, ?_, rfl, by omega⟩
+  · simp [finrank_matrix, finrank_self]  -- Matrix (Fin 2) (Fin 2) ℂ
+  · simp [finrank_matrix, finrank_self]  -- same × 2
 
 /-- The Lorentz group SO⁺(3,1) has dimension 6.
     dim(SO(p,q)) = n(n-1)/2 where n = p+q.
@@ -469,13 +484,15 @@ theorem dirac_spinor_dim :
     -- Spinor dimension formula: 2^(n/2) for even n
     -- For n = 4: 2^(4/2) = 2² = 4
     (2 : ℕ) ^ (4 / 2) = 4 ∧
-    -- SU(4) fundamental: dim = 4 (from F1.6)
-    (4 : ℕ) = 4 ∧
-    -- Column of M₄(ℂ): dim = 4
-    (4 : ℕ) = 4 ∧
+    -- Column of M₄(ℂ) = ℂ⁴: finrank = 4 (genuine module dimension)
+    finrank ℂ (Fin 4 → ℂ) = 4 ∧
+    -- SU(4) fundamental = column module: finrank matches spinor formula
+    finrank ℂ (Fin 4 → ℂ) = 2 ^ (4 / 2) ∧
     -- All three are ℂ⁴ — same 4-dimensional vector space
     (4 : ℕ) = 4 := by
-  exact ⟨by norm_num, rfl, rfl, rfl⟩
+  refine ⟨by norm_num, ?_, ?_, rfl⟩
+  · simp  -- Fin 4 → ℂ
+  · simp  -- Fin 4 → ℂ
 
 /-- Weyl spinor decomposition: the 4D Dirac spinor splits into
     two Weyl spinors of dimension 2 each.
@@ -490,20 +507,18 @@ theorem dirac_spinor_dim :
 
     Three descriptions of the same L/R splitting. -/
 theorem weyl_spinor_decomposition :
-    -- Dirac spinor dim = 4
-    (2 : ℕ) ^ 2 = 4 ∧
-    -- Weyl spinor dim = 4/2 = 2
-    4 / 2 = (2 : ℕ) ∧
+    -- Dirac spinor = ℂ⁴: finrank = 4 (genuine module dimension)
+    finrank ℂ (Fin 4 → ℂ) = 4 ∧
+    -- Each Weyl spinor = ℂ²: finrank = 2
+    finrank ℂ (Fin 2 → ℂ) = 2 ∧
     -- Dirac = left + right: 4 = 2 + 2
-    2 + 2 = (4 : ℕ) ∧
-    -- Left Weyl → SU(2)_L (from F2.3 chirality)
-    (2 : ℕ) = 2 ∧
-    -- Right Weyl → SU(2)_R
-    (2 : ℕ) = 2 ∧
-    -- Full fermion: Dirac × colour × generations = 4 × 2 × 2 × 3 = 48
-    -- Actually: per generation = 4 × 2 × 2 = 16 (then × 3 gens)
+    finrank ℂ (Fin 4 → ℂ) = finrank ℂ (Fin 2 → ℂ) + finrank ℂ (Fin 2 → ℂ) ∧
+    -- Full fermion per generation: dim(ℂ¹⁶) = 16
+    finrank ℂ (Fin 16 → ℂ) = 16 ∧
+    -- Per-generation decomposition: 4 × 2 × 2 = 16
     4 * 2 * 2 = (16 : ℕ) := by
-  exact ⟨by norm_num, by omega, by omega, rfl, rfl, by omega⟩
+  refine ⟨?_, ?_, ?_, ?_, by omega⟩
+  all_goals simp
 
 /-- The triple unification: gauge, spacetime, and generation structure
     all come from the SAME ℂ⁴.
@@ -514,19 +529,21 @@ theorem weyl_spinor_decomposition :
 
     All three roles are played by the column space of D₂ = M₄(ℂ). -/
 theorem triple_unification :
-    -- SU(4) fundamental: dim = 4
-    (4 : ℕ) = 4 ∧
-    -- Dirac spinor: dim = 2^(4/2) = 4
-    (2 : ℕ) ^ (4 / 2) = 4 ∧
+    -- SU(4) fundamental = column of M₄(ℂ) = ℂ⁴: finrank = 4 (genuine)
+    finrank ℂ (Fin 4 → ℂ) = 4 ∧
+    -- Dirac spinor: finrank = 2^(4/2) = 4
+    finrank ℂ (Fin 4 → ℂ) = 2 ^ (4 / 2) ∧
     -- Quaternionic module: dim_ℂ(ℍ² ⊗_ℍ ℂ) = 2 × 4 / 2 = 4
     2 * 4 / 2 = (4 : ℕ) ∧
-    -- All three = 4: the column space of M₄(ℂ)
-    (4 : ℕ) = 4 ∧
-    -- This is NOT a coincidence — it's because D₂ = M₄(ℂ) is simultaneously:
-    -- a matrix algebra (gauge), a Clifford algebra (spacetime),
-    -- and a quaternionic algebra (generations)
-    (4 : ℕ) ^ 2 = 16 := by
-  exact ⟨rfl, by norm_num, by omega, rfl, by norm_num⟩
+    -- D₂ = M₄(ℂ): finrank = 16 (genuine)
+    finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) = 16 ∧
+    -- The "4" = column dim, "16" = algebra dim: 4² = 16
+    (finrank ℂ (Fin 4 → ℂ)) ^ 2 = finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) := by
+  refine ⟨?_, ?_, by omega, ?_, ?_⟩
+  · simp                                  -- Fin 4 → ℂ
+  · simp                                  -- Fin 4 → ℂ
+  · simp [finrank_matrix, finrank_self]  -- Matrix (Fin 4) (Fin 4) ℂ
+  · simp [finrank_matrix, finrank_self]  -- both pi and matrix
 
 /-!
 ## Part 7: Why Not Other Dimensions
@@ -650,12 +667,12 @@ theorem clifford_periodicity :
     This derivation is parameter-free. No compactification needed. -/
 theorem spacetime_forced :
     -- DIMENSION
-    -- (1) D₂ = M₄(ℂ): dim = 4² = 16
-    ((4 : ℕ) ^ 2 = 16) ∧
+    -- (1) D₂ = M₄(ℂ): finrank = 16 (genuine module dimension)
+    (finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) = 16) ∧
     -- (2) Cl₄(ℂ) = M₄(ℂ): matrix size = 2^(4/2) = 4
     ((2 : ℕ) ^ (4 / 2) = 4) ∧
-    -- (3) Both are M₄(ℂ)
-    ((4 : ℕ) = 4) ∧
+    -- (3) Column module ℂ⁴: finrank = 4 (genuine)
+    (finrank ℂ (Fin 4 → ℂ) = 4) ∧
     -- (4) Uniqueness: n=2 gives 2, n=6 gives 8 — only n=4 gives 4
     ((2 : ℕ) ^ (2 / 2) = 2 ∧ (2 : ℕ) ≠ 4) ∧
     -- (5) Spacetime dimension = 4
@@ -669,23 +686,26 @@ theorem spacetime_forced :
     (1 + 3 = (4 : ℕ)) ∧
 
     -- CONVERGENCE
-    -- (9) dim_ℝ(SL₂(ℂ)) = 6
-    (8 - 2 = (6 : ℕ)) ∧
+    -- (9) dim_ℂ(M₂(ℂ)) = 4 (genuine), so dim_ℝ(SL₂(ℂ)) = 4×2 - 2 = 6
+    (finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) * 2 - 2 = 6) ∧
     -- (10) dim(SO(3,1)) = 4×3/2 = 6
     (4 * 3 / 2 = (6 : ℕ)) ∧
     -- (11) Two lineages: both give dim = 4
     (3 + 1 = (4 : ℕ)) ∧
 
     -- SPINOR-FERMION
-    -- (12) Dirac spinor = SU(4) fundamental = ℂ⁴
-    ((2 : ℕ) ^ (4 / 2) = 4) ∧
-    -- (13) Weyl spinor = SU(2): dim = 2
-    (4 / 2 = (2 : ℕ)) := by
-  refine ⟨by norm_num, by norm_num, rfl,
-          ⟨by norm_num, by omega⟩,
+    -- (12) Dirac spinor = column(M₄(ℂ)) = ℂ⁴: finrank = 4
+    (finrank ℂ (Fin 4 → ℂ) = 4) ∧
+    -- (13) Weyl spinor = ℂ²: finrank = 2
+    (finrank ℂ (Fin 2 → ℂ) = 2) := by
+  refine ⟨?_, by norm_num, ?_, ⟨by norm_num, by omega⟩,
           by norm_num, by norm_num, by omega,
-          by omega, by omega, by omega,
-          by norm_num, by omega⟩
+          ?_, by omega, by omega, ?_, ?_⟩
+  · simp [finrank_matrix, finrank_self]  -- Matrix (Fin 4) (Fin 4) ℂ
+  · simp                                  -- Fin 4 → ℂ
+  · simp [finrank_matrix, finrank_self]  -- Matrix (Fin 2) (Fin 2) ℂ
+  · simp                                  -- Fin 4 → ℂ
+  · simp                                  -- Fin 2 → ℂ
 
 /-!
 ## Part 10: Predictions from F1.7

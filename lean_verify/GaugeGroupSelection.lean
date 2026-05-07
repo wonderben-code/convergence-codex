@@ -46,8 +46,9 @@ import Mathlib.RingTheory.MatrixAlgebra
 import Mathlib.LinearAlgebra.Matrix.Reindex
 import Mathlib.Data.Complex.Basic
 import Mathlib.RingTheory.TensorProduct.Maps
+import Mathlib.LinearAlgebra.FreeModule.Finite.Matrix
 
-open Matrix
+open Matrix Module
 open scoped TensorProduct
 
 /-!
@@ -219,6 +220,18 @@ theorem entries_D2 : Fintype.card (Fin 4 × Fin 4) = 16 := by
 /-- D₃ = M₁₆(ℂ) has 256 matrix entries. -/
 theorem entries_D3 : Fintype.card (Fin 16 × Fin 16) = 256 := by
   simp [Fintype.card_prod, Fintype.card_fin]
+
+/-- D₁ = M₂(ℂ) has finrank 4 as a ℂ-vector space (via Module.finrank_matrix). -/
+theorem finrank_D1 : Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) = 4 := by
+  simp [Module.finrank_matrix]
+
+/-- D₂ = M₄(ℂ) has finrank 16 as a ℂ-vector space (via Module.finrank_matrix). -/
+theorem finrank_D2 : Module.finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) = 16 := by
+  simp [Module.finrank_matrix]
+
+/-- D₃ = M₁₆(ℂ) has finrank 256 as a ℂ-vector space (via Module.finrank_matrix). -/
+theorem finrank_D3 : Module.finrank ℂ (Matrix (Fin 16) (Fin 16) ℂ) = 256 := by
+  simp [Module.finrank_matrix]
 
 /-- The squaring property: 2² = 4, 4² = 16, 16² = 256. -/
 theorem dimension_squaring :

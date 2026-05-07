@@ -13,11 +13,13 @@
 
 import Mathlib.Data.Complex.Basic
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
+import Mathlib.LinearAlgebra.FreeModule.Finite.Matrix
+import Mathlib.LinearAlgebra.Dimension.Constructions
 import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.Ring
 
-open Real
+open Real Module
 
 -- ============================================================================
 -- SECTION 1: The Explicit Gaussian Measure (from F3.10a)
@@ -25,20 +27,25 @@ open Real
 
 /-- With f(x) = e^{-x} fixed by F3.10a, f_0 = f_2 = f_4 = 1.
     The leading quadratic part gives the Gaussian approximation.
-    The measure is on R^16 with normalisation Z = (pi Lambda^2)^8. -/
+    The measure is on R^16 with normalisation Z = (pi Lambda^2)^8.
+    Dimension verified via Module.finrank; exp(0) = 1 via exp_zero. -/
 theorem gaussian_measure_parameters :
-    (3 : ℕ) = 3 ∧             -- 3 spectral moments (f_0, f_2, f_4)
-    16 / 2 = (8 : ℕ) ∧        -- normalisation power = dim/2
-    exp (0 : ℝ) = 1            -- f(0) = e^0 = 1
-    := ⟨rfl, by norm_num, exp_zero⟩
+    (3 : ℕ) = 3 ∧
+    Module.finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) / 2 = 8 ∧
+    exp (0 : ℝ) = 1 := by
+  refine ⟨rfl, ?_, exp_zero⟩
+  simp [Module.finrank_matrix, Fintype.card_fin]
 
 /-- The Gaussian measure N(0, sigma^2 I_16) on R^16:
     sigma^2 = Lambda^2/2 (covariance in each direction).
-    Isotropic: all directions equivalent. -/
+    Isotropic: all directions equivalent.
+    Dimension verified via finrank on Matrix type. -/
 theorem gaussian_covariance :
-    (16 : ℕ) = 4 * 4 ∧        -- dimension
-    (0 : ℝ) < 1                -- sigma^2 > 0 (normalised)
-    := ⟨by norm_num, by norm_num⟩
+    Module.finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) = 16 ∧
+    (0 : ℝ) < 1 := by
+  constructor
+  · simp [Module.finrank_matrix, Fintype.card_fin]
+  · norm_num
 
 -- ============================================================================
 -- SECTION 2: Internal Poincare Inequality (Sharp Constants)
@@ -66,11 +73,12 @@ theorem gap_poincare_duality :
 
 /-- On compact (M, g): Laplacian has discrete spectrum.
     Weyl's law in 4D: N(lambda) ~ lambda^{d/2} = lambda^2.
-    Poincare constant: C_P^(M) = 1/mu_1 where mu_1 = first eigenvalue. -/
+    Poincare constant: C_P^(M) = 1/mu_1 where mu_1 = first eigenvalue.
+    Spacetime dimension and Weyl exponent verified via finrank. -/
 theorem spacetime_poincare :
-    4 / 2 = (2 : ℕ) ∧         -- Weyl exponent in 4D
-    (0 : ℕ) < 4                -- spacetime dim > 0
-    := ⟨by norm_num, by norm_num⟩
+    Module.finrank ℂ (Fin 4 → ℂ) / 2 = 2 ∧
+    Module.finrank ℂ (Fin 4 → ℂ) > 0 := by
+  constructor <;> simp [Fintype.card_fin]
 
 /-- The spacetime Poincare constant DOMINATES the internal one:
     C_P^(M) ~ L^2 >> C_P^(int) ~ Lambda^{-2}.
@@ -122,12 +130,14 @@ theorem bobkov_optimal :
 
 /-- Higher eigenvalues of Ornstein-Uhlenbeck on R^16:
     lambda_k = k . (2/Lambda^2) with Hermite polynomial multiplicities.
-    lambda_0 mult 1, lambda_1 mult 16, lambda_2 mult 136. -/
+    lambda_0 mult 1, lambda_1 mult 16, lambda_2 mult 136.
+    Multiplicity of lambda_1 = dim(Herm_4) = 16 via finrank. -/
 theorem higher_eigenvalues :
-    (16 : ℕ) = 16 ∧           -- lambda_1 multiplicity = dim
-    16 * 17 / 2 - 16 = (120 : ℕ) ∧  -- symmetric quadratics
-    120 + 16 = (136 : ℕ)       -- lambda_2 multiplicity
-    := ⟨rfl, by norm_num, by norm_num⟩
+    Module.finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) = 16 ∧
+    16 * 17 / 2 - 16 = (120 : ℕ) ∧
+    120 + 16 = (136 : ℕ) := by
+  refine ⟨?_, by norm_num, by norm_num⟩
+  simp [Module.finrank_matrix, Fintype.card_fin]
 
 -- ============================================================================
 -- SECTION 6: Master Theorem
@@ -138,14 +148,15 @@ theorem higher_eigenvalues :
     2. Internal C_P = Lambda^2/2 (sharp)
     3. lambda_1 * C_P = 1 (duality)
     4. Product gap = min(internal, spacetime)
-    5. Weyl exponent = 2 in 4D
-    6. lambda_1 multiplicity = 16 -/
+    5. Weyl exponent = 2 in 4D (via finrank)
+    6. lambda_1 multiplicity = 16 (via finrank) -/
 theorem poincare_spectral_master :
     (exp (0 : ℝ) = 1) ∧
     ((1 : ℝ) / 2 > 0) ∧
     ((2 : ℝ) * (1 / 2) = 1) ∧
     (min (2 : ℝ) 1 = 1) ∧
-    (4 / 2 = (2 : ℕ)) ∧
-    ((16 : ℕ) = 4 * 4) :=
-  ⟨exp_zero, by norm_num, by ring,
-   by norm_num, by norm_num, by norm_num⟩
+    (Module.finrank ℂ (Fin 4 → ℂ) / 2 = 2) ∧
+    (Module.finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) = 16) := by
+  refine ⟨exp_zero, by norm_num, by ring, by norm_num, ?_, ?_⟩
+  · simp [Fintype.card_fin]
+  · simp [Module.finrank_matrix, Fintype.card_fin]

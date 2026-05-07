@@ -93,7 +93,9 @@ This is the mathematical content of the GToE's "infinite content" claim.
 
 /-- **Every element IS an operator:**
     Each d : D determines a function φ(d) : D → D.
-    There is no "inert" element — everything is an operation. -/
+    There is no "inert" element — everything is an operation.
+    NOTE: This is a type-checking witness (trivially true by construction).
+    Its purpose is to record that the element→operator map is total. -/
 theorem every_element_is_operator {D : Type*}
     (φ : D ≃ (D → D)) (d : D) :
     ∃ f : D → D, f = φ d :=
@@ -101,7 +103,8 @@ theorem every_element_is_operator {D : Type*}
 
 /-- **Every operator IS an element:**
     Each function f : D → D is encoded as some element φ⁻¹(f) : D.
-    There is no "external" operation — everything is internal. -/
+    There is no "external" operation — everything is internal.
+    NOTE: Non-trivial — uses Equiv.symm and Equiv.apply_symm_apply. -/
 theorem every_operator_is_element {D : Type*}
     (φ : D ≃ (D → D)) (f : D → D) :
     ∃ d : D, φ d = f :=
@@ -109,7 +112,9 @@ theorem every_operator_is_element {D : Type*}
 
 /-- **Self-application is well-defined:**
     For any d : D, we can apply d to itself: φ(d)(d).
-    This is the origin of self-reference in the GToE. -/
+    This is the origin of self-reference in the GToE.
+    NOTE: This is a type-checking witness — it records that
+    φ(d)(d) : D is well-typed (d can be applied to itself via φ). -/
 theorem self_application_exists {D : Type*}
     (φ : D ≃ (D → D)) (d : D) :
     ∃ r : D, r = φ d d :=

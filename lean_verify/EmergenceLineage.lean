@@ -28,6 +28,7 @@ import Mathlib.LinearAlgebra.Dimension.Constructions
 import Mathlib.LinearAlgebra.FreeModule.Finite.Matrix
 import Mathlib.LinearAlgebra.Matrix.ToLin
 import Mathlib.Data.Complex.Basic
+import Mathlib.RingTheory.MatrixAlgebra
 
 open Module
 
@@ -152,6 +153,31 @@ theorem dim_D1 : finrank ℂ ((Fin 2 → ℂ) →ₗ[ℂ] (Fin 2 → ℂ)) = 4 :
 theorem dim_D1_eq_seq :
     finrank ℂ ((Fin 2 → ℂ) →ₗ[ℂ] (Fin 2 → ℂ)) = emergenceDim 1 := by
   rw [dim_D1, emergenceDim_one]
+
+/-- **Theorem 1.2b:** dim(M₂(ℂ)) = 4 as a ℂ-vector space (via finrank_matrix).
+    This connects the endomorphism dimension to the concrete matrix algebra. -/
+theorem finrank_M2_matrix : finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) = 4 := by
+  simp [finrank_matrix]
+
+/-- **Theorem 1.3b:** dim(M₄(ℂ)) = 16 as a ℂ-vector space (via finrank_matrix).
+    D₂ = End(M₂(ℂ)) ≅ M₄(ℂ) as matrix algebras. -/
+theorem finrank_M4_matrix : finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) = 16 := by
+  simp [finrank_matrix]
+
+/-- **Theorem 1.4b:** dim(M₁₆(ℂ)) = 256 as a ℂ-vector space (via finrank_matrix).
+    D₃ = End(M₄(ℂ)) ≅ M₁₆(ℂ). -/
+theorem finrank_M16_matrix : finrank ℂ (Matrix (Fin 16) (Fin 16) ℂ) = 256 := by
+  simp [finrank_matrix]
+
+/-- The dimension squaring is witnessed by finrank_matrix:
+    dim(Mₙ(ℂ)) = n² and dim(M_{n²}(ℂ)) = n⁴ = (dim(Mₙ(ℂ)))².
+    Checked for M₂ → M₄ → M₁₆. -/
+theorem finrank_matrix_squaring :
+    finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) ^ 2 =
+    finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) ∧
+    finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) ^ 2 =
+    finrank ℂ (Matrix (Fin 16) (Fin 16) ℂ) := by
+  simp [finrank_matrix]
 
 /-!
 ## Part 6: The Lineage Summary

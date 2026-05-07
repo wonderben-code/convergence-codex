@@ -31,7 +31,11 @@ From D ≅ (D → D) alone, with no additional axioms, we derive:
 -/
 
 /-- **Constraint 1: Self-reference is forced.**
-    D ≅ (D → D) implies D contains a self-referential element. -/
+    D ≅ (D → D) implies D contains a self-referential element.
+    Specifically, the diagonal operator δ satisfies φ(δ)(δ) = φ(δ)(δ).
+    NOTE: The deeper content is in diagonal_operator_exists (φ(δ)(x) = φ(x)(x)),
+    which is non-trivial. This theorem witnesses that D is nonempty and
+    self-application is type-safe. -/
 theorem self_reference_forced {D : Type*}
     (φ : D ≃ (D → D)) :
     ∃ d : D, φ d d = φ d d :=

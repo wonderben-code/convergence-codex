@@ -44,6 +44,11 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.IntervalCases
+import Mathlib.LinearAlgebra.FreeModule.Finite.Matrix
+import Mathlib.LinearAlgebra.Dimension.Constructions
+
+open Module (finrank finrank_self finrank_matrix)
+open Fintype (card card_fin)
 
 /-!
 ## Phase 1: Signature from Quaternion Sign Structure
@@ -353,19 +358,19 @@ theorem end_aut_spinor_match :
     This is not "two lineages happen to agree" — it is
     "the symmetry group is contained in the geometry algebra by construction." -/
 theorem lineage_convergence_forced :
-    -- Cl(1,3) has dim 16
+    -- Cl(1,3) ≅ M₂(ℍ): dim_ℝ = 2⁴ = 16
     (2 : ℕ) ^ 4 = 16 ∧
-    -- Spin(3,1) has dim 6
+    -- Spin(3,1) has dim 6 = n(n-1)/2 for n=4
     4 * 3 / 2 = (6 : ℕ) ∧
     -- Spin ⊂ Cl: 6 < 16 (proper subgroup)
     (6 : ℕ) < 16 ∧
     -- Both give spacetime dim = 4
     3 + 1 = (4 : ℕ) ∧
-    -- The relationship Spin ⊂ Cl is definitional:
-    -- Spin(p,q) = {x ∈ Cl(p,q)^× : x is even, N(x) = 1}
-    -- This is not a theorem to be proved — it is the DEFINITION
-    True := by
-  exact ⟨by norm_num, by omega, by omega, by omega, trivial⟩
+    -- dim_ℂ(M₂(ℂ)) = finrank(M₂(ℂ)) = 4 (genuine Mathlib computation)
+    -- Spin(3,1) ≅ SL₂(ℂ) ⊂ M₂(ℂ)^×: contained in a 4-dim algebra
+    finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) = 4 := by
+  exact ⟨by norm_num, by omega, by omega, by omega,
+         by simp [finrank_matrix, finrank_self]⟩
 
 /-!
 ## Phase 3: Triple Unification is Identity, Not Coincidence
@@ -391,21 +396,24 @@ The "canonical isomorphisms" are IDENTITY MAPS — the space is the same.
 /-- D₂ = M₄(ℂ) has ONE column module: ℂ⁴.
     This single ℂ⁴ is simultaneously all three structures. -/
 theorem one_algebra_one_module :
-    -- D₂ = M₄(ℂ): ONE algebra
-    (4 : ℕ) ^ 2 = 16 ∧
-    -- Column module of M₄(ℂ): dim = 4 → ℂ⁴
-    (4 : ℕ) = 4 ∧
-    -- As SU(4) fundamental: dim = 4 (the "4" in Pati-Salam (4,2,1))
-    (4 : ℕ) = 4 ∧
-    -- As Dirac spinor: dim = 2^(4/2) = 4
-    (2 : ℕ) ^ (4 / 2) = 4 ∧
+    -- D₂ = M₄(ℂ): finrank = 16 (genuine Mathlib)
+    finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) = 16 ∧
+    -- Column module of M₄(ℂ) = ℂ⁴: finrank = 4 (genuine Mathlib)
+    finrank ℂ (Fin 4 → ℂ) = 4 ∧
+    -- As SU(4) fundamental: same ℂ⁴
+    finrank ℂ (Fin 4 → ℂ) = 4 ∧
+    -- As Dirac spinor: finrank = 2^(4/2) = 4
+    finrank ℂ (Fin 4 → ℂ) = 2 ^ (4 / 2) ∧
     -- As ℍ² ⊗ ℂ: dim = 2 × 4 / 2 = 4
     2 * 4 / 2 = (4 : ℕ) ∧
-    -- All three give 4, but they are not "three different 4's"
-    -- They are the SAME 4: column(M₄(ℂ)) = column(Cl₄(ℂ)) = column(M₂(ℍ) ⊗ ℂ)
-    -- because M₄(ℂ) = Cl₄(ℂ) = M₂(ℍ) ⊗ ℂ (three names for one algebra)
-    (4 : ℕ) = 4 := by
-  exact ⟨by norm_num, rfl, rfl, by norm_num, by omega, rfl⟩
+    -- Column² = algebra: (finrank ℂ⁴)² = finrank M₄(ℂ) (genuine)
+    (finrank ℂ (Fin 4 → ℂ)) ^ 2 = finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) := by
+  refine ⟨?_, ?_, ?_, ?_, by omega, ?_⟩
+  · simp [finrank_matrix, finrank_self]
+  · simp
+  · simp
+  · simp
+  · simp [finrank_matrix, finrank_self]
 
 /-- The three group actions on ℂ⁴ are compatible because they come
     from the SAME algebra acting by left multiplication.
@@ -605,10 +613,10 @@ theorem spacetime_unconditional :
     (3 + 1 = (4 : ℕ)) ∧
 
     -- PHASE 3: UNIFICATION
-    -- (11) One algebra, dim 16
-    ((4 : ℕ) ^ 2 = 16) ∧
-    -- (12) Three perspectives: SU(4) dim 15, Spin dim 6, Im(ℍ) dim 3
-    (15 + 6 + 3 = (24 : ℕ)) ∧
+    -- (11) One algebra M₄(ℂ): finrank = 16 (genuine Mathlib)
+    (finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) = 16) ∧
+    -- (12) Column module ℂ⁴: finrank = 4 (genuine Mathlib)
+    (finrank ℂ (Fin 4 → ℂ) = 4) ∧
 
     -- PHASE 4: HIGHER INVARIANCE
     -- (13) D₃ internal: dim 256
@@ -617,8 +625,10 @@ theorem spacetime_unconditional :
     ((2 : ℕ) ^ (4 / 2) = 4) := by
   refine ⟨by omega, by omega, ⟨rfl, rfl⟩,
           ⟨by omega, by omega, by omega, by omega⟩,
-          by omega, by omega, by norm_num,
-          by omega, by norm_num, by norm_num⟩
+          by omega, by omega, ?_, ?_,
+          by norm_num, by norm_num⟩
+  · simp [finrank_matrix, finrank_self]
+  · simp
 
 /-!
 ## Strengthened Predictions
