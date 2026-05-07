@@ -64,6 +64,12 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.IntervalCases
+import Mathlib.LinearAlgebra.Dimension.Constructions
+import Mathlib.LinearAlgebra.FreeModule.Finite.Matrix
+import Mathlib.LinearAlgebra.Complex.FiniteDimensional
+import Mathlib.Algebra.Quaternion
+
+open scoped Quaternion
 
 /-!
 ## Part 1: The Division Algebra Dimensions (Hurwitz)
@@ -95,17 +101,18 @@ theorem hurwitz_dimensions :
     ℍ: dim 4, non-commutative, ASSOCIATIVE
     𝕆: dim 8, non-commutative, NON-ASSOCIATIVE -/
 theorem division_algebra_properties :
-    -- ℝ: dim 1
-    (1 : ℕ) = 1 ∧
-    -- ℂ: dim 2 over ℝ
-    (2 : ℕ) = 2 ∧
-    -- ℍ: dim 4 over ℝ
-    (4 : ℕ) = 4 ∧
-    -- 𝕆: dim 8 over ℝ
+    -- ℝ: finrank 1 (Mathlib)
+    Module.finrank ℝ ℝ = 1 ∧
+    -- ℂ: finrank 2 over ℝ (Mathlib)
+    Module.finrank ℝ ℂ = 2 ∧
+    -- ℍ: finrank 4 over ℝ (Mathlib)
+    Module.finrank ℝ ℍ[ℝ] = 4 ∧
+    -- 𝕆: dim 8 over ℝ (not in Mathlib)
     (8 : ℕ) = 8 ∧
     -- Dimensions sum: 1 + 2 + 4 + 8 = 15
     1 + 2 + 4 + 8 = (15 : ℕ) := by
-  exact ⟨rfl, rfl, rfl, rfl, by omega⟩
+  exact ⟨Module.finrank_self ℝ, Complex.finrank_real_complex,
+         Quaternion.finrank_eq_four, rfl, by omega⟩
 
 /-!
 ## Part 2: The Associativity Constraint
@@ -183,32 +190,33 @@ the cascade's output. M₄(ℂ) has a natural quaternionic sub-structure.
 
 /-- Dimension matching: M₄(ℂ) and M₂(ℍ) have compatible dimensions. -/
 theorem quaternionic_dimension_match :
-    -- dim_ℂ(M₄(ℂ)) = 4² = 16
-    (4 : ℕ) ^ 2 = 16 ∧
-    -- dim_ℍ(M₂(ℍ)) = 2² = 4 (quaternionic dimension)
-    (2 : ℕ) ^ 2 = 4 ∧
-    -- dim_ℝ(M₂(ℍ)) = 2² × dim_ℝ(ℍ) = 4 × 4 = 16
-    (2 : ℕ) ^ 2 * 4 = 16 ∧
-    -- dim_ℂ(M₂(ℍ) ⊗ ℂ) = dim_ℝ(M₂(ℍ))/2 = 16/2 = 8... no
-    -- Actually: dim_ℂ(M₄(ℂ)) = 16 = dim_ℝ(M₂(ℍ))
-    -- The complexification of M₂(ℍ) is M₄(ℂ)
-    (16 : ℕ) = 16 := by
-  exact ⟨by norm_num, by norm_num, by norm_num, rfl⟩
+    -- dim_ℂ(M₄(ℂ)) = 16 (Mathlib)
+    Module.finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) = 16 ∧
+    -- dim_ℝ(ℍ) = 4 (Mathlib)
+    Module.finrank ℝ ℍ[ℝ] = 4 ∧
+    -- dim_ℝ(M₂(ℍ)) = 2² × 4 = 16
+    (2 : ℕ) ^ 2 * Module.finrank ℝ ℍ[ℝ] = 16 ∧
+    -- Complexification matching
+    Module.finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) = (2 : ℕ) ^ 2 * Module.finrank ℝ ℍ[ℝ] := by
+  refine ⟨?_, Quaternion.finrank_eq_four, ?_, ?_⟩
+  all_goals simp [Module.finrank_matrix, Fintype.card_fin, Module.finrank_self,
+                   Quaternion.finrank_eq_four]
 
 /-- The quaternion algebra ℍ has dimension 4 over ℝ:
     ℍ = ℝ·1 ⊕ ℝ·i ⊕ ℝ·j ⊕ ℝ·k
     The real part has dimension 1.
     The imaginary part Im(ℍ) = ℝ·i ⊕ ℝ·j ⊕ ℝ·k has dimension 3. -/
 theorem quaternion_decomposition :
-    -- dim_ℝ(ℍ) = 4
-    (4 : ℕ) = 4 ∧
-    -- dim_ℝ(Re ℍ) = 1 (the real scalar part)
-    (1 : ℕ) = 1 ∧
-    -- dim_ℝ(Im ℍ) = 4 - 1 = 3 (the imaginary part)
-    4 - 1 = (3 : ℕ) ∧
+    -- dim_ℝ(ℍ) = 4 (Mathlib)
+    Module.finrank ℝ ℍ[ℝ] = 4 ∧
+    -- dim_ℝ(ℝ) = 1 (scalar subalgebra)
+    Module.finrank ℝ ℝ = 1 ∧
+    -- dim_ℝ(Im ℍ) = 4 - 1 = 3
+    Module.finrank ℝ ℍ[ℝ] - Module.finrank ℝ ℝ = 3 ∧
     -- Decomposition: 1 + 3 = 4
     1 + 3 = (4 : ℕ) := by
-  exact ⟨rfl, rfl, by omega, by omega⟩
+  refine ⟨Quaternion.finrank_eq_four, Module.finrank_self ℝ, ?_, by omega⟩
+  simp [Quaternion.finrank_eq_four, Module.finrank_self]
 
 /-!
 ## Part 4: Three Complex Structures = Three Generations
@@ -243,46 +251,41 @@ by which imaginary quaternion direction they align with.
 /-- The imaginary quaternions span a 3-dimensional space.
     This is THE source of the number 3. -/
 theorem imaginary_quaternion_dim :
-    -- dim_ℝ(Im ℍ) = 3
-    -- Im(ℍ) = {ai + bj + ck : a, b, c ∈ ℝ}
-    -- Basis: {i, j, k} — three elements
-    (3 : ℕ) = 3 ∧
-    -- Each basis element squares to -1: i²=j²=k²=-1
-    -- (This defines a complex structure J with J²=-id)
-    -- Number of independent complex structures = dim(Im ℍ) = 3
-    (3 : ℕ) = 4 - 1 := by
-  exact ⟨rfl, by omega⟩
+    -- dim_ℝ(Im ℍ) = finrank(ℍ) - finrank(ℝ) = 4 - 1 = 3
+    Module.finrank ℝ ℍ[ℝ] - Module.finrank ℝ ℝ = 3 ∧
+    -- The number 3 = dim(ℍ) - 1
+    Module.finrank ℝ ℍ[ℝ] - 1 = 3 := by
+  constructor <;> simp [Quaternion.finrank_eq_four, Module.finrank_self]
 
 /-- The quaternion algebra relations: i² = j² = k² = ijk = -1.
     These are NOT free parameters — they are the UNIQUE algebra
     structure on ℝ⁴ that makes it a division algebra (Frobenius 1878). -/
 theorem quaternion_relations :
-    -- i² = -1 (first complex structure)
-    -- j² = -1 (second complex structure)
-    -- k² = -1 (third complex structure)
-    -- ijk = -1 (compatibility relation)
-    -- These give: ij = k, jk = i, ki = j (cyclic)
-    -- And: ji = -k, kj = -i, ik = -j (anti-cyclic)
-    -- Number of independent generators: 3
-    (3 : ℕ) = 3 ∧
-    -- Number of independent relations: 1 (ijk = -1 implies all others)
-    (1 : ℕ) = 1 ∧
-    -- dim(Im ℍ) = generators = 3
-    (3 : ℕ) = 3 := by
-  exact ⟨rfl, rfl, rfl⟩
+    -- dim_ℝ(ℍ) = 4 (Mathlib)
+    Module.finrank ℝ ℍ[ℝ] = 4 ∧
+    -- Number of imaginary generators = dim - 1 = 3
+    Module.finrank ℝ ℍ[ℝ] - 1 = 3 ∧
+    -- dim_ℝ(ℂ) = 2 (Mathlib)
+    Module.finrank ℝ ℂ = 2 ∧
+    -- ℍ has strictly more imaginary dimensions than ℂ
+    Module.finrank ℝ ℍ[ℝ] - 1 > Module.finrank ℝ ℂ - 1 := by
+  refine ⟨Quaternion.finrank_eq_four, ?_, Complex.finrank_real_complex, ?_⟩
+  <;> simp [Quaternion.finrank_eq_four, Complex.finrank_real_complex]
 
 /-- Each complex structure on ℝ⁴ reduces it to ℂ²:
     ℝ⁴ with J_q becomes ℂ² (as a complex vector space under J_q).
     dim_ℂ = dim_ℝ / 2 = 4 / 2 = 2. -/
 theorem complex_structure_reduction :
-    -- Real dim of ℍ (as ℝ-vector space)
-    (4 : ℕ) = 4 ∧
+    -- dim_ℝ(ℍ) = 4 (Mathlib)
+    Module.finrank ℝ ℍ[ℝ] = 4 ∧
+    -- dim_ℝ(ℂ) = 2 (Mathlib)
+    Module.finrank ℝ ℂ = 2 ∧
     -- Complex dim under any single J: 4/2 = 2
-    (4 : ℕ) / 2 = 2 ∧
-    -- Each complex structure picks out a ℂ² ⊂ ℝ⁴
-    -- Three structures pick out three ℂ²'s
+    Module.finrank ℝ ℍ[ℝ] / Module.finrank ℝ ℂ = 2 ∧
+    -- Three complex structures pick out three ℂ²'s
     3 * 2 = (6 : ℕ) := by
-  exact ⟨rfl, by omega, by omega⟩
+  refine ⟨Quaternion.finrank_eq_four, Complex.finrank_real_complex, ?_, by omega⟩
+  simp [Quaternion.finrank_eq_four, Complex.finrank_real_complex]
 
 /-!
 ## Part 5: Why Exactly 3 (Not 2, Not 4, Not More)
@@ -311,18 +314,18 @@ Step 5: Completeness (Hurwitz)
 
 /-- The forced chain: dim(ℍ)=4 → dim(Im ℍ)=3 → 3 generations. -/
 theorem three_from_quaternion_dim :
-    -- Step 1: dim(ℍ) = 4 (Hurwitz)
-    (4 : ℕ) = 4 ∧
+    -- Step 1: dim_ℝ(ℍ) = 4 (Mathlib)
+    Module.finrank ℝ ℍ[ℝ] = 4 ∧
     -- Step 2: dim(Im ℍ) = 4 - 1 = 3
-    4 - 1 = (3 : ℕ) ∧
+    Module.finrank ℝ ℍ[ℝ] - 1 = 3 ∧
     -- Step 3: 3 complex structures → 3 generations
-    (3 : ℕ) = 3 ∧
-    -- Step 4: Next div alg (dim 8) excluded by non-associativity
-    -- If it WERE included: would give dim(Im 𝕆) = 8-1 = 7 structures
+    Module.finrank ℝ ℍ[ℝ] - 1 = 3 ∧
+    -- Step 4: Hypothetical 𝕆 (dim 8) would give 7 structures
     8 - 1 = (7 : ℕ) ∧
-    -- But 𝕆 is excluded → we stop at 3
-    (3 : ℕ) < 7 := by
-  exact ⟨rfl, by omega, rfl, by omega, by omega⟩
+    -- dim(Im ℍ) < dim(Im 𝕆): we stop at 3
+    Module.finrank ℝ ℍ[ℝ] - 1 < 7 := by
+  refine ⟨Quaternion.finrank_eq_four, ?_, ?_, by omega, ?_⟩
+  all_goals simp [Quaternion.finrank_eq_four]
 
 /-- Why NOT 2 generations (ℂ only):
     ℂ has dim_ℝ = 2, so Im(ℂ) has dim 1.
@@ -334,15 +337,14 @@ theorem three_from_quaternion_dim :
     The cascade operates in FdVect_ℂ. The quaternionic structure
     is what EMERGES at D₂ beyond the base ℂ-structure. -/
 theorem why_not_two :
-    -- dim(Im ℂ) = 2 - 1 = 1 (only one imaginary direction in ℂ)
-    2 - 1 = (1 : ℕ) ∧
-    -- But ℂ is the base field, not emergent structure
-    -- The emergent structure at D₂ is ℍ, giving dim(Im ℍ) = 3
-    4 - 1 = (3 : ℕ) ∧
-    -- If we counted ℂ: would get 1 generation (wrong)
-    -- Correct: ℍ emerging beyond ℂ gives 3 generations
-    (3 : ℕ) ≠ 1 := by
-  exact ⟨by omega, by omega, by omega⟩
+    -- dim_ℝ(Im ℂ) = 2 - 1 = 1
+    Module.finrank ℝ ℂ - 1 = 1 ∧
+    -- dim_ℝ(Im ℍ) = 4 - 1 = 3
+    Module.finrank ℝ ℍ[ℝ] - 1 = 3 ∧
+    -- 3 ≠ 1: ℍ gives 3 generations, not 1
+    Module.finrank ℝ ℍ[ℝ] - 1 ≠ Module.finrank ℝ ℂ - 1 := by
+  refine ⟨?_, ?_, ?_⟩
+  all_goals simp [Complex.finrank_real_complex, Quaternion.finrank_eq_four]
 
 /-- Why NOT 4+ generations:
     Would require a 5th normed division algebra (beyond ℝ,ℂ,ℍ,𝕆)
@@ -351,15 +353,16 @@ theorem why_not_two :
     - Cayley-Dickson: 𝕆 is non-associative (this is provable from the construction)
     - Therefore: 3 is the MAXIMUM number of associative division algebras -/
 theorem why_not_four :
-    -- Hurwitz: only 4 normed division algebras total
-    (4 : ℕ) = 4 ∧
-    -- Minus 1 non-associative (𝕆) = 3 associative
-    4 - 1 = (3 : ℕ) ∧
-    -- 3 < 4 (fewer associative than total)
+    -- ℍ has dim 4 (Frobenius maximum)
+    Module.finrank ℝ ℍ[ℝ] = 4 ∧
+    -- dim(Im ℍ) = 3 = generation count
+    Module.finrank ℝ ℍ[ℝ] - 1 = 3 ∧
+    -- 3 < 4
     (3 : ℕ) < 4 ∧
-    -- No 5th exists → no way to get generation 4
-    True := by
-  exact ⟨rfl, by omega, by omega, trivial⟩
+    -- A 4th generation would require dim(Im) ≥ 4
+    Module.finrank ℝ ℍ[ℝ] - 1 < 4 := by
+  refine ⟨Quaternion.finrank_eq_four, ?_, by omega, ?_⟩
+  all_goals simp [Quaternion.finrank_eq_four]
 
 /-!
 ## Part 6: The Cascade Level ↔ Division Algebra Correspondence
@@ -387,17 +390,21 @@ The number of division algebra levels beyond the base field:
 
 /-- Cascade dimensions at each level. -/
 theorem cascade_level_dims :
-    -- D₁: matrix size 2, dim 4
-    (2 : ℕ) ^ 2 = 4 ∧
-    -- D₂: matrix size 4, dim 16
-    (4 : ℕ) ^ 2 = 16 ∧
-    -- D₃: matrix size 16, dim 256
-    (16 : ℕ) ^ 2 = 256 ∧
-    -- D₂ as quaternionic: M₂(ℍ) has matrix size 2 over ℍ
-    (2 : ℕ) ^ 2 = 4 ∧
-    -- dim_ℝ(ℍ) = 4, so dim_ℝ(M₂(ℍ)) = 4 × 4 = 16
-    4 * 4 = (16 : ℕ) := by
-  refine ⟨by norm_num, by norm_num, by norm_num, by norm_num, by omega⟩
+    -- D₁ = M₂(ℂ): finrank 4
+    Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) = 4 ∧
+    -- D₂ = M₄(ℂ): finrank 16
+    Module.finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) = 16 ∧
+    -- D₃ = M₁₆(ℂ): finrank 256
+    Module.finrank ℂ (Matrix (Fin 16) (Fin 16) ℂ) = 256 ∧
+    -- dim_ℝ(ℍ) = 4
+    Module.finrank ℝ ℍ[ℝ] = 4 ∧
+    -- dim_ℝ(M₂(ℍ)) = 2² × 4 = 16
+    (2 : ℕ) ^ 2 * Module.finrank ℝ ℍ[ℝ] = 16 := by
+  refine ⟨?_, ?_, ?_, Quaternion.finrank_eq_four, ?_⟩
+  · simp [Module.finrank_matrix, Fintype.card_fin, Module.finrank_self]
+  · simp [Module.finrank_matrix, Fintype.card_fin, Module.finrank_self]
+  · simp [Module.finrank_matrix, Fintype.card_fin, Module.finrank_self]
+  · simp [Quaternion.finrank_eq_four]
 
 /-- The M₂(ℍ) ≅ M₄(ℂ) isomorphism (dimension verification):
     M₂(ℍ) viewed as a real algebra has dim 16.
@@ -405,16 +412,18 @@ theorem cascade_level_dims :
     The isomorphism is M₂(ℍ) ⊗_ℝ ℂ ≅ M₄(ℂ).
     Alternatively: M₂(ℍ) is a real form of M₄(ℂ). -/
 theorem M2H_M4C_dims :
-    -- dim_ℝ(M₂(ℍ)) = 2² × dim_ℝ(ℍ) = 4 × 4 = 16
-    (2 : ℕ) ^ 2 * 4 = 16 ∧
-    -- dim_ℝ(M₄(ℂ)) = 4² × dim_ℝ(ℂ) = 16 × 2 = 32
-    (4 : ℕ) ^ 2 * 2 = 32 ∧
-    -- dim_ℂ(M₄(ℂ)) = 4² = 16
-    (4 : ℕ) ^ 2 = 16 ∧
-    -- Complexification: dim_ℝ(M₂(ℍ)) × dim_ℝ(ℂ)/dim_ℝ(ℂ) = dim_ℂ(M₄(ℂ))
-    -- Actually: M₂(ℍ) ⊗_ℝ ℂ ≅ M₄(ℂ), checking: 16 = 16 ✓ (complex dims)
-    (16 : ℕ) = 4 ^ 2 := by
-  refine ⟨by norm_num, by norm_num, by norm_num, by norm_num⟩
+    -- dim_ℝ(M₂(ℍ)) = 2² × dim_ℝ(ℍ) = 16
+    (2 : ℕ) ^ 2 * Module.finrank ℝ ℍ[ℝ] = 16 ∧
+    -- dim_ℝ(M₄(ℂ)) = finrank_ℂ(M₄(ℂ)) × dim_ℝ(ℂ) = 32
+    Module.finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) * Module.finrank ℝ ℂ = 32 ∧
+    -- dim_ℂ(M₄(ℂ)) = 16
+    Module.finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) = 16 ∧
+    -- Complexification matching
+    (2 : ℕ) ^ 2 * Module.finrank ℝ ℍ[ℝ] =
+    Module.finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) := by
+  refine ⟨?_, ?_, ?_, ?_⟩
+  all_goals simp [Module.finrank_matrix, Fintype.card_fin, Module.finrank_self,
+                   Quaternion.finrank_eq_four, Complex.finrank_real_complex]
 
 /-!
 ## Part 7: Fermion Counting with Three Generations
@@ -431,9 +440,11 @@ where each generation has 8 left-handed + 8 right-handed fermions
 under Pati-Salam.
 -/
 
-/-- Total fermion count: 3 generations × 16 per generation = 48. -/
+/-- Total fermion count: 3 generations × 16 per generation = 48.
+    3 = dim(Im ℍ), 16 = finrank of D₃ column. -/
 theorem total_fermion_count :
-    3 * 16 = (48 : ℕ) := by omega
+    (Module.finrank ℝ ℍ[ℝ] - 1) * Module.finrank ℂ (Fin 16 → ℂ) = 48 := by
+  simp [Quaternion.finrank_eq_four, Module.finrank_pi, Fintype.card_fin]
 
 /-- Decomposition: 48 = 3 × (8_L + 8_R). -/
 theorem fermion_chiral_decomposition :
@@ -493,16 +504,16 @@ The logical chain that forces 3:
     This is WEAKER than Hurwitz (doesn't need normed) but SUFFICIENT
     for our purposes (the cascade requires associativity). -/
 theorem frobenius_count :
-    -- ℝ (dim 1) + ℂ (dim 2) + ℍ (dim 4) = 3 algebras
-    (3 : ℕ) = 3 ∧
-    -- Their dimensions: 1, 2, 4
-    1 + 2 + 4 = (7 : ℕ) ∧
-    -- Maximum dimension of associative div. alg. = 4 (ℍ)
-    (4 : ℕ) = 4 ∧
-    -- Next possible dim would be 8 (𝕆) but it's non-associative
-    -- → no associative division algebra of dim > 4 exists
-    (4 : ℕ) < 8 := by
-  exact ⟨rfl, by omega, rfl, by omega⟩
+    -- Their dimensions verified by Mathlib
+    Module.finrank ℝ ℝ = 1 ∧
+    Module.finrank ℝ ℂ = 2 ∧
+    Module.finrank ℝ ℍ[ℝ] = 4 ∧
+    -- Sum: 1 + 2 + 4 = 7
+    Module.finrank ℝ ℝ + Module.finrank ℝ ℂ + Module.finrank ℝ ℍ[ℝ] = 7 ∧
+    -- Maximum associative dimension < 8 (𝕆)
+    Module.finrank ℝ ℍ[ℝ] < 8 := by
+  refine ⟨Module.finrank_self ℝ, Complex.finrank_real_complex, Quaternion.finrank_eq_four, ?_, ?_⟩
+  all_goals simp [Module.finrank_self, Complex.finrank_real_complex, Quaternion.finrank_eq_four]
 
 /-- Alternative argument: the cascade produces exactly 3 non-trivial
     levels before the division algebra sequence terminates:
@@ -600,32 +611,30 @@ Assembling all components:
     The number 3 is a theorem of pure mathematics (Frobenius 1878).
     It is not a parameter. -/
 theorem three_generations_forced :
-    -- (1) D₂ dimensions match M₂(ℍ)
-    ((2 : ℕ) ^ 2 * 4 = 16) ∧
-    -- (2) dim_ℝ(ℍ) = 4
-    ((4 : ℕ) = 4) ∧
+    -- (1) D₂ = M₄(ℂ): finrank matches M₂(ℍ) complexification
+    (2 : ℕ) ^ 2 * Module.finrank ℝ ℍ[ℝ] = Module.finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) ∧
+    -- (2) dim_ℝ(ℍ) = 4 (Mathlib)
+    Module.finrank ℝ ℍ[ℝ] = 4 ∧
     -- (3) dim(Im ℍ) = 3
-    (4 - 1 = (3 : ℕ)) ∧
-    -- (4) Three basis elements {i,j,k}
-    ((3 : ℕ) = 3) ∧
+    Module.finrank ℝ ℍ[ℝ] - 1 = 3 ∧
+    -- (4) dim_ℝ(ℂ) = 2 (Mathlib)
+    Module.finrank ℝ ℂ = 2 ∧
     -- (5) 16 fermions per generation
-    (16 = 4 * 2 * 1 + 4 * 1 * (2 : ℕ)) ∧
-    -- (6) 𝕆 has dim 8
-    ((8 : ℕ) = 8) ∧
-    -- (7) Associative division algebras: exactly 3
-    (4 - 1 = (3 : ℕ)) ∧
-    -- (8) Total normed div. algs.: 4, minus 1 non-assoc = 3
-    (4 - 1 = (3 : ℕ)) ∧
-    -- (9) Total fermions: 3 × 16 = 48
-    (3 * 16 = (48 : ℕ)) ∧
-    -- (10) CP violation: requires (N-1)(N-2)/2 > 0, i.e., N ≥ 3
-    ((3 - 1) * (3 - 2) / 2 = (1 : ℕ)) ∧
-    -- (11) Frobenius count
-    ((3 : ℕ) = 3) ∧
-    -- Cross-check: quarks + leptons = 36 + 12 = 48
-    (36 + 12 = (48 : ℕ)) := by
-  refine ⟨by norm_num, rfl, by omega, rfl, by omega, rfl,
-          by omega, by omega, by omega, by omega, rfl, by omega⟩
+    Module.finrank ℂ (Fin 16 → ℂ) = 16 ∧
+    -- (6) ℍ dim < 𝕆 dim
+    Module.finrank ℝ ℍ[ℝ] < 8 ∧
+    -- (7) dim_ℝ(ℝ) = 1 (Mathlib)
+    Module.finrank ℝ ℝ = 1 ∧
+    -- (8) Total fermions: 3 × 16 = 48
+    (Module.finrank ℝ ℍ[ℝ] - 1) * Module.finrank ℂ (Fin 16 → ℂ) = 48 ∧
+    -- (9) CP violation: N ≥ 3 required
+    (3 - 1) * (3 - 2) / 2 = (1 : ℕ) ∧
+    -- (10) quarks + leptons = 48
+    36 + 12 = (48 : ℕ) := by
+  refine ⟨?_, Quaternion.finrank_eq_four, ?_, Complex.finrank_real_complex,
+          ?_, ?_, Module.finrank_self ℝ, ?_, by omega, by omega⟩
+  all_goals simp [Quaternion.finrank_eq_four, Module.finrank_matrix, Fintype.card_fin,
+                   Module.finrank_self, Module.finrank_pi]
 
 /-!
 ## Part 11: Predictions from F3.1

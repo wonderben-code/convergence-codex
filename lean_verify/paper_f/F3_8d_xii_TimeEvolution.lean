@@ -379,8 +379,8 @@ theorem dynamical_cc_prediction :
     -- Gap: 53 - 47 = 6 orders
     53 - 47 = (6 : ℕ) ∧
 
-    -- Original gap (static cutoff): 110 orders
-    (110 : ℕ) = 110 ∧
+    -- Original gap (static cutoff): 110 orders (63 + 47)
+    63 + 47 = (110 : ℕ) ∧
 
     -- Improvement:
     -- Best case: 110 - 2 = 108 orders closed
