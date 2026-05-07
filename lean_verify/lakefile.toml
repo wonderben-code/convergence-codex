@@ -64,5 +64,9 @@ roots = [
   "GaussianMeasure",
   "ReflectionPositivity",
   "BakryEmeryGap",
-  "RepDecomposition"
+  "RepDecomposition",
+  "YangMillsEmbedding",
+  "ConnesClassification",
+  "SpectralActionMeasure",
+  "OSReconstructionFormal"
 ]
