@@ -146,20 +146,6 @@ theorem trace_zero_matrix :
     trace (0 : Matrix (Fin 4) (Fin 4) ℂ) = 0 := by
   simp [Matrix.trace, Matrix.diag]
 
-/-- Combining trace_one and the cascade:
-    Tr(I₄)/4 = 1. This normalisation is used in defining
-    the normalised trace tr = Tr/n which appears in the
-    spectral action as tr(f(D²/Λ²)). -/
-theorem normalised_trace_identity :
-    (4 : ℂ) / 4 = 1 := by norm_num
-
-/-- For unitary U ∈ U(4): det(U) ∈ U(1), i.e., |det(U)| = 1.
-    For special unitary U ∈ SU(4): det(U) = 1.
-    The cascade's gauge group is SU(4), so det = 1 exactly.
-    This means the path integral measure is gauge-invariant:
-    det(∂(UDU⁻¹)/∂D) = |det(U)|² = 1. -/
-theorem gauge_measure_invariance : (1 : ℂ) * 1 = 1 := by ring
-
 -- ============================================================================
 -- SECTION 5: Matrix Powers and the Spectral Action
 -- ============================================================================
@@ -186,21 +172,6 @@ theorem spectral_dimension_from_trace :
     (trace (1 : Matrix (Fin 4) (Fin 4) ℂ) : ℂ) = 4 := by
   rw [Matrix.trace_one]
   simp [Fintype.card_fin]
-
-/-- Axiom 4 (Reality): The real structure J satisfies J² = ε·I
-    where ε = -1 for KO-dimension 2.
-    We verify: (-1)² = 1, so J² acting twice gives identity. -/
-theorem reality_j_squared : (-1 : ℤ) ^ 2 = 1 := by norm_num
-
-/-- Axiom 5 (First-order): [[D,a], JbJ⁻¹] = 0 for all a,b.
-    Nested commutators of 4×4 matrices are computable because
-    dim(M₄) = 16 is finite. -/
-theorem first_order_finite_check : 16 * 16 = 256 := by norm_num
-
-/-- Axiom 6 (Orientability): The grading γ satisfies γ² = I.
-    In even dimensions, γ is the chirality operator.
-    For d = 4: γ = γ⁵ = iγ⁰γ¹γ²γ³ (the fifth gamma matrix). -/
-theorem grading_squared : (1 : ℤ) ^ 2 = 1 := by norm_num
 
 -- ============================================================================
 -- SECTION 7: The Fundamental Theorem of the Cascade Spectral Action

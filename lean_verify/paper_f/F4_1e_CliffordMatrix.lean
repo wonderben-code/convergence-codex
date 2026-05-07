@@ -262,21 +262,4 @@ theorem clifford4_ι_e₁_mul_e₂ :
     clifford4ToMatrix (ι Q₄ e₁ * ι Q₄ e₂) = γ₁ * γ₂ := by
   rw [map_mul, clifford4_ι_e₁, clifford4_ι_e₂]
 
--- ============================================================================
--- SECTION 10: Physical Significance
--- ============================================================================
-
-/-- The Clifford algebra dimension formula: dim(Cl_n) = 2^n.
-    For n = 4: dim(Cl₄) = 2⁴ = 16. -/
-theorem clifford_dim_formula : 2 ^ 4 = 16 := by norm_num
-
-/-- The cascade level D₂ = M₄(ℂ) has dimension 16 = 4². -/
-theorem cascade_D2_dim : 4 * 4 = 16 := by norm_num
-
-/-- The spacetime algebra: Cl₄(ℂ) and M₄(ℂ) have matching dimensions.
-    This is the algebraic foundation of the Dirac equation:
-    the 4-dimensional Clifford algebra acts on 4-component spinors
-    via 4×4 gamma matrices. -/
-theorem spacetime_algebra_dim : 2 ^ 4 = 4 * 4 := by norm_num
-
 end

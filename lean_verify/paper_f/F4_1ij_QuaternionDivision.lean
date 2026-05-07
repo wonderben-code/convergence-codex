@@ -38,42 +38,7 @@ theorem quaternion_dim_four : Module.finrank ℝ ℍ[ℝ] = 4 :=
   Quaternion.finrank_eq_four
 
 -- ============================================================================
--- SECTION 2: Imaginary Quaternions — dim(Im(ℍ)) = 3 (F4.1j)
--- ============================================================================
-
--- The imaginary quaternions Im(ℍ) = {ai + bj + ck : a,b,c ∈ ℝ} form a
--- 3-dimensional real vector space. This is the kernel of the real-part map.
--- dim(Im(ℍ)) = dim(ℍ) - dim(ℝ) = 4 - 1 = 3 by rank-nullity.
-
-/-- The imaginary dimension: dim(Im(ℍ)) = dim(ℍ) - 1 = 4 - 1 = 3.
-    Since ℍ ≅ ℝ⁴ as ℝ-vector spaces and the real part is a surjective
-    linear map to ℝ, its kernel (= Im(ℍ)) has dimension 4 - 1 = 3.
-
-    This is the NUMBER THREE that drives three generations:
-    - D₀ produces ℝ (dim(Im) = 0 — no imaginary part)
-    - D₁ produces ℂ (dim(Im) = 1 — one imaginary direction)
-    - D₂ produces ℍ (dim(Im) = 3 — three imaginary directions)
-    - 𝕆 excluded (non-associative → not an endomorphism algebra)
-    → Exactly 3 non-trivial levels with imaginary structure. -/
-theorem imaginary_quaternion_dim : 4 - 1 = 3 := by norm_num
-
-/-- The division algebra dimensions form the sequence 1, 2, 4.
-    ℝ has dim 1, ℂ has dim 2, ℍ has dim 4. These are 2⁰, 2¹, 2².
-    This matches the cascade dimensions at D₀, D₁, D₂. -/
-theorem division_algebra_dims : 2 ^ 0 = 1 ∧ 2 ^ 1 = 2 ∧ 2 ^ 2 = 4 := by
-  constructor <;> [norm_num; constructor <;> norm_num]
-
-/-- The imaginary dimensions of the three division algebras: 0, 1, 3.
-    ℝ: dim(Im) = 1 - 1 = 0
-    ℂ: dim(Im) = 2 - 1 = 1
-    ℍ: dim(Im) = 4 - 1 = 3
-    These count the "internal degrees of freedom" at each cascade level. -/
-theorem imaginary_dims :
-    (1 - 1 = 0) ∧ (2 - 1 = 1) ∧ (4 - 1 = 3) := by
-  exact ⟨by norm_num, by norm_num, by norm_num⟩
-
--- ============================================================================
--- SECTION 3: Quaternion Non-Commutativity (F2.3 chirality foundation)
+-- SECTION 2: Quaternion Multiplication and Non-Commutativity
 -- ============================================================================
 
 -- In ℍ[R,-1,0,-1], the multiplication is:
@@ -91,16 +56,6 @@ theorem quat_ij_k_component :
 theorem quat_ji_k_component :
     ((⟨0, 0, 1, 0⟩ : ℍ[ℝ]) * ⟨0, 1, 0, 0⟩).imK = -1 := by
   simp [mk_mul_mk]
-
-/-- **NON-COMMUTATIVITY THEOREM**: i*j ≠ j*i in the quaternions.
-    This is the algebraic origin of chirality — left and right are
-    distinguishable because the algebra is non-commutative.
-    At D₂ = M₂(ℍ), this non-commutativity forces the left-right
-    asymmetry of the weak interaction (SU(2)_L ≠ SU(2)_R). -/
-theorem quaternion_noncommutative :
-    (⟨0, 1, 0, 0⟩ : ℍ[ℝ]) * ⟨0, 0, 1, 0⟩ ≠ ⟨0, 0, 1, 0⟩ * ⟨0, 1, 0, 0⟩ := by
-  simp [mk_mul_mk, QuaternionAlgebra.ext_iff]
-  norm_num
 
 /-- i * j = k in standard quaternions (re=0, imI=0, imJ=0, imK=1). -/
 theorem quat_ij_eq_k :
@@ -137,7 +92,7 @@ theorem hamilton_relation :
   ⟨quat_i_sq, quat_j_sq, quat_k_sq⟩
 
 -- ============================================================================
--- SECTION 4: Octonion Exclusion — Associativity Constraint (F4.1i)
+-- SECTION 3: Associativity — Octonion Exclusion (F4.1i)
 -- ============================================================================
 
 -- The cascade uses End(V) = V →ₗ V, which is an ASSOCIATIVE algebra.
@@ -152,39 +107,8 @@ theorem matrix_mul_assoc (A B C : Matrix (Fin 4) (Fin 4) ℂ) :
     A * B * C = A * (B * C) :=
   mul_assoc A B C
 
-/-- The number of associative division algebras over ℝ is exactly 3.
-    ℝ (dim 1), ℂ (dim 2), ℍ (dim 4). No others exist (Frobenius theorem).
-    The cascade produces exactly these three at levels D₀, D₁, D₂. -/
-theorem exactly_three_division_algebras : 3 = 3 := rfl
-
 -- ============================================================================
--- SECTION 5: Division Algebra ↔ Generation Correspondence
--- ============================================================================
-
-/-- Each division algebra contributes one fermion generation.
-    The correspondence:
-    - ℝ (D₀): 1st generation (electron family)
-    - ℂ (D₁): 2nd generation (muon family)
-    - ℍ (D₂): 3rd generation (tau family)
-    Total: 3 generations, matching observation. -/
-theorem three_generations : 1 + 1 + 1 = 3 := by norm_num
-
-/-- The next division algebra (𝕆, dim 8) would require dim(Im) = 7.
-    But 𝕆 is non-associative, so it's excluded from the cascade.
-    This is why there is NO 4th generation. -/
-theorem octonion_dim_excluded : 8 - 1 = 7 := by norm_num
-
-/-- The total imaginary dimensions across all three division algebras:
-    0 + 1 + 3 = 4. This equals the spacetime dimension. -/
-theorem total_imaginary_dim : 0 + 1 + 3 = 4 := by norm_num
-
-/-- The cascade's quaternionic structure at D₂ = M₂(ℍ):
-    dim(M₂(ℍ)) over ℝ = 2² × 4 = 16, matching dim(M₄(ℂ)) = 16.
-    This confirms the isomorphism M₄(ℂ) ≅ M₂(ℍ) ⊗_ℝ ℂ. -/
-theorem M2H_dim : 2 * 2 * 4 = 16 := by norm_num
-
--- ============================================================================
--- SECTION 6: Cascade Division Algebra Properties
+-- SECTION 4: Cascade Division Algebra Properties
 -- ============================================================================
 
 /-- ℝ is commutative and associative (trivially). -/
@@ -197,16 +121,3 @@ theorem complex_commutative (a b : ℂ) : a * b = b * a := mul_comm a b
 theorem quaternion_associative (a b c : ℍ[ℝ]) : a * b * c = a * (b * c) :=
   mul_assoc a b c
 
-/-- The commutativity pattern across cascade levels:
-    D₀ (ℝ): commutative, associative
-    D₁ (ℂ): commutative, associative
-    D₂ (ℍ): NON-commutative, associative ← chirality appears HERE
-    𝕆:       non-commutative, NON-associative ← excluded by cascade
-    The cascade stops exactly where non-associativity would begin. -/
-theorem commutativity_pattern :
-    -- D₂ is non-commutative (proven via quaternion_noncommutative)
-    -- D₃ = M₁₆(ℂ) is also non-commutative for dim > 1
-    -- Matrix algebras are always associative
-    (∀ A B C : Matrix (Fin 4) (Fin 4) ℂ, A * B * C = A * (B * C)) := by
-  intro A B C
-  exact mul_assoc A B C
