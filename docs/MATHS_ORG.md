@@ -9,11 +9,19 @@
 
 ## Core Principles
 
-### 1. The Caesar Principle (Strategic Sequencing)
-Not all problems are equal. Some problems, once conquered, cause 3-4 other problems to fall easily. Attack the EASIEST problem that unlocks the most territory. Every agent must think: "what's the one sub-problem that, if I solve it, makes everything else fall?"
+### 1. The Caesar Principle (Strategic Decomposition → FULL Solution)
+Not all problems are equal. Some problems, once conquered, cause 3-4 other problems to fall easily. When a problem is hard, decompose it into a staircase of sub-problems, then attack the EASIEST stair that unlocks the most territory.
+
+**CRITICAL: The staircase is a STRATEGY for solving the ENTIRE original problem, not just one step.** Agents must:
+1. Decompose the hard problem into a staircase of sub-problems
+2. Attack the easiest stair first (it unlocks others)
+3. **Climb the ENTIRE staircase** — solve every step
+4. **Arrive at the top** — the original hard problem is now solved
+
+Finding the decomposition is not the goal. SOLVING the full problem via the decomposition IS the goal. An agent who decomposes brilliantly but only solves step 1 of 5 has not finished. They continue until all 5 steps are proven and the original theorem compiles.
 
 ### 2. The Key Generator Principle (Intermediate Steps)
-If you can't prove A → C directly, find B such that A → B → C works. Every hard theorem has a staircase of intermediate lemmas. Find the staircase. Each step should be manageable. The staircase IS the proof.
+If you can't prove A → C directly, find B such that A → B → C works. Every hard theorem has a staircase of intermediate lemmas. Find the staircase. Each step should be manageable. The staircase IS the proof. **But you must prove EVERY step of the staircase — A → B, then B → C — and chain them together. The job is done when A → C compiles, not when you've identified B.**
 
 ### 3. Relentless — No Arbitrary Limits
 There is NO attempt limit. Agents do not stop after 3 tries. They try every strategy, every decomposition, every Mathlib path, every web resource. They stop ONLY when:
@@ -259,15 +267,55 @@ Grades are defined in `docs/LEAN_INTEGRITY_PROTOCOL.md` with 25 calibration exam
 
 ---
 
-## Session Recovery
+## Anti-Drift Persistence System
 
-If context is lost:
+**Problem:** Context windows compact and clear. Sessions restart. Without persistent state, agents lose track of where they are and repeat work or skip files.
 
-1. Read this document (`docs/MATHS_ORG.md`)
-2. Read `docs/LEAN_INTEGRITY_PROTOCOL.md` (grading system)
-3. Read `docs/LEAN_AUDIT_REPORT.md` (progress tracker)
-4. Check which batch/file/phase you're in
-5. Resume from the recorded checkpoint
+**Solution:** ALL pipeline state is written to files on disk and committed to git. Nothing lives only in context.
+
+### State Files
+
+| File | Purpose | Updated by |
+|------|---------|------------|
+| `docs/MATHS_ORG.md` | This document. The workflow spec. Read-only during execution. | Only updated if the workflow itself changes |
+| `docs/COORDINATOR_STATE.md` | **THE LIVE STATE FILE.** Current batch, per-file phase, blockers, cross-file discoveries. | Coordinator after EVERY phase completion |
+| `docs/LEAN_AUDIT_REPORT.md` | Per-file classification and grading results | Triage agents, Certification agents |
+| `docs/file_reports/<filename>_report.md` | Per-file detailed report: what each mathematician tried, synthesis decisions, review findings, blocker details | Each phase agent for that file |
+
+### The Coordinator's Persistence Protocol
+
+After EVERY phase completion for EVERY file, the Coordinator MUST:
+
+1. **Update `COORDINATOR_STATE.md`** with:
+   - File name
+   - Phase just completed
+   - Outcome (success / needs-round-2 / blocker)
+   - Next action
+   - Any cross-file discoveries (useful lemmas, Mathlib patterns found)
+
+2. **Git commit + push** the state update (per the data provenance rule)
+
+3. **Write per-file report** to `docs/file_reports/` with detailed findings
+
+### Session Recovery Protocol
+
+If context is lost or a new session starts:
+
+1. Read `docs/MATHS_ORG.md` (this document — the workflow spec)
+2. Read `docs/COORDINATOR_STATE.md` (**the live state — tells you exactly where you are**)
+3. Read `docs/LEAN_INTEGRITY_PROTOCOL.md` (grading system)
+4. Read `docs/LEAN_AUDIT_REPORT.md` (per-file classifications)
+5. For any file mid-pipeline, read `docs/file_reports/<filename>_report.md`
+6. Resume from the recorded checkpoint — **no guessing, no repeating work**
+
+### Anti-Drift Rules
+
+1. **Never rely on context alone.** If it's not in a file on disk, it doesn't exist.
+2. **Every decision gets written down.** "We chose proof strategy X because Y" — in the file report.
+3. **Every blocker gets documented.** Not "it didn't work" but "Mathlib lacks X, tried Y and Z, here's the exact error."
+4. **Cross-file discoveries propagate.** If solving File A reveals a useful lemma, it goes in COORDINATOR_STATE.md under "Discoveries" so agents working on File B can use it.
+5. **Commit after every phase.** Not at the end of a batch — after EVERY phase of EVERY file. Granular checkpointing.
+6. **State files are the source of truth.** If context says one thing and the state file says another, the state file wins.
 
 ---
 
