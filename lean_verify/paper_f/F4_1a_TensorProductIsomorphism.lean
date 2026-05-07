@@ -34,6 +34,7 @@
 import Mathlib.RingTheory.MatrixAlgebra
 import Mathlib.LinearAlgebra.Matrix.Reindex
 import Mathlib.LinearAlgebra.FreeModule.Finite.Matrix
+import Mathlib.LinearAlgebra.Dimension.Constructions
 import Mathlib.Logic.Equiv.Fin.Basic
 import Mathlib.Data.Complex.Basic
 
@@ -140,19 +141,49 @@ theorem cascadeTensorIso_bijective :
 theorem fin_prod_card : Fintype.card (Fin 2 × Fin 2) = Fintype.card (Fin 4) := by
   simp [Fintype.card_fin, Fintype.card_prod]
 
-/-- The cascade dimensions: 2×2=4 (D₁→D₂), 4×4=16 (D₂→D₃). -/
-theorem cascade_target_dims : 2 * 2 = 4 ∧ 4 * 4 = 16 := by omega
+/-- **CASCADE TARGET ALGEBRA DIMENSIONS** (via Module.finrank)
+
+    The target matrix algebras at each cascade level have dimension n² as
+    ℂ-vector spaces, computed via Mathlib's `Module.finrank_matrix`:
+      dim_ℂ(M₄(ℂ))  = 4 × 4 × 1 = 16
+      dim_ℂ(M₁₆(ℂ)) = 16 × 16 × 1 = 256
+
+    This is NOT arithmetic — it uses Mathlib's finrank_matrix which computes
+    the dimension of a free module of matrices, and finrank_self (dim_R R = 1). -/
+theorem cascade_target_dims :
+    Module.finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) = 16 ∧
+    Module.finrank ℂ (Matrix (Fin 16) (Fin 16) ℂ) = 256 := by
+  constructor <;> simp [Module.finrank_matrix, Fintype.card_fin, Module.finrank_self]
+
+/-- The cascade isomorphisms preserve dimension: the tensor product algebra
+    has the same ℂ-dimension as the target matrix algebra at each cascade step.
+    Derived directly from `cascadeD1toD2` and `cascadeD2toD3` via
+    `LinearEquiv.finrank_eq` (dimension is preserved by linear equivalence). -/
+theorem cascade_iso_preserves_dim :
+    Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ ⊗[ℂ] Matrix (Fin 2) (Fin 2) ℂ) =
+      Module.finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) ∧
+    Module.finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ ⊗[ℂ] Matrix (Fin 4) (Fin 4) ℂ) =
+      Module.finrank ℂ (Matrix (Fin 16) (Fin 16) ℂ) :=
+  ⟨cascadeD1toD2.toLinearEquiv.finrank_eq,
+   cascadeD2toD3.toLinearEquiv.finrank_eq⟩
 
 -- ============================================================================
 -- SECTION 6: The Cascade Formula — dim(D_{k+1}) = dim(D_k)²
 -- ============================================================================
 
-/-- **CASCADE DIMENSION DOUBLING**
+/-- **CASCADE DIMENSION TOWER** (via Module.finrank)
+
     The tensor product isomorphism M_n ⊗ M_n ≅ M_{n²} gives the
     dimension formula: dim(D_{k+1}) = dim(D_k)². Since D_k = M_{2^k},
     this yields dim(D_{k+1}) = (2^k)² · (2^k)² = (2^{k+1})² = dim(M_{2^{k+1}}).
 
-    Here we verify the concrete cascade dimensions match:
-    2×2 = 4, 4×4 = 16, 16×16 = 256. -/
+    We verify the concrete ℂ-module dimensions at every cascade level using
+    Mathlib's `Module.finrank_matrix` (NOT arithmetic):
+      D₁ = M₂(ℂ)  → dim = 4
+      D₂ = M₄(ℂ)  → dim = 16
+      D₃ = M₁₆(ℂ) → dim = 256 -/
 theorem cascade_dimensions :
-    2 * 2 = 4 ∧ 4 * 4 = 16 ∧ 16 * 16 = 256 := by omega
+    Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) = 4 ∧
+    Module.finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) = 16 ∧
+    Module.finrank ℂ (Matrix (Fin 16) (Fin 16) ℂ) = 256 := by
+  refine ⟨?_, ?_, ?_⟩ <;> simp [Module.finrank_matrix, Fintype.card_fin, Module.finrank_self]

@@ -23,9 +23,11 @@
 import Mathlib.Algebra.Quaternion
 import Mathlib.LinearAlgebra.Dimension.Finrank
 import Mathlib.LinearAlgebra.Dimension.DivisionRing
+import Mathlib.LinearAlgebra.Dimension.StrongRankCondition
+import Mathlib.LinearAlgebra.Complex.FiniteDimensional
 import Mathlib.Data.Complex.Basic
 
-open Quaternion QuaternionAlgebra
+open Quaternion QuaternionAlgebra Module
 
 -- ============================================================================
 -- SECTION 1: Quaternion Dimension — dim(ℍ) = 4 (F4.1i foundation)
@@ -45,7 +47,7 @@ theorem quaternion_dim_four : Module.finrank ℝ ℍ[ℝ] = 4 :=
 -- 3-dimensional real vector space. This is the kernel of the real-part map.
 -- dim(Im(ℍ)) = dim(ℍ) - dim(ℝ) = 4 - 1 = 3 by rank-nullity.
 
-/-- The imaginary dimension: dim(Im(ℍ)) = dim(ℍ) - 1 = 4 - 1 = 3.
+/-- dim(Im(ℍ)) = finrank(ℍ) - finrank(ℝ) = 4 - 1 = 3.
     Since ℍ ≅ ℝ⁴ as ℝ-vector spaces and the real part is a surjective
     linear map to ℝ, its kernel (= Im(ℍ)) has dimension 4 - 1 = 3.
 
@@ -54,23 +56,39 @@ theorem quaternion_dim_four : Module.finrank ℝ ℍ[ℝ] = 4 :=
     - D₁ produces ℂ (dim(Im) = 1 — one imaginary direction)
     - D₂ produces ℍ (dim(Im) = 3 — three imaginary directions)
     - 𝕆 excluded (non-associative → not an endomorphism algebra)
-    → Exactly 3 non-trivial levels with imaginary structure. -/
-theorem imaginary_quaternion_dim : 4 - 1 = 3 := by norm_num
+    → Exactly 3 non-trivial levels with imaginary structure.
 
-/-- The division algebra dimensions form the sequence 1, 2, 4.
-    ℝ has dim 1, ℂ has dim 2, ℍ has dim 4. These are 2⁰, 2¹, 2².
-    This matches the cascade dimensions at D₀, D₁, D₂. -/
-theorem division_algebra_dims : 2 ^ 0 = 1 ∧ 2 ^ 1 = 2 ∧ 2 ^ 2 = 4 := by
-  constructor <;> [norm_num; constructor <;> norm_num]
+    UPGRADE NOTE: The subtraction uses the actual Mathlib finrank values
+    (finrank ℝ ℍ[ℝ] = 4, finrank ℝ ℝ = 1) rather than bare arithmetic.
+    A full Grade A proof would construct Im(ℍ) as a Submodule and use
+    Submodule.finrank, but Mathlib does not expose a standard `Quaternion.im`
+    submodule with a finrank lemma. The rank-nullity derivation here is
+    the strongest statement available. -/
+theorem imaginary_quaternion_dim :
+    finrank ℝ ℍ[ℝ] - finrank ℝ ℝ = 3 := by
+  rw [Quaternion.finrank_eq_four, finrank_self]
+
+/-- The division algebra dimensions: dim_ℝ(ℝ) = 1, dim_ℝ(ℂ) = 2, dim_ℝ(ℍ) = 4.
+    These are the three associative division algebras over ℝ (Frobenius theorem).
+    Proven using Mathlib's finrank for each algebra. Grade A. -/
+theorem division_algebra_dims :
+    finrank ℝ ℝ = 1 ∧ finrank ℝ ℂ = 2 ∧ finrank ℝ ℍ[ℝ] = 4 :=
+  ⟨finrank_self ℝ, Complex.finrank_real_complex, Quaternion.finrank_eq_four⟩
 
 /-- The imaginary dimensions of the three division algebras: 0, 1, 3.
-    ℝ: dim(Im) = 1 - 1 = 0
-    ℂ: dim(Im) = 2 - 1 = 1
-    ℍ: dim(Im) = 4 - 1 = 3
-    These count the "internal degrees of freedom" at each cascade level. -/
+    ℝ: dim(Im) = finrank(ℝ) - finrank(ℝ) = 1 - 1 = 0
+    ℂ: dim(Im) = finrank(ℂ) - finrank(ℝ) = 2 - 1 = 1
+    ℍ: dim(Im) = finrank(ℍ) - finrank(ℝ) = 4 - 1 = 3
+    These count the "internal degrees of freedom" at each cascade level.
+    Uses actual Mathlib finrank values. Grade A-. -/
 theorem imaginary_dims :
-    (1 - 1 = 0) ∧ (2 - 1 = 1) ∧ (4 - 1 = 3) := by
-  exact ⟨by norm_num, by norm_num, by norm_num⟩
+    (finrank ℝ ℝ - finrank ℝ ℝ = 0) ∧
+    (finrank ℝ ℂ - finrank ℝ ℝ = 1) ∧
+    (finrank ℝ ℍ[ℝ] - finrank ℝ ℝ = 3) := by
+  refine ⟨?_, ?_, ?_⟩
+  · rw [finrank_self]; ring
+  · rw [Complex.finrank_real_complex, finrank_self]
+  · rw [Quaternion.finrank_eq_four, finrank_self]
 
 -- ============================================================================
 -- SECTION 3: Quaternion Non-Commutativity (F2.3 chirality foundation)
@@ -152,36 +170,75 @@ theorem matrix_mul_assoc (A B C : Matrix (Fin 4) (Fin 4) ℂ) :
     A * B * C = A * (B * C) :=
   mul_assoc A B C
 
-/-- The number of associative division algebras over ℝ is exactly 3.
-    ℝ (dim 1), ℂ (dim 2), ℍ (dim 4). No others exist (Frobenius theorem).
-    The cascade produces exactly these three at levels D₀, D₁, D₂. -/
-theorem exactly_three_division_algebras : 3 = 3 := rfl
+/-- The three associative division algebras over ℝ have distinct dimensions:
+    dim_ℝ(ℝ) = 1, dim_ℝ(ℂ) = 2, dim_ℝ(ℍ) = 4, and these are all distinct.
+    Frobenius theorem (that NO other finite-dimensional associative division
+    algebra over ℝ exists) is NOT formalised in Mathlib as of v4.29.1.
+    What we CAN prove: the three known algebras exist with the stated
+    dimensions and those dimensions are pairwise distinct. Grade B+.
+
+    OUT OF SCOPE: The full Frobenius classification theorem. This would
+    require formalising the proof that every finite-dimensional associative
+    division algebra over ℝ is isomorphic to ℝ, ℂ, or ℍ. -/
+theorem division_algebra_dims_distinct :
+    finrank ℝ ℝ = 1 ∧ finrank ℝ ℂ = 2 ∧ finrank ℝ ℍ[ℝ] = 4 ∧
+    finrank ℝ ℝ ≠ finrank ℝ ℂ ∧
+    finrank ℝ ℝ ≠ finrank ℝ ℍ[ℝ] ∧
+    finrank ℝ ℂ ≠ finrank ℝ ℍ[ℝ] := by
+  refine ⟨finrank_self ℝ, Complex.finrank_real_complex, Quaternion.finrank_eq_four, ?_, ?_, ?_⟩
+  · rw [finrank_self, Complex.finrank_real_complex]; norm_num
+  · rw [finrank_self, Quaternion.finrank_eq_four]; norm_num
+  · rw [Complex.finrank_real_complex, Quaternion.finrank_eq_four]; norm_num
 
 -- ============================================================================
 -- SECTION 5: Division Algebra ↔ Generation Correspondence
 -- ============================================================================
 
-/-- Each division algebra contributes one fermion generation.
-    The correspondence:
+/-- The number of division algebras in the cascade equals 3.
+    We prove this by showing the three finrank values are distinct
+    members of {1, 2, 4}, hence the set has cardinality 3.
+
+    The physical interpretation: each division algebra contributes
+    one fermion generation:
     - ℝ (D₀): 1st generation (electron family)
     - ℂ (D₁): 2nd generation (muon family)
     - ℍ (D₂): 3rd generation (tau family)
-    Total: 3 generations, matching observation. -/
-theorem three_generations : 1 + 1 + 1 = 3 := by norm_num
+
+    FORMALISATION NOTE: The claim "3 division algebras → 3 generations"
+    is a physical interpretation of the Frobenius theorem applied to the
+    cascade structure. What we prove here: there are exactly 3 distinct
+    finrank values among {finrank ℝ ℝ, finrank ℝ ℂ, finrank ℝ ℍ[ℝ]}.
+    The Frobenius classification itself (no 4th algebra exists) is
+    OUT OF SCOPE — see `division_algebra_dims_distinct`. Grade B+. -/
+theorem three_generations :
+    ({finrank ℝ ℝ, finrank ℝ ℂ, finrank ℝ ℍ[ℝ]} : Finset ℕ).card = 3 := by
+  rw [finrank_self, Complex.finrank_real_complex, Quaternion.finrank_eq_four]
+  decide
 
 /-- The next division algebra (𝕆, dim 8) would require dim(Im) = 7.
     But 𝕆 is non-associative, so it's excluded from the cascade.
-    This is why there is NO 4th generation. -/
+    This is why there is NO 4th generation.
+
+    OUT OF SCOPE: Mathlib does not have an Octonion type as of v4.29.1.
+    We cannot state finrank ℝ 𝕆 = 8 or prove non-associativity of 𝕆.
+    The arithmetic 8 - 1 = 7 is retained as a placeholder. The octonion
+    exclusion argument rests on the already-proven associativity of
+    End(V) (see `matrix_mul_assoc` and `quaternion_associative`). -/
 theorem octonion_dim_excluded : 8 - 1 = 7 := by norm_num
 
 /-- The total imaginary dimensions across all three division algebras:
-    0 + 1 + 3 = 4. This equals the spacetime dimension. -/
-theorem total_imaginary_dim : 0 + 1 + 3 = 4 := by norm_num
+    (finrank(ℝ) - 1) + (finrank(ℂ) - 1) + (finrank(ℍ) - 1) = 0 + 1 + 3 = 4.
+    This equals the spacetime dimension. Grade A-: uses real finrank values. -/
+theorem total_imaginary_dim :
+    (finrank ℝ ℝ - 1) + (finrank ℝ ℂ - 1) + (finrank ℝ ℍ[ℝ] - 1) = 4 := by
+  rw [finrank_self, Complex.finrank_real_complex, Quaternion.finrank_eq_four]
 
 /-- The cascade's quaternionic structure at D₂ = M₂(ℍ):
-    dim(M₂(ℍ)) over ℝ = 2² × 4 = 16, matching dim(M₄(ℂ)) = 16.
-    This confirms the isomorphism M₄(ℂ) ≅ M₂(ℍ) ⊗_ℝ ℂ. -/
-theorem M2H_dim : 2 * 2 * 4 = 16 := by norm_num
+    dim(M₂(ℍ)) over ℝ = 2² × finrank(ℍ) = 4 × 4 = 16, matching dim(M₄(ℂ)) = 16.
+    This confirms the isomorphism M₄(ℂ) ≅ M₂(ℍ) ⊗_ℝ ℂ.
+    Uses the actual finrank of ℍ. Grade A-. -/
+theorem M2H_dim : 2 * 2 * finrank ℝ ℍ[ℝ] = 16 := by
+  rw [Quaternion.finrank_eq_four]
 
 -- ============================================================================
 -- SECTION 6: Cascade Division Algebra Properties
@@ -197,16 +254,24 @@ theorem complex_commutative (a b : ℂ) : a * b = b * a := mul_comm a b
 theorem quaternion_associative (a b c : ℍ[ℝ]) : a * b * c = a * (b * c) :=
   mul_assoc a b c
 
-/-- The commutativity pattern across cascade levels:
-    D₀ (ℝ): commutative, associative
-    D₁ (ℂ): commutative, associative
-    D₂ (ℍ): NON-commutative, associative ← chirality appears HERE
-    𝕆:       non-commutative, NON-associative ← excluded by cascade
-    The cascade stops exactly where non-associativity would begin. -/
+/-- The commutativity/associativity pattern across cascade levels:
+    D₀ (ℝ): commutative AND associative
+    D₁ (ℂ): commutative AND associative
+    D₂ (ℍ): NON-commutative BUT associative ← chirality appears HERE
+    𝕆:       non-commutative AND non-associative ← excluded by cascade
+
+    This theorem proves all three parts using the actual algebra types.
+    The cascade stops exactly where non-associativity would begin. Grade A. -/
 theorem commutativity_pattern :
-    -- D₂ is non-commutative (proven via quaternion_noncommutative)
-    -- D₃ = M₁₆(ℂ) is also non-commutative for dim > 1
-    -- Matrix algebras are always associative
-    (∀ A B C : Matrix (Fin 4) (Fin 4) ℂ, A * B * C = A * (B * C)) := by
-  intro A B C
-  exact mul_assoc A B C
+    -- ℝ is commutative
+    (∀ a b : ℝ, a * b = b * a) ∧
+    -- ℂ is commutative
+    (∀ a b : ℂ, a * b = b * a) ∧
+    -- ℍ is NON-commutative (witnessed by i*j ≠ j*i)
+    ((⟨0, 1, 0, 0⟩ : ℍ[ℝ]) * ⟨0, 0, 1, 0⟩ ≠ ⟨0, 0, 1, 0⟩ * ⟨0, 1, 0, 0⟩) ∧
+    -- ℍ is still associative
+    (∀ a b c : ℍ[ℝ], a * b * c = a * (b * c)) :=
+  ⟨fun a b => mul_comm a b,
+   fun a b => mul_comm a b,
+   quaternion_noncommutative,
+   fun a b c => mul_assoc a b c⟩
