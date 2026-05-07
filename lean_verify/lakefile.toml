@@ -68,5 +68,6 @@ roots = [
   "YangMillsEmbedding",
   "ConnesClassification",
   "SpectralActionMeasure",
-  "OSReconstructionFormal"
+  "OSReconstructionFormal",
+  "ConnesNCG",
 ]

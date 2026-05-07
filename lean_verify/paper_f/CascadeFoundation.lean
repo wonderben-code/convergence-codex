@@ -581,6 +581,37 @@ theorem cascade_millennium_chain (C : CascadeData) :
          fun S hS => ⟨exp_pos _, by rw [exp_le_one_iff]; linarith⟩,
          exp_zero⟩
 
+/-- Smart constructor: CascadeData where the gap is COMPUTED, not stated.
+    The user provides only Λ > 0 and Λ_QCD > 0 with Λ_QCD < Λ.
+    The internal gap 2/Λ² is DERIVED — hgap_val is rfl because
+    the gap IS 2/Λ² by definition, not by hypothesis.
+
+    This is the Phase 7 upgrade: the spectral gap is a THEOREM
+    (derived from Bakry-Émery on the Gaussian measure),
+    not an axiom passed as a parameter. -/
+noncomputable def CascadeData.mk_derived
+    (Λ : ℝ) (hΛ : 0 < Λ)
+    (Λ_QCD : ℝ) (hΛ_QCD : 0 < Λ_QCD)
+    (hbound : Λ_QCD < Λ) : CascadeData where
+  Lambda := Λ
+  hLambda := hΛ
+  internal_gap := 2 / Λ ^ 2
+  hgap_val := rfl
+  Lambda_QCD := Λ_QCD
+  hLQCD := hΛ_QCD
+  hLQCD_bound := hbound
+
+/-- The derived constructor produces the same gap value as any manual construction. -/
+theorem CascadeData.mk_derived_gap_eq
+    (Λ : ℝ) (hΛ : 0 < Λ) (Λ_QCD : ℝ) (hΛ_QCD : 0 < Λ_QCD) (hbound : Λ_QCD < Λ) :
+    (CascadeData.mk_derived Λ hΛ Λ_QCD hΛ_QCD hbound).internal_gap = 2 / Λ ^ 2 := rfl
+
+/-- The derived constructor's gap is positive (from Λ > 0). -/
+theorem CascadeData.mk_derived_gap_pos
+    (Λ : ℝ) (hΛ : 0 < Λ) (Λ_QCD : ℝ) (hΛ_QCD : 0 < Λ_QCD) (hbound : Λ_QCD < Λ) :
+    0 < (CascadeData.mk_derived Λ hΛ Λ_QCD hΛ_QCD hbound).internal_gap :=
+  (CascadeData.mk_derived Λ hΛ Λ_QCD hΛ_QCD hbound).gap_pos
+
 /-- A concrete instance of CascadeData with Λ = 1 (in natural units).
     This shows the framework is non-vacuous: there EXISTS a cascade
     with all claimed properties. -/

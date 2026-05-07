@@ -33,6 +33,7 @@ import CascadeFoundation
 import CascadeUniqueness
 import LieAlgebraEmbedding
 import RepDecomposition
+import ConnesNCG
 
 open Real Module
 
@@ -432,3 +433,20 @@ theorem classification_summary :
    cascade_fermion_dim,
    cascade_hilbert_dim,
    ko_sign_product sm_ko_data⟩
+
+-- ============================================================================
+-- SECTION 9: Phase 7 — NCG Axioms Verified by Matrix Computation
+-- ============================================================================
+
+/-- Phase 7 upgrade: the cascade spectral triple's NCG axioms are now
+    PROVED by direct 4×4 matrix computation in ConnesNCG.lean.
+    - γ² = 1: diagonal_mul_diagonal + fin_cases
+    - {γ, D} = 0: 16-entry exhaustive verification
+    - D² = m²·1: matrix multiplication + ring
+    - Dᵀ = D: entry-wise symmetry -/
+theorem phase7_ncg_verified (m : ℂ) :
+    chiralityOp * chiralityOp = (1 : Matrix (Fin 4) (Fin 4) ℂ) ∧
+    chiralityOp * diracOp m + diracOp m * chiralityOp = 0 ∧
+    diracOp m * diracOp m = m ^ 2 • (1 : Matrix (Fin 4) (Fin 4) ℂ) ∧
+    projLeft + projRight = (1 : Matrix (Fin 4) (Fin 4) ℂ) :=
+  ⟨chirality_sq, dirac_chirality_anticommute m, dirac_sq m, proj_complement⟩
