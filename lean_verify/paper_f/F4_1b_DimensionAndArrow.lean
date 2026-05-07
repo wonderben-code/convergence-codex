@@ -31,9 +31,10 @@
 
 import Mathlib.LinearAlgebra.FreeModule.Finite.Matrix
 import Mathlib.LinearAlgebra.Matrix.Trace
+import Mathlib.LinearAlgebra.Dimension.Finrank
 import Mathlib.Data.Complex.Basic
 
-open Matrix
+open Matrix Module
 
 -- ============================================================================
 -- SECTION 1: Dimension Formula — dim(Mₙ(ℂ)) = n²
@@ -109,30 +110,51 @@ theorem trace_cyclic_general (n : ℕ) (A B : Matrix (Fin n) (Fin n) ℂ) :
 
 /-- The endomorphism dimension map d ↦ d² is strictly monotone for d ≥ 2.
     This means each cascade level has STRICTLY MORE structure than the previous.
-    The cascade is irreversible: you cannot reduce complexity. -/
-theorem end_dim_strictly_increasing (d : ℕ) (hd : d ≥ 2) : d * d > d := by
-  have : d ≥ 2 := hd
+    The cascade is irreversible: you cannot reduce complexity.
+
+    Proven via Mathlib's `Module.finrank_linearMap`: for a free finite module V
+    over ℂ, finrank(End(V)) = finrank(V)². For finrank ≥ 2, n² > n. -/
+theorem end_dim_strictly_increasing (V : Type*) [AddCommGroup V] [Module ℂ V]
+    [Module.Free ℂ V] [Module.Finite ℂ V]
+    (hd : finrank ℂ V ≥ 2) :
+    finrank ℂ (Module.End ℂ V) > finrank ℂ V := by
+  rw [finrank_linearMap]
+  set d := finrank ℂ V with hd_def
+  -- finrank_linearMap gives finrank(V →ₗ V) = d * d, and d * d > d for d ≥ 2
   calc d * d ≥ 2 * d := Nat.mul_le_mul_right d hd
     _ = d + d := by ring
     _ > d := by omega
 
-/-- The dimension gap grows: d² - d ≥ d for d ≥ 2.
+/-- The dimension gap grows: finrank(End(V)) - finrank(V) ≥ finrank(V) for dim ≥ 2.
     At each cascade level, the "new" degrees of freedom (d² - d)
     are at least as numerous as the old ones (d). The cascade
-    generates at least as much new structure as already existed. -/
-theorem cascade_growth (d : ℕ) (hd : d ≥ 2) : d * d - d ≥ d := by
+    generates at least as much new structure as already existed.
+
+    Uses `Module.finrank_linearMap` to express in terms of genuine vector space
+    dimensions rather than raw arithmetic. -/
+theorem cascade_growth (V : Type*) [AddCommGroup V] [Module ℂ V]
+    [Module.Free ℂ V] [Module.Finite ℂ V]
+    (hd : finrank ℂ V ≥ 2) :
+    finrank ℂ (Module.End ℂ V) - finrank ℂ V ≥ finrank ℂ V := by
+  rw [finrank_linearMap]
+  set d := finrank ℂ V
   have h1 : d * d ≥ 2 * d := Nat.mul_le_mul_right d hd
   omega
 
 /-- The pre-image of M₂ under End is UNIQUE: only a 2-dimensional space
     maps to a 4-dimensional endomorphism algebra.
 
-    If End(V) ≅ M₂(ℂ), then dim(End(V)) = 4, so dim(V)² = 4, so dim(V) = 2.
-    Therefore V ≅ ℂ².
+    If Mₙ(ℂ) has the same ℂ-dimension as M₂(ℂ), then n = 2.
+    Proven via `Module.finrank_matrix` (which gives dim(Mₙ) = n²)
+    plus arithmetic: n² = 4 → n = 2.
 
     This means the cascade has a unique "start": you cannot reach M₂ from
     anything other than ℂ². The arrow of time has a definite origin. -/
-theorem end_preimage_M2_unique (n : ℕ) (hn : n * n = 4) : n = 2 := by
+theorem end_preimage_M2_unique (n : ℕ)
+    (hn : finrank ℂ (Matrix (Fin n) (Fin n) ℂ) = finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ)) :
+    n = 2 := by
+  simp [finrank_matrix, Fintype.card_fin] at hn
+  -- hn : n * n = 2 * 2, i.e. n * n = 4
   have h1 : n ≤ 2 := by
     by_contra h
     push Not at h
@@ -147,9 +169,14 @@ theorem end_preimage_M2_unique (n : ℕ) (hn : n * n = 4) : n = 2 := by
     omega
   omega
 
-/-- The pre-image of M₄ under End is UNIQUE: only a 4-dimensional space
-    maps to a 16-dimensional endomorphism algebra (dim(V)² = 16 → dim(V) = 4). -/
-theorem end_preimage_M4_unique (n : ℕ) (hn : n * n = 16) : n = 4 := by
+/-- The pre-image of M₄ under End is UNIQUE: if Mₙ(ℂ) has the same
+    ℂ-dimension as M₄(ℂ), then n = 4.
+    Proven via `Module.finrank_matrix` (n² = 16 → n = 4). -/
+theorem end_preimage_M4_unique (n : ℕ)
+    (hn : finrank ℂ (Matrix (Fin n) (Fin n) ℂ) = finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ)) :
+    n = 4 := by
+  simp [finrank_matrix, Fintype.card_fin] at hn
+  -- hn : n * n = 4 * 4, i.e. n * n = 16
   have h1 : n ≤ 4 := by
     by_contra h
     push Not at h
@@ -164,9 +191,15 @@ theorem end_preimage_M4_unique (n : ℕ) (hn : n * n = 16) : n = 4 := by
     omega
   omega
 
-/-- The pre-image of M₁₆ under End is UNIQUE: dim(V)² = 256 → dim(V) = 16.
+/-- The pre-image of M₁₆ under End is UNIQUE: if Mₙ(ℂ) has the same
+    ℂ-dimension as M₁₆(ℂ), then n = 16.
+    Proven via `Module.finrank_matrix` (n² = 256 → n = 16).
     Each cascade level has a unique predecessor. -/
-theorem end_preimage_M16_unique (n : ℕ) (hn : n * n = 256) : n = 16 := by
+theorem end_preimage_M16_unique (n : ℕ)
+    (hn : finrank ℂ (Matrix (Fin n) (Fin n) ℂ) = finrank ℂ (Matrix (Fin 16) (Fin 16) ℂ)) :
+    n = 16 := by
+  simp [finrank_matrix, Fintype.card_fin] at hn
+  -- hn : n * n = 16 * 16, i.e. n * n = 256
   have h1 : n ≤ 16 := by
     by_contra h
     push Not at h
@@ -182,10 +215,14 @@ theorem end_preimage_M16_unique (n : ℕ) (hn : n * n = 256) : n = 16 := by
   omega
 
 /-- The cascade is NOT invertible at the first non-trivial level:
-    there is no natural number d > 2 such that d² = 2.
-    In other words, M₂ is not in the image of End restricted to
-    algebras of dimension > 2. The seed ℂ² is the ONLY starting point. -/
-theorem no_higher_preimage_of_seed (d : ℕ) (hd : d > 2) : d * d ≠ 2 := by
+    there is no n > 2 such that Mₙ(ℂ) has the same dimension as the seed ℂ²
+    (i.e. finrank = 2). Since finrank(Mₙ) = n² ≥ 9 for n ≥ 3, the seed
+    cannot be reached from any higher-dimensional matrix algebra.
+    The seed ℂ² is the ONLY starting point. -/
+theorem no_higher_preimage_of_seed (d : ℕ) (hd : d > 2) :
+    finrank ℂ (Matrix (Fin d) (Fin d) ℂ) ≠ 2 := by
+  simp [finrank_matrix, Fintype.card_fin]
+  -- Goal: d * d ≠ 2
   have : d * d ≥ 9 := by
     have h3 : d ≥ 3 := hd
     calc d * d ≥ 3 * 3 := Nat.mul_le_mul h3 h3
@@ -194,16 +231,20 @@ theorem no_higher_preimage_of_seed (d : ℕ) (hd : d > 2) : d * d ≠ 2 := by
 
 /-- **THE ARROW OF TIME THEOREM**
 
-    The endomorphism cascade has THREE properties that establish irreversibility:
+    The endomorphism cascade has THREE properties that establish irreversibility,
+    all expressed in terms of genuine `Module.finrank` over ℂ:
 
-    1. STRICT GROWTH: dim(End(V)) = (dim V)² > dim V for dim V ≥ 2.
+    1. STRICT GROWTH: finrank(End(V)) > finrank(V) for finrank(V) ≥ 2.
        Each level has strictly more structure than the last.
+       (Uses `Module.finrank_linearMap` to compute dim(End(V)) = dim(V)².)
 
-    2. UNIQUE PRE-IMAGES: dim(V)² = n² has a unique solution dim(V) = n.
+    2. UNIQUE PRE-IMAGES: finrank(Mₙ) = finrank(Mₘ) → n = m at each cascade level.
        Each level has exactly one predecessor.
+       (Uses `Module.finrank_matrix` to reduce to n² = m².)
 
     3. UNIQUE ORIGIN: The seed ℂ² is the only starting point — no
-       higher-dimensional algebra maps to M₂ under End.
+       higher-dimensional matrix algebra has finrank = 2.
+       (Uses `Module.finrank_matrix` to show n² ≠ 2 for n ≥ 3.)
 
     Together: the cascade ℂ² → M₂ → M₄ → M₁₆ → ... is a one-way street
     with a definite beginning and no return. This is the algebraic arrow
@@ -212,15 +253,19 @@ theorem no_higher_preimage_of_seed (d : ℕ) (hd : d > 2) : d * d ≠ 2 := by
     170 years after Clausius (1854), this provides the first algebraic
     grounding of time's direction. -/
 theorem arrow_of_time :
-    -- 1. Strict growth at each cascade level
-    (∀ d : ℕ, d ≥ 2 → d * d > d) ∧
-    -- 2. Unique pre-images at cascade levels
-    (∀ n : ℕ, n * n = 4 → n = 2) ∧
-    (∀ n : ℕ, n * n = 16 → n = 4) ∧
-    (∀ n : ℕ, n * n = 256 → n = 16) ∧
+    -- 1. Strict growth: finrank(End(V)) > finrank(V) for finrank ≥ 2
+    (∀ (V : Type*) [AddCommGroup V] [Module ℂ V] [Module.Free ℂ V] [Module.Finite ℂ V],
+       finrank ℂ V ≥ 2 → finrank ℂ (Module.End ℂ V) > finrank ℂ V) ∧
+    -- 2. Unique pre-images at cascade levels (via finrank equality of matrix algebras)
+    (∀ n : ℕ, finrank ℂ (Matrix (Fin n) (Fin n) ℂ) =
+              finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) → n = 2) ∧
+    (∀ n : ℕ, finrank ℂ (Matrix (Fin n) (Fin n) ℂ) =
+              finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) → n = 4) ∧
+    (∀ n : ℕ, finrank ℂ (Matrix (Fin n) (Fin n) ℂ) =
+              finrank ℂ (Matrix (Fin 16) (Fin 16) ℂ) → n = 16) ∧
     -- 3. No higher-dimensional pre-image of the seed
-    (∀ d : ℕ, d > 2 → d * d ≠ 2) := by
-  exact ⟨end_dim_strictly_increasing,
+    (∀ d : ℕ, d > 2 → finrank ℂ (Matrix (Fin d) (Fin d) ℂ) ≠ 2) := by
+  exact ⟨fun V _ _ _ _ hd => end_dim_strictly_increasing V hd,
          end_preimage_M2_unique,
          end_preimage_M4_unique,
          end_preimage_M16_unique,

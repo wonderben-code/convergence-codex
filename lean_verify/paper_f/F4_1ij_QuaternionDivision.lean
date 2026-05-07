@@ -86,7 +86,7 @@ theorem imaginary_dims :
     (finrank ℝ ℂ - finrank ℝ ℝ = 1) ∧
     (finrank ℝ ℍ[ℝ] - finrank ℝ ℝ = 3) := by
   refine ⟨?_, ?_, ?_⟩
-  · rw [finrank_self]; ring
+  · rw [finrank_self]
   · rw [Complex.finrank_real_complex, finrank_self]
   · rw [Quaternion.finrank_eq_four, finrank_self]
 

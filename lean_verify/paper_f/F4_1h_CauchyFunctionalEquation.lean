@@ -22,7 +22,9 @@
   4. Monotonicity squeezes: f(q_n) ≤ f(x) ≤ f(q_m) for q_n ≤ x ≤ q_m
   5. Since f(q_n) = q_n * f(1) → x * f(1), we get f(x) = f(1) * x
 
-  Machine-verified: 8 theorems, 0 sorry.
+  Machine-verified: 14 declarations (13 theorems/lemmas + 1 def), 0 sorry.
+  Includes: Cauchy monotone→linear (67-line proof), semigroup→exponential
+  (via log composition + Cauchy), zero-free-parameters (additive + multiplicative).
   This is NOT native_decide — these are genuine Lean 4 proofs using Mathlib.
 -/
 
@@ -34,8 +36,9 @@ import Mathlib.Topology.Instances.Real.Lemmas
 import Mathlib.Topology.Instances.Rat
 import Mathlib.Topology.Algebra.Ring.Real
 import Mathlib.Order.Filter.Basic
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
-open Filter Topology
+open Filter Topology Real
 
 -- ============================================================================
 -- SECTION 1: ℚ-Linearity of Additive Functions
@@ -189,34 +192,131 @@ theorem monotone_additive_identity (f : ℝ →+ ℝ) (hf : Monotone f) (h1 : f 
   intro x
   rw [cauchy_monotone_linear f hf x, h1, one_mul]
 
-/-- The semigroup version: if g : ℝ → ℝ>0 satisfies g(x+y) = g(x) * g(y)
-    and g is monotone decreasing with g(0) = 1, then g(x) = e^{-cx} for some c > 0.
+-- ============================================================================
+-- SECTION 5: The Semigroup → Exponential Theorem
+-- ============================================================================
 
-    This follows from the additive version by taking log:
-    log(g(x+y)) = log(g(x)) + log(g(y)), so f := log ∘ g is additive and monotone.
-    Then f(x) = f(1) * x, so g(x) = exp(f(1) * x) = e^{cx} where c = f(1).
-    Since g is decreasing, c < 0, i.e., g(x) = e^{-|c|·x}.
+-- The semigroup version: if g : ℝ → ℝ satisfies g(x+y) = g(x) * g(y),
+-- g is everywhere positive, and g is monotone, then g(x) = exp(log(g(1)) * x).
+--
+-- This follows from the additive version by taking log:
+-- log(g(x+y)) = log(g(x)) + log(g(y)), so f := log ∘ g is additive and monotone.
+-- Then cauchy_monotone_linear gives f(x) = f(1) * x, so g(x) = exp(f(1) * x).
+--
+-- The physical constraint g(0) = 1 is automatic (g(0) = g(0+0) = g(0)²
+-- so g(0) = 1 since g > 0), and positivity + decay force the sign of c.
+-- Normalising Λ absorbs |c|, giving the canonical form g(x) = e^{-x}.
 
-    The physical constraint g(0) = 1 is automatic (g(0) = g(0+0) = g(0)²
-    so g(0) = 1 since g > 0), and positivity + decay force c < 0.
-    Normalising Λ absorbs |c|, giving the canonical form g(x) = e^{-x}. -/
-theorem semigroup_exponential_form_description :
-    True := trivial  -- The full proof requires Mathlib's exp/log; stated as description
+-- Caesar decomposition: build the proof in stages.
 
-/-- PHYSICAL CONCLUSION: Zero Free Parameters
+/-- Lemma: A positive multiplicative function satisfies g(0) = 1. -/
+lemma mult_pos_at_zero (g : ℝ → ℝ) (hpos : ∀ x, 0 < g x)
+    (hmul : ∀ x y, g (x + y) = g x * g y) : g 0 = 1 := by
+  have h0 := hmul 0 0
+  simp at h0
+  -- h0 : g 0 = g 0 * g 0, i.e. g(0) = g(0)²
+  -- Since g(0) > 0, we can divide both sides by g(0)
+  have hg0_pos : g 0 > 0 := hpos 0
+  have hg0_ne : g 0 ≠ 0 := ne_of_gt hg0_pos
+  nlinarith [sq_nonneg (g 0 - 1)]
 
-    The cascade forces f(x+y) = f(x)·f(y) (multiplicative semigroup property).
-    Taking logarithms: log f(x+y) = log f(x) + log f(y) (additive).
-    The cascade's ordering forces monotonicity.
-    By cauchy_monotone_linear: log f(x) = c·x, hence f(x) = e^{cx}.
-    Physical constraints (f(0)=1, f>0, f→0) force c<0.
-    Absorbed into the cutoff Λ: the canonical form is f(x) = e^{-x}.
+/-- Lemma: log ∘ g is additive when g is positive and multiplicative. -/
+lemma log_of_mult_is_additive (g : ℝ → ℝ) (hpos : ∀ x, 0 < g x)
+    (hmul : ∀ x y, g (x + y) = g x * g y) (x y : ℝ) :
+    log (g (x + y)) = log (g x) + log (g y) := by
+  rw [hmul x y]
+  exact log_mul (ne_of_gt (hpos x)) (ne_of_gt (hpos y))
 
-    Therefore: f₄ = f(0) = 1, f₂ = ∫x·e^{-x}dx = 1, f₀ = ∫e^{-x}dx = 1.
-    ALL spectral moments equal 1. ZERO free parameters. QED. -/
-theorem zero_free_parameters_from_cauchy :
-    let f₀ : ℝ := 1  -- ∫₀^∞ e^{-x} dx (by direct computation)
-    let f₂ : ℝ := 1  -- ∫₀^∞ x·e^{-x} dx = Γ(2) = 1! = 1
-    let f₄ : ℝ := 1  -- e^{-0} = 1 (the function value at 0)
-    f₀ = f₂ ∧ f₂ = f₄ ∧ f₀ = 1 := by
-  simp
+/-- Lemma: If g is monotone and positive, then log ∘ g is monotone. -/
+lemma log_of_monotone_pos_is_monotone (g : ℝ → ℝ) (hpos : ∀ x, 0 < g x)
+    (hmon : Monotone g) : Monotone (fun x => log (g x)) := by
+  intro a b hab
+  exact log_le_log (hpos a) (hmon hab)
+
+/-- Package log ∘ g as an AddMonoidHom when g is positive and multiplicative. -/
+noncomputable def logOfMultHom (g : ℝ → ℝ) (hpos : ∀ x, 0 < g x)
+    (hmul : ∀ x y, g (x + y) = g x * g y) : ℝ →+ ℝ where
+  toFun := fun x => log (g x)
+  map_zero' := by
+    rw [mult_pos_at_zero g hpos hmul]
+    exact log_one
+  map_add' := fun x y => log_of_mult_is_additive g hpos hmul x y
+
+/-- **SEMIGROUP EXPONENTIAL FORM THEOREM**
+
+    If g : ℝ → ℝ is positive, multiplicative (g(x+y) = g(x)·g(y)), and monotone,
+    then g(x) = exp(log(g(1)) · x) for all x.
+
+    This is the multiplicative analogue of cauchy_monotone_linear. It proves that
+    any monotone solution to the multiplicative Cauchy equation is necessarily
+    an exponential function. -/
+theorem semigroup_exponential_form (g : ℝ → ℝ) (hpos : ∀ x, 0 < g x)
+    (hmul : ∀ x y, g (x + y) = g x * g y) (hmon : Monotone g) (x : ℝ) :
+    g x = exp (log (g 1) * x) := by
+  -- Step 1: Build h = log ∘ g as an AddMonoidHom
+  let h := logOfMultHom g hpos hmul
+  -- Step 2: h is monotone
+  have hh_mon : Monotone h := log_of_monotone_pos_is_monotone g hpos hmon
+  -- Step 3: By cauchy_monotone_linear, h(x) = h(1) * x
+  have hh_linear := cauchy_monotone_linear h hh_mon x
+  -- hh_linear : h x = h 1 * x, i.e., log(g(x)) = log(g(1)) * x
+  -- Step 4: Exponentiate both sides
+  have hgx_pos : 0 < g x := hpos x
+  -- log(g(x)) = log(g(1)) * x
+  change log (g x) = log (g 1) * x at hh_linear
+  -- Therefore g(x) = exp(log(g(1)) * x)
+  rw [← exp_log hgx_pos, hh_linear]
+
+-- ============================================================================
+-- SECTION 6: Zero Free Parameters
+-- ============================================================================
+
+-- PHYSICAL CONCLUSION: Zero Free Parameters
+--
+-- The cascade forces f(x+y) = f(x)·f(y) (multiplicative semigroup property).
+-- Taking logarithms: log f(x+y) = log f(x) + log f(y) (additive).
+-- The cascade's ordering forces monotonicity.
+-- By cauchy_monotone_linear: log f(x) = c·x, hence f(x) = e^{cx}.
+-- Physical constraints (f(0)=1, f>0, f→0) force c<0.
+-- Absorbed into the cutoff Λ: the canonical form is f(x) = e^{-x}.
+
+/-- Any two monotone additive functions with the same value at 1 are identical
+    everywhere. This is the additive "zero free parameters" result:
+    monotonicity + additivity + one boundary value determines the function
+    completely. -/
+theorem zero_free_parameters_additive (f g : ℝ →+ ℝ)
+    (hf : Monotone f) (hg : Monotone g) (h1 : f 1 = g 1) :
+    ∀ x, f x = g x :=
+  monotone_additive_determined_by_one f g hf hg h1
+
+/-- Any two monotone positive multiplicative functions with the same value at 1
+    are identical everywhere. This is the multiplicative "zero free parameters"
+    result: the semigroup property + monotonicity + one normalisation condition
+    leaves zero degrees of freedom.
+
+    Proof: by semigroup_exponential_form, both are exp(log(g(1)) * x), and since
+    g(1) = h(1), they are the same function. -/
+theorem zero_free_parameters_multiplicative
+    (g h : ℝ → ℝ)
+    (hg_pos : ∀ x, 0 < g x) (hh_pos : ∀ x, 0 < h x)
+    (hg_mul : ∀ x y, g (x + y) = g x * g y) (hh_mul : ∀ x y, h (x + y) = h x * h y)
+    (hg_mon : Monotone g) (hh_mon : Monotone h)
+    (h1 : g 1 = h 1) :
+    ∀ x, g x = h x := by
+  intro x
+  rw [semigroup_exponential_form g hg_pos hg_mul hg_mon x,
+      semigroup_exponential_form h hh_pos hh_mul hh_mon x, h1]
+
+/-- The spectral function is uniquely determined: if f is a monotone additive
+    function with f(1) = 1, then f is the identity. This is the strongest
+    form of "zero free parameters" — the normalisation f(1) = 1 leaves
+    literally no freedom in the function.
+
+    Applied to the cascade: the spectral function satisfies the Cauchy equation
+    (from the semigroup property after taking log), monotonicity comes from the
+    cascade ordering, and the boundary condition f(1) = 1 comes from physical
+    normalisation. Therefore f = id is the unique solution. -/
+theorem zero_free_parameters_from_cauchy (f : ℝ →+ ℝ)
+    (hf : Monotone f) (h1 : f 1 = 1) :
+    ∀ x, f x = x :=
+  monotone_additive_identity f hf h1
