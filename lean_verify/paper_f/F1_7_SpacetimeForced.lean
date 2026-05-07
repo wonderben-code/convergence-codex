@@ -61,6 +61,7 @@ import Mathlib.LinearAlgebra.FreeModule.Finite.Matrix
 import Mathlib.LinearAlgebra.Dimension.Constructions
 -- Import genuine Clifford algebra proofs (transitively imports CliffordAlgebra, Quaternion, etc.)
 import F4_1e_CliffordMatrix
+import CascadeFoundation
 
 open Matrix CliffordAlgebra
 open Module (finrank finrank_self finrank_matrix finrank_pi finrank_pi_fintype)
@@ -198,11 +199,11 @@ and the dimension match finrank(Cl₄) = finrank(M₄(ℂ)) = 16, both genuine.
     - AlgHom Cl₄(ℂ) →ₐ[ℂ] M₄(ℂ) exists (via CliffordAlgebra.lift with gamma matrices)
     - finrank equality means any injection/surjection is bijective (Artin-Wedderburn) -/
 theorem D2_is_Cl4 :
-    -- D₂ = M₄(ℂ): finrank_ℂ(M₄(ℂ)) = 16 (GENUINE: matrix4_finrank)
+    -- D₂ = M₄(ℂ): finrank_ℂ(M₄(ℂ)) = 16 (CascadeFoundation: cascade_algebra_dim)
     Module.finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) = 16 ∧
     -- Cl₄(ℂ): finrank = 16 (GENUINE: clifford4_finrank)
     Module.finrank ℂ (CliffordAlgebra Q₄) = 16 ∧
-    -- Column module of M₄(ℂ): finrank_ℂ(ℂ⁴) = 4 (genuine)
+    -- Column module of M₄(ℂ): finrank_ℂ(ℂ⁴) = 4 (CascadeFoundation: cascade_hilbert_dim)
     finrank ℂ (Fin 4 → ℂ) = 4 ∧
     -- Dimension match (GENUINE: clifford4_matrix4_finrank_eq)
     Module.finrank ℂ (CliffordAlgebra Q₄) =
@@ -210,8 +211,8 @@ theorem D2_is_Cl4 :
     -- The "4" in M₄ corresponds to spacetime dimension n = 4
     -- via the formula: matrix size = 2^(n/2), so 4 = 2^(n/2), n = 4
     (2 : ℕ) ^ 2 = 4 := by
-  refine ⟨matrix4_finrank, clifford4_finrank, ?_, clifford4_matrix4_finrank_eq, by norm_num⟩
-  · simp
+  refine ⟨cascade_algebra_dim, clifford4_finrank, ?_, clifford4_matrix4_finrank_eq, by norm_num⟩
+  · exact cascade_hilbert_dim
 
 /-- The cascade origin of D₂:
     ℂ² → End(ℂ²) = M₂(ℂ) → End(M₂(ℂ)) = M₄(ℂ).
@@ -791,6 +792,26 @@ theorem prediction_spinor_gauge_unity :
     -- With 3 generations: 3 × 16 = 48 total
     3 * 16 = (48 : ℕ) := by
   exact ⟨rfl, rfl, by omega, by omega⟩
+
+/-- **CascadeData connection:** The cascade's OS-verified QFT lives in
+    d = 4 spacetime dimensions, matching the Clifford-forced dimension.
+    The mass gap from CascadeData operates in this 4D spacetime. -/
+theorem spacetime_cascade_connection (C : CascadeData) :
+    -- The cascade's OS verification lives in d=4
+    C.os_verified.d = 4 ∧
+    -- Euclidean group E(4) has dim 10
+    (C.os_verified.d * (C.os_verified.d - 1) / 2 + C.os_verified.d = 10) ∧
+    -- The cascade algebra dimension = 16 = Cl₄(ℂ) dimension
+    Module.finrank ℂ CascadeAlgebra = 16 ∧
+    -- The cascade Hilbert space is 4-dimensional (spinor = fundamental)
+    Module.finrank ℂ CascadeHilbert = 4 ∧
+    -- The cascade has a mass gap in 4D spacetime
+    0 < C.has_mass_gap.gap :=
+  ⟨C.os_verified.hd,
+   C.os_verified.euclidean_group_dim,
+   cascade_algebra_dim,
+   cascade_hilbert_dim,
+   C.has_mass_gap.gap_pos⟩
 
 /-!
 ## What F1.7 Establishes

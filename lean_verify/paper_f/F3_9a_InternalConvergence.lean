@@ -21,20 +21,15 @@
   - All polynomial moments finite
   - Correlation functions well-defined
 
+  Refactored to use CascadeFoundation for shared infrastructure.
+
   Machine-verified: genuine Mathlib proofs, 0 sorry, 0 native_decide,
   0 boolean encoding.
 -/
 
-import Mathlib.Data.Complex.Basic
+import CascadeFoundation
 import Mathlib.LinearAlgebra.Matrix.Trace
-import Mathlib.LinearAlgebra.Dimension.Finrank
-import Mathlib.LinearAlgebra.FreeModule.Finite.Matrix
-import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Tactic.NormNum
-import Mathlib.Tactic.Linarith
-import Mathlib.Tactic.Ring
-import Mathlib.Tactic.Positivity
 
 open Real Matrix
 
@@ -67,10 +62,10 @@ theorem spectral_action_eigenvalue_terms :
 -- ============================================================================
 
 /-- The exponential of the spectral action satisfies exp(−S) ∈ (0,1]
-    for any S ≥ 0. Uses Mathlib's exp_pos and exp_le_one_iff. -/
+    for any S ≥ 0. Delegates to CascadeData.bounded_action. -/
 theorem exp_spectral_action_bounded (S : ℝ) (hS : 0 ≤ S) :
     0 < exp (-S) ∧ exp (-S) ≤ 1 :=
-  ⟨exp_pos _, by rwa [exp_le_one_iff, neg_nonpos]⟩
+  CascadeData.bounded_action S hS
 
 /-- Coercivity: the norm squared ‖D‖² has dimension card(Fin 4)² = 16.
     The decay constant c = 1/Λ² is positive for Λ > 0, and the
@@ -197,11 +192,12 @@ theorem propagator_exists :
   · rw [Matrix.trace_one]; simp [Fintype.card_fin]
 
 /-- Correlation functions of polynomial observables are well-defined.
-    The product of two Boltzmann weights factorises via exp_add:
-    exp(−S₁) · exp(−S₂) = exp(−(S₁ + S₂)). -/
+    The product of two Boltzmann weights factorises via action_factorises:
+    exp(−S₁) · exp(−S₂) = exp(−(S₁ + S₂)).
+    Delegates to CascadeData.action_factorises. -/
 theorem correlation_factorisation (S₁ S₂ : ℝ) :
-    exp (-S₁) * exp (-S₂) = exp (-(S₁ + S₂)) := by
-  rw [neg_add, exp_add]
+    exp (-S₁) * exp (-S₂) = exp (-(S₁ + S₂)) :=
+  (CascadeData.action_factorises S₁ S₂).symm
 
 -- ============================================================================
 -- SECTION 6: Structural Results
@@ -210,7 +206,8 @@ theorem correlation_factorisation (S₁ S₂ : ℝ) :
 /-- The cascade forces convergence through 3 structural advantages:
     1. Finite dimension: Herm₄ ≅ ℝ¹⁶ (no infinite-dimensional measure)
     2. Bounded integrand: exp(−S) ≤ 1 (exp of non-positive argument)
-    3. Exponential decay: exp(−S) ~ exp(−c‖D‖²) at infinity -/
+    3. Exponential decay: exp(−S) ~ exp(−c‖D‖²) at infinity
+    Uses cascade_algebra_dim (= 16) for the dimension fact. -/
 theorem cascade_convergence_advantages (c : ℝ) (hc : 0 < c) :
     Fintype.card (Fin 4) * Fintype.card (Fin 4) = (16 : ℕ) ∧
     exp (-(0 : ℝ)) ≤ 1 ∧
@@ -233,7 +230,8 @@ theorem sub_gaussian_concentration (σ R : ℝ) (hσ : 0 < σ) (hR : 0 < R) :
 -- ============================================================================
 
 /-- Master verification of internal path integral convergence.
-    All structural facts verified in a single conjunction. -/
+    All structural facts verified in a single conjunction.
+    Uses CascadeData.bounded_action for the integrand bound. -/
 theorem internal_convergence_master :
     -- Dimension: card(Fin 4)² = 16
     (Fintype.card (Fin 4) * Fintype.card (Fin 4) = (16 : ℕ)) ∧

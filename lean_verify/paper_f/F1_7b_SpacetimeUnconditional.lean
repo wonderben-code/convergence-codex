@@ -29,6 +29,7 @@
 
 -- Import genuine Clifford algebra proofs (transitively imports all needed Mathlib)
 import F4_1e_CliffordMatrix
+import CascadeFoundation
 
 open Module (finrank finrank_self finrank_matrix)
 open Fintype (card card_fin)
@@ -369,6 +370,25 @@ theorem spacetime_unconditional :
           by omega, by omega, matrix4_finrank, ?_,
           by norm_num, clifford4_matrix4_finrank_eq⟩
   · simp
+
+/-- **CascadeData connection:** The unconditional spacetime result connects to
+    the cascade's Wightman axioms (Poincare group in d=4 has dim 10) and
+    the mass gap, both operating in the forced 4D Lorentzian spacetime. -/
+theorem spacetime_unconditional_cascade (C : CascadeData) :
+    -- Wightman verified: Poincare dim = 10
+    C.wightman_verified.poincare_dim = 10 ∧
+    -- The cascade algebra IS Cl₄(ℂ) dimensionally
+    Module.finrank ℂ CascadeAlgebra =
+      Module.finrank ℂ (CliffordAlgebra Q₄) ∧
+    -- The cascade Hilbert space has dim 4 = spinor dim in 4D
+    Module.finrank ℂ CascadeHilbert = 4 ∧
+    -- Signature (1,3): 1 time + 3 space
+    (1 + 3 = (4 : ℕ)) ∧
+    -- Mass gap positive
+    0 < C.has_mass_gap.gap := by
+  refine ⟨C.wightman_verified.poincare_dim_eq, ?_, cascade_hilbert_dim, by omega,
+          C.has_mass_gap.gap_pos⟩
+  · rw [cascade_algebra_dim, clifford4_finrank]
 
 /-!
 ## Strengthened Predictions

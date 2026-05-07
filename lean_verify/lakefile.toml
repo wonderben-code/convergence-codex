@@ -16,6 +16,16 @@ rev = "v4.29.1"
 
 [[lean_lib]]
 name = "LogosVerify"
+roots = [
+  "LogosVerify",
+  "EmergenceTheorem", "EmergenceLineage", "ThreeLineages",
+  "GaugeGroupSelection", "GravityLineage", "QuantumLineage",
+  "GToECoherence", "LawvereFixedPoint", "ReflexiveDomainFP",
+  "SeedForced", "NothingToSeed", "InfiniteContent",
+  "Inexhaustibility", "ConstraintContent", "PreferredDecomposition",
+  "SMCompleteness", "StandardModelReps", "SU2Emergence",
+  "_proof_001", "_proof_002", "_proof_003", "_proof_004", "_proof_004_logos"
+]
 
 [[lean_lib]]
 name = "PaperF"
@@ -46,5 +56,7 @@ roots = [
   "F4_3g_ClusterExpansion", "F4_3h_InfiniteVolumeLimit", "F4_4a_OSAxiomsCompact",
   "F4_4b_UniformCorrelationBounds", "F4_4c_ClusterExpansionFull",
   "F4_4d_ThermodynamicLimit", "F4_4e_WightmanAxioms", "F4_4f_MassGapPersists",
-  "F4_4g_UnconditionalMillennium"
+  "F4_4g_UnconditionalMillennium",
+  "CascadeFoundation",
+  "CascadeUniqueness"
 ]

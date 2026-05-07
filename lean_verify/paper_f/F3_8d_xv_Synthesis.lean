@@ -35,19 +35,13 @@
   K₄: Comparison with all other approaches
   K₅: The definitive CC prediction from the cascade
 
+  Refactored to use CascadeFoundation for shared infrastructure.
+
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1
   Target: 0 sorry — 10 theorems across 5 phases
 -/
 
-import Mathlib.Data.Complex.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Tactic.NormNum
-import Mathlib.Tactic.Linarith
-import Mathlib.Tactic.IntervalCases
-import Mathlib.LinearAlgebra.Dimension.Finrank
-import Mathlib.Analysis.SpecialFunctions.ExpDeriv
-import Mathlib.Tactic.Positivity
-import Mathlib.LinearAlgebra.FreeModule.Finite.Matrix
+import CascadeFoundation
 
 open Real
 
@@ -110,13 +104,12 @@ theorem complete_chain :
     Fintype.card (Fin 4 × Fin 4) = 16 ∧
     -- M₂(ℂ) dimension (the seed algebra)
     Fintype.card (Fin 2 × Fin 2) = 4 ∧
-    -- D₂ matrix finrank via Mathlib
-    Module.finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) = 16 := by
+    -- D₂ matrix finrank via CascadeFoundation
+    Module.finrank ℂ CascadeAlgebra = 16 := by
   refine ⟨by omega, by omega, by omega, by omega, by omega,
-          ?_, ?_, ?_⟩
+          ?_, ?_, cascade_algebra_dim⟩
   · simp [Fintype.card_prod, Fintype.card_fin]
   · simp [Fintype.card_prod, Fintype.card_fin]
-  · simp [Module.finrank_matrix, Fintype.card_fin, Module.finrank_self]
 
 /-!
 ## Phase 2 (K₂): The Self-Consistent Solution
@@ -467,7 +460,7 @@ theorem future_work :
     - 0 < exp(-(50:ℝ)): the prediction is real and positive
     - exp_zero = 1: vacuum baseline
     - Fintype.card (Fin 4 × Fin 4) = 16: cascade D₂ dim
-    - Module.finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) = 16
+    - cascade_algebra_dim: Module.finrank via CascadeFoundation
     - N_B(IR) = 4 > N_F(IR) = 0: positive sign -/
 theorem cc_synthesis_final :
     -- Total CC theorems: 109 + 10 = 119
@@ -496,15 +489,13 @@ theorem cc_synthesis_final :
     exp (0 : ℝ) = 1 ∧
     -- GENUINE: cascade D₂ dimension = 16 via Fintype
     Fintype.card (Fin 4 × Fin 4) = 16 ∧
-    -- GENUINE: D₂ matrix finrank = 16 via Mathlib
-    Module.finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) = 16 := by
+    -- GENUINE: D₂ matrix finrank = 16 via CascadeFoundation
+    Module.finrank ℂ CascadeAlgebra = 16 := by
   refine ⟨by omega, by omega, by omega, by omega,
           by omega, by omega, by omega, by omega,
           by omega, by omega,
-          ?_, ?_, ?_, ?_, ?_⟩
+          ?_, ?_, ?_, ?_, cascade_algebra_dim⟩
   · rw [exp_lt_one_iff]; norm_num
   · exact exp_pos _
   · exact exp_zero
   · simp [Fintype.card_prod, Fintype.card_fin]
-  · simp [Module.finrank_matrix, Fintype.card_fin,
-          Module.finrank_self]
