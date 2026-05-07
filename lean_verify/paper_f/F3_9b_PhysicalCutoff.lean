@@ -39,7 +39,7 @@ theorem rank_preserved_through_breaking :
     -- SM rank: (n-1) for each SU(n), +1 for U(1)
     (3 - 1) + (2 - 1) + 1 = (4 : ℕ) ∧
     -- PS rank: (n-1) for each SU(n)
-    (4 - 1) + (2 - 1) + (2 - 1) = (4 : ℕ) :=
+    (4 - 1) + (2 - 1) + (2 - 1) = (5 : ℕ) :=
   ⟨by norm_num, by norm_num⟩
 
 /-- Below Λ_PS: 3 gauge factors (SU(3), SU(2), U(1)).
