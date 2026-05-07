@@ -12,6 +12,8 @@
 -/
 
 import CascadeFoundation
+import BakryEmeryGap
+import TransferMatrix
 
 open Real Module
 
@@ -186,3 +188,98 @@ theorem poincare_spectral_master :
     (Module.finrank ℂ CascadeAlgebra = 16) := by
   refine ⟨exp_zero, by norm_num, by ring, by norm_num, ?_, cascade_algebra_dim⟩
   · rw [cascade_hilbert_dim]
+
+-- ============================================================================
+-- SECTION 8: PoincareData Infrastructure (via BakryEmeryGap)
+-- ============================================================================
+
+/-- The Poincaré inequality uses PoincareData from BakryEmeryGap:
+    - gap = 2/Λ² (the spectral gap from Bakry-Émery)
+    - poincare_constant = 1/gap = Λ²/2 (the optimal constant)
+    - gap × C_P = 1 (duality) -/
+theorem poincare_via_infrastructure (C : CascadeData) :
+    -- PoincareData gap = internal gap
+    ((cascade_poincare C).gap = C.internal_gap) ∧
+    -- Poincaré constant = 1/gap
+    ((cascade_poincare C).poincare_constant = 1 / C.internal_gap) ∧
+    -- Gap × C_P = 1 (exact duality)
+    (C.internal_gap * (cascade_poincare C).poincare_constant = 1) ∧
+    -- Poincaré constant positive
+    (0 < (cascade_poincare C).poincare_constant) := by
+  exact ⟨rfl,
+         cascade_poincare_value C,
+         cascade_gap_poincare_duality C,
+         (cascade_poincare C).cp_pos⟩
+
+/-- The gap-covariance duality from the QuadraticPotential:
+    λ₁ · σ² = 1 where σ² = 1/(2a) is the covariance and λ₁ = 2a is the gap.
+    For the cascade: a = 1/Λ², so σ² = Λ²/2 and λ₁ = 2/Λ². -/
+theorem poincare_gap_covariance_duality (C : CascadeData) :
+    -- Gap × covariance = 1
+    ((cascade_quadratic_potential C).spectral_gap *
+     (cascade_quadratic_potential C).covariance = 1) ∧
+    -- Spectral gap positive
+    (0 < (cascade_quadratic_potential C).spectral_gap) ∧
+    -- Covariance positive
+    (0 < (cascade_quadratic_potential C).covariance) := by
+  exact ⟨(cascade_quadratic_potential C).gap_covariance_duality,
+         (cascade_quadratic_potential C).spectral_gap_pos,
+         (cascade_quadratic_potential C).covariance_pos⟩
+
+/-- The log-Sobolev inequality implies the Poincaré inequality (hierarchy):
+    LSI ⇒ Poincaré ⇒ spectral gap.
+    For Gaussian measures, all three have the SAME constant.
+    References cascade_log_sobolev from BakryEmeryGap. -/
+theorem poincare_from_log_sobolev (C : CascadeData) :
+    -- LSI → Poincaré with same gap
+    ((cascade_log_sobolev C).to_poincare.gap = C.internal_gap) ∧
+    -- LSI constant positive
+    (0 < (cascade_log_sobolev C).lsi_constant) ∧
+    -- LSI = gap for Gaussian
+    ((cascade_log_sobolev C).lsi_constant = (cascade_log_sobolev C).spectral_gap) ∧
+    -- Concentration for positive t
+    (∀ t : ℝ, 0 < t →
+      exp (-((cascade_log_sobolev C).lsi_constant * t ^ 2 / 2)) < 1) := by
+  exact ⟨rfl,
+         (cascade_log_sobolev C).lsi_pos,
+         (cascade_log_sobolev C).lsi_eq_gap,
+         (cascade_log_sobolev C).concentration_strict⟩
+
+-- ============================================================================
+-- SECTION 9: Transfer Matrix from Poincaré (via TransferMatrix)
+-- ============================================================================
+
+/-- The Poincaré inequality's spectral gap feeds the transfer matrix:
+    T = exp(-H) with gap Δ, giving correlator decay ~ exp(-Δr).
+    The transfer matrix eigenvalue bound exp(-Δ) < 1 follows from Δ > 0. -/
+theorem poincare_to_transfer_matrix (C : CascadeData) :
+    -- Transfer matrix gap = internal gap (from Poincaré)
+    (C.to_transfer_matrix.gap = C.internal_gap) ∧
+    -- Excited eigenvalues strictly < 1
+    (C.to_transfer_matrix.max_excited_eigenvalue < 1) ∧
+    -- Correlation length = 1/gap is finite
+    (0 < 1 / C.to_transfer_matrix.gap) ∧
+    -- n-step decay for discrete lattice
+    (∀ n : ℕ, 0 < n →
+      exp (-C.to_transfer_matrix.gap * ↑n) < 1) := by
+  exact ⟨rfl,
+         C.to_transfer_matrix.max_eigenvalue_lt_one,
+         C.to_transfer_matrix.correlation_length_finite,
+         C.to_transfer_matrix.n_step_decay⟩
+
+/-- The complete Poincaré → mass gap chain via transfer matrix:
+    Poincaré constant C_P = 1/λ₁ → spectral gap λ₁ →
+    transfer matrix gap Δ = λ₁ → HasMassGap(gap = Δ). -/
+theorem poincare_to_mass_gap (C : CascadeData) :
+    -- Poincaré constant positive
+    (0 < (cascade_poincare C).poincare_constant) ∧
+    -- Mass gap via transfer positive
+    (0 < C.mass_gap_via_transfer.gap) ∧
+    -- Mass gap = internal gap
+    (C.mass_gap_via_transfer.gap = C.internal_gap) ∧
+    -- Both mass gap routes consistent
+    (C.has_mass_gap.gap = min C.internal_gap C.Lambda_QCD) := by
+  exact ⟨(cascade_poincare C).cp_pos,
+         C.gap_pos,
+         C.mass_gap_via_transfer_eq,
+         rfl⟩

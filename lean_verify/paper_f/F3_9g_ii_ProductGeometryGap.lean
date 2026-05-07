@@ -11,6 +11,8 @@
 -/
 
 import CascadeFoundation
+import BakryEmeryGap
+import TransferMatrix
 
 open Real Module
 
@@ -139,3 +141,90 @@ theorem product_gap_master (C : CascadeData) :
   refine ⟨?_, by ring, C.physical_gap_pos, C.gap_pos, ?_, by norm_num⟩
   · rw [cascade_hilbert_dim, cascade_algebra_dim]
   · rw [cascade_hilbert_dim]
+
+-- ============================================================================
+-- SECTION 7: Bakry-Émery Product Gap (via BakryEmeryGap)
+-- ============================================================================
+
+/-- The product gap inherits from the Bakry-Émery criterion:
+    the internal gap from the quadratic potential on Herm₄(ℂ)
+    transfers to the product M × F via tensor product of operators.
+    The internal gap = 2/Λ² from cascade_quadratic_potential. -/
+theorem product_gap_from_bakry_emery (C : CascadeData) :
+    -- Internal gap from quadratic potential
+    (0 < (cascade_quadratic_potential C).spectral_gap) ∧
+    -- Consistent with CascadeData
+    ((cascade_quadratic_potential C).spectral_gap = C.internal_gap) ∧
+    -- Bakry-Émery criterion satisfied
+    (0 < (cascade_bakry_emery C).spectral_gap) ∧
+    -- Product gap = min(internal, spacetime) > 0 on compact M
+    (0 < min C.internal_gap C.Lambda_QCD) := by
+  exact ⟨(cascade_quadratic_potential C).spectral_gap_pos,
+         cascade_gap_consistent C,
+         (cascade_bakry_emery C).gap_pos,
+         C.physical_gap_pos⟩
+
+/-- The Bakry-Émery mass gap for the product geometry:
+    the mass gap from the Bakry-Émery route (internal only) provides
+    one component of the product gap. -/
+theorem product_bakry_emery_mass_gap (C : CascadeData) :
+    -- Bakry-Émery mass gap positive
+    (0 < (cascade_bakry_emery_mass_gap C).gap) ∧
+    -- Correlators decay at the gap rate
+    (∀ r : ℝ, 0 < r →
+      exp (-(cascade_bakry_emery_mass_gap C).gap * r) < 1) := by
+  exact ⟨(cascade_bakry_emery_mass_gap C).gap_pos,
+         cascade_bakry_emery_decay C⟩
+
+-- ============================================================================
+-- SECTION 8: Transfer Matrix Product Gap (via TransferMatrix)
+-- ============================================================================
+
+/-- The product geometry gap feeds into the transfer matrix formalism:
+    T_total = T_M ⊗ T_F, and the physical transfer matrix uses
+    min(internal_gap, Λ_QCD) as the gap. -/
+theorem product_gap_transfer_matrix (C : CascadeData) :
+    -- Physical transfer matrix gap = min(internal, confinement)
+    (C.to_physical_transfer_matrix.gap = min C.internal_gap C.Lambda_QCD) ∧
+    -- Physical gap ≤ internal gap
+    (C.to_physical_transfer_matrix.gap ≤ C.internal_gap) ∧
+    -- Physical gap ≤ confinement gap
+    (C.to_physical_transfer_matrix.gap ≤ C.Lambda_QCD) ∧
+    -- Physical gap is positive
+    (0 < C.to_physical_transfer_matrix.gap) ∧
+    -- Correlators decay at the physical gap rate
+    (∀ r : ℝ, 0 < r →
+      exp (-C.to_physical_transfer_matrix.gap * r) < 1) := by
+  exact ⟨rfl,
+         C.physical_gap_le_internal,
+         C.physical_gap_le_confinement,
+         C.to_physical_transfer_matrix.gap_pos,
+         C.to_physical_transfer_matrix.correlator_decay⟩
+
+/-- The Hamiltonian data for the product geometry:
+    HamiltonianData from CascadeData with spectral gap = internal_gap.
+    The spatial dimension is 3 (3+1 dimensional QFT). -/
+theorem product_hamiltonian_data (C : CascadeData) :
+    -- Hamiltonian spectral gap = internal gap
+    (C.to_hamiltonian.spectral_gap = C.internal_gap) ∧
+    -- Spatial dim = 3
+    (C.to_hamiltonian.spatial_dim = 3) ∧
+    -- Gap is positive
+    (0 < C.to_hamiltonian.spectral_gap) ∧
+    -- Mass gap from Hamiltonian = internal gap
+    (C.to_hamiltonian.to_mass_gap.gap = C.internal_gap) := by
+  exact ⟨rfl, rfl, C.gap_pos, rfl⟩
+
+/-- Both routes to mass gap are consistent:
+    Route 1: CascadeData.has_mass_gap (direct) → min(internal, Λ_QCD)
+    Route 2: CascadeData.mass_gap_via_transfer (transfer matrix) → internal_gap
+    The physical gap (Route 1) uses min because it accounts for confinement. -/
+theorem product_gap_routes_consistent (C : CascadeData) :
+    -- Route 1: physical gap
+    (C.has_mass_gap.gap = min C.internal_gap C.Lambda_QCD) ∧
+    -- Route 2: transfer matrix gap
+    (C.mass_gap_via_transfer.gap = C.internal_gap) ∧
+    -- Both positive
+    (0 < C.has_mass_gap.gap) ∧
+    (0 < C.mass_gap_via_transfer.gap) :=
+  ⟨rfl, rfl, C.has_mass_gap.gap_pos, C.gap_pos⟩

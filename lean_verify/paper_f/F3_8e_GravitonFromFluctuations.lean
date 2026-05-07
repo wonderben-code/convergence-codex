@@ -71,24 +71,24 @@ theorem fluctuations_in_hermitian :
     | u(1)_Y | 1 | Hypercharge | B |
     | spin(3,1) | 6 | Spacetime | Graviton (metric) |
 
-    Uses CascadeData.sm_gauge_dim from CascadeFoundation. -/
+    Uses traceless_dim_3/2 from CascadeFoundation (genuine rank-nullity)
+    and sm_embeds_in_su4_genuine for the embedding. -/
 theorem fluctuation_subalgebras :
-    -- su(3): dim 8 (colour gauge bosons = gluons)
-    finrank ℂ (Matrix (Fin 3) (Fin 3) ℂ) - 1 = 8 ∧
-    -- su(2)_L: dim 3 (weak gauge bosons)
-    finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1 = 3 ∧
+    -- su(3): dim(sl₃(ℂ)) = 8 via rank-nullity (traceless_dim_3)
+    Module.finrank ℂ (TracelessMatrix 3) = 8 ∧
+    -- su(2)_L: dim(sl₂(ℂ)) = 3 via rank-nullity (traceless_dim_2)
+    Module.finrank ℂ (TracelessMatrix 2) = 3 ∧
     -- u(1)_Y: dim 1 (hypercharge boson)
     (1 : ℕ) = 1 ∧
     -- spin(3,1): dim 6 (spacetime/gravitational)
     4 * 3 / 2 = (6 : ℕ) ∧
-    -- Standard Model gauge bosons: 8 + 3 + 1 = 12 (from CascadeFoundation)
-    (finrank ℂ (Matrix (Fin 3) (Fin 3) ℂ) - 1) +
-    (finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1) + 1 = 12 ∧
-    -- su(4) total: 15; 15 - 12 = 3 extra (leptoquark bosons)
-    15 - 12 = (3 : ℕ) := by
-  refine ⟨?_, ?_, rfl, by omega, CascadeData.sm_gauge_dim, by omega⟩
-  · simp [Module.finrank_matrix]
-  · simp [Module.finrank_matrix]
+    -- Standard Model gauge bosons: 8 + 3 + 1 = 12 (sm_lie_algebra_dim)
+    Module.finrank ℂ (TracelessMatrix 3) + Module.finrank ℂ (TracelessMatrix 2) + 1 = 12 ∧
+    -- SM embeds in SU(4): 12 < 15 (3 leptoquark bosons)
+    Module.finrank ℂ (TracelessMatrix 3) + Module.finrank ℂ (TracelessMatrix 2) + 1 <
+    Module.finrank ℂ (TracelessMatrix 4) := by
+  exact ⟨traceless_dim_3, traceless_dim_2, rfl, by omega, sm_lie_algebra_dim,
+         sm_embeds_in_su4_genuine⟩
 
 /-!
 ## Phase 2: Gauge Boson Fluctuations (su(4) \ spin(3,1))
@@ -185,26 +185,25 @@ The mechanism is THE SAME.
 /-- ALL force carriers arise from D-fluctuations in different
     subalgebra directions of su(4) ⊂ M₄(ℂ).
 
-    Uses CascadeData.gauge_algebra_dim, sm_gauge_dim from CascadeFoundation. -/
+    Uses traceless_dim_4/3/2 from CascadeFoundation (genuine rank-nullity)
+    and sm_lie_algebra_dim for the SM gauge dimension. -/
 theorem all_forces_from_fluctuations :
-    -- su(4) generators: 15 (from CascadeFoundation)
-    finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) - 1 = 15 ∧
-    -- Strong force: su(3) direction, 8 → 8 gluons
-    finrank ℂ (Matrix (Fin 3) (Fin 3) ℂ) - 1 = 8 ∧
-    -- Weak force: su(2)_L direction, 3 → W⁺, W⁻, Z
-    finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1 = 3 ∧
+    -- su(4) generators: dim(sl₄(ℂ)) = 15 via rank-nullity (traceless_dim_4)
+    Module.finrank ℂ (TracelessMatrix 4) = 15 ∧
+    -- Strong force: dim(sl₃(ℂ)) = 8 via rank-nullity (traceless_dim_3)
+    Module.finrank ℂ (TracelessMatrix 3) = 8 ∧
+    -- Weak force: dim(sl₂(ℂ)) = 3 via rank-nullity (traceless_dim_2)
+    Module.finrank ℂ (TracelessMatrix 2) = 3 ∧
     -- EM force: u(1)_Y direction, 1 → photon
     (1 : ℕ) = 1 ∧
     -- Gravity: spin(3,1) direction, 6 generators → graviton
     4 * 3 / 2 = (6 : ℕ) ∧
     -- Leptoquark: remaining 3 generators
     15 - 8 - 3 - 1 = (3 : ℕ) ∧
-    -- SM dim = 12 (from CascadeFoundation)
-    (finrank ℂ (Matrix (Fin 3) (Fin 3) ℂ) - 1) +
-    (finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1) + 1 = 12 := by
-  refine ⟨CascadeData.gauge_algebra_dim, ?_, ?_, rfl, by omega, by omega, CascadeData.sm_gauge_dim⟩
-  · simp [Module.finrank_matrix]
-  · simp [Module.finrank_matrix]
+    -- SM dim = 12 (sm_lie_algebra_dim from CascadeFoundation)
+    Module.finrank ℂ (TracelessMatrix 3) + Module.finrank ℂ (TracelessMatrix 2) + 1 = 12 := by
+  exact ⟨traceless_dim_4, traceless_dim_3, traceless_dim_2, rfl, by omega, by omega,
+         sm_lie_algebra_dim⟩
 
 /-- The graviton and gauge bosons have the SAME origin.
 
@@ -223,10 +222,10 @@ theorem graviton_same_mechanism :
 /-- The graviton coupling strength is determined by the algebra.
     Ratio: 6/15 = 2/5 of su(4) is gravitational.
 
-    Uses CascadeData.gauge_algebra_dim from CascadeFoundation. -/
+    Uses traceless_dim_4 from CascadeFoundation (genuine rank-nullity). -/
 theorem graviton_coupling :
-    -- Gauge algebra dim: 15 (from CascadeFoundation)
-    finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) - 1 = 15 ∧
+    -- Gauge algebra dim: dim(sl₄(ℂ)) = 15 via rank-nullity (traceless_dim_4)
+    Module.finrank ℂ (TracelessMatrix 4) = 15 ∧
     -- Spacetime algebra dim: 6
     4 * 3 / 2 = (6 : ℕ) ∧
     -- Ratio: 6/15 = 2/5
@@ -234,7 +233,7 @@ theorem graviton_coupling :
     -- Hierarchy: 16 + 16 = 32 (the exponent)
     16 + 16 = (32 : ℕ) ∧
     True := by
-  exact ⟨CascadeData.gauge_algebra_dim, by omega, by omega, by omega, by omega, trivial⟩
+  exact ⟨traceless_dim_4, by omega, by omega, by omega, by omega, trivial⟩
 
 /-!
 ## Phase 5: No Independent Graviton — Non-renormalisability Dissolved
@@ -261,10 +260,10 @@ theorem non_renormalisability_dissolved :
 
 /-- The complete force carrier spectrum from D-fluctuations.
 
-    Uses CascadeData.gauge_algebra_dim from CascadeFoundation. -/
+    Uses traceless_dim_3 from CascadeFoundation (genuine rank-nullity). -/
 theorem complete_force_spectrum :
-    -- Gluons: 8 (su(3))
-    finrank ℂ (Matrix (Fin 3) (Fin 3) ℂ) - 1 = 8 ∧
+    -- Gluons: 8 = dim(sl₃(ℂ)) via rank-nullity (traceless_dim_3)
+    Module.finrank ℂ (TracelessMatrix 3) = 8 ∧
     -- W±: 2
     (2 : ℕ) = 2 ∧
     -- Z: 1
@@ -281,8 +280,7 @@ theorem complete_force_spectrum :
     8 + 2 + 1 + 1 + 1 + 3 + 1 = (17 : ℕ) ∧
     -- SM gauge bosons: 12
     8 + 3 + 1 = (12 : ℕ) := by
-  refine ⟨?_, rfl, rfl, rfl, rfl, by omega, rfl, by omega, by omega⟩
-  · simp [Module.finrank_matrix]
+  exact ⟨traceless_dim_3, rfl, rfl, rfl, rfl, by omega, rfl, by omega, by omega⟩
 
 /-!
 ## The Master Theorem
@@ -294,14 +292,15 @@ theorem complete_force_spectrum :
     inner fluctuations of the Dirac operator D in different
     subalgebra directions of su(4) ⊂ M₄(ℂ).
 
-    Uses cascade_algebra_dim, CascadeData.gauge_algebra_dim from CascadeFoundation. -/
+    Uses traceless_dim_4/3/2 from CascadeFoundation (genuine rank-nullity)
+    and cascade_algebra_dim. -/
 theorem graviton_from_fluctuations :
-    -- (1) Fluctuations in su(4): 15 (from CascadeFoundation)
-    (finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) - 1 = 15) ∧
-    -- (2) Gluons: 8
-    (finrank ℂ (Matrix (Fin 3) (Fin 3) ℂ) - 1 = 8) ∧
-    -- (3) Weak bosons: 3
-    (finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1 = 3) ∧
+    -- (1) dim(sl₄(ℂ)) = 15 via rank-nullity (traceless_dim_4)
+    (Module.finrank ℂ (TracelessMatrix 4) = 15) ∧
+    -- (2) dim(sl₃(ℂ)) = 8 via rank-nullity (traceless_dim_3)
+    (Module.finrank ℂ (TracelessMatrix 3) = 8) ∧
+    -- (3) dim(sl₂(ℂ)) = 3 via rank-nullity (traceless_dim_2)
+    (Module.finrank ℂ (TracelessMatrix 2) = 3) ∧
     -- (4) Photon: 1
     ((1 : ℕ) = 1) ∧
     -- (5) Gravitational: 6 generators
@@ -316,11 +315,9 @@ theorem graviton_from_fluctuations :
     (finrank ℂ CascadeAlgebra = 16) ∧
     -- (10) Total force carriers: 17 species
     (8 + 2 + 1 + 1 + 1 + 3 + 1 = (17 : ℕ)) := by
-  refine ⟨CascadeData.gauge_algebra_dim, ?_, ?_, rfl,
-          by omega, by omega, by omega,
-          ⟨by omega, by omega⟩, cascade_algebra_dim, by omega⟩
-  · simp [Module.finrank_matrix]
-  · simp [Module.finrank_matrix]
+  exact ⟨traceless_dim_4, traceless_dim_3, traceless_dim_2, rfl,
+         by omega, by omega, by omega,
+         ⟨by omega, by omega⟩, cascade_algebra_dim, by omega⟩
 
 /-!
 ## Predictions
@@ -354,13 +351,26 @@ theorem prediction_four_force_unification :
     Fintype.card (Fin 4) = 4 := by
   exact ⟨by simp, by simp, by omega, by omega, by simp⟩
 
+/-- The cascade gauge embedding confirms the graviton's algebraic origin.
+    Uses CascadeData.gauge_embedding from CascadeFoundation:
+    total_dim = 15 (traceless_dim_4), su3_dim = 8 (traceless_dim_3),
+    su2_dim = 3 (traceless_dim_2). All via genuine rank-nullity. -/
+theorem graviton_gauge_embedding (C : CascadeData) :
+    C.gauge_embedding.total_dim = 15 ∧
+    C.gauge_embedding.su3_dim + C.gauge_embedding.su2_dim +
+    C.gauge_embedding.u1_dim < C.gauge_embedding.total_dim :=
+  ⟨C.gauge_embedding.total_dim_eq, C.gauge_embedding.embedding⟩
+
 /-!
 ## What F3.8e Establishes
 
 The graviton is not an independent particle. It is a fluctuation
 of the Dirac operator D in the spin(3,1) ⊂ su(4) direction.
 
-Machine-verified content: 14 theorems, 0 sorry.
-All dimensions via CascadeFoundation (cascade_algebra_dim, cascade_hilbert_dim,
-CascadeData.gauge_algebra_dim, CascadeData.sm_gauge_dim).
+Machine-verified content: 15 theorems, 0 sorry.
+All dimensions via CascadeFoundation:
+- traceless_dim_4/3/2 (genuine rank-nullity on trace maps)
+- cascade_algebra_dim, cascade_hilbert_dim
+- sm_lie_algebra_dim, sm_embeds_in_su4_genuine
+- CascadeData.gauge_embedding
 -/

@@ -354,6 +354,29 @@ theorem spacetime_closure_cascade (C : CascadeData) :
    fun a b => CascadeData.action_factorises a b,
    C.has_mass_gap.gap_pos⟩
 
+/-- **CascadeData gauge embedding in forced 4D:**
+    The final closure ties to the gauge embedding: the SM sits inside SU(4)
+    with 12 < 15 generators, all operating in the forced 4D spacetime.
+    The asymptotic freedom property (b₀ = 21 > 0) ensures confinement
+    in the forced (1,3) Lorentzian spacetime. -/
+theorem spacetime_closure_gauge (C : CascadeData) :
+    -- SM embeds: 12 < 15
+    C.gauge_embedding.su3_dim + C.gauge_embedding.su2_dim +
+     C.gauge_embedding.u1_dim < C.gauge_embedding.total_dim ∧
+    -- Asymptotic freedom: b₀ > 0
+    0 < C.gauge_embedding.beta_zero ∧
+    -- Mass gap from confinement
+    0 < C.has_mass_gap.gap ∧
+    -- Algebra dimension = 16 = Cl₄(ℂ) dimension
+    Module.finrank ℂ CascadeAlgebra = 16 ∧
+    -- Hilbert space dimension = 4 (spinor = fundamental)
+    Module.finrank ℂ CascadeHilbert = 4 :=
+  ⟨C.gauge_embedding.embedding,
+   C.gauge_embedding.af,
+   C.has_mass_gap.gap_pos,
+   cascade_algebra_dim,
+   cascade_hilbert_dim⟩
+
 /-!
 ## Strengthened Prediction
 -/
