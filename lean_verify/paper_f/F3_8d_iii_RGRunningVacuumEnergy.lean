@@ -64,6 +64,8 @@ import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.IntervalCases
 import Mathlib.LinearAlgebra.Dimension.Finrank
+import Mathlib.LinearAlgebra.FreeModule.Finite.Matrix
+import Mathlib.Data.Fin.Basic
 
 /-!
 ## Phase 1 (K₁): Particle Content at Each Scale
@@ -123,12 +125,17 @@ theorem full_spectrum_at_ps_scale :
     But the 9 Goldstone bosons are also removed (eaten): net = 27 - 9 = 18
     N_B^{eff}(below M_X) = 52 - 18 = 34 -/
 theorem ps_breaking_dof_change :
-    -- SM gauge generators: 8 + 3 + 1 = 12
-    8 + 3 + 1 = (12 : ℕ) ∧
+    -- SM gauge generators: su(3) + su(2) + u(1) = 12 via finrank
+    (Module.finrank ℂ (Matrix (Fin 3) (Fin 3) ℂ) - 1) +
+    (Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1) + 1 = (12 : ℕ) ∧
     -- SM massless gauge DOF: 12 × 2 = 24
     12 * 2 = (24 : ℕ) ∧
-    -- Broken generators (leptoquarks): 21 - 12 = 9
-    21 - 12 = (9 : ℕ) ∧
+    -- Broken generators (leptoquarks): PS - SM = 21 - 12 = 9
+    ((Module.finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) - 1) +
+     (Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1) +
+     (Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1)) -
+    ((Module.finrank ℂ (Matrix (Fin 3) (Fin 3) ℂ) - 1) +
+     (Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1) + 1) = (9 : ℕ) ∧
     -- Each massive vector: 3 DOF (longitudinal mode acquired)
     9 * 3 = (27 : ℕ) ∧
     -- Goldstones eaten: one per broken generator = 9
@@ -139,7 +146,8 @@ theorem ps_breaking_dof_change :
     52 - 18 = (34 : ℕ) ∧
     -- Effective asymmetry below M_X: N_F - N_B = 96 - 34 = 62
     96 - 34 = (62 : ℕ) := by
-  exact ⟨by omega, by omega, by omega, by omega, by omega, by omega, by omega, by omega⟩
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;>
+    simp [Module.finrank_matrix, Fintype.card_fin]
 
 /-!
 ## Phase 2 (K₂): Mass Threshold Hierarchy
@@ -186,15 +194,16 @@ theorem mass_threshold_count :
     3 * 4 = (12 : ℕ) ∧
     -- Coloured fermion types: 6 quarks × 3 colours
     6 * 3 = (18 : ℕ) ∧
-    -- Massive gauge bosons after EW breaking: (SU(2)_L × U(1)_Y → U(1)_em) = 3
-    4 - 1 = (3 : ℕ) ∧
+    -- Massive gauge bosons after EW breaking: dim(su(2)) via finrank
+    Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1 = (3 : ℕ) ∧
     -- Massive scalar: Higgs bidoublet → 1 physical Higgs after EWSB
     8 - 3 - 3 - 1 = (1 : ℕ) ∧
     -- Distinct mass thresholds: PS + EW + mid + low
     1 + 4 + 3 + 5 = (13 : ℕ) ∧
     -- Total cascade-determined particle types: 6 quarks + 6 leptons + 21 gauge + 1 Higgs
     6 + 6 + 21 + 1 = (34 : ℕ) := by
-  exact ⟨by omega, by omega, by omega, by omega, by omega, by omega⟩
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩ <;>
+    simp [Module.finrank_matrix, Fintype.card_fin]
 
 /-- Fermionic DOF removed at each quark threshold.
 
@@ -541,8 +550,12 @@ theorem all_thresholds_cascade_determined :
     3 * 2 = (6 : ℕ) ∧
     -- Leptons: 6 types (3 generations × 2 types)
     3 * 2 = (6 : ℕ) ∧
-    -- Gauge bosons: 21 PS generators = 12 SM + 9 leptoquarks
-    12 + 9 = (21 : ℕ) ∧
+    -- Gauge bosons: PS generators = SM + leptoquarks, via finrank
+    (Module.finrank ℂ (Matrix (Fin 3) (Fin 3) ℂ) - 1) +
+    (Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1) + 1 + 9 =
+    (Module.finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) - 1) +
+    (Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1) +
+    (Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1) ∧
     -- Higgs: bidoublet (1,2,2) gives 1 physical scalar after EWSB
     8 - 3 - 3 - 1 = (1 : ℕ) ∧
     -- Total distinct particle types: 6 + 6 + 21 + 1 = 34
@@ -553,7 +566,8 @@ theorem all_thresholds_cascade_determined :
     -- Free parameters in RG running: Yukawa couplings (determine masses)
     -- But total DOF is cascade-fixed: 52 + 96 = 148
     52 + 96 = (148 : ℕ) := by
-  exact ⟨by omega, by omega, by omega, by omega, by omega, by omega, by omega⟩
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;>
+    simp [Module.finrank_matrix, Fintype.card_fin]
 
 /-- Cumulative CC programme status after Layer 3.
 

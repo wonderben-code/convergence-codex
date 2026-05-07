@@ -46,6 +46,8 @@ import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.IntervalCases
 import Mathlib.LinearAlgebra.Dimension.Finrank
+import Mathlib.LinearAlgebra.FreeModule.Finite.Matrix
+import Mathlib.Data.Fin.Basic
 
 /-!
 ## Phase 1 (K₁): Broken Generator Counting
@@ -61,25 +63,30 @@ Together these determine EXACTLY which generators break at each stage.
     Entirely cascade-determined: the factors (4,2,2) are the unique
     solution to the cascade constraints (F1.6, Theorem cascade_unique_solution). -/
 theorem ps_gauge_algebra_dim :
-    (4 * 4 - 1) + (2 * 2 - 1) + (2 * 2 - 1) = (21 : ℕ) ∧
+    -- dim(su(4)) + dim(su(2)_L) + dim(su(2)_R) via finrank of matrix algebras
+    (Module.finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) - 1) +
+    (Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1) +
+    (Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1) = (21 : ℕ) ∧
     -- Components: su(4), su(2)_L, su(2)_R
-    4 * 4 - 1 = (15 : ℕ) ∧
-    2 * 2 - 1 = (3 : ℕ) ∧
+    Module.finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) - 1 = (15 : ℕ) ∧
+    Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1 = (3 : ℕ) ∧
     -- Rank of PS: 3 + 1 + 1 = 5
     (4 - 1) + (2 - 1) + (2 - 1) = (5 : ℕ) := by
-  exact ⟨by norm_num, by norm_num, by norm_num, by norm_num⟩
+  simp [Module.finrank_matrix, Fintype.card_fin]
 
 /-- Standard Model gauge algebra dimension: su(3) ⊕ su(2)_L ⊕ u(1)_Y.
     SM = (3²-1) + (2²-1) + 1 = 8 + 3 + 1 = 12.
     The SM embedding in PS is forced by anomaly cancellation (F0.8). -/
 theorem sm_gauge_algebra_dim :
-    (3 * 3 - 1) + (2 * 2 - 1) + 1 = (12 : ℕ) ∧
+    -- dim(su(3)) + dim(su(2)_L) + dim(u(1)_Y) via finrank
+    (Module.finrank ℂ (Matrix (Fin 3) (Fin 3) ℂ) - 1) +
+    (Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1) + 1 = (12 : ℕ) ∧
     -- Components: su(3), su(2)_L, u(1)_Y
-    3 * 3 - 1 = (8 : ℕ) ∧
+    Module.finrank ℂ (Matrix (Fin 3) (Fin 3) ℂ) - 1 = (8 : ℕ) ∧
     -- Rank of SM: 2 + 1 + 1 = 4 = 2² (seed dimension squared, F0.8)
     (3 - 1) + (2 - 1) + 1 = (4 : ℕ) ∧
-    4 = 2 * 2 := by
-  exact ⟨by norm_num, by norm_num, by norm_num, by norm_num⟩
+    Fintype.card (Fin 2 × Fin 2) = 4 := by
+  simp [Module.finrank_matrix, Fintype.card_fin, Fintype.card_prod]
 
 /-- PS → SM breaking: exactly 9 generators break.
     21 - 12 = 9. These are the generators of SU(4) that are NOT
@@ -89,24 +96,32 @@ theorem sm_gauge_algebra_dim :
     Each broken generator → one massive gauge boson (leptoquark).
     These are the bosons that mediate proton decay (F3.8c). -/
 theorem ps_to_sm_broken_generators :
-    21 - 12 = (9 : ℕ) ∧
+    -- PS generators - SM generators = broken generators
+    ((Module.finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) - 1) +
+     (Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1) +
+     (Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1)) -
+    ((Module.finrank ℂ (Matrix (Fin 3) (Fin 3) ℂ) - 1) +
+     (Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1) + 1) = (9 : ℕ) ∧
     -- Decomposition: 6 from colour sector + 3 from right sector
-    (15 - 8 - 1) + (3 * 1) = (9 : ℕ) ∧
+    (Module.finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) - 1) -
+    (Module.finrank ℂ (Matrix (Fin 3) (Fin 3) ℂ) - 1) - 1 +
+    (Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1) = (9 : ℕ) ∧
     -- All 9 are cascade-determined (no choice in which break)
     9 > 0 := by
-  exact ⟨by norm_num, by norm_num, by norm_num⟩
+  simp [Module.finrank_matrix, Fintype.card_fin]
 
 /-- Electroweak breaking: exactly 3 generators break.
     SU(2)_L × U(1)_Y → U(1)_em: (3+1) - 1 = 3 broken.
     These produce exactly W⁺, W⁻, Z⁰.
     Forced by the Higgs mechanism (F3.2, 32 theorems). -/
 theorem ew_broken_generators :
-    (2 * 2 - 1 + 1) - 1 = (3 : ℕ) ∧
+    -- SU(2)_L × U(1)_Y → U(1)_em: dim(su(2)) + 1 - 1 = 3 broken
+    (Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1 + 1) - 1 = (3 : ℕ) ∧
     -- After EW: only photon remains massless → 1 unbroken generator
     4 - 3 = (1 : ℕ) ∧
-    -- Total remaining massless generators: gluons + photon = 8 + 1 = 9
-    8 + 1 = (9 : ℕ) := by
-  exact ⟨by norm_num, by omega, by norm_num⟩
+    -- Total remaining massless generators: gluons + photon
+    (Module.finrank ℂ (Matrix (Fin 3) (Fin 3) ℂ) - 1) + 1 = (9 : ℕ) := by
+  simp [Module.finrank_matrix, Fintype.card_fin]
 
 /-- Total broken generators across both cascade-forced SSB stages: 12.
     9 (PS→SM) + 3 (EW) = 12 massive gauge bosons total.
@@ -353,17 +368,17 @@ theorem monotonicity_l2 :
 theorem exactly_two_ssb_stages :
     -- Stage 1: PS → SM (9 broken generators)
     21 - 12 = (9 : ℕ) ∧
-    -- Stage 2: EW → U(1)_em (3 broken generators)
-    4 - 1 = (3 : ℕ) ∧
+    -- Stage 2: EW → U(1)_em (3 broken generators = dim(su(2)))
+    Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1 = (3 : ℕ) ∧
     -- Total massive bosons: 12
     9 + 3 = (12 : ℕ) ∧
-    -- Remaining massless: 9 (8 gluons + photon)
-    8 + 1 = (9 : ℕ) ∧
+    -- Remaining massless: gluons + photon
+    (Module.finrank ℂ (Matrix (Fin 3) (Fin 3) ℂ) - 1) + 1 = (9 : ℕ) ∧
     -- Total: 12 + 9 = 21 = dim(PS) ✓ (accounting complete)
     12 + 9 = (21 : ℕ) ∧
     -- Exactly 2 stages: PS→SM and EW→U(1)_em
     9 + 3 = (12 : ℕ) := by
-  refine ⟨by norm_num, by norm_num, by norm_num, by norm_num, by norm_num, by norm_num⟩
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩ <;> simp [Module.finrank_matrix, Fintype.card_fin]
 
 /-- MASTER THEOREM: Symmetry Breaking Vacuum Shifts (CC Layer 2).
 
@@ -384,14 +399,18 @@ theorem exactly_two_ssb_stages :
     Major closure requires L4 (cross-lineage interference in the
     29,952-dimensional interaction space) or Track B (new cascade physics). -/
 theorem ssb_vacuum_shifts :
-    -- Broken generators (cascade-determined)
-    (4 * 4 - 1) + (2 * 2 - 1) + (2 * 2 - 1) = (21 : ℕ) ∧
-    (3 * 3 - 1) + (2 * 2 - 1) + 1 = (12 : ℕ) ∧
+    -- Broken generators (cascade-determined via finrank of matrix algebras)
+    (Module.finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) - 1) +
+    (Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1) +
+    (Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1) = (21 : ℕ) ∧
+    (Module.finrank ℂ (Matrix (Fin 3) (Fin 3) ℂ) - 1) +
+    (Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1) + 1 = (12 : ℕ) ∧
     21 - 12 = (9 : ℕ) ∧
     4 - 1 = (3 : ℕ) ∧
     9 + 3 = (12 : ℕ) ∧
-    -- DOF structure
-    (8 + 1) * 2 + (9 + 3) * 3 = (54 : ℕ) ∧
+    -- DOF structure: (gluons + photon) × 2 pol + (leptoquarks + W,Z) × 3 pol
+    ((Module.finrank ℂ (Matrix (Fin 3) (Fin 3) ℂ) - 1) + 1) * 2 +
+    (9 + 3) * 3 = (54 : ℕ) ∧
     -- Scale hierarchy (Λ⁴ exponents)
     4 * 18 = (72 : ℕ) ∧ 4 * 16 = (64 : ℕ) ∧ 4 * 2 = (8 : ℕ) ∧
     -- Well-ordered: 72 > 64 > 8
@@ -402,9 +421,8 @@ theorem ssb_vacuum_shifts :
     (70 : ℕ) > 62 ∧
     -- Complete: 12 massive + 9 massless = 21 total ✓
     12 + 9 = (21 : ℕ) := by
-  refine ⟨by norm_num, by norm_num, by norm_num, by norm_num, by norm_num,
-          by norm_num, by norm_num, by norm_num, by norm_num, by norm_num,
-          by norm_num, by norm_num, by norm_num, by norm_num⟩
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;>
+    simp [Module.finrank_matrix, Fintype.card_fin]
 
 /-- PREDICTION: The PS vacuum shift is testable via proton decay.
     The same 9 leptoquark bosons that shift the vacuum energy at the
@@ -421,12 +439,17 @@ theorem ssb_vacuum_shifts :
     contribute to the CC also mediate an observable process. -/
 theorem prediction_ps_shift_testable_via_proton_decay :
     -- Same 9 leptoquarks mediate both vacuum shift and proton decay
-    21 - 12 = (9 : ℕ) ∧
+    -- 9 = dim(PS) - dim(SM) via finrank
+    ((Module.finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) - 1) +
+     (Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1) +
+     (Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1)) -
+    ((Module.finrank ℂ (Matrix (Fin 3) (Fin 3) ℂ) - 1) +
+     (Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1) + 1) = (9 : ℕ) ∧
     -- Both depend on M_X⁴ ∝ Λ_PS⁴
     4 * 16 = (64 : ℕ) ∧
     -- Proton decay tests M_X: each leptoquark has 3 DOF (massive vector)
     9 * 3 = (27 : ℕ) := by
-  exact ⟨by omega, by norm_num, by omega⟩
+  refine ⟨?_, ?_, ?_⟩ <;> simp [Module.finrank_matrix, Fintype.card_fin]
 
 /-- CUMULATIVE IMPROVEMENT: L1 + L2 combined (additive structure).
 

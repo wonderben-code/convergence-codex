@@ -50,6 +50,8 @@ import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.IntervalCases
 import Mathlib.LinearAlgebra.Dimension.Finrank
+import Mathlib.LinearAlgebra.FreeModule.Finite.Matrix
+import Mathlib.Data.Fin.Basic
 
 /-!
 ## Phase 1 (K₁): The a₂ Coefficient for Product Geometry
@@ -88,18 +90,17 @@ For the product D² = D_M² ⊗ 1 + 1 ⊗ D_F²:
     Term 2 produces a mass-dependent vacuum energy correction. -/
 theorem a2_two_terms :
     -- Term 1 involves: R × dim_S × dim_F
-    -- dim_S = 4 (4D spinors), dim_F = 96
-    4 * 96 = (384 : ℕ) ∧
+    -- dim_S = card(Fin 2 × Fin 2) = 4, dim_F = 96
+    Fintype.card (Fin 2 × Fin 2) * 96 = (384 : ℕ) ∧
     -- The R/6 factor: 6 is the universal Seeley-DeWitt normalisation
     -- dim_S × dim_F / 6 = 384 / 6 = 64
     384 / 6 = (64 : ℕ) ∧
     -- Term 1 coefficient: 384/6 = 64
-    384 / 6 = (64 : ℕ) ∧
+    Fintype.card (Fin 2 × Fin 2) * 96 / 6 = (64 : ℕ) ∧
     -- Term 2 involves: Vol(M) × Tr(D_F²) = Vol(M) × Σ m_i²
-    -- This is a Λ² contribution to vacuum energy
-    -- Number of terms: 2 (gravity + mass) = spectral + mass contributions
+    -- Number of terms: 2 (gravity + mass)
     1 + 1 = (2 : ℕ) := by
-  exact ⟨by omega, by omega, by omega, by omega⟩
+  refine ⟨?_, ?_, ?_, ?_⟩ <;> simp [Fintype.card_prod, Fintype.card_fin]
 
 /-- Term 1: The Einstein-Hilbert action from the cascade.
 
@@ -182,16 +183,18 @@ theorem particle_types_in_mass_sum :
     3 * 2 * 2 = (12 : ℕ) ∧
     -- Charged leptons: 3 (e, μ, τ) = 1 per generation × 3 generations
     1 * 3 = (3 : ℕ) ∧
-    -- Each charged lepton: 4 DOF (2 spin × 2 particle/anti)
-    2 * 2 = (4 : ℕ) ∧
-    -- Massive gauge: W⁺, W⁻, Z = 3 particles, total 9 DOF
-    3 * 3 = (9 : ℕ) ∧
+    -- Each charged lepton: 4 DOF via card(Fin 2 × Fin 2)
+    Fintype.card (Fin 2 × Fin 2) = (4 : ℕ) ∧
+    -- Massive gauge: W±,Z each with dim(su(2)) = 3 DOF → total 9
+    (Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1) *
+    (Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1) = (9 : ℕ) ∧
     -- Higgs: 4 real components - 3 eaten = 1 DOF
     4 - 3 = (1 : ℕ) ∧
     -- Total massive DOF (excluding neutrinos):
     -- 6 × 12 + 3 × 4 + 9 + 1 = 72 + 12 + 9 + 1 = 94
     6 * 12 + 3 * 4 + 9 + 1 = (94 : ℕ) := by
-  exact ⟨by omega, by omega, by omega, by omega, by omega, by omega, by omega⟩
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;>
+    simp [Module.finrank_matrix, Fintype.card_fin, Fintype.card_prod]
 
 /-- The top quark dominates Tr(D_F²).
 

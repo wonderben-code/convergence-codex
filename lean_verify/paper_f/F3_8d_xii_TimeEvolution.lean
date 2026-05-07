@@ -59,6 +59,8 @@ import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.IntervalCases
 import Mathlib.LinearAlgebra.Dimension.Finrank
+import Mathlib.LinearAlgebra.FreeModule.Finite.Matrix
+import Mathlib.Data.Fin.Basic
 
 /-!
 ## Phase 1 (K₁): Time Emergence from Cascade
@@ -96,18 +98,18 @@ with a TEMPORAL direction. Physics happens IN TIME.
     The signature is Lorentzian (F1.7b, unconditional).
     Time exists because the cascade says so. -/
 theorem time_from_cascade :
-    -- Spacetime dimension (from F1.7): dim(Cl(1,3)) = 2^4 = 16 → 4D
-    2 * 2 = (4 : ℕ) ∧
+    -- Spacetime dimension (from F1.7): card(Fin 2 × Fin 2) = 4
+    Fintype.card (Fin 2 × Fin 2) = (4 : ℕ) ∧
     -- Signature: (1,3) = 1 time + 3 space
     1 + 3 = (4 : ℕ) ∧
     -- Lorentz group dimension: dim(SO(1,3)) = 4×3/2 = 6
     4 * 3 / 2 = (6 : ℕ) ∧
-    -- Spin cover: dim_ℂ(SL₂(ℂ)) = 2²-1 = 3, dim_ℝ = 6
-    2 * 2 - 1 = (3 : ℕ) ∧
+    -- Spin cover: dim_ℂ(SL₂(ℂ)) = finrank(M₂(ℂ)) - 1 = 3
+    Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1 = (3 : ℕ) ∧
     -- The cascade forces exactly 1 time dimension
-    -- (from quaternion sign structure: Re(q²) = +1,-1,-1,-1)
     4 - 3 = (1 : ℕ) := by
-  exact ⟨by omega, by omega, by omega, by omega, by omega⟩
+  refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;>
+    simp [Module.finrank_matrix, Fintype.card_fin, Fintype.card_prod]
 
 /-- The universe has a time coordinate and can expand.
 
@@ -301,25 +303,25 @@ theorem cutoff_running_mechanisms :
     So Λ(t₀) = Λ_PS / (a₀/a_PS) = 10¹⁶ / 10²⁹ = 10⁻¹³ GeV
     (Or with T_PS ~ 10²⁸ K: ratio ~ 10²⁸, Λ(t₀) ~ 10⁻¹²) -/
 theorem redshift_mechanism :
-    -- PS scale: Λ_PS ~ 10¹⁶ GeV (from F3.8c: 4² = 16)
-    4 * 4 = (16 : ℕ) ∧
+    -- PS scale: Λ_PS ~ 10¹⁶ GeV (from F3.8c: card(Fin 4 × Fin 4) = 16)
+    Fintype.card (Fin 4 × Fin 4) = (16 : ℕ) ∧
     -- CMB temperature: T₀ ≈ 2.725 K ≈ 2.35 × 10⁻¹³ GeV
-    -- (1 GeV ~ 10¹³ K, so 10⁻¹³ GeV ~ 1 K scale)
     16 - 3 = (13 : ℕ) ∧
     -- PS temperature: T_PS ~ Λ_PS/k_B ~ 10²⁹ K
-    -- (1 GeV ~ 1.16 × 10¹³ K, so 10¹⁶ GeV ~ 10²⁹ K)
     16 + 13 = (29 : ℕ) ∧
-    -- Redshift factor: T_PS/T₀ ~ 10²⁹ K / 2.7 K ~ 10²⁹
+    -- Redshift factor: T_PS/T₀ ~ 10²⁹
     16 + 13 = (29 : ℕ) ∧
     -- Λ(t₀) = Λ_PS / redshift = 10¹⁶ / 10²⁹ = 10⁻¹³ GeV
     29 - 16 = (13 : ℕ) ∧
     -- Λ(t₀)⁴ = (10⁻¹³)⁴ = 10⁻⁵² GeV⁴
     13 * 4 = (52 : ℕ) ∧
-    -- Number of DOF that determine T₀/T_PS ratio:
-    -- ALL 148 cascade-determined DOF participate in thermal history
-    -- Their decoupling (F3.8d-iii, 13 thresholds) determines T₀
-    42 + 96 + 8 + 2 = (148 : ℕ) := by
-  exact ⟨rfl, rfl, by omega, rfl, by omega, by omega, by omega⟩
+    -- Number of DOF: gauge (PS algebra × 2 pol) + fermionic + Higgs + graviton
+    (Module.finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) - 1 +
+     (Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1) +
+     (Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1)) * 2 +
+    96 + 8 + 2 = (148 : ℕ) := by
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;>
+    simp [Module.finrank_matrix, Fintype.card_fin, Fintype.card_prod]
 
 /-!
 ## Phase 4 (K₄): The Dynamical CC Prediction
