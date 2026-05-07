@@ -29,6 +29,7 @@ import Mathlib.Algebra.QuaternionBasis
 import Mathlib.LinearAlgebra.Matrix.Notation
 import Mathlib.LinearAlgebra.CliffordAlgebra.Equivs
 import Mathlib.Data.Complex.Basic
+import Mathlib.LinearAlgebra.Dimension.Constructions
 
 open Matrix
 
@@ -147,36 +148,54 @@ def clifford2Iso :
 -- SECTION 7: Properties
 -- ============================================================================
 
-/-- The quaternion splitting preserves the unit. -/
+/-- The quaternion splitting preserves the unit.
+    Delegates to the `AlgEquiv.map_one` API of `quatSplitEquiv`. -/
 theorem quatSplitEquiv_map_one :
     quatSplitEquiv (1 : ℍ[ℂ,(1 : ℂ),0,1]) = (1 : Matrix (Fin 2) (Fin 2) ℂ) :=
-  map_one quatSplitEquiv
+  quatSplitEquiv.map_one
 
-/-- The quaternion splitting preserves multiplication. -/
+/-- The quaternion splitting preserves multiplication.
+    Delegates to the `AlgEquiv.map_mul'` field of `quatSplitEquiv`. -/
 theorem quatSplitEquiv_map_mul (x y : ℍ[ℂ,(1 : ℂ),0,1]) :
     quatSplitEquiv (x * y) = quatSplitEquiv x * quatSplitEquiv y :=
-  map_mul quatSplitEquiv x y
+  quatSplitEquiv.map_mul' x y
 
-/-- The quaternion splitting is bijective. -/
+/-- The quaternion splitting is bijective (every `AlgEquiv` is).
+    Delegates to `AlgEquiv.bijective` on `quatSplitEquiv`. -/
 theorem quatSplitEquiv_bijective :
     Function.Bijective quatSplitEquiv :=
   quatSplitEquiv.bijective
 
-/-- The Clifford-matrix isomorphism preserves the unit. -/
+/-- The Clifford-matrix isomorphism preserves the unit.
+    Delegates to the `AlgEquiv.map_one` API of `clifford2Iso`. -/
 theorem clifford2Iso_map_one :
     clifford2Iso (1 : CliffordAlgebra (CliffordAlgebraQuaternion.Q (1 : ℂ) (1 : ℂ))) =
     (1 : Matrix (Fin 2) (Fin 2) ℂ) :=
-  map_one clifford2Iso
+  clifford2Iso.map_one
 
 -- ============================================================================
 -- SECTION 8: Dimension Verification
 -- ============================================================================
 
-/-- Both algebras have dimension 4: H = C + Ci + Cj + Ck, M_2 has 4 entries. -/
-theorem split_quat_matrix_dim : 2 * 2 = 4 := by norm_num
+/-- M₂(ℂ) has finrank 4 over ℂ: the 2×2 matrix algebra is 4-dimensional.
+    Uses `Module.finrank_matrix` from Mathlib. -/
+theorem split_quat_matrix_dim :
+    Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) = 4 := by
+  rw [Module.finrank_matrix, Module.finrank_self]
+  norm_num
 
-/-- Clifford algebra dimension: dim(Cl_2) = 2^2 = 4. -/
-theorem clifford2_dim : 2 ^ 2 = 4 := by norm_num
+/-- dim_ℂ(M₂(ℂ)) = 2² = 4. Since Cl₂(ℂ) ≅ M₂(ℂ) via `clifford2Iso`,
+    this witnesses dim(Cl₂) = 2². -/
+theorem clifford2_dim :
+    Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) = 2 ^ 2 := by
+  rw [Module.finrank_matrix, Module.finrank_self]
+  norm_num
 
-/-- Cl_4(C) has dimension 2^4 = 16 = 4 * 4, matching M_2 tensor M_2 = M_4. -/
-theorem clifford4_dim : 2 ^ 4 = 16 ∧ 16 = 4 * 4 := by omega
+/-- dim_ℂ(M₄(ℂ)) = 2⁴ = 16 = 4 × 4, matching Cl₄(ℂ) ≅ M₄(ℂ).
+    Uses `Module.finrank_matrix` on the 4×4 matrix algebra. -/
+theorem clifford4_dim :
+    Module.finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) = 2 ^ 4 ∧ (2 : ℕ) ^ 4 = 4 * 4 := by
+  constructor
+  · rw [Module.finrank_matrix, Module.finrank_self]
+    norm_num
+  · norm_num
