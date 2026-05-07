@@ -14,18 +14,24 @@
   2. Trace is zero on commutators: Tr([A,B]) = 0 (gauge invariance)
   3. Determinant of identity: det(I_n) = 1
   4. Determinant is multiplicative: det(AB) = det(A)·det(B)
-  5. Determinant-trace connection via characteristic polynomial
+  5. Normalised trace: tr(A) = Tr(A)/n, with tr(I) = 1
+  6. Gauge measure invariance: det(UAU⁻¹) = det(A) for SU(n)
+  7. Spectral triple axioms: reality (J²), first-order (dim End), grading (γ²)
 
   Machine-verified: genuine Mathlib proofs, 0 sorry, 0 native_decide.
 -/
 
 import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 import Mathlib.LinearAlgebra.FreeModule.Finite.Matrix
+import Mathlib.LinearAlgebra.Dimension.Finrank
 import Mathlib.Data.Complex.Basic
 import Mathlib.Data.Fin.Basic
 import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.Ring
+import Mathlib.Tactic.FinCases
+import Mathlib.Tactic.FieldSimp
 
 open Matrix
 
@@ -134,7 +140,7 @@ theorem det_transpose_eq {n : Type*} [Fintype n] [DecidableEq n]
   Matrix.det_transpose A
 
 -- ============================================================================
--- SECTION 4: Cascade-Specific Matrix Computations
+-- SECTION 4: Normalised Trace and Cascade Computations  [UPGRADED]
 -- ============================================================================
 
 -- The cascade algebra D₁ = M₄(ℂ) is a 16-dimensional complex algebra.
@@ -146,19 +152,53 @@ theorem trace_zero_matrix :
     trace (0 : Matrix (Fin 4) (Fin 4) ℂ) = 0 := by
   simp [Matrix.trace, Matrix.diag]
 
-/-- Combining trace_one and the cascade:
-    Tr(I₄)/4 = 1. This normalisation is used in defining
-    the normalised trace tr = Tr/n which appears in the
-    spectral action as tr(f(D²/Λ²)). -/
-theorem normalised_trace_identity :
-    (4 : ℂ) / 4 = 1 := by norm_num
+/-- The normalised trace tr(A) = Tr(A)/n, used in the spectral action
+    where the spectral action density is tr(f(D²/Λ²)) rather than Tr.
+    The normalisation ensures tr(I) = 1 regardless of representation dimension. -/
+noncomputable def normalisedTrace (n : ℕ) [NeZero n]
+    (A : Matrix (Fin n) (Fin n) ℂ) : ℂ :=
+  trace A / (n : ℂ)
 
-/-- For unitary U ∈ U(4): det(U) ∈ U(1), i.e., |det(U)| = 1.
-    For special unitary U ∈ SU(4): det(U) = 1.
-    The cascade's gauge group is SU(4), so det = 1 exactly.
-    This means the path integral measure is gauge-invariant:
-    det(∂(UDU⁻¹)/∂D) = |det(U)|² = 1. -/
-theorem gauge_measure_invariance : (1 : ℂ) * 1 = 1 := by ring
+/-- The normalised trace of the identity matrix is 1 for any n > 0.
+    tr(I_n) = Tr(I_n)/n = n/n = 1.
+    In the cascade at D₁ = M₄(ℂ): tr(I₄) = 4/4 = 1.
+    This normalisation is what makes the spectral action density
+    tr(f(D²/Λ²)) independent of the representation dimension. -/
+theorem normalised_trace_identity (n : ℕ) [NeZero n] :
+    normalisedTrace n (1 : Matrix (Fin n) (Fin n) ℂ) = 1 := by
+  unfold normalisedTrace
+  rw [Matrix.trace_one, Fintype.card_fin]
+  exact div_self (Nat.cast_ne_zero.mpr (NeZero.ne n))
+
+/-- Specialisation: tr(I₄) = 1 at the cascade's physical level D₁. -/
+theorem normalised_trace_I4 :
+    normalisedTrace 4 (1 : Matrix (Fin 4) (Fin 4) ℂ) = 1 :=
+  normalised_trace_identity 4
+
+-- ============================================================================
+-- SECTION 4b: Gauge Measure Invariance  [UPGRADED]
+-- ============================================================================
+
+/-- Conjugation by a special unitary matrix preserves the determinant:
+    det(U · A · U⁻¹) = det(A).
+    This is the determinant formulation of gauge invariance: the spectral
+    action's determinantal part is invariant under gauge transformations
+    D ↦ UDU⁻¹. The Jacobian of this transformation is
+    det(Ad_U) = (det U)^{2n}, which equals 1 when det(U) = 1. -/
+theorem gauge_measure_invariance {n : Type*} [Fintype n] [DecidableEq n]
+    (U A : Matrix n n ℂ) (hU : det U = 1) :
+    det (U * A * U⁻¹) = det A := by
+  rw [det_mul, det_mul, det_nonsing_inv, hU, one_mul]
+  simp [Ring.inverse_one]
+
+/-- For any k ∈ ℕ, (det U)^k = 1 when det U = 1.
+    The gauge measure Jacobian for the adjoint action is (det U)^{2n}
+    which equals 1 for special unitary U. -/
+theorem gauge_jacobian_power {n : Type*} [Fintype n] [DecidableEq n]
+    (U : Matrix n n ℂ) (hU : det U = 1) (k : ℕ) :
+    (det U) ^ k = 1 := by
+  rw [hU]
+  exact one_pow k
 
 -- ============================================================================
 -- SECTION 5: Matrix Powers and the Spectral Action
@@ -173,7 +213,7 @@ theorem det_power {n : Type*} [Fintype n] [DecidableEq n]
   Matrix.det_pow A k
 
 -- ============================================================================
--- SECTION 6: Connection to the Spectral Triple Axioms
+-- SECTION 6: Connection to the Spectral Triple Axioms  [UPGRADED]
 -- ============================================================================
 
 -- The seven axioms of Connes's NCG spectral triple require specific
@@ -187,20 +227,105 @@ theorem spectral_dimension_from_trace :
   rw [Matrix.trace_one]
   simp [Fintype.card_fin]
 
-/-- Axiom 4 (Reality): The real structure J satisfies J² = ε·I
-    where ε = -1 for KO-dimension 2.
-    We verify: (-1)² = 1, so J² acting twice gives identity. -/
-theorem reality_j_squared : (-1 : ℤ) ^ 2 = 1 := by norm_num
+-- ----------------------------------------------------------------------------
+-- Axiom 4 (Reality): J² = εI  [UPGRADED from (-1:ℤ)^2=1 to matrix theorems]
+-- ----------------------------------------------------------------------------
 
-/-- Axiom 5 (First-order): [[D,a], JbJ⁻¹] = 0 for all a,b.
-    Nested commutators of 4×4 matrices are computable because
-    dim(M₄) = 16 is finite. -/
-theorem first_order_finite_check : 16 * 16 = 256 := by norm_num
+/-- Any matrix involution squares to the identity.
+    In the spectral triple, the reality operator J satisfies J² = ε·I.
+    When ε = 1 (KO-dimension 0 or 6), J is an involution: J² = I. -/
+theorem reality_j_squared {n : Type*} [Fintype n] [DecidableEq n]
+    {R : Type*} [Ring R]
+    (J : Matrix n n R) (hJ : J * J = 1) :
+    J ^ 2 = 1 := by
+  rw [sq]
+  exact hJ
+
+/-- For the KO-dimension 2 case: ε = -1, so J² = -I.
+    If J² = -1 then J⁴ = (J²)² = (-I)² = I, meaning J has order 4.
+    This is the Standard Model's KO-dimension: the reality operator
+    is a quaternionic structure with J⁴ = I but J² = -I. -/
+theorem reality_order_four {n : Type*} [Fintype n] [DecidableEq n]
+    {R : Type*} [Ring R]
+    (J : Matrix n n R) (hJ : J ^ 2 = -1) :
+    J ^ 4 = 1 := by
+  have h : J ^ 4 = (J ^ 2) ^ 2 := by rw [← pow_mul]
+  rw [h, hJ, sq, neg_mul_neg, one_mul]
+
+/-- Existence of a 4x4 involution over ℂ. The charge conjugation matrix
+    C in the Dirac basis satisfies C² = I. We prove such matrices exist
+    (the identity is the trivial example; physically, C = iγ²γ⁰). -/
+theorem exists_involution_4x4 :
+    ∃ J : Matrix (Fin 4) (Fin 4) ℂ, J ^ 2 = 1 :=
+  ⟨1, one_pow 2⟩
+
+-- ----------------------------------------------------------------------------
+-- Axiom 5 (First-order): dim(End(M₄)) = 256  [UPGRADED from 16*16=256]
+-- ----------------------------------------------------------------------------
+
+/-- Axiom 5 (First-order): [[D,a], JbJ⁻¹] = 0 for all a,b in the algebra.
+    The nested commutator lives in End(M₄(ℂ)), which is the ℂ-linear
+    endomorphism algebra of M₄(ℂ). This space has dimension
+    dim(End(M₄)) = (dim M₄)² = 16² = 256, making the first-order
+    condition a finite (256-dimensional) linear algebra check.
+
+    This is the genuine Mathlib computation: Module.finrank of the
+    endomorphism algebra Module.End ℂ (Matrix (Fin 4) (Fin 4) ℂ). -/
+theorem first_order_finite_check :
+    Module.finrank ℂ (Module.End ℂ (Matrix (Fin 4) (Fin 4) ℂ)) = 256 := by
+  rw [Module.finrank_linearMap]
+  simp [Module.finrank_matrix, Fintype.card_fin, Module.finrank_self]
+
+-- ----------------------------------------------------------------------------
+-- Axiom 6 (Orientability): γ² = I  [UPGRADED from (1:ℤ)^2=1 to matrix proof]
+-- ----------------------------------------------------------------------------
+
+/-- The chirality grading matrix for the 4-dimensional case.
+    In the chiral (Weyl) representation, γ⁵ = diag(I₂, -I₂) = diag(1,1,-1,-1).
+    This is the physical chirality operator that distinguishes left-handed
+    and right-handed fermions in the Standard Model. -/
+def γ_grading : Matrix (Fin 4) (Fin 4) ℂ :=
+  Matrix.diagonal ![1, 1, -1, -1]
+
+-- Helper lemmas for evaluating the grading vector at indices 2 and 3
+private lemma grading_vec_2 : (![1, 1, -1, -1] : Fin 4 → ℂ) 2 = -1 := by
+  simp [Matrix.cons_val_two, Matrix.head_cons]
+
+private lemma grading_vec_3 : (![1, 1, -1, -1] : Fin 4 → ℂ) 3 = -1 := by
+  simp [Matrix.cons_val_three, Matrix.head_cons]
 
 /-- Axiom 6 (Orientability): The grading γ satisfies γ² = I.
-    In even dimensions, γ is the chirality operator.
-    For d = 4: γ = γ⁵ = iγ⁰γ¹γ²γ³ (the fifth gamma matrix). -/
-theorem grading_squared : (1 : ℤ) ^ 2 = 1 := by norm_num
+    In even dimensions, γ is the chirality operator. For d = 4,
+    γ = γ⁵ = iγ⁰γ¹γ²γ³ (the fifth gamma matrix).
+    We prove this for the explicit matrix γ = diag(1,1,-1,-1),
+    verifying that each diagonal entry squares to 1. -/
+theorem grading_squared :
+    γ_grading ^ 2 = 1 := by
+  unfold γ_grading
+  rw [sq, Matrix.diagonal_mul_diagonal]
+  congr 1
+  funext i
+  fin_cases i <;> simp [grading_vec_2, grading_vec_3]
+
+/-- The grading matrix has trace 0: Tr(γ) = 1+1-1-1 = 0.
+    This is the index-theoretic statement: the chirality grading
+    contributes equally to the left-handed and right-handed sectors.
+    The Atiyah-Singer index is ind(D) = Tr(γ) when D is the Dirac operator. -/
+theorem grading_trace_zero :
+    trace γ_grading = 0 := by
+  unfold γ_grading
+  simp [Matrix.trace, Matrix.diag]
+  rw [Fin.sum_univ_four]
+  simp [grading_vec_2, grading_vec_3]
+
+/-- The grading matrix has determinant 1: det(γ) = 1·1·(-1)·(-1) = 1.
+    This means γ ∈ SL(4,ℂ), consistent with the spectral triple axioms
+    (the grading is an orientation, which preserves the volume form). -/
+theorem grading_det_one :
+    det γ_grading = 1 := by
+  unfold γ_grading
+  rw [Matrix.det_diagonal, Fin.prod_univ_four]
+  simp [grading_vec_2, grading_vec_3]
 
 -- ============================================================================
 -- SECTION 7: The Fundamental Theorem of the Cascade Spectral Action
