@@ -58,5 +58,11 @@ roots = [
   "F4_4d_ThermodynamicLimit", "F4_4e_WightmanAxioms", "F4_4f_MassGapPersists",
   "F4_4g_UnconditionalMillennium",
   "CascadeFoundation",
-  "CascadeUniqueness"
+  "CascadeUniqueness",
+  "LieAlgebraEmbedding",
+  "TransferMatrix",
+  "GaussianMeasure",
+  "ReflectionPositivity",
+  "BakryEmeryGap",
+  "RepDecomposition"
 ]
