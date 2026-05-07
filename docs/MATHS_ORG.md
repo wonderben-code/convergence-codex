@@ -200,8 +200,20 @@ Gets: the synthesized file + ALL 5-6 peer review reports.
 - Reads the built file cold
 - Independently grades every theorem against the LEAN_INTEGRITY_PROTOCOL.md
 - Checks every theorem is Grade A
-- If ALL Grade A -> **CERTIFIED**
+- If ALL Grade A -> **CERTIFIED** -> proceed to Phase 8
 - If ANY theorem < Grade A -> back to Phase 4 with specific flags
+
+---
+
+### PHASE 8: BITCOIN STAMP (coordinator)
+
+- Git commit the certified `.lean` file with message: `CERTIFIED: <filename> — all theorems Grade A`
+- Git push
+- Run `ots stamp` on the commit hash
+- Commit and push the `.ots` file
+- This creates an immutable, timestamped record that this file was certified at this point in time
+
+**Every certified file gets its own Bitcoin timestamp.** This is the provenance seal.
 
 ---
 
