@@ -46,19 +46,6 @@ theorem trace_identity (n : Type*) [Fintype n] [DecidableEq n]
     trace (1 : Matrix n n R) = Fintype.card n :=
   Matrix.trace_one
 
-/-- For 2×2 matrices: Tr(I₂) = 2. The cascade level D₀. -/
-theorem trace_I2 : trace (1 : Matrix (Fin 2) (Fin 2) ℂ) = 2 := by
-  rw [Matrix.trace_one]
-  simp [Fintype.card_fin]
-
-/-- For 4×4 matrices: Tr(I₄) = 4. The cascade level D₁.
-    This is THE physical level — dim(ℂ⁴) = 4 determines:
-    - The a₀ Seeley-DeWitt coefficient
-    - The number of eigenvalues after gauge fixing
-    - The fundamental representation dimension -/
-theorem trace_I4 : trace (1 : Matrix (Fin 4) (Fin 4) ℂ) = 4 := by
-  rw [Matrix.trace_one]
-  simp [Fintype.card_fin]
 
 -- ============================================================================
 -- SECTION 2: Trace Linearity and Commutativity
@@ -133,18 +120,6 @@ theorem det_transpose_eq {n : Type*} [Fintype n] [DecidableEq n]
     det A.transpose = det A :=
   Matrix.det_transpose A
 
--- ============================================================================
--- SECTION 4: Cascade-Specific Matrix Computations
--- ============================================================================
-
--- The cascade algebra D₁ = M₄(ℂ) is a 16-dimensional complex algebra.
--- Key matrices: I₄ (identity), the 15 su(4) generators, and scalar multiples.
-
-/-- The trace of zero is zero. Needed for: the traceless part of
-    su(4) generators has Tr(T_a) = 0 for all a = 1,...,15. -/
-theorem trace_zero_matrix :
-    trace (0 : Matrix (Fin 4) (Fin 4) ℂ) = 0 := by
-  simp [Matrix.trace, Matrix.diag]
 
 -- ============================================================================
 -- SECTION 5: Matrix Powers and the Spectral Action
@@ -158,45 +133,3 @@ theorem det_power {n : Type*} [Fintype n] [DecidableEq n]
     det (A ^ k) = (det A) ^ k :=
   Matrix.det_pow A k
 
--- ============================================================================
--- SECTION 6: Connection to the Spectral Triple Axioms
--- ============================================================================
-
--- The seven axioms of Connes's NCG spectral triple require specific
--- properties of the matrix algebra. Here we verify the algebraic backbone.
-
-/-- Axiom 1 (Dimension): The spectral dimension is determined by Tr(I).
-    For D₁ = M₄(ℂ) acting on ℂ⁴: Tr(I₄) = 4.
-    The spectral dimension formula gives d = 4 (matching spacetime). -/
-theorem spectral_dimension_from_trace :
-    (trace (1 : Matrix (Fin 4) (Fin 4) ℂ) : ℂ) = 4 := by
-  rw [Matrix.trace_one]
-  simp [Fintype.card_fin]
-
--- ============================================================================
--- SECTION 7: The Fundamental Theorem of the Cascade Spectral Action
--- ============================================================================
-
-/-- The spectral action S = Tr(f(D²/Λ²)) is well-defined because:
-    1. D is a matrix in M₄(ℂ) (cascade-forced)
-    2. f = exp(-x) (Cauchy equation, F4.1h)
-    3. Tr is linear (trace_additive) and cyclic (trace_commutative)
-    4. det is multiplicative (det_multiplicative)
-    5. The trace of the identity gives the leading coefficient
-
-    This master theorem verifies the algebraic consistency:
-    Tr(I₄) = 4, det(I₄) = 1, Tr([A,B]) = 0, det(AB) = det(A)det(B). -/
-theorem spectral_action_algebraic_foundations :
-    -- Tr(I₄) = 4 (representation dimension)
-    (trace (1 : Matrix (Fin 4) (Fin 4) ℂ) = 4) ∧
-    -- det(I₄) = 1 (normalisation)
-    (det (1 : Matrix (Fin 4) (Fin 4) ℂ) = 1) ∧
-    -- Tr(I₂) = 2 (SU(2) fundamental)
-    (trace (1 : Matrix (Fin 2) (Fin 2) ℂ) = 2) ∧
-    -- det(I₂) = 1
-    (det (1 : Matrix (Fin 2) (Fin 2) ℂ) = 1) := by
-  refine ⟨?_, ?_, ?_, ?_⟩
-  · rw [Matrix.trace_one]; simp [Fintype.card_fin]
-  · exact Matrix.det_one
-  · rw [Matrix.trace_one]; simp [Fintype.card_fin]
-  · exact Matrix.det_one
