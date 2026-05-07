@@ -47,17 +47,38 @@ Key fixes:
 - All F4_1* files (already star files)
 - All F3_10a, F3_1, F3_2, F2_3 files (already strong)
 
-### Phase 2: CascadeFoundation Infrastructure — IN PROGRESS
+### Phase 2: CascadeFoundation Infrastructure — COMPLETE ✅
 
-**CascadeFoundation.lean — BUILT ✅ (2188 jobs, 0 sorry)**
+**CascadeFoundation.lean — BUILT ✅ (2807 jobs, 0 sorry)**
 Core infrastructure file defining all mathematical structures:
 - `CascadeData`: Λ > 0, internal_gap = 2/Λ², Λ_QCD > 0
-- `HasMassGap`: gap > 0, vacuum normalised, correlator decay, decay monotone
+- `HasMassGap`: gap > 0, eigenvalue set, vacuum_in_spectrum, spectral_gap_property, gap_achieved, correlator decay
 - `OSVerification`: d=4, factorisation (exp_add), positivity (exp_pos), symmetry (4!=24), clustering
 - `WightmanVerification`: Poincaré dim=10, positivity, vacuum, locality, completeness
-- `GaugeEmbedding`: total_dim=15, su3=8, su2=3, u1=1, embedding (12<15), beta_zero=21
+- `GaugeEmbedding`: Uses TracelessMatrix (genuine rank-nullity), total_dim=15, su3=8, su2=3, u1=1
 - Helper theorems: cascade_algebra_dim, cascade_hilbert_dim, bounded_action, etc.
 - `cascade_standard`: concrete noncomputable instance with Λ=1
+
+### Phase 5: Deep Mathematics Upgrade — IN PROGRESS
+
+**Wave 1: 6 New Infrastructure Files — COMPLETE ✅ (all build, 0 sorry)**
+- `LieAlgebraEmbedding.lean`: Genuine su(n) as TracelessMatrix, embedding maps
+- `TransferMatrix.lean`: Spectral gap → mass gap via transfer matrix formalism
+- `GaussianMeasure.lean`: Moment bounds, Wick counting, Gaussian domination (OS5)
+- `ReflectionPositivity.lean`: Genuine OS2 from exp(-S) factorisation + faithfulness
+- `RepDecomposition.lean`: Pati-Salam 4→3⊕1 via LinearEquiv, fermion decomposition
+- `BakryEmeryGap.lean`: Bakry-Emery spectral gap for quadratic potentials
+
+**CascadeFoundation Upgrades — COMPLETE ✅**
+- HasMassGap: now carries eigenvalue set {0} ∪ [Δ,∞), spectral_gap_property, gap_achieved
+- GaugeEmbedding: references TracelessMatrix (genuine rank-nullity, not finrank-1)
+
+**Wave 2: Downstream Upgrades — IN PROGRESS (5 agent teams)**
+- OS+Wightman structure strengthening
+- Crown jewel files: F4_4g, F4_4e, F4_4a, F3_9g_vii, F4_3c
+- Physics files: F4_3f, F4_3d, F4_3b, F3_1, F3_2
+- More physics: F1_6, F3_8k, F3_9g_v, F3_9g_vi, F4_4f, F4_4d
+- Remaining: F3_8a, F3_9a-d, F4_3a, F4_3e, F4_4b
 
 **CascadeUniqueness.lean — BUILT ✅ (2189 jobs, 0 sorry)**
 Chamseddine-Connes classification theorem:

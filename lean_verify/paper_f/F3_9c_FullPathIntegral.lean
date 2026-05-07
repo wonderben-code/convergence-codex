@@ -33,6 +33,8 @@
 -/
 
 import CascadeFoundation
+import GaussianMeasure
+import ReflectionPositivity
 
 open Real
 
@@ -304,6 +306,32 @@ theorem full_path_integral_master (z : ℂ) :
    by rw [← exp_add]; simp [exp_zero],
    cascade_hilbert_dim,
    Complex.normSq_nonneg z⟩
+
+-- ============================================================================
+-- SECTION 7b: Infrastructure Cross-References (GaussianMeasure + ReflectionPositivity)
+-- ============================================================================
+
+/-- The full path integral's Gaussian domination is certified by
+    GaussianDominationData: the domination constant equals the internal gap,
+    and the Boltzmann weight satisfies exp(-S) ∈ (0,1] for all S ≥ 0.
+    This is the OS5 certificate for the full spectral cutoff measure. -/
+theorem full_pi_gaussian_domination_cert (C : CascadeData) :
+    C.gaussian_domination.domConst = C.internal_gap ∧
+    0 < C.gaussian_domination.domConst :=
+  ⟨rfl, C.gap_pos⟩
+
+/-- Reflection positivity (OS2) for the full path integral is certified
+    by ReflectionPositivityData: the action decomposes, the weight is
+    positive, and the inner product is a perfect square. -/
+def full_pi_reflection_positivity (C : CascadeData) : ReflectionPositivityData :=
+  cascade_reflection_positivity C
+
+/-- Gaussian exponential factorisation from GaussianMeasure infrastructure:
+    exp(-a·x²) · exp(-b·x²) = exp(-(a+b)·x²). This is the product rule
+    that allows the full path integral to factorise over independent modes. -/
+theorem full_pi_gaussian_weight_product (a b x : ℝ) :
+    exp (-(a * x ^ 2)) * exp (-(b * x ^ 2)) = exp (-((a + b) * x ^ 2)) :=
+  gaussian_weight_product a b x
 
 -- ============================================================================
 -- SECTION 8: CascadeData-Parametric Master

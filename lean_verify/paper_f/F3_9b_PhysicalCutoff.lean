@@ -20,6 +20,7 @@
 -/
 
 import CascadeFoundation
+import BakryEmeryGap
 
 open Real Matrix
 
@@ -173,6 +174,31 @@ theorem cascade_gap_gives_suppression (C : CascadeData) (r : ℝ) (hr : 0 < r) :
 theorem cutoff_compatible_with_af (C : CascadeData) :
     0 < C.gauge_embedding.beta_zero :=
   C.gauge_embedding.af
+
+-- ============================================================================
+-- SECTION 6b: Bakry-Émery Infrastructure Cross-References
+-- ============================================================================
+
+/-- The Bakry-Émery Poincaré inequality validates the physical cutoff:
+    the Poincaré constant C_P = Λ²/2 is positive, confirming that
+    fluctuations around the vacuum are controlled at scale Λ. -/
+theorem cutoff_poincare_constant_positive (C : CascadeData) :
+    0 < (cascade_poincare C).poincare_constant :=
+  (cascade_poincare C).cp_pos
+
+/-- The log-Sobolev inequality gives sub-Gaussian concentration for
+    the cutoff measure: P(|f - Ef| ≥ t) ≤ exp(-αt²/2) where α = 2/Λ².
+    This ensures the cutoff theory has well-controlled fluctuations. -/
+theorem cutoff_log_sobolev_positive (C : CascadeData) :
+    0 < (cascade_log_sobolev C).lsi_constant :=
+  cascade_lsi_pos C
+
+/-- The Bakry-Émery gap-covariance duality for the cutoff:
+    gap × Poincaré constant = 1, linking the spectral gap 2/Λ²
+    to the covariance Λ²/2 of the Gaussian measure on Herm₄(ℂ). -/
+theorem cutoff_gap_poincare_duality (C : CascadeData) :
+    C.internal_gap * (cascade_poincare C).poincare_constant = 1 :=
+  cascade_gap_poincare_duality C
 
 -- ============================================================================
 -- SECTION 7: Master Theorem

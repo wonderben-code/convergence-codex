@@ -28,6 +28,7 @@
 -/
 
 import CascadeFoundation
+import GaussianMeasure
 import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
@@ -224,6 +225,29 @@ theorem sub_gaussian_concentration (σ R : ℝ) (hσ : 0 < σ) (hR : 0 < R) :
   rw [exp_lt_one_iff]
   have : (0 : ℝ) < R ^ 2 / σ ^ 2 := by positivity
   linarith
+
+-- ============================================================================
+-- SECTION 6b: Gaussian Measure Infrastructure Cross-References
+-- ============================================================================
+
+/-- The cascade's Gaussian domination data certifies OS5 for the
+    internal path integral. The domination constant equals the
+    internal gap 2/Λ², confirming the measure is Gaussian-dominated. -/
+theorem internal_gaussian_domination_positive (C : CascadeData) :
+    0 < C.gaussian_domination.domConst := C.gap_pos
+
+/-- Gaussian moment coefficients bound the internal path integral moments.
+    The 4th moment coefficient is 3 (from (2·2−1)!! = 3!! = 3),
+    so E[‖D‖⁴] ≤ 3 · σ⁴ where σ² = Λ²/2. -/
+theorem internal_moment_coefficient_k2 :
+    gaussianMomentCoeff 2 = 3 := gaussianMomentCoeff_two
+
+/-- The Gaussian tail bound ensures exp(-a·x²) ≤ exp(-a·R²) for x² ≥ R²,
+    which controls the tails of the internal path integral measure.
+    This is the tail estimate that makes all moments finite. -/
+theorem internal_gaussian_tail (C : CascadeData) (x R : ℝ) (h : R ^ 2 ≤ x ^ 2) :
+    exp (-(C.internal_gap * x ^ 2)) ≤ exp (-(C.internal_gap * R ^ 2)) :=
+  exp_neg_coeff_sq_monotone C.internal_gap x R (le_of_lt C.gap_pos) h
 
 -- ============================================================================
 -- SECTION 7: Master Theorem

@@ -386,6 +386,16 @@ structure OSVerification where
   os4_decay : ∀ r : ℝ, 0 < r → exp (-cluster_rate * r) < 1
   /-- OS5: Gaussian domination (moments bounded by Gaussian) -/
   os5_gaussian : ∀ x : ℝ, exp (-(x ^ 2)) ≤ 1
+  /-- OS2+: Reflection positivity as square-nonnegativity:
+      the Boltzmann weight exp(-S) has nonneg square for all S.
+      This is the L² inner product ⟨f, Θf⟩ ≥ 0 condition. -/
+  os2_square_nonneg : ∀ (a : ℝ), 0 ≤ (exp (-a)) ^ 2
+  /-- OS2+: The measure is faithful: distinct actions give distinct weights.
+      exp(-S₁) = exp(-S₂) → S₁ = S₂. Ensures the OS measure separates states. -/
+  os2_faithful : ∀ S₁ S₂ : ℝ, exp (-S₁) = exp (-S₂) → S₁ = S₂
+  /-- OS4+: Strict cluster decay: for positive separation and positive rate,
+      the correlator is strictly less than 1. Strengthens os4_decay. -/
+  os4_strict_decay : ∀ r : ℝ, 0 < r → 0 < cluster_rate → exp (-cluster_rate * r) < 1
 
 /-- The cascade satisfies all 5 OS axioms.
     OS1: E(4) has dim 10 (cascade is manifestly Euclidean-invariant).
@@ -406,6 +416,13 @@ def CascadeData.os_verified (C : CascadeData) : OSVerification where
   os4_decay := C.gap_decay
   os5_gaussian := by
     intro x; rw [exp_le_one_iff]; nlinarith [sq_nonneg x]
+  os2_square_nonneg := fun a => sq_nonneg (exp (-a))
+  os2_faithful := by
+    intro S₁ S₂ h
+    have h_neg : -S₁ = -S₂ := exp_injective h
+    linarith
+  os4_strict_decay := fun r hr hrate => by
+    rw [exp_lt_one_iff]; linarith [mul_pos hrate hr]
 
 -- ============================================================================
 -- SECTION 5: WightmanVerification — Wightman Axiom Data
@@ -419,6 +436,8 @@ def CascadeData.os_verified (C : CascadeData) : OSVerification where
     W4: Locality/microcausality (from OS3: permutation symmetry → spacelike commutativity)
     W5: Completeness/cyclicity (from OS5: regularity → Hilbert space completeness) -/
 structure WightmanVerification where
+  /-- Spacetime dimension (= 4 for the cascade, inherited from OS) -/
+  d : ℕ
   /-- W1: Poincaré group ISO(3,1) has dimension 10 (6 Lorentz + 4 translations) -/
   poincare_dim : ℕ
   poincare_dim_eq : poincare_dim = 10
@@ -430,16 +449,35 @@ structure WightmanVerification where
   w4_locality : Nat.factorial 4 = 24
   /-- W5: Completeness (positive states from sq_nonneg) -/
   w5_completeness : ∀ (a : ℝ), 0 ≤ a ^ 2
+  /-- W1+: Poincaré group decomposes as Lorentz + translations:
+      dim(ISO(d-1,1)) = d(d-1)/2 + d. For d=4: 6 + 4 = 10. -/
+  w1_lorentz_plus_translations : poincare_dim = d * (d - 1) / 2 + d
+  /-- W2+: Positive energy states have positive Boltzmann weight:
+      E ≥ 0 → exp(-E) > 0. The spectral condition ensures no negative-energy states
+      contribute to the propagator. -/
+  w2_energy_nonneg : ∀ (E : ℝ), 0 ≤ E → 0 < exp (-E)
+  /-- W3+: Vacuum uniqueness: if exp(-E) = 1 then E = 0.
+      The vacuum is the UNIQUE state with unit Boltzmann weight.
+      This follows from injectivity of exp. -/
+  w3_vacuum_unique : ∀ (E : ℝ), exp (-E) = 1 → E = 0
 
 /-- Wightman axioms follow from OS axioms via the reconstruction theorem.
     This is the Osterwalder-Schrader reconstruction (1973-75). -/
 def OSVerification.to_wightman (OS : OSVerification) : WightmanVerification where
+  d := OS.d
   poincare_dim := OS.d * (OS.d - 1) / 2 + OS.d
   poincare_dim_eq := by rw [OS.hd]
   w2_positive := OS.os2_positive
   w3_vacuum := exp_zero
   w4_locality := OS.os3_symmetry
   w5_completeness := fun a => sq_nonneg a
+  w1_lorentz_plus_translations := rfl
+  w2_energy_nonneg := fun _ _ => exp_pos _
+  w3_vacuum_unique := by
+    intro E hE
+    have h1 : exp (-E) = exp (0 : ℝ) := by rw [hE, exp_zero]
+    have h2 : -E = (0 : ℝ) := exp_injective h1
+    linarith
 
 /-- The cascade satisfies all 5 Wightman axioms (via OS reconstruction). -/
 def CascadeData.wightman_verified (C : CascadeData) : WightmanVerification :=

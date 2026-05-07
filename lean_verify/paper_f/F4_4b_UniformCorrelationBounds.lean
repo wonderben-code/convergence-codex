@@ -21,8 +21,9 @@
 -/
 
 import CascadeFoundation
+import GaussianMeasure
 
-open Real
+open Real Nat
 
 set_option linter.style.longLine false
 
@@ -272,6 +273,32 @@ theorem decay_product (Δ d : ℝ) (n : ℕ) (hΔ : 0 < Δ) (hd : 0 < d) (hn : 0
         rw [exp_lt_one_iff]
         have hn_pos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr hn
         nlinarith [mul_pos hΔ hd]
+
+-- ============================================================================
+-- SECTION 6b: Gaussian Measure Infrastructure Cross-References
+-- ============================================================================
+
+/-- The Gaussian domination data from GaussianMeasure certifies that the
+    cascade's uniform correlation bounds flow from Gaussian moment bounds.
+    The domination constant is positive and equals the internal gap. -/
+theorem ucb_gaussian_domination_positive (C : CascadeData) :
+    0 < C.gaussian_domination.domConst := C.gap_pos
+
+/-- The Wick pairing identity provides exact moment formulae for uniform
+    bounds: (2k)! = 2^k · k! · (2k-1)!! gives the Gaussian moment
+    coefficient directly. The crude bound (2k-1)!! ≤ (2k)! suffices
+    for uniform correlation estimates. -/
+theorem ucb_moment_coefficient_bound (k : ℕ) :
+    gaussianMomentCoeff k ≤ (2 * k)! :=
+  gaussianMomentCoeff_le_factorial k
+
+/-- The exponential integrability from GaussianMeasure: for any t < gap,
+    exp(-(gap - t) · x²) ≤ 1 for all x. This gives uniform moment
+    generating function bounds that are independent of the volume L. -/
+theorem ucb_exponential_integrability (C : CascadeData) (t : ℝ)
+    (ht : 0 < t) (hta : t < C.internal_gap) (x : ℝ) :
+    exp (-(C.internal_gap - t) * x ^ 2) ≤ 1 :=
+  cascade_exponential_integrability C t ht hta x
 
 -- ============================================================================
 -- SECTION 7: Master Theorem

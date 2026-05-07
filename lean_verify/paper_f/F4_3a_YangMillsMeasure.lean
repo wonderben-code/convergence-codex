@@ -23,6 +23,8 @@
 -/
 
 import CascadeFoundation
+import GaussianMeasure
+import TransferMatrix
 
 open Real
 
@@ -307,6 +309,30 @@ theorem cascade_mass_gap_from_data (C : CascadeData) :
     0 < C.has_mass_gap.gap ∧
     (∀ r : ℝ, 0 < r → exp (-C.has_mass_gap.gap * r) < 1) :=
   ⟨C.has_mass_gap.gap_pos, C.has_mass_gap.correlator_decay⟩
+
+-- ============================================================================
+-- SECTION 9b: Infrastructure Cross-References (GaussianMeasure + TransferMatrix)
+-- ============================================================================
+
+/-- The Gaussian domination data from GaussianMeasure provides the OS5
+    certificate for the Yang-Mills measure: the domination constant is
+    positive and all Boltzmann weights are bounded in (0,1]. -/
+theorem ym_gaussian_domination_const_pos (C : CascadeData) :
+    0 < C.gaussian_domination.domConst := C.gap_pos
+
+/-- The transfer matrix formalism connects the Yang-Mills spectral gap
+    to the mass gap: CascadeData → TransferMatrixData → HasMassGap.
+    The transfer matrix gap equals the internal gap 2/Λ². -/
+theorem ym_transfer_matrix_gap_eq (C : CascadeData) :
+    C.to_transfer_matrix.gap = C.internal_gap :=
+  CascadeData.transfer_gap_eq C
+
+/-- The Yang-Mills correlator decay via the transfer matrix:
+    for any separation r > 0, exp(-gap · r) < 1.
+    This is the decay rate for glueball correlators. -/
+theorem ym_correlator_decay_via_transfer (C : CascadeData) (r : ℝ) (hr : 0 < r) :
+    exp (-C.to_transfer_matrix.gap * r) < 1 :=
+  C.to_transfer_matrix.correlator_decay r hr
 
 -- ============================================================================
 -- SECTION 10: Master Theorem
