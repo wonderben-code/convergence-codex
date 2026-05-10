@@ -276,15 +276,20 @@ Nothing
             │  │  │  │  ├─ Koide-like relations m_e+m_μ+m_τ formula  [PREDICTED]
             │  │  │  │  ├─ CKM matrix (V_us ≈ 0.22, V_cb ≈ 0.04, δ ≈ 68°)  [PREDICTED] ← F5.4
             │  │  │  │  ├─ Top quark mass m_t ≈ 173 GeV (cascade Yukawa)  [PREDICTED]
-            │  │  │  │  ├─ Lepton g-2 alignment with SM (no new low-E physics)  [PREDICTED]  ← F7.11
-            │  │  │  │  └─ B-meson anomalies R_K, R_K* → 1 (SM-aligned)  [PREDICTED]    ← F7.12
+            │  │  │  │  ├─ Muon g-2 a_μ ≈ 116 591 810 × 10⁻¹¹ (SM-aligned)  [PREDICTED] ← F7.11
+            │  │  │  │  │     ⤳ Tree predicts SM hadronic VP (lattice-aligned);
+            │  │  │  │  │       Fermilab BNL excess interpreted as hadronic
+            │  │  │  │  │       systematic, not new physics.
+            │  │  │  │  └─ B-meson R_K, R_K* → 1.00 ± 0.05 (SM-aligned)  [PREDICTED]    ← F7.12
             │  │  │  └─ Neutrino masses + PMNS (seesaw forced by PS)  [PARTIAL]      ← F6.9
             │  │  │     ├─ Majorana nature (from ν_R Majorana mass)  [PREDICTED]
             │  │  │     ├─ Normal hierarchy (Yukawa ordering)  [PREDICTED]
             │  │  │     ├─ Absolute scale m₃ ≈ 0.05 eV  [PREDICTED]
             │  │  │     ├─ Σm_ν ≈ 0.06 eV (specific cascade-fixed sum)  [PREDICTED]    ← F7.13
             │  │  │     ├─ PMNS angles θ₁₂ ≈ 34°, θ₂₃ ≈ 45°, θ₁₃ ≈ 8.5°  [PREDICTED]
-            │  │  │     ├─ PMNS δ_CP (Yukawa CP from same Im ℍ structure)  [PREDICTED] ← F7.14
+            │  │  │     ├─ PMNS δ_CP ≈ -π/2 (≈ -1.57 rad, maximal CP)  [PREDICTED]    ← F7.14
+            │  │  │     │     ⤳ Motivated by μ↔τ symmetry forced by PS bidoublet
+            │  │  │     │     ⤳ Currently consistent with T2K + NOvA (~2σ from 0)
             │  │  │     ├─ Neutrinoless 2β decay rate Γ ∝ |m_ee|²  [PREDICTED]        ← F7.4
             │  │  │     └─ Sterile-ν dark matter candidate  [PREDICTED]               ← F6.8
             │  │  │        ├─ Relic abundance Ω_DM ≈ 0.27  [PREDICTED]
@@ -322,8 +327,8 @@ Nothing
                │  ├─ No-deleting theorem  [PREDICTED]
                │  ├─ No-broadcasting theorem  [PREDICTED]
                │  ├─ Quantum entanglement / non-locality  [PREDICTED]
-               │  │  ├─ Bell inequality violations  [PREDICTED]
-               │  │  ├─ Tsirelson bound (QM-saturating)  [PREDICTED]
+               │  │  ├─ Bell inequality violations (CHSH > 2)  [PREDICTED]
+               │  │  ├─ Tsirelson bound = 2√2 ≈ 2.828 (QM-saturating)  [PREDICTED]
                │  │  └─ ER=EPR (overlay to BH entropy holographic subtree)  [SPECULATIVE]
                │  ├─ Quantum Zeno effect  [PREDICTED]
                │  ├─ Quantum tunnelling / WKB / semi-classical limit  [PREDICTED]
@@ -377,8 +382,14 @@ Nothing
                   │  │  └─ Ω_Λ ≈ 0.69  [PREDICTED]                                    ← F5.5
                   │  ├─ a₂ ~Λ² → Newton's G (= 3π/(f₂Λ²))  [CLAIMED]                  ← F3.8c
                   │  │  ├─ Graviton (spin-2, 2 polarisations)  [CLAIMED]
-                  │  │  ├─ Hubble constant H₀ ≈ 67-73 km/s/Mpc  [PREDICTED]
-                  │  │  ├─ Specific H₀ resolving early/late tension  [PREDICTED]      ← F7.15
+                  │  │  ├─ Hubble constant H₀ ≈ 67.4 km/s/Mpc (CMB-aligned)  [PREDICTED]
+                  │  │  ├─ Hubble tension verdict (specific value)  [PREDICTED]       ← F7.15
+                  │  │  │     ⤳ Tree predicts CMB value from cascade-fixed G + a₀;
+                  │  │  │       late-time SH0ES discrepancy interpreted as either
+                  │  │  │       (i) systematic in distance-ladder calibration, or
+                  │  │  │       (ii) signal of a missing sub-branch — likely under
+                  │  │  │       Cosmology synthesis (e.g. early-dark-energy cascade
+                  │  │  │       branch we haven't placed yet).
                   │  │  └─ Graviton scattering, UV-softened at Λ_PS  [PREDICTED]      ← F3.8j
                   │  ├─ a₄ ~Λ⁰ (dimensionless terms)  [PARTIAL]
                   │  │  ├─ Yang-Mills F²  [PARTIAL]
@@ -396,11 +407,16 @@ Nothing
                   │  │     ├─ Monopole problem dissolved  [PREDICTED]
                   │  │     ├─ Cosmological arrow (Λ redshifts monotonically)  [PREDICTED] ← F6.5(ii)
                   │  │     └─ Cosmological structure formation  [grown in v4]
-                  │  │        ├─ Power spectrum P(k), pivot k₀, A_s  [PREDICTED]
-                  │  │        ├─ σ_8 specific value resolving structure tension  [PREDICTED] ← F7.16
+                  │  │        ├─ Power spectrum P(k); pivot k₀ = 0.05 Mpc⁻¹  [PREDICTED]
+                  │  │        ├─ Scalar amplitude A_s ≈ 2.1 × 10⁻⁹  [PREDICTED]
+                  │  │        ├─ σ_8 ≈ 0.81 (CMB-aligned)  [PREDICTED]                ← F7.16
+                  │  │        │     ⤳ Tree predicts Planck/CMB value;
+                  │  │        │       weak-lensing low-σ_8 (KiDS, DES) interpreted
+                  │  │        │       as systematic OR a signal of missing sub-branch
+                  │  │        │       in late-time structure dynamics.
                   │  │        ├─ CMB anisotropy spectra TT / TE / EE  [PREDICTED]
-                  │  │        ├─ B-mode polarisation (sourced by r)  [PREDICTED]      ← F7.6
-                  │  │        ├─ Baryon acoustic oscillation scale ~150 Mpc  [PREDICTED]
+                  │  │        ├─ B-mode polarisation (sourced by r ≈ 0.004)  [PREDICTED] ← F7.6
+                  │  │        ├─ Baryon acoustic oscillation scale ≈ 147 Mpc  [PREDICTED]
                   │  │        ├─ Halo mass function (Press-Schechter / Tinker)  [PREDICTED]
                   │  │        ├─ Halo profiles (NFW from sterile-ν dynamics)  [PREDICTED]
                   │  │        ├─ Reionisation z_re ≈ 7.7  [PREDICTED]
@@ -453,8 +469,15 @@ Nothing
 
 ─────────────────────────────────────────────────────────────────────────
 DOWNSTREAM EMERGENT PHYSICS  [DOWNSTREAM]
-  Not algebraically forced; emergent by composition / statistics.
-  Causal parent: SM (atomic level) + GR + statistical mechanics.
+  ★ Not a separate tree — these are descendants of the main cladogram.
+  Causal parent (single-parent rule preserved): Higgs mechanism +
+  QM phenomenology subtree + Pauli exclusion → Atomic physics.
+  Shown as a separate block here purely for visual layout; conceptually
+  they hang off the "Higgs mechanism" node in the END lineage and the
+  "QM phenomenology subtree" node in the ⟨·,·⟩ lineage, with a
+  cross-lineage dependency overlay between them.
+  Tagged [DOWNSTREAM] because emergence here is by composition /
+  statistics, not by direct algebraic forcing.
 ─────────────────────────────────────────────────────────────────────────
 
 Atomic physics  [DOWNSTREAM]
@@ -504,11 +527,20 @@ Atomic physics  [DOWNSTREAM]
 
 ─────────────────────────────────────────────────────────────────────────
 ASTROPHYSICS & PLANETARY  [DOWNSTREAM]
-  Causal parent: GR + nuclear / atomic + cosmological structure formation.
+  ★ Not a separate tree — descendants of the main cladogram.
+  Causal parent (single-parent rule preserved): GR (a₂) + Cosmology
+  synthesis + Atomic physics → BBN / stars / galaxies / planets.
+  Shown as a separate block for visual layout; conceptually hangs off
+  "Cosmological structure formation" (under R² Starobinsky) and "Atomic
+  physics" (Downstream).
 ─────────────────────────────────────────────────────────────────────────
 
-├─ Big Bang Nucleosynthesis (D, ³He, ⁴He, ⁷Li abundances)  [DOWNSTREAM]
+├─ Big Bang Nucleosynthesis  [DOWNSTREAM]
 │  ⤳ depends on cosmology synthesis upstream
+│  ├─ D/H ≈ 2.5 × 10⁻⁵
+│  ├─ ⁴He mass fraction Y_p ≈ 0.247
+│  ├─ ³He/H ≈ 1 × 10⁻⁵
+│  └─ ⁷Li/H ≈ 1.6 × 10⁻¹⁰  (residual ~3σ "Lithium tension")
 ├─ Stellar physics  [DOWNSTREAM]
 │  ├─ Stellar fusion (pp / CNO / triple-α)
 │  ├─ Stellar structure / evolution / HR diagram
