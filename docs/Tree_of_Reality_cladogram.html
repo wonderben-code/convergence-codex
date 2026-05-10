@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Tree of Reality — Cladogram</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #06061a;
+    color: #e2e8f0;
+    min-height: 100vh;
+    overflow: hidden;
+  }
+
+  .header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    background: linear-gradient(180deg, #06061a 0%, rgba(6,6,26,0.95) 80%, rgba(6,6,26,0) 100%);
+    pointer-events: none;
+  }
+  .header > * { pointer-events: auto; }
+  .header .left { display: flex; align-items: center; gap: 16px; }
+  .header h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #818cf8, #c084fc, #f472b6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .header .view-label {
+    font-size: 0.72rem;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 500;
+  }
+
+  .nav-links {
+    display: flex; gap: 6px;
+  }
+  .nav-links a {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .nav-links a.active {
+    background: rgba(99,102,241,0.4);
+    border: 1px solid #818cf8;
+    color: #fff;
+  }
+  .nav-links a:not(.active) {
+    background: rgba(99,102,241,0.12);
+    border: 1px solid rgba(99,102,241,0.25);
+    color: #a5b4fc;
+  }
+  .nav-links a:not(.active):hover {
+    background: rgba(99,102,241,0.25);
+    color: #e0e7ff;
+  }
+
+  .legend {
+    position: fixed;
+    bottom: 20px; left: 20px;
+    z-index: 100;
+    display: flex;
+    gap: 14px;
+    font-size: 0.72rem;
+    background: rgba(6,6,26,0.9);
+    border: 1px solid rgba(99,102,241,0.15);
+    border-radius: 10px;
+    padding: 10px 16px;
+    backdrop-filter: blur(10px);
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #94a3b8;
+  }
+  .legend-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .controls {
+    position: fixed;
+    bottom: 20px; right: 20px;
+    z-index: 100;
+    display: flex;
+    gap: 8px;
+    background: rgba(6,6,26,0.9);
+    border: 1px solid rgba(99,102,241,0.15);
+    border-radius: 12px;
+    padding: 8px 12px;
+    backdrop-filter: blur(10px);
+  }
+  .controls button {
+    background: rgba(99,102,241,0.15);
+    border: 1px solid rgba(99,102,241,0.3);
+    color: #c4b5fd;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .controls button:hover {
+    background: rgba(99,102,241,0.3);
+    color: #e0e7ff;
+  }
+
+  #graph { width: 100vw; height: 100vh; }
+
+  /* Stage column labels */
+  .stage-col-label {
+    font-size: 9px;
+    fill: rgba(100,116,139,0.6);
+    text-anchor: middle;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+
+  /* Detail panel */
+  .detail-panel {
+    position: fixed;
+    top: 0; right: -480px;
+    width: 460px;
+    height: 100vh;
+    z-index: 200;
+    background: rgba(10,10,40,0.97);
+    border-left: 1px solid rgba(99,102,241,0.2);
+    backdrop-filter: blur(20px);
+    padding: 30px 24px;
+    overflow-y: auto;
+    transition: right 0.3s ease;
+  }
+  .detail-panel.open { right: 0; }
+  .detail-panel .close-btn {
+    position: absolute;
+    top: 16px; right: 16px;
+    background: none;
+    border: none;
+    color: #94a3b8;
+    font-size: 1.5rem;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .detail-panel .close-btn:hover { color: #e2e8f0; }
+  .detail-panel .node-id {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: #64748b;
+    margin-bottom: 4px;
+  }
+  .detail-panel h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #e2e8f0;
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .detail-panel .stage-tag {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+  }
+  .detail-panel .description {
+    font-size: 0.88rem;
+    color: #94a3b8;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .detail-panel h3 {
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #818cf8;
+    margin: 20px 0 10px;
+  }
+  .evidence-table {
+    width: 100%;
+    font-size: 0.78rem;
+    border-collapse: collapse;
+    margin-bottom: 8px;
+  }
+  .evidence-table th {
+    text-align: left;
+    color: #64748b;
+    font-weight: 500;
+    padding: 6px 8px;
+    border-bottom: 1px solid rgba(99,102,241,0.15);
+  }
+  .evidence-table td {
+    padding: 6px 8px;
+    border-bottom: 1px solid rgba(99,102,241,0.08);
+    color: #cbd5e1;
+  }
+  .evidence-table .file-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: #a5b4fc;
+  }
+  .status-badge {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .status-badge.proved { background: rgba(34,197,94,0.2); color: #4ade80; }
+  .status-badge.partial { background: rgba(250,204,21,0.2); color: #fbbf24; }
+  .status-badge.claimed { background: rgba(249,115,22,0.2); color: #fb923c; }
+  .status-badge.predicted { background: rgba(139,92,246,0.2); color: #a78bfa; }
+  .predicted-box {
+    background: rgba(139,92,246,0.08);
+    border: 1px solid rgba(139,92,246,0.2);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-top: 10px;
+    font-size: 0.82rem;
+    color: #c4b5fd;
+    line-height: 1.5;
+  }
+  .predicted-box .pred-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #8b5cf6;
+    margin-bottom: 6px;
+  }
+  .depends-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 6px;
+  }
+  .dep-tag {
+    font-size: 0.68rem;
+    background: rgba(99,102,241,0.12);
+    border: 1px solid rgba(99,102,241,0.2);
+    color: #a5b4fc;
+    padding: 2px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .dep-tag:hover { background: rgba(99,102,241,0.25); }
+
+  .tooltip {
+    position: fixed;
+    z-index: 300;
+    background: rgba(15,15,45,0.95);
+    border: 1px solid rgba(99,102,241,0.3);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.78rem;
+    color: #e2e8f0;
+    max-width: 280px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+    backdrop-filter: blur(10px);
+  }
+  .tooltip .tt-title { font-weight: 600; margin-bottom: 4px; }
+  .tooltip .tt-stage { font-size: 0.68rem; color: #818cf8; }
+
+  .detail-panel::-webkit-scrollbar { width: 6px; }
+  .detail-panel::-webkit-scrollbar-track { background: transparent; }
+  .detail-panel::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.3); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="left">
+    <h1>The Tree of Reality</h1>
+    <span class="view-label">Cladogram View</span>
+  </div>
+  <div class="nav-links">
+    <a href="index.html">Radial</a>
+    <a href="cladogram.html" class="active">Cladogram</a>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#4ade80;"></div> Proved</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#fbbf24;"></div> Partial</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#fb923c;"></div> Claimed</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#a78bfa;"></div> Predicted</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#38bdf8; box-shadow: 0 0 6px rgba(56,189,248,0.4);"></div> Strongest</div>
+</div>
+
+<div class="controls">
+  <button onclick="resetView()">Reset View</button>
+  <button onclick="expandAll()">Fit All</button>
+</div>
+
+<svg id="graph"></svg>
+
+<div class="detail-panel" id="detail-panel">
+  <button class="close-btn" onclick="closePanel()">&times;</button>
+  <div id="detail-content"></div>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+// =====================================================
+// SAME 82 NODES — exact copy from radial version
+// =====================================================
+
+const NODES = [
+  {id:1, name:"Self-reference forces existence", short:"Existence", stage:1, stageName:"Existence",
+   status:"proved", starred:false,
+   desc:"Any system capable of self-reference must contain fixed points. Lawvere's generalisation of Gödel, Tarski, Cantor, Turing. 'Nothing' that can refer to itself is already 'something.'",
+   evidence:[
+     {file:"LawvereFixedPoint.lean", status:"proved", what:"Fixed point theorem in cartesian closed categories"},
+     {file:"ReflexiveDomainFP.lean", status:"proved", what:"Reflexive domains D≅(D→D) have fixed points"}
+   ], predictions:[]},
+  {id:2, name:"The reflexive domain is self-determining", short:"Self-determining", stage:1, stageName:"Existence",
+   status:"proved", starred:false,
+   desc:"If D=(D→D), then D determines itself completely. Every operator is faithfully represented. Zero free parameters.",
+   evidence:[
+     {file:"ConstraintContent.lean", status:"proved", what:"Zero free parameters, unique internal representation"},
+     {file:"InfiniteContent.lean", status:"proved", what:"Every endomorphism injectively represented in D"},
+     {file:"GToECoherence.lean", status:"proved", what:"All properties from single axiom D=(D→D)"}
+   ], predictions:[]},
+  {id:3, name:"No complete self-description is possible", short:"Incompleteness", stage:1, stageName:"Existence",
+   status:"proved", starred:false,
+   desc:"The reflexive domain cannot fully describe itself — Cantor's diagonal and Tarski's undefinability. The theory is inherently open-ended.",
+   evidence:[{file:"Inexhaustibility.lean", status:"proved", what:"No surjection D→(D→Prop). Incompleteness."}], predictions:[]},
+  {id:4, name:"M₂(ℂ) is the unique minimal seed", short:"Seed M₂(ℂ)", stage:2, stageName:"The Seed",
+   status:"partial", starred:false,
+   desc:"The simplest nontrivial matrix algebra over ℂ. Non-commutative, nontrivial trace, End strictly larger.",
+   evidence:[{file:"NothingToSeed.lean", status:"partial", what:"Transition from void to M₂(ℂ)"},{file:"SeedForced.lean", status:"partial", what:"M₂(ℂ) as unique minimal seed"}],
+   predictions:["Rigorous proof M₂(ℂ) is UNIQUE minimal algebra satisfying cascade property"]},
+  {id:5, name:"End(M₂) = M₄(ℂ)", short:"Cascade M₄", stage:3, stageName:"The Cascade",
+   status:"proved", starred:true,
+   desc:"M₂⊗M₂ ≅ M₄(ℂ). One operation generates larger algebra. M₄→M₁₆→M₂₅₆→...",
+   evidence:[{file:"F4_1a_TensorProductIsomorphism.lean", status:"proved", what:"★ M₂⊗M₂ ≅ M₄ as genuine AlgEquiv"},{file:"CascadeFoundation.lean", status:"proved", what:"★ dim(M₄)=16, traceless dims via rank-nullity"},{file:"EmergenceLineage.lean", status:"partial", what:"Dimension sequence 2^(2^n)"},{file:"PreferredDecomposition.lean", status:"partial", what:"M₄ = M₂⊗M₂ canonical"}], predictions:[]},
+  {id:6, name:"Cascade is irreversible — algebraic arrow of time", short:"Arrow of time", stage:3, stageName:"The Cascade",
+   status:"proved", starred:true,
+   desc:"dim(End(V)) = dim(V)² > dim(V) for dim≥2. Each level has unique pre-image.",
+   evidence:[{file:"F4_1b_DimensionAndArrow.lean", status:"proved", what:"★ Strict growth, unique pre-images"}], predictions:[]},
+  {id:7, name:"n = 4 is uniquely forced", short:"n=4 forced", stage:3, stageName:"The Cascade",
+   status:"partial", starred:false,
+   desc:"n even, n²−1≥12, n minimal → n=4.",
+   evidence:[{file:"CascadeUniqueness.lean", status:"partial", what:"n=4 by case analysis"},{file:"ConnesClassification.lean", status:"proved", what:"★ Chamseddine-Connes classification"}], predictions:[]},
+  {id:8, name:"Spacetime is 4-dimensional", short:"4D spacetime", stage:4, stageName:"End → Spacetime",
+   status:"proved", starred:true,
+   desc:"M₄(ℂ) ≅ Cl₄(ℂ) — Clifford algebra encoding 4D geometry. The '4' is DERIVED.",
+   evidence:[{file:"F4_1e_CliffordMatrix.lean", status:"proved", what:"★ Gamma matrices, Clifford relations, AlgHom"},{file:"F4_1e_QuaternionSplitting.lean", status:"proved", what:"★ ℍ[ℂ,1,0,1] ≅ M₂(ℂ)"},{file:"F1_7_SpacetimeForced.lean", status:"proved", what:"Cl₄=M₄ forces 4D"}], predictions:[]},
+  {id:9, name:"Signature is Lorentzian (1,3)", short:"Lorentzian", stage:4, stageName:"End → Spacetime",
+   status:"partial", starred:false, desc:"Real form M₂(ℍ) ↔ Cl(1,3;ℝ). Minkowski metric forced.",
+   evidence:[{file:"F1_7b_SpacetimeUnconditional.lean", status:"partial", what:"Signatures excluded"},{file:"F1_7c_SpacetimeFinalClosure.lean", status:"claimed", what:"Higgs VEV selects timelike"}],
+   predictions:["Prove Cl(1,3;ℝ) ≅ M₂(ℍ) in Lean"]},
+  {id:10, name:"SM gauge algebra lives in sl₄", short:"Gauge algebra", stage:4, stageName:"End → Forces",
+   status:"proved", starred:true, desc:"sl₄(ℂ) dim 15: su(3)⊕su(2)⊕u(1) = 12D. Remaining 3 = leptoquark generators.",
+   evidence:[{file:"LieAlgebraEmbedding.lean", status:"proved", what:"★★★ Injective Lie homs. STRONGEST FILE"},{file:"GaugeGroupSelection.lean", status:"partial", what:"D₃ → Pati-Salam"}],
+   predictions:["Lie GROUP embedding SU(3)×SU(2)×U(1) ↪ SU(4)"]},
+  {id:11, name:"Pati-Salam is unique", short:"Pati-Salam", stage:4, stageName:"End → Forces",
+   status:"proved", starred:false, desc:"(4,2,2) unique → SU(4)×SU(2)_L×SU(2)_R.",
+   evidence:[{file:"F1_6_PatiSalamForced.lean", status:"proved", what:"(4,2,2) unique. Alternatives excluded"},{file:"SU2Emergence.lean", status:"partial", what:"SU(2) at D₁"}], predictions:[]},
+  {id:12, name:"Parity violated (chirality)", short:"Chirality", stage:4, stageName:"End → Forces",
+   status:"proved", starred:false, desc:"L/R asymmetry from Azumaya decomposition.",
+   evidence:[{file:"F2_3_ChiralityForced.lean", status:"proved", what:"Left regular rep injective"}], predictions:[]},
+  {id:13, name:"Quarks and leptons: 4 → 3 ⊕ 1", short:"Quarks & leptons", stage:4, stageName:"End → Matter",
+   status:"proved", starred:true, desc:"SU(4) on ℂ⁴ decomposes as 3+1 under SU(3). Pati-Salam unification.",
+   evidence:[{file:"RepDecomposition.lean", status:"proved", what:"★ Fin 3⊕Fin 1 ≃ Fin 4. 96 DOF"},{file:"StandardModelReps.lean", status:"partial", what:"ℂ¹⁶ matches (4,2,2)"}], predictions:[]},
+  {id:14, name:"Exactly three generations", short:"3 generations", stage:4, stageName:"End → Matter",
+   status:"proved", starred:true, desc:"dim(Im ℍ)=3. 4th blocked: octonions non-associative.",
+   evidence:[{file:"F3_1_ThreeGenerations.lean", status:"proved", what:"★ dim(Im ℍ) = 3"},{file:"F4_1ij_QuaternionDivision.lean", status:"proved", what:"★ ℍ non-commutative"},{file:"F3_1b_ModuleSpectral.lean", status:"partial", what:"Mass operator → 3 eigenvalues"}],
+   predictions:["Mass hierarchy: why top/electron = 340,000?"]},
+  {id:15, name:"Higgs mechanism forced", short:"Higgs forced", stage:4, stageName:"End → Matter",
+   status:"partial", starred:false, desc:"Higgs bidoublet (1,2,2). PS→SM symmetry breaking.",
+   evidence:[{file:"F3_2_HiggsForced.lean", status:"partial", what:"Higgs bidoublet dim=4"}],
+   predictions:["Higgs mass (~125 GeV) from cascade"]},
+  {id:16, name:"Anomalies cancel", short:"Anomaly cancel", stage:4, stageName:"End → Forces",
+   status:"partial", starred:false, desc:"All gauge anomalies cancel.",
+   evidence:[{file:"F3_9e_AnomalyCancellation.lean", status:"partial", what:"Anomaly +2−2=0"},{file:"SMCompleteness.lean", status:"partial", what:"4 conditions. Weinberg 3/8"}],
+   predictions:["Genuine Tr(T^a{T^b,T^c}) computation"]},
+  {id:17, name:"Weinberg angle sin²θ_W = 3/8", short:"Weinberg angle", stage:4, stageName:"End → Forces",
+   status:"proved", starred:true, desc:"3/(3+8) at unification scale.",
+   evidence:[{file:"F4_1_Foundations.lean", status:"proved", what:"★ Weinberg 3/8 from finrank"}],
+   predictions:["RG running to sin²θ_W ≈ 0.231"]},
+  {id:18, name:"GL₂ → SL₂ → Lorentz group", short:"Lorentz group", stage:4, stageName:"Aut → Gravity",
+   status:"partial", starred:false, desc:"Aut(ℂ²)=GL₂. ker(det)=SL₂. Preserves Minkowski metric.",
+   evidence:[{file:"GravityLineage.lean", status:"partial", what:"Aut→GL₂→SL₂, dim 6=6"}],
+   predictions:["SL₂(ℂ) ≅ Spin(3,1)", "Einstein field equations from cascade"]},
+  {id:19, name:"Quantum mechanics is forced", short:"QM forced", stage:4, stageName:"⟨·,·⟩ → QM",
+   status:"partial", starred:false, desc:"Inner product → Hilbert → Born rule → unitary evolution.",
+   evidence:[{file:"QuantumLineage.lean", status:"partial", what:"Inner product → Hilbert, C-S → Born"}],
+   predictions:["Schrödinger equation", "Entanglement structure"]},
+  {id:20, name:"No-cloning theorem", short:"No-cloning", stage:4, stageName:"⟨·,·⟩ → QM",
+   status:"proved", starred:false, desc:"Universal cloner → vanishing. Quantum-classical divide.",
+   evidence:[{file:"_proof_003.lean", status:"proved", what:"Universal cloner → x⊗y+y⊗x=0"}], predictions:[]},
+  {id:21, name:"Spectral triple constructed", short:"Spectral triple", stage:5, stageName:"Spectral Triple",
+   status:"proved", starred:true, desc:"(A,H,D,γ,J) on M₄(ℂ)⊕ℂ⁴. γ²=1, {γ,D}=0, D²=m²I.",
+   evidence:[{file:"ConnesNCG.lean", status:"proved", what:"★ All by fin_cases on 4×4"},{file:"F3_8f_ConnesNCG.lean", status:"partial", what:"Extended NCG"},{file:"F4_1f_MatrixTraceAndDet.lean", status:"proved", what:"★ Trace cyclicity, det mult."}], predictions:[]},
+  {id:22, name:"Trace and determinant properties", short:"Trace & det", stage:5, stageName:"Spectral Triple",
+   status:"proved", starred:true, desc:"Tr(AB)=Tr(BA). det(AB)=det(A)det(B). γ²=1.",
+   evidence:[{file:"F4_1f_MatrixTraceAndDet.lean", status:"proved", what:"★ Mathlib: trace_mul_comm, det_mul"},{file:"F4_1e_SpectralTripleArithmetic.lean", status:"partial", what:"Numerical backbone"}], predictions:[]},
+  {id:23, name:"Spectral function must be exponential", short:"Cauchy → exp", stage:6, stageName:"Zero Parameters",
+   status:"proved", starred:true, desc:"Cauchy: additive+monotone → f(x)=cx. Forces exp. All moments=1.",
+   evidence:[{file:"F4_1h_CauchyFunctionalEquation.lean", status:"proved", what:"★★ 67-line genuine. STRONGEST ANALYSIS"}], predictions:[]},
+  {id:24, name:"Heat kernel is canonical", short:"Heat kernel", stage:6, stageName:"Zero Parameters",
+   status:"proved", starred:false, desc:"Cascade forces exp(−tD²). 19 params → 3.",
+   evidence:[{file:"F3_10a_HeatKernelCanonicity.lean", status:"proved", what:"Γ(1)=1. 19→3"}], predictions:[]},
+  {id:25, name:"Genuine measure on config space", short:"Measure", stage:6, stageName:"Zero Parameters",
+   status:"proved", starred:true, desc:"exp(−S) via Measure.withDensity. Absolutely continuous.",
+   evidence:[{file:"SpectralActionMeasure.lean", status:"proved", what:"★ Genuine Measure.withDensity"}],
+   predictions:["Full 16D measure on Herm₄(ℂ) ≅ ℝ¹⁶"]},
+  {id:26, name:"Tr(f(D²/Λ²)) — one formula", short:"Spectral action", stage:7, stageName:"Spectral Action",
+   status:"claimed", starred:false, desc:"Combines End, ⟨·,·⟩, and Aut. Heat kernel expansion → each force.",
+   evidence:[{file:"F3_8b_SpectralActionComputation.lean", status:"claimed", what:"Arithmetic only"}],
+   predictions:["Actual heat kernel a₀, a₂, a₄ on M₄(ℂ)"]},
+  {id:27, name:"a₀ → Cosmological constant", short:"Cosmo constant", stage:8, stageName:"Forces Emerge",
+   status:"partial", starred:false, desc:"Zeroth coefficient = vacuum energy. 96−52=44 cascade-determined.",
+   evidence:[{file:"F3_8d_CosmologicalConstant.lean", status:"partial", what:"DOF 96−52=44"}],
+   predictions:["Λ_CC ≈ 10⁻¹²² in Planck units"]},
+  {id:28, name:"a₂ → Newton's constant", short:"Newton's G", stage:8, stageName:"Forces Emerge",
+   status:"claimed", starred:false, desc:"→ Einstein-Hilbert ∫R√g. G = 3π/(f₂Λ²).",
+   evidence:[{file:"F3_8c_NewtonsConstant.lean", status:"claimed", what:"G = 3π/(f₂Λ²)"},{file:"F3_8a_QuantumGravityFoundations.lean", status:"partial", what:"QG ingredients"}],
+   predictions:["Compute a₂ → scalar curvature R"]},
+  {id:29, name:"a₄ → Yang-Mills", short:"Yang-Mills", stage:8, stageName:"Forces Emerge",
+   status:"partial", starred:false, desc:"→ Tr(F²). Strong + electroweak.",
+   evidence:[{file:"YangMillsEmbedding.lean", status:"partial", what:"su(3)↪su(4). β₀=21"},{file:"F4_3a_YangMillsMeasure.lean", status:"partial", what:"Conditional"}],
+   predictions:["a₄ = c·Tr(F_μν F^μν)"]},
+  {id:30, name:"Fluctuations → Higgs + Yukawa", short:"Higgs potential", stage:8, stageName:"Forces Emerge",
+   status:"predicted", starred:false, desc:"D→D+A+JAJ* → Higgs field. V(φ)=λ(|φ|²−v²)². Entirely open.",
+   evidence:[], predictions:["Higgs potential + Yukawa from cascade"]},
+  {id:31, name:"Asymptotic freedom + confinement", short:"Confinement", stage:9, stageName:"Consequences",
+   status:"partial", starred:false, desc:"su(3)↪su(4), β₀=21>0 → AF. Long range → confinement.",
+   evidence:[{file:"F3_9g_v_ConfinementFromCascade.lean", status:"partial", what:"AF β₀=21"},{file:"F4_3b_ConfinementFirstPrinciples.lean", status:"partial", what:"7-step chain"}],
+   predictions:["Linear confining potential from cascade"]},
+  {id:32, name:"Graviton from fluctuations", short:"Graviton", stage:9, stageName:"Consequences",
+   status:"claimed", starred:false, desc:"Spin-2, 10 components, 2 polarisations.",
+   evidence:[{file:"F3_8e_GravitonFromFluctuations.lean", status:"claimed", what:""},{file:"F3_8j_GravitonScattering.lean", status:"claimed", what:""}],
+   predictions:["Graviton propagator → linearised GR"]},
+  {id:33, name:"Black hole entropy", short:"BH entropy", stage:9, stageName:"Consequences",
+   status:"claimed", starred:false, desc:"S = A/(4G) from spectral action.",
+   evidence:[{file:"F3_8i_BlackHoleEntropy.lean", status:"claimed", what:""}], predictions:["S=A/(4G) from cascade"]},
+  {id:34, name:"Background independence", short:"BG independence", stage:9, stageName:"Consequences",
+   status:"claimed", starred:false, desc:"Spectral action invariant under diffeomorphisms.",
+   evidence:[{file:"F3_8h_BackgroundIndependence.lean", status:"claimed", what:""},{file:"F3_8g_HigherLoopCorrections.lean", status:"claimed", what:""}],
+   predictions:["Diffeomorphism invariance"]},
+  {id:35, name:"Phase transitions + universality", short:"Phase transitions", stage:9, stageName:"Consequences",
+   status:"proved", starred:false, desc:"Landau Z₂ breaking. Scaling relations.",
+   evidence:[{file:"_proof_004.lean", status:"proved", what:"Landau Z₂, universal rescaling"},{file:"_proof_004_logos.lean", status:"partial", what:"Scaling — 1 sorry"}], predictions:[]},
+  {id:36, name:"Structural properties", short:"Structure", stage:9, stageName:"Consequences",
+   status:"proved", starred:false, desc:"Scale separation. Tensor dim. Knaster-Tarski.",
+   evidence:[{file:"_proof_001.lean", status:"proved", what:"Scale separation, projection idempotence"},{file:"_proof_002.lean", status:"proved", what:"Knaster-Tarski, local→global"}], predictions:[]},
+  {id:37, name:"Gaussian integral converges", short:"Gaussian", stage:10, stageName:"Rigorous QFT",
+   status:"proved", starred:true, desc:"√(π/b) on ℝⁿ.",
+   evidence:[{file:"F4_1l_GaussianPartition.lean", status:"proved", what:"★ integral_gaussian"}], predictions:[]},
+  {id:38, name:"Gaussian domination", short:"Wick pairing", stage:10, stageName:"Rigorous QFT",
+   status:"proved", starred:true, desc:"(2k)!=(2k)!!·(2k−1)!!. Tail estimates.",
+   evidence:[{file:"GaussianMeasure.lean", status:"proved", what:"★ Wick, double factorial, tail"}], predictions:[]},
+  {id:39, name:"Bakry-Émery spectral gap", short:"Spectral gap", stage:10, stageName:"Rigorous QFT",
+   status:"proved", starred:true, desc:"Hess(V)≥K → gap≥K. Cascade: gap=2/Λ².",
+   evidence:[{file:"BakryEmeryGap.lean", status:"proved", what:"★ Gap=2/Λ². Poincaré + log-Sobolev"}],
+   predictions:["Genuine Bakry-Émery on ℝⁿ"]},
+  {id:40, name:"Transfer matrix: gap → mass gap", short:"Transfer matrix", stage:10, stageName:"Rigorous QFT",
+   status:"partial", starred:false, desc:"Converts spectral gap → mass gap via correlator decay.",
+   evidence:[{file:"TransferMatrix.lean", status:"partial", what:"exp(−Δr)<1. Semigroup"}],
+   predictions:["Hamiltonian on L²(Herm₄,μ) with gap"]},
+  {id:41, name:"Reflection positivity (OS2)", short:"Reflection pos", stage:10, stageName:"Rigorous QFT",
+   status:"partial", starred:false, desc:"Boltzmann factorises. exp injective. Squares nonneg.",
+   evidence:[{file:"ReflectionPositivity.lean", status:"partial", what:"Exp factorisation, sq_nonneg"},{file:"F3_9d_ReflectionPositivity.lean", status:"claimed", what:"OS2"}],
+   predictions:["Genuine ⟨Θf,f⟩≥0"]},
+  {id:42, name:"5 OS axioms", short:"OS axioms", stage:10, stageName:"Rigorous QFT",
+   status:"claimed", starred:false, desc:"OS1-5: covariance, reflection pos, permutation, cluster, Gaussian dom.",
+   evidence:[{file:"F4_4a_OSAxiomsCompact.lean", status:"claimed", what:"All 5"},{file:"OSReconstructionFormal.lean", status:"partial", what:"OS→QFT"}],
+   predictions:["Verify all 5 for cascade Schwinger functions"]},
+  {id:43, name:"OS reconstruction → Wightman QFT", short:"Wightman QFT", stage:10, stageName:"Rigorous QFT",
+   status:"claimed", starred:false, desc:"OS1-5 → unique Wightman QFT in Minkowski space.",
+   evidence:[{file:"F4_3f_OSReconstruction.lean", status:"claimed", what:""},{file:"F4_4e_WightmanAxioms.lean", status:"claimed", what:""},{file:"F4_3d_SpectralWightman.lean", status:"claimed", what:""}],
+   predictions:["Formalise OS reconstruction", "GNS construction"]},
+  {id:44, name:"Internal → product geometry gap", short:"Product gap", stage:11, stageName:"Mass Gap",
+   status:"claimed", starred:false, desc:"gap = min(gap_M, gap_F) > 0.",
+   evidence:[{file:"F3_9g_i_InternalSpectralGap.lean", status:"claimed", what:""},{file:"F3_9g_ii_ProductGeometryGap.lean", status:"partial", what:"lt_min"},{file:"F3_9g_iv_CompactOperatorSpectrum.lean", status:"partial", what:"Kato stability"}], predictions:[]},
+  {id:45, name:"Cluster decomposition", short:"Cluster", stage:11, stageName:"Mass Gap",
+   status:"partial", starred:false, desc:"Correlations decay exp at rate = mass gap.",
+   evidence:[{file:"F3_9g_vi_ClusterDecomposition.lean", status:"partial", what:"exp decay"},{file:"F4_3g_ClusterExpansion.lean", status:"partial", what:"High-T"},{file:"F4_4b_UniformCorrelationBounds.lean", status:"partial", what:"Gaussian dom"}],
+   predictions:["Cluster expansion at physical coupling"]},
+  {id:46, name:"Thermodynamic limit exists", short:"Thermo limit", stage:11, stageName:"Mass Gap",
+   status:"claimed", starred:false, desc:"lim_{L→∞} correlation functions exist.",
+   evidence:[{file:"F4_3h_InfiniteVolumeLimit.lean", status:"claimed", what:""},{file:"F4_4d_ThermodynamicLimit.lean", status:"claimed", what:""}],
+   predictions:["Tightness + weak convergence"]},
+  {id:47, name:"Mass gap persists in ∞ volume", short:"Gap persists", stage:11, stageName:"Mass Gap",
+   status:"claimed", starred:false, desc:"Gap doesn't close as L→∞.",
+   evidence:[{file:"F4_4f_MassGapPersists.lean", status:"claimed", what:""},{file:"F3_9g_vii_FullMassGapTheorem.lean", status:"claimed", what:""},{file:"F4_3c_MassGapConditional.lean", status:"claimed", what:""}],
+   predictions:["Resolvent bounded — core of Clay Prize"]},
+  {id:48, name:"Yang-Mills mass gap on ℝ⁴", short:"YM mass gap", stage:11, stageName:"Mass Gap",
+   status:"claimed", starred:false, desc:"SU(3) YM satisfies Wightman + positive mass gap.",
+   evidence:[{file:"F4_4g_UnconditionalMillennium.lean", status:"claimed", what:"Grand assembly"}],
+   predictions:["YM measure on ℝ⁴ — Clay $1M"]},
+  {id:49, name:"Leptoquarks → new particles", short:"Leptoquarks", stage:12, stageName:"Open Frontiers", status:"predicted", starred:false, desc:"3 extra sl₄ generators = leptoquarks.", evidence:[], predictions:["Masses, cross-sections, decay modes"]},
+  {id:50, name:"Dark matter", short:"Dark matter", stage:12, stageName:"Open Frontiers", status:"predicted", starred:false, desc:"From leptoquark sector or higher cascade.", evidence:[], predictions:["DM candidate from cascade"]},
+  {id:51, name:"Neutrino masses", short:"Neutrino masses", stage:12, stageName:"Open Frontiers", status:"predicted", starred:false, desc:"Dirac vs Majorana + values.", evidence:[], predictions:["Mechanism + values"]},
+  {id:52, name:"Matter-antimatter asymmetry", short:"Baryogenesis", stage:12, stageName:"Open Frontiers", status:"predicted", starred:false, desc:"CP violation → matter dominance.", evidence:[], predictions:["Baryogenesis from CP"]},
+  {id:53, name:"Proton decay", short:"Proton decay", stage:12, stageName:"Open Frontiers", status:"predicted", starred:false, desc:"Leptoquark-mediated.", evidence:[], predictions:["Lifetime (bound: >10³⁴ yr)"]},
+  {id:54, name:"Higher cascade levels", short:"Higher cascade", stage:12, stageName:"Open Frontiers", status:"predicted", starred:false, desc:"M₁₆→M₂₅₆→...", evidence:[], predictions:["Content of M₁₆(ℂ)+"]},
+  {id:55, name:"QG S-matrix", short:"QG S-matrix", stage:12, stageName:"Open Frontiers", status:"predicted", starred:false, desc:"Graviton-graviton scattering.", evidence:[], predictions:["S-matrix from spectral action"]},
+  {id:56, name:"Cosmological predictions", short:"Cosmology", stage:12, stageName:"Open Frontiers", status:"predicted", starred:false, desc:"Inflation, dark energy, primordial GW.", evidence:[], predictions:["Observables from early-universe"]},
+  // Missing fossils
+  {id:57, name:"What IS a 'canonical operation'?", short:"Canonical op [F2.1]", stage:3, stageName:"Branching Gate", status:"predicted", starred:false, desc:"Define Lean predicate for 'canonical operation'. Without this, lineages are CHOSEN not FORCED.", evidence:[], predictions:["Formal definition making 'forced' rigorous"]},
+  {id:58, name:"Three choices are exhaustive", short:"Exhaustive [F2.2]", stage:3, stageName:"Branching Gate", status:"predicted", starred:false, desc:"Prove no OTHER canonical operations exist.", evidence:[], predictions:["No fourth canonical op in SMCC"]},
+  {id:59, name:"Cartesian lineage → computation", short:"Cartesian [F2.6]", stage:4, stageName:"New Lineage", status:"predicted", starred:false, desc:"In CCC, cascade → Scott D∞. Bool=1+1 unique seed. Classical computation shares algebraic ancestor with physics.", evidence:[], predictions:["Scott D∞ from cascade in CCC"]},
+  {id:60, name:"Linear lineage → quantum info", short:"Linear [F2.8]", stage:4, stageName:"New Lineage", status:"predicted", starred:false, desc:"SMCC → *-autonomous categories → quantum information + linear logic.", evidence:[], predictions:["*-autonomous from cascade"]},
+  {id:61, name:"Braided lineage → anyonic physics", short:"Braided [F3.7]", stage:4, stageName:"New Lineage", status:"predicted", starred:false, desc:"Braided monoidal → modular tensor categories → topological QFTs, anyons. NEW PHYSICS.", evidence:[], predictions:["Topological physics from cascade"]},
+  {id:62, name:"Born rule derived from cascade", short:"Born rule [F3.3]", stage:4, stageName:"⟨·,·⟩ → QM", status:"predicted", starred:false, desc:"Born rule via linear D∞ + Geometry of Interaction. Closes QM entirely.", evidence:[], predictions:["Born rule from GoI"]},
+  {id:63, name:"Schrödinger equation from cascade", short:"Schrödinger [F3.3]", stage:5, stageName:"⟨·,·⟩ → QM", status:"predicted", starred:false, desc:"iℏ∂ψ/∂t = Hψ where H from spectral triple.", evidence:[], predictions:["H from spectral triple → dynamics"]},
+  {id:64, name:"Self-consistency fixed point", short:"Self-consistency [F3.10b]", stage:6, stageName:"Zero Parameters", status:"predicted", starred:false, desc:"Vacuum geometry consistent with defining action → fixed-point equation for f₀.", evidence:[], predictions:["Fixed-point for f₀"]},
+  {id:65, name:"Partition function constraint", short:"Z constraint [F3.10c]", stage:6, stageName:"Zero Parameters", status:"predicted", starred:false, desc:"Z normalisation fixes one moment. 3 eqs for 3 unknowns.", evidence:[], predictions:["Normalization fixes moment"]},
+  {id:66, name:"Spectral self-duality", short:"Self-duality [F3.10d]", stage:6, stageName:"Zero Parameters", status:"predicted", starred:false, desc:"Λ↔c/Λ → Mellin self-dual → f(x)=e^{−x}.", evidence:[], predictions:["Scale inversion → unique f"]},
+  {id:67, name:"Moment relations from algebra", short:"Casimir [F3.10f]", stage:6, stageName:"Zero Parameters", status:"predicted", starred:false, desc:"su(4) Casimirs → 2 trace identities → 2 moment relations.", evidence:[], predictions:["Casimir → 2 relations"]},
+  {id:68, name:"ZERO free parameters", short:"Zero params [F3.10g]", stage:6, stageName:"Zero Parameters", status:"predicted", starred:false, desc:"All 3 moments uniquely fixed. Everything from ∅.", evidence:[], predictions:["f₀, f₂, f₄ fixed"]},
+  {id:69, name:"Internal PI convergence", short:"PI converges [F3.9a]", stage:10, stageName:"QG Closure", status:"predicted", starred:false, desc:"Gap 1: ∫ exp(−S) dD < ∞ on ℝ¹⁶.", evidence:[], predictions:["Convergence via measure theory"]},
+  {id:70, name:"Physical cutoff justification", short:"Cutoff [F3.9b]", stage:7, stageName:"QG Closure", status:"predicted", starred:false, desc:"Gap 2: Λ_PS intrinsic, not removable.", evidence:[], predictions:["Observables well-defined at finite Λ"]},
+  {id:71, name:"Full spectral cutoff PI", short:"Full PI [F3.9c]", stage:10, stageName:"QG Closure", status:"predicted", starred:false, desc:"Gap 3: Weyl's law → N(Λ) modes → finite integral.", evidence:[], predictions:["Weyl + truncation → finite"]},
+  {id:72, name:"Ward identities", short:"Ward [F3.9f]", stage:7, stageName:"QG Closure", status:"predicted", starred:false, desc:"Gap 6: Spectral + measure invariance → Ward-Takahashi.", evidence:[], predictions:["Automatic Ward identities"]},
+  {id:73, name:"Non-perturbative quantisation", short:"FINAL BOSS [F3.8k]", stage:11, stageName:"QG Closure", status:"predicted", starred:false, desc:"Z well-defined. Finite dim, bounded S, compact U(4). OS→unitary QG.", evidence:[], predictions:["Z → OS → unitary QG"]},
+  {id:74, name:"Fine structure constant α", short:"α≈1/137 [F4.1]", stage:12, stageName:"Predictions", status:"predicted", starred:false, desc:"RG running from 3/8 → α≈1/137.", evidence:[], predictions:["RG → α≈1/137"]},
+  {id:75, name:"Fermion mass ratios", short:"Masses [F4.2]", stage:12, stageName:"Predictions", status:"predicted", starred:false, desc:"Yukawa → all fermion masses.", evidence:[], predictions:["Yukawa from cascade"]},
+  {id:76, name:"CKM/PMNS mixing", short:"CKM [F4.3]", stage:12, stageName:"Predictions", status:"predicted", starred:false, desc:"Mixing angles + CP phase.", evidence:[], predictions:["All angles from cascade"]},
+  {id:77, name:"Hierarchy problem dissolved", short:"Hierarchy [F6.1]", stage:12, stageName:"Predictions", status:"predicted", starred:false, desc:"No quadratic divergence. Physical cutoff.", evidence:[], predictions:["Problem dissolved"]},
+  {id:78, name:"Strong CP solved", short:"Strong CP [F6.2]", stage:12, stageName:"Predictions", status:"predicted", starred:false, desc:"PS left-right → θ=0.", evidence:[], predictions:["θ=0 from Pati-Salam"]},
+  {id:79, name:"Inflation from spectral action", short:"Inflation [F6.6]", stage:12, stageName:"Predictions", status:"predicted", starred:false, desc:"Starobinsky R² from a₄.", evidence:[], predictions:["n_s and r from cascade"]},
+  {id:80, name:"Arrow of time", short:"Arrow [F6.5]", stage:12, stageName:"Predictions", status:"predicted", starred:false, desc:"Algebraic → thermodynamic arrow.", evidence:[], predictions:["Alg → thermo arrow"]},
+  {id:81, name:"RG → all SM parameters", short:"All SM [F5]", stage:12, stageName:"Predictions", status:"predicted", starred:false, desc:"Complete RG programme.", evidence:[], predictions:["Every measured value derived"]},
+  {id:82, name:"Universality metatheorem", short:"Universality [F3.4]", stage:12, stageName:"Metatheorem", status:"predicted", starred:false, desc:"Fixed point in every SMCC.", evidence:[], predictions:["Construction forces totality"]},
+];
+
+const EDGES = [
+  {source:1, target:2}, {source:1, target:3}, {source:1, target:4}, {source:2, target:4},
+  {source:4, target:5}, {source:5, target:6}, {source:5, target:7},
+  {source:5, target:8}, {source:8, target:9}, {source:5, target:10},
+  {source:10, target:11}, {source:11, target:12}, {source:10, target:13},
+  {source:4, target:14}, {source:11, target:15}, {source:13, target:15},
+  {source:10, target:16}, {source:13, target:16}, {source:14, target:16},
+  {source:10, target:17},
+  {source:4, target:18},
+  {source:4, target:19}, {source:19, target:20},
+  {source:5, target:21}, {source:8, target:21}, {source:10, target:21},
+  {source:5, target:22},
+  {source:5, target:23}, {source:23, target:24}, {source:5, target:25},
+  {source:21, target:26}, {source:24, target:26}, {source:25, target:26},
+  {source:26, target:27}, {source:26, target:28}, {source:26, target:29}, {source:10, target:29},
+  {source:26, target:30}, {source:15, target:30},
+  {source:29, target:31}, {source:10, target:31},
+  {source:28, target:32}, {source:28, target:33}, {source:28, target:34},
+  {source:25, target:37}, {source:37, target:38},
+  {source:25, target:39}, {source:39, target:40},
+  {source:25, target:41},
+  {source:38, target:42}, {source:39, target:42}, {source:41, target:42},
+  {source:42, target:43},
+  {source:39, target:44}, {source:40, target:44},
+  {source:44, target:45}, {source:45, target:46}, {source:46, target:47},
+  {source:43, target:48}, {source:47, target:48},
+  {source:10, target:49}, {source:49, target:50}, {source:49, target:53},
+  {source:14, target:51}, {source:12, target:52},
+  {source:5, target:54}, {source:28, target:55}, {source:27, target:56},
+  {source:4, target:57}, {source:57, target:58},
+  {source:4, target:59}, {source:4, target:60}, {source:4, target:61},
+  {source:19, target:62}, {source:19, target:63}, {source:21, target:63},
+  {source:24, target:64}, {source:25, target:65}, {source:23, target:66},
+  {source:22, target:67}, {source:23, target:68}, {source:64, target:68},
+  {source:65, target:68}, {source:66, target:68}, {source:67, target:68},
+  {source:25, target:69}, {source:26, target:70}, {source:26, target:72},
+  {source:69, target:71}, {source:70, target:71},
+  {source:69, target:73}, {source:70, target:73}, {source:71, target:73},
+  {source:72, target:73}, {source:42, target:73}, {source:43, target:73},
+  {source:17, target:74}, {source:30, target:75}, {source:14, target:76},
+  {source:30, target:76}, {source:15, target:77}, {source:70, target:77},
+  {source:10, target:78}, {source:11, target:78},
+  {source:27, target:79}, {source:28, target:79},
+  {source:6, target:80}, {source:26, target:81},
+];
+
+const STATUS_COLORS = {
+  proved: "#4ade80", partial: "#fbbf24", claimed: "#fb923c", predicted: "#a78bfa"
+};
+
+// =====================================================
+// BUILD HIERARCHY for d3.tree()
+// =====================================================
+
+// Choose primary parent for each node (lowest-stage source, then lowest id)
+const nodeMap = {};
+NODES.forEach(n => nodeMap[n.id] = n);
+
+// Build adjacency: for each node, find all parents
+const parents = {};
+EDGES.forEach(e => {
+  if (!parents[e.target]) parents[e.target] = [];
+  parents[e.target].push(e.source);
+});
+
+// Choose primary parent
+const primaryParent = {};
+NODES.forEach(n => {
+  if (n.id === 1) return; // root
+  const pList = parents[n.id] || [];
+  if (pList.length === 0) {
+    // Orphan — attach to spectral action or nearest stage
+    primaryParent[n.id] = n.stage <= 3 ? 1 : n.stage <= 7 ? 5 : 26;
+    return;
+  }
+  // Pick parent with lowest stage, then lowest id
+  pList.sort((a, b) => {
+    const sa = nodeMap[a].stage, sb = nodeMap[b].stage;
+    return sa !== sb ? sa - sb : a - b;
+  });
+  primaryParent[n.id] = pList[0];
+});
+
+// Build tree structure
+function buildHierarchy() {
+  const root = {...nodeMap[1], children: []};
+  const treeNodes = {1: root};
+
+  // Process in order of stage then id
+  const sorted = NODES.filter(n => n.id !== 1).slice().sort((a, b) => a.stage !== b.stage ? a.stage - b.stage : a.id - b.id);
+
+  sorted.forEach(n => {
+    const node = {...n, children: []};
+    treeNodes[n.id] = node;
+    const pid = primaryParent[n.id];
+    if (treeNodes[pid]) {
+      treeNodes[pid].children.push(node);
+    } else {
+      root.children.push(node);
+    }
+  });
+
+  return root;
+}
+
+const hierarchyData = buildHierarchy();
+
+// Secondary edges (non-primary)
+const secondaryEdges = EDGES.filter(e => primaryParent[e.target] !== e.source);
+
+// =====================================================
+// LAYOUT
+// =====================================================
+
+const width = window.innerWidth;
+const height = window.innerHeight;
+const margin = {top: 80, right: 220, bottom: 60, left: 120};
+
+// Stage x-positions (left to right)
+const stageX = {
+  1: 0, 2: 130, 3: 280, 4: 460, 5: 640, 6: 780,
+  7: 920, 8: 1060, 9: 1200, 10: 1100, 11: 1340, 12: 1500
+};
+
+const svg = d3.select("#graph").attr("width", width).attr("height", height);
+const g = svg.append("g");
+
+const zoom = d3.zoom()
+  .scaleExtent([0.15, 3])
+  .on("zoom", e => g.attr("transform", e.transform));
+svg.call(zoom);
+
+// Use d3.hierarchy + d3.tree for vertical positions
+const root = d3.hierarchy(hierarchyData);
+const treeLayout = d3.tree().size([height * 2.5, 1400]);
+treeLayout(root);
+
+// Override x with stage-based position, keep y from tree layout
+root.each(d => {
+  d._treeY = d.y; // save original
+  d.y = d.x; // swap: tree x→our y
+  d.x = stageX[d.data.stage] || 0;
+});
+
+// Center vertically
+const allY = root.descendants().map(d => d.y);
+const minY = d3.min(allY), maxY = d3.max(allY);
+const yRange = maxY - minY;
+const yOffset = -minY + 40;
+root.each(d => d.y += yOffset);
+
+// Initial transform to show the root nicely
+svg.call(zoom.transform, d3.zoomIdentity.translate(margin.left, height/2 - yRange/2 - 40).scale(0.45));
+
+// Stage column lines and labels
+const stageG = g.append("g");
+const stageNames = {1:"Existence",2:"Seed",3:"Cascade",4:"Lineages",5:"Spectral Triple",6:"Zero Params",7:"Spectral Action",8:"Forces",9:"Consequences",10:"QFT",11:"Mass Gap",12:"Frontiers"};
+Object.entries(stageX).forEach(([s, x]) => {
+  stageG.append("line")
+    .attr("x1", x).attr("x2", x)
+    .attr("y1", -100).attr("y2", yRange + 200)
+    .attr("stroke", "rgba(99,102,241,0.04)")
+    .attr("stroke-width", 1);
+  stageG.append("text")
+    .attr("class", "stage-col-label")
+    .attr("x", x).attr("y", -20)
+    .text(stageNames[s] || `Stage ${s}`);
+});
+
+// Draw primary links (elbow connectors like phylogenetic trees)
+const linkG = g.append("g");
+root.links().forEach(link => {
+  const s = link.source, t = link.target;
+  linkG.append("path")
+    .attr("d", `M${s.x},${s.y} H${(s.x + t.x) / 2} V${t.y} H${t.x}`)
+    .attr("fill", "none")
+    .attr("stroke", "rgba(99,102,241,0.18)")
+    .attr("stroke-width", 1.2);
+});
+
+// Draw secondary edges as curved dotted lines
+const secG = g.append("g");
+const nodePositions = {};
+root.each(d => nodePositions[d.data.id] = {x: d.x, y: d.y});
+
+secondaryEdges.forEach(e => {
+  const s = nodePositions[e.source], t = nodePositions[e.target];
+  if (!s || !t) return;
+  const midX = (s.x + t.x) / 2;
+  const midY = (s.y + t.y) / 2;
+  const dx = t.x - s.x, dy = t.y - s.y;
+  const cx = midX + dy * 0.15, cy = midY - dx * 0.15;
+  secG.append("path")
+    .attr("d", `M${s.x},${s.y} Q${cx},${cy} ${t.x},${t.y}`)
+    .attr("fill", "none")
+    .attr("stroke", "rgba(139,92,246,0.1)")
+    .attr("stroke-width", 0.8)
+    .attr("stroke-dasharray", "3,3");
+});
+
+// Draw nodes
+const nodeG = g.append("g");
+
+function nodeRadius(d) {
+  const ev = d.data.evidence ? d.data.evidence.length : 0;
+  return 5 + Math.min(ev * 1.2, 8);
+}
+
+const nodes = nodeG.selectAll("g")
+  .data(root.descendants())
+  .join("g")
+  .attr("transform", d => `translate(${d.x},${d.y})`)
+  .style("cursor", "pointer")
+  .on("click", (e, d) => openPanel(d.data))
+  .on("mouseover", (e, d) => showTooltip(e, d.data))
+  .on("mousemove", moveTooltip)
+  .on("mouseout", hideTooltip);
+
+// Glow for starred
+nodes.filter(d => d.data.starred)
+  .append("circle")
+  .attr("r", d => nodeRadius(d) + 5)
+  .attr("fill", "none")
+  .attr("stroke", "#38bdf8")
+  .attr("stroke-width", 1.2)
+  .attr("opacity", 0.4);
+
+// Main circle
+nodes.append("circle")
+  .attr("r", d => nodeRadius(d))
+  .attr("fill", d => STATUS_COLORS[d.data.status])
+  .attr("opacity", 0.85)
+  .attr("stroke", d => d.data.starred ? "#38bdf8" : "rgba(255,255,255,0.1)")
+  .attr("stroke-width", d => d.data.starred ? 1.5 : 0.5);
+
+// Label to the right of each node
+nodes.append("text")
+  .text(d => `${d.data.id}. ${d.data.short}`)
+  .attr("x", d => nodeRadius(d) + 6)
+  .attr("dy", 3.5)
+  .attr("text-anchor", "start")
+  .attr("fill", d => d.data.status === "predicted" ? "#a78bfa" : "#94a3b8")
+  .attr("font-size", "8.5px")
+  .attr("font-family", "'Inter', sans-serif")
+  .attr("font-weight", d => d.data.starred ? 600 : 400);
+
+// =====================================================
+// TOOLTIP
+// =====================================================
+
+const tooltip = document.getElementById("tooltip");
+function showTooltip(event, d) {
+  tooltip.innerHTML = `<div class="tt-title">${d.id}. ${d.short}</div><div class="tt-stage">${d.stageName}</div><div style="margin-top:4px;font-size:0.72rem;color:#94a3b8">${d.evidence.length} file${d.evidence.length!==1?'s':''} · ${d.predictions.length} prediction${d.predictions.length!==1?'s':''}</div>`;
+  tooltip.style.opacity = 1;
+}
+function moveTooltip(event) {
+  tooltip.style.left = (event.clientX + 14) + "px";
+  tooltip.style.top = (event.clientY - 10) + "px";
+}
+function hideTooltip() { tooltip.style.opacity = 0; }
+
+// =====================================================
+// DETAIL PANEL
+// =====================================================
+
+const panel = document.getElementById("detail-panel");
+const detailContent = document.getElementById("detail-content");
+
+function openPanel(d) {
+  let evidenceHtml = "";
+  if (d.evidence.length > 0) {
+    evidenceHtml = `<h3>Evidence (Lean 4 files)</h3><table class="evidence-table"><thead><tr><th>File</th><th>Status</th><th>What it proves</th></tr></thead><tbody>${d.evidence.map(e => `<tr><td class="file-name">${e.file}</td><td><span class="status-badge ${e.status}">${e.status}</span></td><td>${e.what}</td></tr>`).join("")}</tbody></table>`;
+  }
+  let predHtml = d.predictions.map(p => `<div class="predicted-box"><div class="pred-label">Predicted / Open</div>${p}</div>`).join("");
+
+  const deps = EDGES.filter(e => e.target === d.id).map(e => nodeMap[e.source]).filter(Boolean);
+  const children = EDGES.filter(e => e.source === d.id).map(e => nodeMap[e.target]).filter(Boolean);
+  let depsHtml = deps.length ? `<h3>Depends on</h3><div class="depends-list">${deps.map(dep => `<span class="dep-tag" onclick="openPanel(nodeMap[${dep.id}])">${dep.id}. ${dep.short}</span>`).join("")}</div>` : "";
+  let childHtml = children.length ? `<h3>Enables</h3><div class="depends-list">${children.map(ch => `<span class="dep-tag" onclick="openPanel(nodeMap[${ch.id}])">${ch.id}. ${ch.short}</span>`).join("")}</div>` : "";
+
+  const sc = STATUS_COLORS[d.status];
+  detailContent.innerHTML = `<div class="node-id">Node ${d.id} · Stage ${d.stage}</div><h2>${d.name}</h2><span class="stage-tag" style="background:${sc}22;color:${sc};border:1px solid ${sc}44">${d.status} — ${d.stageName}</span><div class="description">${d.desc}</div>${evidenceHtml}${predHtml}${depsHtml}${childHtml}`;
+  panel.classList.add("open");
+}
+function closePanel() { panel.classList.remove("open"); }
+
+// =====================================================
+// CONTROLS
+// =====================================================
+
+function resetView() {
+  svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity.translate(margin.left, height/2 - yRange/2 - 40).scale(0.45));
+  closePanel();
+}
+
+function expandAll() {
+  const allX = root.descendants().map(d => d.x);
+  const allYv = root.descendants().map(d => d.y);
+  const xMin = d3.min(allX), xMax = d3.max(allX);
+  const yMin = d3.min(allYv), yMax = d3.max(allYv);
+  const scaleX = (width - 200) / (xMax - xMin + 200);
+  const scaleY = (height - 140) / (yMax - yMin + 200);
+  const scale = Math.min(scaleX, scaleY, 1);
+  const tx = width/2 - (xMin + xMax)/2 * scale;
+  const ty = height/2 - (yMin + yMax)/2 * scale;
+  svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(scale));
+}
+
+document.addEventListener("keydown", e => { if (e.key === "Escape") closePanel(); });
+
+// Pulse predicted
+function pulse() {
+  nodes.filter(d => d.data.status === "predicted")
+    .select("circle:nth-child(2), circle:first-child")
+    .transition().duration(1500).attr("opacity", 0.5)
+    .transition().duration(1500).attr("opacity", 0.85);
+  setTimeout(pulse, 3000);
+}
+pulse();
+
+</script>
+</body>
+</html>
