@@ -1,17 +1,40 @@
-# Tree of Reality — Causal Cladogram (Content Specification v4)
+# Tree of Reality — Causal Cladogram (Content Specification v4.2)
 
 **Status:** content-locked structure for the "true cladogram" view of physics.
 Implementation (HTML/D3) deliberately deferred — this document is the source of
 truth for the *theory* itself; the visualisation is a downstream rendering.
 
 **Date locked:** 2026-05-10
-**Version:** v4
+**Version:** v4.2
+
+**What changed v4.1 → v4.2 (per author 2026-05-10):**
+
+- **Removed §9 Rival frameworks entirely.** Rival theories are not part of
+  *this* tree; including them as a section conflated "the tree of reality"
+  with "comparative theory of theories." Renumbered §10 → §9, §11 → §10.
+- **Removed the "Pre-cascade trigger" META node** from both the meta-tree
+  (§2.5) and the main tree (§3). Reason: the cascade trigger is **already
+  answered** at the root by the self-referential reflexive domain
+  `D = (D → D)` (Lawvere/Scott fixpoint). Self-reference *is* what
+  bootstraps existence from nothing — it is atemporal and logical, not a
+  prior cause. Treating it as an open META question was a category error.
+- **Moved temporal interpretations** (eternal cascade, cyclic / pre-Big-Bang,
+  cascade-onset = Big Bang, multiverse) under §3 Cosmology synthesis as
+  **alternative cosmological scenarios** for how the atemporal cascade
+  *manifests temporally* — not as competing answers to the trigger.
+- Added explicit annotation at the root that `D = (D → D)` is the cascade
+  trigger; no separate META question needed.
+
+**What changed v4 → v4.1 (per author 2026-05-10):**
+
+- Sharpened predictions with specific numerical targets: δ_CP ≈ −π/2,
+  Σm_ν ≈ 0.06 eV, H₀ ≈ 67.4 km/s/Mpc, σ_8 ≈ 0.81, A_s ≈ 2.1×10⁻⁹,
+  muon g-2 SM-aligned, R_K → 1.00, BBN abundances.
 
 **What changed v3 → v4 (substantial expansion per author 2026-05-10):**
 
 - Added **meta-tree above the seed** (§2.5): selection rules + space of
   alternative seeds (M_n, 𝕆, ℍ, J₃(𝕆), II_∞/III, categorical seeds).
-- Added **Pre-cascade trigger** node with open hypotheses.
 - Named **cascade fork events** (Furey, Dixon, Boyle-Farnsworth,
   exceptional F₄/E₆/E₇/E₈) as explicit sibling branches.
 - **Grew QM ⟨·,·⟩ subtree** (Born, Schrödinger, path integral, decoherence,
@@ -184,19 +207,22 @@ META-CATEGORICAL LEVEL  [META]
 │     ├─ Cartesian closed → Bool, classical computation         [SPECULATIVE]
 │     ├─ Linear / SMCC → quantum information                     [SPECULATIVE]
 │     └─ Braided → anyons, topological QFT                       [SPECULATIVE]
-│
-└─ Pre-cascade trigger  [META, OPEN]
-   ├─ Eternal-cascade hypothesis (cascade has no temporal start)
-   ├─ Quantum tunnelling from nothing (Vilenkin-style, recast in NCG)
-   ├─ Cyclic / pre-Big-Bang phase (cascade re-initiates each cycle)
-   ├─ Cascade-onset = Big Bang event (the cascade IS the Big Bang)
-   └─ Selection from a multiverse of seeds (anthropic / measure-theoretic)
 ```
 
+**Note on the cascade trigger.** The meta-tree does *not* contain a
+"pre-cascade trigger" node. The trigger is already given at the root of
+the main tree by the **self-referential reflexive domain** `D = (D → D)`
+(Lawvere/Scott fixpoint): self-reference forces existence atemporally and
+logically. There is no "before" the cascade — the closed self-referential
+loop *is* what makes the cascade exist. Temporal interpretations
+(eternal cascade, cyclic / pre-Big-Bang, cascade-onset = Big Bang,
+multiverse selection) are alternative *cosmological scenarios* for how
+this atemporal cascade manifests temporally; they appear under §3
+Cosmology synthesis, not as separate trigger answers.
+
 The meta-tree is *not* part of the deductive cladogram. Its purpose is to
-keep the questions "why these axioms?" and "what initiated the cascade?"
-visible as legitimate frontiers without polluting the strict tree with
-unfounded parents.
+keep the question "why these axioms?" visible as a legitimate frontier
+without polluting the strict tree with unfounded parents.
 
 ---
 
@@ -204,14 +230,14 @@ unfounded parents.
 
 ```
 Nothing
-└─ Self-reference forces existence  [PROVED]
+└─ Self-reference forces existence  [PROVED]   ← THE CASCADE TRIGGER
    ├─ Subsumes Cantor / Gödel / Turing / Tarski / Russell (Lawvere)  [PREDICTED]   ← F1.2
    └─ Reflexive domain D = (D→D)  [PROVED]
+      │  Closed self-referential loop. Atemporal, logical. No "before."
+      │  The loop *is* what makes the cascade exist — no separate trigger.
       ├─ No complete self-description (Cantor/Tarski applied to D)  [PROVED]
       └─ M₂(ℂ): minimal seed under §2.5 selection rules  [PARTIAL]
          ⤳ Sibling alternative seeds (§2.5) — overlay only, not a tree edge
-         └─ Pre-cascade trigger  [META, OPEN]
-            ⤳ See §2.5 hypotheses (eternal / tunnelling / cyclic / Big-Bang-as-onset)
          └─ Cascade: End(M₂)=M₄, then M₄→M₁₆→…  [PROVED ★]
             │
             ├─ Cascade fork events  [SPECULATIVE]
@@ -444,7 +470,16 @@ Nothing
                   ├─ Cosmology synthesis (multi-input)
                   │  ├─ Total Ω = 1 (from inflation)  [PREDICTED]
                   │  ├─ T_CMB = 2.725 K  [PREDICTED]                                  ← F5.5
-                  │  └─ Ω_radiation (photon + ν energy density)  [PREDICTED]
+                  │  ├─ Ω_radiation (photon + ν energy density)  [PREDICTED]
+                  │  └─ Alternative cosmological scenarios  [META, OPEN]
+                  │     │  How the atemporal D=(D→D) cascade manifests temporally.
+                  │     │  The cascade is the trigger; these are competing
+                  │     │  scenarios for its temporal expression.
+                  │     ├─ Eternal-cascade scenario (no temporal start)
+                  │     ├─ Cyclic / pre-Big-Bang phase (cascade re-initiates each cycle)
+                  │     ├─ Cascade-onset = Big Bang event (the cascade IS the Big Bang)
+                  │     ├─ Quantum tunnelling from nothing (Vilenkin-style, recast in NCG)
+                  │     └─ Multiverse selection (anthropic / measure-theoretic over §2.5 seeds)
                   │
                   └─ Rigorous QFT
                      ├─ Gaussian integral converges  [PROVED ★]
@@ -834,34 +869,7 @@ extend the map.
 
 ---
 
-## 9. Rival frameworks (competitor trees)
-
-These are not branches of our tree; they are **alternative trees**
-proposing different fundamental structures for physics. Honest accounting
-requires naming them, noting where they agree / disagree with ours, and
-pointing to distinguishing experiments.
-
-| Framework                        | Their root / mechanism                                           | Where it agrees with ours          | Where it diverges                                  | Distinguishing test                              |
-|----------------------------------|------------------------------------------------------------------|------------------------------------|----------------------------------------------------|--------------------------------------------------|
-| String / M-theory                | Extended objects in 10/11-D target space; dualities              | UV completion of gravity           | Extra dimensions; landscape of vacua; SUSY low-E   | SUSY at LHC / FCC; KK modes; high-r              |
-| Loop Quantum Gravity             | Spin networks; quantised area / volume                           | Background-independent gravity     | Discrete geometry; no SM matter content forced     | Lorentz invariance violations; BH spectroscopy   |
-| Causal Sets                      | Discrete causal partial order                                    | Lorentz / causality respected      | No continuum; combinatorial geometry               | CMB anomaly patterns; nonlocality scale          |
-| Causal Dynamical Triangulations  | Path integral over discretised geometries                         | 4D emerges; Euclidean PI methods    | Geometry simplicial, not algebraic                 | Hausdorff / spectral dimension flow              |
-| Asymptotic Safety                | UV fixed point of gravity coupling                                | UV completion of GR                | No matter content forced; gauge group ad-hoc       | High-energy graviton scattering                  |
-| Twistor theory                   | SL₂(ℂ) twistor space ℂℙ³ as fundamental                          | Lorentz / spinor structure shared  | Holomorphic primary, not algebraic seed             | Twistor-amplitudes vs spectral-action amplitudes |
-| Emergent gravity (Verlinde et al.) | Gravity as entropic / informational                              | Holographic / entropy-area linkage | Gravity not fundamental; metric is derived          | Galaxy rotation curves vs DM particle searches   |
-| Wolfram physics / hypergraph     | Discrete rewriting system; computation primary                    | Computational completeness         | No algebra; reality as graph dynamics              | Specific Lorentz-violation / discreteness sigs   |
-| Constructor theory               | Possible / impossible counterfactual tasks                        | Quantum / classical emergent       | Different ontology; principles-based               | Reformulation of QM tests; principle-of-locality |
-| It-from-Bit / digital physics    | Information primary; physics computational                        | Holographic links                  | No algebra; Bool-categorical seed only             | Bekenstein-saturating boundaries                 |
-
-**Honest note:** several of these (string, twistor, holographic) may turn
-out to be *dual descriptions* of the same physics our tree describes —
-not rivals but reformulations. The distinguishing experiments are the
-honest test.
-
----
-
-## 10. Implementation notes (for later)
+## 9. Implementation notes (for later)
 
 When the visualisation is built (separate task, `tree-of-reality.html`):
 
@@ -894,7 +902,7 @@ When the visualisation is built (separate task, `tree-of-reality.html`):
 
 ---
 
-## 11. Provenance
+## 10. Provenance
 
 - **Source roadmap:** `docs/PAPER_F_ROADMAP.md` (v 2026-05-08, 130KB).
 - **Lean evidence files:** `lean_verify/` — currently 13 files in build,
