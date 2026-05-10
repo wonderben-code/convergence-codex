@@ -1,13 +1,33 @@
-# Tree of Reality — Causal Cladogram (Content Specification v3)
+# Tree of Reality — Causal Cladogram (Content Specification v4)
 
 **Status:** content-locked structure for the "true cladogram" view of physics.
 Implementation (HTML/D3) deliberately deferred — this document is the source of
 truth for the *theory* itself; the visualisation is a downstream rendering.
 
 **Date locked:** 2026-05-10
-**Version:** v3
+**Version:** v4
 
-**What changed since v2 (corrections per author 2026-05-10):**
+**What changed v3 → v4 (substantial expansion per author 2026-05-10):**
+
+- Added **meta-tree above the seed** (§2.5): selection rules + space of
+  alternative seeds (M_n, 𝕆, ℍ, J₃(𝕆), II_∞/III, categorical seeds).
+- Added **Pre-cascade trigger** node with open hypotheses.
+- Named **cascade fork events** (Furey, Dixon, Boyle-Farnsworth,
+  exceptional F₄/E₆/E₇/E₈) as explicit sibling branches.
+- **Grew QM ⟨·,·⟩ subtree** (Born, Schrödinger, path integral, decoherence,
+  einselection, measurement, Bell, Zeno, tunnelling, SYK, Pauli, no-delete).
+- Added **holographic subtree** under BH entropy.
+- Added **cosmological structure-formation subtree** under R².
+- **Sharpened predictions** to named leaves: PMNS δ_CP, Σm_ν, axion-or-no-
+  axion fork, lepton g-2, B-meson R_K, specific H₀, specific σ_8.
+- Added **Downstream emergent physics** as new top-level branch (atomic →
+  chem → condensed matter → biology → cognition / observer).
+- Added **Astrophysics & planetary** as new top-level branch.
+- Added **§9 Rival frameworks** as competitor trees with distinguishing tests.
+- **Reconciled KO-dim**: 6 mod 8 (finite part) vs 2 mod 8 (total M × F).
+- New status tags: `[META]`, `[SPECULATIVE]`, `[DOWNSTREAM]`.
+
+**Earlier (v2 → v3) corrections retained:**
 
 1. **The tree is an open, living map — not a closure proof.** Earlier framing
    (v2) said "anything that doesn't fit breaks the theory." That was wrong.
@@ -68,10 +88,21 @@ dependency / multi-input / aggregate) — never as merger children.
 6. **No orphan "Frontiers" branch.** Within the cladogram, every prediction
    lives at its causal antecedent. The §6 frontiers are *meta*: they say
    *where the cladogram could grow*, not where solved problems go.
-7. **Status reflects current Lean evidence.** PROVED requires unconditional
-   0-sorry Mathlib proof. PARTIAL = some evidence, gaps stated.
-   CLAIMED = weak evidence / scaffolding. PREDICTED = no evidence yet
-   (missing fossil — Mendeleev gap).
+7. **Status taxonomy.** Seven tags, in increasing distance from algebraic
+   forcing:
+   - `[PROVED]` — unconditional 0-sorry Mathlib proof.
+   - `[PARTIAL]` — some evidence, gaps stated explicitly.
+   - `[CLAIMED]` — weak evidence / scaffolding only.
+   - `[PREDICTED]` — no evidence yet, but the structure of the tree forces
+     a specific position (missing fossil / Mendeleev gap). Falsifiable.
+   - `[SPECULATIVE]` — alternative branch the meta-framework permits but
+     does not force; may exist in parallel (e.g. octonion finite triples).
+   - `[DOWNSTREAM]` — emergent from upstream physics by compositional /
+     statistical mechanism, not algebraically forced (e.g. chemistry from
+     atoms; biology from chemistry).
+   - `[META]` — meta-categorical / outside the framework's deductive
+     reach as currently formulated (e.g. why these axioms? what triggered
+     the cascade?). Different epistemic level from `[PREDICTED]`.
 
 ---
 
@@ -122,7 +153,54 @@ overlay from similarity — see §4.
 
 ---
 
-## 3. The Tree (v3 — full)
+## 2.5 Meta-tree above the seed
+
+The seed M₂(ℂ) is selected by four constraints: (i) minimality, (ii)
+non-commutativity, (iii) finite-dimensionality, (iv) faithful trace. Drop
+any one and you get a different seed. The constraints themselves come
+from a **meta-categorical level** that the cladogram-proper does not
+deductively reach. We surface this here as a separate (smaller) meta-tree;
+its leaves are not Mendeleev gaps in the same sense — they are
+`[META]` and `[SPECULATIVE]` rather than `[PREDICTED]`.
+
+```
+META-CATEGORICAL LEVEL  [META]
+│
+├─ Selection rules (why these constraints?)
+│  ├─ Minimality                      [META, OPEN]
+│  ├─ Non-commutativity required       [PARTIAL — without it, classical geometry only]
+│  ├─ Finite-dimensional               [META, OPEN — relax → infinite-dim seeds]
+│  └─ Faithful trace exists            [PARTIAL — needed for probability / GNS]
+│
+├─ Space of possible seeds  [SPECULATIVE]
+│  ├─ M₂(ℂ) — our universe's seed (selected by all four rules)
+│  ├─ M_n(ℂ) for n ≥ 3                 [SPECULATIVE — alternative starting points]
+│  ├─ ℍ (quaternion) standalone        [SPECULATIVE]
+│  ├─ 𝕆 (octonion) / Cayley-Dickson   [SPECULATIVE — non-associative; needs Jordan structure]
+│  ├─ J₃(𝕆) exceptional Jordan algebra [SPECULATIVE — Albert algebra; F₄ / E₆ paths]
+│  ├─ Infinite-dim von Neumann II_∞   [SPECULATIVE — gives different physics]
+│  ├─ Infinite-dim von Neumann III     [SPECULATIVE — modular / thermal physics]
+│  └─ Categorical alternative seeds (functorial level above algebra)
+│     ├─ Cartesian closed → Bool, classical computation         [SPECULATIVE]
+│     ├─ Linear / SMCC → quantum information                     [SPECULATIVE]
+│     └─ Braided → anyons, topological QFT                       [SPECULATIVE]
+│
+└─ Pre-cascade trigger  [META, OPEN]
+   ├─ Eternal-cascade hypothesis (cascade has no temporal start)
+   ├─ Quantum tunnelling from nothing (Vilenkin-style, recast in NCG)
+   ├─ Cyclic / pre-Big-Bang phase (cascade re-initiates each cycle)
+   ├─ Cascade-onset = Big Bang event (the cascade IS the Big Bang)
+   └─ Selection from a multiverse of seeds (anthropic / measure-theoretic)
+```
+
+The meta-tree is *not* part of the deductive cladogram. Its purpose is to
+keep the questions "why these axioms?" and "what initiated the cascade?"
+visible as legitimate frontiers without polluting the strict tree with
+unfounded parents.
+
+---
+
+## 3. The Tree (v4 — full)
 
 ```
 Nothing
@@ -130,21 +208,42 @@ Nothing
    ├─ Subsumes Cantor / Gödel / Turing / Tarski / Russell (Lawvere)  [PREDICTED]   ← F1.2
    └─ Reflexive domain D = (D→D)  [PROVED]
       ├─ No complete self-description (Cantor/Tarski applied to D)  [PROVED]
-      └─ M₂(ℂ): unique minimal seed  [PARTIAL]
+      └─ M₂(ℂ): minimal seed under §2.5 selection rules  [PARTIAL]
+         ⤳ Sibling alternative seeds (§2.5) — overlay only, not a tree edge
+         └─ Pre-cascade trigger  [META, OPEN]
+            ⤳ See §2.5 hypotheses (eternal / tunnelling / cyclic / Big-Bang-as-onset)
          └─ Cascade: End(M₂)=M₄, then M₄→M₁₆→…  [PROVED ★]
+            │
+            ├─ Cascade fork events  [SPECULATIVE]
+            │  At each level the cascade admits a family of finite spectral
+            │  triples; ours selects one. The unselected ones are real
+            │  branches; the question is whether they instantiate parallel
+            │  physics or are forbidden by an unidentified selection rule.
+            │  ├─ Our branch: C ⊕ ℍ ⊕ M₃(ℂ) at the M₂₅₆ level  [PROVED ★]
+            │  ├─ Furey: ℂ ⊗ ℍ ⊗ 𝕆 finite triple  [SPECULATIVE]
+            │  │  └─ Predicts SM gauge group via octonion automorphisms
+            │  ├─ Dixon: algebra-of-nature ℝ ⊗ ℂ ⊗ ℍ ⊗ 𝕆  [SPECULATIVE]
+            │  ├─ Boyle-Farnsworth octonion GUT  [SPECULATIVE]
+            │  ├─ F₄ / E₆ / E₇ / E₈ exceptional finite triples  [SPECULATIVE]
+            │  │  └─ Larger gauge groups; would predict more matter
+            │  └─ Higher cascade depth (M₆₅₅₃₆ and beyond)  [SPECULATIVE]
+            │     ├─ Possible additional matter sectors  [SPECULATIVE]
+            │     ├─ Possible hidden / dark sector algebras  [SPECULATIVE]
+            │     └─ Possible exceptional symmetry emergence at deeper levels
             │
             ├─ Cascade properties
             │  ├─ Irreversible — arrow of time  [PROVED ★]
             │  │  └─ Algebraic → thermodynamic arrow  [PREDICTED]                    ← F6.5(i)
             │  ├─ n = 4 uniquely forced  [PROVED ★]
+            │  ├─ Cascade depth selection (why physics at M₂₅₆?)  [META, OPEN]
             │  ├─ What IS 'canonical'?  [PREDICTED]                                  ← F2.1
             │  └─ Three choices exhaustive  [PREDICTED]                              ← F2.2
             │     └─ Universality across every SMCC  [PREDICTED]                     ← F3.4
             │
-            ├─ Categorical alternative seeds  ← Speciation frontier (see §6.A)
-            │  ├─ Cartesian closed → Bool, computation  [PREDICTED]                  ← F2.6/F2.7
-            │  ├─ Linear / SMCC → quantum information  [PREDICTED]                   ← F2.8
-            │  └─ Braided → anyons, topological QFT  [PREDICTED]                     ← F3.7
+            ├─ Categorical alternative seeds (mirror in §2.5 meta-tree)
+            │  ├─ Cartesian closed → Bool, computation  [SPECULATIVE]                ← F2.6/F2.7
+            │  ├─ Linear / SMCC → quantum information  [SPECULATIVE]                 ← F2.8
+            │  └─ Braided → anyons, topological QFT  [SPECULATIVE]                   ← F3.7
             │
             ├─ END lineage → matter / observable algebra
             │  ├─ 4D spacetime forced (M₄ ≅ Cl₄)  [PROVED ★]
@@ -161,6 +260,9 @@ Nothing
             │  ├─ Pati-Salam (4,2,2)  [PROVED]
             │  │  ├─ Chirality / parity violation  [PROVED]
             │  │  ├─ Strong CP θ = 0 (LR symmetry forces it)  [PREDICTED]             ← F6.2
+            │  │  │  ├─ Path A: PS-symmetry mechanism (no axion needed)  [PREDICTED]
+            │  │  │  └─ Path B (alt fork): QCD axion, m_a ≈ 10⁻⁵ – 10⁻³ eV  [SPECULATIVE]
+            │  │  │     ⤳ Falsifiable binary: detect axion → Path B; null → Path A
             │  │  ├─ Right-handed W boson M(W_R) ~ 10⁴⁻⁶ GeV  [PREDICTED]             ← F7.2
             │  │  ├─ Heavy Higgs H_R at v_R  [PREDICTED]                              ← F7.3
             │  │  ├─ "No new physics below Λ_PS"  [PREDICTED]                         ← F7.9
@@ -172,12 +274,17 @@ Nothing
             │  │  │  │  ├─ Mass hierarchy (top/e ≈ 340k)  [PREDICTED]
             │  │  │  │  ├─ Yukawa eigenvalue ordering on Im(ℍ)  [PREDICTED]            ← F5.4
             │  │  │  │  ├─ Koide-like relations m_e+m_μ+m_τ formula  [PREDICTED]
-            │  │  │  │  └─ CKM matrix (V_us ≈ 0.22, V_cb ≈ 0.04, δ ≈ 68°)  [PREDICTED] ← F5.4
+            │  │  │  │  ├─ CKM matrix (V_us ≈ 0.22, V_cb ≈ 0.04, δ ≈ 68°)  [PREDICTED] ← F5.4
+            │  │  │  │  ├─ Top quark mass m_t ≈ 173 GeV (cascade Yukawa)  [PREDICTED]
+            │  │  │  │  ├─ Lepton g-2 alignment with SM (no new low-E physics)  [PREDICTED]  ← F7.11
+            │  │  │  │  └─ B-meson anomalies R_K, R_K* → 1 (SM-aligned)  [PREDICTED]    ← F7.12
             │  │  │  └─ Neutrino masses + PMNS (seesaw forced by PS)  [PARTIAL]      ← F6.9
             │  │  │     ├─ Majorana nature (from ν_R Majorana mass)  [PREDICTED]
             │  │  │     ├─ Normal hierarchy (Yukawa ordering)  [PREDICTED]
             │  │  │     ├─ Absolute scale m₃ ≈ 0.05 eV  [PREDICTED]
+            │  │  │     ├─ Σm_ν ≈ 0.06 eV (specific cascade-fixed sum)  [PREDICTED]    ← F7.13
             │  │  │     ├─ PMNS angles θ₁₂ ≈ 34°, θ₂₃ ≈ 45°, θ₁₃ ≈ 8.5°  [PREDICTED]
+            │  │  │     ├─ PMNS δ_CP (Yukawa CP from same Im ℍ structure)  [PREDICTED] ← F7.14
             │  │  │     ├─ Neutrinoless 2β decay rate Γ ∝ |m_ee|²  [PREDICTED]        ← F7.4
             │  │  │     └─ Sterile-ν dark matter candidate  [PREDICTED]               ← F6.8
             │  │  │        ├─ Relic abundance Ω_DM ≈ 0.27  [PREDICTED]
@@ -192,6 +299,8 @@ Nothing
             │
             ├─ AUT lineage → symmetry / forces
             │  ├─ GL₂ → SL₂(ℂ)  [PARTIAL]
+            │  │  ├─ Twistor space (SL₂(ℂ) acts on ℂℙ³)  [SPECULATIVE]
+            │  │  │  └─ Penrose twistor programme as derived sub-branch
             │  │  └─ SL₂(ℂ) ≅ Spin(3,1)  [PREDICTED]
             │  │     └─ Lorentz SO⁰(1,3)  [PARTIAL]
             │  │        └─ Diff(M) ⋊ Gauge(M) emerges (Aut(C∞⊗A_F))  [PREDICTED]
@@ -200,11 +309,35 @@ Nothing
             │     G_J = unitaries of A preserving J; gauge group of NCG
             │     ⤳ Co-evolved similarity overlay to END and ⟨·,·⟩ realisations (§4)
             │
-            └─ ⟨·,·⟩ lineage → geometry / dynamics / spectral action
-               ├─ Hilbert structure + U(2) evolution  [PARTIAL]
-               │  └─ Born rule (full derivation)  [PREDICTED]                        ← F3.3
-               ├─ No-cloning theorem  [PROVED]
-               ├─ Schrödinger equation  [PREDICTED]
+            └─ ⟨·,·⟩ lineage → geometry / dynamics / spectral action / QM
+               │
+               ├─ QM phenomenology subtree  [grown in v4]
+               │  ├─ Hilbert structure + U(n) evolution  [PARTIAL]
+               │  ├─ Schrödinger equation (Heisenberg evolution by D)  [PREDICTED]
+               │  ├─ Path integral formulation (consistent with Spectral Action) [PREDICTED]
+               │  ├─ Heisenberg picture ↔ Schrödinger picture equivalence  [PREDICTED]
+               │  ├─ Born rule derivation (Gleason-style under spectral measure) [PREDICTED] ← F3.3
+               │  ├─ Pauli exclusion (antisymmetric tensor on H_F)  [PREDICTED]
+               │  ├─ No-cloning theorem  [PROVED]
+               │  ├─ No-deleting theorem  [PREDICTED]
+               │  ├─ No-broadcasting theorem  [PREDICTED]
+               │  ├─ Quantum entanglement / non-locality  [PREDICTED]
+               │  │  ├─ Bell inequality violations  [PREDICTED]
+               │  │  ├─ Tsirelson bound (QM-saturating)  [PREDICTED]
+               │  │  └─ ER=EPR (overlay to BH entropy holographic subtree)  [SPECULATIVE]
+               │  ├─ Quantum Zeno effect  [PREDICTED]
+               │  ├─ Quantum tunnelling / WKB / semi-classical limit  [PREDICTED]
+               │  ├─ Decoherence (GKLS dynamics from environmental coupling)  [PREDICTED]
+               │  │  └─ Einselection / pointer basis  [PREDICTED]
+               │  │     └─ Measurement / wavefunction "collapse" appearance  [PREDICTED]
+               │  │        ├─ Branching (Many-Worlds reading)  [PREDICTED]
+               │  │        └─ Born-rule probabilities recovered statistically  [PREDICTED]
+               │  ├─ Quantum error correction (entropy / stabiliser structure)  [PREDICTED]
+               │  └─ Quantum chaos / SYK / random-matrix universality  [SPECULATIVE]
+               │     ├─ Spectral statistics of D match GUE / GOE / GSE  [PREDICTED]
+               │     ├─ SYK-class scrambling time t* ~ β log N  [SPECULATIVE]
+               │     └─ Maldacena-Shenker-Stanford bound saturation  [SPECULATIVE]
+               │
                ├─ ★ Spectral Triple — ⟨·,·⟩ realisation  [PARTIAL]
                │  Abstract operator-algebra triple on H; D self-adjoint, ±1 grading γ,
                │  antilinear J satisfying Connes' axioms; KO-dim 6 mod 8 for SM matching
@@ -212,8 +345,10 @@ Nothing
                │
                ├─ γ²=1, {γ,D}=0, D²=m²I  [PROVED ★]
                ├─ Trace + determinant  [PROVED ★]
-               ├─ Connes NCG: 7 axioms, KO-dim = 2 mod 8  [PREDICTED]                ← F3.8f
-               │  ├─ Fermion doubling forced  [PREDICTED]
+               ├─ Connes NCG: 7 axioms  [PREDICTED]                                 ← F3.8f
+               │  ├─ KO-dim = 6 mod 8 for the FINITE part (Connes-Marcolli, SM matching) [PREDICTED]
+               │  ├─ KO-dim = 2 mod 8 for the TOTAL triple (M × F = 4 + 6 ≡ 2) [PREDICTED]
+               │  ├─ Fermion doubling resolved by KO-dim 6 (not forced)  [PREDICTED]
                │  └─ Poincaré duality K₀(M₄(ℂ)) ≅ ℤ  [PREDICTED]
                ├─ Background independence: Diff(M) ⋊ Gauge(M) automatic  [PREDICTED] ← F3.8h
                │  ⤳ depends on AUT lineage (dotted overlay)
@@ -243,6 +378,7 @@ Nothing
                   │  ├─ a₂ ~Λ² → Newton's G (= 3π/(f₂Λ²))  [CLAIMED]                  ← F3.8c
                   │  │  ├─ Graviton (spin-2, 2 polarisations)  [CLAIMED]
                   │  │  ├─ Hubble constant H₀ ≈ 67-73 km/s/Mpc  [PREDICTED]
+                  │  │  ├─ Specific H₀ resolving early/late tension  [PREDICTED]      ← F7.15
                   │  │  └─ Graviton scattering, UV-softened at Λ_PS  [PREDICTED]      ← F3.8j
                   │  ├─ a₄ ~Λ⁰ (dimensionless terms)  [PARTIAL]
                   │  │  ├─ Yang-Mills F²  [PARTIAL]
@@ -258,7 +394,18 @@ Nothing
                   │  │     ├─ Flatness problem dissolved  [PREDICTED]                 ← F6.7
                   │  │     ├─ Horizon problem dissolved  [PREDICTED]                  ← F6.7
                   │  │     ├─ Monopole problem dissolved  [PREDICTED]
-                  │  │     └─ Cosmological arrow (Λ redshifts monotonically)  [PREDICTED] ← F6.5(ii)
+                  │  │     ├─ Cosmological arrow (Λ redshifts monotonically)  [PREDICTED] ← F6.5(ii)
+                  │  │     └─ Cosmological structure formation  [grown in v4]
+                  │  │        ├─ Power spectrum P(k), pivot k₀, A_s  [PREDICTED]
+                  │  │        ├─ σ_8 specific value resolving structure tension  [PREDICTED] ← F7.16
+                  │  │        ├─ CMB anisotropy spectra TT / TE / EE  [PREDICTED]
+                  │  │        ├─ B-mode polarisation (sourced by r)  [PREDICTED]      ← F7.6
+                  │  │        ├─ Baryon acoustic oscillation scale ~150 Mpc  [PREDICTED]
+                  │  │        ├─ Halo mass function (Press-Schechter / Tinker)  [PREDICTED]
+                  │  │        ├─ Halo profiles (NFW from sterile-ν dynamics)  [PREDICTED]
+                  │  │        ├─ Reionisation z_re ≈ 7.7  [PREDICTED]
+                  │  │        ├─ Sachs-Wolfe / Integrated Sachs-Wolfe signal  [PREDICTED]
+                  │  │        └─ Lyman-α forest statistics  [PREDICTED]
                   │  └─ Higgs + Yukawa from inner fluctuations of D + A  [PREDICTED]
                   │     ⤳ depends on END lineage (dotted overlay)
                   │
@@ -268,7 +415,14 @@ Nothing
                   │  │  ├─ First law dM = T dS verified  [PREDICTED]
                   │  │  ├─ Singularity resolution: curvature bounded R ~ Λ²  [PREDICTED]
                   │  │  ├─ BH minimum radius r_min ~ 10³ ℓ_P  [PREDICTED]             ← F7.10
-                  │  │  └─ Information preservation (D self-adjoint → unitary)  [PREDICTED]
+                  │  │  ├─ Information preservation (D self-adjoint → unitary)  [PREDICTED]
+                  │  │  └─ Holographic subtree  [grown in v4, SPECULATIVE]
+                  │  │     ├─ Holographic principle (S ≤ A/4G as identity)  [SPECULATIVE]
+                  │  │     ├─ AdS-CFT-like correspondence in NCG  [SPECULATIVE]
+                  │  │     ├─ ER=EPR (entanglement ↔ wormhole geometry)  [SPECULATIVE]
+                  │  │     ├─ Boundary entanglement entropy  [SPECULATIVE]
+                  │  │     ├─ Page curve (information recovery)  [SPECULATIVE]
+                  │  │     └─ Bulk reconstruction from boundary data  [SPECULATIVE]
                   │  └─ Phase transitions (Landau Z₂)  [PROVED]
                   │
                   ├─ Cosmology synthesis (multi-input)
@@ -295,6 +449,83 @@ Nothing
                         ├─ Cluster decomposition  [PARTIAL]                           ← F3.9g_vi
                         ├─ Thermodynamic limit  [CLAIMED]
                         └─ YM mass gap on ℝ⁴  [CLAIMED]                               ← F3.9g_vii
+
+
+─────────────────────────────────────────────────────────────────────────
+DOWNSTREAM EMERGENT PHYSICS  [DOWNSTREAM]
+  Not algebraically forced; emergent by composition / statistics.
+  Causal parent: SM (atomic level) + GR + statistical mechanics.
+─────────────────────────────────────────────────────────────────────────
+
+Atomic physics  [DOWNSTREAM]
+├─ Hydrogen-like spectra (Schrödinger + Coulomb)
+├─ Multi-electron atoms (QED + Pauli + correlation)
+├─ Periodic table structure (shell filling from Pauli + Coulomb)
+├─ Atomic spectra / fine structure / hyperfine / Lamb shift  [QED corrections]
+└─ Chemistry  [DOWNSTREAM]
+   ├─ Molecular bonding (covalent / ionic / vdW / metallic)
+   ├─ Molecular orbital theory; spectroscopy (UV-Vis / IR / NMR / MS)
+   ├─ Reaction kinetics + thermodynamics
+   ├─ Catalysis
+   ├─ Crystal structures (group theory of lattices)
+   └─ Solid-state / Condensed matter  [DOWNSTREAM]
+      ├─ Band theory (Bloch's theorem)
+      ├─ Semiconductors / insulators / metals
+      ├─ Superconductivity (BCS / High-T_c / topological)
+      ├─ Topological matter / anyons  ⤳ similarity with Braided seed
+      ├─ Quantum Hall effects (integer / fractional)
+      ├─ Magnetism (ferro / anti / spin glass)
+      ├─ Phase transitions  ⤳ similarity with upstream Landau Z₂
+      ├─ Superfluidity (He-4 / He-3)
+      └─ Strongly correlated electrons (Hubbard / t-J / SYK lattice)
+   └─ Soft matter / fluids / plasma  [DOWNSTREAM]
+      ├─ Hydrodynamics (Navier-Stokes; Millennium-adjacent)
+      ├─ Turbulence
+      ├─ Plasma physics (MHD)
+      └─ Granular / glassy matter
+   └─ Biochemistry  [DOWNSTREAM]
+      ├─ Macromolecules (proteins, lipids, nucleic acids)
+      ├─ Enzymatic catalysis
+      ├─ Energy carriers (ATP, electron transport)
+      └─ Biology  [DOWNSTREAM]
+         ├─ Self-replicating molecules (RNA-world / autocatalytic)
+         ├─ Cells / membranes / metabolism
+         ├─ Genetics / heredity (DNA-RNA-protein)
+         ├─ Evolution by natural selection
+         ├─ Multicellularity / tissues / organs
+         ├─ Nervous systems / signalling
+         └─ Cognition / mind / observer  [META; DOWNSTREAM]
+            ├─ Integrated Information Theory (IIT) reading  [SPECULATIVE]
+            ├─ Global Workspace / attention schema  [SPECULATIVE]
+            ├─ Predictive coding / Bayesian brain  [SPECULATIVE]
+            └─ Where the spectral-triple "observer" sits  [META]
+               ⤳ The observer in the formalism may be the deep descendant
+                 of the same cascade that produced the formalism itself.
+
+─────────────────────────────────────────────────────────────────────────
+ASTROPHYSICS & PLANETARY  [DOWNSTREAM]
+  Causal parent: GR + nuclear / atomic + cosmological structure formation.
+─────────────────────────────────────────────────────────────────────────
+
+├─ Big Bang Nucleosynthesis (D, ³He, ⁴He, ⁷Li abundances)  [DOWNSTREAM]
+│  ⤳ depends on cosmology synthesis upstream
+├─ Stellar physics  [DOWNSTREAM]
+│  ├─ Stellar fusion (pp / CNO / triple-α)
+│  ├─ Stellar structure / evolution / HR diagram
+│  ├─ Heavy element nucleosynthesis (s / r / p / rp processes)
+│  └─ Endpoints: white dwarfs, neutron stars, black holes
+│     ⤳ similarity with BH entropy upstream
+├─ Galaxies / clusters / cosmic web  [DOWNSTREAM]
+│  ⤳ depends on structure-formation subtree
+├─ Planets / exoplanets  [DOWNSTREAM]
+│  ├─ Planet formation (protoplanetary discs)
+│  ├─ Habitable zones
+│  └─ Origins of life / abiogenesis  ⤳ overlay to Biology
+└─ Multi-messenger astronomy  [DOWNSTREAM]
+   ├─ Gravitational waves (LIGO / Virgo / KAGRA / LISA)
+   │  ⤳ test of graviton scattering UV-softening (F3.8j)
+   ├─ Cosmic rays / neutrinos
+   └─ X-ray / γ-ray sources
 ```
 
 ---
@@ -341,6 +572,12 @@ does not happen.
 | Aggregate           | Ω_Λ (a₀)                                          | Total Ω = 1 (Cosmology synthesis)                 | Ω_Λ ≈ 0.69 contribution                          |
 | Aggregate           | Ω_DM (sterile-ν, under Neutrinos)                 | Total Ω = 1 (Cosmology synthesis)                 | Ω_DM ≈ 0.27 contribution                         |
 | Aggregate           | Ω_b (baryogenesis, under Pati-Salam)              | Total Ω = 1 (Cosmology synthesis)                 | Ω_b ≈ 0.05 contribution                          |
+| Co-evolved similarity | Topological matter (Condensed matter, downstream) | Braided alternative seed (§2.5)                  | Anyons / topological order on both branches      |
+| Co-evolved similarity | Phase transitions (downstream condensed matter)   | Phase transitions (Landau Z₂ under Spectral Action) | Same critical-phenomena structure, distinct branches |
+| Co-evolved similarity | Stellar / galactic black holes (Astrophysics)     | BH entropy (Spectral Action consequences)         | Same horizon thermodynamics, distinct branches   |
+| Cross-lineage dependency | QM phenomenology subtree (⟨·,·⟩)              | Atomic physics (Downstream)                       | Schrödinger + Pauli required for atoms           |
+| Cross-lineage dependency | Cosmology synthesis                            | BBN / structure formation (Astrophysics)          | Initial conditions for downstream cosmology      |
+| Cross-lineage dependency | ER=EPR (QM subtree)                            | Holographic subtree (under BH entropy)            | Entanglement ↔ wormhole identification           |
 
 ---
 
@@ -380,6 +617,16 @@ spectral-geometric operation. No mathematical fiction.
 | Glueball ~1.6 GeV                   | Lattice QCD agrees                                                     |
 | W_R, H_R at 10⁴⁻⁶ GeV               | Beyond LHC; future colliders; falsifiable                              |
 | BH r_min ~ 10³ ℓ_P                  | Indirect signatures only; far-future test                              |
+| PMNS δ_CP                           | Hyper-K / DUNE measurement; falsifiable                                 |
+| Σm_ν specific value                 | KATRIN / cosmology Σm_ν < 0.12 eV; falsifiable                          |
+| Lepton g-2                          | Currently a low-significance tension; tree predicts SM alignment        |
+| B-meson R_K, R_K*                   | LHCb 2022 R_K → 1; consistent with tree's "no new physics below Λ_PS"   |
+| Specific H₀                         | Currently a 5σ tension; tree should resolve                             |
+| Specific σ_8                        | Currently ~2σ tension; tree should resolve                              |
+| Holographic / AdS-CFT structure     | Indirect (via lattice + analogue); deeply tested in AdS                |
+| Atomic / chemistry / biology        | Confirmed (everywhere we look)                                          |
+| BBN abundances                      | Confirmed (D/H, ³He, ⁴He, ⁷Li; Li tension at <3σ)                       |
+| Gravitational waves (LIGO)          | Confirmed; UV-softening test pending                                    |
 
 ✓ All postdictions match measured values; all falsifiable predictions sit
 in physically motivated ranges; the cladogram positions match the
@@ -524,6 +771,13 @@ extend the map.
 | F7.8  | Glueball spectrum (1.6 GeV +)           | Confinement                                |
 | F7.9  | No new physics below Λ_PS               | Pati-Salam                                 |
 | F7.10 | BH r_min ~ 10³ ℓ_P                      | Black hole entropy                         |
+| F7.11 | Lepton g-2 SM-aligned (no new physics)  | Three generations / Higgs-Yukawa           |
+| F7.12 | B-meson R_K, R_K* → 1 (SM-aligned)      | Three generations                          |
+| F7.13 | Σm_ν ≈ 0.06 eV specific                 | Neutrino masses + PMNS                     |
+| F7.14 | PMNS δ_CP value                         | Neutrino masses + PMNS                     |
+| F7.15 | Specific H₀ resolving Hubble tension    | a₂ Newton's G + cosmology synthesis        |
+| F7.16 | Specific σ_8 resolving structure tension | R² Starobinsky structure formation        |
+| F7.17 | Axion-or-no-axion binary fork           | Strong CP θ = 0 (under Pati-Salam)         |
 
 ---
 
@@ -548,7 +802,34 @@ extend the map.
 
 ---
 
-## 9. Implementation notes (for later)
+## 9. Rival frameworks (competitor trees)
+
+These are not branches of our tree; they are **alternative trees**
+proposing different fundamental structures for physics. Honest accounting
+requires naming them, noting where they agree / disagree with ours, and
+pointing to distinguishing experiments.
+
+| Framework                        | Their root / mechanism                                           | Where it agrees with ours          | Where it diverges                                  | Distinguishing test                              |
+|----------------------------------|------------------------------------------------------------------|------------------------------------|----------------------------------------------------|--------------------------------------------------|
+| String / M-theory                | Extended objects in 10/11-D target space; dualities              | UV completion of gravity           | Extra dimensions; landscape of vacua; SUSY low-E   | SUSY at LHC / FCC; KK modes; high-r              |
+| Loop Quantum Gravity             | Spin networks; quantised area / volume                           | Background-independent gravity     | Discrete geometry; no SM matter content forced     | Lorentz invariance violations; BH spectroscopy   |
+| Causal Sets                      | Discrete causal partial order                                    | Lorentz / causality respected      | No continuum; combinatorial geometry               | CMB anomaly patterns; nonlocality scale          |
+| Causal Dynamical Triangulations  | Path integral over discretised geometries                         | 4D emerges; Euclidean PI methods    | Geometry simplicial, not algebraic                 | Hausdorff / spectral dimension flow              |
+| Asymptotic Safety                | UV fixed point of gravity coupling                                | UV completion of GR                | No matter content forced; gauge group ad-hoc       | High-energy graviton scattering                  |
+| Twistor theory                   | SL₂(ℂ) twistor space ℂℙ³ as fundamental                          | Lorentz / spinor structure shared  | Holomorphic primary, not algebraic seed             | Twistor-amplitudes vs spectral-action amplitudes |
+| Emergent gravity (Verlinde et al.) | Gravity as entropic / informational                              | Holographic / entropy-area linkage | Gravity not fundamental; metric is derived          | Galaxy rotation curves vs DM particle searches   |
+| Wolfram physics / hypergraph     | Discrete rewriting system; computation primary                    | Computational completeness         | No algebra; reality as graph dynamics              | Specific Lorentz-violation / discreteness sigs   |
+| Constructor theory               | Possible / impossible counterfactual tasks                        | Quantum / classical emergent       | Different ontology; principles-based               | Reformulation of QM tests; principle-of-locality |
+| It-from-Bit / digital physics    | Information primary; physics computational                        | Holographic links                  | No algebra; Bool-categorical seed only             | Bekenstein-saturating boundaries                 |
+
+**Honest note:** several of these (string, twistor, holographic) may turn
+out to be *dual descriptions* of the same physics our tree describes —
+not rivals but reformulations. The distinguishing experiments are the
+honest test.
+
+---
+
+## 10. Implementation notes (for later)
 
 When the visualisation is built (separate task, `tree-of-reality.html`):
 
@@ -581,7 +862,7 @@ When the visualisation is built (separate task, `tree-of-reality.html`):
 
 ---
 
-## 10. Provenance
+## 11. Provenance
 
 - **Source roadmap:** `docs/PAPER_F_ROADMAP.md` (v 2026-05-08, 130KB).
 - **Lean evidence files:** `lean_verify/` — currently 13 files in build,
