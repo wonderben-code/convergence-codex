@@ -1,11 +1,18 @@
-# Tree of Reality — Causal Cladogram (Content Specification v4.2)
+# Tree of Reality — Causal Cladogram (Content Specification v4.3)
+
+**Created by:** Mark E. Mala (pen name of Ekram Alam).
 
 **Status:** content-locked structure for the "true cladogram" view of physics.
 Implementation (HTML/D3) deliberately deferred — this document is the source of
 truth for the *theory* itself; the visualisation is a downstream rendering.
 
 **Date locked:** 2026-05-10
-**Version:** v4.2
+**Version:** v4.3
+
+**What changed v4.2 → v4.3 (per author 2026-05-10):**
+
+- Added explicit authorship attribution: **Mark E. Mala (pen name of
+  Ekram Alam)** at the top of the document and in §10 Provenance.
 
 **What changed v4.1 → v4.2 (per author 2026-05-10):**
 
@@ -904,6 +911,8 @@ When the visualisation is built (separate task, `tree-of-reality.html`):
 
 ## 10. Provenance
 
+- **Author:** Mark E. Mala (pen name of Ekram Alam). All conceptual
+  framing, design choices, and the cladogram structure are his.
 - **Source roadmap:** `docs/PAPER_F_ROADMAP.md` (v 2026-05-08, 130KB).
 - **Lean evidence files:** `lean_verify/` — currently 13 files in build,
   52 unverified per integrity gate (2026-05-06). Statuses in this
