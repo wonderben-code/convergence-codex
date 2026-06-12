@@ -1,18 +1,22 @@
 # The Convergence Codex
 
-**The world's first and largest systematic mapping of cross-domain structural relationships across established science, mathematics, and physics.**
+**An open, exploratory mapping of cross-domain structural relationships across science, mathematics, and physics — discovered with custom AI, formalised in Lean 4, and timestamped for provenance.**
+
+This is independent, AI-collaborative research, not peer-reviewed. Some of it is genuine structural discovery; some is preliminary or wrong. Everything is open and Bitcoin-timestamped so it can be checked. Read it in that light.
 
 ---
 
 ## What This Is
 
-Three custom-built AIs form an autonomous research pipeline:
+Custom-built AI components form a research pipeline:
 
-- **Gnosis** — discovers structural convergences across scientific fields
-- **Logos** — formally proves each discovery using Lean 4 and mathematical reasoning
-- **Synthesis** — writes publication-quality papers from the discoveries and proofs
+- **Gnosis** — discovers structural convergences across scientific fields ([its own repo](https://github.com/wonderben-code/gnosis-ai)).
+- **Logos** — attempts to formalise discoveries as Lean 4 / Mathlib proofs.
+- **Synthesis** — *retired as an autonomous system.* Papers are now composed manually with Claude Code, because the higher-rigour writing benefits from a human in the loop.
 
-The pipeline runs across ALL established fields of science, mathematics, and physics. Every discovery is validated, formally proved where possible, published as a paper on Zenodo, and made explorable on an interactive website. Everything is Bitcoin-timestamped with full cryptographic provenance.
+Discoveries are validated, formalised where genuinely possible, published as papers on Zenodo, and mapped on an interactive website. Everything is Bitcoin-timestamped with cryptographic provenance.
+
+**An honest note on the formalisation.** A May 2026 internal audit found that a large fraction of the Lean theorems were arithmetic proxies or type-level tautologies — they compiled with zero `sorry` but did not establish the physics their docstrings claimed. Around twenty files are the genuinely Mathlib-backed core; the rest is honest work-in-progress. See `lean_verify/MATHS_ORG_STATE.md` for the audited state. Claims throughout carry status tags (PROVED / PARTIAL / CLAIMED / PREDICTED / SPECULATIVE / DOWNSTREAM / META) so nothing has to be taken on trust.
 
 ## The Pipeline
 
@@ -21,64 +25,56 @@ Established Knowledge
         │
         ▼
    ┌─────────┐
-   │  GNOSIS  │  Survey fields → Find convergences → Validate → Meta-converge
+   │  GNOSIS  │  Survey fields → find convergences → validate → meta-converge
    └────┬─────┘
         │ Structured discoveries (JSON)
         ▼
    ┌─────────┐
-   │  LOGOS   │  Detect proof type → Select apparatus → Prove → Adversarial check
+   │  LOGOS   │  Detect proof type → select apparatus → prove (Lean 4) → adversarial check
    └────┬─────┘
-        │ Formal proofs (Lean 4 + natural language)
+        │ Formal proofs (Lean 4 + natural language), with honest status tags
         ▼
-   ┌─────────┐
-   │SYNTHESIS │  Detect paper boundaries → Write → Cite → Honest scope
-   └────┬─────┘
-        │ Publication-ready papers (Markdown)
-        ▼
-   Zenodo + Bitcoin timestamp
+   Manual composition (Claude Code) → Zenodo + Bitcoin timestamp
 ```
 
-Each AI is independently runnable. The pipeline is coordinated by a thin orchestrator with human-in-the-loop checkpoints.
+Each component is independently runnable, coordinated by a thin orchestrator with human-in-the-loop checkpoints.
 
-## The Scale
+## The Scope
 
-With 70-100+ fields across science, mathematics, and physics:
-- **~3,000+ pairwise comparisons** (exhaustive, cross-domain first)
-- **~1,000-2,000 multi-field groups** (3+ fields simultaneously)
-- **Multiple levels of meta-convergence** (combinatorial at every level)
-- **Recursive cascade to fixed points** (the deepest structural principles)
-- **Estimated total cost: under $4,000** for mapping structural relationships across all of science
+The combinatorial design is exhaustive *within the set of fields surveyed* — not "all of science". As coverage grows toward dozens of fields:
+- Cross-domain pairwise comparisons (cross-domain first)
+- Multi-field groups (3+ fields simultaneously)
+- Meta-convergence levels (combinatorial at each level)
+- A recursive cascade toward fixed points
+
+Compute runs on Claude (API or Claude Code Max-plan, ~$0 in the latter). Cost figures quoted in the papers are for the specific runs reported there, not for "all of science".
 
 ## Repository Structure
 
 ```
 convergence-codex/
-├── docs/           ← Architecture, specs, roadmap
-├── logos/          ← Logos AI (formaliser)
-├── synthesis/      ← Synthesis AI (communicator)
-├── orchestrator/   ← Pipeline orchestrator
-├── data/           ← Codex outputs (convergences, proofs, papers)
-└── papers/         ← Published papers
+├── docs/           ← Architecture, the Tree of Reality spec, contributing guide
+├── logos/          ← Logos (formaliser)
+├── orchestrator/   ← pipeline orchestrator
+├── lean_verify/    ← Lean 4 proofs + the audited integrity state
+├── data/           ← outputs (convergences, proofs, paper drafts)
+└── papers/         ← published papers
 ```
 
-Gnosis AI lives in its own repo: [wonderben-code/gnosis-ai](https://github.com/wonderben-code/gnosis-ai)
+Gnosis lives in its own repo: [wonderben-code/gnosis-ai](https://github.com/wonderben-code/gnosis-ai).
 
 ## Status
 
-**Planning complete. Build not started.**
-
-See `docs/ROADMAP.md` for the build plan.
+Active, exploratory. Gnosis (v1 published; v2 cross-domain in development) and Logos are built; papers are published on Zenodo; the Lean codebase is partially genuine and honestly tagged (see the audit note above). This is a living research repository, not a finished product.
 
 ## Papers
 
-All papers published on [Zenodo](https://zenodo.org) with DOIs. All Bitcoin-timestamped.
+Published on [Zenodo](https://zenodo.org), CERN's open-access repository, each with a permanent DOI and Bitcoin timestamp.
 
 ## Open Source
 
-MIT License. All three AIs, all code, all data, all papers — fully open.
+MIT License. Code, data, and papers are open. To audit a claim: find its node in the Tree of Reality, follow it to the Lean file, run `lake build`, watch it compile.
 
-## Creator
+## Author
 
-Mark E. Mala (Ekram Alam) — serial founder, YC alum, Forbes Technology Council.
-
-Part of the [Infinitography](https://infinitography.com) research programme.
+Mark E. Mala (pen name of Ekram Alam). Part of the [Infinitography](https://infinitography.com) research programme.

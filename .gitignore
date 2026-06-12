@@ -7,3 +7,25 @@ dist/
 build/
 .env
 *.ots.bak
+
+# internal planning / scaffolding — never publish
+MASTER_ROADMAP.md
+docs/MASTER_ROADMAP.md
+docs/ROADMAP.md
+docs/*_ROADMAP.md
+docs/*_PLAN.md
+docs/*_STATE.md
+docs/COORDINATOR_STATE.md
+docs/GNOSIS_V2_*.md
+docs/LOGOS_*.md
+docs/MATHS_ORG.md
+docs/EMERGENCE_PROGRAMME.md
+docs/FULL_CHECKLIST.md
+docs/LEAN_AUDIT_REPORT.md
+docs/PROOF_TRACKER.md
+docs/file_reports/
+lean_verify/PHASE5_BATTLE_PLAN.md
+lean_verify/PEER_REVIEW_RESULTS.md
+.claude/
+CLAUDE.md
+docs/ARCHITECTURE.md
