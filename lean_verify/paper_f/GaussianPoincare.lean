@@ -2,8 +2,9 @@
   GaussianPoincare: The 1-d Gaussian Poincaré Inequality
   ======================================================
 
-  Frontier unit (tree §11.4/§11.6, spine L23; wall #1 of the honest wall
-  map). What the estate had before this file: the spec doc tags
+  Frontier unit (tree §11.6, the rigorous-QFT branch where the
+  `BakryEmeryGap.lean` row lives; link L23 of
+  `codex-internal/formalisation/SPINE.md`; wall #1 of the honest wall map). What the estate had before this file: the spec doc tags
   "Bakry-Émery spectral gap (gap = 2/Λ²)" as PROVED ★, but in Lean the gap
   was a DEFINITION and the criterion field was discharged by `le_refl` — no
   measure, no variance, no test function appeared anywhere (Phase 0 audit).
@@ -15,16 +16,23 @@
 
       ∫ p² dγ − (∫ p dγ)² ≤ ∫ (p′)² dγ        (`poincare_gaussianReal`)
 
-  with the constant 1 SHARP (equality at p = X, `poincare_sharp`). The route
+  with the constant 1 SHARP — and sharpness is EXPORTED, not remarked:
+  `gvar_X_eq_one` and `dirichlet_X_eq_one` compute both sides at p = X, and
+  `no_better_constant` concludes that any constant c for which the inequality
+  holds universally satisfies c ≥ 1. The route
   is Chernoff's: expand in Hermite polynomials, where both sides are exactly
   computable and the inequality becomes the index comparison 1 ≤ k.
 
-  The stairs, each of which is new work — Mathlib has the algebraic Hermite
-  polynomials and nothing else about them:
+  The stairs, each of which is new work. Mathlib has the algebraic Hermite
+  polynomials with their coefficient, degree and monicity facts and the
+  Rodrigues formula — two of which (`hermite_monic`, `natDegree_hermite`) are
+  imported and used below — but no derivative identity and no L² theory
+  whatsoever:
 
   1. §1–3 ALGEBRA. `derivative_H_succ`: Hₙ₊₁′ = (n+1)·Hₙ, which Mathlib does
-     NOT have (it has only the recurrence Hₙ₊₁ = X·Hₙ − Hₙ′ and the
-     Rodrigues formula); the three-term recurrence; and `exists_hermite_repr`
+     NOT have (a search for `derivative (hermite …)` across Mathlib returns
+     only the two occurrences inside `hermite_succ` itself); the three-term
+     recurrence; and `exists_hermite_repr`
      — every real polynomial is a finite Hermite combination with an
      explicit degree bound.
   2. §4 ANALYSIS. `stein_weight`: Gaussian integration by parts,
@@ -376,10 +384,13 @@ theorem stein_weight (p : ℝ[X]) :
 
     With Stein's identity in hand the Hermite family can be shown orthogonal
     in L²(W). Everything is phrased through the linear functional
-    I(p) = ∫ p·W and the pairing ⟪p,q⟫ = I(p·q); the normalisation constant
-    Z = ∫ W = √(2π) is carried symbolically (its value is computed, but no
-    result below depends on it, because the Poincaré inequality is invariant
-    under scaling the weight). -/
+    I(p) = ∫ p·W and the pairing ⟪p,q⟫ = I(p·q). The normalisation constant
+    Z = ∫ W is computed exactly (`Z_eq : Z = √(2π)`) and IS used twice, so
+    the value is load-bearing and not decoration: `Z_pos` derives Z ≠ 0 from
+    it (which every division below needs), and §7 rewrites through it to
+    identify Z⁻¹·W with Mathlib's `gaussianPDFReal 0 1`. What the inequality
+    does not depend on is the SCALE of the weight — but that is a property of
+    the statement, not of these proofs. -/
 
 /-- The Gaussian functional I(p) = ∫ p(x)·e^{−x²/2} dx. -/
 def I (p : ℝ[X]) : ℝ := ∫ x : ℝ, p.eval x * W x
@@ -574,8 +585,8 @@ def gvar (p : ℝ[X]) : ℝ := gmean (p * p) - (gmean p) ^ 2
     Var_γ(p) ≤ E_γ[(p′)²] for the standard Gaussian γ on ℝ.
     Both sides are computed exactly in Hermite coordinates — the variance is
     Σ_{k≥1} aₖ²·k!, the Dirichlet form is Σ_{k≥1} k·aₖ²·k! — so the
-    inequality is the index comparison 1 ≤ k, and the constant 1 is sharp
-    (equality holds for p = H₁ = X). -/
+    inequality is the index comparison 1 ≤ k. The constant 1 is sharp:
+    see `no_better_constant`. -/
 theorem poincare_polynomial (p : ℝ[X]) :
     gvar p ≤ gmean (derivative p * derivative p) := by
   obtain ⟨N, a, rfl⟩ := exists_hermite_repr' p
@@ -636,8 +647,9 @@ theorem poincare_polynomial (p : ℝ[X]) :
   have hsum := Finset.sum_le_sum hterm
   nlinarith [hsum]
 
-/-- **Sharpness**: for p = H₁ = X the Poincaré inequality is an equality, so
-    the constant 1 cannot be improved. -/
+/-- For p = H₁ = X the Poincaré inequality is an equality. (The two sides are
+    each equal to 1 — see `gvar_X_eq_one` and `dirichlet_X_eq_one`; the
+    statement that no smaller constant works is `no_better_constant`.) -/
 theorem poincare_sharp : gvar X = gmean (derivative X * derivative X) := by
   have h1 : (X : ℝ[X]) = ∑ k ∈ Finset.range 2,
       (fun j => if j = 1 then (1 : ℝ) else 0) k • H k := by
@@ -823,6 +835,36 @@ theorem gvar_X_eq_one : gvar (X : ℝ[X]) = 1 := by
   simp only [Polynomial.eval_X] at h
   rw [← h]
   simp
+
+/-- The Dirichlet energy of X is 1. -/
+theorem dirichlet_X_eq_one :
+    gmean (derivative (X : ℝ[X]) * derivative X) = 1 := by
+  rw [Polynomial.derivative_X, one_mul, gmean_one]
+
+/-- **THE CONSTANT 1 CANNOT BE IMPROVED**, as an exported statement rather
+    than a remark: if Var_γ(p) ≤ c·E_γ[(p′)²] holds for every polynomial,
+    then c ≥ 1. (Proof: test on p = X, where the variance and the Dirichlet
+    energy are both exactly 1.) -/
+theorem no_better_constant (c : ℝ)
+    (h : ∀ p : ℝ[X], gvar p ≤ c * gmean (derivative p * derivative p)) :
+    1 ≤ c := by
+  have hX := h X
+  rw [gvar_X_eq_one, dirichlet_X_eq_one, mul_one] at hX
+  exact hX
+
+/-- Sharpness in the measure-theoretic vocabulary, matching the language of
+    `poincare_gaussianReal`: at p = X both sides equal 1. -/
+theorem poincare_sharp_gaussianReal :
+    Var[fun x => (X : ℝ[X]).eval x; gaussianReal 0 1] = 1 ∧
+      (∫ x : ℝ, ((derivative (X : ℝ[X])).eval x) ^ 2 ∂(gaussianReal 0 1)) = 1 := by
+  refine ⟨by rw [variance_eq_gvar, gvar_X_eq_one], ?_⟩
+  have hd : (∫ x : ℝ, ((derivative (X : ℝ[X])).eval x) ^ 2 ∂(gaussianReal 0 1))
+      = gmean (derivative X * derivative X) := by
+    rw [gmean_eq_integral]
+    congr 1
+    funext x
+    rw [Polynomial.eval_mul, sq]
+  rw [hd, dirichlet_X_eq_one]
 
 /-! ## 9. The stairs above this one
 
