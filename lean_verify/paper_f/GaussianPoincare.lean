@@ -313,7 +313,312 @@ theorem stein_weight (p : ℝ[X]) :
   rw [hsplit, integral_sub hi1 hi2] at h0
   linarith
 
-/-! ## 5. What is NOT proven here
+/-! ## 5. The Gaussian pairing and Hermite orthogonality
+
+    With Stein's identity in hand the Hermite family can be shown orthogonal
+    in L²(W). Everything is phrased through the linear functional
+    I(p) = ∫ p·W and the pairing ⟪p,q⟫ = I(p·q); the normalisation constant
+    Z = ∫ W = √(2π) is carried symbolically (its value is computed, but no
+    result below depends on it, because the Poincaré inequality is invariant
+    under scaling the weight). -/
+
+/-- The Gaussian functional I(p) = ∫ p(x)·e^{−x²/2} dx. -/
+def I (p : ℝ[X]) : ℝ := ∫ x : ℝ, p.eval x * W x
+
+@[simp] theorem I_zero : I 0 = 0 := by
+  unfold I
+  simp
+
+theorem I_add (p q : ℝ[X]) : I (p + q) = I p + I q := by
+  unfold I
+  rw [← integral_add (integrable_poly_mul_W p) (integrable_poly_mul_W q)]
+  congr 1
+  funext x
+  simp [add_mul]
+
+theorem I_sub (p q : ℝ[X]) : I (p - q) = I p - I q := by
+  unfold I
+  rw [← integral_sub (integrable_poly_mul_W p) (integrable_poly_mul_W q)]
+  congr 1
+  funext x
+  simp [sub_mul]
+
+theorem I_smul (c : ℝ) (p : ℝ[X]) : I (c • p) = c * I p := by
+  unfold I
+  have h : ∀ x : ℝ, (c • p).eval x * W x = c • (p.eval x * W x) := by
+    intro x
+    rw [smul_eq_C_mul, Polynomial.eval_mul, Polynomial.eval_C, smul_eq_mul]
+    ring
+  simp_rw [h]
+  rw [integral_smul]
+  simp
+
+/-- **Stein's identity in functional form**: I(X·p) = I(p′). -/
+theorem I_X_mul (p : ℝ[X]) : I (X * p) = I (derivative p) := by
+  unfold I
+  rw [← stein_weight p]
+  congr 1
+  funext x
+  simp
+
+/-- The Gaussian pairing ⟪p,q⟫ = ∫ p·q·W. -/
+def ip (p q : ℝ[X]) : ℝ := I (p * q)
+
+/-- The normalisation constant Z = ∫ e^{−x²/2} dx. -/
+def Z : ℝ := I 1
+
+theorem Z_eq : Z = Real.sqrt (2 * Real.pi) := by
+  unfold Z I W
+  have h : ∀ x : ℝ, (1 : ℝ[X]).eval x * Real.exp (-x ^ 2 / 2)
+      = Real.exp (-(1 / 2 : ℝ) * x ^ 2) := by
+    intro x
+    rw [Polynomial.eval_one, one_mul]
+    congr 1
+    ring
+  simp_rw [h]
+  rw [integral_gaussian]
+  congr 1
+  ring
+
+theorem Z_pos : 0 < Z := by
+  rw [Z_eq]
+  positivity
+
+/-- Linearity of the pairing in its second argument. -/
+theorem ip_smul_right (p q : ℝ[X]) (c : ℝ) : ip p (c • q) = c * ip p q := by
+  unfold ip
+  rw [mul_smul_comm, I_smul]
+
+@[simp] theorem ip_zero_right (p : ℝ[X]) : ip p 0 = 0 := by
+  unfold ip
+  simp
+
+/-- **The raising/lowering adjunction**: ⟪Hₘ₊₁, Hₙ⟫ = ⟪Hₘ, Hₙ′⟫. Multiplying
+    by X on one side is differentiating on the other — this is the whole
+    content of Gaussian integration by parts, in Hermite coordinates. -/
+theorem ip_H_succ (m n : ℕ) :
+    ip (H (m + 1)) (H n) = ip (H m) (derivative (H n)) := by
+  unfold ip
+  rw [H_succ m]
+  have e1 : (X * H m - derivative (H m)) * H n
+      = X * (H m * H n) - derivative (H m) * H n := by ring
+  rw [e1, I_sub, I_X_mul, derivative_mul, I_add]
+  ring
+
+/-- Every Hermite polynomial of positive index has zero Gaussian mean. -/
+theorem I_H_succ (n : ℕ) : I (H (n + 1)) = 0 := by
+  rw [H_succ n, I_sub, I_X_mul]
+  ring
+
+/-- **Hermite orthogonality in L²(W)**: ⟪Hₘ, Hₙ⟫ = m!·Z·δₘₙ. Mathlib has no
+    Gaussian-L² theory of the Hermite family at all; this is the statement
+    that makes the family a coordinate system for the Gaussian. -/
+theorem ip_H (m n : ℕ) :
+    ip (H m) (H n) = if m = n then (m.factorial : ℝ) * Z else 0 := by
+  induction m generalizing n with
+  | zero =>
+      cases n with
+      | zero => simp [ip, Z]
+      | succ k =>
+          have h : ip (H 0) (H (k + 1)) = I (H (k + 1)) := by
+            unfold ip
+            rw [H_zero, one_mul]
+          rw [h, I_H_succ]
+          simp
+  | succ m ih =>
+      cases n with
+      | zero =>
+          rw [ip_H_succ, H_zero]
+          simp
+      | succ k =>
+          rw [ip_H_succ, derivative_H_succ, ip_smul_right, ih k]
+          by_cases hmk : m = k
+          · subst hmk
+            rw [if_pos rfl, if_pos rfl, Nat.factorial_succ]
+            push_cast
+            ring
+          · rw [if_neg hmk, if_neg (by omega : m + 1 ≠ k + 1)]
+            ring
+
+/-! ## 6. The variance identity and the Poincaré inequality
+
+    With orthogonality proven, the Gaussian variance and the Dirichlet form
+    become sums over Hermite coefficients, and the inequality reduces to
+    k! ≤ k·k! for k ≥ 1. -/
+
+/-- I is additive over finite sums. -/
+theorem I_sum {ι : Type*} (s : Finset ι) (f : ι → ℝ[X]) :
+    I (∑ i ∈ s, f i) = ∑ i ∈ s, I (f i) := by
+  classical
+  induction s using Finset.induction_on with
+  | empty => simp
+  | @insert i s hi ih => rw [Finset.sum_insert hi, I_add, ih, Finset.sum_insert hi]
+
+/-- **The pairing of two Hermite expansions** collapses to a single sum, by
+    orthogonality. -/
+theorem ip_sum (M : ℕ) (a b : ℕ → ℝ) :
+    ip (∑ j ∈ Finset.range M, a j • H j) (∑ k ∈ Finset.range M, b k • H k)
+      = ∑ k ∈ Finset.range M, a k * b k * (k.factorial : ℝ) * Z := by
+  unfold ip
+  rw [Finset.sum_mul_sum, I_sum]
+  refine Finset.sum_congr rfl fun j hj => ?_
+  rw [I_sum]
+  have hterm : ∀ k, I ((a j • H j) * (b k • H k))
+      = a j * b k * (if j = k then (j.factorial : ℝ) * Z else 0) := by
+    intro k
+    have he : (a j • H j) * (b k • H k) = (a j * b k) • (H j * H k) := by
+      rw [smul_mul_assoc, mul_smul_comm, smul_smul]
+    rw [he, I_smul]
+    congr 1
+    exact ip_H j k
+  simp only [hterm, mul_ite, mul_zero]
+  rw [Finset.sum_ite_eq (Finset.range M) j
+    (fun k => a j * b k * ((j.factorial : ℝ) * Z))]
+  rw [if_pos hj]
+  ring
+
+/-- The Gaussian mean of an expansion is its zeroth coefficient. -/
+theorem I_expansion (N : ℕ) (a : ℕ → ℝ) :
+    I (∑ k ∈ Finset.range (N + 1), a k • H k) = a 0 * Z := by
+  rw [I_sum]
+  have hterm : ∀ k, I (a k • H k) = a k * I (H k) := fun k => I_smul _ _
+  simp only [hterm]
+  rw [Finset.sum_eq_single 0]
+  · rw [H_zero]
+    rfl
+  · intro k _ hk0
+    obtain ⟨m, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hk0
+    rw [I_H_succ, mul_zero]
+  · intro h
+    exact absurd (Finset.mem_range.mpr (Nat.succ_pos N)) h
+
+/-- **The derivative of an expansion**, in Hermite coordinates: the index
+    drops by one and the coefficient picks up the index. -/
+theorem derivative_expansion (N : ℕ) (a : ℕ → ℝ) :
+    derivative (∑ k ∈ Finset.range (N + 1), a k • H k)
+      = ∑ j ∈ Finset.range N, (((j : ℝ) + 1) * a (j + 1)) • H j := by
+  rw [derivative_sum, Finset.sum_range_succ']
+  have h0 : derivative (a 0 • H 0) = 0 := by
+    rw [H_zero, derivative_smul]
+    simp
+  rw [h0, add_zero]
+  refine Finset.sum_congr rfl fun j _ => ?_
+  rw [derivative_smul, derivative_H_succ, smul_smul, mul_comm]
+
+/-- The Gaussian mean E_γ[p] = ∫p·W / ∫W. -/
+def gmean (p : ℝ[X]) : ℝ := I p / Z
+
+/-- The Gaussian variance Var_γ(p) = E_γ[p²] − E_γ[p]². -/
+def gvar (p : ℝ[X]) : ℝ := gmean (p * p) - (gmean p) ^ 2
+
+/-- **THE POINCARÉ INEQUALITY for polynomial test functions**:
+    Var_γ(p) ≤ E_γ[(p′)²] for the standard Gaussian γ on ℝ.
+    Both sides are computed exactly in Hermite coordinates — the variance is
+    Σ_{k≥1} aₖ²·k!, the Dirichlet form is Σ_{k≥1} k·aₖ²·k! — so the
+    inequality is the index comparison 1 ≤ k, and the constant 1 is sharp
+    (equality holds for p = H₁ = X). -/
+theorem poincare_polynomial (p : ℝ[X]) :
+    gvar p ≤ gmean (derivative p * derivative p) := by
+  obtain ⟨N, a, rfl⟩ := exists_hermite_repr' p
+  have hZ : Z ≠ 0 := ne_of_gt Z_pos
+  -- the mean is the zeroth coefficient
+  have hmean : gmean (∑ k ∈ Finset.range (N + 1), a k • H k) = a 0 := by
+    unfold gmean
+    rw [I_expansion, mul_div_assoc, div_self hZ, mul_one]
+  -- the second moment
+  have hsq : gmean ((∑ k ∈ Finset.range (N + 1), a k • H k)
+      * (∑ k ∈ Finset.range (N + 1), a k • H k))
+      = ∑ k ∈ Finset.range (N + 1), a k * a k * (k.factorial : ℝ) := by
+    have h := ip_sum (N + 1) a a
+    unfold ip at h
+    unfold gmean
+    rw [h, ← Finset.sum_mul, mul_div_assoc, div_self hZ, mul_one]
+  -- the Dirichlet form
+  have hder : gmean (derivative (∑ k ∈ Finset.range (N + 1), a k • H k)
+      * derivative (∑ k ∈ Finset.range (N + 1), a k • H k))
+      = ∑ j ∈ Finset.range N, (((j : ℝ) + 1) * a (j + 1))
+          * (((j : ℝ) + 1) * a (j + 1)) * (j.factorial : ℝ) := by
+    rw [derivative_expansion]
+    have h := ip_sum N (fun j => ((j : ℝ) + 1) * a (j + 1))
+      (fun j => ((j : ℝ) + 1) * a (j + 1))
+    unfold ip at h
+    unfold gmean
+    rw [h, ← Finset.sum_mul, mul_div_assoc, div_self hZ, mul_one]
+  -- assemble
+  unfold gvar
+  rw [hmean, hsq, hder, Finset.sum_range_succ'
+    (fun k => a k * a k * (k.factorial : ℝ)) N]
+  simp only [Nat.factorial_zero, Nat.cast_one, mul_one]
+  have hterm : ∀ j ∈ Finset.range N,
+      a (j + 1) * a (j + 1) * (((j + 1).factorial : ℕ) : ℝ)
+        ≤ (((j : ℝ) + 1) * a (j + 1)) * (((j : ℝ) + 1) * a (j + 1))
+            * ((j.factorial : ℕ) : ℝ) := by
+    intro j _
+    have hF : (0 : ℝ) ≤ ((j.factorial : ℕ) : ℝ) := Nat.cast_nonneg _
+    have hfact : (((j + 1).factorial : ℕ) : ℝ)
+        = ((j : ℝ) + 1) * ((j.factorial : ℕ) : ℝ) := by
+      rw [Nat.factorial_succ]
+      push_cast
+      ring
+    rw [hfact]
+    have hd : (((j : ℝ) + 1) * a (j + 1)) * (((j : ℝ) + 1) * a (j + 1))
+          * ((j.factorial : ℕ) : ℝ)
+        - a (j + 1) * a (j + 1) * (((j : ℝ) + 1) * ((j.factorial : ℕ) : ℝ))
+        = ((j : ℝ) * ((j : ℝ) + 1)) * (a (j + 1) * a (j + 1)
+            * ((j.factorial : ℕ) : ℝ)) := by
+      ring
+    have hj : (0 : ℝ) ≤ (j : ℝ) := Nat.cast_nonneg j
+    have hnn : 0 ≤ ((j : ℝ) * ((j : ℝ) + 1)) * (a (j + 1) * a (j + 1)
+        * ((j.factorial : ℕ) : ℝ)) := by
+      apply mul_nonneg
+      · nlinarith
+      · exact mul_nonneg (mul_self_nonneg _) hF
+    linarith
+  have hsum := Finset.sum_le_sum hterm
+  nlinarith [hsum]
+
+/-- **Sharpness**: for p = H₁ = X the Poincaré inequality is an equality, so
+    the constant 1 cannot be improved. -/
+theorem poincare_sharp : gvar X = gmean (derivative X * derivative X) := by
+  have h1 : (X : ℝ[X]) = ∑ k ∈ Finset.range 2,
+      (fun j => if j = 1 then (1 : ℝ) else 0) k • H k := by
+    rw [Finset.sum_range_succ, Finset.sum_range_one]
+    simp
+  have hZ : Z ≠ 0 := ne_of_gt Z_pos
+  rw [h1]
+  have hmean : gmean (∑ k ∈ Finset.range 2,
+      (fun j => if j = 1 then (1 : ℝ) else 0) k • H k) = 0 := by
+    unfold gmean
+    rw [I_expansion]
+    simp
+  have hsq : gmean ((∑ k ∈ Finset.range 2,
+        (fun j => if j = 1 then (1 : ℝ) else 0) k • H k)
+      * ∑ k ∈ Finset.range 2, (fun j => if j = 1 then (1 : ℝ) else 0) k • H k)
+      = 1 := by
+    have h := ip_sum 2 (fun j => if j = 1 then (1 : ℝ) else 0)
+      (fun j => if j = 1 then (1 : ℝ) else 0)
+    unfold ip at h
+    unfold gmean
+    rw [h, ← Finset.sum_mul, mul_div_assoc, div_self hZ, mul_one]
+    rw [Finset.sum_range_succ, Finset.sum_range_one]
+    norm_num
+  have hder : gmean (derivative (∑ k ∈ Finset.range 2,
+        (fun j => if j = 1 then (1 : ℝ) else 0) k • H k)
+      * derivative (∑ k ∈ Finset.range 2,
+        (fun j => if j = 1 then (1 : ℝ) else 0) k • H k)) = 1 := by
+    rw [derivative_expansion]
+    have h := ip_sum 1 (fun j => ((j : ℝ) + 1) * (if j + 1 = 1 then (1 : ℝ) else 0))
+      (fun j => ((j : ℝ) + 1) * (if j + 1 = 1 then (1 : ℝ) else 0))
+    unfold ip at h
+    unfold gmean
+    rw [h, ← Finset.sum_mul, mul_div_assoc, div_self hZ, mul_one]
+    rw [Finset.sum_range_one]
+    norm_num
+  unfold gvar
+  rw [hmean, hsq, hder]
+  ring
+
+/-! ## 7. What is NOT proven here
 
     This file currently contains NO analysis and NO measure theory, and
     therefore does not contain the Poincaré inequality or any part of it.
