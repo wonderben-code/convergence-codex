@@ -153,8 +153,13 @@ theorem chiral_split_dimension :
   refine ⟨?_, ?_, ?_, by omega, by omega, by omega⟩
   all_goals rw [Module.finrank_pi, Fintype.card_fin]
 
-/-- The chiral decomposition is the UNIQUE way to split 16 into two
-    Pati-Salam representations of equal dimension with one SU(2) factor trivial. -/
+/-- HONESTY NOTE (integrity fix, 29 Jul 2026): this theorem takes the
+    answer as hypotheses h3–h8 and returns them; its two substantive
+    hypotheses (_h1, _h2) are underscore-bound and UNUSED — it was flagged
+    by the Phase 0 audit as concluding its own assumptions. It is kept for
+    interface stability. The genuine derivation, in which the values are
+    COMPUTED from structural constraints, is `chiral_decomposition_derived`
+    below. -/
 theorem chiral_decomposition_unique (a b c d e f : ℕ)
     -- First rep: (a, b, c) with one of b,c = 1
     (_h1 : a * b * c + d * e * f = 16)
@@ -175,6 +180,35 @@ theorem chiral_decomposition_unique (a b c d e f : ℕ)
     -- Then the decomposition is exactly (4,2,1) ⊕ (4̄,1,2)
     a = 4 ∧ b = 2 ∧ c = 1 ∧ d = 4 ∧ e = 1 ∧ f = 2 := by
   exact ⟨h8, h6, h3, by omega, h4, h7⟩
+
+/-- **The chiral decomposition, genuinely derived.** Constraints (all USED):
+    the two chiral halves fill the 16-dimensional fermion space equally
+    (h1, h2); the split is chiral — each half is trivial under the opposite
+    SU(2) (h3, h4); the colour dimensions of the halves form a conjugate
+    pair (h5); both SU(2)s act nontrivially on their own half — a genuine
+    doublet or larger (hb, hf); and there are at least 3 colours (ha —
+    a physical input, stated, not derived). CONCLUSION: the split is exactly
+    (4,2,1) ⊕ (4̄,1,2) — the values 4 and 2 are COMPUTED (a·b = 8 with
+    a ≥ 3, b ≥ 2 forces (4,2) uniquely), not assumed. -/
+theorem chiral_decomposition_derived (a b c d e f : ℕ)
+    (h1 : a * b * c + d * e * f = 16)
+    (h2 : a * b * c = d * e * f)
+    (h3 : c = 1)
+    (h4 : e = 1)
+    (h5 : a = d)
+    (hb : 2 ≤ b)
+    (hf : 2 ≤ f)
+    (ha : 3 ≤ a) :
+    a = 4 ∧ b = 2 ∧ c = 1 ∧ d = 4 ∧ e = 1 ∧ f = 2 := by
+  subst h3 h4 h5
+  simp only [mul_one] at h1 h2
+  have ha0 : 0 < a := by omega
+  have hbf : b = f := Nat.eq_of_mul_eq_mul_left ha0 h2
+  subst hbf
+  have hab : a * b = 8 := by omega
+  have hdvd : a ∣ 8 := ⟨b, hab.symm⟩
+  have ha8 : a ≤ 8 := Nat.le_of_dvd (by norm_num) hdvd
+  interval_cases a <;> omega
 
 /-!
 ## Part 4: WHY Left Couples to Left (The Structural Argument)
@@ -540,7 +574,10 @@ Machine-verified content (0 sorry):
 1. Left multiplication is an algebra homomorphism (covariant)
 2. Right multiplication requires the opposite/transpose (contravariant)
 3. These are structurally different (left is injective without involution)
-4. The chiral decomposition (4,2,1) ⊕ (4̄,1,2) = 16 is unique
+4. The chiral decomposition (4,2,1) ⊕ (4̄,1,2) = 16 is unique — genuinely
+   derived in chiral_decomposition_derived (values computed from structural
+   constraints + the ≥3-colours input; the older chiral_decomposition_unique
+   assumed its values, see its honesty note)
 5. Transpose eigenspaces (dim 3+1) provide U(1) direction in right sector
 6. Left sector has no preferred direction → SU(2)_L unbroken
 7. The master chirality theorem (9 conjuncts)
