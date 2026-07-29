@@ -15,9 +15,11 @@
   2. `cubicTrace_neg_transpose` — the conjugate (antifundamental) assignment
      T ↦ −Tᵀ flips the sign: d(−T₁ᵀ,−T₂ᵀ,−T₃ᵀ) = −d(T₁,T₂,T₃).
      A(R̄) = −A(R) as trace algebra, not as an integer stipulation.
-  3. `fund_antifund_cubic_cancel`, `pati_salam_su4_cubic_cancel` — the SU(4)³
-     cubic anomaly of the Pati-Salam fermion content (4,2,1) ⊕ (4̄,1,2)
-     cancels for EVERY generator triple, any number of generations.
+  3. `fund_antifund_cubic_cancel` — the SU(4)³ cubic anomaly cancels between
+     fundamental and antifundamental for EVERY generator triple; and
+     `pati_salam_su4_weighted_cancel` — the same on the (4,2)-style product
+     representation, with the multiplicity weight DERIVED from Matrix.trace_one
+     (`cubicTrace_kronecker_pure`), not written as a literal.
   4. `su2_cubic_vanishes` — pseudo-reality: with ε the antisymmetric 2×2 unit,
      ε·T = −Tᵀ·ε for every traceless T (proven entrywise), so conjugation by ε
      identifies the fundamental with its conjugate and the su(2) cubic form
@@ -27,13 +29,17 @@
      on a product representation the generators are T ⊗ₖ 1 and 1 ⊗ₖ S, the
      cubic trace factorises through Matrix.trace_kronecker, and tracelessness
      of the single factor kills it.
-  6. `linear_trace_kronecker_vanishes` — the gauge-gravitational (linear)
-     anomaly: Tr(T ⊗ₖ 1) = Tr(T)·dim = 0 for traceless T.
+  6. `linear_trace_kronecker_vanishes` (+ `_right`) — the gauge-gravitational
+     (linear) anomaly in both orientations: Tr(T ⊗ₖ 1) = Tr(T)·dim = 0 and
+     Tr(1 ⊗ₖ S) = dim·Tr(S) = 0 for traceless T, S.
   7. `su4_cubic_form_ne_zero` — non-triviality witness: d(T₀,T₀,T₀) = −48 ≠ 0
      for T₀ = diag(1,1,1,−3) ∈ sl₄, so the Pati-Salam cancellation is a
      genuine cancellation of a non-vanishing form, not 0 = 0.
-  8. `pati_salam_anomaly_free` — master theorem bundling 3–6 for the
-     Pati-Salam content, quantified over all generator triples.
+  8. `pati_salam_anomaly_free` — master theorem bundling 3–7 for the
+     Pati-Salam content. Scope note: statements cover the Kronecker generator
+     patterns the anomaly computation uses (all complex matrices of those
+     patterns — a superset of the su(N) generators); cubicTrace multilinearity
+     over the full product algebra is not developed here.
 
   NOT proven here (cited, out of scope): the QFT input that the triangle
   anomaly is proportional to this d-symbol (Adler–Bell–Jackiw 1969); the
@@ -107,10 +113,14 @@ theorem fund_antifund_cubic_cancel (T₁ T₂ T₃ : Matrix (Fin 4) (Fin 4) ℂ)
   rw [cubicTrace_neg_transpose]
   ring
 
-/-- The Pati-Salam fermion content per generation is (4,2,1) ⊕ (4̄,1,2): the
-    fundamental enters with multiplicity dim(2)·dim(1) = 2 and the
-    antifundamental with multiplicity dim(1)·dim(2) = 2. The weighted cubic
-    trace sum cancels for every generator triple and every generation count. -/
+/-- Citation form of `fund_antifund_cubic_cancel` with the Pati-Salam
+    multiplicity weights attached. HONESTY NOTE: the `generations` factor and
+    the weights 2 are mathematically inert here — any common weights cancel,
+    and the whole content is `fund_antifund_cubic_cancel` (n·0 = 0 does the
+    rest). The weights' dimension-theoretic origin (2 = dim of the SU(2)
+    factor) is DERIVED in `pati_salam_su4_weighted_cancel` below, where the
+    multiplicity arises from `Matrix.trace_one` on the product representation
+    rather than being written as a literal. -/
 theorem pati_salam_su4_cubic_cancel (generations : ℕ)
     (T₁ T₂ T₃ : Matrix (Fin 4) (Fin 4) ℂ) :
     (generations : ℂ) *
@@ -120,7 +130,7 @@ theorem pati_salam_su4_cubic_cancel (generations : ℕ)
 
 /-! ## 3. SU(2) pseudo-reality: the ε-intertwiner kills the cubic form -/
 
-/-- The antisymmetric unit `ε = iσ₂` (up to phase): the intertwiner between the
+/-- The antisymmetric unit `ε = iσ₂` (exactly): the intertwiner between the
     su(2) fundamental and its conjugate. -/
 def eps : Matrix (Fin 2) (Fin 2) ℂ := !![0, 1; -1, 0]
 
@@ -231,6 +241,39 @@ theorem linear_trace_kronecker_vanishes {m : Type*} [Fintype m] [DecidableEq m]
     trace (T ⊗ₖ (1 : Matrix m m ℂ)) = 0 := by
   rw [trace_kronecker, hT, zero_mul]
 
+/-- Pure-factor multiplicity: on the product representation the cubic trace of
+    three FIRST-factor generators is `dim(second factor) · cubicTrace` — the
+    representation-multiplicity weight arises from `Matrix.trace_one`, not from
+    a hand-written literal. -/
+theorem cubicTrace_kronecker_pure [DecidableEq k] {m : Type*} [Fintype m]
+    [DecidableEq m] (T₁ T₂ T₃ : Matrix k k ℂ) :
+    cubicTrace (T₁ ⊗ₖ (1 : Matrix m m ℂ)) (T₂ ⊗ₖ 1) (T₃ ⊗ₖ 1)
+      = (Fintype.card m : ℂ) * cubicTrace T₁ T₂ T₃ := by
+  unfold cubicTrace
+  rw [← mul_kronecker_mul, ← mul_kronecker_mul, mul_one (1 : Matrix m m ℂ),
+    ← add_kronecker, ← mul_kronecker_mul, mul_one (1 : Matrix m m ℂ),
+    trace_kronecker, trace_one, mul_comm]
+
+/-- SU(4)³ cancellation on the product representation with the multiplicity
+    DERIVED: fundamental pattern `Tᵢ ⊗ₖ 1₂` plus antifundamental pattern
+    `(−Tᵢᵀ) ⊗ₖ 1₂`; each side carries weight `Tr(1₂) = 2` by
+    `cubicTrace_kronecker_pure`, and the sum cancels by
+    `cubicTrace_neg_transpose`. No hand-written multiplicity anywhere. -/
+theorem pati_salam_su4_weighted_cancel (T₁ T₂ T₃ : Matrix (Fin 4) (Fin 4) ℂ) :
+    cubicTrace (T₁ ⊗ₖ (1 : Matrix (Fin 2) (Fin 2) ℂ)) (T₂ ⊗ₖ 1) (T₃ ⊗ₖ 1)
+      + cubicTrace ((-T₁ᵀ) ⊗ₖ (1 : Matrix (Fin 2) (Fin 2) ℂ)) ((-T₂ᵀ) ⊗ₖ 1)
+          ((-T₃ᵀ) ⊗ₖ 1) = 0 := by
+  rw [cubicTrace_kronecker_pure, cubicTrace_kronecker_pure,
+    cubicTrace_neg_transpose]
+  ring
+
+/-- Gauge-gravitational anomaly, SU(2) orientation: `Tr(1 ⊗ₖ S) = dim·Tr(S)`,
+    zero for traceless `S`. Companion to `linear_trace_kronecker_vanishes`. -/
+theorem linear_trace_kronecker_vanishes_right {m : Type*} [Fintype m]
+    [DecidableEq k] (S : Matrix m m ℂ) (hS : trace S = 0) :
+    trace ((1 : Matrix k k ℂ) ⊗ₖ S) = 0 := by
+  rw [trace_kronecker, hS, mul_zero]
+
 /-! ## 5. Non-triviality: the su(4) cubic form is NOT identically zero -/
 
 /-- The traceless diagonal generator `T₀ = diag(1,1,1,−3) ∈ sl₄(ℂ)`
@@ -259,21 +302,28 @@ theorem su4_cubic_form_ne_zero : cubicTrace T₀ T₀ T₀ ≠ 0 := by
 /-! ## 6. Master theorem -/
 
 /-- **Pati-Salam anomaly freedom as genuine representation theory.** For the
-    fermion content (4,2,1) ⊕ (4̄,1,2) (any number of generations):
-    (i)   the SU(4)³ cubic sum cancels for every generator triple;
+    fermion content (4,2,1) ⊕ (4̄,1,2):
+    (i)   the SU(4)³ cubic sum on the product representation cancels for every
+          generator triple, with the multiplicity weight DERIVED from
+          `Matrix.trace_one` (`pati_salam_su4_weighted_cancel`);
     (ii)  the SU(2)_L³ and SU(2)_R³ cubic forms vanish identically on
           traceless generators (pseudo-reality via the ε-intertwiner);
     (iii) mixed SU(4)²–SU(2) traces vanish by trace factorisation;
     (iv)  mixed SU(2)²–SU(4) traces vanish by tracelessness of the su(4) factor;
-    (v)   the gauge-gravitational linear trace vanishes;
+    (v)   the gauge-gravitational linear traces vanish in BOTH orientations;
     (vi)  the cancellation in (i) is non-trivial: the su(4) cubic form itself
-          is non-zero (witness `T₀`).
-    Every conjunct is quantified over ALL generators with only tracelessness
-    assumed — no hardcoded coefficients anywhere. -/
-theorem pati_salam_anomaly_free (generations : ℕ) :
+          is non-zero — a single explicit witness, `T₀`.
+    SCOPE: conjuncts (i)–(v) are quantified over all matrices of the stated
+    Kronecker generator patterns (a superset of the su(N) generators, so
+    nothing is lost); `cubicTrace` multilinearity is not developed here, so
+    arbitrary elements of the product algebra are not covered — only the
+    generator patterns the anomaly computation uses. The hardcoded ±1 anomaly
+    coefficients of F3_9e are gone; no multiplicity literal remains either. -/
+theorem pati_salam_anomaly_free :
     (∀ T₁ T₂ T₃ : Matrix (Fin 4) (Fin 4) ℂ,
-      (generations : ℂ) *
-        (2 * cubicTrace T₁ T₂ T₃ + 2 * cubicTrace (-T₁ᵀ) (-T₂ᵀ) (-T₃ᵀ)) = 0) ∧
+      cubicTrace (T₁ ⊗ₖ (1 : Matrix (Fin 2) (Fin 2) ℂ)) (T₂ ⊗ₖ 1) (T₃ ⊗ₖ 1)
+        + cubicTrace ((-T₁ᵀ) ⊗ₖ (1 : Matrix (Fin 2) (Fin 2) ℂ)) ((-T₂ᵀ) ⊗ₖ 1)
+            ((-T₃ᵀ) ⊗ₖ 1) = 0) ∧
     (∀ S₁ S₂ S₃ : Matrix (Fin 2) (Fin 2) ℂ, trace S₁ = 0 → trace S₂ = 0 →
       trace S₃ = 0 → cubicTrace S₁ S₂ S₃ = 0) ∧
     (∀ (T T' : Matrix (Fin 4) (Fin 4) ℂ) (S : Matrix (Fin 2) (Fin 2) ℂ),
@@ -287,12 +337,15 @@ theorem pati_salam_anomaly_free (generations : ℕ) :
         ((1 : Matrix (Fin 4) (Fin 4) ℂ) ⊗ₖ S') = 0) ∧
     (∀ T : Matrix (Fin 4) (Fin 4) ℂ, trace T = 0 →
       trace (T ⊗ₖ (1 : Matrix (Fin 2) (Fin 2) ℂ)) = 0) ∧
+    (∀ S : Matrix (Fin 2) (Fin 2) ℂ, trace S = 0 →
+      trace ((1 : Matrix (Fin 4) (Fin 4) ℂ) ⊗ₖ S) = 0) ∧
     cubicTrace T₀ T₀ T₀ ≠ 0 := by
-  refine ⟨fun T₁ T₂ T₃ => pati_salam_su4_cubic_cancel generations T₁ T₂ T₃,
+  refine ⟨fun T₁ T₂ T₃ => pati_salam_su4_weighted_cancel T₁ T₂ T₃,
     fun S₁ S₂ S₃ h₁ h₂ h₃ => su2_cubic_vanishes S₁ S₂ S₃ h₁ h₂ h₃,
     fun T T' S hS => mixed_cubic_kronecker_vanishes T T' S hS,
     fun T S S' hT => mixed_cubic_kronecker_vanishes_left T S S' hT,
     fun T hT => linear_trace_kronecker_vanishes T hT,
+    fun S hS => linear_trace_kronecker_vanishes_right S hS,
     su4_cubic_form_ne_zero⟩
 
 end AnomalyTraces
