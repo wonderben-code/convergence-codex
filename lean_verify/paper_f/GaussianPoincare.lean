@@ -108,6 +108,22 @@ theorem natDegree_derivative_H_succ (n : ℕ) :
     natDegree_mul (C_ne_zero.mpr hc) (H_monic n).ne_zero, natDegree_C,
     natDegree_H, zero_add]
 
+/-- **The three-term recurrence** X·Hₙ₊₁ = Hₙ₊₂ + (n+1)·Hₙ, obtained by
+    feeding the derivative identity into the defining recurrence. This is the
+    form in which the Hermite family will drive the orthogonality induction:
+    multiplication by X raises the index by one and adds a multiple of the
+    index below. -/
+theorem X_mul_H_succ (n : ℕ) :
+    X * H (n + 1) = H (n + 2) + ((n : ℝ) + 1) • H n := by
+  rw [H_succ (n + 1), derivative_H_succ]
+  ring
+
+/-- The base case of the three-term recurrence: X·H₀ = H₁. -/
+theorem X_mul_H_zero : X * H 0 = H 1 := by
+  simp
+
+theorem H_ne_zero (n : ℕ) : H n ≠ 0 := (H_monic n).ne_zero
+
 /-! ## 3. The Hermite polynomials are a basis
 
     Every real polynomial of degree ≤ N is a finite ℝ-combination of

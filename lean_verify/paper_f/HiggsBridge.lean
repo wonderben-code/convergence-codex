@@ -24,47 +24,64 @@
      bound**: (Tr P)² ≤ N·Tr(P·P) (real parts), proven via
      `sq_sum_le_card_mul_sum_sq` plus the entrywise identity
      (P·P)ᵢᵢ = Σⱼ |Pᵢⱼ|² ≥ (Pᵢᵢ)².
-  4. `psd_normSq_entry_le`, `psd_re_trace_mul_self_le_sq` — **the Schur
-     bound**, in the opposite direction and in full generality (any PSD
-     matrix over ℂ on any finite index type): |Mᵢⱼ|² ≤ Mᵢᵢ·Mⱼⱼ from the
+  4. `psd_normSq_entry_le`, `psd_re_trace_mul_self_le_sq` — **the minor
+     trace bound**, in the opposite direction and in full generality (any
+     PSD matrix over ℂ, any index type): |Mᵢⱼ|² ≤ Mᵢᵢ·Mⱼⱼ from the
      nonnegativity of the 2×2 principal minor, summed to
      Tr(M·M) ≤ (Tr M)². At P = Yᴴ·Y this is **b ≤ a²**
-     (`tracePP_le_traceP_sq`).
+     (`tracePP_le_traceP_sq`). It genuinely needs positive semidefiniteness:
+     for the Hermitian diag(1,−1), Tr M = 0 while Tr(M·M) = 2.
   5. `ccLambda_lower_bound`, `ccLambda_upper_bound` — the C–C boundary
      coupling λ̃(Λ) := g²·b/a² (CCM 2007 §5.2 eq (5.6); the g there is g₃,
-     defensible at unification) is **bracketed on both sides**:
-     **g²/N ≤ λ̃(Λ) ≤ g²** whenever a = Tr(P) ≠ 0 — and
-     `traceP_re_ne_zero_of_ne_zero` proves that condition is implied by
-     Y ≠ 0, so the window holds for every nonzero Yukawa matrix.
-     (Cascade N = 96: g²/96 ≤ λ̃ ≤ g² — `cascade_ccLambda_window`.)
-  6. `ccLambda_lower_sharp`, `ccLambda_upper_sharp` — **both endpoints are
-     attained**, so neither inequality can be improved: the democratic
-     Yukawa matrix Y = 1 (all couplings equal) gives exactly λ̃ = g²/N,
-     and the rank-one matrix diag(1,0,…,0) — one dominant coupling, the
-     top-quark regime CCM actually works in — gives exactly λ̃ = g².
-     The window is therefore the true range of the C–C boundary coupling
-     over Yukawa textures, not a slack estimate.
+     defensible at unification only to the extent that the three couplings
+     do meet — CCM's own Fig. 1 says they do not meet exactly) is
+     **bracketed on both sides**: **g²/N ≤ λ̃(Λ) ≤ g²**. The upper bound is
+     unconditional; the lower bound needs a = Tr(P) ≠ 0, and
+     `traceP_re_pos_of_ne_zero` proves a > 0 for every Y ≠ 0, so the window
+     holds for every nonzero Yukawa matrix on N ≥ 1 indices.
+     (At N = 96: g²/96 ≤ λ̃ ≤ g² — `cascade_ccLambda_window`.)
+  6. `ccLambda_indicator` — **an exactly-computed family**: if the Yukawa
+     matrix is the identity on a set s of directions and zero elsewhere then
+     λ̃ = g²/|s| exactly. Consequences, all theorems, none assumed:
+     |s| = N (flavour-degenerate Y = 1, all N Yukawa eigenvalues equal) hits
+     the lower endpoint; |s| = 1 (a single dominant coupling) hits the upper
+     endpoint, so neither constant can be improved; and |s| = 3 gives
+     λ̃ = g²/3, which is exactly the value CCM's own top-dominance
+     estimate produces (their eq (5.10): colour triplication makes the
+     dominant Yukawa effectively threefold degenerate, a ≈ 3m_t², b ≈ 3m_t⁴,
+     so b/a² = 1/3), while |s| = 4 gives g²/4, the value of their Remark 5.1
+     once the tau-neutrino Yukawa is included. CCM's working point is thus
+     INSIDE this window and computed here rather than cited.
+     What is NOT claimed: that every real number in [g²/N, g²] is attained.
+     Containment is proven and the values g²/k for 1 ≤ k ≤ N are attained;
+     surjectivity onto the interval is not proven.
   7. `higgsMassSq_transfer`, `higgsMassSq_upper`,
      `cascade_higgsMassSq_window` — NORMALISATION per CCM: the SM quartic
-     is λ = 4λ̃ (CCM §5.2) and the tree-level mass relation is
-     m_H² = 2λv² = 8λ̃v² (CCM eq (5.15)); `higgsMassSq` encodes 8λ̃v²
-     accordingly, and the window transfers: 8(g²/N)v² ≤ m_H² ≤ 8g²v².
-     NOTE: the mass relation itself is DEFINITIONAL here (deriving
-     m_H² = 2λv² from a Higgs potential is not formalised — listed in
-     NOT-proven), and the transfer is monotonicity, nothing deeper.
+     is λ = 4λ̃ (CCM §5.2, after eq (5.10) — cited, not derived here) and
+     the tree-level mass relation is m_H² = 2λv² = 8λ̃v² (CCM eq (5.15)
+     with v = 2M/g from (5.7)); `higgsMassSq` DEFINES 8λ̃v² accordingly,
+     and the window transfers: 8(g²/N)v² ≤ m_H² ≤ 8g²v². The transfer is
+     monotonicity of a definition, nothing deeper.
 
 NOT proven here (named stairs, so the [CLAIMED] tag stays honest):
-  the tree-level relation m_H² = 2λv² itself (definitional here; its
-  derivation from the Higgs potential is standard but unformalised); the
-  spectral-action DERIVATION of the boundary condition λ(Λ) = g²·b/a²
-  itself (here λ(Λ) is a definition, its C–C origin cited:
-  Chamseddine–Connes 2007, §5); WHICH Yukawa texture the cascade actually
-  produces — the window is proven for every nonzero Y and its endpoints
-  are attained, so pinning λ̃ to a single value inside it requires the
-  texture, which is not derived anywhere in the estate; the RG running
-  from Λ to the electroweak scale producing ≈125 GeV (verified-numerics
-  ODE integration — out of Lean's current reach, cited). The 125 GeV
-  number is NEVER claimed as proven content.
+  the tree-level relation m_H² = 2λv² itself, and the normalisation λ = 4λ̃
+  (both are CCM's, cited, not derived here); the spectral-action DERIVATION
+  of the boundary condition λ̃(Λ) = g²·b/a² (here it is a definition, its
+  C–C origin cited: Chamseddine–Connes 2007, §5); **that N = 96 is the right
+  multiplicity** — CCM's eq (3.16) computes a and b as traces over 3×3
+  generation matrices with an explicit colour weight 3, i.e. over 24 Yukawa
+  eigenvalues, and b/a² is NOT invariant under changing the multiplicity
+  with which each eigenvalue is counted (counting each eigenvalue four times
+  scales b/a² by 1/4), so the choice of index set is a real assumption here,
+  not a relabelling — in the bound's direction it is at least the
+  conservative choice, since g²/96 is weaker than g²/24; **that the physical
+  Yukawa texture space is all of Matrix (Fin N) (Fin N) ℂ** — it is not
+  (CCM's textures carry colour weight 3, and within them a dominant quark
+  Yukawa cannot reach the upper endpoint); that every value in the window is
+  attained (see item 6); and the RG running from Λ to the electroweak scale
+  producing ≈125 GeV (verified-numerics ODE integration — out of Lean's
+  current reach, cited). The 125 GeV number is NEVER claimed as proven
+  content.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
@@ -138,11 +155,15 @@ theorem re_trace_mul_self_eq_sum [Fintype N] {M : Matrix N N ℂ} (hM : M.IsHerm
 
 /-- **The 2×2 principal-minor bound**: for positive-semidefinite M,
     |Mᵢⱼ|² ≤ Mᵢᵢ·Mⱼⱼ. Proven by applying `Matrix.PosSemidef.det_nonneg` to
-    the principal submatrix on rows and columns {i, j} — no spectral
-    theorem and no case split on i = j (at i = j the minor degenerates and
-    the statement is the equality |Mᵢᵢ|² = (Mᵢᵢ)², which holds because the
-    diagonal is real). This is the entrywise Cauchy–Schwarz inequality for
-    the pre-inner product defined by M. -/
+    the principal submatrix on rows and columns {i, j}, with no case split
+    on i = j (at i = j the minor degenerates and the statement is the
+    equality |Mᵢᵢ|² = (Mᵢᵢ)², which holds because the diagonal is real).
+    This is the entrywise Cauchy–Schwarz inequality for the pre-inner
+    product xᴴMy defined by M. NOTE on provenance: nothing spectral appears
+    in THIS file, but Mathlib's `det_nonneg` is itself proven through
+    `IsHermitian.det_eq_prod_eigenvalues` and hence through the spectral
+    theorem — so the spectral theorem is in the dependency graph, one layer
+    down, and this proof is not an elementary-means proof of the bound. -/
 theorem psd_normSq_entry_le {M : Matrix N N ℂ} (hM : M.PosSemidef) (i j : N) :
     Complex.normSq (M i j) ≤ (M i i).re * (M j j).re := by
   have hdet : (0 : ℂ) ≤ (M.submatrix ![i, j] ![i, j]).det :=
@@ -196,21 +217,13 @@ theorem traceP_sq_nonneg : 0 ≤ trace ((P Y) * (P Y)) :=
 
 /-- Off-diagonal pairing: for Hermitian P, P j i = conj (P i j). -/
 theorem P_conj_symm (i j : Fin n) :
-    (P Y) j i = (starRingEnd ℂ) ((P Y) i j) := by
-  have := congrFun (congrFun (P_hermitian Y) j) i
-  simp only [Matrix.conjTranspose_apply] at this
-  rw [← this]
-  rfl
+    (P Y) j i = (starRingEnd ℂ) ((P Y) i j) :=
+  herm_conj_symm (P_posSemidef Y).1 i j
 
 /-- The (i,i) entry of P·P is Σⱼ |Pᵢⱼ|², a real cast. -/
 theorem PP_diag (i : Fin n) :
-    ((P Y) * (P Y)) i i = ((∑ j, Complex.normSq ((P Y) i j) : ℝ) : ℂ) := by
-  rw [Matrix.mul_apply]
-  have hterm : ∀ j, (P Y) i j * (P Y) j i
-      = ((Complex.normSq ((P Y) i j) : ℝ) : ℂ) := fun j => by
-    rw [P_conj_symm Y i j, Complex.mul_conj]
-  rw [Finset.sum_congr rfl (fun j _ => hterm j)]
-  norm_cast
+    ((P Y) * (P Y)) i i = ((∑ j, Complex.normSq ((P Y) i j) : ℝ) : ℂ) :=
+  herm_mul_self_diag (P_posSemidef Y).1 i
 
 /-- Diagonal entries of P are nonnegative in the complex order. -/
 theorem diag_nonneg (i : Fin n) : 0 ≤ (P Y) i i := by
@@ -224,16 +237,13 @@ theorem diag_re_nonneg (i : Fin n) : 0 ≤ ((P Y) i i).re := by
 
 /-- a as a named real sum: (Tr P).re = Σᵢ (Pᵢᵢ).re. -/
 theorem re_trace_eq_sum :
-    (trace (P Y)).re = ∑ i, ((P Y) i i).re := by
-  unfold Matrix.trace Matrix.diag
-  exact Complex.re_sum (s := Finset.univ) _
+    (trace (P Y)).re = ∑ i, ((P Y) i i).re :=
+  re_trace_eq_sum_diag (P Y)
 
 /-- b as a named real sum: (Tr P·P).re = Σᵢⱼ |Pᵢⱼ|². -/
 theorem re_tracePP_eq_sum :
-    (trace ((P Y) * (P Y))).re = ∑ i, ∑ j, Complex.normSq ((P Y) i j) := by
-  unfold Matrix.trace Matrix.diag
-  rw [Complex.re_sum]
-  exact Finset.sum_congr rfl fun i _ => by rw [PP_diag]; exact Complex.ofReal_re _
+    (trace ((P Y) * (P Y))).re = ∑ i, ∑ j, Complex.normSq ((P Y) i j) :=
+  re_trace_mul_self_eq_sum (P_posSemidef Y).1
 
 /-- The entry formula for P itself: Pᵢᵢ = Σⱼ |Yⱼᵢ|². -/
 theorem P_diag (i : Fin n) :
@@ -305,12 +315,13 @@ theorem trace_sq_le_card_mul_trace_sq :
 
 /-! ## 4. The boundary coupling and the mass transfer -/
 
-/-- The C–C boundary coupling λ(Λ) = g²·b/a² (a DEFINITION here; its
-    spectral-action derivation is cited, not formalised). -/
+/-- The C–C boundary coupling λ̃(Λ) = g²·b/a² (a DEFINITION here; its
+    spectral-action derivation is cited, not formalised). The SM quartic is
+    λ = 4λ̃; every bound below is on λ̃, not on λ. -/
 def ccLambda (g : ℝ) : ℝ :=
   g ^ 2 * (trace ((P Y) * (P Y))).re / ((trace (P Y)).re) ^ 2
 
-/-- **The lower bound on the boundary coupling**: λ(Λ) ≥ g²/N whenever the
+/-- **The lower bound on the boundary coupling**: λ̃(Λ) ≥ g²/N whenever the
     Yukawa trace is nonzero. The quartic coupling at unification is bounded
     below by the gauge coupling over the fermion multiplicity — the
     algebraic half of the C–C Higgs-mass estimate. -/
@@ -328,7 +339,8 @@ theorem ccLambda_lower_bound (g : ℝ) (hn : 0 < n)
 
 
 /-- The cascade instantiation: N = 96 fermion degrees of freedom,
-    λ(Λ) ≥ g²/96. -/
+    λ̃(Λ) ≥ g²/96. (See the header: N = 96 is an assumption about the right
+    multiplicity, not a theorem — CCM's own a, b are 24-eigenvalue traces.) -/
 theorem cascade_ccLambda_lower (Y : Matrix (Fin 96) (Fin 96) ℂ) (g : ℝ)
     (ha : (trace (P Y)).re ≠ 0) :
     g ^ 2 / 96 ≤ ccLambda Y g := by
@@ -352,7 +364,13 @@ theorem higgsMassSq_transfer (g v : ℝ) (hn : 0 < n)
   have hv : 0 ≤ v ^ 2 := sq_nonneg v
   nlinarith
 
-/-! ## 5. The Schur bound at P: the coupling window and its sharpness -/
+/-! ## 5. The minor trace bound at P: the coupling window and its sharpness
+
+    Naming note: `Tr(M²) ≤ (Tr M)²` for PSD M is sometimes called a Schur
+    bound in the physics literature, but in matrix analysis "Schur" normally
+    refers to the Schur product theorem or the Schur complement. The
+    ingredient used here, |Mᵢⱼ|² ≤ Mᵢᵢ·Mⱼⱼ, is standardly the 2×2 principal
+    minor test (equivalently Cauchy–Schwarz for xᴴMy). -/
 
 /-- **b ≤ a²**: the Schur bound instantiated at P = Yᴴ·Y. This closes the
     stair named as open in the first version of this file. -/
@@ -360,95 +378,162 @@ theorem tracePP_le_traceP_sq :
     (trace ((P Y) * (P Y))).re ≤ ((trace (P Y)).re) ^ 2 :=
   psd_re_trace_mul_self_le_sq (P_posSemidef Y)
 
-/-- **The upper bound on the boundary coupling**: λ̃(Λ) ≤ g². Together with
-    `ccLambda_lower_bound` the quartic coupling at unification is trapped in
-    [g²/N, g²] for every nonzero Yukawa matrix. -/
-theorem ccLambda_upper_bound (g : ℝ) (ha : (trace (P Y)).re ≠ 0) :
-    ccLambda Y g ≤ g ^ 2 := by
-  have hb := tracePP_le_traceP_sq Y
-  have ha2 : 0 < ((trace (P Y)).re) ^ 2 := by positivity
-  rw [ccLambda, div_le_iff₀ ha2]
-  exact mul_le_mul_of_nonneg_left hb (sq_nonneg g)
+/-- **The upper bound on the boundary coupling**: λ̃(Λ) ≤ g², with no
+    hypothesis at all — if the Yukawa trace vanishes the definition gives
+    λ̃ = 0 (Lean's x/0 = 0) and the bound is trivial; otherwise it is the
+    minor trace bound b ≤ a² divided by a² > 0. -/
+theorem ccLambda_upper_bound (g : ℝ) : ccLambda Y g ≤ g ^ 2 := by
+  rcases eq_or_ne ((trace (P Y)).re) 0 with h | h
+  · have hz : ccLambda Y g = 0 := by rw [ccLambda, h]; simp
+    rw [hz]
+    positivity
+  · have hb := tracePP_le_traceP_sq Y
+    have ha2 : 0 < ((trace (P Y)).re) ^ 2 := by positivity
+    rw [ccLambda, div_le_iff₀ ha2]
+    exact mul_le_mul_of_nonneg_left hb (sq_nonneg g)
+
+/-- Strict positivity of the Yukawa trace for Y ≠ 0: a = Tr(P) = ‖Y‖²_F > 0.
+    (The nonvanishing form `traceP_re_ne_zero_of_ne_zero` is what the lower
+    bound consumes; this is the sharper statement its docstring claimed.) -/
+theorem traceP_re_pos_of_ne_zero (hY : Y ≠ 0) : 0 < (trace (P Y)).re := by
+  have hnn : 0 ≤ (trace (P Y)).re := by
+    rw [re_trace_eq_sum]
+    exact Finset.sum_nonneg fun i _ => diag_re_nonneg Y i
+  exact lt_of_le_of_ne hnn (Ne.symm (traceP_re_ne_zero_of_ne_zero Y hY))
 
 /-- **The coupling window**, both sides at once, with the hypothesis in
     physical form (Y ≠ 0 rather than a trace condition). -/
 theorem ccLambda_window (g : ℝ) (hn : 0 < n) (hY : Y ≠ 0) :
     g ^ 2 / (n : ℝ) ≤ ccLambda Y g ∧ ccLambda Y g ≤ g ^ 2 :=
   ⟨ccLambda_lower_bound Y g hn (traceP_re_ne_zero_of_ne_zero Y hY),
-    ccLambda_upper_bound Y g (traceP_re_ne_zero_of_ne_zero Y hY)⟩
+    ccLambda_upper_bound Y g⟩
 
-/-- **The lower endpoint is attained**: the democratic Yukawa matrix Y = 1
-    (all couplings equal) gives exactly λ̃ = g²/N, so `ccLambda_lower_bound`
-    is sharp. -/
-theorem ccLambda_lower_sharp (g : ℝ) (hn : 0 < n) :
-    ccLambda (1 : Matrix (Fin n) (Fin n) ℂ) g = g ^ 2 / (n : ℝ) := by
-  have hn' : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hn.ne'
-  have hP : P (1 : Matrix (Fin n) (Fin n) ℂ) = 1 := by
+/-! ### The exactly-computed textures
+
+    The window's contents are not a mystery: for the Yukawa matrix that is
+    the identity on a set s of directions and zero elsewhere, λ̃ = g²/|s|
+    exactly. |s| = N is the flavour-degenerate case (Y = 1) at the lower
+    endpoint, |s| = 1 is a single dominant coupling at the upper endpoint,
+    and |s| = 3 reproduces CCM's own top-dominance value g²/3. -/
+
+/-- **The k-fold degenerate texture, computed**: λ̃ = g²/|s|. -/
+theorem ccLambda_indicator (s : Finset (Fin n)) (hs : s.Nonempty) (g : ℝ) :
+    ccLambda (Matrix.diagonal (fun i => if i ∈ s then (1 : ℂ) else 0)) g
+      = g ^ 2 / (s.card : ℝ) := by
+  classical
+  have hdd : Matrix.diagonal (fun i => if i ∈ s then (1 : ℂ) else 0)
+      * Matrix.diagonal (fun i => if i ∈ s then (1 : ℂ) else 0)
+      = Matrix.diagonal (fun i => if i ∈ s then (1 : ℂ) else 0) := by
+    rw [Matrix.diagonal_mul_diagonal]
+    congr 1
+    funext i
+    by_cases h : i ∈ s <;> simp [h]
+  have hP : P (Matrix.diagonal (fun i => if i ∈ s then (1 : ℂ) else 0))
+      = Matrix.diagonal (fun i => if i ∈ s then (1 : ℂ) else 0) := by
     unfold P
-    rw [Matrix.conjTranspose_one, one_mul]
-  rw [ccLambda, hP, one_mul, Matrix.trace_one, Fintype.card_fin,
-    Complex.natCast_re, sq]
-  field_simp
+    rw [Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal]
+    congr 1
+    funext i
+    by_cases h : i ∈ s <;> simp [h]
+  have htr : trace (Matrix.diagonal (fun i => if i ∈ s then (1 : ℂ) else 0))
+      = (s.card : ℂ) := by
+    rw [Matrix.trace_diagonal]
+    simp
+  have hne : (s.card : ℝ) ≠ 0 := by
+    have : (0:ℝ) < (s.card : ℝ) := by exact_mod_cast Finset.card_pos.mpr hs
+    exact ne_of_gt this
+  rw [ccLambda, hP, hdd, htr]
+  simp only [Complex.natCast_re]
+  rw [div_eq_div_iff (pow_ne_zero 2 hne) hne]
+  ring
 
-/-- **The upper endpoint is attained**: the rank-one Yukawa matrix
-    diag(1,0,…,0) — a single dominant coupling, which is exactly the
-    top-quark-dominance regime CCM works in — gives λ̃ = g², so
-    `ccLambda_upper_bound` is sharp. -/
+/-- The same, indexed by the multiplicity k. -/
+theorem ccLambda_card (s : Finset (Fin n)) {k : ℕ} (hk : 0 < k) (hs : s.card = k)
+    (g : ℝ) :
+    ccLambda (Matrix.diagonal (fun i => if i ∈ s then (1 : ℂ) else 0)) g
+      = g ^ 2 / (k : ℝ) := by
+  rw [ccLambda_indicator s (Finset.card_pos.mp (by omega)) g, hs]
+
+/-- **CCM's own working point, computed rather than cited**: a threefold
+    degenerate texture gives λ̃ = g²/3 exactly. That is the value CCM's
+    eq (5.10) produces — there colour triplication makes the dominant Yukawa
+    effectively threefold degenerate (a ≈ 3m_t², b ≈ 3m_t⁴, so b/a² = 1/3).
+    Their Remark 5.1, which adds a comparable tau-neutrino Yukawa, is the
+    |s| = 4 case, g²/4. Both lie strictly inside the window proven above. -/
+theorem ccLambda_ccm_top_dominance (s : Finset (Fin n)) (hs : s.card = 3) (g : ℝ) :
+    ccLambda (Matrix.diagonal (fun i => if i ∈ s then (1 : ℂ) else 0)) g
+      = g ^ 2 / 3 := by
+  have h := ccLambda_card s (k := 3) (by norm_num) hs g
+  simpa using h
+
+/-- The flavour-degenerate texture Y = 1 — all N Yukawa eigenvalues equal —
+    computes to the lower endpoint exactly. (Note: this is NOT the
+    "democratic" matrix of flavour physics, which has all *entries* equal
+    and is rank one; that one sits at the upper endpoint.) -/
+theorem ccLambda_one (g : ℝ) (hn : 0 < n) :
+    ccLambda (1 : Matrix (Fin n) (Fin n) ℂ) g = g ^ 2 / (n : ℝ) := by
+  classical
+  have h := ccLambda_indicator (n := n) Finset.univ ⟨⟨0, hn⟩, Finset.mem_univ _⟩ g
+  have hdiag : Matrix.diagonal
+      (fun i : Fin n => if i ∈ (Finset.univ : Finset (Fin n)) then (1 : ℂ) else 0)
+      = (1 : Matrix (Fin n) (Fin n) ℂ) := by
+    simp
+  rw [hdiag, Finset.card_univ, Fintype.card_fin] at h
+  exact h
+
+/-- **The lower endpoint is attained by a nonzero Yukawa matrix**, so
+    `ccLambda_lower_bound` cannot be improved. -/
+theorem ccLambda_lower_sharp (g : ℝ) (hn : 0 < n) :
+    ∃ Y : Matrix (Fin n) (Fin n) ℂ, Y ≠ 0 ∧ ccLambda Y g = g ^ 2 / (n : ℝ) := by
+  refine ⟨1, ?_, ccLambda_one g hn⟩
+  intro h
+  have h00 := congrFun (congrFun h (⟨0, hn⟩ : Fin n)) (⟨0, hn⟩ : Fin n)
+  rw [Matrix.one_apply_eq] at h00
+  simp at h00
+
+/-- **The upper endpoint is attained by a nonzero Yukawa matrix** — a single
+    dominant coupling — so `ccLambda_upper_bound` cannot be improved either.
+    (Sharpness is over all of `Matrix (Fin n) (Fin n) ℂ`; the physical CCM
+    texture space is smaller — see the header.) -/
 theorem ccLambda_upper_sharp (g : ℝ) (hn : 0 < n) :
     ∃ Y : Matrix (Fin n) (Fin n) ℂ, Y ≠ 0 ∧ ccLambda Y g = g ^ 2 := by
   classical
-  set i₀ : Fin n := ⟨0, hn⟩ with hi₀
-  set d : Fin n → ℂ := fun k => if k = i₀ then 1 else 0 with hd
-  have hdd : Matrix.diagonal d * Matrix.diagonal d = Matrix.diagonal d := by
-    rw [Matrix.diagonal_mul_diagonal]
-    congr 1
-    funext k
-    by_cases hk : k = i₀ <;> simp [hd, hk]
-  refine ⟨Matrix.diagonal d, ?_, ?_⟩
+  refine ⟨Matrix.diagonal
+    (fun i => if i ∈ ({⟨0, hn⟩} : Finset (Fin n)) then (1 : ℂ) else 0), ?_, ?_⟩
   · intro h
-    have h00 := congrFun (congrFun h i₀) i₀
+    have h00 := congrFun (congrFun h (⟨0, hn⟩ : Fin n)) (⟨0, hn⟩ : Fin n)
     rw [Matrix.diagonal_apply_eq] at h00
-    simp [hd] at h00
-  · have hP : P (Matrix.diagonal d) = Matrix.diagonal d := by
-      unfold P
-      rw [Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal]
-      congr 1
-      funext k
-      by_cases hk : k = i₀ <;> simp [hd, hk]
-    have htr : trace (Matrix.diagonal d) = 1 := by
-      rw [Matrix.trace_diagonal]
-      simp [hd]
-    rw [ccLambda, hP, hdd, htr]
+    simp at h00
+  · rw [ccLambda_indicator _ ⟨⟨0, hn⟩, Finset.mem_singleton_self _⟩ g]
     simp
 
 /-- The cascade window: g²/96 ≤ λ̃ ≤ g² for every nonzero Yukawa matrix on
-    the 96 cascade fermion degrees of freedom. -/
+    the 96 cascade indices (N = 96 assumed, not derived — see header). -/
 theorem cascade_ccLambda_window (Y : Matrix (Fin 96) (Fin 96) ℂ) (g : ℝ)
     (hY : Y ≠ 0) :
     g ^ 2 / 96 ≤ ccLambda Y g ∧ ccLambda Y g ≤ g ^ 2 :=
   ⟨cascade_ccLambda_lower Y g (traceP_re_ne_zero_of_ne_zero Y hY),
-    ccLambda_upper_bound Y g (traceP_re_ne_zero_of_ne_zero Y hY)⟩
+    ccLambda_upper_bound Y g⟩
 
 /-- The mass transfer, upper side: m_H² = 8λ̃v² ≤ 8g²v². -/
-theorem higgsMassSq_upper (g v : ℝ) (ha : (trace (P Y)).re ≠ 0) :
+theorem higgsMassSq_upper (g v : ℝ) :
     higgsMassSq (ccLambda Y g) v ≤ higgsMassSq (g ^ 2) v := by
   unfold higgsMassSq
-  nlinarith [ccLambda_upper_bound Y g ha, sq_nonneg v]
+  nlinarith [ccLambda_upper_bound Y g, sq_nonneg v]
 
 /-- **The cascade Higgs-mass window**: for every nonzero Yukawa matrix on the
-    96 cascade degrees of freedom, 8(g²/96)v² ≤ m_H² ≤ 8g²v². Both ends are
-    attained by actual Yukawa matrices (`ccLambda_lower_sharp`,
-    `ccLambda_upper_sharp`), so this is the full tree-level range the C–C
-    boundary condition allows — the ≈125 GeV value still requires the RG
-    running and the actual texture, neither of which is formalised. -/
+    96 cascade indices, 8(g²/96)v² ≤ m_H² ≤ 8g²v² — where m_H² := 8λ̃v² is
+    the DEFINITION `higgsMassSq` (CCM eq (5.15) normalisation), not a derived
+    physical quantity. Both constants are sharp over all complex 96×96
+    matrices; the ≈125 GeV value still requires the RG running and the actual
+    Yukawa texture, and N = 96 is itself an assumption (see header). -/
 theorem cascade_higgsMassSq_window (Y : Matrix (Fin 96) (Fin 96) ℂ) (g v : ℝ)
     (hY : Y ≠ 0) :
     higgsMassSq (g ^ 2 / 96) v ≤ higgsMassSq (ccLambda Y g) v ∧
       higgsMassSq (ccLambda Y g) v ≤ higgsMassSq (g ^ 2) v := by
   have ha := traceP_re_ne_zero_of_ne_zero Y hY
-  refine ⟨?_, higgsMassSq_upper Y g v ha⟩
+  refine ⟨?_, higgsMassSq_upper Y g v⟩
   have h := higgsMassSq_transfer Y g v (by norm_num) ha
   simpa using h
-
 
 end HiggsBridge
