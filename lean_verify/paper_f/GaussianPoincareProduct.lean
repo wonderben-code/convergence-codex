@@ -49,6 +49,8 @@
 -/
 
 import GaussianPoincare
+import Mathlib.Algebra.MvPolynomial.Equiv
+import Mathlib.Algebra.MvPolynomial.PDeriv
 
 open Polynomial MeasureTheory
 
@@ -315,5 +317,69 @@ theorem poincare_two_integral (q : Polynomial (Polynomial ℝ)) :
     rw [E2, gmean_eq_integral]
   rw [key, key, key, key]
   exact poincare_two q
+
+/-! ## 5. Toward n dimensions: the first bridge
+
+    Iterating §4 to ℝ¹⁶ cannot be done with a recursively defined tower of
+    nested polynomial types — the type-level recursion cannot carry the
+    `CommRing` instance it needs (tried, and it fails at the definition).
+    The workable route is Mathlib's `MvPolynomial (Fin n) ℝ` with
+    `MvPolynomial.finSuccEquiv`, peeling one variable at a time. That route
+    needs bridges between `MvPolynomial.pderiv` and the polynomial structure
+    on the peeled variable, and Mathlib has none of them.
+
+    Here is the first, and the one that looked hardest: the equivalence
+    carries the partial derivative in the peeled variable to the ordinary
+    polynomial derivative. -/
+
+/-- The equivalence sends constants to constants. -/
+theorem finSuccEquiv_C_apply {n : ℕ} (a : ℝ) :
+    MvPolynomial.finSuccEquiv ℝ n (MvPolynomial.C a) = Polynomial.C (MvPolynomial.C a) := by
+  simp [MvPolynomial.finSuccEquiv_apply]
+
+/-- **The pderiv bridge**: under `finSuccEquiv`, the partial derivative in the
+    peeled variable IS the polynomial derivative,
+
+      finSuccEquiv (∂₀ p) = derivative (finSuccEquiv p).
+
+    Mathlib has no lemma relating `pderiv` to `finSuccEquiv`; this is the
+    first of the two such bridges the n-dimensional induction needs (the
+    second, for the remaining variables, is stated as open in §6). -/
+theorem finSuccEquiv_pderiv_zero {n : ℕ} (p : MvPolynomial (Fin (n + 1)) ℝ) :
+    MvPolynomial.finSuccEquiv ℝ n (MvPolynomial.pderiv 0 p)
+      = Polynomial.derivative (MvPolynomial.finSuccEquiv ℝ n p) := by
+  induction p using MvPolynomial.induction_on with
+  | C a => simp [finSuccEquiv_C_apply]
+  | add p q hp hq => simp [hp, hq]
+  | mul_X p i hp =>
+      refine Fin.cases ?_ ?_ i
+      · simp [Derivation.leibniz, hp, MvPolynomial.finSuccEquiv_X_zero]
+        ring
+      · intro j
+        simp [Derivation.leibniz, hp, MvPolynomial.finSuccEquiv_X_succ]
+        ring
+
+/-! ## 6. What the n-dimensional induction still needs
+
+    Recorded precisely, so the remaining legs are a build and not a research
+    problem. With `EN n : MvPolynomial (Fin n) ℝ → ℝ` defined by recursion —
+    `EN 0` is evaluation at the unique point, `EN (n+1) p = EN n (EyM
+    (finSuccEquiv ℝ n p))` with `EyM` the moment-weighted coefficient sum of
+    §3 — the induction step is §4's argument verbatim. The legs:
+
+    * **(open) the second pderiv bridge**, in coefficient form:
+      `((finSuccEquiv ℝ n) (pderiv j.succ p)).coeff k
+         = pderiv j (((finSuccEquiv ℝ n) p).coeff k)`.
+      Provable by the same `MvPolynomial.induction_on`, with a case split on
+      the peeled index and `Polynomial.coeff_mul_X` / `coeff_mul_C`;
+      `MvPolynomial.finSuccEquiv_coeff_coeff` is the fallback route. Mathlib
+      has no `coeff_pderiv` (checked).
+    * **(open) positivity of `EN n`** — the analogue of `gmean_nonneg`, by
+      induction, using `MvPolynomial.eval_eq_eval_mv_eval'` (which DOES exist
+      in Mathlib and is the key ingredient).
+    * **(open) the assembly**, which is §4 with `gmean` replaced by `EN n`.
+
+    Until those land, nothing in this file says anything about 16 variables,
+    and no tag may move on account of it. -/
 
 end GaussianPoincareProduct
