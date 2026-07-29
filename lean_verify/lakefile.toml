@@ -21,7 +21,7 @@ roots = [
   "EmergenceTheorem", "EmergenceLineage", "ThreeLineages",
   "GaugeGroupSelection", "GravityLineage", "QuantumLineage",
   "GToECoherence", "LawvereFixedPoint", "ReflexiveDomainFP",
-  "SeedForced", "NothingToSeed", "InfiniteContent",
+  "SeedForced", "NothingToSeed", "SeedUniqueness", "InfiniteContent",
   "Inexhaustibility", "ConstraintContent", "PreferredDecomposition",
   "SMCompleteness", "StandardModelReps", "SU2Emergence",
   "_proof_001", "_proof_002", "_proof_003", "_proof_004", "_proof_004_logos"
