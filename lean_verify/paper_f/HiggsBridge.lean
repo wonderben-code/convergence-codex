@@ -17,21 +17,30 @@
   1. `traceP_nonneg`, `traceP_sq_nonneg` — a ≥ 0 and b ≥ 0 in the complex
      order: both functionals are genuinely nonnegative (P is PSD; P·P = Pᴴ·P
      is PSD since P is Hermitian).
-  2. `diag_re_nonneg`, `re_trace_eq_sum` — the real bookkeeping: a and b
-     are (casts of) real sums, diagonal entries of P are real nonnegative.
+  2. `diag_re_nonneg`, `re_trace_eq_sum`, `re_tracePP_eq_sum` — the real
+     bookkeeping AS NAMED THEOREMS: a and b are real sums; diagonal
+     entries of P are real nonnegative.
   3. `trace_sq_le_card_mul_trace_sq` — **the Cauchy–Schwarz/Chebyshev
      bound**: (Tr P)² ≤ N·Tr(P·P) (real parts), proven via
      `sq_sum_le_card_mul_sum_sq` plus the entrywise identity
      (P·P)ᵢᵢ = Σⱼ |Pᵢⱼ|² ≥ (Pᵢᵢ)².
-  4. `ccLambda_lower_bound` — the C–C boundary coupling λ(Λ) := g²·b/a²
-     satisfies **λ(Λ) ≥ g²/N** whenever Y ≠ 0: the quartic coupling at
-     unification is bounded below by the gauge coupling over the fermion
-     multiplicity. (For the cascade's N = 96: λ ≥ g²/96 —
-     `cascade_ccLambda_lower`.)
-  5. `higgsMassSq_transfer` — the tree-level relation m_H² = 2λv²
-     transfers the bound: m_H² ≥ 2(g²/N)v² for v ≥ 0.
+  4. `ccLambda_lower_bound` — the C–C boundary coupling λ̃(Λ) := g²·b/a²
+     (CCM 2007 §5.2 eq (5.6); the g there is g₃, defensible at
+     unification) satisfies **λ̃(Λ) ≥ g²/N** whenever a = Tr(P) ≠ 0 — and
+     `traceP_re_ne_zero_of_ne_zero` proves that condition is implied by
+     Y ≠ 0, so the bound genuinely holds for every nonzero Yukawa matrix.
+     (Cascade N = 96: λ̃ ≥ g²/96 — `cascade_ccLambda_lower`.)
+  5. `higgsMassSq_transfer` — NORMALISATION per CCM: the SM quartic is
+     λ = 4λ̃ (CCM §5.2), and the tree-level mass relation is
+     m_H² = 2λv² = 8λ̃v² (CCM eq (5.15)); `higgsMassSq` encodes 8λ̃v²
+     accordingly, and the bound transfers: m_H² ≥ 8(g²/N)v². NOTE: the
+     mass relation itself is DEFINITIONAL here (deriving m_H² = 2λv² from
+     a Higgs potential is not formalised — listed in NOT-proven), and the
+     transfer is monotonicity, nothing deeper.
 
   NOT proven here (named stairs, so the [CLAIMED] tag stays honest):
+  the tree-level relation m_H² = 2λv² itself (definitional here; its
+  derivation from the Higgs potential is standard but unformalised);
   the UPPER bound b ≤ a² (the Schur/minor trace inequality
   Tr(P²) ≤ (Tr P)² for PSD P — needs the 2×2-minor entry bound; next
   stair, would give λ ≤ g² and the upper mass bound); the spectral-action
@@ -114,21 +123,63 @@ theorem diag_re_nonneg (i : Fin n) : 0 ≤ ((P Y) i i).re := by
   have h := (Complex.le_def.mp (diag_nonneg Y i)).1
   simpa using h
 
+/-- a as a named real sum: (Tr P).re = Σᵢ (Pᵢᵢ).re. -/
+theorem re_trace_eq_sum :
+    (trace (P Y)).re = ∑ i, ((P Y) i i).re := by
+  unfold Matrix.trace Matrix.diag
+  exact Complex.re_sum (s := Finset.univ) _
+
+/-- b as a named real sum: (Tr P·P).re = Σᵢⱼ |Pᵢⱼ|². -/
+theorem re_tracePP_eq_sum :
+    (trace ((P Y) * (P Y))).re = ∑ i, ∑ j, Complex.normSq ((P Y) i j) := by
+  unfold Matrix.trace Matrix.diag
+  rw [Complex.re_sum]
+  exact Finset.sum_congr rfl fun i _ => by rw [PP_diag]; exact Complex.ofReal_re _
+
+/-- The entry formula for P itself: Pᵢᵢ = Σⱼ |Yⱼᵢ|². -/
+theorem P_diag (i : Fin n) :
+    (P Y) i i = ((∑ j, Complex.normSq (Y j i) : ℝ) : ℂ) := by
+  unfold P
+  rw [Matrix.mul_apply]
+  have hterm : ∀ j, Yᴴ i j * Y j i = ((Complex.normSq (Y j i) : ℝ) : ℂ) :=
+    fun j => by
+      rw [Matrix.conjTranspose_apply, Complex.star_def, mul_comm,
+        Complex.mul_conj]
+  rw [Finset.sum_congr rfl (fun j _ => hterm j)]
+  norm_cast
+
+/-- **The non-degeneracy bridge**: Y ≠ 0 implies Tr(P).re ≠ 0 (indeed
+    Tr(P) = ‖Y‖²_F > 0), so `ccLambda_lower_bound`'s hypothesis holds for
+    every nonzero Yukawa matrix. -/
+theorem traceP_re_ne_zero_of_ne_zero (hY : Y ≠ 0) :
+    (trace (P Y)).re ≠ 0 := by
+  rw [re_trace_eq_sum]
+  have hentry : ∀ i, ((P Y) i i).re = ∑ j, Complex.normSq (Y j i) := by
+    intro i
+    rw [P_diag]
+    exact Complex.ofReal_re _
+  intro hzero
+  apply hY
+  ext j i
+  have hnn : ∀ i ∈ Finset.univ, (0 : ℝ) ≤ ∑ j, Complex.normSq (Y j i) :=
+    fun i _ => Finset.sum_nonneg fun j _ => Complex.normSq_nonneg _
+  have hall := (Finset.sum_eq_zero_iff_of_nonneg hnn).mp (by
+    rw [← Finset.sum_congr rfl (fun i _ => hentry i)]
+    exact hzero)
+  have hcol := hall i (Finset.mem_univ i)
+  have hnn2 : ∀ j ∈ Finset.univ, (0 : ℝ) ≤ Complex.normSq (Y j i) :=
+    fun j _ => Complex.normSq_nonneg _
+  have hentry0 := (Finset.sum_eq_zero_iff_of_nonneg hnn2).mp hcol j
+    (Finset.mem_univ j)
+  simpa using Complex.normSq_eq_zero.mp hentry0
+
 /-! ## 3. The Cauchy–Schwarz/Chebyshev bound -/
 
 /-- **(Tr P)² ≤ N · Tr(P·P)** in real parts: Chebyshev on the diagonal plus
     the entrywise lower bound (P·P)ᵢᵢ = Σⱼ|Pᵢⱼ|² ≥ (Pᵢᵢ)². -/
 theorem trace_sq_le_card_mul_trace_sq :
     ((trace (P Y)).re) ^ 2 ≤ (n : ℝ) * (trace ((P Y) * (P Y))).re := by
-  have hdiag_re : (trace (P Y)).re = ∑ i, ((P Y) i i).re := by
-    unfold Matrix.trace Matrix.diag
-    exact Complex.re_sum (s := Finset.univ) _
-  have hPP_re : (trace ((P Y) * (P Y))).re
-      = ∑ i, ∑ j, Complex.normSq ((P Y) i j) := by
-    unfold Matrix.trace Matrix.diag
-    rw [Complex.re_sum]
-    exact Finset.sum_congr rfl fun i _ => by rw [PP_diag]; exact Complex.ofReal_re _
-  rw [hdiag_re, hPP_re]
+  rw [re_trace_eq_sum, re_tracePP_eq_sum]
   calc (∑ i, ((P Y) i i).re) ^ 2
       ≤ (Finset.univ.card : ℝ) * ∑ i, ((P Y) i i).re ^ 2 := by
         exact_mod_cast sq_sum_le_card_mul_sum_sq
@@ -185,13 +236,15 @@ theorem cascade_ccLambda_lower (Y : Matrix (Fin 96) (Fin 96) ℂ) (g : ℝ)
   have := ccLambda_lower_bound Y g (by norm_num) ha
   simpa using this
 
-/-- The tree-level Higgs mass-square m_H² = 2λv², as the transfer map:
-    the coupling bound becomes a mass bound. -/
-def higgsMassSq (lam v : ℝ) : ℝ := 2 * lam * v ^ 2
+/-- The tree-level Higgs mass-square in CCM normalisation:
+    m_H² = 2λv² with the SM quartic λ = 4λ̃, i.e. m_H² = 8λ̃v²
+    (CCM 2007 §5.2, eq (5.15)). The relation is DEFINITIONAL here — its
+    derivation from the Higgs potential is not formalised (see header). -/
+def higgsMassSq (lamTilde v : ℝ) : ℝ := 8 * lamTilde * v ^ 2
 
-/-- **The mass transfer**: λ ≥ g²/N and v real give
-    m_H² = 2λv² ≥ 2(g²/N)v². (The ≈125 GeV number requires the RG running,
-    cited not proven.) -/
+/-- The mass transfer (monotonicity of the definition, nothing deeper):
+    λ̃ ≥ g²/N gives m_H² = 8λ̃v² ≥ 8(g²/N)v². (The ≈125 GeV number requires
+    the RG running, cited not proven.) -/
 theorem higgsMassSq_transfer (g v : ℝ) (hn : 0 < n)
     (ha : (trace (P Y)).re ≠ 0) :
     higgsMassSq (g ^ 2 / (n : ℝ)) v ≤ higgsMassSq (ccLambda Y g) v := by

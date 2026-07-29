@@ -39,9 +39,12 @@
 
   PHYSICAL REGIME: every theorem above holds for ALL Δ ∈ ℝ (the proofs
   only use the product structure of the cross-boundary block). The
-  INTERPRETATION of C as a covariance of a Gaussian field requires Δ > 0
-  (for Δ ≤ 0 the same-side kernel is not positive-definite and no such
-  field exists); "correlation" language applies only in that regime.
+  INTERPRETATION of C as a covariance of a nondegenerate Gaussian field
+  requires Δ > 0: for Δ < 0 the same-side kernel is not even positive
+  semidefinite, so no Gaussian field exists at all; at Δ = 0 the kernel is
+  the all-ones matrix — PSD, but only a degenerate field (one Gaussian
+  copied to every site). "Correlation" language applies in the Δ > 0
+  regime.
 
   NOT proven here: OS2 for a measure on a field configuration space (no
   measure appears); the ℤᵈ (d > 1) case, where the reflected block is not
