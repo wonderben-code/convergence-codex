@@ -21,7 +21,9 @@
   - cascade_classification: the cascade satisfies all classification axioms
 
   KEY THEOREMS:
-  - chamseddine_connes_classification: n = 4 is forced (omega proof)
+  - chamseddine_connes_classification: n = 4 from axioms INCLUDING an
+    assumed bound n ≤ 4 (see its HONESTY NOTE); the derived-minimality
+    version is four_le_of_constraints + classification_min (Section 3.5)
   - gauge_group_forced: SU(4) contains genuine SU(3)×SU(2)×U(1) embeddings
   - fermion_content_forced: 96 DOF with genuine Pati-Salam decomposition
   - cascade_is_the_unique_theory: the grand master theorem
@@ -150,7 +152,19 @@ structure ChamseddineConnesAxioms where
     Therefore n = 4.
 
     The proof is by omega (linear arithmetic solver) after
-    extracting the natural number constraints. -/
+    extracting the natural number constraints.
+
+    HONESTY NOTE (integrity upgrade, 29 Jul 2026): in THIS theorem the
+    upper bound n ≤ 4 is the `minimal` FIELD of `ChamseddineConnesAxioms` —
+    an assumption, not a derivation — so what is proven here is
+    "n even ∧ n ≤ 4 ∧ n²−1 ≥ 12 → n = 4" (a 3-case check). For the version
+    in which minimality is DERIVED (n = 4 because 4 is provably the least
+    admissible size, with no upper-bound assumption anywhere), see
+    `CCConstraints`, `four_le_of_constraints`, and `classification_min`
+    below. In both versions the matrix-algebra form, evenness, and the
+    SM-containment bound are modelling inputs; the analytic
+    Chamseddine-Connes-Marcolli derivation (spectral-triple axioms → the
+    algebra class) is NOT formalised in this repository. -/
 theorem chamseddine_connes_classification (ax : ChamseddineConnesAxioms) :
     ax.matrix_size = 4 := by
   -- Extract constraints
@@ -172,6 +186,52 @@ theorem classification_algebra_dim_forced (ax : ChamseddineConnesAxioms)
     ax.algebra_dim = 16 := by
   rw [ax.algebra_dim_eq, h]
   norm_num
+
+-- ============================================================================
+-- SECTION 3.5: MINIMALITY DERIVED, NOT ASSUMED (integrity upgrade, 29 Jul 2026)
+-- ============================================================================
+
+/-- The admissibility constraints WITHOUT any upper bound: matrix-algebra
+    size, positivity, evenness (the Poincaré-duality proxy), and SM
+    containment. The original `ChamseddineConnesAxioms.minimal` field
+    (matrix_size ≤ 4) is deliberately absent — minimality is now something
+    to PROVE about this class, not assume. -/
+structure CCConstraints where
+  /-- The candidate matrix-algebra size n (for Mₙ(ℂ)). -/
+  matrix_size : ℕ
+  matrix_size_pos : 0 < matrix_size
+  /-- Evenness (Poincaré-duality proxy, as in the original axioms). -/
+  poincare_duality : 2 ∣ matrix_size
+  /-- SM containment: n² − 1 ≥ 12. -/
+  gauge_contains_sm : matrix_size * matrix_size - 1 ≥ 12
+
+/-- **Minimality is a theorem**: every admissible size is at least 4.
+    No upper bound is assumed anywhere — n = 2 is eliminated because
+    3 < 12, odd sizes by evenness. -/
+theorem four_le_of_constraints (c : CCConstraints) : 4 ≤ c.matrix_size := by
+  rcases c with ⟨n, hpos, heven, hgauge⟩
+  by_contra h
+  push Not at h
+  interval_cases n <;> omega
+
+/-- 4 itself is admissible: the bound is sharp. -/
+def fourConstraints : CCConstraints where
+  matrix_size := 4
+  matrix_size_pos := by norm_num
+  poincare_duality := by norm_num
+  gauge_contains_sm := by norm_num
+
+/-- **The classification with minimality DERIVED**: if an admissible size is
+    minimal among all admissible sizes (an actual minimality property, not a
+    numeric bound), then it equals 4. Proof: it is ≥ 4 by
+    `four_le_of_constraints` and ≤ 4 by comparison with `fourConstraints`. -/
+theorem classification_min (c : CCConstraints)
+    (hmin : ∀ c' : CCConstraints, c.matrix_size ≤ c'.matrix_size) :
+    c.matrix_size = 4 := by
+  have h4 := four_le_of_constraints c
+  have hle := hmin fourConstraints
+  have hfour : fourConstraints.matrix_size = 4 := rfl
+  omega
 
 /-- Corollary: the Hilbert space dimension is forced to be 4. -/
 theorem classification_hilbert_dim_forced (ax : ChamseddineConnesAxioms)
