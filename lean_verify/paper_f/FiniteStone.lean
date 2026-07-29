@@ -1,9 +1,20 @@
 /-
-  FiniteStone: Stone's Theorem in the Bounded Case — Schrödinger Evolution
-  ========================================================================
+  FiniteStone: One-Parameter Unitary Groups from Bounded Generators
+  =================================================================
+  (the FORWARD direction of Stone's correspondence, with generator recovery
+   and injectivity — plus the Schrödinger equation, at operator, state, and
+   matrix level)
 
-  Upgrades: the Stone (1932) citation in QuantumLineage/tree §8, previously
-  prose-only. The published tag for "Schrödinger via Stone" is [PREDICTED].
+  PARTIALLY upgrades the Stone (1932) citation in QuantumLineage/tree §8
+  (published tag [PREDICTED]): this file machine-verifies generator → group,
+  the group laws, the Schrödinger equation, and that distinct generators give
+  distinct groups. The cited 1932 statement itself is the CONVERSE — that
+  every (strongly/norm) continuous one-parameter unitary group arises from a
+  self-adjoint generator — and that converse is NOT proven here in any
+  dimension; see the NOT-proven paragraph below.
+
+  Sign convention: this file uses U(t) = exp(+itH); the physics convention
+  U(t) = e^{−iHt} is obtained by H ↦ −H (the two statements are equivalent).
 
   WHAT THIS FILE PROVES (exactly this, nothing more):
 
@@ -21,22 +32,31 @@
   5. `hasDerivAt_unitaryGroup` — dU/dt = (iH)·U(t) for every t: the abstract
      Schrödinger equation at operator level, with derivative in the norm
      topology of A.
-  6. `generator_recovery`, `generator_determined` — dU/dt|₀ = iH, hence
-     H = −i·(dU/dt|₀): the group determines its generator.
+  6. `generator_recovery` — dU/dt|₀ = iH; `unitaryGroup_injective` — distinct
+     self-adjoint generators give distinct groups (via `HasDerivAt.unique`):
+     the map H ↦ U is injective. (`generator_determined` is the scalar
+     cancellation (−i)·(i·H) = H used as glue — it is labelled as such.)
   7. `schrodinger_equation` — on any complex Hilbert space E and bounded
      self-adjoint H : E →L[ℂ] E, for every state ψ:
      d/dt (U(t)ψ) = (iH)(U(t)ψ). The Schrödinger equation for states.
-  8. `cascade_schrodinger` — the same, instantiated at EuclideanSpace ℂ (Fin n)
-     for every n: every finite cascade level satisfies the Schrödinger
-     equation. (n = 4 is the cascade's M₄ level acting on ℂ⁴.)
+  8. `unitaryGroup_norm_apply` — ‖U(t)ψ‖ = ‖ψ‖: probability conservation,
+     derived from the adjoint identity, not assumed.
+  9. `cascade_schrodinger` (EuclideanSpace ℂ (Fin n), a pure specialization
+     of 7, stated for citation) and `matrix_schrodinger` — the Schrödinger
+     equation for every HERMITIAN MATRIX Hamiltonian M ∈ Mₙ(ℂ), transported
+     through `Matrix.toEuclideanCLM`; the cascade algebras Mₙ(ℂ) are covered
+     as actual matrices, not only as operator algebras.
 
-  NOT proven here (stated to keep the tag honest): the genuinely
-  infinite-dimensional Stone theorem — that every STRONGLY CONTINUOUS
-  one-parameter unitary group has a densely defined (generally UNBOUNDED)
-  self-adjoint generator — requires unbounded-operator spectral theory absent
-  from Mathlib; it remains open here. This file is the complete bounded case:
-  forward direction, group laws, and generator recovery. For the cascade's
-  finite levels the bounded case is the whole story.
+  NOT proven here (stated to keep the tag honest). The CONVERSE of Stone's
+  correspondence — that every continuous one-parameter unitary group is of
+  the form exp(itH) for a self-adjoint H — is not proven IN ANY DIMENSION,
+  finite ones included: neither the norm-continuous (bounded-generator) case
+  nor the strongly-continuous unbounded case (the latter also needs
+  unbounded-operator spectral theory absent from Mathlib). The tree's §8 step
+  "time evolution is continuous and unitary, therefore a Hamiltonian exists"
+  therefore remains open even at the finite cascade levels; what this file
+  supplies is the forward direction, generator recovery and injectivity for
+  the groups constructed here, and the Schrödinger equation.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
@@ -48,6 +68,7 @@ import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.Calculus.Deriv.Comp
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.LinearAlgebra.Complex.Module
+import Mathlib.LinearAlgebra.Matrix.Hermitian
 
 open Complex NormedSpace selfAdjoint
 
@@ -121,12 +142,42 @@ theorem generator_recovery (H : selfAdjoint A) :
   rwa [unitaryGroup_zero, OneMemClass.coe_one, mul_one] at h
 
 omit [CompleteSpace A] [StarModule ℂ A] [ContinuousStar A] in
-/-- The group determines its generator: H = −i·(dU/dt|₀). Together with
-    `generator_recovery` this is the bounded-case content of Stone's
-    correspondence H ↔ U in both directions for the groups constructed here. -/
+/-- Scalar cancellation glue: (−i)·(i·H) = H. This is a ℂ-module identity
+    (it uses nothing about groups or derivatives); the substantive
+    "group determines generator" statement is `unitaryGroup_injective`. -/
 theorem generator_determined (H : selfAdjoint A) :
     (-I) • (I • (H : A)) = (H : A) := by
   rw [smul_smul, neg_mul, Complex.I_mul_I, neg_neg, one_smul]
+
+/-- **Injectivity of the Stone correspondence** (for the groups built here):
+    distinct bounded self-adjoint generators give distinct unitary groups.
+    Proof: both groups have derivatives i•H and i•H′ at 0 (`generator_recovery`);
+    equal functions have equal derivatives (`HasDerivAt.unique`); cancel i. -/
+theorem unitaryGroup_injective (H H' : selfAdjoint A)
+    (h : unitaryGroup H = unitaryGroup H') : H = H' := by
+  have h1 := generator_recovery H
+  have h2 := generator_recovery H'
+  have heq : (fun s => ((unitaryGroup H s : unitary A) : A))
+      = fun s => ((unitaryGroup H' s : unitary A) : A) := by
+    funext s
+    rw [h]
+  rw [heq] at h1
+  have hI : I • (H : A) = I • (H' : A) := h1.unique h2
+  have := congrArg (fun x => (-I) • x) hI
+  simp only [generator_determined] at this
+  exact Subtype.ext this
+
+/-- U(t)⁻¹ = U(−t) inside the unitary group. -/
+theorem unitaryGroup_inv (H : selfAdjoint A) (t : ℝ) :
+    (unitaryGroup H t)⁻¹ = unitaryGroup H (-t) :=
+  (Unitary.star_eq_inv _).symm.trans (unitaryGroup_star H t)
+
+/-- The bundled form: t ↦ U(t) as a monoid homomorphism from (ℝ, +) into the
+    unitary group — the one-parameter-group structure in one object. -/
+def unitaryGroupHom (H : selfAdjoint A) : Multiplicative ℝ →* unitary A where
+  toFun t := unitaryGroup H t.toAdd
+  map_one' := unitaryGroup_zero H
+  map_mul' a b := unitaryGroup_add H a.toAdd b.toAdd
 
 /-! ## 3. The Schrödinger equation for states on a Hilbert space -/
 
@@ -172,5 +223,44 @@ theorem cascade_schrodinger (n : ℕ)
           unitary (EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n))) :
           EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n))) ψ) t :=
   schrodinger_equation H ψ t
+
+/-- **Probability conservation**: ‖U(t)ψ‖ = ‖ψ‖ — derived from the adjoint
+    identity u*u = 1, not assumed. -/
+theorem unitaryGroup_norm_apply {E : Type*} [NormedAddCommGroup E]
+    [InnerProductSpace ℂ E] [CompleteSpace E]
+    (H : selfAdjoint (E →L[ℂ] E)) (t : ℝ) (ψ : E) :
+    ‖((unitaryGroup H t : unitary (E →L[ℂ] E)) : E →L[ℂ] E) ψ‖ = ‖ψ‖ := by
+  set u : E →L[ℂ] E := ((unitaryGroup H t : unitary (E →L[ℂ] E)) : E →L[ℂ] E) with hu_def
+  have hu : star u * u = 1 := Unitary.coe_star_mul_self (unitaryGroup H t)
+  have key : (inner ℂ (u ψ) (u ψ)) = (inner ℂ ψ ψ) := by
+    rw [← ContinuousLinearMap.adjoint_inner_right, ← ContinuousLinearMap.star_eq_adjoint,
+      ← ContinuousLinearMap.mul_apply, hu, ContinuousLinearMap.one_apply]
+  have hsq : ‖u ψ‖ ^ 2 = ‖ψ‖ ^ 2 := by
+    rw [inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K] at key
+    exact_mod_cast key
+  exact (pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).mp hsq
+
+/-- A Hermitian matrix, viewed as a self-adjoint operator on ℂⁿ via the
+    star-algebra equivalence `Matrix.toEuclideanCLM`. -/
+def hermitianToSelfAdjoint {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ)
+    (hM : Matrix.IsHermitian M) :
+    selfAdjoint (EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n)) :=
+  ⟨Matrix.toEuclideanCLM (𝕜 := ℂ) M, by
+    rw [selfAdjoint.mem_iff, ← map_star, show star M = M from hM]⟩
+
+/-- **The Schrödinger equation for matrix Hamiltonians**: for every Hermitian
+    M ∈ Mₙ(ℂ) — the cascade algebras as actual matrices — the evolution
+    U(t) = exp(itM) satisfies d/dt U(t)ψ = i·M(U(t)ψ) on ℂⁿ. -/
+theorem matrix_schrodinger {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ)
+    (hM : Matrix.IsHermitian M) (ψ : EuclideanSpace ℂ (Fin n)) (t : ℝ) :
+    HasDerivAt
+      (fun s => ((unitaryGroup (hermitianToSelfAdjoint M hM) s :
+        unitary (EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n))) :
+        EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n)) ψ)
+      (I • (Matrix.toEuclideanCLM (𝕜 := ℂ) M)
+        (((unitaryGroup (hermitianToSelfAdjoint M hM) t :
+          unitary (EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n))) :
+          EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n)) ψ)) t := by
+  simpa using schrodinger_equation (hermitianToSelfAdjoint M hM) ψ t
 
 end FiniteStone
