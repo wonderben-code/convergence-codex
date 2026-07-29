@@ -23,18 +23,30 @@
      SL₂(ℂ) action preserves the form (self-contained one-line proof via
      det multiplicativity; GravityLineage proves the same fact — restated
      here to keep this file standalone).
-  5. `conj_action_hermitian` — the action H ↦ A·H·Aᴴ maps Hermitian
-     matrices to Hermitian matrices: SL₂(ℂ) genuinely ACTS on Herm₂.
-  6. `kernel_of_conj_action` — if A ∈ SL₂(ℂ) fixes EVERY Hermitian matrix
-     (A·H·Aᴴ = H for all Hermitian H), then A = ±1: the kernel of the
-     action is {±1}, the ℤ/2 of the double cover. (Route: fixing 1 gives
-     A·Aᴴ = 1; then fixing σ₃ and σ₁ forces A diagonal then scalar; scalar
-     in SL₂ with A·Aᴴ = 1 forces c² … |c|² = 1 and c = ±1 via det.)
+  5. `conj_action_hermitian`, `conj_action_one`, `conj_action_mul` — the
+     conjugation map H ↦ A·H·Aᴴ preserves Herm₂ and satisfies the action
+     axioms (identity and compatibility), stated as equations. (No bundled
+     `MulAction` instance is built — noted below.)
+  6. `kernel_of_conj_action` + `pm_one_in_kernel` — BOTH inclusions of
+     "the kernel is {±1}": if det(A) = 1 and A·H·Aᴴ = H for every
+     Hermitian H then A = ±1; and conversely ±1 do fix every Hermitian
+     matrix. The ℤ/2 of the double cover. (Route for ⊆: fixing 1 gives
+     A·Aᴴ = 1, turning fixing into commuting; commuting with σ₃ and σ₁
+     forces A scalar; det = 1 then forces the scalar c to satisfy c² = 1,
+     so c = ±1.)
+  7. `pauliHerm_injective` and `pauliHerm_eq_combination` — the Pauli
+     parametrisation is injective (coefficients are unique) and equals the
+     linear combination t·1 + x·σ₁ + y·σ₂ + z·σ₃ (proven entrywise), so
+     "Pauli coordinates" is earned: a bijective parametrisation of Herm₂.
 
   NOT proven here (the remaining stairs of gap #7, stated so the tag stays
   honest): the bundled Mathlib `QuadraticForm`/`QuadraticForm.Signature`
-  packaging of item 3 (the diagonal formula above carries the mathematical
-  content; the bundling is API work); SURJECTIVITY of SL₂(ℂ) → SO⁺(1,3)
+  packaging of item 3, INCLUDING Sylvester invariance (that (1,3) is THE
+  signature, invariant under change of basis, is not formalised — what is
+  proven is the explicit diagonalisation with signs (+,−,−,−) in an
+  injective, surjective, linear parametrisation); a bundled `MulAction` of
+  SL₂(ℂ) on Herm₂ (the action equations of item 5 are proven, the
+  typeclass object is not constructed); SURJECTIVITY of SL₂(ℂ) → SO⁺(1,3)
   (the actual covering statement — needs polar decomposition/connectedness);
   any identification with `CliffordAlgebra.spinGroup`. Those remain open.
 
@@ -43,10 +55,10 @@
 
 import Mathlib.Data.Complex.Basic
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
-import Mathlib.LinearAlgebra.Matrix.SpecialLinearGroup
 import Mathlib.LinearAlgebra.Matrix.Notation
 import Mathlib.Tactic.NoncommRing
 import Mathlib.Tactic.LinearCombination
+import Mathlib.Tactic.Linarith
 
 open Matrix Complex
 
@@ -119,6 +131,41 @@ theorem pauliHerm_surjective (H : Matrix (Fin 2) (Fin 2) ℂ)
       push_cast
       ring
 
+/-- The Pauli parametrisation is injective: coefficients are unique
+    (recovered from the matrix entries). With `pauliHerm_surjective`:
+    a bijective parametrisation of Herm₂(ℂ) by ℝ⁴. -/
+theorem pauliHerm_injective (t x y z t' x' y' z' : ℝ)
+    (h : pauliHerm t x y z = pauliHerm t' x' y' z') :
+    t = t' ∧ x = x' ∧ y = y' ∧ z = z' := by
+  have h00 := congrFun (congrFun h 0) 0
+  have h01 := congrFun (congrFun h 0) 1
+  have h11 := congrFun (congrFun h 1) 1
+  simp only [pauliHerm, Matrix.cons_val', Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.of_apply] at h00 h01 h11
+  have e00 := congrArg Complex.re h00
+  have e11 := congrArg Complex.re h11
+  have e01r := congrArg Complex.re h01
+  have e01i := congrArg Complex.im h01
+  simp at e00 e11 e01r e01i
+  refine ⟨by linarith, by linarith, by linarith, by linarith⟩
+
+/-- The three Pauli matrices (σ₂ included), for the combination identity. -/
+private def pSigma1 : Matrix (Fin 2) (Fin 2) ℂ := !![0, 1; 1, 0]
+private def pSigma2 : Matrix (Fin 2) (Fin 2) ℂ := !![0, -I; I, 0]
+private def pSigma3 : Matrix (Fin 2) (Fin 2) ℂ := !![1, 0; 0, -1]
+
+/-- `pauliHerm` IS the linear combination t·1 + x·σ₁ + y·σ₂ + z·σ₃,
+    entrywise — the docstring gloss as a theorem. Linearity of the
+    parametrisation follows (a linear combination of fixed matrices). -/
+theorem pauliHerm_eq_combination (t x y z : ℝ) :
+    pauliHerm t x y z
+      = (t : ℂ) • (1 : Matrix (Fin 2) (Fin 2) ℂ) + (x : ℂ) • pSigma1
+        + (y : ℂ) • pSigma2 + (z : ℂ) • pSigma3 := by
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [pauliHerm, pSigma1, pSigma2, pSigma3, Matrix.one_fin_two] <;>
+    ring
+
 /-! ## 3. The determinant is the Minkowski form: signature (1,3) exhibited -/
 
 /-- **The Minkowski form**: det(t·1 + x·σ₁ + y·σ₂ + z·σ₃) = t² − x² − y² − z².
@@ -149,7 +196,19 @@ theorem conj_action_hermitian (A H : Matrix (Fin 2) (Fin 2) ℂ)
   rw [Matrix.conjTranspose_mul, Matrix.conjTranspose_mul,
     Matrix.conjTranspose_conjTranspose, hH, Matrix.mul_assoc]
 
-/-! ## 6. The kernel of the action is {±1} -/
+/-- Action axiom (identity): conjugation by 1 is the identity. -/
+theorem conj_action_one (H : Matrix (Fin 2) (Fin 2) ℂ) :
+    (1 : Matrix (Fin 2) (Fin 2) ℂ) * H * (1 : Matrix (Fin 2) (Fin 2) ℂ)ᴴ = H := by
+  simp
+
+/-- Action axiom (compatibility): conjugation by A·B is conjugation by B
+    then by A. -/
+theorem conj_action_mul (A B H : Matrix (Fin 2) (Fin 2) ℂ) :
+    (A * B) * H * (A * B)ᴴ = A * (B * H * Bᴴ) * Aᴴ := by
+  rw [Matrix.conjTranspose_mul]
+  noncomm_ring
+
+/-! ## 6. The kernel of the action is exactly {±1} -/
 
 /-- σ₃ and σ₁, used as probe matrices for the kernel computation. -/
 private def sigma3 : Matrix (Fin 2) (Fin 2) ℂ := !![1, 0; 0, -1]
@@ -216,5 +275,24 @@ theorem kernel_of_conj_action (A : Matrix (Fin 2) (Fin 2) ℂ)
     ext i j
     fin_cases i <;> fin_cases j <;>
       simp [hA01, hA10, h, ← hdiag]
+
+/-- The converse inclusion: ±1 genuinely lie in the kernel — both have
+    det = 1 and fix every Hermitian matrix. With `kernel_of_conj_action`:
+    the kernel is EXACTLY {±1}. -/
+theorem pm_one_in_kernel :
+    (det (1 : Matrix (Fin 2) (Fin 2) ℂ) = 1 ∧
+      ∀ H : Matrix (Fin 2) (Fin 2) ℂ, Hᴴ = H →
+        (1 : Matrix (Fin 2) (Fin 2) ℂ) * H * (1 : Matrix (Fin 2) (Fin 2) ℂ)ᴴ = H) ∧
+    (det (-1 : Matrix (Fin 2) (Fin 2) ℂ) = 1 ∧
+      ∀ H : Matrix (Fin 2) (Fin 2) ℂ, Hᴴ = H →
+        (-1 : Matrix (Fin 2) (Fin 2) ℂ) * H * (-1 : Matrix (Fin 2) (Fin 2) ℂ)ᴴ = H) := by
+  refine ⟨⟨by simp, fun H _ => by simp⟩,
+    ⟨?_, fun H _ => by
+      simp only [Matrix.conjTranspose_neg, Matrix.conjTranspose_one,
+        Matrix.neg_mul, Matrix.mul_neg, Matrix.mul_one, Matrix.one_mul]
+      exact neg_neg H⟩⟩
+  rw [show (-1 : Matrix (Fin 2) (Fin 2) ℂ) = (-1 : ℂ) • 1 by simp]
+  rw [Matrix.det_smul]
+  simp
 
 end MinkowskiHerm2
