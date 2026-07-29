@@ -21,24 +21,37 @@
      semisimple ℂ-algebra of dimension exactly 4 is isomorphic to M₂(ℂ)
      as a ℂ-algebra. (Σ nᵢ² = 4 with some nᵢ ≥ 2 forces a single factor
      with n = 2.)
-  3. `seed_forced` — the package: dim ≥ 4 always, with dim = 4 realised
-     exactly by M₂(ℂ). "The minimal non-commutative semisimple algebra
-     over ℂ is M₂(ℂ), uniquely" is therefore a THEOREM.
+  3. `seed_forced` — the package: dim ≥ 4 always, and IF dim = 4 THEN
+     A ≅ M₂(ℂ) (a conjunction with a conditional — inhabitation of the
+     dim-4 case is a separate fact, supplied by item 4 and combined in
+     `m2_realises_dim_four`, which instantiates the whole pipeline).
   4. Non-vacuity: `m2_noncommutative`, `m2_finrank` — M₂(ℂ) itself
      satisfies the constraints at dimension 4 (semisimplicity of matrix
      algebras is a Mathlib instance), so the characterised class is
      inhabited and the bound is sharp.
 
-  MODELLING NOTE (the honest joints): the narrative's "trace-faithful C⋆"
-  constraint is modelled as SEMISIMPLICITY — for finite-dimensional complex
-  algebras this is the standard equivalence (a f.d. C⋆-algebra is semisimple;
-  conversely every f.d. semisimple ℂ-algebra carries a C⋆ structure by
-  Wedderburn–Artin) — CITED, not formalised; formalising "f.d. C⋆ ⇒
-  semisimple" would need Mathlib C⋆-algebra radical theory. "Minimal" is
-  rendered as the two theorems: nothing non-commutative exists below
-  dimension 4, and dimension 4 is uniquely M₂(ℂ). NOT proven: that physics
-  requires these constraints (interpretive, the paper's §3 argument); any
-  connection to D = (D→D) (that is L2/L3 of the spine, separate).
+  MODELLING NOTE (the honest joints — ALL of them):
+  (i)   BASE FIELD ℂ: the `[Algebra ℂ A]` hypothesis is load-bearing. Over ℝ
+        the uniqueness statement is FALSE — ℍ and M₂(ℝ) are non-isomorphic
+        non-commutative semisimple ℝ-algebras, both of dimension 4. The
+        paper's quaternionic alternative is therefore dismissed here BY THE
+        CHOICE OF SCALARS (motivated by the complex-QM postulate of §3),
+        not by a proof; the exclusion-over-ℝ is not formalised.
+  (ii)  ASSOCIATIVITY + UNITALITY: the `[Ring A]` hypothesis excludes the
+        octonions by fiat. The paper's "no 4th generation because octonions
+        are non-associative" step is exactly this modelling choice made
+        visible — not a theorem of this file.
+  (iii) TRACE-FAITHFUL C⋆ ↦ SEMISIMPLICITY: standard equivalence for f.d.
+        complex algebras (f.d. C⋆ ⇒ semisimple; conversely by
+        Wedderburn–Artin) — CITED, not formalised; formalising it would
+        need C⋆ radical theory not in Mathlib.
+  (iv)  "MINIMAL" is rendered as the two theorems (nothing non-commutative
+        below dim 4; dim 4 uniquely M₂(ℂ)) plus the sharpness witnesses.
+  NOT proven: that physics requires these constraints (interpretive, §3);
+  any connection to D = (D→D) (spine L2/L3, separate). The correct summary:
+  this file closes the seed-uniqueness statement AS MODELLED — over ℂ,
+  associative, semisimple — so the published [META, OPEN] tag can move to
+  "resolved over ℂ under the stated modelling", not to "closed".
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
@@ -181,7 +194,6 @@ theorem seed_unique_dim_four (A : Type*) [Ring A] [Algebra ℂ A]
     exact absurd this (Finset.notMem_empty j)
   -- collapse the product and reindex the block to Fin 2
   have hdd : d default = 2 := by
-    have : (default : Fin n) = i₀ := Unique.eq_default i₀ ▸ rfl
     rw [show (default : Fin n) = i₀ from (Unique.eq_default i₀).symm, hd2]
   exact ⟨e.trans ((piUniqueAlgEquiv _).trans
     (Matrix.reindexAlgEquiv ℂ ℂ (finCongr hdd)))⟩
@@ -208,5 +220,14 @@ theorem m2_noncommutative :
 /-- dim M₂(ℂ) = 4. -/
 theorem m2_finrank : finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) = 4 := by
   rw [Module.finrank_matrix, Fintype.card_fin, Module.finrank_self]
+
+/-- End-to-end inhabitation: M₂(ℂ) itself satisfies every hypothesis of
+    `seed_forced` (semisimplicity and finite-dimensionality by Mathlib
+    instances, non-commutativity and dimension by the witnesses above), and
+    the dimension-4 branch fires. The "class is inhabited and the bound is
+    sharp" claim is this declaration, not prose. -/
+theorem m2_realises_dim_four :
+    Nonempty ((Matrix (Fin 2) (Fin 2) ℂ) ≃ₐ[ℂ] Matrix (Fin 2) (Fin 2) ℂ) :=
+  (seed_forced (Matrix (Fin 2) (Fin 2) ℂ) m2_noncommutative).2 m2_finrank
 
 end SeedUniqueness
