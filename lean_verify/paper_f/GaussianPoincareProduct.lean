@@ -359,7 +359,104 @@ theorem finSuccEquiv_pderiv_zero {n : ℕ} (p : MvPolynomial (Fin (n + 1)) ℝ) 
         simp [Derivation.leibniz, hp, MvPolynomial.finSuccEquiv_X_succ]
         ring
 
-/-! ## 6. What the n-dimensional induction still needs
+/-- **The second pderiv bridge**, in the coefficient form the induction
+    needs: differentiating in one of the REMAINING variables acts
+    coefficientwise after peeling. -/
+theorem finSuccEquiv_pderiv_succ {n : ℕ} (j : Fin n)
+    (p : MvPolynomial (Fin (n + 1)) ℝ) (k : ℕ) :
+    ((MvPolynomial.finSuccEquiv ℝ n) (MvPolynomial.pderiv j.succ p)).coeff k
+      = MvPolynomial.pderiv j (((MvPolynomial.finSuccEquiv ℝ n) p).coeff k) := by
+  induction p using MvPolynomial.induction_on generalizing k with
+  | C a =>
+      simp [finSuccEquiv_C_apply, Polynomial.coeff_C,
+        apply_ite (MvPolynomial.pderiv j)]
+  | add p q hp hq => simp [hp, hq]
+  | mul_X p i hp =>
+      refine Fin.cases ?_ ?_ i
+      · have hz : MvPolynomial.pderiv j.succ
+            (MvPolynomial.X (0 : Fin (n + 1)) : MvPolynomial (Fin (n + 1)) ℝ) = 0 :=
+          MvPolynomial.pderiv_X_of_ne (Fin.succ_ne_zero j).symm
+        cases k with
+        | zero => simp [Derivation.leibniz, hz, MvPolynomial.finSuccEquiv_X_zero]
+        | succ m =>
+            simp [Derivation.leibniz, hz, MvPolynomial.finSuccEquiv_X_zero, hp]
+      · intro j'
+        by_cases hjj : j' = j
+        · subst hjj
+          simp [Derivation.leibniz, MvPolynomial.finSuccEquiv_X_succ,
+            Polynomial.coeff_mul_C, hp]
+        · have h1 : MvPolynomial.pderiv j.succ
+              (MvPolynomial.X j'.succ : MvPolynomial (Fin (n + 1)) ℝ) = 0 :=
+            MvPolynomial.pderiv_X_of_ne (fun h => hjj (Fin.succ_injective n h))
+          have h2 : MvPolynomial.pderiv j
+              (MvPolynomial.X j' : MvPolynomial (Fin n) ℝ) = 0 :=
+            MvPolynomial.pderiv_X_of_ne hjj
+          simp [Derivation.leibniz, MvPolynomial.finSuccEquiv_X_succ,
+            Polynomial.coeff_mul_C, hp, h1, h2]
+
+/-! ## 6. The n-variable tower: expectation and positivity -/
+
+/-- The inner expectation on the peeled variable, valued in the remaining
+    variables. -/
+def EyM (n : ℕ) (q : Polynomial (MvPolynomial (Fin n) ℝ)) : MvPolynomial (Fin n) ℝ :=
+  ∑ k ∈ Finset.range (q.natDegree + 1), mom k • q.coeff k
+
+/-- **The n-fold iterated Gaussian expectation.** -/
+def EN : (n : ℕ) → MvPolynomial (Fin n) ℝ → ℝ
+  | 0, p => MvPolynomial.eval (fun i => Fin.elim0 i) p
+  | (n + 1), p => EN n (EyM n (MvPolynomial.finSuccEquiv ℝ n p))
+
+theorem EN_zero (p : MvPolynomial (Fin 0) ℝ) :
+    EN 0 p = MvPolynomial.eval (fun i => Fin.elim0 i) p := rfl
+
+theorem EN_succ (n : ℕ) (p : MvPolynomial (Fin (n + 1)) ℝ) :
+    EN (n + 1) p = EN n (EyM n (MvPolynomial.finSuccEquiv ℝ n p)) := rfl
+
+/-- The inner expectation, computed pointwise in the remaining variables by
+    the 1-d functional — the n-variable analogue of `eval_Ey`. -/
+theorem eval_EyM (n : ℕ) (q : Polynomial (MvPolynomial (Fin n) ℝ))
+    (w : Fin n → ℝ) :
+    MvPolynomial.eval w (EyM n q) = gmean (q.map (MvPolynomial.eval w)) := by
+  have hdeg : (q.map (MvPolynomial.eval w)).natDegree < q.natDegree + 1 :=
+    Nat.lt_succ_of_le Polynomial.natDegree_map_le
+  rw [gmean_eq_sum_range hdeg, EyM, map_sum]
+  refine Finset.sum_congr rfl fun k _ => ?_
+  rw [Polynomial.coeff_map, MvPolynomial.smul_eq_C_mul, map_mul,
+    MvPolynomial.eval_C]
+  ring
+
+/-- **Positivity of the n-fold expectation**: a polynomial nonnegative at
+    every point of ℝⁿ has nonnegative expectation. Proven by induction, with
+    Mathlib's `eval_eq_eval_mv_eval'` as the bridge between the peeled
+    variable and the rest. -/
+theorem EN_nonneg : ∀ (n : ℕ) (p : MvPolynomial (Fin n) ℝ),
+    (∀ v : Fin n → ℝ, 0 ≤ MvPolynomial.eval v p) → 0 ≤ EN n p
+  | 0, p, hp => hp _
+  | (n + 1), p, hp => by
+      rw [EN_succ]
+      refine EN_nonneg n _ fun w => ?_
+      rw [eval_EyM]
+      apply gmean_nonneg
+      intro x
+      have h := hp (Fin.cons x w)
+      rwa [MvPolynomial.eval_eq_eval_mv_eval'] at h
+
+/-- Monotonicity of the n-fold expectation, by the same induction. -/
+theorem EN_mono : ∀ (n : ℕ) {p q : MvPolynomial (Fin n) ℝ},
+    (∀ v : Fin n → ℝ, MvPolynomial.eval v p ≤ MvPolynomial.eval v q) →
+      EN n p ≤ EN n q
+  | 0, _, _, h => h _
+  | (n + 1), p, q, h => by
+      rw [EN_succ, EN_succ]
+      refine EN_mono n fun w => ?_
+      rw [eval_EyM, eval_EyM]
+      apply gmean_mono
+      intro x
+      have hx := h (Fin.cons x w)
+      rwa [MvPolynomial.eval_eq_eval_mv_eval',
+        MvPolynomial.eval_eq_eval_mv_eval'] at hx
+
+/-! ## 7. What the n-dimensional induction still needs
 
     Recorded precisely, so the remaining legs are a build and not a research
     problem. With `EN n : MvPolynomial (Fin n) ℝ → ℝ` defined by recursion —
