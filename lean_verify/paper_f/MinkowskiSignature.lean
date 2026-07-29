@@ -31,11 +31,22 @@
      trivial), so 1 + 3 = 4 exhausts the space.
   7. `exists_null_vector` — the light cone is not trivial: there are nonzero
      null directions, which is exactly what a definite form cannot have.
+  8. `pauliCoord` + `pauliHerm_pauliCoord` — the inverse parametrisation, so
+     Pauli coordinates are a genuine bijection with Herm₂(ℂ); and
+     `minkowskiForm_lorentzMap` — **the SL₂(ℂ) conjugation action, read in
+     those coordinates, preserves the Minkowski form**. That is the map into
+     the orthogonal group O(1,3) at the level of the form, which with
+     `MinkowskiHerm2.kernel_of_conj_action` (kernel exactly {±1}) is most of
+     old gap #7's homomorphism half.
 
   NOT proven here (the rest of gap #7, unchanged): SURJECTIVITY of
   SL₂(ℂ) → SO⁺(1,3) (the actual covering statement — needs polar
-  decomposition/connectedness); the identification of SL₂(ℂ) with
-  Mathlib's `spinGroup`; a bundled `MulAction` of SL₂(ℂ) on Herm₂; and the
+  decomposition/connectedness), and with it the identification of the IMAGE
+  as the identity component rather than merely a subgroup of O(1,3);
+  ℝ-linearity of `lorentzMap` as a bundled `LinearMap` (the isometry
+  equation is proven, the bundled object is not built); the identification of
+  SL₂(ℂ) with Mathlib's `spinGroup`; a bundled `MulAction` of SL₂(ℂ) on
+  Herm₂; and the
   claim that this signature is FORCED by the cascade rather than exhibited
   by it — the tree's derivation of "why Herm₂" is a separate argument, and
   nothing here supplies it.
@@ -146,5 +157,72 @@ theorem exists_null_vector : ∃ v : Fin 4 → ℝ, v ≠ 0 ∧ minkowskiForm v 
   · rw [minkowskiForm_apply]
     change (1 : ℝ) ^ 2 - 1 ^ 2 - 0 ^ 2 - 0 ^ 2 = 0
     norm_num
+
+/-! ## 4. The SL₂(ℂ) action is by isometries of the form
+
+    `MinkowskiHerm2` proves det(A·H·Aᴴ) = det(H) for det A = 1, and that the
+    action fixes Herm₂. Transported through the Pauli coordinates, that says
+    exactly that A acts on ℝ⁴ preserving the Minkowski form — the map into
+    the orthogonal group O(1,3) at the level of the form. -/
+
+/-- The inverse of the Pauli parametrisation on Hermitian matrices:
+    t = (Re H₀₀ + Re H₁₁)/2, x = Re H₀₁, y = −Im H₀₁, z = (Re H₀₀ − Re H₁₁)/2. -/
+def pauliCoord (H : Matrix (Fin 2) (Fin 2) ℂ) : Fin 4 → ℝ :=
+  ![(H 0 0).re / 2 + (H 1 1).re / 2, (H 0 1).re, -(H 0 1).im,
+    (H 0 0).re / 2 - (H 1 1).re / 2]
+
+/-- **Round trip**: on Hermitian matrices the Pauli coordinates recover the
+    matrix, so `pauliCoord` really is the inverse parametrisation. -/
+theorem pauliHerm_pauliCoord (H : Matrix (Fin 2) (Fin 2) ℂ) (hH : Hᴴ = H) :
+    pauliHerm (pauliCoord H 0) (pauliCoord H 1) (pauliCoord H 2)
+      (pauliCoord H 3) = H := by
+  have e00 := congrFun (congrFun hH 0) 0
+  have e11 := congrFun (congrFun hH 1) 1
+  have e10 := congrFun (congrFun hH 1) 0
+  simp only [Matrix.conjTranspose_apply] at e00 e11 e10
+  have h00 : (H 0 0).im = 0 := by
+    have : (starRingEnd ℂ) (H 0 0) = H 0 0 := e00
+    exact Complex.conj_eq_iff_im.mp this
+  have h11 : (H 1 1).im = 0 := by
+    have : (starRingEnd ℂ) (H 1 1) = H 1 1 := e11
+    exact Complex.conj_eq_iff_im.mp this
+  have h10 : H 1 0 = (starRingEnd ℂ) (H 0 1) := e10.symm
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [pauliHerm, pauliCoord, Complex.ext_iff, h10, h00, h11]
+
+/-- The Lorentz map induced by A ∈ SL₂(ℂ) in Pauli coordinates. -/
+def lorentzMap (A : Matrix (Fin 2) (Fin 2) ℂ) (v : Fin 4 → ℝ) : Fin 4 → ℝ :=
+  pauliCoord (A * pauliHerm (v 0) (v 1) (v 2) (v 3) * Aᴴ)
+
+/-- **The action preserves the Minkowski form**: for A ∈ SL₂(ℂ),
+    Q(A·v) = Q(v). This is the statement that the conjugation action lands in
+    the orthogonal group of the form — the form half of SL₂(ℂ) → SO⁺(1,3).
+    (What is still missing for the full covering statement: that the image is
+    the IDENTITY COMPONENT and that the map is onto it.) -/
+theorem minkowskiForm_lorentzMap (A : Matrix (Fin 2) (Fin 2) ℂ)
+    (hA : Matrix.det A = 1) (v : Fin 4 → ℝ) :
+    minkowskiForm (lorentzMap A v) = minkowskiForm v := by
+  have hherm : (A * pauliHerm (v 0) (v 1) (v 2) (v 3) * Aᴴ)ᴴ
+      = A * pauliHerm (v 0) (v 1) (v 2) (v 3) * Aᴴ :=
+    conj_action_hermitian A _ (pauliHerm_isHermitian _ _ _ _)
+  have hround := pauliHerm_pauliCoord _ hherm
+  have hcast : ((minkowskiForm (lorentzMap A v) : ℝ) : ℂ)
+      = ((minkowskiForm v : ℝ) : ℂ) := by
+    rw [minkowskiForm_eq_det, minkowskiForm_eq_det, lorentzMap, hround]
+    exact det_conj_invariant A _ hA
+  exact_mod_cast hcast
+
+/-- The identity acts as the identity. -/
+theorem lorentzMap_one (v : Fin 4 → ℝ) : lorentzMap 1 v = v := by
+  have h : (1 : Matrix (Fin 2) (Fin 2) ℂ) * pauliHerm (v 0) (v 1) (v 2) (v 3)
+      * (1 : Matrix (Fin 2) (Fin 2) ℂ)ᴴ
+      = pauliHerm (v 0) (v 1) (v 2) (v 3) := by
+    rw [Matrix.conjTranspose_one, one_mul, mul_one]
+  unfold lorentzMap
+  rw [h]
+  funext i
+  fin_cases i <;>
+    simp [pauliCoord, pauliHerm] <;> ring
 
 end MinkowskiSignature
