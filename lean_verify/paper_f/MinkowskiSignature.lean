@@ -31,6 +31,10 @@
      trivial), so 1 + 3 = 4 exhausts the space.
   7. `exists_null_vector` — the light cone is not trivial: there are nonzero
      null directions, which is exactly what a definite form cannot have.
+  9. `lorentzLin` — the action bundled as an ℝ-LINEAR map (§5), with
+     `lorentzLin_isometry`, so the image can be spoken of as a subgroup of
+     the orthogonal group of the form. This is the domain object a
+     surjectivity statement onto SO⁺(1,3) needs.
   8. `pauliCoord` + `pauliHerm_pauliCoord` — the inverse parametrisation, so
      Pauli coordinates are a genuine bijection with Herm₂(ℂ); and
      `minkowskiForm_lorentzMap` — **the SL₂(ℂ) conjugation action, read in
@@ -43,8 +47,7 @@
   SL₂(ℂ) → SO⁺(1,3) (the actual covering statement — needs polar
   decomposition/connectedness), and with it the identification of the IMAGE
   as the identity component rather than merely a subgroup of O(1,3);
-  ℝ-linearity of `lorentzMap` as a bundled `LinearMap` (the isometry
-  equation is proven, the bundled object is not built); the identification of
+  the identification of
   SL₂(ℂ) with Mathlib's `spinGroup`; a bundled `MulAction` of SL₂(ℂ) on
   Herm₂; and the
   claim that this signature is FORCED by the cascade rather than exhibited
