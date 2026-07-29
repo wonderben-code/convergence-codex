@@ -17,7 +17,9 @@
   - {γ, D} = 0 (Dirac anticommutes with chirality)
   - D² = m²·1 (mass relation)
   - D = Dᵀ (Dirac is symmetric — self-adjoint for real entries)
-  - KO-dimension signs verified
+  - KO signs verified FOR THE TOY TRIPLE (KO-dim 0); the SM requires
+    KO-dim 6 — the discrepancy is now explicit (toy_ko_ne_sm_ko) with the
+    reconciliation direction fixed (the toy J is the non-physical one)
 
   CONNECTIONS:
   - γ separates left (Fin 2) and right (Fin 2) chiralities
@@ -254,9 +256,20 @@ structure KODimensionSigns where
   /-- ε'' ∈ {-1, +1} -/
   epsilon_double_prime_sign : epsilon_double_prime = 1 ∨ epsilon_double_prime = -1
 
-/-- The cascade's KO-dimension signs: (ε, ε', ε'') = (+1, +1, +1).
-    This is KO-dimension 0 (mod 8), consistent with the finite NCG
-    of the Standard Model internal space. -/
+/-- The KO signs of THE TOY TRIPLE OF THIS FILE: (ε, ε', ε'') = (+1, +1, +1),
+    i.e. KO-dimension 0 (mod 8), as follows from the toy real structure used
+    here (transpose-style J commuting with the real diagonal γ).
+
+    RECONCILIATION NOTE (integrity fix, 29 Jul 2026): this is NOT the
+    Standard-Model assignment, and the earlier claim here that it is
+    "consistent with the finite NCG of the Standard Model internal space" was
+    WRONG and is withdrawn. The SM finite internal space has KO-dimension 6
+    (mod 8) with signs (1, 1, −1) (Connes 2006; Chamseddine–Connes–Marcolli
+    2007) — exactly what `ConnesClassification.sm_ko_data` requires. The two
+    assignments are genuinely different (`toy_ko_ne_sm_ko` below): a physical
+    cascade triple needs a real structure with Jγ = −γJ (ε'' = −1), which the
+    toy J of this file does not provide. Constructing such a J on the cascade
+    is OPEN and recorded as such. -/
 def cascade_ko_signs : KODimensionSigns where
   epsilon := 1
   epsilon_prime := 1
@@ -271,6 +284,28 @@ theorem ko_dim_0_signs :
     cascade_ko_signs.epsilon_prime = 1 ∧
     cascade_ko_signs.epsilon_double_prime = 1 :=
   ⟨rfl, rfl, rfl⟩
+
+/-- The Standard-Model KO signs: (ε, ε', ε'') = (1, 1, −1) — KO-dimension 6
+    (mod 8), the assignment `ConnesClassification` requires via
+    `sm_ko_data`. -/
+def sm_ko_signs : KODimensionSigns where
+  epsilon := 1
+  epsilon_prime := 1
+  epsilon_double_prime := -1
+  epsilon_sign := Or.inl rfl
+  epsilon_prime_sign := Or.inl rfl
+  epsilon_double_prime_sign := Or.inr rfl
+
+/-- **The toy and SM sign assignments are genuinely different** — making the
+    previously-silent contradiction between this file (KO-dim 0) and
+    ConnesClassification (KO-dim 6) an explicit, machine-checked fact with a
+    fixed reconciliation direction: the SM side is standard, so the toy
+    triple's real structure is the one that does not model the physics. -/
+theorem toy_ko_ne_sm_ko : cascade_ko_signs ≠ sm_ko_signs := by
+  intro h
+  have h2 := congrArg KODimensionSigns.epsilon_double_prime h
+  simp only [cascade_ko_signs, sm_ko_signs] at h2
+  norm_num at h2
 
 -- ============================================================================
 -- SECTION 7: Connection to CascadeData
@@ -306,7 +341,8 @@ theorem chirality_splits_hilbert :
     (4) Dᵀ = D (self-adjointness — proved entry-wise)
     (5) P_L + P_R = 1 (completeness of chirality decomposition)
     (6) tr(γ) = 0 (anomaly cancellation)
-    (7) KO-dimension signs = (+1, +1, +1) (KO-dim 0)
+    (7) [toy triple only] KO signs = (+1, +1, +1) (KO-dim 0; the SM
+        requires KO-dim 6 — see the reconciliation note in Section 6)
     (8) dim(A) = 16, dim(H) = 4 (finite dimensions) -/
 theorem connes_ncg_master (m : ℂ) :
     -- (1) Grading involution
