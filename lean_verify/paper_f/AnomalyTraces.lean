@@ -245,7 +245,7 @@ theorem linear_trace_kronecker_vanishes {m : Type*} [Fintype m] [DecidableEq m]
     three FIRST-factor generators is `dim(second factor) · cubicTrace` — the
     representation-multiplicity weight arises from `Matrix.trace_one`, not from
     a hand-written literal. -/
-theorem cubicTrace_kronecker_pure [DecidableEq k] {m : Type*} [Fintype m]
+theorem cubicTrace_kronecker_pure {m : Type*} [Fintype m]
     [DecidableEq m] (T₁ T₂ T₃ : Matrix k k ℂ) :
     cubicTrace (T₁ ⊗ₖ (1 : Matrix m m ℂ)) (T₂ ⊗ₖ 1) (T₃ ⊗ₖ 1)
       = (Fintype.card m : ℂ) * cubicTrace T₁ T₂ T₃ := by
