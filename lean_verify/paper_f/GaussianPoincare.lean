@@ -1,25 +1,66 @@
 /-
-  GaussianPoincare: Towards the 1-d Gaussian Poincaré Inequality
-  ==============================================================
+  GaussianPoincare: The 1-d Gaussian Poincaré Inequality
+  ======================================================
 
   Frontier unit (tree §11.4/§11.6, spine L23; wall #1 of the honest wall
-  map). TARGET: Var_γ(f) ≤ E_γ[(f′)²] for the standard Gaussian γ and
-  polynomial test functions f — the Bakry-Émery spectral gap at its first
-  honest stair. What the estate has today (Phase 0 audit): the spec doc
-  tags "Bakry-Émery spectral gap (gap = 2/Λ²)" as PROVED ★, but in Lean
-  the gap is a DEFINITION and the criterion field is discharged by
-  `le_refl` — no measure, no variance, no test function appears.
+  map). What the estate had before this file: the spec doc tags
+  "Bakry-Émery spectral gap (gap = 2/Λ²)" as PROVED ★, but in Lean the gap
+  was a DEFINITION and the criterion field was discharged by `le_refl` — no
+  measure, no variance, no test function appeared anywhere (Phase 0 audit).
 
-  STATUS OF THIS FILE: work in progress, built in stairs. Section 1 (this
-  commit) is the ALGEBRAIC core: the probabilists' Hermite polynomials over
-  ℝ, their derivative identity Hₙ′ = n·Hₙ₋₁ (which Mathlib does NOT have —
-  Mathlib supplies only the recurrence Hₙ₊₁ = X·Hₙ − Hₙ′ and the Rodrigues
-  formula), and the fact that they form a basis: every real polynomial is a
-  finite ℝ-combination of Hermite polynomials, with an explicit degree
-  bound. Nothing here is analytic yet, and nothing here is claimed to be
-  the Poincaré inequality: the measure-theoretic stairs (Gaussian
-  integration by parts, L²(γ)-orthogonality, the variance identity) are
-  named at the bottom of this file and are NOT proven yet.
+  WHAT THIS FILE PROVES (exactly this, nothing more):
+
+  **The Gaussian Poincaré inequality for polynomial test functions**, stated
+  against Mathlib's own `gaussianReal 0 1`:
+
+      ∫ p² dγ − (∫ p dγ)² ≤ ∫ (p′)² dγ        (`poincare_gaussianReal`)
+
+  with the constant 1 SHARP (equality at p = X, `poincare_sharp`). The route
+  is Chernoff's: expand in Hermite polynomials, where both sides are exactly
+  computable and the inequality becomes the index comparison 1 ≤ k.
+
+  The stairs, each of which is new work — Mathlib has the algebraic Hermite
+  polynomials and nothing else about them:
+
+  1. §1–3 ALGEBRA. `derivative_H_succ`: Hₙ₊₁′ = (n+1)·Hₙ, which Mathlib does
+     NOT have (it has only the recurrence Hₙ₊₁ = X·Hₙ − Hₙ′ and the
+     Rodrigues formula); the three-term recurrence; and `exists_hermite_repr`
+     — every real polynomial is a finite Hermite combination with an
+     explicit degree bound.
+  2. §4 ANALYSIS. `stein_weight`: Gaussian integration by parts,
+     ∫ x·p(x)·W = ∫ p′(x)·W, for the weight W = e^{−x²/2}. Proven from the
+     fundamental theorem of calculus on the whole line
+     (`integral_of_hasDerivAt_of_tendsto`) plus integrability of polynomial ×
+     Gaussian and decay at both ends. This is the only genuinely analytic
+     input; everything above it is algebra over this identity.
+  3. §5 ORTHOGONALITY. `ip_H`: ⟪Hₘ, Hₙ⟫ = m!·Z·δₘₙ in L²(W), with
+     Z = ∫ W = √(2π) computed (`Z_eq`). Mathlib has no Gaussian-L² theory of
+     the Hermite family at all; the engine is `ip_H_succ`, the adjunction
+     ⟪Hₘ₊₁, Hₙ⟫ = ⟪Hₘ, Hₙ′⟫, which is integration by parts in Hermite
+     coordinates.
+  4. §6 THE INEQUALITY. The variance is Σ_{k≥1} aₖ²·k! and the Dirichlet
+     form is Σ_{k≥1} k·aₖ²·k!, so the inequality is termwise 1 ≤ k.
+  5. §7 TRANSFER. `gmean_eq_integral`: the normalised weight functional is
+     literally the expectation under `gaussianReal 0 1`, so the final
+     statement rests on Mathlib's measure, not on our conventions.
+
+  NOT proven here — and the published Bakry-Émery tags must NOT move on the
+  strength of this file:
+
+  * **Test functions beyond polynomials.** The inequality is proven for
+    polynomials only. Extending to all of W^{1,2}(γ) needs density of
+    polynomials in that space (Hermite completeness), which is not in
+    Mathlib and is not proven here.
+  * **Dimension > 1.** No tensorisation. The cascade needs ℝ¹⁶ ≅ Herm₄(ℂ);
+    the standard product argument is not formalised here.
+  * **A DIFFERENT MEASURE.** This is the STANDARD Gaussian γ = N(0,1). The
+    estate's claimed "gap = 2/Λ²" concerns a spectral-action measure, which
+    is not this measure; nothing here transfers to it automatically, and no
+    theorem here says anything about Λ. Treat this file as the first honest
+    stair of that programme, not as its conclusion.
+  * The `ProbabilityTheory.variance` phrasing (the variance is written out
+    as ∫p² − (∫p)² to avoid MemLp side conditions), and any statement about
+    Ornstein-Uhlenbeck semigroups, log-Sobolev, or hypercontractivity.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
@@ -31,6 +72,7 @@ import Mathlib.Analysis.Calculus.Deriv.Polynomial
 import Mathlib.Analysis.SpecialFunctions.PolynomialExp
 import Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral
 import Mathlib.MeasureTheory.Integral.IntegralEqImproper
+import Mathlib.Probability.Distributions.Gaussian.Real
 import Mathlib.Tactic.Linarith
 
 open Polynomial
@@ -618,26 +660,79 @@ theorem poincare_sharp : gvar X = gmean (derivative X * derivative X) := by
   rw [hmean, hsq, hder]
   ring
 
-/-! ## 7. What is NOT proven here
+/-! ## 7. The same statement against Mathlib's Gaussian measure
 
-    This file currently contains NO analysis and NO measure theory, and
-    therefore does not contain the Poincaré inequality or any part of it.
-    The remaining stairs, in dependency order:
+    Everything above is phrased through the normalised weight functional
+    `gmean`. This section proves that `gmean` IS the expectation under
+    Mathlib's `gaussianReal 0 1`, and restates the inequality in a form that
+    mentions only that measure — so nothing rests on our own normalisation
+    conventions. -/
 
-    1. **Gaussian integration by parts (Stein's identity)** for polynomials:
-       ∫ x·f(x) dγ = ∫ f′(x) dγ. Requires an integration-by-parts theorem
-       on the whole line plus decay of p(x)·e^{−x²/2} at ±∞.
-    2. **L²(γ)-orthogonality** ∫ Hₘ·Hₙ dγ = n!·δₘₙ, by induction from
-       Stein's identity and the recurrence. Mathlib has no Gaussian-L²
-       theory of Hermite polynomials at all.
-    3. **The variance identity** Var_γ(Σ aₖHₖ) = Σ_{k≥1} aₖ²·k!.
-    4. **The Poincaré inequality** itself, which is then the index
-       comparison k! ≤ k·k! for k ≥ 1 — i.e. all the difficulty is in
-       stairs 1–3, none of it in the final step.
-    5. Tensorisation to ℝ¹⁶ (the cascade's Herm₄(ℂ) ≅ ℝ¹⁶), which is what
-       the tree actually needs.
+open ProbabilityTheory
 
-    Until stair 4 exists, the published Bakry-Émery tags must NOT move on
-    account of this file. -/
+/-- The normalised weight functional is the expectation under Mathlib's
+    standard Gaussian measure. -/
+theorem gmean_eq_integral (p : ℝ[X]) :
+    gmean p = ∫ x : ℝ, p.eval x ∂(gaussianReal 0 1) := by
+  rw [integral_gaussianReal_eq_integral_smul (by norm_num : (1 : NNReal) ≠ 0)]
+  have hpdf : ∀ x : ℝ, gaussianPDFReal 0 1 x • p.eval x
+      = Z⁻¹ • (p.eval x * W x) := by
+    intro x
+    rw [gaussianPDFReal_def]
+    simp only [NNReal.coe_one, mul_one, sub_zero, smul_eq_mul]
+    rw [← Z_eq]
+    unfold W
+    ring
+  simp_rw [hpdf]
+  rw [integral_smul]
+  unfold gmean I
+  rw [smul_eq_mul, inv_mul_eq_div]
+
+/-- **THE GAUSSIAN POINCARÉ INEQUALITY, stated for Mathlib's `gaussianReal`**:
+    for every polynomial p and the standard Gaussian measure γ on ℝ,
+
+      ∫ p² dγ − (∫ p dγ)² ≤ ∫ (p′)² dγ.
+
+    The left-hand side is the variance of p under γ written out; the
+    right-hand side is the Dirichlet energy. Equality holds at p = X
+    (`poincare_sharp`), so the constant 1 is sharp. -/
+theorem poincare_gaussianReal (p : ℝ[X]) :
+    (∫ x : ℝ, (p.eval x) ^ 2 ∂(gaussianReal 0 1))
+        - (∫ x : ℝ, p.eval x ∂(gaussianReal 0 1)) ^ 2
+      ≤ ∫ x : ℝ, ((derivative p).eval x) ^ 2 ∂(gaussianReal 0 1) := by
+  have hpp : (∫ x : ℝ, (p.eval x) ^ 2 ∂(gaussianReal 0 1)) = gmean (p * p) := by
+    rw [gmean_eq_integral]
+    congr 1
+    funext x
+    rw [Polynomial.eval_mul, sq]
+  have hdd : (∫ x : ℝ, ((derivative p).eval x) ^ 2 ∂(gaussianReal 0 1))
+      = gmean (derivative p * derivative p) := by
+    rw [gmean_eq_integral]
+    congr 1
+    funext x
+    rw [Polynomial.eval_mul, sq]
+  rw [hpp, hdd, ← gmean_eq_integral]
+  have h := poincare_polynomial p
+  unfold gvar at h
+  exact h
+
+/-! ## 8. The stairs above this one
+
+    For the record, in dependency order, what a continuation would build:
+
+    1. **Density of polynomials in W^{1,2}(γ)**, so that the inequality
+       extends from polynomial test functions to the natural space. This is
+       Hermite completeness in L²(γ); Mathlib does not have it.
+    2. **Tensorisation** to ℝⁿ: the Poincaré constant of a product measure is
+       the minimum of the factors', giving the inequality on ℝ¹⁶ ≅ Herm₄(ℂ),
+       which is the space the cascade actually needs.
+    3. **A spectral-action measure**: the estate's claimed gap 2/Λ² is about
+       a measure built from the spectral action, not about N(0,1). Writing
+       that measure down in Lean is a prerequisite for any statement about
+       Λ, and it does not exist yet anywhere in the estate.
+    4. The Ornstein-Uhlenbeck semigroup and the Bakry-Émery Γ₂ criterion,
+       which is the machinery the published narrative invokes. This file
+       reaches the conclusion of that machinery in the one case where it can
+       be got at by hand; it does not build the machinery. -/
 
 end GaussianPoincare
