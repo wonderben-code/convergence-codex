@@ -225,4 +225,71 @@ theorem lorentzMap_one (v : Fin 4 → ℝ) : lorentzMap 1 v = v := by
   fin_cases i <;>
     simp [pauliCoord, pauliHerm] <;> ring
 
+/-! ## 5. The action as a bundled linear map
+
+    `minkowskiForm_lorentzMap` says the SL₂(ℂ) action preserves the form. To
+    say it lands in the ORTHOGONAL GROUP of the form — which is what a
+    surjectivity statement onto SO⁺(1,3) needs as its domain — the action has
+    to be a linear map, not just a function. -/
+
+theorem pauliHerm_add (t x y z t' x' y' z' : ℝ) :
+    pauliHerm (t + t') (x + x') (y + y') (z + z')
+      = pauliHerm t x y z + pauliHerm t' x' y' z' := by
+  ext i j
+  fin_cases i <;> fin_cases j <;> simp [pauliHerm] <;> ring
+
+theorem pauliHerm_smul (c t x y z : ℝ) :
+    pauliHerm (c * t) (c * x) (c * y) (c * z) = (c : ℂ) • pauliHerm t x y z := by
+  ext i j
+  fin_cases i <;> fin_cases j <;> simp [pauliHerm] <;> ring
+
+theorem pauliCoord_add (H K : Matrix (Fin 2) (Fin 2) ℂ) :
+    pauliCoord (H + K) = pauliCoord H + pauliCoord K := by
+  funext i
+  fin_cases i <;> simp [pauliCoord] <;> ring
+
+theorem pauliCoord_smul (c : ℝ) (H : Matrix (Fin 2) (Fin 2) ℂ) :
+    pauliCoord ((c : ℂ) • H) = c • pauliCoord H := by
+  funext i
+  fin_cases i <;> simp [pauliCoord] <;> ring
+
+theorem lorentzMap_add (A : Matrix (Fin 2) (Fin 2) ℂ) (v w : Fin 4 → ℝ) :
+    lorentzMap A (v + w) = lorentzMap A v + lorentzMap A w := by
+  unfold lorentzMap
+  have hv : ∀ k : Fin 4, (v + w) k = v k + w k := fun k => rfl
+  rw [hv 0, hv 1, hv 2, hv 3, pauliHerm_add, Matrix.mul_add, Matrix.add_mul,
+    pauliCoord_add]
+
+theorem lorentzMap_smul (A : Matrix (Fin 2) (Fin 2) ℂ) (c : ℝ) (v : Fin 4 → ℝ) :
+    lorentzMap A (c • v) = c • lorentzMap A v := by
+  unfold lorentzMap
+  have hv : ∀ k : Fin 4, (c • v) k = c * v k := fun k => rfl
+  rw [hv 0, hv 1, hv 2, hv 3, pauliHerm_smul, Matrix.mul_smul, Matrix.smul_mul,
+    pauliCoord_smul]
+
+/-- **The Lorentz action as a linear map on ℝ⁴.** -/
+def lorentzLin (A : Matrix (Fin 2) (Fin 2) ℂ) : (Fin 4 → ℝ) →ₗ[ℝ] (Fin 4 → ℝ) where
+  toFun := lorentzMap A
+  map_add' := lorentzMap_add A
+  map_smul' := lorentzMap_smul A
+
+@[simp] theorem lorentzLin_apply (A : Matrix (Fin 2) (Fin 2) ℂ) (v : Fin 4 → ℝ) :
+    lorentzLin A v = lorentzMap A v := rfl
+
+/-- **The action is an isometry of the Minkowski form, as a linear map**: for
+    A ∈ SL₂(ℂ), `lorentzLin A` is an ℝ-linear self-map of ℝ⁴ preserving Q.
+    This is the domain object a surjectivity statement onto SO⁺(1,3) needs.
+
+    The remaining staircase for that statement, so it is a build and not a
+    research problem: (i) exhibit the image inside the orthogonal group of
+    `minkowskiForm` as a bundled object; (ii) define the orthochronous and
+    proper conditions (Λ⁰₀ > 0 and det = 1) — Mathlib has no Lorentz group;
+    (iii) surjectivity itself, whose classical proof decomposes a proper
+    orthochronous transformation into rotations and a boost and exhibits an
+    explicit SL₂(ℂ) preimage for each. Step (iii) is the genuinely hard one. -/
+theorem lorentzLin_isometry (A : Matrix (Fin 2) (Fin 2) ℂ)
+    (hA : Matrix.det A = 1) (v : Fin 4 → ℝ) :
+    minkowskiForm (lorentzLin A v) = minkowskiForm v :=
+  minkowskiForm_lorentzMap A hA v
+
 end MinkowskiSignature
