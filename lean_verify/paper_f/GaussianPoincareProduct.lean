@@ -9,7 +9,27 @@
 
   WHAT THIS FILE PROVES (exactly this, nothing more):
 
-  **The tensorisation step**, `poincare_two`: for a bivariate polynomial q,
+  **The n-dimensional Gaussian Poincaré inequality for polynomial test
+  functions**, `poincare_MV`: for every `p : MvPolynomial (Fin n) ℝ`,
+
+      E[p²] − (E[p])² ≤ Σᵢ E[(∂ᵢp)²]
+
+  with E the n-fold iterated standard Gaussian expectation — and
+  `poincare_R16`, the case n = 16, which is ℝ¹⁶ ≅ Herm₄(ℂ), the dimension
+  the cascade needs. The route: §4 does the tensorisation step in two
+  variables concretely, §5–§8 rebuild it over `MvPolynomial (Fin n) ℝ` and
+  run the induction, peeling one variable at a time with
+  `MvPolynomial.finSuccEquiv`.
+
+  Two bridges the induction needs do not exist in Mathlib and are proven
+  here: `finSuccEquiv_pderiv_zero` (the partial derivative in the peeled
+  variable is the polynomial derivative) and `finSuccEquiv_pderiv_succ` (the
+  other partials act coefficientwise). A route that does NOT work, recorded
+  so it is not retried: a recursively defined tower of nested polynomial
+  types — the type-level recursion cannot carry the `CommRing` instance.
+
+  **The tensorisation step in two variables**, `poincare_two`: for a
+  bivariate polynomial q,
 
       Var(q) ≤ E[(∂_y q)²] + E[(∂_x q)²]
 
@@ -32,11 +52,6 @@
 
   NOT proven here:
 
-  * **Dimension n.** This is the induction STEP (2 = 1 + 1), not the
-    induction. Reaching ℝ¹⁶ ≅ Herm₄(ℂ) means iterating it, which requires
-    the base structure (functional + positivity + the inequality) to be
-    abstracted over an arbitrary coefficient ring — the next unit. Nothing
-    here says anything about 16 variables.
   * **The product MEASURE.** `poincare_two_integral` is stated with ITERATED
     integrals. Identifying that with a single integral against
     `Measure.prod` is Fubini, and needs integrability of the polynomial on
@@ -51,6 +66,7 @@
 import GaussianPoincare
 import Mathlib.Algebra.MvPolynomial.Equiv
 import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.MvPolynomial.Funext
 
 open Polynomial MeasureTheory
 
@@ -456,7 +472,178 @@ theorem EN_mono : ∀ (n : ℕ) {p q : MvPolynomial (Fin n) ℝ},
       rwa [MvPolynomial.eval_eq_eval_mv_eval',
         MvPolynomial.eval_eq_eval_mv_eval'] at hx
 
-/-! ## 7. What the n-dimensional induction still needs
+/-! ## 7. Linearity of the n-fold expectation -/
+
+theorem EyM_add (n : ℕ) (a b : Polynomial (MvPolynomial (Fin n) ℝ)) :
+    EyM n (a + b) = EyM n a + EyM n b := by
+  apply MvPolynomial.funext
+  intro v
+  rw [map_add, eval_EyM, eval_EyM, eval_EyM, Polynomial.map_add, gmean_add]
+
+theorem EyM_sub (n : ℕ) (a b : Polynomial (MvPolynomial (Fin n) ℝ)) :
+    EyM n (a - b) = EyM n a - EyM n b := by
+  apply MvPolynomial.funext
+  intro v
+  rw [map_sub, eval_EyM, eval_EyM, eval_EyM, Polynomial.map_sub, gmean_sub]
+
+theorem EyM_eq_sum_range (n N : ℕ) (q : Polynomial (MvPolynomial (Fin n) ℝ))
+    (hq : q.natDegree ≤ N) :
+    EyM n q = ∑ k ∈ Finset.range (N + 1), mom k • q.coeff k := by
+  rw [EyM]
+  apply Finset.sum_subset
+  · intro k hk
+    simp only [Finset.mem_range] at hk ⊢
+    omega
+  · intro k _ hk
+    simp only [Finset.mem_range, not_lt] at hk
+    rw [Polynomial.coeff_eq_zero_of_natDegree_lt (by omega), smul_zero]
+
+theorem EyM_smul (n : ℕ) (c : ℝ) (a : Polynomial (MvPolynomial (Fin n) ℝ)) :
+    EyM n (c • a) = c • EyM n a := by
+  rw [EyM_eq_sum_range n a.natDegree (c • a) (Polynomial.natDegree_smul_le c a),
+    EyM, Finset.smul_sum]
+  refine Finset.sum_congr rfl fun k _ => ?_
+  rw [Polynomial.coeff_smul, smul_comm]
+
+theorem EyM_one (n : ℕ) : EyM n 1 = 1 := by
+  apply MvPolynomial.funext
+  intro v
+  rw [eval_EyM, Polynomial.map_one, map_one, gmean_one]
+
+theorem EN_add : ∀ (n : ℕ) (p q : MvPolynomial (Fin n) ℝ),
+    EN n (p + q) = EN n p + EN n q
+  | 0, p, q => by simp [EN_zero]
+  | (n + 1), p, q => by
+      rw [EN_succ, EN_succ, EN_succ, map_add, EyM_add, EN_add]
+
+theorem EN_sub : ∀ (n : ℕ) (p q : MvPolynomial (Fin n) ℝ),
+    EN n (p - q) = EN n p - EN n q
+  | 0, p, q => by simp [EN_zero]
+  | (n + 1), p, q => by
+      rw [EN_succ, EN_succ, EN_succ, map_sub, EyM_sub, EN_sub]
+
+theorem EN_smul : ∀ (n : ℕ) (c : ℝ) (p : MvPolynomial (Fin n) ℝ),
+    EN n (c • p) = c * EN n p
+  | 0, c, p => by simp [EN_zero]
+  | (n + 1), c, p => by
+      rw [EN_succ, EN_succ, map_smul, EyM_smul, EN_smul]
+
+theorem EN_one : ∀ n : ℕ, EN n (1 : MvPolynomial (Fin n) ℝ) = 1
+  | 0 => by simp [EN_zero]
+  | (n + 1) => by rw [EN_succ, map_one, EyM_one, EN_one]
+
+theorem EN_C (n : ℕ) (c : ℝ) : EN n (MvPolynomial.C c) = c := by
+  have h : (MvPolynomial.C c : MvPolynomial (Fin n) ℝ) = c • 1 := by
+    rw [MvPolynomial.smul_eq_C_mul, mul_one]
+  rw [h, EN_smul, EN_one, mul_one]
+
+/-- **Cauchy–Schwarz at level n**: (E p)² ≤ E[p²]. -/
+theorem EN_sq_le (n : ℕ) (p : MvPolynomial (Fin n) ℝ) :
+    (EN n p) ^ 2 ≤ EN n (p * p) := by
+  have hring : (p - MvPolynomial.C (EN n p)) * (p - MvPolynomial.C (EN n p))
+      = p * p - (EN n p) • p - (EN n p) • p
+        + ((EN n p) * (EN n p)) • (1 : MvPolynomial (Fin n) ℝ) := by
+    simp only [MvPolynomial.smul_eq_C_mul, map_mul, mul_one]
+    ring
+  have hnn : 0 ≤ EN n ((p - MvPolynomial.C (EN n p)) * (p - MvPolynomial.C (EN n p))) := by
+    refine EN_nonneg n _ fun v => ?_
+    rw [map_mul]
+    exact mul_self_nonneg _
+  rw [hring, EN_add, EN_sub, EN_sub, EN_smul, EN_smul, EN_one] at hnn
+  nlinarith [hnn]
+
+/-! ## 8. The n-dimensional Poincaré inequality -/
+
+/-- Differentiating in a remaining variable commutes with the inner
+    expectation — the n-variable form of `Ey_dX`, via the second bridge. -/
+theorem pderiv_EyM (n : ℕ) (j : Fin n) (p : MvPolynomial (Fin (n + 1)) ℝ) :
+    MvPolynomial.pderiv j (EyM n (MvPolynomial.finSuccEquiv ℝ n p))
+      = EyM n (MvPolynomial.finSuccEquiv ℝ n (MvPolynomial.pderiv j.succ p)) := by
+  have hdeg : (MvPolynomial.finSuccEquiv ℝ n (MvPolynomial.pderiv j.succ p)).natDegree
+      ≤ (MvPolynomial.finSuccEquiv ℝ n p).natDegree := by
+    rw [Polynomial.natDegree_le_iff_coeff_eq_zero]
+    intro m hm
+    rw [finSuccEquiv_pderiv_succ,
+      Polynomial.coeff_eq_zero_of_natDegree_lt hm, map_zero]
+  rw [EyM_eq_sum_range n _ _ hdeg, EyM, map_sum]
+  refine Finset.sum_congr rfl fun k _ => ?_
+  rw [MvPolynomial.smul_eq_C_mul, MvPolynomial.smul_eq_C_mul,
+    MvPolynomial.pderiv_C_mul, finSuccEquiv_pderiv_succ]
+
+/-- **THE n-DIMENSIONAL GAUSSIAN POINCARÉ INEQUALITY** for polynomial test
+    functions: for every `p : MvPolynomial (Fin n) ℝ`,
+
+      E[p²] − (E[p])² ≤ Σᵢ E[(∂ᵢp)²],
+
+    with E the n-fold iterated standard Gaussian expectation. At n = 16 this
+    is the statement on ℝ¹⁶ ≅ Herm₄(ℂ). -/
+theorem poincare_MV : ∀ (n : ℕ) (p : MvPolynomial (Fin n) ℝ),
+    EN n (p * p) - (EN n p) ^ 2
+      ≤ ∑ i : Fin n, EN n (MvPolynomial.pderiv i p * MvPolynomial.pderiv i p)
+  | 0, p => by
+      rw [EN_zero, EN_zero]
+      simp [map_mul, sq]
+  | (n + 1), p => by
+      rw [EN_succ, EN_succ, map_mul]
+      -- inner: the 1-d inequality pointwise in the remaining variables
+      have hinner : EN n (EyM n (MvPolynomial.finSuccEquiv ℝ n p
+            * MvPolynomial.finSuccEquiv ℝ n p))
+          - EN n (EyM n (MvPolynomial.finSuccEquiv ℝ n p)
+            * EyM n (MvPolynomial.finSuccEquiv ℝ n p))
+          ≤ EN n (EyM n (Polynomial.derivative (MvPolynomial.finSuccEquiv ℝ n p)
+            * Polynomial.derivative (MvPolynomial.finSuccEquiv ℝ n p))) := by
+        rw [← EN_sub]
+        refine EN_mono n fun v => ?_
+        rw [map_sub, map_mul, eval_EyM, eval_EyM, eval_EyM,
+          Polynomial.map_mul, Polynomial.map_mul, ← Polynomial.derivative_map]
+        have h1d := poincare_polynomial
+          ((MvPolynomial.finSuccEquiv ℝ n p).map (MvPolynomial.eval v))
+        unfold gvar at h1d
+        rw [pow_two] at h1d
+        linarith
+      -- outer: the induction hypothesis at the inner expectation
+      have houter := poincare_MV n (EyM n (MvPolynomial.finSuccEquiv ℝ n p))
+      -- the ∂₀ term, via the first bridge
+      have h0 : Polynomial.derivative (MvPolynomial.finSuccEquiv ℝ n p)
+          = MvPolynomial.finSuccEquiv ℝ n (MvPolynomial.pderiv 0 p) := by
+        rw [finSuccEquiv_pderiv_zero]
+      -- the remaining terms, via the second bridge and Cauchy–Schwarz
+      have hcs : ∀ j : Fin n,
+          EN n (MvPolynomial.pderiv j (EyM n (MvPolynomial.finSuccEquiv ℝ n p))
+            * MvPolynomial.pderiv j (EyM n (MvPolynomial.finSuccEquiv ℝ n p)))
+          ≤ EN n (EyM n (MvPolynomial.finSuccEquiv ℝ n (MvPolynomial.pderiv j.succ p)
+              * MvPolynomial.finSuccEquiv ℝ n (MvPolynomial.pderiv j.succ p))) := by
+        intro j
+        rw [pderiv_EyM]
+        refine EN_mono n fun v => ?_
+        rw [map_mul, eval_EyM, eval_EyM, Polynomial.map_mul]
+        have hv := gvar_nonneg
+          ((MvPolynomial.finSuccEquiv ℝ n (MvPolynomial.pderiv j.succ p)).map
+            (MvPolynomial.eval v))
+        unfold gvar at hv
+        rw [pow_two] at hv
+        linarith
+      rw [Fin.sum_univ_succ]
+      have hsum : ∑ j : Fin n, EN n (MvPolynomial.pderiv j
+            (EyM n (MvPolynomial.finSuccEquiv ℝ n p))
+          * MvPolynomial.pderiv j (EyM n (MvPolynomial.finSuccEquiv ℝ n p)))
+          ≤ ∑ j : Fin n, EN (n + 1) (MvPolynomial.pderiv j.succ p
+            * MvPolynomial.pderiv j.succ p) := by
+        refine Finset.sum_le_sum fun j _ => ?_
+        rw [EN_succ, map_mul]
+        exact hcs j
+      rw [h0] at hinner
+      rw [EN_succ, map_mul]
+      linarith
+
+/-- **THE CASCADE CASE**: the Gaussian Poincaré inequality on ℝ¹⁶ ≅ Herm₄(ℂ),
+    for polynomial test functions. This is the dimension the cascade needs. -/
+theorem poincare_R16 (p : MvPolynomial (Fin 16) ℝ) :
+    EN 16 (p * p) - (EN 16 p) ^ 2
+      ≤ ∑ i : Fin 16, EN 16 (MvPolynomial.pderiv i p * MvPolynomial.pderiv i p) :=
+  poincare_MV 16 p
+
+/-! ## 9. What remains open
 
     Recorded precisely, so the remaining legs are a build and not a research
     problem. With `EN n : MvPolynomial (Fin n) ℝ → ℝ` defined by recursion —
