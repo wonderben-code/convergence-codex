@@ -43,6 +43,23 @@
   5. §7 TRANSFER. `gmean_eq_integral`: the normalised weight functional is
      literally the expectation under `gaussianReal 0 1`, so the final
      statement rests on Mathlib's measure, not on our conventions.
+  6. §8 MATHLIB VOCABULARY AND CROSS-CHECK. Polynomials are in L²(γ)
+     (`memLp_polynomial_gaussianReal`), so the left-hand side really is
+     Mathlib's `variance`, and the inequality is restated as
+     `Var[p; γ] ≤ ∫(p′)²dγ` (`variance_le_integral_derivative_sq`).
+     `gvar_X_eq_one` then closes the loop against Mathlib's own
+     `variance_fun_id_gaussianReal`, which is proven from the moment
+     generating function — a completely different route. If the
+     orthogonality constant or Z = √(2π) were wrong, that equation would
+     fail.
+
+  CONVENTIONS, so the numbers can be compared with the estate's: the
+  constant proven here is 1, for γ = N(0,1). The estate's `BakryEmeryGap.lean`
+  works with the potential a·|x|², where it DEFINES gap := 2a and
+  covariance := 1/(2a), i.e. gap × covariance = 1. At covariance 1 — which is
+  our measure — that formula gives gap 1, so the two agree. (Theirs is a
+  definition, ours is a theorem; the agreement is a consistency check, not a
+  derivation of theirs.)
 
   NOT proven here — and the published Bakry-Émery tags must NOT move on the
   strength of this file:
@@ -716,7 +733,98 @@ theorem poincare_gaussianReal (p : ℝ[X]) :
   unfold gvar at h
   exact h
 
-/-! ## 8. The stairs above this one
+/-! ## 8. Mathlib's own vocabulary, and an independent cross-check
+
+    Two things are worth having beyond §7. First, the left-hand side of the
+    inequality is the VARIANCE, and Mathlib has a `variance`; saying so
+    requires knowing that polynomials are in L²(γ), which is proven here.
+    Second — and this is the point of the section — the whole chain
+    (Hermite orthogonality, the constant Z, Stein's identity) can be checked
+    against a Mathlib theorem proven by a completely different route: for the
+    identity function, Mathlib computes the Gaussian variance from the moment
+    generating function. `gvar_X_eq_one` closes that loop. If our
+    normalisation were wrong anywhere, this is where it would show. -/
+
+theorem gmean_one : gmean (1 : ℝ[X]) = 1 := by
+  unfold gmean
+  exact div_self (ne_of_gt Z_pos)
+
+theorem gmean_add (p q : ℝ[X]) : gmean (p + q) = gmean p + gmean q := by
+  unfold gmean
+  rw [I_add, add_div]
+
+theorem gmean_smul (c : ℝ) (p : ℝ[X]) : gmean (c • p) = c * gmean p := by
+  unfold gmean
+  rw [I_smul, mul_div_assoc]
+
+/-- Monomials are in L²(γ) — the non-vacuity certificate for the variance. -/
+theorem memLp_pow_gaussianReal (n : ℕ) (m : ℝ) (v : NNReal) :
+    MemLp (fun x : ℝ ↦ x ^ n) 2 (gaussianReal m v) := by
+  rw [memLp_two_iff_integrable_sq (by fun_prop)]
+  have h : MemLp id ((2 * n : ℕ) : NNReal) (gaussianReal m v) := memLp_id_gaussianReal _
+  have h2 := h.integrable_norm_rpow'
+  simp only [id_eq, Real.norm_eq_abs, ENNReal.coe_toReal, NNReal.coe_natCast,
+    Real.rpow_natCast] at h2
+  refine h2.congr' (by fun_prop) (.of_forall fun x ↦ ?_)
+  rw [← pow_mul, ← abs_pow, mul_comm]
+  simp
+
+/-- Polynomials are in L²(γ), so `ProbabilityTheory.variance` is not a junk
+    value on them. -/
+theorem memLp_polynomial_gaussianReal (p : ℝ[X]) (m : ℝ) (v : NNReal) :
+    MemLp (fun x : ℝ ↦ p.eval x) 2 (gaussianReal m v) := by
+  have key : (fun x : ℝ ↦ p.eval x)
+      = ∑ i ∈ Finset.range (p.natDegree + 1), (fun x : ℝ ↦ p.coeff i * x ^ i) := by
+    ext x
+    rw [Finset.sum_apply, Polynomial.eval_eq_sum_range]
+  rw [key]
+  exact memLp_finset_sum' _ fun i _ ↦ (memLp_pow_gaussianReal i m v).const_mul _
+
+/-- Our `gvar` IS Mathlib's `variance` under `gaussianReal 0 1`. -/
+theorem variance_eq_gvar (p : ℝ[X]) :
+    Var[fun x => p.eval x; gaussianReal 0 1] = gvar p := by
+  rw [variance_eq_sub (memLp_polynomial_gaussianReal p 0 1)]
+  unfold gvar
+  congr 1
+  · rw [gmean_eq_integral]
+    congr 1
+    funext x
+    simp [Polynomial.eval_mul, sq]
+  · rw [gmean_eq_integral]
+
+/-- **THE POINCARÉ INEQUALITY IN MATHLIB'S VOCABULARY**:
+    Var[p; γ] ≤ ∫ (p′)² dγ for the standard Gaussian γ. -/
+theorem variance_le_integral_derivative_sq (p : ℝ[X]) :
+    Var[fun x => p.eval x; gaussianReal 0 1]
+      ≤ ∫ x : ℝ, ((derivative p).eval x) ^ 2 ∂(gaussianReal 0 1) := by
+  rw [variance_eq_gvar]
+  have hd : (∫ x : ℝ, ((derivative p).eval x) ^ 2 ∂(gaussianReal 0 1))
+      = gmean (derivative p * derivative p) := by
+    rw [gmean_eq_integral]
+    congr 1
+    funext x
+    rw [Polynomial.eval_mul, sq]
+  rw [hd]
+  exact poincare_polynomial p
+
+/-- Cross-check 1: the Gaussian mean of x is 0, via Mathlib's
+    `integral_id_gaussianReal`. -/
+theorem gmean_X_eq_zero : gmean (X : ℝ[X]) = 0 := by
+  rw [gmean_eq_integral]
+  simp
+
+/-- **Cross-check 2 — the independent confirmation.** Our Hermite machinery
+    gives Var(X) = 1! · Z / Z = 1; Mathlib gets the same number from the
+    moment generating function (`variance_fun_id_gaussianReal`). The two
+    routes share nothing but the measure, so this equation is a genuine test
+    of the orthogonality constant and of `Z = √(2π)`. -/
+theorem gvar_X_eq_one : gvar (X : ℝ[X]) = 1 := by
+  have h := variance_eq_gvar (X : ℝ[X])
+  simp only [Polynomial.eval_X] at h
+  rw [← h]
+  simp
+
+/-! ## 9. The stairs above this one
 
     For the record, in dependency order, what a continuation would build:
 
