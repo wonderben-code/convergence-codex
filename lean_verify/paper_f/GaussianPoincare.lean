@@ -27,6 +27,10 @@
 import Mathlib.RingTheory.Polynomial.Hermite.Basic
 import Mathlib.RingTheory.Polynomial.Hermite.Gaussian
 import Mathlib.Algebra.Polynomial.Degree.Lemmas
+import Mathlib.Analysis.Calculus.Deriv.Polynomial
+import Mathlib.Analysis.SpecialFunctions.PolynomialExp
+import Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral
+import Mathlib.MeasureTheory.Integral.IntegralEqImproper
 import Mathlib.Tactic.Linarith
 
 open Polynomial
@@ -190,7 +194,126 @@ theorem exists_hermite_repr' (p : ℝ[X]) :
   ⟨p.natDegree, (exists_hermite_repr p.natDegree p le_rfl).choose,
     (exists_hermite_repr p.natDegree p le_rfl).choose_spec⟩
 
-/-! ## 4. What is NOT proven here
+/-! ## 4. Gaussian integration by parts (Stein's identity) for polynomials
+
+    The first analytic stair. Everything here is stated against the
+    UNNORMALISED Gaussian weight W(x) = e^{−x²/2} and the Lebesgue integral;
+    the normalised measure `gaussianReal` enters at the next stair. The
+    identity proven is
+
+      ∫ x·p(x)·W(x) dx = ∫ p′(x)·W(x) dx,
+
+    which is Stein's identity / Gaussian integration by parts for polynomial
+    test functions. It is the engine for everything above it: orthogonality
+    of the Hermite family follows from it by induction. -/
+
+open MeasureTheory Filter Topology
+
+/-- The unnormalised standard Gaussian weight e^{−x²/2}. -/
+def W (x : ℝ) : ℝ := Real.exp (-x ^ 2 / 2)
+
+theorem W_pos (x : ℝ) : 0 < W x := Real.exp_pos _
+
+@[simp] theorem W_neg (x : ℝ) : W (-x) = W x := by
+  unfold W
+  congr 1
+  ring
+
+/-- Monomials are integrable against the Gaussian weight. -/
+theorem integrable_pow_mul_W (n : ℕ) : Integrable (fun x : ℝ => x ^ n * W x) := by
+  have hb : (0 : ℝ) < 1 / 2 := by norm_num
+  have hs : (-1 : ℝ) < (n : ℝ) := by
+    have : (0 : ℝ) ≤ (n : ℝ) := Nat.cast_nonneg n
+    linarith
+  have h := integrable_rpow_mul_exp_neg_mul_sq hb hs
+  refine h.congr (Eventually.of_forall fun x => ?_)
+  simp only [W, Real.rpow_natCast]
+  rw [show (-(1 / 2 : ℝ) * x ^ 2) = -x ^ 2 / 2 by ring]
+
+/-- Every polynomial is integrable against the Gaussian weight. -/
+theorem integrable_poly_mul_W (p : ℝ[X]) :
+    Integrable (fun x : ℝ => p.eval x * W x) := by
+  induction p using Polynomial.induction_on' with
+  | monomial n c =>
+      have h := (integrable_pow_mul_W n).const_mul c
+      refine h.congr (Eventually.of_forall fun x => ?_)
+      simp [Polynomial.eval_monomial, mul_assoc]
+  | add p q hp hq =>
+      have h := hp.add hq
+      refine h.congr (Eventually.of_forall fun x => ?_)
+      simp [add_mul]
+
+/-- p(x)·e^{−x²/2} → 0 as x → +∞: the Gaussian beats every polynomial. -/
+theorem tendsto_poly_mul_W_atTop (p : ℝ[X]) :
+    Tendsto (fun x : ℝ => p.eval x * W x) atTop (𝓝 0) := by
+  have habs : Tendsto (fun x : ℝ => ‖p.eval x / Real.exp x‖) atTop (𝓝 0) :=
+    tendsto_zero_iff_norm_tendsto_zero.mp p.tendsto_div_exp_atTop
+  rw [tendsto_zero_iff_norm_tendsto_zero]
+  refine squeeze_zero' (Eventually.of_forall fun x => norm_nonneg _) ?_ habs
+  filter_upwards [eventually_ge_atTop (2 : ℝ)] with x hx
+  rw [Real.norm_eq_abs, Real.norm_eq_abs, abs_mul, abs_div,
+    abs_of_pos (W_pos x), abs_of_pos (Real.exp_pos x), div_eq_mul_inv,
+    ← Real.exp_neg]
+  refine mul_le_mul_of_nonneg_left ?_ (abs_nonneg _)
+  unfold W
+  apply Real.exp_le_exp.mpr
+  nlinarith
+
+/-- p(x)·e^{−x²/2} → 0 as x → −∞, by reflection. -/
+theorem tendsto_poly_mul_W_atBot (p : ℝ[X]) :
+    Tendsto (fun x : ℝ => p.eval x * W x) atBot (𝓝 0) := by
+  have h := (tendsto_poly_mul_W_atTop (p.comp (-X))).comp tendsto_neg_atBot_atTop
+  refine Tendsto.congr (fun x => ?_) h
+  simp [Polynomial.eval_comp]
+
+/-- **The total derivative integrates to zero**: because p·W vanishes at both
+    ends of the line and its derivative is integrable, the fundamental
+    theorem of calculus on ℝ gives ∫ (p·W)′ = 0. -/
+theorem integral_deriv_poly_mul_W (p : ℝ[X]) :
+    ∫ x : ℝ, ((derivative p).eval x - x * p.eval x) * W x = 0 := by
+  have hderiv : ∀ x : ℝ, HasDerivAt (fun y : ℝ => p.eval y * W y)
+      (((derivative p).eval x - x * p.eval x) * W x) x := by
+    intro x
+    have h1 : HasDerivAt (fun y : ℝ => p.eval y) ((derivative p).eval x) x :=
+      p.hasDerivAt x
+    have h2 : HasDerivAt (fun y : ℝ => W y) (W x * (-x)) x := by
+      have hg : HasDerivAt (fun y : ℝ => -y ^ 2 / 2) (-x) x := by
+        have h := ((hasDerivAt_pow 2 x).neg).div_const 2
+        convert h using 1
+        ring
+      simpa [W] using hg.exp
+    have h := h1.mul h2
+    convert h using 1
+    ring
+  have hint : Integrable
+      (fun x : ℝ => ((derivative p).eval x - x * p.eval x) * W x) := by
+    have h := integrable_poly_mul_W (derivative p - X * p)
+    refine h.congr (Eventually.of_forall fun x => ?_)
+    simp [sub_mul]
+  have h := integral_of_hasDerivAt_of_tendsto hderiv hint
+    (tendsto_poly_mul_W_atBot p) (tendsto_poly_mul_W_atTop p)
+  simpa using h
+
+/-- **Stein's identity / Gaussian integration by parts** for polynomial test
+    functions: ∫ x·p(x)·W = ∫ p′(x)·W. This is the one genuinely analytic
+    input to everything that follows. -/
+theorem stein_weight (p : ℝ[X]) :
+    ∫ x : ℝ, (x * p.eval x) * W x = ∫ x : ℝ, (derivative p).eval x * W x := by
+  have h0 := integral_deriv_poly_mul_W p
+  have hi1 : Integrable (fun x : ℝ => (derivative p).eval x * W x) :=
+    integrable_poly_mul_W _
+  have hi2 : Integrable (fun x : ℝ => (x * p.eval x) * W x) := by
+    have h := integrable_poly_mul_W (X * p)
+    refine h.congr (Eventually.of_forall fun x => ?_)
+    simp
+  have hsplit : (fun x : ℝ => ((derivative p).eval x - x * p.eval x) * W x)
+      = fun x : ℝ => (derivative p).eval x * W x - (x * p.eval x) * W x := by
+    funext x
+    ring
+  rw [hsplit, integral_sub hi1 hi2] at h0
+  linarith
+
+/-! ## 5. What is NOT proven here
 
     This file currently contains NO analysis and NO measure theory, and
     therefore does not contain the Poincaré inequality or any part of it.
