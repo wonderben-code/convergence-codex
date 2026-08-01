@@ -46,9 +46,13 @@
   proven is the explicit diagonalisation with signs (+,−,−,−) in an
   injective, surjective, linear parametrisation); a bundled `MulAction` of
   SL₂(ℂ) on Herm₂ (the action equations of item 5 are proven, the
-  typeclass object is not constructed); SURJECTIVITY of SL₂(ℂ) → SO⁺(1,3)
-  (the actual covering statement — needs polar decomposition/connectedness);
-  any identification with `CliffordAlgebra.spinGroup`. Those remain open.
+  typeclass object is not constructed); any identification with
+  `CliffordAlgebra.spinGroup`. STATUS UPDATE on two items this header once
+  listed as open: Sylvester invariance of the signature is proven in
+  `MinkowskiSignature.lean`, and SURJECTIVITY of SL₂(ℂ) → SO⁺(1,3) is
+  proven in `LorentzGroup.lean` + `LorentzSurjectivity.lean`
+  (`lorentz_surjective`, `double_cover`) — algebraically, not by the
+  polar-decomposition/connectedness route once predicted here.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/

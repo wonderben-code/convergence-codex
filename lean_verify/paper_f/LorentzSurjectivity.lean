@@ -469,6 +469,54 @@ theorem double_cover :
       rw [Matrix.one_apply_eq, Matrix.neg_apply, Matrix.one_apply_eq] at h00
       exact (by norm_num : (1 : ℂ) ≠ -1) h00⟩
 
+
+/-- The reverse inclusion of the kernel — the "2" of "2-to-1": Λ(−1) = 1.
+    An adversarial review pointed out that without this, "kernel exactly
+    {±1}" was only half-stated in Λ-coordinates. -/
+theorem lorentzMat_neg_one : lorentzMat (-1 : Matrix (Fin 2) (Fin 2) ℂ) = 1 := by
+  have h : (-1 : Matrix (Fin 2) (Fin 2) ℂ) * (-1) = 1 := by
+    rw [Matrix.neg_mul, Matrix.one_mul]
+    exact neg_neg 1
+  have h2 := lorentzMat_mul (-1 : Matrix (Fin 2) (Fin 2) ℂ) (-1)
+  rw [h, lorentzMat_one] at h2
+  -- Λ(−1)² = 1 and Λ(−1) = Λ(−1·1·(−1)ᴴ-conj)… simpler: −1 = (−1)·1, and
+  -- conjugation by −1 is conjugation by 1 since the signs cancel:
+  have hconj : ∀ v : Fin 4 → ℝ,
+      lorentzMap (-1 : Matrix (Fin 2) (Fin 2) ℂ) v = v := by
+    intro v
+    show pauliCoord ((-1 : Matrix (Fin 2) (Fin 2) ℂ)
+        * pauliHerm (v 0) (v 1) (v 2) (v 3) * (-1 : Matrix (Fin 2) (Fin 2) ℂ)ᴴ) = v
+    have hs : (-1 : Matrix (Fin 2) (Fin 2) ℂ)
+        * pauliHerm (v 0) (v 1) (v 2) (v 3) * (-1 : Matrix (Fin 2) (Fin 2) ℂ)ᴴ
+        = pauliHerm (v 0) (v 1) (v 2) (v 3) := by
+      rw [Matrix.conjTranspose_neg, Matrix.conjTranspose_one, Matrix.neg_mul,
+        Matrix.one_mul, Matrix.mul_neg, Matrix.mul_one]
+      exact neg_neg _
+    rw [hs]
+    have := pauliHerm_pauliCoord _ (pauliHerm_isHermitian (v 0) (v 1) (v 2) (v 3))
+    rw [pauliCoord_pauliHerm]
+    funext i
+    fin_cases i <;> rfl
+  ext i j
+  rw [lorentzMat_apply]
+  rw [hconj (Pi.single j 1)]
+  rw [Matrix.one_apply, Pi.single_apply]
+
+/-- det(−1) = 1 in SL₂: the −1 really lies in the domain. -/
+theorem det_neg_one : (-1 : Matrix (Fin 2) (Fin 2) ℂ).det = 1 := by
+  rw [Matrix.det_neg, Fintype.card_fin, Matrix.det_one]
+  norm_num
+
+/-- **The kernel, both directions**: for A ∈ SL₂(ℂ), Λ(A) = 1 ⟺ A = ±1.
+    With `lorentz_surjective` this is the full 2-to-1 covering statement. -/
+theorem kernel_iff (A : Matrix (Fin 2) (Fin 2) ℂ) (hA : A.det = 1) :
+    lorentzMat A = 1 ↔ A = 1 ∨ A = -1 := by
+  constructor
+  · exact kernel_lorentzMat A hA
+  · rintro (rfl | rfl)
+    · exact lorentzMat_one
+    · exact lorentzMat_neg_one
+
 /-- SO⁺(1,3) is not the trivial group, so the surjectivity above has real
     content: the image of U_y(3/5, 4/5) is a rotation by the doubled angle,
     and its (1,1) entry is −7/25 ≠ 1. -/

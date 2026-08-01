@@ -28,8 +28,11 @@
   3. `lorentzMat_gram` — Λ(A)ᵀ G Λ(A) = G: the image lies in O(1,3), now at
      the level of matrices, which is what a determinant argument needs.
   4. `lorentzUnit`, `lorentzUnit_mem_O13` — the image as elements of the
-     bundled subgroup, and `lorentzHom` bundling it as a `MonoidHom` from
-     SL₂(ℂ) to O(1,3). Step (i), done.
+     bundled subgroup; and `lorentzSOplusHom` / `lorentzHom`, the action
+     bundled as a `MonoidHom` from Mathlib's `SpecialLinearGroup (Fin 2) ℂ`
+     into SO⁺(1,3) (resp. O(1,3)). Step (i), done. (An adversarial review
+     caught an earlier version of this header naming these homs before they
+     existed; they exist now, at the end of §8.)
   5. `det_lorentzMat_sq` — det Λ(A)² = 1 for any isometry; then
      **`det_lorentzMat` — det Λ(A) = +1: the image is PROPER.** The proof is
      not the usual connectedness argument: `exists_sqrt_of_trace_ne`
@@ -46,9 +49,10 @@
      `Subgroup`**. The non-obvious closure is orthochronicity: (ΛΛ′)⁰₀ > 0
      needs a Cauchy–Schwarz argument (`orthochronous_mul`) on the space
      directions, proved here from the Lagrange identity.
-  8. `lorentzHom_mem_SOplus` — **the image of SL₂(ℂ) lies in SO⁺(1,3)**, and
-     `lorentzSOplusHom`, the bundled `MonoidHom` SL₂(ℂ) →* SO⁺(1,3), whose
-     kernel is {±1} by `MinkowskiHerm2.kernel_of_conj_action`.
+  8. `lorentzUnit_mem_SOplus13` — **the image of SL₂(ℂ) lies in SO⁺(1,3)**,
+     and `lorentzSOplusHom`, the bundled `MonoidHom` SL₂(ℂ) →* SO⁺(1,3),
+     with kernel {±1} by `MinkowskiHerm2.kernel_of_conj_action` (both
+     directions assembled in `LorentzSurjectivity.kernel_iff`).
 
   9. `exists_hermitian_sqrt` — **the boost half of surjectivity**. For a unit
      future timelike (t,x,y,z), P = t·1 + x·σ₁ + y·σ₂ + z·σ₃ has det 1 and
@@ -63,14 +67,14 @@
      whose first column is the time axis has first row the time axis too, and
      its lower 3×3 block has orthonormal columns.
 
-  NOT proven here — and this is now ALL that remains of old gap #7:
+  NOT proven here:
 
-  * **SU(2) ↠ SO(3)**, and with it surjectivity of SL₂(ℂ) → SO⁺(1,3). By
-    items 9–11 that single classical theorem is the whole remaining gap: the
-    boost direction is closed and the residual target is exactly SO(3).
-    Mathlib does not have it; its proof needs Euler's fixed-axis theorem, an
-    adapted orthonormal basis, and the half-angle formula. Recorded on
-    `UNLOCK_WATCHLIST.md` as the next leg of this chain.
+  * **Surjectivity — PROVEN DOWNSTREAM.** When this file was written the
+    reduction of items 9–11 left SU(2) ↠ SO(3) as the remaining leg;
+    `LorentzSurjectivity.lean` has since proven it (algebraically — the
+    Euler-fixed-axis route this header once prescribed was not needed) and
+    with it full surjectivity: see `LorentzSurjectivity.lorentz_surjective`,
+    `SOplus13_surjective`, `double_cover`. Cite that file for the covering.
   * That SO⁺(1,3) is the identity component (a topological statement; the
     definition used here is the algebraic one, det = 1 and Λ⁰₀ > 0, which is
     equivalent but not proven equivalent here).
@@ -526,10 +530,48 @@ theorem lorentzUnit_mem_SOplus13 (A : Matrix (Fin 2) (Fin 2) ℂ) (hA : A.det = 
   ⟨lorentzMat_gram A hA, det_lorentzMat A hA,
     lt_of_lt_of_le zero_lt_one (one_le_lorentzMat_zero_zero A hA)⟩
 
+
+/-- SO⁺(1,3) is a subgroup of O(1,3). -/
+theorem SOplus_le_O13 : SOplus13 ≤ O13 := fun _ hM => hM.1
+
+/-- The special linear group SL₂(ℂ), as Mathlib's bundled group. -/
+abbrev SL2C := Matrix.SpecialLinearGroup (Fin 2) ℂ
+
+/-- **The bundled homomorphism SL₂(ℂ) →* SO⁺(1,3)** — the object the
+    header promised and an adversarial review found missing: the whole
+    action packaged as a `MonoidHom` into the subgroup, with
+    multiplicativity carried by `lorentzMat_mul`. -/
+def lorentzSOplusHom : SL2C →* SOplus13 where
+  toFun A := ⟨lorentzUnit A.1 A.2, lorentzUnit_mem_SOplus13 A.1 A.2⟩
+  map_one' := by
+    apply Subtype.ext
+    apply Units.ext
+    show lorentzMat ((1 : SL2C) : Matrix (Fin 2) (Fin 2) ℂ) = _
+    rw [Subgroup.coe_one, Units.val_one, Matrix.SpecialLinearGroup.coe_one]
+    exact lorentzMat_one
+  map_mul' A B := by
+    apply Subtype.ext
+    apply Units.ext
+    show lorentzMat ((A * B : SL2C) : Matrix (Fin 2) (Fin 2) ℂ) = _
+    rw [Subgroup.coe_mul, Units.val_mul, Matrix.SpecialLinearGroup.coe_mul]
+    exact lorentzMat_mul A.1 B.1
+
+@[simp] theorem lorentzSOplusHom_apply (A : SL2C) :
+    ((lorentzSOplusHom A : Matrix.GeneralLinearGroup (Fin 4) ℝ)
+      : Matrix (Fin 4) (Fin 4) ℝ) = lorentzMat A.1 := rfl
+
+/-- The same map, valued in O(1,3): the composition with the inclusion
+    SO⁺(1,3) ≤ O(1,3). -/
+def lorentzHom : SL2C →* O13 :=
+  (Subgroup.inclusion SOplus_le_O13).comp lorentzSOplusHom
+
 /-- **The whole content of this file in one statement**: the SL₂(ℂ) action on
     Minkowski space is a multiplicative map into the proper orthochronous
-    Lorentz group, and its kernel is exactly {±1}. What is NOT here is
-    surjectivity. -/
+    Lorentz group, with trivial-kernel-up-to-sign
+    (`MinkowskiHerm2.kernel_of_conj_action`; the two directions of "exactly
+    {±1}" are assembled in `LorentzSurjectivity.kernel_iff`). Surjectivity is
+    NOT in this file — it is proven downstream, in
+    `LorentzSurjectivity.lorentz_surjective`. -/
 theorem lorentz_action_summary :
     (∀ A B : Matrix (Fin 2) (Fin 2) ℂ, lorentzMat (A * B) = lorentzMat A * lorentzMat B)
       ∧ lorentzMat (1 : Matrix (Fin 2) (Fin 2) ℂ) = 1
@@ -756,15 +798,15 @@ theorem stabiliser_is_rotation {R : Matrix (Fin 4) (Fin 4) ℝ} (hR : IsLorentzM
   · rw [if_pos hab] at h ⊢; linarith
   · rw [if_neg hab] at h ⊢; linarith
 
-/-! ## 10. What is left
+/-! ## 10. Where the chain ends
 
     Putting §9 together: SL₂(ℂ) → SO⁺(1,3) is surjective as soon as every
     rotation is hit, and `stabiliser_is_rotation` says the residual target is
-    exactly SO(3). The remaining leg is therefore the classical SU(2) ↠ SO(3),
-    which Mathlib does not have and which is not a corollary of anything
-    proved here: it needs Euler's theorem (every R ∈ SO(3) has a fixed axis,
-    from det(R − 1) = 0), an adapted orthonormal basis, and the half-angle
-    formula U = cos(θ/2)·1 − i·sin(θ/2)·(n·σ). That is recorded on
-    UNLOCK_WATCHLIST.md as the next leg of this chain, not as a wall. -/
+    exactly SO(3). When this section was written that leg was open;
+    `LorentzSurjectivity.lean` has since climbed it — algebraically, with
+    half-angle pairs and no Euler fixed-axis theorem — and the covering is
+    now a theorem: `LorentzSurjectivity.lorentz_surjective` and
+    `double_cover`. This section stays as the honest record of the
+    reduction. -/
 
 end LorentzGroup

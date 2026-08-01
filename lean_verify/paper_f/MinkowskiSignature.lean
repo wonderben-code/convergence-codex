@@ -43,10 +43,13 @@
      `MinkowskiHerm2.kernel_of_conj_action` (kernel exactly {±1}) is most of
      old gap #7's homomorphism half.
 
-  NOT proven here (the rest of gap #7, unchanged): SURJECTIVITY of
-  SL₂(ℂ) → SO⁺(1,3) (the actual covering statement — needs polar
-  decomposition/connectedness), and with it the identification of the IMAGE
-  as the identity component rather than merely a subgroup of O(1,3);
+  NOT proven here — with a status update: SURJECTIVITY of SL₂(ℂ) → SO⁺(1,3)
+  was open when this file was written and is now PROVEN DOWNSTREAM, in
+  `LorentzGroup.lean` (the groups and the reduction) and
+  `LorentzSurjectivity.lean` (`lorentz_surjective`, `double_cover`) — and
+  algebraically, not by the polar-decomposition/connectedness route this
+  header once predicted. Still not proven anywhere: the identification of
+  the image as the identity COMPONENT (topological);
   the identification of
   SL₂(ℂ) with Mathlib's `spinGroup`; a bundled `MulAction` of SL₂(ℂ) on
   Herm₂; and the

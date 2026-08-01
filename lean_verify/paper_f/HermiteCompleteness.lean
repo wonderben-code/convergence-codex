@@ -16,7 +16,8 @@
      L²(gaussianReal 0 1) for every c: the Gaussian has all exponential
      moments. This is the hypothesis that makes the Gaussian moment problem
      DETERMINATE, and it is where the argument would fail for a heavy-tailed
-     measure (it fails for the lognormal, famously).
+     measure (classically it fails for the lognormal; that classical fact is
+     motivation here, not something formalised).
   2. `tendsto_partial_exp` — for g ∈ L²(γ), the partial sums of the
      exponential series, integrated against g dγ, converge to
      ∫ e^{ixt} g dγ. Dominated convergence, with dominating function
@@ -30,7 +31,7 @@
   4. **`hermite_complete`** — the same with "every polynomial" replaced by
      "every Hermite polynomial", via the Hermite expansion
      `exists_hermite_repr'` of `GaussianPoincare`.
-  5. `hermite_orthogonal_gauss`, `hermite_norm_gauss` — the orthogonality
+  5. `hermite_orthogonal_gauss`, `hermite_norm_sq_gauss` — the orthogonality
      relations transported from the weight-integral formulation to Mathlib's
      `gaussianReal 0 1`: ∫ Hₘ·Hₙ dγ = 0 for m ≠ n and ∫ Hₙ² dγ = n!
      (so no Hₙ is the zero vector — the family is not degenerate).

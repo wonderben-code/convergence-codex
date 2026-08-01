@@ -37,11 +37,17 @@
      embedded su(3) (`bMinusL_comm`), and acts as **+1 on the triplet and −3
      on the singlet**. Those two eigenvalues are the subscripts in "3₁ ⊕ 1₋₃";
      until now they appeared only in prose.
-  7. **`quark_irreducible`** — the triplet is IRREDUCIBLE under the traceless
-     matrices: every nonzero invariant subspace is everything. So 3 ⊕ 1 is the
-     decomposition into irreducibles, not just some invariant splitting. The
-     proof is the elementary-matrix argument: `single i j 1` is traceless for
-     i ≠ j and moves any nonzero coordinate onto any basis vector.
+  7. **`quark_irreducible`** — the 3-dimensional representation is
+     IRREDUCIBLE under the traceless matrices: every nonzero invariant
+     subspace of ℂ³ is everything. Stated on ℂ³ with the raw action; reading
+     it as irreducibility of `quarkSub` inside ℂ⁴ uses the evident
+     equivariant identification ℂ³ ≅ quarkSub, which is NOT formalised here
+     (an adversarial review flagged the gap; the transfer is routine but it
+     is a missing step, and this header says so rather than papering it).
+     With `leptonSub_ne_bot` (the singlet is a genuine line) the honest
+     summary is: one irreducible 3, one nonzero trivial 1. The proof is the
+     elementary-matrix argument: `single i j 1` is traceless for i ≠ j and
+     moves any nonzero coordinate onto any basis vector.
 
   NOT proven here:
 
@@ -272,6 +278,18 @@ theorem charge_lepton {v : Col → ℂ} (hv : v ∈ leptonSub) :
       simp only [bMinusL, Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul]
       rw [Fintype.sum_sum_type]
       simp [Matrix.one_apply]
+
+
+/-- The singlet is not the zero subspace: the lepton direction is a genuine
+    line, so `charge_lepton` is not vacuous. -/
+theorem leptonSub_ne_bot : leptonSub ≠ ⊥ := by
+  intro h
+  have hmem : (Sum.elim ![0, 0, 0] ![1] : Col → ℂ) ∈ leptonSub := by
+    intro i
+    fin_cases i <;> rfl
+  rw [h, Submodule.mem_bot] at hmem
+  have := congrFun hmem (Sum.inr 0)
+  simp at this
 
 /-! ## 5. The triplet is irreducible -/
 

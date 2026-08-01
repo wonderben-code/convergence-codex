@@ -292,4 +292,26 @@ theorem poincare_R16_lambda_measure (Λ : ℝ) (p : MvPolynomial (Fin 16) ℝ) :
   rw [gaussPiVar_sqrt (Λ ^ 2 / 2) (by positivity)] at h
   exact h
 
+/-- **Sharpness of the Λ²/2 constant in MEASURE form**: no smaller constant
+    satisfies the 16-dimensional inequality against the Λ-Gaussian. Transfers
+    `SpectralGaussianGap.no_better_constant_R16_lambda` through
+    `ENs_eq_integral`, so the measure-level statement of
+    `poincare_R16_lambda_measure` carries its own sharpness certificate. -/
+theorem no_better_constant_R16_lambda_measure (Λ c : ℝ)
+    (h : ∀ p : MvPolynomial (Fin 16) ℝ,
+      (∫ x, MvPolynomial.eval x (p * p)
+          ∂(Measure.pi fun _ : Fin 16 => gaussianReal 0 ⟨Λ ^ 2 / 2, by positivity⟩))
+          - (∫ x, MvPolynomial.eval x p
+              ∂(Measure.pi fun _ : Fin 16 => gaussianReal 0 ⟨Λ ^ 2 / 2, by positivity⟩)) ^ 2
+        ≤ c * ∑ i : Fin 16, ∫ x,
+            MvPolynomial.eval x (MvPolynomial.pderiv i p * MvPolynomial.pderiv i p)
+              ∂(Measure.pi fun _ : Fin 16 => gaussianReal 0 ⟨Λ ^ 2 / 2, by positivity⟩)) :
+    Λ ^ 2 / 2 ≤ c := by
+  refine SpectralGaussianGap.no_better_constant_R16_lambda Λ c fun p => ?_
+  have hp := h p
+  rw [← gaussPiVar_sqrt (Λ ^ 2 / 2) (by positivity)] at hp
+  rw [ENs_eq_integral, ENs_eq_integral]
+  simp_rw [ENs_eq_integral]
+  exact hp
+
 end GaussianProductMeasure

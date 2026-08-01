@@ -72,20 +72,28 @@
   NOT proven here — and the published Bakry-Émery tags must NOT move on the
   strength of this file:
 
-  * **Test functions beyond polynomials.** The inequality is proven for
-    polynomials only. Extending to all of W^{1,2}(γ) needs density of
-    polynomials in that space (Hermite completeness), which is not in
-    Mathlib and is not proven here.
-  * **Dimension > 1.** No tensorisation. The cascade needs ℝ¹⁶ ≅ Herm₄(ℂ);
-    the standard product argument is not formalised here.
+  * **Test functions beyond polynomials** — IN THIS FILE. When written this
+    was open; it has since been closed downstream: Hermite completeness is
+    `HermiteCompleteness.lean`, the L²-Fourier apparatus is
+    `HermiteBessel.lean` + `HermiteParseval.lean`, and the inequality for C¹
+    functions of polynomial growth is
+    `PoincareBeyondPolynomials.poincare_beyond_polynomials` (the maximal
+    W^{1,2}(γ) class remains open there, and says so).
+  * **Dimension > 1** — IN THIS FILE. Closed downstream:
+    `GaussianPoincareProduct.poincare_MV` (all n, unit variance) and
+    `GaussianProductMeasure.poincare_R16_measure` (n = 16, against the
+    product measure).
   * **A DIFFERENT MEASURE.** This is the STANDARD Gaussian γ = N(0,1). The
-    estate's claimed "gap = 2/Λ²" concerns a spectral-action measure, which
-    is not this measure; nothing here transfers to it automatically, and no
-    theorem here says anything about Λ. Treat this file as the first honest
-    stair of that programme, not as its conclusion.
-  * The `ProbabilityTheory.variance` phrasing (the variance is written out
-    as ∫p² − (∫p)² to avoid MemLp side conditions), and any statement about
-    Ornstein-Uhlenbeck semigroups, log-Sobolev, or hypercontractivity.
+    Λ-parametrised Gaussian family is treated downstream
+    (`SpectralGaussianGap`, `GaussianProductMeasure`,
+    `PoincareScaledBeyond`); what remains genuinely open everywhere is any
+    connection to a SPECTRAL-ACTION measure — no file derives the Gaussian
+    from Tr f(D/Λ), and no theorem anywhere says it does.
+  * Ornstein-Uhlenbeck semigroups, log-Sobolev, hypercontractivity.
+    (An earlier revision of this list also named "the
+    `ProbabilityTheory.variance` phrasing" as missing — stale even then,
+    since §8 proves `variance_le_integral_derivative_sq` in exactly that
+    phrasing; caught by an adversarial review, recorded in ERRATA.)
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/

@@ -47,7 +47,9 @@
      paragraph above says the V ⊕ V model cannot carry this algebra; an
      unverifiable negative claim in a docstring is the pattern this project
      removes, so it is proven, with an explicit witness (n = 1, M = 1, a = 2,
-     b = 3). The four-block space is forced, not preferred.
+     b = 3). Precisely: THE SAME SHAPE OF ACTION fails on the doubled space —
+     the theorem rules out that shape, not every conceivable algebra action
+     there.
   9. `spectral_triple_axioms` — all of it in one statement, with
      `exists_nonzero_D` and `piRep_injective` alongside so that nothing above
      is satisfied vacuously.
@@ -378,7 +380,7 @@ theorem exists_nonzero_commDpi :
   rw [commDpi_apply] at h1
   simp [Matrix.mulVec, dotProduct, Fin.sum_univ_two] at h1
 
-/-! ## 8. The obstruction, as a theorem rather than a remark
+/-! ## 7. The obstruction, as a theorem rather than a remark
 
     The header claims the V ⊕ V model of `KOSixRealStructure` cannot carry
     this algebra. An unverifiable negative claim in a docstring is exactly the
@@ -412,7 +414,7 @@ theorem order_one_fails_on_doubled :
     KOSixRealStructure.cvec] at h1
   norm_num [Complex.ext_iff] at h1
 
-/-! ## 9. Non-vacuity, and the whole thing in one statement -/
+/-! ## 8. Non-vacuity, and the whole thing in one statement -/
 
 theorem exists_nonzero_D :
     ∃ (M : Matrix (Fin 1) (Fin 1) ℂ) (v : Hf 1), D M v ≠ 0 := by
@@ -422,9 +424,14 @@ theorem exists_nonzero_D :
   simp [D] at h1
 
 /-- **A FINITE REAL SPECTRAL TRIPLE OF KO-DIMENSION 6**, every axiom a
-    theorem: the sign table (ε, ε′, ε″) = (+1, +1, −1); J antiunitary; D
-    self-adjoint and odd for the grading; π a unital faithful
-    *-representation; the commutant condition; the order-one condition. -/
+    theorem IN THIS ONE STATEMENT — including faithfulness of π, which an
+    adversarial review noted was previously only a separate theorem while
+    this docstring claimed it: the sign table (ε, ε′, ε″) = (+1, +1, −1);
+    J antiunitary; D self-adjoint and odd for the grading; π a unital
+    *-representation, FAITHFUL (last conjunct); the commutant condition;
+    the order-one condition. Vacuity caveat unchanged from the header: the
+    signs hold for every M including M = 0; the nonzero-D witnesses are
+    `exists_nonzero_D` and `exists_nonzero_commDpi` at fixed n. -/
 theorem spectral_triple_axioms (M : Matrix (Fin n) (Fin n) ℂ) :
     -- KO-6 signs
     (∀ v : Hf n, J (J v) = v)
@@ -446,9 +453,12 @@ theorem spectral_triple_axioms (M : Matrix (Fin n) (Fin n) ℂ) :
       ∧ (∀ (a b : Matrix (Fin n) (Fin n) ℂ) (v : Hf n),
           piRep a (piOp b v) = piOp b (piRep a v))
       ∧ (∀ (a b : Matrix (Fin n) (Fin n) ℂ) (v : Hf n),
-          commDpi M a (piOp b v) = piOp b (commDpi M a v)) :=
+          commDpi M a (piOp b v) = piOp b (commDpi M a v))
+    -- faithfulness
+      ∧ (∀ a b : Matrix (Fin n) (Fin n) ℂ,
+          (∀ v : Hf n, piRep a v = piRep b v) → a = b) :=
   ⟨J_involutive, J_comm_D M, J_anticomm_gamma, gamma_involutive, D_anticomm_gamma M,
     J_antiunitary, D_selfadjoint M, piRep_mul, piRep_one, piRep_adjoint,
-    commutant_condition, order_one_condition M⟩
+    commutant_condition, order_one_condition M, piRep_injective⟩
 
 end KOSixSpectralTriple
