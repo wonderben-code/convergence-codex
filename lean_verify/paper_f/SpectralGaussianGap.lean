@@ -41,7 +41,10 @@
      there too. **Caveat, and it is not small: `ENs` is an iterated moment
      functional, not an integral.** `gaussScaled_eq_integral` ties the
      one-dimensional object to `gaussianReal`; nothing here ties the
-     16-dimensional one to `Measure.pi`. See "WHAT THIS DOES NOT DO".
+     16-dimensional one to `Measure.pi`. **That gap is now closed
+     downstream**, in `GaussianProductMeasure.lean`
+     (`ENs_eq_integral`, `poincare_R16_lambda_measure`); it cannot be closed
+     here because that file imports this one.
 
   WHAT THIS DOES NOT DO, and it is the whole point of saying it:
 
@@ -53,14 +56,16 @@
     estate's claim that the spectral action *yields* such a measure is
     exactly as unproven as it was before this file.
   * Polynomial test functions only.
-  * **In n > 1 dimensions there is no measure here.** §4 scales
+  * **In n > 1 dimensions there is no measure IN THIS FILE.** §4 scales
     `GaussianPoincareProduct.poincare_MV`, whose expectation `EN n` is an
-    iterated moment functional; `EN_one_eq_integral` certifies n = 1 against
-    `gaussianReal 0 1` and nothing certifies n > 1 against a product measure
-    (that needs Fubini for `Measure.pi`, recorded on UNLOCK_WATCHLIST). So
-    the sentence "for a Gaussian fluctuation measure of variance Λ²/2" is
-    justified at n = 1 and is NOT justified at n = 16 — which is the
-    dimension the cascade needs. Read §4 as an inequality about moments.
+    iterated moment functional, and nothing here identifies it with an
+    integral. Read every §4 statement as an inequality about moments.
+    `GaussianProductMeasure.lean` — which imports this file, so the
+    dependency cannot go the other way — proves the identification
+    (`ENs_eq_integral`) and restates the flagship result against the honest
+    16-dimensional Gaussian of variance Λ²/2
+    (`poincare_R16_lambda_measure`). Cite that file, not this one, for any
+    claim containing the word "measure" at n > 1.
   * Therefore **no published Bakry-Émery tag moves on this file either.**
     What changes is that the claim is now falsifiable: the object exists, the
     constant is derived rather than defined, and what remains is one specific
@@ -241,11 +246,12 @@ theorem poincare_MV_scaled (σ : ℝ) (n : ℕ) (p : MvPolynomial (Fin n) ℝ) :
     (`no_better_constant_R16_lambda`).
 
     TWO caveats, both load-bearing. (a) `ENs σ 16` is the SCALED ITERATED
-    MOMENT FUNCTIONAL of `GaussianPoincareProduct`, not an integral: no
-    theorem here or there identifies it with `Measure.pi`, so this is not
-    yet a statement about a 16-dimensional measure, and the words "Gaussian
-    fluctuation measure" do not belong to it. (b) Even at n = 1, where the
-    object IS a measure, nothing connects it to the spectral action. -/
+    MOMENT FUNCTIONAL of `GaussianPoincareProduct`, not an integral: NO
+    THEOREM IN THIS FILE identifies it with `Measure.pi`, so as stated here
+    this is not a statement about a 16-dimensional measure. The measure form
+    is `GaussianProductMeasure.poincare_R16_lambda_measure`, which is proven
+    but lives downstream because it imports this file. (b) Even in measure
+    form, nothing connects the measure to the spectral action. -/
 theorem poincare_R16_lambda (Λ : ℝ) (p : MvPolynomial (Fin 16) ℝ) :
     ENs (Real.sqrt (Λ ^ 2 / 2)) 16 (p * p)
         - (ENs (Real.sqrt (Λ ^ 2 / 2)) 16 p) ^ 2

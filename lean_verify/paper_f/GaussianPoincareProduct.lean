@@ -65,10 +65,11 @@
     integrals. Identifying that with a single integral against
     `Measure.prod` is Fubini, and needs integrability of the polynomial on
     the product; it is not done here, so no theorem in this file mentions a
-    two-dimensional measure. Correspondingly `EN n` for n > 1 is an iterated
-    moment functional: `EN_one_eq_integral` certifies n = 1 against
-    `gaussianReal 0 1`, and nothing here certifies n > 1 against
-    `Measure.pi`. See §10.
+    two-dimensional measure. Correspondingly `EN n` for n > 1 is, IN THIS
+    FILE, an iterated moment functional: `EN_one_eq_integral` certifies
+    n = 1 against `gaussianReal 0 1`, and nothing here certifies n > 1
+    against `Measure.pi`. That identification is proven downstream, in
+    `GaussianProductMeasure.EN_eq_integral`. See §10.
   * Everything the 1-d file already disclaimed: polynomial test functions
     only, and this is the standard Gaussian, not a spectral-action measure.
 
@@ -754,15 +755,14 @@ theorem no_better_constant_R16 (c : ℝ)
     §5–§8 of this same file; that list was stale and is recorded in
     ERRATA.md. What is genuinely still missing:
 
-    * **`EN n` as an integral against a product measure, for n > 1.** §9
-      certifies n = 1 against `gaussianReal 0 1`. The general statement is
-      `EN n p = ∫ x, MvPolynomial.eval x p ∂(Measure.pi fun _ => gaussianReal 0 1)`,
-      which needs Fubini for `Measure.pi` (Mathlib's
-      `measurePreserving_piFinSuccAbove` is the route) together with
-      integrability of polynomials against the product Gaussian. Until that
-      lands, `EN n` for n > 1 is an iterated moment functional which agrees
-      with the Gaussian expectation on everything one can compute by hand,
-      but which no theorem here identifies with an integral.
+    * **`EN n` as an integral against a product measure, for n > 1** — CLOSED,
+      downstream. §9 certifies n = 1 here; the general statement
+      `EN n p = ∫ x, MvPolynomial.eval x p ∂(Measure.pi fun _ => gaussianReal 0 1)`
+      is `GaussianProductMeasure.EN_eq_integral`, proved by induction on n
+      with Fubini (`integral_prod_symm`) transported along Mathlib's
+      `measurePreserving_piFinSuccAbove`. It lives in that file rather than
+      this one because it imports this one. Nothing in THIS file mentions a
+      product measure, so cite that file for anything that does.
     * **Test functions beyond polynomials**: density of the polynomials in
       W^{1,2}(γₙ). Without it these are statements about polynomials.
     * **Any link to the spectral action.** Nothing here produces a Gaussian
