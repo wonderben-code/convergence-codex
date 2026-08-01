@@ -65,6 +65,14 @@
   * The order-one condition, the first-order condition on the algebra
     representation, and the algebra action itself: this file has J, γ, D and
     an inner product, but no algebra, so it is not yet a spectral triple.
+    **SUPERSEDED for that purpose by `KOSixSpectralTriple.lean`**, which adds
+    the algebra on a FOUR-block space — and which proves, as
+    `order_one_fails_on_doubled`, that the two-block space of this file
+    genuinely cannot carry it: with γ grading particles against antiparticles
+    rather than chirality, the order-one condition fails. This file remains
+    the smaller, sharper statement (the sign table alone, on the smallest
+    space that realises it); cite the other one for anything needing an
+    algebra.
   * Completeness of H and boundedness/compact-resolvent statements: H is
     finite-dimensional here, so these are not obstacles, but nor are they
     stated.
