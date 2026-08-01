@@ -469,4 +469,18 @@ theorem double_cover :
       rw [Matrix.one_apply_eq, Matrix.neg_apply, Matrix.one_apply_eq] at h00
       exact (by norm_num : (1 : ℂ) ≠ -1) h00⟩
 
+/-- SO⁺(1,3) is not the trivial group, so the surjectivity above has real
+    content: the image of U_y(3/5, 4/5) is a rotation by the doubled angle,
+    and its (1,1) entry is −7/25 ≠ 1. -/
+theorem SOplus13_nontrivial : ∃ M ∈ SOplus13, M ≠ 1 := by
+  have hcs : (3 / 5 : ℝ) ^ 2 + (4 / 5) ^ 2 = 1 := by norm_num
+  refine ⟨lorentzUnit (su2Y (3 / 5) (4 / 5)) (det_su2Y _ _ hcs),
+    lorentzUnit_mem_SOplus13 _ _, ?_⟩
+  intro h
+  have hval := congrArg Units.val h
+  rw [lorentzUnit_val, lorentzMat_su2Y _ _ hcs, Units.val_one] at hval
+  have h11 := Matrix.ext_iff.mpr hval 1 1
+  rw [Matrix.one_apply_eq] at h11
+  norm_num [rotY] at h11
+
 end LorentzSurjectivity

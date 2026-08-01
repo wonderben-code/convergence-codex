@@ -366,6 +366,18 @@ theorem order_one_condition (M a b : Matrix (Fin n) (Fin n) ℂ) (v : Hf n) :
   rw [piOp_apply, commDpi_apply, commDpi_apply, piOp_apply]
   ext i <;> simp
 
+/-- Non-vacuity of the ORDER-ONE condition: [D, π(a)] is not identically
+    zero, so `order_one_condition` constrains a genuinely nonzero operator.
+    (At n = 1 the commutator DOES vanish — 1×1 matrices commute — which is
+    why the witness lives at n = 2.) -/
+theorem exists_nonzero_commDpi :
+    ∃ (M a : Matrix (Fin 2) (Fin 2) ℂ) (v : Hf 2), commDpi M a v ≠ 0 := by
+  refine ⟨!![0, 1; 1, 0], !![1, 0; 0, 0], (((fun _ => 0), (fun _ => 1)), (0, 0)), ?_⟩
+  intro h
+  have h1 := congrFun (congrArg Prod.fst (congrArg Prod.fst h)) 0
+  rw [commDpi_apply] at h1
+  simp [Matrix.mulVec, dotProduct, Fin.sum_univ_two] at h1
+
 /-! ## 8. The obstruction, as a theorem rather than a remark
 
     The header claims the V ⊕ V model of `KOSixRealStructure` cannot carry
