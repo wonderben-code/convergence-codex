@@ -6,8 +6,10 @@
   one. This file transfers it to every variance σ² — and in particular to
   σ² = Λ²/2, the cutoff-scale Gaussian of `SpectralGaussianGap` — by the
   substitution x ↦ σx. The flagship Bakry–Émery-form inequality of this
-  campaign now holds for C¹ test functions of polynomial growth, not just
-  polynomials.
+  campaign now holds for every everywhere-differentiable test function of
+  polynomial growth — in particular every C¹ one — not just polynomials.
+  (Everywhere-differentiability is the only regularity used; continuity of
+  the derivative is never assumed.)
 
   WHAT THIS FILE PROVES (exactly this, nothing more):
 
@@ -16,7 +18,8 @@
      (which is unconditional in σ, so no σ ≠ 0 hypothesis is needed
      anywhere in this file — at σ = 0 everything degenerates gracefully to
      the Dirac case, where the inequality is 0 ≤ 0).
-  2. **`poincare_scaled_beyond`** — for EVERY σ and f ∈ C¹ with f, f′ of
+  2. **`poincare_scaled_beyond`** — for EVERY σ and everywhere-differentiable
+     f with f, f′ of
      polynomial growth:
 
          Var_{γ_{σ²}}(f) ≤ σ² · ∫ (f′)² dγ_{σ²}.
@@ -56,8 +59,10 @@ open HermiteCompleteness PoincareBeyondPolynomials
 
 /-! ## 1. The change of variables -/
 
-/-- For σ ≠ 0, integration against the variance-σ² Gaussian is integration
-    of the rescaled function against the standard one. -/
+/-- For EVERY σ, integration against the variance-σ² Gaussian is integration
+    of the rescaled function against the standard one; at σ = 0 both sides
+    equal h(0) via the Dirac case (`gaussianReal` of variance 0). No σ ≠ 0
+    hypothesis is needed — `gaussianReal_map_const_mul` is unconditional. -/
 theorem integral_scaled (σ : ℝ) (h : ℝ → ℝ) (hmeas : Measurable h) :
     ∫ x, h x ∂(gaussianReal 0 (⟨σ ^ 2, sq_nonneg σ⟩ : NNReal))
       = ∫ x, h (σ * x) ∂gauss := by
@@ -74,7 +79,8 @@ theorem integral_scaled (σ : ℝ) (h : ℝ → ℝ) (hmeas : Measurable h) :
 /-! ## 2. The scaled inequality for the class -/
 
 /-- **The Gaussian Poincaré inequality at variance σ², beyond polynomials**:
-    for σ ≠ 0 and C¹ f with f, f′ of polynomial growth,
+    for EVERY σ (σ = 0 degenerates to the Dirac case, where both sides are 0)
+    and every everywhere-differentiable f with f, f′ of polynomial growth,
     Var(f) ≤ σ²·E[(f′)²] against `gaussianReal 0 σ²`. -/
 theorem poincare_scaled_beyond (σ : ℝ) {f f' : ℝ → ℝ}
     (hderiv : ∀ x, HasDerivAt f (f' x) x)
@@ -162,7 +168,7 @@ theorem poincare_scaled_beyond (σ : ℝ) {f f' : ℝ → ℝ}
 /-! ## 3. The cutoff form -/
 
 /-- **The Λ²/2 inequality beyond polynomials**: at the cutoff-scale variance
-    Λ²/2, for C¹ test functions of polynomial growth,
+    Λ²/2, for everywhere-differentiable test functions of polynomial growth,
     Var(f) ≤ (Λ²/2)·E[(f′)²]. The estate's quoted Bakry-Émery gap 2/Λ² now
     constrains non-polynomial observables. Still NOT the spectral action:
     the measure is assumed Gaussian, exactly as everywhere upstream. -/

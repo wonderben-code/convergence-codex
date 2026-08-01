@@ -8,10 +8,12 @@
   d ≥ 2 the reflected covariance is a rank-one factor TIMES the spectator
   covariance, so two new facts are needed: positive semidefiniteness of the
   UNREFLECTED exponential covariance (this file, stair S2 of the mapped
-  staircase), and — for d > 2 — the Schur product theorem (still absent
-  from Mathlib; checked; recorded on the watchlist). At d = 2 exactly one
-  spectator coordinate survives and Schur is not needed. This file
-  therefore proves the d = 2 case outright.
+  staircase), and — for d > 2 — the Schur product theorem (absent from
+  Mathlib when this header was written; since PROVEN downstream in
+  `SchurProduct.lean`). At d = 2 exactly one spectator coordinate survives
+  and Schur is not needed. This file therefore proves the d = 2 case
+  outright, AT COVARIANCE LEVEL — the measure-level packaging remains on
+  the watchlist.
 
   WHAT THIS FILE PROVES (exactly this, nothing more):
 
@@ -25,7 +27,8 @@
      pure algebra plus the semigroup identity, no Fourier, no Bochner. The
      monotonicity hypothesis is an ENUMERATION choice, not a physical
      restriction (a finite site set can always be listed in order); the
-     reindexing lemma for arbitrary enumerations is not formalised here.
+     reindexing lemma IS formalised downstream and the hypothesis REMOVED:
+     `OS2ProductField.quadForm_nonneg_all` / `ouCov_posSemidef_all`.
   3. **`os2_two_dim`** — REFLECTION POSITIVITY IN TWO DIMENSIONS: for sites
      (xᵢ, yᵢ) with time xᵢ > 0 and monotone spatial coordinates, the
      time-reflected product covariance
@@ -35,16 +38,22 @@
      has nonnegative quadratic form: 0 ≤ Σᵢⱼ cᵢcⱼ R(i,j). The reflected
      time factor is rank-one (e^{−Δₜxᵢ}·e^{−Δₜxⱼ}), so the whole form is
      the spatial form evaluated at the rescaled test function — PSD by
-     item 2, no Schur needed.
-  4. `os2_two_dim_attained` — non-vacuity: at a single site the form equals
-     e^{−2Δₜx₀}·c², strictly positive for c ≠ 0.
+     item 2, no Schur needed. NOTE (adversarial review round 3, F1, folded
+     downstream): in THIS file the resolution |xᵢ−(−xⱼ)| = xᵢ+xⱼ lives in
+     prose, not code. The reflection AS AN OBJECT — the map θ and the named
+     identity C(zᵢ, θzⱼ) = rank-one × spatial — is formalised in
+     `OS2ProductField.theta` / `reflectedProdCov_eq` / `os2_reflection`.
+  4. `os2_two_dim_attained` / `os2_two_dim_pos` — non-vacuity: at a single
+     site the form equals e^{−2Δₜx₀}·c², and is PROVEN strictly positive
+     for c ≠ 0.
 
   NOT proven here, each recorded on UNLOCK_WATCHLIST:
 
-  * **d > 2.** The assembly then multiplies two or more spectator
-    covariances entrywise, which is exactly the Schur product theorem —
-    genuinely absent from Mathlib (`Matrix.hadamard` exists with no
-    positivity lemma). Stair S1 of the staircase; a bounded build.
+  * **d > 2.** CLOSED DOWNSTREAM since this header was written: the Schur
+    product theorem is now `SchurProduct.posSemidef_hadamard` (stair S1),
+    and the every-dimension assembly — d = 4 included — is
+    `OS2ProductField.os2_product_field` / `os2_reflection` /
+    `os2_four_dim` (stair S3).
   * **The lattice-Laplacian field.** This covariance is the OU PRODUCT
     field — exponential covariance separately in each coordinate — a
     genuine reflection-positive Gaussian structure in d dimensions but NOT
@@ -328,5 +337,13 @@ theorem os2_two_dim_attained (Δt Δs : ℝ) (x y c : Fin 1 → ℝ) :
   rw [Fin.sum_univ_one, Fin.sum_univ_one]
   simp only [sub_self, abs_zero, mul_zero, Real.exp_zero]
   ring
+
+/-- Strict positivity of the single-site reflected form for c ≠ 0 — the
+    claim the header makes, now a theorem rather than a remark. -/
+theorem os2_two_dim_pos (Δt Δs : ℝ) (x y c : Fin 1 → ℝ) (hc : c 0 ≠ 0) :
+    0 < ∑ i, ∑ j, c i * c j
+        * (Real.exp (-Δt * (x i + x j)) * Real.exp (-Δs * |y i - y j|)) := by
+  rw [os2_two_dim_attained]
+  exact mul_pos (Real.exp_pos _) (mul_self_pos.mpr hc)
 
 end OS2HigherDim

@@ -448,27 +448,6 @@ theorem kernel_lorentzMat (A : Matrix (Fin 2) (Fin 2) ℂ) (hA : A.det = 1)
           (pauliCoord H 3) := by rw [hv]
     _ = H := hph
 
-/-- **THE DOUBLE COVER, in one statement**: the map A ↦ Λ(A) from SL₂(ℂ)
-    (i) lands in SO⁺(1,3), (ii) is multiplicative, (iii) is SURJECTIVE onto
-    SO⁺(1,3), and (iv) has kernel exactly {±1}. Old gap #7, closed. -/
-theorem double_cover :
-    (∀ (A : Matrix (Fin 2) (Fin 2) ℂ) (hA : A.det = 1),
-        lorentzUnit A hA ∈ SOplus13)
-      ∧ (∀ A B : Matrix (Fin 2) (Fin 2) ℂ,
-          lorentzMat (A * B) = lorentzMat A * lorentzMat B)
-      ∧ (∀ M ∈ SOplus13,
-          ∃ (A : Matrix (Fin 2) (Fin 2) ℂ) (hA : A.det = 1),
-            lorentzUnit A hA = M)
-      ∧ (∀ A : Matrix (Fin 2) (Fin 2) ℂ, A.det = 1 →
-          lorentzMat A = 1 → A = 1 ∨ A = -1)
-      ∧ ((1 : Matrix (Fin 2) (Fin 2) ℂ) ≠ -1) :=
-  ⟨lorentzUnit_mem_SOplus13, lorentzMat_mul, SOplus13_surjective,
-    kernel_lorentzMat, by
-      intro h
-      have h00 := Matrix.ext_iff.mpr h 0 0
-      rw [Matrix.one_apply_eq, Matrix.neg_apply, Matrix.one_apply_eq] at h00
-      exact (by norm_num : (1 : ℂ) ≠ -1) h00⟩
-
 
 /-- The reverse inclusion of the kernel — the "2" of "2-to-1": Λ(−1) = 1.
     An adversarial review pointed out that without this, "kernel exactly
@@ -484,7 +463,7 @@ theorem lorentzMat_neg_one : lorentzMat (-1 : Matrix (Fin 2) (Fin 2) ℂ) = 1 :=
   have hconj : ∀ v : Fin 4 → ℝ,
       lorentzMap (-1 : Matrix (Fin 2) (Fin 2) ℂ) v = v := by
     intro v
-    show pauliCoord ((-1 : Matrix (Fin 2) (Fin 2) ℂ)
+    change pauliCoord ((-1 : Matrix (Fin 2) (Fin 2) ℂ)
         * pauliHerm (v 0) (v 1) (v 2) (v 3) * (-1 : Matrix (Fin 2) (Fin 2) ℂ)ᴴ) = v
     have hs : (-1 : Matrix (Fin 2) (Fin 2) ℂ)
         * pauliHerm (v 0) (v 1) (v 2) (v 3) * (-1 : Matrix (Fin 2) (Fin 2) ℂ)ᴴ
@@ -516,6 +495,56 @@ theorem kernel_iff (A : Matrix (Fin 2) (Fin 2) ℂ) (hA : A.det = 1) :
   · rintro (rfl | rfl)
     · exact lorentzMat_one
     · exact lorentzMat_neg_one
+
+/-- **The kernel of the BUNDLED homomorphism**: an element of Mathlib's
+    SL₂(ℂ) lies in the kernel of `lorentzSOplusHom` exactly when its matrix
+    is ±1 — the `MonoidHom.ker` counterpart of `kernel_iff`, closing the
+    gap between the matrix-level kernel statement and the bundled map
+    (adversarial review round 3, F6). -/
+theorem mem_ker_lorentzSOplusHom (A : SL2C) :
+    A ∈ lorentzSOplusHom.ker
+      ↔ ((A : Matrix (Fin 2) (Fin 2) ℂ) = 1
+          ∨ (A : Matrix (Fin 2) (Fin 2) ℂ) = -1) := by
+  rw [MonoidHom.mem_ker]
+  constructor
+  · intro h
+    refine (kernel_iff _ A.2).mp ?_
+    have h2 := congrArg
+      (fun M : SOplus13 => ((M : Matrix.GeneralLinearGroup (Fin 4) ℝ)
+        : Matrix (Fin 4) (Fin 4) ℝ)) h
+    simpa using h2
+  · intro h
+    apply Subtype.ext
+    apply Units.ext
+    change lorentzMat (A : Matrix (Fin 2) (Fin 2) ℂ) = _
+    rw [Subgroup.coe_one, Units.val_one]
+    rcases h with h1 | h1
+    · rw [h1]; exact lorentzMat_one
+    · rw [h1]; exact lorentzMat_neg_one
+
+/-- **THE DOUBLE COVER, in one statement**: the map A ↦ Λ(A) from SL₂(ℂ)
+    (i) lands in SO⁺(1,3), (ii) is multiplicative, (iii) is SURJECTIVE onto
+    SO⁺(1,3), and (iv) has kernel exactly {±1} — as a BICONDITIONAL, both
+    directions (an adversarial review caught conjunct (iv) stating only the
+    forward half while this docstring claimed "exactly"). Old gap #7,
+    closed. -/
+theorem double_cover :
+    (∀ (A : Matrix (Fin 2) (Fin 2) ℂ) (hA : A.det = 1),
+        lorentzUnit A hA ∈ SOplus13)
+      ∧ (∀ A B : Matrix (Fin 2) (Fin 2) ℂ,
+          lorentzMat (A * B) = lorentzMat A * lorentzMat B)
+      ∧ (∀ M ∈ SOplus13,
+          ∃ (A : Matrix (Fin 2) (Fin 2) ℂ) (hA : A.det = 1),
+            lorentzUnit A hA = M)
+      ∧ (∀ A : Matrix (Fin 2) (Fin 2) ℂ, A.det = 1 →
+          (lorentzMat A = 1 ↔ A = 1 ∨ A = -1))
+      ∧ ((1 : Matrix (Fin 2) (Fin 2) ℂ) ≠ -1) :=
+  ⟨lorentzUnit_mem_SOplus13, lorentzMat_mul, SOplus13_surjective,
+    kernel_iff, by
+      intro h
+      have h00 := Matrix.ext_iff.mpr h 0 0
+      rw [Matrix.one_apply_eq, Matrix.neg_apply, Matrix.one_apply_eq] at h00
+      exact (by norm_num : (1 : ℂ) ≠ -1) h00⟩
 
 /-- SO⁺(1,3) is not the trivial group, so the surjectivity above has real
     content: the image of U_y(3/5, 4/5) is a rotation by the doubled angle,

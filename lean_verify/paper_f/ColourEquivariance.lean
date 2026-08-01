@@ -44,8 +44,9 @@
      equivariant identification ℂ³ ≅ quarkSub, which is NOT formalised here
      (an adversarial review flagged the gap; the transfer is routine but it
      is a missing step, and this header says so rather than papering it).
-     With `leptonSub_ne_bot` (the singlet is a genuine line) the honest
-     summary is: one irreducible 3, one nonzero trivial 1. The proof is the
+     With `leptonSub_ne_bot` and `leptonSub_finrank` (the singlet is a
+     genuine line: nonzero, and of dimension EXACTLY one) the honest
+     summary is: one irreducible 3, one one-dimensional trivial 1. The proof is the
      elementary-matrix argument: `single i j 1` is traceless for i ≠ j and
      moves any nonzero coordinate onto any basis vector.
 
@@ -72,6 +73,7 @@ import Mathlib.Data.Matrix.Block
 import Mathlib.Data.Matrix.Basis
 import Mathlib.Data.Complex.Basic
 import Mathlib.LinearAlgebra.Basis.Defs
+import Mathlib.LinearAlgebra.FiniteDimensional.Basic
 import Mathlib.Order.Disjoint
 
 open Matrix
@@ -280,8 +282,8 @@ theorem charge_lepton {v : Col → ℂ} (hv : v ∈ leptonSub) :
       simp [Matrix.one_apply]
 
 
-/-- The singlet is not the zero subspace: the lepton direction is a genuine
-    line, so `charge_lepton` is not vacuous. -/
+/-- The singlet is not the zero subspace, so `charge_lepton` is not
+    vacuous. (That it is EXACTLY a line is `leptonSub_finrank` below.) -/
 theorem leptonSub_ne_bot : leptonSub ≠ ⊥ := by
   intro h
   have hmem : (Sum.elim ![0, 0, 0] ![1] : Col → ℂ) ∈ leptonSub := by
@@ -289,6 +291,37 @@ theorem leptonSub_ne_bot : leptonSub ≠ ⊥ := by
     fin_cases i <;> rfl
   rw [h, Submodule.mem_bot] at hmem
   have := congrFun hmem (Sum.inr 0)
+  simp at this
+
+/-- **The singlet is EXACTLY a line**: `leptonSub` has dimension one — it is
+    the span of the fourth basis vector. Upgrades `leptonSub_ne_bot` from
+    "nonzero" to "a line", making the header's word literal (adversarial
+    review round 3, F7). -/
+theorem leptonSub_finrank : Module.finrank ℂ leptonSub = 1 := by
+  have hspan : leptonSub
+      = Submodule.span ℂ {(Sum.elim ![0, 0, 0] ![1] : Col → ℂ)} := by
+    apply le_antisymm
+    · intro v hv
+      have hv' : v = v (Sum.inr 0) • (Sum.elim ![0, 0, 0] ![1] : Col → ℂ) := by
+        funext z
+        rcases z with i | j
+        · have h0 : (Sum.elim ![0, 0, 0] ![1] : Col → ℂ) (Sum.inl i) = 0 := by
+            fin_cases i <;> rfl
+          simp only [Pi.smul_apply, h0, smul_zero]
+          exact hv i
+        · have hj : j = 0 := Subsingleton.elim j 0
+          subst hj
+          simp
+      rw [hv']
+      exact Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)
+    · rw [Submodule.span_le, Set.singleton_subset_iff, SetLike.mem_coe,
+        mem_leptonSub]
+      intro i
+      fin_cases i <;> rfl
+  rw [hspan]
+  refine finrank_span_singleton ?_
+  intro h
+  have := congrFun h (Sum.inr 0)
   simp at this
 
 /-! ## 5. The triplet is irreducible -/

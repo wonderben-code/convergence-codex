@@ -52,7 +52,9 @@
   8. `lorentzUnit_mem_SOplus13` — **the image of SL₂(ℂ) lies in SO⁺(1,3)**,
      and `lorentzSOplusHom`, the bundled `MonoidHom` SL₂(ℂ) →* SO⁺(1,3),
      with kernel {±1} by `MinkowskiHerm2.kernel_of_conj_action` (both
-     directions assembled in `LorentzSurjectivity.kernel_iff`).
+     directions assembled at matrix level in
+     `LorentzSurjectivity.kernel_iff`, and for the bundled hom itself in
+     `LorentzSurjectivity.mem_ker_lorentzSOplusHom`).
 
   9. `exists_hermitian_sqrt` — **the boost half of surjectivity**. For a unit
      future timelike (t,x,y,z), P = t·1 + x·σ₁ + y·σ₂ + z·σ₃ has det 1 and
@@ -546,13 +548,13 @@ def lorentzSOplusHom : SL2C →* SOplus13 where
   map_one' := by
     apply Subtype.ext
     apply Units.ext
-    show lorentzMat ((1 : SL2C) : Matrix (Fin 2) (Fin 2) ℂ) = _
+    change lorentzMat ((1 : SL2C) : Matrix (Fin 2) (Fin 2) ℂ) = _
     rw [Subgroup.coe_one, Units.val_one, Matrix.SpecialLinearGroup.coe_one]
     exact lorentzMat_one
   map_mul' A B := by
     apply Subtype.ext
     apply Units.ext
-    show lorentzMat ((A * B : SL2C) : Matrix (Fin 2) (Fin 2) ℂ) = _
+    change lorentzMat ((A * B : SL2C) : Matrix (Fin 2) (Fin 2) ℂ) = _
     rw [Subgroup.coe_mul, Units.val_mul, Matrix.SpecialLinearGroup.coe_mul]
     exact lorentzMat_mul A.1 B.1
 

@@ -4,16 +4,21 @@
 
   Since the first Poincaré file, every analytic statement in this campaign
   has carried the caveat "polynomial test functions only". This file removes
-  it: the Gaussian Poincaré inequality holds for every C¹ function of
-  polynomial growth. sin is in the class; so is every bounded smooth
-  function; so is nothing that was provable before today.
+  it: the Gaussian Poincaré inequality holds for every function which,
+  together with its derivative, has polynomial growth — and the only
+  regularity used is everywhere-differentiability, so every C¹ function of
+  the class qualifies (and more: derivative-discontinuous functions of the
+  x²sin(1/x) kind are covered). sin is in the class; so is every
+  bounded smooth function; so is nothing that was provable before today.
 
   WHAT THIS FILE PROVES (exactly this, nothing more):
 
   1. `integral_gauss_eq_weight` — the general bridge ∫ h dγ = Z⁻¹·∫ h·W dx,
      for ANY function (the polynomial file proved it for polynomials; the
      proof never needed polynomiality).
-  2. `memLp_of_polyGrowth` — |f| ≤ C(1+x²)^m puts f in L²(γ).
+  2. `memLp_of_polyGrowth` — a MEASURABLE f with |f| ≤ C(1+x²)^m is in
+     L²(γ) (the measurability hypothesis is carried by the theorem; a
+     bound alone cannot give membership).
   3. `tendsto_growth_mul_W` — growth × polynomial × Gaussian weight → 0 at
      both infinities: the boundary terms of integration by parts vanish.
   4. **`stein_general`** — Gaussian integration by parts for the class:
@@ -21,8 +26,8 @@
      whole line plus the boundary limits; this is the analytic heart.
   5. **`coeff_deriv`** — the coefficient recursion cₙ(f′) = (n+1)·cₙ₊₁(f),
      because X·Hₙ − Hₙ′ = Hₙ₊₁ is literally the Hermite recurrence.
-  6. **`poincare_beyond_polynomials`** — for f ∈ C¹ with f, f′ of polynomial
-     growth:
+  6. **`poincare_beyond_polynomials`** — for everywhere-differentiable f
+     with f, f′ of polynomial growth (in particular every C¹ such f):
 
          ∫ f² dγ − (∫ f dγ)² ≤ ∫ (f′)² dγ.
 
@@ -187,7 +192,7 @@ theorem hasDerivAt_W (x : ℝ) : HasDerivAt W (-x * W x) x := by
   have := hg.exp
   simpa [W, mul_comm] using this
 
-/-- **Gaussian integration by parts for C¹ functions of polynomial
+/-- **Gaussian integration by parts for everywhere-differentiable functions of polynomial
     growth**: ∫ f′·q dγ = ∫ f·(Xq − q′) dγ for every polynomial q. -/
 theorem stein_general {f f' : ℝ → ℝ}
     (hderiv : ∀ x, HasDerivAt f (f' x) x)
@@ -275,7 +280,8 @@ theorem coeff_deriv {f f' : ℝ → ℝ}
 
 /-! ## 5. The inequality, beyond polynomials -/
 
-/-- **THE GAUSSIAN POINCARÉ INEQUALITY FOR C¹ FUNCTIONS OF POLYNOMIAL
+/-- **THE GAUSSIAN POINCARÉ INEQUALITY FOR EVERYWHERE-DIFFERENTIABLE
+    FUNCTIONS OF POLYNOMIAL
     GROWTH** — the caveat "polynomial test functions only" falls:
 
       ∫ f² dγ − (∫ f dγ)² ≤ ∫ (f′)² dγ. -/

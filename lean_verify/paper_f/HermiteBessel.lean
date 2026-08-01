@@ -10,7 +10,7 @@
   WHAT THIS FILE PROVES (exactly this, nothing more):
 
   1. `coeff n f = (∫ f·Hₙ dγ)/n!` — the n-th Hermite coefficient — and
-     `SN N f`, the N-th partial sum, as an honest polynomial.
+     `SNpoly N f`, the N-th partial sum, as an honest polynomial.
   2. `integral_mul_SN`, `integral_SN_sq` — the two orthogonality
      computations: ⟨f, S_N f⟩ = Σ_{n<N} n!·cₙ² and ‖S_N f‖² = Σ_{n<N} n!·cₙ².
   3. **`remainder_expansion`** — ‖f − S_N f‖² = ‖f‖² − Σ_{n<N} n!·cₙ², an
@@ -18,9 +18,10 @@
   4. **`bessel`** — Σ_{n<N} n!·cₙ² ≤ ‖f‖² for every N, and
      `summable_coeff_sq` — the coefficient series Σ n!·cₙ² converges.
   5. `remainder_orthogonal` — f − S_N f ⊥ Hₘ for every m < N.
-  6. `sn_cauchy` — the partial sums are L²-CAUCHY:
-     ‖S_M f − S_N f‖² = Σ_{N≤n<M} n!·cₙ², which tends to 0. The limit
-     object is the next rung, not this one.
+  6. `sn_cauchy` — the L²-Cauchy ESTIMATE:
+     ‖S_M f − S_N f‖² = Σ_{N≤n<M} n!·cₙ², which tends to 0. The bundled
+     `CauchySeq` statement and the limit object are the next rung
+     (`HermiteParseval.cauchySeq_SL`), not this one.
 
   NOT proven here — the remaining legs to Poincaré-beyond-polynomials,
   in order:
