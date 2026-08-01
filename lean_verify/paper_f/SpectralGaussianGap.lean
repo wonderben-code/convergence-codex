@@ -54,6 +54,7 @@
 -/
 
 import GaussianPoincare
+import GaussianPoincareProduct
 
 open Polynomial MeasureTheory ProbabilityTheory
 
@@ -154,6 +155,82 @@ theorem poincare_in_gap_form (Λ : ℝ) (p : ℝ[X]) :
         * gaussScaled (Real.sqrt (Λ ^ 2 / 2)) (derivative p * derivative p) := by
   have h := poincare_lambda Λ p
   rwa [show ((2 : ℝ) / Λ ^ 2)⁻¹ = Λ ^ 2 / 2 from by rw [inv_div]]
+
+/-! ## 4. The same constant in n dimensions — the cascade case -/
+
+/-- The substitution xᵢ ↦ σ·xᵢ in n variables. -/
+def scaleSub (σ : ℝ) (n : ℕ) :
+    MvPolynomial (Fin n) ℝ →ₐ[ℝ] MvPolynomial (Fin n) ℝ :=
+  MvPolynomial.aeval (fun i => MvPolynomial.C σ * MvPolynomial.X i)
+
+theorem scaleSub_X (σ : ℝ) (n : ℕ) (j : Fin n) :
+    scaleSub σ n (MvPolynomial.X j) = MvPolynomial.C σ * MvPolynomial.X j := by
+  simp [scaleSub]
+
+/-- **The chain rule for the rescaling**: each partial derivative picks up
+    exactly one factor of σ. This is where the σ² constant comes from in n
+    dimensions, exactly as it did in one. -/
+theorem pderiv_scaleSub (σ : ℝ) (n : ℕ) (i : Fin n)
+    (p : MvPolynomial (Fin n) ℝ) :
+    MvPolynomial.pderiv i (scaleSub σ n p)
+      = MvPolynomial.C σ * scaleSub σ n (MvPolynomial.pderiv i p) := by
+  induction p using MvPolynomial.induction_on with
+  | C a => simp [scaleSub]
+  | add p q hp hq => simp [hp, hq, mul_add]
+  | mul_X p j hp =>
+      rw [map_mul, scaleSub_X, MvPolynomial.pderiv_mul, hp,
+        MvPolynomial.pderiv_C_mul, MvPolynomial.pderiv_mul, map_add, map_mul,
+        map_mul, scaleSub_X]
+      by_cases hij : j = i
+      · subst hij
+        rw [MvPolynomial.pderiv_X_self, map_one, mul_one]
+        ring
+      · rw [MvPolynomial.pderiv_X_of_ne hij, map_zero]
+        ring
+
+/-- The n-fold Gaussian expectation at variance σ². -/
+def ENs (σ : ℝ) (n : ℕ) (p : MvPolynomial (Fin n) ℝ) : ℝ :=
+  GaussianPoincareProduct.EN n (scaleSub σ n p)
+
+/-- **THE n-DIMENSIONAL POINCARÉ INEQUALITY AT VARIANCE σ²**:
+    Var(p) ≤ σ²·Σᵢ E[(∂ᵢp)²]. -/
+theorem poincare_MV_scaled (σ : ℝ) (n : ℕ) (p : MvPolynomial (Fin n) ℝ) :
+    ENs σ n (p * p) - (ENs σ n p) ^ 2
+      ≤ σ ^ 2 * ∑ i : Fin n,
+          ENs σ n (MvPolynomial.pderiv i p * MvPolynomial.pderiv i p) := by
+  have h := GaussianPoincareProduct.poincare_MV n (scaleSub σ n p)
+  have hterm : ∀ i : Fin n,
+      GaussianPoincareProduct.EN n (MvPolynomial.pderiv i (scaleSub σ n p)
+        * MvPolynomial.pderiv i (scaleSub σ n p))
+      = σ ^ 2 * ENs σ n (MvPolynomial.pderiv i p * MvPolynomial.pderiv i p) := by
+    intro i
+    rw [pderiv_scaleSub]
+    have hsq : (MvPolynomial.C σ * scaleSub σ n (MvPolynomial.pderiv i p))
+        * (MvPolynomial.C σ * scaleSub σ n (MvPolynomial.pderiv i p))
+        = (σ ^ 2) •
+            (scaleSub σ n (MvPolynomial.pderiv i p * MvPolynomial.pderiv i p)) := by
+      rw [map_mul, MvPolynomial.smul_eq_C_mul, map_pow]
+      ring
+    rw [hsq, GaussianPoincareProduct.EN_smul, ENs]
+  simp only [hterm] at h
+  rw [← Finset.mul_sum] at h
+  unfold ENs
+  rw [map_mul]
+  exact h
+
+/-- **THE CASCADE CASE WITH THE CUTOFF CONSTANT**: on ℝ¹⁶ ≅ Herm₄(ℂ), for a
+    Gaussian fluctuation measure of variance Λ²/2,
+    Var(p) ≤ (Λ²/2)·Σᵢ E[(∂ᵢp)²] — the Bakry-Émery gap 2/Λ² in the dimension
+    the cascade needs. Same caveat as everywhere here: a GAUSSIAN of that
+    variance, not the spectral action. -/
+theorem poincare_R16_lambda (Λ : ℝ) (p : MvPolynomial (Fin 16) ℝ) :
+    ENs (Real.sqrt (Λ ^ 2 / 2)) 16 (p * p)
+        - (ENs (Real.sqrt (Λ ^ 2 / 2)) 16 p) ^ 2
+      ≤ (Λ ^ 2 / 2) * ∑ i : Fin 16,
+          ENs (Real.sqrt (Λ ^ 2 / 2)) 16
+            (MvPolynomial.pderiv i p * MvPolynomial.pderiv i p) := by
+  have h := poincare_MV_scaled (Real.sqrt (Λ ^ 2 / 2)) 16 p
+  rwa [Real.sq_sqrt (by positivity)] at h
 
 /-- Non-vacuity: the constant is positive, so the inequality has content. -/
 theorem lambda_constant_pos (Λ : ℝ) (hΛ : Λ ≠ 0) : 0 < Λ ^ 2 / 2 := by
