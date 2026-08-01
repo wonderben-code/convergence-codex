@@ -57,9 +57,11 @@
     is in place — recorded on UNLOCK_WATCHLIST, not claimed here.
   * A field on FINITE site families, not a measure on a function space:
     no projective limit, no continuum field, no Osterwalder–Schrader
-    reconstruction. Mathlib's `measurePreserving_restrict₂` gives marginal
-    consistency of these finite-dimensional distributions, which is the
-    Kolmogorov-extension INPUT, but the extension itself is not taken here.
+    reconstruction. Mathlib's `measurePreserving_restrict₂_multivariateGaussian`
+    (the exact name — an adversarial review caught this header citing a
+    truncated one) gives marginal consistency of these finite-dimensional
+    distributions, which is the Kolmogorov-extension INPUT, but the
+    extension itself is not taken here.
   * The OU-PRODUCT covariance, NOT the lattice-Laplacian Green function —
     the same scope boundary as every file on this staircase, stated loudly
     since the staircase was mapped.
@@ -188,7 +190,11 @@ def doubled {N : ℕ} (z : Fin N → Fin (m + 1) → ℝ) :
 
 /-- **The pairing identity**: the integral of F·F^θ against the field equals
     the reflected covariance form — the bridge from measure to matrix. No
-    positivity of times is needed for the EQUALITY. -/
+    positivity of TIMES is needed for the equality; the RATE hypothesis
+    `hΔ` IS load-bearing even here — with a negative rate the covariance is
+    not PSD, `multivariateGaussian` degenerates to a Dirac mass, and the
+    equality is genuinely FALSE (an adversarial review proved this at
+    Δ = −1 with one site; the hypothesis is not decoration). -/
 theorem integral_pairing (Δ : Fin (m + 1) → ℝ) (hΔ : ∀ k, 0 ≤ Δ k)
     {N : ℕ} (z : Fin N → Fin (m + 1) → ℝ) (c : Fin N → ℝ) :
     ∫ ω, (∑ i, c i * ω (Sum.inl i)) * (∑ j, c j * ω (Sum.inr j))

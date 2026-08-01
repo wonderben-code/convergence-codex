@@ -25,6 +25,13 @@
      closure of the sorry'd theorem, with the estate's actual
      `GibbsMeasure` axiom in place, implies False. Instantiation: Ω = Unit,
      G = PUnit acting trivially, the zero Hamiltonian, the Dirac measure.
+     PRECISION (adversarial review round 4, F4): the closure refuted here
+     is the universe-(0,0) instance of the original `Type*`-polymorphic
+     statement — a Prop cannot quantify over universes. This loses
+     nothing: any fill of the sorry specializes to universe 0, so the
+     refutation still proves the sorry unfillable (the review
+     machine-checked this by deriving False from the sorry'd theorem
+     applied verbatim).
 
   **The repair, stated honestly.** The physics intent (the file's own
   header names the Z₂ Ising symmetry) needs hypotheses the formal
@@ -71,7 +78,10 @@
   ([propext, Classical.choice, Quot.sound]). NOTHING in this file depends
   on the sorry'd theorem itself: no `sorryAx` appears anywhere below.
 
-  **DECISION FOR THE AUTHOR (recorded in PROGRESS_LOG):** whether to amend
+  **DECISION FOR THE AUTHOR (recorded in PROGRESS_LOG — the campaign's
+  ledger, kept with UNLOCK_WATCHLIST in the companion repository
+  `codex-internal`, directory `formalisation/`; neither file lives in this
+  repository):** whether to amend
   `phase_transition_symmetry_breaking` in the pre-existing file to the
   per-model predicate form (this file supplies it), or to keep the file
   frozen as a historical specification with a pointer here. Amending a

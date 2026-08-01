@@ -16,9 +16,11 @@
   1. `integral_gauss_eq_weight` — the general bridge ∫ h dγ = Z⁻¹·∫ h·W dx,
      for ANY function (the polynomial file proved it for polynomials; the
      proof never needed polynomiality).
-  2. `memLp_of_polyGrowth` — a MEASURABLE f with |f| ≤ C(1+x²)^m is in
-     L²(γ) (the measurability hypothesis is carried by the theorem; a
-     bound alone cannot give membership).
+  2. `memLp_of_polyGrowth` — an A.E.-STRONGLY-MEASURABLE f with
+     |f| ≤ C(1+x²)^m is in L²(γ). (The hypothesis is
+     `AEStronglyMeasurable`, weaker than `Measurable` — the theorem is
+     stronger than an earlier version of this line said; a bound alone
+     cannot give membership.)
   3. `tendsto_growth_mul_W` — growth × polynomial × Gaussian weight → 0 at
      both infinities: the boundary terms of integration by parts vanish.
   4. **`stein_general`** — Gaussian integration by parts for the class:

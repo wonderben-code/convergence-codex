@@ -59,9 +59,13 @@
     genuine reflection-positive Gaussian structure in d dimensions but NOT
     the massive lattice Green's function the physics ultimately wants. No
     header downstream may blur that distinction.
-  * The measure-level packaging (the Gaussian measure with THIS covariance,
-    OS2 as an integral statement), and the split of the `_proof_004_logos`
-    sorry, which should be attempted only after the above.
+  * The measure-level packaging and the `_proof_004_logos` split — both
+    open when this header was written, both CLOSED downstream the same
+    day: `OS2MeasureLevel.os2_measure_level` /
+    `OS2Exponential.os2_exponential` (the packaging, linear and
+    exponential observables), and `PhaseTransitionStatement` (the split:
+    the sorry'd statement was proven FALSE as stated). Pointers kept,
+    lines not deleted, per the ledger rule.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/

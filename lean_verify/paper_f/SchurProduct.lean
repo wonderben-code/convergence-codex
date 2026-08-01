@@ -11,9 +11,14 @@
   `R (k,l) j = P k j * Q l j`.
 * `posSemidef_hadamard` — THE SCHUR PRODUCT THEOREM: `A.PosSemidef → B.PosSemidef
   → (A ⊙ B).PosSemidef`.
-* `posSemidef_allOnes`, `posSemidef_entrywise_prod` — the iterated form: the
-  entrywise product of ANY finite family of PSD matrices is PSD (empty product =
-  all-ones matrix, itself the Gram matrix of a single vector).
+* `posSemidef_allOnes`, `posSemidef_entrywise_prod` (families indexed by
+  `Fin m`), and `posSemidef_entrywise_prod'` (families indexed by ANY finite
+  type, by transport along `Fintype.equivFin`) — the iterated form: the
+  entrywise product of a finite family of PSD matrices is PSD (empty product
+  = all-ones matrix, itself the Gram matrix of a single vector). An
+  adversarial review (round 4, F5) caught the header saying "ANY finite
+  family" while only the `Fin`-indexed version existed; the general version
+  now exists.
 * `posSemidef_diagonal_diag` — corollary with independent content: the diagonal
   part of a PSD matrix is PSD (Schur against the identity).
 * Concrete witnesses: `!![2,1;1,2] ⊙ !![2,1;1,2] = !![4,1;1,4]` is PSD, and
@@ -114,6 +119,21 @@ theorem posSemidef_entrywise_prod [Finite n] {m : ℕ} (M : Fin m → Matrix n n
         simp [Fin.prod_univ_succ, hadamard_apply]
       rw [key]
       exact posSemidef_hadamard (hM 0) (ih _ fun k => hM _)
+
+/-- **Iterated Schur product theorem over an ARBITRARY finite index type**:
+transport of `posSemidef_entrywise_prod` along `Fintype.equivFin`. -/
+theorem posSemidef_entrywise_prod' {ι : Type*} [Fintype ι] [Finite n]
+    (M : ι → Matrix n n 𝕜) (hM : ∀ k, (M k).PosSemidef) :
+    (Matrix.of fun i j => ∏ k, M k i j).PosSemidef := by
+  have h := posSemidef_entrywise_prod
+    (fun l : Fin (Fintype.card ι) => M ((Fintype.equivFin ι).symm l))
+    (fun l => hM _)
+  have heq : (Matrix.of fun i j =>
+      ∏ l : Fin (Fintype.card ι), M ((Fintype.equivFin ι).symm l) i j)
+      = (Matrix.of fun i j => ∏ k, M k i j) := by
+    ext i j
+    exact Fintype.prod_equiv (Fintype.equivFin ι).symm _ _ (fun l => rfl)
+  rwa [heq] at h
 
 /-- Corollary with content of its own: the diagonal part of a positive
 semidefinite matrix is positive semidefinite (Schur product against the

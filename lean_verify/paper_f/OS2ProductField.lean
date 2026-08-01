@@ -61,10 +61,14 @@
     of the staircase's covariance-level programme. It is NOT the massive
     lattice Green's function (lattice-Laplacian) field the physics
     ultimately wants; no header downstream may blur that distinction.
-  * COVARIANCE level: matrices and quadratic forms. The measure-level
-    packaging (the Gaussian field with THIS covariance, OS2 as an integral
-    statement) and the split of the `_proof_004_logos` sorry remain on
-    UNLOCK_WATCHLIST and should be attempted in that order.
+  * COVARIANCE level: matrices and quadratic forms. When this header was
+    written, the measure-level packaging and the `_proof_004_logos` split
+    were still open; BOTH landed later the same day — the packaging in
+    `OS2MeasureLevel.os2_measure_level` (linear observables) and
+    `OS2Exponential.os2_exponential` (exponential observables), and the
+    split in `PhaseTransitionStatement` (the sorry'd statement was proven
+    FALSE as stated; see that file). This paragraph is kept with pointers
+    rather than deleted, per the ledger rule.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
