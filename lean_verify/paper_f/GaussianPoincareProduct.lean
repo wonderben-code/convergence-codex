@@ -24,9 +24,18 @@
   Two bridges the induction needs do not exist in Mathlib and are proven
   here: `finSuccEquiv_pderiv_zero` (the partial derivative in the peeled
   variable is the polynomial derivative) and `finSuccEquiv_pderiv_succ` (the
-  other partials act coefficientwise). A route that does NOT work, recorded
-  so it is not retried: a recursively defined tower of nested polynomial
-  types — the type-level recursion cannot carry the `CommRing` instance.
+  other partials act coefficientwise). A route that did NOT work in the
+  attempt made, recorded so it is not retried blind: a recursively defined
+  tower of nested polynomial types, where the type-level recursion could not
+  be made to carry the `CommRing` instance.
+
+  **Sharpness and a measure certificate** (§9): `no_better_constant_MV` — the
+  constant 1 is the LEAST one that works, in every dimension, because the
+  first coordinate attains it (`EN_X_zero`, `EN_X_zero_sq`); without this
+  `poincare_MV` would only say that SOME constant works. And
+  `EN_one_eq_integral` — `EN 1` is literally `∫ · ∂(gaussianReal 0 1)`, so
+  the bottom level of the peeling construction is certified against a
+  measure rather than being a formal device.
 
   **The tensorisation step in two variables**, `poincare_two`: for a
   bivariate polynomial q,
@@ -56,7 +65,10 @@
     integrals. Identifying that with a single integral against
     `Measure.prod` is Fubini, and needs integrability of the polynomial on
     the product; it is not done here, so no theorem in this file mentions a
-    two-dimensional measure.
+    two-dimensional measure. Correspondingly `EN n` for n > 1 is an iterated
+    moment functional: `EN_one_eq_integral` certifies n = 1 against
+    `gaussianReal 0 1`, and nothing here certifies n > 1 against
+    `Measure.pi`. See §10.
   * Everything the 1-d file already disclaimed: polynomial test functions
     only, and this is the standard Gaussian, not a spectral-action measure.
 
@@ -68,7 +80,7 @@ import Mathlib.Algebra.MvPolynomial.Equiv
 import Mathlib.Algebra.MvPolynomial.PDeriv
 import Mathlib.Algebra.MvPolynomial.Funext
 
-open Polynomial MeasureTheory
+open Polynomial MeasureTheory ProbabilityTheory
 
 noncomputable section
 
@@ -337,16 +349,18 @@ theorem poincare_two_integral (q : Polynomial (Polynomial ℝ)) :
 /-! ## 5. Toward n dimensions: the first bridge
 
     Iterating §4 to ℝ¹⁶ cannot be done with a recursively defined tower of
-    nested polynomial types — the type-level recursion cannot carry the
-    `CommRing` instance it needs (tried, and it fails at the definition).
+    nested polynomial types — in the attempt made, the type-level recursion
+    could not be made to carry the `CommRing` instance it needs, failing at
+    the definition itself (both via the equation compiler and via `Nat.rec`).
     The workable route is Mathlib's `MvPolynomial (Fin n) ℝ` with
     `MvPolynomial.finSuccEquiv`, peeling one variable at a time. That route
     needs bridges between `MvPolynomial.pderiv` and the polynomial structure
     on the peeled variable, and Mathlib has none of them.
 
-    Here is the first, and the one that looked hardest: the equivalence
-    carries the partial derivative in the peeled variable to the ordinary
-    polynomial derivative. -/
+    Here is the first: the equivalence carries the partial derivative in the
+    peeled variable to the ordinary polynomial derivative. (The second, in
+    coefficient form, turns out to be the shorter of the two once
+    `MvPolynomial.finSuccEquiv_coeff_coeff` is in hand.) -/
 
 /-- The equivalence sends constants to constants. -/
 theorem finSuccEquiv_C_apply {n : ℕ} (a : ℝ) :
@@ -359,8 +373,9 @@ theorem finSuccEquiv_C_apply {n : ℕ} (a : ℝ) :
       finSuccEquiv (∂₀ p) = derivative (finSuccEquiv p).
 
     Mathlib has no lemma relating `pderiv` to `finSuccEquiv`; this is the
-    first of the two such bridges the n-dimensional induction needs (the
-    second, for the remaining variables, is stated as open in §6). -/
+    first of the two such bridges the n-dimensional induction needs; the
+    second, for the remaining variables, is `finSuccEquiv_pderiv_succ`
+    below. -/
 theorem finSuccEquiv_pderiv_zero {n : ℕ} (p : MvPolynomial (Fin (n + 1)) ℝ) :
     MvPolynomial.finSuccEquiv ℝ n (MvPolynomial.pderiv 0 p)
       = Polynomial.derivative (MvPolynomial.finSuccEquiv ℝ n p) := by
@@ -643,27 +658,115 @@ theorem poincare_R16 (p : MvPolynomial (Fin 16) ℝ) :
       ≤ ∑ i : Fin 16, EN 16 (MvPolynomial.pderiv i p * MvPolynomial.pderiv i p) :=
   poincare_MV 16 p
 
-/-! ## 9. What remains open
+/-! ## 9. One level certified against a measure, and sharpness
 
-    Recorded precisely, so the remaining legs are a build and not a research
-    problem. With `EN n : MvPolynomial (Fin n) ℝ → ℝ` defined by recursion —
-    `EN 0` is evaluation at the unique point, `EN (n+1) p = EN n (EyM
-    (finSuccEquiv ℝ n p))` with `EyM` the moment-weighted coefficient sum of
-    §3 — the induction step is §4's argument verbatim. The legs:
+    `EN n` is built by peeling, so it is a construction until something ties
+    it to a measure. This section ties down n = 1 against Mathlib's Gaussian,
+    and exports the sharpness of the constant 1 in every dimension. -/
 
-    * **(open) the second pderiv bridge**, in coefficient form:
-      `((finSuccEquiv ℝ n) (pderiv j.succ p)).coeff k
-         = pderiv j (((finSuccEquiv ℝ n) p).coeff k)`.
-      Provable by the same `MvPolynomial.induction_on`, with a case split on
-      the peeled index and `Polynomial.coeff_mul_X` / `coeff_mul_C`;
-      `MvPolynomial.finSuccEquiv_coeff_coeff` is the fallback route. Mathlib
-      has no `coeff_pderiv` (checked).
-    * **(open) positivity of `EN n`** — the analogue of `gmean_nonneg`, by
-      induction, using `MvPolynomial.eval_eq_eval_mv_eval'` (which DOES exist
-      in Mathlib and is the key ingredient).
-    * **(open) the assembly**, which is §4 with `gmean` replaced by `EN n`.
+theorem mom_zero : mom 0 = 1 := by
+  unfold mom; simp [GaussianPoincare.gmean_one]
 
-    Until those land, nothing in this file says anything about 16 variables,
-    and no tag may move on account of it. -/
+theorem mom_one : mom 1 = 0 := by
+  unfold mom; simp [GaussianPoincare.gmean_X_eq_zero]
+
+theorem mom_two : mom 2 = 1 := by
+  have h := GaussianPoincare.gvar_X_eq_one
+  unfold GaussianPoincare.gvar at h
+  rw [GaussianPoincare.gmean_X_eq_zero] at h
+  unfold mom
+  rw [pow_two]
+  simpa using h
+
+/-- **`EN 1` IS an integral against Mathlib's Gaussian measure.** The n-fold
+    functional is defined by peeling; this certifies the bottom level against
+    `gaussianReal 0 1` rather than leaving it a formal construction. (For
+    n > 1 the corresponding statement needs Fubini for `Measure.pi`; see
+    §10.) -/
+theorem EN_one_eq_integral (p : MvPolynomial (Fin 1) ℝ) :
+    EN 1 p = ∫ x : ℝ, MvPolynomial.eval (fun _ => x) p ∂(gaussianReal 0 1) := by
+  rw [EN_succ, EN_zero, eval_EyM, GaussianPoincare.gmean_eq_integral]
+  refine integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)
+  dsimp only
+  have hfun : (Fin.cons x (fun i => Fin.elim0 i) : Fin 1 → ℝ) = fun _ => x := by
+    funext i
+    fin_cases i
+    rfl
+  rw [← MvPolynomial.eval_eq_eval_mv_eval' (fun i => Fin.elim0 i) x p, hfun]
+
+theorem EN_zero_poly (n : ℕ) : EN n (0 : MvPolynomial (Fin n) ℝ) = 0 := by
+  simpa using EN_C n 0
+
+/-- The first coordinate has mean zero, in every dimension. -/
+theorem EN_X_zero (n : ℕ) : EN (n + 1) (MvPolynomial.X 0) = 0 := by
+  rw [EN_succ, MvPolynomial.finSuccEquiv_X_zero]
+  have h : EyM n (Polynomial.X : Polynomial (MvPolynomial (Fin n) ℝ)) = 0 := by
+    rw [EyM, Polynomial.natDegree_X, Finset.sum_range_succ, Finset.sum_range_one]
+    simp [mom_one]
+  rw [h, EN_zero_poly]
+
+/-- The first coordinate has variance one, in every dimension. -/
+theorem EN_X_zero_sq (n : ℕ) :
+    EN (n + 1) (MvPolynomial.X 0 * MvPolynomial.X 0) = 1 := by
+  rw [EN_succ, map_mul, MvPolynomial.finSuccEquiv_X_zero]
+  have h : EyM n ((Polynomial.X : Polynomial (MvPolynomial (Fin n) ℝ)) * Polynomial.X)
+      = 1 := by
+    rw [← pow_two, EyM, Polynomial.natDegree_pow, Polynomial.natDegree_X,
+      Finset.sum_range_succ, Finset.sum_range_succ, Finset.sum_range_one]
+    simp [mom_zero, mom_one, mom_two]
+  rw [h, EN_one]
+
+/-- **The constant 1 in `poincare_MV` is sharp in every dimension**: no
+    smaller constant works, because the first coordinate attains it. Without
+    this, `poincare_MV` would only say that SOME constant works. -/
+theorem no_better_constant_MV (n : ℕ) (c : ℝ)
+    (h : ∀ p : MvPolynomial (Fin (n + 1)) ℝ,
+      EN (n + 1) (p * p) - (EN (n + 1) p) ^ 2
+        ≤ c * ∑ i : Fin (n + 1),
+            EN (n + 1) (MvPolynomial.pderiv i p * MvPolynomial.pderiv i p)) :
+    1 ≤ c := by
+  have hX := h (MvPolynomial.X 0)
+  rw [EN_X_zero_sq, EN_X_zero] at hX
+  have hsum : ∑ i : Fin (n + 1),
+      EN (n + 1) (MvPolynomial.pderiv i (MvPolynomial.X 0)
+        * MvPolynomial.pderiv i (MvPolynomial.X 0)) = 1 := by
+    rw [Finset.sum_eq_single (0 : Fin (n + 1))]
+    · rw [MvPolynomial.pderiv_X_self, one_mul, EN_one]
+    · intro b _ hb
+      rw [MvPolynomial.pderiv_X_of_ne (Ne.symm hb), zero_mul, EN_zero_poly]
+    · intro hb
+      exact absurd (Finset.mem_univ _) hb
+  rw [hsum, mul_one] at hX
+  linarith
+
+/-- Sharpness in the cascade dimension, stated on its own. -/
+theorem no_better_constant_R16 (c : ℝ)
+    (h : ∀ p : MvPolynomial (Fin 16) ℝ,
+      EN 16 (p * p) - (EN 16 p) ^ 2
+        ≤ c * ∑ i : Fin 16,
+            EN 16 (MvPolynomial.pderiv i p * MvPolynomial.pderiv i p)) :
+    1 ≤ c := no_better_constant_MV 15 c h
+
+/-! ## 10. What remains open — ABOVE this file, not inside it
+
+    An earlier draft of this section listed the second pderiv bridge,
+    positivity of `EN n`, and the assembly as open. All three are proved in
+    §5–§8 of this same file; that list was stale and is recorded in
+    ERRATA.md. What is genuinely still missing:
+
+    * **`EN n` as an integral against a product measure, for n > 1.** §9
+      certifies n = 1 against `gaussianReal 0 1`. The general statement is
+      `EN n p = ∫ x, MvPolynomial.eval x p ∂(Measure.pi fun _ => gaussianReal 0 1)`,
+      which needs Fubini for `Measure.pi` (Mathlib's
+      `measurePreserving_piFinSuccAbove` is the route) together with
+      integrability of polynomials against the product Gaussian. Until that
+      lands, `EN n` for n > 1 is an iterated moment functional which agrees
+      with the Gaussian expectation on everything one can compute by hand,
+      but which no theorem here identifies with an integral.
+    * **Test functions beyond polynomials**: density of the polynomials in
+      W^{1,2}(γₙ). Without it these are statements about polynomials.
+    * **Any link to the spectral action.** Nothing here produces a Gaussian
+      fluctuation measure from Tr f(D/Λ). That is exactly as unproven as it
+      was before this file, and no published tag moves on account of it. -/
 
 end GaussianPoincareProduct
