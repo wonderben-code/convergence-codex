@@ -58,6 +58,13 @@ import GaussianPoincare
 import Mathlib.MeasureTheory.Measure.CharacteristicFunction.Basic
 
 open MeasureTheory ProbabilityTheory Polynomial Filter Topology
+open scoped NNReal ENNReal
+
+/- Mathlib's own CharacteristicFunction file sets this option around the
+   charFun lemmas; without it, `rw`/`simp` fail to match visibly-identical
+   integral, `inner` and `smul` patterns in this measure-theoretic context
+   (instance-path mismatches under transparency-respecting unification). -/
+set_option backward.isDefEq.respectTransparency false
 
 noncomputable section
 
@@ -212,5 +219,190 @@ theorem tendsto_partial_exp (g : ℝ → ℝ) (hg : MemLp g 2 gauss) (t : ℝ) :
   have := hdom
   simp only [hsum] at this
   exact this
+
+/-! ## 4. Completeness against all polynomials -/
+
+theorem max_sub_max_neg (a : ℝ) : max a 0 - max (-a) 0 = a := by
+  rcases le_total 0 a with h | h
+  · rw [max_eq_left h, max_eq_right (by linarith)]; ring
+  · rw [max_eq_right h, max_eq_left (by linarith)]; ring
+
+/-- **COMPLETENESS OF THE POLYNOMIALS IN L²(γ)**, in dual form: an L²
+    function orthogonal to every polynomial vanishes a.e. The Gaussian
+    moment problem is determinate, and this is its Lean form. -/
+theorem polynomials_complete (f : ℝ → ℝ) (hf : MemLp f 2 gauss)
+    (horth : ∀ p : ℝ[X], ∫ x, f x * p.eval x ∂gauss = 0) :
+    f =ᵐ[gauss] 0 := by
+  classical
+  have hfmeas : AEStronglyMeasurable f gauss := hf.aestronglyMeasurable
+  set fp : ℝ → ℝ := fun x => max (f x) 0 with hfp_def
+  set fm : ℝ → ℝ := fun x => max (-f x) 0 with hfm_def
+  have hfpm : AEStronglyMeasurable fp gauss := hfmeas.sup aestronglyMeasurable_const
+  have hfmm : AEStronglyMeasurable fm gauss :=
+    hfmeas.neg.sup aestronglyMeasurable_const
+  have hfp2 : MemLp fp 2 gauss := by
+    refine hf.of_le hfpm ?_
+    filter_upwards with x
+    rw [Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg (le_max_right _ _)]
+    exact max_le (le_abs_self _) (abs_nonneg _)
+  have hfm2 : MemLp fm 2 gauss := by
+    refine hf.of_le hfmm ?_
+    filter_upwards with x
+    rw [Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg (le_max_right _ _)]
+    exact max_le (neg_le_abs _) (abs_nonneg _)
+  have hsub : ∀ x, fp x - fm x = f x := fun x => max_sub_max_neg (f x)
+  -- the moments of the two halves agree
+  have hmom : ∀ k : ℕ,
+      (∫ x, x ^ k * fp x ∂gauss) = ∫ x, x ^ k * fm x ∂gauss := by
+    intro k
+    have h0 := horth (X ^ k)
+    have hsplit : (∫ x, x ^ k * fp x ∂gauss) - ∫ x, x ^ k * fm x ∂gauss
+        = ∫ x, f x * (X ^ k : ℝ[X]).eval x ∂gauss := by
+      rw [← integral_sub (integrable_pow_mul fp hfp2 k)
+        (integrable_pow_mul fm hfm2 k)]
+      refine integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)
+      have hx := hsub x
+      simp only [Polynomial.eval_pow, Polynomial.eval_X]
+      linear_combination (x : ℝ) ^ k * hx
+    rw [h0] at hsplit
+    linarith [hsplit]
+  -- the two finite measures with densities f⁺ and f⁻
+  set dp : ℝ → ℝ≥0 := fun x => (f x).toNNReal with hdp_def
+  set dm : ℝ → ℝ≥0 := fun x => (-f x).toNNReal with hdm_def
+  have hdp_coe : ∀ x, ((dp x : ℝ)) = fp x := fun x => Real.coe_toNNReal' _
+  have hdm_coe : ∀ x, ((dm x : ℝ)) = fm x := fun x => Real.coe_toNNReal' _
+  have hdp_meas : AEMeasurable dp gauss :=
+    measurable_real_toNNReal.comp_aemeasurable hfmeas.aemeasurable
+  have hdm_meas : AEMeasurable dm gauss :=
+    measurable_real_toNNReal.comp_aemeasurable hfmeas.aemeasurable.neg
+  have hdp_ofReal : (fun x => ((dp x : ℝ≥0∞))) = fun x => ENNReal.ofReal (f x) := rfl
+  have hdm_ofReal : (fun x => ((dm x : ℝ≥0∞))) = fun x => ENNReal.ofReal (-f x) := rfl
+  have hfin_p : (∫⁻ x, (dp x : ℝ≥0∞) ∂gauss) ≠ ⊤ := by
+    rw [hdp_ofReal]
+    exact (hf.integrable one_le_two).lintegral_lt_top.ne
+  have hfin_m : (∫⁻ x, (dm x : ℝ≥0∞) ∂gauss) ≠ ⊤ := by
+    rw [hdm_ofReal]
+    exact ((hf.integrable one_le_two).neg.lintegral_lt_top).ne
+  set mup : Measure ℝ := gauss.withDensity (fun x => (dp x : ℝ≥0∞)) with hmup
+  set mum : Measure ℝ := gauss.withDensity (fun x => (dm x : ℝ≥0∞)) with hmum
+  haveI : IsFiniteMeasure mup := isFiniteMeasure_withDensity hfin_p
+  haveI : IsFiniteMeasure mum := isFiniteMeasure_withDensity hfin_m
+  -- equal characteristic functions, via the moment series
+  have hchar : charFun mup = charFun mum := by
+    funext t
+    have hip : ∀ x : ℝ, ((inner ℝ x t : ℝ) : ℂ) = ((x * t : ℝ) : ℂ) := by
+      intro x
+      norm_cast
+      rw [RCLike.inner_apply]
+      simp [mul_comm]
+    have hpull : ∀ (d : ℝ → ℝ≥0) (fd : ℝ → ℝ), AEMeasurable d gauss →
+        (∀ x, ((d x : ℝ)) = fd x) →
+        charFun (gauss.withDensity (fun x => (d x : ℝ≥0∞))) t
+          = ∫ x, Complex.exp (((x * t : ℝ) : ℂ) * Complex.I) * ((fd x : ℝ) : ℂ)
+              ∂gauss := by
+      intro d fd hd hcoe
+      rw [charFun_apply,
+        integral_withDensity_eq_integral_smul₀ hd
+          (fun x => Complex.exp ((inner ℝ x t : ℝ) * Complex.I))]
+      refine integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)
+      dsimp only
+      rw [NNReal.smul_def, Complex.real_smul, hcoe x, hip x, mul_comm]
+    rw [hpull dp fp hdp_meas hdp_coe, hpull dm fm hdm_meas hdm_coe]
+    -- the two integrals are limits of IDENTICAL moment sequences
+    have h1 := tendsto_partial_exp fp hfp2 t
+    have h2 := tendsto_partial_exp fm hfm2 t
+    have heqseq : (fun N => ∑ k ∈ Finset.range N,
+        ((t : ℂ) * Complex.I) ^ k / (k.factorial : ℂ)
+          * ((∫ x, x ^ k * fp x ∂gauss : ℝ) : ℂ))
+        = fun N => ∑ k ∈ Finset.range N,
+            ((t : ℂ) * Complex.I) ^ k / (k.factorial : ℂ)
+              * ((∫ x, x ^ k * fm x ∂gauss : ℝ) : ℂ) := by
+      funext N
+      exact Finset.sum_congr rfl fun k _ => by rw [hmom k]
+    rw [heqseq] at h1
+    exact tendsto_nhds_unique h1 h2
+  -- hence the measures agree, hence the densities, hence f = 0
+  have hmeq : mup = mum := Measure.ext_of_charFun hchar
+  have hdens : (fun x => (dp x : ℝ≥0∞)) =ᵐ[gauss] fun x => (dm x : ℝ≥0∞) :=
+    (withDensity_eq_iff hdp_meas.coe_nnreal_ennreal hdm_meas.coe_nnreal_ennreal
+      hfin_p).mp hmeq
+  filter_upwards [hdens] with x hx
+  have hnn : dp x = dm x := by exact_mod_cast hx
+  have hfp_eq : fp x = fm x := by
+    rw [← hdp_coe x, ← hdm_coe x, hnn]
+  have := hsub x
+  simp only [Pi.zero_apply]
+  linarith
+
+/-! ## 5. Completeness of the HERMITE system -/
+
+/-- **THE HERMITE POLYNOMIALS ARE COMPLETE**: an L² function orthogonal to
+    every Hₙ vanishes a.e. Reduction to `polynomials_complete` through the
+    Hermite expansion of an arbitrary polynomial. -/
+theorem hermite_complete (f : ℝ → ℝ) (hf : MemLp f 2 gauss)
+    (horth : ∀ n : ℕ, ∫ x, f x * (H n).eval x ∂gauss = 0) :
+    f =ᵐ[gauss] 0 := by
+  refine polynomials_complete f hf fun p => ?_
+  obtain ⟨N, a, hrep⟩ := exists_hermite_repr' p
+  have hpt : (fun x => f x * p.eval x)
+      = fun x => ∑ k ∈ Finset.range (N + 1), a k * (f x * (H k).eval x) := by
+    funext x
+    rw [hrep, Polynomial.eval_finset_sum, Finset.mul_sum]
+    refine Finset.sum_congr rfl fun k _ => ?_
+    rw [smul_eq_C_mul, Polynomial.eval_mul, Polynomial.eval_C]
+    ring
+  have hik : ∀ k : ℕ, Integrable (fun x => a k * (f x * (H k).eval x)) gauss := by
+    intro k
+    have h1 : Integrable (fun x => f x * (H k).eval x) gauss :=
+      MemLp.integrable_mul hf
+        (GaussianPoincare.memLp_polynomial_gaussianReal (H k) 0 1)
+    exact h1.const_mul _
+  rw [hpt, integral_finset_sum _ (fun k _ => hik k)]
+  refine Finset.sum_eq_zero fun k _ => ?_
+  rw [integral_const_mul, horth k, mul_zero]
+
+/-! ## 6. Orthogonality transported to the measure, and the package -/
+
+/-- The orthogonality relations of `GaussianPoincare`, restated against
+    Mathlib's `gaussianReal 0 1`: ⟨Hₘ, Hₙ⟩_{L²(γ)} = δₘₙ · m!. -/
+theorem hermite_orthogonal_gauss (m n : ℕ) :
+    ∫ x, (H m).eval x * (H n).eval x ∂gauss
+      = if m = n then (m.factorial : ℝ) else 0 := by
+  have hZ : Z ≠ 0 := ne_of_gt Z_pos
+  have h1 := gmean_eq_integral (H m * H n)
+  have h2 : (∫ x, (H m * H n).eval x ∂gauss)
+      = ∫ x, (H m).eval x * (H n).eval x ∂gauss :=
+    integral_congr_ae (Filter.Eventually.of_forall fun x => by
+      dsimp only
+      rw [Polynomial.eval_mul])
+  have h3 : gmean (H m * H n) = (if m = n then (m.factorial : ℝ) * Z else 0) / Z := by
+    rw [show gmean (H m * H n) = ip (H m) (H n) / Z from rfl, ip_H]
+  rw [← h2, ← h1, h3]
+  split_ifs
+  · field_simp
+  · simp
+
+/-- No Hₙ is the zero vector of L²(γ): its norm² is n! > 0. -/
+theorem hermite_norm_sq_gauss (n : ℕ) :
+    ∫ x, (H n).eval x * (H n).eval x ∂gauss = (n.factorial : ℝ) := by
+  rw [hermite_orthogonal_gauss n n, if_pos rfl]
+
+/-- **THE HERMITE POLYNOMIALS ARE A COMPLETE ORTHOGONAL SYSTEM IN L²(γ)**:
+    pairwise orthogonal, each of norm² = n! ≠ 0, and nothing in L² is
+    orthogonal to all of them except 0 — stated entirely against Mathlib's
+    own Gaussian measure. This was the CAESAR key on the watchlist: it is
+    what "expand in Hermite modes" needs in order to mean something. -/
+theorem hermite_complete_orthogonal_system :
+    (∀ m n : ℕ, m ≠ n →
+        ∫ x, (H m).eval x * (H n).eval x ∂gauss = 0)
+      ∧ (∀ n : ℕ,
+          ∫ x, (H n).eval x * (H n).eval x ∂gauss = (n.factorial : ℝ))
+      ∧ (∀ n : ℕ, (n.factorial : ℝ) ≠ 0)
+      ∧ (∀ f : ℝ → ℝ, MemLp f 2 gauss →
+          (∀ n : ℕ, ∫ x, f x * (H n).eval x ∂gauss = 0) → f =ᵐ[gauss] 0) :=
+  ⟨fun m n hmn => by rw [hermite_orthogonal_gauss, if_neg hmn],
+    hermite_norm_sq_gauss,
+    fun n => Nat.cast_ne_zero.mpr n.factorial_ne_zero,
+    hermite_complete⟩
 
 end HermiteCompleteness
