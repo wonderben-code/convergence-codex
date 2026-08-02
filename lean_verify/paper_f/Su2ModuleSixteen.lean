@@ -26,18 +26,25 @@
      `ladder_R_cartan`, `cartan_ER`, `cartan_FR`) — the defining
      relations of sl₂ in the spin-½ normalisation, as 16×16 matrix
      identities. Plus nilpotency E² = F² = 0 (the 2-dim rep signature).
-  3. **The two sides commute**: every product of an L-ladder with an
-     R-ladder vanishes (block orthogonality), so all cross-commutators
-     are zero — the ⊕ in su(2)_L ⊕ su(2)_R is real
-     (`upper_mul_lower`, `lower_mul_upper`, `LR_commute`).
-  4. **B−L is central**: it commutes with all four ladders
-     (`BL_central_EL` … `BL_central_FR`) — B−L is colour data, constant
-     on isospin doublets, exactly as the Pati–Salam structure demands.
-  5. `su2_su2_module_structure` — the package: both triples, the
-     cross-vanishing, and centrality in one statement. Together with
-     `WeinbergIndex`'s trace theorems this upgrades the weight system
-     to representation data: the traces ARE traces of Cartan generators
-     of a genuine commuting sl₂ × sl₂ action with central B−L.
+  3. **The two sides commute — ALL 21 generator-pair brackets** (review
+     round 9 completed the accounting): ladder-ladder cross-products
+     vanish (`LR_commute`), each Cartan commutes with the opposite
+     side's ladders (`cartanL_commutes_ER/FR`, `cartanR_commutes_EL/FL`),
+     and the Cartans commute (`T3L_T3R_commute`).
+  4. **B−L is central for ALL six generators**: the four ladders
+     (`BL_central_EL` … `BL_central_FR`) and both Cartans
+     (`BL_central_T3L`, `BL_central_T3R`) — B−L is colour data,
+     constant on isospin doublets, exactly as Pati–Salam demands.
+  5. `su2_su2_module_structure` — the package: both triples, the full
+     cross-commutation, and full centrality in one statement; plus the
+     bridge to MATHLIB'S OFFICIAL sl₂ API — `isSl2Triple_L`/`_R`
+     instantiate `IsSl2Triple ((2:ℚ)•T₃) E F` in the commutator Lie
+     ring, so the weight machinery of `Mathlib.Algebra.Lie.Sl2`
+     applies. The decomposition reading is theorem-backed too:
+     `EL_mulVec_down` (raising: down ↦ up), `EL_mulVec_up` (highest
+     weight annihilated), `EL_mulVec_inr`/`T3L_mulVec_inr` (the eight
+     right-block states are genuine su(2)_L singlets),
+     `T3L_mulVec_up`/`T3L_mulVec_down` (eigenvalues ±½).
 
   NOT proven here: the su(4) (colour) action beyond its Cartan data —
   the B−L direction is the only su(4) generator these files use, and
@@ -51,6 +58,7 @@
 
 import WeinbergIndex
 import Mathlib.LinearAlgebra.Matrix.Kronecker
+import Mathlib.Algebra.Lie.Sl2
 
 open Matrix WeinbergIndex
 open scoped Kronecker
@@ -418,12 +426,130 @@ theorem BL_central_FR : BL * FR = FR * BL := by
           zero_add, ← Matrix.mul_kronecker_mul, Matrix.one_mul,
           Matrix.mul_one]
 
-/-! ## 6. The package -/
+/-! ## 6. Review round 9: the remaining brackets, the Mathlib bridge,
+and the decomposition made theorem-backed -/
 
-/-- **The su(2)×su(2) module structure on the chiral 16**: two sl₂
-    triples with Cartans T₃L, T₃R, commuting with each other, with B−L
-    central. The `WeinbergIndex` diagonals are genuinely the Cartan
-    data of a representation, not free-floating weights. -/
+theorem cartanL_commutes_ER : T3L * ER - ER * T3L = 0 := by
+  rw [T3L_blocks, ER, upper_mul_lower, lower_mul_upper, sub_zero]
+
+theorem cartanL_commutes_FR : T3L * FR - FR * T3L = 0 := by
+  rw [T3L_blocks, FR, upper_mul_lower, lower_mul_upper, sub_zero]
+
+theorem cartanR_commutes_EL : T3R * EL - EL * T3R = 0 := by
+  rw [T3R_blocks, EL, lower_mul_upper, upper_mul_lower, sub_zero]
+
+theorem cartanR_commutes_FL : T3R * FL - FL * T3R = 0 := by
+  rw [T3R_blocks, FL, lower_mul_upper, upper_mul_lower, sub_zero]
+
+theorem T3L_T3R_commute : T3L * T3R - T3R * T3L = 0 := by
+  simp [T3L, T3R, Matrix.diagonal_mul_diagonal, mul_comm]
+
+theorem BL_central_T3L : BL * T3L = T3L * BL := by
+  simp [BL, T3L, Matrix.diagonal_mul_diagonal, mul_comm]
+
+theorem BL_central_T3R : BL * T3R = T3R * BL := by
+  simp [BL, T3R, Matrix.diagonal_mul_diagonal, mul_comm]
+
+/-- **Mathlib's official sl₂ API, instantiated (left)**: the file's
+    identities assemble into `IsSl2Triple` in the commutator Lie ring. -/
+theorem isSl2Triple_L : IsSl2Triple ((2 : ℚ) • T3L) EL FL where
+  h_ne_zero := by
+    intro h
+    have h00 := congrFun (congrFun h (Sum.inl (0, 0))) (Sum.inl (0, 0))
+    simp [T3L, t3Lval, t3] at h00
+  lie_e_f := by
+    rw [Ring.lie_def]
+    exact ladder_L_cartan
+  lie_h_e_nsmul := by
+    rw [Ring.lie_def, smul_mul_assoc, mul_smul_comm, ← smul_sub, cartan_EL,
+      two_smul, two_smul]
+  lie_h_f_nsmul := by
+    rw [Ring.lie_def, smul_mul_assoc, mul_smul_comm, ← smul_sub, cartan_FL,
+      two_smul, two_smul]
+    module
+
+/-- **Mathlib's official sl₂ API, instantiated (right)**. -/
+theorem isSl2Triple_R : IsSl2Triple ((2 : ℚ) • T3R) ER FR where
+  h_ne_zero := by
+    intro h
+    have h00 := congrFun (congrFun h (Sum.inr (0, 0))) (Sum.inr (0, 0))
+    simp [T3R, t3Rval, t3] at h00
+  lie_e_f := by
+    rw [Ring.lie_def]
+    exact ladder_R_cartan
+  lie_h_e_nsmul := by
+    rw [Ring.lie_def, smul_mul_assoc, mul_smul_comm, ← smul_sub, cartan_ER,
+      two_smul, two_smul]
+  lie_h_f_nsmul := by
+    rw [Ring.lie_def, smul_mul_assoc, mul_smul_comm, ← smul_sub, cartan_FR,
+      two_smul, two_smul]
+    module
+
+/-- Raising acts: E_L moves isospin-down to isospin-up, per colour. -/
+theorem EL_mulVec_down (c : Fin 4) :
+    EL.mulVec (Pi.single (Sum.inl (c, 1)) 1)
+      = Pi.single (Sum.inl (c, 0)) 1 := by
+  funext i
+  rw [Matrix.mulVec_single]
+  rcases i with ⟨c', s'⟩ | p
+  · fin_cases s' <;>
+      simp [EL, Matrix.fromBlocks_apply₁₁, Matrix.kroneckerMap_apply, e2,
+        Matrix.one_apply, Pi.single_apply, Prod.ext_iff, eq_comm]
+  · simp [EL, Matrix.fromBlocks_apply₂₁]
+
+/-- The top of each doublet is annihilated: highest weight. -/
+theorem EL_mulVec_up (c : Fin 4) :
+    EL.mulVec (Pi.single (Sum.inl (c, 0)) 1) = 0 := by
+  funext i
+  rw [Matrix.mulVec_single]
+  rcases i with ⟨c', s'⟩ | p
+  · fin_cases s' <;>
+      simp [EL, Matrix.fromBlocks_apply₁₁, Matrix.kroneckerMap_apply, e2,
+        Matrix.one_apply]
+  · simp [EL, Matrix.fromBlocks_apply₂₁]
+
+/-- The eight right-block states are genuine su(2)_L singlets: E_L
+    annihilates them. -/
+theorem EL_mulVec_inr (p : Fin 4 × Fin 2) :
+    EL.mulVec (Pi.single (Sum.inr p) 1) = 0 := by
+  funext i
+  rw [Matrix.mulVec_single]
+  rcases i with q | q <;>
+    simp [EL, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₂]
+
+theorem T3L_mulVec_inr (p : Fin 4 × Fin 2) :
+    T3L.mulVec (Pi.single (Sum.inr p) 1) = 0 := by
+  funext i
+  rw [Matrix.mulVec_single]
+  simp [T3L, t3Lval]
+
+/-- T₃L eigenvalue +½ on the up states. -/
+theorem T3L_mulVec_up (c : Fin 4) :
+    T3L.mulVec (Pi.single (Sum.inl (c, 0)) 1)
+      = (1 / 2 : ℚ) • Pi.single (Sum.inl (c, 0)) 1 := by
+  funext i
+  rw [Matrix.mulVec_single]
+  rcases i with ⟨c', s'⟩ | p <;>
+    simp [T3L, t3Lval, t3, Pi.single_apply]
+
+/-- T₃L eigenvalue −½ on the down states. -/
+theorem T3L_mulVec_down (c : Fin 4) :
+    T3L.mulVec (Pi.single (Sum.inl (c, 1)) 1)
+      = (-(1 / 2) : ℚ) • Pi.single (Sum.inl (c, 1)) 1 := by
+  funext i
+  rw [Matrix.mulVec_single]
+  rcases i with ⟨c', s'⟩ | p <;>
+    simp [T3L, t3Lval, t3, Pi.single_apply]
+
+/-! ## 7. The package -/
+
+/-- **The su(2)×su(2) module structure on the chiral 16, complete**:
+    two sl₂ triples with Cartans T₃L, T₃R; ALL cross-brackets zero
+    (ladder-ladder, Cartan-ladder, Cartan-Cartan); B−L central for all
+    six generators. Every pairwise bracket of the seven generators is
+    now a literal conjunct — the `WeinbergIndex` diagonals are
+    genuinely the Cartan data of a representation, not free-floating
+    weights. -/
 theorem su2_su2_module_structure :
     (EL * FL - FL * EL = (2 : ℚ) • T3L
         ∧ T3L * EL - EL * T3L = EL ∧ T3L * FL - FL * T3L = -FL)
@@ -431,11 +557,18 @@ theorem su2_su2_module_structure :
         ∧ T3R * ER - ER * T3R = ER ∧ T3R * FR - FR * T3R = -FR)
       ∧ (EL * ER - ER * EL = 0 ∧ EL * FR - FR * EL = 0
         ∧ FL * ER - ER * FL = 0 ∧ FL * FR - FR * FL = 0)
+      ∧ (T3L * ER - ER * T3L = 0 ∧ T3L * FR - FR * T3L = 0
+        ∧ T3R * EL - EL * T3R = 0 ∧ T3R * FL - FL * T3R = 0
+        ∧ T3L * T3R - T3R * T3L = 0)
       ∧ (BL * EL = EL * BL ∧ BL * FL = FL * BL
-        ∧ BL * ER = ER * BL ∧ BL * FR = FR * BL) :=
+        ∧ BL * ER = ER * BL ∧ BL * FR = FR * BL
+        ∧ BL * T3L = T3L * BL ∧ BL * T3R = T3R * BL) :=
   ⟨⟨ladder_L_cartan, cartan_EL, cartan_FL⟩,
     ⟨ladder_R_cartan, cartan_ER, cartan_FR⟩,
     LR_commute,
-    ⟨BL_central_EL, BL_central_FL, BL_central_ER, BL_central_FR⟩⟩
+    ⟨cartanL_commutes_ER, cartanL_commutes_FR, cartanR_commutes_EL,
+      cartanR_commutes_FL, T3L_T3R_commute⟩,
+    ⟨BL_central_EL, BL_central_FL, BL_central_ER, BL_central_FR,
+      BL_central_T3L, BL_central_T3R⟩⟩
 
 end Su2ModuleSixteen

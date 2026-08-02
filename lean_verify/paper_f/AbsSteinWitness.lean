@@ -10,7 +10,10 @@
   (|x|, sgn) is a Stein pair, and NO everywhere-differentiable function
   is even a.e.-equal to |x| — so the Stein class strictly exceeds the
   embedded everywhere-differentiable class AT THE LEVEL OF L² CLASSES,
-  one level up from fJump.
+  one level up from fJump. (Ledger provenance: codex-internal
+  UNLOCK_WATCHLIST, "ADDED 2 AUG 2026 (round 7)" successor item
+  "an L²-CLASS-level strictness witness for the Stein class: (|x|, sgn)"
+  — delivered by exactly the route mapped there.)
 
   The route is the classical smoothing argument, done honestly:
   f_ε(x) = √(x² + ε²) is everywhere differentiable with |f_ε′| ≤ 1, so
@@ -190,6 +193,20 @@ theorem tendsto_smooth_deriv {x : ℝ} (hx : x ≠ 0) :
   have h2 := hconst.div (tendsto_smooth x) habs
   rwa [div_abs_eq_sgn hx] at h2
 
+/-- The γ-a.e. form, exported (review round 9): the null set {0} is
+    absorbed once, reusably. -/
+theorem tendsto_smooth_deriv_ae :
+    ∀ᵐ x ∂gauss, Tendsto
+      (fun n : ℕ => x / Real.sqrt (x ^ 2 + (1 / (n + 1) : ℝ) ^ 2))
+      atTop (nhds (sgn x)) := by
+  have hna : NoAtoms (gauss : Measure ℝ) := noAtoms_gaussianReal one_ne_zero
+  have h0 : (gauss : Measure ℝ) {0} = 0 := measure_singleton 0
+  have hmem : {(0 : ℝ)}ᶜ ∈ ae gauss := by
+    rw [mem_ae_iff, compl_compl]
+    exact h0
+  filter_upwards [hmem] with x hx
+  exact tendsto_smooth_deriv (Set.mem_compl_singleton_iff.mp hx)
+
 /-! ## 4. The pairing, by dominated convergence -/
 
 /-- **(|x|, sgn) is a Stein pair.** Membership by polynomial growth;
@@ -252,14 +269,8 @@ theorem steinPair_abs : SteinPair (fun x => |x|) sgn := by
           ≤ 1 * |q.eval x| :=
             mul_le_mul_of_nonneg_right (smooth_deriv_le _ x) (abs_nonneg _)
         _ = |q.eval x| := one_mul _
-    · have hna : NoAtoms (gauss : Measure ℝ) := noAtoms_gaussianReal one_ne_zero
-      have h0 : (gauss : Measure ℝ) {0} = 0 := measure_singleton 0
-      have hmem : {(0 : ℝ)}ᶜ ∈ ae gauss := by
-        rw [mem_ae_iff, compl_compl]
-        exact h0
-      filter_upwards [hmem] with x hx
-      exact (tendsto_smooth_deriv
-        (Set.mem_compl_singleton_iff.mp hx)).mul tendsto_const_nhds
+    · filter_upwards [tendsto_smooth_deriv_ae] with x hx
+      exact hx.mul tendsto_const_nhds
   -- limit of the function side
   have hR : Tendsto (fun n : ℕ =>
       ∫ x, Real.sqrt (x ^ 2 + (1 / (n + 1) : ℝ) ^ 2) * r.eval x ∂gauss)
@@ -312,6 +323,36 @@ theorem steinPair_abs : SteinPair (fun x => |x|) sgn := by
       atTop (nhds (∫ x, |x| * r.eval x ∂gauss)) := by
     refine hR.congr fun n => (hpair n).symm
   exact tendsto_nhds_unique hL hR'
+
+/-- ∫ sgn² dγ = 1 (review round 9): sgn² is 1 off the null point. The
+    certificate below therefore reads Var(|x|) = 1 − 2/π ≤ 1 — SLACK for
+    this witness (and derivable from the trivial Var ≤ ∫f² here, since
+    ∫|x|² = 1 too): its analytic force is the membership + the
+    unreachability, not the numeric bound. Sharpness of the constant
+    stays with (X, 1) upstream. -/
+theorem integral_sgn_sq : ∫ x, sgn x ^ 2 ∂gauss = 1 := by
+  have hna : NoAtoms (gauss : Measure ℝ) := noAtoms_gaussianReal one_ne_zero
+  have h0 : (gauss : Measure ℝ) {0} = 0 := measure_singleton 0
+  have hmem : {(0 : ℝ)}ᶜ ∈ ae gauss := by
+    rw [mem_ae_iff, compl_compl]
+    exact h0
+  have hae : (fun x => sgn x ^ 2) =ᵐ[gauss] fun _ => (1 : ℝ) := by
+    filter_upwards [hmem] with x hx
+    have hx0 : x ≠ 0 := Set.mem_compl_singleton_iff.mp hx
+    rcases lt_or_gt_of_ne hx0 with h | h
+    · simp [sgn, h]
+    · simp [sgn, not_lt.mpr h.le, h]
+  rw [integral_congr_ae hae]
+  simp
+
+/-- Interoperability with Mathlib's sign API (review round 9): this
+    file's `sgn` is the real cast of `SignType.sign`. -/
+theorem sgn_eq_signType_cast (x : ℝ) :
+    ((SignType.sign x : SignType) : ℝ) = sgn x := by
+  rcases lt_trichotomy x 0 with h | h | h
+  · simp [sign_neg h, sgn, h]
+  · simp [h, sgn]
+  · simp [sign_pos h, sgn, not_lt.mpr h.le, h]
 
 /-! ## 5. Class-level unreachability -/
 

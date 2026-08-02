@@ -42,8 +42,9 @@
   5. **`poincare_scaled_beyond_subsumed`** — `poincare_scaled_beyond`'s
      statement re-derived: σ ≠ 0 THROUGH the class inequality; σ = 0 by
      the same standalone Dirac computation (necessarily so — at σ = 0
-     the C¹ pairs provably do not lie in the degenerate class, so no
-     class route exists there). The scaled chain is SUBSUMED, completing
+     NOT EVERY C¹ pair lies in the degenerate class: (X, 1) provably
+     does not, `not_steinPairScaled_zero_id_one` — so no class route
+     exists there). The scaled chain is SUBSUMED, completing
      what the round-7 correction scoped; `poincare_scaled_beyond_original`
      restates it in the original file's literal spelling.
   6. **Sharpness, machine-checked** (review round 8): `var_id_scaled`
@@ -353,6 +354,17 @@ theorem steinPairScaled_id_one {σ : ℝ} (hσ : σ ≠ 0) :
   · have h0 : (0 : ℝ) ≤ x ^ 2 := sq_nonneg x
     rw [abs_one]
     nlinarith
+
+/-- The σ = 0 exclusion, as a theorem (review round 9): (X, 1) — a C¹
+    pair of polynomial growth — does NOT lie in the degenerate σ = 0
+    class (the pairing at q = 1 forces g(0) = 0). So the Dirac branch
+    of the subsumption cannot be routed through the class. -/
+theorem not_steinPairScaled_zero_id_one :
+    ¬ SteinPairScaled 0 (fun x => x) (fun _ => 1) := by
+  rintro ⟨-, -, hpair⟩
+  have h := hpair 1
+  rw [gaussSc_zero] at h
+  simp at h
 
 /-! ## 5. Sharpness, machine-checked (review round 8) -/
 
