@@ -27,9 +27,11 @@
   3. **`gibbs_map_of_invariant`** — if T preserves ν and H∘T = H, then
      T-pushforward fixes `gibbs β H ν`, for EVERY β ∈ ℝ.
   4. `gibbs_smul_invariant` / **`no_finite_volume_breaking`** — the group
-     form, and the punchline: for a G-invariant finite-volume system,
-     clause (2) of the refuted phase-transition statement FAILS at every
-     candidate β_c. Finite-volume Gibbs measures NEVER break a symmetry
+     form, and the punchline: for a G-invariant finite-volume system, the
+     clause-(2) SHAPE of the refuted phase-transition statement — stated
+     for the `gibbs` DEFINED here, not for the opaque `GibbsMeasure`
+     axiom, to which no formal bridge exists — FAILS at every candidate
+     β_c. Finite-volume Gibbs measures NEVER break a symmetry
      of (H, ν) at the level of measure non-invariance. This PROVES the
      remark recorded on the watchlist: symmetry breaking is a
      thermodynamic-limit phenomenon, and any honest per-model Peierls
