@@ -31,9 +31,11 @@
   NOT proven here (unchanged from SPINE):
 
   * The REAL classification Cl(1,3;ℝ) ≅ M₂(ℍ) — this file is complex
-    coefficients throughout, where signature is invisible (Q₄ here has
-    signature (2,2) over ℂ, equivalent to any nondegenerate form). The
-    real story is WALLS.md W7.
+    coefficients throughout, where signature is invisible (Q₄ has
+    diagonal coefficients (+1,+1,−1,−1) — now the THEOREM `Q₄_apply`;
+    over ℂ no signature invariant separates nondegenerate forms, and no
+    form-equivalence claim is formalised here). The real story is
+    WALLS.md W7.
   * Nothing about the cascade, spinors, or physics: this is the L8
     algebra statement and only that.
 
@@ -351,5 +353,36 @@ def cliffordMatrixEquiv :
 theorem cliffordMatrixEquiv_ι (v : (ℂ × ℂ) × (ℂ × ℂ)) :
     cliffordMatrixEquiv (ι Q₄ v) = clifford4Map v :=
   clifford4ToMatrix_ι v
+
+/-! ## The form made explicit, and the generators tracked one by one
+(review round 7: prose became theorems) -/
+
+/-- The quadratic form, evaluated: diagonal coefficients (+1,+1,−1,−1).
+    What the header's signature remark means, as a statement. -/
+theorem Q₄_apply (a b c d : ℂ) :
+    Q₄ ((a, b), (c, d)) = a ^ 2 + b ^ 2 - c ^ 2 - d ^ 2 := by
+  simp [Q₄, CliffordAlgebraQuaternion.Q_apply]
+  ring
+
+/-- The equiv sends the first generator to γ₁ — public, concrete. -/
+theorem cliffordMatrixEquiv_e₁ :
+    cliffordMatrixEquiv (ι Q₄ ((1, 0), (0, 0))) = γ₁ := by
+  rw [cliffordMatrixEquiv_ι]
+  simp [clifford4Map]
+
+theorem cliffordMatrixEquiv_e₂ :
+    cliffordMatrixEquiv (ι Q₄ ((0, 1), (0, 0))) = γ₂ := by
+  rw [cliffordMatrixEquiv_ι]
+  simp [clifford4Map]
+
+theorem cliffordMatrixEquiv_e₃ :
+    cliffordMatrixEquiv (ι Q₄ ((0, 0), (1, 0))) = γ₃ := by
+  rw [cliffordMatrixEquiv_ι]
+  simp [clifford4Map]
+
+theorem cliffordMatrixEquiv_e₄ :
+    cliffordMatrixEquiv (ι Q₄ ((0, 0), (0, 1))) = γ₄ := by
+  rw [cliffordMatrixEquiv_ι]
+  simp [clifford4Map]
 
 end CliffordIso

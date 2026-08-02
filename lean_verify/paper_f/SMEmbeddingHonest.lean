@@ -11,7 +11,15 @@
   the package as "the GENUINE proof that the Standard Model gauge
   algebra embeds in su(4) as a Lie subalgebra — not just a linear
   subspace". This file machine-checks that the reading is FALSE for
-  these maps (ERRATA 36), and proves what is actually true instead.
+  these maps (ERRATA 36 — which also enumerates the propagation: the
+  same gloss recurs in `CascadeFoundation` (the `TracelessMatrix`
+  docstring, the `GaugeEmbedding.embedding` field), `ConnesClassification`
+  (`leptoquark_count`), `F1_6_PatiSalamForced`, and further downstream
+  prose; review round 7 verified every downstream THEOREM consumes only
+  the true conjuncts), and proves what is actually true instead.
+  Naming: throughout, su(n) refers to the complexified objects the
+  estate formalises (sl_n(ℂ); ℂ for u(1)); every dimension count agrees
+  with the compact real forms (dim_ℝ su(n) = dim_ℂ sl_n(ℂ)).
 
   WHAT THIS FILE PROVES (exactly this, nothing more):
 
@@ -22,10 +30,13 @@
   2. `assembly_not_injective` / `assembly_range_le_eleven` — the
      assembled linear map (A, B, c) ↦ su3(A) + su2(B) + u1(c) on
      sl₃ × sl₂ × u(1) has a NONZERO KERNEL (explicit element, from the
-     overlap), so the three images span AT MOST an 11-dimensional
-     subspace of sl₄ — strictly less than the 12 the abstract
-     arithmetic suggests. Three injective maps do not make an injective
-     assembly.
+     overlap), and the three images span EXACTLY an 11-dimensional
+     subspace of sl₄ (`assembly_range_eq_eleven`) — strictly less than
+     the 12 the abstract arithmetic suggests. Three injective maps do
+     not make an injective assembly. Worse, the 11-dimensional span is
+     NOT EVEN A LIE SUBALGEBRA: the bracket of two range elements
+     escapes the range (`assembly_range_not_bracket_closed` — every
+     range element vanishes at entry (0,3), the bracket does not).
   3. `su3_su2_images_not_commuting` / `su2_u1_images_not_commuting` —
      the sl₃ and sl₂ images do NOT commute (the blocks share row and
      column 2), and the sl₂ image does not commute with the u(1) image
@@ -37,7 +48,11 @@
      commutes with the u(1) image), `su3_u1_injective` (the pair
      (A, c) ↦ su3(A) + u1(c) IS injective), `colour_bl_finrank` (its
      range is a genuine 9-dimensional subspace of the 15-dimensional
-     sl₄), and `leptoquark_six`: the complement count is 15 − 9 = 6 —
+     sl₄), `colour_bl_bracket` (the pair IS bracket-closed:
+     [su3(A)+u1(c), su3(A')+u1(c')] = su3([A,A']) — the positive claim
+     meets the same bar as the refutation), and `leptoquark_six` /
+     `leptoquark_coset` (the latter as an actual quotient dimension):
+     the complement count is 15 − 9 = 6 —
      the six Pati–Salam leptoquark directions of the honest coset
      su(4)/(su(3)⊕u(1)_{B−L}), not the "3 extra generators" of the
      abstract 15 − 12 arithmetic.
@@ -47,12 +62,18 @@
 
   NOT proven here (prose, so nobody reads more than is proved):
 
-  * The rank obstruction — su(3)⊕su(2)⊕u(1) has rank 4 and su(4) has
-    rank 3, so NO faithful embedding exists by ANY maps, not just these
-    (a 4-dim rep of sl₃⊕sl₂ faithful on both factors does not exist).
-    That argument needs representation/Cartan theory the estate does
-    not have; this file refutes exactly the assembly the docstring
-    cited and no more.
+  * The full nonexistence theorem — NO faithful embedding exists by
+    ANY maps, not just these. The load-bearing argument over ℂ is
+    representation-theoretic: a 4-dimensional representation of
+    sl₃⊕sl₂ faithful on both factors does not exist (a faithful
+    sl₃-summand is a 3 or 3̄, whose commutant in ℂ⁴ is abelian). The
+    compact-forms rank argument (rank 4 > 3, maximal tori) is also
+    valid FOR THE COMPACT FORMS, but rank alone is NOT an obstruction
+    inside sl₄(ℂ), which contains 4-dimensional abelian subalgebras
+    (an off-diagonal 2×2 block). Neither argument is formalised — both
+    need representation/Cartan theory the estate does not have; what IS
+    formalised is the strongest available refutation of these maps:
+    their span is not even a Lie subalgebra.
   * Nothing about groups, fermion representations, or the Weinberg
     angle. The successor file computes the Weinberg trace forms on the
     honest Pati–Salam representation, where SU(2)_L is a separate
@@ -264,5 +285,148 @@ theorem sm_assembly_corrected :
           su3EmbedFn A * u1EmbedFn c = u1EmbedFn c * su3EmbedFn A :=
   ⟨assembly_not_injective, su3_su2_images_not_commuting,
     su2_u1_images_not_commuting, su3_u1_injective, su3_u1_commute⟩
+
+/-! ## 6. Review round 7: the sharp versions -/
+
+/-- The (su3, su2) pair alone IS jointly injective — the entries
+    (2,3), (3,2), (3,3) pin B (with its tracelessness), then A cancels.
+    So the failure of the THREE-factor assembly is exactly the u(1)
+    overlap, nothing else. -/
+theorem su3_su2_pair_injective :
+    Function.Injective (su3EmbedRestricted.coprod su2EmbedRestricted) := by
+  intro p q h
+  obtain ⟨A, B⟩ := p
+  obtain ⟨A', B'⟩ := q
+  have hval : su3EmbedFn A.val + su2EmbedFn B.val
+      = su3EmbedFn A'.val + su2EmbedFn B'.val := congrArg Subtype.val h
+  have hE : ∀ i j : Fin 4, su3EmbedFn (A.val) i j + su2EmbedFn (B.val) i j
+      = su3EmbedFn (A'.val) i j + su2EmbedFn (B'.val) i j := fun i j => by
+    have := congr_fun (congr_fun hval i) j
+    simpa using this
+  have htrB : B.val 0 0 + B.val 1 1 = 0 := by
+    have hp := B.property
+    simp only [TracelessMatrix, LinearMap.mem_ker, traceMap,
+      Matrix.traceLinearMap_apply] at hp
+    simpa [Matrix.trace_fin_two] using hp
+  have htrB' : B'.val 0 0 + B'.val 1 1 = 0 := by
+    have hp := B'.property
+    simp only [TracelessMatrix, LinearMap.mem_ker, traceMap,
+      Matrix.traceLinearMap_apply] at hp
+    simpa [Matrix.trace_fin_two] using hp
+  have h23 := hE 2 3
+  have h32 := hE 3 2
+  have h33 := hE 3 3
+  norm_num [su3EmbedFn, su2EmbedFn] at h23 h32 h33
+  have hB00 : B.val 0 0 = B'.val 0 0 := by linear_combination htrB - htrB' - h33
+  have hB : B = B' := by
+    apply Subtype.ext
+    ext i j
+    fin_cases i <;> fin_cases j
+    · exact hB00
+    · exact h23
+    · exact h32
+    · exact h33
+  have hA : A = A' := by
+    apply Subtype.ext
+    apply su3Embed_injective
+    have hs2 : su2EmbedFn B.val = su2EmbedFn B'.val := by rw [hB]
+    rw [hs2] at hval
+    exact add_right_cancel hval
+  rw [hA, hB]
+
+/-- The u(1) range sits inside the (su3, su2) pair range — the overlap
+    identity, at the level of ranges. -/
+theorem u1_range_le_pair_range :
+    LinearMap.range u1EmbedRestricted
+      ≤ LinearMap.range (su3EmbedRestricted.coprod su2EmbedRestricted) := by
+  rintro x ⟨c, rfl⟩
+  refine ⟨(⟨overlap3 c, overlap3_mem c⟩, ⟨overlap2 c, overlap2_mem c⟩), ?_⟩
+  apply Subtype.ext
+  change su3EmbedFn (overlap3 c) + su2EmbedFn (overlap2 c) = u1EmbedFn c
+  exact (u1_eq_su3_add_su2 c).symm
+
+/-- **The three images span EXACTLY 11 dimensions**: the assembled
+    range IS the pair range (the u(1) contributes nothing), and the
+    pair is injective from a 11-dimensional domain. Sharpens
+    `assembly_range_le_eleven`. -/
+theorem assembly_range_eq_eleven :
+    finrank ℂ (LinearMap.range assembly) = 11 := by
+  have hrange : LinearMap.range assembly
+      = LinearMap.range (su3EmbedRestricted.coprod su2EmbedRestricted) := by
+    rw [assembly, LinearMap.range_coprod, sup_eq_left.mpr u1_range_le_pair_range]
+  rw [hrange, LinearMap.finrank_range_of_inj su3_su2_pair_injective,
+    Module.finrank_prod, traceless_dim_3, traceless_dim_2]
+
+/-- Every element of the assembled range vanishes at entry (0,3). -/
+theorem assembly_val_zero_at_03
+    (p : (TracelessMatrix 3 × TracelessMatrix 2) × ℂ) :
+    (assembly p).val 0 3 = 0 := by
+  obtain ⟨⟨A, B⟩, c⟩ := p
+  change (su3EmbedFn A.val + su2EmbedFn B.val + u1EmbedFn c) 0 3 = 0
+  norm_num [su3EmbedFn, su2EmbedFn, u1EmbedFn, Fin.ext_iff]
+
+/-- The bracket of two image elements has (0,3)-entry 1 — it ESCAPES
+    the assembled range. -/
+theorem bracket_escapes_at_03 :
+    (su3EmbedFn e02 * su2EmbedFn e01
+      - su2EmbedFn e01 * su3EmbedFn e02) 0 3 = 1 := by
+  norm_num [su3EmbedFn, su2EmbedFn, e02, e01, Matrix.mul_apply,
+    Fin.sum_univ_four]
+
+/-- **The three-image span is not even a Lie subalgebra of sl₄**: the
+    bracket of two elements of the assembled range lies outside it.
+    This refutes "embeds as a Lie subalgebra" in the strongest sense —
+    no re-bracketing of the same span can save it. -/
+theorem assembly_range_not_bracket_closed :
+    ∃ x y : (TracelessMatrix 3 × TracelessMatrix 2) × ℂ,
+      ¬ ∃ z, (assembly z).val
+          = (assembly x).val * (assembly y).val
+            - (assembly y).val * (assembly x).val := by
+  have h3z : su3EmbedFn 0 = 0 := map_zero su3EmbedLinear
+  have h2z : su2EmbedFn 0 = 0 := map_zero su2EmbedLinear
+  have h1z : u1EmbedFn 0 = 0 := map_zero u1EmbedLinear
+  refine ⟨((⟨e02, e02_mem⟩, 0), 0), ((0, ⟨e01, e01_mem⟩), 0), ?_⟩
+  rintro ⟨z, hz⟩
+  have hx : (assembly ((⟨e02, e02_mem⟩, (0 : TracelessMatrix 2)), (0 : ℂ))).val
+      = su3EmbedFn e02 := by
+    change su3EmbedFn e02 + su2EmbedFn (0 : Matrix (Fin 2) (Fin 2) ℂ)
+      + u1EmbedFn 0 = _
+    rw [h2z, h1z]
+    simp
+  have hy : (assembly (((0 : TracelessMatrix 3), ⟨e01, e01_mem⟩), (0 : ℂ))).val
+      = su2EmbedFn e01 := by
+    change su3EmbedFn (0 : Matrix (Fin 3) (Fin 3) ℂ) + su2EmbedFn e01
+      + u1EmbedFn 0 = _
+    rw [h3z, h1z]
+    simp
+  rw [hx, hy] at hz
+  have h03 := congr_fun (congr_fun hz 0) 3
+  rw [assembly_val_zero_at_03, bracket_escapes_at_03] at h03
+  norm_num at h03
+
+/-- **The colour ⊕ B−L span IS bracket-closed**:
+    [su3(A) + u1(c), su3(A') + u1(c')] = su3([A, A']) — the honest
+    positive now meets the same bar as the refutation. -/
+theorem colour_bl_bracket (A A' : Matrix (Fin 3) (Fin 3) ℂ) (c c' : ℂ) :
+    (su3EmbedFn A + u1EmbedFn c) * (su3EmbedFn A' + u1EmbedFn c')
+      - (su3EmbedFn A' + u1EmbedFn c') * (su3EmbedFn A + u1EmbedFn c)
+      = su3EmbedFn (A * A' - A' * A) := by
+  have hc1 := su3_u1_commute A c'
+  have hc2 := su3_u1_commute A' c
+  have hu : u1EmbedFn c * u1EmbedFn c' = u1EmbedFn c' * u1EmbedFn c :=
+    sub_eq_zero.mp (u1Embed_bracket c c')
+  rw [su3EmbedFn_sub, ← su3EmbedFn_mul, ← su3EmbedFn_mul,
+    add_mul, add_mul, mul_add, mul_add, mul_add, mul_add, hc1, hc2, hu]
+  abel
+
+/-- The leptoquark count as an actual QUOTIENT dimension: the coset
+    space sl₄ / (colour ⊕ B−L) is 6-dimensional. -/
+theorem leptoquark_coset :
+    finrank ℂ (TracelessMatrix 4 ⧸
+      LinearMap.range (su3EmbedRestricted.coprod u1EmbedRestricted)) = 6 := by
+  have h := Submodule.finrank_quotient_add_finrank
+    (LinearMap.range (su3EmbedRestricted.coprod u1EmbedRestricted))
+  rw [colour_bl_finrank, traceless_dim_4] at h
+  omega
 
 end SMEmbeddingHonest

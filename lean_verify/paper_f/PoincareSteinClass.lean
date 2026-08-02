@@ -56,8 +56,12 @@
     the watchlist. What IS proven: the Stein class contains every
     everywhere-differentiable function of polynomial growth (item 4)
     and strictly more (item 6), and Poincaré holds on all of it
-    (item 3) — which strictly extends every Poincaré statement
-    previously in the estate.
+    (item 3) — which strictly extends the estate's ONE-DIMENSIONAL
+    STANDARD-GAUSSIAN Poincaré chain (the polynomial theorem and
+    `poincare_beyond_polynomials`). The σ-scaled and n-dimensional
+    product results are PARALLEL statements, not subsumed by this
+    file; a Stein-class version at every variance is the natural next
+    deepening and is mapped on the watchlist.
   * One dimension, the standard Gaussian, and nothing about the spectral
     action — all exactly as disclaimed upstream.
 
@@ -234,14 +238,11 @@ theorem steinPair_jump : SteinPair fJump (fun _ => 1) := by
   rw [hcongr]
   exact hpair q
 
-/-- **fJump has no everywhere-pointwise derivative**: it is discontinuous
-    at 0 (value 5, limit 0), and everywhere-differentiable functions are
-    continuous. So no theorem hypothesising `∀ x, HasDerivAt f (g x) x`
-    can reach it. -/
-theorem jump_not_pointwise_differentiable :
-    ¬ ∃ g : ℝ → ℝ, ∀ x, HasDerivAt fJump (g x) x := by
-  rintro ⟨g, hg⟩
-  have hc : ContinuousAt fJump 0 := (hg 0).continuousAt
+/-- **fJump is not even continuous at 0** (value 5, limit 0) — exported
+    standalone because it rules out MORE than non-differentiability:
+    no hypothesis family that implies continuity at 0 can reach fJump. -/
+theorem fJump_not_continuousAt : ¬ ContinuousAt fJump 0 := by
+  intro hc
   have h5 : fJump 0 = 5 := by simp [fJump]
   have hlim5 : Filter.Tendsto fJump (nhdsWithin 0 {0}ᶜ) (nhds (5 : ℝ)) := by
     have h := hc.tendsto
@@ -256,6 +257,15 @@ theorem jump_not_pointwise_differentiable :
     simp only [fJump, if_neg (Set.mem_compl_singleton_iff.mp hx)]
   have h50 := tendsto_nhds_unique hlim5 hlim0
   norm_num at h50
+
+/-- **fJump has no everywhere-pointwise derivative**: differentiability
+    everywhere implies continuity everywhere, and `fJump_not_continuousAt`
+    forbids it. So no theorem hypothesising `∀ x, HasDerivAt f (g x) x`
+    can reach fJump. -/
+theorem jump_not_pointwise_differentiable :
+    ¬ ∃ g : ℝ → ℝ, ∀ x, HasDerivAt fJump (g x) x := by
+  rintro ⟨g, hg⟩
+  exact fJump_not_continuousAt (hg 0).continuousAt
 
 /-- **The strictness certificate, in one statement**: (fJump, 1) is in the
     class, no pointwise-derivative hypothesis covers fJump, and the
