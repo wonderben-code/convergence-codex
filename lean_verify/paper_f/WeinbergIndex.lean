@@ -67,14 +67,16 @@
   NOT proven here: gauge coupling unification (an assumption about
   physics, not mathematics — inside SO(10) it is automatic, and no
   SO(10) exists in the estate); renormalisation running; symmetry
-  breaking; anything about the measured low-energy angle; the Lie
-  MODULE structure itself — this file formalises the WEIGHT SYSTEM
-  (diagonal Cartan data) of the representation, and identifying these
-  diagonals as the Cartan images of a full su(4)⊕su(2)⊕su(2) action is
-  the standard unformalised identification, mapped on the watchlist;
-  and the Dynkin indices of NON-abelian generators beyond the diagonal
-  ones (for the diagonal/abelian directions used here, the trace form
-  IS the index computation).
+  breaking; anything about the measured low-energy angle; the full
+  su(4) colour action beyond its B−L direction. The su(2)×su(2) half of
+  the module identification IS now formalised — `Su2ModuleSixteen`
+  builds the ladder operators and proves both sl₂ triples, the
+  commuting of the two sides, and the centrality of B−L, so the
+  diagonals here are proven Cartan data of a genuine representation,
+  not free-floating weights. The Dynkin indices of NON-abelian
+  generators beyond the diagonal ones remain unformalised (for the
+  diagonal/abelian directions used here, the trace form IS the index
+  computation).
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
   axioms.
@@ -205,6 +207,22 @@ theorem trace_T3R_BL :
   simp only [Fintype.sum_prod_type]
   norm_num [t3Rval, blval, t3_zero, t3_one, b4_zero, b4_one, b4_two,
     b4_three, Fin.sum_univ_four, Fin.sum_univ_two]
+
+/-- The LITERAL decomposition (review round 8: links became one chain):
+    Tr(Y²) = Tr(T₃R²) + Tr(T₃R·(B−L)) + ¼·Tr((B−L)²) as a single
+    identity — with `trace_T3R_sq`, `trace_T3R_BL`, `trace_BL_sq` this
+    derives `trace_Y_sq`'s 10/3 rather than merely being consistent
+    with it. -/
+theorem trace_Y_sq_decomposition :
+    (Y * Y).trace
+      = (Matrix.diagonal t3Rval * Matrix.diagonal t3Rval).trace
+        + (Matrix.diagonal t3Rval * Matrix.diagonal blval).trace
+        + (1 / 4 : ℚ) * (Matrix.diagonal blval * Matrix.diagonal blval).trace := by
+  simp only [Y, Matrix.diagonal_mul_diagonal, Matrix.trace_diagonal]
+  rw [Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]
+  refine Fintype.sum_congr _ _ fun s => ?_
+  simp only [yval]
+  ring
 
 /-- **T₃L ⊥ Y in the trace form**: the cross term vanishes, block by
     block — this is why Tr(Q²) = Tr(T₃L²) + Tr(Y²). -/

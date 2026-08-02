@@ -40,9 +40,16 @@
      (with f′ of polynomial growth) forms a σ-Stein pair with f′ —
      the reverse transport, test side composed with C(σ)·X.
   5. **`poincare_scaled_beyond_subsumed`** — `poincare_scaled_beyond`'s
-     statement re-derived from the class inequality (σ = 0 again by the
-     Dirac case): the scaled chain is now SUBSUMED, completing what the
-     round-7 correction to `PoincareSteinClass`'s honesty box scoped.
+     statement re-derived: σ ≠ 0 THROUGH the class inequality; σ = 0 by
+     the same standalone Dirac computation (necessarily so — at σ = 0
+     the C¹ pairs provably do not lie in the degenerate class, so no
+     class route exists there). The scaled chain is SUBSUMED, completing
+     what the round-7 correction scoped; `poincare_scaled_beyond_original`
+     restates it in the original file's literal spelling.
+  6. **Sharpness, machine-checked** (review round 8): `var_id_scaled`
+     (Var_{γ_σ²}(X) = σ²) and **`no_better_constant_scaled`** — any
+     constant serving the whole σ-class at σ ≠ 0 is at least σ². The
+     header's "sharp σ² constant" is now a theorem, not a docstring.
 
   WHAT IS AND IS NOT CLAIMED: exactly the variance-one file's honesty
   box, at every σ — polynomials are the test family (incomparable with
@@ -92,10 +99,6 @@ theorem map_scaled (σ : ℝ) :
   · ring
   · ext
     simp
-
-theorem measurePreserving_scaled (σ : ℝ) :
-    MeasurePreserving (fun x => σ * x) gauss (gaussSc σ) :=
-  ⟨by fun_prop, map_scaled σ⟩
 
 /-- Change of variables needing only a.e. strong measurability (the
     class members carry no more). -/
@@ -158,7 +161,8 @@ theorem steinPairScaled_toStd {σ : ℝ} (hσ : σ ≠ 0) {f g : ℝ → ℝ}
 /-! ## 3. The inequality at every variance -/
 
 /-- The Dirac degeneration: at variance 0 the Gaussian is the Dirac
-    mass at 0 and every variance vanishes. -/
+    mass at 0 (a measure equality; the vanishing of both sides of the
+    inequality is derived from it downstream, not stated here). -/
 theorem gaussSc_zero : gaussSc 0 = Measure.dirac 0 := by
   have h0 : (⟨(0 : ℝ) ^ 2, sq_nonneg 0⟩ : NNReal) = 0 := by
     ext
@@ -335,9 +339,10 @@ theorem poincare_scaled_beyond_subsumed (σ : ℝ) {f f' : ℝ → ℝ}
   · exact poincare_stein_scaled σ
       (steinPairScaled_of_polyGrowth hσ hderiv hb hb')
 
-/-- Non-vacuity at every variance: (X, 1) is a σ-Stein pair for σ ≠ 0,
-    and at it the inequality reads σ² ≤ σ²·1 — the constant is used in
-    full. -/
+/-- Non-vacuity at every variance: (X, 1) is a σ-Stein pair for σ ≠ 0.
+    At it the inequality reads σ² ≤ σ²·1 — now MACHINE-CHECKED by
+    `var_id_scaled` and `no_better_constant_scaled` below, not merely
+    asserted. -/
 theorem steinPairScaled_id_one {σ : ℝ} (hσ : σ ≠ 0) :
     SteinPairScaled σ (fun x => x) (fun _ => 1) := by
   refine steinPairScaled_of_polyGrowth (C := 1) (m := 1) hσ
@@ -348,5 +353,44 @@ theorem steinPairScaled_id_one {σ : ℝ} (hσ : σ ≠ 0) :
   · have h0 : (0 : ℝ) ≤ x ^ 2 := sq_nonneg x
     rw [abs_one]
     nlinarith
+
+/-! ## 5. Sharpness, machine-checked (review round 8) -/
+
+/-- Var_{γ_σ²}(X) = σ² — the variance side of the sharpness identity,
+    from Mathlib's `variance_id_gaussianReal`. -/
+theorem var_id_scaled (σ : ℝ) :
+    (∫ x, x ^ 2 ∂gaussSc σ) - (∫ x, x ∂gaussSc σ) ^ 2 = σ ^ 2 := by
+  have hvar : Var[id; gaussSc σ] = ((⟨σ ^ 2, sq_nonneg σ⟩ : ℝ≥0) : ℝ) :=
+    variance_id_gaussianReal
+  rw [variance_eq_sub (memLp_id_gaussianReal' 2 (by norm_num))] at hvar
+  simpa using hvar
+
+/-- **The σ² constant is sharp at every σ ≠ 0**: any constant c that
+    serves EVERY σ-Stein pair satisfies σ² ≤ c — witnessed by (X, 1),
+    where the left side is exactly σ² and ∫1² = 1. -/
+theorem no_better_constant_scaled {σ : ℝ} (hσ : σ ≠ 0) (c : ℝ)
+    (h : ∀ f g : ℝ → ℝ, SteinPairScaled σ f g →
+      (∫ x, f x ^ 2 ∂gaussSc σ) - (∫ x, f x ∂gaussSc σ) ^ 2
+        ≤ c * ∫ x, g x ^ 2 ∂gaussSc σ) :
+    σ ^ 2 ≤ c := by
+  have hid := h (fun x => x) (fun _ => 1) (steinPairScaled_id_one hσ)
+  have h1 : ∫ x, ((fun _ : ℝ => (1 : ℝ)) x) ^ 2 ∂gaussSc σ = 1 := by simp
+  rw [h1, mul_one] at hid
+  simp only [] at hid
+  linarith [var_id_scaled σ]
+
+/-- The subsumption, restated in `poincare_scaled_beyond`'s literal
+    spelling (the two are definitionally equal; this closes even the
+    cosmetic gap). -/
+theorem poincare_scaled_beyond_original (σ : ℝ) {f f' : ℝ → ℝ}
+    (hderiv : ∀ x, HasDerivAt f (f' x) x)
+    {C : ℝ} {m : ℕ}
+    (hb : ∀ x, |f x| ≤ C * (1 + x ^ 2) ^ m)
+    (hb' : ∀ x, |f' x| ≤ C * (1 + x ^ 2) ^ m) :
+    (∫ x, f x ^ 2 ∂(gaussianReal 0 (⟨σ ^ 2, sq_nonneg σ⟩ : NNReal)))
+        - (∫ x, f x ∂(gaussianReal 0 (⟨σ ^ 2, sq_nonneg σ⟩ : NNReal))) ^ 2
+      ≤ σ ^ 2 * ∫ x, f' x ^ 2
+          ∂(gaussianReal 0 (⟨σ ^ 2, sq_nonneg σ⟩ : NNReal)) :=
+  poincare_scaled_beyond_subsumed σ hderiv hb hb'
 
 end PoincareSteinScaled

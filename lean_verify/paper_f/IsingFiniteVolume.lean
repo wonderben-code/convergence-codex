@@ -75,18 +75,10 @@ abbrev Site (n : ℕ) := Fin n × Fin n
 /-- Configurations: a Boolean spin at every site. -/
 abbrev Config (n : ℕ) := Site n → Bool
 
-/-- Every singleton of configurations is measurable: it is the finite
-    intersection of coordinate constraints. (Mathlib has this instance
-    for products but not for finite function spaces.) -/
-instance (n : ℕ) : MeasurableSingletonClass (Config n) := by
-  constructor
-  intro σ
-  have h : {σ} = ⋂ p : Site n, (fun τ : Config n => τ p) ⁻¹' {σ p} := by
-    ext τ
-    simp [funext_iff]
-  rw [h]
-  exact MeasurableSet.iInter fun p =>
-    measurable_pi_apply p (measurableSet_singleton (σ p))
+-- Measurability of singletons in Config n comes from Mathlib's
+-- `Pi.instMeasurableSingletonClass` (countable index, discrete
+-- coordinates) — review round 8 corrected an earlier claim here that
+-- Mathlib lacked this instance (ERRATA 38).
 
 /-- Spin value: true ↦ +1, false ↦ −1. -/
 def spin (b : Bool) : ℝ := if b then 1 else -1
@@ -106,12 +98,45 @@ def adj {n : ℕ} (p q : Site n) : Prop :=
 instance {n : ℕ} (p q : Site n) : Decidable (adj p q) := by
   unfold adj; infer_instance
 
+/-- Adjacency is symmetric — the "bond" reading is honest. -/
+theorem adj_symm {n : ℕ} (p q : Site n) : adj p q ↔ adj q p := by
+  unfold adj
+  constructor <;>
+    rintro (⟨h1, h2⟩ | ⟨h1, h2⟩)
+  · exact Or.inl ⟨h1.symm, h2.symm⟩
+  · exact Or.inr ⟨h1.symm, h2.symm⟩
+  · exact Or.inl ⟨h1.symm, h2.symm⟩
+  · exact Or.inr ⟨h1.symm, h2.symm⟩
+
+/-- No site is adjacent to itself. -/
+theorem adj_irrefl {n : ℕ} (p : Site n) : ¬ adj p p := by
+  unfold adj
+  rintro (⟨-, h | h⟩ | ⟨-, h | h⟩) <;> omega
+
 /-- The Ising Hamiltonian, free boundary, ORDERED adjacent pairs (each
     bond twice — a rescaling of the coupling, harmless for every
     theorem below): H(σ) = −Σ_{p~q} σ_p·σ_q. -/
 def isingH (n : ℕ) (σ : Config n) : ℝ :=
   -∑ p : Site n, ∑ q : Site n,
     if adj p q then spin (σ p) * spin (σ q) else 0
+
+/-- The concrete anchor pinning the double-count convention: the 2×2
+    box has 4 bonds = 8 ordered pairs, so the all-aligned energy is −8
+    (standard single-count normalisation would give −4). -/
+theorem isingH_two_allTrue : isingH 2 (fun _ => true) = -8 := by
+  have hcount : ((Finset.univ : Finset (Site 2 × Site 2)).filter
+      (fun pq => adj pq.1 pq.2)).card = 8 := by decide
+  have hflat : ∑ pq : Site 2 × Site 2, (if adj pq.1 pq.2 then (1 : ℝ) else 0)
+      = ∑ p : Site 2, ∑ q : Site 2,
+          (if adj p q then spin ((fun _ => true) p) * spin ((fun _ => true) q)
+            else 0) := by
+    rw [Fintype.sum_prod_type]
+    refine Fintype.sum_congr _ _ fun p => ?_
+    refine Fintype.sum_congr _ _ fun q => ?_
+    change (if adj p q then (1 : ℝ) else 0) = _
+    split <;> simp [spin]
+  rw [isingH, ← hflat, Finset.sum_boole, hcount]
+  norm_num
 
 /-! ## 2. The symmetry -/
 
@@ -261,18 +286,30 @@ theorem isingH_zflip (n : ℕ) (g : Multiplicative (ZMod 2)) (σ : Config n) :
       simp [zflip, hg]
     rw [h, isingH_flip]
 
+/-- **The positive universal form** (review round 8: the stronger fact,
+    on the record): EVERY ℤ₂ element fixes the Ising Gibbs measure at
+    EVERY β and every box size. -/
+theorem ising_gibbs_zflip_invariant (n : ℕ) (β : ℝ)
+    (g : Multiplicative (ZMod 2)) :
+    Measure.map (fun σ => g • σ)
+        (FiniteGibbs.gibbs β (isingH n) (Measure.count : Measure (Config n)))
+      = FiniteGibbs.gibbs β (isingH n) Measure.count :=
+  FiniteGibbs.gibbs_smul_invariant (measurable_isingH n)
+    (measurePreserving_zflip n) (isingH_zflip n) β g
+
 /-- **No finite-volume symmetry breaking for the 2-d Ising model**: the
     clause-(2) SHAPE of the refuted phase-transition statement fails for
     the real model at every box size — there is no β_c beyond which any
-    ℤ₂ element breaks invariance. `FiniteGibbs.no_finite_volume_breaking`
-    instantiated at its intended target. -/
+    ℤ₂ element breaks invariance. One line from the positive universal
+    form above. -/
 theorem ising_no_finite_volume_breaking (n : ℕ) :
     ¬ ∃ β_c : ℝ, ∀ β > β_c, ∃ g : Multiplicative (ZMod 2),
         FiniteGibbs.gibbs β (isingH n) (Measure.count : Measure (Config n))
           ≠ Measure.map (fun σ => g • σ)
-              (FiniteGibbs.gibbs β (isingH n) Measure.count) :=
-  FiniteGibbs.no_finite_volume_breaking (measurable_isingH n)
-    (measurePreserving_zflip n) (isingH_zflip n)
+              (FiniteGibbs.gibbs β (isingH n) Measure.count) := by
+  rintro ⟨β_c, h⟩
+  obtain ⟨g, hg⟩ := h (β_c + 1) (by linarith)
+  exact hg (ising_gibbs_zflip_invariant n (β_c + 1) g).symm
 
 /-! ## 6. Nontriviality: the model genuinely interacts -/
 

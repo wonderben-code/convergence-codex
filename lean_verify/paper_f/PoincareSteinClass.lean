@@ -58,10 +58,11 @@
     and strictly more (item 6), and Poincaré holds on all of it
     (item 3) — which strictly extends the estate's ONE-DIMENSIONAL
     STANDARD-GAUSSIAN Poincaré chain (the polynomial theorem and
-    `poincare_beyond_polynomials`). The σ-scaled and n-dimensional
-    product results are PARALLEL statements, not subsumed by this
-    file; a Stein-class version at every variance is the natural next
-    deepening and is mapped on the watchlist.
+    `poincare_beyond_polynomials`). The σ-scaled chain is subsumed
+    DOWNSTREAM by `PoincareSteinScaled` (the class at every variance,
+    σ² proven sharp there); the n-dimensional product results remain
+    PARALLEL — nothing subsumes them. The L²-CLASS-level strictness
+    witness (|x|, sgn) lives in `AbsSteinWitness`.
   * One dimension, the standard Gaussian, and nothing about the spectral
     action — all exactly as disclaimed upstream.
 
