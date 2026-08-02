@@ -31,7 +31,9 @@
      family: √(x²+ε²) is differentiable with derivative x/√(x²+ε²),
      value ≤ (1+|ε|)(1+x²), derivative bounded by 1.
   3. `tendsto_smooth`, `tendsto_smooth_deriv` — pointwise limits: values
-     → |x| everywhere; derivatives → sgn x for x ≠ 0 (hence γ-a.e.).
+     → |x| everywhere; derivatives → sgn x for x ≠ 0 — hence γ-a.e.,
+     exported as `tendsto_smooth_deriv_ae` (via `ae_ne_zero`, the null
+     atom absorbed once).
   4. **`steinPair_abs`** — (|x|, sgn) IS a Stein pair: membership by
      polynomial growth, the pairing by dominated convergence through
      the smoothing family.
@@ -43,6 +45,11 @@
   6. **`stein_strict_classes`** — the certificate: membership,
      class-level unreachability, and the Poincaré conclusion
      Var(|x|) ≤ ∫ sgn² dγ in one statement.
+  7. `integral_sgn_sq` — ∫ sgn² dγ = 1, so the certificate's inequality
+     reads Var(|x|) = 1 − 2/π ≤ 1: SLACK at this witness (its force is
+     membership + unreachability; sharpness stays with (X, 1)). And
+     `sgn_eq_signType_cast` — the piecewise sgn IS the real cast of
+     Mathlib's `SignType.sign`.
 
   NOT proven here: the comparison with the Cc^∞-defined W^{1,2}(γ)
   stays OPEN exactly as before — |x| lies in that Sobolev space too, so
@@ -193,19 +200,24 @@ theorem tendsto_smooth_deriv {x : ℝ} (hx : x ≠ 0) :
   have h2 := hconst.div (tendsto_smooth x) habs
   rwa [div_abs_eq_sgn hx] at h2
 
-/-- The γ-a.e. form, exported (review round 9): the null set {0} is
-    absorbed once, reusably. -/
+/-- γ-a.e., x ≠ 0 (review round 10): the null atom {0} absorbed ONCE,
+    reusable by every a.e. statement downstream. -/
+theorem ae_ne_zero : ∀ᵐ x ∂gauss, x ≠ 0 := by
+  have hna : NoAtoms (gauss : Measure ℝ) := noAtoms_gaussianReal one_ne_zero
+  have hmem : {(0 : ℝ)}ᶜ ∈ ae gauss := by
+    rw [mem_ae_iff, compl_compl]
+    exact measure_singleton 0
+  filter_upwards [hmem] with x hx
+  exact Set.mem_compl_singleton_iff.mp hx
+
+/-- The γ-a.e. form, exported (review round 9): derivatives → sgn,
+    a.e. -/
 theorem tendsto_smooth_deriv_ae :
     ∀ᵐ x ∂gauss, Tendsto
       (fun n : ℕ => x / Real.sqrt (x ^ 2 + (1 / (n + 1) : ℝ) ^ 2))
       atTop (nhds (sgn x)) := by
-  have hna : NoAtoms (gauss : Measure ℝ) := noAtoms_gaussianReal one_ne_zero
-  have h0 : (gauss : Measure ℝ) {0} = 0 := measure_singleton 0
-  have hmem : {(0 : ℝ)}ᶜ ∈ ae gauss := by
-    rw [mem_ae_iff, compl_compl]
-    exact h0
-  filter_upwards [hmem] with x hx
-  exact tendsto_smooth_deriv (Set.mem_compl_singleton_iff.mp hx)
+  filter_upwards [ae_ne_zero] with x hx
+  exact tendsto_smooth_deriv hx
 
 /-! ## 4. The pairing, by dominated convergence -/
 
@@ -331,14 +343,8 @@ theorem steinPair_abs : SteinPair (fun x => |x|) sgn := by
     unreachability, not the numeric bound. Sharpness of the constant
     stays with (X, 1) upstream. -/
 theorem integral_sgn_sq : ∫ x, sgn x ^ 2 ∂gauss = 1 := by
-  have hna : NoAtoms (gauss : Measure ℝ) := noAtoms_gaussianReal one_ne_zero
-  have h0 : (gauss : Measure ℝ) {0} = 0 := measure_singleton 0
-  have hmem : {(0 : ℝ)}ᶜ ∈ ae gauss := by
-    rw [mem_ae_iff, compl_compl]
-    exact h0
   have hae : (fun x => sgn x ^ 2) =ᵐ[gauss] fun _ => (1 : ℝ) := by
-    filter_upwards [hmem] with x hx
-    have hx0 : x ≠ 0 := Set.mem_compl_singleton_iff.mp hx
+    filter_upwards [ae_ne_zero] with x hx0
     rcases lt_or_gt_of_ne hx0 with h | h
     · simp [sgn, h]
     · simp [sgn, not_lt.mpr h.le, h]
