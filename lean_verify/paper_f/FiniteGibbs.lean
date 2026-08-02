@@ -127,8 +127,10 @@ theorem Z_ne_zero (β : ℝ) {H : Ω → ℝ} {C : ℝ} (hC : ∀ ω, |H ω| ≤
   · exact absurd h (by simp [Real.exp_pos])
   · exact hν (Measure.measure_univ_eq_zero.mp h)
 
-/-- Under measurable bounded H and a finite nonzero reference measure, the
-    Gibbs measure is an honest probability measure. -/
+/-- Under bounded H and a finite nonzero reference measure, the Gibbs
+    measure is an honest probability measure. (No measurability of H is
+    needed — an adversarial review probed the theorem at an arbitrary
+    bounded function.) -/
 theorem isProbabilityMeasure_gibbs (β : ℝ) {H : Ω → ℝ}
     {C : ℝ} (hC : ∀ ω, |H ω| ≤ C) (ν : Measure Ω) [IsFiniteMeasure ν]
     (hν : ν ≠ 0) : IsProbabilityMeasure (gibbs β H ν) := by
@@ -175,10 +177,13 @@ theorem gibbs_smul_invariant {G : Type*} [Group G] [MulAction G Ω]
   gibbs_map_of_invariant β hmeas (hact g) (hH g)
 
 /-- **No finite-volume symmetry breaking.** For a G-invariant finite-volume
-    system, clause (2) of the refuted phase-transition statement fails at
-    EVERY candidate β_c: the Gibbs measure equals every pushforward, at
-    every β. Symmetry breaking, if it is anywhere, is in the
-    thermodynamic limit — not in any finite volume. -/
+    system, the clause-(2) SHAPE of the refuted phase-transition statement
+    — stated here for the `gibbs` DEFINED in this file, not for the opaque
+    `GibbsMeasure` axiom of the logos file, to which no formal bridge
+    exists (see the NOT-proven box) — fails at EVERY candidate β_c: the
+    Gibbs measure equals every pushforward, at every β. Symmetry breaking,
+    if it is anywhere, is in the thermodynamic limit — not in any finite
+    volume. -/
 theorem no_finite_volume_breaking {G : Type*} [Group G] [MulAction G Ω]
     {H : Ω → ℝ} (hmeas : Measurable H) {ν : Measure Ω}
     (hact : ∀ g : G, MeasurePreserving (fun ω => g • ω) ν ν)
@@ -218,6 +223,12 @@ theorem H2_flip_invariant : ∀ σ, H2 (flip σ) = H2 σ := by
 theorem flip_nontrivial : ∀ σ : Bool × Bool, flip σ ≠ σ := by
   intro ⟨a, b⟩
   cases a <;> cases b <;> simp [flip]
+
+/-- The flip is an involution — the header calls it one, so the file
+    proves it (adversarial review round 5, F2). -/
+theorem flip_involutive : ∀ σ : Bool × Bool, flip (flip σ) = σ := by
+  intro ⟨a, b⟩
+  cases a <;> cases b <;> rfl
 
 theorem measurePreserving_flip : MeasurePreserving flip ν₄ ν₄ := by
   refine ⟨measurable_of_countable flip, ?_⟩

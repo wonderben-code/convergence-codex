@@ -38,11 +38,13 @@
 
   WHAT THIS IS AND IS NOT (the honesty box):
 
-  * This closes the finite-site OS2 programme at its strongest form: the
-    span of exponentials is dense in every reasonable observable algebra
-    over a finite site family, and both the linear pairing
-    (`OS2MeasureLevel.os2_measure_level`) and the exponential pairing
-    (here) are now theorems. Still FINITE sites: no projective limit, no
+  * This closes the finite-site OS2 programme at its strongest PROVEN
+    form: both the linear pairing (`OS2MeasureLevel.os2_measure_level`)
+    and the exponential pairing (here) are theorems. (The standard remark
+    that the span of exponentials is dense in the reasonable observable
+    algebras is UNFORMALISED MOTIVATION — no density theorem exists in
+    the estate, and none is claimed; an adversarial review asked for this
+    label.) Still FINITE sites: no projective limit, no
     continuum field, no OS reconstruction.
   * OU-PRODUCT covariance, NOT the lattice-Laplacian Green function — the
     same boundary as the whole staircase, unchanged.

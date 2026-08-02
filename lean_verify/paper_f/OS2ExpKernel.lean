@@ -85,18 +85,23 @@ def reflKernel {m : ℕ} (Δ : Fin (m + 1) → ℝ) {N : ℕ}
     (z : Fin N → Fin (m + 1) → ℝ) : Matrix (Fin N) (Fin N) ℝ :=
   Matrix.of fun a b => ∏ k, Real.exp (-(Δ k) * |z a k - theta (z b) k|)
 
-/-- The reflected kernel is symmetric: C(zₐ, θz_b) = C(z_b, θzₐ) — in
-    coordinate 0 both exponents are −Δ₀(zₐ₀ + z_b₀). -/
+/-- The reflected kernel is symmetric: C(zₐ, θz_b) = C(z_b, θzₐ) —
+    UNCONDITIONALLY: coordinate 0 gives |zₐ₀ + z_b₀|, symmetric with no
+    sign hypothesis, and the spatial coordinates are symmetric by
+    `abs_sub_comm`. (An adversarial review caught an earlier version
+    carrying an unnecessary positivity hypothesis; it is needed only for
+    positive SEMIDEFINITENESS below, not for symmetry.) -/
 theorem reflKernel_symm {m : ℕ} (Δ : Fin (m + 1) → ℝ) {N : ℕ}
-    (z : Fin N → Fin (m + 1) → ℝ) (hpos : ∀ i, 0 ≤ z i 0) (a b : Fin N) :
+    (z : Fin N → Fin (m + 1) → ℝ) (a b : Fin N) :
     reflKernel Δ z a b = reflKernel Δ z b a := by
   simp only [reflKernel, Matrix.of_apply]
-  rw [reflectedProdCov_eq Δ (z a) (z b) (hpos a) (hpos b),
-    reflectedProdCov_eq Δ (z b) (z a) (hpos b) (hpos a)]
+  refine Finset.prod_congr rfl fun k _ => ?_
   congr 1
-  · congr 2
-    ring
-  · exact Finset.prod_congr rfl fun k _ => by rw [abs_sub_comm]
+  congr 1
+  refine Fin.cases ?_ ?_ k
+  · rw [theta_zero, theta_zero, sub_neg_eq_add, sub_neg_eq_add, add_comm]
+  · intro l
+    rw [theta_succ, theta_succ, abs_sub_comm]
 
 /-- **The reflected kernel matrix is PSD** — `os2_reflection`, packaged. -/
 theorem reflKernel_posSemidef {m : ℕ} (Δ : Fin (m + 1) → ℝ)
@@ -106,7 +111,7 @@ theorem reflKernel_posSemidef {m : ℕ} (Δ : Fin (m + 1) → ℝ)
   refine PosSemidef.of_dotProduct_mulVec_nonneg ?_ ?_
   · ext a b
     simp only [Matrix.conjTranspose_apply, star_trivial]
-    exact reflKernel_symm Δ z hpos b a
+    exact reflKernel_symm Δ z b a
   · intro x
     have h := os2_reflection Δ hΔ z hpos x
     have heq : star x ⬝ᵥ reflKernel Δ z *ᵥ x
