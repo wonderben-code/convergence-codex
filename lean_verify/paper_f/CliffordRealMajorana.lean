@@ -35,6 +35,12 @@
   7. **`cliffordMajoranaEquiv`** — the bundled AlgEquiv
      Cl(3,1;ℝ) ≃ₐ[ℝ] M₄(ℝ) (injectivity by rank at equal finrank 16),
      with generator corollaries `cliffordMajoranaEquiv_e₀ .. _e₃`.
+  8. `Q₃₁_eq_neg_Q₁₃` and `Q₃₁_ne_Q₁₃` — this file's form is the exact
+     pointwise negative of `CliffordRealMinkowski.Q₁₃`, and differs
+     from it at all four coordinate directions. So "the two Minkowski
+     conventions" is a proven relation between the two isomorphism
+     theorems, not a turn of phrase. (Added folding review round 12,
+     which had checked it only in the probe.)
 
   NOT proven here, stated plainly so nobody reads past the bar: the
   mod-8 periodicity table (Cl(1,3) and Cl(3,1) are two of its
@@ -46,13 +52,20 @@
   isomorphisms, and whose missing invariant is recorded in W7.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
-  axioms.
+  axioms (all 51 public declarations probed at review round 12). That
+  round also ran seven corruption tests — Γ₀ squaring to +1, Γ₁ to −1,
+  the gammas commuting, a sign-flipped projector, a mismatched
+  projector pairing, the form being positive semidefinite, the form
+  being the mostly-minus one — each stated as a NEGATION and proven,
+  so the file's uniform entrywise tactics are certified unable to
+  prove the corrupted variants.
 -/
 
 import Mathlib.LinearAlgebra.CliffordAlgebra.Equivs
 import Mathlib.LinearAlgebra.CliffordAlgebra.Prod
 import Mathlib.Data.Matrix.Basis
 import Mathlib.LinearAlgebra.FiniteDimensional.Basic
+import CliffordRealMinkowski
 
 open Matrix CliffordAlgebra
 
@@ -248,10 +261,11 @@ theorem matrix4R_finrank :
     Module.finrank ℝ (Matrix (Fin 4) (Fin 4) ℝ) = 16 := by
   simp [Module.finrank_matrix]
 
-/-- **The dimensions match** — and that is ALL this stage claims. A
-    dimension-matched algebra map is not an isomorphism: surjectivity
-    is a separate obligation (stage 2, route in WALLS.md W7). Stated
-    as its own theorem so the gap is visible rather than implied. -/
+/-- **The dimensions match** — kept as its own theorem because a
+    dimension-matched algebra map is NOT an isomorphism. This file was
+    first landed green stopping exactly here, with surjectivity still
+    owed; §5–6 below discharge that obligation. The theorem stays so a
+    reader can see which step supplies which half. -/
 theorem majorana_dimensions_match :
     Module.finrank ℝ (CliffordAlgebra Q₃₁)
       = Module.finrank ℝ (Matrix (Fin 4) (Fin 4) ℝ) := by
@@ -674,6 +688,35 @@ theorem cliffordMajoranaEquiv_e₃ :
   rw [cliffordMajoranaEquiv_ι]
   simp only [cliffordMajoranaMap, LinearMap.coe_mk, AddHom.coe_mk]
   module
+
+/-! ## 7. The two conventions side by side
+
+`CliffordRealMinkowski.Q₁₃` and `Q₃₁` are not merely "the two
+Minkowski conventions" as a figure of speech: they are exact negatives
+of one another, on the same underlying space, in the same coordinates.
+Review round 12 checked this only in the probe file; it is promoted
+here so the relation between the two isomorphism theorems is machine
+material rather than commentary. -/
+
+/-- **The mostly-plus form is minus the mostly-minus form**, pointwise
+    and in the same coordinates — so `cliffordMajoranaEquiv` and
+    `CliffordRealMinkowski.cliffordRealMinkowskiEquiv` really are the
+    two conventions of one geometry, not two unrelated forms. -/
+theorem Q₃₁_eq_neg_Q₁₃ (v : (ℝ × ℝ) × (ℝ × ℝ)) :
+    Q₃₁ v = - CliffordRealMinkowski.Q₁₃ v := by
+  rw [Q₃₁_apply, CliffordRealMinkowski.Q₁₃_apply]
+  ring
+
+/-- The two forms disagree on every nonzero vector where either is
+    nonzero — stated at the four coordinate directions, which is what
+    the sign-flip actually amounts to. -/
+theorem Q₃₁_ne_Q₁₃ :
+    Q₃₁ ((1, 0), (0, 0)) ≠ CliffordRealMinkowski.Q₁₃ ((1, 0), (0, 0))
+      ∧ Q₃₁ ((0, 1), (0, 0)) ≠ CliffordRealMinkowski.Q₁₃ ((0, 1), (0, 0))
+      ∧ Q₃₁ ((0, 0), (1, 0)) ≠ CliffordRealMinkowski.Q₁₃ ((0, 0), (1, 0))
+      ∧ Q₃₁ ((0, 0), (0, 1)) ≠ CliffordRealMinkowski.Q₁₃ ((0, 0), (0, 1)) := by
+  refine ⟨?_, ?_, ?_, ?_⟩ <;>
+    rw [Q₃₁_apply, CliffordRealMinkowski.Q₁₃_apply] <;> norm_num
 
 end CliffordRealMajorana
 
