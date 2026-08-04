@@ -1,12 +1,12 @@
 /-
-  CliffordRealMajorana.lean — the mostly-PLUS real Clifford algebra
-  Cl(3,1;ℝ): a real 4×4 Majorana representation, with the dimensions
-  matched. STAGE 1 of the W7 twin.
+  CliffordRealMajorana.lean — Cl(3,1;ℝ) ≅ M₄(ℝ) as a bundled ℝ-AlgEquiv:
+  the mostly-PLUS twin, via a real 4×4 Majorana representation.
 
   `CliffordRealMinkowski` proved Cl(1,3;ℝ) ≅ M₂(ℍ) at the mostly-MINUS
   form. WALLS.md's W7 account names the mostly-PLUS twin
   Cl(3,1;ℝ) ≅ M₄(ℝ) as the next stair and maps its route; this file
-  takes the first half of that route.
+  walks it. Both Minkowski conventions are now isomorphism theorems
+  rather than one theorem and one citation.
 
   WHAT THIS FILE PROVES (exactly this, nothing more):
   1. `mgamma_sq` family — the four real 4×4 Majorana gammas square
@@ -22,19 +22,28 @@
      via `CliffordAlgebra.lift`, with `cliffordMajoranaToMatrix_ι`
      tracking generators.
   5. `cliffordMajorana_finrank` (= 16) and `matrix4R_finrank` (= 16),
-     hence **`majorana_dimensions_match`**.
+     hence `majorana_dimensions_match` — kept as its own theorem
+     because a dimension match is NOT an isomorphism, and the file was
+     first landed green at exactly that bar, before surjectivity
+     existed.
+  6. `single_mem` — all sixteen matrix units of M₄(ℝ) lie in the
+     range, hence **`cliffordMajoranaToMatrix_surjective`**. The route
+     is the one WALLS.md W7 maps: the range contains four
+     row-projectors e·⊗1 and four column-projectors 1⊗e·, and every
+     matrix unit is ONE product of one of each — so no nested gamma
+     word is ever expanded.
+  7. **`cliffordMajoranaEquiv`** — the bundled AlgEquiv
+     Cl(3,1;ℝ) ≃ₐ[ℝ] M₄(ℝ) (injectivity by rank at equal finrank 16),
+     with generator corollaries `cliffordMajoranaEquiv_e₀ .. _e₃`.
 
-  NOT proven here, stated plainly so nobody reads past the bar: THIS
-  FILE DOES NOT CLAIM AN ISOMORPHISM. A dimension-matched algebra map
-  is not an iso — surjectivity is a separate obligation and is stage 2
-  of this unit (the route is in WALLS.md W7: generate M₂⊗1 and 1⊗M₂
-  separately, then every Kronecker product, then the matrix units as
-  quarter-combinations). Until that lands, the honest statement is
-  exactly what item 5 says: a representation whose source and target
-  have the same dimension. Also NOT here: the mod-8 periodicity table;
-  the non-isomorphism of Cl(1,3;ℝ) and Cl(3,1;ℝ) (a cited fact, and
-  separating M₂(ℍ) from M₄(ℝ) needs its own invariant — see W7); any
-  spin-group statement; any physics.
+  NOT proven here, stated plainly so nobody reads past the bar: the
+  mod-8 periodicity table (Cl(1,3) and Cl(3,1) are two of its
+  entries, not the table); any spin-group statement; any physics. And
+  the one a reader is most likely to supply for themselves: having
+  Cl(1,3;ℝ) ≅ M₂(ℍ) and Cl(3,1;ℝ) ≅ M₄(ℝ) side by side does NOT
+  prove the two Clifford algebras inequivalent — that needs
+  M₂(ℍ) ≇ M₄(ℝ), which is neither proven here nor implied by the two
+  isomorphisms, and whose missing invariant is recorded in W7.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
   axioms.
@@ -248,4 +257,424 @@ theorem majorana_dimensions_match :
       = Module.finrank ℝ (Matrix (Fin 4) (Fin 4) ℝ) := by
   rw [cliffordMajorana_finrank, matrix4R_finrank]
 
+/-! ## 5. Surjectivity (stage 2)
+
+The route from WALLS.md W7, which avoids expanding sixteen nested
+gamma words. Writing the gammas as Kronecker products, the range
+contains σ₁⊗I and σ₃⊗I outright, and two short words supply I⊗σ₁ and
+I⊗σ₃. Halving sums of those gives the FOUR row-projectors e·⊗I and
+the FOUR column-projectors I⊗e·, and every one of the sixteen matrix
+units is a single product of one of each — depth one, not four. -/
+
+section Surjectivity
+
+set_option linter.unusedSimpArgs false
+set_option linter.unnecessarySeqFocus false
+
+/-- ε⊗I, up to sign: the third element of M₂⊗I. -/
+theorem mΓ₁mΓ₂_eq :
+    mΓ₁ * mΓ₂ = !![0,0,-1,0; 0,0,0,-1; 1,0,0,0; 0,1,0,0] := by
+  ext a b <;> fin_cases a <;> fin_cases b <;>
+    simp [mΓ₁, mΓ₂, Matrix.mul_apply, Fin.sum_univ_four]
+
+/-- I⊗σ₁, as a two-step word. -/
+theorem S_eq :
+    mΓ₁ * mΓ₂ * mΓ₀ = !![0,1,0,0; 1,0,0,0; 0,0,0,1; 0,0,1,0] := by
+  rw [mΓ₁mΓ₂_eq]
+  ext a b <;> fin_cases a <;> fin_cases b <;>
+    simp [mΓ₀, Matrix.mul_apply, Fin.sum_univ_four]
+
+/-- I⊗σ₃. -/
+theorem T_eq :
+    mΓ₀ * mΓ₃ = !![1,0,0,0; 0,-1,0,0; 0,0,1,0; 0,0,0,-1] := by
+  ext a b <;> fin_cases a <;> fin_cases b <;>
+    simp [mΓ₀, mΓ₃, Matrix.mul_apply, Fin.sum_univ_four]
+
+/-- I⊗ε. -/
+theorem U_eq :
+    mΓ₁ * mΓ₂ * mΓ₃ = !![0,1,0,0; -1,0,0,0; 0,0,0,1; 0,0,-1,0] := by
+  rw [mΓ₁mΓ₂_eq]
+  ext a b <;> fin_cases a <;> fin_cases b <;>
+    simp [mΓ₃, Matrix.mul_apply, Fin.sum_univ_four]
+
+/-! ### The generators lie in the range -/
+
+theorem mΓ₀_mem : mΓ₀ ∈ cliffordMajoranaToMatrix.range := by
+  refine ⟨ι Q₃₁ ((1, 0), (0, 0)), ?_⟩
+  change cliffordMajoranaToMatrix (ι Q₃₁ ((1, 0), (0, 0))) = mΓ₀
+  rw [cliffordMajoranaToMatrix_ι]
+  simp only [cliffordMajoranaMap, LinearMap.coe_mk, AddHom.coe_mk]
+  module
+
+theorem mΓ₁_mem : mΓ₁ ∈ cliffordMajoranaToMatrix.range := by
+  refine ⟨ι Q₃₁ ((0, 1), (0, 0)), ?_⟩
+  change cliffordMajoranaToMatrix (ι Q₃₁ ((0, 1), (0, 0))) = mΓ₁
+  rw [cliffordMajoranaToMatrix_ι]
+  simp only [cliffordMajoranaMap, LinearMap.coe_mk, AddHom.coe_mk]
+  module
+
+theorem mΓ₂_mem : mΓ₂ ∈ cliffordMajoranaToMatrix.range := by
+  refine ⟨ι Q₃₁ ((0, 0), (1, 0)), ?_⟩
+  change cliffordMajoranaToMatrix (ι Q₃₁ ((0, 0), (1, 0))) = mΓ₂
+  rw [cliffordMajoranaToMatrix_ι]
+  simp only [cliffordMajoranaMap, LinearMap.coe_mk, AddHom.coe_mk]
+  module
+
+theorem mΓ₃_mem : mΓ₃ ∈ cliffordMajoranaToMatrix.range := by
+  refine ⟨ι Q₃₁ ((0, 0), (0, 1)), ?_⟩
+  change cliffordMajoranaToMatrix (ι Q₃₁ ((0, 0), (0, 1))) = mΓ₃
+  rw [cliffordMajoranaToMatrix_ι]
+  simp only [cliffordMajoranaMap, LinearMap.coe_mk, AddHom.coe_mk]
+  module
+
+/-! ### The eight projectors -/
+
+/-- Row projector e₀₀⊗I = ½(1 + Γ₂). -/
+theorem A0_mem :
+    (!![1,0,0,0; 0,1,0,0; 0,0,0,0; 0,0,0,0] : Matrix (Fin 4) (Fin 4) ℝ)
+      ∈ cliffordMajoranaToMatrix.range := by
+  rw [show (!![1,0,0,0; 0,1,0,0; 0,0,0,0; 0,0,0,0] :
+      Matrix (Fin 4) (Fin 4) ℝ) = (1/2 : ℝ) • (1 + mΓ₂) by
+    ext a b <;> fin_cases a <;> fin_cases b <;>
+      simp [mΓ₂, Matrix.one_apply] <;> norm_num]
+  exact Subalgebra.smul_mem _ (add_mem (one_mem _) mΓ₂_mem) _
+
+/-- Row projector e₁₁⊗I = ½(1 − Γ₂). -/
+theorem A1_mem :
+    (!![0,0,0,0; 0,0,0,0; 0,0,1,0; 0,0,0,1] : Matrix (Fin 4) (Fin 4) ℝ)
+      ∈ cliffordMajoranaToMatrix.range := by
+  rw [show (!![0,0,0,0; 0,0,0,0; 0,0,1,0; 0,0,0,1] :
+      Matrix (Fin 4) (Fin 4) ℝ) = (1/2 : ℝ) • (1 - mΓ₂) by
+    ext a b <;> fin_cases a <;> fin_cases b <;>
+      simp [mΓ₂, Matrix.one_apply] <;> norm_num]
+  exact Subalgebra.smul_mem _ (sub_mem (one_mem _) mΓ₂_mem) _
+
+/-- Row projector e₀₁⊗I = ½(Γ₁ − Γ₁Γ₂). -/
+theorem A2_mem :
+    (!![0,0,1,0; 0,0,0,1; 0,0,0,0; 0,0,0,0] : Matrix (Fin 4) (Fin 4) ℝ)
+      ∈ cliffordMajoranaToMatrix.range := by
+  rw [show (!![0,0,1,0; 0,0,0,1; 0,0,0,0; 0,0,0,0] :
+      Matrix (Fin 4) (Fin 4) ℝ) = (1/2 : ℝ) • (mΓ₁ - mΓ₁ * mΓ₂) by
+    rw [mΓ₁mΓ₂_eq]
+    ext a b <;> fin_cases a <;> fin_cases b <;>
+      simp [mΓ₁] <;> norm_num]
+  exact Subalgebra.smul_mem _ (sub_mem mΓ₁_mem (mul_mem mΓ₁_mem mΓ₂_mem)) _
+
+/-- Row projector e₁₀⊗I = ½(Γ₁ + Γ₁Γ₂). -/
+theorem A3_mem :
+    (!![0,0,0,0; 0,0,0,0; 1,0,0,0; 0,1,0,0] : Matrix (Fin 4) (Fin 4) ℝ)
+      ∈ cliffordMajoranaToMatrix.range := by
+  rw [show (!![0,0,0,0; 0,0,0,0; 1,0,0,0; 0,1,0,0] :
+      Matrix (Fin 4) (Fin 4) ℝ) = (1/2 : ℝ) • (mΓ₁ + mΓ₁ * mΓ₂) by
+    rw [mΓ₁mΓ₂_eq]
+    ext a b <;> fin_cases a <;> fin_cases b <;>
+      simp [mΓ₁] <;> norm_num]
+  exact Subalgebra.smul_mem _ (add_mem mΓ₁_mem (mul_mem mΓ₁_mem mΓ₂_mem)) _
+
+/-- Column projector I⊗e₀₀ = ½(1 + Γ₀Γ₃). -/
+theorem B0_mem :
+    (!![1,0,0,0; 0,0,0,0; 0,0,1,0; 0,0,0,0] : Matrix (Fin 4) (Fin 4) ℝ)
+      ∈ cliffordMajoranaToMatrix.range := by
+  rw [show (!![1,0,0,0; 0,0,0,0; 0,0,1,0; 0,0,0,0] :
+      Matrix (Fin 4) (Fin 4) ℝ) = (1/2 : ℝ) • (1 + mΓ₀ * mΓ₃) by
+    rw [T_eq]
+    ext a b <;> fin_cases a <;> fin_cases b <;>
+      simp [Matrix.one_apply] <;> norm_num]
+  exact Subalgebra.smul_mem _ (add_mem (one_mem _) (mul_mem mΓ₀_mem mΓ₃_mem)) _
+
+/-- Column projector I⊗e₁₁ = ½(1 − Γ₀Γ₃). -/
+theorem B1_mem :
+    (!![0,0,0,0; 0,1,0,0; 0,0,0,0; 0,0,0,1] : Matrix (Fin 4) (Fin 4) ℝ)
+      ∈ cliffordMajoranaToMatrix.range := by
+  rw [show (!![0,0,0,0; 0,1,0,0; 0,0,0,0; 0,0,0,1] :
+      Matrix (Fin 4) (Fin 4) ℝ) = (1/2 : ℝ) • (1 - mΓ₀ * mΓ₃) by
+    rw [T_eq]
+    ext a b <;> fin_cases a <;> fin_cases b <;>
+      simp [Matrix.one_apply] <;> norm_num]
+  exact Subalgebra.smul_mem _ (sub_mem (one_mem _) (mul_mem mΓ₀_mem mΓ₃_mem)) _
+
+/-- Column projector I⊗e₀₁ = ½(Γ₁Γ₂Γ₀ + Γ₁Γ₂Γ₃). -/
+theorem B2_mem :
+    (!![0,1,0,0; 0,0,0,0; 0,0,0,1; 0,0,0,0] : Matrix (Fin 4) (Fin 4) ℝ)
+      ∈ cliffordMajoranaToMatrix.range := by
+  rw [show (!![0,1,0,0; 0,0,0,0; 0,0,0,1; 0,0,0,0] :
+      Matrix (Fin 4) (Fin 4) ℝ)
+      = (1/2 : ℝ) • (mΓ₁ * mΓ₂ * mΓ₀ + mΓ₁ * mΓ₂ * mΓ₃) by
+    rw [S_eq, U_eq]
+    ext a b <;> fin_cases a <;> fin_cases b <;> simp <;> norm_num]
+  exact Subalgebra.smul_mem _
+    (add_mem (mul_mem (mul_mem mΓ₁_mem mΓ₂_mem) mΓ₀_mem)
+      (mul_mem (mul_mem mΓ₁_mem mΓ₂_mem) mΓ₃_mem)) _
+
+/-- Column projector I⊗e₁₀ = ½(Γ₁Γ₂Γ₀ − Γ₁Γ₂Γ₃). -/
+theorem B3_mem :
+    (!![0,0,0,0; 1,0,0,0; 0,0,0,0; 0,0,1,0] : Matrix (Fin 4) (Fin 4) ℝ)
+      ∈ cliffordMajoranaToMatrix.range := by
+  rw [show (!![0,0,0,0; 1,0,0,0; 0,0,0,0; 0,0,1,0] :
+      Matrix (Fin 4) (Fin 4) ℝ)
+      = (1/2 : ℝ) • (mΓ₁ * mΓ₂ * mΓ₀ - mΓ₁ * mΓ₂ * mΓ₃) by
+    rw [S_eq, U_eq]
+    ext a b <;> fin_cases a <;> fin_cases b <;> simp <;> norm_num]
+  exact Subalgebra.smul_mem _
+    (sub_mem (mul_mem (mul_mem mΓ₁_mem mΓ₂_mem) mΓ₀_mem)
+      (mul_mem (mul_mem mΓ₁_mem mΓ₂_mem) mΓ₃_mem)) _
+
+end Surjectivity
+
+/-! ### The sixteen matrix units
+
+Each is ONE product of a row-projector and a column-projector:
+e_{ik}⊗I times I⊗e_{jl} is e_{ik}⊗e_{jl}. No nested gamma word is ever
+expanded here — that is the whole point of the projector route. -/
+
+section MatrixUnits
+
+set_option linter.unusedSimpArgs false
+set_option linter.unnecessarySeqFocus false
+
+private theorem E00_mem :
+    Matrix.single (0 : Fin 4) (0 : Fin 4) (1 : ℝ)
+      ∈ cliffordMajoranaToMatrix.range := by
+  rw [show Matrix.single (0 : Fin 4) (0 : Fin 4) (1 : ℝ)
+      = (!![1,0,0,0; 0,1,0,0; 0,0,0,0; 0,0,0,0] : Matrix (Fin 4) (Fin 4) ℝ)
+        * (!![1,0,0,0; 0,0,0,0; 0,0,1,0; 0,0,0,0] : Matrix (Fin 4) (Fin 4) ℝ) by
+    ext a b <;> fin_cases a <;> fin_cases b <;>
+      simp [Matrix.single, Matrix.mul_apply, Fin.sum_univ_four]]
+  exact mul_mem A0_mem B0_mem
+
+private theorem E11_mem :
+    Matrix.single (1 : Fin 4) (1 : Fin 4) (1 : ℝ)
+      ∈ cliffordMajoranaToMatrix.range := by
+  rw [show Matrix.single (1 : Fin 4) (1 : Fin 4) (1 : ℝ)
+      = (!![1,0,0,0; 0,1,0,0; 0,0,0,0; 0,0,0,0] : Matrix (Fin 4) (Fin 4) ℝ)
+        * (!![0,0,0,0; 0,1,0,0; 0,0,0,0; 0,0,0,1] : Matrix (Fin 4) (Fin 4) ℝ) by
+    ext a b <;> fin_cases a <;> fin_cases b <;>
+      simp [Matrix.single, Matrix.mul_apply, Fin.sum_univ_four]]
+  exact mul_mem A0_mem B1_mem
+
+private theorem E01_mem :
+    Matrix.single (0 : Fin 4) (1 : Fin 4) (1 : ℝ)
+      ∈ cliffordMajoranaToMatrix.range := by
+  rw [show Matrix.single (0 : Fin 4) (1 : Fin 4) (1 : ℝ)
+      = (!![1,0,0,0; 0,1,0,0; 0,0,0,0; 0,0,0,0] : Matrix (Fin 4) (Fin 4) ℝ)
+        * (!![0,1,0,0; 0,0,0,0; 0,0,0,1; 0,0,0,0] : Matrix (Fin 4) (Fin 4) ℝ) by
+    ext a b <;> fin_cases a <;> fin_cases b <;>
+      simp [Matrix.single, Matrix.mul_apply, Fin.sum_univ_four]]
+  exact mul_mem A0_mem B2_mem
+
+private theorem E10_mem :
+    Matrix.single (1 : Fin 4) (0 : Fin 4) (1 : ℝ)
+      ∈ cliffordMajoranaToMatrix.range := by
+  rw [show Matrix.single (1 : Fin 4) (0 : Fin 4) (1 : ℝ)
+      = (!![1,0,0,0; 0,1,0,0; 0,0,0,0; 0,0,0,0] : Matrix (Fin 4) (Fin 4) ℝ)
+        * (!![0,0,0,0; 1,0,0,0; 0,0,0,0; 0,0,1,0] : Matrix (Fin 4) (Fin 4) ℝ) by
+    ext a b <;> fin_cases a <;> fin_cases b <;>
+      simp [Matrix.single, Matrix.mul_apply, Fin.sum_univ_four]]
+  exact mul_mem A0_mem B3_mem
+
+private theorem E22_mem :
+    Matrix.single (2 : Fin 4) (2 : Fin 4) (1 : ℝ)
+      ∈ cliffordMajoranaToMatrix.range := by
+  rw [show Matrix.single (2 : Fin 4) (2 : Fin 4) (1 : ℝ)
+      = (!![0,0,0,0; 0,0,0,0; 0,0,1,0; 0,0,0,1] : Matrix (Fin 4) (Fin 4) ℝ)
+        * (!![1,0,0,0; 0,0,0,0; 0,0,1,0; 0,0,0,0] : Matrix (Fin 4) (Fin 4) ℝ) by
+    ext a b <;> fin_cases a <;> fin_cases b <;>
+      simp [Matrix.single, Matrix.mul_apply, Fin.sum_univ_four]]
+  exact mul_mem A1_mem B0_mem
+
+private theorem E33_mem :
+    Matrix.single (3 : Fin 4) (3 : Fin 4) (1 : ℝ)
+      ∈ cliffordMajoranaToMatrix.range := by
+  rw [show Matrix.single (3 : Fin 4) (3 : Fin 4) (1 : ℝ)
+      = (!![0,0,0,0; 0,0,0,0; 0,0,1,0; 0,0,0,1] : Matrix (Fin 4) (Fin 4) ℝ)
+        * (!![0,0,0,0; 0,1,0,0; 0,0,0,0; 0,0,0,1] : Matrix (Fin 4) (Fin 4) ℝ) by
+    ext a b <;> fin_cases a <;> fin_cases b <;>
+      simp [Matrix.single, Matrix.mul_apply, Fin.sum_univ_four]]
+  exact mul_mem A1_mem B1_mem
+
+private theorem E23_mem :
+    Matrix.single (2 : Fin 4) (3 : Fin 4) (1 : ℝ)
+      ∈ cliffordMajoranaToMatrix.range := by
+  rw [show Matrix.single (2 : Fin 4) (3 : Fin 4) (1 : ℝ)
+      = (!![0,0,0,0; 0,0,0,0; 0,0,1,0; 0,0,0,1] : Matrix (Fin 4) (Fin 4) ℝ)
+        * (!![0,1,0,0; 0,0,0,0; 0,0,0,1; 0,0,0,0] : Matrix (Fin 4) (Fin 4) ℝ) by
+    ext a b <;> fin_cases a <;> fin_cases b <;>
+      simp [Matrix.single, Matrix.mul_apply, Fin.sum_univ_four]]
+  exact mul_mem A1_mem B2_mem
+
+private theorem E32_mem :
+    Matrix.single (3 : Fin 4) (2 : Fin 4) (1 : ℝ)
+      ∈ cliffordMajoranaToMatrix.range := by
+  rw [show Matrix.single (3 : Fin 4) (2 : Fin 4) (1 : ℝ)
+      = (!![0,0,0,0; 0,0,0,0; 0,0,1,0; 0,0,0,1] : Matrix (Fin 4) (Fin 4) ℝ)
+        * (!![0,0,0,0; 1,0,0,0; 0,0,0,0; 0,0,1,0] : Matrix (Fin 4) (Fin 4) ℝ) by
+    ext a b <;> fin_cases a <;> fin_cases b <;>
+      simp [Matrix.single, Matrix.mul_apply, Fin.sum_univ_four]]
+  exact mul_mem A1_mem B3_mem
+
+private theorem E02_mem :
+    Matrix.single (0 : Fin 4) (2 : Fin 4) (1 : ℝ)
+      ∈ cliffordMajoranaToMatrix.range := by
+  rw [show Matrix.single (0 : Fin 4) (2 : Fin 4) (1 : ℝ)
+      = (!![0,0,1,0; 0,0,0,1; 0,0,0,0; 0,0,0,0] : Matrix (Fin 4) (Fin 4) ℝ)
+        * (!![1,0,0,0; 0,0,0,0; 0,0,1,0; 0,0,0,0] : Matrix (Fin 4) (Fin 4) ℝ) by
+    ext a b <;> fin_cases a <;> fin_cases b <;>
+      simp [Matrix.single, Matrix.mul_apply, Fin.sum_univ_four]]
+  exact mul_mem A2_mem B0_mem
+
+private theorem E13_mem :
+    Matrix.single (1 : Fin 4) (3 : Fin 4) (1 : ℝ)
+      ∈ cliffordMajoranaToMatrix.range := by
+  rw [show Matrix.single (1 : Fin 4) (3 : Fin 4) (1 : ℝ)
+      = (!![0,0,1,0; 0,0,0,1; 0,0,0,0; 0,0,0,0] : Matrix (Fin 4) (Fin 4) ℝ)
+        * (!![0,0,0,0; 0,1,0,0; 0,0,0,0; 0,0,0,1] : Matrix (Fin 4) (Fin 4) ℝ) by
+    ext a b <;> fin_cases a <;> fin_cases b <;>
+      simp [Matrix.single, Matrix.mul_apply, Fin.sum_univ_four]]
+  exact mul_mem A2_mem B1_mem
+
+private theorem E03_mem :
+    Matrix.single (0 : Fin 4) (3 : Fin 4) (1 : ℝ)
+      ∈ cliffordMajoranaToMatrix.range := by
+  rw [show Matrix.single (0 : Fin 4) (3 : Fin 4) (1 : ℝ)
+      = (!![0,0,1,0; 0,0,0,1; 0,0,0,0; 0,0,0,0] : Matrix (Fin 4) (Fin 4) ℝ)
+        * (!![0,1,0,0; 0,0,0,0; 0,0,0,1; 0,0,0,0] : Matrix (Fin 4) (Fin 4) ℝ) by
+    ext a b <;> fin_cases a <;> fin_cases b <;>
+      simp [Matrix.single, Matrix.mul_apply, Fin.sum_univ_four]]
+  exact mul_mem A2_mem B2_mem
+
+private theorem E12_mem :
+    Matrix.single (1 : Fin 4) (2 : Fin 4) (1 : ℝ)
+      ∈ cliffordMajoranaToMatrix.range := by
+  rw [show Matrix.single (1 : Fin 4) (2 : Fin 4) (1 : ℝ)
+      = (!![0,0,1,0; 0,0,0,1; 0,0,0,0; 0,0,0,0] : Matrix (Fin 4) (Fin 4) ℝ)
+        * (!![0,0,0,0; 1,0,0,0; 0,0,0,0; 0,0,1,0] : Matrix (Fin 4) (Fin 4) ℝ) by
+    ext a b <;> fin_cases a <;> fin_cases b <;>
+      simp [Matrix.single, Matrix.mul_apply, Fin.sum_univ_four]]
+  exact mul_mem A2_mem B3_mem
+
+private theorem E20_mem :
+    Matrix.single (2 : Fin 4) (0 : Fin 4) (1 : ℝ)
+      ∈ cliffordMajoranaToMatrix.range := by
+  rw [show Matrix.single (2 : Fin 4) (0 : Fin 4) (1 : ℝ)
+      = (!![0,0,0,0; 0,0,0,0; 1,0,0,0; 0,1,0,0] : Matrix (Fin 4) (Fin 4) ℝ)
+        * (!![1,0,0,0; 0,0,0,0; 0,0,1,0; 0,0,0,0] : Matrix (Fin 4) (Fin 4) ℝ) by
+    ext a b <;> fin_cases a <;> fin_cases b <;>
+      simp [Matrix.single, Matrix.mul_apply, Fin.sum_univ_four]]
+  exact mul_mem A3_mem B0_mem
+
+private theorem E31_mem :
+    Matrix.single (3 : Fin 4) (1 : Fin 4) (1 : ℝ)
+      ∈ cliffordMajoranaToMatrix.range := by
+  rw [show Matrix.single (3 : Fin 4) (1 : Fin 4) (1 : ℝ)
+      = (!![0,0,0,0; 0,0,0,0; 1,0,0,0; 0,1,0,0] : Matrix (Fin 4) (Fin 4) ℝ)
+        * (!![0,0,0,0; 0,1,0,0; 0,0,0,0; 0,0,0,1] : Matrix (Fin 4) (Fin 4) ℝ) by
+    ext a b <;> fin_cases a <;> fin_cases b <;>
+      simp [Matrix.single, Matrix.mul_apply, Fin.sum_univ_four]]
+  exact mul_mem A3_mem B1_mem
+
+private theorem E21_mem :
+    Matrix.single (2 : Fin 4) (1 : Fin 4) (1 : ℝ)
+      ∈ cliffordMajoranaToMatrix.range := by
+  rw [show Matrix.single (2 : Fin 4) (1 : Fin 4) (1 : ℝ)
+      = (!![0,0,0,0; 0,0,0,0; 1,0,0,0; 0,1,0,0] : Matrix (Fin 4) (Fin 4) ℝ)
+        * (!![0,1,0,0; 0,0,0,0; 0,0,0,1; 0,0,0,0] : Matrix (Fin 4) (Fin 4) ℝ) by
+    ext a b <;> fin_cases a <;> fin_cases b <;>
+      simp [Matrix.single, Matrix.mul_apply, Fin.sum_univ_four]]
+  exact mul_mem A3_mem B2_mem
+
+private theorem E30_mem :
+    Matrix.single (3 : Fin 4) (0 : Fin 4) (1 : ℝ)
+      ∈ cliffordMajoranaToMatrix.range := by
+  rw [show Matrix.single (3 : Fin 4) (0 : Fin 4) (1 : ℝ)
+      = (!![0,0,0,0; 0,0,0,0; 1,0,0,0; 0,1,0,0] : Matrix (Fin 4) (Fin 4) ℝ)
+        * (!![0,0,0,0; 1,0,0,0; 0,0,0,0; 0,0,1,0] : Matrix (Fin 4) (Fin 4) ℝ) by
+    ext a b <;> fin_cases a <;> fin_cases b <;>
+      simp [Matrix.single, Matrix.mul_apply, Fin.sum_univ_four]]
+  exact mul_mem A3_mem B3_mem
+
+end MatrixUnits
+
+/-- Every standard basis matrix of M₄(ℝ) lies in the range. -/
+theorem single_mem (a b : Fin 4) :
+    Matrix.single a b (1 : ℝ) ∈ cliffordMajoranaToMatrix.range := by
+  fin_cases a <;> fin_cases b
+  exacts [E00_mem, E01_mem, E02_mem, E03_mem, E10_mem, E11_mem, E12_mem,
+    E13_mem, E20_mem, E21_mem, E22_mem, E23_mem, E30_mem, E31_mem, E32_mem,
+    E33_mem]
+
+/-- **The Majorana gammas generate M₄(ℝ)**: the representation is
+    surjective. -/
+theorem cliffordMajoranaToMatrix_surjective :
+    Function.Surjective cliffordMajoranaToMatrix := by
+  intro A
+  have hA : A = ∑ i, ∑ j, Matrix.single i j (A i j) :=
+    (Matrix.sum_sum_single fun i j => A i j).symm
+  have hmem : A ∈ cliffordMajoranaToMatrix.range := by
+    rw [hA]
+    refine sum_mem fun i _ => sum_mem fun j _ => ?_
+    have hs : Matrix.single i j (A i j)
+        = (A i j) • Matrix.single i j (1 : ℝ) := by
+      rw [Matrix.smul_single, smul_eq_mul, mul_one]
+    rw [hs]
+    exact Subalgebra.smul_mem _ (single_mem i j) _
+  exact hmem
+
+/-! ## 6. Injectivity by rank, and the isomorphism -/
+
+/-- **Injectivity by rank**: both sides have finrank 16 and the map is
+    surjective, so the kernel has finrank zero. -/
+theorem cliffordMajoranaToMatrix_injective :
+    Function.Injective cliffordMajoranaToMatrix := by
+  haveI : FiniteDimensional ℝ (CliffordAlgebra Q₃₁) :=
+    FiniteDimensional.of_finrank_pos (by rw [cliffordMajorana_finrank]; norm_num)
+  have hrk := LinearMap.finrank_range_add_finrank_ker
+    cliffordMajoranaToMatrix.toLinearMap
+  have hr : LinearMap.range cliffordMajoranaToMatrix.toLinearMap = ⊤ := by
+    rw [LinearMap.range_eq_top]
+    exact cliffordMajoranaToMatrix_surjective
+  rw [hr, finrank_top, matrix4R_finrank, cliffordMajorana_finrank] at hrk
+  have hk : Module.finrank ℝ
+      (LinearMap.ker cliffordMajoranaToMatrix.toLinearMap) = 0 := by omega
+  have hbot : LinearMap.ker cliffordMajoranaToMatrix.toLinearMap = ⊥ :=
+    Submodule.finrank_eq_zero.mp hk
+  exact LinearMap.ker_eq_bot.mp hbot
+
+/-- **Cl(3,1;ℝ) ≅ M₄(ℝ)** — the mostly-PLUS twin, and with it W7's
+    named stair complete in both conventions. -/
+def cliffordMajoranaEquiv :
+    CliffordAlgebra Q₃₁ ≃ₐ[ℝ] Matrix (Fin 4) (Fin 4) ℝ :=
+  AlgEquiv.ofBijective cliffordMajoranaToMatrix
+    ⟨cliffordMajoranaToMatrix_injective, cliffordMajoranaToMatrix_surjective⟩
+
+/-- The isomorphism IS the gamma representation on generators. -/
+theorem cliffordMajoranaEquiv_ι (v : (ℝ × ℝ) × (ℝ × ℝ)) :
+    cliffordMajoranaEquiv (ι Q₃₁ v) = cliffordMajoranaMap v :=
+  cliffordMajoranaToMatrix_ι v
+
+theorem cliffordMajoranaEquiv_e₀ :
+    cliffordMajoranaEquiv (ι Q₃₁ ((1, 0), (0, 0))) = mΓ₀ := by
+  rw [cliffordMajoranaEquiv_ι]
+  simp only [cliffordMajoranaMap, LinearMap.coe_mk, AddHom.coe_mk]
+  module
+
+theorem cliffordMajoranaEquiv_e₁ :
+    cliffordMajoranaEquiv (ι Q₃₁ ((0, 1), (0, 0))) = mΓ₁ := by
+  rw [cliffordMajoranaEquiv_ι]
+  simp only [cliffordMajoranaMap, LinearMap.coe_mk, AddHom.coe_mk]
+  module
+
+theorem cliffordMajoranaEquiv_e₂ :
+    cliffordMajoranaEquiv (ι Q₃₁ ((0, 0), (1, 0))) = mΓ₂ := by
+  rw [cliffordMajoranaEquiv_ι]
+  simp only [cliffordMajoranaMap, LinearMap.coe_mk, AddHom.coe_mk]
+  module
+
+theorem cliffordMajoranaEquiv_e₃ :
+    cliffordMajoranaEquiv (ι Q₃₁ ((0, 0), (0, 1))) = mΓ₃ := by
+  rw [cliffordMajoranaEquiv_ι]
+  simp only [cliffordMajoranaMap, LinearMap.coe_mk, AddHom.coe_mk]
+  module
+
 end CliffordRealMajorana
+
+
