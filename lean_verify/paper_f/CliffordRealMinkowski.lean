@@ -39,15 +39,21 @@
   7. **`cliffordRealMinkowskiEquiv`** — the bundled AlgEquiv
      Cl(1,3;ℝ) ≃ₐ[ℝ] M₂(ℍ[ℝ]), with generator corollaries
      `cliffordRealMinkowskiEquiv_e₀ .. _e₃`.
+  8. `Q₁₃_indefinite` (review round 11) — the form takes both signs.
 
   NOT proven here, stated so nobody reads past the bar: the mod-8
   periodicity table of real Clifford algebras (this is ONE entry of it);
   the mostly-PLUS convention Cl(3,1;ℝ) ≅ M₄(ℝ) — a DIFFERENT algebra;
   any spin-group statement (the identification of the estate's SL₂(ℂ)
   with Mathlib's spinGroup stays open exactly as W7 records); and any
-  physics. The convention dependence is real mathematics: (1,3) and
-  (3,1) real Clifford algebras are NOT isomorphic, which is why the
-  header fixes the form explicitly.
+  physics. The convention dependence is real mathematics — the standard
+  classification puts Cl(1,3;ℝ) and Cl(3,1;ℝ) in DIFFERENT rows — but
+  that non-isomorphism is a cited fact, NOT verified in this file
+  (review round 11 caught the file asserting it in its own voice); it is
+  why the form is fixed explicitly rather than left to convention. What
+  IS proven about the form beyond the identity: `Q₁₃_indefinite` — it
+  takes a strictly positive and a strictly negative value, so the
+  signature is genuinely mixed and no sign convention is being smuggled.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
   axioms.
@@ -239,6 +245,15 @@ theorem Q₁₃_apply (v : (ℝ × ℝ) × (ℝ × ℝ)) :
     Q₁₃ v = v.1.1 ^ 2 - v.1.2 ^ 2 - v.2.1 ^ 2 - v.2.2 ^ 2 := by
   simp [Q₁₃, CliffordAlgebraQuaternion.Q_apply, QuadraticMap.prod_apply]
   ring
+
+/-- **The form is genuinely indefinite** (review round 11): it takes a
+    strictly positive value on the time direction and a strictly negative
+    one on each space direction. Signature (1,3) with teeth — the
+    identity alone would not rule out a definite form. -/
+theorem Q₁₃_indefinite :
+    0 < Q₁₃ ((1, 0), (0, 0)) ∧ Q₁₃ ((0, 1), (0, 0)) < 0
+      ∧ Q₁₃ ((0, 0), (1, 0)) < 0 ∧ Q₁₃ ((0, 0), (0, 1)) < 0 := by
+  refine ⟨?_, ?_, ?_, ?_⟩ <;> rw [Q₁₃_apply] <;> norm_num
 
 /-! ## 4. The representation -/
 
