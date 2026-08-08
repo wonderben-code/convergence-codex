@@ -22,6 +22,16 @@
   (c) Transport along (a) to get an endomorphism of ℝ⁴, and check it
       preserves the form.
 
+  A caution about step (c), because W7 states it slightly larger than
+  this file delivers. W7 asks for the transport AND for the result to
+  be bundled as a monoid hom `spinGroup Q₁₃ →* Q₁₃.IsometryEquiv Q₁₃`.
+  The transport, the isometry property and the two action laws are all
+  proved below. **The bundling is not built here.** What is missing is
+  packaging, not mathematics — the equivalence needs its inverse
+  exhibited and the monoid hom needs `spinGroup.toUnits` threaded
+  through — but it is missing, and this file does not pretend
+  otherwise.
+
   WHAT THIS FILE PROVES (exactly this, nothing more):
   1. `conjLin` — conjugation by a unit as an ℝ-linear endomorphism of
      the Clifford algebra, with `conjLin_apply`.
@@ -59,8 +69,10 @@
   the first two are untouched, and of the third only the easy half is
   done: ±1 is IN the kernel (item 7). That the kernel is no LARGER than
   ±1 is not proved and does not follow from anything here. W7 marks the
-  remainder research-level rather than bounded. This file is steps (b)
-  and (c) plus a worked example; step (d) is not promised.
+  remainder research-level rather than bounded. This file is step (b),
+  the mathematical content of step (c), and a worked example. The
+  bundling half of (c) is packaging and is not done; step (d) is not
+  promised.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
   axioms.
