@@ -40,6 +40,14 @@
   the first of the three unprobed steps is now a theorem instead of a
   paper computation, and the second has a concrete target.
 
+  WHY ANY OF THIS SAYS ANYTHING, added by review round 28: §3 is empty
+  information if `cplxBlock` is all of M₂(ℍ). **`not_mem_cplxBlock`**
+  shows it is proper and **`Γ₀_not_mem_cplxBlock`** shows the odd part is
+  genuinely outside, so the even/odd distinction is not cosmetic. The
+  round also closed a half-claim: the header calls `blk 0 1` a "central
+  square root of −1" and §1 proved only the square, so
+  **`blk_i_central`** supplies the other half.
+
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
   axioms.
 -/
@@ -298,6 +306,53 @@ file does not have, and the image computation because the eight-term
 "Cl⁰(1,3;ℝ) IS the block subalgebra" is NOT established here. Recorded in
 the watchlist rather than papered over.
 -/
+
+/-! ## 6. Why any of §1–§3 says anything
+
+Review round 28's fold. §3 asserts the even part lands inside
+`cplxBlock`; that is empty information if `cplxBlock` is all of M₂(ℍ),
+and the header calls `blk 0 1` a "central square root of −1" while §1
+proved only the square. Both gaps are closed here.
+-/
+
+/-- **`cplxBlock` is a PROPER subalgebra of M₂(ℍ)**, so §3 is a
+    restriction rather than a tautology. -/
+theorem not_mem_cplxBlock : (!![1, 0; 0, 0] : Matrix (Fin 2) (Fin 2) ℍ[ℝ])
+    ∉ cplxBlock := by
+  rintro ⟨a, b, hab⟩
+  have h00 := congrFun (congrFun hab 0) 0
+  have h11 := congrFun (congrFun hab 1) 1
+  simp [blk] at h00 h11
+  rw [← h00] at h11
+  exact one_ne_zero h11.symm
+
+/-- **And the odd part is genuinely outside it** — `Γ₀` is the image of a
+    vector, and it is not in block form. So the even/odd distinction §3
+    turns on is not cosmetic. -/
+theorem Γ₀_not_mem_cplxBlock : Γ₀ ∉ cplxBlock := by
+  rintro ⟨a, b, hab⟩
+  have h00 := congrFun (congrFun hab 0) 0
+  have h11 := congrFun (congrFun hab 1) 1
+  simp [blk, Γ₀] at h00 h11
+  rw [← h00] at h11
+  have h2 : ((-1 : ℍ[ℝ])).re = ((1 : ℍ[ℝ])).re := by rw [h11]
+  norm_num at h2
+
+/-- **`blk 0 1` is CENTRAL in the block subalgebra.** §1 proved it
+    squares to `−1`; "central square root of −1" needs this half too, and
+    it is what makes the `b` slot a complex direction rather than just
+    another quaternion one. -/
+theorem blk_i_central (a b : ℍ[ℝ]) : blk 0 1 * blk a b = blk a b * blk 0 1 := by
+  rw [blk_mul, blk_mul]
+  congr 1 <;> simp
+
+/-- `blk` is injective in its two arguments, so the eight preimages of
+    §5 are eight independent directions rather than possibly-coinciding
+    ones. -/
+theorem blk_injective {a b c d : ℍ[ℝ]} (h : blk a b = blk c d) : a = c ∧ b = d := by
+  constructor
+  · have := congrFun (congrFun h 0) 0; simpa [blk] using this
+  · have := congrFun (congrFun h 0) 1; simpa [blk] using this
 
 end
 
