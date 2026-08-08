@@ -694,6 +694,49 @@ section Injectivity
 
 set_option linter.unusedSimpArgs false
 
+/-! ### The coordinate readout
+
+Six lemmas making the sentence "the four coordinates are visible as
+matrix entries" into theorems rather than a docstring. Folding review
+round 15, which attacked exactly this: are the four coordinates read
+from four DISTINCT slots, or is one being read twice? Four distinct
+slots, and the two "nothing else is there" lemmas pin that down —
+`(0,0)` carries `v₀` and no imaginary part, `(0,1)` carries the three
+space coordinates and no real part. They are exported rather than
+inlined because reading coordinates back off an element is precisely
+the operation W7's next stair (`spinToEndo`) performs. -/
+
+@[simp] theorem cliffordRealMap_re_00 (v : (ℝ × ℝ) × (ℝ × ℝ)) :
+    ((cliffordRealMap v) 0 0).re = v.1.1 := by
+  simp [cliffordRealMap, Γ₀, Γ₁, Γ₂, Γ₃, qi, qj, qk]
+
+@[simp] theorem cliffordRealMap_imI_00 (v : (ℝ × ℝ) × (ℝ × ℝ)) :
+    ((cliffordRealMap v) 0 0).imI = 0 := by
+  simp [cliffordRealMap, Γ₀, Γ₁, Γ₂, Γ₃, qi, qj, qk]
+
+@[simp] theorem cliffordRealMap_re_01 (v : (ℝ × ℝ) × (ℝ × ℝ)) :
+    ((cliffordRealMap v) 0 1).re = 0 := by
+  simp [cliffordRealMap, Γ₀, Γ₁, Γ₂, Γ₃, qi, qj, qk]
+
+@[simp] theorem cliffordRealMap_imI_01 (v : (ℝ × ℝ) × (ℝ × ℝ)) :
+    ((cliffordRealMap v) 0 1).imI = v.1.2 := by
+  simp [cliffordRealMap, Γ₀, Γ₁, Γ₂, Γ₃, qi, qj, qk]
+
+@[simp] theorem cliffordRealMap_imJ_01 (v : (ℝ × ℝ) × (ℝ × ℝ)) :
+    ((cliffordRealMap v) 0 1).imJ = v.2.1 := by
+  simp [cliffordRealMap, Γ₀, Γ₁, Γ₂, Γ₃, qi, qj, qk]
+
+@[simp] theorem cliffordRealMap_imK_01 (v : (ℝ × ℝ) × (ℝ × ℝ)) :
+    ((cliffordRealMap v) 0 1).imK = v.2.2 := by
+  simp [cliffordRealMap, Γ₀, Γ₁, Γ₂, Γ₃, qi, qj, qk]
+
+/-- The OTHER diagonal entry is the negative, so a readout that took
+    `(1,1)` for `(0,0)` would get the sign wrong. Proven rather than
+    eyeballed, because that is the mistake this shape of proof invites. -/
+theorem cliffordRealMap_re_11 (v : (ℝ × ℝ) × (ℝ × ℝ)) :
+    ((cliffordRealMap v) 1 1).re = -v.1.1 := by
+  simp [cliffordRealMap, Γ₀, Γ₁, Γ₂, Γ₃, qi, qj, qk]
+
 /-- The gamma combination determines its coefficients: `v₀` is the real
     part of the (0,0) entry and `v₁, v₂, v₃` are the `i`, `j`, `k` parts
     of the (0,1) entry. -/
