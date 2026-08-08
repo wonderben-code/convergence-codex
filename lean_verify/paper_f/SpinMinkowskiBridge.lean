@@ -51,6 +51,19 @@
   this file — for which one would additionally need `det = 1` and
   `Λ⁰₀ > 0`, neither of which is proved anywhere for the spin image.
 
+  A CAUTION ABOUT `coordEquiv`, added by review round 19 and worth
+  reading before using anything below. **Being an isometry does not
+  determine the identification.** Swapping the y and z slots gives a
+  DIFFERENT linear equivalence which is equally an isometry between the
+  same two forms — `swapEquiv` and `swapEquiv_ne_coordEquiv` in §5
+  prove exactly that. So `Q₁₃IsometryMinkowski` is a CHOICE, not a
+  canonical object, and a mislabelled choice would make everything
+  downstream conjugate-but-wrong while compiling identically. What pins
+  this particular choice is not the isometry property but
+  `coordEquiv_e₀` … `coordEquiv_e₃`: it sends the Clifford chain's
+  basis to the standard basis of `Fin 4 → ℝ` IN ORDER, so slot 0 is the
+  time direction on both sides.
+
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
   axioms.
 -/
@@ -87,6 +100,22 @@ def coordEquiv : V ≃ₗ[ℝ] (Fin 4 → ℝ) where
 @[simp] theorem coordEquiv_one (v : V) : coordEquiv v 1 = v.1.2 := rfl
 @[simp] theorem coordEquiv_two (v : V) : coordEquiv v 2 = v.2.1 := rfl
 @[simp] theorem coordEquiv_three (v : V) : coordEquiv v 3 = v.2.2 := rfl
+
+/-- **What actually pins the choice.** The isometry property does not
+    (see §5); these four do. The Clifford chain's basis goes to the
+    standard basis in order, so slot 0 is the time direction on both
+    sides. -/
+@[simp] theorem coordEquiv_e₀ : coordEquiv e₀ = ![1, 0, 0, 0] := by
+  funext i; fin_cases i <;> rfl
+
+@[simp] theorem coordEquiv_e₁ : coordEquiv e₁ = ![0, 1, 0, 0] := by
+  funext i; fin_cases i <;> rfl
+
+@[simp] theorem coordEquiv_e₂ : coordEquiv e₂ = ![0, 0, 1, 0] := by
+  funext i; fin_cases i <;> rfl
+
+@[simp] theorem coordEquiv_e₃ : coordEquiv e₃ = ![0, 0, 0, 1] := by
+  funext i; fin_cases i <;> rfl
 
 /-! ## 2. The two forms are the same form -/
 
@@ -178,5 +207,36 @@ theorem lorentzSpinRep_B_time :
     exact SpinBoost.spinToEndo_B e₀
   rw [lorentzSpinRep_apply, hcoord, hg, SpinBoost.boostTX_e₀]
   rfl
+
+/-! ## 5. The identification is a choice, not a canonical object
+
+Review round 19's finding, folded back as a proof rather than as a
+hedge. If "it is an isometry" determined the map, §1's definition would
+need no justification. It does not determine it. -/
+
+/-- The same coordinate identification with y and z exchanged. -/
+def swapEquiv : V ≃ₗ[ℝ] (Fin 4 → ℝ) where
+  toFun v := ![v.1.1, v.1.2, v.2.2, v.2.1]
+  map_add' u v := by funext i; fin_cases i <;> rfl
+  map_smul' c v := by funext i; fin_cases i <;> rfl
+  invFun f := ((f 0, f 1), (f 3, f 2))
+  left_inv v := rfl
+  right_inv f := by funext i; fin_cases i <;> rfl
+
+/-- **It is equally an isometry.** -/
+def swapIsometry : Q₁₃.IsometryEquiv minkowskiForm where
+  __ := swapEquiv
+  map_app' v := by
+    rw [minkowskiForm_apply, Q₁₃_apply]
+    change v.1.1 ^ 2 - v.1.2 ^ 2 - v.2.2 ^ 2 - v.2.1 ^ 2 = _
+    ring
+
+/-- **And it is a different map.** So the isometry property alone does
+    not identify `coordEquiv`; the basis lemmas in §1 do. -/
+theorem swapEquiv_ne_coordEquiv : swapEquiv ≠ (coordEquiv : V ≃ₗ[ℝ] (Fin 4 → ℝ)) := by
+  intro h
+  have h1 : swapEquiv e₂ 2 = coordEquiv e₂ 2 := by rw [h]
+  have h2 : (0 : ℝ) = 1 := h1
+  norm_num at h2
 
 end SpinMinkowskiBridge
