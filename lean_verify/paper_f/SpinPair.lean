@@ -36,6 +36,14 @@
   6. `R₁₂_eq_pair` and `B_eq_pair` — the two hand-built elements really
      are instances, so this genuinely subsumes them rather than sitting
      alongside them.
+  7. **`vreflect_comp_rotXY` and `vreflect_comp_boostTX`** — added by
+     review round 23, and they are the point. Items 6 say the GROUP
+     ELEMENTS coincide; that is not the same as the ACTIONS coinciding,
+     since `spinToEndo_pair` computes through `vreflect ∘ vreflect`
+     while `SpinVectorRep` and `SpinBoost` computed `rotXY` and
+     `boostTX` by entirely different routes. These two say the actions
+     agree, so the generalisation is the same map and not a different
+     one wearing the same name.
 
   WHAT THIS DOES NOT DO. It adds no new information about the IMAGE of
   the representation. A family of elements is still not a
@@ -181,5 +189,104 @@ theorem R₁₂_eq_pair : pair Q₁₃_e₁_ne Q₁₃_e₂_ne = R₁₂ := Unit
 
 /-- And so is the boost. -/
 theorem B_eq_pair : pair Q₁₃_e₀_ne Q₁₃_w_ne = SpinBoost.B := Units.ext rfl
+
+/-! ## 5. The reflections in coordinates, and the two cross-checks
+
+Review round 23's fold. §4 shows the group elements coincide with the
+two hand-built ones; that leaves open whether the ACTIONS do, because
+they are computed by different routes. §5 closes that, and the
+coordinate readouts are the reusable part. -/
+
+theorem polar_e₁ (u : V) : QuadraticMap.polar Q₁₃ e₁ u = -(2 * u.1.2) := by
+  obtain ⟨⟨t, x⟩, ⟨y, z⟩⟩ := u
+  simp only [QuadraticMap.polar, Q₁₃_apply, e₁, Prod.fst_add, Prod.snd_add]
+  ring
+
+theorem polar_e₂ (u : V) : QuadraticMap.polar Q₁₃ e₂ u = -(2 * u.2.1) := by
+  obtain ⟨⟨t, x⟩, ⟨y, z⟩⟩ := u
+  simp only [QuadraticMap.polar, Q₁₃_apply, e₂, Prod.fst_add, Prod.snd_add]
+  ring
+
+theorem polar_e₃ (u : V) : QuadraticMap.polar Q₁₃ e₃ u = -(2 * u.2.2) := by
+  obtain ⟨⟨t, x⟩, ⟨y, z⟩⟩ := u
+  simp only [QuadraticMap.polar, Q₁₃_apply, e₃, Prod.fst_add, Prod.snd_add]
+  ring
+
+theorem vreflect_e₀ (u : V) :
+    vreflect e₀ u = ((u.1.1, -u.1.2), (-u.2.1, -u.2.2)) := by
+  rw [vreflect, SpinBoost.polar_e₀, Q₁₃_e₀]
+  obtain ⟨⟨t, x⟩, ⟨y, z⟩⟩ := u
+  simp only [e₀, Prod.smul_mk, Prod.mk_sub_mk, smul_eq_mul, Prod.mk.injEq]
+  norm_num
+  ring
+
+theorem vreflect_e₁ (u : V) :
+    vreflect e₁ u = ((-u.1.1, u.1.2), (-u.2.1, -u.2.2)) := by
+  rw [vreflect, polar_e₁, Q₁₃_e₁]
+  obtain ⟨⟨t, x⟩, ⟨y, z⟩⟩ := u
+  simp only [e₁, Prod.smul_mk, Prod.mk_sub_mk, smul_eq_mul, Prod.mk.injEq]
+  norm_num
+  ring
+
+theorem vreflect_e₂ (u : V) :
+    vreflect e₂ u = ((-u.1.1, -u.1.2), (u.2.1, -u.2.2)) := by
+  rw [vreflect, polar_e₂, Q₁₃_e₂]
+  obtain ⟨⟨t, x⟩, ⟨y, z⟩⟩ := u
+  simp only [e₂, Prod.smul_mk, Prod.mk_sub_mk, smul_eq_mul, Prod.mk.injEq]
+  norm_num
+  ring
+
+theorem vreflect_e₃ (u : V) :
+    vreflect e₃ u = ((-u.1.1, -u.1.2), (-u.2.1, u.2.2)) := by
+  rw [vreflect, polar_e₃, Q₁₃_e₃]
+  obtain ⟨⟨t, x⟩, ⟨y, z⟩⟩ := u
+  simp only [e₃, Prod.smul_mk, Prod.mk_sub_mk, smul_eq_mul, Prod.mk.injEq]
+  norm_num
+  ring
+
+theorem vreflect_w (u : V) :
+    vreflect SpinBoost.w u
+      = ((17/8 * u.1.1 - 15/8 * u.1.2, 15/8 * u.1.1 - 17/8 * u.1.2),
+          (-u.2.1, -u.2.2)) := by
+  rw [vreflect, SpinBoost.polar_w, SpinBoost.Q₁₃_w]
+  obtain ⟨⟨t, x⟩, ⟨y, z⟩⟩ := u
+  simp only [SpinBoost.w, Prod.smul_mk, Prod.mk_sub_mk, smul_eq_mul,
+    Prod.mk.injEq]
+  norm_num
+  constructor <;> ring
+
+/-- **The π-rotation, recomputed through the general formula.** -/
+theorem vreflect_comp_rotXY (u : V) : vreflect e₁ (vreflect e₂ u) = rotXY u := by
+  rw [vreflect_e₂, vreflect_e₁]
+  simp [rotXY]
+
+/-- **The boost, recomputed through the general formula.** -/
+theorem vreflect_comp_boostTX (u : V) :
+    vreflect e₀ (vreflect SpinBoost.w u) = SpinBoost.boostTX u := by
+  rw [vreflect_w, vreflect_e₀]
+  refine Prod.ext (Prod.ext ?_ ?_) (Prod.ext ?_ ?_) <;>
+    simp [SpinBoost.boostTX]
+
+/-! ## 6. The family is bigger than the two examples -/
+
+theorem Q₁₃_e₃_ne : Q₁₃ e₃ ≠ 0 := by rw [Q₁₃_e₃]; norm_num
+
+/-- A THIRD spin element, neither of the two that existed before. -/
+theorem pair_e₁_e₃_mem :
+    ((pair Q₁₃_e₁_ne Q₁₃_e₃_ne : Clˣ) : Cl) ∈ spinGroup Q₁₃ :=
+  pair_mem _ _ (by rw [Q₁₃_e₁, Q₁₃_e₃]; norm_num)
+
+/-- And it acts differently: the e₁e₃ rotation FIXES e₂, where the e₁e₂
+    rotation negates it. So the family is not the two old elements in
+    disguise. -/
+theorem vreflect_e₁_e₃_fixes_e₂ : vreflect e₁ (vreflect e₃ e₂) = e₂ := by
+  rw [vreflect_e₃, vreflect_e₁]
+  simp [e₂]
+
+theorem vreflect_e₁_e₃_ne_rotXY : vreflect e₁ (vreflect e₃ e₂) ≠ rotXY e₂ := by
+  rw [vreflect_e₃, vreflect_e₁]
+  intro h
+  have h1 := congrArg (fun v : V => v.2.1) h
+  norm_num [rotXY, e₂] at h1
 
 end SpinPair
