@@ -61,6 +61,11 @@
      four). `orthIdem_values_pinned` states both together. The
      inequivalence needs only 4 > 2 and would survive with one side
      unpinned; knowing the values is what makes the invariant reusable.
+     `not_two_le_finrank_range4` and `not_five_le_finrank_range` then
+     show the counting principle's `d`-slot has no slack on either side
+     — strengthening either dimension lemma by one would contradict the
+     corresponding witness (added folding review round 14, which asked
+     whether the principle was over-strong).
   7. **`matrix2H_not_ringEquiv_matrix4R`** — M₂(ℍ) ≇ M₄(ℝ).
   8. **`clifford13_not_ringEquiv_clifford31`** — Cl(1,3;ℝ) ≇ Cl(3,1;ℝ),
      and `clifford13_not_algEquiv_clifford31` for the ℝ-algebra form.
@@ -501,7 +506,40 @@ theorem clifford13_not_algEquiv_clifford31 :
       CliffordAlgebra CliffordRealMajorana.Q₃₁) :=
   ⟨fun φ => clifford13_not_ringEquiv_clifford31.elim φ.toRingEquiv⟩
 
-/-! ## 6. Both values pinned -/
+/-! ## 6. The dimension hypotheses are at their sharp values
+
+Review round 14 attacked `orthIdem_card_le` by asking whether its
+`d`-slot was slack — a principle that let you plug in a larger `d` than
+the truth would be silently over-strong, and both published bounds now
+depend on it. It is not slack, and that is provable from what is already
+here rather than by inspection: strengthening either dimension lemma by
+one would contradict the corresponding attained witness. -/
+
+/-- `one_le_finrank_range4` cannot be strengthened to 2: the principle
+    would then give 4·2 ≤ 4 against `matrix4R_hasOrthIdem_four`. -/
+theorem not_two_le_finrank_range4 :
+    ¬ (∀ x : Matrix (Fin 4) (Fin 4) ℝ, x * x = x → x ≠ 0 →
+      2 ≤ Module.finrank ℝ (LinearMap.range (leftMulVec4 x))) := by
+  intro hd
+  have hb := orthIdem_card_le leftMulVec4Hom leftMulVec4_mul leftMulVec4_one 2 hd
+    matrix4R_hasOrthIdem_four
+  rw [finrank_r4] at hb
+  omega
+
+/-- `four_le_finrank_range` cannot be strengthened to 5: the principle
+    would then give 2·5 ≤ 8 against `matrix2H_hasOrthIdem_two`. So the
+    quaternionic step is at the sharp value too, and the whole argument
+    has no slack anywhere. -/
+theorem not_five_le_finrank_range :
+    ¬ (∀ x : Matrix (Fin 2) (Fin 2) ℍ[ℝ], x * x = x → x ≠ 0 →
+      5 ≤ Module.finrank ℝ (LinearMap.range (leftMulVec x))) := by
+  intro hd
+  have hb := orthIdem_card_le leftMulVecHom leftMulVec_mul leftMulVec_one 5 hd
+    matrix2H_hasOrthIdem_two
+  rw [finrank_h2] at hb
+  omega
+
+/-! ## 7. Both values pinned -/
 
 /-- **The invariant is now known exactly on both algebras** — four for
     M₄(ℝ), two for M₂(ℍ), each with an explicit witness AND a matching
