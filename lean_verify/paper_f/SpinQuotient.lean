@@ -31,6 +31,15 @@
   SO⁺(1,3) up to isomorphism, and does NOT say it is SO⁺(1,3). The
   difference between those two sentences is the whole of what is left.
 
+  WHAT ROUND 30 ADDED, and the first item underpins every "double cover"
+  sentence in the estate: **`neg_one_ne_one_cl`** — `−1 ≠ 1` in
+  Cl(1,3;ℝ). If that failed, `pmOne` would be trivial, the quotient would
+  be the whole group, and every theorem here would be about nothing. It
+  was assumed everywhere and proved nowhere. With `pmOne_two_members`,
+  `pmOne_ne_top`, `pmOne_ne_bot`, and `surjectivityStatement_implies`,
+  which is how one reviews a `def` that states a gap: it cannot be tested
+  by proving it, so instead check that it entails what §4 says it does.
+
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
   axioms.
 -/
@@ -158,6 +167,67 @@ theorem sl2_reaches_all (M : Matrix.GeneralLinearGroup (Fin 4) ℝ)
     (hM : M ∈ SOplus13) :
     ∃ (A : Matrix (Fin 2) (Fin 2) ℂ) (hA : A.det = 1), lorentzUnit A hA = M :=
   LorentzSurjectivity.SOplus13_surjective M hM
+
+/-! ## 5. Why the quotient is a quotient by something
+
+Review round 30's fold, and the first item underpins every "double
+cover" sentence anywhere in the estate. **If `−1 = 1` in Cl(1,3;ℝ) then
+`pmOne` is trivial, the quotient is the whole group, and every theorem
+in this file is about nothing.** That was assumed everywhere and proved
+nowhere.
+-/
+
+/-- **`−1 ≠ 1` in Cl(1,3;ℝ).** The algebra map from ℝ is injective and
+    `−1 ≠ 1` there. Everything about `{±1}` being a TWO-element subgroup
+    rests on this. -/
+theorem neg_one_ne_one_cl : (-1 : Cl) ≠ (1 : Cl) := by
+  intro h
+  have hr : (-1 : ℝ) = 1 := by
+    apply FaithfulSMul.algebraMap_injective ℝ Cl
+    simpa using h
+  norm_num at hr
+
+/-- So `pmOne` genuinely has two members. -/
+theorem pmOne_two_members :
+    (1 : spinGroup Q₁₃) ∈ pmOne ∧ negSpin (1 : spinGroup Q₁₃) ∈ pmOne
+      ∧ negSpin (1 : spinGroup Q₁₃) ≠ (1 : spinGroup Q₁₃) := by
+  refine ⟨Or.inl rfl, Or.inr ?_, negSpin_ne 1⟩
+  change -((1 : spinGroup Q₁₃) : Cl) = -1
+  norm_num
+
+/-- It is a PROPER subgroup — the π-rotation is outside it. -/
+theorem R₁₂'_not_mem_pmOne : R₁₂' ∉ pmOne := by
+  rintro (h | h)
+  · exact SpinFibre.R₁₂_ne_pm_one.1 h
+  · exact SpinFibre.R₁₂_ne_pm_one.2 h
+
+theorem pmOne_ne_top : pmOne ≠ (⊤ : Subgroup (spinGroup Q₁₃)) := fun h =>
+  R₁₂'_not_mem_pmOne (h ▸ Subgroup.mem_top R₁₂')
+
+theorem pmOne_ne_bot : pmOne ≠ (⊥ : Subgroup (spinGroup Q₁₃)) := by
+  intro h
+  have hmem : negSpin (1 : spinGroup Q₁₃) ∈ pmOne := pmOne_two_members.2.1
+  rw [h, Subgroup.mem_bot] at hmem
+  exact negSpin_ne 1 hmem
+
+/-- **Quotienting by less would not work.** The underlying map is not
+    injective, so the trivial subgroup does not serve. -/
+theorem spinToSOplus_not_injective : ¬ Function.Injective spinToSOplus := by
+  intro hinj
+  refine negSpin_ne R₁₂' (hinj (Subtype.ext ?_))
+  exact congrArg (fun M : O13 => (M : Matrix.GeneralLinearGroup (Fin 4) ℝ))
+    (spinToO13_negSpin R₁₂')
+
+/-- **How to review a `def` that states a gap.** `SurjectivityStatement`
+    cannot be tested by proving it — that is the point of it. What can be
+    tested is that it says what §4 claims: if it held, the underlying map
+    would be onto as well. It does. -/
+theorem surjectivityStatement_implies (h : SurjectivityStatement) :
+    Function.Surjective spinToSOplus := by
+  intro M
+  obtain ⟨x, hx⟩ := h M
+  induction x using QuotientGroup.induction_on with
+  | H g => exact ⟨g, hx⟩
 
 end
 
