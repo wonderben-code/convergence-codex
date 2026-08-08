@@ -146,4 +146,28 @@ theorem o13_isometryEquiv_group :
 theorem toO13_surjective : Function.Surjective SpinToLorentzMat.toO13 :=
   fun M => ⟨ofO13 M, o13MulEquiv.left_inv M⟩
 
+theorem toO13_injective : Function.Injective SpinToLorentzMat.toO13 :=
+  o13MulEquiv.symm.injective
+
+/-! ## 5. O(1,3) is still not SO⁺(1,3)
+
+Review round 21's fold. The header says this isomorphism changes
+nothing about properness; here is the witness rather than the
+assurance. -/
+
+/-- The Gram matrix as an explicit ELEMENT of the subgroup `O13` — it is
+    its own inverse, so it is a unit without any invertibility
+    argument. -/
+def gramO13 : O13 :=
+  ⟨⟨gram, gram, gram_mul_gram, gram_mul_gram⟩,
+    (SpinToLorentzMat.gram_isLorentzMat_det_neg).1⟩
+
+/-- **And its determinant is −1.** So `O13` genuinely contains improper
+    elements, `O13 ≃* minkowskiForm.IsometryEquiv minkowskiForm` says
+    nothing whatever about SO⁺(1,3), and neither does anything reached
+    through it from the spin side. -/
+theorem det_gramO13 :
+    ((gramO13 : Matrix.GeneralLinearGroup (Fin 4) ℝ) :
+      Matrix (Fin 4) (Fin 4) ℝ).det = -1 := det_gram
+
 end LorentzIsometryEquiv
