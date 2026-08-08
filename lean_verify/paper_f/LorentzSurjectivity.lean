@@ -30,13 +30,23 @@
      therefore Lorentz with det 1 for free (`rotZ_facts`, `rotY_facts`).
   4. §4 `det_inner_block` — Laplace expansion for the 4×4 shape with time
      and z-axis pinned.
-  5. §5 **`stabiliser_surjective`** — the Euler decomposition: a Lorentz R
-     fixing the time axis satisfies R = rotZ(cα,sα)·rotY(w₃,r)·rotZ(p,q),
-     where (0,w₁,w₂,w₃) is its z-column, r = √(w₁²+w₂²), (cα,sα) points
-     along (w₁,w₂), and (p,q) is read off the residual matrix, which is
-     proven to BE a rotZ by orthonormality + determinant — the determinant
-     pins the reflection sign LINEARLY, no case split. Composing the three
-     preimages: every time-axis-fixing Lorentz rotation is Λ(A).
+  5. §5 **`stabiliser_euler`** — the Euler decomposition, AS A THEOREM
+     ABOUT MATRICES: a Lorentz R fixing the time axis satisfies
+     R = rotZ(cα,sα)·rotY(w₃,r)·rotZ(p,q), where (0,w₁,w₂,w₃) is its
+     z-column, r = √(w₁²+w₂²), (cα,sα) points along (w₁,w₂), and (p,q) is
+     read off the residual matrix, which is proven to BE a rotZ by
+     orthonormality + determinant — the determinant pins the reflection
+     sign LINEARLY, no case split. Then **`stabiliser_surjective`** —
+     every time-axis-fixing Lorentz rotation is Λ(A) — is three lines
+     from it.
+
+     The split is not tidying. This decomposition was originally interior
+     to `stabiliser_surjective`'s proof, used to build an SL₂(ℂ) word and
+     then discarded, so no other development could see it. The
+     Clifford/spin chain reaches every rotZ and every rotY
+     (`SpinRotorFamilies`) and needs the decomposition itself; an opaque
+     SL₂(ℂ) matrix is no use to it. The second user of an argument is the
+     one who discovers it was written too narrowly.
   6. §6 **`lorentz_surjective`** — combining with the boost factorisation:
      for EVERY L with ΛᵀGΛ = G, det L = 1, L⁰₀ > 0 there is A ∈ SL₂(ℂ) with
      Λ(A) = L. Bundled: `SOplus13_surjective`. With
@@ -252,14 +262,23 @@ theorem det_inner_block (M : Matrix (Fin 4) (Fin 4) ℝ)
 
 /-! ## 5. The Euler decomposition: the stabiliser of the time axis is hit -/
 
-/-- **SU(2) ↠ SO(3), in the coordinates of this estate**: every Lorentz
-    matrix fixing the time axis is Λ(A) for some A ∈ SL₂(ℂ). The proof is
-    the Euler decomposition R = rotZ(cα,sα)·rotY(w₃,r)·rotZ(p,q), assembled
-    from the z-column of R, with all three factors hit by §3. -/
-theorem stabiliser_surjective :
+/-- **The Euler decomposition, at the level of MATRICES.** Every Lorentz
+    matrix fixing the time axis is `rotZ · rotY · rotZ`, with all three
+    parameters on the unit circle.
+
+    This was the content of `stabiliser_surjective`'s proof and was used
+    there to build an SL₂(ℂ) word and then discarded, so nothing outside
+    that proof could see it. Exported because a SECOND chain needs it:
+    the Clifford/spin chain reaches every `rotZ` and every `rotY`
+    (`SpinRotorFamilies`) and can get every rotation from this, whereas
+    `stabiliser_surjective` itself hands back an opaque SL₂(ℂ) matrix
+    and is therefore useless to it. **Pattern, again: the second user of
+    an argument is the one who discovers it was written too narrowly.** -/
+theorem stabiliser_euler :
     ∀ R : Matrix (Fin 4) (Fin 4) ℝ, IsLorentzMat R → R.det = 1 →
       (∀ i, R i 0 = (Pi.single (0 : Fin 4) 1 : Fin 4 → ℝ) i) →
-      ∃ A : Matrix (Fin 2) (Fin 2) ℂ, A.det = 1 ∧ lorentzMat A = R := by
+      ∃ a b p q u v : ℝ, a ^ 2 + b ^ 2 = 1 ∧ p ^ 2 + q ^ 2 = 1
+        ∧ u ^ 2 + v ^ 2 = 1 ∧ R = rotZ a b * (rotY p q * rotZ u v) := by
   intro R hR hdet hcol
   obtain ⟨hrow, horth⟩ := stabiliser_is_rotation hR hcol
   have hcol' : ∀ i, R i 0 = if i = 0 then 1 else 0 := by
@@ -391,13 +410,27 @@ theorem stabiliser_surjective :
       _ = rotZ ca sa * (rotY (R 3 3) r
             * (rotY (R 3 3) (-r) * (rotZ ca (-sa) * R))) := by
           rw [Matrix.mul_assoc]
-  obtain ⟨U1, hU1det, hU1⟩ := exists_su2_rotZ ca sa hα
-  obtain ⟨U2, hU2det, hU2⟩ := exists_su2_rotY (R 3 3) r hyz
-  obtain ⟨U3, hU3det, hU3⟩ := exists_su2_rotZ (D 1 1) (D 2 1) hpq
+  exact ⟨ca, sa, R 3 3, r, D 1 1, D 2 1, hα, hyz, hpq,
+    hass.trans (congrArg (fun X => rotZ ca sa * (rotY (R 3 3) r * X)) hDeq)⟩
+
+/-- **SU(2) ↠ SO(3), in the coordinates of this estate**: every Lorentz
+    matrix fixing the time axis is Λ(A) for some A ∈ SL₂(ℂ). The proof is
+    the Euler decomposition R = rotZ(cα,sα)·rotY(w₃,r)·rotZ(p,q), assembled
+    from the z-column of R, with all three factors hit by §3 — now a
+    three-line corollary of `stabiliser_euler`, which is that
+    decomposition on its own. -/
+theorem stabiliser_surjective :
+    ∀ R : Matrix (Fin 4) (Fin 4) ℝ, IsLorentzMat R → R.det = 1 →
+      (∀ i, R i 0 = (Pi.single (0 : Fin 4) 1 : Fin 4 → ℝ) i) →
+      ∃ A : Matrix (Fin 2) (Fin 2) ℂ, A.det = 1 ∧ lorentzMat A = R := by
+  intro R hR hdet hcol
+  obtain ⟨a, b, p, q, u, v, hab, hpq, huv, heq⟩ := stabiliser_euler R hR hdet hcol
+  obtain ⟨U1, hU1det, hU1⟩ := exists_su2_rotZ a b hab
+  obtain ⟨U2, hU2det, hU2⟩ := exists_su2_rotY p q hpq
+  obtain ⟨U3, hU3det, hU3⟩ := exists_su2_rotZ u v huv
   refine ⟨U1 * (U2 * U3), ?_, ?_⟩
   · rw [Matrix.det_mul, Matrix.det_mul, hU1det, hU2det, hU3det]; ring
-  · rw [lorentzMat_mul, lorentzMat_mul, hU1, hU2, hU3, ← hDeq]
-    exact hass.symm
+  · rw [lorentzMat_mul, lorentzMat_mul, hU1, hU2, hU3, heq]
 
 /-! ## 6. The covering: old gap #7 -/
 
