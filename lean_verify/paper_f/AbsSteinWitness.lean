@@ -52,9 +52,16 @@
      Mathlib's `SignType.sign`.
 
   NOT proven here: the comparison with the Cc^∞-defined W^{1,2}(γ)
-  stays OPEN exactly as before — |x| lies in that Sobolev space too, so
-  this witness says nothing about the containment question, and none is
-  claimed. One dimension, variance one (the σ-transport of this witness
+  stays OPEN exactly as before, and none is claimed. **The reason this
+  witness does not settle it is an EXTERNAL fact, flagged as such:** |x|
+  is Lipschitz, so its weak derivative is sgn and both lie in L²(γ), so
+  it lies in the Cc^∞-defined space too — standard, believed, and NOT
+  machine-checked here, because that space has no formal counterpart in
+  the estate (WALLS W6). It is stated because it is load-bearing: were it
+  FALSE, this file's `stein_strict_classes` would settle W6 by exhibiting
+  a Stein-class function outside the Sobolev space. A reader looking for
+  a cheap attack on W6 should start by checking it rather than
+  inheriting it. One dimension, variance one (the σ-transport of this witness
   is routine via `PoincareSteinScaled` and not needed by any claim).
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
