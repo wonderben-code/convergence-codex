@@ -44,13 +44,25 @@
   2. `matrix4R_hasOrthIdem_four` — M₄(ℝ) admits four.
   3. `cliffordMajorana_hasOrthIdem_four` — hence so does Cl(3,1;ℝ),
      transported through `cliffordMajoranaEquiv`.
-  4. `four_le_finrank_range` — the quaternionic dimension step above.
-  5. `matrix2H_orthIdem_le_two` — M₂(ℍ) admits at most two, and
-     `matrix2H_hasOrthIdem_two` — it admits two, so the bound is SHARP
-     rather than vacuous (added folding review round 13, which asked
-     precisely whether the bounded family was empty).
-  6. **`matrix2H_not_ringEquiv_matrix4R`** — M₂(ℍ) ≇ M₄(ℝ).
-  7. **`clifford13_not_ringEquiv_clifford31`** — Cl(1,3;ℝ) ≇ Cl(3,1;ℝ),
+  4. **`orthIdem_card_le`** — the counting principle both bounds are
+     instances of, stated for an arbitrary ring represented on a
+     finite-dimensional REAL space: if every nonzero idempotent acts
+     with range of dimension ≥ d, the family is capped by
+     `n * d ≤ finrank V`. Neither bound below repeats the argument.
+  5. `four_le_finrank_range` — the quaternionic dimension step above,
+     which is `d = 4` for M₂(ℍ) on ℍ²; and `one_le_finrank_range4`,
+     which is the same slot for M₄(ℝ) on ℝ⁴ and is the triviality that
+     a nonzero matrix acts nontrivially.
+  6. Both values PINNED, each with a witness and a matching bound:
+     `matrix2H_orthIdem_le_two` + `matrix2H_hasOrthIdem_two` (exactly
+     two — the second added folding review round 13, which asked
+     precisely whether the bounded family was empty), and
+     `matrix4R_orthIdem_le_four` + `matrix4R_hasOrthIdem_four` (exactly
+     four). `orthIdem_values_pinned` states both together. The
+     inequivalence needs only 4 > 2 and would survive with one side
+     unpinned; knowing the values is what makes the invariant reusable.
+  7. **`matrix2H_not_ringEquiv_matrix4R`** — M₂(ℍ) ≇ M₄(ℝ).
+  8. **`clifford13_not_ringEquiv_clifford31`** — Cl(1,3;ℝ) ≇ Cl(3,1;ℝ),
      and `clifford13_not_algEquiv_clifford31` for the ℝ-algebra form.
 
   NOT proven here: the mod-8 periodicity table (this settles one pair
@@ -101,7 +113,65 @@ theorem HasOrthIdem.of_ringEquiv {A B : Type*} [Ring A] [Ring B]
     simpa using h1
   · rw [← map_sum, hsum, map_one]
 
-/-! ## 2. M₄(ℝ) admits four -/
+/-! ## 2. The counting principle both bounds share
+
+Both upper bounds — four for M₄(ℝ), two for M₂(ℍ) — are the same
+argument at different parameters, and the argument is not about matrices
+at all. Represent the ring on a finite-dimensional REAL space by a
+multiplicative additive map; an idempotent then acts as an idempotent
+endomorphism, whose trace is the dimension of its range; traces add and
+the idempotents sum to 1, so the range dimensions total the dimension of
+the space. If every nonzero idempotent's range has dimension at least
+`d`, that caps the family at `finrank V / d`. -/
+
+/-- An idempotent endomorphism of a finite-dimensional real space has
+    trace equal to the dimension of its range. Stated abstractly so the
+    freeness instances `IsProj.trace` needs are found in the general
+    setting rather than at a concrete space (where instance search does
+    not get there on its own). -/
+private theorem trace_of_idempotent {V : Type} [AddCommGroup V] [Module ℝ V]
+    [FiniteDimensional ℝ V] (f : V →ₗ[ℝ] V) (hf : IsIdempotentElem f) :
+    LinearMap.trace ℝ V f = (Module.finrank ℝ (LinearMap.range f) : ℝ) :=
+  ((LinearMap.isProj_range_iff_isIdempotentElem f).mpr hf).trace
+
+/-- **The counting principle.** A ring represented on a
+    finite-dimensional real space, multiplicatively and unitally, in
+    which every nonzero idempotent acts with range of dimension at
+    least `d`, admits at most `finrank V / d` pairwise-orthogonal
+    nonzero idempotents summing to 1 — stated as `n * d ≤ finrank V` to
+    keep it division-free. -/
+theorem orthIdem_card_le
+    {A : Type*} [Ring A] {V : Type} [AddCommGroup V] [Module ℝ V]
+    [FiniteDimensional ℝ V] (ρ : A →+ (V →ₗ[ℝ] V))
+    (hmul : ∀ x y : A, ρ (x * y) = ρ x ∘ₗ ρ y)
+    (hone : ρ 1 = LinearMap.id) (d : ℕ)
+    (hd : ∀ x : A, x * x = x → x ≠ 0 →
+      d ≤ Module.finrank ℝ (LinearMap.range (ρ x)))
+    {n : ℕ} (h : HasOrthIdem A n) :
+    n * d ≤ Module.finrank ℝ V := by
+  obtain ⟨e, hsq, _, hne, hsum⟩ := h
+  have hidem : ∀ i, IsIdempotentElem (ρ (e i)) := by
+    intro i
+    change ρ (e i) * ρ (e i) = ρ (e i)
+    rw [show ρ (e i) * ρ (e i) = ρ (e i) ∘ₗ ρ (e i) from rfl, ← hmul, hsq]
+  have htr : ∀ i, LinearMap.trace ℝ V (ρ (e i))
+      = (Module.finrank ℝ (LinearMap.range (ρ (e i))) : ℝ) :=
+    fun i => trace_of_idempotent _ (hidem i)
+  have htot : ∑ i, LinearMap.trace ℝ V (ρ (e i)) = (Module.finrank ℝ V : ℝ) := by
+    rw [← map_sum, ← map_sum, hsum, hone, LinearMap.trace_id]
+  have hge : ∀ i, (d : ℝ) ≤ LinearMap.trace ℝ V (ρ (e i)) := by
+    intro i
+    rw [htr i]
+    exact_mod_cast hd _ (hsq i) (hne i)
+  have hreal : ((n * d : ℕ) : ℝ) ≤ (Module.finrank ℝ V : ℝ) := by
+    push_cast
+    calc (n : ℝ) * (d : ℝ) = ∑ _i : Fin n, (d : ℝ) := by
+          rw [Finset.sum_const]; simp [mul_comm]
+      _ ≤ ∑ i, LinearMap.trace ℝ V (ρ (e i)) := Finset.sum_le_sum fun i _ => hge i
+      _ = _ := htot
+  exact_mod_cast hreal
+
+/-! ## 3. M₄(ℝ) admits four -/
 
 section Matrix4
 
@@ -143,6 +213,88 @@ theorem matrix4R_hasOrthIdem_four :
 
 end Matrix4
 
+/-! ### …and at most four
+
+The matching upper bound. Review round 13 left this open and named it
+rather than implying it: the inequivalence only needs 4 > 2, so the
+estate knew M₂(ℍ) admits exactly two but only that M₄(ℝ) admits at
+LEAST four. With the counting principle factored out this costs one
+instantiation at `d = 1` — over ℝ the quaternionic dimension step is
+replaced by the triviality that a nonzero endomorphism has a nonzero
+range. -/
+
+section Matrix4Bound
+
+/-- Left multiplication by a real matrix on ℝ⁴. -/
+def leftMulVec4 (M : Matrix (Fin 4) (Fin 4) ℝ) : (Fin 4 → ℝ) →ₗ[ℝ] (Fin 4 → ℝ) where
+  toFun v := M *ᵥ v
+  map_add' x y := Matrix.mulVec_add M x y
+  map_smul' c x := Matrix.mulVec_smul M c x
+
+@[simp]
+theorem leftMulVec4_apply (M : Matrix (Fin 4) (Fin 4) ℝ) (v : Fin 4 → ℝ) :
+    leftMulVec4 M v = M *ᵥ v := rfl
+
+theorem leftMulVec4_mul (M N : Matrix (Fin 4) (Fin 4) ℝ) :
+    leftMulVec4 (M * N) = leftMulVec4 M ∘ₗ leftMulVec4 N :=
+  LinearMap.ext fun v => (Matrix.mulVec_mulVec v M N).symm
+
+theorem leftMulVec4_one : leftMulVec4 1 = LinearMap.id :=
+  LinearMap.ext fun v => Matrix.one_mulVec v
+
+theorem leftMulVec4_add (M N : Matrix (Fin 4) (Fin 4) ℝ) :
+    leftMulVec4 (M + N) = leftMulVec4 M + leftMulVec4 N :=
+  LinearMap.ext fun v => Matrix.add_mulVec M N v
+
+theorem leftMulVec4_zero : leftMulVec4 0 = 0 :=
+  LinearMap.ext fun v => Matrix.zero_mulVec v
+
+/-- The action bundled as an additive hom. -/
+def leftMulVec4Hom :
+    Matrix (Fin 4) (Fin 4) ℝ →+ ((Fin 4 → ℝ) →ₗ[ℝ] (Fin 4 → ℝ)) where
+  toFun := leftMulVec4
+  map_zero' := leftMulVec4_zero
+  map_add' := leftMulVec4_add
+
+theorem finrank_r4 : Module.finrank ℝ (Fin 4 → ℝ) = 4 := by simp
+
+/-- The real counterpart of `four_le_finrank_range`, and it is the easy
+    one: a NONZERO matrix acts nontrivially (some column is nonzero), so
+    its range is not the zero subspace. No idempotency is needed. -/
+theorem one_le_finrank_range4 (e : Matrix (Fin 4) (Fin 4) ℝ) (h0 : e ≠ 0) :
+    1 ≤ Module.finrank ℝ (LinearMap.range (leftMulVec4 e)) := by
+  obtain ⟨i, j, hij⟩ : ∃ i j, e i j ≠ 0 := by
+    by_contra hc
+    push Not at hc
+    exact h0 (Matrix.ext fun a b => (hc a b).trans (Matrix.zero_apply a b).symm)
+  have hv : leftMulVec4 e (Pi.single j 1) ≠ 0 := by
+    intro hz
+    apply hij
+    have hzi := congrFun hz i
+    rw [leftMulVec4_apply, Matrix.mulVec_single] at hzi
+    simpa using hzi
+  have hbot : LinearMap.range (leftMulVec4 e) ≠ ⊥ := by
+    intro hb
+    apply hv
+    have hm : leftMulVec4 e (Pi.single j 1) ∈ LinearMap.range (leftMulVec4 e) :=
+      LinearMap.mem_range_self _ _
+    rw [hb, Submodule.mem_bot] at hm
+    exact hm
+  have hnz : Module.finrank ℝ (LinearMap.range (leftMulVec4 e)) ≠ 0 := fun hz =>
+    hbot (Submodule.finrank_eq_zero.mp hz)
+  omega
+
+/-- **M₄(ℝ) admits at most four.** With `matrix4R_hasOrthIdem_four`
+    this pins the invariant's value at M₄(ℝ) to exactly four. -/
+theorem matrix4R_orthIdem_le_four {n : ℕ}
+    (h : HasOrthIdem (Matrix (Fin 4) (Fin 4) ℝ) n) : n ≤ 4 := by
+  have hb := orthIdem_card_le leftMulVec4Hom leftMulVec4_mul leftMulVec4_one 1
+    (fun x _ h0 => one_le_finrank_range4 x h0) h
+  rw [finrank_r4] at hb
+  omega
+
+end Matrix4Bound
+
 /-- **Hence so does Cl(3,1;ℝ)** — pulled back through the Majorana
     isomorphism. A statement about the Clifford algebra itself,
     obtained as a payoff of having the isomorphism bundled. -/
@@ -152,13 +304,21 @@ theorem cliffordMajorana_hasOrthIdem_four :
     (CliffordRealMajorana.cliffordMajoranaEquiv.symm.toRingEquiv)
     matrix4R_hasOrthIdem_four
 
-/-! ## 3. The quaternionic side: M₂(ℍ) admits at most two -/
+/-! ## 4. The quaternionic side: M₂(ℍ) admits at most two -/
 
 section Matrix2H
 
-/- Entrywise quaternion arithmetic again; linters silenced for the block. -/
+/- Entrywise quaternion arithmetic again. Linters silenced for the
+block, including `unreachableTactic`/`unnecessarySimpa`: the build's
+option set lets `simp` finish two goals that bare `lake env lean`
+cannot, so the closing `ring` and the `simpa` witness are load-bearing
+under one configuration and flagged as redundant under the other. The
+file must compile under BOTH, so they stay. -/
 set_option linter.unusedSimpArgs false
 set_option linter.unnecessarySeqFocus false
+set_option linter.unreachableTactic false
+set_option linter.unusedTactic false
+set_option linter.unnecessarySimpa false
 
 /-- ℝ is central in ℍ, so the real scalar action commutes with
     quaternion multiplication. Mathlib does not find this by instance
@@ -166,7 +326,7 @@ set_option linter.unnecessarySeqFocus false
 instance smulCommRealQuaternion : SMulCommClass ℝ ℍ[ℝ] ℍ[ℝ] where
   smul_comm c p q := by
     change c • (p * q) = p * (c • q)
-    ext <;> simp
+    ext <;> simp <;> ring
 
 /-- Left multiplication by a quaternionic matrix on ℍ², as an ℝ-linear
     endomorphism of an 8-dimensional real space. The point of passing to
@@ -210,23 +370,13 @@ theorem finrank_h2 : Module.finrank ℝ (Fin 2 → ℍ[ℝ]) = 8 := by
 instance : FiniteDimensional ℝ (Fin 2 → ℍ[ℝ]) :=
   FiniteDimensional.of_finrank_pos (by rw [finrank_h2]; norm_num)
 
-/-- An idempotent endomorphism of a finite-dimensional real space has
-    trace equal to the dimension of its range. Stated abstractly so the
-    freeness instances `IsProj.trace` needs are found in the general
-    setting rather than at the concrete ℍ² (where instance search does
-    not get there on its own). -/
-private theorem trace_of_idempotent {V : Type} [AddCommGroup V] [Module ℝ V]
-    [FiniteDimensional ℝ V] (f : V →ₗ[ℝ] V) (hf : IsIdempotentElem f) :
-    LinearMap.trace ℝ V f = (Module.finrank ℝ (LinearMap.range f) : ℝ) :=
-  ((LinearMap.isProj_range_iff_isIdempotentElem f).mpr hf).trace
-
 /-- Right multiplication of a vector of quaternions by a quaternion.
     ℝ-linear because ℝ is central in ℍ, and the reason a nonzero range
     cannot be small. -/
 def rightMul (v : Fin 2 → ℍ[ℝ]) : ℍ[ℝ] →ₗ[ℝ] (Fin 2 → ℍ[ℝ]) where
   toFun q := fun i => v i * q
   map_add' q r := funext fun i => by simp [mul_add]
-  map_smul' c q := funext fun i => by simp
+  map_smul' c q := funext fun i => by simpa using mul_smul_comm c (v i) q
 
 theorem rightMul_injective {v : Fin 2 → ℍ[ℝ]} (hv : v ≠ 0) :
     Function.Injective (rightMul v) := by
@@ -282,33 +432,10 @@ theorem four_le_finrank_range (e : Matrix (Fin 2) (Fin 2) ℍ[ℝ])
     idempotents summing to 1. -/
 theorem matrix2H_orthIdem_le_two {n : ℕ}
     (h : HasOrthIdem (Matrix (Fin 2) (Fin 2) ℍ[ℝ]) n) : n ≤ 2 := by
-  obtain ⟨e, hsq, _, hne, hsum⟩ := h
-  have hidem : ∀ i, IsIdempotentElem (leftMulVec (e i)) := by
-    intro i
-    change leftMulVec (e i) * leftMulVec (e i) = leftMulVec (e i)
-    rw [show leftMulVec (e i) * leftMulVec (e i)
-        = leftMulVec (e i) ∘ₗ leftMulVec (e i) from rfl,
-      ← leftMulVec_mul, hsq]
-  have htr : ∀ i, LinearMap.trace ℝ _ (leftMulVec (e i))
-      = (Module.finrank ℝ (LinearMap.range (leftMulVec (e i))) : ℝ) :=
-    fun i => trace_of_idempotent _ (hidem i)
-  have hone : ∑ i, LinearMap.trace ℝ (Fin 2 → ℍ[ℝ]) (leftMulVec (e i)) = 8 := by
-    have hsumhom : ∑ i, leftMulVec (e i) = leftMulVec (∑ i, e i) :=
-      (map_sum leftMulVecHom e Finset.univ).symm
-    rw [← map_sum, hsumhom, hsum, leftMulVec_one, LinearMap.trace_id, finrank_h2]
-    norm_num
-  have hge : ∀ i, (4 : ℝ) ≤ LinearMap.trace ℝ _ (leftMulVec (e i)) := by
-    intro i
-    rw [htr i]
-    exact_mod_cast four_le_finrank_range (e i) (hsq i) (hne i)
-  have hbound : (4 * n : ℝ) ≤ 8 := by
-    calc (4 * n : ℝ) = ∑ _i : Fin n, (4 : ℝ) := by
-          rw [Finset.sum_const]; simp [mul_comm]
-      _ ≤ ∑ i, LinearMap.trace ℝ (Fin 2 → ℍ[ℝ]) (leftMulVec (e i)) :=
-          Finset.sum_le_sum fun i _ => hge i
-      _ = 8 := hone
-  have hn : (n : ℝ) ≤ 2 := by linarith
-  exact_mod_cast hn
+  have hb := orthIdem_card_le leftMulVecHom leftMulVec_mul leftMulVec_one 4
+    (fun x hx h0 => four_le_finrank_range x hx h0) h
+  rw [finrank_h2] at hb
+  omega
 
 /-! ### The bound is attained -/
 
@@ -344,7 +471,7 @@ theorem matrix2H_hasOrthIdem_two :
 
 end Matrix2H
 
-/-! ## 4. The obstruction, and the two Clifford algebras -/
+/-! ## 5. The obstruction, and the two Clifford algebras -/
 
 /-- **M₂(ℍ) ≇ M₄(ℝ)** — two 16-dimensional real algebras that are not
     isomorphic even as rings. -/
@@ -373,5 +500,21 @@ theorem clifford13_not_algEquiv_clifford31 :
     IsEmpty (CliffordAlgebra CliffordRealMinkowski.Q₁₃ ≃ₐ[ℝ]
       CliffordAlgebra CliffordRealMajorana.Q₃₁) :=
   ⟨fun φ => clifford13_not_ringEquiv_clifford31.elim φ.toRingEquiv⟩
+
+/-! ## 6. Both values pinned -/
+
+/-- **The invariant is now known exactly on both algebras** — four for
+    M₄(ℝ), two for M₂(ℍ), each with an explicit witness AND a matching
+    bound. The inequivalence needed only 4 > 2 and would have survived
+    with one side unpinned; this says what the invariant IS, which is
+    what makes it reusable against other candidate algebras rather than
+    a one-off separation of these two. -/
+theorem orthIdem_values_pinned :
+    (HasOrthIdem (Matrix (Fin 4) (Fin 4) ℝ) 4
+        ∧ ∀ n, HasOrthIdem (Matrix (Fin 4) (Fin 4) ℝ) n → n ≤ 4)
+      ∧ (HasOrthIdem (Matrix (Fin 2) (Fin 2) ℍ[ℝ]) 2
+        ∧ ∀ n, HasOrthIdem (Matrix (Fin 2) (Fin 2) ℍ[ℝ]) n → n ≤ 2) :=
+  ⟨⟨matrix4R_hasOrthIdem_four, fun _ h => matrix4R_orthIdem_le_four h⟩,
+   ⟨matrix2H_hasOrthIdem_two, fun _ h => matrix2H_orthIdem_le_two h⟩⟩
 
 end IdempotentRankInvariant
