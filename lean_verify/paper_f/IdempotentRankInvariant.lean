@@ -45,7 +45,10 @@
   3. `cliffordMajorana_hasOrthIdem_four` — hence so does Cl(3,1;ℝ),
      transported through `cliffordMajoranaEquiv`.
   4. `four_le_finrank_range` — the quaternionic dimension step above.
-  5. `matrix2H_orthIdem_le_two` — M₂(ℍ) admits at most two.
+  5. `matrix2H_orthIdem_le_two` — M₂(ℍ) admits at most two, and
+     `matrix2H_hasOrthIdem_two` — it admits two, so the bound is SHARP
+     rather than vacuous (added folding review round 13, which asked
+     precisely whether the bounded family was empty).
   6. **`matrix2H_not_ringEquiv_matrix4R`** — M₂(ℍ) ≇ M₄(ℝ).
   7. **`clifford13_not_ringEquiv_clifford31`** — Cl(1,3;ℝ) ≇ Cl(3,1;ℝ),
      and `clifford13_not_algEquiv_clifford31` for the ℝ-algebra form.
@@ -306,6 +309,38 @@ theorem matrix2H_orthIdem_le_two {n : ℕ}
       _ = 8 := hone
   have hn : (n : ℝ) ≤ 2 := by linarith
   exact_mod_cast hn
+
+/-! ### The bound is attained -/
+
+/-- The two diagonal matrix units of M₂(ℍ). -/
+private def E2 : Fin 2 → Matrix (Fin 2) (Fin 2) ℍ[ℝ]
+  | 0 => Matrix.single 0 0 1
+  | 1 => Matrix.single 1 1 1
+
+/-- **M₂(ℍ) does admit two** — so `matrix2H_orthIdem_le_two` is a SHARP
+    bound, not a vacuous one. Without this the inequivalence proof would
+    still go through, but nothing would rule out the possibility that the
+    bound was accidentally bounding an empty family; review round 13
+    flagged exactly that, and this is the answer. -/
+theorem matrix2H_hasOrthIdem_two :
+    HasOrthIdem (Matrix (Fin 2) (Fin 2) ℍ[ℝ]) 2 := by
+  refine ⟨E2, ?_, ?_, ?_, ?_⟩
+  · intro i; fin_cases i <;> ext a b <;> fin_cases a <;> fin_cases b <;>
+      simp [E2, Matrix.single, Matrix.mul_apply, Fin.sum_univ_two]
+  · intro i j hij
+    fin_cases i <;> fin_cases j
+    · exact absurd rfl hij
+    · ext a b <;> fin_cases a <;> fin_cases b <;>
+        simp [E2, Matrix.single, Matrix.mul_apply, Fin.sum_univ_two]
+    · ext a b <;> fin_cases a <;> fin_cases b <;>
+        simp [E2, Matrix.single, Matrix.mul_apply, Fin.sum_univ_two]
+    · exact absurd rfl hij
+  · intro i; fin_cases i <;> intro hc <;>
+      [(have := congrFun (congrFun hc 0) 0); (have := congrFun (congrFun hc 1) 1)] <;>
+      simp [E2, Matrix.single] at this
+  · refine Matrix.ext fun a b => ?_
+    rw [Matrix.sum_apply, Fin.sum_univ_two]
+    fin_cases a <;> fin_cases b <;> simp [E2, Matrix.single, Matrix.one_apply]
 
 end Matrix2H
 
