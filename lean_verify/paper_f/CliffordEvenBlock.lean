@@ -20,22 +20,22 @@
      lands inside it. One `even_induction`, whose only real case is that
      a product of two vectors lands in the block form; that in turn is an
      entrywise computation on `!![t, q; q, −t]`.
-  3. **An even preimage for each of the eight ℝ-basis elements** of
-     `cplxBlock`: `1`, `ι(e₂)ι(e₃)`, `ι(e₃)ι(e₁)`, `ι(e₁)ι(e₂)` for the
-     `a` slot and `−ι(e₀)ι(e₁)ι(e₂)ι(e₃)`, `ι(e₀)ι(e₁)`, `ι(e₀)ι(e₂)`,
-     `ι(e₀)ι(e₃)` for the `b` slot. **The reverse inclusion itself is
-     NOT proved** — see §5's closing note. What §3 gives is containment.
+  3. **`even_image_eq_cplxBlock`** — and the image is EXACTLY
+     `cplxBlock`, not merely inside it. An even preimage is exhibited
+     for each of the eight ℝ-basis elements — `1`, `ι(e₂)ι(e₃)`,
+     `ι(e₃)ι(e₁)`, `ι(e₁)ι(e₂)` for the `a` slot and
+     `−ι(e₀)ι(e₁)ι(e₂)ι(e₃)`, `ι(e₀)ι(e₁)`, `ι(e₀)ι(e₂)`, `ι(e₀)ι(e₃)`
+     for the `b` slot — and `preim` assembles them.
   4. The seven even products of gammas, computed: **`Γ₁Γ₂ = qk·I`**,
      `Γ₃Γ₁ = qj·I`, `Γ₂Γ₃ = qi·I`, `Γ₀Γ₁ = blk 0 qi` and its two
      partners, and **`Γ₀Γ₁Γ₂Γ₃ = blk 0 (−1)`**.
 
-  SO Cl⁰(1,3;ℝ) IS ℍ ⊗_ℝ ℂ IN THE ONLY SENSE THIS FILE ESTABLISHES: the
+  SO Cl⁰(1,3;ℝ) IS ℍ ⊗_ℝ ℂ IN THE SENSE THIS FILE ESTABLISHES: the
   `a` slot is a copy of ℍ, the `b` slot is that copy times a central
   square root of −1 (namely `blk 0 1`, whose square is `blk (−1) 0`), and
   they multiply as ℂ does. **What this file does NOT do is exhibit an
   isomorphism with M₂(ℂ), or say anything about SL₂(ℂ), or about
-  surjectivity — nor even prove the reverse inclusion, so "Cl⁰(1,3;ℝ) IS
-  the block subalgebra" is not established, only "maps into".** ℍ ⊗ ℂ ≅ M₂(ℂ) is a true theorem and it is not proved
+  surjectivity.** ℍ ⊗ ℂ ≅ M₂(ℂ) is a true theorem and it is not proved
   here. W7 step (d)'s surjectivity is untouched; what has changed is that
   the first of the three unprobed steps is now a theorem instead of a
   paper computation, and the second has a concrete target.
@@ -249,7 +249,6 @@ units, and §4 supplies an even preimage for each.
 -/
 
 /-- The eight even generators, as elements of the Clifford algebra. -/
-def g₁ : CliffordAlgebra Q₁₃ := 1
 def gI : CliffordAlgebra Q₁₃ := ι Q₁₃ ((0, 0), (1, 0)) * ι Q₁₃ ((0, 0), (0, 1))
 def gJ : CliffordAlgebra Q₁₃ := ι Q₁₃ ((0, 0), (0, 1)) * ι Q₁₃ ((0, 1), (0, 0))
 def gK : CliffordAlgebra Q₁₃ := ι Q₁₃ ((0, 1), (0, 0)) * ι Q₁₃ ((0, 0), (1, 0))
@@ -289,22 +288,92 @@ theorem equiv_hR : cliffordRealMinkowskiEquiv hR = blk 0 1 := by
   refine Matrix.ext fun i j => ?_
   fin_cases i <;> fin_cases j <;> simp [blk]
 
-/-! ### What is NOT proved here, and it is the reverse inclusion
+/-! ### The reverse inclusion -/
 
-The eight `equiv_*` lemmas above exhibit an even preimage for each of the
-eight ℝ-basis elements of `cplxBlock`, so the image of `evenOdd Q₁₃ 0`
-contains a spanning set and the reverse inclusion of §3 is TRUE. It is
-not a theorem in this file: assembling it needs
-`a.re • g₁ + a.imI • gI + … + b.imK • hK` shown to lie in
-`evenOdd Q₁₃ 0` and to map to `blk a b`, and both halves exhausted the
-elaborator's budget — the membership because `evenOdd` is a `Submodule`
-with no `OneMemClass`, so `1 ∈ evenOdd Q₁₃ 0` needs a named lemma this
-file does not have, and the image computation because the eight-term
-`map_add`/`map_smul` chain is large.
+private theorem mem_one : (1 : CliffordAlgebra Q₁₃) ∈ evenOdd Q₁₃ 0 :=
+  SetLike.one_mem_graded _
 
-**So what §3 gives is containment, not equality**, and the statement
-"Cl⁰(1,3;ℝ) IS the block subalgebra" is NOT established here. Recorded in
-the watchlist rather than papered over.
+private theorem mem_gI : gI ∈ evenOdd Q₁₃ 0 := ι_mul_ι_mem_evenOdd_zero Q₁₃ _ _
+private theorem mem_gJ : gJ ∈ evenOdd Q₁₃ 0 := ι_mul_ι_mem_evenOdd_zero Q₁₃ _ _
+private theorem mem_gK : gK ∈ evenOdd Q₁₃ 0 := ι_mul_ι_mem_evenOdd_zero Q₁₃ _ _
+private theorem mem_hI : hI ∈ evenOdd Q₁₃ 0 := ι_mul_ι_mem_evenOdd_zero Q₁₃ _ _
+private theorem mem_hJ : hJ ∈ evenOdd Q₁₃ 0 := ι_mul_ι_mem_evenOdd_zero Q₁₃ _ _
+private theorem mem_hK : hK ∈ evenOdd Q₁₃ 0 := ι_mul_ι_mem_evenOdd_zero Q₁₃ _ _
+
+private theorem mem_hR : hR ∈ evenOdd Q₁₃ 0 := by
+  change -(ι Q₁₃ ((1, 0), (0, 0)) * ι Q₁₃ ((0, 1), (0, 0))
+    * ι Q₁₃ ((0, 0), (1, 0)) * ι Q₁₃ ((0, 0), (0, 1))) ∈ evenOdd Q₁₃ 0
+  refine neg_mem ?_
+  have hsplit : ι Q₁₃ ((1, 0), (0, 0)) * ι Q₁₃ ((0, 1), (0, 0))
+        * ι Q₁₃ ((0, 0), (1, 0)) * ι Q₁₃ ((0, 0), (0, 1))
+      = (ι Q₁₃ ((1, 0), (0, 0)) * ι Q₁₃ ((0, 1), (0, 0)))
+        * (ι Q₁₃ ((0, 0), (1, 0)) * ι Q₁₃ ((0, 0), (0, 1))) := by
+    simp only [mul_assoc]
+  rw [hsplit]
+  exact (zero_add (0 : ZMod 2)) ▸ SetLike.mul_mem_graded
+    (ι_mul_ι_mem_evenOdd_zero Q₁₃ _ _) (ι_mul_ι_mem_evenOdd_zero Q₁₃ _ _)
+
+/-- The preimage of `blk a b`, as an explicit real combination of the
+    eight even generators. -/
+def preim (a b : ℍ[ℝ]) : CliffordAlgebra Q₁₃ :=
+  a.re • (1 : CliffordAlgebra Q₁₃) + a.imI • gI + a.imJ • gJ + a.imK • gK
+    + b.re • hR + b.imI • hI + b.imJ • hJ + b.imK • hK
+
+theorem preim_mem (a b : ℍ[ℝ]) : preim a b ∈ evenOdd Q₁₃ 0 := by
+  refine Submodule.add_mem _ (Submodule.add_mem _ (Submodule.add_mem _
+    (Submodule.add_mem _ (Submodule.add_mem _ (Submodule.add_mem _
+      (Submodule.add_mem _ ?_ ?_) ?_) ?_) ?_) ?_) ?_) ?_
+  · exact Submodule.smul_mem _ _ mem_one
+  · exact Submodule.smul_mem _ _ mem_gI
+  · exact Submodule.smul_mem _ _ mem_gJ
+  · exact Submodule.smul_mem _ _ mem_gK
+  · exact Submodule.smul_mem _ _ mem_hR
+  · exact Submodule.smul_mem _ _ mem_hI
+  · exact Submodule.smul_mem _ _ mem_hJ
+  · exact Submodule.smul_mem _ _ mem_hK
+
+private theorem blk_decompose (a b : ℍ[ℝ]) :
+    blk a b = a.re • blk 1 0 + a.imI • blk qi 0 + a.imJ • blk qj 0
+      + a.imK • blk qk 0 + b.re • blk 0 1 + b.imI • blk 0 qi
+      + b.imJ • blk 0 qj + b.imK • blk 0 qk := by
+  simp only [blk_smul, blk_add, smul_zero]
+  congr 1
+  · conv_lhs => rw [quat_decompose a]
+    abel
+  · conv_lhs => rw [quat_decompose b]
+    abel
+
+-- The eight-term image computation is large; the budget is raised rather
+-- than the statement weakened.
+set_option maxHeartbeats 800000 in
+theorem equiv_preim (a b : ℍ[ℝ]) :
+    cliffordRealMinkowskiEquiv (preim a b) = blk a b := by
+  rw [preim, blk_decompose]
+  simp only [map_add, map_smul, map_one, equiv_gI, equiv_gJ, equiv_gK,
+    equiv_hR, equiv_hI, equiv_hJ, equiv_hK, blk_one]
+
+/-- **The image of the even part is exactly `cplxBlock`.** -/
+theorem even_image_eq_cplxBlock :
+    (cliffordRealMinkowskiEquiv '' (evenOdd Q₁₃ 0 : Set (CliffordAlgebra Q₁₃)))
+      = (cplxBlock : Set _) := by
+  ext M
+  constructor
+  · rintro ⟨x, hx, rfl⟩
+    exact even_image_mem hx
+  · rintro ⟨a, b, rfl⟩
+    exact ⟨preim a b, preim_mem a b, equiv_preim a b⟩
+
+/-! ### Note on how this landed
+
+The first version of this file could not close the reverse inclusion:
+the membership stalled because `evenOdd` is a `Submodule` with no
+`OneMemClass`, and the eight-term image computation timed out. Both were
+fixed by naming the pieces — `SetLike.one_mem_graded` supplies
+`1 ∈ evenOdd Q₁₃ 0`, and `blk_decompose` does the quaternion bookkeeping
+on the `blk` side so the image computation is a single `simp only` over
+already-proved equations rather than a mixed rewrite. The heartbeat
+budget is raised for that one theorem, with the reason stated at the
+`set_option`.
 -/
 
 /-! ## 6. Why any of §1–§3 says anything
