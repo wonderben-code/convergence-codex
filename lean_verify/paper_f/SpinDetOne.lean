@@ -41,6 +41,20 @@
     principle;
   * `spinGroup.involute_eq` and `involute_ι`, both in Mathlib.
 
+  WHERE THE EVENNESS HYPOTHESIS IS LOAD-BEARING, added by review round 26
+  because §3 gives a reader no way to see it. **`vecUnit_not_mem_spinGroup`
+  — no vector unit is a spin element — and its proof is the collision
+  between §1 and §4**: a vector unit acts with determinant −1 and a spin
+  element with +1, so had any vector unit been a spin element two theorems
+  here would contradict each other. `involute_ne_vecUnit` shows the same
+  thing one step earlier, and `parity_neg_realised` confirms the sign the
+  induction carries genuinely takes both values.
+
+  THE ROTATION'S DETERMINANT HAS NOW BEEN COMPUTED THREE WAYS — an
+  explicit diagonal matrix (`SpinToLorentzMat`), two reflection
+  determinants (`LorentzReflection`), and the parity induction here — and
+  they agree.
+
   WHAT IS STILL OPEN, precisely. `Λ⁰₀ > 0` has no route, no sketch and no
   probe; `SOplus13` membership therefore does NOT follow from this file.
   Surjectivity onto SO⁺(1,3) is untouched. **W7 step (d) is not closed**,
@@ -253,6 +267,63 @@ theorem gram_satisfies_first_not_second :
   refine ⟨gram_isLorentzMat_det_neg.1, ?_⟩
   rw [gram_isLorentzMat_det_neg.2]
   norm_num
+
+/-! ## 7. Where the evenness hypothesis is doing the work
+
+Review round 26's fold. §4's argument turns entirely on spin elements
+being `involute`-fixed, and a reader has no way to see from §3 whether
+that hypothesis is a real restriction or a formality. It is real, and the
+sharpest way to say so is that **the file would be inconsistent without
+it**: §1 says a vector unit acts with determinant −1 and §4 says a spin
+element acts with determinant +1, so if any vector unit were a spin
+element two theorems here would contradict each other.
+-/
+
+/-- **No vector unit is a spin element**, and the proof is exactly the
+    collision. This is the soundness check on the pair of theorems above:
+    had it failed, one of them would be false. -/
+theorem vecUnit_not_mem_spinGroup {v : V} (hv : Q₁₃ v ≠ 0) :
+    ((vecUnit v hv : Clˣ) : Cl) ∉ spinGroup Q₁₃ := by
+  intro hmem
+  have h1 : LinearMap.det (lipToEndo (vecUnit_mem v hv)) = 1 :=
+    det_lipToEndo_eq_one _ (spinGroup.involute_eq hmem)
+  rw [det_lipToEndo_vecUnit hv] at h1
+  norm_num at h1
+
+/-- …and the reason is visible one step earlier: `involute` does NOT fix
+    a vector unit. So `spinGroup.involute_eq` selects rather than holding
+    of everything in sight. -/
+theorem involute_ne_vecUnit {v : V} (hv : Q₁₃ v ≠ 0) :
+    involute ((vecUnit v hv : Clˣ) : Cl) ≠ ((vecUnit v hv : Clˣ) : Cl) := by
+  intro h
+  change involute (ι Q₁₃ v) = ι Q₁₃ v at h
+  rw [involute_ι] at h
+  have h2 : (2 : ℝ) • ι Q₁₃ v = 0 := by
+    rw [two_smul]
+    nth_rewrite 1 [← h]
+    exact neg_add_cancel _
+  have h3 : ι Q₁₃ v = 0 := by
+    rcases smul_eq_zero.1 h2 with hh | hh
+    · exact absurd hh (by norm_num)
+    · exact hh
+  refine hv ?_
+  apply FaithfulSMul.algebraMap_injective ℝ Cl
+  rw [← ι_sq_scalar, h3, mul_zero, map_zero]
+
+/-- **The `−1` branch of `parity` is realised**, so the sign the induction
+    carries is genuinely two-valued and the `involute` clause is not
+    decoration. -/
+theorem parity_neg_realised :
+    ¬ ∀ (x : Clˣ) (hx : x ∈ lipschitzGroup Q₁₃),
+      LinearMap.det (lipToEndo hx) = 1 := by
+  intro h
+  have hone := h (vecUnit e₁ Q₁₃_e₁_ne) (vecUnit_mem e₁ Q₁₃_e₁_ne)
+  rw [det_lipToEndo_vecUnit Q₁₃_e₁_ne] at hone
+  norm_num at hone
+
+/-- And the conclusion is not free from triviality either: the map whose
+    determinants are all `1` is not itself trivial. -/
+theorem spinToO13_nontrivial : spinToO13 R₁₂' ≠ 1 := spinToO13_R₁₂'_ne_one
 
 end
 
