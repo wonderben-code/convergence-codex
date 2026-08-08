@@ -41,11 +41,16 @@
      is the action of the inverse element) that preserves Q₁₃.
   4. **`spinRep : spinGroup Q₁₃ →* Q₁₃.IsometryEquiv Q₁₃`** — the
      bundled homomorphism. This is W7's step (c), complete.
-  5. `spinRep_R₁₂_ne_one` and `spinRep_neg_one` — the homomorphism is
+  5. `spinRep_R₁₂'_ne_one` and `spinRep_neg_one` — the homomorphism is
      not the trivial one, and −1 is in its kernel. Both inherited from
      `SpinVectorRep` §5–6 rather than reproved, but restated at the
      bundled level, because a homomorphism whose non-triviality is only
      known about its unbundled shadow is not much of a homomorphism.
+  6. **`spinRep_not_injective`** — not "one element of the kernel was
+     computed" but the failure of injectivity as a theorem, which is
+     what a double cover actually requires. With `spinRep_R₁₂'_sq` and
+     `R₁₂'_sq_ne_one` putting the factor of two where it belongs:
+     `R₁₂'` has order 4, its image has order 2.
 
   NOT proven here, unchanged from `SpinVectorRep`: that the image is
   SO⁺(1,3), that `spinRep` is onto it, or that its kernel is no larger
@@ -210,5 +215,64 @@ theorem spinRep_neg_one : spinRep ⟨((-1 : Clˣ) : Cl), neg_one_mem⟩ = 1 := b
       (Units.ext rfl) v,
     spinToEndo_neg_one]
   rfl
+
+/-! ## 5. The double cover, stated at the bundled level
+
+Review round 17 attacked the inverse — the piece a `LinearEquiv` carries
+as data and that nothing downstream recomputes — and it held. What the
+round produced that the file did not yet say is below: the failure of
+injectivity as a theorem rather than as a single computed instance, and
+the order mismatch that makes the covering visible. -/
+
+/-- The inverse of the π-rotation is the π-rotation: `rotXY` is an
+    involution, so the inverse element acts the same way. Recorded
+    because a wrong inverse in `linEquiv` would be invisible at every
+    use site. -/
+theorem spinIsom_R₁₂'_inv (v : V) : (spinIsom R₁₂')⁻¹ v = rotXY v := by
+  have h := endo_inv_left R₁₂' (rotXY v)
+  rw [endo_R₁₂'] at h
+  have hinv : rotXY (rotXY v) = v := by simp [rotXY]
+  rw [hinv] at h
+  change endo R₁₂'⁻¹ v = rotXY v
+  rw [← h]
+
+/-- −1 and 1 are different elements of the spin group. -/
+theorem neg_one_ne_one : (⟨((-1 : Clˣ) : Cl), neg_one_mem⟩ : spinGroup Q₁₃) ≠ 1 := by
+  intro h
+  have h3 : ((-1 : Clˣ) : Cl) = ((1 : spinGroup Q₁₃) : Cl) := congrArg Subtype.val h
+  have hr : (-1 : ℝ) = 1 := by
+    apply FaithfulSMul.algebraMap_injective ℝ Cl
+    simpa using h3
+  norm_num at hr
+
+/-- **`spinRep` is not injective.** Not "we computed one element of the
+    kernel" — the map genuinely fails to be injective, which is the
+    statement a double cover requires. What is NOT proved, here or
+    anywhere in the estate, is the other side: that the kernel is no
+    larger than ±1. -/
+theorem spinRep_not_injective : ¬ Function.Injective spinRep := by
+  intro hinj
+  exact neg_one_ne_one (hinj (by rw [spinRep_neg_one, map_one]))
+
+/-- The image of `R₁₂'` squares to the identity: order 2 downstairs. -/
+theorem spinRep_R₁₂'_sq : spinRep R₁₂' * spinRep R₁₂' = 1 := by
+  rw [← map_mul]
+  refine DFunLike.ext _ _ fun v => ?_
+  rw [spinRep_apply, endo_mul, endo_R₁₂', endo_R₁₂',
+    QuadraticMap.IsometryEquiv.one_apply]
+  simp [rotXY]
+
+/-- But `R₁₂'` itself does not: order 4 upstairs. **This is the factor
+    of two, stated where it belongs — between a group element and its
+    image.** -/
+theorem R₁₂'_sq_ne_one : R₁₂' * R₁₂' ≠ 1 := by
+  intro h
+  have hv : ((R₁₂' * R₁₂' : spinGroup Q₁₃) : Cl) = 1 := by rw [h]; rfl
+  rw [show ((R₁₂' * R₁₂' : spinGroup Q₁₃) : Cl) = (R₁₂ : Cl) * (R₁₂ : Cl) from rfl,
+    R₁₂_sq] at hv
+  have hr : (-1 : ℝ) = 1 := by
+    apply FaithfulSMul.algebraMap_injective ℝ Cl
+    simpa using hv
+  norm_num at hr
 
 end SpinToOrthogonal
