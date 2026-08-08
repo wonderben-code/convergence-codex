@@ -672,4 +672,63 @@ theorem cliffordRealMinkowskiEquiv_e₃ :
   simp only [cliffordRealMap, LinearMap.coe_mk, AddHom.coe_mk]
   module
 
+/-! ## 9. The generator map is injective
+
+W7's spin stair needs `Function.Injective (ι Q₁₃)`. Mathlib's
+`spinGroup` machinery proves that twisted conjugation by a spin element
+preserves `range (ι Q)` (`lipschitzGroup.conjAct_smul_range_ι`); turning
+that into an endomorphism of the underlying space means transporting
+along `ι`, which needs ι injective.
+
+**Mathlib does not supply this.** Probed 6 August 2026: nothing in
+`LinearAlgebra/CliffordAlgebra/` proves `ι` injective for a general
+quadratic form, and `exact?` cannot close `Function.Injective (ι Q₁₃)`.
+The concrete isomorphism can, and cheaply — under
+`cliffordRealToMatrix` the four coordinates of `v` sit in plain sight as
+matrix entries, so injectivity is reading them back off. This is the
+second time the decision to build the isomorphism as a BUNDLED
+`AlgEquiv` with generator corollaries, rather than as an abstract
+existence claim, has bought something the abstract version could not. -/
+
+section Injectivity
+
+set_option linter.unusedSimpArgs false
+
+/-- The gamma combination determines its coefficients: `v₀` is the real
+    part of the (0,0) entry and `v₁, v₂, v₃` are the `i`, `j`, `k` parts
+    of the (0,1) entry. -/
+theorem cliffordRealMap_injective : Function.Injective cliffordRealMap := by
+  rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
+  intro v hv
+  obtain ⟨⟨a, b⟩, ⟨c, d⟩⟩ := v
+  have ha : a = 0 := by
+    have h := congrArg (fun M : Matrix (Fin 2) (Fin 2) ℍ[ℝ] => (M 0 0).re) hv
+    simpa [cliffordRealMap, Γ₀, Γ₁, Γ₂, Γ₃, qi, qj, qk] using h
+  have hb : b = 0 := by
+    have h := congrArg (fun M : Matrix (Fin 2) (Fin 2) ℍ[ℝ] => (M 0 1).imI) hv
+    simpa [cliffordRealMap, Γ₀, Γ₁, Γ₂, Γ₃, qi, qj, qk] using h
+  have hc : c = 0 := by
+    have h := congrArg (fun M : Matrix (Fin 2) (Fin 2) ℍ[ℝ] => (M 0 1).imJ) hv
+    simpa [cliffordRealMap, Γ₀, Γ₁, Γ₂, Γ₃, qi, qj, qk] using h
+  have hd : d = 0 := by
+    have h := congrArg (fun M : Matrix (Fin 2) (Fin 2) ℍ[ℝ] => (M 0 1).imK) hv
+    simpa [cliffordRealMap, Γ₀, Γ₁, Γ₂, Γ₃, qi, qj, qk] using h
+  simp [ha, hb, hc, hd]
+
+/-- **`ι Q₁₃` is injective** — the first step of W7's spin stair, and
+    the one the general theory does not provide. -/
+theorem ι_injective : Function.Injective (ι Q₁₃) := by
+  intro v w h
+  apply cliffordRealMap_injective
+  rw [← cliffordRealToMatrix_ι, ← cliffordRealToMatrix_ι, h]
+
+/-- The underlying space embeds in the Clifford algebra as a
+    4-dimensional subspace — the range ι picks out, stated so the
+    dimension is on record before anything acts on it. -/
+theorem finrank_range_ι : Module.finrank ℝ (LinearMap.range (ι Q₁₃)) = 4 := by
+  rw [LinearMap.finrank_range_of_inj ι_injective]
+  simp [Module.finrank_prod]
+
+end Injectivity
+
 end CliffordRealMinkowski
