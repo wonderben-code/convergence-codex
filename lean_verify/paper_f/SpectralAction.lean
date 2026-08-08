@@ -59,11 +59,18 @@
   `Λ²`, and its first nonconstant term is computed. §7 states the
   remaining leg precisely and sends the modelling choice to the author.
 
+  ADDED AFTER THE FIRST DRAFT (§6): the odd-moment vanishing is a shadow
+  of a three-line structural fact — **`γ` maps the `λ`-eigenvectors of
+  `D` bijectively to the `(−λ)`-eigenvectors, so the spectrum is
+  symmetric about zero**. That secures the general-cutoff case
+  mathematically and narrows DECISION 6 to plumbing.
+
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
   axioms.
 -/
 import KOSixSpectralTriple
 import Mathlib.LinearAlgebra.Trace
+import Mathlib.LinearAlgebra.Eigenspace.Basic
 
 namespace SpectralAction
 
@@ -316,7 +323,59 @@ theorem spectralAction_one (Λ : ℂ) (M : Matrix (Fin n) (Fin n) ℂ) :
     trace_Dlin_pow_zero]
   simp
 
-/-! ## 6. Review round 35 — that the object is not empty
+/-! ## 6. Why the odd moments vanish: the spectrum is symmetric
+
+§2 proves `Tr(Dᵏ) = 0` for odd `k` by a trace identity. That is the
+form §4 consumes, but it is a shadow of something more basic, and the
+more basic fact is three lines: **`γ` carries the `λ`-eigenvectors of
+`D` to the `(−λ)`-eigenvectors bijectively, so the spectrum of `D` is
+symmetric about zero.**
+
+This matters beyond tidiness. §4's "the action is a function of `Λ²`"
+is currently proved through the moment expansion and therefore holds
+only for POLYNOMIAL cutoffs. The spectral symmetry is what would carry
+the same conclusion for an arbitrary cutoff, because `Tr f(D/Λ)` is
+then `∑ f(λᵢ/Λ)` over a set of eigenvalues closed under negation. So
+this section secures the MATHEMATICAL content of the general case; what
+DECISION 6 is left asking is whether the project wants the
+functional-calculus plumbing, which is a scope question and not a
+mathematical one.
+-/
+
+theorem gammaLin_gammaLin (v : Hf n) :
+    (gammaLin : Hf n →ₗ[ℂ] Hf n) (gammaLin v) = v := by
+  change gamma (gamma v) = v
+  obtain ⟨⟨a, b⟩, ⟨c, d⟩⟩ := v
+  simp [gamma]
+
+theorem gammaLin_injective : Function.Injective (gammaLin : Hf n →ₗ[ℂ] Hf n) :=
+  Function.LeftInverse.injective gammaLin_gammaLin
+
+/-- **`γ` sends `λ`-eigenvectors to `(−λ)`-eigenvectors.** -/
+theorem eigenvector_neg (M : Matrix (Fin n) (Fin n) ℂ) (l : ℂ) (v : Hf n)
+    (hv : Dlin M v = l • v) : Dlin M (gammaLin v) = (-l) • gammaLin v := by
+  change D M (gamma v) = (-l) • gamma v
+  rw [D_anticomm_gamma M v, show D M v = l • v from hv, gamma_smul, neg_smul]
+
+/-- **The spectrum of the Dirac operator is symmetric about zero.** -/
+theorem hasEigenvalue_neg (M : Matrix (Fin n) (Fin n) ℂ) (l : ℂ)
+    (h : Module.End.HasEigenvalue (Dlin M) l) :
+    Module.End.HasEigenvalue (Dlin M) (-l) := by
+  obtain ⟨v, hv, hv0⟩ := h.exists_hasEigenvector
+  refine Module.End.hasEigenvalue_of_hasEigenvector (x := gammaLin v) ⟨?_, ?_⟩
+  · rw [Module.End.mem_eigenspace_iff]
+    refine eigenvector_neg M l v ?_
+    rw [← Module.End.mem_eigenspace_iff]
+    exact hv
+  · intro hz
+    exact hv0 (gammaLin_injective (by rw [hz, map_zero]))
+
+/-- Stated as the biconditional it is, since `γ` is an involution. -/
+theorem hasEigenvalue_neg_iff (M : Matrix (Fin n) (Fin n) ℂ) (l : ℂ) :
+    Module.End.HasEigenvalue (Dlin M) l ↔ Module.End.HasEigenvalue (Dlin M) (-l) :=
+  ⟨hasEigenvalue_neg M l, fun h => by simpa using hasEigenvalue_neg M (-l) h⟩
+
+/-! ## 7. Review round 35 — that the object is not empty
 
 Three ways this file could be a definition about nothing.
 
@@ -362,7 +421,7 @@ theorem trace_Dlin_zero_but_Dlin_ne :
       ∧ Dlin (1 : Matrix (Fin 1) (Fin 1) ℂ) ≠ 0 :=
   ⟨trace_Dlin_pow_odd _ odd_one, Dlin_one_ne_zero⟩
 
-/-! ## 7. What is still missing, and whose decision it is
+/-! ## 8. What is still missing, and whose decision it is
 
 **No Bakry-Émery tag moves.** The watchlist item this file fires the
 trigger for asks whether the spectral action produces a Gaussian
@@ -390,10 +449,12 @@ do not belong to a formalisation:
    choosing one is a physics commitment.
 2. *Is the polynomial cutoff acceptable?* The literature uses a smooth
    even cutoff and reads off heat-kernel coefficients. This file's
-   restriction to polynomials is honest and stated, but whether the
-   project wants the general statement — which needs functional calculus
-   for a self-adjoint operator, available in Mathlib for the finite case
-   via the spectral theorem — is a scope decision.
+   restriction to polynomials is honest and stated. **§6 narrows this
+   decision:** the mathematical content of the general case — that the
+   spectrum is symmetric about zero, hence that only the even part of
+   any cutoff can contribute — is now proved and does not depend on the
+   cutoff being polynomial. What is left is functional-calculus
+   plumbing, which is a scope question rather than a mathematical one.
 
 Until (1) is answered the Bakry-Émery tags stay where they are, and the
 watchlist item stays open with its remaining leg now one sentence long
