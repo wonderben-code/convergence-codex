@@ -33,6 +33,15 @@
   cannot combine two factors whose signs are unknown, which is every
   step of it.
 
+  WHY THE SPINOR NORM IS NOT OPTIONAL, added by review round 27 because
+  the paragraph above asserts it and §5 would go through unchanged if it
+  were false: **`generators_disagree`** — the reflection in the timelike
+  `e₀` has `Λ⁰₀ = +1` and the one in the spacelike `e₁` has `Λ⁰₀ = −1`.
+  A parity argument like `SpinDetOne`'s cannot see that difference.
+  `vecUnit_e₁_not_mem_spinGroup` then gives a SECOND, independent reason
+  no vector unit is a spin element, sharing nothing with the determinant
+  route, and the two agree.
+
   WHAT REMAINS OF W7 STEP (d). Its three parts were: image inside
   SO⁺(1,3), surjectivity onto it, kernel exactly ±1. The kernel is
   `SpinKernel.kernel_iff`. The image is this file. **Surjectivity is
@@ -47,12 +56,13 @@
 -/
 import SpinDetOne
 import LorentzOrthochronousSign
+import SpinMeetsSL2
 
 namespace SpinOrthochronous
 
 open SpinVectorRep SpinPair SpinToOrthogonal LipschitzVectorRep LorentzReflection
 open MinkowskiSignature LorentzGroup SpinMinkowskiBridge SpinToLorentzMat
-open SpinDetOne LorentzOrthochronousSign
+open SpinDetOne LorentzOrthochronousSign SpinMeetsSL2
 open CliffordAlgebra CliffordRealMinkowski
 open scoped Matrix
 
@@ -333,6 +343,80 @@ def spinToSOplus : spinGroup Q₁₃ →* SOplus13 where
         * ((spinToO13 h : O13) : Matrix.GeneralLinearGroup (Fin 4) ℝ)
     rw [map_mul]
     rfl)
+
+/-! ## 6. Orthochronicity is not a parity, and here is the proof
+
+Review round 27's fold. The header asserts that the generators disagree —
+a timelike reflection preserves the time direction and a spacelike one
+reverses it — and that assertion is what forces the spinor norm into the
+induction. §5 would go through unchanged if it were false and the sign
+were a parity like the determinant, so it is worth being a theorem rather
+than a paragraph.
+-/
+
+/-- The reflection in the TIMELIKE `e₀` is orthochronous. -/
+theorem reflMat_e₀_zero_zero : (reflMat (coordEquiv e₀)) 0 0 = 1 := by
+  have hgv : (gram *ᵥ coordEquiv e₀) 0 = (coordEquiv e₀) 0 := by
+    simp [gram, Matrix.mulVec_diagonal, mw]
+  rw [reflMat]
+  simp only [Matrix.sub_apply, Matrix.vecMulVec_apply, Matrix.one_apply_eq,
+    Pi.smul_apply, smul_eq_mul, hgv]
+  simp [coordEquiv, e₀, minkowskiForm_apply]
+  norm_num
+
+/-- The reflection in the SPACELIKE `e₁` is ANTICHRONOUS. -/
+theorem reflMat_e₁_zero_zero : (reflMat (coordEquiv e₁)) 0 0 = -1 := by
+  rw [reflMat_e₁, Matrix.diagonal_apply_eq]
+  norm_num
+
+/-- **So the generators genuinely disagree**, and no count of them can
+    decide orthochronicity. This is why §4 carries the spinor norm and
+    `SpinDetOne`'s induction did not have to. -/
+theorem generators_disagree :
+    0 < (reflMat (coordEquiv e₀)) 0 0 ∧ (reflMat (coordEquiv e₁)) 0 0 < 0 := by
+  rw [reflMat_e₀_zero_zero, reflMat_e₁_zero_zero]
+  norm_num
+
+/-- **A second, independent reason no vector unit is a spin element.**
+    `SpinDetOne.vecUnit_not_mem_spinGroup` gets this from the
+    determinant; for a SPACELIKE vector the time-time entry gives it by
+    a route sharing nothing with that one, and the two agree. -/
+theorem vecUnit_e₁_not_mem_spinGroup :
+    ((vecUnit e₁ Q₁₃_e₁_ne : Clˣ) : Cl) ∉ spinGroup Q₁₃ := by
+  intro hmem
+  have h := lipMat_zero_zero_pos hmem
+  rw [show lipMat (units_mem_lip hmem) = lipMat (vecUnit_mem e₁ Q₁₃_e₁_ne) from rfl,
+    lipMat_vecUnit, reflMat_e₁_zero_zero] at h
+  norm_num at h
+
+/-- Two spacelike reflections compose to something orthochronous — the
+    `(−1)(−1)` case, which is `LorentzOrthochronousSign`'s new one and is
+    unreachable from `orthochronous_mul` alone. -/
+theorem two_spacelike_chron :
+    0 < ((reflMat (coordEquiv e₁)) * (reflMat (coordEquiv e₁))) 0 0 := by
+  have hL : IsLorentzMat (reflMat (coordEquiv e₁)) := by
+    rw [← lipMat_vecUnit Q₁₃_e₁_ne]
+    exact lipMat_isLorentz _
+  have hneg : (reflMat (coordEquiv e₁)) 0 0 < 0 := by
+    rw [reflMat_e₁_zero_zero]; norm_num
+  exact orthochronous_mul_neg_neg hL hL hneg hneg
+
+/-- The general theorem states the same proposition the two hand
+    computations in `SpinMeetsSL2` stated. Proof irrelevance makes the
+    `rfl` trivial as a PROOF, which is the point: what it certifies is
+    that the general result is about the same objects, not that the two
+    arguments agree. -/
+theorem agrees_with_hand_computation :
+    spinToO13_mem_SOplus13 R₁₂' = spinToO13_R₁₂'_mem_SOplus
+      ∧ spinToO13_mem_SOplus13 B' = spinToO13_B'_mem_SOplus :=
+  ⟨rfl, rfl⟩
+
+/-- And the homomorphism into SO⁺(1,3) is not the trivial one. -/
+theorem spinToSOplus_nontrivial : spinToSOplus R₁₂' ≠ 1 := by
+  intro h
+  have hval : ((spinToO13 R₁₂' : O13) : Matrix.GeneralLinearGroup (Fin 4) ℝ) = 1 :=
+    congrArg Subtype.val h
+  exact spinToO13_R₁₂'_ne_one (Subtype.ext hval)
 
 end
 
