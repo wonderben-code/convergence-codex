@@ -32,7 +32,12 @@
      proved about the IMAGE in step (d)'s sense, and it is a negative
      statement: it rules the rotation group out, it does not identify
      the image with SO⁺(1,3).
-  4. **`boost_rot_ne_rot_boost`** — the boost and the π-rotation of
+  4. **`mixed_pair_not_mem`** — a timelike–SPACElike pair is not a spin
+     element, `Q₁₃ e₀ · Q₁₃ e₁ = −1`. Without this the argument above
+     would be vacuous: "the condition is multiplicative, so both `+1`
+     works too" only says something if some sign pattern is genuinely
+     excluded.
+  5. **`boost_rot_ne_rot_boost`** — the boost and the π-rotation of
      `SpinVectorRep` do not commute. Review round 17 recorded this as a
      check it could not make: the multiplication order on the
      orthogonal group, `(f * g) x = f (g x)`, is only load-bearing if
@@ -200,5 +205,75 @@ theorem boost_rot_ne_rot_boost :
   have h1 : (boostTX (rotXY ((0, 1), (0, 0)))).1.1
       = (rotXY (boostTX ((0, 1), (0, 0)))).1.1 := by rw [h]
   norm_num [boostTX, rotXY] at h1
+
+/-! ## 5. The sign condition has content
+
+Review round 18 attacked the unitarity computation, as the watchlist
+asked it to: `B_mem` rests on `Q(v₁)·Q(v₂) = 1` holding with BOTH
+factors `+1`, and that is the configuration which fails for a single
+generator. The check held. What it produced, and what this section
+records, is the other side of the observation — that the condition
+genuinely selects, rather than being satisfied by everything. -/
+
+/-- **A timelike–spacelike pair is NOT a spin element.** `Q₁₃ e₀ = +1`
+    and `Q₁₃ e₁ = −1` multiply to `−1`, and unitarity fails. Without
+    this the header's argument would be vacuous: "the condition is
+    multiplicative, so both `+1` also works" only means something if
+    some sign pattern is genuinely excluded. -/
+theorem mixed_pair_not_mem : (ι Q₁₃ e₀ * ι Q₁₃ e₁) ∉ spinGroup Q₁₃ := by
+  intro hmem
+  have h : star (ι Q₁₃ e₀ * ι Q₁₃ e₁) * (ι Q₁₃ e₀ * ι Q₁₃ e₁) = 1 := hmem.1.2.1
+  rw [star_mul, star_ι, star_ι,
+    show -ι Q₁₃ e₁ * -ι Q₁₃ e₀ * (ι Q₁₃ e₀ * ι Q₁₃ e₁)
+        = ι Q₁₃ e₁ * ((ι Q₁₃ e₀ * ι Q₁₃ e₀) * ι Q₁₃ e₁) by
+      simp only [neg_mul, mul_neg, neg_neg, mul_assoc], ι_e₀_sq, one_mul,
+    ι_e₁_sq] at h
+  have hr : (-1 : ℝ) = 1 := by
+    apply FaithfulSMul.algebraMap_injective ℝ Cl
+    simpa using h
+  norm_num at hr
+
+/-- The boost preserves `Q₁₃`, proved directly in coordinates. This is
+    already known abstractly through `spinToEndo_preserves`, but the
+    coordinate proof is an independent route to the same fact and it is
+    where `17² − 15² = 8²` actually does its work. -/
+theorem boostTX_preserves (v : V) : Q₁₃ (boostTX v) = Q₁₃ v := by
+  obtain ⟨⟨t, x⟩, ⟨y, z⟩⟩ := v
+  rw [Q₁₃_apply, Q₁₃_apply]
+  norm_num [boostTX]
+  ring
+
+/-- It is a boost in the `t`–`x` plane specifically: the other two
+    directions are fixed. -/
+theorem boostTX_fixes_y (a : ℝ) : boostTX ((0, 0), (a, 0)) = ((0, 0), (a, 0)) := by
+  norm_num [boostTX]
+
+theorem boostTX_fixes_z (a : ℝ) : boostTX ((0, 0), (0, a)) = ((0, 0), (0, a)) := by
+  norm_num [boostTX]
+
+/-- `B` is not the identity of the algebra. -/
+theorem B_ne_one : (B : Cl) ≠ 1 := by
+  intro h
+  apply spinToEndo_B_e₀_ne
+  apply ι_injective
+  rw [ι_spinToEndo, h]
+  have hinv : ((B⁻¹ : Clˣ) : Cl) = 1 := by
+    rw [← Units.val_one (α := Cl)]
+    congr 1
+    rw [inv_eq_one, ← Units.val_eq_one, h]
+  rw [hinv]
+  simp
+
+/-- And it is a different element from the π-rotation, so the spin group
+    is not being probed twice at the same point. -/
+theorem B_ne_R₁₂ : (B : Cl) ≠ (R₁₂ : Cl) := by
+  intro h
+  apply spinToEndo_B_e₀_ne
+  apply ι_injective
+  rw [ι_spinToEndo, h]
+  have hinv : ((B⁻¹ : Clˣ) : Cl) = ((R₁₂⁻¹ : Clˣ) : Cl) := by
+    congr 1
+    exact congrArg Inv.inv (Units.ext h)
+  rw [hinv, ← ι_spinToEndo R₁₂_mem e₀, spinToEndo_R₁₂_e₀]
 
 end SpinBoost
