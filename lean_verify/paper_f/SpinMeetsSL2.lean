@@ -24,6 +24,13 @@
   2. **`R₁₂'_in_SL2_image`** and **`B'_in_SL2_image`** — hence each is
      `Λ(A)` for some `A ∈ SL₂(ℂ)`. **The first theorems in the estate
      relating the Clifford chain to the SL₂(ℂ) chain.**
+  3. **`SOplus13_lt_O13`** — added by review round 24, and it is what
+     makes item 1 worth proving: SO⁺(1,3) is STRICTLY smaller than
+     O(1,3), witnessed by the Gram matrix, which is a Lorentz matrix of
+     determinant −1. Without it, "both elements land in SO⁺(1,3)" could
+     have been free.
+  4. `det_boost_block` — the determinant recomputed by a second route,
+     since the Laplace expansion in item 1 is opaque.
 
   WHAT THIS DOES NOT DO, and the gap is exactly as wide as it was.
   Two elements are not a group. This says nothing about whether the
@@ -40,6 +47,7 @@
 
 import SpinToLorentzMat
 import LorentzSurjectivity
+import LorentzIsometryEquiv
 
 open MinkowskiSignature LorentzGroup SpinVectorRep SpinToOrthogonal
 open SpinMinkowskiBridge SpinToLorentzMat CliffordAlgebra CliffordRealMinkowski
@@ -120,6 +128,48 @@ theorem images_overlap :
       ∧ M ≠ 1 := by
   refine ⟨(spinToO13 R₁₂' : Matrix.GeneralLinearGroup (Fin 4) ℝ),
     ⟨R₁₂', rfl⟩, R₁₂'_in_SL2_image, ?_⟩
+  intro h
+  exact spinToO13_R₁₂'_ne_one (Subtype.ext h)
+
+/-! ## 5. Why §3 was worth proving, and a second route to the determinant
+
+Review round 24's fold. -/
+
+/-- The determinant, recomputed. `det_boost_matrix` goes through Laplace
+    expansion, which is opaque; the matrix is block diagonal with a 2×2
+    boost block and `I₂`, and `det_fin_two` computes that block's
+    determinant directly. Same number, different lemma, and this is
+    where `17² − 15² = 8²` is visibly doing the work. -/
+theorem det_boost_block :
+    (!![17/8, -(15/8); -(15/8), 17/8] : Matrix (Fin 2) (Fin 2) ℝ).det = 1 := by
+  rw [Matrix.det_fin_two_of]
+  norm_num
+
+/-- **SO⁺(1,3) is strictly smaller than O(1,3)**, witnessed by the Gram
+    matrix. This is what makes §3 worth proving: if every element of
+    O(1,3) were proper and orthochronous, `spinToO13_R₁₂'_mem_SOplus`
+    would follow from membership in `O13` alone and would say nothing. -/
+theorem gramO13_not_mem_SOplus :
+    (LorentzIsometryEquiv.gramO13 :
+      Matrix.GeneralLinearGroup (Fin 4) ℝ) ∉ SOplus13 := by
+  rintro ⟨-, hdet, -⟩
+  rw [LorentzIsometryEquiv.det_gramO13] at hdet
+  norm_num at hdet
+
+theorem SOplus13_lt_O13 :
+    ∃ M : Matrix.GeneralLinearGroup (Fin 4) ℝ, M ∈ O13 ∧ M ∉ SOplus13 :=
+  ⟨(LorentzIsometryEquiv.gramO13 : Matrix.GeneralLinearGroup (Fin 4) ℝ),
+    LorentzIsometryEquiv.gramO13.2, gramO13_not_mem_SOplus⟩
+
+/-- And the preimage in §4 is not a trivial one. `R₁₂'_in_SL2_image` is
+    an existential, worth much less if its witness could act trivially —
+    `Λ(±1) = 1`. It cannot: whatever `A` is, its image is the
+    π-rotation, which is not the identity. -/
+theorem preimage_nontrivial (A : Matrix (Fin 2) (Fin 2) ℂ) (hA : A.det = 1)
+    (heq : lorentzUnit A hA
+      = (spinToO13 R₁₂' : Matrix.GeneralLinearGroup (Fin 4) ℝ)) :
+    lorentzUnit A hA ≠ 1 := by
+  rw [heq]
   intro h
   exact spinToO13_R₁₂'_ne_one (Subtype.ext h)
 
