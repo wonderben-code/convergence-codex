@@ -32,12 +32,26 @@
   "`spinGroup Q₁₃ ⧸ {±1}` embeds in SO⁺(1,3)", not "`spinGroup Q₁₃` is
   the double cover of SO⁺(1,3)".
 
+  **SUPERSEDED 8 AUG 2026** — the sentence above was true when written
+  and is now false: `SpinSurjective.spin_surjective` proves the spin map
+  onto SO⁺(1,3), and `SpinSurjective.spinDoubleCover` bundles W7 step (d)
+  as `Spin(1,3) ⧸ {±1} ≃* SO⁺(1,3)`. Left standing per the house rule;
+  what remains open is the TOPOLOGICAL reading (ASSUMPTIONS 41 and 42),
+  not the algebraic one.
+
   AND IT DOES NOT IDENTIFY THE TWO CHAINS. `LorentzSurjectivity.double_cover`
   says SL₂(ℂ) → SO⁺(1,3) is onto with kernel {±1}. This file says the spin
   map has kernel {±1} too. **Two homomorphisms into one group with equal
   kernels are not thereby equal, or even related** — one of them is known
   to be onto and the other is not, and no theorem anywhere intertwines
   them. §5 states that as a theorem-shaped caveat rather than a sentence.
+
+  **SUPERSEDED 8 AUG 2026** — and the reasoning above stays correct while
+  its conclusion stops holding, which is the useful thing about it. Equal
+  kernels still do not relate two maps; what relates them is
+  `SL2Quotient.sl2QuotEquiv` plus surjectivity on both sides, giving
+  `SpinSurjective.spinEquivSL2Quot : Spin(1,3) ⧸ {±1} ≃* SL₂(ℂ) ⧸ {±1}`.
+  Left standing per the house rule.
 
   WHAT ROUND 29 ADDED, and the first item is the reason a biconditional
   is worth more than an implication: **`R₁₂_ne_pm_one`** runs §1
@@ -221,7 +235,8 @@ in theorem form.
 /-- The spin map is 2-to-1 onto its image; **whether that image is all of
     SO⁺(1,3) is not proved**, and this file does not assume it. What IS
     available is that the image contains a rotation and a boost that do
-    not commute. -/
+    not commute. (**SUPERSEDED 8 AUG 2026**: the image IS all of
+    SO⁺(1,3) — `SpinSurjective.spin_surjective`. Left standing.) -/
 theorem image_nonabelian :
     ∃ g h : spinGroup Q₁₃, spinToO13 (g * h) ≠ spinToO13 (h * g) :=
   ⟨B', R₁₂', spinToO13_noncomm⟩

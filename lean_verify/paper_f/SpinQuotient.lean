@@ -31,6 +31,17 @@
   SO⁺(1,3) up to isomorphism, and does NOT say it is SO⁺(1,3). The
   difference between those two sentences is the whole of what is left.
 
+  **SUPERSEDED 8 AUG 2026** — the sentence above was true when written
+  and is now false: `SpinSurjective.spin_surjective` proves the spin map
+  onto SO⁺(1,3), and `SpinSurjective.spinDoubleCover` bundles W7 step (d)
+  as `Spin(1,3) ⧸ {±1} ≃* SO⁺(1,3)`. Left standing per the house rule;
+  what remains open is the TOPOLOGICAL reading (ASSUMPTIONS 41 and 42),
+  not the algebraic one.
+  `spinQuotEmbed` IS onto — `SpinSurjective.surjectivityStatement` — so
+  §4's `SurjectivityStatement` is a discharged hypothesis rather than a
+  gap, and it is kept as a `def` because downstream statements are
+  phrased against it.
+
   WHAT ROUND 30 ADDED, and the first item underpins every "double cover"
   sentence in the estate: **`neg_one_ne_one_cl`** — `−1 ≠ 1` in
   Cl(1,3;ℝ). If that failed, `pmOne` would be trivial, the quotient would
@@ -158,7 +169,13 @@ absence is visible rather than implied.
 
 /-- The missing statement, named but NOT proved anywhere in the estate:
     surjectivity. It is stated here as a definition of the gap, not as a
-    theorem — nothing in this file or any other establishes it. -/
+    theorem — nothing in this file or any other establishes it.
+
+    **SUPERSEDED 8 AUG 2026**: `SpinSurjective.surjectivityStatement`
+    proves it. The `def` is kept because several downstream statements
+    are phrased against it, and the docstring is kept because a record
+    of what the project believed at each point is part of what the
+    record is for. -/
 def SurjectivityStatement : Prop := Function.Surjective spinQuotEmbed
 
 /-- What IS available: the SL₂(ℂ) chain reaches all of SO⁺(1,3). That is

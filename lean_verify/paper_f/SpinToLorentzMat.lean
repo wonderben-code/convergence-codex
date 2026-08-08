@@ -44,6 +44,13 @@
   step (d) is unchanged: the image being SO⁺(1,3), surjectivity onto
   it, and the kernel being no larger than ±1 are all open.
 
+  **SUPERSEDED 8 AUG 2026** — the sentence above was true when written
+  and is now false: `SpinSurjective.spin_surjective` proves the spin map
+  onto SO⁺(1,3), and `SpinSurjective.spinDoubleCover` bundles W7 step (d)
+  as `Spin(1,3) ⧸ {±1} ≃* SO⁺(1,3)`. Left standing per the house rule;
+  what remains open is the TOPOLOGICAL reading (ASSUMPTIONS 41 and 42),
+  not the algebraic one.
+
   THE LIMITATION REVIEW ROUND 20 RECORDED IS NOW CLOSED (§6). That round
   noted the Gram identity for the BOOST element was not independently
   recomputed — the rotation's matrix is diagonal so its `ΛᵀGΛ = G` falls

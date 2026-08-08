@@ -203,7 +203,12 @@ theorem trivial_of_pm_one {x : Clˣ} (hx : (x : Cl) ∈ spinGroup Q₁₃)
     W7 step (d)'s three parts, stated as the equality it is.
 
     The other two parts are untouched: this says nothing about the
-    image landing in SO⁺(1,3), nor about surjectivity onto it. -/
+    image landing in SO⁺(1,3), nor about surjectivity onto it.
+
+    **SUPERSEDED 8 AUG 2026**: both are now proved —
+    `SpinOrthochronous.spinToO13_mem_SOplus13` and
+    `SpinSurjective.spin_surjective`. Sentence left standing per the
+    house rule. -/
 theorem kernel_iff {x : Clˣ} (hx : (x : Cl) ∈ spinGroup Q₁₃) :
     (∀ v : V, spinToEndo hx v = v) ↔ ((x : Cl) = 1 ∨ (x : Cl) = -1) :=
   ⟨kernel_eq_pm_one hx, trivial_of_pm_one hx⟩

@@ -59,6 +59,18 @@
   the spin map is onto; §5 restates that gap in better coordinates and
   does not close it. `SurjectivityStatement` is still a `def`.
 
+  **SUPERSEDED 8 AUG 2026** — the sentence above was true when written
+  and is now false: `SpinSurjective.spin_surjective` proves the spin map
+  onto SO⁺(1,3), and `SpinSurjective.spinDoubleCover` bundles W7 step (d)
+  as `Spin(1,3) ⧸ {±1} ≃* SO⁺(1,3)`. Left standing per the house rule;
+  what remains open is the TOPOLOGICAL reading (ASSUMPTIONS 41 and 42),
+  not the algebraic one.
+  `spinQuotToSL2Quot` is a bijection — `SpinSurjective.spinEquivSL2Quot`
+  is the isomorphism — so §5's `bijective_iff` is a discharged
+  hypothesis. **The restatement in §5 is what made the closure findable**,
+  which is the argument for restating a gap even when the restatement
+  proves nothing.
+
   WHAT ROUND 31 ADDED: the non-vacuity checks that make §§3–5 mean
   something — `sl2PmOne` has two members and is neither ⊥ nor ⊤,
   `SL₂(ℂ) ⧸ {±1}` is nonabelian (proved by transporting

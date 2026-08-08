@@ -51,6 +51,15 @@
   is that `spinGroup Q₁₃` is Mathlib's algebraic object rather than a
   simply-connected cover.
 
+  **SUPERSEDED 8 AUG 2026** — the sentence above was true when written
+  and is now false: `SpinSurjective.spin_surjective` proves the spin map
+  onto SO⁺(1,3), and `SpinSurjective.spinDoubleCover` bundles W7 step (d)
+  as `Spin(1,3) ⧸ {±1} ≃* SO⁺(1,3)`. Left standing per the house rule;
+  what remains open is the TOPOLOGICAL reading (ASSUMPTIONS 41 and 42),
+  not the algebraic one.
+  ASSUMPTIONS 42's half of the caveat is NOT superseded and now carries
+  the whole of it.
+
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
   axioms.
 -/

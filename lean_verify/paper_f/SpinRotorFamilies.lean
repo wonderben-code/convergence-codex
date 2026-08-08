@@ -49,6 +49,12 @@
      next units must discharge are named, separated, and each is a
      statement about a family the estate already understands.
 
+  **SUPERSEDED 8 AUG 2026**: everything the paragraph below calls
+  missing is proved in `SpinSurjective`, and BOTH named residues
+  resolved unexpectedly — (α) was already proved and thrown away inside
+  `stabiliser_surjective`, and (β) was never needed, because the orbit
+  argument conjugates nothing. Left standing per the house rule.
+
   WHAT THIS DOES NOT DO. **It does not prove surjectivity, and it does
   not prove either hypothesis of item 5.** Item 4 puts every `rotZ`,
   every `rotY` and every `t`–`x` boost in the image; item 5's `hrot`

@@ -40,6 +40,13 @@
   the first of the three unprobed steps is now a theorem instead of a
   paper computation, and the second has a concrete target.
 
+  **SUPERSEDED 8 AUG 2026, and by a route this file did not point at.**
+  W7 step (d)'s surjectivity is closed — `SpinSurjective.spin_surjective`
+  — but NOT through `Cl(1,2;ℝ) ≅ M₂(ℂ)`. That route was never needed:
+  the rotor and boost families reach every generator directly. **So this
+  file's mathematics stands and its strategic framing did not**, which is
+  ERRATUM 43. Left standing per the house rule.
+
   WHY ANY OF THIS SAYS ANYTHING, added by review round 28: §3 is empty
   information if `cplxBlock` is all of M₂(ℍ). **`not_mem_cplxBlock`**
   shows it is proper and **`Γ₀_not_mem_cplxBlock`** shows the odd part is
