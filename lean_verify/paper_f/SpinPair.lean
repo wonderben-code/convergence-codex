@@ -81,6 +81,9 @@ def vecUnit (v : V) (hv : Q₁₃ v ≠ 0) : Clˣ where
 @[simp] theorem vecUnit_val (v : V) (hv : Q₁₃ v ≠ 0) :
     ((vecUnit v hv : Clˣ) : Cl) = ι Q₁₃ v := rfl
 
+@[simp] theorem vecUnit_inv (v : V) (hv : Q₁₃ v ≠ 0) :
+    (((vecUnit v hv)⁻¹ : Clˣ) : Cl) = (Q₁₃ v)⁻¹ • ι Q₁₃ v := rfl
+
 theorem vecUnit_mem (v : V) (hv : Q₁₃ v ≠ 0) : vecUnit v hv ∈ lipschitzGroup Q₁₃ :=
   Subgroup.subset_closure ⟨v, rfl⟩
 
@@ -288,5 +291,60 @@ theorem vreflect_e₁_e₃_ne_rotXY : vreflect e₁ (vreflect e₃ e₂) ≠ rot
   intro h
   have h1 := congrArg (fun v : V => v.2.1) h
   norm_num [rotXY, e₂] at h1
+
+/-! ## 7. The reflections are involutions, and the family is closed
+under inversion
+
+Review round 23 recorded `vreflect v ∘ vreflect v = id` as NOT CHECKED —
+true, but needing plumbing that round did not write. PROOF_STRATEGY §7.2
+says a chain reported incomplete is still open, so here it is, by a
+route that avoids the plumbing entirely: work in the vector space rather
+than the algebra, where the whole thing is bilinearity of `polar`. -/
+
+/-- The reflection does not change the component being reflected: the
+    polar form of `v` against `vreflect v u` is the polar form of `v`
+    against `u`. This is the only computation the involution needs. -/
+theorem polar_vreflect {v : V} (hv : Q₁₃ v ≠ 0) (u : V) :
+    QuadraticMap.polar Q₁₃ v (vreflect v u) = QuadraticMap.polar Q₁₃ v u := by
+  rw [vreflect]
+  simp only [QuadraticMap.polar_smul_right, QuadraticMap.polar_sub_right,
+    QuadraticMap.polar_self, smul_eq_mul]
+  apply mul_left_cancel₀ hv
+  rw [← mul_assoc, mul_inv_cancel₀ hv, one_mul]
+  ring
+
+/-- **Each reflection is an involution.** -/
+theorem vreflect_involutive {v : V} (hv : Q₁₃ v ≠ 0) (u : V) :
+    vreflect v (vreflect v u) = u := by
+  conv_lhs => rw [vreflect, polar_vreflect hv, vreflect]
+  rw [smul_smul, mul_inv_cancel₀ hv, one_smul, sub_sub_cancel, smul_smul,
+    inv_mul_cancel₀ hv, one_smul]
+
+/-- The normalisation condition is symmetric. -/
+theorem prod_symm {v w : V} (hprod : Q₁₃ v * Q₁₃ w = 1) : Q₁₃ w * Q₁₃ v = 1 := by
+  rw [mul_comm]; exact hprod
+
+/-- **The family is closed under inversion, and explicitly so:** the
+    inverse of `pair v w` is `pair w v`. Not obvious from the
+    definition, where the inverse carries two scalar factors — they
+    cancel exactly because `Q₁₃ v · Q₁₃ w = 1`. -/
+theorem pair_inv_eq_pair {v w : V} (hv : Q₁₃ v ≠ 0) (hw : Q₁₃ w ≠ 0)
+    (hprod : Q₁₃ v * Q₁₃ w = 1) : (pair hv hw)⁻¹ = pair hw hv := by
+  refine Units.ext ?_
+  have hs : (Q₁₃ w)⁻¹ * (Q₁₃ v)⁻¹ = 1 := by
+    rw [← mul_inv, mul_comm (Q₁₃ w), hprod, inv_one]
+  rw [pair_inv, pair_val, vecUnit_inv, vecUnit_inv, smul_mul_assoc,
+    mul_smul_comm, smul_smul, hs, one_smul]
+
+/-- So the swapped pair is a spin element too. -/
+theorem pair_swap_mem {v w : V} (hv : Q₁₃ v ≠ 0) (hw : Q₁₃ w ≠ 0)
+    (hprod : Q₁₃ v * Q₁₃ w = 1) : ((pair hw hv : Clˣ) : Cl) ∈ spinGroup Q₁₃ :=
+  pair_mem hw hv (prod_symm hprod)
+
+/-- **And the two actions undo each other**, which is what "closed under
+    inversion" is worth at the level of ℝ⁴. -/
+theorem vreflect_pair_symm {v w : V} (hv : Q₁₃ v ≠ 0) (hw : Q₁₃ w ≠ 0) (u : V) :
+    vreflect w (vreflect v (vreflect v (vreflect w u))) = u := by
+  rw [vreflect_involutive hv, vreflect_involutive hw]
 
 end SpinPair
