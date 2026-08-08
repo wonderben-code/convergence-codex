@@ -36,6 +36,15 @@
      matrix. `SpinToLorentzMat` had `det = 1` for one hand-picked element
      and labelled it "one data point, NOT a statement about the image";
      this replaces the data point with the family.
+  5. **`reflMat_e₁`** — added by review round 25, and it is what makes
+     item 2 worth having: a determinant is worthless if the matrix is not
+     the map it claims to be. The reflection in `e₁` is
+     `diag(−1, 1, −1, −1)`, entry by entry. With
+     `det_spinToO13_R₁₂_via_pair` and `det_spinToO13_B_via_pair`, which
+     recover by this route the two determinants the estate had already
+     computed by unrelated ones, and `det_reflMat_null` /
+     `coord_vreflect_null_ne`, which show the non-null hypotheses are
+     load-bearing rather than technical.
 
   WHAT THIS DOES NOT DO. The `pair` family is not the spin group: a
   product of four or six vectors is a spin element and is not a `pair`,
@@ -212,6 +221,99 @@ theorem det_spinToO13_pair {v w : SpinVectorRep.V} (hv : Q₁₃ v ≠ 0)
     det_reflMat (by rwa [minkowskiForm_coordEquiv]),
     det_reflMat (by rwa [minkowskiForm_coordEquiv])]
   norm_num
+
+/-! ## 5. Which matrix, and what the hypotheses are doing
+
+Review round 25's fold. §4 is a determinant computation, and a determinant
+computation is worthless if the matrix is not the map it claims to be —
+that was review round 20's finding one level down, and it applies here
+verbatim. §5.1 pins the matrix. §5.2 checks the new general theorem against
+the two elements the estate had already computed by unrelated routes.
+§5.3 shows the two hypotheses are load-bearing rather than technical.
+-/
+
+/-- **Which matrix.** The reflection in the spacelike `e₁` is
+    `diag(−1, 1, −1, −1)`: it fixes the x-axis and negates everything
+    else, which is minus the reflection in the hyperplane `x = 0`, as
+    §2's docstring says. -/
+theorem reflMat_e₁ : reflMat (coordEquiv e₁) = Matrix.diagonal ![-1, 1, -1, -1] := by
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [reflMat, coordEquiv, e₁, minkowskiForm_apply, gram, mw,
+      Matrix.mulVec_diagonal]
+  norm_num
+
+/-- **The new general theorem agrees with the old hand computation.**
+    `SpinToLorentzMat.det_spinToO13_R₁₂'` got `det = 1` for the π-rotation
+    from an explicit diagonal matrix and `det_diagonal`; this file gets it
+    from two reflection determinants and the matrix determinant lemma. The
+    two routes share nothing, so agreement is evidence and disagreement
+    would have condemned one of them. -/
+private theorem hQ₁₂ : Q₁₃ e₁ * Q₁₃ e₂ = 1 := by rw [Q₁₃_e₁, Q₁₃_e₂]; norm_num
+
+private theorem hQw : Q₁₃ SpinBoost.w ≠ 0 := by rw [SpinBoost.Q₁₃_w]; norm_num
+
+private theorem hQ₀w : Q₁₃ e₀ * Q₁₃ SpinBoost.w = 1 := by
+  rw [Q₁₃_e₀, SpinBoost.Q₁₃_w]; norm_num
+
+theorem det_spinToO13_R₁₂_via_pair :
+    ((spinToO13 ⟨(pair Q₁₃_e₁_ne Q₁₃_e₂_ne : Cl),
+        pair_mem Q₁₃_e₁_ne Q₁₃_e₂_ne hQ₁₂⟩ :
+      Matrix.GeneralLinearGroup (Fin 4) ℝ) : Matrix (Fin 4) (Fin 4) ℝ).det = 1 :=
+  det_spinToO13_pair _ _ hQ₁₂
+
+/-- And the same for the boost, whose earlier `det = 1` went through a
+    Laplace expansion this route never touches. -/
+theorem det_spinToO13_B_via_pair :
+    ((spinToO13 ⟨(pair Q₁₃_e₀_ne hQw : Cl), pair_mem Q₁₃_e₀_ne hQw hQ₀w⟩ :
+      Matrix.GeneralLinearGroup (Fin 4) ℝ) : Matrix (Fin 4) (Fin 4) ℝ).det = 1 :=
+  det_spinToO13_pair _ _ hQ₀w
+
+/-- At a null `p` the reflection matrix collapses to `−I`. -/
+theorem reflMat_null {p : Fin 4 → ℝ} (hp : minkowskiForm p = 0) :
+    reflMat p = -1 := by
+  rw [reflMat, hp]
+  ext i j
+  simp
+
+/-- **`det_reflMat`'s hypothesis is load-bearing.** In four dimensions
+    `det(−I) = +1`, so a null vector gives the opposite answer. -/
+theorem det_reflMat_null {p : Fin 4 → ℝ} (hp : minkowskiForm p = 0) :
+    (reflMat p).det ≠ -1 := by
+  rw [reflMat_null hp, Matrix.det_neg, Matrix.det_one]
+  norm_num
+
+/-- **`coord_vreflect`'s hypothesis is load-bearing too**, and this is the
+    theorem its docstring previously only asserted: at a null `v` the two
+    sides are `0` and `−q`, which differ. -/
+theorem coord_vreflect_null_ne :
+    coordEquiv (vreflect (((1, 1), (0, 0)) : SpinVectorRep.V) e₂)
+      ≠ reflMat (coordEquiv (((1, 1), (0, 0)) : SpinVectorRep.V)) *ᵥ coordEquiv e₂ := by
+  have hz : Q₁₃ (((1, 1), (0, 0)) : SpinVectorRep.V) = 0 := by
+    rw [Q₁₃_apply]; norm_num
+  have hL : coordEquiv (vreflect (((1, 1), (0, 0)) : SpinVectorRep.V) e₂) = 0 := by
+    rw [vreflect, hz]; simp
+  have hR : reflMat (coordEquiv (((1, 1), (0, 0)) : SpinVectorRep.V)) *ᵥ coordEquiv e₂
+      = -coordEquiv e₂ := by
+    rw [reflMat_mulVec, minkowskiForm_coordEquiv, hz]; simp
+  rw [hL, hR]
+  intro hcon
+  have h2 := congrFun hcon 2
+  simp [coordEquiv, e₂] at h2
+
+/-- **§1's hypothesis pins the value, not merely the sign.** At
+    `w ⬝ᵥ u = 4` the determinant is `−3`, so `det_vecMulVec_sub_one` is
+    reading the dot product rather than exploiting the shape. -/
+theorem det_vecMulVec_sub_one_corrupt :
+    (Matrix.vecMulVec ![2, 0, 0, 0] ![2, 0, 0, 0] - 1 :
+      Matrix (Fin 4) (Fin 4) ℝ).det = -3 := by
+  have h : (Matrix.vecMulVec ![2, 0, 0, 0] ![2, 0, 0, 0] - 1 :
+      Matrix (Fin 4) (Fin 4) ℝ) = Matrix.diagonal ![3, -1, -1, -1] := by
+    ext i j
+    fin_cases i <;> fin_cases j <;> simp
+    norm_num
+  rw [h, Matrix.det_diagonal, Fin.prod_univ_four]
+  simp
 
 end
 
