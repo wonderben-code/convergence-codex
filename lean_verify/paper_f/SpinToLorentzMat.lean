@@ -44,6 +44,13 @@
   step (d) is unchanged: the image being SO⁺(1,3), surjectivity onto
   it, and the kernel being no larger than ±1 are all open.
 
+  ONE LIMITATION, recorded by review round 20 rather than papered over:
+  the Gram identity for the BOOST element is not independently
+  recomputed. The rotation's matrix is diagonal, so §5 checks
+  `ΛᵀGΛ = G` for it from the diagonal algebra alone; the boost's matrix
+  is not, and for that element the property rests on
+  `isLorentzMat_of_isometry` only.
+
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
   axioms.
 -/
@@ -187,5 +194,82 @@ theorem spinToO13_B_moves_time :
     exact SpinBoost.spinToEndo_B e₀
   rw [hcoord, hg, SpinBoost.boostTX_e₀]
   rfl
+
+/-! ## 5. Which elements, exactly
+
+Review round 20's fold. "It lands in O(1,3)" is a weak statement if
+nobody checks WHICH element; the matrices below are the strongest thing
+this file can say, and they are what a reader should check against
+their own paper computation. -/
+
+/-- Index reduction at slots 2 and 3, which `norm_num`'s simp set
+    does not perform. -/
+private theorem vc2 {α : Type*} (a b c d : α) : ![a, b, c, d] 2 = c := rfl
+private theorem vc3 {α : Type*} (a b c d : α) : ![a, b, c, d] 3 = d := rfl
+
+/-- The boost as an element of the spin group. -/
+def B' : spinGroup Q₁₃ := ⟨(SpinBoost.B : Cl), SpinBoost.B_mem⟩
+
+theorem endo_B' (v : V) : endo B' v = SpinBoost.boostTX v := by
+  rw [endo, spinToEndo_congr (toUnits_mem _) SpinBoost.B_mem (Units.ext rfl) v]
+  exact SpinBoost.spinToEndo_B v
+
+theorem symm_single : ∀ j : Fin 4,
+    coordEquiv.symm (Pi.single j (1 : ℝ)) = ![e₀, e₁, e₂, e₃] j := by
+  intro j
+  fin_cases j <;>
+    (refine Prod.ext (Prod.ext ?_ ?_) (Prod.ext ?_ ?_) <;> simp [e₀, e₁, e₂, e₃])
+
+/-- **The π-rotation, as an actual Lorentz matrix.** -/
+theorem spinToO13_R₁₂'_matrix :
+    ((spinToO13 R₁₂' : Matrix.GeneralLinearGroup (Fin 4) ℝ) :
+      Matrix (Fin 4) (Fin 4) ℝ) = Matrix.diagonal ![1, -1, -1, 1] := by
+  ext i j
+  rw [spinToO13_apply_entry, endo_R₁₂', symm_single]
+  fin_cases i <;> fin_cases j <;>
+    norm_num [rotXY, e₀, e₁, e₂, e₃, Matrix.diagonal]
+
+/-- **The boost, as an actual Lorentz matrix.** -/
+theorem spinToO13_B'_matrix :
+    ((spinToO13 B' : Matrix.GeneralLinearGroup (Fin 4) ℝ) :
+      Matrix (Fin 4) (Fin 4) ℝ)
+      = !![17/8, -(15/8), 0, 0; -(15/8), 17/8, 0, 0; 0, 0, 1, 0; 0, 0, 0, 1] := by
+  ext i j
+  rw [spinToO13_apply_entry, endo_B', symm_single]
+  fin_cases i <;> fin_cases j <;>
+    norm_num [SpinBoost.boostTX, e₀, e₁, e₂, e₃]
+
+/-- **The order convention is pinned by a refutation, not by a `rfl`.**
+    `toO13` is a homomorphism and not an anti-homomorphism; that only
+    means something because the image is nonabelian, and the boost is
+    what makes it so. -/
+theorem spinToO13_noncomm : spinToO13 (B' * R₁₂') ≠ spinToO13 (R₁₂' * B') := by
+  intro h
+  have h1 := congrArg (fun y : O13 =>
+    ((y : Matrix.GeneralLinearGroup (Fin 4) ℝ) : Matrix (Fin 4) (Fin 4) ℝ) 0 1) h
+  simp only [] at h1
+  rw [spinToO13_apply_entry, spinToO13_apply_entry, endo_mul, endo_mul,
+    endo_R₁₂', endo_B', endo_B', endo_R₁₂', symm_single] at h1
+  norm_num [SpinBoost.boostTX, rotXY, e₁] at h1
+
+/-- **O(1,3) is not SO⁺(1,3), and the caveat in the header is not
+    hypothetical:** the Gram matrix itself is a Lorentz matrix, and its
+    determinant is −1. So membership in `O13` carries no information
+    about properness whatsoever. -/
+theorem gram_isLorentzMat_det_neg :
+    IsLorentzMat gram ∧ (gram : Matrix (Fin 4) (Fin 4) ℝ).det = -1 := by
+  refine ⟨?_, det_gram⟩
+  rw [IsLorentzMat, gram, Matrix.diagonal_transpose, ← gram, gram_mul_gram,
+    Matrix.one_mul]
+
+/-- One honest data point on properness, and no more than that: the
+    π-rotation's matrix has determinant 1. **This is one element. It is
+    not a statement about the image**, and `det = 1` on the image is not
+    proved anywhere. -/
+theorem det_spinToO13_R₁₂' :
+    ((spinToO13 R₁₂' : Matrix.GeneralLinearGroup (Fin 4) ℝ) :
+      Matrix (Fin 4) (Fin 4) ℝ).det = 1 := by
+  rw [spinToO13_R₁₂'_matrix, Matrix.det_diagonal, Fin.prod_univ_four]
+  norm_num [vc2, vc3]
 
 end SpinToLorentzMat
