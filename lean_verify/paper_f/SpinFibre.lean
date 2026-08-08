@@ -39,6 +39,15 @@
   to be onto and the other is not, and no theorem anywhere intertwines
   them. §5 states that as a theorem-shaped caveat rather than a sentence.
 
+  WHAT ROUND 29 ADDED, and the first item is the reason a biconditional
+  is worth more than an implication: **`R₁₂_ne_pm_one`** runs §1
+  backwards — `spinToO13 R₁₂' ≠ 1` was proved by computing a 4×4 matrix,
+  and it now yields a statement about Cl(1,3;ℝ) with no matrix in it.
+  **`spinToO13_R₁₂'_sq`** is a three-file cross-check: `R₁₂² = −1` (proved
+  from the unit inverse, no matrices) plus §1's kernel forces the
+  π-rotation to square into the kernel, while `R₁₂'_sq_ne_one` says the
+  element is not the identity — order 4 above, order 2 below.
+
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
   axioms.
 -/
@@ -226,6 +235,44 @@ theorem not_injective : ¬ Function.Injective spinToO13 :=
 theorem fibre_of_one (h : spinGroup Q₁₃) :
     spinToO13 h = 1 ↔ ((h : Cl) = 1 ∨ (h : Cl) = -1) :=
   spinToO13_eq_one_iff h
+
+/-! ## 5. Consequences, and the cross-check that ties three files together
+
+Review round 29's fold. The kernel theorem is a biconditional, so it can
+be run in EITHER direction, and the backwards direction turns a matrix
+computation into an algebraic fact that was nowhere proved.
+-/
+
+/-- **`R₁₂` is neither `1` nor `−1` in the Clifford algebra.** This is
+    the kernel theorem run backwards: `spinToO13 R₁₂' ≠ 1` was proved by
+    computing a 4×4 matrix, and it now yields a statement about Cl(1,3;ℝ)
+    with no matrix in it. -/
+theorem R₁₂_ne_pm_one : (R₁₂ : Cl) ≠ 1 ∧ (R₁₂ : Cl) ≠ -1 := by
+  have h := spinToO13_R₁₂'_ne_one
+  exact ⟨fun hc => h ((spinToO13_eq_one_iff R₁₂').2 (Or.inl hc)),
+    fun hc => h ((spinToO13_eq_one_iff R₁₂').2 (Or.inr hc))⟩
+
+/-- **Three files meet here.** `SpinVectorRep.R₁₂_sq` says `R₁₂² = −1`,
+    proved from the unit inverse with no matrices; §1 says the kernel is
+    `±1`; together they force the π-rotation to square into the kernel.
+    `R₁₂'_sq_ne_one` says the element itself is not the identity — so
+    `R₁₂'` has order 4 and its image order 2, which is the factor of two
+    a double cover would be made of. -/
+theorem spinToO13_R₁₂'_sq : spinToO13 (R₁₂' * R₁₂') = 1 := by
+  refine (spinToO13_eq_one_iff _).2 (Or.inr ?_)
+  change (R₁₂ : Cl) * (R₁₂ : Cl) = -1
+  exact R₁₂_sq
+
+/-- The fibre criterion refutes a wrong pairing: the boost and the
+    rotation do not differ by a sign, so they are in different fibres. -/
+theorem spinToO13_B'_ne_R₁₂' : spinToO13 B' ≠ spinToO13 R₁₂' := by
+  intro h
+  rcases (spinToO13_eq_iff B' R₁₂').1 h with hp | hp
+  · exact SpinBoost.B_ne_R₁₂ hp
+  · have hb : ((spinToO13 B' : Matrix.GeneralLinearGroup (Fin 4) ℝ) :
+        Matrix (Fin 4) (Fin 4) ℝ) 0 0 = 17 / 8 := SpinMeetsSL2.entry00_B'
+    rw [h, spinToO13_R₁₂'_matrix, Matrix.diagonal_apply_eq] at hb
+    norm_num at hb
 
 end
 
