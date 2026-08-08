@@ -47,10 +47,14 @@
   any spin-group statement (the identification of the estate's SL₂(ℂ)
   with Mathlib's spinGroup stays open exactly as W7 records); and any
   physics. The convention dependence is real mathematics — the standard
-  classification puts Cl(1,3;ℝ) and Cl(3,1;ℝ) in DIFFERENT rows — but
-  that non-isomorphism is a cited fact, NOT verified in this file
-  (review round 11 caught the file asserting it in its own voice); it is
-  why the form is fixed explicitly rather than left to convention. What
+  classification puts Cl(1,3;ℝ) and Cl(3,1;ℝ) in DIFFERENT rows — and
+  that non-isomorphism is still NOT verified in THIS file (review round
+  11 caught the file asserting it in its own voice). It is no longer a
+  citation for the estate, though: `IdempotentRankInvariant` proves
+  M₂(ℍ) ≇ M₄(ℝ) by an orthogonal-idempotent count and derives
+  **`clifford13_not_ringEquiv_clifford31`** from it and the two
+  isomorphism theorems. It is why the form is fixed explicitly rather
+  than left to convention. What
   IS proven about the form beyond the identity: `Q₁₃_indefinite` — it
   takes a strictly positive and a strictly negative value, so the
   signature is genuinely mixed and no sign convention is being smuggled.

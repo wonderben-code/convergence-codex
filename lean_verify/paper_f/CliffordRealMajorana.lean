@@ -48,8 +48,13 @@
   the one a reader is most likely to supply for themselves: having
   Cl(1,3;ℝ) ≅ M₂(ℍ) and Cl(3,1;ℝ) ≅ M₄(ℝ) side by side does NOT
   prove the two Clifford algebras inequivalent — that needs
-  M₂(ℍ) ≇ M₄(ℝ), which is neither proven here nor implied by the two
-  isomorphisms, and whose missing invariant is recorded in W7.
+  M₂(ℍ) ≇ M₄(ℝ), which is not implied by the two isomorphisms and is
+  not proven in this file. It IS proven in the estate:
+  `IdempotentRankInvariant` supplies the invariant W7 named (the count
+  of pairwise-orthogonal nonzero idempotents summing to 1) and derives
+  **`clifford13_not_ringEquiv_clifford31`**. The non-implication above
+  stands as stated; what has changed is that the missing half now
+  exists elsewhere rather than nowhere.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
   axioms (all 51 public declarations probed at review round 12). That
