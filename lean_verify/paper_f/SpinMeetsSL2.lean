@@ -12,7 +12,7 @@
   estate has built actually hit by the SL₂(ℂ) map?**
 
   They are, and the two ingredients were both already on the shelf. The
-  estate proved SL₂(ℂ) ↠ SO⁺(1,3) in `LorentzSurjectivity` months ago;
+  estate proved SL₂(ℂ) ↠ SO⁺(1,3) in `LorentzSurjectivity` on 1 Aug;
   this week's work computed the two spin elements as explicit Lorentz
   matrices. All that was missing was checking those matrices satisfy
   SO⁺(1,3)'s two extra conditions — det = 1 and Λ⁰₀ > 0.
