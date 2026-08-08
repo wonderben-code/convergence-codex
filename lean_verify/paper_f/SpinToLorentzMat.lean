@@ -44,12 +44,13 @@
   step (d) is unchanged: the image being SO⁺(1,3), surjectivity onto
   it, and the kernel being no larger than ±1 are all open.
 
-  ONE LIMITATION, recorded by review round 20 rather than papered over:
-  the Gram identity for the BOOST element is not independently
-  recomputed. The rotation's matrix is diagonal, so §5 checks
-  `ΛᵀGΛ = G` for it from the diagonal algebra alone; the boost's matrix
-  is not, and for that element the property rests on
-  `isLorentzMat_of_isometry` only.
+  THE LIMITATION REVIEW ROUND 20 RECORDED IS NOW CLOSED (§6). That round
+  noted the Gram identity for the BOOST element was not independently
+  recomputed — the rotation's matrix is diagonal so its `ΛᵀGΛ = G` falls
+  out of the diagonal algebra, but the boost's does not, and for that
+  element the property rested on `isLorentzMat_of_isometry` alone.
+  `boost_isLorentzMat_direct` now checks it entrywise, by a route that
+  does not pass through the general theorem.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
   axioms.
@@ -271,5 +272,34 @@ theorem det_spinToO13_R₁₂' :
       Matrix (Fin 4) (Fin 4) ℝ).det = 1 := by
   rw [spinToO13_R₁₂'_matrix, Matrix.det_diagonal, Fin.prod_univ_four]
   norm_num [vc2, vc3]
+
+/-! ## 6. The boost's Gram identity, independently
+
+Review round 20 recorded this as the one check it did not make: the
+rotation's matrix is diagonal, so §5 verifies `ΛᵀGΛ = G` for it from the
+diagonal algebra alone, but the boost's matrix is not diagonal and its
+Gram identity rested on `isLorentzMat_of_isometry`. PROOF_STRATEGY §7.2
+says that leaves the chain open. Here it is entrywise, by a route that
+does not touch the general theorem — so the boost is now covered by two
+independent arguments, as the rotation already was. -/
+
+/-- **The boost matrix satisfies `ΛᵀGΛ = G`, checked entrywise.** -/
+theorem boost_isLorentzMat_direct :
+    IsLorentzMat (!![17/8, -(15/8), 0, 0; -(15/8), 17/8, 0, 0;
+      0, 0, 1, 0; 0, 0, 0, 1] : Matrix (Fin 4) (Fin 4) ℝ) := by
+  rw [IsLorentzMat, gram]
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [Matrix.mul_apply, Fin.sum_univ_four, Matrix.diagonal, mw,
+      Matrix.transpose_apply] <;> norm_num
+
+/-- And it is the matrix the spin element actually produces, so the
+    independent check applies to the element and not merely to a matrix
+    that resembles it. -/
+theorem spinToO13_B'_isLorentzMat_direct :
+    IsLorentzMat ((spinToO13 B' : Matrix.GeneralLinearGroup (Fin 4) ℝ) :
+      Matrix (Fin 4) (Fin 4) ℝ) := by
+  rw [spinToO13_B'_matrix]
+  exact boost_isLorentzMat_direct
 
 end SpinToLorentzMat
