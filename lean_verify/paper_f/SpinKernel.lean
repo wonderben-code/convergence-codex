@@ -36,8 +36,11 @@
      available only because the isomorphism to M₂(ℍ) is bundled.
   4. **`central_of_comm_ι`** — commuting with the vectors is enough.
   5. **`kernel_eq_pm_one`** — **the kernel of the vector representation
-     is contained in ±1.** With `SpinVectorRep.spinToEndo_neg_one` for
-     the reverse inclusion, the kernel is exactly ±1.
+     is contained in ±1.**
+  6. **`kernel_iff`** — and the converse, so the kernel is EXACTLY ±1
+     as a biconditional rather than as two facts a reader has to put
+     together. Added by review round 22, which pointed out that the
+     file proved one inclusion and asserted the other in prose.
 
   WHAT THIS DOES NOT DO. Step (d)'s other two parts are untouched and
   are NOT reclassified by this: that the image lands in the identity
@@ -173,5 +176,36 @@ theorem kernel_eq_pm_one {x : Clˣ} (hx : (x : Cl) ∈ spinGroup Q₁₃)
   · right
     rw [hc, show c = -1 by linarith]
     simp
+
+/-! ## 6. The kernel is exactly ±1
+
+Review round 22's fold. §5 proves one inclusion and the header asserted
+the other by pointing at `SpinVectorRep.spinToEndo_neg_one`. That is two
+facts a reader has to assemble, and one of them was prose. Here is the
+biconditional. -/
+
+/-- ±1 acts trivially. The two signs cancel because the inverse of ±1
+    is itself. -/
+theorem trivial_of_pm_one {x : Clˣ} (hx : (x : Cl) ∈ spinGroup Q₁₃)
+    (h : (x : Cl) = 1 ∨ (x : Cl) = -1) (v : V) : spinToEndo hx v = v := by
+  have hmul := Units.mul_inv x
+  apply ι_injective
+  rw [ι_spinToEndo]
+  rcases h with h | h
+  · rw [h, one_mul] at hmul
+    rw [h, one_mul, hmul, mul_one]
+  · rw [h, neg_one_mul] at hmul
+    have hy : ((x⁻¹ : Clˣ) : Cl) = -1 := neg_eq_iff_eq_neg.mp hmul
+    rw [h, hy]
+    simp
+
+/-- **The kernel of the vector representation is EXACTLY ±1.** One of
+    W7 step (d)'s three parts, stated as the equality it is.
+
+    The other two parts are untouched: this says nothing about the
+    image landing in SO⁺(1,3), nor about surjectivity onto it. -/
+theorem kernel_iff {x : Clˣ} (hx : (x : Cl) ∈ spinGroup Q₁₃) :
+    (∀ v : V, spinToEndo hx v = v) ↔ ((x : Cl) = 1 ∨ (x : Cl) = -1) :=
+  ⟨kernel_eq_pm_one hx, trivial_of_pm_one hx⟩
 
 end SpinKernel
