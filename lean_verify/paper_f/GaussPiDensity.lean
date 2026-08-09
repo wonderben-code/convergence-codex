@@ -45,19 +45,26 @@
   `MeasureTheory/Constructions/Pi.lean` and `MeasureTheory/Measure/Prod.lean`.
   Had any of the three existed the identity would have been three lines.
 
-  AND IT CARRIES AN INTEGRABILITY HYPOTHESIS, WHICH THE 1-d VERSION DOES NOT.
-  `integral_gauss` is unconditional because
-  `integral_gaussianReal_eq_integral_smul` is. The induction here goes
-  through Fubini, which is not. That is a real difference from the 1-d file
-  and it is stated rather than hidden. **My expectation is that it costs
-  nothing** — the bridge's integrands are `L²` functions against compactly
-  supported smooth test functions, so integrability is available on both
-  sides — **but that is a PREDICTION about a file that does not exist yet,
-  and this estate labels those.** If it turns out to bite, the fix is the
-  unconditional measure-level identity
-  `gaussPi n = volume.withDensity (ENNReal.ofReal ∘ rhoPi n)`, which the
-  three negative probes above say would have to be proved from
-  `Measure.pi_eq` by hand.
+  THE PREDICTION IN THIS HEADER WAS TESTED AND IT FAILED, AND THE FALLBACK IT
+  NAMED IS WHAT IS NOW PROVED. As first written, `integral_gaussPi` carried
+  two integrability hypotheses that the 1-d `integral_gauss` does not, and
+  this header predicted that it would cost nothing downstream because the
+  bridge's integrands are `L²` functions against compactly supported test
+  functions. **That was wrong, and wrong in a way worth recording:** on the
+  Lebesgue side the hypothesis is integrability of `ρₙ·f` against `volume`,
+  and the only way to get it from `f ∈ L²(γⁿ)` is the change of measure
+  itself. The prediction was circular and I did not see it until the bridge
+  refused to typecheck.
+
+  So the identity is now proved where Tonelli needs no hypotheses at all.
+  **`lintegral_gaussPi`** does the induction with `∫⁻`; **`gaussPi_eq_withDensity`**
+  turns it into the measure identity `γⁿ = volume.withDensity (ofReal ∘ ρₙ)`;
+  and `integral_gaussPi` and `integrable_gaussPi_iff` fall out of Mathlib's
+  `withDensity` API with NO hypotheses on `f` whatsoever. This is the
+  unconditional fallback the earlier header named, and it is strictly
+  stronger than what it replaces — `PROOF_STRATEGY` §7 rule 3, removing a
+  restrictive hypothesis, arrived at by being forced rather than by
+  choosing.
 
   WHAT THIS DOES NOT DO. It is not the bridge. N5c — that `ψ ↦ ψ/ρₙ`
   preserves `Cc^∞` and satisfies `xᵢ(ψ/ρₙ) − ∂ᵢ(ψ/ρₙ) = −(∂ᵢψ)/ρₙ` — and
@@ -76,6 +83,7 @@ namespace GaussPiDensity
 open MeasureTheory ProbabilityTheory Polynomial Filter Topology
 open GaussianPoincare HermiteCompleteness GaussianProductMeasure HermitePi
 open HermitePiPeel TextbookSobolev
+open scoped NNReal ENNReal
 
 noncomputable section
 
@@ -195,63 +203,134 @@ theorem rhoPi_cons (n : ℕ) (x₀ : ℝ) (y : Fin n → ℝ) :
   rw [rhoPi, rhoPi, Fin.prod_univ_succ, Fin.cons_zero]
   rfl
 
-/-- **STAIR N5a: `∫ f dγⁿ = ∫ ρₙ·f dx`.** The n-dimensional twin of
-    `TextbookSobolev.integral_gauss`, with the integrability hypothesis the
-    1-d version does not need. -/
-theorem integral_gaussPi : ∀ (n : ℕ) (f : (Fin n → ℝ) → ℝ),
-    Integrable f (gaussPi n) → Integrable (fun x => rhoPi n x * f x) volume →
-    ∫ x, f x ∂gaussPi n = ∫ x, rhoPi n x * f x := by
+/-- The density as an `ℝ≥0`-valued function, which is the shape `withDensity`
+    and its integral lemmas want. -/
+def rhoPiNN (n : ℕ) (x : Fin n → ℝ) : NNReal := (rhoPi n x).toNNReal
+
+theorem rhoPiNN_coe (n : ℕ) (x : Fin n → ℝ) :
+    ((rhoPiNN n x : ℝ≥0) : ℝ≥0∞) = ENNReal.ofReal (rhoPi n x) := rfl
+
+theorem rhoPiNN_toReal (n : ℕ) (x : Fin n → ℝ) : ((rhoPiNN n x : ℝ≥0) : ℝ) = rhoPi n x :=
+  Real.coe_toNNReal _ (le_of_lt (rhoPi_pos n x))
+
+theorem measurable_rhoPi (n : ℕ) : Measurable (rhoPi n) :=
+  (rhoPi_smooth n).continuous.measurable
+
+theorem measurable_rhoPiNN (n : ℕ) : Measurable (rhoPiNN n) :=
+  (measurable_rhoPi n).real_toNNReal
+
+/-- `p ↦ Fin.cons p.1 p.2` is measurable. `fun_prop` has no `Fin.cons`
+    theorem, so this is done coordinate by coordinate through `Fin.cases`. -/
+theorem measurable_cons (n : ℕ) :
+    Measurable (fun p : ℝ × (Fin n → ℝ) => Fin.cons p.1 p.2 :
+      ℝ × (Fin n → ℝ) → (Fin (n + 1) → ℝ)) := by
+  refine measurable_pi_lambda _ fun i => ?_
+  refine Fin.cases ?_ ?_ i
+  · simpa using measurable_fst
+  · intro j
+    simpa using measurable_snd.eval
+
+/-- The one-dimensional lintegral identity, straight off Mathlib's definition
+    of `gaussianReal` as a `withDensity`. -/
+theorem lintegral_gauss_one {h : ℝ → ℝ≥0∞} (hh : Measurable h) :
+    ∫⁻ x, h x ∂(gaussianReal 0 1) = ∫⁻ x, ENNReal.ofReal (rho x) * h x := by
+  rw [gaussianReal_of_var_ne_zero 0 one_ne_zero,
+    lintegral_withDensity_eq_lintegral_mul _ (measurable_gaussianPDF 0 1) hh]
+  refine lintegral_congr fun x => ?_
+  rw [Pi.mul_apply]
+  congr 1
+
+/-- **THE UNCONDITIONAL IDENTITY, at the level where Tonelli needs no
+    hypotheses.** This is what replaced an earlier Bochner-level statement
+    that carried two integrability hypotheses; see the header. -/
+theorem lintegral_gaussPi : ∀ (n : ℕ) (f : (Fin n → ℝ) → ℝ≥0∞), Measurable f →
+    ∫⁻ x, f x ∂gaussPi n = ∫⁻ x, ENNReal.ofReal (rhoPi n x) * f x := by
   intro n
   induction n with
   | zero =>
-    intro f _ _
-    have hg : ∀ x : Fin 0 → ℝ, f x = f 0 := by
-      intro x; congr 1; funext i; exact i.elim0
-    have hr : ∀ x : Fin 0 → ℝ, rhoPi 0 x * f x = f 0 := by
-      intro x; rw [rhoPi_zero_dim, one_mul, hg x]
-    rw [integral_congr_ae (Filter.Eventually.of_forall hg),
-      integral_congr_ae (Filter.Eventually.of_forall hr), integral_const, integral_const]
-    have h1 : (gaussPi 0).real Set.univ = 1 := by rw [probReal_univ]
-    have h2 : (volume : Measure (Fin 0 → ℝ)).real Set.univ = 1 := by
-      rw [measureReal_def, volume_pi, Measure.pi_of_empty (fun _ : Fin 0 => (volume : Measure ℝ))]
-      simp
-    rw [h1, h2]
+    intro f _
+    have hgd : gaussPi 0 = Measure.dirac (fun i : Fin 0 => (0:ℝ)) := by
+      rw [gaussPi, Measure.pi_of_empty (fun _ : Fin 0 => gaussianReal 0 1)]
+      congr 1
+      funext i
+      exact i.elim0
+    have hvd : (volume : Measure (Fin 0 → ℝ)) = Measure.dirac (fun i : Fin 0 => (0:ℝ)) := by
+      rw [volume_pi, Measure.pi_of_empty (fun _ : Fin 0 => (volume : Measure ℝ))]
+      congr 1
+      funext i
+      exact i.elim0
+    rw [hgd, hvd, lintegral_dirac, lintegral_dirac, rhoPi_zero_dim]
+    simp
   | succ n ih =>
-    intro f hf hrf
-    -- both slice-integrabilities, transported to a.e. against LEBESGUE, which is
-    -- the filter the right-hand side's outer integral runs over
-    have hac : (volume : Measure ℝ) ≪ gaussianReal 0 1 :=
-      gaussianReal_absolutelyContinuous' 0 one_ne_zero
-    have hsl : ∀ᵐ x₀ ∂(volume : Measure ℝ),
-        Integrable (fun y => f (Fin.cons x₀ y)) (gaussPi n) :=
-      hac.ae_le (integrable_slice n hf)
-    have hslv : ∀ᵐ x₀ ∂(volume : Measure ℝ),
-        Integrable (fun y => rhoPi (n + 1) (Fin.cons x₀ y) * f (Fin.cons x₀ y))
-          (volume : Measure (Fin n → ℝ)) :=
-      (integrable_peel_volume n hrf).prod_right_ae
-    -- the inductive hypothesis, applied inside, one slice at a time
-    have hinner : ∀ᵐ x₀ ∂(volume : Measure ℝ),
-        rho x₀ * (∫ y, f (Fin.cons x₀ y) ∂gaussPi n)
-          = ∫ y, rhoPi (n + 1) (Fin.cons x₀ y) * f (Fin.cons x₀ y) := by
-      filter_upwards [hsl, hslv] with x₀ h1 h2
-      have hc : (fun y : Fin n → ℝ => rhoPi (n + 1) (Fin.cons x₀ y) * f (Fin.cons x₀ y))
-          = fun y => rho x₀ * (rhoPi n y * f (Fin.cons x₀ y)) := by
-        funext y
-        rw [rhoPi_cons]
-        ring
-      rw [hc] at h2
-      have h2' : Integrable (fun y : Fin n → ℝ => rhoPi n y * f (Fin.cons x₀ y)) volume := by
-        refine (h2.const_mul (rho x₀)⁻¹).congr (Filter.Eventually.of_forall fun y => ?_)
-        exact inv_mul_cancel_left₀ (rho_ne_zero x₀) _
-      rw [ih _ h1 h2', ← integral_const_mul]
-      refine integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)
-      dsimp only
-      rw [rhoPi_cons]
-      ring
-    rw [integral_peel_fubini n hf, integral_gauss,
-      ← integral_peel_volume n (fun z => rhoPi (n + 1) z * f z),
-      integral_prod _ (integrable_peel_volume n hrf)]
-    exact integral_congr_ae hinner
+    intro f hf
+    have hcons : Measurable fun p : ℝ × (Fin n → ℝ) => f (Fin.cons p.1 p.2) :=
+      hf.comp (measurable_cons n)
+    have hrc : Measurable fun p : ℝ × (Fin n → ℝ) =>
+        ENNReal.ofReal (rhoPi (n + 1) (Fin.cons p.1 p.2)) * f (Fin.cons p.1 p.2) :=
+      (((measurable_rhoPi (n + 1)).comp (measurable_cons n)).ennreal_ofReal).mul hcons
+    -- peel on the Gaussian side
+    have hg : ∫⁻ x, f x ∂gaussPi (n + 1)
+        = ∫⁻ p : ℝ × (Fin n → ℝ), f (Fin.cons p.1 p.2)
+            ∂((gaussianReal 0 1).prod (gaussPi n)) := by
+      rw [← (measurePreserving_peel n).lintegral_comp hcons]
+      refine lintegral_congr fun z => ?_
+      simp only [peel_apply, Fin.cons_self_tail]
+    -- peel on the Lebesgue side
+    have hv : ∫⁻ x, ENNReal.ofReal (rhoPi (n + 1) x) * f x
+        = ∫⁻ p : ℝ × (Fin n → ℝ),
+            ENNReal.ofReal (rhoPi (n + 1) (Fin.cons p.1 p.2)) * f (Fin.cons p.1 p.2)
+            ∂((volume : Measure ℝ).prod volume) := by
+      rw [← (measurePreserving_peel_volume n).lintegral_comp hrc]
+      refine lintegral_congr fun z => ?_
+      simp only [peel_apply, Fin.cons_self_tail]
+    rw [hg, hv, lintegral_prod _ hcons.aemeasurable,
+      lintegral_prod _ hrc.aemeasurable]
+    rw [lintegral_gauss_one hcons.lintegral_prod_right']
+    refine lintegral_congr fun x₀ => ?_
+    have hslice : Measurable fun y : Fin n → ℝ => f (Fin.cons x₀ y) :=
+      hf.comp ((measurable_cons n).comp (measurable_const.prodMk measurable_id))
+    rw [ih _ hslice, ← lintegral_const_mul _ (((measurable_rhoPi n).ennreal_ofReal).mul hslice)]
+    refine lintegral_congr fun y => ?_
+    rw [rhoPi_cons, ENNReal.ofReal_mul (le_of_lt (rho_pos x₀))]
+    ring
+
+/-- **`γⁿ` IS Lebesgue measure weighted by `ρₙ`.** The measure-level identity
+    the earlier Bochner statement was a conditional shadow of. -/
+theorem gaussPi_eq_withDensity (n : ℕ) :
+    gaussPi n = volume.withDensity (fun x => ENNReal.ofReal (rhoPi n x)) := by
+  refine Measure.ext fun s hs => ?_
+  have h1 : gaussPi n s = ∫⁻ x, s.indicator (fun _ => (1:ℝ≥0∞)) x ∂gaussPi n := by
+    rw [lintegral_indicator hs]; simp
+  have h2 : (volume.withDensity (fun x => ENNReal.ofReal (rhoPi n x))) s
+      = ∫⁻ x, ENNReal.ofReal (rhoPi n x) * s.indicator (fun _ => (1:ℝ≥0∞)) x := by
+    rw [withDensity_apply _ hs, ← lintegral_indicator hs]
+    refine lintegral_congr fun x => ?_
+    by_cases hx : x ∈ s <;> simp [hx]
+  rw [h1, h2, lintegral_gaussPi n _ (measurable_const.indicator hs)]
+
+/-- **STAIR N5a, UNCONDITIONALLY: `∫ f dγⁿ = ∫ ρₙ·f dx`**, for EVERY `f`,
+    exactly like the one-dimensional `TextbookSobolev.integral_gauss`. -/
+theorem integral_gaussPi (n : ℕ) (f : (Fin n → ℝ) → ℝ) :
+    ∫ x, f x ∂gaussPi n = ∫ x, rhoPi n x * f x := by
+  have hd : (fun x => ENNReal.ofReal (rhoPi n x))
+      = fun x => ((rhoPiNN n x : ℝ≥0) : ℝ≥0∞) := rfl
+  rw [gaussPi_eq_withDensity n, hd,
+    integral_withDensity_eq_integral_smul (measurable_rhoPiNN n) f]
+  refine integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)
+  dsimp only
+  rw [NNReal.smul_def, rhoPiNN_toReal, smul_eq_mul]
+
+/-- And integrability transfers, which is what a consumer needs before it can
+    use the identity on a function it only knows is `L²(γⁿ)`. -/
+theorem integrable_gaussPi_iff (n : ℕ) {f : (Fin n → ℝ) → ℝ} :
+    Integrable f (gaussPi n) ↔ Integrable (fun x => f x * rhoPi n x) volume := by
+  rw [gaussPi_eq_withDensity n]
+  rw [integrable_withDensity_iff ((measurable_rhoPi n).ennreal_ofReal)
+    (Filter.Eventually.of_forall fun x => ENNReal.ofReal_lt_top)]
+  constructor <;> intro h <;>
+    refine h.congr (Filter.Eventually.of_forall fun x => ?_) <;>
+    dsimp only <;>
+    rw [ENNReal.toReal_ofReal (le_of_lt (rhoPi_pos n x))]
 
 end
 
