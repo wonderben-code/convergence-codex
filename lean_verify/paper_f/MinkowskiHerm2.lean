@@ -40,7 +40,10 @@
      "Pauli coordinates" is earned: a bijective parametrisation of Herm₂.
 
   NOT proven here (the remaining stairs of gap #7, stated so the tag stays
-  honest): the bundled Mathlib `QuadraticForm` packaging of item 3,
+  honest) — **THIS LIST IS SUPERSEDED. All three of its stairs have since
+  been climbed; see the THIRD STATUS UPDATE below. It is kept verbatim
+  because the estate does not delete a claim it has had to revise.** The
+  list as written: the bundled Mathlib `QuadraticForm` packaging of item 3,
   INCLUDING Sylvester invariance (that (1,3) is THE
   signature, invariant under change of basis, is not formalised — what is
   proven is the explicit diagonalisation with signs (+,−,−,−) in an
@@ -69,6 +72,30 @@
   Mathlib's, or whether a sharper statement is now cheap, is unprobed and
   is on the watchlist rather than assumed either way** — ERRATA 40/42 say
   an absence claim decays, and this is one that did.
+
+  THIRD STATUS UPDATE, 15 Aug 2026, from the watchlist re-sweep — **and it
+  contradicts the paragraph immediately above, which is wrong twice.**
+  (i) `MinkowskiSignature.lean` does NOT prove "a hand-rolled version". It
+  defines `minkowskiForm : QuadraticForm ℝ (Fin 4 → ℝ)` as
+  `weightedSumSquares ℝ mw`, computes `sigPos minkowskiForm = 1` and
+  `sigNeg minkowskiForm = 3` with Mathlib's own `sigPos_weightedSumSquares`
+  / `sigNeg_weightedSumSquares`, and proves `signature_invariant` **using
+  `QuadraticMap.Equivalent.sigPos_eq` and `.sigNeg_eq` — the very lemmas
+  the paragraph above announces as newly available.** There is nothing to
+  restate; it is already stated in the library's language.
+  (ii) That file is dated 1 August. The signature API therefore did NOT
+  "not exist when the line was written" — the estate had been using it for
+  ten days when the second update called it new. The second update
+  described this project's own file without opening it. That is ERRATUM 55.
+
+  AND THE OTHER TWO STAIRS IN THE LIST ARE ALSO CLIMBED, which no update
+  before this one said: `Herm2Action.lean` constructs
+  `instance : MulAction SL2C Herm2` (the conjugation action `A • H = A·H·Aᴴ`),
+  and `SpinMeetsSL2.lean` relates `spinGroup Q₁₃` to the Lorentz matrices
+  through `spinToO13`, with `PinImage.lean` using that identification
+  throughout. **So gap #7's remaining-stairs list is empty**, and a reader
+  who stopped at the list — which is what a reader does — was being told
+  three things were open when none of them was.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
