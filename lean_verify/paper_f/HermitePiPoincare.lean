@@ -14,14 +14,19 @@
   polynomial**, which is a genuine difference in kind: membership is a
   property an arbitrary `L²(γⁿ)` function can have.
 
-  **What is NOT proved here, and what an earlier draft of this header
-  claimed:** that the class is strictly LARGER than the polynomials. Every
-  member §5 exhibits is a Hermite product, and Hermite products are
-  polynomials. In one dimension the estate does have non-polynomial members
-  (`AbsSteinWitness`), and the same should hold here, but *should* is not a
-  theorem and this file does not contain one. **So the honest statement is:
-  a Poincaré inequality on a differently-defined class whose known members
-  are still all polynomials.**
+  **What is not proved IN THIS FILE, and what an earlier draft of this header
+  wrongly claimed was:** that the class is strictly LARGER than the
+  polynomials. Every member §5 exhibits is a Hermite product, and Hermite
+  products are polynomials. The claim was retracted here and the gap named on
+  the watchlist.
+
+  **RESOLVED THE SAME DAY, in `AbsSteinWitnessPi`.** `|xᵢ|` is a member of
+  `SteinPairPi n` with gradient `sgn(xᵢ)·eᵢ`
+  (`absCoord_steinPairPi`), and it is not a.e. equal to ANY differentiable
+  function, hence to no polynomial (`absCoord_not_ae_differentiable`). So the
+  class IS strictly larger than the polynomials and this inequality IS
+  genuinely beyond `poincare_MV` — but that is a theorem in another file, and
+  this header states it as a pointer rather than as something proved below.
 
   **It is also NOT the textbook Sobolev space.** Connecting `SteinPairPi` to
   `TextbookSobolevPi`'s `Cc^∞`-tested class is the n-dimensional
