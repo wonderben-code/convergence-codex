@@ -27,6 +27,12 @@
   5. **`poincare_sobolevWeakScaled`** — the Gaussian Poincaré inequality on
      the textbook Gaussian Sobolev space **at every variance**, constant
      `σ²`, proved sharp.
+  6. **`exists_sobolevWeakScaled_iff`** and **`sobolevWeakScaled_unique`** —
+     the coefficient characterisation in BOTH directions at every variance,
+     and uniqueness of the weak derivative. §5c was first written saying the
+     existence half was blocked on a missing measurability-transfer lemma;
+     it is not, and §5c now proves it. The blocker dissolved into
+     `MeasurableEmbedding.aestronglyMeasurable_map_iff`, which Mathlib has.
 
   WHAT IT COSTS, recorded because I estimated it a few hours ago and the
   rule is that estimates get checked against outcomes (ERRATA 43).
@@ -523,22 +529,79 @@ theorem sobolevWeakScaled_unique {σ : ℝ} (hσ : σ ≠ 0) {f g₁ g₂ : ℝ 
   have hx3 := pow_eq_zero_iff (n := 2) (by norm_num) |>.1 hx2
   linarith [hx3]
 
-/-! ## 5c. What is NOT done at general σ, named
+/-! ## 5c. The existence half, at every variance
 
-The EXISTENCE half of the coefficient characterisation — from a summable
-sequence to a partner — is proved at σ = 1
-(`HermiteHilbertBasis.steinPair_iff_sobolev`) and is NOT transported here.
-The obstruction is specific and worth naming rather than glossing: the
-transport produces a candidate `g(x) = G(x/σ)/σ` from a standard-Gaussian
-`G`, and to place it in `MemLp _ 2 (gaussSc σ)` one needs `G` to be
-a.e.-strongly-measurable for `gaussSc σ` rather than for `gauss`. The two
-measures are mutually absolutely continuous — both have everywhere-positive
-densities — but the estate has no lemma transporting a.e.-strong
-measurability across a change of measure, and inventing one at the end of
-this file would be the wrong place for it. **So `σ`-existence is open, the
-reason is a missing general lemma and not a missing idea, and the
-statement below is the necessary direction only.**
+Written a few minutes after the section that said it was not done, which
+is why the watchlist item it created is closed in the same file. The
+blocker named there — moving a.e.-strong measurability across a change of
+measure — turned out to need nothing new: `x ↦ σx` is a measurable
+embedding, and Mathlib's `MeasurableEmbedding.aestronglyMeasurable_map_iff`
+does exactly the transfer. **The estimate ("kind: routine, amount: small")
+was right, and it is recorded because the two before it were not.**
 -/
+
+theorem measurableEmbedding_scal {σ : ℝ} (hσ : σ ≠ 0) :
+    MeasurableEmbedding (fun x : ℝ => σ * x) :=
+  (Homeomorph.mulLeft₀ σ hσ).toMeasurableEquiv.measurableEmbedding
+
+/-- a.e.-strong measurability moves across the change of variables. -/
+theorem aestronglyMeasurable_scaled_iff {σ : ℝ} (hσ : σ ≠ 0) {h : ℝ → ℝ} :
+    AEStronglyMeasurable h (gaussSc σ)
+      ↔ AEStronglyMeasurable (fun y => h (σ * y)) gauss := by
+  rw [← map_scaled σ]
+  exact (measurableEmbedding_scal hσ).aestronglyMeasurable_map_iff
+
+/-- The reverse of `memLp_comp_scaled`: a standard-Gaussian `L²` function
+    pulls back to a σ-Gaussian one. -/
+theorem memLp_ofStd {σ : ℝ} (hσ : σ ≠ 0) {G : ℝ → ℝ} (hG : MemLp G 2 gauss) :
+    MemLp (fun x => σ⁻¹ * G (σ⁻¹ * x)) 2 (gaussSc σ) := by
+  have hcomp : ((fun x : ℝ => σ⁻¹ * G (σ⁻¹ * x)) ∘ fun y : ℝ => σ * y)
+      = fun y => σ⁻¹ * G y := by
+    funext y
+    simp only [Function.comp_apply]
+    rw [show σ⁻¹ * (σ * y) = y by field_simp]
+  have hmeas : AEStronglyMeasurable (fun x : ℝ => σ⁻¹ * G (σ⁻¹ * x)) (gaussSc σ) := by
+    rw [aestronglyMeasurable_scaled_iff hσ]
+    have h2 : (fun y : ℝ => σ⁻¹ * G (σ⁻¹ * (σ * y))) = fun y => σ⁻¹ * G y := by
+      funext y
+      rw [show σ⁻¹ * (σ * y) = y by field_simp]
+    rw [h2]
+    exact hG.aestronglyMeasurable.const_mul σ⁻¹
+  rw [← map_scaled σ]
+  rw [memLp_map_measure_iff (by rwa [map_scaled σ]) (by fun_prop), hcomp]
+  exact hG.const_mul σ⁻¹
+
+/-- **THE EXISTENCE HALF AT EVERY VARIANCE.** -/
+theorem exists_sobolevWeakScaled_of_summable {σ : ℝ} (hσ : σ ≠ 0) {f : ℝ → ℝ}
+    (hf : MemLp f 2 (gaussSc σ))
+    (hsum : Summable fun n : ℕ => ((n : ℝ) + 1) * (n.factorial : ℝ)
+      * HermiteBessel.coeff n (trF σ f) ^ 2) :
+    ∃ g : ℝ → ℝ, SobolevWeakScaled σ f g := by
+  obtain ⟨G, hG⟩ :=
+    (HermiteHilbertBasis.steinPair_iff_sobolev (memLp_comp_scaled σ hf)).mpr hsum
+  have hgm := memLp_ofStd hσ hG.2.1
+  refine ⟨fun x => σ⁻¹ * G (σ⁻¹ * x),
+    (steinPairScaled_iff_sobolevWeakScaled hσ hf hgm).mp ?_⟩
+  refine steinPairScaled_ofStd hσ hf hgm ?_
+  have hgeq : trG σ (fun x => σ⁻¹ * G (σ⁻¹ * x)) = G := by
+    funext y
+    simp only [trG]
+    rw [show σ⁻¹ * (σ * y) = y by field_simp]
+    field_simp
+  rw [hgeq]
+  exact hG
+
+/-- **THE COEFFICIENT CHARACTERISATION AT EVERY VARIANCE**, both
+    directions: `f` lies in the textbook Gaussian Sobolev space of variance
+    `σ²` exactly when the transported function's Hermite coefficients are
+    Sobolev-summable. -/
+theorem exists_sobolevWeakScaled_iff {σ : ℝ} (hσ : σ ≠ 0) {f : ℝ → ℝ}
+    (hf : MemLp f 2 (gaussSc σ)) :
+    (∃ g : ℝ → ℝ, SobolevWeakScaled σ f g) ↔
+      Summable fun n : ℕ => ((n : ℝ) + 1) * (n.factorial : ℝ)
+        * HermiteBessel.coeff n (trF σ f) ^ 2 :=
+  ⟨fun ⟨_, hg⟩ => summable_sobolev_scaled hσ hg,
+    exists_sobolevWeakScaled_of_summable hσ hf⟩
 
 /-! ## 6. Review round 42 — the ways this could be hollow
 
