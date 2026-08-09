@@ -141,6 +141,24 @@ theorem integrable_cons_mul_H (n : ℕ) {F : (Fin (n + 1) → ℝ) → ℝ}
 
 /-! ## 3. Residue (i): the slice-integral is square-integrable -/
 
+/-- **The slices are in `L²(γ)` almost everywhere.** Stated rather than left
+    inside `memLp_G`'s proof, because the induction consumes it directly and
+    `HermitePiPeel` recorded the lesson: machinery buried in a proof is
+    machinery the next person rebuilds.
+
+    Both halves are needed and neither is enough — `F` integrable gives the
+    slice a.e. strongly measurable, `F²` integrable gives its square a.e.
+    integrable, and `L²` is exactly the conjunction. -/
+theorem memLp_slice_ae (n : ℕ) {F : (Fin (n + 1) → ℝ) → ℝ}
+    (hF : MemLp F 2 (gaussPi (n + 1))) :
+    ∀ᵐ y ∂gaussPi n, MemLp (fun x₀ => F (Fin.cons x₀ y)) 2 (gaussianReal 0 1) := by
+  have hFint : Integrable F (gaussPi (n + 1)) := hF.integrable one_le_two
+  have hF2 : Integrable (fun z => F z ^ 2) (gaussPi (n + 1)) :=
+    (memLp_two_iff_integrable_sq hF.aestronglyMeasurable).mp hF
+  filter_upwards [(integrable_peel n hFint).prod_left_ae,
+    (integrable_peel n hF2).prod_left_ae] with y h1 h2
+  exact (memLp_two_iff_integrable_sq h1.aestronglyMeasurable).mpr h2
+
 /-- **THE MISSING HALF OF THE INDUCTIVE CALL'S HYPOTHESIS.** If `F` is in
     `L²(γⁿ⁺¹)` then each slice-integral `G_{m₀}` is in `L²(γⁿ)`.
 
@@ -151,18 +169,13 @@ theorem integrable_cons_mul_H (n : ℕ) {F : (Fin (n + 1) → ℝ) → ℝ}
 theorem memLp_G (n : ℕ) {F : (Fin (n + 1) → ℝ) → ℝ}
     (hF : MemLp F 2 (gaussPi (n + 1))) (m₀ : ℕ) :
     MemLp (G n F m₀) 2 (gaussPi n) := by
-  have hFint : Integrable F (gaussPi (n + 1)) := hF.integrable one_le_two
   have hF2 : Integrable (fun z => F z ^ 2) (gaussPi (n + 1)) :=
     (memLp_two_iff_integrable_sq hF.aestronglyMeasurable).mp hF
-  have hPhi : Integrable (fun p : ℝ × (Fin n → ℝ) => F (Fin.cons p.1 p.2))
-      ((gaussianReal 0 1).prod (gaussPi n)) := integrable_peel n hFint
   have hPhi2 : Integrable (fun p : ℝ × (Fin n → ℝ) => F (Fin.cons p.1 p.2) ^ 2)
       ((gaussianReal 0 1).prod (gaussPi n)) := integrable_peel n hF2
   -- a.e. in `y`, the slice is itself an L² function of one variable
   have hslice : ∀ᵐ y ∂gaussPi n,
-      MemLp (fun x₀ => F (Fin.cons x₀ y)) 2 (gaussianReal 0 1) := by
-    filter_upwards [hPhi.prod_left_ae, hPhi2.prod_left_ae] with y h1 h2
-    exact (memLp_two_iff_integrable_sq h1.aestronglyMeasurable).mpr h2
+      MemLp (fun x₀ => F (Fin.cons x₀ y)) 2 (gaussianReal 0 1) := memLp_slice_ae n hF
   -- Cauchy–Schwarz, pointwise in `y`
   have hCS : ∀ᵐ y ∂gaussPi n, G n F m₀ y ^ 2
       ≤ (∫ x₀, F (Fin.cons x₀ y) ^ 2 ∂(gaussianReal 0 1)) * (m₀.factorial : ℝ) := by
