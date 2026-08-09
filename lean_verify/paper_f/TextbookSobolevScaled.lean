@@ -441,6 +441,105 @@ theorem poincare_smoothScaled_sharp {σ : ℝ} (hσ : σ ≠ 0) :
       (steinPairScaled_id_one hσ).2.1).mp (steinPairScaled_id_one hσ),
     var_id_scaled σ⟩
 
+/-! ## 5b. Coefficients and uniqueness at every variance
+
+Without these the σ story is lopsided: the estate would have the
+inequality at every variance and the coefficient description and the
+uniqueness of the derivative only at σ = 1, which is the same asymmetry
+this file was written to remove.
+-/
+
+/-- **The coefficient characterisation at variance σ².** Stated about the
+    transported pair, which is what the transport makes available without
+    building a σ-Hermite system. -/
+theorem steinPairScaled_iff_coeff {σ : ℝ} (hσ : σ ≠ 0) {f g : ℝ → ℝ}
+    (hf : MemLp f 2 (gaussSc σ)) (hg : MemLp g 2 (gaussSc σ)) :
+    SteinPairScaled σ f g ↔
+      ∀ n : ℕ, HermiteBessel.coeff n (trG σ g)
+        = (n + 1 : ℝ) * HermiteBessel.coeff (n + 1) (trF σ f) := by
+  rw [steinPairScaled_iff_std hσ hf hg]
+  exact SteinCoefficients.steinPair_iff_coeff (memLp_comp_scaled σ hf)
+    ((memLp_comp_scaled σ hg).const_mul σ)
+
+/-- The same in the textbook's language. -/
+theorem sobolevWeakScaled_iff_coeff {σ : ℝ} (hσ : σ ≠ 0) {f g : ℝ → ℝ}
+    (hf : MemLp f 2 (gaussSc σ)) (hg : MemLp g 2 (gaussSc σ)) :
+    SobolevWeakScaled σ f g ↔
+      ∀ n : ℕ, HermiteBessel.coeff n (trG σ g)
+        = (n + 1 : ℝ) * HermiteBessel.coeff (n + 1) (trF σ f) :=
+  (steinPairScaled_iff_sobolevWeakScaled hσ hf hg).symm.trans
+    (steinPairScaled_iff_coeff hσ hf hg)
+
+/-- **The Sobolev summability is necessary at every variance.** -/
+theorem summable_sobolev_scaled {σ : ℝ} (hσ : σ ≠ 0) {f g : ℝ → ℝ}
+    (h : SobolevWeakScaled σ f g) :
+    Summable fun n : ℕ => ((n : ℝ) + 1) * (n.factorial : ℝ)
+      * HermiteBessel.coeff n (trF σ f) ^ 2 :=
+  SteinCoefficients.summable_sobolev_of_steinPair
+    (steinPairScaled_toStd hσ ((steinPairScaled_iff_sobolevWeakScaled hσ h.1 h.2.1).mpr h))
+
+/-- **The weak derivative is unique at every variance.** Proved through
+    the integral rather than through an a.e. transport: the transported
+    partners agree in L², the change of variables carries the integral of
+    the squared difference across with a factor of σ², and σ ≠ 0 finishes. -/
+theorem sobolevWeakScaled_unique {σ : ℝ} (hσ : σ ≠ 0) {f g₁ g₂ : ℝ → ℝ}
+    (h₁ : SobolevWeakScaled σ f g₁) (h₂ : SobolevWeakScaled σ f g₂) :
+    g₁ =ᵐ[gaussSc σ] g₂ := by
+  have hs₁ := steinPairScaled_toStd hσ
+    ((steinPairScaled_iff_sobolevWeakScaled hσ h₁.1 h₁.2.1).mpr h₁)
+  have hs₂ := steinPairScaled_toStd hσ
+    ((steinPairScaled_iff_sobolevWeakScaled hσ h₂.1 h₂.2.1).mpr h₂)
+  have hzero := SteinCoefficients.steinPartner_unique hs₁ hs₂
+  -- transport the vanishing integral back
+  have hmeas : AEStronglyMeasurable (fun x => (g₁ x - g₂ x) ^ 2) (gaussSc σ) :=
+    ((h₁.2.1.aestronglyMeasurable.sub h₂.2.1.aestronglyMeasurable).pow 2)
+  have htr : ∫ x, (g₁ x - g₂ x) ^ 2 ∂gaussSc σ
+      = ∫ y, (g₁ (σ * y) - g₂ (σ * y)) ^ 2 ∂gauss :=
+    integral_transfer _ hmeas
+  have hexp : ∫ y, (σ * g₁ (σ * y) - σ * g₂ (σ * y)) ^ 2 ∂gauss
+      = σ ^ 2 * ∫ y, (g₁ (σ * y) - g₂ (σ * y)) ^ 2 ∂gauss := by
+    rw [← integral_const_mul]
+    refine integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)
+    ring
+  rw [hexp] at hzero
+  have hs2 : (σ : ℝ) ^ 2 ≠ 0 := pow_ne_zero 2 hσ
+  have hz : ∫ y, (g₁ (σ * y) - g₂ (σ * y)) ^ 2 ∂gauss = 0 := by
+    rcases mul_eq_zero.mp hzero with h | h
+    · exact absurd h hs2
+    · exact h
+  rw [hz] at htr
+  -- and read off the a.e. equality
+  have hint : Integrable (fun x => (g₁ x - g₂ x) ^ 2) (gaussSc σ) := by
+    have hm : MemLp (fun x => g₁ x - g₂ x) 2 (gaussSc σ) := h₁.2.1.sub h₂.2.1
+    have := hm.integrable_mul hm
+    refine this.congr (Filter.Eventually.of_forall fun x => ?_)
+    simp only [Pi.mul_apply]
+    ring
+  have hnn : 0 ≤ᵐ[gaussSc σ] fun x => (g₁ x - g₂ x) ^ 2 :=
+    Filter.Eventually.of_forall fun x => sq_nonneg _
+  have hae := (integral_eq_zero_iff_of_nonneg_ae hnn hint).1 htr
+  filter_upwards [hae] with x hx
+  have hx2 : (g₁ x - g₂ x) ^ 2 = 0 := hx
+  have hx3 := pow_eq_zero_iff (n := 2) (by norm_num) |>.1 hx2
+  linarith [hx3]
+
+/-! ## 5c. What is NOT done at general σ, named
+
+The EXISTENCE half of the coefficient characterisation — from a summable
+sequence to a partner — is proved at σ = 1
+(`HermiteHilbertBasis.steinPair_iff_sobolev`) and is NOT transported here.
+The obstruction is specific and worth naming rather than glossing: the
+transport produces a candidate `g(x) = G(x/σ)/σ` from a standard-Gaussian
+`G`, and to place it in `MemLp _ 2 (gaussSc σ)` one needs `G` to be
+a.e.-strongly-measurable for `gaussSc σ` rather than for `gauss`. The two
+measures are mutually absolutely continuous — both have everywhere-positive
+densities — but the estate has no lemma transporting a.e.-strong
+measurability across a change of measure, and inventing one at the end of
+this file would be the wrong place for it. **So `σ`-existence is open, the
+reason is a missing general lemma and not a missing idea, and the
+statement below is the necessary direction only.**
+-/
+
 /-! ## 6. Review round 42 — the ways this could be hollow
 
 **"The transport could be one-directional and the `iff` cosmetic."** It is
