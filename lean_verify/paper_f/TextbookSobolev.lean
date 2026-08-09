@@ -229,6 +229,53 @@ theorem sobolevWeak_iff_coeff {f : ℝ → ℝ} (hf : MemLp f 2 gauss) :
   exact ⟨fun ⟨g, hg⟩ => ⟨g, (stein_iff_sobolevWeak f g).mpr hg⟩,
     fun ⟨g, hg⟩ => ⟨g, (stein_iff_sobolevWeak f g).mp hg⟩⟩
 
+/-! ## 5b. The point of the whole chain: Poincaré on the textbook space
+
+Found by re-sweeping the watchlist against what the equalities now give.
+Every Poincaré statement in the estate has been about a class of OUR
+choosing — polynomials, then C¹ with polynomial growth, then the Stein
+class. **The inequality has never been stated on the space a textbook
+names**, because until this file that space did not exist in Lean. It is
+one line from `poincare_stein`, and it is the sentence the entire Hermite
+chain has been walking towards since 1 August.
+-/
+
+/-- **THE GAUSSIAN POINCARÉ INEQUALITY ON THE TEXTBOOK GAUSSIAN SOBOLEV
+    SPACE.** For `f` in `W^{1,2}(γ)` with weak derivative `g`,
+    `Var(f) ≤ ∫ g² dγ`. No smoothness, no growth condition, no pointwise
+    derivative — the hypothesis is membership of the space itself. -/
+theorem poincare_sobolevWeak {f g : ℝ → ℝ} (h : SobolevWeak f g) :
+    (∫ x, f x ^ 2 ∂gauss) - (∫ x, f x ∂gauss) ^ 2 ≤ ∫ x, g x ^ 2 ∂gauss :=
+  poincare_stein ((stein_iff_sobolevWeak f g).mpr h)
+
+/-- The constant 1 is SHARP on the textbook space, witnessed by `(X, 1)`:
+    the variance of `X` is `1` and `∫ 1² dγ = 1`, so the inequality is an
+    equality there and no smaller constant works. -/
+theorem var_id_gauss : (∫ x : ℝ, x ^ 2 ∂gauss) - (∫ x : ℝ, x ∂gauss) ^ 2 = 1 := by
+  have hvar := variance_id_gaussianReal (μ := 0) (v := 1)
+  rw [variance_eq_sub (memLp_id_gaussianReal' 2 (by norm_num))] at hvar
+  simpa using hvar
+
+theorem poincare_sobolevWeak_sharp :
+    SobolevWeak (fun x : ℝ => x) (fun _ => 1)
+      ∧ (∫ x : ℝ, x ^ 2 ∂gauss) - (∫ x : ℝ, x ∂gauss) ^ 2
+          = ∫ _x : ℝ, (1 : ℝ) ^ 2 ∂gauss := by
+  refine ⟨(smoothSteinPair_iff_sobolevWeak _ _).mp
+    SteinSmoothTest.smoothSteinPair_id_one, ?_⟩
+  rw [var_id_gauss]
+  simp
+
+/-- And in coefficient form: for `f` in the textbook space the inequality
+    is the termwise `n! ≤ (n+1)·n!` comparison, so the whole chain —
+    polynomial pairing, `Cc^∞` pairing, weak derivatives, Hermite
+    coefficients, and the inequality itself — closes on one object. -/
+theorem poincare_sobolevWeak_of_coeff {f : ℝ → ℝ} (hf : MemLp f 2 gauss)
+    (hsum : Summable fun n : ℕ => ((n : ℝ) + 1) * (n.factorial : ℝ) * coeff n f ^ 2) :
+    ∃ g : ℝ → ℝ, SobolevWeak f g ∧
+      (∫ x, f x ^ 2 ∂gauss) - (∫ x, f x ∂gauss) ^ 2 ≤ ∫ x, g x ^ 2 ∂gauss := by
+  obtain ⟨g, hg⟩ := (HermiteHilbertBasis.steinPair_iff_sobolev hf).mpr hsum
+  exact ⟨g, (stein_iff_sobolevWeak f g).mp hg, poincare_stein hg⟩
+
 /-! ## 6. Review round 41 — the ways this could be hollow
 
 **"`ρ` could be anything."** It is `Mathlib`'s own `gaussianPDFReal 0 1`,
