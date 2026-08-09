@@ -160,7 +160,8 @@ theorem re_trace_mul_self_eq_sum [Fintype N] {M : Matrix N N ℂ} (hM : M.IsHerm
     equality |Mᵢᵢ|² = (Mᵢᵢ)², which holds because the diagonal is real).
     This is the entrywise Cauchy–Schwarz inequality for the pre-inner
     product xᴴMy defined by M. NOTE on provenance: nothing spectral appears
-    in THIS file, but Mathlib's `det_nonneg` is itself proven through
+    in THIS file, but Mathlib's `Matrix.PosSemidef.det_nonneg` (this line
+    said `det_nonneg`, which does not resolve — ERRATUM 50) is itself proven through
     `IsHermitian.det_eq_prod_eigenvalues` and hence through the spectral
     theorem — so the spectral theorem is in the dependency graph, one layer
     down, and this proof is not an elementary-means proof of the bound. -/

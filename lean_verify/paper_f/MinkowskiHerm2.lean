@@ -40,19 +40,35 @@
      "Pauli coordinates" is earned: a bijective parametrisation of Herm₂.
 
   NOT proven here (the remaining stairs of gap #7, stated so the tag stays
-  honest): the bundled Mathlib `QuadraticForm`/`QuadraticForm.Signature`
-  packaging of item 3, INCLUDING Sylvester invariance (that (1,3) is THE
+  honest): the bundled Mathlib `QuadraticForm` packaging of item 3,
+  INCLUDING Sylvester invariance (that (1,3) is THE
   signature, invariant under change of basis, is not formalised — what is
   proven is the explicit diagonalisation with signs (+,−,−,−) in an
   injective, surjective, linear parametrisation); a bundled `MulAction` of
   SL₂(ℂ) on Herm₂ (the action equations of item 5 are proven, the
   typeclass object is not constructed); any identification with
-  `CliffordAlgebra.spinGroup`. STATUS UPDATE on two items this header once
+  `spinGroup` (root namespace; this line said `CliffordAlgebra.spinGroup`,
+  which does not resolve — ERRATUM 50). STATUS UPDATE on two items this header once
   listed as open: Sylvester invariance of the signature is proven in
   `MinkowskiSignature.lean`, and SURJECTIVITY of SL₂(ℂ) → SO⁺(1,3) is
   proven in `LorentzGroup.lean` + `LorentzSurjectivity.lean`
   (`lorentz_surjective`, `double_cover`) — algebraically, not by the
   polar-decomposition/connectedness route once predicted here.
+
+  SECOND STATUS UPDATE, 11 Aug 2026, from the citation sweep of ERRATUM 50
+  and worth more than the citation it came from. **Mathlib now has a
+  signature API for quadratic forms** —
+  `Mathlib/LinearAlgebra/QuadraticForm/Signature.lean`, with
+  `QuadraticForm.sigPos` / `QuadraticForm.sigNeg` and
+  `QuadraticMap.Equivalent.sigPos_eq` / `.sigNeg_eq`, which ARE Sylvester's
+  law of inertia (the uniqueness part). The "bundled Mathlib packaging"
+  listed above as a remaining stair therefore has a library counterpart
+  that did not exist when the line was written, and the estate's own
+  `MinkowskiSignature.lean` proves a hand-rolled version of the same
+  invariance. **Whether the estate's version should be restated against
+  Mathlib's, or whether a sharper statement is now cheap, is unprobed and
+  is on the watchlist rather than assumed either way** — ERRATA 40/42 say
+  an absence claim decays, and this is one that did.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/

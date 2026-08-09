@@ -25,8 +25,10 @@
     `hermite_orthogonal_gauss`.
   * **`Hpi_memLp`** — each `Hpi n m` is in `L²(γⁿ)`, which N3 needs before
     it can speak of an orthonormal family at all.
-  * **`Hpi_norm_sq`**, **`Hpi_ne_zero_norm`** — the norms, and that they
+  * **`Hpi_norm_sq`**, **`Hpi_norm_sq_pos`** — the norms, and that they
     are nonzero, so the normalisation N3 performs is legal.
+    (This line named `Hpi_ne_zero_norm` until the 11 Aug citation sweep;
+    no such theorem was ever in the file. See ERRATUM 50.)
 
   WHAT THIS DOES NOT DO. Stair N2 — completeness of the multi-index system
   — is untouched and remains the stair that decides whether the

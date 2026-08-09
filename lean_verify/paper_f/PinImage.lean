@@ -43,7 +43,9 @@
   WHAT THIS DOES NOT DO. It says nothing about a DIFFERENT normalisation
   of the pin group. `Pin⁺` and `Pin⁻` are genuinely different groups and
   which one Mathlib's definition gives is a convention; the theorem here
-  is about `CliffordAlgebra.pinGroup` as Mathlib defines it, and the
+  is about `pinGroup` as Mathlib defines it (root namespace, in
+  `Mathlib/LinearAlgebra/CliffordAlgebra/SpinGroup.lean`; this line said
+  `CliffordAlgebra.pinGroup`, which does not resolve — ERRATUM 50), and the
   header says so rather than saying "the pin group". Nothing here is
   topological either — same caveat as `SpinSurjective` §5, ASSUMPTIONS 41
   and 42.

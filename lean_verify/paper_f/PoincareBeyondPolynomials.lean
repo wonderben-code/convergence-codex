@@ -21,8 +21,12 @@
      `AEStronglyMeasurable`, weaker than `Measurable` — the theorem is
      stronger than an earlier version of this line said; a bound alone
      cannot give membership.)
-  3. `tendsto_growth_mul_W` — growth × polynomial × Gaussian weight → 0 at
-     both infinities: the boundary terms of integration by parts vanish.
+  3. `tendsto_growth_mul_W_atTop` and `tendsto_growth_mul_W_atBot` —
+     growth × polynomial × Gaussian weight → 0 at both infinities: the
+     boundary terms of integration by parts vanish. (This line named a
+     single `tendsto_growth_mul_W`, which does not exist and hid that
+     there are two statements, one per end of the line; corrected by the
+     11 Aug citation sweep, ERRATUM 50.)
   4. **`stein_general`** — Gaussian integration by parts for the class:
      ∫ f′·q dγ = ∫ f·(Xq − q′) dγ for every polynomial q. The FTC on the
      whole line plus the boundary limits; this is the analytic heart.
