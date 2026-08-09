@@ -29,6 +29,11 @@
      strict inequality is possible.
   3. **`corner_mem_lowerHalf`, `corner_not_innermost`** — the two facts about
      the corner site that make it a witness, proved rather than asserted.
+  4. **§2b, the torus.** A torus reflection has TWO mirror layers, the
+     innermost and the seam, so the corner will not do — it sits on the seam.
+     **`crossOp_form_torus_not_neg`**: the site one step in does, once the
+     side is at least six, and the form is attained there as well. So the
+     degeneracy is not special to free boundaries.
 
   **WHAT THIS EXPLAINS.** `PrismStrict` runs through `M − P = 1 + 1`, which is
   positive DEFINITE. For the box the same difference is `−2 · crossOp`, which
@@ -44,9 +49,12 @@
     route. A different argument could still give strictness, and nothing here
     rules one out. **Stating the stronger negative would be exactly the
     overreach this file exists to correct.**
-  * **No torus statement.** The torus has two mirror layers rather than one,
-    so the same corner argument needs a corner away from BOTH, which is true
-    for large enough side but is not proved here.
+  * **The torus is covered too, and §2b is why the sentence that used to sit
+    here is gone.** The draft said the torus "needs a corner away from BOTH
+    mirror layers, which is true for large enough side but is not proved
+    here" — a claim of exactly the kind ERRATUM 48 forbids leaving
+    unattempted, in the file written to correct another one. It is now
+    proved, at side at least six.
   * Still one axiom, free field, finite graph.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
@@ -165,6 +173,69 @@ theorem crossOp_form_box_not_neg (i : Fin d) (hn : Even n) (h4 : 4 ≤ n) :
 
 end Box
 
+/-! ## 2b. And on the torus, for the same reason twice over
+
+A torus reflection has two mirror layers rather than one — the innermost and
+the seam where the ends are glued. **The corner is therefore the wrong
+witness: it sits ON the seam.** The site one step in is the right one, and it
+exists as soon as the side is at least six.
+-/
+
+section Torus
+
+open TorusReflection
+
+variable {d n : ℕ} {m : ℝ}
+
+/-- One step in from the corner. -/
+def stepIn (d n : ℕ) (hn : 1 < n) : BoxGraph.Site d n := fun _ => ⟨1, hn⟩
+
+theorem stepIn_mem_lowerHalf (i : Fin d) (hn : 1 < n) (h6 : 6 ≤ n) :
+    stepIn d n hn ∈ lowerHalf i n := by
+  simp only [lowerHalf, Finset.mem_filter, Finset.mem_univ, true_and]
+  change 2 * 1 < n
+  omega
+
+/-- It is on neither mirror layer: not the innermost, and not the seam. -/
+theorem stepIn_off_both (i : Fin d) (hn : 1 < n) (h6 : 6 ≤ n) :
+    ¬ (2 * ((stepIn d n hn) i).val + 2 = n ∨ ((stepIn d n hn) i).val = 0) := by
+  simp only [stepIn]
+  omega
+
+/-- **THE TORUS'S CROSS-COUPLING FORM IS ATTAINED TOO**, at the site one step
+    in from the corner, once the side is at least six. So the degeneracy that
+    blocks strictness is not special to free boundaries. -/
+theorem crossOp_form_torus_not_neg (i : Fin d) (hn : Even n) (h6 : 6 ≤ n) :
+    ∃ v : BoxGraph.Site d n → ℝ, v ≠ 0 ∧ (∀ p, p ∉ lowerHalf i n → v p = 0) ∧
+      ∑ p, ∑ q, v p * v q * crossOp (torusGraph d n) m (revSite (n := n) i) p q = 0 := by
+  classical
+  have h1 : 1 < n := by omega
+  have hmem := stepIn_mem_lowerHalf (n := n) i h1 h6
+  have hdiag : crossOp (torusGraph d n) m (revSite (n := n) i)
+      (stepIn d n h1) (stepIn d n h1) = 0 := by
+    rw [TorusReflection.crossOp_eq_neg_adj (isHalf_lowerHalf i hn) hmem hmem]
+    refine if_neg fun hadj => ?_
+    exact stepIn_off_both (n := n) i h1 h6
+      ((adj_torus_revSite_iff i hn hmem hmem).mp hadj).2
+  refine ⟨fun p => if p = stepIn d n h1 then (1:ℝ) else 0, ?_, ?_, ?_⟩
+  · intro hc
+    have := congrFun hc (stepIn d n h1)
+    simp at this
+  · intro p hp
+    refine if_neg fun hc => hp ?_
+    rw [hc]; exact hmem
+  · rw [Finset.sum_eq_single (stepIn d n h1)]
+    · rw [Finset.sum_eq_single (stepIn d n h1)]
+      · simp [hdiag]
+      · intro q _ hq; simp [hq]
+      · intro h; exact absurd (Finset.mem_univ _) h
+    · intro p _ hp
+      refine Finset.sum_eq_zero fun q _ => ?_
+      simp [hp]
+    · intro h; exact absurd (Finset.mem_univ _) h
+
+end Torus
+
 /-! ## 3. Review round 94 — the ways this could be hollow
 
 **"Does this correct `PrismStrict` or decorate it?"** It corrects it.
@@ -192,6 +263,14 @@ which blocks the route `PrismStrict` used. Some other argument could still
 deliver strictness, and nothing here rules one out. Asserting the stronger
 negative would be the overreach this file exists to correct — replacing one
 unchecked sentence with another.
+
+**"The torus section — is it the box argument copied?"** The structure is the
+same and the WITNESS is not, which is the content. A torus reflection has two
+mirror layers, so the corner is disqualified: it sits on the seam. The right
+witness is one step in, and it exists only from side six, where the box needed
+four. **Both numbers are forced and both are proved** (`stepIn_off_both`,
+`corner_not_innermost`); had the corner worked on the torus the section would
+have been a copy and would not have been worth writing.
 
 **"Why is the prism different, in one sentence?"** Every vertex of a two-layer
 stack touches the mirror, so the coupling is `−1` on the whole diagonal and
