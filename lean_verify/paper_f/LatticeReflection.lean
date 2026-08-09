@@ -168,7 +168,72 @@ theorem reflectionPositive_empty (n : ℕ) (m : ℝ) :
   have : ∀ p : Site n, c p = 0 := fun p => hc p (by simp)
   simp [this]
 
-/-! ## 5. Review round 73 — the ways this could be hollow
+/-! ## 5. The smallest instance, and what it identifies
+
+`reflectionPositive_empty` is free. The next case up is a singleton half,
+and it is not free: it says exactly one thing, and that thing is the bottom
+rung of the ladder recorded in `UNLOCK_WATCHLIST.md`.
+-/
+
+/-- **THE SINGLETON CRITERION.** Reflection positivity on a one-site half is
+    EXACTLY non-negativity of one entry of the Green function — the entry
+    joining a site to its mirror image.
+
+    This is worth stating because it identifies the bottom rung: any attack
+    on the general statement has to prove the propagator non-negative first,
+    and that is the random-walk representation `WALLS.md` W1 names as its
+    second route. -/
+theorem reflectionPositive_singleton_iff (n : ℕ) (m : ℝ) (p : Site n) :
+    ReflectionPositive n m {p} ↔ 0 ≤ green n m (refl n p) p := by
+  classical
+  constructor
+  · intro h
+    have := h (fun q => if q = p then 1 else 0) (by
+      intro q hq
+      simp only [Finset.mem_singleton] at hq
+      simp [hq])
+    simpa using this
+  · intro hg c hc
+    have hzero : ∀ q, q ≠ p → c q = 0 := fun q hq => hc q (by simpa using hq)
+    rw [Finset.sum_eq_single p (fun q _ hq => by simp [hzero q hq])
+      (fun h => absurd (Finset.mem_univ p) h)]
+    rw [Finset.sum_eq_single p (fun q _ hq => by simp [hzero q hq])
+      (fun h => absurd (Finset.mem_univ p) h)]
+    have : c p * c p = (c p) ^ 2 := by ring
+    rw [this]
+    exact mul_nonneg (sq_nonneg _) hg
+
+/-- **A NON-VACUOUS INSTANCE.** At a site the reflection FIXES, the entry in
+    question is a diagonal one, and `green_diag_pos` makes it positive. So
+    reflection positivity genuinely holds somewhere — unlike
+    `reflectionPositive_empty`, this one is not true for a degenerate
+    reason. Fixed sites exist exactly when `n` is odd (`Fin.rev i = i`
+    forces `2i = n − 1`). -/
+theorem reflectionPositive_singleton_of_fixed (n : ℕ) {m : ℝ} (hm : m ≠ 0)
+    {p : Site n} (hfix : refl n p = p) :
+    ReflectionPositive n m {p} := by
+  rw [reflectionPositive_singleton_iff, hfix]
+  exact le_of_lt (LatticeField.green_diag_pos n hm p)
+
+/-- Fixed sites exist exactly when `n` is odd, and here is one: the middle
+    row. Proved rather than remarked, because without it
+    `reflectionPositive_singleton_of_fixed` is a statement about a possibly
+    empty hypothesis. -/
+theorem exists_fixed_of_odd {k : ℕ} : ∃ p : Site (2 * k + 1), refl (2 * k + 1) p = p := by
+  refine ⟨(⟨k, by omega⟩, ⟨k, by omega⟩), ?_⟩
+  simp only [refl_apply, Prod.mk.injEq, and_true]
+  exact Fin.ext (by simp [Fin.val_rev]; omega)
+
+/-- **SO REFLECTION POSITIVITY GENUINELY HOLDS SOMEWHERE.** On an odd box
+    there is a half — a single fixed site — for which the property is a
+    theorem. That is what makes `ReflectionPositive` a statement with
+    content rather than one whose only known instances are degenerate. -/
+theorem exists_reflectionPositive_singleton {k : ℕ} {m : ℝ} (hm : m ≠ 0) :
+    ∃ p : Site (2 * k + 1), ReflectionPositive (2 * k + 1) m {p} := by
+  obtain ⟨p, hp⟩ := exists_fixed_of_odd (k := k)
+  exact ⟨p, reflectionPositive_singleton_of_fixed _ hm hp⟩
+
+/-! ## 6. Review round 73 — the ways this could be hollow
 
 **"The reflection could be the wrong map."** `adj_refl` is the check that
 matters and it is not automatic: reflecting the first coordinate turns
@@ -191,6 +256,15 @@ The OU-product covariance is reflection-invariant too, and proving its
 positivity took `SchurProduct` → `OS2ProductField` → `OS2ExpKernel` →
 `OS2Exponential`. What W1 says is missing is not a symmetry, it is an
 estimate.
+
+**"The only instances could be degenerate."** That was true of the first
+draft, whose only theorem about `ReflectionPositive` was that it holds on
+the empty half. §5 fixes it: `reflectionPositive_singleton_iff` says the
+one-site case is EXACTLY non-negativity of one Green-function entry — which
+identifies the bottom rung of the ladder in `UNLOCK_WATCHLIST.md`, since any
+attack on the general statement must prove the propagator non-negative — and
+`exists_reflectionPositive_singleton` produces a genuine instance on every
+odd box, via a fixed site that is exhibited rather than asserted.
 
 **"`ReflectionPositive` could be stated so weakly that it is trivial."** The
 first draft of it WAS defective, and in the way this project keeps finding:
