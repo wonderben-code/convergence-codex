@@ -46,15 +46,15 @@
      `exact?` does not find — four lines from `Measure.pi_eq`, generic, and
      flagged as a plausible upstream contribution.
 
-  WHAT THIS DOES NOT DO — a dated claim, per ERRATUM 53, to be re-read after
-  the next unit rather than trusted. It does not carry the COEFFICIENT
-  characterisation to variance σ². `HermitePiCoeff` decides membership by a
-  series in the Hermite coefficients, and those are defined against
-  `gaussPi n`; the transport here moves functions, not coefficient systems,
-  so a σ-indexed Hermite basis would have to be built to state the analogue.
-  Nothing below attempts it. **σ = 0 is now handled** — §7, added after the
-  first draft of this header said it was not — so the only residue left is
-  the coefficient one.
+  WHAT THIS HEADER SAID IT DOES NOT DO, AND WHY BOTH CAVEATS ARE NOW GONE.
+  The first draft named two residues: σ = 0, and the coefficient
+  characterisation at variance σ². §7 closed the first. §8 closed the
+  second, **and the caveat had overstated the difficulty** — it said a
+  σ-indexed Hermite basis "would have to be built", when in fact §3 and §6
+  together are a biconditional on membership, so the standard coefficient
+  series of the RESCALED function decides it. That is ERRATUM 53's pattern
+  for the fourth time, and both caveats are left visible above §7 and §8
+  rather than deleted.
 
   **A NOTE ON SHARPNESS, kept because the drafting history is the point.**
   An earlier draft of this header claimed σ² sharp on the strength of
@@ -497,6 +497,59 @@ theorem poincare_smoothSteinPairPiVar_all (σ : ℝ) {f : (Fin n → ℝ) → �
   · rw [gaussPiVar_zero, integral_dirac, integral_dirac]
     simp [pow_two]
   · exact poincare_smoothSteinPairPiVar hσ h
+
+/-! ## 8. Membership at variance σ², decided by coefficients
+
+**This section exists because the header's own caveat overstated the
+difficulty**, which is ERRATUM 53's pattern for the fourth time. That caveat
+said carrying `HermitePiCoeff` to variance σ² would need "a σ-indexed Hermite
+basis to be built", because the coefficients are defined against `gaussPi n`
+and the transport moves functions rather than coefficient systems.
+
+Both halves of that are true and the conclusion does not follow. §3 and §6
+together are a BICONDITIONAL: `f` has a σ-partner exactly when `f ∘ σ·` has a
+standard one. So membership at variance σ² is decided by the STANDARD
+coefficient series of the RESCALED function, and no new basis is needed. A
+σ-indexed basis would state the same fact about `f`'s own coefficients
+against σ-Hermite functions — which are the standard ones composed with the
+scaling — so it would be a change of presentation, not of content.
+-/
+
+/-- The two transports of §3 and §6 combine into a biconditional on
+    MEMBERSHIP: `f` has a σ-partner iff the rescaled `f` has a standard one. -/
+theorem existsPairVar_iff_std {σ : ℝ} (hσ : σ ≠ 0) (f : (Fin n → ℝ) → ℝ) :
+    (∃ g : Fin n → ((Fin n → ℝ) → ℝ), SmoothSteinPairPiVar σ n f g)
+      ↔ (∃ G : Fin n → ((Fin n → ℝ) → ℝ),
+            SmoothSteinPairPi n (fun y => f (scl σ y)) G) := by
+  constructor
+  · rintro ⟨g, hg⟩
+    exact ⟨_, smoothSteinPairPiVar_toStd hσ hg⟩
+  · rintro ⟨G, hG⟩
+    have hfun : (fun x : Fin n → ℝ => f (scl σ (scl σ⁻¹ x))) = f := by
+      funext x
+      congr 1
+      funext j
+      rw [scl_apply, scl_apply]
+      field_simp
+    exact ⟨_, by simpa only [hfun] using smoothSteinPairPiVar_ofStd hσ hG⟩
+
+/-- **MEMBERSHIP AT VARIANCE σ², FROM COEFFICIENTS ALONE.** `f ∈ L²(γ_σⁿ)`
+    has a gradient partner if and only if `Σ_k |k|·(∏ⱼkⱼ!)·c_k(f∘σ·)² < ∞` —
+    the same series `HermitePiCoeff` uses, read off the rescaled function.
+    The last residue of the n-dimensional line. -/
+theorem smoothSteinPairPiVar_iff_summable {σ : ℝ} (hσ : σ ≠ 0)
+    {f : (Fin n → ℝ) → ℝ} (hf : MemLp f 2 (gaussPiVar σ n)) :
+    (∃ g : Fin n → ((Fin n → ℝ) → ℝ), SmoothSteinPairPiVar σ n f g)
+      ↔ Summable (HermitePiCoeff.wt n (fun y => f (scl σ y))) := by
+  rw [existsPairVar_iff_std hσ f]
+  constructor
+  · rintro ⟨G, hG⟩
+    exact HermitePiCoeff.summable_total_of_steinPairPi
+      ((steinPairPi_iff_smoothSteinPairPi n _ _).mpr hG)
+  · intro hsum
+    obtain ⟨g, hg⟩ :=
+      HermitePiCoeff.exists_partner_of_summable (memLp_comp_scl σ hf) hsum
+    exact ⟨g, (steinPairPi_iff_smoothSteinPairPi n _ _).mp hg⟩
 
 end
 
