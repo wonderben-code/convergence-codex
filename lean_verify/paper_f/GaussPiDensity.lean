@@ -119,44 +119,64 @@ because the `j`-th factor's derivative in that direction is `ρ′(xⱼ)` times
 the `j`-th coordinate of `Pi.single i 1`, which is zero unless `j = i`.
 -/
 
-theorem hasFDerivAt_rho_coord (n : ℕ) (i : Fin n) (x : Fin n → ℝ) :
-    HasFDerivAt (fun y : Fin n → ℝ => rho (y i))
-      ((-(x i) * rho (x i)) • (ContinuousLinearMap.proj i : (Fin n → ℝ) →L[ℝ] ℝ)) x := by
-  have h := (hasDerivAt_rho (x i)).hasFDerivAt
-  have := h.comp x (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin n => ℝ) i).hasFDerivAt
-  convert this using 1
-  ext v
-  simp
-  ring
+/-- **The product rule for a product of ONE-VARIABLE functions, one
+    coordinate at a time.** Against `Pi.single i 1` every factor but the
+    `i`-th dies, because the `j`-th factor's directional derivative carries
+    the `j`-th coordinate of `Pi.single i 1`.
 
-theorem fderiv_rho_coord_single (n : ℕ) (i j : Fin n) (x : Fin n → ℝ) :
-    fderiv ℝ (fun y : Fin n → ℝ => rho (y j)) x (Pi.single i (1:ℝ))
-      = if j = i then -(x i) * rho (x i) else 0 := by
-  rw [(hasFDerivAt_rho_coord n j x).fderiv]
-  simp only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.proj_apply, smul_eq_mul]
-  by_cases h : j = i
-  · subst h
+    Stated generally rather than for `ρ` alone: this argument was written
+    inline for the density, and the multi-index Hermite recursion
+    (`HermitePiStein.Hpi_succ`) needs the identical argument for a product of
+    Hermite polynomials. `HermitePiPeel`'s standing lesson — machinery buried
+    in a proof is machinery the next person rebuilds — fourth instance. -/
+theorem fderiv_coordProd (n : ℕ) (u : Fin n → ℝ → ℝ)
+    (hu : ∀ j, Differentiable ℝ (u j)) (i : Fin n) (x : Fin n → ℝ) :
+    fderiv ℝ (fun y : Fin n → ℝ => ∏ j, u j (y j)) x (Pi.single i (1:ℝ))
+      = deriv (u i) (x i) * ∏ j ∈ Finset.univ.erase i, u j (x j) := by
+  have hco : ∀ j : Fin n, HasFDerivAt (fun y : Fin n → ℝ => u j (y j))
+      ((deriv (u j) (x j)) • (ContinuousLinearMap.proj j : (Fin n → ℝ) →L[ℝ] ℝ)) x := by
+    intro j
+    have h := ((hu j) (x j)).hasDerivAt.hasFDerivAt
+    have hc := h.comp x
+      (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin n => ℝ) j).hasFDerivAt
+    convert hc using 1
+    ext v
     simp
-  · rw [if_neg h, Pi.single_eq_of_ne h, mul_zero]
-
-/-- **`∂ᵢρₙ(x) = −xᵢ·ρₙ(x)`.** Stair N5b, in the spelling Mathlib's
-    integration-by-parts theorem consumes. -/
-theorem fderiv_rhoPi (n : ℕ) (i : Fin n) (x : Fin n → ℝ) :
-    fderiv ℝ (rhoPi n) x (Pi.single i (1:ℝ)) = -(x i) * rhoPi n x := by
-  have hdiff : ∀ j ∈ Finset.univ, DifferentiableAt ℝ (fun y : Fin n → ℝ => rho (y j)) x :=
-    fun j _ => (hasFDerivAt_rho_coord n j x).differentiableAt
-  have hprod : rhoPi n = fun y : Fin n → ℝ => ∏ j ∈ Finset.univ, rho (y j) := rfl
-  rw [hprod, fderiv_finset_prod hdiff]
+    ring
+  have hsingle : ∀ j : Fin n,
+      fderiv ℝ (fun y : Fin n → ℝ => u j (y j)) x (Pi.single i (1:ℝ))
+        = if j = i then deriv (u i) (x i) else 0 := by
+    intro j
+    rw [(hco j).fderiv]
+    simp only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.proj_apply, smul_eq_mul]
+    by_cases h : j = i
+    · subst h; simp
+    · rw [if_neg h, Pi.single_eq_of_ne h, mul_zero]
+  rw [fderiv_finset_prod (fun j _ => (hco j).differentiableAt)]
   simp only [ContinuousLinearMap.coe_sum', Finset.sum_apply,
     ContinuousLinearMap.smul_apply, smul_eq_mul]
   rw [Finset.sum_eq_single i]
-  · rw [fderiv_rho_coord_single, if_pos rfl]
-    rw [← Finset.mul_prod_erase Finset.univ (fun j => rho (x j)) (Finset.mem_univ i)]
+  · rw [hsingle, if_pos rfl]
     ring
   · intro j _ hj
-    rw [fderiv_rho_coord_single, if_neg hj, mul_zero]
+    rw [hsingle, if_neg hj, mul_zero]
   · intro h
     exact absurd (Finset.mem_univ i) h
+
+theorem rho_differentiable : Differentiable ℝ rho :=
+  fun x => (hasDerivAt_rho x).differentiableAt
+
+/-- **`∂ᵢρₙ(x) = −xᵢ·ρₙ(x)`.** Stair N5b, now the `u = ρ` instance of
+    `fderiv_coordProd`. -/
+theorem fderiv_rhoPi (n : ℕ) (i : Fin n) (x : Fin n → ℝ) :
+    fderiv ℝ (rhoPi n) x (Pi.single i (1:ℝ)) = -(x i) * rhoPi n x := by
+  have hprod : rhoPi n = fun y : Fin n → ℝ => ∏ j, rho (y j) := rfl
+  have hprod' : rhoPi n x = ∏ j, rho (x j) := rfl
+  rw [hprod, fderiv_coordProd n (fun _ => rho) (fun _ => rho_differentiable) i x,
+    (hasDerivAt_rho (x i)).deriv]
+  dsimp only
+  rw [← Finset.mul_prod_erase Finset.univ (fun j => rho (x j)) (Finset.mem_univ i)]
+  ring
 
 /-! ## 3. N5a: the measure identity
 
