@@ -28,10 +28,15 @@
   `GaussPiExp` supplying the domination and this file supplying the
   uniqueness theorem, what remains of N2 is the convergence argument and
   the bookkeeping that assembles them — the one-dimensional
-  `polynomials_complete` pattern, with no ingredient now missing. That
-  claim is a prediction about a route, which this project has learned to
-  distrust (ERRATA 40/42 applied to routes), so it is written as a
-  prediction and not as a plan.
+  `polynomials_complete` pattern.
+
+  **CORRECTION, same day.** The sentence above originally ended "with no
+  ingredient now missing", and that was false when written: characteristic
+  functions are COMPLEX, and `GaussPiExp`'s bound was stated for the real
+  exponential series, which is a different sum. Found by trying to use the
+  two files together rather than by reading either. Fixed by proving
+  `GaussPiExp.partial_exp_bound_complex`, not by softening the sentence —
+  so the claim is true now, and the record shows it was not.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
   axioms.

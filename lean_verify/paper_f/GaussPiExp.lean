@@ -26,10 +26,13 @@
   * **`integrable_exp_sumAbs_mul`** — hence `exp(c·Σᵢ|xᵢ|)·|G|` is
     integrable for every `G ∈ L²(γⁿ)`: the dominating function N2's
     dominated-convergence step needs.
-  * **`abs_inner_le_sumAbs`** and **`partial_exp_bound`** — the bridge from
-    a linear form to that dominating function, and the uniform bound on
-    the partial sums of `exp(⟨t,x⟩)`. Together they are the hypothesis of
-    dominated convergence, with the limit function left to N2 proper.
+  * **`abs_inner_le_sumAbs`**, **`partial_exp_bound`** and
+    **`partial_exp_bound_complex`** — the bridge from a linear form to
+    that dominating function, and the uniform bound on the partial sums of
+    `exp⟨t,x⟩`, in BOTH the real and the complex form. The complex one is
+    the one characteristic functions actually need; §3b records that it
+    was missing from the first version of this file and from two headers
+    that had already gone out saying otherwise.
 
   WHAT THIS DOES NOT DO. It is a domination, not a convergence: nothing
   here says the partial sums converge to anything, and nothing here
@@ -133,6 +136,37 @@ theorem partial_exp_bound (n : ℕ) (t x : Fin n → ℝ) {C : ℝ}
     _ = ∑ k ∈ Finset.range N, |y| ^ k / (k.factorial : ℝ) := by
         refine Finset.sum_congr rfl fun k _ => ?_
         rw [abs_div, abs_pow, abs_of_nonneg (by positivity : (0:ℝ) ≤ (k.factorial : ℝ))]
+    _ ≤ Real.exp |y| := Real.sum_le_exp_of_nonneg (abs_nonneg y) N
+    _ ≤ Real.exp (C * sumAbs n x) :=
+        Real.exp_le_exp.mpr (abs_inner_le_sumAbs n t x hC)
+
+/-! ## 3b. The COMPLEX bound — added after the real one turned out to be
+       the wrong shape
+
+Caught by trying to use §3 rather than by reading it. Characteristic
+functions are complex: the sums dominated convergence actually sees are
+`∑_{k<N} (i·y)^k / k!`, not `∑_{k<N} y^k / k!`. The real bound of §3 does
+not apply to them — different summands — and a header of mine had already
+gone out saying "every ingredient now exists". **It did not.** It does
+now, and the fix is a theorem rather than a retraction: the complex
+partial sums obey the same bound, because `‖(i·y)^k‖ = |y|^k`.
+-/
+
+theorem partial_exp_bound_complex (n : ℕ) (t x : Fin n → ℝ) {C : ℝ}
+    (hC : ∀ i, |t i| ≤ C) (N : ℕ) :
+    ‖∑ k ∈ Finset.range N,
+        ((↑(∑ i, t i * x i) : ℂ) * Complex.I) ^ k / (k.factorial : ℂ)‖
+      ≤ Real.exp (C * sumAbs n x) := by
+  set y : ℝ := ∑ i, t i * x i with hy
+  calc ‖∑ k ∈ Finset.range N, ((↑y : ℂ) * Complex.I) ^ k / (k.factorial : ℂ)‖
+      ≤ ∑ k ∈ Finset.range N, ‖((↑y : ℂ) * Complex.I) ^ k / (k.factorial : ℂ)‖ :=
+        norm_sum_le _ _
+    _ = ∑ k ∈ Finset.range N, |y| ^ k / (k.factorial : ℝ) := by
+        refine Finset.sum_congr rfl fun k _ => ?_
+        rw [norm_div, norm_pow, norm_mul, Complex.norm_I, mul_one,
+          Complex.norm_real, Real.norm_eq_abs]
+        congr 1
+        rw [Complex.norm_natCast]
     _ ≤ Real.exp |y| := Real.sum_le_exp_of_nonneg (abs_nonneg y) N
     _ ≤ Real.exp (C * sumAbs n x) :=
         Real.exp_le_exp.mpr (abs_inner_le_sumAbs n t x hC)
