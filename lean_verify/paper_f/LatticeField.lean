@@ -44,6 +44,18 @@
   chessboard estimate. W1's failing step is untouched and this file makes no
   progress on it whatever.
 
+  **AMENDED 9 AUG 2026 — THE SENTENCE IN CAPITALS ABOVE IS NO LONGER TRUE,
+  and the paragraph is kept because the verdict it records was correct.**
+  `LatticeReflection.refl` is the reflection on `Site n`;
+  `LatticeReflectionPositive.reflectionPositive_lattice` is the
+  covariance-level positivity; and `GraphOS2.os2_lattice` is
+  `integral_pairing` and `os2_measure_level` for THIS measure — the two
+  theorems this header says "did NOT transfer and are not attempted". They
+  transfer. **The diagnosis was right and so was the refusal to fake it**:
+  the obstruction really was the missing reflection, it really was outside
+  the packaging layer, and once it was built the packaging went through with
+  nothing left over. Everything else in this header stands as written.
+
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
   axioms.
 -/
