@@ -2,14 +2,29 @@
   GaussPiDensity.lean — **stairs N5a and N5b**: the n-dimensional Gaussian
   density, and the one identity the whole `Cc^∞` bridge will rest on.
 
-  WHY BOTH IN ONE FILE, AND WHY THIS FILE EXISTS AT ALL. The 12 August probe
-  of N5 found that Mathlib supplies the hard analytic step —
-  `integral_mul_fderiv_eq_neg_fderiv_mul_of_integrable`, integration by parts
-  in a finite-dimensional real vector space, in exactly the directional form
-  `fderiv ℝ g x v` that `v = Pi.single i 1` turns into the i-th partial
-  derivative. But that theorem needs an **additive Haar measure**, and
-  `gaussPi n` is not one. So the bridge must go through Lebesgue, and this
-  file builds the two things that conversion needs:
+  WHY BOTH IN ONE FILE, AND WHY THIS FILE EXISTS AT ALL — **CORRECTED
+  13 AUGUST, SEE ERRATUM 51.** As first written this header said the file
+  existed because Mathlib's `integral_mul_fderiv_eq_neg_fderiv_mul_of_integrable`
+  supplies "the hard analytic step of N5" and needs a Haar measure. **That
+  attribution was false.** N5 is the `Cc^∞` bridge, and the bridge — in one
+  dimension and in n — uses **no integration by parts at all**: it is the
+  substitution `φ = ψ/ρ` in one direction and `ψ = φ·ρ` in the other, plus
+  the change of measure, twice each. Read `TextbookSobolev.textbookBridge`
+  and there is no FTC in it. The symptom was visible here and unnoticed:
+  this file imported `LineDeriv.IntegrationByParts` and never used a single
+  lemma from it, and it compiles with the import deleted.
+
+  **The two theorems below are the right ones and are unchanged.** They are
+  the exact twins of what the 1-d bridge consumes — `integral_gauss` and
+  `hasDerivAt_rho` — and the bridge cannot be written without them. Only the
+  stated reason was wrong. Where Mathlib's integration by parts is genuinely
+  needed is a DIFFERENT and later stair: the n-dimensional analogue of
+  `PoincareBeyondPolynomials.stein_general`, which shows that a
+  differentiable function of polynomial growth actually IS a Stein pair with
+  its gradient. That stair is not on the original staircase and is now on the
+  watchlist under its own name.
+
+  What this file builds, and what the bridge consumes:
 
   * **`integral_gaussPi`** (N5a) — `∫ f dγⁿ = ∫ ρₙ·f dx`. The n-dimensional
     twin of the estate's one-dimensional `TextbookSobolev.integral_gauss`.
@@ -55,7 +70,6 @@
 -/
 import HermitePiPeel
 import TextbookSobolev
-import Mathlib.Analysis.Calculus.LineDeriv.IntegrationByParts
 
 namespace GaussPiDensity
 
