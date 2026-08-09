@@ -32,11 +32,13 @@
      equal; that is the third thing that equality unlocked.
   3. **`poincare_smoothSteinPairPiVar`** — **`Var_{γ_σⁿ}(f) ≤ σ²·Σᵢ ∫ gᵢ²`**,
      the n-dimensional Gaussian Poincaré inequality at every variance.
-  4. **`poincare_sobolevWeakPiVar`** — the same on the textbook side, and
-     **`var_coord_scaled`**: the variance of a coordinate under `γ_σⁿ` is
-     exactly σ², so the LEFT-hand side of (3) reaches σ² on a concrete
-     function. **THAT IS NOT YET SHARPNESS AND THE HEADER SAYS SO** — see
-     the second paragraph of WHAT THIS DOES NOT DO.
+  4. **`poincare_sobolevWeakPiVar`** — the same on the textbook side.
+  5. **`smoothSteinPairPiVar_ofStd`** and **`poincare_sharp_var`** — the
+     BACKWARD transport, and with it **σ² is SHARP**: on the coordinate
+     function both sides of (3) equal σ², and the coordinate is exhibited as
+     a member of the scaled class rather than assumed to be one. §5 of this
+     file records that an earlier draft claimed sharpness without proving
+     it; §6 discharges the retraction rather than leaving it standing.
 
   WHAT THIS DOES NOT DO — a dated claim, per ERRATUM 53, to be re-read after
   the next unit rather than trusted. It does not carry the COEFFICIENT
@@ -48,19 +50,15 @@
   degenerates to a Dirac mass — the 1-d chain handles that case explicitly
   (`PoincareSteinScaled.gaussSc_zero`) and this file simply requires σ ≠ 0.
 
-  **AND IT DOES NOT PROVE σ² SHARP, which an earlier draft of this header
-  claimed.** `var_coord_scaled` computes the left-hand side on the
-  coordinate function and gets σ². To conclude the constant is ATTAINED one
-  also needs the right-hand side to be σ², i.e. the coordinate to be a
-  member of `SmoothSteinPairPiVar σ n` with a unit gradient — and the
-  transport below runs from variance σ² to variance `1`, not back, so
-  nothing here supplies that. The route is a backward transport
-  `smoothSteinPairPiVar_ofStd`, mirroring §3 with `σ⁻¹` in place of `σ`;
-  the estate has the standard-variance witness it would need
-  (`W6ConversePi.poincare_coord_textbook`, where both sides are `1`). At
-  σ = 1 sharpness IS known, by that theorem. For general σ the inequality
-  below is a bound whose left side is known to reach σ², which is weaker
-  than sharpness and is stated as such.
+  **A NOTE ON SHARPNESS, kept because the drafting history is the point.**
+  An earlier draft of this header claimed σ² sharp on the strength of
+  `var_coord_scaled`, which computes only the LEFT-hand side. That was
+  caught before pushing and the header was rewritten to say the constant was
+  NOT proved sharp, naming the missing piece as a backward transport. §6 then
+  built it, so sharpness is now a theorem (`poincare_sharp_var`). The
+  retraction is left visible in §5 rather than erased: a claim that had to be
+  withdrawn and was then earned is more informative than one that was always
+  true.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
   axioms.
@@ -268,14 +266,14 @@ theorem poincare_sobolevWeakPiVar {σ : ℝ} (hσ : σ ≠ 0) {f : (Fin n → �
   ⟨(smoothSteinPairPi_iff_sobolevWeakPi n _ _).mp (smoothSteinPairPiVar_toStd hσ h),
     poincare_smoothSteinPairPiVar hσ h⟩
 
-/-! ## 5. The left-hand side reaches σ² — which is not yet sharpness
+/-! ## 5. The left-hand side reaches σ²
 
-At σ = 1 sharpness is known: `W6ConversePi.poincare_coord_textbook` computes
-BOTH sides on a coordinate and gets `1`. Here only the left side is computed.
-Getting the right side needs the coordinate to be a member of
-`SmoothSteinPairPiVar σ n`, and §3's transport runs the other way, so this
-section stops where the proof stops. The gap is named in the header and
-routed there.
+This section computes one side of the inequality on the coordinate function
+and gets σ². **On its own that is NOT sharpness**, and an earlier draft of
+this file's header said it was — the right-hand side also has to be σ², which
+needs the coordinate to be a MEMBER of the scaled class, and §3's transport
+runs the other way. §6 supplies the missing direction and finishes the
+argument. The retraction is left recorded here on purpose.
 -/
 
 /-- The variance of a coordinate at variance σ² is σ². -/
@@ -302,6 +300,138 @@ theorem var_coord_scaled (σ : ℝ) (i : Fin n) :
   obtain ⟨hvar, -, -⟩ := poincare_coord_textbook n i
   rw [h1, h2, hsq, hlin]
   nlinarith [hvar]
+
+/-! ## 6. The backward transport, and σ² IS sharp
+
+§5 stopped at "the left-hand side reaches σ²" and the header routed the fix:
+a transport running from variance `1` back to variance σ². It is §3's
+computation with `σ⁻¹` in place of `σ`, and with it the coordinate function
+becomes a member of the scaled class, so both sides can be computed and the
+constant is attained.
+-/
+
+/-- The scaling run backwards is measure-preserving too. `Measure.map_map`
+    on the composite, which is the identity. -/
+theorem measurePreserving_scl_inv {σ : ℝ} (hσ : σ ≠ 0) (n : ℕ) :
+    MeasurePreserving (scl σ⁻¹ : (Fin n → ℝ) → Fin n → ℝ)
+      (gaussPiVar σ n) (gaussPi n) := by
+  refine ⟨(continuous_scl σ⁻¹).measurable, ?_⟩
+  rw [← (measurePreserving_scl σ n).map_eq,
+    Measure.map_map (continuous_scl σ⁻¹).measurable (continuous_scl σ).measurable]
+  have hid : (scl σ⁻¹ ∘ scl σ : (Fin n → ℝ) → Fin n → ℝ) = id := by
+    funext y
+    funext j
+    rw [Function.comp_apply, scl_apply, scl_apply, id_eq]
+    field_simp
+  rw [hid, Measure.map_id]
+
+theorem memLp_comp_scl_inv {σ : ℝ} (hσ : σ ≠ 0) {u : (Fin n → ℝ) → ℝ}
+    (hu : MemLp u 2 (gaussPi n)) :
+    MemLp (fun x => u (scl σ⁻¹ x)) 2 (gaussPiVar σ n) := by
+  have hmp := measurePreserving_scl_inv hσ n
+  rw [← hmp.map_eq] at hu
+  exact (memLp_map_measure_iff hu.aestronglyMeasurable hmp.measurable.aemeasurable).mp hu
+
+/-- **THE BACKWARD TRANSPORT.** A standard pair becomes a σ-pair. -/
+theorem smoothSteinPairPiVar_ofStd {σ : ℝ} (hσ : σ ≠ 0) {F : (Fin n → ℝ) → ℝ}
+    {G : Fin n → ((Fin n → ℝ) → ℝ)} (h : SmoothSteinPairPi n F G) :
+    SmoothSteinPairPiVar σ n (fun x => F (scl σ⁻¹ x))
+      (fun i x => σ⁻¹ * G i (scl σ⁻¹ x)) := by
+  obtain ⟨hF, hG, hpair⟩ := h
+  have hinv : ∀ y : Fin n → ℝ, scl σ⁻¹ (scl σ y) = y := by
+    intro y; funext j; rw [scl_apply, scl_apply]; field_simp
+  refine ⟨memLp_comp_scl_inv hσ hF,
+    fun i => (memLp_comp_scl_inv hσ (hG i)).const_mul σ⁻¹, fun i φ hφ hcφ => ?_⟩
+  -- run the standard pairing at the rescaled test function
+  have hp := hpair i (fun z => φ (scl σ z)) (contDiff_comp_scl σ hφ)
+    (hasCompactSupport_comp_scl hσ hcφ)
+  have hL : (∫ x, (fun x => F (scl σ⁻¹ x)) x
+        * (x i * φ x / σ ^ 2 - fderiv ℝ φ x (Pi.single i (1:ℝ))) ∂gaussPiVar σ n)
+      = σ⁻¹ * ∫ y, F y * (y i * φ (scl σ y)
+          - fderiv ℝ (fun z => φ (scl σ z)) y (Pi.single i (1:ℝ))) ∂gaussPi n := by
+    rw [integral_scl σ (by
+      refine (memLp_comp_scl_inv hσ hF).aestronglyMeasurable.mul ?_
+      exact ((((continuous_apply i).mul hφ.continuous).div_const _).sub
+        (continuous_partial n hφ i)).aestronglyMeasurable),
+      ← integral_const_mul]
+    refine integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)
+    dsimp only
+    rw [hinv y, fderiv_comp_scl σ hφ i y, scl_apply]
+    field_simp
+  have hR : (∫ x, (σ⁻¹ * G i (scl σ⁻¹ x)) * φ x ∂gaussPiVar σ n)
+      = σ⁻¹ * ∫ y, G i y * φ (scl σ y) ∂gaussPi n := by
+    rw [integral_scl σ (by
+      exact ((memLp_comp_scl_inv hσ (hG i)).const_mul σ⁻¹).aestronglyMeasurable.mul
+        hφ.continuous.aestronglyMeasurable),
+      ← integral_const_mul]
+    refine integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)
+    dsimp only
+    rw [hinv y]
+    ring
+  rw [hL, hR, hp]
+
+/-- The class is closed under scalar multiples, which is what turns the
+    transported coordinate `σ⁻¹xᵢ` back into `xᵢ`. -/
+theorem smoothSteinPairPiVar_const_mul {σ : ℝ} (c : ℝ) {f : (Fin n → ℝ) → ℝ}
+    {g : Fin n → ((Fin n → ℝ) → ℝ)} (h : SmoothSteinPairPiVar σ n f g) :
+    SmoothSteinPairPiVar σ n (fun x => c * f x) (fun i x => c * g i x) := by
+  obtain ⟨hf, hg, hpair⟩ := h
+  refine ⟨hf.const_mul c, fun i => (hg i).const_mul c, fun i φ hφ hcφ => ?_⟩
+  have h1 : (∫ x, (c * f x) * (x i * φ x / σ ^ 2
+        - fderiv ℝ φ x (Pi.single i (1:ℝ))) ∂gaussPiVar σ n)
+      = c * ∫ x, f x * (x i * φ x / σ ^ 2
+          - fderiv ℝ φ x (Pi.single i (1:ℝ))) ∂gaussPiVar σ n := by
+    rw [← integral_const_mul]
+    refine integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)
+    dsimp only; ring
+  have h2 : (∫ x, (c * g i x) * φ x ∂gaussPiVar σ n)
+      = c * ∫ x, g i x * φ x ∂gaussPiVar σ n := by
+    rw [← integral_const_mul]
+    refine integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)
+    dsimp only; ring
+  rw [h1, h2, hpair i φ hφ hcφ]
+
+/-- **THE COORDINATE IS A MEMBER AT EVERY VARIANCE**, with a unit gradient.
+    This is what §5 was missing. -/
+theorem coord_memVar {σ : ℝ} (hσ : σ ≠ 0) (i : Fin n) :
+    SmoothSteinPairPiVar σ n (fun x => x i) (fun j _ => if j = i then (1:ℝ) else 0) := by
+  classical
+  have hstd : SmoothSteinPairPi n (fun y : Fin n → ℝ => y i)
+      (fun j _ => if j = i then (1:ℝ) else 0) :=
+    (smoothSteinPairPi_iff_sobolevWeakPi n _ _).mpr (coord_sobolevWeakPi n i)
+  have h := smoothSteinPairPiVar_const_mul (σ := σ) σ
+    (smoothSteinPairPiVar_ofStd hσ hstd)
+  have hf : (fun x : Fin n → ℝ => σ * (scl σ⁻¹ x) i) = fun x : Fin n → ℝ => x i := by
+    funext x; rw [scl_apply]; field_simp
+  have hg : (fun (j : Fin n) (x : Fin n → ℝ) =>
+        σ * (σ⁻¹ * (if j = i then (1:ℝ) else 0)))
+      = fun (j : Fin n) (_ : Fin n → ℝ) => if j = i then (1:ℝ) else 0 := by
+    funext j x
+    rw [← mul_assoc, mul_inv_cancel₀ hσ, one_mul]
+  rw [hf, hg] at h
+  exact h
+
+/-- **σ² IS SHARP.** Both sides of the inequality equal σ² on the coordinate
+    function — so the constant is attained and no smaller one can work. This
+    discharges the retraction §5 was written to record. -/
+theorem poincare_sharp_var {σ : ℝ} (hσ : σ ≠ 0) (i : Fin n) :
+    ((∫ x : Fin n → ℝ, x i * x i ∂gaussPiVar σ n)
+        - (∫ x : Fin n → ℝ, x i ∂gaussPiVar σ n) ^ 2 = σ ^ 2)
+      ∧ (σ ^ 2 * ∑ j : Fin n, ∫ _x : Fin n → ℝ,
+            (if j = i then (1:ℝ) else 0) * (if j = i then (1:ℝ) else 0)
+              ∂gaussPiVar σ n) = σ ^ 2
+      ∧ SmoothSteinPairPiVar σ n (fun x => x i)
+          (fun j _ => if j = i then (1:ℝ) else 0) := by
+  classical
+  refine ⟨var_coord_scaled σ i, ?_, coord_memVar hσ i⟩
+  have hone : (∑ j : Fin n, ∫ _x : Fin n → ℝ,
+      (if j = i then (1:ℝ) else 0) * (if j = i then (1:ℝ) else 0)
+        ∂gaussPiVar σ n) = 1 := by
+    rw [Finset.sum_eq_single i]
+    · rw [if_pos rfl]; simp
+    · intro j _ hj; rw [if_neg hj]; simp
+    · intro hi; exact absurd (Finset.mem_univ i) hi
+  rw [hone, mul_one]
 
 end
 
