@@ -155,6 +155,44 @@ theorem tsum_coeff_gi (n : ℕ) {f : (Fin n → ℝ) → ℝ}
     simp [h0]
   rw [tsum_congr hterm, (succAt_injective n i).tsum_eq hsupp]
 
+/-- **EXTRACTED from `poincare_steinPi`, where this was a `have`.** If `f`
+    has a Stein partner then for each coordinate the `kᵢ`-weighted
+    coefficient series of `f` CONVERGES. The inequality below consumes it,
+    and so does every refutation of membership: a coefficient sequence whose
+    weighted series diverges has no partner at all. -/
+theorem summable_weighted_coeffPi (n : ℕ) {f : (Fin n → ℝ) → ℝ}
+    {g : Fin n → ((Fin n → ℝ) → ℝ)} (h : SteinPairPi n f g) (i : Fin n) :
+    Summable fun k : Fin n → ℕ => (k i : ℝ) * (facPi n k * coeffPi n k f ^ 2) := by
+  classical
+  have hg := h.2.1
+  have hs : Summable fun m : Fin n → ℕ => facPi n m * coeffPi n m (g i) ^ 2 := by
+    have hh := summable_coeffPi_sq n ((hg i).toLp (g i))
+    refine hh.congr fun m => ?_
+    rw [coeffPi_congr_ae n (hg i).coeFn_toLp m]
+  have hterm : ∀ m : Fin n → ℕ,
+      facPi n m * coeffPi n m (g i) ^ 2
+        = (fun k : Fin n → ℕ => (k i : ℝ) * (facPi n k * coeffPi n k f ^ 2))
+            (succAt m i) := by
+    intro m
+    simp only
+    rw [succAt_self, coeffPi_recursion n h i m, facPi_succAt]
+    push_cast
+    ring
+  have hsupp : Function.support
+      (fun k : Fin n → ℕ => (k i : ℝ) * (facPi n k * coeffPi n k f ^ 2))
+        ⊆ Set.range fun m : Fin n → ℕ => succAt m i := by
+    intro k hk
+    refine mem_range_succAt n i ?_
+    intro h0
+    apply hk
+    simp [h0]
+  have hzero : ∀ k ∉ Set.range fun m : Fin n → ℕ => succAt m i,
+      (fun k : Fin n → ℕ => (k i : ℝ) * (facPi n k * coeffPi n k f ^ 2)) k = 0 := by
+    intro k hk
+    by_contra hne
+    exact hk (hsupp hne)
+  exact ((succAt_injective n i).summable_iff hzero).mp (hs.congr hterm)
+
 /-! ## 4. THE INEQUALITY -/
 
 /-- **GAUSSIAN POINCARÉ IN n DIMENSIONS, BEYOND POLYNOMIALS.**
@@ -181,39 +219,8 @@ theorem poincare_steinPi (n : ℕ) {f : (Fin n → ℝ) → ℝ}
   simp_rw [hgi]
   -- summability, coordinate by coordinate and in total
   have hsumF : ∀ i : Fin n,
-      Summable fun k : Fin n → ℕ => (k i : ℝ) * (facPi n k * coeffPi n k f ^ 2) := by
-    intro i
-    have hpar : (∑' m : Fin n → ℕ, facPi n m * coeffPi n m (g i) ^ 2)
-        = ∑' k : Fin n → ℕ, (k i : ℝ) * (facPi n k * coeffPi n k f ^ 2) :=
-      tsum_coeff_gi n h i
-    have hs : Summable fun m : Fin n → ℕ => facPi n m * coeffPi n m (g i) ^ 2 := by
-      have hh := summable_coeffPi_sq n ((hg i).toLp (g i))
-      refine hh.congr fun m => ?_
-      rw [coeffPi_congr_ae n (hg i).coeFn_toLp m]
-    -- transport summability along the same injection
-    have hterm : ∀ m : Fin n → ℕ,
-        facPi n m * coeffPi n m (g i) ^ 2
-          = (fun k : Fin n → ℕ => (k i : ℝ) * (facPi n k * coeffPi n k f ^ 2))
-              (succAt m i) := by
-      intro m
-      simp only
-      rw [succAt_self, coeffPi_recursion n h i m, facPi_succAt]
-      push_cast
-      ring
-    have hsupp : Function.support
-        (fun k : Fin n → ℕ => (k i : ℝ) * (facPi n k * coeffPi n k f ^ 2))
-          ⊆ Set.range fun m : Fin n → ℕ => succAt m i := by
-      intro k hk
-      refine mem_range_succAt n i ?_
-      intro h0
-      apply hk
-      simp [h0]
-    have hzero : ∀ k ∉ Set.range fun m : Fin n → ℕ => succAt m i,
-        (fun k : Fin n → ℕ => (k i : ℝ) * (facPi n k * coeffPi n k f ^ 2)) k = 0 := by
-      intro k hk
-      by_contra hne
-      exact hk (hsupp hne)
-    exact ((succAt_injective n i).summable_iff hzero).mp (hs.congr hterm)
+      Summable fun k : Fin n → ℕ => (k i : ℝ) * (facPi n k * coeffPi n k f ^ 2) :=
+    fun i => summable_weighted_coeffPi n h i
   rw [← Summable.tsum_finsetSum fun i _ => hsumF i]
   -- and the term-by-term comparison
   rw [variance_eq_tsum n hf]
