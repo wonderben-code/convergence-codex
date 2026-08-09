@@ -26,9 +26,11 @@
      `lapMatrix_toEuclideanLin_le`** — **the statement the box cannot make.**
      Adding edges increases the Dirichlet energy pointwise, so `L_G ≤ L_{G'}`
      whenever `G ≤ G'`, stated both as `PosSemidef` of the difference and as
-     a literal `≤` in Mathlib's Loewner order on operators. A fixed box has a
-     fixed edge set and cannot express comparison at all; this is content the
-     generalisation BUYS rather than merely re-hosts.
+     a `≤` between `toEuclideanLin` images. A fixed box has a fixed edge set
+     and cannot express comparison at all; this is content the generalisation
+     BUYS rather than merely re-hosts. (**Both formulations are detours**:
+     Mathlib has a Loewner `≤` on `Matrix` itself, and
+     `MatrixLoewner.lapMatrix_le` uses it. See §7 and ERRATUM 62.)
   4. **§6: the box is an instance** — `LatticeLaplacian.massive`,
      `LatticeLaplacian.green` and `LatticeField.latticeField` are the general
      definitions at `latticeGraph n`, by `rfl`, and the box's kernel theorem
@@ -45,8 +47,10 @@
   reflection positivity — the reflection is genuinely box-specific
   (`Fin.rev`) and `LatticeReflection` stays where it is. And §4 stops at the
   Loewner order on LAPLACIANS: the step a physicist would want next, that
-  `green` is ANTItone in the graph, needs operator antitonicity of the matrix
-  inverse, which §7 records as a Mathlib gap rather than assuming.
+  `green` is ANTItone in the graph, is **not proved here**. §7 said it needed
+  a theorem Mathlib lacked; that was wrong, and `MatrixLoewner.green_antitone`
+  walks the leg. This file is left as it was written, with §7 recording the
+  error, rather than retro-fitted.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
   axioms.
@@ -162,12 +166,14 @@ compares two graphs, and a fixed box has one edge set. Adding edges can only
 raise the Dirichlet energy, so the Laplacians are ordered in the Loewner
 sense.
 
-Mathlib carries no `≤` on `Matrix`, but it does carry the Loewner partial
-order on operators (`LinearMap.instLoewnerPartialOrder`), and
-`Matrix.isPositive_toEuclideanLin_iff` is the bridge. So the ordering is
-stated twice: once as `PosSemidef (B − A)`, which is what the proof produces,
-and once as an honest `≤` in Mathlib's own order. See §7 — the second form
-exists because the first draft of §7 asserted that order was absent.
+The ordering is stated twice here: once as `PosSemidef (B − A)`, which is
+what the proof produces, and once as a `≤` between `toEuclideanLin` images
+via `LinearMap.instLoewnerPartialOrder` and
+`Matrix.isPositive_toEuclideanLin_iff`. **Both are detours.** Mathlib carries
+`Matrix.instPartialOrder` — a Loewner `≤` on `Matrix` itself, scoped to
+`MatrixOrder` — and `MatrixLoewner.lapMatrix_le` states the theorem in it.
+§7 records how this file's review section managed to get that wrong twice in
+one day.
 -/
 
 /-- **Adding edges raises the Dirichlet energy.** -/
@@ -375,23 +381,31 @@ being removed.
 **"§4 could be advertised as more than it is."** It is the Loewner order on
 LAPLACIANS. The statement a physicist wants is the reverse order on GREEN
 FUNCTIONS — more edges, faster decay — and that needs operator antitonicity
-of the inverse, `0 < A ≤ B → B⁻¹ ≤ A⁻¹`. A grep for that shape across
-`Mathlib/LinearAlgebra/Matrix/` and `Mathlib/Analysis/` returns nothing, and
-the standard proof conjugates by `A^{-1/2}` and needs "for positive definite
-`C`, `I ≤ C → C⁻¹ ≤ I`", which is spectral. So §4's remaining leg is written
-down here and not attempted, per `PROOF_STRATEGY` §3.
+of the inverse, `0 < A ≤ B → B⁻¹ ≤ A⁻¹`. **That leg is written down here and
+not attempted, per `PROOF_STRATEGY` §3.**
 
-**And the first draft of that paragraph was wrong, in the way ERRATUM 40/42
-predicts.** It said "Mathlib has neither a Loewner order on matrices nor
-that theorem". The second half survives; the first half was **true only
-because of the qualifier**. Mathlib has `LinearMap.instLoewnerPartialOrder`
-on operators of a Hilbert space, and `Matrix.isPositive_toEuclideanLin_iff`
-is a one-line bridge from `PosSemidef`. The earlier probe searched for
-`LE (Matrix …)`, found nothing, and wrote a sentence whose narrowness was
-exactly what made it survive. **The correction is
-`lapMatrix_toEuclideanLin_le`, not a softened sentence** — §4 now states the
-ordering in the library's own order, which is a stronger and more reusable
-form than `PosSemidef (B − A)`, and the mistake is what produced it.
+**AMENDED THE SAME DAY, TWICE, AND BOTH DRAFTS OF THIS PARAGRAPH WERE
+WRONG. See ERRATUM 62 and `MatrixLoewner.lean`.** Draft one said "Mathlib
+has neither a Loewner order on matrices nor that theorem". Draft two
+corrected the first half to "the order exists on OPERATORS, not on
+`Matrix`", added `lapMatrix_toEuclideanLin_le` as the fix, and asserted the
+second half survived "a grep for that shape across
+`Mathlib/LinearAlgebra/Matrix/` and `Mathlib/Analysis/`".
+
+**Both halves are false.** `Mathlib/Analysis/Matrix/Order.lean` — a file
+none of the three probes opened — defines `Matrix.instPartialOrder`,
+`A ≤ B := (B − A).PosSemidef`, scoped to `MatrixOrder`. And
+`CStarAlgebra.inv_le_inv` is the antitonicity, in
+`Analysis/CStarAlgebra/ContinuousFunctionalCalculus/Order.lean`, which the
+grep did not reach because it searched `Analysis/` for matrix-shaped names
+and the theorem is stated for C⋆-algebras.
+
+**Corrected by proving, in both rounds.** `lapMatrix_toEuclideanLin_le`
+below stays — it is true and it is where the second draft's mistake led —
+but `MatrixLoewner.lapMatrix_le` now states the same thing in the order
+Mathlib actually has, and `MatrixLoewner.green_antitone` walks the leg this
+paragraph said was not attempted. **The estate's `PosSemidef (B − A)`
+formulations were a detour around notation that existed.**
 
 **"A library lemma could have been reinvented."** One was, and it is
 recorded rather than quietly fixed. `LatticeLaplacian.lattLap_not_posDef`
