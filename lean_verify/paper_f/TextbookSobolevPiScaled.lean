@@ -39,6 +39,12 @@
      a member of the scaled class rather than assumed to be one. §5 of this
      file records that an earlier draft claimed sharpness without proving
      it; §6 discharges the retraction rather than leaving it standing.
+  6. **`poincare_smoothSteinPairPiVar_all`** — and the `σ ≠ 0` hypothesis
+     disappears. At `σ = 0` the measure is a point mass and the statement is
+     `0 ≤ 0`. Getting there needed **`pi_dirac`**, that a `Measure.pi` of
+     Dirac masses is a Dirac mass, which **Mathlib does not have** and
+     `exact?` does not find — four lines from `Measure.pi_eq`, generic, and
+     flagged as a plausible upstream contribution.
 
   WHAT THIS DOES NOT DO — a dated claim, per ERRATUM 53, to be re-read after
   the next unit rather than trusted. It does not carry the COEFFICIENT
@@ -46,9 +52,9 @@
   series in the Hermite coefficients, and those are defined against
   `gaussPi n`; the transport here moves functions, not coefficient systems,
   so a σ-indexed Hermite basis would have to be built to state the analogue.
-  Nothing below attempts it. Nor does it treat σ = 0, where the measure
-  degenerates to a Dirac mass — the 1-d chain handles that case explicitly
-  (`PoincareSteinScaled.gaussSc_zero`) and this file simply requires σ ≠ 0.
+  Nothing below attempts it. **σ = 0 is now handled** — §7, added after the
+  first draft of this header said it was not — so the only residue left is
+  the coefficient one.
 
   **A NOTE ON SHARPNESS, kept because the drafting history is the point.**
   An earlier draft of this header claimed σ² sharp on the strength of
@@ -432,6 +438,65 @@ theorem poincare_sharp_var {σ : ℝ} (hσ : σ ≠ 0) (i : Fin n) :
     · intro j _ hj; rw [if_neg hj]; simp
     · intro hi; exact absurd (Finset.mem_univ i) hi
   rw [hone, mul_one]
+
+/-! ## 7. σ = 0, and the hypothesis disappears
+
+The 1-d chain handles the degenerate variance explicitly
+(`PoincareSteinScaled.gaussSc_zero`, and `poincare_stein_scaled` carries no
+`σ ≠ 0`). This section does the same in `n`, so every statement above can be
+restated without the hypothesis.
+
+**Mathlib has no `Measure.pi_dirac`** — a product of Dirac masses is a Dirac
+mass — and `exact?` does not find it. It is proved here from
+`Measure.pi_eq`, four lines, and it is generic: no Gaussian content, no
+cascade content. Flagged as a plausible upstream contribution alongside the
+two `pderiv`/`finSuccEquiv` bridges already on the watchlist.
+-/
+
+/-- **A product of Dirac masses is a Dirac mass.** Absent from Mathlib. -/
+theorem pi_dirac (n : ℕ) :
+    Measure.pi (fun _ : Fin n => Measure.dirac (0:ℝ)) = Measure.dirac (0 : Fin n → ℝ) := by
+  refine Measure.pi_eq fun s hs => ?_
+  rw [Measure.dirac_apply' _ (MeasurableSet.univ_pi hs)]
+  rw [Finset.prod_congr rfl fun i _ => Measure.dirac_apply' (0:ℝ) (hs i)]
+  by_cases h : ∀ i, (0:ℝ) ∈ s i
+  · simp [h]
+  · push Not at h
+    obtain ⟨i, hi⟩ := h
+    have hnot : (0 : Fin n → ℝ) ∉ Set.univ.pi s := by
+      simp only [Set.mem_univ_pi]
+      exact fun hc => hi (hc i)
+    rw [Set.indicator_of_notMem hnot]
+    exact (Finset.prod_eq_zero (Finset.mem_univ i)
+      (Set.indicator_of_notMem hi (1 : ℝ → ENNReal))).symm
+
+/-- **At variance `0` the measure is the Dirac mass at the origin.** The
+    n-dimensional twin of `PoincareSteinScaled.gaussSc_zero`. -/
+theorem gaussPiVar_zero (n : ℕ) : gaussPiVar 0 n = Measure.dirac 0 := by
+  have h0 : (⟨(0 : ℝ) ^ 2, sq_nonneg 0⟩ : NNReal) = 0 := by
+    ext
+    show (0:ℝ) ^ 2 = ((0 : NNReal) : ℝ)
+    norm_num
+  have hfun : (fun _ : Fin n => gaussianReal 0 (⟨(0:ℝ) ^ 2, sq_nonneg 0⟩ : NNReal))
+      = fun _ : Fin n => Measure.dirac (0:ℝ) := by
+    funext _
+    rw [h0]
+    exact gaussianReal_zero_var 0
+  rw [gaussPiVar, hfun]
+  exact pi_dirac n
+
+/-- **THE INEQUALITY AT EVERY VARIANCE, WITH NO `σ ≠ 0` HYPOTHESIS.** At
+    `σ = 0` the measure degenerates to a point mass, both sides are `0`, and
+    the statement is `0 ≤ 0` — true, and worth having so that the theorem is
+    a statement about all σ rather than about all nonzero σ. -/
+theorem poincare_smoothSteinPairPiVar_all (σ : ℝ) {f : (Fin n → ℝ) → ℝ}
+    {g : Fin n → ((Fin n → ℝ) → ℝ)} (h : SmoothSteinPairPiVar σ n f g) :
+    (∫ x, f x * f x ∂gaussPiVar σ n) - (∫ x, f x ∂gaussPiVar σ n) ^ 2
+      ≤ σ ^ 2 * ∑ i : Fin n, ∫ x, g i x * g i x ∂gaussPiVar σ n := by
+  rcases eq_or_ne σ 0 with rfl | hσ
+  · rw [gaussPiVar_zero, integral_dirac, integral_dirac]
+    simp [pow_two]
+  · exact poincare_smoothSteinPairPiVar hσ h
 
 end
 
