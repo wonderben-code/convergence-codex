@@ -35,10 +35,16 @@ five files so that `PeierlsCover` could mention it.
 `IsingBoundaryField.MagnetisationBound` is stated for `isingMeasure n h β` — the
 boundary-**field** Hamiltonian over **all** configurations. This is the field-free
 Hamiltonian **conditioned** on `+` boundary. Three things still separate them, none begun:
-**the comparison between a boundary FIELD at finite `h` and a `+` boundary CONDITION**, which this estate has not examined (**corrected 2026-08-10, ERRATUM 86**: first written as "the `h → 0⁺`
-limit", asserted without checking — a finite boundary field does not force the boundary),
-the extension from interior sites to all sites, and the passage from a probability to
-`∫ magnetisation`. **Untouched.**
+**the comparison between a boundary FIELD at finite `h` and a `+` boundary CONDITION**, not
+examined when this file was written (**corrected 2026-08-10, ERRATUM 86**: first written as
+"the `h → 0⁺` limit", asserted without checking — a finite boundary field does not force the
+boundary). **EXAMINED 2026-08-10, AFTER THIS FILE**, in two parts: `BoundaryFieldRatio`
+shows the `h → 0` route is FALSE — at zero field the magnetisation integral is exactly zero
+— and `BoundaryFieldLimit.tendsto_integral` shows `h → +∞` is the limit that does recover
+the `+` boundary condition. The residue there is a quantifier: a threshold in `h` per box,
+where the target needs one field strength for every box at once. Also the extension from
+interior sites to all sites, and the passage from a probability to `∫ magnetisation`.
+**Untouched.**
 -/
 
 namespace PeierlsConditional

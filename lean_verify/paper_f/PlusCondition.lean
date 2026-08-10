@@ -48,9 +48,15 @@ this theorem in place of `ContourSubtract.gibbs_bound_of_subset`, plus positivit
 
 And `IsingBoundaryField.MagnetisationBound` remains further off still: it is stated for the
 boundary-**field** measure over **all** configurations, and three things beyond conditioning
-separate the two — **the comparison between a boundary FIELD at finite `h` and a `+` boundary CONDITION**, which this estate has not examined (**corrected 2026-08-10, ERRATUM 86**: this header first
-called it "the `h → 0⁺` limit", asserted without checking), all sites rather than interior
-sites, and the passage to `∫ magnetisation`. Untouched.
+separate the two — **the comparison between a boundary FIELD at finite `h` and a `+`
+boundary CONDITION**, not examined when this file was written (**corrected 2026-08-10,
+ERRATUM 86**: this header first called it "the `h → 0⁺` limit", asserted without checking).
+**EXAMINED 2026-08-10, AFTER THIS FILE**, in two parts: `BoundaryFieldRatio` shows the
+`h → 0` route is FALSE — at zero field the magnetisation integral is exactly zero — and
+`BoundaryFieldLimit.tendsto_integral` shows `h → +∞` is the limit that does recover the `+`
+boundary condition. What is left there is a quantifier: a threshold in `h` per box, against
+a target needing one for every box. Also all sites rather than interior sites, and the
+passage to `∫ magnetisation`. Untouched.
 -/
 
 namespace PlusCondition

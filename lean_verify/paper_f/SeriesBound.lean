@@ -44,8 +44,11 @@ which is worth stating because it would be easy to write otherwise. That `def` i
 literature by a limit in `h` that is **not** formalised here — and **corrected 2026-08-10
 (ERRATUM 86): this header first named that limit `h → 0⁺`, which is the standard route for a
 *bulk* field and was asserted without checking it is the right one for a *boundary* field.**
-A finite boundary field does not force the boundary; it favours it. What separates the two
-set-ups is that unexamined comparison, not a limit this estate can name. Beyond conditioning,
+A finite boundary field does not force the boundary; it favours it. **EXAMINED 2026-08-10,
+AFTER THIS FILE**: `BoundaryFieldRatio` refutes the `h → 0` route outright, and
+`BoundaryFieldLimit.tendsto_integral` gives the one that works — `h → +∞`, derived from the
+weight rather than named. What separates the two set-ups is therefore no longer an
+unexamined comparison but a quantifier: a threshold in `h` per box. Beyond conditioning,
 a magnetisation bound would also need the estimate at **every** site rather than every
 interior site, and the passage from a weight ratio to the integral `∫ magnetisation`. **Four
 things, not one**, and `MagnetisationBound` is untouched.

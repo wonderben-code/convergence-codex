@@ -40,11 +40,22 @@ This file's expectation is a ratio of sums over the `+`-**boundary** configurati
   it. Recovering a `+` boundary condition from a field is a limit in `h`, and this file
   does **not** determine which limit or on what terms — an earlier draft of this header
   asserted `h → 0⁺`, which is the standard route for a *bulk* field and is very likely the
-  wrong statement for a *boundary* one. The honest position is that the comparison is
-  unexamined.
+  wrong statement for a *boundary* one. The honest position, when this file was written, was
+  that the comparison is unexamined. **EXAMINED 2026-08-10, THE SAME DAY**:
+  `BoundaryFieldRatio` proves the `h → 0` route FALSE — at zero field the magnetisation
+  integral is exactly zero, in every box and at every temperature — and
+  `BoundaryFieldLimit.tendsto_integral` proves that `h → +∞` recovers the `+`-conditioned
+  expectation of every observable. What remains after that is a quantifier, not a
+  comparison: a threshold in `h` per box, where `MagnetisationBound` needs one field
+  strength for every box at once.
 * **the object.** `MagnetisationBound` integrates against a measure; this is a ratio of
   finite sums. The estate has no `+`-conditioned measure, and inventing one to make the
-  shapes match would hide the first gap rather than close it.
+  shapes match would hide the first gap rather than close it. **SETTLED 2026-08-10 without
+  inventing one**: `BoundaryFieldRatio.integral_isingMeasure` shows the integral against the
+  estate's existing measure **is** a ratio of finite sums, so the mismatch of kind was a
+  fact waiting to be stated. The mismatch of **domain** — all configurations of the field
+  Hamiltonian, versus the `+` class of the field-free one — is the first bullet, and is
+  where the content was all along.
 
 `MagnetisationBound` remains untouched.
 -/
