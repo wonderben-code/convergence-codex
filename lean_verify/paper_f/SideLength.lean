@@ -21,7 +21,7 @@ that name a witness for a bond, because they were stated against `DualBonds.bond
 * **`card_of_mem_cycCandidates`** — so **every member of `PeierlsCover.cycCandidates P₀ r L`
   has exactly `L` bonds**, which is what makes the family graded by length;
 * and therefore §4: **`peierls_closed_form`**, the estimate with an explicit right-hand
-  side, `∑_{L ≤ card (Plaq n)} (2L + 3)^2 * 4^L * exp (-4βL)`. The grading is what makes the
+  side, `∑_{3 ≤ L ≤ card (Plaq n)} (2L + 3)^2 * 4^L * exp (-4βL)`. The grading is what makes the
   sum split by cardinality; each fibre is then bounded by the walk count.
 
 ## What is still missing — two things, and they are not the same kind
@@ -131,17 +131,34 @@ theorem mem_peierlsFamily_card {P₀ : Plaq n} {γ : Finset (Sym2 (Site n))}
 With the length determined by the member, the sum over the family splits by cardinality —
 `Finset.sum_fiberwise_of_maps_to` again — and each fibre is bounded by the walk count. -/
 
+/-- **A member of the family has at least three bonds**, a cycle having length at least
+three. Without this the closed form below would keep its `L = 0, 1, 2` terms, which
+contribute at least `9` **at every `β`** — so the bound could never be small, and the claim
+that it is small for large `β` would be false rather than merely unproved (ERRATUM 85). -/
+theorem three_le_card_of_mem_cycCandidates {P₀ : Plaq n} {r L : ℕ}
+    {γ : Finset (Sym2 (Site n))} (hγ : γ ∈ cycCandidates P₀ r L) : 3 ≤ γ.card := by
+  obtain ⟨Q, -, hγQ⟩ := Finset.mem_biUnion.mp hγ
+  obtain ⟨w, hw, rfl⟩ := Finset.mem_image.mp hγQ
+  obtain ⟨-, hcyc⟩ := Finset.mem_filter.mp hw
+  rw [card_sideBonds_cycle hcyc]
+  exact hcyc.three_le_length
+
+theorem three_le_card_of_mem_peierlsFamily {P₀ : Plaq n} {γ : Finset (Sym2 (Site n))}
+    (hγ : γ ∈ peierlsFamily P₀) : 3 ≤ γ.card :=
+  three_le_card_of_mem_cycCandidates (mem_peierlsFamily_card hγ).1
+
 /-- **The sum over the family, in closed form.** Every member of cardinality `L` came from
 a length-`L` cycle, so the fibre at `L` sits inside `cycCandidates P₀ (L + 1) L`, whose size
 `PeierlsCover.card_cycCandidates_le` bounds. No sign hypothesis on `β`. -/
 theorem sum_family_le (P₀ : Plaq n) (β : ℝ) :
     ∑ γ ∈ peierlsFamily P₀, Real.exp (-(4 * β) * (γ.card : ℝ)) ≤
-      ∑ L ∈ Finset.range (Fintype.card (Plaq n) + 1),
+      ∑ L ∈ Finset.Ico 3 (Fintype.card (Plaq n) + 1),
         ((2 * (L + 1) + 1) ^ 2 * 4 ^ L : ℕ) * Real.exp (-(4 * β) * (L : ℝ)) := by
   classical
   have hmaps : ∀ γ ∈ peierlsFamily P₀,
-      γ.card ∈ Finset.range (Fintype.card (Plaq n) + 1) := fun γ hγ =>
-    Finset.mem_range.mpr (Nat.lt_succ_of_le (mem_peierlsFamily_card hγ).2)
+      γ.card ∈ Finset.Ico 3 (Fintype.card (Plaq n) + 1) := fun γ hγ =>
+    Finset.mem_Ico.mpr ⟨three_le_card_of_mem_peierlsFamily hγ,
+      Nat.lt_succ_of_le (mem_peierlsFamily_card hγ).2⟩
   rw [← Finset.sum_fiberwise_of_maps_to hmaps
     (fun γ => Real.exp (-(4 * β) * (γ.card : ℝ)))]
   refine Finset.sum_le_sum fun L _ => ?_
@@ -161,7 +178,11 @@ theorem sum_family_le (P₀ : Plaq n) (β : ℝ) :
 /-- **THE PEIERLS ESTIMATE, IN CLOSED FORM.** The weight of the `+`-boundary configurations
 with `x` down, over the full partition function, is at most
 
-`∑_{L ≤ card (Plaq n)} (2L + 3) ^ 2 * 4 ^ L * exp (-4βL)`.
+`∑_{3 ≤ L ≤ card (Plaq n)} (2L + 3) ^ 2 * 4 ^ L * exp (-4βL)`.
+
+The sum **starts at three**, a cycle having length at least three, and that is not
+cosmetic: with `L = 0, 1, 2` present the right-hand side would exceed `9` at every `β` and
+could never be small (ERRATUM 85).
 
 Every factor is explicit and none mentions the box except the range of the sum. **What this
 is not**, exactly as `PeierlsCover` records: it is not the *conditional* probability — the
@@ -174,7 +195,7 @@ theorem peierls_closed_form (hn : 0 < n) (β : ℝ) {x : Site n}
     (∑ σ ∈ (Finset.univ : Finset (Config n)).filter
         (fun σ => PlusBoundary σ ∧ σ x = false), Real.exp (-β * isingH n σ)) /
       (∑ σ : Config n, Real.exp (-β * isingH n σ)) ≤
-      ∑ L ∈ Finset.range (Fintype.card (Plaq n) + 1),
+      ∑ L ∈ Finset.Ico 3 (Fintype.card (Plaq n) + 1),
         ((2 * (L + 1) + 1) ^ 2 * 4 ^ L : ℕ) * Real.exp (-(4 * β) * (L : ℝ)) :=
   le_trans (peierls_family_bound hn β hi hj) (sum_family_le _ β)
 
