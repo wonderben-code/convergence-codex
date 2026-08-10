@@ -49,11 +49,21 @@
   left open and no case is guessed.
 
   WHAT THIS DOES NOT DO.
-  * **It is not an "exactly when".** §3 gives one direction: touching implies
-    strict. The converse — that a site not touching the mirror always yields
-    a null direction — is what the NOT-strict files prove case by case, and
-    it is not unified here. Calling the pair an equivalence would be an
-    overclaim, and the prose that prompted this file did say "exactly when".
+  * **It is not an "exactly when", and the prose that said so is REFUTED.**
+    §3 gives one direction: touching implies strict. **The converse is false,
+    and there is now a counterexample** — the TORUS AT SIDE THREE, where the
+    site on the midline touches nothing (it is its own mirror, and the graph
+    is loopless) and the form is strict anyway. Measured after this file's
+    theorems were proved, which is why the caution above was worth keeping
+    (ERRATUM 73).
+    **What the measurement says the right criterion is**, matching all twenty
+    cases tried — box and torus, sides two to six, dimensions one and two —
+    is: *the cross-coupling restricted to the STRICT half (strictly below the
+    midline) is negative definite.* Touching is the special case where that
+    block is minus the identity, and a site ON the mirror is rigid for a
+    different reason the touching condition cannot express. Proving that
+    version needs the three-block form with a middle layer, which this file
+    does not build; it is on the watchlist with the data.
   * **Nothing new for the prism.** `PrismStrict` already had it by a longer
     route through two Green functions; that route is left standing because it
     proves a sharper statement (an equality of forms) than this one needs.
