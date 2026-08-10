@@ -58,7 +58,8 @@
   5. **`gaussianField_map_perm`** — **the Gaussian field is invariant under
      every graph automorphism**, as an equality of measures.
   6. **`gaussianField_map_revSite`** — instantiated at the box reflections,
-     the estate's only constructed automorphisms.
+     the estate's only constructed automorphisms **when this file was written;
+     `TorusTranslation` added the translations the same day**.
 
   WHAT THIS DOES NOT DO.
   * **It is not OS3.** Said above, and said again because it is the sentence a
@@ -72,6 +73,15 @@
     generality is therefore untested against a non-involutive example**, which
     is stated because it is the honest weakness of this unit — the hypothesis
     was weakened and no case in the estate exercises the weakening.
+    **AMENDED 2026-08-10, SAME DAY: DISCHARGED.** `TorusTranslation` (adbe234)
+    builds the torus translations, proves them automorphisms at every side
+    length and dimension, and proves one of them NOT an involution
+    (`shift_ne_involutive`, at `d = 1`, `n = 3`). So
+    `gaussianField_map_shift` is an instance this file's hypothesis reaches
+    and no earlier theorem on this wall could have: `IsRefl` carries
+    involutivity as a structure FIELD, so a non-involutive map could not even
+    be supplied. **Coordinate permutations are still unbuilt**, and that part
+    of the bullet stands.
   * Still one axiom, free field, finite graph.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
