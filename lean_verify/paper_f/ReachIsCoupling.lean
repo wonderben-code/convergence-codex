@@ -79,7 +79,16 @@
   * **It does not make the criterion a biconditional.** Strict implies nonzero
     coupling; nonzero coupling does not imply strict, and box side four is the
     counterexample `ReachCriterion` already recorded. The gap is exactly where
-    it was. **AMENDED 2026-08-10, SAME DAY (ERRATUM 76): A BICONDITIONAL DOES EXIST**, and this sentence generalised from the failure of one candidate to the non-existence of any. `StrictBiconditional.strict_iff_not_supportedIsotropic`: the form is strict exactly when no nonzero vector on the half is both killed by the coupling and kept inside the region by the massive operator. It comes from negating `NullSpace.reflectedForm_eq_zero_iff_massive`, which was proved the same day facing the other way. **What stays true is the narrower claim** — touching and reach are two different conditions and neither is the negation of the other, so THAT pair is not an equivalence.
+    it was. **AMENDED 2026-08-10, SAME DAY (ERRATUM 76): A BICONDITIONAL DOES
+    EXIST**, and this sentence generalised from the failure of one candidate
+    to the non-existence of any.
+    `StrictBiconditional.strict_iff_not_supportedIsotropic`: the form is
+    strict exactly when no nonzero vector on the half is both killed by the
+    coupling and kept inside the region by the massive operator. It comes from
+    negating `NullSpace.reflectedForm_eq_zero_iff_massive`, which was proved
+    the same day facing the other way. **What stays true is the narrower
+    claim** — touching and reach are two different conditions and neither is
+    the negation of the other, so THAT pair is not an equivalence.
   * **It does not widen the class.** Removing a hypothesis that was implied
     removes no restriction — the theorems always applied exactly here. What
     changes is what the statements say, not what they cover, and pretending

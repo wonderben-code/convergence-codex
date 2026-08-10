@@ -82,7 +82,17 @@
     for strictness. **The sentence's own statement is still unproved**: its
     hypothesis is reach, not degeneracy, and reach fails on the box at even
     side, where `BoxNotStrict`'s separate construction remains the only proof.
-    One mechanism unified, one still by cases, and no equivalence. **AMENDED 2026-08-10, SAME DAY (ERRATUM 76): A BICONDITIONAL DOES EXIST**, and this sentence generalised from the failure of one candidate to the non-existence of any. `StrictBiconditional.strict_iff_not_supportedIsotropic`: the form is strict exactly when no nonzero vector on the half is both killed by the coupling and kept inside the region by the massive operator. It comes from negating `NullSpace.reflectedForm_eq_zero_iff_massive`, which was proved the same day facing the other way. **What stays true is the narrower claim** — touching and reach are two different conditions and neither is the negation of the other, so THAT pair is not an equivalence.
+    One mechanism unified, one still by cases, and no equivalence. **AMENDED
+    2026-08-10, SAME DAY (ERRATUM 76): A BICONDITIONAL DOES EXIST**, and this
+    sentence generalised from the failure of one candidate to the
+    non-existence of any.
+    `StrictBiconditional.strict_iff_not_supportedIsotropic`: the form is
+    strict exactly when no nonzero vector on the half is both killed by the
+    coupling and kept inside the region by the massive operator. It comes from
+    negating `NullSpace.reflectedForm_eq_zero_iff_massive`, which was proved
+    the same day facing the other way. **What stays true is the narrower
+    claim** — touching and reach are two different conditions and neither is
+    the negation of the other, so THAT pair is not an equivalence.
   * **Torus side one is not stated.** There the reflection is the identity
     and the argument is `StrictCriterion`'s side-one argument verbatim; it is
     omitted rather than copied, and this sentence is the record that it was a

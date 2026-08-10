@@ -263,7 +263,16 @@ Weaker, and the header says so rather than the review having to. §3 proves
 when", and the other direction — a site that misses the mirror always yields
 a null direction — is proved case by case in the NOT-strict files and is not
 unified here. **Calling the pair an equivalence would be the overclaim this
-project keeps catching**, so it is not called one. **AMENDED 2026-08-10, SAME DAY (ERRATUM 76): A BICONDITIONAL DOES EXIST**, and this sentence generalised from the failure of one candidate to the non-existence of any. `StrictBiconditional.strict_iff_not_supportedIsotropic`: the form is strict exactly when no nonzero vector on the half is both killed by the coupling and kept inside the region by the massive operator. It comes from negating `NullSpace.reflectedForm_eq_zero_iff_massive`, which was proved the same day facing the other way. **What stays true is the narrower claim** — touching and reach are two different conditions and neither is the negation of the other, so THAT pair is not an equivalence.
+project keeps catching**, so it is not called one. **AMENDED 2026-08-10, SAME
+DAY (ERRATUM 76): A BICONDITIONAL DOES EXIST**, and this sentence generalised
+from the failure of one candidate to the non-existence of any.
+`StrictBiconditional.strict_iff_not_supportedIsotropic`: the form is strict
+exactly when no nonzero vector on the half is both killed by the coupling and
+kept inside the region by the massive operator. It comes from negating
+`NullSpace.reflectedForm_eq_zero_iff_massive`, which was proved the same day
+facing the other way. **What stays true is the narrower claim** — touching and
+reach are two different conditions and neither is the negation of the other,
+so THAT pair is not an equivalence.
 
 **"Two instances is barely more than one. Has the objection really
 expired?"** The original objection was that a predicate used once is worse
