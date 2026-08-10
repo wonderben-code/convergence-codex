@@ -70,7 +70,14 @@
   6. **`not_strict_box_odd_via_criterion`** — the odd box decided by the
      criterion alone, as the check that it reaches a case the wall already
      knows (ERRATUM 48).
-  7. **`supportedIsotropic_box_even`** — and the even box run the other way:
+  7. **`strict_iff_crossForm_neg_on_reachKernel`** — **the same criterion in
+     closed form**: strict exactly when the coupling is NEGATIVE DEFINITE on
+     the subspace of vectors the operator keeps inside the region. Two lines
+     from §3, because the isotropy clause is the only quadratic one. **This is
+     the same SHAPE as ERRATUM 73's measured criterion**, restricted to a
+     different subspace — the measurement said "the strict half", and the two
+     are not claimed to coincide. §7 says what is and is not settled by that.
+  8. **`supportedIsotropic_box_even`** — and the even box run the other way:
      `BoxNotStrict` says it is degenerate, so the criterion says a supported
      isotropic vector EXISTS there. Neither regime of §4 reaches that case, so
      it is the evidence that the biconditional has content between the two
@@ -285,6 +292,60 @@ theorem supportedIsotropic_box_even (i : Fin d) (hn : Even n) (h4 : 4 ≤ n)
     (fun p hp _ => hcsupp p hp)
 
 end OddBox
+
+/-! ## 7. The criterion in closed form, and ERRATUM 73's table explained
+
+The two clauses of `SupportedIsotropic` are of different kinds and the
+difference is what lets them be separated. The support condition and the reach
+condition are both LINEAR — they cut out a subspace of vectors on the half.
+The isotropy condition is QUADRATIC. So the whole criterion says: the coupling
+form, restricted to that subspace, has no nontrivial zero — and since the
+coupling is nonpositive to begin with, no nontrivial zero means negative
+definite.
+
+**It is the same SHAPE as ERRATUM 73's measured criterion, and not the same
+statement.** The measurement said *the coupling restricted to the strict half
+is negative definite*, and matched the twenty cases it was tested on. **The two
+restrictions are to different subspaces and this file does not claim they
+coincide.** They plainly can differ: where the reach stays inside, the subspace
+here is the whole half and the coupling is identically zero on it — never
+negative definite, so never strict — while at the other extreme the subspace
+can be trivial and the condition vacuous, giving strictness for a reason the
+measured version states quite differently.
+
+  What the closed form settles is that a DEFINITENESS condition was the right
+  shape to be measuring, and which restriction makes it a theorem. Whether the
+  measured version agrees in verdict on every row of that table is a separate
+  question, not checked here and not asserted — checking it means recomputing
+  the table against this subspace, which nobody has done.
+-/
+
+/-- The vectors on the half that the massive operator keeps inside the region.
+    A linear condition, though nothing here needs it to be. -/
+def InReachKernel (G : SimpleGraph V) [DecidableRel G.Adj] (m : ℝ) (H Mir : Finset V)
+    (v : V → ℝ) : Prop :=
+  (∀ p, p ∉ H → v p = 0)
+    ∧ ∀ p, p ∉ H → p ∉ Mir → (GraphLaplacian.massive G m *ᵥ v) p = 0
+
+/-- **THE CRITERION IN CLOSED FORM.** The reflected form is strict exactly when
+    the coupling is NEGATIVE DEFINITE on the subspace of vectors the operator
+    keeps inside the region. This is ERRATUM 73's measured criterion with the
+    restriction corrected from "the strict half" to that subspace, and it is a
+    two-line consequence of §3 — the isotropy clause is the only quadratic one,
+    so it is the only one that survives into a definiteness statement. -/
+theorem strict_iff_crossForm_neg_on_reachKernel (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ)
+    (hm : m ≠ 0) (hcross : ∀ w : V → ℝ, crossForm G m θ H w ≤ 0) :
+    (∀ c : V → ℝ, c ≠ 0 → (∀ p, p ∉ H → p ∉ Mir → c p = 0) →
+        0 < GraphReflection.reflectedForm G m θ c)
+      ↔ ∀ v : V → ℝ, InReachKernel G m H Mir v → v ≠ 0 → crossForm G m θ H v < 0 := by
+  rw [strict_iff_not_supportedIsotropic hM h hm hcross]
+  constructor
+  · rintro hno v ⟨hvs, hvr⟩ hv0
+    rcases lt_or_eq_of_le (hcross v) with hlt | heq
+    · exact hlt
+    · exact absurd ⟨v, hv0, hvs, heq, hvr⟩ hno
+  · rintro hneg ⟨v, hv0, hvs, hviso, hvr⟩
+    exact absurd hviso (ne_of_lt (hneg v ⟨hvs, hvr⟩ hv0))
 
 /-! ## 6. Review — the ways this could be hollow
 
