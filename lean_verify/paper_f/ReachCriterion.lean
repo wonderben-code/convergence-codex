@@ -33,13 +33,24 @@
      stays inside the region, and the strict half is nonempty, then a null
      direction exists. Over an arbitrary graph and an arbitrary mirror half.
      **The converse, with its two hypotheses named.**
+     **AMENDED 2026-08-10, SAME DAY (ERRATUM 75): THERE IS ONLY ONE
+     HYPOTHESIS.** `ReachIsCoupling` proves `ReachInside ↔ ∀ w, crossForm w =
+     0`, so the reach condition implies the coupling one and implies far more
+     than nonpositivity. Three of this file's four signatures carry `hcross`
+     and none needs it; the deleted-hypothesis versions are
+     `ReachIsCoupling.not_strict_of_reach` and `.reach_escapes_of_strict`.
+     Nothing here becomes false — a redundant hypothesis weakens a theorem
+     and never wrongs it — and nothing this file covers changes.
   2. **`crossForm_eq_zero_of_reach`** — and in that situation the coupling is
      forced to vanish on the witness. It is not an extra assumption but a
      consequence, which is why `BoxOddNotStrict` had to prove it separately
      and this file does not.
   3. **`reach_escapes_of_strict`** — the contrapositive, which is the
      statement worth remembering: **strictness forces the operator to reach
-     out of the region.**
+     out of the region.** **AMENDED 2026-08-10, SAME DAY: the statement worth
+     remembering is `ReachIsCoupling.crossForm_ne_zero_of_strict`, which says
+     the same thing about the coupling — strictness forces the coupling to be
+     NONZERO. "Reaching out" was that fact in geometric dress.
   4. **`exists_null_direction_box_odd'`** — the odd box re-derived from §1,
      as the check that the generalisation really covers the case it came
      from (ERRATUM 48).
@@ -54,7 +65,13 @@
   * **The reach hypothesis is not vacuous and not automatic.** It fails on
     the box at even side (the innermost layer reaches the far half), which is
     why `BoxNotStrict`'s separate construction is still the only proof there
-    and is left standing.
+    and is left standing. **AMENDED 2026-08-10, SAME DAY: it also fails on the
+    TORUS at every side length** — the wrap-around edge joins the bottom layer
+    to its own mirror however long the side is
+    (`TorusAnySide.torus_cross_diag_any`), so the coupling is diagonal rather
+    than zero and `ReachIsCoupling`'s equivalence rules the torus out. This
+    file never applied there, which is exactly why `OddNotStrictInstances`
+    needed its own construction on a smaller half. Forced, not overlooked.
   * Still one axiom, free field, finite graph.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
@@ -130,7 +147,14 @@ theorem crossForm_eq_zero_of_reach (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ
 /-- **THE STATEMENT WORTH REMEMBERING.** Contrapositive of §1: if the form is
     strict then the operator must reach out of the region. Strictness is a
     fact about the geometry of the reach, not about the size of the
-    coupling. -/
+    coupling.
+
+    **AMENDED 2026-08-10, SAME DAY: the last sentence is FALSE and is kept
+    with its refutation** (ERRATUM 75). It contrasts two things
+    `ReachIsCoupling` shows are one: reaching inside the region is exactly the
+    coupling vanishing identically. The contrast was drawn from the fact that
+    the two hypotheses had different names, not from any check that they were
+    independent. -/
 theorem reach_escapes_of_strict (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ) (hm : m ≠ 0)
     (hcross : ∀ w : V → ℝ, crossForm G m θ H w ≤ 0)
     {p₀ : V} (hp₀ : p₀ ∈ H)
