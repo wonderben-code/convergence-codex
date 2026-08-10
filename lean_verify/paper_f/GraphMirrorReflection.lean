@@ -392,6 +392,31 @@ theorem quadDiff (hM : IsMirrorHalf θ H Mir) (hξ : IsOddFun θ ξ) :
   rw [hdiff, sum_split_half H F, hHH, hCC, hmix, hrow]
   ring
 
+/-- **THE CRITERION, FOR A MIRROR HALF.** If the only cut-crossing edges join
+    a site to its own mirror, the cross-coupling form is nonpositive. This is
+    `TorusReflection.crossOp_nonpos_of_cross_diag` with `IsHalf` weakened to
+    `IsMirrorHalf`, and it is stated here rather than there because it is
+    about the splitting and not about any particular graph.
+
+    **ADDED 2026-08-10**, when the torus at odd side needed it: there the
+    cross-coupling is NOT zero — the wrap-around edge still crosses the cut —
+    but it is diagonal, which is exactly what this consumes. -/
+theorem crossForm_nonpos_of_cross_diag (hM : IsMirrorHalf θ H Mir)
+    (hcross : ∀ p ∈ H, ∀ q ∈ H, G.Adj p (θ q) → p = q) (w : V → ℝ) :
+    crossForm G m θ H w ≤ 0 := by
+  classical
+  refine Finset.sum_nonpos fun p hp => Finset.sum_nonpos fun q hq => ?_
+  have hne : p ≠ θ q := fun hc => hM.notMem_of_mem hq (hc ▸ hp)
+  rw [GraphLaplacian.massive_apply, if_neg hne]
+  by_cases hpq : p = q
+  · subst hpq
+    by_cases hadj : G.Adj p (θ p)
+    · simp only [if_pos hadj]
+      nlinarith [sq_nonneg (w p)]
+    · simp [hadj]
+  · have : ¬ G.Adj p (θ q) := fun hc => hpq (hcross p hp q hq hc)
+    simp [this]
+
 /-! ## 6. Reflection positivity with a mirror
 
 The pieces assemble with no further mathematics. Take the test vector that
