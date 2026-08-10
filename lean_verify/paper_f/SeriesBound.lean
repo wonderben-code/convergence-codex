@@ -57,6 +57,10 @@ things, not one**, and `MagnetisationBound` is untouched.
 `β`", with the threshold *not* exhibited. The proof is by a limit, so a reader wanting an
 explicit temperature will not find one here; `sum_le_cube` is the explicit inequality behind
 it and does carry a usable threshold (`8 exp (-4β) ≤ 1/2`).
+**ANSWERED 2026-08-10, AFTER THIS FILE**: `ExplicitThreshold` carries exactly that
+inequality through the four filter statements built on this one, and lands at
+`magnetisation_two_thirds` — at `β ≥ 1`, in every box, the conditional magnetisation is at
+least `⅔ n²`, with no filter in the statement.
 -/
 
 namespace SeriesBound
