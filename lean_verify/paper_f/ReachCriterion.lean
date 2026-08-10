@@ -59,7 +59,7 @@
   * **It is still not a biconditional in one statement.** §1 needs the reach
     hypothesis and `StrictCriterion`/`MirrorStrict` need the touching
     hypothesis, and neither is the negation of the other — a graph can fail
-    both. What is now true is that the two known mechanisms are each proved
+    both. **AMENDED 2026-08-10, SAME DAY (ERRATUM 76): A BICONDITIONAL DOES EXIST**, and this sentence generalised from the failure of one candidate to the non-existence of any. `StrictBiconditional.strict_iff_not_supportedIsotropic`: the form is strict exactly when no nonzero vector on the half is both killed by the coupling and kept inside the region by the massive operator. It comes from negating `NullSpace.reflectedForm_eq_zero_iff_massive`, which was proved the same day facing the other way. **What stays true is the narrower claim** — touching and reach are two different conditions and neither is the negation of the other, so THAT pair is not an equivalence. What is now true is that the two known mechanisms are each proved
     in the general setting rather than case by case, and no wall case is left
     to either.
   * **The reach hypothesis is not vacuous and not automatic.** It fails on
@@ -221,7 +221,7 @@ forces the reach to escape. It does NOT produce a single biconditional,
 because the sufficient condition proved elsewhere is about touching and this
 necessary one is about reach, and neither is the negation of the other. **A
 graph can fail both**, and saying otherwise would repeat exactly the mistake
-ERRATUM 73 records.
+ERRATUM 73 records. **AMENDED 2026-08-10, SAME DAY (ERRATUM 76): A BICONDITIONAL DOES EXIST**, and this sentence generalised from the failure of one candidate to the non-existence of any. `StrictBiconditional.strict_iff_not_supportedIsotropic`: the form is strict exactly when no nonzero vector on the half is both killed by the coupling and kept inside the region by the massive operator. It comes from negating `NullSpace.reflectedForm_eq_zero_iff_massive`, which was proved the same day facing the other way. **What stays true is the narrower claim** — touching and reach are two different conditions and neither is the negation of the other, so THAT pair is not an equivalence.
 
 **"Is the reach hypothesis doing real work, or is it always true?"** Real
 work: it holds on the box at odd side, where the mirror layer absorbs the
@@ -248,7 +248,7 @@ independent measurement.
 the torus are settled at every side length, the estate's own definition is
 settled from side three, both directions of the criterion are proved in the
 general setting, and the one thing not claimed — a single biconditional — is
-not claimed because it is not true in the form anyone would want to write.
+not claimed because it is not true in the form anyone would want to write. **AMENDED 2026-08-10, SAME DAY (ERRATUM 76): A BICONDITIONAL DOES EXIST**, and this sentence generalised from the failure of one candidate to the non-existence of any. `StrictBiconditional.strict_iff_not_supportedIsotropic`: the form is strict exactly when no nonzero vector on the half is both killed by the coupling and kept inside the region by the massive operator. It comes from negating `NullSpace.reflectedForm_eq_zero_iff_massive`, which was proved the same day facing the other way. **What stays true is the narrower claim** — touching and reach are two different conditions and neither is the negation of the other, so THAT pair is not an equivalence.
 -/
 
 end ReachCriterion
