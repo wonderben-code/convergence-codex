@@ -89,13 +89,8 @@ entrywise form is written once.
 theorem massive_apply {W : Type*} [Fintype W] [DecidableEq W] (G : SimpleGraph W)
     [DecidableRel G.Adj] (m : ℝ) (p q : W) :
     massive G m p q
-      = (if p = q then (G.degree p : ℝ) + m ^ 2 else 0) - (if G.Adj p q then 1 else 0) := by
-  classical
-  simp only [massive, Matrix.add_apply, SimpleGraph.lapMatrix, Matrix.sub_apply,
-    SimpleGraph.degMatrix, SimpleGraph.adjMatrix, Matrix.diagonal_apply, Matrix.of_apply]
-  by_cases h : p = q
-  · subst h; simp
-  · simp [h]
+      = (if p = q then (G.degree p : ℝ) + m ^ 2 else 0) - (if G.Adj p q then 1 else 0) :=
+  GraphLaplacian.massive_apply G m p q
 
 /-! ## 2. The two blocks of the stack -/
 

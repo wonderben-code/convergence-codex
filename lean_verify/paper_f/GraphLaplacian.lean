@@ -75,6 +75,24 @@ def massive (m : ℝ) : Matrix V V ℝ :=
 theorem massive_isSymm (m : ℝ) : (massive G m).IsSymm :=
   (G.isSymm_lapMatrix (R := ℝ)).add (Matrix.isSymm_diagonal _)
 
+/-- **THE MASSIVE OPERATOR ENTRYWISE**: degree plus mass on the diagonal,
+    `−1` across an edge, `0` otherwise.
+
+    **RELOCATED 2026-08-10 from `PrismTransfer.massive_apply`**, which stated
+    it for an arbitrary graph while living in a file about prisms. Anything
+    downstream that needed the entries had to import the prism machinery to
+    get them, and `BoxOddReflection` is where that finally bit. The prism
+    file keeps the name and now restates this. -/
+theorem massive_apply (m : ℝ) (p q : V) :
+    massive G m p q
+      = (if p = q then (G.degree p : ℝ) + m ^ 2 else 0) - (if G.Adj p q then 1 else 0) := by
+  classical
+  simp only [massive, Matrix.add_apply, SimpleGraph.lapMatrix, Matrix.sub_apply,
+    SimpleGraph.degMatrix, SimpleGraph.adjMatrix, Matrix.diagonal_apply, Matrix.of_apply]
+  by_cases h : p = q
+  · subst h; simp
+  · simp [h]
+
 omit [Fintype V] in
 theorem diagonal_massSq_posDef {m : ℝ} (hm : m ≠ 0) :
     (Matrix.diagonal (fun _ : V => m ^ 2)).PosDef :=
