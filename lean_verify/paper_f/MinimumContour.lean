@@ -11,7 +11,8 @@ argued that its `e^{-4β}` bound was sharp by asserting that a configuration wit
 what a proof would need — *"every bond lies in some unit square"* — and left it.
 
 **That ingredient arrived the next day, in a file written for something else**
-(`DualBonds.exists_side_eq`, built to make the dual lattice cover the primal bonds), and
+(`PlaquetteLattice.exists_side_eq`, declared in `DualBonds.lean` — namespace and file differ
+here — built to make the dual lattice cover the primal bonds), and
 nothing connected the two until the watchlist was re-swept. This file connects them.
 
 ## The bound
