@@ -34,10 +34,17 @@
   4. **`os2_lattice_lower_any`** and **`os2_exponential_lattice_lower_any`** —
      the estate's own field, paired, at every side length, on the lower side
      of the cut.
+  5. **`reflectionPositive_two_any`**, **`reflectionPositive_two_mono_any`**,
+     **`os2_two_lower_any`**, **`os2_exponential_two_lower_any`** — the same
+     across the SECOND-coordinate cut, which matters because OS2 reflects in
+     the time coordinate and which lattice direction carries time is a
+     modelling choice this estate has not made.
 
   WHAT THIS DOES NOT DO.
   * **No upper-half or complement statement at odd side.** Explained above;
     this is a gap with a named cause, not an oversight.
+  * **No `_compl` or `_either` form on either cut.** Same cause as above:
+    both route through the fact about halves that fails at odd side.
   * **Nothing for the torus.** `TorusReflection` builds its own reflection
     and its own cross-coupling, and `torus_two_eq_box` may genuinely need the
     parity. Untraced, and deliberately not guessed at.
@@ -55,6 +62,7 @@
 -/
 import BoxOddReflection
 import GraphOS2Exponential
+import LatticeReflectionTwo
 
 namespace OS2AnySide
 
@@ -160,6 +168,55 @@ theorem os2_exponential_lattice_lower_any (n : ℕ) (hm : m ≠ 0)
     (GraphReflection.isRefl_latticeGraph n) ?_ t ht c
   rw [GraphReflection.reflectionPositive_box n m half]
   exact reflectionPositive_lattice_any n hm hlow
+
+/-! ## 2b. The second-coordinate cut, at every side length
+
+`LatticeReflectionTwo.reflectionPositive_two` consumes reflection positivity
+on the box at `i = 1` and nothing else, so it generalises the same way §2's
+first-coordinate version does. The `_compl` and `_either` forms do not, for
+the reason §3 gives — they route through the same fact about halves.
+-/
+
+/-- **THE SECOND-COORDINATE CUT, ANY SIDE.** -/
+theorem reflectionPositive_two_any (n : ℕ) (hm : m ≠ 0) :
+    GraphReflection.ReflectionPositive (IsingContourSeparation.latticeGraph n) m
+      (LatticeReflectionTwo.refl2 n) (LatticeReflectionTwo.lowerHalfPair2 n) := by
+  rw [← LatticeReflectionTwo.map_lowerHalf_two n]
+  exact (reflectionPositive_congr (sitePair n) adj_sitePair
+    LatticeReflectionTwo.sitePair_revSite_two m _).mp
+    (BoxOddReflection.reflectionPositive_box_any (1 : Fin 2) n hm)
+
+theorem reflectionPositive_two_mono_any (n : ℕ) (hm : m ≠ 0)
+    {half : Finset (IsingFiniteVolume.Site n)}
+    (hsub : half ⊆ LatticeReflectionTwo.lowerHalfPair2 n) :
+    GraphReflection.ReflectionPositive (IsingContourSeparation.latticeGraph n) m
+      (LatticeReflectionTwo.refl2 n) half :=
+  ReflectionPositive.mono hsub (reflectionPositive_two_any n hm)
+
+/-- **MEASURE-LEVEL OS2 ACROSS THE SECOND-COORDINATE CUT, ANY SIDE** — lower
+    side only, for the reason §3 gives. -/
+theorem os2_two_lower_any (n : ℕ) (hm : m ≠ 0)
+    {half : Finset (IsingFiniteVolume.Site n)}
+    (hs : half ⊆ LatticeReflectionTwo.lowerHalfPair2 n)
+    {c : IsingFiniteVolume.Site n → ℝ} (hc : ∀ p, p ∉ half → c p = 0) :
+    0 ≤ ∫ ω, (∑ p, c p * ω (LatticeReflectionTwo.refl2 n p)) * (∑ q, c q * ω q)
+        ∂(LatticeField.latticeField n m) := by
+  rw [GraphLaplacian.latticeField_box]
+  exact GraphOS2.os2_measure_level _ hm (reflectionPositive_two_mono_any n hm hs) hc
+
+/-- **AND ON THE EXPONENTIAL ALGEBRA.** -/
+theorem os2_exponential_two_lower_any (n : ℕ) (hm : m ≠ 0)
+    {half : Finset (IsingFiniteVolume.Site n)}
+    (hs : half ⊆ LatticeReflectionTwo.lowerHalfPair2 n)
+    {M : ℕ} (t : Fin M → IsingFiniteVolume.Site n → ℝ)
+    (ht : ∀ k p, p ∉ half → t k p = 0) (c : Fin M → ℂ) :
+    0 ≤ ∫ ω, (∑ k, c k * Complex.exp
+          ((∑ p, t k p * ω (LatticeReflectionTwo.refl2 n p) : ℝ) * Complex.I))
+        * (starRingEnd ℂ) (∑ l, c l * Complex.exp ((∑ p, t l p * ω p : ℝ) * Complex.I))
+        ∂(LatticeField.latticeField n m) := by
+  rw [GraphLaplacian.latticeField_box]
+  exact GraphOS2Exponential.os2_exponential m hm (LatticeReflectionTwo.isRefl_refl2 n)
+    (reflectionPositive_two_mono_any n hm hs) t ht c
 
 /-! ## 3. Review — the ways this could be hollow
 
