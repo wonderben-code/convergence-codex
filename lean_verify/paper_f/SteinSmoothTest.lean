@@ -55,7 +55,14 @@
   `SmoothSteinPair f g → SteinPair f g`, the textbook space contained in
   the Stein class — is NOT proved. §5 states it as `W6Converse` and proves
   `w6_of_converse`: it is exactly what stands between here and the wall
-  falling. The route is named there. **What has changed is the wall's
+  falling. The route is named there.
+
+  **CORRECTED IN PLACE 2026-08-10 (`ERRATUM 92`), original left standing.**
+  `W6Converse.w6Converse_holds : SteinSmoothTest.W6Converse` discharges it,
+  and with `w6_of_converse` the wall fell — `WALLS.md` records W6 as closed
+  in one dimension and in every dimension. **"W6 is not settled" was true
+  when written and has been false since**; a reader who stopped at this
+  paragraph would have carried the wrong status for a week. **What has changed is the wall's
   kind**: W6 was a question we could not settle partly because we could
   not state it. It is stated, one direction is proved, and the other has
   an address.

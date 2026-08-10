@@ -368,7 +368,18 @@ end Box4
 is exact. §5 supplies an OBJECT — a reflection in four dimensions — and an
 equivalence. **`RP4` is a `def` and nothing in this estate proves it for any
 half with more than one element.** The ladder is unchanged: R1a done, R1b
-open, R2 done, R3 open, R4 open. What §5 removes is the position
+open, R2 done, R3 open, R4 open.
+
+**BOTH SENTENCES ABOVE ARE NOW FALSE — CORRECTED IN PLACE 2026-08-10
+(`ERRATUM 92`), and left standing because the round they were written in is
+part of the record.** `GraphReflectionPositive.rp4_holds` proves
+`GraphReflection.RP4 n m i (lowerHalf i n)` for even `n`, every coordinate
+`i`, and `m ≠ 0` — a half with rather more than one element. And the ladder
+is complete: R1a, R1b, R2, R3 and R4 are all done, R4 by
+`GraphReflectionPositive.reflectionPositive_box`. What was true when this
+paragraph was written — that §5 supplies an object and an equivalence, and
+that supplying them is not the same as proving the statement — is still
+true, and is the only part of it that survives. What §5 removes is the position
 `LatticeField` §3 found the estate in once before, where a wall's statement
 needed an object nobody had built.
 
