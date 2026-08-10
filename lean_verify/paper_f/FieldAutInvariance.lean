@@ -52,7 +52,16 @@
      of `EuclideanSpace ℝ V`.
   3. **`charFun_map_isometry`** — the characteristic function of a pushforward
      along a linear isometry, at the adjoint point. General measure theory; not
-     in Mathlib under any name found by search.
+     in Mathlib under any name found by search. **AMENDED 2026-08-10, SAME DAY:
+     the `FiniteDimensional ℝ E` hypothesis is REMOVED.** It was written in
+     because the application is finite-dimensional, and the proof never used
+     it: `integral_map` and `LinearIsometryEquiv.inner_map_map` are all that
+     enter, and neither knows about dimension. **A hypothesis a proof never
+     uses is a hypothesis the statement should not have**, and this one made
+     the lemma look like lattice machinery when it is a fact about any real
+     inner-product space with a Borel structure. That is also what makes it an
+     upstreaming candidate rather than an estate helper; the watchlist item for
+     Mathlib contributions has it.
   4. **`green_quadForm_perm`** — the covariance quadratic form is invariant.
      `green_congr` reindexed; the only step that touches the graph.
   5. **`gaussianField_map_perm`** — **the Gaussian field is invariant under
@@ -137,7 +146,7 @@ definition either way.
 /-- **THE CHARACTERISTIC FUNCTION OF A PUSHFORWARD ALONG AN ISOMETRY**, at the
     inverse-image point. -/
 theorem charFun_map_isometry {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
-    [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E]
+    [MeasurableSpace E] [BorelSpace E]
     (T : E ≃ₗᵢ[ℝ] E) (μ : Measure E) (t : E) :
     charFun (μ.map T) t = charFun μ (T.symm t) := by
   rw [charFun_apply, charFun_apply,
