@@ -84,6 +84,15 @@
     massive image of an isotropic cone; how big that cone is depends on the
     graph, and at the odd box it is everything only because the coupling is
     identically zero there. No dimension is claimed anywhere.
+    **AMENDED 2026-08-10, SAME DAY: computed at the odd box.**
+    `NullSpaceDimension.finrank_nullSub_box_odd` — the null space is a genuine
+    subspace there (the cone is everything, exactly for the reason this bullet
+    gives) of dimension the number of sites STRICTLY below the midline, and
+    `nullSub_lt_admissible_box_odd` measures the deficiency: one layer, the
+    midline. **The bullet stays true everywhere else**, and for the reason
+    stated — at even side and on the torus the cone is a proper quadric, the
+    null set need not be a subspace, and a dimension is the wrong question
+    rather than a hard one.
   * **It does not remove the coupling hypothesis from §§4–6.** §3 is
     unconditional, but "the form vanishes iff two things vanish" needs both
     pieces to have a sign, and only the first has one for free. Where the
