@@ -104,6 +104,15 @@ Building it this way rather than as a bespoke `Finset` is the point. It is
 Mathlib's object, so Mathlib's graph API — `Walk`, `Subgraph`,
 `ConnectedComponent`, `degree` — applies to it without further work, and
 that API is exactly what the geometric half of Peierls has to consume.
+
+NOTE ADDED 2026-08-10: that promise is now cashed against a theorem the
+estate did not have when it was made. `CycleDecomposition` proves, for any
+finite simple graph, that all degrees even is exactly being an edge-disjoint
+union of cycles, and `ContourCircuits.contour_decomposes_of_evenDegrees`
+applies it to `brokenGraph` **with no adaptation at all** — the proof is one
+line, which is what "without further work" was supposed to mean. What it
+needs is even degrees, and `ContourCircuits` also shows by witness that the
+primal broken graph does not have them in general.
 -/
 
 /-- **The broken-bond graph**: sites are adjacent in it when the lattice

@@ -37,6 +37,29 @@
   attempted here. No `3^{|γ|}`, no "surrounds", no dual lattice.
   **`IsingBoundaryField.MagnetisationBound` untouched.**
 
+  AMENDED 2026-08-10 (`11eda2a`, `2ae6338`). **THE GENERAL GRAPH THEOREM IS
+  NOW WRITTEN**, so the paragraph above is out of date in its reason though
+  not in its conclusion. `EvenDegreeCycle` proves that an even-degree graph
+  with an edge contains a cycle, and `CycleDecomposition` runs that as an
+  induction to
+  `SimpleGraph.evenDegrees_iff_exists_cycle_decomposition` — all degrees
+  even EXACTLY WHEN the edges are an edge-disjoint union of cycles, for any
+  finite simple graph. Neither goes near `IsEulerian`; the route is
+  `IsAcyclic.isTree_connectedComponent`.
+
+  **AND IT DOES NOT APPLY HERE, WHICH IS THE PART WORTH READING.**
+  `ContourCircuits.not_evenDegrees_brokenGraph_sigmaOdd` exhibits a
+  configuration on the 3×3 box — down at the centre, up elsewhere — whose
+  broken-bond graph has a site of degree ONE. The primal contour is a CUT,
+  and cuts do not have even degrees; the evenness the textbook uses is a
+  DUAL-lattice statement, and this estate has no dual lattice. So the
+  blocker moved from "the general theorem does not exist" to "there is no
+  dual lattice", which is a different and more specific piece of work.
+  `ContourCircuits` carries the conditional corollary
+  (`contour_decomposes_of_evenDegrees`) so that the moment a dual exists the
+  decomposition is one line. **`MagnetisationBound` still untouched, and
+  "surrounds" and `3^{|γ|}` are exactly where they were.**
+
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
   axioms.
 -/

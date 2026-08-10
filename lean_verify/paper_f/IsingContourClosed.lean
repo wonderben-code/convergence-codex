@@ -37,6 +37,17 @@
   into a list of loops here. No dual lattice, no `3^{|γ|}`,
   `IsingBoundaryField.MagnetisationBound` untouched.
 
+  AMENDED 2026-08-10. **The cutting into a list of loops now EXISTS as a
+  general theorem** (`CycleDecomposition.exists_cycle_decomposition`), and
+  the sentence above should not be read as saying it is unavailable. What it
+  needs is EVEN DEGREES, and the cocycle property proved in this file is not
+  that: `ContourCircuits.not_evenDegrees_brokenGraph_sigmaOdd` exhibits a
+  configuration whose broken-bond graph has a site of degree one. **The gap
+  between "crosses every cycle evenly" and "every vertex has even degree" is
+  exactly planar duality**, and it is the piece this estate does not have.
+  The header's caution — that calling this "contours are circuits" would be
+  wrong — stands unchanged and is if anything now sharper.
+
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
   axioms.
 -/
