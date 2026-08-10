@@ -41,10 +41,14 @@ which is worth stating because it would be easy to write otherwise. That `def` i
 *different measure*: `isingMeasure n h β`, built from `isingHB n h` — the Hamiltonian with a
 **boundary field** `h` — over **all** configurations. This file bounds a weight ratio for
 `isingH` restricted to `+`-**boundary configurations**. Those are two set-ups, related in the
-literature by an `h → 0⁺` limit that is **not** formalised here. Beyond conditioning, a
-magnetisation bound would also need the estimate at **every** site rather than every interior
-site, and the passage from a weight ratio to the integral `∫ magnetisation`. **Four things,
-not one**, and `MagnetisationBound` is untouched.
+literature by a limit in `h` that is **not** formalised here — and **corrected 2026-08-10
+(ERRATUM 86): this header first named that limit `h → 0⁺`, which is the standard route for a
+*bulk* field and was asserted without checking it is the right one for a *boundary* field.**
+A finite boundary field does not force the boundary; it favours it. What separates the two
+set-ups is that unexamined comparison, not a limit this estate can name. Beyond conditioning,
+a magnetisation bound would also need the estimate at **every** site rather than every
+interior site, and the passage from a weight ratio to the integral `∫ magnetisation`. **Four
+things, not one**, and `MagnetisationBound` is untouched.
 
 **And a caution about reading the theorem.** `∀ᶠ β in atTop` says "for all large enough
 `β`", with the threshold *not* exhibited. The proof is by a limit, so a reader wanting an
