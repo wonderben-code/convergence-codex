@@ -238,13 +238,22 @@ correct odd-side upper statement would be about the strictly-upper region,
 which is a different set, so it is a different theorem and not a missing
 instance of this one.
 
-**"Could the complement version be recovered by monotonicity?"** Probably,
-and it is deliberately not attempted here. The strictly-upper region is
-contained in the image of the lower half, so a `mirror` plus `mono` argument
-ought to work — but `ReflectionPositive.mirror` is stated through `IsHalf` in
-`LatticeReflectionPositive`, so it would need the same generalisation this
-file's §2 performed, and doing it half-carefully at the end of a sweep is how
-the errata list grows. **Recorded as available rather than done.**
+**"Could the complement version be recovered by monotonicity?"** Yes, and it
+now is — `BoxOddComplement` (c22723c), on both cuts and at every side length.
+
+**AMENDED 2026-08-10, SAME DAY: the paragraph that stood here was FALSE and
+is corrected rather than deleted (ERRATUM 71).** It said the route "would
+need the same generalisation this file's §2 performed, because
+`ReflectionPositive.mirror` is stated through `IsHalf` in
+`LatticeReflectionPositive`". **It is not.** `mirror` takes `IsRefl G θ` and
+a reflection-positivity hypothesis; there is no `IsHalf` in its statement or
+in its proof. The claim was written without opening the lemma, and it
+converted an available five-line argument into a recorded refusal. What the
+even case actually uses is `IsHalf.image_eq` — the complement EQUALS the
+image — which does need fixed-point-freeness and is false at odd length; but
+monotonicity only ever consumes the INCLUSION, and that survives a fixed
+layer. The original sentence is kept above in the commit history and the
+superseding file names it.
 
 **"Does anything here weaken a statement to make it provable?"** No. Every
 theorem in §1 and §2 has the conclusion of the theorem it generalises,
