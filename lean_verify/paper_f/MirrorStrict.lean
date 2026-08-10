@@ -58,16 +58,41 @@
   and four; not strict at five and up. With the box settled at every side,
   **this wall has no open sharpness case left**.
 
+  **AMENDED 2026-08-10, SAME DAY (ERRATUM 74): "settled" OVERSTATED SIDE TWO.**
+  This file proves three and four. There was no torus side-two theorem here or
+  anywhere else in the estate — only `torus_two_eq_box` and the box result,
+  never composed. §5 below said exactly that while this paragraph did not, and
+  the two were written from different sources: the review from the declaration
+  list, the summary from what was meant to have been done. `SmallSideStrict`
+  composes them and adds side ONE, so the sentence is now true. It is left
+  standing with this note rather than edited, because what was wrong was a
+  report on the estate and deleting the report hides that it was made.
+
   WHAT THIS DOES NOT DO.
   * **Still not an "exactly when".** §3 is sufficiency. The converse — that a
     strict half whose coupling is degenerate always yields a null direction —
     is what the negative files do case by case and is still not unified.
     ERRATUM 73 exists because that gap was once papered over; it is not
     papered over here.
+    **AMENDED 2026-08-10, SAME DAY: half of this is superseded.**
+    `ReachCriterion` proves a converse MECHANISM once in the general setting —
+    nonpositive coupling plus reach-inside forces a null direction — and
+    re-derives the odd box from it, so the negative side is no longer purely
+    case by case; `reach_escapes_of_strict` is a genuine necessary condition
+    for strictness. **The sentence's own statement is still unproved**: its
+    hypothesis is reach, not degeneracy, and reach fails on the box at even
+    side, where `BoxNotStrict`'s separate construction remains the only proof.
+    One mechanism unified, one still by cases, and no equivalence.
   * **Torus side one is not stated.** There the reflection is the identity
     and the argument is `StrictCriterion`'s side-one argument verbatim; it is
     omitted rather than copied, and this sentence is the record that it was a
     choice.
+    **AMENDED 2026-08-10, SAME DAY: stated now.** `SmallSideStrict` generalises
+    that argument to an arbitrary graph — a reflection fixing every vertex
+    turns the reflected form into the energy, and the graph never enters — so
+    the torus case is a corollary, not a copy. **This bullet was also
+    incomplete when written**: side TWO was equally unstated and is not named
+    here, which is the under-reporting ERRATUM 74 records.
   * Still one axiom, free field, finite graph.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
@@ -369,12 +394,23 @@ strict from five. The estate's own `def`: not strict from three, and its
 sides one and two are the box's by transport but are not stated. **No open
 sharpness case remains on this wall**, and the one case that looked like a
 counterexample to the whole picture is now a theorem.
+**AMENDED 2026-08-10, SAME DAY: the transports are performed.**
+`SmallSideStrict` states the torus at sides one and two and the estate's own
+`def` at sides one and two. This paragraph was the accurate one — it said "not
+stated" where the header said "settled" (ERRATUM 74) — and the fix was to prove
+the four statements rather than to reword either.
 
 **"What is still not proved?"** The converse direction, which would make the
 criterion an equivalence. Every negative result on this wall exhibits a null
 direction by an explicit construction, and no theorem says a degenerate
 coupling forces one. **That is the honest remaining gap**, and after ERRATUM
 73 it is stated rather than assumed away.
+**AMENDED 2026-08-10, SAME DAY:** still true as stated — no theorem says a
+DEGENERATE coupling forces a null direction — but `ReachCriterion` narrowed
+the gap the same day: with a reach hypothesis in place of degeneracy, one
+general theorem replaces the case-by-case constructions on the odd side, and
+its contrapositive is a necessary condition for strictness. The equivalence
+remains out of reach and is not claimed.
 -/
 
 end MirrorStrict

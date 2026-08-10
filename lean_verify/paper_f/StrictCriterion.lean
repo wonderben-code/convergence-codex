@@ -64,6 +64,14 @@
     different reason the touching condition cannot express. Proving that
     version needs the three-block form with a middle layer, which this file
     does not build; it is on the watchlist with the data.
+    **AMENDED 2026-08-10, SAME DAY: the three-block form was NOT needed.**
+    `MirrorStrict` proves the corrected criterion by KEEPING a term that
+    `reflectionPositive_mirror` already derives and then throws away — the
+    completing-the-square chain gives `reflectedForm ≥ −crossForm (G · anti c)`
+    before any hypothesis on the coupling is used. No Schur complement, no
+    middle-layer block. Fourth route this month refused on an unchecked claim
+    about machinery the estate already owned; ERRATUM 71's addenda record the
+    pattern, and this sentence is one of its instances.
   * **Nothing new for the prism.** `PrismStrict` already had it by a longer
     route through two Green functions; that route is left standing because it
     proves a sharper statement (an equality of forms) than this one needs.
@@ -72,6 +80,12 @@
     the wrap-around, but the innermost layer touches through the midline too,
     and whether every site touches depends on the side in a way this file
     does not analyse.
+    **AMENDED 2026-08-10, SAME DAY: the torus is now settled at four or less,
+    and every case is strict.** Sides three and four by `MirrorStrict`, whose
+    `torus_touching` performs exactly the side-dependent analysis this bullet
+    declined — both edge types are needed and neither suffices alone. Sides one
+    and two by `SmallSideStrict`, side two transporting along
+    `torus_two_eq_box` and side one by the identity reflection.
   * Still one axiom, free field, finite graph.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
@@ -287,6 +301,12 @@ side-one and side-two cases are not stated here; the torus at four or less
 remains open and this file's argument does not reach it, because a torus site
 touches its mirror through the wrap-around as well as the midline and whether
 every site touches is side-dependent in a way not analysed.
+**AMENDED 2026-08-10, SAME DAY: both gaps are closed.** `SmallSideStrict`
+states the estate's own `def` at sides one and two; `MirrorStrict` and
+`SmallSideStrict` between them settle the torus at every side of four or less.
+The sentence is kept because "not stated here" is the phrasing that let the gap
+be found — the same sweep caught a sibling file saying "settled" of a case with
+no theorem (ERRATUM 74).
 -/
 
 end StrictCriterion

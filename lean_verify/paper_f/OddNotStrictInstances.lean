@@ -46,11 +46,26 @@
     coordinate zero, which is exactly the layer the wrap-around forbids, so
     the construction has nothing left to act on. Whether side three is sharp
     on the torus is open, and this file does not guess.
+    **AMENDED 2026-08-10, SAME DAY: side three is settled and it is STRICT**
+    (`MirrorStrict.reflectionPositive_torus_three_strict`). The structural
+    reason given here is precisely why: a form with no room to degenerate does
+    not degenerate. **Declining to guess was load-bearing** — this case was the
+    counterexample that refuted the estate's old strictness criterion (ERRATUM
+    73), and guessing "not strict" by analogy with the other odd sides would
+    have been wrong.
   * **Even sides on the torus are not covered either.** There the
     cross-coupling has two diagonal terms rather than one — the wrap-around
     AND the innermost layer — so the same construction needs `v` to avoid
     both, which needs side six and up. Stated because it is the obvious next
     instance, not attempted here.
+    **AMENDED 2026-08-10, SAME DAY: THIS BULLET WAS WRONG WHEN WRITTEN, not
+    merely overtaken** (ERRATUM 74, addendum). `TorusNotStrict.not_strict_torus`
+    had proved the even torus at side six and up the PREVIOUS day, by a
+    different route, at exactly the threshold this bullet names as future work
+    — and the review paragraph at the foot of this same file cites that
+    theorem's hypotheses correctly. The header therefore contradicted the
+    review three paragraphs later. What is true is narrower: THIS FILE's
+    construction does not reach the even case.
   * **Still a subspace, not the null space.** Unchanged from
     `BoxOddNotStrict`.
   * Still one axiom, free field, finite graph.
@@ -302,6 +317,14 @@ of those gaps is accompanied by a prediction**, and the count above was
 checked against the actual hypotheses of `TorusNotStrict` rather than
 remembered — an earlier draft of this paragraph said "from three" and was
 wrong.
+
+**AMENDED 2026-08-10, SAME DAY: none of those gaps is open any more, and every
+one closed the opposite way from the rest of the wall.** Box sides one and two:
+strict (`StrictCriterion`). Torus sides three and four: strict (`MirrorStrict`).
+Torus sides one and two: strict (`SmallSideStrict`). Declining to predict was
+the right call — the wall's pattern is "not strict", every one of these six
+cases is strict, and a prediction from the pattern would have been wrong six
+times.
 -/
 
 end OddNotStrictInstances

@@ -68,10 +68,23 @@
     `BoxNotStrict` needs four. Whether either is strict is unknown here, and
     the honest phrasing is "not covered" rather than "the last case", since
     both fall BELOW the threshold rather than between the two results.
+    **AMENDED 2026-08-10, SAME DAY: both are settled and they go the other
+    way.** `StrictCriterion` proves the box STRICT at side two — every site of
+    the half sits on the cut, so it touches its own mirror — and at side one,
+    where the reflection is the identity and the reflected form is the energy.
+    "Unknown here" was right about this file and is no longer right about the
+    estate.
   * **Nothing for the torus or the estate's own `def` at odd side.** The
     identity in §3 is general and both should follow; neither is attempted,
     and this sentence is a statement about what was done, not a prediction
     about what will happen.
+    **AMENDED 2026-08-10, SAME DAY: both are done.** `OddNotStrictInstances`
+    instantiates §3 at the estate's own `def` (odd side three and up) and at
+    the torus (odd side FIVE and up — at three the wrap-around leaves the
+    construction nothing to act on, and the form is strict there anyway, by
+    `MirrorStrict`). "Both should follow" held for the `def` and needed a
+    side-length correction for the torus, which is why it was written as a
+    statement about what was done.
   * Still one axiom, free field, finite graph.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
