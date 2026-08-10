@@ -50,9 +50,13 @@
   carrying `Even n` is listed in §4 and none of it is this chain.
 
   WHAT THIS DOES NOT DO.
-  * **No strictness.** Unchanged, and on an odd side the results should get
-    easier and change shape rather than transfer — the cross-coupling is
-    identically zero there, so more directions should be null, not fewer.
+  * **No strictness.** Unchanged. **AMENDED 2026-08-10: the sentence that
+    stood here predicted "more directions should be null, not fewer", and
+    measurement says that is only half right (ERRATUM 72).** At odd side
+    THREE the reflected form is nondegenerate on the strict half alone, so
+    every null direction must charge the mirror layer; from odd side FIVE
+    upward it is already degenerate on the strict half. Two regimes, not one,
+    and the prediction saw neither.
   * **Nothing for the torus**, still untraced.
   * **The originals are untouched.** Pushed records, still correct, still
     compiling.

@@ -218,9 +218,14 @@ was weakened; the hypothesis was.
 
 **"What is left with `Even n` on this wall now?"** `isHalf_lowerHalf` and
 `BoxCrossCoupling`, permanently and correctly, because they are ABOUT
-fixed-point-free reflections. And the three strictness files, which are
-expected to change shape: with no midline edge at odd side on the box, more
-directions should be null, not fewer. **Nothing on the positivity side of
+fixed-point-free reflections. And the three strictness files. **AMENDED
+2026-08-10: this paragraph predicted "more directions should be null, not
+fewer" at odd side, and measurement refutes the simple form of that
+(ERRATUM 72)** — at odd side three the form is nondegenerate on the strict
+half and every null direction must charge the mirror; from odd side five it
+is degenerate on the strict half already. The watchlist carries the measured
+structure; predictions like the one deleted here are what ERRATUM 72 is
+about. **Nothing on the positivity side of
 this wall carries a parity hypothesis any more** — box, lattice, both
 coordinate cuts, both sides, torus, measure level and exponential algebra.
 -/
