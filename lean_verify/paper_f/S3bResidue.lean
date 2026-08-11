@@ -37,6 +37,16 @@ attempted**: it means either restricting to clusters with a boundary near `x`, o
 a ball as the interior chain does, and the second immediately meets the length-control decision
 this file already declines to make for `ERRATUM 89`'s reason.
 
+**ONE CONSTRAINT ON ANY REPAIR IS NOW PROVED**, and it is a necessary condition rather than a
+guess. `RimBoundary.exists_boundary_outside_cluster_of_reaches_rim`: if the plaquette at `x`
+reaches a rim, then **some boundary site lies outside the cluster of `x`**. It follows from
+`RimBoundary.not_reachable_rim_of_boundary_const` — a configuration constant along the edge of
+the box has no rim edge at all, because an outward side has both its ends on the boundary. So
+`ReachesBoundary`, which gives a boundary site *inside* the cluster, cannot be the only
+hypothesis: a repaired statement must also keep some boundary site *outside* it. **Necessary,
+not sufficient** — a cluster can leave part of the edge alone while the plaquette at `x` sits on
+a closed loop around an interior hole, and that case is untreated.
+
 The rest of this header is left standing as written, because that is what a record is for.
 
 ## The residue, restated — and it is ONE statement, not the two `ERRATUM 97` named

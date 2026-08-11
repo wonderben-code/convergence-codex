@@ -1,0 +1,180 @@
+import S3bRefutation
+
+/-!
+# Reaching a rim requires the configuration to change value along the edge of the box
+
+`ERRATUM 108` refuted `S3bResidue.ClusterReachesRim` with one witness: all sites down, so the
+cluster is the whole box, its indicator is constant, the contour is empty and the plaquette at
+`x` reaches nothing. A witness says the statement is false. It does not say **why**, and it does
+not tell the author what a repaired statement must look like.
+
+This file replaces the witness with a criterion.
+
+> **`not_reachable_rim_of_boundary_const`** — if a configuration takes the **same value at every
+> boundary site**, then no plaquette reaches any rim vertex in its extended dual graph. Not "the
+> ones we tried": none, for every configuration constant on the edge of the box.
+
+and hence, for the object S3b-ii is about:
+
+> **`exists_boundary_outside_cluster_of_reaches_rim`** — if the plaquette at `x` reaches a rim in
+> `extDual (clusterOn σ x)`, then **some boundary site is not in the cluster of `x`**.
+
+That is a *necessary condition on any repair*, derived rather than guessed, and it is sharper
+than the refutation it generalises: `ReachesBoundary` says some boundary site **is** in the
+cluster, so a repaired statement must also require some boundary site **outside** it. A cluster
+that swallows the whole edge of the box reaches no rim, however large it is and however much
+contour it has elsewhere.
+
+## The geometry it turns on
+
+**`outward_side_isBoundary`** — a side facing the outer face has **both endpoints on the boundary
+of the box**. Immediate from the four `*_eq_self_iff` lemmas once the sides are unfolded: a left
+side with `P.i = 0` is `{(0, j), (0, j+1)}`, a top side with `P.j + 2 = n` is
+`{(i, n-1), (i+1, n-1)}`, and so on. So a rim edge needs a **broken** bond with both ends on the
+boundary, which a configuration constant there cannot supply.
+
+## What this deepens
+
+`ExtendedDual.no_rim_edge_of_plusBoundary` is the same conclusion under `PlusBoundary` — every
+boundary site **up**. The hypothesis used is not that the common value is `true`; it is only that
+there **is** a common value. `no_rim_edge_of_boundary_const` is that theorem with the value
+forgotten, and `no_rim_edge_of_plusBoundary` follows from it.
+
+## What it does not do
+
+It gives a necessary condition for the repair, not a sufficient one, and it does not repair
+`ClusterReachesRim`. Requiring a boundary site outside the cluster is **not** enough — a cluster
+can leave part of the edge alone and still have the plaquette at `x` sitting on a closed loop
+around an interior hole, connected to nothing. That case is not treated here and is not claimed
+to be. `ClusterReachesRim` stays refuted and unrepaired, and the length-control DECISION NEEDED
+in `S3bResidue` is untouched. `IsingBoundaryField.MagnetisationBound` is untouched.
+-/
+
+namespace RimBoundary
+
+open IsingFiniteVolume IsingContourEnergy IsingContourPlaquette PlaquetteLattice
+open IsingBoundaryField IsingContourSeparation
+open DualObstruction DualGraph ExtendedDual FieldCover FieldBoundaryEnergy PeierlsCover
+open S3bResidue
+
+set_option linter.style.openClassical false
+open scoped Classical
+
+variable {n : ℕ}
+
+/-! ## 1. An outward side lies along the edge of the box -/
+
+/-- **A SIDE FACING THE OUTER FACE HAS BOTH ENDS ON THE BOUNDARY.** One case per direction, each
+of them the corresponding `*_eq_self_iff` read into the coordinates of the two corners. -/
+theorem outward_side_isBoundary {P : Plaq n} {d : Fin 4} (h : Outward P d) :
+    ∀ y ∈ sideOf P d, isBoundary y = true := by
+  have hi := P.hi
+  have hj := P.hj
+  fin_cases d
+  · -- left: `P.i = 0`, side is `{(0, j), (0, j+1)}`
+    have h0 : P.i = 0 := (leftP_eq_self_iff P).mp h
+    intro y hy
+    rcases Sym2.mem_iff.mp hy with rfl | rfl <;>
+      simp only [isBoundary, bl, tl, decide_eq_true_eq] <;> omega
+  · -- up: `P.j + 2 = n`, side is `{(i, j+1), (i+1, j+1)}`
+    have h0 : P.j + 2 = n := (upP_eq_self_iff P).mp h
+    intro y hy
+    rcases Sym2.mem_iff.mp hy with rfl | rfl <;>
+      simp only [isBoundary, tl, tr, decide_eq_true_eq] <;> omega
+  · -- right: `P.i + 2 = n`, side is `{(i+1, j+1), (i+1, j)}`
+    have h0 : P.i + 2 = n := (rightP_eq_self_iff P).mp h
+    intro y hy
+    rcases Sym2.mem_iff.mp hy with rfl | rfl <;>
+      simp only [isBoundary, tr, br, decide_eq_true_eq] <;> omega
+  · -- down: `P.j = 0`, side is `{(i+1, 0), (i, 0)}`
+    have h0 : P.j = 0 := (downP_eq_self_iff P).mp h
+    intro y hy
+    rcases Sym2.mem_iff.mp hy with rfl | rfl <;>
+      simp only [isBoundary, br, bl, decide_eq_true_eq] <;> omega
+
+/-! ## 2. So a configuration constant on the boundary has no rim edge
+
+`ExtendedDual.no_rim_edge_of_plusBoundary` assumes every boundary site is **up**. Only the
+constancy is used, never the value. -/
+
+/-- **NO RIM EDGE, FOR ANY CONFIGURATION CONSTANT ON THE BOUNDARY.** A rim edge needs a broken
+bond that is an outward side; `outward_side_isBoundary` puts both its ends on the boundary, and
+there the configuration does not change, so the bond is not broken. -/
+theorem no_rim_edge_of_boundary_const {τ : Config n}
+    (hconst : ∀ p q : Site n, isBoundary p = true → isBoundary q = true → τ p = τ q)
+    (P : Plaq n) (d : Fin 4) : ¬ (extDual τ).Adj (Sum.inl P) (Sum.inr d) := by
+  rintro ⟨hmem, hout⟩
+  -- both ends of the side are boundary sites
+  have hb := outward_side_isBoundary hout
+  -- and a bond in the contour has ends where `τ` differs
+  revert hmem hb
+  refine Sym2.ind (fun a b hmem hb => ?_) (sideOf P d)
+  rw [mem_contour] at hmem
+  exact hmem.2 (hconst a b (hb a (Sym2.mem_mk_left a b)) (hb b (Sym2.mem_mk_right a b)))
+
+/-- The `+` case is the special value `true`: `ExtendedDual.no_rim_edge_of_plusBoundary` is this
+theorem with the value remembered, and is recovered here to show nothing was lost. -/
+theorem no_rim_edge_of_plusBoundary' {σ : Config n} (hσ : PlusBoundary σ) (P : Plaq n)
+    (d : Fin 4) : ¬ (extDual σ).Adj (Sum.inl P) (Sum.inr d) :=
+  no_rim_edge_of_boundary_const
+    (fun p q hp hq => by rw [hσ p hp, hσ q hq]) P d
+
+/-! ## 3. And therefore no plaquette reaches a rim -/
+
+/-- With no rim edge, a walk that starts at a plaquette stays at plaquettes. -/
+theorem stays_inl {τ : Config n}
+    (h : ∀ (P : Plaq n) (d : Fin 4), ¬ (extDual τ).Adj (Sum.inl P) (Sum.inr d)) :
+    ∀ {a b : ExtV n}, (extDual τ).Walk a b → (∃ P, a = Sum.inl P) → ∃ Q, b = Sum.inl Q := by
+  intro a b w
+  induction w with
+  | nil => exact id
+  | @cons u v _ hadj _ ih =>
+    rintro ⟨P, rfl⟩
+    cases v with
+    | inl Q => exact ih ⟨Q, rfl⟩
+    | inr e => exact absurd hadj (h P e)
+
+/-- **CONSTANT ON THE BOUNDARY ⟹ NO PLAQUETTE REACHES ANY RIM.** -/
+theorem not_reachable_rim_of_boundary_const {τ : Config n}
+    (hconst : ∀ p q : Site n, isBoundary p = true → isBoundary q = true → τ p = τ q)
+    (P : Plaq n) (d : Fin 4) :
+    ¬ (extDual τ).Reachable (Sum.inl P) (Sum.inr d) := by
+  rintro ⟨w⟩
+  obtain ⟨Q, hQ⟩ := stays_inl (no_rim_edge_of_boundary_const hconst) w ⟨P, rfl⟩
+  exact absurd hQ (by simp)
+
+/-! ## 4. The necessary condition on any repair of `ClusterReachesRim` -/
+
+/-- **REACHING A RIM FORCES A BOUNDARY SITE OUTSIDE THE CLUSTER.** Contrapositive of §3 for the
+cluster indicator, with the two boundary sites at which it differs resolved: `clusterOn` is
+`true` exactly on the cluster, so a disagreement along the edge of the box is a boundary site the
+cluster does not contain.
+
+This is the shape of the constraint any repaired S3b-ii statement must satisfy.
+`ReachesBoundary` gives a boundary site **inside** the cluster; this gives one **outside**. -/
+theorem exists_boundary_outside_cluster_of_reaches_rim {σ : Config n} {x : Site n}
+    {P : Plaq n} {d : Fin 4}
+    (h : (extDual (clusterOn σ x)).Reachable (Sum.inl P) (Sum.inr d)) :
+    ∃ p : Site n, isBoundary p = true ∧ ¬ (downGraph σ).Reachable x p := by
+  by_contra hc
+  refine not_reachable_rim_of_boundary_const (τ := clusterOn σ x) ?_ P d h
+  intro p q hp hq
+  have hall : ∀ y : Site n, isBoundary y = true → (downGraph σ).Reachable x y := by
+    intro y hy
+    by_contra hny
+    exact hc ⟨y, hy, hny⟩
+  rw [show clusterOn σ x p = true from clusterOn_eq_true_iff.mpr (hall p hp),
+    show clusterOn σ x q = true from clusterOn_eq_true_iff.mpr (hall q hq)]
+
+/-- **THE REFUTATION OF `ERRATUM 108`, RE-DERIVED FROM THE CRITERION.** All sites down: every
+boundary site is in the cluster, so §4 leaves nothing outside it and no rim is reached. The
+original proof computed the contour and found it empty; this one never mentions the contour. -/
+theorem not_reachable_rim_allDown (hn : 0 < n) (x : Site n) (P : Plaq n) (d : Fin 4) :
+    ¬ (extDual (clusterOn (S3bRefutation.allDown n) x)).Reachable (Sum.inl P) (Sum.inr d) := by
+  intro h
+  obtain ⟨p, hp, hnr⟩ := exists_boundary_outside_cluster_of_reaches_rim h
+  refine hnr ?_
+  rw [S3bRefutation.downGraph_allDown]
+  exact (latticeGraph_connected hn).preconnected x p
+
+end RimBoundary

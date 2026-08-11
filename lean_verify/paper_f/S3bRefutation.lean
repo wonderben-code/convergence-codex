@@ -47,6 +47,13 @@ to "some plaquette within `L + 1` of `x`", at which point the length `L` reappea
 the length-control question `S3bResidue` already flags as a DECISION NEEDED. Choosing between
 those quickly, to make the list tidy, is `ERRATUM 89`.
 
+**AND THE WITNESS HAS SINCE BEEN REPLACED BY A CRITERION.** `RimBoundary` proves that *any*
+configuration constant along the edge of the box has no rim edge whatever, so the all-down
+witness below is one instance of a class: `RimBoundary.not_reachable_rim_allDown` re-derives this
+file's conclusion without computing a contour at all. What that buys is the necessary condition
+on a repair — some boundary site must lie **outside** the cluster — which this file's single
+witness could not have supplied.
+
 `S3bResidue.walk_to_bdry_of_gap` remains true — it is an implication, and an implication from a
 false hypothesis is no less valid. What it is not is *useful*, and the ledger now says so.
 `IsingBoundaryField.MagnetisationBound` is untouched.
