@@ -33,6 +33,10 @@ the pinned environment's *statements* rather than against guessed names (`check_
 >
 > **`instIsCentral`** — and the `Algebra.IsCentral ℝ ℍ[ℝ]` instance the wall's note says does not
 > exist. It exists now.
+>
+> **`mem_matrixCenter_iff`, `matrixCenter_eq_range`** — and therefore **the centre of `Mₙ(ℍ[ℝ])` is
+> the real scalar matrices**, which is `WALLS` §W7 step (iii) itself. See the section below on why
+> this header first claimed the opposite.
 
 ## The argument, and why two witnesses suffice
 
@@ -41,18 +45,31 @@ with `i` forces the `j` and `k` components to vanish, and commuting with `j` for
 component to vanish. Nothing needs to be said about `k`, and the file proves that rather than
 checking a third case for reassurance.
 
-## What this does NOT do
+## §3 closes step (iii), and this section used to say it did not
 
-**It does not close W7 step (iii), and it does not close W7.** Step (iii) wanted the centre of
-`M₂(ℍ[ℝ])`; this is the centre of `ℍ[ℝ]`, and Mathlib's `Matrix.center_eq_range` is stated for a
-`CommSemiring` of entries — **`ℍ[ℝ]` is not commutative**, so that theorem does not apply to
-`M₂(ℍ[ℝ])` and the two halves do not simply compose. **The remaining step is the centre of a matrix
-algebra over a NON-commutative base**, which is a different theorem from the one Mathlib has, and it
-is not proved here. What changed is that it is now the *only* thing left in step (iii), and it is
-named precisely instead of being bundled with a quaternion computation that is now done.
+**Superseded in place, and the superseded text is quoted because it was wrong for an instructive
+reason.** The first draft of this header read:
 
-**No claim is made about `Cl(1,3;ℝ)`.** Transporting along `cliffordRealMinkowskiEquiv` is step (ii)
-and is untouched here.
+> *"**It does not close W7 step (iii)** … Mathlib's `Matrix.center_eq_range` is stated for a
+> `CommSemiring` of entries — **`ℍ[ℝ]` is not commutative** — so the two halves do not simply
+> compose. **The remaining step is the centre of a matrix algebra over a NON-commutative base**,
+> which is a different theorem from the one Mathlib has, and it is not proved here."*
+
+Every clause about `center_eq_range` is true. The inference — *therefore Mathlib cannot do the
+non-commutative case* — is **false**. **`Matrix.subsemigroupCenter_eq_scalar_map` is stated over
+`[Semiring α]`**, no commutativity anywhere, and gives the centre of the matrix semigroup as the
+image under `Matrix.scalar` of the centre of the base. It was **one line below `center_eq_range` in
+the same `--shape` output**; the first reading took the first hit and stopped.
+
+So §3 proves **`mem_matrixCenter_iff`** and **`matrixCenter_eq_range`**: the centre of `Mₙ(ℍ[ℝ])`
+is exactly the real scalar matrices, for **every** index type rather than only `Fin 2`. That is
+`WALLS` §W7 step (iii).
+
+## What this still does NOT do
+
+**It does not close W7.** Step (iii) is one of four. **No claim is made about `Cl(1,3;ℝ)`** —
+transporting along `cliffordRealMinkowskiEquiv` is step (ii), steps (i) and (iv) are separate, and
+all three are untouched here. What this file settles is the centre computation those steps consume.
 -/
 
 open scoped Quaternion
@@ -120,7 +137,55 @@ instance instIsCentral : Algebra.IsCentral ℝ ℍ[ℝ] where
     obtain ⟨r, hr⟩ := mem_center_iff.1 (by simpa using hq)
     exact ⟨r, hr.symm⟩
 
-/-! ## 3. The two witnesses are not redundant
+/-! ## 3. The centre of a matrix algebra over `ℍ[ℝ]`
+
+**And the step this file's header called "the only thing left" is not left either.** The header
+said Mathlib's `Matrix.center_eq_range` needs a `CommSemiring` of entries, so it cannot speak about
+`M₂(ℍ[ℝ])` — which is true of *that* lemma. It is not true of Mathlib:
+**`Matrix.subsemigroupCenter_eq_scalar_map` is stated over `[Semiring α]`**, with no commutativity
+at all, and says the centre of the matrix semigroup is the image under `Matrix.scalar` of the
+centre of the base. Composed with §2, that is `WALLS` §W7 step (iii).
+
+**This was found by asking the KEY GENERATOR question immediately** (`PROOF_STRATEGY` §6 rule 3:
+if the unit just finished was a B, retry B→C before touching the queue) — the lemma was sitting in
+the same `--shape` output that produced §2's finding, one line below it, and the first reading took
+`center_eq_range` and stopped. -/
+
+/-- **THE CENTRE OF `Mₙ(ℍ[ℝ])` IS THE REAL SCALARS.** `WALLS` §W7 step (iii), for every index type
+rather than only `Fin 2`. Mathlib supplies the matrix half over a **non-commutative** base and §2
+supplies the quaternion half. -/
+theorem mem_matrixCenter_iff {n : Type*} [DecidableEq n] [Fintype n]
+    {A : Matrix n n ℍ[ℝ]} :
+    A ∈ Set.center (Matrix n n ℍ[ℝ]) ↔ ∃ r : ℝ, A = Matrix.scalar n (algebraMap ℝ ℍ[ℝ] r) := by
+  constructor
+  · intro hA
+    have h1 : A ∈ Subsemigroup.center (Matrix n n ℍ[ℝ]) :=
+      Subsemigroup.mem_center_iff.2 (Semigroup.mem_center_iff.1 hA)
+    rw [Matrix.subsemigroupCenter_eq_scalar_map] at h1
+    obtain ⟨c, hc, rfl⟩ := h1
+    obtain ⟨r, hr⟩ :=
+      mem_center_iff.1 (Semigroup.mem_center_iff.2 (Subsemigroup.mem_center_iff.1 hc))
+    -- `Subsemigroup.map` carries `Matrix.scalar n` through two coercions; they are
+    -- definitionally the plain application, so `rfl` closes the gap `rw` leaves.
+    exact ⟨r, by rw [hr]; rfl⟩
+  · rintro ⟨r, rfl⟩
+    refine Semigroup.mem_center_iff.2 fun B => ?_
+    have : (Matrix.scalar n) (algebraMap ℝ ℍ[ℝ] r) ∈ Subsemigroup.center (Matrix n n ℍ[ℝ]) := by
+      rw [Matrix.subsemigroupCenter_eq_scalar_map]
+      exact ⟨algebraMap ℝ ℍ[ℝ] r,
+        Subsemigroup.mem_center_iff.2 (Semigroup.mem_center_iff.1 (mem_center_iff.2 ⟨r, rfl⟩)),
+        rfl⟩
+    exact (Subsemigroup.mem_center_iff.1 this B)
+
+/-- The same statement as an equality of sets. -/
+theorem matrixCenter_eq_range {n : Type*} [DecidableEq n] [Fintype n] :
+    Set.center (Matrix n n ℍ[ℝ])
+      = Set.range (fun r : ℝ => Matrix.scalar n (algebraMap ℝ ℍ[ℝ] r)) := by
+  ext A
+  rw [mem_matrixCenter_iff]
+  exact ⟨fun ⟨r, hr⟩ => ⟨r, hr.symm⟩, fun ⟨r, hr⟩ => ⟨r, hr.symm⟩⟩
+
+/-! ## 4. The two witnesses are not redundant
 
 A reader may reasonably ask whether one test element would have done. It would not, and the file
 answers that with counterexamples rather than with an assertion.
