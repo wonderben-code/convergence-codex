@@ -1,4 +1,5 @@
 import RimWalk
+import EdgeAddParity
 
 /-!
 # How many odd vertices the extended dual graph has, and therefore how many open paths
@@ -21,10 +22,11 @@ excludes that case, so the bound is `2` and not `1`. **Nor is four exhibited.** 
 configuration in this estate is shown to have four odd rims; `4` is a case left open, which is
 not the same as a case shown to occur (`ERRATA 71` addendum 3 and `ERRATUM 101`).
 
-**And the reading "at most two open paths" is conditional, everywhere it appears below.** There
-is no decomposition theorem here and no path object. A decomposition into circuits plus open
-paths, *if one is ever proved*, would have `2k` odd vertices for `k` paths, and this file bounds
-that count — it does not bound paths, because there are none to bound yet. Every docstring
+**And the reading "at most two open paths" is conditional, everywhere it appears below.** §6
+does produce a decomposition, but of the *repaired* graph `extDual σ ⊔ edge u v`, into circuits
+— **there is no path object anywhere in this file.** A decomposition into circuits plus open
+paths, *if one is ever proved*, would have `2k` odd vertices for `k` paths, and §4 bounds that
+count; it does not bound paths, because there are none here to bound. Every sentence below
 saying "at most two open paths" is shorthand for that conditional and for nothing stronger.
 
 ## What the parity buys that geometry did not
@@ -40,12 +42,33 @@ No second geometric argument, no repeat of `cornerDown_left_rim_unique` in direc
 is the shape of the whole point: a path has two ends, and the parity of the graph knows it even
 when we have only looked at one end.
 
+## And then the repair, which the count makes available
+
+Knowing the odd vertices are exactly two is not just a bound — it is the hypothesis of the
+classical fix. `EdgeAddParity.evenDegrees_sup_edge` (general, any finite graph) says a graph
+even everywhere but at two non-adjacent vertices becomes even everywhere when those two are
+joined. Here the non-adjacency is **free**: the odd vertices are rims, and `extAdj` puts no edge
+between two rims. So §6 gets
+
+> **`exists_cycle_decomposition_sup_edge_of_card_two`** — when `extDual σ` has exactly two odd
+> vertices, adding one edge between them yields a graph that is an edge-disjoint union of
+> cycles, by the estate's own `CycleDecomposition.exists_cycle_decomposition`.
+
 ## What this does not do
 
-It does not produce a decomposition, and it does not produce a walk. `S3bResidue`'s
-`ClusterReachesRim` is untouched; so is `IsingBoundaryField.MagnetisationBound`. What changes is
-that the missing theorem now has a stated arity — circuits plus **at most two** paths — instead
-of an unbounded "plus paths".
+**It does not produce a walk, and that is now the whole of the remaining step.** From a cycle
+through the added edge one wants to delete that edge and read off an `extDual σ`-path from one
+rim to the other. The decomposition returns cycle **graphs** (`SimpleGraph.IsCycleGraph`), not
+walks, so there is nothing to rotate: **recovering a walk from an `IsCycleGraph` is the missing
+theorem**, and it is general graph theory with no Ising content in it.
+
+**The `4` case is untreated.** Two edges must be added and the pairing is a choice; nothing here
+makes it.
+
+`S3bResidue.ClusterReachesRim` is untouched and unproved, and
+`IsingBoundaryField.MagnetisationBound` is untouched. What has changed is that "a
+circuits-plus-paths decomposition" — an unbounded family, and a theorem nobody had written down
+— is now one bounded case plus one named general lemma about `IsCycleGraph`.
 -/
 
 namespace RimParity
@@ -117,8 +140,10 @@ a rim. That is the whole of what is proved.
 
 Its intended use is conditional and is not proved here: a decomposition into circuits plus open
 paths would have two odd endpoints per path, so `k` paths would need `2k ≤ 4` — at most two
-paths, each running rim to rim by `RimWalk.odd_degree_isRim`. No such decomposition exists in
-this estate or in Mathlib, so no path is bounded by this theorem; a count is. -/
+paths, each running rim to rim by `RimWalk.odd_degree_isRim`. **No circuits-plus-paths
+decomposition exists in this estate or in Mathlib**, so this theorem bounds a count and not a
+number of paths. §6 uses the `= 2` case to build a circuits-only decomposition of a repaired
+graph, which is a different statement. -/
 theorem card_oddExt_eq_zero_or_two_or_four (σ : Config n) :
     (oddExt σ).card = 0 ∨ (oddExt σ).card = 2 ∨ (oddExt σ).card = 4 := by
   obtain ⟨k, hk⟩ := even_card_oddExt σ
@@ -178,5 +203,67 @@ theorem cornerDown_card_oddExt (hn : 1 < n) :
   · omega
   · exact Or.inl h
   · exact Or.inr h
+
+/-! ## 6. The repair, applied to this graph
+
+`EdgeAddParity.evenDegrees_sup_edge` is the classical move: if a finite graph is even
+everywhere except at two non-adjacent vertices, joining those two makes it even everywhere. For
+the extended dual graph the non-adjacency hypothesis is **free** — the odd vertices are rims by
+`RimWalk.odd_degree_isRim`, and `ExtendedDual.extAdj` puts no edge between two rims. -/
+
+/-- Two rim vertices are never adjacent: `extAdj` sends `inr, inr` to `False` outright. -/
+theorem rim_not_adj (σ : Config n) (d e : Fin 4) :
+    ¬ (extDual σ).Adj (Sum.inr d) (Sum.inr e) := id
+
+/-- Odd vertices of the extended dual graph are never adjacent, since both are rims. -/
+theorem odd_not_adj {σ : Config n} {u v : ExtV n} (hu : u ∈ oddExt σ) (hv : v ∈ oddExt σ) :
+    ¬ (extDual σ).Adj u v := by
+  obtain ⟨d, rfl⟩ := odd_degree_isRim (mem_oddExt.mp hu)
+  obtain ⟨e, rfl⟩ := odd_degree_isRim (mem_oddExt.mp hv)
+  exact rim_not_adj σ d e
+
+/-- **THE REPAIR.** With exactly two odd vertices, adding the single edge between them makes
+every degree of the extended dual graph even. Nothing has to be checked about where the two
+vertices are: they are rims, so they are not already joined. -/
+theorem evenDegrees_extDual_sup_edge {σ : Config n} {u v : ExtV n} (hne : u ≠ v)
+    (hall : oddExt σ = {u, v}) :
+    SimpleGraph.EvenDegrees (extDual σ ⊔ SimpleGraph.edge u v) := by
+  classical
+  have hu : u ∈ oddExt σ := by rw [hall]; exact Finset.mem_insert_self u {v}
+  have hv : v ∈ oddExt σ := by
+    rw [hall]; exact Finset.mem_insert_of_mem (Finset.mem_singleton_self v)
+  refine SimpleGraph.evenDegrees_sup_edge hne (odd_not_adj hu hv)
+    (mem_oddExt.mp hu) (mem_oddExt.mp hv) ?_
+  intro w hwu hwv
+  by_contra hodd
+  rcases Finset.mem_insert.mp (hall ▸ mem_oddExt.mpr hodd) with h | h
+  · exact hwu h
+  · exact hwv (Finset.mem_singleton.mp h)
+
+/-- **AND SO THE REPAIRED GRAPH DECOMPOSES INTO CIRCUITS.** When the extended dual graph has
+exactly two odd vertices, one added edge turns it into an edge-disjoint union of cycles, via
+`CycleDecomposition.exists_cycle_decomposition`.
+
+This is as far as the circuit route goes today, and the remaining step is small and named.
+What one wants next is the `extDual σ`-**walk** from `u` to `v` obtained by deleting the added
+edge from whichever cycle carries it. The decomposition returns cycle *graphs*
+(`SimpleGraph.IsCycleGraph`), not walks, so there is nothing to rotate; **recovering a walk
+from an `IsCycleGraph` is the missing theorem**, and it is a general graph statement with no
+Ising content. `S3bResidue.ClusterReachesRim` remains unproved.
+
+The `4` case is untreated: two edges must be added and the pairing is a choice. -/
+theorem exists_cycle_decomposition_sup_edge_of_card_two {σ : Config n}
+    (h2 : (oddExt σ).card = 2) :
+    ∃ u v : ExtV n, u ≠ v ∧ ¬ (extDual σ).Adj u v ∧
+      ∃ L : List (SimpleGraph (ExtV n)), (∀ H ∈ L, SimpleGraph.IsCycleGraph H) ∧
+        L.Pairwise Disjoint ∧
+        L.foldr (· ⊔ ·) ⊥ = extDual σ ⊔ SimpleGraph.edge u v := by
+  classical
+  obtain ⟨u, v, hne, hall⟩ := Finset.card_eq_two.mp h2
+  have hu : u ∈ oddExt σ := by rw [hall]; exact Finset.mem_insert_self u {v}
+  have hv : v ∈ oddExt σ := by
+    rw [hall]; exact Finset.mem_insert_of_mem (Finset.mem_singleton_self v)
+  exact ⟨u, v, hne, odd_not_adj hu hv,
+    SimpleGraph.exists_cycle_decomposition _ (evenDegrees_extDual_sup_edge hne hall)⟩
 
 end RimParity
