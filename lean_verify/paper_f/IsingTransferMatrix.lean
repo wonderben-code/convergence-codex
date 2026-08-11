@@ -33,6 +33,12 @@ gap from a genuine operator but a **model** one, `diag(e^{−Δk})`, chosen rath
 from a Hamiltonian. This operator is not chosen: it is what the one-dimensional Ising
 Hamiltonian's Boltzmann weights are.
 
+**And §5 proves the names.** Every docstring above calls these `2 cosh β` and `2 sinh β`; §5
+proves it (`lamPlus_eq_two_cosh`, `lamMinus_eq_two_sinh`) rather than leaving the identification
+in prose, and then **`ratio_eq_tanh`**: the ratio of the two eigenvalues is `tanh β`, which is the
+chain's textbook correlation-decay rate. The gap and the decay rate are the same datum about the
+same matrix.
+
 ## What this does NOT do, and the distance is not small
 
 **It is one dimension.** The one-dimensional Ising chain has no phase transition, and the gap
@@ -50,6 +56,10 @@ probed 2026-08-11, `PerronFrobenius` and `perronFrobenius` return **zero files**
 files matching `IsPrimitive` are Pythagorean triples, Dirichlet and additive characters,
 polynomials and roots of unity — not matrix primitivity. For `2^n × 2^n` that theorem, or a
 substitute, is what clause (ii) would need.
+
+**Clause (iii) is half-done and only half.** `ratio_eq_tanh` identifies the spectral ratio with
+`tanh β`. That the two-point function actually decays at that rate needs the partition function
+as `tr Tⁿ` and correlations as traces of `T`-words, and **none of that is here**.
 -/
 
 namespace IsingTransferMatrix
@@ -117,12 +127,12 @@ theorem eigenvalue_eq {μ : ℝ} {v : Fin 2 → ℝ} (hv : v ≠ 0)
   have hsum : (lamPlus β - μ) * (v 0 + v 1) = 0 := by
     have : exp β * v 0 + exp (-β) * v 1 + (exp (-β) * v 0 + exp β * v 1)
         = μ * v 0 + μ * v 1 := by rw [h0, h1]
-    simp only [lamPlus]; nlinarith [this]
+    simp only [lamPlus]; linear_combination this
   -- subtracting: `(lamMinus β - μ) * (v 0 - v 1) = 0`
   have hdif : (lamMinus β - μ) * (v 0 - v 1) = 0 := by
     have : exp β * v 0 + exp (-β) * v 1 - (exp (-β) * v 0 + exp β * v 1)
         = μ * v 0 - μ * v 1 := by rw [h0, h1]
-    simp only [lamMinus]; nlinarith [this]
+    simp only [lamMinus]; linear_combination this
   have e1 : v 0 + v 1 = 0 := by
     rcases mul_eq_zero.mp hsum with h' | h'
     · exact absurd (by linarith : μ = lamPlus β) hp
@@ -164,6 +174,43 @@ theorem gap_eq (β : ℝ) : lamPlus β - |lamMinus β| = 2 * exp (-|β|) := by
       refine abs_of_nonpos ?_
       simp only [lamMinus, sub_nonpos]
       exact exp_le_exp.mpr (by linarith)
-    rw [this, hb]; simp only [lamPlus, lamMinus]; ring
+    rw [this, hb, neg_neg]; simp only [lamPlus, lamMinus]; ring
+
+/-! ## 5. The names the prose was already using, and the correlation rate
+
+**This section exists because of an adversarial reading of §§1–4.** Every docstring above calls
+`lamPlus` "`2 cosh β`" and `lamMinus` "`2 sinh β`", and the file proved no such thing: the
+definitions are `exp β ± exp (-β)`, and the identification with Mathlib's `Real.cosh` and
+`Real.sinh` was asserted in prose and nowhere carried. Two lines each, and now it is carried.
+
+What the identification buys is not cosmetic. The ratio of the two eigenvalues is `tanh β`, and
+that number is the textbook rate of correlation decay along the chain — the reciprocal of the
+correlation length. So this is the first half of W4's clause (iii), *tie the gap to correlation
+decay*, in the one case where the operator exists: the gap and the decay rate are the same datum
+about the same matrix, not two facts placed side by side. **The second half — that `tanh β` IS
+the two-point function's decay, which needs the partition function as `tr Tⁿ` and correlations
+as traces — is NOT here.** -/
+
+/-- `lamPlus` is `2 cosh β`, which every docstring above already called it. -/
+theorem lamPlus_eq_two_cosh (β : ℝ) : lamPlus β = 2 * Real.cosh β := by
+  rw [Real.cosh_eq]; simp only [lamPlus]; ring
+
+/-- `lamMinus` is `2 sinh β`, likewise. -/
+theorem lamMinus_eq_two_sinh (β : ℝ) : lamMinus β = 2 * Real.sinh β := by
+  rw [Real.sinh_eq]; simp only [lamMinus]; ring
+
+/-- **THE SPECTRAL RATIO IS `tanh β`** — the standard correlation-decay rate of the chain. The
+gap of §4 and the decay rate are the same datum about the same matrix. -/
+theorem ratio_eq_tanh (β : ℝ) : lamMinus β / lamPlus β = Real.tanh β := by
+  rw [lamMinus_eq_two_sinh, lamPlus_eq_two_cosh, Real.tanh_eq_sinh_div_cosh]
+  rw [mul_div_mul_left _ _ (two_ne_zero)]
+
+/-- And it is a genuine contraction at every finite `β`: `|tanh β| < 1`, which is
+`abs_lamMinus_lt_lamPlus` divided through by the positive `lamPlus`. -/
+theorem abs_ratio_lt_one (β : ℝ) : |lamMinus β / lamPlus β| < 1 := by
+  have hpos : 0 < lamPlus β := by
+    simp only [lamPlus]; linarith [Real.exp_pos β, Real.exp_pos (-β)]
+  rw [abs_div, abs_of_pos hpos, div_lt_one hpos]
+  exact abs_lamMinus_lt_lamPlus β
 
 end IsingTransferMatrix
