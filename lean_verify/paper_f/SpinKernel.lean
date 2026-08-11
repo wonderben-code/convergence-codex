@@ -63,8 +63,10 @@ namespace SpinKernel
 
 /-! ## 1. The centre of the quaternions is ℝ
 
-Mathlib does not have this. Two commutators are enough: with `i` and
-with `j`. -/
+Mathlib does not have this — **re-verified 11 Aug 2026 by shape**, not just by
+name: 148 statements in the pinned environment mention `Quaternion` and not one
+mentions a centre, and `Algebra.IsCentral` has no instance for `ℍ[ℝ]`. Two
+commutators are enough: with `i` and with `j`. -/
 
 theorem quaternion_central {a : ℍ[ℝ]} (h : ∀ q : ℍ[ℝ], a * q = q * a) :
     a = (algebraMap ℝ ℍ[ℝ]) a.re := by
@@ -77,7 +79,22 @@ theorem quaternion_central {a : ℍ[ℝ]} (h : ∀ q : ℍ[ℝ], a * q = q * a) 
 
 /-! ## 2. The centre of M₂(ℍ) is ℝ
 
-Also absent from Mathlib. Three test matrices: the idempotent `E₀₀`
+**"Also absent from Mathlib" — THAT WAS FALSE, corrected 11 Aug 2026,
+`ERRATUM 119`.** `Matrix.subsemigroupCenter_eq_scalar_map` is in Mathlib and is
+stated over `[Semiring α]` — **no commutativity**, so the quaternionic entries
+are no obstacle — giving the centre of the matrix semigroup as the image of the
+base's centre under `Matrix.scalar`. `Matrix.center_eq_range` sits beside it for
+the commutative case. The original probe searched names (`Matrix.mem_center_iff`
+and neighbours) and missed by a suffix; a shape probe returns both at once.
+`QuaternionCenter.mem_matrixCenter_iff` states the consequence for **every**
+index type, where this section's theorem is `Fin 2` only.
+
+**The hand proof below is kept and is not weakened.** It is self-contained,
+it is what the rest of this file consumes, and rewriting a working proof to
+route through a library lemma found afterwards would be churn. What was wrong
+was the sentence, not the mathematics.
+
+Three test matrices: the idempotent `E₀₀`
 forces the off-diagonal entries to vanish, the unit `E₀₁` forces the two
 diagonal entries equal, and the scalar quaternion matrices force that
 common entry central in ℍ, hence real by §1. -/
