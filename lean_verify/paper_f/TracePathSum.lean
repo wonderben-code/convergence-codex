@@ -31,11 +31,31 @@ supplies the open case.
 
 **It does not discharge `PartitionIsTrace`.** That statement sums over `s : Fin (N+1) → Bool` of
 `∏ i, T (s i) (s (i+1))` with `i+1` **cyclic in `Fin (N+1)`**, and `trace_pow_succ` gives the same
-number indexed as *(basepoint, interior)* instead. The two are the same sum written differently and
-the missing step is the bijection between the two indexings — which is not bookkeeping in the
-dismissible sense, because the cyclic successor changes shape with `N` and so does not induct the
-way the open walk does. **Named here, not attempted here**, which is `PROOF_STRATEGY` §3's condition
-for leaving a chain.
+number indexed as *(basepoint, interior)* instead.
+
+**Why the cyclic form does not simply induct**, since "it is only re-indexing" is the wrong
+intuition and would send the next reader down a dead end. Peel the first factor off
+`∏ i : Fin (N+2), M (s i) (s (i+1))`. What is left is *not* the cyclic product of `Fin.tail s` over
+`Fin (N+1)`: the leftover's last factor is `M (s (N+1)) (s 0)`, ending at `s 0`, whereas the tail's
+own cyclic product ends at `(tail s) 0 = s 1`. The wrap-around points at a place the tail no longer
+knows about, so the recursion does not close.
+
+**The route that does work, written out because §3 asks for the remaining leg precisely and this is
+now precise.** Introduce the *open* product along a path of `n+1` points,
+`openProd M p = ∏ i : Fin n, M (p i.castSucc) (p i.succ)`, which peels cleanly because
+`castSucc`/`succ` do not wrap. Then two steps, neither of them an induction on the cyclic form:
+
+1. `∏ i : Fin (N+1), M (s i) (s (i+1)) = openProd M (Fin.snoc s (s 0))` — the cyclic product is the
+   open product along `s` with its own first point appended. This is a `Finset.prod_congr` over
+   `Fin (N+1)`, needing `Fin.snoc_castSucc` and, for the final factor, that `s (i+1)` at the last
+   `i` is `s 0` on both sides.
+2. `openProd M (Fin.snoc s (s 0)) = walkProd M (s 0) N (s 0) (Fin.tail s)` — **this** inducts, on
+   `N`, because `walkProd` holds its endpoint `b` fixed while the start moves, which is exactly the
+   shape `openProd` peels into.
+
+`Fin.snoc`, `Fin.snoc_castSucc`, `Fin.snoc_last`, `Fin.prod_univ_castSucc` are all present in the
+pinned environment (checked). **Not attempted here** — it is a unit of `Fin` bookkeeping, not a
+wall, and it is the whole distance from this file to `PartitionIsTrace`.
 
 **And nothing here is about the Ising model.** `M` is any matrix over any semiring.
 -/
