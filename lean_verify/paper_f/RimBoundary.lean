@@ -40,6 +40,19 @@ boundary site **up**. The hypothesis used is not that the common value is `true`
 there **is** a common value. `no_rim_edge_of_boundary_const` is that theorem with the value
 forgotten, and `no_rim_edge_of_plusBoundary` follows from it.
 
+## And §5 localises it to one side of the box
+
+Asking for constancy on the *whole* boundary is more than the proof needs. `Outward P 0` forces
+`P.i = 0`, so a left-rim edge needs a broken bond in **column zero** — each direction pins its own
+edge of the box. Hence
+
+> **`exists_onSide_outside_cluster_of_reaches_rim`** — if the plaquette at `x` reaches the rim in
+> direction `d`, then some site **on side `d`** is outside the cluster of `x`.
+
+which names *which* of the four sides §4 was talking about. `starts_at_rim` carries the walk
+argument per direction, where `stays_inl` needs every rim edge gone at once: a walk may legally
+visit the other three rims and come back, so the one-sided statement cannot reuse it.
+
 ## What it does not do
 
 It gives a necessary condition for the repair, not a sufficient one, and it does not repair
@@ -176,5 +189,96 @@ theorem not_reachable_rim_allDown (hn : 0 < n) (x : Site n) (P : Plaq n) (d : Fi
   refine hnr ?_
   rw [S3bRefutation.downGraph_allDown]
   exact (latticeGraph_connected hn).preconnected x p
+
+/-! ## 5. The criterion localises to a single side of the box
+
+§2 asks the configuration to be constant on the **whole** boundary. That is more than the proof
+needs. A rim edge in direction `d` needs an outward side in direction `d`, and `Outward P 0`
+forces `P.i = 0`, so the bond lies in **column zero** — not merely somewhere on the boundary.
+Each direction pins its own side of the box, so the obstruction is one-sided. -/
+
+/-- The side of the box that direction `d` points off: left, top, right, bottom. -/
+-- Written as a disjunction guarded on `d.val` rather than a chain of `if`s: after `fin_cases d`
+-- the guards are closed by `rfl` and nothing has to reduce a decidable equality on `Fin 4`.
+def OnSide (d : Fin 4) (y : Site n) : Prop :=
+  (d.val = 0 ∧ y.1.val = 0) ∨ (d.val = 1 ∧ y.2.val + 1 = n)
+    ∨ (d.val = 2 ∧ y.1.val + 1 = n) ∨ (d.val = 3 ∧ y.2.val = 0)
+
+/-- **AN OUTWARD SIDE LIES ALONG ITS OWN SIDE OF THE BOX**, which is sharper than
+`outward_side_isBoundary`: not just on the boundary, but on the one edge direction `d` faces. -/
+theorem outward_side_onSide {P : Plaq n} {d : Fin 4} (h : Outward P d) :
+    ∀ y ∈ sideOf P d, OnSide d y := by
+  have hi := P.hi
+  have hj := P.hj
+  fin_cases d
+  · have h0 : P.i = 0 := (leftP_eq_self_iff P).mp h
+    intro y hy
+    refine Or.inl ⟨rfl, ?_⟩
+    rcases Sym2.mem_iff.mp hy with rfl | rfl <;> simp only [bl, tl] <;> omega
+  · have h0 : P.j + 2 = n := (upP_eq_self_iff P).mp h
+    intro y hy
+    refine Or.inr (Or.inl ⟨rfl, ?_⟩)
+    rcases Sym2.mem_iff.mp hy with rfl | rfl <;> simp only [tl, tr] <;> omega
+  · have h0 : P.i + 2 = n := (rightP_eq_self_iff P).mp h
+    intro y hy
+    refine Or.inr (Or.inr (Or.inl ⟨rfl, ?_⟩))
+    rcases Sym2.mem_iff.mp hy with rfl | rfl <;> simp only [tr, br] <;> omega
+  · have h0 : P.j = 0 := (downP_eq_self_iff P).mp h
+    intro y hy
+    refine Or.inr (Or.inr (Or.inr ⟨rfl, ?_⟩))
+    rcases Sym2.mem_iff.mp hy with rfl | rfl <;> simp only [br, bl] <;> omega
+
+/-- **CONSTANT ALONG ONE SIDE KILLS THAT ONE RIM.** No hypothesis at all about the other three
+sides of the box. -/
+theorem no_rim_edge_of_side_const {τ : Config n} {d : Fin 4}
+    (hconst : ∀ p q : Site n, OnSide d p → OnSide d q → τ p = τ q) (P : Plaq n) :
+    ¬ (extDual τ).Adj (Sum.inl P) (Sum.inr d) := by
+  rintro ⟨hmem, hout⟩
+  have hb := outward_side_onSide hout
+  revert hmem hb
+  refine Sym2.ind (fun a b hmem hb => ?_) (sideOf P d)
+  rw [mem_contour] at hmem
+  exact hmem.2 (hconst a b (hb a (Sym2.mem_mk_left a b)) (hb b (Sym2.mem_mk_right a b)))
+
+/-- With no edge into rim `d`, that rim is isolated, so a walk ending there began there. Stated
+per direction, unlike `stays_inl`, which needs every rim edge gone at once — a walk may legally
+visit the other three rims and come back. -/
+theorem starts_at_rim {τ : Config n} {d : Fin 4}
+    (h : ∀ Q : Plaq n, ¬ (extDual τ).Adj (Sum.inl Q) (Sum.inr d)) :
+    ∀ {a b : ExtV n}, (extDual τ).Walk a b → b = Sum.inr d → a = Sum.inr d := by
+  intro a b w
+  induction w with
+  | nil => exact id
+  | @cons u v _ hadj _ ih =>
+    intro hb
+    have hv := ih hb
+    subst hv
+    cases u with
+    | inl Q => exact absurd hadj (h Q)
+    | inr e => exact hadj.elim
+
+/-- **REACHING RIM `d` NEEDS THE CONFIGURATION TO CHANGE ALONG SIDE `d`.** -/
+theorem not_reachable_rim_of_side_const {τ : Config n} {d : Fin 4}
+    (hconst : ∀ p q : Site n, OnSide d p → OnSide d q → τ p = τ q) (P : Plaq n) :
+    ¬ (extDual τ).Reachable (Sum.inl P) (Sum.inr d) := by
+  rintro ⟨w⟩
+  exact absurd (starts_at_rim (no_rim_edge_of_side_const hconst) w rfl) (by simp)
+
+/-- **THE LOCALISED NECESSARY CONDITION.** If the plaquette at `x` reaches the rim in direction
+`d`, then some site **on side `d` of the box** is outside the cluster of `x`. §4 gives a site
+somewhere on the boundary; this names which of the four sides it is on. -/
+theorem exists_onSide_outside_cluster_of_reaches_rim {σ : Config n} {x : Site n}
+    {P : Plaq n} {d : Fin 4}
+    (h : (extDual (clusterOn σ x)).Reachable (Sum.inl P) (Sum.inr d)) :
+    ∃ p : Site n, OnSide d p ∧ ¬ (downGraph σ).Reachable x p := by
+  by_contra hc
+  refine not_reachable_rim_of_side_const (τ := clusterOn σ x) ?_ P h
+  intro p q hp hq
+  have hall : ∀ y : Site n, OnSide d y → (downGraph σ).Reachable x y := by
+    intro y hy
+    by_contra hny
+    exact hc ⟨y, hy, hny⟩
+  rw [show clusterOn σ x p = true from clusterOn_eq_true_iff.mpr (hall p hp),
+    show clusterOn σ x q = true from clusterOn_eq_true_iff.mpr (hall q hq)]
 
 end RimBoundary
