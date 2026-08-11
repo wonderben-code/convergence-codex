@@ -104,8 +104,15 @@ end Monoid
 
 section Group
 
-variable {R M N : Type*} [CommRing R] [AddCommGroup M] [Module R M]
-  [AddCommGroup N] [Module R N] {Q : QuadraticMap R M N}
+/- **The same context as the monoid above, and it used to be stronger.** This section asked for
+`[CommRing R] [AddCommGroup M] [AddCommGroup N]` while the section directly above it — the same
+structure, one axiom less — asked only for `[CommSemiring R] [AddCommMonoid M] [AddCommMonoid N]`.
+Nothing here consumes the difference: the inverse is `IsometryEquiv.symm`, and `inv_mul_cancel` is
+`LinearEquiv.left_inv`, neither of which needs negation. Weakened after `ERRATUM 116`, where the
+same defect appeared in `IsingTransferSym` and was traced to copying a typeclass context from
+elsewhere rather than reading off what the proofs use. -/
+variable {R M N : Type*} [CommSemiring R] [AddCommMonoid M] [Module R M]
+  [AddCommMonoid N] [Module R N] {Q : QuadraticMap R M N}
 
 instance : Inv (Q.IsometryEquiv Q) := ⟨IsometryEquiv.symm⟩
 
@@ -114,6 +121,14 @@ instance : Inv (Q.IsometryEquiv Q) := ⟨IsometryEquiv.symm⟩
 
 instance : Group (Q.IsometryEquiv Q) where
   inv_mul_cancel f := DFunLike.ext _ _ fun x => f.toLinearEquiv.left_inv x
+
+/- **AND THE WEAKENING BITES, CHECKED RATHER THAN ANNOUNCED.** `ℕ` is a `CommSemiring` and not a
+ring, and an `AddCommMonoid` is a `ℕ`-module automatically, so this line asks for the isometry group
+of a quadratic map with **nothing to subtract anywhere in sight** — which the old `[CommRing R]
+[AddCommGroup M]` refused outright. It is an `example` on purpose: it is a witness, not an instance,
+and should not enter the instance graph. `check_ledger.py` does not count it as a declaration. -/
+example {M N : Type} [AddCommMonoid M] [AddCommMonoid N] (Q : QuadraticMap ℕ M N) :
+    Group (Q.IsometryEquiv Q) := inferInstance
 
 end Group
 
