@@ -37,6 +37,16 @@ wall exist only to stop a reader inferring otherwise from the names `SpectralAct
 > *a* witness establishes nothing at all. `IsMirrorHalf` sat in this estate for a week with only
 > the trivial witness, and the file that noticed said so; this one is checked rather than
 > assumed.
+>
+> **`pair_symm_of_bianchi`** (§5) — **one of the four clauses is redundant.** The two
+> antisymmetries and the first Bianchi identity imply the pair symmetry, by way of
+> `bianchi_alt_sum`, which is the cancellation identity behind it stated as a theorem rather than
+> as an explanation. `IsAlgCurv.mk'` is the three-clause constructor that follows.
+>
+> **`bianchi_not_implied`** (§6) — **and no other clause is.** `ω ⊗ ω` for the standard symplectic
+> form on `Fin 4` satisfies both antisymmetries and the pair symmetry and fails Bianchi. The
+> dimension is forced downward as far as this file can force it: `eq_zero_of_le_one` rules out
+> `n ≤ 1` and `bianchi_of_antisymm_two` rules out `n = 2`; `n = 3` is open here and said to be.
 
 ## Why components rather than multilinear maps
 
@@ -183,12 +193,246 @@ theorem constCurv_ne_zero {n : ℕ} (hn : 2 ≤ n) : constCurv n ≠ fun _ _ _ _
   rw [h] at this
   simp [scal, ricci] at this
 
-/-! ## 4. What no theorem here uses
+/-! ## 4. What no theorem here uses — **SUPERSEDED BY §5, and kept as written**
 
-**`bianchi` is not consumed by anything in this file.** `ricci_symm` uses the pair symmetry and
-both antisymmetries; the witness lemmas verify Bianchi but nothing downstream reads it. It is in
-the structure because an algebraic curvature tensor has it, not because a proof below needs it,
-and a reader should not infer that the clause is load-bearing here. It becomes load-bearing in
-the classification this file does not attempt. -/
+> **`bianchi` is not consumed by anything in this file.** `ricci_symm` uses the pair symmetry and
+> both antisymmetries; the witness lemmas verify Bianchi but nothing downstream reads it. It is in
+> the structure because an algebraic curvature tensor has it, not because a proof below needs it,
+> and a reader should not infer that the clause is load-bearing here. It becomes load-bearing in
+> the classification this file does not attempt.
+
+That paragraph was true of §§1–3 and is **false of the file as it now stands**: `bianchi` is what
+proves the pair symmetry in §5, so it is load-bearing here after all, and the classification is not
+where it first earns its place. It is quoted rather than deleted because the observation is what
+produced §5 — noticing a clause was inert is what made asking *which clauses are inert* the next
+question, and the answer turned out to be a theorem rather than a note.
+
+## 5. Which of the four clauses are load-bearing
+
+The question §4 raised, asked properly. Three of the four dependencies among the clauses are
+settled below and the fourth — whether `bianchi` follows from the rest — is settled in §6, in the
+negative, by a witness. -/
+
+section Dependencies
+
+variable {R : Fin n → Fin n → Fin n → Fin n → ℝ}
+
+/-- A slot repeated across an antisymmetric pair kills the tensor: `R a a c d = 0`. -/
+theorem diag_left_eq_zero (hL : ∀ a b c d, R a b c d = -R b a c d) (a c d : Fin n) :
+    R a a c d = 0 := by
+  have h := hL a a c d
+  linarith
+
+/-- The same on the right: `R a b c c = 0`. **Used by nothing below** — it is the mirror of
+`diag_left_eq_zero` and is here because a vocabulary file that carries one half of a symmetric pair
+and not the other is a nuisance downstream. Said explicitly, because §4 is what this file thinks of
+declarations whose role a reader might over-read. -/
+theorem diag_right_eq_zero (hR : ∀ a b c d, R a b c d = -R a b d c) (a b c : Fin n) :
+    R a b c c = 0 := by
+  have h := hR a b c c
+  linarith
+
+/-- **THE IDENTITY BEHIND THE NEXT THEOREM, PROVED RATHER THAN ASSERTED.** Writing `B(x,y,z,w)`
+for the Bianchi sum `R x y z w + R y z x w + R z x y w`,
+
+`B(a,b,c,d) − B(a,b,d,c) − B(a,c,d,b) + B(b,c,d,a) = 2 (R a b c d − R c d a b)`
+
+**using only the two antisymmetries.** Ten of the twelve terms on the left cancel in pairs and the
+remaining two double. This was the file's explanation of `pair_symm_of_bianchi`, sitting in a
+docstring where nothing checked it; it is a theorem now, so the explanation and the proof are the
+same object. -/
+theorem bianchi_alt_sum
+    (hL : ∀ a b c d, R a b c d = -R b a c d)
+    (hR : ∀ a b c d, R a b c d = -R a b d c)
+    (a b c d : Fin n) :
+    (R a b c d + R b c a d + R c a b d) - (R a b d c + R b d a c + R d a b c)
+      - (R a c d b + R c d a b + R d a c b) + (R b c d a + R c d b a + R d b c a)
+      = 2 * (R a b c d - R c d a b) := by
+  have e1 := hR a b c d
+  have e2 := hR b c a d
+  have e3 := hL a c d b
+  have e4 := hR c a b d
+  have e5 := hR d a b c
+  have e6 := hR c d a b
+  have e7 := hL d b c a
+  have e8 := hR b d a c
+  linarith
+
+/-- **THE PAIR SYMMETRY IS NOT AN INDEPENDENT ASSUMPTION.** The two antisymmetries and the first
+Bianchi identity imply it: the left-hand side of `bianchi_alt_sum` is a signed sum of four Bianchi
+sums, so it vanishes, and its right-hand side is `2 (R a b c d − R c d a b)`.
+
+This is the classical fact that the four symmetries of a Riemann tensor are one redundant. It is
+also what makes the `bianchi` clause load-bearing in this file — see §4. -/
+theorem pair_symm_of_bianchi
+    (hL : ∀ a b c d, R a b c d = -R b a c d)
+    (hR : ∀ a b c d, R a b c d = -R a b d c)
+    (hB : ∀ a b c d, R a b c d + R b c a d + R c a b d = 0)
+    (a b c d : Fin n) : R a b c d = R c d a b := by
+  have key := bianchi_alt_sum hL hR a b c d
+  rw [hB a b c d, hB a b d c, hB a c d b, hB b c d a] at key
+  linarith
+
+/-- Given the pair symmetry, the right antisymmetry is the left one conjugated by it. -/
+theorem antisymm_right_of_pair_symm
+    (hL : ∀ a b c d, R a b c d = -R b a c d)
+    (hP : ∀ a b c d, R a b c d = R c d a b)
+    (a b c d : Fin n) : R a b c d = -R a b d c := by
+  rw [hP a b c d, hP a b d c]
+  exact hL c d a b
+
+/-- And symmetrically. So **in the presence of the pair symmetry the two antisymmetries are
+equivalent**, and the structure has two different three-clause presentations, not one. -/
+theorem antisymm_left_of_pair_symm
+    (hR : ∀ a b c d, R a b c d = -R a b d c)
+    (hP : ∀ a b c d, R a b c d = R c d a b)
+    (a b c d : Fin n) : R a b c d = -R b a c d := by
+  rw [hP a b c d, hP b a c d]
+  exact hR c d a b
+
+/-- **A THREE-CLAUSE CONSTRUCTOR**, which is the practical content of `pair_symm_of_bianchi`:
+anyone exhibiting an algebraic curvature tensor has one fewer clause to check. -/
+theorem IsAlgCurv.mk'
+    (hL : ∀ a b c d, R a b c d = -R b a c d)
+    (hR : ∀ a b c d, R a b c d = -R a b d c)
+    (hB : ∀ a b c d, R a b c d + R b c a d + R c a b d = 0) :
+    IsAlgCurv R where
+  antisymm_left := hL
+  antisymm_right := hR
+  pair_symm := pair_symm_of_bianchi hL hR hB
+  bianchi := hB
+
+/-- **BELOW DIMENSION TWO THERE IS NOTHING TO CLASSIFY:** every algebraic curvature tensor
+vanishes identically, from the left antisymmetry alone, because `Fin n` is then a subsingleton and
+every index equals every other. So the hypothesis `2 ≤ n` carried by `scal_constCurv_pos` and
+`constCurv_ne_zero` is **sharp** rather than a convenience — at `n ≤ 1` those statements are false,
+not merely unproved. -/
+theorem eq_zero_of_le_one (hn : n ≤ 1) (hL : ∀ a b c d, R a b c d = -R b a c d)
+    (a b c d : Fin n) : R a b c d = 0 := by
+  have : Subsingleton (Fin n) := Fin.subsingleton_iff_le_one.mpr hn
+  have hab : a = b := Subsingleton.elim a b
+  subst hab
+  exact diag_left_eq_zero hL a c d
+
+/-- **AND SHARPNESS IS A THEOREM, NOT A REMARK.** The previous docstring said `2 ≤ n` is sharp
+because `constCurv` vanishes below it; here that is proved, so the word "sharp" is carried by
+something. `constCurv_ne_zero`'s conclusion is therefore false at `n ≤ 1` rather than merely
+unproved. -/
+theorem constCurv_eq_zero_of_le_one (hn : n ≤ 1) (a b c d : Fin n) :
+    constCurv n a b c d = 0 :=
+  eq_zero_of_le_one hn (isAlgCurv_constCurv n).antisymm_left a b c d
+
+/-- **ON `Fin 2` THE BIANCHI IDENTITY IS FREE**, from the left antisymmetry alone — neither the
+right antisymmetry nor the pair symmetry is needed. Among any three indices drawn from a
+two-element type two coincide, and each of the three coincidences makes one term of the Bianchi sum
+vanish and the other two cancel by antisymmetry. This is what stops `Fin 2` from being a candidate
+witness in §6, and it is the exact point at which the argument fails for larger `n`: the pigeonhole
+step, and nothing else. -/
+theorem bianchi_of_antisymm_two {R : Fin 2 → Fin 2 → Fin 2 → Fin 2 → ℝ}
+    (hL : ∀ a b c d, R a b c d = -R b a c d) (a b c d : Fin 2) :
+    R a b c d + R b c a d + R c a b d = 0 := by
+  have hz := diag_left_eq_zero hL
+  by_cases hab : a = b
+  · rw [hab]
+    have h1 := hz b c d
+    have h2 := hL b c b d
+    linarith
+  by_cases hbc : b = c
+  · rw [hbc]
+    have h1 := hz c a d
+    have h2 := hL a c c d
+    linarith
+  by_cases hac : a = c
+  · rw [hac]
+    have h1 := hz c b d
+    have h2 := hL c b c d
+    linarith
+  · exfalso
+    have ha := a.isLt
+    have hb := b.isLt
+    have hc := c.isLt
+    have n1 : a.val ≠ b.val := fun h => hab (Fin.ext h)
+    have n2 : b.val ≠ c.val := fun h => hbc (Fin.ext h)
+    have n3 : a.val ≠ c.val := fun h => hac (Fin.ext h)
+    omega
+
+end Dependencies
+
+/-! ## 6. And `bianchi` is NOT redundant — a witness, not an assertion
+
+§5 removes one clause from the structure. It would be easy to leave the reader thinking the other
+three are equally soft, and easier still to *say* they are not without checking. This section
+exhibits a tensor satisfying **both antisymmetries and the pair symmetry** and **failing Bianchi**,
+so the remaining three-clause presentation is minimal in the one direction §5 leaves open.
+
+The witness is `ω ⊗ ω` for `ω` the standard symplectic form on `Fin 4`. Antisymmetry of `ω` costs
+no case analysis at all: `ω` is defined as `f a b − f b a`, so `ω a b = -ω b a` is `ring`. The
+Bianchi sum at `(0,1,2,3)` is the Plücker expression `ω₀₁ω₂₃ + ω₁₂ω₀₃ + ω₂₀ω₁₃`, which is `1`,
+and that single evaluation is the whole refutation. -/
+
+/-- An asymmetric seed; only `symp` below is used, and only through `symp_antisymm`. -/
+def sympSeed (a b : Fin 4) : ℝ := if a = 0 ∧ b = 1 then 1 else if a = 2 ∧ b = 3 then 1 else 0
+
+/-- The standard symplectic form on `Fin 4`, as `sympSeed` antisymmetrised. -/
+def symp (a b : Fin 4) : ℝ := sympSeed a b - sympSeed b a
+
+theorem symp_antisymm (a b : Fin 4) : symp a b = -symp b a := by
+  simp only [symp]; ring
+
+/-- `ω ⊗ ω`. -/
+def sympCurv (a b c d : Fin 4) : ℝ := symp a b * symp c d
+
+theorem sympCurv_antisymm_left (a b c d : Fin 4) :
+    sympCurv a b c d = -sympCurv b a c d := by
+  simp only [sympCurv]; rw [symp_antisymm a b]; ring
+
+theorem sympCurv_antisymm_right (a b c d : Fin 4) :
+    sympCurv a b c d = -sympCurv a b d c := by
+  simp only [sympCurv]; rw [symp_antisymm c d]; ring
+
+theorem sympCurv_pair_symm (a b c d : Fin 4) : sympCurv a b c d = sympCurv c d a b := by
+  simp only [sympCurv]; ring
+
+/-- **THE BIANCHI SUM IS `1` AT `(0,1,2,3)`.** -/
+theorem sympCurv_bianchi_ne_zero :
+    sympCurv 0 1 2 3 + sympCurv 1 2 0 3 + sympCurv 2 0 1 3 = 1 := by
+  norm_num [sympCurv, symp, sympSeed, Fin.ext_iff]
+
+theorem not_isAlgCurv_sympCurv : ¬ IsAlgCurv sympCurv := by
+  intro h
+  have h0 := h.bianchi 0 1 2 3
+  rw [sympCurv_bianchi_ne_zero] at h0
+  exact one_ne_zero h0
+
+/-- **SO THE OTHER THREE CLAUSES DO NOT IMPLY `bianchi`**, and this is the theorem that says so
+rather than four lemmas a reader has to assemble. Together with `pair_symm_of_bianchi`: of the four
+clauses of `IsAlgCurv`, the pair symmetry is redundant and the Bianchi identity is not.
+
+**The dimension is not arbitrary and the file proves it is not.** `eq_zero_of_le_one` kills `n ≤ 1`
+outright, and `bianchi_of_antisymm_two` shows no witness can exist over `Fin 2` either — there the
+Bianchi identity follows from the left antisymmetry alone. `Fin 3` is **not settled here**: no
+witness is offered and no proof that none exists, and the reason is that the argument that works
+for `Fin 2` is pigeonhole on three indices and simply stops. So what is established is that the
+smallest witness lives in dimension `3` or `4`, and that `4` works. -/
+theorem bianchi_not_implied :
+    ∃ R : Fin 4 → Fin 4 → Fin 4 → Fin 4 → ℝ,
+      (∀ a b c d, R a b c d = -R b a c d) ∧
+      (∀ a b c d, R a b c d = -R a b d c) ∧
+      (∀ a b c d, R a b c d = R c d a b) ∧
+      ¬ (∀ a b c d, R a b c d + R b c a d + R c a b d = 0) := by
+  refine ⟨sympCurv, sympCurv_antisymm_left, sympCurv_antisymm_right, sympCurv_pair_symm, ?_⟩
+  intro hB
+  have h0 := hB 0 1 2 3
+  rw [sympCurv_bianchi_ne_zero] at h0
+  exact one_ne_zero h0
+
+/-! ## 7. What §§5–6 do NOT settle
+
+They say nothing about **`antisymm_left` alone**. `antisymm_left_of_pair_symm` shows it follows
+from `antisymm_right` together with the pair symmetry, so it is redundant in *that* presentation;
+whether it follows from `antisymm_right` and `bianchi` without the pair symmetry is **not decided
+here and no witness is offered either way**. Nor is any of this a step toward `a₂`: §§5–6 are
+statements about a structure with four clauses, and the wall named in the header is untouched by
+them. -/
 
 end AlgebraicCurvature
