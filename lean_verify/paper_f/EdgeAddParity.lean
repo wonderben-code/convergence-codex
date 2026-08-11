@@ -20,19 +20,28 @@ to "circuits plus one open path".
 It is a parity statement about neighbour sets, and it is complete: the three cases of
 `neighborSet_sup_edge` (the two endpoints, and everything else) are proved, not assumed.
 
-**It is not the decomposition theorem for open paths, and the gap is named precisely.** From a
-cycle of `G ⊔ edge u v` through the added edge one wants to delete that edge and read off a
-`G`-path from `u` to `v`. Deleting an edge from a cycle *does* leave a path — that is the
-content of `SimpleGraph.Walk.IsCycle`'s rotation — but the estate's decomposition returns a
-`List (SimpleGraph V)` of cycle **graphs** (`IsCycleGraph`), not walks, so there is no walk to
-rotate. Recovering a walk from an `IsCycleGraph` is a separate theorem and this file does not
-have it. **`S3bResidue.ClusterReachesRim` is therefore still unproved**, and the residue is
-now smaller and sharper than "a circuits-plus-paths theorem": it is *walk extraction from
-`IsCycleGraph`*.
+**§4 then cuts the added edge back out**, which is the part an earlier version of this header
+declared impossible:
 
-**The `4` case is not handled.** With four odd vertices one adds two edges, and which two
-pairs to join is a choice the graph does not make for you. Nothing here rules the case out and
-nothing here treats it; `RimParity.card_oddExt_eq_zero_or_two_or_four` leaves it open.
+> **`reachable_of_odd_pair`** — a finite graph that is even everywhere except at two
+> non-adjacent vertices has those two vertices **connected in the graph itself**.
+
+That is the circuits-plus-one-path statement in the form anything downstream actually wants: not
+a list of pieces, but a walk between the two odd vertices of the original graph.
+
+**The header used to say this step was blocked, and it was not (`ERRATUM 107`).** The claim was
+that the decomposition returns cycle *graphs* rather than walks, "so there is nothing to
+rotate". `CycleDecomposition.IsCycleGraph` is *defined* as
+`∃ v (p : H.Walk v v), p.IsCycle ∧ p.toSubgraph.spanningCoe = H` — the walk is existentially
+bound in the definition — and Mathlib's
+`SimpleGraph.adj_and_reachable_delete_edges_iff_exists_cycle` converts a cycle through an edge
+into reachability after deleting it. Neither fact was hard to find; the block was inferred from
+the *name* `IsCycleGraph` and never checked against the definition.
+
+**The `4` case is genuinely not handled.** With four odd vertices one adds two edges, and which
+two pairs to join is a choice the graph does not make for you. Nothing here rules the case out
+and nothing here treats it; `RimParity.card_oddExt_eq_zero_or_two_or_four` leaves it open. That
+sentence is a NOT ATTEMPTED, not a block.
 
 `IsingBoundaryField.MagnetisationBound` is untouched.
 -/
@@ -122,5 +131,76 @@ theorem exists_cycle_decomposition_sup_edge [Finite V] (hne : u ≠ v) (hnadj : 
 decomposition above is not a decomposition of `G` in disguise. -/
 theorem lt_sup_edge_of_odd (hne : u ≠ v) (hnadj : ¬ G.Adj u v) : G < G ⊔ edge u v :=
   lt_sup_edge _ _ _ hne hnadj
+
+/-! ## 4. Cutting the added edge back out
+
+An earlier draft of this file said the decomposition was as far as one could go, because it
+returns cycle *graphs* rather than walks and so "there is nothing to rotate". **That was wrong
+and is recorded as `ERRATUM 107`.** `CycleDecomposition.IsCycleGraph` is *defined* as
+`∃ v (p : H.Walk v v), p.IsCycle ∧ p.toSubgraph.spanningCoe = H` — the walk is right there,
+existentially bound — and Mathlib's
+`SimpleGraph.adj_and_reachable_delete_edges_iff_exists_cycle` turns a cycle through an edge into
+reachability after deleting it. Both were found by opening the definition instead of reading its
+name. -/
+
+/-- Adjacency in a `foldr`-union is adjacency in one of the members. -/
+theorem foldr_sup_adj {L : List (SimpleGraph V)} {a b : V} :
+    (L.foldr (· ⊔ ·) ⊥).Adj a b ↔ ∃ H ∈ L, H.Adj a b := by
+  induction L with
+  | nil => simp
+  | cons K L ih => simp [ih, or_and_right, exists_or]
+
+/-- A member of the list sits below the union. -/
+theorem le_foldr_sup {L : List (SimpleGraph V)} {H : SimpleGraph V} (hH : H ∈ L) :
+    H ≤ L.foldr (· ⊔ ·) ⊥ := fun _ _ h => foldr_sup_adj.mpr ⟨H, hH, h⟩
+
+/-- **DELETING AN EDGE OF A DECOMPOSED GRAPH LEAVES ITS ENDPOINTS CONNECTED.** Every edge of a
+cycle decomposition lies on one of the cycles, and a cycle through an edge is exactly what
+Mathlib's `adj_and_reachable_delete_edges_iff_exists_cycle` consumes. -/
+theorem reachable_sdiff_of_cycle_decomposition {L : List (SimpleGraph V)}
+    (hcyc : ∀ H ∈ L, IsCycleGraph H) (hsup : L.foldr (· ⊔ ·) ⊥ = G) (huv : G.Adj u v) :
+    (G \ fromEdgeSet {s(u, v)}).Reachable u v := by
+  classical
+  obtain ⟨H, hHL, hHadj⟩ := foldr_sup_adj.mp (hsup ▸ huv)
+  obtain ⟨w, p, hp, hEq⟩ := hcyc H hHL
+  have hmem : s(u, v) ∈ p.edges := by
+    rw [← hEq] at hHadj
+    rw [← Walk.adj_toSubgraph_iff_mem_edges]
+    simpa using hHadj
+  have hle : H ≤ G := hsup ▸ le_foldr_sup hHL
+  exact (adj_and_reachable_delete_edges_iff_exists_cycle.mpr
+    ⟨w, p.mapLe hle, hp.mapLe hle, p.edges_mapLe_eq_edges hle ▸ hmem⟩).2
+
+/-- Deleting the edge just added gives back exactly the graph it was added to. -/
+theorem sup_edge_sdiff_edge (hnadj : ¬ G.Adj u v) :
+    (G ⊔ edge u v) \ fromEdgeSet {s(u, v)} = G := by
+  have hE : (edge u v : SimpleGraph V) = fromEdgeSet {s(u, v)} := rfl
+  rw [← hE]
+  ext a b
+  simp only [sdiff_adj, sup_adj, edge_adj]
+  constructor
+  · rintro ⟨h | h, hn⟩
+    · exact h
+    · exact absurd h hn
+  · intro h
+    refine ⟨Or.inl h, ?_⟩
+    rintro ⟨(⟨rfl, rfl⟩ | ⟨rfl, rfl⟩), -⟩
+    · exact hnadj h
+    · exact hnadj h.symm
+
+/-- **THE OPEN PATH.** Two odd vertices, non-adjacent: they are connected **in `G` itself**.
+Add the edge between them, decompose the result into cycles, and cut the added edge back out —
+the cycle carrying it becomes a `G`-walk from `u` to `v`.
+
+This is the circuits-plus-one-path statement in the only form that matters downstream: not a
+list of pieces, but a walk between the two odd vertices, in the original graph. -/
+theorem reachable_of_odd_pair [Finite V] (hne : u ≠ v) (hnadj : ¬ G.Adj u v)
+    (hu : ¬ Even (G.neighborSet u).ncard) (hv : ¬ Even (G.neighborSet v).ncard)
+    (hrest : ∀ w, w ≠ u → w ≠ v → Even (G.neighborSet w).ncard) :
+    G.Reachable u v := by
+  obtain ⟨L, hcyc, -, hsup⟩ := exists_cycle_decomposition_sup_edge hne hnadj hu hv hrest
+  have hadj : (G ⊔ edge u v).Adj u v :=
+    Or.inr ((edge_adj u v u v).mpr ⟨Or.inl ⟨rfl, rfl⟩, hne⟩)
+  exact sup_edge_sdiff_edge hnadj ▸ reachable_sdiff_of_cycle_decomposition hcyc hsup hadj
 
 end SimpleGraph

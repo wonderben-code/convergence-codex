@@ -85,11 +85,13 @@ the decomposition would carry at most two open paths rather than an unbounded fa
 `RimParity.exists_cycle_decomposition_sup_edge_of_card_two` then *builds* a decomposition in the
 `= 2` case, by adding one edge between the two odd rims (they are never adjacent, so the classical
 repair applies with no side condition) and invoking `CycleDecomposition.exists_cycle_decomposition`
-on the result. **What route (i) still needs is therefore two specific things, both smaller than
-"a decomposition theorem":** the `= 4` case, where two edges must be added and the pairing is a
-choice; and **walk extraction** — the decomposition returns cycle *graphs* (`IsCycleGraph`), and
-turning the cycle carrying the added edge into an `extDual σ`-walk from rim to rim needs a walk,
-which no `IsCycleGraph` currently yields. That last is general graph theory with no Ising content.
+on the result. `RimParity.reachable_of_card_oddExt_two` then cuts the added edge back out, so in
+the `= 2` case
+**the rim-to-rim walk in `extDual σ` itself is a theorem** (`ERRATUM 107` records the day this
+step was wrongly written down as blocked). **Route (i) therefore has exactly one gap left:** the
+`= 4` case, where two edges must be added and the pairing is a choice nothing makes. And note
+what route (i) does NOT give even when complete — a walk between two *rims* says nothing about
+where the plaquette at `x` sits, which is `ERRATUM 97`'s point and is route (ii)'s job.
 **(ii)** The open-path analogue of `RayWalk.exists_circuit_near_of_down`: shoot a ray
 from `x`, count crossings, and locate the piece near `x` — which is how the interior chain does
 the
