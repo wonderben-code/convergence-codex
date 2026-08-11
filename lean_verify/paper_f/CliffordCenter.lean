@@ -2,17 +2,28 @@ import QuaternionCenter
 import CliffordRealMinkowski
 
 /-!
-# The centre of `Cl(1,3;ℝ)` is `ℝ` — `WALLS` §W7 step (iii)
+# The centre of `Cl(1,3;ℝ)` is `ℝ` — ALREADY PROVED IN THIS ESTATE, see the retraction below
+
+**RETRACTION, `ERRATUM 118`, added on the day this file was written.** `SpinKernel.lean` proved
+`clifford_central` on **8 August**, by transport along `cliffordRealMinkowskiEquiv` — the same route,
+the same isomorphism. `WALLS` §W7 records that closure **four paragraphs below the route paragraphs
+this file quotes**, and the section was not read to its end. **This file closes nothing that was
+open.**
+
+What it legitimately adds: `mem_center_congr`, the transport stated as a **general reusable lemma**
+about any `AlgEquiv` rather than inlined into one proof, and `instIsCentral`, which `SpinKernel`
+does not provide. Everything else here is a second proof of a theorem the estate already had.
 
 `WALLS.md` §W7's step (d) has three parts, and step (iii) of them is:
 
 > *"The centre of `Cl(1,3;ℝ)` is `ℝ`. This is the real work. Route: transport along the estate's
 > `cliffordRealMinkowskiEquiv` to `M₂(ℍ)` and compute the centre there."*
 
-**`QuaternionCenter` computed the centre there. It did not transport, and it said it had closed the
-step.** That overclaim is `ERRATUM 117`'s second addendum — a step read down as far as its *route*,
-the route's destination proved, and the step's name written on it. This file is the transport, and
-with it the step really does close.
+**`SpinKernel` did exactly this on 8 August** and `WALLS` says so four paragraphs after the quote
+above. The 11 August sequence — `QuaternionCenter` proving the route's destination and claiming the
+step (`ERRATUM 117` second addendum), then this file supplying the transport — re-derived a closed
+result twice over. Both errors are the same one: **reading part of a document and concluding about
+the whole.**
 
 > **`mem_center_congr`** — centre membership passes along **any** `AlgEquiv`, in either direction.
 > Stated generally because it is a general fact and nothing about it is Clifford-specific.
@@ -20,7 +31,8 @@ with it the step really does close.
 > **`algebraMap_eq_scalar`** — the one bridge the composition needs: the algebra map into a matrix
 > algebra is `Matrix.scalar` of the algebra map into the entries.
 >
-> **`center_eq_range`** — **the centre of `Cl(1,3;ℝ)` is exactly the scalars.** §W7 step (iii).
+> **`center_eq_range`** — the centre of `Cl(1,3;ℝ)` is exactly the scalars. **Already proved as
+> `SpinKernel.clifford_central`; this is a second proof.**
 >
 > **`mem_center_iff`** — the same as a membership criterion, which is the form step (ii) consumes.
 
@@ -79,13 +91,14 @@ theorem algebraMap_eq_scalar {n : Type*} [Fintype n] [DecidableEq n]
 
 /-! ## 3. The centre of `Cl(1,3;ℝ)` -/
 
-/-- **THE CENTRE OF `Cl(1,3;ℝ)` IS THE SCALARS.** `WALLS` §W7 step (iii), by the route §W7 itself
-proposed: transport along `cliffordRealMinkowskiEquiv` and use the centre of `M₂(ℍ[ℝ])`.
+/-- **THE CENTRE OF `Cl(1,3;ℝ)` IS THE SCALARS.** By transport along
+`cliffordRealMinkowskiEquiv`, using the centre of `M₂(ℍ[ℝ])`.
 
-Both halves of the computation were in hand before this file — the matrix half from Mathlib
-(`Matrix.subsemigroupCenter_eq_scalar_map`, over any `Semiring`, so the non-commutative entries are
-fine) and the quaternion half from `QuaternionCenter`. **What was missing was exactly this
-crossing.** -/
+**`SpinKernel.clifford_central` states this and proves it the same way, since 8 August.** This is a
+second proof and is kept only because `mem_center_congr` above factors the transport out as a
+general lemma. The one thing here that is not a duplicate is that the matrix half comes from
+**Mathlib** (`Matrix.subsemigroupCenter_eq_scalar_map`, any `Semiring`) rather than being
+hand-built, which is `ERRATUM 118`'s surviving finding. -/
 theorem mem_center_iff {x : CliffordAlgebra Q₁₃} :
     x ∈ Set.center (CliffordAlgebra Q₁₃)
       ↔ ∃ r : ℝ, x = algebraMap ℝ (CliffordAlgebra Q₁₃) r := by
@@ -112,12 +125,12 @@ instance instIsCentral : Algebra.IsCentral ℝ (CliffordAlgebra Q₁₃) where
     obtain ⟨r, hr⟩ := mem_center_iff.1 (by simpa using hx)
     exact ⟨r, hr.symm⟩
 
-/-! ## 4. The step is closed, and the wall is not
+/-! ## 4. Nothing here is closed by this file
 
-`WALLS` §W7 step (d)(iii) asked for exactly `center_eq_range`, and it is proved. **Step (d) is not
-closed**: (i) *trivial action ⇒ commutes with every vector* and (ii) *commutes with every vector ⇒
-central* are both still to build, and §W7 records them as small rather than as done — a distinction
-this estate has now got wrong once today and should not repeat. **W7 is not closed**: step (d) is
-one of several, and the other parts of the double-cover statement remain research-level. -/
+**`WALLS` §W7 step (d) was closed on 8 August by `SpinKernel.lean`** — `kernel_iff`, a spin element
+acts trivially exactly when it is `±1`, with (i), (ii), (iii) and (iv) all built there. This file
+re-proved (iii). **W7 itself is not closed**: step (d) is one of three parts of the double-cover
+statement and the other two remain research-level, which was true before this file and is true
+after it. -/
 
 end CliffordCenter

@@ -2,7 +2,19 @@ import Mathlib.Algebra.Quaternion
 import Mathlib.Tactic
 
 /-!
-# The centre of `ℍ[ℝ]` is `ℝ`
+# The centre of `ℍ[ℝ]` is `ℝ` — ALREADY PROVED IN THIS ESTATE, see the retraction below
+
+**RETRACTION, `ERRATUM 118`, added on the day this file was written.** `SpinKernel.lean` proved
+`quaternion_central` and `matrix2H_central` on **8 August**, and `WALLS` §W7 records it four
+paragraphs below the route paragraphs quoted here. **The wall step this file claims to advance was
+already closed.**
+
+**Three things here are genuinely new and survive the retraction.** (1) `Matrix.center_eq_range`
+and `Matrix.subsemigroupCenter_eq_scalar_map` **are in Mathlib** — which falsifies `SpinKernel`'s
+own *"Mathlib does not have this"* and *"Also absent from Mathlib"* for the matrix half, and those
+claims still stand uncorrected in that file. (2) `mem_matrixCenter_iff` holds for **every** index
+type; `SpinKernel.matrix2H_central` is `Fin 2` only. (3) The `Algebra.IsCentral` instance, which the
+estate did not have. The rest is a second proof of what was already there.
 
 `WALLS.md` §W7 step (iii) needs the centre of `M₂(ℍ[ℝ])`, and records that **two** ingredients are
 missing from Mathlib and must be built here:
