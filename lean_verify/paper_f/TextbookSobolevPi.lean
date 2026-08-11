@@ -29,7 +29,7 @@
 
   WHERE MATHLIB'S INTEGRATION BY PARTS DOES AND DOES NOT APPEAR —
   **ERRATUM 51, and this file is the evidence for both halves.** The
-  12 August probe concluded that
+  9 August probe concluded that
   `integral_mul_fderiv_eq_neg_fderiv_mul_of_integrable` supplies N5's hard
   step. **It supplies no step of the bridge**: §3's two directions are the
   substitution `φ = ψ/ρₙ` and `ψ = φ·ρₙ` plus
@@ -228,7 +228,7 @@ A biconditional between two classes is uninteresting if both are empty. The
 constants are in it with the zero gradient — and proving that needs exactly
 one fact, `∫ ∂ᵢψ dx = 0` for a compactly supported smooth `ψ`, which is
 **Mathlib's `integral_mul_fderiv_eq_neg_fderiv_mul_of_integrable` at
-`f ≡ 1`.** So the tool the 12 August probe found is genuinely used in this
+`f ≡ 1`.** So the tool the 9 August probe found is genuinely used in this
 file — for a witness, not for the bridge. ERRATUM 51 was about the
 attribution, not about the tool.
 -/

@@ -14,7 +14,7 @@
   supplies the criterion.
 
   THE ITEM AS OPENED ASSUMED THE WRONG SHAPE, and saying so is the point of
-  the first section. `UNLOCK_WATCHLIST`'s entry, written 13 August, took the
+  the first section. `UNLOCK_WATCHLIST`'s entry, written 9 August, took the
   1-dimensional twin `PoincareBeyondPolynomials.stein_general` as the model:
   Gaussian integration by parts proved by FTC on the line with the boundary
   terms shown to vanish at ±∞. The boundary term is there because the 1-d

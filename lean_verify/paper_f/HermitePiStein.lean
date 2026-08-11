@@ -1,6 +1,6 @@
 /-
   HermitePiStein.lean — **the multi-index Hermite recursion**, which the
-  13 August probe of N6 identified as the one missing ingredient.
+  9 August probe of N6 identified as the one missing ingredient.
 
   WHAT THE PROBE FOUND, and why this file exists. The one-dimensional
   Poincaré inequality on the Stein class (`PoincareSteinClass`) is pure
@@ -152,7 +152,7 @@ theorem facPi_succAt (n : ℕ) (m : Fin n → ℕ) (i : Fin n) :
   ring
 
 /-- **`c_m(gᵢ) = (mᵢ+1)·c_{m+eᵢ}(f)`.** The multi-index twin of
-    `SteinCoefficients.coeff_steinPair`, and the ingredient the 13 August
+    `SteinCoefficients.coeff_steinPair`, and the ingredient the 9 August
     probe of N6 named as missing. -/
 theorem coeffPi_recursion (n : ℕ) {f : (Fin n → ℝ) → ℝ}
     {g : Fin n → ((Fin n → ℝ) → ℝ)} (h : SteinPairPi n f g)
