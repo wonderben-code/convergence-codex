@@ -31,6 +31,11 @@ stops applying — which is the whole content of Scott's move.
 > the continuous equation either, because the constant maps already inject `D` into `D →𝒄 D` and
 > miss the identity. Any solution is infinite, which is what `D∞` is, and `dInfExists_infinite`
 > states that as a constraint on the target rather than as a fact about finite types.
+>
+> **`subsingleton_of_discDomainReflexive`** — and no **discrete** order solves it either, however
+> large the type: there `→𝒄` and `→` coincide (`discEquiv`) and §2 applies unchanged, Cantor having
+> no size hypothesis. So a solution must be infinite **and** genuinely ordered, which is what the
+> `D∞` construction produces and why it takes a construction.
 
 ## The estate's existing `ReflexiveDomain` is a complete lattice and nothing more
 
@@ -43,10 +48,10 @@ is why the statement had to be written down here before it could be refuted.
 ## What this file does NOT do
 
 **It does not build `D∞` and does not shorten that construction by one line.** `DInfExists` below
-names the target and is not proved. This file supplies the two facts that bracket it: the naive
-equation is impossible, and the continuous equation is impossible for finite `D`. Between those
-sits an inverse limit of ω-CPOs along embedding–projection pairs, and neither Mathlib nor this
-estate has one.
+names the target and is not proved. This file supplies the facts that bracket it: the naive
+equation is impossible outright, and the continuous equation is impossible for finite `D` and for
+any discrete order. Between those and `D∞` sits an inverse limit of ω-CPOs along
+embedding–projection pairs, and neither Mathlib nor this estate has one.
 
 **Probed 2026-08-11, by shape.** Mathlib has `OmegaCompletePartialOrder` (80 declarations in
 `Order/OmegaCompletePartialOrder.lean`), the continuous-hom bundling `ContinuousHom` with notation
@@ -178,7 +183,60 @@ theorem not_isDomainReflexive_of_finite (D : Type u) [OmegaCompletePartialOrder 
   obtain ⟨c, hc⟩ := hsurj ContinuousHom.id
   exact id_notMem_range_const h ⟨c, hc⟩
 
-/-! ## 5. The target, named and not proved
+/-! ## 5. The discrete order, so the small-case check is a theorem rather than a paragraph
+
+An earlier draft of §6 ruled out one further family of candidates **by hand** and said so: an
+infinite type carrying the discrete order is an ω-CPO on which every function is continuous, so §2
+applies and the case dies. Leaving that as prose in the file that names a gap object is exactly
+what `ERRATUM 108` was about, so it is proved here.
+
+The point of the discrete order is that it makes `→𝒄` and `→` the same thing — which is the
+converse of §3's message, and together they say what Scott's move actually costs: the order has to
+be non-trivial enough that continuity is a real restriction. -/
+
+/-- `D` carrying the discrete order, in which `x ≤ y` means `x = y`. -/
+def Disc (D : Type u) : Type u := D
+
+instance : PartialOrder (Disc D) where
+  le x y := x = y
+  le_refl _ := rfl
+  le_trans _ _ _ h₁ h₂ := h₁.trans h₂
+  le_antisymm _ _ h _ := h
+
+theorem disc_le_iff {x y : Disc D} : x ≤ y ↔ x = y := Iff.rfl
+
+/-- **A DISCRETE ORDER IS AN ω-CPO.** A monotone `ℕ →o Disc D` is constant, so every chain has a
+supremum and it is the chain's first value. -/
+instance : OmegaCompletePartialOrder (Disc D) where
+  ωSup c := c 0
+  le_ωSup c i := (c.monotone (Nat.zero_le i)).symm
+  ωSup_le _ _ h := h 0
+
+/-- Every self-map of a discrete ω-CPO is continuous, so `→𝒄` is `→`. -/
+def discHom (f : Disc D → Disc D) : Disc D →𝒄 Disc D where
+  toFun := f
+  monotone' _ _ h := congrArg f (disc_le_iff.mp h)
+  map_ωSup' _ := rfl
+
+/-- **THE CONTINUOUS SELF-MAPS OF A DISCRETE ω-CPO ARE ALL OF THEM.** -/
+def discEquiv (D : Type u) : (Disc D →𝒄 Disc D) ≃ (Disc D → Disc D) where
+  toFun f := f
+  invFun := discHom
+  left_inv _ := rfl
+  right_inv _ := rfl
+
+/-- **SO NO DISCRETE ORDER SOLVES SCOTT'S EQUATION EITHER**, however large the underlying type.
+Composing the equivalence with `discEquiv` lands exactly on §2, and §2 has no size hypothesis — it
+is Cantor, so infinity does not help. This is what the earlier draft asserted and did not prove. -/
+theorem subsingleton_of_discDomainReflexive (h : IsDomainReflexive (Disc D)) :
+    Subsingleton (Disc D) := by
+  obtain ⟨e⟩ := h
+  exact subsingleton_of_setReflexive (e.trans (discEquiv D))
+
+/-- And that is a statement about `D`, since `Disc D` is `D`. -/
+theorem subsingleton_disc_iff : Subsingleton (Disc D) ↔ Subsingleton D := Iff.rfl
+
+/-! ## 6. The target, named and not proved
 
 `PROOF_STRATEGY` §3's condition for leaving a chain is that the remaining leg be written down
 precisely. This is it. -/
@@ -195,14 +253,14 @@ produced. `¬ Subsingleton D` is not decoration: `PUnit` satisfies the equation 
 `isSetReflexive_punit` records it. Finite `D` is ruled out **in Lean**, by
 `not_isDomainReflexive_of_finite` above.
 
-*One further case was checked by hand and is NOT formalised here, and is labelled so rather than
-left looking like the rest.* An infinite type carrying the **discrete** order would also be an
-ω-CPO — a monotone `ℕ →o D` into a discrete order is constant, so every chain has a sup and every
-function is both monotone and continuous — and there `D →𝒄 D` is all of `D → D`, so §2 applies and
-the case dies. That paragraph is arithmetic done outside Lean; formalising it would mean building
-the discrete-order ω-CPO instance and the equivalence `(D →𝒄 D) ≃ (D → D)`, which is a unit of work
-and not this one. What it means for the target is that a witness must be infinite *and* genuinely
-ordered, which is exactly what `D∞` is and why it takes a construction.
+**And the discrete case is ruled out in Lean too, as of §5.** An earlier draft of this docstring
+ruled it out by hand and said so — an infinite type with the discrete order is an ω-CPO on which
+every function is continuous, so §2 applies. That paragraph is now
+`subsingleton_of_discDomainReflexive`, with the ω-CPO instance and `discEquiv` doing exactly the
+work the paragraph described. **Nothing about this gap object is now checked outside Lean.**
+
+What the two exclusions mean for the target: a witness must be infinite *and* genuinely ordered,
+which is exactly what `D∞` is and why it takes a construction.
 
 **Not attempted here.** What it needs is the inverse limit of the tower
 `D₀ ← D₁ ← D₂ ← ⋯` with `Dₙ₊₁ = Dₙ →𝒄 Dₙ`, the embedding–projection pairs relating consecutive
