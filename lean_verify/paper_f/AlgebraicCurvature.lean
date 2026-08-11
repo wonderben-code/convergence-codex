@@ -1,6 +1,7 @@
 import Mathlib.Algebra.BigOperators.Fin
 import Mathlib.Tactic.Ring
 import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.FinCases
 import Mathlib.Data.Real.Basic
 import Mathlib.Algebra.Order.BigOperators.Group.Finset
 
@@ -442,6 +443,106 @@ theorem bianchi_not_implied :
   have h0 := hB 0 1 2 3
   rw [sympCurv_bianchi_ne_zero] at h0
   exact one_ne_zero h0
+
+/-! ## 8. The Einstein trace, and the one classification this file can afford
+
+`IsAlgCurv` was built because W5's algebraic stair is about **maps out of** the space of algebraic
+curvature tensors. The distinguished one is the Einstein combination, and the smallest case of the
+classification is `n = 2`, where the space turns out to be one-dimensional and the Einstein
+combination is therefore identically zero — the algebraic shadow of the fact that the Einstein
+tensor carries no information in two dimensions.
+
+Still not `a₂`, still no manifold, and the `n = 4` classification is still not attempted. -/
+
+section Einstein
+
+variable {R : Fin n → Fin n → Fin n → Fin n → ℝ}
+
+/-- **THE EINSTEIN COMBINATION**, `Ric − ½ scal · δ`. -/
+noncomputable def einstein (R : Fin n → Fin n → Fin n → Fin n → ℝ) (b c : Fin n) : ℝ :=
+  ricci R b c - (1 / 2) * scal R * delta b c
+
+theorem einstein_symm (hR : IsAlgCurv R) (b c : Fin n) : einstein R b c = einstein R c b := by
+  simp only [einstein, ricci_symm hR b c, delta_symm b c]
+
+/-- **ITS TRACE IS `(1 − n/2) scal`.** In particular it is `−scal` in four dimensions
+(`trace_einstein_four`) and `0` in two — the first sign that `n = 2` is degenerate. -/
+theorem trace_einstein (R : Fin n → Fin n → Fin n → Fin n → ℝ) :
+    ∑ b, einstein R b b = (1 - (n : ℝ) / 2) * scal R := by
+  simp only [einstein, delta_self, mul_one]
+  rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
+    nsmul_eq_mul, ← scal]
+  ring
+
+theorem trace_einstein_four (R : Fin 4 → Fin 4 → Fin 4 → Fin 4 → ℝ) :
+    ∑ b, einstein R b b = -scal R := by
+  rw [trace_einstein]; norm_num
+
+theorem einstein_constCurv (n : ℕ) (b c : Fin n) :
+    einstein (constCurv n) b c = ((n : ℝ) - 1) * (1 - (n : ℝ) / 2) * delta b c := by
+  simp only [einstein, ricci_constCurv, scal_constCurv]
+  ring
+
+/-! ### The two-dimensional classification -/
+
+/-- **EVERY ALGEBRAIC CURVATURE TENSOR ON `Fin 2` IS A MULTIPLE OF `constCurv`**, and the
+multiple is read off at a single component. This is the `n = 2` case of the classification W5's
+account lists as not attempted; it is affordable here only because the space is one-dimensional
+and the proof is sixteen instances of the two antisymmetries. Neither the pair symmetry nor
+Bianchi is needed — by `bianchi_of_antisymm_two` the latter is free in this dimension anyway. -/
+theorem eq_smul_constCurv_two {R : Fin 2 → Fin 2 → Fin 2 → Fin 2 → ℝ}
+    (hL : ∀ a b c d, R a b c d = -R b a c d)
+    (hR : ∀ a b c d, R a b c d = -R a b d c) (a b c d : Fin 2) :
+    R a b c d = -R 0 1 0 1 * constCurv 2 a b c d := by
+  have k0 : ∀ c d : Fin 2, R 0 0 c d = 0 := fun c d => diag_left_eq_zero hL 0 c d
+  have k1 : ∀ c d : Fin 2, R 1 1 c d = 0 := fun c d => diag_left_eq_zero hL 1 c d
+  have m0 : ∀ a b : Fin 2, R a b 0 0 = 0 := fun a b => diag_right_eq_zero hR a b 0
+  have m1 : ∀ a b : Fin 2, R a b 1 1 = 0 := fun a b => diag_right_eq_zero hR a b 1
+  have p1 : R 1 0 0 1 = -R 0 1 0 1 := hL 1 0 0 1
+  have p2 : R 0 1 1 0 = -R 0 1 0 1 := by have h := hR 0 1 0 1; linarith
+  have p3 : R 1 0 1 0 = R 0 1 0 1 := by have h := hR 1 0 0 1; linarith
+  fin_cases a <;> fin_cases b <;> fin_cases c <;> fin_cases d <;>
+    simp [constCurv, delta, k0, k1, m0, m1, p1, p2, p3]
+
+/-- Hence its Ricci trace is a multiple of the metric. -/
+theorem ricci_two {R : Fin 2 → Fin 2 → Fin 2 → Fin 2 → ℝ}
+    (hL : ∀ a b c d, R a b c d = -R b a c d)
+    (hR : ∀ a b c d, R a b c d = -R a b d c) (b c : Fin 2) :
+    ricci R b c = -R 0 1 0 1 * delta b c := by
+  have h : ∀ a, R a b c a = -R 0 1 0 1 * constCurv 2 a b c a :=
+    fun a => eq_smul_constCurv_two hL hR a b c a
+  simp only [ricci]
+  rw [Finset.sum_congr rfl fun a _ => h a, ← Finset.mul_sum]
+  have hc := ricci_constCurv 2 b c
+  simp only [ricci] at hc
+  rw [hc]
+  norm_num
+
+/-- **AND THE EINSTEIN COMBINATION VANISHES IDENTICALLY IN TWO DIMENSIONS**, for every algebraic
+curvature tensor and not merely for the constant-curvature one. The scalar curvature is `2λ`, the
+Ricci trace is `λ δ`, and `λ δ − ½ · 2λ · δ = 0`. -/
+theorem einstein_eq_zero_two {R : Fin 2 → Fin 2 → Fin 2 → Fin 2 → ℝ}
+    (hL : ∀ a b c d, R a b c d = -R b a c d)
+    (hR : ∀ a b c d, R a b c d = -R a b d c) (b c : Fin 2) :
+    einstein R b c = 0 := by
+  have hs : scal R = 2 * -R 0 1 0 1 := by
+    simp only [scal]
+    rw [Finset.sum_congr rfl fun b _ => ricci_two hL hR b b]
+    simp [delta_self, Finset.sum_const, Finset.card_univ]
+  simp only [einstein, ricci_two hL hR, hs]
+  ring
+
+/-- **AND THAT VANISHING IS NOT VACUOUS**, by the standard §3 set for this file. It would be worth
+nothing if every algebraic curvature tensor on `Fin 2` were zero — `eq_smul_constCurv_two` says
+they are all multiples of one tensor, and a one-dimensional space could still be `{0}`. It is not:
+`constCurv 2` satisfies every clause and has scalar curvature `2`. So `einstein_eq_zero_two` says
+something about a class that has non-zero members, which is what makes it the algebraic shadow of
+"the Einstein tensor carries no information in two dimensions" rather than a triviality. -/
+theorem exists_scal_ne_zero_two :
+    ∃ R : Fin 2 → Fin 2 → Fin 2 → Fin 2 → ℝ, IsAlgCurv R ∧ scal R ≠ 0 :=
+  ⟨constCurv 2, isAlgCurv_constCurv 2, by rw [scal_constCurv]; norm_num⟩
+
+end Einstein
 
 /-! ## 7. What §§5–6 do NOT settle
 
