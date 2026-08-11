@@ -79,8 +79,12 @@ union bound, which quantifies over the whole event.
 Two routes are known and neither is attempted. **(i)** A decomposition of an
 even-except-at-the-rims graph into circuits plus paths between the odd vertices — for which
 `RimWalk.odd_degree_isRim` supplies the hypothesis, and which neither the estate nor Mathlib
-has. **(ii)** The open-path analogue of `RayWalk.exists_circuit_near_of_down`: shoot a ray from
-`x`, count crossings, and locate the piece near `x` — which is how the interior chain does the
+has. *Its arity is now known:* `RimParity.card_oddExt_eq_zero_or_two_or_four` says the odd
+vertices number `0`, `2` or `4`, so such a decomposition would carry **at most two** open
+paths, not an unbounded family. That bounds the theorem's shape; it does not supply the
+theorem. **(ii)** The open-path analogue of `RayWalk.exists_circuit_near_of_down`: shoot a ray
+from `x`, count crossings, and locate the piece near `x` — which is how the interior chain does
+the
 corresponding job. -/
 def ClusterReachesRim (n : ℕ) : Prop :=
   ∀ (σ : Config n) (x : Site n) (hi : x.1.val + 1 < n) (hj : x.2.val + 1 < n),
