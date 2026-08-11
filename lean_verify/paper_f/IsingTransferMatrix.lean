@@ -1,5 +1,6 @@
 import Mathlib.Analysis.SpecialFunctions.Exp
 import Mathlib.LinearAlgebra.Eigenspace.Matrix
+import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.Data.Complex.Basic
 
 /-!
@@ -212,5 +213,73 @@ theorem abs_ratio_lt_one (β : ℝ) : |lamMinus β / lamPlus β| < 1 := by
     simp only [lamPlus]; linarith [Real.exp_pos β, Real.exp_pos (-β)]
   rw [abs_div, abs_of_pos hpos, div_lt_one hpos]
   exact abs_lamMinus_lt_lamPlus β
+
+/-! ## 6. Powers, and the trace
+
+W4's clause (iii) wants the gap tied to correlation decay, and the object that does that in the
+textbook is the partition function written as `tr Tᴺ`. This section proves the **spectral half**
+of that: every power of the transfer matrix in closed form, and its trace.
+
+`transfer β` is `a·1 + b·X` with `a = e^β`, `b = e^{-β}` and `X` the swap, and `X² = 1`, so its
+powers stay in the two-dimensional algebra spanned by `1` and `X`. Written out, that is a
+symmetric matrix with `cN` on the diagonal and `dN` off it, and the induction is one `mul_fin_two`
+and some arithmetic. -/
+
+/-- The diagonal entry of `Tᴺ`, `(λ₊ᴺ + λ₋ᴺ)/2`. -/
+noncomputable def cN (β : ℝ) (N : ℕ) : ℝ := (lamPlus β ^ N + lamMinus β ^ N) / 2
+
+/-- The off-diagonal entry of `Tᴺ`, `(λ₊ᴺ − λ₋ᴺ)/2`. -/
+noncomputable def dN (β : ℝ) (N : ℕ) : ℝ := (lamPlus β ^ N - lamMinus β ^ N) / 2
+
+/-- **EVERY POWER OF THE TRANSFER MATRIX, IN CLOSED FORM.** -/
+theorem transfer_pow (β : ℝ) (N : ℕ) :
+    transfer β ^ N = !![cN β N, dN β N; dN β N, cN β N] := by
+  induction N with
+  | zero =>
+    rw [pow_zero, Matrix.one_fin_two]
+    norm_num [cN, dN]
+  | succ N ih =>
+    rw [pow_succ, ih, transfer, Matrix.mul_fin_two]
+    have hp : lamPlus β ^ (N + 1) = lamPlus β ^ N * (exp β + exp (-β)) := by
+      rw [pow_succ]; rfl
+    have hm : lamMinus β ^ (N + 1) = lamMinus β ^ N * (exp β - exp (-β)) := by
+      rw [pow_succ]; rfl
+    have e1 : cN β N * exp β + dN β N * exp (-β) = cN β (N + 1) := by
+      simp only [cN, dN, hp, hm]; ring
+    have e2 : cN β N * exp (-β) + dN β N * exp β = dN β (N + 1) := by
+      simp only [cN, dN, hp, hm]; ring
+    have e3 : dN β N * exp β + cN β N * exp (-β) = dN β (N + 1) := by
+      rw [add_comm]; exact e2
+    have e4 : dN β N * exp (-β) + cN β N * exp β = cN β (N + 1) := by
+      rw [add_comm]; exact e1
+    rw [e1, e2, e3, e4]
+
+/-- **AND ITS TRACE IS `λ₊ᴺ + λ₋ᴺ`** — the sum of the eigenvalues' `N`-th powers, which is what
+the partition function of the periodic chain of length `N` is equal to. -/
+theorem trace_transfer_pow (β : ℝ) (N : ℕ) :
+    Matrix.trace (transfer β ^ N) = lamPlus β ^ N + lamMinus β ^ N := by
+  rw [transfer_pow]
+  simp [Matrix.trace, Matrix.diag, Fin.sum_univ_two, cN]
+
+/-- **What remains of clause (iii), as ONE statement.** The partition function of the periodic
+chain, `∑_{s : Fin N → Bool} exp (β ∑ᵢ sᵢsᵢ₊₁)`, equals `tr Tᴺ`. That is the sum-over-paths
+identity `∑_s ∏ᵢ M_{sᵢ,sᵢ₊₁} = tr Mᴺ`, and **it is not proved here and is not in Mathlib** —
+probed 2026-08-11: `trace_pow_eq_sum`, `Matrix.trace_pow`, `trace_list_prod` and `prod_cycle`
+all return zero files. Given it, `trace_transfer_pow` turns the partition function into
+`λ₊ᴺ + λ₋ᴺ`, `ratio_eq_tanh` turns the ratio into `tanh β`, and clause (iii) closes for the
+chain. **NOT ATTEMPTED**, and the cyclic index bookkeeping is the reason it is a unit of its own
+rather than a corollary.
+
+**Checked at `N = 0` and `N = 1` by hand — arithmetic done outside Lean, and labelled as such.**
+`ERRATUM 108` refuted a gap object of this project that no one had tried to falsify, so a new one
+gets its small cases read before it is written down. At `N + 1 = 1` the index `i + 1` wraps to
+`i`, the product is `M s₀ s₀`, and the sum over the two functions `Fin 1 → Bool` is
+`M₀₀ + M₁₁ = tr M`. At `N + 1 = 2` the two factors are `M s₀ s₁` and `M s₁ s₀`, and the sum over
+four functions is `∑_{a,b} M_{ab} M_{ba} = tr M²`. Both agree, so the wrap-around convention in
+`Fin (N+1)` is the periodic chain and not an off-by-one. -/
+def PartitionIsTrace : Prop :=
+  ∀ (β : ℝ) (N : ℕ), ∑ s : Fin (N + 1) → Bool,
+      ∏ i : Fin (N + 1), transfer β (if s i then 0 else 1) (if s (i + 1) then 0 else 1)
+    = Matrix.trace (transfer β ^ (N + 1))
 
 end IsingTransferMatrix
