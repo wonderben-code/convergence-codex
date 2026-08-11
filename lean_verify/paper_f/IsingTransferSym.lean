@@ -1,5 +1,6 @@
 import IsingTransfer2D
 import Mathlib.Analysis.Matrix.Spectrum
+import Mathlib.Algebra.Quaternion
 
 /-!
 # The symmetrised two-dimensional transfer matrix
@@ -21,8 +22,13 @@ This file applies the textbook remedy.
 >
 > **`transferSym_isHermitian`** — so the spectrum is real and Mathlib's spectral theorem applies.
 >
-> **`trace_pow_mul_comm`** — `tr ((AB)ᵏ) = tr ((BA)ᵏ)` for any two square matrices. Not in Mathlib
-> under any name probed; proved here from `A · (BA)ᵏ = (AB)ᵏ · A` and `trace_mul_comm`.
+> **`trace_pow_mul_comm`** — `tr ((AB)ᵏ) = tr ((BA)ᵏ)` for any two square matrices. Absent from
+> Mathlib by name and, re-probed 2026-08-11, by shape: nothing in Mathlib puts `trace` of a power on
+> both sides of an equation. Proved here from `A · (BA)ᵏ = (AB)ᵏ · A` and `trace_mul_comm`.
+>
+> **And stated over `CommSemiring`, not `CommRing`** — see §1, where the first draft's hypotheses
+> were both too strong and where its hand proof of `A · (BA)ᵏ = (AB)ᵏ · A` turned out to duplicate
+> a Mathlib lemma living outside the `Matrix` namespace.
 >
 > **`partition2_eq_trace_sym`** — and therefore **the partition function is the trace of a power of
 > a symmetric matrix**. Nothing about the model changed; what changed is that the object carrying it
@@ -51,33 +57,115 @@ open Finset Real IsingTransfer2D
 
 variable {n : ℕ}
 
-/-! ## 1. A general trace fact, absent from Mathlib -/
+/-! ## 1. A general trace fact, absent from Mathlib
 
-variable {α : Type*} [Fintype α] [DecidableEq α] {R : Type*} [CommRing R]
+**Each of the two theorems below is stated over the weakest hypotheses that carry it, and they are
+not the same hypotheses.** A first draft of this file asked for `[CommRing R]` in both, having
+copied the context from the concrete `ℝ` setting downstream rather than reading off what the proofs
+consume. What they actually consume:
 
-/-- `A · (B·A)ᵏ = (A·B)ᵏ · A`. The bookkeeping behind every "trace is cyclic" argument about
-powers. -/
-theorem mul_pow_swap (A B : Matrix α α R) :
-    ∀ k : ℕ, A * (B * A) ^ k = (A * B) ^ k * A
-  | 0 => by simp
-  | k + 1 => by
-    calc A * (B * A) ^ (k + 1) = A * ((B * A) * (B * A) ^ k) := by rw [pow_succ']
-      _ = (A * B) * (A * (B * A) ^ k) := by simp [Matrix.mul_assoc]
-      _ = (A * B) * ((A * B) ^ k * A) := by rw [mul_pow_swap A B k]
-      _ = (A * B) ^ (k + 1) * A := by rw [pow_succ']; simp [Matrix.mul_assoc]
+* `mul_pow_swap` is a fact about a **monoid**. No commutativity, no subtraction, no addition.
+* `trace_pow_mul_comm` needs commutativity, because `Matrix.trace_mul_comm` does
+  (`[AddCommMonoid R] [CommMagma R]`), but it does **not** need subtraction. The least coherent
+  context that also has matrix powers is `CommSemiring`.
 
-/-- **`tr ((AB)ᵏ) = tr ((BA)ᵏ)`.** Probed 2026-08-11 and absent from Mathlib: `trace_pow_mul_comm`,
-`Matrix.trace_pow` and `Matrix.pow_apply` all return nothing. `Matrix.trace_mul_comm` is the `k = 1`
-case and is what this is built from. -/
-theorem trace_pow_mul_comm (A B : Matrix α α R) :
-    ∀ k : ℕ, Matrix.trace ((A * B) ^ k) = Matrix.trace ((B * A) ^ k)
-  | 0 => by simp
-  | k + 1 => by
+This is not tidying. `CommRing` excluded matrices over `ℕ` — the walk-counting case `TracePathSum`
+exists to serve — and, for `mul_pow_swap`, matrices over `ℍ`, which is what
+`CliffordRealMinkowski` produces. Both are now covered. -/
+
+section GeneralTrace
+
+variable {α : Type*} [Fintype α] [DecidableEq α]
+
+section
+
+variable {R : Type*} [Semiring R]
+
+/-- `A · (B·A)ᵏ = (A·B)ᵏ · A`, the bookkeeping behind every "trace is cyclic" argument about powers.
+
+**MATHLIB ALREADY HAS THIS AND A FIRST DRAFT OF THIS FILE PROVED IT BY HAND.** It is
+`SemiconjBy.pow_right`: `A * (B * A) = (A * B) * A` is associativity, so `A` semiconjugates `B * A`
+to `A * B`, and semiconjugation passes to powers in any monoid. The duplicate arose from probing
+the `Matrix` namespace for a `Matrix`-shaped name, when the fact is general and lives in
+`Algebra.Group.Semiconj`. `ERRATUM 42` is the rule this broke — probe by shape, not by the name you
+expect — and the shape to have probed was `a * x = y * a`, not `Matrix.*`.
+
+**Holds over any semiring**, hence for matrices over `ℕ` and over `ℍ`. -/
+theorem mul_pow_swap (A B : Matrix α α R) (k : ℕ) : A * (B * A) ^ k = (A * B) ^ k * A :=
+  (show SemiconjBy A (B * A) (A * B) from (mul_assoc A B A).symm).pow_right k
+
+end
+
+section
+
+variable {R : Type*} [CommSemiring R]
+
+/-- **`tr ((AB)ᵏ) = tr ((BA)ᵏ)`.** Absent from Mathlib by name — `trace_pow_mul_comm`,
+`Matrix.trace_pow`, `Matrix.pow_apply` all return nothing — and, re-probed 2026-08-11, absent by
+**shape**: no statement anywhere in Mathlib applies `trace` to a power on both sides of an equation.
+The name probe alone would not have settled it, because the ingredient `mul_pow_swap` was in Mathlib
+all along under a name no `Matrix` probe reaches. `Matrix.trace_mul_comm` is the `k = 1` case and is
+what this is built from.
+
+**Commutativity is needed and subtraction is not**, so this is stated over `CommSemiring`; the case
+that buys is `ℕ`-valued matrices, which are the ones that count walks.
+
+**And there is no induction on `k`.** The first draft recursed and never used the recursive call —
+`mul_pow_swap` has already done the induction. -/
+theorem trace_pow_mul_comm (A B : Matrix α α R) (k : ℕ) :
+    Matrix.trace ((A * B) ^ k) = Matrix.trace ((B * A) ^ k) := by
+  cases k with
+  | zero => simp
+  | succ k =>
     calc Matrix.trace ((A * B) ^ (k + 1))
         = Matrix.trace (((A * B) ^ k * A) * B) := by rw [pow_succ]; simp [Matrix.mul_assoc]
       _ = Matrix.trace ((A * (B * A) ^ k) * B) := by rw [mul_pow_swap]
       _ = Matrix.trace (B * (A * (B * A) ^ k)) := Matrix.trace_mul_comm _ _
       _ = Matrix.trace ((B * A) ^ (k + 1)) := by rw [pow_succ']; simp [Matrix.mul_assoc]
+
+end
+
+/-! ### 1.1 The weakening is real, and it is checked rather than announced
+
+A hypothesis weakened on paper is not thereby weakened: the test is whether something the old
+hypothesis **refused** now goes through. So the two instantiations below are recorded as theorems
+rather than as a remark, and the refusal was **observed rather than predicted** — probed
+2026-08-11, against a copy of this section carrying the first draft's `[CommRing R]`:
+
+* `#synth CommSemiring ℕ` succeeds (`Nat.instCommSemiring`) and `#synth CommRing ℕ` fails.
+* `#synth Semiring ℍ[ℝ]` succeeds (via `DivisionRing`) and `#synth CommRing ℍ[ℝ]` fails.
+* Neither witness below elaborates against `[CommRing R]`. The observed failure mode is a
+  heartbeat timeout inside instance search rather than a clean rejection, which is a scruffier
+  signal than one would like; the two `#synth` lines above are the crisp form of the same fact and
+  are why the timeouts are read as absence rather than as slowness. -/
+
+open scoped Quaternion
+
+/-- **`mul_pow_swap` OVER A NON-COMMUTATIVE COEFFICIENT RING.** `ℍ[ℝ]` is not commutative
+(`quaternion_mul_not_comm` below, proved rather than cited), so `[CommRing R]` refused this
+outright. `M₂(ℍ[ℝ])` is not a curiosity in this estate: it is `CliffordRealMinkowski`'s target
+algebra, the `M₂(ℍ)` in `Cl(1,3;ℝ) ≃ₐ M₂(ℍ)`. -/
+theorem mul_pow_swap_quaternion (A B : Matrix (Fin 2) (Fin 2) ℍ[ℝ]) (k : ℕ) :
+    A * (B * A) ^ k = (A * B) ^ k * A :=
+  mul_pow_swap A B k
+
+/-- The non-commutativity that gives the witness above its point, `i · j = k` against
+`j · i = −k`. -/
+theorem quaternion_mul_not_comm : ∃ a b : ℍ[ℝ], a * b ≠ b * a := by
+  refine ⟨⟨0, 1, 0, 0⟩, ⟨0, 0, 1, 0⟩, fun h => ?_⟩
+  have hk := congrArg QuaternionAlgebra.imK h
+  simp at hk
+  norm_num at hk
+
+/-- **`trace_pow_mul_comm` OVER `ℕ`.** `ℕ` is a `CommSemiring` and not a ring — there is nothing to
+subtract — so `[CommRing R]` refused this too. And `ℕ` is not an exotic instantiation here: matrices
+over `ℕ` are the adjacency matrices whose powers count walks, which is the entire subject of
+`TracePathSum`. The over-strong hypothesis had excluded the identity's own home ground. -/
+theorem trace_pow_mul_comm_nat (A B : Matrix (Fin 3) (Fin 3) ℕ) (k : ℕ) :
+    Matrix.trace ((A * B) ^ k) = Matrix.trace ((B * A) ^ k) :=
+  trace_pow_mul_comm A B k
+
+end GeneralTrace
 
 /-! ## 2. The symmetrised matrix -/
 
