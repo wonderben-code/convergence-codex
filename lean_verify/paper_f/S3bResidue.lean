@@ -14,6 +14,31 @@ boundary condition) and `RimWalk` (the translation between the construction and 
 This file states what is not proved, in the estate's convention for a gap: a `def` returning
 `Prop`, so it can be pointed at rather than described.
 
+## READ THIS FIRST: `ClusterReachesRim` IS FALSE (`ERRATUM 108`)
+
+Everything below was written on the assumption that the `def` this file introduces is an open
+statement awaiting a proof. **It is not open. It is false**, and `S3bRefutation` proves it so:
+take every site down. Then the down cluster of any site is the whole box, `ReachesBoundary`
+holds everywhere, `clusterOn σ x` is constant — and **a constant configuration has empty
+contour**, so `extDual (clusterOn σ x)` has no edges at all and the plaquette at `x` reaches
+nothing. `S3bRefutation.not_clusterReachesRim` for `1 < n`, and
+`not_clusterReachesRim_interior` at a strictly interior site so the corner is not doing the
+work.
+
+What went wrong is a specification error, not a mathematical one. The interior analogue,
+`RayWalk.exists_circuit_near_of_down`, never claims the plaquette **at `x`** is on the contour:
+it produces a plaquette in a **ball** of radius `L + 1` around `x`. This `def` asked for the
+plaquette at `x` itself, and a site deep inside a droplet has no broken bond on its own
+plaquette.
+
+`walk_to_bdry_of_gap` below is still a valid implication — nothing about it was wrong — but its
+hypothesis can never be discharged, so it is not a reduction of anything. **The repair is not
+attempted**: it means either restricting to clusters with a boundary near `x`, or weakening to
+a ball as the interior chain does, and the second immediately meets the length-control decision
+this file already declines to make for `ERRATUM 89`'s reason.
+
+The rest of this header is left standing as written, because that is what a record is for.
+
 ## The residue, restated — and it is ONE statement, not the two `ERRATUM 97` named
 
 `ERRATUM 97` corrected an overclaim by saying the residue was two things: a circuits-plus-paths
@@ -68,13 +93,24 @@ route's step S2, and by `FieldCover.DownInside` it is exactly the negation of th
 def ReachesBoundary (σ : Config n) (x : Site n) : Prop :=
   ∃ p : Site n, (downGraph σ).Reachable x p ∧ isBoundary p = true
 
-/-- **THE GAP OF S3b-ii, NAMED.** For every configuration, every interior site that is down
-with a cluster reaching the edge of the box: in the extended dual graph of that cluster, the
-plaquette at the site is connected to one of the four rim vertices.
+/-- **THIS STATEMENT IS FALSE — see `S3bRefutation.not_clusterReachesRim` and `ERRATUM 108`.**
+It is kept, unchanged, because `walk_to_bdry_of_gap` is stated against it and because a refuted
+specification is worth more on the record than a silently deleted one.
 
-This is a `def` returning `Prop` and **nothing in this estate proves it**. It is stated over
-all `σ` and all such `x` deliberately: a proof for one configuration is worth nothing to the
-union bound, which quantifies over the whole event.
+For every configuration, every interior site that is down with a cluster reaching the edge of
+the box: in the extended dual graph of that cluster, the plaquette at the site is connected to
+one of the four rim vertices. The all-down configuration satisfies every hypothesis and fails
+the conclusion — its cluster is the whole box, its `clusterOn` is constant, and a constant
+configuration has no contour, so the graph has no edges.
+
+It was stated over all `σ` and all such `x` deliberately, since a proof for one configuration
+is worth nothing to the union bound; that same universal quantifier is what swept in the
+no-contour case.
+
+**The two routes below were routes to a false statement**, and the paragraph is kept as written
+because route (i)'s graph theory is true, was worth proving, and survives the refutation: it is
+about `extDual` in general, not about this `def`. What it cannot do is discharge a hypothesis
+that has a counterexample.
 
 Two routes are known and neither is attempted. **(i)** A decomposition of an
 even-except-at-the-rims graph into circuits plus paths between the odd vertices — for which
