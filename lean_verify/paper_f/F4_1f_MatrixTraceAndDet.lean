@@ -72,7 +72,7 @@ theorem trace_I4 : trace (1 : Matrix (Fin 4) (Fin 4) ℂ) = 4 := by
 
 /-- Trace is additive: Tr(A + B) = Tr(A) + Tr(B).
     This is fundamental to the spectral action decomposition. -/
-theorem trace_additive {n : Type*} [Fintype n] [DecidableEq n]
+theorem trace_additive {n : Type*} [Fintype n]
     (A B : Matrix n n ℂ) :
     trace (A + B) = trace A + trace B :=
   Matrix.trace_add A B
@@ -82,7 +82,7 @@ theorem trace_additive {n : Type*} [Fintype n] [DecidableEq n]
     - The spectral action is gauge-invariant: Tr(f(UDU⁻¹)) = Tr(f(D))
     - The path integral measure is gauge-invariant
     - Ward identities hold at tree level -/
-theorem trace_commutative {n : Type*} [Fintype n] [DecidableEq n]
+theorem trace_commutative {n : Type*} [Fintype n]
     (A B : Matrix n n ℂ) :
     trace (A * B) = trace (B * A) :=
   Matrix.trace_mul_comm A B
@@ -93,7 +93,7 @@ theorem trace_commutative {n : Type*} [Fintype n] [DecidableEq n]
     the spectral action because Tr(f(UDU⁻¹)) = Tr(Uf(D)U⁻¹) = Tr(f(D)).
     The commutator [A,B] = AB - BA has zero trace because
     Tr(AB) = Tr(BA) (trace cyclicity). -/
-theorem trace_commutator_zero {n : Type*} [Fintype n] [DecidableEq n]
+theorem trace_commutator_zero {n : Type*} [Fintype n]
     (A B : Matrix n n ℂ) :
     trace (A * B - B * A) = 0 := by
   rw [Matrix.trace_sub, Matrix.trace_mul_comm]
@@ -101,13 +101,13 @@ theorem trace_commutator_zero {n : Type*} [Fintype n] [DecidableEq n]
 
 /-- Trace is invariant under cyclic permutation: Tr(ABC) = Tr(CAB).
     This extends trace cyclicity to three matrices. -/
-theorem trace_cyclic {n : Type*} [Fintype n] [DecidableEq n]
+theorem trace_cyclic {n : Type*} [Fintype n]
     (A B C : Matrix n n ℂ) :
     trace (A * B * C) = trace (C * A * B) :=
   trace_mul_cycle A B C
 
 /-- Trace of a scalar multiple: Tr(cA) = c·Tr(A). -/
-theorem trace_scalar {n : Type*} [Fintype n] [DecidableEq n]
+theorem trace_scalar {n : Type*} [Fintype n]
     (c : ℂ) (A : Matrix n n ℂ) :
     trace (c • A) = c * trace A :=
   Matrix.trace_smul c A
@@ -233,13 +233,28 @@ theorem spectral_dimension_from_trace :
 
 /-- Any matrix involution squares to the identity.
     In the spectral triple, the reality operator J satisfies J² = ε·I.
-    When ε = 1 (KO-dimension 0 or 6), J is an involution: J² = I. -/
+    When ε = 1 (KO-dimension 0 or 6), J is an involution: J² = I.
+
+    **Stated over `[Semiring R]`, not `[Ring R]`.** The proof unfolds `sq` and
+    uses the hypothesis; it never subtracts or negates anything, so the ring
+    structure was surplus. `reality_order_four` below is the contrasting case
+    and keeps `[Ring R]`, because `J ^ 2 = -1` cannot even be *stated* without
+    negation. Weakened after `ERRATUM 116`; this file was surfaced by
+    `check_ledger.py --contexts`, which flagged it for carrying `[CommRing]`
+    beside `[Ring]` and left the reading to a human — and the reading found one
+    theorem to weaken and two to leave alone. -/
 theorem reality_j_squared {n : Type*} [Fintype n] [DecidableEq n]
-    {R : Type*} [Ring R]
+    {R : Type*} [Semiring R]
     (J : Matrix n n R) (hJ : J * J = 1) :
     J ^ 2 = 1 := by
   rw [sq]
   exact hJ
+
+/-- **AND THE WEAKENING BITES**, checked rather than announced: `ℕ` is a `Semiring` and not a
+    `Ring`, so this instantiation is one `[Ring R]` refused. An `example` on purpose — a witness,
+    not a lemma anything depends on. -/
+example (J : Matrix (Fin 2) (Fin 2) ℕ) (hJ : J * J = 1) : J ^ 2 = 1 :=
+  reality_j_squared J hJ
 
 /-- For the KO-dimension 2 case: ε = -1, so J² = -I.
     If J² = -1 then J⁴ = (J²)² = (-I)² = I, meaning J has order 4.
