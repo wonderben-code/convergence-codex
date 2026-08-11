@@ -88,10 +88,13 @@ repair applies with no side condition) and invoking `CycleDecomposition.exists_c
 on the result. `RimParity.reachable_of_card_oddExt_two` then cuts the added edge back out, so in
 the `= 2` case
 **the rim-to-rim walk in `extDual σ` itself is a theorem** (`ERRATUM 107` records the day this
-step was wrongly written down as blocked). **Route (i) therefore has exactly one gap left:** the
-`= 4` case, where two edges must be added and the pairing is a choice nothing makes. And note
-what route (i) does NOT give even when complete — a walk between two *rims* says nothing about
-where the plaquette at `x` sits, which is `ERRATUM 97`'s point and is route (ii)'s job.
+step was wrongly written down as blocked). **And `RimParity.exists_reachable_odd_rim` then
+removes the count hypothesis entirely** — `EdgeAddParity.exists_odd_reachable` applies handshake
+to a single connected component, so an odd vertex always reaches an odd partner and the `= 4`
+case needs no pairing choice. **Route (i) is finished.** What it gives is a rim-to-rim walk for
+every configuration — and that is *not* this `def`: a walk between two **rims** says nothing
+about where the plaquette at `x` sits. That is `ERRATUM 97`'s point, and it is route (ii)'s job,
+which is the whole of what remains.
 **(ii)** The open-path analogue of `RayWalk.exists_circuit_near_of_down`: shoot a ray
 from `x`, count crossings, and locate the piece near `x` — which is how the interior chain does
 the

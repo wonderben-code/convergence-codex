@@ -38,10 +38,19 @@ bound in the definition — and Mathlib's
 into reachability after deleting it. Neither fact was hard to find; the block was inferred from
 the *name* `IsCycleGraph` and never checked against the definition.
 
-**The `4` case is genuinely not handled.** With four odd vertices one adds two edges, and which
-two pairs to join is a choice the graph does not make for you. Nothing here rules the case out
-and nothing here treats it; `RimParity.card_oddExt_eq_zero_or_two_or_four` leaves it open. That
-sentence is a NOT ATTEMPTED, not a block.
+**§5 then removes every hypothesis of `reachable_of_odd_pair`, and with them the `4` case.** The
+edge-adding route needs to know the two odd vertices are the only ones, distinct and
+non-adjacent, and with four odd vertices it needs a choice of pairing. None of that is
+necessary, because handshake applies to a single **connected component** just as well as to the
+whole graph:
+
+> **`exists_odd_reachable`** — in any finite graph, a vertex of odd degree has another vertex of
+> odd degree **that it can reach**. No other hypothesis.
+
+The component is taken as a spanning subgraph on the same vertex type (`compGraph`), so no new
+instances are needed; vertices outside the component have degree `0` there and cannot be the
+partner handshake produces. §§2–4 are kept because the decomposition itself is the useful object
+for anything that wants the circuits and not just the path.
 
 `IsingBoundaryField.MagnetisationBound` is untouched.
 -/
@@ -202,5 +211,61 @@ theorem reachable_of_odd_pair [Finite V] (hne : u ≠ v) (hnadj : ¬ G.Adj u v)
   have hadj : (G ⊔ edge u v).Adj u v :=
     Or.inr ((edge_adj u v u v).mpr ⟨Or.inl ⟨rfl, rfl⟩, hne⟩)
   exact sup_edge_sdiff_edge hnadj ▸ reachable_sdiff_of_cycle_decomposition hcyc hsup hadj
+
+/-! ## 5. The same conclusion with three hypotheses removed
+
+`reachable_of_odd_pair` needs to know that `u` and `v` are the **only** odd vertices, that they
+are distinct, and that they are non-adjacent. None of that is necessary. The handshake lemma
+applies to any finite graph, and it applies just as well to **one connected component of it** —
+so an odd vertex always has an odd partner *in its own component*, and the partner is therefore
+reachable.
+
+The component is taken as a spanning subgraph on the same vertex type rather than as an induced
+subgraph on a subtype, which keeps every instance the ambient graph already had. -/
+
+/-- `G` with every edge outside `u`'s component deleted. Same vertex type, so no new `Fintype`
+or `DecidableEq` is needed anywhere below. -/
+@[simps]
+def compGraph (G : SimpleGraph V) (u : V) : SimpleGraph V where
+  Adj a b := G.Adj a b ∧ G.Reachable u a
+  symm := fun _ _ ⟨hab, hua⟩ => ⟨hab.symm, hua.trans hab.reachable⟩
+  loopless := ⟨fun _ h => G.irrefl h.1⟩
+
+theorem compGraph_le (G : SimpleGraph V) (u : V) : compGraph G u ≤ G := fun _ _ h => h.1
+
+/-- Inside the component, `compGraph` has the neighbours `G` has. -/
+theorem neighborSet_compGraph_of_reachable {u w : V} (h : G.Reachable u w) :
+    (compGraph G u).neighborSet w = G.neighborSet w := by
+  ext x; exact ⟨fun hx => hx.1, fun hx => ⟨hx, h⟩⟩
+
+/-- Outside it, no neighbours at all. -/
+theorem neighborSet_compGraph_of_not_reachable {u w : V} (h : ¬ G.Reachable u w) :
+    (compGraph G u).neighborSet w = ∅ := by
+  ext x; exact ⟨fun hx => absurd hx.2 h, fun hx => hx.elim⟩
+
+/-- **AN ODD VERTEX HAS AN ODD PARTNER IT CAN REACH.** No hypothesis beyond finiteness and the
+oddness of `u`: handshake applied to `u`'s component, where every vertex outside the component
+has degree `0` and so cannot be the partner the lemma produces.
+
+This is `reachable_of_odd_pair` with `u ≠ v`, `¬ G.Adj u v` and "these are the only two odd
+vertices" all dropped. -/
+theorem exists_odd_reachable [Finite V] {u : V} (hu : ¬ Even (G.neighborSet u).ncard) :
+    ∃ v, v ≠ u ∧ ¬ Even (G.neighborSet v).ncard ∧ G.Reachable u v := by
+  classical
+  have : Fintype V := Fintype.ofFinite V
+  have hself : (compGraph G u).neighborSet u = G.neighborSet u :=
+    neighborSet_compGraph_of_reachable (Reachable.refl u)
+  have hoddu : Odd ((compGraph G u).degree u) := by
+    rw [degree_eq_ncard_neighborSet, hself]
+    exact Nat.not_even_iff_odd.mp hu
+  obtain ⟨w, hwu, hw⟩ :=
+    (compGraph G u).exists_ne_odd_degree_of_exists_odd_degree u hoddu
+  have hreach : G.Reachable u w := by
+    by_contra hc
+    rw [degree_eq_ncard_neighborSet, neighborSet_compGraph_of_not_reachable hc] at hw
+    simp at hw
+  refine ⟨w, hwu, ?_, hreach⟩
+  rw [← neighborSet_compGraph_of_reachable hreach, ← degree_eq_ncard_neighborSet]
+  exact Nat.not_even_iff_odd.mpr hw
 
 end SimpleGraph

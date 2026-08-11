@@ -65,24 +65,30 @@ because the decomposition returns cycle graphs rather than walks. **That was wro
 > two **rims**, and they are connected **in `extDual σ` itself**: no added edge, no repaired
 > graph.
 
+and then, once `EdgeAddParity` §5 removed the count hypothesis as well:
+
+> **`exists_reachable_odd_rim`** — for **every** configuration, with no hypothesis on the count,
+> each odd rim is joined **within `extDual σ`** to another odd rim. The `4` case needs no
+> pairing choice because it needs no added edges.
+
 So "the open path runs rim to rim" — asserted on geometric grounds in `RimWalk` and
-`ExtendedDual` — is a theorem in the `= 2` case.
+`ExtendedDual` — is a theorem outright, and `cornerDown_reachable_second_rim` is the
+unconditional instance.
 
 ## What this does not do
 
-**The `4` case is untreated.** Two edges must be added and the pairing is a choice; nothing here
-makes it. `cornerDown_reachable_or_four` states the resulting disjunction for `cornerDown`
-rather than quietly assuming the branch one would prefer.
+**Rim-to-rim is not plaquette-to-rim.** `S3bResidue.ClusterReachesRim` asks for a walk from the
+plaquette **at `x`** out to a rim. Knowing two rims are joined to each other says nothing about
+where `x` sits, and that missing half is route (ii), the open-path analogue of `RayWalk`'s
+ray-and-crossing-parity argument (`ERRATUM 97`). `ClusterReachesRim` is untouched and unproved;
+so is `IsingBoundaryField.MagnetisationBound`.
 
-**And rim-to-rim is not plaquette-to-rim.** `S3bResidue.ClusterReachesRim` asks for a walk from
-the plaquette **at `x`** out to a rim. Knowing two rims are joined to each other says nothing
-about where `x` sits, and that missing half is exactly route (ii), the open-path analogue of
-`RayWalk`'s ray-and-crossing-parity argument (`ERRATUM 97`). `ClusterReachesRim` is untouched
-and unproved; so is `IsingBoundaryField.MagnetisationBound`.
-
-What has changed in a day: "a circuits-plus-paths decomposition, which neither this estate nor
-Mathlib has" is now a proved rim-to-rim walk in the `= 2` case, one untreated pairing choice,
-and one geometric step that was always going to be needed.
+What changed in a day: "a circuits-plus-paths decomposition, which neither this estate nor
+Mathlib has" is now a proved rim-to-rim walk for every configuration, and the residue is the one
+geometric step that was always going to be needed. Two of the three intermediate descriptions of
+that residue — a missing decomposition, then a missing walk extraction, then an untreated
+pairing — were each superseded within hours of being written, and `ERRATUM 107` records why the
+middle one was not merely superseded but wrong.
 -/
 
 namespace RimParity
@@ -306,14 +312,39 @@ theorem reachable_of_card_oddExt_two {σ : Config n} (h2 : (oddExt σ).card = 2)
   obtain ⟨e, rfl⟩ := odd_degree_isRim (mem_oddExt.mp hv)
   exact ⟨d, e, fun hc => hne (by rw [hc]), hreach⟩
 
-/-- **FOR `cornerDown`, UNCONDITIONALLY: either the rim-to-rim path exists, or there are four
-odd rims.** `cornerDown_card_oddExt` rules out `0`, and the `2` case is now a theorem rather
-than a hope. Nothing here decides which branch holds — the `4` case is still untreated, and
-saying so is the point of stating the disjunction rather than the branch one would prefer. -/
-theorem cornerDown_reachable_or_four (hn : 1 < n) :
-    (∃ d e : Fin 4, d ≠ e ∧
-        (extDual (MinimumContour.cornerDown n)).Reachable (Sum.inr d) (Sum.inr e))
-      ∨ (oddExt (MinimumContour.cornerDown n)).card = 4 :=
-  (cornerDown_card_oddExt hn).imp reachable_of_card_oddExt_two id
+/-! ### The count hypothesis was not needed either
+
+`SimpleGraph.exists_odd_reachable` drops every hypothesis of `reachable_of_odd_pair`: an odd
+vertex has an odd partner **in its own connected component**, by handshake applied to that
+component. So the `= 4` case needs no pairing choice, because it needs no added edges — the two
+statements below hold for every configuration, with no count hypothesis at all. -/
+
+/-- **EVERY ODD RIM REACHES ANOTHER ODD RIM.** No hypothesis on the number of odd vertices, so
+the `= 4` case is covered too: whichever rims are odd, each of them is joined *within
+`extDual σ`* to another odd rim.
+
+This is `exists_second_odd_rim` with the connection added, and
+`reachable_of_card_oddExt_two` with the count hypothesis removed. -/
+theorem exists_reachable_odd_rim {σ : Config n} {d : Fin 4}
+    (h : ¬ Even ((extDual σ).neighborSet (Sum.inr d)).ncard) :
+    ∃ e : Fin 4, e ≠ d ∧ ¬ Even ((extDual σ).neighborSet (Sum.inr e)).ncard
+      ∧ (extDual σ).Reachable (Sum.inr d) (Sum.inr e) := by
+  obtain ⟨w, hwu, hw, hreach⟩ := SimpleGraph.exists_odd_reachable h
+  obtain ⟨e, rfl⟩ := odd_degree_isRim hw
+  exact ⟨e, fun hc => hwu (by rw [hc]), hw, hreach⟩
+
+/-- **FOR `cornerDown`, UNCONDITIONALLY.** `ExtendedDual.cornerDown_left_rim_degree_one` makes
+the left rim odd; the theorem above then gives a second odd rim **and a walk to it**, with no
+case split and no hypothesis on the count. The two-bond contour through the corner is that
+walk. -/
+theorem cornerDown_reachable_second_rim (hn : 1 < n) :
+    ∃ e : Fin 4, e ≠ 0 ∧
+      (extDual (MinimumContour.cornerDown n)).Reachable (Sum.inr 0) (Sum.inr e) := by
+  have h : ¬ Even
+      ((extDual (MinimumContour.cornerDown n)).neighborSet (Sum.inr 0)).ncard := by
+    rw [cornerDown_left_rim_degree_one hn]
+    exact Nat.not_even_iff_odd.mpr odd_one
+  obtain ⟨e, hne, -, hreach⟩ := exists_reachable_odd_rim h
+  exact ⟨e, hne, hreach⟩
 
 end RimParity
