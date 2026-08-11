@@ -22,11 +22,15 @@ the function-space functor. This file is **item 2**:
 > `proj_succ` recording that they commute with the tower's maps.
 >
 > **`up`, `down`, `down_up`** — travelling `n` levels up the tower and back down is the identity.
-> That is the arithmetic a level-into-limit embedding is built from. **The embedding itself is NOT
-> built here** — see the closing section — because the coherent sequence it produces is defined by
-> cases on `n < k` versus `n ≥ k` and the two branches live at index `n` and index `k + m`, so it
-> needs transport along `k + (n - k) = n`. That is index bookkeeping rather than mathematics, and it
-> is named rather than half-done.
+>
+> **`embFun`, `embSeq_coherent`, `proj_embFun` — AND THE LEVEL-INTO-LIMIT EMBEDDING ITSELF, which
+> this header used to say was not built here.** Added 2026-08-11 under `PROOF_STRATEGY` §7 rule 2
+> (*finish every unfinished chain*). The deferral was on the grounds that the coherent sequence
+> *"needs transport along `k + (n - k) = n` … index bookkeeping rather than mathematics"*. **That
+> was right about the difficulty and wrong about it being unavoidable**: `upTo` and `downTo`
+> recurse on the TARGET index with the inequality carried as a hypothesis, so the only transport
+> left is along a decidable equality of naturals in the one case `k = n+1`, and `omega` discharges
+> the arithmetic. See §5.
 
 ## What this does NOT do
 
@@ -172,5 +176,121 @@ def limitConstEquiv (D : Type u) [OmegaCompletePartialOrder D] :
     | zero => rfl
     | succ k ih => exact ih.trans (x.2 k).symm
   right_inv _ := rfl
+
+
+/-! ## 5. Each level embeds in the limit
+
+**The leg this file deferred**, built 2026-08-11 (`PROOF_STRATEGY` §7 rule 2). The obstacle named in
+the header was transport along `k + (n - k) = n`. It is avoided by recursing on the **target** index
+with the inequality carried as a hypothesis: `upTo k n h` climbs from `k` to `n`, `downTo n k h`
+descends, and neither mentions a subtraction. The one place a transport survives is the case
+`k = n + 1`, where it is along a decidable equality of naturals.
+
+**What this is NOT.** `embFun` is proved **monotone**, not continuous, so it is a map of ordered
+types and **not yet a `→𝒄`**. Making it one needs `upTo` and `downTo` to commute with `ωSup` — both
+are composites of continuous maps, so it is expected to go through, but **it is not proved
+here** and until it is, `embFun` cannot be the embedding half of an `EPPair` into the limit.
+That is the next rung and it is named rather than assumed. -/
+
+def upTo (k : ℕ) : ∀ n, k ≤ n → T.carrier k → T.carrier n
+  | 0, h, x => (Nat.le_zero.1 h) ▸ x
+  | n + 1, h, x =>
+      if hk : k = n + 1 then hk ▸ x
+      else (T.step n).emb (upTo k n (Nat.lt_succ_iff.1 (lt_of_le_of_ne h hk)) x)
+
+def downTo (n : ℕ) : ∀ k, n ≤ k → T.carrier k → T.carrier n
+  | 0, h, x => (Nat.le_zero.1 h) ▸ x
+  | k + 1, h, x =>
+      if hk : n = k + 1 then hk ▸ x
+      else downTo n k (Nat.lt_succ_iff.1 (lt_of_le_of_ne h hk)) ((T.step k).proj x)
+
+theorem upTo_self (k : ℕ) (h : k ≤ k) (x : T.carrier k) : upTo T k k h x = x := by
+  cases k with
+  | zero => rfl
+  | succ n => simp [upTo]
+
+theorem downTo_self (k : ℕ) (h : k ≤ k) (x : T.carrier k) : downTo T k k h x = x := by
+  cases k with
+  | zero => rfl
+  | succ n => simp [downTo]
+
+theorem upTo_succ (k n : ℕ) (h : k ≤ n) (x : T.carrier k) :
+    upTo T k (n + 1) (h.trans (Nat.le_succ n)) x = (T.step n).emb (upTo T k n h x) := by
+  have hne : k ≠ n + 1 := by omega
+  simp [upTo, hne]
+
+/-- Descending to `n+1` and then projecting is descending to `n`. -/
+theorem proj_downTo : ∀ (k n : ℕ) (h : n + 1 ≤ k) (x : T.carrier k),
+    (T.step n).proj (downTo T (n + 1) k h x) = downTo T n k (Nat.le_of_succ_le h) x
+  | 0, n, h, x => absurd h (by omega)
+  | k + 1, n, h, x => by
+      by_cases hk : n + 1 = k + 1
+      · have hnk : n = k := by omega
+        subst hnk
+        simp [downTo, downTo_self]
+      · have h1 : n + 1 ≤ k := by omega
+        have h2 : n ≠ k + 1 := by omega
+        simp only [downTo, dif_neg hk, dif_neg h2]
+        exact proj_downTo k n h1 ((T.step k).proj x)
+
+
+
+/-- The coherent sequence representing `x : T.carrier k`: climb above `k`, descend below it. -/
+def embSeq (k : ℕ) (x : T.carrier k) (n : ℕ) : T.carrier n :=
+  if h : k ≤ n then upTo T k n h x
+  else downTo T n k (Nat.le_of_lt (Nat.lt_of_not_le h)) x
+
+/-- **AND IT IS COHERENT**, which is the whole content: three cases, and the middle one
+(`k = n+1`) is where climbing and descending have to agree. -/
+theorem embSeq_coherent (k : ℕ) (x : T.carrier k) (n : ℕ) :
+    (T.step n).proj (embSeq T k x (n + 1)) = embSeq T k x n := by
+  by_cases h : k ≤ n
+  · simp only [embSeq, dif_pos h, dif_pos (h.trans (Nat.le_succ n))]
+    rw [upTo_succ T k n h x, (T.step n).proj_emb]
+  · by_cases h2 : k = n + 1
+    · subst h2
+      simp only [embSeq, dif_pos (le_refl _), dif_neg h]
+      rw [upTo_self]
+      simp [downTo, downTo_self]
+    · have h3 : ¬ (k ≤ n + 1) := by omega
+      simp only [embSeq, dif_neg h3, dif_neg h]
+      exact proj_downTo T k n (by omega) x
+
+/-- **EACH LEVEL SITS INSIDE THE LIMIT.** -/
+def embFun (k : ℕ) (x : T.carrier k) : Limit T := ⟨embSeq T k x, embSeq_coherent T k x⟩
+
+/-- **AND IT IS A SECTION OF THE LIMIT'S OWN PROJECTION** — reading level `k` back off the
+sequence returns `x`. This is what makes it an embedding rather than an arbitrary map. -/
+theorem proj_embFun (k : ℕ) (x : T.carrier k) : proj T k (embFun T k x) = x := by
+  change embSeq T k x k = x
+  simp [embSeq, upTo_self]
+
+theorem upTo_mono (k : ℕ) : ∀ n (h : k ≤ n) {x y : T.carrier k}, x ≤ y →
+    upTo T k n h x ≤ upTo T k n h y
+  | 0, h, x, y, hxy => by
+      obtain rfl := Nat.le_zero.1 h; simpa [upTo] using hxy
+  | n + 1, h, x, y, hxy => by
+      by_cases hk : k = n + 1
+      · subst hk; simpa [upTo] using hxy
+      · simp only [upTo, dif_neg hk]
+        exact (T.step n).emb.monotone (upTo_mono k n _ hxy)
+
+theorem downTo_mono (n : ℕ) : ∀ k (h : n ≤ k) {x y : T.carrier k}, x ≤ y →
+    downTo T n k h x ≤ downTo T n k h y
+  | 0, h, x, y, hxy => by
+      obtain rfl := Nat.le_zero.1 h; simpa [downTo] using hxy
+  | k + 1, h, x, y, hxy => by
+      by_cases hk : n = k + 1
+      · subst hk; simpa [downTo] using hxy
+      · simp only [downTo, dif_neg hk]
+        exact downTo_mono n k _ ((T.step k).proj.monotone hxy)
+
+theorem embFun_mono (k : ℕ) {x y : T.carrier k} (hxy : x ≤ y) :
+    embFun T k x ≤ embFun T k y := by
+  intro n
+  simp only [embFun, embSeq]
+  split
+  · exact upTo_mono T k n _ hxy
+  · exact downTo_mono T n k _ hxy
 
 end InverseLimitCPO
