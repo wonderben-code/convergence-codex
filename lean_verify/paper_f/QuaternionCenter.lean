@@ -62,8 +62,19 @@ image under `Matrix.scalar` of the centre of the base. It was **one line below `
 the same `--shape` output**; the first reading took the first hit and stopped.
 
 So §3 proves **`mem_matrixCenter_iff`** and **`matrixCenter_eq_range`**: the centre of `Mₙ(ℍ[ℝ])`
-is exactly the real scalar matrices, for **every** index type rather than only `Fin 2`. That is
-`WALLS` §W7 step (iii).
+is exactly the real scalar matrices, for **every** index type rather than only `Fin 2`.
+
+**AND THE FIRST VERSION OF THIS PARAGRAPH THEN SAID "That is `WALLS` §W7 step (iii)", WHICH IS AN
+OVERCLAIM.** Step (iii) is *"the centre of `Cl(1,3;ℝ)` is ℝ"*; transporting along
+`cliffordRealMinkowskiEquiv` to `M₂(ℍ)` is its **route**. This file proves the route's
+**destination**. The transport is **not done here**, so step (iii) is **not closed** — what is
+closed is that both ingredients the wall called missing are now in hand, one from Mathlib and one
+from §2. Mathlib's `Subsemiring.centerCongr` transports a centre along a ring equivalence and is
+the obvious next rung.
+
+**That is three instances in one day of the same error** — a name probe that missed a lemma, a
+shape search read to its first hit, and now a step's *route* read as the step. All three are the
+same move: taking a part for the whole. Recorded rather than smoothed over, in `ERRATUM 117`.
 
 ## What this still does NOT do
 
