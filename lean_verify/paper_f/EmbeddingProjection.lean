@@ -26,16 +26,16 @@ That lead was recorded as **not checked**. This file builds the structure and ch
 > the `D∞` tower is made of: from `D ⇄ E`, `f ↦ emb ∘ f ∘ proj` and `g ↦ proj ∘ g ∘ emb`. **Both
 > `EPPair` identities are proved for them** (`funProj_funEmb`, `funEmb_funProj_le`).
 >
-> **`IsFunContinuous`** — and the one thing left before those two assemble into a pair, named as an
-> object with `funPair_of_continuous` as its reduction, so it is the whole remaining distance to one
-> level of the tower and not a programme.
+> **`funPair`** — **and they assemble.** `funEmbHom` and `funProjHom` prove the two maps
+> continuous, so the functor lands as an `EPPair (D →𝒄 D) (E →𝒄 E)`. The step is complete, and what
+> remains of `D∞` is the inverse limit and the bilimit theorem — §W8.0's items 2 and 3.
 
 ## What this does NOT do
 
-**It does not build `D∞`, and §W8.0's items 2 and 3 are untouched.** What is here is item 1 and the
-functor that makes item 2's tower well-defined. **The inverse limit itself — the object, its ω-CPO
-structure, and the bilimit theorem that it is a fixed point of this functor — is not attempted**,
-and `ReflexiveDomainObstruction.DInfExists` still names the target unproved.
+**It does not build `D∞`, and §W8.0's items 2 and 3 are untouched.** What is here is item 1 and
+the complete functor that makes item 2's tower well-defined. **The inverse limit itself — the
+object, its ω-CPO structure, and the bilimit theorem that it is a fixed point of this functor — is
+not attempted**, and `ReflexiveDomainObstruction.DInfExists` still names the target unproved.
 
 Nothing here is an approximation of the limit or a partial version of it. A tower whose maps exist
 is not a tower whose limit exists, and this file supplies only the maps.
@@ -141,56 +141,79 @@ theorem funEmb_funProj_le (P : EPPair D E) (g : E →𝒄 E) (y : E) :
   change P.emb (P.proj (g (P.emb (P.proj y)))) ≤ g y
   exact le_trans (P.emb_proj_le _) (g.monotone (P.emb_proj_le y))
 
-/-! ## What is NOT here, and it is one named thing
+/-! ## The functor, assembled
 
-`funEmb` and `funProj` are the right maps and satisfy both `EPPair` clauses. **They are not
-assembled into an `EPPair (D →𝒄 D) (E →𝒄 E)` here**, because that needs them to be *continuous* as
-maps between the function-space ω-CPOs — `f ↦ emb ∘ f ∘ proj` must commute with `ωSup` in
-`D →𝒄 D`, which is pointwise but is a further proof. It is a build, not a wall, and it is stated
-here rather than quietly skipped.
+An earlier version of this file stopped one step short of here. It defined `funEmb` and `funProj`,
+proved both `EPPair` identities for them, and then named their **continuity** as an open object
+with a reduction — *"a build, not a wall, and it is stated here rather than quietly skipped."*
+`PROOF_STRATEGY` §3 says to re-attempt the next leg the moment the previous one lands rather than
+returning to the queue, so it was attempted, and it is below. The naming is kept because the
+reduction it produced is the right shape and because the near-miss recorded on `IsFunContinuous` is
+worth keeping. -/
 
-That, plus §W8.0's items 2 and 3 — the inverse limit and the bilimit theorem — is the whole
-remaining distance to `D∞`. -/
+/-- The bundled `funEmb`. Monotone pointwise from `emb`; the `ωSup` clause is pointwise too,
+because suprema in a function-space ω-CPO are computed pointwise and `emb` is continuous. -/
+def funEmbHom (P : EPPair D E) : (D →𝒄 D) →𝒄 (E →𝒄 E) where
+  toFun := P.funEmb
+  monotone' _ _ h y := P.emb.monotone (h (P.proj y))
+  map_ωSup' c := by
+    apply DFunLike.ext
+    intro y
+    simp [funEmb, ContinuousHom.ωSup_apply, P.emb.ωScottContinuous.map_ωSup, Chain.map]
+    congr 1
 
-/-- The one thing this file leaves open, as an object rather than a sentence: **that a pair's
-`funEmb` and `funProj` are continuous**, i.e. underlie continuous maps between the function-space
-ω-CPOs.
+/-- The bundled `funProj`, by the same argument on the other side. -/
+def funProjHom (P : EPPair D E) : (E →𝒄 E) →𝒄 (D →𝒄 D) where
+  toFun := P.funProj
+  monotone' _ _ h x := P.proj.monotone (h (P.emb x))
+  map_ωSup' c := by
+    apply DFunLike.ext
+    intro x
+    simp [funProj, ContinuousHom.ωSup_apply, P.proj.ωScottContinuous.map_ωSup, Chain.map]
+    congr 1
+
+/-- **THE FUNCTION-SPACE FUNCTOR ON EMBEDDING–PROJECTION PAIRS.** From a pair `D ⇄ E` it builds a
+pair `(D →𝒄 D) ⇄ (E →𝒄 E)`. This is the step `D∞`'s tower is made of, and it is now complete: the
+maps are `funEmb`/`funProj`, their continuity is `funEmbHom`/`funProjHom`, and the two `EPPair`
+clauses are `funProj_funEmb` and `funEmb_funProj_le`. -/
+def funPair (P : EPPair D E) : EPPair (D →𝒄 D) (E →𝒄 E) where
+  emb := P.funEmbHom
+  proj := P.funProjHom
+  proj_emb := P.funProj_funEmb
+  emb_proj_le g y := P.funEmb_funProj_le g y
+
+/-- The property this file named as its open step, before `funEmbHom` and `funProjHom` discharged
+it an hour later: that a pair's two induced maps on function spaces are continuous.
 
 **A first draft of this `def` said something else and was caught by reading it back.** It read
 `∀ _ : EPPair D E, Nonempty (EPPair (D →𝒄 D) (E →𝒄 E))` — *some* pair exists on the function
 spaces, which is **not** the statement wanted: it could hold for reasons having nothing to do with
 `funEmb` and `funProj`, and a proof of it would not advance the tower by a step. That is
 `ERRATUM 108`'s failure exactly — a gap object whose statement is not the thing meant — caught
-before it shipped, by the habit that erratum produced.
-
-**This is known mathematics, not a conjecture of this project**: the maps are continuous because
-`ωSup` in a function-space ω-CPO is pointwise. It is stated per-pair rather than universally so
-that it can be *checked on an instance*, which `isFunContinuous_refl` does. -/
+before it shipped, by the habit that erratum produced. It is kept, now proved, because a `def` that
+was going to be the record of a gap is a better record of a near-miss than a deleted one. -/
 def IsFunContinuous (P : EPPair D E) : Prop :=
   ∃ (Φ : (D →𝒄 D) →𝒄 (E →𝒄 E)) (Ψ : (E →𝒄 E) →𝒄 (D →𝒄 D)),
     (∀ f, Φ f = P.funEmb f) ∧ (∀ g, Ψ g = P.funProj g)
 
-/-- **AND THE REDUCTION, so the `def` is not decorative:** granted the continuity, the pair on the
-function spaces follows immediately from the two identities already proved. So the remaining
-distance from this file to one level of the `D∞` tower is exactly `IsFunContinuous` and nothing
-else. -/
-theorem funPair_of_continuous {P : EPPair D E} (h : P.IsFunContinuous) :
-    Nonempty (EPPair (D →𝒄 D) (E →𝒄 E)) := by
-  obtain ⟨Φ, Ψ, hΦ, hΨ⟩ := h
-  refine ⟨⟨Φ, Ψ, fun f => ?_, fun g => ?_⟩⟩
-  · rw [hΦ f, hΨ (P.funEmb f), P.funProj_funEmb]
-  · rw [hΨ g, hΦ (P.funProj g)]
-    intro y
-    exact P.funEmb_funProj_le g y
+/-- **AND IT HOLDS FOR EVERY PAIR.** -/
+theorem isFunContinuous (P : EPPair D E) : P.IsFunContinuous :=
+  ⟨P.funEmbHom, P.funProjHom, fun _ => rfl, fun _ => rfl⟩
 
-/-- **AND IT IS NOT VACUOUS**, checked on an instance rather than assumed: the identity pair
-satisfies it with both maps the identity. That is **not** evidence for the general case — the
-general case is where the pointwise-`ωSup` argument is needed and this one needs nothing — but a
-`def` returning `Prop` with no instance at all is a trap this estate has fallen into before, and
-the file that noticed said so. -/
-theorem isFunContinuous_refl : (refl : EPPair D D).IsFunContinuous := by
-  refine ⟨ContinuousHom.id, ContinuousHom.id, fun f => ?_, fun g => ?_⟩ <;>
-    apply DFunLike.ext <;> intro x <;> rfl
+/-! ## What is NOT here, and it is now exactly two things
+
+`WALLS` §W8.0 lists three ingredients for `D∞`. **Item 1 is this file's `EPPair`, and the
+function-space functor that item 2's tower needs is `funPair`.** What is left is:
+
+* **the inverse limit itself** — the object `lim (Dₙ, pₙ)`, with its ω-CPO structure. Mathlib has
+  no inverse limit of ordered structures at all; `Order/DirectedInverseSystem.lean` is a *direct*
+  limit of types.
+* **the bilimit theorem** — that the limit is a fixed point of `funPair`, i.e. isomorphic to its own
+  continuous self-maps. That is what would discharge `ReflexiveDomainObstruction.DInfExists`, and
+  it is not attempted.
+
+**Nothing here is an approximation of the limit.** A tower whose maps exist is not a tower whose
+limit exists, and this file supplies only the maps. -/
 
 end EPPair
 
