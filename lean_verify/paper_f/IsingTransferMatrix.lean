@@ -2,6 +2,7 @@ import Mathlib.Analysis.SpecialFunctions.Exp
 import Mathlib.LinearAlgebra.Eigenspace.Matrix
 import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.Data.Complex.Basic
+import TracePathSum
 
 /-!
 # The one-dimensional Ising transfer matrix, and a gap that is derived rather than supplied
@@ -263,12 +264,18 @@ theorem trace_transfer_pow (β : ℝ) (N : ℕ) :
 
 /-- **What remains of clause (iii), as ONE statement.** The partition function of the periodic
 chain, `∑_{s : Fin N → Bool} exp (β ∑ᵢ sᵢsᵢ₊₁)`, equals `tr Tᴺ`. That is the sum-over-paths
-identity `∑_s ∏ᵢ M_{sᵢ,sᵢ₊₁} = tr Mᴺ`, and **it is not proved here and is not in Mathlib** —
-probed 2026-08-11: `trace_pow_eq_sum`, `Matrix.trace_pow`, `trace_list_prod` and `prod_cycle`
-all return zero files. Given it, `trace_transfer_pow` turns the partition function into
-`λ₊ᴺ + λ₋ᴺ`, `ratio_eq_tanh` turns the ratio into `tanh β`, and clause (iii) closes for the
-chain. **NOT ATTEMPTED**, and the cyclic index bookkeeping is the reason it is a unit of its own
-rather than a corollary.
+identity `∑_s ∏ᵢ M_{sᵢ,sᵢ₊₁} = tr Mᴺ`, and **it is still not in Mathlib** — probed 2026-08-11:
+`trace_pow_eq_sum`, `Matrix.trace_pow`, `trace_list_prod` and `prod_cycle` all return zero files,
+and `Matrix.pow_apply` does not exist either. Given it, `trace_transfer_pow` turns the partition
+function into `λ₊ᴺ + λ₋ᴺ`, `ratio_eq_tanh` turns the ratio into `tanh β`, and clause (iii) closes
+for the chain.
+
+**THIS PARAGRAPH SAID "NOT ATTEMPTED" AND IS SUPERSEDED BY §7, the same day.** It was attempted,
+in `TracePathSum.lean` for an arbitrary matrix over an arbitrary commutative semiring, and §7
+instantiates it here. The sentence *"the cyclic index bookkeeping is the reason it is a unit of its
+own rather than a corollary"* was right about the cost and wrong about the outcome: it was a unit
+of its own, and it landed. The paragraph is kept rather than rewritten because a gap object's
+history is what makes the next estimate worth anything.
 
 **Checked at `N = 0` and `N = 1` by hand — arithmetic done outside Lean, and labelled as such.**
 `ERRATUM 108` refuted a gap object of this project that no one had tried to falsify, so a new one
@@ -276,10 +283,52 @@ gets its small cases read before it is written down. At `N + 1 = 1` the index `i
 `i`, the product is `M s₀ s₀`, and the sum over the two functions `Fin 1 → Bool` is
 `M₀₀ + M₁₁ = tr M`. At `N + 1 = 2` the two factors are `M s₀ s₁` and `M s₁ s₀`, and the sum over
 four functions is `∑_{a,b} M_{ab} M_{ba} = tr M²`. Both agree, so the wrap-around convention in
-`Fin (N+1)` is the periodic chain and not an off-by-one. -/
+`Fin (N+1)` is the periodic chain and not an off-by-one.
+
+*Both of those hand-checks are now superseded by `partitionIsTrace` in §7, which proves the
+statement for every `N`. They are kept because they are the record of the habit, and because the
+habit is what stopped this `def` being written down wrong.* -/
 def PartitionIsTrace : Prop :=
   ∀ (β : ℝ) (N : ℕ), ∑ s : Fin (N + 1) → Bool,
       ∏ i : Fin (N + 1), transfer β (if s i then 0 else 1) (if s (i + 1) then 0 else 1)
     = Matrix.trace (transfer β ^ (N + 1))
+
+/-! ## 7. `PartitionIsTrace` is now a theorem
+
+§6 named `PartitionIsTrace` as the last open piece of `WALLS` §W4.0's item 3, and recorded that the
+sum-over-paths identity behind it is absent from Mathlib. `TracePathSum` supplies that identity for
+an arbitrary matrix over an arbitrary commutative semiring. What is left is the coding: this file's
+configurations are `Bool`-valued and the matrix is indexed by `Fin 2`. -/
+
+/-- The spin coding this file uses throughout: `true ↦ 0`, `false ↦ 1`. -/
+def code (b : Bool) : Fin 2 := if b then 0 else 1
+
+/-- And it is a bijection, which is the only fact the instantiation needs. Both directions are
+`decide` over a four-element check. -/
+def codeEquiv : Bool ≃ Fin 2 where
+  toFun := code
+  invFun i := decide (i = 0)
+  left_inv := by decide
+  right_inv := by decide
+
+/-- **THE PARTITION FUNCTION IS THE TRACE.** The last item `WALLS` §W4.0 lists for the
+one-dimensional chain, discharged: `TracePathSum.sum_cyc_eq_trace` gives the identity over `Fin 2`
+configurations and `codeEquiv` transports it to the `Bool` configurations this file sums over.
+
+**This does not close W4.** It closes one clause of item 3, in one dimension, where the gap never
+shuts. The wall's items 1 and 2 — the `2ⁿ × 2ⁿ` matrix for `d = 2`, and separating its top
+eigenvalue — are untouched, and `ratio_eq_tanh` plus this identity together are the *whole* of what
+the one-dimensional case has to say about correlation decay. -/
+theorem partitionIsTrace : PartitionIsTrace := by
+  intro β N
+  have h : (∑ s : Fin (N + 1) → Bool,
+        ∏ i : Fin (N + 1), transfer β (if s i then 0 else 1) (if s (i + 1) then 0 else 1))
+      = ∑ σ : Fin (N + 1) → Fin 2, ∏ i : Fin (N + 1), transfer β (σ i) (σ (i + 1)) := by
+    refine Fintype.sum_equiv (Equiv.arrowCongr (Equiv.refl (Fin (N + 1))) codeEquiv)
+      (fun s => ∏ i : Fin (N + 1),
+        transfer β (if s i then 0 else 1) (if s (i + 1) then 0 else 1))
+      (fun σ => ∏ i : Fin (N + 1), transfer β (σ i) (σ (i + 1))) fun s => ?_
+    rfl
+  rw [h, TracePathSum.sum_cyc_eq_trace]
 
 end IsingTransferMatrix
