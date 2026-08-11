@@ -72,14 +72,31 @@ group action written down and a Schur-type argument, and **nothing here begins i
 stated as a `def` either: `ERRATUM 108` refuted a gap object of this project that nobody had
 tried to falsify, and naming this one before its small cases have been read would repeat that.
 
-**Mathlib has none of this, probed 2026-08-11 by shape and not by name.** `RicciTensor`,
-`ScalarCurvature`, `AlgebraicCurvature`, `sectionalCurvature`: **zero files each**. `Riemann`
-matches 28 files and *none of them is geometry* — six are L-series, five box integrals, three
-complex analysis, two modular forms; only three are under `Geometry/Manifold` and those are
-`RiemannianMetric`. The single file matching `curvature` is
-`MeasureTheory/Measure/Doubling.lean`, which is not this. The estate's own two `Ricci` mentions
-are both prose: a docstring in `BakryEmeryGap.lean` and a comment in
+**Mathlib has no curvature, probed 2026-08-11 by shape and not by name.** `RicciTensor`,
+`ScalarCurvature`, `AlgebraicCurvature`, `sectionalCurvature`, `RiemannCurvature`,
+`CurvatureTensor`, `covariantDerivative`, `LeviCivita`, `EinsteinTensor`, `Lovelock`,
+`HeatKernel`: **zero files each**. Across all of Mathlib, **exactly one file matches `curvature`
+case-insensitively** and it is `MeasureTheory/Measure/Doubling.lean`, which is not this. Inside
+`Geometry/`, `curvature`, `Christoffel`, `geodesic`, `parallelTransport` and `Levi` are all zero,
+and every match for `Connection` is `GaloisConnection`. The estate's own two `Ricci` mentions are
+both prose: a docstring in `BakryEmeryGap.lean` and a comment in
 `F3_8b_SpectralActionComputation.lean`.
+
+**WHAT MATHLIB DOES HAVE, and an earlier draft of this paragraph got it wrong.** That draft read
+*"`Riemann` matches 28 files and none of them is geometry … only three are under
+`Geometry/Manifold` and those are `RiemannianMetric`"*, which is self-contradictory and false in
+its first clause. Three of the 28 **are** geometry, and reading them rather than their titles
+shows a substantial Riemannian metric layer: `Topology/VectorBundle/Riemannian.lean`
+(`RiemannianMetric`, `ContinuousRiemannianMetric`, `RiemannianBundle`),
+`Geometry/Manifold/VectorBundle/Riemannian.lean` (`ContMDiffRiemannianMetric`) and
+`Geometry/Manifold/Riemannian/` (`IsRiemannianManifold`, path length, and the induced extended
+metric). `Geometry/Manifold/VectorField/LieBracket.lean` supplies `mlieBracket`.
+
+So the honest boundary is one layer up from where that draft put it: **Mathlib has metrics and the
+Lie bracket, and no connection.** Curvature is defined in terms of the connection —
+`R(X,Y)Z = ∇_X∇_Y Z − ∇_Y∇_X Z − ∇_{[X,Y]}Z` — so two of those three ingredients exist and the
+middle one does not. None of that changes what this file is: `IsAlgCurv` is components in a frame
+with no manifold anywhere near it, and it connects to none of those declarations.
 -/
 
 namespace AlgebraicCurvature
