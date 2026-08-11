@@ -544,6 +544,81 @@ theorem exists_scal_ne_zero_two :
 
 end Einstein
 
+/-! ## 9. Removing the orthonormal frame: contraction against an arbitrary metric
+
+Everything above contracts with `δ`, which is the statement "the frame is orthonormal". That is one
+of the two restrictions the header names, and this section removes it: `ricciG` and `scalG` contract
+with an arbitrary `g`, and **`ricciG_symm` needs only that `g` is symmetric** — no positivity, no
+non-degeneracy, no relation to `R`.
+
+The old definitions are recovered as the `δ` case (`ricciG_delta`, `scalG_delta`), so nothing above
+is orphaned and the generalisation is checked against what it generalises rather than asserted to
+subsume it.
+
+**The other restriction is untouched and this does not weaken it.** These are still components
+indexed by `Fin n`, not multilinear maps on a vector space, and there is still no manifold. What has
+gone is the assumption that the metric is the identity — which is `WALLS` §W5.0 item 2's first step
+and not more than that. -/
+
+section GeneralMetric
+
+variable {R : Fin n → Fin n → Fin n → Fin n → ℝ} {g : Fin n → Fin n → ℝ}
+
+/-- **The Ricci trace against an arbitrary inverse metric**, `Ric_{bc} = g^{ad} R_{dbca}`. -/
+def ricciG (g : Fin n → Fin n → ℝ) (R : Fin n → Fin n → Fin n → Fin n → ℝ) (b c : Fin n) : ℝ :=
+  ∑ a, ∑ d, g a d * R d b c a
+
+/-- It is the old one when the frame is orthonormal. -/
+theorem ricciG_delta (R : Fin n → Fin n → Fin n → Fin n → ℝ) (b c : Fin n) :
+    ricciG delta R b c = ricci R b c := by
+  simp only [ricciG, ricci]
+  refine Finset.sum_congr rfl fun a _ => ?_
+  rw [Finset.sum_eq_single a]
+  · simp [delta_self]
+  · intro x _ hx; simp [delta, Ne.symm hx]
+  · intro h; exact absurd (Finset.mem_univ a) h
+
+/-- **THE RICCI TRACE IS SYMMETRIC FOR ANY SYMMETRIC METRIC.** `ricci_symm` assumed the metric was
+`δ`; the only property of it the proof ever used is that it is symmetric. The tensor identity doing
+the work is `R_{dbca} = R_{acbd}`, from the pair symmetry and both antisymmetries — the same three
+clauses as before, so no hypothesis on `R` is added either. -/
+theorem ricciG_symm (hg : ∀ a d, g a d = g d a) (hR : IsAlgCurv R) (b c : Fin n) :
+    ricciG g R b c = ricciG g R c b := by
+  have key : ∀ a d : Fin n, R d b c a = R a c b d := by
+    intro a d
+    calc R d b c a = R c a d b := hR.pair_symm d b c a
+      _ = -R a c d b := hR.antisymm_left c a d b
+      _ = -(-R a c b d) := by rw [hR.antisymm_right a c d b]
+      _ = R a c b d := neg_neg _
+  simp only [ricciG]
+  calc ∑ a, ∑ d, g a d * R d b c a
+      = ∑ a, ∑ d, g a d * R a c b d := by
+        exact Finset.sum_congr rfl fun a _ =>
+          Finset.sum_congr rfl fun d _ => by rw [key a d]
+    _ = ∑ d, ∑ a, g a d * R a c b d := Finset.sum_comm
+    _ = ∑ a, ∑ d, g a d * R d c b a := by
+        exact Finset.sum_congr rfl fun a _ =>
+          Finset.sum_congr rfl fun d _ => by rw [hg a d]
+
+/-- **The scalar curvature against the same metric.** -/
+def scalG (g : Fin n → Fin n → ℝ) (R : Fin n → Fin n → Fin n → Fin n → ℝ) : ℝ :=
+  ∑ b, ∑ c, g b c * ricciG g R b c
+
+theorem scalG_delta (R : Fin n → Fin n → Fin n → Fin n → ℝ) : scalG delta R = scal R := by
+  simp only [scalG, scal]
+  refine Finset.sum_congr rfl fun b _ => ?_
+  rw [Finset.sum_eq_single b]
+  · simp [delta_self, ricciG_delta]
+  · intro x _ hx; simp [delta, Ne.symm hx]
+  · intro h; exact absurd (Finset.mem_univ b) h
+
+/-- And the witness still works, with its old value, so the generalisation is not vacuous at the
+one tensor this file can compute with. -/
+theorem scalG_delta_constCurv (n : ℕ) : scalG delta (constCurv n) = (n : ℝ) * ((n : ℝ) - 1) := by
+  rw [scalG_delta, scal_constCurv]
+
+end GeneralMetric
+
 /-! ## 7. What §§5–6 do NOT settle
 
 They say nothing about **`antisymm_left` alone**. `antisymm_left_of_pair_symm` shows it follows
