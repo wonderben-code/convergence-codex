@@ -48,6 +48,15 @@ wall exist only to stop a reader inferring otherwise from the names `SpectralAct
 > form on `Fin 4` satisfies both antisymmetries and the pair symmetry and fails Bianchi. The
 > dimension is forced downward as far as this file can force it: `eq_zero_of_le_one` rules out
 > `n ≤ 1` and `bianchi_of_antisymm_two` rules out `n = 2`; `n = 3` is open here and said to be.
+>
+> **`antisymm_left_not_implied`** (§10) — **and the dependency picture is complete.** The left
+> antisymmetry does not follow from the right one and Bianchi either; the witness is three entries
+> on `Fin 3`, and `antisymm_left_of_two` proves `Fin 3` minimal. So of the four clauses **exactly
+> one is redundant — the pair symmetry — and only in the presence of both antisymmetries.**
+>
+> **`ricciG`, `scalG`, `ricciG_symm`** (§9) — the orthonormal frame comes off. The two traces
+> contract against an **arbitrary** metric and the symmetry of the Ricci trace needs only that the
+> metric is symmetric; `ricciG_delta` and `scalG_delta` recover §2 as the `δ` case.
 
 ## Why components rather than multilinear maps
 
@@ -619,13 +628,114 @@ theorem scalG_delta_constCurv (n : ℕ) : scalG delta (constCurv n) = (n : ℝ) 
 
 end GeneralMetric
 
-/-! ## 7. What §§5–6 do NOT settle
+/-! ## 10. The last clause: `antisymm_left` does not follow from the other two either
 
-They say nothing about **`antisymm_left` alone**. `antisymm_left_of_pair_symm` shows it follows
-from `antisymm_right` together with the pair symmetry, so it is redundant in *that* presentation;
-whether it follows from `antisymm_right` and `bianchi` without the pair symmetry is **not decided
-here and no witness is offered either way**. Nor is any of this a step toward `a₂`: §§5–6 are
-statements about a structure with four clauses, and the wall named in the header is untouched by
-them. -/
+§7 recorded, as an open question of this file's own, whether the left antisymmetry follows from
+`antisymm_right` and `bianchi` without the pair symmetry. **It does not**, and here is the witness.
+
+The tensor below is three entries on `Fin 3`, antisymmetrised in its last pair so that
+`antisymm_right` costs nothing, and it satisfies Bianchi. It has `R 0 0 1 2 = 1`, which the left
+antisymmetry forbids outright: that clause forces `R a a c d = 0` (`diag_left_eq_zero`).
+
+**`Fin 3` is minimal, and that is proved rather than asserted**: `antisymm_left_of_two` below shows
+that on `Fin 2` the left antisymmetry *does* follow from the right one and Bianchi, so no
+two-dimensional witness exists — the same shape as `bianchi_of_antisymm_two` in §5, and for the same
+pigeonhole reason.
+
+*One figure here is arithmetic done outside Lean and is labelled as such rather than left looking
+like the rest*: solving the linear system gives the space of tensors with `antisymm_right` and
+Bianchi as dimension `1` at `n = 2` and dimension `9` at `n = 3`. Nothing below depends on those
+numbers; they are why the search stopped at three. -/
+
+/-- **AT `n = 2` THERE IS NOTHING TO FIND.** The left antisymmetry follows from the right one and
+Bianchi, by the same pigeonhole that made Bianchi free in §5: among three indices drawn from a
+two-element type two coincide. So the witness below could not have lived on `Fin 2`. -/
+theorem antisymm_left_of_two {R : Fin 2 → Fin 2 → Fin 2 → Fin 2 → ℝ}
+    (hR : ∀ a b c d, R a b c d = -R a b d c)
+    (hB : ∀ a b c d, R a b c d + R b c a d + R c a b d = 0) (a b c d : Fin 2) :
+    R a b c d = -R b a c d := by
+  have z : ∀ x y w : Fin 2, R x y w w = 0 := fun x y w => diag_right_eq_zero hR x y w
+  have z000 := z 0 0 0
+  have z001 := z 0 0 1
+  have z010 := z 0 1 0
+  have z011 := z 0 1 1
+  have z100 := z 1 0 0
+  have z101 := z 1 0 1
+  have z110 := z 1 1 0
+  have z111 := z 1 1 1
+  have b0000 := hB 0 0 0 0
+  have r0000 := hR 0 0 0 0
+  have b0001 := hB 0 0 0 1
+  have r0001 := hR 0 0 0 1
+  have b0010 := hB 0 0 1 0
+  have r0010 := hR 0 0 1 0
+  have b0011 := hB 0 0 1 1
+  have r0011 := hR 0 0 1 1
+  have b0100 := hB 0 1 0 0
+  have r0100 := hR 0 1 0 0
+  have b0101 := hB 0 1 0 1
+  have r0101 := hR 0 1 0 1
+  have b0110 := hB 0 1 1 0
+  have r0110 := hR 0 1 1 0
+  have b0111 := hB 0 1 1 1
+  have r0111 := hR 0 1 1 1
+  have b1000 := hB 1 0 0 0
+  have r1000 := hR 1 0 0 0
+  have b1001 := hB 1 0 0 1
+  have r1001 := hR 1 0 0 1
+  have b1010 := hB 1 0 1 0
+  have r1010 := hR 1 0 1 0
+  have b1011 := hB 1 0 1 1
+  have r1011 := hR 1 0 1 1
+  have b1100 := hB 1 1 0 0
+  have r1100 := hR 1 1 0 0
+  have b1101 := hB 1 1 0 1
+  have r1101 := hR 1 1 0 1
+  have b1110 := hB 1 1 1 0
+  have r1110 := hR 1 1 1 0
+  have b1111 := hB 1 1 1 1
+  have r1111 := hR 1 1 1 1
+  fin_cases a <;> fin_cases b <;> fin_cases c <;> fin_cases d <;>
+    simp only [Fin.zero_eta, Fin.mk_one] <;> linarith
+
+/-- Three entries, and everything else zero. -/
+def cwSeed (a b c d : Fin 3) : ℝ :=
+  (if a = 0 ∧ b = 0 ∧ c = 1 ∧ d = 2 then 1 else 0)
+  + (if a = 0 ∧ b = 2 ∧ c = 0 ∧ d = 1 then 1 else 0)
+  + (if a = 1 ∧ b = 0 ∧ c = 2 ∧ d = 0 then 1 else 0)
+
+/-- The witness: `cwSeed` antisymmetrised in its last pair, so `antisymm_right` is `ring`. -/
+def cw (a b c d : Fin 3) : ℝ := cwSeed a b c d - cwSeed a b d c
+
+theorem cw_antisymm_right (a b c d : Fin 3) : cw a b c d = -cw a b d c := by
+  simp only [cw]; ring
+
+theorem cw_bianchi (a b c d : Fin 3) : cw a b c d + cw b c a d + cw c a b d = 0 := by
+  fin_cases a <;> fin_cases b <;> fin_cases c <;> fin_cases d <;>
+    simp [cw, cwSeed]
+
+theorem cw_diag_ne_zero : cw 0 0 1 2 = 1 := by
+  simp [cw, cwSeed]
+
+/-- **SO THE LEFT ANTISYMMETRY IS INDEPENDENT OF THE OTHER TWO.** With `bianchi_not_implied` and
+`pair_symm_of_bianchi`, the dependency picture of `IsAlgCurv` is now complete: **exactly one of the
+four clauses is redundant, the pair symmetry, and it is redundant only in the presence of both
+antisymmetries.** -/
+theorem antisymm_left_not_implied :
+    ∃ R : Fin 3 → Fin 3 → Fin 3 → Fin 3 → ℝ,
+      (∀ a b c d, R a b c d = -R a b d c) ∧
+      (∀ a b c d, R a b c d + R b c a d + R c a b d = 0) ∧
+      ¬ (∀ a b c d, R a b c d = -R b a c d) := by
+  refine ⟨cw, cw_antisymm_right, cw_bianchi, ?_⟩
+  intro hL
+  have := diag_left_eq_zero hL 0 1 2
+  rw [cw_diag_ne_zero] at this
+  exact one_ne_zero this
+
+/-! ## 7. What this file does NOT settle
+
+§7 used to record the question §10 has now answered. What remains outside this file is unchanged:
+**none of §§5–6 or §10 is a step toward `a₂`.** They are statements about a structure with four
+clauses on a finite index type, and the wall named in the header is untouched by them. -/
 
 end AlgebraicCurvature
