@@ -47,6 +47,14 @@ hypothesis: a repaired statement must also keep some boundary site *outside* it.
 not sufficient** — a cluster can leave part of the edge alone while the plaquette at `x` sits on
 a closed loop around an interior hole, and that case is untreated.
 
+**AND THE RIM VERTICES CAN BE ELIMINATED FROM THE QUESTION ENTIRELY.**
+`RimBoundary.reachable_rim_iff`: the plaquette at `x` reaches the rim in direction `d` **exactly
+when** it reaches some plaquette whose side `d` is broken and faces the outer face. So a repaired
+statement need not mention `Sum.inr` at all — it has to connect the plaquette at `x` to a
+plaquette already sitting on the edge of the box. What it may **not** do is drop to
+`dualGraph`: reachability in `extDual` between two plaquettes can route through a rim, which is
+precisely what the four extra vertices were introduced to allow.
+
 The rest of this header is left standing as written, because that is what a record is for.
 
 ## The residue, restated — and it is ONE statement, not the two `ERRATUM 97` named

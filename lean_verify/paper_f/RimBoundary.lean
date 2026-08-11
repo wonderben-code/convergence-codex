@@ -53,6 +53,25 @@ which names *which* of the four sides §4 was talking about. `starts_at_rim` car
 argument per direction, where `stays_inl` needs every rim edge gone at once: a walk may legally
 visit the other three rims and come back, so the one-sided statement cannot reuse it.
 
+## And §6 makes both criteria corollaries, by saying what reaching a rim IS
+
+A walk arriving at `inr d` cannot have come from another rim — `extAdj` sends `inr, inr` to
+`False` — so its last step comes from a plaquette already carrying a broken outward side in
+direction `d`. That is two-way:
+
+> **`reachable_rim_iff`** — `P` reaches the rim in direction `d` **exactly when** it reaches some
+> plaquette `Q` with `sideOf Q d ∈ contour τ` and `Outward Q d`.
+
+The rim vertices were scaffolding for the construction; the question they encode is a question
+about plaquettes, and §6 states it without them. `not_reachable_rim_of_side_const'` re-derives §5
+from it, which is the evidence that the subsumption claimed here is real rather than asserted.
+
+**Note what it does not reduce to.** `(extDual τ).Reachable (inl P) (inl Q)` is **not**
+`(dualGraph τ).Reachable P Q`: a walk between two plaquettes in the extended graph may hop
+through a rim, so two plaquettes with broken outward sides on the *same* side of the box are
+joined even when the ordinary dual graph separates them. That is what the extra vertices were for,
+and it is why §6 is stated in `extDual` and not transported down.
+
 ## What it does not do
 
 It gives a necessary condition for the repair, not a sufficient one, and it does not repair
@@ -280,5 +299,57 @@ theorem exists_onSide_outside_cluster_of_reaches_rim {σ : Config n} {x : Site n
     exact hc ⟨y, hy, hny⟩
   rw [show clusterOn σ x p = true from clusterOn_eq_true_iff.mpr (hall p hp),
     show clusterOn σ x q = true from clusterOn_eq_true_iff.mpr (hall q hq)]
+
+/-! ## 6. The exact characterisation, which makes §§2 and 5 corollaries
+
+Both criteria above are one-way: constancy along a side forbids reaching that rim. The
+two-way statement is available and it is better, because it says what reaching a rim **is**.
+
+A walk that arrives at `inr d` cannot have arrived from another rim — `extAdj` sends `inr, inr`
+to `False` — so its last step comes from a plaquette carrying a broken outward side in direction
+`d`. That is the whole content, and it turns "does `P` reach the rim" into "does `P` reach a
+plaquette that is **already** at the edge, in direction `d`". -/
+
+/-- A walk that **starts** at a rim either never leaves it or steps immediately to a plaquette
+carrying a broken outward side in that direction. -/
+theorem walk_from_rim {τ : Config n} :
+    ∀ {a b : ExtV n}, (extDual τ).Walk a b → ∀ d : Fin 4, a = Sum.inr d →
+      b = Sum.inr d ∨ ∃ Q : Plaq n, (extDual τ).Adj (Sum.inl Q) (Sum.inr d)
+        ∧ (extDual τ).Reachable (Sum.inl Q) b := by
+  intro a b w
+  induction w with
+  | nil => exact fun d h => Or.inl h
+  | @cons u v _ hadj w' _ =>
+    rintro d rfl
+    cases v with
+    | inl Q => exact Or.inr ⟨Q, hadj.symm, ⟨w'⟩⟩
+    | inr e => exact hadj.elim
+
+/-- **REACHING A RIM IS REACHING A PLAQUETTE THAT IS ALREADY AT THE EDGE.** `P` reaches the rim
+in direction `d` exactly when it reaches, inside the extended graph, some plaquette `Q` whose
+side `d` is broken and faces the outer face.
+
+This is the residue of S3b-ii stated without any reference to the rim vertices: they were
+scaffolding for the construction, and the question they encode is a question about plaquettes. -/
+theorem reachable_rim_iff {τ : Config n} {P : Plaq n} {d : Fin 4} :
+    (extDual τ).Reachable (Sum.inl P) (Sum.inr d) ↔
+      ∃ Q : Plaq n, (sideOf Q d ∈ contour τ ∧ Outward Q d)
+        ∧ (extDual τ).Reachable (Sum.inl P) (Sum.inl Q) := by
+  constructor
+  · intro h
+    obtain ⟨w⟩ := h.symm
+    rcases walk_from_rim w d rfl with hc | ⟨Q, hadj, hre⟩
+    · exact absurd hc (by simp)
+    · exact ⟨Q, hadj, hre.symm⟩
+  · rintro ⟨Q, hadj, hre⟩
+    exact hre.trans (SimpleGraph.Adj.reachable hadj)
+
+/-- §5 falls out: with no broken outward side on that side of the box there is no such `Q`. -/
+theorem not_reachable_rim_of_side_const' {τ : Config n} {d : Fin 4}
+    (hconst : ∀ p q : Site n, OnSide d p → OnSide d q → τ p = τ q) (P : Plaq n) :
+    ¬ (extDual τ).Reachable (Sum.inl P) (Sum.inr d) := by
+  rw [reachable_rim_iff]
+  rintro ⟨Q, hQ, -⟩
+  exact no_rim_edge_of_side_const hconst Q hQ
 
 end RimBoundary
