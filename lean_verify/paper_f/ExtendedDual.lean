@@ -41,8 +41,18 @@ What the picture says should replace it is a decomposition into circuits **plus 
 the odd vertices** — for `cornerDown`, one path of length two running from the left rim to the
 bottom rim through the corner. The estate has no such theorem and neither does Mathlib
 (`WALLS.md` W3 records the Euler-direction gap), so `UNLOCK_WATCHLIST`'s S3b-ii covering is
-still not proved. **This file moves the obstruction from "the construction cannot be written"
-to "the construction is written and one graph theorem is missing", and no further.**
+still not proved.
+
+**AND THAT DECOMPOSITION WOULD NOT BE ENOUGH BY ITSELF — an earlier draft of this header said
+it was, and that was wrong (`ERRATUM 97`).** The covering has to produce a walk from a
+plaquette *near `x`* out to a rim, and a decomposition says only that the edge set falls into
+circuits and paths; it does not say which piece the plaquette at `x` lies on. The interior
+chain never relied on decomposition alone either: `PeierlsCover.cover_cycCandidates` gets its
+circuit from `RayWalk.exists_circuit_near_of_down`, a **geometric** argument about a ray from
+`x` and the parity of its crossings, and only then reaches for the decomposition. **So the
+residue of S3b-ii is two things, not one:** the graph theorem, and the open-path analogue of
+the ray argument. What this file settles is that the construction those would run on exists and
+has the right degrees.
 
 `IsingBoundaryField.MagnetisationBound` is untouched.
 -/
