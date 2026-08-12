@@ -252,12 +252,24 @@ controlled by §4, and the two are combined without ever dividing by a quantity 
 negative — the target is cleared as `m·n²·Den ≤ Num`, which is why `0 ≤ m` appears. -/
 
 /-- **THE FINITE-`h` MAGNETISATION BOUND.** If the `+`-conditioned ratio is at least `q·n²` and the
-off-`+` mass is at most `u`, then `MagnetisationBoundAt n β h m` holds whenever
-`m(1 + u) + u ≤ q`. The hypothesis `hu` is where `h` enters, and it is an inequality at a **finite**
-`h`, not a statement about a limit. -/
-theorem magnetisationBoundAt_of_bound {n : ℕ} {β h u m q : ℝ}
-    (hβ : 0 < β) (hh : 0 ≤ h) (hm0 : 0 ≤ m)
-    (hu : (2 : ℝ) ^ (n * n) * Real.exp (-(2 * β * h)) ≤ u)
+off-`+` mass is at most `u·Zplus`, then `MagnetisationBoundAt n β h m` holds whenever
+`m(1 + u) + u ≤ q`. `hoff` is where `h` enters, and it is an inequality at a **finite** `h`, not a
+statement about a limit.
+
+*Generalised after the fact, and FOUR hypotheses came off.* The first version took the concrete
+`2^(n·n)·e^{−2βh} ≤ u` in place of `hoff`, and needed `0 < β`, `0 ≤ h` and `0 ≤ u` besides. Taking
+the off-`+` bound **abstractly** drops all of them: every one of the three was there to feed
+`sum_offPlus_le`, which is no longer called. `h` and `β` now carry no sign condition at all —
+nothing below reads either direction — and `u ≥ 0` follows from `hoff`. The fourth was found by
+the unused-variable linter after the other three, which is worth recording: **removing hypotheses
+exposes more of them.** `offBound_of_pow` recovers the old hypothesis, and
+**`BoundaryStratum.sum_offPlus_le` is the sharper supplier this generalisation exists for.** -/
+theorem magnetisationBoundAt_of_bound {n : ℕ} {β h u m q : ℝ} (hm0 : 0 ≤ m)
+    (hoff : (∑ σ ∈ (Finset.univ : Finset (Config n)).filter
+        (fun σ => ¬ PlusBoundary σ), Real.exp (-β * isingH n σ) *
+          Real.exp (-(2 * β * h) * (downCount n σ : ℝ)))
+      ≤ u * ∑ σ ∈ (Finset.univ : Finset (Config n)).filter (fun σ => PlusBoundary σ),
+          Real.exp (-β * isingH n σ))
     (hplus : q * ((n : ℝ) * n) ≤
       (∑ σ ∈ (Finset.univ : Finset (Config n)).filter (fun σ => PlusBoundary σ),
           magnetisation n σ * Real.exp (-β * isingH n σ)) /
@@ -267,7 +279,6 @@ theorem magnetisationBoundAt_of_bound {n : ℕ} {β h u m q : ℝ}
     MagnetisationBoundAt n β h m := by
   classical
   intro hn
-  have hu0 : (0 : ℝ) ≤ u := le_trans (by positivity) hu
   set Zp := ∑ σ ∈ (Finset.univ : Finset (Config n)).filter (fun σ => PlusBoundary σ),
     Real.exp (-β * isingH n σ) with hZp
   set Np := ∑ σ ∈ (Finset.univ : Finset (Config n)).filter (fun σ => PlusBoundary σ),
@@ -290,19 +301,7 @@ theorem magnetisationBoundAt_of_bound {n : ℕ} {β h u m q : ℝ}
     Finset.sum_nonneg fun σ _ => by positivity
   have hOffD_le : (∑ σ ∈ (Finset.univ : Finset (Config n)).filter
       (fun σ => ¬ PlusBoundary σ), Real.exp (-β * isingH n σ) *
-        Real.exp (-(2 * β * h) * (downCount n σ : ℝ))) ≤ u * Zp := by
-    have hrw : ∀ σ : Config n, Real.exp (-β * isingH n σ) *
-        Real.exp (-(2 * β * h) * (downCount n σ : ℝ))
-        = 1 * Real.exp (-β * isingH n σ) *
-          Real.exp (-(2 * β * h) * (downCount n σ : ℝ)) := fun σ => by ring
-    rw [Finset.sum_congr rfl fun σ _ => hrw σ]
-    refine (sum_offPlus_le hβ.le hh 1 zero_le_one).trans ?_
-    have h1 : (2 : ℝ) ^ (n * n) * Real.exp (-(2 * β * h)) * (1 * groundWeight n β)
-        ≤ u * (1 * groundWeight n β) :=
-      mul_le_mul_of_nonneg_right hu (by have := (groundWeight_pos n β).le; positivity)
-    refine h1.trans ?_
-    have : (1 : ℝ) * groundWeight n β ≤ Zp := by rw [one_mul]; exact hgw
-    exact mul_le_mul_of_nonneg_left this hu0
+        Real.exp (-(2 * β * h) * (downCount n σ : ℝ))) ≤ u * Zp := hoff
   have hDenpos : 0 < Den := by rw [hDsplit]; linarith
   have hDenle : Den ≤ Zp * (1 + u) := by rw [hDsplit]; nlinarith
   -- the numerator
@@ -329,14 +328,17 @@ theorem magnetisationBoundAt_of_bound {n : ℕ} {β h u m q : ℝ}
           Real.exp (-(2 * β * h) * (downCount n σ : ℝ)) := by positivity
       nlinarith
     refine (Finset.sum_le_sum hterm).trans ?_
-    refine (sum_offPlus_le hβ.le hh ((n : ℝ) * n) hn2.le).trans ?_
-    have h1 : (2 : ℝ) ^ (n * n) * Real.exp (-(2 * β * h)) *
-        (((n : ℝ) * n) * groundWeight n β) ≤ u * (((n : ℝ) * n) * groundWeight n β) :=
-      mul_le_mul_of_nonneg_right hu (by have := (groundWeight_pos n β).le; positivity)
-    refine h1.trans ?_
-    have h2 : ((n : ℝ) * n) * groundWeight n β ≤ ((n : ℝ) * n) * Zp :=
-      mul_le_mul_of_nonneg_left hgw hn2.le
-    exact mul_le_mul_of_nonneg_left h2 hu0
+    have hpull : ∑ σ ∈ (Finset.univ : Finset (Config n)).filter (fun σ => ¬ PlusBoundary σ),
+        ((n : ℝ) * n) * Real.exp (-β * isingH n σ) *
+          Real.exp (-(2 * β * h) * (downCount n σ : ℝ))
+        = ((n : ℝ) * n) * ∑ σ ∈ (Finset.univ : Finset (Config n)).filter
+            (fun σ => ¬ PlusBoundary σ), Real.exp (-β * isingH n σ) *
+              Real.exp (-(2 * β * h) * (downCount n σ : ℝ)) := by
+      rw [Finset.mul_sum]
+      exact Finset.sum_congr rfl fun σ _ => by ring
+    rw [hpull]
+    have hstep := mul_le_mul_of_nonneg_left hoff hn2.le
+    nlinarith [hstep]
   -- the plus ratio, cleared of its division
   have hplus' : q * ((n : ℝ) * n) * Zp ≤ Np := by
     rw [le_div_iff₀ hZppos] at hplus
@@ -354,6 +356,34 @@ theorem magnetisationBoundAt_of_bound {n : ℕ} {β h u m q : ℝ}
   have hstep : (m * (1 + u) + u) * (((n : ℝ) * n) * Zp) ≤ q * (((n : ℝ) * n) * Zp) :=
     mul_le_mul_of_nonneg_right hmq hpos.le
   nlinarith [hstep, hplus']
+
+/-- **THE CRUDE OFF-`+` BOUND, IN THE ABSTRACT SHAPE THE LEMMA ABOVE NOW TAKES.** This is what
+`magnetisationBoundAt_of_bound` used to have inlined; lifting it out is what let the lemma be
+stated against an arbitrary supplier, and `BoundaryStratum.sum_offPlus_le` is the other one. -/
+theorem offBound_of_pow {n : ℕ} {β h u : ℝ} (hβ : 0 ≤ β) (hh : 0 ≤ h)
+    (hu : (2 : ℝ) ^ (n * n) * Real.exp (-(2 * β * h)) ≤ u) :
+    (∑ σ ∈ (Finset.univ : Finset (Config n)).filter (fun σ => ¬ PlusBoundary σ),
+        Real.exp (-β * isingH n σ) * Real.exp (-(2 * β * h) * (downCount n σ : ℝ)))
+      ≤ u * ∑ σ ∈ (Finset.univ : Finset (Config n)).filter (fun σ => PlusBoundary σ),
+          Real.exp (-β * isingH n σ) := by
+  classical
+  have hu0 : (0 : ℝ) ≤ u := le_trans (by positivity) hu
+  have hgw : groundWeight n β ≤ ∑ σ ∈ (Finset.univ : Finset (Config n)).filter
+      (fun σ => PlusBoundary σ), Real.exp (-β * isingH n σ) := groundWeight_le_plus n β
+  have hrw : ∀ σ : Config n, Real.exp (-β * isingH n σ) *
+      Real.exp (-(2 * β * h) * (downCount n σ : ℝ))
+      = 1 * Real.exp (-β * isingH n σ) *
+        Real.exp (-(2 * β * h) * (downCount n σ : ℝ)) := fun σ => by ring
+  rw [Finset.sum_congr rfl fun σ _ => hrw σ]
+  refine (sum_offPlus_le hβ hh 1 zero_le_one).trans ?_
+  have h1 : (2 : ℝ) ^ (n * n) * Real.exp (-(2 * β * h)) * (1 * groundWeight n β)
+      ≤ u * (1 * groundWeight n β) :=
+    mul_le_mul_of_nonneg_right hu (by have := (groundWeight_pos n β).le; positivity)
+  refine h1.trans ?_
+  have h2 : (1 : ℝ) * groundWeight n β
+      ≤ ∑ σ ∈ (Finset.univ : Finset (Config n)).filter (fun σ => PlusBoundary σ),
+          Real.exp (-β * isingH n σ) := by rw [one_mul]; exact hgw
+  exact mul_le_mul_of_nonneg_left h2 hu0
 
 /-! ## 7. The threshold, explicitly -/
 
@@ -411,8 +441,8 @@ theorem magnetisation_threshold {m : ℝ} (hm0 : 0 ≤ m) (hm : m < 1) :
   rcases Nat.eq_zero_or_pos n with rfl | hn
   · exact fun hcon => absurd hcon (lt_irrefl 0)
   refine magnetisationBoundAt_of_bound (q := 1 - 2 * ((1 - m) / 4))
-    (u := (1 - m) / (2 * (1 + m))) hβ0 hh hm0 ?_ (hβ n hn) ?_
-  · exact pow_two_exp_le hβ0 hc hthr
+    (u := (1 - m) / (2 * (1 + m))) hm0 ?_ (hβ n hn) ?_
+  · exact offBound_of_pow hβ0.le hh (pow_two_exp_le hβ0 hc hthr)
   · have hval : m * (1 + (1 - m) / (2 * (1 + m))) + (1 - m) / (2 * (1 + m))
         = 1 - 2 * ((1 - m) / 4) := by
       field_simp
