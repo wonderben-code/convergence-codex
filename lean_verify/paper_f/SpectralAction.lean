@@ -56,7 +56,7 @@
   below constructs a measure, integrates against one, or derives a
   variance. What has changed is that the question is now expressible:
   `spectralAction` exists, its `Λ`-dependence is proved to be through
-  `Λ²`, and its first nonconstant term is computed. §7 states the
+  `Λ²`, and its first nonconstant term is computed. §8 states the
   remaining leg precisely and sends the modelling choice to the author.
 
   ADDED AFTER THE FIRST DRAFT (§6): the odd-moment vanishing is a shadow
@@ -64,6 +64,13 @@
   `D` bijectively to the `(−λ)`-eigenvectors, so the spectrum is
   symmetric about zero**. That secures the general-cutoff case
   mathematically and narrows DECISION 6 to plumbing.
+
+  ADDED LATER STILL (§9): item 5 above computes the SECOND moment and
+  stops, so every higher term of the expansion stayed opaque. `Dlin_sq`
+  is block diagonal, so **`Tr(D^{2k}) = 4 Tr((MMᴴ)^k)` for every `k`**,
+  and hence **the action depends on the Yukawa matrix only through the
+  singular values of `M`** (`spectralAction_congr_of_moments`). Still not
+  a measure — §9 says so in its own text and neither DECISION moves.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
   axioms.
@@ -421,6 +428,56 @@ theorem trace_Dlin_zero_but_Dlin_ne :
       ∧ Dlin (1 : Matrix (Fin 1) (Fin 1) ℂ) ≠ 0 :=
   ⟨trace_Dlin_pow_odd _ odd_one, Dlin_one_ne_zero⟩
 
+/-! ## 8. What is still missing, and whose decision it is
+
+**No Bakry-Émery tag moves.** The watchlist item this file fires the
+trigger for asks whether the spectral action produces a Gaussian
+FLUCTUATION MEASURE of variance `Λ²/2`. A trace is a number. Nothing
+above constructs a measure, integrates against one, or derives a
+variance, and no amount of further computation of `Tr(Dᵏ)` will produce
+one — the missing step is a modelling step, not a calculation.
+
+What HAS changed, precisely:
+
+* `Tr f(D/Λ)` exists as a Lean object for the estate's own Dirac
+  operator, where before nothing computed it at all.
+* Its `Λ`-dependence is PROVED to be through `Λ²` alone
+  (`spectralAction_neg_lambda`), which is the shape any `gap = 2/Λ²`
+  claim must have and which was previously asserted nowhere.
+* Its leading nonconstant term is `4 Tr(MMᴴ)/Λ²`.
+
+**DECISIONS NEEDED (author).** Two, and they are modelling choices that
+do not belong to a formalisation. The estate-wide register numbers them
+**DECISION 5** and **DECISION 6**; the local `1.`/`2.` below are the same
+two, and every ledger outside this file uses the register numbers:
+
+1. (**DECISION 5**) *What is the fluctuation measure?* To get from `Tr f(D/Λ)` to a
+   probability measure one must say which variable fluctuates and with
+   what weight — the standard choice being `exp(−Tr f(D/Λ))` in the
+   inner fluctuations of `D`. The estate has no such definition and
+   choosing one is a physics commitment.
+2. (**DECISION 6**) *Is the polynomial cutoff acceptable?* The literature uses a smooth
+   even cutoff and reads off heat-kernel coefficients. This file's
+   restriction to polynomials is honest and stated. **§6 narrows this
+   decision:** the mathematical content of the general case — that the
+   spectrum is symmetric about zero, hence that only the even part of
+   any cutoff can contribute — is now proved and does not depend on the
+   cutoff being polynomial. What is left is functional-calculus
+   plumbing, which is a scope question rather than a mathematical one.
+
+Until (1) is answered the Bakry-Émery tags stay where they are, and the
+watchlist item stays open with its remaining leg now one sentence long
+instead of two.
+
+**AND §9 BELOW TESTS THE SENTENCE ABOVE.** "No amount of further
+computation of `Tr(Dᵏ)` will produce a measure" is a claim about an
+unbounded family, so it is worth doing more of that computation and
+seeing what comes out. §9 does every even moment at once. What comes out
+is a statement about which features of `M` the action can depend on —
+and still no measure, which is the sentence surviving its own test
+rather than being repeated.
+-/
+
 /-! ## 9. Every even moment, not just the second
 
 §2 computes `Tr(D²) = 4 Tr(MMᴴ)` and stops there, and §3's expansion then carries every higher
@@ -428,10 +485,10 @@ moment as an opaque `Tr(Dᵏ)`. But `Dlin_sq` is block diagonal, and a block-dia
 powers are the blocks' powers — so **every** even moment is the same computation with an exponent
 on it, and the odd ones already vanish.
 
-What comes out is the structural statement the file's §8 could not make: **the spectral action
-sees the Yukawa matrix only through the traces of powers of `MMᴴ`** — that is, only through its
-singular values. Nothing here needs functional calculus, so the polynomial restriction of §3 is
-untouched and DECISION 2 is not affected. -/
+What comes out is the structural statement §8 could not make: **the spectral action sees the
+Yukawa matrix only through the traces of powers of `MMᴴ`** — that is, only through its singular
+values. Nothing here needs functional calculus, so the polynomial restriction of §3 is untouched
+and **DECISION 6** (§8's item 2) is not affected. -/
 
 /-- `(AB)^{k+1} = A (BA)^k B`. The bookkeeping behind the cyclic trace identity below. -/
 theorem pow_mul_swap (A B : Matrix (Fin n) (Fin n) ℂ) :
@@ -511,46 +568,6 @@ theorem spectralAction_congr_of_moments {M N : Matrix (Fin n) (Fin n) ℂ}
     subst hji
     rw [trace_Dlin_pow_two_mul, trace_Dlin_pow_two_mul, h]
   · rw [trace_Dlin_pow_odd _ hj, trace_Dlin_pow_odd _ hj]
-
-/-! ## 8. What is still missing, and whose decision it is
-
-**No Bakry-Émery tag moves.** The watchlist item this file fires the
-trigger for asks whether the spectral action produces a Gaussian
-FLUCTUATION MEASURE of variance `Λ²/2`. A trace is a number. Nothing
-above constructs a measure, integrates against one, or derives a
-variance, and no amount of further computation of `Tr(Dᵏ)` will produce
-one — the missing step is a modelling step, not a calculation.
-
-What HAS changed, precisely:
-
-* `Tr f(D/Λ)` exists as a Lean object for the estate's own Dirac
-  operator, where before nothing computed it at all.
-* Its `Λ`-dependence is PROVED to be through `Λ²` alone
-  (`spectralAction_neg_lambda`), which is the shape any `gap = 2/Λ²`
-  claim must have and which was previously asserted nowhere.
-* Its leading nonconstant term is `4 Tr(MMᴴ)/Λ²`.
-
-**DECISIONS NEEDED (author).** Two, and they are modelling choices that
-do not belong to a formalisation:
-
-1. *What is the fluctuation measure?* To get from `Tr f(D/Λ)` to a
-   probability measure one must say which variable fluctuates and with
-   what weight — the standard choice being `exp(−Tr f(D/Λ))` in the
-   inner fluctuations of `D`. The estate has no such definition and
-   choosing one is a physics commitment.
-2. *Is the polynomial cutoff acceptable?* The literature uses a smooth
-   even cutoff and reads off heat-kernel coefficients. This file's
-   restriction to polynomials is honest and stated. **§6 narrows this
-   decision:** the mathematical content of the general case — that the
-   spectrum is symmetric about zero, hence that only the even part of
-   any cutoff can contribute — is now proved and does not depend on the
-   cutoff being polynomial. What is left is functional-calculus
-   plumbing, which is a scope question rather than a mathematical one.
-
-Until (1) is answered the Bakry-Émery tags stay where they are, and the
-watchlist item stays open with its remaining leg now one sentence long
-instead of two.
--/
 
 end
 
