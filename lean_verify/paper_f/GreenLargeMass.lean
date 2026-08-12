@@ -115,6 +115,13 @@ per-vertex weights the general identity carries, `c p = u p · (deg p + m²)`, a
 term is *exactly* `−crossForm u` with an `O(m⁻⁶)` remainder. §9 checks the hypotheses are
 satisfiable somewhere §4's are not, on a six-vertex graph that is regular of no degree.
 
+§10 then takes the other direction and the degree ceiling too — the ceiling because every finite
+graph has one. **`reflectionPositive_arbitrarily_large_iff_hcross_general`: on every finite graph
+carrying a mirror reflection, with no regularity, no condition on `A²`, no class hypothesis and no
+bound to supply, being reflection positive at arbitrarily large masses is EXACTLY the coupling
+hypothesis.** §4's biconditional is the case `Δ = d` and is subsumed; what §4 keeps is the sharper
+explicit threshold `d²S² < m²·crossForm` against §10's `4Δ²S² < m²·crossForm` with `Δ ≤ m²`.
+
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 
@@ -430,7 +437,12 @@ theorem hcross_of_reflectionPositive_arbitrarily_large (hd : G.IsRegularOfDegree
 /-- **AND SO, AT LARGE MASS, THE TWO CONDITIONS ARE THE SAME CONDITION.** One direction is the
 estate's own theorem at every mass (`GraphMirrorReflection.reflectionPositive_mirror`); the other
 is this file's, and it needs the mass to be large. Together: **being reflection positive at
-arbitrarily large masses is exactly `hcross`.** -/
+arbitrarily large masses is exactly `hcross`.**
+
+**SUBSUMED 2026-08-12 by §10's `reflectionPositive_arbitrarily_large_iff_hcross_general`**, which
+drops `hd` entirely. This statement is kept because it is not merely a special case in strength:
+§4's threshold `d²S² < m²·crossForm` is sharper than the general one, which pays a factor four and
+asks `Δ ≤ m²` besides. Use this on a regular graph, §10 on any graph. -/
 theorem reflectionPositive_arbitrarily_large_iff_hcross (hd : G.IsRegularOfDegree d)
     (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ) (m₀ : ℝ) :
     (∀ M : ℝ, ∃ m' : ℝ, M < m' ∧ m' ≠ 0 ∧ GraphReflection.ReflectionPositive G m' θ H)
@@ -1039,5 +1051,154 @@ theorem stepGraph_not_reflectionPositive_of_large {m : ℝ} (hm : 100 < m ^ 2) :
   nlinarith [hm, ht, mul_pos (show (0 : ℝ) < m ^ 2 - 100 by linarith) ht]
 
 end NonRegularWitness
+
+/-! ## 10. And so the BICONDITIONAL holds with no hypothesis on the graph at all
+
+`PROOF_STRATEGY` §3: the moment a rung lands, re-attempt the next one before returning to the
+queue. §8 removed regularity from one direction; this section removes it from the other, and then
+discharges the degree ceiling internally — **because every finite graph has one.**
+
+`reflectionPositive_arbitrarily_large_iff_hcross_general` is therefore the file's headline with its
+hypotheses gone: on **every** finite graph carrying a mirror reflection, being reflection positive
+at arbitrarily large masses is **exactly** the coupling hypothesis. §4's biconditional is the
+special case `Δ = d`, and is now subsumed — what §4 keeps that this does not is the sharp explicit
+threshold `d²S² < m²·crossForm`, against this section's `4Δ²S² < m²·crossForm` and `Δ ≤ m²`.
+Neither statement is deleted; the file records which is stronger in which respect.
+
+**This does not move `WALLS` W1.** The remaining leg there wants the converse at a FIXED mass, and
+every threshold here is witness-dependent. What has changed since §4 is only the class of graphs
+the large-mass half applies to, which is now all of them.
+-/
+
+section GeneralBiconditional
+
+open GreenExpansion
+
+variable {G : SimpleGraph V} [DecidableRel G.Adj] {m : ℝ} {θ : V ≃ V} {H Mir : Finset V}
+
+omit [DecidableEq V] in
+/-- Once the mass beats the degree ceiling, the weighted `ℓ¹` mass the general threshold is
+measured in is at most twice the plain one. -/
+theorem weighted_sum_le {Δ : ℕ} (hΔ : ∀ v : V, G.degree v ≤ Δ) (hmΔ : (Δ : ℝ) ≤ m ^ 2)
+    (u : V → ℝ) :
+    ∑ p ∈ H, |u p * ((G.degree p : ℝ) + m ^ 2)| ≤ 2 * m ^ 2 * ∑ p ∈ H, |u p| := by
+  rw [Finset.mul_sum]
+  refine Finset.sum_le_sum fun p _ => ?_
+  have hdp : ((G.degree p : ℝ)) ≤ (Δ : ℝ) := by exact_mod_cast hΔ p
+  have hnn : (0 : ℝ) ≤ (G.degree p : ℝ) + m ^ 2 := by positivity
+  rw [abs_mul, abs_of_nonneg hnn]
+  have : ((G.degree p : ℝ) + m ^ 2) ≤ 2 * m ^ 2 := by linarith
+  calc |u p| * ((G.degree p : ℝ) + m ^ 2) ≤ |u p| * (2 * m ^ 2) :=
+        mul_le_mul_of_nonneg_left this (abs_nonneg _)
+    _ = 2 * m ^ 2 * |u p| := by ring
+
+/-- **THE THRESHOLD IN THE PLAIN `ℓ¹` MASS.** §8's hypothesis is stated in the weighted mass, which
+itself grows like `m²` and so is awkward to quantify over. This converts it into a condition on the
+*unweighted* mass `S = ∑_H |u|`, at the cost of a factor four: `4Δ²S² < m²·crossForm u` and
+`Δ ≤ m²` suffice. -/
+theorem threshold_of_plain (hm : 0 < m ^ 2) {Δ : ℕ} (hΔ : ∀ v : V, G.degree v ≤ Δ)
+    (hmΔ : (Δ : ℝ) ≤ m ^ 2) {u : V → ℝ}
+    (hbig : 4 * (Δ : ℝ) ^ 2 * (∑ p ∈ H, |u p|) ^ 2 < m ^ 2 * crossForm G m θ H u) :
+    ((m ^ 2)⁻¹) ^ 3 * (Δ : ℝ) ^ 2 * (∑ p ∈ H, |u p * ((G.degree p : ℝ) + m ^ 2)|) ^ 2
+      < crossForm G m θ H u := by
+  set S : ℝ := ∑ p ∈ H, |u p| with hSdef
+  set T : ℝ := ∑ p ∈ H, |u p * ((G.degree p : ℝ) + m ^ 2)| with hTdef
+  have hS : 0 ≤ S := Finset.sum_nonneg fun _ _ => abs_nonneg _
+  have hT : 0 ≤ T := Finset.sum_nonneg fun _ _ => abs_nonneg _
+  have hTle : T ≤ 2 * m ^ 2 * S := weighted_sum_le hΔ hmΔ u
+  have hsq : T ^ 2 ≤ (2 * m ^ 2 * S) ^ 2 := by
+    nlinarith [hT, hTle]
+  have hcoef : (0 : ℝ) ≤ ((m ^ 2)⁻¹) ^ 3 * (Δ : ℝ) ^ 2 := by positivity
+  have hstep : ((m ^ 2)⁻¹) ^ 3 * (Δ : ℝ) ^ 2 * T ^ 2
+      ≤ ((m ^ 2)⁻¹) ^ 3 * (Δ : ℝ) ^ 2 * (2 * m ^ 2 * S) ^ 2 :=
+    mul_le_mul_of_nonneg_left hsq hcoef
+  have hclose : ((m ^ 2)⁻¹) ^ 3 * (Δ : ℝ) ^ 2 * (2 * m ^ 2 * S) ^ 2
+      = (4 * (Δ : ℝ) ^ 2 * S ^ 2) / m ^ 2 := by
+    field_simp
+    ring
+  rw [hclose] at hstep
+  have hfin : (4 * (Δ : ℝ) ^ 2 * S ^ 2) / m ^ 2 < crossForm G m θ H u := by
+    rw [div_lt_iff₀ hm]
+    linarith [hbig]
+  linarith [hstep, hfin]
+
+omit [DecidableEq V] in
+/-- Every finite graph has a degree ceiling, and the crudest one will do. -/
+theorem degree_le_card (v : V) : G.degree v ≤ Fintype.card V :=
+  Finset.card_le_univ _
+
+/-- **THE WALL'S CONVERSE AT LARGE MASS, WITH NO HYPOTHESIS ON THE GRAPH.** §4 asked the graph to
+be regular; nothing here does. The conclusion names no mass because `crossForm` names none
+(`GraphMirrorReflection.crossForm_mass_independent`). -/
+theorem hcross_of_reflectionPositive_arbitrarily_large_general (hM : IsMirrorHalf θ H Mir)
+    (h : IsRefl G θ)
+    (hRP : ∀ M : ℝ, ∃ m' : ℝ, M < m' ∧ m' ≠ 0 ∧ GraphReflection.ReflectionPositive G m' θ H)
+    (m₀ : ℝ) (w : V → ℝ) :
+    crossForm G m₀ θ H w ≤ 0 := by
+  classical
+  by_contra hc
+  rw [not_le] at hc
+  set Δ : ℕ := Fintype.card V with hΔdef
+  have hΔ : ∀ v : V, G.degree v ≤ Δ := fun v => degree_le_card v
+  set u : V → ℝ := fun i => if i ∈ H then w i else 0 with hudef
+  have hus : ∀ p, p ∉ H → u p = 0 := fun p hp => by rw [hudef]; simp [hp]
+  have hupos : ∀ m' : ℝ, 0 < crossForm G m' θ H u := by
+    intro m'
+    rw [hudef, crossForm_restrict w, crossForm_mass_independent hM m' m₀ w]
+    exact hc
+  set S : ℝ := ∑ p ∈ H, |u p| with hSdef
+  set K : ℝ := 4 * (Δ : ℝ) ^ 2 * S ^ 2 / crossForm G m₀ θ H u with hKdef
+  obtain ⟨m', hm'gt, hm'ne, hm'RP⟩ := hRP (max (max 1 (Δ : ℝ)) K)
+  have h1 : (1 : ℝ) < m' := lt_of_le_of_lt (le_trans (le_max_left _ _) (le_max_left _ _)) hm'gt
+  have hΔlt : (Δ : ℝ) < m' := lt_of_le_of_lt (le_trans (le_max_right _ _) (le_max_left _ _)) hm'gt
+  have hK : K < m' := lt_of_le_of_lt (le_max_right _ _) hm'gt
+  have hmsq : m' < m' ^ 2 := by nlinarith [h1]
+  have hm2 : (0 : ℝ) < m' ^ 2 := by nlinarith [h1]
+  have hmΔ : (Δ : ℝ) ≤ m' ^ 2 := le_of_lt (lt_trans hΔlt hmsq)
+  have hcf0 : 0 < crossForm G m₀ θ H u := hupos m₀
+  have hbig : 4 * (Δ : ℝ) ^ 2 * S ^ 2 < m' ^ 2 * crossForm G m' θ H u := by
+    have hcf : crossForm G m' θ H u = crossForm G m₀ θ H u := crossForm_mass_independent hM m' m₀ u
+    have hKlt : K < m' ^ 2 := lt_trans hK hmsq
+    rw [hKdef, div_lt_iff₀ hcf0] at hKlt
+    rw [hcf]
+    linarith [hKlt]
+  exact not_reflectionPositive_of_crossForm_pos_general hM h hm'ne hΔ hus
+    (threshold_of_plain hm2 hΔ hmΔ hbig) hm'RP
+
+/-- **THE FILE'S HEADLINE, WITH ITS HYPOTHESES GONE.** On every finite graph carrying a mirror
+reflection — no regularity, no condition on `A²`, no class hypothesis, no degree bound to supply —
+**being reflection positive at arbitrarily large masses is exactly the coupling hypothesis.** One
+direction is the estate's own theorem at every mass
+(`GraphMirrorReflection.reflectionPositive_mirror`); the other is §8's, and it needs the mass to be
+large. §4's `reflectionPositive_arbitrarily_large_iff_hcross` is the case `Δ = d` and is subsumed;
+what §4 keeps is the sharper explicit threshold. -/
+theorem reflectionPositive_arbitrarily_large_iff_hcross_general (hM : IsMirrorHalf θ H Mir)
+    (h : IsRefl G θ) (m₀ : ℝ) :
+    (∀ M : ℝ, ∃ m' : ℝ, M < m' ∧ m' ≠ 0 ∧ GraphReflection.ReflectionPositive G m' θ H)
+      ↔ ∀ w : V → ℝ, crossForm G m₀ θ H w ≤ 0 := by
+  constructor
+  · intro hRP w
+    exact hcross_of_reflectionPositive_arbitrarily_large_general hM h hRP m₀ w
+  · intro hcross M
+    refine ⟨max M 0 + 1, by have := le_max_left M 0; linarith, by positivity,
+      fun c hcs => ?_⟩
+    exact reflectionPositive_mirror hM h (by positivity)
+      (fun w => by rw [crossForm_mass_independent hM _ m₀ w]; exact hcross w)
+      (fun p hp _ => hcs p hp)
+
+/-- **AND `stepGraph` IS NOW DECIDED IN BOTH DIRECTIONS.** §9 gave the failure at every `m² > 100`;
+the biconditional turns that into the statement that it is not reflection positive at arbitrarily
+large masses **because** it fails `hcross`, with the two conditions identified rather than merely
+compared. Still open at small mass, exactly as §9 says. -/
+theorem stepGraph_not_reflectionPositive_arbitrarily_large :
+    ¬ ∀ M : ℝ, ∃ m' : ℝ, M < m' ∧ m' ≠ 0 ∧
+        GraphReflection.ReflectionPositive stepGraph m' sigma6 Hs := by
+  intro hRP
+  have := (reflectionPositive_arbitrarily_large_iff_hcross_general (Mir := (∅ : Finset (Fin 6)))
+    isMirrorHalf_Hs isRefl_sigma6 1).mp hRP us
+  rw [crossForm_step_pos] at this
+  norm_num at this
+
+end GeneralBiconditional
 
 end GreenLargeMass
