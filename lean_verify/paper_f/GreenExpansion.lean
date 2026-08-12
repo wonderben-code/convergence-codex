@@ -47,8 +47,26 @@ does not, so no sign follows. **What would close the converse is a bound making 
 smaller than the cross form's negative direction** — that is an estimate, which is analysis,
 which this file deliberately does not attempt.
 
-**REGULARITY IS A RESTRICTION ON §§1–7 ONLY, AND §8 REMOVES IT.** The scalar `s` only exists
-because every degree is the same. For a general graph the same two substitutions give
+**AND §9 FINDS THE SECOND WAY THE REMAINDER CLOSES, WHICH IS WHERE A COUNTEREXAMPLE WOULD HAVE
+TO LIVE.** The Laplacian kills constants, so the Green function's row sums are `m⁻²`
+(`green_mulVec_one`) and `green * J = m⁻² • J`. With that, the remainder closes whenever `A²` lies
+in the span of `1`, `A` **and the all-ones matrix `J`** — and the criterion it produces is **not**
+`hcross`:
+
+> **`reflectionPositive_iff_slack`** — reflection positivity at `c` is
+> `crossForm c ≤ (γ / m²) · (∑_{p ∈ H} c p)²`.
+
+`hcross` implies that for `γ ≥ 0` (`slack_of_hcross`) and is **strictly stronger**. So a
+counterexample to the converse must use the slack: a graph in this class whose cross form is
+positive somewhere but never by more than it. **None is exhibited and none is claimed to exist** —
+what has changed is that the search has an address, and that the slack grows like `m⁻²`, so small
+mass is where to look. The class is inhabited beyond §6's matchings by
+`IndefiniteCoupling.bipGraph` — `K₂,₂`, `2`-regular, `A² = 2•J − 2•A` — where the cross form and
+the slack have the *same* sign and so add rather than fight (`reflectedForm_bipGraph`), which is
+why that graph is reflection positive and is not the counterexample.
+
+**REGULARITY RESTRICTS §§1–7 AND §9, AND §8 REMOVES IT FOR THE IDENTITY.** The scalar `s` only
+exists because every degree is the same. For a general graph the same two substitutions give
 `green = Dinv + Dinv A Dinv + green A Dinv A Dinv`, where `Dinv = diagonal ((deg · + m²)⁻¹)`, and
 the leading term becomes `C p q / ((m² + deg p) * (m² + deg q))` — `IsRefl.degree` makes the two
 weights match under the mirror, without which that coefficient would not even be symmetric in `p`
@@ -445,5 +463,212 @@ theorem green_mirror_general (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ) (hm 
   rw [Matrix.add_apply, Matrix.add_apply, Dinv, Matrix.diagonal_apply,
     if_neg (mirror_ne hM hp hq), zero_add, ← Dinv, Dinv_adj_Dinv_mirror h p q] at hg
   exact hg
+
+/-! ## 9. The all-ones direction, and a wider class where the remainder closes
+
+§6 closes the remainder when `A² = 1`. There is a second way it can close, and it needs one fact
+the estate did not have: **the Green function's row sums are `m⁻²`.** The Laplacian kills
+constants, so `massive *ᵥ 1⃗ = m² • 1⃗`, so `green *ᵥ 1⃗ = m⁻² • 1⃗` — hence `green * J = m⁻² • J`
+for the all-ones matrix `J`.
+
+With that, the remainder closes whenever `A²` lies in the span of `1`, `A` **and `J`**:
+
+> **`smul_green_of_adjSq`** — if `A * A = α • 1 + β • A + γ • J` then
+> `(s² − α − β s) • green = (s − β) • 1 + A + (γ / m²) • J`.
+
+**And the criterion it produces is NOT `hcross`.** Read at a mirrored entry and summed against a
+vector supported on the half, it says reflection positivity at `c` is
+
+    crossForm c  ≤  (γ / m²) * (∑_{p ∈ H} c p)²
+
+— which `hcross` implies and which is **strictly weaker whenever `γ > 0`**. So this class is
+exactly where a counterexample to the wall's converse would have to live: a graph in it whose
+cross form is positive somewhere, but never by more than the slack. **No such graph is exhibited
+here and none is claimed to exist.** What has changed is that the search has an address.
+
+**The class is inhabited and the witness was already in the estate.** `IndefiniteCoupling.bipGraph`
+is `K₂,₂`, is `2`-regular, and has `A² = 2 • J − 2 • A` — two vertices of the same part have both
+of the others as common neighbours, two of different parts have none. That is `α = 0`, `β = −2`,
+`γ = 2`, and §6's matching class is the disjoint case `α = 1, β = γ = 0`.
+-/
+
+/-- **THE MASSIVE OPERATOR ON CONSTANTS.** The Laplacian kills them, so only the mass survives. -/
+theorem massive_mulVec_one (m : ℝ) :
+    GraphLaplacian.massive G m *ᵥ (fun _ => (1 : ℝ)) = fun _ => m ^ 2 := by
+  rw [GraphLaplacian.massive, Matrix.add_mulVec, G.lapMatrix_mulVec_const_eq_zero]
+  ext p
+  simp [Matrix.mulVec, Matrix.diagonal, dotProduct]
+
+/-- **AND SO THE GREEN FUNCTION'S ROW SUMS ARE `m⁻²`.** -/
+theorem green_mulVec_one (hm : m ≠ 0) :
+    GraphLaplacian.green G m *ᵥ (fun _ => (1 : ℝ)) = fun _ => (m ^ 2)⁻¹ := by
+  have hm2 : (m : ℝ) ^ 2 ≠ 0 := pow_ne_zero _ hm
+  have key : GraphLaplacian.green G m *ᵥ
+      (GraphLaplacian.massive G m *ᵥ (fun _ => (1 : ℝ))) = fun _ => (1 : ℝ) := by
+    rw [Matrix.mulVec_mulVec, GraphLaplacian.green_mul_massive G hm, Matrix.one_mulVec]
+  rw [massive_mulVec_one (G := G) m,
+    show (fun _ : V => m ^ 2) = (m ^ 2) • (fun _ : V => (1 : ℝ)) from by ext p; simp,
+    Matrix.mulVec_smul] at key
+  ext p
+  have hp := congrFun key p
+  simp only [Pi.smul_apply, smul_eq_mul] at hp
+  field_simp
+  linarith [hp]
+
+/-- The all-ones matrix. -/
+noncomputable def allOnes (V : Type*) : Matrix V V ℝ := fun _ _ => 1
+
+theorem green_mul_allOnes (hm : m ≠ 0) :
+    GraphLaplacian.green G m * allOnes V = (m ^ 2)⁻¹ • allOnes V := by
+  ext p q
+  have hp := congrFun (green_mulVec_one (G := G) (m := m) hm) p
+  simp only [Matrix.mulVec, dotProduct, mul_one] at hp
+  simp only [Matrix.mul_apply, allOnes, Matrix.smul_apply, smul_eq_mul, mul_one]
+  exact hp
+
+/-- **THE IDENTITY SOLVES WHENEVER `A²` IS IN THE SPAN OF `1`, `A` AND `J`.** -/
+theorem smul_green_of_adjSq (hd : G.IsRegularOfDegree d) (hm : m ≠ 0) {α β γ : ℝ}
+    (hA : G.adjMatrix ℝ * G.adjMatrix ℝ
+      = α • (1 : Matrix V V ℝ) + β • G.adjMatrix ℝ + γ • allOnes V) :
+    (((d : ℝ) + m ^ 2) ^ 2 - α - β * ((d : ℝ) + m ^ 2)) • GraphLaplacian.green G m
+      = (((d : ℝ) + m ^ 2) - β) • (1 : Matrix V V ℝ) + G.adjMatrix ℝ
+        + (γ * (m ^ 2)⁻¹) • allOnes V := by
+  have hs := smul_green hd hm
+  have hGA : GraphLaplacian.green G m * G.adjMatrix ℝ
+      = ((d : ℝ) + m ^ 2) • GraphLaplacian.green G m - 1 := by
+    rw [hs]; abel
+  have h2 := sq_smul_green hd hm
+  rw [Matrix.mul_assoc, hA, Matrix.mul_add, Matrix.mul_add, Matrix.mul_smul, Matrix.mul_smul,
+    Matrix.mul_smul, Matrix.mul_one, hGA, green_mul_allOnes hm] at h2
+  rw [sub_smul, sub_smul, h2, smul_sub, smul_smul]
+  module
+
+/-! ### The criterion this produces, and why it is not `hcross` -/
+
+/-- **THE GREEN FUNCTION AT A MIRRORED ENTRY, ON THIS CLASS.** The `1` term drops as always; what
+survives beside the cross-cut adjacency is a constant `γ / m²`, the same at every entry. -/
+theorem green_mirror_of_adjSq (hd : G.IsRegularOfDegree d) (hM : IsMirrorHalf θ H Mir)
+    (h : IsRefl G θ) (hm : m ≠ 0) {α β γ : ℝ}
+    (hA : G.adjMatrix ℝ * G.adjMatrix ℝ
+      = α • (1 : Matrix V V ℝ) + β • G.adjMatrix ℝ + γ • allOnes V)
+    {p q : V} (hp : p ∈ H) (hq : q ∈ H) :
+    (((d : ℝ) + m ^ 2) ^ 2 - α - β * ((d : ℝ) + m ^ 2)) * GraphLaplacian.green G m (θ p) q
+      = crossAdj G θ p q + γ * (m ^ 2)⁻¹ := by
+  have hg := congrFun (congrFun (smul_green_of_adjSq (G := G) (m := m) hd hm hA) (θ p)) q
+  rw [Matrix.smul_apply, smul_eq_mul, Matrix.add_apply, Matrix.add_apply, Matrix.smul_apply,
+    Matrix.one_apply, if_neg (mirror_ne hM hp hq), smul_zero, zero_add, adjMatrix_mirror h p q,
+    Matrix.smul_apply, allOnes, smul_eq_mul, mul_one] at hg
+  exact hg
+
+/-- **THE REFLECTED FORM ON THIS CLASS, EXACTLY**: the cross form, plus a slack proportional to
+the SQUARE OF THE SUM of the coefficients over the half. -/
+theorem reflectedForm_of_adjSq (hd : G.IsRegularOfDegree d) (hM : IsMirrorHalf θ H Mir)
+    (h : IsRefl G θ) (hm : m ≠ 0) {α β γ : ℝ}
+    (hA : G.adjMatrix ℝ * G.adjMatrix ℝ
+      = α • (1 : Matrix V V ℝ) + β • G.adjMatrix ℝ + γ • allOnes V)
+    {c : V → ℝ} (hc : ∀ p, p ∉ H → c p = 0) :
+    (((d : ℝ) + m ^ 2) ^ 2 - α - β * ((d : ℝ) + m ^ 2)) * reflectedForm G m θ c
+      = - crossForm G m θ H c + (γ * (m ^ 2)⁻¹) * (∑ p ∈ H, c p) ^ 2 := by
+  classical
+  set K := ((d : ℝ) + m ^ 2) ^ 2 - α - β * ((d : ℝ) + m ^ 2) with hKdef
+  have hlhs : K * reflectedForm G m θ c
+      = ∑ p ∈ H, ∑ q ∈ H, c p * c q * (crossAdj G θ p q + γ * (m ^ 2)⁻¹) := by
+    rw [reflectedForm_eq_sum_half hc, Finset.mul_sum]
+    refine Finset.sum_congr rfl fun p hp => ?_
+    rw [Finset.mul_sum]
+    refine Finset.sum_congr rfl fun q hq => ?_
+    rw [show K * (c p * c q * GraphLaplacian.green G m (θ p) q)
+        = c p * c q * (K * GraphLaplacian.green G m (θ p) q) from by ring,
+      hKdef, green_mirror_of_adjSq hd hM h hm hA hp hq]
+  rw [hlhs, crossForm_eq_neg_adj hM m c, neg_neg,
+    show (∑ p ∈ H, c p) ^ 2 = (∑ p ∈ H, c p) * (∑ q ∈ H, c q) from sq _,
+    Finset.sum_mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl fun p hp => ?_
+  rw [Finset.mul_sum, ← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl fun q hq => ?_
+  rw [crossAdj]
+  ring
+
+/-! ### The class is inhabited, and the witness was already in the estate -/
+
+theorem bipGraph_two_regular : IndefiniteCoupling.bipGraph.IsRegularOfDegree 2 := by
+  change ∀ v, IndefiniteCoupling.bipGraph.degree v = 2
+  intro v
+  have hnb : ∀ u : Fin 4, IndefiniteCoupling.bipGraph.Adj v u ↔ (v.val < 2) ≠ (u.val < 2) :=
+    fun _ => Iff.rfl
+  have : IndefiniteCoupling.bipGraph.neighborFinset v
+      = Finset.univ.filter fun u => (v.val < 2) ≠ (u.val < 2) := by
+    ext u
+    rw [SimpleGraph.mem_neighborFinset, Finset.mem_filter, hnb u]
+    exact ⟨fun h => ⟨Finset.mem_univ u, h⟩, fun h => h.2⟩
+  rw [SimpleGraph.degree, this]
+  fin_cases v <;> rfl
+
+/-- **`K₂,₂` SQUARES INTO THE SPAN.** Two vertices of the same part have both of the others as
+common neighbours; two of different parts have none. So `A² = 2 • J − 2 • A`, which is
+`α = 0`, `β = −2`, `γ = 2`. -/
+theorem bipGraph_adjSq :
+    IndefiniteCoupling.bipGraph.adjMatrix ℝ * IndefiniteCoupling.bipGraph.adjMatrix ℝ
+      = (0 : ℝ) • (1 : Matrix (Fin 4) (Fin 4) ℝ)
+        + (-2 : ℝ) • IndefiniteCoupling.bipGraph.adjMatrix ℝ + (2 : ℝ) • allOnes (Fin 4) := by
+  ext p q
+  fin_cases p <;> fin_cases q <;>
+    simp [Matrix.mul_apply, Fin.sum_univ_succ, SimpleGraph.adjMatrix_apply, allOnes,
+      IndefiniteCoupling.bipGraph] <;> norm_num
+
+/-- **THE REFLECTED FORM ON `K₂,₂`, EXACTLY.** Every cross pair is adjacent, so the cross form is
+`−(c₀+c₁)²` and the slack is `(2/m²)(c₀+c₁)²`: the two add rather than fight, which is why this
+graph is reflection positive and is *not* a counterexample to the converse. It is the witness that
+the class of §9 is inhabited beyond §6's matchings. -/
+theorem reflectedForm_bipGraph (hm : m ≠ 0) {c : Fin 4 → ℝ}
+    (hc : ∀ p, p ∉ IndefiniteCoupling.Hh → c p = 0) :
+    (((2 : ℝ) + m ^ 2) ^ 2 - 0 - (-2) * ((2 : ℝ) + m ^ 2))
+        * reflectedForm IndefiniteCoupling.bipGraph m IndefiniteCoupling.rho c
+      = (c 0 + c 1) ^ 2 + (2 * (m ^ 2)⁻¹) * (∑ p ∈ IndefiniteCoupling.Hh, c p) ^ 2 := by
+  have h := reflectedForm_of_adjSq (d := 2) (H := IndefiniteCoupling.Hh)
+    (Mir := (∅ : Finset (Fin 4))) bipGraph_two_regular IndefiniteCoupling.isMirrorHalf_Hh
+    IndefiniteCoupling.isRefl_rho_bip hm bipGraph_adjSq hc
+  push_cast at h
+  rw [h, IndefiniteCoupling.crossForm_bip m c, neg_neg]
+
+/-! ### And the criterion this class satisfies is NOT `hcross`
+
+Stated as a theorem so the difference cannot soften into a remark. Reflection positivity at `c` is
+`crossForm c ≤ (γ/m²)(∑_H c)²`, and `hcross` is `crossForm c ≤ 0`. The first follows from the
+second whenever `γ ≥ 0`, and the two differ exactly by the slack. **A counterexample to the wall's
+converse, if one exists, must use that slack**: a graph in this class whose cross form is positive
+somewhere but never by more than `(γ/m²)(∑_H c)²`. None is exhibited here.
+-/
+
+/-- **THE EXACT CRITERION ON THIS CLASS.** -/
+theorem reflectionPositive_iff_slack (hd : G.IsRegularOfDegree d) (hM : IsMirrorHalf θ H Mir)
+    (h : IsRefl G θ) (hm : m ≠ 0) {α β γ : ℝ}
+    (hA : G.adjMatrix ℝ * G.adjMatrix ℝ
+      = α • (1 : Matrix V V ℝ) + β • G.adjMatrix ℝ + γ • allOnes V)
+    (hK : 0 < ((d : ℝ) + m ^ 2) ^ 2 - α - β * ((d : ℝ) + m ^ 2)) :
+    GraphReflection.ReflectionPositive G m θ H ↔
+      ∀ c : V → ℝ, (∀ p, p ∉ H → c p = 0) →
+        crossForm G m θ H c ≤ (γ * (m ^ 2)⁻¹) * (∑ p ∈ H, c p) ^ 2 := by
+  constructor
+  · intro hrp c hcs
+    have hr := reflectedForm_of_adjSq hd hM h hm hA hcs
+    have h0 : (0 : ℝ) ≤ reflectedForm G m θ c := hrp c hcs
+    nlinarith [mul_nonneg (le_of_lt hK) h0]
+  · intro hslack c hcs
+    have hr := reflectedForm_of_adjSq hd hM h hm hA hcs
+    have := hslack c hcs
+    rw [← reflectedForm]
+    nlinarith [hr, this]
+
+/-- **AND `hcross` IS STRICTLY THE STRONGER CONDITION when `γ ≥ 0`.** The implication is one line;
+what matters is that it is only an implication, and that the gap is exactly the slack. -/
+theorem slack_of_hcross (hγ : 0 ≤ γ) (hm : m ≠ 0)
+    (hc : ∀ w : V → ℝ, crossForm G m θ H w ≤ 0) (c : V → ℝ) :
+    crossForm G m θ H c ≤ (γ * (m ^ 2)⁻¹) * (∑ p ∈ H, c p) ^ 2 := by
+  have h1 : (0 : ℝ) ≤ (γ * (m ^ 2)⁻¹) * (∑ p ∈ H, c p) ^ 2 := by
+    have : (0 : ℝ) ≤ (m ^ 2)⁻¹ := by positivity
+    have := mul_nonneg hγ this
+    positivity
+  linarith [hc c]
 
 end GreenExpansion
