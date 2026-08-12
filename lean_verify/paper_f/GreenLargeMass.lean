@@ -1201,4 +1201,90 @@ theorem stepGraph_not_reflectionPositive_arbitrarily_large :
 
 end GeneralBiconditional
 
+/-! ## 11. The dichotomy §10 forces, and where it puts the remaining search
+
+`PROOF_STRATEGY` §3 again: §10 landed, so the next rung before the queue. It is short, because §10
+did the work — but the statements are ones the estate does not have, and they are the shape the
+open question is asked in.
+
+Two theorems bracket every graph. `GraphMirrorReflection.reflectionPositive_mirror` says `hcross`
+gives reflection positivity **at every mass**. §10 says failing `hcross` costs it **at every large
+mass**. Together, `reflectionPositive_all_or_bounded`: on every finite graph with a mirror
+reflection, **either it is reflection positive at every nonzero mass, or there is a threshold past
+which it is at none.** There is no third behaviour — no graph is reflection positive on an
+unbounded set of masses and fails on another unbounded set.
+
+**That is the sharpest form of where the wall's counterexample can live.**
+`CrossFormMatrix.not_converse_of_mass_dependent` says a refutation of the converse is a graph
+reflection positive at one mass and not at another. `refutation_is_bounded_above` says any such
+graph has its reflection-positive masses **bounded above** — so the search is over a bounded window,
+and `not_converse_of_mass_dependent`'s "at another mass" is always a *large* one. §6 reached the
+same place from the other side, by showing the slack that would excuse a failure is exactly zero at
+every witness of it; this reaches it from the masses rather than from the vectors.
+
+**What this is not.** It does not bound the window, exhibit a graph in it, or show one exists. The
+threshold in `exists_threshold_of_not_hcross` is produced by contradiction and is not extracted, so
+nothing here is computable from a graph. `WALLS` W1's leg — the converse at a fixed mass — is
+untouched for the fourth consecutive section, which is said here rather than left to be noticed.
+-/
+
+section Dichotomy
+
+variable {G : SimpleGraph V} [DecidableRel G.Adj] {θ : V ≃ V} {H Mir : Finset V}
+
+/-- **FAILING THE COUPLING HYPOTHESIS COSTS REFLECTION POSITIVITY AT EVERY LARGE MASS**, not merely
+at arbitrarily large ones. The threshold is produced by contradiction from §10 and is deliberately
+not extracted — see the section header. -/
+theorem exists_threshold_of_not_hcross (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ) (m₀ : ℝ)
+    (hnot : ¬ ∀ w : V → ℝ, crossForm G m₀ θ H w ≤ 0) :
+    ∃ M : ℝ, ∀ m : ℝ, M < m → m ≠ 0 → ¬ GraphReflection.ReflectionPositive G m θ H := by
+  by_contra hc
+  push Not at hc
+  refine hnot (fun w => hcross_of_reflectionPositive_arbitrarily_large_general hM h ?_ m₀ w)
+  intro M
+  obtain ⟨m', hgt, hne, hrp⟩ := hc M
+  exact ⟨m', hgt, hne, hrp⟩
+
+/-- **THE DICHOTOMY: ALL MASSES, OR A BOUNDED SET OF THEM.** On every finite graph carrying a mirror
+reflection, reflection positivity either holds at every nonzero mass or fails past a threshold.
+**There is no third behaviour** — no graph holds it on an unbounded set of masses and fails on
+another unbounded set. The first branch is `GraphMirrorReflection.reflectionPositive_mirror` and the
+second is §10; what is new is that they exhaust the cases. -/
+theorem reflectionPositive_all_or_bounded (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ) :
+    (∀ m : ℝ, m ≠ 0 → GraphReflection.ReflectionPositive G m θ H)
+      ∨ ∃ M : ℝ, ∀ m : ℝ, M < m → m ≠ 0 → ¬ GraphReflection.ReflectionPositive G m θ H := by
+  by_cases hc : ∀ w : V → ℝ, crossForm G 1 θ H w ≤ 0
+  · refine Or.inl fun m hm c hcs => ?_
+    exact reflectionPositive_mirror hM h hm
+      (fun w => by rw [crossForm_mass_independent hM m 1 w]; exact hc w)
+      (fun p hp _ => hcs p hp)
+  · exact Or.inr (exists_threshold_of_not_hcross hM h 1 hc)
+
+/-- **AND SO THE WALL'S COUNTEREXAMPLE, IF IT EXISTS, LIVES IN A BOUNDED WINDOW OF MASSES.**
+`CrossFormMatrix.not_converse_of_mass_dependent` says a refutation of the converse is a graph
+reflection positive at one mass and not at another. This says the masses where it IS reflection
+positive are bounded above — so the "other mass" is always a large one, and the search is over a
+bounded window. **Nothing here bounds the window or shows one is inhabited.** -/
+theorem refutation_is_bounded_above (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ)
+    (hrefute : ∃ m : ℝ, m ≠ 0 ∧ GraphReflection.ReflectionPositive G m θ H
+      ∧ ¬ ∀ w : V → ℝ, crossForm G m θ H w ≤ 0) :
+    ∃ M : ℝ, ∀ m : ℝ, M < m → m ≠ 0 → ¬ GraphReflection.ReflectionPositive G m θ H := by
+  obtain ⟨m, _, _, hnot⟩ := hrefute
+  exact exists_threshold_of_not_hcross hM h m hnot
+
+/-- **THE DICHOTOMY LANDS ON `stepGraph`'s SECOND BRANCH**, which §9 already knew with an explicit
+threshold of `100`. Stated so that the general theorem is checked against a case where the answer is
+independently known, as §5 does for §4. -/
+theorem stepGraph_bounded_branch :
+    ∃ M : ℝ, ∀ m : ℝ, M < m → m ≠ 0 →
+      ¬ GraphReflection.ReflectionPositive stepGraph m sigma6 Hs := by
+  refine exists_threshold_of_not_hcross (Mir := (∅ : Finset (Fin 6)))
+    isMirrorHalf_Hs isRefl_sigma6 1 ?_
+  intro hall
+  have := hall us
+  rw [crossForm_step_pos] at this
+  norm_num at this
+
+end Dichotomy
+
 end GreenLargeMass
