@@ -766,9 +766,14 @@ by `R ↦ Ric` and `R ↦ scal · δ` — and then **refuses to write it as a `d
 > this one before its small cases have been read would repeat that.
 
 This section reads the small cases, and it still does not name the object. The group action is not
-written down and no Schur-type argument is attempted. What is settled here is the half of "these
-two span" that needs no invariant theory at all: **whether the two named maps are independent of
-each other**, dimension by dimension.
+written down here and no Schur-type argument is attempted. What is settled here is the part of
+"these two span" that needs no invariant theory to prove: **whether the two named maps are
+independent of each other**, dimension by dimension.
+
+*Read this section together with §12, which was written after it and because of it.* Independence
+is only half of "these two are a basis of the equivariant maps" — the other half is that the two
+**are** equivariant, which this section assumed and never checked. §12 checks it. What is below is
+true as stated; it is weaker than the wall's item 4 half it was first advertised as settling.
 
 **They are not always.** At `n = 2` they are proportional — `ricci_eq_half_scal_two`, which is §8's
 `einstein_eq_zero_two` read as a statement about the maps rather than about a tensor — so the span
@@ -911,7 +916,11 @@ UP.** A relation `α · Ric + β · scal · δ = 0` holding for *every* algebrai
 Ricci term drops out and `β · scal` must vanish with `scal = (n−2)(n−1) > 0`; at any other
 coordinate `α · (n − 2)` must then vanish too.
 
-This is one of the two halves of `WALLS` §W5.0 §6 item 4 — the half that needs no group action. -/
+**This sentence used to end "— the half that needs no group action", and that was wrong.** It
+needs no group action to *prove*, which is what the observation was; but the half itself is *the
+two named maps are equivariant and independent*, and independence alone leaves the first conjunct
+unchecked. §12 supplies it. Corrected in place rather than deleted, because the error is the
+point: two things can be shown distinct without either having been shown to be what it is called. -/
 theorem traces_independent (hn : 3 ≤ n) {α β : ℝ}
     (hz : ∀ R : Fin n → Fin n → Fin n → Fin n → ℝ, IsAlgCurv R → ∀ b c,
       α * ricci R b c + β * (scal R * delta b c) = 0) :
