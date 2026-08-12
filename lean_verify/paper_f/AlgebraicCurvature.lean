@@ -74,7 +74,7 @@ wall exist only to stop a reader inferring otherwise from the names `SpectralAct
 > algebraic curvature tensors is invariant, and `ricci_act` / `scal_act` / `act2_delta` show both
 > maps commute with the frame change.
 >
-> **`lovelock_two`** (§13) — **and in dimension two the item is COMPLETE, both halves.** Any
+> **`lovelock_two`** (§15) — **and in dimension two the item is COMPLETE, both halves.** Any
 > homogeneous `O(2)`-equivariant map out of algebraic curvature tensors is a multiple of
 > `R ↦ scal R · δ`, so the family has no members outside the span of the two named maps. Three
 > facts make it affordable and none survives to `n ≥ 3`: the domain is a line, the generator is
@@ -1311,7 +1311,15 @@ theorem traces_equivariant (hQ : IsOrth Q) (R : Fin n → Fin n → Fin n → Fi
         = act2 Q (fun b' c' => scal R * delta b' c') b c) :=
   ⟨ricci_act hQ R, scalDelta_act hQ R⟩
 
-/-! ### The first invariant-theoretic step, and item 4 complete in dimension two -/
+/-! ## 13. The invariant-theoretic machinery: reflections, transpositions, and no averaging
+
+**SECTION NUMBERS ADDED 2026-08-12 (`ERRATUM 138`).** This file's header cited `§13` and `§14`,
+and neither marker existed — the material was written under one `###` subsection of §12 and the
+numbers lived only in prose. Worse, the header's numbering ran BACKWARDS against the file: it
+called `lovelock_two` §13 and `act_constCurv` §14, and `act_constCurv` is proved first, because
+`lovelock_two` consumes it. Numbering now follows file order — machinery, then the generator's
+invariance, then the two-dimensional theorem — and the four prose references are corrected to
+match. -/
 
 /-- `reflect k` is **diagonal**: it scales slot `b` by `1 − 2δ_{bk}`, which is `−1` at `k` and `1`
 elsewhere. Written this way so `act2` against it is two evaluations. -/
@@ -1421,6 +1429,8 @@ theorem scal_smul (lam : ℝ) (R : Fin n → Fin n → Fin n → Fin n → ℝ) 
     scal (fun a b c d => lam * R a b c d) = lam * scal R := by
   simp only [scal, ricci, Finset.mul_sum]
 
+/-! ## 14. The generator is fixed by every orthogonal frame change, in every dimension -/
+
 /-- The one contraction the next theorem needs: four copies of `Q` against a pair of deltas
 coupling slot 1 to slot 4 and slot 2 to slot 3. **Two of the four sums collapse on the deltas** and
 what is left factors into two row inner products, which orthogonality turns into deltas. -/
@@ -1466,7 +1476,7 @@ theorem sum_act_delta_pair (hQ : IsOrth Q) (a b c d : Fin n) :
 tensor, doing the work. The proof here is the direct one and is dimension-free: the two deltas of
 `constCurv` collapse two of the four summation slots, and orthogonality closes the rest.
 
-So `WALLS` §W5.0 §6 item 4 loses one of the three `n = 2`-specific ingredients §13 leaned on. The
+So `WALLS` §W5.0 §6 item 4 loses one of the three `n = 2`-specific ingredients §15 leaned on. The
 other two — that the domain is a line, and hence that one value determines the map — are the ones
 that actually confine `lovelock_two` to two dimensions. -/
 theorem act_constCurv (hQ : IsOrth Q) (a b c d : Fin n) :
@@ -1511,6 +1521,8 @@ theorem equivariant_constCurv (i : Fin n)
     funext a b c d; exact act_constCurv hQ a b c d
   rw [h2] at h1
   exact h1.symm
+
+/-! ## 15. Item 4 complete in dimension two -/
 
 /-- **AND SO `WALLS` §W5.0 §6 ITEM 4 IS COMPLETE IN DIMENSION TWO** — both halves, not just the
 independence half of §11. Any map from algebraic curvature tensors to 2-tensors that is homogeneous
@@ -1590,16 +1602,16 @@ with four clauses on a finite index type, and the wall named in the header is un
 halves — *the two named maps are equivariant and independent* and *nothing outside their span is
 equivariant*. §11 settles the independence, dimension by dimension, and finds it **false at
 `n = 2` and true from `n = 3`**; §12 supplies the equivariance, which §11 had assumed without
-checking; §13 settles the second half **in dimension two only** (`lovelock_two`), where the domain
+checking; §15 settles the second half **in dimension two only** (`lovelock_two`), where the domain
 is one-dimensional and the classification collapses to "an invariant 2-tensor is a multiple of the
 metric".
 
 **For `n ≥ 3` the second half is not started, and `n = 2` gives no purchase on it.** The three
-facts §13 leans on all fail there: the space of algebraic curvature tensors has dimension `6` at
+facts §15 leans on all fail there: the space of algebraic curvature tensors has dimension `6` at
 `n = 3` and `20` at `n = 4` rather than `1`, so the map is not determined by one value; what
 replaces "the domain is a line" is the irreducible decomposition of that space under `O(n)`, and
 nothing in this file computes one. `eq_smul_delta_of_invariant` **does** hold in every dimension
-and is the one piece of §13 that transfers.
+and is the one piece of §15's argument that transfers.
 
 Two things §12 writes down but does not prove, both said at the point of use: that
 `act (Q · Q') = act Q ∘ act Q'`, so `act` is a change-of-frame formula rather than a `MulAction`
