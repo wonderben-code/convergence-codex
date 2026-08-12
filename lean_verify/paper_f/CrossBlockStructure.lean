@@ -195,6 +195,31 @@ strict at sides 1–2 and not from 3; torus 1–4 and not from 5). **Instantiati
 family's cut written out and none of that is here**, so this is a prediction, not a re-derivation,
 and it is recorded as one.
 
+## §9 — the prediction cashed, on the torus
+
+§8 said the lattice reading was a prediction. Here it is cashed on one family, and the criterion
+returns the estate's own threshold.
+
+The torus cut is diagonal at every side (`TorusAnySide.torus_cross_diag_any`), so it is a block cut
+in one line (`isCrossBlock_torus`) and §8's criterion reduces to *is every half-site joined to its
+own mirror?* — which `torus_adj_self_mirror_iff` answers: **only on the two extreme layers**, the
+boundary layer reached by the wrap-around bond and the innermost layer of an even side. Every layer
+between is joined to nothing across the cut. So
+
+> `torus_strict_iff_le_four_lowerHalf`: **strict if and only if `n ≤ 4`**, in every dimension and
+> at every nonzero mass.
+
+**No new case is decided, and that is worth saying plainly.** The estate already has all six: two
+non-strictness theorems in two files, split by parity (`TorusNotStrict.not_strict_torus`, even and
+from six; `OddNotStrictInstances.not_strict_torus_odd`, odd and from five), and four strictness
+theorems, one per side, in two more (`SmallSideStrict`, `MirrorStrict`). **What is new is that they
+are one biconditional with one proof**, uniform in `n` and in `d`, obtained by reading a condition
+off the edges — `torus_not_strict_of_five_le` and `torus_strict_of_le_four` are the two halves,
+stated in the estate's own support convention so the comparison is literal and not approximate.
+
+**Still not cashed: the box and the estate's own `def`.** Their cuts are diagonal too and the same
+route should work; it is not attempted here.
+
 ## What this does NOT do
 
 It says nothing new about reflection positivity **off** `GreenExpansion` §9's class.
@@ -1097,5 +1122,150 @@ theorem bipGraph_not_strict_of_cut (m : ℝ) (hm : m ≠ 0) :
       IndefiniteCoupling.isRefl_rho_bip hm isCrossBlock_bipGraph).mp hstrict)
 
 end StrictComplete
+
+/-! ## 9. The prediction cashed on the torus: the threshold falls out of the criterion -/
+
+section Torus
+
+open GreenExpansion GraphReflection GraphMirrorReflection CrossFormMatrix
+open BoxOddReflection TorusReflection TorusAnySide
+
+variable {d n : ℕ} {m : ℝ}
+
+/-- The torus cut is diagonal at every side (`TorusAnySide.torus_cross_diag_any`), so it is a
+block cut with every block a singleton or empty. One line, and it is the whole of what §8's
+hypothesis needs here. -/
+theorem isCrossBlock_torus (i : Fin d) (n : ℕ) :
+    IsCrossBlock (torusGraph d n) (revSite (n := n) i) (strictLower i n) :=
+  isCrossBlock_of_cross_diag (torus_cross_diag_any i n)
+
+/-- **A HALF-SITE OF THE TORUS IS JOINED TO ITS OWN MIRROR EXACTLY AT THE TWO EXTREME LAYERS.**
+Either it sits on the boundary layer, where the wrap-around bond reaches its mirror, or it sits on
+the innermost layer of an even side, where the mirror is the neighbour across the cut. Everything
+between is joined to nothing across the cut, and that is what breaks strictness. -/
+theorem torus_adj_self_mirror_iff (i : Fin d) {n : ℕ} {s : BoxGraph.Site d n}
+    (hs : s ∈ strictLower i n) :
+    (torusGraph d n).Adj s (revSite (n := n) i s) ↔ (s i).val = 0 ∨ 2 * (s i).val + 2 = n := by
+  rw [mem_strictLower] at hs
+  have hlt := (s i).isLt
+  have hrev : (Fin.rev (s i)).val = n - ((s i).val + 1) := Fin.val_rev (s i)
+  constructor
+  · rintro ⟨k, hoff, hne, hcases⟩
+    have hki : k = i := by
+      by_contra hk
+      have hcoord := hoff i (fun hc => hk hc.symm)
+      rw [revSite_apply_self] at hcoord
+      have hv := congrArg Fin.val hcoord
+      rw [hrev] at hv
+      omega
+    subst hki
+    rw [revSite_apply_self] at hcases
+    rw [hrev] at hcases
+    omega
+  · intro hor
+    refine ⟨i, fun j hj => (revSite_apply_ne hj s).symm, ?_, ?_⟩
+    · rw [revSite_apply_self]
+      intro hc
+      have := congrArg Fin.val hc
+      rw [hrev] at this
+      omega
+    · rw [revSite_apply_self, hrev]
+      omega
+
+/-- **AND SO §8's CRITERION READS OFF THE TORUS THRESHOLD.** Strictness on the torus, at every
+side length and in every dimension, is the condition that every half-site sits on one of the two
+extreme layers. -/
+theorem torus_strict_iff_layers (i : Fin d) (n : ℕ) (hm : m ≠ 0) :
+    (∀ c : BoxGraph.Site d n → ℝ, c ≠ 0 →
+        (∀ p, p ∉ strictLower i n → p ∉ midLayer i n → c p = 0) →
+        0 < GraphReflection.reflectedForm (torusGraph d n) m (revSite (n := n) i) c)
+      ↔ ∀ s ∈ strictLower i n, (s i).val = 0 ∨ 2 * (s i).val + 2 = n := by
+  rw [strict_iff_cut_perfect (isMirrorHalf_strictLower i n) (isRefl_torus i) hm
+    (isCrossBlock_torus i n)]
+  constructor
+  · intro hall s hs
+    exact (torus_adj_self_mirror_iff i hs).mp ((hall s hs s hs).mpr rfl)
+  · intro hlayers s hs q hq
+    exact ⟨torus_cross_diag_any i n s hs q hq,
+      fun hsq => hsq ▸ (torus_adj_self_mirror_iff i hs).mpr (hlayers s hs)⟩
+
+/-- **THE LAYER CONDITION IS `n ≤ 4`, AND NOTHING ABOUT THE DIMENSION.** Every half-site is on an
+extreme layer exactly when the side is at most four: at five and above the layer `1` is strictly
+inside the half and is joined to nothing across the cut. -/
+theorem torus_layers_iff_le_four (i : Fin d) (n : ℕ) :
+    (∀ s ∈ strictLower i n, (s i).val = 0 ∨ 2 * (s i).val + 2 = n) ↔ n ≤ 4 := by
+  constructor
+  · intro hall
+    by_contra hn
+    have h4 : 4 < n := by omega
+    have h1 : (1 : ℕ) < n := by omega
+    have hmem : (fun _ => (⟨1, h1⟩ : Fin n)) ∈ strictLower i n :=
+      mem_strictLower.mpr (by simpa using by omega)
+    rcases hall _ hmem with h | h <;> simp only [] at h <;> omega
+  · intro hn s hs
+    rw [mem_strictLower] at hs
+    omega
+
+/-- **THE THRESHOLD, AS `WALLS` W1 RECORDS IT — NOW A COROLLARY OF THE CUT CRITERION.** Strict at
+side four and below, not from five up, in every dimension and at every nonzero mass. The estate
+proved the two halves separately, by two different mechanisms
+(`SmallSideStrict` upward, `TorusNotStrict.not_strict_torus` downward and only at even sides from
+six); this is one statement and it covers the odd sides too. -/
+theorem torus_strict_iff_le_four (i : Fin d) (n : ℕ) (hm : m ≠ 0) :
+    (∀ c : BoxGraph.Site d n → ℝ, c ≠ 0 →
+        (∀ p, p ∉ strictLower i n → p ∉ midLayer i n → c p = 0) →
+        0 < GraphReflection.reflectedForm (torusGraph d n) m (revSite (n := n) i) c)
+      ↔ n ≤ 4 :=
+  (torus_strict_iff_layers i n hm).trans (torus_layers_iff_le_four i n)
+
+/-- **THE SAME STATEMENT IN THE ESTATE'S OWN SUPPORT CONVENTION**, so that the comparison with
+`TorusNotStrict.not_strict_torus`, `OddNotStrictInstances.not_strict_torus_odd`,
+`SmallSideStrict.reflectionPositive_torus_one_strict` / `_two_strict` and
+`MirrorStrict.reflectionPositive_torus_three_strict` / `_four_strict` is literal rather than
+approximate: those six theorems quantify over `c` supported on `lowerHalf`, which is
+`strictLower ∪ midLayer` (`BoxOddReflection.lowerHalf_eq_union`).
+
+**No new case is decided here.** The six cover `n ≤ 4` and `n ≥ 5` between them, in four files, by
+two mechanisms each side, with the non-strict half split by parity. What this adds is that they are
+**one statement with one proof**, uniform in `n` and in `d`, obtained by reading a condition off
+the cut. -/
+theorem torus_strict_iff_le_four_lowerHalf (i : Fin d) (n : ℕ) (hm : m ≠ 0) :
+    (∀ c : BoxGraph.Site d n → ℝ, c ≠ 0 → (∀ p, p ∉ GraphHalfSpace.lowerHalf i n → c p = 0) →
+        0 < GraphReflection.reflectedForm (torusGraph d n) m (revSite (n := n) i) c)
+      ↔ n ≤ 4 := by
+  have hsupp : ∀ p : BoxGraph.Site d n,
+      p ∉ GraphHalfSpace.lowerHalf i n ↔ (p ∉ strictLower i n ∧ p ∉ midLayer i n) := by
+    intro p
+    rw [lowerHalf_eq_union, Finset.mem_union, not_or]
+  rw [← torus_strict_iff_le_four i n hm]
+  constructor
+  · intro hstrict c hc0 hcsupp
+    refine hstrict c hc0 (fun p hp => ?_)
+    obtain ⟨hpS, hpM⟩ := (hsupp p).mp hp
+    exact hcsupp p hpS hpM
+  · intro hstrict c hc0 hcsupp
+    exact hstrict c hc0 (fun p hpS hpM => hcsupp p ((hsupp p).mpr ⟨hpS, hpM⟩))
+
+/-- **THE NON-STRICT HALF, AT EVERY SIDE FROM FIVE AND WITHOUT A PARITY SPLIT.** The estate proves
+this in two files: `TorusNotStrict.not_strict_torus` at EVEN sides from six, by a null-direction
+construction, and `OddNotStrictInstances.not_strict_torus_odd` at ODD sides from five, by a second
+one that had to dodge the wrap-around. Both are instances of this. -/
+theorem torus_not_strict_of_five_le (i : Fin d) (n : ℕ) (h5 : 5 ≤ n) (hm : m ≠ 0) :
+    ¬ (∀ c : BoxGraph.Site d n → ℝ, c ≠ 0 →
+        (∀ p, p ∉ GraphHalfSpace.lowerHalf i n → c p = 0) →
+        0 < GraphReflection.reflectedForm (torusGraph d n) m (revSite (n := n) i) c) :=
+  fun hstrict => absurd ((torus_strict_iff_le_four_lowerHalf i n hm).mp hstrict) (by omega)
+
+/-- **AND THE STRICT HALF, AT EVERY SIDE UP TO FOUR.** The estate proves this in two files as well
+— `SmallSideStrict.reflectionPositive_torus_one_strict` and `_two_strict`,
+`MirrorStrict.reflectionPositive_torus_three_strict` and `_four_strict`, one theorem per side. All
+four are instances of this, and so is `n = 0`, which none of them names. -/
+theorem torus_strict_of_le_four (i : Fin d) (n : ℕ) (hn : n ≤ 4) (hm : m ≠ 0)
+    {c : BoxGraph.Site d n → ℝ} (hc0 : c ≠ 0)
+    (hcsupp : ∀ p, p ∉ GraphHalfSpace.lowerHalf i n → c p = 0) :
+    0 < GraphReflection.reflectedForm (torusGraph d n) m (revSite (n := n) i) c :=
+  (torus_strict_iff_le_four_lowerHalf i n hm).mpr hn c hc0 hcsupp
+
+end Torus
 
 end CrossBlockStructure
