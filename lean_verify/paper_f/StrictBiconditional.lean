@@ -93,7 +93,12 @@
     in the backward direction: without a sign on the coupling, "the form is
     never negative" fails and strictness stops being the negation of
     degeneracy. `NullSpace.reflectedForm_slack` holds without it and this does
-    not.
+    not. **AND THAT IS NOW A THEOREM RATHER THAN AN EXPLANATION**, 2026-08-12:
+    `IndefiniteCoupling.backward_direction_fails` exhibits a four-vertex graph
+    where the coupling is indefinite, no supported isotropic vector exists, and
+    the form is strictly negative — premise true, conclusion false. So `hcross`
+    is **necessary** in the backward direction, not merely used by this proof of
+    it. §3b removes it from the FORWARD direction, where it was never needed.
   * **It decides no new graph.** Every instantiation in §4 and §5 is a case
     the wall had already settled by other means; the criterion is checked
     against them, not used to extend them.
@@ -417,8 +422,19 @@ hours without the sentence.
 direction only, and the header says which. Backward needs the form to be
 nonnegative so that strict is the negation of null; that is
 `reflectionPositive_mirror` and it consumes `hcross`. Forward needs nothing
-about the coupling's sign. An indefinite coupling breaks the equivalence and
-this file does not claim otherwise.
+about the coupling's sign — **which §3b now states separately, with the
+hypothesis gone.**
+
+The last sentence of this paragraph used to read *"An indefinite coupling breaks
+the equivalence and this file does not claim otherwise."* **It is now claimed,
+and proved elsewhere, 2026-08-12.** `IndefiniteCoupling` builds the perfect
+matching `0–3`, `1–2` on `Fin 4` with half `{0,1}` and reflection `p ↦ p + 2`;
+there the coupling reaches `+2`, no supported isotropic vector exists (the reach
+clause alone empties the condition), and the reflected form is strictly
+negative. `backward_direction_fails` is the pair, and it upgrades this
+paragraph's caution into a **necessity** result: `hcross` cannot be dropped from
+§3's backward direction. Nothing above changes; what changes is that the reader
+no longer has to take the caveat on trust.
 
 **"Is §5 a real check or a re-run?"** A real one: it decides the odd box
 without the witness `BoxOddNotStrict` constructs and without the reach argument
