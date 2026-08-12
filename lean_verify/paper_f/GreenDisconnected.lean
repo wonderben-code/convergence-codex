@@ -235,4 +235,69 @@ theorem stepGraph_not_reflectionPositive_general (hm : m ≠ 0) :
 
 end StepGraph
 
+/-! ## 5. And the two halves are one biconditional, with the connectedness hypothesis gone
+
+`GraphGreenPositive.green_pos` says the propagator is strictly positive **on a connected graph**.
+§2 says it is zero between components. Neither is the sharp statement, which needs no hypothesis on
+the graph at all:
+
+**`green_pos_iff_reachable`: `0 < green p q` if and only if `q` is reachable from `p`.**
+
+`green_pos` is the case where every pair is reachable, and §2 is the other direction; the
+connectedness hypothesis was doing nothing except making "reachable" trivially true.
+
+The forward half is §2 in contrapositive. The reverse half re-runs `green_pos`'s own walk
+induction, whose adjacency step is `private` in that file and is therefore re-derived here from
+public API — `massive_mulVec_apply`, `green_nonneg` and `green_diag_pos`, with
+`massive · green = 1` obtained from `green · massive = 1` by `Matrix.mul_eq_one_comm`.
+-/
+
+section Sharp
+
+/-- The zero set of a column is closed under adjacency. `GraphGreenPositive` proves this and keeps
+it `private`; the statement is re-derived rather than the file edited. -/
+theorem green_zero_adj_of_pub (hm : m ≠ 0) (q : V) {s : V} (hs : green G m s q = 0)
+    {r : V} (hadj : G.Adj s r) : green G m r q = 0 := by
+  have hsq : s ≠ q := fun hc => by
+    rw [hc] at hs; exact absurd hs (ne_of_gt (green_diag_pos G hm q))
+  have hmg : massive G m * green G m = 1 :=
+    mul_eq_one_comm.mp (green_mul_massive (G := G) hm)
+  have hval : (massive G m *ᵥ fun u => green G m u q) s = 0 := by
+    have := congrFun (congrFun hmg s) q
+    rw [Matrix.mul_apply] at this
+    rw [Matrix.mulVec, dotProduct, this, Matrix.one_apply_ne hsq]
+  rw [GraphGreenPositive.massive_mulVec_apply, hs, mul_zero, zero_sub, neg_eq_zero] at hval
+  exact (Finset.sum_eq_zero_iff_of_nonneg
+    (fun u _ => GraphGreenPositive.green_nonneg G hm u q)).mp hval r
+    ((SimpleGraph.mem_neighborFinset _ _ _).mpr hadj)
+
+/-- **THE SHARP STATEMENT.** No connectedness hypothesis: the propagator is strictly positive
+exactly between vertices joined by a path. -/
+theorem green_pos_iff_reachable (hm : m ≠ 0) (p q : V) :
+    0 < green G m p q ↔ G.Reachable p q := by
+  constructor
+  · intro hpos
+    by_contra hr
+    rw [green_eq_zero_of_not_reachable G hm hr] at hpos
+    exact lt_irrefl 0 hpos
+  · intro hr
+    rcases lt_or_eq_of_le (GraphGreenPositive.green_nonneg G hm p q) with hlt | heq
+    · exact hlt
+    · exfalso
+      have hwalk : ∀ {a b : V}, G.Walk a b → green G m a q = 0 → green G m b q = 0 := by
+        intro a b w
+        induction w with
+        | nil => exact id
+        | cons hadj _ ih => exact fun ha => ih (green_zero_adj_of_pub G hm q ha hadj)
+      obtain ⟨w⟩ := hr
+      exact absurd (hwalk w heq.symm) (ne_of_gt (green_diag_pos G hm q))
+
+/-- **AND `GraphGreenPositive.green_pos` IS THE SPECIAL CASE**, re-derived here so the
+generalisation is checked against the theorem it generalises rather than asserted to contain it. -/
+theorem green_pos_of_connected (hG : G.Connected) (hm : m ≠ 0) (p q : V) :
+    0 < green G m p q :=
+  (green_pos_iff_reachable G hm p q).mpr (hG.preconnected p q)
+
+end Sharp
+
 end GreenDisconnected
