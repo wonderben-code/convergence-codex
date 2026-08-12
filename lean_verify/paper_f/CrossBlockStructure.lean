@@ -246,6 +246,20 @@ is proved here directly, because that is the shape §8 consumes.
 
 **Still not cashed: the estate's own lattice `def`.**
 
+## §11 — the third family, and all three in one statement
+
+The estate's own lattice `def` is the two-dimensional box transported
+(`LatticeNotStrict.reflectedForm_lattice_eq`, an *equality* of reflected forms), so §11 is a
+transport of §10 and not a third instance of the criterion. `pushforward_conditions` is the
+direction `SmallSideStrict.pullback_conditions` did not need, and
+`lattice_strict_iff_le_two` follows: **strict if and only if `n ≤ 2`**, matching the box exactly, as
+a transported statement must.
+
+`all_three_thresholds` states the box, the torus and the `def` in one theorem. That is the
+deliverable of §§8–11: **three sharpness thresholds, previously eleven theorems across eight files
+by six mechanisms, read off one condition about edges** — and the torus's two extra sides explained
+by a single bond.
+
 ## What this does NOT do
 
 It says nothing new about reflection positivity **off** `GreenExpansion` §9's class.
@@ -1447,5 +1461,78 @@ theorem box_and_torus_thresholds (i : Fin d) (n : ℕ) (hm : m ≠ 0) :
   ⟨box_strict_iff_le_two_lowerHalf i n hm, torus_strict_iff_le_four_lowerHalf i n hm⟩
 
 end Box
+
+/-! ## 11. And the estate's own `def`, by transport -/
+
+section Lattice
+
+open GreenExpansion GraphReflection GraphMirrorReflection CrossFormMatrix
+open BoxGraph IsingFiniteVolume LatticeReflectionPositive
+
+variable {n : ℕ} {m : ℝ}
+
+/-- The push-forward of `SmallSideStrict.pullback_conditions`: a family on the general box that is
+nonzero and supported on `lowerHalf` transports to one on the estate's box that is nonzero and
+supported on `lowerHalfPair`, and reindexing recovers the original. -/
+theorem pushforward_conditions {c' : BoxGraph.Site 2 n → ℝ} (hc0 : c' ≠ 0)
+    (hsupp : ∀ p, p ∉ GraphHalfSpace.lowerHalf (0 : Fin 2) n → c' p = 0) :
+    (fun q : IsingFiniteVolume.Site n => c' ((sitePair n).symm q)) ≠ 0
+      ∧ (∀ q, q ∉ lowerHalfPair n → c' ((sitePair n).symm q) = 0)
+      ∧ (fun p : BoxGraph.Site 2 n => c' ((sitePair n).symm (sitePair n p))) = c' := by
+  classical
+  refine ⟨?_, ?_, funext fun p => by rw [Equiv.symm_apply_apply]⟩
+  · intro hzero
+    refine hc0 (funext fun p => ?_)
+    have := congrFun hzero (sitePair n p)
+    rwa [Equiv.symm_apply_apply] at this
+  · intro q hq
+    refine hsupp _ fun hmem => hq ?_
+    rw [← map_lowerHalf n]
+    exact Finset.mem_map.mpr ⟨(sitePair n).symm q, hmem, by simp⟩
+
+/-- **THE ESTATE'S OWN `def` HAS THE BOX'S THRESHOLD, WHICH IS THE ONE THING IT COULD HAVE.** The
+lattice `def` is the two-dimensional box transported (`LatticeNotStrict.reflectedForm_lattice_eq`),
+so this is a transport of §10 rather than a third instance of the criterion — and the transport is
+an equality of forms, so nothing is lost in either direction. -/
+theorem lattice_strict_iff_le_two (n : ℕ) (hm : m ≠ 0) :
+    (∀ c : IsingFiniteVolume.Site n → ℝ, c ≠ 0 →
+        (∀ p, p ∉ lowerHalfPair n → c p = 0) →
+        0 < GraphReflection.reflectedForm (IsingContourSeparation.latticeGraph n) m
+              (LatticeReflection.refl n) c)
+      ↔ n ≤ 2 := by
+  rw [← box_strict_iff_le_two_lowerHalf (0 : Fin 2) n hm]
+  constructor
+  · intro hlat c' hc0 hsupp
+    obtain ⟨hne, hs, hback⟩ := pushforward_conditions hc0 hsupp
+    have hpos := hlat _ hne hs
+    rw [LatticeNotStrict.reflectedForm_lattice_eq
+      (m := m) (fun q => c' ((sitePair n).symm q)), hback] at hpos
+    exact hpos
+  · intro hbox c hc0 hcsupp
+    rw [LatticeNotStrict.reflectedForm_lattice_eq (m := m) c]
+    obtain ⟨hne, hsupp⟩ := SmallSideStrict.pullback_conditions hc0 hcsupp
+    exact hbox _ hne hsupp
+
+/-- **ALL THREE FAMILIES, IN ONE STATEMENT.** The estate's three sharpness thresholds, each
+previously several theorems by several mechanisms, read off one criterion about edges. The torus
+gains two sides over the other two, and the reason is a single bond: the wrap-around. -/
+theorem all_three_thresholds (n : ℕ) (hm : m ≠ 0) :
+    ((∀ c : BoxGraph.Site 2 n → ℝ, c ≠ 0 →
+        (∀ p, p ∉ GraphHalfSpace.lowerHalf (0 : Fin 2) n → c p = 0) →
+        0 < GraphReflection.reflectedForm (boxGraph 2 n) m
+              (revSite (n := n) (0 : Fin 2)) c) ↔ n ≤ 2)
+      ∧ ((∀ c : BoxGraph.Site 2 n → ℝ, c ≠ 0 →
+        (∀ p, p ∉ GraphHalfSpace.lowerHalf (0 : Fin 2) n → c p = 0) →
+        0 < GraphReflection.reflectedForm (TorusReflection.torusGraph 2 n) m
+              (revSite (n := n) (0 : Fin 2)) c) ↔ n ≤ 4)
+      ∧ ((∀ c : IsingFiniteVolume.Site n → ℝ, c ≠ 0 →
+        (∀ p, p ∉ lowerHalfPair n → c p = 0) →
+        0 < GraphReflection.reflectedForm (IsingContourSeparation.latticeGraph n) m
+              (LatticeReflection.refl n) c) ↔ n ≤ 2) :=
+  ⟨box_strict_iff_le_two_lowerHalf (0 : Fin 2) n hm,
+    torus_strict_iff_le_four_lowerHalf (0 : Fin 2) n hm,
+    lattice_strict_iff_le_two n hm⟩
+
+end Lattice
 
 end CrossBlockStructure
