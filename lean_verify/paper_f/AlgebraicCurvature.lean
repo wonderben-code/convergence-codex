@@ -4,6 +4,7 @@ import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.FinCases
 import Mathlib.Data.Real.Basic
 import Mathlib.Algebra.Order.BigOperators.Group.Finset
+import Mathlib.LinearAlgebra.UnitaryGroup
 
 /-!
 # Algebraic curvature tensors, their two traces, and a witness
@@ -64,7 +65,15 @@ wall exist only to stop a reader inferring otherwise from the names `SpectralAct
 > basis of their span only for `n ≥ 3`. The separating witness is `knSquare (projOff k)`, whose
 > Ricci trace is `(n−2)` times a *projector*; `isAlgCurv_knSquare` builds it by removing `δ` from
 > §3's witness, and `knSquare_delta` is the `rfl` that keeps `constCurv` as the special case.
-> **The group action is not written down and the spanning half of the classification is not begun.**
+> **The spanning half of the classification is not begun.**
+>
+> **`traces_equivariant`** (§12) — the membership check §11 skipped. §11 proved the two maps
+> independent inside a family it never showed either belonged to; `act` is the change of frame,
+> `IsOrth` is orthogonality (derived from **Mathlib's** `Matrix.orthogonalGroup` by
+> `isOrth_of_mem_orthogonalGroup`, with two distinct witnesses), `isAlgCurv_act` shows the space of
+> algebraic curvature tensors is invariant, and `ricci_act` / `scal_act` / `act2_delta` show both
+> maps commute with the frame change. **The family is still not shown to have no other members**,
+> which is the invariant theory and is the rest of item 4.
 
 ## Why components rather than multilinear maps
 
@@ -965,16 +974,344 @@ theorem scal_delta_ne_zero_two :
 
 end LovelockShadow
 
+/-! ## 12. The group arrives, and §11's missing membership check
+
+**§11 proved the two maps independent without ever checking they are in the family.** The family
+`WALLS` §W5.0 §6 item 4 is about is the `O(n)`-**equivariant** linear maps; §11 showed `R ↦ Ric`
+and `R ↦ scal·δ` are linearly independent of each other and never once asked whether either
+commutes with a rotation. Independence inside a set one has not shown either element belongs to is
+a weaker fact than it reads as, and this section supplies what was missing.
+
+`act` is the rotation action on four-index arrays, `act2` the same rotation on 2-tensors, and
+`IsOrth` is orthogonality in the two forms the contractions need — rows and columns — which
+`isOrth_of_mem_orthogonalGroup` derives from membership in **Mathlib's own**
+`Matrix.orthogonalGroup`, so the predicate is not one this file invented for its own convenience.
+`isOrth_delta`, `isOrth_reflect` and `reflect_ne_delta` keep it from being a class with one
+trivial inhabitant, which is this file's §3 standard applied to a hypothesis rather than to a
+witness — and the third of those is what makes the first two count as two. That the reflection
+lies outside `SO(n)` is **true and not proved here**: no determinant is computed in this file.
+
+**`isAlgCurv_act`** — the space of algebraic curvature tensors is invariant, so "maps *from*
+algebraic curvature tensors" is a sentence about something the action preserves. The four clauses
+are four relabellings of the summation index, done as `Equiv`s rather than as chains of
+`Finset.sum_comm`; only Bianchi needs the tensor's own clause pointwise.
+
+**`ricci_equivariant`** and **`scalDelta_equivariant`** — the check §11 skipped. `Ric` transforms
+as a 2-tensor (which needs the columns of `Q` orthonormal, contracting the first slot against the
+fourth) and `scal` is invariant outright, while `δ` is fixed by `act2` (which needs the rows). So
+both maps of §11 are members of the family, and `traces_equivariant` states the two together.
+
+**What this still does not do.** It gives the group, the action and the membership of the two named
+maps. **It does not show the family has no other members** — that is the spanning half of item 4,
+the Schur-type argument, and there is no averaging, no character and no irreducible decomposition
+anywhere below. Item 4 remains half a build. Still no `a₂`, still no manifold. -/
+
+section Equivariance
+
+variable {Q : Fin n → Fin n → ℝ}
+
+/-- **Orthogonality of `Q`**, in the two forms this section contracts with. Over a square real
+matrix each clause implies the other, and `isOrth_of_mem_orthogonalGroup` derives both from one
+membership; they are both fields because `ricci_act` contracts down a column and `act2_delta`
+across a row, and threading `mul_eq_one_comm` through each use would obscure which is which. -/
+structure IsOrth (Q : Fin n → Fin n → ℝ) : Prop where
+  /-- The rows are orthonormal: `Q Qᵀ = 1`. -/
+  rows : ∀ x y, ∑ a, Q x a * Q y a = delta x y
+  /-- The columns are orthonormal: `Qᵀ Q = 1`. -/
+  cols : ∀ x y, ∑ a, Q a x * Q a y = delta x y
+
+/-- **AND IT IS MATHLIB'S ORTHOGONAL GROUP**, not a predicate invented here to be convenient. -/
+theorem isOrth_of_mem_orthogonalGroup {M : Matrix (Fin n) (Fin n) ℝ}
+    (hM : M ∈ Matrix.orthogonalGroup (Fin n) ℝ) : IsOrth (fun a b => M a b) := by
+  have hrow : M * M.transpose = 1 := (Matrix.mem_orthogonalGroup_iff (Fin n) ℝ).mp hM
+  have hcol : M.transpose * M = 1 := mul_eq_one_comm.mp hrow
+  constructor
+  · intro x y
+    have h := congrFun (congrFun hrow x) y
+    simpa [Matrix.mul_apply, Matrix.one_apply, Matrix.transpose_apply, delta] using h
+  · intro x y
+    have h := congrFun (congrFun hcol x) y
+    simpa [Matrix.mul_apply, Matrix.one_apply, Matrix.transpose_apply, delta] using h
+
+/-- Contracting two deltas along their second index. -/
+theorem sum_delta_right (a b : Fin n) : ∑ x, delta a x * delta b x = delta a b := by
+  have h : ∀ x : Fin n, delta a x * delta b x = delta x a * delta b x := by
+    intro x; rw [delta_symm a x]
+  rw [Finset.sum_congr rfl fun x _ => h x, sum_delta_left a fun x => delta b x, delta_symm b a]
+
+/-- The identity is orthogonal. -/
+theorem isOrth_delta : IsOrth (delta : Fin n → Fin n → ℝ) where
+  rows := sum_delta_right
+  cols x y := by
+    have h : ∀ a : Fin n, delta a x * delta a y = delta x a * delta y a := by
+      intro a; rw [delta_symm a x, delta_symm a y]
+    rw [Finset.sum_congr rfl fun a _ => h a, sum_delta_right]
+
+/-- **The reflection in the hyperplane `x_k = 0`** — `δ` with one diagonal entry negated. -/
+def reflect (k a b : Fin n) : ℝ := delta a b - 2 * (delta a k * delta b k)
+
+/-- **AND IT IS ORTHOGONAL TOO**, so `IsOrth` is not a class with one inhabitant — the §3 standard
+applied to a hypothesis rather than to a witness. `reflect_ne_delta` is the half that makes this
+worth stating; without it "two witnesses" would be one witness written twice.
+
+*What is deliberately NOT claimed*: that `reflect k` lies outside `SO(n)`. It does, and this file
+does not prove it — no determinant is computed anywhere below, and nothing here depends on the
+distinction. -/
+theorem isOrth_reflect (k : Fin n) : IsOrth (reflect k) := by
+  have key : ∀ x y : Fin n, ∑ a, reflect k x a * reflect k y a = delta x y := by
+    intro x y
+    have h : ∀ a : Fin n, reflect k x a * reflect k y a
+        = delta x a * delta y a - 2 * delta y k * (delta a k * delta x a)
+          - 2 * delta x k * (delta a k * delta y a)
+          + 4 * (delta x k * delta y k) * (delta a k * delta a k) := by
+      intro a; simp only [reflect]; ring
+    have s2 : ∑ a : Fin n, 2 * delta y k * (delta a k * delta x a) = 2 * delta y k * delta x k := by
+      rw [← Finset.mul_sum, sum_delta_left k fun a => delta x a]
+    have s3 : ∑ a : Fin n, 2 * delta x k * (delta a k * delta y a) = 2 * delta x k * delta y k := by
+      rw [← Finset.mul_sum, sum_delta_left k fun a => delta y a]
+    have s4 : ∑ a : Fin n, 4 * (delta x k * delta y k) * (delta a k * delta a k)
+        = 4 * (delta x k * delta y k) * 1 := by
+      rw [← Finset.mul_sum, sum_delta_left k fun a => delta a k, delta_self]
+    rw [Finset.sum_congr rfl fun a _ => h a, Finset.sum_add_distrib, Finset.sum_sub_distrib,
+      Finset.sum_sub_distrib, sum_delta_right x y, s2, s3, s4]
+    ring
+  have hs : ∀ a b : Fin n, reflect k a b = reflect k b a := by
+    intro a b; simp only [reflect]; rw [delta_symm a b]; ring
+  refine ⟨key, fun x y => ?_⟩
+  have h : ∀ a : Fin n, reflect k a x * reflect k a y = reflect k x a * reflect k y a := by
+    intro a; rw [hs a x, hs a y]
+  rw [Finset.sum_congr rfl fun a _ => h a, key]
+
+/-- **AND THE TWO WITNESSES ARE DIFFERENT**, at the one entry the reflection moves. Without this
+`isOrth_delta` and `isOrth_reflect` would be one inhabitant written twice, and the sentence above
+about the §3 standard would be doing no work. -/
+theorem reflect_ne_delta (k : Fin n) : reflect k ≠ (delta : Fin n → Fin n → ℝ) := by
+  intro h
+  have h1 : reflect k k k = delta k k := by rw [h]
+  simp only [reflect, delta_self] at h1
+  norm_num at h1
+
+/-! ### How a four-index array transforms under `Q` -/
+
+/-- **THE CHANGE OF FRAME BY `Q`**, on a four-index array: each slot is contracted with a copy of
+`Q`. The four summation slots are bundled into one product index so that permuting them is an
+`Equiv` and `Fintype.sum_equiv` does every relabelling below in one line, rather than a chain of
+`Finset.sum_comm` under three binders.
+
+**It is called `act` and the composition law is NOT proved.** `act_delta` below checks that the
+identity frame change is the identity; that `act (Q · Q') = act Q ∘ act Q'`, which is the other
+half of being a group action and what a `MulAction` instance would assert, is **not established
+here and is not used below** — every theorem in this section quantifies over a single `Q`. -/
+def act (Q : Fin n → Fin n → ℝ) (R : Fin n → Fin n → Fin n → Fin n → ℝ) (a b c d : Fin n) : ℝ :=
+  ∑ p : Fin n × Fin n × Fin n × Fin n,
+    Q a p.1 * Q b p.2.1 * Q c p.2.2.1 * Q d p.2.2.2 * R p.1 p.2.1 p.2.2.1 p.2.2.2
+
+/-- **The same change of frame on a 2-tensor**, which is where the two maps of §11 land. -/
+def act2 (Q : Fin n → Fin n → ℝ) (S : Fin n → Fin n → ℝ) (b c : Fin n) : ℝ :=
+  ∑ b', ∑ c', Q b b' * Q c c' * S b' c'
+
+/-- **THE IDENTITY FRAME CHANGE IS THE IDENTITY**, so the formula above is the transformation law
+and not merely a plausible-looking quadruple sum. Only one term of the product index survives. -/
+theorem act_delta (R : Fin n → Fin n → Fin n → Fin n → ℝ) (a b c d : Fin n) :
+    act delta R a b c d = R a b c d := by
+  simp only [act]
+  rw [Finset.sum_eq_single (a, b, c, d)]
+  · simp
+  · intro p _ hp
+    by_cases h1 : a = p.1
+    · by_cases h2 : b = p.2.1
+      · by_cases h3 : c = p.2.2.1
+        · by_cases h4 : d = p.2.2.2
+          · exact absurd (by rw [h1, h2, h3, h4]) hp
+          · simp [delta, h4]
+        · simp [delta, h3]
+      · simp [delta, h2]
+    · simp [delta, h1]
+  · intro h; exact absurd (Finset.mem_univ (a, b, c, d)) h
+
+variable {R : Fin n → Fin n → Fin n → Fin n → ℝ}
+
+theorem act_antisymm_left (Q : Fin n → Fin n → ℝ) (hL : ∀ a b c d, R a b c d = -R b a c d)
+    (a b c d : Fin n) : act Q R a b c d = -act Q R b a c d := by
+  simp only [act, ← Finset.sum_neg_distrib]
+  refine Fintype.sum_equiv
+    ⟨fun p => (p.2.1, p.1, p.2.2.1, p.2.2.2), fun p => (p.2.1, p.1, p.2.2.1, p.2.2.2),
+      fun _ => rfl, fun _ => rfl⟩ _ _ fun p => ?_
+  simp only [Equiv.coe_fn_mk]
+  rw [hL p.1 p.2.1 p.2.2.1 p.2.2.2]
+  ring
+
+theorem act_antisymm_right (Q : Fin n → Fin n → ℝ) (hR : ∀ a b c d, R a b c d = -R a b d c)
+    (a b c d : Fin n) : act Q R a b c d = -act Q R a b d c := by
+  simp only [act, ← Finset.sum_neg_distrib]
+  refine Fintype.sum_equiv
+    ⟨fun p => (p.1, p.2.1, p.2.2.2, p.2.2.1), fun p => (p.1, p.2.1, p.2.2.2, p.2.2.1),
+      fun _ => rfl, fun _ => rfl⟩ _ _ fun p => ?_
+  simp only [Equiv.coe_fn_mk]
+  rw [hR p.1 p.2.1 p.2.2.1 p.2.2.2]
+  ring
+
+theorem act_pair_symm (Q : Fin n → Fin n → ℝ) (hP : ∀ a b c d, R a b c d = R c d a b)
+    (a b c d : Fin n) : act Q R a b c d = act Q R c d a b := by
+  simp only [act]
+  refine Fintype.sum_equiv
+    ⟨fun p => (p.2.2.1, p.2.2.2, p.1, p.2.1), fun p => (p.2.2.1, p.2.2.2, p.1, p.2.1),
+      fun _ => rfl, fun _ => rfl⟩ _ _ fun p => ?_
+  simp only [Equiv.coe_fn_mk]
+  rw [hP p.1 p.2.1 p.2.2.1 p.2.2.2]
+  ring
+
+theorem act_bianchi (Q : Fin n → Fin n → ℝ)
+    (hB : ∀ a b c d, R a b c d + R b c a d + R c a b d = 0) (a b c d : Fin n) :
+    act Q R a b c d + act Q R b c a d + act Q R c a b d = 0 := by
+  have e2 : act Q R b c a d
+      = ∑ p : Fin n × Fin n × Fin n × Fin n,
+          Q a p.1 * Q b p.2.1 * Q c p.2.2.1 * Q d p.2.2.2 * R p.2.1 p.2.2.1 p.1 p.2.2.2 := by
+    refine (Fintype.sum_equiv
+      ⟨fun p => (p.2.1, p.2.2.1, p.1, p.2.2.2), fun p => (p.2.2.1, p.1, p.2.1, p.2.2.2),
+        fun _ => rfl, fun _ => rfl⟩ _ _ fun p => ?_).symm
+    simp only [Equiv.coe_fn_mk]
+    ring
+  have e3 : act Q R c a b d
+      = ∑ p : Fin n × Fin n × Fin n × Fin n,
+          Q a p.1 * Q b p.2.1 * Q c p.2.2.1 * Q d p.2.2.2 * R p.2.2.1 p.1 p.2.1 p.2.2.2 := by
+    refine (Fintype.sum_equiv
+      ⟨fun p => (p.2.2.1, p.1, p.2.1, p.2.2.2), fun p => (p.2.1, p.2.2.1, p.1, p.2.2.2),
+        fun _ => rfl, fun _ => rfl⟩ _ _ fun p => ?_).symm
+    simp only [Equiv.coe_fn_mk]
+    ring
+  rw [e2, e3]
+  simp only [act]
+  rw [← Finset.sum_add_distrib, ← Finset.sum_add_distrib]
+  refine Finset.sum_eq_zero fun p _ => ?_
+  have hp := hB p.1 p.2.1 p.2.2.1 p.2.2.2
+  have hz : Q a p.1 * Q b p.2.1 * Q c p.2.2.1 * Q d p.2.2.2 *
+      (R p.1 p.2.1 p.2.2.1 p.2.2.2 + R p.2.1 p.2.2.1 p.1 p.2.2.2
+        + R p.2.2.1 p.1 p.2.1 p.2.2.2) = 0 := by
+    rw [hp, mul_zero]
+  linarith [hz]
+
+/-- **THE SPACE OF ALGEBRAIC CURVATURE TENSORS IS INVARIANT UNDER THE ACTION.** So "the maps out of
+algebraic curvature tensors" is a phrase about something the group preserves, which is what makes
+the classification a question about representations rather than about an arbitrary subset. Note the
+orthogonality of `Q` is **not needed here** — every clause is a relabelling — and is not assumed. -/
+theorem isAlgCurv_act (Q : Fin n → Fin n → ℝ) (hR : IsAlgCurv R) : IsAlgCurv (act Q R) where
+  antisymm_left := act_antisymm_left Q hR.antisymm_left
+  antisymm_right := act_antisymm_right Q hR.antisymm_right
+  pair_symm := act_pair_symm Q hR.pair_symm
+  bianchi := act_bianchi Q hR.bianchi
+
+/-! ### And the two maps are equivariant -/
+
+/-- **THE RICCI TRACE TRANSFORMS AS A 2-TENSOR**, which is the first half of the membership check
+§11 skipped. Orthogonality enters exactly once, contracting the first slot against the fourth: the
+sum `∑ₐ Q_{a p₁} Q_{a p₄}` is a column inner product and is `δ_{p₁p₄}`. -/
+theorem ricci_act (hQ : IsOrth Q) (R : Fin n → Fin n → Fin n → Fin n → ℝ) (b c : Fin n) :
+    ricci (act Q R) b c = act2 Q (ricci R) b c := by
+  have key : ricci (act Q R) b c
+      = ∑ x, ∑ y, ∑ z, Q b y * Q c z * R x y z x := by
+    simp only [ricci, act]
+    rw [Finset.sum_comm]
+    have step : ∀ p : Fin n × Fin n × Fin n × Fin n,
+        ∑ a, Q a p.1 * Q b p.2.1 * Q c p.2.2.1 * Q a p.2.2.2 * R p.1 p.2.1 p.2.2.1 p.2.2.2
+          = delta p.1 p.2.2.2 * (Q b p.2.1 * Q c p.2.2.1 * R p.1 p.2.1 p.2.2.1 p.2.2.2) := by
+      intro p
+      have h : ∀ a : Fin n,
+          Q a p.1 * Q b p.2.1 * Q c p.2.2.1 * Q a p.2.2.2 * R p.1 p.2.1 p.2.2.1 p.2.2.2
+            = (Q a p.1 * Q a p.2.2.2) *
+              (Q b p.2.1 * Q c p.2.2.1 * R p.1 p.2.1 p.2.2.1 p.2.2.2) := by
+        intro a; ring
+      rw [Finset.sum_congr rfl fun a _ => h a, ← Finset.sum_mul, hQ.cols]
+    rw [Finset.sum_congr rfl fun p _ => step p]
+    rw [Fintype.sum_prod_type]
+    refine Finset.sum_congr rfl fun x _ => ?_
+    rw [Fintype.sum_prod_type]
+    refine Finset.sum_congr rfl fun y _ => ?_
+    rw [Fintype.sum_prod_type]
+    refine Finset.sum_congr rfl fun z _ => ?_
+    have h : ∀ w : Fin n, delta x w * (Q b y * Q c z * R x y z w)
+        = delta w x * (Q b y * Q c z * R x y z w) := by
+      intro w; rw [delta_symm x w]
+    rw [Finset.sum_congr rfl fun w _ => h w,
+      sum_delta_left x fun w => Q b y * Q c z * R x y z w]
+  rw [key, Finset.sum_comm]
+  refine Finset.sum_congr rfl fun y _ => ?_
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun z _ => ?_
+  simp only [ricci]
+  rw [← Finset.mul_sum]
+
+/-- **`δ` IS FIXED BY THE ACTION ON 2-TENSORS**, which needs the rows of `Q` orthonormal — the
+other half of `IsOrth`, and the reason both halves are fields of it. -/
+theorem act2_delta (hQ : IsOrth Q) (b c : Fin n) : act2 Q delta b c = delta b c := by
+  simp only [act2]
+  have inner : ∀ b' : Fin n, ∑ c', Q b b' * Q c c' * delta b' c' = Q b b' * Q c b' := by
+    intro b'
+    have h : ∀ c' : Fin n, Q b b' * Q c c' * delta b' c' = delta c' b' * (Q b b' * Q c c') := by
+      intro c'; rw [delta_symm b' c']; ring
+    rw [Finset.sum_congr rfl fun c' _ => h c', sum_delta_left b' fun c' => Q b b' * Q c c']
+  rw [Finset.sum_congr rfl fun b' _ => inner b', hQ.rows]
+
+/-- **AND THE SCALAR CURVATURE IS INVARIANT OUTRIGHT.** -/
+theorem scal_act (hQ : IsOrth Q) (R : Fin n → Fin n → Fin n → Fin n → ℝ) :
+    scal (act Q R) = scal R := by
+  simp only [scal]
+  rw [Finset.sum_congr rfl fun b _ => ricci_act hQ R b b]
+  simp only [act2]
+  rw [Finset.sum_comm]
+  have inner : ∀ y : Fin n, ∑ b, ∑ z, Q b y * Q b z * ricci R y z
+      = ∑ z, delta y z * ricci R y z := by
+    intro y
+    rw [Finset.sum_comm]
+    refine Finset.sum_congr rfl fun z _ => ?_
+    rw [← Finset.sum_mul, hQ.cols]
+  rw [Finset.sum_congr rfl fun y _ => inner y]
+  refine Finset.sum_congr rfl fun y _ => ?_
+  have h : ∀ z : Fin n, delta y z * ricci R y z = delta z y * ricci R y z := by
+    intro z; rw [delta_symm y z]
+  rw [Finset.sum_congr rfl fun z _ => h z, sum_delta_left y fun z => ricci R y z]
+
+/-- **AND SO THE SECOND MAP IS EQUIVARIANT TOO.** -/
+theorem scalDelta_act (hQ : IsOrth Q) (R : Fin n → Fin n → Fin n → Fin n → ℝ) (b c : Fin n) :
+    scal (act Q R) * delta b c = act2 Q (fun b' c' => scal R * delta b' c') b c := by
+  have hpull : act2 Q (fun b' c' => scal R * delta b' c') b c = scal R * act2 Q delta b c := by
+    simp only [act2, Finset.mul_sum]
+    refine Finset.sum_congr rfl fun b' _ => Finset.sum_congr rfl fun c' _ => ?_
+    ring
+  rw [hpull, act2_delta hQ, scal_act hQ]
+
+/-- **BOTH OF §11'S MAPS ARE `O(n)`-EQUIVARIANT.** This is the membership check §11 did not make:
+it proved the two independent of each other inside a family it never showed either belonged to.
+They do belong to it.
+
+**And no more than that.** The classification's remaining content is that the family has *no other*
+members, which is the invariant theory — no averaging over the group, no character, no irreducible
+decomposition appears anywhere in this file. `WALLS` §W5.0 §6 item 4 is half a build. -/
+theorem traces_equivariant (hQ : IsOrth Q) (R : Fin n → Fin n → Fin n → Fin n → ℝ) :
+    (∀ b c, ricci (act Q R) b c = act2 Q (ricci R) b c) ∧
+      (∀ b c, scal (act Q R) * delta b c
+        = act2 Q (fun b' c' => scal R * delta b' c') b c) :=
+  ⟨ricci_act hQ R, scalDelta_act hQ R⟩
+
+end Equivariance
+
 /-! ## 7. What this file does NOT settle
 
 §7 used to record the question §10 has now answered. What remains outside this file is unchanged:
-**none of §§5–6, §10 or §11 is a step toward `a₂`.** They are statements about a structure with
-four clauses on a finite index type, and the wall named in the header is untouched by them.
+**none of §§5–6, §10, §11 or §12 is a step toward `a₂`.** They are statements about a structure
+with four clauses on a finite index type, and the wall named in the header is untouched by them.
 
-§11 narrows one thing and it is worth being exact about which. `WALLS` §W5.0 §6 item 4 has two
-halves — *the two named maps are independent* and *nothing outside their span is equivariant*.
-§11 settles the first, dimension by dimension, and finds it **false at `n = 2` and true from
-`n = 3`**. The second half is the invariant theory, needs the `O(n)` action written down, and is
-**not started**: there is no group anywhere in this file. -/
+§§11–12 narrow one thing and it is worth being exact about which. `WALLS` §W5.0 §6 item 4 has two
+halves — *the two named maps are equivariant and independent* and *nothing outside their span is
+equivariant*. §11 settles the independence, dimension by dimension, and finds it **false at
+`n = 2` and true from `n = 3`**; §12 supplies the equivariance, which §11 had assumed without
+checking. **The second half is not started.** It is the invariant theory — no averaging over the
+group, no character, no irreducible decomposition appears in this file — and it is what the word
+"spanned" in the wall's sentence actually asserts.
+
+Two things §12 writes down but does not prove, both said at the point of use: that
+`act (Q · Q') = act Q ∘ act Q'`, so `act` is a change-of-frame formula rather than a `MulAction`
+(`act_delta` is the identity half and nothing below composes two frames), and that `reflect k` has
+determinant `−1`, so nothing here distinguishes `O(n)` from `SO(n)`. -/
 
 end AlgebraicCurvature
