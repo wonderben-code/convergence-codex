@@ -165,6 +165,36 @@ The theorem was right. The reading around it described a definiteness that canno
 forward half here in one line, because `ReachInside` puts every supported vector in the reach
 kernel. Two results, one fact, and the per-vector form is the stronger.
 
+## §8 — and the chain closes: strictness on a block cut is a perfect matching
+
+§6's row identity was not about `K₂,₂`. `massive_mulVec_mirror`: on any graph with a mirror
+reflection, the operator's row at a mirror site `θ s` is minus the cross matrix's row at `s`. So
+the reach kernel is **one linear equation per half-site** (`inReachKernel_iff_rows`), and with §7's
+"strict ⟺ reach kernel trivial" the whole criterion becomes combinatorial
+(`strict_iff_cut_perfect`):
+
+> **strict exactly when every half-site is joined to its own mirror image and to no other
+> half-site's** — every block a singleton, and no half-site outside a block.
+
+No vectors, no operator, no mass. Decidable on a finite graph, like the coupling criterion it sits
+on top of. The two failures it forbids are the two ways a nonzero vector survives: a half-site with
+no cross-neighbour at all (take its indicator) and two half-sites sharing a block (take the
+difference of theirs).
+
+**Sufficiency needs no block hypothesis** — a perfect matching *is* a block cut
+(`isCrossBlock_of_cut_perfect`), so `strict_of_cut_perfect` asks only for the matching.
+
+**Checked against §6 by a different route.** §6 proved `K₂,₂` non-strict by exhibiting a vector and
+computing; `bipGraph_not_strict_of_cut` proves the same thing by inspecting one edge
+(`bipGraph_cut_not_perfect`), and the two agree.
+
+**A prediction this file does NOT cash.** Every lattice cut in the estate is diagonal, so the
+criterion reduces there to *every half-site is joined to its own mirror*, which fails as soon as
+the half contains a site away from the cut — the right shape for `WALLS` W1's thresholds (box
+strict at sides 1–2 and not from 3; torus 1–4 and not from 5). **Instantiating it needs each
+family's cut written out and none of that is here**, so this is a prediction, not a re-derivation,
+and it is recorded as one.
+
 ## What this does NOT do
 
 It says nothing new about reflection positivity **off** `GreenExpansion` §9's class.
@@ -861,5 +891,211 @@ theorem strict_iff_reachKernel_trivial (hM : IsMirrorHalf θ H Mir) (h : IsRefl 
     exact hv0 (htriv v hr)
 
 end ReachIsotropy
+
+/-! ## 8. Strictness on a block cut, completely: the cut must be a perfect matching -/
+
+section StrictComplete
+
+open GreenExpansion GraphReflection GraphMirrorReflection CrossFormMatrix CrossPosSemidef
+
+variable [Fintype V] [DecidableEq V]
+variable {G : SimpleGraph V} [DecidableRel G.Adj] {m : ℝ} {θ : V ≃ V} {H Mir : Finset V}
+
+/-- The operator's entry from a mirror site back into the half is minus the cross matrix's. -/
+theorem massive_mirror_entry (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ) (m : ℝ)
+    {s q : V} (hs : s ∈ H) (hq : q ∈ H) :
+    GraphLaplacian.massive G m (θ s) q = - crossMatrix G θ H s q := by
+  classical
+  have hne : θ s ≠ q := fun hc => hM.notMem_of_mem hs (hc ▸ hq)
+  have hiff : G.Adj (θ s) q ↔ G.Adj s (θ q) :=
+    ⟨fun ha => (adj_cross_comm h q s).mp ha.symm, fun ha => ((adj_cross_comm h q s).mpr ha).symm⟩
+  rw [GraphLaplacian.massive_apply, if_neg hne, zero_sub,
+    crossMatrix_apply_of_mem hs hq, crossAdj]
+  by_cases ha : G.Adj s (θ q)
+  · rw [if_pos ha, if_pos (hiff.mpr ha)]
+  · rw [if_neg ha, if_neg fun hc => ha (hiff.mp hc)]
+
+/-- **THE OPERATOR'S ROW AT A MIRROR SITE IS THE CROSS MATRIX'S ROW.** This is the identity §6
+found on `K₂,₂`, and nothing about that graph was used. -/
+theorem massive_mulVec_mirror (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ) (m : ℝ)
+    {v : V → ℝ} (hv : ∀ i, i ∉ H → v i = 0) {s : V} (hs : s ∈ H) :
+    (GraphLaplacian.massive G m *ᵥ v) (θ s) = - ∑ q ∈ H, crossMatrix G θ H s q * v q := by
+  classical
+  have hres : ∑ q ∈ H, GraphLaplacian.massive G m (θ s) q * v q
+      = ∑ q : V, GraphLaplacian.massive G m (θ s) q * v q :=
+    Finset.sum_subset (Finset.subset_univ H) (fun q _ hq => by rw [hv q hq]; ring)
+  rw [Matrix.mulVec, dotProduct, ← hres, ← Finset.sum_neg_distrib]
+  exact Finset.sum_congr rfl fun q hq => by
+    rw [massive_mirror_entry hM h m hs hq]; ring
+
+/-- **AND SO THE REACH KERNEL IS ONE LINEAR EQUATION PER HALF-SITE.** The condition the operator
+imposes off the half is exactly that every row of the cross matrix annihilates `v`. -/
+theorem inReachKernel_iff_rows (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ) (m : ℝ) (v : V → ℝ) :
+    StrictBiconditional.InReachKernel G m H Mir v ↔
+      (∀ i, i ∉ H → v i = 0) ∧ ∀ s ∈ H, ∑ q ∈ H, crossMatrix G θ H s q * v q = 0 := by
+  constructor
+  · rintro ⟨hv, hreach⟩
+    refine ⟨hv, fun s hs => ?_⟩
+    have := hreach (θ s) (hM.notMem_of_mem hs) (mirror_notMem_mir hM hs)
+    rw [massive_mulVec_mirror hM h m hv hs, neg_eq_zero] at this
+    exact this
+  · rintro ⟨hv, hrows⟩
+    refine ⟨hv, fun p hp hpM => ?_⟩
+    have hs : θ p ∈ H := hM.mem_of_notMem hp hpM
+    have hback : θ (θ p) = p := h.invol p
+    rw [← hback, massive_mulVec_mirror hM h m hv hs, hrows (θ p) hs, neg_zero]
+
+/-- A supported vector whose cross-matrix rows all vanish, and which is nonzero, refutes
+triviality of the reach kernel. Packaged so the two witnesses below share it. -/
+theorem ne_zero_of_rows (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ) (m : ℝ)
+    (htriv : ∀ v : V → ℝ, StrictBiconditional.InReachKernel G m H Mir v → v = 0)
+    {v : V → ℝ} (hvsupp : ∀ i, i ∉ H → v i = 0)
+    (hrows : ∀ t ∈ H, ∑ r ∈ H, crossMatrix G θ H t r * v r = 0) : v = 0 :=
+  htriv v ((inReachKernel_iff_rows hM h m v).mpr ⟨hvsupp, hrows⟩)
+
+/-- **STRICTNESS ON A BLOCK CUT IS A PERFECT MATCHING OF THE CUT.** Every half-site joined to its
+own mirror image and to no other half-site's — that is, every block a singleton and no half-site
+outside a block. Purely combinatorial, and decidable on a finite graph.
+
+Read against the lattice families this is the right shape: their cuts are diagonal, so the
+condition reduces to *every half-site is joined to its own mirror*, which fails as soon as the half
+is thick enough to contain a site not adjacent to the cut. **That reading is a prediction and is
+not proved here** — instantiating it at the box, the torus and the estate's `def` needs each
+family's cut written out, and none of that is done in this file. -/
+theorem strict_iff_cut_perfect (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ) (hm : m ≠ 0)
+    (hC : IsCrossBlock G θ H) :
+    (∀ c : V → ℝ, c ≠ 0 → (∀ p, p ∉ H → p ∉ Mir → c p = 0) →
+        0 < GraphReflection.reflectedForm G m θ c)
+      ↔ ∀ s ∈ H, ∀ q ∈ H, (G.Adj s (θ q) ↔ s = q) := by
+  classical
+  rw [strict_iff_reachKernel_trivial hM h hm ((hcross_iff_isCrossBlock hM h m).mpr hC)]
+  constructor
+  · intro htriv s hs q hq
+    refine ⟨fun ha => ?_, fun hsq => ?_⟩
+    · -- `e_s − e_q` is in the reach kernel, so it is zero, so `s = q`
+      by_contra hsq
+      set v : V → ℝ := fun x => if x = s then 1 else if x = q then -1 else 0 with hvdef
+      have hvs : v s = 1 := by rw [hvdef]; simp
+      have hvsupp : ∀ i, i ∉ H → v i = 0 := by
+        intro i hi
+        have h1 : i ≠ s := fun hc => hi (hc ▸ hs)
+        have h2 : i ≠ q := fun hc => hi (hc ▸ hq)
+        rw [hvdef]; simp [h1, h2]
+      have hsq' : CrossRel G θ H s q := ⟨hs, hq, ha⟩
+      have hqs' : CrossRel G θ H q s := crossRel_symm h hsq'
+      have hrows : ∀ t ∈ H, ∑ r ∈ H, crossMatrix G θ H t r * v r = 0 := by
+        intro t _
+        have hsub : ({s, q} : Finset V) ⊆ H := by
+          intro x hx
+          simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+          rcases hx with rfl | rfl <;> assumption
+        have houtside : ∀ r ∈ H, r ∉ ({s, q} : Finset V) → crossMatrix G θ H t r * v r = 0 := by
+          intro r _ hr
+          simp only [Finset.mem_insert, Finset.mem_singleton, not_or] at hr
+          rw [hvdef]; simp [hr.1, hr.2]
+        have hts : crossMatrix G θ H t s = crossMatrix G θ H t q := by
+          have f1 : crossMatrix G θ H t s = 1 → crossMatrix G θ H t q = 1 := fun hh =>
+            (crossMatrix_eq_one_iff t q).mpr
+              ⟨((crossMatrix_eq_one_iff t s).mp hh).1, hq,
+                hC.trans t s q ((crossMatrix_eq_one_iff t s).mp hh) hsq'⟩
+          have f2 : crossMatrix G θ H t q = 1 → crossMatrix G θ H t s = 1 := fun hh =>
+            (crossMatrix_eq_one_iff t s).mpr
+              ⟨((crossMatrix_eq_one_iff t q).mp hh).1, hs,
+                hC.trans t q s ((crossMatrix_eq_one_iff t q).mp hh) hqs'⟩
+          rcases crossMatrix_entries (G := G) (θ := θ) (H := H) t s with e1 | e1
+          · rcases crossMatrix_entries (G := G) (θ := θ) (H := H) t q with e2 | e2
+            · rw [e1, e2]
+            · exact absurd (f2 e2) (by rw [e1]; norm_num)
+          · rcases crossMatrix_entries (G := G) (θ := θ) (H := H) t q with e2 | e2
+            · exact absurd (f1 e1) (by rw [e2]; norm_num)
+            · rw [e1, e2]
+        rw [← Finset.sum_subset hsub houtside,
+          Finset.sum_insert (by simpa using hsq), Finset.sum_singleton, hvdef]
+        simp only [if_true, if_neg (Ne.symm hsq)]
+        rw [hts]; ring
+      have := ne_zero_of_rows hM h m htriv hvsupp hrows
+      rw [this] at hvs
+      exact absurd hvs (by norm_num)
+    · -- `e_s` is in the reach kernel unless `s` is joined to its own mirror
+      subst hsq
+      by_contra ha
+      set v : V → ℝ := fun x => if x = s then (1 : ℝ) else 0 with hvdef
+      have hvs : v s = 1 := by rw [hvdef]; simp
+      have hvsupp : ∀ i, i ∉ H → v i = 0 := by
+        intro i hi
+        have h1 : i ≠ s := fun hc => hi (hc ▸ hs)
+        rw [hvdef]; simp [h1]
+      have hnone : ∀ t : V, crossMatrix G θ H t s = 0 := by
+        intro t
+        rcases crossMatrix_entries (G := G) (θ := θ) (H := H) t s with e | e
+        · exact e
+        · exact absurd (hC.loop s t (crossRel_symm h ((crossMatrix_eq_one_iff t s).mp e))) ha
+      have hrows : ∀ t ∈ H, ∑ r ∈ H, crossMatrix G θ H t r * v r = 0 := by
+        intro t _
+        have hsub : ({s} : Finset V) ⊆ H := by simpa using hs
+        have houtside : ∀ r ∈ H, r ∉ ({s} : Finset V) → crossMatrix G θ H t r * v r = 0 := by
+          intro r _ hr
+          have : r ≠ s := by simpa using hr
+          rw [hvdef]; simp [this]
+        rw [← Finset.sum_subset hsub houtside, Finset.sum_singleton, hvdef]
+        simp [hnone t]
+      have := ne_zero_of_rows hM h m htriv hvsupp hrows
+      rw [this] at hvs
+      exact absurd hvs (by norm_num)
+  · intro hmatch v hr
+    obtain ⟨hvsupp, hrows⟩ := (inReachKernel_iff_rows hM h m v).mp hr
+    funext x
+    by_cases hx : x ∈ H
+    · have hsub : ({x} : Finset V) ⊆ H := by simpa using hx
+      have houtside : ∀ r ∈ H, r ∉ ({x} : Finset V) → crossMatrix G θ H x r * v r = 0 := by
+        intro r hrH hr
+        have hne : r ≠ x := by simpa using hr
+        have hzero : crossMatrix G θ H x r = 0 := by
+          rcases crossMatrix_entries (G := G) (θ := θ) (H := H) x r with e | e
+          · exact e
+          · exact absurd ((hmatch x hx r hrH).mp
+              ((crossMatrix_eq_one_iff x r).mp e).2.2).symm hne
+        rw [hzero, zero_mul]
+      have hcollapse : ∑ r ∈ H, crossMatrix G θ H x r * v r = v x := by
+        rw [← Finset.sum_subset hsub houtside, Finset.sum_singleton,
+          crossMatrix_apply_of_mem hx hx, crossAdj, if_pos ((hmatch x hx x hx).mpr rfl), one_mul]
+      rw [← hcollapse, hrows x hx]
+      rfl
+    · rw [hvsupp x hx]; rfl
+
+omit [Fintype V] [DecidableEq V] [DecidableRel G.Adj] in
+/-- A perfect matching of the cut IS a block cut, with every block a singleton — so the
+hypothesis of the theorem above is free on its right-hand side. -/
+theorem isCrossBlock_of_cut_perfect
+    (hmatch : ∀ s ∈ H, ∀ q ∈ H, (G.Adj s (θ q) ↔ s = q)) : IsCrossBlock G θ H :=
+  isCrossBlock_of_cross_diag (fun s hs q hq ha => (hmatch s hs q hq).mp ha)
+
+/-- **AND SO SUFFICIENCY NEEDS NO BLOCK HYPOTHESIS AT ALL.** A cut that matches each half-site to
+its own mirror image and to nothing else gives strictness outright. -/
+theorem strict_of_cut_perfect (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ) (hm : m ≠ 0)
+    (hmatch : ∀ s ∈ H, ∀ q ∈ H, (G.Adj s (θ q) ↔ s = q)) :
+    ∀ c : V → ℝ, c ≠ 0 → (∀ p, p ∉ H → p ∉ Mir → c p = 0) →
+      0 < GraphReflection.reflectedForm G m θ c :=
+  (strict_iff_cut_perfect hM h hm (isCrossBlock_of_cut_perfect hmatch)).mpr hmatch
+
+/-- `K₂,₂`'s cut is not a matching: site `0` is joined to `ρ 1`. -/
+theorem bipGraph_cut_not_perfect :
+    ¬ ∀ s ∈ IndefiniteCoupling.Hh, ∀ q ∈ IndefiniteCoupling.Hh,
+        (IndefiniteCoupling.bipGraph.Adj s (IndefiniteCoupling.rho q) ↔ s = q) := by
+  intro hc
+  exact absurd ((hc 0 (by decide) 1 (by decide)).mp (by decide)) (by decide)
+
+/-- **THE CROSS-CHECK: §6's RESULT RE-DERIVED BY A DIFFERENT ROUTE.** §6 proved `K₂,₂` non-strict
+by exhibiting an isotropic vector in the reach kernel and computing. This proves the same thing by
+checking a condition on the graph's edges and nothing else, and the two agree. -/
+theorem bipGraph_not_strict_of_cut (m : ℝ) (hm : m ≠ 0) :
+    ¬ ∀ c : Fin 4 → ℝ, c ≠ 0 →
+        (∀ p, p ∉ IndefiniteCoupling.Hh → p ∉ (∅ : Finset (Fin 4)) → c p = 0) →
+        0 < GraphReflection.reflectedForm IndefiniteCoupling.bipGraph m IndefiniteCoupling.rho c :=
+  fun hstrict => bipGraph_cut_not_perfect
+    ((strict_iff_cut_perfect IndefiniteCoupling.isMirrorHalf_Hh
+      IndefiniteCoupling.isRefl_rho_bip hm isCrossBlock_bipGraph).mp hstrict)
+
+end StrictComplete
 
 end CrossBlockStructure
