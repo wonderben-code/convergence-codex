@@ -51,6 +51,21 @@ here.** Once it exists the bilimit is statable, and only then.
 
 **Having a limit is not having `D∞`.** This file builds limits of arbitrary towers; `D∞` is the
 limit of one particular tower together with a theorem about it, and only the first half is here.
+
+**HEADER NOTE, 2026-08-12.** The three paragraphs above were written when this file stopped at §4,
+and two of their sentences now read wrongly. *"The bilimit theorem is not proved, **not
+attempted**"* — the first clause is still true **of this file**, the second is not: §§8–11 build
+the whole of the general apparatus the bilimit needs. *"What would have to be stated first is the
+canonical tower … **Not built here**"* — still true, and `CanonicalTower.lean` built it on
+2026-08-11. **What this file does NOT contain remains exactly what those paragraphs say it does
+not: **no declaration below mentions `canonical`** — this file imports only
+`EmbeddingProjection`, so it could not — `Bilimit` is not stated here, and every theorem proved
+here is about an arbitrary `Tower`. (The *word* appears a dozen times in the prose below, saying
+which parts of the wall these general facts do and do not reach; that is the point of those
+paragraphs and not a counterexample to this one.)** Where the wall actually stands is `WALLS`
+§W8.0, not this header. §§5–11 in order: the level-into-limit embedding; its continuity;
+`levelPair`; the round trips exhausting the limit; `funTower` and the two maps; the equivalence;
+the shift and the order-isomorphism upgrade.
 -/
 
 namespace InverseLimitCPO
@@ -741,6 +756,12 @@ lemma is built here, in `CanonicalTower`, or anywhere else in this estate.
 
 **Nothing in this section is an argument that the shift lemma is easy.** It is named, and this
 file's record on naming-and-estimating is in §9.
+
+**§11 SUPPLIES THE SHIFT LEMMA — FOR AN ARBITRARY TOWER, WHICH IS NOT THE SAME AS CLOSING THE
+WALL.** `shift` and `shiftEquiv` are here; the identification of `funTower (canonical X)` with
+`shift (canonical X)` is a fact about the *canonical* tower and lives in `CanonicalTower.lean`,
+together with `Bilimit` itself. No declaration in this file mentions `canonical`, and the import
+graph makes that structural rather than a matter of restraint.
 -/
 
 /-- Up then down loses information, `emb_proj_le` iterated. -/
@@ -862,5 +883,85 @@ def funLimitEquiv : (Limit T →𝒄 Limit T) ≃ Limit (funTower T) where
   invFun := fromFunLimit T
   left_inv := fromFunLimit_toFunLimit T
   right_inv := toFunLimit_fromFunLimit T
+
+/-! ## 11. The shift, and the equivalence upgraded to an order isomorphism
+
+**Two loose ends, both general facts about towers.**
+
+**`shift` and `shiftEquiv`.** Dropping a tower's bottom level does not change its limit: a coherent
+sequence starting at level 1 already determines what its level-0 entry would have to be, by
+projecting once. The equivalence is elementary — the only content is that the round trip recovers
+the discarded entry, which is the coherence condition at `n = 0`. **This is §8's step (b) as a
+statement about an arbitrary tower.** It is *not* `Bilimit`: that needs
+`funTower (canonical X) = shift (canonical X)`, a fact about the canonical tower which this file
+does not mention and `CanonicalTower.lean` does.
+
+**`funLimitOrderIso`.** `WALLS` §W8.0's *"what this account does not cover"* asks whether the bare
+type equivalence is the right target *"or whether an order-isomorphism should be demanded — `D∞`
+gives the stronger statement … but a builder would want the stronger"*. Both directions of §10's
+equivalence are monotone — `toFunLimit` pointwise from `proj`'s monotonicity, `fromFunLimit`
+because a supremum of a dominated chain is dominated — so the equivalence **is** an order
+isomorphism, and the stronger form is available. This is a strengthening of §10, not a new theorem
+about the wall.
+
+**`embHom_injective`** is `levelPair`'s `emb_injective`, recorded here because non-triviality of a
+limit is proved from it and nothing else in this file needs it.
+-/
+
+/-- **THE TOWER SHIFTED UP ONE LEVEL.** -/
+def shift : Tower.{u} where
+  carrier n := T.carrier (n + 1)
+  cpo n := T.cpo (n + 1)
+  step n := T.step (n + 1)
+
+/-- Dropping the bottom level does not change the limit. -/
+def shiftEquiv : Limit (shift T) ≃ Limit T where
+  toFun x :=
+    ⟨fun n => match n with
+       | 0 => (T.step 0).proj (x.1 0)
+       | n + 1 => x.1 n,
+     by
+       intro n
+       cases n with
+       | zero => rfl
+       | succ n => exact x.2 n⟩
+  invFun y := ⟨fun n => y.1 (n + 1), fun n => y.2 (n + 1)⟩
+  left_inv x := by
+    apply Subtype.ext
+    funext n
+    rfl
+  right_inv y := by
+    apply Subtype.ext
+    funext n
+    cases n with
+    | zero => exact y.2 0
+    | succ n => rfl
+
+/-- Each level embeds **injectively**, since `levelPair k` is an embedding-projection pair. -/
+theorem embHom_injective (k : ℕ) : Function.Injective (embHom T k) :=
+  (levelPair T k).emb_injective
+
+theorem toFunLimit_mono : Monotone (toFunLimit T) := by
+  intro f f' h n x
+  exact (proj T n).monotone (h (embHom T n x))
+
+theorem fromFunLimit_mono : Monotone (fromFunLimit T) := by
+  intro g g' h y
+  change fromFunLimit T g y ≤ fromFunLimit T g' y
+  rw [fromFunLimit_apply, fromFunLimit_apply]
+  refine ωSup_le _ _ fun n => ?_
+  refine le_trans (embFun_mono T n (h n (proj T n y))) ?_
+  exact le_ωSup (approxPtChain T g' y) n
+
+/-- **AND IT IS AN ORDER ISOMORPHISM**, which `WALLS` §W8.0 §8 asked for and §10 did not give. -/
+def funLimitOrderIso : (Limit T →𝒄 Limit T) ≃o Limit (funTower T) where
+  toEquiv := funLimitEquiv T
+  map_rel_iff' {f f'} := by
+    constructor
+    · intro h
+      have h' : toFunLimit T f ≤ toFunLimit T f' := h
+      have h'' := fromFunLimit_mono T h'
+      rwa [fromFunLimit_toFunLimit, fromFunLimit_toFunLimit] at h''
+    · exact fun h => toFunLimit_mono T h
 
 end InverseLimitCPO
