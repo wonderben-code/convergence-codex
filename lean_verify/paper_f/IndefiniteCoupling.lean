@@ -335,6 +335,39 @@ theorem not_strict {m : ℝ} (hm : m ≠ 0) :
     · norm_num [cvec]
   exact absurd (hstrict cvec hne hsupp) (not_lt.mpr (reflectedForm_cvec_neg hm).le)
 
+/-! ## 6. And the same witness settles the wall's MAIN theorem
+
+`strict_iff_not_supportedIsotropic` is a refinement. `reflectionPositive_mirror` is the theorem
+this wall rests on, and it carries the same hypothesis. One line of §5 settles that too, and it is
+the stronger statement of the two. -/
+
+/-- **`GraphReflection.ReflectionPositive` FAILS HERE**, stated against the estate's own predicate.
+The mirror is empty, so *supported on `H ∪ Mir`* is exactly `ReflectionPositive`'s support
+condition and the two line up without adjustment. -/
+theorem not_reflectionPositive {m : ℝ} (hm : m ≠ 0) :
+    ¬ GraphReflection.ReflectionPositive crossGraph m rho Hh := by
+  intro hrp
+  have hsupp : ∀ p, p ∉ Hh → cvec p = 0 := by
+    intro p hp
+    fin_cases p
+    · exact absurd (by decide : (0 : Fin 4) ∈ Hh) hp
+    · exact absurd (by decide : (1 : Fin 4) ∈ Hh) hp
+    · norm_num [cvec]
+    · norm_num [cvec]
+  exact absurd (hrp cvec hsupp) (not_le.mpr (reflectedForm_cvec_neg hm))
+
+/-- **SO `hcross` IS NECESSARY IN `reflectionPositive_mirror` TOO**, and that is the sharper of the
+two necessity results: `strict_iff_not_supportedIsotropic` is a refinement of the wall, and
+`reflectionPositive_mirror` is the wall. Its other three hypotheses all hold here
+(`isMirrorHalf_Hh`, `isRefl_rho`, `hm`), so the coupling hypothesis is the only thing standing
+between them and a false conclusion. -/
+theorem hcross_necessary_for_positivity {m : ℝ} (hm : m ≠ 0) :
+    IsMirrorHalf rho Hh (∅ : Finset (Fin 4))
+      ∧ GraphReflection.IsRefl crossGraph rho
+      ∧ ¬ (∀ w : Fin 4 → ℝ, crossForm crossGraph m rho Hh w ≤ 0)
+      ∧ ¬ GraphReflection.ReflectionPositive crossGraph m rho Hh :=
+  ⟨isMirrorHalf_Hh, isRefl_rho, not_hcross m, not_reflectionPositive hm⟩
+
 /-- **THE COUPLING HYPOTHESIS IS NECESSARY IN `strict_iff_not_supportedIsotropic`, NOT MERELY
 USED.** Both sides of its backward implication are settled here and they disagree: no supported
 isotropic vector exists, and the form is still not strict. So `hcross` cannot be dropped from that
