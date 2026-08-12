@@ -136,6 +136,35 @@ on `crossGraph`**, doing the opposite job here. `the_two_graphs_fail_differently
 by side: same reflection, same half, same mass; one is not reflection positive at all, the other is
 and is degenerate.
 
+## §7 — and then a clause of the estate's own definition turns out to be free
+
+Retrying once more found something about a definition rather than a graph.
+`StrictBiconditional.SupportedIsotropic` asks for a nonzero `v` that is (a) supported on the half,
+(b) **isotropic** — `crossForm v = 0` — and (c) in the reach kernel. **(b) follows from (a) and
+(c)**, on every graph with a mirror reflection, with no coupling hypothesis and no block hypothesis
+(`crossForm_eq_zero_of_inReachKernel`). The reason is one line of symmetry:
+`ReachIsCoupling.crossForm_symm_matrix` makes `crossForm v = ∑_{p ∈ H} v p · (massive *ᵥ v) (θ p)`,
+and the reach condition kills every factor, `θ p` being exactly a site outside the half and off the
+mirror.
+
+**Precisely what is redundant, and where.** The `def` is stated without `IsMirrorHalf` or `IsRefl`,
+so the clause is not redundant *in the definition*. It is redundant at **every site where the
+definition is used**, since every one of them carries both.
+
+**What this does to the criterion.**
+`StrictBiconditional.strict_iff_crossForm_neg_on_reachKernel` presents strictness as *the coupling
+is negative definite on the reach kernel*. The coupling is **identically zero** there, so that
+condition holds only vacuously, and the criterion says (`strict_iff_reachKernel_trivial`):
+
+> **strict exactly when the reach kernel is trivial.**
+
+The theorem was right. The reading around it described a definiteness that cannot occur.
+
+**Checked against `ReachIsCoupling`, which proves the same fact one quantifier up:** that file's
+`ReachInside ↔ crossForm ≡ 0` is about the graph; `crossForm_eq_zero_of_reachInside` derives its
+forward half here in one line, because `ReachInside` puts every supported vector in the reach
+kernel. Two results, one fact, and the per-vector form is the stronger.
+
 ## What this does NOT do
 
 It says nothing new about reflection positivity **off** `GreenExpansion` §9's class.
@@ -734,5 +763,103 @@ theorem the_two_graphs_fail_differently (m : ℝ) (hm : m ≠ 0) :
   ⟨not_reflectionPositive hm, hcross_bip m, bipGraph_not_strict m hm⟩
 
 end BipStrict
+
+/-! ## 7. The isotropy clause was never doing any work -/
+
+section ReachIsotropy
+
+open GraphReflection GraphMirrorReflection CrossFormMatrix
+
+variable [Fintype V] [DecidableEq V]
+variable {G : SimpleGraph V} [DecidableRel G.Adj] {m : ℝ} {θ : V ≃ V} {H Mir : Finset V}
+
+omit [Fintype V] [DecidableEq V] in
+/-- A half-site's mirror image is off the mirror as well as out of the half. -/
+theorem mirror_notMem_mir (hM : IsMirrorHalf θ H Mir) {s : V} (hs : s ∈ H) : θ s ∉ Mir := by
+  intro hc
+  have hfix : θ (θ s) = θ s := (hM.fixed (θ s)).mp hc
+  exact hM.disj s hs ((hM.fixed s).mpr (θ.injective hfix))
+
+/-- **A VECTOR IN THE REACH KERNEL IS AUTOMATICALLY ISOTROPIC.** The coupling's matrix is
+symmetric under swapping which argument is mirrored (`ReachIsCoupling.crossForm_symm_matrix`), so
+`crossForm v = ∑_{p ∈ H} v p · (massive *ᵥ v) (θ p)` — and the reach condition kills every one of
+those factors, because `θ p` is exactly a site outside the half and off the mirror.
+
+**So the isotropy clause of `StrictBiconditional.SupportedIsotropic` is implied by its other two.**
+No block hypothesis, no coupling hypothesis, no `hcross`: this holds on every graph with a mirror
+reflection and an involutive automorphism. -/
+theorem crossForm_eq_zero_of_inReachKernel (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ) (m : ℝ)
+    {v : V → ℝ} (hr : StrictBiconditional.InReachKernel G m H Mir v) :
+    crossForm G m θ H v = 0 := by
+  classical
+  obtain ⟨hsupp, hreach⟩ := hr
+  have hsymm : ∀ x y, GraphLaplacian.massive G m x y = GraphLaplacian.massive G m y x :=
+    fun x y => congrFun (congrFun (GraphLaplacian.massive_isSymm (G := G) m).eq y) x
+  have hrow : ∀ p ∈ H, ∑ q ∈ H, v q * GraphLaplacian.massive G m (θ p) q = 0 := by
+    intro p hp
+    have hz := hreach (θ p) (hM.notMem_of_mem hp) (mirror_notMem_mir hM hp)
+    rw [Matrix.mulVec, dotProduct] at hz
+    have hres : ∑ q ∈ H, GraphLaplacian.massive G m (θ p) q * v q
+        = ∑ q : V, GraphLaplacian.massive G m (θ p) q * v q :=
+      Finset.sum_subset (Finset.subset_univ H) (fun q _ hq => by rw [hsupp q hq]; ring)
+    calc ∑ q ∈ H, v q * GraphLaplacian.massive G m (θ p) q
+        = ∑ q ∈ H, GraphLaplacian.massive G m (θ p) q * v q :=
+          Finset.sum_congr rfl fun q _ => by ring
+      _ = ∑ q : V, GraphLaplacian.massive G m (θ p) q * v q := hres
+      _ = 0 := hz
+  rw [crossForm]
+  refine Finset.sum_eq_zero fun p hp => ?_
+  have hsplit : ∑ q ∈ H, v p * v q * GraphLaplacian.massive G m p (θ q)
+      = v p * ∑ q ∈ H, v q * GraphLaplacian.massive G m (θ p) q := by
+    rw [Finset.mul_sum]
+    exact Finset.sum_congr rfl fun q _ => by
+      rw [ReachIsCoupling.crossForm_symm_matrix h m p q, hsymm q (θ p)]
+      ring
+  rw [hsplit, hrow p hp, mul_zero]
+
+/-- **THE CONSISTENCY CHECK, AGAINST `ReachIsCoupling`.** That file proves
+`ReachCriterion.ReachInside G m H Mir ↔ ∀ w, crossForm G m θ H w = 0` — a statement about the
+graph. The forward half of it is one line from the theorem above, because `ReachInside` puts
+*every* supported vector in the reach kernel. The two results are the same fact at two
+quantifier depths, and the per-vector one is the stronger. -/
+theorem crossForm_eq_zero_of_reachInside (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ) (m : ℝ)
+    (hRI : ReachCriterion.ReachInside G m H Mir) {w : V → ℝ} (hw : ∀ p, p ∉ H → w p = 0) :
+    crossForm G m θ H w = 0 :=
+  crossForm_eq_zero_of_inReachKernel hM h m ⟨hw, hRI w hw⟩
+
+/-- **AND SO THE ESTATE'S ISOTROPY PREDICATE IS A STATEMENT ABOUT THE REACH KERNEL ALONE.** -/
+theorem supportedIsotropic_iff_reachKernel_ne_zero (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ)
+    (m : ℝ) :
+    StrictBiconditional.SupportedIsotropic G m θ H Mir ↔
+      ∃ v : V → ℝ, v ≠ 0 ∧ StrictBiconditional.InReachKernel G m H Mir v := by
+  constructor
+  · rintro ⟨v, hv0, hvs, -, hvr⟩
+    exact ⟨v, hv0, hvs, hvr⟩
+  · rintro ⟨v, hv0, hr⟩
+    exact ⟨v, hv0, hr.1, crossForm_eq_zero_of_inReachKernel hM h m hr, hr.2⟩
+
+/-- **THE CRITERION, WITH THE DEFINITENESS READING REMOVED.**
+`StrictBiconditional.strict_iff_crossForm_neg_on_reachKernel` presents strictness as *the coupling
+is negative definite on the reach kernel*. The coupling is **identically zero** there, so that
+condition can only ever hold vacuously, and what the criterion actually says is:
+
+> **strict exactly when the reach kernel is trivial.**
+
+The theorem is right; the reading was doing extra work. -/
+theorem strict_iff_reachKernel_trivial (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ) (hm : m ≠ 0)
+    (hcross : ∀ w : V → ℝ, crossForm G m θ H w ≤ 0) :
+    (∀ c : V → ℝ, c ≠ 0 → (∀ p, p ∉ H → p ∉ Mir → c p = 0) →
+        0 < GraphReflection.reflectedForm G m θ c)
+      ↔ ∀ v : V → ℝ, StrictBiconditional.InReachKernel G m H Mir v → v = 0 := by
+  rw [StrictBiconditional.strict_iff_not_supportedIsotropic hM h hm hcross,
+    supportedIsotropic_iff_reachKernel_ne_zero hM h m]
+  constructor
+  · intro hno v hr
+    by_contra hv0
+    exact hno ⟨v, hv0, hr⟩
+  · rintro htriv ⟨v, hv0, hr⟩
+    exact hv0 (htriv v hr)
+
+end ReachIsotropy
 
 end CrossBlockStructure
