@@ -118,6 +118,33 @@ theorem card_walksTo_bdry_le (σ : Config n) (P : Plaq n) (L : ℕ) :
   le_trans (card_walksTo_le σ P _ L)
     (Nat.mul_le_mul_right _ (card_bdryPlaq_le n))
 
+/-! ### The same sum over TRAILS, with the textbook constant
+
+Added 2026-08-12 alongside `WalkCount` §1b. **Nothing downstream of here consumes it yet**
+and the threshold is unchanged; it is stated because the target half of the rethreading is
+cheap and the producer half is not, so separating them makes the remaining work visible.
+-/
+
+/-- **AT MOST `|T| · 4 · 3 ^ L` DUAL TRAILS OF LENGTH `L + 1` REACH `T` FROM `P`.** -/
+theorem card_trailsTo_le (σ : Config n) (P : Plaq n) (T : Finset (Plaq n)) (L : ℕ) :
+    ∑ Q ∈ T, (((dualGraph σ).finsetWalkLength (L + 1) P Q).filter fun p => p.IsTrail).card
+      ≤ T.card * (4 * 3 ^ L) := by
+  calc ∑ Q ∈ T, (((dualGraph σ).finsetWalkLength (L + 1) P Q).filter fun p => p.IsTrail).card
+      ≤ ∑ _Q ∈ T, 4 * 3 ^ L :=
+        Finset.sum_le_sum fun Q _ => card_trails_le_three_pow σ L P Q
+    _ = T.card * (4 * 3 ^ L) := by rw [Finset.sum_const, smul_eq_mul]
+
+/-- **AND AT MOST `4 n · 4 · 3 ^ L` OF THEM RUN FROM `P` TO THE EDGE**, against `4 n · 4 ^ (L+1)`
+for walks. **The chain above still uses the walk count**, because the walks it quantifies
+over are not known to be trails where they are produced — see `WalkCount` §4 for the four
+files that would have to carry `IsTrail` for this to replace it. -/
+theorem card_trailsTo_bdry_le (σ : Config n) (P : Plaq n) (L : ℕ) :
+    ∑ Q ∈ bdryPlaq n,
+        (((dualGraph σ).finsetWalkLength (L + 1) P Q).filter fun p => p.IsTrail).card
+      ≤ 4 * n * (4 * 3 ^ L) :=
+  le_trans (card_trailsTo_le σ P _ L)
+    (Nat.mul_le_mul_right _ (card_bdryPlaq_le n))
+
 /-! ## 3. The geometric tail from a general starting length
 
 `SeriesBound.geom_Ico_le` is the same sum from `L₀ = 3`, which is the minimum contour length

@@ -236,22 +236,38 @@ theorem card_nb_top_le [DecidableEq V] [LocallyFinite G] {d : ℕ}
           rw [Finset.sum_const, Finset.card_univ, card_neighborSet_eq_degree, smul_eq_mul]
     _ ≤ d * (d - 1) ^ L := Nat.mul_le_mul_right _ (hd u)
 
-/-- A cycle satisfies the non-backtracking condition, because it is a trail. -/
-theorem nb_of_isCycle {u : V} (p : G.Walk u u) (hp : p.IsCycle) :
-    ∀ (w : V) (h : G.Adj u w) (q : G.Walk w u), p = Walk.cons h q → NB u q := by
+/-- **A TRAIL SATISFIES THE NON-BACKTRACKING CONDITION**, at either end and between any
+two vertices. This is the bridge: nothing else about trails is used. -/
+theorem nb_of_isTrail {u v : V} (p : G.Walk u v) (hp : p.IsTrail) :
+    ∀ (w : V) (h : G.Adj u w) (q : G.Walk w v), p = Walk.cons h q → NB u q := by
   intro w h q heq
   subst heq
-  exact NB_of_isTrail_cons h q hp.isTrail
+  exact NB_of_isTrail_cons h q hp
+
+/-- A cycle satisfies it too, being a trail. -/
+theorem nb_of_isCycle {u : V} (p : G.Walk u u) (hp : p.IsCycle) :
+    ∀ (w : V) (h : G.Adj u w) (q : G.Walk w u), p = Walk.cons h q → NB u q :=
+  nb_of_isTrail p hp.isTrail
+
+/-- **TRAILS OF LENGTH `L + 1` BETWEEN TWO VERTICES: at most `d * (d-1) ^ L`.** -/
+theorem card_trails_nb_le [DecidableEq V] [LocallyFinite G] {d : ℕ}
+    (hd : ∀ w, G.degree w ≤ d) (L : ℕ) (u v : V) :
+    ((G.finsetWalkLength (L + 1) u v).filter (fun p => p.IsTrail)).card
+      ≤ d * (d - 1) ^ L := by
+  refine le_trans (Finset.card_le_card ?_) (card_nb_top_le hd L u v)
+  intro p hp
+  rw [Finset.mem_filter] at hp ⊢
+  exact ⟨hp.1, nb_of_isTrail p hp.2⟩
 
 /-- **CYCLES OF LENGTH `L+1` THROUGH A VERTEX: at most `d * (d-1) ^ L`**, which is the
 non-backtracking bound rather than the bare `d ^ (L+1)`. -/
 theorem card_cycles_nb_le [DecidableEq V] [LocallyFinite G] {d : ℕ}
     (hd : ∀ w, G.degree w ≤ d) (L : ℕ) (u : V) :
     ((G.finsetWalkLength (L + 1) u u).filter (fun p => p.IsCycle)).card ≤ d * (d - 1) ^ L := by
-  refine le_trans (Finset.card_le_card ?_) (card_nb_top_le hd L u u)
+  refine le_trans (Finset.card_le_card ?_) (card_trails_nb_le hd L u u)
   intro p hp
   rw [Finset.mem_filter] at hp ⊢
-  exact ⟨hp.1, nb_of_isCycle p hp.2⟩
+  exact ⟨hp.1, hp.2.isTrail⟩
 
 end NonBacktracking
 
@@ -333,6 +349,13 @@ most `4 ^ (L+1)`, strictly so once `L ≥ 1`. -/
 theorem three_pow_le_four_pow (L : ℕ) : 4 * 3 ^ L ≤ 4 ^ (L + 1) := by
   rw [pow_succ']
   exact Nat.mul_le_mul_left 4 (Nat.pow_le_pow_left (by norm_num) L)
+
+/-- **AT MOST `4 · 3 ^ L` TRAILS OF LENGTH `L + 1` BETWEEN TWO PLAQUETTES**, which is the
+form the boundary sum wants: it quantifies over endpoints rather than over closed walks. -/
+theorem card_trails_le_three_pow (σ : Config n) (L : ℕ) (P Q : Plaq n) :
+    (((dualGraph σ).finsetWalkLength (L + 1) P Q).filter fun p => p.IsTrail).card
+      ≤ 4 * 3 ^ L :=
+  card_trails_nb_le (degree_le_four σ) L P Q
 
 /-! ### What this does NOT move, and it is the number a reader will look for
 
