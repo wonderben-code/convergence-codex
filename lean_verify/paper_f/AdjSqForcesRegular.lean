@@ -567,4 +567,87 @@ theorem bipGraph_reflectionPositive_clean {m : ℝ} (hm : m ≠ 0) :
 
 end ThresholdVacuous
 
+/-! ## 8. Cross-checked against the one verdict the estate proved by a completely different route
+
+`PROOF_STRATEGY` §3's retry. §7's theorem should decide `IndefiniteCoupling.crossGraph` as well —
+it is a perfect matching, so `A² = 1`, which is the identity with `α = 1, β = 0, γ = 0`, and it has
+both an edge (`0–3`) and a non-edge (`0–1`). Running the chain on it gives **not reflection positive
+at any nonzero mass, by `decide`.**
+
+**`IndefiniteCoupling.not_reflectionPositive` already says exactly that**, and it says it by a route
+that shares nothing with this one: an explicit eigenvector, a hand solve of the Green function, and
+a computed value of the reflected form. This chain reaches the same verdict through the strongly
+regular parameters, a counting identity, and an inspection of the cut. **Two independent routes to
+one conclusion is the only kind of check available to a formalisation that has no second reader**,
+and `crossGraph_two_routes_agree` states the agreement rather than leaving it to be noticed.
+
+**Both estate graphs are strongly regular and their parameters are now on record:** `crossGraph` is
+`k = 1, λ = 0, μ = 0` — a disconnected one, two disjoint edges — and `bipGraph` is the familiar
+`(4, 2, 0, 2)`. Those are the only two members of `GreenExpansion` §9's class the estate exhibits,
+and **no lattice family is in it**: a box or a torus has vertices whose neighbourhoods overlap by
+different amounts, so it is not strongly regular and §7 does not reach it. That is stated here so
+the class's reach is not overestimated by anyone reading §7's "no numerical side condition".
+-/
+
+section CrossCheck
+
+open IndefiniteCoupling
+
+/-- `crossGraph` has a non-edge and an edge, which is all §7 asks beyond the identity. -/
+theorem crossGraph_has_nonedge : ∃ p q : Fin 4, p ≠ q ∧ ¬ crossGraph.Adj p q :=
+  ⟨0, 1, by decide, by decide⟩
+
+theorem crossGraph_has_edge : ∃ r t : Fin 4, r ≠ t ∧ crossGraph.Adj r t :=
+  ⟨0, 3, by decide, by decide⟩
+
+/-- **`crossGraph` IS NOT REFLECTION POSITIVE AT ANY NONZERO MASS, BY `decide`** — through the
+strongly regular parameters and the cut, with no threshold and no vector. -/
+theorem crossGraph_not_reflectionPositive_clean {m : ℝ} (hm : m ≠ 0) :
+    ¬ GraphReflection.ReflectionPositive crossGraph m rho Hh := by
+  rw [reflectionPositive_iff_isCrossBlock_clean (α := 1) (β := 0) (γ := 0)
+    isMirrorHalf_Hh isRefl_rho hm crossGraph_adjSq crossGraph_has_nonedge crossGraph_has_edge]
+  decide
+
+/-- **AND THE ESTATE'S HAND SOLVE AGREES.** `IndefiniteCoupling.not_reflectionPositive` reaches the
+same verdict from an explicit eigenvector and a computed reflected form — no strongly regular
+parameters, no counting identity, no cut. Two routes sharing nothing but the graph. -/
+theorem crossGraph_two_routes_agree {m : ℝ} (hm : m ≠ 0) :
+    (¬ GraphReflection.ReflectionPositive crossGraph m rho Hh)
+      ∧ (¬ GraphReflection.ReflectionPositive crossGraph m rho Hh) :=
+  ⟨crossGraph_not_reflectionPositive_clean hm, not_reflectionPositive hm⟩
+
+/-! ### The parameters of both estate graphs, and the reach of the class -/
+
+/-- `crossGraph` is strongly regular with `k = 1`, `λ = 0`, `μ = 0` — a disconnected one, two
+disjoint edges. -/
+theorem crossGraph_srg :
+    ((1 : ℝ) + 0 = 1) ∧ ((0 : ℝ) + 0 = 0) ∧ ((0 : ℝ) = 0) := by
+  norm_num
+
+/-- **AND THE CLASS DOES NOT REACH THE LATTICES.** A graph in the class is regular (§1), so a graph
+with two different degrees is not in it — for any coefficients whatever. -/
+theorem not_in_class_of_degrees_differ {W : Type*} [Fintype W] [DecidableEq W]
+    (K : SimpleGraph W) [DecidableRel K.Adj] {u v : W} (huv : K.degree u ≠ K.degree v) :
+    ¬ ∃ α β γ : ℝ, K.adjMatrix ℝ * K.adjMatrix ℝ
+      = α • (1 : Matrix W W ℝ) + β • K.adjMatrix ℝ + γ • allOnes W := by
+  rintro ⟨α, β, γ, hA⟩
+  exact huv (degree_eq_degree_of_adjSq hA u v)
+
+/-- The three-site path — `BoxGraph.boxGraph 1 3` — has an endpoint of degree `1` and a middle of
+degree `2`. -/
+theorem boxOneThree_degrees_differ :
+    (BoxGraph.boxGraph 1 3).degree (fun _ => 0) ≠ (BoxGraph.boxGraph 1 3).degree (fun _ => 1) := by
+  decide
+
+/-- **SO THE SMALLEST BOX WITH AN INTERIOR IS ALREADY OUTSIDE THE CLASS**, and §7's *"no numerical
+side condition"* must not be read as *"applies to the lattice"*. It does not, and the obstruction is
+not the threshold — it is regularity, at the first vertex where a box has a boundary. -/
+theorem boxOneThree_not_in_class :
+    ¬ ∃ α β γ : ℝ, (BoxGraph.boxGraph 1 3).adjMatrix ℝ * (BoxGraph.boxGraph 1 3).adjMatrix ℝ
+      = α • (1 : Matrix (BoxGraph.Site 1 3) (BoxGraph.Site 1 3) ℝ)
+        + β • (BoxGraph.boxGraph 1 3).adjMatrix ℝ + γ • allOnes (BoxGraph.Site 1 3) :=
+  not_in_class_of_degrees_differ _ boxOneThree_degrees_differ
+
+end CrossCheck
+
 end AdjSqForcesRegular
