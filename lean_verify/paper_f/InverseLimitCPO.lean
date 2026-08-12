@@ -479,6 +479,11 @@ level approximations — and it is one lemma, not the theorem. Two further steps
 equivalence just named, and then, for the canonical tower specifically, that shifting a tower by
 one level does not change its limit. `CanonicalTower.Bilimit` remains unproved and neither section
 here is evidence for it.
+
+**§9 BUILDS `funTower` AND BOTH MAPS, SO HALF THE SENTENCE ABOVE IS ALREADY FALSE.** It read: *"that
+tower is not constructed anywhere in this estate, **and neither is the equivalence**."* The tower is
+`funTower`, the two directions are `toFunLimit` and `fromFunLimit`, and they are built in §9. **The
+equivalence is still not**, because neither round-trip identity is proved — see §9's own account.
 -/
 
 /-- Climbing from `k` is climbing from `k+1` after one `emb`. The lemma that makes the round trips
@@ -578,5 +583,122 @@ theorem ωSup_roundTripChain : ωSup (roundTripChain T) = ContinuousHom.id := by
     rfl
   rw [hc]
   exact ωSup_embProjChain T y
+
+/-! ## 9. The tower of self-maps, and both maps between it and the limit's self-maps
+
+**The step §8 named as the hard one, started rather than finished.** `funTower T` is the tower
+`n ↦ (T.carrier n →𝒄 T.carrier n)` whose steps are `EPPair.funPair (T.step n)` — the function-space
+functor applied to the tower's own pairs, which `EmbeddingProjection` supplies. Both directions of
+the comparison exist:
+
+* **`toFunLimit`** cuts a self-map of the limit down to each level, `proj n ∘ f ∘ embHom n`. Its
+  coherence is `embHom_succ_emb` (embedding one level and *then* sitting in the limit is the same
+  as sitting in the limit directly) composed with `proj_succ`.
+* **`fromFunLimit`** assembles a coherent sequence of level self-maps into one self-map of the
+  limit, as the supremum of `embHom n ∘ g n ∘ proj n`. That family is a chain, which is
+  `approxChain`'s obligation and the only real work in this section: it needs `g`'s coherence at a
+  point, and `embHom_proj_le_embHom_succ`.
+
+**NEITHER ROUND-TRIP IDENTITY IS PROVED, SO THERE IS NO EQUIVALENCE HERE.** `toFunLimit` and
+`fromFunLimit` are two maps between two types and nothing more. What is missing, named exactly:
+
+* `toFunLimit (fromFunLimit g) = g`, which needs the iterated coherence
+  `downTo n m ∘ g m ∘ upTo n m = g n` for `n ≤ m`, plus that the terms below `n` do not exceed
+  `g n`;
+* `fromFunLimit (toFunLimit f) = f`, which is where §8's `ωSup_roundTripChain` is meant to be
+  consumed — it becomes `⨆ n, r n ∘ f ∘ r n = f` where `⨆ n, r n = id`, a diagonal-of-a-double-
+  supremum argument.
+
+**And even with both, `Bilimit` needs the one-level shift lemma** (§8's step (b)) before the
+canonical tower's limit is a fixed point of its own function space. **This section is one map, its
+inverse-to-be, and no theorem relating them.** `CanonicalTower.Bilimit` remains unproved.
+
+**No estimate of difficulty is offered for the two identities.** This file's last three sections
+each carried one, two of the three were wrong, and both wrong ones were wrong in the direction of
+calling something harder than it was — so the useful thing to record is that the estimates have not
+earned their place, not another estimate.
+-/
+
+/-- Embedding one level and then sitting in the limit is sitting in the limit directly. -/
+theorem embSeq_succ_emb (n : ℕ) (x : T.carrier n) (m : ℕ) :
+    embSeq T (n + 1) ((T.step n).emb x) m = embSeq T n x m := by
+  by_cases h1 : n + 1 ≤ m
+  · have h0 : n ≤ m := Nat.le_of_succ_le h1
+    simp only [embSeq, dif_pos h1, dif_pos h0]
+    exact (upTo_succ_left T n m h1 x).symm
+  · have hm : m ≤ n := by omega
+    have hm1 : m ≤ n + 1 := by omega
+    have hne : m ≠ n + 1 := by omega
+    simp only [embSeq, dif_neg h1]
+    have hstep : downTo T m (n + 1) hm1 ((T.step n).emb x) = downTo T m n hm x := by
+      simp only [downTo, dif_neg hne]
+      rw [(T.step n).proj_emb]
+    rw [hstep]
+    by_cases h2 : n ≤ m
+    · have hmn : m = n := by omega
+      subst hmn
+      simp only [dif_pos (le_refl m)]
+      rw [downTo_self, upTo_self]
+    · simp only [dif_neg h2]
+
+theorem embFun_succ_emb (n : ℕ) (x : T.carrier n) :
+    embFun T (n + 1) ((T.step n).emb x) = embFun T n x :=
+  Subtype.ext (funext fun m => embSeq_succ_emb T n x m)
+
+theorem embHom_succ_emb (n : ℕ) (x : T.carrier n) :
+    embHom T (n + 1) ((T.step n).emb x) = embHom T n x :=
+  embFun_succ_emb T n x
+
+/-- **THE TOWER OF SELF-MAPS.** Level `n` is the continuous self-maps of level `n`, and the step
+is the function-space functor applied to the tower's own step. -/
+def funTower : Tower.{u} where
+  carrier n := T.carrier n →𝒄 T.carrier n
+  cpo _ := inferInstance
+  step n := EPPair.funPair (T.step n)
+
+/-- A continuous self-map of the limit, cut down to each level. -/
+def toFunLimit (f : Limit T →𝒄 Limit T) : Limit (funTower T) :=
+  ⟨fun n => (proj T n).comp (f.comp (embHom T n)), by
+    intro n
+    apply ContinuousHom.ext
+    intro x
+    change (T.step n).proj (proj T (n + 1) (f (embHom T (n + 1) ((T.step n).emb x))))
+        = proj T n (f (embHom T n x))
+    rw [embHom_succ_emb, proj_succ]⟩
+
+/-- Level `n` of a coherent sequence of self-maps, with its type stated. `(funTower T).carrier n`
+is definitionally `T.carrier n →𝒄 T.carrier n` but does not unfold at application sites. -/
+def funLevel (g : Limit (funTower T)) (n : ℕ) : T.carrier n →𝒄 T.carrier n := g.1 n
+
+/-- Coherence of `g`, applied at a point. -/
+theorem funLevel_coherent (g : Limit (funTower T)) (n : ℕ) (z : T.carrier n) :
+    (T.step n).proj (funLevel T g (n + 1) ((T.step n).emb z)) = funLevel T g n z :=
+  congrArg (fun h : T.carrier n →𝒄 T.carrier n => h z) (g.2 n)
+
+/-- `embHom n` factors through `embHom (n+1)` after one `emb`, so pushing a projected element
+into the limit at level `n` is bounded by pushing the element itself in at level `n+1`. -/
+theorem embHom_proj_le_embHom_succ (n : ℕ) (w : T.carrier (n + 1)) :
+    embHom T n ((T.step n).proj w) ≤ embHom T (n + 1) w := by
+  rw [← embHom_succ_emb T n ((T.step n).proj w)]
+  exact embFun_mono T (n + 1) ((T.step n).emb_proj_le w)
+
+/-- The chain of level approximations attached to a coherent sequence of self-maps. -/
+def approxChain (g : Limit (funTower T)) : Chain (Limit T →𝒄 Limit T) :=
+  ⟨fun n => (embHom T n).comp ((funLevel T g n).comp (proj T n)), by
+    intro m n hmn
+    induction n, hmn using Nat.le_induction with
+    | base => exact le_rfl
+    | succ n hmn ih =>
+        refine le_trans ih ?_
+        intro y
+        change embHom T n (funLevel T g n (proj T n y))
+            ≤ embHom T (n + 1) (funLevel T g (n + 1) (proj T (n + 1) y))
+        rw [(proj_succ T n y).symm, ← funLevel_coherent T g n ((T.step n).proj (proj T (n + 1) y))]
+        refine le_trans (embHom_proj_le_embHom_succ T n _) ?_
+        exact embFun_mono T (n + 1) ((funLevel T g (n + 1)).monotone ((T.step n).emb_proj_le _))⟩
+
+/-- **AND THE MAP BACK**: a coherent sequence of level self-maps assembles into a self-map of the
+limit, as the supremum of its level approximations. -/
+def fromFunLimit (g : Limit (funTower T)) : Limit T →𝒄 Limit T := ωSup (approxChain T g)
 
 end InverseLimitCPO
