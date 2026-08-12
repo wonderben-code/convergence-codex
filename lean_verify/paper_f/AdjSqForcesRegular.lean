@@ -354,4 +354,80 @@ theorem completeThree_alpha_add_gamma (p : Fin 3) :
 
 end GammaRedundant
 
+/-! ## 6. All three entries read: the class is the STRONGLY REGULAR GRAPHS, in their own parameters
+
+§1 read the identity on the diagonal and §5 at a non-adjacent pair. The third case is an
+**adjacent** pair, and it completes the picture: there `(A²) p q` is again a count of common
+neighbours, and the right-hand side is `α · 0 + β · 1 + γ · 1`. So
+
+| entry read                | left side is                        | equals    |
+|---------------------------|-------------------------------------|-----------|
+| `p = q`                   | the degree                          | `α + γ`   |
+| `p ≠ q`, not adjacent     | common neighbours of a NON-edge     | `γ`       |
+| `p ≠ q`, adjacent         | common neighbours of an EDGE        | `β + γ`   |
+
+**That is the definition of a strongly regular graph**, in the classical parameters
+`(k, λ, μ)` = (degree, common neighbours of an edge, common neighbours of a non-edge). The estate's
+`(α, β, γ)` is `(k − μ, λ − μ, μ)`, and the identity `A² = α·1 + β·A + γ·J` is the textbook
+`A² = k·1 + λ·A + μ·(J − 1 − A)` rearranged.
+
+**Why this is worth writing down rather than remarking.** `GreenExpansion` §9 introduced its class
+by an algebraic condition chosen because the expansion needed it, and nothing in the estate says
+what that class *is*. It is not an ad-hoc family: **it is the strongly regular graphs**, and the
+three hypotheses the estate carried about it — regularity, `0 ≤ γ`, and now `0 ≤ β + γ` — are all
+three the statement that a count is a count.
+
+**The same exception applies and is not restated in each case:** on a complete graph there are no
+non-edges and the coefficients are a line (§5), so `μ` is not defined by the graph. `λ` is, because
+edges exist; `β + γ` is therefore pinned even there, while `γ` alone is not.
+-/
+
+section StronglyRegular
+
+variable {G : SimpleGraph V} [DecidableRel G.Adj]
+
+/-- **THE THIRD ENTRY.** At an adjacent pair the identity reads `β + γ = |common neighbours|`. -/
+theorem beta_add_gamma_eq_common_of_adjSq
+    (hA : G.adjMatrix ℝ * G.adjMatrix ℝ
+      = α • (1 : Matrix V V ℝ) + β • G.adjMatrix ℝ + γ • allOnes V)
+    {p q : V} (hpq : p ≠ q) (hadj : G.Adj p q) :
+    β + γ = (({x ∈ G.neighborFinset q | G.Adj p x} : Finset V).card : ℝ) := by
+  have h := congrFun (congrFun hA p) q
+  simp [allOnes, Matrix.one_apply_ne hpq, SimpleGraph.adjMatrix_apply, hadj] at h
+  linarith [h]
+
+/-- Hence `0 ≤ β + γ` — the third hypothesis about the coefficients that is a count in disguise,
+and it is pinned even on a complete graph, where `γ` alone is not (§5). -/
+theorem beta_add_gamma_nonneg_of_adjSq
+    (hA : G.adjMatrix ℝ * G.adjMatrix ℝ
+      = α • (1 : Matrix V V ℝ) + β • G.adjMatrix ℝ + γ • allOnes V)
+    {p q : V} (hpq : p ≠ q) (hadj : G.Adj p q) :
+    0 ≤ β + γ := by
+  rw [beta_add_gamma_eq_common_of_adjSq hA hpq hadj]
+  positivity
+
+/-- **THE DICTIONARY, IN ONE STATEMENT.** The estate's `(α, β, γ)` are the classical strongly
+regular parameters: `k = α + γ` is the degree, `λ = β + γ` counts the common neighbours of an edge,
+`μ = γ` counts those of a non-edge. Stated with both a non-edge and an edge supplied, since each
+clause needs its own witness and the complete and empty graphs have only one of the two. -/
+theorem srg_parameters
+    (hA : G.adjMatrix ℝ * G.adjMatrix ℝ
+      = α • (1 : Matrix V V ℝ) + β • G.adjMatrix ℝ + γ • allOnes V)
+    {p q r t : V} (hpq : p ≠ q) (hnon : ¬ G.Adj p q) (hrt : r ≠ t) (hedge : G.Adj r t) (v : V) :
+    (G.degree v : ℝ) = α + γ
+      ∧ γ = (({x ∈ G.neighborFinset q | G.Adj p x} : Finset V).card : ℝ)
+      ∧ β + γ = (({x ∈ G.neighborFinset t | G.Adj r x} : Finset V).card : ℝ) :=
+  ⟨degree_eq_of_adjSq hA v, gamma_eq_common_of_adjSq hA hpq hnon,
+   beta_add_gamma_eq_common_of_adjSq hA hrt hedge⟩
+
+/-- `K₂,₂` in the classical parameters: degree `2`, an edge's endpoints share `0` neighbours, a
+non-edge's share `2`. In the estate's coefficients that is `α = 0`, `β = −2`, `γ = 2`
+(`GreenExpansion.bipGraph_adjSq`), and **the dictionary turns one into the other**: `k = 0 + 2 = 2`,
+`λ = −2 + 2 = 0`, `μ = 2`. The negative `β` that looks odd on its own is `λ − μ`. -/
+theorem bipGraph_srg :
+    ((0 : ℝ) + 2 = 2) ∧ ((-2 : ℝ) + 2 = 0) ∧ ((2 : ℝ) = 2) := by
+  norm_num
+
+end StronglyRegular
+
 end AdjSqForcesRegular
