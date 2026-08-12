@@ -164,6 +164,46 @@ Strictness says none is. The only work is turning one quantifier around and
 checking that the two support conditions line up.
 -/
 
+/-! ## 3b. The forward half without the coupling hypothesis
+
+§6 says of `hcross` that it is *"genuinely needed, in one direction only"*. That is true, and the
+biconditional above carries it in both anyway, because a biconditional has one hypothesis list.
+Stated separately, the forward half needs nothing about the coupling's sign — so it survives
+exactly where §3 does not: **an indefinite coupling**, the case §6 names as breaking the
+equivalence. -/
+
+/-- **A SUPPORTED ISOTROPIC VECTOR IS A NULL DIRECTION, WHATEVER THE COUPLING DOES.** No
+`hcross`. The two clauses do all the work: isotropy makes
+`BoxOddNotStrict.reflectedForm_massive_eq_crossForm`'s right-hand side vanish, and the reach
+clause is what puts `massive *ᵥ v` in the region where the reflected form is being asked about.
+Nothing here inspects the sign of anything. -/
+theorem reflectedForm_massive_eq_zero_of_isotropic (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ)
+    (hm : m ≠ 0) {v : V → ℝ} (hvsupp : ∀ p, p ∉ H → v p = 0)
+    (hviso : crossForm G m θ H v = 0) :
+    GraphReflection.reflectedForm G m θ (GraphLaplacian.massive G m *ᵥ v) = 0 := by
+  rw [BoxOddNotStrict.reflectedForm_massive_eq_crossForm hM h hm hvsupp,
+    crossForm_anti_eq hM hvsupp]
+  exact hviso
+
+/-- **AND SO IT REFUTES STRICTNESS, WITH NO HYPOTHESIS ON THE COUPLING.** This is §3's forward
+direction with `hcross` **removed**, and it is the half that matters for a negative result: to
+show a graph is not strict one exhibits a supported isotropic vector, and one should not have to
+know the coupling is nonpositive first.
+
+**Where the removal buys something rather than tidying.** With an indefinite coupling the
+reflected form can be negative, `reflectionPositive_mirror` does not apply, and §3 is false as a
+biconditional — §6 says so. This statement holds there unchanged. -/
+theorem not_strict_of_supportedIsotropic (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ) (hm : m ≠ 0)
+    (hiso : SupportedIsotropic G m θ H Mir) :
+    ¬ (∀ c : V → ℝ, c ≠ 0 → (∀ p, p ∉ H → p ∉ Mir → c p = 0) →
+        0 < GraphReflection.reflectedForm G m θ c) := by
+  rintro hstrict
+  obtain ⟨v, hv0, hvsupp, hviso, hvreach⟩ := hiso
+  exact absurd (reflectedForm_massive_eq_zero_of_isotropic hM h hm hvsupp hviso)
+    (ne_of_gt (hstrict _ (massive_mulVec_ne_zero hm hv0) hvreach))
+
+/-! ## 3c. The biconditional, with its forward half now imported -/
+
 /-- **STRICT EXACTLY WHEN NO SUPPORTED ISOTROPIC VECTOR EXISTS.** Over an
     arbitrary graph and an arbitrary mirror half, under the coupling
     hypothesis the wall already assumes everywhere. -/
@@ -174,13 +214,9 @@ theorem strict_iff_not_supportedIsotropic (hM : IsMirrorHalf θ H Mir) (h : IsRe
       ↔ ¬ SupportedIsotropic G m θ H Mir := by
   classical
   constructor
-  · rintro hstrict ⟨v, hv0, hvsupp, hviso, hvreach⟩
-    have hc0 : GraphLaplacian.massive G m *ᵥ v ≠ 0 := massive_mulVec_ne_zero hm hv0
-    have hform : GraphReflection.reflectedForm G m θ (GraphLaplacian.massive G m *ᵥ v) = 0 := by
-      rw [BoxOddNotStrict.reflectedForm_massive_eq_crossForm hM h hm hvsupp,
-        crossForm_anti_eq hM hvsupp]
-      exact hviso
-    exact absurd hform (ne_of_gt (hstrict _ hc0 hvreach))
+  · -- §3b, which does not use `hcross`; imported rather than repeated, so that the
+    -- hypothesis-free version is checked against this one rather than parallel to it.
+    exact fun hstrict hiso => not_strict_of_supportedIsotropic hM h hm hiso hstrict
   · intro hno c hc0 hcsupp
     have hge : 0 ≤ GraphReflection.reflectedForm G m θ c :=
       reflectionPositive_mirror hM h hm hcross hcsupp
