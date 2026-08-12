@@ -73,7 +73,7 @@
   is on the watchlist rather than assumed either way** — ERRATA 40/42 say
   an absence claim decays, and this is one that did.
 
-  THIRD STATUS UPDATE, 15 Aug 2026, from the watchlist re-sweep — **and it
+  THIRD STATUS UPDATE, 9 August 2026, from the watchlist re-sweep — **and it
   contradicts the paragraph immediately above, which is wrong twice.**
   (i) `MinkowskiSignature.lean` does NOT prove "a hand-rolled version". It
   defines `minkowskiForm : QuadraticForm ℝ (Fin 4 → ℝ)` as
@@ -83,6 +83,16 @@
   `QuadraticMap.Equivalent.sigPos_eq` and `.sigNeg_eq` — the very lemmas
   the paragraph above announces as newly available.** There is nothing to
   restate; it is already stated in the library's language.
+  [DATE CORRECTED 2026-08-12. This update was headed `15 Aug 2026`, a day
+  this campaign has never reached. `git log -S` puts the line in `1e064e2`,
+  **9 August 2026**, and the heading is rewritten to that rather than
+  flagged, because a commit hash is an artefact and guessing is only the
+  defect when there is nothing to resolve against (`ERRATUM 79`'s rule, and
+  `WALLS`'s date audit applied it the same way to three rows). Found by
+  `check_ledger.py --future` after `ERRATUM 155` widened its pattern to month
+  ABBREVIATIONS — `Aug` had never been matchable, so every abbreviated date
+  in the Lean sources was invisible, and `--dates` does not scan `.lean` at
+  all. This is the one thing that widening found that was genuinely uncaught.]
   (ii) That file is dated 1 August. The signature API therefore did NOT
   "not exist when the line was written" — the estate had been using it for
   ten days when the second update called it new. The second update
