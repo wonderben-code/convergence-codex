@@ -1287,4 +1287,85 @@ theorem stepGraph_bounded_branch :
 
 end Dichotomy
 
+/-! ## 12. And so reflection positivity at large mass is DECIDABLE
+
+`PROOF_STRATEGY` §6's first question — *what did this unlock?* — and the answer is not another
+inequality. §10 identifies "reflection positive at arbitrarily large masses" with `hcross`, on every
+finite graph. `CrossBlockStructure.hcross_iff_isCrossBlock` identifies `hcross` with a condition on
+the cut that has no vectors, no mass and no real numbers in it, and
+`CrossBlockStructure.instDecidableIsCrossBlock` is a real `Decidable` instance for it.
+
+Composing the two: **`reflectionPositive_arbitrarily_large_iff_isCrossBlock`, and then
+`decidableLargeMassRP` — on a concrete finite graph, whether it is reflection positive at large mass
+is settled by `decide`.** An analytic property of the inverse of an operator, decided by inspecting
+the adjacency relation.
+
+Three instances are closed that way and nothing else: `crossGraph` and `stepGraph` fail, `bipGraph`
+holds. Each proof is one rewrite along the biconditional followed by `decide`, with no lemma cited
+in between — the decidability is used rather than described. **No new case is decided by §12** — §9
+already had `stepGraph` with an explicit threshold, `IndefiniteCoupling` had `crossGraph` at every
+mass, and `bipGraph` was reflection positive from `hcross` at every mass. What is new is the
+*route*: three hand arguments become three `decide`s, and a fourth graph would cost nothing.
+
+**The honest limit, and it is the same one as §§8–11.** This decides the *large-mass* behaviour.
+`reflectionPositive_all_or_bounded` says that is the whole of the dichotomy — so what `decide`
+settles is which branch a graph is on, and on the bounded branch it says nothing about where the
+threshold is or what happens below it. `WALLS` W1's leg is untouched for the fifth consecutive
+section.
+-/
+
+section Decidable
+
+open CrossBlockStructure
+
+variable {G : SimpleGraph V} [DecidableRel G.Adj] {θ : V ≃ V} {H Mir : Finset V}
+
+/-- **REFLECTION POSITIVITY AT LARGE MASS IS A CONDITION ON THE CUT.** No vectors, no mass, no real
+numbers: the half-sites joined across the cut form a disjoint union of complete blocks. -/
+theorem reflectionPositive_arbitrarily_large_iff_isCrossBlock (hM : IsMirrorHalf θ H Mir)
+    (h : IsRefl G θ) :
+    (∀ M : ℝ, ∃ m' : ℝ, M < m' ∧ m' ≠ 0 ∧ GraphReflection.ReflectionPositive G m' θ H)
+      ↔ IsCrossBlock G θ H :=
+  (reflectionPositive_arbitrarily_large_iff_hcross_general hM h 1).trans
+    (hcross_iff_isCrossBlock hM h 1)
+
+/-- **AND SO IT IS DECIDABLE.** The instance is `CrossBlockStructure.instDecidableIsCrossBlock`
+transported across the biconditional; the three examples below are closed by `decide` alone. -/
+def decidableLargeMassRP (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ) :
+    Decidable (∀ M : ℝ, ∃ m' : ℝ, M < m' ∧ m' ≠ 0 ∧
+        GraphReflection.ReflectionPositive G m' θ H) :=
+  decidable_of_iff _ (reflectionPositive_arbitrarily_large_iff_isCrossBlock hM h).symm
+
+/-! ### Three graphs, three `decide`s, no new case decided -/
+
+open IndefiniteCoupling in
+/-- `crossGraph` is on the bounded branch. `IndefiniteCoupling.not_reflectionPositive` already knew
+it at every mass, by a hand solve; this is the same verdict by inspection of the cut. -/
+theorem crossGraph_not_reflectionPositive_arbitrarily_large :
+    ¬ ∀ M : ℝ, ∃ m' : ℝ, M < m' ∧ m' ≠ 0 ∧
+        GraphReflection.ReflectionPositive crossGraph m' rho Hh := by
+  rw [reflectionPositive_arbitrarily_large_iff_isCrossBlock isMirrorHalf_Hh isRefl_rho]
+  decide
+
+open IndefiniteCoupling in
+/-- `bipGraph` is on the every-mass branch — one block of size two, and the cut is not diagonal, so
+this is not the estate's original sufficient condition in disguise. -/
+theorem bipGraph_reflectionPositive_arbitrarily_large :
+    ∀ M : ℝ, ∃ m' : ℝ, M < m' ∧ m' ≠ 0 ∧
+        GraphReflection.ReflectionPositive bipGraph m' rho Hh := by
+  rw [reflectionPositive_arbitrarily_large_iff_isCrossBlock isMirrorHalf_Hh isRefl_rho_bip]
+  decide
+
+/-- §9's witness, now by `decide` rather than by a threshold computation. The two agree, which is
+the point of doing it twice: §9 says *not past `m² = 100`*, this says *not past some threshold*,
+and neither says anything below one. -/
+theorem stepGraph_not_reflectionPositive_arbitrarily_large_by_decide :
+    ¬ ∀ M : ℝ, ∃ m' : ℝ, M < m' ∧ m' ≠ 0 ∧
+        GraphReflection.ReflectionPositive stepGraph m' sigma6 Hs := by
+  rw [reflectionPositive_arbitrarily_large_iff_isCrossBlock (Mir := (∅ : Finset (Fin 6)))
+    isMirrorHalf_Hs isRefl_sigma6]
+  decide
+
+end Decidable
+
 end GreenLargeMass
