@@ -175,6 +175,40 @@ theorem sum_family_le (P₀ : Plaq n) (β : ℝ) :
   exact_mod_cast Nat.cast_le.mpr
     (le_trans (Finset.card_le_card hsub) (card_cycCandidates_le P₀ (L + 1) L))
 
+/-- **THE SAME SUM WITH THE TEXTBOOK CONSTANT `3`.** Identical to `sum_family_le` except
+that the fibre bound is `PeierlsCover.card_cycCandidates_le_two_three`, which keeps the
+`IsCycle` hypothesis instead of discarding it. The sum starts at `3`, so the `1 ≤ L` side
+condition is free.
+
+`ERRATUM 126`: this is the count the threshold actually consumes, which a paragraph in
+`WalkCount` got wrong earlier the same day. -/
+theorem sum_family_le_three (P₀ : Plaq n) (β : ℝ) :
+    ∑ γ ∈ peierlsFamily P₀, Real.exp (-(4 * β) * (γ.card : ℝ)) ≤
+      ∑ L ∈ Finset.Ico 3 (Fintype.card (Plaq n) + 1),
+        ((2 * (L + 1) + 1) ^ 2 * (2 * 3 ^ L) : ℕ) * Real.exp (-(4 * β) * (L : ℝ)) := by
+  classical
+  have hmaps : ∀ γ ∈ peierlsFamily P₀,
+      γ.card ∈ Finset.Ico 3 (Fintype.card (Plaq n) + 1) := fun γ hγ =>
+    Finset.mem_Ico.mpr ⟨three_le_card_of_mem_peierlsFamily hγ,
+      Nat.lt_succ_of_le (mem_peierlsFamily_card hγ).2⟩
+  rw [← Finset.sum_fiberwise_of_maps_to hmaps
+    (fun γ => Real.exp (-(4 * β) * (γ.card : ℝ)))]
+  refine Finset.sum_le_sum fun L hL => ?_
+  have hL1 : 1 ≤ L := le_trans (by norm_num) (Finset.mem_Ico.mp hL).1
+  have hval : ∀ γ ∈ (peierlsFamily P₀).filter (fun γ => γ.card = L),
+      Real.exp (-(4 * β) * (γ.card : ℝ)) = Real.exp (-(4 * β) * (L : ℝ)) := by
+    intro γ hγ
+    rw [(Finset.mem_filter.mp hγ).2]
+  rw [Finset.sum_congr rfl hval, Finset.sum_const, nsmul_eq_mul]
+  refine mul_le_mul_of_nonneg_right ?_ (Real.exp_nonneg _)
+  have hsub : (peierlsFamily P₀).filter (fun γ => γ.card = L) ⊆ cycCandidates P₀ (L + 1) L := by
+    intro γ hγ
+    obtain ⟨hfam, hcard⟩ := Finset.mem_filter.mp hγ
+    exact hcard ▸ (mem_peierlsFamily_card hfam).1
+  exact_mod_cast Nat.cast_le.mpr
+    (le_trans (Finset.card_le_card hsub)
+      (card_cycCandidates_le_two_three P₀ (L + 1) L hL1))
+
 /-- **THE PEIERLS ESTIMATE, IN CLOSED FORM.** The weight of the `+`-boundary configurations
 with `x` down, over the full partition function, is at most
 
@@ -198,5 +232,15 @@ theorem peierls_closed_form (hn : 0 < n) (β : ℝ) {x : Site n}
       ∑ L ∈ Finset.Ico 3 (Fintype.card (Plaq n) + 1),
         ((2 * (L + 1) + 1) ^ 2 * 4 ^ L : ℕ) * Real.exp (-(4 * β) * (L : ℝ)) :=
   le_trans (peierls_family_bound hn β hi hj) (sum_family_le _ β)
+
+/-- The same, with `2 · 3 ^ L` in place of `4 ^ L`. -/
+theorem peierls_closed_form_three (hn : 0 < n) (β : ℝ) {x : Site n}
+    (hi : x.1.val + 1 < n) (hj : x.2.val + 1 < n) :
+    (∑ σ ∈ (Finset.univ : Finset (Config n)).filter
+        (fun σ => PlusBoundary σ ∧ σ x = false), Real.exp (-β * isingH n σ)) /
+      (∑ σ : Config n, Real.exp (-β * isingH n σ)) ≤
+      ∑ L ∈ Finset.Ico 3 (Fintype.card (Plaq n) + 1),
+        ((2 * (L + 1) + 1) ^ 2 * (2 * 3 ^ L) : ℕ) * Real.exp (-(4 * β) * (L : ℝ)) :=
+  le_trans (peierls_family_bound hn β hi hj) (sum_family_le_three _ β)
 
 end SideLength

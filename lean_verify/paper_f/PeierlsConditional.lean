@@ -216,6 +216,17 @@ theorem plusFamily_sum_le (P₀ : Plaq n) (β : ℝ) :
       fun _ _ _ => Real.exp_nonneg _)
     (sum_family_le P₀ β)
 
+/-- The same with the textbook constant, `ERRATUM 126`: `2 · 3 ^ L` in place of `4 ^ L`,
+from `SideLength.sum_family_le_three`. -/
+theorem plusFamily_sum_le_three (P₀ : Plaq n) (β : ℝ) :
+    ∑ γ ∈ plusFamily P₀, Real.exp (-(4 * β) * (γ.card : ℝ)) ≤
+      ∑ L ∈ Finset.Ico 3 (Fintype.card (Plaq n) + 1),
+        ((2 * (L + 1) + 1) ^ 2 * (2 * 3 ^ L) : ℕ) * Real.exp (-(4 * β) * (L : ℝ)) :=
+  le_trans
+    (Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _)
+      fun _ _ _ => Real.exp_nonneg _)
+    (sum_family_le_three P₀ β)
+
 /-- **PEIERLS, CONDITIONED AND SMALL.** For every `ε > 0`, at every low enough temperature,
 for **every box** and every interior site, the Gibbs probability that the site is down
 **given `+` boundary conditions** is less than `ε`.

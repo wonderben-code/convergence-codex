@@ -146,6 +146,58 @@ theorem sum_le_cube (β : ℝ) (hβ : 8 * Real.exp (-(4 * β)) ≤ 1 / 2) (M : �
         exact mul_le_mul_of_nonneg_left hle (by norm_num)
     _ = 22 * (8 * q) ^ 3 := by ring
 
+/-- **THE SAME SUM WITH THE TEXTBOOK CONSTANT: at most `44 · (6 exp (-4β)) ^ 3`**, under
+the weaker hypothesis `6 exp (-4β) ≤ 1/2`.
+
+The whole difference is one factor: `(2L+3)^2 · 2 · 3^L ≤ 11 · 2^L · 2 · 3^L = 22 · 6^L`
+where the `4 ^ L` version gave `11 · 8 ^ L`. **The threshold moves from `ln 16 / 4 ≈ 0.693`
+to `ln 12 / 4 ≈ 0.621`**, which is the arithmetic `UNLOCK_WATCHLIST` predicted for a
+non-backtracking count. -/
+theorem sum_le_cube_six (β : ℝ) (hβ : 6 * Real.exp (-(4 * β)) ≤ 1 / 2) (M : ℕ) :
+    ∑ L ∈ Finset.Ico 3 M,
+        ((2 * (L + 1) + 1) ^ 2 * (2 * 3 ^ L) : ℕ) * Real.exp (-(4 * β) * (L : ℝ)) ≤
+      44 * (6 * Real.exp (-(4 * β))) ^ 3 := by
+  set q : ℝ := Real.exp (-(4 * β)) with hq
+  have hq0 : 0 < q := Real.exp_pos _
+  have hterm : ∀ L ∈ Finset.Ico 3 M,
+      ((2 * (L + 1) + 1) ^ 2 * (2 * 3 ^ L) : ℕ) * Real.exp (-(4 * β) * (L : ℝ)) ≤
+        22 * (6 * q) ^ L := by
+    intro L hL
+    have hL3 : 3 ≤ L := (Finset.mem_Ico.mp hL).1
+    have hexp : Real.exp (-(4 * β) * (L : ℝ)) = q ^ L := by
+      rw [hq, ← Real.exp_nat_mul]
+      ring_nf
+    have hcast : (((2 * (L + 1) + 1) ^ 2 * (2 * 3 ^ L) : ℕ) : ℝ)
+        = ((2 * L + 3) ^ 2 : ℕ) * (2 * (3 : ℝ) ^ L) := by
+      push_cast
+      ring
+    rw [hexp, hcast]
+    have hpoly : (((2 * L + 3) ^ 2 : ℕ) : ℝ) ≤ 11 * 2 ^ L := by
+      exact_mod_cast Nat.cast_le.mpr (sq_le_pow_two L hL3)
+    calc (((2 * L + 3) ^ 2 : ℕ) : ℝ) * (2 * (3 : ℝ) ^ L) * q ^ L
+        ≤ (11 * 2 ^ L) * (2 * (3 : ℝ) ^ L) * q ^ L := by
+          refine mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hpoly ?_) ?_
+          · positivity
+          · positivity
+      _ = 22 * (6 * q) ^ L := by
+          rw [mul_pow]
+          have : (6 : ℝ) ^ L = 2 ^ L * 3 ^ L := by
+            rw [← mul_pow]; norm_num
+          rw [this]; ring
+  refine le_trans (Finset.sum_le_sum hterm) ?_
+  rw [← Finset.mul_sum]
+  have hle := geom_Ico_le (6 * q) (by positivity) hβ M
+  calc 22 * ∑ L ∈ Finset.Ico 3 M, (6 * q) ^ L ≤ 22 * (2 * (6 * q) ^ 3) := by
+        exact mul_le_mul_of_nonneg_left hle (by norm_num)
+    _ = 44 * (6 * q) ^ 3 := by ring
+
+/-- And it is genuinely a strengthening: the hypothesis is weaker and the bound smaller.
+`44 · 216 = 9504` against `22 · 512 = 11264`. -/
+theorem six_cube_le_eight_cube (β : ℝ) :
+    44 * (6 * Real.exp (-(4 * β))) ^ 3 ≤ 22 * (8 * Real.exp (-(4 * β))) ^ 3 := by
+  have h : (0 : ℝ) ≤ Real.exp (-(4 * β)) := (Real.exp_pos _).le
+  nlinarith [pow_nonneg h 3, sq_nonneg (Real.exp (-(4 * β)))]
+
 /-! ## 4. So it is eventually smaller than any `ε` -/
 
 theorem tendsto_bound : Tendsto (fun β : ℝ => 22 * (8 * Real.exp (-(4 * β))) ^ 3) atTop

@@ -87,6 +87,35 @@ theorem cond_le (hn : 0 < n) {β : ℝ} (hβ : 8 * Real.exp (-(4 * β)) ≤ 1 / 
     exact le_trans (peierls_conditional hn β hi hj)
       (le_trans (plusFamily_sum_le _ β) (sum_le_cube β hβ _))
 
+/-- **THE SAME ESTIMATE AT THE TEXTBOOK CONSTANT.** Under `6 e^{-4β} ≤ 1/2` — a strictly
+weaker hypothesis than `cond_le`'s, so a strictly lower temperature threshold, `ln 12 / 4 ≈
+0.621` against `ln 16 / 4 ≈ 0.693` — the same conditional probability is at most
+`44 (6 e^{-4β})³`, which `SeriesBound.six_cube_le_eight_cube` shows is the smaller bound.
+
+The entire gain is one hypothesis that was being discarded: the contours counted are
+**cycles**, and a cycle cannot immediately reverse (`WalkCount` §1b, `ERRATUM 126`). -/
+theorem cond_le_six (hn : 0 < n) {β : ℝ} (hβ : 6 * Real.exp (-(4 * β)) ≤ 1 / 2) (x : Site n) :
+    (∑ σ ∈ (Finset.univ : Finset (Config n)).filter
+        (fun σ => PlusBoundary σ ∧ σ x = false), Real.exp (-β * isingH n σ)) /
+      (∑ σ ∈ (Finset.univ : Finset (Config n)).filter (fun σ => PlusBoundary σ),
+        Real.exp (-β * isingH n σ))
+      ≤ 44 * (6 * Real.exp (-(4 * β))) ^ 3 := by
+  classical
+  have hrhs : (0 : ℝ) ≤ 44 * (6 * Real.exp (-(4 * β))) ^ 3 := by positivity
+  by_cases hb : isBoundary x = true
+  · rw [down_empty_of_boundary hb, Finset.sum_empty, zero_div]
+    exact hrhs
+  · have hi : x.1.val + 1 < n := by
+      have := x.1.isLt
+      by_contra hc
+      exact hb (by simp only [isBoundary, decide_eq_true_eq]; omega)
+    have hj : x.2.val + 1 < n := by
+      have := x.2.isLt
+      by_contra hc
+      exact hb (by simp only [isBoundary, decide_eq_true_eq]; omega)
+    exact le_trans (peierls_conditional hn β hi hj)
+      (le_trans (plusFamily_sum_le_three _ β) (sum_le_cube_six β hβ _))
+
 /-! ## 2. The magnetisation, with the threshold written down
 
 `PlusMagnetisation.magnetisation_ge`'s argument, with the explicit bound of §1 in place of an
