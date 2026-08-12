@@ -77,6 +77,30 @@ the containment is strict. The three conditions line up as
 
 with the first inclusion strict by `bipGraph` and the second by `crossGraph`.
 
+## §4 — and then the criterion pays a second time: the coupling in closed form
+
+`PROOF_STRATEGY` §3 says to retry the next rung before banking the last, and the block structure
+carries more than a yes/no. On a block cut the coupling is not merely nonpositive, it is
+
+    crossForm w  =  − ∑ over blocks of (block sum of w)²
+
+(`crossForm_eq_neg_sum_cls_sq`) — an **identity**, with `hcross` as the trivial reading of it.
+Two things follow that the inequality could not give:
+
+* **the coupling's kernel is combinatorial.** `crossForm_eq_zero_iff`: the form vanishes at `w`
+  exactly when every block sum of `w` vanishes. One linear condition per block, and the
+  degeneracy of the coupling is therefore the number of blocks. `crossForm_neg_iff` is the
+  contrapositive, and it is what a strictness argument wants.
+* **an existing estate theorem is strengthened.** `IndefiniteCoupling.hcross_bip` says the
+  coupling on `K₂,₂` is `≤ 0`. It is `−(w 0 + w 1)²` exactly (`crossForm_bipGraph_exact`), and it
+  vanishes precisely on the antisymmetric vectors of the half (`crossForm_bipGraph_zero_iff`) —
+  the one block of size two that `isCrossBlock_bipGraph` found, read as a linear condition.
+
+The `K₂,₂` value is proved **twice by different routes** and they agree:
+`crossForm_eq_neg_sq_of_complete` derives it straight from
+`GraphMirrorReflection.crossForm_eq_neg_adj` with no block machinery at all, which is a check on
+the closed form rather than a corollary of it.
+
 ## What this does NOT do
 
 It says nothing new about reflection positivity **off** `GreenExpansion` §9's class.
@@ -373,6 +397,11 @@ theorem isCrossBlock_of_cross_diag (hdiag : ∀ p ∈ H, ∀ q ∈ H, G.Adj p (�
     subst h2
     exact hadj
 
+/-- Every pair of half-sites of `K₂,₂` is cross-adjacent, so its cut is a single block of size
+two. Used by §4 to compute the coupling there exactly. -/
+theorem bipGraph_cross_all : ∀ p ∈ IndefiniteCoupling.Hh, ∀ q ∈ IndefiniteCoupling.Hh,
+    IndefiniteCoupling.bipGraph.Adj p (IndefiniteCoupling.rho q) := by decide
+
 /-- **THE CONTAINMENT IS STRICT.** `bipGraph` satisfies the criterion — one block of size two,
 not singletons — while `IndefiniteCoupling.cross_not_diagonal` says its cut is not diagonal. So
 the criterion is genuinely weaker than the estate's original sufficient condition, and
@@ -410,5 +439,133 @@ theorem criterion_separates_the_two_examples :
   ⟨isCrossBlock_bipGraph, not_isCrossBlock_crossGraph⟩
 
 end Examples
+
+/-! ## 4. On a block cut the coupling is not merely nonpositive — it is minus a sum of squares -/
+
+section Exact
+
+open GreenExpansion GraphReflection GraphMirrorReflection CrossFormMatrix CrossPosSemidef
+
+variable [Fintype V] [DecidableEq V] {C : Matrix V V ℝ} {H : Finset V}
+
+omit [DecidableEq V] in
+/-- The class indicator, summed against a vector, is the sum over the class. -/
+theorem sum_indicator_eq_sum_cls (hB : IsBlockOnes C H) {k : V} (c : V → ℝ) :
+    (∑ i, c i * (if C k i = 1 then (1 : ℝ) else 0)) = ∑ i ∈ cls C H k, c i := by
+  classical
+  have step : ∀ i : V, c i * (if C k i = 1 then (1 : ℝ) else 0) = if C k i = 1 then c i else 0 :=
+    fun i => by by_cases hki : C k i = 1 <;> simp [hki]
+  rw [Finset.sum_congr rfl fun i _ => step i, ← Finset.sum_filter]
+  refine Finset.sum_congr ?_ fun _ _ => rfl
+  ext i
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and, cls]
+  exact ⟨fun hki => ⟨(mem_blk_of_isBlockOnes hB hki).2, hki⟩, fun hi => hi.2⟩
+
+omit [DecidableEq V] in
+/-- **THE FORM IN CLOSED FORM.** A block-ones matrix's quadratic form is the sum, over classes, of
+the squared class sum — each class weighted by the reciprocal of its size because the outer sum
+runs over members rather than over classes. -/
+theorem form_eq_sum_cls_sq (hB : IsBlockOnes C H) (c : V → ℝ) :
+    ∑ i, ∑ j, c i * c j * C i j
+      = ∑ k ∈ blk C H, ((cls C H k).card : ℝ)⁻¹ * (∑ i ∈ cls C H k, c i) ^ 2 := by
+  rw [form_eq_sum_sq hB.symm (fun i _ j _ l _ hij hjl => hB.trans i j l hij hjl)
+    hB.entries (fun _ _ hij => mem_blk_of_isBlockOnes hB hij) c]
+  exact Finset.sum_congr rfl fun k _ => by rw [sum_indicator_eq_sum_cls hB c]
+
+omit [DecidableEq V] in
+/-- **AND SO THE FORM VANISHES EXACTLY ON THE VECTORS WHOSE CLASS SUMS ALL VANISH.** The
+degeneracy is combinatorial: one linear condition per class, and nothing else. -/
+theorem form_eq_zero_iff (hB : IsBlockOnes C H) (c : V → ℝ) :
+    (∑ i, ∑ j, c i * c j * C i j) = 0 ↔ ∀ k ∈ blk C H, (∑ i ∈ cls C H k, c i) = 0 := by
+  have hnn : ∀ k ∈ blk C H,
+      0 ≤ ((cls C H k).card : ℝ)⁻¹ * (∑ i ∈ cls C H k, c i) ^ 2 := by
+    intro k _
+    have : (0 : ℝ) ≤ ((cls C H k).card : ℝ)⁻¹ := by positivity
+    positivity
+  rw [form_eq_sum_cls_sq hB c, Finset.sum_eq_zero_iff_of_nonneg hnn]
+  refine ⟨fun h k hk => ?_, fun h k hk => by rw [h k hk]; ring⟩
+  have hpos : (0 : ℝ) < ((cls C H k).card : ℝ)⁻¹ :=
+    inv_pos.mpr (Nat.cast_pos.mpr (cls_card_pos hk))
+  have := h k hk
+  rcases mul_eq_zero.mp this with hc | hs
+  · exact absurd hc hpos.ne'
+  · exact pow_eq_zero_iff (n := 2) (by norm_num) |>.mp hs
+
+end Exact
+
+section ExactGraph
+
+open GreenExpansion GraphReflection GraphMirrorReflection CrossFormMatrix CrossPosSemidef
+
+variable [Fintype V] [DecidableEq V]
+variable {G : SimpleGraph V} [DecidableRel G.Adj] {m : ℝ} {θ : V ≃ V} {H Mir : Finset V}
+
+/-- **THE COUPLING FORM ON A BLOCK CUT, EXACTLY.** `hcross` says the form is `≤ 0`; on a block cut
+it is **minus a sum of squares**, one per block, and the theorem is an identity rather than an
+inequality. Everything below is read off it. -/
+theorem crossForm_eq_neg_sum_cls_sq (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ)
+    (hC : IsCrossBlock G θ H) (m : ℝ) (w : V → ℝ) :
+    crossForm G m θ H w
+      = - ∑ k ∈ blk (crossMatrix G θ H) H,
+            ((cls (crossMatrix G θ H) H k).card : ℝ)⁻¹
+              * (∑ i ∈ cls (crossMatrix G θ H) H k, w i) ^ 2 := by
+  have hB : IsBlockOnes (crossMatrix G θ H) H := (isBlockOnes_iff_isCrossBlock h).mpr hC
+  have hforms : ∑ i, ∑ j, w i * w j * crossMatrix G θ H i j = - crossForm G m θ H w := by
+    rw [form_eq_dotProduct w, dotProduct_crossMatrix hM m w]
+  have hsum := form_eq_sum_cls_sq hB w
+  linarith
+
+/-- **THE COUPLING'S KERNEL IS COMBINATORIAL.** On a block cut the coupling form vanishes at `w`
+exactly when every block sum of `w` vanishes — one linear condition per block. `hcross` and its
+degeneracy are then the same statement read twice. -/
+theorem crossForm_eq_zero_iff (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ)
+    (hC : IsCrossBlock G θ H) (m : ℝ) (w : V → ℝ) :
+    crossForm G m θ H w = 0 ↔
+      ∀ k ∈ blk (crossMatrix G θ H) H, (∑ i ∈ cls (crossMatrix G θ H) H k, w i) = 0 := by
+  have hB : IsBlockOnes (crossMatrix G θ H) H := (isBlockOnes_iff_isCrossBlock h).mpr hC
+  rw [crossForm_eq_neg_sum_cls_sq hM h hC m w, neg_eq_zero, ← form_eq_sum_cls_sq hB w]
+  exact form_eq_zero_iff hB w
+
+/-- And so the coupling is strictly negative exactly off that subspace. -/
+theorem crossForm_neg_iff (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ)
+    (hC : IsCrossBlock G θ H) (m : ℝ) (w : V → ℝ) :
+    crossForm G m θ H w < 0 ↔
+      ∃ k ∈ blk (crossMatrix G θ H) H, (∑ i ∈ cls (crossMatrix G θ H) H k, w i) ≠ 0 := by
+  have hle : crossForm G m θ H w ≤ 0 := (hcross_iff_isCrossBlock hM h m).mpr hC w
+  rw [lt_iff_le_and_ne, and_iff_right hle, Ne, crossForm_eq_zero_iff hM h hC m w]
+  simp
+
+/-- **THE ONE-BLOCK CASE, WITHOUT ANY OF THE MACHINERY.** When every pair of half-sites is
+cross-adjacent the cut is a single block and the coupling is exactly minus the squared total. Proved
+straight from `crossForm_eq_neg_adj`, so it is an independent check on the closed form above rather
+than a corollary of it. -/
+theorem crossForm_eq_neg_sq_of_complete (hM : IsMirrorHalf θ H Mir) (m : ℝ)
+    (hall : ∀ p ∈ H, ∀ q ∈ H, G.Adj p (θ q)) (w : V → ℝ) :
+    crossForm G m θ H w = - (∑ p ∈ H, w p) ^ 2 := by
+  classical
+  rw [crossForm_eq_neg_adj hM m w, neg_inj, sq, Finset.sum_mul_sum]
+  exact Finset.sum_congr rfl fun p hp => Finset.sum_congr rfl fun q hq => by
+    rw [if_pos (hall p hp q hq), mul_one]
+
+/-- **THE CROSS-CHECK, ON THE ESTATE'S OWN WITNESS.** `IndefiniteCoupling.hcross_bip` says the
+coupling on `K₂,₂` is `≤ 0`. It is `−(w 0 + w 1)²` — the same fact with the slack removed, and the
+single block of size two that `isCrossBlock_bipGraph` found is exactly the `w 0 + w 1`. -/
+theorem crossForm_bipGraph_exact (m : ℝ) (w : Fin 4 → ℝ) :
+    crossForm IndefiniteCoupling.bipGraph m IndefiniteCoupling.rho IndefiniteCoupling.Hh w
+      = - (w 0 + w 1) ^ 2 := by
+  rw [crossForm_eq_neg_sq_of_complete IndefiniteCoupling.isMirrorHalf_Hh m bipGraph_cross_all w,
+    show IndefiniteCoupling.Hh = ({0, 1} : Finset (Fin 4)) from rfl]
+  norm_num
+
+/-- **AND THE COUPLING ON `K₂,₂` IS DEGENERATE, WITH THE DEGENERACY NAMED.** It vanishes on exactly
+the antisymmetric vectors of the half and is strictly negative on every other. That is one linear
+condition, which is one block. -/
+theorem crossForm_bipGraph_zero_iff (m : ℝ) (w : Fin 4 → ℝ) :
+    crossForm IndefiniteCoupling.bipGraph m IndefiniteCoupling.rho IndefiniteCoupling.Hh w = 0
+      ↔ w 0 + w 1 = 0 := by
+  rw [crossForm_bipGraph_exact m w, neg_eq_zero]
+  exact pow_eq_zero_iff (n := 2) (by norm_num)
+
+end ExactGraph
 
 end CrossBlockStructure
