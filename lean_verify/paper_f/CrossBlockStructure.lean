@@ -256,9 +256,28 @@ direction `SmallSideStrict.pullback_conditions` did not need, and
 a transported statement must.
 
 `all_three_thresholds` states the box, the torus and the `def` in one theorem. That is the
-deliverable of §§8–11: **three sharpness thresholds, previously eleven theorems across eight files
-by six mechanisms, read off one condition about edges** — and the torus's two extra sides explained
-by a single bond.
+deliverable of §§8–11: **three sharpness thresholds, read off one condition about edges**, with the
+torus's two extra sides explained by a single bond.
+
+**The fifteen theorems this replaces, counted rather than estimated**, across eight files:
+
+* torus — `TorusNotStrict.not_strict_torus`, `OddNotStrictInstances.not_strict_torus_odd`,
+  `SmallSideStrict.reflectionPositive_torus_one_strict` and `_two_strict`,
+  `MirrorStrict.reflectionPositive_torus_three_strict` and `_four_strict`;
+* box — `BoxNotStrict.not_strict`, `BoxOddNotStrict.not_strict_box_odd`,
+  `StrictCriterion.reflectionPositive_box_one_strict` and `_box_two_strict`,
+  `SmallSideStrict.reflectionPositive_box_one_strict'`;
+* the estate's `def` — `LatticeNotStrict.not_strict_lattice`,
+  `OddNotStrictInstances.not_strict_lattice_odd`,
+  `SmallSideStrict.reflectionPositive_lattice_one_strict` and `_two_strict`.
+
+**Every one of the fifteen was checked to exist under that name before this list was written.**
+None of them is deleted or weakened; what §§8–11 add is that all fifteen are instances of one
+biconditional, and that the two thresholds differ for a reason the statement exhibits.
+
+**The count in `fceefcc`'s commit message describes this list, and the edit that writes it here
+failed silently in that commit** — the message was accurate about the work and wrong about the
+artefact for one commit. `ERRATUM 151`.
 
 ## What this does NOT do
 
