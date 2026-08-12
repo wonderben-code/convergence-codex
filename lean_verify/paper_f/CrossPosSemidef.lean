@@ -25,6 +25,18 @@ and it contains `K₂,₂`.
 than a failure to find a counterexample.** The address was correct — a counterexample had to use
 the slack — and the answer is that on this class nothing can.
 
+## And a general consequence, with no class hypothesis at all
+
+`hcross_iff_zeroSum`: **the coupling hypothesis only ever needs checking on vectors that sum to
+zero on the half.** No regularity, no condition on `A²`, no mass hypothesis. The quantifier drops
+from the whole space to a subspace of codimension one, on every graph with a mirror reflection,
+and the reason is exactly the `0/1` theorem below.
+
+The reduction is not vacuous and the estate's own witness shows it: `IndefiniteCoupling.wpos =
+![1, −1, 0, 0]` is supported on the half, **already sums to zero there**, and the coupling form is
+`+2` on it (`crossGraph_zeroSum_test_fails`). So on the one graph known to fail `hcross`, the
+reduction costs nothing — the refuting vector was in the smaller test space all along.
+
 ## The three steps, and where the `0/1` hypothesis is spent
 
 `e_p − e_q` has zero sum, so `C p p − 2 C p q + C q q ≥ 0`. **With entries in `{0,1}` that says
@@ -418,6 +430,77 @@ theorem zeroSumNonneg_of_reflectionPositive (hd : G.IsRegularOfDegree d)
   refine le_trans this (le_of_eq ?_)
   refine Finset.sum_congr rfl fun p hp => Finset.sum_congr rfl fun q hq => ?_
   rw [crossMatrix_apply_of_mem hp hq, crossAdj]
+
+/-- The two ways of writing the same hypothesis: the coupling form is nonpositive on the
+sum-zero vectors of the half exactly when the cross matrix is nonnegative on them. -/
+theorem zeroSumNonneg_iff_crossForm (hM : IsMirrorHalf θ H Mir) (m : ℝ) :
+    ZeroSumNonneg (crossMatrix G θ H) H ↔
+      ∀ c : V → ℝ, (∀ i, i ∉ H → c i = 0) → (∑ i ∈ H, c i) = 0 →
+        crossForm G m θ H c ≤ 0 := by
+  have hconv : ∀ c : V → ℝ,
+      ∑ p ∈ H, ∑ q ∈ H, c p * c q * crossMatrix G θ H p q
+        = ∑ p ∈ H, ∑ q ∈ H, c p * c q * (if G.Adj p (θ q) then 1 else 0) :=
+    fun c => Finset.sum_congr rfl fun p hp => Finset.sum_congr rfl fun q hq => by
+      rw [crossMatrix_apply_of_mem hp hq, crossAdj]
+  constructor
+  · intro hz c hcs hsum
+    have := hz c hcs hsum
+    rw [hconv c] at this
+    rw [crossForm_eq_neg_adj hM m c]
+    linarith
+  · intro hc c hcs hsum
+    have := hc c hcs hsum
+    rw [crossForm_eq_neg_adj hM m c] at this
+    rw [hconv c]
+    linarith
+
+/-- **THE COUPLING HYPOTHESIS ONLY EVER NEEDS CHECKING ON SUM-ZERO VECTORS.** No regularity, no
+condition on `A²`, no mass hypothesis — `crossForm` does not depend on the mass anyway. The
+quantifier drops from the whole space to a subspace of codimension one, and the reason is that a
+cross matrix has entries in `{0,1}`: `posSemidef_of_zeroSum` is exactly this statement about
+matrices, and `ERRATUM 144`'s counterexample shows it would be false for merely nonnegative
+entries.
+
+This is what made the converse work on §9's class, but it is stronger than that use of it and
+stands on its own. -/
+theorem hcross_of_zeroSum (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ) (m : ℝ)
+    (hz : ∀ c : V → ℝ, (∀ i, i ∉ H → c i = 0) → (∑ i ∈ H, c i) = 0 →
+      crossForm G m θ H c ≤ 0) (w : V → ℝ) :
+    crossForm G m θ H w ≤ 0 := by
+  have hzs : ZeroSumNonneg (crossMatrix G θ H) H := (zeroSumNonneg_iff_crossForm hM m).mpr hz
+  have hpsd := posSemidef_of_zeroSum (C := crossMatrix G θ H) (H := H)
+    crossMatrix_entries (crossMatrix_symm h) (fun i j hij => crossMatrix_support hij) hzs w
+  rw [form_eq_dotProduct w, dotProduct_crossMatrix hM m w] at hpsd
+  linarith
+
+/-- **AND SO THE TWO TESTS ARE THE SAME TEST**, on every graph with a mirror reflection. -/
+theorem hcross_iff_zeroSum (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ) (m : ℝ) :
+    (∀ w : V → ℝ, crossForm G m θ H w ≤ 0) ↔
+      ∀ c : V → ℝ, (∀ i, i ∉ H → c i = 0) → (∑ i ∈ H, c i) = 0 →
+        crossForm G m θ H c ≤ 0 :=
+  ⟨fun hc c _ _ => hc c, fun hz => hcross_of_zeroSum hM h m hz⟩
+
+/-- **THE REDUCED TEST REALLY CAN FAIL, AND THE ESTATE'S OWN WITNESS ALREADY LIES IN IT.**
+`IndefiniteCoupling.wpos = ![1, -1, 0, 0]` is supported on the half AND sums to zero there, and
+the coupling form is `+2` on it. So the codimension-one test is not vacuously satisfied — and on
+the one graph the estate knows fails `hcross`, the reduction costs nothing: the refuting vector
+was already sum-zero. Checked rather than assumed. -/
+theorem crossGraph_zeroSum_test_fails (m : ℝ) :
+    (∀ i, i ∉ IndefiniteCoupling.Hh → IndefiniteCoupling.wpos i = 0)
+      ∧ (∑ i ∈ IndefiniteCoupling.Hh, IndefiniteCoupling.wpos i) = 0
+      ∧ 0 < crossForm IndefiniteCoupling.crossGraph m IndefiniteCoupling.rho
+              IndefiniteCoupling.Hh IndefiniteCoupling.wpos := by
+  refine ⟨?_, ?_, ?_⟩
+  · intro i hi
+    fin_cases i
+    · exact absurd (by decide : (0 : Fin 4) ∈ IndefiniteCoupling.Hh) hi
+    · exact absurd (by decide : (1 : Fin 4) ∈ IndefiniteCoupling.Hh) hi
+    · norm_num [IndefiniteCoupling.wpos]
+    · norm_num [IndefiniteCoupling.wpos]
+  · rw [show IndefiniteCoupling.Hh = ({0, 1} : Finset (Fin 4)) from rfl]
+    norm_num [IndefiniteCoupling.wpos]
+  · rw [IndefiniteCoupling.crossForm_pos m]
+    norm_num
 
 /-- **THE WALL'S CONVERSE, ON THE WHOLE OF §9's CLASS.** Reflection positivity implies the
 coupling hypothesis. Together with `GreenExpansion.reflectionPositive_iff_slack` and
