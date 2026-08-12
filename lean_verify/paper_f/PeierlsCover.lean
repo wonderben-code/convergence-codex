@@ -26,6 +26,8 @@ the rotated walk cuts out the same graph and therefore the same bonds — and
 * **`peierls_family_bound`** — hence the weight of the **`+`-boundary** configurations with
   `x` down, over the **full** partition function, is at most `∑_{γ ∈ S} exp (-4β |γ|)`,
   where `S` is the union over `L ≤ card (Plaq n)` of the family.
+* **`peierls_shape_count`** (§3b) — the same covering said in the words the `3^L` watchlist
+  item uses: the contour is drawn from at most `(2L+3)² · 2 · 3^L` candidates.
 
 `S` is a finite set built without reference to any configuration, and
 `card_peierlsFamily_le` bounds it by `∑_{L} (2L + 3) ^ 2 * 4 ^ L`.
@@ -176,6 +178,35 @@ theorem cover_cycCandidates {σ : Config n} (hσ : PlusBoundary σ) (hn : 0 < n)
     have : p.support.tail.length ≤ Fintype.card (Plaq n) := hnodup.length_le_card
     simpa using this
 
+/-! ## 3b. The shape count, in the words the watchlist asked for
+
+`UNLOCK_WATCHLIST`'s `3^L` item names two things. (i) was refuted the day it was written
+(`ERRATUM 111`). (ii) is *"an injection from circuits of length `L` surrounding a site into
+something of size `~3^L`, which is the classic Peierls estimate and is genuine
+combinatorics"*, and the two halves of it have been in this file since 10 August and since
+`2544ba4` respectively — the covering, and the count. **They are stated together here so the
+item has one name to point at rather than a composition a reader has to perform.**
+
+The polynomial factor `(2L+3)²` is the choice of where the contour is anchored and is part
+of the classical estimate too; it is what the geometric sum in `SeriesBound` absorbs.
+-/
+
+/-- **THE SHAPE COUNT.** For a `+`-boundary configuration with `x` down there is a length
+`L` and a contour `γ` of that length inside `σ`'s contour, drawn from a set of **at most
+`(2L+3)² · 2 · 3^L`** candidates depending only on `L` and the site. -/
+theorem peierls_shape_count {σ : Config n} (hσ : PlusBoundary σ) (hn : 0 < n) {x : Site n}
+    (hx : σ x = false) :
+    ∃ L : ℕ, ∃ γ ∈ cycCandidates (RayWalk.plaqAt hσ hx) (L + 1) L,
+      γ ⊆ contour σ ∧ L ≤ Fintype.card (Plaq n) ∧
+        (cycCandidates (RayWalk.plaqAt hσ hx) (L + 1) L).card
+          ≤ (2 * L + 3) ^ 2 * (2 * 3 ^ L) := by
+  obtain ⟨L, γ, hγ, hsub, -, hLcard⟩ := cover_cycCandidates hσ hn hx
+  refine ⟨L, γ, hγ, hsub, hLcard, ?_⟩
+  have := card_cycCandidates_le_two_three (RayWalk.plaqAt hσ hx) (L + 1) L
+  calc (cycCandidates (RayWalk.plaqAt hσ hx) (L + 1) L).card
+      ≤ (2 * (L + 1) + 1) ^ 2 * (2 * 3 ^ L) := this
+    _ = (2 * L + 3) ^ 2 * (2 * 3 ^ L) := by ring_nf
+
 /-! ## 4. The family, and the bound over it
 
 Two things the draft of this section got wrong, both fixed by narrowing the statement
@@ -244,34 +275,5 @@ theorem peierls_family_bound (hn : 0 < n) (β : ℝ) {x : Site n}
   refine ⟨γ, Finset.mem_filter.mpr ⟨Finset.mem_biUnion.mpr
     ⟨L, Finset.mem_range.mpr (by omega), ?_⟩, hreal⟩, hsub⟩
   rwa [plaqAt_eq_plaqOf hplus hdown hi hj] at hγ
-
-/-! ## 3b. The shape count, in the words the watchlist asked for
-
-`UNLOCK_WATCHLIST`'s `3^L` item names two things. (i) was refuted the day it was written
-(`ERRATUM 111`). (ii) is *"an injection from circuits of length `L` surrounding a site into
-something of size `~3^L`, which is the classic Peierls estimate and is genuine
-combinatorics"*, and the two halves of it have been in this file since 10 August and since
-`2544ba4` respectively — the covering, and the count. **They are stated together here so the
-item has one name to point at rather than a composition a reader has to perform.**
-
-The polynomial factor `(2L+3)²` is the choice of where the contour is anchored and is part
-of the classical estimate too; it is what the geometric sum in `SeriesBound` absorbs.
--/
-
-/-- **THE SHAPE COUNT.** For a `+`-boundary configuration with `x` down there is a length
-`L` and a contour `γ` of that length inside `σ`'s contour, drawn from a set of **at most
-`(2L+3)² · 2 · 3^L`** candidates depending only on `L` and the site. -/
-theorem peierls_shape_count {σ : Config n} (hσ : PlusBoundary σ) (hn : 0 < n) {x : Site n}
-    (hx : σ x = false) :
-    ∃ L : ℕ, ∃ γ ∈ cycCandidates (RayWalk.plaqAt hσ hx) (L + 1) L,
-      γ ⊆ contour σ ∧ L ≤ Fintype.card (Plaq n) ∧
-        (cycCandidates (RayWalk.plaqAt hσ hx) (L + 1) L).card
-          ≤ (2 * L + 3) ^ 2 * (2 * 3 ^ L) := by
-  obtain ⟨L, γ, hγ, hsub, -, hLcard⟩ := cover_cycCandidates hσ hn hx
-  refine ⟨L, γ, hγ, hsub, hLcard, ?_⟩
-  have := card_cycCandidates_le_two_three (RayWalk.plaqAt hσ hx) (L + 1) L
-  calc (cycCandidates (RayWalk.plaqAt hσ hx) (L + 1) L).card
-      ≤ (2 * (L + 1) + 1) ^ 2 * (2 * 3 ^ L) := this
-    _ = (2 * L + 3) ^ 2 * (2 * 3 ^ L) := by ring_nf
 
 end PeierlsCover
