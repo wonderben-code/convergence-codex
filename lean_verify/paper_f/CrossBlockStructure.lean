@@ -117,6 +117,25 @@ nonzero vector in the reach kernel with all block sums zero refutes strictness.
 half of the condition and nothing here computes it; what changed is that the coupling half is now
 linear.
 
+## §6 — and the item §5 opened is answered on its own named target
+
+§5's watchlist leg said the next question is a graph with a block of size bigger than one, named
+`K₂,₂` as the first target, and reduced it to a two-by-two computation nobody had done. It is done
+here, and the answer is **`K₂,₂` is reflection positive and NOT strictly so**, at every nonzero
+mass — which the estate did not know, `WALLS` W1's sharpness line covering the box, the torus and
+the lattice `def` and nothing else.
+
+The reason is the cleanest possible instance of §5. `bipGraph_massive_mulVec_out`: on this graph
+the operator's row at either mirror site reads `−(v 0 + v 1)`. **So the reach condition and the
+block's linear condition are the same equation**, the two subspaces of §5 coincide rather than
+meeting at `0`, and every sum-zero vector on the half is isotropic
+(`bipGraph_inReachKernel_of_sum_zero`, `bipGraph_supportedIsotropic`, `bipGraph_not_strict`).
+
+The witness is `IndefiniteCoupling.wpos = ![1, −1, 0, 0]` — **the same vector that refutes `hcross`
+on `crossGraph`**, doing the opposite job here. `the_two_graphs_fail_differently` puts the two side
+by side: same reflection, same half, same mass; one is not reflection positive at all, the other is
+and is degenerate.
+
 ## What this does NOT do
 
 It says nothing new about reflection positivity **off** `GreenExpansion` §9's class.
@@ -632,5 +651,88 @@ theorem not_strict_of_reachKernel_block_sums_zero (hM : IsMirrorHalf θ H Mir) (
   exact hne (hz k hk)
 
 end Strict
+
+/-! ## 6. The item §5 opened, answered on its own named target: `K₂,₂` is NOT strict -/
+
+section BipStrict
+
+open GraphReflection GraphMirrorReflection CrossFormMatrix IndefiniteCoupling
+
+/-- On `K₂,₂` every vertex outside the half is joined to both half-sites, so the operator's row
+there reads off the half's total. -/
+theorem bipGraph_massive_mulVec_out (m : ℝ) {v : Fin 4 → ℝ} (hv : ∀ i, i ∉ Hh → v i = 0)
+    {p : Fin 4} (hp : p ∉ Hh) :
+    (GraphLaplacian.massive bipGraph m *ᵥ v) p = - (v 0 + v 1) := by
+  have hv2 : v 2 = 0 := hv 2 (by decide)
+  have hv3 : v 3 = 0 := hv 3 (by decide)
+  have hp23 : p = 2 ∨ p = 3 := by revert hp; revert p; decide
+  rcases hp23 with rfl | rfl
+  · simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_four, GraphLaplacian.massive_apply,
+      hv2, hv3, show ¬ ((2 : Fin 4) = 0) by decide, show ¬ ((2 : Fin 4) = 1) by decide,
+      show ¬ ((2 : Fin 4) = 3) by decide,
+      show bipGraph.Adj 2 0 by decide, show bipGraph.Adj 2 1 by decide,
+      show ¬ bipGraph.Adj 2 2 by decide, show ¬ bipGraph.Adj 2 3 by decide,
+      if_false, if_pos]
+    ring
+  · simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_four, GraphLaplacian.massive_apply,
+      hv2, hv3, show ¬ ((3 : Fin 4) = 0) by decide, show ¬ ((3 : Fin 4) = 1) by decide,
+      show ¬ ((3 : Fin 4) = 2) by decide,
+      show bipGraph.Adj 3 0 by decide, show bipGraph.Adj 3 1 by decide,
+      show ¬ bipGraph.Adj 3 2 by decide, show ¬ bipGraph.Adj 3 3 by decide,
+      if_false, if_pos]
+    ring
+
+/-- **AND SO EVERY SUM-ZERO VECTOR ON THE HALF IS IN THE REACH KERNEL.** On this graph the
+operator's condition off the half and the block's linear condition are the *same* equation, which
+is why the two subspaces of §5 do not meet only at `0`. -/
+theorem bipGraph_inReachKernel_of_sum_zero (m : ℝ) {v : Fin 4 → ℝ} (hv : ∀ i, i ∉ Hh → v i = 0)
+    (h0 : v 0 + v 1 = 0) :
+    StrictBiconditional.InReachKernel bipGraph m Hh (∅ : Finset (Fin 4)) v :=
+  ⟨hv, fun p hp _ => by rw [bipGraph_massive_mulVec_out m hv hp, h0, neg_zero]⟩
+
+/-- `IndefiniteCoupling.wpos = ![1, −1, 0, 0]` is supported on the half and sums to zero there —
+the same vector that refutes `hcross` on `crossGraph`, doing the opposite job here. -/
+theorem wpos_supported : ∀ i, i ∉ Hh → wpos i = 0 := by
+  intro i hi
+  fin_cases i
+  · exact absurd (by decide : (0 : Fin 4) ∈ Hh) hi
+  · exact absurd (by decide : (1 : Fin 4) ∈ Hh) hi
+  · norm_num [wpos]
+  · norm_num [wpos]
+
+/-- **`K₂,₂` IS REFLECTION POSITIVE AND NOT STRICTLY SO**, at every nonzero mass — which the
+estate did not know, and which `WALLS` W1's sharpness line covers for the box, the torus and the
+lattice `def` and for nothing else. The witness is a single block's kernel direction: the cut is
+one block of size two, so `crossForm` vanishes on `w 0 + w 1 = 0` (§4), and on this graph that is
+also exactly the reach condition. -/
+theorem bipGraph_supportedIsotropic (m : ℝ) :
+    StrictBiconditional.SupportedIsotropic bipGraph m rho Hh (∅ : Finset (Fin 4)) := by
+  refine ⟨wpos, ?_, wpos_supported, ?_, (bipGraph_inReachKernel_of_sum_zero m wpos_supported ?_).2⟩
+  · intro hc
+    have : wpos 0 = 0 := by rw [hc]; rfl
+    norm_num [wpos] at this
+  · rw [crossForm_bipGraph_exact m wpos]
+    norm_num [wpos]
+  · norm_num [wpos]
+
+/-- **THE CONCLUSION.** Reflection positivity on `K₂,₂` is degenerate: some nonzero vector on the
+half has reflected form zero, so the inequality is not strict. -/
+theorem bipGraph_not_strict (m : ℝ) (hm : m ≠ 0) :
+    ¬ ∀ c : Fin 4 → ℝ, c ≠ 0 → (∀ p, p ∉ Hh → p ∉ (∅ : Finset (Fin 4)) → c p = 0) →
+        0 < GraphReflection.reflectedForm bipGraph m rho c :=
+  StrictBiconditional.not_strict_of_supportedIsotropic isMirrorHalf_Hh isRefl_rho_bip hm
+    (bipGraph_supportedIsotropic m)
+
+/-- **BOTH FOUR-VERTEX GRAPHS ARE NOW DECIDED, AND THEY FAIL DIFFERENTLY.** `crossGraph` is not
+reflection positive at all (`IndefiniteCoupling.not_reflectionPositive`); `bipGraph` is reflection
+positive but not strictly. Same reflection, same half, same mass. -/
+theorem the_two_graphs_fail_differently (m : ℝ) (hm : m ≠ 0) :
+    ¬ GraphReflection.ReflectionPositive crossGraph m rho Hh
+      ∧ (∀ w : Fin 4 → ℝ, crossForm bipGraph m rho Hh w ≤ 0)
+      ∧ ¬ ∀ c : Fin 4 → ℝ, c ≠ 0 → (∀ p, p ∉ Hh → p ∉ (∅ : Finset (Fin 4)) → c p = 0) →
+            0 < GraphReflection.reflectedForm bipGraph m rho c :=
+  ⟨not_reflectionPositive hm, hcross_bip m, bipGraph_not_strict m hm⟩
+
+end BipStrict
 
 end CrossBlockStructure
