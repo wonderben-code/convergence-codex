@@ -95,6 +95,36 @@ theorem card_cycCandidates_le (P₀ : Plaq n) (r L : ℕ) :
           le_trans Finset.card_image_le (Finset.card_filter_le _ _)
     _ ≤ (2 * r + 1) ^ 2 * 4 ^ L := DualFamily.card_closed_walks_ball_le P₀ r L
 
+/-- **THE SAME COUNT WITH THE TEXTBOOK CONSTANT `3`.** `card_cycCandidates_le` above
+discards the `IsCycle` filter one line before it would pay; this keeps it.
+`ERRATUM 126` is about mis-tracing which count the threshold consumes — it is this one.
+
+**Not yet consumed.** `card_peierlsFamily_le` below still uses the `4 ^ L` version, and
+changing that changes the hypothesis of `SeriesBound.sum_le_cube` and everything above it.
+-/
+theorem card_cycCandidates_le_three (P₀ : Plaq n) (r L : ℕ) :
+    (cycCandidates P₀ r (L + 1)).card ≤ (2 * r + 1) ^ 2 * (4 * 3 ^ L) := by
+  calc (cycCandidates P₀ r (L + 1)).card
+      ≤ ∑ Q ∈ ball P₀ r,
+          ((((fullDual n).finsetWalkLength (L + 1) Q Q).filter fun w => w.IsCycle).image fun w =>
+            sideBonds (w.toSubgraph.spanningCoe : SimpleGraph (Plaq n))).card :=
+        Finset.card_biUnion_le
+    _ ≤ ∑ Q ∈ ball P₀ r,
+          (((fullDual n).finsetWalkLength (L + 1) Q Q).filter fun w => w.IsCycle).card :=
+        Finset.sum_le_sum fun Q _ => Finset.card_image_le
+    _ ≤ (2 * r + 1) ^ 2 * (4 * 3 ^ L) := DualFamily.card_cycles_ball_le P₀ r L
+
+/-- **THE FORM THE DOWNSTREAM SUM WANTS**, with no natural subtraction in it: for any
+positive length, `(2r+1)^2 · 2 · 3 ^ L`. Weaker than `card_cycCandidates_le_three` by the
+factor `4·3^(L-1) ≤ 2·3^L`, and worth the slack because the sum it feeds is indexed by `L`
+and would otherwise carry an `L - 1` in `ℕ`. -/
+theorem card_cycCandidates_le_two_three (P₀ : Plaq n) (r L : ℕ) (hL : 1 ≤ L) :
+    (cycCandidates P₀ r L).card ≤ (2 * r + 1) ^ 2 * (2 * 3 ^ L) := by
+  obtain ⟨M, rfl⟩ : ∃ M, L = M + 1 := ⟨L - 1, by omega⟩
+  refine le_trans (card_cycCandidates_le_three P₀ r M) (Nat.mul_le_mul_left _ ?_)
+  calc 4 * 3 ^ M ≤ 6 * 3 ^ M := Nat.mul_le_mul_right _ (by norm_num)
+    _ = 2 * 3 ^ (M + 1) := by ring
+
 /-! ## 3. The covering -/
 
 /-- **A down site's circuit is in the family.** The rotation is the only move: the

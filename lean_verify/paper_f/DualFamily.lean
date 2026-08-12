@@ -106,6 +106,20 @@ theorem card_closed_walks_ball_le (P : Plaq n) (r L : ℕ) :
     _ = (ball P r).card * 4 ^ L := by rw [Finset.sum_const, smul_eq_mul]
     _ ≤ (2 * r + 1) ^ 2 * 4 ^ L := Nat.mul_le_mul_right _ (card_ball_le P r)
 
+/-- **THE SAME BALL SUM OVER CYCLES, WITH THE TEXTBOOK CONSTANT: `(2r+1)^2 · 4 · 3 ^ L`.**
+`card_closed_walks_ball_le` above throws the cycle hypothesis away and counts every closed
+walk; `SimpleGraph.card_cycles_nb_le` keeps it, and a cycle cannot immediately reverse. -/
+theorem card_cycles_ball_le (P : Plaq n) (r L : ℕ) :
+    ∑ Q ∈ ball P r,
+        (((fullDual n).finsetWalkLength (L + 1) Q Q).filter fun w => w.IsCycle).card
+      ≤ (2 * r + 1) ^ 2 * (4 * 3 ^ L) := by
+  calc ∑ Q ∈ ball P r,
+        (((fullDual n).finsetWalkLength (L + 1) Q Q).filter fun w => w.IsCycle).card
+      ≤ ∑ _Q ∈ ball P r, 4 * 3 ^ L :=
+        Finset.sum_le_sum fun Q _ => SimpleGraph.card_cycles_nb_le degree_le_four L Q
+    _ = (ball P r).card * (4 * 3 ^ L) := by rw [Finset.sum_const, smul_eq_mul]
+    _ ≤ (2 * r + 1) ^ 2 * (4 * 3 ^ L) := Nat.mul_le_mul_right _ (card_ball_le P r)
+
 /-! ## 3. A dual subgraph's bonds do not depend on the configuration
 
 `DualBonds.bonds` filters the contour, so its *definition* mentions `σ`. For a subgraph of
