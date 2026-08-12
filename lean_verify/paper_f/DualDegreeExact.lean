@@ -60,7 +60,8 @@ not `PlusBoundary` **and** has a nonempty dual graph **and** has a nonzero broke
 `cornerDown` supplies the third, the flip supplies the second, and no configuration in this estate
 is known to supply all three. `PlusCondition.contour_xor` makes such a configuration constructible
 in principle — the symmetric difference of a `+` contour with `cornerDown`'s two outward sides —
-and `UNLOCK_WATCHLIST`'s S3b-iii records that leg rather than leaving it implied here.
+and `UNLOCK_WATCHLIST`'s S3b-ii block records that leg, with its own trigger, rather than leaving
+it implied here.
 -/
 
 namespace DualDegreeExact
