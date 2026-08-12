@@ -64,6 +64,33 @@ entries, so the whole remainder is at most `d²/m²` times `(∑_H |c|)²`.
   like `m⁻²`, so if a counterexample exists it is at small mass. **None is exhibited here and none
   is claimed to exist** — what changed is that the search has lost half its range.
 
+## §6 — and at small mass, where the question now lives, the divergence misses its target
+
+`PROOF_STRATEGY` §3's retry. §4 moves the search to small mass; §6 asks what is there, and the
+answer is exact rather than asymptotic.
+
+`GreenExpansion.green_mulVec_one` says every row of `green` sums to `m⁻²`. Subtracting
+`(m²·|V|)⁻¹` times the all-ones matrix therefore leaves a matrix whose rows sum to **zero**
+(`greenHat_row_sum`), and the reflected form splits with no error term at all
+(`reflectedForm_split`):
+
+    reflectedForm c  =  (the hat form at c)  +  (m²·|V|)⁻¹ · (∑ c)².
+
+**All of the `m⁻²` divergence sits on the constant mode and nowhere else.** So on a sum-zero vector
+it is simply absent (`reflectedForm_eq_hat_of_sum_zero`).
+
+**Why that matters here.** `CrossPosSemidef.hcross_iff_zeroSum` says that if the coupling
+hypothesis fails, it fails at a vector supported on the half that **sums to zero there** — hence on
+all of `V`. So (`hcross_failure_is_orthogonal_to_the_slack`):
+
+> **the growing slack that makes small mass the place to look is unavailable at every witness of
+> the failure it would have to excuse.** The slack lives on the constant mode; the failures live
+> orthogonally to it.
+
+Both halves are exact; neither is an estimate. **This does not close the converse** — what remains
+at such a `c` is whether the hat form can be nonnegative while the coupling form is positive, which
+is the wall restated on a subspace of codimension one, with the `m⁻²` gone.
+
 ## Non-vacuity, checked on the estate's own witness — and the general theorem loses
 
 `IndefiniteCoupling.crossGraph` is `1`-regular with `crossForm … wpos = 2` and `∑_H |wpos| = 2`, so
@@ -436,6 +463,99 @@ theorem crossGraph_not_reflectionPositive_of_two_lt {m : ℝ} (hm : m ≠ 0) (hm
 
 end Witness
 
+/-! ## 6. And at small mass, where the question now lives, the divergence misses its target -/
 
+section SmallMass
+
+open GreenExpansion
+
+variable {G : SimpleGraph V} [DecidableRel G.Adj] {m : ℝ} {θ : V ≃ V} {H Mir : Finset V}
+
+/-- The Green function with its constant mode removed. `green`'s row sums are all `m⁻²`
+(`GreenExpansion.green_mulVec_one`), so subtracting `(m²·|V|)⁻¹` times the all-ones matrix leaves
+a matrix that annihilates constants — and carries none of the `m⁻²` divergence. -/
+noncomputable def greenHat (G : SimpleGraph V) [DecidableRel G.Adj] (m : ℝ) : Matrix V V ℝ :=
+  GraphLaplacian.green G m - (m ^ 2 * (Fintype.card V : ℝ))⁻¹ • allOnes V
+
+theorem greenHat_row_sum (hm : m ≠ 0) (hV : 0 < Fintype.card V) (x : V) :
+    ∑ q, greenHat G m x q = 0 := by
+  have hrow : ∑ q, GraphLaplacian.green G m x q = (m ^ 2)⁻¹ := by
+    have hg := congrFun (green_mulVec_one (G := G) (m := m) hm) x
+    rw [Matrix.mulVec, dotProduct] at hg
+    simpa using hg
+  have hVne : ((Fintype.card V : ℝ)) ≠ 0 := Nat.cast_ne_zero.mpr hV.ne'
+  have hm2 : (m : ℝ) ^ 2 ≠ 0 := pow_ne_zero _ hm
+  have hentry : ∀ q : V, greenHat G m x q
+      = GraphLaplacian.green G m x q - (m ^ 2 * (Fintype.card V : ℝ))⁻¹ := by
+    intro q
+    simp only [greenHat, Matrix.sub_apply, Matrix.smul_apply, allOnes, smul_eq_mul, mul_one]
+  rw [Finset.sum_congr rfl fun q _ => hentry q, Finset.sum_sub_distrib, hrow,
+    Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
+  field_simp
+  ring
+
+/-- **THE REFLECTED FORM SPLITS EXACTLY**, on every graph and at every nonzero mass: a part built
+from a matrix whose rows sum to zero, plus the whole of the `m⁻²` divergence, which sits on the
+constant mode and nowhere else. -/
+theorem reflectedForm_split (c : V → ℝ) :
+    GraphReflection.reflectedForm G m θ c
+      = (∑ p, ∑ q, c p * c q * greenHat G m (θ p) q)
+        + (m ^ 2 * (Fintype.card V : ℝ))⁻¹ * (∑ p, c p) ^ 2 := by
+  have hsplit : ∀ p q : V, c p * c q * GraphLaplacian.green G m (θ p) q
+      = c p * c q * greenHat G m (θ p) q
+        + c p * c q * (m ^ 2 * (Fintype.card V : ℝ))⁻¹ := by
+    intro p q
+    simp only [greenHat, Matrix.sub_apply, Matrix.smul_apply, allOnes, smul_eq_mul, mul_one]
+    ring
+  have hconst : ∑ p, ∑ q, c p * c q * (m ^ 2 * (Fintype.card V : ℝ))⁻¹
+      = (m ^ 2 * (Fintype.card V : ℝ))⁻¹ * (∑ p, c p) ^ 2 := by
+    have hrow : ∀ p : V, ∑ q, c p * c q * (m ^ 2 * (Fintype.card V : ℝ))⁻¹
+        = c p * ((∑ q, c q) * (m ^ 2 * (Fintype.card V : ℝ))⁻¹) := by
+      intro p
+      rw [show c p * ((∑ q, c q) * (m ^ 2 * (Fintype.card V : ℝ))⁻¹)
+            = ∑ q, c p * (c q * (m ^ 2 * (Fintype.card V : ℝ))⁻¹) by
+          rw [← Finset.mul_sum, ← Finset.sum_mul]]
+      exact Finset.sum_congr rfl fun q _ => by ring
+    rw [Finset.sum_congr rfl fun p _ => hrow p, ← Finset.sum_mul, sq]
+    ring
+  rw [GraphReflection.reflectedForm,
+    Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => hsplit p q,
+    Finset.sum_congr rfl fun p _ => Finset.sum_add_distrib, Finset.sum_add_distrib, hconst]
+
+/-- **AND SO ON A SUM-ZERO VECTOR THE DIVERGENCE IS SIMPLY ABSENT.** -/
+theorem reflectedForm_eq_hat_of_sum_zero {c : V → ℝ} (h0 : (∑ p, c p) = 0) :
+    GraphReflection.reflectedForm G m θ c = ∑ p, ∑ q, c p * c q * greenHat G m (θ p) q := by
+  rw [reflectedForm_split (θ := θ) c, h0]
+  ring
+
+/-- **THE POINT, AND IT IS WHY THE SMALL-MASS ROUTE IS NARROWER THAN IT LOOKS.** If the coupling
+hypothesis fails then — by `CrossPosSemidef.hcross_iff_zeroSum` — it fails at a vector supported on
+the half that **sums to zero there**, and hence on all of `V`. At such a vector the `m⁻²` term of
+the split above is exactly zero.
+
+So the growing slack that makes small mass the remaining place to look
+(`GreenExpansion.reflectionPositive_iff_slack`, whose slack is `(γ/m²)·(∑_H c)²`) **is unavailable
+at every witness of the failure it would have to excuse.** The slack lives on the constant mode;
+the failures live orthogonally to it. Both facts are exact and neither is an estimate.
+
+**This does not close the converse.** What remains at such a `c` is whether the hat form can be
+nonnegative while the coupling form is positive, and that is a question about `greenHat` with no
+`m⁻²` in it — the wall, restated on a smaller space. -/
+theorem hcross_failure_is_orthogonal_to_the_slack (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ)
+    (m : ℝ)
+    (hfail : ¬ ∀ w : V → ℝ, crossForm G m θ H w ≤ 0) :
+    ∃ c : V → ℝ, (∀ p, p ∉ H → c p = 0) ∧ (∑ p, c p) = 0 ∧ 0 < crossForm G m θ H c
+      ∧ GraphReflection.reflectedForm G m θ c
+          = ∑ p, ∑ q, c p * c q * greenHat G m (θ p) q := by
+  classical
+  rw [CrossPosSemidef.hcross_iff_zeroSum hM h m] at hfail
+  push Not at hfail
+  obtain ⟨c, hcs, hsum, hpos⟩ := hfail
+  have hall : (∑ p, c p) = 0 := by
+    rw [← Finset.sum_subset (Finset.subset_univ H) (fun p _ hp => hcs p hp)]
+    exact hsum
+  exact ⟨c, hcs, hall, hpos, reflectedForm_eq_hat_of_sum_zero hall⟩
+
+end SmallMass
 
 end GreenLargeMass
