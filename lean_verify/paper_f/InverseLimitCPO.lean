@@ -964,4 +964,30 @@ def funLimitOrderIso : (Limit T →𝒄 Limit T) ≃o Limit (funTower T) where
       rwa [fromFunLimit_toFunLimit, fromFunLimit_toFunLimit] at h''
     · exact fun h => toFunLimit_mono T h
 
+/-! ### The shift is an order isomorphism too
+
+`shiftEquiv` was stated as a bare `Equiv` above, which was enough for `Bilimit` as the estate
+states it and **not** enough for the strengthening `WALLS` §W8.0 §8 asks for: a bare equivalence
+composed with an order isomorphism is only a bare equivalence. Both directions here are obviously
+monotone — one is a reindex plus a single `proj`, the other is a reindex — so the gap was that
+nobody had written it down. -/
+
+theorem shiftEquiv_mono : Monotone (shiftEquiv T) := by
+  intro x y h n
+  cases n with
+  | zero => exact (T.step 0).proj.monotone (h 0)
+  | succ n => exact h n
+
+theorem shiftEquiv_symm_mono : Monotone (shiftEquiv T).symm := fun _ _ h n => h (n + 1)
+
+/-- **THE SHIFT IS AN ORDER ISOMORPHISM**, not merely a bijection. -/
+def shiftOrderIso : Limit (shift T) ≃o Limit T where
+  toEquiv := shiftEquiv T
+  map_rel_iff' {x y} := by
+    constructor
+    · intro h
+      have := shiftEquiv_symm_mono T h
+      rwa [Equiv.symm_apply_apply, Equiv.symm_apply_apply] at this
+    · exact fun h => shiftEquiv_mono T h
+
 end InverseLimitCPO

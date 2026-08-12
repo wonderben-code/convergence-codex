@@ -273,4 +273,50 @@ theorem limit_prop_not_discrete :
   obtain ⟨x, y, hle, hne⟩ := exists_lt_limit_prop
   exact fun h => hne (h x y hle)
 
+/-! ## 7. The strengthening `WALLS` §W8.0 §8 asked for
+
+**The wall's own "what this account does not cover" opens with it:** *"Whether `IsDomainReflexive`
+as stated (a bare type equivalence `D ≃ (D →𝒄 D)`) is the right target, or whether an
+order-isomorphism should be demanded — `D∞` gives the stronger statement, so the weaker one being
+unproved is the honest gap, **but a builder would want the stronger**."*
+
+**§5 gave the weaker one and said so.** The obstruction was not deep: `funLimitOrderIso` had
+already upgraded the general equivalence, and what was missing was the same upgrade for
+`shiftEquiv`, whose two directions are a reindex and a reindex-plus-one-projection. With
+`InverseLimitCPO.shiftOrderIso` in place the composition carries the order all the way through.
+
+**`bilimit_orderIso`** is the bilimit as an `≃o`, and **`dInfExists_orderIso`** is the wall's target
+with the order carried across. `bilimit_holds'` derives the estate's `Bilimit` from the stronger
+form, which is the direction that should hold: **the `def` the estate wrote down is a corollary
+here, not the best available.** `Bilimit` and `DInfExists` are left exactly as they were stated —
+weakening or rewriting a target to match what got proved is the one move this campaign does not
+make, and strengthening past it needs no edit to either.
+
+**What is still not claimed.** Nothing here says the order isomorphism is *canonical*, natural in
+`X`, or unique; nor that `Limit (canonical X)` is a domain in any sense stronger than "ω-CPO with a
+non-discrete order". §6's two comparable points remain the whole of what is known about the order.
+-/
+
+/-- **AND THE BILIMIT AS AN ORDER ISOMORPHISM.** -/
+theorem bilimit_orderIso (X : PtCPO.{u}) :
+    Nonempty (Limit (canonical X) ≃o (Limit (canonical X) →𝒄 Limit (canonical X))) := by
+  refine ⟨?_⟩
+  have e₁ : (Limit (canonical X) →𝒄 Limit (canonical X)) ≃o Limit (funTower (canonical X)) :=
+    funLimitOrderIso (canonical X)
+  have e₂ : Limit (funTower (canonical X)) ≃o Limit (canonical X) := by
+    rw [funTower_canonical]
+    exact shiftOrderIso (canonical X)
+  exact (e₁.trans e₂).symm
+
+/-- And so the bare-equivalence form is a corollary rather than the best available. -/
+theorem bilimit_holds' : Bilimit.{u} :=
+  fun X => (bilimit_orderIso X).map (fun e => e.toEquiv)
+
+/-- **AND THE WALL'S TARGET IN ITS STRONGER FORM.** `ReflexiveDomainObstruction.DInfExists` asks
+for a bare type equivalence; this is the same witness with the order carried across. -/
+theorem dInfExists_orderIso :
+    ∃ (D : Type) (_ : OmegaCompletePartialOrder D), ¬ Subsingleton D ∧ Nonempty (D ≃o (D →𝒄 D)) :=
+  ⟨Limit (canonical propPt), inferInstance,
+    not_subsingleton_limit propPt not_subsingleton_prop, bilimit_orderIso propPt⟩
+
 end CanonicalTower
