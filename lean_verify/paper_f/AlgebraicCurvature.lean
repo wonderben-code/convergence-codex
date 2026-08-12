@@ -57,6 +57,14 @@ wall exist only to stop a reader inferring otherwise from the names `SpectralAct
 > **`ricciG`, `scalG`, `ricciG_symm`** (§9) — the orthonormal frame comes off. The two traces
 > contract against an **arbitrary** metric and the symmetry of the Ricci trace needs only that the
 > metric is symmetric; `ricciG_delta` and `scalG_delta` recover §2 as the `δ` case.
+>
+> **`traces_independent`, `traces_dependent_two`** (§11) — the small cases of W5's Lovelock item,
+> read rather than guessed. The two maps that item names, `R ↦ Ric` and `R ↦ scal · δ`, are
+> **linearly independent from dimension three up and proportional at dimension two**, so they are a
+> basis of their span only for `n ≥ 3`. The separating witness is `knSquare (projOff k)`, whose
+> Ricci trace is `(n−2)` times a *projector*; `isAlgCurv_knSquare` builds it by removing `δ` from
+> §3's witness, and `knSquare_delta` is the `rfl` that keeps `constCurv` as the special case.
+> **The group action is not written down and the spanning half of the classification is not begun.**
 
 ## Why components rather than multilinear maps
 
@@ -166,12 +174,19 @@ def delta (a b : Fin n) : ℝ := if a = b then 1 else 0
 theorem delta_symm (a b : Fin n) : delta a b = delta b a := by
   simp only [delta]; by_cases h : a = b <;> simp [h, eq_comm]
 
-/-- Contracting two deltas over a shared index leaves one. -/
-theorem sum_delta_mul (b c : Fin n) : ∑ a, delta a c * delta b a = delta b c := by
+/-- **A delta under a sum is an evaluation:** `∑ₐ δ_{ac} f a = f c`, for an arbitrary `f`. Stated
+in this generality because §11 contracts a delta against something that is not another delta; the
+next lemma, which is all §§3 and 9 need, is its `f = δ_{b·}` case and is now that case rather than
+a second proof of the same three-line argument. -/
+theorem sum_delta_left (c : Fin n) (f : Fin n → ℝ) : ∑ a, delta a c * f a = f c := by
   rw [Finset.sum_eq_single c]
   · simp [delta_self]
   · intro x _ hx; simp [delta, hx]
   · intro hc; exact absurd (Finset.mem_univ c) hc
+
+/-- Contracting two deltas over a shared index leaves one. -/
+theorem sum_delta_mul (b c : Fin n) : ∑ a, delta a c * delta b a = delta b c :=
+  sum_delta_left c fun a => delta b a
 
 /-- **The constant-curvature tensor**, `δ_{ad} δ_{bc} − δ_{ac} δ_{bd}`. -/
 def constCurv (n : ℕ) (a b c d : Fin n) : ℝ := delta a d * delta b c - delta a c * delta b d
@@ -732,10 +747,234 @@ theorem antisymm_left_not_implied :
   rw [cw_diag_ne_zero] at this
   exact one_ne_zero this
 
+/-! ## 11. The Lovelock shadow: its two candidate maps, and the dimension where they part
+
+`WALLS` §W5.0 §6 item 4 names the algebraic content of Lovelock's theorem — that the
+`O(n)`-equivariant linear maps from algebraic curvature tensors to symmetric 2-tensors are spanned
+by `R ↦ Ric` and `R ↦ scal · δ` — and then **refuses to write it as a `def`**, in these words:
+
+> `ERRATUM 108` refuted a gap object of this project that nobody had tried to falsify, and naming
+> this one before its small cases have been read would repeat that.
+
+This section reads the small cases, and it still does not name the object. The group action is not
+written down and no Schur-type argument is attempted. What is settled here is the half of "these
+two span" that needs no invariant theory at all: **whether the two named maps are independent of
+each other**, dimension by dimension.
+
+**They are not always.** At `n = 2` they are proportional — `ricci_eq_half_scal_two`, which is §8's
+`einstein_eq_zero_two` read as a statement about the maps rather than about a tensor — so the span
+of the pair is one-dimensional there and the pair is not a basis of it. **From `n = 3` up they are
+independent** (`traces_independent`), and what separates them is a curvature tensor whose Ricci
+trace is a *projector* rather than a multiple of the metric.
+
+That witness is `constCurv` with the metric replaced by a rank-`(n−1)` projector, which needs §3's
+witness lemmas proved for an arbitrary symmetric form rather than for `δ`. So the section opens by
+removing that restriction: **`isAlgCurv_knSquare`** says the Kulkarni–Nomizu square `h_{ad}h_{bc} −
+h_{ac}h_{bd}` of *any* symmetric `h` is an algebraic curvature tensor, and `knSquare_delta` is the
+`rfl` recording that §3's `constCurv` is its `h = δ` case. The proof in §3 already used nothing
+about `δ` beyond `delta_symm`; this is that observation cashed rather than noticed.
+
+**What this does and does not do to the wall's sentence.** The sentence says *spanned by*, and a
+span is allowed to be smaller than the number of vectors offered, so **nothing here refutes it**.
+What is refuted is the reading — natural, and the reading a premature `def` would have frozen —
+that the two maps are a *basis* in every dimension. That reading is false at `n = 2`. The other
+half of item 4, that nothing outside their span is equivariant, is the invariant theory, and it is
+**not begun here**: no group, no action, no averaging.
+
+**Still no `a₂`, still no manifold.** Everything below is a four-index array of reals. -/
+
+section LovelockShadow
+
+variable {h : Fin n → Fin n → ℝ}
+
+/-- **The Kulkarni–Nomizu square of a form**, `h_{ad} h_{bc} − h_{ac} h_{bd}`. §3's `constCurv` is
+its `h = δ` case, definitionally — see `knSquare_delta`. -/
+def knSquare (h : Fin n → Fin n → ℝ) (a b c d : Fin n) : ℝ := h a d * h b c - h a c * h b d
+
+/-- `constCurv` **is** the Kulkarni–Nomizu square of the metric, and this is `rfl` rather than a
+resemblance, so §3's witness is genuinely the special case and not a parallel construction. -/
+theorem knSquare_delta (n : ℕ) : knSquare (delta : Fin n → Fin n → ℝ) = constCurv n := rfl
+
+/-- **AND IT IS AN ALGEBRAIC CURVATURE TENSOR FOR EVERY SYMMETRIC `h`.** One restrictive hypothesis
+removed from `isAlgCurv_constCurv`: that proof used no property of `δ` except `delta_symm`, and
+symmetry of `h` is all that is asked here. No positivity, no non-degeneracy. -/
+theorem isAlgCurv_knSquare (hs : ∀ a b, h a b = h b a) : IsAlgCurv (knSquare h) where
+  antisymm_left a b c d := by simp only [knSquare]; ring
+  antisymm_right a b c d := by simp only [knSquare]; ring
+  pair_symm a b c d := by
+    simp only [knSquare]
+    rw [hs c b, hs d a, hs c a, hs d b]; ring
+  bianchi a b c d := by
+    simp only [knSquare]
+    rw [hs c a, hs b a, hs c b]; ring
+
+/-- **ITS RICCI TRACE IS `(tr h) · h − h²`.** With `h = δ` this is `n·δ − δ = (n−1)δ`, which is
+`ricci_constCurv`; with `h` a projector, below, the two terms have different coefficients and the
+trace comes out proportional to `h` rather than to `δ`. That difference is the whole of §11. -/
+theorem ricci_knSquare (h : Fin n → Fin n → ℝ) (b c : Fin n) :
+    ricci (knSquare h) b c = (∑ a, h a a) * h b c - ∑ a, h a c * h b a := by
+  simp only [ricci, knSquare]
+  rw [Finset.sum_sub_distrib, ← Finset.sum_mul]
+
+/-! ### The projector, and the tensor built from it -/
+
+/-- **The metric with one diagonal entry switched off**: `δ` minus the rank-one projector onto the
+`k` axis, i.e. the orthogonal projector onto the hyperplane `x_k = 0`. Its trace is `n − 1` rather
+than `n`, it is idempotent, and it is **not** a multiple of `δ` as soon as there is a coordinate
+besides `k` — which is what makes it separate the two maps. -/
+def projOff (k a b : Fin n) : ℝ := delta a b - delta a k * delta b k
+
+theorem projOff_symm (k : Fin n) : ∀ a b, projOff k a b = projOff k b a := by
+  intro a b
+  simp only [projOff]
+  rw [delta_symm a b]; ring
+
+/-- The switched-off coordinate is annihilated: `P_{bk} = 0` for every `b`. -/
+@[simp] theorem projOff_right_eq_zero (k b : Fin n) : projOff k b k = 0 := by
+  simp [projOff]
+
+theorem projOff_diag_eq_zero (k : Fin n) : projOff k k k = 0 := projOff_right_eq_zero k k
+
+theorem projOff_diag_eq_one {k a : Fin n} (hak : a ≠ k) : projOff k a a = 1 := by
+  simp [projOff, delta, hak]
+
+/-- **ITS TRACE IS `n − 1`.** -/
+theorem sum_projOff_diag (k : Fin n) : ∑ a, projOff k a a = (n : ℝ) - 1 := by
+  have hpt : ∀ a : Fin n, projOff k a a = 1 - delta a k * delta a k := by
+    intro a; simp only [projOff, delta_self]
+  rw [Finset.sum_congr rfl fun a _ => hpt a, Finset.sum_sub_distrib, Finset.sum_const,
+    Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, mul_one,
+    sum_delta_left k fun a => delta a k, delta_self]
+
+/-- **AND IT IS IDEMPOTENT.** The proof is two evaluations and one vanishing: contracting the free
+delta picks out `P_{bc}`, and the correction term contracts to `P_{bk}`, which is `0`. -/
+theorem sum_projOff_mul (k b c : Fin n) : ∑ a, projOff k a c * projOff k b a = projOff k b c := by
+  have hpt : ∀ a : Fin n, projOff k a c * projOff k b a
+      = delta a c * projOff k b a - delta c k * (delta a k * projOff k b a) := by
+    intro a; simp only [projOff]; ring
+  rw [Finset.sum_congr rfl fun a _ => hpt a, Finset.sum_sub_distrib, ← Finset.mul_sum,
+    sum_delta_left c fun a => projOff k b a, sum_delta_left k fun a => projOff k b a,
+    projOff_right_eq_zero, mul_zero, sub_zero]
+
+theorem isAlgCurv_projOffCurv (k : Fin n) : IsAlgCurv (knSquare (projOff k)) :=
+  isAlgCurv_knSquare (projOff_symm k)
+
+/-- **ITS RICCI TRACE IS `(n − 2) · P`** — a multiple of the *projector*, not of the metric. The
+trace supplies `n − 1` and idempotence takes one back off. -/
+theorem ricci_projOffCurv (k b c : Fin n) :
+    ricci (knSquare (projOff k)) b c = ((n : ℝ) - 2) * projOff k b c := by
+  rw [ricci_knSquare, sum_projOff_diag, sum_projOff_mul]
+  ring
+
+theorem scal_projOffCurv (k : Fin n) :
+    scal (knSquare (projOff k)) = ((n : ℝ) - 2) * ((n : ℝ) - 1) := by
+  simp only [scal, ricci_projOffCurv]
+  rw [← Finset.mul_sum, sum_projOff_diag]
+
+/-- **AND THE WITNESS IS NOT THE ZERO TENSOR**, for `n ≥ 3`. This file's §3 standard: a witness
+whose non-triviality is not checked is worth nothing, because `R = 0` satisfies every clause. -/
+theorem scal_projOffCurv_pos (hn : 3 ≤ n) (k : Fin n) : 0 < scal (knSquare (projOff k)) := by
+  rw [scal_projOffCurv]
+  have h3 : (3 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+  nlinarith
+
+/-- **AND ITS RICCI TRACE IS NOT A MULTIPLE OF THE METRIC**, once `n ≥ 3`. That is the separation,
+and it is two evaluations: at the switched-off coordinate the trace is `0` while `δ` is `1`, and at
+any other coordinate the trace is `n − 2`, which is non-zero exactly when `n ≠ 2`. Both halves fail
+at `n = 2` — there is no other coordinate to use, and `n − 2` is zero anyway. -/
+theorem ricci_not_smul_delta (hn : 3 ≤ n) :
+    ∃ k : Fin n, ∀ lam : ℝ, ¬ ∀ b c, ricci (knSquare (projOff k)) b c = lam * delta b c := by
+  obtain ⟨k, j, hjk⟩ : ∃ k j : Fin n, j ≠ k :=
+    ⟨⟨0, by omega⟩, ⟨1, by omega⟩, by simp⟩
+  refine ⟨k, fun lam hlam => ?_⟩
+  have h3 : (3 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+  have h1 := hlam k k
+  have h2 := hlam j j
+  rw [ricci_projOffCurv, projOff_diag_eq_zero, delta_self] at h1
+  rw [ricci_projOffCurv, projOff_diag_eq_one hjk, delta_self] at h2
+  linarith
+
+/-! ### The two maps, and the dimension at which they part -/
+
+/-- **THE TWO CANDIDATE MAPS OF THE LOVELOCK SHADOW ARE LINEARLY INDEPENDENT FROM DIMENSION THREE
+UP.** A relation `α · Ric + β · scal · δ = 0` holding for *every* algebraic curvature tensor forces
+`α = β = 0`, and two evaluations of the projector witness do it: at the switched-off coordinate the
+Ricci term drops out and `β · scal` must vanish with `scal = (n−2)(n−1) > 0`; at any other
+coordinate `α · (n − 2)` must then vanish too.
+
+This is one of the two halves of `WALLS` §W5.0 §6 item 4 — the half that needs no group action. -/
+theorem traces_independent (hn : 3 ≤ n) {α β : ℝ}
+    (hz : ∀ R : Fin n → Fin n → Fin n → Fin n → ℝ, IsAlgCurv R → ∀ b c,
+      α * ricci R b c + β * (scal R * delta b c) = 0) :
+    α = 0 ∧ β = 0 := by
+  obtain ⟨k, j, hjk⟩ : ∃ k j : Fin n, j ≠ k :=
+    ⟨⟨0, by omega⟩, ⟨1, by omega⟩, by simp⟩
+  have h3 : (3 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+  have h1 := hz _ (isAlgCurv_projOffCurv k) k k
+  have h2 := hz _ (isAlgCurv_projOffCurv k) j j
+  rw [ricci_projOffCurv, scal_projOffCurv, projOff_diag_eq_zero, delta_self] at h1
+  rw [ricci_projOffCurv, scal_projOffCurv, projOff_diag_eq_one hjk, delta_self] at h2
+  have hP : (0 : ℝ) < ((n : ℝ) - 2) * ((n : ℝ) - 1) := by nlinarith
+  have hb : β = 0 := by
+    have h1' : β * (((n : ℝ) - 2) * ((n : ℝ) - 1)) = 0 := by linarith
+    rcases mul_eq_zero.mp h1' with hh | hh
+    · exact hh
+    · exact absurd hh (ne_of_gt hP)
+  refine ⟨?_, hb⟩
+  rw [hb] at h2
+  have h2' : α * ((n : ℝ) - 2) = 0 := by linarith
+  rcases mul_eq_zero.mp h2' with hh | hh
+  · exact hh
+  · exact absurd hh (ne_of_gt (by linarith : (0 : ℝ) < (n : ℝ) - 2))
+
+/-- **AT `n = 2` THE TWO MAPS ARE PROPORTIONAL.** This is §8's `einstein_eq_zero_two` restated as a
+fact about the maps: `Ric = ½ scal · δ` for *every* algebraic curvature tensor on `Fin 2`, not for
+some. -/
+theorem ricci_eq_half_scal_two {R : Fin 2 → Fin 2 → Fin 2 → Fin 2 → ℝ} (hR : IsAlgCurv R)
+    (b c : Fin 2) : ricci R b c = 1 / 2 * (scal R * delta b c) := by
+  have h := einstein_eq_zero_two hR.antisymm_left hR.antisymm_right b c
+  simp only [einstein] at h
+  linarith
+
+/-- **SO IN DIMENSION TWO THE PAIR IS DEPENDENT**, in exactly the sense `traces_independent` denies
+from dimension three up: a relation with `α ≠ 0`, holding for every algebraic curvature tensor. The
+span of the two maps is therefore one-dimensional at `n = 2` and two-dimensional from `n = 3`, so
+**the pair is a basis of its span only from three up** — which is the reading of `WALLS` §W5.0 §6
+item 4 that a premature `def` would have frozen, and it is false in the smallest dimension where
+there is anything at all to classify.
+
+`exists_scal_ne_zero_two` of §8 keeps this from being vacuous: the class it quantifies over has
+members with non-zero scalar curvature. -/
+theorem traces_dependent_two :
+    ∃ α β : ℝ, (α ≠ 0 ∨ β ≠ 0) ∧
+      ∀ R : Fin 2 → Fin 2 → Fin 2 → Fin 2 → ℝ, IsAlgCurv R → ∀ b c,
+        α * ricci R b c + β * (scal R * delta b c) = 0 := by
+  refine ⟨1, -(1 / 2), Or.inl one_ne_zero, fun R hR b c => ?_⟩
+  have h := ricci_eq_half_scal_two hR b c
+  linarith
+
+/-- **AND THE SPAN AT `n = 2` IS ONE-DIMENSIONAL, NOT ZERO.** `traces_dependent_two` on its own is
+compatible with both maps vanishing identically, in which case "proportional" would be a flattering
+name for "both zero" and the comparison with `n ≥ 3` would be empty. It is not that case: the
+second map is non-zero already at §3's witness. -/
+theorem scal_delta_ne_zero_two :
+    ∃ R : Fin 2 → Fin 2 → Fin 2 → Fin 2 → ℝ, IsAlgCurv R ∧ ∃ b c : Fin 2,
+      scal R * delta b c ≠ 0 := by
+  obtain ⟨R, hR, hs⟩ := exists_scal_ne_zero_two
+  exact ⟨R, hR, 0, 0, by simpa using hs⟩
+
+end LovelockShadow
+
 /-! ## 7. What this file does NOT settle
 
 §7 used to record the question §10 has now answered. What remains outside this file is unchanged:
-**none of §§5–6 or §10 is a step toward `a₂`.** They are statements about a structure with four
-clauses on a finite index type, and the wall named in the header is untouched by them. -/
+**none of §§5–6, §10 or §11 is a step toward `a₂`.** They are statements about a structure with
+four clauses on a finite index type, and the wall named in the header is untouched by them.
+
+§11 narrows one thing and it is worth being exact about which. `WALLS` §W5.0 §6 item 4 has two
+halves — *the two named maps are independent* and *nothing outside their span is equivariant*.
+§11 settles the first, dimension by dimension, and finds it **false at `n = 2` and true from
+`n = 3`**. The second half is the invariant theory, needs the `O(n)` action written down, and is
+**not started**: there is no group anywhere in this file. -/
 
 end AlgebraicCurvature
