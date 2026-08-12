@@ -231,4 +231,46 @@ theorem dInf_infinite :
     ∃ (D : Type) (_ : OmegaCompletePartialOrder D), ¬ Subsingleton D ∧ Infinite D :=
   ReflexiveDomainObstruction.dInfExists_infinite dInfExists_holds
 
+/-! ## 6. The witness, checked against this estate's own no-go theorems
+
+**`ReflexiveDomainObstruction` proves two things any solution must satisfy, and neither is implied
+by §5.** They are the wall's reason for existing, so the construction is worth holding against
+them rather than assuming it clears them.
+
+* **Any solution is infinite** — `not_isDomainReflexive_of_finite`, read as a constraint by
+  `dInfExists_infinite`. Discharged in §5 by `dInf_infinite`, which routes the witness through that
+  file's own reduction rather than arguing separately.
+* **No solution carries the discrete order** — `subsingleton_of_discDomainReflexive`, because on a
+  discrete ω-CPO every self-map is continuous and Cantor applies unchanged, with no size
+  hypothesis. **This one §5 does not touch**, and a witness that happened to be discretely ordered
+  would contradict it. `exists_lt_limit_prop` exhibits two distinct comparable elements —
+  `embHom 0 False ≤ embHom 0 True`, distinct because `embHom` is injective — so
+  `limit_prop_not_discrete`.
+
+**This is a consistency check, not a new result.** It could not have failed without something else
+being wrong; the point is that nobody had run it, and "my construction satisfies my own no-go
+theorems' hypotheses" is the kind of thing an estate should be able to say in Lean rather than by
+reasoning about it.
+
+**What it is NOT: a proof that the order is interesting.** Two comparable points is the minimum the
+obstruction rules out and nothing more. No claim is made here about the witness's order structure
+beyond that, and in particular nothing about it being a *domain* in any of the stronger senses.
+-/
+
+/-- The witness has two DISTINCT COMPARABLE elements, so its order is not discrete. -/
+theorem exists_lt_limit_prop :
+    ∃ x y : Limit (canonical propPt), x ≤ y ∧ x ≠ y := by
+  refine ⟨embHom (canonical propPt) 0 False, embHom (canonical propPt) 0 True, ?_, ?_⟩
+  · exact embFun_mono (canonical propPt) 0 (fun h => h.elim)
+  · intro hEq
+    have : (False : Prop) = True := embHom_injective (canonical propPt) 0 hEq
+    exact this ▸ trivial
+
+/-- **AND THE WITNESS IS NOT A DISCRETE ORDER**, which is what
+`ReflexiveDomainObstruction.subsingleton_of_discDomainReflexive` requires of any solution. -/
+theorem limit_prop_not_discrete :
+    ¬ (∀ x y : Limit (canonical propPt), x ≤ y → x = y) := by
+  obtain ⟨x, y, hle, hne⟩ := exists_lt_limit_prop
+  exact fun h => hne (h x y hle)
+
 end CanonicalTower
