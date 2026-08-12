@@ -65,12 +65,19 @@
   symmetric about zero**. That secures the general-cutoff case
   mathematically and narrows DECISION 6 to plumbing.
 
-  ADDED LATER STILL (§9): item 5 above computes the SECOND moment and
-  stops, so every higher term of the expansion stayed opaque. `Dlin_sq`
-  is block diagonal, so **`Tr(D^{2k}) = 4 Tr((MMᴴ)^k)` for every `k`**,
-  and hence **the action depends on the Yukawa matrix only through the
-  singular values of `M`** (`spectralAction_congr_of_moments`). Still not
-  a measure — §9 says so in its own text and neither DECISION moves.
+  ADDED LATER STILL (§9, §10): item 5 above computes the SECOND moment
+  and stops, so every higher term of the expansion stayed opaque.
+  `Dlin_sq` is block diagonal, so **`Tr(D^{2k}) = 4 Tr((MMᴴ)^k)` for
+  every `k`** — and §10's converse, that a MONOMIAL cutoff picks out one
+  moment, makes it an equivalence: **the trace moments are exactly what
+  the action sees**, and testing at the even monomials with `Λ = 1` is
+  already as strong as testing at every polynomial and every `Λ`.
+
+  Those moments are equivalent to the singular values of `M` — a true and
+  standard symmetric-function fact which **this estate does not prove**,
+  and which §9's docstring asserted in passing before `ERRATUM 141`. Every
+  statement here is about traces. Still not a measure, and neither
+  DECISION moves.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
   axioms.
@@ -486,9 +493,12 @@ powers are the blocks' powers — so **every** even moment is the same computati
 on it, and the odd ones already vanish.
 
 What comes out is the structural statement §8 could not make: **the spectral action sees the
-Yukawa matrix only through the traces of powers of `MMᴴ`** — that is, only through its singular
-values. Nothing here needs functional calculus, so the polynomial restriction of §3 is untouched
-and **DECISION 6** (§8's item 2) is not affected. -/
+Yukawa matrix only through the traces of powers of `MMᴴ`**. Nothing here needs functional calculus,
+so the polynomial restriction of §3 is untouched and **DECISION 6** (§8's item 2) is not affected.
+
+*An earlier version of this paragraph and of the docstring below added "— that is, only through its
+singular values". That equivalence is TRUE and is NOT PROVED HERE; §10 says what it would take.
+`ERRATUM 141`.* -/
 
 /-- `(AB)^{k+1} = A (BA)^k B`. The bookkeeping behind the cyclic trace identity below. -/
 theorem pow_mul_swap (A B : Matrix (Fin n) (Fin n) ℂ) :
@@ -549,8 +559,11 @@ theorem trace_Dlin_pow_two_mul (M : Matrix (Fin n) (Fin n) ℂ) (k : ℕ) :
   ring
 
 /-- **AND SO THE ACTION SEES THE YUKAWA MATRIX ONLY THROUGH `Tr((MMᴴ)^k)`.** Two matrices with the
-same such traces — equivalently, the same singular values with multiplicity — give the same
-spectral action at every cutoff and every `Λ`.
+same such traces give the same spectral action at every cutoff and every `Λ`. §10 proves the
+converse, so this is an equivalence.
+
+*This docstring said "— equivalently, the same singular values with multiplicity —" of the
+hypothesis. True, standard, and not proved in this estate: `ERRATUM 141`, and §10.*
 
 This is what §8's *"no amount of further computation of `Tr(Dᵏ)` will produce a measure"* leaves
 room for: it is not a measure, and it is not a step toward one. It is a statement about which
@@ -568,6 +581,77 @@ theorem spectralAction_congr_of_moments {M N : Matrix (Fin n) (Fin n) ℂ}
     subst hji
     rw [trace_Dlin_pow_two_mul, trace_Dlin_pow_two_mul, h]
   · rw [trace_Dlin_pow_odd _ hj, trace_Dlin_pow_odd _ hj]
+
+/-! ## 10. And the moments are all it sees: the converse
+
+§9 is one-directional — equal moments give equal actions. The converse holds too, and it is
+cheaper than §9 was: **a monomial cutoff picks out a single moment.** `spectralAction (X^k) 1 M`
+is `Tr(Dᵏ)` on the nose, because `(X^k).coeff j` kills every term of the expansion but one.
+
+So the implication of §9 is an EQUIVALENCE, and the test family collapses: agreement at the EVEN
+MONOMIALS AT `Λ = 1` — a countable set of cutoffs at a single cutoff scale — is already as strong
+as agreement at every polynomial cutoff and every `Λ`. **That is the sense in which the traces of
+powers of `MMᴴ` are exactly what the action sees**, rather than merely at least what it sees.
+
+**THE ONE STEP THAT IS NOT PROVED HERE, and §9's docstring asserted it in passing.** "Equal
+`Tr((MMᴴ)^k)` for every `k`" and "the same singular values with multiplicity" are equivalent — the
+power sums of a finite multiset of reals determine the multiset — but that is a symmetric-function
+fact about eigenvalues, and **the estate does not prove it.** Mathlib has Newton's identities for
+`MvPolynomial` and `Matrix.trace_eq_sum_roots_charpoly`, but not `Tr(Aᵏ) = ∑ λᵢᵏ`, which needs
+triangularisation. Every statement below is therefore about TRACES, and the singular-value
+phrasing is flagged where it appears rather than proved (`ERRATUM 141`, and an `UNLOCK_WATCHLIST`
+item with its trigger).
+-/
+
+/-- **A MONOMIAL CUTOFF IS A SINGLE MOMENT.** At `Λ = 1`, `Tr((X^k)(D)) = Tr(Dᵏ)`. -/
+theorem spectralAction_monomial (k : ℕ) (M : Matrix (Fin n) (Fin n) ℂ) :
+    spectralAction (Polynomial.X ^ k) 1 M = LinearMap.trace ℂ (Hf n) ((Dlin M) ^ k) := by
+  rw [spectralAction_eq_sum _ _ _ (show (Polynomial.X ^ k : Polynomial ℂ).natDegree < k + 1 by
+    rw [Polynomial.natDegree_X_pow]; omega)]
+  rw [Finset.sum_eq_single k]
+  · simp
+  · intro j _ hj
+    simp [Polynomial.coeff_X_pow, hj]
+  · intro hk
+    exact absurd (Finset.self_mem_range_succ k) hk
+
+/-- **THE EVEN MOMENTS ARE READ OFF THE ACTION.** `Tr((MMᴴ)^k)` is a quarter of the action at the
+cutoff `X^{2k}` and `Λ = 1`, so it is not merely determined by the action — it is one of its
+values, up to the factor of four the four blocks contribute. -/
+theorem trace_pow_eq_spectralAction (M : Matrix (Fin n) (Fin n) ℂ) (k : ℕ) :
+    4 * ((M * Mᴴ) ^ k).trace = spectralAction (Polynomial.X ^ (2 * k)) 1 M := by
+  rw [spectralAction_monomial, trace_Dlin_pow_two_mul]
+
+/-- **THE CONVERSE OF §9.** If the actions agree at the even monomials with `Λ = 1`, the moments
+agree. Nothing about the two matrices is used beyond the previous lemma. -/
+theorem moments_of_spectralAction_congr {M N : Matrix (Fin n) (Fin n) ℂ}
+    (h : ∀ k : ℕ, spectralAction (Polynomial.X ^ (2 * k)) 1 M
+                    = spectralAction (Polynomial.X ^ (2 * k)) 1 N)
+    (k : ℕ) : ((M * Mᴴ) ^ k).trace = ((N * Nᴴ) ^ k).trace := by
+  have h4 : (4 : ℂ) * ((M * Mᴴ) ^ k).trace = 4 * ((N * Nᴴ) ^ k).trace := by
+    rw [trace_pow_eq_spectralAction, trace_pow_eq_spectralAction, h k]
+  exact mul_left_cancel₀ (by norm_num) h4
+
+/-- **THE THREE CONDITIONS ARE ONE.** Testing at every polynomial cutoff and every `Λ`, testing at
+the even monomials at `Λ = 1` alone, and having the same trace moments, are the same condition.
+
+The middle one is the content: **the test family collapses to a countable set of cutoffs at a
+single scale.** The outer two are §9 and the lemma above.
+
+**What this does NOT say**, and §9's docstring said it in passing before `ERRATUM 141`: that the
+two matrices have the same singular values. That is equivalent to the third clause and is not
+proved in this estate — see the section header. -/
+theorem spectralAction_congr_tfae {M N : Matrix (Fin n) (Fin n) ℂ} :
+    ((∀ (f : Polynomial ℂ) (Λ : ℂ), spectralAction f Λ M = spectralAction f Λ N)
+       ↔ (∀ k : ℕ, ((M * Mᴴ) ^ k).trace = ((N * Nᴴ) ^ k).trace))
+    ∧ ((∀ k : ℕ, spectralAction (Polynomial.X ^ (2 * k)) 1 M
+                   = spectralAction (Polynomial.X ^ (2 * k)) 1 N)
+       ↔ (∀ k : ℕ, ((M * Mᴴ) ^ k).trace = ((N * Nᴴ) ^ k).trace)) := by
+  constructor
+  · exact ⟨fun h => moments_of_spectralAction_congr fun k => h _ 1,
+      fun h f Λ => spectralAction_congr_of_moments h f Λ⟩
+  · exact ⟨fun h => moments_of_spectralAction_congr h,
+      fun h k => spectralAction_congr_of_moments h _ 1⟩
 
 end
 
