@@ -1,4 +1,4 @@
-import CrossPosSemidef
+import CrossBlockStructure
 
 /-!
 # The `A²` class was never a class of regular graphs — it is a class that FORCES regularity
@@ -146,5 +146,75 @@ theorem crossGraph_prediction_matches (p : Fin 4) :
     (IndefiniteCoupling.crossGraph.degree p : ℝ) = 1 + 0
       ∧ IndefiniteCoupling.crossGraph.degree p = 1 :=
   ⟨degree_eq_of_adjSq crossGraph_adjSq p, IndefiniteCoupling.degree_eq_one p⟩
+
+/-! ## 4. And the DECIDABLE form sheds it too — which buys a verdict at a FIXED mass
+
+`PROOF_STRATEGY` §3: §§1–3 landed, so the next rung before the queue.
+`CrossBlockStructure.reflectionPositive_iff_isCrossBlock` carries the same two hypotheses and the
+same redundancy, and it is the version whose right-hand side is **decidable**. Dropping `hd` there
+gives a decision procedure with one fewer input — and, unlike `GreenLargeMass` §12, **it decides
+reflection positivity at a FIXED mass**, because this equivalence holds at every mass rather than
+only asymptotically. The price is that it applies only on the `A²` class, where §12 applies to every
+finite graph. Two different trades, and the file states both rather than presenting the newer one as
+strictly better.
+
+`bipGraph` is the instance. Its coefficients are `α = 0, β = −2, γ = 2`, so the threshold is
+`0 < (2 + m²)(4 + m²)`, which holds at every mass — the condition is discharged once, by
+`positivity`, rather than per mass. What is left is `IsCrossBlock`, and that is `decide`.
+-/
+
+section DecidableFixedMass
+
+open CrossBlockStructure
+
+variable {G : SimpleGraph V} [DecidableRel G.Adj] {m : ℝ} {θ : V ≃ V} {H Mir : Finset V}
+
+/-- **THE DECIDABLE EQUIVALENCE WITHOUT `hd`**, and with the threshold in the coefficients. -/
+theorem reflectionPositive_iff_isCrossBlock' [Nonempty V]
+    (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ) (hm : m ≠ 0) (hγ : 0 ≤ γ)
+    (hA : G.adjMatrix ℝ * G.adjMatrix ℝ
+      = α • (1 : Matrix V V ℝ) + β • G.adjMatrix ℝ + γ • allOnes V)
+    (hK : 0 < (α + γ + m ^ 2) ^ 2 - α - β * (α + γ + m ^ 2)) :
+    GraphReflection.ReflectionPositive G m θ H ↔ IsCrossBlock G θ H := by
+  have hdeg := cast_degree_eq_of_adjSq hA (α := α) (β := β) (γ := γ)
+  refine CrossBlockStructure.reflectionPositive_iff_isCrossBlock
+    (isRegularOfDegree_of_adjSq hA) hM h hm hγ hA ?_
+  rw [hdeg]
+  exact hK
+
+/-- **AND SO, ON THIS CLASS, REFLECTION POSITIVITY AT A GIVEN MASS IS DECIDABLE.**
+`GreenLargeMass` §12 decides the *large-mass* behaviour of every finite graph; this decides a
+*fixed* mass on the `A²` class. Neither contains the other. -/
+def decidableRP_of_adjSq [Nonempty V]
+    (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ) (hm : m ≠ 0) (hγ : 0 ≤ γ)
+    (hA : G.adjMatrix ℝ * G.adjMatrix ℝ
+      = α • (1 : Matrix V V ℝ) + β • G.adjMatrix ℝ + γ • allOnes V)
+    (hK : 0 < (α + γ + m ^ 2) ^ 2 - α - β * (α + γ + m ^ 2)) :
+    Decidable (GraphReflection.ReflectionPositive G m θ H) :=
+  decidable_of_iff _ (reflectionPositive_iff_isCrossBlock' hM h hm hγ hA hK).symm
+
+/-! ### `K₂,₂` at every nonzero mass, by `decide` -/
+
+open IndefiniteCoupling in
+/-- The threshold is discharged once and for all masses: with `α = 0`, `β = −2`, `γ = 2` it reads
+`0 < (2 + m²)(4 + m²)`. -/
+theorem bipGraph_hK (m : ℝ) :
+    0 < ((0 : ℝ) + 2 + m ^ 2) ^ 2 - 0 - (-2) * ((0 : ℝ) + 2 + m ^ 2) := by
+  have h : (0 : ℝ) ≤ m ^ 2 := sq_nonneg m
+  nlinarith [h]
+
+open IndefiniteCoupling in
+/-- **`K₂,₂` IS REFLECTION POSITIVE AT EVERY NONZERO MASS, AND THE PROOF IS `decide`.** The estate
+had this from `hcross` (`GreenExpansion.reflectionPositive_bipGraph` and the criterion route); what
+is new is that no hypothesis about the graph's degree is supplied and no vector is exhibited —
+the whole verdict, at a fixed mass, comes from inspecting the cut. -/
+theorem bipGraph_reflectionPositive_of_ne {m : ℝ} (hm : m ≠ 0) :
+    GraphReflection.ReflectionPositive bipGraph m rho Hh := by
+  refine (reflectionPositive_iff_isCrossBlock' (α := 0) (β := -2) (γ := 2)
+    isMirrorHalf_Hh isRefl_rho_bip hm (by norm_num) bipGraph_adjSq ?_).mpr ?_
+  · exact bipGraph_hK m
+  · decide
+
+end DecidableFixedMass
 
 end AdjSqForcesRegular
