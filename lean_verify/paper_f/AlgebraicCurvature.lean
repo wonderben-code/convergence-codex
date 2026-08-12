@@ -78,7 +78,8 @@ wall exist only to stop a reader inferring otherwise from the names `SpectralAct
 > homogeneous `O(2)`-equivariant map out of algebraic curvature tensors is a multiple of
 > `R ↦ scal R · δ`, so the family has no members outside the span of the two named maps. Three
 > facts make it affordable and none survives to `n ≥ 3`: the domain is a line, the generator is
-> fixed by the group (`act_constCurv_two`), and **`eq_smul_delta_of_invariant`** — an invariant
+> fixed by the group (`act_constCurv`, §14, which holds in every dimension), and
+> **`eq_smul_delta_of_invariant`** — an invariant
 > 2-tensor is a multiple of the metric, by reflections and transpositions alone, with no averaging.
 > `lovelock_two_ricci` checks the hypotheses are met by `Ric` itself and recovers §11's constant
 > `½` through the new machinery. **For `n ≥ 3` the spanning half is untouched.**
@@ -1420,25 +1421,96 @@ theorem scal_smul (lam : ℝ) (R : Fin n → Fin n → Fin n → Fin n → ℝ) 
     scal (fun a b c d => lam * R a b c d) = lam * scal R := by
   simp only [scal, ricci, Finset.mul_sum]
 
-/-- **THE CONSTANT-CURVATURE TENSOR IS FIXED BY EVERY ORTHOGONAL FRAME CHANGE, IN DIMENSION TWO.**
-Proved without factorising the quadruple sum: `act Q` lands back in the one-dimensional space
-(`isAlgCurv_act` and `eq_smul_constCurv_two`), so it multiplies the generator by some `λ`, and
-`scal_act` says the scalar curvature did not move — so `2λ = 2`. -/
-theorem act_constCurv_two {Q : Fin 2 → Fin 2 → ℝ} (hQ : IsOrth Q) (a b c d : Fin 2) :
-    act Q (constCurv 2) a b c d = constCurv 2 a b c d := by
-  have hAC : IsAlgCurv (act Q (constCurv 2)) := isAlgCurv_act Q (isAlgCurv_constCurv 2)
-  have hrep := eq_smul_constCurv_two hAC.antisymm_left hAC.antisymm_right
-  set lam : ℝ := -(act Q (constCurv 2)) 0 1 0 1 with hlam
-  have heq : act Q (constCurv 2) = fun a b c d => lam * constCurv 2 a b c d := by
-    funext a b c d; exact hrep a b c d
-  have hs : scal (act Q (constCurv 2)) = lam * scal (constCurv 2) := by
-    rw [heq, scal_smul]
-  rw [scal_act hQ] at hs
-  have hsc : scal ((constCurv 2 : Fin 2 → Fin 2 → Fin 2 → Fin 2 → ℝ)) = 2 := by
-    rw [scal_constCurv]; norm_num
-  rw [hsc] at hs
-  have hone : lam = 1 := by linarith
-  rw [hrep a b c d, hone, one_mul]
+/-- The one contraction the next theorem needs: four copies of `Q` against a pair of deltas
+coupling slot 1 to slot 4 and slot 2 to slot 3. **Two of the four sums collapse on the deltas** and
+what is left factors into two row inner products, which orthogonality turns into deltas. -/
+theorem sum_act_delta_pair (hQ : IsOrth Q) (a b c d : Fin n) :
+    ∑ p : Fin n × Fin n × Fin n × Fin n,
+      Q a p.1 * Q b p.2.1 * Q c p.2.2.1 * Q d p.2.2.2 * (delta p.1 p.2.2.2 * delta p.2.1 p.2.2.1)
+      = delta a d * delta b c := by
+  have hw : ∀ x y z : Fin n, ∑ w, Q a x * Q b y * Q c z * Q d w * (delta x w * delta y z)
+      = Q a x * Q b y * Q c z * Q d x * delta y z := by
+    intro x y z
+    have h : ∀ w : Fin n, Q a x * Q b y * Q c z * Q d w * (delta x w * delta y z)
+        = delta w x * (Q a x * Q b y * Q c z * Q d w * delta y z) := by
+      intro w; rw [delta_symm x w]; ring
+    rw [Finset.sum_congr rfl fun w _ => h w,
+      sum_delta_left x fun w => Q a x * Q b y * Q c z * Q d w * delta y z]
+  have hz : ∀ x y : Fin n, ∑ z, Q a x * Q b y * Q c z * Q d x * delta y z
+      = Q a x * Q b y * Q c y * Q d x := by
+    intro x y
+    have h : ∀ z : Fin n, Q a x * Q b y * Q c z * Q d x * delta y z
+        = delta z y * (Q a x * Q b y * Q c z * Q d x) := by
+      intro z; rw [delta_symm y z]; ring
+    rw [Finset.sum_congr rfl fun z _ => h z,
+      sum_delta_left y fun z => Q a x * Q b y * Q c z * Q d x]
+  simp only [Fintype.sum_prod_type]
+  have step : ∀ x : Fin n,
+      ∑ y, ∑ z, ∑ w, Q a x * Q b y * Q c z * Q d w * (delta x w * delta y z)
+        = Q a x * Q d x * ∑ y, Q b y * Q c y := by
+    intro x
+    have inner : ∀ y : Fin n,
+        ∑ z, ∑ w, Q a x * Q b y * Q c z * Q d w * (delta x w * delta y z)
+          = Q a x * Q b y * Q c y * Q d x := by
+      intro y
+      rw [Finset.sum_congr rfl fun z _ => hw x y z, hz x y]
+    rw [Finset.sum_congr rfl fun y _ => inner y, Finset.mul_sum]
+    exact Finset.sum_congr rfl fun y _ => by ring
+  rw [Finset.sum_congr rfl fun x _ => step x, ← Finset.sum_mul, hQ.rows a d, hQ.rows b c]
+
+/-- **THE CONSTANT-CURVATURE TENSOR IS FIXED BY EVERY ORTHOGONAL FRAME CHANGE, IN EVERY DIMENSION.**
+
+*This replaces a `Fin 2`-only version.* That one went through the one-dimensionality of `Fin 2`:
+`act Q` lands back in the space, so it scales the generator by some `λ`, and `scal_act` forces
+`2λ = 2`. The argument is short and **does not generalise at all** — it is the line, not the
+tensor, doing the work. The proof here is the direct one and is dimension-free: the two deltas of
+`constCurv` collapse two of the four summation slots, and orthogonality closes the rest.
+
+So `WALLS` §W5.0 §6 item 4 loses one of the three `n = 2`-specific ingredients §13 leaned on. The
+other two — that the domain is a line, and hence that one value determines the map — are the ones
+that actually confine `lovelock_two` to two dimensions. -/
+theorem act_constCurv (hQ : IsOrth Q) (a b c d : Fin n) :
+    act Q (constCurv n) a b c d = constCurv n a b c d := by
+  simp only [act]
+  have split : ∀ p : Fin n × Fin n × Fin n × Fin n,
+      Q a p.1 * Q b p.2.1 * Q c p.2.2.1 * Q d p.2.2.2 * constCurv n p.1 p.2.1 p.2.2.1 p.2.2.2
+        = Q a p.1 * Q b p.2.1 * Q c p.2.2.1 * Q d p.2.2.2 *
+            (delta p.1 p.2.2.2 * delta p.2.1 p.2.2.1)
+          - Q a p.1 * Q b p.2.1 * Q c p.2.2.1 * Q d p.2.2.2 *
+            (delta p.1 p.2.2.1 * delta p.2.1 p.2.2.2) := by
+    intro p; simp only [constCurv]; ring
+  have second : ∑ p : Fin n × Fin n × Fin n × Fin n,
+      Q a p.1 * Q b p.2.1 * Q c p.2.2.1 * Q d p.2.2.2 * (delta p.1 p.2.2.1 * delta p.2.1 p.2.2.2)
+      = delta a c * delta b d := by
+    rw [Fintype.sum_equiv
+      ⟨fun p => (p.1, p.2.1, p.2.2.2, p.2.2.1), fun p => (p.1, p.2.1, p.2.2.2, p.2.2.1),
+        fun _ => rfl, fun _ => rfl⟩ _
+      (fun p : Fin n × Fin n × Fin n × Fin n =>
+        Q a p.1 * Q b p.2.1 * Q d p.2.2.1 * Q c p.2.2.2 *
+          (delta p.1 p.2.2.2 * delta p.2.1 p.2.2.1))
+      fun p => by simp only [Equiv.coe_fn_mk]; ring]
+    exact sum_act_delta_pair hQ a b d c
+  rw [Finset.sum_congr rfl fun p _ => split p, Finset.sum_sub_distrib,
+    sum_act_delta_pair hQ a b c d, second]
+  simp only [constCurv]
+
+/-- **AND SO, IN EVERY DIMENSION, AN EQUIVARIANT MAP SENDS THE CONSTANT-CURVATURE TENSOR TO A
+MULTIPLE OF THE METRIC.** This is the part of `lovelock_two`'s argument that survives past `n = 2`,
+and it is a genuine constraint at every dimension: whatever an equivariant map does to the rest of
+the space, on this one direction it agrees with `R ↦ scal R · δ` up to scale.
+
+**It is not the classification and does not approach it.** The space of algebraic curvature tensors
+has dimension `6` at `n = 3` and `20` at `n = 4`; this pins the map down on a *line* inside it. -/
+theorem equivariant_constCurv (i : Fin n)
+    {T : (Fin n → Fin n → Fin n → Fin n → ℝ) → Fin n → Fin n → ℝ}
+    (hequiv : ∀ Q, IsOrth Q → ∀ R, IsAlgCurv R → ∀ b c, T (act Q R) b c = act2 Q (T R) b c)
+    (b c : Fin n) : T (constCurv n) b c = T (constCurv n) i i * delta b c := by
+  refine eq_smul_delta_of_invariant i (fun Q hQ b c => ?_) b c
+  have h1 := hequiv Q hQ (constCurv n) (isAlgCurv_constCurv n) b c
+  have h2 : act Q (constCurv n) = constCurv n := by
+    funext a b c d; exact act_constCurv hQ a b c d
+  rw [h2] at h1
+  exact h1.symm
 
 /-- **AND SO `WALLS` §W5.0 §6 ITEM 4 IS COMPLETE IN DIMENSION TWO** — both halves, not just the
 independence half of §11. Any map from algebraic curvature tensors to 2-tensors that is homogeneous
@@ -1447,11 +1519,14 @@ the span of §11's two maps.
 
 Three things make this affordable where the general case is not. The domain is a *line*
 (`eq_smul_constCurv_two`), so the map is determined by one value; the generator is *fixed* by the
-group (`act_constCurv_two`), so that value is an invariant 2-tensor; and an invariant 2-tensor is a
-multiple of `δ` (`eq_smul_delta_of_invariant`) by reflections and transpositions alone. **None of
-the three survives to `n ≥ 3`**: the space of algebraic curvature tensors has dimension `6` at
-`n = 3` and `20` at `n = 4`, and the argument that replaces "the domain is a line" is the
-irreducible decomposition this file does not have.
+group (`act_constCurv`), so that value is an invariant 2-tensor; and an invariant 2-tensor is a
+multiple of `δ` (`eq_smul_delta_of_invariant`) by reflections and transpositions alone. **Two of
+the three do not survive to `n ≥ 3`** — the space of algebraic curvature tensors has dimension
+`6` at `n = 3` and `20` at `n = 4`, so the map is not determined by one value, and what replaces
+"the domain is a
+line" is the irreducible decomposition this file does not have. *The middle one does survive*: §14
+proves `act_constCurv` in every dimension, and `equivariant_constCurv` is what it buys — an
+equivariant map is pinned to a multiple of `δ` on that one direction, at every `n`.
 
 Only *homogeneity* is assumed, not additivity — the domain is one-dimensional, so additivity would
 be a hypothesis the proof never reaches for. -/
@@ -1465,7 +1540,7 @@ theorem lovelock_two {T : (Fin 2 → Fin 2 → Fin 2 → Fin 2 → ℝ) → Fin 
     intro Q hQ b c
     have h1 := hequiv Q hQ (constCurv 2) (isAlgCurv_constCurv 2) b c
     have h2 : act Q (constCurv 2) = constCurv 2 := by
-      funext a b c d; exact act_constCurv_two hQ a b c d
+      funext a b c d; exact act_constCurv hQ a b c d
     rw [h2] at h1
     exact h1.symm
   have hS := eq_smul_delta_of_invariant (0 : Fin 2) hinv
