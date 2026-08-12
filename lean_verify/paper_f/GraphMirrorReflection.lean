@@ -392,6 +392,50 @@ theorem quadDiff (hM : IsMirrorHalf θ H Mir) (hξ : IsOddFun θ ξ) :
   rw [hdiff, sum_split_half H F, hHH, hCC, hmix, hrow]
   ring
 
+/-! ### The coupling never sees the mass
+
+`ReachIsCoupling`'s header names the fact this rests on — *"for `q` in the half the mirror image
+`θ q` is neither in the half nor on the mirror — the one place the three-way splitting is doing
+real work"* — and spends it on identifying reach with the coupling. It has a second consequence
+nobody drew, and it is about the shape of every coupling hypothesis on this wall. -/
+
+/-- **THE COUPLING'S MATRIX ENTRIES ARE PURE ADJACENCY.** For `p` and `q` both in the half, `θ q`
+leaves the half, so `p ≠ θ q`, so the diagonal branch of `massive_apply` — the only branch that
+carries the degree and the mass — is never taken. The one-line `hne` here is exactly the one
+`crossForm_nonpos_of_cross_diag` derives inline below; naming it is the whole of what follows. -/
+theorem massive_apply_of_mem_half (hM : IsMirrorHalf θ H Mir) (m : ℝ) {p q : V}
+    (hp : p ∈ H) (hq : q ∈ H) :
+    GraphLaplacian.massive G m p (θ q) = - (if G.Adj p (θ q) then 1 else 0) := by
+  classical
+  have hne : p ≠ θ q := fun hc => hM.notMem_of_mem hq (hc ▸ hp)
+  rw [GraphLaplacian.massive_apply, if_neg hne, zero_sub]
+
+/-- **AND SO `crossForm` DOES NOT DEPEND ON THE MASS AT ALL.** It is a quadratic form built from
+the cross-cut adjacency and nothing else. -/
+theorem crossForm_eq_neg_adj (hM : IsMirrorHalf θ H Mir) (m : ℝ) (w : V → ℝ) :
+    crossForm G m θ H w
+      = - ∑ p ∈ H, ∑ q ∈ H, w p * w q * (if G.Adj p (θ q) then 1 else 0) := by
+  classical
+  have hneg : (- ∑ p ∈ H, ∑ q ∈ H, w p * w q * (if G.Adj p (θ q) then 1 else 0))
+      = ∑ p ∈ H, ∑ q ∈ H, -(w p * w q * (if G.Adj p (θ q) then 1 else 0)) := by
+    simp only [Finset.sum_neg_distrib]
+  rw [crossForm, hneg]
+  exact Finset.sum_congr rfl fun p hp => Finset.sum_congr rfl fun q hq => by
+    rw [massive_apply_of_mem_half hM m hp hq]; ring
+
+/-- **THE HYPOTHESIS FIVE FILES CARRY IS NOT INDEXED BY THE MASS.** Anyone establishing it may do
+so at whatever mass is convenient and keep it at every other. -/
+theorem crossForm_mass_independent (hM : IsMirrorHalf θ H Mir) (m m' : ℝ) (w : V → ℝ) :
+    crossForm G m θ H w = crossForm G m' θ H w := by
+  rw [crossForm_eq_neg_adj hM m w, crossForm_eq_neg_adj hM m' w]
+
+theorem crossForm_nonpos_iff_of_mass (hM : IsMirrorHalf θ H Mir) (m m' : ℝ) :
+    (∀ w : V → ℝ, crossForm G m θ H w ≤ 0) ↔ (∀ w : V → ℝ, crossForm G m' θ H w ≤ 0) := by
+  constructor <;> intro h w
+  · rw [← crossForm_mass_independent hM m m' w]; exact h w
+  · rw [crossForm_mass_independent hM m m' w]; exact h w
+
+
 /-- **THE CRITERION, FOR A MIRROR HALF.** If the only cut-crossing edges join
     a site to its own mirror, the cross-coupling form is nonpositive. This is
     `TorusReflection.crossOp_nonpos_of_cross_diag` with `IsHalf` weakened to
