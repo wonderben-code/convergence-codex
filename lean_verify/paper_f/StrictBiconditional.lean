@@ -354,6 +354,22 @@ negative definite, so never strict — while at the other extreme the subspace
 can be trivial and the condition vacuous, giving strictness for a reason the
 measured version states quite differently.
 
+**AND THE SPECTRUM THE PARAGRAPH ABOVE DESCRIBES IS NOT A SPECTRUM, 2026-08-12
+(`ERRATUM 150`).** It names two extremes — reach inside, where the coupling
+vanishes on the whole half and strictness fails; and a trivial subspace, where
+the condition is vacuous and strictness holds — and reads as though the cases
+between them are the interesting ones. **There are no cases between them.**
+`CrossBlockStructure.crossForm_eq_zero_of_inReachKernel`: a vector supported on
+the half and in the reach kernel has `crossForm v = 0`, on EVERY graph with a
+mirror reflection, with no coupling hypothesis. So the coupling is identically
+zero on that subspace always, not only when the reach stays inside, and the
+right-hand side of `strict_iff_crossForm_neg_on_reachKernel` is satisfiable only
+vacuously: **strict exactly when the reach kernel is trivial**
+(`CrossBlockStructure.strict_iff_reachKernel_trivial`). Nothing here is false —
+the biconditional is a theorem and stays one — and the paragraph is kept because
+what it got right is the harder half: that the two restrictions differ and that
+this file does not claim they coincide.
+
   What the closed form settles is that a DEFINITENESS condition was the right
   shape to be measuring, and which restriction makes it a theorem. Whether the
   measured version agrees in verdict on every row of that table is a separate
@@ -373,7 +389,16 @@ def InReachKernel (G : SimpleGraph V) [DecidableRel G.Adj] (m : ℝ) (H Mir : Fi
     keeps inside the region. This is ERRATUM 73's measured criterion with the
     restriction corrected from "the strict half" to that subspace, and it is a
     two-line consequence of §3 — the isotropy clause is the only quadratic one,
-    so it is the only one that survives into a definiteness statement. -/
+    so it is the only one that survives into a definiteness statement.
+
+    **THE DEFINITENESS IS VACUOUS, 2026-08-12 (`ERRATUM 150`).** The coupling is
+    identically zero on this subspace — `CrossBlockStructure.crossForm_eq_zero_of_inReachKernel`,
+    which needs neither `hcross` nor anything about the graph beyond the two
+    hypotheses above — so the right-hand side holds exactly when the subspace is
+    trivial. The theorem is unchanged; what it says is
+    `CrossBlockStructure.strict_iff_reachKernel_trivial`. And the isotropy
+    clause of `SupportedIsotropic` is implied by the other two at every site
+    where that definition is used. -/
 theorem strict_iff_crossForm_neg_on_reachKernel (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ)
     (hm : m ≠ 0) (hcross : ∀ w : V → ℝ, crossForm G m θ H w ≤ 0) :
     (∀ c : V → ℝ, c ≠ 0 → (∀ p, p ∉ H → p ∉ Mir → c p = 0) →
