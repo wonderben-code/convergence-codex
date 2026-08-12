@@ -220,6 +220,32 @@ stated in the estate's own support convention so the comparison is literal and n
 **Still not cashed: the box and the estate's own `def`.** Their cuts are diagonal too and the same
 route should work; it is not attempted here.
 
+## §10 — and on the box, where §9's prediction said the threshold would be smaller
+
+§9 predicted, in writing and before checking, that the box would come out lower than the torus
+because **a box does not wrap around**: its boundary layer has no bond to its mirror, so only the
+innermost layer of an even side is ever joined across the cut. That is `box_adj_self_mirror_iff`,
+and the criterion then gives
+
+> `box_strict_iff_le_two_lowerHalf`: **strict if and only if `n ≤ 2`**.
+
+`WALLS` W1 records the box as strict at sides 1–2 and not from 3. The prediction was right, and the
+difference between the two thresholds is exactly the two sides the wrap-around bond buys.
+
+**Again no new case is decided**, and again the gain is in the count: the box threshold was five
+theorems in four files by three mechanisms — `BoxNotStrict.not_strict` (even, from four),
+`BoxOddNotStrict.not_strict_box_odd` (odd, from three, via the reach criterion because the odd
+box's cut is empty), `StrictCriterion.reflectionPositive_box_one_strict` and `_box_two_strict`, and
+`SmallSideStrict.reflectionPositive_box_one_strict'`. `box_not_strict_of_three_le` and
+`box_strict_of_le_two` are the two halves; `box_and_torus_thresholds` states both families at once.
+
+**`box_cross_diag_any` is new as stated.** The estate had diagonality at even sides
+(`TorusReflection.boxGraph_cross_diag`) and emptiness at odd ones
+(`BoxOddReflection.not_adj_cross_odd`), both on `lowerHalf`; the uniform statement on `strictLower`
+is proved here directly, because that is the shape §8 consumes.
+
+**Still not cashed: the estate's own lattice `def`.**
+
 ## What this does NOT do
 
 It says nothing new about reflection positivity **off** `GreenExpansion` §9's class.
@@ -1267,5 +1293,159 @@ theorem torus_strict_of_le_four (i : Fin d) (n : ℕ) (hn : n ≤ 4) (hm : m ≠
   (torus_strict_iff_le_four_lowerHalf i n hm).mpr hn c hc0 hcsupp
 
 end Torus
+
+/-! ## 10. And on the box, where there is no wrap-around, the threshold is two -/
+
+section Box
+
+open GreenExpansion GraphReflection GraphMirrorReflection CrossFormMatrix
+open BoxOddReflection BoxGraph TorusReflection
+
+variable {d n : ℕ} {m : ℝ}
+
+/-- **THE BOX CUT IS DIAGONAL AT EVERY SIDE.** The estate has this in two halves —
+`TorusReflection.boxGraph_cross_diag` at even sides and `BoxOddReflection.not_adj_cross_odd`, which
+says the cut is EMPTY at odd sides — and both are on `lowerHalf`. Proved directly here on
+`strictLower`, at every side, because §8's criterion wants exactly this shape. -/
+theorem box_cross_diag_any (i : Fin d) (n : ℕ) :
+    ∀ p ∈ strictLower i n, ∀ q ∈ strictLower i n,
+      (boxGraph d n).Adj p (revSite (n := n) i q) → p = q := by
+  intro p hp q hq hadj
+  rw [mem_strictLower] at hp hq
+  obtain ⟨k, hoff, hcase⟩ := hadj
+  have hrevq : ∀ j, (revSite (n := n) i q) j = if j = i then Fin.rev (q i) else q j := by
+    intro j
+    by_cases hj : j = i
+    · subst hj; simp
+    · simp [revSite_apply_ne hj, hj]
+  have hvrev : (Fin.rev (q i)).val = n - ((q i).val + 1) := Fin.val_rev (q i)
+  have hqlt := (q i).isLt
+  have hki : k = i := by
+    by_contra hk
+    have hcoord := hoff i (fun hc => hk hc.symm)
+    rw [hrevq i, if_pos rfl] at hcoord
+    have hv := congrArg Fin.val hcoord
+    rw [hvrev] at hv
+    omega
+  subst hki
+  rw [hrevq k, if_pos rfl] at hcase
+  rw [hvrev] at hcase
+  have hik : (p k).val = (q k).val := by omega
+  funext j
+  by_cases hj : j = k
+  · subst hj; exact Fin.ext hik
+  · have := hoff j hj
+    rwa [hrevq j, if_neg hj] at this
+
+/-- The box cut is a block cut at every side, one line from the above. -/
+theorem isCrossBlock_box (i : Fin d) (n : ℕ) :
+    IsCrossBlock (boxGraph d n) (revSite (n := n) i) (strictLower i n) :=
+  isCrossBlock_of_cross_diag (box_cross_diag_any i n)
+
+/-- **AND A BOX HALF-SITE IS JOINED TO ITS OWN MIRROR ONLY ON THE INNERMOST LAYER OF AN EVEN
+SIDE.** This is the whole difference from the torus: **there is no wrap-around bond**, so the
+boundary layer is joined to nothing across the cut and only one layer ever is. -/
+theorem box_adj_self_mirror_iff (i : Fin d) {n : ℕ} {s : BoxGraph.Site d n}
+    (hs : s ∈ strictLower i n) :
+    (boxGraph d n).Adj s (revSite (n := n) i s) ↔ 2 * (s i).val + 2 = n := by
+  rw [mem_strictLower] at hs
+  have hlt := (s i).isLt
+  have hrev : (Fin.rev (s i)).val = n - ((s i).val + 1) := Fin.val_rev (s i)
+  constructor
+  · rintro ⟨k, hoff, hcase⟩
+    have hki : k = i := by
+      by_contra hk
+      have hcoord := hoff i (fun hc => hk hc.symm)
+      rw [revSite_apply_self] at hcoord
+      have hv := congrArg Fin.val hcoord
+      rw [hrev] at hv
+      omega
+    subst hki
+    rw [revSite_apply_self, hrev] at hcase
+    omega
+  · intro hn
+    refine ⟨i, fun j hj => (revSite_apply_ne hj s).symm, ?_⟩
+    rw [revSite_apply_self, hrev]
+    omega
+
+/-- **THE BOX THRESHOLD, READ OFF THE CUT: STRICT EXACTLY AT SIDE TWO AND BELOW.** `WALLS` W1
+records the box as strict at sides 1–2 and not from 3, proved by separate arguments; here it is one
+biconditional, and the reason for the smaller threshold than the torus's is visible in the
+statement — no wrap-around, so the boundary layer never reaches its mirror. -/
+theorem box_strict_iff_le_two (i : Fin d) (n : ℕ) (hm : m ≠ 0) :
+    (∀ c : BoxGraph.Site d n → ℝ, c ≠ 0 →
+        (∀ p, p ∉ strictLower i n → p ∉ midLayer i n → c p = 0) →
+        0 < GraphReflection.reflectedForm (boxGraph d n) m (revSite (n := n) i) c)
+      ↔ n ≤ 2 := by
+  rw [strict_iff_cut_perfect (isMirrorHalf_strictLower i n) (boxGraph_revSite_aut i) hm
+    (isCrossBlock_box i n)]
+  constructor
+  · intro hall
+    by_contra hn
+    have h2 : 2 < n := by omega
+    have h0 : (0 : ℕ) < n := by omega
+    have hmem : (fun _ => (⟨0, h0⟩ : Fin n)) ∈ strictLower i n :=
+      mem_strictLower.mpr (by simpa using by omega)
+    have := (box_adj_self_mirror_iff i hmem).mp ((hall _ hmem _ hmem).mpr rfl)
+    simp only [] at this
+    omega
+  · intro hn s hs q hq
+    refine ⟨box_cross_diag_any i n s hs q hq, fun hsq => hsq ▸ ?_⟩
+    refine (box_adj_self_mirror_iff i hs).mpr ?_
+    rw [mem_strictLower] at hs
+    omega
+
+/-- **THE SAME, IN THE ESTATE'S `lowerHalf` SUPPORT CONVENTION**, so the comparison with
+`BoxNotStrict` and `SmallSideStrict.reflectionPositive_box_one_strict'` is literal. -/
+theorem box_strict_iff_le_two_lowerHalf (i : Fin d) (n : ℕ) (hm : m ≠ 0) :
+    (∀ c : BoxGraph.Site d n → ℝ, c ≠ 0 →
+        (∀ p, p ∉ GraphHalfSpace.lowerHalf i n → c p = 0) →
+        0 < GraphReflection.reflectedForm (boxGraph d n) m (revSite (n := n) i) c)
+      ↔ n ≤ 2 := by
+  have hsupp : ∀ p : BoxGraph.Site d n,
+      p ∉ GraphHalfSpace.lowerHalf i n ↔ (p ∉ strictLower i n ∧ p ∉ midLayer i n) := by
+    intro p
+    rw [lowerHalf_eq_union, Finset.mem_union, not_or]
+  rw [← box_strict_iff_le_two i n hm]
+  constructor
+  · intro hstrict c hc0 hcsupp
+    refine hstrict c hc0 (fun p hp => ?_)
+    obtain ⟨hpS, hpM⟩ := (hsupp p).mp hp
+    exact hcsupp p hpS hpM
+  · intro hstrict c hc0 hcsupp
+    exact hstrict c hc0 (fun p hpS hpM => hcsupp p ((hsupp p).mpr ⟨hpS, hpM⟩))
+
+/-- **THE NON-STRICT HALF, AT EVERY SIDE FROM THREE AND WITHOUT A PARITY SPLIT.** The estate proves
+this in two files — `BoxNotStrict.not_strict` at EVEN sides from four and
+`BoxOddNotStrict.not_strict_box_odd` at ODD sides from three, the second going through the reach
+criterion because the odd box's cut is empty. Both are instances of this. -/
+theorem box_not_strict_of_three_le (i : Fin d) (n : ℕ) (h3 : 3 ≤ n) (hm : m ≠ 0) :
+    ¬ (∀ c : BoxGraph.Site d n → ℝ, c ≠ 0 →
+        (∀ p, p ∉ GraphHalfSpace.lowerHalf i n → c p = 0) →
+        0 < GraphReflection.reflectedForm (boxGraph d n) m (revSite (n := n) i) c) :=
+  fun hstrict => absurd ((box_strict_iff_le_two_lowerHalf i n hm).mp hstrict) (by omega)
+
+/-- **AND THE STRICT HALF, AT SIDES TWO AND BELOW.** Instances:
+`StrictCriterion.reflectionPositive_box_one_strict` and `_box_two_strict`, and
+`SmallSideStrict.reflectionPositive_box_one_strict'`. `n = 0` falls out too. -/
+theorem box_strict_of_le_two (i : Fin d) (n : ℕ) (hn : n ≤ 2) (hm : m ≠ 0)
+    {c : BoxGraph.Site d n → ℝ} (hc0 : c ≠ 0)
+    (hcsupp : ∀ p, p ∉ GraphHalfSpace.lowerHalf i n → c p = 0) :
+    0 < GraphReflection.reflectedForm (boxGraph d n) m (revSite (n := n) i) c :=
+  (box_strict_iff_le_two_lowerHalf i n hm).mpr hn c hc0 hcsupp
+
+/-- **THE TWO FAMILIES SIDE BY SIDE, AND THE WRAP-AROUND IS THE WHOLE DIFFERENCE.** Same criterion,
+same reflection, same half; the torus threshold is four and the box's is two, and the extra two
+sides are the boundary layer that the wrap-around bond reaches and the box has no bond to. -/
+theorem box_and_torus_thresholds (i : Fin d) (n : ℕ) (hm : m ≠ 0) :
+    ((∀ c : BoxGraph.Site d n → ℝ, c ≠ 0 →
+        (∀ p, p ∉ GraphHalfSpace.lowerHalf i n → c p = 0) →
+        0 < GraphReflection.reflectedForm (boxGraph d n) m (revSite (n := n) i) c) ↔ n ≤ 2)
+      ∧ ((∀ c : BoxGraph.Site d n → ℝ, c ≠ 0 →
+        (∀ p, p ∉ GraphHalfSpace.lowerHalf i n → c p = 0) →
+        0 < GraphReflection.reflectedForm (torusGraph d n) m (revSite (n := n) i) c) ↔ n ≤ 4) :=
+  ⟨box_strict_iff_le_two_lowerHalf i n hm, torus_strict_iff_le_four_lowerHalf i n hm⟩
+
+end Box
 
 end CrossBlockStructure
