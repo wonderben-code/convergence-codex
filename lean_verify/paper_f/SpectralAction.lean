@@ -421,6 +421,97 @@ theorem trace_Dlin_zero_but_Dlin_ne :
       ∧ Dlin (1 : Matrix (Fin 1) (Fin 1) ℂ) ≠ 0 :=
   ⟨trace_Dlin_pow_odd _ odd_one, Dlin_one_ne_zero⟩
 
+/-! ## 9. Every even moment, not just the second
+
+§2 computes `Tr(D²) = 4 Tr(MMᴴ)` and stops there, and §3's expansion then carries every higher
+moment as an opaque `Tr(Dᵏ)`. But `Dlin_sq` is block diagonal, and a block-diagonal operator's
+powers are the blocks' powers — so **every** even moment is the same computation with an exponent
+on it, and the odd ones already vanish.
+
+What comes out is the structural statement the file's §8 could not make: **the spectral action
+sees the Yukawa matrix only through the traces of powers of `MMᴴ`** — that is, only through its
+singular values. Nothing here needs functional calculus, so the polynomial restriction of §3 is
+untouched and DECISION 2 is not affected. -/
+
+/-- `(AB)^{k+1} = A (BA)^k B`. The bookkeeping behind the cyclic trace identity below. -/
+theorem pow_mul_swap (A B : Matrix (Fin n) (Fin n) ℂ) :
+    ∀ k : ℕ, (A * B) ^ (k + 1) = A * ((B * A) ^ k) * B
+  | 0 => by simp
+  | k + 1 => by
+      rw [pow_succ, pow_mul_swap A B k, pow_succ]
+      noncomm_ring
+
+/-- **THE TRACE OF A POWER IS CYCLIC.** `Matrix.trace_mul_comm` is the `k = 1` case; Mathlib has
+no statement for general `k` (searched by shape over `Matrix.trace_*`, `ERRATUM 42`). Used four
+times below, once per block. -/
+theorem trace_pow_mul_comm (A B : Matrix (Fin n) (Fin n) ℂ) :
+    ∀ k : ℕ, ((A * B) ^ k).trace = ((B * A) ^ k).trace
+  | 0 => by simp
+  | k + 1 => by
+      rw [pow_mul_swap A B k, Matrix.trace_mul_comm, ← Matrix.mul_assoc, ← pow_succ']
+
+/-- **`D` TO ANY EVEN POWER IS BLOCK DIAGONAL**, each block a power of one of the four products.
+`Dlin_sq` is `k = 1`. -/
+theorem Dlin_pow_two_mul (M : Matrix (Fin n) (Fin n) ℂ) (k : ℕ) :
+    (Dlin M) ^ (2 * k)
+      = LinearMap.prodMap
+          (LinearMap.prodMap (Matrix.mulVecLin ((M * Mᴴ) ^ k))
+            (Matrix.mulVecLin ((Mᴴ * M) ^ k)))
+          (LinearMap.prodMap (Matrix.mulVecLin ((mbar M * Mᵀ) ^ k))
+            (Matrix.mulVecLin ((Mᵀ * mbar M) ^ k))) := by
+  induction k with
+  | zero => simp [Module.End.one_eq_id]
+  | succ k ih =>
+      have h2 : (Dlin M) ^ (2 * (k + 1)) = (Dlin M) ^ (2 * k) * (Dlin M) ^ 2 := by
+        rw [← pow_add]; ring_nf
+      rw [h2, ih, Dlin_sq]
+      -- `mulVecLin_mul` is stated with `∘ₗ`; on endomorphisms that IS the ring
+      -- multiplication, which is what makes the four blocks compose independently.
+      have hcomp : ∀ A B : Matrix (Fin n) (Fin n) ℂ,
+          A.mulVecLin * B.mulVecLin = (A * B).mulVecLin := fun A B => by
+        rw [Matrix.mulVecLin_mul]; rfl
+      simp only [LinearMap.prodMap_mul, hcomp, ← pow_succ]
+
+/-- **EVERY EVEN MOMENT: `Tr(D^{2k}) = 4 · Tr((MMᴴ)^k)`.** All four blocks give the same number,
+by the three identities `trace_Dlin_sq` uses at `k = 1`, each generalised: `trace_pow_mul_comm`
+for the two particle blocks, and `(M̄Mᵀ)^k = ((MMᴴ)^k)ᵀ` for the antiparticle ones. At `k = 0`
+this reads `4n = 4 · Tr(1)`, which is `trace_Dlin_pow_zero`. -/
+theorem trace_Dlin_pow_two_mul (M : Matrix (Fin n) (Fin n) ℂ) (k : ℕ) :
+    LinearMap.trace ℂ (Hf n) ((Dlin M) ^ (2 * k)) = 4 * ((M * Mᴴ) ^ k).trace := by
+  rw [Dlin_pow_two_mul, LinearMap.trace_prodMap', LinearMap.trace_prodMap',
+    LinearMap.trace_prodMap', trace_mulVecLin, trace_mulVecLin, trace_mulVecLin,
+    trace_mulVecLin]
+  have h1 : ((Mᴴ * M) ^ k).trace = ((M * Mᴴ) ^ k).trace := trace_pow_mul_comm _ _ k
+  have hT : mbar M * Mᵀ = (M * Mᴴ)ᵀ := by
+    rw [Matrix.transpose_mul, ← mbar_transpose, Matrix.transpose_transpose]
+  have h2 : ((mbar M * Mᵀ) ^ k).trace = ((M * Mᴴ) ^ k).trace := by
+    rw [hT, ← Matrix.transpose_pow, Matrix.trace_transpose]
+  have h3 : ((Mᵀ * mbar M) ^ k).trace = ((M * Mᴴ) ^ k).trace := by
+    rw [trace_pow_mul_comm, h2]
+  rw [h1, h2, h3]
+  ring
+
+/-- **AND SO THE ACTION SEES THE YUKAWA MATRIX ONLY THROUGH `Tr((MMᴴ)^k)`.** Two matrices with the
+same such traces — equivalently, the same singular values with multiplicity — give the same
+spectral action at every cutoff and every `Λ`.
+
+This is what §8's *"no amount of further computation of `Tr(Dᵏ)` will produce a measure"* leaves
+room for: it is not a measure, and it is not a step toward one. It is a statement about which
+features of `M` the action can possibly depend on, and the answer is a short list. -/
+theorem spectralAction_congr_of_moments {M N : Matrix (Fin n) (Fin n) ℂ}
+    (h : ∀ k : ℕ, ((M * Mᴴ) ^ k).trace = ((N * Nᴴ) ^ k).trace)
+    (f : Polynomial ℂ) (Λ : ℂ) :
+    spectralAction f Λ M = spectralAction f Λ N := by
+  rw [spectralAction_eq_sum f Λ M (Nat.lt_succ_self _),
+    spectralAction_eq_sum f Λ N (Nat.lt_succ_self _)]
+  refine Finset.sum_congr rfl fun j _ => ?_
+  rcases Nat.even_or_odd j with hj | hj
+  · obtain ⟨i, hi⟩ := hj
+    have hji : j = 2 * i := by omega
+    subst hji
+    rw [trace_Dlin_pow_two_mul, trace_Dlin_pow_two_mul, h]
+  · rw [trace_Dlin_pow_odd _ hj, trace_Dlin_pow_odd _ hj]
+
 /-! ## 8. What is still missing, and whose decision it is
 
 **No Bakry-Émery tag moves.** The watchlist item this file fires the
