@@ -72,15 +72,26 @@ binomial series gives `(1 + e^{(c−2h)β})^B − 1`, which is `O(1)` as soon as
 `B·e^{(c−2h)β} = O(1)` — that is, **`h ≳ c/2 + log B / (2β)`**. `B` is linear in the side, so this
 route's threshold would be **logarithmic in `n`** where the one proved above is quadratic.
 
-**Why it is not attempted here rather than blocked**: the energy comparison needs
-`isingH (flip S σ) ≤ isingH σ + c·|S|`, whose constant comes from a bound on the number of
-neighbours of a site — and **the estate has no degree bound for `adj`**, probed 2026-08-12 by
-reading `IsingFiniteVolume.lean` rather than by name. `adj` is a bare `Prop` on `Fin n × Fin n`,
-not a `SimpleGraph`, so the graph-theoretic degree lemmas elsewhere in the estate do not reach it.
-That bound is itself a bounded build — the four neighbours are tagged by *which coordinate moved*
-and *in which direction*, so the neighbour set injects into a four-element type — and nothing here
-has tried it. **Whether the logarithmic threshold closes the uniformity gap is a separate question
-and the answer is no**: `log n → ∞` too. It would make the remaining gap smaller, not absent.
+**Why it is not attempted here** — *and the reason first given was false, corrected in place
+under `ERRATUM 131` rather than edited away*. The paragraph read:
+
+> the energy comparison needs `isingH (flip S σ) ≤ isingH σ + c·|S|`, whose constant comes from a
+> bound on the number of neighbours of a site — and **the estate has no degree bound for `adj`** …
+> That bound is itself a bounded build … and nothing here has tried it.
+
+**Both claims were wrong.** `PlusClassVanishes` has had `card_adj_le_four` and `card_adj_le_four'`
+— the degree bound, in exactly the form used — and `isingH_flipAt_le`, the single-site energy
+comparison with the same constant `16`, since long before this file. The probe behind the word
+"none" scanned the first `20` of the `96` files that mention `adj`; `PlusClassVanishes` is the
+`74`th. `FlipEnergy.isingH_flipOn_le` has since generalised that comparison from one site to an
+arbitrary set, so **the energy leg is now done and was never the obstacle it was billed as**.
+
+**What actually remains** are the other two legs, and neither is bookkeeping: stratifying the
+off-`+` sum by the number of wrong boundary spins, and proving the flip map injective on each
+stratum so the binomial coefficient is an upper bound. Those are **not attempted**.
+
+**And the logarithmic threshold would not close the uniformity gap either**: `log n → ∞` too. It
+would make the remaining gap smaller, not absent.
 -/
 
 namespace FieldThreshold

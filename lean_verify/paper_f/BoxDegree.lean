@@ -3,20 +3,33 @@ import BoxGraph
 /-!
 # Every site of the `n^d` box has at most `2d` neighbours
 
-`FieldThreshold`'s header names the fence its own threshold sits behind, and then names the one
-ingredient the sharper estimate needs and the estate does not have:
+## Read the correction first: this file was written on a false premise
+
+`FieldThreshold`'s header said, of the estimate that would sharpen its own threshold:
 
 > the energy comparison wants `isingH (flip S σ) ≤ isingH σ + c·|S|`, whose constant comes from a
-> **degree bound on `adj`**, and **the estate has none** … That bound is itself a bounded build —
-> the four neighbours are tagged by which coordinate moved and in which direction — and nothing
-> here has tried it.
+> **degree bound on `adj`**, and **the estate has none** … That bound is itself a bounded build
+> … and nothing here has tried it.
 
-This is that build, and it comes out in **any** dimension rather than only in two, because
-`BoxGraph.adj` is already stated in any dimension and nothing in the argument cares:
+**Both halves of that were false, and `ERRATUM 131` records how.** The estate has had the degree
+bound since `PlusClassVanishes` — `card_adj_le_four` and `card_adj_le_four'`, both exactly the
+`d = 2` statement — and has had the single-site energy comparison too,
+`PlusClassVanishes.isingH_flipAt_le`, with the same constant `16`. The probe that produced the
+word "none" was truncated: it scanned the first `20` of the `96` files that mention `adj`, and
+`PlusClassVanishes` is the `74`th.
 
-> **`card_adj_le`** — for every site `p` of the `n^d` box, at most `2d` sites are adjacent to it.
-> **`boxGraph_degree_le`** — the same as a statement about `SimpleGraph.degree`.
-> **`card_isingAdj_le_four`** — and hence at most `4` in the estate's own two-dimensional lattice.
+**What is left of this file after that correction is real, and it is a generalisation rather than
+a first.** The pre-existing bound is `d = 2` only, and stated as a raw `Finset` cardinality:
+
+> **`card_adj_le`** — for every site of the `n^d` box, at most `2d` sites are adjacent to it, in
+> **every** dimension. That is queue item 4's shape exactly: one restrictive hypothesis — the
+> dimension — removed from a result the estate already had.
+> **`boxGraph_degree_le`** — and the same fact in the `SimpleGraph.degree` vocabulary, which the
+> estate also did not have, so a consumer working with `boxGraph` need not unfold a filter.
+
+**The `d = 2` corollary this file first carried has been deleted**, because it was a second copy
+of `PlusClassVanishes.card_adj_le_four` under a new name, and duplicated declaration names are
+already an open question for the author here.
 
 ## The proof is a covering, not a tagging
 
@@ -37,11 +50,10 @@ So no injectivity, no choice, no decidable search: a subset inclusion and `Finse
 
 ## What this does NOT do
 
-**It does not move the Peierls wall or the field threshold.** It supplies one arithmetic
-ingredient that `FieldThreshold`'s sharper estimate would need; the estimate itself — the flip
-energy comparison, the stratification by the number of wrong boundary spins, the binomial sum —
-is **not attempted here**. `FieldThreshold.magnetisation_threshold` is unchanged and still
-quadratic in the side.
+**It does not move the Peierls wall or the field threshold**, and — now that the premise is
+corrected — it does not supply a missing ingredient either, because the ingredient was not
+missing. `FieldThreshold.magnetisation_threshold` is unchanged and still quadratic in the side,
+and the remaining legs of the sharper estimate are **not attempted here**.
 
 **And the bound is not claimed sharp at the boundary.** `2d` is the interior degree; corner and
 edge sites have fewer. Nothing below distinguishes them, because an upper bound is all the
@@ -118,27 +130,5 @@ theorem boxGraph_degree_le (p : Site d n) : (boxGraph d n).degree p ≤ 2 * d :=
   classical
   rw [SimpleGraph.degree, SimpleGraph.neighborFinset_eq_filter]
   exact card_adj_le p
-
-/-! ## 3. And four, in the estate's own lattice
-
-`BoxGraph` §3 already proves the `d = 2` adjacency is `IsingFiniteVolume.adj` transported along
-`sitePair`. Transporting a cardinality along the same equivalence is all that is left. -/
-
-/-- **AT MOST FOUR NEIGHBOURS IN THE TWO-DIMENSIONAL LATTICE**, stated against
-`IsingFiniteVolume.adj` — the relation `isingH` is actually summed over. -/
-theorem card_isingAdj_le_four {n : ℕ} (P : IsingFiniteVolume.Site n) :
-    ((Finset.univ : Finset (IsingFiniteVolume.Site n)).filter
-      (fun Q => IsingFiniteVolume.adj P Q)).card ≤ 4 := by
-  classical
-  set p : Site 2 n := (sitePair n).symm P with hp
-  have hPp : sitePair n p = P := by rw [hp, Equiv.apply_symm_apply]
-  have hcard : ((Finset.univ : Finset (Site 2 n)).filter (fun q => adj p q)).card
-      = ((Finset.univ : Finset (IsingFiniteVolume.Site n)).filter
-          (fun Q => IsingFiniteVolume.adj P Q)).card := by
-    refine Finset.card_equiv (sitePair n) fun q => ?_
-    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-    rw [adj_two_iff, hPp]
-  rw [← hcard]
-  exact (card_adj_le p).trans (by norm_num)
 
 end BoxDegree
