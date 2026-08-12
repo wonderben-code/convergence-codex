@@ -40,19 +40,20 @@ converse. It is not a toy class: it is exactly where `IndefiniteCoupling.crossGr
 re-derives that file's `not_reflectionPositive` from the general theorem — an independent route to
 a fact previously obtained by a hand solve, agreeing down to the denominator.
 
-**It does not settle the necessity question in general, and the gap is exactly one bound.** `remainder` is
-not sign-definite and nothing here estimates it: `green` has all entries positive on a connected
-graph (`GraphGreenPositive`) and `A * A` has nonnegative entries, but `c p * c q` does not, so no
-sign follows. **What would close the converse is a bound making `|remainder|` smaller than the
-cross form's negative direction** — and that is an estimate, which is analysis, which this file
-deliberately does not attempt.
+**It does not settle the necessity question in general, and the gap is exactly one bound.** The
+remainder is not sign-definite and nothing here estimates it: `green` has all entries positive on
+a connected graph (`GraphGreenPositive`) and `A * A` has nonnegative entries, but `c p * c q`
+does not, so no sign follows. **What would close the converse is a bound making the remainder
+smaller than the cross form's negative direction** — that is an estimate, which is analysis,
+which this file deliberately does not attempt.
 
-**REGULARITY IS A REAL RESTRICTION AND IT IS STATED, NOT HIDDEN.** The scalar `s` only exists
+**REGULARITY IS A RESTRICTION ON §§1–7 ONLY, AND §8 REMOVES IT.** The scalar `s` only exists
 because every degree is the same. For a general graph the same two substitutions give
-`green = Dm⁻¹ + Dm⁻¹ A Dm⁻¹ + Dm⁻¹ A Dm⁻¹ A green` with `Dm = diagonal (deg · + m²)`, and the
-leading term becomes `C p q / ((m² + deg p) * (m² + deg q))` — `IsRefl.degree` makes the two
-weights match under the mirror. That version is **not proved here**; the regular case is, and it
-covers the torus, the cycle and both graphs `IndefiniteCoupling` uses.
+`green = Dinv + Dinv A Dinv + green A Dinv A Dinv`, where `Dinv = diagonal ((deg · + m²)⁻¹)`, and
+the leading term becomes `C p q / ((m² + deg p) * (m² + deg q))` — `IsRefl.degree` makes the two
+weights match under the mirror, without which that coefficient would not even be symmetric in `p`
+and `q`. **§8 proves that version**, so the restriction is gone from the identity; §6's converse
+still needs `1`-regularity, which is a stronger thing and is not affected.
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
@@ -356,5 +357,93 @@ theorem reflectionPositive_of_posSemidef_of_one_regular (hd : G.IsRegularOfDegre
     GraphReflection.ReflectionPositive G m θ H :=
   (reflectionPositive_iff_hcross_of_one_regular hd hM h hm).mpr
     ((crossForm_nonpos_iff_posSemidef hM h m).mpr hps)
+
+/-! ## 8. Regularity removed
+
+§§1–4 need a scalar `s`, which exists only because the degrees agree. They do not have to. Write
+`Dm` for the diagonal matrix of `deg p + m²` and `Dinv` for its entrywise reciprocal — no general
+matrix inverse is used, the two are shown mutually inverse by one diagonal multiplication — and
+the same two substitutions run:
+
+> **`green_eq_two_terms`** — `green = Dinv + Dinv * A * Dinv + green * A * Dinv * A * Dinv`.
+
+At a mirrored entry the first term still vanishes and the second is still the cross-cut
+adjacency, now **weighted**: `crossAdj p q / ((m² + deg p) * (m² + deg q))`. The two weights come
+out matched because `IsRefl.degree` says a mirror image has the same degree as its original —
+without that the leading term would not even be symmetric in `p` and `q`.
+
+This is the restriction the file's own header used to name as not removed. The consumer is the
+BOX, which is not regular at its boundary; the torus and the cycle were already covered.
+-/
+
+/-- The diagonal of `massive`: degree plus mass squared. -/
+noncomputable def Dm (G : SimpleGraph V) [DecidableRel G.Adj] (m : ℝ) : Matrix V V ℝ :=
+  Matrix.diagonal fun p => (G.degree p : ℝ) + m ^ 2
+
+/-- Its entrywise reciprocal. Positive for `m ≠ 0`, so no general matrix inverse is needed. -/
+noncomputable def Dinv (G : SimpleGraph V) [DecidableRel G.Adj] (m : ℝ) : Matrix V V ℝ :=
+  Matrix.diagonal fun p => ((G.degree p : ℝ) + m ^ 2)⁻¹
+
+omit [DecidableEq V] in
+theorem weight_pos (hm : m ≠ 0) (p : V) : (0 : ℝ) < (G.degree p : ℝ) + m ^ 2 := by
+  have h1 : (0 : ℝ) ≤ (G.degree p : ℝ) := Nat.cast_nonneg _
+  have h2 : (0 : ℝ) < m ^ 2 := by positivity
+  linarith
+
+theorem Dm_mul_Dinv (hm : m ≠ 0) : Dm G m * Dinv G m = 1 := by
+  rw [Dm, Dinv, Matrix.diagonal_mul_diagonal]
+  rw [show (fun p => ((G.degree p : ℝ) + m ^ 2) * ((G.degree p : ℝ) + m ^ 2)⁻¹) = fun _ => (1 : ℝ)
+    from funext fun p => mul_inv_cancel₀ (ne_of_gt (weight_pos hm p))]
+  exact Matrix.diagonal_one
+
+theorem massive_eq_Dm_sub_adj (m : ℝ) :
+    GraphLaplacian.massive G m = Dm G m - G.adjMatrix ℝ := by
+  ext p q
+  rw [GraphLaplacian.massive_apply, Matrix.sub_apply, Dm, Matrix.diagonal_apply,
+    SimpleGraph.adjMatrix_apply]
+
+/-- **ONE SUBSTITUTION, WITHOUT REGULARITY**: `green = Dinv + green * A * Dinv`. -/
+theorem green_eq_one_term (hm : m ≠ 0) :
+    GraphLaplacian.green G m
+      = Dinv G m + GraphLaplacian.green G m * G.adjMatrix ℝ * Dinv G m := by
+  have h1 : GraphLaplacian.green G m * GraphLaplacian.massive G m = 1 :=
+    GraphLaplacian.green_mul_massive G hm
+  rw [massive_eq_Dm_sub_adj m, Matrix.mul_sub, sub_eq_iff_eq_add] at h1
+  calc GraphLaplacian.green G m
+      = GraphLaplacian.green G m * (Dm G m * Dinv G m) := by rw [Dm_mul_Dinv hm, Matrix.mul_one]
+    _ = (GraphLaplacian.green G m * Dm G m) * Dinv G m := by rw [Matrix.mul_assoc]
+    _ = (1 + GraphLaplacian.green G m * G.adjMatrix ℝ) * Dinv G m := by rw [h1]
+    _ = _ := by rw [Matrix.add_mul, Matrix.one_mul]
+
+/-- **TWO SUBSTITUTIONS, WITHOUT REGULARITY.** The general form of `sq_smul_green`. -/
+theorem green_eq_two_terms (hm : m ≠ 0) :
+    GraphLaplacian.green G m
+      = Dinv G m + Dinv G m * G.adjMatrix ℝ * Dinv G m
+        + GraphLaplacian.green G m * G.adjMatrix ℝ * Dinv G m * G.adjMatrix ℝ * Dinv G m := by
+  conv_lhs => rw [green_eq_one_term hm]
+  conv_lhs => rw [green_eq_one_term hm]
+  rw [Matrix.add_mul, Matrix.add_mul, add_assoc]
+
+/-- **THE WEIGHTED LEADING TERM.** `IsRefl.degree` is what makes the two weights match: a mirror
+image has the same degree as its original, so the coefficient is symmetric in `p` and `q`. -/
+theorem Dinv_adj_Dinv_mirror (h : IsRefl G θ) (p q : V) :
+    (Dinv G m * G.adjMatrix ℝ * Dinv G m) (θ p) q
+      = crossAdj G θ p q * (((G.degree p : ℝ) + m ^ 2) * ((G.degree q : ℝ) + m ^ 2))⁻¹ := by
+  rw [Matrix.mul_assoc, Dinv, Matrix.diagonal_mul, Matrix.mul_diagonal, adjMatrix_mirror h p q,
+    h.degree p]
+  rw [mul_inv]
+  ring
+
+/-- **THE GREEN FUNCTION AT A MIRRORED ENTRY, WITH NO REGULARITY.** -/
+theorem green_mirror_general (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ) (hm : m ≠ 0)
+    {p q : V} (hp : p ∈ H) (hq : q ∈ H) :
+    GraphLaplacian.green G m (θ p) q
+      = crossAdj G θ p q * (((G.degree p : ℝ) + m ^ 2) * ((G.degree q : ℝ) + m ^ 2))⁻¹
+        + (GraphLaplacian.green G m * G.adjMatrix ℝ * Dinv G m * G.adjMatrix ℝ * Dinv G m)
+            (θ p) q := by
+  have hg := congrFun (congrFun (green_eq_two_terms (G := G) (m := m) hm) (θ p)) q
+  rw [Matrix.add_apply, Matrix.add_apply, Dinv, Matrix.diagonal_apply,
+    if_neg (mirror_ne hM hp hq), zero_add, ← Dinv, Dinv_adj_Dinv_mirror h p q] at hg
+  exact hg
 
 end GreenExpansion
