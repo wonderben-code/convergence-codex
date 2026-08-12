@@ -1,4 +1,4 @@
-import CrossBlockStructure
+import GreenLargeMass
 
 /-!
 # The `A²` class was never a class of regular graphs — it is a class that FORCES regularity
@@ -429,5 +429,142 @@ theorem bipGraph_srg :
   norm_num
 
 end StronglyRegular
+
+/-! ## 7. And the numerical threshold is VACUOUS
+
+`hK : 0 < (k + m²)² − α − β(k + m²)` is the last hypothesis, and it looks like a real condition on
+the mass. It is not. Write `f(x) = x² − βx − α`; the threshold is `f(k + m²) > 0`.
+
+**Three facts, and the first is the one the estate never had.** Multiplying `A² = α·1 + β·A + γ·J`
+on the right by `J` and using `A·J = k·J` gives
+
+    k² = α + β·k + γ·n,    i.e.    f(k) = γ·n
+
+(`sq_degree_eq`), the classical counting identity of a strongly regular graph, here obtained from
+the matrices. Then `γ ≥ 0` (§5) and `β + γ ≤ k` (§6, a set of common neighbours sits inside a
+neighbourhood), so `2k − β ≥ k ≥ 0`. Expanding,
+
+    f(k + m²) = f(k) + (2k − β)·m² + m⁴ = γ·n + (2k − β)·m² + m⁴ ≥ m⁴ > 0.
+
+**So `hK` holds at every nonzero mass, on every graph in the class that has an edge and a
+non-edge.** The threshold was never selecting masses; it was recording that `k + m²` sits above the
+adjacency spectrum, which it does automatically because `k` is the top of that spectrum and `m² > 0`
+— proved here by counting rather than by Perron–Frobenius.
+
+## What the estate's central converse actually needs
+
+`reflectionPositive_iff_hcross_of_adjSq` was stated with five hypotheses. Four of them are gone:
+
+* `hd` — implied (§1);
+* `hγ` — implied (§5);
+* `hK` — implied (§7);
+* and the `d` in the statement is `α + γ`.
+
+What is left is the reflection data, a nonzero mass, the identity, and **two structural conditions:
+the graph has an edge and has a non-edge.** Both are needed and neither is cosmetic — the empty
+graph makes `β` arbitrary and the complete graph makes `γ` arbitrary, so on those two the
+coefficients are not functions of the graph and no argument from them can be (§5).
+-/
+
+section ThresholdVacuous
+
+variable {G : SimpleGraph V} [DecidableRel G.Adj] {d : ℕ} {m : ℝ}
+
+omit [DecidableEq V] in
+/-- On a `d`-regular graph the adjacency matrix acts on the all-ones matrix as `d`. -/
+theorem adjMatrix_mul_allOnes (hd : G.IsRegularOfDegree d) :
+    G.adjMatrix ℝ * allOnes V = (d : ℝ) • allOnes V := by
+  ext p q
+  rw [Matrix.mul_apply]
+  simp only [allOnes, Matrix.smul_apply, smul_eq_mul, mul_one]
+  rw [GreenLargeMass.adj_row_sum p, hd p]
+
+/-- **THE COUNTING IDENTITY OF A STRONGLY REGULAR GRAPH, FROM THE MATRICES.** Multiply the identity
+by `J` on the right: the left becomes `k²·J` and the right `(α + βk + γn)·J`. -/
+theorem sq_degree_eq [Nonempty V] (hd : G.IsRegularOfDegree d)
+    (hA : G.adjMatrix ℝ * G.adjMatrix ℝ
+      = α • (1 : Matrix V V ℝ) + β • G.adjMatrix ℝ + γ • allOnes V) :
+    (d : ℝ) ^ 2 = α + β * (d : ℝ) + γ * (Fintype.card V : ℝ) := by
+  have hAJ := adjMatrix_mul_allOnes hd (V := V) (G := G)
+  have h : G.adjMatrix ℝ * G.adjMatrix ℝ * allOnes V
+      = (α • (1 : Matrix V V ℝ) + β • G.adjMatrix ℝ + γ • allOnes V) * allOnes V := by rw [hA]
+  rw [Matrix.mul_assoc, hAJ, Matrix.mul_smul, hAJ, add_mul, add_mul, Matrix.smul_mul,
+    Matrix.smul_mul, Matrix.smul_mul, Matrix.one_mul, hAJ, allOnes_mul_allOnes] at h
+  have hpt := congrFun (congrFun h (Classical.arbitrary V)) (Classical.arbitrary V)
+  simp only [allOnes, Matrix.smul_apply, smul_eq_mul, Matrix.add_apply] at hpt
+  nlinarith [hpt]
+
+/-- **THE THRESHOLD IS VACUOUS.** No mass is excluded: `hK` follows from the identity, a nonzero
+mass, and the two counting facts of §§5–6. -/
+theorem hK_of_adjSq [Nonempty V] (hd : G.IsRegularOfDegree d)
+    (hA : G.adjMatrix ℝ * G.adjMatrix ℝ
+      = α • (1 : Matrix V V ℝ) + β • G.adjMatrix ℝ + γ • allOnes V)
+    (hm : m ≠ 0) (hγ : 0 ≤ γ) (hlam : β + γ ≤ (d : ℝ)) :
+    0 < ((d : ℝ) + m ^ 2) ^ 2 - α - β * ((d : ℝ) + m ^ 2) := by
+  have hsq := sq_degree_eq hd hA
+  have hn : (0 : ℝ) ≤ (Fintype.card V : ℝ) := Nat.cast_nonneg _
+  have hdn : (0 : ℝ) ≤ (d : ℝ) := Nat.cast_nonneg _
+  have hm2 : 0 < m ^ 2 := by positivity
+  have hm4 : 0 < m ^ 4 := by positivity
+  nlinarith [hsq, mul_nonneg hγ hn, mul_nonneg (by linarith : (0:ℝ) ≤ (d:ℝ) - β) (le_of_lt hm2)]
+
+/-- The common-neighbour bound of §6 in the form `hK_of_adjSq` wants: `λ ≤ k`. -/
+theorem beta_add_gamma_le_degree
+    (hA : G.adjMatrix ℝ * G.adjMatrix ℝ
+      = α • (1 : Matrix V V ℝ) + β • G.adjMatrix ℝ + γ • allOnes V)
+    {r t : V} (hrt : r ≠ t) (hedge : G.Adj r t) :
+    β + γ ≤ (G.degree t : ℝ) := by
+  rw [beta_add_gamma_eq_common_of_adjSq hA hrt hedge]
+  exact_mod_cast Finset.card_filter_le _ _
+
+/-! ### The converse with everything implied stripped away -/
+
+/-- **WHAT THE ESTATE'S CENTRAL CONVERSE ACTUALLY NEEDS.** The reflection data, a nonzero mass, the
+`A²` identity, and two structural conditions: an edge and a non-edge. Compare
+`CrossPosSemidef.reflectionPositive_iff_hcross_of_adjSq`, which asks for `hd`, `hγ` and `hK` as
+well — all three implied, by §1, §5 and §7. -/
+theorem reflectionPositive_iff_hcross_of_adjSq_clean [Nonempty V]
+    {θ : V ≃ V} {H Mir : Finset V}
+    (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ) (hm : m ≠ 0)
+    (hA : G.adjMatrix ℝ * G.adjMatrix ℝ
+      = α • (1 : Matrix V V ℝ) + β • G.adjMatrix ℝ + γ • allOnes V)
+    (hnon : ∃ p q : V, p ≠ q ∧ ¬ G.Adj p q) (hedge : ∃ r t : V, r ≠ t ∧ G.Adj r t) :
+    GraphReflection.ReflectionPositive G m θ H ↔ ∀ w : V → ℝ, crossForm G m θ H w ≤ 0 := by
+  obtain ⟨p, q, hpq, hadj⟩ := hnon
+  obtain ⟨r, t, hrt, hrtadj⟩ := hedge
+  have hγ : (0 : ℝ) ≤ γ := gamma_nonneg_of_adjSq hA hpq hadj
+  have hreg := isRegularOfDegree_of_adjSq hA
+  have hdeg : (G.degree t : ℝ) = ((G.degree (Classical.arbitrary V) : ℕ) : ℝ) := by
+    rw [hreg t]
+  have hlam : β + γ ≤ ((G.degree (Classical.arbitrary V) : ℕ) : ℝ) := by
+    rw [← hdeg]; exact beta_add_gamma_le_degree hA hrt hrtadj
+  refine CrossPosSemidef.reflectionPositive_iff_hcross_of_adjSq hreg hM h hm hγ hA ?_
+  exact hK_of_adjSq hreg hA hm hγ hlam
+
+/-- And the decidable form. **On a strongly regular graph that is neither complete nor empty,
+reflection positivity at any given nonzero mass is decidable, with no numerical side condition at
+all.** -/
+theorem reflectionPositive_iff_isCrossBlock_clean [Nonempty V]
+    {θ : V ≃ V} {H Mir : Finset V}
+    (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ) (hm : m ≠ 0)
+    (hA : G.adjMatrix ℝ * G.adjMatrix ℝ
+      = α • (1 : Matrix V V ℝ) + β • G.adjMatrix ℝ + γ • allOnes V)
+    (hnon : ∃ p q : V, p ≠ q ∧ ¬ G.Adj p q) (hedge : ∃ r t : V, r ≠ t ∧ G.Adj r t) :
+    GraphReflection.ReflectionPositive G m θ H ↔ CrossBlockStructure.IsCrossBlock G θ H :=
+  (reflectionPositive_iff_hcross_of_adjSq_clean hM h hm hA hnon hedge).trans
+    (CrossBlockStructure.hcross_iff_isCrossBlock hM h m)
+
+/-- `K₂,₂` again, now with **no threshold computation anywhere**: it has an edge, it has a
+non-edge, and the rest is `decide`. Compare §4's `bipGraph_reflectionPositive_of_ne`, which had to
+discharge `0 < (2 + m²)(4 + m²)` first. -/
+theorem bipGraph_reflectionPositive_clean {m : ℝ} (hm : m ≠ 0) :
+    GraphReflection.ReflectionPositive IndefiniteCoupling.bipGraph m
+      IndefiniteCoupling.rho IndefiniteCoupling.Hh := by
+  refine (reflectionPositive_iff_isCrossBlock_clean (α := 0) (β := -2) (γ := 2)
+    IndefiniteCoupling.isMirrorHalf_Hh IndefiniteCoupling.isRefl_rho_bip hm bipGraph_adjSq
+    ⟨0, 1, by decide, by decide⟩ ⟨0, 2, by decide, by decide⟩).mpr ?_
+  decide
+
+end ThresholdVacuous
 
 end AdjSqForcesRegular
