@@ -55,7 +55,15 @@
     any Peierls-type bound — the successor watchlist item, a mapped wall.
   * Any connection between β and physics scales; β here is a real number.
 
-  Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 axioms
+  Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry
+
+  CORRECTED IN PLACE 2026-08-12 (ERRATUM 134). This line used to end
+  "0 sorry, 0 axioms", and the second half was false as written: every
+  declaration here that is not a bare definition depends on `propext`,
+  `Classical.choice` and `Quot.sound`, which are axioms. What was meant is
+  "no axioms of this project's own" — a true and much weaker claim, and the
+  one every later file states as "all on the three standard axioms".
+  Checked, not assumed: `#print axioms` over every declaration in this file.
   beyond [propext, Classical.choice, Quot.sound] on every declaration.
 -/
 
