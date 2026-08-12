@@ -1,4 +1,5 @@
 import InverseLimitCPO
+import ReflexiveDomainObstruction
 
 /-!
 # The canonical tower `D, [D → D], [[D → D] → [D → D]], …`
@@ -31,7 +32,7 @@ This file builds it, so the bilimit becomes stateable — and states it.
 > **`Bilimit`** — and now the wall's last ingredient can be written down: that the limit of this
 > tower is isomorphic to its own continuous self-maps.
 
-## What this does NOT do
+## What this does NOT do — SUPERSEDED 2026-08-12, see the note below
 
 **`Bilimit` is not proved.** It is `WALLS` §W8.0's item 3 and it is the whole of what remains of
 that wall. Its proof is a cofinality argument — the limit's self-maps are themselves a limit of the
@@ -40,6 +41,35 @@ levels' self-maps, one level shifted — and none of it is here.
 **Nothing in this file is evidence for it.** Building the tower makes the statement *sayable*; it
 says nothing about whether it is true, and the classical answer being yes is not a proof in this
 estate.
+
+## `Bilimit` IS PROVED, 2026-08-12
+
+The two paragraphs above are kept verbatim and are **both now false of this file**. The cofinality
+argument they describe — *"the limit's self-maps are themselves a limit of the levels' self-maps,
+one level shifted"* — is exactly the proof, and it turned out to be a correct description of it.
+It is assembled in §5 below from three pieces built in `InverseLimitCPO` over the course of the
+same day:
+
+* **`ωSup_roundTripChain`** (§8 there) — the round trips through the levels have the identity as
+  their supremum;
+* **`funLimitEquiv`** (§10) — the self-maps of a limit are the limit of the levels' self-maps, for
+  an **arbitrary** tower;
+* **`shiftEquiv`** (§11) — dropping a tower's bottom level does not change its limit.
+
+**What this file adds is the last link and it is `rfl`:** `funTower (canonical X)` and
+`shift (canonical X)` are the *same tower*, because `level (n+1)` is *defined* as
+`funStep (level n)` and `step (n+1)` as `funPair (step n)`. Composing gives `Bilimit`.
+
+**And the target `WALLS` §W8.0 §1 actually names** — *"a **non-trivial** `D` with `D ≅ [D → D]`"* —
+needs one thing beyond the isomorphism, which the wall's own §2 is entirely about: the witness must
+not be a point. `dInfExists_holds` supplies it, using `Prop` as the seed and
+`embHom_injective` to carry non-triviality from level 0 into the limit.
+
+**What is still NOT here.** `Bilimit` is stated with `Nonempty (… ≃ …)`, a bare type equivalence,
+which is what the estate's `IsDomainReflexive` and `DInfExists` also ask for. `funLimitOrderIso`
+gives the order-isomorphism strengthening for the *arbitrary-tower* statement; **this file does not
+transport it through `shiftEquiv`**, which is not an order isomorphism as stated either. So the
+stronger form of `Bilimit` itself is available in principle and is not proved here.
 -/
 
 namespace CanonicalTower
@@ -138,5 +168,67 @@ def propPt : PtCPO.{0} where
   carrier := Prop
   cpo := inferInstance
   bot := inferInstance
+
+/-! ## 5. The bilimit, proved
+
+**`WALLS` §W8.0 item 3.** Everything general is in `InverseLimitCPO`; what is special to the
+canonical tower is one `rfl` and the choice of a non-trivial seed.
+
+**`funTower_canonical` is definitional and that is the whole trick.** `level X (n+1)` is *defined*
+as `funStep (level X n)`, whose carrier is `(level X n).carrier →𝒄 (level X n).carrier`, which is
+`funTower (canonical X)`'s level `n`; and `step X (n+1)` is *defined* as `funPair (step X n)`,
+which is `funTower (canonical X)`'s step `n`. So the tower of the canonical tower's level self-maps
+**is** the canonical tower with its bottom level removed, on the nose. Had either definition been
+written differently — `level` by a general recursor, `step` with an intervening cast — this would
+be a transport instead, and the section would be longer than it is.
+
+**Non-triviality is the wall's §1 and it is separate from the isomorphism.** `Bilimit` holds for
+`X = PUnit` too, where the limit is a point and the isomorphism is vacuous; the wall asks for a
+witness that is *not* a point, because its §2 proves the naive equation has only trivial solutions
+and the whole subject exists to escape that. `not_subsingleton_limit` carries non-triviality up
+from level 0 by `embHom_injective`, and `Prop` — the seed `propPt` already checked to be a
+`PtCPO` — is not a subsingleton.
+
+**`dInfExists_holds` is therefore the wall's target in the estate's own words**, and
+`dInf_infinite` reads it back through `ReflexiveDomainObstruction`'s own reduction: the witness is
+infinite, which is what that file predicted any witness must be.
+-/
+
+/-- **THE CANONICAL TOWER'S SELF-MAP TOWER IS ITSELF, SHIFTED**, and it is `rfl`. -/
+theorem funTower_canonical (X : PtCPO.{u}) : funTower (canonical X) = shift (canonical X) := rfl
+
+/-- **THE BILIMIT HOLDS.** -/
+theorem bilimit_holds : Bilimit.{u} := by
+  intro X
+  refine ⟨?_⟩
+  have e₁ : (Limit (canonical X) →𝒄 Limit (canonical X)) ≃ Limit (funTower (canonical X)) :=
+    funLimitEquiv (canonical X)
+  have e₂ : Limit (funTower (canonical X)) ≃ Limit (canonical X) := by
+    rw [funTower_canonical]
+    exact shiftEquiv (canonical X)
+  exact (e₁.trans e₂).symm
+
+/-- Level 0 of the canonical tower is `X` itself, so a non-trivial `X` gives a non-trivial limit. -/
+theorem not_subsingleton_limit (X : PtCPO.{u}) (h : ¬ Subsingleton X.carrier) :
+    ¬ Subsingleton (Limit (canonical X)) := by
+  intro hsub
+  refine h ⟨fun a b => ?_⟩
+  exact embHom_injective (canonical X) 0 (hsub.elim _ _)
+
+/-- `Prop` is not a subsingleton: `True ≠ False`. -/
+theorem not_subsingleton_prop : ¬ Subsingleton Prop := by
+  intro h
+  have : True = False := h.elim True False
+  exact this.symm ▸ trivial
+
+/-- **AND SO A NON-TRIVIAL SOLUTION OF SCOTT'S EQUATION EXISTS.** -/
+theorem dInfExists_holds : ReflexiveDomainObstruction.DInfExists := by
+  refine ⟨Limit (canonical propPt), inferInstance, ?_, bilimit_holds propPt⟩
+  exact not_subsingleton_limit propPt not_subsingleton_prop
+
+/-- And it is infinite, by the estate's own reduction. -/
+theorem dInf_infinite :
+    ∃ (D : Type) (_ : OmegaCompletePartialOrder D), ¬ Subsingleton D ∧ Infinite D :=
+  ReflexiveDomainObstruction.dInfExists_infinite dInfExists_holds
 
 end CanonicalTower
