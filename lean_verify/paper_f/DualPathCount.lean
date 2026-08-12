@@ -120,9 +120,13 @@ theorem card_walksTo_bdry_le (σ : Config n) (P : Plaq n) (L : ℕ) :
 
 /-! ### The same sum over TRAILS, with the textbook constant
 
-Added 2026-08-12 alongside `WalkCount` §1b. **Nothing downstream of here consumes it yet**
-and the threshold is unchanged; it is stated because the target half of the rethreading is
-cheap and the producer half is not, so separating them makes the remaining work visible.
+Added 2026-08-12 alongside `WalkCount` §1b. **Nothing downstream of here consumes it, and
+`ERRATUM 126` records that this file is not on the threshold path at all** — it is imported
+by `OuterFaceObstruction` and by nothing else. The sentence that stood here said these sums
+were "the target half of the rethreading"; they are not, because the rethreading the
+threshold needs happens in `PeierlsCover`, where a **cycle** count is bounded by throwing
+the cycle hypothesis away. These statements are kept: they are true, they are the
+boundary-route analogue, and the boundary route may yet want them.
 -/
 
 /-- **AT MOST `|T| · 4 · 3 ^ L` DUAL TRAILS OF LENGTH `L + 1` REACH `T` FROM `P`.** -/
@@ -135,9 +139,10 @@ theorem card_trailsTo_le (σ : Config n) (P : Plaq n) (T : Finset (Plaq n)) (L :
     _ = T.card * (4 * 3 ^ L) := by rw [Finset.sum_const, smul_eq_mul]
 
 /-- **AND AT MOST `4 n · 4 · 3 ^ L` OF THEM RUN FROM `P` TO THE EDGE**, against `4 n · 4 ^ (L+1)`
-for walks. **The chain above still uses the walk count**, because the walks it quantifies
-over are not known to be trails where they are produced — see `WalkCount` §4 for the four
-files that would have to carry `IsTrail` for this to replace it. -/
+for walks. **Not consumed by anything**, and `ERRATUM 126`: the sentence that stood here
+said the chain above still uses the walk count "because the walks it quantifies over are
+not known to be trails where they are produced". The threshold chain does not run through
+this file. See `WalkCount` §4. -/
 theorem card_trailsTo_bdry_le (σ : Config n) (P : Plaq n) (L : ℕ) :
     ∑ Q ∈ bdryPlaq n,
         (((dualGraph σ).finsetWalkLength (L + 1) P Q).filter fun p => p.IsTrail).card

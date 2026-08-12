@@ -357,22 +357,43 @@ theorem card_trails_le_three_pow (σ : Config n) (L : ℕ) (P Q : Plaq n) :
       ≤ 4 * 3 ^ L :=
   card_trails_nb_le (degree_le_four σ) L P Q
 
-/-! ### What this does NOT move, and it is the number a reader will look for
+/-! ### What this does not move YET — and the first version of this paragraph was wrong
 
-**The threshold is unchanged.** `DualPathCount` and `ExplicitThreshold` do not consume the
-cycle count. They consume `card_walksTo_bdry_le`, which bounds **every walk** of length `L`
-from a plaquette to the boundary — not the cycles, and not the trails — and that is where
-the `4 ^ L` producing `8 · exp(-4β)` comes from. Nothing above touches it.
+**`ERRATUM 126`.** This section originally read:
 
-**What rethreading would need**, named so it is a piece of work rather than a hope: the
-walks that chain actually quantifies over would have to be known to be **trails** at the
-point where they are counted, which means the files that produce them —
-`RayWalk.exists_circuit_near_of_down` and the chain into `SideLength`/`SeriesBound` —
-carrying `IsTrail` through. `NB_of_isTrail_cons` is then the only bridge needed, and
-`card_nb_top_le` replaces `card_finsetWalkLength_le`. **That is four files and is not
-begun.** The arithmetic it would buy is recorded in `UNLOCK_WATCHLIST`: the geometric
-ratio `8 · exp(-4β)` becomes `6 · exp(-4β)` and the closed-form threshold moves from about
-`0.69` to about `0.62`.
+> *"**The threshold is unchanged.** `DualPathCount` and `ExplicitThreshold` do not consume
+> the cycle count. They consume `card_walksTo_bdry_le`, which bounds **every walk** of
+> length `L` from a plaquette to the boundary — not the cycles, and not the trails — and
+> that is where the `4 ^ L` producing `8 · exp(-4β)` comes from … the walks that chain
+> actually quantifies over would have to be known to be **trails** … That is four files and
+> is not begun."*
+
+**Every sentence of that trace is false, and it was written without following the chain.**
+`DualPathCount` is imported by exactly one file, `OuterFaceObstruction`, and is **not on
+the threshold path at all**. The path is
+`ExplicitThreshold.cond_le` → `SeriesBound.sum_le_cube` and
+`PeierlsConditional.plusFamily_sum_le` → `SideLength.sum_family_le` →
+`PeierlsCover.card_peierlsFamily_le` → **`PeierlsCover.card_cycCandidates_le`**, and that
+last one counts
+
+```
+(((fullDual n).finsetWalkLength L Q Q).filter fun w => w.IsCycle)
+```
+
+— **cycles**, which it then bounds by dropping the `IsCycle` filter with
+`Finset.card_filter_le` and applying the bare closed-walk count. **So the `4 ^ L` that
+produces `8 · exp(-4β)` is a cycle count with the cycle hypothesis thrown away**, which is
+exactly what `card_cycles_nb_le` above replaces. No trail-carrying through producer files
+is needed; the hypothesis is already there and is being discarded one line before it would
+pay.
+
+**So the improvement applies, and it is not plumbed in as of this commit.** What it needs:
+`card_cycCandidates_le` bounding by `(2r+1)^2 · 4 · 3^(L-1)` instead of `(2r+1)^2 · 4^L`,
+and then the geometric ratio in `SeriesBound` going from `4·q` to `3·q`, i.e. the
+hypothesis `8 · exp(-4β) ≤ 1/2` becoming `6 · exp(-4β) ≤ 1/2`, through `PeierlsCover`,
+`SideLength`, `PeierlsConditional`, `SeriesBound` and `ExplicitThreshold`. **Until that
+lands the published threshold is unchanged** — which is the one thing the original
+paragraph got right, and for the wrong reason.
 -/
 
 end WalkCount
