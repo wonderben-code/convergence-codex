@@ -23,6 +23,9 @@ conditional theorem whose hypothesis nothing satisfies proves nothing"* — so t
 > `p ↦ p + 2`, the cross-coupling is **`+2` at an explicit vector**. Hence
 > **`not_hcross`**: the standing hypothesis is FALSE here.
 
+> And then §§4–5 decide the graph and turn that into a **necessity** result — see *What this does
+> and does not settle* below.
+
 ## Why it takes four vertices and two edges, and why no lattice does this
 
 `crossForm G m θ H w = ∑_{p ∈ H} ∑_{q ∈ H} w p · w q · massive p (θ q)`, and off the diagonal
@@ -47,10 +50,40 @@ adjacent to the *other* one's mirror image, which is the whole of the constructi
 statement about graphs, and there is now a graph in the estate where it applies and
 `strict_iff_not_supportedIsotropic` cannot be stated at all.
 
-**It does not exhibit a supported isotropic vector here**, so it does not decide whether *this*
-graph is strict, and it makes no claim either way — deciding it means deciding whether such a
-vector exists, which is a computation this file does not do. **NOT ATTEMPTED**, in the sense
-`ERRATUM 71` addendum 3 fixes: nothing was tried.
+**SUPERSEDED WITHIN THE UNIT, and the superseded text is kept because the plan it records was
+wrong about its own difficulty.** It read:
+
+> *It does not exhibit a supported isotropic vector here, so it does not decide whether this graph
+> is strict, and it makes no claim either way — deciding it means deciding whether such a vector
+> exists, which is a computation this file does not do. **NOT ATTEMPTED**.*
+
+`PROOF_STRATEGY` §3 says to re-attempt the next rung the moment one lands rather than banking it,
+so the computation was attempted immediately, and it is short. §§4–5 now decide the graph
+completely, and the answer is better than the question:
+
+> **`not_supportedIsotropic`** — no supported isotropic vector exists here. The *reach* clause
+> alone empties the condition: the massive operator reads off `−v 1` at site `2` and `−v 0` at
+> site `3`, so requiring it to vanish outside the half kills both coordinates. Nothing about the
+> coupling is used.
+
+> **`reflectedForm_cvec_neg`** — and the reflected form is nevertheless **strictly negative**, at
+> the same `(1, −1)` that made the coupling positive in §2. So the graph is not strict; it is not
+> even reflection positive.
+
+> **`backward_direction_fails`** — together: **the coupling hypothesis is NECESSARY in
+> `strict_iff_not_supportedIsotropic`, not merely used.** Its backward implication says *no
+> supported isotropic vector ⟹ strict*, and here the premise holds and the conclusion fails.
+> `StrictBiconditional` §6's *"an indefinite coupling breaks the equivalence and this file does
+> not claim otherwise"* is now a theorem rather than a caveat.
+
+**The forward direction is untouched and still holds here** — that is §3b, which carries no
+coupling hypothesis, and §3 of this file records that it applies. What fails is the converse, and
+only the converse.
+
+**No matrix is inverted.** `green` is `massive⁻¹`, but the solve of `massive *ᵥ w = cvec` is done
+by hand on the two `2 × 2` blocks and carried with its denominator cleared (`vraw`), so every
+verification is a polynomial identity in `m` and `green_mul_massive` turns the checked solve
+around. That is why §5 has no side conditions to discharge beyond `m ≠ 0`.
 
 **And it does not weaken anything.** No existing theorem loses a hypothesis and no lattice result
 is touched; what changes is that a hypothesis assumed four times is now known to be a real
@@ -157,5 +190,164 @@ theorem section3b_applies {m : ℝ} (hm : m ≠ 0)
     ¬ (∀ c : Fin 4 → ℝ, c ≠ 0 → (∀ p, p ∉ Hh → p ∉ (∅ : Finset (Fin 4)) → c p = 0) →
         0 < GraphReflection.reflectedForm crossGraph m rho c) :=
   StrictBiconditional.not_strict_of_supportedIsotropic isMirrorHalf_Hh isRefl_rho hm hiso
+
+
+/-! ## 4. No supported isotropic vector lives here
+
+The reach clause alone empties the condition: at site `2` the massive operator reads off `−v 1`
+and at site `3` it reads off `−v 0`, so demanding it vanish outside the half kills both
+coordinates. Nothing about the coupling is used. -/
+
+theorem massive_mulVec_apply_two {v : Fin 4 → ℝ} (m : ℝ) (h2 : v 2 = 0) (h3 : v 3 = 0) :
+    (GraphLaplacian.massive crossGraph m *ᵥ v) 2 = - v 1 := by
+  simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_four, GraphLaplacian.massive_apply, h2, h3]
+  norm_num [show ¬ ((2 : Fin 4) = 0) by decide, show ¬ crossGraph.Adj 2 0 by decide,
+    show ¬ ((2 : Fin 4) = 1) by decide, show crossGraph.Adj 2 1 by decide,
+    show ((2 : Fin 4) = 2) by decide]
+
+theorem massive_mulVec_apply_three {v : Fin 4 → ℝ} (m : ℝ) (h2 : v 2 = 0) (h3 : v 3 = 0) :
+    (GraphLaplacian.massive crossGraph m *ᵥ v) 3 = - v 0 := by
+  simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_four, GraphLaplacian.massive_apply, h2, h3]
+  norm_num [show ¬ ((3 : Fin 4) = 0) by decide, show crossGraph.Adj 3 0 by decide,
+    show ¬ ((3 : Fin 4) = 1) by decide, show ¬ crossGraph.Adj 3 1 by decide,
+    show ((3 : Fin 4) = 3) by decide]
+
+/-- **THE CONDITION IS EMPTY HERE.** -/
+theorem not_supportedIsotropic (m : ℝ) :
+    ¬ StrictBiconditional.SupportedIsotropic crossGraph m rho Hh (∅ : Finset (Fin 4)) := by
+  rintro ⟨v, hv0, hvsupp, -, hreach⟩
+  have h2 : v 2 = 0 := hvsupp 2 (by decide)
+  have h3 : v 3 = 0 := hvsupp 3 (by decide)
+  have r2 := hreach 2 (by decide) (by simp)
+  have r3 := hreach 3 (by decide) (by simp)
+  rw [massive_mulVec_apply_two m h2 h3] at r2
+  rw [massive_mulVec_apply_three m h2 h3] at r3
+  refine hv0 (funext fun p => ?_)
+  fin_cases p
+  · simpa using neg_eq_zero.mp r3
+  · simpa using neg_eq_zero.mp r2
+  · simpa using h2
+  · simpa using h3
+
+/-! ## 5. And the reflected form is NEGATIVE — so the hypothesis is necessary, not merely used
+
+`StrictBiconditional` §6 says *"an indefinite coupling breaks the equivalence and this file does
+not claim otherwise"*. §4 gives one side of that; this gives the other, and together they turn the
+caveat into a theorem.
+
+**No matrix inverse is computed.** `green` is `massive⁻¹`, and rather than invert a `4 × 4` matrix
+the solve is done by hand and checked: `wsol` is exhibited, `massive *ᵥ wsol = cvec` is verified
+entrywise, and `green_mul_massive` turns that into `green *ᵥ cvec = wsol`. -/
+
+/-- The diagonal entry of the massive operator here: degree one plus the mass. -/
+noncomputable def dd (m : ℝ) : ℝ := 1 + m ^ 2
+
+theorem dd_sq_sub_one_pos {m : ℝ} (hm : m ≠ 0) : 0 < dd m ^ 2 - 1 := by
+  have h : 0 < m ^ 2 := by positivity
+  simp only [dd]
+  nlinarith
+
+/-- Every vertex of a perfect matching has one neighbour. -/
+theorem degree_eq_one (p : Fin 4) : crossGraph.degree p = 1 := by revert p; decide
+
+/-- The coefficient family: `+1` and `−1` on the half. Opposite signs again — the same feature
+that made the coupling positive in §2. Written with `if` rather than `![…]` so that evaluating at
+`rho p` is a decidable comparison rather than a list projection. -/
+def cvec : Fin 4 → ℝ := fun p => if p = 0 then 1 else if p = 1 then -1 else 0
+
+/-- The solve of `massive *ᵥ w = cvec`, **cleared of its denominator**: on the block `{0,3}` the
+matrix is `[[d,−1],[−1,d]]` against `(1,0)` and on `{1,2}` the same against `(−1,0)`, so the
+solution is `(d,−d,−1,1)` over `d² − 1`. Carrying the numerator alone keeps every verification
+below a polynomial identity — no inverse is ever written and no denominator ever has to be
+discharged. -/
+noncomputable def vraw (m : ℝ) : Fin 4 → ℝ := fun p =>
+  if p = 0 then dd m else if p = 1 then -dd m else if p = 2 then -1 else 1
+
+/-- **THE SOLVE, CHECKED ENTRYWISE.** Four polynomial identities in `m`. -/
+theorem massive_mulVec_vraw (m : ℝ) :
+    GraphLaplacian.massive crossGraph m *ᵥ vraw m = (dd m ^ 2 - 1) • cvec := by
+  funext p
+  simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_four, GraphLaplacian.massive_apply,
+    degree_eq_one, vraw, cvec, dd, Pi.smul_apply, smul_eq_mul]
+  fin_cases p <;> norm_num [crossGraph, Fin.ext_iff] <;> ring
+
+/-- And so the Green function's action on `cvec` is known without inverting anything:
+`green_mul_massive` turns the checked solve around. -/
+theorem green_mulVec_cvec {m : ℝ} (hm : m ≠ 0) :
+    (dd m ^ 2 - 1) • (GraphLaplacian.green crossGraph m *ᵥ cvec) = vraw m := by
+  rw [← Matrix.mulVec_smul, ← massive_mulVec_vraw m, Matrix.mulVec_mulVec,
+    GraphLaplacian.green_mul_massive crossGraph hm, Matrix.one_mulVec]
+
+/-- **THE REFLECTED FORM, CLEARED OF ITS DENOMINATOR.** Only two of the sixteen terms survive:
+`cvec` is supported on `{0,1}`, `rho 0 = 2` and `rho 1 = 3`, and `vraw` is `−1` at `2` and `+1`
+at `3`. -/
+theorem reflectedForm_cvec_scaled {m : ℝ} (hm : m ≠ 0) :
+    (dd m ^ 2 - 1) * GraphReflection.reflectedForm crossGraph m rho cvec = -2 := by
+  have key : ∀ p : Fin 4,
+      ∑ q, cvec p * cvec q * GraphLaplacian.green crossGraph m (rho p) q
+        = cvec p * (GraphLaplacian.green crossGraph m *ᵥ cvec) (rho p) := by
+    intro p
+    simp only [Matrix.mulVec, dotProduct, Finset.mul_sum]
+    exact Finset.sum_congr rfl fun q _ => by ring
+  have hg : ∀ p : Fin 4,
+      (dd m ^ 2 - 1) * (GraphLaplacian.green crossGraph m *ᵥ cvec) p = vraw m p := by
+    intro p
+    have := congrFun (green_mulVec_cvec hm) p
+    simpa [Pi.smul_apply, smul_eq_mul] using this
+  have hc1 : cvec 1 = -1 := rfl
+  have hc2 : cvec 2 = 0 := rfl
+  have hc3 : cvec 3 = 0 := rfl
+  have hv2 : vraw m 2 = -1 := rfl
+  have hv3 : vraw m 3 = 1 := rfl
+  have e2 := hg 2
+  have e3 := hg 3
+  rw [hv2] at e2
+  rw [hv3] at e3
+  simp only [GraphReflection.reflectedForm, key, Fin.sum_univ_four,
+    show ((rho 0 : Fin 4)) = 2 from rfl, show ((rho 1 : Fin 4)) = 3 from rfl,
+    show ((rho 2 : Fin 4)) = 0 from rfl, show ((rho 3 : Fin 4)) = 1 from rfl,
+    show cvec 0 = 1 from rfl, hc1, hc2, hc3]
+  ring_nf
+  ring_nf at e2 e3
+  linarith [e2, e3]
+
+theorem reflectedForm_cvec_neg {m : ℝ} (hm : m ≠ 0) :
+    GraphReflection.reflectedForm crossGraph m rho cvec < 0 := by
+  have hpos := dd_sq_sub_one_pos hm
+  have h := reflectedForm_cvec_scaled hm
+  nlinarith [h, hpos]
+
+/-- **AND SO THE FORM IS NOT STRICT** — indeed not even nonnegative, so this graph is not
+reflection positive either. -/
+theorem not_strict {m : ℝ} (hm : m ≠ 0) :
+    ¬ (∀ c : Fin 4 → ℝ, c ≠ 0 → (∀ p, p ∉ Hh → p ∉ (∅ : Finset (Fin 4)) → c p = 0) →
+        0 < GraphReflection.reflectedForm crossGraph m rho c) := by
+  intro hstrict
+  have hne : cvec ≠ 0 := fun hc => by
+    have := congrFun hc 0
+    norm_num [cvec] at this
+  have hsupp : ∀ p, p ∉ Hh → p ∉ (∅ : Finset (Fin 4)) → cvec p = 0 := by
+    intro p hp _
+    fin_cases p
+    · exact absurd (by decide : (0 : Fin 4) ∈ Hh) hp
+    · exact absurd (by decide : (1 : Fin 4) ∈ Hh) hp
+    · norm_num [cvec]
+    · norm_num [cvec]
+  exact absurd (hstrict cvec hne hsupp) (not_lt.mpr (reflectedForm_cvec_neg hm).le)
+
+/-- **THE COUPLING HYPOTHESIS IS NECESSARY IN `strict_iff_not_supportedIsotropic`, NOT MERELY
+USED.** Both sides of its backward implication are settled here and they disagree: no supported
+isotropic vector exists, and the form is still not strict. So `hcross` cannot be dropped from that
+direction, and `StrictBiconditional` §6's *"an indefinite coupling breaks the equivalence and this
+file does not claim otherwise"* is now a theorem rather than a caveat.
+
+**What is NOT claimed.** The forward direction is untouched — `StrictBiconditional` §3b proves it
+with no coupling hypothesis at all, and §3 of this file records that it applies here. What fails
+is the converse, and only the converse. -/
+theorem backward_direction_fails {m : ℝ} (hm : m ≠ 0) :
+    ¬ StrictBiconditional.SupportedIsotropic crossGraph m rho Hh (∅ : Finset (Fin 4))
+      ∧ ¬ (∀ c : Fin 4 → ℝ, c ≠ 0 → (∀ p, p ∉ Hh → p ∉ (∅ : Finset (Fin 4)) → c p = 0) →
+            0 < GraphReflection.reflectedForm crossGraph m rho c) :=
+  ⟨not_supportedIsotropic m, not_strict hm⟩
 
 end IndefiniteCoupling
