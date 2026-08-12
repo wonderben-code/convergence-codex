@@ -106,6 +106,15 @@ it fails at **every** nonzero mass. **So the general theorem is strictly weaker 
 one on the only graph where both apply.** That is what a large-mass result should be, and saying it
 is more useful than presenting the two as independent confirmations.
 
+## And then the same theorem without the regularity hypothesis
+
+§§1–5 are `d`-regular because `GreenExpansion.sq_mul_reflectedForm` is. §8 runs the whole argument
+on `GreenExpansion.green_mirror_general` instead, which has no regularity, and asks only for a
+degree ceiling `Δ` — which every finite graph has. The witness has to be reweighted by the
+per-vertex weights the general identity carries, `c p = u p · (deg p + m²)`, and then the leading
+term is *exactly* `−crossForm u` with an `O(m⁻⁶)` remainder. §9 checks the hypotheses are
+satisfiable somewhere §4's are not, on a six-vertex graph that is regular of no degree.
+
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 
@@ -657,5 +666,378 @@ theorem greenHat_bot_two_row_sum {m : ℝ} (hm : m ≠ 0) :
   greenHat_row_sum hm (by simp) 0
 
 end Erratum152
+
+/-! ## 8. The same theorem with REGULARITY REMOVED — queue item 4, on the file's own §4
+
+§§1–5 assume the graph is `d`-regular, because `GreenExpansion.sq_mul_reflectedForm` does. That
+file's §8 already removed regularity from the identity itself
+(`GreenExpansion.green_mirror_general`): at a mirrored entry the Green function is the cross-cut
+adjacency divided by `(deg p + m²)(deg q + m²)`, plus a remainder, and `IsRefl.degree` is what makes
+the two weights match. **The large-mass argument runs on that identity verbatim once the remainder
+is bounded, and the bound needs only a degree ceiling.**
+
+The one change of shape: the leading term is now WEIGHTED, so the witness has to be reweighted. If
+`crossForm u > 0` then the vector `c p = u p · (deg p + m²)` — supported on the half exactly when
+`u` is — has `reflectedForm c = −crossForm u + remainder`, **exactly**, and the remainder is
+`O(m⁻⁶)` against a leading term of order one.
+
+**The general theorem is WEAKER on regular graphs than §4 is**, and that is stated rather than
+hidden. §4's threshold, in the `ℓ¹` mass `S = ∑_H |c|` of the witness, is `d²S² < m²·crossForm`.
+This one is stated in the *weighted* mass `S(m) = ∑_H |u p|(deg p + m²)`, which itself grows like
+`m²`, so the honest reading is the one §9 computes on a concrete graph rather than a constant
+quoted here: at `Δ = 2` and `crossForm = 2` the threshold comes out at `m² > 100`, against §4's
+`m² > 2` on the four-vertex regular witness. **Removing the hypothesis costs roughly two orders of
+magnitude in the mass**, and buys graphs §4 cannot be stated on at all.
+
+§9 exhibits one, `stepGraph`, and exhibits it because the first draft of this paragraph asserted
+one *without checking* — it named the box, on the true grounds that the box is not regular at its
+boundary. That was false: `CrossBlockStructure.isCrossBlock_box` makes the box a block cut at every
+side, so `hcross` HOLDS on the box and this theorem's hypothesis is unsatisfiable there. `ERRATA`
+153.
+-/
+
+section General
+
+open GreenExpansion
+
+variable {G : SimpleGraph V} [DecidableRel G.Adj] {m : ℝ} {θ : V ≃ V} {H Mir : Finset V}
+
+omit [DecidableEq V] in
+/-- Column sums of the adjacency matrix are the degree, `A` being symmetric. -/
+theorem adj_col_sum (q : V) : ∑ s, G.adjMatrix ℝ s q = (G.degree q : ℝ) := by
+  have hsym : ∀ s t : V, G.adjMatrix ℝ s t = G.adjMatrix ℝ t s := by
+    intro s t
+    simp only [SimpleGraph.adjMatrix_apply]
+    by_cases hh : G.Adj s t
+    · rw [if_pos hh, if_pos hh.symm]
+    · rw [if_neg hh, if_neg (fun hc => hh hc.symm)]
+  rw [Finset.sum_congr rfl fun s _ => hsym s q, adj_row_sum q]
+
+theorem Dinv_diag_le (hm : m ≠ 0) (s : V) : Dinv G m s s ≤ (m ^ 2)⁻¹ := by
+  have hpos : (0 : ℝ) < m ^ 2 := by positivity
+  have hdeg : (0 : ℝ) ≤ (G.degree s : ℝ) := Nat.cast_nonneg _
+  rw [Dinv, Matrix.diagonal_apply_eq]
+  gcongr
+  linarith
+
+theorem Dinv_diag_nonneg (hm : m ≠ 0) (s : V) : 0 ≤ Dinv G m s s := by
+  rw [Dinv, Matrix.diagonal_apply_eq]
+  exact le_of_lt (inv_pos.mpr (weight_pos hm s))
+
+/-- The weighted middle factor, off the mirror: `Dinv · A · Dinv` is diagonal-weighted adjacency. -/
+theorem Dinv_adj_Dinv_apply (s q : V) :
+    (Dinv G m * G.adjMatrix ℝ * Dinv G m) s q
+      = Dinv G m s s * G.adjMatrix ℝ s q * Dinv G m q q := by
+  rw [Matrix.mul_assoc, Dinv, Matrix.diagonal_mul, Matrix.mul_diagonal,
+    Matrix.diagonal_apply_eq, Matrix.diagonal_apply_eq]
+  ring
+
+/-- One matrix product in: `green · A` is bounded by `m⁻²` times the degree. -/
+theorem greenA_abs_le (hm : m ≠ 0) (x s : V) :
+    |(GraphLaplacian.green G m * G.adjMatrix ℝ) x s| ≤ (m ^ 2)⁻¹ * (G.degree s : ℝ) := by
+  rw [Matrix.mul_apply]
+  calc |∑ r, GraphLaplacian.green G m x r * G.adjMatrix ℝ r s|
+      ≤ ∑ r, |GraphLaplacian.green G m x r * G.adjMatrix ℝ r s| :=
+        Finset.abs_sum_le_sum_abs _ _
+    _ ≤ ∑ r, (m ^ 2)⁻¹ * G.adjMatrix ℝ r s := by
+        refine Finset.sum_le_sum fun r _ => ?_
+        have hA : 0 ≤ G.adjMatrix ℝ r s := by
+          simp only [SimpleGraph.adjMatrix_apply]; split_ifs <;> norm_num
+        rw [abs_mul, abs_of_nonneg hA]
+        exact mul_le_mul_of_nonneg_right (green_abs_le hm x r) hA
+    _ = (m ^ 2)⁻¹ * (G.degree s : ℝ) := by rw [← Finset.mul_sum, adj_col_sum s]
+
+/-- **THE GENERAL REMAINDER'S ENTRIES ARE `O(m⁻⁶)`**, with a degree ceiling and nothing else. -/
+theorem generalRemainder_abs_le (hm : m ≠ 0) {Δ : ℕ} (hΔ : ∀ v : V, G.degree v ≤ Δ) (x q : V) :
+    |(GraphLaplacian.green G m * G.adjMatrix ℝ * Dinv G m * G.adjMatrix ℝ * Dinv G m) x q|
+      ≤ ((m ^ 2)⁻¹) ^ 3 * (Δ : ℝ) ^ 2 := by
+  have hinvpos : (0 : ℝ) ≤ (m ^ 2)⁻¹ := by positivity
+  have hD : (0 : ℝ) ≤ (Δ : ℝ) := Nat.cast_nonneg _
+  have hassoc : GraphLaplacian.green G m * G.adjMatrix ℝ * Dinv G m * G.adjMatrix ℝ * Dinv G m
+      = (GraphLaplacian.green G m * G.adjMatrix ℝ) * (Dinv G m * G.adjMatrix ℝ * Dinv G m) := by
+    simp only [Matrix.mul_assoc]
+  rw [hassoc, Matrix.mul_apply]
+  have hterm : ∀ s : V, |(GraphLaplacian.green G m * G.adjMatrix ℝ) x s
+      * (Dinv G m * G.adjMatrix ℝ * Dinv G m) s q|
+      ≤ ((m ^ 2)⁻¹ * (Δ : ℝ)) * ((m ^ 2)⁻¹ * G.adjMatrix ℝ s q * (m ^ 2)⁻¹) := by
+    intro s
+    have hA : 0 ≤ G.adjMatrix ℝ s q := by
+      simp only [SimpleGraph.adjMatrix_apply]; split_ifs <;> norm_num
+    have h1 : |(GraphLaplacian.green G m * G.adjMatrix ℝ) x s| ≤ (m ^ 2)⁻¹ * (Δ : ℝ) :=
+      le_trans (greenA_abs_le hm x s)
+        (mul_le_mul_of_nonneg_left (by exact_mod_cast hΔ s) hinvpos)
+    have h2 : |(Dinv G m * G.adjMatrix ℝ * Dinv G m) s q|
+        ≤ (m ^ 2)⁻¹ * G.adjMatrix ℝ s q * (m ^ 2)⁻¹ := by
+      rw [Dinv_adj_Dinv_apply, abs_of_nonneg
+        (mul_nonneg (mul_nonneg (Dinv_diag_nonneg hm s) hA) (Dinv_diag_nonneg hm q))]
+      exact mul_le_mul
+        (mul_le_mul_of_nonneg_right (Dinv_diag_le hm s) hA) (Dinv_diag_le hm q)
+        (Dinv_diag_nonneg hm q) (mul_nonneg hinvpos hA)
+    rw [abs_mul]
+    exact mul_le_mul h1 h2 (abs_nonneg _) (mul_nonneg hinvpos hD)
+  calc |∑ s, (GraphLaplacian.green G m * G.adjMatrix ℝ) x s
+          * (Dinv G m * G.adjMatrix ℝ * Dinv G m) s q|
+      ≤ ∑ s, |(GraphLaplacian.green G m * G.adjMatrix ℝ) x s
+          * (Dinv G m * G.adjMatrix ℝ * Dinv G m) s q| := Finset.abs_sum_le_sum_abs _ _
+    _ ≤ ∑ s, ((m ^ 2)⁻¹ * (Δ : ℝ)) * ((m ^ 2)⁻¹ * G.adjMatrix ℝ s q * (m ^ 2)⁻¹) :=
+        Finset.sum_le_sum fun s _ => hterm s
+    _ = ((m ^ 2)⁻¹) ^ 3 * (Δ : ℝ) * ∑ s, G.adjMatrix ℝ s q := by
+        rw [Finset.mul_sum]
+        exact Finset.sum_congr rfl fun s _ => by ring
+    _ ≤ ((m ^ 2)⁻¹) ^ 3 * (Δ : ℝ) * (Δ : ℝ) := by
+        rw [adj_col_sum q]
+        have : (G.degree q : ℝ) ≤ (Δ : ℝ) := by exact_mod_cast hΔ q
+        have hc : (0 : ℝ) ≤ ((m ^ 2)⁻¹) ^ 3 * (Δ : ℝ) := by positivity
+        exact mul_le_mul_of_nonneg_left this hc
+    _ = ((m ^ 2)⁻¹) ^ 3 * (Δ : ℝ) ^ 2 := by ring
+
+/-- The cross-cut adjacency summed against a vector is minus the coupling form. -/
+theorem sum_crossAdj_eq (hM : IsMirrorHalf θ H Mir) (m : ℝ) (u : V → ℝ) :
+    ∑ p ∈ H, ∑ q ∈ H, u p * u q * CrossFormMatrix.crossAdj G θ p q = - crossForm G m θ H u := by
+  rw [crossForm_eq_neg_adj hM m u, neg_neg]
+  exact Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => by
+    rw [CrossFormMatrix.crossAdj]
+
+/-- **THE LARGE-MASS CONVERSE, WITH REGULARITY REMOVED.** The witness has to be reweighted by the
+per-vertex weights the general identity carries — `c p = u p · (deg p + m²)` — and then the leading
+term is *exactly* `−crossForm u`, with a remainder that is `O(m⁻⁶)`. Only a degree ceiling is
+assumed, and every finite graph has one. -/
+theorem reflectedForm_neg_of_crossForm_pos_general (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ)
+    (hm : m ≠ 0) {Δ : ℕ} (hΔ : ∀ v : V, G.degree v ≤ Δ)
+    {u : V → ℝ} (hus : ∀ p, p ∉ H → u p = 0)
+    (hbig : ((m ^ 2)⁻¹) ^ 3 * (Δ : ℝ) ^ 2
+              * (∑ p ∈ H, |u p * ((G.degree p : ℝ) + m ^ 2)|) ^ 2 < crossForm G m θ H u) :
+    GraphReflection.reflectedForm G m θ (fun p => u p * ((G.degree p : ℝ) + m ^ 2)) < 0 := by
+  classical
+  set c : V → ℝ := fun p => u p * ((G.degree p : ℝ) + m ^ 2) with hcdef
+  have hcs : ∀ p, p ∉ H → c p = 0 := fun p hp => by rw [hcdef]; simp [hus p hp]
+  set R : Matrix V V ℝ :=
+    GraphLaplacian.green G m * G.adjMatrix ℝ * Dinv G m * G.adjMatrix ℝ * Dinv G m with hRdef
+  -- the exact split, term by term
+  have hterm : ∀ p ∈ H, ∀ q ∈ H, c p * c q * GraphLaplacian.green G m (θ p) q
+      = u p * u q * CrossFormMatrix.crossAdj G θ p q + c p * c q * R (θ p) q := by
+    intro p hp q hq
+    rw [green_mirror_general hM h hm hp hq, ← hRdef, hcdef]
+    have hp0 : ((G.degree p : ℝ) + m ^ 2) ≠ 0 := ne_of_gt (weight_pos hm p)
+    have hq0 : ((G.degree q : ℝ) + m ^ 2) ≠ 0 := ne_of_gt (weight_pos hm q)
+    field_simp
+  have hsplit : GraphReflection.reflectedForm G m θ c
+      = - crossForm G m θ H u + ∑ p ∈ H, ∑ q ∈ H, c p * c q * R (θ p) q := by
+    rw [reflectedForm_eq_sum_half hcs,
+      Finset.sum_congr rfl fun p hp => Finset.sum_congr rfl fun q hq => hterm p hp q hq,
+      Finset.sum_congr rfl fun p _ => Finset.sum_add_distrib, Finset.sum_add_distrib,
+      sum_crossAdj_eq hM m u]
+  -- and the remainder is small
+  have hrem : |∑ p ∈ H, ∑ q ∈ H, c p * c q * R (θ p) q|
+      ≤ ((m ^ 2)⁻¹) ^ 3 * (Δ : ℝ) ^ 2 * (∑ p ∈ H, |c p|) ^ 2 := by
+    have hstep : ∀ p ∈ H, |∑ q ∈ H, c p * c q * R (θ p) q|
+        ≤ |c p| * (((m ^ 2)⁻¹) ^ 3 * (Δ : ℝ) ^ 2) * ∑ q ∈ H, |c q| := by
+      intro p _
+      calc |∑ q ∈ H, c p * c q * R (θ p) q|
+          ≤ ∑ q ∈ H, |c p * c q * R (θ p) q| := Finset.abs_sum_le_sum_abs _ _
+        _ ≤ ∑ q ∈ H, |c p| * |c q| * (((m ^ 2)⁻¹) ^ 3 * (Δ : ℝ) ^ 2) := by
+            refine Finset.sum_le_sum fun q _ => ?_
+            rw [abs_mul, abs_mul]
+            exact mul_le_mul_of_nonneg_left (generalRemainder_abs_le hm hΔ (θ p) q)
+              (mul_nonneg (abs_nonneg _) (abs_nonneg _))
+        _ = |c p| * (((m ^ 2)⁻¹) ^ 3 * (Δ : ℝ) ^ 2) * ∑ q ∈ H, |c q| := by
+            rw [Finset.mul_sum]
+            exact Finset.sum_congr rfl fun q _ => by ring
+    calc |∑ p ∈ H, ∑ q ∈ H, c p * c q * R (θ p) q|
+        ≤ ∑ p ∈ H, |∑ q ∈ H, c p * c q * R (θ p) q| := Finset.abs_sum_le_sum_abs _ _
+      _ ≤ ∑ p ∈ H, |c p| * (((m ^ 2)⁻¹) ^ 3 * (Δ : ℝ) ^ 2) * ∑ q ∈ H, |c q| :=
+          Finset.sum_le_sum hstep
+      _ = ((m ^ 2)⁻¹) ^ 3 * (Δ : ℝ) ^ 2 * (∑ p ∈ H, |c p|) ^ 2 := by
+          rw [← Finset.sum_mul, ← Finset.sum_mul]
+          ring
+  rw [hsplit]
+  have := abs_le.mp hrem
+  linarith [this.1, this.2, hbig]
+
+/-- The same, as a failure of the estate's own predicate. -/
+theorem not_reflectionPositive_of_crossForm_pos_general (hM : IsMirrorHalf θ H Mir)
+    (h : IsRefl G θ) (hm : m ≠ 0) {Δ : ℕ} (hΔ : ∀ v : V, G.degree v ≤ Δ)
+    {u : V → ℝ} (hus : ∀ p, p ∉ H → u p = 0)
+    (hbig : ((m ^ 2)⁻¹) ^ 3 * (Δ : ℝ) ^ 2
+              * (∑ p ∈ H, |u p * ((G.degree p : ℝ) + m ^ 2)|) ^ 2 < crossForm G m θ H u) :
+    ¬ GraphReflection.ReflectionPositive G m θ H := by
+  intro hRP
+  have hcs : ∀ p, p ∉ H → u p * ((G.degree p : ℝ) + m ^ 2) = 0 := fun p hp => by
+    simp [hus p hp]
+  exact absurd (hRP _ hcs)
+    (not_le.mpr (reflectedForm_neg_of_crossForm_pos_general hM h hm hΔ hus hbig))
+
+end General
+
+
+/-! ## 9. Non-vacuity for §8, on a graph that is genuinely NOT regular
+
+§8 is only worth having if its hypotheses are satisfiable somewhere §4's are not, and the first
+draft of §8's header asserted that without checking it — it named *the box*, on the true grounds
+that the box is not regular at its boundary. **That was false**, and `CrossBlockStructure` already
+contained the refutation: `isCrossBlock_box` says the box cut is a block cut at *every* side and
+every dimension, so by `hcross_iff_isCrossBlock` the box satisfies `hcross`, `crossForm ≤ 0`
+everywhere on it, and §8's hypothesis `0 < crossForm u` is **unsatisfiable** there. §8 says nothing
+whatever about the box. `ERRATA` 153.
+
+So here is a witness that is checked instead of asserted. `stepGraph` is two three-vertex paths,
+`2 – 0 – 4` and `1 – 3 – 5`, exchanged by `p ↦ p + 3`:
+
+* it is **not regular** — `stepGraph_degree_zero` is `2` and `stepGraph_degree_one` is `1`, so
+  `stepGraph_not_regular`, and §4 cannot be *stated* here, let alone applied;
+* it has a degree ceiling of `2`, which is all §8 asks;
+* and it fails `hcross` at `us = (1, −1, 0, …)`, with `crossForm = 2`, because `0` is joined to
+  `σ 1 = 4` and `1` to `σ 0 = 3` while neither is joined to its own mirror — the same
+  intransitive triple that refutes `crossGraph`, now carrying a pendant that breaks the regularity.
+
+Hence `stepGraph_not_reflectionPositive_of_large`: reflection positivity fails on `stepGraph` for
+every `m² > 100`. Unlike §5 — where the general theorem was deliberately checked against a case
+already known, and came out strictly weaker — no other route in the estate reaches this graph. That
+is a checkable claim and it was checked: every theorem in `paper_f` whose *conclusion* is a failure
+of `ReflectionPositive` is either about `IndefiniteCoupling.crossGraph` by name
+(`IndefiniteCoupling.not_reflectionPositive`, `GreenExpansion` §7, `CrossBlockStructure` §5) or
+carries `IsRegularOfDegree` as a hypothesis (§4 above); the one remaining occurrence,
+`CrossFormMatrix.not_converse_of_mass_dependent`, takes such a failure as *input*. `stepGraph` is
+regular of no degree, so none of them applies.
+
+Two things are deliberately NOT claimed. This is a *large-mass* statement, so what happens on
+`stepGraph` at small mass is exactly as open as the general question in §6. And `stepGraph` is two
+paths — a hand computation of its Green function, in the style `IndefiniteCoupling` does for
+`crossGraph`, would very likely settle it at every mass. §8 is the first route *in the estate* that
+reaches it, which is a smaller claim than being the only possible one.
+-/
+
+section NonRegularWitness
+
+open GreenExpansion CrossBlockStructure
+
+/-- **TWO THREE-VERTEX PATHS, EXCHANGED BY `+3`.** Adjacency is one arithmetic fact: the labels
+differ by `2` and at least one of them is a path centre (`0` or `3`, the multiples of three). That
+makes `2 – 0 – 4` and `1 – 3 – 5` edges while `1 – 5` and `2 – 4`, which also differ by `2`, are
+not; and it makes the two centres have degree `2` against the leaves' `1`. -/
+def stepGraph : SimpleGraph (Fin 6) where
+  Adj p q := (p - q = 2 ∨ q - p = 2) ∧ (p.val % 3 = 0 ∨ q.val % 3 = 0)
+  symm := by rintro p q ⟨h1, h2⟩; exact ⟨h1.symm, h2.symm⟩
+  loopless := ⟨by
+    intro p hp
+    have h : (0 : Fin 6) = 2 := by rcases hp.1 with h | h <;> rwa [sub_self] at h
+    exact absurd h (by decide)⟩
+
+instance : DecidableRel stepGraph.Adj := fun p q =>
+  inferInstanceAs (Decidable ((p - q = 2 ∨ q - p = 2) ∧ (p.val % 3 = 0 ∨ q.val % 3 = 0)))
+
+/-- The reflection: add three, which swaps `0 ↔ 3`, `1 ↔ 4`, `2 ↔ 5` and carries one path to the
+other. -/
+def sigma6 : Fin 6 ≃ Fin 6 := Equiv.addRight 3
+
+@[simp] theorem sigma6_apply (p : Fin 6) : sigma6 p = p + 3 := rfl
+
+/-- The half: one whole path. -/
+def Hs : Finset (Fin 6) := {0, 1, 2}
+
+/-- The refuting vector — the same opposite signs as `IndefiniteCoupling.wpos`, now with a third
+coordinate on the half that it does not need and does not use. -/
+def us : Fin 6 → ℝ := ![1, -1, 0, 0, 0, 0]
+
+theorem isRefl_sigma6 : GraphReflection.IsRefl stepGraph sigma6 where
+  invol := by intro p; revert p; decide
+  adj := by intro p q; revert p q; decide
+
+theorem isMirrorHalf_Hs : IsMirrorHalf sigma6 Hs (∅ : Finset (Fin 6)) where
+  fixed := by decide
+  disj := by decide
+  split := by decide
+
+/-- The half has three sites, so every sum over it is three terms. -/
+theorem sum_Hs (f : Fin 6 → ℝ) : ∑ p ∈ Hs, f p = f 0 + f 1 + f 2 := by
+  rw [show Hs = ({0, 1, 2} : Finset (Fin 6)) from rfl,
+    Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_singleton]
+  ring
+
+/-! ### The graph is not regular -/
+
+theorem stepGraph_degree_zero : stepGraph.degree 0 = 2 := by decide
+
+theorem stepGraph_degree_one : stepGraph.degree 1 = 1 := by decide
+
+/-- **AND SO §4 DOES NOT APPLY HERE AT ALL.** -/
+theorem stepGraph_not_regular : ¬ ∃ d : ℕ, stepGraph.IsRegularOfDegree d := by
+  rintro ⟨d, hd⟩
+  have h0 := hd 0
+  have h1 := hd 1
+  rw [stepGraph_degree_zero] at h0
+  rw [stepGraph_degree_one] at h1
+  omega
+
+/-- The degree ceiling §8 asks for. -/
+theorem stepGraph_degree_le (v : Fin 6) : stepGraph.degree v ≤ 2 := by revert v; decide
+
+/-! ### And it fails the coupling hypothesis -/
+
+/-- The cut relation on `stepGraph` is intransitive at `(0, 1, 0)`, exactly as on `crossGraph`. -/
+theorem not_isCrossBlock_stepGraph : ¬ IsCrossBlock stepGraph sigma6 Hs := by decide
+
+/-- **THE COUPLING IS `+2` HERE TOO.** Only the two off-diagonal terms survive: `0` is joined to
+`σ 1 = 4` and `1` to `σ 0 = 3`, while `0` is not joined to `σ 0 = 3` nor `1` to `σ 1 = 4`. The
+pendant sites contribute nothing — `us` vanishes at `2`, and `2` is joined to no mirror at all. -/
+theorem crossForm_step_pos (m : ℝ) : crossForm stepGraph m sigma6 Hs us = 2 := by
+  have h := sum_crossAdj_eq (G := stepGraph) (θ := sigma6) (H := Hs)
+    (Mir := (∅ : Finset (Fin 6))) isMirrorHalf_Hs m us
+  have hs : ∑ p ∈ Hs, ∑ q ∈ Hs, us p * us q * CrossFormMatrix.crossAdj stepGraph sigma6 p q
+      = -2 := by
+    simp only [sum_Hs, CrossFormMatrix.crossAdj, sigma6_apply]
+    norm_num [us, show ((1 : Fin 6) + 3) = 4 from rfl, show ((2 : Fin 6) + 3) = 5 from rfl,
+      show ((0 : Fin 6) + 3) = 3 from rfl,
+      show ¬ stepGraph.Adj 0 3 by decide, show stepGraph.Adj 0 4 by decide,
+      show ¬ stepGraph.Adj 0 5 by decide, show stepGraph.Adj 1 3 by decide,
+      show ¬ stepGraph.Adj 1 4 by decide, show ¬ stepGraph.Adj 1 5 by decide,
+      show ¬ stepGraph.Adj 2 3 by decide, show ¬ stepGraph.Adj 2 4 by decide,
+      show ¬ stepGraph.Adj 2 5 by decide]
+  rw [hs] at h
+  linarith
+
+theorem us_supported : ∀ p, p ∉ Hs → us p = 0 := by
+  intro p hp
+  fin_cases p <;> simp_all [us, Hs]
+
+/-- The `ℓ¹` mass §8's threshold is measured against, computed exactly: the weights are the two
+degrees, `2` at the centre and `1` at the leaf. -/
+theorem us_weighted_sum (m : ℝ) :
+    ∑ p ∈ Hs, |us p * ((stepGraph.degree p : ℝ) + m ^ 2)| = 3 + 2 * m ^ 2 := by
+  have hm : (0 : ℝ) ≤ m ^ 2 := sq_nonneg m
+  have e0 : us 0 = 1 := by simp [us]
+  have e1 : us 1 = -1 := by simp [us]
+  have e2 : us 2 = 0 := by simp [us]
+  rw [sum_Hs (fun p => |us p * ((stepGraph.degree p : ℝ) + m ^ 2)|), e0, e1, e2,
+    stepGraph_degree_zero, stepGraph_degree_one, show stepGraph.degree 2 = 1 by decide]
+  push_cast
+  rw [one_mul, zero_mul, abs_zero,
+    abs_of_nonneg (show (0 : ℝ) ≤ 2 + m ^ 2 by linarith),
+    show (-1 : ℝ) * (1 + m ^ 2) = -(1 + m ^ 2) by ring, abs_neg,
+    abs_of_nonneg (show (0 : ℝ) ≤ 1 + m ^ 2 by linarith)]
+  ring
+
+/-- **§8 FIRES ON A GRAPH §4 CANNOT SEE.** -/
+theorem stepGraph_not_reflectionPositive_of_large {m : ℝ} (hm : 100 < m ^ 2) :
+    ¬ GraphReflection.ReflectionPositive stepGraph m sigma6 Hs := by
+  have hm0 : m ≠ 0 := by
+    intro h
+    rw [h] at hm
+    norm_num at hm
+  refine not_reflectionPositive_of_crossForm_pos_general (u := us) (Δ := 2)
+    isMirrorHalf_Hs isRefl_sigma6 hm0 stepGraph_degree_le us_supported ?_
+  rw [crossForm_step_pos, us_weighted_sum]
+  have ht : (0 : ℝ) < m ^ 2 := by linarith
+  have hcube : (0 : ℝ) < (m ^ 2) ^ 3 := by positivity
+  have hrw : (m ^ 2)⁻¹ ^ 3 * ((2 : ℕ) : ℝ) ^ 2 * (3 + 2 * m ^ 2) ^ 2
+      = (4 * (3 + 2 * m ^ 2) ^ 2) / ((m ^ 2) ^ 3) := by
+    push_cast
+    rw [inv_pow]
+    field_simp
+    ring
+  rw [hrw, div_lt_iff₀ hcube]
+  nlinarith [hm, ht, mul_pos (show (0 : ℝ) < m ^ 2 - 100 by linarith) ht]
+
+end NonRegularWitness
 
 end GreenLargeMass
