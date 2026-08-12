@@ -696,10 +696,11 @@ The one change of shape: the leading term is now WEIGHTED, so the witness has to
 **The general theorem is WEAKER on regular graphs than §4 is**, and that is stated rather than
 hidden. §4's threshold, in the `ℓ¹` mass `S = ∑_H |c|` of the witness, is `d²S² < m²·crossForm`.
 This one is stated in the *weighted* mass `S(m) = ∑_H |u p|(deg p + m²)`, which itself grows like
-`m²`, so the honest reading is the one §9 computes on a concrete graph rather than a constant
-quoted here: at `Δ = 2` and `crossForm = 2` the threshold comes out at `m² > 100`, against §4's
-`m² > 2` on the four-vertex regular witness. **Removing the hypothesis costs roughly two orders of
-magnitude in the mass**, and buys graphs §4 cannot be stated on at all.
+`m²`, so the two cannot be compared as written. **The comparison that means anything is the two
+theorems on the SAME graph**, and §9 does it: on `IndefiniteCoupling.crossGraph`, which is
+`1`-regular so both apply, §4 gives `m² > 2` and §8 gives `m² > 4`
+(`crossGraph_not_reflectionPositive_general_of_four_lt`). **A factor of two is the honest price of
+removing the hypothesis**, and it buys graphs §4 cannot be stated on at all.
 
 §9 exhibits one, `stepGraph`, and exhibits it because the first draft of this paragraph asserted
 one *without checking* — it named the box, on the true grounds that the box is not regular at its
@@ -903,7 +904,9 @@ So here is a witness that is checked instead of asserted. `stepGraph` is two thr
   intransitive triple that refutes `crossGraph`, now carrying a pendant that breaks the regularity.
 
 Hence `stepGraph_not_reflectionPositive_of_large`: reflection positivity fails on `stepGraph` for
-every `m² > 100`. Unlike §5 — where the general theorem was deliberately checked against a case
+every `m² > 100` — a constant with a clean arithmetic certificate rather than a sharp one; §8's
+hypothesis here is `2(3 + 2m²)² < (m²)³`, which first holds near `m² = 11`, and nothing here
+computes the boundary. Unlike §5 — where the general theorem was deliberately checked against a case
 already known, and came out strictly weaker — no other route in the estate reaches this graph. That
 is a checkable claim and it was checked: every theorem in `paper_f` whose *conclusion* is a failure
 of `ReflectionPositive` is either about `IndefiniteCoupling.crossGraph` by name
@@ -1029,7 +1032,56 @@ theorem us_weighted_sum (m : ℝ) :
     abs_of_nonneg (show (0 : ℝ) ≤ 1 + m ^ 2 by linarith)]
   ring
 
-/-- **§8 FIRES ON A GRAPH §4 CANNOT SEE.** -/
+/-! ### The like-for-like cost of removing the hypothesis, on the one graph where both apply -/
+
+open IndefiniteCoupling in
+/-- The weighted `ℓ¹` mass of `crossGraph`'s refuting vector: the graph is `1`-regular, so every
+weight is `1 + m²`. -/
+theorem wpos_weighted_sum (m : ℝ) :
+    ∑ p ∈ Hh, |wpos p * ((crossGraph.degree p : ℝ) + m ^ 2)| = 2 * (1 + m ^ 2) := by
+  have hm : (0 : ℝ) ≤ m ^ 2 := sq_nonneg m
+  rw [show Hh = ({0, 1} : Finset (Fin 4)) from rfl,
+    Finset.sum_insert (by decide), Finset.sum_singleton,
+    show wpos 0 = 1 by simp [wpos], show wpos 1 = -1 by simp [wpos],
+    degree_eq_one, degree_eq_one]
+  push_cast
+  rw [one_mul, abs_of_nonneg (show (0 : ℝ) ≤ 1 + m ^ 2 by linarith),
+    show (-1 : ℝ) * (1 + m ^ 2) = -(1 + m ^ 2) by ring, abs_neg,
+    abs_of_nonneg (show (0 : ℝ) ≤ 1 + m ^ 2 by linarith)]
+  ring
+
+open IndefiniteCoupling in
+/-- **THE GENERAL THEOREM ON `crossGraph`, WHICH IS WHERE THE COST OF REMOVING THE HYPOTHESIS CAN
+ACTUALLY BE READ.** §5 compares §4's threshold on this graph with `IndefiniteCoupling`'s hand solve.
+The comparison that measures *what regularity was buying* is a different one: **§4 and §8 on the
+SAME graph.** §4 gives `m² > 2` (`crossGraph_not_reflectionPositive_of_two_lt`); §8 gives `m² > 4`.
+**A factor of two, and that is the honest price** — not the ratio between §4 here and §8 on the
+six-vertex graph below, which are different graphs and measure nothing. -/
+theorem crossGraph_not_reflectionPositive_general_of_four_lt {m : ℝ} (hm : 4 < m ^ 2) :
+    ¬ GraphReflection.ReflectionPositive crossGraph m rho Hh := by
+  have hm0 : m ≠ 0 := by
+    intro h
+    rw [h] at hm
+    norm_num at hm
+  have ht : (0 : ℝ) < m ^ 2 := by linarith
+  refine not_reflectionPositive_of_crossForm_pos_general (u := wpos) (Δ := 1)
+    isMirrorHalf_Hh isRefl_rho hm0 (fun v => le_of_eq (degree_eq_one v))
+    CrossBlockStructure.wpos_supported ?_
+  rw [crossForm_pos, wpos_weighted_sum]
+  have hcube : (0 : ℝ) < (m ^ 2) ^ 3 := by positivity
+  have hrw : (m ^ 2)⁻¹ ^ 3 * ((1 : ℕ) : ℝ) ^ 2 * (2 * (1 + m ^ 2)) ^ 2
+      = (4 * (1 + m ^ 2) ^ 2) / ((m ^ 2) ^ 3) := by
+    push_cast
+    rw [inv_pow]
+    field_simp
+    ring
+  rw [hrw, div_lt_iff₀ hcube]
+  nlinarith [ht, mul_pos (show (0 : ℝ) < m ^ 2 - 4 by linarith) ht]
+
+/-- **§8 FIRES ON A GRAPH §4 CANNOT SEE.** The constant `100` is a value with a clean arithmetic
+certificate, **not this theorem's threshold**: §8's hypothesis here is `2(3 + 2m²)² < (m²)³`, which
+first holds somewhere near `m² = 11`. Nothing below computes the sharp boundary and nothing claims
+to. -/
 theorem stepGraph_not_reflectionPositive_of_large {m : ℝ} (hm : 100 < m ^ 2) :
     ¬ GraphReflection.ReflectionPositive stepGraph m sigma6 Hs := by
   have hm0 : m ≠ 0 := by
@@ -1186,7 +1238,8 @@ theorem reflectionPositive_arbitrarily_large_iff_hcross_general (hM : IsMirrorHa
       (fun w => by rw [crossForm_mass_independent hM _ m₀ w]; exact hcross w)
       (fun p hp _ => hcs p hp)
 
-/-- **AND `stepGraph` IS NOW DECIDED IN BOTH DIRECTIONS.** §9 gave the failure at every `m² > 100`;
+/-- **AND `stepGraph` IS NOW DECIDED IN BOTH DIRECTIONS.** §9 gave the failure at every `m² > 100`
+(a proved sufficient value, not a sharp threshold);
 the biconditional turns that into the statement that it is not reflection positive at arbitrarily
 large masses **because** it fails `hcross`, with the two conditions identified rather than merely
 compared. Still open at small mass, exactly as §9 says. -/
