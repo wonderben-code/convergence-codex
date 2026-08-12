@@ -43,10 +43,16 @@ adjacent to the MIRROR of `q`, which is not visibly symmetric in `p` and `q`. It
 symmetrising by hand and half the statements below would carry a factor of two.
 
 **WHAT IT DOES NOT DO.** It does not decide the hypothesis for any graph the estate has not
-already decided, and it is not a route to the necessity question — whether reflection positivity
-*implies* `hcross` in general is untouched here and remains open, `IndefiniteCoupling` having
-settled only that the hypothesis cannot be dropped from the theorem. Restating a condition is
-not proving one, and this file proves no new graph reflection positive.
+already decided. Restating a condition is not proving one, and this file proves no new graph
+reflection positive.
+
+**The necessity question stays open, and §6 constrains it rather than answering it.** Whether
+reflection positivity *implies* `hcross` in general is untouched — `IndefiniteCoupling` settled
+only that the hypothesis cannot be DELETED from the theorem. What §6 adds is a consequence:
+since `crossForm` does not depend on the mass and `ReflectionPositive` does, **a converse at one
+nonzero mass would make reflection positivity the same statement at every nonzero mass**. So the
+converse is falsifiable by a single mass-dependent example, with no cross form computed. No such
+example is exhibited here and none is claimed to exist.
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
@@ -258,5 +264,55 @@ theorem crossForm_nonpos_sub (m : ℝ) (h' : H' ⊆ H)
     rw [← Finset.sum_subset h' fun q _ hq => by rw [if_neg hq]; ring]
     exact Finset.sum_congr rfl fun q hq => by rw [if_pos hp, if_pos hq]
   exact hkey ▸ hc _
+
+/-! ## 6. The open question, and the consequence that makes it falsifiable
+
+`hcross` is SUFFICIENT for `GraphMirrorReflection.reflectionPositive_mirror` — that is the
+theorem — and `IndefiniteCoupling.hcross_necessary_for_positivity` shows it cannot be DELETED,
+by exhibiting one graph where it fails and reflection positivity fails with it. **Whether it is
+necessary in general — whether reflection positivity implies it — is open**, and is named as
+open in this wall's account and in two file headers.
+
+It is not, however, unconstrained, and the constraint is a theorem rather than a feeling.
+**`crossForm` does not depend on the mass** (`crossForm_mass_independent`, proved when the
+coupling was shown to be mass-free) while `ReflectionPositive` plainly does. So a converse would
+force those two facts to meet:
+
+> **`reflectionPositive_mass_independent_of_converse`** — if reflection positivity implies
+> `hcross` at ONE nonzero mass, then reflection positivity at that mass implies it at EVERY
+> nonzero mass.
+
+**That makes the converse falsifiable by a single example**: any graph and half that is
+reflection positive at one nonzero mass and not at another kills it, with no need to compute a
+cross form at all. No such example is exhibited here, and none is claimed to exist.
+-/
+
+/-- **A CONVERSE WOULD MAKE REFLECTION POSITIVITY MASS-INDEPENDENT.** The hypothesis is the
+converse AT ONE MASS; the conclusion is reflection positivity at any other nonzero mass. The
+whole content is that the two steps are at different masses and the middle term is not: `hcross`
+is mass-free, so it carries across, and `reflectionPositive_mirror_of_isHalf` carries it back. -/
+theorem reflectionPositive_mass_independent_of_converse (hH : GraphHalfSpace.IsHalf θ H)
+    (h : IsRefl G θ) {m m' : ℝ} (hm' : m' ≠ 0)
+    (hconv : GraphReflection.ReflectionPositive G m θ H → ∀ w, crossForm G m θ H w ≤ 0)
+    (hrp : GraphReflection.ReflectionPositive G m θ H) :
+    GraphReflection.ReflectionPositive G m' θ H := by
+  have hc := hconv hrp
+  have hc' : ∀ w : V → ℝ, crossForm G m' θ H w ≤ 0 := by
+    intro w
+    rw [← crossForm_mass_independent
+      (Mir := (∅ : Finset V)) (isMirrorHalf_of_isHalf hH) m m' w]
+    exact hc w
+  exact reflectionPositive_mirror_of_isHalf hH h hm' hc'
+
+/-- And the same thing said as the falsification test, so that a reader looking for a way to
+attack the question finds it stated as a task: **a graph and half that is reflection positive at
+one nonzero mass and NOT at another refutes the converse at that graph**, without any cross form
+being computed. -/
+theorem not_converse_of_mass_dependent (hH : GraphHalfSpace.IsHalf θ H) (h : IsRefl G θ)
+    {m m' : ℝ} (hm' : m' ≠ 0)
+    (hrp : GraphReflection.ReflectionPositive G m θ H)
+    (hnot : ¬ GraphReflection.ReflectionPositive G m' θ H) :
+    ¬ (GraphReflection.ReflectionPositive G m θ H → ∀ w : V → ℝ, crossForm G m θ H w ≤ 0) :=
+  fun hconv => hnot (reflectionPositive_mass_independent_of_converse hH h hm' hconv hrp)
 
 end CrossFormMatrix
