@@ -39,6 +39,15 @@ not attempted**, and `ReflexiveDomainObstruction.DInfExists` still names the tar
 
 Nothing here is an approximation of the limit or a partial version of it. A tower whose maps exist
 is not a tower whose limit exists, and this file supplies only the maps.
+
+**THE PARAGRAPH ABOVE SAID "NOT ATTEMPTED" AND IS SUPERSEDED, 2026-08-12.** Items 2 and 3 were
+attempted and they landed — `InverseLimitCPO` builds the limit and its ω-CPO structure, and
+`CanonicalTower.bilimit_holds` and `CanonicalTower.dInfExists_holds` prove the bilimit theorem and
+discharge `ReflexiveDomainObstruction.DInfExists`, which the sentence above says *still names the
+target unproved*. **That clause is now false**; W8 is closed. The paragraph is kept rather than
+rewritten, per `IsingTransferMatrix` §7's precedent: what a file said it was not doing, on the day
+it said it, is part of why the next estimate is worth anything. This file is item 1 and the functor,
+and that is still exactly what it is. Found by `check_ledger.py --attempts` (`ERRATUM 148`).
 -/
 
 namespace EmbeddingProjection
@@ -213,7 +222,12 @@ function-space functor that item 2's tower needs is `funPair`.** What is left is
   it is not attempted.
 
 **Nothing here is an approximation of the limit.** A tower whose maps exist is not a tower whose
-limit exists, and this file supplies only the maps. -/
+limit exists, and this file supplies only the maps.
+
+**SUPERSEDED 2026-08-12, as the header's version of this list is:** both bullets were attempted and
+both landed (`InverseLimitCPO`, `CanonicalTower.bilimit_holds`), and
+`ReflexiveDomainObstruction.DInfExists` is discharged by `CanonicalTower.dInfExists_holds`. Kept as
+written; `ERRATUM 148`. -/
 
 end EPPair
 

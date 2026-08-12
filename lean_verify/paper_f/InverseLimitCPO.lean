@@ -35,6 +35,11 @@ the function-space functor. This file is **item 2**:
 ## What this does NOT do
 
 **The bilimit theorem is not proved, not attempted, and DELIBERATELY NOT NAMED AS A `def` HERE.**
+*(**SUPERSEDED 2026-08-12** — it was stated and proved, exactly as the next paragraph prescribes:
+`CanonicalTower` builds the canonical tower with `OrderBot` alongside and `bilimit_holds` proves
+the theorem, discharging `ReflexiveDomainObstruction.DInfExists` via `dInfExists_holds`. The
+refusal below to name it early is what made the eventual statement the right one, so the paragraph
+is kept rather than rewritten. `ERRATUM 148`.)*
 A first draft of this file did name it, as *"for every tower whose levels are equivalent to the
 continuous self-maps of the level below, the limit is equivalent to its own continuous self-maps"*.
 **That is not the theorem.** The bilimit theorem is about the tower whose steps ARE

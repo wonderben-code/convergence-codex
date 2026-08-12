@@ -266,7 +266,13 @@ which is exactly what `D∞` is and why it takes a construction.
 `D₀ ← D₁ ← D₂ ← ⋯` with `Dₙ₊₁ = Dₙ →𝒄 Dₙ`, the embedding–projection pairs relating consecutive
 levels, and the proof that the limit is a fixed point of the function-space functor. Mathlib has
 the objects and the arrows and the fact that `α →𝒄 β` is again an ω-CPO; it has no inverse limit of
-ω-CPOs at all. -/
+ω-CPOs at all.
+
+**SUPERSEDED 2026-08-12: THIS PREDICATE IS PROVED.** `CanonicalTower.dInfExists_holds` gives a
+witness, built along exactly the three ingredients named above — `EmbeddingProjection` the pairs,
+`InverseLimitCPO` the limit and its ω-CPO structure, `CanonicalTower` the tower and the bilimit —
+and `dInfExists_orderIso` carries the order across as well. The Mathlib absence noted above was
+accurate and is why it took three files. The paragraph is kept as written; `ERRATUM 148`. -/
 def DInfExists : Prop :=
   ∃ (D : Type) (_ : OmegaCompletePartialOrder D), ¬ Subsingleton D ∧ Nonempty (D ≃ (D →𝒄 D))
 
