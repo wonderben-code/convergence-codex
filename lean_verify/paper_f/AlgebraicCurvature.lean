@@ -663,7 +663,7 @@ end GeneralMetric
 
 /-! ## 10. The last clause: `antisymm_left` does not follow from the other two either
 
-§7 recorded, as an open question of this file's own, whether the left antisymmetry follows from
+§16 recorded, as an open question of this file's own, whether the left antisymmetry follows from
 `antisymm_right` and `bianchi` without the pair symmetry. **It does not**, and here is the witness.
 
 The tensor below is three entries on `Fin 3`, antisymmetrised in its last pair so that
@@ -1592,9 +1592,15 @@ theorem lovelock_two_ricci :
 
 end Equivariance
 
-/-! ## 7. What this file does NOT settle
+/-! ## 16. What this file does NOT settle
 
-§7 used to record the question §10 has now answered. What remains outside this file is unchanged:
+**This section was `## 7` until `ERRATUM 140`, and there is no §7 now.** It was written when the
+file ended at §6; sections 8 through 15 were then appended ABOVE it, so its number was the oldest
+in the file and the first to stop matching the layout — the defect `check_ledger.py --sections`
+exists to catch. Renumbering it was cheap here because the only two references to it were inside
+this file. Both are updated.
+
+It used to record the question §10 has now answered. What remains outside this file is unchanged:
 **none of §§5–6, §10, §11 or §12 is a step toward `a₂`.** They are statements about a structure
 with four clauses on a finite index type, and the wall named in the header is untouched by them.
 
