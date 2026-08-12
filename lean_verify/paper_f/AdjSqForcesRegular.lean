@@ -217,4 +217,141 @@ theorem bipGraph_reflectionPositive_of_ne {m : ℝ} (hm : m ≠ 0) :
 
 end DecidableFixedMass
 
+/-! ## 5. The SECOND hypothesis is redundant too — off the diagonal, and with a real exception
+
+§1 read the identity on the diagonal. Read it at an entry `(p, q)` with `p ≠ q` and `p` not
+adjacent to `q`: the identity term vanishes, the adjacency term vanishes, and the all-ones term is
+one. So
+
+    γ = the number of common neighbours of p and q,
+
+a **count** — which settles `hγ : 0 ≤ γ` without assuming it. Both of the class's hypotheses about
+the coefficients are therefore consequences of the identity, on any graph that has two distinct
+non-adjacent vertices.
+
+**AND THE EXCEPTION IS REAL, NOT A TECHNICALITY, WHICH IS WHY IT IS PROVED RATHER THAN NOTED.** On a
+complete graph there is no such pair, and worse: `J = A + 1`, so `1`, `A` and `J` are linearly
+dependent and **the coefficients are not determined by the graph at all.** `completeThree_gamma_one`
+and `completeThree_gamma_neg_one` exhibit the same three-vertex graph written both with `γ = 1` and
+with `γ = −1`. So on complete graphs `hγ` is a genuine condition — on the *representation chosen*,
+not on the graph — and `gamma_nonneg_of_adjSq` cannot be extended to cover them.
+
+**What is invariant even there:** `α + γ` is the degree in every representation, `2` in both of the
+two above. §1's conclusion survives the non-uniqueness that kills §5's.
+-/
+
+section GammaRedundant
+
+variable {G : SimpleGraph V} [DecidableRel G.Adj]
+
+/-- **`γ` IS A COUNT.** At a non-adjacent pair of distinct vertices the identity reads
+`γ = |{common neighbours}|`, so `γ` is determined by the graph and is a cast of a natural number. -/
+theorem gamma_eq_common_of_adjSq
+    (hA : G.adjMatrix ℝ * G.adjMatrix ℝ
+      = α • (1 : Matrix V V ℝ) + β • G.adjMatrix ℝ + γ • allOnes V)
+    {p q : V} (hpq : p ≠ q) (hadj : ¬ G.Adj p q) :
+    γ = (({x ∈ G.neighborFinset q | G.Adj p x} : Finset V).card : ℝ) := by
+  have h := congrFun (congrFun hA p) q
+  simp [allOnes, Matrix.one_apply_ne hpq, SimpleGraph.adjMatrix_apply, hadj] at h
+  exact h.symm
+
+/-- **HENCE `hγ` IS REDUNDANT**, on any graph with two distinct non-adjacent vertices. -/
+theorem gamma_nonneg_of_adjSq
+    (hA : G.adjMatrix ℝ * G.adjMatrix ℝ
+      = α • (1 : Matrix V V ℝ) + β • G.adjMatrix ℝ + γ • allOnes V)
+    {p q : V} (hpq : p ≠ q) (hadj : ¬ G.Adj p q) :
+    0 ≤ γ := by
+  rw [gamma_eq_common_of_adjSq hA hpq hadj]
+  positivity
+
+/-- **THE CONVERSE WITH BOTH COEFFICIENT HYPOTHESES GONE.** What is left is the identity, the
+reflection data, a nonzero mass, the threshold, and the one structural fact that the graph is not
+complete. -/
+theorem reflectionPositive_iff_hcross_of_adjSq'' [Nonempty V] {m : ℝ} {θ : V ≃ V} {H Mir : Finset V}
+    (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ) (hm : m ≠ 0)
+    (hA : G.adjMatrix ℝ * G.adjMatrix ℝ
+      = α • (1 : Matrix V V ℝ) + β • G.adjMatrix ℝ + γ • allOnes V)
+    (hnc : ∃ p q : V, p ≠ q ∧ ¬ G.Adj p q)
+    (hK : 0 < (α + γ + m ^ 2) ^ 2 - α - β * (α + γ + m ^ 2)) :
+    GraphReflection.ReflectionPositive G m θ H ↔ ∀ w : V → ℝ, crossForm G m θ H w ≤ 0 := by
+  obtain ⟨p, q, hpq, hadj⟩ := hnc
+  exact reflectionPositive_iff_hcross_of_adjSq' hM h hm (gamma_nonneg_of_adjSq hA hpq hadj) hA hK
+
+/-- And the decidable form the same way. -/
+theorem reflectionPositive_iff_isCrossBlock'' [Nonempty V] {m : ℝ} {θ : V ≃ V} {H Mir : Finset V}
+    (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ) (hm : m ≠ 0)
+    (hA : G.adjMatrix ℝ * G.adjMatrix ℝ
+      = α • (1 : Matrix V V ℝ) + β • G.adjMatrix ℝ + γ • allOnes V)
+    (hnc : ∃ p q : V, p ≠ q ∧ ¬ G.Adj p q)
+    (hK : 0 < (α + γ + m ^ 2) ^ 2 - α - β * (α + γ + m ^ 2)) :
+    GraphReflection.ReflectionPositive G m θ H ↔ CrossBlockStructure.IsCrossBlock G θ H := by
+  obtain ⟨p, q, hpq, hadj⟩ := hnc
+  exact reflectionPositive_iff_isCrossBlock' hM h hm (gamma_nonneg_of_adjSq hA hpq hadj) hA hK
+
+/-! ### The exception, proved in general: on a complete graph the coefficients form a LINE -/
+
+/-- The complete graph's adjacency matrix is the all-ones matrix minus the identity. -/
+theorem top_adjMatrix_eq (V : Type*) [DecidableEq V] :
+    (⊤ : SimpleGraph V).adjMatrix ℝ = allOnes V - 1 := by
+  ext p q
+  by_cases hpq : p = q
+  · subst hpq; simp [allOnes, SimpleGraph.adjMatrix_apply]
+  · simp [allOnes, SimpleGraph.adjMatrix_apply, Matrix.one_apply_ne hpq, hpq]
+
+/-- The all-ones matrix is `|V|` times idempotent. -/
+theorem allOnes_mul_allOnes (V : Type*) [Fintype V] :
+    allOnes V * allOnes V = (Fintype.card V : ℝ) • allOnes V := by
+  ext p q
+  simp [allOnes, Matrix.mul_apply, Finset.card_univ]
+
+/-- **AND SO THE COEFFICIENTS OF A COMPLETE GRAPH ARE A ONE-PARAMETER FAMILY.** `J = A + 1` makes
+`1`, `A` and `J` linearly dependent, so the identity holds for **every** real `t`:
+
+    A² = (1 + t)·1 + t·A + (|V| − 2 − t)·J.
+
+`γ = |V| − 2 − t` therefore takes every real value, and `hγ : 0 ≤ γ` is a condition on the
+representation rather than on the graph. **`gamma_nonneg_of_adjSq` cannot be extended here**, and
+this is why it asks for a non-adjacent pair rather than for something weaker. -/
+theorem top_adjSq_family (V : Type*) [Fintype V] [DecidableEq V] (t : ℝ) :
+    (⊤ : SimpleGraph V).adjMatrix ℝ * (⊤ : SimpleGraph V).adjMatrix ℝ
+      = (1 + t) • (1 : Matrix V V ℝ) + t • (⊤ : SimpleGraph V).adjMatrix ℝ
+        + ((Fintype.card V : ℝ) - 2 - t) • allOnes V := by
+  rw [top_adjMatrix_eq]
+  simp only [sub_mul, mul_sub, allOnes_mul_allOnes, Matrix.one_mul, Matrix.mul_one]
+  module
+
+/-- `K₃` with `γ = 1`, from the family at `t = 0`. -/
+theorem completeThree_gamma_one :
+    (⊤ : SimpleGraph (Fin 3)).adjMatrix ℝ * (⊤ : SimpleGraph (Fin 3)).adjMatrix ℝ
+      = (1 : ℝ) • (1 : Matrix (Fin 3) (Fin 3) ℝ)
+        + (0 : ℝ) • (⊤ : SimpleGraph (Fin 3)).adjMatrix ℝ + (1 : ℝ) • allOnes (Fin 3) := by
+  have h := top_adjSq_family (Fin 3) 0
+  rw [show ((1 : ℝ) + 0) = 1 by norm_num,
+    show ((Fintype.card (Fin 3) : ℝ) - 2 - 0) = 1 by norm_num [Fintype.card_fin]] at h
+  exact h
+
+/-- **AND THE SAME GRAPH WITH `γ = −1`**, from the family at `t = 2`. Two representations of one
+graph, so no function of the coefficients alone can be a property of the graph — which is exactly
+what `gamma_nonneg_of_adjSq` would have to be if it held here. -/
+theorem completeThree_gamma_neg_one :
+    (⊤ : SimpleGraph (Fin 3)).adjMatrix ℝ * (⊤ : SimpleGraph (Fin 3)).adjMatrix ℝ
+      = (3 : ℝ) • (1 : Matrix (Fin 3) (Fin 3) ℝ)
+        + (2 : ℝ) • (⊤ : SimpleGraph (Fin 3)).adjMatrix ℝ + (-1 : ℝ) • allOnes (Fin 3) := by
+  have h := top_adjSq_family (Fin 3) 2
+  rw [show ((1 : ℝ) + 2) = 3 by norm_num,
+    show ((Fintype.card (Fin 3) : ℝ) - 2 - 2) = -1 by norm_num [Fintype.card_fin]] at h
+  exact h
+
+/-- **`α + γ` IS THE DEGREE IN BOTH**, which is §1 surviving the non-uniqueness that defeats §5:
+`1 + 1 = 2` and `3 + (−1) = 2`, and `K₃` is `2`-regular. **One conclusion of the diagonal argument
+is invariant under a change the off-diagonal argument does not survive**, and that asymmetry is the
+content of this section. -/
+theorem completeThree_alpha_add_gamma (p : Fin 3) :
+    ((⊤ : SimpleGraph (Fin 3)).degree p : ℝ) = 1 + 1
+      ∧ ((⊤ : SimpleGraph (Fin 3)).degree p : ℝ) = 3 + (-1) :=
+  ⟨degree_eq_of_adjSq completeThree_gamma_one p,
+   degree_eq_of_adjSq completeThree_gamma_neg_one p⟩
+
+end GammaRedundant
+
 end AdjSqForcesRegular
