@@ -398,12 +398,16 @@ true — **right**, here. The one estimate that missed was the pessimistic one, 
 the map not existing. That is worth knowing about the next such judgement, and it is not evidence
 that the next one will be right.
 
-**What is still not here, stated so it is not inferred.** `Bilimit` — that the limit of the
-canonical tower is isomorphic to its own continuous function space — needs one thing beyond this
-section: that `⨆ k, embHom k ∘ proj k` is the **identity** on `Limit T`. Every `EPPair` above is a
-map between *two* objects; the bilimit is a statement about the supremum of a chain of self-maps of
-*one* of them, and nothing in this file constructs that chain, let alone computes its supremum.
-`CanonicalTower.Bilimit` remains unproved and this section is not evidence for it.
+**§8 CLIMBS THE RUNG THIS SECTION NAMED — AND THE NAMING WAS WRONG IN A WAY WORTH KEEPING.** The
+paragraph here read: *"`Bilimit` … **needs one thing beyond this section**: that
+`⨆ k, embHom k ∘ proj k` is the **identity** on `Limit T`. Every `EPPair` above is a map between
+two objects; the bilimit is a statement about the supremum of a chain of self-maps of one of them,
+and nothing in this file constructs that chain, let alone computes its supremum."* The chain and
+its supremum are built in §8 and the supremum **is** the identity. But *"needs one thing"* was
+false: closing it does not close `Bilimit`, which needs the self-maps of the limit to be
+**themselves an inverse limit** of the levels' self-maps, and that is not built. The sentence was
+in the paragraph whose whole job is to stop the reader over-reading the section, and it
+over-claimed. See §8 for what actually remains.
 -/
 
 /-- Descending inside a coherent sequence just reads off the lower level. This is coherence,
@@ -451,5 +455,128 @@ def levelPair (k : ℕ) : EPPair (T.carrier k) (Limit T) where
   proj := proj T k
   proj_emb := proj_embHom T k
   emb_proj_le := embHom_proj_le T k
+
+/-! ## 8. The round trips exhaust the limit
+
+**Every element of the limit is the supremum of its own finite approximations.** Going into level
+`k` and back out gives less than you started with (§7); doing it at higher and higher `k` gives
+more and more; and the supremum over all `k` is exactly what you started with. That last point is
+where coherence does the work: at level `n`, the approximation through level `k` is *already exact*
+for every `k ≥ n`, so the chain is eventually constant at each level and its supremum is forced.
+
+**`upTo_succ_left`** is the one new piece of arithmetic — climbing from `k` is climbing from `k+1`
+after one `emb` — and it is what makes the round trips a **chain** rather than an unordered family.
+
+**What this does NOT close, and §7 got this wrong.** §7 said `Bilimit` *"needs one thing beyond
+this section"*, naming this supremum. That was an understatement made inside the paragraph whose
+purpose is to prevent over-reading, which is the worst place for one. `Bilimit` needs the
+continuous **self-maps of the limit** to be themselves the inverse limit of the levels' self-maps —
+`(Limit T →𝒄 Limit T) ≃ Limit (funTower T)`, where `funTower T` is the tower
+`n ↦ (T.carrier n →𝒄 T.carrier n)` with `EPPair.funPair (T.step n)` as its steps. **That tower is
+not constructed anywhere in this estate, and neither is the equivalence.** `ωSup_roundTripChain` is
+the standard *first* lemma of that argument — it is what lets a self-map be recovered from its
+level approximations — and it is one lemma, not the theorem. Two further steps sit after it: the
+equivalence just named, and then, for the canonical tower specifically, that shifting a tower by
+one level does not change its limit. `CanonicalTower.Bilimit` remains unproved and neither section
+here is evidence for it.
+-/
+
+/-- Climbing from `k` is climbing from `k+1` after one `emb`. The lemma that makes the round trips
+increase with `k`. -/
+theorem upTo_succ_left (k : ℕ) : ∀ n (h : k + 1 ≤ n) (x : T.carrier k),
+    upTo T k n (Nat.le_of_succ_le h) x = upTo T (k + 1) n h ((T.step k).emb x)
+  | 0, h, _ => absurd h (by omega)
+  | n + 1, h, x => by
+      by_cases hk : k + 1 = n + 1
+      · have hkn : k = n := by omega
+        subst hkn
+        simp [upTo, upTo_self]
+      · have h' : k + 1 ≤ n := by omega
+        have hne : k ≠ n + 1 := by omega
+        simp only [upTo, dif_neg hne, dif_neg hk]
+        rw [upTo_succ_left k n h' x]
+
+/-- Inside a coherent sequence, climbing to level `n` from a higher starting level gives more. -/
+theorem upTo_le_upTo (y : Limit T) {j n : ℕ} (hjn : j ≤ n) {k : ℕ} (hjk : j ≤ k) :
+    ∀ (hkn : k ≤ n), upTo T j n hjn (y.1 j) ≤ upTo T k n hkn (y.1 k) := by
+  induction k, hjk using Nat.le_induction with
+  | base => intro _; exact le_rfl
+  | succ k hjk ih =>
+      intro hkn
+      have hk : k ≤ n := Nat.le_of_succ_le hkn
+      calc upTo T j n hjn (y.1 j)
+          ≤ upTo T k n hk (y.1 k) := ih hk
+        _ = upTo T (k + 1) n hkn ((T.step k).emb (y.1 k)) := upTo_succ_left T k n hkn (y.1 k)
+        _ ≤ upTo T (k + 1) n hkn (y.1 (k + 1)) := by
+            refine upTo_mono T (k + 1) n hkn ?_
+            calc (T.step k).emb (y.1 k)
+                = (T.step k).emb ((T.step k).proj (y.1 (k + 1))) := by rw [y.2 k]
+              _ ≤ y.1 (k + 1) := (T.step k).emb_proj_le _
+
+/-- The round trips increase with the level: below `n` both sides read off `y` exactly, and above
+`n` it is `upTo_le_upTo`. -/
+theorem embHom_proj_mono (y : Limit T) {j k : ℕ} (hjk : j ≤ k) :
+    embHom T j (proj T j y) ≤ embHom T k (proj T k y) := by
+  intro n
+  change embSeq T j (y.1 j) n ≤ embSeq T k (y.1 k) n
+  by_cases hkn : k ≤ n
+  · have hjn : j ≤ n := le_trans hjk hkn
+    simp only [embSeq, dif_pos hkn, dif_pos hjn]
+    exact upTo_le_upTo T y hjn hjk hkn
+  · have hn : n ≤ k := Nat.le_of_lt (Nat.lt_of_not_le hkn)
+    simp only [embSeq, dif_neg hkn]
+    rw [downTo_val T y n k hn]
+    exact (embHom_proj_le T j y) n
+
+/-- The chain of round trips through level `k`, at a fixed point of the limit. -/
+def embProjChain (y : Limit T) : Chain (Limit T) :=
+  ⟨fun k => embHom T k (proj T k y), fun _ _ h => embHom_proj_mono T y h⟩
+
+@[simp] theorem embProjChain_apply (y : Limit T) (k : ℕ) :
+    embProjChain T y k = embHom T k (proj T k y) := rfl
+
+/-- **AND ITS SUPREMUM IS `y` ITSELF.** Upward by §7, since every round trip is `≤ y`; downward
+because the `n`-th round trip is already **exact** at level `n`, so `y.1 n` is in the chain. -/
+theorem ωSup_embProjChain (y : Limit T) : ωSup (embProjChain T y) = y := by
+  apply le_antisymm
+  · refine ωSup_le _ _ fun k => ?_
+    rw [embProjChain_apply]
+    exact embHom_proj_le T k y
+  · intro n
+    have hn : (embProjChain T y n).1 n = y.1 n := by
+      rw [embProjChain_apply]
+      change embSeq T n (y.1 n) n = y.1 n
+      simp [embSeq, upTo_self]
+    calc y.1 n = (embProjChain T y n).1 n := hn.symm
+      _ ≤ (ωSup (embProjChain T y)).1 n := (le_ωSup (embProjChain T y) n) n
+
+/-- Into level `k` and back out, as a continuous self-map of the limit. -/
+def levelRoundTrip (k : ℕ) : Limit T →𝒄 Limit T := (embHom T k).comp (proj T k)
+
+@[simp] theorem levelRoundTrip_apply (k : ℕ) (y : Limit T) :
+    levelRoundTrip T k y = embHom T k (proj T k y) := rfl
+
+/-- The round trips as a chain of **self-maps** of the limit, which is the form the bilimit
+argument consumes and the form §7 said this file did not construct. -/
+def roundTripChain : Chain (Limit T →𝒄 Limit T) :=
+  ⟨fun k => levelRoundTrip T k, fun _ _ h y => embHom_proj_mono T y h⟩
+
+@[simp] theorem roundTripChain_apply (k : ℕ) : roundTripChain T k = levelRoundTrip T k := rfl
+
+/-- **THE SUPREMUM OF THE ROUND TRIPS IS THE IDENTITY ON THE LIMIT.** The bundled form of
+`ωSup_embProjChain`: suprema in `Limit T →𝒄 Limit T` are pointwise, and pointwise this is the
+previous theorem. -/
+theorem ωSup_roundTripChain : ωSup (roundTripChain T) = ContinuousHom.id := by
+  apply ContinuousHom.ext
+  intro y
+  rw [show (ωSup (roundTripChain T)) = ContinuousHom.ωSup (roundTripChain T) from rfl,
+    ContinuousHom.ωSup_apply]
+  have hc : ((roundTripChain T).map ContinuousHom.toMono).map (OrderHom.apply y)
+      = embProjChain T y := by
+    apply OrderHom.ext
+    funext k
+    rfl
+  rw [hc]
+  exact ωSup_embProjChain T y
 
 end InverseLimitCPO
