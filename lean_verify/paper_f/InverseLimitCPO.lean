@@ -186,11 +186,10 @@ with the inequality carried as a hypothesis: `upTo k n h` climbs from `k` to `n`
 descends, and neither mentions a subtraction. The one place a transport survives is the case
 `k = n + 1`, where it is along a decidable equality of naturals.
 
-**What this is NOT.** `embFun` is proved **monotone**, not continuous, so it is a map of ordered
-types and **not yet a `→𝒄`**. Making it one needs `upTo` and `downTo` to commute with `ωSup` — both
-are composites of continuous maps, so it is expected to go through, but **it is not proved
-here** and until it is, `embFun` cannot be the embedding half of an `EPPair` into the limit.
-That is the next rung and it is named rather than assumed. -/
+**§6 CLIMBS THE RUNG THIS SECTION NAMED.** The paragraph here used to read: *"`embFun` is proved
+monotone, not continuous … it is expected to go through, but it is not proved here."* It is proved
+now — `upTo_ωSup`, `downTo_ωSup` and `embHom` — and the expectation was correct, which is worth
+recording because this file's estimates have not always been. -/
 
 def upTo (k : ℕ) : ∀ n, k ≤ n → T.carrier k → T.carrier n
   | 0, h, x => (Nat.le_zero.1 h) ▸ x
@@ -292,5 +291,93 @@ theorem embFun_mono (k : ℕ) {x y : T.carrier k} (hxy : x ≤ y) :
   split
   · exact upTo_mono T k n _ hxy
   · exact downTo_mono T n k _ hxy
+
+
+/-! ## 6. The embedding is continuous
+
+**The rung §5 named, climbed.** `upTo` and `downTo` are composites of the tower's own continuous
+maps together with identity transports along equalities of naturals, so each commutes with `ωSup`;
+the two inductions below say so, and `embHom` assembles them.
+
+**What this does NOT give.** A `→𝒄` is only the *first* `EPPair` field. The second,
+`emb_proj_le : ∀ y, embHom k (proj k y) ≤ y`, is **not proved here**. It looks true — above level
+`k` it is the tower's own `emb_proj_le` applied levelwise, and below `k` coherence makes it an
+equality — but **looking true is what §5 said about continuity, and §5 was writing a cheque.**
+Until it is proved there is no `EPPair (T.carrier k) (Limit T)` in this file, and none is claimed.
+-/
+
+/-- `upTo` bundled as an order homomorphism. -/
+def upToHom (k n : ℕ) (h : k ≤ n) : T.carrier k →o T.carrier n :=
+  ⟨upTo T k n h, fun _ _ hxy => upTo_mono T k n h hxy⟩
+
+/-- `downTo` bundled as an order homomorphism. -/
+def downToHom (n k : ℕ) (h : n ≤ k) : T.carrier k →o T.carrier n :=
+  ⟨downTo T n k h, fun _ _ hxy => downTo_mono T n k h hxy⟩
+
+theorem upTo_ωSup (k : ℕ) : ∀ n (h : k ≤ n) (c : Chain (T.carrier k)),
+    upTo T k n h (ωSup c) = ωSup (c.map (upToHom T k n h))
+  | 0, h, c => by
+      obtain rfl := Nat.le_zero.1 h
+      simp [upTo, upToHom, Chain.map]
+      rfl
+  | n + 1, h, c => by
+      by_cases hk : k = n + 1
+      · subst hk
+        simp [upTo, upToHom, Chain.map]
+        rfl
+      · have h' : k ≤ n := by omega
+        simp only [upTo, dif_neg hk]
+        rw [upTo_ωSup k n h' c, (T.step n).emb.ωScottContinuous.map_ωSup]
+        congr 1
+        apply OrderHom.ext
+        funext i
+        simp [Chain.map, upToHom, upTo, dif_neg hk]
+
+theorem downTo_ωSup (n : ℕ) : ∀ k (h : n ≤ k) (c : Chain (T.carrier k)),
+    downTo T n k h (ωSup c) = ωSup (c.map (downToHom T n k h))
+  | 0, h, c => by
+      obtain rfl := Nat.le_zero.1 h
+      simp [downTo, downToHom, Chain.map]
+      rfl
+  | k + 1, h, c => by
+      by_cases hk : n = k + 1
+      · subst hk
+        simp [downTo, downToHom, Chain.map]
+        rfl
+      · have h' : n ≤ k := by omega
+        simp only [downTo, dif_neg hk]
+        rw [(T.step k).proj.ωScottContinuous.map_ωSup, downTo_ωSup n k h']
+        congr 1
+        apply OrderHom.ext
+        funext i
+        simp [Chain.map, downToHom, downTo, dif_neg hk]
+
+/-- **AND THE EMBEDDING IS CONTINUOUS**, so it is a `→𝒄` — the rung §5 named. That is the *first*
+of an `EPPair`'s two fields and not by itself an `EPPair`; see the section header. -/
+def embHom (k : ℕ) : T.carrier k →𝒄 Limit T where
+  toFun := embFun T k
+  monotone' _ _ h := embFun_mono T k h
+  map_ωSup' c := by
+    apply Subtype.ext
+    funext n
+    change embSeq T k (ωSup c) n = ωSup (Limit.levelChain T _ n)
+    by_cases h : k ≤ n
+    · simp only [embSeq, dif_pos h]
+      rw [upTo_ωSup T k n h c]
+      congr 1
+      apply OrderHom.ext
+      funext i
+      change upTo T k n h (c i) = embSeq T k (c i) n
+      simp [embSeq, dif_pos h]
+    · simp only [embSeq, dif_neg h]
+      rw [downTo_ωSup T n k (Nat.le_of_lt (Nat.lt_of_not_le h)) c]
+      congr 1
+      apply OrderHom.ext
+      funext i
+      change downTo T n k _ (c i) = embSeq T k (c i) n
+      simp [embSeq, dif_neg h]
+
+theorem proj_embHom (k : ℕ) (x : T.carrier k) : proj T k (embHom T k x) = x :=
+  proj_embFun T k x
 
 end InverseLimitCPO
