@@ -53,6 +53,34 @@ that and does not claim it.
 **What is NOT claimed.** That the threshold is optimal, that it is the best this route gives, or
 that `MagnetisationBound` is true or false. `BoundaryFieldLimit` §6's "whether one exists is not
 decided here" is still not decided.
+
+## The next fence, named precisely, and NOT attempted
+
+Worked out when this file was reviewed, and written down so the next attempt starts from an
+estimate rather than from "sharpen the count". Stratify the off-`+` sum by `k = D σ` instead of
+collapsing it:
+
+`∑_{σ ∉ +} w(σ) e^{−2βhk(σ)} = ∑_{k ≥ 1} e^{−2βhk} ∑_{D σ = k} w(σ)`.
+
+The inner sum is where the crude step lives. Flipping the `k` wrong boundary spins of `σ` lands in
+the `+` class, and the map `σ ↦ (the flipped set, the flipped configuration)` is **injective**, so
+
+`∑_{D σ = k} w(σ) ≤ C(B, k) · e^{cβk} · Zplus`,
+
+with `B` the number of boundary sites and `c` a constant from the energy comparison. Summing the
+binomial series gives `(1 + e^{(c−2h)β})^B − 1`, which is `O(1)` as soon as
+`B·e^{(c−2h)β} = O(1)` — that is, **`h ≳ c/2 + log B / (2β)`**. `B` is linear in the side, so this
+route's threshold would be **logarithmic in `n`** where the one proved above is quadratic.
+
+**Why it is not attempted here rather than blocked**: the energy comparison needs
+`isingH (flip S σ) ≤ isingH σ + c·|S|`, whose constant comes from a bound on the number of
+neighbours of a site — and **the estate has no degree bound for `adj`**, probed 2026-08-12 by
+reading `IsingFiniteVolume.lean` rather than by name. `adj` is a bare `Prop` on `Fin n × Fin n`,
+not a `SimpleGraph`, so the graph-theoretic degree lemmas elsewhere in the estate do not reach it.
+That bound is itself a bounded build — the four neighbours are tagged by *which coordinate moved*
+and *in which direction*, so the neighbour set injects into a four-element type — and nothing here
+has tried it. **Whether the logarithmic threshold closes the uniformity gap is a separate question
+and the answer is no**: `log n → ∞` too. It would make the remaining gap smaller, not absent.
 -/
 
 namespace FieldThreshold
