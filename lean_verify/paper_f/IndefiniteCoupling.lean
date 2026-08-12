@@ -88,6 +88,15 @@ around. That is why §5 has no side conditions to discharge beyond `m ≠ 0`.
 **And it does not weaken anything.** No existing theorem loses a hypothesis and no lattice result
 is touched; what changes is that a hypothesis assumed four times is now known to be a real
 restriction rather than a formality.
+
+**AND §7 CLOSES THE OTHER SIDE.** §§2–6 show the hypothesis is *necessary*. §7 shows the estate's
+only *sufficient condition* for it is **not**: `crossForm_nonpos_of_cross_diag` asks cross-cut
+adjacency to be diagonal, and on `K₂,₂` the coupling is nonpositive with the adjacency wide open
+(`cross_diag_not_necessary`). `GraphMirrorReflection.crossForm_eq_neg_adj` is what makes that a
+one-line computation and also explains it: the coupling is `−wᵀAw` for the cross-adjacency matrix
+`A`, so `hcross` says exactly *`A` is positive semidefinite*, and diagonal `0/1` matrices are only
+some of those. **No better test is offered** — reducing `hcross` to a PSD check is exact but is
+linear algebra per graph rather than a combinatorial criterion, and finding one is NOT ATTEMPTED.
 -/
 
 namespace IndefiniteCoupling
@@ -382,5 +391,77 @@ theorem backward_direction_fails {m : ℝ} (hm : m ≠ 0) :
       ∧ ¬ (∀ c : Fin 4 → ℝ, c ≠ 0 → (∀ p, p ∉ Hh → p ∉ (∅ : Finset (Fin 4)) → c p = 0) →
             0 < GraphReflection.reflectedForm crossGraph m rho c) :=
   ⟨not_supportedIsotropic m, not_strict hm⟩
+
+/-! ## 7. The other side: the estate's only route to `hcross` is strictly narrower than `hcross`
+
+§§2–6 showed the hypothesis is **necessary**. This shows the estate's only *sufficient condition*
+for it is **not**.
+
+`GraphMirrorReflection.crossForm_nonpos_of_cross_diag` asks that cross-cut adjacency be diagonal —
+`p, q ∈ H` with `G.Adj p (θ q)` force `p = q` — and it is the one route to `hcross` anywhere here.
+`crossForm_eq_neg_adj` (`dd7ecb4`) says why it works and also why it is not the whole story: the
+coupling is `−wᵀAw` for the cross-adjacency matrix `A`, so **`hcross` says exactly that `A` is
+positive semidefinite**, and diagonal `0/1` matrices are only some of those.
+
+The complete bipartite graph `K₂,₂` gives `A` the all-ones matrix. Non-diagonal, and PSD because
+`wᵀJw = (w₀ + w₁)²`. -/
+
+/-- `K₂,₂` on `Fin 4`: joined exactly when one endpoint is in `{0,1}` and the other is not. -/
+def bipGraph : SimpleGraph (Fin 4) where
+  Adj p q := (p.val < 2) ≠ (q.val < 2)
+  symm := by intro p q h; exact h.symm
+  loopless := ⟨fun p h => h rfl⟩
+
+instance : DecidableRel bipGraph.Adj := fun p q =>
+  inferInstanceAs (Decidable ((p.val < 2) ≠ (q.val < 2)))
+
+theorem isRefl_rho_bip : GraphReflection.IsRefl bipGraph rho where
+  invol := by intro p; revert p; decide
+  adj := by intro p q; revert p q; decide
+
+/-- **THE CROSS-ADJACENCY IS NOT DIAGONAL HERE**, so
+`crossForm_nonpos_of_cross_diag` cannot be applied: site `0` is joined to `3 = rho 1`. -/
+theorem cross_not_diagonal :
+    ¬ (∀ p ∈ Hh, ∀ q ∈ Hh, bipGraph.Adj p (rho q) → p = q) := by
+  intro h
+  have : (0 : Fin 4) = 1 := h 0 (by decide) 1 (by decide) (by decide)
+  exact absurd this (by decide)
+
+/-- **AND THE COUPLING IS NONPOSITIVE ANYWAY**, because the all-ones matrix is positive
+semidefinite: the form is `−(w 0 + w 1)²`. Computed through `crossForm_eq_neg_adj`, so the mass
+never appears — which is the point of that lemma. -/
+theorem crossForm_bip (m : ℝ) (w : Fin 4 → ℝ) :
+    crossForm bipGraph m rho Hh w = -((w 0 + w 1) ^ 2) := by
+  classical
+  rw [GraphMirrorReflection.crossForm_eq_neg_adj isMirrorHalf_Hh m w]
+  have hH : Hh = ({0, 1} : Finset (Fin 4)) := rfl
+  rw [hH]
+  simp only [Finset.sum_insert (by decide : (0 : Fin 4) ∉ ({1} : Finset (Fin 4))),
+    Finset.sum_singleton, rho_apply,
+    show ((0 : Fin 4) + 2) = 2 from rfl, show ((1 : Fin 4) + 2) = 3 from rfl]
+  norm_num [show bipGraph.Adj 0 2 by decide, show bipGraph.Adj 0 3 by decide,
+    show bipGraph.Adj 1 2 by decide, show bipGraph.Adj 1 3 by decide]
+  ring
+
+theorem hcross_bip (m : ℝ) : ∀ w : Fin 4 → ℝ, crossForm bipGraph m rho Hh w ≤ 0 := by
+  intro w
+  rw [crossForm_bip m w]
+  simpa using sq_nonneg (w 0 + w 1)
+
+/-- **SO THE SUFFICIENT CONDITION IS STRICTLY SUFFICIENT.** `hcross` holds on `K₂,₂` and the
+estate's only route to it does not apply. Together with §6 the picture is complete: the hypothesis
+cannot be dropped, and the test for it cannot be the last word.
+
+**What this does NOT say.** It gives no better test. `crossForm_eq_neg_adj` reduces `hcross` to
+*the cross-adjacency matrix is positive semidefinite*, which is exact but is linear algebra per
+graph, not a combinatorial criterion — and finding one is **NOT ATTEMPTED** (`ERRATUM 71`
+addendum 3): nothing was tried. What is now known is that any such criterion must be strictly
+weaker than diagonality. -/
+theorem cross_diag_not_necessary (m : ℝ) :
+    GraphReflection.IsRefl bipGraph rho
+      ∧ IsMirrorHalf rho Hh (∅ : Finset (Fin 4))
+      ∧ (∀ w : Fin 4 → ℝ, crossForm bipGraph m rho Hh w ≤ 0)
+      ∧ ¬ (∀ p ∈ Hh, ∀ q ∈ Hh, bipGraph.Adj p (rho q) → p = q) :=
+  ⟨isRefl_rho_bip, isMirrorHalf_Hh, hcross_bip m, cross_not_diagonal⟩
 
 end IndefiniteCoupling
