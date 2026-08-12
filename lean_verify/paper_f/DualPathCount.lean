@@ -217,6 +217,65 @@ theorem sum_walksTo_bdry_le (σ : Config n) (P : Plaq n) {β : ℝ}
         positivity
     _ = 8 * n * (4 * q) ^ L₀ := by ring
 
+/-- **THE SAME SERIES OVER TRAILS, WITH THE TEXTBOOK CONSTANT.** `card_trailsTo_bdry_le`
+had no consumer when it was added; this is it. The count is `4n · 4 · 3^L` for length
+`L+1` instead of `4n · 4^L` for length `L`, so the geometric ratio is `3q` rather than `4q`
+and the hypothesis is `3 exp(-4β) ≤ 1/2` — a **lower** temperature threshold on this half
+of the route, matching what the interior half gained in `SeriesBound.sum_le_cube_six`.
+
+The sum runs from `L₀ + 1`, because the trail bound is stated at length `L + 1`; the
+constant `16` is `4 · 4` where the walk version's `8` is `2 · 4`, the extra `4` being the
+first step that the non-backtracking count still pays in full. -/
+theorem sum_trailsTo_bdry_le (σ : Config n) (P : Plaq n) {β : ℝ}
+    (hβ : 3 * Real.exp (-(4 * β)) ≤ 1 / 2) (L₀ M : ℕ) :
+    ∑ L ∈ Finset.Ico L₀ M,
+        ((∑ Q ∈ bdryPlaq n,
+            (((dualGraph σ).finsetWalkLength (L + 1) P Q).filter fun p => p.IsTrail).card : ℕ) : ℝ)
+          * Real.exp (-(4 * β) * (L : ℝ))
+      ≤ 32 * n * (3 * Real.exp (-(4 * β))) ^ L₀ := by
+  classical
+  set q : ℝ := Real.exp (-(4 * β)) with hq
+  have hq0 : 0 < q := Real.exp_pos _
+  have hterm : ∀ L ∈ Finset.Ico L₀ M,
+      ((∑ Q ∈ bdryPlaq n,
+          (((dualGraph σ).finsetWalkLength (L + 1) P Q).filter fun p => p.IsTrail).card : ℕ) : ℝ)
+          * Real.exp (-(4 * β) * (L : ℝ))
+        ≤ (16 * n : ℝ) * (3 * q) ^ L := by
+    intro L _
+    have hcount : ((∑ Q ∈ bdryPlaq n,
+        (((dualGraph σ).finsetWalkLength (L + 1) P Q).filter fun p => p.IsTrail).card : ℕ) : ℝ)
+        ≤ ((4 * n * (4 * 3 ^ L) : ℕ) : ℝ) := by
+      exact_mod_cast card_trailsTo_bdry_le σ P L
+    have hexp : Real.exp (-(4 * β) * (L : ℝ)) = q ^ L := by
+      rw [hq, ← Real.exp_nat_mul]
+      congr 1
+      ring
+    calc ((∑ Q ∈ bdryPlaq n,
+            (((dualGraph σ).finsetWalkLength (L + 1) P Q).filter fun p => p.IsTrail).card : ℕ) : ℝ)
+          * Real.exp (-(4 * β) * (L : ℝ))
+        ≤ ((4 * n * (4 * 3 ^ L) : ℕ) : ℝ) * q ^ L := by
+          rw [hexp]
+          exact mul_le_mul_of_nonneg_right hcount (pow_nonneg hq0.le L)
+      _ = (16 * n : ℝ) * (3 * q) ^ L := by push_cast; ring
+  calc ∑ L ∈ Finset.Ico L₀ M,
+        ((∑ Q ∈ bdryPlaq n,
+            (((dualGraph σ).finsetWalkLength (L + 1) P Q).filter fun p => p.IsTrail).card : ℕ) : ℝ)
+          * Real.exp (-(4 * β) * (L : ℝ))
+      ≤ ∑ L ∈ Finset.Ico L₀ M, (16 * n : ℝ) * (3 * q) ^ L := Finset.sum_le_sum hterm
+    _ = (16 * n : ℝ) * ∑ L ∈ Finset.Ico L₀ M, (3 * q) ^ L := by rw [Finset.mul_sum]
+    _ ≤ (16 * n : ℝ) * (2 * (3 * q) ^ L₀) := by
+        refine mul_le_mul_of_nonneg_left (geom_Ico_le' _ (by positivity) hβ L₀ M) ?_
+        positivity
+    _ = 32 * n * (3 * q) ^ L₀ := by ring
+
+/-- And the trail threshold is implied by the interior one, exactly as `threshold_of_eight`
+is: `3 ≤ 6`, so `6 exp(-4β) ≤ 1/2` gives it. The two halves of the route can still be taken
+at one temperature, and now at the lower one. -/
+theorem threshold_of_six {β : ℝ} (hβ : 6 * Real.exp (-(4 * β)) ≤ 1 / 2) :
+    3 * Real.exp (-(4 * β)) ≤ 1 / 2 := by
+  have h : (0 : ℝ) < Real.exp (-(4 * β)) := Real.exp_pos _
+  linarith
+
 /-- The threshold used above is implied by the one the interior estimate already runs under,
 so the two halves of the route can be taken at the same temperature. -/
 theorem threshold_of_eight {β : ℝ} (hβ : 8 * Real.exp (-(4 * β)) ≤ 1 / 2) :
