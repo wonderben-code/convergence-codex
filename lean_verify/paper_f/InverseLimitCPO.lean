@@ -617,6 +617,15 @@ inverse-to-be, and no theorem relating them.** `CanonicalTower.Bilimit` remains 
 each carried one, two of the three were wrong, and both wrong ones were wrong in the direction of
 calling something harder than it was — so the useful thing to record is that the estimates have not
 earned their place, not another estimate.
+
+**§10 PROVES BOTH IDENTITIES, SO THE PARAGRAPHS ABOVE ARE SUPERSEDED.** They read: *"**NEITHER
+ROUND-TRIP IDENTITY IS PROVED, SO THERE IS NO EQUIVALENCE HERE.** `toFunLimit` and `fromFunLimit`
+are two maps between two types and nothing more … **This section is one map, its inverse-to-be, and
+no theorem relating them.**"* There is a theorem relating them now, in both directions, and
+`funLimitEquiv` is the equivalence. The two sketches those paragraphs gave of what each identity
+would need were both right, which is recorded because **this section's refusal to estimate the
+difficulty was the right call and its analysis of the *route* was not the thing in doubt.**
+`CanonicalTower.Bilimit` is still not proved — see §10.
 -/
 
 /-- Embedding one level and then sitting in the limit is sitting in the limit directly. -/
@@ -700,5 +709,158 @@ def approxChain (g : Limit (funTower T)) : Chain (Limit T →𝒄 Limit T) :=
 /-- **AND THE MAP BACK**: a coherent sequence of level self-maps assembles into a self-map of the
 limit, as the supremum of its level approximations. -/
 def fromFunLimit (g : Limit (funTower T)) : Limit T →𝒄 Limit T := ωSup (approxChain T g)
+
+/-! ## 10. The self-maps of the limit ARE the limit of the levels' self-maps
+
+**§9's two named identities, both proved, and the equivalence they make.**
+
+**`toFunLimit (fromFunLimit g) = g`** rests on **`downTo_funLevel_upTo`**, iterated coherence:
+climbing to level `m`, applying `g` there and coming back down is `g` at the level you started
+from. `funLevel_coherent` is its one-step case and the induction is on the target level. At the
+supremum, the terms with `m ≥ n` are then *exactly* `g n x`, and the terms with `m < n` are bounded
+by it using **`upTo_downTo_le`** — up-then-down loses information, which is `emb_proj_le` iterated.
+
+**`fromFunLimit (toFunLimit f) = f`** is the diagonal argument, and it is where §8's
+`ωSup_roundTripChain` is finally consumed. Downward each term is `r n (f (r n y)) ≤ f y` twice
+over. Upward, `f y = ⨆ n, f (r n y)` by continuity of `f` and §8, and each `f (r n y)` is in turn
+`⨆ m, r m (f (r n y))` by §8 again — **two suprema, merged by evaluating at `max m n`**, where
+`embHom_proj_mono` moves the outer index up and monotonicity of `f` moves the inner one.
+
+**`funLimitEquiv : (Limit T →𝒄 Limit T) ≃ Limit (funTower T)`** — for an **arbitrary** tower, not
+just the canonical one. This is `WALLS` §W8.0 item 3's second step, whole.
+
+## What is left of the wall, which is one step and not zero
+
+**`CanonicalTower.Bilimit` is still not proved.** It asks for
+`Limit (canonical X) ≃ (Limit (canonical X) →𝒄 Limit (canonical X))`, and §10 supplies the
+right-hand side as `Limit (funTower (canonical X))`. Closing the wall needs one more thing:
+**`canonical X`'s own levels satisfy `level (n+1) = funStep (level n)`, so `funTower (canonical X)`
+is `canonical X`
+shifted up by one level — and a shifted tower has the same limit.** Neither the shift nor that
+lemma is built here, in `CanonicalTower`, or anywhere else in this estate.
+
+**Nothing in this section is an argument that the shift lemma is easy.** It is named, and this
+file's record on naming-and-estimating is in §9.
+-/
+
+/-- Up then down loses information, `emb_proj_le` iterated. -/
+theorem upTo_downTo_le {m : ℕ} : ∀ {n : ℕ} (h : m ≤ n) (w : T.carrier n),
+    upTo T m n h (downTo T m n h w) ≤ w := by
+  intro n h
+  induction n, h using Nat.le_induction with
+  | base => intro w; rw [downTo_self, upTo_self]
+  | succ n hmn ih =>
+      intro w
+      have hne : m ≠ n + 1 := by omega
+      simp only [upTo, downTo, dif_neg hne]
+      calc (T.step n).emb (upTo T m n hmn (downTo T m n hmn ((T.step n).proj w)))
+          ≤ (T.step n).emb ((T.step n).proj w) := (T.step n).emb.monotone (ih _)
+        _ ≤ w := (T.step n).emb_proj_le w
+
+/-- **ITERATED COHERENCE**: climbing to level `m`, applying `g` there and coming back down is
+`g` at the level you started from. `funLevel_coherent` is the one-step case. -/
+theorem downTo_funLevel_upTo (g : Limit (funTower T)) {n : ℕ} :
+    ∀ {m : ℕ} (h : n ≤ m) (x : T.carrier n),
+      downTo T n m h (funLevel T g m (upTo T n m h x)) = funLevel T g n x := by
+  intro m h
+  induction m, h using Nat.le_induction with
+  | base => intro x; rw [upTo_self, downTo_self]
+  | succ m hnm ih =>
+      intro x
+      have hne : n ≠ m + 1 := by omega
+      simp only [upTo, downTo, dif_neg hne]
+      rw [funLevel_coherent, ih x]
+
+/-- The chain of level approximations, evaluated at a point of the limit. -/
+def approxPtChain (g : Limit (funTower T)) (y : Limit T) : Chain (Limit T) :=
+  ⟨fun n => embHom T n (funLevel T g n (proj T n y)), fun _ _ h => (approxChain T g).monotone h y⟩
+
+theorem fromFunLimit_apply (g : Limit (funTower T)) (y : Limit T) :
+    fromFunLimit T g y = ωSup (approxPtChain T g y) := by
+  change (ContinuousHom.ωSup (approxChain T g)) y = _
+  rw [ContinuousHom.ωSup_apply]
+  congr 1
+
+/-- **THE FIRST ROUND TRIP IS THE IDENTITY.** -/
+theorem toFunLimit_fromFunLimit (g : Limit (funTower T)) :
+    toFunLimit T (fromFunLimit T g) = g := by
+  apply Subtype.ext
+  funext n
+  apply ContinuousHom.ext
+  intro x
+  change proj T n (fromFunLimit T g (embHom T n x)) = funLevel T g n x
+  rw [fromFunLimit_apply]
+  change ωSup (Limit.levelChain T (approxPtChain T g (embHom T n x)) n) = funLevel T g n x
+  apply le_antisymm
+  · refine ωSup_le _ _ fun m => ?_
+    change embSeq T m (funLevel T g m (embSeq T n x m)) n ≤ funLevel T g n x
+    rcases lt_trichotomy m n with hlt | heq | hgt
+    · have hmn : m ≤ n := le_of_lt hlt
+      have hnm : ¬ n ≤ m := by omega
+      simp only [embSeq, dif_neg hnm, dif_pos hmn]
+      calc upTo T m n hmn (funLevel T g m (downTo T m n hmn x))
+          = upTo T m n hmn (downTo T m n hmn
+              (funLevel T g n (upTo T m n hmn (downTo T m n hmn x)))) := by
+            rw [downTo_funLevel_upTo T g hmn]
+        _ ≤ funLevel T g n (upTo T m n hmn (downTo T m n hmn x)) := upTo_downTo_le T hmn _
+        _ ≤ funLevel T g n x := (funLevel T g n).monotone (upTo_downTo_le T hmn x)
+    · subst heq
+      simp [embSeq, upTo_self]
+    · have hnm : n ≤ m := le_of_lt hgt
+      have hmn : ¬ m ≤ n := by omega
+      simp only [embSeq, dif_pos hnm, dif_neg hmn]
+      exact le_of_eq (downTo_funLevel_upTo T g hnm x)
+  · have hn : (Limit.levelChain T (approxPtChain T g (embHom T n x)) n) n = funLevel T g n x := by
+      change embSeq T n (funLevel T g n (embSeq T n x n)) n = funLevel T g n x
+      simp [embSeq, upTo_self]
+    calc funLevel T g n x
+        = (Limit.levelChain T (approxPtChain T g (embHom T n x)) n) n := hn.symm
+      _ ≤ ωSup (Limit.levelChain T (approxPtChain T g (embHom T n x)) n) := le_ωSup _ n
+
+/-- **THE SECOND ROUND TRIP IS THE IDENTITY TOO.** This is where `ωSup_roundTripChain` is
+consumed: `f y` is recovered from the level approximations of `y`, each of those is recovered from
+its own approximations, and the two suprema are merged by going out to the larger index. -/
+theorem fromFunLimit_toFunLimit (f : Limit T →𝒄 Limit T) :
+    fromFunLimit T (toFunLimit T f) = f := by
+  apply ContinuousHom.ext
+  intro y
+  rw [fromFunLimit_apply]
+  set d := approxPtChain T (toFunLimit T f) y with hd
+  have hdj : ∀ j, d j = embHom T j (proj T j (f (embHom T j (proj T j y)))) := fun _ => rfl
+  apply le_antisymm
+  · refine ωSup_le _ _ fun j => ?_
+    rw [hdj j]
+    calc embHom T j (proj T j (f (embHom T j (proj T j y))))
+        ≤ f (embHom T j (proj T j y)) := embHom_proj_le T j _
+      _ ≤ f y := f.monotone (embHom_proj_le T j y)
+  · have key : ∀ n, f (embHom T n (proj T n y)) ≤ ωSup d := by
+      intro n
+      rw [← ωSup_embProjChain T (f (embHom T n (proj T n y)))]
+      refine ωSup_le _ _ fun m => ?_
+      have hmk : m ≤ max m n := le_max_left m n
+      have hnk : n ≤ max m n := le_max_right m n
+      change embHom T m (proj T m (f (embHom T n (proj T n y)))) ≤ ωSup d
+      calc embHom T m (proj T m (f (embHom T n (proj T n y))))
+          ≤ embHom T (max m n) (proj T (max m n) (f (embHom T n (proj T n y)))) :=
+            embHom_proj_mono T _ hmk
+        _ ≤ embHom T (max m n)
+              (proj T (max m n) (f (embHom T (max m n) (proj T (max m n) y)))) := by
+            refine embFun_mono T (max m n) ((proj T (max m n)).monotone
+              (f.monotone (embHom_proj_mono T y hnk)))
+        _ = d (max m n) := (hdj _).symm
+        _ ≤ ωSup d := le_ωSup d (max m n)
+    have hfy : f y = ωSup ((embProjChain T y).map f.toMono) := by
+      conv_lhs => rw [← ωSup_embProjChain T y]
+      exact f.ωScottContinuous.map_ωSup _
+    rw [hfy]
+    exact ωSup_le _ _ fun n => key n
+
+/-- **AND THE EQUIVALENCE.** The continuous self-maps of the limit ARE the limit of the tower of
+the levels' self-maps. This is `WALLS` §W8.0 item 3's second step, whole. -/
+def funLimitEquiv : (Limit T →𝒄 Limit T) ≃ Limit (funTower T) where
+  toFun := toFunLimit T
+  invFun := fromFunLimit T
+  left_inv := fromFunLimit_toFunLimit T
+  right_inv := toFunLimit_fromFunLimit T
 
 end InverseLimitCPO
