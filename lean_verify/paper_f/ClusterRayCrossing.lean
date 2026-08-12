@@ -47,6 +47,15 @@ out. **`both_branches_realised`** settles it on a `2 × 2` box at one site: the 
 configuration takes the first branch and **cannot** take the second — its contour is empty — and
 the all-up configuration, whose down-graph has no edges at all, takes the second.
 
+## The degenerate branch is exactly one thing, and that is §7
+
+`allDown` is not one awkward witness among many. The crossing lemma says, with no ray involved,
+that **a cluster's contour is empty only if the cluster is the whole box** — so every boundary
+site is in it. The route's estimate suppresses a cluster by
+`exp(-4β|contour|) · exp(-2βh·k)`, two mechanisms, and
+**`contour_nonempty_or_all_boundary`** says they are never both idle: an empty contour is exactly
+the case in which the second term is as large as it can be.
+
 ## What this does NOT do
 
 **It does not repair `ClusterReachesRim`, and it does not close S3b-ii.** A bond of the contour
@@ -54,6 +63,11 @@ gives an edge of the dual graph; the route needs a WALK from a plaquette near `x
 and getting from "there is an edge here" to "there is a walk to the rim" is the circuits-plus-paths
 decomposition and the parity argument that the watchlist records as residues (a) and (b). Neither
 is touched here.
+
+**And §7 is not the estimate either.** It rules out the case where BOTH suppression terms are
+worthless; it says nothing quantitative about a cluster with a small nonempty contour that also
+misses most of the boundary, which is the case `DualPathCount` exists to handle and the one the
+route actually turns on.
 
 **It settles one third of the `DECISION NEEDED` on that route, and only by narrowing it.** The
 question was *which distance* — `L∞` to the boundary, the route map's `2 d(x)` perimeter form, or
@@ -257,5 +271,60 @@ theorem both_branches_realised :
           e ∈ contour (clusterOn (allUp 2) (col 0 1 one_lt_two))) :=
   ⟨⟨allDown_left_branch 0 1 one_lt_two, allDown_no_second_branch 0 1 one_lt_two⟩,
     allUp_second_branch 0 1 one_lt_two Nat.one_pos⟩
+
+/-! ## 7. The degenerate branch is exactly one configuration of the cluster
+
+§4 treats the all-down configuration as *a* witness in branch one. It is more than that, and the
+crossing lemma of §1 says so without any ray: **the only way a cluster's contour can be empty is
+for the cluster to be the whole box.**
+
+That matters for the route rather than for tidiness. The field-model estimate
+`FieldBoundaryEnergy.down_prob_le_cluster_sum` suppresses a cluster `ν` by
+`exp(-4β|contour ν|) · exp(-2βh·k(ν))`, where `k(ν)` counts the boundary sites in `ν` — **two
+mechanisms, and the theorems below say they cannot both be idle.** If the contour is empty the
+first is worth nothing, and that is exactly the case in which the cluster contains *every*
+boundary site and the second is worth as much as it can be.
+-/
+
+/-- **AN EMPTY CLUSTER CONTOUR MEANS THE CLUSTER IS EVERYTHING.** No ray and no geometry: the
+lattice graph is connected, so a site outside the cluster would supply a walk out of it, and §1
+turns that walk into a contour bond. -/
+theorem reachable_of_contour_clusterOn_empty {σ : Config n} {x : Site n} (hn : 0 < n)
+    (h : contour (clusterOn σ x) = ∅) (y : Site n) : (downGraph σ).Reachable x y := by
+  by_contra hy
+  obtain ⟨w⟩ := (latticeGraph_connected hn).preconnected x y
+  obtain ⟨e, -, hec⟩ := exists_contour_edge_of_walk w (Reachable.refl _) hy
+  rw [h] at hec
+  exact absurd hec (Finset.notMem_empty e)
+
+/-- And hence every boundary site is in the cluster, which is the quantity the field term of the
+estimate is paid in. -/
+theorem boundary_mem_cluster_of_contour_empty {σ : Config n} {x : Site n} (hn : 0 < n)
+    (h : contour (clusterOn σ x) = ∅) {p : Site n} (hp : isBoundary p = true) :
+    (downGraph σ).Reachable x p ∧ isBoundary p = true :=
+  ⟨reachable_of_contour_clusterOn_empty hn h p, hp⟩
+
+/-- **THE TWO SUPPRESSION MECHANISMS ARE NOT BOTH IDLE.** For any configuration and any site,
+either the cluster's contour is nonempty — the energy term of
+`FieldBoundaryEnergy.down_prob_le_cluster_sum` has something to charge — or the cluster contains
+**every** boundary site, which is the largest the field term can be.
+
+This is the shape the route's remaining leg has to have, and it is stated here so that the leg is
+written down rather than gestured at: what is NOT proved is any *quantitative* interpolation
+between the two, and the estimate needs one. A cluster with a small nonempty contour that also
+misses most of the boundary is not excluded by this theorem, and is exactly the case the count in
+`DualPathCount` exists to handle. -/
+theorem contour_nonempty_or_all_boundary (σ : Config n) (x : Site n) (hn : 0 < n) :
+    contour (clusterOn σ x) ≠ ∅
+      ∨ ∀ p : Site n, isBoundary p = true → (downGraph σ).Reachable x p := by
+  by_cases h : contour (clusterOn σ x) = ∅
+  · exact Or.inr fun p _ => reachable_of_contour_clusterOn_empty hn h p
+  · exact Or.inl h
+
+/-- **AND THE REFUTING CONFIGURATION IS THE RIGHT-HAND BRANCH**, which is the sharp form of §4:
+`allDown` is not one awkward witness among many, it is what the empty-contour case forces. -/
+theorem allDown_all_boundary (hn : 0 < n) (x : Site n) (p : Site n) :
+    (downGraph (allDown n)).Reachable x p :=
+  reachable_of_contour_clusterOn_empty hn (contour_clusterOn_allDown x) p
 
 end ClusterRayCrossing
