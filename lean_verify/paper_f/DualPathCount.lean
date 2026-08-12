@@ -224,4 +224,58 @@ theorem threshold_of_eight {β : ℝ} (hβ : 8 * Real.exp (-(4 * β)) ≤ 1 / 2)
   have := Real.exp_pos (-(4 * β))
   linarith
 
+/-! ## 4. The geometric length bound — §W3.0 §6's item 1
+
+**`WALLS` §W3.0 §6 names three things a boundary-route proof needs and calls this the
+first**: *"a cluster containing `x` and a boundary site has edge boundary at least `2 d(x)`,
+where `d(x)` is the distance from `x` to the edge. **Not stated anywhere.** `PlaqLocal`'s
+closed-walk analogue is proved, so this is its open-path twin."*
+
+**It is the twin of `near_endpoint`, not of the radius lemma**, and that is why it is four
+lines: `PlaqLocal.near_endpoint` already says a walk of length `L` moves each coordinate by
+at most `L`, for **any** two endpoints — it was never restricted to closed walks. Reaching
+a boundary plaquette from `P` therefore costs at least `P`'s distance to the edge, in each
+of the four directions separately, hence at least the minimum.
+
+**What this is NOT.** It bounds the length of a **dual walk** that reaches the boundary. It
+says nothing about a *cluster* containing such a walk — that is §5's item 1, the covering,
+whose natural proof meets `OuterFaceObstruction.exists_two_outer_sides`, and it is
+untouched here. The factor `2` in §6's phrasing belongs to the cluster statement, not to
+this one.
+-/
+
+/-- The distance from a plaquette to the edge of the plaquette grid, in the sup metric the
+dual walks move in. -/
+def distToEdge (P : Plaq n) : ℕ :=
+  min (min P.i P.j) (min (n - (P.i + 2)) (n - (P.j + 2)))
+
+/-- **A DUAL WALK THAT REACHES THE BOUNDARY IS AT LEAST AS LONG AS THE DISTANCE TO IT.**
+Each of the four ways of being a boundary plaquette bounds one of the four terms of
+`distToEdge`, and the minimum is bounded by each. -/
+theorem distToEdge_le_length {σ : Config n} {P Q : Plaq n}
+    (w : (dualGraph σ).Walk P Q) (hQ : IsBdryPlaq Q) :
+    distToEdge P ≤ w.length := by
+  obtain ⟨h1, h2, h3, h4⟩ := PlaqLocal.near_endpoint w
+  have hPi := P.hi
+  have hPj := P.hj
+  have hQi := Q.hi
+  have hQj := Q.hj
+  unfold distToEdge
+  rcases hQ with h | h | h | h <;> omega
+
+/-- And with a starting plaquette only known to lie near `P`: the cost is the distance to
+the edge less the slack. This is the form a covering argument would consume, `r` being how
+far the anchor may sit from the site. -/
+theorem distToEdge_le_length_of_near {σ : Config n} {P Q R : Plaq n} {r : ℕ}
+    (w : (dualGraph σ).Walk Q R) (hQ : PlaqLocal.Near P Q r) (hR : IsBdryPlaq R) :
+    distToEdge P - r ≤ w.length := by
+  have h := distToEdge_le_length w hR
+  obtain ⟨h1, h2, h3, h4⟩ := hQ
+  have hPi := P.hi
+  have hPj := P.hj
+  have hQi := Q.hi
+  have hQj := Q.hj
+  unfold distToEdge at h ⊢
+  omega
+
 end DualPathCount
