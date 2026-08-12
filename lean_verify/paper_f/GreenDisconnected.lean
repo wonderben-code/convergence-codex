@@ -2,6 +2,7 @@ import GraphGreenPositive
 import GraphMirrorReflection
 import GreenExpansion
 import StepGraphSmallMass
+import GraphOS2
 
 /-!
 # The Green function vanishes between components, and what that costs reflection positivity
@@ -299,5 +300,73 @@ theorem green_pos_of_connected (hG : G.Connected) (hm : m ≠ 0) (p q : V) :
   (green_pos_iff_reachable G hm p q).mpr (hG.preconnected p q)
 
 end Sharp
+
+/-! ## 6. And the two downstream results that carried the hypothesis lose it too
+
+`green_pos`'s connectedness hypothesis was inherited by everything built on it. Two results carry
+it, and §5 replaces it in both with the reachability that was doing the work:
+
+* `GraphGreenPositive.twoPoint_pos` — the Gaussian field of a **connected** graph is strictly
+  positively correlated at every pair of sites;
+* `GraphOS2.os2_pos_single` — OS2's inequality at a singleton half is strict on a **connected**
+  graph.
+
+Neither needs the graph connected. The first needs a path between the two sites; the second needs
+one between a site and its mirror image — **and on a disconnected graph that is a real condition
+rather than a formality**, which is exactly what `StepGraphSmallMass` and §4 are about: there the
+mirror of a half-site lies in the other component, the correlation is zero, and OS2's inequality at
+that site IS `0 ≤ 0`.
+
+**So this is not only a hypothesis removed, it is a hypothesis replaced by the right one.** The
+sharpened forms below say when the strictness holds and, by `green_pos_iff_reachable`, exactly when
+it fails.
+
+**The originals are not edited.** They are pushed records and they are correct; these add.
+-/
+
+section Downstream
+
+/-- **STRICT POSITIVE CORRELATION EXACTLY BETWEEN SITES JOINED BY A PATH.** Compare
+`GraphGreenPositive.twoPoint_pos`, which asks the whole graph to be connected. -/
+theorem twoPoint_pos_iff_reachable (hm : m ≠ 0) (p q : V) :
+    0 < ∫ ω, ω p * ω q ∂(GraphLaplacian.gaussianField G m) ↔ G.Reachable p q := by
+  rw [GraphLaplacian.twoPoint G hm p q]
+  exact green_pos_iff_reachable G hm p q
+
+/-- `GraphGreenPositive.twoPoint_pos` as the special case, re-derived. -/
+theorem twoPoint_pos_of_connected (hG : G.Connected) (hm : m ≠ 0) (p q : V) :
+    0 < ∫ ω, ω p * ω q ∂(GraphLaplacian.gaussianField G m) :=
+  (twoPoint_pos_iff_reachable G hm p q).mpr (hG.preconnected p q)
+
+/-- **AND OS2's INEQUALITY AT A SINGLETON HALF IS STRICT EXACTLY WHEN THE SITE REACHES ITS OWN
+MIRROR.** Compare `GraphOS2.os2_pos_single`, which asks the whole graph to be connected. On a graph
+where the reflection leaves the component — `GreenLargeMass.stepGraph`, §4 — the inequality is
+`0 ≤ 0` at every half-site, and this says so. -/
+theorem os2_pos_single_iff_reachable (hm : m ≠ 0) (θ : V ≃ V) (p : V) :
+    0 < ∫ ω, (∑ r, (if r = p then (1:ℝ) else 0) * ω (θ r))
+            * (∑ q, (if q = p then (1:ℝ) else 0) * ω q)
+        ∂(GraphLaplacian.gaussianField G m)
+      ↔ G.Reachable (θ p) p := by
+  rw [GraphOS2.integral_pairing_refl_single G hm]
+  exact green_pos_iff_reachable G hm (θ p) p
+
+/-- `GraphOS2.os2_pos_single` as the special case, re-derived. -/
+theorem os2_pos_single_of_connected (hG : G.Connected) (hm : m ≠ 0) (θ : V ≃ V) (p : V) :
+    0 < ∫ ω, (∑ r, (if r = p then (1:ℝ) else 0) * ω (θ r))
+            * (∑ q, (if q = p then (1:ℝ) else 0) * ω q)
+        ∂(GraphLaplacian.gaussianField G m) :=
+  (os2_pos_single_iff_reachable G hm θ p).mpr (hG.preconnected _ _)
+
+/-- **AND THE FAILURE IS EXHIBITED, NOT ONLY ALLOWED FOR.** On `stepGraph` the reflection carries
+site `0` out of its component, so OS2's inequality there is exactly `0 ≤ 0`. -/
+theorem stepGraph_os2_not_strict (hm : m ≠ 0) :
+    ¬ (0 < ∫ ω, (∑ r, (if r = (0 : Fin 6) then (1:ℝ) else 0) * ω (GreenLargeMass.sigma6 r))
+              * (∑ q, (if q = (0 : Fin 6) then (1:ℝ) else 0) * ω q)
+          ∂(GraphLaplacian.gaussianField GreenLargeMass.stepGraph m)) := by
+  rw [os2_pos_single_iff_reachable GreenLargeMass.stepGraph hm]
+  rw [show GreenLargeMass.sigma6 0 = 3 from rfl]
+  exact stepGraph_not_reachable_three_zero
+
+end Downstream
 
 end GreenDisconnected
