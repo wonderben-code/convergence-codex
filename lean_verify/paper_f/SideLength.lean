@@ -193,8 +193,7 @@ theorem sum_family_le_three (P₀ : Plaq n) (β : ℝ) :
       Nat.lt_succ_of_le (mem_peierlsFamily_card hγ).2⟩
   rw [← Finset.sum_fiberwise_of_maps_to hmaps
     (fun γ => Real.exp (-(4 * β) * (γ.card : ℝ)))]
-  refine Finset.sum_le_sum fun L hL => ?_
-  have hL1 : 1 ≤ L := le_trans (by norm_num) (Finset.mem_Ico.mp hL).1
+  refine Finset.sum_le_sum fun L _ => ?_
   have hval : ∀ γ ∈ (peierlsFamily P₀).filter (fun γ => γ.card = L),
       Real.exp (-(4 * β) * (γ.card : ℝ)) = Real.exp (-(4 * β) * (L : ℝ)) := by
     intro γ hγ
@@ -207,7 +206,7 @@ theorem sum_family_le_three (P₀ : Plaq n) (β : ℝ) :
     exact hcard ▸ (mem_peierlsFamily_card hfam).1
   exact_mod_cast Nat.cast_le.mpr
     (le_trans (Finset.card_le_card hsub)
-      (card_cycCandidates_le_two_three P₀ (L + 1) L hL1))
+      (card_cycCandidates_le_two_three P₀ (L + 1) L))
 
 /-- **THE PEIERLS ESTIMATE, IN CLOSED FORM.** The weight of the `+`-boundary configurations
 with `x` down, over the full partition function, is at most

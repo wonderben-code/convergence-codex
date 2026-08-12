@@ -118,12 +118,23 @@ theorem card_cycCandidates_le_three (P₀ : Plaq n) (r L : ℕ) :
 positive length, `(2r+1)^2 · 2 · 3 ^ L`. Weaker than `card_cycCandidates_le_three` by the
 factor `4·3^(L-1) ≤ 2·3^L`, and worth the slack because the sum it feeds is indexed by `L`
 and would otherwise carry an `L - 1` in `ℕ`. -/
-theorem card_cycCandidates_le_two_three (P₀ : Plaq n) (r L : ℕ) (hL : 1 ≤ L) :
+theorem card_cycCandidates_le_two_three (P₀ : Plaq n) (r L : ℕ) :
     (cycCandidates P₀ r L).card ≤ (2 * r + 1) ^ 2 * (2 * 3 ^ L) := by
-  obtain ⟨M, rfl⟩ : ∃ M, L = M + 1 := ⟨L - 1, by omega⟩
-  refine le_trans (card_cycCandidates_le_three P₀ r M) (Nat.mul_le_mul_left _ ?_)
-  calc 4 * 3 ^ M ≤ 6 * 3 ^ M := Nat.mul_le_mul_right _ (by norm_num)
-    _ = 2 * 3 ^ (M + 1) := by ring
+  match L with
+  | 0 =>
+      -- length zero: the only closed walk is `nil`, and `nil` is not a cycle.
+      refine le_trans (le_of_eq (Finset.card_eq_zero.2 ?_)) (Nat.zero_le _)
+      refine Finset.eq_empty_of_forall_notMem fun γ hγ => ?_
+      obtain ⟨Q, -, hγQ⟩ := Finset.mem_biUnion.mp hγ
+      obtain ⟨w, hw, -⟩ := Finset.mem_image.mp hγQ
+      obtain ⟨hw0, hcyc⟩ := Finset.mem_filter.mp hw
+      rw [SimpleGraph.mem_finsetWalkLength_iff] at hw0
+      exact hcyc.ne_nil (SimpleGraph.Walk.length_eq_zero_iff.mp hw0)
+  | M + 1 =>
+      refine le_trans (card_cycCandidates_le_three P₀ r M) (Nat.mul_le_mul_left _ ?_)
+      calc 4 * 3 ^ M ≤ 6 * 3 ^ M := Nat.mul_le_mul_right _ (by norm_num)
+        _ = 2 * 3 ^ (M + 1) := by ring
+
 
 /-! ## 3. The covering -/
 
@@ -233,5 +244,34 @@ theorem peierls_family_bound (hn : 0 < n) (β : ℝ) {x : Site n}
   refine ⟨γ, Finset.mem_filter.mpr ⟨Finset.mem_biUnion.mpr
     ⟨L, Finset.mem_range.mpr (by omega), ?_⟩, hreal⟩, hsub⟩
   rwa [plaqAt_eq_plaqOf hplus hdown hi hj] at hγ
+
+/-! ## 3b. The shape count, in the words the watchlist asked for
+
+`UNLOCK_WATCHLIST`'s `3^L` item names two things. (i) was refuted the day it was written
+(`ERRATUM 111`). (ii) is *"an injection from circuits of length `L` surrounding a site into
+something of size `~3^L`, which is the classic Peierls estimate and is genuine
+combinatorics"*, and the two halves of it have been in this file since 10 August and since
+`2544ba4` respectively — the covering, and the count. **They are stated together here so the
+item has one name to point at rather than a composition a reader has to perform.**
+
+The polynomial factor `(2L+3)²` is the choice of where the contour is anchored and is part
+of the classical estimate too; it is what the geometric sum in `SeriesBound` absorbs.
+-/
+
+/-- **THE SHAPE COUNT.** For a `+`-boundary configuration with `x` down there is a length
+`L` and a contour `γ` of that length inside `σ`'s contour, drawn from a set of **at most
+`(2L+3)² · 2 · 3^L`** candidates depending only on `L` and the site. -/
+theorem peierls_shape_count {σ : Config n} (hσ : PlusBoundary σ) (hn : 0 < n) {x : Site n}
+    (hx : σ x = false) :
+    ∃ L : ℕ, ∃ γ ∈ cycCandidates (RayWalk.plaqAt hσ hx) (L + 1) L,
+      γ ⊆ contour σ ∧ L ≤ Fintype.card (Plaq n) ∧
+        (cycCandidates (RayWalk.plaqAt hσ hx) (L + 1) L).card
+          ≤ (2 * L + 3) ^ 2 * (2 * 3 ^ L) := by
+  obtain ⟨L, γ, hγ, hsub, -, hLcard⟩ := cover_cycCandidates hσ hn hx
+  refine ⟨L, γ, hγ, hsub, hLcard, ?_⟩
+  have := card_cycCandidates_le_two_three (RayWalk.plaqAt hσ hx) (L + 1) L
+  calc (cycCandidates (RayWalk.plaqAt hσ hx) (L + 1) L).card
+      ≤ (2 * (L + 1) + 1) ^ 2 * (2 * 3 ^ L) := this
+    _ = (2 * L + 3) ^ 2 * (2 * 3 ^ L) := by ring_nf
 
 end PeierlsCover
