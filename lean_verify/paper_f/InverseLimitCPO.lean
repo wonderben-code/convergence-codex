@@ -299,11 +299,11 @@ theorem embFun_mono (k : ℕ) {x y : T.carrier k} (hxy : x ≤ y) :
 maps together with identity transports along equalities of naturals, so each commutes with `ωSup`;
 the two inductions below say so, and `embHom` assembles them.
 
-**What this does NOT give.** A `→𝒄` is only the *first* `EPPair` field. The second,
-`emb_proj_le : ∀ y, embHom k (proj k y) ≤ y`, is **not proved here**. It looks true — above level
-`k` it is the tower's own `emb_proj_le` applied levelwise, and below `k` coherence makes it an
-equality — but **looking true is what §5 said about continuity, and §5 was writing a cheque.**
-Until it is proved there is no `EPPair (T.carrier k) (Limit T)` in this file, and none is claimed.
+**§7 CLOSES WHAT THIS SECTION REFUSED TO CLAIM.** The paragraph here read: *"A `→𝒄` is only the
+first `EPPair` field. The second, `emb_proj_le`, is **not proved here**. It looks true … but looking
+true is what §5 said about continuity, and §5 was writing a cheque. Until it is proved there is no
+`EPPair (T.carrier k) (Limit T)` in this file, and none is claimed."* It is proved in §7, by exactly
+the two-case argument that paragraph sketched, and `levelPair` is that `EPPair`.
 -/
 
 /-- `upTo` bundled as an order homomorphism. -/
@@ -379,5 +379,77 @@ def embHom (k : ℕ) : T.carrier k →𝒄 Limit T where
 
 theorem proj_embHom (k : ℕ) (x : T.carrier k) : proj T k (embHom T k x) = x :=
   proj_embFun T k x
+
+/-! ## 7. Each level is an embedding–projection pair into the limit
+
+**The rung §6 named, and it is the last one this construction needs.** `emb_proj_le` splits on the
+same case as everything else here. **Below `k`**, descending inside a coherent sequence just reads
+off the lower level — that is what coherence *says* — so the composite is an equality, not an
+inequality. **Above `k`**, climbing is `emb` applied repeatedly, and each application is bounded by
+the tower's own `emb_proj_le` after coherence rewrites `y.1 n` as `(T.step n).proj (y.1 (n+1))`.
+
+**So `levelPair k : EPPair (T.carrier k) (Limit T)` exists**, and the inverse limit is a genuine
+cocone of embedding–projection pairs over the tower.
+
+**A note on this file's estimates, now that there are four of them.** Its header once said the
+level-into-limit embedding needed transport along `k + (n − k) = n` and called that unavoidable —
+**wrong**, §5. §5 said continuity was expected to go through — **right**, §6. §6 said this looked
+true — **right**, here. The one estimate that missed was the pessimistic one, and it cost a day of
+the map not existing. That is worth knowing about the next such judgement, and it is not evidence
+that the next one will be right.
+
+**What is still not here, stated so it is not inferred.** `Bilimit` — that the limit of the
+canonical tower is isomorphic to its own continuous function space — needs one thing beyond this
+section: that `⨆ k, embHom k ∘ proj k` is the **identity** on `Limit T`. Every `EPPair` above is a
+map between *two* objects; the bilimit is a statement about the supremum of a chain of self-maps of
+*one* of them, and nothing in this file constructs that chain, let alone computes its supremum.
+`CanonicalTower.Bilimit` remains unproved and this section is not evidence for it.
+-/
+
+/-- Descending inside a coherent sequence just reads off the lower level. This is coherence,
+iterated: `y.2` is the single-step version and the recursion is the same one that defines
+`downTo`. -/
+theorem downTo_val (y : Limit T) (n : ℕ) : ∀ k (h : n ≤ k), downTo T n k h (y.1 k) = y.1 n
+  | 0, h => by obtain rfl := Nat.le_zero.1 h; rfl
+  | k + 1, h => by
+      by_cases hk : n = k + 1
+      · subst hk; simp [downTo]
+      · have h' : n ≤ k := by omega
+        simp only [downTo, dif_neg hk]
+        rw [y.2 k, downTo_val y n k h']
+
+/-- Climbing inside a coherent sequence only loses information. Each step is the tower's own
+`emb_proj_le` once coherence has rewritten the target level as a projection of the one above. -/
+theorem upTo_val_le (y : Limit T) (k : ℕ) : ∀ n (h : k ≤ n), upTo T k n h (y.1 k) ≤ y.1 n
+  | 0, h => by obtain rfl := Nat.le_zero.1 h; exact le_of_eq rfl
+  | n + 1, h => by
+      by_cases hk : k = n + 1
+      · subst hk; simp [upTo]
+      · have h' : k ≤ n := by omega
+        simp only [upTo, dif_neg hk]
+        calc (T.step n).emb (upTo T k n h' (y.1 k))
+            ≤ (T.step n).emb (y.1 n) := (T.step n).emb.monotone (upTo_val_le y k n h')
+          _ = (T.step n).emb ((T.step n).proj (y.1 (n + 1))) := by rw [y.2 n]
+          _ ≤ y.1 (n + 1) := (T.step n).emb_proj_le _
+
+/-- **THE SECOND `EPPair` FIELD**: going into the limit from level `k` and back out never returns
+more than you started with. Below `k` it is an equality and above `k` it is the tower's own
+`emb_proj_le`, levelwise. -/
+theorem embHom_proj_le (k : ℕ) (y : Limit T) : embHom T k (proj T k y) ≤ y := by
+  intro n
+  change embSeq T k (y.1 k) n ≤ y.1 n
+  by_cases h : k ≤ n
+  · simp only [embSeq, dif_pos h]
+    exact upTo_val_le T y k n h
+  · simp only [embSeq, dif_neg h]
+    exact le_of_eq (downTo_val T y n k (Nat.le_of_lt (Nat.lt_of_not_le h)))
+
+/-- **EACH LEVEL SITS IN THE LIMIT AS AN EMBEDDING–PROJECTION PAIR.** Both fields are proved:
+`proj_embHom` is exact, `embHom_proj_le` is the inequality. -/
+def levelPair (k : ℕ) : EPPair (T.carrier k) (Limit T) where
+  emb := embHom T k
+  proj := proj T k
+  proj_emb := proj_embHom T k
+  emb_proj_le := embHom_proj_le T k
 
 end InverseLimitCPO
