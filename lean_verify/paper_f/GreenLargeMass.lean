@@ -76,16 +76,22 @@ answer is exact rather than asymptotic.
 
     reflectedForm c  =  (the hat form at c)  +  (m²·|V|)⁻¹ · (∑ c)².
 
-**All of the `m⁻²` divergence sits on the constant mode and nowhere else.** So on a sum-zero vector
-it is simply absent (`reflectedForm_eq_hat_of_sum_zero`).
+**That is an identity and it is the whole of what is proved here.** A sentence claiming more — that
+the hat form therefore carries no `m⁻²` divergence — stood in this header for one commit and is
+**false**; see §7 and `ERRATUM 152`. What survives, and is all §6 ever needed, is that on a
+sum-zero vector the explicit `(∑ c)²` term is absent (`reflectedForm_eq_hat_of_sum_zero`).
 
 **Why that matters here.** `CrossPosSemidef.hcross_iff_zeroSum` says that if the coupling
 hypothesis fails, it fails at a vector supported on the half that **sums to zero there** — hence on
 all of `V`. So (`hcross_failure_is_orthogonal_to_the_slack`):
 
-> **the growing slack that makes small mass the place to look is unavailable at every witness of
-> the failure it would have to excuse.** The slack lives on the constant mode; the failures live
-> orthogonally to it.
+> **the `(∑ c)²` term is exactly zero at every witness of the failure it would have to excuse.**
+
+`GreenExpansion` §9's slack is `(γ/m²)·(∑_H c)²`, the same shape, and it vanishes on the same
+vectors — which is what `CrossPosSemidef.hcross_of_reflectionPositive` already spends on §9's class.
+**What this adds is that the vanishing is an identity about the Green function itself and needs no
+class hypothesis.** It does NOT say the rest of the form is tame at small mass; §7 exhibits a graph
+where it is not.
 
 Both halves are exact; neither is an estimate. **This does not close the converse** — what remains
 at such a `c` is whether the hat form can be nonnegative while the coupling form is positive, which
@@ -471,9 +477,15 @@ open GreenExpansion
 
 variable {G : SimpleGraph V} [DecidableRel G.Adj] {m : ℝ} {θ : V ≃ V} {H Mir : Finset V}
 
-/-- The Green function with its constant mode removed. `green`'s row sums are all `m⁻²`
-(`GreenExpansion.green_mulVec_one`), so subtracting `(m²·|V|)⁻¹` times the all-ones matrix leaves
-a matrix that annihilates constants — and carries none of the `m⁻²` divergence. -/
+/-- The Green function with the GLOBAL constant mode removed. `green`'s row sums are all `m⁻²`
+(`GreenExpansion.green_mulVec_one`), so subtracting `(m²·|V|)⁻¹` times the all-ones matrix leaves a
+matrix whose rows sum to zero (`greenHat_row_sum`).
+
+**THIS SENTENCE ONCE CONTINUED "— and carries none of the `m⁻²` divergence", AND THAT CLAUSE IS
+FALSE** (`ERRATUM 152`, §7). Removing the all-ones matrix removes one line out of the Laplacian's
+`0`-eigenspace, and that eigenspace has dimension equal to the number of components. On two points
+with no edge `greenHat 0 0 = (2m²)⁻¹`, which is unbounded (`greenHat_bot_two_unbounded`) — while
+its rows still sum to zero, so the counterexample refutes the sentence and none of the theorems. -/
 noncomputable def greenHat (G : SimpleGraph V) [DecidableRel G.Adj] (m : ℝ) : Matrix V V ℝ :=
   GraphLaplacian.green G m - (m ^ 2 * (Fintype.card V : ℝ))⁻¹ • allOnes V
 
@@ -533,10 +545,10 @@ hypothesis fails then — by `CrossPosSemidef.hcross_iff_zeroSum` — it fails a
 the half that **sums to zero there**, and hence on all of `V`. At such a vector the `m⁻²` term of
 the split above is exactly zero.
 
-So the growing slack that makes small mass the remaining place to look
-(`GreenExpansion.reflectionPositive_iff_slack`, whose slack is `(γ/m²)·(∑_H c)²`) **is unavailable
-at every witness of the failure it would have to excuse.** The slack lives on the constant mode;
-the failures live orthogonally to it. Both facts are exact and neither is an estimate.
+So the slack of `GreenExpansion.reflectionPositive_iff_slack`, which is `(γ/m²)·(∑_H c)²`, **is
+exactly zero at every witness of the failure it would have to excuse.** Both facts are exact and
+neither is an estimate. **What this does NOT say is that the remaining form is tame at small
+mass** — §7 exhibits a graph where the hat entries are unbounded as the mass falls.
 
 **This does not close the converse.** What remains at such a `c` is whether the hat form can be
 nonnegative while the coupling form is positive, and that is a question about `greenHat` with no
@@ -557,5 +569,93 @@ theorem hcross_failure_is_orthogonal_to_the_slack (hM : IsMirrorHalf θ H Mir) (
   exact ⟨c, hcs, hall, hpos, reflectedForm_eq_hat_of_sum_zero hall⟩
 
 end SmallMass
+
+/-! ## 7. And the sentence §6 was written with is FALSE — `greenHat` does not remove the divergence
+
+`ERRATUM 152`. §6's definition was introduced with the words *"leaves a matrix that annihilates
+constants — and carries none of the `m⁻²` divergence."* **The clause after the dash is not proved
+and is not true.** What is proved is an algebraic identity and a row sum; boundedness as `m → 0` is
+a spectral statement and it fails as soon as the graph is disconnected, because then the
+`0`-eigenspace of the Laplacian has dimension greater than one and `allOnes` projects onto only a
+line inside it.
+
+The witness is as small as it can be: **two vertices and no edge.** There `green = m⁻²·1`, so
+`greenHat 0 0 = m⁻² − (2m²)⁻¹ = (2m²)⁻¹`, which is unbounded — while its rows still sum to zero,
+exactly as `greenHat_row_sum` says. So the counterexample is consistent with everything §6 proves
+and refutes only the sentence §6 was described with.
+
+**What survives untouched:** `reflectedForm_split`, `reflectedForm_eq_hat_of_sum_zero` and
+`hcross_failure_is_orthogonal_to_the_slack` are identities and are unaffected. What is withdrawn is
+the reading that the hat form is *tame* at small mass. It is not, in general.
+-/
+
+section Erratum152
+
+open GreenExpansion
+
+/-- The empty graph on two points: two vertices, no edge, so two components. -/
+theorem massive_bot_two (m : ℝ) :
+    GraphLaplacian.massive (⊥ : SimpleGraph (Fin 2)) m
+      = (m ^ 2) • (1 : Matrix (Fin 2) (Fin 2) ℝ) := by
+  have hlap : (⊥ : SimpleGraph (Fin 2)).lapMatrix ℝ = 0 := by
+    have hdeg : ∀ v : Fin 2, (⊥ : SimpleGraph (Fin 2)).degree v = 0 := by
+      intro v
+      simp [SimpleGraph.degree, SimpleGraph.neighborFinset, SimpleGraph.neighborSet]
+    ext i j
+    simp only [SimpleGraph.lapMatrix, Matrix.sub_apply, SimpleGraph.degMatrix,
+      Matrix.diagonal_apply, SimpleGraph.adjMatrix_apply, Matrix.zero_apply]
+    by_cases hij : i = j
+    · rw [if_pos hij, hdeg i, if_neg (by rw [hij]; exact fun hc => hc.ne rfl)]
+      norm_num
+    · rw [if_neg hij, if_neg (fun hc : (⊥ : SimpleGraph (Fin 2)).Adj i j => hc)]
+      norm_num
+  ext i j
+  rw [GraphLaplacian.massive, hlap]
+  by_cases hij : i = j <;> simp [hij]
+
+theorem green_bot_two {m : ℝ} (hm : m ≠ 0) :
+    GraphLaplacian.green (⊥ : SimpleGraph (Fin 2)) m
+      = (m ^ 2)⁻¹ • (1 : Matrix (Fin 2) (Fin 2) ℝ) := by
+  have hpos : (0 : ℝ) < m ^ 2 := by positivity
+  rw [GraphLaplacian.green, massive_bot_two]
+  refine Matrix.inv_eq_right_inv ?_
+  rw [Matrix.smul_mul, Matrix.one_mul, smul_smul, mul_inv_cancel₀ hpos.ne', one_smul]
+
+/-- **THE COUNTEREXAMPLE.** On the two-point empty graph the hat entry is `(2m²)⁻¹`, which is not
+bounded as the mass falls — so subtracting the all-ones matrix does **not** remove the `m⁻²`
+divergence. -/
+theorem greenHat_bot_two {m : ℝ} (hm : m ≠ 0) :
+    greenHat (⊥ : SimpleGraph (Fin 2)) m 0 0 = (2 * m ^ 2)⁻¹ := by
+  have hpos : (0 : ℝ) < m ^ 2 := by positivity
+  rw [greenHat, Matrix.sub_apply, green_bot_two hm]
+  simp only [Matrix.smul_apply, Matrix.one_apply_eq, allOnes, smul_eq_mul, mul_one,
+    Fintype.card_fin]
+  rw [show ((2 : ℕ) : ℝ) = 2 from by norm_num]
+  field_simp
+  ring
+
+/-- **AND SO IT IS UNBOUNDED**, stated without limits: past every bound there is a nonzero mass at
+which the hat entry exceeds it. -/
+theorem greenHat_bot_two_unbounded (B : ℝ) :
+    ∃ m : ℝ, m ≠ 0 ∧ B < greenHat (⊥ : SimpleGraph (Fin 2)) m 0 0 := by
+  obtain ⟨n, hn⟩ := exists_nat_gt (max (2 * B) 2)
+  have h2 : (2 : ℝ) < n := lt_of_le_of_lt (le_max_right (2 * B) 2) hn
+  have hB2 : 2 * B < n := lt_of_le_of_lt (le_max_left (2 * B) 2) hn
+  have hn0 : (0 : ℝ) < n := lt_trans (by norm_num) h2
+  have hne : ((n : ℝ))⁻¹ ≠ 0 := by positivity
+  refine ⟨(n : ℝ)⁻¹, hne, ?_⟩
+  rw [greenHat_bot_two hne]
+  have hval : (2 * ((n : ℝ)⁻¹) ^ 2)⁻¹ = (n : ℝ) ^ 2 / 2 := by
+    field_simp
+  rw [hval]
+  nlinarith [hB2, h2, hn0]
+
+/-- The rows still sum to zero there, so the counterexample refutes the sentence and not the
+theorem. -/
+theorem greenHat_bot_two_row_sum {m : ℝ} (hm : m ≠ 0) :
+    ∑ q, greenHat (⊥ : SimpleGraph (Fin 2)) m 0 q = 0 :=
+  greenHat_row_sum hm (by simp) 0
+
+end Erratum152
 
 end GreenLargeMass
