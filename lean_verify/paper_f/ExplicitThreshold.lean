@@ -168,6 +168,61 @@ theorem magnetisation_ge_of (hn : 0 < n) {β : ℝ} (hβ : 8 * Real.exp (-(4 * �
         ring
     _ ≤ _ := Finset.sum_le_sum fun p _ => hsite p
 
+/-- **THE SAME MAGNETISATION BOUND AT THE TEXTBOOK CONSTANT.** Hypothesis
+`6 e^{-4β} ≤ 1/2` rather than `8 e^{-4β} ≤ 1/2`, and `ε = 44 (6 e^{-4β})³` rather than
+`22 (8 e^{-4β})³` — weaker hypothesis, smaller `ε`, so a better bound at a lower
+temperature. Proof identical to `magnetisation_ge_of` with `cond_le_six` in place of
+`cond_le`; `ERRATUM 126`.
+
+**What this does NOT sharpen, and this time the trace was followed.** `magnetisation_two_thirds`
+and `magnetisation_half_measure` are stated at `β ≥ 1`, and `β ≥ 1` already satisfies both
+hypotheses, so their statements are unchanged. Getting a *lower* `β` out of them needs a new
+exponential estimate at a non-integer point — `exp_le_of_one_le` is proved from
+`Real.exp_one_gt_d9` and an integer power — and that is not done here. -/
+theorem magnetisation_ge_of_six (hn : 0 < n) {β : ℝ} (hβ : 6 * Real.exp (-(4 * β)) ≤ 1 / 2) :
+    (1 - 2 * (44 * (6 * Real.exp (-(4 * β))) ^ 3)) * ((n : ℝ) * n) ≤
+      (∑ σ ∈ (Finset.univ : Finset (Config n)).filter (fun σ => PlusBoundary σ),
+          magnetisation n σ * Real.exp (-β * isingH n σ)) /
+        (∑ σ ∈ (Finset.univ : Finset (Config n)).filter (fun σ => PlusBoundary σ),
+          Real.exp (-β * isingH n σ)) := by
+  classical
+  set ε : ℝ := 44 * (6 * Real.exp (-(4 * β))) ^ 3 with hε
+  set Z : ℝ := ∑ σ ∈ (Finset.univ : Finset (Config n)).filter (fun σ => PlusBoundary σ),
+    Real.exp (-β * isingH n σ) with hZ
+  have hZpos : 0 < Z := plus_partition_pos β
+  rw [le_div_iff₀ hZpos]
+  have hsplit : ∀ p : Site n, ((Finset.univ : Finset (Config n)).filter
+      (fun σ => PlusBoundary σ)).filter (fun σ => σ p = false) =
+      (Finset.univ : Finset (Config n)).filter (fun σ => PlusBoundary σ ∧ σ p = false) := by
+    intro p; ext σ; simp
+  have hnum : ∑ σ ∈ (Finset.univ : Finset (Config n)).filter (fun σ => PlusBoundary σ),
+      magnetisation n σ * Real.exp (-β * isingH n σ) =
+      ∑ p : Site n, (Z - 2 * ∑ σ ∈ (Finset.univ : Finset (Config n)).filter
+        (fun σ => PlusBoundary σ ∧ σ p = false), Real.exp (-β * isingH n σ)) := by
+    have hexp : ∀ σ ∈ (Finset.univ : Finset (Config n)).filter (fun σ => PlusBoundary σ),
+        magnetisation n σ * Real.exp (-β * isingH n σ) =
+          ∑ p : Site n, spin (σ p) * Real.exp (-β * isingH n σ) := by
+      intro σ _
+      rw [magnetisation, Finset.sum_mul]
+    rw [Finset.sum_congr rfl hexp, Finset.sum_comm]
+    exact Finset.sum_congr rfl fun p _ => by rw [sum_spin_eq β p, hsplit p]
+  rw [hnum]
+  have hsite : ∀ p : Site n, (1 - 2 * ε) * Z ≤
+      Z - 2 * ∑ σ ∈ (Finset.univ : Finset (Config n)).filter
+        (fun σ => PlusBoundary σ ∧ σ p = false), Real.exp (-β * isingH n σ) := by
+    intro p
+    have hle := cond_le_six hn hβ p
+    rw [div_le_iff₀ hZpos] at hle
+    nlinarith
+  calc (1 - 2 * ε) * ((n : ℝ) * n) * Z
+      = ∑ _p : Site n, (1 - 2 * ε) * Z := by
+        rw [Finset.sum_const, Finset.card_univ]
+        simp only [nsmul_eq_mul]
+        rw [show (Fintype.card (Site n) : ℝ) = (n : ℝ) * n from by
+          simp [Site, Fintype.card_prod]]
+        ring
+    _ ≤ _ := Finset.sum_le_sum fun p _ => hsite p
+
 /-! ## 3. And at `β ≥ 1` the arithmetic closes -/
 
 /-- `8 e^{-4β} ≤ 3/20` from `β ≥ 1`, via `Real.exp_one_gt_d9`. -/
