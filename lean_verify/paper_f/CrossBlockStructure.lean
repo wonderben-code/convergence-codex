@@ -101,6 +101,22 @@ The `K₂,₂` value is proved **twice by different routes** and they agree:
 `GraphMirrorReflection.crossForm_eq_neg_adj` with no block machinery at all, which is a check on
 the closed form rather than a corollary of it.
 
+## §5 — and the kernel is what the strictness machinery was asking for
+
+`StrictBiconditional.strict_iff_crossForm_neg_on_reachKernel` closes strictness on *the coupling
+is strictly negative on the reach kernel*. §4 says what strict negativity is, so on a block cut
+(`strict_iff_reachKernel_has_nonzero_block_sum`):
+
+> **strict exactly when the reach kernel meets the all-block-sums-zero subspace only at `0`.**
+
+The quadratic condition is gone; both sides are conjunctions of linear equations.
+`not_strict_of_reachKernel_block_sums_zero` is the same fact in the form a search consumes — one
+nonzero vector in the reach kernel with all block sums zero refutes strictness.
+
+**This is a reformulation and is not claimed to decide any graph.** The reach kernel is the other
+half of the condition and nothing here computes it; what changed is that the coupling half is now
+linear.
+
 ## What this does NOT do
 
 It says nothing new about reflection positivity **off** `GreenExpansion` §9's class.
@@ -567,5 +583,54 @@ theorem crossForm_bipGraph_zero_iff (m : ℝ) (w : Fin 4 → ℝ) :
   exact pow_eq_zero_iff (n := 2) (by norm_num)
 
 end ExactGraph
+
+/-! ## 5. And so strictness on a block cut is a LINEAR condition on the reach kernel -/
+
+section Strict
+
+open GreenExpansion GraphReflection GraphMirrorReflection CrossFormMatrix CrossPosSemidef
+
+variable [Fintype V] [DecidableEq V]
+variable {G : SimpleGraph V} [DecidableRel G.Adj] {m : ℝ} {θ : V ≃ V} {H Mir : Finset V}
+
+/-- **THE STRICTNESS CRITERION, WITH THE QUADRATIC CONDITION REMOVED.**
+`StrictBiconditional.strict_iff_crossForm_neg_on_reachKernel` says the reflected form is strict
+exactly when the coupling is strictly negative on every nonzero vector the operator keeps inside
+the region. On a block cut §4 says what strict negativity IS — some block sum is nonzero — so the
+criterion becomes:
+
+> **strict exactly when the reach kernel meets the all-block-sums-zero subspace only at `0`.**
+
+Both sides of that sentence are conjunctions of linear equations in `v`, so the criterion is two
+subspaces meeting trivially where the estate previously had a quadratic form to sign — said as a
+description of the shape, since no `Submodule` is constructed here and none is needed for the
+statement. The coupling hypothesis is not assumed: `IsCrossBlock` supplies it. -/
+theorem strict_iff_reachKernel_has_nonzero_block_sum (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ)
+    (hm : m ≠ 0) (hC : IsCrossBlock G θ H) :
+    (∀ c : V → ℝ, c ≠ 0 → (∀ p, p ∉ H → p ∉ Mir → c p = 0) →
+        0 < GraphReflection.reflectedForm G m θ c)
+      ↔ ∀ v : V → ℝ, StrictBiconditional.InReachKernel G m H Mir v → v ≠ 0 →
+          ∃ k ∈ blk (crossMatrix G θ H) H,
+            (∑ i ∈ cls (crossMatrix G θ H) H k, v i) ≠ 0 := by
+  rw [StrictBiconditional.strict_iff_crossForm_neg_on_reachKernel hM h hm
+    ((hcross_iff_isCrossBlock hM h m).mpr hC)]
+  refine forall_congr' fun v => ?_
+  exact imp_congr_right fun _ => imp_congr_right fun _ => crossForm_neg_iff hM h hC m v
+
+/-- **AND SO A SINGLE VECTOR REFUTES STRICTNESS.** One nonzero vector that the operator keeps
+inside the region and whose every block sum vanishes is enough. This is the criterion above read
+backwards, and it is the form a counterexample search consumes. -/
+theorem not_strict_of_reachKernel_block_sums_zero (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ)
+    (hm : m ≠ 0) (hC : IsCrossBlock G θ H) {v : V → ℝ}
+    (hv : StrictBiconditional.InReachKernel G m H Mir v) (hv0 : v ≠ 0)
+    (hz : ∀ k ∈ blk (crossMatrix G θ H) H, (∑ i ∈ cls (crossMatrix G θ H) H k, v i) = 0) :
+    ¬ ∀ c : V → ℝ, c ≠ 0 → (∀ p, p ∉ H → p ∉ Mir → c p = 0) →
+        0 < GraphReflection.reflectedForm G m θ c := by
+  intro hstrict
+  obtain ⟨k, hk, hne⟩ :=
+    (strict_iff_reachKernel_has_nonzero_block_sum hM h hm hC).mp hstrict v hv hv0
+  exact hne (hz k hk)
+
+end Strict
 
 end CrossBlockStructure
