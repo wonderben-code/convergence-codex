@@ -72,8 +72,16 @@ wall exist only to stop a reader inferring otherwise from the names `SpectralAct
 > `IsOrth` is orthogonality (derived from **Mathlib's** `Matrix.orthogonalGroup` by
 > `isOrth_of_mem_orthogonalGroup`, with two distinct witnesses), `isAlgCurv_act` shows the space of
 > algebraic curvature tensors is invariant, and `ricci_act` / `scal_act` / `act2_delta` show both
-> maps commute with the frame change. **The family is still not shown to have no other members**,
-> which is the invariant theory and is the rest of item 4.
+> maps commute with the frame change.
+>
+> **`lovelock_two`** (§13) — **and in dimension two the item is COMPLETE, both halves.** Any
+> homogeneous `O(2)`-equivariant map out of algebraic curvature tensors is a multiple of
+> `R ↦ scal R · δ`, so the family has no members outside the span of the two named maps. Three
+> facts make it affordable and none survives to `n ≥ 3`: the domain is a line, the generator is
+> fixed by the group (`act_constCurv_two`), and **`eq_smul_delta_of_invariant`** — an invariant
+> 2-tensor is a multiple of the metric, by reflections and transpositions alone, with no averaging.
+> `lovelock_two_ricci` checks the hypotheses are met by `Ric` itself and recovers §11's constant
+> `½` through the new machinery. **For `n ≥ 3` the spanning half is untouched.**
 
 ## Why components rather than multilinear maps
 
@@ -1302,6 +1310,199 @@ theorem traces_equivariant (hQ : IsOrth Q) (R : Fin n → Fin n → Fin n → Fi
         = act2 Q (fun b' c' => scal R * delta b' c') b c) :=
   ⟨ricci_act hQ R, scalDelta_act hQ R⟩
 
+/-! ### The first invariant-theoretic step, and item 4 complete in dimension two -/
+
+/-- `reflect k` is **diagonal**: it scales slot `b` by `1 − 2δ_{bk}`, which is `−1` at `k` and `1`
+elsewhere. Written this way so `act2` against it is two evaluations. -/
+theorem reflect_apply (k b b' : Fin n) : reflect k b b' = (1 - 2 * delta b k) * delta b b' := by
+  by_cases h : b = b'
+  · subst h
+    simp only [reflect, delta_self, mul_one]
+    by_cases hk : b = k <;> simp [delta, hk]
+  · have h0 : delta b b' = 0 := by simp [delta, h]
+    simp only [reflect, h0, mul_zero]
+    by_cases hk : b = k
+    · have hb' : delta b' k = 0 := by
+        have : b' ≠ k := by rw [← hk]; exact fun e => h e.symm
+        simp [delta, this]
+      simp [hb']
+    · simp [delta, hk]
+
+theorem act2_reflect (k : Fin n) (S : Fin n → Fin n → ℝ) (b c : Fin n) :
+    act2 (reflect k) S b c = (1 - 2 * delta b k) * ((1 - 2 * delta c k) * S b c) := by
+  simp only [act2, reflect_apply]
+  have inner : ∀ b' : Fin n,
+      ∑ c', (1 - 2 * delta b k) * delta b b' * ((1 - 2 * delta c k) * delta c c') * S b' c'
+        = (1 - 2 * delta b k) * delta b b' * ((1 - 2 * delta c k) * S b' c) := by
+    intro b'
+    have h : ∀ c' : Fin n,
+        (1 - 2 * delta b k) * delta b b' * ((1 - 2 * delta c k) * delta c c') * S b' c'
+          = delta c' c *
+            ((1 - 2 * delta b k) * delta b b' * ((1 - 2 * delta c k) * S b' c')) := by
+      intro c'; rw [delta_symm c c']; ring
+    rw [Finset.sum_congr rfl fun c' _ => h c',
+      sum_delta_left c fun c' =>
+        (1 - 2 * delta b k) * delta b b' * ((1 - 2 * delta c k) * S b' c')]
+  rw [Finset.sum_congr rfl fun b' _ => inner b']
+  have h2 : ∀ b' : Fin n,
+      (1 - 2 * delta b k) * delta b b' * ((1 - 2 * delta c k) * S b' c)
+        = delta b' b * ((1 - 2 * delta b k) * ((1 - 2 * delta c k) * S b' c)) := by
+    intro b'; rw [delta_symm b b']; ring
+  rw [Finset.sum_congr rfl fun b' _ => h2 b',
+    sum_delta_left b fun b' => (1 - 2 * delta b k) * ((1 - 2 * delta c k) * S b' c)]
+
+theorem delta_perm (σ : Equiv.Perm (Fin n)) (x y : Fin n) : delta (σ x) (σ y) = delta x y := by
+  by_cases h : x = y
+  · subst h; simp [delta_self]
+  · have hσ : σ x ≠ σ y := fun e => h (σ.injective e)
+    simp [delta, h, hσ]
+
+/-- **The permutation matrices**, the second family of orthogonal frame changes this section uses.
+Between them and the reflections they pin an invariant 2-tensor down completely. -/
+def permMat (σ : Equiv.Perm (Fin n)) (a b : Fin n) : ℝ := delta (σ a) b
+
+theorem isOrth_permMat (σ : Equiv.Perm (Fin n)) : IsOrth (permMat σ) := by
+  constructor
+  · intro x y
+    simp only [permMat]
+    rw [sum_delta_right (σ x) (σ y), delta_perm]
+  · intro x y
+    simp only [permMat]
+    rw [Fintype.sum_equiv σ (fun a => delta (σ a) x * delta (σ a) y)
+      (fun z => delta z x * delta z y) fun _ => rfl]
+    have h : ∀ z : Fin n, delta z x * delta z y = delta x z * delta y z := by
+      intro z; rw [delta_symm z x, delta_symm z y]
+    rw [Finset.sum_congr rfl fun z _ => h z, sum_delta_right]
+
+theorem act2_permMat (σ : Equiv.Perm (Fin n)) (S : Fin n → Fin n → ℝ) (b c : Fin n) :
+    act2 (permMat σ) S b c = S (σ b) (σ c) := by
+  simp only [act2, permMat]
+  have inner : ∀ b' : Fin n, ∑ c', delta (σ b) b' * delta (σ c) c' * S b' c'
+      = delta (σ b) b' * S b' (σ c) := by
+    intro b'
+    have h : ∀ c' : Fin n, delta (σ b) b' * delta (σ c) c' * S b' c'
+        = delta c' (σ c) * (delta (σ b) b' * S b' c') := by
+      intro c'; rw [delta_symm (σ c) c']; ring
+    rw [Finset.sum_congr rfl fun c' _ => h c',
+      sum_delta_left (σ c) fun c' => delta (σ b) b' * S b' c']
+  rw [Finset.sum_congr rfl fun b' _ => inner b']
+  have h2 : ∀ b' : Fin n, delta (σ b) b' * S b' (σ c) = delta b' (σ b) * S b' (σ c) := by
+    intro b'; rw [delta_symm (σ b) b']
+  rw [Finset.sum_congr rfl fun b' _ => h2 b', sum_delta_left (σ b) fun b' => S b' (σ c)]
+
+/-- **A 2-TENSOR FIXED BY EVERY ORTHOGONAL FRAME CHANGE IS A MULTIPLE OF THE METRIC.** This is the
+first genuinely invariant-theoretic statement in this file, and it is the shape of the argument the
+full classification needs — but it is cheap, because **two families of group elements suffice and
+neither requires averaging**. A reflection forces every off-diagonal entry to vanish (it flips the
+sign of exactly one of the two slots), and a transposition forces the diagonal entries to agree.
+No character, no irreducible decomposition, no integration over the group. -/
+theorem eq_smul_delta_of_invariant (i : Fin n) {S : Fin n → Fin n → ℝ}
+    (hS : ∀ Q, IsOrth Q → ∀ b c, act2 Q S b c = S b c) (b c : Fin n) :
+    S b c = S i i * delta b c := by
+  have off : ∀ x y : Fin n, x ≠ y → S x y = 0 := by
+    intro x y hxy
+    have h := hS (reflect x) (isOrth_reflect x) x y
+    rw [act2_reflect, delta_self] at h
+    have hyx : delta y x = 0 := by simp [delta, Ne.symm hxy]
+    rw [hyx] at h
+    linarith
+  have diag : ∀ x : Fin n, S x x = S i i := by
+    intro x
+    have h := hS (permMat (Equiv.swap x i)) (isOrth_permMat _) x x
+    rw [act2_permMat, Equiv.swap_apply_left] at h
+    exact h.symm
+  by_cases h : b = c
+  · subst h; rw [delta_self, mul_one]; exact diag b
+  · have h0 : delta b c = 0 := by simp [delta, h]
+    rw [off b c h, h0, mul_zero]
+
+theorem scal_smul (lam : ℝ) (R : Fin n → Fin n → Fin n → Fin n → ℝ) :
+    scal (fun a b c d => lam * R a b c d) = lam * scal R := by
+  simp only [scal, ricci, Finset.mul_sum]
+
+/-- **THE CONSTANT-CURVATURE TENSOR IS FIXED BY EVERY ORTHOGONAL FRAME CHANGE, IN DIMENSION TWO.**
+Proved without factorising the quadruple sum: `act Q` lands back in the one-dimensional space
+(`isAlgCurv_act` and `eq_smul_constCurv_two`), so it multiplies the generator by some `λ`, and
+`scal_act` says the scalar curvature did not move — so `2λ = 2`. -/
+theorem act_constCurv_two {Q : Fin 2 → Fin 2 → ℝ} (hQ : IsOrth Q) (a b c d : Fin 2) :
+    act Q (constCurv 2) a b c d = constCurv 2 a b c d := by
+  have hAC : IsAlgCurv (act Q (constCurv 2)) := isAlgCurv_act Q (isAlgCurv_constCurv 2)
+  have hrep := eq_smul_constCurv_two hAC.antisymm_left hAC.antisymm_right
+  set lam : ℝ := -(act Q (constCurv 2)) 0 1 0 1 with hlam
+  have heq : act Q (constCurv 2) = fun a b c d => lam * constCurv 2 a b c d := by
+    funext a b c d; exact hrep a b c d
+  have hs : scal (act Q (constCurv 2)) = lam * scal (constCurv 2) := by
+    rw [heq, scal_smul]
+  rw [scal_act hQ] at hs
+  have hsc : scal ((constCurv 2 : Fin 2 → Fin 2 → Fin 2 → Fin 2 → ℝ)) = 2 := by
+    rw [scal_constCurv]; norm_num
+  rw [hsc] at hs
+  have hone : lam = 1 := by linarith
+  rw [hrep a b c d, hone, one_mul]
+
+/-- **AND SO `WALLS` §W5.0 §6 ITEM 4 IS COMPLETE IN DIMENSION TWO** — both halves, not just the
+independence half of §11. Any map from algebraic curvature tensors to 2-tensors that is homogeneous
+and `O(2)`-equivariant **is** a multiple of `R ↦ scal R · δ`, so the family has no members outside
+the span of §11's two maps.
+
+Three things make this affordable where the general case is not. The domain is a *line*
+(`eq_smul_constCurv_two`), so the map is determined by one value; the generator is *fixed* by the
+group (`act_constCurv_two`), so that value is an invariant 2-tensor; and an invariant 2-tensor is a
+multiple of `δ` (`eq_smul_delta_of_invariant`) by reflections and transpositions alone. **None of
+the three survives to `n ≥ 3`**: the space of algebraic curvature tensors has dimension `6` at
+`n = 3` and `20` at `n = 4`, and the argument that replaces "the domain is a line" is the
+irreducible decomposition this file does not have.
+
+Only *homogeneity* is assumed, not additivity — the domain is one-dimensional, so additivity would
+be a hypothesis the proof never reaches for. -/
+theorem lovelock_two {T : (Fin 2 → Fin 2 → Fin 2 → Fin 2 → ℝ) → Fin 2 → Fin 2 → ℝ}
+    (hom : ∀ (lam : ℝ) (R : Fin 2 → Fin 2 → Fin 2 → Fin 2 → ℝ) (b c : Fin 2),
+      T (fun a b c d => lam * R a b c d) b c = lam * T R b c)
+    (hequiv : ∀ Q, IsOrth Q → ∀ R, IsAlgCurv R → ∀ b c, T (act Q R) b c = act2 Q (T R) b c) :
+    ∃ lam : ℝ, ∀ R, IsAlgCurv R → ∀ b c, T R b c = lam * (scal R * delta b c) := by
+  have hinv : ∀ Q, IsOrth Q → ∀ b c,
+      act2 Q (T (constCurv 2)) b c = T (constCurv 2) b c := by
+    intro Q hQ b c
+    have h1 := hequiv Q hQ (constCurv 2) (isAlgCurv_constCurv 2) b c
+    have h2 : act Q (constCurv 2) = constCurv 2 := by
+      funext a b c d; exact act_constCurv_two hQ a b c d
+    rw [h2] at h1
+    exact h1.symm
+  have hS := eq_smul_delta_of_invariant (0 : Fin 2) hinv
+  refine ⟨T (constCurv 2) 0 0 / 2, fun R hR b c => ?_⟩
+  have hrep : R = fun a b c d => -R 0 1 0 1 * constCurv 2 a b c d := by
+    funext a b c d; exact eq_smul_constCurv_two hR.antisymm_left hR.antisymm_right a b c d
+  have hTR : T R b c = -R 0 1 0 1 * T (constCurv 2) b c := by
+    conv_lhs => rw [hrep]
+    exact hom _ _ b c
+  have hscal : scal R = 2 * -R 0 1 0 1 := by
+    conv_lhs => rw [hrep]
+    rw [scal_smul, scal_constCurv]
+    have hc : ((2 : ℕ) : ℝ) = 2 := by norm_num
+    rw [hc]
+    ring
+  rw [hTR, hS b c, hscal]
+  ring
+
+theorem ricci_smul (lam : ℝ) (R : Fin n → Fin n → Fin n → Fin n → ℝ) (b c : Fin n) :
+    ricci (fun a b c d => lam * R a b c d) b c = lam * ricci R b c := by
+  simp only [ricci, Finset.mul_sum]
+
+/-- **AND THE HYPOTHESES ARE MET BY THE MAP THE CLASSIFICATION IS ACTUALLY ABOUT.** `lovelock_two`
+is satisfied by the zero map, so without this it would be a theorem about a class whose only
+evident member is trivial — the §3 standard again, now applied to a hypothesis pair. `Ric` is
+homogeneous (`ricci_smul`) and equivariant (`ricci_act`), so the classification applies to it.
+
+**And what it produces is `½`, which §11 got by a different route.** The constant `lovelock_two`
+extracts is `Ric(constCurv 2)₀₀ / 2 = (2−1)/2`, and `ricci_eq_half_scal_two` says the constant is
+`½`. This statement is proved *through* `lovelock_two`, not from §11, so the two agreeing is a
+check on the machinery rather than a restatement of it. -/
+theorem lovelock_two_ricci :
+    ∃ lam : ℝ, ∀ R : Fin 2 → Fin 2 → Fin 2 → Fin 2 → ℝ, IsAlgCurv R → ∀ b c,
+      ricci R b c = lam * (scal R * delta b c) :=
+  lovelock_two (fun lam R b c => ricci_smul lam R b c)
+    (fun _ hQ R _ b c => ricci_act hQ R b c)
+
 end Equivariance
 
 /-! ## 7. What this file does NOT settle
@@ -1310,13 +1511,20 @@ end Equivariance
 **none of §§5–6, §10, §11 or §12 is a step toward `a₂`.** They are statements about a structure
 with four clauses on a finite index type, and the wall named in the header is untouched by them.
 
-§§11–12 narrow one thing and it is worth being exact about which. `WALLS` §W5.0 §6 item 4 has two
+§§11–13 narrow one thing and it is worth being exact about which. `WALLS` §W5.0 §6 item 4 has two
 halves — *the two named maps are equivariant and independent* and *nothing outside their span is
 equivariant*. §11 settles the independence, dimension by dimension, and finds it **false at
 `n = 2` and true from `n = 3`**; §12 supplies the equivariance, which §11 had assumed without
-checking. **The second half is not started.** It is the invariant theory — no averaging over the
-group, no character, no irreducible decomposition appears in this file — and it is what the word
-"spanned" in the wall's sentence actually asserts.
+checking; §13 settles the second half **in dimension two only** (`lovelock_two`), where the domain
+is one-dimensional and the classification collapses to "an invariant 2-tensor is a multiple of the
+metric".
+
+**For `n ≥ 3` the second half is not started, and `n = 2` gives no purchase on it.** The three
+facts §13 leans on all fail there: the space of algebraic curvature tensors has dimension `6` at
+`n = 3` and `20` at `n = 4` rather than `1`, so the map is not determined by one value; what
+replaces "the domain is a line" is the irreducible decomposition of that space under `O(n)`, and
+nothing in this file computes one. `eq_smul_delta_of_invariant` **does** hold in every dimension
+and is the one piece of §13 that transfers.
 
 Two things §12 writes down but does not prove, both said at the point of use: that
 `act (Q · Q') = act Q ∘ act Q'`, so `act` is a change-of-frame formula rather than a `MulAction`
