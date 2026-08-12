@@ -73,7 +73,7 @@ completely, and the answer is better than the question:
 > **`backward_direction_fails`** — together: **the coupling hypothesis is NECESSARY in
 > `strict_iff_not_supportedIsotropic`, not merely used.** Its backward implication says *no
 > supported isotropic vector ⟹ strict*, and here the premise holds and the conclusion fails.
-> `StrictBiconditional` §6's *"an indefinite coupling breaks the equivalence and this file does
+> `StrictBiconditional` §8's *"an indefinite coupling breaks the equivalence and this file does
 > not claim otherwise"* is now a theorem rather than a caveat.
 
 **The forward direction is untouched and still holds here** — that is §3b, which carries no
@@ -240,7 +240,7 @@ theorem not_supportedIsotropic (m : ℝ) :
 
 /-! ## 5. And the reflected form is NEGATIVE — so the hypothesis is necessary, not merely used
 
-`StrictBiconditional` §6 says *"an indefinite coupling breaks the equivalence and this file does
+`StrictBiconditional` §8 says *"an indefinite coupling breaks the equivalence and this file does
 not claim otherwise"*. §4 gives one side of that; this gives the other, and together they turn the
 caveat into a theorem.
 
@@ -380,7 +380,7 @@ theorem hcross_necessary_for_positivity {m : ℝ} (hm : m ≠ 0) :
 /-- **THE COUPLING HYPOTHESIS IS NECESSARY IN `strict_iff_not_supportedIsotropic`, NOT MERELY
 USED.** Both sides of its backward implication are settled here and they disagree: no supported
 isotropic vector exists, and the form is still not strict. So `hcross` cannot be dropped from that
-direction, and `StrictBiconditional` §6's *"an indefinite coupling breaks the equivalence and this
+direction, and `StrictBiconditional` §8's *"an indefinite coupling breaks the equivalence and this
 file does not claim otherwise"* is now a theorem rather than a caveat.
 
 **What is NOT claimed.** The forward direction is untouched — `StrictBiconditional` §3b proves it

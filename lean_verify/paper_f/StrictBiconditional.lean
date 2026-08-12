@@ -171,10 +171,10 @@ checking that the two support conditions line up.
 
 /-! ## 3b. The forward half without the coupling hypothesis
 
-§6 says of `hcross` that it is *"genuinely needed, in one direction only"*. That is true, and the
+§8 says of `hcross` that it is *"genuinely needed, in one direction only"*. That is true, and the
 biconditional above carries it in both anyway, because a biconditional has one hypothesis list.
 Stated separately, the forward half needs nothing about the coupling's sign — so it survives
-exactly where §3 does not: **an indefinite coupling**, the case §6 names as breaking the
+exactly where §3 does not: **an indefinite coupling**, the case §8 names as breaking the
 equivalence. -/
 
 /-- **A SUPPORTED ISOTROPIC VECTOR IS A NULL DIRECTION, WHATEVER THE COUPLING DOES.** No
@@ -197,7 +197,7 @@ know the coupling is nonpositive first.
 
 **Where the removal buys something rather than tidying.** With an indefinite coupling the
 reflected form can be negative, `reflectionPositive_mirror` does not apply, and §3 is false as a
-biconditional — §6 says so. This statement holds there unchanged. -/
+biconditional — §8 says so. This statement holds there unchanged. -/
 theorem not_strict_of_supportedIsotropic (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ) (hm : m ≠ 0)
     (hiso : SupportedIsotropic G m θ H Mir) :
     ¬ (∀ c : V → ℝ, c ≠ 0 → (∀ p, p ∉ H → p ∉ Mir → c p = 0) →
@@ -388,7 +388,15 @@ theorem strict_iff_crossForm_neg_on_reachKernel (hM : IsMirrorHalf θ H Mir) (h 
   · rintro hneg ⟨v, hv0, hvs, hviso, hvr⟩
     exact absurd hviso (ne_of_lt (hneg v ⟨hvs, hvr⟩ hv0))
 
-/-! ## 6. Review — the ways this could be hollow
+/-! ## 8. Review — the ways this could be hollow
+
+**This section was `## 6` until `ERRATUM 140`, and there is no §6 now.** It was written when the
+file ended at §5, and §7 was then appended ABOVE it — the defect `check_ledger.py --sections`
+exists to catch, and the reason its number is the oldest in the file. Renumbering here was NOT
+free: nine references had to move with it, three in this file, three in `IndefiniteCoupling` and
+three in the ledgers. That is the cost of a section number escaping its file, and it is recorded
+because it is the argument for fixing this class of defect early rather than late.
+
 
 **"Is this the thing ERRATUM 73 forbids?"** No, and the distinction is worth
 being precise about rather than asserting. ERRATUM 73 refutes *strict exactly
