@@ -58,9 +58,12 @@ throughout, and the Schur correction only helps); necessity **fails**.
 The hypothesis was not weakened to fit the proof: the proof was written first, and an
 exhaustive rational search was then run to find out whether the hypothesis could be dropped.
 It cannot. `MirrorConverseFails` exhibits a seven-vertex graph with `|H| = 2` and `|Mir| = 3`
-that is reflection positive at `m = 1/2` and fails `hcross`. Seven vertices is the smallest
-possible: every `σ`-invariant graph on four, five and six vertices was checked, at masses from
-`10⁻³` to `50`, and every one of them obeys the equivalence.
+that is reflection positive at `m = 1/2` and fails `hcross`. Seven is the smallest place it can
+happen: below that, the fixed-point-free cases are this file's theorem, and the two cases with a
+mirror — 24 graphs on five vertices and 192 on six — were decided **at every mass**, by
+interpolating the relevant determinant as a polynomial in `m²` over `ℚ` and settling its sign
+with a Sturm sequence. That argument is computation, recorded as such in `WALLS`, and is not
+formalised; the counterexample itself is.
 
 That witness settles a second question the estate had left open. `CrossFormMatrix`
 `.not_converse_of_mass_dependent` says a graph positive at one mass and not at another would
