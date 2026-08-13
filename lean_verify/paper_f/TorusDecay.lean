@@ -40,11 +40,14 @@ attempted:
 * **clause (iii)** — the extension theorem, which `ERRATUM 100` and `ERRATUM 101` between them
   established is *absent* from Mathlib rather than merely unspecialised.
 
-**And "uniform correlation bounds" is read here in its weakest true sense**: a bound on the
-**two-point** function, uniform in `n`. Bounds on higher correlations would need the Wick moment
-formula, which the estate does not have — see `GreenDecay`'s header for what it does have, which
-is the pairing *count* and not the moment identity. **The item stays open** and its trigger is
-unchanged.
+**And "uniform correlation bounds" is read here as a bound on the two-point function, uniform in
+`n`.** A first draft of this paragraph added that bounds on *higher* correlations would need the
+Wick moment formula, which the estate does not have. **`GreenClustering`, written the same day,
+makes that false as stated**: it bounds the whole generating functional's failure to factorise, for
+all test functions at once, without Wick — so the higher orders are covered in that sense. What
+remains true, and is the narrower claim this paragraph now makes, is that no *individual* higher
+correlation is written down, because extraction is the Wick step. **The item stays open** on its
+other clauses, and its trigger is unchanged.
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/

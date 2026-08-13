@@ -61,15 +61,26 @@ are missing here and none is bookkeeping:
 * **the infinite-volume limit** — the watchlist's *"infinite-volume limit along periodic boxes
   (W2's first leg)"*, open; `WALLS` W2 itself is the wider wall, *"the continuum field and OS
   reconstruction"*;
-* **the higher correlation functions.** Gaussian ⇒ Wick would give them from the two-point
-  function, and **a first draft of this sentence said Wick's theorem is not in this estate, which
-  is false.** `paper_f/GaussianMeasure.lean` has `wick_pairing_identity`,
-  `wick_pairing_expanded`, `wick_check_k1`–`k3` and `wick_pairings_table`. What those prove is the
+* **the higher correlation functions — SUPERSEDED THE SAME DAY, see the note after this list.**
+  Gaussian ⇒ Wick would give them from the two-point function, and **a first draft of this
+  sentence said Wick's theorem is not in this estate, which is false.**
+  `paper_f/GaussianMeasure.lean` has `wick_pairing_identity`, `wick_pairing_expanded`,
+  `wick_check_k1`–`k3` and `wick_pairings_table`. What those prove is the
   **counting** identity `(2k)! = 2^k · k! · (2k−1)‼` — arithmetic about factorials, with no
   measure, no field and no Gaussian anywhere in the statement. **The moment formula**
   `E[X₁⋯X_{2k}] = ∑_{pairings} ∏ E[Xᵢ Xⱼ]`, which is the half a clustering argument would consume,
   is the one that is absent;
 * **the continuum.**
+
+**THE SECOND BULLET IS SUPERSEDED BY `GreenClustering`, WRITTEN THE SAME DAY AND KEPT HERE RATHER
+THAN SILENTLY EDITED.** Its route is not Wick: `LatticeGeneratingFunctional.generatingFunctional`
+already packages every order at once, and an exponential of a quadratic factorises exactly, so
+`GreenClustering.clustering` bounds `Z(f+g) − Z(f)Z(g)` for **all** test functions living `N` steps
+apart, using this file's estimate on the cross term and nothing else. **What survives of the bullet
+is narrower and still true**: no *individual* higher correlation is written down, because
+extracting one means differentiating under the integral and the identity that comes out *is* Wick's
+formula. So the generating functional clusters; extraction does not follow. The first and third
+bullets are untouched.
 
 **No theorem in this file should be recorded as OS4**, and the watchlist item keeps `OS4` open.
 What changes is the sentence *"needs a decay estimate the estate does not have"*: the estate has
