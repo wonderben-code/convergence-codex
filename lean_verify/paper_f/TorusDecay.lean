@@ -1,0 +1,176 @@
+import GreenDecay
+import TorusReflection
+
+/-!
+# The same decay on the periodic box, which is the family the infinite-volume limit uses
+
+`GreenDecay` proved that the propagator decays geometrically in the graph distance at a rate fixed
+by a bound on the degrees, and drew the volume-uniform corollary **on the box**. The watchlist item
+that wants a uniform bound is not about the box:
+
+> ITEM: the infinite-volume limit along periodic boxes (W2's first leg)
+> … **What does not exist is any statement relating different `n`**: no embedding of
+> `torusGraph d n` into `torusGraph d (2n)`, **no uniform bound**, no notion of the limit measure's
+> index set.
+> WHAT WOULD BE NEEDED … (ii) … **uniform correlation bounds** plus a tightness argument, which is
+> where the analysis lives.
+
+So the corollary has to be on `torusGraph`, and the only thing standing between `GreenDecay` and
+that was a degree bound, which no file had. **This supplies it and takes the corollary.**
+
+## What is delivered
+
+* `torusGraph_degree_le`: every site of `torusGraph d n` has at most `2d` neighbours, at every
+  side length, `n = 1` and `n = 2` included (where the truth is smaller and this does not say so).
+  Proved by the over-counting argument `BoxDegree` uses — exhibit a total step map and show every
+  neighbour is in its image — with the clamped step replaced by the **cyclic** one.
+* `torusGraph_green_abs_le`, `torusGraph_uniform`, `torusGraph_covariance_abs_le`: `GreenDecay`'s
+  three conclusions, at `torusGraph d n`, with a rate depending on `d` and `m` and **not on `n`**.
+
+## Exactly how far this moves the watchlist item, which is half of one clause of three
+
+**It supplies the first half of clause (ii) and nothing else.** Clause (ii) reads *"uniform
+correlation bounds **plus a tightness argument**, which is where the analysis lives"*, and the
+second half is where the analysis lives, by the clause's own account. Not supplied here, and not
+attempted:
+
+* **the tightness argument** — nothing here is a statement about a sequence of measures;
+* **clause (i)** — the item records that the torus covariances are **not** compatible, so there is
+  no projective system, and a uniform bound does not create one;
+* **clause (iii)** — the extension theorem, which `ERRATUM 100` and `ERRATUM 101` between them
+  established is *absent* from Mathlib rather than merely unspecialised.
+
+**And "uniform correlation bounds" is read here in its weakest true sense**: a bound on the
+**two-point** function, uniform in `n`. Bounds on higher correlations would need the Wick moment
+formula, which the estate does not have — see `GreenDecay`'s header for what it does have, which
+is the pairing *count* and not the moment identity. **The item stays open** and its trigger is
+unchanged.
+
+Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
+-/
+
+namespace TorusDecay
+
+open BoxGraph TorusReflection GraphLaplacian MeasureTheory ProbabilityTheory
+
+set_option linter.style.openClassical false
+open scoped Classical
+
+variable {d n : ℕ} {m : ℝ}
+
+/-! ## 1. One cyclic step along one coordinate
+
+`BoxDegree.stepSite` clamps at the wall; here the step wraps. Both are total, and totality is the
+only property the count needs — a step that lands on a non-neighbour, or back on `p`, only makes
+the over-count larger.
+-/
+
+/-- **THE CYCLIC STEP MAP.** `stepT p i b` moves coordinate `i` of `p` one place forward
+(`b = true`) or back around the circle `Fin n`. -/
+def stepT (p : Site d n) (i : Fin d) (b : Bool) : Site d n :=
+  Function.update p i
+    (if b then ⟨if (p i).val + 1 = n then 0 else (p i).val + 1, by
+        have := (p i).isLt; split <;> omega⟩
+     else ⟨if (p i).val = 0 then n - 1 else (p i).val - 1, by
+        have := (p i).isLt; split <;> omega⟩)
+
+/-- **EVERY NEIGHBOUR IS A CYCLIC STEP.** The four disjuncts of `adjT` are the four cases, and the
+two wrap-around ones are exactly what the clamped map could not produce. -/
+theorem adjT_eq_stepT {p q : Site d n} (h : (torusGraph d n).Adj p q) :
+    ∃ t : Fin d × Bool, q = stepT p t.1 t.2 := by
+  obtain ⟨i, hoff, hne, hstep⟩ := h
+  -- `n` is positive because `p i` inhabits `Fin n`
+  have hn : 0 < n := lt_of_le_of_lt (Nat.zero_le _) (p i).isLt
+  rcases hstep with hup | hdown | hzero | hwrap
+  · -- `p i + 1 = q i`, an ordinary forward step
+    refine ⟨(i, true), ?_⟩
+    funext j
+    by_cases hj : j = i
+    · subst hj
+      simp only [stepT, Function.update_self]
+      refine Fin.ext ?_
+      have hlt := (q j).isLt
+      change (q j).val = if (p j).val + 1 = n then 0 else (p j).val + 1
+      rw [if_neg (by omega)]
+      omega
+    · simp only [stepT, Function.update_of_ne hj]
+      exact (hoff j hj).symm
+  · -- `q i + 1 = p i`, an ordinary backward step
+    refine ⟨(i, false), ?_⟩
+    funext j
+    by_cases hj : j = i
+    · subst hj
+      simp only [stepT, Function.update_self]
+      refine Fin.ext ?_
+      change (q j).val = if (p j).val = 0 then n - 1 else (p j).val - 1
+      rw [if_neg (by omega)]
+      omega
+    · simp only [stepT, Function.update_of_ne hj]
+      exact (hoff j hj).symm
+  · -- `p i = 0` and `q i + 1 = n`: step back across the join
+    refine ⟨(i, false), ?_⟩
+    funext j
+    by_cases hj : j = i
+    · subst hj
+      simp only [stepT, Function.update_self]
+      refine Fin.ext ?_
+      change (q j).val = if (p j).val = 0 then n - 1 else (p j).val - 1
+      rw [if_pos hzero.1]
+      omega
+    · simp only [stepT, Function.update_of_ne hj]
+      exact (hoff j hj).symm
+  · -- `q i = 0` and `p i + 1 = n`: step forward across the join
+    refine ⟨(i, true), ?_⟩
+    funext j
+    by_cases hj : j = i
+    · subst hj
+      simp only [stepT, Function.update_self]
+      refine Fin.ext ?_
+      change (q j).val = if (p j).val + 1 = n then 0 else (p j).val + 1
+      rw [if_pos hwrap.2]
+      omega
+    · simp only [stepT, Function.update_of_ne hj]
+      exact (hoff j hj).symm
+
+/-! ## 2. The count -/
+
+/-- **AT MOST `2d` NEIGHBOURS ON THE PERIODIC BOX**, in every dimension and at every side length.
+At `n ≤ 2` the true degree is smaller — the two directions coincide — and this bound does not say
+so, which is all the decay estimate needs. -/
+theorem torusGraph_degree_le (p : Site d n) : (torusGraph d n).degree p ≤ 2 * d := by
+  classical
+  rw [SimpleGraph.degree, SimpleGraph.neighborFinset_eq_filter]
+  have hsub : (Finset.univ : Finset (Site d n)).filter (fun q => (torusGraph d n).Adj p q)
+      ⊆ (Finset.univ : Finset (Fin d × Bool)).image (fun t => stepT p t.1 t.2) := by
+    intro q hq
+    obtain ⟨t, ht⟩ := adjT_eq_stepT (Finset.mem_filter.mp hq).2
+    exact Finset.mem_image.mpr ⟨t, Finset.mem_univ t, ht.symm⟩
+  refine (Finset.card_le_card hsub).trans (Finset.card_image_le.trans ?_)
+  simp [Finset.card_univ, Fintype.card_prod, Nat.mul_comm]
+
+/-! ## 3. `GreenDecay` on the periodic box -/
+
+/-- **THE DECAY RATE ON THE TORUS DOES NOT DEPEND ON THE SIDE LENGTH.** -/
+theorem torusGraph_green_abs_le (d n : ℕ) (hm : m ≠ 0) (p q : Site d n) :
+    |green (torusGraph d n) m p q|
+      ≤ GreenDecay.decayRate (2 * d) m ^ ((torusGraph d n).dist p q) * (m ^ 2)⁻¹ :=
+  GreenDecay.green_abs_le_pow_dist hm (fun v => torusGraph_degree_le v) p q
+
+/-- **THE UNIFORM BOUND THE WATCHLIST ITEM ASKS FOR**, in the quantifier order that makes it
+uniform: `N` is produced from `d`, `m` and `ε` before `n` is mentioned. -/
+theorem torusGraph_uniform (d : ℕ) (hm : m ≠ 0) {ε : ℝ} (hε : 0 < ε) :
+    ∃ N : ℕ, ∀ (n : ℕ) (p q : Site d n), N ≤ (torusGraph d n).dist p q →
+      |green (torusGraph d n) m p q| < ε := by
+  obtain ⟨N, hN⟩ := GreenDecay.exists_pow_lt hm (2 * d) hε
+  exact ⟨N, fun n p q hpq =>
+    lt_of_le_of_lt (torusGraph_green_abs_le d n hm p q) (hN _ hpq)⟩
+
+/-- **AND THE SAME ABOUT THE FIELD**: the two-point function of the Gaussian field on the periodic
+box clusters exponentially, at a rate independent of the side length. -/
+theorem torusGraph_covariance_abs_le (d n : ℕ) (hm : m ≠ 0) (p q : Site d n) :
+    |cov[fun ω : EuclideanSpace ℝ (Site d n) => ω p,
+        fun ω : EuclideanSpace ℝ (Site d n) => ω q; gaussianField (torusGraph d n) m]|
+      ≤ GreenDecay.decayRate (2 * d) m ^ ((torusGraph d n).dist p q) * (m ^ 2)⁻¹ :=
+  GreenDecay.covariance_abs_le hm (fun v => torusGraph_degree_le v) p q
+
+end TorusDecay
