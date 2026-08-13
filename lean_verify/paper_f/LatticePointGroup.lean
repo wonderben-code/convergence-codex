@@ -59,10 +59,19 @@ being empty talk: the two families are **distinct** (`permSite_ne_revSite`) and 
 ## What this is not, stated because the neighbouring item was misread once already
 
 **It is not OS3**, and no theorem here should be recorded as OS3. OS3 is invariance under the
-Euclidean group `E(d)`, which is continuous and infinite; the hyperoctahedral group is finite, the
-box has no translations at all, and the torus's are a finite cyclic group per axis. What is true
-is narrower and worth having on its own terms: **the estate can now name the full point group of
-its lattice, and the field is invariant under it** — where before it could name two elements.
+Euclidean group `E(d)`, which is continuous and infinite; the signed permutations are finite, the
+box has no translations at all, and the torus's are a finite cyclic group per axis.
+
+What is true is narrower, and stated to match §4 exactly rather than to sound like it: **the axis
+reversals and the axis permutations now sit side by side, and the field is invariant under the
+entire subgroup they generate** — where before the estate had exactly one automorphism statement
+outside the reflections, and nothing saying that two automorphisms compose.
+
+(This paragraph is a correction. It previously read *"the estate can now name the full point group
+of its lattice"* and *"where before it could name two elements"* — restating, three paragraphs
+later, the two claims §4's own text had already withdrawn, so the header contradicted itself. See
+`ERRATUM 158`, third addendum: the fix had been applied at the site of each error instead of to
+the file.)
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
