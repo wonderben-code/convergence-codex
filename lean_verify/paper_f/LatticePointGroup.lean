@@ -56,7 +56,7 @@ being empty talk: the two families are **distinct** (`permSite_ne_revSite`) and 
 **not** a group of involutions (`permSite_not_involutive`), so §1's algebra is doing work that
 `GraphReflection.IsRefl` — which carries involutivity as a structure field — could not.
 
-## What this is not, stated because the neighbouring item was misread once already
+## What this is not, stated at length because the neighbouring item asks for it
 
 **It is not OS3**, and no theorem here should be recorded as OS3. OS3 is invariance under the
 Euclidean group `E(d)`, which is continuous and infinite; the signed permutations are finite, the
