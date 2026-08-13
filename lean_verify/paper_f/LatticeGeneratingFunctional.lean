@@ -30,9 +30,25 @@ on every finite graph, at every nonzero mass. Two things come with it:
   whole ray `t ↦ exp(t²·c/2)` with `c = f ⬝ᵥ green G m *ᵥ f`, so the growth rate is not estimated
   but computed.
 
-§4 records the two-point function as the special case `cov[ω p, ω q] = green G m p q`. Checked by
-grep before being claimed: no statement in `paper_f` equates this field's covariance to the Green
-function — the only other occurrence of the word is a scalar `def` in `BakryEmeryGap`.
+§4 states the two-point function as `cov[ω p, ω q] = green G m p q`.
+
+**A NOVELTY CLAIM THAT STOOD HERE IS WITHDRAWN — `ERRATUM 159`, found 2026-08-13 while writing
+`GreenDecay`, which needed §4 and went to check what it rested on.** The withdrawn sentence read:
+*"Checked by grep before being claimed: no statement in `paper_f` equates this field's covariance
+to the Green function — the only other occurrence of the word is a scalar `def` in
+`BakryEmeryGap`."* **Both halves are false.**
+
+* `GraphLaplacian.twoPoint` proves `∫ ω p · ω q ∂(gaussianField G m) = green G m p q`, and the
+  field is centred, so that **is** the covariance. Its proof contains the `cov[…] = green`
+  equation *verbatim*, as a one-line `have` off `covariance_eval_multivariateGaussian` — the same
+  lemma §4 below uses. `LatticeField.twoPoint` is the same statement on the box.
+* The word `covariance` occurs in **35** files of `paper_f`, five times in `GraphLaplacian.lean`
+  itself (`grep -rc covariance paper_f/*.lean`, run 2026-08-13). A one-line command refutes the
+  sentence, so it was written from a narrower probe than the one it describes.
+
+**§4 is therefore a change of vocabulary, not new content.** It is kept, because the `cov[…]` form
+is the one a clustering statement consumes and `GreenDecay.covariance_abs_le` is now the consumer
+— but it is not a discovery, and this file no longer says it is.
 
 ## What this is NOT, and the precedent for saying so
 
@@ -142,7 +158,10 @@ theorem integrable_exp_inner (hm : m ≠ 0) (f : EuclideanSpace ℝ V) :
 
 /-! ## 4. The two-point function is the Green function
 
-Used informally since the field was defined, written down nowhere.
+**In the `cov[…]` vocabulary**, which is the only thing new here: `GraphLaplacian.twoPoint` has had
+the same fact in the `∫ ω p · ω q` vocabulary since the field was defined, and for a centred field
+the two are the same statement. See `ERRATUM 159` in the header for what this section was wrongly
+claimed to be.
 -/
 
 /-- **THE COVARIANCE OF TWO SITES IS THE PROPAGATOR BETWEEN THEM.** -/
@@ -150,6 +169,20 @@ theorem covariance_eval (hm : m ≠ 0) (p q : V) :
     cov[fun ω => ω p, fun ω => ω q; gaussianField G m] = green G m p q := by
   have hps : (green G m).PosSemidef := (green_posDef G hm).posSemidef
   rw [gaussianField, covariance_eval_multivariateGaussian hps]
+
+/-- **THE TWO VOCABULARIES ARE ONE STATEMENT, AND THAT IS NOW A THEOREM RATHER THAN A REMARK.**
+`ERRATUM 159`'s fold-back: instead of asserting in prose that `cov[…]` and `GraphLaplacian.twoPoint`
+say the same thing, prove it. **No mass hypothesis** — the identification is about the field being
+centred and holds at `m = 0` too, where the Green function does not exist and neither
+`covariance_eval` nor `twoPoint` can be stated. That is the sharpest form of the point: the two
+vocabularies agree for a reason that has nothing to do with the propagator. -/
+theorem covariance_eq_twoPoint (p q : V) :
+    cov[fun ω : EuclideanSpace ℝ V => ω p, fun ω : EuclideanSpace ℝ V => ω q; gaussianField G m]
+      = ∫ ω, ω p * ω q ∂(gaussianField G m) := by
+  have hsub := covariance_eq_sub (GraphLaplacian.memLp_eval G m p) (GraphLaplacian.memLp_eval G m q)
+  rw [GraphLaplacian.integral_eval, GraphLaplacian.integral_eval, mul_zero, sub_zero] at hsub
+  rw [hsub]
+  simp only [Pi.mul_apply]
 
 /-- **AND THE VARIANCE AT A SITE IS THE DIAGONAL ENTRY.** -/
 theorem variance_eval (hm : m ≠ 0) (p : V) :
