@@ -49,6 +49,13 @@ the file says the opposite.
 
 ## What is not proved, and where the remaining leg goes
 
+**SUPERSEDED IN ITS CONCLUSION, 15 AUG 2026, AND KEPT RATHER THAN REWRITTEN.** The missing half
+below was supplied the same afternoon: `LorentzConnectedReduction` reduced it to connectedness of
+SL₂(ℂ), `SL2Connected` proved that, and `SL2Connected.identityComponent_eq` states the
+identification **unconditionally**. `eq_of_isPreconnected` here keeps its hypothesis and stays as
+the conditional form; nothing in this file changed. The paragraphs below are the state of play on
+the morning of 15 August and are left standing as that.
+
 **The missing half is that SO⁺(1,3) is connected**, and nothing here bears on it.
 
 The honest reduction, and the only part of this that the last month of work changed: because

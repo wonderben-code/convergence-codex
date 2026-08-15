@@ -40,7 +40,19 @@ inversion is continuous where the determinant does not vanish — but **that agr
 this file neither proves nor uses**; it proves the second half directly instead, which is cheap
 here and would not have been had `Λ` been defined on a group where inversion is not polynomial.
 
-## What is still open, and it is now entirely outside this estate
+## What was still open when this file was written — CLOSED THE SAME AFTERNOON
+
+**SUPERSEDED, 15 AUG 2026, AND KEPT RATHER THAN REWRITTEN.** Everything below this heading was
+true when written and is now false in its conclusion: **`SL2Connected.isPreconnected_univ_SL2C`
+proves SL₂(ℂ) connected**, so `identityComponent_eq`'s hypothesis is discharged and
+`SL2Connected.identityComponent_eq` states the identification with no hypothesis at all. The
+watchlist item is CLOSED.
+
+**And the paragraph below got the size of the remaining step wrong**, which is why it is kept.
+It calls the step *"a Mathlib contribution, not an estate task"* and says of its four-step route
+*"step 1 is the work"* — **step 1 is a citation**, and at `n = 2` the whole route is unnecessary
+because the decomposition is a three-term formula. `SL2Connected`'s header sets out the
+correction. The record of misjudging a wall is worth more here than a tidy page.
 
 **SL₂(ℂ) is connected.** Not proved here, and **not in this Mathlib**: probed 15 Aug 2026 by
 `grep -rn` over `.lake/packages/mathlib/Mathlib/ --include=*.lean` for the three patterns
