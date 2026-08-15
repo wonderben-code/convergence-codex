@@ -100,10 +100,17 @@ as first phrased:
 
 * **`green_abs_le_pow`'s hypothesis `k ≤ G.dist p q` is UNSATISFIABLE for `k ≥ 1` at an
   unreachable pair.** So the inductive estimate was not merely weak there — it was *silent*, and
-  so was everything stated with the same hypothesis, including `boxGraph_uniform`,
-  `TorusDecay.torusGraph_uniform` and `GreenClustering.cross_abs_le`. A hypothesis that fails on
-  an infimum over the empty set looks exactly like one that holds narrowly, which is why this
-  survived a header paragraph explicitly about the convention.
+  a hypothesis that fails on an infimum over the empty set looks exactly like one that holds
+  narrowly, which is why this survived a header paragraph explicitly about the convention.
+  **Where that silence actually cost something, and where it did not, was checked rather than
+  assumed** (`ERRATUM 165`, which withdraws the first version of this bullet): it bit
+  `GreenClustering.cross_abs_le`, stated for an *arbitrary* graph; it did **not** bite
+  `boxGraph_uniform`, because `BoxGraph.boxGraph_connected` proves the box connected for `0 < n`
+  and there are no unreachable pairs to be silent about; and for
+  `TorusDecay.torusGraph_uniform` **the estate proves no such thing** — grepped
+  `boxGraph.*Connected\|torusGraph.*Connected` over `paper_f/*.lean`, which returns
+  `boxGraph_connected` and no torus counterpart — so whether its silence is vacuous is not
+  established here and is not assumed.
 * `green_abs_le_pow_dist` reads the inductive estimate at `k = G.dist p q = 0`, so it *does*
   degrade to `(m²)⁻¹` rather than vanishing. That much the caveat said, and it is still true.
 
