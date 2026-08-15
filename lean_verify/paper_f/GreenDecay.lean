@@ -1,4 +1,5 @@
 import GreenLargeMass
+import GreenDisconnected
 import LatticeGeneratingFunctional
 import BoxDegree
 import Mathlib.Combinatorics.SimpleGraph.Metric
@@ -92,12 +93,41 @@ file's bound degrades to `(m²)⁻¹` and says nothing. The sharp statement ther
 and is stronger than anything below: `GreenDisconnected.green_eq_zero_of_not_reachable` gives
 `green p q = 0` outright.
 
+**AND ON 15 AUG 2026 THE CAVEAT WAS ACTED ON, WHICH IT HAD NOT BEEN.** The paragraph above was
+written the day this file was, and then three statements were written underneath it that it
+applies to, without the connection being made. Two consequences, neither visible from the caveat
+as first phrased:
+
+* **`green_abs_le_pow`'s hypothesis `k ≤ G.dist p q` is UNSATISFIABLE for `k ≥ 1` at an
+  unreachable pair.** So the inductive estimate was not merely weak there — it was *silent*, and
+  so was everything stated with the same hypothesis, including `boxGraph_uniform`,
+  `TorusDecay.torusGraph_uniform` and `GreenClustering.cross_abs_le`. A hypothesis that fails on
+  an infimum over the empty set looks exactly like one that holds narrowly, which is why this
+  survived a header paragraph explicitly about the convention.
+* `green_abs_le_pow_dist` reads the inductive estimate at `k = G.dist p q = 0`, so it *does*
+  degrade to `(m²)⁻¹` rather than vanishing. That much the caveat said, and it is still true.
+
+The hypothesis is now `¬ G.Reachable p q ∨ k ≤ G.dist p q`, the new branch is one line of
+`GreenDisconnected.green_eq_zero_of_not_reachable`, and **nothing is weakened** — the old
+hypothesis implies the new one, so every earlier instance still applies.
+
+**The other half of the same amendment: uniformity was being stated per family.** `Δ` is a
+parameter of the rate, so the distance `N` at which the propagator drops below `ε` depends on
+`Δ`, `m` and `ε` and on nothing else — not on the graph, not on its vertex type, not on the
+volume. The estate said so in prose and stated it only for boxes (`boxGraph_uniform`) and for tori
+(`TorusDecay.torusGraph_uniform`). **`exists_dist_uniform` now says it for an arbitrary finite
+graph of bounded degree**, with `N` produced before the graph is mentioned, and `boxGraph_uniform`
+is an instance of it. `TorusDecay` is a separate file and is left for a separate unit; until then
+its version stands on its own proof.
+
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 
 namespace GreenDecay
 
 open GraphLaplacian MeasureTheory ProbabilityTheory Matrix Finset
+
+universe u
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 variable {G : SimpleGraph V} [DecidableRel G.Adj] {m : ℝ}
@@ -170,16 +200,21 @@ induction on `k`. Reading it at `k = dist p q` gives the theorem.
 
 /-- **THE DECAY ESTIMATE, IN INDUCTIVE FORM.** -/
 theorem green_abs_le_pow (hm : m ≠ 0) {Δ : ℕ} (hΔ : ∀ v : V, G.degree v ≤ Δ) :
-    ∀ (k : ℕ) (p q : V), k ≤ G.dist p q →
+    ∀ (k : ℕ) (p q : V), (¬ G.Reachable p q ∨ k ≤ G.dist p q) →
       |green G m p q| ≤ decayRate Δ m ^ k * (m ^ 2)⁻¹ := by
   have hm2 : (0 : ℝ) < m ^ 2 := by positivity
   intro k
   induction k with
   | zero => intro p q _; simpa using GreenLargeMass.green_abs_le (G := G) hm p q
   | succ k ih =>
-    intro p q hk
+    intro p q hk'
     set C : ℝ := decayRate Δ m ^ k * (m ^ 2)⁻¹ with hC
     have hC0 : 0 ≤ C := by
+      have := decayRate_nonneg Δ (m := m) hm
+      positivity
+    -- the branch the original statement could not reach: across components the entry is zero
+    rcases hk' with hnr | hk
+    · rw [GreenDisconnected.green_eq_zero_of_not_reachable G hm hnr, abs_zero]
       have := decayRate_nonneg Δ (m := m) hm
       positivity
     -- `dist p q ≥ k+1 > 0` forces `p ≠ q` and reachability
@@ -199,7 +234,7 @@ theorem green_abs_le_pow (hm : m ≠ 0) {Δ : ℕ} (hΔ : ∀ v : V, G.degree v 
       have hstep : G.dist p q ≤ (SimpleGraph.Walk.cons hadj w).length :=
         SimpleGraph.dist_le _
       rw [SimpleGraph.Walk.length_cons, hw] at hstep
-      exact ih r q (by omega)
+      exact ih r q (Or.inr (by omega))
     -- sum the neighbours
     have hsum : |∑ r ∈ G.neighborFinset p, green G m r q| ≤ (G.degree p : ℝ) * C := by
       refine (Finset.abs_sum_le_sum_abs _ _).trans ?_
@@ -226,7 +261,7 @@ theorem green_abs_le_pow (hm : m ≠ 0) {Δ : ℕ} (hΔ : ∀ v : V, G.degree v 
 nonzero mass, the propagator between two sites is at most `(Δ/(Δ+m²))^{dist} · m⁻²`. -/
 theorem green_abs_le_pow_dist (hm : m ≠ 0) {Δ : ℕ} (hΔ : ∀ v : V, G.degree v ≤ Δ) (p q : V) :
     |green G m p q| ≤ decayRate Δ m ^ (G.dist p q) * (m ^ 2)⁻¹ :=
-  green_abs_le_pow hm hΔ (G.dist p q) p q le_rfl
+  green_abs_le_pow hm hΔ (G.dist p q) p q (Or.inr le_rfl)
 
 /-- The same with the graph's own maximum degree, which needs no hypothesis. -/
 theorem green_abs_le_maxDegree (hm : m ≠ 0) (p q : V) :
@@ -280,14 +315,33 @@ theorem boxGraph_green_abs_le (d n : ℕ) (hm : m ≠ 0) (p q : Site d n) :
       ≤ decayRate (2 * d) m ^ ((boxGraph d n).dist p q) * (m ^ 2)⁻¹ :=
   green_abs_le_pow_dist hm (fun v => BoxDegree.boxGraph_degree_le v) p q
 
+/-- **UNIFORMITY IS A PROPERTY OF THE DEGREE BOUND AND NOTHING ELSE**, so the statement should
+not name a family of graphs — and until 15 Aug 2026 the only versions of it in the estate did
+(`boxGraph_uniform` here, `TorusDecay.torusGraph_uniform` there). `N` is produced from `Δ`, `m`
+and `ε` before the graph, the vertex type, or the two sites are mentioned; the family versions are
+now instances rather than separate theorems.
+
+The separation hypothesis is `¬ H.Reachable p q ∨ N ≤ H.dist p q` for the reason recorded on
+`green_abs_le_pow`: `SimpleGraph.dist` is `0` across components, so the second disjunct alone
+excludes exactly the pairs where the conclusion is sharpest. -/
+theorem exists_dist_uniform (hm : m ≠ 0) (Δ : ℕ) {ε : ℝ} (hε : 0 < ε) :
+    ∃ N : ℕ, ∀ (W : Type u) [Fintype W] [DecidableEq W] (H : SimpleGraph W) [DecidableRel H.Adj],
+      (∀ v : W, H.degree v ≤ Δ) → ∀ p q : W,
+        (¬ H.Reachable p q ∨ N ≤ H.dist p q) → |green H m p q| < ε := by
+  obtain ⟨N, hN⟩ := exists_pow_lt hm Δ hε
+  refine ⟨N, fun W _ _ H _ hdeg p q hsep => ?_⟩
+  exact lt_of_le_of_lt (green_abs_le_pow hm hdeg N p q hsep) (hN N le_rfl)
+
 open BoxGraph in
 /-- **AND THEREFORE A DISTANCE CHOSEN FROM `d`, `m` AND `ε` ALONE WORKS AT EVERY SIDE LENGTH.**
-The quantifier order is the content: `N` is produced before `n` is mentioned. -/
+The quantifier order is the content: `N` is produced before `n` is mentioned. Now an instance of
+`exists_dist_uniform`, which produces `N` before the *graph* is mentioned. -/
 theorem boxGraph_uniform (d : ℕ) (hm : m ≠ 0) {ε : ℝ} (hε : 0 < ε) :
-    ∃ N : ℕ, ∀ (n : ℕ) (p q : Site d n), N ≤ (boxGraph d n).dist p q →
+    ∃ N : ℕ, ∀ (n : ℕ) (p q : Site d n),
+      (¬ (boxGraph d n).Reachable p q ∨ N ≤ (boxGraph d n).dist p q) →
       |green (boxGraph d n) m p q| < ε := by
-  obtain ⟨N, hN⟩ := exists_pow_lt hm (2 * d) hε
-  refine ⟨N, fun n p q hpq => ?_⟩
-  exact lt_of_le_of_lt (boxGraph_green_abs_le d n hm p q) (hN _ hpq)
+  obtain ⟨N, hN⟩ := exists_dist_uniform (m := m) hm (2 * d) hε
+  exact ⟨N, fun n p q hpq =>
+    hN (Site d n) (boxGraph d n) (fun v => BoxDegree.boxGraph_degree_le v) p q hpq⟩
 
 end GreenDecay

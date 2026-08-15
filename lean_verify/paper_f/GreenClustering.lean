@@ -87,8 +87,9 @@ The hypothesis is now
 
     ¬ G.Reachable p q  ∨  N ≤ G.dist p q
 
-and the new branch costs one line, `GreenDisconnected.green_eq_zero_of_not_reachable` giving
-`green p q = 0` there. **Nothing else in the file changed**, and no conclusion was weakened: the
+and the new branch is discharged inside `GreenDecay.green_abs_le_pow`, which was given the same
+disjunction the same day — the estimate is where the two cases belong, and this file now passes
+`hsep` straight through. **Nothing else in the file changed**, and no conclusion was weakened: the
 old hypothesis implies the new one, so every earlier instance still applies. A caller written
 against the old signature supplies `Or.inr`; there were none outside this file, checked with
 `grep -rn "cross_abs_le\|GreenClustering\." paper_f/*.lean` filtered to files other than this one,
@@ -209,11 +210,9 @@ theorem cross_abs_le (hm : m ≠ 0) {Δ : ℕ} (hΔ : ∀ v : V, G.degree v ≤ 
     · simp [hfp]
     by_cases hgq : g q = 0
     · simp [hgq]
-    have hgreen : |green G m p q| ≤ C := by
-      rcases hsep p q hfp hgq with hnr | hd
-      · rw [GreenDisconnected.green_eq_zero_of_not_reachable G hm hnr, abs_zero]
-        exact hC0
-      · exact green_abs_le_pow hm hΔ N p q hd
+    -- the disjunction is discharged inside `green_abs_le_pow`, which knows both branches
+    have hgreen : |green G m p q| ≤ C :=
+      green_abs_le_pow hm hΔ N p q (hsep p q hfp hgq)
     calc |f p * green G m p q * g q| = |f p| * |green G m p q| * |g q| := by
           rw [abs_mul, abs_mul]
       _ ≤ |f p| * C * |g q| := by
