@@ -124,8 +124,8 @@ theorem scalPart_eq (i : Fin n)
     T (scalPart R) b c
       = scal R / ((n : ℝ) * ((n : ℝ) - 1)) * (T (constCurv n) i i * delta b c) := by
   have hfun : (scalPart R)
-      = fun a b c d => (scal R / ((n : ℝ) * ((n : ℝ) - 1))) * constCurv n a b c d := by
-    funext a b c d; simp only [scalPart, knSquare_delta]
+      = fun a b c d => (scal R / ((n : ℝ) * ((n : ℝ) - 1))) * constCurv n a b c d :=
+    funext fun a => funext fun b => funext fun c => funext fun d => scalPart_eq_smul R a b c d
   rw [hfun, hsmul]
   exact congrArg _ (equivariant_constCurv i hequiv b c)
 

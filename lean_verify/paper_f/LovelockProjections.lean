@@ -254,6 +254,13 @@ theorem decomposition (R : Fin n → Fin n → Fin n → Fin n → ℝ) (a b c d
     R a b c d = weylPart R a b c d + ricciPart R a b c d + scalPart R a b c d := by
   simp only [weylPart]; ring
 
+/-- **THE SCALAR PIECE IS A MULTIPLE OF `constCurv`** — the definition unfolded, using
+`knSquare_delta`. Two rewrites; it is named rather than inlined because the same two rewrites were
+an anonymous `have` inside `LovelockReduction.scalPart_eq` and are wanted again downstream. -/
+theorem scalPart_eq_smul (R : Fin n → Fin n → Fin n → Fin n → ℝ) (a b c d : Fin n) :
+    scalPart R a b c d = (scal R / ((n : ℝ) * ((n : ℝ) - 1))) * constCurv n a b c d := by
+  simp only [scalPart, knSquare_delta]
+
 /-! ## 3. The traces, computed -/
 
 /-- **THE SCALAR PIECE CARRIES THE PURE-TRACE PART OF THE RICCI TENSOR.** -/
