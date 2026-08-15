@@ -118,6 +118,13 @@ The hypothesis is now `¬ G.Reachable p q ∨ k ≤ G.dist p q`, the new branch 
 `GreenDisconnected.green_eq_zero_of_not_reachable`, and **nothing is weakened** — the old
 hypothesis implies the new one, so every earlier instance still applies.
 
+**And the field-level uniform statement, which did not exist in any form.**
+`exists_dist_uniform_covariance` and `exists_dist_uniform_twoPoint` say the `ε` statement about
+the two-point function of the Gaussian field rather than about `green`. The estate had the field
+bound pointwise and general (`covariance_abs_le`) and the `ε` form only for the propagator, so a
+consumer asking *"is there a uniform correlation bound"* — which is a question about the field —
+had to assemble one. Added 15 Aug 2026.
+
 **The other half of the same amendment: uniformity was being stated per family.** `Δ` is a
 parameter of the rate, so the distance `N` at which the propagator drops below `ε` depends on
 `Δ`, `m` and `ε` and on nothing else — not on the graph, not on its vertex type, not on the
@@ -338,6 +345,35 @@ theorem exists_dist_uniform (hm : m ≠ 0) (Δ : ℕ) {ε : ℝ} (hε : 0 < ε) 
   obtain ⟨N, hN⟩ := exists_pow_lt hm Δ hε
   refine ⟨N, fun W _ _ H _ hdeg p q hsep => ?_⟩
   exact lt_of_le_of_lt (green_abs_le_pow hm hdeg N p q hsep) (hN N le_rfl)
+
+/-- **THE SAME UNIFORMITY, FOR THE FIELD RATHER THAN THE PROPAGATOR.** `exists_dist_uniform` is
+about `green`, which is an intermediate object; a consumer asking whether the estate has a uniform
+correlation bound is asking about the **covariance of the field**. What the estate had was
+`covariance_abs_le` — general in the graph but **pointwise**, a bound at each pair rather than a
+distance beyond which everything is below `ε` — and the `ε` form only at the propagator level.
+**There was no `ε`-uniform statement about the field at all.** Same `N`, produced from `Δ`, `m`
+and `ε` before the graph. -/
+theorem exists_dist_uniform_covariance (hm : m ≠ 0) (Δ : ℕ) {ε : ℝ} (hε : 0 < ε) :
+    ∃ N : ℕ, ∀ (W : Type u) [Fintype W] [DecidableEq W] (H : SimpleGraph W) [DecidableRel H.Adj],
+      (∀ v : W, H.degree v ≤ Δ) → ∀ p q : W,
+        (¬ H.Reachable p q ∨ N ≤ H.dist p q) →
+        |cov[fun ω : EuclideanSpace ℝ W => ω p, fun ω : EuclideanSpace ℝ W => ω q;
+            gaussianField H m]| < ε := by
+  obtain ⟨N, hN⟩ := exists_dist_uniform hm Δ hε
+  refine ⟨N, fun W _ _ H _ hdeg p q hsep => ?_⟩
+  rw [LatticeGeneratingFunctional.covariance_eval (G := H) hm p q]
+  exact hN W H hdeg p q hsep
+
+/-- And in `GraphLaplacian.twoPoint`'s vocabulary, so neither consumer has to translate. -/
+theorem exists_dist_uniform_twoPoint (hm : m ≠ 0) (Δ : ℕ) {ε : ℝ} (hε : 0 < ε) :
+    ∃ N : ℕ, ∀ (W : Type u) [Fintype W] [DecidableEq W] (H : SimpleGraph W) [DecidableRel H.Adj],
+      (∀ v : W, H.degree v ≤ Δ) → ∀ p q : W,
+        (¬ H.Reachable p q ∨ N ≤ H.dist p q) →
+        |∫ ω, ω p * ω q ∂(gaussianField H m)| < ε := by
+  obtain ⟨N, hN⟩ := exists_dist_uniform hm Δ hε
+  refine ⟨N, fun W _ _ H _ hdeg p q hsep => ?_⟩
+  rw [GraphLaplacian.twoPoint (G := H) hm p q]
+  exact hN W H hdeg p q hsep
 
 open BoxGraph in
 /-- **AND THEREFORE A DISTANCE CHOSEN FROM `d`, `m` AND `ε` ALONE WORKS AT EVERY SIDE LENGTH.**
