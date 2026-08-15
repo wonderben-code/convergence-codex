@@ -17,8 +17,10 @@ statements the gaps were about.**
 
 * `ip2_act2_transp` — the 2-tensor twin of `LovelockActInverse.ip_act_transp`, and **it needs no
   orthogonality at all**: it is Fubini on the doubled index;
-* `isAlgCurv_sub` and `ip_sub_left` — two lines each, and named here because §5d listed the first
-  as one of the two things standing in the way;
+* `ip_sub_left` — two lines, and named here because §5d listed it as one of the two things standing
+  in the way. **§5d listed the other as `isAlgCurv_sub`, and that one was already in the estate**
+  (`LovelockProjections`, since the file was written). A first version of this file proved it again;
+  `ERRATUM 173` records the miss and the duplicate is gone;
 * **`eqAdjoint T S := curvProj (adjoint T S)`**, with
   * **`isAlgCurv_eqAdjoint`** — **it is an algebraic curvature tensor, for every `T` and every
     `S`, with no hypothesis at all.** *This is gap (ii);*
@@ -87,18 +89,6 @@ theorem ip2_act2_transp (Q : Fin n → Fin n → ℝ) (S U : Fin n → Fin n →
   rw [hL, hR]
   exact Fintype.sum_equiv
     ⟨fun p => (p.2, p.1), fun p => (p.2, p.1), fun _ => rfl, fun _ => rfl⟩ _ _ fun _ => rfl
-
-theorem isAlgCurv_sub {A B : Fin n → Fin n → Fin n → Fin n → ℝ}
-    (hA : IsAlgCurv A) (hB : IsAlgCurv B) :
-    IsAlgCurv (fun a b c d => A a b c d - B a b c d) where
-  antisymm_left a b c d := by
-    have := hA.antisymm_left a b c d; have := hB.antisymm_left a b c d; linarith
-  antisymm_right a b c d := by
-    have := hA.antisymm_right a b c d; have := hB.antisymm_right a b c d; linarith
-  pair_symm a b c d := by
-    have := hA.pair_symm a b c d; have := hB.pair_symm a b c d; linarith
-  bianchi a b c d := by
-    have := hA.bianchi a b c d; have := hB.bianchi a b c d; linarith
 
 theorem ip_sub_left (A B C : Fin n → Fin n → Fin n → Fin n → ℝ) :
     ip (fun a b c d => A a b c d - B a b c d) C = ip A C - ip B C := by
