@@ -34,6 +34,10 @@ alone** and something better happens:
 * `sum_weylPart_twoProj_row` — hence `∑ⱼ weylPart (knSquare (twoProj i j)) = 0`, **for each fixed
   `i` separately**. The global relation of §5e is the sum of these `n`, which is why it is weaker.
 
+The scalar curvature of `h ⊙ δ` is `LovelockOrthogonality.scal_kn_delta`, which already existed.
+**A copy of it was written here and committed before the fourth review question was asked**; it is
+gone and `ERRATUM 176` records why the question was skipped.
+
 ## And the count finishes
 
 * `T_sum_weyl_twoProj_row` — `T` across the row sum, by `LovelockDiagonalSum.T_sum`;
@@ -91,17 +95,6 @@ theorem sum_knSquare_twoProj_row (i : Fin n) (a b c d : Fin n) :
     ← Finset.mul_sum, ← Finset.sum_mul, ← Finset.mul_sum, ← Finset.sum_mul,
     sum_delta_right b c, sum_delta_right a d, sum_delta_right b d, sum_delta_right a c]
   simp only [kn, oneProj]
-
-/-- The scalar curvature of `h ⊙ δ`, from `ricci_kn_delta`. -/
-theorem scal_kn_delta (h : Fin n → Fin n → ℝ) :
-    scal (kn h delta) = (2 * (n : ℝ) - 2) * (∑ z, h z z) := by
-  have e1 : ∑ b : Fin n, (delta b b : ℝ) = (n : ℝ) := by simp [delta]
-  have hb : ∀ b : Fin n, ricci (kn h delta) b b
-      = (∑ z, h z z) * delta b b + ((n : ℝ) - 2) * h b b := fun b => ricci_kn_delta h b b
-  have hs : scal (kn h delta) = ∑ b, ricci (kn h delta) b b := rfl
-  rw [hs, Finset.sum_congr rfl fun b _ => hb b, Finset.sum_add_distrib, ← Finset.mul_sum,
-    ← Finset.mul_sum, e1]
-  ring
 
 /-- And its trace-free Ricci tensor, which is `(n−2)` times the trace-free part of `h`. -/
 theorem tracefreeRicci_kn_delta (hn0 : (n : ℝ) ≠ 0) (h : Fin n → Fin n → ℝ) :
