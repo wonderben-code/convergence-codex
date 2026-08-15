@@ -222,7 +222,19 @@ theorem det_lorentzMat_sq (A : Matrix (Fin 2) (Fin 2) ℂ) (hA : A.det = 1) :
     continuous, valued in {±1}, and SL₂(ℂ) is connected. That argument is not
     available here, and it is not needed. Every element of SL₂(ℂ) is a
     product of squares, by an explicit formula, and det Λ of a square is a
-    square of ±1. -/
+    square of ±1.
+
+    **SUPERSEDED IN ITS SECOND SENTENCE, 15 AUG 2026, AND KEPT RATHER THAN
+    REWRITTEN.** *"That argument is not available here"* was true when written
+    and is now false. Both missing ingredients arrived the same day:
+    `LorentzConnectedReduction.continuous_lorentzMat` makes `Λ` continuous and
+    `SL2Connected.isPreconnected_univ_SL2C` makes SL₂(ℂ) connected, so
+    `LorentzProperTopological.det_lorentzMat_topological` carries the
+    topological proof out. **The rest of the paragraph stands unchanged**: the
+    algebraic proof below is still the one this file uses, still needs nothing
+    topological, and is still what everything downstream depends on. What the
+    sentence recorded was the reach of this estate in July, not a gap in the
+    mathematics. -/
 
 /-- Cayley–Hamilton in 2×2, proved entrywise. -/
 theorem cayley_two (A : Matrix (Fin 2) (Fin 2) ℂ) :
