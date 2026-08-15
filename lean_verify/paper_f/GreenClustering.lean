@@ -124,6 +124,8 @@ namespace GreenClustering
 open GraphLaplacian GreenDecay MeasureTheory ProbabilityTheory Matrix Finset
 open scoped RealInnerProductSpace
 
+universe u
+
 variable {V : Type*} [Fintype V] [DecidableEq V]
 variable {G : SimpleGraph V} [DecidableRel G.Adj] {m : ℝ}
 
@@ -337,5 +339,72 @@ theorem log_generatingFunctional_add_of_not_reachable (hm : m ≠ 0)
   have h := log_generatingFunctional_add (G := G) hm f g
   rw [cross_eq_zero_of_not_reachable hm (WithLp.ofLp f) (WithLp.ofLp g) hsep] at h
   linarith
+
+/-! ## 6. The ε-form, which is the shape a consumer cites
+
+§4 gives a *bound* that shrinks with the separation. What an OS4-style consumer asks is the
+other way round: **name a tolerance, and be told a separation that achieves it** — with the
+separation settled before the graph, the volume or the test functions are chosen. That is the
+same upgrade `GreenDecay.exists_dist_uniform` performs on the two-point bound, one level up: here
+the object is the whole generating functional, so the statement covers every order at once in the
+sense this file's opening section sets out, and no further.
+
+**The tolerance is RELATIVE and the statement says so.** The conclusion is
+`|Z(f+g) − Z(f)Z(g)| ≤ Z(f)·Z(g)·ε`, not `≤ ε`. That is the honest form: `Z(f)` grows like
+`exp(½ f·Cf)` and an absolute tolerance would be a different and much stronger claim, which
+nothing here proves. Read `ε` as a fractional error in the factorisation.
+
+**And `N` cannot depend on `Δ`, `m` and `ε` alone.** The bound carries `‖f‖₁·‖g‖₁`, so a bound
+`C` on the test functions' `ℓ¹` norms is a genuine fourth input; pretending otherwise would be
+exactly the overreach the errata in this file's history are about. `C` is quantified **before**
+the graph, so nothing here depends on the volume.
+-/
+
+/-- **CLUSTERING WITH A TOLERANCE INSTEAD OF A RATE.** `N` is produced from `Δ`, `m`, the `ℓ¹`
+bound `C` and `ε`, before the vertex type, the graph or the test functions are mentioned. -/
+theorem exists_clustering_uniform (hm : m ≠ 0) (Δ : ℕ) (C : ℝ) {ε : ℝ} (hε : 0 < ε) :
+    ∃ N : ℕ, ∀ (W : Type u) [Fintype W] [DecidableEq W] (H : SimpleGraph W) [DecidableRel H.Adj],
+      (∀ v : W, H.degree v ≤ Δ) → ∀ f g : EuclideanSpace ℝ W,
+        (∑ p, |f p|) ≤ C → (∑ q, |g q|) ≤ C →
+        (∀ p q, f p ≠ 0 → g q ≠ 0 → ¬ H.Reachable p q ∨ N ≤ H.dist p q) →
+        |(∫ ω, Real.exp ⟪f + g, ω⟫ ∂(gaussianField H m))
+            - (∫ ω, Real.exp ⟪f, ω⟫ ∂(gaussianField H m))
+              * (∫ ω, Real.exp ⟪g, ω⟫ ∂(gaussianField H m))|
+          ≤ (∫ ω, Real.exp ⟪f, ω⟫ ∂(gaussianField H m))
+              * (∫ ω, Real.exp ⟪g, ω⟫ ∂(gaussianField H m)) * ε := by
+  -- the tolerance in the exponent that `ε` demands, kept positive at `C = 0` by the `+ 1`
+  set δ : ℝ := Real.log (1 + ε) / (C ^ 2 + 1) with hδdef
+  have hlog : 0 < Real.log (1 + ε) := Real.log_pos (by linarith)
+  have hδ : 0 < δ := by positivity
+  obtain ⟨N, hN⟩ := GreenDecay.exists_pow_lt hm Δ hδ
+  refine ⟨N, fun W _ _ H _ hdeg f g hfC hgC hsep => ?_⟩
+  set r : ℝ := GreenDecay.decayRate Δ m ^ N * (m ^ 2)⁻¹ with hrdef
+  have hr0 : 0 ≤ r := by
+    have := GreenDecay.decayRate_nonneg Δ (m := m) hm
+    positivity
+  have hrδ : r < δ := hN N le_rfl
+  -- the `ℓ¹` norms are nonnegative, so `C` is too and the product is bounded by `C²`
+  have hf0 : (0 : ℝ) ≤ ∑ p, |f p| := Finset.sum_nonneg fun _ _ => abs_nonneg _
+  have hg0 : (0 : ℝ) ≤ ∑ q, |g q| := Finset.sum_nonneg fun _ _ => abs_nonneg _
+  have hB : (∑ p, |f p|) * (∑ q, |g q|) * r ≤ C ^ 2 * r := by
+    have : (∑ p, |f p|) * (∑ q, |g q|) ≤ C ^ 2 := by nlinarith
+    exact mul_le_mul_of_nonneg_right this hr0
+  -- and `C² · r < log (1 + ε)`, so the exponential is below `1 + ε`
+  have hexp : Real.exp ((∑ p, |f p|) * (∑ q, |g q|) * r) - 1 ≤ ε := by
+    have hCr : C ^ 2 * r < Real.log (1 + ε) := by
+      have hC2 : (0 : ℝ) ≤ C ^ 2 := sq_nonneg C
+      have : C ^ 2 * r < C ^ 2 * δ + δ := by nlinarith
+      have hδmul : C ^ 2 * δ + δ = Real.log (1 + ε) := by
+        rw [hδdef]; field_simp
+      linarith
+    have := Real.exp_lt_exp.mpr (lt_of_le_of_lt hB hCr)
+    rw [Real.exp_log (by linarith)] at this
+    linarith
+  refine (clustering (G := H) hm hdeg f g hsep).trans ?_
+  have hZf : 0 < ∫ ω, Real.exp ⟪f, ω⟫ ∂(gaussianField H m) := by
+    rw [LatticeGeneratingFunctional.generatingFunctional hm f]; exact Real.exp_pos _
+  have hZg : 0 < ∫ ω, Real.exp ⟪g, ω⟫ ∂(gaussianField H m) := by
+    rw [LatticeGeneratingFunctional.generatingFunctional hm g]; exact Real.exp_pos _
+  exact mul_le_mul_of_nonneg_left hexp (mul_pos hZf hZg).le
 
 end GreenClustering
