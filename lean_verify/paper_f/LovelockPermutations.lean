@@ -63,10 +63,13 @@ paragraph asserted it could not be done without "representing `T` restricted to 
 a linear map on `ℝⁿ` and reading off its entries" — a claim about a proof that had not been
 attempted. See that file's header for the correction.
 
-**The honest tally on the three-step route, spelled out rather than given as a fraction:** step 1,
-done (`LovelockReflections`). Step 2 has two parts — the frame change, which was already in
-`AlgebraicCurvature` and is only *applied* here, and the combinatorics, done in
-`LovelockDiagonalWitness` on a fixed pair of indices. Step 3 has two parts — the bridge
+**The honest tally on the three-step route, spelled out rather than given as a fraction.** Step 1,
+done (`LovelockReflections`). **Step 2** has two parts: the frame change, which was already in
+`AlgebraicCurvature` and is only *applied* here, and the combinatorics, which
+`LovelockDiagonalWitness` delivers **on the two-index witnesses `hIJ i j`** — the multiple exists
+there and is shown to be one constant across every ordered pair of distinct indices. What is still
+missing from step 2 is the expansion of a *general* traceless diagonal tensor in those witnesses,
+which is a `Finset` induction and not a coefficient matrix. **Step 3** has two parts: the bridge
 `isOrth_of_mem_orthogonalGroup`, which already existed and was never the difficulty, and the
 diagonalisation itself, **not done and still the refusal**.
 
