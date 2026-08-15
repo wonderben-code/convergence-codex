@@ -40,6 +40,28 @@ attempted:
 * **clause (iii)** — the extension theorem, which `ERRATUM 100` and `ERRATUM 101` between them
   established is *absent* from Mathlib rather than merely unspecialised.
 
+## Two amendments, 15 Aug 2026
+
+**`torusGraph_uniform` is now an instance rather than a theorem of its own.** The distance at
+which the propagator drops below `ε` depends on the degree bound, the mass and `ε` and on nothing
+else, which this file demonstrated for the torus and `GreenDecay` demonstrated for the box, twice
+over, with two proofs. `GreenDecay.exists_dist_uniform` now says it once for **every** finite
+graph of bounded degree, with `N` produced before the graph is mentioned, and both family
+versions are corollaries. Its separation hypothesis is `¬ Reachable ∨ N ≤ dist`, so this file's
+statement inherits the weaker form.
+
+**And the torus is now known to be connected, which the estate had never said.** `ERRATUM 165`
+recorded a sentence about this file that could not be checked from inside the estate, because
+`BoxGraph.boxGraph_connected` existed and no torus counterpart did. `torusGraph_connected` closes
+that, in three lines and by the cheapest available route: **the box is a subgraph of the torus**
+(`boxGraph_le_torusGraph`) — a box bond changes one coordinate by exactly one, which is `adjT`'s
+first disjunct — so connectivity transports along `SimpleGraph.Connected.mono` and **the
+wrap-around bonds the torus adds are never used**. The consequence, `torusGraph_reachable`,
+settles what `165` left open: the generalised hypothesis's first disjunct is vacuous on this
+family. That is not a defect of the generalisation, which buys everything on
+`GreenClustering.cross_abs_le`'s arbitrary graphs; it is what *this* family gets, now said rather
+than assumed.
+
 **And "uniform correlation bounds" is read here as a bound on the two-point function, uniform in
 `n`.** A first draft of this paragraph added that bounds on *higher* correlations would need the
 Wick moment formula, which the estate does not have. **`GreenClustering`, written the same day,
@@ -160,13 +182,50 @@ theorem torusGraph_green_abs_le (d n : ℕ) (hm : m ≠ 0) (p q : Site d n) :
   GreenDecay.green_abs_le_pow_dist hm (fun v => torusGraph_degree_le v) p q
 
 /-- **THE UNIFORM BOUND THE WATCHLIST ITEM ASKS FOR**, in the quantifier order that makes it
-uniform: `N` is produced from `d`, `m` and `ε` before `n` is mentioned. -/
+uniform: `N` is produced from `d`, `m` and `ε` before `n` is mentioned. Now an instance of
+`GreenDecay.exists_dist_uniform`, which produces `N` before the *graph* is mentioned, so the
+uniformity is no longer a property this family happens to have. -/
 theorem torusGraph_uniform (d : ℕ) (hm : m ≠ 0) {ε : ℝ} (hε : 0 < ε) :
-    ∃ N : ℕ, ∀ (n : ℕ) (p q : Site d n), N ≤ (torusGraph d n).dist p q →
+    ∃ N : ℕ, ∀ (n : ℕ) (p q : Site d n),
+      (¬ (torusGraph d n).Reachable p q ∨ N ≤ (torusGraph d n).dist p q) →
       |green (torusGraph d n) m p q| < ε := by
-  obtain ⟨N, hN⟩ := GreenDecay.exists_pow_lt hm (2 * d) hε
+  obtain ⟨N, hN⟩ := GreenDecay.exists_dist_uniform (m := m) hm (2 * d) hε
   exact ⟨N, fun n p q hpq =>
-    lt_of_le_of_lt (torusGraph_green_abs_le d n hm p q) (hN _ hpq)⟩
+    hN (Site d n) (torusGraph d n) (fun v => torusGraph_degree_le v) p q hpq⟩
+
+/-! ## 4. The torus is connected, which the estate had never said
+
+`ERRATUM 165` recorded that a sentence about `torusGraph_uniform` could not be checked from
+inside the estate, because `BoxGraph.boxGraph_connected` exists and **no torus counterpart did**.
+It does now, and it costs three lines, because the box is a subgraph of the torus: a box bond
+changes one coordinate by exactly one, and that is the first disjunct of `adjT`. The wrap-around
+bonds the torus adds are not needed for connectivity and are not used here.
+-/
+
+/-- **THE BOX IS A SUBGRAPH OF THE TORUS.** Every non-wrapping bond is a torus bond. -/
+theorem boxGraph_le_torusGraph (d n : ℕ) : boxGraph d n ≤ torusGraph d n := by
+  rintro p q ⟨i, hj, hi⟩
+  refine ⟨i, hj, ?_, ?_⟩
+  · intro he
+    rw [he] at hi
+    rcases hi with h1 | h1 <;> omega
+  · rcases hi with h1 | h1
+    · exact Or.inl h1
+    · exact Or.inr (Or.inl h1)
+
+/-- **THE PERIODIC BOX IS CONNECTED IN EVERY DIMENSION AND AT EVERY POSITIVE SIDE LENGTH.** -/
+theorem torusGraph_connected (d : ℕ) (hn : 0 < n) : (torusGraph d n).Connected :=
+  SimpleGraph.Connected.mono (boxGraph_le_torusGraph d n) (BoxGraph.boxGraph_connected d hn)
+
+/-- **AND THEREFORE THE FIRST DISJUNCT OF `torusGraph_uniform`'S HYPOTHESIS IS NEVER USED HERE.**
+This settles what `ERRATUM 165` left open: generalising the separation hypothesis to cover
+unreachable pairs buys nothing on the torus, because the torus has none. It is not a defect of
+the generalisation — `GreenClustering.cross_abs_le` quantifies over arbitrary graphs and there it
+buys everything — but it is what this family gets, and the estate can now say so instead of
+assuming it. -/
+theorem torusGraph_reachable (d : ℕ) (hn : 0 < n) (p q : Site d n) :
+    (torusGraph d n).Reachable p q :=
+  (torusGraph_connected d hn).preconnected p q
 
 /-- **AND THE SAME ABOUT THE FIELD**: the two-point function of the Gaussian field on the periodic
 box clusters exponentially, at a rate independent of the side length. -/
