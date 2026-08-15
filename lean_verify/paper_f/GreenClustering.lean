@@ -1,4 +1,5 @@
 import GreenDecay
+import GreenDisconnected
 
 /-!
 # The free field clusters exponentially, at every order at once
@@ -67,11 +68,52 @@ in no other. **The infinite-volume limit and the continuum are untouched**, and 
 should be recorded as OS4. The watchlist item keeps `OS4` open.
 
 **And the separation hypothesis is stated on the sites, not on regions.** `hsep` says every `p`
-with `f p ≠ 0` is at distance `≥ N` from every `q` with `g q ≠ 0`. There is no `Finset`-valued
+with `f p ≠ 0` is separated from every `q` with `g q ≠ 0`. There is no `Finset`-valued
 notion of the distance between two regions anywhere in `paper_f` — grepped for `setDist`,
 `regionDist`, and `Finset` next to `dist`, all zero — so introducing one here would be a
 definition with a single user. A consumer that has two regions instantiates `hsep` by unfolding
 its own supports.
+
+## The hypothesis that was too strong, and the case it excluded (added 15 Aug 2026)
+
+The first version of §3 asked for `N ≤ G.dist p q` outright. **Mathlib's `SimpleGraph.dist` is
+`0` between vertices in different components** — it is an infimum over an empty set of walk
+lengths — so for every `N ≥ 1` that hypothesis is *unsatisfiable* precisely when the two supports
+lie in different components. The estimate was silent on the case where the two fields are most
+obviously independent, and silent for a reason that is an artefact of how `dist` is defined
+rather than anything about the field.
+
+The hypothesis is now
+
+    ¬ G.Reachable p q  ∨  N ≤ G.dist p q
+
+and the new branch costs one line, `GreenDisconnected.green_eq_zero_of_not_reachable` giving
+`green p q = 0` there. **Nothing else in the file changed**, and no conclusion was weakened: the
+old hypothesis implies the new one, so every earlier instance still applies. A caller written
+against the old signature supplies `Or.inr`; there were none outside this file, checked with
+`grep -rn "cross_abs_le\|GreenClustering\." paper_f/*.lean` filtered to files other than this one,
+which returns one header sentence in `GreenDecay` and no Lean term.
+
+**The disjunction is per pair, and that is where the useful generality is.** Some sites of `f`
+may be unreachable from some sites of `g` while the rest are merely far away; the estimate now
+covers that mixture, which is the situation on any graph with more than one component and is not
+reachable by taking `N` large.
+
+**And where the graph really does separate, the conclusion is not merely small, it is exact.**
+`generatingFunctional_mul_of_not_reachable` (§5): if every site of `f` is unreachable from every
+site of `g` then
+
+    Z(f + g)  =  Z(f) · Z(g)
+
+with no error term at all — the free field is a product of independent fields on the components,
+in the generating-functional sense this file works in.
+
+**A draft of the previous paragraph claimed that statement "could not be stated under the old
+hypothesis, let alone proved". That is false and is `ERRATUM 164`**: its hypothesis is
+`¬ G.Reachable`, which never mentions `dist`, so it could have been written on any day. What is
+true is smaller and is the whole finding: **the file's estimate was vacuous exactly there and
+nobody had noticed**, because `dist = 0` for unreachable pairs makes a failed hypothesis look
+like a satisfied one.
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
@@ -143,11 +185,17 @@ theorem log_generatingFunctional_add (hm : m ≠ 0) (f g : EuclideanSpace ℝ V)
   rw [show ((f : V → ℝ) + (g : V → ℝ)) = ((f + g : EuclideanSpace ℝ V) : V → ℝ) from rfl] at h
   rw [h]; ring
 
-/-! ## 3. The cross term is small when the supports are far apart -/
+/-! ## 3. The cross term is small when the supports are far apart
 
-/-- **THE ESTIMATE.** `GreenDecay` enters here and nowhere else. -/
+"Far apart" means `N` steps away **or in different components**; see the header for why the
+second disjunct is not redundant and why leaving it out excluded the sharpest case.
+-/
+
+/-- **THE ESTIMATE.** `GreenDecay` enters here and nowhere else, and `GreenDisconnected` supplies
+the branch `GreenDecay` cannot see. -/
 theorem cross_abs_le (hm : m ≠ 0) {Δ : ℕ} (hΔ : ∀ v : V, G.degree v ≤ Δ) {N : ℕ}
-    (f g : V → ℝ) (hsep : ∀ p q, f p ≠ 0 → g q ≠ 0 → N ≤ G.dist p q) :
+    (f g : V → ℝ)
+    (hsep : ∀ p q, f p ≠ 0 → g q ≠ 0 → ¬ G.Reachable p q ∨ N ≤ G.dist p q) :
     |f ⬝ᵥ green G m *ᵥ g|
       ≤ (∑ p, |f p|) * (∑ q, |g q|) * (decayRate Δ m ^ N * (m ^ 2)⁻¹) := by
   have hm2 : (0 : ℝ) < m ^ 2 := by positivity
@@ -161,8 +209,11 @@ theorem cross_abs_le (hm : m ≠ 0) {Δ : ℕ} (hΔ : ∀ v : V, G.degree v ≤ 
     · simp [hfp]
     by_cases hgq : g q = 0
     · simp [hgq]
-    have hgreen : |green G m p q| ≤ C :=
-      green_abs_le_pow hm hΔ N p q (hsep p q hfp hgq)
+    have hgreen : |green G m p q| ≤ C := by
+      rcases hsep p q hfp hgq with hnr | hd
+      · rw [GreenDisconnected.green_eq_zero_of_not_reachable G hm hnr, abs_zero]
+        exact hC0
+      · exact green_abs_le_pow hm hΔ N p q hd
     calc |f p * green G m p q * g q| = |f p| * |green G m p q| * |g q| := by
           rw [abs_mul, abs_mul]
       _ ≤ |f p| * C * |g q| := by
@@ -203,7 +254,7 @@ apart, the generating functional factorises up to an error that is geometric in 
 depending only on the degree bound and the mass. -/
 theorem clustering (hm : m ≠ 0) {Δ : ℕ} (hΔ : ∀ v : V, G.degree v ≤ Δ) {N : ℕ}
     (f g : EuclideanSpace ℝ V)
-    (hsep : ∀ p q, f p ≠ 0 → g q ≠ 0 → N ≤ G.dist p q) :
+    (hsep : ∀ p q, f p ≠ 0 → g q ≠ 0 → ¬ G.Reachable p q ∨ N ≤ G.dist p q) :
     |(∫ ω, Real.exp ⟪f + g, ω⟫ ∂(gaussianField G m))
         - (∫ ω, Real.exp ⟪f, ω⟫ ∂(gaussianField G m))
           * (∫ ω, Real.exp ⟪g, ω⟫ ∂(gaussianField G m))|
@@ -234,12 +285,58 @@ theorem clustering (hm : m ≠ 0) {Δ : ℕ} (hΔ : ∀ v : V, G.degree v ≤ Δ
 in the way. -/
 theorem log_clustering (hm : m ≠ 0) {Δ : ℕ} (hΔ : ∀ v : V, G.degree v ≤ Δ) {N : ℕ}
     (f g : EuclideanSpace ℝ V)
-    (hsep : ∀ p q, f p ≠ 0 → g q ≠ 0 → N ≤ G.dist p q) :
+    (hsep : ∀ p q, f p ≠ 0 → g q ≠ 0 → ¬ G.Reachable p q ∨ N ≤ G.dist p q) :
     |Real.log (∫ ω, Real.exp ⟪f + g, ω⟫ ∂(gaussianField G m))
         - Real.log (∫ ω, Real.exp ⟪f, ω⟫ ∂(gaussianField G m))
         - Real.log (∫ ω, Real.exp ⟪g, ω⟫ ∂(gaussianField G m))|
       ≤ (∑ p, |f p|) * (∑ q, |g q|) * (decayRate Δ m ^ N * (m ^ 2)⁻¹) := by
   rw [log_generatingFunctional_add hm f g]
   exact cross_abs_le hm hΔ (WithLp.ofLp f) (WithLp.ofLp g) hsep
+
+/-! ## 5. Across components the factorisation is exact
+
+Everything above is an estimate that degrades with `N`. When the two supports are in different
+components there is nothing to estimate: the propagator between them is identically zero, so the
+cross term vanishes and `generatingFunctional_add` — which was always an identity — becomes the
+statement that the two fields are independent.
+
+Note what is *not* assumed: the graph is not assumed disconnected, and the supports are not
+assumed to be whole components. All that is required is that no site of `f` is reachable from any
+site of `g`.
+-/
+
+/-- The cross term vanishes identically between components. -/
+theorem cross_eq_zero_of_not_reachable (hm : m ≠ 0) (f g : V → ℝ)
+    (hsep : ∀ p q, f p ≠ 0 → g q ≠ 0 → ¬ G.Reachable p q) :
+    f ⬝ᵥ green G m *ᵥ g = 0 := by
+  rw [dotProduct_mulVec_eq]
+  refine Finset.sum_eq_zero fun p _ => Finset.sum_eq_zero fun q _ => ?_
+  by_cases hfp : f p = 0
+  · simp [hfp]
+  by_cases hgq : g q = 0
+  · simp [hgq]
+  rw [GreenDisconnected.green_eq_zero_of_not_reachable G hm (hsep p q hfp hgq), mul_zero,
+    zero_mul]
+
+/-- **EXACT FACTORISATION ACROSS COMPONENTS**, with no error term and no rate. -/
+theorem generatingFunctional_mul_of_not_reachable (hm : m ≠ 0) (f g : EuclideanSpace ℝ V)
+    (hsep : ∀ p q, f p ≠ 0 → g q ≠ 0 → ¬ G.Reachable p q) :
+    (∫ ω, Real.exp ⟪f + g, ω⟫ ∂(gaussianField G m))
+      = (∫ ω, Real.exp ⟪f, ω⟫ ∂(gaussianField G m))
+        * (∫ ω, Real.exp ⟪g, ω⟫ ∂(gaussianField G m)) := by
+  rw [generatingFunctional_add hm f g,
+    cross_eq_zero_of_not_reachable hm (WithLp.ofLp f) (WithLp.ofLp g) hsep,
+    Real.exp_zero, mul_one]
+
+/-- The additive form: the free energies add exactly. -/
+theorem log_generatingFunctional_add_of_not_reachable (hm : m ≠ 0)
+    (f g : EuclideanSpace ℝ V)
+    (hsep : ∀ p q, f p ≠ 0 → g q ≠ 0 → ¬ G.Reachable p q) :
+    Real.log (∫ ω, Real.exp ⟪f + g, ω⟫ ∂(gaussianField G m))
+      = Real.log (∫ ω, Real.exp ⟪f, ω⟫ ∂(gaussianField G m))
+        + Real.log (∫ ω, Real.exp ⟪g, ω⟫ ∂(gaussianField G m)) := by
+  have h := log_generatingFunctional_add (G := G) hm f g
+  rw [cross_eq_zero_of_not_reachable hm (WithLp.ofLp f) (WithLp.ofLp g) hsep] at h
+  linarith
 
 end GreenClustering
