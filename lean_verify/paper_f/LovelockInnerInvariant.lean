@@ -37,10 +37,18 @@ been a blocker for any of them: the arguments that identify the Weyl summand as 
 with no copy of the symmetric-2-tensor representation are run against an invariant form.
 
 **It is not a step toward the statement.** Nothing here says anything about what an equivariant `T`
-does to the Weyl summand, and no route to `KillsWeyl` is closer than it was this morning — there is
-still no candidate elementary argument, as `WALLS` §W5.0 §5c records. **The watchlist item does not
-move.** A missing ingredient supplied is not progress, and this file is written so nobody reads it
-as any.
+does to the Weyl summand. **The watchlist item does not move.** A missing ingredient supplied is
+not progress, and this file is written so nobody reads it as any.
+
+**ADDENDUM, later the same day.** The paragraph above used to continue *"and no route to
+`KillsWeyl` is closer than it was this morning — there is still no candidate elementary argument,
+as `WALLS` §W5.0 §5c records."* **The second clause is no longer true**, and the sentence is
+withdrawn rather than left standing: `PROOF_STRATEGY` §6 question 3 sends a `B` straight back to
+`B → C`, that retry was run on this file, and it produced a candidate route — `WALLS` §W5.0 §5d,
+first rung in `LovelockReflectionFour`, and two named gaps. **What is withdrawn is only the claim
+that no candidate exists.** The rest stands unchanged: a candidate route with named gaps is not a
+proof, this file is still not a step toward the statement, and the watchlist item still does not
+move.
 
 **And the other disclaimers stand.** No `InnerProductSpace` instance, no completeness, no norm; and
 `LovelockOrthogonality`'s corrected `a₂` paragraph is unaffected — `a₂`'s integrand is a multiple
