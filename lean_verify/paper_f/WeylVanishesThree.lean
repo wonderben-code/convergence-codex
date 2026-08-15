@@ -198,7 +198,7 @@ theorem eq_zero_of_ricci_eq_zero (hR : IsAlgCurv R) (h0 : ∀ b c, ricci R b c =
 /-- **THE WEYL SUMMAND IS IDENTICALLY ZERO IN DIMENSION THREE.** -/
 theorem weylPart_eq_zero (hR : IsAlgCurv R) (a b c d : Fin 3) : weylPart R a b c d = 0 := by
   refine eq_zero_of_ricci_eq_zero (isAlgCurv_weylPart hR) (fun x y => ?_) a b c d
-  exact ricci_weylPart (by norm_num) (by norm_num) (by norm_num) R x y
+  exact ricci_weylPart (by norm_num) (by norm_num) R x y
 
 theorem weylPart_eq_zero_fun (hR : IsAlgCurv R) :
     weylPart R = fun _ _ _ _ => (0 : ℝ) := by

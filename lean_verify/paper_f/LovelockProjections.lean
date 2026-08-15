@@ -61,6 +61,17 @@ neither needs `h a b = h b a`. Symmetry survives only where it is genuinely used
 `isAlgCurv_kn`, whose pair-symmetry and Bianchi clauses do need it.
 
 **The larger version of the same observation, and it is the strongest statement in the file.**
+**AND ALL FOUR STOPPED CARRYING `(n:ℝ) ≠ 0` ON 15 AUG 2026 (`ERRATUM 166`, `167`), BY TWO
+DIFFERENT MECHANISMS THAT LOOK THE SAME FROM OUTSIDE.** `ricci_scalPart`, `ricci_ricciPart` and
+`ricci_weylPart` each take `(b c : Fin n)`, and an element of `Fin n` cannot exist unless `n > 0`
+— so their `hn0` was **redundant**, derivable in two lines from a binder already present.
+`scal_weylPart` takes no such element, so its `hn0` was not derivable; it went because **its only
+use was forwarding it to `ricci_weylPart`**, and once that stopped needing it the compiler's
+unused-variable linter said so. A hypothesis whose sole use is to be handed on becomes decoration
+the moment its callee loses it, which means **a hypothesis audit is not stable under a downstream
+signature change and has to be re-run after one.** The paragraph below is what the first audit
+found and is left as written.
+
 `ricci_scalPart`, `ricci_ricciPart`, `ricci_weylPart` and `scal_weylPart` were all drafted with an
 `IsAlgCurv R` hypothesis, and **not one of them uses it** — the linter said so and the proofs
 confirm it. The trace identities hold for **any** four-index array of reals: they are consequences
@@ -246,7 +257,7 @@ theorem decomposition (R : Fin n → Fin n → Fin n → Fin n → ℝ) (a b c d
 /-! ## 3. The traces, computed -/
 
 /-- **THE SCALAR PIECE CARRIES THE PURE-TRACE PART OF THE RICCI TENSOR.** -/
-theorem ricci_scalPart (hn0 : (n : ℝ) ≠ 0) (hn1 : (n : ℝ) - 1 ≠ 0)
+theorem ricci_scalPart (hn1 : (n : ℝ) - 1 ≠ 0)
     (R : Fin n → Fin n → Fin n → Fin n → ℝ) (b c : Fin n) :
     ricci (scalPart R) b c = (scal R / (n : ℝ)) * delta b c := by
   have hlin : ricci (scalPart R) b c
@@ -257,32 +268,33 @@ theorem ricci_scalPart (hn0 : (n : ℝ) ≠ 0) (hn1 : (n : ℝ) - 1 ≠ 0)
 
 /-- **THE RICCI PIECE CARRIES THE TRACELESS PART**, exactly, and this is the one statement in the
 file that spends `n ≥ 3`. -/
-theorem ricci_ricciPart (hn0 : (n : ℝ) ≠ 0) (hn2 : (n : ℝ) - 2 ≠ 0)
+theorem ricci_ricciPart (hn2 : (n : ℝ) - 2 ≠ 0)
     (R : Fin n → Fin n → Fin n → Fin n → ℝ) (b c : Fin n) :
     ricci (ricciPart R) b c = tracefreeRicci R b c := by
   have hlin : ricci (ricciPart R) b c
       = (1 / ((n : ℝ) - 2)) * ricci (kn (tracefreeRicci R) delta) b c := by
     simp only [ricci, ricciPart, Finset.mul_sum]
+  have hn0 : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr b.pos.ne'
   rw [hlin, ricci_kn_delta (tracefreeRicci R), trace_tracefreeRicci hn0 R]
   field_simp
   ring
 
 /-- **THE WEYL PIECE IS RICCI-FLAT.** This is the theorem the decomposition exists for. -/
-theorem ricci_weylPart (hn0 : (n : ℝ) ≠ 0) (hn1 : (n : ℝ) - 1 ≠ 0) (hn2 : (n : ℝ) - 2 ≠ 0)
+theorem ricci_weylPart (hn1 : (n : ℝ) - 1 ≠ 0) (hn2 : (n : ℝ) - 2 ≠ 0)
     (R : Fin n → Fin n → Fin n → Fin n → ℝ) (b c : Fin n) :
     ricci (weylPart R) b c = 0 := by
   have hlin : ricci (weylPart R) b c
       = ricci R b c - ricci (ricciPart R) b c - ricci (scalPart R) b c := by
     simp only [ricci, weylPart, Finset.sum_sub_distrib]
-  rw [hlin, ricci_ricciPart hn0 hn2 R, ricci_scalPart hn0 hn1, tracefreeRicci]
+  rw [hlin, ricci_ricciPart hn2 R, ricci_scalPart hn1, tracefreeRicci]
   ring
 
 /-- **HENCE ITS SCALAR CURVATURE VANISHES TOO.** -/
-theorem scal_weylPart (hn0 : (n : ℝ) ≠ 0) (hn1 : (n : ℝ) - 1 ≠ 0) (hn2 : (n : ℝ) - 2 ≠ 0)
+theorem scal_weylPart (hn1 : (n : ℝ) - 1 ≠ 0) (hn2 : (n : ℝ) - 2 ≠ 0)
     (R : Fin n → Fin n → Fin n → Fin n → ℝ) :
     scal (weylPart R) = 0 := by
   simp only [scal]
-  rw [Finset.sum_congr rfl fun b _ => ricci_weylPart hn0 hn1 hn2 R b b]
+  rw [Finset.sum_congr rfl fun b _ => ricci_weylPart hn1 hn2 R b b]
   simp
 
 /-! ## 4. Each piece is itself an algebraic curvature tensor -/

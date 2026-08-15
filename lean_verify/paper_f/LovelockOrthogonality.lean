@@ -292,24 +292,24 @@ theorem ip_eq_zero_of_ricci_eq_zero (hR : IsAlgCurv R) (h0 : ∀ b c, ricci R b 
   simp
 
 /-- **THE WEYL PIECE IS ORTHOGONAL TO THE TRACELESS-RICCI PIECE.** -/
-theorem ip_weylPart_ricciPart (hn0 : (n : ℝ) ≠ 0) (hn1 : (n : ℝ) - 1 ≠ 0) (hn2 : (n : ℝ) - 2 ≠ 0)
+theorem ip_weylPart_ricciPart (hn1 : (n : ℝ) - 1 ≠ 0) (hn2 : (n : ℝ) - 2 ≠ 0)
     (hR : IsAlgCurv R) : ip (weylPart R) (ricciPart R) = 0 := by
   have hfun : ricciPart R
       = fun a b c d => (1 / ((n : ℝ) - 2)) * kn (tracefreeRicci R) delta a b c d := by
     funext a b c d; rfl
   rw [hfun, ip_smul_right,
     ip_eq_zero_of_ricci_eq_zero (isAlgCurv_weylPart hR)
-      (fun b c => ricci_weylPart hn0 hn1 hn2 R b c) (tracefreeRicci R), mul_zero]
+      (fun b c => ricci_weylPart hn1 hn2 R b c) (tracefreeRicci R), mul_zero]
 
 /-- **AND TO THE SCALAR PIECE.** -/
-theorem ip_weylPart_scalPart (hn0 : (n : ℝ) ≠ 0) (hn1 : (n : ℝ) - 1 ≠ 0) (hn2 : (n : ℝ) - 2 ≠ 0)
+theorem ip_weylPart_scalPart (hn1 : (n : ℝ) - 1 ≠ 0) (hn2 : (n : ℝ) - 2 ≠ 0)
     (hR : IsAlgCurv R) : ip (weylPart R) (scalPart R) = 0 := by
   have hfun : scalPart R
       = fun a b c d => (scal R / ((n : ℝ) * ((n : ℝ) - 1)))
           * knSquare (delta : Fin n → Fin n → ℝ) a b c d := by
     funext a b c d; rfl
   rw [hfun, ip_smul_right, ip_knSquare_delta (isAlgCurv_weylPart hR),
-    scal_weylPart hn0 hn1 hn2 R]
+    scal_weylPart hn1 hn2 R]
   ring
 
 /-- **AND THE OTHER TWO ARE ORTHOGONAL TO EACH OTHER**, because the middle summand is built from
@@ -334,8 +334,8 @@ theorem ip_self_eq (hn0 : (n : ℝ) ≠ 0) (hn1 : (n : ℝ) - 1 ≠ 0) (hn2 : (n
     (hR : IsAlgCurv R) :
     ip R R = ip (weylPart R) (weylPart R) + ip (ricciPart R) (ricciPart R)
       + ip (scalPart R) (scalPart R) := by
-  have hWR := ip_weylPart_ricciPart hn0 hn1 hn2 hR
-  have hWS := ip_weylPart_scalPart hn0 hn1 hn2 hR
+  have hWR := ip_weylPart_ricciPart hn1 hn2 hR
+  have hWS := ip_weylPart_scalPart hn1 hn2 hR
   have hRS := ip_ricciPart_scalPart hn0 hR
   have eW : ip (weylPart R) R = ip (weylPart R) (weylPart R) := by
     rw [ip_decomp_right (weylPart R) R, hWR, hWS]; ring
