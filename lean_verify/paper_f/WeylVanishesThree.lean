@@ -230,7 +230,7 @@ theorem classification_three_of_ricciProportional
         + (T (constCurv 3) i i / ((3 : ℝ) * ((3 : ℝ) - 1)) - α / (3 : ℝ))
             * scal R * delta b c := by
   have h := LovelockReduction.classification_of_killsWeyl_of_ricciProportional
-    (n := 3) (by norm_num) i hadd hsmul hequiv (killsWeyl_three hsmul) hRic hR b c
+    (n := 3) i hadd hsmul hequiv (killsWeyl_three hsmul) hRic hR b c
   simpa using h
 
 end WeylVanishesThree

@@ -64,6 +64,26 @@ computes the trace of the Ricci summand — and this file never computes it, bec
 stated at every dimension; it is the *projections it reduces to* that need three or more. Corrected
 before commit by reading the signatures rather than the intention.
 
+**AND ON 15 AUG 2026 IT STOPPED CARRYING THAT ONE TOO, WHICH SAYS SOMETHING ABOUT THE AUDIT
+ABOVE.** `(n:ℝ) ≠ 0` is no longer a hypothesis of
+`classification_of_killsWeyl_of_ricciProportional`. It is **derived**, in two lines, from the
+argument `i : Fin n` that was already sitting two tokens away in the same signature — an element
+of `Fin n` cannot exist unless `n > 0`.
+
+**The audit that produced the paragraph above asked the wrong question.** It asked, of each
+hypothesis, *is it used?* — and `hn0` **is** used, by the `field_simp` at the end. It never asked
+*is it implied by something else already assumed?* Those are different tests, and only the second
+catches redundancy. Worth the sentence because every hypothesis audit this campaign has run, on
+every file it has written, has been the first kind.
+
+**The same question asked across the group**, by
+`grep -n "hn0 : (n : ℝ) ≠ 0" paper_f/Lovelock*.lean`: eight other declarations carry `hn0`.
+**Three carry it redundantly** — `LovelockProjections.ricci_scalPart`, `ricci_ricciPart` and
+`ricci_weylPart`, each taking `(b c : Fin n)`. **Five carry it for real** —
+`LovelockProjections.scal_weylPart` and `LovelockOrthogonality`'s four — because they quantify
+only over functions `Fin n → …`, which exist at `n = 0`. The three are a different file and a
+different unit, named here rather than done here.
+
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 
@@ -113,7 +133,7 @@ theorem scalPart_eq (i : Fin n)
 
 /-- **THE CLASSIFICATION FOLLOWS FROM THE TWO OPEN STATEMENTS.** -/
 theorem classification_of_killsWeyl_of_ricciProportional
-    (hn0 : (n : ℝ) ≠ 0) (i : Fin n)
+    (i : Fin n)
     (hadd : ∀ R S, T (fun a b c d => R a b c d + S a b c d) = fun b c => T R b c + T S b c)
     (hsmul : ∀ (lam : ℝ) R, T (fun a b c d => lam * R a b c d) = fun b c => lam * T R b c)
     (hequiv : ∀ Q, IsOrth Q → ∀ R, IsAlgCurv R → ∀ b c, T (act Q R) b c = act2 Q (T R) b c)
@@ -123,6 +143,10 @@ theorem classification_of_killsWeyl_of_ricciProportional
       = α * ricci R b c
         + (T (constCurv n) i i / ((n : ℝ) * ((n : ℝ) - 1)) - α / (n : ℝ))
             * scal R * delta b c := by
+  -- `i : Fin n` already says the dimension is positive, so `(n : ℝ) ≠ 0` is derived rather than
+  -- assumed; see the header for why it used to be a hypothesis
+  have hnpos : 0 < n := i.pos
+  have hn0 : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hnpos.ne'
   -- split `R` into its three pieces and push `T` across the two sums
   have hsplit : R = fun a b c d =>
       weylPart R a b c d + (ricciPart R a b c d + scalPart R a b c d) := by
