@@ -1,7 +1,7 @@
 import LovelockReflections
 
 /-!
-# Step 2's frame change: permutations, and what they say about the diagonal
+# Step 2's frame change, which was already in the estate
 
 `LovelockReflections` proved step 1 of the elementary route to `RicciProportional` — reflections
 force `T` to send a reflection-fixed tensor to a diagonal one — and recorded step 2 as **a guess**:
@@ -12,15 +12,32 @@ force `T` to send a reflection-fixed tensor to a diagonal one — and recorded s
 > unit to test, not as a promise.
 
 `PROOF_STRATEGY` §6's key generator says that when a unit was a B, retry B → C immediately. This
-file is that retry, and **the guess was half right**: the frame change is as cheap as predicted,
-and the combinatorial argument that consumes it is not delivered here.
+file is that retry.
+
+## ERRATUM 168: the first draft rebuilt the permutation matrices
+
+The first version of this file opened by defining `permMat`, proving `isOrth_permMat`, and
+computing `act2_permMat`, and its header reported that "**the guess was half right** — the frame
+change is as cheap as predicted". **All three declarations already existed in
+`AlgebraicCurvature`**, with the same three names and the same two statements, in a file this one
+transitively imports. So the guess was not half right in the way the header claimed: the frame
+change was not *cheap*, it was **already done**, and the check that would have found this is one
+`grep` against the file the whole route is built on.
+
+Nothing clashed and nothing warned: the duplicates sat inside `namespace LovelockPermutations`, so
+the imported names were silently shadowed. `LovelockReflections` had done the same thing one file
+earlier with the *reflection* — see its own header — which is what turned a slip into a pattern
+worth an erratum number.
+
+**Three declarations went; nothing that was proved here is now unproved.** What is left is the
+part that was never in `AlgebraicCurvature`: not that a permutation is an orthogonal frame change,
+but what it does to the image of an equivariant `T`.
 
 ## What is proved
 
-`permMat σ` is the orthogonal matrix of a permutation, and its action on a 2-tensor is a
-relabelling and nothing else:
+`AlgebraicCurvature.act2_permMat` says the action on a 2-tensor is a relabelling and nothing else,
 
-    act2 (permMat σ) S b c  =  S (σ b) (σ c)                    (`act2_permMat`)
+    act2 (permMat σ) S b c  =  S (σ b) (σ c)
 
 with no signs and no sums surviving. From that and equivariance:
 
@@ -30,28 +47,28 @@ with no signs and no sums surviving. From that and equivariance:
   actually consumes: `T (ricciPart (act (permMat σ) R)) b c = T (ricciPart R) (σ b) (σ c)`. It
   needs `act_ricciPart`, that the summand commutes with a frame change, and
   `isAlgCurv_ricciPart`, that it stays inside the symmetry class.
-* `T_ricciPart_diagonal_permMat` — a consistency check that step 1 and §2 compose, and **not new
-  content**: it says the permuted tensor's image is still diagonal, which also follows from step 1
-  alone, because relabelling a diagonal tensor gives a diagonal tensor. It is kept because a
-  composition that did *not* typecheck would have meant one of the two steps was stated wrongly,
-  and it is labelled so nobody reads it as the permutation argument doing work.
+* `T_ricciPart_diagonal_permMat` — a consistency check that step 1 and this file compose, and
+  **not new content**: it says the permuted tensor's image is still diagonal, which also follows
+  from step 1 alone, because relabelling a diagonal tensor gives a diagonal tensor. It is kept
+  because a composition that did *not* typecheck would have meant one of the two steps was stated
+  wrongly, and it is labelled so nobody reads it as the permutation argument doing work.
 
-## What is NOT proved, and it is the half the guess got wrong
+## What is NOT proved here
 
-**Step 2 is not finished.** What is delivered is the *equivariance* of the diagonal under
-relabelling. What step 2 needs on top is the **combinatorial** part: that a linear, relabelling-
-equivariant assignment from a traceless diagonal tensor to a diagonal tensor is a fixed multiple
-of the identity. The argument is standard — expand the assignment in coordinates, note that
-equivariance forces the coefficient matrix to depend only on whether two indices agree, so it is
-`α·δ + β·(all ones)`, and tracelessness kills the `β` term — but every step of it needs the
-coefficient matrix built, which means representing `T` restricted to diagonal tensors as a linear
-map on `ℝⁿ` and reading off its entries. **None of that is here.**
+**Step 2 is not finished in this file.** What is delivered is the *equivariance* of the diagonal
+under relabelling. What step 2 needs on top is the **combinatorial** part: that a linear,
+relabelling-equivariant assignment from a traceless diagonal tensor to a diagonal tensor is a fixed
+multiple of the identity. **That is `LovelockDiagonalWitness`**, and the first draft of this
+paragraph asserted it could not be done without "representing `T` restricted to diagonal tensors as
+a linear map on `ℝⁿ` and reading off its entries" — a claim about a proof that had not been
+attempted. See that file's header for the correction.
 
 **The honest tally on the three-step route, spelled out rather than given as a fraction:** step 1,
-done (`LovelockReflections`). Step 2 has two parts — the frame change, done here, and the
-combinatorics, **not done**. Step 3 has two parts — the bridge `isOrth_of_mem_orthogonalGroup`,
-which already existed and was never the difficulty, and the diagonalisation itself, **not done and
-still the refusal**. So of the four parts that were ever work, **two are done**.
+done (`LovelockReflections`). Step 2 has two parts — the frame change, which was already in
+`AlgebraicCurvature` and is only *applied* here, and the combinatorics, done in
+`LovelockDiagonalWitness` on a fixed pair of indices. Step 3 has two parts — the bridge
+`isOrth_of_mem_orthogonalGroup`, which already existed and was never the difficulty, and the
+diagonalisation itself, **not done and still the refusal**.
 
 **And nothing here bears on `KillsWeyl`**, the harder of `LovelockReduction`'s two `Prop`s. The
 watchlist item does not move.
@@ -64,57 +81,9 @@ namespace LovelockPermutations
 open AlgebraicCurvature LovelockProjections LovelockEquivariance LovelockReflections Finset
 
 variable {n : ℕ}
-
-/-! ## 1. The permutation as a frame change -/
-
-/-- The orthogonal matrix of a permutation. -/
-def permMat (σ : Equiv.Perm (Fin n)) (a b : Fin n) : ℝ := if b = σ a then 1 else 0
-
-/-- **A PERMUTATION IS AN ORTHOGONAL FRAME CHANGE**, so `hequiv` applies to it. -/
-theorem isOrth_permMat (σ : Equiv.Perm (Fin n)) : IsOrth (permMat σ) where
-  rows := by
-    intro x y
-    have h : ∀ a : Fin n, permMat σ x a * permMat σ y a
-        = if a = σ x then (if a = σ y then (1 : ℝ) else 0) else 0 := by
-      intro a
-      by_cases hx : a = σ x <;> by_cases hy : a = σ y <;>
-        simp [permMat, hx, hy]
-    simp only [h, Finset.sum_ite_eq', Finset.mem_univ, if_true, delta]
-    by_cases hxy : x = y <;> simp [hxy, σ.injective.eq_iff]
-  cols := by
-    intro x y
-    have h : ∀ a : Fin n, permMat σ a x * permMat σ a y
-        = if x = σ a then (if y = σ a then (1 : ℝ) else 0) else 0 := by
-      intro a
-      by_cases hx : x = σ a <;> by_cases hy : y = σ a <;>
-        simp [permMat, hx, hy]
-    rw [Finset.sum_eq_single (σ.symm x)]
-    · simp only [Equiv.apply_symm_apply, h, delta]
-      rcases eq_or_ne x y with hxy | hxy
-      · simp [hxy]
-      · simp [hxy, Ne.symm hxy]
-    · intro a _ ha
-      rw [h]
-      exact if_neg fun hc => ha (by rw [hc, Equiv.symm_apply_apply])
-    · intro hc; exact absurd (Finset.mem_univ (σ.symm x)) hc
-
-/-- **AND ITS ACTION ON A 2-TENSOR IS A RELABELLING**, with no signs and no surviving sum. -/
-theorem act2_permMat (σ : Equiv.Perm (Fin n)) (S : Fin n → Fin n → ℝ) (b c : Fin n) :
-    act2 (permMat σ) S b c = S (σ b) (σ c) := by
-  simp only [act2, permMat]
-  rw [Finset.sum_eq_single (σ b)]
-  · rw [Finset.sum_eq_single (σ c)]
-    · simp
-    · intro d _ hd; simp [hd]
-    · intro h; exact absurd (Finset.mem_univ (σ c)) h
-  · intro d _ hd
-    refine Finset.sum_eq_zero fun e _ => ?_
-    simp [hd]
-  · intro h; exact absurd (Finset.mem_univ (σ b)) h
-
-/-! ## 2. What relabelling the frame does to the answer -/
-
 variable {T : (Fin n → Fin n → Fin n → Fin n → ℝ) → Fin n → Fin n → ℝ}
+
+/-! ## 1. What relabelling the frame does to the answer -/
 
 /-- Relabelling the frame relabels the answer, with nothing else happening. -/
 theorem T_act_permMat
