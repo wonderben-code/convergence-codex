@@ -53,9 +53,17 @@ proved in that generality, rather than for one `f`, is what makes this a short f
 
 **It is the exponential observable, not the polynomial one.** The Wick recursion
 `E[X₁⋯X_{2n}] = ∑_j ⟨X₁,X_j⟩·E[∏_{i≠1,j}X_i]` needs `∫ ⟪a,ω⟫·F(ω)` for `F` a **product of smeared
-fields**, and getting there from the exponential case means differentiating again — once per factor.
-That is not done here, so **the sub-trigger does not close**; what changes is that its first leg
-exists and the remaining step is a second differentiation rather than a missing identity.
+fields**. That is not done here, so **the sub-trigger does not close**; what changes is that its
+first leg exists and the remaining step is a second differentiation rather than a missing identity.
+
+*AMENDED 16 AUGUST 2026 (`ERRATUM 183`). The sentence above used to continue: "~~and getting there
+from the exponential case means differentiating again — once per factor~~." **That half is
+withdrawn.** It cost one differentiation, not `n`, because the derivative can be taken in the
+**test function** rather than in a scalar multiplying it, and the `n`-fold part is then absorbed by
+`LatticeMomentsGeneral` already knowing every moment of a single smeared field
+(`LatticeWickRecursion.wick_recursion`, `214454a`). **What is NOT withdrawn is everything else in
+this paragraph**: this file is still the exponential observable, the polynomial one is still not
+here, and the sub-trigger still did not close on this commit.*
 
 **And OS4 does not move.** Finite volume throughout. **No published tag moves.**
 -/
