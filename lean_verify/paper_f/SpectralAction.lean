@@ -596,11 +596,21 @@ powers of `MMᴴ` are exactly what the action sees**, rather than merely at leas
 **THE ONE STEP THAT IS NOT PROVED HERE, and §9's docstring asserted it in passing.** "Equal
 `Tr((MMᴴ)^k)` for every `k`" and "the same singular values with multiplicity" are equivalent — the
 power sums of a finite multiset of reals determine the multiset — but that is a symmetric-function
-fact about eigenvalues, and **the estate does not prove it.** Mathlib has Newton's identities for
-`MvPolynomial` and `Matrix.trace_eq_sum_roots_charpoly`, but not `Tr(Aᵏ) = ∑ λᵢᵏ`, which needs
-triangularisation. Every statement below is therefore about TRACES, and the singular-value
-phrasing is flagged where it appears rather than proved (`ERRATUM 141`, and an `UNLOCK_WATCHLIST`
-item with its trigger).
+fact about eigenvalues, and **the estate does not prove it.** Every statement below is therefore
+about TRACES, and the singular-value phrasing is flagged where it appears rather than proved
+(`ERRATUM 141`, and an `UNLOCK_WATCHLIST` item with its trigger).
+
+*AMENDED 16 AUGUST 2026 (`ERRATUM 179`). This paragraph used to end: "Mathlib has Newton's
+identities for `MvPolynomial` and `Matrix.trace_eq_sum_roots_charpoly`, but not `Tr(Aᵏ) = ∑ λᵢᵏ`,
+**which needs triangularisation**." The last clause was false and is withdrawn.
+`TracePowerSpectrum.trace_pow_eq_sum_roots_charpoly` proves `Tr(Aᵏ) = ∑ λᵢᵏ` over any
+algebraically closed field with no triangularisation anywhere, by decomposing into generalised
+eigenspaces; and `Matrix.trace_pow_mul_conjTranspose` reads it at `M · Mᴴ`, which is the matrix
+this section traces. **The paragraph's conclusion is unchanged and the section is unchanged**: that
+was one of three legs, the other two — power sums determine the elementary symmetric functions,
+and equal characteristic polynomials give the same root multiset — are still not proved here, so
+"equal moments" still does not give "same singular values" and no statement below may be
+restated. The claim that was wrong was the claim about why it was hard.*
 -/
 
 /-- **A MONOMIAL CUTOFF IS A SINGLE MOMENT.** At `Λ = 1`, `Tr((X^k)(D)) = Tr(Dᵏ)`. -/
