@@ -71,6 +71,15 @@ are missing here and none is bookkeeping:
   measure, no field and no Gaussian anywhere in the statement. **The moment formula**
   `E[X₁⋯X_{2k}] = ∑_{pairings} ∏ E[Xᵢ Xⱼ]`, which is the half a clustering argument would consume,
   is the one that is absent;
+
+  *AMENDED 16 AUGUST 2026 (`ERRATUM 185`). "~~is the one that is absent~~" is **withdrawn at
+  `k = 2`**: `LatticeIsserlisFour.isserlis_four` (`4d35d08`) is exactly this formula at `2k = 4`,
+  at four arbitrary test functions and all three pairings. Above that it is present only in
+  patterns — `LatticeWickTwo.wick_two` gives order six at `(a,b,f,f,f,f)` — and **the closed
+  pairing sum at general order really is still absent**, for the carrier reason
+  `LatticeMomentsGeneral` records. The clause "which is the half a clustering argument would
+  consume" **is not withdrawn and has since been demonstrated**: that is precisely what
+  `LatticeFourPointClustering` and `LatticeHigherClustering` consume it for.*
 * **the continuum.**
 
 **THE SECOND BULLET IS SUPERSEDED BY `GreenClustering`, WRITTEN THE SAME DAY AND KEPT HERE RATHER

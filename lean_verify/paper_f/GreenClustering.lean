@@ -8,8 +8,20 @@ import GreenDisconnected
 clustering: the higher correlations, which the textbook obtains from the two-point function by
 **Wick's moment formula**. That formula is not in this estate (`GreenDecay` §"What this is NOT")
 and — probed against the pinned environment on 2026-08-13, by name and by shape — **it is not in
-Mathlib either**: `grep -rli isserlis Mathlib/` returns zero files; `Wick` returns zero
-declarations under `Mathlib/Probability/`; and `Gaussian/Real.lean` carries the
+Mathlib either**:
+
+*AMENDED 16 AUGUST 2026 (`ERRATUM 185`). "~~That formula is not in this estate~~" is
+**withdrawn**. It is, since `4d35d08`: `LatticeIsserlisFour.isserlis_four` is Wick's moment
+formula at order four, at four arbitrary test functions, and
+`LatticeWickRecursion.wick_recursion` is its recursive form at every order against a power of
+one test function. **Not withdrawn:** the
+Mathlib half of the sentence, which is a DATED probe result and stands as a record of 13 August;
+and everything below, which is what this file actually does. **This file still does not go through
+Wick** — that remains the point of the section, and the fact that the road now exists does not mean
+this file took it.*
+
+The Mathlib probe, as of 2026-08-13: `grep -rli isserlis Mathlib/` returns zero files; `Wick`
+returns zero declarations under `Mathlib/Probability/`; and `Gaussian/Real.lean` carries the
 moment *generating* function, `variance_id_gaussianReal`, and
 `memLp_id_gaussianReal` — *"all the moments are finite"* — but **no moment identity at all**, in
 one variable or several. `Gaussian/Multivariate.lean` has the mean, the covariance bilinear form,
