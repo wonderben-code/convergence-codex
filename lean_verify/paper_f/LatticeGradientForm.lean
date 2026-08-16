@@ -55,6 +55,9 @@ its partial derivatives are what the chain rule says, and that the two `MemLp` s
 (`ERRATUM 183`) — the fourth time on this chain that the next step has been named rather than
 guessed at, and the previous three guesses were all wrong in the same direction.
 
+*Sections 1–3 were committed first (`e53c703`); §4 below closes the algebraic half completely, so
+the residue named above is now purely the calculus.*
+
 **And the vertex type is still `Fin n`**, for the reason `LatticeFieldProduct` records: the
 estate's concrete lattices have product vertex types. **No published tag moves. OS4 does not
 move.**
@@ -115,5 +118,49 @@ theorem sum_sq_sqrt_green_col (hm : m ≠ 0) (w : Fin n → ℝ) :
       = w ⬝ᵥ green G m *ᵥ w :=
   sum_sq_col_eq_quadForm _ _ isSymm_sqrt_green
     (LatticeFieldProduct.sqrt_green_mul_self hm) w
+
+/-! ## 4. The algebraic half of the assembly, closed
+
+What a Poincaré inequality produces after a change of variables by `√G` is a sum of squares of the
+**derivative** evaluated along the `√G`-images of the coordinate directions. The derivative at a
+point is a continuous linear functional and nothing else about it matters here, so this section is
+stated for an arbitrary one. -/
+
+/-- **A LINEAR FUNCTIONAL IS ITS VALUES ON THE AXES.** In finite dimensions, with no
+completeness, no Riesz representative and no inner product: `T` on any vector is the coordinate
+combination of `T` on the coordinate directions. -/
+theorem apply_eq_sum_coords {n : ℕ} (T : EuclideanSpace ℝ (Fin n) →L[ℝ] ℝ) (v : Fin n → ℝ) :
+    T (WithLp.toLp 2 v) = ∑ j, v j * T (WithLp.toLp 2 (Pi.single j (1 : ℝ))) := by
+  have hv : (WithLp.toLp 2 v : EuclideanSpace ℝ (Fin n))
+      = ∑ j, v j • (WithLp.toLp 2 (Pi.single j (1 : ℝ)) : EuclideanSpace ℝ (Fin n)) := by
+    ext i
+    simp [Finset.sum_apply, Pi.single_apply]
+  rw [hv, map_sum]
+  exact Finset.sum_congr rfl fun j _ => by rw [map_smul]; simp
+
+/-- **THE ALGEBRAIC HALF OF THE CORRELATED POINCARÉ INEQUALITY, COMPLETE.**
+
+For any continuous linear functional `T` — in the application, the Fréchet derivative of the
+observable at a point — the sum of its squared values along the `√G`-images of the coordinate
+directions **is** the Green quadratic form of its coordinate values.
+
+The left side is exactly what `SteinGeneralPi.poincare_contDiff` produces once
+`LatticeFieldProduct.gaussianField_eq_map_gaussPi` has changed variables; the right side is
+exactly `⟪∇Φ, G ∇Φ⟫`. **Nothing analytic is left in the identity** — what remains between this and
+the inequality is the chain rule and two integrability transports, and both are calculus rather
+than algebra. -/
+theorem sum_sq_apply_sqrt_green (hm : m ≠ 0) (T : EuclideanSpace ℝ (Fin n) →L[ℝ] ℝ) :
+    ∑ i : Fin n, (T (WithLp.toLp 2 (CFC.sqrt (green G m) *ᵥ Pi.single i (1 : ℝ)))) ^ 2
+      = (fun j => T (WithLp.toLp 2 (Pi.single j (1 : ℝ))))
+          ⬝ᵥ green G m *ᵥ (fun j => T (WithLp.toLp 2 (Pi.single j (1 : ℝ)))) := by
+  have hexp : ∀ i : Fin n,
+      T (WithLp.toLp 2 (CFC.sqrt (green G m) *ᵥ Pi.single i (1 : ℝ)))
+        = ∑ j, (fun k => T (WithLp.toLp 2 (Pi.single k (1 : ℝ)))) j
+            * (CFC.sqrt (green G m) *ᵥ Pi.single i (1 : ℝ)) j := by
+    intro i
+    rw [apply_eq_sum_coords]
+    exact Finset.sum_congr rfl fun j _ => by ring
+  simp only [hexp]
+  exact sum_sq_sqrt_green_col hm _
 
 end LatticeGradientForm
