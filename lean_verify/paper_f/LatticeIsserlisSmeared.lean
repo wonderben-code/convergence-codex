@@ -37,9 +37,15 @@ anything about delta functions.
 
 **It is still the pattern `(f,f,g,g)`.** Isserlis proper is
 `E[⟪a,ω⟫⟪b,ω⟫⟪c,ω⟫⟪d,ω⟫] = ⟨a,Gb⟩⟨c,Gd⟩ + ⟨a,Gc⟩⟨b,Gd⟩ + ⟨a,Gd⟩⟨b,Gc⟩` at four arbitrary test
-functions, and that is the fifteen-term polarisation the watchlist sub-trigger names. Generalising
-the *arguments* from sites to test functions is orthogonal to generalising the *pattern*, and only
-the first is done here.
+functions, and that is the watchlist sub-trigger. Generalising the *arguments* from sites to test
+functions is orthogonal to generalising the *pattern*, and only the first is done here.
+
+*AMENDED 16 AUGUST 2026 (`ERRATUM 181`). This sentence used to call that "~~the fifteen-term
+polarisation~~". **Withdrawn**: one slot at a time costs two steps of two terms, and
+`LatticeIsserlisFour.isserlis_four` (`4d35d08`) does it. **What is NOT withdrawn is the point of
+the paragraph** — the two axes really are orthogonal, and this file moves only the first. What the
+sequel showed is that THIS unit was the prerequisite for it: the polarisation substitutes `c + d`
+into a slot, and a slot that only accepts `δₚ` cannot receive it.*
 
 **And OS4 does not move.** Finite volume throughout, as before. **No published tag moves.**
 -/

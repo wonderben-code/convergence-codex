@@ -37,9 +37,15 @@ are the infinite-volume limit and the continuum, and every statement here is at 
 graph. What the uniform version supplies is that the rate does not degrade as the graph grows —
 the hypothesis such an argument needs, not the argument.
 
-**And it is the pattern `(f,f,g,g)`.** The four field factors come from two test functions. Four
-arbitrary ones need the fifteen-term polarisation the watchlist sub-trigger names, which is still
-untouched. **No published tag moves.**
+**And it is the pattern `(f,f,g,g)`.** The four field factors come from two test functions; four
+arbitrary ones are not covered by anything in this file. **No published tag moves.**
+
+*AMENDED 16 AUGUST 2026 (`ERRATUM 181`). This paragraph used to end: "~~Four arbitrary ones need
+the fifteen-term polarisation the watchlist sub-trigger names, which is still untouched~~."
+**Both halves are withdrawn** — the count was wrong (two steps of two terms, one slot at a time)
+and it is no longer untouched (`LatticeIsserlisFour.isserlis_four`, `4d35d08`). **What is NOT
+withdrawn is the restriction on THIS file**, whose every statement is still `(f,f,g,g)`; the
+clustering estimate here has not been re-derived at four arbitrary arguments.*
 -/
 
 namespace LatticeFourPointClustering

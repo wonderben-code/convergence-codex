@@ -10,6 +10,11 @@ header named what it was not:
 > *"Recovering the full symmetric 4-linear form from the quartic is **polarisation**, and
 > polarisation of a quartic is sixteen terms, not four. It is not done here."*
 
+*(That quotation is faithful to what `LatticeMoments`'s header said when this file was written. **Its
+count is now withdrawn** — `ERRATUM 181`, and the amendment is in `LatticeMoments` itself. It is
+quoted here unaltered because this file's argument was built on reading it, and rewriting the
+quotation would hide why the next section is phrased as a correction of it.)*
+
 `PROOF_STRATEGY` §3 says to re-attempt `B → C` the moment `B` lands. **This is that attempt, and it
 reaches the TWO-SITE case**: `∫ (ω p)²(ω q)² = G(p,p)·G(q,q) + 2·G(p,q)²`, which is Isserlis for the
 index pattern `(p,p,q,q)` — the three pairings `{pp}{qq}`, `{pq}{pq}`, `{pq}{pq}`.
@@ -44,10 +49,16 @@ integrability is free and the unit is the bookkeeping.
 
 **It is still not Isserlis.** The general statement is
 `E[ωₐω_bω_cω_d] = G_{ab}G_{cd} + G_{ac}G_{bd} + G_{ad}G_{bc}` at four arbitrary indices, and this
-is the pattern `(p,p,q,q)`. The patterns `(p,p,p,q)` and `(p,q,r,s)` need three and fifteen further
-polarisation terms respectively and are **not** proved here. What has changed since
-`LatticeMoments` is that the two-site case is done and the method is visibly the same one; what has
-not changed is that nobody has done the general count.
+is the pattern `(p,p,q,q)`. The patterns `(p,p,p,q)` and `(p,q,r,s)` are **not** proved here. What
+has changed since `LatticeMoments` is that the two-site case is done and the method is visibly the
+same one.
+
+*AMENDED 16 AUGUST 2026 (`ERRATUM 181`). This paragraph used to continue: "~~need three and fifteen
+further polarisation terms respectively~~ … nobody has done the general count." **The counts were
+wrong and are withdrawn.** Fifteen is the price of the one-shot polarisation; opening one slot at a
+time costs two steps of two terms, and `LatticeIsserlisFour.isserlis_four` (`4d35d08`) proves the
+general case that way. **What is NOT withdrawn: those patterns are still not proved in THIS file**,
+and every statement below is still the `(p,p,q,q)` one.*
 
 **And OS4 still does not move.** `connected_four_point` is a finite-volume identity. Composing it
 with `GreenDecay.covariance_abs_le` would give exponential decay of the connected four-point

@@ -57,8 +57,15 @@ mgf — and what is left is:
 `E[ωₚ ω_q ω_r ω_s] = G_{pq}G_{rs} + G_{pr}G_{qs} + G_{ps}G_{qr}`, and what is here is its
 **diagonal** — the quartic form `f ↦ E[⟪f,ω⟫⁴]`, plus the one index pattern
 (`p,p,p,p`) that reads off it directly. Recovering the full symmetric 4-linear form from the
-quartic is **polarisation**, and polarisation of a quartic is sixteen terms, not four. It is not
+quartic is **polarisation**, and ~~polarisation of a quartic is sixteen terms, not four~~. It is not
 done here and nothing below should be read as if it were.
+
+*AMENDED 16 AUGUST 2026 (`ERRATUM 181`). The struck clause is withdrawn. Sixteen is the count for
+the ONE-SHOT polarisation, the alternating sum over the subsets of `{a,b,c,d}`; polarising **one
+slot at a time** costs two steps of two terms, because `(x+y)² − (x−y)² = 4xy` leaves the rest of
+the integrand alone. `LatticeIsserlisFour.isserlis_four` is those two steps. **What is NOT
+withdrawn is the sentence around it**: Isserlis is still not proved in THIS file, and the rest of
+this paragraph stands.*
 
 **And OS4 does not move.** The watchlist lists OS4's two remaining pieces as the infinite-volume
 limit and the continuum; neither is touched, and this file is finite-volume throughout. What moves
