@@ -10,8 +10,8 @@ header named what it was not:
 > *"Recovering the full symmetric 4-linear form from the quartic is **polarisation**, and
 > polarisation of a quartic is sixteen terms, not four. It is not done here."*
 
-*(That quotation is faithful to what `LatticeMoments`'s header said when this file was written. **Its
-count is now withdrawn** — `ERRATUM 181`, and the amendment is in `LatticeMoments` itself. It is
+*(That quotation is faithful to what `LatticeMoments`'s header said when this file was written.
+**Its count is now withdrawn** — `ERRATUM 181`, and the amendment is in `LatticeMoments`. It is
 quoted here unaltered because this file's argument was built on reading it, and rewriting the
 quotation would hide why the next section is phrased as a correction of it.)*
 
