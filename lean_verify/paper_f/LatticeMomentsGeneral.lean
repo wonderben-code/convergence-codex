@@ -54,6 +54,14 @@ for those pairings that **Mathlib does not have**: `IsPerfectMatching` is a pred
 polarising twice; whether the same trick reaches order six **is not estimated here** (`ERRATUM
 181`).
 
+*ADDENDUM, same day. The paragraph above is true about the CLOSED form and is not the whole story:
+Wick also has a RECURSIVE statement, `E[X₁⋯X_{2n}] = ∑_{j≥2} ⟨X₁,X_j⟩·E[∏_{i≠1,j} X_i]`, which
+needs no pairings type — only `Finset.erase` and a `Finset` product. What THAT needs is Gaussian
+integration by parts for the CORRELATED field, which the estate has only for product Gaussians.
+So the obstruction is real but it is not the one named here, and the watchlist sub-trigger is
+re-pointed accordingly. Recorded before the sentence could be repeated a second time, which is the
+narrow rule `ERRATUM 181` left behind.*
+
 **And OS4 does not move.** Finite volume throughout. **No published tag moves**, and in particular
 `GaussianMeasure`'s own file is not edited — the connection is made here, in a file that imports it.
 -/
