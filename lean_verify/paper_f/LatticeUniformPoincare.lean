@@ -70,6 +70,18 @@ untouched.
 **No spectral gap is claimed.** `m⁻²` is an upper bound on the propagator's norm, which is a
 lower bound on the mass gap of the *free* field only; nothing here is stated about a spectrum.
 
+**The observable class is `ContDiff ℝ 1`, and that is a restriction rather than the natural
+hypothesis.** The estate has already been through this once on the one-smearing inequality:
+`LatticePoincare` was stated for `C¹` observables and `LatticeSobolevPoincare` then restated it
+for the Gaussian Sobolev space `W^{1,2}` with a weak derivative, which is the class the
+inequality actually belongs on. **Nothing has done that for the correlated inequality**, and the
+ingredient exists — `HermitePiPoincare.poincare_steinPi` is stated on the `SteinPairPi` class
+rather than on `ContDiff ℝ 1`, and `SteinGeneralPi.steinPairPi_of_contDiff` is only the bridge
+*into* it from the smooth side. Carrying the class version along the route this file already
+uses (reindex off `Fin n` as in `LatticePoincarePi`, then change variables by `√G`) is the next
+deepening. **Not costed** (`ERRATUM 183`) — and on this chain four difficulty estimates out of
+five were wrong, so a reader should discount any guess about it, including a future one of mine.
+
 **No published tag moves.**
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
