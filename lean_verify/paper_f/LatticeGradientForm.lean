@@ -58,8 +58,10 @@ guessed at, and the previous three guesses were all wrong in the same direction.
 *Sections 1–3 were committed first (`e53c703`); §4 below closes the algebraic half completely, so
 the residue named above is now purely the calculus.*
 
-**And the vertex type is still `Fin n`**, for the reason `LatticeFieldProduct` records: the
-estate's concrete lattices have product vertex types. **No published tag moves. OS4 does not
+*AMENDED: the vertex type is now **arbitrary**. Nothing in this file ever needed `Fin n` — the
+algebra is about a symmetric matrix and a vector, and the linearity argument is about a
+finite-dimensional space. The `Fin n` was inherited from `LatticeFieldProduct`'s first version and
+is removed here in place, `PROOF_STRATEGY` §7.3.* **No published tag moves. OS4 does not
 move.**
 -/
 
@@ -76,11 +78,11 @@ linear functional along the `S`-images of the coordinate directions gives the qu
 
 `w` is the tuple of partial derivatives; **no Riesz representative appears**, because in finite
 dimensions linearity on the coordinate directions is all the information a functional has. -/
-theorem sum_sq_col_eq_quadForm {n : ℕ} (S A : Matrix (Fin n) (Fin n) ℝ) (hS : S.IsSymm)
-    (hSA : S * S = A) (w : Fin n → ℝ) :
-    ∑ i : Fin n, (∑ j, w j * (S *ᵥ Pi.single i (1 : ℝ)) j) ^ 2 = w ⬝ᵥ A *ᵥ w := by
+theorem sum_sq_col_eq_quadForm {V : Type*} [Fintype V] [DecidableEq V]
+    (S A : Matrix V V ℝ) (hS : S.IsSymm) (hSA : S * S = A) (w : V → ℝ) :
+    ∑ i : V, (∑ j, w j * (S *ᵥ Pi.single i (1 : ℝ)) j) ^ 2 = w ⬝ᵥ A *ᵥ w := by
   have hsym : ∀ a b, S a b = S b a := fun a b => congrFun (congrFun hS b) a
-  have hcol : ∀ i : Fin n, (∑ j, w j * (S *ᵥ Pi.single i (1 : ℝ)) j) = (S *ᵥ w) i := by
+  have hcol : ∀ i : V, (∑ j, w j * (S *ᵥ Pi.single i (1 : ℝ)) j) = (S *ᵥ w) i := by
     intro i
     have h1 : ∀ j, (S *ᵥ Pi.single i (1 : ℝ)) j = S j i := by
       intro j; simp [Matrix.mulVec, dotProduct_single]
@@ -94,7 +96,8 @@ theorem sum_sq_col_eq_quadForm {n : ℕ} (S A : Matrix (Fin n) (Fin n) ℝ) (hS 
 
 /-! ## 2. The propagator's square root is symmetric -/
 
-variable {n : ℕ} {G : SimpleGraph (Fin n)} [DecidableRel G.Adj] {m : ℝ}
+variable {V : Type*} [Fintype V] [DecidableEq V] {G : SimpleGraph V} [DecidableRel G.Adj]
+variable {m : ℝ}
 
 /-- A `CFC` square root is positive semidefinite, hence Hermitian, hence — over `ℝ` — symmetric.
 
@@ -112,12 +115,12 @@ theorem isSymm_sqrt_green : (CFC.sqrt (green G m)).IsSymm := by
 /-- **THE IDENTITY AT THE PROPAGATOR**, in the form the analytic assembly will cite: the sum of
 squared partial derivatives along the `√G`-images of the coordinate directions **is** the Green
 quadratic form of the partial-derivative tuple. -/
-theorem sum_sq_sqrt_green_col (hm : m ≠ 0) (w : Fin n → ℝ) :
-    ∑ i : Fin n,
+theorem sum_sq_sqrt_green_col (hm : m ≠ 0) (w : V → ℝ) :
+    ∑ i : V,
         (∑ j, w j * (CFC.sqrt (green G m) *ᵥ Pi.single i (1 : ℝ)) j) ^ 2
       = w ⬝ᵥ green G m *ᵥ w :=
   sum_sq_col_eq_quadForm _ _ isSymm_sqrt_green
-    (LatticeFieldProduct.sqrt_green_mul_self hm) w
+    (LatticeFieldProduct.sqrt_green_mul_self_general hm) w
 
 /-! ## 4. The algebraic half of the assembly, closed
 
@@ -129,10 +132,11 @@ stated for an arbitrary one. -/
 /-- **A LINEAR FUNCTIONAL IS ITS VALUES ON THE AXES.** In finite dimensions, with no
 completeness, no Riesz representative and no inner product: `T` on any vector is the coordinate
 combination of `T` on the coordinate directions. -/
-theorem apply_eq_sum_coords {n : ℕ} (T : EuclideanSpace ℝ (Fin n) →L[ℝ] ℝ) (v : Fin n → ℝ) :
+theorem apply_eq_sum_coords {V : Type*} [Fintype V] [DecidableEq V]
+    (T : EuclideanSpace ℝ V →L[ℝ] ℝ) (v : V → ℝ) :
     T (WithLp.toLp 2 v) = ∑ j, v j * T (WithLp.toLp 2 (Pi.single j (1 : ℝ))) := by
-  have hv : (WithLp.toLp 2 v : EuclideanSpace ℝ (Fin n))
-      = ∑ j, v j • (WithLp.toLp 2 (Pi.single j (1 : ℝ)) : EuclideanSpace ℝ (Fin n)) := by
+  have hv : (WithLp.toLp 2 v : EuclideanSpace ℝ V)
+      = ∑ j, v j • (WithLp.toLp 2 (Pi.single j (1 : ℝ)) : EuclideanSpace ℝ V) := by
     ext i
     simp [Finset.sum_apply, Pi.single_apply]
   rw [hv, map_sum]
@@ -149,11 +153,11 @@ The left side is exactly what `SteinGeneralPi.poincare_contDiff` produces once
 exactly `⟪∇Φ, G ∇Φ⟫`. **Nothing analytic is left in the identity** — what remains between this and
 the inequality is the chain rule and two integrability transports, and both are calculus rather
 than algebra. -/
-theorem sum_sq_apply_sqrt_green (hm : m ≠ 0) (T : EuclideanSpace ℝ (Fin n) →L[ℝ] ℝ) :
-    ∑ i : Fin n, (T (WithLp.toLp 2 (CFC.sqrt (green G m) *ᵥ Pi.single i (1 : ℝ)))) ^ 2
+theorem sum_sq_apply_sqrt_green (hm : m ≠ 0) (T : EuclideanSpace ℝ V →L[ℝ] ℝ) :
+    ∑ i : V, (T (WithLp.toLp 2 (CFC.sqrt (green G m) *ᵥ Pi.single i (1 : ℝ)))) ^ 2
       = (fun j => T (WithLp.toLp 2 (Pi.single j (1 : ℝ))))
           ⬝ᵥ green G m *ᵥ (fun j => T (WithLp.toLp 2 (Pi.single j (1 : ℝ)))) := by
-  have hexp : ∀ i : Fin n,
+  have hexp : ∀ i : V,
       T (WithLp.toLp 2 (CFC.sqrt (green G m) *ᵥ Pi.single i (1 : ℝ)))
         = ∑ j, (fun k => T (WithLp.toLp 2 (Pi.single k (1 : ℝ)))) j
             * (CFC.sqrt (green G m) *ᵥ Pi.single i (1 : ℝ)) j := by

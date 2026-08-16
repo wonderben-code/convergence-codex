@@ -1,4 +1,5 @@
-import LatticeCorrelatedPoincare
+import SteinGeneralPi
+import GaussianProductMeasure
 
 /-!
 # The `n`-dimensional Poincaré inequality off `Fin n`
