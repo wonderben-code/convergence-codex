@@ -42,11 +42,12 @@ the identity trivial.
 
 ## What this is NOT
 
-**The two `L²` side conditions are stated on the composed function**, not on `Φ` against the
-field. Transporting them across `gaussianField_eq_map_gaussPi` is a `memLp_map_measure_iff`
-exercise that is **not done here**, so a user must supply them in the `gaussPi` vocabulary. That is
-recorded as a restriction rather than hidden: the conclusion is about the field, the hypotheses are
-not.
+*The first version of this file left the two `L²` side conditions phrased on the composed
+function, and recorded that as a restriction. **§3 removes it**: `poincare_correlated_field` states
+the observable and both side conditions against `gaussianField G m`, with the side conditions on
+the ordinary coordinate partial derivatives — the same tuple the right-hand side uses. The
+`√G`-direction derivatives the proof needs are finite linear combinations of those, so nothing
+extra is assumed.*
 
 **And the vertex type is `Fin n`.** The estate's concrete lattices (`boxGraph`, `torusGraph`) have
 product vertex types, so **this does not reach them** until someone transports across
@@ -149,5 +150,72 @@ theorem poincare_correlated (hm : m ≠ 0) {Φ : EuclideanSpace ℝ (Fin n) → 
     fun i => (hgrad i).integrable_mul (hgrad i)
   rw [← integral_finset_sum _ (fun i _ => hint i)]
   exact integral_congr_ae (Filter.Eventually.of_forall hpt)
+
+/-! ## 3. The hypotheses moved onto the field
+
+`poincare_correlated`'s conclusion is about `gaussianField G m` and its two `L²` side conditions
+are about the **composed** observable against `gaussPi n`. That mismatch was recorded as a
+restriction rather than hidden; this section removes it, so that hypotheses and conclusion speak
+about the same measure and the same function.
+
+Two things make it work. `memLp_map_measure_iff` transports square-integrability across
+`gaussianField_eq_map_gaussPi` in both directions. And the derivative in a `√G`-direction is a
+*finite linear combination* of the ordinary coordinate partial derivatives
+(`LatticeGradientForm.apply_eq_sum_coords`), so requiring the coordinate partials to be `L²` is
+enough — which is also the form the conclusion is stated in. -/
+
+/-- Square-integrability against the field is square-integrability of the composition against the
+product measure. Both directions, since `memLp_map_measure_iff` is an iff.
+
+**No hypothesis on the mass**, because `gaussianField_eq_map_gaussPi` needs none — it is a
+definitional identity. This was first written with `m ≠ 0` by habit and the linter caught it: the
+fourth such catch today. -/
+theorem memLp_field_iff {Ψ : EuclideanSpace ℝ (Fin n) → ℝ}
+    (hΨ : AEStronglyMeasurable Ψ (gaussianField G m)) :
+    MemLp Ψ 2 (gaussianField G m)
+      ↔ MemLp (fun y => Ψ (WithLp.toLp 2 (CFC.sqrt (green G m) *ᵥ y))) 2 (gaussPi n) := by
+  rw [gaussianField_eq_map_gaussPi (G := G) (m := m)] at hΨ ⊢
+  simpa [Function.comp_def] using memLp_map_measure_iff hΨ (by fun_prop)
+
+/-- **THE INEQUALITY WITH EVERY HYPOTHESIS ON THE FIELD.**
+
+Same conclusion as `poincare_correlated`, but now the observable and both side conditions are
+stated against `gaussianField G m`, and the side conditions are about the **ordinary coordinate
+partial derivatives** — the very tuple `∂Φ` that appears on the right-hand side.
+
+The `√G`-direction derivatives the proof actually needs are recovered as finite linear
+combinations of those, which is why no extra hypothesis is required. -/
+theorem poincare_correlated_field (hm : m ≠ 0) {Φ : EuclideanSpace ℝ (Fin n) → ℝ}
+    (hΦc : ContDiff ℝ 1 Φ)
+    (hmem : MemLp Φ 2 (gaussianField G m))
+    (hgrad : ∀ j, MemLp (fun ω => fderiv ℝ Φ ω (WithLp.toLp 2 (Pi.single j (1 : ℝ)))) 2
+      (gaussianField G m)) :
+    (∫ ω, Φ ω * Φ ω ∂(gaussianField G m)) - (∫ ω, Φ ω ∂(gaussianField G m)) ^ 2
+      ≤ ∫ ω, (fun j => fderiv ℝ Φ ω (WithLp.toLp 2 (Pi.single j (1 : ℝ))))
+          ⬝ᵥ green G m *ᵥ (fun j => fderiv ℝ Φ ω (WithLp.toLp 2 (Pi.single j (1 : ℝ))))
+        ∂(gaussianField G m) := by
+  have hΦd : Differentiable ℝ Φ := hΦc.differentiable (by norm_num)
+  -- the observable, transported
+  have hmem' : MemLp (fun y => Φ (sqrtMap (CFC.sqrt (green G m)) y)) 2 (gaussPi n) := by
+    simpa only [sqrtMap_apply] using (memLp_field_iff hmem.1).mp hmem
+  -- each coordinate partial, transported
+  have hpart : ∀ j, MemLp (fun y => fderiv ℝ Φ (WithLp.toLp 2 (CFC.sqrt (green G m) *ᵥ y))
+      (WithLp.toLp 2 (Pi.single j (1 : ℝ)))) 2 (gaussPi n) :=
+    fun j => (memLp_field_iff (hgrad j).1).mp (hgrad j)
+  -- and hence each `√G`-direction derivative, as a finite linear combination of them
+  have hgrad' : ∀ i, MemLp (fun y => fderiv ℝ
+      (fun z => Φ (sqrtMap (CFC.sqrt (green G m)) z)) y (Pi.single i (1 : ℝ))) 2 (gaussPi n) := by
+    intro i
+    have hrw : (fun y => fderiv ℝ (fun z => Φ (sqrtMap (CFC.sqrt (green G m)) z)) y
+        (Pi.single i (1 : ℝ)))
+        = fun y => ∑ j, (CFC.sqrt (green G m) *ᵥ Pi.single i (1 : ℝ)) j
+            * fderiv ℝ Φ (WithLp.toLp 2 (CFC.sqrt (green G m) *ᵥ y))
+                (WithLp.toLp 2 (Pi.single j (1 : ℝ))) := by
+      funext y
+      rw [fderiv_comp_sqrtMap _ hΦd y (Pi.single i (1 : ℝ)), sqrtMap_apply, sqrtMap_apply,
+        LatticeGradientForm.apply_eq_sum_coords]
+    rw [hrw]
+    exact memLp_finset_sum _ (fun j _ => (hpart j).const_mul _)
+  exact poincare_correlated hm hΦc hmem' hgrad'
 
 end LatticeCorrelatedPoincare
