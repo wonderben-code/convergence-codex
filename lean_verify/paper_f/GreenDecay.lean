@@ -83,6 +83,18 @@ extracting one means differentiating under the integral and the identity that co
 formula. So the generating functional clusters; extraction does not follow. The first and third
 bullets are untouched.
 
+*AMENDED 16 AUGUST 2026 (`ERRATUM 184`). The two sentences struck through above — "~~no
+individual higher correlation is written down~~" and "~~extraction does not follow~~" — are
+**withdrawn**. **The diagnosis was right and the verdict is now wrong.** Extracting one did
+mean differentiating under the integral, and the identity that came out IS Wick's formula —
+`LatticeWickRecursion.wick_recursion` (`214454a`). Individual higher correlations now exist
+**at every order** and, since `LatticeHigherClustering` (`da0390a`), **they cluster**: in the
+pattern `(a, f^(n+1))` the whole correlation decays geometrically, with nothing to subtract,
+and across components it is exactly zero. **What is NOT withdrawn is everything else in this
+paragraph** — this file still does not prove any of that, `OS4` is untouched, and the
+generating-functional route recorded here remains what this file does.*
+
+
 **No theorem in this file should be recorded as OS4**, and the watchlist item keeps `OS4` open.
 What changes is the sentence *"needs a decay estimate the estate does not have"*: the estate has
 one now, for the two-point function, uniform in the volume.

@@ -71,6 +71,18 @@ remains true, and is the narrower claim this paragraph now makes, is that no *in
 correlation is written down, because extraction is the Wick step. **The item stays open** on its
 other clauses, and its trigger is unchanged.
 
+*AMENDED 16 AUGUST 2026 (`ERRATUM 184`). The clause struck through above — "~~no individual
+higher correlation is written down~~" — is **withdrawn**. **The diagnosis was right and the
+verdict is now wrong.** Extracting one did mean differentiating under the integral, and the
+identity that came out IS Wick's formula — `LatticeWickRecursion.wick_recursion` (`214454a`).
+Individual higher correlations now exist **at every order** and, since
+`LatticeHigherClustering` (`da0390a`), **they cluster**: in the pattern `(a, f^(n+1))` the
+whole correlation decays geometrically, with nothing to subtract, and across components it is
+exactly zero. **What is NOT withdrawn is everything else in this paragraph** — this file still
+does not prove any of that, `OS4` is untouched, and the generating-functional route recorded
+here remains what this file does.*
+
+
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 
