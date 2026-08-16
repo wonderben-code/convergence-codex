@@ -53,11 +53,16 @@ substance.*
 
 ## What this is NOT
 
-**It is still not a proof that the class at the field is strictly wider than `C¹`.**
-`LatticeCorrelatedStein`'s header records that gap and this file does not close it — what it does
-is supply the invertibility that a witness would need, since the natural candidate is
-`ω ↦ |((√G)⁻¹ ω) v|`, whose composition with `√G` is the `|x v|` of `LatticeSteinPoincarePi`.
-**That witness is not constructed here.** Naming a route is not walking it (`ERRATUM 183`).
+~~**It is still not a proof that the class at the field is strictly wider than `C¹`.** ... what it
+does is supply the invertibility that a witness would need, since the natural candidate is
+`ω ↦ |((√G)⁻¹ ω) v|` ... **That witness is not constructed here.**~~
+
+**SUPERSEDED — THE WITNESS IS NOW BUILT, AND IT IS THE CANDIDATE NAMED ABOVE.**
+`LatticeFieldWitness` defines exactly `ω ↦ |((√G)⁻¹ ω) v|`, proves it is a Stein pair against the
+field, proves it is not `ContDiff ℝ 1`, and concludes the class is strictly wider. Kept per
+`ERRATUM 94`. **The sentence "naming a route is not walking it" stands unamended** — it was the
+right caution at the time, and the route being walked one unit later does not make refusing to
+claim it in advance wrong.
 
 **`OS4` does not move, no spectral gap is claimed, and no published tag moves.**
 

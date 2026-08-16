@@ -55,11 +55,18 @@ proved here and not costed** (`ERRATUM 183`). They are weaker than the `MemLp` h
 relabelling inside `SteinPairOf`. An intrinsic characterisation — a Stein identity stated against
 `gaussianField K m` itself — is **not here and not costed**.
 
-**NO NON-SMOOTH WITNESS IS EXHIBITED AT THE FIELD.** `LatticeSteinPoincarePi` exhibits one against
-the product measure (`|x v|`), which is what makes the class *there* provably wider than `C¹`.
-Transporting it through `√G` would give one here; **it is not done**. So this file proves the class
-**contains** `C¹` and does **not** prove it strictly larger. Claiming otherwise would be asserting
-the corollary of a theorem nobody has written.
+~~**NO NON-SMOOTH WITNESS IS EXHIBITED AT THE FIELD.** `LatticeSteinPoincarePi` exhibits one
+against the product measure (`|x v|`) ... Transporting it through `√G` would give one here; **it is
+not done**. So this file proves the class **contains** `C¹` and does **not** prove it strictly
+larger.~~
+
+**SUPERSEDED, AND BY THE ROUTE THIS PARAGRAPH NAMED.** `LatticeFieldWitness.absCoordField` is that
+transported witness — `ω ↦ |((√G)⁻¹ ω) v|` — and
+`LatticeFieldWitness.steinPairField_strictly_wider_than_contDiff` proves the class at the field
+**is** strictly larger than `C¹`. The wording above is kept per `ERRATUM 94` rather than deleted:
+it was accurate when written, and the guess it recorded about how the gap would close was right,
+which is worth as much as the correction. What it needed first was the invertibility of `√G`
+(`LatticeSqrtEquiv`), which did not exist on the day this paragraph was written.
 
 **`OS4` does not move, no spectral gap is claimed, and no published tag moves.**
 
