@@ -70,9 +70,23 @@ It has two halves, one on each side of the Mathlib boundary.
   rather than estate work, and **discharging the estate side did nothing whatever to it**.
 
 *Recorded so the next reader inherits the two dead ends rather than re-walking them — and so that
-the one now walked is not confused with the one still standing.* **`no_embedding_three_into_six`
-below remains the only negative result: `TorusCycleGraph` is a change of vocabulary, not a proof
-that the embedding fails for general `n`.**
+the one now walked is not confused with the one still standing.*
+
+**AND THE GENERAL STATEMENT WAS PROVED THE SAME DAY, BY NEITHER HALF OF THAT ROUTE.**
+`TorusEmbeddingGeneral.no_embedding_double` proves it: no injective graph homomorphism
+`torusGraph 1 n → torusGraph 1 (2n)` for `n ≥ 3`. **`girth` is not used, `cycleGraph` is not used,
+and no walk is shown to be a cycle.** The argument is that an injective homomorphism carries the
+*two* neighbours of a site to two *distinct* neighbours of its image, and at side `≥ 3` a site has
+**exactly** two — so the map is a local bijection, its range is closed under adjacency, and a
+connected target forces it onto. The general form is stronger than what was asked:
+`side_eq_of_isSiteEmbedding` says any such map between tori of side `≥ 3` forces the sides equal.
+
+**THE ROUTE ABOVE IS LEFT STANDING BECAUSE IT IS WHAT WAS BELIEVED, AND IT WAS WRONG IN A WAY WORTH
+KEEPING.** It named `girth (cycleGraph n) = n` as *the* obstruction. It is not an obstruction to
+this statement at all — and worse, the half of it that looked nearly reachable is the half that
+would have been useless: an exhibited cycle bounds girth **above**, and ruling out a short cycle
+needs the bound **below**. *A recorded route is a hypothesis about difficulty, and this one was
+wrong in both directions at once.*
 
 **`n = 4` was attempted and the decision procedure overflowed the stack.** That is a **resource
 limit and is evidence for nothing**: it says the kernel ran out of room, not that a map does or does

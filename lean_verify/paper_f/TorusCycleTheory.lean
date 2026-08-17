@@ -42,13 +42,16 @@ file committed one step earlier. **This file is the fold-back, and the fold-back
 The two hypotheses agreeing is a fact about two statements, not a mechanism, and it is recorded
 here as an observation precisely so that no later reader promotes it to an explanation.
 
-**`girth` is still not reached, and that is the honest state.** `TorusCycleGraph`'s header named
-`girth (cycleGraph n) = n` as the Mathlib-side half of `TorusEmbedding`'s route, and it remains
-absent from Mathlib. What Mathlib *does* have is `cycleGraph.cycle`, an explicit closed walk of
-length `n+3`, and `cycleGraph.length_cycle` computing its length — but **a closed walk is not a
-cycle until it is proved to be one**, `IsCycle` is not established for it in the library, and
-girth is an infimum over cycles. **The half that was missing this morning is still missing**, and
-one direction of it being nearly in reach is not the same as it being in reach.
+**`girth` is still not reached, and that remains true — but the sentence that stood here about
+what it was FOR was wrong, and is corrected the same day.** `girth (cycleGraph n) = n` is still
+absent from Mathlib: `cycleGraph.cycle` is an explicit closed walk of length `n+3` with its length
+computed, but **a closed walk is not a cycle until proved to be one**, `IsCycle` is not established
+for it, and girth is an infimum over cycles. What was wrong is the *role*: this file, following
+`TorusCycleGraph`, called that the Mathlib-side half of `TorusEmbedding`'s route to the general
+`n ≥ 3` statement. **`TorusEmbeddingGeneral.no_embedding_double` proves that statement without
+girth**, from an exact degree count and connectivity. **And the half that looked nearly in reach
+was the useless half**: an exhibited cycle bounds girth from **above**, while excluding a short
+cycle needs the bound from **below**.
 
 **`d = 1` only**, for the reason `TorusCycleGraph` gave: `torusGraph d n` at `d ≥ 2` is a product
 of cycles and `cycleGraph` is one cycle. Every statement here is about the one-dimensional ring.

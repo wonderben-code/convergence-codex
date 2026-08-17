@@ -32,10 +32,14 @@ already existed, and nothing connected them.
 
 ## What this is NOT
 
-**It does not prove `TorusEmbedding`'s general statement.** That needs `girth (cycleGraph n) = n`,
-and **Mathlib defines `girth` and computes it for no cycle graph** — probed 17 August, and recorded
-in `TorusEmbedding`'s header as the other half of the route. This file removes the estate-side
-obstacle and leaves the Mathlib-side one exactly where it was.
+**It does not prove `TorusEmbedding`'s general statement**, which is a fact about this file and
+remains true. The reason given here for why it does not was **wrong, and is corrected the same
+day**: this said the general statement *"needs `girth (cycleGraph n) = n`"*, absent from Mathlib.
+**It does not need it.** `TorusEmbeddingGeneral.no_embedding_double` proves the general statement
+from an exact degree count and connectivity, using neither girth nor `cycleGraph`. The girth fact
+is still absent from Mathlib and is still worth having; it was never the obstruction. *The
+sentence is left standing rather than deleted because a wrong estimate of difficulty is worth
+keeping next to the thing that refuted it.*
 
 **It is `d = 1` only.** `torusGraph d n` for `d ≥ 2` is a product of cycles, and Mathlib's
 `cycleGraph` is one cycle. Nothing here says anything about `d ≥ 2`, which is where the estate's
