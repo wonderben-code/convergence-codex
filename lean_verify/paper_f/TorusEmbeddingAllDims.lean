@@ -31,6 +31,11 @@ theorem, `torusGraph_degree_eq`, and the estate was most of the way to it alread
   here.** That is the point: the idea was never about `d = 1`. The leaves are renamed rather than
   shadowing that file's: `ERRATUM 193` recorded what leaf-name collisions cost this estate, and
   three more next door would have been the cheapest possible way to repeat it.
+* **`adj_of_adj_map`**, **`isoOfIsTorusEmbedding`**, **`autOfIsTorusEmbedding`** — an embedding
+  **reflects** adjacency as well as preserving it, so it is an **isomorphism of graphs**, and every
+  self-embedding is an **automorphism**. **This does not follow from bijectivity**: a bijective
+  graph homomorphism can carry non-adjacent vertices to adjacent ones. It is the local-bijection
+  step doing the work a third time.
 * **`isTorusEmbedding_one_iff`** and the `example` after it — the `d = 1` case is *definitionally*
   `TorusEmbedding.IsSiteEmbedding`, and `TorusEmbeddingGeneral.no_embedding_double` is re-derived
   from the general theorem by `rfl`-level agreement rather than by resemblance.
@@ -46,6 +51,11 @@ theorem, `torusGraph_degree_eq`, and the estate was most of the way to it alread
 `n = 2` the two cyclic steps along a coordinate *are* the same step, the degree is `d` rather than
 `2d`, and `TorusEmbedding.embedding_two_into_four` exhibits an actual embedding. The hypothesis
 excludes exactly the side length at which the torus **is** the box.
+
+**`d = 0` is excluded from the side-length conclusion by hypothesis, not by oversight.** At `d = 0`
+every `Site 0 n` is a one-point type, so any map between them is a bijection and every side length
+embeds in every other; `1 ≤ d` in `side_eq_of_isTorusEmbedding` is exactly what excludes it. The
+isomorphism results need no hypothesis on `d`, because at `d = 0` they are true and trivial.
 
 **Nothing here is about covariances.** The item this clause belongs to is about a compatible family
 of measures; a missing graph embedding is not an incompatible family, and clause (i) remains
@@ -174,10 +184,12 @@ theorem neighborFinset_image_of_torusEmbedding {a b : ℕ} (ha : 3 ≤ a) (hb : 
       SimpleGraph.card_neighborFinset_eq_degree, torusGraph_degree_eq ha,
       torusGraph_degree_eq hb]
 
-/-- **ANY EMBEDDING BETWEEN TORI OF SIDE `≥ 3` FORCES THE SIDES EQUAL, IN EVERY POSITIVE
-DIMENSION.** -/
-theorem side_eq_of_isTorusEmbedding {a b : ℕ} (hd : 1 ≤ d) (ha : 3 ≤ a) (hb : 3 ≤ b)
-    {φ : Site d a → Site d b} (h : IsTorusEmbedding φ) : a = b := by
+/-- **AN EMBEDDING IS ONTO.** Its range is closed under adjacency, by the local-bijection step;
+the target is connected, by `TorusDecay.torusGraph_connected`; so the range is everything.
+
+**No hypothesis on `d` is needed here** — only the cardinality step below wants `d ≠ 0`. -/
+theorem surjective_of_isTorusEmbedding {a b : ℕ} (ha : 3 ≤ a) (hb : 3 ≤ b)
+    {φ : Site d a → Site d b} (h : IsTorusEmbedding φ) : Function.Surjective φ := by
   have hbase : Site d a := fun _ => ⟨0, by omega⟩
   have hclosed : ∀ ⦃x y⦄, x ∈ Set.range φ → (torusGraph d b).Adj x y → y ∈ Set.range φ := by
     rintro _ y ⟨v, rfl⟩ hxy
@@ -186,12 +198,17 @@ theorem side_eq_of_isTorusEmbedding {a b : ℕ} (hd : 1 ≤ d) (ha : 3 ≤ a) (h
       exact hxy
     obtain ⟨w, -, rfl⟩ := Finset.mem_image.mp hmem
     exact ⟨w, rfl⟩
-  have hsurj : Function.Surjective φ := by
-    intro y
-    obtain ⟨w⟩ := (TorusDecay.torusGraph_connected (n := b) d (by omega)).preconnected
-      (φ hbase) y
-    have hy : y ∈ Set.range φ := TorusEmbeddingGeneral.mem_of_walk hclosed w ⟨hbase, rfl⟩
-    exact hy
+  intro y
+  obtain ⟨w⟩ := (TorusDecay.torusGraph_connected (n := b) d (by omega)).preconnected
+    (φ hbase) y
+  have hy : y ∈ Set.range φ := TorusEmbeddingGeneral.mem_of_walk hclosed w ⟨hbase, rfl⟩
+  exact hy
+
+/-- **ANY EMBEDDING BETWEEN TORI OF SIDE `≥ 3` FORCES THE SIDES EQUAL, IN EVERY POSITIVE
+DIMENSION.** -/
+theorem side_eq_of_isTorusEmbedding {a b : ℕ} (hd : 1 ≤ d) (ha : 3 ≤ a) (hb : 3 ≤ b)
+    {φ : Site d a → Site d b} (h : IsTorusEmbedding φ) : a = b := by
+  have hsurj : Function.Surjective φ := surjective_of_isTorusEmbedding ha hb h
   have hcard : a ^ d = b ^ d := by
     have := Fintype.card_of_bijective (f := φ) ⟨h.1, hsurj⟩
     simpa [Fintype.card_fun] using this
@@ -222,5 +239,38 @@ files agree rather than resemble each other. -/
 example (n : ℕ) (hn : 3 ≤ n) (φ : Site 1 n → Site 1 (2 * n)) :
     ¬ TorusEmbedding.IsSiteEmbedding φ :=
   no_torus_embedding_double (d := 1) le_rfl n hn φ
+
+/-! ## 5. And every embedding is an isomorphism -/
+
+/-- **AN EMBEDDING REFLECTS ADJACENCY, NOT ONLY PRESERVES IT.**
+
+**This does not follow from bijectivity.** A bijective graph homomorphism can fail to be an
+isomorphism in general — it may carry non-adjacent vertices to adjacent ones. What rules that out
+here is the local-bijection step again: `φ q` adjacent to `φ p` puts it in `(N p).image φ`, and
+injectivity pulls it back to a neighbour of `p`. -/
+theorem adj_of_adj_map {a b : ℕ} (ha : 3 ≤ a) (hb : 3 ≤ b)
+    {φ : Site d a → Site d b} (h : IsTorusEmbedding φ) {p q : Site d a}
+    (hpq : (torusGraph d b).Adj (φ p) (φ q)) : (torusGraph d a).Adj p q := by
+  have hmem : φ q ∈ ((torusGraph d a).neighborFinset p).image φ := by
+    rw [neighborFinset_image_of_torusEmbedding ha hb h p, SimpleGraph.mem_neighborFinset]
+    exact hpq
+  obtain ⟨w, hw, hwq⟩ := Finset.mem_image.mp hmem
+  rw [SimpleGraph.mem_neighborFinset] at hw
+  rwa [h.1 hwq] at hw
+
+/-- **SO AN EMBEDDING OF TORI OF SIDE `≥ 3` IS AN ISOMORPHISM OF GRAPHS**, bundled. With
+`side_eq_of_isTorusEmbedding` this says the only injective homomorphisms between these graphs are
+the isomorphisms, and they exist only between equal side lengths. -/
+noncomputable def isoOfIsTorusEmbedding {a b : ℕ} (ha : 3 ≤ a) (hb : 3 ≤ b)
+    {φ : Site d a → Site d b} (h : IsTorusEmbedding φ) :
+    torusGraph d a ≃g torusGraph d b where
+  toEquiv := Equiv.ofBijective φ ⟨h.1, surjective_of_isTorusEmbedding ha hb h⟩
+  map_rel_iff' := ⟨adj_of_adj_map ha hb h, h.2 _ _⟩
+
+/-- **EVERY SELF-EMBEDDING OF THE TORUS IS AN AUTOMORPHISM**, at every side length `≥ 3` and in
+every dimension — the `a = b` case, stated because it is the one a reader asks about. -/
+noncomputable def autOfIsTorusEmbedding {a : ℕ} (ha : 3 ≤ a) {φ : Site d a → Site d a}
+    (h : IsTorusEmbedding φ) : torusGraph d a ≃g torusGraph d a :=
+  isoOfIsTorusEmbedding ha ha h
 
 end TorusEmbeddingAllDims
