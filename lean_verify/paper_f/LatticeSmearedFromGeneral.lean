@@ -84,9 +84,23 @@ discharged from polynomial growth, so its hypothesis list can be compared with
 
 ## What this is NOT
 
-**It does not reprove `poincare_smeared`**, whose hypotheses this cannot reach (see above). It
-proves the same *conclusion* under the *general* theorem's hypotheses, which is what "the two lines
-agree" can honestly mean.
+**IT NOW DOES REPROVE `poincare_smeared`, AND §8 IS WHERE.** This paragraph read:
+
+> **It does not reprove `poincare_smeared`**, whose hypotheses this cannot reach (see above). It
+> proves the same *conclusion* under the *general* theorem's hypotheses, which is what "the two
+> lines agree" can honestly mean.
+
+That was true when written and is quoted rather than deleted (`ERRATUM 94`). The hypotheses were
+unreachable because the correlated line demanded `ContDiff ℝ 1`;
+`LatticeFieldDifferentiable.poincare_correlated_differentiable` removed that demand, and
+**`poincare_smeared_of_correlated_general`** now takes `hm`, `f`, `hderiv`, `hb`, `hb'` and nothing
+else. A machine-checked `example` confirms the result **is** `poincare_smeared`'s statement rather
+than something resembling it.
+
+**§5 and §6 are untouched by this.** `poincare_smeared` and `poincare_correlated_general` — the
+`C¹` theorem — remain incomparable, with a witness each way. What §8 changes is a claim about *this
+file's* reach, closed by later units of the same campaign rather than by a better proof of the same
+thing.
 
 **Nothing here is new mathematics.** It is a consistency link between two existing results, of the
 kind that is invisible to every automated check in this project — both files build, both are
@@ -204,7 +218,13 @@ So on one-smearing observables the difference between the estate's two Poincaré
 observables of several smearings, which the smeared one cannot state, and it also reaches `C¹`
 functions of super-polynomial growth that are still `L²` — `poincare_smeared` requires polynomial
 growth outright. What §4 adds is that in the one direction that can be compared cleanly, the gap is
-a single named condition rather than a tangle.* -/
+a single named condition rather than a tangle.*
+
+**AND §8 CLOSES THAT GAP.** The single named condition is removed by
+`LatticeFieldDifferentiable.poincare_correlated_differentiable`, so
+`poincare_smeared_of_correlated_general` needs no `ContDiff ℝ 1` at all. §4 is left standing
+because **measuring a gap and closing it are two different results**, and the measurement is what
+told the campaign which hypothesis to attack. -/
 
 /-- **THE SMEARED INEQUALITY UNDER `poincare_smeared`'S OWN HYPOTHESES, PLUS `C¹`.**
 
@@ -396,45 +416,72 @@ theorem abs_coord_le_norm (f : EuclideanSpace ℝ W) (j : W) : |(WithLp.ofLp f) 
   rwa [hn, mul_one] at hcs
 
 omit [DecidableEq W] in
+/-- **POLYNOMIAL GROWTH SURVIVES ONE SMEARING, WITH THE EXPONENT UNTOUCHED.**
+`|F t| ≤ C(1+t²)^k` gives `|F ⟪f,ω⟫| ≤ C(1+‖f‖²)^k·(1+‖ω‖²)^k`, by Cauchy–Schwarz on the smearing
+and one elementary factorisation. -/
+theorem smear_polyGrowth {F : ℝ → ℝ} {C : ℝ} {k : ℕ}
+    (hb : ∀ x, |F x| ≤ C * (1 + x ^ 2) ^ k) (f ω : EuclideanSpace ℝ W) :
+    |F (inner ℝ f ω : ℝ)| ≤ C * (1 + ‖f‖ ^ 2) ^ k * (1 + ‖ω‖ ^ 2) ^ k := by
+  have hC : 0 ≤ C := by
+    have h0 := hb 0
+    norm_num at h0
+    exact le_trans (abs_nonneg _) h0
+  have hcs : |(inner ℝ f ω : ℝ)| ≤ ‖f‖ * ‖ω‖ := abs_real_inner_le_norm f ω
+  have hsq : (inner ℝ f ω : ℝ) ^ 2 ≤ ‖f‖ ^ 2 * ‖ω‖ ^ 2 := by
+    nlinarith [abs_nonneg (inner ℝ f ω : ℝ), sq_abs (inner ℝ f ω : ℝ),
+      norm_nonneg f, norm_nonneg ω]
+  refine (hb _).trans ?_
+  have hstep : (1 + (inner ℝ f ω : ℝ) ^ 2) ^ k ≤ ((1 + ‖f‖ ^ 2) * (1 + ‖ω‖ ^ 2)) ^ k := by
+    refine pow_le_pow_left₀ (by positivity) ?_ k
+    nlinarith [sq_nonneg ‖f‖, sq_nonneg ‖ω‖]
+  calc C * (1 + (inner ℝ f ω : ℝ) ^ 2) ^ k
+      ≤ C * ((1 + ‖f‖ ^ 2) * (1 + ‖ω‖ ^ 2)) ^ k := mul_le_mul_of_nonneg_left hstep hC
+    _ = C * (1 + ‖f‖ ^ 2) ^ k * (1 + ‖ω‖ ^ 2) ^ k := by rw [mul_pow]; ring
+
+/-- **AND SO DOES THE GRADIENT'S**, paying one factor of `‖f‖`: `∂ⱼ[F⟪f,ω⟫] = F′⟪f,ω⟫·fⱼ` by
+`fderiv_smear`, and a coordinate is bounded by the norm. -/
+theorem fderiv_smear_polyGrowth {F F' : ℝ → ℝ} (hderiv : ∀ x, HasDerivAt F (F' x) x)
+    {C : ℝ} {k : ℕ} (hb' : ∀ x, |F' x| ≤ C * (1 + x ^ 2) ^ k)
+    (f : EuclideanSpace ℝ W) (j : W) (ω : EuclideanSpace ℝ W) :
+    |fderiv ℝ (fun z : EuclideanSpace ℝ W => (F (inner ℝ f z) : ℝ)) ω
+        (WithLp.toLp 2 (Pi.single j (1 : ℝ)))|
+      ≤ C * (1 + ‖f‖ ^ 2) ^ k * (1 + ‖f‖) * (1 + ‖ω‖ ^ 2) ^ k := by
+  rw [fderiv_smear hderiv ω j, abs_mul]
+  have h1 := smear_polyGrowth hb' f ω
+  have h2 : |(WithLp.ofLp f) j| ≤ 1 + ‖f‖ :=
+    (abs_coord_le_norm f j).trans (by linarith [norm_nonneg f])
+  have hnn : (0:ℝ) ≤ C * (1 + ‖f‖ ^ 2) ^ k * (1 + ‖ω‖ ^ 2) ^ k := le_trans (abs_nonneg _) h1
+  calc |F' (inner ℝ f ω : ℝ)| * |(WithLp.ofLp f) j|
+      ≤ (C * (1 + ‖f‖ ^ 2) ^ k * (1 + ‖ω‖ ^ 2) ^ k) * (1 + ‖f‖) :=
+        mul_le_mul h1 h2 (abs_nonneg _) hnn
+    _ = C * (1 + ‖f‖ ^ 2) ^ k * (1 + ‖f‖) * (1 + ‖ω‖ ^ 2) ^ k := by ring
+
+omit [DecidableEq W] in
 theorem differentiable_wigSmear (f : EuclideanSpace ℝ W) : Differentiable ℝ (wigSmear f) :=
   DifferentiableNotC1.differentiable_wig.comp (innerSL ℝ f).differentiable
 
 omit [DecidableEq W] in
-/-- Polynomial growth of the observable, with a constant depending only on `‖f‖`. -/
+/-- Polynomial growth of the observable — `smear_polyGrowth` at `F = wig`, `C = 2`, `k = 1`,
+with `1 ≤ 1 + ‖f‖` supplying the extra factor the gradient bound needs. -/
 theorem wigSmear_bound (f : EuclideanSpace ℝ W) (ω : EuclideanSpace ℝ W) :
     |wigSmear f ω| ≤ 2 * (1 + ‖f‖ ^ 2) * (1 + ‖f‖) * (1 + ‖ω‖ ^ 2) ^ 1 := by
-  have hcs : |(inner ℝ f ω : ℝ)| ≤ ‖f‖ * ‖ω‖ := abs_real_inner_le_norm f ω
-  have hw := DifferentiableNotC1.wig_bound (inner ℝ f ω : ℝ)
-  simp only [pow_one, one_mul] at hw ⊢
-  have hsq : (inner ℝ f ω : ℝ) ^ 2 ≤ ‖f‖ ^ 2 * ‖ω‖ ^ 2 := by
-    nlinarith [abs_nonneg (inner ℝ f ω : ℝ), sq_abs (inner ℝ f ω : ℝ),
-      norm_nonneg f, norm_nonneg ω]
-  have h1 : |wigSmear f ω| ≤ 1 + (inner ℝ f ω : ℝ) ^ 2 := hw
-  nlinarith [norm_nonneg f, norm_nonneg ω, sq_nonneg ‖ω‖, sq_nonneg ‖f‖]
+  have hb2 : ∀ x : ℝ, |DifferentiableNotC1.wig x| ≤ 2 * (1 + x ^ 2) ^ 1 := fun x =>
+    (DifferentiableNotC1.wig_bound x).trans (by nlinarith [sq_nonneg x])
+  have h := smear_polyGrowth hb2 f ω
+  simp only [pow_one] at h
+  simp only [wigSmear, pow_one]
+  refine h.trans ?_
+  have hA : (0:ℝ) ≤ 2 * (1 + ‖f‖ ^ 2) * (1 + ‖ω‖ ^ 2) := by positivity
+  nlinarith [mul_nonneg hA (norm_nonneg f)]
 
-/-- The same bound for every partial derivative, `fderiv_smear` supplying the gradient. -/
+/-- The same bound for every partial derivative — `fderiv_smear_polyGrowth` at `F = wig`. -/
 theorem fderiv_wigSmear_bound (f : EuclideanSpace ℝ W) (j : W) (ω : EuclideanSpace ℝ W) :
     |fderiv ℝ (wigSmear f) ω (WithLp.toLp 2 (Pi.single j (1 : ℝ)))|
       ≤ 2 * (1 + ‖f‖ ^ 2) * (1 + ‖f‖) * (1 + ‖ω‖ ^ 2) ^ 1 := by
-  have hgrad := fderiv_smear (f := f) (F := DifferentiableNotC1.wig)
-    (F' := DifferentiableNotC1.wig') DifferentiableNotC1.hasDerivAt_wig ω j
-  have hcs : |(inner ℝ f ω : ℝ)| ≤ ‖f‖ * ‖ω‖ := abs_real_inner_le_norm f ω
-  have hsq : (inner ℝ f ω : ℝ) ^ 2 ≤ ‖f‖ ^ 2 * ‖ω‖ ^ 2 := by
-    nlinarith [abs_nonneg (inner ℝ f ω : ℝ), sq_abs (inner ℝ f ω : ℝ),
-      norm_nonneg f, norm_nonneg ω]
-  have hw := DifferentiableNotC1.wig'_bound (inner ℝ f ω : ℝ)
-  have hc := abs_coord_le_norm f j
-  simp only [pow_one] at hw ⊢
-  rw [show fderiv ℝ (wigSmear f) ω (WithLp.toLp 2 (Pi.single j (1 : ℝ)))
-      = DifferentiableNotC1.wig' (inner ℝ f ω : ℝ) * (WithLp.ofLp f) j from hgrad, abs_mul]
-  have hwnn : (0:ℝ) ≤ |DifferentiableNotC1.wig' (inner ℝ f ω : ℝ)| := abs_nonneg _
-  have hstep : |DifferentiableNotC1.wig' (inner ℝ f ω : ℝ)| * |(WithLp.ofLp f) j|
-      ≤ (2 * (1 + ‖f‖ ^ 2 * ‖ω‖ ^ 2)) * ‖f‖ := by
-    refine mul_le_mul ?_ hc (abs_nonneg _) (by positivity)
-    nlinarith
-  refine hstep.trans ?_
-  nlinarith [norm_nonneg f, norm_nonneg ω, sq_nonneg ‖ω‖, sq_nonneg ‖f‖,
-    mul_nonneg (norm_nonneg f) (sq_nonneg ‖ω‖)]
+  have h := fderiv_smear_polyGrowth (F := DifferentiableNotC1.wig)
+    (F' := DifferentiableNotC1.wig') DifferentiableNotC1.hasDerivAt_wig
+    DifferentiableNotC1.wig'_bound f j ω
+  simpa [wigSmear] using h
 
 /-- **THE CAVEAT §6 WROTE, NOW A THEOREM.** The inequality `poincare_correlated_general` states
 **does** hold at `ω ↦ wig ⟪f,ω⟫`, by `LatticeFieldDifferentiable`'s differentiable route — even
@@ -450,5 +497,93 @@ theorem poincare_reaches_wigSmear (hm : m ≠ 0) (f : EuclideanSpace ℝ W) :
         ∂(gaussianField K m) :=
   LatticeFieldDifferentiable.poincare_correlated_differentiable hm (differentiable_wigSmear f)
     (wigSmear_bound f) (fun j ω => fderiv_wigSmear_bound f j ω)
+
+/-! ## 8. And now the correlated line DOES subsume `poincare_smeared` — this file's own
+"What this is NOT" has been overtaken
+
+§4 established that on observables of a single smearing the entire difference between the estate's
+two Poincaré theorems is `ContDiff ℝ 1 F`, one named condition. The "What this is NOT" section
+concluded, correctly at the time, that this file **does not reprove `poincare_smeared`**, *"whose
+hypotheses this cannot reach"*.
+
+**`LatticeFieldDifferentiable.poincare_correlated_differentiable` reaches them.** It asks for a
+differentiable observable of polynomial growth and no continuity of the gradient — and `§7`'s
+`smear_polyGrowth` and `fderiv_smear_polyGrowth` say exactly that `ω ↦ F⟪f,ω⟫` is one whenever `F`
+satisfies `poincare_smeared`'s own three hypotheses. So the `C¹` §4 isolated is not merely small;
+it is **gone**, and `poincare_smeared_of_correlated_general` takes `hm`, `f`, `hderiv`, `hb`, `hb'`
+and nothing else.
+
+**WHAT DOES AND DOES NOT CHANGE, because the header above is not simply wrong.**
+
+* `poincare_smeared` and `poincare_correlated_general` — the `C¹` theorem — **remain
+  incomparable**, and §5 and §6 both stand: `Real.exp` is in one and not the other, `wig ⟪f,·⟫` is
+  in the other and not the one. Nothing in §8 touches either witness.
+* What §8 changes is a claim about **this file's own reach**, not about those two theorems: the
+  *correlated line as a whole*, which now includes the differentiable route, subsumes
+  `poincare_smeared` completely. `§4`'s "the gap is exactly one hypothesis" was a true measurement
+  of a gap that has since been closed **by this campaign's own later units**, not by a better proof
+  of the same thing.
+
+*The superseded sentence is quoted rather than deleted (`ERRATUM 94`) because a file that measured a
+gap and then closed it should show both, and because "cannot reach" was a statement about the estate
+on the day it was written and never about mathematics.* -/
+
+/-- **`poincare_smeared`, REPROVED FROM THE CORRELATED LINE, ON ITS OWN HYPOTHESES VERBATIM.**
+
+`hm`, `f`, `hderiv`, `hb`, `hb'` — the five arguments of `LatticePoincare.poincare_smeared`, with
+**no `ContDiff ℝ 1`**. Compare `poincare_smeared_of_correlated_polyGrowth`, which is this statement
+plus that hypothesis; §4 called it the entire remaining difference and it is now removed. -/
+theorem poincare_smeared_of_correlated_general (hm : m ≠ 0) (f : EuclideanSpace ℝ W)
+    {F F' : ℝ → ℝ} (hderiv : ∀ x, HasDerivAt F (F' x) x) {C : ℝ} {k : ℕ}
+    (hb : ∀ x, |F x| ≤ C * (1 + x ^ 2) ^ k)
+    (hb' : ∀ x, |F' x| ≤ C * (1 + x ^ 2) ^ k) :
+    (∫ ω, (F (inner ℝ f ω) : ℝ) ^ 2 ∂(gaussianField K m))
+        - (∫ ω, (F (inner ℝ f ω) : ℝ) ∂(gaussianField K m)) ^ 2
+      ≤ linVar K m f * ∫ ω, (F' (inner ℝ f ω : ℝ)) ^ 2 ∂(gaussianField K m) := by
+  classical
+  have hΦd : Differentiable ℝ (fun ω : EuclideanSpace ℝ W => (F (inner ℝ f ω) : ℝ)) := by
+    intro ω
+    exact ((hderiv (inner ℝ f ω : ℝ)).comp_hasFDerivAt ω
+      (innerSL ℝ f).hasFDerivAt).differentiableAt
+  have hB : ∀ ω : EuclideanSpace ℝ W, |(F (inner ℝ f ω) : ℝ)|
+      ≤ C * (1 + ‖f‖ ^ 2) ^ k * (1 + ‖f‖) * (1 + ‖ω‖ ^ 2) ^ k := by
+    intro ω
+    refine (smear_polyGrowth hb f ω).trans ?_
+    have hA : (0:ℝ) ≤ C * (1 + ‖f‖ ^ 2) ^ k * (1 + ‖ω‖ ^ 2) ^ k :=
+      le_trans (abs_nonneg _) (smear_polyGrowth hb f ω)
+    nlinarith [mul_nonneg hA (norm_nonneg f)]
+  have key := LatticeFieldDifferentiable.poincare_correlated_differentiable (K := K) hm hΦd hB
+    (fun j ω => fderiv_smear_polyGrowth hderiv hb' f j ω)
+  have hconv : ∀ ω : EuclideanSpace ℝ W,
+      (F (inner ℝ f ω) : ℝ) * (F (inner ℝ f ω) : ℝ) = (F (inner ℝ f ω) : ℝ) ^ 2 :=
+    fun ω => (sq _).symm
+  simp only [hconv] at key
+  refine key.trans (le_of_eq ?_)
+  have hpt : ∀ ω : EuclideanSpace ℝ W,
+      (fun j => fderiv ℝ (fun z : EuclideanSpace ℝ W => (F (inner ℝ f z) : ℝ)) ω
+          (WithLp.toLp 2 (Pi.single j (1 : ℝ))))
+        ⬝ᵥ green K m *ᵥ
+          (fun j => fderiv ℝ (fun z : EuclideanSpace ℝ W => (F (inner ℝ f z) : ℝ)) ω
+            (WithLp.toLp 2 (Pi.single j (1 : ℝ))))
+      = linVar K m f * (F' (inner ℝ f ω : ℝ)) ^ 2 := by
+    intro ω
+    simp only [fderiv_smear hderiv ω]
+    rw [quadForm_smul, linVar_eq_dotG]
+    unfold dotG
+    ring
+  simp only [hpt]
+  rw [integral_const_mul]
+
+/-- **MACHINE-CHECKED: §8 IS `poincare_smeared`, NOT MERELY SOMETHING LIKE IT.**
+
+Proof irrelevance closes `A = B` by `rfl` exactly when the two propositions coincide, so this
+`example` fails to compile if the hypothesis lists or the conclusions differ in any way. It is the
+check that "subsumes" was not asserted. -/
+example (hm : m ≠ 0) (f : EuclideanSpace ℝ W) {F F' : ℝ → ℝ}
+    (hderiv : ∀ x, HasDerivAt F (F' x) x) {C : ℝ} {k : ℕ}
+    (hb : ∀ x, |F x| ≤ C * (1 + x ^ 2) ^ k)
+    (hb' : ∀ x, |F' x| ≤ C * (1 + x ^ 2) ^ k) :
+    LatticePoincare.poincare_smeared (G := K) hm f hderiv hb hb'
+      = poincare_smeared_of_correlated_general hm f hderiv hb hb' := rfl
 
 end LatticeSmearedFromGeneral
