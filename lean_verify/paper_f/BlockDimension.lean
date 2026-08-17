@@ -253,9 +253,17 @@ theorem finrank_ker_torusHalf_pos {m : ℝ} (hm : m ≠ 0) :
 failing. One graph, one reflection, one mass, two halves: blind in no direction, blind in at least
 one.
 
-**Not the exact value.** That the antipodal half's kernel has dimension exactly `1` would follow
-from `finrank_ker_blockSums_add` together with the block count there being `1`, and the block count
-is what the abandoned route was computing. **Recorded as not done.** -/
+**SUPERSEDED BY `TorusBlockCount`, WHICH DID EXACTLY WHAT THIS SENTENCE PREDICTED.** It read:
+
+> *"**Not the exact value.** That the antipodal half's kernel has dimension exactly `1` would follow
+> from `finrank_ker_blockSums_add` together with the block count there being `1`, and the block
+> count is what the abandoned route was computing. **Recorded as not done.**"*
+
+`TorusBlockCount.card_blockClasses_torusHalf` proves the block count is `1` and
+`TorusBlockCount.finrank_ker_torusHalf` is the consequence, so `finrank_ker_torusHalf_pos` below is
+now the weaker of two statements about the same number. **The prediction of the route was right and
+the estimate of the cost was not**: that file builds in six seconds, and the difference from the
+abandoned attempt is that `decide` is never asked to evaluate a `Finset (Finset (Site 1 4))`. -/
 theorem finrank_ker_two_halves {m : ℝ} (hm : m ≠ 0) :
     Module.finrank ℝ (LinearMap.ker
         (blockSums (TorusReflection.torusGraph 1 4) torusRho rotHalf)) = 0

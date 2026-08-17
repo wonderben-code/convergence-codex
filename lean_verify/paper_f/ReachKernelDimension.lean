@@ -53,10 +53,18 @@ not be a subspace at all — `finrank` is the wrong question there rather than a
 `reachKer` is a different object: the families the *operator* keeps inside the region. **Nothing
 here says the quadric is a subspace.**
 
-The **exact** value of `finrank (reachKer)` at the estate's `torusHalf` is still NOT DONE, for the
-same reason `BlockDimension` §5 recorded: it needs the exact block count there, which no file
-computes. The identity above turns that into a purely combinatorial question, which is a change of
-difficulty and not a proof.
+**SUPERSEDED THE SAME DAY, BY `TorusBlockCount`.** This header said:
+
+> *"The **exact** value of `finrank (reachKer)` at the estate's `torusHalf` is still NOT DONE, for
+> the same reason `BlockDimension` §5 recorded: it needs the exact block count there, which no file
+> computes. The identity above turns that into a purely combinatorial question, which is a change
+> of difficulty and not a proof."*
+
+The first clause was true when written and is now false:
+`TorusBlockCount.card_blockClasses_torusHalf` computes the block count (**one block**) and
+`TorusBlockCount.finrank_reachKer_torusHalf` reads the value off this file's identity —
+**exactly one dimension**. The last clause was right about itself:
+the change of difficulty was the whole of it, and the combinatorial question took one file.
 
 **No published tag moves**, `OS4` does not move, and no spectral gap is claimed.
 
