@@ -1,5 +1,6 @@
 import LatticeCorrelatedPoincare
 import LatticeIsserlisSmeared
+import LatticePoincare
 
 /-!
 # The two Poincaré lines of this estate agree on their overlap
@@ -30,6 +31,15 @@ Neither theorem implies the other. **No file in the estate claimed otherwise** �
 all three headers — so this is an unrecorded fact rather than an erratum. But "the general one
 covers the special one" is exactly the sort of thing a later reader assumes, and it is false.
 
+**AND "INCOMPARABLE" IS TRUE BUT VAGUER THAN IT NEEDS TO BE, WHICH §4 FIXES.** The general
+theorem's two `L²` side conditions are **implied** by `poincare_smeared`'s own polynomial-growth
+bounds (`LatticePoincare.memLp_comp_pair`). Feeding them in leaves a statement whose hypotheses are
+`poincare_smeared`'s **verbatim** plus `ContDiff ℝ 1 F` — so on observables of a single smearing
+**the entire difference between the estate's two Poincaré theorems is the continuity of the
+derivative**, one named condition. The incomparability is not withdrawn: the general theorem still
+reaches several smearings, and still reaches `C¹` functions of super-polynomial growth that remain
+`L²`, which `poincare_smeared` excludes outright.
+
 ## What IS true, and is a theorem here
 
 On the overlap — `C¹` observables of one smearing — the two agree, and the smeared statement comes
@@ -41,6 +51,10 @@ out of the general one with the constant it should have:
 The content is one chain rule and one scalar extraction: `∂ⱼ[F(⟪f,ω⟫)] = F′(⟪f,ω⟫)·fⱼ`, so the
 gradient tuple is `F′` times the fixed vector `f`, and the quadratic form pulls the scalar out
 squared — leaving exactly `linVar K m f`. **The propagator never has to be touched.**
+
+**`poincare_smeared_of_correlated_polyGrowth`** is the same conclusion with the `L²` conditions
+discharged from polynomial growth, so its hypothesis list can be compared with
+`poincare_smeared`'s line by line.
 
 ## What this is NOT
 
@@ -147,5 +161,43 @@ theorem poincare_smeared_of_correlated (hm : m ≠ 0) (f : EuclideanSpace ℝ W)
     ring
   simp only [hpt]
   rw [integral_const_mul]
+
+/-! ## 4. The gap is EXACTLY one hypothesis, which §3 left vaguer than it needed to be
+
+§3 carries the general theorem's two `L²` conditions as hypotheses, and the header called the two
+classes "incomparable". Both are true, and both understate what can be said: **`poincare_smeared`'s
+own polynomial-growth bounds already imply those `L²` conditions**, via
+`LatticePoincare.memLp_comp_pair`. Feeding them in leaves a statement whose hypotheses are
+`poincare_smeared`'s **verbatim**, plus `ContDiff ℝ 1 F` and nothing else.
+
+So on one-smearing observables the difference between the estate's two Poincaré theorems is
+**exactly the continuity of the derivative** — one hypothesis, named, rather than a two-sided
+"incomparable".
+
+*The incomparability itself still stands and is not withdrawn: the general theorem reaches
+observables of several smearings, which the smeared one cannot state, and it also reaches `C¹`
+functions of super-polynomial growth that are still `L²` — `poincare_smeared` requires polynomial
+growth outright. What §4 adds is that in the one direction that can be compared cleanly, the gap is
+a single named condition rather than a tangle.* -/
+
+/-- **THE SMEARED INEQUALITY UNDER `poincare_smeared`'S OWN HYPOTHESES, PLUS `C¹`.**
+
+Compare `LatticePoincare.poincare_smeared`, which takes `hm`, `f`, `hderiv`, `hb`, `hb'`. This
+takes those five and `ContDiff ℝ 1 F`. **That one hypothesis is the entire difference between the
+estate's two Poincaré theorems on observables of a single smearing.** -/
+theorem poincare_smeared_of_correlated_polyGrowth (hm : m ≠ 0) (f : EuclideanSpace ℝ W)
+    {F F' : ℝ → ℝ} (hFc : ContDiff ℝ 1 F) (hderiv : ∀ x, HasDerivAt F (F' x) x)
+    {C : ℝ} {k : ℕ}
+    (hb : ∀ x, |F x| ≤ C * (1 + x ^ 2) ^ k)
+    (hb' : ∀ x, |F' x| ≤ C * (1 + x ^ 2) ^ k) :
+    (∫ ω, (F (inner ℝ f ω) : ℝ) * (F (inner ℝ f ω) : ℝ) ∂(gaussianField K m))
+        - (∫ ω, (F (inner ℝ f ω) : ℝ) ∂(gaussianField K m)) ^ 2
+      ≤ linVar K m f * ∫ ω, (F' (inner ℝ f ω : ℝ)) ^ 2 ∂(gaussianField K m) := by
+  have hF'eq : F' = deriv F := funext fun x => (hderiv x).deriv.symm
+  have hF'c : Continuous F' := by
+    rw [hF'eq]; exact hFc.continuous_deriv le_rfl
+  refine poincare_smeared_of_correlated hm f hFc hderiv
+    (LatticePoincare.memLp_comp_pair (G := K) hm f hFc.continuous hb) (fun j => ?_)
+  exact (LatticePoincare.memLp_comp_pair (G := K) hm f hF'c hb').mul_const _
 
 end LatticeSmearedFromGeneral
