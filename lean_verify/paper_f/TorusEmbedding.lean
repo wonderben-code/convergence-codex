@@ -3,12 +3,24 @@ import TorusReflection
 /-!
 # Is there a site map from the torus at side `n` into the torus at side `2n`?
 
-`UNLOCK_WATCHLIST`'s infinite-volume item opens by saying that **no embedding of `torusGraph d n`
-into `torusGraph d (2n)`** exists, and `ASSUMPTIONS_LEDGER` entry 47 — written yesterday — offered
-that as the *weaker, already-defensible* reading of the item's stronger claim about covariances,
-adding that it **"needs no new mathematics and may be what was always meant"**.
+`UNLOCK_WATCHLIST`'s infinite-volume item says, of the torus approximants:
 
-**That sentence was prose, and this file checks it. It is not simply true.**
+> **What does not exist is any statement relating different `n`**: no embedding of
+> `torusGraph d n` into `torusGraph d (2n)`, no uniform bound, no notion of the limit measure's
+> index set.
+
+**Read exactly, that is a claim about what the ESTATE CONTAINS, not about what mathematics
+permits** — and its middle clause has already been discharged once: `TorusDecay` supplied the
+uniform bound, and the item records that "no uniform bound" is "now false as written". **This file
+does the same to the first clause.** The estate now has two statements relating different `n`, so
+the sentence is partly false as written for the second time, in the same way and for the same
+reason.
+
+**AND IT ALSO CORRECTS SOMETHING THAT WAS A MATHEMATICAL CLAIM, AND WAS MINE.**
+`ASSUMPTIONS_LEDGER` entry 47, written yesterday, offered as the *weaker, already-defensible*
+reading of the item's covariance claim that **"no canonical map exists, so the projective route is
+unavailable as stated"**, adding that this **"needs no new mathematics and may be what was always
+meant"**. That was a claim about mathematics, it was prose, and it is **false**.
 
 ## What is actually the case, at the two side lengths a decision procedure reaches
 
@@ -30,8 +42,10 @@ by decision is the one where the embedding exists.
 
 ## What this does NOT settle, stated precisely
 
-**It does not prove the item's claim, and it does not refute it.** Two side lengths are not a
-theorem about all of them. The general statement — no injective graph homomorphism
+**It does not settle the general question, and two side lengths are not a theorem about all of
+them.** What it discharges is the item's *bookkeeping* clause — the estate now has statements
+relating different `n` — not any mathematical claim about all `n`. The general statement — no
+injective graph homomorphism
 `torusGraph 1 n → torusGraph 1 (2n)` for `n ≥ 3` — is **not proved here**. It is believable for the
 usual reason (a homomorphic image of an `n`-cycle that is injective is an `n`-cycle subgraph, and a
 `2n`-cycle contains none for `n ≥ 3`), and that reason is **an argument in prose, exactly the kind
