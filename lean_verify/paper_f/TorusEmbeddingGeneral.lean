@@ -53,8 +53,16 @@ fact is still absent from Mathlib** and is still interesting; it is simply not w
 exhibits an embedding at `n = 2`, and `2 < 3`, so nothing here contradicts it — the hypothesis
 `3 ≤ n` is exactly what excludes the degenerate side length at which the torus *is* the box.
 
-**`d = 1` only**, as everywhere in this chain: at `d ≥ 2` sites do not have degree `2` and the
-local-bijection step fails at its first line.
+**`d = 1` only**, as everywhere in this chain — ~~at `d ≥ 2` sites do not have degree `2` and the
+local-bijection step fails at its first line.~~ **THE SECOND HALF OF THAT SENTENCE WAS FALSE AND IS
+CORRECTED THE SAME DAY.** Sites at `d ≥ 2` have degree `2d`, not `2`, and **the local-bijection
+step does not care what the number is** — only that the same exact count holds at both ends. It
+failed at nothing. What was missing was one theorem, and
+`TorusEmbeddingAllDims.torusGraph_degree_eq` supplies it: degree exactly `2d`, every dimension,
+every side `≥ 3`. `TorusEmbeddingAllDims.no_torus_embedding_double` is this file's theorem at every
+`d ≥ 1`, and `no_embedding_double` below is its `d = 1` case, checked by the kernel rather than by
+resemblance. *Two wrong difficulty estimates in one chain, on consecutive units — see
+`ERRATUM 194`, which is about exactly this.*
 
 **It says nothing about covariances.** `UNLOCK_WATCHLIST`'s infinite-volume item is about a
 compatible family of measures; this is about graph maps, and a missing graph embedding is not an
