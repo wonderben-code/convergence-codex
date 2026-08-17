@@ -1,6 +1,7 @@
 import LatticeCorrelatedPoincare
 import LatticeIsserlisSmeared
 import LatticePoincare
+import LatticeGeneratingFunctional
 
 /-!
 # The two Poincaré lines of this estate agree on their overlap
@@ -23,13 +24,19 @@ being stated precisely rather than assumed.**
 continuous**. `poincare_correlated_general` asks for `ContDiff ℝ 1`. So:
 
 * a differentiable `F` with discontinuous derivative and polynomial growth is inside
-  `poincare_smeared` and **outside** `poincare_correlated_general`;
-* an observable of two smearings is inside `poincare_correlated_general` and **outside**
-  `poincare_smeared`, which cannot state it.
+  `poincare_smeared` and **outside** `poincare_correlated_general`. **STILL ASSERTED, NOT PROVED.**
+  The classical witness is `x² sin(1/x)` extended by `0`, differentiable everywhere with a
+  derivative discontinuous at the origin and bounded by `2|x| + 1`; **it is not built here**;
+* `Real.exp` is inside `poincare_correlated_general` and **outside** `poincare_smeared`, which
+  cannot state it. **PROVED, in §5** — `exp_not_polyGrowth` and `poincare_reaches_exp`;
+* and an observable of two smearings is inside `poincare_correlated_general` and outside
+  `poincare_smeared`, for the trivial reason that the latter has no room to state it.
 
-Neither theorem implies the other. **No file in the estate claimed otherwise** — checked by reading
-all three headers — so this is an unrecorded fact rather than an erratum. But "the general one
-covers the special one" is exactly the sort of thing a later reader assumes, and it is false.
+Neither theorem implies the other — **one direction now exhibited by a witness rather than
+asserted, the other still asserted and labelled as such.** **No file in the estate claimed
+otherwise** — checked by reading all three headers — so this is an unrecorded fact rather than an
+erratum. But "the general one covers the special one" is exactly the sort of thing a later reader
+assumes, and it is false.
 
 **AND "INCOMPARABLE" IS TRUE BUT VAGUER THAN IT NEEDS TO BE, WHICH §4 FIXES.** The general
 theorem's two `L²` side conditions are **implied** by `poincare_smeared`'s own polynomial-growth
@@ -199,5 +206,69 @@ theorem poincare_smeared_of_correlated_polyGrowth (hm : m ≠ 0) (f : EuclideanS
   refine poincare_smeared_of_correlated hm f hFc hderiv
     (LatticePoincare.memLp_comp_pair (G := K) hm f hFc.continuous hb) (fun j => ?_)
   exact (LatticePoincare.memLp_comp_pair (G := K) hm f hF'c hb').mul_const _
+
+/-! ## 5. One of the two separations, exhibited rather than asserted
+
+The header claims the classes separate in **both** directions. Both claims were **asserted**, which
+is the failure this campaign has logged repeatedly: a statement about the estate written in prose
+while the Lean file stays silent. §5 discharges the direction that the estate's own tools reach.
+
+`Real.exp` is `C¹`, its composition with a smearing is square-integrable against the field
+(the Gaussian has exponential moments), and it is **not** of polynomial growth — so
+`poincare_correlated_general` applies to it and `poincare_smeared` **cannot state it**. -/
+
+/-- **`exp` is not of polynomial growth**, so it fails `poincare_smeared`'s hypothesis outright. -/
+theorem exp_not_polyGrowth :
+    ¬ ∃ (C : ℝ) (k : ℕ), ∀ x : ℝ, |Real.exp x| ≤ C * (1 + x ^ 2) ^ k := by
+  rintro ⟨C, k, hb⟩
+  have hbound : ∀ x : ℝ, 1 ≤ x → Real.exp x / x ^ (2 * k) ≤ C * 2 ^ k := by
+    intro x hx
+    have hx0 : (0 : ℝ) < x := lt_of_lt_of_le zero_lt_one hx
+    have hxk : (0 : ℝ) < x ^ (2 * k) := by positivity
+    have h1 : (1 : ℝ) + x ^ 2 ≤ 2 * x ^ 2 := by nlinarith
+    have h2 : (1 + x ^ 2) ^ k ≤ (2 * x ^ 2) ^ k := by
+      exact pow_le_pow_left₀ (by positivity) h1 k
+    have hC : (0 : ℝ) ≤ C := by
+      have h0 := hb 0
+      norm_num at h0
+      linarith
+    have h3 : Real.exp x ≤ C * (2 * x ^ 2) ^ k := by
+      have := hb x
+      rw [abs_of_pos (Real.exp_pos x)] at this
+      exact this.trans (by nlinarith [h2])
+    have h4 : (2 * x ^ 2 : ℝ) ^ k = 2 ^ k * x ^ (2 * k) := by
+      rw [mul_pow, ← pow_mul]
+    rw [div_le_iff₀ hxk]
+    calc Real.exp x ≤ C * (2 * x ^ 2) ^ k := h3
+      _ = C * 2 ^ k * x ^ (2 * k) := by rw [h4]; ring
+  have hev := (Real.tendsto_exp_div_pow_atTop (2 * k)).eventually_gt_atTop (C * 2 ^ k)
+  obtain ⟨x, hx1, hx2⟩ := ((Filter.eventually_ge_atTop (1 : ℝ)).and hev).exists
+  exact absurd (hbound x hx1) (not_le.mpr hx2)
+
+/-- The exponential of a smearing is square-integrable against the field: its square is the
+exponential of the smearing at `2•f`, and the Gaussian has exponential moments. -/
+theorem memLp_exp_smear (hm : m ≠ 0) (f : EuclideanSpace ℝ W) :
+    MemLp (fun ω : EuclideanSpace ℝ W => Real.exp (inner ℝ f ω : ℝ)) 2 (gaussianField K m) := by
+  have hmeas : AEStronglyMeasurable
+      (fun ω : EuclideanSpace ℝ W => Real.exp (inner ℝ f ω : ℝ)) (gaussianField K m) :=
+    (Real.continuous_exp.comp (LatticeIsserlisFour.continuous_pair f)).aestronglyMeasurable
+  rw [memLp_two_iff_integrable_sq hmeas]
+  have hsq : (fun ω : EuclideanSpace ℝ W => (Real.exp (inner ℝ f ω : ℝ)) ^ 2)
+      = fun ω : EuclideanSpace ℝ W => Real.exp (inner ℝ ((2 : ℝ) • f) ω : ℝ) := by
+    funext ω
+    rw [inner_smul_left]
+    simp [two_mul, Real.exp_add, sq]
+  rw [hsq]
+  exact LatticeGeneratingFunctional.integrable_exp_inner (G := K) hm _
+
+/-- **THE SEPARATION, EXHIBITED.** The general theorem's inequality holds for the exponential
+observable — which `poincare_smeared` cannot state, by `exp_not_polyGrowth`. -/
+theorem poincare_reaches_exp (hm : m ≠ 0) (f : EuclideanSpace ℝ W) :
+    (∫ ω, Real.exp (inner ℝ f ω : ℝ) * Real.exp (inner ℝ f ω : ℝ) ∂(gaussianField K m))
+        - (∫ ω, Real.exp (inner ℝ f ω : ℝ) ∂(gaussianField K m)) ^ 2
+      ≤ linVar K m f * ∫ ω, (Real.exp (inner ℝ f ω : ℝ)) ^ 2 ∂(gaussianField K m) :=
+  poincare_smeared_of_correlated hm f Real.contDiff_exp (fun x => Real.hasDerivAt_exp x)
+    (memLp_exp_smear (K := K) hm f)
+    (fun _ => (memLp_exp_smear (K := K) hm f).mul_const _)
 
 end LatticeSmearedFromGeneral
