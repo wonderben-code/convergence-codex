@@ -468,6 +468,21 @@ theorem cascade_particle_count : 14 + 48 = 62 := by norm_num
 -- The cascade's quaternionic structure D₁ = M₄(ℂ) ≅ M₂(ℍ) determines
 -- the KO-dimension of the spectral triple.
 -- OUT OF SCOPE: KO-dimension requires KO-theory / real K-theory not in Mathlib.
+--
+-- CONTRADICTION IN THE RECORD, FLAGGED 2026-08-17 (ERRATUM 198). NOT RESOLVED
+-- HERE, AND NOT RESOLVABLE BY EITHER FILE ALONE.
+--
+-- The docstring below asserts KO-dimension 2 with eps = J^2 = -1. The estate's
+-- KOSixRealStructure builds an explicit real structure J on an explicit space
+-- and PROVES eps = J^2 = +1 (J_involutive, collected in ko_six_signs) -- the
+-- KO-6 value. eps' = +1 and eps'' = -1 agree between the two files; eps does
+-- not, and KOSixRealStructure.J_not_ko_two proves the KO-2 value is NOT
+-- available for that J, so the disagreement is not a convention.
+--
+-- WHICH ONE THE CASCADE OUGHT TO CARRY IS THE AUTHOR'S DECISION -- it is a
+-- question about what the intended real structure is, not about a missing
+-- proof -- and it is recorded under DECISIONS NEEDED. Nothing here is amended,
+-- nothing is deleted, and neither claim is weakened.
 
 /-- KO-dimension 2 (mod 8): the signs (ε, ε', ε'') = (-1, +1, -1).
     ε = J² = -1 (quaternionic structure)

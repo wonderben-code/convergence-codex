@@ -337,4 +337,41 @@ theorem signs_with_nonzero_D :
   exact ⟨M, hMs, hMne, J_involutive, J_comm_D M hMs, J_anticomm_gamma,
     D_selfadjoint M, J_antiunitary⟩
 
+/-! ## 8. The KO-2 sign is not available for THIS `J`, and that is a contradiction in the record
+
+`F4_1e_SpectralTripleArithmetic.ko_dimension_signs` asserts, in its docstring, that the cascade's
+real structure has
+
+> *"KO-dimension 2 (mod 8): the signs `(ε, ε', ε'') = (-1, +1, -1)`. **`ε = J² = -1` (quaternionic
+> structure)** … OUT OF SCOPE: requires KO-theory classification — 3 attempts exhausted"*
+
+and proves `(-1) * 1 * (-1) = 1` on integers. Its neighbour `ko_dim_mod_8` proves `2 % 8 = 2`.
+
+**This file proves `ε = +1`** (`J_involutive`, and `ko_six_signs` collecting all three), for an
+explicit `J` on an explicit space. `ε' = +1` and `ε'' = -1` agree between the two; **`ε` does
+not.**
+
+**THIS FILE DOES NOT ADJUDICATE, AND THE THEOREM BELOW IS NOT AN ADJUDICATION.** Which KO-dimension
+the cascade ought to carry is a modelling question about what the intended real structure is, and it
+belongs to the author — it is recorded under DECISIONS NEEDED. What is settled here is narrower and
+purely mathematical: **the two are not both available for the `J` this file builds**, so the
+disagreement cannot be dissolved as a convention. If KO-2 is wanted, the construction has to change;
+if this construction is wanted, the KO-2 docstring is describing a different object. -/
+theorem J_not_ko_two : ¬ (∀ v : H 1, J (J v) = -v) := by
+  intro h
+  have hv := h ((fun _ => 1), (fun _ => 1))
+  have h1 := congrFun (congrArg Prod.fst hv) 0
+  simp [J] at h1
+  norm_num at h1
+
+/-- **AND THE SAME STATEMENT WITHOUT A CHOICE OF `n`**: on any nonempty index the two signs collide,
+because they would force `2 • v = 0` on a complex vector space. -/
+theorem ko_signs_incompatible {m : ℕ} (hm : 0 < m)
+    (h1 : ∀ v : H m, J (J v) = v) (h2 : ∀ v : H m, J (J v) = -v) : False := by
+  set v : H m := ((fun _ => 1), (fun _ => 1)) with hvdef
+  have he : v = -v := (h1 v).symm.trans (h2 v)
+  have hz := congrFun (congrArg Prod.fst he) ⟨0, hm⟩
+  simp [hvdef] at hz
+  norm_num at hz
+
 end KOSixRealStructure
