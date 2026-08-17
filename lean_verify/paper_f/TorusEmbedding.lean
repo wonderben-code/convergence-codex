@@ -45,11 +45,27 @@ by decision is the one where the embedding exists.
 **It does not settle the general question, and two side lengths are not a theorem about all of
 them.** What it discharges is the item's *bookkeeping* clause — the estate now has statements
 relating different `n` — not any mathematical claim about all `n`. The general statement — no
-injective graph homomorphism
-`torusGraph 1 n → torusGraph 1 (2n)` for `n ≥ 3` — is **not proved here**. It is believable for the
-usual reason (a homomorphic image of an `n`-cycle that is injective is an `n`-cycle subgraph, and a
-`2n`-cycle contains none for `n ≥ 3`), and that reason is **an argument in prose, exactly the kind
-this file exists to distrust**.
+injective graph homomorphism `torusGraph 1 n → torusGraph 1 (2n)` for `n ≥ 3` — is **not proved
+here**. It is believable for the usual reason (an injective homomorphic image of an `n`-cycle is an
+`n`-cycle subgraph, and a `2n`-cycle contains none for `n ≥ 3`), and that reason is **an argument in
+prose, exactly the kind this file exists to distrust**.
+
+**THE ROUTE TO IT WAS PROBED ON 17 AUGUST AND IS RECORDED HERE RATHER THAN LEFT AS "SOMEONE
+COULD".**
+It has two halves, one on each side of the Mathlib boundary.
+
+* **Estate side:** `torusGraph 1 n` should be `SimpleGraph.cycleGraph n` transported along
+  `Site 1 n ≃ Fin n` (`Equiv.funUnique`). Mathlib defines `cycleGraph n = circulantGraph {1}` and
+  the estate's `adjT` is visibly the same relation with the wrap written out by hand. **Attempted:
+  `adjT a b ↔ (cycleGraph n).Adj a b` does not fall to `simp` + `omega`** — `Fin` subtraction puts
+  a `%` in the goal that `omega` cannot see through, so the wrap needs manual case analysis. Not a
+  wall; not a one-liner either.
+* **Mathlib side:** the obstruction is then `girth (cycleGraph n) = n`. **Mathlib has `girth` and
+  `egirth` (`Combinatorics/SimpleGraph/Girth.lean`) and computes neither for `cycleGraph`** —
+  probed by shape today, the only `cycleGraph`-meets-girth hit in the library being a *comment* in
+  `Bipartite.lean`. That half is a plausible Mathlib contribution rather than estate work.
+
+*Recorded so the next reader inherits the two dead ends rather than re-walking them.*
 
 **`n = 4` was attempted and the decision procedure overflowed the stack.** That is a **resource
 limit and is evidence for nothing**: it says the kernel ran out of room, not that a map does or does
