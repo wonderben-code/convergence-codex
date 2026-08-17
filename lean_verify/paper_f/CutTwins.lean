@@ -50,7 +50,7 @@ Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 namespace CutTwins
 
 open SimpleGraph GraphReflection GraphMirrorReflection CrossFormMatrix CrossBlockStructure
-open NullSpaceDimension ReachKernelDimension CutRank
+open CrossPosSemidef BlockCount NullSpaceDimension ReachKernelDimension CutRank
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 variable {G : SimpleGraph V} [DecidableRel G.Adj] {θ : V ≃ V} {H Mir : Finset V} {m : ℝ}
@@ -228,5 +228,109 @@ theorem isolated_of_twins_of_diagonal
   have hqt : q = t := hdiag q hq t ht hA
   rw [hqt] at hA
   exact key t ht ((hadj t ht).mpr hA)
+
+/-! ## 6. On a block cut, twins are exactly co-membership of a block -/
+
+omit [Fintype V] in
+/-- **TWO MEMBERS OF THE SAME BLOCK ARE TWINS.** The block relation is transitive by
+`IsCrossBlock.trans` and symmetric by `CrossFormMatrix.adj_cross_comm`, so a cross-neighbour of one
+member is a cross-neighbour of every member. -/
+theorem twins_of_mem_cls (h : IsRefl G θ) (hC : IsCrossBlock G θ H) {k : V}
+    (hsk : s ∈ cls (crossMatrix G θ H) H k) (htk : t ∈ cls (crossMatrix G θ H) H k)
+    (hne : s ≠ t) : Twins G θ H s t := by
+  obtain ⟨⟨hsH, -⟩, hkH, hks⟩ := mem_cls_iff.mp hsk
+  obtain ⟨⟨htH, -⟩, -, hkt⟩ := mem_cls_iff.mp htk
+  have hsk' : G.Adj s (θ k) := (adj_cross_comm h k s).mp hks
+  have htk' : G.Adj t (θ k) := (adj_cross_comm h k t).mp hkt
+  have hst : G.Adj s (θ t) := hC.trans s k t ⟨hsH, hkH, hsk'⟩ ⟨hkH, htH, hkt⟩
+  have hts : G.Adj t (θ s) := hC.trans t k s ⟨htH, hkH, htk'⟩ ⟨hkH, hsH, hks⟩
+  refine ⟨hsH, htH, hne, fun q hq => ⟨fun hA => ?_, fun hA => ?_⟩⟩
+  · exact hC.trans q s t ⟨hq, hsH, hA⟩ ⟨hsH, htH, hst⟩
+  · exact hC.trans q t s ⟨hq, htH, hA⟩ ⟨htH, hsH, hts⟩
+
+omit [Fintype V] in
+/-- **AND ON A BLOCK CUT A HALF-SITE OUTSIDE `blk` MEETS THE CUT NOWHERE.** `IsCrossBlock.loop`
+read contrapositively: a cross-neighbour would put the site in `blk`. -/
+theorem isolated_of_notMem_blk (h : IsRefl G θ) (hC : IsCrossBlock G θ H) {s : V} (hs : s ∈ H)
+    (hnb : s ∉ blk (crossMatrix G θ H) H) : ∀ q ∈ H, ¬ G.Adj q (θ s) := by
+  intro q hq hA
+  exact hnb (mem_blk_iff.mpr ⟨hs, hC.loop s q ⟨hs, hq, (adj_cross_comm h q s).mp hA⟩⟩)
+
+omit [Fintype V] in
+/-- **TWINS CANNOT STRADDLE.** If one twin meets the cut then so does the other, and they share a
+block. -/
+theorem mem_cls_of_twins (h : IsRefl G θ) (htw : Twins G θ H s t)
+    (hs : s ∈ blk (crossMatrix G θ H) H) : t ∈ cls (crossMatrix G θ H) H s := by
+  obtain ⟨hsH, htH, -, hadj⟩ := htw
+  have hss : G.Adj s (θ s) := (mem_blk_iff.mp hs).2
+  have hst : G.Adj s (θ t) := (hadj s hsH).mp hss
+  have hts : G.Adj t (θ s) := (adj_cross_comm h s t).mp hst
+  have htt : G.Adj t (θ t) := (hadj t htH).mp hts
+  exact mem_cls_iff.mpr ⟨⟨htH, htt⟩, hsH, hst⟩
+
+omit [Fintype V] in
+/-- **THE CHARACTERISATION, AND IT MAKES THE TWO CERTIFICATES ONE THING.**
+
+On a block cut, two distinct half-sites are twins exactly when they **share a block** or **both meet
+the cut nowhere**. Read together with `CutRank.rank_lt_of_isolated`, both non-strictness
+certificates in this chain say the same thing in different words: **the cut cannot tell the two
+sites apart**, either because it joins them to the same places or because it joins them to nothing.
+
+It also finishes §5's account, and §7 turns that into a theorem rather than a reading. -/
+theorem twins_iff_block_or_isolated (h : IsRefl G θ) (hC : IsCrossBlock G θ H)
+    (hs : s ∈ H) (ht : t ∈ H) (hne : s ≠ t) :
+    Twins G θ H s t
+      ↔ ((∃ k, s ∈ cls (crossMatrix G θ H) H k ∧ t ∈ cls (crossMatrix G θ H) H k)
+          ∨ ((∀ q ∈ H, ¬ G.Adj q (θ s)) ∧ (∀ q ∈ H, ¬ G.Adj q (θ t)))) := by
+  constructor
+  · intro htw
+    by_cases hb : s ∈ blk (crossMatrix G θ H) H
+    · exact Or.inl ⟨s, self_mem_cls hb, mem_cls_of_twins h htw hb⟩
+    · refine Or.inr ⟨isolated_of_notMem_blk h hC hs hb, fun q hq hA => ?_⟩
+      exact isolated_of_notMem_blk h hC hs hb q hq ((htw.2.2.2 q hq).mpr hA)
+  · rintro (⟨k, hsk, htk⟩ | ⟨hi, hj⟩)
+    · exact twins_of_mem_cls h hC hsk htk hne
+    · exact ⟨hs, ht, hne, fun q hq => ⟨fun hA => absurd hA (hi q hq),
+        fun hA => absurd hA (hj q hq)⟩⟩
+
+/-! ## 7. And on a block cut the two certificates are complete -/
+
+/-- **NON-STRICTNESS ON A BLOCK CUT IS EXACTLY: AN ISOLATED SITE, OR A PAIR OF TWINS.**
+
+`CrossBlockStructure.strict_iff_cut_perfect` says a block cut is strict exactly when
+`∀ s q ∈ H, G.Adj s (θ q) ↔ s = q`. Read the two ways that can fail: the `←` direction fails at
+some site joined to nothing (**isolated**), and the `→` direction fails at two distinct sites joined
+across the cut, which §6 says is **twins**.
+
+**So `CutRank.not_strict_of_isolated` and `not_strict_of_twins` are together the whole of
+non-strictness on a block cut, and neither alone is** — §3 already exhibited a graph for each side.
+Both hypotheses are decidable, so on a block cut non-strictness is decidable by enumeration through
+this pair, which is what `RE-SWEEP #23` recorded as missing for a rank.
+
+**It does NOT extend off a block cut.** The forward direction runs through `strict_iff_cut_perfect`,
+which consumes `IsCrossBlock`, and `CutRankWitness.rank_full_not_strict_crossGraph` is a graph where
+non-strictness has neither cause. -/
+theorem not_strict_iff_isolated_or_twins (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ) (hm : m ≠ 0)
+    (hC : IsCrossBlock G θ H) :
+    ¬ (∀ c : V → ℝ, c ≠ 0 → (∀ p, p ∉ H → p ∉ Mir → c p = 0) →
+        0 < GraphReflection.reflectedForm G m θ c)
+      ↔ ((∃ s ∈ H, ∀ q ∈ H, ¬ G.Adj q (θ s))
+          ∨ (∃ s ∈ H, ∃ t ∈ H, Twins G θ H s t)) := by
+  classical
+  rw [strict_iff_cut_perfect hM h hm hC]
+  constructor
+  · intro hno
+    push Not at hno
+    obtain ⟨s, hs, q, hq, hiff⟩ := hno
+    rcases hiff with ⟨hA, hne⟩ | ⟨hA, hsq⟩
+    · have h1 : crossMatrix G θ H s q = 1 := (crossMatrix_eq_one_iff s q).mpr ⟨hs, hq, hA⟩
+      obtain ⟨hsb, hqb⟩ := mem_blk_of_entry h hC h1
+      refine Or.inr ⟨s, hs, q, hq, twins_of_mem_cls h hC (self_mem_cls hsb) ?_ hne⟩
+      exact mem_cls_iff.mpr ⟨⟨hq, (mem_blk_iff.mp hqb).2⟩, hs, hA⟩
+    · rw [← hsq] at hA
+      exact Or.inl ⟨s, hs, isolated_of_notMem_blk h hC hs fun hb => hA (mem_blk_iff.mp hb).2⟩
+  · rintro (⟨s, hs, hiso⟩ | ⟨s, hs, t, ht, htw⟩) hperf
+    · exact hiso s hs ((hperf s hs s hs).mpr rfl)
+    · exact htw.2.2.1 ((hperf s hs t ht).mp ((htw.2.2.2 s hs).mp ((hperf s hs s hs).mpr rfl)))
 
 end CutTwins
