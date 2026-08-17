@@ -20,6 +20,9 @@ is degenerate at every nonzero mass.
 
 * **`reflectedForm_congr`** — the reflected form itself transports, which
   `LatticeReflectionPositive.sum_green_congr` had in unpackaged form.
+* **`isRefl_congr`, `isMirrorHalf_congr`** — **the reflection and the half transport too**, at any
+  size. §4 and §7 do these by `decide` at `Fin 4`, which the type's smallness allows and nothing
+  else would.
 * **`strict_congr`** and **`strict_congr_iff`** — **strictness transports**, in both directions,
   along a bijection intertwining the two reflections, with the half and the mirror carried by
   `Finset.map`.
@@ -93,6 +96,57 @@ theorem reflectedForm_congr (e : V ≃ W) (he : ∀ p q, G'.Adj (e p) (e q) ↔ 
     {θ : V ≃ V} {θ' : W ≃ W} (hθ : ∀ p, e (θ p) = θ' (e p)) (m : ℝ) (c : W → ℝ) :
     reflectedForm G' m θ' c = reflectedForm G m θ (fun p => c (e p)) :=
   LatticeReflectionPositive.sum_green_congr e he hθ m c
+
+omit [Fintype V] [DecidableEq V] [Fintype W] [DecidableEq W] [DecidableRel G.Adj]
+  [DecidableRel G'.Adj] in
+/-- **THE REFLECTION ITSELF TRANSPORTS.** `§4` and `§7` establish this at `Fin 4` by `decide`,
+which is available only because the type is small; this is the statement at any size. -/
+theorem isRefl_congr (e : V ≃ W) (he : ∀ p q, G'.Adj (e p) (e q) ↔ G.Adj p q)
+    {θ : V ≃ V} {θ' : W ≃ W} (hθ : ∀ p, e (θ p) = θ' (e p)) (h : IsRefl G θ) : IsRefl G' θ' where
+  invol := by
+    intro w
+    obtain ⟨p, rfl⟩ := e.surjective w
+    rw [← hθ p, ← hθ (θ p), h.invol p]
+  adj := by
+    intro w w'
+    obtain ⟨p, rfl⟩ := e.surjective w
+    obtain ⟨q, rfl⟩ := e.surjective w'
+    rw [← hθ p, ← hθ q, he (θ p) (θ q), he p q]
+    exact h.adj p q
+
+omit [Fintype V] [DecidableEq V] [Fintype W] [DecidableEq W] in
+/-- **AND SO DOES THE HALF, WITH ITS MIRROR**, both carried by `Finset.map`. -/
+theorem isMirrorHalf_congr (e : V ≃ W) {θ : V ≃ V} {θ' : W ≃ W}
+    (hθ : ∀ p, e (θ p) = θ' (e p)) {H Mir : Finset V}
+    (h : GraphMirrorReflection.IsMirrorHalf θ H Mir) :
+    GraphMirrorReflection.IsMirrorHalf θ' (H.map e.toEmbedding) (Mir.map e.toEmbedding) where
+  fixed := by
+    intro w
+    obtain ⟨p, rfl⟩ := e.surjective w
+    rw [← hθ p]
+    simp only [Finset.mem_map, Equiv.coe_toEmbedding, EmbeddingLike.apply_eq_iff_eq]
+    constructor
+    · rintro ⟨k, hk, rfl⟩; rw [(h.fixed k).mp hk]
+    · intro hp; exact ⟨p, (h.fixed p).mpr hp, rfl⟩
+  disj := by
+    rintro w hw hc
+    simp only [Finset.mem_map, Equiv.coe_toEmbedding] at hw hc
+    obtain ⟨k, hk, rfl⟩ := hw
+    obtain ⟨l, hl, hle⟩ := hc
+    exact h.disj k hk (by rwa [e.injective hle] at hl)
+  split := by
+    intro w hw
+    obtain ⟨p, rfl⟩ := e.surjective w
+    have hpM : p ∉ Mir := fun hc => hw (Finset.mem_map.mpr ⟨p, hc, rfl⟩)
+    rw [← hθ p]
+    simp only [Finset.mem_map, Equiv.coe_toEmbedding]
+    constructor
+    · rintro ⟨k, hk, hke⟩ ⟨l, hl, hle⟩
+      rw [e.injective hke] at hk
+      rw [e.injective hle] at hl
+      exact ((h.split p hpM).mp hk) hl
+    · intro hno
+      exact ⟨p, (h.split p hpM).mpr (fun hc => hno ⟨θ p, hc, rfl⟩), rfl⟩
 
 /-! ## 2. And so does strictness -/
 
