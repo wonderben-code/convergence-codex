@@ -48,6 +48,15 @@ puts the two side by side: same graph, same side length, same mass, **strict und
 and degenerate under another**. §5 confirms by `decide` that the two reflections and the two halves
 really are different objects, so the pair is not a contradiction.
 
+## The apparent conflict, named before a reader finds it
+
+`CrossBlockStructure.torus_strict_iff_le_four_lowerHalf` is a **biconditional at every side and in
+every dimension**: the periodic lattice is strict **iff `n ≤ 4`**. Read by its name alone that
+contradicts `torusFour_not_strict`. It does not, and the reason is written into the name:
+**`_lowerHalf`**. The biconditional quantifies over families supported in `lowerHalf i n`, against
+`revSite i`, and says nothing about any other reflection. **This file is what makes that suffix
+load-bearing rather than descriptive.**
+
 ## A recorded claim this refutes
 
 `CrossBlockStructure`'s closure of the `K₂,₂` strictness item says the result is *"the estate's
