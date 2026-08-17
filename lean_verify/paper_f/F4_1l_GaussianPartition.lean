@@ -27,6 +27,7 @@
 -/
 
 import CascadeFoundation
+import SelfAdjointDimension
 import Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
@@ -172,6 +173,22 @@ theorem pi_positive : (0 : ℝ) < π := pi_pos
 --
 -- Therefore the gauge orbit theorems below express the dimension arithmetic
 -- in terms of the FULL matrix space finrank, which Mathlib CAN verify.
+--
+-- SUPERSEDED IN PART, 2026-08-17 (ERRATUM 94: quoted, not rewritten).
+-- The FIRST of the three is no longer missing. SelfAdjointDimension supplies
+--   finrank_selfAdjoint_matrix : finrank ℝ (selfAdjoint (Matrix (Fin n) (Fin n) ℂ)) = n²
+-- for every n, proved from Mathlib's own ℜ/ℑ decomposition of a complex star
+-- module and without choosing a basis of Hermitian matrices. So the arithmetic
+-- below can now be stated about Herm₄(ℂ) ITSELF rather than about the full
+-- matrix algebra standing in for it: see dim_Herm4 and physical_dof_Herm4 at
+-- the end of this section. The proxy statements dim_U4 and physical_dof are
+-- TRUE and are kept unchanged; what was missing was never their correctness,
+-- only the ability to say the same thing about the right space.
+--
+-- The SECOND and THIRD remain missing and are NOT supplied here: skewAdjoint's
+-- dimension would follow from Mathlib's skewAdjoint.negISMul being an
+-- isomorphism, and nothing in this estate builds it; unitaryGroup's dimension
+-- as a manifold is a different kind of statement about a different object.
 
 /-- The dimension of U(4) as a Lie group equals dim_ℂ(CascadeAlgebra).
     For U(4): the Lie algebra 𝔲(4) consists of skew-Hermitian 4×4 matrices.
@@ -193,6 +210,26 @@ theorem physical_dof :
     Module.finrank ℂ CascadeAlgebra -
     4 * (4 - 1) = 4 := by
   simp [Module.finrank_matrix, Fintype.card_fin]
+
+/-- **THE GAUGE-ORBIT ARITHMETIC, STATED ABOUT `Herm₄(ℂ)` ITSELF.**
+`dim_U4` above states `16` about `CascadeAlgebra` because the real dimension of the Hermitian
+matrices was not available when it was written. It is now
+(`SelfAdjointDimension.finrank_selfAdjoint_four`), so this says the same number about the space the
+gauge argument is about: the self-adjoint part of the cascade algebra. -/
+theorem dim_Herm4 : Module.finrank ℝ (selfAdjoint CascadeAlgebra) = 16 :=
+  SelfAdjointDimension.finrank_selfAdjoint_four
+
+/-- **AND THE PHYSICAL DEGREE-OF-FREEDOM COUNT, ON THE SAME SPACE.**
+`physical_dof` above performs `16 − 4·(4−1) = 4` on the proxy; this performs it on `Herm₄(ℂ)`.
+
+**What is still NOT proved here, and it is the whole physical content:** that the generic gauge
+orbit has dimension `4·(4−1)`. That number is an *input* to both statements — supplied by the
+prose above, not by a theorem — and neither this nor `physical_dof` establishes it. What both do
+is the subtraction. -/
+theorem physical_dof_Herm4 :
+    Module.finrank ℝ (selfAdjoint CascadeAlgebra) - 4 * (4 - 1) = 4 := by
+  rw [dim_Herm4]
+
 
 /-- Physical DOF equals the CascadeHilbert space dimension:
     after gauge fixing, the 4 eigenvalues of D span ℂ⁴ = CascadeHilbert.
