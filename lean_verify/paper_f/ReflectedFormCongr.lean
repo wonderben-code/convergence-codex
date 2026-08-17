@@ -20,9 +20,9 @@ is degenerate at every nonzero mass.
 
 * **`reflectedForm_congr`** — the reflected form itself transports, which
   `LatticeReflectionPositive.sum_green_congr` had in unpackaged form.
-* **`strict_congr`** — **strictness transports** along a bijection intertwining the two
-  reflections, with the half and the mirror carried by `Finset.map`. Stated in the direction the
-  application needs; the reverse is not proved here.
+* **`strict_congr`** and **`strict_congr_iff`** — **strictness transports**, in both directions,
+  along a bijection intertwining the two reflections, with the half and the mirror carried by
+  `Finset.map`.
 * **`torusFourEquiv`** and **`torusFourEquiv_eq`** — the relabelling as a *computable* equivalence,
   checked by the kernel to be the underlying map of `TorusBipGraphSame.torusFour_iso_bipGraph`.
 * **`isRefl_torusRho`, `isMirrorHalf_torusHalf`, `torusHalf_card`** — the transported reflection is
@@ -96,8 +96,7 @@ theorem reflectedForm_congr (e : V ≃ W) (he : ∀ p q, G'.Adj (e p) (e q) ↔ 
 /-- **STRICTNESS TRANSPORTS.** If the reflected form is positive on every nonzero family supported
 in `H` (off the mirror), the same holds on the far side for `H.map e`.
 
-**One direction only**, which is the one the application needs: the estate's four-vertex result is a
-*negation*, so this is used contrapositively. The reverse is not proved here. -/
+The reverse is `strict_congr_iff` below, obtained by running this one at `e.symm`. -/
 theorem strict_congr (e : V ≃ W) (he : ∀ p q, G'.Adj (e p) (e q) ↔ G.Adj p q)
     {θ : V ≃ V} {θ' : W ≃ W} (hθ : ∀ p, e (θ p) = θ' (e p)) (m : ℝ) (H Mir : Finset V)
     (hst : ∀ c : V → ℝ, c ≠ 0 → (∀ p, p ∉ H → p ∉ Mir → c p = 0) →
@@ -112,6 +111,34 @@ theorem strict_congr (e : V ≃ W) (he : ∀ p q, G'.Adj (e p) (e q) ↔ G.Adj p
   · refine hsupp (e p) (fun hmem => hp ?_) (fun hmem => hpm ?_) <;>
     · obtain ⟨k, hk, hke⟩ := Finset.mem_map.mp hmem
       rwa [e.injective hke] at hk
+
+/-- **AND IT IS AN EQUIVALENCE.** The reverse direction is this same theorem run at `e.symm`, with
+the adjacency and intertwining hypotheses transported and the half carried back by
+`Finset.map_map`.
+
+The first version of this file proved only the direction its application needed and said so. It
+needed nothing else. -/
+theorem strict_congr_iff (e : V ≃ W) (he : ∀ p q, G'.Adj (e p) (e q) ↔ G.Adj p q)
+    {θ : V ≃ V} {θ' : W ≃ W} (hθ : ∀ p, e (θ p) = θ' (e p)) (m : ℝ) (H Mir : Finset V) :
+    (∀ c : V → ℝ, c ≠ 0 → (∀ p, p ∉ H → p ∉ Mir → c p = 0) → 0 < reflectedForm G m θ c)
+      ↔ (∀ c : W → ℝ, c ≠ 0 →
+          (∀ w, w ∉ H.map e.toEmbedding → w ∉ Mir.map e.toEmbedding → c w = 0) →
+          0 < reflectedForm G' m θ' c) := by
+  have hback : ∀ X : Finset V, (X.map e.toEmbedding).map e.symm.toEmbedding = X := by
+    intro X
+    rw [Finset.map_map]
+    simp
+  refine ⟨strict_congr e he hθ m H Mir, fun hst => ?_⟩
+  have he' : ∀ p q, G.Adj (e.symm p) (e.symm q) ↔ G'.Adj p q := by
+    intro p q
+    simpa using (he (e.symm p) (e.symm q)).symm
+  have hθ' : ∀ p, e.symm (θ' p) = θ (e.symm p) := by
+    intro p
+    have h := hθ (e.symm p)
+    simp only [Equiv.apply_symm_apply] at h
+    rw [← h, Equiv.symm_apply_apply]
+  have := strict_congr e.symm he' hθ' m (H.map e.toEmbedding) (Mir.map e.toEmbedding) hst
+  rwa [hback H, hback Mir] at this
 
 /-! ## 3. The relabelling, computably -/
 
