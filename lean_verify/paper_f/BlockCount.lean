@@ -23,6 +23,9 @@ would have matched. Deleted and cited.
 times at weight `1/c` — once. **`blockCount` is that sum**, and it is the number of blocks without
 a quotient type anywhere in it.
 
+> **`blockCount_eq_card_blockClasses`** — `blockCount` **is** the number of blocks. §5 proves the
+> name rather than leaving it to a docstring.
+>
 > **`blockCount_le_card`** — `blockCount ≤ |H|`, always.
 >
 > **`strict_iff_blockCount_eq`** — on a block cut, **the reflected form is strict exactly when
@@ -227,5 +230,91 @@ theorem blockCount_torusHalf_ne :
   exact not_cutPerfect_torusHalf
     ((strict_iff_cut_perfect isMirrorHalf_torusHalf isRefl_torusRho (m := 1) one_ne_zero
       isCrossBlock_torusHalf).mp hstrict)
+
+/-! ## 5. The name is a theorem: `blockCount` really counts the blocks
+
+Until this section `blockCount` is a **name for a sum of reciprocals** and the claim that it counts
+blocks lives in a docstring. The docstring's argument — *"a class of size `c` is counted `c` times
+at weight `1/c`"* — is correct and is exactly the sort of sentence this project does not accept on
+its own. Here it is proved: the classes partition the block, so the sum telescopes to their number.
+-/
+
+/-- The distinct classes of the cut, as a finset of finsets. **These are the blocks.** -/
+noncomputable def blockClasses (G : SimpleGraph V) [DecidableRel G.Adj] (θ : V ≃ V)
+    (H : Finset V) : Finset (Finset V) :=
+  (blk (crossMatrix G θ H) H).image (cls (crossMatrix G θ H) H)
+
+omit [Fintype V] in
+theorem cls_subset_blk {k : V} :
+    cls (crossMatrix G θ H) H k ⊆ blk (crossMatrix G θ H) H :=
+  Finset.filter_subset _ _
+
+omit [Fintype V] in
+/-- **EVERY MEMBER OF A BLOCK HAS THAT BLOCK AS ITS CLASS.** This is what makes the classes a
+partition rather than merely a covering. -/
+theorem cls_eq_of_mem_blockClasses (h : IsRefl G θ) (hC : IsCrossBlock G θ H)
+    {B : Finset V} (hB : B ∈ blockClasses G θ H) {k : V} (hk : k ∈ B) :
+    cls (crossMatrix G θ H) H k = B := by
+  classical
+  have hbo : IsBlockOnes (crossMatrix G θ H) H := (isBlockOnes_iff_isCrossBlock h).mpr hC
+  obtain ⟨j, hj, rfl⟩ := Finset.mem_image.mp hB
+  have hkblk : k ∈ blk (crossMatrix G θ H) H := cls_subset_blk hk
+  have hjk : crossMatrix G θ H j k = 1 := (Finset.mem_filter.mp hk).2
+  exact (cls_eq_of_rel hbo.symm (fun i _ a _ l _ hij hjl => hbo.trans i a l hij hjl)
+    hj hkblk hjk).symm
+
+omit [Fintype V] in
+/-- **THE BLOCK IS COVERED BY ITS CLASSES — AND THIS NEEDS NO HYPOTHESIS AT ALL.** Both
+containments are `self_mem_cls` and `cls ⊆ blk`, neither of which knows about reflections or block
+structure.
+
+**The linter found that**: the first version of this theorem carried `IsRefl` and `IsCrossBlock`
+and used neither. **Being a covering is free; being DISJOINT is what needs the cut to be in
+blocks**, and that is where those hypotheses are actually spent, in
+`blockCount_eq_card_blockClasses` below. -/
+theorem blk_eq_biUnion :
+    blk (crossMatrix G θ H) H = (blockClasses G θ H).biUnion id := by
+  classical
+  ext k
+  simp only [Finset.mem_biUnion, id_eq]
+  constructor
+  · intro hk
+    exact ⟨cls (crossMatrix G θ H) H k, Finset.mem_image_of_mem _ hk, self_mem_cls hk⟩
+  · rintro ⟨B, hB, hkB⟩
+    obtain ⟨j, hj, rfl⟩ := Finset.mem_image.mp hB
+    exact cls_subset_blk hkB
+
+omit [Fintype V] in
+/-- **AND THE COUNT IS THEIR NUMBER.** Each class contributes `|B|` terms of size `|B|⁻¹`. -/
+theorem blockCount_eq_card_blockClasses (h : IsRefl G θ) (hC : IsCrossBlock G θ H) :
+    blockCount G θ H = ((blockClasses G θ H).card : ℝ) := by
+  classical
+  have hdisj : (blockClasses G θ H : Set (Finset V)).PairwiseDisjoint id := by
+    intro B hB B' hB' hne
+    simp only [Finset.disjoint_left, id_eq]
+    intro x hx hx'
+    exact hne ((cls_eq_of_mem_blockClasses h hC hB hx).symm.trans
+      (cls_eq_of_mem_blockClasses h hC hB' hx'))
+  have hstep : blockCount G θ H
+      = ∑ B ∈ blockClasses G θ H, ∑ _k ∈ B, ((B.card : ℝ))⁻¹ := by
+    rw [blockCount, blk_eq_biUnion, Finset.sum_biUnion hdisj]
+    refine Finset.sum_congr rfl fun B hB => ?_
+    refine Finset.sum_congr rfl fun k hk => ?_
+    rw [cls_eq_of_mem_blockClasses h hC hB hk]
+  rw [hstep]
+  have hone : ∀ B ∈ blockClasses G θ H, ∑ _k ∈ B, ((B.card : ℝ))⁻¹ = 1 := by
+    intro B hB
+    obtain ⟨j, hj, rfl⟩ := Finset.mem_image.mp hB
+    have hpos : 0 < (cls (crossMatrix G θ H) H j).card := cls_card_pos hj
+    rw [Finset.sum_const, nsmul_eq_mul]
+    exact mul_inv_cancel₀ (Nat.cast_ne_zero.mpr hpos.ne')
+  rw [Finset.sum_congr rfl hone, Finset.sum_const, nsmul_eq_mul, mul_one]
+
+omit [Fintype V] in
+/-- **SO THE COUNT IS A WHOLE NUMBER**, which the definition as a sum of reciprocals does not
+show. -/
+theorem exists_nat_blockCount (h : IsRefl G θ) (hC : IsCrossBlock G θ H) :
+    ∃ n : ℕ, blockCount G θ H = (n : ℝ) :=
+  ⟨(blockClasses G θ H).card, blockCount_eq_card_blockClasses h hC⟩
 
 end BlockCount
