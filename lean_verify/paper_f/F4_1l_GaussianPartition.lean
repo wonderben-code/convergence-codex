@@ -189,6 +189,18 @@ theorem pi_positive : (0 : ℝ) < π := pi_pos
 -- dimension would follow from Mathlib's skewAdjoint.negISMul being an
 -- isomorphism, and nothing in this estate builds it; unitaryGroup's dimension
 -- as a manifold is a different kind of statement about a different object.
+--
+-- AMENDED THE SAME DAY: the SECOND is now supplied too. SelfAdjointDimension
+-- section 3 builds the isomorphism the sentence above predicted, giving
+--   finrank_skewAdjoint_matrix : finrank ℝ (skewAdjoint (Matrix (Fin n) (Fin n) ℂ)) = n²
+-- so dim_ℝ 𝔲(4) = 16 is a theorem (dim_u4_lie below) rather than the sentence in
+-- dim_U4's own docstring. Only the THIRD -- unitaryGroup as a manifold -- is
+-- still missing, and it stays missing.
+--
+-- WHAT NONE OF THIS SUPPLIES, and it is the number the arithmetic below actually
+-- consumes: the dimension of a GENERIC GAUGE ORBIT, 4·(4-1) = 12. That is a
+-- stabiliser computation, not a dimension of 𝔲(4), and nothing in this estate
+-- performs it. It remains an input from the prose.
 
 /-- The dimension of U(4) as a Lie group equals dim_ℂ(CascadeAlgebra).
     For U(4): the Lie algebra 𝔲(4) consists of skew-Hermitian 4×4 matrices.
@@ -229,6 +241,22 @@ is the subtraction. -/
 theorem physical_dof_Herm4 :
     Module.finrank ℝ (selfAdjoint CascadeAlgebra) - 4 * (4 - 1) = 4 := by
   rw [dim_Herm4]
+
+/-- **`dim_ℝ 𝔲(4) = 16`, AS A THEOREM ABOUT THE SPACE.** `dim_U4`'s own docstring says *"the Lie
+algebra `𝔲(4)` consists of skew-Hermitian `4 × 4` matrices; as a real vector space
+`dim_ℝ(𝔲(4)) = n²`"* — a sentence, next to a theorem about `finrank ℂ CascadeAlgebra`. This is that
+sentence, proved, about the skew-Hermitian matrices themselves. -/
+theorem dim_u4_lie : Module.finrank ℝ (skewAdjoint CascadeAlgebra) = 16 :=
+  SelfAdjointDimension.finrank_skewAdjoint_four
+
+/-- **AND THE TWO HALVES ACCOUNT FOR THE WHOLE ALGEBRA**: `Herm₄ ⊕ 𝔲(4)` has the real dimension of
+`M₄(ℂ)`, `16 + 16 = 32`. The gauge-fixing picture above splits `M₄(ℂ)` this way and the split is
+now a theorem rather than a description. -/
+theorem dim_herm4_add_u4 :
+    Module.finrank ℝ (selfAdjoint CascadeAlgebra) + Module.finrank ℝ (skewAdjoint CascadeAlgebra)
+      = Module.finrank ℝ CascadeAlgebra :=
+  SelfAdjointDimension.finrank_selfAdjoint_add_skewAdjoint 4
+
 
 
 /-- Physical DOF equals the CascadeHilbert space dimension:

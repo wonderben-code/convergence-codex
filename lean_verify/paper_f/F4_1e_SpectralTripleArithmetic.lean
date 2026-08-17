@@ -19,6 +19,7 @@
 -/
 
 import CascadeFoundation
+import TracelessSkewDimension
 
 open Real Module
 
@@ -106,6 +107,26 @@ theorem dim_C4_cascade : finrank ℂ CascadeHilbert = 4 := cascade_hilbert_dim
 -- OUT OF SCOPE: Mathlib has no `finrank skewAdjointMatricesLieSubalgebra` or
 -- `dim(su(n))` theorem. The generator counts n²-1 require Lie algebra structure
 -- not available. We prove the ARITHMETIC identity and note the gap.
+--
+-- SUPERSEDED IN PART, 2026-08-17 (ERRATUM 94: quoted, not rewritten).
+-- The FIRST clause above is still true: Mathlib has no such theorem.
+-- THE SECOND IS FALSE, and it is why three attempts failed against the wrong
+-- obstacle: the counts n²-1 do NOT require a Lie bracket. The traceless
+-- skew-Hermitian matrices are the kernel of ONE real-linear functional -- the
+-- imaginary part of the trace -- on a space whose dimension is n²
+-- (SelfAdjointDimension.finrank_skewAdjoint_matrix), and rank-nullity finishes.
+-- TracelessSkewDimension supplies the counts; su_dim_2, su_dim_3 and su_dim_4
+-- at the end of this section state them about the SPACE.
+--
+-- The arithmetic theorems below are TRUE and are kept unchanged. What changes is
+-- that they are no longer the only thing available.
+--
+-- STILL OUT OF SCOPE, and the naming is where the temptation is: that these
+-- subspaces ARE the Lie algebras of SU(n) -- tangent spaces at the identity of
+-- smooth groups -- needs a smooth structure that nothing here builds. The new
+-- definition is called `traceless`, not `su`, for that reason. The direct-sum
+-- statements below (pati_salam_generators, sm_gauge_dim) are likewise still pure
+-- arithmetic: nothing here constructs a direct sum of these subspaces.
 
 /-- su(n) has n² - 1 generators. General formula.
     Adding back the trace direction recovers u(n) with n² generators.
@@ -128,6 +149,31 @@ theorem dim_su3 : 3 ^ 2 - 1 = 8 := by norm_num
     Also available via CascadeData.gauge_algebra_dim from CascadeFoundation.
     OUT OF SCOPE: requires dim(skewAdjoint(M₄(ℂ)) ∩ traceless) = 15 — 3 attempts exhausted -/
 theorem dim_su4 : 4 ^ 2 - 1 = 15 := by norm_num
+
+/-- **`dim_ℝ 𝔰𝔲(2) = 3`, ABOUT THE SPACE.** `dim_su2` above states `2 ^ 2 - 1 = 3`, which is a fact
+about natural numbers. This is the fact about the traceless skew-Hermitian `2 × 2` matrices, from
+`TracelessSkewDimension.finrank_traceless_two`. Both are true; only one is about matrices. -/
+theorem su_dim_2 : Module.finrank ℝ (TracelessSkewDimension.traceless 2) = 3 :=
+  TracelessSkewDimension.finrank_traceless_two
+
+/-- **`dim_ℝ 𝔰𝔲(3) = 8`, ABOUT THE SPACE.** The Gell-Mann count. -/
+theorem su_dim_3 : Module.finrank ℝ (TracelessSkewDimension.traceless 3) = 8 :=
+  TracelessSkewDimension.finrank_traceless_three
+
+/-- **`dim_ℝ 𝔰𝔲(4) = 15`, ABOUT THE SPACE.** The cascade's gauge algebra.
+
+**What this does NOT say**, and the docstring on `dim_su4` above says it in prose: that this space
+*contains* `𝔰𝔲(3) ⊕ 𝔲(1)` plus six more generators. That is a decomposition statement and nothing
+here constructs it — only the total is proved. -/
+theorem su_dim_4 : Module.finrank ℝ (TracelessSkewDimension.traceless 4) = 15 :=
+  TracelessSkewDimension.finrank_traceless_four
+
+/-- **AND `𝔲(n)` IS `𝔰𝔲(n)` PLUS THE TRACE DIRECTION**, which `su_generators` above asserts as
+`n² - 1 + 1 = n²` on naturals. This is the same equation between two dimensions. -/
+theorem u_dim_eq_su_dim_add_one (n : ℕ) (hn : 0 < n) :
+    Module.finrank ℝ (TracelessSkewDimension.traceless n) + 1
+      = Module.finrank ℝ (skewAdjoint (Matrix (Fin n) (Fin n) ℂ)) :=
+  TracelessSkewDimension.finrank_traceless_add_one_eq_skewAdjoint n hn
 
 /-- The Pati-Salam gauge algebra: su(4) ⊕ su(2)_L ⊕ su(2)_R.
     Total generators: 15 + 3 + 3 = 21.
