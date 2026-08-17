@@ -36,11 +36,25 @@ statement come out at the same price as the `4 × 4` one.
 true and they were stated honestly, with the workaround named in a comment. What was missing was
 the ability to say the same arithmetic about the *right space*, and that is what changes here.
 
-**Nothing about the gauge orbit is proved.** `skewAdjoint` — the Lie algebra `𝔲(n)` — is the second
-item on that file's missing list; it would follow from `skewAdjoint.negISMul` being an isomorphism,
-and it is recorded here as **NOT DONE** rather than claimed, because this file does not build it.
-The third item, the dimension of `unitaryGroup` as a manifold, is a different kind of statement
-about a different kind of object and is not touched.
+**SUPERSEDED THE SAME DAY BY §3 OF THIS FILE, AND THE ROUTE IT NAMED WAS THE ROUTE.** This section
+said:
+
+> *"**Nothing about the gauge orbit is proved.** `skewAdjoint` — the Lie algebra `𝔲(n)` — is the
+> second item on that file's missing list; it would follow from `skewAdjoint.negISMul` being an
+> isomorphism, and it is recorded here as **NOT DONE** rather than claimed, because this file does
+> not build it."*
+
+§3 builds it: `skewAdjointEquivSelfAdjoint` is exactly `skewAdjoint.negISMul` upgraded, and
+**`finrank_skewAdjoint_matrix` gives `dim_ℝ 𝔲(n) = n²`**. So the **second** of the three missing
+facts is also supplied, and the prediction of the route was right — which is worth separating from
+the fact that I recorded it as undone rather than doing it, since the whole cost was one section.
+
+**The third item is untouched and stays untouched.** The dimension of `unitaryGroup (Fin n) ℂ` as a
+**manifold** is a statement about a smooth structure, not about a module, and nothing here bears on
+it. **Neither does anything here prove the gauge orbit's dimension**, which is what the arithmetic
+in `F4_1l_GaussianPartition` consumes: `dim 𝔲(n) = n²` is the dimension of the *group acting*, and
+the dimension of a generic *orbit* is `n² − n`, which needs a stabiliser computation this file does
+not do.
 
 **No published tag moves**, and no physics claim is made or moved.
 
@@ -122,5 +136,60 @@ theorem finrank_selfAdjoint_two :
     Module.finrank ℝ (selfAdjoint (Matrix (Fin 2) (Fin 2) ℂ)) = 4 := by
   rw [finrank_selfAdjoint_matrix 2]
   norm_num
+
+/-! ## 3. The skew-adjoint part, which is the same size -/
+
+section SkewAdjoint
+
+variable {A : Type*} [AddCommGroup A] [Module ℂ A] [StarAddMonoid A] [StarModule ℂ A]
+
+/-- **MULTIPLICATION BY `i` IS A LINEAR EQUIVALENCE FROM SKEW-ADJOINT TO SELF-ADJOINT.** Mathlib has
+the map (`skewAdjoint.negISMul`) and one side of the round trip (`skewAdjoint.I_smul_neg_I`); this
+supplies the other side and bundles them. -/
+noncomputable def skewAdjointEquivSelfAdjoint : skewAdjoint A ≃ₗ[ℝ] selfAdjoint A where
+  toFun := skewAdjoint.negISMul
+  invFun x := ⟨I • (x : A), by
+    rw [skewAdjoint.mem_iff, star_smul, star_def, conj_I, selfAdjoint.star_val_eq, neg_smul]⟩
+  map_add' := map_add _
+  map_smul' := map_smul _
+  left_inv a := by
+    ext
+    simpa using skewAdjoint.I_smul_neg_I a
+  right_inv x := by
+    ext
+    simp [skewAdjoint.negISMul_apply_coe, smul_smul]
+
+/-- **AND SO THE TWO HALVES HAVE THE SAME DIMENSION.** -/
+theorem finrank_skewAdjoint_eq :
+    Module.finrank ℝ (skewAdjoint A) = Module.finrank ℝ (selfAdjoint A) :=
+  (skewAdjointEquivSelfAdjoint (A := A)).finrank_eq
+
+end SkewAdjoint
+
+/-- **THE SECOND MISSING FACT, SUPPLIED: `dim_ℝ 𝔲(n) = n²`.** The skew-Hermitian matrices are the
+Lie algebra of the unitary group, and multiplication by `i` carries them bijectively onto the
+Hermitian ones. -/
+theorem finrank_skewAdjoint_matrix (n : ℕ) :
+    Module.finrank ℝ (skewAdjoint (Matrix (Fin n) (Fin n) ℂ)) = n ^ 2 := by
+  rw [finrank_skewAdjoint_eq, finrank_selfAdjoint_matrix n]
+
+/-- **`dim_ℝ 𝔲(4) = 16`**, which `F4_1l_GaussianPartition.dim_U4`'s docstring asserts in prose —
+*"the Lie algebra `𝔲(4)` consists of skew-Hermitian `4 × 4` matrices; as a real vector space
+`dim_ℝ(𝔲(4)) = n²`"* — and which is now a theorem about that space rather than a sentence about
+it. -/
+theorem finrank_skewAdjoint_four :
+    Module.finrank ℝ (skewAdjoint (Matrix (Fin 4) (Fin 4) ℂ)) = 16 := by
+  rw [finrank_skewAdjoint_matrix 4]
+  norm_num
+
+/-- **AND THE TWO HALVES TOGETHER ARE THE WHOLE SPACE**, which is `two_mul_finrank_selfAdjoint` read
+with §3: `n² + n² = 2n²`. Stated because the pair is what the decomposition means, and because it
+is the shape a reader checking the arithmetic will want. -/
+theorem finrank_selfAdjoint_add_skewAdjoint (n : ℕ) :
+    Module.finrank ℝ (selfAdjoint (Matrix (Fin n) (Fin n) ℂ))
+        + Module.finrank ℝ (skewAdjoint (Matrix (Fin n) (Fin n) ℂ))
+      = Module.finrank ℝ (Matrix (Fin n) (Fin n) ℂ) := by
+  rw [finrank_selfAdjoint_matrix n, finrank_skewAdjoint_matrix n, finrank_real_matrix n]
+  ring
 
 end SelfAdjointDimension
