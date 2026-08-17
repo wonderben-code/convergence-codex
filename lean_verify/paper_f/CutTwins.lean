@@ -193,4 +193,40 @@ theorem reachKer_torusHalf_eq_span (m : ℝ) :
   refine (Submodule.eq_of_le_of_finrank_le hle ?_).symm
   rw [hspan, TorusBlockCount.finrank_reachKer_torusHalf m]
 
+/-! ## 5. Where this certificate adds nothing, and why the torus is where it fires -/
+
+omit [Fintype V] [DecidableEq V] [DecidableRel G.Adj] in
+/-- **ON A DIAGONAL CUT, TWINS ARE BOTH ISOLATED — SO THIS CERTIFICATE ADDS NOTHING THERE.**
+
+If the only cross-cut adjacency inside the half is a site to its own mirror, then two sites with the
+same cross-neighbours must have none: a neighbour of `θ s` inside the half can only be `s`, and the
+twin condition would then force `s` adjacent to `θ t` and hence `s = t`.
+
+**This is a negative result about the tool above and it is the point of this section.**
+`GraphMirrorReflection.crossForm_nonpos_of_cross_diag` is the estate's only route to the coupling
+hypothesis and it asks exactly for diagonality; every lattice family in the estate satisfies it
+(`CrossBlockStructure.box_cross_diag_any` and its torus and lattice siblings). **So on every family
+the estate actually studies, `not_strict_of_twins` is subsumed by
+`CutRank.not_strict_of_isolated`,** and §3's independence is a statement about cuts the lattices do
+not produce.
+
+**Which is exactly where the torus's antipodal half sits.**
+`HalfBlockStructure.not_crossDiag_torusHalf` says that cut is **not** diagonal — it is a block cut
+with a block of size two — and that is why twins can fire there at all. The certificate is not
+useless and it is not general: it is a tool for block cuts with blocks bigger than a point, and
+this theorem is what pins that down. -/
+theorem isolated_of_twins_of_diagonal
+    (hdiag : ∀ p ∈ H, ∀ q ∈ H, G.Adj p (θ q) → p = q) (htw : Twins G θ H s t) :
+    (∀ q ∈ H, ¬ G.Adj q (θ s)) ∧ (∀ q ∈ H, ¬ G.Adj q (θ t)) := by
+  obtain ⟨hs, ht, hne, hadj⟩ := htw
+  have key : ∀ q ∈ H, ¬ G.Adj q (θ s) := by
+    intro q hq hA
+    have hqs : q = s := hdiag q hq s hs hA
+    rw [hqs] at hA
+    exact hne (hdiag s hs t ht ((hadj s hs).mp hA))
+  refine ⟨key, fun q hq hA => ?_⟩
+  have hqt : q = t := hdiag q hq t ht hA
+  rw [hqt] at hA
+  exact key t ht ((hadj t ht).mpr hA)
+
 end CutTwins
