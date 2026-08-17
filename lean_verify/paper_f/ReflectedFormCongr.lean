@@ -31,14 +31,22 @@ is degenerate at every nonzero mass.
 * **`torusFour_reflectionPositive`** — reflection positivity **holds** there, so the next line is a
   degeneracy rather than an absence.
 * **`torusFour_not_strict`** — **strict reflection positivity fails on the one-dimensional periodic
-  lattice at side four.**
+  lattice at side four**, under the carried-across reflection.
+* **`strict_depends_on_reflection`** — **and it holds there under the lattice's own reflection**, so
+  strictness is a property of the *pair*, not of the graph.
 
-## Why that last one is not already known
+## And the reason that last one is sharp is not the reason first written here
 
-`TorusNotStrict.not_strict_torus` needs **`Even n` and `6 ≤ n`**. Side four is below its threshold,
-and the estate's non-strictness on the periodic lattice therefore began at six. This gives four —
-**but under the reflection and half carried across from `bipGraph`, which are NOT the ones that file
-uses.** §5 settles which by `decide` rather than by argument, and says so either way.
+**The first draft of this header said the estate's non-strictness on the periodic lattice "began at
+six" and that side four was simply below the threshold. That is wrong, and the truth is better.**
+`MirrorStrict.reflectionPositive_torus_four_strict` proves the periodic lattice at side four **IS
+strict**, in every dimension, at every nonzero mass — under `revSite i` with `lowerHalf i 4`.
+
+So this file is not filling a gap below a threshold. **It is showing that there is no threshold to
+fill, because strictness is not a property of the graph at all.** `strict_depends_on_reflection`
+puts the two side by side: same graph, same side length, same mass, **strict under one reflection
+and degenerate under another**. §5 confirms by `decide` that the two reflections and the two halves
+really are different objects, so the pair is not a contradiction.
 
 ## A recorded claim this refutes
 
@@ -181,6 +189,25 @@ theorem torusFour_not_strict (m : ℝ) (hm : m ≠ 0) :
   rw [torusHalf_map] at h
   simpa using h
 
+/-- **STRICTNESS IS NOT A PROPERTY OF THE GRAPH.** One graph, one side length, one mass, two
+reflections — and the two answers differ.
+
+`MirrorStrict.reflectionPositive_torus_four_strict` gives the left half: the periodic lattice at
+side four is strict under `revSite 0` with `lowerHalf 0 4`. `torusFour_not_strict` gives the right:
+it is degenerate under the reflection carried across from `IndefiniteCoupling.bipGraph`. §5 checks
+that these really are two different reflections and two different halves, so the conjunction is a
+statement about reflections rather than a contradiction. -/
+theorem strict_depends_on_reflection (m : ℝ) (hm : m ≠ 0) :
+    (∀ c : BoxGraph.Site 1 4 → ℝ, c ≠ 0 →
+        (∀ p, p ∉ GraphHalfSpace.lowerHalf (d := 1) (n := 4) 0 → c p = 0) →
+        0 < reflectedForm (TorusReflection.torusGraph 1 4) m
+              (GraphReflection.revSite (d := 1) (n := 4) 0) c)
+      ∧ ¬ ∀ c : BoxGraph.Site 1 4 → ℝ, c ≠ 0 →
+          (∀ p, p ∉ torusHalf → p ∉ (∅ : Finset (BoxGraph.Site 1 4)) → c p = 0) →
+          0 < reflectedForm (TorusReflection.torusGraph 1 4) m torusRho c :=
+  ⟨fun _ hc0 hcs => MirrorStrict.reflectionPositive_torus_four_strict 0 hm hc0 hcs,
+    torusFour_not_strict m hm⟩
+
 /-! ## 5. Is it the lattice's own reflection? Decided, not argued -/
 
 /-- **IT IS NOT `GraphReflection.revSite 0`.** The lattice's own reflection at side four sends
@@ -188,8 +215,10 @@ theorem torusFour_not_strict (m : ℝ) (hm : m ≠ 0) :
 reflections of the same four-cycle through opposite edge midpoints, rotated by one step — but they
 are **different maps**, and §4's theorem is about the second.
 
-**So this does not lower `TorusNotStrict`'s `6 ≤ n` threshold for that file's reflection.** It adds
-a side length below it for a different one. Said here rather than left for a reader to discover. -/
+**So the two results do not collide.** `MirrorStrict.reflectionPositive_torus_four_strict` is about
+`revSite 0` and `lowerHalf 0 4`; `torusFour_not_strict` is about `torusRho` and `torusHalf`; and
+these theorems say those are different. **Without them `strict_depends_on_reflection` would read as
+a contradiction rather than as a finding.** -/
 theorem torusRho_ne_revSite : torusRho ≠ GraphReflection.revSite (d := 1) (n := 4) 0 := by
   intro h
   have : torusRho (fun _ => 0) = GraphReflection.revSite (d := 1) (n := 4) 0 (fun _ => 0) := by
