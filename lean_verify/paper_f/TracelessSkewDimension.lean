@@ -123,4 +123,42 @@ theorem finrank_traceless_add_one_eq_skewAdjoint (n : ℕ) (hn : 0 < n) :
   rw [SelfAdjointDimension.finrank_skewAdjoint_matrix n]
   exact finrank_traceless_add n hn
 
+/-! ## 2. Products, which is what a direct sum of these subspaces costs -/
+
+instance finiteDimensional_traceless (n : ℕ) : FiniteDimensional ℝ (traceless n) :=
+  FiniteDimensional.finiteDimensional_submodule _
+
+/-- **THE `4 ⊕ 2 ⊕ 2` PATTERN: `15 + 3 + 3 = 21`, AS A DIMENSION.**
+`F4_1e.pati_salam_generators` states `15 + 3 + 3 = 21` on naturals and records
+*"requires direct sum of Lie algebra dimensions — 3 attempts exhausted"*. **A direct sum of finite
+subspaces costs `Module.finrank_prod`**, which is in Mathlib, and the three summands' dimensions are
+§1. No Lie structure is used.
+
+**What this is a statement about**: the product of three subspaces of matrix spaces. Reading it as
+*the Pati–Salam gauge algebra* is an identification this file does not make and does not need —
+see §1's note on why the definition is called `traceless`. -/
+theorem finrank_prod_4_2_2 :
+    Module.finrank ℝ (traceless 4 × traceless 2 × traceless 2) = 21 := by
+  rw [Module.finrank_prod, Module.finrank_prod, finrank_traceless_four, finrank_traceless_two]
+
+/-- **THE `3 ⊕ 2 ⊕ 1` PATTERN: `8 + 3 + 1 = 12`, AS A DIMENSION.**
+`F4_1e.sm_generators` states `8 + 3 + 1 = 12` on naturals with the same recorded reason. The third
+summand is `skewAdjoint (M₁(ℂ))`, whose dimension is `1² = 1` by
+`SelfAdjointDimension.finrank_skewAdjoint_matrix`. -/
+theorem finrank_prod_3_2_1 :
+    Module.finrank ℝ
+        (traceless 3 × traceless 2 × skewAdjoint (Matrix (Fin 1) (Fin 1) ℂ)) = 12 := by
+  rw [Module.finrank_prod, Module.finrank_prod, finrank_traceless_three, finrank_traceless_two,
+    SelfAdjointDimension.finrank_skewAdjoint_matrix 1]
+  norm_num
+
+/-- **AND THE DIFFERENCE IS NINE**, which `F4_1e`'s next docstring reads as six leptoquarks plus
+three right-handed weak bosons. **That reading is not proved here**: this is `21 − 12`, and nothing
+in this file decomposes either space. -/
+theorem finrank_prod_diff :
+    Module.finrank ℝ (traceless 4 × traceless 2 × traceless 2)
+      = Module.finrank ℝ
+          (traceless 3 × traceless 2 × skewAdjoint (Matrix (Fin 1) (Fin 1) ℂ)) + 9 := by
+  rw [finrank_prod_4_2_2, finrank_prod_3_2_1]
+
 end TracelessSkewDimension

@@ -127,6 +127,15 @@ theorem dim_C4_cascade : finrank ℂ CascadeHilbert = 4 := cascade_hilbert_dim
 -- definition is called `traceless`, not `su`, for that reason. The direct-sum
 -- statements below (pati_salam_generators, sm_gauge_dim) are likewise still pure
 -- arithmetic: nothing here constructs a direct sum of these subspaces.
+--
+-- AMENDED THE SAME DAY (ERRATUM 197). The last sentence was wrong about the
+-- direct sums, and the reason recorded against them -- "requires direct sum of
+-- Lie algebra dimensions, 3 attempts exhausted" -- named Module.finrank_prod,
+-- which is in Mathlib. pati_salam_generators_dim and sm_generators_dim now state
+-- 21 and 12 as dimensions of PRODUCTS of the subspaces. Still not proved, and
+-- still correctly out of scope: force_carrier_count and sm_boson_count, whose
+-- summands include a graviton and a Higgs -- those are physics identifications,
+-- not dimensions of summands, and no product computation reaches them.
 
 /-- su(n) has n² - 1 generators. General formula.
     Adding back the trace direction recovers u(n) with n² generators.
@@ -180,11 +189,32 @@ theorem u_dim_eq_su_dim_add_one (n : ℕ) (hn : 0 < n) :
     OUT OF SCOPE: requires direct sum of Lie algebra dimensions — 3 attempts exhausted -/
 theorem pati_salam_generators : 15 + 3 + 3 = 21 := by norm_num
 
+/-- **`15 + 3 + 3 = 21` AS A DIMENSION, 2026-08-17.** The recorded reason above — *"requires direct
+sum of Lie algebra dimensions"* — named `Module.finrank_prod`, which is in Mathlib. With the three
+summands' dimensions from `TracelessSkewDimension` this is immediate, and no Lie structure is used.
+
+**What it is a statement about**: a product of three subspaces of matrix spaces. Reading it as *the
+Pati–Salam gauge algebra* is an identification neither file makes. `pati_salam_generators` above is
+true and is left standing (`ERRATUM 94`). -/
+theorem pati_salam_generators_dim :
+    Module.finrank ℝ
+        (TracelessSkewDimension.traceless 4 × TracelessSkewDimension.traceless 2
+          × TracelessSkewDimension.traceless 2) = 21 :=
+  TracelessSkewDimension.finrank_prod_4_2_2
+
 /-- The Standard Model gauge algebra: su(3) ⊕ su(2) ⊕ u(1).
     Total generators: 8 + 3 + 1 = 12.
     Also derivable via CascadeData.sm_gauge_dim from CascadeFoundation.
     OUT OF SCOPE: requires direct sum of Lie algebra dimensions — 3 attempts exhausted -/
 theorem sm_generators : 8 + 3 + 1 = 12 := by norm_num
+
+/-- **`8 + 3 + 1 = 12` AS A DIMENSION.** Same correction as the line above; the `u(1)` summand is
+`skewAdjoint (M₁(ℂ))`, of dimension `1² = 1`. -/
+theorem sm_generators_dim :
+    Module.finrank ℝ
+        (TracelessSkewDimension.traceless 3 × TracelessSkewDimension.traceless 2
+          × skewAdjoint (Matrix (Fin 1) (Fin 1) ℂ)) = 12 :=
+  TracelessSkewDimension.finrank_prod_3_2_1
 
 /-- Breaking Pati-Salam → SM removes 21 - 12 = 9 generators.
     These are: 6 leptoquark + 3 right-handed W bosons (W_R±, Z_R). -/
