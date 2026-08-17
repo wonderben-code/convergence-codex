@@ -3,6 +3,7 @@ import LatticeIsserlisSmeared
 import LatticePoincare
 import LatticeGeneratingFunctional
 import DifferentiableNotC1
+import LatticeFieldDifferentiable
 
 /-!
 # The two Poincaré lines of this estate agree on their overlap
@@ -48,6 +49,13 @@ not by itself stop `ω ↦ wig ⟪f,ω⟫` from being `C¹` — compositions can
 compose. §6 proves the observable itself fails, for every `f ≠ 0`, by restricting to a line on
 which the smearing is the identity. At `f = 0` the observable is constant and the separation
 correctly does not hold, which is why that hypothesis is there.
+
+**AND THE SEPARATION IS BETWEEN HYPOTHESIS CLASSES AND NOT BETWEEN CONCLUSIONS, WHICH §7 MAKES
+PRECISE RATHER THAN MERELY CAREFUL.** §6 said only that `poincare_correlated_general`'s hypothesis
+fails at `wig ⟪f,·⟫`, and added that nothing ruled out the inequality holding by another route.
+`LatticeFieldDifferentiable` has since built that route, so **`poincare_reaches_wigSmear`** proves
+the inequality **does** hold there. *A caveat that can be turned into a theorem should be, and this
+one was written knowing the route was missing rather than knowing it was absent.*
 
 **AND "INCOMPARABLE" IS TRUE BUT VAGUER THAN IT NEEDS TO BE, WHICH §4 FIXES.** The general
 theorem's two `L²` side conditions are **implied** by `poincare_smeared`'s own polynomial-growth
@@ -355,5 +363,92 @@ theorem separation_both_directions (hm : m ≠ 0) {f : EuclideanSpace ℝ W} (hf
       ∧ ¬ ContDiff ℝ 1 (fun ω : EuclideanSpace ℝ W => DifferentiableNotC1.wig (inner ℝ f ω : ℝ))
       ∧ ¬ ∃ (C : ℝ) (k : ℕ), ∀ x : ℝ, |Real.exp x| ≤ C * (1 + x ^ 2) ^ k :=
   ⟨poincare_smeared_reaches_wig hm f, not_contDiff_wig_smear hf, exp_not_polyGrowth⟩
+
+/-! ## 7. The §6 caveat, discharged — the conclusion DOES hold, by another route
+
+§6 was careful to say that it proved `poincare_correlated_general`'s **hypothesis** fails at
+`ω ↦ wig ⟪f,ω⟫`, **not** that its conclusion does, and named where a different route might come
+from. `LatticeFieldDifferentiable` has since built that route:
+`poincare_correlated_differentiable` proves the same inequality for any differentiable observable of
+polynomial growth, with no continuity of the gradient. `wig ⟪f,·⟫` is such an observable.
+
+**So the separation §6 exhibited is exactly a separation between HYPOTHESIS CLASSES, and §7 is what
+makes that precise rather than merely careful.** The observable is outside the `C¹` theorem's reach
+and the inequality holds for it anyway. A caveat that can be turned into a theorem should be. -/
+
+/-- `ω ↦ wig ⟪f,ω⟫`, the observable §6 showed is not `C¹`. -/
+noncomputable def wigSmear (f : EuclideanSpace ℝ W) : EuclideanSpace ℝ W → ℝ :=
+  fun ω => DifferentiableNotC1.wig (inner ℝ f ω : ℝ)
+
+omit [DecidableEq W] in
+/-- A coordinate of a vector is bounded by its norm — Cauchy–Schwarz against a unit basis vector. -/
+theorem abs_coord_le_norm (f : EuclideanSpace ℝ W) (j : W) : |(WithLp.ofLp f) j| ≤ ‖f‖ := by
+  classical
+  have hj : (inner ℝ f (WithLp.toLp 2 (Pi.single j (1 : ℝ))) : ℝ) = (WithLp.ofLp f) j := by
+    have hinner : ∀ x : W, (inner ℝ ((WithLp.ofLp f) x) (if x = j then (1 : ℝ) else 0) : ℝ)
+        = (WithLp.ofLp f) x * (if x = j then (1 : ℝ) else 0) := fun x =>
+      (RCLike.inner_apply (𝕜 := ℝ) _ _).trans (by simp [mul_comm])
+    simp [PiLp.inner_apply, hinner]
+  have hcs := abs_real_inner_le_norm f (WithLp.toLp 2 (Pi.single j (1 : ℝ)))
+  rw [hj] at hcs
+  have hn : ‖(WithLp.toLp 2 (Pi.single j (1 : ℝ)) : EuclideanSpace ℝ W)‖ = 1 := by
+    simp
+  rwa [hn, mul_one] at hcs
+
+omit [DecidableEq W] in
+theorem differentiable_wigSmear (f : EuclideanSpace ℝ W) : Differentiable ℝ (wigSmear f) :=
+  DifferentiableNotC1.differentiable_wig.comp (innerSL ℝ f).differentiable
+
+omit [DecidableEq W] in
+/-- Polynomial growth of the observable, with a constant depending only on `‖f‖`. -/
+theorem wigSmear_bound (f : EuclideanSpace ℝ W) (ω : EuclideanSpace ℝ W) :
+    |wigSmear f ω| ≤ 2 * (1 + ‖f‖ ^ 2) * (1 + ‖f‖) * (1 + ‖ω‖ ^ 2) ^ 1 := by
+  have hcs : |(inner ℝ f ω : ℝ)| ≤ ‖f‖ * ‖ω‖ := abs_real_inner_le_norm f ω
+  have hw := DifferentiableNotC1.wig_bound (inner ℝ f ω : ℝ)
+  simp only [pow_one, one_mul] at hw ⊢
+  have hsq : (inner ℝ f ω : ℝ) ^ 2 ≤ ‖f‖ ^ 2 * ‖ω‖ ^ 2 := by
+    nlinarith [abs_nonneg (inner ℝ f ω : ℝ), sq_abs (inner ℝ f ω : ℝ),
+      norm_nonneg f, norm_nonneg ω]
+  have h1 : |wigSmear f ω| ≤ 1 + (inner ℝ f ω : ℝ) ^ 2 := hw
+  nlinarith [norm_nonneg f, norm_nonneg ω, sq_nonneg ‖ω‖, sq_nonneg ‖f‖]
+
+/-- The same bound for every partial derivative, `fderiv_smear` supplying the gradient. -/
+theorem fderiv_wigSmear_bound (f : EuclideanSpace ℝ W) (j : W) (ω : EuclideanSpace ℝ W) :
+    |fderiv ℝ (wigSmear f) ω (WithLp.toLp 2 (Pi.single j (1 : ℝ)))|
+      ≤ 2 * (1 + ‖f‖ ^ 2) * (1 + ‖f‖) * (1 + ‖ω‖ ^ 2) ^ 1 := by
+  have hgrad := fderiv_smear (f := f) (F := DifferentiableNotC1.wig)
+    (F' := DifferentiableNotC1.wig') DifferentiableNotC1.hasDerivAt_wig ω j
+  have hcs : |(inner ℝ f ω : ℝ)| ≤ ‖f‖ * ‖ω‖ := abs_real_inner_le_norm f ω
+  have hsq : (inner ℝ f ω : ℝ) ^ 2 ≤ ‖f‖ ^ 2 * ‖ω‖ ^ 2 := by
+    nlinarith [abs_nonneg (inner ℝ f ω : ℝ), sq_abs (inner ℝ f ω : ℝ),
+      norm_nonneg f, norm_nonneg ω]
+  have hw := DifferentiableNotC1.wig'_bound (inner ℝ f ω : ℝ)
+  have hc := abs_coord_le_norm f j
+  simp only [pow_one] at hw ⊢
+  rw [show fderiv ℝ (wigSmear f) ω (WithLp.toLp 2 (Pi.single j (1 : ℝ)))
+      = DifferentiableNotC1.wig' (inner ℝ f ω : ℝ) * (WithLp.ofLp f) j from hgrad, abs_mul]
+  have hwnn : (0:ℝ) ≤ |DifferentiableNotC1.wig' (inner ℝ f ω : ℝ)| := abs_nonneg _
+  have hstep : |DifferentiableNotC1.wig' (inner ℝ f ω : ℝ)| * |(WithLp.ofLp f) j|
+      ≤ (2 * (1 + ‖f‖ ^ 2 * ‖ω‖ ^ 2)) * ‖f‖ := by
+    refine mul_le_mul ?_ hc (abs_nonneg _) (by positivity)
+    nlinarith
+  refine hstep.trans ?_
+  nlinarith [norm_nonneg f, norm_nonneg ω, sq_nonneg ‖ω‖, sq_nonneg ‖f‖,
+    mul_nonneg (norm_nonneg f) (sq_nonneg ‖ω‖)]
+
+/-- **THE CAVEAT §6 WROTE, NOW A THEOREM.** The inequality `poincare_correlated_general` states
+**does** hold at `ω ↦ wig ⟪f,ω⟫`, by `LatticeFieldDifferentiable`'s differentiable route — even
+though that theorem's `C¹` hypothesis fails there for every `f ≠ 0` (`not_contDiff_wig_smear`).
+
+So what §6 exhibited is a gap between **hypothesis classes** and not between what can be concluded,
+and §7 is what turns "nothing here rules that out" into "and here it is". -/
+theorem poincare_reaches_wigSmear (hm : m ≠ 0) (f : EuclideanSpace ℝ W) :
+    (∫ ω, wigSmear f ω * wigSmear f ω ∂(gaussianField K m))
+        - (∫ ω, wigSmear f ω ∂(gaussianField K m)) ^ 2
+      ≤ ∫ ω, (fun j => fderiv ℝ (wigSmear f) ω (WithLp.toLp 2 (Pi.single j (1 : ℝ))))
+          ⬝ᵥ green K m *ᵥ (fun j => fderiv ℝ (wigSmear f) ω (WithLp.toLp 2 (Pi.single j (1 : ℝ))))
+        ∂(gaussianField K m) :=
+  LatticeFieldDifferentiable.poincare_correlated_differentiable hm (differentiable_wigSmear f)
+    (wigSmear_bound f) (fun j ω => fderiv_wigSmear_bound f j ω)
 
 end LatticeSmearedFromGeneral
