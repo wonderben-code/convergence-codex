@@ -44,7 +44,7 @@ Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 
 namespace TracelessSkewDimension
 
-open Complex
+open Complex Matrix
 
 /-- **THE IMAGINARY PART OF THE TRACE, AS A REAL-LINEAR FUNCTIONAL ON THE SKEW-HERMITIAN
 MATRICES.** A skew-Hermitian matrix has purely imaginary trace, so this loses nothing. -/
@@ -160,5 +160,48 @@ theorem finrank_prod_diff :
       = Module.finrank ℝ
           (traceless 3 × traceless 2 × skewAdjoint (Matrix (Fin 1) (Fin 1) ℂ)) + 9 := by
   rw [finrank_prod_4_2_2, finrank_prod_3_2_1]
+
+/-! ## 3. The name earns itself, and a witness for `B − L` -/
+
+/-- **A MEMBER OF `traceless n` IS TRACELESS.** The definition asks only that the **imaginary part**
+of the trace vanish; the real part vanishes for free because a skew-Hermitian matrix has purely
+imaginary trace (`Matrix.trace_conjTranspose`).
+
+**This was owed.** §1 named the subspace `traceless` and proved nothing of the kind — the audit of
+`ERRATUM 197` found the omission in this file, not in someone else's. -/
+theorem trace_eq_zero_of_mem_traceless {n : ℕ} {A : skewAdjoint (Matrix (Fin n) (Fin n) ℂ)}
+    (hA : A ∈ traceless n) : Matrix.trace (A : Matrix (Fin n) (Fin n) ℂ) = 0 := by
+  set M : Matrix (Fin n) (Fin n) ℂ := (A : Matrix (Fin n) (Fin n) ℂ) with hM
+  have hskew : Mᴴ = -M := skewAdjoint.mem_iff.mp A.property
+  have hre : (Matrix.trace M).re = 0 := by
+    have h1 : star (Matrix.trace M) = -Matrix.trace M := by
+      rw [← Matrix.trace_conjTranspose, hskew, Matrix.trace_neg]
+    have h2 := congrArg Complex.re h1
+    simp only [Complex.star_def, Complex.conj_re, Complex.neg_re] at h2
+    linarith
+  have him : (Matrix.trace M).im = 0 := hA
+  exact Complex.ext hre him
+
+/-- **THE `B − L` GENERATOR IS A MEMBER, AND ITS TRACE VANISHES.**
+`F4_1e.bl_traceless` states `3 * 1 + 1 * (-3) = 0` on integers and records *"OUT OF SCOPE: requires
+trace theory on su(4) generators — 3 attempts exhausted"*. The trace theory needed is
+`Matrix.trace` of a diagonal matrix. This exhibits the matrix — `diag(i, i, i, −3i)`, which is
+`B − L` scaled by `3i` — as an element of `traceless 4`. -/
+noncomputable def blGen : Matrix (Fin 4) (Fin 4) ℂ :=
+  Matrix.diagonal ![Complex.I, Complex.I, Complex.I, -3 * Complex.I]
+
+theorem blGen_mem_skewAdjoint : blGen ∈ skewAdjoint (Matrix (Fin 4) (Fin 4) ℂ) := by
+  rw [skewAdjoint.mem_iff, blGen]
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp
+
+theorem blGen_trace : Matrix.trace blGen = 0 := by
+  rw [blGen, Matrix.trace_diagonal]
+  simp [Fin.sum_univ_four]
+  ring
+
+theorem blGen_mem_traceless : (⟨blGen, blGen_mem_skewAdjoint⟩ : skewAdjoint _) ∈ traceless 4 := by
+  simp [traceless, traceIm, blGen_trace]
 
 end TracelessSkewDimension
