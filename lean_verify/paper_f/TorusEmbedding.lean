@@ -54,18 +54,25 @@ prose, exactly the kind this file exists to distrust**.
 COULD".**
 It has two halves, one on each side of the Mathlib boundary.
 
-* **Estate side:** `torusGraph 1 n` should be `SimpleGraph.cycleGraph n` transported along
-  `Site 1 n ≃ Fin n` (`Equiv.funUnique`). Mathlib defines `cycleGraph n = circulantGraph {1}` and
-  the estate's `adjT` is visibly the same relation with the wrap written out by hand. **Attempted:
-  `adjT a b ↔ (cycleGraph n).Adj a b` does not fall to `simp` + `omega`** — `Fin` subtraction puts
-  a `%` in the goal that `omega` cannot see through, so the wrap needs manual case analysis. Not a
-  wall; not a one-liner either.
-* **Mathlib side:** the obstruction is then `girth (cycleGraph n) = n`. **Mathlib has `girth` and
-  `egirth` (`Combinatorics/SimpleGraph/Girth.lean`) and computes neither for `cycleGraph`** —
-  probed by shape today, the only `cycleGraph`-meets-girth hit in the library being a *comment* in
-  `Bipartite.lean`. That half is a plausible Mathlib contribution rather than estate work.
+* **Estate side — DISCHARGED, same day, in `TorusCycleGraph`.** `torusGraph 1 n` should be
+  `SimpleGraph.cycleGraph n` transported along `Site 1 n ≃ Fin n` (`Equiv.funUnique`). Mathlib
+  defines `cycleGraph n = circulantGraph {1}` and the estate's `adjT` is visibly the same relation
+  with the wrap written out by hand. The first attempt is recorded because it failed and the reason
+  it failed is the content: **`adjT a b ↔ (cycleGraph n).Adj a b` does not fall to `simp` +
+  `omega`** — `Fin` subtraction puts a `%` in the goal that `omega` cannot see through. What
+  supplied the case analysis was `Fin.val_add_one`, whose own statement is the split on
+  `b = Fin.last n`. `TorusCycleGraph.torusGraph_one_iso` now proves
+  `torusGraph 1 (n+1) ≃g cycleGraph (n+1)`.
+* **Mathlib side — UNMOVED.** The obstruction is then `girth (cycleGraph n) = n`. **Mathlib has
+  `girth` and `egirth` (`Combinatorics/SimpleGraph/Girth.lean`) and computes neither for
+  `cycleGraph`** — probed by shape on 17 August, the only `cycleGraph`-meets-girth hit in the
+  library being a *comment* in `Bipartite.lean`. That half is a plausible Mathlib contribution
+  rather than estate work, and **discharging the estate side did nothing whatever to it**.
 
-*Recorded so the next reader inherits the two dead ends rather than re-walking them.*
+*Recorded so the next reader inherits the two dead ends rather than re-walking them — and so that
+the one now walked is not confused with the one still standing.* **`no_embedding_three_into_six`
+below remains the only negative result: `TorusCycleGraph` is a change of vocabulary, not a proof
+that the embedding fails for general `n`.**
 
 **`n = 4` was attempted and the decision procedure overflowed the stack.** That is a **resource
 limit and is evidence for nothing**: it says the kernel ran out of room, not that a map does or does
