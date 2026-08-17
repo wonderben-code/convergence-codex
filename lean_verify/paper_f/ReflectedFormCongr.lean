@@ -34,6 +34,9 @@ is degenerate at every nonzero mass.
   lattice at side four**, under the carried-across reflection.
 * **`strict_depends_on_reflection`** — **and it holds there under the lattice's own reflection**, so
   strictness is a property of the *pair*, not of the graph.
+* **`strict_depends_on_the_half`** — and §7 pins down *which* part of the pair: the two reflections
+  are **conjugate by a rotation** (`rot_intertwines`), so **the half is the variable**. Same graph,
+  same reflection, same mass: strict on a contiguous half, degenerate on an antipodal one.
 
 ## And the reason that last one is sharp is not the reason first written here
 
@@ -265,5 +268,66 @@ theorem torusRho_ne_revSite : torusRho ≠ GraphReflection.revSite (d := 1) (n :
 /-- **AND THE HALF IS NOT `lowerHalf` EITHER.** -/
 theorem torusHalf_ne_lowerHalf :
     torusHalf ≠ GraphHalfSpace.lowerHalf (d := 1) (n := 4) 0 := by decide
+
+/-! ## 7. The operative difference is the HALF, not the reflection
+
+`strict_depends_on_reflection` above is true and **its name is imprecise**, which the kernel says
+rather than a reader having to notice. `revSite 0` is `(0 3)(1 2)` and `torusRho` is `(0 1)(2 3)`:
+**both are edge reflections of the same four-cycle, conjugate by one step of rotation.** What
+differs is the half — `lowerHalf 0 4` is `{0,1}`, a contiguous side, and `torusHalf` is `{0,2}`,
+an antipodal pair. So the sharp statement fixes the reflection and moves the half.
+-/
+
+/-- One step of rotation of the four-cycle. -/
+def rot : BoxGraph.Site 1 4 ≃ BoxGraph.Site 1 4 :=
+  (TorusCycleGraph.siteEquiv 4).trans
+    ((Equiv.addRight (1 : Fin 4)).trans (TorusCycleGraph.siteEquiv 4).symm)
+
+theorem rot_adj (p q : BoxGraph.Site 1 4) :
+    (TorusReflection.torusGraph 1 4).Adj (rot p) (rot q)
+      ↔ (TorusReflection.torusGraph 1 4).Adj p q := by
+  revert p q
+  decide
+
+/-- **THE TWO REFLECTIONS ARE CONJUGATE**, by that rotation. This is what makes the section
+heading true rather than a guess. -/
+theorem rot_intertwines (p : BoxGraph.Site 1 4) :
+    rot (GraphReflection.revSite (d := 1) (n := 4) 0 p) = torusRho (rot p) := by
+  revert p
+  decide
+
+/-- The contiguous half, carried along the rotation: `{1,2}`. -/
+def rotHalf : Finset (BoxGraph.Site 1 4) :=
+  (GraphHalfSpace.lowerHalf (d := 1) (n := 4) 0).map rot.toEmbedding
+
+/-- **AND IT IS NOT `torusHalf`.** `{1,2}` against `{0,2}` — a side of the cycle against an
+antipodal pair. **This is the whole difference between the two answers.** -/
+theorem rotHalf_ne_torusHalf : rotHalf ≠ torusHalf := by decide
+
+/-- The lattice at side four is strict under `torusRho` **on the rotated contiguous half**,
+transported from `MirrorStrict.reflectionPositive_torus_four_strict` by `strict_congr_iff`. -/
+theorem torusFour_strict_rotHalf (m : ℝ) (hm : m ≠ 0) :
+    ∀ c : BoxGraph.Site 1 4 → ℝ, c ≠ 0 →
+      (∀ p, p ∉ rotHalf → p ∉ (∅ : Finset (BoxGraph.Site 1 4)) → c p = 0) →
+      0 < reflectedForm (TorusReflection.torusGraph 1 4) m torusRho c := by
+  have h := (strict_congr_iff rot rot_adj rot_intertwines m
+      (GraphHalfSpace.lowerHalf (d := 1) (n := 4) 0) ∅).mp
+    (fun c hc0 hcs => MirrorStrict.reflectionPositive_torus_four_strict 0 hm hc0
+      (fun p hp => hcs p hp (by simp)))
+  simpa [rotHalf] using h
+
+/-- **ONE GRAPH, ONE REFLECTION, ONE MASS — AND THE HALF DECIDES.**
+
+Under `torusRho`: **strict** on the contiguous half `rotHalf = {1,2}`, **degenerate** on the
+antipodal half `torusHalf = {0,2}`. `rotHalf_ne_torusHalf` is what stops this being a
+contradiction, and `rot_intertwines` is what shows the reflection is not the variable. -/
+theorem strict_depends_on_the_half (m : ℝ) (hm : m ≠ 0) :
+    (∀ c : BoxGraph.Site 1 4 → ℝ, c ≠ 0 →
+        (∀ p, p ∉ rotHalf → p ∉ (∅ : Finset (BoxGraph.Site 1 4)) → c p = 0) →
+        0 < reflectedForm (TorusReflection.torusGraph 1 4) m torusRho c)
+      ∧ ¬ ∀ c : BoxGraph.Site 1 4 → ℝ, c ≠ 0 →
+          (∀ p, p ∉ torusHalf → p ∉ (∅ : Finset (BoxGraph.Site 1 4)) → c p = 0) →
+          0 < reflectedForm (TorusReflection.torusGraph 1 4) m torusRho c :=
+  ⟨torusFour_strict_rotHalf m hm, torusFour_not_strict m hm⟩
 
 end ReflectedFormCongr
