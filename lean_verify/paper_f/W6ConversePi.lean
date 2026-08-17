@@ -52,6 +52,32 @@
   theorem about a class known to be inhabited by non-constants (§5) and
   not known to be proper.
 
+  **BOTH OF THE TWO PARAGRAPHS ABOVE ARE NOW FALSE — SUPERSEDED
+  2026-08-17 (`ERRATUM 94`: quoted, not rewritten; `ERRATUM 199`).** They
+  were true on 14 August and were made false the same week by files this
+  header was never brought back to.
+
+  * *"the two n-dimensional classes are NOT known to be equal …
+    `W6Converse.stein_iff_smooth` has no twin below and none is claimed"* —
+    **`SteinSmoothPi.smoothSteinPairPi_of_steinPairPi` is the twin**, and
+    `steinPairPi_iff_smoothSteinPairPi` is the biconditional. The three
+    n-dimensional classes coincide.
+  * *"the estate has no n-dimensional properness witness"* —
+    **`HermitePiProper.exists_memLp_not_steinPairPi`**: in every dimension
+    `n ≥ 1` there is an `f ∈ L²(γⁿ)` with no Stein partner at all. The
+    reason given is obsolete too: the refutation needed only the ONE
+    direction of the coefficient story the estate already had, and the
+    full characterisation exists as well
+    (`HermitePiCoeff.steinPairPi_iff_summable`).
+
+  **NO CITING THEOREM IS ADDED HERE, AND THE REASON IS STRUCTURAL.** Both
+  closers are DOWNSTREAM — `HermitePiProper` imports this file — so a
+  machine-checked citation inside this header would be an import cycle.
+  That is exactly why this kind of claim rots: the file that would have to
+  be corrected can never depend on the file that corrects it, so nothing
+  mechanical will ever catch it. The correction is prose, and it is
+  deliberate prose.
+
   ONE OF THE NAMED PIECES BELOW IS GENERIC AND DOES NOT BELONG IN THIS
   FILE: `hasCompactSupport_coordProd` — a product of one-variable compactly
   supported functions of the coordinates has compact support. It says

@@ -31,6 +31,11 @@
      two sides of `ψ`'s own Stein pairing are the SAME integrand, so they
      cancel, and what is left is `∫ ψ·∂ᵢ(Hpi m)`.
   3. **`smoothSteinPairPi_of_steinPairPi`** — the containment.
+     **This is the twin `W6ConversePi` said did not exist.** That file's
+     header reads *"`W6Converse.stein_iff_smooth` has no twin below and
+     none is claimed"*, and it is upstream of this one, so it cannot cite
+     the theorem that refutes it; the back-reference lives here instead
+     (`ERRATUM 199`).
   4. **`steinPairPi_iff_smoothSteinPairPi`**, **`steinPairPi_iff_sobolevWeakPi`**
      and **`w6_answered_pi`** — **the three n-dimensional classes COINCIDE**,
      stated in the shape WALLS W6 asks the question, one dimension at a

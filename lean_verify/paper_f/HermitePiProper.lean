@@ -17,6 +17,14 @@
      is an `f ∈ L²(γⁿ)` with **no** Stein partner at all. Not "no obvious
      one": the refutation is a single divergent series and it kills every
      candidate `g` simultaneously.
+
+     **AND IT CLOSES A CLAUSE `W6ConversePi` COULD NOT RETRACT ITSELF.**
+     That file's header said *"the estate has no n-dimensional properness
+     witness — no `f ∈ L²(γⁿ)` shown to lie outside `SteinPairPi`"*. This
+     is the witness. The note belongs HERE and not only there because
+     `W6ConversePi` is UPSTREAM of this file: it can never import the
+     theorem that refutes its own sentence, so the back-reference is the
+     only direction a machine can check (`ERRATUM 199`).
   2. **`steinPairPi_proper`**, **`sobolevWeakPi_proper`** and
      **`smoothSteinPairPi_proper`** — and therefore all three n-dimensional
      classes are proper, the last two through `W6ConversePi`'s arrow.
