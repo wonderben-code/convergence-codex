@@ -205,4 +205,62 @@ theorem finrank_couplingKer_add_blockCount (h : IsRefl G θ) (hC : IsCrossBlock 
           w ∈ LinearMap.ker (blockSums G θ H) ↔ crossForm G m θ H (w : V → ℝ) = 0 :=
   ⟨finrank_ker_blockSums_add_blockCount h hC, mem_ker_blockSums_iff h hC hM m⟩
 
+/-! ## 5. The two halves, measured
+
+`PROOF_STRATEGY` §6 Q3: §§1–4 are a criterion and nothing had been measured with it. These are the
+two halves of `ReflectedFormCongr` §7, and the criterion returns a dimension for each — **derived
+from the strictness facts already proved, through `strict_iff_finrank_ker_eq_zero`**, with no new
+computation at all.
+
+**A route that was tried and abandoned, recorded as what it is.** The first attempt computed
+`blockClasses` directly at each half — `blk`, `cls`, then the image — in order to read off `1` and
+`2` and get the exact dimensions. `blk` and `cls` filter on a **real** matrix entry, so they are
+`noncomputable` and the arithmetic had to be routed through
+`BlockCount.mem_blk_iff` / `mem_cls_iff` into adjacency, where `decide` can work. **That build did
+not finish in a reasonable time and was killed.** This is a fact about that attempt and this build
+machine, **not a claim that the computation is hard** (`ERRATUM 194`): the route below makes it
+unnecessary, so nothing was learned about the cost of the one abandoned.
+-/
+
+open HalfBlockStructure ReflectedFormCongr
+
+/-- **THE CONTIGUOUS HALF: THE COUPLING IS BLIND IN NO DIRECTION.**
+
+`ReflectedFormCongr.torusFour_strict_rotHalf` says the reflected form is strict there; §3 says
+strictness *is* the kernel vanishing. -/
+theorem finrank_ker_rotHalf {m : ℝ} (hm : m ≠ 0) :
+    Module.finrank ℝ (LinearMap.ker
+        (blockSums (TorusReflection.torusGraph 1 4) torusRho rotHalf)) = 0 :=
+  (strict_iff_finrank_ker_eq_zero isRefl_torusRho
+      (isCrossBlock_of_cross_diag crossDiag_rotHalf) isMirrorHalf_rotHalf (m := m) hm).mp
+    (fun c hc0 hcs => torusFour_strict_rotHalf m hm c hc0 hcs)
+
+/-- **THE ANTIPODAL HALF: THE COUPLING IS BLIND IN AT LEAST ONE.**
+
+`ReflectedFormCongr.torusFour_not_strict` says the reflected form is *not* strict there, so by §3
+the kernel is not trivial. **This is the dimension statement doing work**: a degeneracy that §7
+could only report as a failed inequality is here a positive number of directions. -/
+theorem finrank_ker_torusHalf_pos {m : ℝ} (hm : m ≠ 0) :
+    0 < Module.finrank ℝ (LinearMap.ker
+        (blockSums (TorusReflection.torusGraph 1 4) torusRho torusHalf)) := by
+  rcases Nat.eq_zero_or_pos (Module.finrank ℝ (LinearMap.ker
+      (blockSums (TorusReflection.torusGraph 1 4) torusRho torusHalf))) with hz | hpos
+  · exact absurd ((strict_iff_finrank_ker_eq_zero isRefl_torusRho isCrossBlock_torusHalf
+      isMirrorHalf_torusHalf (m := m) hm).mpr hz) (torusFour_not_strict m hm)
+  · exact hpos
+
+/-- **AND SO THE TWO HALVES ARE SEPARATED BY A DIMENSION**, not only by an inequality holding or
+failing. One graph, one reflection, one mass, two halves: blind in no direction, blind in at least
+one.
+
+**Not the exact value.** That the antipodal half's kernel has dimension exactly `1` would follow
+from `finrank_ker_blockSums_add` together with the block count there being `1`, and the block count
+is what the abandoned route was computing. **Recorded as not done.** -/
+theorem finrank_ker_two_halves {m : ℝ} (hm : m ≠ 0) :
+    Module.finrank ℝ (LinearMap.ker
+        (blockSums (TorusReflection.torusGraph 1 4) torusRho rotHalf)) = 0
+      ∧ 0 < Module.finrank ℝ (LinearMap.ker
+        (blockSums (TorusReflection.torusGraph 1 4) torusRho torusHalf)) :=
+  ⟨finrank_ker_rotHalf hm, finrank_ker_torusHalf_pos hm⟩
+
 end BlockDimension
