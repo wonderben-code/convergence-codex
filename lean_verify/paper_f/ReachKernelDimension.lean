@@ -25,6 +25,8 @@ statement that now has a value at every half, not only at the strict ones.
 * **`reachKer_eq_of_mass`** — on a block cut the reach kernel does not depend on `m`. The
   right-hand side of the identity is combinatorial, so the left-hand side cannot move with the
   mass. Nothing before this said that; `InReachKernel` mentions `m` in its definition.
+  **Superseded by `CutRank.reachKer_eq_of_mass_general`, which drops the block hypothesis** — the
+  mass-independence is a fact about `crossMatrix`, not about blocks.
 * **`two_le_finrank_reachKer`** — two blocks short of `|H|` means degeneracy in **two independent
   directions**. The biconditional could not distinguish "not strict" from "very far from strict";
   this does, and it is the first statement in the estate that does.
@@ -226,8 +228,17 @@ visible from the definition — it is a consequence of the block hypothesis.
 
 `CrossFormMatrix.crossForm_mass_independent` already says the *coupling* is mass-free; that is the
 reason the right-hand side of §3 has no `m` in it. What is new is that the property crosses to the
-reach kernel, which is defined through `GraphLaplacian.massive G m` and therefore does move with
-the mass on a graph whose cut is not in blocks. -/
+reach kernel, which is defined through `GraphLaplacian.massive G m`.
+
+**SUPERSEDED THE SAME DAY BY `CutRank.reachKer_eq_of_mass_general`, AND ONE SENTENCE HERE WAS
+WRONG.** This docstring ended:
+
+> *"…and therefore does move with the mass on a graph whose cut is not in blocks."*
+
+That was a guess dressed as a statement, and it is **false**:
+`CrossBlockStructure.inReachKernel_iff_rows` already puts the reach kernel in bijection with the
+cut matrix's rows on **any** cut, and the cut matrix has no mass in it. The theorem below is true
+and is now the block-cut case of a general one. -/
 theorem reachKer_eq_of_mass (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ)
     (hC : IsCrossBlock G θ H) (m₁ m₂ : ℝ) :
     reachKer G m₁ H Mir = reachKer G m₂ H Mir := by
@@ -253,7 +264,11 @@ Before this the left-hand side was known only to be zero or not zero.
 nothing here reproves it; this is that theorem carried across `comap_reachKer`. The work is §2–§3
 — the identification of the reach kernel with the block-sum kernel — and the value of the carry is
 that `reachKer` is the object the strictness criterion is stated about, while `blockSums` is an
-auxiliary map defined to count blocks. -/
+auxiliary map defined to count blocks.
+
+**AND `IsCrossBlock` IS NOT NEEDED FOR THE IDENTITY**, which `CutRank.finrank_reachKer_add_rank`
+proves the same day: what stands opposite the degeneracy in general is the **rank of the cut**, and
+the block hypothesis is what turns that rank into a count. This theorem is the block-cut case. -/
 theorem finrank_reachKer_add (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ)
     (hC : IsCrossBlock G θ H) :
     Module.finrank ℝ (reachKer G m H Mir) + (blockClasses G θ H).card = H.card := by
