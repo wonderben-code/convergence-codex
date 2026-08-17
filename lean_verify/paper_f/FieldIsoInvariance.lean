@@ -38,6 +38,10 @@ the `example` beneath it, not asserted.
   GRAPH ISOMORPHIC TO IT**, as an equality of measures.
 * **`gaussianField_map_iso`** — the same, phrased for a `SimpleGraph.Iso`, which is the form a
   caller holding one actually has.
+* **`congrField_eq_permField`** and the `example` beside it — the two prose claims that
+  `FieldAutInvariance`'s statements are this file's at `W = V`, **checked by the kernel** rather
+  than asserted. §1 checked the third; leaving the other two as prose was the same defect one
+  register down.
 * **`gaussianField_torus_eq_cycleGraph`** — **the payoff.** `TorusCycleGraph` proved the estate's
   `d = 1` torus **is** Mathlib's `cycleGraph` as a graph. This says the estate's Gaussian field on
   it **is** the Gaussian field on `cycleGraph`, as a measure.
@@ -169,7 +173,26 @@ theorem gaussianField_map_iso (e : G ≃g G') (hm : m ≠ 0) :
     (gaussianField G m).map (congrField e.toEquiv) = gaussianField G' m :=
   gaussianField_map_congr e.toEquiv (fun _ _ => e.map_rel_iff) hm
 
-/-! ## 5. The payoff: the estate's one-dimensional torus field IS Mathlib's cycle-graph field -/
+/-! ## 5. The two prose claims about specialisation, checked
+
+`ERRATUM 48`'s neighbour: this file says in three places that a `FieldAutInvariance` statement is
+its own at `W = V`. **§1 checked one of them with an `example` and the other two were left as
+prose**, which is the same defect one register down. Both are checked here. -/
+
+omit [DecidableEq V] in
+/-- **`FieldAutInvariance.permField` IS `congrField` AT `W = V`**, by `rfl` — the prose claim in §2,
+checked. -/
+theorem congrField_eq_permField (θ : V ≃ V) :
+    congrField θ = FieldAutInvariance.permField θ := rfl
+
+/-- **AND `FieldAutInvariance.gaussianField_map_perm` IS THIS FILE'S THEOREM AT `G' = G`**, checked
+by the kernel rather than asserted. The generalisation is therefore faithful: nothing was lost in
+opening the two graphs apart. -/
+example {θ : V ≃ V} (hθ : FieldAutInvariance.IsGraphAut G θ) (hm : m ≠ 0) :
+    (gaussianField G m).map (FieldAutInvariance.permField θ) = gaussianField G m :=
+  gaussianField_map_congr (G' := G) θ hθ hm
+
+/-! ## 6. The payoff: the estate's one-dimensional torus field IS Mathlib's cycle-graph field -/
 
 /-- **THE PAYOFF.** `TorusCycleGraph.torusGraph_one_iso` proved the estate's `d = 1` torus **is**
 Mathlib's `cycleGraph`, as a graph. This says its Gaussian field **is** the Gaussian field on
