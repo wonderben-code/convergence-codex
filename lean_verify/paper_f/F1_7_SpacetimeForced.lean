@@ -61,6 +61,9 @@ import Mathlib.LinearAlgebra.FreeModule.Finite.Matrix
 import Mathlib.LinearAlgebra.Dimension.Constructions
 -- Import genuine Clifford algebra proofs (transitively imports CliffordAlgebra, Quaternion, etc.)
 import F4_1e_CliffordMatrix
+import CliffordRealMinkowski
+import CliffordRealMajorana
+import IdempotentRankInvariant
 import CascadeFoundation
 
 open Matrix CliffordAlgebra
@@ -401,6 +404,51 @@ theorem Cl31_is_M4R :
   refine ⟨by norm_num, ?_, ?_, by norm_num, by omega, by omega⟩
   · simp [finrank_matrix, finrank_self]
   · simp [finrank_matrix, finrank_self]
+
+/-! ### The two classifications are not out of scope — this estate proved them
+
+**SUPERSEDED 2026-08-17 (`ERRATUM 94`: quoted, not rewritten; `ERRATUM 197`'s audit, corrected).**
+The two theorems above prove **dimension arithmetic** — `2 ^ 4 = 16` and its partners — under
+reasons reading *"the step formula … is standard algebra but not formalised in Mathlib for real
+Clifford algebras"* and *"Real Clifford algebra Cl(3,1) classification not formalised in Mathlib"*.
+
+**Both sentences are true about Mathlib and both are beside the point, because this estate
+formalised them itself.** `CliffordRealMinkowski.cliffordRealMinkowskiEquiv` and
+`CliffordRealMajorana.cliffordMajoranaEquiv` are bundled `≃ₐ[ℝ]` isomorphisms, built by exhibiting
+gamma representations and proving them bijective — **without** the step formula the first reason
+names as missing.
+
+**This is the failure `UNLOCK_WATCHLIST` exists to prevent**: a theorem lands and a placeholder
+elsewhere goes on standing in for it, under a reason that reads as if nobody could have it.
+
+**AND THE AUDIT OF `ERRATUM 197` MISSED IT**, one unit before this. That audit asked of each
+recorded reason *"is the named thing absent from Mathlib?"* — and here the answer is **yes**, so the
+notes were classified as standing. **The question it failed to ask is "does this estate have it?"**
+That is recorded as the audit's own defect, not as a new finding about someone else.
+-/
+
+/-- **Cl(1,3;ℝ) ≅ M₂(ℍ), THE ISOMORPHISM.** `Cl13_is_M2H` above checks that both sides have real
+dimension `16`. This is the map. -/
+theorem Cl13_is_M2H_iso :
+    Nonempty (CliffordAlgebra CliffordRealMinkowski.Q₁₃
+      ≃ₐ[ℝ] Matrix (Fin 2) (Fin 2) (Quaternion ℝ)) :=
+  ⟨CliffordRealMinkowski.cliffordRealMinkowskiEquiv⟩
+
+/-- **Cl(3,1;ℝ) ≅ M₄(ℝ), THE ISOMORPHISM.** -/
+theorem Cl31_is_M4R_iso :
+    Nonempty (CliffordAlgebra CliffordRealMajorana.Q₃₁ ≃ₐ[ℝ] Matrix (Fin 4) (Fin 4) ℝ) :=
+  ⟨CliffordRealMajorana.cliffordMajoranaEquiv⟩
+
+/-- **AND THE TWO TARGETS ARE GENUINELY DIFFERENT ALGEBRAS.** `Cl31_is_M4R`'s docstring says
+*"M₄(ℝ) is NOT M₂(ℍ)"* and then checks that `16 = 16` — which is the one thing that does **not**
+distinguish them. `IdempotentRankInvariant.matrix2H_not_ringEquiv_matrix4R` is the separation, by an
+orthogonal-idempotent count.
+
+**So the exclusion argument the docstring describes is a theorem**, and equal dimension was never
+going to be it. -/
+theorem M2H_ne_M4R :
+    IsEmpty (Matrix (Fin 2) (Fin 2) (Quaternion ℝ) ≃+* Matrix (Fin 4) (Fin 4) ℝ) :=
+  IdempotentRankInvariant.matrix2H_not_ringEquiv_matrix4R
 
 /-- Signature determination: M₂(ℍ) selects (1,3) from the possible signatures.
 
