@@ -42,7 +42,10 @@
      and reused through `steinPairPi_of_sobolevWeakPi`.
   4. **`memLp_of_polyGrowth`** — polynomial growth suffices for the L²
      clauses, through `GaussPiExp.memLp_exp_sumAbs` and the elementary
-     `1 + s² ≤ (1+s)² ≤ exp(2s)`.
+     `1 + s² ≤ (1+s)² ≤ exp(2s)`. It asks only for A.E.-STRONG
+     MEASURABILITY, matching the 1-d twin; it read `Continuous h` until
+     `SteinDifferentiablePi` needed it for a discontinuous gradient, and the
+     proof never used more than the weaker hypothesis.
   5. **`sin_coord_mem`** — and the criterion is exercised rather than
      merely stated: `x ↦ sin xᵢ` is a member, with gradient `cos xᵢ · eᵢ`.
      It is bounded (`sin_coord_bounded`) and non-constant
@@ -202,9 +205,17 @@ theorem poly_le_exp {t : ℝ} (ht : 0 ≤ t) (m : ℕ) :
         push_cast
         ring
 
-/-- **Polynomial growth suffices.** Any continuous `h` with
-    `|h x| ≤ C·(1 + ‖x‖²)^m` is in `L²(γⁿ)`. -/
-theorem memLp_of_polyGrowth {h : (Fin n → ℝ) → ℝ} (hc : Continuous h) {C : ℝ}
+/-- **Polynomial growth suffices.** Any a.e.-strongly-measurable `h` with
+    `|h x| ≤ C·(1 + ‖x‖²)^m` is in `L²(γⁿ)`.
+
+    *This asked for `Continuous h` until `SteinDifferentiablePi` needed it for
+    the partial derivative of a merely differentiable function, which need not
+    be continuous. The proof never used more than measurability — the
+    continuity was spent on one `.aestronglyMeasurable` — and the 1-d twin
+    `PoincareBeyondPolynomials.memLp_of_polyGrowth` had taken the weaker
+    hypothesis from the start.* -/
+theorem memLp_of_polyGrowth {h : (Fin n → ℝ) → ℝ}
+    (hc : AEStronglyMeasurable h (gaussPi n)) {C : ℝ}
     {m : ℕ} (hb : ∀ x, |h x| ≤ C * (1 + ‖x‖ ^ 2) ^ m) :
     MemLp h 2 (gaussPi n) := by
   have hC : 0 ≤ C := by
@@ -212,7 +223,7 @@ theorem memLp_of_polyGrowth {h : (Fin n → ℝ) → ℝ} (hc : Continuous h) {C
     have hpos : (0 : ℝ) < (1 + ‖(0 : Fin n → ℝ)‖ ^ 2) ^ m := by positivity
     nlinarith [abs_nonneg (h 0)]
   refine MemLp.of_le ((memLp_exp_sumAbs n (2 * m)).const_mul C)
-    hc.aestronglyMeasurable (Filter.Eventually.of_forall fun x => ?_)
+    hc (Filter.Eventually.of_forall fun x => ?_)
   rw [Real.norm_eq_abs, Real.norm_eq_abs,
     abs_of_nonneg (by positivity : (0:ℝ) ≤ C * Real.exp (2 * (m : ℝ) * sumAbs n x))]
   refine (hb x).trans ?_
@@ -264,10 +275,10 @@ theorem sin_coord_mem (i : Fin n) :
         (Pi.single j (1:ℝ))) := by
   refine sobolevWeakPi_of_contDiff (contDiff_sinCoord i) ?_ fun j => ?_
   · exact memLp_of_polyGrowth (C := 1) (m := 0)
-      (Real.continuous_sin.comp (continuous_apply i))
+      (Real.continuous_sin.comp (continuous_apply i)).aestronglyMeasurable
       fun x => by simpa using Real.abs_sin_le_one (x i)
   · refine memLp_of_polyGrowth (C := 1) (m := 0)
-      ((continuous_gradient (contDiff_sinCoord i) j)) fun x => ?_
+      ((continuous_gradient (contDiff_sinCoord i) j)).aestronglyMeasurable fun x => ?_
     rw [(hasFDerivAt_sinCoord i x).fderiv]
     simp only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.proj_apply,
       smul_eq_mul, pow_zero, mul_one]
