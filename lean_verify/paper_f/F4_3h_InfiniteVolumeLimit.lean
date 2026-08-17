@@ -23,6 +23,7 @@ import CascadeFoundation
 import GaussianMeasure
 import SpectralActionMeasure
 import ConnesNCG
+import Mathlib.Topology.MetricSpace.Sequences
 
 open Real Module
 
@@ -131,11 +132,36 @@ theorem cascade_gaussian_domination (C : CascadeData) :
 theorem bolzano_weierstrass (C : ℝ) (hC : 0 < C) :
     0 < C ∧ 0 ≤ C := ⟨hC, le_of_lt hC⟩
 
+/-- **THE ACTUAL BOLZANO-WEIERSTRASS, 2026-08-17.** The statement above carries the theorem's name
+and proves `0 < C ∧ 0 ≤ C` — its own hypothesis, restated. It is TRUE and is left standing
+(`ERRATUM 94`), but it is not Bolzano-Weierstrass, and the comment two declarations below saying the
+real one is *"OUT OF SCOPE: requires topology/sequences in Mathlib"* is **false**: Mathlib has
+`tendsto_subseq_of_bounded`, and this is one application of it.
+
+A sequence of reals bounded in absolute value has a subsequence converging to some limit. That is
+what the uniform-bounds argument above actually needs. -/
+theorem bolzano_weierstrass_real (x : ℕ → ℝ) (C : ℝ) (hb : ∀ n, |x n| ≤ C) :
+    ∃ (a : ℝ) (φ : ℕ → ℕ), StrictMono φ ∧ Filter.Tendsto (x ∘ φ) Filter.atTop (nhds a) := by
+  have hmem : ∀ n, x n ∈ Set.Icc (-C) C := fun n => abs_le.mp (hb n)
+  obtain ⟨a, -, φ, hφ, hlim⟩ :=
+    tendsto_subseq_of_bounded (Metric.isBounded_Icc (-C) C) hmem
+  exact ⟨a, φ, hφ, hlim⟩
+
 /-- Diagonal extraction: for countably many observables O_1, O_2, ...,
     apply Bolzano-Weierstrass successively and take diagonal.
     Result: a SINGLE subsequence L_{k} such that ALL
     <O_j>_{L_k} converge simultaneously.
     -- OUT OF SCOPE: requires topology/sequences in Mathlib -/
+    -- SUPERSEDED IN PART, 2026-08-17 (ERRATUM 94: quoted, not rewritten).
+    -- The stated reason is FALSE for the Bolzano-Weierstrass half: Mathlib has
+    -- tendsto_subseq_of_bounded, and bolzano_weierstrass_real above is one
+    -- application of it. What remains genuinely undone is the DIAGONAL step --
+    -- extracting a single subsequence along which countably many sequences all
+    -- converge -- and the obstruction there is not a missing library but a
+    -- CONSTRUCTION: nested subsequences and a diagonal, which nobody in this
+    -- estate has built. Recorded with the obstacle named correctly this time.
+    -- The statement below is TRUE and is left standing; it is not the theorem
+    -- its name and docstring describe.
 theorem diagonal_extraction :
     -- Countably many observables -> countable process
     (0 : ℕ) < 1 ∧
