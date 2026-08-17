@@ -2,6 +2,7 @@ import LatticeCorrelatedPoincare
 import LatticeIsserlisSmeared
 import LatticePoincare
 import LatticeGeneratingFunctional
+import DifferentiableNotC1
 
 /-!
 # The two Poincaré lines of this estate agree on their overlap
@@ -24,19 +25,29 @@ being stated precisely rather than assumed.**
 continuous**. `poincare_correlated_general` asks for `ContDiff ℝ 1`. So:
 
 * a differentiable `F` with discontinuous derivative and polynomial growth is inside
-  `poincare_smeared` and **outside** `poincare_correlated_general`. **STILL ASSERTED, NOT PROVED.**
-  The classical witness is `x² sin(1/x)` extended by `0`, differentiable everywhere with a
-  derivative discontinuous at the origin and bounded by `2|x| + 1`; **it is not built here**;
+  `poincare_smeared` and **outside** `poincare_correlated_general`. **PROVED, in §6** —
+  `poincare_smeared_reaches_wig` and `not_contDiff_wig_smear`. The witness is `x² sin(1/x)`
+  extended by `0`, differentiable everywhere with a derivative discontinuous at the origin and
+  bounded by `2|x| + 1`; it is **built in `DifferentiableNotC1`**, which has no lattice imports
+  and no measure in it. *This bullet read "**STILL ASSERTED, NOT PROVED** … it is not built here"
+  until `30a5193`, quoted per `ERRATUM 94` rather than deleted, because that label is the reason
+  the witness got built;*
 * `Real.exp` is inside `poincare_correlated_general` and **outside** `poincare_smeared`, which
   cannot state it. **PROVED, in §5** — `exp_not_polyGrowth` and `poincare_reaches_exp`;
 * and an observable of two smearings is inside `poincare_correlated_general` and outside
   `poincare_smeared`, for the trivial reason that the latter has no room to state it.
 
-Neither theorem implies the other — **one direction now exhibited by a witness rather than
-asserted, the other still asserted and labelled as such.** **No file in the estate claimed
-otherwise** — checked by reading all three headers — so this is an unrecorded fact rather than an
-erratum. But "the general one covers the special one" is exactly the sort of thing a later reader
-assumes, and it is false.
+Neither theorem implies the other — **both directions now exhibited by witnesses rather than
+asserted**, and `separation_both_directions` states the pair as one proposition. **No file in the
+estate claimed otherwise** — checked by reading all three headers — so this is an unrecorded fact
+rather than an erratum. But "the general one covers the special one" is exactly the sort of thing a
+later reader assumes, and it is false.
+
+**The `wig` direction is about the OBSERVABLE, not merely the profile.** `wig` failing `C¹` would
+not by itself stop `ω ↦ wig ⟪f,ω⟫` from being `C¹` — compositions can be smoother than what they
+compose. §6 proves the observable itself fails, for every `f ≠ 0`, by restricting to a line on
+which the smearing is the identity. At `f = 0` the observable is constant and the separation
+correctly does not hold, which is why that hypothesis is there.
 
 **AND "INCOMPARABLE" IS TRUE BUT VAGUER THAN IT NEEDS TO BE, WHICH §4 FIXES.** The general
 theorem's two `L²` side conditions are **implied** by `poincare_smeared`'s own polynomial-growth
@@ -270,5 +281,79 @@ theorem poincare_reaches_exp (hm : m ≠ 0) (f : EuclideanSpace ℝ W) :
   poincare_smeared_of_correlated hm f Real.contDiff_exp (fun x => Real.hasDerivAt_exp x)
     (memLp_exp_smear (K := K) hm f)
     (fun _ => (memLp_exp_smear (K := K) hm f).mul_const _)
+
+/-! ## 6. The OTHER separation, also exhibited — and the observable, not just the profile
+
+§5 left the second half of the header's claim marked **STILL ASSERTED, NOT PROVED** and named the
+witness anyone would need: `x²sin(1/x)` extended by `0`. `DifferentiableNotC1` builds it, with no
+lattice in sight. §6 is where it earns its place here.
+
+**The instantiation was available all along, which is why leaving it as a caveat would have been
+the wrong call.** `LatticePoincare.poincare_smeared` asks for `hderiv`, `hb`, `hb'` and nothing
+else about `F`; `DifferentiableNotC1.exists_differentiable_polyGrowth_not_contDiff` proves exactly
+those three at `C = 2`, `k = 1`. So `poincare_smeared_reaches_wig` is a one-line application.
+
+**AND THE HALF THAT IS NOT A ONE-LINE APPLICATION IS THE HALF THAT MATTERS.** `wig` not being `C¹`
+says nothing yet about the *observable* `ω ↦ wig ⟪f,ω⟫` — a composition can be smoother than the
+function composed. `not_contDiff_wig_smear` closes that: restrict along the line
+`t ↦ t·(‖f‖²)⁻¹·f`, on which the smearing reads off `⟪f, t·(‖f‖²)⁻¹·f⟫ = t`, so a `C¹` observable
+would compose with a linear map to give a `C¹` `wig`. It needs `f ≠ 0`, and it should: at `f = 0`
+the observable is constant and perfectly smooth, so the separation genuinely has a hypothesis
+rather than merely inheriting one.
+
+**What this does NOT say.** It says `poincare_correlated_general`'s **hypothesis** fails at this
+observable — not that its **conclusion** does. Nothing here rules out the inequality holding for
+`wig ⟪f,·⟫` by some other route, and the estate's own `LatticeSqrtEquiv` line is precisely such a
+route for other non-smooth observables. The claim is about the reach of a theorem as stated, which
+is what "the hypothesis classes are incomparable" means and all it means. -/
+
+/-- **THE SMEARED THEOREM REACHES `wig`.** `poincare_smeared`'s three hypotheses, verbatim, are
+what `DifferentiableNotC1` proves — so the inequality holds for an observable whose profile is
+differentiable everywhere with a **discontinuous** derivative. -/
+theorem poincare_smeared_reaches_wig (hm : m ≠ 0) (f : EuclideanSpace ℝ W) :
+    (∫ ω, DifferentiableNotC1.wig (inner ℝ f ω : ℝ) ^ 2 ∂(gaussianField K m))
+        - (∫ ω, DifferentiableNotC1.wig (inner ℝ f ω : ℝ) ∂(gaussianField K m)) ^ 2
+      ≤ linVar K m f
+          * ∫ ω, DifferentiableNotC1.wig' (inner ℝ f ω : ℝ) ^ 2 ∂(gaussianField K m) :=
+  LatticePoincare.poincare_smeared (G := K) hm f DifferentiableNotC1.hasDerivAt_wig
+    (fun x => (DifferentiableNotC1.wig_bound x).trans (by nlinarith [sq_nonneg x]))
+    DifferentiableNotC1.wig'_bound
+
+omit [DecidableEq W] in
+/-- **AND THE GENERAL THEOREM DOES NOT REACH IT — AT THE OBSERVABLE, NOT MERELY AT THE PROFILE.**
+
+`ω ↦ wig ⟪f,ω⟫` is not `ContDiff ℝ 1` for any `f ≠ 0`. The line `t ↦ t·(‖f‖²)⁻¹·f` is smooth and
+the smearing restricted to it is the identity, so a `C¹` observable would give a `C¹` `wig`. -/
+theorem not_contDiff_wig_smear {f : EuclideanSpace ℝ W} (hf : f ≠ 0) :
+    ¬ ContDiff ℝ 1 (fun ω : EuclideanSpace ℝ W => DifferentiableNotC1.wig (inner ℝ f ω : ℝ)) := by
+  intro h
+  have hnn : ‖f‖ ≠ 0 := norm_ne_zero_iff.mpr hf
+  have hline : ContDiff ℝ 1 (fun t : ℝ => t • ((‖f‖ ^ 2)⁻¹ • f)) :=
+    contDiff_id.smul contDiff_const
+  have hinner : ∀ t : ℝ, (inner ℝ f (t • ((‖f‖ ^ 2)⁻¹ • f)) : ℝ) = t := by
+    intro t
+    rw [real_inner_smul_right, real_inner_smul_right, real_inner_self_eq_norm_sq]
+    field_simp
+  have hcomp := h.comp hline
+  have heq : (fun t : ℝ => DifferentiableNotC1.wig
+      (inner ℝ f (t • ((‖f‖ ^ 2)⁻¹ • f)) : ℝ)) = DifferentiableNotC1.wig :=
+    funext fun t => by rw [hinner t]
+  rw [Function.comp_def, heq] at hcomp
+  exact DifferentiableNotC1.not_contDiff_wig hcomp
+
+/-- **THE SECOND SEPARATION, EXHIBITED RATHER THAN ASSERTED.**
+
+One observable, `ω ↦ wig ⟪f,ω⟫` at any `f ≠ 0`: the smeared theorem's inequality **holds** for it,
+and the general theorem's `C¹` hypothesis **fails** for it. Together with `poincare_reaches_exp`
+and `exp_not_polyGrowth` — which do the same in the opposite direction — the header's
+incomparability claim is now a pair of witnesses in both directions, with nothing left asserted. -/
+theorem separation_both_directions (hm : m ≠ 0) {f : EuclideanSpace ℝ W} (hf : f ≠ 0) :
+    ((∫ ω, DifferentiableNotC1.wig (inner ℝ f ω : ℝ) ^ 2 ∂(gaussianField K m))
+        - (∫ ω, DifferentiableNotC1.wig (inner ℝ f ω : ℝ) ∂(gaussianField K m)) ^ 2
+        ≤ linVar K m f
+            * ∫ ω, DifferentiableNotC1.wig' (inner ℝ f ω : ℝ) ^ 2 ∂(gaussianField K m))
+      ∧ ¬ ContDiff ℝ 1 (fun ω : EuclideanSpace ℝ W => DifferentiableNotC1.wig (inner ℝ f ω : ℝ))
+      ∧ ¬ ∃ (C : ℝ) (k : ℕ), ∀ x : ℝ, |Real.exp x| ≤ C * (1 + x ^ 2) ^ k :=
+  ⟨poincare_smeared_reaches_wig hm f, not_contDiff_wig_smear hf, exp_not_polyGrowth⟩
 
 end LatticeSmearedFromGeneral
