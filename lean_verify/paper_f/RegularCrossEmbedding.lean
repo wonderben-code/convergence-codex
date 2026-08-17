@@ -48,12 +48,20 @@ the counting argument live. **This file assumes what that one proves**, and the 
 complementary: that one says *the sizes must agree*, this one says *once they agree, everything
 else follows from regularity*.
 
-**Equal cardinality is not removable.** Without it an injective map into a strictly larger regular
-graph of the same degree is still a local bijection but not onto, so there is no isomorphism and no
-equality of measures — the map embeds a graph in a bigger one.
+**Equal cardinality is not removable, and the reason needs one more word than it was given.** The
+sentence said *"an injective map into a strictly larger regular graph of the same degree is still a
+local bijection but not onto"*. **A local bijection into a CONNECTED target IS onto** — that is
+`TorusEmbeddingAllDims`'s own argument — so the counterexample requires the target **disconnected**:
+`C₄ ↪ C₄ ⊔ C₄`, both `2`-regular, injective, edge-preserving, not onto. The hypothesis stands; the
+justification silently assumed disconnection.
 
-**Regularity is not removable**, for `RegularSelfEmbedding`'s reason, and here it is needed at
-*both* ends with the *same* `k`.
+**~~Regularity is not removable~~, needed at both ends with the same `k`. REFUTED 17 Aug 2026 by
+`EdgeCountEmbedding.isoOfEdgeCard`; struck rather than rewritten, per `ERRATUM 94`.** It is replaced
+by `G.edgeFinset.card = G'.edgeFinset.card`, which `EdgeCountEmbedding.two_mul_edgeCard_of_regular`
+**derives** from the two regularities and the matching vertex count — strictly weaker, so the old
+hypothesis was sufficient and never necessary. **Something here is irreducible and this file was
+right about that**: `P₃ → K₃` by the identity is injective and edge-preserving and no isomorphism.
+**The error was assuming the irreducible count had to be the DEGREE count.** It is the edge count.
 
 **It is not OS3.** `FieldAutInvariance`'s capitals apply here for the fourth time in this chain:
 relating two finite graphs is not the Euclidean group. **`OS4` does not move**, no spectral gap is

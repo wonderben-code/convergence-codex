@@ -50,11 +50,14 @@ The criterion is therefore a genuine widening and not a rephrasing.
 
 ## What this is NOT
 
-**Regularity is not removable.** On a graph with two different degrees an injective homomorphism
-can carry a low-degree vertex's neighbourhood *into* a high-degree one without exhausting it, and
-the local-bijection step fails at its first line — which is where `AdjSqForcesRegular`'s reading
-applies in reverse: here the hypothesis is doing work, and saying so is worth as much as removing
-one that is not.
+**~~Regularity is not removable.~~ REFUTED 17 Aug 2026 by `EdgeCountEmbedding`; struck rather than
+rewritten, per `ERRATUM 94`.** The sentence read: *"On a graph with two different degrees an
+injective homomorphism can carry a low-degree vertex's neighbourhood into a high-degree one without
+exhausting it, and the local-bijection step fails at its first line."* **Every word of the reason is
+true and the conclusion does not follow from it.** The local-bijection *step* needs regularity; the
+*theorem* does not. `EdgeCountEmbedding.adj_of_adj_map_of_isSelfEmbedding` counts **edges** instead
+of neighbourhoods — `Sym2.map φ` is injective on `G.edgeFinset` and lands in it, so on a finite
+graph it exhausts it — and takes **`[Finite V]` and nothing else**. `ERRATUM 194`, third firing.
 
 **This is a self-map statement.** The two-side theorem —
 `TorusEmbeddingMinimal.side_eq_of_isTorusEmbedding'`, that an embedding between tori of different

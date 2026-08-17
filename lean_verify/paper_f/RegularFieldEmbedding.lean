@@ -34,9 +34,11 @@ kinds of claim, and this one is the stronger.
 
 ## What this is NOT
 
-**Regularity is not removable**, for `RegularSelfEmbedding`'s reason: on a graph with two degrees
-the local-bijection step fails at its first line, so the map need not be an automorphism and there
-is nothing to hand to `gaussianField_map_perm`.
+**~~Regularity is not removable~~, for `RegularSelfEmbedding`'s reason. REFUTED 17 Aug 2026 by
+`EdgeCountEmbedding.gaussianField_map_of_isSelfEmbedding'`, which is this statement with the
+regularity gone; struck rather than rewritten, per `ERRATUM 94`.** **And this file's version was the
+worse of the two**: it did not reach the judgement, it *cited* one — the phrase *"for
+`RegularSelfEmbedding`'s reason"* is verbatim what `ERRATUM 194` forbids, written the day before.
 
 **It is not OS3.** `FieldAutInvariance`'s capitals apply here unchanged and for the third time in
 this chain: a finite graph has an automorphism group, not the Euclidean group, and widening the
