@@ -54,10 +54,13 @@ statement about a compact set.
 2. **A pushforward of each finite-volume field into it** — extend a field on a box or a torus to
    all of `ℤ^d`. **This is a choice, not a construction**, and it is `ASSUMPTIONS_LEDGER` 47, an
    author's decision. By zero and by periodic repetition give different limits.
-3. **The union bound over sites**, which needs (1) and (2) to be stated at all: a compact subset of
-   a countable product is contained in a product of intervals, so the per-site bounds here would
-   assemble with radii `aₓ` chosen to make `∑ₓ ε 2^{-|x|}` converge. Elementary once (1) and (2)
-   exist, and unstatable before.
+3. **The union bound over sites.** A compact subset of a countable product is contained in a
+   product of intervals, so the per-site bounds assemble with radii `aₓ` chosen to make a weight
+   `∑ₓ wₓ` converge. **An earlier draft of this header said that step was "unstatable before" (1)
+   and (2). That was wrong, and §4 below is the correction** — the union bound is provable in
+   finite volume right now, with the weight as a parameter, and §4's constant is `∑ₓ wₓ` and
+   mentions nothing else about the graph. **What (1) and (2) are actually needed for is to make
+   the weight ONE function on ONE index set** instead of a fresh function per volume.
 
 Only after all three does Mathlib's `isCompact_setOf_probabilityMeasure_mass_eq_compl_isCompact_le`
 apply — and that theorem, the step clause (ii) calls the analysis, needs nothing from this project
@@ -131,5 +134,52 @@ theorem meas_abs_ge_radius_le (hm : m ≠ 0) {ε : ℝ} (hε : 0 < ε) (x : V) :
   have hcalc : m ^ 2 * (m ^ 2 * ε)⁻¹ = ε⁻¹ := by
     field_simp
   rw [hcalc, inv_inv]
+
+/-! ## 4. The union bound over sites, with the weight as a parameter
+
+**Written as the adversarial review of §§1–3**, which is why it corrects this file's own header
+rather than a different file's. §3 above claimed the assembly step was "unstatable before" the
+carrier existed. It is statable now: the only thing a fresh index set would change is whether the
+weight is one function or one per volume.
+-/
+
+/-- **THE UNION BOUND**, with a radius chosen independently at each site. -/
+theorem meas_exists_abs_ge_le (hm : m ≠ 0) (a : V → ℝ) (ha : ∀ x, 0 < a x) :
+    gaussianField G m {ω : EuclideanSpace ℝ V | ∃ x, a x ≤ |ω x|}
+      ≤ ∑ x, ENNReal.ofReal ((m ^ 2 * (a x) ^ 2)⁻¹) := by
+  have hset : {ω : EuclideanSpace ℝ V | ∃ x, a x ≤ |ω x|}
+      = ⋃ x, {ω : EuclideanSpace ℝ V | a x ≤ |ω x|} := by
+    ext ω; simp
+  rw [hset]
+  refine (measure_iUnion_le _).trans ?_
+  rw [tsum_fintype]
+  exact Finset.sum_le_sum fun x _ => meas_abs_ge_le G m hm x (ha x)
+
+/-- **AND WITH THE RADII READ OFF A WEIGHT.** The bound is the weight's total mass and **says
+nothing else about the graph**: for any `w`, the field leaves the box `∏ₓ [−radius m (w x),
+radius m (w x)]` with probability at most `∑ₓ w x`.
+
+**This is the assembly step, in finite volume.** What a fixed index set would buy is that `w` is
+**one** function rather than one per volume — which is the whole of what `ASSUMPTIONS_LEDGER` 47
+decides, and is why that decision, and not this inequality, is where the leg stops. -/
+theorem meas_exists_abs_ge_radius_le (hm : m ≠ 0) (w : V → ℝ) (hw : ∀ x, 0 < w x) :
+    gaussianField G m {ω : EuclideanSpace ℝ V | ∃ x, radius m (w x) ≤ |ω x|}
+      ≤ ENNReal.ofReal (∑ x, w x) := by
+  refine (meas_exists_abs_ge_le G m hm (fun x => radius m (w x))
+    (fun x => radius_pos m hm (hw x))).trans ?_
+  rw [ENNReal.ofReal_sum_of_nonneg (fun x _ => le_of_lt (hw x))]
+  refine Finset.sum_le_sum fun x _ => ENNReal.ofReal_le_ofReal ?_
+  have hm2 : (0 : ℝ) < m ^ 2 := by positivity
+  rw [radius_sq m hm (hw x)]
+  have hcalc : m ^ 2 * (m ^ 2 * w x)⁻¹ = (w x)⁻¹ := by field_simp
+  rw [hcalc, inv_inv]
+
+/-- **THE TOLERANCE FORM**, which is the shape a tightness argument quotes: any weight whose total
+is at most `ε` gives an `ε`-bound, and the box it names is a product of intervals. -/
+theorem meas_exists_abs_ge_radius_le_of_sum_le (hm : m ≠ 0) (w : V → ℝ) (hw : ∀ x, 0 < w x)
+    {ε : ℝ} (hsum : ∑ x, w x ≤ ε) :
+    gaussianField G m {ω : EuclideanSpace ℝ V | ∃ x, radius m (w x) ≤ |ω x|}
+      ≤ ENNReal.ofReal ε :=
+  (meas_exists_abs_ge_radius_le G m hm w hw).trans (ENNReal.ofReal_le_ofReal hsum)
 
 end FieldTightness
