@@ -1,6 +1,5 @@
 import CliffordEightIso
-import Mathlib.LinearAlgebra.QuadraticForm.AlgClosed
-import Mathlib.Analysis.Complex.Polynomial.Basic
+import CliffordEvenLadder
 
 /-!
 # The complex classification at ranks 6 and 8, quantified over every nondegenerate form
@@ -91,33 +90,39 @@ theorem Q₈_separating :
   simp_all
 
 /-- **THE CLASSIFICATION ENTRY AT RANK 6.** Every nondegenerate quadratic form on every
-six-dimensional complex space has Clifford algebra `M₈(ℂ)`. -/
+six-dimensional complex space has Clifford algebra `M₈(ℂ)`.
+
+**REWRITTEN THE SAME DAY TO CITE `CliffordEvenLadder`.** The first version proved this and
+the rank-8 twin directly, each from the corresponding concrete isomorphism. The ladder proves
+it at **every** even rank, so these are its cases `k = 3` and `k = 4`, and their own proofs are
+**deleted rather than kept beside the generalisation** (`ERRATUM 176`). -/
 theorem clifford_iso_M8_of_nondegenerate {V : Type*} [AddCommGroup V] [Module ℂ V]
     [FiniteDimensional ℂ V] (hV : Module.finrank ℂ V = 6) (Q : QuadraticForm ℂ V)
     (hQ : (QuadraticMap.associated (R := ℂ) Q).SeparatingLeft) :
-    Nonempty (CliffordAlgebra Q ≃ₐ[ℂ] Matrix (Fin 8) (Fin 8) ℂ) := by
-  have e1 := QuadraticForm.equivalent_weightedSumSquares_of_isAlgClosed Q hQ
-  have e2 := QuadraticForm.equivalent_weightedSumSquares_of_isAlgClosed
-    CliffordSixIso.Q₆ Q₆_separating
-  rw [hV] at e1
-  rw [CliffordSixIso.finrank_V6] at e2
-  obtain ⟨i1⟩ := e1
-  obtain ⟨i2⟩ := e2
-  exact ⟨(CliffordAlgebra.equivOfIsometry (i1.trans i2.symm)).trans CliffordSixIso.equivM8⟩
+    Nonempty (CliffordAlgebra Q ≃ₐ[ℂ] Matrix (Fin 8) (Fin 8) ℂ) :=
+  CliffordEvenLadder.clifford_iso_of_nondegenerate 3 (by rw [hV]) Q hQ
 
 /-- **THE CLASSIFICATION ENTRY AT RANK 8.** -/
 theorem clifford_iso_M16_of_nondegenerate {V : Type*} [AddCommGroup V] [Module ℂ V]
     [FiniteDimensional ℂ V] (hV : Module.finrank ℂ V = 8) (Q : QuadraticForm ℂ V)
     (hQ : (QuadraticMap.associated (R := ℂ) Q).SeparatingLeft) :
-    Nonempty (CliffordAlgebra Q ≃ₐ[ℂ] Matrix (Fin 16) (Fin 16) ℂ) := by
-  have e1 := QuadraticForm.equivalent_weightedSumSquares_of_isAlgClosed Q hQ
-  have e2 := QuadraticForm.equivalent_weightedSumSquares_of_isAlgClosed
-    CliffordEightIso.Q₈ Q₈_separating
-  rw [hV] at e1
-  rw [CliffordEightIso.finrank_V8] at e2
-  obtain ⟨i1⟩ := e1
-  obtain ⟨i2⟩ := e2
-  exact ⟨(CliffordAlgebra.equivOfIsometry (i1.trans i2.symm)).trans CliffordEightIso.equivM16⟩
+    Nonempty (CliffordAlgebra Q ≃ₐ[ℂ] Matrix (Fin 16) (Fin 16) ℂ) :=
+  CliffordEvenLadder.clifford_iso_of_nondegenerate 4 (by rw [hV]) Q hQ
+
+/-- **AND THE LADDER REPROVES THE CONCRETE CASE, WHICH IS WHY `Q₆_separating` IS STILL LIVE.**
+`CliffordSixIso.equivM8` builds `Cl(Q₆) ≃ₐ M₈(ℂ)` by an elementary route — periodicity on top of
+`CliffordIso`, with no appeal to the fundamental theorem of algebra. This obtains the same
+conclusion from the ladder instead, which **demonstrates** the subsumption rather than asserting it
+(`ERRATUM 201`). **The concrete files are kept deliberately**: their route is independent of
+`IsAlgClosed ℂ`, so they are not a weaker restatement of this. -/
+theorem clifford_Q₆_iso_M8_via_ladder :
+    Nonempty (CliffordAlgebra CliffordSixIso.Q₆ ≃ₐ[ℂ] Matrix (Fin 8) (Fin 8) ℂ) :=
+  clifford_iso_M8_of_nondegenerate CliffordSixIso.finrank_V6 _ Q₆_separating
+
+/-- The same at rank 8. -/
+theorem clifford_Q₈_iso_M16_via_ladder :
+    Nonempty (CliffordAlgebra CliffordEightIso.Q₈ ≃ₐ[ℂ] Matrix (Fin 16) (Fin 16) ℂ) :=
+  clifford_iso_M16_of_nondegenerate CliffordEightIso.finrank_V8 _ Q₈_separating
 
 end
 
