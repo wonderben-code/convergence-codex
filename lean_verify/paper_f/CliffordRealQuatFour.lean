@@ -39,9 +39,18 @@ off-diagonal. Four half-sums of the target's entries then give the preimage outr
 
 ## What this does and does NOT establish
 
-**It establishes base cases on all eight diagonals.** With
-`SignatureArithmetic.sigPos_sub_sigNeg_QextHyp` — the hyperbolic step adds `(1,1)` and so preserves
-`p − q` — every `Cl(p,q)` is now *reachable in principle* from one of them.
+**It establishes a base case in each of the eight residue classes `mod 8`.**
+
+**THE SENTENCE THAT STOOD HERE WAS FALSE AND IS QUOTED, NOT DELETED (`ERRATUM 212`).** It read:
+*"With `SignatureArithmetic.sigPos_sub_sigNeg_QextHyp` — the hyperbolic step adds `(1,1)` and so
+preserves `p − q` — every `Cl(p,q)` is now reachable in principle from one of them."* **The premise
+is a theorem and the inference does not follow.** The step preserves `p − q` **exactly**, not modulo
+8, so a base case at `(p₀,q₀)` reaches only `(p₀+n, q₀+n)`, and a target `(p,q)` needs a base with
+`min(p,q) = 0` at its *own* value of `p − q`. A base case in the residue class is not a base case on
+the diagonal. Reach is `p − q ∈ {−3,…,4}` — eight *consecutive* diagonals, not eight residue
+classes — once `CliffordRealTwoZero` fills the `p − q = 2` hole this file's own reasoning missed.
+Everything with `p − q ≥ 5` or `≤ −4` needs the mod-8 periodicity `Cl(p+8,q) ≅ M₁₆(Cl(p,q))`, which
+this estate does not have.
 
 **It does not establish the classification theorem.** Assembling the base cases and the step into a
 statement quantified over all `p` and `q` needs an induction that **is not in this estate**, and no
