@@ -146,6 +146,27 @@ theorem clifford_step_neg {W : Type*} [AddCommGroup W] [Module ℝ W] [FiniteDim
     (by rw [hdim]; simp [Module.finrank_prod]) (by rw [hsig, sigNeg_Qext_neg])
   exact ⟨e.trans (equivQuatTwo Q)⟩
 
+/-! ### A witness that the reach figure's NEGATIVE half was wrong
+
+`WALLS §W7.2` says *"not reachable — every `Cl(p,q)` with `p − q ≥ 5` or `p − q ≤ −4`"*. That
+sentence was derived from a move set containing only the hyperbolic step, which fixes `p − q`.
+`clifford_step_pos` sends `d ↦ 2 − d`, so from the estate's `Cl(0,3)` — which has `d = −3` and is
+`ℍ × ℍ` — it reaches `d = 5`. Here is that case, in full, as a theorem about **every**
+nondegenerate real form of dimension `5` with `sigPos = 5`. -/
+
+theorem clifford_five_zero {W : Type*} [AddCommGroup W] [Module ℝ W] [FiniteDimensional ℝ W]
+    (Q' : QuadraticForm ℝ W) (hQ' : (QuadraticMap.associated (R := ℝ) Q').SeparatingLeft)
+    (hdim : Module.finrank ℝ W = 5) (hsig : sigPos Q' = 5) :
+    Nonempty (CliffordAlgebra Q' ≃ₐ[ℝ] Matrix (Fin 2) (Fin 2) (ℍ[ℝ] × ℍ[ℝ])) := by
+  have hneg : (QuadraticMap.associated (R := ℝ) (-CliffordRealPauli.Q₃₀)).SeparatingLeft := by
+    refine separatingLeft_of_sig ?_
+    simp [CliffordRealPauli.sigPos_Q₃₀, CliffordRealPauli.sigNeg_Q₃₀]
+  obtain ⟨e⟩ := clifford_step_pos CliffordRealPauli.sep_Q₃₀ hQ'
+    (by simp [hdim]) (by rw [hsig, CliffordRealPauli.sigPos_Q₃₀])
+  obtain ⟨f⟩ := CliffordRealSplitQuat.clifford_iso_quatSplit_of_sig
+    (-CliffordRealPauli.Q₃₀) hneg (by simp) (by simp [CliffordRealPauli.sigNeg_Q₃₀])
+  exact ⟨e.trans (AlgEquiv.mapMatrix f)⟩
+
 end
 
 end CliffordPeriodicityQuantified
