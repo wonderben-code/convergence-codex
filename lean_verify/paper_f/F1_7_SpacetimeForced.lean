@@ -63,6 +63,7 @@ import Mathlib.LinearAlgebra.Dimension.Constructions
 import F4_1e_CliffordMatrix
 import CliffordDimension
 import CliffordSixIso
+import CliffordEightIso
 import CliffordRealMinkowski
 import CliffordRealMajorana
 import IdempotentRankInvariant
@@ -197,6 +198,26 @@ not a matrix algebra, so no statement quantifying over all forms is available. -
 theorem clifford6_iso_M8 :
     Nonempty (CliffordAlgebra CliffordSixIso.Q₆ ≃ₐ[ℂ] Matrix (Fin 8) (Fin 8) ℂ) :=
   ⟨CliffordSixIso.equivM8⟩
+
+/-- **AND THE 8D ISOMORPHISM FOLLOWED, THE SAME DAY — THE OTHER HALF OF THE COMMENT IS WITHDRAWN
+TOO.** The docstring immediately above says *"`Cl₈(ℂ) ≅ M₁₆(ℂ)` is **still not proved**"*. **Quoted,
+not edited** (`ERRATUM 94`): `CliffordEightIso.equivM16` proves it.
+
+**And it cost almost nothing, because the prediction had already been discharged.** That docstring's
+sibling in `CliffordSixIso` said the construction *"should apply with `Cl₆` in place of `Cl₄`"* and
+labelled it a prediction about difficulty (`ERRATUM 194`). Rather than test the prediction by
+copying the construction, `CliffordPeriodicity` states it once for **every** quadratic form; the
+`n = 8` case is then one application plus the same transport.
+
+**WHAT REMAINS UNPROVED IS UNCHANGED AND IS NOT SMALLER.** These are the isomorphisms at **two
+specific forms**, `CliffordSixIso.Q₆` and `CliffordEightIso.Q₈`. The classification table
+quantifies over *every* nondegenerate form of each rank, and that needs a normal-form theorem this
+estate does not have. `CliffordDimension.finrank_cliffordAlgebra_congr` is why the gap cannot be
+closed by counting. **Nothing here touches odd dimensions**, where the classification is a direct
+sum of two matrix algebras and this construction does not reach it. -/
+theorem clifford8_iso_M16 :
+    Nonempty (CliffordAlgebra CliffordEightIso.Q₈ ≃ₐ[ℂ] Matrix (Fin 16) (Fin 16) ℂ) :=
+  ⟨CliffordEightIso.equivM16⟩
 
 /-- The cascade levels ARE even-dimensional complexified Clifford algebras.
     D_k = M_{2^k}(ℂ) = Cl_{2k}(ℂ).
