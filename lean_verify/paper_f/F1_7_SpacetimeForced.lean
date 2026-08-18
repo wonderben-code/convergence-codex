@@ -150,6 +150,23 @@ theorem clifford8_finrank (Q : QuadraticForm ℂ (Fin 8 → ℂ)) :
     Module.finrank ℂ (CliffordAlgebra Q) = 256 :=
   CliffordDimension.finrank_clifford_eight Q
 
+/-- **THE SUBSUMPTION CLAIM, DISCHARGED RATHER THAN ASSERTED.** When `CliffordDimension` landed
+earlier today its record said the general formula shows *"the dimension never needed the chain"* —
+but its instances were stated over `Fin n → ℂ`, and `Q₄` lives on `(ℂ × ℂ) × (ℂ × ℂ)`. **A theorem
+about a different carrier does not subsume anything** (`ERRATUM 48`: a criterion that produces no
+member it could not produce before has its usefulness asserted). This is the same `16` that
+`clifford4_finrank` proves, obtained from `finrank_cliffordAlgebra_of_finrank_eq` **at `Q₄`
+itself**, with the dimension of the carrier as the only input.
+
+`clifford4_finrank` is **not** superseded: it is what `CliffordIso` builds the algebra isomorphism
+on, and that is the content this cannot reach. -/
+theorem clifford4_finrank_via_exterior :
+    Module.finrank ℂ (CliffordAlgebra Q₄) = 16 := by
+  have hV : Module.finrank ℂ ((ℂ × ℂ) × (ℂ × ℂ)) = 4 := by
+    simp [Module.finrank_prod]
+  simpa using
+    CliffordDimension.finrank_cliffordAlgebra_of_finrank_eq ℂ ((ℂ × ℂ) × (ℂ × ℂ)) Q₄ hV
+
 -- WHAT THIS DOES NOT DO, AND IT IS THE HALF THE TABLE IS ABOUT.
 -- The heading above each arithmetic conjunct reads "Cl_6(C) = M_8(C)" and
 -- "Cl_8(C) = M_16(C)" -- ISOMORPHISMS. Neither is proved, and the dimension

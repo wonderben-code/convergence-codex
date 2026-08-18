@@ -75,6 +75,16 @@ theorem finrank_cliffordAlgebra [Invertible (2 : K)] (Q : QuadraticForm K V) :
     finrank K (CliffordAlgebra Q) = 2 ^ finrank K V :=
   (CliffordAlgebra.equivExterior Q).finrank_eq.trans (finrank_exteriorAlgebra K V)
 
+/-- **THE FORM THE ESTATE'S OWN CLIFFORD ALGEBRAS NEED.** `Q₄` lives on `(ℂ × ℂ) × (ℂ × ℂ)`,
+`Q₁₃` and `Q₃₁` on products of `ℝ`s — **not** on `Fin n → K`. Stating the dimension against a
+hypothesis `finrank K V = n` rather than against a chosen carrier is what lets the general theorem
+be applied to them, and until it is applied the claim that it subsumes their bespoke chains is
+asserted rather than shown. -/
+theorem finrank_cliffordAlgebra_of_finrank_eq [Invertible (2 : K)] {n : ℕ}
+    (Q : QuadraticForm K V) (hV : finrank K V = n) :
+    finrank K (CliffordAlgebra Q) = 2 ^ n := by
+  rw [finrank_cliffordAlgebra K V Q, hV]
+
 end General
 
 /-! ## The complex case, which is what `F1_7_SpacetimeForced`'s table is about -/
