@@ -1,5 +1,6 @@
 import LatticeGeneratingFunctional
 import GreenDisconnected
+import Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence
 
 /-!
 # The lattice field factorises across a reachability barrier
@@ -113,5 +114,42 @@ theorem generatingFunctional_add_of_separated (hm : m ≠ 0) (p : V) (f g : Eucl
         * (∫ ω, Real.exp ⟪g, ω⟫ ∂(gaussianField G m)) :=
   generatingFunctional_add_of_orthogonal G m hm f g
     (greenPairing_eq_zero_of_separated G m hm p f g hf hg)
+
+/-! ## 3. …and the observables are genuinely independent
+
+Factorisation of the generating functional is a statement about one pair of observables. **Zero
+covariance between jointly Gaussian variables is independence**, and Mathlib has that criterion
+(`HasGaussianLaw.indepFun_of_covariance_eq_zero`), so the statement can be made about the
+σ-algebras rather than about an integral. That is the strongest form of the finite-volume shadow
+this file can carry — and it is still not OS4, for the reason the header gives.
+-/
+
+open LatticeGeneratingFunctional in
+/-- **The covariance of two linear observables is the Green pairing.** The off-diagonal companion
+of `LatticeGeneratingFunctional.variance_pair`, proved the same way. -/
+theorem covariance_pair (hm : m ≠ 0) (f g : EuclideanSpace ℝ V) :
+    cov[pair f, pair g; gaussianField G m]
+      = (WithLp.ofLp f) ⬝ᵥ green G m *ᵥ (WithLp.ofLp g) := by
+  have hps : (green G m).PosSemidef := (green_posDef G hm).posSemidef
+  rw [show (⇑(pair f)) = (fun u => ⟪f, u⟫) from rfl,
+    show (⇑(pair g)) = (fun u => ⟪g, u⟫) from rfl,
+    ← covarianceBilin_apply_eq_cov IsGaussian.memLp_two_id, gaussianField,
+    covarianceBilin_multivariateGaussian hps]
+
+open LatticeGeneratingFunctional in
+/-- **The two observables are jointly Gaussian**, being a continuous linear image of the field. -/
+theorem hasGaussianLaw_pair (f g : EuclideanSpace ℝ V) :
+    HasGaussianLaw (fun ω => (pair f ω, pair g ω)) (gaussianField G m) :=
+  IsGaussian.hasGaussianLaw_id.map_fun ((pair f).prod (pair g))
+
+open LatticeGeneratingFunctional in
+/-- **INDEPENDENCE, not just factorisation.** Two linear observables of the lattice field on
+opposite sides of a reachability barrier are independent. -/
+theorem indepFun_pair_of_separated (hm : m ≠ 0) (p : V) (f g : EuclideanSpace ℝ V)
+    (hf : ∀ v, ¬ G.Reachable p v → f v = 0)
+    (hg : ∀ v, G.Reachable p v → g v = 0) :
+    IndepFun (pair f) (pair g) (gaussianField G m) :=
+  (hasGaussianLaw_pair G m f g).indepFun_of_covariance_eq_zero
+    (by rw [covariance_pair G m hm]; exact greenPairing_eq_zero_of_separated G m hm p f g hf hg)
 
 end LatticeFieldFactorises
