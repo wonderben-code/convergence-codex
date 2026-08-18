@@ -46,10 +46,6 @@ open scoped TensorProduct Quaternion
 
 noncomputable section
 
-/-- Transport a Clifford algebra along an equality of forms. -/
-def congrForm {W : Type*} [AddCommGroup W] [Module ℝ W] {Q₁ Q₂ : QuadraticForm ℝ W}
-    (h : Q₁ = Q₂) : CliffordAlgebra Q₁ ≃ₐ[ℝ] CliffordAlgebra Q₂ := h ▸ AlgEquiv.refl
-
 /-- **Absent from Mathlib** (`QuadraticMap.neg_prod` does not resolve in the environment dump):
 negating an orthogonal sum negates each summand. -/
 theorem neg_prod {W₁ W₂ : Type*} [AddCommGroup W₁] [Module ℝ W₁] [AddCommGroup W₂] [Module ℝ W₂]
@@ -79,7 +75,7 @@ variable [FiniteDimensional ℝ V]
 
 /-- Peeling the negation off a doubly-negated form. -/
 def unNeg (Q : QuadraticForm ℝ V) : CliffordAlgebra (- -Q) ≃ₐ[ℝ] CliffordAlgebra Q :=
-  congrForm (neg_neg Q)
+  CliffordTensorTwo.congrQ (neg_neg Q)
 
 /-- **Two positive steps.** `Cl(Q ⊥ ⟨1,1⟩ ⊥ ⟨1,1⟩) ≅ M₂(Cl Q ⊗ ℍ)`: the positive step gives the
 matrix factor, the negation turns the second positive step into a negative one, and the negative
@@ -89,7 +85,7 @@ def stepTwo (Q : QuadraticForm ℝ V) :
       Matrix (Fin 2) (Fin 2) (CliffordAlgebra Q ⊗[ℝ] ℍ[ℝ]) :=
   (equivMatrixTwo (Qext Q 1 1)).trans <|
     AlgEquiv.mapMatrix <|
-      (congrForm (neg_Qext Q 1 1)).trans <|
+      (CliffordTensorTwo.congrQ (neg_Qext Q 1 1)).trans <|
         (equivQuatTwo (-Q)).trans <|
           Algebra.TensorProduct.congr (unNeg Q) AlgEquiv.refl
 
@@ -152,7 +148,7 @@ def stepTwoNeg (Q : QuadraticForm ℝ V) :
       Matrix (Fin 2) (Fin 2) (CliffordAlgebra Q) ⊗[ℝ] ℍ[ℝ] :=
   (equivQuatTwo (Qext Q (-1) (-1))).trans <|
     Algebra.TensorProduct.congr
-      ((congrForm (neg_Qext_neg Q)).trans <|
+      ((CliffordTensorTwo.congrQ (neg_Qext_neg Q)).trans <|
         (equivMatrixTwo (-Q)).trans (AlgEquiv.mapMatrix (unNeg Q)))
       AlgEquiv.refl
 
