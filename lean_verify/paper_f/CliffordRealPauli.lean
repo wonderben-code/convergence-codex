@@ -1,42 +1,51 @@
 import CliffordRealSplitQuat
 import MinkowskiHerm2
+import Mathlib.LinearAlgebra.Complex.FiniteDimensional
 
 /-!
-# The Pauli representation of `Cl(3,0;ℝ)` — stage 1, and it is **not** an isomorphism yet
+# `Cl(3,0;ℝ) ≅ M₂(ℂ)` — the third diagonal, and the first that does not split
 
 `CliffordRealSplit` and `CliffordRealSplitQuat` took `p − q ≡ 1` and `≡ 5` off the real wall by the
 same trick twice: find something in the algebra squaring to `+1`, and split. `ERRATUM 211` records
 that the wall had been overstated by exactly those two classes.
 
-**The remaining two do not split.** `Cl(3,0) ≅ M₂(ℂ)` and `Cl(4,0) ≅ M₂(ℍ)` are simple algebras, so
-no central idempotent exists and the previous technique provably cannot reach them. Getting them
-needs a representation **built and checked**, as `CliffordRealMinkowski` and `CliffordRealMajorana`
-did — and those were done in two stages, the map first and surjectivity after. **This is stage 1 for
-`Cl(3,0)`, and it is labelled as such rather than dressed up as the theorem.**
+**This one does not split.** `Cl(3,0) ≅ M₂(ℂ)` is a **simple** algebra, so no central idempotent
+exists and the previous technique provably cannot reach it. It is done the other way — a
+representation **built and checked**, as `CliffordRealMinkowski` and `CliffordRealMajorana` did.
 
-## What is proved
+> **`equivPauli`** — `Cl(3,0;ℝ) ≃ₐ[ℝ] M₂(ℂ)`. Signature `(3,0)` proved, so **`p − q = 3`**.
 
-> **`toPauli`** — an `ℝ`-algebra map `Cl(3,0;ℝ) →ₐ[ℝ] M₂(ℂ)`, from `pauliMap_sq`: the three
-> generators go to the Pauli matrices and `(x σ₁ + y σ₂ + z σ₃)² = (x² + y² + z²)·1`.
+## The construction, and the one fact it turns on
 
-> **`toPauli_w`** — the volume element `ω = e₁e₂e₃` goes to **`i · 1`**. This is the structural fact
-> that distinguishes this case from the two that fell: `ω² = −1` here, not `+1`, so the centre of
-> `Cl(3,0)` is a copy of `ℂ` rather than a split pair, **which is exactly why the algebra is simple
-> and the splitting technique fails.** The element that would have split it supplies the imaginary
-> unit instead.
+The generators go to the Pauli matrices, which this estate already has:
+`MinkowskiHerm2.pauliHerm t x y z` is `t·1 + x·σ₁ + y·σ₂ + z·σ₃`, so the three matrices need no new
+definitions and `pauliMap_eq_pauliHerm` records that this map is its traceless part.
 
-The Pauli matrices are not new definitions: `MinkowskiHerm2.pauliHerm t x y z` is
-`t·1 + x·σ₁ + y·σ₂ + z·σ₃`, and `pauliMap_eq_pauliHerm` records that the map here is its traceless
-part, so the two are not two objects.
+**`toPauli_w` is the structural fact.** The volume element `ω = e₁e₂e₃` goes to `i·1`, so `ω² = −1`
+rather than `+1`: the centre of `Cl(3,0)` is a copy of `ℂ`, not a split pair. **That is exactly why
+this algebra is simple and why the earlier trick fails on it** — the very element that split the
+other two supplies the imaginary unit instead. Surjectivity then follows because the eight products
+`{1, e₁, e₂, e₃, ω, e₂e₃, e₃e₁, e₁e₂}` land on `{1, σ₁, σ₂, σ₃, i, iσ₁, iσ₂, iσ₃}`, a real basis of
+`M₂(ℂ)`, so a preimage can be written from the four complex entries of the target.
 
-## What is NOT proved, and it is the whole remaining leg
+`clifford_iso_pauli_of_sig` states it over **every** nondegenerate real form of dimension 3 with
+`sigPos 3`, not just the named one.
 
-**Surjectivity, and therefore the isomorphism.** `CliffordDimension.cliffordAlgEquivOfSurjective`
-would close it immediately — `finrank ℝ M₂(ℂ) = 8 = 2³` — so the isomorphism is *one theorem away*
-and that theorem is `Function.Surjective toPauli`. The route is not in doubt: the eight products
-`{1, e₁, e₂, e₃, ω, e₂e₃, e₃e₁, e₁e₂}` map to `{1, σ₁, σ₂, σ₃, i, iσ₁, iσ₂, iσ₃}`, a real basis of
-`M₂(ℂ)`, so an explicit preimage can be written down from the four complex entries of a target
-matrix. **It is not written down here, and until it is, `p − q ≡ 3` is still on the wall.**
+## Two bridging lemmas, and why they are here
+
+`algebraMap_eq_coe` and `smul_re'`/`smul_im'` are `rfl`-level facts that exist only because the same
+scalar appears in three spellings — `algebraMap ℝ ℂ`, the coercion, and a real `•` on a complex
+value — which `simp` and `ring` treat as distinct atoms. Mathlib's `Complex.smul_re` does not match
+what these goals produce, though it proves the restatement that does. Recording them saved the
+second half of this file and they are stated once rather than worked around eight times.
+
+## Where the wall stands after this
+
+Reached: `p − q ≡ 0, 1, 2, 3, 5, 6, 7`. **Missing: `p − q ≡ 4` alone.**
+
+That is `Cl(4,0) ≅ M₂(ℍ)`, and nothing here transfers: it is simple, so it does not split, and its
+representation is **quaternionic** rather than complex, so the Pauli construction does not carry
+over either. **Not estimated.**
 
 **No published tag moves.**
 
@@ -71,6 +80,12 @@ def pauliMap : ((ℝ × ℝ) × ℝ) →ₗ[ℝ] Matrix (Fin 2) (Fin 2) ℂ wher
 
 @[simp] theorem pauliMap_apply (v : (ℝ × ℝ) × ℝ) :
     pauliMap v = v.1.1 • sig₁ + v.1.2 • sig₂ + v.2 • sig₃ := rfl
+
+/-- The components of a real scalar acting on a complex number. Mathlib's `Complex.smul_re` is
+stated for a different `SMul` path and does not match what these goals produce; these are `rfl` and
+they do. Every entrywise computation in stage 2 needs them. -/
+@[simp] theorem smul_re' (r : ℝ) (z : ℂ) : (r • z).re = r * z.re := Complex.smul_re r z
+@[simp] theorem smul_im' (r : ℝ) (z : ℂ) : (r • z).im = r * z.im := Complex.smul_im r z
 
 /-- `algebraMap ℝ ℂ` **is** the coercion — definitionally, so this is `rfl` — but `simp` and `ring`
 treat the two spellings as different atoms, and every entrywise computation below produces one of
@@ -132,6 +147,87 @@ theorem toPauli_w : toPauli w = Complex.I • (1 : Matrix (Fin 2) (Fin 2) ℂ) :
   ext i j
   fin_cases i <;> fin_cases j <;>
     simp [sig₁, sig₂, sig₃, Matrix.mul_apply, Fin.sum_univ_two]
+
+/-! ## Stage 2 — surjectivity, and the isomorphism
+
+The eight products land on a real basis of `M₂(ℂ)`. Each product lemma is the same computation as
+`toPauli_w`, and with them a preimage can be written from the four complex entries of the target. -/
+
+@[simp] theorem toPauli_f₂f₃ : toPauli (f₂ * f₃) = Complex.I • sig₁ := by
+  simp only [f₂, f₃, map_mul, toPauli_ι]
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [sig₁, sig₂, sig₃, Matrix.mul_apply, Fin.sum_univ_two]
+
+@[simp] theorem toPauli_f₃f₁ : toPauli (f₃ * f₁) = Complex.I • sig₂ := by
+  simp only [f₃, f₁, map_mul, toPauli_ι]
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [sig₁, sig₂, sig₃, Matrix.mul_apply, Fin.sum_univ_two]
+
+@[simp] theorem toPauli_f₁f₂ : toPauli (f₁ * f₂) = Complex.I • sig₃ := by
+  simp only [f₁, f₂, map_mul, toPauli_ι]
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [sig₁, sig₂, sig₃, Matrix.mul_apply, Fin.sum_univ_two]
+
+@[simp] theorem toPauli_f₁ : toPauli f₁ = sig₁ := by
+  simp only [f₁, toPauli_ι]; ext i j; fin_cases i <;> fin_cases j <;> simp [sig₁, sig₂, sig₃]
+
+@[simp] theorem toPauli_f₂ : toPauli f₂ = sig₂ := by
+  simp only [f₂, toPauli_ι]; ext i j; fin_cases i <;> fin_cases j <;> simp [sig₁, sig₂, sig₃]
+
+@[simp] theorem toPauli_f₃ : toPauli f₃ = sig₃ := by
+  simp only [f₃, toPauli_ι]; ext i j; fin_cases i <;> fin_cases j <;> simp [sig₁, sig₂, sig₃]
+
+/-- **Surjective.** For a target `M`, the coefficients in the basis `{1, σ₁, σ₂, σ₃}` are
+`a = (m₀₀+m₁₁)/2`, `b = (m₀₁+m₁₀)/2`, `c = i(m₀₁−m₁₀)/2`, `d = (m₀₀−m₁₁)/2`, and each splits into
+its real part (carried by `1, e₁, e₂, e₃`) and its imaginary part (carried by
+`ω, e₂e₃, e₃e₁, e₁e₂`). -/
+theorem toPauli_surjective : Function.Surjective toPauli := by
+  intro M
+  refine ⟨((M 0 0 + M 1 1) / 2).re • 1 + ((M 0 0 + M 1 1) / 2).im • w
+        + ((M 0 1 + M 1 0) / 2).re • f₁ + ((M 0 1 + M 1 0) / 2).im • (f₂ * f₃)
+        + (Complex.I * (M 0 1 - M 1 0) / 2).re • f₂
+        + (Complex.I * (M 0 1 - M 1 0) / 2).im • (f₃ * f₁)
+        + ((M 0 0 - M 1 1) / 2).re • f₃ + ((M 0 0 - M 1 1) / 2).im • (f₁ * f₂), ?_⟩
+  simp only [map_add, map_smul, toPauli_w, toPauli_f₁, toPauli_f₂, toPauli_f₃,
+    toPauli_f₂f₃, toPauli_f₃f₁, toPauli_f₁f₂, map_one]
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [sig₁, sig₂, sig₃, Complex.ext_iff] <;> ring_nf
+  all_goals simp
+
+/-- **`Cl(3,0;ℝ) ≃ₐ[ℝ] M₂(ℂ)`.** -/
+def equivPauli : CliffordAlgebra Q₃₀ ≃ₐ[ℝ] Matrix (Fin 2) (Fin 2) ℂ := by
+  haveI : Invertible (2 : ℝ) := invertibleOfNonzero (by norm_num)
+  refine CliffordDimension.cliffordAlgEquivOfSurjective ℝ ((ℝ × ℝ) × ℝ) Q₃₀ toPauli
+    toPauli_surjective ?_
+  simp [Module.finrank_matrix, Complex.finrank_real_complex]
+
+/-! ### Its signature — `p − q ≡ 3` -/
+
+theorem sigPos_Q₃₀ : sigPos Q₃₀ = 3 := by
+  rw [Q₃₀, sigPos_prod, CliffordRealSignatures.sigPos_quaternionQ, sigPos_smul_sq]; norm_num
+
+theorem sigNeg_Q₃₀ : sigNeg Q₃₀ = 0 := by
+  rw [Q₃₀, sigNeg_prod, CliffordRealSignatures.sigNeg_quaternionQ, sigNeg_smul_sq]; norm_num
+
+/-- **`p − q = 3`**, the third diagonal off the wall. -/
+theorem diagonal_three : sigPos Q₃₀ = 3 ∧ sigNeg Q₃₀ = 0 := ⟨sigPos_Q₃₀, sigNeg_Q₃₀⟩
+
+theorem sep_Q₃₀ : (QuadraticMap.associated (R := ℝ) Q₃₀).SeparatingLeft :=
+  CliffordRealSignatures.separatingLeft_of_sig (by rw [sigPos_Q₃₀, sigNeg_Q₃₀]; simp)
+
+/-- **Every** nondegenerate real form of dimension 3 with `sigPos = 3` gives `M₂(ℂ)`. -/
+theorem clifford_iso_pauli_of_sig {V : Type*} [AddCommGroup V] [Module ℝ V]
+    [FiniteDimensional ℝ V] (Q : QuadraticForm ℝ V)
+    (hQ : (QuadraticMap.associated (R := ℝ) Q).SeparatingLeft)
+    (hdim : Module.finrank ℝ V = 3) (hsig : sigPos Q = 3) :
+    Nonempty (CliffordAlgebra Q ≃ₐ[ℝ] Matrix (Fin 2) (Fin 2) ℂ) := by
+  obtain ⟨e⟩ := CliffordRealQuantified.cliffordEquiv_of_sigPos_eq hQ sep_Q₃₀
+    (by simp [hdim]) (by rw [hsig, sigPos_Q₃₀])
+  exact ⟨e.trans equivPauli⟩
 
 end
 
