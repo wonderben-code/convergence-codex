@@ -62,6 +62,7 @@ import Mathlib.LinearAlgebra.Dimension.Constructions
 -- Import genuine Clifford algebra proofs (transitively imports CliffordAlgebra, Quaternion, etc.)
 import F4_1e_CliffordMatrix
 import CliffordDimension
+import CliffordSixIso
 import CliffordRealMinkowski
 import CliffordRealMajorana
 import IdempotentRankInvariant
@@ -176,6 +177,26 @@ theorem clifford4_finrank_via_exterior :
 -- (clifford4_finrank) and the algebra isomorphism (CliffordIso) were two units,
 -- and the second was much the harder. What is supplied is the subject matter of
 -- the arithmetic conjuncts, not the classification.
+
+/-- **AND THE 6D ISOMORPHISM LANDED LATER THE SAME DAY, 2026-08-18 — HALF THE COMMENT ABOVE IS NOW
+FALSE.** That comment is mine, written a few hours earlier, and said *"neither is proved"* of
+`Cl₆(ℂ) ≅ M₈(ℂ)` and `Cl₈(ℂ) ≅ M₁₆(ℂ)`. **It is quoted, not edited** (`ERRATUM 94`). The first is
+now proved: `CliffordSixIso.equivM8`, by the classical periodicity step `Cl₆ ≅ M₂(Cl₄)` realised
+concretely, so that every verification is over a `2 × 2` matrix rather than sixty-four `8 × 8`
+matrix units.
+
+**THE REST OF THAT COMMENT STANDS AND IS NOT WEAKENED.** The dimension formula still cannot prove
+an isomorphism — `CliffordDimension.finrank_cliffordAlgebra_congr` — and the proof above uses the
+quadratic form throughout, not the dimension. `Cl₈(ℂ) ≅ M₁₆(ℂ)` is **still not proved**.
+
+**AND THIS IS NOT THE TABLE'S ENTRY AS STATED.** It is the isomorphism at **one** six-dimensional
+form, `CliffordSixIso.Q₆`. The classification says *every* nondegenerate six-dimensional complex
+form gives `M₈(ℂ)`, and that needs a normal-form theorem this estate does not have. **The
+restriction is not pedantic**: the zero form on the same space gives the exterior algebra, which is
+not a matrix algebra, so no statement quantifying over all forms is available. -/
+theorem clifford6_iso_M8 :
+    Nonempty (CliffordAlgebra CliffordSixIso.Q₆ ≃ₐ[ℂ] Matrix (Fin 8) (Fin 8) ℂ) :=
+  ⟨CliffordSixIso.equivM8⟩
 
 /-- The cascade levels ARE even-dimensional complexified Clifford algebras.
     D_k = M_{2^k}(ℂ) = Cl_{2k}(ℂ).
