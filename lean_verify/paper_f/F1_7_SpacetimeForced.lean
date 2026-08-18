@@ -61,6 +61,7 @@ import Mathlib.LinearAlgebra.FreeModule.Finite.Matrix
 import Mathlib.LinearAlgebra.Dimension.Constructions
 -- Import genuine Clifford algebra proofs (transitively imports CliffordAlgebra, Quaternion, etc.)
 import F4_1e_CliffordMatrix
+import CliffordDimension
 import CliffordRealMinkowski
 import CliffordRealMajorana
 import IdempotentRankInvariant
@@ -120,6 +121,44 @@ theorem clifford_complex_even_dims :
   exact ⟨clifford2_finrank, clifford4_finrank,
          clifford4_matrix4_finrank_eq,
          by norm_num, by norm_num, by norm_num, by norm_num⟩
+
+/-- **THE LAST FOUR CONJUNCTS ARE NOW STATEMENTS ABOUT ALGEBRAS, 2026-08-18.** The theorem above
+proves `n = 2` and `n = 4` genuinely and then, for `n = 6` and `n = 8`, proves
+
+> `(2 : ℕ) ^ (6 / 2) = 8 ∧ (8 : ℕ) ^ 2 = 64` and `(2 : ℕ) ^ (8 / 2) = 16 ∧ (16 : ℕ) ^ 2 = 256`
+
+— **true statements about natural numbers, in the place where statements about algebras belong** —
+under the recorded reason
+
+> *"OUT OF SCOPE: would need CliffordAlgebra for 6D quadratic form"*
+
+and the same for 8D. **The statement is left standing and the reason is quoted, not edited**
+(`ERRATUM 94`); what is corrected is the reason. **It is false.** `CliffordAlgebra` is defined in
+Mathlib for *any* quadratic form on *any* module, so no six-dimensional construction is missing.
+The reason prices the technique — one bespoke `prodEquiv` chain per dimension, which is how `n = 2`
+and `n = 4` were reached here — rather than the statement, which needs a dimension formula that
+covers every dimension at once. `CliffordDimension.finrank_cliffordAlgebra` is that formula, and it
+is `CliffordAlgebra.equivExterior` composed with a count of `Finset (Fin n)`. Found by the
+`ERRATUM 200` check: *when a wall's stated reason names a technique, price the statement.* -/
+theorem clifford6_finrank (Q : QuadraticForm ℂ (Fin 6 → ℂ)) :
+    Module.finrank ℂ (CliffordAlgebra Q) = 64 :=
+  CliffordDimension.finrank_clifford_six Q
+
+/-- **AND `dim Cl₈(ℂ) = 256`**, for every quadratic form on an eight-dimensional complex space
+rather than for a chosen one. -/
+theorem clifford8_finrank (Q : QuadraticForm ℂ (Fin 8 → ℂ)) :
+    Module.finrank ℂ (CliffordAlgebra Q) = 256 :=
+  CliffordDimension.finrank_clifford_eight Q
+
+-- WHAT THIS DOES NOT DO, AND IT IS THE HALF THE TABLE IS ABOUT.
+-- The heading above each arithmetic conjunct reads "Cl_6(C) = M_8(C)" and
+-- "Cl_8(C) = M_16(C)" -- ISOMORPHISMS. Neither is proved, and the dimension
+-- formula provably cannot prove either: it returns 2^n for the ZERO quadratic
+-- form as well, so it does not distinguish the algebras the table names. The
+-- estate already knows this costs separate work -- at n = 4 the dimension
+-- (clifford4_finrank) and the algebra isomorphism (CliffordIso) were two units,
+-- and the second was much the harder. What is supplied is the subject matter of
+-- the arithmetic conjuncts, not the classification.
 
 /-- The cascade levels ARE even-dimensional complexified Clifford algebras.
     D_k = M_{2^k}(ℂ) = Cl_{2k}(ℂ).
