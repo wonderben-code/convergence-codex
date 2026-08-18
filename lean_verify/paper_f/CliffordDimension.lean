@@ -182,4 +182,50 @@ theorem finrank_cliffordAlgebra_real (V : Type*) [AddCommGroup V] [Module ℝ V]
 
 end Real
 
+/-! ## 5. The rung the isomorphism question actually stands on
+
+`WALLS §W7.1` records that the only available route to `Cl₆(ℂ) ≅ M₈(ℂ)` is the one `CliffordIso`
+took at `n = 4`: exhibit gamma matrices, prove the induced algebra map **surjective**, conclude.
+The conclusion step there is `clifford4ToMatrix_injective` — **fourteen lines of rank–nullity welded
+to `Q₄`, `M₄(ℂ)` and the number `4`.** Nothing in that argument is about any of the three. Freed, it
+says: **a surjective algebra map between algebras of equal finite dimension is an isomorphism**, so
+any future gamma construction owes only surjectivity.
+-/
+
+section Bijectivity
+
+/-- **A SURJECTIVE ALGEBRA MAP BETWEEN ALGEBRAS OF EQUAL FINITE DIMENSION IS AN ISOMORPHISM.**
+Rank–nullity: the range is everything, so the kernel has dimension zero. -/
+noncomputable def algEquivOfSurjectiveOfFinrankEq
+    {K A B : Type*} [Field K] [Ring A] [Ring B] [Algebra K A] [Algebra K B]
+    [FiniteDimensional K A] (f : A →ₐ[K] B) (hf : Function.Surjective f)
+    (h : finrank K A = finrank K B) : A ≃ₐ[K] B := by
+  refine AlgEquiv.ofBijective f ⟨?_, hf⟩
+  have hrk := LinearMap.finrank_range_add_finrank_ker f.toLinearMap
+  have hr : LinearMap.range f.toLinearMap = ⊤ := LinearMap.range_eq_top.mpr hf
+  rw [hr, finrank_top, ← h] at hrk
+  have hk : finrank K (LinearMap.ker f.toLinearMap) = 0 := by omega
+  exact LinearMap.ker_eq_bot.mp (Submodule.finrank_eq_zero.mp hk)
+
+variable (K : Type*) [Field K] (V : Type*) [AddCommGroup V] [Module K V] [FiniteDimensional K V]
+
+/-- A Clifford algebra over a finite-dimensional space is finite-dimensional, which §1 gives for
+free: its dimension is `2 ^ n`, and `2 ^ n > 0`. -/
+instance finiteDimensional_cliffordAlgebra [Invertible (2 : K)] (Q : QuadraticForm K V) :
+    FiniteDimensional K (CliffordAlgebra Q) :=
+  FiniteDimensional.of_finrank_pos (by
+    rw [finrank_cliffordAlgebra K V Q]; positivity)
+
+/-- **SO A GAMMA CONSTRUCTION OWES ONLY SURJECTIVITY.** Given any algebra map from `CliffordAlgebra
+Q` onto a `B` of dimension `2 ^ n`, this is the isomorphism. **It does not build such a map and does
+not claim one exists** — that is the open half of `WALLS §W7.1`, and this is the half that is not
+open. -/
+noncomputable def cliffordAlgEquivOfSurjective [Invertible (2 : K)] {B : Type*} [Ring B]
+    [Algebra K B] (Q : QuadraticForm K V) (f : CliffordAlgebra Q →ₐ[K] B)
+    (hf : Function.Surjective f) (hB : finrank K B = 2 ^ finrank K V) :
+    CliffordAlgebra Q ≃ₐ[K] B :=
+  algEquivOfSurjectiveOfFinrankEq f hf (by rw [finrank_cliffordAlgebra K V Q, hB])
+
+end Bijectivity
+
 end CliffordDimension

@@ -44,6 +44,7 @@
 -/
 
 import F4_1e_CliffordMatrix
+import CliffordDimension
 import Mathlib.LinearAlgebra.FiniteDimensional.Basic
 
 open Matrix CliffordAlgebra
@@ -347,6 +348,29 @@ def cliffordMatrixEquiv :
     CliffordAlgebra Q₄ ≃ₐ[ℂ] Matrix (Fin 4) (Fin 4) ℂ :=
   AlgEquiv.ofBijective clifford4ToMatrix
     ⟨clifford4ToMatrix_injective, clifford4ToMatrix_surjective⟩
+
+/-- **THE INJECTIVITY ARGUMENT ABOVE IS NOT ABOUT `Q₄`, `M₄(ℂ)` OR THE NUMBER `4`, 2026-08-18.**
+`clifford4ToMatrix_injective` is fourteen lines of rank–nullity in which the only inputs are
+*"the range is everything"* and *"the two dimensions agree"*. `CliffordDimension` states that as
+`algEquivOfSurjectiveOfFinrankEq`, and `cliffordAlgEquivOfSurjective` specialises it to Clifford
+algebras using the general dimension formula, so that **a gamma construction in any dimension owes
+only surjectivity**.
+
+**This is the instantiation, not a remark that one could be made** (`ERRATUM 201`: a subsumption
+claim is discharged by applying the general result to the specific object, not by observing that
+the statements resemble each other). It rebuilds *this file's own isomorphism* from the general
+lemma, with `clifford4ToMatrix_surjective` as the only Clifford-specific input.
+
+**`cliffordMatrixEquiv` above is NOT superseded and is not deleted.** It is the one whose
+generator behaviour `cliffordMatrixEquiv_apply_ι` records, and that behaviour — not the mere
+existence of an isomorphism — is what the spin identification consumes. -/
+noncomputable def cliffordMatrixEquiv_via_finrank :
+    CliffordAlgebra Q₄ ≃ₐ[ℂ] Matrix (Fin 4) (Fin 4) ℂ :=
+  CliffordDimension.cliffordAlgEquivOfSurjective ℂ ((ℂ × ℂ) × (ℂ × ℂ)) Q₄ clifford4ToMatrix
+    clifford4ToMatrix_surjective (by
+      have hV : Module.finrank ℂ ((ℂ × ℂ) × (ℂ × ℂ)) = 4 := by simp [Module.finrank_prod]
+      rw [matrix4_finrank, hV]
+      norm_num)
 
 /-- The isomorphism IS the gamma representation: it sends the generators
     to the gamma matrices (not a repackaged abstract equivalence). -/
