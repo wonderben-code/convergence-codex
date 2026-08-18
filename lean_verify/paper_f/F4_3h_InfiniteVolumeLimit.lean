@@ -23,6 +23,7 @@ import CascadeFoundation
 import GaussianMeasure
 import SpectralActionMeasure
 import ConnesNCG
+import DiagonalExtraction
 import Mathlib.Topology.MetricSpace.Sequences
 
 open Real Module
@@ -168,6 +169,46 @@ theorem diagonal_extraction :
     -- Diagonal subsequence is non-empty
     (1 : ℕ) ≤ 1 :=
   ⟨by norm_num, le_refl 1⟩
+
+/-- **THE ACTUAL DIAGONAL EXTRACTION, 2026-08-18 — AND MY OWN RECORDED REASON WAS WRONG.** The
+comment above is mine, written yesterday. It corrected the file's original false reason and then
+supplied a false one of its own:
+
+> *"What remains genuinely undone is the DIAGONAL step — extracting a single subsequence along
+> which countably many sequences all converge — and the obstruction there is not a missing library
+> but a **CONSTRUCTION**: nested subsequences and a diagonal, which nobody in this estate has
+> built."*
+
+**No such construction is needed and none was built.** `ERRATUM 94`: the sentence is quoted, not
+edited. The whole tuple of sequences is a *single point* of `Π j, Icc (-C j) (C j)`; that product is
+compact by `isCompact_univ_pi` and, being a countable product of metric spaces, first-countable, so
+`IsCompact.tendsto_subseq` produces one subsequence in one step and `tendsto_pi_nhds` reads it back
+off coordinatewise. The obstacle was named correctly and its **size** was not — which is the same
+error the file's original author made, in the opposite direction, one line up.
+
+`DiagonalExtraction.exists_subseq_tendsto_pi` is that theorem; this is its instance in the shape
+§1 needs, with `O j L` the `j`-th observable at volume `L`, together with the bound carried to the
+limit. -/
+theorem diagonal_extraction_real (O : ℕ → ℕ → ℝ) (C : ℕ → ℝ)
+    (hb : ∀ j L, |O j L| ≤ C j) :
+    ∃ (a : ℕ → ℝ) (φ : ℕ → ℕ), StrictMono φ ∧
+      (∀ j, Filter.Tendsto (fun k => O j (φ k)) Filter.atTop (nhds (a j))) ∧
+      (∀ j, |a j| ≤ C j) := by
+  obtain ⟨a, φ, hφ, hlim⟩ := DiagonalExtraction.exists_subseq_tendsto_pi O C hb
+  exact ⟨a, φ, hφ, hlim, fun j => DiagonalExtraction.limit_abs_le O C hb hlim j⟩
+
+-- WHAT IS STILL NOT PROVED, STATED SO IT CANNOT BE READ OFF THE ABOVE.
+-- Section 1's three-step argument is: bounds -> subsequence -> uniqueness.
+-- Step 2 is now a theorem. Step 1 is NOT: nothing in this file produces the
+-- family O or its bounds C from CascadeData, and the uniform correlation
+-- bounds are hypothesised throughout, not derived. Step 3 is NOT:
+-- limit_uniqueness below proves exp (-Delta) < 1, not that two subsequential
+-- limits agree. And the limit a is a bounded real family, NOT a state --
+-- positivity, normalisation and the OS axioms for it are untouched.
+-- This is a comment and not a theorem on purpose (ERRATUM 197): a True
+-- statement carrying prose in its docstring is the very pattern the note
+-- above objects to, and writing one here to disclaim the theorem above
+-- would reintroduce it one declaration later.
 
 -- ============================================================================
 -- SECTION 4: Uniqueness of the Limit (via CascadeData)
