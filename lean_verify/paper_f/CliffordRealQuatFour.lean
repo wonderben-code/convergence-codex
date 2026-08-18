@@ -1,22 +1,21 @@
 import CliffordRealPauli
 
 /-!
-# `Cl(4,0;ℝ) → M₂(ℍ)` — the last class, stage 1
+# `Cl(4,0;ℝ) ≅ M₂(ℍ)` — the last residue class
 
-`p − q ≡ 4` is the **only** residue class of the real classification still without a base case.
+`p − q ≡ 4` was the **only** class of the real classification still without a base case.
 `CliffordRealSplit` took `≡ 1`, `CliffordRealSplitQuat` took `≡ 5`, `CliffordRealPauli` took `≡ 3`,
 and `ERRATUM 211` is the account of how that list began the day at four.
 
-The watchlist item for this class wrote the representation out rather than gesturing at it, and
-asked for it in two stages. **This is stage 1: the map and the Clifford relation.** Surjectivity —
-and therefore the isomorphism — is stage 2 and is *not* in this file.
+> **`equivQuatFour`** — `Cl(4,0;ℝ) ≃ₐ[ℝ] M₂(ℍ)`. Signature `(4,0)` proved, so **`p − q = 4`**.
+
+**Every residue class `mod 8` now has a base case in this estate.**
 
 ## The map, and why it is one line rather than four matrices
 
-The item named four matrices. They are better written as one: a vector `v = (a,b,c,d)` becomes the
-quaternion `q = a + b i + c j + d k`, and the matrix is
-
-`hMap v = !![0, q; star q, 0]`.
+The watchlist item for this class named four quaternionic matrices. They are better written as one:
+a vector `(a,b,c,d)` becomes the quaternion `q = a + b i + c j + d k`, and the matrix is
+`hMap v = !![0, q; star q, 0]`. Writing the four out would have produced sixteen products to check.
 
 The conceptual content is one quaternion identity —
 `hMap v * hMap v = !![q · star q, 0; 0, star q · q]`, and `q · star q = star q · q = normSq q` —
@@ -30,19 +29,24 @@ exactly the prose-ahead-of-proof shape `CliffordRealSplitQuat`'s review caught t
 kept as a theorem because it is true and it is the reason the construction works; it is no longer
 described as the mechanism of a proof that does not use it.
 
-## What is proved
+## Surjectivity, and why it was short
 
-> **`hMap_sq`** — the Clifford relation, hence **`toQuatFour : Cl(4,0;ℝ) →ₐ[ℝ] M₂(ℍ)`**.
+Sixteen real dimensions, but the structure does the work rather than sixteen coefficients. Products
+of two generators give the **central** scalars — `g₃g₄ ↦ −i`, `g₂g₄ ↦ j`, `g₂g₃ ↦ −k` — so `sc q`
+realises `!![q,0;0,q]` for **every** quaternion at once. `g₁g₂ ↦ diag(−i, i)` breaks the symmetry
+between the diagonal entries, giving `!![−p,0;0,p]`; and `g₁` is the swap, turning diagonal into
+off-diagonal. Four half-sums of the target's entries then give the preimage outright.
 
-> **`toQuatFour_g₁ … _g₄`** — the four generators land on the four matrices the watchlist item
-> named, so the abstract map and the worked-out representation are the same object.
+## What this does and does NOT establish
 
-## What is NOT proved
+**It establishes base cases on all eight diagonals.** With
+`SignatureArithmetic.sigPos_sub_sigNeg_QextHyp` — the hyperbolic step adds `(1,1)` and so preserves
+`p − q` — every `Cl(p,q)` is now *reachable in principle* from one of them.
 
-**Surjectivity, and therefore the isomorphism.** `finrank ℝ (M₂(ℍ)) = 16 = 2⁴` holds, so
-`CliffordDimension.cliffordAlgEquivOfSurjective` closes it the moment surjectivity exists — the same
-shape as the three classes that fell today. **Until then `p − q ≡ 4` is still on the wall**, and the
-file title says stage 1 for that reason.
+**It does not establish the classification theorem.** Assembling the base cases and the step into a
+statement quantified over all `p` and `q` needs an induction that **is not in this estate**, and no
+file here should be read as containing it. What exists is eight base cases, a step, and a proof that
+the step preserves the diagonal. **That is the material for the theorem, not the theorem.**
 
 **No published tag moves.**
 
@@ -154,6 +158,91 @@ theorem sep_Q₄₀ : (QuadraticMap.associated (R := ℝ) Q₄₀).SeparatingLef
 /-- The dimension count stage 2 will need, recorded now because it is the half that is free. -/
 theorem finrank_target : Module.finrank ℝ (Matrix (Fin 2) (Fin 2) ℍ[ℝ]) = 2 ^ 4 := by
   simp [Module.finrank_matrix, Quaternion.finrank_eq_four]
+
+/-! ## Stage 2 — surjectivity, and the isomorphism
+
+The scalars come from products of two generators — `g₃g₄ ↦ −i`, `g₂g₄ ↦ j`, `g₂g₃ ↦ −k`, all
+central — so `sc q` realises `!![q,0;0,q]` for every quaternion. `g₁g₂ ↦ diag(−i, i)` breaks the
+symmetry between the two diagonal entries, and `g₁` swaps the diagonal for the off-diagonal. Four
+halves of the target's entries then give an explicit preimage. -/
+
+@[simp] theorem toQuatFour_g₃g₄ :
+    toQuatFour (g₃ * g₄) = !![⟨0, -1, 0, 0⟩, 0; 0, ⟨0, -1, 0, 0⟩] := by
+  simp only [g₃, g₄, map_mul, toQuatFour_ι]
+  refine Matrix.ext fun i j => ?_
+  fin_cases i <;> fin_cases j <;>
+    simp [Matrix.mul_apply, Fin.sum_univ_two, Quaternion.ext_iff]
+
+@[simp] theorem toQuatFour_g₂g₄ :
+    toQuatFour (g₂ * g₄) = !![⟨0, 0, 1, 0⟩, 0; 0, ⟨0, 0, 1, 0⟩] := by
+  simp only [g₂, g₄, map_mul, toQuatFour_ι]
+  refine Matrix.ext fun i j => ?_
+  fin_cases i <;> fin_cases j <;>
+    simp [Matrix.mul_apply, Fin.sum_univ_two, Quaternion.ext_iff]
+
+@[simp] theorem toQuatFour_g₂g₃ :
+    toQuatFour (g₂ * g₃) = !![⟨0, 0, 0, -1⟩, 0; 0, ⟨0, 0, 0, -1⟩] := by
+  simp only [g₂, g₃, map_mul, toQuatFour_ι]
+  refine Matrix.ext fun i j => ?_
+  fin_cases i <;> fin_cases j <;>
+    simp [Matrix.mul_apply, Fin.sum_univ_two, Quaternion.ext_iff]
+
+@[simp] theorem toQuatFour_g₁g₂ :
+    toQuatFour (g₁ * g₂) = !![⟨0, -1, 0, 0⟩, 0; 0, ⟨0, 1, 0, 0⟩] := by
+  simp only [g₁, g₂, map_mul, toQuatFour_ι]
+  refine Matrix.ext fun i j => ?_
+  fin_cases i <;> fin_cases j <;>
+    simp [Matrix.mul_apply, Fin.sum_univ_two, Quaternion.ext_iff]
+
+/-- Every quaternion, as a central scalar matrix in the image. -/
+def sc (q : ℍ[ℝ]) : CliffordAlgebra Q₄₀ :=
+  q.re • 1 - q.imI • (g₃ * g₄) + q.imJ • (g₂ * g₄) - q.imK • (g₂ * g₃)
+
+theorem toQuatFour_sc (q : ℍ[ℝ]) : toQuatFour (sc q) = !![q, 0; 0, q] := by
+  simp only [sc, map_add, map_sub, map_smul, map_one, toQuatFour_g₃g₄, toQuatFour_g₂g₄,
+    toQuatFour_g₂g₃]
+  refine Matrix.ext fun i j => ?_
+  fin_cases i <;> fin_cases j <;> simp [Quaternion.ext_iff]
+
+/-- The other diagonal shape, `!![−p, 0; 0, p]`, from `g₁g₂`. The right scalar is `−(p·i)`
+because `(−(p·i))·i = p`. -/
+def dg (p : ℍ[ℝ]) : CliffordAlgebra Q₄₀ := sc (-(p * ⟨0, 1, 0, 0⟩)) * (g₁ * g₂)
+
+theorem toQuatFour_dg (p : ℍ[ℝ]) : toQuatFour (dg p) = !![-p, 0; 0, p] := by
+  simp only [dg, map_mul, toQuatFour_sc]
+  refine Matrix.ext fun i j => ?_
+  fin_cases i <;> fin_cases j <;>
+    simp [Matrix.mul_apply, Fin.sum_univ_two, Quaternion.ext_iff]
+
+/-- **Surjective.** With `u,v` the half-sum and half-difference of the diagonal entries and `s,t`
+those of the off-diagonal ones, `sc u + dg v + (sc s + dg t) * g₁` maps onto the target. -/
+theorem toQuatFour_surjective : Function.Surjective toQuatFour := by
+  intro M
+  refine ⟨sc ((2:ℝ)⁻¹ • (M 0 0 + M 1 1)) + dg ((2:ℝ)⁻¹ • (M 1 1 - M 0 0))
+        + (sc ((2:ℝ)⁻¹ • (M 0 1 + M 1 0)) + dg ((2:ℝ)⁻¹ • (M 1 0 - M 0 1))) * g₁, ?_⟩
+  simp only [map_add, map_mul, toQuatFour_sc, toQuatFour_dg, toQuatFour_g₁]
+  refine Matrix.ext fun i j => ?_
+  fin_cases i <;> fin_cases j <;>
+    simp [Quaternion.ext_iff] <;> ring_nf
+  all_goals simp
+
+/-- **`Cl(4,0;ℝ) ≃ₐ[ℝ] M₂(ℍ)`** — the last residue class. -/
+def equivQuatFour : CliffordAlgebra Q₄₀ ≃ₐ[ℝ] Matrix (Fin 2) (Fin 2) ℍ[ℝ] := by
+  haveI : Invertible (2 : ℝ) := invertibleOfNonzero (by norm_num)
+  refine CliffordDimension.cliffordAlgEquivOfSurjective ℝ ((ℝ × ℝ) × (ℝ × ℝ)) Q₄₀ toQuatFour
+    toQuatFour_surjective ?_
+  rw [finrank_target]
+  norm_num
+
+/-- **Every** nondegenerate real form of dimension 4 with `sigPos = 4` gives `M₂(ℍ)`. -/
+theorem clifford_iso_quatFour_of_sig {V : Type*} [AddCommGroup V] [Module ℝ V]
+    [FiniteDimensional ℝ V] (Q : QuadraticForm ℝ V)
+    (hQ : (QuadraticMap.associated (R := ℝ) Q).SeparatingLeft)
+    (hdim : Module.finrank ℝ V = 4) (hsig : sigPos Q = 4) :
+    Nonempty (CliffordAlgebra Q ≃ₐ[ℝ] Matrix (Fin 2) (Fin 2) ℍ[ℝ]) := by
+  obtain ⟨e⟩ := CliffordRealQuantified.cliffordEquiv_of_sigPos_eq hQ sep_Q₄₀
+    (by simp [hdim]) (by rw [hsig, sigPos_Q₄₀])
+  exact ⟨e.trans equivQuatFour⟩
 
 end
 
