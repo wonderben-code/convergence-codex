@@ -167,6 +167,32 @@ theorem clifford_five_zero {W : Type*} [AddCommGroup W] [Module ℝ W] [FiniteDi
     (-CliffordRealPauli.Q₃₀) hneg (by simp) (by simp [CliffordRealPauli.sigNeg_Q₃₀])
   exact ⟨e.trans (AlgEquiv.mapMatrix f)⟩
 
+/-! ### `Cl(0,4;ℝ) ≅ M₂(ℍ)`
+
+The last unproved row of `F1_7_SpacetimeForced.signature_determination`'s table, and an immediate
+consequence of `clifford_step_neg`: peel two negative directions off `(0,4)` to reach `(0,2)`,
+whose negation is `(2,0)` — and `Cl(2,0) ≅ M₂(ℝ)`. So `Cl(0,4) ≅ M₂(ℝ) ⊗ ℍ ≅ M₂(ℍ)`. -/
+
+theorem sep_neg_N_neg :
+    (QuadraticMap.associated (R := ℝ) (-(N (-1) (-1)))).SeparatingLeft := by
+  refine separatingLeft_of_sig ?_
+  simp [N]
+
+/-- **`Cl(0,4;ℝ) ≅ M₂(ℍ)`**, for every nondegenerate real form of dimension `4` with
+`sigNeg = 4`. -/
+theorem clifford_iso_M2H_zero_four {W : Type*} [AddCommGroup W] [Module ℝ W]
+    [FiniteDimensional ℝ W] (Q' : QuadraticForm ℝ W)
+    (hQ' : (QuadraticMap.associated (R := ℝ) Q').SeparatingLeft)
+    (hdim : Module.finrank ℝ W = 4) (hsig : sigNeg Q' = 4) :
+    Nonempty (CliffordAlgebra Q' ≃ₐ[ℝ] Matrix (Fin 2) (Fin 2) ℍ[ℝ]) := by
+  obtain ⟨e⟩ := clifford_step_neg (Q := N (-1) (-1)) sep_N_neg hQ'
+    (by simp [hdim]) (by rw [hsig]; simp [N])
+  obtain ⟨f⟩ := CliffordRealTwoZero.clifford_iso_M2Real_of_sig (-(N (-1) (-1))) sep_neg_N_neg
+    (by simp) (by simp [N])
+  refine ⟨((e.trans (Algebra.TensorProduct.congr f AlgEquiv.refl)).trans
+    (CliffordPeriodicityEight.matrixTensorRight (Fin 2) ℝ ℍ[ℝ])).trans
+      (AlgEquiv.mapMatrix (Algebra.TensorProduct.lid ℝ ℍ[ℝ]))⟩
+
 end
 
 end CliffordPeriodicityQuantified
