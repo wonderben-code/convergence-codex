@@ -119,11 +119,17 @@ theorem exists_perm_comp_eq {w v : Fin n → ℝ}
     rw [hσ, hvv, hww]
 
 /-- The positive-weight count as a `Fintype.card`, which is the shape `exists_perm_comp_eq`
-consumes; `sigPos` states it as a `Set.ncard`. -/
-theorem ncard_eq_card_pos (w : Fin n → ℝ) :
+consumes; `sigPos` states it as a `Set.ncard`. Stated over an arbitrary finite index type because
+`SignatureArithmetic` needs it on a sum type. -/
+theorem ncard_eq_card_pos' {ι : Type*} [Fintype ι] (w : ι → ℝ) :
     {i | 0 < w i}.ncard = Fintype.card {i // 0 < w i} := by
+  classical
   rw [Set.ncard_eq_toFinset_card', Set.toFinset_card]
   exact Fintype.card_congr (Equiv.refl _)
+
+/-- The `Fin n` case, which is the shape the permutation lemma consumes. -/
+theorem ncard_eq_card_pos (w : Fin n → ℝ) :
+    {i | 0 < w i}.ncard = Fintype.card {i // 0 < w i} := ncard_eq_card_pos' w
 
 /-! ## The converse of Sylvester's law -/
 
