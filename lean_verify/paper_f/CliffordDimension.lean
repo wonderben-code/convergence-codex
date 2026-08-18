@@ -85,6 +85,30 @@ theorem finrank_cliffordAlgebra_of_finrank_eq [Invertible (2 : K)] {n : ℕ}
     finrank K (CliffordAlgebra Q) = 2 ^ n := by
   rw [finrank_cliffordAlgebra K V Q, hV]
 
+/-- **THE DIMENSION IS BLIND TO THE FORM, AND THIS IS THE CLAIM MADE IN PROSE YESTERDAY.** Any two
+quadratic forms on the same space give Clifford algebras of the same dimension. The header of this
+file, `F1_7_SpacetimeForced`'s comment and `ERRATUM 200` all assert that the formula *"cannot
+distinguish the algebras the classification table names"*, on the grounds that it *"returns `2 ^ n`
+for the zero form too"*. **That was asserted; here it is** — `ERRATUM 201`, applied to my own claim
+one day later.
+
+**What it does and does not say.** It says the *dimension* is not a function that separates
+Clifford algebras: it is constant on the whole space of quadratic forms over a fixed `V`. It does
+**not** say `Cl(Q₁)` and `Cl(Q₂)` are non-isomorphic for `Q₁ ≠ Q₂` — that is a different statement
+needing an invariant this file does not build, and it is **not** claimed. What is ruled out is one
+specific route to the table: no argument of the form *"the dimensions agree, therefore the algebras
+agree"* can work here, because the dimensions agree for every pair of forms whatsoever. -/
+theorem finrank_cliffordAlgebra_congr [Invertible (2 : K)] (Q₁ Q₂ : QuadraticForm K V) :
+    finrank K (CliffordAlgebra Q₁) = finrank K (CliffordAlgebra Q₂) := by
+  rw [finrank_cliffordAlgebra K V Q₁, finrank_cliffordAlgebra K V Q₂]
+
+/-- **THE ZERO FORM IS THE WITNESS**, stated separately because it is the one the prose named: a
+six-dimensional complex space carries a quadratic form whose Clifford algebra has dimension `64` and
+is the exterior algebra. -/
+theorem finrank_cliffordAlgebra_zero [Invertible (2 : K)] (Q : QuadraticForm K V) :
+    finrank K (CliffordAlgebra (0 : QuadraticForm K V)) = finrank K (CliffordAlgebra Q) :=
+  finrank_cliffordAlgebra_congr K V 0 Q
+
 end General
 
 /-! ## The complex case, which is what `F1_7_SpacetimeForced`'s table is about -/
