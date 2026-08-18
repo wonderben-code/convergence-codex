@@ -64,6 +64,7 @@ import F4_1e_CliffordMatrix
 import CliffordDimension
 import CliffordSixIso
 import CliffordEightIso
+import CliffordClassification
 import CliffordRealMinkowski
 import CliffordRealMajorana
 import IdempotentRankInvariant
@@ -218,6 +219,36 @@ sum of two matrix algebras and this construction does not reach it. -/
 theorem clifford8_iso_M16 :
     Nonempty (CliffordAlgebra CliffordEightIso.Q₈ ≃ₐ[ℂ] Matrix (Fin 16) (Fin 16) ℂ) :=
   ⟨CliffordEightIso.equivM16⟩
+
+/-- **AND THE QUANTIFIER FELL TOO, THE SAME DAY — THE RESTRICTION RECORDED THREE TIMES ABOVE IS
+WITHDRAWN.** The docstrings above say, in three places, that these are isomorphisms *"at two
+specific forms"* and that the table's *every nondegenerate form* needs *"a normal-form theorem this
+estate does not have"* — adding, each time, that **Mathlib had not been searched for it**.
+**Quoted, not edited** (`ERRATUM 94`). The search was the missing step and Mathlib has the theorem:
+`QuadraticForm.equivalent_weightedSumSquares_of_isAlgClosed`.
+
+`CliffordClassification.clifford_iso_M8_of_nondegenerate` and `…_M16_of_nondegenerate` are the
+table's entries as stated: **every** nondegenerate form on **every** complex space of dimension 6
+(resp. 8). What made the specific results specific was a library search that had been deferred and
+labelled as deferred — which is the one part of the record that behaved correctly.
+
+**WHAT IS STILL NOT PROVED.** Odd dimensions, where the classification is `M ⊕ M`. Even ranks other
+than 2, 4, 6, 8 — the ladder should continue and **that is a prediction about difficulty, labelled
+one** (`ERRATUM 194`). And the nondegeneracy hypothesis is **not removable**:
+`CliffordDimension.finrank_cliffordAlgebra_congr` gives the same dimension for the zero form, whose
+Clifford algebra is the exterior algebra, so the statement is **false** without it. -/
+theorem clifford6_iso_M8_general {V : Type*} [AddCommGroup V] [Module ℂ V]
+    [FiniteDimensional ℂ V] (hV : Module.finrank ℂ V = 6) (Q : QuadraticForm ℂ V)
+    (hQ : (QuadraticMap.associated (R := ℂ) Q).SeparatingLeft) :
+    Nonempty (CliffordAlgebra Q ≃ₐ[ℂ] Matrix (Fin 8) (Fin 8) ℂ) :=
+  CliffordClassification.clifford_iso_M8_of_nondegenerate hV Q hQ
+
+/-- The same at rank 8. -/
+theorem clifford8_iso_M16_general {V : Type*} [AddCommGroup V] [Module ℂ V]
+    [FiniteDimensional ℂ V] (hV : Module.finrank ℂ V = 8) (Q : QuadraticForm ℂ V)
+    (hQ : (QuadraticMap.associated (R := ℂ) Q).SeparatingLeft) :
+    Nonempty (CliffordAlgebra Q ≃ₐ[ℂ] Matrix (Fin 16) (Fin 16) ℂ) :=
+  CliffordClassification.clifford_iso_M16_of_nondegenerate hV Q hQ
 
 /-- The cascade levels ARE even-dimensional complexified Clifford algebras.
     D_k = M_{2^k}(ℂ) = Cl_{2k}(ℂ).
