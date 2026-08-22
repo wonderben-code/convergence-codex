@@ -165,6 +165,15 @@ SUBGROUP of SO⁺(1,3). Whether that subgroup is everything is W7 step
 (d)'s remaining part and is not proved. The statement below is what the
 file would need in order to say "double cover", written out so that its
 absence is visible rather than implied.
+
+**⚠ SUPERSEDED 8 AUG 2026 — IT IS EVERYTHING.** Kept per `ERRATUM 94`.
+`SpinSurjective.surjectivityStatement` proves `spinQuotEmbed` onto and
+`spinDoubleCover` bundles the pair as `Spin(1,3) ⧸ {±1} ≃* SO⁺(1,3)`.
+**The `def` below already carries this correction and this section did
+not** — the same once-per-file-instead-of-once-per-claim shape as
+`ERRATUM 228`, found by the scope-B census on 2026-08-22. What remains
+open at W7 is the TOPOLOGICAL reading (`ASSUMPTIONS 41` and `42`), not
+the algebraic one.
 -/
 
 /-- The missing statement, named but NOT proved anywhere in the estate:
