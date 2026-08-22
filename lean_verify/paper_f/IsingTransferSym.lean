@@ -43,6 +43,16 @@ Mathlib** (`PerronFrobenius`/`perronFrobenius`: zero files, probed 2026-08-11) a
 here. `IsingTransfer2D.transfer2_pos` records the positivity it would consume; `transferSym_pos`
 below records that symmetrising does not destroy it.
 
+⚠ **THE CLAIM STANDS AND THE PROBE IS THE WRONG ONE — `ERRATUM 234`, third instance, kept per
+`ERRATUM 94`.** `PerronFrobenius`/`perronFrobenius` really are zero files, and no Perron–Frobenius
+**conclusion** is in Mathlib. But that probe searches for the theorem's **eponym**, and Mathlib
+does not name it after anybody: it names the **hypotheses**. `Matrix.IsPrimitive` and
+`Matrix.IsIrreducible` exist, seventeen declarations between them, every one a definition or an
+accessor. **And `Matrix.IsPrimitive` is field-for-field the hypothesis triple this estate's
+`PerronPrimitive` hand-wrote** — `nonneg` and `exists_pos_pow`. So the bad probe did not hide a
+theorem; it hid the fact that the estate and the library had been describing the same object under
+different names for a fortnight. `PerronMathlibPredicate` joins them.
+
 ⚠ **«WHAT REMAINS IS EXACTLY PERRON–FROBENIUS» IS SUPERSEDED, 22 AUGUST; THE PARAGRAPH IS KEPT PER
 `ERRATUM 94`.** Every sentence of it remains true **of this file** — nothing below separates
 anything — and the Mathlib probe is not withdrawn. What is no longer true is the implied statement

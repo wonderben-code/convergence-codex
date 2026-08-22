@@ -50,6 +50,16 @@ of this matrix — is untouched, and it is the hard one: Perron–Frobenius is a
 argument in `IsingTransferMatrix` does not generalise. **Having the operator is not having its
 spectrum.**
 
+⚠ **THE CLAIM STANDS AND THE PROBE IS THE WRONG ONE — `ERRATUM 234`, third instance, kept per
+`ERRATUM 94`.** `PerronFrobenius`/`perronFrobenius` really are zero files, and no Perron–Frobenius
+**conclusion** is in Mathlib. But that probe searches for the theorem's **eponym**, and Mathlib
+does not name it after anybody: it names the **hypotheses**. `Matrix.IsPrimitive` and
+`Matrix.IsIrreducible` exist, seventeen declarations between them, every one a definition or an
+accessor. **And `Matrix.IsPrimitive` is field-for-field the hypothesis triple this estate's
+`PerronPrimitive` hand-wrote** — `nonneg` and `exists_pos_pow`. So the bad probe did not hide a
+theorem; it hid the fact that the estate and the library had been describing the same object under
+different names for a fortnight. `PerronMathlibPredicate` joins them.
+
 ⚠ **«ITEM 2 … IS UNTOUCHED» WAS TRUE ON 11 AUGUST AND IS FALSE SINCE 22 AUGUST. THE SENTENCE IS
 KEPT PER `ERRATUM 94`.** Item 2 is **closed**, by nine files ending at
 `PerronGap.transferSym_gap`: `|λ| < λ_top` for every eigenvalue of `transferSym` off the argmax,
