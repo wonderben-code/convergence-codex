@@ -185,6 +185,41 @@ section Asymptotics
 
 open Filter Topology IsingTransfer2D IsingTransferSym
 
+/-- **THE WEIGHTED RATIO SUM CONVERGES TO ITS TOP-INDEX WEIGHT.** For a symmetric matrix with
+strictly positive entries, `k` an index carrying a largest eigenvalue, and **any** family of
+weights `c`, `∑ᵢ cᵢ · (λᵢ/λₖ)^(M+1) → c k`. Every ratio off the argmax has modulus below one
+(`PerronGap.abs_eigenvalues_lt_of_ne`) and the largest value is attained at one index only
+(`index_eq_of_eigenvalues_eq_top`), so exactly one term survives and the weights on the others
+are irrelevant however large they are.
+
+**Extracted from `partition2_div_top_pow_tendsto_one`'s proof rather than copied out of it** —
+that theorem is now this one at `c = 1`. `IsingTwoPointLimit` needs the same limit at two
+different weight families, and `ERRATUM 173` is avoided by refactoring the source. -/
+theorem tendsto_weighted_ratio_pow {ι : Type*} [Fintype ι] [DecidableEq ι] [Nonempty ι]
+    {A : Matrix ι ι ℝ} (hA : A.IsHermitian) (hpos : ∀ i j, 0 < A i j) {k : ι}
+    (hk : ∀ j, hA.eigenvalues j ≤ hA.eigenvalues k) (c : ι → ℝ) :
+    Tendsto (fun M : ℕ => ∑ i, c i * (hA.eigenvalues i / hA.eigenvalues k) ^ (M + 1))
+      atTop (𝓝 (c k)) := by
+  classical
+  have hkpos : 0 < hA.eigenvalues k := PerronGap.eigenvalue_max_pos hA hpos hk
+  have hterm : ∀ i : ι,
+      Tendsto (fun M : ℕ => c i * (hA.eigenvalues i / hA.eigenvalues k) ^ (M + 1))
+        atTop (𝓝 (if i = k then c i else 0)) := by
+    intro i
+    by_cases hik : i = k
+    · subst hik
+      simp [div_self (ne_of_gt hkpos)]
+    · have hne : hA.eigenvalues i ≠ hA.eigenvalues k := fun h =>
+        hik (index_eq_of_eigenvalues_eq_top hA hpos hk h)
+      have habs : |hA.eigenvalues i / hA.eigenvalues k| < 1 := by
+        rw [abs_div, abs_of_pos hkpos, div_lt_one hkpos]
+        exact PerronGap.abs_eigenvalues_lt_of_ne hA hpos hk hne
+      have h0 := tendsto_pow_atTop_nhds_zero_of_abs_lt_one habs
+      have h1 := (h0.mul_const (hA.eigenvalues i / hA.eigenvalues k)).const_mul (c i)
+      simpa [hik, pow_succ] using h1
+  have hsum := tendsto_finset_sum (univ : Finset ι) fun i (_ : i ∈ univ) => hterm i
+  simpa using hsum
+
 /-- **THE PARTITION FUNCTION IS ASYMPTOTICALLY THE TOP EIGENVALUE'S POWER.** For every inverse
 temperature and every strip width, `partition2 β n M / λ_top ^ (M+1) → 1` as the strip length
 `M → ∞`. Every ingredient is from this chain: §2 for the power sum, `PerronGap` for the
@@ -201,29 +236,12 @@ theorem partition2_div_top_pow_tendsto_one (β : ℝ) (n : ℕ) :
   have hkpos : 0 < hA.eigenvalues k := PerronGap.eigenvalue_max_pos hA hpos hk
   refine ⟨k, hkpos, ?_⟩
   have hrw : ∀ M : ℕ, partition2 β n M / hA.eigenvalues k ^ (M + 1)
-      = ∑ i, (hA.eigenvalues i / hA.eigenvalues k) ^ (M + 1) := by
+      = ∑ i, (1 : ℝ) * (hA.eigenvalues i / hA.eigenvalues k) ^ (M + 1) := by
     intro M
     rw [partition2_eq_sum_eigenvalues_pow, Finset.sum_div]
-    exact Finset.sum_congr rfl fun i _ => (div_pow _ _ _).symm
+    exact Finset.sum_congr rfl fun i _ => by rw [one_mul, div_pow]
   refine Tendsto.congr (fun M => (hrw M).symm) ?_
-  have hterm : ∀ i : Col n, Tendsto (fun M : ℕ => (hA.eigenvalues i / hA.eigenvalues k) ^ (M + 1))
-      atTop (𝓝 (if i = k then (1 : ℝ) else 0)) := by
-    intro i
-    by_cases hik : i = k
-    · subst hik
-      simp [div_self (ne_of_gt hkpos)]
-    · have hne : hA.eigenvalues i ≠ hA.eigenvalues k := fun h =>
-        hik (index_eq_of_eigenvalues_eq_top hA hpos hk h)
-      have hlt : |hA.eigenvalues i| < hA.eigenvalues k :=
-        PerronGap.abs_eigenvalues_lt_of_ne hA hpos hk hne
-      have habs : |hA.eigenvalues i / hA.eigenvalues k| < 1 := by
-        rw [abs_div, abs_of_pos hkpos, div_lt_one hkpos]
-        exact hlt
-      have h0 := tendsto_pow_atTop_nhds_zero_of_abs_lt_one habs
-      have := h0.mul_const (hA.eigenvalues i / hA.eigenvalues k)
-      simpa [hik, pow_succ] using this
-  have hsum := tendsto_finset_sum (univ : Finset (Col n)) fun i (_ : i ∈ univ) => hterm i
-  simpa using hsum
+  simpa using tendsto_weighted_ratio_pow hA hpos hk (fun _ => (1 : ℝ))
 
 end Asymptotics
 
