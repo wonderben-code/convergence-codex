@@ -70,6 +70,17 @@ which is what the estate's `IsDomainReflexive` and `DInfExists` also ask for. `f
 gives the order-isomorphism strengthening for the *arbitrary-tower* statement; **this file does not
 transport it through `shiftEquiv`**, which is not an order isomorphism as stated either. So the
 stronger form of `Bilimit` itself is available in principle and is not proved here.
+
+**⚠ SUPERSEDED — §5 OF THIS FILE PROVES IT, and the paragraph is kept per `ERRATUM 94`.** *"This
+file does not transport it through `shiftEquiv` … the stronger form of `Bilimit` itself is
+available in principle and is not proved here"* stopped being true when `bilimit_orderIso` and
+`dInfExists_orderIso` were added: `InverseLimitCPO.shiftOrderIso` supplies the missing upgrade and
+the composition carries the order the whole way. §5 says so in its own words — *"§5 gave the weaker
+one and said so. The obstruction was not deep."* **`WALLS` §W8's summary row recorded the
+correction and this header did not**, which is the same shape as `ERRATUM 226`'s instances four and
+five and is found by the same signal: a marker naming an object that a theorem now concludes.
+**What still stands: `Bilimit` and `DInfExists` are left exactly as stated**, the estate's `def`
+being a corollary of the stronger form rather than being rewritten to match it. `ERRATUM 228`.
 -/
 
 namespace CanonicalTower

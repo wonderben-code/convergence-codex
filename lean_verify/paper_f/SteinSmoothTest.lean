@@ -318,9 +318,21 @@ rest. **What is missing is the Lean plumbing, not the idea**: a scaled
 bump family with a uniform derivative bound, and two dominated-convergence
 arguments. That is a unit of work, not a wall — but it has not been done,
 so W6 stands.
+
+**⚠ SUPERSEDED — IT WAS DONE, AND THIS FILE'S OWN HEADER HAS SAID SO SINCE
+2026-08-10.** Kept per `ERRATUM 94`. *"It has not been done, so W6 stands"*
+is false: `W6Converse.w6Converse_holds : SteinSmoothTest.W6Converse`
+discharges it, `stein_iff_smooth` is the biconditional, and `WALLS` records
+W6 as closed. The header's §"WHAT THIS DOES NOT DO" carries that correction
+under `ERRATUM 92`; **this section, twelve lines of route for a proof that
+exists, did not.** What still stands is the route itself — the bump-family
+argument sketched above is what `W6Converse` actually does. `ERRATUM 228`.
 -/
 
-/-- The exact missing implication. -/
+/-- The exact missing implication. **(⚠ NO LONGER MISSING — `W6Converse.w6Converse_holds`
+    proves it, 2026-08-10, `ERRATUM 92`. The name and statement are left exactly as they were:
+    weakening or rewriting a target to match what got proved is the one move this campaign does
+    not make, and this `def` is now the thing that theorem concludes. `ERRATUM 228`.)** -/
 def W6Converse : Prop := ∀ f g : ℝ → ℝ, SmoothSteinPair f g → SteinPair f g
 
 /-- **The second residue, named for the same reason.** That the Cc^∞-tested
