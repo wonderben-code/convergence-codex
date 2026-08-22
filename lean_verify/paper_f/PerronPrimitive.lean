@@ -40,6 +40,13 @@ witness always exists. **That implication is not proved in this file** and the h
 therefore stated with the odd `k` supplied, rather than derived from a bare `∃ k` — `ERRATUM 48`:
 the convenient version would be asserting a step nobody took.
 
+⚠ **SUPERSEDED — §4 PROVES IT, AND THE HYPOTHESIS IS GONE. THE PARAGRAPH IS KEPT PER `ERRATUM 94`.**
+`abs_lt_max_of_ne_of_primitive` takes a bare positive `k` with `A ^ k` strictly positive and needs
+no parity at all: **`pos_pow_succ`** shows a strictly positive power stays strictly positive under
+one more multiplication (the no-zero-row fact it needs is itself a consequence of `A ^ k > 0`, not
+an extra hypothesis), **`pos_pow_of_le`** iterates it, and **`exists_odd_pos_pow`** picks `k` or
+`k + 1`. That is the classical **primitivity** hypothesis, in full, with nothing left over.
+
 **WHAT DOES NOT MOVE.** This is still one finite symmetric matrix. `WALLS` §W4.0 §6 item 3 — the
 passage from a spectral gap to correlation decay at `d ≥ 2` — is untouched, and a gap for a
 primitive matrix at fixed side length is not a mass gap either.
@@ -203,5 +210,83 @@ theorem not_pos_pow_of_bipartite [Nonempty n] (A : Matrix n n ℝ) {c : n → Bo
   linarith [hz, this]
 
 end Bipartite
+
+/-! ## 4. The odd hypothesis is removable, and here it is removed
+
+The header above stated, and deliberately did not prove, that a strictly positive power stays
+strictly positive as the exponent grows — so that an odd witness always exists and the parity
+condition costs nothing. `ERRATUM 48` is why it was flagged rather than assumed; the standing
+orders are why it is now proved rather than reworded.
+
+**The one thing that looks like an extra hypothesis is not one.** The induction needs `A` to have
+no zero row, and that is a *consequence* of `A ^ k > 0` for `k ≥ 1`: a zero row of `A` is a zero
+row of every power.
+-/
+
+section Removable
+
+variable {n : Type*} [Fintype n] [DecidableEq n]
+
+/-- A strictly positive power forces every row of `A` to be somewhere positive. -/
+theorem exists_pos_entry [Nonempty n] {A : Matrix n n ℝ} (hnn : ∀ i j, 0 ≤ A i j) {k : ℕ}
+    (hk : 0 < k) (hpos : ∀ i j, 0 < (A ^ k) i j) (i : n) : ∃ l, 0 < A i l := by
+  by_contra hcon
+  push Not at hcon
+  obtain ⟨m, rfl⟩ : ∃ m, k = m + 1 := ⟨k - 1, (Nat.succ_pred_eq_of_pos hk).symm⟩
+  obtain ⟨j⟩ := ‹Nonempty n›
+  have hz : (A ^ (m + 1)) i j = 0 := by
+    rw [pow_succ', Matrix.mul_apply]
+    refine Finset.sum_eq_zero fun l _ => ?_
+    have : A i l = 0 := le_antisymm (hcon l) (hnn i l)
+    rw [this, zero_mul]
+  exact absurd hz (ne_of_gt (hpos i j))
+
+/-- **A STRICTLY POSITIVE POWER STAYS STRICTLY POSITIVE.** -/
+theorem pos_pow_succ [Nonempty n] {A : Matrix n n ℝ} (hnn : ∀ i j, 0 ≤ A i j) {k : ℕ}
+    (hk : 0 < k) (hpos : ∀ i j, 0 < (A ^ k) i j) (i j : n) : 0 < (A ^ (k + 1)) i j := by
+  obtain ⟨l, hl⟩ := exists_pos_entry hnn hk hpos i
+  rw [pow_succ', Matrix.mul_apply]
+  refine Finset.sum_pos' (fun p _ => mul_nonneg (hnn i p) (le_of_lt (hpos p j))) ⟨l, mem_univ l, ?_⟩
+  exact mul_pos hl (hpos l j)
+
+/-- And therefore at every larger exponent. -/
+theorem pos_pow_of_le [Nonempty n] {A : Matrix n n ℝ} (hnn : ∀ i j, 0 ≤ A i j) {k : ℕ}
+    (hk : 0 < k) (hpos : ∀ i j, 0 < (A ^ k) i j) : ∀ {m : ℕ}, k ≤ m → ∀ i j, 0 < (A ^ m) i j := by
+  intro m hm
+  induction m with
+  | zero => omega
+  | succ p ih =>
+      rcases Nat.lt_or_ge k (p + 1) with h | h
+      · have hkp : k ≤ p := Nat.lt_succ_iff.mp h
+        exact pos_pow_succ hnn (lt_of_lt_of_le hk hkp) (ih hkp)
+      · have : k = p + 1 := le_antisymm hm h
+        subst this; exact hpos
+
+/-- **SO AN ODD WITNESS ALWAYS EXISTS**, which is what the header paragraph above claimed and did
+not prove. -/
+theorem exists_odd_pos_pow [Nonempty n] {A : Matrix n n ℝ} (hnn : ∀ i j, 0 ≤ A i j) {k : ℕ}
+    (hk : 0 < k) (hpos : ∀ i j, 0 < (A ^ k) i j) : ∃ m, Odd m ∧ ∀ i j, 0 < (A ^ m) i j := by
+  rcases Nat.even_or_odd k with he | ho
+  · exact ⟨k + 1, Even.add_one he, pos_pow_of_le hnn hk hpos (Nat.le_succ k)⟩
+  · exact ⟨k, ho, hpos⟩
+
+/-- **THE SEPARATION FOR A PRIMITIVE SYMMETRIC MATRIX, WITH NO PARITY HYPOTHESIS.** This is the
+classical statement: nonnegative entries, some positive power strictly positive. -/
+theorem abs_lt_max_of_ne_of_primitive [Nonempty n] {A : Matrix n n ℝ} (hA : A.IsHermitian)
+    (hnn : ∀ i j, 0 ≤ A i j) {k : ℕ} (hk : 0 < k) (hpos : ∀ i j, 0 < (A ^ k) i j) {p : n}
+    (hp : ∀ j, hA.eigenvalues j ≤ hA.eigenvalues p) {j : n}
+    (hne : hA.eigenvalues j ≠ hA.eigenvalues p) :
+    |hA.eigenvalues j| < hA.eigenvalues p := by
+  obtain ⟨m, hm, hmpos⟩ := exists_odd_pos_pow hnn hk hpos
+  exact abs_lt_max_of_ne hA hm hmpos hp hne
+
+/-- And the top eigenvalue is positive, on the same hypotheses. -/
+theorem max_pos_of_primitive [Nonempty n] {A : Matrix n n ℝ} (hA : A.IsHermitian)
+    (hnn : ∀ i j, 0 ≤ A i j) {k : ℕ} (hk : 0 < k) (hpos : ∀ i j, 0 < (A ^ k) i j) {p : n}
+    (hp : ∀ j, hA.eigenvalues j ≤ hA.eigenvalues p) : 0 < hA.eigenvalues p := by
+  obtain ⟨m, hm, hmpos⟩ := exists_odd_pos_pow hnn hk hpos
+  exact max_pos hA hm hmpos hp
+
+end Removable
 
 end PerronPrimitive
