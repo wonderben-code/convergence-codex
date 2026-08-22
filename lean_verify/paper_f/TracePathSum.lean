@@ -185,6 +185,18 @@ theorem cyc_eq_openProd (M : Matrix α α R) (N : ℕ) (s : Fin (N + 1) → α) 
   · intro j
     rw [Fin.succ_castSucc, Fin.snoc_castSucc, castSucc_add_one]
 
+omit [Fintype α] [DecidableEq α] in
+/-- **THE CYCLIC PRODUCT ALONG `s` IS THE CLOSED WALK FROM `s 0` BACK TO `s 0`.** Extracted from
+inside `sum_cyc_eq_trace`'s proof on 2026-08-22, when `IsingTwoPoint.sum_cyc_weighted` needed the
+same step: the alternative was to copy six lines, which is `ERRATUM 173` written on purpose. -/
+theorem cyc_eq_walkProd (M : Matrix α α R) (N : ℕ) (s : Fin (N + 1) → α) :
+    (∏ i : Fin (N + 1), M (s i) (s (i + 1))) = walkProd M (s 0) N (s 0) (Fin.tail s) := by
+  rw [cyc_eq_openProd]
+  have : (Fin.snoc s (s 0) : Fin (N + 2) → α)
+      = Fin.cons (s 0) (Fin.snoc (Fin.tail s) (s 0)) := by
+    rw [Fin.cons_snoc_eq_snoc_cons, Fin.cons_self_tail]
+  rw [this, openProd_cons_snoc]
+
 /-- **THE PARTITION-FUNCTION IDENTITY.** The sum over cyclic configurations of the product of
 transfer entries around the loop is the trace of the matrix power. Every step is one of the three
 above plus the `Fin.consEquiv` reindexing already used in §2.
@@ -194,15 +206,7 @@ arbitrary commutative semiring. -/
 theorem sum_cyc_eq_trace (M : Matrix α α R) (N : ℕ) :
     ∑ s : Fin (N + 1) → α, ∏ i : Fin (N + 1), M (s i) (s (i + 1))
       = Matrix.trace (M ^ (N + 1)) := by
-  have hterm : ∀ s : Fin (N + 1) → α,
-      (∏ i : Fin (N + 1), M (s i) (s (i + 1))) = walkProd M (s 0) N (s 0) (Fin.tail s) := by
-    intro s
-    rw [cyc_eq_openProd]
-    have : (Fin.snoc s (s 0) : Fin (N + 2) → α)
-        = Fin.cons (s 0) (Fin.snoc (Fin.tail s) (s 0)) := by
-      rw [Fin.cons_snoc_eq_snoc_cons, Fin.cons_self_tail]
-    rw [this, openProd_cons_snoc]
-  rw [Finset.sum_congr rfl fun s _ => hterm s, trace_pow_succ]
+  rw [Finset.sum_congr rfl fun s _ => cyc_eq_walkProd M N s, trace_pow_succ]
   have hprod : (∑ p : α × (Fin N → α), walkProd M p.1 N p.1 p.2)
       = ∑ a, ∑ t : Fin N → α, walkProd M a N a t := Fintype.sum_prod_type _
   rw [← hprod]
