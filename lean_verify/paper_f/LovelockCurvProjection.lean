@@ -55,6 +55,17 @@ and `KillsWeyl` at `n ≥ 4` is exactly as open as it was.
 `Curv` cannot see it. Those three are what the route consumes; bundling is a separate decision, and
 `LovelockReduction` §1's reason for not taking it stands.
 
+**⚠ SUPERSEDED — `LovelockCurvProjectionOrthogonal` IS THE BUNDLED SENSE**, and the paragraph is
+kept per `ERRATUM 94`. *"No submodule, no `orthogonalProjection` instance"* is false: `algCurv` is
+the submodule, and `starProjection_arrEquiv` proves **`curvProj` is Mathlib's orthogonal
+projection onto it** — equal as functions, by Mathlib's own characterisation. The reason given
+here was that the decision had no consumer; it has two now, and neither was statable before,
+because both need a metric: **`curvProj_minimal`** — `curvProj A` is the **closest** algebraic
+curvature tensor to `A` — and **`norm_curvProj_le`**. What still stands: **no instance is placed
+on the array type**, so every statement in this file remains one about the bare form, and the
+uniqueness clause was closed separately by `LovelockCurvProjectionUnique`. `ERRATUM 228` is the
+rule this is applied under.
+
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 

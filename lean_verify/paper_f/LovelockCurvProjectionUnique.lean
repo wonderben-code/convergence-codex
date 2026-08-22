@@ -38,6 +38,16 @@ Every theorem here is about the construction being canonical, not about what `T`
 `LinearMap`. What `curvProj` now has is the characterisation those instances would carry; what it
 does not have is the instance, and that remains a decision rather than a gap.
 
+**⚠ SUPERSEDED — IT IS ONE NOW.** Kept per `ERRATUM 94`.
+`LovelockCurvProjectionOrthogonal.algCurv` is the `Submodule`, and `starProjection_arrEquiv`
+proves `curvProj` **equal** to Mathlib's orthogonal projection onto it — using this file's own
+`curvProj_unique` route in Mathlib's vocabulary: membership plus orthogonality of the difference.
+**The sentence was right that it was a decision rather than a gap, and wrong about what the
+decision cost**: taking it produced `curvProj_minimal`, that `curvProj A` is the **closest**
+algebraic curvature tensor to `A`, which no theorem here could state because "closest" needs a
+metric. What still stands: **no instance on the array type**, and this file's theorems are still
+about the bare form. `ERRATUM 228`.
+
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 
