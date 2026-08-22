@@ -32,7 +32,23 @@ writing needed.
 * **`corr2`** — **the two-point function**: the expectation of `σ_i σ_{i'}` within a column, and
   **`corr2_eq_trace_div`**;
 * **`corr2_self`** — `⟨σ_i σ_i⟩ = 1`, the sanity check that the normalisation is right, proved
-  from `spin_sq` rather than asserted.
+  from `spin_sq` rather than asserted;
+* **`corr2Sep`** — **the two-point function ALONG the strip**, two spins in the same row `k`
+  columns apart, and **`corr2Sep_eq_trace_div`**: the transfer matrix twice with the spin diagonal
+  between the factors, which is the shape every transfer-matrix account of correlation decay starts
+  from. `corr2` pairs spins across the strip, whose width is fixed; **this one is in the direction
+  the limit is taken in**, and it is the observable a mass gap concerns. `corr2Sep_zero` is its
+  normalisation check.
+
+## What is still not here, and it is no longer an object
+
+**A decay statement.** `corr2Sep_eq_trace_div` puts the observable in the form the classical
+argument uses, and the classical argument then needs **the spectral gap of `transfer2` fed into
+it** — `λ₂/λ₁` raised to the separation. `PerronGap` and `PerronSimple` supply a gap for a
+**primitive** matrix at a **fixed** side length; the strip's width is fixed here too, and every
+limit available is in its length. **So what stands between this file and a mass gap is not a
+missing definition and not a missing identity: it is the uniformity in the width**, which is
+`WALLS` §W4 §6 item 2's own closing sentence and is open mathematics.
 
 ## What is NOT proved, named as a `def` in this estate's convention for a gap
 
@@ -206,5 +222,52 @@ theorem separatedTransferFormula_holds (n : ℕ) : SeparatedTransferFormula n :=
     rw [hsub, Finset.sum_congr rfl fun s _ => by rw [hfac (k' + m + 1) s]]
     exact TracePathSeq.sum_cyc_two_weight (transfer2 β n)
       (fun σ : Col n => spin (σ i)) (fun σ : Col n => spin (σ i)) k' m
+
+/-! ## 6. The observable a decay statement would be about
+
+`corr2` pairs two spins **within a column** — the direction across the strip, whose width is fixed.
+The two-point function a mass gap concerns is the other one: two spins in the **same row**, `k`
+columns apart, along the direction the limit is taken in. `separatedTransferFormula_holds` supplies
+its numerator; this normalises it. -/
+
+/-- **THE TWO-POINT FUNCTION ALONG THE STRIP**: the expectation of the product of the spins at
+row `i` of column `0` and row `i` of column `k`. -/
+noncomputable def corr2Sep (β : ℝ) (n M : ℕ) (k : Fin (M + 1)) (i : Fin (n + 1)) : ℝ :=
+  (∑ s : Fin (M + 1) → Col n, spin (s 0 i) * spin (s k i) * exp (β * energy M s))
+    / partition2 β n M
+
+/-- **AND IT IS A RATIO OF TRACES**, with the transfer matrix appearing twice and the spin
+diagonal between the factors — the shape every transfer-matrix account of correlation decay
+starts from. -/
+theorem corr2Sep_eq_trace_div (β : ℝ) (n M : ℕ) (k : Fin (M + 1)) (i : Fin (n + 1)) :
+    corr2Sep β n M k i
+      = Matrix.trace (Matrix.diagonal (fun σ : Col n => spin (σ i)) * transfer2 β n ^ (k : ℕ)
+            * Matrix.diagonal (fun σ : Col n => spin (σ i))
+            * transfer2 β n ^ (M + 1 - (k : ℕ)))
+          / Matrix.trace (transfer2 β n ^ (M + 1)) := by
+  have hkM : (k : ℕ) ≤ M := Nat.lt_succ_iff.mp k.isLt
+  have hke : (⟨(k : ℕ), by omega⟩ : Fin (M + 1)) = k := Fin.ext rfl
+  rw [corr2Sep, partition2_eq_trace]
+  rw [show (∑ s : Fin (M + 1) → Col n, spin (s 0 i) * spin (s k i) * exp (β * energy M s))
+      = ∑ s : Fin (M + 1) → Col n,
+          spin (s 0 i) * spin (s (⟨(k : ℕ), by omega⟩ : Fin (M + 1)) i) * exp (β * energy M s)
+    from by rw [hke]]
+  rw [separatedTransferFormula_holds n β M (k : ℕ) hkM i]
+
+/-- **`⟨σ_{0,i} σ_{0,i}⟩ = 1`**, the normalisation check for the separated observable at zero
+separation, proved from `spin_sq` rather than asserted. -/
+theorem corr2Sep_zero (β : ℝ) (n M : ℕ) (i : Fin (n + 1)) :
+    corr2Sep β n M 0 i = 1 := by
+  have hz : partition2 β n M ≠ 0 := ne_of_gt (by
+    simp only [partition2]
+    exact Finset.sum_pos (fun s _ => exp_pos _)
+      ⟨(fun _ _ => true : Fin (M + 1) → Col n), Finset.mem_univ _⟩)
+  have hnum : (∑ s : Fin (M + 1) → Col n,
+      spin (s 0 i) * spin (s 0 i) * exp (β * energy M s)) = partition2 β n M := by
+    simp only [partition2]
+    exact Finset.sum_congr rfl fun s _ => by rw [spin_sq, one_mul]
+  simp only [corr2Sep]
+  rw [hnum]
+  exact div_self hz
 
 end IsingTwoPoint
