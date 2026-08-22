@@ -48,6 +48,15 @@ homogeneous. **Neither lemma exists in this estate**: `weylPart` is linear becau
 `scal` are, and nobody has written it down. That is named here rather than assumed, and it is a
 unit of work, not a wall.
 
+**⚠ SUPERSEDED THE SAME DAY — `LovelockWeylSubmodule` WROTE THEM AND DID THE INSTANTIATION.**
+Kept per `ERRATUM 94`, and **the sentence was right on both counts**: the two lemmas were absent,
+and it was a unit of work rather than a wall. `weylPart_add` and `weylPart_smul` are there, built
+from four linearity lemmas the estate already had in four different files; `weylSub` is the Weyl
+summand as a submodule, `stable_weylSub` its stability, and `exists_stable_complement_weylSub` the
+instantiation. **What still stands is the paragraph above it** — a stable complement for the Weyl
+summand is still not `KillsWeyl`, Schur needs it **irreducible**, and the watchlist item does not
+move. `ERRATUM 228`'s rule.
+
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 
