@@ -44,6 +44,26 @@ correlation decay — is discharged only for the one-dimensional chain and is un
 and §6 itself says the physical `d ≥ 2` mass gap is open mathematics with no formalisation route
 known to this project. **A gap for one finite matrix at one fixed side length is not a mass gap**,
 and nothing here says otherwise.
+
+**⚠ SUPERSEDED 2026-08-22 (`ERRATUM 94`: the sentence above is kept as written; `ERRATUM 242`).
+THE PASSAGE FROM A SPECTRAL GAP TO CORRELATION DECAY IS DISCHARGED AT `d = 2`, AND IT IS
+DISCHARGED USING THIS FILE.** `IsingTopRatio.corr2SepInf_abs_le_subTopRatio` bounds the infinite
+strip's two-point function by `(subTopRatio β n)^κ`, and `subTopRatio_lt_one`'s proof calls
+`PerronGap.abs_eigenvalues_lt_of_ne` — so the decay theorem literally consumes the gap proved here,
+on `IsingTransferSym.transferSym`, which is the **two-dimensional** Ising transfer matrix. Both
+clauses are wrong: not *"only for the one-dimensional chain"*, and `d = 2` is exactly where it was
+done. **`WALLS` §W4 was corrected on this same phrasing and the correction never reached here**
+(`ERRATUM 228`'s eighth instance retired *"in `d ≥ 2` none of this is available"*).
+
+**WHAT IS ACTUALLY UNTOUCHED, and it is not smaller for being stated correctly:** the WIDTH limit.
+Every quantity in that chain is at one fixed width `n`; `IsingTopRatio.UniformSubTopRatio` names
+what item 3 now wants — one `δ > 0` with `subTopRatio β n ≤ 1 - δ` for every `n` — it is proved at
+no `β` but `β = 0` (`IsingTopRatioZero`), and no route is recorded. **The wall does not move.**
+
+**AND NO MACHINE-CHECKED CITATION CAN BE PUT HERE**: the correcting theorem is DOWNSTREAM — the
+strip chain imports this file — so a citation in this header would be an import cycle. Same
+structural reason `W6ConversePi` records for its own corrections; the back-reference lives in
+`IsingTopRatio` instead, which is the direction a machine can resolve.
 -/
 
 namespace PerronGap
@@ -175,7 +195,13 @@ open IsingTransfer2D IsingTransferSym in
 
 **And it is not a mass gap.** `WALLS` §W4.0 §6 item 3 — the passage from a spectral gap to
 correlation decay — exists here only for the one-dimensional chain, and §6 says the physical
-`d ≥ 2` question is open mathematics. This is one finite matrix at one fixed side length. -/
+`d ≥ 2` question is open mathematics. This is one finite matrix at one fixed side length.
+
+**[⚠ THE CLAUSE «exists here only for the one-dimensional chain» IS FALSE — it is discharged at
+`d = 2` and BY THIS THEOREM: `IsingTopRatio.subTopRatio_lt_one` calls `abs_eigenvalues_lt_of_ne`
+and `corr2SepInf_abs_le_subTopRatio` turns it into exponential decay of the two-dimensional
+strip's two-point function. See the header's dated supersession; `ERRATUM 242`. What is untouched
+is the WIDTH limit.]** -/
 theorem transferSym_gap (β : ℝ) (m : ℕ) :
     ∃ (M : ℝ) (u : EuclideanSpace ℝ (Col m)), (∀ i, 0 < (WithLp.ofLp u) i) ∧ 0 < M ∧
       mv (transferSym β m) u = M • u ∧

@@ -39,6 +39,26 @@ the first place.
 
 **And the wall does not move.** Item 3 — the passage from a spectral gap to correlation decay — is
 discharged only for the one-dimensional chain and untouched at `d ≥ 2`.
+
+**⚠ SUPERSEDED 2026-08-22 (`ERRATUM 94`: the sentence above is kept as written; `ERRATUM 242`).
+THE PASSAGE FROM A SPECTRAL GAP TO CORRELATION DECAY IS DISCHARGED AT `d = 2`, AND IT IS
+DISCHARGED USING THIS FILE.** `IsingTopRatio.corr2SepInf_abs_le_subTopRatio` bounds the infinite
+strip's two-point function by `(subTopRatio β n)^κ`, and `subTopRatio_lt_one`'s proof calls
+`PerronGap.abs_eigenvalues_lt_of_ne` — so the decay theorem literally consumes the gap proved here,
+on `IsingTransferSym.transferSym`, which is the **two-dimensional** Ising transfer matrix. Both
+clauses are wrong: not *"only for the one-dimensional chain"*, and `d = 2` is exactly where it was
+done. **`WALLS` §W4 was corrected on this same phrasing and the correction never reached here**
+(`ERRATUM 228`'s eighth instance retired *"in `d ≥ 2` none of this is available"*).
+
+**WHAT IS ACTUALLY UNTOUCHED, and it is not smaller for being stated correctly:** the WIDTH limit.
+Every quantity in that chain is at one fixed width `n`; `IsingTopRatio.UniformSubTopRatio` names
+what item 3 now wants — one `δ > 0` with `subTopRatio β n ≤ 1 - δ` for every `n` — it is proved at
+no `β` but `β = 0` (`IsingTopRatioZero`), and no route is recorded. **The wall does not move.**
+
+**AND NO MACHINE-CHECKED CITATION CAN BE PUT HERE**: the correcting theorem is DOWNSTREAM — the
+strip chain imports this file — so a citation in this header would be an import cycle. Same
+structural reason `W6ConversePi` records for its own corrections; the back-reference lives in
+`IsingTopRatio` instead, which is the direction a machine can resolve.
 -/
 
 namespace PerronSimple
