@@ -287,4 +287,49 @@ theorem log_partition2_tendsto_log_top (β : ℝ) (n : ℕ) :
 
 end FreeEnergy
 
+/-! ## 6. The two eigenvalue families have all the same power sums, and that is not the same as
+being the same family
+
+`IsingTransferSym.partition2_eq_sum_eigenvalues` sums `(hA.pow (M+1)).eigenvalues` and §2 sums
+`hA.eigenvalues ^ (M+1)`. Both equal `partition2`, so those two sums are equal — and §6 says the
+stronger thing, that **every** power sum of the two families agrees, which is what the spectral
+mapping theorem would follow from.
+
+**IT IS NOT THE SPECTRAL MAPPING THEOREM AND MUST NOT BE READ AS ONE.** Equal power sums are not
+an equal multiset. The missing step is Newton's identities — power sums determine the elementary
+symmetric functions in characteristic zero — plus the passage back to the characteristic
+polynomial. `UNLOCK_WATCHLIST`'s trace-moments item calls those legs (ii) and (iii), records that
+Mathlib has Newton only over `MvPolynomial σ R` with no multiset `psum`, and has declined to build
+them since 16 August on the stated ground that **nothing downstream would consume them.**
+
+**THAT GROUND NO LONGER HOLDS, WHICH IS THE POINT OF WRITING §6.** With legs (ii) and (iii), §6
+gives `(hA.pow k).eigenvalues` and `hA.eigenvalues ^ k` as equal multisets — the eigenvalue-family
+spectral mapping, which `ERRATUM 222` established this estate does not have and Mathlib does not
+either. The item's trigger arm *"a downstream file needs the multiset statement"* has fired here.
+-/
+
+section PowerSums
+
+variable {n : Type*} [Fintype n] [DecidableEq n] {A : Matrix n n ℝ}
+
+/-- **ALL POWER SUMS OF THE TWO EIGENVALUE FAMILIES AGREE.** For a real symmetric `A`, every
+`m`-th power sum of the eigenvalues of `A ^ k` equals the corresponding power sum of the `k`-th
+powers of the eigenvalues of `A`. Both sides are `tr (A ^ (k * m))`. -/
+theorem sum_eigenvalues_pow_pow (hA : A.IsHermitian) (k m : ℕ) :
+    ∑ i, (hA.pow k).eigenvalues i ^ m = ∑ i, (hA.eigenvalues i ^ k) ^ m := by
+  have hl : ∑ i, (hA.pow k).eigenvalues i ^ m = ((A ^ k) ^ m).trace :=
+    (real_trace_pow_eq_sum_eigenvalues_pow (hA.pow k) m).symm
+  have hr : ∑ i, hA.eigenvalues i ^ (k * m) = (A ^ (k * m)).trace :=
+    (real_trace_pow_eq_sum_eigenvalues_pow hA (k * m)).symm
+  rw [hl, ← pow_mul, ← hr]
+  exact Finset.sum_congr rfl fun i _ => pow_mul _ k m
+
+/-- The `m = 1` case, which is the sentence `partition2_eq_sum_eigenvalues` and §2 already force
+between them, stated on its own so the general result above is visibly stronger. -/
+theorem sum_eigenvalues_pow (hA : A.IsHermitian) (k : ℕ) :
+    ∑ i, (hA.pow k).eigenvalues i = ∑ i, hA.eigenvalues i ^ k := by
+  simpa using sum_eigenvalues_pow_pow hA k 1
+
+end PowerSums
+
 end TransferPowerSum
