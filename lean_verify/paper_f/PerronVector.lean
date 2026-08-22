@@ -1,5 +1,6 @@
 import RayleighMatrix
 import PerronEquality
+import IsingTransferSym
 
 /-!
 # A nonnegative top eigenvector, and a strictly positive one
@@ -32,6 +33,14 @@ Perron–Frobenius has a second half: that the top eigenvalue is **simple**. Not
 it. Two nonnegative nowhere-zero eigenvectors for the same eigenvalue can still be independent as
 far as anything proved here is concerned, and ruling that out is where positivity is used a second
 time.
+
+**And it applies to the wall's own matrix**, which is checked below rather than asserted
+(`ERRATUM 48`): `IsingTransferSym.transferSym` is Hermitian (`transferSym_isHermitian`) and has
+strictly positive entries (`transferSym_pos`), both already proved in this estate, so
+`exists_pos_top_eigenvector_transferSym` is an instance and not an analogy. **That matrix is the
+symmetrised two-dimensional Ising transfer matrix — `transfer2` itself is NOT symmetric, which is
+why `IsingTransferSym` exists at all, and applying this file to `transfer2` directly would be
+wrong.**
 
 **And the wall does not move.** `WALLS` §W4.0 §6 item 3 — the passage from a spectral gap to
 correlation decay — is discharged only for the one-dimensional chain and untouched at `d ≥ 2`,
@@ -160,5 +169,20 @@ theorem exists_pos_top_eigenvector [Nonempty n] (hA : A.IsHermitian)
   have hii := hrowpos i
   rw [hsmul i] at hii
   nlinarith [hii, hMpos]
+
+/-! ## 3. The wall's own matrix -/
+
+open IsingTransfer2D IsingTransferSym in
+/-- **APPLIED TO THE SYMMETRISED TWO-DIMENSIONAL ISING TRANSFER MATRIX**, which is Hermitian and
+strictly positive by two theorems this estate already had.
+
+**This is `WALLS` §W4.0 §6 item 2's first clause and not its second.** A strictly positive top
+eigenvector is not a *separation*: nothing here says the top eigenvalue is simple or strictly
+above the rest, and item 2 asked for exactly that. -/
+theorem exists_pos_top_eigenvector_transferSym (β : ℝ) (m : ℕ) :
+    ∃ (M : ℝ) (u : EuclideanSpace ℝ (Col m)), (∀ i, 0 < (WithLp.ofLp u) i) ∧
+      (∀ j, (transferSym_isHermitian β m).eigenvalues j ≤ M) ∧ 0 < M ∧
+      mv (transferSym β m) u = M • u :=
+  exists_pos_top_eigenvector (transferSym_isHermitian β m) (fun i j => transferSym_pos β i j)
 
 end PerronVector
