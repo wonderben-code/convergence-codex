@@ -44,6 +44,30 @@ dual walk to the edge inside its contour. That is the open-path analogue of
 `PeierlsCover.cover_cycCandidates`, and it is the whole of S3b-ii now. It is a geometric
 statement about the dual graph, not a counting one, and it is **not begun**.
 
+⚠ **«IT IS THE WHOLE OF S3b-ii NOW» IS STALE, CORRECTED 2026-08-22, THE PARAGRAPH KEPT PER
+`ERRATUM 94`.** The first sentence stands — nothing here supplies the covering, and it is still
+not begun. What is wrong is the picture of the step around it.
+
+**S3b-ii's SPECIFICATION was refuted the day before this file was written**, and this header does
+not mention it: `S3bRefutation.not_clusterReachesRim` (11 Aug) proves `S3bResidue
+.ClusterReachesRim` **false** for every `n > 1`, the witness being the all-down configuration —
+whose cluster is the whole box, so it reaches the boundary, and whose contour is **empty**, so the
+plaquette at `x` reaches nothing. So the covering is not a lemma waiting to be proved: **the
+statement it would have been proved against does not hold**, and the `UNLOCK_WATCHLIST` block says
+in as many words that repairing it is the first task, ahead of any route to it.
+
+**And half of the route that a repair would use landed eleven hours after this file.**
+`ClusterRayCrossing.leftEdge_reachable_or_contour_edge_on_ray` (12 Aug 14:49) is the dichotomy
+with no hypotheses: for every configuration and every site, either the left-edge site on `x`'s
+leftward ray is in its down cluster, or the cluster's contour has a bond **on that ray**, hence
+within `x.1` of `x`. Its own header calls itself *"the first half of route (ii)"* and
+*"deliberately not the repair itself"*.
+
+**So the accurate state of S3b-ii is four things, not one.** (1) The specification is refuted.
+(2) The repair is the first task, is **unstarted**, and has **no route recorded**. (3) The
+dichotomy a repair would be built from exists. (4) The counting side is this file. **The covering
+cannot be attempted before (2)**, and nothing in this chain has moved since 12 August.
+
 Nothing in this file mentions the Ising measure. `IsingBoundaryField.MagnetisationBound` is
 untouched, and `FieldBoundaryEnergy.down_prob_le_cluster_sum` — the inequality whose
 right-hand side this would bound — is unchanged.
