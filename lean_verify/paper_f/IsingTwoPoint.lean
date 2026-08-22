@@ -40,6 +40,18 @@ writing needed.
   the limit is taken in**, and it is the observable a mass gap concerns. `corr2Sep_zero` is its
   normalisation check.
 
+* **`energy_translate`, `corrNum_translate`, `corr2Sep_translate`** — the strip is periodic in its
+  length, so the two-point function **depends only on the separation**; and **`corr2Sep_neg`** —
+  it is symmetric under `k ↦ −k`.
+
+## What the symmetry forbids, which is worth having before attempting a decay statement
+
+**`⟨σ₀ σ_k⟩ = ⟨σ₀ σ_{M+1−k}⟩` at every finite length.** So the two-point function **cannot be
+decreasing in `k` across the whole range** — it is symmetric about the midpoint, and at `k = M+1−k`
+it turns around. Any exponential-decay statement on this strip is therefore about `k` up to the
+midpoint, or about the limit in the length. **That is a constraint on the statement, found before
+attempting it rather than after**, and it is the kind of thing `ERRATUM 108` exists about.
+
 ## What is still not here, and it is no longer an object
 
 **A decay statement.** `corr2Sep_eq_trace_div` puts the observable in the form the classical
@@ -269,5 +281,59 @@ theorem corr2Sep_zero (β : ℝ) (n M : ℕ) (i : Fin (n + 1)) :
   simp only [corr2Sep]
   rw [hnum]
   exact div_self hz
+
+/-! ## 7. Translation invariance, and what it forbids a decay statement from saying
+
+The strip is periodic in its length, so rotating a configuration changes nothing. Two consequences,
+and the second is a constraint on any statement about decay. -/
+
+/-- **THE ENERGY IS TRANSLATION-INVARIANT.** Rotating the columns permutes the terms of a cyclic
+sum. -/
+theorem energy_translate (M : ℕ) (a : Fin (M + 1)) (s : Fin (M + 1) → Col n) :
+    energy M (fun j => s (j + a)) = energy M s := by
+  simp only [energy]
+  refine Fintype.sum_equiv (Equiv.addRight a) _ _ fun j => ?_
+  simp only [Equiv.coe_addRight]
+  rw [add_right_comm j a 1]
+
+/-- **THE UNNORMALISED TWO-POINT SUM DEPENDS ONLY ON THE SEPARATION.** -/
+theorem corrNum_translate (β : ℝ) (n M : ℕ) (a k : Fin (M + 1)) (i : Fin (n + 1)) :
+    (∑ s : Fin (M + 1) → Col n, spin (s a i) * spin (s (a + k) i) * exp (β * energy M s))
+      = ∑ s : Fin (M + 1) → Col n, spin (s 0 i) * spin (s k i) * exp (β * energy M s) := by
+  let e : (Fin (M + 1) → Col n) ≃ (Fin (M + 1) → Col n) :=
+    { toFun := fun s j => s (j + a)
+      invFun := fun s j => s (j - a)
+      left_inv := fun s => by funext j; simp
+      right_inv := fun s => by funext j; simp }
+  have hcomp := Equiv.sum_comp e
+    (fun s : Fin (M + 1) → Col n => spin (s 0 i) * spin (s k i) * exp (β * energy M s))
+  rw [← hcomp]
+  refine Finset.sum_congr rfl fun s _ => ?_
+  change spin (s a i) * spin (s (a + k) i) * exp (β * energy M s)
+      = spin (s (0 + a) i) * spin (s (k + a) i) * exp (β * energy M fun j => s (j + a))
+  rw [energy_translate, zero_add, add_comm a k]
+
+/-- **SO THE TWO-POINT FUNCTION DEPENDS ONLY ON THE SEPARATION.** -/
+theorem corr2Sep_translate (β : ℝ) (n M : ℕ) (a k : Fin (M + 1)) (i : Fin (n + 1)) :
+    (∑ s : Fin (M + 1) → Col n, spin (s a i) * spin (s (a + k) i) * exp (β * energy M s))
+        / partition2 β n M
+      = corr2Sep β n M k i :=
+  congrArg (· / partition2 β n M) (corrNum_translate β n M a k i)
+
+/-- **AND IT IS SYMMETRIC UNDER `k ↦ −k`**, which in `Fin (M+1)` is the separation measured the
+other way round the loop.
+
+**This is what forbids a naive decay statement.** `⟨σ₀ σ_k⟩ = ⟨σ₀ σ_{M+1−k}⟩` at every finite
+length, so the two-point function **cannot** be decreasing in `k` across the whole range: it is
+symmetric about the midpoint. Any exponential-decay statement on this strip must therefore be
+about `k` up to the midpoint, or about the limit in the length — which is the limit `WALLS`
+§W4 §6 item 2 says is available, at fixed width. -/
+theorem corr2Sep_neg (β : ℝ) (n M : ℕ) (k : Fin (M + 1)) (i : Fin (n + 1)) :
+    corr2Sep β n M (-k) i = corr2Sep β n M k i := by
+  have h := corrNum_translate β n M k (-k) i
+  rw [add_neg_cancel k] at h
+  simp only [corr2Sep]
+  rw [← h]
+  exact congrArg (· / partition2 β n M) (Finset.sum_congr rfl fun s _ => by ring)
 
 end IsingTwoPoint
