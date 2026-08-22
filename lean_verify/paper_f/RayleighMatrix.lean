@@ -36,6 +36,14 @@ is short of is the *application*: producing a `v` that achieves equality and who
 modulus does too, which is where the strict positivity of `A` would finally enter and where
 nothing here goes. **Half (b), simplicity of the top eigenvalue, is untouched by everything
 here.**
+
+**FORWARD POINTER, added 2026-08-22 — both sentences above are unchanged and remain true OF THIS
+FILE.** The application half (a) is short of — *"producing a `v` that achieves equality and whose
+entrywise modulus does too"* — was supplied by `PerronVector.quadForm_absVec_ge` and
+`PerronVector.exists_pos_top_eigenvector`, which consume §4's own
+`mv_eq_smul_of_quadForm_eq`. Half (b) is proved: `PerronSimple.top_eigenspace_dim_one`. Added
+because *"untouched by everything here"* is one word away from *"untouched"*, and a reader who
+takes the second is left believing the estate lacks a theorem it has — `ERRATUM 230`.
 -/
 
 namespace RayleighMatrix

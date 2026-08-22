@@ -50,6 +50,20 @@ of this matrix — is untouched, and it is the hard one: Perron–Frobenius is a
 argument in `IsingTransferMatrix` does not generalise. **Having the operator is not having its
 spectrum.**
 
+⚠ **«ITEM 2 … IS UNTOUCHED» WAS TRUE ON 11 AUGUST AND IS FALSE SINCE 22 AUGUST. THE SENTENCE IS
+KEPT PER `ERRATUM 94`.** Item 2 is **closed**, by nine files ending at
+`PerronGap.transferSym_gap`: `|λ| < λ_top` for every eigenvalue of `transferSym` off the argmax,
+with `PerronVector.exists_pos_top_eigenvector` and `PerronSimple.top_eigenspace_dim_one` as its
+two halves. **The probe result above is NOT withdrawn**: general Perron–Frobenius is still absent
+from Mathlib and is still proved nowhere here. What closed item 2 is narrower and is exactly what
+this matrix needs — the **symmetric, strictly positive** case, which `transferSym` is in and
+`transfer2` is not. And the note about the hand-rolled `2 × 2` argument stands as written: it did
+not generalise; a different argument did.
+
+**AND THE WALL DID NOT MOVE, WHICH IS WHY THIS PARAGRAPH IS A CORRECTION AND NOT A CLOSURE.** W4
+now rests entirely on item 3, and item 3 rests on one sentence: the eigenvalue separation
+**uniform in the width**. Everything the estate proves about this matrix is at one fixed `n`.
+
 **No eigenvalue, gap, or free energy is computed here.** The matrix is `2ⁿ⁺¹ × 2ⁿ⁺¹`, and
 nothing below
 diagonalises it, estimates it, or takes any limit in `n`.

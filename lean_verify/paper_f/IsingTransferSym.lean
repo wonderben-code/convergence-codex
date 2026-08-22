@@ -43,6 +43,22 @@ Mathlib** (`PerronFrobenius`/`perronFrobenius`: zero files, probed 2026-08-11) a
 here. `IsingTransfer2D.transfer2_pos` records the positivity it would consume; `transferSym_pos`
 below records that symmetrising does not destroy it.
 
+⚠ **«WHAT REMAINS IS EXACTLY PERRON–FROBENIUS» IS SUPERSEDED, 22 AUGUST; THE PARAGRAPH IS KEPT PER
+`ERRATUM 94`.** Every sentence of it remains true **of this file** — nothing below separates
+anything — and the Mathlib probe is not withdrawn. What is no longer true is the implied statement
+about what the estate lacks: `PerronGap.transferSym_gap` proves `|λ| < λ_top` off the argmax **for
+this file's own matrix**, and it does so without proving general Perron–Frobenius, because the
+symmetric strictly-positive case has a variational proof the general case does not.
+`transferSym_pos`, recorded above as *"the positivity it would consume"*, is what that chain
+consumed.
+
+**AND `trace_transferSym_pow` TURNED OUT TO BE THE RUNG IT LOOKED LIKE.**
+`TransferPowerSum.partition2_eq_sum_eigenvalues_pow` puts the partition function in this matrix's
+own eigenvalues, and `IsingTwoPointSpectral.corr2Sep_eq_spectral` and
+`IsingTwoPointLimit.corr2SepInf_connected_le` put the strip's two-point function there too, the
+second with an exponential clustering bound. **All of it at fixed width**, which is `WALLS` §W4 §6
+item 3's open sentence and is untouched by any of it.
+
 **No eigenvalue is computed, no gap is bounded, and no limit in the width is taken.** The free
 energy does not appear.
 

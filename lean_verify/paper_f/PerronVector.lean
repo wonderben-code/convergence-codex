@@ -178,7 +178,14 @@ strictly positive by two theorems this estate already had.
 
 **This is `WALLS` §W4.0 §6 item 2's first clause and not its second.** A strictly positive top
 eigenvector is not a *separation*: nothing here says the top eigenvalue is simple or strictly
-above the rest, and item 2 asked for exactly that. -/
+above the rest, and item 2 asked for exactly that.
+
+**FORWARD POINTER, added 2026-08-22 — the sentence above is unchanged and remains true OF THIS
+FILE.** The second clause is proved: `PerronSimple.top_eigenspace_dim_one` for simplicity and
+`PerronGap.abs_lt_top_of_ne` for the strict domination, both consuming the vector this theorem
+produces. Added because a reader landing here otherwise takes *"nothing here says"* for *"nothing
+says"* — `ERRATUM 230`'s defect, whose repair is a pointer at the true claim and not a rewrite of
+it. -/
 theorem exists_pos_top_eigenvector_transferSym (β : ℝ) (m : ℕ) :
     ∃ (M : ℝ) (u : EuclideanSpace ℝ (Col m)), (∀ i, 0 < (WithLp.ofLp u) i) ∧
       (∀ j, (transferSym_isHermitian β m).eigenvalues j ≤ M) ∧ 0 < M ∧
