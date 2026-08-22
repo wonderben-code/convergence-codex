@@ -20,12 +20,14 @@ a trace with an observable inserted twice does not, and has to be earned.
 
 ## What is proved
 
-* **`conj_mul_conj`** and **`pow_conj`** — for an explicit inverse pair `P · Q = 1`, two conjugates
-  multiply as the conjugate of the product, and hence `(Q · B · P)ᵏ = Q · Bᵏ · P`. Stated over
-  `CommRing` from **one** hypothesis: `mul_eq_one_comm` supplies the other side;
-* **`diagonal_comm`** — diagonal matrices commute. Absent from Mathlib (probed) and from this
-  estate (probed), and stated over `NonUnitalNonAssocCommSemiring`, which is what its two
-  ingredients ask for and no more;
+* **`conj_mul_conj`** — for an explicit inverse pair `P · Q = 1`, two conjugates multiply as the
+  conjugate of the product. Stated over `CommRing` from **one** hypothesis. **This is the one
+  lemma of the original §1 that survived a shape probe of Mathlib**; the closest thing there,
+  `SemiconjBy.mul_right`, is a different statement;
+  **The `(Q · B · P)ᵏ = Q · Bᵏ · P` step that used to sit beside it is gone**: that is Mathlib's
+  `Units.conj_pow'`, orientation included, and `transferSym_pow_eq_conj` now calls it with the
+  unit built inline. The first draft proved it by induction and called the section new —
+  `ERRATUM 234`'s addendum, and the reason there is no wrapper is that it had exactly one caller;
 * **`halfIntraInv`** and its two inverse laws — the diagonal factor `IsingTransferSym` splits in
   half is invertible, explicitly, with no `Nonsing` machinery — together with
   **`isUnit_halfIntraInv`** and **`inv_halfIntraInv`**, which hand that explicit inverse to
@@ -74,9 +76,12 @@ open scoped Matrix
 
 /-! ## 1. Conjugation by an explicit inverse pair
 
-Both statements below take **one** hypothesis, `P · Q = 1`. The other side is not assumed:
-`mul_eq_one_comm` supplies it, square matrices over a commutative ring being Dedekind
-finite. -/
+One lemma, taking **one** hypothesis `P · Q = 1`; the other side is not assumed, `mul_eq_one_comm`
+supplying it since square matrices over a commutative ring are Dedekind finite.
+
+**This section had three lemmas and two of them were Mathlib's** — `Units.conj_pow'` and
+`Matrix.commute_diagonal`, both found by re-probing under `ERRATUM 234`'s rule one unit after
+writing it. Only `conj_mul_conj` survived. -/
 
 section Conj
 
@@ -88,25 +93,6 @@ theorem conj_mul_conj (P Q A B : Matrix α α R) (hPQ : P * Q = 1) :
     Q * A * P * (Q * B * P) = Q * (A * B) * P := by
   simp only [Matrix.mul_assoc]
   rw [← Matrix.mul_assoc P Q, hPQ, Matrix.one_mul]
-
-/-- **A CONJUGATE'S POWERS ARE THE CONJUGATE OF THE POWERS.** -/
-theorem pow_conj (P Q B : Matrix α α R) (hPQ : P * Q = 1) :
-    ∀ k : ℕ, (Q * B * P) ^ k = Q * B ^ k * P
-  | 0 => by
-    rw [pow_zero, pow_zero, Matrix.mul_one]
-    exact (mul_eq_one_comm.mp hPQ).symm
-  | k + 1 => by
-    rw [pow_succ, pow_conj P Q B hPQ k, conj_mul_conj P Q (B ^ k) B hPQ, ← pow_succ]
-
-/-- **DIAGONAL MATRICES COMMUTE**, over any commutative coefficient. Absent from Mathlib by name
-and by shape (probed 2026-08-22: no `diagonal_comm`, no `Commute` lemma mentioning `diagonal`) and
-absent from this estate. Stated over `NonUnitalNonAssocCommSemiring`, which is exactly what the two
-lemmas it consumes ask for — `Matrix.diagonal_mul_diagonal` needs no unit and no associativity, and
-the entrywise step needs only `mul_comm`. -/
-theorem diagonal_comm {S : Type*} [NonUnitalNonAssocCommSemiring S] (d e : α → S) :
-    Matrix.diagonal d * Matrix.diagonal e = Matrix.diagonal e * Matrix.diagonal d := by
-  rw [Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]
-  exact Matrix.diagonal_eq_diagonal_iff.mpr fun σ => mul_comm _ _
 
 end Conj
 
@@ -160,7 +146,8 @@ theorem transferSym_eq_conj (β : ℝ) (n : ℕ) :
 theorem transferSym_pow_eq_conj (β : ℝ) (n : ℕ) (k : ℕ) :
     transferSym β n ^ k = halfIntraInv β n * transfer2 β n ^ k * halfIntra β n := by
   rw [transferSym_eq_conj]
-  exact pow_conj (halfIntra β n) (halfIntraInv β n) (transfer2 β n) (halfIntra_mul_inv β n) k
+  exact Units.conj_pow' ⟨halfIntra β n, halfIntraInv β n, halfIntra_mul_inv β n,
+    halfIntraInv_mul β n⟩ (transfer2 β n) k
 
 /-! ## 4. A diagonal insertion does not see the conjugation -/
 
@@ -171,7 +158,7 @@ theorem diag_mul_transferSym_pow (β : ℝ) (n : ℕ) (d : Col n → ℝ) (k : �
       = halfIntraInv β n * (Matrix.diagonal d * transfer2 β n ^ k) * halfIntra β n := by
   rw [transferSym_pow_eq_conj]
   simp only [← Matrix.mul_assoc]
-  rw [halfIntraInv, diagonal_comm]
+  rw [halfIntraInv, (Matrix.commute_diagonal _ _).eq]
 
 /-- **THE TWO-POINT TRACE IS THE SAME FOR BOTH MATRICES**, for any DIAGONAL insertion — which is
 what the spin observable is.
