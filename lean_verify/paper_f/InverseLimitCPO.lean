@@ -645,7 +645,9 @@ no theorem relating them.**"* There is a theorem relating them now, in both dire
 `funLimitEquiv` is the equivalence. The two sketches those paragraphs gave of what each identity
 would need were both right, which is recorded because **this section's refusal to estimate the
 difficulty was the right call and its analysis of the *route* was not the thing in doubt.**
-`CanonicalTower.Bilimit` is still not proved — see §10.
+*"`CanonicalTower.Bilimit` is still not proved — see §10."* **⚠ THAT SENTENCE IS FALSE, and
+is kept per `ERRATUM 94`:** `CanonicalTower.bilimit_holds` proves it outright, and this file's
+own header has said so since 2026-08-12. `ERRATUM 226`.
 -/
 
 /-- Embedding one level and then sitting in the limit is sitting in the limit directly. -/
@@ -767,6 +769,19 @@ WALL.** `shift` and `shiftEquiv` are here; the identification of `funTower (cano
 `shift (canonical X)` is a fact about the *canonical* tower and lives in `CanonicalTower.lean`,
 together with `Bilimit` itself. No declaration in this file mentions `canonical`, and the import
 graph makes that structural rather than a matter of restraint.
+
+**⚠ SUPERSEDED — `CanonicalTower.bilimit_holds` CLOSED THE WALL, AND THIS SECTION HEADING IS THE
+LAST PLACE IN THE FILE THAT DOES NOT KNOW.** The heading above reads *"What is left of the wall,
+which is one step and not zero"* and the paragraph under it reads *"**`CanonicalTower.Bilimit` is
+still not proved.** … Neither the shift nor that lemma is built here, in `CanonicalTower`, or
+anywhere else in this estate."* Both are false: `funTower_canonical` is the identification this
+paragraph asked for, and `bilimit_holds : Bilimit.{u}` is unconditional, with `bilimit_holds'` a
+second route through `bilimit_orderIso`. The paragraphs are kept per `ERRATUM 94`; **the estimate
+in them was right** — one step, and it was the step named here.
+
+**AND THE POINT OF RECORDING IT IS WHERE THE STALE SENTENCES SAT.** This file's own header had
+carried the correction from 2026-08-12 (`ERRATUM 148`, §"What this does NOT do"). The header was
+fixed and §10 and §11 were not, in the same file, for ten days. `ERRATUM 226`.
 -/
 
 /-- Up then down loses information, `emb_proj_le` iterated. -/
