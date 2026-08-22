@@ -38,6 +38,18 @@ reducibility needs two things: the complement is invariant, *and* the two togeth
 subspace type for four-index arrays — `LovelockReduction` §1's standing reason, a decision about
 carriers rather than a mathematical obstruction, but a decision that has not been taken.
 
+**⚠ SUPERSEDED 2026-08-22 — THE DECISION WAS TAKEN AND THE SECOND HALF IS PROVED.** Kept per
+`ERRATUM 94`. `LovelockInnerSpace.arrEquiv` chose a carrier without placing an instance on the
+array type, and `LovelockCompleteReducibility.exists_stable_complement` is the whole statement:
+**every `act`-stable submodule of four-index arrays has an `act`-stable complement.** The
+"together they are everything" half is Mathlib's
+`Submodule.isCompl_orthogonal_of_hasOrthogonalProjection`; **the invariance half is
+`orth_of_invariant` below**, restated where the objects are subspaces. **What still stands is the
+paragraph after this one**, and it is the one that matters: complete reducibility is still not
+`KillsWeyl`, Schur needs the Weyl summand **irreducible**, and nothing approaches that — **the
+watchlist item does not move.** `ERRATUM 228`'s rule: the correction lands in every place, so the
+same note is on `orth_of_invariant`'s own docstring below.
+
 **AND COMPLETE REDUCIBILITY WOULD NOT BE `KillsWeyl` EITHER.** Schur's lemma needs the Weyl
 summand **irreducible**, which no argument here approaches, and over `ℝ` its sharp form needs more
 still (§5b's first bullet). **The watchlist item does not move**, and this file is written so that
@@ -125,7 +137,12 @@ normally used to construct.
 
 **This is one ingredient of complete reducibility and not complete reducibility.** The other — that
 the set and its complement together are everything — is a statement about subspaces, and no
-subspace type for four-index arrays exists here. See the header. -/
+subspace type for four-index arrays exists here. See the header.
+
+**⚠ SUPERSEDED — `LovelockCompleteReducibility.exists_stable_complement` IS COMPLETE
+REDUCIBILITY**, on the carrier `LovelockInnerSpace` supplied, with `stable_orthogonal` this very
+theorem restated for subspaces. Kept per `ERRATUM 94`. **Still not `KillsWeyl`**: Schur needs
+irreducibility. `ERRATUM 228`. -/
 theorem orth_of_invariant (hQ : IsOrth Q) {V : (Fin n → Fin n → Fin n → Fin n → ℝ) → Prop}
     (hV : ∀ P, IsOrth P → ∀ R, V R → V (act P R))
     {A : Fin n → Fin n → Fin n → Fin n → ℝ} (hA : ∀ R, V R → ip A R = 0)
