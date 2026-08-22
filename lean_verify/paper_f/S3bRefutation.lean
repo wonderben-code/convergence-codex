@@ -47,6 +47,24 @@ to "some plaquette within `L + 1` of `x`", at which point the length `L` reappea
 the length-control question `S3bResidue` already flags as a DECISION NEEDED. Choosing between
 those quickly, to make the list tidy, is `ERRATUM 89`.
 
+**⚠ THE WORD "either" IS WRONG, AND THE TWO ARE NOT ALTERNATIVES.** Superseded 2026-08-22
+(`ERRATUM 94`: the paragraph above is kept as written; `ERRATUM 240`). The second option —
+weakening *"the plaquette at `x`"* to *"some plaquette within `L + 1`"* — **is refuted on its own,
+by this file's own witness**: `S3bAnchorRefutation.not_clusterReachesRimNear` shows it false at
+**every** radius, because with everything down the contour is empty, the extended dual graph is
+edgeless, and **no plaquette in the box** reaches a rim — so offering more plaquettes offers
+nothing. The first option restricts the CONFIGURATION and survives; the second weakens the
+CONCLUSION and cannot stand alone. **A repair needs one of each.**
+
+**And that unasks the `DECISION NEEDED` rather than answering it.**
+`S3bAnchorRefutation.not_reachable_rim_any` is quantified over ALL plaquettes, so it refutes every
+anchor set whatsoever — up to and including the whole box — and no choice among
+`L^∞`-to-the-boundary, the `2 d(x)` perimeter form and `PlaqLocal.Near`'s radius repairs anything.
+**The choice becomes well-posed only once a hypothesis excluding the empty contour is fixed, and
+should be made then, against it.** `S3bLocalObstruction` supplies the other half: at radius zero
+the first option forces `x` onto the boundary of its own cluster, so a usable version of it needs
+a positive radius too.
+
 **AND THE WITNESS HAS SINCE BEEN REPLACED BY A CRITERION.** `RimBoundary` proves that *any*
 configuration constant along the edge of the box has no rim edge whatever, so the all-down
 witness below is one instance of a class: `RimBoundary.not_reachable_rim_allDown` re-derives this
