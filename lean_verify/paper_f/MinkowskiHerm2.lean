@@ -62,7 +62,9 @@
   and worth more than the citation it came from. **Mathlib now has a
   signature API for quadratic forms** —
   `Mathlib/LinearAlgebra/QuadraticForm/Signature.lean`, with
-  `QuadraticForm.sigPos` / `QuadraticForm.sigNeg` and
+  `sigPos` / `sigNeg` — **root namespace**, not `QuadraticForm.sigPos` /
+  `QuadraticForm.sigNeg`, which is what this line said and which do not exist
+  (`ERRATUM 224`); the wrong spellings are kept beside the right ones — and
   `QuadraticMap.Equivalent.sigPos_eq` / `.sigNeg_eq`, which ARE Sylvester's
   law of inertia (the uniqueness part). The "bundled Mathlib packaging"
   listed above as a remaining stair therefore has a library counterpart

@@ -205,7 +205,9 @@ theorem bipGraph_hK (m : ℝ) :
 
 open IndefiniteCoupling in
 /-- **`K₂,₂` IS REFLECTION POSITIVE AT EVERY NONZERO MASS, AND THE PROOF IS `decide`.** The estate
-had this from `hcross` (`GreenExpansion.reflectionPositive_bipGraph` and the criterion route); what
+had this from `hcross` (`GreenExpansion.reflectedForm_bipGraph` and the criterion route — this
+line said `GreenExpansion.reflectionPositive_bipGraph`, which **exists nowhere**; `ERRATUM 224`,
+and the wrong spelling is kept beside the right one); what
 is new is that no hypothesis about the graph's degree is supplied and no vector is exhibited —
 the whole verdict, at a fixed mass, comes from inspecting the cut. -/
 theorem bipGraph_reflectionPositive_of_ne {m : ℝ} (hm : m ≠ 0) :

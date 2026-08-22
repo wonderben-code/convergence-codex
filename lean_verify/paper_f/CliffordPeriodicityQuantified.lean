@@ -114,7 +114,9 @@ theorem clifford_periodicity_eight_neg {W : Type*} [AddCommGroup W] [Module ℝ 
 These are the same transport applied to `CliffordTensorTwo`'s two relations rather than to the
 eight-fold chain, and they matter for a reason that has nothing to do with periodicity:
 **they are moves on the diagonal `p − q` that the estate's reach analysis has never included.**
-Mathlib's `QuadraticForm.sigPos_neg` and `sigNeg_neg` say `−Q` has signature `(q, p)`, so in
+Mathlib's `sigPos_neg` and `sigNeg_neg` — **root namespace**; this line said
+`QuadraticForm.sigPos_neg`, which does not exist (`ERRATUM 224`), and the wrong spelling is kept
+beside the right one — say `−Q` has signature `(q, p)`, so in
 signature terms these read
 
 * `Cl(p+2, q) ≅ M₂(Cl(q, p))` — the diagonal `d = p − q` goes to `2 − d`;
