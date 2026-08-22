@@ -21,7 +21,9 @@ the argument is about. This file supplies the missing fact.
 
 ## The route, and it is short because Mathlib has the hard half
 
-`Complex.realPart_add_I_smul_imaginaryPart` decomposes every element of a complex star module as
+`realPart_add_I_smul_imaginaryPart` (root namespace — this header said
+`Complex.realPart_add_I_smul_imaginaryPart`, which does not exist; `ERRATUM 224`, and the wrong
+spelling is kept here rather than deleted) decomposes every element of a complex star module as
 `ℜ a + I • ℑ a` with **both parts self-adjoint**, and `selfAdjoint.realPart_coe`,
 `IsSelfAdjoint.imaginaryPart`, `realPart_I_smul` and `imaginaryPart_I_smul` are exactly the four
 round-trip identities. So `(x, y) ↦ x + I • y` is a **linear equivalence**

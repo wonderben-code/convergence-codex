@@ -149,7 +149,9 @@ def clifford2Iso :
 -- ============================================================================
 
 /-- The quaternion splitting preserves the unit.
-    Delegates to the `AlgEquiv.map_one` API of `quatSplitEquiv`. -/
+    Delegates to the generic `map_one` at `quatSplitEquiv`. (This line said
+    `AlgEquiv.map_one`, which does not exist as a name — `ERRATUM 224` — and the
+    wrong spelling is kept beside the right one.) -/
 theorem quatSplitEquiv_map_one :
     quatSplitEquiv (1 : ℍ[ℂ,(1 : ℂ),0,1]) = (1 : Matrix (Fin 2) (Fin 2) ℂ) :=
   quatSplitEquiv.map_one

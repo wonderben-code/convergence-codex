@@ -271,7 +271,9 @@ FAILS is whether that matters to the wall**, and it does not. See below.
 
 **"`boxGraph 2 n ≃g latticeGraph n` could be doing violence to one side."**
 It is a `RelIso`, so adjacency is preserved in both directions, and the
-underlying map is `Equiv.piFinTwoEquiv` — the library's own identification,
+underlying map is `piFinTwoEquiv` — the library's own identification, and it is in the ROOT
+namespace: this line said `Equiv.piFinTwoEquiv`, which does not exist (`ERRATUM 224`), and the
+wrong spelling is kept beside the right one —
 not one written here to make the proof go. `adj_two_iff` is proved by case
 analysis on the index, and the correspondence is exactly the expected one:
 index `1` is `IsingFiniteVolume.adj`'s first disjunct (`p.1 = q.1`, second
