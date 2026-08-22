@@ -47,6 +47,17 @@ that permutation rather than negated. **None of that is in this estate** — pro
 each — and none of it is assumed below. What is proved is convergence to the diagonal term,
 whatever that term is.
 
+⚠ **SUPERSEDED — `IsingMagnetisationVanishes` PROVES `‖B_{p₀p₀}‖² = 0`, so `corr2SepInf` tends to
+ZERO and `|corr2SepInf κ| ≤ rᵏ`. The paragraph above is kept per `ERRATUM 94`, and every sentence
+in it remains true OF THIS FILE.** Two things in it were right: that decay to zero may not be
+**assumed** here, and that the flip invariance was genuinely absent when this was written — it was
+supplied afterwards by `IsingFlipSymmetry`. One was incomplete: **the route named above, through
+the top eigenvector's strict positivity, is not the route taken.** The proof conjugates the flip
+into the eigenbasis, where it commutes with a diagonal matrix, and uses only simplicity of the top
+eigenvalue **in the list**. So this file's clustering-to-an-unknown-constant becomes clustering to
+a known one, and `corr2SepInf_connected_le` becomes an exponential **decay** bound. **Nothing
+about the width changes and `WALLS` §W4 does not move.**
+
 **But `r` DEPENDS ON THE WIDTH.** It is built from that width's eigenvalues, and nothing here says
 it stays below one as `n` grows — which is exactly `WALLS` §W4 §6 item 3's open sentence. What §5
 is, is exponential clustering for **one** strip.

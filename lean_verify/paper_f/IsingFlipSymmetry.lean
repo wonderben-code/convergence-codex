@@ -34,6 +34,18 @@ the top eigenvector to be *fixed* rather than negated, and a bridge from `spinEi
 quadratic form at that vector. **`expect_spin_eq_zero` is not that statement**: it is the average
 over a finite strip, and the limit `M → ∞` at fixed width is where the two would meet.
 
+⚠ **THE THREE STEPS ARE THE WRONG ROUTE, AND `IsingMagnetisationVanishes` PROVES
+`‖B_{p₀p₀}‖² = 0` WITHOUT ANY OF THEM. The paragraph is kept per `ERRATUM 94`.** Its first
+sentence stands — this file still proves nothing about the top eigenvector — and its last stands
+too. What is wrong is *"it needs three more steps"*: **no eigenvector is produced anywhere in the
+proof, no positivity of one is used, and `PerronSimple.top_eigenspace_dim_one` is never invoked.**
+Conjugating §4's `flipMat` into the eigenbasis keeps all three of its laws, and the commuting one
+becomes commuting with a **diagonal** matrix, which forces vanishing off any index whose eigenvalue
+occurs once in the list — simplicity **in the list**, which is strictly weaker than simplicity of
+the eigenspace and was already proved
+(`TransferPowerSum.index_eq_of_eigenvalues_eq_top`). **The cost of the wrong route was one
+paragraph, written before §4 existed**; §4 is what made the short one visible.
+
 **And zero magnetisation is not a mass gap and does not move `WALLS` §W4.** At fixed width the
 strip is a one-dimensional system and its magnetisation vanishing is expected rather than
 surprising; what makes it worth proving is that `IsingTwoPointLimit` names it as an unproved
