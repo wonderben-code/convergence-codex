@@ -11,6 +11,18 @@ vanish. **The flip invariance was checked to be absent from this estate and was 
 used.** This file supplies it, and takes the finite-volume consequence, which needs no spectral
 theory at all.
 
+⚠ **THAT SENTENCE IS TOO STRONG AND IS `ERRATUM 234`. It is kept per `ERRATUM 94`.** What is true:
+flip invariance **of `IsingTransfer2D.energy`** — the strip's periodic energy on `Col n` — did not
+exist, and nothing below duplicates anything. What is false is the implication that the estate had
+no such argument at all. `IsingFiniteVolume` has had `flip` on `Config n` since 22 July, with
+`flip_involutive`, `isingH_flip` and `ising_gibbs_flip_invariant`; `IsingBoundaryField` has
+`magnetisation_flip`; and **`BoundaryFieldRatio.integral_magnetisation_zero_field` is `§3`'s
+theorem for the box**, by the same argument. **The probe that missed them was run** — over
+`paper_f/Ising*.lean`, for `energy_neg`, `energy_not` and `spin_flip` — and every one of those is
+a name I would have chosen rather than a name in use. The name in use is `flip`. `ERRATUM 42`'s
+rule is *probe by shape, not by the name you would have chosen*, and it was broken here while
+obeying `ERRATUM 233`'s rule to probe the estate at all.
+
 ## What is proved
 
 * **`flipCol`** — flip every spin of a column — with `spin_not` and `spin_flipCol`;
@@ -118,32 +130,44 @@ theorem transferSym_flipCol (β : ℝ) (σ τ : Col n) :
 
 /-! ## 3. The magnetisation, and it is zero -/
 
-/-- **THE MAGNETISATION OF THE FINITE STRIP IS EXACTLY ZERO**, at every inverse temperature, every
-width and every length. No positivity, no spectral theory and no limit: the flip is a bijection of
-configurations that preserves the Boltzmann weight and negates the observable, so the numerator is
-its own negative. -/
-theorem expect_spin_eq_zero (β : ℝ) (n M : ℕ) (i : Fin (n + 1)) :
-    expect β n M (fun σ : Col n => spin (σ i)) = 0 := by
-  have hnum : (∑ s : Fin (M + 1) → Col n, spin (s 0 i) * exp (β * energy M s)) = 0 := by
-    set N := ∑ s : Fin (M + 1) → Col n, spin (s 0 i) * exp (β * energy M s) with hN
+/-- **ANY ODD OBSERVABLE HAS ZERO EXPECTATION ON THE STRIP.** The flip is a bijection of
+configurations that preserves the Boltzmann weight, so an observable it negates has a numerator
+equal to its own negative. No positivity, no spectral theory and no limit.
+
+**This is the strip's analogue of `BoundaryFieldRatio.integral_magnetisation_zero_field`**, which
+does the same for the box's Gibbs measure by the same argument. The two are about different
+objects — a Bochner integral against `isingMeasure` on `Config n` there, a ratio of finite sums
+over `Fin (M+1) → Col n` here — and neither statement gives the other; the pointer is here because
+`ERRATUM 234` records that this file's first draft claimed the estate had no such argument. -/
+theorem expect_eq_zero_of_odd (β : ℝ) (n M : ℕ) {w : Col n → ℝ}
+    (hw : ∀ σ : Col n, w (flipCol σ) = -w σ) : expect β n M w = 0 := by
+  have hnum : (∑ s : Fin (M + 1) → Col n, w (s 0) * exp (β * energy M s)) = 0 := by
+    set N := ∑ s : Fin (M + 1) → Col n, w (s 0) * exp (β * energy M s) with hN
     have hre : N = ∑ s : Fin (M + 1) → Col n,
-        spin (flipConf M s 0 i) * exp (β * energy M (flipConf M s)) := by
+        w (flipConf M s 0) * exp (β * energy M (flipConf M s)) := by
       rw [hN]
       refine Fintype.sum_equiv
         ((Function.Involutive.toPerm (flipConf (n := n) M) (flipConf_involutive M))) _ _ ?_
       intro s
       simp only [Function.Involutive.coe_toPerm, flipConf_involutive]
     have hneg : (∑ s : Fin (M + 1) → Col n,
-        spin (flipConf M s 0 i) * exp (β * energy M (flipConf M s))) = -N := by
+        w (flipConf M s 0) * exp (β * energy M (flipConf M s))) = -N := by
       rw [hN, ← Finset.sum_neg_distrib]
       refine Finset.sum_congr rfl fun s _ => ?_
-      rw [energy_flipCol, flipConf, spin_flipCol, neg_mul]
+      rw [energy_flipCol, flipConf, hw, neg_mul]
     rw [hre, hneg] at hN
     linarith [hN]
-  have hdef : expect β n M (fun σ : Col n => spin (σ i))
-      = (∑ s : Fin (M + 1) → Col n, spin (s 0 i) * exp (β * energy M s))
+  have hdef : expect β n M w
+      = (∑ s : Fin (M + 1) → Col n, w (s 0) * exp (β * energy M s))
         / partition2 β n M := rfl
   rw [hdef, hnum, zero_div]
+
+/-- **THE MAGNETISATION OF THE FINITE STRIP IS EXACTLY ZERO**, at every inverse temperature, every
+width and every length — the instance of the lemma above at a single spin, which is odd because a
+single spin is. -/
+theorem expect_spin_eq_zero (β : ℝ) (n M : ℕ) (i : Fin (n + 1)) :
+    expect β n M (fun σ : Col n => spin (σ i)) = 0 :=
+  expect_eq_zero_of_odd β n M fun σ => spin_flipCol σ i
 
 /-! ## 4. The same symmetry as a matrix identity -/
 

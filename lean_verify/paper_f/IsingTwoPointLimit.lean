@@ -44,8 +44,18 @@ every spin leaves `IsingTransfer2D.energy` unchanged and negates the observable,
 eigenvector is strictly positive (`PerronVector.exists_pos_top_eigenvector`) and so is fixed by
 that permutation rather than negated. **None of that is in this estate** — probed 2026-08-22 over
 `paper_f/Ising*.lean` and `paper_f/Perron*.lean` for `energy_neg`, `energy_not`, `spin_flip`: zero
-each — and none of it is assumed below. What is proved is convergence to the diagonal term,
-whatever that term is.
+each — and none of it is assumed below.
+
+⚠ **«None of that is in this estate» IS TOO STRONG — `ERRATUM 234`, kept per `ERRATUM 94`.** The
+probe result quoted is real and the three names do return zero. They are three names *I* would
+have chosen. The estate's name is `flip`, and `IsingFiniteVolume.flip`,
+`IsingFiniteVolume.ising_gibbs_flip_invariant`, `IsingBoundaryField.magnetisation_flip` and
+`BoundaryFieldRatio.integral_magnetisation_zero_field` — the box's version of exactly this
+argument — have all been there for a month. **What is true and was the operative fact** is
+narrower: flip invariance of `IsingTransfer2D.energy`, the strip's own periodic energy, was
+genuinely absent, so `IsingFlipSymmetry` duplicates nothing.
+
+What is proved here is convergence to the diagonal term, whatever that term is.
 
 ⚠ **SUPERSEDED — `IsingMagnetisationVanishes` PROVES `‖B_{p₀p₀}‖² = 0`, so `corr2SepInf` tends to
 ZERO and `|corr2SepInf κ| ≤ rᵏ`. The paragraph above is kept per `ERRATUM 94`, and every sentence
