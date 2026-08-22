@@ -295,10 +295,13 @@ being the same family
 stronger thing, that **every** power sum of the two families agrees, which is what the spectral
 mapping theorem would follow from.
 
-**IT IS NOT THE SPECTRAL MAPPING THEOREM AND MUST NOT BE READ AS ONE.** Equal power sums are not
-an equal multiset. The missing step is Newton's identities — power sums determine the elementary
-symmetric functions in characteristic zero — plus the passage back to the characteristic
-polynomial. `UNLOCK_WATCHLIST`'s trace-moments item calls those legs (ii) and (iii), records that
+**IT IS NOT THE SPECTRAL MAPPING THEOREM AND MUST NOT BE READ AS ONE — AND THE PRECISE REASON
+MATTERS.** *"Equal power sums"* and *"equal multiset"* are not the same statement. Over `ℝ` the
+**implication is real**: all power sums agreeing does force the multisets to agree, by Newton's
+identities plus the passage back to the characteristic polynomial. **That implication is not
+proved here and is not available in this estate**, so what §6 supplies is the *hypothesis* of the
+spectral mapping theorem and not its conclusion. Saying "equal power sums are not an equal
+multiset" flat would be false; saying §6 proves the mapping would be `ERRATUM 222` again. `UNLOCK_WATCHLIST`'s trace-moments item calls those legs (ii) and (iii), records that
 Mathlib has Newton only over `MvPolynomial σ R` with no multiset `psum`, and has declined to build
 them since 16 August on the stated ground that **nothing downstream would consume them.**
 
