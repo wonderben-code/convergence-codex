@@ -94,6 +94,15 @@ the rest of it**, and it is the part that matters: there is still no `InnerProdu
 and no completeness, so "orthogonality" should still be read as *"this bilinear form vanishes on
 these pairs"*. Found by `--gapmarks`, `ERRATUM 226`.
 
+**AND NOW THAT LAST CLAUSE HAS GONE THE SAME WAY, WHICH IS WHY IT IS BEING CORRECTED THE SAME
+DAY.** `LovelockInnerSpace.arrEquiv` is an explicit linear equivalence onto
+`EuclideanSpace ℝ (Fin n × Fin n × Fin n × Fin n)` and `inner_arrEquiv` proves it carries `ip` to
+that space's inner product, so **"orthogonality" in this file now means orthogonality in a
+genuine inner-product space** — `inner_weylPart_ricciPart` and its two companions restate §6's
+theorems there, and `norm_sq_eq` is §6's Pythagoras on norms. What is *still* true of the sentence
+above: **no instance is placed on `Fin n → Fin n → Fin n → Fin n → ℝ`**, so every statement in
+this file remains one about the bare form, and completeness is neither claimed nor used.
+
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 

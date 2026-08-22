@@ -51,6 +51,17 @@ proof, this file is still not a step toward the statement, and the watchlist ite
 move.
 
 **And the other disclaimers stand.** No `InnerProductSpace` instance, no completeness, no norm; and
+
+**⚠ THE "NO NORM" CLAUSE IS SUPERSEDED — `LovelockInnerSpace` MAKES THESE THREE INVARIANTS
+LENGTHS.** Kept per `ERRATUM 94`. `arrEquiv` is an explicit linear equivalence onto
+`EuclideanSpace ℝ (Fin n × Fin n × Fin n × Fin n)` carrying `ip` to that space's inner product, so
+`√(ip R R)` is a norm and this file's three theorems say a **length** is frame-independent, not
+merely a number: `norm_arrEquiv_act`, `norm_arrEquiv_weylPart_act`, `norm_arrEquiv_ricciPart_act`
+and `norm_arrEquiv_scalPart_act` are those statements, and they are proved from these by one
+rewrite each. **What still stands: no instance is placed on the array type**, so every theorem
+below remains one about the bare form, and completeness is neither claimed nor used. `ERRATUM 226`
+is the rule this is being applied under — a correction lands in every place, not the nearest one.
+
 `LovelockOrthogonality`'s corrected `a₂` paragraph is unaffected — `a₂`'s integrand is a multiple
 of the scalar curvature, the quadratic invariants belong to the next coefficient, and nothing in
 this file is an `a₂` computation.

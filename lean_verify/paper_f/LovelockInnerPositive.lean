@@ -34,6 +34,17 @@ stands: no `InnerProductSpace`, no completeness, no norm. Bundling would mean ch
 for four-index arrays that nothing in the estate consumes — `LovelockReduction` §1's reason again.
 What is proved is the two properties, on the bare form.
 
+**⚠ SUPERSEDED IN PART — `LovelockInnerSpace` SUPPLIES THE NORM WITHOUT CHOOSING A CARRIER**, and
+the paragraph is kept per `ERRATUM 94`. **What still stands, and it is the operative half:** no
+instance is placed on `Fin n → Fin n → Fin n → Fin n → ℝ`, and everything proved below is proved
+on the bare form. **What stopped being true is the conclusion a reader would draw from *"no
+`InnerProductSpace`, no completeness, no norm"*.** `arrEquiv` is an explicit linear equivalence
+onto `EuclideanSpace ℝ (Fin n × Fin n × Fin n × Fin n)`, `inner_arrEquiv` proves it carries `ip`
+to that space's inner product, and `√(ip R R)` is therefore a norm — with `ip_abs_le`
+(Cauchy–Schwarz) and `ip_add_sqrt_le` (the triangle inequality) following, neither of which the
+bare form gives. **The carrier objection was answered rather than ignored**: `ip_weylPart_abs_le`
+consumes it, and `ip_weylPart_le_self` below is what makes that bound about the whole tensor.
+
 **And it says nothing about `KillsWeyl`.** It sharpens *how* non-trivial the Weyl summand is, from
 "has a non-zero entry" to "has positive length". The statement about what an equivariant `T` does
 to it is untouched, and the watchlist item does not move.
