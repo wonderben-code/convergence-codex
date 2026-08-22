@@ -26,13 +26,16 @@ missing and its ingredients are not.
 ## What this does and does not give the wall
 
 It gives the **inequality** half of the variational picture, which is the half that was missing by
-name. It does **not** yet give *«a maximiser of the form is an eigenvector»* — that needs the
-expansion of `v` back out of its coefficients, and is deliberately left to its own unit rather
-than bundled here on the strength of the coefficients vanishing. **`coeff_eq_zero_of_quadForm_eq`
-is the input to that step and is not that step.**
+name. §4, added after the rest of the file compiled, gives the other: **`mv_eq_smul_of_quadForm_eq`
+— a vector achieving equality IS an eigenvector for `M`.** `coeff_eq_zero_of_quadForm_eq` is the
+input to that step and §4 is the step; the two were kept apart so that neither is claimed on the
+strength of the other (`ERRATUM 48`).
 
-And even completed, this reaches only half (a) of `WALLS` §W4.0 §6 item 2. Half (b), simplicity of
-the top eigenvalue, is untouched by everything here.
+**So half (a) of `WALLS` §W4.0 §6 item 2 is complete as a statement about the form**, and what it
+is short of is the *application*: producing a `v` that achieves equality and whose entrywise
+modulus does too, which is where the strict positivity of `A` would finally enter and where
+nothing here goes. **Half (b), simplicity of the top eigenvalue, is untouched by everything
+here.**
 -/
 
 namespace RayleighMatrix
@@ -152,5 +155,72 @@ theorem coeff_eq_zero_of_quadForm_eq (hA : A.IsHermitian) {M : ℝ}
     have := (mul_lt_mul_of_pos_right hj hpos)
     linarith
   exact pow_eq_zero_iff (n := 2) (by norm_num) |>.mp hsq
+
+/-! ## 4. A vector achieving equality is an eigenvector
+
+**Written after §§1–3 compiled**, as the step §3 deliberately did not bundle.
+-/
+
+omit [DecidableEq n] in
+theorem mv_smul (c : ℝ) (v : EuclideanSpace ℝ n) : mv A (c • v) = c • mv A v := by
+  ext i
+  change ∑ j, A i j * (c * (WithLp.ofLp v) j) = c * ∑ j, A i j * (WithLp.ofLp v) j
+  rw [Finset.mul_sum]
+  exact Finset.sum_congr rfl fun j _ => by ring
+
+omit [DecidableEq n] in
+theorem mv_add (v w : EuclideanSpace ℝ n) : mv A (v + w) = mv A v + mv A w := by
+  ext i
+  change ∑ j, A i j * ((WithLp.ofLp v) j + (WithLp.ofLp w) j)
+      = (∑ j, A i j * (WithLp.ofLp v) j) + ∑ j, A i j * (WithLp.ofLp w) j
+  rw [← Finset.sum_add_distrib]
+  exact Finset.sum_congr rfl fun j _ => by ring
+
+omit [DecidableEq n] in
+theorem mv_zero : mv A (0 : EuclideanSpace ℝ n) = 0 := by
+  ext i
+  change ∑ _j, A i _j * (0 : ℝ) = (0 : ℝ)
+  simp
+
+omit [DecidableEq n] in
+theorem mv_sum {ι : Type*} (s : Finset ι) (f : ι → EuclideanSpace ℝ n) :
+    mv A (∑ i ∈ s, f i) = ∑ i ∈ s, mv A (f i) := by
+  classical
+  induction s using Finset.induction with
+  | empty => simpa using mv_zero
+  | insert a s ha ih =>
+      rw [Finset.sum_insert ha, Finset.sum_insert ha, mv_add, ih]
+
+theorem sum_coeff_smul (hA : A.IsHermitian) (v : EuclideanSpace ℝ n) :
+    ∑ j, coeff hA v j • (hA.eigenvectorBasis j) = v := by
+  refine Eq.trans (Finset.sum_congr rfl fun j _ => ?_) ((hA.eigenvectorBasis).sum_repr v)
+  exact congrArg (· • (hA.eigenvectorBasis j))
+    ((hA.eigenvectorBasis).repr_apply_apply v j).symm
+
+/-- **A VECTOR ACHIEVING EQUALITY IN THE VARIATIONAL INEQUALITY IS AN EIGENVECTOR FOR `M`.**
+
+This is the statement `WALLS` §W4.0 §6 item 2's half (a) needs. What it is *not* is the
+application: producing such a `v` for a strictly positive `A`, with `|v|` achieving equality too,
+is where positivity enters and is not here. -/
+theorem mv_eq_smul_of_quadForm_eq (hA : A.IsHermitian) {M : ℝ}
+    (hmax : ∀ j, hA.eigenvalues j ≤ M) {v : EuclideanSpace ℝ n}
+    (heq : inner ℝ v (mv A v) = M * inner ℝ v v) : mv A v = M • v := by
+  have hterm : ∀ j, hA.eigenvalues j * coeff hA v j = M * coeff hA v j := by
+    intro j
+    rcases eq_or_lt_of_le (hmax j) with h | h
+    · rw [h]
+    · rw [coeff_eq_zero_of_quadForm_eq hA hmax heq h]; ring
+  calc mv A v = mv A (∑ j, coeff hA v j • (hA.eigenvectorBasis j)) := by
+        rw [sum_coeff_smul hA]
+    _ = ∑ j, mv A (coeff hA v j • (hA.eigenvectorBasis j)) := mv_sum _ _
+    _ = ∑ j, (hA.eigenvalues j * coeff hA v j) • (hA.eigenvectorBasis j) := by
+        refine Finset.sum_congr rfl fun j _ => ?_
+        rw [mv_smul, mv_eigenvectorBasis hA, smul_smul, mul_comm]
+    _ = ∑ j, (M * coeff hA v j) • (hA.eigenvectorBasis j) := by
+        exact Finset.sum_congr rfl fun j _ => by rw [hterm j]
+    _ = M • ∑ j, coeff hA v j • (hA.eigenvectorBasis j) := by
+        rw [Finset.smul_sum]
+        exact Finset.sum_congr rfl fun j _ => by rw [smul_smul]
+    _ = M • v := by rw [sum_coeff_smul hA]
 
 end RayleighMatrix
