@@ -27,9 +27,9 @@ Nothing joined the two. This file is that step.
 > **`partition2_eq_sum_eigenvalues_pow`** — hence the two-dimensional Ising partition function is
 > `∑ (λ i) ^ (M + 1)` over the eigenvalues of `transferSym` itself.
 
-**WHY IT HAD TO BE BUILT.** `TracePowerSpectrum.herm_trace_pow` proves exactly the same identity
+**WHY IT HAD TO BE BUILT.** `Matrix.herm_trace_pow` proves exactly the same identity
 for a matrix over `ℂ`, and `transferSym` is real; its ancestor
-`TracePowerSpectrum.trace_pow_eq_sum_roots_charpoly` needs `IsAlgClosed`, which `ℝ` is not. Both
+`Matrix.trace_pow_eq_sum_roots_charpoly` needs `IsAlgClosed`, which `ℝ` is not. Both
 were written by this project and neither reaches a real symmetric matrix — `ERRATUM 42`, a lemma
 existing and a lemma applying are two different probes. **Mathlib has no eigenvalue-family
 spectral mapping at all**: `eigenvalues_pow`, `pow_eigenvalues`, `eigenvalues_zpow`,
@@ -242,7 +242,7 @@ with no proof behind it, in a file whose subject is the difference between those
 **AND THE PROBE THAT FOUND THE ABSENCE IS WORTH RECORDING** (`ERRATUM 42`, third instance in this
 one file). This estate proves partition-function positivity twice — `BoundaryFieldRatio.
 partition_pos` and `PeierlsConditional.plus_partition_pos` — and **neither is about
-`IsingTransfer2D.partition2`**. Together with `TracePowerSpectrum.herm_trace_pow` being complex-
+`IsingTransfer2D.partition2`**. Together with `Matrix.herm_trace_pow` being complex-
 only and `trace_pow_eq_sum_roots_charpoly` needing `IsAlgClosed`, that is three lemmas in one
 file's review that exist for the neighbouring object and not for this one.
 -/
