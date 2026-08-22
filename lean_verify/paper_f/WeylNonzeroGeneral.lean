@@ -53,6 +53,16 @@ landing on `1/3` is a check the estate can run and a coincidence of prose is not
 every dimension from four up rather than only in four — a strictly larger *non*-vacuity claim, and
 still not a step toward the statement itself. The watchlist item does not move.
 
+
+**⚠ SUPERSEDED — `LovelockKillsWeyl.killsWeyl_of_equivariant` PROVES `KillsWeyl` AT EVERY `n ≥ 3`**
+(`171d474`, 15 August), and the paragraph above is kept per `ERRATUM 94`. Every additive,
+homogeneous, `O(n)`-equivariant `T` annihilates the Weyl summand; `classification` follows, and the
+watchlist's Lovelock item is CLOSED — its sweep record reads *"the closure is `KillsWeyl` at every
+`n ≥ 3`"*. **So *"the watchlist item does not move"* is true only in the sense that a closed item
+cannot move, and it invites the opposite reading.** What is still open at W5 is not this: it is
+rung 2 of `WALLS` §W5.1's staircase, an **affine connection and Levi-Civita** — zero names in
+Mathlib. `ERRATUM 230`.
+
 **And still no dimension count.** The rank of the Weyl summand is not computed here either. One
 entry of one tensor is all that is claimed, now for every `n`.
 

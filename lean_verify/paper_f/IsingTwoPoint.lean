@@ -1,4 +1,5 @@
 import IsingTransfer2D
+import TracePathSeq
 
 /-!
 # The two-point function of the two-dimensional strip, and the observable that did not exist
@@ -41,6 +42,15 @@ writing needed.
 on the same column and collapse into one diagonal. **The separated case needs the cyclic product
 split at two points rather than one**, which `cyc_eq_walkProd` does not do, and it is the rung
 between this file and any decay statement.
+
+**⚠ SUPERSEDED THE SAME DAY — `separatedTransferFormula_holds` PROVES IT**, and the paragraph is
+kept per `ERRATUM 94`. **The diagnosis above was wrong about what was needed.** The cyclic product
+does not have to be split at two points: `TracePathSeq` generalises `TracePathSum` to a
+**sequence** of matrices, one per step, and a weight at a fixed time is then a diagonal factor
+folded into that step's matrix. `TracePathSeq.sum_cyc_two_weight` is the general statement and this
+file's `k = 0` argument is unchanged. **What the paragraph got right is that it was a rung and not
+a wall.** `PROOF_STRATEGY` §6's KEY GENERATOR rule — a unit that reaches a `B` retries `B → C`
+immediately — is what produced it, in the unit after this one.
 
 **And a decay statement is further still.** Even with the separated formula, *decay* needs the
 spectral gap fed into it, the strip is of **fixed width**, and every limit available here is in its
@@ -142,12 +152,59 @@ on one column and collapse into a single diagonal; the separated case needs the 
 split at **two** points rather than one, which `TracePathSum.cyc_eq_walkProd` does not do.
 
 **This is stated as a definition of the gap, not as a claim**, in the convention `S3bResidue`
-records — and it is the rung between this file and any statement about decay. -/
+records — and it is the rung between this file and any statement about decay.
+
+**⚠ NO LONGER A GAP — `separatedTransferFormula_holds` below proves it**, the same day, via
+`TracePathSeq.sum_cyc_two_weight`. **The `def`'s name and statement are left exactly as they
+were**: rewriting a target to match what got proved is the one move this campaign does not make,
+and this `def` is now the thing that theorem concludes. The sentence *"needs the cyclic product
+split at two points"* was the wrong diagnosis and is kept beside the correction (`ERRATUM 94`) —
+what it needed was a sequence of matrices, not a second split. `ERRATUM 228`. -/
 def SeparatedTransferFormula (n : ℕ) : Prop :=
   ∀ (β : ℝ) (M k : ℕ) (_ : k ≤ M) (i : Fin (n + 1)),
     (∑ s : Fin (M + 1) → Col n, spin (s 0 i) * spin (s ⟨k, by omega⟩ i)
         * exp (β * energy M s))
       = Matrix.trace (Matrix.diagonal (fun σ : Col n => spin (σ i)) * transfer2 β n ^ k
           * Matrix.diagonal (fun σ : Col n => spin (σ i)) * transfer2 β n ^ (M + 1 - k))
+
+/-! ## 5. The rung climbed, the same day
+
+`TracePathSeq` generalises `TracePathSum` to a **sequence** of matrices, one per step; the
+separated formula is then this file's `k = 0` argument with the second weight at a different time,
+and needs no new combinatorics. -/
+
+/-- **THE SEPARATED TRANSFER FORMULA, PROVED.** The `def` above named it; this discharges it.
+The `k = 0` case is the one §3 already had — both weights on one column — and is closed here by
+`spin_sq` through `Matrix.diagonal_mul_diagonal`; every `k ≥ 1` is
+`TracePathSeq.sum_cyc_two_weight` at `w = v = spin ∘ (· i)`. -/
+theorem separatedTransferFormula_holds (n : ℕ) : SeparatedTransferFormula n := by
+  intro β M k hk i
+  have hfac : ∀ (N : ℕ) (s : Fin (N + 1) → Col n),
+      exp (β * energy N s) = ∏ j : Fin (N + 1), transfer2 β n (s j) (s (j + 1)) := by
+    intro N s
+    simp only [energy, transfer2, Finset.mul_sum]
+    exact Real.exp_sum _ _
+  rcases Nat.eq_zero_or_pos k with hk0 | hk1
+  · subst hk0
+    have hz : (⟨0, by omega⟩ : Fin (M + 1)) = 0 := rfl
+    have hlhs : (∑ s : Fin (M + 1) → Col n,
+        spin (s 0 i) * spin (s (⟨0, by omega⟩ : Fin (M + 1)) i) * exp (β * energy M s))
+          = partition2 β n M := by
+      simp only [partition2, hz]
+      exact Finset.sum_congr rfl fun s _ => by rw [spin_sq, one_mul]
+    have hd : Matrix.diagonal (fun σ : Col n => spin (σ i))
+        * Matrix.diagonal (fun σ : Col n => spin (σ i)) = 1 := by
+      rw [Matrix.diagonal_mul_diagonal]
+      have : (fun σ : Col n => spin (σ i) * spin (σ i)) = fun _ => (1 : ℝ) := by
+        funext σ; exact spin_sq (σ i)
+      rw [this, Matrix.diagonal_one]
+    rw [hlhs, pow_zero, Matrix.mul_one, hd, Matrix.one_mul, Nat.sub_zero,
+      partition2_eq_trace]
+  · obtain ⟨k', rfl⟩ : ∃ k', k = k' + 1 := ⟨k - 1, by omega⟩
+    obtain ⟨m, rfl⟩ : ∃ m, M = k' + m + 1 := ⟨M - k' - 1, by omega⟩
+    have hsub : k' + m + 1 + 1 - (k' + 1) = m + 1 := by omega
+    rw [hsub, Finset.sum_congr rfl fun s _ => by rw [hfac (k' + m + 1) s]]
+    exact TracePathSeq.sum_cyc_two_weight (transfer2 β n)
+      (fun σ : Col n => spin (σ i)) (fun σ : Col n => spin (σ i)) k' m
 
 end IsingTwoPoint

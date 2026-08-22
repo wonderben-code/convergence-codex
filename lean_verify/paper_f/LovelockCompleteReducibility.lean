@@ -57,6 +57,17 @@ instantiation. **What still stands is the paragraph above it** — a stable comp
 summand is still not `KillsWeyl`, Schur needs it **irreducible**, and the watchlist item does not
 move. `ERRATUM 228`'s rule.
 
+
+**⚠ CORRECTED 2026-08-22 — THE SENTENCE ABOVE IS TRUE AND ITS FRAMING IS NOT, and it is kept per
+`ERRATUM 94`.** `KillsWeyl` is **proved**, at every `n ≥ 3`, by
+`LovelockKillsWeyl.killsWeyl_of_equivariant` (`171d474`, 15 August), and the watchlist's Lovelock
+item is CLOSED. *"The watchlist item does not move"* is therefore true only in the sense that a
+closed item cannot move — **and it invites the reading that `KillsWeyl` is open, which is false.**
+What this file does not bear on is the wall's actual remaining step, which is rung 2 of `WALLS`
+§W5.1's staircase: an **affine connection and Levi-Civita**, zero names in Mathlib. `ERRATUM 230`
+records that this framing was inherited from the headers being extended and repeated across a
+day's units without being checked.
+
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 

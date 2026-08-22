@@ -49,6 +49,16 @@ curvature tensor; this is one witness, and the orbit of a single Weyl tensor is 
 the Weyl summand. That is `WALLS` §W5.0 §5b's irreducibility question, which nothing in this group
 has approached.
 
+
+**⚠ SUPERSEDED — `LovelockKillsWeyl.killsWeyl_of_equivariant` PROVES `KillsWeyl` AT EVERY `n ≥ 3`**
+(`171d474`, 15 August), and the paragraph above is kept per `ERRATUM 94`. Every additive,
+homogeneous, `O(n)`-equivariant `T` annihilates the Weyl summand; `classification` follows, and the
+watchlist's Lovelock item is CLOSED — its sweep record reads *"the closure is `KillsWeyl` at every
+`n ≥ 3`"*. **So *"the watchlist item does not move"* is true only in the sense that a closed item
+cannot move, and it invites the opposite reading.** What is still open at W5 is not this: it is
+rung 2 of `WALLS` §W5.1's staircase, an **affine connection and Levi-Civita** — zero names in
+Mathlib. `ERRATUM 230`.
+
 **What the two numbers are is also not computed.** `p` and `q` are `T W i i` and `T W k k`; no
 theorem here evaluates either, and for all this file says they may be anything at all.
 

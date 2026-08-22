@@ -47,6 +47,16 @@ is, **`KillsWeyl` at `n ≥ 4` is not proved and the watchlist item does not mov
 assembly is routine" is precisely the kind of sentence `ERRATUM 175` exists about; what is claimed
 here is only what is compiled here.
 
+
+**⚠ SUPERSEDED — `LovelockKillsWeyl.killsWeyl_of_equivariant` PROVES `KillsWeyl` AT EVERY `n ≥ 3`**
+(`171d474`, 15 August), and the paragraph above is kept per `ERRATUM 94`. Every additive,
+homogeneous, `O(n)`-equivariant `T` annihilates the Weyl summand; `classification` follows, and the
+watchlist's Lovelock item is CLOSED — its sweep record reads *"the closure is `KillsWeyl` at every
+`n ≥ 3`"*. **So *"the watchlist item does not move"* is true only in the sense that a closed item
+cannot move, and it invites the opposite reading.** What is still open at W5 is not this: it is
+rung 2 of `WALLS` §W5.1's staircase, an **affine connection and Levi-Civita** — zero names in
+Mathlib. `ERRATUM 230`.
+
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 
