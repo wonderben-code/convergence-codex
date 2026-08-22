@@ -27,6 +27,14 @@
   phrased it is answered; W6 as a reader of a textbook would phrase it
   needs that one further bridge, and this file does not build it.
 
+  ⚠ **«STILL NOT MACHINE-CHECKED» IS FALSE AND THE PARAGRAPH IS KEPT PER
+  `ERRATUM 94`.** `TextbookSobolev.textbookBridge : SteinSmoothTest
+  .TextbookBridge` proves it, and that file's own header opens by saying
+  so. **The last sentence stands as written of THIS file** — it does not
+  build the bridge — and what is false is the claim about the estate.
+  `ERRATUM 230`'s fifteenth instance, found by reading `WALLS` §W6's one
+  unread status claim, which carries the same stale sentence.
+
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
   axioms.
 -/
