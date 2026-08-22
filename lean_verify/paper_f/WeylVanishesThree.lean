@@ -215,7 +215,14 @@ theorem killsWeyl_three {T : (Fin 3 → Fin 3 → Fin 3 → Fin 3 → ℝ) → F
   intro R hR b c
   rw [weylPart_eq_zero_fun hR, hzero]
 
-/-! ## 4. The payoff: one open statement instead of two -/
+/-! ## 4. The payoff: one open statement instead of two
+
+**⚠ AND THEN NONE.** Heading kept per `ERRATUM 94`. The surviving statement was `KillsWeyl`, and
+`LovelockKillsWeyl.killsWeyl_of_equivariant` closed it at every `n ≥ 3` on 15 August (`171d474`) —
+so this file's payoff is now that it made the `n = 3` case *automatic*, not that it reduced two
+open statements to one. `RicciProportional` closed too (`LovelockDiagonalise.ricciProportional`).
+**What this section proves is unchanged**; what changed is the sentence about how much was left.
+`ERRATUM 230`. -/
 
 /-- **AT `n = 3` THE CLASSIFICATION FOLLOWS FROM `RicciProportional` ALONE.** -/
 theorem classification_three_of_ricciProportional
