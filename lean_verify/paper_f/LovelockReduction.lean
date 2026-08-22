@@ -44,6 +44,20 @@ concern disjoint pieces of the decomposition, and that the third piece needs nei
 Anyone tempted to read this as progress on Lovelock should note that a reduction to two open
 statements is not a proof of either.
 
+**⚠ SUPERSEDED — BOTH STATEMENTS ARE PROVED, AND THIS FILE IS WHERE A READER COMES TO FIND THAT
+OUT.** Kept per `ERRATUM 94`. **`RicciProportional`**: `LovelockDiagonalise.ricciProportional`, at
+every `n` with `(n : ℝ) ≠ 2`. **`KillsWeyl`**: `LovelockKillsWeyl.killsWeyl_of_equivariant`, at
+every `n ≥ 3` (`171d474`, 15 August), and with it
+`LovelockKillsWeyl.classification` — **the whole algebraic classification**. The watchlist's
+Lovelock item is CLOSED and `WALLS` §W5.1 §1 records it. *"Exactly as unproven as the
+classification was"* was true when written and stopped being true a week later.
+
+**Why this correction matters more than the others in its family.** Thirty-eight files in this
+group end with *"the watchlist item does not move"*, which is true of each of them and says
+nothing about whether the item is open. **This file defines both statements**, so a reader
+following either name arrives here — and until now was told, twice in `def` docstrings and once
+in a section heading, that they are open. `ERRATUM 230`.
+
 **Neither is stated as a theorem here, deliberately.** They are `def`s of `Prop`s, taken as
 hypotheses. Writing them as `theorem … := sorry` would put a `sorry` in the estate for a statement
 nobody is currently attempting, which this project does not do.
@@ -94,15 +108,24 @@ open AlgebraicCurvature LovelockProjections LovelockEquivariance Finset
 variable {n : ℕ}
 variable {T : (Fin n → Fin n → Fin n → Fin n → ℝ) → Fin n → Fin n → ℝ}
 
-/-! ## 1. The two statements that remain -/
+/-! ## 1. The two statements that remain
+
+**⚠ NEITHER REMAINS.** Heading kept per `ERRATUM 94`: `LovelockDiagonalise.ricciProportional`
+closed the second and `LovelockKillsWeyl.killsWeyl_of_equivariant` the first, at every `n ≥ 3`.
+`ERRATUM 230`. -/
 
 /-- **THE FIRST OPEN STATEMENT.** `T` annihilates the Weyl summand. This is the harder half and is
-where the missing invariant theory sits. -/
+where the missing invariant theory sits. **(⚠ NO LONGER OPEN — `LovelockKillsWeyl.
+killsWeyl_of_equivariant` proves it for every additive, homogeneous, `O(n)`-equivariant `T` at
+every `n ≥ 3`. The `def`'s name and statement are left exactly as they were, per this campaign's
+rule against rewriting a target to match what got proved; this is now the thing that theorem
+concludes. `ERRATUM 230`.)** -/
 def KillsWeyl (T : (Fin n → Fin n → Fin n → Fin n → ℝ) → Fin n → Fin n → ℝ) : Prop :=
   ∀ R, IsAlgCurv R → ∀ b c, T (weylPart R) b c = 0
 
 /-- **THE SECOND OPEN STATEMENT.** On the traceless-Ricci summand, `T` is a fixed multiple of the
-identity. -/
+identity. **(⚠ NO LONGER OPEN — `LovelockDiagonalise.ricciProportional` proves it outright at
+every `n` with `(n : ℝ) ≠ 2`. Name and statement left as they were. `ERRATUM 230`.)** -/
 def RicciProportional (T : (Fin n → Fin n → Fin n → Fin n → ℝ) → Fin n → Fin n → ℝ)
     (α : ℝ) : Prop :=
   ∀ R, IsAlgCurv R → ∀ b c, T (ricciPart R) b c = α * tracefreeRicci R b c
@@ -131,7 +154,9 @@ theorem scalPart_eq (i : Fin n)
 
 /-! ## 3. The reduction -/
 
-/-- **THE CLASSIFICATION FOLLOWS FROM THE TWO OPEN STATEMENTS.** -/
+/-- **THE CLASSIFICATION FOLLOWS FROM THE TWO OPEN STATEMENTS.** (⚠ **Neither is open** —
+see the two `def`s above; the theorem is unchanged and its hypotheses are now theorems.
+`ERRATUM 230`.) -/
 theorem classification_of_killsWeyl_of_ricciProportional
     (i : Fin n)
     (hadd : ∀ R S, T (fun a b c d => R a b c d + S a b c d) = fun b c => T R b c + T S b c)

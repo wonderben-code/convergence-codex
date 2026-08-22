@@ -49,6 +49,11 @@ summand, does not claim `n = 4` is the first dimension where it is non-zero, and
 `n ≥ 5`. One non-zero entry in one tensor in one dimension is all that is claimed, because that is
 all that is needed to make `KillsWeyl` non-vacuous where the classification is still open.
 
+**⚠ THE CLASSIFICATION IS NOT STILL OPEN**, corrected 2026-08-22 and the sentence kept per
+`ERRATUM 94`: `LovelockKillsWeyl.classification` closed it at every `n ≥ 3` on 15 August. **The
+non-vacuity this file supplies is what makes that classification a statement about something**,
+which is a better reason for the file to exist than the one the sentence gave. `ERRATUM 230`.
+
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 
