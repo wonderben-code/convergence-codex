@@ -153,6 +153,12 @@ sayable; the classical answer being yes is not a proof in this estate. The proof
 argument — the limit's self-maps are themselves a limit of the levels' self-maps, shifted by one —
 and none of it is here.
 
+⚠ **SUPERSEDED — `bilimit_holds` PROVES THIS, FORTY LINES BELOW, IN THIS FILE.** The paragraph
+above is kept per `ERRATUM 94` and every clause of it is now false: the cofinality argument is
+here, and `bilimit_holds'` is a second route. `WALLS` §W8 recorded the correction on 2026-08-12
+and **this docstring was never updated** — the ledger was fixed and the source was not, which is
+why five wall-map sweeps did not catch it. `ERRATUM 225`.
+
 **The statement quantifies over `X`, deliberately.** The classical construction starts from any
 non-trivial pointed ω-CPO, and a statement for one chosen `X` would be weaker than the theorem and
 would invite the reader to supply the wrong one. -/

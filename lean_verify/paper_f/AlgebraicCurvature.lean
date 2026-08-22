@@ -1119,7 +1119,13 @@ theorem reflect_ne_delta (k : Fin n) : reflect k ≠ (delta : Fin n → Fin n �
 **It is called `act` and the composition law is NOT proved.** `act_delta` below checks that the
 identity frame change is the identity; that `act (Q · Q') = act Q ∘ act Q'`, which is the other
 half of being a group action and what a `MulAction` instance would assert, is **not established
-here and is not used below** — every theorem in this section quantifies over a single `Q`. -/
+here and is not used below** — every theorem in this section quantifies over a single `Q`.
+
+**SUPERSEDED — `LovelockActComposition.act_mul` PROVES IT, together with `act_one`.** The paragraph
+above is kept per `ERRATUM 94` and is still true of *this file*; what it invites, and what was
+wrong, is the reading that the composition law is unproved in the estate. That file's own header
+quotes this sentence as the thing it answers, and nothing here pointed back. Found by
+`PROOF_STRATEGY` §7 rule 2's sweep of gap-marking `def`s, `ERRATUM 225`. -/
 def act (Q : Fin n → Fin n → ℝ) (R : Fin n → Fin n → Fin n → Fin n → ℝ) (a b c d : Fin n) : ℝ :=
   ∑ p : Fin n × Fin n × Fin n × Fin n,
     Q a p.1 * Q b p.2.1 * Q c p.2.2.1 * Q d p.2.2.2 * R p.1 p.2.1 p.2.2.1 p.2.2.2
