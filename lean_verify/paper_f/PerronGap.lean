@@ -27,6 +27,12 @@ so `v = ±|v|` and `Av = M·v` as well as `−M·v`, which with `M > 0` forces `
 
 ## **WHAT THIS CLOSES, AND WHAT IT DOES NOT**
 
+§4, added after the rest compiled, states the separation **about the eigenvalue list**
+(`hA.eigenvalues`) rather than about a supplied eigenvector — which is the form `WALLS` §W4.0 §6
+item 2 is about and the form `IsingTransferSym.partition2_eq_sum_eigenvalues` consumes. *Stating
+it only about supplied eigenvectors would have been `ERRATUM 48`'s defect: the list version does
+follow, from `mulVec_eigenvectorBasis`, and «it follows» is not «it is stated».*
+
 It closes item 2 **for a strictly positive symmetric matrix**, which is what
 `IsingTransferSym.transferSym` is. Item 2's own words were *"either Perron–Frobenius (absent from
 Mathlib; a contribution in its own right) or a direct estimate exploiting positivity of the
@@ -179,5 +185,79 @@ theorem transferSym_gap (β : ℝ) (m : ℕ) :
   exact ⟨M, u, hupos, hM, heig, fun lam v hv hne hlam =>
     abs_lt_top_of_ne (transferSym_isHermitian β m) (fun i j => transferSym_pos β i j)
       hmax hM hv hne hlam⟩
+
+/-! ## 4. The same statement about the eigenvalue list
+
+Everything above takes an eigen**vector**. `WALLS` §W4.0 §6 item 2 is about the **spectrum**, and
+`IsingTransferSym.partition2_eq_sum_eigenvalues` consumes `hA.eigenvalues`. The passage is
+`mulVec_eigenvectorBasis` and it is written out here rather than left as *«it follows»*.
+-/
+
+theorem eigenvectorBasis_ne_zero [Nonempty n] (hA : A.IsHermitian) (j : n) :
+    (hA.eigenvectorBasis j : EuclideanSpace ℝ n) ≠ 0 := by
+  intro h
+  have hn : ‖(hA.eigenvectorBasis j : EuclideanSpace ℝ n)‖ = 1 :=
+    (hA.eigenvectorBasis).orthonormal.1 j
+  rw [h, norm_zero] at hn
+  norm_num at hn
+
+theorem exists_max_eigenvalue [Nonempty n] (hA : A.IsHermitian) :
+    ∃ k, ∀ j, hA.eigenvalues j ≤ hA.eigenvalues k := by
+  obtain ⟨k, -, hk⟩ :=
+    Finset.exists_max_image (univ : Finset n) hA.eigenvalues Finset.univ_nonempty
+  exact ⟨k, fun j => hk j (mem_univ j)⟩
+
+/-- **THE LARGEST EIGENVALUE OF A STRICTLY POSITIVE SYMMETRIC MATRIX IS STRICTLY POSITIVE.** -/
+theorem eigenvalue_max_pos [Nonempty n] (hA : A.IsHermitian) (hpos : ∀ i j, 0 < A i j) {k : n}
+    (hk : ∀ j, hA.eigenvalues j ≤ hA.eigenvalues k) : 0 < hA.eigenvalues k := by
+  set b := (hA.eigenvectorBasis k : EuclideanSpace ℝ n) with hb
+  set u := absVec b with hu
+  have hbne : b ≠ 0 := eigenvectorBasis_ne_zero hA k
+  have hunorm : inner ℝ u u = inner ℝ b b := normSq_absVec b
+  have hupos : 0 < inner ℝ u u := by rw [hunorm]; exact real_inner_self_pos.mpr hbne
+  have hune : u ≠ 0 := by intro h0; rw [h0] at hupos; simp at hupos
+  have hex : ∃ p, (WithLp.ofLp u) p ≠ 0 := by
+    by_contra hcon
+    push Not at hcon
+    exact hune (by ext i; simpa using hcon i)
+  obtain ⟨p, hp⟩ := hex
+  have hup : 0 < (WithLp.ofLp u) p := lt_of_le_of_ne (absVec_nonneg b p) (Ne.symm hp)
+  have h1 : 0 < inner ℝ u (mv A u) := by
+    rw [inner_expand]
+    refine Finset.sum_pos' (fun i _ => ?_) ⟨p, mem_univ p, ?_⟩
+    · rw [mv_row]
+      exact mul_nonneg (absVec_nonneg b i)
+        (Finset.sum_nonneg fun j _ => mul_nonneg (le_of_lt (hpos i j)) (absVec_nonneg b j))
+    · rw [mv_row]
+      refine mul_pos hup (Finset.sum_pos' (fun j _ =>
+        mul_nonneg (le_of_lt (hpos p j)) (absVec_nonneg b j)) ⟨p, mem_univ p, ?_⟩)
+      exact mul_pos (hpos p p) hup
+  have h2 : inner ℝ u (mv A u) ≤ hA.eigenvalues k * inner ℝ u u :=
+    quadForm_le_of_eigenvalues_le hA hk u
+  nlinarith [h1, h2, hupos]
+
+/-- **THE SEPARATION, STATED ABOUT THE EIGENVALUE LIST.** Every eigenvalue other than the largest
+is strictly smaller **in absolute value**. -/
+theorem abs_eigenvalues_lt_of_ne [Nonempty n] (hA : A.IsHermitian) (hpos : ∀ i j, 0 < A i j)
+    {k : n} (hk : ∀ j, hA.eigenvalues j ≤ hA.eigenvalues k) {j : n}
+    (hne : hA.eigenvalues j ≠ hA.eigenvalues k) :
+    |hA.eigenvalues j| < hA.eigenvalues k :=
+  abs_lt_top_of_ne hA hpos hk (eigenvalue_max_pos hA hpos hk)
+    (mv_eigenvectorBasis hA j) (eigenvectorBasis_ne_zero hA j) hne
+
+open IsingTransfer2D IsingTransferSym in
+/-- **THE GAP FOR THE SYMMETRISED TWO-DIMENSIONAL ISING TRANSFER MATRIX, ABOUT ITS EIGENVALUES.**
+This is the form `partition2_eq_sum_eigenvalues` speaks in. -/
+theorem transferSym_eigenvalues_gap (β : ℝ) (m : ℕ) :
+    ∃ k : Col m, 0 < (transferSym_isHermitian β m).eigenvalues k ∧
+      (∀ j, (transferSym_isHermitian β m).eigenvalues j
+        ≤ (transferSym_isHermitian β m).eigenvalues k) ∧
+      ∀ j, (transferSym_isHermitian β m).eigenvalues j
+            ≠ (transferSym_isHermitian β m).eigenvalues k →
+        |(transferSym_isHermitian β m).eigenvalues j|
+          < (transferSym_isHermitian β m).eigenvalues k := by
+  obtain ⟨k, hk⟩ := exists_max_eigenvalue (transferSym_isHermitian β m)
+  refine ⟨k, eigenvalue_max_pos _ (fun i j => transferSym_pos β i j) hk, hk, fun j hj => ?_⟩
+  exact abs_eigenvalues_lt_of_ne _ (fun i j => transferSym_pos β i j) hk hj
 
 end PerronGap
