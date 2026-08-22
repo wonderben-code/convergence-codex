@@ -299,24 +299,26 @@ theorem exists_subTop_ratio (β : ℝ) (n : ℕ) {p₀ : Col n}
     exact PerronGap.abs_eigenvalues_lt_of_ne _ hpos hp₀ hvne
   exact ⟨_, abs_nonneg _, hlt qm hqm, fun q hq => hmax q hq⟩
 
-/-- **EXPONENTIAL CLUSTERING FOR THE STRIP OF FIXED WIDTH.** The connected two-point function of
-the infinite strip is bounded by `rᵏ`, with `r < 1` the largest eigenvalue ratio off the top index.
+/-- **THE BOUND FOR ANY `r` THAT DOMINATES THE RATIOS**, which is the content of
+`corr2SepInf_connected_le` with the existential taken off the front.
 
-**Read what this is about.** The strip has a FIXED width `n` and the limit taken to reach
-`corr2SepInf` was in the length. `r` depends on `n` — it is built from that width's eigenvalues —
-and **nothing here says it stays below one as the width grows**, which is `WALLS` §W4 §6 item 3's
-open sentence and is untouched. What this is, is exponential clustering for one strip. -/
-theorem corr2SepInf_connected_le (β : ℝ) (n : ℕ) (i : Fin (n + 1)) {p₀ : Col n}
-    (hp₀ : ∀ j, (transferSym_isHermitian β n).eigenvalues j
-        ≤ (transferSym_isHermitian β n).eigenvalues p₀) :
-    ∃ r : ℝ, 0 ≤ r ∧ r < 1 ∧ ∀ κ : ℕ,
-      |corr2SepInf β n i p₀ κ - ‖spinEigen β n i p₀ p₀‖ ^ 2| ≤ r ^ κ := by
+**Why it is stated separately.** The estimate below uses `r` through exactly two facts — that it is
+nonnegative and that it dominates every off-top ratio — and through nothing else; `r < 1` is carried
+by the corollary and never enters the calculation. So a caller holding a NAMED `r` can have the
+bound at that `r` instead of at whichever witness the existential happened to produce, and
+`IsingTopRatio.corr2SepInf_abs_le_subTopRatio` is that caller. Extracting it changes no statement:
+`corr2SepInf_connected_le` below is unchanged and is now two lines.
+
+**And the argmax hypothesis is not needed here.** The proof of the estimate uses `p₀` only through
+`0 < λ_{p₀}`, so that is what this asks for. Being the maximiser is how the caller gets it
+(`PerronGap.eigenvalue_max_pos`) and is a strictly stronger assumption. -/
+theorem corr2SepInf_connected_le_of_ratio_le (β : ℝ) (n : ℕ) (i : Fin (n + 1)) {p₀ : Col n}
+    (hp₀pos : 0 < (transferSym_isHermitian β n).eigenvalues p₀) {r : ℝ} (hr0 : 0 ≤ r)
+    (hrle : ∀ q ∈ univ.erase p₀,
+      |(transferSym_isHermitian β n).eigenvalues q
+        / (transferSym_isHermitian β n).eigenvalues p₀| ≤ r) (κ : ℕ) :
+    |corr2SepInf β n i p₀ κ - ‖spinEigen β n i p₀ p₀‖ ^ 2| ≤ r ^ κ := by
   classical
-  have hpos : ∀ a b : Col n, 0 < transferSym β n a b := transferSym_entries_pos β n
-  have hp₀pos : 0 < (transferSym_isHermitian β n).eigenvalues p₀ :=
-    PerronGap.eigenvalue_max_pos _ hpos hp₀
-  obtain ⟨r, hr0, hr1, hrle⟩ := exists_subTop_ratio β n hp₀
-  refine ⟨r, hr0, hr1, fun κ => ?_⟩
   rw [corr2SepInf_eq_diag_add β n i hp₀pos κ, add_sub_cancel_left]
   calc |∑ q ∈ univ.erase p₀, ‖spinEigen β n i p₀ q‖ ^ 2
           * ((transferSym_isHermitian β n).eigenvalues q
@@ -336,5 +338,24 @@ theorem corr2SepInf_connected_le (β : ℝ) (n : ℕ) (i : Fin (n + 1)) {p₀ : 
         exact Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _)
           fun q _ _ => sq_nonneg _
     _ = r ^ κ := by rw [sum_sq_spinEigen_row, one_mul]
+
+/-- **EXPONENTIAL CLUSTERING FOR THE STRIP OF FIXED WIDTH.** The connected two-point function of
+the infinite strip is bounded by `rᵏ`, with `r < 1` the largest eigenvalue ratio off the top index.
+
+**Read what this is about.** The strip has a FIXED width `n` and the limit taken to reach
+`corr2SepInf` was in the length. `r` depends on `n` — it is built from that width's eigenvalues —
+and **nothing here says it stays below one as the width grows**, which is `WALLS` §W4 §6 item 3's
+open sentence and is untouched. What this is, is exponential clustering for one strip.
+**`r` IS NOW ALSO AVAILABLE BY NAME**, as `IsingTopRatio.subTopRatio`, which is this existential's
+witness written down; the two statements say the same thing and the named one is what a statement
+about the width has to be phrased in. -/
+theorem corr2SepInf_connected_le (β : ℝ) (n : ℕ) (i : Fin (n + 1)) {p₀ : Col n}
+    (hp₀ : ∀ j, (transferSym_isHermitian β n).eigenvalues j
+        ≤ (transferSym_isHermitian β n).eigenvalues p₀) :
+    ∃ r : ℝ, 0 ≤ r ∧ r < 1 ∧ ∀ κ : ℕ,
+      |corr2SepInf β n i p₀ κ - ‖spinEigen β n i p₀ p₀‖ ^ 2| ≤ r ^ κ := by
+  obtain ⟨r, hr0, hr1, hrle⟩ := exists_subTop_ratio β n hp₀
+  exact ⟨r, hr0, hr1, fun κ => corr2SepInf_connected_le_of_ratio_le β n i
+    (PerronGap.eigenvalue_max_pos _ (transferSym_entries_pos β n) hp₀) hr0 hrle κ⟩
 
 end IsingTwoPointLimit
