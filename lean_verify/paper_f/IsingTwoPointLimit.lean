@@ -24,7 +24,11 @@ denominator alone. This file takes it in both.
 * **`corr2SepInf_tendsto_diag`** — so as the separation grows the infinite strip's two-point
   function tends to `‖B_{p₀p₀}‖²`;
 * **`corr2SepInf_connected_tendsto_zero`** — and the object that goes to zero is the **connected**
-  function `⟨σ₀σ_κ⟩_∞ − ‖B_{p₀p₀}‖²`.
+  function `⟨σ₀σ_κ⟩_∞ − ‖B_{p₀p₀}‖²`;
+* **`exists_subTop_ratio`** and **`corr2SepInf_connected_le`** — **EXPONENTIAL CLUSTERING**:
+  `|⟨σ₀σ_κ⟩_∞ − ‖B_{p₀p₀}‖²| ≤ rᵏ`, with `r < 1` the largest eigenvalue ratio off the top index.
+  The constant is `1`, and that is §3's row sum rather than a convenience — the off-diagonal
+  squared entries are part of a family summing to one.
 
 ## What this is NOT, and one of these is a correction to an obvious target
 
@@ -43,10 +47,17 @@ that permutation rather than negated. **None of that is in this estate** — pro
 each — and none of it is assumed below. What is proved is convergence to the diagonal term,
 whatever that term is.
 
-**No rate is proved.** `corr2SepInf_connected_tendsto_zero` is convergence, not exponential
-convergence. The bound `|·| ≤ C·rᵏ` with `r = max_{q≠p₀} |λ_q/λ_{p₀}|` is one step further and is
-not taken here. Nor is the boundedness `|corr2SepInf κ| ≤ 1`, which §3's row sum makes cheap and
-which nothing below needs.
+**But `r` DEPENDS ON THE WIDTH.** It is built from that width's eigenvalues, and nothing here says
+it stays below one as `n` grows — which is exactly `WALLS` §W4 §6 item 3's open sentence. What §5
+is, is exponential clustering for **one** strip.
+
+**`corr2SepInf_connected_tendsto_zero` is weaker than `corr2SepInf_connected_le` and is kept
+anyway**, with its own proof: the bound needs the largest off-top ratio to be **attained**, and so
+needs `Col n` to have more than one element, while the convergence does not. The two are not the
+same statement proved twice — one is qualitative and holds more generally.
+
+**And the boundedness `|corr2SepInf κ| ≤ 1` is not proved**, being cheap from §3's row sum and
+needed by nothing below.
 
 **And `p₀` is a parameter, not a canonical object.** `PerronGap.exists_max_eigenvalue` supplies an
 index carrying a largest eigenvalue, and `TransferPowerSum.index_eq_of_eigenvalues_eq_top` says
@@ -228,5 +239,81 @@ theorem corr2SepInf_connected_tendsto_zero (β : ℝ) (n : ℕ) (i : Fin (n + 1)
     Tendsto (fun κ : ℕ => corr2SepInf β n i p₀ κ - ‖spinEigen β n i p₀ p₀‖ ^ 2) atTop (𝓝 0) := by
   have h := (corr2SepInf_tendsto_diag β n i hp₀).sub_const (‖spinEigen β n i p₀ p₀‖ ^ 2)
   simpa using h
+
+/-! ## 5. The rate
+
+§4 says the connected function goes to zero. This says how fast, and the constant is `1`:
+`|⟨σ₀σ_κ⟩_∞ − ‖B_{p₀p₀}‖²| ≤ rᵏ` with `r` the largest ratio off the top index. The `1` is not a
+convenience — it is §3's row sum, since the off-diagonal squared entries are part of a family
+summing to one. -/
+
+/-- **THE LARGEST RATIO OFF THE TOP INDEX IS BELOW ONE**, and it is attained, so this is a number
+and not an infimum. `Col n` has `2ⁿ⁺¹ ≥ 2` elements (`IsingTransfer2D.card_Col`), which is what
+makes the set it is a maximum over nonempty; a one-element index type would make the statement
+vacuous and the bound below trivial. -/
+theorem exists_subTop_ratio (β : ℝ) (n : ℕ) {p₀ : Col n}
+    (hp₀ : ∀ j, (transferSym_isHermitian β n).eigenvalues j
+        ≤ (transferSym_isHermitian β n).eigenvalues p₀) :
+    ∃ r : ℝ, 0 ≤ r ∧ r < 1 ∧ ∀ q ∈ univ.erase p₀,
+      |(transferSym_isHermitian β n).eigenvalues q
+        / (transferSym_isHermitian β n).eigenvalues p₀| ≤ r := by
+  classical
+  have hpos : ∀ a b : Col n, 0 < transferSym β n a b := transferSym_entries_pos β n
+  have hp₀pos : 0 < (transferSym_isHermitian β n).eigenvalues p₀ :=
+    PerronGap.eigenvalue_max_pos _ hpos hp₀
+  obtain ⟨q₁, hq₁⟩ := exists_ne p₀
+  have hne : (univ.erase p₀).Nonempty := ⟨q₁, Finset.mem_erase.mpr ⟨hq₁, mem_univ q₁⟩⟩
+  obtain ⟨qm, hqm, hmax⟩ := Finset.exists_max_image (univ.erase p₀)
+    (fun q => |(transferSym_isHermitian β n).eigenvalues q
+      / (transferSym_isHermitian β n).eigenvalues p₀|) hne
+  have hlt : ∀ q ∈ univ.erase p₀,
+      |(transferSym_isHermitian β n).eigenvalues q
+        / (transferSym_isHermitian β n).eigenvalues p₀| < 1 := by
+    intro q hq
+    have hqne : q ≠ p₀ := (Finset.mem_erase.mp hq).1
+    have hvne : (transferSym_isHermitian β n).eigenvalues q
+        ≠ (transferSym_isHermitian β n).eigenvalues p₀ := fun h =>
+      hqne (TransferPowerSum.index_eq_of_eigenvalues_eq_top _ hpos hp₀ h)
+    rw [abs_div, abs_of_pos hp₀pos, div_lt_one hp₀pos]
+    exact PerronGap.abs_eigenvalues_lt_of_ne _ hpos hp₀ hvne
+  exact ⟨_, abs_nonneg _, hlt qm hqm, fun q hq => hmax q hq⟩
+
+/-- **EXPONENTIAL CLUSTERING FOR THE STRIP OF FIXED WIDTH.** The connected two-point function of
+the infinite strip is bounded by `rᵏ`, with `r < 1` the largest eigenvalue ratio off the top index.
+
+**Read what this is about.** The strip has a FIXED width `n` and the limit taken to reach
+`corr2SepInf` was in the length. `r` depends on `n` — it is built from that width's eigenvalues —
+and **nothing here says it stays below one as the width grows**, which is `WALLS` §W4 §6 item 3's
+open sentence and is untouched. What this is, is exponential clustering for one strip. -/
+theorem corr2SepInf_connected_le (β : ℝ) (n : ℕ) (i : Fin (n + 1)) {p₀ : Col n}
+    (hp₀ : ∀ j, (transferSym_isHermitian β n).eigenvalues j
+        ≤ (transferSym_isHermitian β n).eigenvalues p₀) :
+    ∃ r : ℝ, 0 ≤ r ∧ r < 1 ∧ ∀ κ : ℕ,
+      |corr2SepInf β n i p₀ κ - ‖spinEigen β n i p₀ p₀‖ ^ 2| ≤ r ^ κ := by
+  classical
+  have hpos : ∀ a b : Col n, 0 < transferSym β n a b := transferSym_entries_pos β n
+  have hp₀pos : 0 < (transferSym_isHermitian β n).eigenvalues p₀ :=
+    PerronGap.eigenvalue_max_pos _ hpos hp₀
+  obtain ⟨r, hr0, hr1, hrle⟩ := exists_subTop_ratio β n hp₀
+  refine ⟨r, hr0, hr1, fun κ => ?_⟩
+  rw [corr2SepInf_eq_diag_add β n i hp₀pos κ, add_sub_cancel_left]
+  calc |∑ q ∈ univ.erase p₀, ‖spinEigen β n i p₀ q‖ ^ 2
+          * ((transferSym_isHermitian β n).eigenvalues q
+              / (transferSym_isHermitian β n).eigenvalues p₀) ^ κ|
+      ≤ ∑ q ∈ univ.erase p₀, |‖spinEigen β n i p₀ q‖ ^ 2
+          * ((transferSym_isHermitian β n).eigenvalues q
+              / (transferSym_isHermitian β n).eigenvalues p₀) ^ κ| :=
+        Finset.abs_sum_le_sum_abs _ _
+    _ ≤ ∑ q ∈ univ.erase p₀, ‖spinEigen β n i p₀ q‖ ^ 2 * r ^ κ := by
+        refine Finset.sum_le_sum fun q hq => ?_
+        rw [abs_mul, abs_of_nonneg (sq_nonneg _), abs_pow]
+        exact mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (abs_nonneg _) (hrle q hq) κ)
+          (sq_nonneg _)
+    _ = (∑ q ∈ univ.erase p₀, ‖spinEigen β n i p₀ q‖ ^ 2) * r ^ κ := (Finset.sum_mul _ _ _).symm
+    _ ≤ (∑ q, ‖spinEigen β n i p₀ q‖ ^ 2) * r ^ κ := by
+        refine mul_le_mul_of_nonneg_right ?_ (pow_nonneg hr0 κ)
+        exact Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _)
+          fun q _ _ => sq_nonneg _
+    _ = r ^ κ := by rw [sum_sq_spinEigen_row, one_mul]
 
 end IsingTwoPointLimit
