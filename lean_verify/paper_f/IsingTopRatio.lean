@@ -195,7 +195,18 @@ giving `subTopRatio 0 n = 0` at every width and `UniformSubTopRatio 0` with `δ 
 sketch and not a theorem**: none of it is proved below, the eigenvalue list of a rank-one matrix is
 not in this estate, and the word "should" is doing real work. It is written here because it names
 the next unit and because a reader is entitled to know whether the target is known to be
-satisfiable. It is not — not even at infinite temperature. -/
+satisfiable. It is not — not even at infinite temperature.
+
+**⚠ SUPERSEDED THE SAME DAY, AND BY THE UNIT THIS PARAGRAPH NAMED** (`ERRATUM 94`: the paragraph
+above is kept as written). **`IsingTopRatioZero.uniformSubTopRatio_zero` proves
+`UniformSubTopRatio 0`**, with `δ = 1`, so the target IS satisfiable. The sketch above is the proof
+in outline and the step it called missing was supplied rather than assumed:
+`eigenvalues_sq_eq_of_mul_self` — a Hermitian `A` with `A * A = c • A` has every eigenvalue
+satisfying `λ² = c·λ` — which needs no eigenvalue list for a rank-one matrix and no rank at all,
+only the eigenvector basis used twice. **What does NOT change**: the wall does not move, nothing
+here or there says anything about `β ≠ 0`, and `β = 0` is the degenerate case where the matrix has
+rank one and non-interacting spins do not correlate. Read the other way it is a filter on
+strategies — **an argument that would also work at `β = 0` is not yet doing the work.** -/
 
 /-- **AND THIS IS WHAT IT WOULD BUY**, which is why the `def` above is the right statement of the
 item rather than a name attached to nothing: one exponential rate, valid at every width at once. -/
