@@ -57,11 +57,17 @@ noncomputable section
 
 section MatrixProd
 
+variable (R : Type*) [CommSemiring R]
 variable (n : Type*) [Fintype n] [DecidableEq n]
-variable (A B : Type*) [Semiring A] [Semiring B] [Algebra ℂ A] [Algebra ℂ B]
+variable (A B : Type*) [Semiring A] [Semiring B] [Algebra R A] [Algebra R B]
 
-/-- **MATRICES OVER A PRODUCT ARE A PRODUCT OF MATRICES.** Not in Mathlib; entrywise. -/
-def matrixProd : Matrix n n (A × B) ≃ₐ[ℂ] Matrix n n A × Matrix n n B where
+/-- **MATRICES OVER A PRODUCT ARE A PRODUCT OF MATRICES.** Not in Mathlib; entrywise.
+
+The base ring is arbitrary. It was `ℂ` until `CliffordModelResidues` wanted the same fact over `ℝ`
+to put `Cl(0,7;ℝ)` in the textbook's `M₈(ℝ) × M₈(ℝ)` shape rather than `M₂(M₄(ℝ) × M₄(ℝ))`; **no
+step of the proof ever used `ℂ`**, so the generalisation is the variable line. The `ℂ` use below is
+unchanged and is the instantiation (`ERRATUM 201`). -/
+def matrixProd : Matrix n n (A × B) ≃ₐ[R] Matrix n n A × Matrix n n B where
   toFun M := (M.map Prod.fst, M.map Prod.snd)
   invFun p := Matrix.of fun i j => (p.1 i j, p.2 i j)
   left_inv M := by ext i j <;> simp
@@ -135,7 +141,7 @@ theorem cliffordRfOdd (k : ℕ) :
       refine (CliffordAlgebra.equivOfIsometry (splitIso (2 * k + 1))).trans ?_
       refine (CliffordPeriodicity.periodicityEquiv (Rf (2 * k + 1))).trans ?_
       refine (AlgEquiv.mapMatrix g).trans ?_
-      refine (matrixProd (Fin 2) _ _).trans ?_
+      refine (matrixProd ℂ (Fin 2) _ _).trans ?_
       exact AlgEquiv.prodCongr
         ((Matrix.compAlgEquiv (Fin 2) (Fin (2 ^ k)) ℂ ℂ).trans
           (Matrix.reindexAlgEquiv ℂ ℂ
