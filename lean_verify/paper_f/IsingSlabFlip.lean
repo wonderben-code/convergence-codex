@@ -115,6 +115,13 @@ theorem mul_flipMatG_apply (A : Matrix (Cross V) (Cross V) ℝ) (σ ρ : Cross V
   rw [Finset.sum_congr rfl fun τ _ => h τ,
     Finset.sum_ite_eq' univ (flipCross ρ) fun τ => A σ τ, if_pos (mem_univ _)]
 
+/-- **THE FLIP MATRIX IS ITS OWN INVERSE**, because the flip is an involution. -/
+theorem flipMatG_mul_flipMatG (V : Type*) [Fintype V] [DecidableEq V] :
+    flipMatG V * flipMatG V = 1 := by
+  ext σ ρ
+  rw [flipMatG_mul_apply, flipMatG, Matrix.of_apply, flipCross_involutive, Matrix.one_apply]
+  exact if_congr eq_comm rfl rfl
+
 /-! ## 3. The two identities the decay argument consumes -/
 
 /-- **THE FLIP COMMUTES WITH THE TRANSFER MATRIX.** -/
