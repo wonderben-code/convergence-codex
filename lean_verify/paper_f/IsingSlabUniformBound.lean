@@ -154,7 +154,7 @@ theorem tanh_pow_le_expectG {M : ℕ} (hM : 1 ≤ M) {β h : ℝ} (hβ : 0 ≤ �
     {c : K → ℝ} (hc : ∀ k, 0 ≤ c k) (B : K → Finset V) (A : Finset V) :
     tanh (β * h) ^ A.card
       ≤ expectG β (fun σ => intraOf c B σ + fieldE h σ) M (fun σ => ∏ v ∈ A, spin (σ v)) := by
-  have h₁ := tanh_pow_le_expect (sset M B) (coup M β h c) (β * h) (fieldCoup M V K β h)
+  have h₁ := tanh_pow_le_expect (sset M B) (coup M β h c) (fieldCoup M V K β h)
     (isUniformField_fieldCoup M B β h) (fieldCoup_nonneg hβ hh) (fieldCoup_le_coup hβ hc)
     ((({(0 : Fin (M + 1))} : Finset (Fin (M + 1))) ×ˢ A))
   rw [num_eq_slab hM β h c B A, part_eq_slab hM β h c B, card_layerZero] at h₁
