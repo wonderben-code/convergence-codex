@@ -225,6 +225,31 @@ theorem zero_le_integral_of_interior_mem [NeZero n] (β h : ℝ) (hβ : 0 ≤ β
   have h₁ := prod_boxField_le_integral β h hβ hh A
   rwa [Finset.prod_eq_zero hp₁ (by rw [boxField, if_neg hint, Real.tanh_zero])] at h₁
 
+/-! ## 5. ADDENDUM 23 AUGUST 2026 — the general bridge instantiated, because the estate already had
+the special case and this file's ancestor said it did not -/
+
+/-- **THE GENERAL BRIDGE, INSTANTIATED AT THE BOX.** `FiniteGibbsSum.integral_gibbs_count` applied
+to `isingHB` reproduces `BoundaryFieldRatio.integral_isingMeasure`, which has been in this estate
+since **10 August 2026** (`4101026`).
+
+This restatement is deliberate and it is not padding. `FiniteGibbsSum`'s header claimed that the
+identity between an integral against `FiniteGibbs.gibbs` and a ratio of Boltzmann sums was said
+here for the first time on 23 August. **That claim was false** (`ERRATUM 252`), and the cheapest
+honest repair is a proof that the general theorem subsumes the one that was already there —
+`ERRATUM 201`'s rule that a generalisation must be instantiated, applied to the generalisation
+whose novelty was overstated.
+
+What remains genuinely new in `FiniteGibbsSum` is the *generality*: `integral_isingMeasure` is
+about `isingHB` on `Config n` and nothing else, so it does not cover `IsingBulkFieldBound`'s
+`isingHBulk`, which is where the general form is actually load-bearing. -/
+theorem integral_isingMeasure_of_gibbs_count (n : ℕ) (h β : ℝ) (f : Config n → ℝ) :
+    ∫ σ, f σ ∂(isingMeasure n h β)
+      = (∑ σ : Config n, f σ * Real.exp (-β * isingHB n h σ))
+          / (∑ σ : Config n, Real.exp (-β * isingHB n h σ)) := by
+  rw [isingMeasure, FiniteGibbsSum.integral_gibbs_count, FiniteGibbsSum.partition]
+  congr 1
+  exact Finset.sum_congr rfl fun σ _ => mul_comm _ _
+
 end
 
 end IsingBoxInteraction

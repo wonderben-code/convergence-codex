@@ -31,6 +31,32 @@
   Ising, nothing about boundaries and nothing about magnetisation; it makes those statements
   comparable, which is all a bridge should do.
 
+  ADDENDUM 23 AUGUST 2026 — THE SENTENCE ABOVE BEGINNING "Those are the same number and this estate
+  had never said so" IS FALSE, AND IT IS KEPT ABOVE SO THE CORRECTION IS LEGIBLE (`ERRATUM 94`).
+
+  WHAT WAS ALREADY THERE. `BoundaryFieldRatio.integral_isingMeasure`, added **10 August 2026**
+  (`4101026`), states `∫ σ, f σ ∂(isingMeasure n h β) = (∑_σ f σ·e^{−β·isingHB}) / (∑_σ e^{−β·isingHB})`.
+  `isingMeasure n h β` is *definitionally* `FiniteGibbs.gibbs β (isingHB n h) Measure.count`, so that
+  theorem identifies an integral against `FiniteGibbs.gibbs` with the corresponding ratio of Boltzmann
+  sums — the exact words of the trigger quoted above. **The trigger was already satisfied on the day
+  it was written.** `BoundaryFieldRatio`'s own header says so in as many words: *"It is now an
+  identity with a proof rather than a gap."*
+
+  WHAT IS STILL TRUE, AND IT IS NOT NOTHING. `integral_isingMeasure` is about ONE Hamiltonian on ONE
+  configuration space. `integral_gibbs_count` is about an arbitrary `H : Ω → ℝ` on an arbitrary
+  nonempty finite `Ω`, and that generality is load-bearing exactly once: `IsingBulkFieldBound` uses it
+  for `isingHBulk`, a DIFFERENT Hamiltonian, which the 10 August theorem does not cover and cannot be
+  made to cover. `partition_pos`, `Z_toReal` and the two comparison forms are also new. So this file
+  is a genuine generalisation whose novelty claim was overstated — not a duplicate, and not the first
+  of its kind either.
+
+  AND ONE OF THE TWO CALL SITES DID NOT NEED IT. `IsingBoxInteraction` applies the general bridge at
+  `isingHB`, where the special case would have served. That is recorded rather than tidied away,
+  because it is the measure of how much of this file's motivation survives: half of it.
+
+  HOW IT WAS MISSED. The search was conducted inside `FiniteGibbs.lean`, by shape, looking for a
+  general lemma; it was never a grep of the whole estate for the specific instance. `ERRATUM 252`.
+
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 
