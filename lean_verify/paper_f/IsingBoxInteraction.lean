@@ -29,6 +29,18 @@
   route cannot reach a bound proportional to the AREA of the box. Making that failure a theorem
   needs the boundary's cardinality, which is not here.
 
+  ADDENDUM 2026-08-23, SAME DAY — **THE OBSERVABLE NO LONGER HAS TO BE ONE SITE**
+  (`PROOF_STRATEGY` section 7 rule 3: a fence removed is a real theorem even when no tag moves).
+  **`prod_boxField_le_integral`** gives `⟨∏_{p ∈ A} σ_p⟩ ≥ ∏_{p ∈ A} tanh (boxField p)` for an
+  arbitrary set of sites, and `boxField_le_integral` is now its `|A| = 1` instance
+  (`ERRATUM 201`).
+
+  **AND THE FENCE REMOVAL BUYS THE ROUTE NOTHING INSIDE THE BOX**, which is worth stating rather
+  than leaving to be inferred: **`zero_le_integral_of_interior_mem`** — one interior site anywhere
+  in `A` and the whole product bound collapses to `0`, because that site's factor is `tanh 0`. So
+  the multi-site statement has exactly the same ceiling as the single-site one, and
+  `IsingBoundaryRouteCeiling`'s conclusion is untouched by the generalisation.
+
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 
@@ -160,23 +172,33 @@ theorem part_eq_partition (n : ℕ) (β h : ℝ) :
   rw [part, FiniteGibbsSum.partition]
   exact Finset.sum_congr rfl fun σ _ => by rw [energy_eq n β h σ]
 
-theorem num_eq_sum (n : ℕ) (β h : ℝ) (p₀ : Site n) :
-    num (boxSet n) (boxCoup n β h) {p₀}
-      = ∑ σ : Config n, exp (-β * isingHB n h σ) * IsingTransfer2D.spin (σ p₀) := by
+theorem num_eq_sum (n : ℕ) (β h : ℝ) (A : Finset (Site n)) :
+    num (boxSet n) (boxCoup n β h) A
+      = ∑ σ : Config n, exp (-β * isingHB n h σ) * ∏ p ∈ A, IsingTransfer2D.spin (σ p) := by
   rw [num]
   refine Finset.sum_congr rfl fun σ _ => ?_
-  rw [Finset.prod_singleton, energy_eq n β h σ, mul_comm]
+  rw [energy_eq n β h σ, mul_comm]
 
-/-- **THE MAGNETISATION AT A SITE OF THE BOUNDARY-FIELD BOX IS AT LEAST `tanh` OF THE LOCAL FIELD**,
-as an integral against `isingMeasure` itself. -/
+/-- **EVERY CORRELATION OF THE BOUNDARY-FIELD BOX IS AT LEAST THE PRODUCT OF THE LOCAL `tanh`s**, as
+an integral against `isingMeasure` itself. The observable is an arbitrary set of sites; the
+`|A| = 1` case is the magnetisation. -/
+theorem prod_boxField_le_integral [NeZero n] (β h : ℝ) (hβ : 0 ≤ β) (hh : 0 ≤ h)
+    (A : Finset (Site n)) :
+    (∏ p ∈ A, tanh (boxField n β h p))
+      ≤ ∫ σ, ∏ p ∈ A, IsingTransfer2D.spin (σ p) ∂(isingMeasure n h β) := by
+  have hb := prod_tanh_le_expect (boxSet n) (boxCoup n β h) (boxField n β h) (boxFieldCoup n β h)
+    (isSiteField_boxField n β h) (boxFieldCoup_nonneg hβ hh) (boxFieldCoup_le_boxCoup hβ) A
+  rw [num_eq_sum n β h A, part_eq_partition n β h] at hb
+  rw [isingMeasure]
+  exact FiniteGibbsSum.le_integral_gibbs_count β (isingHB n h) _ hb
+
+/-- The magnetisation case. -/
 theorem boxField_le_integral [NeZero n] (β h : ℝ) (hβ : 0 ≤ β) (hh : 0 ≤ h) (p₀ : Site n) :
     tanh (boxField n β h p₀)
       ≤ ∫ σ, IsingTransfer2D.spin (σ p₀) ∂(isingMeasure n h β) := by
-  have hb := prod_tanh_le_expect (boxSet n) (boxCoup n β h) (boxField n β h) (boxFieldCoup n β h)
-    (isSiteField_boxField n β h) (boxFieldCoup_nonneg hβ hh) (boxFieldCoup_le_boxCoup hβ) {p₀}
-  rw [Finset.prod_singleton, num_eq_sum n β h p₀, part_eq_partition n β h] at hb
-  rw [isingMeasure]
-  exact FiniteGibbsSum.le_integral_gibbs_count β (isingHB n h) _ hb
+  have h₁ := prod_boxField_le_integral β h hβ hh {p₀}
+  rw [Finset.prod_singleton] at h₁
+  simpa using h₁
 
 /-- On the boundary the bound is `tanh (β·h)`. -/
 theorem tanh_le_integral_boundary [NeZero n] (β h : ℝ) (hβ : 0 ≤ β) (hh : 0 ≤ h) {p₀ : Site n}
@@ -193,6 +215,15 @@ theorem zero_le_integral_interior [NeZero n] (β h : ℝ) (hβ : 0 ≤ β) (hh :
     (0 : ℝ) ≤ ∫ σ, IsingTransfer2D.spin (σ p₀) ∂(isingMeasure n h β) := by
   have h₁ := boxField_le_integral β h hβ hh p₀
   rwa [boxField, if_neg hp₀, Real.tanh_zero] at h₁
+
+/-- **AND THE SAME COLLAPSE HAPPENS FOR EVERY MULTI-SITE CORRELATION**: one interior site in `A` and
+the whole product is `0`. So the fence removed here does not buy the route anything at all inside
+the box, which is worth stating rather than leaving to be inferred. -/
+theorem zero_le_integral_of_interior_mem [NeZero n] (β h : ℝ) (hβ : 0 ≤ β) (hh : 0 ≤ h)
+    {A : Finset (Site n)} {p₁ : Site n} (hp₁ : p₁ ∈ A) (hint : ¬ isBoundary p₁) :
+    (0 : ℝ) ≤ ∫ σ, ∏ p ∈ A, IsingTransfer2D.spin (σ p) ∂(isingMeasure n h β) := by
+  have h₁ := prod_boxField_le_integral β h hβ hh A
+  rwa [Finset.prod_eq_zero hp₁ (by rw [boxField, if_neg hint, Real.tanh_zero])] at h₁
 
 end
 

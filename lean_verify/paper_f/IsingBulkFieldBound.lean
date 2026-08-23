@@ -31,6 +31,18 @@
   nothing about symmetry breaking: the constant `tanh (β·h)` collapses to `0` as `h → 0`, which is
   the whole reason a bulk field is not a proof of spontaneous magnetisation.
 
+  ADDENDUM 2026-08-23, SAME DAY — **THE OBSERVABLE NO LONGER HAS TO BE ONE SITE**
+  (`PROOF_STRATEGY` section 7 rule 3). **`tanh_pow_le_integral_bulk`**:
+  `⟨∏_{p ∈ A} σ_p⟩ ≥ (tanh (β·h))^{|A|}` for an arbitrary set of sites, and
+  `tanh_le_integral_bulk` is now its `|A| = 1` instance (`ERRATUM 201`).
+
+  **AND HERE THE CONTRAST WITH THE BOUNDARY-FIELD TWIN SHARPENS RATHER THAN REPEATS.** There, one
+  interior site in `A` collapses the whole product to `0`
+  (`IsingBoxInteraction.zero_le_integral_of_interior_mem`). Here **no site can collapse it**,
+  because every site carries the field — so the bulk model has a non-trivial lower bound on every
+  correlation function, at every separation, and the boundary model has one only on subsets of `∂`.
+  The same one-word difference that produced the `O(n)`-against-`O(n²)` deficit produces this.
+
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 
@@ -138,22 +150,32 @@ theorem part_eq_partition_bulk (n : ℕ) (β h : ℝ) :
   rw [part, FiniteGibbsSum.partition]
   exact Finset.sum_congr rfl fun σ _ => by rw [energy_eq_bulk n β h σ]
 
-theorem num_eq_sum_bulk (n : ℕ) (β h : ℝ) (p₀ : Site n) :
-    num (boxSet n) (bulkCoup n β h) {p₀}
-      = ∑ σ : Config n, exp (-β * isingHBulk n h σ) * IsingTransfer2D.spin (σ p₀) := by
+theorem num_eq_sum_bulk (n : ℕ) (β h : ℝ) (A : Finset (Site n)) :
+    num (boxSet n) (bulkCoup n β h) A
+      = ∑ σ : Config n, exp (-β * isingHBulk n h σ) * ∏ p ∈ A, IsingTransfer2D.spin (σ p) := by
   rw [num]
   refine Finset.sum_congr rfl fun σ _ => ?_
-  rw [Finset.prod_singleton, energy_eq_bulk n β h σ, mul_comm]
+  rw [energy_eq_bulk n β h σ, mul_comm]
+
+/-- **EVERY CORRELATION OF THE BULK-FIELD BOX IS AT LEAST `(tanh (β·h))^{|A|}`** — and unlike the
+boundary-field twin, no site of `A` can collapse the product, because every site carries the
+field. -/
+theorem tanh_pow_le_integral_bulk (β h : ℝ) (hβ : 0 ≤ β) (hh : 0 ≤ h) (A : Finset (Site n)) :
+    tanh (β * h) ^ A.card
+      ≤ ∫ σ, ∏ p ∈ A, IsingTransfer2D.spin (σ p) ∂(bulkMeasure n h β) := by
+  have hb := tanh_pow_le_expect (boxSet n) (bulkCoup n β h) (bulkFieldCoup n β h)
+    (isUniformField_bulk n β h) (bulkFieldCoup_nonneg hβ hh) (bulkFieldCoup_le_bulkCoup hβ) A
+  rw [num_eq_sum_bulk n β h A, part_eq_partition_bulk n β h] at hb
+  rw [bulkMeasure]
+  exact FiniteGibbsSum.le_integral_gibbs_count β (isingHBulk n h) _ hb
 
 /-- **AT EVERY SITE — BOUNDARY OR INTERIOR — THE MAGNETISATION IS AT LEAST `tanh (β·h)`.** This is
 the clause the boundary-field model cannot have: there, the interior bound is `tanh 0 = 0`. -/
 theorem tanh_le_integral_bulk (β h : ℝ) (hβ : 0 ≤ β) (hh : 0 ≤ h) (p₀ : Site n) :
     tanh (β * h) ≤ ∫ σ, IsingTransfer2D.spin (σ p₀) ∂(bulkMeasure n h β) := by
-  have hb := tanh_le_expect (boxSet n) (bulkCoup n β h) (bulkFieldCoup n β h)
-    (isUniformField_bulk n β h) (bulkFieldCoup_nonneg hβ hh) (bulkFieldCoup_le_bulkCoup hβ) p₀
-  rw [num_eq_sum_bulk n β h p₀, part_eq_partition_bulk n β h] at hb
-  rw [bulkMeasure]
-  exact FiniteGibbsSum.le_integral_gibbs_count β (isingHBulk n h) _ hb
+  have h₁ := tanh_pow_le_integral_bulk β h hβ hh {p₀}
+  rw [Finset.card_singleton, pow_one] at h₁
+  simpa using h₁
 
 /-! ## 5. `MagnetisationBound`'s inequality, for this model -/
 
