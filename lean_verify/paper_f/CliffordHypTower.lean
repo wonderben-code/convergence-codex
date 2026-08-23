@@ -48,7 +48,7 @@ open CliffordHyperbolicStep QuadraticMap
 
 noncomputable section
 
-universe u
+universe u v
 
 /-! ## 1. The tower of spaces -/
 
@@ -162,7 +162,7 @@ def cliffordEquivHypTower (Q : QuadraticForm ℝ V) : ∀ k,
 **What this is.** A form whose indices are both `k` larger than `Q`'s has Clifford algebra
 `M_{2^k}(Cl Q)` — so the whole diagonal `p − q` collapses onto its smallest point, and the
 classification of a diagonal reduces to the classification of one form on it. -/
-theorem clifford_reduce_k {W : Type u} [AddCommGroup W] [Module ℝ W] [FiniteDimensional ℝ W]
+theorem clifford_reduce_k {W : Type v} [AddCommGroup W] [Module ℝ W] [FiniteDimensional ℝ W]
     {Q : QuadraticForm ℝ V} {Q' : QuadraticForm ℝ W}
     (hQ : (QuadraticMap.associated (R := ℝ) Q).SeparatingLeft)
     (hQ' : (QuadraticMap.associated (R := ℝ) Q').SeparatingLeft) (k : ℕ)
@@ -176,7 +176,7 @@ theorem clifford_reduce_k {W : Type u} [AddCommGroup W] [Module ℝ W] [FiniteDi
 
 /-- **AND THE NEGATIVE INDEX FOLLOWS**, as at one step: nondegeneracy and the dimension force it,
 so the `k`-fold move is `(+k, +k)` and diagonal-preserving. -/
-theorem sigNeg_of_reduce {W : Type u} [AddCommGroup W] [Module ℝ W] [FiniteDimensional ℝ W]
+theorem sigNeg_of_reduce {W : Type v} [AddCommGroup W] [Module ℝ W] [FiniteDimensional ℝ W]
     {Q : QuadraticForm ℝ V} {Q' : QuadraticForm ℝ W}
     (hQ : (QuadraticMap.associated (R := ℝ) Q).SeparatingLeft)
     (hQ' : (QuadraticMap.associated (R := ℝ) Q').SeparatingLeft) (k : ℕ)
@@ -191,7 +191,7 @@ theorem sigNeg_of_reduce {W : Type u} [AddCommGroup W] [Module ℝ W] [FiniteDim
 
 /-- `CliffordHyperbolicStep.clifford_step_hyp` recovered at `k = 1` (`ERRATUM 201`), up to the
 `2 ^ 1 = 2` the statement there writes as `2`. -/
-theorem clifford_reduce_one {W : Type u} [AddCommGroup W] [Module ℝ W] [FiniteDimensional ℝ W]
+theorem clifford_reduce_one {W : Type v} [AddCommGroup W] [Module ℝ W] [FiniteDimensional ℝ W]
     {Q : QuadraticForm ℝ V} {Q' : QuadraticForm ℝ W}
     (hQ : (QuadraticMap.associated (R := ℝ) Q).SeparatingLeft)
     (hQ' : (QuadraticMap.associated (R := ℝ) Q').SeparatingLeft)
