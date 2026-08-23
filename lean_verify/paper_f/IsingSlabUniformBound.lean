@@ -33,6 +33,23 @@
   the numerator and the denominator, and both go through `energy_eq`, which is where `1 ≤ M` enters
   and the only place it does.
 
+  ADDENDUM 2026-08-23, SAME DAY — **THE BOUND IS NOT ONLY ABOUT THE MAGNETISATION.**
+  `IsingIndependentSpins` was generalised from a one-site observable to an arbitrary set the same
+  day, so `tanh_pow_le_expectG_slab` now gives `⟨∏_{v ∈ A} σ_v⟩ ≥ (tanh (β·h))^{|A|}` for any set
+  `A` of sites in one cross-section — **a lower bound on the two-point function at `|A| = 2`, on the
+  four-point function at `|A| = 4`, and so on, depending on `|A|` and the field and on nothing
+  else**: not on the separation of the sites, and not on the size of the slab.
+  `tanh_le_expectG_slab` is the `|A| = 1` instance. `prod_layerZero` and `card_layerZero` are the
+  only new plumbing: the observable set inside the space-time site set is `{0} ×ˢ A`, whose product
+  of spins is `A`'s product on layer `0` and whose cardinality is `A`'s.
+
+  **THIS SAYS NOTHING ABOUT DECAY**, and the direction is worth stating because it is the opposite
+  of what the estate's other two-point work is about. A LOWER bound that does not decrease with
+  separation is not in tension with exponential decay of the CONNECTED function: at `h > 0` the
+  connected two-point function is `⟨σ_uσ_v⟩ − ⟨σ_u⟩⟨σ_v⟩`, and the bound here is on the unconnected
+  one, whose limit at large separation is the square of the magnetisation and not zero. Nothing here
+  bounds a connected correlation in either direction.
+
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 
@@ -88,18 +105,32 @@ theorem isUniformField_fieldCoup (M : ℕ) (B : K → Finset V) (β h : ℝ) :
 
 /-! ## 2. The two transports -/
 
-theorem num_eq_slab {M : ℕ} (hM : 1 ≤ M) (β h : ℝ) (c : K → ℝ) (B : K → Finset V) (v₀ : V) :
-    num (sset M B) (coup M β h c) {((0 : Fin (M + 1)), v₀)}
-      = ∑ s : Fin (M + 1) → Cross V, spin (s 0 v₀)
+omit [Fintype V] [DecidableEq V] [Fintype K] in
+/-- The observable set on layer `0`: `{0} ×ˢ A` inside the space-time site set, whose cardinality is
+`A`'s and whose product of spins is `A`'s product on layer `0`. -/
+theorem prod_layerZero (M : ℕ) (A : Finset V) (τ : (Fin (M + 1) × V) → Bool) :
+    ∏ w ∈ ({(0 : Fin (M + 1))} : Finset (Fin (M + 1))) ×ˢ A, spin (τ w)
+      = ∏ v ∈ A, spin (τ ((0 : Fin (M + 1)), v)) := by
+  rw [Finset.prod_product, Finset.prod_singleton]
+
+omit [Fintype V] [DecidableEq V] [Fintype K] in
+theorem card_layerZero (M : ℕ) (A : Finset V) :
+    ((({(0 : Fin (M + 1))} : Finset (Fin (M + 1))) ×ˢ A).card) = A.card := by
+  rw [Finset.card_product, Finset.card_singleton, one_mul]
+
+theorem num_eq_slab {M : ℕ} (hM : 1 ≤ M) (β h : ℝ) (c : K → ℝ) (B : K → Finset V)
+    (A : Finset V) :
+    num (sset M B) (coup M β h c) (({(0 : Fin (M + 1))} : Finset (Fin (M + 1))) ×ˢ A)
+      = ∑ s : Fin (M + 1) → Cross V, (∏ v ∈ A, spin (s 0 v))
           * exp (β * energyG (fun σ => intraOf c B σ + fieldE h σ) M s) := by
   refine (Fintype.sum_equiv (pathEquiv M V)
-    (fun s : Fin (M + 1) → Cross V => spin (s 0 v₀)
+    (fun s : Fin (M + 1) → Cross V => (∏ v ∈ A, spin (s 0 v))
       * exp (β * energyG (fun σ => intraOf c B σ + fieldE h σ) M s))
     (fun τ : (Fin (M + 1) × V) → Bool =>
-      (∏ w ∈ ({((0 : Fin (M + 1)), v₀)} : Finset (Fin (M + 1) × V)), spin (τ w))
+      (∏ w ∈ ({(0 : Fin (M + 1))} : Finset (Fin (M + 1))) ×ˢ A, spin (τ w))
         * exp (∑ i : Idx M V K, coup M β h c i * ∏ w ∈ sset M B i, spin (τ w)))
     fun s => ?_).symm
-  simp only [Finset.prod_singleton, pathEquiv_apply]
+  simp only [prod_layerZero, pathEquiv_apply]
   rw [energy_eq hM β h c B s]
 
 theorem part_eq_slab {M : ℕ} (hM : 1 ≤ M) (β h : ℝ) (c : K → ℝ) (B : K → Finset V) :
@@ -119,15 +150,24 @@ theorem part_eq_slab {M : ℕ} (hM : 1 ≤ M) (β h : ℝ) (c : K → ℝ) (B : 
 /-- **`tanh (β·h)` IS A LOWER BOUND ON THE SLAB MAGNETISATION, AND IT DOES NOT KNOW HOW BIG THE SLAB
 IS.** Every hypothesis is `≤`: the bound is `0` at `β·h = 0`, which is exactly right, since the
 magnetisation is `0` there. -/
+theorem tanh_pow_le_expectG {M : ℕ} (hM : 1 ≤ M) {β h : ℝ} (hβ : 0 ≤ β) (hh : 0 ≤ h)
+    {c : K → ℝ} (hc : ∀ k, 0 ≤ c k) (B : K → Finset V) (A : Finset V) :
+    tanh (β * h) ^ A.card
+      ≤ expectG β (fun σ => intraOf c B σ + fieldE h σ) M (fun σ => ∏ v ∈ A, spin (σ v)) := by
+  have h₁ := tanh_pow_le_expect (sset M B) (coup M β h c) (β * h) (fieldCoup M V K β h)
+    (isUniformField_fieldCoup M B β h) (fieldCoup_nonneg hβ hh) (fieldCoup_le_coup hβ hc)
+    ((({(0 : Fin (M + 1))} : Finset (Fin (M + 1))) ×ˢ A))
+  rw [num_eq_slab hM β h c B A, part_eq_slab hM β h c B, card_layerZero] at h₁
+  rw [expectG]
+  exact h₁
+
+/-- The magnetisation case, `|A| = 1`. -/
 theorem tanh_le_expectG {M : ℕ} (hM : 1 ≤ M) {β h : ℝ} (hβ : 0 ≤ β) (hh : 0 ≤ h)
     {c : K → ℝ} (hc : ∀ k, 0 ≤ c k) (B : K → Finset V) (v₀ : V) :
     tanh (β * h) ≤ expectG β (fun σ => intraOf c B σ + fieldE h σ) M (fun σ => spin (σ v₀)) := by
-  have h₁ := tanh_le_expect (sset M B) (coup M β h c) (β * h) (fieldCoup M V K β h)
-    (isUniformField_fieldCoup M B β h) (fieldCoup_nonneg hβ hh) (fieldCoup_le_coup hβ hc)
-    ((0 : Fin (M + 1)), v₀)
-  rw [num_eq_slab hM β h c B v₀, part_eq_slab hM β h c B] at h₁
-  rw [expectG]
-  exact h₁
+  have h₁ := tanh_pow_le_expectG hM hβ hh hc B {v₀}
+  rw [Finset.card_singleton, pow_one] at h₁
+  simpa using h₁
 
 /-! ## 4. The bound, for this estate's own slab -/
 
@@ -145,6 +185,23 @@ theorem tanh_le_expectG_slab {M : ℕ} (hM : 1 ≤ M) {β h Ja Jb : ℝ} (hβ : 
     rw [slabIntraAniso_eq_intraOf Ja Jb σ]
   rw [hE]
   exact tanh_le_expectG hM hβ hh (bondCoup_nonneg hJa hJb) (bondSet a b) v₀
+
+/-- **AND THE SAME FOR EVERY CORRELATION FUNCTION OF THE SLAB, NOT ONLY THE MAGNETISATION.** For a
+set `A` of sites in one cross-section, `⟨∏_{v ∈ A} σ_v⟩ ≥ (tanh (β·h))^{|A|}` — a lower bound on the
+two-point function at `|A| = 2`, on the four-point function at `|A| = 4`, and so on. **The bound
+depends on `|A|` and on the field, and on nothing else**: not on how far apart the sites are, and
+not on how large the slab is. -/
+theorem tanh_pow_le_expectG_slab {M : ℕ} (hM : 1 ≤ M) {β h Ja Jb : ℝ} (hβ : 0 ≤ β) (hh : 0 ≤ h)
+    (hJa : 0 ≤ Ja) (hJb : 0 ≤ Jb) (A : Finset (Fin (a + 1) × Fin (b + 1))) :
+    tanh (β * h) ^ A.card
+      ≤ expectG β (fun σ => slabIntraAniso Ja Jb σ + fieldE h σ) M
+          (fun σ => ∏ v ∈ A, spin (σ v)) := by
+  have hE : (fun σ : Cross (Fin (a + 1) × Fin (b + 1)) => slabIntraAniso Ja Jb σ + fieldE h σ)
+      = fun σ => intraOf (bondCoup a b Ja Jb) (bondSet a b) σ + fieldE h σ := by
+    funext σ
+    rw [slabIntraAniso_eq_intraOf Ja Jb σ]
+  rw [hE]
+  exact tanh_pow_le_expectG hM hβ hh (bondCoup_nonneg hJa hJb) (bondSet a b) A
 
 /-- The isotropic case, the slab the rest of the estate uses. -/
 theorem tanh_le_expectG_slab_iso {M : ℕ} (hM : 1 ≤ M) {β h : ℝ} (hβ : 0 ≤ β) (hh : 0 ≤ h)
