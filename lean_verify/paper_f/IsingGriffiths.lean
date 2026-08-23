@@ -34,6 +34,24 @@
   cross-section, and the field, each with coupling `β` or `β h`. **Neither step is attempted here
   and neither has been probed** (`ERRATUM 250`); naming them is not the same as costing them.
 
+  ADDENDUM 2026-08-23 — BOTH PARAGRAPHS ABOVE ARE NOW OUT OF DATE, AND ARE KEPT (`ERRATUM 94`).
+
+  * *"It is not yet a statement about the estate's slab … Neither step is attempted here."* Both
+    steps were done the same day. `IsingSlabGriffiths.energy_eq` is (i) and (ii) together, and
+    `IsingSlabFerro.slabIntraAniso_eq_intraOf` identifies the estate's own slab interaction as the
+    `intraOf` parameter. The sentence was true when written and is recorded here, where the claim
+    was made, and not only where the news was announced (`ERRATUM 226`).
+  * *"`griffiths_nonneg` … `0 ≤ …`"*, and the whole file's `≥ 0` reading. **The same expansion gives
+    `> 0`**, and it is now proved here: see `boltzmann_expansion`, `sum_pow_spin_pos`,
+    `sum_prod_pow_spin_pos` and **`griffiths_pos`** below. The non-negativity theorems are unchanged
+    and are still the right statement when no term sits on the observable's own set.
+
+  WHAT THE STRICTNESS COST, STATED PLAINLY. Nothing new. The expansion that was a `have` inside
+  `griffiths_nonneg` is now the named `boltzmann_expansion`, instantiated by both the non-negative
+  and the positive theorem (`ERRATUM 201`); `sum_pow_spin_nonneg` computed `1 + (−1)^n` and threw
+  the value away, and `sum_pow_spin_pos` is the same line keeping it. **The parity set is still
+  never constructed**, in either direction.
+
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 
@@ -60,12 +78,27 @@ theorem sum_pow_spin_nonneg (n : ℕ) : 0 ≤ ∑ b : Bool, spin b ^ n := by
   · rw [he.neg_one_pow]; norm_num
   · rw [ho.neg_one_pow]; norm_num
 
+/-- **AND IT IS `2` WHEN `n` IS EVEN.** The same one line, read for its value instead of its sign:
+that is the entire difference between `≥ 0` and `> 0` in this file. -/
+theorem sum_pow_spin_pos {n : ℕ} (hn : Even n) : 0 < ∑ b : Bool, spin b ^ n := by
+  have h : ∑ b : Bool, spin b ^ n = 1 + (-1 : ℝ) ^ n := by
+    simp [spin]
+  rw [h, hn.neg_one_pow]
+  norm_num
+
 /-- **AND SO EVERY CONFIGURATION SUM OF A PRODUCT OF SPIN POWERS IS NON-NEGATIVE**, whatever the
 multiplicities. This is the step that replaces the parity bookkeeping. -/
 theorem sum_prod_pow_spin_nonneg (c : V → ℕ) :
     0 ≤ ∑ σ : V → Bool, ∏ v : V, spin (σ v) ^ c v := by
   rw [← Fintype.prod_sum fun (v : V) (b : Bool) => spin b ^ c v]
   exact Finset.prod_nonneg fun v _ => sum_pow_spin_nonneg (c v)
+
+/-- **AND STRICTLY POSITIVE WHEN EVERY MULTIPLICITY IS EVEN** — the value is `2 ^ card V`, but only
+its sign is needed and only its sign is taken. -/
+theorem sum_prod_pow_spin_pos {c : V → ℕ} (hc : ∀ v, Even (c v)) :
+    0 < ∑ σ : V → Bool, ∏ v : V, spin (σ v) ^ c v := by
+  rw [← Fintype.prod_sum fun (v : V) (b : Bool) => spin b ^ c v]
+  exact Finset.prod_pos fun v _ => sum_pow_spin_pos (hc v)
 
 /-! ## 2. Products of spins as products of powers -/
 
@@ -116,9 +149,68 @@ theorem sinh_nonneg {x : ℝ} (hx : 0 ≤ x) : 0 ≤ sinh x := by
   have h : exp (-x) ≤ exp x := Real.exp_le_exp.mpr (by linarith)
   linarith
 
+/-- And strictly positive on the strictly positive reals. `Real.sinh_pos_of_pos` lives in the same
+differentiation file `sinh_nonneg` avoided, so this is the same four lines with a strict inequality
+rather than a new import. -/
+theorem sinh_pos_of_pos {x : ℝ} (hx : 0 < x) : 0 < sinh x := by
+  rw [Real.sinh_eq]
+  have h : exp (-x) < exp x := Real.exp_lt_exp.mpr (by linarith)
+  linarith
+
 /-! ## 5. Griffiths' first inequality -/
 
 variable {I : Type*} [Fintype I]
+
+/-- **THE EXPANSION, ONCE AND BY NAME.** Each Boltzmann factor is
+`cosh (J i) + (∏ spin) · sinh (J i)` because `∏ spin` is `±1`; the product over the interaction
+terms expands over subsets `T` (`Finset.prod_add`); and each `T`-term's spins collapse onto
+multiplicities. The exponent of
+`spin (σ v)` in the `T`-term is `[v ∈ A] + #{i ∈ T : v ∈ S i}` — the observable's own set counted
+once, each chosen interaction set counted once.
+
+**This identity carries both signs of the file.** `griffiths_nonneg` reads it as *every term is
+`≥ 0`*; `griffiths_pos` reads it as *one named term is `> 0`*. It was a `have` inside the first of
+those until 2026-08-23, which is why the second could not be attempted without repeating it.
+
+`DecidableEq I` is on the STATEMENT here and not on `griffiths_nonneg`/`griffiths_pos`, which reach
+it through `classical`: `Finset.univ \ T` needs the instance and the old `have` got it for free from
+the enclosing proof, which is the one thing hoisting the identity actually cost. -/
+theorem boltzmann_expansion [DecidableEq I] (S : I → Finset V) (J : I → ℝ) (A : Finset V)
+    (σ : V → Bool) :
+    (∏ v ∈ A, spin (σ v)) * exp (∑ i : I, J i * ∏ v ∈ S i, spin (σ v))
+      = ∑ T ∈ Finset.univ.powerset,
+          ((∏ i ∈ T, sinh (J i)) * ∏ i ∈ Finset.univ \ T, cosh (J i))
+            * ∏ v : V, spin (σ v)
+                ^ ((if v ∈ A then 1 else 0) + ∑ i ∈ T, if v ∈ S i then 1 else 0) := by
+  classical
+  rw [Real.exp_sum,
+    Finset.prod_congr rfl fun i _ => (exp_term (J i) (S i) σ).trans (add_comm _ _),
+    Finset.prod_add (fun i => (∏ v ∈ S i, spin (σ v)) * sinh (J i)) (fun i => cosh (J i))]
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl fun T _ => ?_
+  rw [Finset.prod_mul_distrib, prod_prod_eq_prod_pow T S σ, prod_finset_eq_prod_pow A σ]
+  have hcomb : (∏ v : V, spin (σ v) ^ (if v ∈ A then 1 else 0))
+      * ∏ v : V, spin (σ v) ^ (∑ i ∈ T, if v ∈ S i then 1 else 0)
+      = ∏ v : V, spin (σ v)
+          ^ ((if v ∈ A then 1 else 0) + ∑ i ∈ T, if v ∈ S i then 1 else 0) := by
+    rw [← Finset.prod_mul_distrib]
+    exact Finset.prod_congr rfl fun v _ => (pow_add _ _ _).symm
+  rw [← hcomb]
+  ring
+
+/-- Every term of the expansion has a non-negative coefficient when the couplings are, and a
+non-negative configuration sum whatever they are. Both halves of `griffiths_nonneg`, and the
+non-negative half of `griffiths_pos`, are this lemma. -/
+theorem expansion_term_nonneg [DecidableEq I] (S : I → Finset V) (J : I → ℝ) (hJ : ∀ i, 0 ≤ J i)
+    (A : Finset V) (T : Finset I) :
+    0 ≤ ∑ σ : V → Bool,
+      ((∏ i ∈ T, sinh (J i)) * ∏ i ∈ Finset.univ \ T, cosh (J i))
+        * ∏ v : V, spin (σ v)
+            ^ ((if v ∈ A then 1 else 0) + ∑ i ∈ T, if v ∈ S i then 1 else 0) := by
+  rw [← Finset.mul_sum]
+  refine mul_nonneg (mul_nonneg ?_ ?_) (sum_prod_pow_spin_nonneg _)
+  · exact Finset.prod_nonneg fun i _ => sinh_nonneg (hJ i)
+  · exact Finset.prod_nonneg fun i _ => (Real.cosh_pos _).le
 
 /-- **GRIFFITHS' FIRST INEQUALITY.** For any finite family of interaction sets with non-negative
 couplings and any observable set, the unnormalised correlation is non-negative. Bonds are sets of
@@ -128,38 +220,51 @@ theorem griffiths_nonneg (S : I → Finset V) (J : I → ℝ) (hJ : ∀ i, 0 ≤
     0 ≤ ∑ σ : V → Bool, (∏ v ∈ A, spin (σ v))
         * exp (∑ i : I, J i * ∏ v ∈ S i, spin (σ v)) := by
   classical
-  have hfac : ∀ σ : V → Bool,
-      (∏ v ∈ A, spin (σ v)) * exp (∑ i : I, J i * ∏ v ∈ S i, spin (σ v))
-        = ∑ T ∈ Finset.univ.powerset,
-            ((∏ i ∈ T, sinh (J i)) * ∏ i ∈ Finset.univ \ T, cosh (J i))
-              * ∏ v : V, spin (σ v)
-                  ^ ((if v ∈ A then 1 else 0) + ∑ i ∈ T, if v ∈ S i then 1 else 0) := by
-    intro σ
-    rw [Real.exp_sum,
-      Finset.prod_congr rfl fun i _ => (exp_term (J i) (S i) σ).trans (add_comm _ _),
-      Finset.prod_add (fun i => (∏ v ∈ S i, spin (σ v)) * sinh (J i)) (fun i => cosh (J i))]
-    rw [Finset.mul_sum]
-    refine Finset.sum_congr rfl fun T _ => ?_
-    rw [Finset.prod_mul_distrib, prod_prod_eq_prod_pow T S σ, prod_finset_eq_prod_pow A σ]
-    have hcomb : (∏ v : V, spin (σ v) ^ (if v ∈ A then 1 else 0))
-        * ∏ v : V, spin (σ v) ^ (∑ i ∈ T, if v ∈ S i then 1 else 0)
-        = ∏ v : V, spin (σ v)
-            ^ ((if v ∈ A then 1 else 0) + ∑ i ∈ T, if v ∈ S i then 1 else 0) := by
-      rw [← Finset.prod_mul_distrib]
-      exact Finset.prod_congr rfl fun v _ => (pow_add _ _ _).symm
-    rw [← hcomb]
-    ring
-  rw [Finset.sum_congr rfl fun σ _ => hfac σ, Finset.sum_comm]
-  refine Finset.sum_nonneg fun T _ => ?_
+  rw [Finset.sum_congr rfl fun σ _ => boltzmann_expansion S J A σ, Finset.sum_comm]
+  exact Finset.sum_nonneg fun T _ => expansion_term_nonneg S J hJ A T
+
+/-- **AND IT IS STRICT AS SOON AS THE MODEL CARRIES THE OBSERVABLE'S OWN TERM.** If some interaction
+set is `A` itself, with a strictly positive coupling, the unnormalised correlation is strictly
+positive. Every term of the expansion is `≥ 0` by `expansion_term_nonneg`; the `T = {i₀}` term is
+`> 0`; `Finset.sum_pos'` is the whole difference.
+
+**WHY THE HYPOTHESIS IS `S i₀ = A` AND NOT SOMETHING WEAKER.** The `T = {i₀}` term carries the
+exponent `[v ∈ A] + [v ∈ S i₀]` at the site `v`, and a sum of two indicators is even exactly when
+they agree at every site — so `S i₀ = A` is not a convenience, it is the condition for that term to
+survive the configuration sum at all. Sets that merely overlap `A` leave an odd exponent somewhere
+and their term vanishes. Nothing here claims it is *necessary* for the conclusion, only that it is
+what makes this proof go.
+
+For `A = {v₀}` it reads: **a ferromagnetic model with a strictly positive field at `v₀` has strictly
+positive magnetisation at `v₀`** — `griffiths_site_pos`. -/
+theorem griffiths_pos (S : I → Finset V) (J : I → ℝ) (hJ : ∀ i, 0 ≤ J i) (A : Finset V)
+    (i₀ : I) (hS : S i₀ = A) (hJ₀ : 0 < J i₀) :
+    0 < ∑ σ : V → Bool, (∏ v ∈ A, spin (σ v))
+        * exp (∑ i : I, J i * ∏ v ∈ S i, spin (σ v)) := by
+  classical
+  rw [Finset.sum_congr rfl fun σ _ => boltzmann_expansion S J A σ, Finset.sum_comm]
+  refine Finset.sum_pos' (fun T _ => expansion_term_nonneg S J hJ A T)
+    ⟨{i₀}, Finset.mem_powerset.mpr (Finset.subset_univ _), ?_⟩
   rw [← Finset.mul_sum]
-  refine mul_nonneg (mul_nonneg ?_ ?_) (sum_prod_pow_spin_nonneg _)
-  · exact Finset.prod_nonneg fun i _ => sinh_nonneg (hJ i)
-  · exact Finset.prod_nonneg fun i _ => (Real.cosh_pos _).le
+  refine mul_pos (mul_pos ?_ ?_) (sum_prod_pow_spin_pos fun v => ?_)
+  · rw [Finset.prod_singleton]
+    exact sinh_pos_of_pos hJ₀
+  · exact Finset.prod_pos fun i _ => Real.cosh_pos _
+  · rw [Finset.sum_singleton, hS]
+    exact Even.add_self _
 
 /-- **THE MAGNETISATION CASE**, which is the one the watchlist item is about: `A = {v₀}`. -/
 theorem griffiths_site_nonneg (S : I → Finset V) (J : I → ℝ) (hJ : ∀ i, 0 ≤ J i) (v₀ : V) :
     0 ≤ ∑ σ : V → Bool, spin (σ v₀) * exp (∑ i : I, J i * ∏ v ∈ S i, spin (σ v)) := by
   have h := griffiths_nonneg S J hJ {v₀}
+  simpa using h
+
+/-- **THE MAGNETISATION CASE OF THE STRICT INEQUALITY**, which is what the watchlist item asks for:
+a strictly positive field at `v₀` is an interaction set `{v₀}` with a strictly positive coupling. -/
+theorem griffiths_site_pos (S : I → Finset V) (J : I → ℝ) (hJ : ∀ i, 0 ≤ J i) (v₀ : V)
+    (i₀ : I) (hS : S i₀ = {v₀}) (hJ₀ : 0 < J i₀) :
+    0 < ∑ σ : V → Bool, spin (σ v₀) * exp (∑ i : I, J i * ∏ v ∈ S i, spin (σ v)) := by
+  have h := griffiths_pos S J hJ {v₀} i₀ hS hJ₀
   simpa using h
 
 /-- The partition function of such a model is positive, so the normalised correlation is
@@ -171,6 +276,16 @@ theorem griffiths_expect_nonneg (S : I → Finset V) (J : I → ℝ) (hJ : ∀ i
         / ∑ σ : V → Bool, exp (∑ i : I, J i * ∏ v ∈ S i, spin (σ v)) := by
   refine div_nonneg (griffiths_nonneg S J hJ A) ?_
   exact Finset.sum_nonneg fun σ _ => (exp_pos _).le
+
+/-- And strictly positive, under the hypothesis of `griffiths_pos`: the partition function is a
+finite sum of exponentials over a nonempty configuration space, hence positive. -/
+theorem griffiths_expect_pos (S : I → Finset V) (J : I → ℝ) (hJ : ∀ i, 0 ≤ J i)
+    (A : Finset V) (i₀ : I) (hS : S i₀ = A) (hJ₀ : 0 < J i₀) :
+    0 < (∑ σ : V → Bool, (∏ v ∈ A, spin (σ v))
+          * exp (∑ i : I, J i * ∏ v ∈ S i, spin (σ v)))
+        / ∑ σ : V → Bool, exp (∑ i : I, J i * ∏ v ∈ S i, spin (σ v)) := by
+  refine div_pos (griffiths_pos S J hJ A i₀ hS hJ₀) ?_
+  exact Finset.sum_pos (fun σ _ => exp_pos _) ⟨fun _ => true, Finset.mem_univ _⟩
 
 end
 
