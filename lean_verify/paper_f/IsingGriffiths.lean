@@ -52,6 +52,21 @@
   the value away, and `sum_pow_spin_pos` is the same line keeping it. **The parity set is still
   never constructed**, in either direction.
 
+  ADDENDUM 2026-08-23, SECOND — **THE STRICT INEQUALITY'S HYPOTHESIS WAS TOO STRONG AND IS NOW AT
+  ITS ACTUAL SHAPE** (`PROOF_STRATEGY` §7 rule 3). `griffiths_pos` above asked that the observable
+  set BE an interaction set, and its own docstring said nothing claimed that necessary. It was not.
+  **`griffiths_pos_of_parity`**: a family `T` of interaction terms, all with strictly positive
+  couplings, covering every site of `A` an ODD number of times and every other site an EVEN number,
+  suffices — which is exactly `A = △_{i ∈ T} S i`, the classical condition. `griffiths_pos` is now
+  the `|T| = 1` case and **`griffiths_pos_symmDiff`** is the `|T| = 2` one.
+
+  **AND THE TWO-TERM CASE REACHES SOMETHING THE ONE-TERM CASE CANNOT: A CORRELATION WITH NO FIELD.**
+  With `|T| = 1` the observable must be an interaction set, which for a two-point function means a
+  bond — and a bond's own correlation. With `|T| = 2` the observable is a symmetric difference, so
+  `{u, v}` for two sites joined by a path of bonds qualifies, and **no field term is involved at
+  all**. Every strict-positivity result in this estate before today required `h > 0`; this one does
+  not.
+
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 
@@ -223,41 +238,71 @@ theorem griffiths_nonneg (S : I → Finset V) (J : I → ℝ) (hJ : ∀ i, 0 ≤
   rw [Finset.sum_congr rfl fun σ _ => boltzmann_expansion S J A σ, Finset.sum_comm]
   exact Finset.sum_nonneg fun T _ => expansion_term_nonneg S J hJ A T
 
-/-- **AND IT IS STRICT AS SOON AS THE MODEL CARRIES THE OBSERVABLE'S OWN TERM.** If some interaction
-set is `A` itself, with a strictly positive coupling, the unnormalised correlation is strictly
-positive. Every term of the expansion is `≥ 0` by `expansion_term_nonneg`; the `T = {i₀}` term is
-`> 0`; `Finset.sum_pos'` is the whole difference.
-
-**WHY THE HYPOTHESIS IS `S i₀ = A` AND NOT SOMETHING WEAKER.** The `T = {i₀}` term carries the
-exponent `[v ∈ A] + [v ∈ S i₀]` at the site `v`, and a sum of two indicators is even exactly when
-they agree at every site — so `S i₀ = A` is not a convenience, it is the condition for that term to
-survive the configuration sum at all. Sets that merely overlap `A` leave an odd exponent somewhere
-and their term vanishes. Nothing here claims it is *necessary* for the conclusion, only that it is
-what makes this proof go.
-
-For `A = {v₀}` it reads: **a ferromagnetic model with a strictly positive field at `v₀` has strictly
-positive magnetisation at `v₀`** — `griffiths_site_pos`. -/
-theorem griffiths_pos (S : I → Finset V) (J : I → ℝ) (hJ : ∀ i, 0 ≤ J i) (A : Finset V)
-    (i₀ : I) (hS : S i₀ = A) (hJ₀ : 0 < J i₀) :
-    0 < ∑ σ : V → Bool, (∏ v ∈ A, spin (σ v))
-        * exp (∑ i : I, J i * ∏ v ∈ S i, spin (σ v)) := by
-  classical
-  rw [Finset.sum_congr rfl fun σ _ => boltzmann_expansion S J A σ, Finset.sum_comm]
-  refine Finset.sum_pos' (fun T _ => expansion_term_nonneg S J hJ A T)
-    ⟨{i₀}, Finset.mem_powerset.mpr (Finset.subset_univ _), ?_⟩
-  rw [← Finset.mul_sum]
-  refine mul_pos (mul_pos ?_ ?_) (sum_prod_pow_spin_pos fun v => ?_)
-  · rw [Finset.prod_singleton]
-    exact sinh_pos_of_pos hJ₀
-  · exact Finset.prod_pos fun i _ => Real.cosh_pos _
-  · rw [Finset.sum_singleton, hS]
-    exact Even.add_self _
-
 /-- **THE MAGNETISATION CASE**, which is the one the watchlist item is about: `A = {v₀}`. -/
 theorem griffiths_site_nonneg (S : I → Finset V) (J : I → ℝ) (hJ : ∀ i, 0 ≤ J i) (v₀ : V) :
     0 ≤ ∑ σ : V → Bool, spin (σ v₀) * exp (∑ i : I, J i * ∏ v ∈ S i, spin (σ v)) := by
   have h := griffiths_nonneg S J hJ {v₀}
   simpa using h
+
+/-- **THE STRICT INEQUALITY, AT ITS ACTUAL HYPOTHESIS.** If some family `T` of interaction terms,
+all with strictly positive couplings, covers every site of the observable set `A` an ODD number of
+times and every other site an EVEN number, then the unnormalised correlation is strictly positive.
+
+**THAT PARITY CONDITION IS EXACTLY `A = △_{i ∈ T} S i`**, the symmetric difference of the chosen
+interaction sets — a sum of indicators is even precisely when the indicators agree mod 2 — and it is
+the classical condition under which a ferromagnetic correlation is known to be positive. Every term
+of `boltzmann_expansion` is `≥ 0` by `expansion_term_nonneg`; the `T` term is `> 0`;
+`Finset.sum_pos'` is the whole difference.
+
+**WHY THIS IS STATED AND NOT JUST `S i₀ = A`.** The `|T| = 1` case (`griffiths_pos` below) needs the
+observable to BE an interaction set, which is the magnetisation case and little else. With `|T| > 1`
+the observable can be a symmetric difference — `{u, v}` for two sites joined by a PATH of bonds, for
+instance — and that is a two-point function rather than a one-point one. The earlier docstring said
+of the `S i₀ = A` hypothesis that nothing claimed it necessary; this is what it was hiding. -/
+theorem griffiths_pos_of_parity (S : I → Finset V) (J : I → ℝ) (hJ : ∀ i, 0 ≤ J i) (A : Finset V)
+    (T : Finset I) (hT : ∀ i ∈ T, 0 < J i)
+    (hpar : ∀ v : V, Even ((if v ∈ A then 1 else 0) + ∑ i ∈ T, if v ∈ S i then 1 else 0)) :
+    0 < ∑ σ : V → Bool, (∏ v ∈ A, spin (σ v))
+        * exp (∑ i : I, J i * ∏ v ∈ S i, spin (σ v)) := by
+  classical
+  rw [Finset.sum_congr rfl fun σ _ => boltzmann_expansion S J A σ, Finset.sum_comm]
+  refine Finset.sum_pos' (fun T' _ => expansion_term_nonneg S J hJ A T')
+    ⟨T, Finset.mem_powerset.mpr (Finset.subset_univ _), ?_⟩
+  rw [← Finset.mul_sum]
+  refine mul_pos (mul_pos ?_ ?_) (sum_prod_pow_spin_pos hpar)
+  · exact Finset.prod_pos fun i hi => sinh_pos_of_pos (hT i hi)
+  · exact Finset.prod_pos fun i _ => Real.cosh_pos _
+
+/-- **THE ONE-TERM CASE**: the model carries the observable's own set with a strictly positive
+coupling. For `A = {v₀}` this reads *a ferromagnetic model with a strictly positive field at `v₀`
+has strictly positive magnetisation at `v₀`* — `griffiths_site_pos`. -/
+theorem griffiths_pos (S : I → Finset V) (J : I → ℝ) (hJ : ∀ i, 0 ≤ J i) (A : Finset V)
+    (i₀ : I) (hS : S i₀ = A) (hJ₀ : 0 < J i₀) :
+    0 < ∑ σ : V → Bool, (∏ v ∈ A, spin (σ v))
+        * exp (∑ i : I, J i * ∏ v ∈ S i, spin (σ v)) := by
+  classical
+  refine griffiths_pos_of_parity S J hJ A {i₀} (fun i hi => ?_) fun v => ?_
+  · rw [Finset.mem_singleton] at hi
+    exact hi ▸ hJ₀
+  · rw [Finset.sum_singleton, hS]
+    exact Even.add_self _
+
+/-- **THE TWO-TERM CASE, WHICH IS THE ONE THE ONE-TERM CASE CANNOT REACH.** If two interaction sets
+have strictly positive couplings, their symmetric difference is a strictly positive correlation.
+`Finset.mem_symmDiff` is what turns the set condition into the parity one. -/
+theorem griffiths_pos_symmDiff (S : I → Finset V) (J : I → ℝ) (hJ : ∀ i, 0 ≤ J i)
+    (i₁ i₂ : I) (hne : i₁ ≠ i₂) (h₁ : 0 < J i₁) (h₂ : 0 < J i₂) :
+    0 < ∑ σ : V → Bool, (∏ v ∈ symmDiff (S i₁) (S i₂), spin (σ v))
+        * exp (∑ i : I, J i * ∏ v ∈ S i, spin (σ v)) := by
+  classical
+  refine griffiths_pos_of_parity S J hJ _ {i₁, i₂} (fun i hi => ?_) fun v => ?_
+  · rcases Finset.mem_insert.mp hi with rfl | hi'
+    · exact h₁
+    · rw [Finset.mem_singleton] at hi'
+      exact hi' ▸ h₂
+  · rw [Finset.sum_pair hne]
+    by_cases hv₁ : v ∈ S i₁ <;> by_cases hv₂ : v ∈ S i₂ <;>
+      simp [Finset.mem_symmDiff, hv₁, hv₂]
 
 /-- **THE MAGNETISATION CASE OF THE STRICT INEQUALITY**, which is what the watchlist item asks for:
 a strictly positive field at `v₀` is an interaction set `{v₀}` with a strictly positive coupling. -/
