@@ -166,7 +166,13 @@ what the spin observable is.
 This is the statement `IsingTransferSym.trace_transferSym_pow` does **not** give: there the trace
 has one factor and cyclicity moves the diagonal weight around it, here it has two and the weight
 would have to pass through the observable. It does, because the observable is diagonal too, and
-that hypothesis is not decoration — for a general insertion the two traces differ. -/
+that hypothesis is not decoration — for a general insertion the two traces differ.
+
+**⚠ THAT LAST CLAUSE WAS ASSERTED AND NOT PROVED, HERE OR ANYWHERE**, and it is now proved:
+`IsingSlabSpectral.exists_insertion_not_conj_invariant` exhibits a two-by-two insertion not
+commuting with the conjugating diagonal for which the two traces are `17/4` and `2`. The sentence
+is left as written (`ERRATUM 94`); the pointer is prose rather than a citation because that file
+imports this one and the dependency cannot be reversed (`ERRATUM 242`). `ERRATUM 247`. -/
 theorem trace_two_point_sym (β : ℝ) (n : ℕ) (d : Col n → ℝ) (k m : ℕ) :
     (Matrix.diagonal d * transferSym β n ^ k * Matrix.diagonal d * transferSym β n ^ m).trace
       = (Matrix.diagonal d * transfer2 β n ^ k * Matrix.diagonal d * transfer2 β n ^ m).trace := by
