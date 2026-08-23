@@ -48,9 +48,18 @@ Tightness is a statement about **one** family of measures on **one** space: for 
 statement about a compact set.
 
 **What is missing is not analysis. It is the carrier**, and naming it is the point of this file:
+*(Read with the 23 Aug 2026 supersession inside item 1 below: the carrier now exists, and what is
+missing is the author's decision in item 2.)*
 
 1. **A single space** — `Π _ : ℤ^d, ℝ` is the natural one, is Polish and Borel in Mathlib with no
    work, and is not defined anywhere in this estate.
+   **^ SUPERSEDED 23 Aug 2026 and kept (`ERRATUM 94`): `ConfigSpace.lean` defines it.** `Config ι`
+   is `ι → ℝ`, `cube a` is the configurations bounded site by site, `isCompact_cube` is Tychonoff,
+   and `compl_cube` says its complement is `{ω | ∃ x, a x < |ω x|}` — **the set §4 below bounds,
+   verbatim**. `isTightMeasureSet_of_site_tail` then takes per-site bounds with a summable weight
+   and returns `MeasureTheory.IsTightMeasureSet`, Mathlib's own notion. **So item (1) is done and
+   item (3) composes with it; what is left of this list is item (2) alone**, which is an author's
+   decision and not a construction.
 2. **A pushforward of each finite-volume field into it** — extend a field on a box or a torus to
    all of `ℤ^d`. **This is a choice, not a construction**, and it is `ASSUMPTIONS_LEDGER` 47, an
    author's decision. By zero and by periodic repetition give different limits.
