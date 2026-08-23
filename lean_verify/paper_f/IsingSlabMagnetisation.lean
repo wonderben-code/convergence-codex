@@ -39,6 +39,14 @@
   expectation and is elementary; the content here is the statement AT THE TOP
   EIGENVECTOR, which is what a limit of correlations sees.
 
+  **AND THE TWO ARE NOW RELATED, WHICH THIS PARAGRAPH COULD NOT SAY WHEN IT WAS
+  WRITTEN.** It is right that they are different objects.
+  `IsingGibbsMagnetisation.expectG_spin_tendsto` proves the relation: the
+  finite-volume Gibbs expectation CONVERGES, as the slab grows long, to the
+  quantity this file makes zero. So the pivot is the magnetisation by proof and
+  not by the name it was given. The pointer is prose rather than a citation
+  because that file imports this one (`ERRATUM 242`).
+
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 

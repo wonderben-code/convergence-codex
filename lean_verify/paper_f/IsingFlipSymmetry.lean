@@ -46,6 +46,11 @@ the top eigenvector to be *fixed* rather than negated, and a bridge from `spinEi
 quadratic form at that vector. **`expect_spin_eq_zero` is not that statement**: it is the average
 over a finite strip, and the limit `M → ∞` at fixed width is where the two would meet.
 
+**AND THE TWO ARE NOW RELATED (prose pointer, `ERRATUM 242`: the file below imports this one).**
+`IsingGibbsMagnetisation.expectG_spin_tendsto` proves that the finite-volume Gibbs expectation this
+theorem computes CONVERGES, as the length grows, to the quadratic form at the top eigenvector. The
+distinction drawn above is correct and is a distinction between a sequence and its limit.
+
 ⚠ **THE THREE STEPS ARE THE WRONG ROUTE, AND `IsingMagnetisationVanishes` PROVES
 `‖B_{p₀p₀}‖² = 0` WITHOUT ANY OF THEM. The paragraph is kept per `ERRATUM 94`.** Its first
 sentence stands — this file still proves nothing about the top eigenvector — and its last stands
