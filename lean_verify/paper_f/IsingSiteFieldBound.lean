@@ -278,6 +278,88 @@ theorem route_insufficient_boundary {β h m : ℝ} (hm : 0 < m) :
       simp [boxField, hb])
     (fun n => by exact_mod_cast IsingBoundaryRouteCeiling.card_boundary_le n)
 
+/-! ## 7. ADDENDUM 23 AUGUST 2026 — the route's output, COMPUTED, for the class both models live in
+
+§6 bounds the route's total. For the profiles this estate actually holds it can be computed
+exactly, and the computation supersedes one of §6's own claims. -/
+
+/-- An **indicator** profile: strength `h₀` on `S`, nothing off it. Both models here are of this
+shape — `IsingBoxInteraction.boxField` with `S = ∂`, and the bulk field with `S = univ`. -/
+def IsIndicator (f : Site n → ℝ) (S : Finset (Site n)) (h₀ : ℝ) : Prop :=
+  (∀ p ∈ S, f p = h₀) ∧ (∀ p, p ∉ S → f p = 0)
+
+/-- **FOR AN INDICATOR PROFILE THE ROUTE'S TOTAL IS NOT BOUNDED BUT COMPUTED**: exactly
+`|S| · tanh h₀`. **No monotonicity of `tanh` is used, and that is not a stylistic remark** — this
+Mathlib has `Real.tanh_lt_one` and `Real.neg_one_lt_tanh` and no `tanh_le_tanh` at all, so an
+argument needing monotonicity would have had to prove it first. This one needs `Real.tanh_zero`. -/
+theorem sum_tanh_of_indicator (f : Site n → ℝ) (S : Finset (Site n)) (h₀ : ℝ)
+    (hf : IsIndicator f S h₀) :
+    ∑ p : Site n, tanh (f p) = (S.card : ℝ) * tanh h₀ := by
+  obtain ⟨hon, hoff⟩ := hf
+  have h1 : ∑ p ∈ S, tanh (f p) = ∑ p : Site n, tanh (f p) := by
+    refine Finset.sum_subset (Finset.subset_univ S) ?_
+    intro p _ hpS
+    rw [hoff p hpS, Real.tanh_zero]
+  rw [← h1, Finset.sum_congr rfl fun p hp => by rw [hon p hp], Finset.sum_const, nsmul_eq_mul]
+
+/-- The boundary field is the indicator of `∂` at strength `β·h`. -/
+theorem isIndicator_boxField (n : ℕ) (β h : ℝ) :
+    IsIndicator (boxField n β h) ((Finset.univ : Finset (Site n)).filter fun p => isBoundary p)
+      (β * h) := by
+  constructor
+  · intro p hp
+    have hb : isBoundary p = true := by simpa using hp
+    rw [boxField, if_pos hb]
+  · intro p hp
+    have hb : ¬ (isBoundary p = true) := by simpa using hp
+    rw [boxField, if_neg hb]
+
+/-- A constant profile is the indicator of everything. -/
+theorem isIndicator_const (n : ℕ) (x : ℝ) :
+    IsIndicator (fun _ : Site n => x) Finset.univ x :=
+  ⟨fun _ _ => rfl, fun p hp => absurd (Finset.mem_univ p) hp⟩
+
+/-- **THE EXACT VALUE FOR THE BOUNDARY MODEL.** -/
+theorem sum_tanh_boxField (n : ℕ) (β h : ℝ) :
+    ∑ p : Site n, tanh (boxField n β h p)
+      = (((Finset.univ : Finset (Site n)).filter fun p => isBoundary p).card : ℝ) * tanh (β * h) :=
+  sum_tanh_of_indicator _ _ _ (isIndicator_boxField n β h)
+
+/-- **AND SO `IsingBoundaryRouteCeiling.route_bound_le` IS DERIVED AFTER ALL — HYPOTHESIS AND ALL.**
+
+§6's header says this file is "more general in the profile and weaker in the constant" than
+`route_bound_le`, and that the two are *incomparable*. **That sentence is true of
+`sum_tanh_le_card_of_support` and is SUPERSEDED HERE** (`ERRATUM 94`, kept above rather than
+rewritten): once the total is computed rather than bounded, `route_bound_le` follows from
+`sum_tanh_boxField` and `card_boundary_le`, and the `0 ≤ β·h` it carries is exactly what the last
+step needs — `0 ≤ tanh (β·h)`. The constant was never the obstacle; the inequality was. -/
+theorem route_bound_le_of_indicator (n : ℕ) {β h : ℝ} (hβh : 0 ≤ β * h) :
+    ∑ p : Site n, tanh (boxField n β h p) ≤ 4 * (n : ℝ) * tanh (β * h) := by
+  rw [sum_tanh_boxField n β h]
+  have hcard : (((Finset.univ : Finset (Site n)).filter fun p => isBoundary p).card : ℝ)
+      ≤ 4 * (n : ℝ) := by exact_mod_cast IsingBoundaryRouteCeiling.card_boundary_le n
+  have htanh : (0 : ℝ) ≤ tanh (β * h) := by
+    rcases eq_or_lt_of_le hβh with heq | hlt
+    · rw [← heq, Real.tanh_zero]
+    · exact (tanh_pos_of_pos hlt).le
+  exact mul_le_mul_of_nonneg_right hcard htanh
+
+/-- **THE OTHER HALF OF THE DICHOTOMY: AN EXTENSIVE SUPPORT DOES REACH THE TARGET.** With §6's
+`route_insufficient_of_sublinear` this makes the route's behaviour a statement about the SIZE of
+the support and nothing else — sub-extensive fails, extensive succeeds, and the boundary and bulk
+models are the two ends of the same one-parameter fact rather than two files. -/
+theorem indicator_bound_of_card (f : Site n → ℝ) (S : Finset (Site n)) (h₀ : ℝ)
+    (hf : IsIndicator f S h₀) (hh₀ : 0 ≤ h₀) {δ : ℝ}
+    (hcard : δ * ((n : ℝ) * n) ≤ (S.card : ℝ)) :
+    (δ * tanh h₀) * ((n : ℝ) * n) ≤ ∑ p : Site n, tanh (f p) := by
+  rw [sum_tanh_of_indicator f S h₀ hf]
+  have htanh : (0 : ℝ) ≤ tanh h₀ := by
+    rcases eq_or_lt_of_le hh₀ with heq | hlt
+    · rw [← heq, Real.tanh_zero]
+    · exact (tanh_pos_of_pos hlt).le
+  calc (δ * tanh h₀) * ((n : ℝ) * n) = (δ * ((n : ℝ) * n)) * tanh h₀ := by ring
+    _ ≤ (S.card : ℝ) * tanh h₀ := mul_le_mul_of_nonneg_right hcard htanh
+
 end
 
 end IsingSiteFieldBound
