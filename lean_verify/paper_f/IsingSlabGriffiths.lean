@@ -39,6 +39,25 @@
   estate's own `slabIntra` is of that shape — nearest-neighbour pairs inside a cross-section, each
   with coupling `1` — is a separate check and is not made here.
 
+  ADDENDUM 2026-08-23 — BOTH "NOT DONE" PARAGRAPHS ABOVE ARE NOW DONE, AND ARE KEPT (`ERRATUM 94`),
+  corrected here where the claims were made and not only where the news was announced
+  (`ERRATUM 226`).
+
+  * *"That arithmetic is by hand and not in Lean … has not been attempted."* It was attempted the
+    same day and the route above was right in every particular. `IsingGriffiths.griffiths_pos` is
+    the strict inequality, and `IsingSlabStrict.expectG_pos` carries it across this file's own
+    transport: **for `0 < β` and `0 < h`, the slab magnetisation is strictly positive.** The single
+    obstacle was that the expansion lived as a `have` inside `griffiths_nonneg` and could not be
+    referred to; hoisting it to `IsingGriffiths.boltzmann_expansion` made the strict half three
+    lines. Nothing about the estimate above turned out to be wrong — only the assumption that it
+    would be expensive.
+  * *"That the estate's own `slabIntra` is of that shape … is a separate check and is not made
+    here."* It is made, in `IsingSlabFerro.slabIntraAniso_eq_intraOf`.
+
+  `expectG_nonneg` below is NOT superseded: it holds at `β = 0` and `h = 0`, where the strict
+  statement is false — `IsingSlabStrict.expectG_slab_eq_zero_of_no_field` proves the magnetisation
+  is exactly `0` at zero field. The two are the right statements for their own hypotheses.
+
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 

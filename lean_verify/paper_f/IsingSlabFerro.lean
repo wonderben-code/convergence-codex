@@ -27,6 +27,17 @@
   WHAT IS STILL NOT PROVED, AND IT IS NOW ONE THING. Strictness. `≥ 0` is not `> 0`, the route is
   the one `IsingSlabGriffiths` records, and nothing here approaches it.
 
+  ADDENDUM 2026-08-23 — "WHAT IS STILL NOT PROVED, AND IT IS NOW ONE THING" IS NOW NOTHING, and the
+  paragraph is kept (`ERRATUM 94`) and corrected here where the claim was made (`ERRATUM 226`).
+  `IsingGriffiths.griffiths_pos` proved the strict inequality abstractly and
+  **`IsingSlabStrict.expectG_slab_pos`** carries it to this file's own theorem: for `0 < β` and
+  `0 < h`, with the same `1 ≤ M`, `1 ≤ a`, `1 ≤ b`, **the magnetisation of this estate's
+  three-dimensional Ising slab in a strictly positive field is STRICTLY POSITIVE.** The route this
+  file pointed at was taken unchanged; it cost no new mathematics.
+
+  `expectG_slab_nonneg` below is NOT superseded — it holds at `β = 0` and `h = 0`, where the strict
+  statement is false, and `IsingSlabStrict.expectG_slab_eq_zero_of_no_field` proves it false there.
+
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 
