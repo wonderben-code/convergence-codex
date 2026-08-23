@@ -47,6 +47,16 @@
   limit is taken here. What has closed is the watchlist item that asked for the magnetisation in a
   field to be positive at finite volume.
 
+  ADDENDUM 2026-08-23, SAME DAY — **`1 ≤ a` AND `1 ≤ b` ARE GONE FROM `expectG_slab_pos` AND
+  `expectG_slab_pos_iso`.** The paragraph above is kept (`ERRATUM 94`) and was right that the
+  degenerate width is a real geometric fact and wrong to conclude the case had to be excluded: at
+  `a = 0` the horizontal term is the CONSTANT `Ja`, and a constant is of Griffiths shape (the empty
+  interaction set, whose product is `1`). `IsingSlabFerro.bondSet` now returns `∅` there and its
+  identity holds for every `a` and `b`, so **this file's slab theorems hold at every cross-section,
+  down to a single site.** `1 ≤ M` is unchanged and is still needed. `expectG_pos` never had the
+  width hypotheses — it is stated for an arbitrary finite cross-section — so only the two slab
+  corollaries move. See `ERRATUM 251` for the claim that the exclusion rested on, which was false.
+
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 
@@ -108,21 +118,22 @@ theorem expectG_pos {M : ℕ} (hM : 1 ≤ M) {β h : ℝ} (hβ : 0 < β) (hh : 0
 variable {a b : ℕ}
 
 /-- **THE MAGNETISATION OF THIS ESTATE'S THREE-DIMENSIONAL ISING SLAB, IN A STRICTLY POSITIVE FIELD
-AND WITH FERROMAGNETIC COUPLINGS, IS STRICTLY POSITIVE**, at every site, every cross-section at
-least two sites wide in each direction, and every length of at least two slices. -/
-theorem expectG_slab_pos {M : ℕ} (hM : 1 ≤ M) (ha : 1 ≤ a) (hb : 1 ≤ b)
+AND WITH FERROMAGNETIC COUPLINGS, IS STRICTLY POSITIVE**, at every site, **every cross-section**,
+and every length of at least two slices. (The width conditions were here when this was written and
+were removed the same day — see the file header's second addendum and `ERRATUM 251`.) -/
+theorem expectG_slab_pos {M : ℕ} (hM : 1 ≤ M)
     {β h Ja Jb : ℝ} (hβ : 0 < β) (hh : 0 < h) (hJa : 0 ≤ Ja) (hJb : 0 ≤ Jb)
     (v₀ : Fin (a + 1) × Fin (b + 1)) :
     0 < expectG β (fun σ => slabIntraAniso Ja Jb σ + fieldE h σ) M (fun σ => spin (σ v₀)) := by
   have hE : (fun σ : Cross (Fin (a + 1) × Fin (b + 1)) => slabIntraAniso Ja Jb σ + fieldE h σ)
       = fun σ => intraOf (bondCoup a b Ja Jb) (bondSet a b) σ + fieldE h σ := by
     funext σ
-    rw [slabIntraAniso_eq_intraOf ha hb Ja Jb σ]
+    rw [slabIntraAniso_eq_intraOf Ja Jb σ]
   rw [hE]
   exact expectG_pos hM hβ hh (bondCoup_nonneg hJa hJb) (bondSet a b) v₀
 
 /-- The isotropic case, where the energy is the estate's own `slabIntra`. -/
-theorem expectG_slab_pos_iso {M : ℕ} (hM : 1 ≤ M) (ha : 1 ≤ a) (hb : 1 ≤ b)
+theorem expectG_slab_pos_iso {M : ℕ} (hM : 1 ≤ M)
     {β h : ℝ} (hβ : 0 < β) (hh : 0 < h) (v₀ : Fin (a + 1) × Fin (b + 1)) :
     0 < expectG β (fun σ => slabIntra σ + fieldE h σ) M (fun σ => spin (σ v₀)) := by
   have hE : (fun σ : Cross (Fin (a + 1) × Fin (b + 1)) => slabIntra σ + fieldE h σ)
@@ -130,7 +141,7 @@ theorem expectG_slab_pos_iso {M : ℕ} (hM : 1 ≤ M) (ha : 1 ≤ a) (hb : 1 ≤
     funext σ
     rw [slabIntraAniso_one_one]
   rw [hE]
-  exact expectG_slab_pos hM ha hb hβ hh zero_le_one zero_le_one v₀
+  exact expectG_slab_pos hM hβ hh zero_le_one zero_le_one v₀
 
 /-! ## 4. And `0 < h` is not removable -/
 
