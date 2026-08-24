@@ -12,11 +12,18 @@
   statement. `Equiv.sumCompl` appears only inside the proof, where it belongs.
 
   THE HYPOTHESES ARE THE HONEST ONES. `P` picks out a set of indices; every term it picks must
-  have all its sites inside the region, and every term it does not pick must have all its sites
-  outside it. Terms whose
-  sites straddle the boundary are not permitted — and that is not a limitation dodged but the reason
-  `IsingSupportModel` was proved first: in the intended application the straddling terms are exactly
-  the ones whose coupling is zero, and they are removed before this theorem is applied.
+  have all its sites inside the region, and every term it does not pick must — **if it is live** —
+  have all its sites outside it.
+
+  **THAT LIVENESS CLAUSE IS AN AMENDMENT, MADE THE SAME DAY AND RECORDED HERE RATHER THAN ONLY IN
+  THE LOG.** As first proved, this file forbade straddling terms outright, and its records said so.
+  Working out the instantiation showed that was one hypothesis too strong: a term with zero coupling
+  contributes nothing to either half of the energy, so **nothing need be assumed about where its
+  sites lie**. The distinction is not academic. In `IsingPathComparison.pathCoup` the bonds outside
+  the chosen set are switched off rather than removed, and those are precisely the terms straddling
+  the walk — so under the original statement the box's own model failed the hypothesis and the dead
+  bonds had to be deleted first, which changes the index type. Under the amended one they do not,
+  and `expect_drop_outside_of_live` is the form that applies directly.
 
   STRUCTURE. `expect_eq_left` factorises a correlation into "the region's half" over the region's
   configurations alone, and is the only real work. `expect_drop_outside` then applies it **twice** —
@@ -109,7 +116,7 @@ def eR (S : I → Finset V) (J : I → ℝ) (P : I → Prop) [DecidablePred P]
 omit [Fintype V] [DecidableEq V] in
 /-- **THE ENERGY SPLITS.** Every term is pure, so every term lands in exactly one half. -/
 theorem energy_glue (S : I → Finset V) (J : I → ℝ) (P : I → Prop) [DecidablePred P]
-    (hL : ∀ i, P i → ∀ v ∈ S i, Q v) (hLc : ∀ i, ¬ P i → ∀ v ∈ S i, ¬ Q v)
+    (hL : ∀ i, P i → ∀ v ∈ S i, Q v) (hLc : ∀ i, ¬ P i → J i ≠ 0 → ∀ v ∈ S i, ¬ Q v)
     (τ : ({v // Q v} ⊕ {v // ¬ Q v}) → Bool) :
     ∑ i : I, J i * ∏ v ∈ S i, spin (glue τ v)
       = eL S J P (fun x => τ (Sum.inl x)) + eR S J P (fun x => τ (Sum.inr x)) := by
@@ -123,7 +130,9 @@ theorem energy_glue (S : I → Finset V) (J : I → ℝ) (P : I → Prop) [Decid
   · have h1 : keep P J i = 0 := by simp [keep, hi]
     have h2 : drop P J i = J i := by simp [drop, hi]
     rw [h1, h2, zero_mul, zero_add]
-    exact congrArg _ (prod_congr_right (S i) (hLc i hi) _ _ (fun _ => rfl))
+    by_cases hz : J i = 0
+    · rw [hz, zero_mul, zero_mul]
+    · exact congrArg _ (prod_congr_right (S i) (hLc i hi hz) _ _ (fun _ => rfl))
 
 /-! ## 3. The factorisation -/
 
@@ -149,7 +158,7 @@ theorem partR_pos (Q : V → Prop) [DecidablePred Q] (S : I → Finset V) (J : I
   Finset.sum_pos (fun _ _ => exp_pos _) ⟨fun _ => true, Finset.mem_univ _⟩
 
 theorem part_factor (S : I → Finset V) (J : I → ℝ) (P : I → Prop) [DecidablePred P]
-    (hL : ∀ i, P i → ∀ v ∈ S i, Q v) (hLc : ∀ i, ¬ P i → ∀ v ∈ S i, ¬ Q v) :
+    (hL : ∀ i, P i → ∀ v ∈ S i, Q v) (hLc : ∀ i, ¬ P i → J i ≠ 0 → ∀ v ∈ S i, ¬ Q v) :
     part S J = partL Q S J P * partR Q S J P := by
   rw [part, ← sum_glue (Q := Q) (fun υ : V → Bool => exp (∑ i : I, J i * ∏ v ∈ S i, spin (υ v))),
       partL, partR,
@@ -158,7 +167,7 @@ theorem part_factor (S : I → Finset V) (J : I → ℝ) (P : I → Prop) [Decid
   rw [← Real.exp_add, energy_glue S J P hL hLc τ]
 
 theorem num_factor (S : I → Finset V) (J : I → ℝ) (P : I → Prop) [DecidablePred P]
-    (hL : ∀ i, P i → ∀ v ∈ S i, Q v) (hLc : ∀ i, ¬ P i → ∀ v ∈ S i, ¬ Q v)
+    (hL : ∀ i, P i → ∀ v ∈ S i, Q v) (hLc : ∀ i, ¬ P i → J i ≠ 0 → ∀ v ∈ S i, ¬ Q v)
     (A : Finset V) (hA : ∀ v ∈ A, Q v) :
     num S J A = numL Q S J P A * partR Q S J P := by
   rw [num, ← sum_glue (Q := Q) (fun υ : V → Bool =>
@@ -175,7 +184,7 @@ theorem num_factor (S : I → Finset V) (J : I → ℝ) (P : I → Prop) [Decida
 /-- **A CORRELATION INSIDE THE REGION IS COMPUTED BY THE REGION ALONE.** The complement's partition
 function divides out; it is never evaluated and nothing is assumed about it. -/
 theorem expect_eq_left (S : I → Finset V) (J : I → ℝ) (P : I → Prop) [DecidablePred P]
-    (hL : ∀ i, P i → ∀ v ∈ S i, Q v) (hLc : ∀ i, ¬ P i → ∀ v ∈ S i, ¬ Q v)
+    (hL : ∀ i, P i → ∀ v ∈ S i, Q v) (hLc : ∀ i, ¬ P i → J i ≠ 0 → ∀ v ∈ S i, ¬ Q v)
     (A : Finset V) (hA : ∀ v ∈ A, Q v) :
     num S J A / part S J = numL Q S J P A / partL Q S J P := by
   rw [num_factor S J P hL hLc A hA, part_factor S J P hL hLc,
@@ -192,11 +201,13 @@ The region's decidability is not a hypothesis of the statement — nothing in it
 the purity clauses — so it is supplied by `classical` in the proof rather than demanded of every
 caller. -/
 theorem expect_drop_outside (S : I → Finset V) (J : I → ℝ) (P : I → Prop) [DecidablePred P]
-    (hL : ∀ i, P i → ∀ v ∈ S i, Q v) (hLc : ∀ i, ¬ P i → ∀ v ∈ S i, ¬ Q v)
+    (hL : ∀ i, P i → ∀ v ∈ S i, Q v) (hLc : ∀ i, ¬ P i → J i ≠ 0 → ∀ v ∈ S i, ¬ Q v)
     (A : Finset V) (hA : ∀ v ∈ A, Q v) :
     num S J A / part S J = num S (keep P J) A / part S (keep P J) := by
   classical
-  rw [expect_eq_left S J P hL hLc A hA, expect_eq_left S (keep P J) P hL hLc A hA]
+  rw [expect_eq_left S J P hL hLc A hA,
+      -- the switched-off model has no live term outside `P` at all, so its clause is vacuous
+      expect_eq_left S (keep P J) P hL (fun i hi hz => absurd (by simp [keep, hi]) hz) A hA]
   simp only [numL, partL, eL, keep_keep]
 
 /-- **THE SAME, WITH THE TWO PURITY CLAUSES PACKAGED AS THE ONE CONDITION A READER WOULD STATE.**
@@ -210,6 +221,21 @@ theorem expect_drop_outside_of_pure (S : I → Finset V) (J : I → ℝ)
     num S J A / part S J
       = num S (keep (fun i => ∀ v ∈ S i, Q v) J) A / part S (keep (fun i => ∀ v ∈ S i, Q v) J) :=
   expect_drop_outside S J (fun i => ∀ v ∈ S i, Q v) (fun _ h => h)
-    (fun i hi => (hpure i).resolve_left hi) A hA
+    (fun i hi _ => (hpure i).resolve_left hi) A hA
+
+/-- **AND A DEAD TERM MAY STRADDLE THE BOUNDARY FREELY**, which is the form the box actually needs.
+A term with zero coupling contributes nothing to either half, so nothing has to be assumed about
+where its sites lie. **This is not a convenience.** In `IsingPathComparison.pathCoup` the bonds
+outside the chosen set are switched off rather than removed, and those are exactly the terms whose
+two ends straddle the walk — so under the earlier statement the box's own model failed the
+hypothesis, and the straddlers had to be deleted first, changing the index type. Under this one
+they do not. -/
+theorem expect_drop_outside_of_live (S : I → Finset V) (J : I → ℝ)
+    (hpure : ∀ i, J i ≠ 0 → (∀ v ∈ S i, Q v) ∨ (∀ v ∈ S i, ¬ Q v))
+    (A : Finset V) (hA : ∀ v ∈ A, Q v) :
+    num S J A / part S J
+      = num S (keep (fun i => ∀ v ∈ S i, Q v) J) A / part S (keep (fun i => ∀ v ∈ S i, Q v) J) :=
+  expect_drop_outside S J (fun i => ∀ v ∈ S i, Q v) (fun _ h => h)
+    (fun i hi hz => (hpure i hz).resolve_left hi) A hA
 
 end IsingRegionSplit
