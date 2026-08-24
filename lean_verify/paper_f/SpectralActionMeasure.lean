@@ -30,6 +30,34 @@
   - Mass gap from measure → OS4 (cluster decay)
 
   Machine-verified: genuine Mathlib proofs, 0 sorry, 0 native_decide.
+
+  ADDENDUM 24 AUGUST 2026 — THE TITLE AND THE FIRST SENTENCE ARE FALSE, AND ARE KEPT ABOVE SO THE
+  CORRECTION IS LEGIBLE (`ERRATUM 94`, `ERRATUM 254`).
+
+  *"Genuine Probability Measure from the Spectral Action"* and *"This file defines a GENUINE
+  probability measure from the spectral action on the finite-dimensional space Herm4(C)"* are
+  wrong on three counts, and the last section of this file now proves the first of them:
+
+  * **NOT A PROBABILITY MEASURE.** `spectralActionMeasure Set.univ = ⊤` —
+    `spectralActionMeasure_univ_eq_top`, and `not_isProbabilityMeasure_spectralActionMeasure` in
+    the form a reader will search for. `exp (-S)` is at least `1` on the whole half-line
+    `(-∞, 0]`, which has infinite Lebesgue measure, so no normalisation is available as written.
+  * **NOT ON Herm4(C).** It is a measure on `ℝ`. The `def` site says so ("the 1-dimensional
+    factor as a foundation"); the title does not.
+  * **NOT FROM THE SPECTRAL ACTION.** This file does not import `SpectralAction` and never
+    mentions `spectralAction`, `Tr` or any Dirac operator. `S` is a free real variable.
+
+  **NONE OF THIS IS A NEW DISCOVERY AND SAYING SO MATTERS.** `TRUE_LEDGER`'s Phase 0 audit
+  recorded all three in prose, the first of them verbatim: *"the constructed measure has INFINITE
+  total mass (exp(-S) is not Lebesgue-integrable over all of R since it diverges as S -> -infinity)
+  and no finiteness, normalisation, or `IsProbabilityMeasure` statement is proven"*. `SPINE.md`,
+  `PROPOSED_TAG_CHANGES.md` item 6 and `ASSUMPTIONS_LEDGER.md` carry the dimension point.
+  **What none of them did was prove it.** The observation is Phase 0's; the theorem is new, and it
+  is here rather than in a record because the claim it refutes is here.
+
+  WHAT IS NOT WITHDRAWN. `spectralActionMeasure` IS a genuine `MeasureTheory.Measure ℝ`, built
+  with `withDensity` and proved absolutely continuous. That part of the file's claim is true, and
+  the tier `MIXED / C+` reflects it. Nothing else in the file is touched.
 -/
 
 import CascadeFoundation
@@ -531,3 +559,41 @@ noncomputable def spectralActionMeasure : Measure ℝ :=
 theorem spectralActionMeasure_ac :
     spectralActionMeasure ≪ volume :=
   withDensity_absolutelyContinuous _ _
+
+-- ============================================================================
+-- SECTION 13 (ADDED 24 AUGUST 2026): the measure is NOT a probability measure
+-- ============================================================================
+
+/-- **THE TOTAL MASS IS INFINITE.** `boltzmannWeight S = exp (-S)` is at least `1` on the whole
+half-line `(-∞, 0]`, whose Lebesgue measure is infinite, so the density integrates to `⊤`.
+
+This refutes this file's title and opening sentence, both kept above and superseded in the header
+addendum (`ERRATUM 94`). `TRUE_LEDGER`'s Phase 0 audit stated it in prose and it was never proved;
+this is the proof, placed beside the definition so that a reader who greps for a spectral-action
+measure meets the theorem and not only the claim. -/
+theorem spectralActionMeasure_univ_eq_top : spectralActionMeasure Set.univ = ⊤ := by
+  rw [spectralActionMeasure, withDensity_apply _ MeasurableSet.univ, Measure.restrict_univ]
+  refine eq_top_iff.mpr ?_
+  have hone : ∀ S ∈ Set.Iic (0 : ℝ), (1 : ENNReal) ≤ boltzmannDensity S := by
+    intro S hS
+    have hS' : S ≤ 0 := hS
+    have h1 : (1 : ℝ) ≤ boltzmannWeight S := by
+      have hexp := Real.add_one_le_exp (-S)
+      rw [boltzmannWeight]
+      linarith
+    rw [boltzmannDensity, show (1 : ENNReal) = ENNReal.ofReal 1 by simp]
+    exact ENNReal.ofReal_le_ofReal h1
+  calc (⊤ : ENNReal)
+      = 1 * volume (Set.Iic (0 : ℝ)) := by rw [Real.volume_Iic, one_mul]
+    _ = ∫⁻ _ in Set.Iic (0 : ℝ), (1 : ENNReal) ∂volume := (setLIntegral_const _ _).symm
+    _ ≤ ∫⁻ S in Set.Iic (0 : ℝ), boltzmannDensity S ∂volume :=
+        setLIntegral_mono' measurableSet_Iic hone
+    _ ≤ ∫⁻ S, boltzmannDensity S ∂volume := setLIntegral_le_lintegral _ _
+
+/-- **AND SO IT IS NOT A PROBABILITY MEASURE**, in the form a reader will search for. -/
+theorem not_isProbabilityMeasure_spectralActionMeasure :
+    ¬ IsProbabilityMeasure spectralActionMeasure := by
+  intro h
+  have hu := h.measure_univ
+  rw [spectralActionMeasure_univ_eq_top] at hu
+  exact ENNReal.top_ne_one hu
