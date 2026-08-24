@@ -141,6 +141,64 @@ theorem card_depth_lt_le (n D : ℕ) :
         Nat.add_le_add_right (Nat.add_le_add_right (Finset.card_union_le _ _) _) _
     _ ≤ 4 * (D * n) := by omega
 
+/-! ## 2. The two-term split, and the ceiling it gives
+
+Bounding `∑ r^{depth}` exactly would need the sites partitioned by depth and a geometric sum.
+Splitting at a threshold needs neither, and the threshold may be chosen **after** `m` is given,
+which is exactly what a refutation allows. -/
+
+/-- **THE ROUTE'S TOTAL, SPLIT AT ANY THRESHOLD.** Shallow sites contribute at most `1` each and
+there are few of them; deep sites are many but each contributes at most `r^D`. -/
+theorem chain_total_le (n D : ℕ) {r : ℝ} (hr0 : 0 ≤ r) (hr1 : r ≤ 1) :
+    ∑ p : Site n, r ^ depth n p ≤ 4 * (D : ℝ) * n + ((n : ℝ) * n) * r ^ D := by
+  classical
+  rw [← Finset.sum_filter_add_sum_filter_not Finset.univ (fun p : Site n => depth n p < D)]
+  have hlow : ∑ p ∈ Finset.univ.filter (fun p : Site n => depth n p < D), r ^ depth n p
+      ≤ 4 * (D : ℝ) * n := by
+    refine le_trans (Finset.sum_le_card_nsmul _ _ 1 (fun p _ => pow_le_one₀ hr0 hr1)) ?_
+    rw [nsmul_eq_mul, mul_one]
+    have := card_depth_lt_le n D
+    have hc : ((Finset.univ.filter fun p : Site n => depth n p < D).card : ℝ)
+        ≤ ((4 * (D * n) : ℕ) : ℝ) := Nat.cast_le.mpr this
+    push_cast at hc
+    linarith
+  have hhigh : ∑ p ∈ Finset.univ.filter (fun p : Site n => ¬ depth n p < D), r ^ depth n p
+      ≤ ((n : ℝ) * n) * r ^ D := by
+    refine le_trans (Finset.sum_le_card_nsmul _ _ (r ^ D) (fun p hp => ?_)) ?_
+    · have hD : D ≤ depth n p := by
+        simp only [Finset.mem_filter, Finset.mem_univ, true_and, not_lt] at hp
+        exact hp
+      exact pow_le_pow_of_le_one hr0 hr1 hD
+    · rw [nsmul_eq_mul]
+      refine mul_le_mul_of_nonneg_right ?_ (by positivity)
+      have hc : ((Finset.univ.filter fun p : Site n => ¬ depth n p < D).card : ℝ)
+          ≤ ((Finset.univ : Finset (Site n)).card : ℝ) :=
+        Nat.cast_le.mpr (Finset.card_le_card (Finset.filter_subset _ _))
+      rw [Finset.card_univ] at hc
+      simpa [Site, Fintype.card_prod, Fintype.card_fin] using hc
+  linarith
+
+/-- **AND SO NO `m > 0` SURVIVES.** Choose `D` with `r^D` small — possible because `r < 1` — then
+`n` large: the first term of the split is linear in `n` and the second is a fixed small fraction of
+`n²`. The order of the choices is the whole argument. -/
+theorem chain_route_insufficient {r m : ℝ} (hr0 : 0 ≤ r) (hr1 : r < 1) (hm : 0 < m) :
+    ¬ ∀ n : ℕ, 0 < n → m * ((n : ℝ) * n) ≤ ∑ p : Site n, r ^ depth n p := by
+  intro hall
+  obtain ⟨D, hD⟩ := exists_pow_lt_of_lt_one (by linarith : (0:ℝ) < m / 2) hr1
+  obtain ⟨N, hN⟩ := exists_nat_gt (8 * (D : ℝ) / m)
+  set n := N + 1 with hn
+  have hnpos : (0:ℝ) < (n : ℝ) := by positivity
+  have hNn : 8 * (D : ℝ) / m < (n : ℝ) := by
+    refine lt_trans hN ?_
+    rw [hn]
+    push_cast
+    linarith
+  rw [div_lt_iff₀ hm] at hNn
+  have h1 := hall n (Nat.succ_pos N)
+  have h2 := chain_total_le n D hr0 hr1.le
+  have hsq : (0:ℝ) < (n:ℝ) * n := by positivity
+  nlinarith [h1, h2, hD, hNn, hnpos, hsq, pow_nonneg hr0 D]
+
 end
 
 end IsingChainRouteCeiling
