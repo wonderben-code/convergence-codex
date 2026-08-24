@@ -17,13 +17,20 @@
   * §2 `box_expect_eq_walk_energy`: the box's path-comparison correlation at one walk site, written
     in the chain side's own notation. This is `IsingBoxRegion.box_expect_eq_walk` read through §1.
 
-  WHAT REMAINS, AND THE NEXT STEP IS NAMED RATHER THAN GESTURED AT. `chain_expect` computes a
-  correlation over `IsingChainDecay.chainSite`, whose sites are built by iterated `Option`. Reading
-  the walk's model as one of those needs an equivalence between the walk's sites and that tower,
-  which needs **the walk to visit `m + 1` distinct sites** — and `IsingBoxWalk.exists_boundary_walk`
-  does not say that. Its walks are straight lines and so are injective, but injectivity is not among
-  its five clauses and nothing may be assumed from the construction. **That missing clause is the
-  next step**, it is not attempted here, and its cost is not claimed (`ERRATUM 246`).
+  WHAT REMAINS. `chain_expect` computes a correlation over `IsingChainDecay.chainSite`, whose sites
+  are built by iterated `Option`. Reading the walk's model as one of those needs an equivalence
+  between the walk's sites and that tower. Relating the two, and then exhibiting the walk's energy
+  as a `chainE`, is not attempted here and its cost is not claimed (`ERRATUM 246`).
+
+  **THE PARAGRAPH THAT STOOD HERE WAS WRONG AND IS QUOTED SO THE CORRECTION CAN BE CHECKED**
+  (`ERRATUM 94`, `ERRATUM 258`). It said the next step was that *"the walk to visit `m + 1` distinct
+  sites — and `IsingBoxWalk.exists_boundary_walk` does not say that … injectivity is not among its
+  five clauses"*. **It is the fourth clause.** That theorem's docstring calls the walk
+  *self-avoiding* in its first line and names clause four as "what makes it a path rather than a
+  walk". The absence was asserted from memory against a statement written two units earlier and
+  never re-read. `IsingWalkOrder` is the fold-back and it folds back by **using** the clause:
+  `card_walkSites` counts the sites and `walkOrder` indexes them **in the walk's own order**, which
+  is the object the chain actually needs and which a bare cardinality bijection would not give.
 
   **No wall moves. Nothing here is a bound on anything** — §2 is an identity between two
   correlations in the finite box, in a new notation.
