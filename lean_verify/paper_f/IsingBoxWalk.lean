@@ -10,9 +10,19 @@
   need and nothing else.**
 
   WHAT IS PROVED. `exists_boundary_walk`: for every `p`, a function `γ : ℕ → Site n` with `γ 0 = p`,
-  `isBoundary (γ (depth n p))`, `adj (γ k) (γ (k+1))` at every `k < depth n p`, and `γ` injective on
-  `{0, …, depth n p}`. **The walk is a straight line** — `depth` is a minimum of four coordinate
-  distances, and whichever attains it names the direction to walk in.
+  `isBoundary (γ (depth n p))`, `adj (γ k) (γ (k+1))` at every `k < depth n p`, `γ` injective on
+  `{0, …, depth n p}`, and **`isBoundary (γ i) = false` at every `i < depth n p`**. The walk is a
+  straight line — `depth` is a minimum of four coordinate distances, and whichever attains it names
+  the direction to walk in.
+
+  WHY THE FIFTH CLAUSE IS THERE, AND WHAT IT REPAIRS IN THIS FILE'S OWN HEADLINE. Without it the
+  statement says the walk IS on the boundary at step `depth n p` and says nothing about the steps
+  before, so "to the boundary of **exactly** its own depth" was carried by the construction rather
+  than by the theorem — a reader could satisfy the first four clauses with a walk that sat on the
+  boundary the whole way. It is also the fact the chain comparison needs: it is what makes the
+  path's INTERMEDIATE sites unfielded in `IsingPathComparison.pathCoup`, which is the shape
+  `IsingChainDecay.chain_expect` computes (field at the base, pendant sites bare). At `depth n p = 0`
+  the clause is vacuous, which is right — a site already on the boundary has a walk of no steps.
 
   WHY THE FOURTH CLAUSE IS THERE AND IS NOT DECORATION. The first three make `γ` a *walk*; a walk
   may revisit a site, and one that did would not present `depth n p` distinct bonds to compare
@@ -47,11 +57,13 @@ open Finset
 open IsingFiniteVolume IsingBoundaryField IsingChainRouteCeiling
 
 /-- **FROM EVERY SITE THERE IS A STRAIGHT SELF-AVOIDING WALK TO THE BOUNDARY OF EXACTLY ITS OWN
-DEPTH.** The fourth clause is what makes it a path rather than a walk. -/
+DEPTH.** The fourth clause is what makes it a path rather than a walk; the fifth is what makes
+"exactly" a claim of the theorem rather than of the construction. -/
 theorem exists_boundary_walk (n : ℕ) (p : Site n) :
     ∃ γ : ℕ → Site n, γ 0 = p ∧ isBoundary (γ (depth n p)) = true ∧
       (∀ k, k < depth n p → adj (γ k) (γ (k + 1))) ∧
-      (∀ i ≤ depth n p, ∀ j ≤ depth n p, γ i = γ j → i = j) := by
+      (∀ i ≤ depth n p, ∀ j ≤ depth n p, γ i = γ j → i = j) ∧
+      (∀ i, i < depth n p → isBoundary (γ i) = false) := by
   have h1 : p.1.val < n := p.1.isLt
   have h2 : p.2.val < n := p.2.isLt
   have hd : depth n p = min (min p.1.val (n - 1 - p.1.val)) (min p.2.val (n - 1 - p.2.val)) := rfl
@@ -59,7 +71,7 @@ theorem exists_boundary_walk (n : ℕ) (p : Site n) :
   rcases (by omega : depth n p = p.1.val ∨ depth n p = n - 1 - p.1.val ∨
       depth n p = p.2.val ∨ depth n p = n - 1 - p.2.val) with hA | hB | hC | hD
   · -- inward along the first coordinate
-    refine ⟨fun k => (⟨p.1.val - k, by omega⟩, p.2), ?_, ?_, ?_, ?_⟩
+    refine ⟨fun k => (⟨p.1.val - k, by omega⟩, p.2), ?_, ?_, ?_, ?_, ?_⟩
     · simp
     · simp only [isBoundary, decide_eq_true_eq]
       left
@@ -72,8 +84,11 @@ theorem exists_boundary_walk (n : ℕ) (p : Site n) :
     · intro i hi j hj hij
       simp only [Prod.mk.injEq, Fin.mk.injEq, and_true] at hij
       omega
+    · intro i hi
+      simp only [isBoundary, decide_eq_false_iff_not]
+      omega
   · -- outward along the first coordinate
-    refine ⟨fun k => (⟨p.1.val + min k (n - 1 - p.1.val), by omega⟩, p.2), ?_, ?_, ?_, ?_⟩
+    refine ⟨fun k => (⟨p.1.val + min k (n - 1 - p.1.val), by omega⟩, p.2), ?_, ?_, ?_, ?_, ?_⟩
     · simp
     · simp only [isBoundary, decide_eq_true_eq]
       right; left
@@ -86,8 +101,11 @@ theorem exists_boundary_walk (n : ℕ) (p : Site n) :
     · intro i hi j hj hij
       simp only [Prod.mk.injEq, Fin.mk.injEq, and_true] at hij
       omega
+    · intro i hi
+      simp only [isBoundary, decide_eq_false_iff_not]
+      omega
   · -- inward along the second coordinate
-    refine ⟨fun k => (p.1, ⟨p.2.val - k, by omega⟩), ?_, ?_, ?_, ?_⟩
+    refine ⟨fun k => (p.1, ⟨p.2.val - k, by omega⟩), ?_, ?_, ?_, ?_, ?_⟩
     · simp
     · simp only [isBoundary, decide_eq_true_eq]
       right; right; left
@@ -100,8 +118,11 @@ theorem exists_boundary_walk (n : ℕ) (p : Site n) :
     · intro i hi j hj hij
       simp only [Prod.mk.injEq, Fin.mk.injEq, true_and] at hij
       omega
+    · intro i hi
+      simp only [isBoundary, decide_eq_false_iff_not]
+      omega
   · -- outward along the second coordinate
-    refine ⟨fun k => (p.1, ⟨p.2.val + min k (n - 1 - p.2.val), by omega⟩), ?_, ?_, ?_, ?_⟩
+    refine ⟨fun k => (p.1, ⟨p.2.val + min k (n - 1 - p.2.val), by omega⟩), ?_, ?_, ?_, ?_, ?_⟩
     · simp
     · simp only [isBoundary, decide_eq_true_eq]
       right; right; right
@@ -113,6 +134,9 @@ theorem exists_boundary_walk (n : ℕ) (p : Site n) :
       omega
     · intro i hi j hj hij
       simp only [Prod.mk.injEq, Fin.mk.injEq, true_and] at hij
+      omega
+    · intro i hi
+      simp only [isBoundary, decide_eq_false_iff_not]
       omega
 
 end IsingBoxWalk

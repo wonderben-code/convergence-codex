@@ -121,22 +121,35 @@ theorem pathCoup_walk_eq (β h : ℝ) (γ : ℕ → Site n) (m : ℕ)
     Finset.mem_image.mpr ⟨i, Finset.mem_range.mpr hi, rfl⟩
   simp [pathCoup, hmem, hadj i hi]
 
+/-- **THE PATH'S INTERMEDIATE SITES CARRY NO FIELD**, which is the other half of what makes the
+comparison model a chain in `IsingChainDecay`'s sense: a field at the base and bare sites hanging
+off it. It is `IsingBoxWalk.exists_boundary_walk`'s fifth clause read through `pathCoup`. -/
+theorem pathCoup_no_field_before (β h : ℝ) (γ : ℕ → Site n) (m : ℕ)
+    (hoff : ∀ i, i < m → isBoundary (γ i) = false) (B : Finset (Site n × Site n))
+    (i : ℕ) (hi : i < m) :
+    pathCoup n β h B (Sum.inr (γ i)) = 0 := by
+  simp [pathCoup, hoff i hi]
+
 /-- **THE PRESENTATION CLAUSE, FOR EVERY SITE OF THE BOX.** For every `p` there is a set of at most
 `depth n p` genuine bonds of the box such that the comparison model keeping exactly those bonds and
 the boundary field is below the box at `p`, and whose last site is on the boundary. This is
 `WALLS §W3.6`'s *"a path to the boundary of its own depth, presented in the Griffiths idiom with
-couplings below the box's"* — **the presentation, not the evaluation.** The ratio on the left is
-not computed here and no lower bound on the box follows from this theorem alone. -/
+couplings below the box's"* — **the presentation, not the evaluation.** The two coupling clauses
+say the model along the path really is a chain in `IsingChainDecay`'s sense: `β` on each of its
+bonds, and no field on any site before the last. The ratio on the left is **not computed here** and
+no lower bound on the box follows from this theorem alone. -/
 theorem exists_path_comparison (β h : ℝ) (hβ : 0 ≤ β) (hh : 0 ≤ h) (p : Site n) :
     ∃ (γ : ℕ → Site n) (B : Finset (Site n × Site n)),
       γ 0 = p ∧ isBoundary (γ (depth n p)) = true ∧ B = walkBonds γ (depth n p) ∧
       B.card ≤ depth n p ∧
       (∀ i, i < depth n p → pathCoup n β h B (Sum.inl (γ i, γ (i + 1))) = β) ∧
+      (∀ i, i < depth n p → pathCoup n β h B (Sum.inr (γ i)) = 0) ∧
       num (boxSet n) (pathCoup n β h B) {p} / part (boxSet n) (pathCoup n β h B)
         ≤ ∫ σ, IsingTransfer2D.spin (σ p) ∂(isingMeasure n h β) := by
-  obtain ⟨γ, h0, hbd, hadj, -⟩ := IsingBoxWalk.exists_boundary_walk n p
+  obtain ⟨γ, h0, hbd, hadj, -, hoff⟩ := IsingBoxWalk.exists_boundary_walk n p
   refine ⟨γ, walkBonds γ (depth n p), h0, hbd, rfl, walkBonds_card_le γ _,
-    fun i hi => pathCoup_walk_eq β h γ _ hadj i hi, ?_⟩
+    fun i hi => pathCoup_walk_eq β h γ _ hadj i hi,
+    fun i hi => pathCoup_no_field_before β h γ _ hoff _ i hi, ?_⟩
   have := pathCoup_le_integral β h hβ hh (walkBonds γ (depth n p)) {p}
   simpa using this
 
