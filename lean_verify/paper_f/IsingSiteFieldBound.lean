@@ -241,30 +241,53 @@ theorem card_ge_of_route_bound (β : ℝ) (c : Site n → ℝ) (S : Finset (Site
     m * ((n : ℝ) * n) ≤ (S.card : ℝ) :=
   le_trans hb (sum_tanh_le_card β c S hsupp)
 
+/-- **THE SHARP FORM, ADDED 24 AUGUST 2026 — ONE BOX IS ENOUGH.** If at a single positive `n` the
+support carries fewer than `m·n²` sites, the route already fails there, so it fails as a family.
+No growth rate, no asymptotics, no archimedean step: the route delivers at most `|S n|`
+(`sum_tanh_le_card_of_support`) and the target is `m·n²`.
+
+**THIS IS THE FENCE `route_insufficient_of_sublinear` BELOW WAS CARRYING**, and removing it matters
+because of what it was used to claim. `WALLS §W3.6`'s addendum says the route *"succeeds exactly
+when the field's support is a positive fraction of the box"* — and the failure half was proved
+only for supports growing like `O(n)`, which leaves every intermediate rate (`n^{3/2}`, say)
+outside both halves. **"Exactly when" was an over-claim by my own theorems** (`ERRATUM 256`), and
+this is the repair: with this statement the two halves meet, since `indicator_bound_of_card`
+supplies the success side at `|S| ≥ δ·n²`. -/
+theorem route_insufficient_of_small_support {m : ℝ}
+    (f : ∀ n : ℕ, Site n → ℝ) (S : ∀ n : ℕ, Finset (Site n))
+    (hsupp : ∀ n : ℕ, ∀ p : Site n, p ∉ S n → f n p = 0)
+    (hcard : ∃ n : ℕ, 0 < n ∧ ((S n).card : ℝ) < m * ((n : ℝ) * n)) :
+    ¬ ∀ n : ℕ, 0 < n → m * ((n : ℝ) * n) ≤ ∑ p : Site n, tanh (f n p) := by
+  intro hall
+  obtain ⟨n, hn, hlt⟩ := hcard
+  exact absurd (le_trans (hall n hn)
+    (sum_tanh_le_card_of_support (f n) (S n) (hsupp n))) (not_le.mpr hlt)
+
 /-- **AND SO NO SUB-EXTENSIVE PROFILE CAN EVER REACH THE TARGET**, at any temperature, for any
-field strength — the boundary was never the point. -/
+field strength — the boundary was never the point.
+
+**KEPT, AND NOW A COROLLARY** (`ERRATUM 94`): it is `route_insufficient_of_small_support` plus the
+archimedean step that finds a box where `K·n < m·n²`. The general statement needs no such step,
+which is the tell that the growth rate was never part of the mathematics. -/
 theorem route_insufficient_of_sublinear {m K : ℝ} (hm : 0 < m)
     (f : ∀ n : ℕ, Site n → ℝ) (S : ∀ n : ℕ, Finset (Site n))
     (hsupp : ∀ n : ℕ, ∀ p : Site n, p ∉ S n → f n p = 0)
     (hcard : ∀ n : ℕ, ((S n).card : ℝ) ≤ K * n) :
     ¬ ∀ n : ℕ, 0 < n → m * ((n : ℝ) * n) ≤ ∑ p : Site n, tanh (f n p) := by
-  intro hall
+  refine route_insufficient_of_small_support f S hsupp ?_
   obtain ⟨N, hN⟩ := exists_nat_gt (K / m)
+  refine ⟨N + 1, Nat.succ_pos N, ?_⟩
   have hpos : (0 : ℝ) < (N : ℝ) + 1 := by positivity
-  have h3 : m * (((N : ℝ) + 1) * ((N : ℝ) + 1)) ≤ K * ((N : ℝ) + 1) := by
-    have h1 := hall (N + 1) (Nat.succ_pos N)
-    have h2 := le_trans h1
-      (sum_tanh_le_card_of_support (f (N + 1)) (S (N + 1)) (hsupp (N + 1)))
-    have h3' := le_trans h2 (hcard (N + 1))
-    push_cast at h3'
-    exact h3'
-  have h4 : m * ((N : ℝ) + 1) ≤ K := by
-    by_contra hcon
-    have hcon' : K < m * ((N : ℝ) + 1) := not_le.mp hcon
-    nlinarith [h3, hpos, hcon']
+  have hK : ((S (N + 1)).card : ℝ) ≤ K * ((N : ℝ) + 1) := by
+    have h := hcard (N + 1)
+    push_cast at h
+    exact h
   have h5 : K / m < (N : ℝ) + 1 := lt_trans hN (by linarith)
   rw [div_lt_iff₀ hm] at h5
-  nlinarith [h4, h5]
+  have hlt : K * ((N : ℝ) + 1) < m * (((N : ℝ) + 1) * ((N : ℝ) + 1)) := by
+    nlinarith [h5, hpos]
+  push_cast
+  exact lt_of_le_of_lt hK hlt
 
 /-- **`IsingBoundaryRouteCeiling.route_insufficient`, DERIVED**: the case `S n = ∂`, `K = 4`. Proved
 rather than asserted (`ERRATUM 201`), and **without that theorem's `0 ≤ β·h`** — the sign of the
