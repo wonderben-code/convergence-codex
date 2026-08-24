@@ -217,4 +217,54 @@ theorem decay_uniform_of_uniformSubTopRatio {β : ℝ} (h : UniformSubTopRatio �
   refine ⟨δ, hδ, fun n i κ => le_trans (corr2SepInf_abs_le_subTopRatio β n i κ) ?_⟩
   exact pow_le_pow_left₀ (subTopRatio_nonneg β n) (hle n) κ
 
+/-! ## ADDENDUM 24 AUGUST 2026 — what a REFUTATION would have to look like
+
+`UNLOCK_WATCHLIST`'s trigger for this item reads *"when anything in this estate proves a LOWER
+bound on a correlation, or bounds an eigenvalue ratio in terms of the matrix SIZE"*. **Its first
+clause has now fired four times and matched nothing**, because a lower bound that DECAYS in the
+separation is perfectly consistent with `UniformSubTopRatio` — indeed
+`decay_uniform_of_uniformSubTopRatio`, directly above, predicts exactly such bounds. The section
+below proves which lower bounds are relevant, so the trigger can say so instead of catching every
+one. -/
+
+/-- **A CORRELATION LOWER BOUND THAT DOES NOT DECAY IN THE SEPARATION REFUTES
+`UniformSubTopRatio`.** One constant `c > 0`, attained at arbitrarily large separations somewhere
+in the family, is enough: `decay_uniform_of_uniformSubTopRatio` would force `c ≤ (1 − δ)^κ` at
+every `κ`, and `(1 − δ)^κ` gets below `c`.
+
+**`δ ≤ 1` is not assumed** — it follows, because `subTopRatio` is non-negative and bounded above by
+`1 − δ`. So the theorem needs nothing about `β` and nothing about the model. -/
+theorem not_uniformSubTopRatio_of_nondecaying {β c : ℝ} (hc : 0 < c)
+    (h : ∀ κ : ℕ, ∃ (n : ℕ) (i : Fin (n + 1)),
+      c ≤ |corr2SepInf β n i (topIndex β n) κ|) :
+    ¬ UniformSubTopRatio β := by
+  intro hU
+  obtain ⟨δ, hδ, hle⟩ := hU
+  have hnn : (0 : ℝ) ≤ 1 - δ := le_trans (subTopRatio_nonneg β 0) (hle 0)
+  have hlt : 1 - δ < 1 := by linarith
+  have hdecay : ∀ (n : ℕ) (i : Fin (n + 1)) (κ : ℕ),
+      |corr2SepInf β n i (topIndex β n) κ| ≤ (1 - δ) ^ κ := fun n i κ =>
+    le_trans (corr2SepInf_abs_le_subTopRatio β n i κ)
+      (pow_le_pow_left₀ (subTopRatio_nonneg β n) (hle n) κ)
+  obtain ⟨κ, hκ⟩ := exists_pow_lt_of_lt_one hc hlt
+  obtain ⟨n, i, hni⟩ := h κ
+  exact absurd (le_trans hni (hdecay n i κ)) (not_le.mpr hκ)
+
+/-- **AND THE CONTRAPOSITIVE, WHICH IS THE FORM THE TRIGGER SHOULD BE READ IN**: if the item is
+ever proved, then every correlation lower bound in this family decays. So a lower bound is evidence
+about this item **only when it is uniform in the separation**, and the four bounds that have fired
+this trigger are not. -/
+theorem decays_of_uniformSubTopRatio {β : ℝ} (h : UniformSubTopRatio β) {c : ℝ} (hc : 0 < c) :
+    ∃ κ : ℕ, ∀ (n : ℕ) (i : Fin (n + 1)),
+      |corr2SepInf β n i (topIndex β n) κ| < c := by
+  obtain ⟨δ, hδ, hle⟩ := h
+  have hnn : (0 : ℝ) ≤ 1 - δ := le_trans (subTopRatio_nonneg β 0) (hle 0)
+  have hlt : 1 - δ < 1 := by linarith
+  have hdecay : ∀ (n : ℕ) (i : Fin (n + 1)) (κ : ℕ),
+      |corr2SepInf β n i (topIndex β n) κ| ≤ (1 - δ) ^ κ := fun n i κ =>
+    le_trans (corr2SepInf_abs_le_subTopRatio β n i κ)
+      (pow_le_pow_left₀ (subTopRatio_nonneg β n) (hle n) κ)
+  obtain ⟨κ, hκ⟩ := exists_pow_lt_of_lt_one hc hlt
+  exact ⟨κ, fun n i => lt_of_le_of_lt (hdecay n i κ) hκ⟩
+
 end IsingTopRatio
