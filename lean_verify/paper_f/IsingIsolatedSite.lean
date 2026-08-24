@@ -28,6 +28,7 @@
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 import IsingPendantSite
+import IsingChainDecay
 
 namespace IsingIsolatedSite
 
@@ -73,6 +74,37 @@ theorem isolated_expect (E : (V → Bool) → ℝ) (v₀ : V) :
   rw [isolated_num E v₀, isolated_part E v₀]
   have hZ : (0:ℝ) < basePart E := basePart_pos E
   field_simp
+
+/-! ## 2. ADDENDUM — the same, `k` sites at a time
+
+The induction is the one `IsingChainDecay.chain_expect` performs, with the bond switched off at
+every step, so the site set and its two instances are **reused rather than rebuilt**. -/
+
+/-- The energy after `k` isolated sites are added: it still never mentions any of them. -/
+def isoE (E : (V → Bool) → ℝ) : (k : ℕ) → (IsingChainDecay.chainSite V k → Bool) → ℝ
+  | 0 => E
+  | _ + 1 => fun σ => isoE E _ (fun v => σ (some v))
+
+/-- The original site, seen from inside the enlarged site set. -/
+def oldSite (V : Type*) (v₀ : V) : (k : ℕ) → IsingChainDecay.chainSite V k
+  | 0 => v₀
+  | _ + 1 => some (oldSite V v₀ _)
+
+/-- **ANY NUMBER OF SITES THE ENERGY NEVER MENTIONS CHANGE NO CORRELATION.** Each step doubles both
+halves and each doubling cancels; `2^k` never appears because it is cancelled as it is created. -/
+theorem iso_expect (E : (V → Bool) → ℝ) (v₀ : V) (k : ℕ) :
+    baseNum (isoE E k) (oldSite V v₀ k) / basePart (isoE E k) = baseNum E v₀ / basePart E := by
+  induction k with
+  | zero => rfl
+  | succ k ih =>
+      have hnum : baseNum (isoE E (k + 1)) (oldSite V v₀ (k + 1))
+          = 2 * baseNum (isoE E k) (oldSite V v₀ k) :=
+        isolated_num (isoE E k) (oldSite V v₀ k)
+      have hpart : basePart (isoE E (k + 1)) = 2 * basePart (isoE E k) :=
+        isolated_part (isoE E k) (oldSite V v₀ k)
+      rw [hnum, hpart, ← ih]
+      have hZ : (0:ℝ) < basePart (isoE E k) := basePart_pos _
+      field_simp
 
 end
 
