@@ -182,7 +182,7 @@ theorem num_eq_sum (n : ℕ) (β h : ℝ) (A : Finset (Site n)) :
 /-- **EVERY CORRELATION OF THE BOUNDARY-FIELD BOX IS AT LEAST THE PRODUCT OF THE LOCAL `tanh`s**, as
 an integral against `isingMeasure` itself. The observable is an arbitrary set of sites; the
 `|A| = 1` case is the magnetisation. -/
-theorem prod_boxField_le_integral [NeZero n] (β h : ℝ) (hβ : 0 ≤ β) (hh : 0 ≤ h)
+theorem prod_boxField_le_integral (β h : ℝ) (hβ : 0 ≤ β) (hh : 0 ≤ h)
     (A : Finset (Site n)) :
     (∏ p ∈ A, tanh (boxField n β h p))
       ≤ ∫ σ, ∏ p ∈ A, IsingTransfer2D.spin (σ p) ∂(isingMeasure n h β) := by
@@ -193,7 +193,7 @@ theorem prod_boxField_le_integral [NeZero n] (β h : ℝ) (hβ : 0 ≤ β) (hh :
   exact FiniteGibbsSum.le_integral_gibbs_count β (isingHB n h) _ hb
 
 /-- The magnetisation case. -/
-theorem boxField_le_integral [NeZero n] (β h : ℝ) (hβ : 0 ≤ β) (hh : 0 ≤ h) (p₀ : Site n) :
+theorem boxField_le_integral (β h : ℝ) (hβ : 0 ≤ β) (hh : 0 ≤ h) (p₀ : Site n) :
     tanh (boxField n β h p₀)
       ≤ ∫ σ, IsingTransfer2D.spin (σ p₀) ∂(isingMeasure n h β) := by
   have h₁ := prod_boxField_le_integral β h hβ hh {p₀}
@@ -201,7 +201,7 @@ theorem boxField_le_integral [NeZero n] (β h : ℝ) (hβ : 0 ≤ β) (hh : 0 �
   simpa using h₁
 
 /-- On the boundary the bound is `tanh (β·h)`. -/
-theorem tanh_le_integral_boundary [NeZero n] (β h : ℝ) (hβ : 0 ≤ β) (hh : 0 ≤ h) {p₀ : Site n}
+theorem tanh_le_integral_boundary (β h : ℝ) (hβ : 0 ≤ β) (hh : 0 ≤ h) {p₀ : Site n}
     (hp₀ : isBoundary p₀) :
     tanh (β * h) ≤ ∫ σ, IsingTransfer2D.spin (σ p₀) ∂(isingMeasure n h β) := by
   have h₁ := boxField_le_integral β h hβ hh p₀
@@ -210,7 +210,7 @@ theorem tanh_le_integral_boundary [NeZero n] (β h : ℝ) (hβ : 0 ≤ β) (hh :
 /-- **AND INSIDE, THIS ROUTE GIVES EXACTLY `0`** — `tanh 0`, because the comparison model has no
 field there. Recorded as a theorem rather than as a remark, because it is the reason the route
 cannot reach a bound proportional to the area of the box. -/
-theorem zero_le_integral_interior [NeZero n] (β h : ℝ) (hβ : 0 ≤ β) (hh : 0 ≤ h) {p₀ : Site n}
+theorem zero_le_integral_interior (β h : ℝ) (hβ : 0 ≤ β) (hh : 0 ≤ h) {p₀ : Site n}
     (hp₀ : ¬ isBoundary p₀) :
     (0 : ℝ) ≤ ∫ σ, IsingTransfer2D.spin (σ p₀) ∂(isingMeasure n h β) := by
   have h₁ := boxField_le_integral β h hβ hh p₀
@@ -219,13 +219,36 @@ theorem zero_le_integral_interior [NeZero n] (β h : ℝ) (hβ : 0 ≤ β) (hh :
 /-- **AND THE SAME COLLAPSE HAPPENS FOR EVERY MULTI-SITE CORRELATION**: one interior site in `A` and
 the whole product is `0`. So the fence removed here does not buy the route anything at all inside
 the box, which is worth stating rather than leaving to be inferred. -/
-theorem zero_le_integral_of_interior_mem [NeZero n] (β h : ℝ) (hβ : 0 ≤ β) (hh : 0 ≤ h)
+theorem zero_le_integral_of_interior_mem (β h : ℝ) (hβ : 0 ≤ β) (hh : 0 ≤ h)
     {A : Finset (Site n)} {p₁ : Site n} (hp₁ : p₁ ∈ A) (hint : ¬ isBoundary p₁) :
     (0 : ℝ) ≤ ∫ σ, ∏ p ∈ A, IsingTransfer2D.spin (σ p) ∂(isingMeasure n h β) := by
   have h₁ := prod_boxField_le_integral β h hβ hh A
   rwa [Finset.prod_eq_zero hp₁ (by rw [boxField, if_neg hint, Real.tanh_zero])] at h₁
 
-/-! ## 5. ADDENDUM 23 AUGUST 2026 — the general bridge instantiated, because the estate already had
+/-! ## ADDENDUM 24 AUGUST 2026 — `[NeZero n]` came off all five integral theorems, and it was
+never doing anything
+
+§7 rule 3. Five theorems in §5 and `IsingBoundaryRouteCeiling.sum_le_integral_magnetisation`
+carried `[NeZero n]`. **The cheapest possible test that it was vestigial had been sitting in the
+estate for a day**: `IsingBulkFieldBound` and `IsingSiteFieldBound` prove the same shape of
+statement through the same `FiniteGibbsSum.le_integral_gibbs_count`, and neither file contains the
+string `NeZero` at all. The instance the bridge needs is `Nonempty (Config n)`, and `Config n` is
+`Site n → Bool`, which is nonempty for every `n` — including `n = 0`, where the empty function is
+the only configuration.
+
+**WHAT THE REMOVAL BUYS, STATED WITHOUT INFLATION.** At `n = 0` the site type is empty, so
+`boxField_le_integral`, `tanh_le_integral_boundary` and `zero_le_integral_interior` are vacuous
+(there is no `p₀`), `prod_boxField_le_integral` says `1 ≤ 1` at `A = ∅`, and
+`sum_le_integral_magnetisation` says `0 ≤ 0`. **The degenerate case is trivial and this addendum
+does not pretend otherwise.** What the removal is worth is that the statements now say what they
+mean and no caller carries an instance it never needed — the whole chain from `boxField` to the
+route ceiling had been threading it end to end.
+
+**Contrast `IsingSlabStrict`'s `1 ≤ M`, which is NOT of this kind** (`ERRATUM 251`): there the
+excluded case genuinely breaks `energy_eq`, and the hypothesis was tested by trying to remove it
+and failing. The test is the same either way; only the outcome differs.
+
+## 5. ADDENDUM 23 AUGUST 2026 — the general bridge instantiated, because the estate already had
 the special case and this file's ancestor said it did not -/
 
 /-- **THE GENERAL BRIDGE, INSTANTIATED AT THE BOX.** `FiniteGibbsSum.integral_gibbs_count` applied

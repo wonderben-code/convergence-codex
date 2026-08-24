@@ -161,7 +161,7 @@ theorem route_bound_le (n : ℕ) {β h : ℝ} (hβh : 0 ≤ β * h) :
 
 /-- The per-site bounds sum to a bound on the magnetisation, integrability being free on a finite
 space against a probability measure. -/
-theorem sum_le_integral_magnetisation (n : ℕ) [NeZero n] {β h : ℝ} (hβ : 0 ≤ β) (hh : 0 ≤ h) :
+theorem sum_le_integral_magnetisation (n : ℕ) {β h : ℝ} (hβ : 0 ≤ β) (hh : 0 ≤ h) :
     ∑ p : Site n, tanh (boxField n β h p)
       ≤ ∫ σ, magnetisation n σ ∂(isingMeasure n h β) := by
   haveI : IsProbabilityMeasure (isingMeasure n h β) := isingHB_isProbability n h β
