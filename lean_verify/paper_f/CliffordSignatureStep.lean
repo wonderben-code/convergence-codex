@@ -17,12 +17,21 @@ ans[(p,q)] = _mat(16, ans[(p-8, q)])        -- eight-fold
 ans[(p,q)] = _mat(16, ans[(p,   q-8)])      -- its mirror
 ```
 
-**Every one of those five was proved in this estate for a general form, and none of them was
-stated at the signature index the script uses.** `clifford_step_hyp`, `clifford_step_pos`,
-`clifford_step_neg`, `clifford_periodicity_eight` and its mirror are all quantified over an
-arbitrary `Q'` with a hypothesis on `sigPos` or `sigNeg`; turning that into a statement about
-`sigForm (p+2) q` needs an extra ingredient in every case, and nobody had supplied it. So the
-figure rested on a translation that was correct and unwritten.
+**Every one of those five was proved in this estate for a general form, and the script applies
+them at the signature index.** `clifford_step_hyp`, `clifford_step_pos`, `clifford_step_neg`,
+`clifford_periodicity_eight` and its mirror are all quantified over an arbitrary `Q'` with a
+hypothesis on `sigPos` or `sigNeg`, and turning that into a statement about `sigForm (p+2) q`
+needs an extra ingredient in every case. **Precisely** — an earlier draft of this header said
+"none of them was stated at the signature index", which is too strong:
+
+* the hyperbolic, `(+2,0)` and `(0,+2)` steps had **no** signature-level statement at all;
+* the two eight-fold moves had one **only on the two axes** —
+  `CliffordModelPeriodicity.clifford_model_periodicity` is `Cl(n+8, 0) ≅ M₁₆(Cl(n, 0))` and
+  `clifford_model_periodicity_neg` is its `p = 0` mirror — where the script applies them at
+  general `(p, q)`.
+
+So the figure rested on a translation that was correct and, for the general `(p, q)` the script
+needs, unwritten.
 
 **This file writes it.** Nothing new about Clifford algebras is proved: each theorem is the
 existing quantified step instantiated at the models, composed where needed with
@@ -119,7 +128,9 @@ theorem clifford_sig_step_neg (p q : ℕ) :
   obtain ⟨f⟩ := clifford_neg_model p q
   exact ⟨e.trans (Algebra.TensorProduct.congr f AlgEquiv.refl)⟩
 
-/-- **`Cl(p+8, q) ≅ M₁₆(Cl(p, q))`** — the eight-fold periodicity at the models. -/
+/-- **`Cl(p+8, q) ≅ M₁₆(Cl(p, q))`** — the eight-fold periodicity at the models, at general `q`.
+`CliffordModelPeriodicity.clifford_model_periodicity` is the `q = 0` case and was already there;
+the script applies the move at every `q`. -/
 theorem clifford_sig_periodicity_eight (p q : ℕ) :
     Nonempty (CliffordAlgebra (sigForm (p + 8) q) ≃ₐ[ℝ]
       Matrix (Fin 16) (Fin 16) (CliffordAlgebra (sigForm p q))) :=
@@ -128,7 +139,8 @@ theorem clifford_sig_periodicity_eight (p q : ℕ) :
     (by rw [finrank_sigSpace, finrank_sigSpace]; omega)
     (by rw [sigPos_sigForm, sigPos_sigForm])
 
-/-- **`Cl(p, q+8) ≅ M₁₆(Cl(p, q))`** — its mirror, the script's fifth line. -/
+/-- **`Cl(p, q+8) ≅ M₁₆(Cl(p, q))`** — its mirror, the script's fifth line, at general `p`;
+`clifford_model_periodicity_neg` is the `p = 0` case. -/
 theorem clifford_sig_periodicity_eight_neg (p q : ℕ) :
     Nonempty (CliffordAlgebra (sigForm p (q + 8)) ≃ₐ[ℝ]
       Matrix (Fin 16) (Fin 16) (CliffordAlgebra (sigForm p q))) :=
