@@ -9,8 +9,15 @@ undetermined** (`WALLS §W7.2`). That is a Python computation over a bounded ran
 `CliffordSignatureStep` put the five moves it applies into Lean at the signature index. **This
 file runs the induction, in Lean, with no bound.**
 
-> **`clifford_reduces_to_small`** — for every `p` and `q` there are `p'`, `q'` with
-> `p' + q' ≤ 7` and a `k > 0` with `Cl(p,q) ≃ₐ[ℝ] M_k(Cl(p',q'))`.
+> **`clifford_reduces_to_small_pow`** — for every `p` and `q` there are `p'`, `q'` with
+> `p' + q' ≤ 7` and an `m` with `p' + q' + 2m = p + q` and
+> `Cl(p,q) ≃ₐ[ℝ] M_{2^m}(Cl(p',q'))`.
+
+**The matrix size is not existential window-dressing: it is `2^m` with `m` fixed by the
+signature**, since `2m` is exactly how much the reduction removes from `p + q`. A first version
+of this file said only *some* `k > 0` and listed bounding it under what is not proved; the
+induction was already carrying the invariant and had to be asked. `clifford_reduces_to_small` is
+kept as the weaker corollary.
 
 ## Why this shape, and why it is not the statement the watch-list calls impossible
 
@@ -52,10 +59,11 @@ this is the general one and the estate did not have it.
 
 * Nothing identifies the base cases. `p' + q' ≤ 7` bounds them; it does not name them, and the
   sixteen names are `ASSUMPTIONS 49`'s decision.
-* Nothing here bounds `k`. It is a product of `2`s and `16`s along the reduction chain and the
-  statement is existential in it.
-* The reduction is **not** claimed canonical: different case orders give different `(p', q', k)`,
-  and `Nonempty` records existence, not choice.
+* The reduction is **not** claimed canonical: different case orders give different `(p', q')`,
+  and `Nonempty` records existence, not choice. **`m` is not free, though**: `2m = p + q − p' − q'`,
+  so once the base case is fixed the matrix size is too.
+* Nothing checks that `p' + q'` has the parity that makes `m` an integer for *every* base case —
+  the theorem produces one that does, which is weaker than a statement about all of them.
 -/
 
 namespace CliffordReduction
@@ -99,64 +107,84 @@ def matrixOne (A : Type*) [Semiring A] [Algebra ℝ A] :
   map_add' _ _ := rfl
   commutes' r := by simp [Matrix.algebraMap_matrix_apply]
 
+/-- `M_{2^a}(M_{2^m}(A)) ≃ₐ[ℝ] M_{2^(a+m)}(A)` — `matrixFlatten` with the exponent arithmetic. -/
+def matrixPowMul (A : Type*) [Semiring A] [Algebra ℝ A] (a m : ℕ) :
+    Matrix (Fin (2 ^ a)) (Fin (2 ^ a)) (Matrix (Fin (2 ^ m)) (Fin (2 ^ m)) A) ≃ₐ[ℝ]
+      Matrix (Fin (2 ^ (a + m))) (Fin (2 ^ (a + m))) A :=
+  (matrixFlatten A (2 ^ a) (2 ^ m)).trans
+    (Matrix.reindexAlgEquiv ℝ A (finCongr (pow_add 2 a m).symm))
+
 /-! ## 2. One step down, whenever the total is at least eight -/
 
 /-- **AT `p + q ≥ 8` A MOVE ALWAYS APPLIES, AND IT LANDS ON A MATRIX ALGEBRA.** Both indices
 positive is the hyperbolic step; otherwise the total sits on one axis, is at least `8` there, and
 the eight-fold move applies. -/
 theorem reduces_one (p q : ℕ) (h : 8 ≤ p + q) :
-    ∃ p' q' k : ℕ, p' + q' < p + q ∧ 0 < k ∧
+    ∃ p' q' a : ℕ, 0 < a ∧ p' + q' + 2 * a = p + q ∧
       Nonempty (CliffordAlgebra (sigForm p q) ≃ₐ[ℝ]
-        Matrix (Fin k) (Fin k) (CliffordAlgebra (sigForm p' q'))) := by
+        Matrix (Fin (2 ^ a)) (Fin (2 ^ a)) (CliffordAlgebra (sigForm p' q'))) := by
   by_cases hp : 0 < p
   · by_cases hq : 0 < q
     · obtain ⟨a, rfl⟩ : ∃ a, p = a + 1 := ⟨p - 1, by omega⟩
       obtain ⟨b, rfl⟩ : ∃ b, q = b + 1 := ⟨q - 1, by omega⟩
-      exact ⟨a, b, 2, by omega, by norm_num, clifford_sig_step_hyp a b⟩
+      exact ⟨a, b, 1, by norm_num, by omega, by simpa using clifford_sig_step_hyp a b⟩
     · have hq0 : q = 0 := by omega
       subst hq0
       obtain ⟨c, rfl⟩ : ∃ c, p = c + 8 := ⟨p - 8, by omega⟩
-      exact ⟨c, 0, 16, by omega, by norm_num, clifford_sig_periodicity_eight c 0⟩
+      exact ⟨c, 0, 4, by norm_num, by omega,
+        by simpa using clifford_sig_periodicity_eight c 0⟩
   · have hp0 : p = 0 := by omega
     subst hp0
     obtain ⟨c, rfl⟩ : ∃ c, q = c + 8 := ⟨q - 8, by omega⟩
-    exact ⟨0, c, 16, by omega, by norm_num, clifford_sig_periodicity_eight_neg 0 c⟩
+    exact ⟨0, c, 4, by norm_num, by omega,
+      by simpa using clifford_sig_periodicity_eight_neg 0 c⟩
 
 /-! ## 3. The induction -/
 
 /-- The induction, with the total carried as a fuel parameter so that the recursion is on `ℕ`. -/
 private theorem reduces_aux : ∀ n p q : ℕ, p + q ≤ n →
-    ∃ p' q' k : ℕ, p' + q' ≤ 7 ∧ 0 < k ∧
+    ∃ p' q' m : ℕ, p' + q' ≤ 7 ∧ p' + q' + 2 * m = p + q ∧
       Nonempty (CliffordAlgebra (sigForm p q) ≃ₐ[ℝ]
-        Matrix (Fin k) (Fin k) (CliffordAlgebra (sigForm p' q'))) := by
+        Matrix (Fin (2 ^ m)) (Fin (2 ^ m)) (CliffordAlgebra (sigForm p' q'))) := by
   intro n
   induction n with
   | zero =>
       intro p q h
-      exact ⟨p, q, 1, by omega, by norm_num,
-        ⟨(matrixOne _).symm⟩⟩
+      exact ⟨p, q, 0, by omega, by omega, ⟨by simpa using (matrixOne _).symm⟩⟩
   | succ n ih =>
       intro p q h
       by_cases hs : p + q ≤ 7
-      · exact ⟨p, q, 1, hs, by norm_num,
-          ⟨(matrixOne _).symm⟩⟩
-      · obtain ⟨p₁, q₁, j, hlt, hj, ⟨e⟩⟩ := reduces_one p q (by omega)
-        obtain ⟨p', q', k, hsmall, hk, ⟨f⟩⟩ := ih p₁ q₁ (by omega)
-        exact ⟨p', q', j * k, hsmall, Nat.mul_pos hj hk,
-          ⟨(e.trans (AlgEquiv.mapMatrix f)).trans (matrixFlatten _ j k)⟩⟩
+      · exact ⟨p, q, 0, hs, by omega, ⟨by simpa using (matrixOne _).symm⟩⟩
+      · obtain ⟨p₁, q₁, a, ha, hsum, ⟨e⟩⟩ := reduces_one p q (by omega)
+        obtain ⟨p', q', m, hsmall, hsum', ⟨f⟩⟩ := ih p₁ q₁ (by omega)
+        exact ⟨p', q', a + m, hsmall, by omega,
+          ⟨(e.trans (AlgEquiv.mapMatrix f)).trans (matrixPowMul _ a m)⟩⟩
 
-/-- **EVERY REAL CLIFFORD ALGEBRA IS A MATRIX ALGEBRA OVER A SMALL ONE.** For every `p` and `q`
-there are `p'`, `q'` with `p' + q' ≤ 7` and a `k > 0` with
-`Cl(p, q) ≃ₐ[ℝ] M_k(Cl(p', q'))`.
+/-- **EVERY REAL CLIFFORD ALGEBRA IS A MATRIX ALGEBRA OVER A SMALL ONE, AND THE MATRIX SIZE IS
+FIXED BY THE SIGNATURE.** For every `p` and `q` there are `p'`, `q'` with `p' + q' ≤ 7` and an `m`
+with `p' + q' + 2m = p + q` and `Cl(p, q) ≃ₐ[ℝ] M_{2^m}(Cl(p', q'))`.
 
 Quantified over all `p` and `q`, with no bound, and **without naming the base cases** — which is
 `ASSUMPTIONS 49`'s decision and is not taken here. `reach_closure.py` names them, over
-`p + q ≤ 80`, in Python. -/
+`p + q ≤ 80`, in Python.
+
+The exponent is not extra decoration: `2m` is exactly what the reduction removes from `p + q`,
+so the size of the matrix algebra is determined once the base case is. -/
+theorem clifford_reduces_to_small_pow (p q : ℕ) :
+    ∃ p' q' m : ℕ, p' + q' ≤ 7 ∧ p' + q' + 2 * m = p + q ∧
+      Nonempty (CliffordAlgebra (sigForm p q) ≃ₐ[ℝ]
+        Matrix (Fin (2 ^ m)) (Fin (2 ^ m)) (CliffordAlgebra (sigForm p' q'))) :=
+  reduces_aux (p + q) p q le_rfl
+
+/-- The weaker form, kept because it is the one a reader reaches for: **some** positive matrix
+size over **some** small base case. It is `clifford_reduces_to_small_pow` with the exponent
+forgotten, and forgetting it is the only content. -/
 theorem clifford_reduces_to_small (p q : ℕ) :
     ∃ p' q' k : ℕ, p' + q' ≤ 7 ∧ 0 < k ∧
       Nonempty (CliffordAlgebra (sigForm p q) ≃ₐ[ℝ]
-        Matrix (Fin k) (Fin k) (CliffordAlgebra (sigForm p' q'))) :=
-  reduces_aux (p + q) p q le_rfl
+        Matrix (Fin k) (Fin k) (CliffordAlgebra (sigForm p' q'))) := by
+  obtain ⟨p', q', m, hsmall, _, he⟩ := clifford_reduces_to_small_pow p q
+  exact ⟨p', q', 2 ^ m, hsmall, pow_pos (by norm_num) m, he⟩
 
 end
 
