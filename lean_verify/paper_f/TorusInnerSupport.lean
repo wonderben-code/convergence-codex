@@ -34,7 +34,8 @@ from the other side, which is the check that the set is the right one.
   rather than two, and the seam case is the one that fails without `1 ≤ pᵢ`.
 * `lowerHalf_sdiff_torusInner` — the deficiency is **exactly the two layers**, as a set identity,
   mirroring `NullSpaceDimensionEven.lowerHalf_sdiff_innerLower` where it is one.
-* `torusInner_nonempty` — inhabited from `n = 6`, so the lemma is not vacuous.
+* `torusInner_nonempty` — inhabited from `n = 6`, so the lemma is not vacuous. **The bound is not
+  sharp**: `NullSpaceTorus.torusInner_nonempty_iff` proves inhabited ↔ `5 ≤ n` (ERRATUM 264).
 
 ## What is NOT proved
 
@@ -72,8 +73,15 @@ theorem torusInner_subset_lowerHalf (i : Fin d) (n : ℕ) :
     torusInner i n ⊆ lowerHalf i n := fun p hp =>
   (mem_lowerHalf i p).mpr (by rw [mem_torusInner] at hp; omega)
 
-/-- **INHABITED FROM `n = 6`** — the same bound `TorusNotStrict.exists_null_direction_torus`
-carries, reached from the other side. -/
+/-- **INHABITED FROM `n = 6`.**
+
+**NOT SHARP, AND THE AGREEMENT BELOW IS WEAKER THAN IT LOOKS** (ERRATUM 264). The witness `pᵢ = 1`
+only needs `4 < n`, so the set is inhabited from `n = 5`; `NullSpaceTorus.torusInner_nonempty_iff`
+proves the threshold is exactly five. `6 ≤ n` is copied from
+`TorusNotStrict.exists_null_direction_torus`, and the two bounds coincide only because that
+theorem is stated at even side, where five and six are the same condition. The original wording
+here called that coincidence "the same bound reached from the other side" and offered it as
+evidence the set was the right one; it is not evidence, and the sharp threshold is. -/
 theorem torusInner_nonempty (i : Fin d) (h6 : 6 ≤ n) : (torusInner i n).Nonempty :=
   ⟨fun _ => ⟨1, by omega⟩, mem_torusInner.mpr (by simp; omega)⟩
 

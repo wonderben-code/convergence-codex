@@ -87,6 +87,25 @@
     `BoxOddNotStrict`; strictness at the small sides says the null space is
     trivial there, which is the whole content, but at the large sides only a
     subspace of it is exhibited.
+
+    **SUPERSEDED IN PART, 25 AUG 2026.** The trailing clause was a claim about
+    the estate and is now false in three of its four cases. The null space is
+    described EXACTLY at large sides by `NullSpace.nullSpace_box_odd`,
+    `NullSpaceEven.nullSpace_box_even` and `NullSpaceTorus.nullSpace_torus_even`,
+    each with the matching `mem_nullSub_iff_…` submodule identity and a
+    dimension (`NullSpaceDimension`, `NullSpaceDimensionEven`,
+    `NullSpaceTorus.finrank_nullSub_torus_even`). **The one case where the
+    clause still holds as written is the ODD TORUS**: `OddNotStrictInstances`
+    exhibits a null direction at odd side and nothing describes the space it
+    lies in. That is now the only lattice-and-parity combination in this group
+    without an exact description, and naming it is the point of amending this
+    bullet rather than deleting it.
+
+    **And the threshold this file's summary transports is now reached from the
+    other end too.** `NullSpaceTorus.null_trivial_iff_side_le_four` proves the
+    even torus nondegenerate on the half exactly for `n ≤ 4`, from the dimension
+    of the null space rather than from strictness on the box. The two routes
+    share no argument; they agree.
   * Still one axiom, free field, finite graph.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
