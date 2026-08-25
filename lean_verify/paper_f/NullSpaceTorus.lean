@@ -33,10 +33,20 @@ box's dimension free, arriving a second time.
 
 ## The threshold, read off the dimension rather than transported
 
+**AND THE THRESHOLD ITSELF WAS ALREADY THE ESTATE'S** (`ERRATUM 267`).
+`CrossBlockStructure.torus_strict_iff_le_four_lowerHalf` has had `n ≤ 4` since 12 August, at every
+side and parity, with no size hypothesis; this section reaches the same number from the dimension
+of the null space, which is a different route and not a first. What the route buys is stated in
+`NullSpaceTorusAny.strict_iff_torusInner_empty`: the form is strict exactly when the interior
+is empty, so the number becomes a consequence of a count rather than a second opinion agreeing
+with the first. The paragraphs below are left as written apart from this note.
+
 `SmallSideStrict`'s summary settles the torus by transport — *"strict at one, two, three and
 four; not strict at five and up"* — and its own honest bullet says of the large sides that
-**"only a subspace of [the null space] is exhibited"**. §4 removes that caveat at even side and
-reaches the same threshold from the other direction: the null space has dimension
+**"only a subspace of [the null space] is exhibited"**. **That bullet is what this chain actually
+answers**; the threshold below was already `CrossBlockStructure`'s (`ERRATUM 267`). §4 removes the
+caveat at even side and reaches the known threshold from the other direction: the null space
+has dimension
 `(torusInner i n).card`, that set is empty exactly below side five, and so
 `null_trivial_iff_side_le_four` says the even torus is nondegenerate on the half **exactly** at
 sides `≤ 4`. Two independent routes to one number is the only real check available here, and

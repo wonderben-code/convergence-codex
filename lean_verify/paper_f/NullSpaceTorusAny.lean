@@ -30,26 +30,32 @@ defined for the even side and `mem_torusInner_iff_sdiff` shows it is already `st
 both layers at every `n`. So the odd torus's null space is described by the same set as the even
 one, and the dimension is the same instance of the same general theorem.
 
-## The threshold, and the third independent route to it
+## The threshold — which the estate ALREADY HAD, and what this file adds to it
 
-`null_trivial_iff_side_le_four_any` says the torus reflected form is nondegenerate on the half
-**exactly** at sides `n ≤ 4`, at every parity. Three routes now reach that number and they share
-no argument:
+**ERRATUM 267.** The draft of this section announced the threshold `n ≤ 4` as newly reached and
+claimed that §4 unified two parity-split degeneracy theorems for the first time. **Both claims were
+false and the correction was already written down.**
+`CrossBlockStructure.torus_strict_iff_le_four_lowerHalf` (12 August) is
 
-* `SmallSideStrict` transports strictness from the box and the estate's own `def` (sides 1–4).
-* `NullSpaceTorus.null_trivial_iff_side_le_four` counts the even-side null space.
-* This file counts it at every side. The estate's own degeneracy results are split by parity —
-  `TorusNotStrict.exists_null_direction_torus` at `Even n` with `6 ≤ n`, and
-  `OddNotStrictInstances.exists_null_direction_torus_odd` at `Odd n` with `5 ≤ n`, each with its
-  own hand-built witness — and §4 makes **both** of them instances of one statement,
-  `exists_null_direction_torus_any`, which asks only `5 ≤ n` and builds no witness at all: the
-  null space is nontrivial because its dimension is positive.
+> `(∀ c ≠ 0 supported on lowerHalf, 0 < reflectedForm (torusGraph d n) m (revSite i) c) ↔ n ≤ 4`
 
-**That agreement had a way of failing, which is the point.** `not_strict_torus_odd` was proved
-from an explicit family; `null_trivial_iff_side_le_four_any` is proved from
-`torusInner_nonempty_iff`. The two share no argument, and the count could have come out at six —
-in which case it would have contradicted a theorem the estate already had, at `n = 5`. It does
-not. Contrast ERRATUM 264, where the two numbers being compared could not have disagreed.
+at every side, in every dimension, with no parity hypothesis and no size hypothesis — and its own
+docstring says *"No new case is decided here"* and lists the six theorems it subsumes, three even
+and three odd. The unification had happened thirteen days earlier.
+
+**What this file adds is not the number but the reason for it.** `CrossBlockStructure` decides
+*whether* the form is degenerate by reading a condition off the cut; it contains no occurrence of
+`nullSub`, `nullSpace` or `finrank`, and nothing in the estate outside this chain mentions
+`torusInner`. So nothing could say *which* families are null, or how many. Here they are described
+(`nullSpace_torus_any`), counted (`finrank_nullSub_torus_any`), and the threshold falls out as a
+corollary of the count: **the form is strict exactly when the interior is empty, and the interior
+is empty exactly below side five**. That is `strict_iff_torusInner_empty` in §5, which derives the
+estate's biconditional rather than re-proving it, so the two are one statement and not two
+agreeing ones.
+
+The agreement itself stands as a fact — the dimension route and `strict_iff_cut_perfect` share no
+argument — but it is a third route to a number the estate had already checked twice, not the
+first check of the day with a way of failing.
 
 ## What is NOT proved
 
@@ -210,9 +216,17 @@ theorem nullSub_lt_admissible_torus_any (i : Fin d) (h2 : 2 ≤ n) (hm : m ≠ 0
 /-! ## 4. The estate's two parity-split degeneracy theorems, as one -/
 
 /-- **A NONZERO NULL FAMILY AT EVERY SIDE FROM FIVE, AT EVERY PARITY.**
-`TorusNotStrict.exists_null_direction_torus` is this at `Even n` with `6 ≤ n` and
-`OddNotStrictInstances.exists_null_direction_torus_odd` at `Odd n` with `5 ≤ n`; each builds an
-explicit family and each covers one parity. This covers both with `5 ≤ n` and **builds nothing**:
+
+**THE UNIFICATION CLAIMED HERE IN DRAFT WAS THIRTEEN DAYS OLD** (`ERRATUM 267`).
+`CrossBlockStructure.torus_strict_iff_le_four_lowerHalf` already subsumes all six parity-split
+`not_strict_*`/`strict` theorems, and says so in its own docstring — *"No new case is decided
+here"* — which I read past. What this statement adds over that one is the **massive shape**: the
+null family is exhibited as `massive *ᵥ v` with `v` supported on `torusInner`, which a
+strict-or-not biconditional does not give and which is what the description in §2 buys.
+
+`TorusNotStrict.exists_null_direction_torus` is the even case with `6 ≤ n` and
+`OddNotStrictInstances.exists_null_direction_torus_odd` the odd case with `5 ≤ n`; each builds an
+explicit family. This covers both with `5 ≤ n` and **builds nothing**:
 the null space is nontrivial because `finrank_nullSub_torus_any` makes its dimension
 `(torusInner i n).card` and `torusInner_nonempty_iff` makes that positive from five. The massive
 shape comes out as well, which in the two parity-split versions is a separate step. -/
@@ -240,11 +254,14 @@ theorem not_strict_torus_any (i : Fin d) (n : ℕ) (h5 : 5 ≤ n) (hm : m ≠ 0)
   exact absurd hcform (ne_of_gt (hstrict c hc0 hcsupp))
 
 /-- **NONDEGENERATE EXACTLY BELOW SIDE FIVE, AT EVERY PARITY.**
-`NullSpaceTorus.null_trivial_iff_side_le_four` is this at even side. What is added is every odd
-side — and `n = 5` in particular, which the even-side count could not reach and which
-`SmallSideStrict`'s transported range (sides one to four) does not cover either. The estate does
-know `n = 5`, from `OddNotStrictInstances.not_strict_torus_odd` and a hand-built family; this
-reaches it from the dimension instead. -/
+
+**THIS NUMBER IS NOT NEW AND THE DRAFT SAID IT WAS** (`ERRATUM 267`).
+`CrossBlockStructure.torus_strict_iff_le_four_lowerHalf` has had the same threshold since 12
+August, at every side, in every dimension, with no parity and no size hypothesis. What is new is
+the route: that one reads a condition off the cut, this one counts the null space. See
+`strict_iff_torusInner_empty` below, which is the point — composed with the estate's
+biconditional it makes the threshold a *consequence of the count* rather than a second argument
+agreeing with the first. -/
 theorem null_trivial_iff_side_le_four_any (i : Fin d) (n : ℕ) (hm : m ≠ 0) :
     (∀ c : Site d n → ℝ, (∀ p, p ∉ lowerHalf i n → c p = 0) →
         reflectedForm (torusGraph d n) m (revSite (n := n) i) c = 0 → c = 0) ↔ n ≤ 4 := by
@@ -277,5 +294,52 @@ theorem nullSpace_torus_odd (i : Fin d) (hn : Odd n) (hm : m ≠ 0)
     exact ⟨v, fun p hp => hvsupp p (by rw [mem_torusInner]; omega), hvc⟩
   · rintro ⟨v, hvsupp, hvc⟩
     exact ⟨v, fun p hp => hvsupp p (by rw [mem_torusInner] at hp; omega), hvc⟩
+
+/-! ## 6. The threshold as a consequence of the count, not a second opinion -/
+
+/-- **STRICT ON THE HALF EXACTLY WHEN THE INTERIOR IS EMPTY.** The null space is the massive image
+of the families on `torusInner` (§2) and has dimension `(torusInner i n).card` (§3), so it is
+trivial exactly when that set is empty. No side length appears. -/
+theorem strict_iff_torusInner_empty (i : Fin d) (n : ℕ) (hm : m ≠ 0) :
+    (∀ c : Site d n → ℝ, (∀ p, p ∉ lowerHalf i n → c p = 0) →
+        reflectedForm (torusGraph d n) m (revSite (n := n) i) c = 0 → c = 0)
+      ↔ torusInner i n = ∅ := by
+  classical
+  rw [null_trivial_iff_side_le_four_any i n hm]
+  constructor
+  · exact fun h4 => NullSpaceTorus.torusInner_eq_empty_of_le_four i h4
+  · intro he
+    by_contra h4
+    obtain ⟨p, hp⟩ := NullSpaceTorus.torusInner_nonempty_of_five_le (n := n) i (by omega)
+    rw [he] at hp
+    exact absurd hp (by simp)
+
+/-- **THE SAME, IN THE ESTATE'S STRICTNESS VOCABULARY** — the left side is *literally*
+`CrossBlockStructure.torus_strict_iff_le_four_lowerHalf`'s left side. Composing the two gives
+`torusInner i n = ∅ ↔ n ≤ 4`, which is `NullSpaceTorus.torusInner_nonempty_iff` read backwards.
+
+**That composition is the whole fold-back of `ERRATUM 267`.** The draft of this file presented its
+threshold as a second, independent argument agreeing with the estate's. It is better than that and
+also less: the number was never in doubt, and what the count supplies is the *reason* — the form is
+strict because there is nothing for a null family to be built from, and below side five there is
+nothing because the interior of the half is empty. Two agreeing arguments become one argument and
+its explanation.
+
+Passing from `= 0 → c = 0` to `0 < …` is where reflection positivity enters, and it holds at every
+side (`TorusAnySide.reflectionPositive_torus_any`). -/
+theorem strict_iff_torusInner_empty' (i : Fin d) (n : ℕ) (hm : m ≠ 0) :
+    (∀ c : Site d n → ℝ, c ≠ 0 → (∀ p, p ∉ lowerHalf i n → c p = 0) →
+        0 < reflectedForm (torusGraph d n) m (revSite (n := n) i) c)
+      ↔ torusInner i n = ∅ := by
+  rw [← strict_iff_torusInner_empty i n hm]
+  constructor
+  · intro hs c hcsupp hnull
+    by_contra hc0
+    exact absurd hnull (ne_of_gt (hs c hc0 hcsupp))
+  · intro hs c hc0 hcsupp
+    rcases lt_or_eq_of_le
+      (TorusAnySide.reflectionPositive_torus_any i n hm c hcsupp) with h | h
+    · exact h
+    · exact absurd (hs c hcsupp h.symm) hc0
 
 end NullSpaceTorusAny
