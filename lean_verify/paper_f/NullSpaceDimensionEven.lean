@@ -28,7 +28,9 @@ measures the deficiency against the admissible families: it is exactly the midli
 * `lowerHalf_sdiff_innerLower` — and the deficiency is **exactly the innermost layer**, as a set
   identity rather than as a remark.
 * `nullSub_lt_admissible_box_even` — so the form is degenerate at even side with a measured
-  codimension, the even twin of `nullSub_lt_admissible_box_odd`.
+  codimension, the even twin of `nullSub_lt_admissible_box_odd`. **The word `codimension` here
+  described a theorem that did not exist until `NullSpaceCodimension` (`ERRATUM 268`): what
+  this file states is `<`, and the codimension proper is `codim_box_even` there.
 
 ## The symmetry worth naming
 

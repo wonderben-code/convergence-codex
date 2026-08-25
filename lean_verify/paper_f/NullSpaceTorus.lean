@@ -73,7 +73,11 @@ and the threshold lemmas are parity-free already and `NullSpaceTorusAny` consume
 The deficiency is bounded below rather than computed: `nullSub_lt_admissible_torus_even` says the
 null space is strictly smaller than the admissible families, and
 `TorusInnerSupport.lowerHalf_sdiff_torusInner` says by exactly which sites, but the two are not
-combined into a codimension count the way the odd box's `nullSub_lt_admissible_box_odd` is —
+combined into a codimension count. **The clause here used to say "the way the odd box's
+`nullSub_lt_admissible_box_odd` is", which was false — that theorem is an inequality too, and no
+codimension count existed for any of the four cases** (`ERRATUM 268`). `NullSpaceCodimension`
+supplies all four; what is still missing is only the closed-form NUMBER, since each deficiency is a
+union of coordinate slices whose cardinality `n ^ (d - 1)` nothing here computes —
 because that would need the cardinality of a two-layer set, and counting it is arithmetic nobody
 has needed yet.
 

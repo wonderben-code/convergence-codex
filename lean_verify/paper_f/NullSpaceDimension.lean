@@ -209,8 +209,17 @@ theorem finrank_nullSub_box_odd (i : Fin d) {m : ℝ} (hm : m ≠ 0) :
 
 /-- **AND IT IS STRICTLY SMALLER THAN THE ADMISSIBLE FAMILIES.** The form is
     degenerate, and this says by how much: the deficiency is exactly the
-    midline layer, which is nonempty at odd side. Degeneracy with a measured
-    codimension rather than a bare "not strict". -/
+    midline layer, which is nonempty at odd side.
+
+    **THE LAST SENTENCE OF THIS DOCSTRING USED TO READ "Degeneracy with a
+    measured codimension rather than a bare `not strict`", AND THE STATEMENT
+    BELOW IS AN INEQUALITY** (`ERRATUM 268`). It says `<`; the set making up the
+    difference is named in a separate identity and nothing joined the two, so
+    the word *codimension* described a theorem that did not exist. It exists
+    now: `NullSpaceCodimension.codim_box_odd` is
+    `finrank (nullSub …) + (midLayer i n).card = finrank (supportedOn …)`, and
+    the general form over any finite graph is
+    `NullSpaceCodimension.finrank_nullSub_add_card_sdiff`. -/
 theorem nullSub_lt_admissible_box_odd (i : Fin d) (hn : Odd n) {m : ℝ} (hm : m ≠ 0) :
     Module.finrank ℝ (nullSub (boxGraph d n) m (strictLower i n))
       < Module.finrank ℝ (supportedOn (lowerHalf i n)) := by
