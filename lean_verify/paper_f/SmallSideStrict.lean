@@ -101,6 +101,16 @@
     without an exact description, and naming it is the point of amending this
     bullet rather than deleting it.
 
+    **AMENDED AGAIN THE SAME DAY: the odd torus no longer survives either.**
+    `NullSpaceTorusAny.nullSpace_torus_any` describes the null space exactly at
+    EVERY side and every parity, with `nullSpace_torus_odd` the odd-side reading
+    and `finrank_nullSub_torus_any` the dimension. So the clause is now false in
+    all four of its cases and this bullet records only history. The paragraph
+    above stood for two hours; it is left in place rather than deleted because
+    what it named as the last gap is exactly what closed it, and a bullet that
+    named a gap and then saw it shut is more useful than one that never named
+    it.
+
     **And the threshold this file's summary transports is now reached from the
     other end too.** `NullSpaceTorus.null_trivial_iff_side_le_four` proves the
     even torus nondegenerate on the half exactly for `n ≤ 4`, from the dimension

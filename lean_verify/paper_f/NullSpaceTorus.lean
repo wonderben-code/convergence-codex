@@ -46,6 +46,18 @@ they agree.
 `TorusNotStrict`'s witness forwards through the biconditional and so shows that witness has the
 massive shape, which `TorusNotStrict` asserted of the box's construction and never computed here.
 
+## SUBSUMED THE SAME DAY, AND DELIBERATELY KEPT
+
+`NullSpaceTorusAny` proves every theorem below at **every** side length, with `strictLower` in
+place of `lowerHalf` — the two sets coincide at even side — and `nullSpace_torus_even'` there
+recovers `nullSpace_torus_even` in one line. This file is kept rather than folded in for the
+reason `NullSpaceDimension` is kept beside `NullSpaceDimensionEven`: the even case is where the
+argument is legible, and the generalisation was only visible once it was written. What made the
+odd side reachable was noticing that every use of `Even n` here was to recover `strictLower`'s
+condition from `lowerHalf`'s, and that is a sentence one can only write after writing the proof
+that does it. §§4–5 below are NOT subsumed at odd side by anything here — `torusInner_nonempty_iff`
+and the threshold lemmas are parity-free already and `NullSpaceTorusAny` consumes them.
+
 ## What is NOT proved
 
 The deficiency is bounded below rather than computed: `nullSub_lt_admissible_torus_even` says the
