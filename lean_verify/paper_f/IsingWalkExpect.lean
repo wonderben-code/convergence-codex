@@ -17,11 +17,15 @@
   give, through `IsingPathComparison.pathCoup_le_integral`, is a genuine lower bound on the box at
   every site — a weak one, decaying with distance to the boundary, but proved.
 
-  WHAT IS LEFT SYMBOLIC, AND DELIBERATELY. The base model here is a single site carrying field
-  `β * h`, and its correlation is written `baseNum / basePart` rather than evaluated to
-  `tanh (β * h)`. That evaluation is a separate small statement; it is **not attempted here** and
-  its cost is not claimed (`ERRATUM 246`). Nothing above depends on it — the decay, and hence the
-  arm's fate, is settled by the `tanh β ^ m` factor alone.
+  THE BASE CORRELATION IS EVALUATED TOO, in the last section: a single site in a field has
+  correlation `tanh` of that field, so `box_walk_expect_closed` reads
+  **`tanh β ^ m * tanh (β * h)`** with nothing left symbolic.
+
+  **THAT EVALUATION WAS FIRST RECORDED HERE AS "NOT ATTEMPTED" AND THE SENTENCE IS SUPERSEDED**
+  (`ERRATUM 94`). It said the evaluation was a separate small statement whose cost was not claimed.
+  It was small; naming a residue does not discharge it, and `PROOF_STRATEGY §7`'s second rule is to
+  finish every unfinished chain. Nothing above depended on it then and nothing does now — the decay
+  is settled by the `tanh β ^ m` factor alone — but the formula is now closed.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
@@ -105,6 +109,72 @@ theorem box_walk_expect :
         (fun _ hi => hi) (fun i hi hz => (pathCoup_pure_of_live β h γ m i hz).resolve_left hi)
         {γ 0} hA,
       numL_eq β h γ m hadj hinj hbnd hoff, partL_eq β h γ m hadj hinj hbnd hoff, chain_expect]
+
+end
+
+/-! ## The base correlation, evaluated -/
+
+theorem base_part_eq (c : ℝ) :
+    basePart (fun τ : Fin 1 → Bool => c * IsingTransfer2D.spin (τ 0)) = exp c + exp (-c) := by
+  rw [basePart, ← Fintype.sum_equiv (Equiv.funUnique (Fin 1) Bool).symm
+      (fun b : Bool => exp (c * IsingTransfer2D.spin ((fun _ => b : Fin 1 → Bool) 0)))
+      (fun τ : Fin 1 → Bool => exp (c * IsingTransfer2D.spin (τ 0))) (fun _ => rfl),
+      Fintype.sum_bool]
+  simp [IsingTransfer2D.spin]
+
+theorem base_num_eq (c : ℝ) :
+    baseNum (fun τ : Fin 1 → Bool => c * IsingTransfer2D.spin (τ 0)) (0 : Fin 1)
+      = exp c - exp (-c) := by
+  rw [baseNum, ← Fintype.sum_equiv (Equiv.funUnique (Fin 1) Bool).symm
+      (fun b : Bool => IsingTransfer2D.spin ((fun _ => b : Fin 1 → Bool) 0)
+        * exp (c * IsingTransfer2D.spin ((fun _ => b : Fin 1 → Bool) 0)))
+      (fun τ : Fin 1 → Bool => IsingTransfer2D.spin (τ 0)
+        * exp (c * IsingTransfer2D.spin (τ 0))) (fun _ => rfl),
+      Fintype.sum_bool]
+  simp [IsingTransfer2D.spin]
+  ring
+
+/-- **THE BASE CORRELATION IS `tanh` OF THE FIELD.** A single site in a field: two configurations,
+one computation. -/
+theorem base_expect (c : ℝ) :
+    baseNum (fun τ : Fin 1 → Bool => c * IsingTransfer2D.spin (τ 0)) (0 : Fin 1)
+        / basePart (fun τ : Fin 1 → Bool => c * IsingTransfer2D.spin (τ 0)) = tanh c := by
+  rw [base_num_eq, base_part_eq, Real.tanh_eq_sinh_div_cosh, Real.sinh_eq, Real.cosh_eq]
+  have hpos : (0 : ℝ) < exp c + exp (-c) := by positivity
+  field_simp
+
+section
+variable (β h : ℝ) (γ : ℕ → Site n) (m : ℕ)
+  (hadj : ∀ k, k < m → adj (γ k) (γ (k + 1)))
+  (hinj : ∀ i ≤ m, ∀ j ≤ m, γ i = γ j → i = j)
+  (hbnd : isBoundary (γ m) = true) (hoff : ∀ i, i < m → isBoundary (γ i) = false)
+
+include hadj hinj hbnd hoff in
+/-- **THE COMPARISON MODEL'S MAGNETISATION IN CLOSED FORM: `tanh β ^ m * tanh (β * h)`.**
+Every symbol on the right is elementary, and **every one of them is at most `1` in absolute value
+while `tanh β` is strictly less than `1`** — so the whole thing decays geometrically in `m`, the
+site's distance to the boundary. This is the arm's answer written out with nothing left symbolic. -/
+theorem box_walk_expect_closed :
+    num (boxSet n) (pathCoup n β h (walkBonds γ m)) {γ 0}
+        / part (boxSet n) (pathCoup n β h (walkBonds γ m))
+      = tanh β ^ m * tanh (β * h) := by
+  rw [box_walk_expect β h γ m hadj hinj hbnd hoff, base_expect (β * h)]
+
+include hadj hinj hbnd hoff in
+/-- **THE ARM'S ACTUAL DELIVERABLE, AS A THEOREM RATHER THAN A SENTENCE.** Every record of this arm
+has said in prose that it yields a genuine lower bound on the box; the review asked where that
+theorem was, and it was nowhere. Here it is: at every site, the box's magnetisation is at least
+`tanh β ^ m * tanh (β * h)`, where `m` is the length of any self-avoiding walk from the site to the
+boundary.
+
+**It is a true bound and a weak one**, decaying geometrically in `m` and so useless for the uniform
+statement `MagnetisationBound` wants — which is the arm's answer, not a defect in this line. -/
+theorem box_magnetisation_lower_bound (hβ : 0 ≤ β) (hh : 0 ≤ h) :
+    tanh β ^ m * tanh (β * h)
+      ≤ ∫ σ, ∏ p ∈ ({γ 0} : Finset (Site n)),
+          IsingTransfer2D.spin (σ p) ∂(isingMeasure n h β) := by
+  rw [← box_walk_expect_closed β h γ m hadj hinj hbnd hoff]
+  exact pathCoup_le_integral β h hβ hh (walkBonds γ m) {γ 0}
 
 end
 
