@@ -45,8 +45,20 @@ needed to run the argument. It is not, and this file is where that shows:
   witness of that blindness. What is proved is that the action determines the singular value
   multiset and **nothing finer**, which is the honest reading of "sees the matrix through its
   singular values", now with a counterexample attached to the "nothing finer".
-* It says nothing about odd monomials, about `Λ ≠ 1`, or about non-monomial `f`. `SpectralAction`'s
-  `spectralAction_of_no_even_part` already records that the odd part is invisible.
+* It says nothing about odd monomials or about non-monomial `f`. `SpectralAction`'s
+  `spectralAction_of_no_even_part` already records that the odd part is invisible. (`Λ ≠ 1` IS
+  covered — §4.)
+* **`ASSUMPTIONS_LEDGER` 43 is inherited and is not weakened.** Its first part — that this estate's
+  `spectralAction` takes a POLYNOMIAL cutoff, where the physics object takes a smooth one — bites
+  on how far this reaches: the hypothesis here is about **monomials**, and it is **not** proved
+  that agreement of a smooth cutoff's action forces the same conclusion. What
+  `SpectralAction.spectralAction_congr_tfae` supplies is that agreement over *all* polynomials and
+  all `Λ` is the same condition, so the remaining gap is exactly the polynomial-to-smooth step that
+  entry already names as plumbing rather than research.
+  Its second part — that the spectral action is a **number and not a measure** — is untouched:
+  nothing here constructs a measure, integrates against one, or derives a variance. Singular values
+  are determined from traces, which is what a trace is. So this file joins that entry's *"what it
+  does NOT taint"* list rather than extending the claim it warns about.
 * It gives no bound: equal actions force equal multisets, and nothing here says that *close*
   actions force *close* multisets.
 -/
