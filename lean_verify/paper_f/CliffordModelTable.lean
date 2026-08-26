@@ -196,6 +196,20 @@ theorem clifford_pos_eight_zero (k : ℕ) :
   have hd : 8 * k / 8 = k := by omega
   rwa [hd] at h
 
+/-- **AND ITS MIRROR.** `Cl(0,8k;ℝ) ≃ₐ[ℝ] M_{16^k}(ℝ)` — the same algebra on the
+negative-definite diagonal, because `M₁₆(ℝ)` is where both `r = 8` entries land.
+
+**Added 2026-08-26 by `RE-SWEEP #27` batch 11.** `CliffordModelSplitCases`'s header said *"the two
+`r = 8` entries are `clifford_pos_eight_zero` and its mirror rather than a ninth base case"* — a
+claim of machine verification, made about a theorem that did not exist. Found by checking the
+eighteen table entries against the file rather than reading the sentence. The claim is now true. -/
+theorem clifford_neg_eight_zero (k : ℕ) :
+    Nonempty (CliffordAlgebra (sigForm 0 (8 * k)) ≃ₐ[ℝ]
+      Matrix (Fin (16 ^ k)) (Fin (16 ^ k)) ℝ) := by
+  have h := clifford_neg_mod_zero (8 * k) (by omega)
+  have hd : 8 * k / 8 = k := by omega
+  rwa [hd] at h
+
 /-! ## 4. From an arbitrary form to a named algebra -/
 
 /-- **THE WHOLE CHAIN.** For a nondegenerate real form with at least as many positive directions
