@@ -102,6 +102,25 @@ so §2 has to be transported. The one step with content is `cx_posSemidef`,
 and it goes through the Gram factorisation: `CFC.sqrt` is available on real
 matrices, so a positive semidefinite `A` is `SᴴS` with `S` real, and the
 complexification of `SᴴS` is `(cx S)ᴴ(cx S)`.
+
+**THE PARAGRAPH ABOVE DESCRIBES A PROOF THIS FILE NO LONGER USES** (`ERRATUM 274`,
+26 August 2026). It is kept because it is the honest record of how the section was
+first built, and because the route it describes is correct — it is simply not the
+cheapest one, and its cost was a hypothesis.
+
+The Gram route needs `[Fintype n]` and `[DecidableEq n]`: `CFC.sqrt` and the matrix
+product both do. `Matrix.PosSemidef` and `Matrix.PosDef` need **neither** — each is a
+condition on finitely-supported vectors `x : n →₀ R`. So the instances were the
+PROOF's hypothesis sitting in the statement, and four theorems here were stated for
+an arbitrary index type and proved only for a finite decidable one.
+
+`cx_form_eq` replaces the factorisation with a splitting that uses no finiteness at
+all: write `z : n →₀ ℂ` as `u + iv`, and the form becomes
+`∑∑ Aᵢⱼ(uᵢuⱼ + vᵢvⱼ) + i·∑∑ Aᵢⱼ(uᵢvⱼ − vᵢuⱼ)`, whose real part is two applications of
+the real hypothesis and whose imaginary part cancels under `i ↔ j` because `A` is
+symmetric. `cx_posSemidef`, `posSemidef_of_cx`, `cx_le_iff` and `cx_posDef` all follow
+from it and all `omit` both instances. `cx_inv` keeps them, and irreducibly: it is
+about `det` and `A⁻¹`.
 -/
 
 /-- A real matrix read as a complex one. -/
@@ -137,35 +156,106 @@ omit [Fintype n] [DecidableEq n] in
 @[simp] theorem cx_conjTranspose (A : Matrix n n ℝ) : (cx A)ᴴ = cx Aᴴ := by
   ext i j; simp [Matrix.conjTranspose_apply]
 
-/-- **The complexification of a positive semidefinite real matrix is
-    positive semidefinite.** Via the Gram factorisation, which is where
-    `CFC.sqrt` on real matrices earns its place. -/
-theorem cx_posSemidef {A : Matrix n n ℝ} (h : A.PosSemidef) : (cx A).PosSemidef := by
-  have hsq : CFC.sqrt A * CFC.sqrt A = A := CFC.sqrt_mul_sqrt_self A h.nonneg
-  have hH : (CFC.sqrt A)ᴴ = CFC.sqrt A :=
-    IsSelfAdjoint.of_nonneg (CFC.sqrt_nonneg A)
-  have hfac : cx A = (cx (CFC.sqrt A))ᴴ * cx (CFC.sqrt A) := by
-    rw [cx_conjTranspose, hH, ← cx_mul, hsq]
-  rw [hfac]
-  exact Matrix.posSemidef_conjTranspose_mul_self _
+omit [Fintype n] [DecidableEq n] in
+/-- A double `Finsupp.sum` against a fixed kernel, pushed through `mapRange`. Used in both
+    directions of the complexification: `ℂ → ℝ` taking real and imaginary parts, and `ℝ → ℂ`
+    embedding. Stated once rather than inlined twice (`ERRATUM 271`). -/
+private theorem sum_pair_mapRange {R S : Type*} [Zero R] [NonUnitalNonAssocSemiring S]
+    [StarRing S] (f : R → S) (hf : f 0 = 0) (x : n →₀ R) (B : n → n → S) :
+    ((Finsupp.mapRange f hf x).sum fun i a =>
+        (Finsupp.mapRange f hf x).sum fun j b => star a * B i j * b)
+      = x.sum fun i a => x.sum fun j b => star (f a) * B i j * f b := by
+  rw [Finsupp.sum_mapRange_index (by intro a; simp)]
+  refine Finsupp.sum_congr fun i _ => ?_
+  rw [Finsupp.sum_mapRange_index (by intro a; simp)]
 
-omit [DecidableEq n] in
-/-- And back. Restricting the complex condition to real vectors. -/
+omit [Fintype n] [DecidableEq n] in
+/-- **THE COMPLEX FORM OF A REAL SYMMETRIC MATRIX IS THE SUM OF TWO REAL FORMS.** Split
+    `z : n →₀ ℂ` into real and imaginary parts `u, v`; then
+    `∑∑ z̄ᵢAᵢⱼzⱼ = ∑∑ Aᵢⱼ(uᵢuⱼ + vᵢvⱼ) + i·∑∑ Aᵢⱼ(uᵢvⱼ − vᵢuⱼ)`, and the imaginary part
+    vanishes because `A` is symmetric, by relabelling `i ↔ j`. **No finiteness of `n` is used
+    anywhere**, which is the whole point: `Matrix.PosSemidef` and `Matrix.PosDef` are conditions
+    on finitely-supported vectors, and it is the GRAM route through `CFC.sqrt` — not the
+    statement — that needs `[Fintype n]`. -/
+private theorem cx_form_eq {A : Matrix n n ℝ} (hA : A.IsHermitian) (z : n →₀ ℂ) :
+    (z.sum fun i zi => z.sum fun j zj => star zi * cx A i j * zj)
+      = ((((Finsupp.mapRange Complex.re Complex.zero_re z).sum fun i a =>
+              (Finsupp.mapRange Complex.re Complex.zero_re z).sum fun j b => star a * A i j * b)
+          + ((Finsupp.mapRange Complex.im Complex.zero_im z).sum fun i a =>
+              (Finsupp.mapRange Complex.im Complex.zero_im z).sum fun j b =>
+                star a * A i j * b) : ℝ) : ℂ) := by
+  have hsymm : ∀ i j, A j i = A i j := fun i j => by
+    have := congrArg (fun M : Matrix n n ℝ => M i j) (hA : Aᴴ = A)
+    simpa [Matrix.conjTranspose_apply] using this
+  rw [sum_pair_mapRange Complex.re Complex.zero_re z A,
+    sum_pair_mapRange Complex.im Complex.zero_im z A]
+  simp only [Finsupp.sum, star_trivial]
+  have hcross : (∑ i ∈ z.support, ∑ j ∈ z.support, (z i).im * A i j * (z j).re)
+      = ∑ i ∈ z.support, ∑ j ∈ z.support, (z i).re * A i j * (z j).im := by
+    rw [Finset.sum_comm]
+    refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
+    rw [hsymm a b]; ring
+  have hre_eq : (∑ i ∈ z.support, ∑ j ∈ z.support, star (z i) * cx A i j * z j).re
+      = (∑ i ∈ z.support, ∑ j ∈ z.support, (z i).re * A i j * (z j).re)
+        + ∑ i ∈ z.support, ∑ j ∈ z.support, (z i).im * A i j * (z j).im := by
+    rw [← Finset.sum_add_distrib]
+    simp only [Complex.re_sum]
+    refine Finset.sum_congr rfl fun i _ => ?_
+    rw [← Finset.sum_add_distrib]
+    refine Finset.sum_congr rfl fun j _ => ?_
+    simp only [cx_apply, Complex.mul_re, Complex.mul_im, Complex.ofReal_re,
+      Complex.ofReal_im, Complex.star_def, Complex.conj_re, Complex.conj_im]
+    ring
+  have him_eq : (∑ i ∈ z.support, ∑ j ∈ z.support, star (z i) * cx A i j * z j).im = 0 := by
+    have hsplit : (∑ i ∈ z.support, ∑ j ∈ z.support, star (z i) * cx A i j * z j).im
+        = (∑ i ∈ z.support, ∑ j ∈ z.support, (z i).re * A i j * (z j).im)
+          - ∑ i ∈ z.support, ∑ j ∈ z.support, (z i).im * A i j * (z j).re := by
+      rw [← Finset.sum_sub_distrib]
+      simp only [Complex.im_sum]
+      refine Finset.sum_congr rfl fun i _ => ?_
+      rw [← Finset.sum_sub_distrib]
+      refine Finset.sum_congr rfl fun j _ => ?_
+      simp only [cx_apply, Complex.mul_re, Complex.mul_im, Complex.ofReal_re,
+        Complex.ofReal_im, Complex.star_def, Complex.conj_re, Complex.conj_im]
+      ring
+    rw [hsplit, hcross, sub_self]
+  exact Complex.ext (by rw [Complex.ofReal_re]; exact hre_eq)
+    (by rw [Complex.ofReal_im]; exact him_eq)
+
+omit [Fintype n] [DecidableEq n] in
+/-- **The complexification of a positive semidefinite real matrix is positive semidefinite, at
+    ANY index type.** The hypothesis the Gram route needed was the PROOF's, not the statement's;
+    `cx_form_eq` is the proof that does without it. -/
+theorem cx_posSemidef {A : Matrix n n ℝ} (h : A.PosSemidef) : (cx A).PosSemidef := by
+  refine ⟨(cx_conjTranspose A).trans (congrArg cx (h.isHermitian : Aᴴ = A)), fun z => ?_⟩
+  rw [cx_form_eq h.isHermitian z]
+  exact_mod_cast add_nonneg (h.2 _) (h.2 _)
+
+
+omit [Fintype n] [DecidableEq n] in
+/-- And back, and also at any index type: a real vector is a complex one whose imaginary part
+    is zero, so the complex condition RESTRICTS. Same route as `cx_posSemidef` and the same
+    `sum_pair_mapRange`, run in the other direction. -/
 theorem posSemidef_of_cx {A : Matrix n n ℝ} (h : (cx A).PosSemidef) : A.PosSemidef := by
-  refine Matrix.PosSemidef.of_dotProduct_mulVec_nonneg ?_ fun x => ?_
+  refine ⟨?_, fun x => ?_⟩
   · have h1 : (cx A)ᴴ = cx A := h.isHermitian
     rw [cx_conjTranspose] at h1
     exact cx_injective h1
-  · have hc := h.dotProduct_mulVec_nonneg (fun i => (x i : ℂ))
-    have hval : star (fun i => (x i : ℂ)) ⬝ᵥ (cx A *ᵥ fun i => (x i : ℂ))
-        = ((star x ⬝ᵥ (A *ᵥ x) : ℝ) : ℂ) := by
-      simp only [dotProduct, Matrix.mulVec, star_trivial, Pi.star_apply,
-        RCLike.star_def, cx_apply]
+  · have hc := h.2 (Finsupp.mapRange (fun r : ℝ => (r : ℂ)) Complex.ofReal_zero x)
+    rw [sum_pair_mapRange (fun r : ℝ => (r : ℂ)) Complex.ofReal_zero x (cx A)] at hc
+    have hcast : (x.sum fun i a => x.sum fun j b =>
+          star ((a : ℂ)) * cx A i j * (b : ℂ))
+        = (((x.sum fun i a => x.sum fun j b => star a * A i j * b) : ℝ) : ℂ) := by
+      simp only [Finsupp.sum, Complex.ofReal_sum, cx_apply, Complex.star_def,
+        Complex.conj_ofReal, star_trivial]
+      refine Finset.sum_congr rfl fun i _ => ?_
+      refine Finset.sum_congr rfl fun j _ => ?_
       push_cast
-      simp [Finset.mul_sum]
-    rw [hval] at hc
+      ring
+    rw [hcast] at hc
     exact_mod_cast hc
 
+omit [Fintype n] [DecidableEq n] in
 theorem cx_le_iff {A B : Matrix n n ℝ} : cx A ≤ cx B ↔ A ≤ B := by
   rw [Matrix.le_iff, Matrix.le_iff, ← cx_sub]
   exact ⟨posSemidef_of_cx, cx_posSemidef⟩
@@ -173,15 +263,28 @@ theorem cx_le_iff {A B : Matrix n n ℝ} : cx A ≤ cx B ↔ A ≤ B := by
 theorem cx_inv {A : Matrix n n ℝ} (h : IsUnit A.det) : cx A⁻¹ = (cx A)⁻¹ :=
   (Matrix.inv_eq_right_inv (by rw [← cx_mul, Matrix.mul_nonsing_inv _ h, cx_one])).symm
 
+omit [Fintype n] [DecidableEq n] in
+/-- **And positive DEFINITE, also at any index type.** The determinant route this file used
+    before genuinely needs `[Fintype n]` and `[DecidableEq n]` — `det` and `A⁻¹` do — but
+    `Matrix.PosDef`, like `PosSemidef`, is a condition on finitely-supported vectors, so the
+    same splitting works: a nonzero `z` has a nonzero real or imaginary part, that part
+    contributes strictly, and the other contributes at least zero. -/
 theorem cx_posDef {A : Matrix n n ℝ} (h : A.PosDef) : (cx A).PosDef := by
-  refine (Matrix.PosSemidef.posDef_iff_isUnit (cx_posSemidef h.posSemidef)).mpr ?_
-  have hd : IsUnit A.det := (Matrix.isUnit_iff_isUnit_det _).mp h.isUnit
-  have hprod : cx A * cx A⁻¹ = 1 := by
-    rw [← cx_mul, Matrix.mul_nonsing_inv _ hd, cx_one]
-  have hdet : (cx A).det * (cx A⁻¹).det = 1 := by
-    rw [← Matrix.det_mul, hprod, Matrix.det_one]
-  exact (Matrix.isUnit_iff_isUnit_det _).mpr
-    (isUnit_iff_ne_zero.mpr (left_ne_zero_of_mul_eq_one hdet))
+  refine ⟨(cx_conjTranspose A).trans (congrArg cx (h.isHermitian : Aᴴ = A)), fun z hz => ?_⟩
+  rw [cx_form_eq h.isHermitian z]
+  have hne : Finsupp.mapRange Complex.re Complex.zero_re z ≠ 0
+      ∨ Finsupp.mapRange Complex.im Complex.zero_im z ≠ 0 := by
+    by_contra hc
+    push Not at hc
+    refine hz (Finsupp.ext fun i => ?_)
+    have h1 : (z i).re = 0 := by
+      have := Finsupp.ext_iff.mp hc.1 i; simpa using this
+    have h2 : (z i).im = 0 := by
+      have := Finsupp.ext_iff.mp hc.2 i; simpa using this
+    simpa [Complex.ext_iff] using ⟨h1, h2⟩
+  rcases hne with hne | hne
+  · exact_mod_cast add_pos_of_pos_of_nonneg (h.2 hne) (h.posSemidef.2 _)
+  · exact_mod_cast add_pos_of_nonneg_of_pos (h.posSemidef.2 _) (h.2 hne)
 
 /-! ## 4. Antitonicity over `ℝ` — rung 2 of the ladder -/
 
