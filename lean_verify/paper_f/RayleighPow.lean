@@ -19,7 +19,7 @@ exact when written on 22 August, and the theorem that refutes them landed four d
 
 `HermitianSpectralMapping.eigenvalues_pow_multiset` proves the full multiset identification for a
 Hermitian matrix **with no Newton identities and no power sums at all**. The route is the
-characteristic polynomial: Mathlib's `Matrix.IsHermitian.charpoly_eq` writes `A.charpoly` as
+characteristic polynomial: Mathlib's `Matrix.IsHermitian.charpoly_eq` writes `Matrix.charpoly A` as
 `∏ᵢ (X − C λᵢ)`, the conjugation in the spectral theorem is a `StarAlgEquiv` so it commutes with
 the power, and the roots of a characteristic polynomial ARE the eigenvalue multiset.
 
