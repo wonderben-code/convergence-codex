@@ -4,7 +4,8 @@
 
   Frontier unit (tree §11.6, the rigorous-QFT branch where the
   `BakryEmeryGap.lean` row lives; link L23 of
-  `codex-internal/formalisation/SPINE.md`; wall #1 of the honest wall map). What the estate had before this file: the spec doc tags
+  `codex-internal/formalisation/SPINE.md`; wall #1 of the honest wall map). What the estate had
+  before this file: the spec doc tags
   "Bakry-Émery spectral gap (gap = 2/Λ²)" as PROVED ★, but in Lean the gap
   was a DEFINITION and the criterion field was discharged by `le_refl` — no
   measure, no variance, no test function appeared anywhere (Phase 0 audit).

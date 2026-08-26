@@ -69,8 +69,6 @@ import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 
 open Real MeasureTheory
 
-set_option linter.style.longLine false
-
 -- ============================================================================
 -- SECTION 1: The Boltzmann Weight Function
 -- ============================================================================

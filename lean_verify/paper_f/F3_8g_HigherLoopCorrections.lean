@@ -21,8 +21,6 @@ import CascadeFoundation
 
 open Module Real
 
-set_option linter.style.longLine false
-
 /-!
 ## Phase 1 (G1): One-Loop Structure — The Accidental Cancellation
 

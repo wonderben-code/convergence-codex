@@ -38,8 +38,6 @@ import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
 open Real
 
-set_option linter.style.longLine false
-
 -- ============================================================================
 -- SECTION 1: ReflectionPositivityData — The OS2 Chain
 -- ============================================================================

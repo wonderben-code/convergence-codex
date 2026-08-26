@@ -31,8 +31,6 @@ import CascadeFoundation
 
 open Module
 
-set_option linter.style.longLine false
-
 /-!
 ## Phase 1: Inner Fluctuations Decompose Along Subalgebras
 

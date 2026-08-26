@@ -27,8 +27,6 @@ import ConnesNCG
 
 open Real Nat
 
-set_option linter.style.longLine false
-
 -- ============================================================================
 -- SECTION 1: Quadratic Minimum of the Spectral Action
 -- ============================================================================

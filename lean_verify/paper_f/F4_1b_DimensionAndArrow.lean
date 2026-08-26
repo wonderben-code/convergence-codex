@@ -34,8 +34,6 @@ import Mathlib.LinearAlgebra.Matrix.Trace
 
 open Matrix Module
 
-set_option linter.style.longLine false
-
 -- ============================================================================
 -- SECTION 1: Dimension Formula — dim(Mₙ(ℂ)) = n²
 -- ============================================================================

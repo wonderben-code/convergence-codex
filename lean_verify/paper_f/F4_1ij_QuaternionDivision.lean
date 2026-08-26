@@ -29,8 +29,6 @@ import Mathlib.LinearAlgebra.Complex.FiniteDimensional
 
 open Real Quaternion QuaternionAlgebra Module
 
-set_option linter.style.longLine false
-
 -- ============================================================================
 -- SECTION 1: Quaternion Dimension — dim(ℍ) = 4 (F4.1i foundation)
 -- ============================================================================

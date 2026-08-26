@@ -26,8 +26,6 @@ import ConnesNCG
 
 open Real Matrix
 
-set_option linter.style.longLine false
-
 -- ============================================================================
 -- SECTION 1: The Cutoff as Unification Scale
 -- ============================================================================

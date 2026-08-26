@@ -31,8 +31,6 @@ import LieAlgebraEmbedding
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 
 open Real Module
-
-set_option linter.style.longLine false
 set_option linter.style.setOption false
 set_option linter.style.maxHeartbeats false
 

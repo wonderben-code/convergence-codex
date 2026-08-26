@@ -35,8 +35,6 @@ import ConnesNCG
 
 open Real
 
-set_option linter.style.longLine false
-
 -- ============================================================================
 -- SECTION 1: Classical Gauge Invariance of Spectral Action
 -- ============================================================================

@@ -29,8 +29,6 @@ import ConnesNCG
 
 open Real
 
-set_option linter.style.longLine false
-
 -- ============================================================================
 -- SECTION 1: Spectral Triple Dimensions
 -- ============================================================================
@@ -458,7 +456,8 @@ open MeasureTheory in
     by GENUINE measure theory and noncommutative geometry infrastructure.
     - SpectralActionMeasure provides the actual Euclidean measure μ = exp(-S)dD
       as a MeasureTheory.Measure with μ ≪ volume
-    - The Boltzmann weight factorisation boltzmannWeight(a+b) = boltzmannWeight(a) * boltzmannWeight(b)
+    - The Boltzmann weight factorisation
+      boltzmannWeight(a+b) = boltzmannWeight(a) * boltzmannWeight(b)
       is the mathematical core of OS2 (reflection positivity)
     - ConnesNCG provides the spectral triple (A, H, D, J, γ) that defines
       the cascade — this is the NCG data that the Wightman QFT reconstructs FROM

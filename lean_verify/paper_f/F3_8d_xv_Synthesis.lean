@@ -48,8 +48,6 @@ import CascadeFoundation
 
 open Real
 
-set_option linter.style.longLine false
-
 /-!
 ## Phase 1 (K₁): The Complete Chain from Nothing to CC
 

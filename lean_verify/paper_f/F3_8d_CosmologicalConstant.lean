@@ -34,8 +34,6 @@ import CascadeFoundation
 
 open Real Module
 
-set_option linter.style.longLine false
-
 /-!
 ### Mathlib anchor theorems
 

@@ -5,7 +5,8 @@
 
   WHY. `IsingModelSplit` proved that a split model's correlations ignore the other part, and that
   relabelling sites changes nothing. Both were stated for a bare energy function `E`. Every model in
-  this estate is presented differently — as a family of interaction terms, `part S J` and `num S J A`
+  this estate is presented differently — as a family of interaction terms, `part S J` and
+  `num S J A`
   summing `J i * ∏ v ∈ S i, spin (σ v)` over an index type — and the previous file's records said
   plainly that putting such a sum into split shape was **not attempted**. This file attempts it.
 

@@ -32,8 +32,6 @@ import Mathlib.Tactic.IntervalCases
 
 open Module
 
-set_option linter.style.longLine false
-
 /-!
 ## Phase 1 (N₁): Spectral Dimension = 4
 

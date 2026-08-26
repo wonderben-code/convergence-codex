@@ -1,7 +1,8 @@
 /-
   IsingChainIndex.lean — the chain's tower of sites, indexed by position, and glued to the walk.
 
-  WHY. `IsingChainDecay.chain_expect` is stated over `chainSite`, a tower built by iterated `Option`:
+  WHY. `IsingChainDecay.chain_expect` is stated over `chainSite`, a tower built by iterated
+  `Option`:
   `chainSite V 0 = V` and `chainSite V (k+1) = Option (chainSite V k)`. `IsingWalkOrder.walkOrder`
   indexes the walk's sites by `Fin (m + 1)`. Neither knows about the other, and the records have
   named exactly this as what remains.

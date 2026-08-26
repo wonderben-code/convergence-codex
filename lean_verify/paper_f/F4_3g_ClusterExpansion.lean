@@ -31,8 +31,6 @@ import ConnesNCG
 
 open Real Module
 
-set_option linter.style.longLine false
-
 -- ============================================================================
 -- SECTION 1: Cluster Expansion Framework
 -- ============================================================================

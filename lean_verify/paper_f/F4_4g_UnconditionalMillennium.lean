@@ -43,8 +43,6 @@ import ConnesNCG
 
 open Real Module Matrix MeasureTheory
 
-set_option linter.style.longLine false
-
 -- ============================================================================
 -- SECTION 1: The Complete Proof Chain
 -- ============================================================================
@@ -172,7 +170,8 @@ theorem clay_requirement_4_nontrivial (C : CascadeData) :
     C.gauge_embedding.su3_dim + C.gauge_embedding.su2_dim +
      C.gauge_embedding.u1_dim < C.gauge_embedding.total_dim ∧
     -- SM dimensions are correct
-    C.gauge_embedding.su3_dim = 8 ∧ C.gauge_embedding.su2_dim = 3 ∧ C.gauge_embedding.u1_dim = 1 := by
+    C.gauge_embedding.su3_dim = 8 ∧ C.gauge_embedding.su2_dim = 3
+      ∧ C.gauge_embedding.u1_dim = 1 := by
   exact ⟨C.gauge_embedding.total_dim_eq,
          C.gauge_embedding.beta_zero_eq,
          C.gauge_embedding.af,

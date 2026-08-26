@@ -34,8 +34,6 @@ import ConnesNCG
 
 open Real Fintype
 
-set_option linter.style.longLine false
-
 -- ============================================================================
 -- SECTION 1: Finite-Dimensional Internal Space
 -- ============================================================================

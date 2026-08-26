@@ -23,8 +23,6 @@ import Mathlib.LinearAlgebra.Matrix.Trace
 
 open Matrix Real Module
 
-set_option linter.style.longLine false
-
 /-!
 ## Phase 1 (S₁): Graviton Field from D-Fluctuation
 

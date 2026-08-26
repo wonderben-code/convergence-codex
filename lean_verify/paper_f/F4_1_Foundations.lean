@@ -43,8 +43,6 @@ import Mathlib.Data.Rat.Cast.Defs
 
 open Matrix Module TensorProduct Real
 
-set_option linter.style.longLine false
-
 -- ============================================================================
 -- SECTION 1: Weinberg Angle — sin²θ_W = 3/8 (F4.1f)
 -- ============================================================================

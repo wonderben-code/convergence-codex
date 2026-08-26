@@ -23,8 +23,6 @@
 import CascadeFoundation
 
 open Real Module Matrix
-
-set_option linter.style.longLine false
 set_option linter.style.setOption false
 set_option linter.style.maxHeartbeats false
 set_option linter.style.show false

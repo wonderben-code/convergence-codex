@@ -27,8 +27,6 @@ import ConnesNCG
 
 open Real
 
-set_option linter.style.longLine false
-
 -- ============================================================================
 -- SECTION 1: Precompactness from Uniform Bounds
 -- ============================================================================

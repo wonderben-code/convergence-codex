@@ -21,7 +21,8 @@
   than by the theorem — a reader could satisfy the first four clauses with a walk that sat on the
   boundary the whole way. It is also the fact the chain comparison needs: it is what makes the
   path's INTERMEDIATE sites unfielded in `IsingPathComparison.pathCoup`, which is the shape
-  `IsingChainDecay.chain_expect` computes (field at the base, pendant sites bare). At `depth n p = 0`
+  `IsingChainDecay.chain_expect` computes (field at the base, pendant sites bare). At
+  `depth n p = 0`
   the clause is vacuous, which is right — a site already on the boundary has a walk of no steps.
 
   WHY THE FOURTH CLAUSE IS THERE AND IS NOT DECORATION. The first three make `γ` a *walk*; a walk

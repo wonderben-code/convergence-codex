@@ -259,7 +259,9 @@ units, and §4 supplies an even preimage for each.
 def gI : CliffordAlgebra Q₁₃ := ι Q₁₃ ((0, 0), (1, 0)) * ι Q₁₃ ((0, 0), (0, 1))
 def gJ : CliffordAlgebra Q₁₃ := ι Q₁₃ ((0, 0), (0, 1)) * ι Q₁₃ ((0, 1), (0, 0))
 def gK : CliffordAlgebra Q₁₃ := ι Q₁₃ ((0, 1), (0, 0)) * ι Q₁₃ ((0, 0), (1, 0))
-def hR : CliffordAlgebra Q₁₃ := -(ι Q₁₃ ((1, 0), (0, 0)) * ι Q₁₃ ((0, 1), (0, 0)) * ι Q₁₃ ((0, 0), (1, 0)) * ι Q₁₃ ((0, 0), (0, 1)))
+def hR : CliffordAlgebra Q₁₃ :=
+  -(ι Q₁₃ ((1, 0), (0, 0)) * ι Q₁₃ ((0, 1), (0, 0)) *
+    ι Q₁₃ ((0, 0), (1, 0)) * ι Q₁₃ ((0, 0), (0, 1)))
 def hI : CliffordAlgebra Q₁₃ := ι Q₁₃ ((1, 0), (0, 0)) * ι Q₁₃ ((0, 1), (0, 0))
 def hJ : CliffordAlgebra Q₁₃ := ι Q₁₃ ((1, 0), (0, 0)) * ι Q₁₃ ((0, 0), (1, 0))
 def hK : CliffordAlgebra Q₁₃ := ι Q₁₃ ((1, 0), (0, 0)) * ι Q₁₃ ((0, 0), (0, 1))

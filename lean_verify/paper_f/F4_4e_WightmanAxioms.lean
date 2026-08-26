@@ -33,8 +33,6 @@ import ConnesNCG
 
 open Real
 
-set_option linter.style.longLine false
-
 -- ============================================================================
 -- SECTION 1: The OS → Wightman Reconstruction
 -- ============================================================================

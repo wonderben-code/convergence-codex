@@ -23,8 +23,6 @@ import TracelessSkewDimension
 
 open Real Module
 
-set_option linter.style.longLine false
-
 open Module (finrank)
 open Fintype (card)
 

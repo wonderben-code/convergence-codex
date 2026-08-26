@@ -27,8 +27,6 @@ import Mathlib.LinearAlgebra.Matrix.Trace
 
 open Matrix Real Module
 
-set_option linter.style.longLine false
-
 /-!
 ## Phase 1 (B1): Black Hole Geometry — The Schwarzschild Solution
 

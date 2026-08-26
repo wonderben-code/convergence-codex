@@ -30,7 +30,8 @@
   **WHAT THAT DOES TO THE FOUR THEOREMS.** THREE of `ReachCriterion`'s four
   signatures carry `hcross` — counted, not recalled — and none of them needs
   it; the fourth, `exists_null_direction_box_odd'`, supplies it internally and
-  need not. §4 restates the two substantive ones without it. Nothing gets weaker and one hypothesis disappears from each.
+  need not. §4 restates the two substantive ones without it. Nothing gets weaker and one
+  hypothesis disappears from each.
   More usefully, the contrapositive becomes a sentence about the object the
   wall is actually about: **strictness forces the coupling to be nonzero.**
   Not "the reach escapes" — that was the same fact wearing a geometric

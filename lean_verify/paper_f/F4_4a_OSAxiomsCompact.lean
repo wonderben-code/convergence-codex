@@ -27,8 +27,6 @@ import ConnesNCG
 
 open Real
 
-set_option linter.style.longLine false
-
 -- ============================================================================
 -- SECTION 1: The Cascade Path Integral is Finite-Dimensional
 -- ============================================================================
@@ -98,7 +96,8 @@ theorem os2_reflection_positivity_unconditional (C : CascadeData) (S_plus S_minu
     0 < exp (-S_plus) ∧
     -- |z|² ≥ 0 (non-negativity of the inner product)
     0 ≤ (exp (-S_plus)) ^ 2 := by
-  exact ⟨CascadeData.action_factorises S_plus S_minus, C.os_verified.os2_positive S_plus, sq_nonneg _⟩
+  exact ⟨CascadeData.action_factorises S_plus S_minus, C.os_verified.os2_positive S_plus,
+    sq_nonneg _⟩
 
 /-- The transfer matrix T = exp(-H·Δt) is a POSITIVE operator
     because exp(-x) > 0 for all x. It also satisfies the

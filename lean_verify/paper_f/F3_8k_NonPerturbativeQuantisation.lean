@@ -36,8 +36,6 @@ import Mathlib.LinearAlgebra.Matrix.Trace
 
 open Matrix Real Module
 
-set_option linter.style.longLine false
-
 /-!
 ## Phase 1 (K₁): The Internal Path Integral — Finite-Dimensional
 
@@ -221,7 +219,8 @@ theorem k5_correlator_decay (C : CascadeData) (r : ℝ) (hr : 0 < r) :
 -- Uses C.gauge_embedding (dot notation) from CascadeFoundation
 theorem k5_gauge_embedding_data (C : CascadeData) :
     C.gauge_embedding.total_dim = 15
-    ∧ C.gauge_embedding.su3_dim + C.gauge_embedding.su2_dim + C.gauge_embedding.u1_dim < C.gauge_embedding.total_dim
+    ∧ C.gauge_embedding.su3_dim + C.gauge_embedding.su2_dim + C.gauge_embedding.u1_dim
+        < C.gauge_embedding.total_dim
     ∧ 0 < C.gauge_embedding.beta_zero
     := ⟨C.gauge_embedding.total_dim_eq, C.gauge_embedding.embedding, C.gauge_embedding.af⟩
 
@@ -285,7 +284,8 @@ theorem nonperturbative_cascade_chain (C : CascadeData) :
     -- (5) Wightman axioms satisfied (dot notation)
     ∧ (C.wightman_verified.poincare_dim = 10)
     -- (6) SM embeds in SU(4) (dot notation via gauge_embedding)
-    ∧ (C.gauge_embedding.su3_dim + C.gauge_embedding.su2_dim + C.gauge_embedding.u1_dim < C.gauge_embedding.total_dim)
+    ∧ (C.gauge_embedding.su3_dim + C.gauge_embedding.su2_dim + C.gauge_embedding.u1_dim
+        < C.gauge_embedding.total_dim)
     -- (7) Asymptotic freedom (dot notation via gauge_embedding)
     ∧ (0 < C.gauge_embedding.beta_zero)
     := by

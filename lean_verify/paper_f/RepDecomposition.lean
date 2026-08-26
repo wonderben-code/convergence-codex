@@ -40,8 +40,6 @@ import CascadeFoundation
 
 open Module
 
-set_option linter.style.longLine false
-
 -- ============================================================================
 -- SECTION 1: The Pati-Salam Colour Decomposition (Fin level)
 -- ============================================================================

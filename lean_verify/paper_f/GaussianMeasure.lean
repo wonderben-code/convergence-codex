@@ -33,8 +33,6 @@ import Mathlib.Data.Nat.Factorial.DoubleFactorial
 
 open Real Nat
 
-set_option linter.style.longLine false
-
 -- ============================================================================
 -- SECTION 1: Double Factorial and Wick Pairing Combinatorics
 -- ============================================================================
@@ -123,7 +121,8 @@ theorem even_double_factorial_pos (k : ℕ) :
 theorem gaussian_moment_coeff (k : ℕ) :
     (2 * k)! / (2 ^ k * k !) = (2 * k - 1)‼ := by
   rw [wick_pairing_expanded]
-  rw [Nat.mul_div_cancel_left _ (Nat.mul_pos (Nat.pos_of_ne_zero (by positivity)) (Nat.factorial_pos k))]
+  rw [Nat.mul_div_cancel_left _
+    (Nat.mul_pos (Nat.pos_of_ne_zero (by positivity)) (Nat.factorial_pos k))]
 
 /-- (2k-1)!! ≤ (2k)! / k!.
     This bound is useful for moment estimates.
@@ -375,7 +374,8 @@ theorem cascade_os5_from_bounded_action (_C : CascadeData) :
     (∀ S : ℝ, 0 ≤ S → 0 < exp (-S) ∧ exp (-S) ≤ 1) ∧
     (∀ x : ℝ, exp (-(x ^ 2)) ≤ 1) ∧
     (∀ a b : ℝ, exp (-(a + b)) = exp (-a) * exp (-b)) := by
-  exact ⟨fun S hS => CascadeData.bounded_action S hS, exp_neg_sq_le_one, fun a b => by rw [neg_add, exp_add]⟩
+  exact ⟨fun S hS => CascadeData.bounded_action S hS, exp_neg_sq_le_one,
+    fun a b => by rw [neg_add, exp_add]⟩
 
 /-- The cascade's Gaussian domination data is consistent with its OS verification.
     Both use the same internal gap and produce the same bounds. -/

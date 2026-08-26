@@ -32,8 +32,6 @@ import CascadeFoundation
 
 open Real Module
 
-set_option linter.style.longLine false
-
 -- ============================================================================
 -- SECTION 1: TransferMatrixData — The Transfer Matrix Structure
 -- ============================================================================
@@ -347,7 +345,8 @@ theorem CascadeData.mass_gap_routes_consistent (C : CascadeData) :
     - Internal gap: from the Bakry-Emery criterion on Herm₄
     - Confinement gap: from dimensional transmutation in SU(3)
     The mass gap is the MINIMUM of both (whichever is tighter). -/
-noncomputable def CascadeData.to_physical_transfer_matrix (C : CascadeData) : TransferMatrixData where
+noncomputable def CascadeData.to_physical_transfer_matrix (C : CascadeData) :
+    TransferMatrixData where
   gap := min C.internal_gap C.Lambda_QCD
   gap_pos := C.physical_gap_pos
   max_excited_eigenvalue := exp (-(min C.internal_gap C.Lambda_QCD))

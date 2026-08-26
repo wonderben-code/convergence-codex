@@ -30,8 +30,6 @@ import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
 open Real Matrix
 
-set_option linter.style.longLine false
-
 -- ============================================================================
 -- SECTION 1: Reflection Structure
 -- ============================================================================

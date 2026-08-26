@@ -43,8 +43,6 @@ import ConnesNCG
 
 open Matrix
 
-set_option linter.style.longLine false
-
 /-!
 ## Phase 1 (A_1): SU(4)^3 Anomaly — The Cubic Cancellation
 

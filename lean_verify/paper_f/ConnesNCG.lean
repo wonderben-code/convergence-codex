@@ -35,8 +35,6 @@ import Mathlib.Data.Matrix.Mul
 import Mathlib.LinearAlgebra.Matrix.Trace
 
 open Matrix
-
-set_option linter.style.longLine false
 set_option linter.unusedSimpArgs false
 
 -- ============================================================================

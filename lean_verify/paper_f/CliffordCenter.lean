@@ -5,7 +5,8 @@ import CliffordRealMinkowski
 # The centre of `Cl(1,3;ℝ)` is `ℝ` — ALREADY PROVED IN THIS ESTATE, see the retraction below
 
 **RETRACTION, `ERRATUM 118`, added on the day this file was written.** `SpinKernel.lean` proved
-`clifford_central` on **8 August**, by transport along `cliffordRealMinkowskiEquiv` — the same route,
+`clifford_central` on **8 August**, by transport along `cliffordRealMinkowskiEquiv` — the same
+route,
 the same isomorphism. `WALLS` §W7 records that closure **four paragraphs below the route paragraphs
 this file quotes**, and the section was not read to its end. **This file closes nothing that was
 open.**

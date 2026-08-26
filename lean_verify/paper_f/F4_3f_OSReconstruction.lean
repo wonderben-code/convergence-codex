@@ -25,8 +25,6 @@ import ConnesNCG
 
 open Real
 
-set_option linter.style.longLine false
-
 -- ============================================================================
 -- SECTION 1: The 5 Osterwalder-Schrader Axioms (via CascadeData)
 -- ============================================================================

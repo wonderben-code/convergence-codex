@@ -45,8 +45,6 @@ import ConnesNCG
 
 open Real Module Matrix
 
-set_option linter.style.longLine false
-
 /-!
 ## Phase 1 (C₁): The Cascade Forces a C*-Algebra
 
