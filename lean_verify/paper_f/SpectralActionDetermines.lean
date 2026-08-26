@@ -125,7 +125,44 @@ theorem singularValues_multiset_eq {M N : Matrix (Fin n) (Fin n) ℂ}
     rw [Multiset.map_map]; rfl
   rw [hM, hN, hbase]
 
-/-! ## 4. The conclusion cannot be strengthened, and that is a theorem rather than a caveat -/
+/-! ## 4. The cutoff, removed — `Λ = 1` was a convenience of the ingredient, not a hypothesis -/
+
+/-- **AT AN EVEN MONOMIAL THE CUTOFF IS A NONZERO SCALAR AND NOTHING ELSE.**
+`spectralAction f Λ M` is `Tr (f (Λ⁻¹ • Dlin M))`, so at `f = X^m` it is `Λ⁻ᵐ` times the value at
+`Λ = 1`. Stated for every `m`, even or odd, because the parity plays no part in it. -/
+theorem spectralAction_pow_lambda (Λ : ℂ) (m : ℕ) (M : Matrix (Fin n) (Fin n) ℂ) :
+    SpectralAction.spectralAction (Polynomial.X ^ m) Λ M
+      = Λ⁻¹ ^ m * SpectralAction.spectralAction (Polynomial.X ^ m) 1 M := by
+  unfold SpectralAction.spectralAction
+  rw [Polynomial.aeval_X_pow, Polynomial.aeval_X_pow, smul_pow, map_smul, smul_eq_mul,
+    inv_one, one_smul]
+
+/-- **THE MAIN THEOREM AT EVERY NONZERO CUTOFF.** `§2` is stated at `Λ = 1` because its ingredient
+`SpectralAction.trace_pow_eq_spectralAction` is. That is a convenience of the ingredient and not a
+hypothesis of the mathematics: at a FIXED `Λ ≠ 0` the two actions differ from their `Λ = 1` values
+by the same nonzero scalar `Λ⁻¹ ^ (2k)`, which cancels.
+
+**This is the standing queue item — remove one restrictive hypothesis at a time — and the
+hypothesis removed is a `Λ`.** Note what is NOT claimed: the action itself genuinely depends on the
+cutoff (`SpectralAction.spectralAction_lambda_dependent` exhibits two different values), so this is
+not a statement that `Λ` does not matter. It is that **`Λ` does not matter to what the action
+DETERMINES**, which is a different sentence. -/
+theorem eigenvalues_multiset_eq_of_spectralAction_eq_lambda {M N : Matrix (Fin n) (Fin n) ℂ}
+    {Λ : ℂ} (hΛ : Λ ≠ 0)
+    (h : ∀ k, 1 ≤ k → k ≤ n →
+      SpectralAction.spectralAction (Polynomial.X ^ (2 * k)) Λ M
+        = SpectralAction.spectralAction (Polynomial.X ^ (2 * k)) Λ N) :
+    Multiset.map (isHermitian_mul_conjTranspose_self M).eigenvalues Finset.univ.val
+      = Multiset.map (isHermitian_mul_conjTranspose_self N).eigenvalues Finset.univ.val := by
+  refine eigenvalues_multiset_eq_of_spectralAction_eq (fun k hk hkn => ?_)
+  have hpow : (Λ⁻¹ : ℂ) ^ (2 * k) ≠ 0 := pow_ne_zero _ (inv_ne_zero hΛ)
+  have hk' := h k hk hkn
+  -- Explicit arguments: a bare `rw` rewrites the LHS twice, because the `1` created by the
+  -- first rewrite matches the `Λ` of the second.
+  rw [spectralAction_pow_lambda Λ (2 * k) M, spectralAction_pow_lambda Λ (2 * k) N] at hk'
+  exact mul_left_cancel₀ hpow hk'
+
+/-! ## 5. The conclusion cannot be strengthened, and that is a theorem rather than a caveat -/
 
 /-- **THE SAME ACTION AT EVERY EVEN MONOMIAL DOES NOT FORCE THE SAME MATRIX.** `-M` and `M` give
 the same `M · Mᴴ`, hence the same action at every `X^{2k}` and every `Λ`.
