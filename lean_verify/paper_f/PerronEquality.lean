@@ -15,6 +15,18 @@ This file is that equality case, and it settles two halves of it.
 > that is what it is about; **absent from Mathlib**, which has `Finset.abs_sum_le_sum_abs` and no
 > equality companion (`Finset.abs_sum_eq_sum_abs`, `abs_sum_eq_iff`: 0 each).
 >
+> **^ THE ABSENCE CLAIM STANDS AND ITS SEARCH DID NOT (`ERRATUM 281`).** Both probe strings
+> above assume the Mathlib name contains `sum`, and the nearest neighbour does not:
+> **`abs_add_eq_add_abs_iff` — `|a + b| = |a| + |b| ↔ (0 ≤ a ∧ 0 ≤ b) ∨ (a ≤ 0 ∧ b ≤ 0)`** —
+> which is this theorem's conclusion, *forces a common sign*, in Mathlib, for two terms. So
+> Mathlib does have the equality case; what it does not have is the **weighted** version over a
+> **`Fintype`**, and that is what is proved here. Enumerating `Finset.*abs` gives five names --
+> `abs_sum_le_sum_abs`, `abs_sum_of_nonneg`, `abs_sum_of_nonneg'`, `abs_prod`, `abs_expect_le` --
+> and none is an equality case, so the `Finset`-level claim is confirmed by a probe that assumes
+> nothing about the name. The two-term lemma is not a route to this one: an induction over it
+> would have to carry the weights and the sign of the partial sums, which is the content of the
+> proof below.
+>
 > **`sign_constant_of_mulVec_abs_eq`** — so an eigenvector achieving equality at **one** index of
 > a strictly positive matrix is sign-constant.
 >
