@@ -13,10 +13,12 @@ direction and *how far it is from `> 0`* is not known at all.
 **WHY THAT IS NOT BOOKKEEPING**, and the record says so in its own words. The second-coordinate
 item's own trigger line in `UNLOCK_WATCHLIST` reads:
 
-> *"when the second direction is wanted — and note WHY it might be: OS2 reflects in the TIME
+> *"when the second direction is wanted -- and note WHY it might be: OS2 reflects in the TIME
 > coordinate, and which of the lattice coordinates carries time is a modelling choice this estate
 > has not made. A result in one direction only is therefore weaker than it looks the moment a time
 > axis is named."*
+
+(The record's own ASCII dash is kept. A quotation that has been tidied is not a quotation.)
 
 `OS2AnySide` §2b answered that for **positivity** (`reflectionPositive_two_any` and its `os2`
 companions), and `RE-SWEEP #27` batch 2 re-read the block, superseded the clause in place, and
