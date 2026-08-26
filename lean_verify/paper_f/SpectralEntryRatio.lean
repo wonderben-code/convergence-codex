@@ -217,4 +217,78 @@ theorem ratio_zero_of_constant_entries (hA : A.IsHermitian) {c : ℝ} (hc : 0 < 
   · exact h1
   · exact absurd h1 (ne_of_gt htoppos)
 
+/-! ## 6. The same criterion with the entry hypotheses removed -/
+
+/-- **THE SUM OF ALL SQUARED RATIOS IS THE FROBENIUS NORM OVER THE TOP EIGENVALUE SQUARED.**
+An identity, not an estimate: `sum_sq_eigenvalues` divided through by `λ_top²`. -/
+theorem sum_sq_ratio_eq (hA : A.IsHermitian) (p₀ : ι) :
+    ∑ j, (hA.eigenvalues j / hA.eigenvalues p₀) ^ 2
+      = (∑ i, ∑ j, (A i j) ^ 2) / (hA.eigenvalues p₀) ^ 2 := by
+  rw [← sum_sq_eigenvalues hA, Finset.sum_div]
+  exact Finset.sum_congr rfl fun j _ => by rw [div_pow]
+
+/-- **THE SHARP FORM, AND THE ENTRY HYPOTHESES ARE GONE.** Every off-top ratio squared is at most
+`‖A‖_F²/λ_top² − 1`. §§1–4 arrive here through two crude bounds — `‖A‖_F² ≤ N²b²` and
+`λ_top ≥ N·a` — and **those two bounds are the only thing the entry hypotheses were ever
+buying**. -/
+theorem sq_ratio_le_frobenius (hA : A.IsHermitian) {p₀ : ι} (hpos : 0 < hA.eigenvalues p₀)
+    {q : ι} (hq : q ≠ p₀) :
+    (hA.eigenvalues q / hA.eigenvalues p₀) ^ 2
+      ≤ (∑ i, ∑ j, (A i j) ^ 2) / (hA.eigenvalues p₀) ^ 2 - 1 := by
+  classical
+  have hall := sum_sq_ratio_eq hA p₀
+  have hsplit : ∑ j, (hA.eigenvalues j / hA.eigenvalues p₀) ^ 2
+      = 1 + ∑ j ∈ univ.erase p₀, (hA.eigenvalues j / hA.eigenvalues p₀) ^ 2 := by
+    rw [← Finset.add_sum_erase _ _ (Finset.mem_univ p₀), div_self (ne_of_gt hpos), one_pow]
+  have hmem : q ∈ univ.erase p₀ := Finset.mem_erase.mpr ⟨hq, Finset.mem_univ q⟩
+  have hle := Finset.single_le_sum
+    (f := fun j => (hA.eigenvalues j / hA.eigenvalues p₀) ^ 2)
+    (fun j _ => sq_nonneg _) hmem
+  linarith [hall, hsplit, hle]
+
+/-- **SO THE CRITERION IS `‖A‖_F² < 2·λ_top²`**, with no reference to entries at all. -/
+theorem abs_ratio_lt_one_of_frobenius (hA : A.IsHermitian) {p₀ : ι}
+    (hpos : 0 < hA.eigenvalues p₀)
+    (hfro : ∑ i, ∑ j, (A i j) ^ 2 < 2 * (hA.eigenvalues p₀) ^ 2)
+    {q : ι} (hq : q ≠ p₀) :
+    |hA.eigenvalues q / hA.eigenvalues p₀| < 1 := by
+  have hsq := sq_ratio_le_frobenius hA hpos hq
+  have hpos2 : (0 : ℝ) < (hA.eigenvalues p₀) ^ 2 := by positivity
+  have hdiv : (∑ i, ∑ j, (A i j) ^ 2) / (hA.eigenvalues p₀) ^ 2 < 2 := by
+    rw [div_lt_iff₀ hpos2]; linarith
+  have hlt : (hA.eigenvalues q / hA.eigenvalues p₀) ^ 2 < 1 := by linarith
+  have habs : |hA.eigenvalues q / hA.eigenvalues p₀| ^ 2 < 1 := by rwa [sq_abs]
+  nlinarith [abs_nonneg (hA.eigenvalues q / hA.eigenvalues p₀), habs]
+
+/-- **AND IT IS A REFORMULATION RATHER THAN A SUFFICIENT CONDITION**, which is what makes it the
+wrong tool for `W4` even in this sharp form: `‖A‖_F² < 2·λ_top²` says exactly that the sum of ALL
+the off-top squared ratios is below one.
+
+`IsingTopRatio.UniformSubTopRatio` asks only that the LARGEST of them stay below `1 − δ`. Over
+`2ⁿ⁺¹` eigenvalues those are very different demands — a tail of `2ⁿ⁺¹` ratios each near `1/2` has
+a maximum well inside the target and a sum of squares far above one. **So this route over-asks by
+a factor that itself grows with the width**, and sharpening §§1–4 to their exact form does not
+change that. The entry-ratio computation in this file's header shows where the crude version dies;
+this shows that the sharp version was never going to be the right shape. -/
+theorem frobenius_lt_iff_tail_lt_one (hA : A.IsHermitian) {p₀ : ι}
+    (hpos : 0 < hA.eigenvalues p₀) :
+    (∑ i, ∑ j, (A i j) ^ 2 < 2 * (hA.eigenvalues p₀) ^ 2)
+      ↔ ∑ j ∈ univ.erase p₀, (hA.eigenvalues j / hA.eigenvalues p₀) ^ 2 < 1 := by
+  classical
+  have hpos2 : (0 : ℝ) < (hA.eigenvalues p₀) ^ 2 := by positivity
+  have hall := sum_sq_ratio_eq hA p₀
+  have hsplit : ∑ j, (hA.eigenvalues j / hA.eigenvalues p₀) ^ 2
+      = 1 + ∑ j ∈ univ.erase p₀, (hA.eigenvalues j / hA.eigenvalues p₀) ^ 2 := by
+    rw [← Finset.add_sum_erase _ _ (Finset.mem_univ p₀), div_self (ne_of_gt hpos), one_pow]
+  rw [hsplit] at hall
+  constructor
+  · intro h
+    have : (∑ i, ∑ j, (A i j) ^ 2) / (hA.eigenvalues p₀) ^ 2 < 2 := by
+      rw [div_lt_iff₀ hpos2]; linarith
+    linarith
+  · intro h
+    have : (∑ i, ∑ j, (A i j) ^ 2) / (hA.eigenvalues p₀) ^ 2 < 2 := by linarith
+    rw [div_lt_iff₀ hpos2] at this
+    linarith
+
 end SpectralEntryRatio
