@@ -76,7 +76,7 @@ variable {n : ℕ} {m : ℝ}
     over an abstract index type on purpose: at the concrete `Site n` the
     `simp` set does not reduce `⟪·,·⟫` on `ℝ`, and this is the same lemma
     `OS2MeasureLevel` proves inline for its own abstract `ι`. -/
-private theorem coord_eq_inner {ι : Type*} [Fintype ι] [DecidableEq ι]
+private theorem coord_eq_inner {ι : Type*} [Fintype ι]
     (a : ι) (ω : EuclideanSpace ℝ ι) :
     ω a = ⟪EuclideanSpace.basisFun ι ℝ a, ω⟫ :=
   (EuclideanSpace.basisFun_inner (ι := ι) (𝕜 := ℝ) ω a).symm

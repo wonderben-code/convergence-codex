@@ -112,6 +112,7 @@ theorem antiExt_antisymm (hH : IsHalf θ H) (hinv : Function.Involutive θ)
   · rw [antiExt_of_notMem (hH.notMem_of_mem hp), antiExt_of_mem hp, hinv p]
   · rw [antiExt_of_mem (hH.mem_of_notMem hp), antiExt_of_notMem hp, neg_neg]
 
+omit [DecidableEq V] in
 /-- **THE DOUBLING LEMMA.** Two functions of the same parity under `θ` pair
     to twice their pairing over the half. -/
 theorem sum_double (hH : IsHalf θ H) (hinv : Function.Involutive θ) {f g : V → ℝ}

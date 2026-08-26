@@ -112,6 +112,7 @@ theorem IsHalf.image_eq (hH : IsHalf θ H) (hinv : Function.Involutive θ) :
   · intro hp
     exact ⟨θ p, hH.mem_of_notMem hp, hinv p⟩
 
+omit [DecidableEq V] in
 /-- The fold: a sum over all vertices splits into the half and its image. -/
 theorem IsHalf.sum_split (hH : IsHalf θ H) (hinv : Function.Involutive θ) (f : V → ℝ) :
     ∑ p, f p = (∑ k ∈ H, f k) + ∑ k ∈ H, f (θ k) := by

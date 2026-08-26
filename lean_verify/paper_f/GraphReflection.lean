@@ -74,6 +74,7 @@ structure IsRefl (θ : V ≃ V) : Prop where
 
 variable {G}
 
+omit [DecidableEq V] in
 theorem IsRefl.degree {θ : V ≃ V} (h : IsRefl G θ) (p : V) :
     G.degree (θ p) = G.degree p := by
   classical
