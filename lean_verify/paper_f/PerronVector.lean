@@ -61,7 +61,11 @@ done. **`WALLS` §W4 was corrected on this same phrasing and the correction neve
 **WHAT IS ACTUALLY UNTOUCHED, and it is not smaller for being stated correctly:** the WIDTH limit.
 Every quantity in that chain is at one fixed width `n`; `IsingTopRatio.UniformSubTopRatio` names
 what item 3 now wants — one `δ > 0` with `subTopRatio β n ≤ 1 - δ` for every `n` — it is proved at
-no `β` but `β = 0` (`IsingTopRatioZero`), and no route is recorded. **The wall does not move.**
+no `β` but `β = 0` (`IsingTopRatioZero`), and **from 2026-08-26 a route IS
+recorded** — `SpectralEntryRatio.subTop_ratio_le`, a dimension-free bound on the sub-top
+ratio from the entry ratio, together with the number showing it cannot reach this matrix
+(`ERRATUM 269`; the citation is downstream, as the paragraph below says). **The wall does
+not move**, and what is retired is the claim that nothing had been tried.
 
 **AND NO MACHINE-CHECKED CITATION CAN BE PUT HERE**: the correcting theorem is DOWNSTREAM — the
 strip chain imports this file — so a citation in this header would be an import cycle. Same

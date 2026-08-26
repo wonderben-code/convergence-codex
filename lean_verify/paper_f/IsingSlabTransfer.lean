@@ -42,7 +42,8 @@
   cross-section is FIXED and finite; the gap is a gap for one finite matrix, as
   it was at `d = 2`, and the open question is unchanged — whether the sub-top
   ratio stays away from 1 as the cross-section GROWS
-  (`IsingTopRatio.UniformSubTopRatio`, proved at no `β` but `0`, no route). What
+  (`IsingTopRatio.UniformSubTopRatio`, proved at no `β` but `0`; a route is recorded
+  from 2026-08-26 — `SpectralEntryRatio` — and does not reach it, `ERRATUM 269`). What
   changes is that the question is now the same question in every dimension rather
   than a two-dimensional question, which is worth knowing before anyone attempts
   it in the belief that `d = 2` is special. **It is not: nothing in the chain ever

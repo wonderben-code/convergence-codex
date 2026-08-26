@@ -38,8 +38,10 @@
      showing what it delivers: one rate that works at every width.
 
   WHAT IS NOT PROVED, AND IT IS THE WHOLE OF ITEM 3.
-  **`UniformSubTopRatio β` is not proved for any `β`, and no route to it is
-  recorded here.** What this file changes is that the sentence now has a
+  **`UniformSubTopRatio β` is not proved for any `β`.** *"And no route to it is
+  recorded here"* stood until 2026-08-26; `SpectralEntryRatio.subTop_ratio_le` is
+  one, with the number that stops it reaching this matrix (`ERRATUM 269`). What
+  this file changes is that the sentence now has a
   subject. Before it, "the ratio stays below one as the width grows" could
   not be typed, because neither the ratio nor the index it is measured from
   existed as a function of the width.
@@ -180,7 +182,10 @@ UNIFORMLY IN THE WIDTH: one `δ > 0` serving every `n` at once.
 
 **What separates it from `subTopRatio_lt_one`** is only the order of two quantifiers, and that is
 the entire remaining content of the item. The estate proves `∀ n, subTopRatio β n < 1`; this asks
-for `∃ δ > 0, ∀ n, subTopRatio β n ≤ 1 - δ`. Nothing here proves it and no route is recorded.
+for `∃ δ > 0, ∀ n, subTopRatio β n ≤ 1 - δ`. Nothing here proves it. **A route is recorded from
+2026-08-26** — `SpectralEntryRatio.subTop_ratio_le` for one matrix and
+`SlabEntryRatio.uniformSubTopRatioFam_of_entries` for a family — and it does not reach this one;
+`ERRATUM 269` records that this sentence stood in six files and was corrected in one.
 
 **It is stated at a fixed `β` because it is not expected to hold at every `β`** — that expectation
 is physical and is NOT proved anywhere in this estate; the header says why and says so. -/
