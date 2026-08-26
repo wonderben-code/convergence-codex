@@ -162,7 +162,56 @@ theorem eigenvalues_multiset_eq_of_spectralAction_eq_lambda {M N : Matrix (Fin n
   rw [spectralAction_pow_lambda Λ (2 * k) M, spectralAction_pow_lambda Λ (2 * k) N] at hk'
   exact mul_left_cancel₀ hpow hk'
 
-/-! ## 5. The conclusion cannot be strengthened, and that is a theorem rather than a caveat -/
+/-! ## 5. The fourth clause of `SpectralAction`'s TFAE, which that file records as unproved -/
+
+/-- **THE CONVERSE DIRECTION: EQUAL EIGENVALUE MULTISETS GIVE EQUAL TRACE MOMENTS.** The trace of
+`(M · Mᴴ)^k` is the `k`-th power sum of those eigenvalues (`Matrix.trace_pow_mul_conjTranspose`),
+and a power sum is a function of the multiset. Every `k`, no hypotheses. -/
+theorem trace_pow_eq_of_eigenvalues_multiset_eq {M N : Matrix (Fin n) (Fin n) ℂ}
+    (h : Multiset.map (isHermitian_mul_conjTranspose_self M).eigenvalues Finset.univ.val
+       = Multiset.map (isHermitian_mul_conjTranspose_self N).eigenvalues Finset.univ.val)
+    (k : ℕ) : ((M * Mᴴ) ^ k).trace = ((N * Nᴴ) ^ k).trace := by
+  have hM : ∑ i, (((isHermitian_mul_conjTranspose_self M).eigenvalues i : ℂ)) ^ k
+      = (Multiset.map (fun x : ℝ => ((x : ℂ)) ^ k)
+          (Multiset.map (isHermitian_mul_conjTranspose_self M).eigenvalues
+            Finset.univ.val)).sum := by
+    rw [Multiset.map_map]; rfl
+  have hN : ∑ i, (((isHermitian_mul_conjTranspose_self N).eigenvalues i : ℂ)) ^ k
+      = (Multiset.map (fun x : ℝ => ((x : ℂ)) ^ k)
+          (Multiset.map (isHermitian_mul_conjTranspose_self N).eigenvalues
+            Finset.univ.val)).sum := by
+    rw [Multiset.map_map]; rfl
+  rw [Matrix.trace_pow_mul_conjTranspose, Matrix.trace_pow_mul_conjTranspose, hM, hN, h]
+
+/-- **`SpectralAction.spectralAction_congr_tfae` GAINS ITS FOURTH CLAUSE.**
+
+That theorem proves three conditions equivalent — testing at every polynomial and every `Λ`,
+testing at the even monomials at `Λ = 1`, and equal trace moments — and its docstring says of the
+one this file supplies:
+
+> **What this does NOT say** … that the two matrices have the same singular values. That is
+> equivalent to the third clause and is **not proved in this estate**.
+
+It is now. `equal trace moments ↔ equal eigenvalue multisets of `M · Mᴴ``, which is the same
+condition as equal singular values, those being the square roots.
+
+**AND ONE DIRECTION IS SHARPER THAN THE EQUIVALENCE NEEDS.** The `←` direction is §2 and it
+consumes only `1 ≤ k ≤ n`: **`n` of the countably many moments already force the multiset.** The
+TFAE is stated over all `k` because its other clauses are, and nothing here weakens it; what is
+recorded is that the hypothesis can be finite. -/
+theorem eigenvalues_multiset_eq_iff_trace_pow_eq {M N : Matrix (Fin n) (Fin n) ℂ} :
+    Multiset.map (isHermitian_mul_conjTranspose_self M).eigenvalues Finset.univ.val
+      = Multiset.map (isHermitian_mul_conjTranspose_self N).eigenvalues Finset.univ.val
+    ↔ ∀ k : ℕ, ((M * Mᴴ) ^ k).trace = ((N * Nᴴ) ^ k).trace := by
+  constructor
+  · intro h k
+    exact trace_pow_eq_of_eigenvalues_multiset_eq h k
+  · intro h
+    refine eigenvalues_multiset_eq_of_spectralAction_eq (fun k _ _ => ?_)
+    rw [← SpectralAction.trace_pow_eq_spectralAction,
+      ← SpectralAction.trace_pow_eq_spectralAction, h k]
+
+/-! ## 6. The conclusion cannot be strengthened, and that is a theorem rather than a caveat -/
 
 /-- **THE SAME ACTION AT EVERY EVEN MONOMIAL DOES NOT FORCE THE SAME MATRIX.** `-M` and `M` give
 the same `M · Mᴴ`, hence the same action at every `X^{2k}` and every `Λ`.

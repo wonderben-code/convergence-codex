@@ -650,7 +650,22 @@ single scale.** The outer two are §9 and the lemma above.
 
 **What this does NOT say**, and §9's docstring said it in passing before `ERRATUM 141`: that the
 two matrices have the same singular values. That is equivalent to the third clause and is not
-proved in this estate — see the section header. -/
+proved in this estate — see the section header.
+
+**^ THE LAST CLAUSE IS FALSE FROM 26 AUGUST 2026, AND THE SENTENCE IS KEPT** (`ERRATUM 94`): it was
+exact when written and the theorem that refutes it landed later.
+`SpectralActionDetermines.eigenvalues_multiset_eq_iff_trace_pow_eq` proves the equivalence this
+paragraph calls unproved — equal trace moments **if and only if** equal eigenvalue multisets of
+`M · Mᴴ`, which is the same condition as equal singular values, those being the square roots
+(`singularValues_multiset_eq`). **So this TFAE has a fourth clause.**
+
+The route is Newton's identities: `PowerSumMultiset.multiset_eq_of_sum_pow_eq` turns equal power
+sums into an equal multiset, which is the step `RayleighPow`'s header named as the only one
+available and unbuilt.
+
+**AND THE HARD DIRECTION NEEDS ONLY FINITELY MANY MOMENTS.** `∀ k` above is what the other clauses
+quantify over; the implication from moments to multiset consumes only `1 ≤ k ≤ n`. Nothing here is
+weakened — it is recorded that the hypothesis can be finite. -/
 theorem spectralAction_congr_tfae {M N : Matrix (Fin n) (Fin n) ℂ} :
     ((∀ (f : Polynomial ℂ) (Λ : ℂ), spectralAction f Λ M = spectralAction f Λ N)
        ↔ (∀ k : ℕ, ((M * Mᴴ) ^ k).trace = ((N * Nᴴ) ^ k).trace))
