@@ -272,9 +272,11 @@ theorem su4_branching :
     corresponding matrix algebra. -/
 theorem sm_gauge_dim :
     (Module.finrank ℂ (Matrix (Fin 3) (Fin 3) ℂ) - 1) +
-    (Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1) + 1 = 12 := by
-  simp [Module.finrank_matrix, Fintype.card_fin]
+    (Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) - 1) + 1 = 12 :=
+  CascadeData.sm_gauge_dim
 
+-- `dupname_scan.py` (ERRATUM 271): identical statement AND identical proof to
+-- `CascadeData.sm_gauge_dim` in `CascadeFoundation.lean`, which this file imports.
 /-- The Pati-Salam gauge group dimension:
     dim(SU(4)) + dim(SU(2)_L) + dim(SU(2)_R)
     = (finrank(M₄) - 1) + (finrank(M₂) - 1) + (finrank(M₂) - 1) = 15 + 3 + 3 = 21.

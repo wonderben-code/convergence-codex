@@ -215,16 +215,12 @@ bonds the torus adds are not needed for connectivity and are not used here.
 -/
 
 /-- **THE BOX IS A SUBGRAPH OF THE TORUS.** Every non-wrapping bond is a torus bond. -/
-theorem boxGraph_le_torusGraph (d n : ℕ) : boxGraph d n ≤ torusGraph d n := by
-  rintro p q ⟨i, hj, hi⟩
-  refine ⟨i, hj, ?_, ?_⟩
-  · intro he
-    rw [he] at hi
-    rcases hi with h1 | h1 <;> omega
-  · rcases hi with h1 | h1
-    · exact Or.inl h1
-    · exact Or.inr (Or.inl h1)
+theorem boxGraph_le_torusGraph (d n : ℕ) : boxGraph d n ≤ torusGraph d n :=
+  TorusReflection.boxGraph_le_torusGraph d n
 
+-- `dupname_scan.py` (ERRATUM 271): the proof that stood here re-derived
+-- `TorusReflection.boxGraph_le_torusGraph`, which this file imports. The statement and the
+-- name are kept so nothing downstream moves; only the second proof is gone.
 /-- **THE PERIODIC BOX IS CONNECTED IN EVERY DIMENSION AND AT EVERY POSITIVE SIDE LENGTH.** -/
 theorem torusGraph_connected (d : ℕ) (hn : 0 < n) : (torusGraph d n).Connected :=
   SimpleGraph.Connected.mono (boxGraph_le_torusGraph d n) (BoxGraph.boxGraph_connected d hn)

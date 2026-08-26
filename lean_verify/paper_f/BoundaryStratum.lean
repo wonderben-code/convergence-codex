@@ -83,9 +83,12 @@ theorem downSet_card (n : ℕ) (σ : Config n) : (downSet n σ).card = downCount
 theorem downSet_subset (n : ℕ) (σ : Config n) : downSet n σ ⊆ bdrySites n :=
   Finset.filter_subset _ _
 
-theorem mem_bdrySites {p : Site n} : p ∈ bdrySites n ↔ isBoundary p = true := by
-  simp [bdrySites]
+theorem mem_bdrySites {p : Site n} : p ∈ bdrySites n ↔ isBoundary p = true :=
+  PlusClassVanishes.mem_bdrySites
 
+-- `dupname_scan.py` (ERRATUM 271): re-derived `PlusClassVanishes.mem_bdrySites`, which this file
+-- imports; `bdrySites` is defined once, in `BoundaryFieldLimit`, so the two are the same
+-- statement about the same set.
 /-- **FLIPPING EXACTLY THE WRONG BOUNDARY SPINS LANDS IN THE `+` CLASS.** -/
 theorem plusBoundary_flipOn_downSet (σ : Config n) :
     PlusBoundary (flipOn (downSet n σ) σ) := by

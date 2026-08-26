@@ -164,8 +164,10 @@ theorem fderiv_coordProd (n : ℕ) (u : Fin n → ℝ → ℝ)
     exact absurd (Finset.mem_univ i) h
 
 theorem rho_differentiable : Differentiable ℝ rho :=
-  fun x => (hasDerivAt_rho x).differentiableAt
+  TextbookSobolev.rho_differentiable
 
+-- `dupname_scan.py` (ERRATUM 271): `rho` is defined once, in `TextbookSobolev`, and this file
+-- imports it; the proof here was the same three tokens.
 /-- **`∂ᵢρₙ(x) = −xᵢ·ρₙ(x)`.** Stair N5b, now the `u = ρ` instance of
     `fderiv_coordProd`. -/
 theorem fderiv_rhoPi (n : ℕ) (i : Fin n) (x : Fin n → ℝ) :

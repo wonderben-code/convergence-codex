@@ -188,9 +188,11 @@ theorem field_factor_le_one {β h : ℝ} (hβ : 0 ≤ β) (hh : 0 ≤ h) (σ : C
 /-! ## 4. So the off-`+` part of either sum is at most `2^(n·n) · exp(−2βh)` ground weights -/
 
 /-- The number of configurations, explicitly. -/
-theorem card_config (n : ℕ) : Fintype.card (Config n) = 2 ^ (n * n) := by
-  simp [Config, Site, Fintype.card_prod]
+theorem card_config (n : ℕ) : Fintype.card (Config n) = 2 ^ (n * n) :=
+  IsingContourSeparation.card_config n
 
+-- `dupname_scan.py` (ERRATUM 271): re-derived `IsingContourSeparation.card_config`, which this
+-- file imports. Name and statement kept; the duplicate proof is gone.
 theorem sum_offPlus_le {β h : ℝ} (hβ : 0 ≤ β) (hh : 0 ≤ h) (C : ℝ) (hC : 0 ≤ C) :
     ∑ σ ∈ (Finset.univ : Finset (Config n)).filter (fun σ => ¬ PlusBoundary σ),
         C * Real.exp (-β * isingH n σ) * Real.exp (-(2 * β * h) * (downCount n σ : ℝ))
