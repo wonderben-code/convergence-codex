@@ -38,11 +38,13 @@ needed to run the argument. It is not, and this file is where that shows:
 
 ## Not covered, per `ERRATUM 60`
 
-* **This is not a statement that `M = N`, and it cannot be.** The spectral action is blind to the
-  unitaries: `M` and `U · M · V` have the same singular values for any unitary `U`, `V`, and the
-  action cannot tell them apart. What is proved is that the action determines the singular value
+* **This is not a statement that `M = N`, and it cannot be — §4 PROVES that**, rather than
+  asserting it. `exists_ne_with_same_spectralAction`: for every `M ≠ 0` there is an `N ≠ M` with
+  the same action at every even monomial, namely `-M`. The spectral action is blind to the
+  unitaries — `M` and `U · M · V` have the same singular values — and the sign is the cheapest
+  witness of that blindness. What is proved is that the action determines the singular value
   multiset and **nothing finer**, which is the honest reading of "sees the matrix through its
-  singular values".
+  singular values", now with a counterexample attached to the "nothing finer".
 * It says nothing about odd monomials, about `Λ ≠ 1`, or about non-monomial `f`. `SpectralAction`'s
   `spectralAction_of_no_even_part` already records that the odd part is invisible.
 * It gives no bound: equal actions force equal multisets, and nothing here says that *close*
@@ -122,5 +124,36 @@ theorem singularValues_multiset_eq {M N : Matrix (Fin n) (Fin n) ℂ}
         (Multiset.map (isHermitian_mul_conjTranspose_self N).eigenvalues Finset.univ.val) := by
     rw [Multiset.map_map]; rfl
   rw [hM, hN, hbase]
+
+/-! ## 4. The conclusion cannot be strengthened, and that is a theorem rather than a caveat -/
+
+/-- **THE SAME ACTION AT EVERY EVEN MONOMIAL DOES NOT FORCE THE SAME MATRIX.** `-M` and `M` give
+the same `M · Mᴴ`, hence the same action at every `X^{2k}` and every `Λ`.
+
+Written because §2's docstring says the conclusion *"is not a statement that `M = N`, and it cannot
+be"*, and a caveat asserted is worth less than a witness exhibited (`PROOF_STRATEGY` §7: fold back
+by proving more). The sign is the cheapest witness; it is not the only one — any `U · M · V` with
+`U`, `V` unitary does the same — but one witness settles the question the caveat raises. -/
+theorem spectralAction_eq_neg (M : Matrix (Fin n) (Fin n) ℂ) (k : ℕ) :
+    SpectralAction.spectralAction (Polynomial.X ^ (2 * k)) 1 (-M)
+      = SpectralAction.spectralAction (Polynomial.X ^ (2 * k)) 1 M := by
+  rw [← SpectralAction.trace_pow_eq_spectralAction, ← SpectralAction.trace_pow_eq_spectralAction,
+    conjTranspose_neg, neg_mul_neg]
+
+/-- **AND THE TWO MATRICES ARE GENUINELY DIFFERENT WHENEVER `M ≠ 0`.** So the hypothesis of §2 is
+satisfiable by a pair that is not a pair of equal matrices, and §2's conclusion is exactly as
+strong as it can be. -/
+theorem exists_ne_with_same_spectralAction {M : Matrix (Fin n) (Fin n) ℂ} (hM : M ≠ 0) :
+    ∃ N : Matrix (Fin n) (Fin n) ℂ, N ≠ M ∧
+      ∀ k, SpectralAction.spectralAction (Polynomial.X ^ (2 * k)) 1 N
+         = SpectralAction.spectralAction (Polynomial.X ^ (2 * k)) 1 M :=
+  ⟨-M, fun h => hM (by
+      -- `IsAddTorsionFree` is not found for a matrix type, so the cancellation is done
+      -- entrywise, where it is `ℂ`'s.
+      ext i j
+      have hij := congrFun (congrFun h i) j
+      simp only [Matrix.neg_apply] at hij
+      simpa using neg_eq_self.mp hij),
+    fun k => spectralAction_eq_neg M k⟩
 
 end SpectralActionDetermines
