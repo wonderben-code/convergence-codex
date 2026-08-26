@@ -30,10 +30,18 @@ closed form, not as an estimate.
   supremum is the Hilbert projective diameter, and **`HasDiameterLE`**, the predicate that every
   such logarithm is at most `D`. The predicate rather than the supremum, deliberately: a lower
   bound on a diameter is a witness, and a witness refutes a `∀`.
+* **`crossRatio_diagonal_mul`, `crossRatio_mul_diagonal`, `hasDiameterLE_diagonal_congr`** — the
+  cross-ratio, and hence the diameter, is **invariant under diagonal congruence**, on any finite
+  index type. A cross-ratio has each index twice above the line and twice below, so a factor
+  attached to a single row or column cancels with itself. This is the classical statement that the
+  Hilbert metric lives on RAYS, and it is the structural reason the computation below works.
 * **`log_crossRatio_transferSym`** — the cross-ratio of `transferSym β n` is
   `exp (β * (inter σ τ + inter σ' τ' − inter σ τ' − inter σ' τ))`. **The `intra` factors cancel
-  exactly**: each column's own weight appears once in the numerator and once in the denominator,
-  which is the whole reason a cross-ratio is the right quantity and an entry ratio is not.
+  exactly**, and that is now an INSTANCE rather than an accident: `transferSym` is literally
+  `halfIntra * horiz * halfIntra` with `halfIntra` a `Matrix.diagonal` of exponentials, so
+  `crossRatio_transferSym_eq_horiz` removes both factors by the lemma above and what is left is
+  the horizontal weight alone. **A first draft expanded the entries and cancelled by `ring`** —
+  which works and explains nothing.
 * **`log_crossRatio_allConst`** — at the four constant columns it is `4 * β * (n + 1)`, computed
   rather than bounded.
 * **`inter_bracket_eq`, `term_le_four`, `hasDiameterLE_transferSym`** — and that quadruple is
@@ -80,17 +88,72 @@ bound is an exhibited quadruple and refuting it needs no analysis. -/
 def HasDiameterLE (A : Matrix ι ι ℝ) (D : ℝ) : Prop :=
   ∀ i j k l, Real.log (crossRatio A i j k l) ≤ D
 
-/-! ## 2. The transfer matrix's cross-ratio, in closed form
+/-! ## 2. The cross-ratio does not see a diagonal, on either side
 
-The point of a cross-ratio rather than a ratio of entries: `transferSym` gives each column half its
-own vertical weight on both sides, so every `intra` factor occurs once above the line and once
-below and cancels **exactly**. What survives is the horizontal coupling alone.
+**This is the structural reason the computation below works, and it is not about the Ising model.**
+A cross-ratio has each index twice above the line and twice below, so a factor attached to a single
+row or a single column cancels with itself. Multiplying by a positive diagonal is exactly attaching
+such a factor, so **the projective diameter is invariant under diagonal congruence** — which is the
+classical statement that the Hilbert metric is a metric on RAYS rather than on vectors.
+
+A first draft of this file proved the transfer matrix's cross-ratio by expanding `transferSym_apply`
+and cancelling the `intra` factors by `ring`. That works and says nothing. The cancellation is this
+lemma, and `transferSym` is literally `halfIntra * horiz * halfIntra` with `halfIntra` a
+`Matrix.diagonal`, so the computation below is now an instance rather than an accident.
 -/
+
+section Diagonal
+
+variable [Fintype ι] [DecidableEq ι]
+
+theorem crossRatio_diagonal_mul {d : ι → ℝ} (hd : ∀ i, d i ≠ 0) (A : Matrix ι ι ℝ) (i j k l : ι) :
+    crossRatio (Matrix.diagonal d * A) i j k l = crossRatio A i j k l := by
+  simp only [crossRatio, Matrix.diagonal_mul]
+  rw [show d i * A i k * (d j * A j l) = d i * d j * (A i k * A j l) by ring,
+    show d i * A i l * (d j * A j k) = d i * d j * (A i l * A j k) by ring,
+    mul_div_mul_left _ _ (mul_ne_zero (hd i) (hd j))]
+
+theorem crossRatio_mul_diagonal {d : ι → ℝ} (hd : ∀ i, d i ≠ 0) (A : Matrix ι ι ℝ) (i j k l : ι) :
+    crossRatio (A * Matrix.diagonal d) i j k l = crossRatio A i j k l := by
+  simp only [crossRatio, Matrix.mul_diagonal]
+  rw [show A i k * d k * (A j l * d l) = d k * d l * (A i k * A j l) by ring,
+    show A i l * d l * (A j k * d k) = d k * d l * (A i l * A j k) by ring,
+    mul_div_mul_left _ _ (mul_ne_zero (hd k) (hd l))]
+
+/-- **THE PROJECTIVE DIAMETER IS INVARIANT UNDER DIAGONAL CONGRUENCE.** Symmetrising a transfer
+matrix is a diagonal congruence, so it does not change this quantity — which is worth knowing
+before anyone tries to make a Birkhoff-type estimate easier by choosing a different
+normalisation. -/
+theorem hasDiameterLE_diagonal_congr {d e : ι → ℝ} (hd : ∀ i, d i ≠ 0) (he : ∀ i, e i ≠ 0)
+    (A : Matrix ι ι ℝ) (D : ℝ) :
+    HasDiameterLE (Matrix.diagonal d * A * Matrix.diagonal e) D ↔ HasDiameterLE A D := by
+  constructor <;> intro h i j k l
+  · have := h i j k l
+    rwa [crossRatio_mul_diagonal he, crossRatio_diagonal_mul hd] at this
+  · have := h i j k l
+    rwa [crossRatio_mul_diagonal he, crossRatio_diagonal_mul hd]
+
+end Diagonal
+
+/-! ## 3. The transfer matrix's cross-ratio, in closed form
+
+`transferSym β n = halfIntra β n * horiz β n * halfIntra β n`, and `halfIntra` is a diagonal of
+strictly positive entries, so §2 removes it and what is left is the horizontal weight alone.
+-/
+
+theorem halfIntra_ne_zero (β : ℝ) (n : ℕ) (σ : Col n) : exp (β * intra σ / 2) ≠ 0 :=
+  ne_of_gt (exp_pos _)
+
+theorem crossRatio_transferSym_eq_horiz (β : ℝ) (n : ℕ) (σ σ' τ τ' : Col n) :
+    crossRatio (transferSym β n) σ σ' τ τ' = crossRatio (horiz β n) σ σ' τ τ' := by
+  rw [transferSym, halfIntra, crossRatio_mul_diagonal (halfIntra_ne_zero β n),
+    crossRatio_diagonal_mul (halfIntra_ne_zero β n)]
 
 theorem crossRatio_transferSym (β : ℝ) (n : ℕ) (σ σ' τ τ' : Col n) :
     crossRatio (transferSym β n) σ σ' τ τ'
       = exp (β * (inter σ τ + inter σ' τ' - inter σ τ' - inter σ' τ)) := by
-  simp only [crossRatio, transferSym_apply, ← Real.exp_add, ← Real.exp_sub]
+  rw [crossRatio_transferSym_eq_horiz]
+  simp only [crossRatio, horiz, ← Real.exp_add, ← Real.exp_sub]
   congr 1
   ring
 
@@ -99,7 +162,7 @@ theorem log_crossRatio_transferSym (β : ℝ) (n : ℕ) (σ σ' τ τ' : Col n) 
       = β * (inter σ τ + inter σ' τ' - inter σ τ' - inter σ' τ) := by
   rw [crossRatio_transferSym, Real.log_exp]
 
-/-! ## 3. The witness: the two constant columns -/
+/-! ## 4. The witness: the two constant columns -/
 
 /-- The all-up column. -/
 def allTrue (n : ℕ) : Col n := fun _ => true
@@ -129,7 +192,7 @@ theorem log_crossRatio_allConst (β : ℝ) (n : ℕ) :
     inter_false_true]
   ring
 
-/-! ## 4. And the witness is extremal, so the diameter is EXACTLY `4·β·(n+1)`
+/-! ## 5. And the witness is extremal, so the diameter is EXACTLY `4·β·(n+1)`
 
 The bracket is `∑ᵢ (spin σᵢ − spin σ'ᵢ)(spin τᵢ − spin τ'ᵢ)`: a sum of `n + 1` terms each of which
 is `−4`, `0` or `4`, because every factor is a difference of two signs. So `4 (n+1)` is not merely
@@ -165,7 +228,7 @@ theorem hasDiameterLE_transferSym {β : ℝ} (hβ : 0 ≤ β) (n : ℕ) :
   have := inter_bracket_le (n := n) σ σ' τ τ'
   nlinarith [this, hβ]
 
-/-! ## 5. So no `D` bounds it at every width -/
+/-! ## 6. So no `D` bounds it at every width -/
 
 /-- **NOT BOUNDED BY `D` ONCE THE STRIP IS WIDE ENOUGH.** -/
 theorem not_hasDiameterLE {β D : ℝ} {n : ℕ} (h : D < 4 * β * ((n : ℝ) + 1)) :
