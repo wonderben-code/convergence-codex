@@ -47,13 +47,23 @@ equality.
 * **`not_strict_compl_box_odd`** — so at odd side from five the form is **not** strict on the
   complement either, and `MirrorStrictness`'s gap is closed there.
 
-## WHAT IS STILL OPEN, AND IT IS ONE SIDE LENGTH
+## THE ONE SIDE LENGTH THIS FILE LEFT OPEN IS NOW CLOSED, AND IN THE OTHER DIRECTION
 
-**`n = 3` is not settled and nothing below claims it.** There the complement is a single layer, the
-mirror image of `innerLower i 3 = {pᵢ = 0}`, and the witness used here does not fit: its support
-reaches `pᵢ = 1`, which is outside `innerLower` at that side. Whether the form is strict on one
-layer at odd side three is a question this file leaves exactly where it found it — a genuinely
-smaller question than the one it started with, which is the point of writing it down.
+**The draft of this file ended here saying `n = 3` was not settled**, because the witness above
+does not fit: at that side `innerLower i 3 = {pᵢ = 0}` is a single layer and the witness's support
+reaches `pᵢ = 1`. That sentence was right about the witness and wrong to stop.
+
+**At side three the form IS strict there**, and §6 proves it. The reason the witness fails is the
+reason no witness exists: a family on the bottom layer whose massive image also lives on the bottom
+layer must vanish, because each bottom site has a site directly above it that is **outside** the
+layer and adjacent to **no other** site of it — so the row of the operator at that site reads off
+one coefficient and sets it to zero. `eq_zero_of_massive_mulVec_supported` is that argument on any
+finite graph, and `bottom_witness` is the geometry.
+
+So the picture at odd side is complete: **not strict on the complement from five, strict on it at
+three**, and the two are proved by opposite mechanisms — a family that exists, and a family that
+cannot. Nothing here is left as a smaller question, which the draft's own closing sentence offered
+as consolation and which turned out not to be needed.
 -/
 
 namespace MirrorComplement
@@ -197,5 +207,107 @@ theorem not_strict_compl_box_odd (i : Fin d) {n : ℕ} (hn : Odd n) (h5 : 5 ≤ 
   intro hstrict
   obtain ⟨c, hc0, hcsupp, hcform⟩ := exists_null_innerLower (m := m) i h5 hm
   exact absurd hcform (ne_of_gt (hstrict c hc0 hcsupp))
+
+/-! ## 6. And at side three the form is strict on that layer, for the opposite reason
+
+A null family would have to be a massive image of something on the layer that itself lives on the
+layer. Each site of the bottom layer has the site directly above it, which is off the layer and
+adjacent to nothing else on it, so the operator's row there is one coefficient and one equation.
+-/
+
+/-- **A SET WHOSE MASSIVE IMAGE CANNOT STAY INSIDE IT.** If every point of `S` has a neighbour
+outside `S` adjacent to no other point of `S`, then a vector supported on `S` whose massive image
+vanishes off `S` is zero. On any finite graph, at any mass — the mass never appears, because every
+row used here is an off-diagonal one. -/
+theorem eq_zero_of_massive_mulVec_supported {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (m : ℝ) {S : Finset V}
+    (hwit : ∀ q ∈ S, ∃ p, p ∉ S ∧ G.Adj p q ∧ ∀ r ∈ S, G.Adj p r → r = q)
+    {v : V → ℝ} (hv : ∀ x, x ∉ S → v x = 0)
+    (hout : ∀ x, x ∉ S → (GraphLaplacian.massive G m *ᵥ v) x = 0) :
+    v = 0 := by
+  classical
+  funext q
+  by_cases hq : q ∈ S
+  · obtain ⟨p, hpS, hadj, huniq⟩ := hwit q hq
+    have h := hout p hpS
+    simp only [Matrix.mulVec, dotProduct] at h
+    rw [Finset.sum_eq_single q] at h
+    · rw [GraphLaplacian.massive_apply, if_neg (fun hc : p = q => hpS (hc ▸ hq)),
+        if_pos hadj] at h
+      simp only [Pi.zero_apply]
+      linarith
+    · intro r _ hrq
+      by_cases hrS : r ∈ S
+      · have hnadj : ¬ G.Adj p r := fun hA => hrq (huniq r hrS hA)
+        rw [GraphLaplacian.massive_apply, if_neg (fun hc : p = r => hpS (hc ▸ hrS)),
+          if_neg hnadj]
+        ring
+      · rw [hv r hrS]; ring
+    · intro h'; exact absurd (Finset.mem_univ q) h'
+  · simpa using hv q hq
+
+/-- **THE GEOMETRY**: the site directly above a bottom site is off the layer and touches nothing
+else on it. -/
+theorem bottom_witness (i : Fin d) {n : ℕ} (h2 : 2 ≤ n) :
+    ∀ q ∈ bottom i n, ∃ p, p ∉ bottom i n ∧ (boxGraph d n).Adj p q ∧
+      ∀ r ∈ bottom i n, (boxGraph d n).Adj p r → r = q := by
+  classical
+  intro q hq
+  rw [mem_bottom] at hq
+  refine ⟨Function.update q i ⟨1, by omega⟩, ?_, ?_, ?_⟩
+  · rw [mem_bottom]; simp
+  · exact ⟨i, fun j hj => by simp [Function.update_of_ne hj], Or.inr (by simp [hq])⟩
+  · intro r hr hadj
+    rw [mem_bottom] at hr
+    obtain ⟨j, hsame, hstep⟩ := hadj
+    have hji : j = i := by
+      by_contra hj
+      have := hsame i (fun hc => hj hc.symm)
+      rw [Function.update_self] at this
+      rw [← this] at hr
+      simp at hr
+    rw [hji] at hsame hstep
+    funext l
+    by_cases hl : l = i
+    · rw [hl]
+      exact Fin.ext (by omega)
+    · have := hsame l hl
+      rw [Function.update_of_ne hl] at this
+      exact this.symm
+
+/-- **AT SIDE THREE THE FORM IS NONDEGENERATE ON `innerLower`**, which at that side is the bottom
+layer. -/
+theorem nondegenerate_innerLower_three (i : Fin d) (hm : m ≠ 0)
+    {c : Site d 3 → ℝ} (hc : ∀ p, p ∉ innerLower i 3 → c p = 0)
+    (hform : reflectedForm (boxGraph d 3) m (revSite (n := 3) i) c = 0) : c = 0 := by
+  classical
+  have hinner : innerLower i 3 = bottom i 3 := by
+    ext p
+    rw [mem_innerLower, mem_bottom]
+    have := (p i).isLt
+    omega
+  have hlow : ∀ p, p ∉ lowerHalf i 3 → c p = 0 := fun p hp =>
+    hc p fun hmem => hp (NullSpaceDimensionEven.innerLower_subset_lowerHalf i 3 hmem)
+  obtain ⟨v, hvsupp, hvc⟩ := (NullSpaceBoxAny.nullSpace_box_any (m := m) i 3 hm hlow).mp hform
+  have hv : v = 0 := by
+    refine eq_zero_of_massive_mulVec_supported (S := bottom i 3) (boxGraph d 3) m
+      (bottom_witness i (by norm_num)) ?_ ?_
+    · intro x hx
+      exact hvsupp x (by rwa [hinner])
+    · intro x hx
+      rw [hvc]
+      exact hc x (by rwa [hinner])
+  rw [← hvc, hv, Matrix.mulVec_zero]
+
+/-- **AND SO IT IS STRICT ON THE COMPLEMENT AT ODD SIDE THREE**, by the same mirror identity that
+carried the negative result from five. The two halves of the odd-side picture are proved by
+opposite mechanisms: a null family that exists, and one that cannot. -/
+theorem nondegenerate_compl_box_three (i : Fin d) (hm : m ≠ 0) :
+    ∀ c : Site d 3 → ℝ, (∀ p, p ∉ (lowerHalf i 3)ᶜ → c p = 0) →
+      reflectedForm (boxGraph d 3) m (revSite (n := 3) i) c = 0 → c = 0 := by
+  classical
+  rw [compl_lowerHalf_eq_image_innerLower i (by decide),
+    ← MirrorStrictness.nondegenerate_iff_mirror (BoxNotStrict.isRefl_box i) m (innerLower i 3)]
+  exact fun c hc hform => nondegenerate_innerLower_three i hm hc hform
 
 end MirrorComplement
