@@ -30,7 +30,8 @@ roots = [
 [[lean_lib]]
 name = "PaperF"
 srcDir = "paper_f"
-roots = ["HermitianSpectralMapping", 
+roots = [
+  "PowerSumMultiset","HermitianSpectralMapping", 
   "MirrorComplement",
   "ProjectiveDiameter",
   "NullSpaceMirror",
