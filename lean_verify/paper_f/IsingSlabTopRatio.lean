@@ -155,7 +155,17 @@ once.
 
 **What separates it from `subTopRatioG_lt_one`** is only the order of two quantifiers, and that is
 the entire remaining content of the item. The estate proves `∀ i, subTopRatioG β (E i) < 1`; this
-asks for `∃ δ > 0, ∀ i, subTopRatioG β (E i) ≤ 1 - δ`. No route is recorded, in any dimension. -/
+asks for `∃ δ > 0, ∀ i, subTopRatioG β (E i) ≤ 1 - δ`.
+
+**"No route is recorded, in any dimension" — the sentence that used to end this docstring — was
+true when written and is not now** (2026-08-26). `SpectralEntryRatio.subTop_ratio_le` is a route
+and is stated for an arbitrary finite Hermitian matrix, so it applies here with nothing to adapt;
+`SlabEntryRatio.uniformSubTopRatioFam_of_entries` discharges THIS `Prop` under the hypothesis that
+one interval `[a, b]` with `b² < 2a²` contains every member's entries, producing the `δ` from `a`
+and `b` before any member is named. **The item still does not move**: that hypothesis fails for the
+Ising family at every `β > 0`, because `transferG_apply`'s entries are exponentials of sums over
+the cross-section and their ratio therefore grows with it. What is retired is the claim that
+nothing had been tried. -/
 def UniformSubTopRatioFam {ι : Type*} {W : ι → Type*} [∀ i, Fintype (W i)]
     [∀ i, DecidableEq (W i)] [∀ i, Nonempty (W i)] (E : ∀ i, Cross (W i) → ℝ) (β : ℝ) : Prop :=
   ∃ δ : ℝ, 0 < δ ∧ ∀ i : ι, subTopRatioG β (E i) ≤ 1 - δ
