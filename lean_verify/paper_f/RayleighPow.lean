@@ -13,6 +13,31 @@ statement that is reachable now. **This file is that B.** The full multiset iden
 Newton. The **largest** eigenvalue needs only the variational characterisation, which this estate
 already has, and that is what the Perron chain actually consumes.
 
+**^ "THE FULL MULTISET IDENTIFICATION NEEDS NEWTON" IS FALSE, 26 AUGUST 2026, AND SO IS THE SAME
+CLAIM FOUR LINES ABOVE.** Both kept verbatim (`ERRATUM 94`); **neither is an erratum** — they were
+exact when written on 22 August, and the theorem that refutes them landed four days later.
+
+`HermitianSpectralMapping.eigenvalues_pow_multiset` proves the full multiset identification for a
+Hermitian matrix **with no Newton identities and no power sums at all**. The route is the
+characteristic polynomial: Mathlib's `Matrix.IsHermitian.charpoly_eq` writes `A.charpoly` as
+`∏ᵢ (X − C λᵢ)`, the conjugation in the spectral theorem is a `StarAlgEquiv` so it commutes with
+the power, and the roots of a characteristic polynomial ARE the eigenvalue multiset.
+
+**WHAT THIS FILE'S B WAS RIGHT ABOUT, AND IT IS THE USEFUL HALF.** Newton IS the only route from
+*equal power sums* to *equal multisets*, and that statement — the watchlist item's legs (ii) and
+(iii) — remains unbuilt and is still the only route for a NON-Hermitian matrix. What was wrong was
+identifying that route's difficulty with the problem's: **power sums are how one reaches a multiset
+when nothing better is available, and for a Hermitian matrix something better is available.** That
+is `ERRATUM 278`'s shape — one route's obstacle read as the statement's — and this is its second
+instance in two days, which is why it is written out rather than quietly amended.
+
+**THIS FILE IS NOT WITHDRAWN AND ITS THEOREMS ARE NOT DUPLICATES.** `eigenvalues_pow_le_max` and
+`le_max_eigenvalues_pow` are now each one line from `exists_eigenvalue_pow_eq`, and they are kept
+because their proofs go the other way — through the variational characterisation and
+`eigenvalues_le_of_quadForm_le`, the converse that was *"absent until now"*. **Two routes to one
+statement is not a duplicate**; it is the thing this estate keeps both of, and the second route is
+what makes the first one's cost visible.
+
 > **`eigenvalues_le_of_quadForm_le`** — the converse of
 > `RayleighMatrix.quadForm_le_of_eigenvalues_le`: a uniform bound on the quadratic form bounds
 > every eigenvalue. Two lines, and absent until now.

@@ -119,4 +119,23 @@ theorem sum_map_eigenvalues_pow {A : Matrix n n 𝕜} (hA : A.IsHermitian) (k : 
   simpa only [Multiset.map_map, Finset.sum, Function.comp_def] using
     congrArg Multiset.sum h
 
+/-- **EVERY EIGENVALUE OF `Aᵏ` IS A `k`-TH POWER OF AN EIGENVALUE OF `A`.** The membership form of
+the multiset equality, and the form that makes the two `RayleighPow` bounds one-liners.
+
+**They are NOT restated here** (`ERRATUM 271`): `RayleighPow.eigenvalues_pow_le_max` and
+`RayleighPow.le_max_eigenvalues_pow` exist and restating them under new names would be a duplicate,
+which is the defect this estate has caught four times this week. What is worth recording is that
+each is now one line from this lemma — the first by rewriting the eigenvalue as some `λⱼᵏ` and
+applying the hypothesis at `j`, the second by taking `i` with `(hA.pow k).eigenvalues i` the image
+of `p` — and that their own proofs go a different way, through the variational characterisation.
+**Two routes to one statement is not a duplicate; it is the thing the estate keeps both of.** -/
+theorem exists_eigenvalue_pow_eq {A : Matrix n n 𝕜} (hA : A.IsHermitian) (k : ℕ) (i : n) :
+    ∃ j, (hA.pow k).eigenvalues i = hA.eigenvalues j ^ k := by
+  have hmem : (hA.pow k).eigenvalues i
+      ∈ Multiset.map (hA.pow k).eigenvalues Finset.univ.val :=
+    Multiset.mem_map_of_mem _ (Finset.mem_val.mpr (Finset.mem_univ i))
+  rw [eigenvalues_pow_multiset hA k, Multiset.mem_map] at hmem
+  obtain ⟨j, _, hj⟩ := hmem
+  exact ⟨j, hj.symm⟩
+
 end HermitianSpectralMapping
