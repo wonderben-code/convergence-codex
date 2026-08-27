@@ -150,4 +150,5 @@ roots = [
   "LatticeFourPointExact",
   "LatticeTruncatedNorms",
   "LatticeTruncatedUniform",
+  "PairingKinds",
 ]
