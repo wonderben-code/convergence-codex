@@ -57,6 +57,13 @@ this estate at general order**; that is the ladder, whose analytic half is
 `LatticeSteinMajorant` and whose closed-form derivative is untouched. The two sides are not
 matched and general Isserlis does not follow from anything here.
 
+**⚠ SUPERSEDED 2026-08-27, kept as written (`ERRATUM 94`).** *"The left-hand side — the Gaussian
+integral — obeys no proved recursion in this estate at general order"* is now false:
+`LadderStep.ladder` proves `∫∏ᵢ⟪ aᵢ,ω⟫·exp⟪f,ω⟫ = steinSum a f · exp(½⟨f,Gf⟩)` at every order, which
+is that recursion, and `IsserlisAll.isserlisGeneral_all` follows at `f = 0`. **Still true**: the
+last sentence's *"from anything here"*, which is scoped to this file; and (1)'s *"not written
+here"*, likewise — `PairingRecursion.sum_pairProduct_succ` is where the bridge was written.
+
 No measure, integral or test function appears below; the file is pure combinatorics so that the
 Gaussian chain can import it.
 -/

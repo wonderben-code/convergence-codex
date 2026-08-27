@@ -48,6 +48,15 @@ file does establish is that **the blocker the watchlist names is not the only ro
 different thing from removing it, and the watchlist clause is amended to say so rather than
 rewritten.
 
+**⚠ SUPERSEDED 2026-08-27, and the paragraph above is kept as written (`ERRATUM 94`).** *"The
+general `k` is NOT proved"* was true for eleven days and is now false. `LadderStep.ladder` builds
+every rung of the ladder derived above, by exactly the route the paragraph prescribes — the sum
+over partial pairings written as a term (`SteinSumRecursion.steinTerm`) and differentiated
+(`LatticeSteinLadder.hasDerivAt_steinSum`) — and `IsserlisAll.isserlisGeneral_all` is its `f = 0`
+corollary. **What is NOT superseded is the sentence after it**: this file establishes that the
+blocker the watchlist names is not the only road, which stays a different claim from removing it.
+`LatticeSteinMajorant` and `LadderStep` removed it, by that road rather than this one.
+
 ## What is proved
 
 * `deriv_bound_two` — `‖y·z·exp(x + s·z)‖` bounded, for `|s| ≤ 1`, by six terms each of the form

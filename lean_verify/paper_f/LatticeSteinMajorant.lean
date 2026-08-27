@@ -81,6 +81,13 @@ polynomial in `s` times `exp` of a quadratic in `s`, whose value is a sum over t
 pairings that `Involutions` supplies — and that half is combinatorial, is untouched here, and
 is still not costed. The honest summary is: **of the two things every rung needs, one is now
 paid for once and the other is still paid per rung.**
+
+**⚠ SUPERSEDED 2026-08-27, kept as written (`ERRATUM 94`), and by the better outcome.** The
+second half of that summary is false: the combinatorial half is **also paid once**, by
+`SteinSumRecursion.sum_steinTerm_option` transported in `SteinSumSucc.steinSum_succ` and
+differentiated in `LatticeSteinLadder.hasDerivAt_steinSum`, so `LadderStep.ladder` holds at every
+order with no per-rung cost at all. *"Untouched here"* is scoped to this file and stays true;
+*"is still not costed"* was scoped to the estate, and it is the clause that dated (`ERRATUM 302`).
 -/
 
 namespace LatticeSteinMajorant

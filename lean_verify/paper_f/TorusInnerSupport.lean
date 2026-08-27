@@ -45,6 +45,15 @@ the dimension count do not exist yet. The cross-form computation they need shoul
 `adj_torus_revSite_iff` is already in the shape `crossForm_box_eq` consumed — **but it is not
 written, and after three occasions today of underestimating how close a named statement was, that
 sentence is a description of what exists rather than a forecast.**
+
+**⚠ SUPERSEDED 2026-08-27, kept as written (`ERRATUM 94`).** Both analogues exist, in the file that
+imports this one: `NullSpaceTorus.nullSpace_torus_even` is the torus analogue of
+`NullSpaceEven.nullSpace_box_even`, and `NullSpaceTorus.finrank_nullSub_torus_even` is the dimension
+count, with `NullSpaceTorusAny.nullSpace_torus_any` dropping the parity hypothesis and
+`NullSpaceCodimension` and `LatticeSliceCount` turning the deficiency into a number. **The cautious
+closing clause was right about its kind and wrong about its content**: it warned against
+forecasting, and the sentence it was guarding had a shelf life anyway — because the claim was about
+the estate rather than about this file.
 -/
 
 namespace TorusInnerSupport

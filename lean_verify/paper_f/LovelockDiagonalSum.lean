@@ -78,6 +78,19 @@ The second **looks** like a short computation from `IsOrth` — contract with `Q
 row inner products. **That is a sizing judgement, and this line of files exists because one of
 mine was wrong**, so it is recorded as a guess for a later unit to test, not as a promise.
 
+**⚠ SUPERSEDED 2026-08-27, kept as written (`ERRATUM 94`), and BOTH things are now here.** Item 2
+first: `LovelockActComposition.act_mul` proves the composition law this paragraph quotes
+`AlgebraicCurvature` as lacking — that file's own paragraph now carries a `SUPERSEDED` note saying
+so — and `LovelockFrameInverse.eq_of_act2_eq` inverts `act2` for orthogonal `Q`, with
+`LovelockActInverse.eq_of_act_eq` the four-index twin. So *"Nothing in `paper_f` inverts `act2`"*
+is false. Item 1 next, and it is the larger of the two: `LovelockDiagonalise.diagonalisable` proves
+`LovelockFrameInverse.Diagonalisable n` — Mathlib's spectral theorem carried across to `IsOrth`
+through `act2_eq_conj` and `mem_orthogonalGroup_of_isOrth` — so *"the diagonalisation does not"*
+is false too, and `LovelockDiagonalise.ricciProportional` proves the very target this section was
+measuring the distance to. **The sizing guess in the paragraph above was never tested**, because
+the route that landed did not need the contraction it describes. It is left recorded and untested
+rather than credited.
+
 **And nothing here bears on `KillsWeyl`**, the harder of `LovelockReduction`'s two `Prop`s and the
 one where the missing invariant theory lives. The watchlist item does not move.
 

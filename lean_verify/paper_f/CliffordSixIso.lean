@@ -37,6 +37,14 @@ form. Getting to *the* classification entry needs a normal-form theorem for comp
 (any two of the same rank are equivalent), which **this estate does not have and this file does not
 supply**.
 
+**⚠ SUPERSEDED 2026-08-27, kept as written (`ERRATUM 94`).** *"which this estate does not have"* is
+now false. `CliffordClassification` found the theorem in Mathlib —
+`QuadraticForm.equivalent_weightedSumSquares_of_isAlgClosed` — and
+`CliffordClassification.clifford_iso_M8_of_nondegenerate` concludes `CliffordAlgebra Q ≃ₐ[ℂ] M₈(ℂ)`
+for **every** nondegenerate `Q` on **every** six-dimensional complex space, out of this file's `Q₆`
+case. *"This file does not supply"* is scoped to this file and stays true. The paragraph below is
+**not** withdrawn: it is exactly why the quantified statement needs nondegeneracy and not nothing.
+
 **And the gap is not a technicality**: `CliffordDimension.finrank_cliffordAlgebra_congr` shows every
 form on this space gives dimension `64`, while the zero form gives the exterior algebra, which is
 not `M₈(ℂ)`. So *"`Cl(Q) ≅ M₈(ℂ)` for a six-dimensional `Q`"* is **false in general** and the

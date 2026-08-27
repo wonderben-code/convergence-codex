@@ -44,6 +44,12 @@ and this file claims only that one.
 index-side identity; the term a rung actually carries — a product of propagators over the pairs
 and of `⟨f,Ga⟩` over the fixed points — is not written down anywhere yet, and neither is its
 derivative. **Not costed** (`ERRATUM 194`).
+
+**⚠ SUPERSEDED 2026-08-27, kept as written (`ERRATUM 94`).** *"is not written down anywhere yet,
+and neither is its derivative"* — both exist. The term is `SteinSumRecursion.steinTerm`, its
+derivative is `LatticeSteinLadder.hasDerivAt_steinSum`, and `LadderStep.ladder` closes the rung at
+every order. **One word dated it**: *"anywhere"* is a claim about the estate, which any later file
+can falsify, where *"not here"* would have stayed true for ever (`ERRATUM 302`).
 -/
 
 namespace InvolutionSums

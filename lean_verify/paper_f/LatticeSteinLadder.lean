@@ -57,6 +57,12 @@ transport `PairingRecursion` performed for `perfectMatchings`, now wanted for `i
 the fixed-point factor carried along. **It is not done here**, and until it is, no rung above the
 third is built and general-order Isserlis follows from none of this. **Not costed**
 (`ERRATUM 194`).
+
+**⚠ SUPERSEDED 2026-08-27, kept as written (`ERRATUM 94`).** The re-indexing this section calls
+for is `SteinSumSucc.steinSum_succ`; with it, `LadderStep.ladder` builds every rung and
+`IsserlisAll.isserlisGeneral_all` follows. So *"until it is, no rung above the third is built"* is
+false. *"It is not done here"* is scoped to this file and stays true — the clause after it was
+scoped to the estate, and that is the clause that dated (`ERRATUM 302`).
 -/
 
 namespace LatticeSteinLadder

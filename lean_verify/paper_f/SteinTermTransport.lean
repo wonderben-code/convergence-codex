@@ -35,6 +35,13 @@ matched against `LatticeSteinLadder.hasDerivAt_steinClosed` and
 `InvolutionFixedSum.sum_fixedPoints_comm`, and `finSuccEquiv`'s two values substituted. **None of
 that is done here**, no rung above the third is built, and general-order Isserlis follows from
 none of it. **Not costed** (`ERRATUM 194`).
+
+**⚠ SUPERSEDED 2026-08-27, kept as written (`ERRATUM 94`).** The assembly listed above was
+carried out, item for item, in `SteinSumSucc.steinSum_succ` and `LadderStep.steinClosed_deriv_eq`.
+So *"no rung above the third is built"* is false — `LadderStep.ladder` holds at every order and
+`IsserlisAll.isserlisGeneral_all` with it. *"None of that is done here"* is scoped to this file and
+stays true, and that difference in scope is the whole of why one clause dated and the other did
+not (`ERRATUM 302`).
 -/
 
 namespace SteinTermTransport

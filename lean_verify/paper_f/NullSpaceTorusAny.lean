@@ -65,6 +65,13 @@ At odd side that set is ONE layer (the seam) rather than two, so the odd count i
 the two and is still not done — it needs the size of `{p : pᵢ = 0}`, which is `n ^ (d - 1)` and
 which nothing in this estate has had a reason to compute.
 
+**⚠ SUPERSEDED 2026-08-27, kept as written (`ERRATUM 94`).** *"nothing in this estate has had a
+reason to compute"* is false: `LatticeSliceCount.card_slice` proves that a coordinate slice has
+`n ^ (d - 1)` sites, for every axis and every value, and `LatticeSliceCount.codim_torus_odd_eq`
+turns this file's seam into that number. **And that file names this sentence** — its header records
+the three places, this among them, that said the count was missing, and it was written to close
+them.
+
 Reflection positivity is untouched at every side: `TorusAnySide.reflectionPositive_torus_any` says
 the form is `≥ 0`. This says by how much `≥` fails to be `>`.
 -/

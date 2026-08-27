@@ -40,6 +40,14 @@ The induction itself. Closing it needs `steinSum_succ` matched against
 `hasDerivAt_steinClosed` through `sum_fixedPoints_comm`, then `LatticeSteinRung.hasDerivAt_rung_ray`
 for the integral side, then `HasDerivAt.unique`. **None of that is here**, no rung above the third
 is built, and general-order Isserlis follows from none of it. **Not costed** (`ERRATUM 194`).
+
+**⚠ SUPERSEDED 2026-08-27 — the same day — and kept as written (`ERRATUM 94`).** Every step named
+above was taken in `LadderStep`: `steinSum_succ` matched against `hasDerivAt_steinClosed` through
+`sum_fixedPoints_comm` (`LadderStep.steinClosed_deriv_eq`), then
+`LatticeSteinRung.hasDerivAt_rung_ray`, then `HasDerivAt.unique` (`LadderStep.ladder_succ`), then
+the induction (`LadderStep.ladder`). *"No rung above the third is built"* is therefore false, and
+general-order Isserlis is `IsserlisAll.isserlisGeneral_all`. *"None of that is here"* is scoped to
+this file and stays true (`ERRATUM 302`).
 -/
 
 namespace SteinSumSucc

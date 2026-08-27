@@ -40,6 +40,13 @@ obeyed by the RIGHT-hand side of `IsserlisGeneral`. **The left-hand side — the
 whose analytic half is `LatticeSteinMajorant` and whose closed-form derivative is untouched. Until
 the two sides are matched, general Isserlis follows from none of this, and **no estimate is
 offered** (`ERRATUM 194`).
+
+**⚠ SUPERSEDED 2026-08-27, kept as written (`ERRATUM 94`).** *"The left-hand side — the Gaussian
+integral `∫ ∏ᵢ⟪fᵢ,ω⟫` — obeys no proved recursion at general order in this estate"* is now
+false, and so is the condition in *"Until the two sides are matched"*: `LadderStep.ladder` matches
+them at every order, and `IsserlisAll.isserlisGeneral_all` is the consequence. **Still true**:
+*"general Isserlis follows from none of this"*, read as scoped to this file — `LadderStep` needs
+`LatticeSteinLadder`, `SteinSumSucc` and `InvolutionFixedSum` besides.
 -/
 
 namespace PairingRecursion

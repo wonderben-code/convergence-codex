@@ -26,6 +26,11 @@ hypothesis, and the hypothesis is symmetric here and closes by `simp`.
 **WHAT IS NOT HERE.** No measure, no integral, no test function; and no ladder. Using this to close
 the induction step also needs `SteinSumRecursion.sum_steinTerm_option` transported from `Option α`
 to `Fin (n+1)`, which is **not done** — see `LatticeSteinLadder`. **Not costed** (`ERRATUM 194`).
+
+**⚠ SUPERSEDED 2026-08-27, kept as written (`ERRATUM 94`).** *"which is **not done** — see
+`LatticeSteinLadder`"*: it is done. `SteinSumSucc.steinSum_succ` is that transport, and
+`LadderStep.ladder` uses it together with `sum_fixedPoints_comm` below to close the induction at
+every order. The pointer was right about where to look and wrong about what would be found there.
 -/
 
 namespace InvolutionFixedSum
