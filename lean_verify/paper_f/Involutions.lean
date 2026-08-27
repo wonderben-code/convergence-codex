@@ -54,19 +54,35 @@ theorems were proved by differentiating under an integral sign; this number is c
   phrased in `Nat.ModEq` and mentions none of the three;
 * `card_involutions_fin_zero … _six` and `card_perfectMatchings_fin_zero … _six` — the two
   sequences, by `decide` over the permutation group, and
-  `card_perfectMatchings_fin_six_eq_doubleFactorial` for the check named above.
+  `card_perfectMatchings_fin_six_eq_doubleFactorial` for the check named above;
+* `prodSubtypeEquivSigma`, `mem_involutions_option_iff`, `conj_mem_involutions`,
+  `conj_swap_fix`, `fixingCongr`/`card_fixing_congr` (the count of involutions fixing a point
+  does not depend on the point, by conjugating with the transposition between them),
+  `fixingNoneEquiv`/`card_fixing_none` (an involution of `Option β` fixing `none` **is** an
+  involution of `β`), and `card_involutions_option`;
+* **`card_involutions_option_option`** and **`card_involutions_fin_add_two`** — the recurrence
+  `I(n+2) = I(n+1) + (n+1)·I(n)`;
+* `numInvolutions` and **`card_involutions_fin_eq_numInvolutions`** — the numbers as a plain `ℕ`
+  recursion and the theorem tying it to the count, in the shape Mathlib gives `derangements`.
+  **This is what makes the `decide` table a check rather than a duplicate**: `numInvolutions 6`
+  computes `76` without mentioning a permutation, §6 gets `76` by testing all `720` of them, and
+  the theorem says they must agree — so those seven values test the whole of §7. It is also what
+  extends the table: `card_involutions_fin_seven` (`232`), `_eight` (`764`) and `_twelve`
+  (`140152`), none of them reachable by `decide` over the group.
 
 ## What is NOT proved here, and it is the next rung
 
-**The recurrence `I(n+2) = I(n+1) + (n+1)·I(n)` is not proved.** Its two ingredients are, and
-they are exactly `involutive_swap_optionCongr_iff` plus the observation that the count of
-involutions fixing a given point does not depend on which point (conjugate by a transposition).
-What is missing is the bookkeeping between them: the subtype equivalence
-`involutions (Option α) ≃ {(a, f) // f ∈ involutions α ∧ ∀ b, a = some b → f b = b}` induced by
-`Equiv.Perm.decomposeOption`, and the sum over the first component. **No estimate of that cost
-is offered** (`ERRATUM 194`); what can be said is that the mathematics of the step is done and
-the residue is `Equiv`/`Fintype.card` plumbing. Until it is proved the table above stops at six,
-by `decide`, and every entry of it is checked rather than asserted.
+**The double-factorial recurrence for the PERFECT matchings is not proved.** `P(n+2) = (n+1)·P(n)`
+needs a fixed-point-free variant of `fixingNoneEquiv`: an involution of `Option α` with no fixed
+point must send `none` to some `b`, and the corresponding `f` then fixes `b` and **nothing else**,
+so the fibre is the perfect matchings of `α` minus that point rather than the involutions of it.
+The decomposition of §4 covers the case distinction; what is missing is that one subtype
+equivalence. **No estimate of its cost is offered** (`ERRATUM 194`); the perfect-matching entries
+of the table therefore stop at six, all six by `decide`.
+
+**And the map from an involution to the propagator product its term carries is not here.** That
+map is the content of Wick's theorem. This file supplies the index set and says nothing about
+what is summed over it.
 
 ## What this is NOT
 
@@ -338,6 +354,191 @@ actually carries. -/
 theorem card_perfectMatchings_fin_six_eq_doubleFactorial :
     Fintype.card ↑(perfectMatchings (Fin 6)) = Nat.doubleFactorial 5 := by
   rw [card_perfectMatchings_fin_six]
+  decide
+
+/-! ## 7. The recurrence
+
+`I(n+2) = I(n+1) + (n+1)·I(n)`, which §4 makes a bookkeeping exercise: an involution of
+`Option α` either fixes `none`, and is an involution of `α`, or swaps `none` with some `b`, and
+is an involution of `α` fixing `b`. The count of those does not depend on which `b`, by
+conjugating with the transposition that moves one to the other. -/
+
+/-- Splitting a subtype of a product by its first component. -/
+def prodSubtypeEquivSigma {ι β : Type*} (Q : ι → β → Prop) :
+    {p : ι × β // Q p.1 p.2} ≃ Σ a : ι, {f : β // Q a f} where
+  toFun p := ⟨p.1.1, p.1.2, p.2⟩
+  invFun q := ⟨(q.1, q.2.1), q.2.2⟩
+  left_inv := by rintro ⟨⟨a, f⟩, h⟩; rfl
+  right_inv := by rintro ⟨a, f, h⟩; rfl
+
+/-- §4 restated along `Equiv.Perm.decomposeOption`, which is the form the count needs. -/
+theorem mem_involutions_option_iff {α : Type*} [DecidableEq α] (σ : Equiv.Perm (Option α)) :
+    σ ∈ involutions (Option α)
+      ↔ ((Equiv.Perm.decomposeOption σ).2 ∈ involutions α
+          ∧ ∀ b, (Equiv.Perm.decomposeOption σ).1 = some b
+              → (Equiv.Perm.decomposeOption σ).2 b = b) := by
+  have h : Equiv.swap none (Equiv.Perm.decomposeOption σ).1
+      * Equiv.optionCongr (Equiv.Perm.decomposeOption σ).2 = σ := by
+    rw [← Equiv.Perm.decomposeOption_symm_apply, Equiv.symm_apply_apply]
+  conv_lhs => rw [← h]
+  exact involutive_swap_optionCongr_iff _ _
+
+/-- Conjugating an involution by an involution gives an involution. -/
+theorem conj_mem_involutions {α : Type*} {f c : Equiv.Perm α}
+    (hf : f ∈ involutions α) (hc : c ∈ involutions α) : c * f * c ∈ involutions α := by
+  intro x
+  simp only [Equiv.Perm.mul_apply]
+  rw [hc, hf, hc]
+
+/-- And conjugating by `swap b b'` moves the fixed point from `b` to `b'`. -/
+theorem conj_swap_fix {α : Type*} [DecidableEq α] {f : Equiv.Perm α} {b b' : α}
+    (hb : f b = b) : (Equiv.swap b b' * f * Equiv.swap b b') b' = b' := by
+  simp only [Equiv.Perm.mul_apply]
+  rw [Equiv.swap_apply_right, hb, Equiv.swap_apply_left]
+
+/-- **THE COUNT OF INVOLUTIONS FIXING A POINT DOES NOT DEPEND ON THE POINT.** -/
+def fixingCongr {α : Type*} [DecidableEq α] (b b' : α) :
+    {f : Equiv.Perm α // f ∈ involutions α ∧ f b = b}
+      ≃ {f : Equiv.Perm α // f ∈ involutions α ∧ f b' = b'} where
+  toFun f := ⟨Equiv.swap b b' * f.1 * Equiv.swap b b',
+    ⟨conj_mem_involutions f.2.1 (swap_mem_involutions b b'), conj_swap_fix f.2.2⟩⟩
+  invFun g := ⟨Equiv.swap b' b * g.1 * Equiv.swap b' b,
+    ⟨conj_mem_involutions g.2.1 (swap_mem_involutions b' b), conj_swap_fix g.2.2⟩⟩
+  left_inv f := by
+    ext x
+    simp only [Equiv.Perm.mul_apply, Equiv.swap_comm b' b]
+    rw [Equiv.swap_apply_self, Equiv.swap_apply_self]
+  right_inv g := by
+    ext x
+    simp only [Equiv.Perm.mul_apply, Equiv.swap_comm b' b]
+    rw [Equiv.swap_apply_self, Equiv.swap_apply_self]
+
+theorem card_fixing_congr {α : Type*} [Fintype α] [DecidableEq α] (b b' : α) :
+    Fintype.card {f : Equiv.Perm α // f ∈ involutions α ∧ f b = b}
+      = Fintype.card {f : Equiv.Perm α // f ∈ involutions α ∧ f b' = b'} :=
+  Fintype.card_congr (fixingCongr b b')
+
+/-- An involution of `Option β` fixing `none` **is** an involution of `β`. -/
+def fixingNoneEquiv {β : Type*} [DecidableEq β] :
+    {f : Equiv.Perm (Option β) // f ∈ involutions (Option β) ∧ f none = none}
+      ≃ ↑(involutions β) where
+  toFun f := ⟨Equiv.removeNone f.1, by
+    have h := ((mem_involutions_option_iff f.1).mp f.2.1).1
+    rwa [Equiv.Perm.decomposeOption_apply] at h⟩
+  invFun g := ⟨Equiv.optionCongr g.1, by
+    refine ⟨?_, by simp⟩
+    intro x
+    cases x with
+    | none => simp
+    | some y => simp [Equiv.optionCongr_apply, g.2 y]⟩
+  left_inv f := by
+    refine Subtype.ext ?_
+    have hd : Equiv.Perm.decomposeOption f.1 = (none, Equiv.removeNone f.1) := by
+      rw [Equiv.Perm.decomposeOption_apply, f.2.2]
+    have h := Equiv.Perm.decomposeOption.symm_apply_apply f.1
+    rw [hd, Equiv.Perm.decomposeOption_symm_apply] at h
+    simpa using h
+  right_inv g := Subtype.ext (Equiv.removeNone_optionCongr g.1)
+
+theorem card_fixing_none {β : Type*} [Fintype β] [DecidableEq β] :
+    Fintype.card {f : Equiv.Perm (Option β) //
+        f ∈ involutions (Option β) ∧ f none = none}
+      = Fintype.card ↑(involutions β) :=
+  Fintype.card_congr fixingNoneEquiv
+
+/-- The count over `Option α`, split by where `none` goes. -/
+theorem card_involutions_option {α : Type*} [Fintype α] [DecidableEq α] :
+    Fintype.card ↑(involutions (Option α))
+      = Fintype.card ↑(involutions α)
+        + ∑ b : α, Fintype.card {f : Equiv.Perm α // f ∈ involutions α ∧ f b = b} := by
+  have e1 : ↑(involutions (Option α)) ≃
+      {p : Option α × Equiv.Perm α //
+        p.2 ∈ involutions α ∧ ∀ b, p.1 = some b → p.2 b = b} :=
+    Equiv.subtypeEquiv Equiv.Perm.decomposeOption (fun σ => mem_involutions_option_iff σ)
+  rw [Fintype.card_congr (e1.trans (prodSubtypeEquivSigma
+        (fun (a : Option α) (f : Equiv.Perm α) =>
+          f ∈ involutions α ∧ ∀ b, a = some b → f b = b))),
+    Fintype.card_sigma, Fintype.sum_option]
+  congr 1
+  · exact Fintype.card_congr (Equiv.subtypeEquivRight (fun f => by simp))
+  · exact Finset.sum_congr rfl fun b _ =>
+      Fintype.card_congr (Equiv.subtypeEquivRight (fun f => by simp))
+
+/-- **THE RECURRENCE.** -/
+theorem card_involutions_option_option {β : Type*} [Fintype β] [DecidableEq β] :
+    Fintype.card ↑(involutions (Option (Option β)))
+      = Fintype.card ↑(involutions (Option β))
+        + (Fintype.card β + 1) * Fintype.card ↑(involutions β) := by
+  rw [card_involutions_option (α := Option β)]
+  congr 1
+  rw [Finset.sum_congr rfl (fun b (_ : b ∈ Finset.univ) =>
+        card_fixing_congr (α := Option β) b none),
+    Finset.sum_const, Finset.card_univ, Fintype.card_option, smul_eq_mul, card_fixing_none]
+
+/-- And at `Fin`, which is the shape the table is in: `I(n+2) = I(n+1) + (n+1)·I(n)`. -/
+theorem card_involutions_fin_add_two (n : ℕ) :
+    Fintype.card ↑(involutions (Fin (n + 2)))
+      = Fintype.card ↑(involutions (Fin (n + 1)))
+        + (n + 1) * Fintype.card ↑(involutions (Fin n)) := by
+  have e : Fin (n + 2) ≃ Option (Option (Fin n)) :=
+    (finSuccEquiv (n + 1)).trans (Equiv.optionCongr (finSuccEquiv n))
+  rw [card_involutions_invariant e,
+    card_involutions_option_option,
+    card_involutions_invariant (finSuccEquiv n) (β := Option (Fin n)) |>.symm,
+    Fintype.card_fin]
+
+/-! ## 8. The involution numbers as a `ℕ` recursion, and the two routes checked against each other
+
+Mathlib gives `derangements` a companion `numDerangements : ℕ → ℕ` and a theorem tying the two
+together, so that a count can be evaluated without touching a permutation group. The same shape
+is what makes the table extend: rewriting under `Fintype.card` at a numeral index forces `whnf`
+on the permutation-group instance, and at `Fin 8` that does not finish inside the default budget.
+Through `numInvolutions` there is no group to evaluate at all. -/
+
+/-- The involution numbers, as a plain `ℕ` recursion — the shape `numDerangements` has. -/
+def numInvolutions : ℕ → ℕ
+  | 0 => 1
+  | 1 => 1
+  | n + 2 => numInvolutions (n + 1) + (n + 1) * numInvolutions n
+
+/-- **AND IT COUNTS THEM.** The base cases are two of §6's `decide` results and the step is the
+recurrence, so this is the whole table in one statement. -/
+theorem card_involutions_fin_eq_numInvolutions (n : ℕ) :
+    Fintype.card ↑(involutions (Fin n)) = numInvolutions n := by
+  induction n using Nat.twoStepInduction with
+  | zero => exact card_involutions_fin_zero
+  | one => exact card_involutions_fin_one
+  | more n ih0 ih1 =>
+      rw [card_involutions_fin_add_two n, ih0, ih1]
+      rfl
+
+/-- **THE CHECK ON THE RECURRENCE ITSELF.** `76` was obtained in §6 by enumerating the `720`
+permutations of a six-element set and testing each; `numInvolutions 6` computes it from the two
+entries below it by a recursion that never mentions a permutation. The theorem above says the two
+must agree, so the `decide` values of §6 are a consistency check on the whole chain of §7 — the
+`Option`-decomposition, the conjugation, and the sum split. -/
+theorem numInvolutions_six : numInvolutions 6 = 76 := by decide
+
+theorem card_involutions_fin_six_two_ways :
+    Fintype.card ↑(involutions (Fin 6)) = numInvolutions 6 :=
+  card_involutions_fin_eq_numInvolutions 6
+
+/-- `I(7) = 232` and `I(8) = 764`, **neither reachable by `decide` over the group** — that would
+enumerate `5040` and `40320` permutations — and both immediate here. -/
+theorem card_involutions_fin_seven :
+    Fintype.card ↑(involutions (Fin 7)) = 232 := by
+  rw [card_involutions_fin_eq_numInvolutions]
+  decide
+
+theorem card_involutions_fin_eight :
+    Fintype.card ↑(involutions (Fin 8)) = 764 := by
+  rw [card_involutions_fin_eq_numInvolutions]
+  decide
+
+/-- And at a size where enumeration is hopeless: `I(12) = 140152`. -/
+theorem card_involutions_fin_twelve :
+    Fintype.card ↑(involutions (Fin 12)) = 140152 := by
+  rw [card_involutions_fin_eq_numInvolutions]
   decide
 
 end Involutions
