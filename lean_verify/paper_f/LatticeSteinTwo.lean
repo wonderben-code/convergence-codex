@@ -60,6 +60,21 @@ rewritten.
   `LatticeIsserlisSmeared.smeared_twoPoint` proved by polarising a second moment. **A new identity
   that disagreed with an old one at a shared point would be worth knowing about; this one agrees.**
 
+And **the third rung, `T_3`**, because one rung is thin evidence for a ladder:
+
+* `deriv_bound_three`, `integrable_deriv_bound_three` — the same split once more, twelve terms
+  `exp(x ± y ± z ± 2w)`, each of them `exp⟪g,ω⟫` at `g = f ± a ± b ± 2c`;
+* `hasDerivAt_stein_three_ray`, `hasDerivAt_stein_three_closed`, and **`stein_three`**:
+  `∫⟪a,ω⟫⟪b,ω⟫⟪c,ω⟫exp⟪f,ω⟫ = (⟨c,Ga⟩⟨f,Gb⟩ + ⟨c,Gb⟩⟨f,Ga⟩ + ⟨b,Ga⟩⟨f,Gc⟩ +
+  ⟨f,Ga⟩⟨f,Gb⟩⟨f,Gc⟩)·exp(½⟨f,Gf⟩)`. **FOUR TERMS, AND
+  `Involutions.card_involutions_fin_three` IS `4`** — the partial pairings of a three-element set,
+  three of which pair two of `a, b, c` and contract the third, one of which contracts all three.
+  This is the first identity in the estate exhibiting that structure rather than one or two
+  special cases of it;
+* `stein_three_zero` — and at `f = 0` it vanishes, which is
+  `LatticeOddVanishing.integral_prod_odd_eq_zero` at three factors, the first odd order above one.
+  **The two statements genuinely meet there**, by routes with no step in common.
+
 Finite volume throughout. **No wall moves. No published tag moves.**
 -/
 
@@ -262,6 +277,267 @@ theorem stein_two_zero (hm : m ≠ 0) (a b : EuclideanSpace ℝ V) :
   have hv : linVar G m 0 = 0 := by simp [linVar_eq_dotG, dotG]
   simp only [inner_zero_left, Real.exp_zero, mul_one, hz, hv, zero_mul, add_zero,
     zero_div] at h
+  simpa using h
+
+/-! ## 4. The third rung, where the pairing sum becomes visible
+
+`T_3` is one more differentiation, and what comes out has **four** terms — which is
+`Involutions.card_involutions_fin_three`, the number of ways to pair up three things partially.
+Three of them pair two of `a, b, c` and contract the third with the exponential's argument; the
+fourth contracts all three. **That is the first place in this estate where a Stein-type identity
+exhibits the partial-pairing structure rather than one or two special cases of it.** -/
+
+/-- The majorant one factor deeper again: `deriv_bound_two` with a third linear factor split off
+by `|y| ≤ eʸ + e⁻ʸ`. Twelve terms, each `exp(x ± y ± z ± 2w)`. -/
+theorem deriv_bound_three (x y z w s : ℝ) (hs : |s| ≤ 1) :
+    ‖y * z * w * Real.exp (x + s * w)‖
+      ≤ Real.exp (x + y + z + 2 * w) + 2 * Real.exp (x + y + z)
+          + Real.exp (x + y + z - 2 * w)
+        + (Real.exp (x + y - z + 2 * w) + 2 * Real.exp (x + y - z)
+          + Real.exp (x + y - z - 2 * w))
+      + (Real.exp (x - y + z + 2 * w) + 2 * Real.exp (x - y + z)
+          + Real.exp (x - y + z - 2 * w)
+        + (Real.exp (x - y - z + 2 * w) + 2 * Real.exp (x - y - z)
+          + Real.exp (x - y - z - 2 * w))) := by
+  have hzw := deriv_bound_two x z w s hs
+  have hy := abs_le_exp_add_exp_neg y
+  have hregroup : ‖y * z * w * Real.exp (x + s * w)‖
+      = |y| * ‖z * w * Real.exp (x + s * w)‖ := by
+    rw [Real.norm_eq_abs, Real.norm_eq_abs, mul_assoc, mul_assoc, ← mul_assoc z, abs_mul]
+  rw [hregroup]
+  have hstep : |y| * ‖z * w * Real.exp (x + s * w)‖
+      ≤ (Real.exp y + Real.exp (-y))
+        * (Real.exp (x + z + 2 * w) + 2 * Real.exp (x + z) + Real.exp (x + z - 2 * w)
+          + (Real.exp (x - z + 2 * w) + 2 * Real.exp (x - z)
+            + Real.exp (x - z - 2 * w))) :=
+    mul_le_mul hy hzw (norm_nonneg _) (by positivity)
+  refine hstep.trans (le_of_eq ?_)
+  simp only [Real.exp_add, Real.exp_sub, Real.exp_neg]
+  field_simp
+
+/-- Each of the twelve is `exp⟪g,ω⟫` at `g = f ± a ± b ± 2c`. -/
+theorem integrable_deriv_bound_three (hm : m ≠ 0) (f a b c : EuclideanSpace ℝ V) :
+    Integrable (fun ω =>
+      Real.exp ((inner ℝ f ω : ℝ) + (inner ℝ a ω : ℝ) + (inner ℝ b ω : ℝ)
+          + 2 * (inner ℝ c ω : ℝ))
+        + 2 * Real.exp ((inner ℝ f ω : ℝ) + (inner ℝ a ω : ℝ) + (inner ℝ b ω : ℝ))
+        + Real.exp ((inner ℝ f ω : ℝ) + (inner ℝ a ω : ℝ) + (inner ℝ b ω : ℝ)
+          - 2 * (inner ℝ c ω : ℝ))
+      + (Real.exp ((inner ℝ f ω : ℝ) + (inner ℝ a ω : ℝ) - (inner ℝ b ω : ℝ)
+          + 2 * (inner ℝ c ω : ℝ))
+        + 2 * Real.exp ((inner ℝ f ω : ℝ) + (inner ℝ a ω : ℝ) - (inner ℝ b ω : ℝ))
+        + Real.exp ((inner ℝ f ω : ℝ) + (inner ℝ a ω : ℝ) - (inner ℝ b ω : ℝ)
+          - 2 * (inner ℝ c ω : ℝ)))
+      + (Real.exp ((inner ℝ f ω : ℝ) - (inner ℝ a ω : ℝ) + (inner ℝ b ω : ℝ)
+          + 2 * (inner ℝ c ω : ℝ))
+        + 2 * Real.exp ((inner ℝ f ω : ℝ) - (inner ℝ a ω : ℝ) + (inner ℝ b ω : ℝ))
+        + Real.exp ((inner ℝ f ω : ℝ) - (inner ℝ a ω : ℝ) + (inner ℝ b ω : ℝ)
+          - 2 * (inner ℝ c ω : ℝ))
+      + (Real.exp ((inner ℝ f ω : ℝ) - (inner ℝ a ω : ℝ) - (inner ℝ b ω : ℝ)
+          + 2 * (inner ℝ c ω : ℝ))
+        + 2 * Real.exp ((inner ℝ f ω : ℝ) - (inner ℝ a ω : ℝ) - (inner ℝ b ω : ℝ))
+        + Real.exp ((inner ℝ f ω : ℝ) - (inner ℝ a ω : ℝ) - (inner ℝ b ω : ℝ)
+          - 2 * (inner ℝ c ω : ℝ))))) (gaussianField G m) := by
+  have key : ∀ (p q r : ℝ), Integrable (fun ω =>
+      Real.exp ((inner ℝ f ω : ℝ) + p * (inner ℝ a ω : ℝ) + q * (inner ℝ b ω : ℝ)
+        + r * (inner ℝ c ω : ℝ))) (gaussianField G m) := by
+    intro p q r
+    refine (LatticeGeneratingFunctional.integrable_exp_inner (G := G) hm
+      (f + p • a + q • b + r • c)).congr (Filter.Eventually.of_forall fun ω => ?_)
+    simp [inner_add_left, real_inner_smul_left]
+  have mk : ∀ (p q : ℝ), Integrable (fun ω =>
+      Real.exp ((inner ℝ f ω : ℝ) + p * (inner ℝ a ω : ℝ) + q * (inner ℝ b ω : ℝ)
+          + 2 * (inner ℝ c ω : ℝ))
+        + 2 * Real.exp ((inner ℝ f ω : ℝ) + p * (inner ℝ a ω : ℝ) + q * (inner ℝ b ω : ℝ))
+        + Real.exp ((inner ℝ f ω : ℝ) + p * (inner ℝ a ω : ℝ) + q * (inner ℝ b ω : ℝ)
+          - 2 * (inner ℝ c ω : ℝ))) (gaussianField G m) := by
+    intro p q
+    have h1 := key p q 2
+    have h2 := key p q 0
+    have h3 := key p q (-2)
+    exact ((h1.congr (Filter.Eventually.of_forall fun ω => by ring_nf)).add
+      ((h2.congr (Filter.Eventually.of_forall fun ω => by ring_nf)).const_mul 2)).add
+        (h3.congr (Filter.Eventually.of_forall fun ω => by ring_nf))
+  have m1 := mk 1 1
+  have m2 := mk 1 (-1)
+  have m3 := mk (-1) 1
+  have m4 := mk (-1) (-1)
+  refine ((m1.congr (Filter.Eventually.of_forall fun ω => by ring_nf)).add
+    (m2.congr (Filter.Eventually.of_forall fun ω => by ring_nf))).add
+      ((m3.congr (Filter.Eventually.of_forall fun ω => by ring_nf)).add
+        (m4.congr (Filter.Eventually.of_forall fun ω => by ring_nf)))
+
+/-- **THE INTEGRAL READING** at the third rung. -/
+theorem hasDerivAt_stein_three_ray (hm : m ≠ 0) (f a b c : EuclideanSpace ℝ V) :
+    HasDerivAt (fun s : ℝ => ∫ ω, (inner ℝ a ω : ℝ) * (inner ℝ b ω : ℝ)
+        * Real.exp ((inner ℝ f ω : ℝ) + s * (inner ℝ c ω : ℝ)) ∂(gaussianField G m))
+      (∫ ω, (inner ℝ a ω : ℝ) * (inner ℝ b ω : ℝ) * (inner ℝ c ω : ℝ)
+        * Real.exp (inner ℝ f ω : ℝ) ∂(gaussianField G m)) 0 := by
+  set μ := gaussianField G m with hμ
+  set F : ℝ → EuclideanSpace ℝ V → ℝ :=
+    fun s ω => (inner ℝ a ω : ℝ) * (inner ℝ b ω : ℝ)
+      * Real.exp ((inner ℝ f ω : ℝ) + s * (inner ℝ c ω : ℝ)) with hF
+  set F' : ℝ → EuclideanSpace ℝ V → ℝ :=
+    fun s ω => (inner ℝ a ω : ℝ) * (inner ℝ b ω : ℝ) * ((inner ℝ c ω : ℝ)
+      * Real.exp ((inner ℝ f ω : ℝ) + s * (inner ℝ c ω : ℝ))) with hF'
+  have hbase : ∀ s : ℝ, Continuous
+      (fun ω : EuclideanSpace ℝ V =>
+        Real.exp ((inner ℝ f ω : ℝ) + s * (inner ℝ c ω : ℝ))) := fun s =>
+    Real.continuous_exp.comp ((continuous_pair f).add (continuous_const.mul (continuous_pair c)))
+  have hcont : ∀ s : ℝ, Continuous (F s) := fun s =>
+    ((continuous_pair a).mul (continuous_pair b)).mul (hbase s)
+  have hcont' : ∀ s : ℝ, Continuous (F' s) := fun s =>
+    ((continuous_pair a).mul (continuous_pair b)).mul ((continuous_pair c).mul (hbase s))
+  have hderiv : ∀ (ω : EuclideanSpace ℝ V) (s : ℝ), HasDerivAt (F · ω) (F' s ω) s := by
+    intro ω s
+    have hlin : HasDerivAt
+        (fun t : ℝ => (inner ℝ f ω : ℝ) + t * (inner ℝ c ω : ℝ)) (inner ℝ c ω : ℝ) s := by
+      simpa using ((hasDerivAt_id s).mul_const (inner ℝ c ω : ℝ)).const_add (inner ℝ f ω : ℝ)
+    have hp := hlin.exp.const_mul ((inner ℝ a ω : ℝ) * (inner ℝ b ω : ℝ))
+    simp only [hF, hF']
+    convert hp using 1
+    ring
+  have hint0 : Integrable (F 0) μ := by
+    have key : ∀ (p q : ℝ), Integrable (fun ω : EuclideanSpace ℝ V =>
+        Real.exp ((inner ℝ f ω : ℝ) + p * (inner ℝ a ω : ℝ) + q * (inner ℝ b ω : ℝ))) μ := by
+      intro p q
+      refine (LatticeGeneratingFunctional.integrable_exp_inner (G := G) hm
+        (f + p • a + q • b)).congr (Filter.Eventually.of_forall fun ω => ?_)
+      simp [inner_add_left, real_inner_smul_left]
+    have hb : Integrable (fun ω : EuclideanSpace ℝ V =>
+        Real.exp ((inner ℝ f ω : ℝ) + (inner ℝ a ω : ℝ) + (inner ℝ b ω : ℝ))
+          + Real.exp ((inner ℝ f ω : ℝ) + (inner ℝ a ω : ℝ) - (inner ℝ b ω : ℝ))
+        + (Real.exp ((inner ℝ f ω : ℝ) - (inner ℝ a ω : ℝ) + (inner ℝ b ω : ℝ))
+          + Real.exp ((inner ℝ f ω : ℝ) - (inner ℝ a ω : ℝ) - (inner ℝ b ω : ℝ)))) μ :=
+      (((key 1 1).congr (Filter.Eventually.of_forall fun ω => by ring_nf)).add
+        ((key 1 (-1)).congr (Filter.Eventually.of_forall fun ω => by ring_nf))).add
+          (((key (-1) 1).congr (Filter.Eventually.of_forall fun ω => by ring_nf)).add
+            ((key (-1) (-1)).congr (Filter.Eventually.of_forall fun ω => by ring_nf)))
+    refine Integrable.mono' hb ((hcont 0).aestronglyMeasurable)
+      (Filter.Eventually.of_forall fun ω => ?_)
+    have habs : ‖F 0 ω‖
+        = |(inner ℝ a ω : ℝ)| * |(inner ℝ b ω : ℝ)| * Real.exp (inner ℝ f ω : ℝ) := by
+      simp only [hF, Real.norm_eq_abs, zero_mul, add_zero]
+      rw [abs_mul, abs_mul, abs_of_pos (Real.exp_pos _)]
+    rw [habs]
+    have hya := abs_le_exp_add_exp_neg (inner ℝ a ω : ℝ)
+    have hyb := abs_le_exp_add_exp_neg (inner ℝ b ω : ℝ)
+    have hpos : (0 : ℝ) < Real.exp (inner ℝ f ω : ℝ) := Real.exp_pos _
+    have hprod : |(inner ℝ a ω : ℝ)| * |(inner ℝ b ω : ℝ)|
+        ≤ (Real.exp (inner ℝ a ω : ℝ) + Real.exp (-(inner ℝ a ω : ℝ)))
+          * (Real.exp (inner ℝ b ω : ℝ) + Real.exp (-(inner ℝ b ω : ℝ))) :=
+      mul_le_mul hya hyb (abs_nonneg _) (by positivity)
+    calc |(inner ℝ a ω : ℝ)| * |(inner ℝ b ω : ℝ)| * Real.exp (inner ℝ f ω : ℝ)
+        ≤ (Real.exp (inner ℝ a ω : ℝ) + Real.exp (-(inner ℝ a ω : ℝ)))
+            * (Real.exp (inner ℝ b ω : ℝ) + Real.exp (-(inner ℝ b ω : ℝ)))
+            * Real.exp (inner ℝ f ω : ℝ) := mul_le_mul_of_nonneg_right hprod hpos.le
+      _ = _ := by
+          simp only [Real.exp_add, Real.exp_sub, Real.exp_neg]
+          field_simp
+  have hres := hasDerivAt_integral_of_dominated_loc_of_deriv_le
+    (μ := μ) (F := F) (F' := F') (x₀ := (0 : ℝ)) (bound := fun ω =>
+      Real.exp ((inner ℝ f ω : ℝ) + (inner ℝ a ω : ℝ) + (inner ℝ b ω : ℝ)
+          + 2 * (inner ℝ c ω : ℝ))
+        + 2 * Real.exp ((inner ℝ f ω : ℝ) + (inner ℝ a ω : ℝ) + (inner ℝ b ω : ℝ))
+        + Real.exp ((inner ℝ f ω : ℝ) + (inner ℝ a ω : ℝ) + (inner ℝ b ω : ℝ)
+          - 2 * (inner ℝ c ω : ℝ))
+      + (Real.exp ((inner ℝ f ω : ℝ) + (inner ℝ a ω : ℝ) - (inner ℝ b ω : ℝ)
+          + 2 * (inner ℝ c ω : ℝ))
+        + 2 * Real.exp ((inner ℝ f ω : ℝ) + (inner ℝ a ω : ℝ) - (inner ℝ b ω : ℝ))
+        + Real.exp ((inner ℝ f ω : ℝ) + (inner ℝ a ω : ℝ) - (inner ℝ b ω : ℝ)
+          - 2 * (inner ℝ c ω : ℝ)))
+      + (Real.exp ((inner ℝ f ω : ℝ) - (inner ℝ a ω : ℝ) + (inner ℝ b ω : ℝ)
+          + 2 * (inner ℝ c ω : ℝ))
+        + 2 * Real.exp ((inner ℝ f ω : ℝ) - (inner ℝ a ω : ℝ) + (inner ℝ b ω : ℝ))
+        + Real.exp ((inner ℝ f ω : ℝ) - (inner ℝ a ω : ℝ) + (inner ℝ b ω : ℝ)
+          - 2 * (inner ℝ c ω : ℝ))
+      + (Real.exp ((inner ℝ f ω : ℝ) - (inner ℝ a ω : ℝ) - (inner ℝ b ω : ℝ)
+          + 2 * (inner ℝ c ω : ℝ))
+        + 2 * Real.exp ((inner ℝ f ω : ℝ) - (inner ℝ a ω : ℝ) - (inner ℝ b ω : ℝ))
+        + Real.exp ((inner ℝ f ω : ℝ) - (inner ℝ a ω : ℝ) - (inner ℝ b ω : ℝ)
+          - 2 * (inner ℝ c ω : ℝ)))))
+    (s := Metric.ball (0 : ℝ) 1) (Metric.ball_mem_nhds _ one_pos)
+    (Filter.Eventually.of_forall fun s => (hcont s).aestronglyMeasurable)
+    hint0
+    ((hcont' 0).aestronglyMeasurable)
+    (Filter.Eventually.of_forall fun ω s hsm => by
+      have hs : |s| ≤ 1 := le_of_lt (by simpa [Real.dist_eq] using hsm)
+      have h := deriv_bound_three (inner ℝ f ω : ℝ) (inner ℝ a ω : ℝ) (inner ℝ b ω : ℝ)
+        (inner ℝ c ω : ℝ) s hs
+      simpa [hF', mul_assoc] using h)
+    (integrable_deriv_bound_three hm f a b c)
+    (Filter.Eventually.of_forall fun ω s _ => hderiv ω s)
+  have hval : (∫ ω, F' 0 ω ∂μ)
+      = ∫ ω, (inner ℝ a ω : ℝ) * (inner ℝ b ω : ℝ) * (inner ℝ c ω : ℝ)
+          * Real.exp (inner ℝ f ω : ℝ) ∂μ := by
+    simp only [hF', zero_mul, add_zero]
+    exact integral_congr_ae (Filter.Eventually.of_forall fun ω => by ring)
+  rw [← hval]
+  simpa [hF] using hres.2
+
+/-- **THE CLOSED READING** at the third rung: `stein_two` at `f + s•c`, one product rule. -/
+theorem hasDerivAt_stein_three_closed (hm : m ≠ 0) (f a b c : EuclideanSpace ℝ V) :
+    HasDerivAt (fun s : ℝ => ∫ ω, (inner ℝ a ω : ℝ) * (inner ℝ b ω : ℝ)
+        * Real.exp ((inner ℝ f ω : ℝ) + s * (inner ℝ c ω : ℝ)) ∂(gaussianField G m))
+      ((dotG G m c a * dotG G m f b + dotG G m f a * dotG G m c b) * Real.exp (linVar G m f / 2)
+        + (dotG G m b a + dotG G m f a * dotG G m f b)
+            * (dotG G m f c * Real.exp (linVar G m f / 2))) 0 := by
+  have hfun : (fun s : ℝ => ∫ ω, (inner ℝ a ω : ℝ) * (inner ℝ b ω : ℝ)
+      * Real.exp ((inner ℝ f ω : ℝ) + s * (inner ℝ c ω : ℝ)) ∂(gaussianField G m))
+      = fun s : ℝ => (dotG G m b a
+          + (dotG G m f a + s * dotG G m c a) * (dotG G m f b + s * dotG G m c b))
+          * Real.exp (linVar G m (f + s • c) / 2) := by
+    funext s
+    have h1 : ∀ ω : EuclideanSpace ℝ V, ((inner ℝ f ω : ℝ) + s * (inner ℝ c ω : ℝ))
+        = (inner ℝ (f + s • c) ω : ℝ) := fun ω => (inner_add_smul f c s ω).symm
+    simp only [h1]
+    rw [stein_two hm (f + s • c) a b, dotG_add_left, dotG_add_left, dotG_smul_left,
+      dotG_smul_left]
+  rw [hfun]
+  have hu : HasDerivAt (fun s : ℝ => dotG G m b a
+      + (dotG G m f a + s * dotG G m c a) * (dotG G m f b + s * dotG G m c b))
+      (dotG G m c a * dotG G m f b + dotG G m f a * dotG G m c b) 0 := by
+    have h1 : HasDerivAt (fun s : ℝ => dotG G m f a + s * dotG G m c a) (dotG G m c a) 0 := by
+      simpa using ((hasDerivAt_id (0 : ℝ)).mul_const (dotG G m c a)).const_add (dotG G m f a)
+    have h2 : HasDerivAt (fun s : ℝ => dotG G m f b + s * dotG G m c b) (dotG G m c b) 0 := by
+      simpa using ((hasDerivAt_id (0 : ℝ)).mul_const (dotG G m c b)).const_add (dotG G m f b)
+    have h3 := (h1.mul h2).const_add (dotG G m b a)
+    convert h3 using 1
+    simp
+  have hv := hasDerivAt_gf_ray (G := G) hm f c
+  have hres := hu.mul hv
+  convert hres using 1
+  simp only [zero_mul, add_zero, zero_smul]
+
+/-- **THREE LINEAR FACTORS AGAINST AN EXPONENTIAL, AND THE PARTIAL-PAIRING SUM IS VISIBLE.**
+
+`∫⟪a,ω⟫⟪b,ω⟫⟪c,ω⟫exp⟪f,ω⟫ = (⟨c,Ga⟩⟨f,Gb⟩ + ⟨c,Gb⟩⟨f,Ga⟩ + ⟨b,Ga⟩⟨f,Gc⟩ +
+⟨f,Ga⟩⟨f,Gb⟩⟨f,Gc⟩)·exp(½⟨f,Gf⟩)`.
+
+**FOUR TERMS, AND `Involutions.card_involutions_fin_three` IS `4`** — the number of ways to pair
+three things partially. Three of them pair two of `a, b, c` and contract the third with `f`; the
+fourth contracts all three. This is the first identity in the estate that exhibits that structure
+rather than one or two special cases of it. -/
+theorem stein_three (hm : m ≠ 0) (f a b c : EuclideanSpace ℝ V) :
+    ∫ ω, (inner ℝ a ω : ℝ) * (inner ℝ b ω : ℝ) * (inner ℝ c ω : ℝ)
+        * Real.exp (inner ℝ f ω : ℝ) ∂(gaussianField G m)
+      = (dotG G m c a * dotG G m f b + dotG G m c b * dotG G m f a
+          + dotG G m b a * dotG G m f c
+          + dotG G m f a * dotG G m f b * dotG G m f c) * Real.exp (linVar G m f / 2) := by
+  have h := (hasDerivAt_stein_three_ray (G := G) hm f a b c).unique
+    (hasDerivAt_stein_three_closed hm f a b c)
+  rw [h]
+  ring
+
+/-- **AND AT `f = 0` IT VANISHES**, which `LatticeOddVanishing.integral_prod_odd_eq_zero` says at
+every odd order and this estate previously had only for an odd power of one test function. Three
+factors is the first odd order above one, so the two statements genuinely meet here. -/
+theorem stein_three_zero (hm : m ≠ 0) (a b c : EuclideanSpace ℝ V) :
+    ∫ ω, (inner ℝ a ω : ℝ) * (inner ℝ b ω : ℝ) * (inner ℝ c ω : ℝ)
+        ∂(gaussianField G m) = 0 := by
+  have h := stein_three (G := G) hm 0 a b c
+  have hz : ∀ g : EuclideanSpace ℝ V, dotG G m 0 g = 0 := fun g => by simp [dotG]
+  simp only [inner_zero_left, Real.exp_zero, mul_one, hz, zero_mul, mul_zero, add_zero] at h
   simpa using h
 
 end LatticeSteinTwo
