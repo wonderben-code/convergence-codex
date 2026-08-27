@@ -151,4 +151,5 @@ roots = [
   "LatticeTruncatedNorms",
   "LatticeTruncatedUniform",
   "PairingKinds",
+  "LatticeTruncatedKinds",
 ]
