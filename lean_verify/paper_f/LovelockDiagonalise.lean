@@ -62,6 +62,16 @@ produced some other number and nothing else would have complained.
 `Qᵀ · Q = 1` on 2-tensors; `AlgebraicCurvature`'s statement that `act (Q · Qʹ) = act Q ∘ act Qʹ` is
 not established stands unchanged, and nothing here needs it.
 
+**⚠ SUPERSEDED 2026-08-27, kept as written (`ERRATUM 94`), in BOTH of its claims.**
+*"`KillsWeyl` at `n ≥ 4` is untouched"* and *"the watchlist item ... stays open"* are false:
+`LovelockKillsWeyl.killsWeyl_of_equivariant` proves `KillsWeyl` at every `n ≥ 3` and
+`LovelockKillsWeyl.classification` is the whole algebraic classification —
+`LovelockReduction`'s own header carries the dated amendment naming both. And *"the composition
+law is still not proved"* is false: `LovelockActComposition.act_mul` proves it, and
+`AlgebraicCurvature`'s paragraph saying otherwise carries its own `SUPERSEDED` note.
+**What still stands** is everything this section says about `n = 3` not being a second `n = 2`,
+and the two consistency checks (`ERRATUM 302`).
+
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 

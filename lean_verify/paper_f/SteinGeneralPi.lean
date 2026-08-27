@@ -65,7 +65,19 @@
   containment is strict**, and the difference matters: §2 lands in
   `SobolevWeakPi`, and whether `|xᵢ|` belongs THERE is not settled anywhere
   in the estate, because the one arrow runs out of `SobolevWeakPi` rather
-  than into it. **And this file does not settle the
+  than into it.
+
+  **⚠ SUPERSEDED 2026-08-27, kept as written (`ERRATUM 94`).** *"whether `|xᵢ|`
+  belongs THERE is not settled anywhere in the estate"* is false:
+  `SteinSmoothPi` proves `SobolevWeakPi n (AbsSteinWitnessPi.absCoord n i)
+  (AbsSteinWitnessPi.sgnCoord n i)` — `|xᵢ|` is in the textbook class, with
+  `sgnCoord` as its weak derivative. **The reason given was the wrong one too**:
+  the arrow's direction was never the obstacle, because membership was proved
+  directly rather than transported along it (`ERRATUM 302`). What still stands
+  is the first half — being `C¹` is not necessary for membership of the Stein
+  class — and the distinction from §2's containment being strict.
+
+  **And this file does not settle the
   reverse containment** `SteinPairPi → SmoothSteinPairPi`: it produces
   members of the textbook class, which is the small side of the one arrow
   the estate has, so it cannot close a gap that runs the other way.

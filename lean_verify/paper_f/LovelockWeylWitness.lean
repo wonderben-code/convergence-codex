@@ -39,6 +39,13 @@ numbers.** And `∑_{i<j} knSquare (twoProj i j) = constCurv`, whose Weyl part i
 one linear relation between `p` and `q`: **one number.** Neither is proved here, both are hand
 sketches, and by this project's vocabulary a hand sketch is a guess.
 
+**⚠ SUPERSEDED 2026-08-27, kept as written (`ERRATUM 94`).** *"the watchlist item does not
+move"* was true when written and is now false — `LovelockKillsWeyl.killsWeyl_of_equivariant`
+proves `KillsWeyl` at every `n ≥ 3`, by a route that needs no witness at all. **What still
+stands**: that THIS file is not that proof, that its two sketches were never carried out, and
+that a hand sketch is a guess. The route that landed did not use either sketch, so neither was
+tested (`ERRATUM 302`).
+
 **And even at one number it would not be `KillsWeyl`**, which quantifies over every algebraic
 curvature tensor, not over one witness. The orbit of a single Weyl tensor is not known to span the
 Weyl summand — that is the irreducibility question `WALLS` §W5.0 §5b names, and nothing here

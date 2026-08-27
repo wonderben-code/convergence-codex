@@ -98,6 +98,12 @@ observable, which the estate has only for the exponential (`LatticeSteinIdentity
 power of one test function (`LatticeWickRecursion`) — **is untouched and this does not shorten
 it.**
 
+**⚠ SUPERSEDED 2026-08-27, kept as written (`ERRATUM 94`).** *"is untouched and this does not
+shorten it"* is false: `LadderStep.ladder` **is** Gaussian integration by parts for the correlated
+field at a product observable, at every order, and `IsserlisAll.isserlisGeneral_all` follows from
+it. *"Nothing here mentions a Gaussian"* and *"none of it is here"* are scoped to this file and
+stay true — this file is still only the index type (`ERRATUM 302`).
+
 **And the coefficient is not proved either.** Knowing that the terms are indexed by involutions
 says nothing about which propagator product each term carries. That map is the content of Wick's
 theorem and none of it is here.

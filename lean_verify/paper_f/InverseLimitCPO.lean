@@ -493,7 +493,18 @@ purpose is to prevent over-reading, which is the worst place for one. `Bilimit` 
 continuous **self-maps of the limit** to be themselves the inverse limit of the levels' self-maps —
 `(Limit T →𝒄 Limit T) ≃ Limit (funTower T)`, where `funTower T` is the tower
 `n ↦ (T.carrier n →𝒄 T.carrier n)` with `EPPair.funPair (T.step n)` as its steps. **That tower is
-not constructed anywhere in this estate, and neither is the equivalence.** `ωSup_roundTripChain` is
+not constructed anywhere in this estate, and neither is the equivalence.** 
+**⚠ SUPERSEDED 2026-08-27, kept as written (`ERRATUM 94`) — AND THIS FILE ALREADY KNEW.**
+*"That tower is not constructed anywhere in this estate, and neither is the equivalence"* and
+*"`CanonicalTower.Bilimit` remains unproved"* are false: `CanonicalTower.funTower_canonical` is
+the identification and `CanonicalTower.bilimit_holds : Bilimit` is unconditional.
+**§10 of this same file carries a `SUPERSEDED` note saying exactly that**, added when the wall
+closed — and this paragraph, making the same claim, did not get one. A supersession applied to
+one paragraph and not to its twin in the same file is `ERRATUM 300`'s shape at the smallest scale
+it can occur at (`ERRATUM 304`). What still stands: `ωSup_roundTripChain` really is one lemma and
+not the theorem, and the estimate *"one step"* was right.
+
+`ωSup_roundTripChain` is
 the standard *first* lemma of that argument — it is what lets a self-map be recovered from its
 level approximations — and it is one lemma, not the theorem. Two further steps sit after it: the
 equivalence just named, and then, for the canonical tower specifically, that shifting a tower by

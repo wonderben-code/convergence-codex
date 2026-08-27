@@ -81,6 +81,14 @@ expansion this estate does not have — `WALLS` W5 fails at the differential geo
 is zero files, and nothing here changes that. **No theorem in this file should be recorded as an
 `a₂` computation.**
 
+**⚠ SUPERSEDED 2026-08-27 IN ITS FIRST PARAGRAPH TOO, kept as written (`ERRATUM 94`).**
+*"`LovelockReduction` names the two `Prop`s that remain"* and *"The watchlist item stays open on
+its recorded blocker"* are false: `LovelockDiagonalise.ricciProportional` and
+`LovelockKillsWeyl.killsWeyl_of_equivariant` prove both, and `LovelockKillsWeyl.classification`
+is the classification itself. **What still stands** is that nothing in THIS file bears on either,
+and the whole of the `a₂` paragraph below — no heat-kernel expansion exists here and no theorem
+in this file should be recorded as an `a₂` computation (`ERRATUM 302`).
+
 **And `ip` is not proved to be an inner product in Mathlib's sense**: no `InnerProductSpace`
 instance, no positive-definiteness, no completeness. It is a symmetric bilinear form, and
 positivity is not proved because nothing below needs it. Said so that "orthogonality" is read as

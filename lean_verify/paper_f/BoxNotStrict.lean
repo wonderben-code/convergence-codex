@@ -37,6 +37,15 @@
   * **It says nothing about the torus**, whose null direction for the coupling
     `CrossDegenerate` supplies but whose block difference has TWO layers in it;
     the same construction should work and is not written.
+
+  **⚠ SUPERSEDED 2026-08-27, kept as written (`ERRATUM 94`).** *"the same construction
+  should work and is not written"* — it is written, and by that construction:
+  `TorusNotStrict.exists_null_direction_torus` and `not_strict_torus`, with the two
+  layers handled exactly as this bullet predicted. **That file's header quotes this
+  bullet and says it closes it**, which is how the sentence came to stand after it
+  had been answered — nothing propagates backwards down an import edge except by
+  hand (`ERRATUM 302`).
+
   * **No measure-level statement.** `GraphOS2` and `GraphOS2Exponential`
     quantify over reflection positivity as a hypothesis, so nothing there
     changes: a non-strict hypothesis was all they ever used.
