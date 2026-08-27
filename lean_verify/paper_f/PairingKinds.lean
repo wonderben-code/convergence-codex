@@ -35,6 +35,11 @@ inequality, an equation.
   representatives, estimated kind by kind, `Ms^a·Mt^b·ε^c`. **No hypothesis relates the three
   bounds**, so a caller holding only a uniform one takes all three equal and recovers the old
   estimate;
+* **`abs_prod_le_worst`** — **and the exact count of pairings turns out not to be needed.** With
+  the cross estimate no larger than either same-side estimate, the per-kind bound is worst at the
+  SMALLEST admissible crossing count, which `PairingParity` fixes at `2`: raising `c` by two trades
+  one `Ms` and one `Mt` for two `ε`, and `ε² ≤ Ms·Mt`. So one bound covers every crossing pairing,
+  with no enumeration anywhere;
 * **`abs_prod_le_of_card_cross`** — the same bound with the exponents **read off `c`**:
   `Ms^((|S|−c)/2)·Mt^((|Sᶜ|−c)/2)·ε^c`. **This is the theorem §3 was proved for, and the one above
   is not it** — that one states its exponents as cardinalities a caller holding only the crossing
@@ -43,11 +48,16 @@ inequality, an equation.
 
 ## What is NOT here
 
-**The sum.** Carrying `abs_prod_le_kinds` over the pairings needs the number of pairings with
-exactly `c` crossings, which this estate does not have.
-`PairingCount.card_crossing_doubleFactorial` counts the pairings that cross AT ALL, not those
-that cross a given number of times. Until that exists, the per-kind bound is a statement about
-one pairing. **Not done, not costed** (`ERRATUM 194`).
+**The EXACT sum**, and the distinction is the correction §6 forced on this paragraph.
+
+*A first version said: "Carrying the per-kind bound over the pairings needs the number of pairings
+with exactly `c` crossings, which this estate does not have." That is false of the BOUND.*
+`abs_prod_le_worst` covers every crossing pairing at once, so summing needs only the number that
+cross AT ALL — which is `PairingCount.card_crossing_doubleFactorial`, and the estate has it.
+
+What the per-`c` count is still needed for is an **equality**: the exact value of the sum, kind by
+kind, rather than an estimate of it. That is a bijection onto `c`-subsets of each side together
+with a matching between them, and it is **not done, not costed** (`ERRATUM 194`).
 
 No measure, integral or test function appears in this file.
 -/
@@ -302,5 +312,94 @@ theorem abs_prod_le_of_card_cross {σ : Equiv.Perm ι} (hσ : σ ∈ perfectMatc
   have hb : (farSet σ S).card = (Sᶜ.card - c) / 2 := by omega
   have h := abs_prod_le_kinds (σ := σ) S w hcross hnear hfar
   rwa [ha, hb, hc] at h
+
+/-! ## 6. The worst case is two crossings, and no count of pairings is needed for it
+
+`PairingKinds`' own record called the number of pairings with exactly `c` crossings *"the one
+thing left"*. **For the bound it is not needed at all.** When the cross estimate is the smallest of
+the three — which is the whole situation clustering is about — the per-kind bound is WORST at the
+smallest admissible `c`, and `PairingParity` says that is `2`. Raising `c` by two trades one `Ms`
+and one `Mt` for two `ε`, and `ε² ≤ Ms·Mt`. So a single bound covers every crossing pairing, with
+no enumeration anywhere. -/
+
+/-- The crossing count is at most the size of the near side, because
+`PairingSharp.card_crossSet` exhibits it as the cardinality of a subset of `S`. -/
+theorem card_cross_le {σ : Equiv.Perm ι} (hσ : σ ∈ perfectMatchings ι) (S : Finset ι) :
+    (crossSet σ S (Finset.univ.filter (fun i => i < σ i))).card ≤ S.card := by
+  rw [card_crossSet hσ (isRepSet_filter_lt hσ.1)]
+  exact Finset.card_filter_le _ _
+
+omit [Fintype ι] [LinearOrder ι] in
+/-- A pairing that does not respect the split has an element of `S` whose partner is outside it —
+which is the hypothesis `PairingParity.two_le_card_cross` wants, phrased the way callers hold it. -/
+theorem cross_nonempty_of_not_respects {σ : Equiv.Perm ι} (hσ : σ ∈ perfectMatchings ι)
+    {S : Finset ι} (hns : ¬ RespectsSplit S σ) :
+    (S.filter (fun i => σ i ∉ S)).Nonempty := by
+  classical
+  have hinv : Function.Involutive σ := hσ.1
+  -- `not_forall` and not `push_neg`: the latter is deprecated in this toolchain, and it also
+  -- turns the negated `Iff` into a disjunction, which is more case analysis than either witness
+  -- needs.
+  rw [RespectsSplit] at hns
+  obtain ⟨i, hi⟩ := not_forall.mp hns
+  by_cases hiS : i ∈ S
+  · -- `i ∈ S`, so the failing `Iff` forces `σ i ∉ S` and `i` itself is the witness
+    exact ⟨i, Finset.mem_filter.mpr ⟨hiS, fun h => hi (iff_of_true h hiS)⟩⟩
+  · -- otherwise `σ i ∈ S`, and its partner is `i`, which is not
+    have hσi : σ i ∈ S := by
+      by_contra h
+      exact hi (iff_of_false h hiS)
+    exact ⟨σ i, Finset.mem_filter.mpr ⟨hσi, by rw [hinv i]; exact hiS⟩⟩
+
+/-- **THE SINGLE BOUND, WITH NO COUNT OF PAIRINGS IN IT.** For every pairing that crosses an
+even-sized split, with the cross estimate no larger than either same-side estimate. **The exponents
+are those of the two-crossing case**, which is the worst one: raising the crossing count by two
+trades one `Ms` and one `Mt` for two `ε`, and `ε² ≤ Ms·Mt`. -/
+theorem abs_prod_le_worst {σ : Equiv.Perm ι} (hσ : σ ∈ perfectMatchings ι) (S : Finset ι)
+    (w : ι → ι → ℝ) {ε Ms Mt : ℝ} (hε0 : 0 ≤ ε) (hεs : ε ≤ Ms) (hεt : ε ≤ Mt)
+    (hcross : ∀ i, ¬ (i ∈ S ↔ σ i ∈ S) → |w i (σ i)| ≤ ε)
+    (hnear : ∀ i, i ∈ S → σ i ∈ S → |w i (σ i)| ≤ Ms)
+    (hfar : ∀ i, i ∉ S → σ i ∉ S → |w i (σ i)| ≤ Mt)
+    (hS : Even S.card) (hns : ¬ RespectsSplit S σ) :
+    |∏ i ∈ Finset.univ.filter (fun i => i < σ i), w i (σ i)|
+      ≤ Ms ^ ((S.card - 2) / 2) * Mt ^ ((Sᶜ.card - 2) / 2) * ε ^ 2 := by
+  classical
+  set c := (crossSet σ S (Finset.univ.filter (fun i => i < σ i))).card with hcdef
+  have hcross_eq : c = (S.filter (fun i => σ i ∉ S)).card := by
+    rw [hcdef, card_crossSet hσ (isRepSet_filter_lt hσ.1)]
+  have h2c : 2 ≤ c := by
+    rw [hcross_eq]
+    exact PairingParity.two_le_card_cross hσ hS (cross_nonempty_of_not_respects hσ hns)
+  have hpar : c % 2 = S.card % 2 := by
+    rw [hcross_eq]; exact PairingParity.card_cross_parity hσ S
+  have hcS : c ≤ S.card := card_cross_le hσ S
+  have hcT : c ≤ Sᶜ.card := by
+    have := two_mul_card_farSet_add_card_cross hσ S
+    omega
+  obtain ⟨u, hu⟩ := hS
+  obtain ⟨t, ht⟩ : ∃ t, c = 2 + 2 * t := ⟨(c - 2) / 2, by omega⟩
+  have hA : (S.card - c) / 2 + t = (S.card - 2) / 2 := by omega
+  have hB : (Sᶜ.card - c) / 2 + t = (Sᶜ.card - 2) / 2 := by omega
+  have hMs0 : (0:ℝ) ≤ Ms := le_trans hε0 hεs
+  have hMt0 : (0:ℝ) ≤ Mt := le_trans hε0 hεt
+  refine (abs_prod_le_of_card_cross hσ S w hcross hnear hfar hcdef.symm).trans ?_
+  -- `nlinarith` is not in scope here: this file's imports are the combinatorial ones and pull in
+  -- no nonlinear arithmetic tactic. The step is one `mul_le_mul` anyway.
+  have hε2 : ε ^ 2 ≤ Ms * Mt := by
+    rw [sq]
+    exact mul_le_mul hεs hεt hε0 hMs0
+  have key : (ε ^ 2) ^ t ≤ (Ms * Mt) ^ t := pow_le_pow_left₀ (sq_nonneg ε) hε2 t
+  have hbase : (0:ℝ) ≤ Ms ^ ((S.card - c) / 2) * Mt ^ ((Sᶜ.card - c) / 2) * ε ^ 2 := by positivity
+  have hlhs : Ms ^ ((S.card - c) / 2) * Mt ^ ((Sᶜ.card - c) / 2) * ε ^ c
+      = Ms ^ ((S.card - c) / 2) * Mt ^ ((Sᶜ.card - c) / 2) * ε ^ 2 * (ε ^ 2) ^ t := by
+    -- forwards on the LEFT: `ε^(2+2t) = ε^2 * (ε^2)^t`, then `ring` reassociates. Going
+    -- backwards from the right fails, because `ε^2` sits inside the left factor and `pow_add`
+    -- has no `ε^2 * ε^(2t)` subterm to match.
+    rw [ht, pow_add, pow_mul]
+    ring
+  rw [hlhs]
+  refine (mul_le_mul_of_nonneg_left key hbase).trans (le_of_eq ?_)
+  rw [mul_pow, ← hA, ← hB, pow_add, pow_add]
+  ring
 
 end PairingKinds
