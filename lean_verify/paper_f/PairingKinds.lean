@@ -34,7 +34,12 @@ inequality, an equation.
 * **`abs_prod_le_kinds`** — and the bound the counts were for: the product over the
   representatives, estimated kind by kind, `Ms^a·Mt^b·ε^c`. **No hypothesis relates the three
   bounds**, so a caller holding only a uniform one takes all three equal and recovers the old
-  estimate.
+  estimate;
+* **`abs_prod_le_of_card_cross`** — the same bound with the exponents **read off `c`**:
+  `Ms^((|S|−c)/2)·Mt^((|Sᶜ|−c)/2)·ε^c`. **This is the theorem §3 was proved for, and the one above
+  is not it** — that one states its exponents as cardinalities a caller holding only the crossing
+  count cannot evaluate. A first version of this summary claimed the reading and the file proved
+  only the cardinality form.
 
 ## What is NOT here
 
@@ -272,5 +277,30 @@ theorem abs_prod_le_kinds {σ : Equiv.Perm ι} (S : Finset ι) (w : ι → ι �
   have hMs0 : (0:ℝ) ≤ Ms ^ (nearSet σ S).card := le_trans (h0 _) hn
   have hMt0 : (0:ℝ) ≤ Mt ^ (farSet σ S).card := le_trans (h0 _) hf
   exact mul_le_mul (mul_le_mul hn hf (h0 _) hMs0) hc (h0 _) (mul_nonneg hMs0 hMt0)
+
+/-- **THE SAME BOUND WITH THE EXPONENTS READ OFF `c`**, which is what §3 was proved for and what
+`abs_prod_le_kinds` does NOT give: that theorem states its exponents as the cardinalities of
+`nearSet` and `farSet`, and a caller holding only the crossing count cannot evaluate them. The
+identities of §3 do the reading — `a = (|S| − c)/2` and `b = (|Sᶜ| − c)/2` — and the subtractions
+are not truncated, because `2a + c = |S|` forces `c ≤ |S|`.
+
+**A FIRST VERSION OF THIS FILE CLAIMED THIS IN ITS SUMMARY AND PROVED ONLY THE PREVIOUS THEOREM.**
+The sentence *"a caller who knows `c` knows the whole expression"* was true of the mathematics and
+not of the file. -/
+theorem abs_prod_le_of_card_cross {σ : Equiv.Perm ι} (hσ : σ ∈ perfectMatchings ι) (S : Finset ι)
+    (w : ι → ι → ℝ) {ε Ms Mt : ℝ}
+    (hcross : ∀ i, ¬ (i ∈ S ↔ σ i ∈ S) → |w i (σ i)| ≤ ε)
+    (hnear : ∀ i, i ∈ S → σ i ∈ S → |w i (σ i)| ≤ Ms)
+    (hfar : ∀ i, i ∉ S → σ i ∉ S → |w i (σ i)| ≤ Mt)
+    {c : ℕ} (hc : (crossSet σ S (Finset.univ.filter (fun i => i < σ i))).card = c) :
+    |∏ i ∈ Finset.univ.filter (fun i => i < σ i), w i (σ i)|
+      ≤ Ms ^ ((S.card - c) / 2) * Mt ^ ((Sᶜ.card - c) / 2) * ε ^ c := by
+  have hn := two_mul_card_nearSet_add_card_cross hσ S
+  have hf := two_mul_card_farSet_add_card_cross hσ S
+  rw [hc] at hn hf
+  have ha : (nearSet σ S).card = (S.card - c) / 2 := by omega
+  have hb : (farSet σ S).card = (Sᶜ.card - c) / 2 := by omega
+  have h := abs_prod_le_kinds (σ := σ) S w hcross hnear hfar
+  rwa [ha, hb, hc] at h
 
 end PairingKinds
