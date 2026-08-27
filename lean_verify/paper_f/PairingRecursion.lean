@@ -238,7 +238,21 @@ A specialisation of `sum_pairProduct_succ` would have shown none of this.
 side needs `m ≠ 0`, so **neither exercises `dotG_comm`** — and symmetry is the whole hypothesis
 `PairWeightRep.prod_repSet_eq` runs on. At two indices there is one pair and nothing to reorder, so
 an error in the symmetry-dependent half of the argument would survive this check untouched. The
-smallest case that would see it is four indices, and it is not done here. -/
+smallest case that would see it is four indices, and it is not done here.
+
+**⚠ SUPERSEDED 2026-08-27, kept as written (`ERRATUM 94`, corrected by `ERRATUM 310`).**
+*"The smallest case that would see it is four indices"* is **false**, and the four-index check is
+now done: `PairingRecursionFour.sum_pairProduct_four_consistent`, both sides computed
+independently, neither using `sum_pairProduct_succ`. **Neither side takes `m ≠ 0` there either** —
+so four indices does not exercise `dotG_comm` and the symmetry-dependent half survives that check
+too. **Everything else in this paragraph stands**: the two-index check really does not exercise
+the symmetry, and that really is worth saying. What was wrong was the estimate of what would.
+
+The reason, argued in that file and not formalised: the representative of a pair is its smaller
+end on the pairing side, and on the recursion side `0` joins the larger `b.succ` with the rest
+relabelled by the order-preserving `Fin.succ` — so both sides name every factor
+smaller-argument-first, **at every order**. If that reading holds, no instance of this check sees
+the symmetry, and testing that half needs a non-symmetric weight rather than more indices. -/
 theorem sum_pairProduct_two_consistent (f : Fin 2 → EuclideanSpace ℝ V) :
     (∑ σ : ↑(perfectMatchings (Fin 2)), pairProduct G m f σ.1)
       = ∑ b : Fin 1, dotG G m (f 0) (f b.succ)
