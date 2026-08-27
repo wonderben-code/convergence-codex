@@ -146,4 +146,5 @@ roots = [
   "ConnesNCG",
   "PairingCount",
   "LatticeTruncatedExplicit",
+  "LatticeFourPointViaGeneral",
 ]
