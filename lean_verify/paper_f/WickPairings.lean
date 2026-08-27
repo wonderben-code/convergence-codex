@@ -142,4 +142,37 @@ theorem isserlisGeneral_two (hm : m ≠ 0) : IsserlisGeneral G m 2 := by
   simp only [hprod]
   linear_combination isserlis_four (G := G) hm (f 0) (f 1) (f 2) (f 3)
 
+/-! ## 4. The statement is TRUE at every order on the diagonal
+
+`n ≤ 2` are three points. This is a whole locus, at every `n`: when all `2n` test functions are the
+SAME, `IsserlisGeneral`'s right-hand side is `(2n−1)‼·(fᵀGf)^n`, which is exactly what
+`LatticeWickCount.moment_eq_card_perfectMatchings` says the left-hand side is.
+
+**This is a check on the STATEMENT and not a step towards proving it.** It says the two sides agree
+wherever the test functions coincide; the content of Isserlis is what happens when they do not.
+What makes it worth having is that it holds at **every** `n`, so a mis-stated coefficient or a
+mis-chosen index set would show up here at some order even if `n = 0, 1, 2` passed. -/
+
+/-- At a constant test function every pairing contributes `(fᵀGf)` once per pair, and there are
+`n` pairs — `Involutions.two_mul_card_lt_image`. -/
+theorem pairProduct_const (n : ℕ) (f : EuclideanSpace ℝ V)
+    (σ : ↑(perfectMatchings (Fin (2 * n)))) :
+    pairProduct G m (fun _ => f) σ.1 = (linVar G m f) ^ n := by
+  have hcard : 2 * (Finset.univ.filter (fun i => i < σ.1 i)).card = 2 * n := by
+    rw [two_mul_card_lt_image σ.2, Fintype.card_fin]
+  have hn : (Finset.univ.filter (fun i => i < σ.1 i)).card = n := by omega
+  simp only [pairProduct, Finset.prod_const, hn, ← linVar_eq_dotG]
+
+/-- **AND HENCE THE STATEMENT HOLDS AT EVERY ORDER ON THE DIAGONAL.** -/
+theorem isserlisGeneral_diagonal (hm : m ≠ 0) (n : ℕ) (f : EuclideanSpace ℝ V) :
+    ∫ ω, ∏ _i : Fin (2 * n), (inner ℝ f ω : ℝ) ∂(gaussianField G m)
+      = ∑ σ : ↑(perfectMatchings (Fin (2 * n))), pairProduct G m (fun _ => f) σ.1 := by
+  have hprod : ∀ ω : EuclideanSpace ℝ V,
+      (∏ _i : Fin (2 * n), (inner ℝ f ω : ℝ)) = (inner ℝ f ω : ℝ) ^ (2 * n) := fun ω => by
+    rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin]
+  simp only [hprod, Finset.sum_congr rfl (fun σ _ => pairProduct_const (G := G) n f σ),
+    Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
+  have hk : (2 * n) / 2 = n := by omega
+  rw [LatticeWickCount.moment_eq_card_perfectMatchings hm f (2 * n), hk]
+
 end WickPairings

@@ -812,4 +812,50 @@ theorem card_perfectMatchings_fin_six_two_ways :
   norm_num at h
   exact h
 
+/-! ## 11. Half the elements of a perfect matching lie below their partner
+
+The fact a consumer needs to evaluate a pairing's contribution on the diagonal: a pairing indexed
+by *one representative per pair* has exactly half as many representatives as there are elements. -/
+
+/-- **A FIXED-POINT-FREE INVOLUTION MOVES EXACTLY HALF ITS POINTS UPWARD.** `σ` carries
+`{i | i < σ i}` bijectively onto `{i | σ i < i}`, the two are disjoint because `σ` has no fixed
+point, and together they are everything. -/
+theorem two_mul_card_lt_image {α : Type*} [Fintype α] [LinearOrder α]
+    {σ : Equiv.Perm α} (h : σ ∈ perfectMatchings α) :
+    2 * (Finset.univ.filter (fun i => i < σ i)).card = Fintype.card α := by
+  classical
+  set A := Finset.univ.filter (fun i : α => i < σ i) with hA
+  set B := Finset.univ.filter (fun i : α => σ i < i) with hB
+  have hcard : A.card = B.card := by
+    refine Finset.card_nbij' (fun i => σ i) (fun i => σ i) ?_ ?_ ?_ ?_
+    · intro i hi
+      simp only [hA, hB, Finset.coe_filter, Set.mem_setOf_eq, Finset.mem_univ, true_and] at hi ⊢
+      rw [h.1 i]
+      exact hi
+    · intro i hi
+      simp only [hA, hB, Finset.coe_filter, Set.mem_setOf_eq, Finset.mem_univ, true_and] at hi ⊢
+      rw [h.1 i]
+      exact hi
+    · intro i _
+      exact h.1 i
+    · intro i _
+      exact h.1 i
+  have hdisj : Disjoint A B := by
+    rw [Finset.disjoint_left]
+    intro i hi hi'
+    simp only [hA, Finset.mem_filter] at hi
+    simp only [hB, Finset.mem_filter] at hi'
+    exact absurd hi.2 (asymm hi'.2)
+  have hunion : A ∪ B = Finset.univ := by
+    ext i
+    simp only [hA, hB, Finset.mem_union, Finset.mem_filter, Finset.mem_univ, true_and,
+      iff_true]
+    rcases lt_trichotomy i (σ i) with hlt | heq | hgt
+    · exact Or.inl hlt
+    · exact absurd heq.symm (h.2 i)
+    · exact Or.inr hgt
+  have := Finset.card_union_of_disjoint hdisj
+  rw [hunion, Finset.card_univ, hcard] at this
+  omega
+
 end Involutions
