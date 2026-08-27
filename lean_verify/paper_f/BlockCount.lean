@@ -52,6 +52,16 @@ sending a family to its tuple of block sums, and this file does not build it. Wh
 *criterion*: strictness is the count reaching its maximum. **Recorded as not done rather than as
 hard**, per `ERRATUM 194`.
 
+**⚠ ANSWERED 2026-08-27, sentence kept as written (`ERRATUM 94`, found by `ERRATUM 309`).**
+`BlockDimension` builds exactly that map (`blockSums`), proves it surjective, and
+`finrank_couplingKer_add_blockCount` is the dimension together with the identification of that
+kernel with the coupling's (`mem_ker_blockSums_iff`) — its docstring calls itself *"the statement
+the phrase asked for, in one place"*. *"Not proved here"* stays true of this file; what was missing
+was the **forward pointer**, and a reader following this paragraph spent the search. **This one is
+outside `fences_scan.py`'s reach and is named in that file as a known miss**: `BlockDimension`
+answers positionally, quoting no word of this sentence, so no matcher keyed on quotation can see
+it.
+
 **No published tag moves**, `OS4` does not move, and no spectral gap is claimed.
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.

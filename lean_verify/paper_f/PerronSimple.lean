@@ -159,7 +159,15 @@ EIGENVALUE.** Every eigenvector for it is a multiple of one strictly positive ve
 
 **This is half of what `WALLS` §W4.0 §6 item 2 means by «separation» and not the other half**:
 `|λ| < M` for every other eigenvalue is a further statement, `−M` is not excluded here, and it is
-not attempted. -/
+not attempted.
+
+**⚠ SUPERSEDED 2026-08-27, kept as written (`ERRATUM 94`, found by `ERRATUM 309`).**
+`PerronGap.abs_lt_top_of_ne` is `|λ| < M` for every eigenvalue but the top one, with
+`eq_zero_of_neg_top_eigenvector` ruling out `−M`, and `PerronGap.transferSym_gap` is the instance
+at this very matrix — so item 2's other half is closed. **This is the SECOND copy of a claim this
+file already withdrew**: the header's copy was annotated on the same day by `ERRATUM 305`, and this
+one, sitting in a declaration docstring rather than in a header section, was missed because that
+mode's unit of test is a section of a header. Recorded here rather than folded silently into 305. -/
 theorem transferSym_top_simple (β : ℝ) (m : ℕ) :
     ∃ (M : ℝ) (u : EuclideanSpace ℝ (Col m)), (∀ i, 0 < (WithLp.ofLp u) i) ∧ 0 < M ∧
       mv (transferSym β m) u = M • u ∧

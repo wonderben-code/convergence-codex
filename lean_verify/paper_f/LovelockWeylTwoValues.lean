@@ -44,6 +44,13 @@ how far that was from the answer, and named what should cut it further:
 linear relation between the two numbers and leaving one. **That is still a hand sketch and it is
 still not proved here.**
 
+**⚠ SUPERSEDED 2026-08-27, kept as written (`ERRATUM 94`, found by `ERRATUM 309`).** It stopped
+being a sketch: `LovelockWitnessSum.sum_knSquare_twoProj` is `∑ᵢ∑ⱼ knSquare (twoProj i j) =
+2·constCurv n` at every dimension, `weylPart_constCurv` kills the Weyl part, and
+`sum_weylPart_twoProj` is the linear relation this paragraph predicted. That file quotes this
+sentence and answers it in four words — *"and the sketch was right"*. **The count is unaffected**:
+this file's `2` and the item's non-movement stand as written.
+
 **And one number would still not be `KillsWeyl`.** The statement quantifies over every algebraic
 curvature tensor; this is one witness, and the orbit of a single Weyl tensor is not known to span
 the Weyl summand. That is `WALLS` §W5.0 §5b's irreducibility question, which nothing in this group

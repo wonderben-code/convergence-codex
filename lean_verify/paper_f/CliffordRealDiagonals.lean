@@ -37,6 +37,15 @@ have (`QuadraticForm.equivalent_one_neg_one_weighted_sum_squared`, with `sigPos`
 uniqueness) and which is **not applied here**. Recorded so the next reader knows the normal-form
 half is available and only the quantification is missing.
 
+**⚠ HALF SUPERSEDED 2026-08-27, kept as written (`ERRATUM 94`, found by `ERRATUM 309`), and WHICH
+half matters.** *"Not applied here"* is answered: `CliffordRealQuantified` applies Sylvester's law,
+proves its converse (`equivalent_of_sigPos_eq`, which Mathlib does not supply) and gives
+`cliffordEquiv_of_sigPos_eq` — the isomorphism class depends only on dimension and signature. **The
+FIRST clause stands**: that `QExtHyp` of Mathlib's `(0,1)` form *has* signature `(1,2)` is still
+computed nowhere, and that file says so itself in its own *"does not compute the signature of any
+named form"*. So the paragraph is half dead and half live, and reading it as wholly open — which is
+how it reads without this note — costs a search.
+
 **No published tag moves.**
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.

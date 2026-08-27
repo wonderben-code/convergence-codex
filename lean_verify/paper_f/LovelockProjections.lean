@@ -103,6 +103,11 @@ The compiler is the authority; the arithmetic was to stop a wrong constant reach
   the three summands are mutually orthogonal for the natural inner product on four-index arrays is
   **not proved here**, and this estate has no inner product on that space to state it against.
   Named rather than quietly dropped.
+
+  **⚠ SUPERSEDED 2026-08-27, kept as written (`ERRATUM 94`, found by `ERRATUM 309`).**
+  *"This estate has no inner product on that space to state it against"* is **estate-scoped and
+  false**: `LovelockOrthogonality` supplies the form and proves the orthogonality, and its own
+  header quotes this sentence and says so. *"Not proved here"* remains true of this file.
 * **Not `a₂`, and not a manifold.** Everything below is a four-index array of reals, as in
   `AlgebraicCurvature` throughout. `WALLS` W5 fails at the differential geometry and this moves it
   no closer.
