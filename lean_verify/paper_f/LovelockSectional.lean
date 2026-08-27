@@ -36,6 +36,17 @@ antisymmetry when the pair is dependent) but it is **not proved here**, and the 
 needs *extend an orthonormal pair to an orthogonal matrix*, which is a Mathlib bridge this estate
 has not built.
 
+**⚠ SUPERSEDED 2026-08-27, kept as written (`ERRATUM 94`, corrected by `ERRATUM 312`).**
+`LovelockSectionalOrthonormal.sec_eq_zero_of_orthonormal` proves it, and
+`eq_zero_of_sec_orthonormal` is `eq_zero_of_sec` with the hypothesis weakened to orthonormal
+pairs. **"Elementary" was right; the stated blocker was wrong.** No extension to an orthogonal
+matrix is used, because the argument never needs a whole matrix — only a second vector.
+`sec_add_smul` (`sec Z x (y + t·x) = sec Z x y`, both added copies dying against `x` by the two
+antisymmetries) manufactures the orthogonal partner inside the plane, and the two scaling lemmas
+normalise it. **The first half of this paragraph is unchanged**: the hypothesis here really is
+about all pairs, and the second missing thing it names — that `ip Z (act Q W) = 0` for every
+orthogonal `Q` is the vanishing of every frame-change's sectional entries — is still not built.
+
 **And the other half is not here either:** that `ip Z (act Q W) = 0` for every orthogonal `Q` is
 equivalent to the sectional entries of every frame-change of `Z` vanishing. That is a computation
 about `ip Y (knSquare (twoProj i j))`, and it is not in this file.
