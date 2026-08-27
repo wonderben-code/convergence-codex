@@ -144,4 +144,5 @@ roots = [
   "SpectralActionMeasure",
   "OSReconstructionFormal",
   "ConnesNCG",
+  "PairingCount",
 ]
