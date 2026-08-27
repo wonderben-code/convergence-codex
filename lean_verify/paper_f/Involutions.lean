@@ -68,21 +68,26 @@ theorems were proved by differentiating under an integral sign; this number is c
   computes `76` without mentioning a permutation, §6 gets `76` by testing all `720` of them, and
   the theorem says they must agree — so those seven values test the whole of §7. It is also what
   extends the table: `card_involutions_fin_seven` (`232`), `_eight` (`764`) and `_twelve`
-  (`140152`), none of them reachable by `decide` over the group.
+  (`140152`), none of them reachable by `decide` over the group;
+* the same decomposition again for the PERFECT matchings, with one extra condition — a
+  fixed-point-free involution of `Option α` cannot fix `none`, so it sends `none` to some `b`,
+  and the corresponding `f` fixes `b` **and nothing else**: `onlyFixing`, `pmPred`,
+  **`perfectMatching_swap_optionCongr_iff`**, `mem_perfectMatchings_option_iff`,
+  `conj_swap_onlyFixing`, `onlyFixingCongr`, `onlyFixingNoneEquiv`, `perfectMatchingsCongr`,
+  `card_perfectMatchings_option`, `card_perfectMatchings_option_option`, and
+  **`card_perfectMatchings_fin_add_two`** — `P(n+2) = (n+1)·P(n)`;
+* **`card_perfectMatchings_fin_eq_doubleFactorial`** — hence `P(2k) = (2k−1)‼`, **the
+  coefficient general-order Isserlis carries, proved in general rather than checked at one
+  value**, with `card_perfectMatchings_fin_odd` for the odd sizes.
+  `card_perfectMatchings_fin_six_eq_doubleFactorial` is now its case `k = 3` and is kept
+  because that `15` comes from `decide` over `720` permutations: the two agree, which tests §9's
+  decomposition the way §8's values test §7's.
 
-## What is NOT proved here, and it is the next rung
+## What is NOT proved here
 
-**The double-factorial recurrence for the PERFECT matchings is not proved.** `P(n+2) = (n+1)·P(n)`
-needs a fixed-point-free variant of `fixingNoneEquiv`: an involution of `Option α` with no fixed
-point must send `none` to some `b`, and the corresponding `f` then fixes `b` and **nothing else**,
-so the fibre is the perfect matchings of `α` minus that point rather than the involutions of it.
-The decomposition of §4 covers the case distinction; what is missing is that one subtype
-equivalence. **No estimate of its cost is offered** (`ERRATUM 194`); the perfect-matching entries
-of the table therefore stop at six, all six by `decide`.
-
-**And the map from an involution to the propagator product its term carries is not here.** That
-map is the content of Wick's theorem. This file supplies the index set and says nothing about
-what is summed over it.
+**The map from an involution to the propagator product its term carries.** That map is the
+content of Wick's theorem. This file supplies the index set and the coefficient count and says
+nothing about what is summed over them.
 
 ## What this is NOT
 
@@ -540,5 +545,271 @@ theorem card_involutions_fin_twelve :
     Fintype.card ↑(involutions (Fin 12)) = 140152 := by
   rw [card_involutions_fin_eq_numInvolutions]
   decide
+
+/-! ## 9. The perfect matchings, and the double factorial
+
+The same decomposition again, with one extra condition. A fixed-point-free involution of
+`Option α` cannot fix `none`, so it sends `none` to some `b`; the corresponding `f` then fixes
+`b` — that is what makes the whole thing an involution — and **fixes nothing else**, because a
+second fixed point of `f` would be a fixed point of the whole. So the fibre over `b` is the
+involutions of `α` whose fixed-point set is exactly `{b}`, and at `α = Option β` with `b = none`
+those are the perfect matchings of `β`. Hence `P(n+2) = (n+1)·P(n)`, the double factorial. -/
+
+/-- Involutions of `α` whose only fixed point is `b`. -/
+def onlyFixing {α : Type*} (b : α) : Set (Equiv.Perm α) :=
+  {f | f ∈ involutions α ∧ ∀ x, f x = x ↔ x = b}
+
+/-- The condition on `Equiv.Perm.decomposeOption σ` that makes `σ` a perfect matching. -/
+def pmPred {α : Type*} (a : Option α) (f : Equiv.Perm α) : Prop :=
+  ∃ b : α, a = some b ∧ f ∈ onlyFixing b
+
+/-- **THE STRUCTURAL FACT FOR PERFECT MATCHINGS**, in the shape of
+`involutive_swap_optionCongr_iff` and proved off it. -/
+theorem perfectMatching_swap_optionCongr_iff {α : Type*} [DecidableEq α]
+    (a : Option α) (f : Equiv.Perm α) :
+    (Equiv.swap none a * Equiv.optionCongr f) ∈ perfectMatchings (Option α) ↔ pmPred a f := by
+  constructor
+  · rintro ⟨hinv, hfree⟩
+    obtain ⟨hf, hfix⟩ := (involutive_swap_optionCongr_iff a f).mp hinv
+    -- `none` is not fixed, so `a = some b`
+    have hnone := hfree none
+    rw [swapCongr_none] at hnone
+    obtain ⟨b, rfl⟩ : ∃ b, a = some b := by
+      cases a with
+      | none => exact absurd rfl hnone
+      | some b => exact ⟨b, rfl⟩
+    refine ⟨b, rfl, hf, fun x => ⟨fun hx => ?_, fun hx => ?_⟩⟩
+    · by_contra hxb
+      have hne : (some b : Option α) ≠ some (f x) := by rw [hx]; simpa using fun h => hxb h.symm
+      have := hfree (some x)
+      rw [swapCongr_some, if_neg hne, hx] at this
+      exact this rfl
+    · subst hx; exact hfix x rfl
+  · rintro ⟨b, rfl, hf, hfix⟩
+    refine ⟨(involutive_swap_optionCongr_iff _ _).mpr ⟨hf, fun b' hb' => ?_⟩, fun y => ?_⟩
+    · have hbb : b = b' := Option.some_injective _ hb'
+      subst hbb
+      exact (hfix b).mpr rfl
+    · cases y with
+      | none => rw [swapCongr_none]; simp
+      | some x =>
+          rw [swapCongr_some]
+          by_cases hax : (some b : Option α) = some (f x)
+          · rw [if_pos hax]; simp
+          · rw [if_neg hax]
+            simp only [ne_eq, Option.some.injEq]
+            intro hx
+            exact hax (by rw [hx, (hfix x).mp hx])
+
+/-- `perfectMatchings (Option α)`, transported along `Equiv.Perm.decomposeOption`. -/
+theorem mem_perfectMatchings_option_iff {α : Type*} [DecidableEq α]
+    (σ : Equiv.Perm (Option α)) :
+    σ ∈ perfectMatchings (Option α)
+      ↔ pmPred (Equiv.Perm.decomposeOption σ).1 (Equiv.Perm.decomposeOption σ).2 := by
+  have h : Equiv.swap none (Equiv.Perm.decomposeOption σ).1
+      * Equiv.optionCongr (Equiv.Perm.decomposeOption σ).2 = σ := by
+    rw [← Equiv.Perm.decomposeOption_symm_apply, Equiv.symm_apply_apply]
+  conv_lhs => rw [← h]
+  exact perfectMatching_swap_optionCongr_iff _ _
+
+instance decidablePredOnlyFixing {α : Type*} [DecidableEq α] [Fintype α] (b : α) :
+    DecidablePred (· ∈ onlyFixing b) := fun f => by
+  unfold onlyFixing involutions Function.Involutive
+  infer_instance
+
+/-- Conjugating by `swap b b'` moves an *only* fixed point from `b` to `b'`. -/
+theorem conj_swap_onlyFixing {α : Type*} [DecidableEq α] {f : Equiv.Perm α} {b b' : α}
+    (h : ∀ x, f x = x ↔ x = b) :
+    ∀ x, (Equiv.swap b b' * f * Equiv.swap b b') x = x ↔ x = b' := by
+  intro x
+  simp only [Equiv.Perm.mul_apply]
+  constructor
+  · intro hx
+    have h1 : f (Equiv.swap b b' x) = Equiv.swap b b' x := by
+      have h0 := congrArg (Equiv.swap b b') hx
+      rwa [Equiv.swap_apply_self] at h0
+    have h2 : Equiv.swap b b' x = b := (h _).mp h1
+    have h3 := congrArg (Equiv.swap b b') h2
+    rw [Equiv.swap_apply_self, Equiv.swap_apply_left] at h3
+    exact h3
+  · rintro rfl
+    rw [Equiv.swap_apply_right, (h b).mpr rfl, Equiv.swap_apply_left]
+
+/-- **THE FIBRE DOES NOT DEPEND ON WHICH POINT**, by the same conjugation as `fixingCongr`. -/
+def onlyFixingCongr {α : Type*} [DecidableEq α] (b b' : α) :
+    ↑(onlyFixing b) ≃ ↑(onlyFixing b') where
+  toFun f := ⟨Equiv.swap b b' * f.1 * Equiv.swap b b',
+    ⟨conj_mem_involutions f.2.1 (swap_mem_involutions b b'), conj_swap_onlyFixing f.2.2⟩⟩
+  invFun g := ⟨Equiv.swap b' b * g.1 * Equiv.swap b' b,
+    ⟨conj_mem_involutions g.2.1 (swap_mem_involutions b' b), conj_swap_onlyFixing g.2.2⟩⟩
+  left_inv f := by
+    ext x
+    simp only [Equiv.Perm.mul_apply, Equiv.swap_comm b' b]
+    rw [Equiv.swap_apply_self, Equiv.swap_apply_self]
+  right_inv g := by
+    ext x
+    simp only [Equiv.Perm.mul_apply, Equiv.swap_comm b' b]
+    rw [Equiv.swap_apply_self, Equiv.swap_apply_self]
+
+theorem card_onlyFixing_congr {α : Type*} [Fintype α] [DecidableEq α] (b b' : α) :
+    Fintype.card ↑(onlyFixing b) = Fintype.card ↑(onlyFixing b') :=
+  Fintype.card_congr (onlyFixingCongr b b')
+
+/-- **AND AT `none` IT IS THE PERFECT MATCHINGS ONE SIZE DOWN.** -/
+def onlyFixingNoneEquiv {β : Type*} [DecidableEq β] :
+    ↑(onlyFixing (none : Option β)) ≃ ↑(perfectMatchings β) where
+  toFun f := ⟨Equiv.removeNone f.1, by
+    have hnone : f.1 none = none := (f.2.2 none).mpr rfl
+    have hd : Equiv.Perm.decomposeOption f.1 = (none, Equiv.removeNone f.1) := by
+      rw [Equiv.Perm.decomposeOption_apply, hnone]
+    have hinv : Equiv.removeNone f.1 ∈ involutions β := by
+      have h := ((mem_involutions_option_iff f.1).mp f.2.1).1
+      rwa [Equiv.Perm.decomposeOption_apply] at h
+    refine ⟨hinv, fun y hy => ?_⟩
+    have hcongr : Equiv.optionCongr (Equiv.removeNone f.1) = f.1 := by
+      have h := Equiv.Perm.decomposeOption.symm_apply_apply f.1
+      rw [hd, Equiv.Perm.decomposeOption_symm_apply] at h
+      simpa using h
+    have hfy : f.1 (some y) = some y := by
+      have h0 : Equiv.optionCongr (Equiv.removeNone f.1) (some y) = some y := by
+        rw [Equiv.optionCongr_apply, Option.map_some, hy]
+      rwa [hcongr] at h0
+    exact absurd ((f.2.2 (some y)).mp hfy) (by simp)⟩
+  invFun g := ⟨Equiv.optionCongr g.1, by
+    refine ⟨?_, fun x => ⟨fun hx => ?_, fun hx => ?_⟩⟩
+    · intro x
+      cases x with
+      | none => simp
+      | some y => simp [Equiv.optionCongr_apply, g.2.1 y]
+    · cases x with
+      | none => rfl
+      | some y =>
+          simp only [Equiv.optionCongr_apply, Option.map_some, Option.some.injEq] at hx
+          exact absurd hx (g.2.2 y)
+    · subst hx; simp⟩
+  left_inv f := by
+    refine Subtype.ext ?_
+    have hnone : f.1 none = none := (f.2.2 none).mpr rfl
+    have hd : Equiv.Perm.decomposeOption f.1 = (none, Equiv.removeNone f.1) := by
+      rw [Equiv.Perm.decomposeOption_apply, hnone]
+    have h := Equiv.Perm.decomposeOption.symm_apply_apply f.1
+    rw [hd, Equiv.Perm.decomposeOption_symm_apply] at h
+    simpa using h
+  right_inv g := Subtype.ext (Equiv.removeNone_optionCongr g.1)
+
+theorem card_onlyFixing_none {β : Type*} [Fintype β] [DecidableEq β] :
+    Fintype.card ↑(onlyFixing (none : Option β)) = Fintype.card ↑(perfectMatchings β) :=
+  Fintype.card_congr onlyFixingNoneEquiv
+
+/-- Transport of `perfectMatchings` along an equivalence, as `involutionsCongr` is for
+`involutions`. -/
+def perfectMatchingsCongr {α β : Type*} (e : α ≃ β) :
+    ↑(perfectMatchings α) ≃ ↑(perfectMatchings β) where
+  toFun σ := ⟨e.permCongr σ.1, by
+    refine ⟨fun x => by simp [Equiv.permCongr_apply, σ.2.1 (e.symm x)], fun x hx => ?_⟩
+    rw [Equiv.permCongr_apply] at hx
+    exact σ.2.2 (e.symm x) (by simpa using congrArg e.symm hx)⟩
+  invFun τ := ⟨e.symm.permCongr τ.1, by
+    refine ⟨fun x => by simp [Equiv.permCongr_apply, τ.2.1 (e x)], fun x hx => ?_⟩
+    rw [Equiv.permCongr_apply] at hx
+    exact τ.2.2 (e x) (by simpa using congrArg e hx)⟩
+  left_inv σ := by ext x; simp
+  right_inv τ := by ext x; simp
+
+theorem card_perfectMatchings_invariant {α β : Type*} [Fintype α] [DecidableEq α]
+    [Fintype β] [DecidableEq β] (e : α ≃ β) :
+    Fintype.card ↑(perfectMatchings α) = Fintype.card ↑(perfectMatchings β) :=
+  Fintype.card_congr (perfectMatchingsCongr e)
+
+/-- The count over `Option α`: no `none` term at all, because a perfect matching cannot fix it. -/
+theorem card_perfectMatchings_option {α : Type*} [Fintype α] [DecidableEq α] :
+    Fintype.card ↑(perfectMatchings (Option α))
+      = ∑ b : α, Fintype.card ↑(onlyFixing b) := by
+  classical
+  have e1 : ↑(perfectMatchings (Option α)) ≃
+      {p : Option α × Equiv.Perm α // pmPred p.1 p.2} :=
+    Equiv.subtypeEquiv Equiv.Perm.decomposeOption (fun σ => mem_perfectMatchings_option_iff σ)
+  rw [Fintype.card_congr (e1.trans (prodSubtypeEquivSigma
+        (fun (a : Option α) (f : Equiv.Perm α) => pmPred a f))),
+    Fintype.card_sigma, Fintype.sum_option]
+  have hnone : Fintype.card {f : Equiv.Perm α // pmPred none f} = 0 := by
+    rw [Fintype.card_eq_zero_iff]
+    exact ⟨fun f => by obtain ⟨b, hb, -⟩ := f.2; exact absurd hb (by simp)⟩
+  rw [hnone, zero_add]
+  exact Finset.sum_congr rfl fun b _ =>
+    Fintype.card_congr (Equiv.subtypeEquivRight (fun f => by
+      constructor
+      · rintro ⟨b', hb', hf⟩
+        cases hb'
+        exact hf
+      · intro hf
+        exact ⟨b, rfl, hf⟩))
+
+/-- **THE DOUBLE-FACTORIAL RECURRENCE.** -/
+theorem card_perfectMatchings_option_option {β : Type*} [Fintype β] [DecidableEq β] :
+    Fintype.card ↑(perfectMatchings (Option (Option β)))
+      = (Fintype.card β + 1) * Fintype.card ↑(perfectMatchings β) := by
+  rw [card_perfectMatchings_option (α := Option β),
+    Finset.sum_congr rfl (fun b (_ : b ∈ Finset.univ) =>
+      card_onlyFixing_congr (α := Option β) b none),
+    Finset.sum_const, Finset.card_univ, Fintype.card_option, smul_eq_mul,
+    card_onlyFixing_none]
+
+/-- And at `Fin`: `P(n+2) = (n+1)·P(n)`. -/
+theorem card_perfectMatchings_fin_add_two (n : ℕ) :
+    Fintype.card ↑(perfectMatchings (Fin (n + 2)))
+      = (n + 1) * Fintype.card ↑(perfectMatchings (Fin n)) := by
+  have e : Fin (n + 2) ≃ Option (Option (Fin n)) :=
+    (finSuccEquiv (n + 1)).trans (Equiv.optionCongr (finSuccEquiv n))
+  rw [card_perfectMatchings_invariant e, card_perfectMatchings_option_option, Fintype.card_fin]
+
+/-! ## 10. `P(2k) = (2k−1)‼`, which is the coefficient general-order Isserlis carries -/
+
+/-- The double-factorial recursion in the index shape this induction produces.
+
+**DECLARED DUPLICATE** (`ERRATUM 176`): this is `LatticeWickRecursion.doubleFactorial_step`,
+statement for statement. It is restated rather than imported **because the dependency would run
+the wrong way** — this file is pure combinatorics and is meant to be importable BY the Gaussian
+chain, not the other way round. Six lines is the price of that. -/
+theorem doubleFactorial_step_local (j : ℕ) :
+    Nat.doubleFactorial (2 * j + 1) = (2 * j + 1) * Nat.doubleFactorial (2 * j - 1) := by
+  match j with
+  | 0 => decide
+  | (i + 1) =>
+      have h1 : 2 * (i + 1) + 1 = (2 * i + 1) + 2 := by omega
+      have h3 : 2 * (i + 1) - 1 = 2 * i + 1 := by omega
+      rw [h1, h3, Nat.doubleFactorial_add_two]
+
+/-- **THE PAIRINGS OF `2k` OBJECTS NUMBER `(2k−1)‼`** — the coefficient the estate's Wick
+expansions carry, proved rather than checked at one value.
+
+`card_perfectMatchings_fin_six_eq_doubleFactorial` is now the case `k = 3` of this, and it is
+kept because its `15` comes from `decide` over `720` permutations: the two agree, and that
+agreement tests the decomposition of §9 the way §8's does the one of §7. -/
+theorem card_perfectMatchings_fin_eq_doubleFactorial (k : ℕ) :
+    Fintype.card ↑(perfectMatchings (Fin (2 * k))) = Nat.doubleFactorial (2 * k - 1) := by
+  induction k with
+  | zero => simpa using card_perfectMatchings_fin_zero
+  | succ k ih =>
+      have hidx : 2 * (k + 1) = 2 * k + 2 := by ring
+      rw [hidx, card_perfectMatchings_fin_add_two (2 * k), ih]
+      have hsub : 2 * k + 2 - 1 = 2 * k + 1 := by omega
+      rw [hsub, doubleFactorial_step_local k]
+
+/-- And an odd number of objects has no pairing at all. -/
+theorem card_perfectMatchings_fin_odd (k : ℕ) :
+    Fintype.card ↑(perfectMatchings (Fin (2 * k + 1))) = 0 := by
+  rw [Fintype.card_eq_zero_iff]
+  refine ⟨fun σ => ?_⟩
+  have h := even_card_of_mem_perfectMatchings σ.2
+  rw [Fintype.card_fin, Nat.even_iff] at h
+  omega
+
+/-- The general statement checked against §6's `decide`: `P(6) = 5‼ = 15`. -/
+theorem card_perfectMatchings_fin_six_two_ways :
+    Fintype.card ↑(perfectMatchings (Fin 6)) = Nat.doubleFactorial 5 := by
+  have h := card_perfectMatchings_fin_eq_doubleFactorial 3
+  norm_num at h
+  exact h
 
 end Involutions
