@@ -59,6 +59,16 @@ does not degrade as the graph grows — the hypothesis such an argument needs, n
 **And the patterns are still `(a, f^(n+1))` and `(a, b, f^(n+2))`**, not `2n` arbitrary test
 functions, for the reason `LatticeWickTwo` records: the obstruction is the number of **distinct**
 test functions, which stands at three. **No published tag moves.**
+
+**⚠ SUPERSEDED IN ITS REASON, 2026-08-27, and kept as written (`ERRATUM 94`).** *"The obstruction
+is the number of **distinct** test functions, which stands at three"* is false:
+`IsserlisAll.isserlisGeneral_all` proves `WickPairings.IsserlisGeneral G m k` at every `k`, so the
+identity is available at any number of distinct test functions. **What is NOT superseded is the
+first clause**: the patterns proved *in this file* are still `(a, f^(n+1))` and `(a, b, f^(n+2))`,
+because lifting them needs the pairing sum split along the near/far boundary, and only the first
+half of that split exists — `PairingSplit.sum_prod_eq_sum_respects` collapses the sum onto the
+matchings that do not cross when the crossing propagator vanishes. **The factorisation and the
+estimate are not written**, and no number is offered for them (`ERRATUM 194`).
 -/
 
 namespace LatticeHigherClustering
