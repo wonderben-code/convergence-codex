@@ -41,11 +41,14 @@ is fixed by proving the alternative rather than by rewording the sentence.
 
 * `truncated_half_fin_four` — the value: `3/2 · (gᵀGg)²`, from `LatticeIsserlisFour.isserlis_four`
   and `LatticeTruncatedOdd.truncated_eq_full_of_odd`;
-* **`sharp_needs_even_card`** — the hypotheses, and the negated conclusion, in one statement;
-* **`sharp_without_even_card_is_false`** — the headline: that theorem with the one hypothesis
-  deleted, and nothing else changed, does not hold;
-* `sharp_with_even_card_holds` — the check. Putting the hypothesis back makes the same body an
-  `exact` of `abs_integral_prod_sub_mul_le_sq`, so a transcription slip would not elaborate;
+* `SharpBody` and `SharpWithoutEven` — that theorem's conclusion, and that theorem minus the one
+  hypothesis, each named ONCE so that nothing below re-transcribes them;
+* `sharp_with_even_card_holds` — **the check, and it comes first.** Putting the hypothesis back
+  makes `SharpBody` an `exact` of `abs_integral_prod_sub_mul_le_sq`, so the two names are that
+  theorem rather than a paraphrase of it;
+* **`sharp_needs_even_card`** — the hypotheses, and the negated conclusion, at one instance;
+* **`sharp_without_even_card_is_false`** — the headline: `¬ SharpWithoutEven G m`;
+* `sharp_without_even_card_is_false_of_nonempty` — and it is not vacuous: **one vertex is enough**;
 * `integral_prod_subtype_eq_zero_of_odd_via_fin` and
   `integral_prod_subtype_eq_zero_of_odd_two_ways` — the relabelling route, and the previous unit's
   theorem re-proved through it.
@@ -92,16 +95,47 @@ theorem truncated_half_fin_four (hm : m ≠ 0) (g : EuclideanSpace ℝ V) :
 
 /-! ## 2. The hypothesis is necessary -/
 
-/-- **`abs_integral_prod_sub_mul_le_sq` IS FALSE WITHOUT `Even S.card`, AND EVERY OTHER HYPOTHESIS
-OF IT HOLDS HERE.** The four conjuncts are, in order, that theorem's `hM0`, its `hcross` at
-`ε = |dotG (½g) g|`, its `hall` at `M = dotG g g`, and the negation of its conclusion. The split
-is `{0}`, whose card is `1` — the one hypothesis missing.
+/-- **`abs_integral_prod_sub_mul_le_sq`'s CONCLUSION, WRITTEN ONCE.** The counterexample, the
+refutation and the check below all mention this inequality, and a file whose subject is
+transcription fidelity should not copy it three times by hand. `sharp_with_even_card_holds` is what
+ties this name to the estate's theorem; everything else quantifies over the name. -/
+def SharpBody (G : SimpleGraph V) [DecidableRel G.Adj] (m : ℝ) {k : ℕ}
+    (a : Fin k → EuclideanSpace ℝ V) (S : Finset (Fin k)) (ε M : ℝ) : Prop :=
+  |∫ ω, (∏ i, (inner ℝ (a i) ω : ℝ)) ∂(gaussianField G m)
+      - (∫ ω, (∏ x : {x : Fin k // x ∈ S}, (inner ℝ (a x) ω : ℝ)) ∂(gaussianField G m))
+        * (∫ ω, (∏ y : {y : Fin k // y ∉ S}, (inner ℝ (a y) ω : ℝ)) ∂(gaussianField G m))|
+    ≤ (Fintype.card ↑(perfectMatchings (Fin k)) : ℝ) * (ε ^ 2 * M ^ (k / 2 - 2))
+
+/-- **AND THE SAME THEOREM WITH `Even S.card` DELETED**, which is the proposition §2 refutes. -/
+def SharpWithoutEven (G : SimpleGraph V) [DecidableRel G.Adj] (m : ℝ) : Prop :=
+  ∀ {k : ℕ} (a : Fin k → EuclideanSpace ℝ V) (S : Finset (Fin k)) {ε M : ℝ}, 0 ≤ M →
+    (∀ i ∈ S, ∀ j ∉ S, |dotG G m (a i) (a j)| ≤ ε) →
+    (∀ i j, |dotG G m (a i) (a j)| ≤ M) → SharpBody G m a S ε M
+
+/-- **THE CHECK, AND IT COMES FIRST BECAUSE EVERYTHING BELOW RESTS ON IT.** Putting `Even S.card`
+back into `SharpWithoutEven`'s binder list gives exactly this, and it is discharged **by `exact`,
+with no massaging**, from `LatticeTruncatedSharp.abs_integral_prod_sub_mul_le_sq`. So `SharpBody`
+is that theorem's conclusion and `SharpWithoutEven` is that theorem minus one hypothesis — not a
+paraphrase of either. A mis-copied binder, exponent or side of the inequality would stop this
+declaration elaborating. It is a DECLARED duplicate of that theorem (`ERRATUM 176`), kept for the
+check and for nothing else. -/
+theorem sharp_with_even_card_holds (hm : m ≠ 0) {k : ℕ} (a : Fin k → EuclideanSpace ℝ V)
+    (S : Finset (Fin k)) (hS : Even S.card) {ε M : ℝ} (hM0 : 0 ≤ M)
+    (hcross : ∀ i ∈ S, ∀ j ∉ S, |dotG G m (a i) (a j)| ≤ ε)
+    (hall : ∀ i j, |dotG G m (a i) (a j)| ≤ M) :
+    SharpBody G m a S ε M :=
+  LatticeTruncatedSharp.abs_integral_prod_sub_mul_le_sq hm a S hS hM0 hcross hall
+
+/-- **EVERY OTHER HYPOTHESIS OF THAT THEOREM HOLDS AT ONE INSTANCE, AND ITS CONCLUSION FAILS.**
+The four conjuncts are, in order, `hM0`, `hcross` at `ε = |dotG (½g) g|`, `hall` at `M = dotG g g`,
+and the negation of the conclusion. The split is `{0}`, whose card is `1` — the one hypothesis
+missing.
 
 **Where the factor of two comes from.** The quantity is `3/2 · c²` with `c = gᵀGg > 0`
 (`truncated_half_fin_four`), while the bound is `3 · ((c/2)² · c⁰) = 3/4 · c²`. That gap is the
-content of `card_cross_eq_one_of_card_eq_one`: at an odd split each pairing crosses **once**, so
-the truncated correlation is linear in the cross-propagator while the bound is quadratic, and
-scaling `½` down to `t` widens the failure like `1/t`.
+content of `LatticeTruncatedOdd.card_cross_eq_one_of_card_eq_one`: at an odd split each pairing
+crosses **once**, so the truncated correlation is linear in the cross-propagator while the bound is
+quadratic, and scaling `½` down to `t` widens the failure like `1/t`.
 
 **`LatticeSobolevPoincare.linVar_pos` is the only place the graph enters**, and all it needs is
 that the Green form is positive definite — no connectivity, no separation, no particular `G`. -/
@@ -112,14 +146,8 @@ theorem sharp_needs_even_card (hm : m ≠ 0) {g : EuclideanSpace ℝ V} (hg : g 
             ≤ |dotG G m ((1/2 : ℝ) • g) g|)
       ∧ (∀ i j, |dotG G m (![(1/2 : ℝ) • g, g, g, g] i) (![(1/2 : ℝ) • g, g, g, g] j)|
             ≤ dotG G m g g)
-      ∧ ¬ (|∫ ω, (∏ i, (inner ℝ (![(1/2 : ℝ) • g, g, g, g] i) ω : ℝ)) ∂(gaussianField G m)
-              - (∫ ω, (∏ x : {x : Fin 4 // x ∈ ({0} : Finset (Fin 4))},
-                    (inner ℝ (![(1/2 : ℝ) • g, g, g, g] x) ω : ℝ)) ∂(gaussianField G m))
-                * (∫ ω, (∏ y : {y : Fin 4 // y ∉ ({0} : Finset (Fin 4))},
-                    (inner ℝ (![(1/2 : ℝ) • g, g, g, g] y) ω : ℝ)) ∂(gaussianField G m))|
-            ≤ (Fintype.card ↑(perfectMatchings (Fin 4)) : ℝ)
-              * (|dotG G m ((1/2 : ℝ) • g) g| ^ 2
-                  * (dotG G m g g) ^ (4 / 2 - 2))) := by
+      ∧ ¬ SharpBody G m ![(1/2 : ℝ) • g, g, g, g] ({0} : Finset (Fin 4))
+            (|dotG G m ((1/2 : ℝ) • g) g|) (dotG G m g g) := by
   have hc : (0 : ℝ) < dotG G m g g := linVar_eq_dotG (G := G) (m := m) g ▸ linVar_pos hm hg
   have hhalf : dotG G m ((1/2 : ℝ) • g) g = 1 / 2 * dotG G m g g := dotG_smul_left g g (1/2 : ℝ)
   have habs : |dotG G m ((1/2 : ℝ) • g) g| = 1 / 2 * dotG G m g g := by
@@ -151,43 +179,39 @@ theorem sharp_needs_even_card (hm : m ≠ 0) {g : EuclideanSpace ℝ V} (hg : g 
           mul_le_mul hs1 (mul_le_mul ht1 le_rfl hc.le zero_le_one) (by positivity) zero_le_one
       _ = dotG G m g g := by ring
   · -- the conclusion: `3/2·c²` against `3·(c/2)² = 3/4·c²`
-    rw [truncated_half_fin_four hm g, habs, card_perfectMatchings_fin_four, linVar_eq_dotG]
+    intro hb
+    rw [SharpBody, truncated_half_fin_four hm g, habs, card_perfectMatchings_fin_four,
+      linVar_eq_dotG] at hb
     have hsq : (0 : ℝ) < (dotG G m g g) ^ 2 := pow_pos hc 2
-    rw [abs_of_pos (by linarith)]
-    norm_num
+    rw [abs_of_pos (by linarith)] at hb
+    norm_num at hb
     linarith
 
-/-- **SO THE THEOREM WITH `Even S.card` DELETED IS FALSE.** The quantified body below is
-`abs_integral_prod_sub_mul_le_sq`'s statement with that one hypothesis removed and nothing else
-changed — same binders, same `ε` and `M`, same right-hand side — and it does not hold. This is the
-headline: **the hypothesis is necessary, not merely convenient.** -/
+/-- **SO THE THEOREM WITH `Even S.card` DELETED IS FALSE.** This is the headline: **the hypothesis
+is necessary, not merely convenient.** -/
 theorem sharp_without_even_card_is_false (hm : m ≠ 0) {g : EuclideanSpace ℝ V} (hg : g ≠ 0) :
-    ¬ (∀ {k : ℕ} (a : Fin k → EuclideanSpace ℝ V) (S : Finset (Fin k)) {ε M : ℝ}, 0 ≤ M →
-        (∀ i ∈ S, ∀ j ∉ S, |dotG G m (a i) (a j)| ≤ ε) →
-        (∀ i j, |dotG G m (a i) (a j)| ≤ M) →
-        |∫ ω, (∏ i, (inner ℝ (a i) ω : ℝ)) ∂(gaussianField G m)
-            - (∫ ω, (∏ x : {x : Fin k // x ∈ S}, (inner ℝ (a x) ω : ℝ)) ∂(gaussianField G m))
-              * (∫ ω, (∏ y : {y : Fin k // y ∉ S}, (inner ℝ (a y) ω : ℝ)) ∂(gaussianField G m))|
-          ≤ (Fintype.card ↑(perfectMatchings (Fin k)) : ℝ) * (ε ^ 2 * M ^ (k / 2 - 2))) := by
+    ¬ SharpWithoutEven G m := by
   intro h
   obtain ⟨hM0, hcross, hall, hno⟩ := sharp_needs_even_card (G := G) hm hg
   exact hno (h (k := 4) ![(1/2 : ℝ) • g, g, g, g] ({0} : Finset (Fin 4)) hM0 hcross hall)
 
-/-- **AND THE CHECK THAT THE PROPOSITION JUST REFUTED IS THE RIGHT ONE.** A statement transcribed
-by hand can drift from the theorem it claims to be. Putting `Even S.card` back turns the body above
-into something `abs_integral_prod_sub_mul_le_sq` proves **by `exact`, with no massaging** — so this
-declaration does not elaborate if a binder, an exponent or a side of the inequality was copied
-wrong. It is a declared duplicate of that theorem (`ERRATUM 176`), kept for the check and for
-nothing else. -/
-theorem sharp_with_even_card_holds (hm : m ≠ 0) {k : ℕ} (a : Fin k → EuclideanSpace ℝ V)
-    (S : Finset (Fin k)) (hS : Even S.card) {ε M : ℝ} (hM0 : 0 ≤ M)
-    (hcross : ∀ i ∈ S, ∀ j ∉ S, |dotG G m (a i) (a j)| ≤ ε)
-    (hall : ∀ i j, |dotG G m (a i) (a j)| ≤ M) :
-    |∫ ω, (∏ i, (inner ℝ (a i) ω : ℝ)) ∂(gaussianField G m)
-        - (∫ ω, (∏ x : {x : Fin k // x ∈ S}, (inner ℝ (a x) ω : ℝ)) ∂(gaussianField G m))
-          * (∫ ω, (∏ y : {y : Fin k // y ∉ S}, (inner ℝ (a y) ω : ℝ)) ∂(gaussianField G m))|
-      ≤ (Fintype.card ↑(perfectMatchings (Fin k)) : ℝ) * (ε ^ 2 * M ^ (k / 2 - 2)) :=
-  LatticeTruncatedSharp.abs_integral_prod_sub_mul_le_sq hm a S hS hM0 hcross hall
+omit [Fintype V] in
+/-- A coordinate vector is not the zero vector. Mathlib has no `EuclideanSpace.single_ne_zero`
+(`exact?` finds nothing), and the one-line proof is here rather than left implicit, because the
+corollary below is the whole reason the refutation is not vacuous. **`Fintype V` is `omit`ted**:
+the build reported it unused and a coordinate vector is nonzero at any index type. -/
+theorem euclidean_single_ne_zero (p : V) : (EuclideanSpace.single p (1 : ℝ)) ≠ 0 := by
+  intro h
+  have hp := congrFun (congrArg WithLp.ofLp h) p
+  simp at hp
+
+/-- **AND THE REFUTATION IS NOT VACUOUS.** `sharp_without_even_card_is_false` asks for a `g ≠ 0`,
+and on an empty vertex set there is none — so as stated it would hold for a reason having nothing
+to do with the mathematics. **One vertex is enough** and no more is needed: no connectivity, no
+size condition, no separation. -/
+theorem sharp_without_even_card_is_false_of_nonempty [Nonempty V] (hm : m ≠ 0) :
+    ¬ SharpWithoutEven G m :=
+  sharp_without_even_card_is_false hm (euclidean_single_ne_zero (Classical.arbitrary V))
 
 /-! ## 3. The relabelling route the previous unit said was not there -/
 
