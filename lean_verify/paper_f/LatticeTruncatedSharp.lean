@@ -18,6 +18,22 @@ to have an even number of members. **At odd `|S|` the whole correlation vanishes
 side of the split is odd, so its own correlation is zero and so is the product — so nothing is
 lost that anybody wanted.
 
+**⚠ SUPERSEDED 2026-08-27, kept as written (`ERRATUM 94`, corrected by `ERRATUM 307`).**
+*"At odd `|S|` the whole correlation vanishes anyway"* and *"nothing is lost that anybody wanted"*
+are **false**. The truncated correlation is a DIFFERENCE, and at odd `|S|` only its **second** term
+vanishes; the first is a correlation of `k` factors and, when `k` is even, is generally nonzero.
+`LatticeTruncatedOdd.truncated_eq_full_of_odd` proves that the quantity there is the FULL
+correlation, and `truncated_const_fin_four_pos` exhibits it as `3 (fᵀGf)² > 0` at `k = 4`,
+`S = {0}`. **The sentence is right about `k` odd** — where the full correlation vanishes too —
+and it conflated `|S|` odd with `k` odd.
+
+**What the hypothesis actually costs, and it is not nothing.** It excludes a case in which the
+statement has content. `LatticeTruncatedOdd.card_cross_eq_one_of_card_eq_one` shows why no
+sharpening of the argument below recovers it: at `|S| = 1` the crossing count is exactly `1` for
+every pairing, so `PairingParity.two_le_card_cross`'s conclusion is **false** there rather than
+merely unavailable, and `ε²` is out of reach. **Everything proved in this file stands unchanged** —
+what was wrong was a sentence about it, not a theorem.
+
 ## What is proved
 
 * **`abs_integral_prod_sub_mul_le_sq`** — the sum bound at the sharp exponent;
