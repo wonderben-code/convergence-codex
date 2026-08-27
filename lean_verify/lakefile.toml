@@ -149,4 +149,5 @@ roots = [
   "LatticeFourPointViaGeneral",
   "LatticeFourPointExact",
   "LatticeTruncatedNorms",
+  "LatticeTruncatedUniform",
 ]
