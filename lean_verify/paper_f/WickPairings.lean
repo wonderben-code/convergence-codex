@@ -14,11 +14,16 @@ proves the cases the estate already has by other means.
 
 ## The statement
 
-For `2n` test functions `f : Fin (2n) → E`,
+For `k` test functions `f : Fin k → E`, **any `k`, odd or even**,
 
 ```
-∫ ∏ᵢ ⟪fᵢ, ω⟫ dμ  =  ∑_{σ a pairing of Fin (2n)}  ∏_{i < σ i} ⟨fᵢ, G f_{σ i}⟩
+∫ ∏ᵢ ⟪fᵢ, ω⟫ dμ  =  ∑_{σ a pairing of Fin k}  ∏_{i < σ i} ⟨fᵢ, G f_{σ i}⟩
 ```
+
+At odd `k` the sum is empty, because an odd set has no pairing
+(`Involutions.perfectMatchings_eq_empty_of_odd`), and the statement asserts the integral vanishes.
+**That half is proved outright**, in `LatticeOddVanishing`, off the field's symmetry under
+`ω ↦ −ω`; the even half is the open one.
 
 The inner product runs over `{i | i < σ i}` — **one representative per pair** — which is what makes
 `pairProduct` the propagator product of the pairing rather than its square.
@@ -28,21 +33,24 @@ The inner product runs over `{i | i < σ i}` — **one representative per pair**
 * `pairProduct` and **`IsserlisGeneral`**, the statement as a `Prop`. This is the shape
   `IsingTopRatio.UniformSubTopRatio` uses for `W4`'s open item: **a named `Prop` cannot drift**,
   and a later unit either proves it or does not;
-* `isserlisGeneral_zero` — `n = 0`. The empty product integrates to `1`, and `Fin 0` has exactly
+* `isserlisGeneral_zero` — `k = 0`. The empty product integrates to `1`, and `Fin 0` has exactly
   one pairing whose product is empty. **Both sides are `1` for different reasons** and the case is
   not vacuous;
-* `isserlisGeneral_one` — `n = 1`, which is `LatticeIsserlisSmeared.smeared_twoPoint`;
-* **`isserlisGeneral_two`** — `n = 2`, from `LatticeIsserlisFour.isserlis_four`. This is the first
+* `isserlisGeneral_two` — `k = 2`, which is `LatticeIsserlisSmeared.smeared_twoPoint`;
+* **`isserlisGeneral_four`** — `k = 4`, from `LatticeIsserlisFour.isserlis_four`. This is the first
   case where the sum has more than one term, and it is the one that tests whether the statement is
   the RIGHT one: the three pairings of `Fin 4` are enumerated by `decide`, their pair products
   computed, and the result matched against a theorem proved by polarising a fourth moment twice.
   **If `pairProduct` had the wrong index set — every `i` rather than one per pair — this would
-  fail**, and nothing else in the file would have noticed.
+  fail**, and nothing else in the file would have noticed;
+* `pairProduct_const` and `isserlisGeneral_diagonal` — and the statement holds at **every** even
+  `k` when the test functions all coincide, which is a locus rather than three points.
 
 ## What is NOT proved
 
-**`IsserlisGeneral G m n` for `n ≥ 3`.** The statement is now writable and the first three cases
-hold; the general proof needs Gaussian integration by parts for the correlated field at a
+**`IsserlisGeneral G m k` at even `k ≥ 6`.** The odd `k` are proved (`LatticeOddVanishing`),
+`k = 0, 2, 4` are proved here, and the diagonal holds at every even `k`; the general even proof
+needs Gaussian integration by parts for the correlated field at a
 **product** observable, which this estate has only for the exponential
 (`LatticeSteinIdentity`) and for a power of one test function (`LatticeWickRecursion`). That is
 the watchlist's other blocker, it is unchanged, and **nothing here shortens it**. No estimate is
@@ -67,10 +75,10 @@ noncomputable def pairProduct (G : SimpleGraph V) [DecidableRel G.Adj] (m : ℝ)
 
 /-- **GENERAL-ORDER ISSERLIS, STATED.** Not proved here beyond `n ≤ 2`; named so that it cannot
 drift, in the shape `IsingTopRatio.UniformSubTopRatio` uses for `W4`'s open item. -/
-def IsserlisGeneral (G : SimpleGraph V) [DecidableRel G.Adj] (m : ℝ) (n : ℕ) : Prop :=
-  ∀ f : Fin (2 * n) → EuclideanSpace ℝ V,
+def IsserlisGeneral (G : SimpleGraph V) [DecidableRel G.Adj] (m : ℝ) (k : ℕ) : Prop :=
+  ∀ f : Fin k → EuclideanSpace ℝ V,
     ∫ ω, ∏ i, (inner ℝ (f i) ω : ℝ) ∂(gaussianField G m)
-      = ∑ σ : ↑(perfectMatchings (Fin (2 * n))), pairProduct G m f σ.1
+      = ∑ σ : ↑(perfectMatchings (Fin k)), pairProduct G m f σ.1
 
 /-! ## 1. `n = 0`, where both sides are `1` for different reasons -/
 
@@ -78,14 +86,13 @@ theorem isserlisGeneral_zero : IsserlisGeneral G m 0 := by
   intro f
   have hone : (Finset.univ : Finset ↑(perfectMatchings (Fin 0))) = {⟨1, by decide⟩} := by
     decide
-  simp only [Nat.mul_zero, Finset.univ_eq_empty, Finset.prod_empty, integral_const,
-    smul_eq_mul, mul_one]
+  simp only [Finset.univ_eq_empty, Finset.prod_empty, integral_const, smul_eq_mul, mul_one]
   rw [Finset.sum_congr hone (fun _ _ => rfl), Finset.sum_singleton]
   simp [pairProduct]
 
 /-! ## 2. `n = 1`, which is the smeared two-point function -/
 
-theorem isserlisGeneral_one (hm : m ≠ 0) : IsserlisGeneral G m 1 := by
+theorem isserlisGeneral_two (hm : m ≠ 0) : IsserlisGeneral G m 2 := by
   intro f
   have hone : (Finset.univ : Finset ↑(perfectMatchings (Fin 2)))
       = {⟨Equiv.swap 0 1, by decide⟩} := by decide
@@ -110,32 +117,32 @@ three products matched against a theorem proved by polarising a fourth moment tw
 **This is the case that can fail.** If `pairProduct` ranged over every `i` rather than one
 representative per pair, each term would be the square of what it should be and this proof would
 not close; `n = 0` and `n = 1` would not have noticed. -/
-theorem isserlisGeneral_two (hm : m ≠ 0) : IsserlisGeneral G m 2 := by
+theorem isserlisGeneral_four (hm : m ≠ 0) : IsserlisGeneral G m 4 := by
   intro f
-  have huniv : (Finset.univ : Finset ↑(perfectMatchings (Fin (2 * 2))))
+  have huniv : (Finset.univ : Finset ↑(perfectMatchings (Fin 4)))
       = {⟨Equiv.swap 0 1 * Equiv.swap 2 3, by decide⟩,
          ⟨Equiv.swap 0 2 * Equiv.swap 1 3, by decide⟩,
          ⟨Equiv.swap 0 3 * Equiv.swap 1 2, by decide⟩} := by decide
   rw [Finset.sum_congr huniv (fun _ _ => rfl), Finset.sum_insert (by decide),
     Finset.sum_insert (by decide), Finset.sum_singleton]
-  have h1 : (Finset.univ.filter (fun i : Fin (2 * 2) =>
-      i < (Equiv.swap 0 1 * Equiv.swap 2 3 : Equiv.Perm (Fin (2 * 2))) i)) = {0, 2} := by decide
-  have h2 : (Finset.univ.filter (fun i : Fin (2 * 2) =>
-      i < (Equiv.swap 0 2 * Equiv.swap 1 3 : Equiv.Perm (Fin (2 * 2))) i)) = {0, 1} := by decide
-  have h3 : (Finset.univ.filter (fun i : Fin (2 * 2) =>
-      i < (Equiv.swap 0 3 * Equiv.swap 1 2 : Equiv.Perm (Fin (2 * 2))) i)) = {0, 1} := by decide
-  have a1 : (Equiv.swap 0 1 * Equiv.swap 2 3 : Equiv.Perm (Fin (2 * 2))) 0 = 1 := by decide
-  have a2 : (Equiv.swap 0 1 * Equiv.swap 2 3 : Equiv.Perm (Fin (2 * 2))) 2 = 3 := by decide
-  have b1 : (Equiv.swap 0 2 * Equiv.swap 1 3 : Equiv.Perm (Fin (2 * 2))) 0 = 2 := by decide
-  have b2 : (Equiv.swap 0 2 * Equiv.swap 1 3 : Equiv.Perm (Fin (2 * 2))) 1 = 3 := by decide
-  have c1 : (Equiv.swap 0 3 * Equiv.swap 1 2 : Equiv.Perm (Fin (2 * 2))) 0 = 3 := by decide
-  have c2 : (Equiv.swap 0 3 * Equiv.swap 1 2 : Equiv.Perm (Fin (2 * 2))) 1 = 2 := by decide
+  have h1 : (Finset.univ.filter (fun i : Fin 4 =>
+      i < (Equiv.swap 0 1 * Equiv.swap 2 3 : Equiv.Perm (Fin 4)) i)) = {0, 2} := by decide
+  have h2 : (Finset.univ.filter (fun i : Fin 4 =>
+      i < (Equiv.swap 0 2 * Equiv.swap 1 3 : Equiv.Perm (Fin 4)) i)) = {0, 1} := by decide
+  have h3 : (Finset.univ.filter (fun i : Fin 4 =>
+      i < (Equiv.swap 0 3 * Equiv.swap 1 2 : Equiv.Perm (Fin 4)) i)) = {0, 1} := by decide
+  have a1 : (Equiv.swap 0 1 * Equiv.swap 2 3 : Equiv.Perm (Fin 4)) 0 = 1 := by decide
+  have a2 : (Equiv.swap 0 1 * Equiv.swap 2 3 : Equiv.Perm (Fin 4)) 2 = 3 := by decide
+  have b1 : (Equiv.swap 0 2 * Equiv.swap 1 3 : Equiv.Perm (Fin 4)) 0 = 2 := by decide
+  have b2 : (Equiv.swap 0 2 * Equiv.swap 1 3 : Equiv.Perm (Fin 4)) 1 = 3 := by decide
+  have c1 : (Equiv.swap 0 3 * Equiv.swap 1 2 : Equiv.Perm (Fin 4)) 0 = 3 := by decide
+  have c2 : (Equiv.swap 0 3 * Equiv.swap 1 2 : Equiv.Perm (Fin 4)) 1 = 2 := by decide
   simp only [pairProduct, h1, h2, h3]
   rw [Finset.prod_insert (by decide), Finset.prod_singleton,
     Finset.prod_insert (by decide), Finset.prod_singleton,
     Finset.prod_insert (by decide), Finset.prod_singleton,
     a1, a2, b1, b2, c1, c2]
-  have hprod : ∀ ω : EuclideanSpace ℝ V, (∏ i : Fin (2 * 2), (inner ℝ (f i) ω : ℝ))
+  have hprod : ∀ ω : EuclideanSpace ℝ V, (∏ i : Fin 4, (inner ℝ (f i) ω : ℝ))
       = (inner ℝ (f 0) ω : ℝ) * (inner ℝ (f 1) ω : ℝ) * (inner ℝ (f 2) ω : ℝ)
         * (inner ℝ (f 3) ω : ℝ) := fun ω => by
     rw [Fin.prod_univ_four]
