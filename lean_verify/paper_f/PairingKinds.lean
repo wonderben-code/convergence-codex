@@ -356,7 +356,8 @@ even-sized split, with the cross estimate no larger than either same-side estima
 are those of the two-crossing case**, which is the worst one: raising the crossing count by two
 trades one `Ms` and one `Mt` for two `ε`, and `ε² ≤ Ms·Mt`. -/
 theorem abs_prod_le_worst {σ : Equiv.Perm ι} (hσ : σ ∈ perfectMatchings ι) (S : Finset ι)
-    (w : ι → ι → ℝ) {ε Ms Mt : ℝ} (hε0 : 0 ≤ ε) (hεs : ε ≤ Ms) (hεt : ε ≤ Mt)
+    (w : ι → ι → ℝ) {ε Ms Mt : ℝ} (hMs0 : 0 ≤ Ms) (hMt0 : 0 ≤ Mt)
+    (hε2 : ε ^ 2 ≤ Ms * Mt)
     (hcross : ∀ i, ¬ (i ∈ S ↔ σ i ∈ S) → |w i (σ i)| ≤ ε)
     (hnear : ∀ i, i ∈ S → σ i ∈ S → |w i (σ i)| ≤ Ms)
     (hfar : ∀ i, i ∉ S → σ i ∉ S → |w i (σ i)| ≤ Mt)
@@ -380,14 +381,7 @@ theorem abs_prod_le_worst {σ : Equiv.Perm ι} (hσ : σ ∈ perfectMatchings ι
   obtain ⟨t, ht⟩ : ∃ t, c = 2 + 2 * t := ⟨(c - 2) / 2, by omega⟩
   have hA : (S.card - c) / 2 + t = (S.card - 2) / 2 := by omega
   have hB : (Sᶜ.card - c) / 2 + t = (Sᶜ.card - 2) / 2 := by omega
-  have hMs0 : (0:ℝ) ≤ Ms := le_trans hε0 hεs
-  have hMt0 : (0:ℝ) ≤ Mt := le_trans hε0 hεt
   refine (abs_prod_le_of_card_cross hσ S w hcross hnear hfar hcdef.symm).trans ?_
-  -- `nlinarith` is not in scope here: this file's imports are the combinatorial ones and pull in
-  -- no nonlinear arithmetic tactic. The step is one `mul_le_mul` anyway.
-  have hε2 : ε ^ 2 ≤ Ms * Mt := by
-    rw [sq]
-    exact mul_le_mul hεs hεt hε0 hMs0
   have key : (ε ^ 2) ^ t ≤ (Ms * Mt) ^ t := pow_le_pow_left₀ (sq_nonneg ε) hε2 t
   have hbase : (0:ℝ) ≤ Ms ^ ((S.card - c) / 2) * Mt ^ ((Sᶜ.card - c) / 2) * ε ^ 2 := by positivity
   have hlhs : Ms ^ ((S.card - c) / 2) * Mt ^ ((Sᶜ.card - c) / 2) * ε ^ c
