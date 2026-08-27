@@ -145,4 +145,5 @@ roots = [
   "OSReconstructionFormal",
   "ConnesNCG",
   "PairingCount",
+  "LatticeTruncatedExplicit",
 ]
