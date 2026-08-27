@@ -858,4 +858,29 @@ theorem two_mul_card_lt_image {α : Type*} [Fintype α] [LinearOrder α]
   rw [hunion, Finset.card_univ, hcard] at this
   omega
 
+/-! ## 12. The counts at an arbitrary finite type
+
+Everything above is stated at `Fin n`, which is where the induction lives. The transport lemmas of
+§3 make the general statements one line each, and they matter because an index set that arises in
+practice is rarely `Fin n` on the nose. -/
+
+/-- `|involutions α| = numInvolutions |α|`, for any finite `α`. -/
+theorem card_involutions_eq_numInvolutions (α : Type*) [Fintype α] [DecidableEq α] :
+    Fintype.card ↑(involutions α) = numInvolutions (Fintype.card α) := by
+  rw [card_involutions_invariant (Fintype.equivFin α), card_involutions_fin_eq_numInvolutions]
+
+/-- **`|perfectMatchings α| = (|α|−1)‼` WHENEVER `|α|` IS EVEN**, for any finite `α`. -/
+theorem card_perfectMatchings_eq_doubleFactorial (α : Type*) [Fintype α] [DecidableEq α]
+    {k : ℕ} (h : Fintype.card α = 2 * k) :
+    Fintype.card ↑(perfectMatchings α) = Nat.doubleFactorial (2 * k - 1) := by
+  rw [card_perfectMatchings_invariant (Fintype.equivFinOfCardEq h),
+    card_perfectMatchings_fin_eq_doubleFactorial]
+
+/-- And an odd finite type has no perfect matching, which is
+`perfectMatchings_eq_empty_of_odd` said as a cardinality. -/
+theorem card_perfectMatchings_eq_zero_of_odd (α : Type*) [Fintype α] [DecidableEq α]
+    (h : ¬ Even (Fintype.card α)) : Fintype.card ↑(perfectMatchings α) = 0 := by
+  rw [Fintype.card_eq_zero_iff]
+  exact ⟨fun σ => h (even_card_of_mem_perfectMatchings σ.2)⟩
+
 end Involutions
