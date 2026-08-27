@@ -18,9 +18,9 @@ convenience composition, where one bound covering every test function was simply
 ## What is proved
 
 * **`truncated_abs_le_two_norms`** — the decay bound with **one norm per side of the split**:
-  `≤ count·((Cs·Ct·rᴺ/m²)²·((Cs+Ct)²/m²)^(k/2−2))`. The sum `Cs + Ct` appears only in the factor
-  that bounds *every* pair including the same-side ones, and it is a sum rather than a maximum
-  because that needs no case analysis and both are non-negative;
+  `≤ count·((Cs·Ct·rᴺ/m²)²·(max(Cs,Ct)²/m²)^(k/2−2))`. The two are merged in exactly one place —
+  the factor that must bound *every* pair, same-side ones included — and the merge is a
+  **maximum**;
 * **`truncated_abs_le_four_two_norms`** — at four test functions the second factor is an empty
   power, **so the uniform bound disappears entirely** and what is left is `2·(Cs·Ct·rᴺ/m²)²`;
 * **`connected_smeared_le_two_ways`** — **the last item, closed.** At `![f, f, g, g]` and
@@ -35,11 +35,14 @@ convenience composition, where one bound covering every test function was simply
 
 ## What is NOT here
 
-**The uniform factor does not disappear above order four.** At `k > 4` the exponent `k/2 − 2` is
-positive and `(Cs + Ct)²` is still a common bound — a crude one, since it does not distinguish which
-side a pair lies on. Splitting `M` into three cases by side would sharpen it and is **not done, not
-costed** (`ERRATUM 194`). What can be said is that the CROSS factor, which carries all the decay,
-is now exact at every order.
+**The uniform factor does not disappear above order four**, and what would sharpen it is NOT what
+a first version of this paragraph proposed. It said *"splitting `M` into three cases by side"* —
+near-near, far-far, crossing. **That cannot be done to a uniform bound**: `M` is raised to a power
+counting factors whose kinds vary from pairing to pairing, so the only thing a single `M` can be is
+the largest of the three, which is `max(Cs,Ct)²` and is what it now is. Sharpening past that needs
+the count PER KIND carried inside the sum over pairings, which is a different theorem and is **not
+done, not costed** (`ERRATUM 194`). What can be said is that the CROSS factor, which carries all
+the decay, is exact at every order.
 
 **And it is not OS4.** Finite volume, and a constant that grows faster than geometrically in the
 order — unchanged by anything here.
@@ -60,7 +63,7 @@ those outside it. The cross factor is `Cs·Ct` exactly; only the factor bounding
 same-side ones included — needs something covering both. -/
 theorem truncated_abs_le_two_norms (hm : m ≠ 0) {Δ : ℕ} (hΔ : ∀ v : V, G.degree v ≤ Δ) {N k : ℕ}
     (a : Fin k → EuclideanSpace ℝ V) (S : Finset (Fin k)) (hS : Even S.card)
-    {Cs Ct : ℝ} (hCs0 : 0 ≤ Cs) (hCt0 : 0 ≤ Ct)
+    {Cs Ct : ℝ} (hCs0 : 0 ≤ Cs)
     (hCs : ∀ i ∈ S, ∑ p, |(a i).ofLp p| ≤ Cs) (hCt : ∀ i ∉ S, ∑ p, |(a i).ofLp p| ≤ Ct)
     (hsep : ∀ i ∈ S, ∀ j ∉ S, ∀ p q, (a i).ofLp p ≠ 0 → (a j).ofLp q ≠ 0 →
       ¬ G.Reachable p q ∨ N ≤ G.dist p q) :
@@ -70,19 +73,31 @@ theorem truncated_abs_le_two_norms (hm : m ≠ 0) {Δ : ℕ} (hΔ : ∀ v : V, G
       ≤ ((Finset.univ.filter
             (fun σ : ↑(perfectMatchings (Fin k)) => ¬ RespectsSplit S σ.1)).card : ℝ)
         * ((Cs * Ct * (decayRate Δ m ^ N * (m ^ 2)⁻¹)) ^ 2
-            * ((Cs + Ct) * (Cs + Ct) * (m ^ 2)⁻¹) ^ (k / 2 - 2)) := by
+            * (max Cs Ct * max Cs Ct * (m ^ 2)⁻¹) ^ (k / 2 - 2)) := by
   have hm2 : (0 : ℝ) < m ^ 2 := by positivity
   have hr0 : (0 : ℝ) ≤ decayRate Δ m := decayRate_nonneg Δ hm
   have hK0 : (0 : ℝ) ≤ decayRate Δ m ^ N * (m ^ 2)⁻¹ := by positivity
   have hU0 : (0 : ℝ) ≤ (m ^ 2)⁻¹ := by positivity
   have hl1 : ∀ i, (0 : ℝ) ≤ ∑ p, |(a i).ofLp p| :=
     fun i => Finset.sum_nonneg fun _ _ => abs_nonneg _
-  -- the only place the two bounds have to be merged: a factor covering SAME-side pairs too
-  have hsum : ∀ i, ∑ p, |(a i).ofLp p| ≤ Cs + Ct := by
+  -- THE ONLY PLACE THE TWO BOUNDS HAVE TO BE MERGED: a factor covering SAME-side pairs too.
+  -- **THE MERGE IS A MAXIMUM AND NOT A SUM, AND THIS FILE'S OWN RECORD PROPOSED SOMETHING
+  -- MORE COMPLICATED.** It said splitting `M` three ways by side — near-near, far-far,
+  -- crossing — would sharpen the factor. It would not, and cannot: a single uniform `M` is
+  -- raised to a power that counts factors whose KINDS vary from pairing to pairing, so the
+  -- only thing a uniform bound can be is the largest of the three, `max Cs Ct` squared.
+  -- Sharpening past that needs the count per kind inside the sum, which is a different
+  -- theorem. `max` is strictly better than the `Cs + Ct` this file first carried.
+  --
+  -- **AND THE CHANGE COST A HYPOTHESIS, WHICH WAS REMOVED RATHER THAN SILENCED.** `0 ≤ Ct`
+  -- was needed to show `Cs ≤ Cs + Ct` and `Ct ≤ Cs + Ct`; `max` needs neither, the build
+  -- reported it unused, and it is gone. The theorem is stronger for it: at `S = univ` the
+  -- far side is empty, `hCt` is vacuous, and a negative `Ct` is now allowed.
+  have hsum : ∀ i, ∑ p, |(a i).ofLp p| ≤ max Cs Ct := by
     intro i
     by_cases hi : i ∈ S
-    · exact (hCs i hi).trans (by linarith)
-    · exact (hCt i hi).trans (by linarith)
+    · exact (hCs i hi).trans (le_max_left _ _)
+    · exact (hCt i hi).trans (le_max_right _ _)
   refine abs_integral_prod_sub_mul_le_count hm a S hS (by positivity) ?_ ?_
   · intro i hi j hj
     refine (dotG_abs_le_of_sep hm hΔ (a i) (a j) (hsep i hi j hj)).trans ?_
@@ -91,14 +106,14 @@ theorem truncated_abs_le_two_norms (hm : m ≠ 0) {Δ : ℕ} (hΔ : ∀ v : V, G
   · intro i j
     refine (dotG_abs_le hm hΔ (a i) (a j)).trans ?_
     exact mul_le_mul_of_nonneg_right
-      (mul_le_mul (hsum i) (hsum j) (hl1 j) (by linarith)) hU0
+      (mul_le_mul (hsum i) (hsum j) (hl1 j) (le_trans hCs0 (le_max_left _ _))) hU0
 
 /-! ## 2. At four test functions the common bound disappears -/
 
 /-- **THE UNIFORM FACTOR IS AN EMPTY POWER AT ORDER FOUR.** `4/2 − 2 = 0`, so `Cs + Ct` never
 appears, and `LatticeTruncatedCount.crossing_card_fin_four` supplies the `2`. -/
 theorem truncated_abs_le_four_two_norms (hm : m ≠ 0) {Δ : ℕ} (hΔ : ∀ v : V, G.degree v ≤ Δ)
-    {N : ℕ} (a : Fin 4 → EuclideanSpace ℝ V) {Cs Ct : ℝ} (hCs0 : 0 ≤ Cs) (hCt0 : 0 ≤ Ct)
+    {N : ℕ} (a : Fin 4 → EuclideanSpace ℝ V) {Cs Ct : ℝ} (hCs0 : 0 ≤ Cs)
     (hCs : ∀ i ∈ ({0, 1} : Finset (Fin 4)), ∑ p, |(a i).ofLp p| ≤ Cs)
     (hCt : ∀ i ∉ ({0, 1} : Finset (Fin 4)), ∑ p, |(a i).ofLp p| ≤ Ct)
     (hsep : ∀ i ∈ ({0, 1} : Finset (Fin 4)), ∀ j ∉ ({0, 1} : Finset (Fin 4)), ∀ p q,
@@ -110,7 +125,7 @@ theorem truncated_abs_le_four_two_norms (hm : m ≠ 0) {Δ : ℕ} (hΔ : ∀ v :
               (inner ℝ (a y) ω : ℝ)) ∂(gaussianField G m))|
       ≤ 2 * (Cs * Ct * (decayRate Δ m ^ N * (m ^ 2)⁻¹)) ^ 2 := by
   have h := truncated_abs_le_two_norms hm hΔ a ({0, 1} : Finset (Fin 4)) (by decide)
-    hCs0 hCt0 hCs hCt hsep
+    hCs0 hCs hCt hsep
   rwa [crossing_card_fin_four, show (4 : ℕ) / 2 - 2 = 0 from rfl, pow_zero, mul_one,
     show ((2 : ℕ) : ℝ) = 2 from by norm_num] at h
 
@@ -156,7 +171,7 @@ theorem connected_smeared_le_two_ways (hm : m ≠ 0) {Δ : ℕ} (hΔ : ∀ v : V
     intro i hi j hj p q hp hq
     rcases hmemS i hi with rfl | rfl <;> rcases hmemT j hj with rfl | rfl <;>
       exact hsep p q hp hq
-  have h := truncated_abs_le_four_two_norms hm hΔ ![f, f, g, g] (hl1 f) (hl1 g) hCs hCt hsep'
+  have h := truncated_abs_le_four_two_norms hm hΔ ![f, f, g, g] (hl1 f) hCs hCt hsep'
   rw [show (fun ω => ∏ i : Fin 4, (inner ℝ (![f, f, g, g] i) ω : ℝ))
       = fun ω => (inner ℝ f ω : ℝ) ^ 2 * (inner ℝ g ω : ℝ) ^ 2 from
         funext fun ω => by rw [prod_fin_four f f g g ω]; ring,
