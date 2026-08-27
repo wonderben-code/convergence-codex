@@ -29,6 +29,8 @@
      statement with no reflection in it.
 
   WHAT THIS DOES NOT DO.
+
+
   * **`reflectionPositive_prism_strict` IS STILL NOT PROVED**, and the
     recorded overclaim in `PrismTransfer`'s header is therefore only half
     discharged. The equality above makes strictness equivalent to
@@ -40,6 +42,15 @@
     `Analysis/CStarAlgebra/` or `Analysis/Matrix/`; and no product-of-
     commuting-positive-definites lemma in `LinearAlgebra/Matrix/PosDef.lean`,
     which is the other route.
+
+  **SUPERSEDED 2026-08-27 IN ITS FIRST CLAUSE, kept as written (`ERRATUM 94`,
+  found by `ERRATUM 305`).** *"`reflectionPositive_prism_strict` IS STILL NOT
+  PROVED"* is false: `PrismStrict.reflectionPositive_prism_strict` proves it,
+  and `PrismStrict` IMPORTS this file, so the sentence was falsified from
+  directly above it in the import graph. **Still true** is everything the
+  bullet says about what the equality reduces strictness TO, and the trap
+  named in the paragraph after it — the search was accurate and the reading
+  of `CStarAlgebra.inv_le_inv_iff` is still the right reading.
 
     **One thing the search did turn up, and it is a trap rather than a
     solution.** `CStarAlgebra.inv_le_inv_iff` exists — an `iff`, not just an

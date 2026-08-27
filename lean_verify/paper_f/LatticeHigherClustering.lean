@@ -69,6 +69,16 @@ because lifting them needs the pairing sum split along the near/far boundary, an
 half of that split exists — `PairingSplit.sum_prod_eq_sum_respects` collapses the sum onto the
 matchings that do not cross when the crossing propagator vanishes. **The factorisation and the
 estimate are not written**, and no number is offered for them (`ERRATUM 194`).
+
+**⚠ THE NOTE ABOVE IS ITSELF SUPERSEDED, 2026-08-27, and kept as written (`ERRATUM 94`,
+`ERRATUM 305`).** *"only the first half of that split exists"* and *"The factorisation and the
+estimate are not written"* were true when written and were false by the end of the same day.
+`PairingWeight.sum_prod_eq_mul` is the factorisation and `PairingRelabel.integral_prod_split` is
+it at the measure; `LatticeTruncatedDecay.truncated_abs_le`,
+`LatticeTruncatedSharp.truncated_abs_le_sq` and `LatticeTruncatedNorms.truncated_abs_le_two_norms`
+are the estimate, at `k` arbitrary test functions, with one `ℓ¹` norm per side of the split.
+**A supersession note is an estate-scope claim like any other, and dating it is not the same as
+keeping it true** — that is why `claims_scan.py` now tests each SENTENCE rather than each section.
 -/
 
 namespace LatticeHigherClustering

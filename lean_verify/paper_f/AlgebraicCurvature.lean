@@ -108,6 +108,14 @@ group action written down and a Schur-type argument, and **nothing here begins i
 stated as a `def` either: `ERRATUM 108` refuted a gap object of this project that nobody had
 tried to falsify, and naming this one before its small cases have been read would repeat that.
 
+**⚠ SUPERSEDED 2026-08-27, kept as written (`ERRATUM 94`, found by `ERRATUM 305`).** *"The Lovelock
+classification itself is not attempted"* is false: `LovelockKillsWeyl.killsWeyl_of_equivariant` and
+`LovelockKillsWeyl.classification` are that theorem, at every `n ≥ 3`. **Still true**: *"nothing
+here begins it"*, which is scoped to this file. **This paragraph was reported as covered when it
+was not**: `LovelockDiagonalise`'s own dated note says *"`AlgebraicCurvature`'s paragraph saying
+otherwise carries its own `SUPERSEDED` note"* — and it does, at §4 and at §13, on the COMPOSITION
+LAW. The classification paragraph, which is this one, carried none.
+
 **Mathlib has no curvature, probed 2026-08-11 by shape and not by name.** `RicciTensor`,
 `ScalarCurvature`, `AlgebraicCurvature`, `sectionalCurvature`, `RiemannCurvature`,
 `CurvatureTensor`, `covariantDerivative`, `LeviCivita`, `EinsteinTensor`, `Lovelock`,

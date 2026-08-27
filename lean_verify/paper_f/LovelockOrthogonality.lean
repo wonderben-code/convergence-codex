@@ -94,7 +94,9 @@ instance, no positive-definiteness, no completeness. It is a symmetric bilinear 
 positivity is not proved because nothing below needs it. Said so that "orthogonality" is read as
 *"this bilinear form vanishes on these pairs"* and not as more.
 
-**SUPERSEDED IN PART — `LovelockInnerPositive` PROVES THE POSITIVITY.** `ip_self_nonneg`,
+**SUPERSEDED IN PART, 2026-08-27 — `LovelockInnerPositive` PROVES THE POSITIVITY.** *(The note
+below carried no date until `ERRATUM 305`; an undated supersession note is the defect the dated
+form exists to prevent, so it is dated here rather than left.)* `ip_self_nonneg`,
 `ip_self_pos` and `eq_zero_of_ip_self_eq_zero` are there, and that file's §2 is titled *"The
 consumer that made it worth proving"* — so *"nothing below needs it"* was true of this file and
 stopped being true of the estate. The paragraph is kept per `ERRATUM 94`; **what still stands is

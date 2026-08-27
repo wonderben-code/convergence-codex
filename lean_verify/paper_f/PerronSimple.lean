@@ -37,6 +37,18 @@ once and every other eigenvalue is **strictly below** it.
 statement, done by hand, and it does not generalise as written — which is what §6 item 2 said in
 the first place.
 
+**⚠ SUPERSEDED 2026-08-27, kept as written (`ERRATUM 94`, found by `ERRATUM 305`).** *"Ruling out
+`−M` for a strictly positive matrix is a separate classical argument and is not attempted"* is
+false: `PerronGap.abs_eigenvalues_lt_of_ne` is that argument and
+`PerronPrimitive.abs_lt_max_of_ne_of_pos` recovers it from the primitive case, both giving
+`|λⱼ| < λ_max` for every eigenvalue other than the top one of a Hermitian, strictly positive
+matrix. **Still true**: *"the other thing it can mean is not here"*, scoped to this file.
+**AND THIS ONE COULD NOT HAVE BEEN CAUGHT BY AN IMPORT-GRAPH TRIGGER.** Neither `PerronGap` nor
+`PerronPrimitive` imports this file — they sit on a different branch of the `Perron` family — so
+the expiry rule `claims_accepted.txt` uses, *"a file committed ABOVE this one is newer"*, would
+never have fired. An estate-scope claim is falsifiable by anything in the estate, and the import
+graph is a conservative proxy for that, not the thing itself.
+
 **And the wall does not move.** Item 3 — the passage from a spectral gap to correlation decay — is
 discharged only for the one-dimensional chain and untouched at `d ≥ 2`.
 

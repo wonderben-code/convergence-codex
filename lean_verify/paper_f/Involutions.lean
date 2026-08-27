@@ -108,6 +108,12 @@ stay true — this file is still only the index type (`ERRATUM 302`).
 says nothing about which propagator product each term carries. That map is the content of Wick's
 theorem and none of it is here.
 
+**⚠ SUPERSEDED 2026-08-27, kept as written (`ERRATUM 94`, found by `ERRATUM 305`).** *"the
+coefficient is not proved either"* is false: `WickPairings.pairProduct` is the map from a pairing
+to its propagator product and `IsserlisAll.isserlisGeneral_all` proves `IsserlisGeneral G m k` at
+**every** `k`, so which product each term carries is settled at every order. **Still true**: *"none
+of it is here"*, which is scoped to this file — this file is still only the index type.
+
 **No wall moves. No published tag moves.**
 -/
 
