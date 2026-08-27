@@ -55,6 +55,15 @@ The old sentence is right about `k` odd, where the full correlation vanishes too
 generally nonzero and that the crossing count that would force `ε²` is `1`. Turning that into a
 refuting instance needs a concrete `G`, `m` and separated test functions, and is not done here.
 
+**⚠ SUPERSEDED THE SAME DAY, 2026-08-27, kept as written (`ERRATUM 94`).** It is done, in
+`LatticeOddSplitSharp`, and **the estimate of what it would take was wrong in both halves**: no
+concrete `G` is needed and no separation is needed. `sharp_without_even_card_is_false` refutes
+`abs_integral_prod_sub_mul_le_sq` with `Even S.card` deleted — every other hypothesis satisfied —
+at `a = ![½g, g, g, g]`, `S = {0}`, for **any** `g ≠ 0` on **any** finite graph at **any** `m ≠ 0`,
+by a factor of `2`. The one thing that was needed and not foreseen is scaling one test function:
+at an odd split the quantity is LINEAR in the cross-propagator while the bound is quadratic, so
+shrinking a factor drives them apart, and separation is beside the point.
+
 **No wall moves, no published tag moves, and `truncated_abs_le_sq` is unchanged** — it was always
 true; what was false was a sentence about it.
 -/
@@ -73,7 +82,15 @@ variable {V : Type*} [Fintype V] [DecidableEq V] {G : SimpleGraph V} [DecidableR
 /-- **EVERY ODD CORRELATION VANISHES, WHATEVER THE FACTORS ARE INDEXED BY.**
 `LatticeOddVanishing.integral_prod_odd_eq_zero` says this at `Fin (2n+1)`; its proof uses nothing
 about `Fin` beyond `Fintype.card_fin`, and this is the same proof with that step deleted. The
-generalisation is what makes the theorem usable below, where the index type is `{i // i ∈ S}`. -/
+generalisation is what makes the theorem usable below, where the index type is `{i // i ∈ S}`.
+
+**⚠ THAT LAST CLAUSE IS SUPERSEDED, 2026-08-27, kept as written (`ERRATUM 94`).** It overstates.
+A side of a split is a finite type of known cardinality, so `Fintype.equivFinOfCardEq` carries the
+`Fin (2n+1)` statement onto it directly —
+`LatticeOddSplitSharp.integral_prod_subtype_eq_zero_of_odd_via_fin` does it in four lines and
+re-proves this file's own corollary through it. **The generalisation is shorter, not necessary.**
+The overstatement has the same shape as the error this file was written to correct: a true
+observation with a conclusion drawn past it. -/
 theorem integral_prod_eq_zero_of_odd_card (hm : m ≠ 0) {ι : Type*} [Fintype ι]
     (hodd : Odd (Fintype.card ι)) (f : ι → EuclideanSpace ℝ V) :
     ∫ ω, (∏ i, (inner ℝ (f i) ω : ℝ)) ∂(gaussianField G m) = 0 := by
@@ -205,7 +222,11 @@ theorem truncated_const_fin_four_pos (hm : m ≠ 0) {f : EuclideanSpace ℝ V} (
 `PairingParity.card_cross_parity` says `c` has the parity of `|S|`. At `|S| = 1` that leaves
 `c = 1` and no room: the single member of `S` is not fixed by `σ`, so its partner lies outside.
 **So `ε²` is not reachable at an odd split by any sharpening of the same argument** — the
-hypothesis `Even S.card` in `LatticeTruncatedSharp` is load-bearing, not decorative. -/
+hypothesis `Even S.card` in `LatticeTruncatedSharp` is load-bearing, not decorative.
+
+**AND THAT IS NOW A THEOREM RATHER THAN A READING OF ONE.** `LatticeOddSplitSharp` cashes this
+count into `sharp_without_even_card_is_false`: `abs_integral_prod_sub_mul_le_sq` with `Even S.card`
+deleted, and every other hypothesis met, is false. -/
 theorem card_cross_eq_one_of_card_eq_one {ι : Type*} [DecidableEq ι]
     {σ : Equiv.Perm ι} (hσ : σ ∈ perfectMatchings ι) {S : Finset ι} (hS : S.card = 1) :
     (S.filter (fun i => σ i ∉ S)).card = 1 := by
