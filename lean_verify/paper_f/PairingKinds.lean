@@ -31,14 +31,18 @@ inequality, an equation.
   term, not on average. Two theorems and not one, because the near and far identities come from
   two different instances of the same lemma and a single check would exercise only one of them.
 
+* **`abs_prod_le_kinds`** — and the bound the counts were for: the product over the
+  representatives, estimated kind by kind, `Ms^a·Mt^b·ε^c`. **No hypothesis relates the three
+  bounds**, so a caller holding only a uniform one takes all three equal and recovers the old
+  estimate.
+
 ## What is NOT here
 
-**The bound.** Turning these counts into `ε^c·Ms^a·Mt^b` means splitting the product over the
-representatives three ways and applying a different bound on each — `Finset.prod_le_prod` on each
-piece after `Finset.prod_union` twice. **Not done, not costed** (`ERRATUM 194`). And summing THAT
-over pairings needs the number of pairings with exactly `c` crossings, which is a formula this
-estate does not have — `PairingCount.card_crossing_doubleFactorial` counts the pairings that cross
-at all, not those that cross a given number of times.
+**The sum.** Carrying `abs_prod_le_kinds` over the pairings needs the number of pairings with
+exactly `c` crossings, which this estate does not have.
+`PairingCount.card_crossing_doubleFactorial` counts the pairings that cross AT ALL, not those
+that cross a given number of times. Until that exists, the per-kind bound is a statement about
+one pairing. **Not done, not costed** (`ERRATUM 194`).
 
 No measure, integral or test function appears in this file.
 -/
@@ -187,5 +191,86 @@ theorem card_kinds_far_fin_four :
         + (crossSet σ.1 ({0, 1} : Finset (Fin 4))
             (Finset.univ.filter (fun i => i < σ.1 i))).card = 2 := by
   decide
+
+/-! ## 5. The bound the counts were for
+
+The product over the representatives splits along the three kinds, and each piece takes its own
+estimate. **The exponents are the counts of §3**, so a caller who knows `c` knows the whole
+expression — which is what the identities were for. -/
+
+/-- The three kinds partition the representative set `Finset.univ.filter (· < σ ·)`. Stated as a
+`Finset` identity rather than three membership lemmas, because that is the form
+`Finset.prod_union` consumes. -/
+theorem union_kinds (σ : Equiv.Perm ι) (S : Finset ι) :
+    nearSet σ S ∪ farSet σ S ∪ crossSet σ S (Finset.univ.filter (fun i => i < σ i))
+      = Finset.univ.filter (fun i => i < σ i) := by
+  ext i
+  simp only [nearSet, farSet, crossSet, Finset.mem_union, Finset.mem_filter, Finset.mem_univ,
+    true_and]
+  by_cases hi : i ∈ S <;> by_cases hσi : σ i ∈ S <;> simp [hi, hσi]
+
+theorem disjoint_near_far (σ : Equiv.Perm ι) (S : Finset ι) :
+    Disjoint (nearSet σ S) (farSet σ S) := by
+  rw [Finset.disjoint_left]
+  intro i hi hi'
+  simp only [nearSet, farSet, Finset.mem_filter, Finset.mem_univ, true_and] at hi hi'
+  exact hi'.2.1 hi.2.1
+
+theorem disjoint_union_cross (σ : Equiv.Perm ι) (S : Finset ι) :
+    Disjoint (nearSet σ S ∪ farSet σ S)
+      (crossSet σ S (Finset.univ.filter (fun i => i < σ i))) := by
+  rw [Finset.disjoint_left]
+  intro i hi hi'
+  rw [mem_crossSet_iff] at hi'
+  simp only [nearSet, farSet, Finset.mem_union, Finset.mem_filter, Finset.mem_univ,
+    true_and] at hi
+  rcases hi with h | h
+  · exact hi'.2 (iff_of_true h.2.1 h.2.2)
+  · exact hi'.2 (iff_of_false h.2.1 h.2.2)
+
+/-- **THE PRODUCT, ESTIMATED KIND BY KIND.** `ε` bounds the propagator across the split, `Ms`
+bounds it inside the near group and `Mt` inside the far one; the exponents are the three counts,
+and §3 says the last two are determined by the first. **No hypothesis relates `ε`, `Ms` and `Mt`**
+— a caller with only a uniform bound takes all three equal and recovers the old estimate. -/
+theorem abs_prod_le_kinds {σ : Equiv.Perm ι} (S : Finset ι) (w : ι → ι → ℝ)
+    {ε Ms Mt : ℝ}
+    (hcross : ∀ i, ¬ (i ∈ S ↔ σ i ∈ S) → |w i (σ i)| ≤ ε)
+    (hnear : ∀ i, i ∈ S → σ i ∈ S → |w i (σ i)| ≤ Ms)
+    (hfar : ∀ i, i ∉ S → σ i ∉ S → |w i (σ i)| ≤ Mt) :
+    |∏ i ∈ Finset.univ.filter (fun i => i < σ i), w i (σ i)|
+      ≤ Ms ^ (nearSet σ S).card * Mt ^ (farSet σ S).card
+        * ε ^ (crossSet σ S (Finset.univ.filter (fun i => i < σ i))).card := by
+  classical
+  -- FORWARDS, NOT BACKWARDS. `rw [← union_kinds]` also rewrites the `R` sitting inside
+  -- `crossSet σ S R` on the right-hand side, which turns the goal into one about
+  -- `crossSet σ S (near ∪ far ∪ cross)`. Building the split as its own equation leaves the
+  -- right-hand side alone.
+  have hsplit : ∏ i ∈ Finset.univ.filter (fun i => i < σ i), |w i (σ i)|
+      = (∏ i ∈ nearSet σ S, |w i (σ i)|) * (∏ i ∈ farSet σ S, |w i (σ i)|)
+        * ∏ i ∈ crossSet σ S (Finset.univ.filter (fun i => i < σ i)), |w i (σ i)| := by
+    rw [← Finset.prod_union (disjoint_near_far σ S),
+      ← Finset.prod_union (disjoint_union_cross σ S), union_kinds σ S]
+  rw [Finset.abs_prod, hsplit]
+  have hn : ∏ i ∈ nearSet σ S, |w i (σ i)| ≤ Ms ^ (nearSet σ S).card := by
+    refine (Finset.prod_le_prod (fun i _ => abs_nonneg _) ?_).trans_eq (Finset.prod_const _)
+    intro i hi
+    simp only [nearSet, Finset.mem_filter, Finset.mem_univ, true_and] at hi
+    exact hnear i hi.2.1 hi.2.2
+  have hf : ∏ i ∈ farSet σ S, |w i (σ i)| ≤ Mt ^ (farSet σ S).card := by
+    refine (Finset.prod_le_prod (fun i _ => abs_nonneg _) ?_).trans_eq (Finset.prod_const _)
+    intro i hi
+    simp only [farSet, Finset.mem_filter, Finset.mem_univ, true_and] at hi
+    exact hfar i hi.2.1 hi.2.2
+  have hc : ∏ i ∈ crossSet σ S (Finset.univ.filter (fun i => i < σ i)), |w i (σ i)|
+      ≤ ε ^ (crossSet σ S (Finset.univ.filter (fun i => i < σ i))).card := by
+    refine (Finset.prod_le_prod (fun i _ => abs_nonneg _) ?_).trans_eq (Finset.prod_const _)
+    intro i hi
+    rw [mem_crossSet_iff] at hi
+    exact hcross i hi.2
+  have h0 : ∀ (T : Finset ι), (0:ℝ) ≤ ∏ i ∈ T, |w i (σ i)| :=
+    fun T => Finset.prod_nonneg fun _ _ => abs_nonneg _
+  have hMs0 : (0:ℝ) ≤ Ms ^ (nearSet σ S).card := le_trans (h0 _) hn
+  have hMt0 : (0:ℝ) ≤ Mt ^ (farSet σ S).card := le_trans (h0 _) hf
+  exact mul_le_mul (mul_le_mul hn hf (h0 _) hMs0) hc (h0 _) (mul_nonneg hMs0 hMt0)
 
 end PairingKinds
