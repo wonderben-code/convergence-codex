@@ -33,7 +33,16 @@ length.
 **Is not:** the classic constant. Peierls' textbook bound is `3 ^ L`-shaped, because a
 self-avoiding walk cannot immediately turn back and so has only three continuations after
 the first step. A degree bound alone gives `4 ^ L`, and the sharper constant is **not
-proved here**. *Remark, not a theorem of this estate:* in the textbook argument any
+proved here**.
+
+**⚠ SUPERSEDED 2026-08-27, kept as written (`ERRATUM 94`, found by `ERRATUM 311`), and it
+is superseded by §4 OF THIS FILE.** `card_cycles_le_three_pow` and
+`card_trails_le_three_pow` give `4 · 3 ^ L`, off the non-backtracking count of §1b, and
+`three_pow_le_four_pow` proves that really is sharper. The paragraph was written before §4
+existed and the file's own header was never revisited when it grew — which is the
+mechanism `ERRATUM 311` is about, not a claim anyone repeated.
+
+*Remark, not a theorem of this estate:* in the textbook argument any
 constant base works once the temperature is low enough, so `4` in place of `3` costs only
 a worse threshold — but that is a statement about the summation step, which is not
 formalised anywhere here, and nothing in this file depends on it.
@@ -394,6 +403,18 @@ hypothesis `8 · exp(-4β) ≤ 1/2` becoming `6 · exp(-4β) ≤ 1/2`, through `
 `SideLength`, `PeierlsConditional`, `SeriesBound` and `ExplicitThreshold`. **Until that
 lands the published threshold is unchanged** — which is the one thing the original
 paragraph got right, and for the wrong reason.
+
+**⚠ SUPERSEDED 2026-08-27, kept as written (`ERRATUM 94`, found by `ERRATUM 311`). IT
+LANDED — ALL FIVE FILES.** `PeierlsCover.card_cycCandidates_le_two_three` is the first rung
+in the no-natural-subtraction form `(2r+1)^2 · 2 · 3 ^ L`;
+`PeierlsConditional.plusFamily_sum_le_three` and `SeriesBound.sum_le_cube_six` carry it;
+`ExplicitThreshold.cond_le_six`, `magnetisation_ge_of_six`, `magnetisation_two_thirds_six`
+(`β ≥ 11/12` rather than `β ≥ 1`) and `magnetisation_half_measure_six` are the conclusions.
+`ExplicitThresholdCeiling.six_buys_the_temperature` then proves the improvement is real
+rather than cosmetic. **So "the published threshold is unchanged" is false**: the estate
+carries both routes and the `6` route reaches a strictly lower temperature. The route
+predicted in this paragraph is exactly the route taken — **the prediction was right and only
+the tense went wrong** — and nothing here was rewritten to hide the gap between them.
 -/
 
 end WalkCount

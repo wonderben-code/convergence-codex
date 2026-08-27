@@ -37,7 +37,18 @@ about. (i) *Against this chain's own limit*: the closed form cannot be used at a
 `8 e^{-4β} ≤ 1/2`, and `1` is within about half of that. (ii) *Against the physics*: Onsager's
 critical value for the square lattice is `β ≈ 0.4407` in the single-count convention, hence
 about `0.22` in this estate's double-counted one — **an external fact this estate does not
-prove**. So the threshold is roughly four to five times the truth. **A Peierls argument gives
+prove**. So the threshold is roughly four to five times the truth.
+
+**⚠ CLAUSE (i) SUPERSEDED 2026-08-27, kept as written (`ERRATUM 94`, found by
+`ERRATUM 311`).** *"The closed form cannot be used at all unless `8 e^{-4β} ≤ 1/2`"* stopped
+being true when §1's `cond_le_six` landed **in this same file**: there is now a closed form
+under `6 e^{-4β} ≤ 1/2`, a strictly weaker hypothesis, and `magnetisation_two_thirds_six`
+reaches `⅔ n²` at `β ≥ 11/12` rather than `β ≥ 1`.
+`ExplicitThresholdCeiling.six_buys_the_temperature` proves that gap is real. **Clause (ii)
+and the conclusion stand**: `11/12` against `0.22` is still four to five times the truth,
+and a Peierls argument still gives a finite temperature and never the right one.
+
+**A Peierls argument gives
 a finite temperature, never the right one**; what has changed is that the estate now names
 its finite temperature instead of naming none.
 
