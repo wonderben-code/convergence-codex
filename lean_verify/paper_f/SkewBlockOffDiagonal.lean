@@ -68,6 +68,15 @@ physics reading is untouched. **`skewOffDiagMap` and the `9 + 6` split below are
 a decomposition of Lie algebras** — the real analogue of `BlockGrading`/`BlockLieMorphism` is not
 written, and nothing here says the skew block split respects a bracket.
 
+**⚠ AND THAT ANALOGUE IS NOW WRITTEN, SAME DAY — `SuBlockGrading`, WITH ONE PIECE STILL MISSING.**
+`suEven` and `suOdd` are the block-diagonal and block-off-diagonal parts of the compact form, the
+four bracket rules hold, `suEvenLie` is a `LieSubalgebra ℝ`, and `sup_eq`/`inf_eq_bot` make them
+complementary **inside** `tracelessSkewMat` — so the ℤ/2-grading does restrict to the real form.
+**What is still not done is the identification with THIS file's map**: nothing says `suOdd` is the
+range of `skewOffDiagMap` or `suEven` its kernel, no comparison map is built, and the `9 + 6`
+split below is still a dimension count that no theorem connects to that grading. That is a
+different unit and, as of 2026-08-28, it is not written.
+
 **No wall moves. No published tag moves.**
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.

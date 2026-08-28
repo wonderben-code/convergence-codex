@@ -75,6 +75,14 @@ block-scalar matrix and is **not** skew-adjoint unless `c` is imaginary; no real
 `SkewBlockOffDiagonal` is not imported. In the physics reading the corresponding generator is
 `i`-times this one, and **that reading is not formalised anywhere in this chain**.
 
+**⚠ THE LAST SENTENCE IS NO LONGER TRUE, 2026-08-28 — `SuBlockGrading`.** `centreOf_I_mem` puts
+`centreOf p q (i·t)` in the skew-Hermitian subspace for every real `t`, and
+`centreOf_one_notMem` shows `centreOf p q 1` is **not** there once `q > 0`, so the `i` is doing
+work rather than decorating. `lie_centreOf_I_offDiagOf` is this file's `lie_centreOf_offDiagOf`
+at that parameter: the action on the odd piece is multiplication by `±(p+q)·i·t`. **The rest of
+this paragraph stands** — this file still takes no real form and still does not import
+`SkewBlockOffDiagonal`.
+
 **No physics.** That `(p+q)c` is a hypercharge-like eigenvalue, or that the odd part is a
 leptoquark sector, is the reading `PatiSalamOffDiagonal` fences. This file adds a bracket
 computation and adds nothing to that reading.
