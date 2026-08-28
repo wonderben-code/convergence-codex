@@ -108,6 +108,19 @@ bracket rules below would restrict to the skew-adjoint real form — `⁅X, Y⁆
 matrices is skew-adjoint — but **that is not proved here and `su(n)` is not mentioned in any
 statement**.
 
+> **⚠ SUPERSEDED THE SAME DAY, `SuBlockGrading` — and this pointer was missing for a day.**
+> The restriction the paragraph above predicts **is proved**: `SuBlockGrading` builds
+> `evenPartR` / `oddPartR` over `ℝ` and proves all four bracket rules —
+> `lie_suEven_suEven`, `lie_suEven_suOdd`, `lie_suOdd_suEven`, `lie_suOdd_suOdd` — so the
+> grading really does restrict to the compact form, with `suEvenLie` as the even subalgebra.
+> `TracelessSkewLie.lie_mem_skewSub` is the *"`⁅X, Y⁆` of two skew-adjoint matrices is
+> skew-adjoint"* step this paragraph names. **The sentence is kept as written (`ERRATUM 94`)**
+> — it is the record of what this file does, and it stays true of this file: nothing below is
+> over `ℝ` and no statement here mentions the compact form. What was wrong was only that a
+> reader had no route onward, on the same day the route was built.
+> **The naming caution stands**: `SuBlockGrading` does not use the name `su` in any statement
+> either, following `F4_1e_SpectralTripleArithmetic`'s written decision.
+
 **No physics.** Whether the even part "is" colour-plus-hypercharge and the odd part "is" the
 leptoquark sector is the reading `PatiSalamOffDiagonal` fences; this file adds a bracket to the
 mathematics and adds nothing to that reading.

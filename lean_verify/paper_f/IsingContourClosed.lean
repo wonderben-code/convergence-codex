@@ -48,6 +48,32 @@
   The header's caution — that calling this "contours are circuits" would be
   wrong — stands unchanged and is if anything now sharper.
 
+  AMENDED 2026-08-28, AND THIS TIME IT IS THE CONVERSE. The paragraph above
+  says **"the converse is not attempted and is where the work is"**, and
+  draws a consequence: *"without it `realisedContours` is CONSTRAINED, not
+  characterised, and no upper bound on its size follows."* **The converse was
+  attempted and it is proved**, in `IsingContourCocycle`, which imports this
+  file and cites `cocycle_of_realised` as the other half — and this header
+  said nothing about it until today. `realised_iff_cocycle` is
+  `γ ∈ realisedContours n ↔ IsCocycle γ`, for `0 < n` and for `γ` whose edges
+  are edges of the site graph, **and it is proved by exactly the route this
+  paragraph predicted**: a configuration built by path-following, `pathParity`.
+  So `realisedContours` IS characterised, and the consequence clause above is
+  now false rather than merely dated.
+
+  **The size clause is closed too, and closed against the Peierls argument
+  rather than for it.** `IsingContourCocycle.card_realisedContours` gives
+  `2 · #realisedContours n = 2^(n·n)` — an exact count, not a bound — and
+  `card_realisedContours_unbounded` puts the consequence beyond argument.
+  That file's own header calls this "the honest half": the number of contours
+  is still exponential in the AREA of the box, so what the characterisation
+  bought is a true count and **not** the entropy estimate Peierls needs.
+
+  The first sentence — *"the converse is not attempted"* — was true of THIS
+  file when written and stays true of this file; it is kept (`ERRATUM 94`) as
+  the record of what was open. What is corrected is the reader's route: there
+  was none, and the closing file is one import away.
+
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
   axioms.
 -/
