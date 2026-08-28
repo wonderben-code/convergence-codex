@@ -1,5 +1,6 @@
 import LieAlgebraEmbedding
 import TracelessSkewDimension
+import SMEmbeddingHonest
 
 /-!
 # The nine broken generators, decomposed — six of them, as a subspace rather than a subtraction
@@ -16,6 +17,19 @@ what it is:
 `LieAlgebraEmbedding.leptoquark_generators`, which is `15 - 12 = 3` by rewriting three dimension
 lemmas. **Neither exhibits a subspace.** Checked before writing this file, on the rule
 `ERRATUM 313` cost a unit to learn.
+
+**⚠ THE SENTENCE IN BOLD ABOVE IS FALSE, AND IS KEPT SO THAT THE CORRECTION IS LEGIBLE
+(`ERRATUM 94`, `ERRATUM 317`).** `SMEmbeddingHonest` decomposed `sl(4,ℂ)` on 2 August 2026 and this
+file did not know it: `colour_bl_finrank` exhibits the image of colour ⊕ `B − L` as a genuine
+**9**-dimensional subspace, and `leptoquark_coset` gives the complementary **6** as a quotient
+dimension. What was checked before writing was the two declarations the fence itself *names*; the
+prior work carries neither of those names and was not found by looking for them. **§5 below is the
+fold-back, and it is a theorem rather than a retraction**: `ker_offDiagMap_eq_colour_bl` proves the
+kernel described here by an entry condition **is** that image, and `leptoquarkCosetEquiv` upgrades
+the earlier quotient *dimension* into a quotient *model* — the coset is the pair of off-diagonal
+blocks. **What §§1–3 add that was not there** is the 6 as a subspace with an explicit section
+rather than only as a quotient, and the block-diagonal description of the 9. **What §4 adds** has
+no prior at all: `SMEmbeddingHonest` works over `ℂ`, and §4 is over `ℝ`.
 
 **This file decomposes the `su(4)` factor.** `offDiagMap` sends a traceless `4 × 4` matrix to its
 last column and last row, above and left of the corner:
@@ -47,6 +61,12 @@ decay. *(ii)* **The other three of the nine are untouched.** They come from `su(
 minus hypercharge, which is a different computation in a different factor, and this file says
 nothing about it. **So `TracelessSkewDimension`'s fence is half closed, not closed**, and its
 paragraph is annotated to say which half.
+
+## 5, added the same night
+
+**The nine was already a subspace, and §5 identifies it.** See the amended paragraph above: the
+`ℂ` half of this file overlaps prior work it did not find, and the overlap is discharged by proving
+the two descriptions equal rather than by softening either.
 
 **No wall moves. No published tag moves**, and no claim here bears on the cascade's physical
 content.
@@ -249,5 +269,115 @@ theorem su4_real_splits_nine_six :
       = Module.finrank ℝ (LinearMap.ker offDiagMapR)
         + Module.finrank ℝ (LinearMap.range offDiagMapR) := by
   rw [finrank_ker_offDiagMapR, finrank_range_offDiagMapR, finrank_traceless_four]
+
+/-! ## 5. The nine was already a subspace, and this identifies it (`ERRATUM 317`) -/
+
+/-- The top-left `3 × 3` block of a `4 × 4` matrix. -/
+def topBlock (M : Matrix (Fin 4) (Fin 4) ℂ) : Matrix (Fin 3) (Fin 3) ℂ :=
+  M.submatrix fin3_to_fin4 fin3_to_fin4
+
+/-- **THE TRACE SPLITS OFF THE CORNER.** -/
+theorem trace_topBlock (M : Matrix (Fin 4) (Fin 4) ℂ) :
+    Matrix.trace (topBlock M) + M 3 3 = Matrix.trace M := by
+  have e0 : fin3_to_fin4 0 = 0 := rfl
+  have e1 : fin3_to_fin4 1 = 1 := rfl
+  have e2 : fin3_to_fin4 2 = 2 := rfl
+  simp only [topBlock, Matrix.trace, Matrix.diag, Matrix.submatrix_apply, Fin.sum_univ_three,
+    Fin.sum_univ_four, e0, e1, e2]
+
+/-- The colour summand's underlying matrix, unfolded once so that no later proof has to. -/
+theorem su3EmbedRestricted_val (A : TracelessMatrix 3) :
+    ((su3EmbedRestricted A : TracelessMatrix 4) : Matrix (Fin 4) (Fin 4) ℂ)
+      = su3EmbedFn (A : Matrix (Fin 3) (Fin 3) ℂ) := rfl
+
+/-- The `B − L` summand's underlying matrix, likewise. -/
+theorem u1EmbedRestricted_val (c : ℂ) :
+    ((u1EmbedRestricted c : TracelessMatrix 4) : Matrix (Fin 4) (Fin 4) ℂ) = u1EmbedFn c := rfl
+
+/-- The value of the assembled map, unfolded once so that no later proof has to. -/
+theorem coprod_val (A : TracelessMatrix 3) (c : ℂ) :
+    ((su3EmbedRestricted.coprod u1EmbedRestricted) (A, c) : Matrix (Fin 4) (Fin 4) ℂ)
+      = su3EmbedFn (A : Matrix (Fin 3) (Fin 3) ℂ) + u1EmbedFn c := rfl
+
+/-- **THE COLOUR ⊕ `B − L` IMAGE LANDS IN THE KERNEL.** Neither summand has an entry in the last
+column or the last row off the corner: the `su(3)` block is confined to indices `< 3`, and the
+`B − L` matrix is diagonal. -/
+theorem colour_bl_le_ker_offDiagMap :
+    LinearMap.range (su3EmbedRestricted.coprod u1EmbedRestricted) ≤ LinearMap.ker offDiagMap := by
+  rintro _ ⟨⟨A, c⟩, rfl⟩
+  refine (mem_ker_offDiagMap_iff _).mpr ⟨fun i => ?_, fun j => ?_⟩
+  · have hi : ¬ ((i : ℕ) = 3) := by omega
+    simp [su3EmbedRestricted_val, u1EmbedRestricted_val, su3EmbedFn, u1EmbedFn, fin3_to_fin4,
+      Fin.ext_iff, hi]
+  · have hj : ¬ ((3 : ℕ) = (j : ℕ)) := by omega
+    simp [su3EmbedRestricted_val, u1EmbedRestricted_val, su3EmbedFn, u1EmbedFn, fin3_to_fin4,
+      Fin.ext_iff, hj]
+
+/-- **AND THE KERNEL LANDS IN IT**, which is the direction with content. Given a traceless `M`
+whose last column and last row vanish off the corner, put `c := -(M 3 3)/3` — forced, because
+`u1EmbedFn c` is the only summand with a corner entry — and `A := topBlock M - c • 1`. That `A` is
+traceless is not an extra hypothesis: `tr (topBlock M) = -(M 3 3) = 3c` by `trace_topBlock` and
+`M`'s own tracelessness, and `tr (c • 1) = 3c` too. **The trace condition on the `4 × 4` matrix is
+exactly what makes the `3 × 3` correction traceless**, which is the same accounting that made
+`offDiagMap` surjective, read in the other direction. -/
+theorem ker_offDiagMap_le_colour_bl :
+    LinearMap.ker offDiagMap ≤ LinearMap.range (su3EmbedRestricted.coprod u1EmbedRestricted) := by
+  intro M hM
+  obtain ⟨h1, h2⟩ := (mem_ker_offDiagMap_iff M).mp hM
+  have htr : Matrix.trace (M : Matrix (Fin 4) (Fin 4) ℂ) = 0 := by
+    have hA := M.property
+    simp only [TracelessMatrix, LinearMap.mem_ker, traceMap, Matrix.traceLinearMap_apply] at hA
+    exact hA
+  set N : Matrix (Fin 4) (Fin 4) ℂ := (M : Matrix (Fin 4) (Fin 4) ℂ) with hN
+  set c : ℂ := -(N 3 3) / 3 with hc
+  have hblock : Matrix.trace (topBlock N) = 3 * c := by
+    have h := trace_topBlock N
+    rw [htr] at h
+    rw [hc]
+    linear_combination h
+  have hAmem : topBlock N - c • (1 : Matrix (Fin 3) (Fin 3) ℂ) ∈ TracelessMatrix 3 := by
+    refine LinearMap.mem_ker.mpr ?_
+    simp only [traceMap, Matrix.traceLinearMap_apply, Matrix.trace_sub, Matrix.trace_smul,
+      Matrix.trace_one, Fintype.card_fin, hblock, smul_eq_mul]
+    push_cast
+    ring
+  refine ⟨(⟨topBlock N - c • (1 : Matrix (Fin 3) (Fin 3) ℂ), hAmem⟩, c), ?_⟩
+  apply Subtype.ext
+  rw [coprod_val, ← hN]
+  have a0 : N 0 3 = 0 := h1 0
+  have a1 : N 1 3 = 0 := h1 1
+  have a2 : N 2 3 = 0 := h1 2
+  have b0 : N 3 0 = 0 := h2 0
+  have b1 : N 3 1 = 0 := h2 1
+  have b2 : N 3 2 = 0 := h2 2
+  have hcorner : -(3 * c) = N 3 3 := by rw [hc]; ring
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [su3EmbedFn, u1EmbedFn, topBlock, fin3_to_fin4, a0, a1, a2, b0, b1, b2, hcorner]
+
+/-- **THE TWO NINES ARE THE SAME NINE.** `SMEmbeddingHonest.colour_bl_finrank` (2 August 2026)
+already exhibited a genuine `9`-dimensional subspace of `sl(4,ℂ)` — the image of colour ⊕ `B − L` —
+and `SMEmbeddingHonest.leptoquark_coset` already gave the complementary `6` as a quotient
+dimension. **§§1–3 above did not know that**, and said so in prose that was wrong; `ERRATUM 317`
+records it. This theorem is the fold-back: the kernel characterised here by an entry condition
+**is** that image, so the two descriptions are of one subspace and not of two that happen to agree
+on a numeral. -/
+theorem ker_offDiagMap_eq_colour_bl :
+    LinearMap.ker offDiagMap = LinearMap.range (su3EmbedRestricted.coprod u1EmbedRestricted) :=
+  le_antisymm ker_offDiagMap_le_colour_bl colour_bl_le_ker_offDiagMap
+
+/-- **AND THE COSET IS THE PAIR OF OFF-DIAGONAL BLOCKS**, explicitly.
+`SMEmbeddingHonest.leptoquark_coset` says the quotient `sl(4,ℂ) / (colour ⊕ B − L)` has dimension
+`6`; this says *what* that quotient is — `offDiagMap` descends to it and the descent is an
+isomorphism onto `(Fin 3 → ℂ) × (Fin 3 → ℂ)`. **A dimension becomes a model**, which is the one
+thing a dimension count cannot give you.
+
+**Only over `ℂ`.** The estate has no real colour ⊕ `B − L` embedding, so §4's real decomposition has
+no counterpart here and none is claimed. -/
+noncomputable def leptoquarkCosetEquiv :
+    (TracelessMatrix 4 ⧸ LinearMap.range (su3EmbedRestricted.coprod u1EmbedRestricted))
+      ≃ₗ[ℂ] ((Fin 3 → ℂ) × (Fin 3 → ℂ)) :=
+  (Submodule.quotEquivOfEq _ _ ker_offDiagMap_eq_colour_bl.symm).trans
+    (offDiagMap.quotKerEquivOfSurjective offDiagMap_surjective)
 
 end PatiSalamOffDiagonal
