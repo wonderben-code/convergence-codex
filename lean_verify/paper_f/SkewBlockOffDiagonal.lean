@@ -77,6 +77,17 @@ range of `skewOffDiagMap` or `suEven` its kernel, no comparison map is built, an
 split below is still a dimension count that no theorem connects to that grading. That is a
 different unit and, as of 2026-08-28, it is not written.
 
+**⚠ AND THAT UNIT IS `SuBlockIdentification`, THE SAME DAY.** `mem_suOdd_iff` shows `suOdd` is
+**exactly** the set of `skewOffDiagOf B`, and `map_ker_skewOffDiagMap` shows `suEven` is
+**exactly** `skewOffDiagMap`'s kernel carried into the matrices — both turning on the one fact
+this file's header states in prose, that skew-Hermiticity determines the lower-left block as
+`−Bᴴ`. `finrank_suOdd = 2pq`, `finrank_suEven = p² + q² − 1` and `su_block_splits` are then
+**derived from the grading** through `Submodule.finrank_sup_add_finrank_inf_eq`, so the `9 + 6`
+below is the dimension of two graded pieces and not only a rank–nullity count that agrees with
+them. **`skew_block_splits` itself is NOT restated, transported or identified with that** — it is
+about subspaces of two subtypes and the new numbers are about subspaces of the matrices
+(`ERRATUM 316`).
+
 **No wall moves. No published tag moves.**
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
