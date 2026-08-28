@@ -49,6 +49,16 @@ having a torus.
 algebra, and `suEven ⊔ suOdd` is `tracelessSkewMat`, not `⊤`. **No `ZMod 2`-indexed family is
 built below and no instance is declared.**
 
+**⚠ THE REASON WAS RIGHT AND THE CONCLUSION TOO NARROW, 2026-08-28 — `SuGradedLieAlgebra`.** The
+grading does decompose a whole algebra: **not the matrices, but `tracelessSkewLie` itself**, which
+`TracelessSkewLie` built as a `LieSubalgebra ℝ` and which is a Lie algebra in its own right. Pulled
+back along the subtype inclusion the two pieces satisfy `sup_suPart = ⊤` and `inf_suPart = ⊥` —
+exactly what fails in the matrices — so `GradedLieAlgebra (suPart p q)` holds at `ZMod 2`. **The
+mathematics is entirely this file's**: `SetLike.GradedBracket` is the four rules above read through
+`Submodule.mem_comap`, and `DirectSum.Decomposition` is `sup_eq`/`inf_eq_bot` through
+`DirectSum.isInternal_submodule_iff_isCompl`. What changed is **where the grading lives**, not what
+it says. The sentence above is kept as the record of the right reason for the wrong conclusion.
+
 **No `LieSubmodule` for the odd piece.** `BlockOddModule` does that over `ℂ`; the real analogue is
 not written here.
 
