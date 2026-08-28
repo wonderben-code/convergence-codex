@@ -62,6 +62,22 @@ statement to name, and **inventing a `Prop` whose only instance needs three side
 make the package look more complete than the estate is.** It is named as absent rather than
 manufactured.
 
+**⚠ "THERE IS NO UNCONDITIONAL FINITE-VOLUME CLUSTERING STATEMENT TO NAME" IS FALSE, and is kept so
+the correction is legible (`ERRATUM 94`, `ERRATUM 322`).**
+`LatticeFieldFactorises.indepFun_pair_of_separated` is one, and it is stronger than decay:
+observables on opposite sides of a **reachability barrier** are **independent**, with no degree
+bound, no separation parameter and no `ε`. I checked the two theorems I had in mind and not the
+object — `ERRATUM 317`'s failure, one unit later.
+
+**THE DECISION TO LEAVE CLUSTERING OUT SURVIVES, FOR A BETTER REASON, AND IT IS NOW A THEOREM.**
+`LatticeClustering.clustering_trivial_of_preconnected`: on a **preconnected** graph the separation
+hypotheses force the second test function to be identically zero. The box is connected, so the
+exact statement is **empty on the object the OS programme is about**, and bundling it here would
+have advertised a clustering property of the lattice field that the theorem does not supply.
+`LatticeClustering` names the property, proves the field satisfies it, and proves the emptiness
+beside it. The quantitative statement — `GreenDecay.covariance_abs_le`, which does have content on
+a connected graph — still needs its uniform degree bound, and that has not moved.
+
 **Permutation symmetry is not bundled** either: the estate has no statement of it for
 `gaussianField`, and this file does not add one.
 
