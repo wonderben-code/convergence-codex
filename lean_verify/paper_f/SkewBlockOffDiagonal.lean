@@ -58,6 +58,16 @@ any statement proved here, and no comparison map exists.
 **No physics, no Lie theory, no group.** The kernel is a subspace of matrices; whether its summands
 "are" colour and hypercharge is the reading `PatiSalamOffDiagonal` fences.
 
+**⚠ THE MIDDLE CLAUSE IS SUPERSEDED, 2026-08-28 — `TracelessSkewLie`.** `tracelessSkewSub` above
+is, transported along `skewIncl` into the matrices, the carrier of a `LieSubalgebra ℝ`; the
+commutator of two skew-Hermitian matrices is skew-Hermitian and the trace half is Mathlib's.
+`finrank_tracelessSkewSub` is therefore the dimension of a Lie algebra, and that file's
+`finrank_tracelessSkewMat` is this one's theorem transported, not reproved. **The other two
+clauses stand**: no group is built, no smooth structure exists anywhere in the estate, and the
+physics reading is untouched. **`skewOffDiagMap` and the `9 + 6` split below are NOT claimed to be
+a decomposition of Lie algebras** — the real analogue of `BlockGrading`/`BlockLieMorphism` is not
+written, and nothing here says the skew block split respects a bracket.
+
 **No wall moves. No published tag moves.**
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.

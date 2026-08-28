@@ -27,6 +27,19 @@ and rank–nullity does the rest.
 `A ↦ im (tr A)`; it is real-linear because `trace` is additive and commutes with real scalars and
 `Complex.im` is real-linear; it is onto because `i · 1` has trace `i·n`.
 
+**⚠ IT IS NOW ALSO A STATEMENT ABOUT A LIE ALGEBRA, 2026-08-28 — `TracelessSkewLie`.** The
+sentence above is exact about what this file does and stays. What has changed is that the subspace
+it measures is now known to be closed under the bracket: `TracelessSkewLie.tracelessSkewLie` is
+the same set as a `LieSubalgebra ℝ (Matrix ι ι ℂ)`, carried over by `skewIncl` from this
+presentation to a submodule of the matrices themselves, and `finrank_tracelessSkewMat` **is this
+file's `finrank_traceless_add` transported** rather than reproved. The bracket half needed one
+fact this file did not have — a skew-Hermitian matrix has purely imaginary trace — which is why
+the transport is a theorem and not a coercion. **Mathlib has nothing to cite here**: its
+`skewAdjointLieSubalgebra` and `skewAdjointMatricesLieSubalgebra` are about a **bilinear form**,
+not the star operation, and a search of the whole vendored tree for `skewAdjoint` in any line
+mentioning a Lie notion returns nothing outside those two files. That is the opposite of what the
+complex side turned out to be (`ERRATUM 324`), and it was measured rather than assumed.
+
 **NOT proved, and the name is where the temptation is.** That this subspace *is* the Lie algebra of
 `SU(n)` — the tangent space at the identity of a smooth group — is a statement about a smooth
 structure, and **nothing here builds one**. The definition below is called `traceless` rather than

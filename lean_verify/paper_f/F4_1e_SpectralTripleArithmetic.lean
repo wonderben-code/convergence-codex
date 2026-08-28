@@ -122,7 +122,22 @@ theorem dim_C4_cascade : finrank ℂ CascadeHilbert = 4 := cascade_hilbert_dim
 -- STILL OUT OF SCOPE, and the naming is where the temptation is: that these
 -- subspaces ARE the Lie algebras of SU(n) -- tangent spaces at the identity of
 -- smooth groups -- needs a smooth structure that nothing here builds. The new
--- definition is called `traceless`, not `su`, for that reason. The direct-sum
+-- definition is called `traceless`, not `su`, for that reason.
+--
+-- THE STRUCTURE CLAUSE IS SUPERSEDED, 2026-08-28 (ERRATUM 94: quoted, not
+-- rewritten). "Lie algebra structure not available" is no longer true of this
+-- estate: TracelessSkewLie builds tracelessSkewLie, a LieSubalgebra over the
+-- reals whose carrier is the traceless skew-Hermitian matrices, with dimension
+-- n^2 - 1 transported from TracelessSkewDimension. The FIRST clause of the
+-- original diagnosis still stands and was re-measured that day: Mathlib has no
+-- finrank for skewAdjointMatricesLieSubalgebra and no dim(su(n)) -- and, more
+-- to the point, its skewAdjoint Lie files are about a BILINEAR FORM, not the
+-- star operation, so there was nothing there to cite in the first place.
+--
+-- THE NAMING SENTENCE ABOVE IS FOLLOWED, NOT OVERRIDDEN. TracelessSkewLie does
+-- not use the name `su` for any declaration, for the reason recorded here: the
+-- algebraic Lie algebra is built, the smooth group is not, and whether the
+-- estate should now adopt the name is the author's call. The direct-sum
 -- statements below (pati_salam_generators, sm_gauge_dim) are likewise still pure
 -- arithmetic: nothing here constructs a direct sum of these subspaces.
 --
