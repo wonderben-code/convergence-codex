@@ -40,6 +40,10 @@ different field; confusing the two cost `ERRATUM 316`.
 >
 > **`broken_nine`** — that three plus `PatiSalamOffDiagonal`'s six is the nine, **with both
 > summands exhibited as spaces**: a range on one side, a quotient on the other.
+>
+> **`blLine_eq_centraliser`** (§5, added the same night) — the `B − L` line **is** the centraliser
+> of two colour rotations inside `traceless 4`, so the direction the count starts from is forced
+> rather than chosen.
 
 **`yRep_fst_ne_zero` and `yRep_snd_ne_zero` are not decoration.** They say hypercharge has a
 nonzero component in *each* summand — it is a genuine mixture, not a direction sitting inside
@@ -54,6 +58,15 @@ that hypercharge *is* `T₃R + (B − L)/2` are the standard assignments; they a
 `WeinbergIndex.yval` and `TracelessSkewDimension.blGen`'s own docstring and are **not theorems
 here**. Choose different generators and the arithmetic below is unchanged, which is the honest way
 to say that this file computes a dimension and not a physics claim.
+
+**⚠ AMENDED THE SAME NIGHT BY §5, and only in part (`ERRATUM 94`).** The clause is kept because
+most of it still holds, but one third of it no longer does. **The `B − L` DIRECTION is not a
+convention**: `blLine_eq_centraliser` proves `blLine` is exactly the set of elements of
+`traceless 4` commuting with two rotation generators of colour, so the line is **forced**, and the
+argument needs no Schur-type input — two brackets and fourteen entry equations close it. **What
+remains conventional is the scale and the name**: `blGen` is `3i · (B − L)` rather than `B − L`, and
+calling the line `u(1)_{B−L}` rather than "the centraliser of colour in `su(4)`" is an act of
+naming. **`t3RT` and `Y` are untouched by this** and remain conventions in full.
 
 **(ii) The reading is physics.** That the three surviving directions are the `W_R^±` and `Z_R`
 gauge bosons of a broken right-handed weak interaction is an interpretation. Nothing here mentions
@@ -181,5 +194,139 @@ theorem broken_nine :
     Module.finrank ℝ (LinearMap.range PatiSalamOffDiagonal.offDiagMapR)
       + Module.finrank ℝ (RightSector ⧸ hyperchargeLine) = 9 := by
   rw [PatiSalamOffDiagonal.finrank_range_offDiagMapR, finrank_broken_right]
+
+/-! ## 5. The `B − L` line is not a choice: it is the centraliser of colour -/
+
+/-- `E₀₁ − E₁₀`, block-embedded: a real antisymmetric matrix, hence skew-Hermitian, and traceless
+because its diagonal is zero. One of the rotation generators of `so(3) ⊆ su(3)`. -/
+noncomputable def so3A : Matrix (Fin 4) (Fin 4) ℂ :=
+  Matrix.of fun i j => if i = 0 ∧ j = 1 then 1 else if i = 1 ∧ j = 0 then -1 else 0
+
+/-- `E₀₂ − E₂₀`, block-embedded. -/
+noncomputable def so3B : Matrix (Fin 4) (Fin 4) ℂ :=
+  Matrix.of fun i j => if i = 0 ∧ j = 2 then 1 else if i = 2 ∧ j = 0 then -1 else 0
+
+theorem so3A_mem_skewAdjoint : so3A ∈ skewAdjoint (Matrix (Fin 4) (Fin 4) ℂ) := by
+  rw [skewAdjoint.mem_iff, so3A]
+  ext i j
+  fin_cases i <;> fin_cases j <;> simp
+
+theorem so3B_mem_skewAdjoint : so3B ∈ skewAdjoint (Matrix (Fin 4) (Fin 4) ℂ) := by
+  rw [skewAdjoint.mem_iff, so3B]
+  ext i j
+  fin_cases i <;> fin_cases j <;> simp
+
+theorem so3A_mem_traceless : (⟨so3A, so3A_mem_skewAdjoint⟩ : skewAdjoint _) ∈ traceless 4 := by
+  have h : Matrix.trace so3A = 0 := by
+    simp [Matrix.trace, Matrix.diag, Fin.sum_univ_four, so3A]
+  simp [traceless, traceIm, h]
+
+theorem so3B_mem_traceless : (⟨so3B, so3B_mem_skewAdjoint⟩ : skewAdjoint _) ∈ traceless 4 := by
+  have h : Matrix.trace so3B = 0 := by
+    simp [Matrix.trace, Matrix.diag, Fin.sum_univ_four, so3B]
+  simp [traceless, traceIm, h]
+
+/-- **`B − L` COMMUTES WITH COLOUR**, on these two generators. `ColourEquivariance.bMinusL_comm`
+proves the same thing against the whole embedded `su(3)`, over `ℂ` and on the index type
+`Fin 3 ⊕ Fin 1`; this is the statement in the object this file uses. -/
+theorem blGen_comm_so3A : blGen * so3A = so3A * blGen := by
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [blGen, so3A, Matrix.mul_apply, Matrix.diagonal_apply]
+
+theorem blGen_comm_so3B : blGen * so3B = so3B * blGen := by
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [blGen, so3B, Matrix.mul_apply, Matrix.diagonal_apply]
+
+set_option maxRecDepth 10000 in
+/-- **AND NOTHING ELSE IN `su(4)` DOES**, at the level of matrices. Two generators suffice — no
+third rotation and no Schur-type argument, because the entry equations already close.
+
+`[N, so3A] = 0` forces `N 0 0 = N 1 1` and kills `N 0 2, N 0 3, N 1 2, N 1 3, N 2 0, N 2 1, N 3 0,
+N 3 1`; `[N, so3B] = 0` forces `N 0 0 = N 2 2` and kills `N 0 1, N 1 0, N 2 3, N 3 2`. What is left
+is `diag(a, a, a, d)`. **The two remaining constraints are the ones defining `su(4)`**:
+tracelessness gives `d = -3a`, and skew-Hermiticity gives `a` purely imaginary. So
+`N = t • blGen` with `t = (N 0 0).im`. -/
+theorem eq_smul_blGen_of_commutes {N : Matrix (Fin 4) (Fin 4) ℂ}
+    (hskew : Nᴴ = -N) (htr : Matrix.trace N = 0)
+    (hA : N * so3A = so3A * N) (hB : N * so3B = so3B * N) :
+    N = (((N 0 0).im : ℝ) : ℂ) • blGen := by
+  have eA : ∀ i j, (N * so3A) i j = (so3A * N) i j := fun i j => congrFun (congrFun hA i) j
+  have eB : ∀ i j, (N * so3B) i j = (so3B * N) i j := fun i j => congrFun (congrFun hB i) j
+  have sA : ∀ i j, (N * so3A) i j = (so3A * N) i j := eA
+  have sB : ∀ i j, (N * so3B) i j = (so3B * N) i j := eB
+  -- the entry equations, each stated rather than left to whatever `simp` produced
+  have e01 : N 0 0 = N 1 1 := by simpa [Matrix.mul_apply, so3A, Matrix.of_apply] using sA 0 1
+  have e02 : N 1 2 = 0 := by simpa [Matrix.mul_apply, so3A, Matrix.of_apply] using (sA 0 2).symm
+  have e03 : N 1 3 = 0 := by simpa [Matrix.mul_apply, so3A, Matrix.of_apply] using (sA 0 3).symm
+  have e12 : N 0 2 = 0 := by simpa [Matrix.mul_apply, so3A, Matrix.of_apply] using sA 1 2
+  have e13 : N 0 3 = 0 := by simpa [Matrix.mul_apply, so3A, Matrix.of_apply] using sA 1 3
+  have e20 : N 2 1 = 0 := by simpa [Matrix.mul_apply, so3A, Matrix.of_apply] using sA 2 0
+  have e21 : N 2 0 = 0 := by simpa [Matrix.mul_apply, so3A, Matrix.of_apply] using sA 2 1
+  have e30 : N 3 1 = 0 := by simpa [Matrix.mul_apply, so3A, Matrix.of_apply] using sA 3 0
+  have e31 : N 3 0 = 0 := by simpa [Matrix.mul_apply, so3A, Matrix.of_apply] using sA 3 1
+  have f02 : N 0 0 = N 2 2 := by simpa [Matrix.mul_apply, so3B, Matrix.of_apply] using sB 0 2
+  have f03 : N 2 3 = 0 := by simpa [Matrix.mul_apply, so3B, Matrix.of_apply] using (sB 0 3).symm
+  have f12 : N 1 0 = 0 := by simpa [Matrix.mul_apply, so3B, Matrix.of_apply] using sB 1 2
+  have f21 : N 0 1 = 0 := by simpa [Matrix.mul_apply, so3B, Matrix.of_apply] using sB 2 1
+  have f30 : N 3 2 = 0 := by simpa [Matrix.mul_apply, so3B, Matrix.of_apply] using sB 3 0
+  clear sA sB eA eB hA hB
+  have hre : (N 0 0).re = 0 := by
+    have h := congrFun (congrFun hskew 0) 0
+    simp only [Matrix.conjTranspose_apply, Matrix.neg_apply, Complex.star_def] at h
+    have h2 := congrArg Complex.re h
+    simp only [Complex.conj_re, Complex.neg_re] at h2
+    linarith
+  have h00 : N 0 0 = (((N 0 0).im : ℝ) : ℂ) * Complex.I := by
+    apply Complex.ext <;> simp [hre]
+  -- `t` is generalised so that the diagonal equation is not a rewrite into itself
+  suffices h : ∀ t : ℝ, N 0 0 = (t : ℂ) * Complex.I → N = ((t : ℝ) : ℂ) • blGen from
+    h _ h00
+  intro t ht0
+  have hd : N 3 3 = (t : ℂ) * (-3 * Complex.I) := by
+    simp only [Matrix.trace, Matrix.diag, Fin.sum_univ_four] at htr
+    rw [← e01, ← f02, ht0] at htr
+    linear_combination htr
+  have d1 : N 1 1 = (t : ℂ) * Complex.I := by rw [← e01]; exact ht0
+  have d2 : N 2 2 = (t : ℂ) * Complex.I := by rw [← f02]; exact ht0
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [blGen, ht0, d1, d2, hd, e02, e03, e12, e13,
+      e20, e21, e30, e31, f03, f12, f21, f30]
+
+/-- **AND NOTHING ELSE IN `su(4)` DOES.** The matrix statement above, read inside `traceless 4`:
+the two constraints it needs are exactly membership in this space. -/
+theorem mem_blLine_of_commutes (M : traceless 4)
+    (hA : (M : Matrix (Fin 4) (Fin 4) ℂ) * so3A = so3A * (M : Matrix (Fin 4) (Fin 4) ℂ))
+    (hB : (M : Matrix (Fin 4) (Fin 4) ℂ) * so3B = so3B * (M : Matrix (Fin 4) (Fin 4) ℂ)) :
+    M ∈ blLine := by
+  have hskew : (M : Matrix (Fin 4) (Fin 4) ℂ)ᴴ = -(M : Matrix (Fin 4) (Fin 4) ℂ) :=
+    skewAdjoint.mem_iff.mp M.val.property
+  have htr : Matrix.trace (M : Matrix (Fin 4) (Fin 4) ℂ) = 0 :=
+    trace_eq_zero_of_mem_traceless M.property
+  refine Submodule.mem_span_singleton.mpr
+    ⟨((M : Matrix (Fin 4) (Fin 4) ℂ) 0 0).im, ?_⟩
+  apply Subtype.ext
+  apply Subtype.ext
+  exact (eq_smul_blGen_of_commutes hskew htr hA hB).symm
+
+/-- **THE CENTRALISER OF COLOUR IN `su(4)` IS EXACTLY THE `B − L` LINE.** Both directions:
+`blGen` commutes with the two generators, and nothing outside its span does. -/
+theorem blLine_eq_centraliser :
+    blLine = {M : traceless 4 |
+        (M : Matrix (Fin 4) (Fin 4) ℂ) * so3A = so3A * (M : Matrix (Fin 4) (Fin 4) ℂ)
+          ∧ (M : Matrix (Fin 4) (Fin 4) ℂ) * so3B = so3B * (M : Matrix (Fin 4) (Fin 4) ℂ)} := by
+  ext M
+  constructor
+  · intro hM
+    obtain ⟨t, ht⟩ := Submodule.mem_span_singleton.mp hM
+    have hval : (M : Matrix (Fin 4) (Fin 4) ℂ) = (t : ℂ) • blGen := by
+      rw [← ht]
+      rfl
+    exact ⟨by rw [hval, Matrix.smul_mul, Matrix.mul_smul, blGen_comm_so3A],
+           by rw [hval, Matrix.smul_mul, Matrix.mul_smul, blGen_comm_so3B]⟩
+  · rintro ⟨hA, hB⟩
+    exact mem_blLine_of_commutes M hA hB
 
 end PatiSalamRightSector
