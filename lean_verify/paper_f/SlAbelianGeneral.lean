@@ -45,6 +45,14 @@ the complex side fails by `(p−1)(q−1)`, which is as large as you like.**
 **"Subalgebra" is the weak sense this estate has**: a subspace closed under `X, Y ↦ XY − YX`. No
 `LieSubalgebra` instance is built and no Lie theory is invoked.
 
+**⚠ "THE WEAK SENSE AVAILABLE TO THIS ESTATE" WAS WRONG, 2026-08-28.** The strong sense was in
+Mathlib the whole time. `BlockGrading.sl_toSubmodule` is `rfl`: the ambient `tracelessSub ι` used
+here **is** the carrier of `LieAlgebra.SpecialLinear.sl ι ℂ`, and `Ring.lie_def` makes
+`X, Y ↦ X * Y − Y * X` **definitionally** Mathlib's bracket `⁅X, Y⁆`. A submodule closed under it
+is a Lie subalgebra in content; what this file genuinely lacks is the packaged `LieSubalgebra`
+**instance**, and nothing else. The sentence above is kept as the record of what was believed when
+it was written (`ERRATUM 324`).
+
 **No wall moves. No published tag moves.**
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.

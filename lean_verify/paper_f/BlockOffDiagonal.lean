@@ -39,6 +39,12 @@ arithmetic. The four-way decomposition of `sl(p+q)` is now `sl(p) ⊕ sl(q) ⊕ 
 every summand a named image or range. **No Lie theory is claimed there either** — the summands are
 called `sl(p)` and `sl(q)` in prose and nowhere in the statements.
 
+**⚠ THE SECOND CLAUSE WAS WRONG, 2026-08-28.** `BlockGrading.sl_toSubmodule` is `rfl`, so
+`tracelessSub ι` is Mathlib's `LieAlgebra.SpecialLinear.sl ι ℂ` at every `ι` and the summands were
+in the statements already. What was genuinely missing — that the decomposition respects a bracket —
+is proved in `BlockGrading` for the even/odd grading below, and is **still open** for the four-way
+splitting of the kernel (`blockDiagMap` is not yet known to be a Lie algebra morphism).
+
 ## What is NOT claimed
 
 **No transport to `PatiSalamOffDiagonal` is claimed.** That file works over `Fin 4`; this one over
@@ -65,6 +71,13 @@ summands "are" colour and hypercharge is the reading `PatiSalamOffDiagonal` fenc
 adds nothing to it.
 
 **No Lie theory.** `tracelessSub` is a submodule of matrices; no bracket, no `LieSubalgebra`.
+
+**⚠ SUPERSEDED IN THIS FILE'S OWN SUBJECT, 2026-08-28.** `BlockGrading` proves
+`⁅evenPart, evenPart⁆ ⊆ evenPart`, `⁅evenPart, oddPart⁆ ⊆ oddPart`, `⁅oddPart, oddPart⁆ ⊆ evenPart`
+for Mathlib's bracket, so the kernel/range split proved here **is** a ℤ/2-grading; and
+`oddPart_not_lie_closed` shows the range side is not a subalgebra, so the two pieces are not
+symmetric. `BlockGrading.map_ker_offDiagMap` is what identifies this file's kernel with the even
+piece. The sentence above is kept as the record of what this file alone establishes.
 
 **No wall moves. No published tag moves.**
 

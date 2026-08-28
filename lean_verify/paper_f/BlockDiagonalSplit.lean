@@ -30,6 +30,19 @@ range of a named surjection, and no step asserted about numerals.
 `sl(q)` in this prose and nowhere in the statements. Nothing here says the decomposition respects a
 bracket, and no `LieSubalgebra` is built.
 
+**⚠ HALF OF THAT IS NOW FALSE AND THE OTHER HALF IS NAMED, 2026-08-28.**
+`BlockGrading.sl_toSubmodule` is `rfl`: `tracelessSub ι` **is** the carrier of Mathlib's
+`LieAlgebra.SpecialLinear.sl ι ℂ`, at every `ι` including `Fin p` and `Fin q`. So the summands were
+`sl(p)` and `sl(q)` **in the statements** the whole time and the sentence above had simply not
+looked; `ERRATUM 313` is the standing record of that error and this is another instance of it.
+`BlockGrading` also proves the block decomposition respects the bracket — a ℤ/2-grading of
+`gl(p+q)` that restricts to `sl(p+q)` — and builds `BlockGrading.evenLie`, an honest
+`LieSubalgebra`. **What is still not proved is the sentence's content at THIS file's own
+decomposition**: nothing yet says `blockDiagMap` is a morphism of Lie algebras, i.e. that
+`⁅blockDiagMap x, blockDiagMap y⁆ = blockDiagMap ⁅x, y⁆` with the `ℂ` direction central. That is a
+different theorem, it is not proved anywhere, and until it is, `sl(p) ⊕ sl(q) ⊕ ℂ` here remains a
+decomposition of a **module**.
+
 **No transport to any `Fin n` file**, and none is built — `PatiSalamOffDiagonal`,
 `SMEmbeddingHonest` and `ColourCommutant` all work over `Fin 4`.
 `SMEmbeddingHonest.colour_bl_finrank` exhibits colour ⊕ `B − L` as a `9`-dimensional subspace

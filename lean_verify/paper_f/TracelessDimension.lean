@@ -50,6 +50,15 @@ file neither imports nor touches it; `ERRATUM 316` is the record of what confusi
 **It is not a Lie-algebra statement.** `tracelessSub ι` is a submodule of matrices; no bracket, no
 `LieSubalgebra`, and the name `sl(ι)` in this header is prose.
 
+**⚠ THE LAST CLAUSE IS FALSE AND WAS FALSE WHEN WRITTEN, 2026-08-28.** `sl(ι)` is not prose here:
+`BlockGrading.sl_toSubmodule` is `rfl`, so `tracelessSub ι` **is** the carrier of Mathlib's
+`LieAlgebra.SpecialLinear.sl ι ℂ`, and `finrank_tracelessSub` is therefore already the dimension
+of the special linear Lie algebra — `BlockGrading.finrank_sl` is this file's term, copied, with no
+proof of its own. The first two clauses stand: **this file** states no bracket and builds no
+`LieSubalgebra`. `ERRATUM 324` is the record of writing `LieSubalgebra` into five headers without
+grepping the estate for it, when `F4_1e_SpectralTripleArithmetic` had named a Mathlib one since
+before this campaign began.
+
 **No wall moves. No published tag moves.**
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.

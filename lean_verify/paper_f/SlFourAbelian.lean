@@ -45,6 +45,14 @@ and only one side of it is a theorem. `TracelessSkewDimension.traceless 4` is no
 **"Subalgebra" is used in the weak sense** available to this estate: a subspace closed under
 `X, Y ↦ X * Y − Y * X`. No `LieSubalgebra` instance is built and no Lie theory is invoked.
 
+**⚠ "THE WEAK SENSE AVAILABLE TO THIS ESTATE" WAS WRONG, 2026-08-28.** The strong sense was in
+Mathlib the whole time. `BlockGrading.sl_toSubmodule` is `rfl`: the ambient `tracelessSub ι` used
+here **is** the carrier of `LieAlgebra.SpecialLinear.sl ι ℂ`, and `Ring.lie_def` makes
+`X, Y ↦ X * Y − Y * X` **definitionally** Mathlib's bracket `⁅X, Y⁆`. A submodule closed under it
+is a Lie subalgebra in content; what this file genuinely lacks is the packaged `LieSubalgebra`
+**instance**, and nothing else. The sentence above is kept as the record of what was believed when
+it was written (`ERRATUM 324`).
+
 **⚠ THE DIMENSION RESTRICTION IS REMOVED 2026-08-28, and this file is kept as the `n = 4` case.**
 `SlAbelianGeneral` proves the same thing over `Fin p ⊕ Fin q` for every `p, q ≥ 2`: the strictly
 upper `p × q` block is a `p·q`-dimensional abelian subalgebra of `sl_{p+q}(ℂ)`, the Cartan is
