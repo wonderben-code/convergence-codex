@@ -62,6 +62,12 @@ minus hypercharge, which is a different computation in a different factor, and t
 nothing about it. **So `TracelessSkewDimension`'s fence is half closed, not closed**, and its
 paragraph is annotated to say which half.
 
+**⚠ CLAUSE (ii) SUPERSEDED 2026-08-28, kept per `ERRATUM 94`.** `PatiSalamRightSector` does that
+computation: `blLine × traceless 2` is four-dimensional, hypercharge is one line inside it lying in
+neither summand, the quotient is three, and `PatiSalamRightSector.broken_nine` adds it to this
+file's six. **The dimension half of the fence is now closed.** Clause *(i)* is not superseded and
+will not be by any dimension count: the leptoquark reading is physics.
+
 ## 5, added the same night
 
 **The nine was already a subspace, and §5 identifies it.** See the amended paragraph above: the

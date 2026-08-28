@@ -173,7 +173,24 @@ its own object.
 **The other three are untouched**: they come from `su(2)_R ⊕ u(1)_{B−L}` minus hypercharge, a
 different computation in a different factor. **And the reading itself is still not proved** — that
 these six directions are leptoquark gauge bosons is physics, not a consequence of a dimension
-count, and nothing in either file mentions a particle or a decay. -/
+count, and nothing in either file mentions a particle or a decay.
+
+**⚠ THE SECOND HALF IS NO LONGER UNTOUCHED, 2026-08-28, the sentence above kept per `ERRATUM 94`.**
+`PatiSalamRightSector.finrank_broken_right` does that computation, in this file's own objects:
+`blLine × traceless 2` — the `B − L` line inside `traceless 4` together with the whole of
+`traceless 2` as `su(2)_R` — is **four**-dimensional (`finrank_rightSector`), hypercharge is **one
+line inside it** and not inside either summand (`yRep_fst_ne_zero`, `yRep_snd_ne_zero`, which is the
+linear-algebra content of *"`Y` is a combination of `T₃R` and `B − L`"*), and the quotient is
+**three**. `PatiSalamRightSector.broken_nine` then adds it to the six: `6 + 3 = 9`, **both summands
+exhibited as spaces** — a range on one side, a quotient on the other — where this file's own
+`finrank_prod_diff` had only `21 − 12`.
+
+**SO THE DIMENSION READING OF THE FENCE IS CLOSED AND THE PHYSICS READING IS NOT.** What is proved
+is a decomposition of `su(4) ⊕ su(2)_R ⊕ u(1)` by dimension. That these nine directions *are* six
+leptoquarks and three right-handed weak bosons remains an interpretation: no file involved mentions
+a particle, a mass, a current or a symmetry breaking, and the identification of `blGen` with
+`B − L`, of `diag(i,−i)` with `T₃R`, and of `Y` with `T₃R + (B − L)/2` are the standard
+conventions, cited and **not proved**. -/
 theorem finrank_prod_diff :
     Module.finrank ℝ (traceless 4 × traceless 2 × traceless 2)
       = Module.finrank ℝ
