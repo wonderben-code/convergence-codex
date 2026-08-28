@@ -49,6 +49,10 @@ the sides here are subtypes of `Fin k` — so a relabelling `↥S ≃ Fin S.card
 through `perfectMatchings` and `pairProduct`, which is `PairingRecursion`'s transport again and is
 **not done here**. **Not costed** (`ERRATUM 194`). No measure, integral or test function appears
 below.
+
+**⚠ ANSWERED, pointer added 2026-08-27 (`ERRATUM 314`); kept as written (`ERRATUM 94`).**
+`PairingCluster.integral_prod_sub_mul_eq` carries it, with `PairingRelabel.sum_pm_eq_integral`
+doing the subtype relabelling this paragraph describes.
 -/
 
 namespace PairingWeight

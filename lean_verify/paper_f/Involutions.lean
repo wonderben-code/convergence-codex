@@ -89,6 +89,12 @@ theorems were proved by differentiating under an integral sign; this number is c
 content of Wick's theorem. This file supplies the index set and the coefficient count and says
 nothing about what is summed over them.
 
+**⚠ ANSWERED, pointer added 2026-08-27 (`ERRATUM 314`); kept as written (`ERRATUM 94`), and it
+stays true of this file.** `WickPairings.pairProduct` is that map and
+`IsserlisAll.isserlisGeneral_all` proves the sum over these index sets is the correlation, at every
+order. (A second paragraph below already carries an `ERRATUM 305` note saying the same of the
+coefficient; this one is the map, and had none.)
+
 ## What this is NOT
 
 **It is not general-order Isserlis.** It is the index type that statement needs and does not

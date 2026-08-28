@@ -34,6 +34,10 @@ The estimate follows by bounding each crossing term (`PairingBound`) and countin
 Any statement about the graph. `ε` is a hypothesis here, not a consequence: turning *"the two
 groups are far apart"* into a numerical `ε` is `GreenDecay`/`GreenClustering`'s business and is
 not done here. **Not costed** (`ERRATUM 194`). Finite volume throughout.
+
+**⚠ ANSWERED, pointer added 2026-08-27 (`ERRATUM 314`); the sentence is kept as written
+(`ERRATUM 94`) and stays true of this file.** `LatticeTruncatedDecay.truncated_abs_le` takes the
+separation hypothesis and produces `decayRate Δ m ^ N`, which is exactly that conversion.
 -/
 
 namespace PairingCluster

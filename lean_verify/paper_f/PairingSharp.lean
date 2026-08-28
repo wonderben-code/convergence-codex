@@ -35,6 +35,9 @@ The measure. Carrying this up to `∫ ∏ᵢ⟪aᵢ,ω⟫` is `PairingCluster`'s
 `LatticeTruncatedDecay`'s route with `abs_prod_le_sq_of_not_respects` in place of
 `PairingBound.abs_prod_le_of_not_respects`, and is **not done here**. **Not costed**
 (`ERRATUM 194`).
+
+**⚠ ANSWERED, pointer added 2026-08-27 (`ERRATUM 314`); kept as written (`ERRATUM 94`).**
+`LatticeTruncatedSharp.abs_integral_prod_sub_mul_le_sq` is that route, taken.
 -/
 
 namespace PairingSharp

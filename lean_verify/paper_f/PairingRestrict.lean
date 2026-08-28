@@ -39,6 +39,11 @@ The bijection, and therefore the factorisation. Restriction is one direction; th
 done here. Until it is, `∑ over the respecting matchings` is not known to be a product of two
 sums and no clustering statement follows. **Not costed** (`ERRATUM 194`). No measure, integral or
 test function appears.
+
+**⚠ ANSWERED, pointer added 2026-08-27 (`ERRATUM 314`); kept as written (`ERRATUM 94`).**
+`PairingGlue.splitEquiv` is that bijection as an `Equiv`, with `card_respecting` the count it
+gives, and `PairingWeight.sum_prod_eq_mul` is the product of two sums this paragraph says does not
+follow. Both were built after this file.
 -/
 
 namespace PairingRestrict

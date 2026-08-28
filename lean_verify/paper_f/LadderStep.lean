@@ -36,6 +36,10 @@ side is recognised as the closed form one order up, and the induction runs.
 fixed-point factors vanish and only the perfect matchings survive — and identifying the surviving
 sum with `WickPairings.pairProduct` is **not done here**. So general-order Isserlis does not
 follow from this file alone, and no claim is made that it does. **Not costed** (`ERRATUM 194`).
+
+**⚠ ANSWERED, pointer added 2026-08-27 (`ERRATUM 314`); kept as written (`ERRATUM 94`).**
+`IsserlisAll.isserlisGeneral_all` is `ladder` at `f = 0` with that identification made, and it
+holds at every order.
 -/
 
 namespace LadderStep
