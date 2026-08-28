@@ -156,12 +156,19 @@ theorem finrank_prod_3_2_1 :
 three right-handed weak bosons. **That reading is not proved here**: this is `21 − 12`, and nothing
 in this file decomposes either space.
 
-**⚠ HALF SUPERSEDED 2026-08-28, kept as written (`ERRATUM 94`, `ERRATUM 315`), and WHICH half
-matters.** `PatiSalamOffDiagonal` decomposes the `su(4)` factor: `offDiagMap` reads a traceless
-`4 × 4` matrix's last column and last row, is surjective onto `(Fin 3 → ℂ) × (Fin 3 → ℂ)` because a
-purely off-diagonal matrix has zero diagonal and so is automatically traceless, and rank–nullity
-gives `15 = 9 + 6` with the kernel characterised as the block-diagonal part
-(`mem_ker_offDiagMap_iff`). **So the SIX is now a subspace rather than a subtraction.**
+**⚠ HALF SUPERSEDED 2026-08-28, kept as written (`ERRATUM 94`, `ERRATUM 315`, corrected by
+`ERRATUM 316`), and WHICH half matters.** `PatiSalamOffDiagonal.su4_real_splits_nine_six`
+decomposes the `su(4)` factor — **`traceless 4`, this file's own object**: `offDiagMapR` reads a
+traceless skew-Hermitian matrix's last column on the first three indices, is surjective because a
+purely off-diagonal skew-Hermitian matrix has zero diagonal and so is traceless for free, and
+rank–nullity against `finrank_traceless_four` gives `15 = 9 + 6` over `ℝ`. **So the SIX is now a
+subspace rather than a subtraction** — three complex entries, two real dimensions each, the last
+row being determined by the last column.
+
+**The first version of this note cited §§1–3 of that file, which decompose `sl(4,ℂ)` over `ℂ` and
+NOT `su(4)` over `ℝ`.** The two have equal dimension and are not the same space; one is a real form
+of the other. Corrected the same night, and both decompositions are kept because each is true of
+its own object.
 
 **The other three are untouched**: they come from `su(2)_R ⊕ u(1)_{B−L}` minus hypercharge, a
 different computation in a different factor. **And the reading itself is still not proved** — that

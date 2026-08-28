@@ -1,4 +1,5 @@
 import LieAlgebraEmbedding
+import TracelessSkewDimension
 
 /-!
 # The nine broken generators, decomposed — six of them, as a subspace rather than a subtraction
@@ -159,5 +160,94 @@ theorem su4_splits_nine_six :
       = Module.finrank ℂ (LinearMap.ker offDiagMap)
         + Module.finrank ℂ (LinearMap.range offDiagMap) := by
   rw [finrank_ker_offDiagMap, finrank_range_offDiagMap, traceless_dim_4]
+
+
+/-! ## 4. The same decomposition in `su(4)`, which is the object the fence is actually about
+
+**§§1–3 decompose `sl(4,ℂ)` and `TracelessSkewDimension` counts `su(4)`, and those are different
+spaces.** `CascadeFoundation.TracelessMatrix 4` is the traceless COMPLEX matrices, a `ℂ`-submodule
+of `finrank ℂ = 15`; `TracelessSkewDimension.traceless 4` is the traceless SKEW-HERMITIAN matrices,
+an `ℝ`-submodule of `finrank ℝ = 15`. The dimensions coincide and the objects do not — one is a
+real form of the other — and a first version of this file annotated the fence as though §§1–3
+settled it. **They do not. This section does** (`ERRATUM 316`).
+
+**And the real count is the interesting one.** A skew-Hermitian matrix's last ROW is determined by
+its last column, `M 3 i = −conj (M i 3)`, so the off-diagonal part is three COMPLEX entries — six
+real dimensions — rather than six independent ones. **That is where the six comes from in the
+physics, and §§1–3 got it by a different route that happens to give the same number.**
+-/
+
+open TracelessSkewDimension in
+/-- The last column of a traceless skew-Hermitian `4 × 4` matrix, on the first three indices. The
+last row is not read because skew-Hermiticity determines it. -/
+noncomputable def offDiagMapR : traceless 4 →ₗ[ℝ] (Fin 3 → ℂ) where
+  toFun M := fun i =>
+    ((M : skewAdjoint (Matrix (Fin 4) (Fin 4) ℂ)) : Matrix (Fin 4) (Fin 4) ℂ) (fin3_to_fin4 i) 3
+  map_add' _ _ := rfl
+  map_smul' _ _ := rfl
+
+/-- `b` down the last column, `−conj b` along the last row, nothing else. -/
+noncomputable def skewOffDiagOf (b : Fin 3 → ℂ) : Matrix (Fin 4) (Fin 4) ℂ :=
+  Matrix.of fun i j =>
+    if _ : j = 3 then (if hi : i.val < 3 then b ⟨i.val, hi⟩ else 0)
+    else if i = 3 then (if hj : j.val < 3 then -(starRingEnd ℂ) (b ⟨j.val, hj⟩) else 0)
+    else 0
+
+theorem skewOffDiagOf_skew (b : Fin 3 → ℂ) :
+    skewOffDiagOf b ∈ skewAdjoint (Matrix (Fin 4) (Fin 4) ℂ) := by
+  rw [skewAdjoint.mem_iff]
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [skewOffDiagOf]
+
+theorem skewOffDiagOf_diag (b : Fin 3 → ℂ) (i : Fin 4) : skewOffDiagOf b i i = 0 := by
+  simp only [skewOffDiagOf, Matrix.of_apply]
+  by_cases hi : i = 3
+  · subst hi; norm_num
+  · rw [dif_neg hi, if_neg hi]
+
+open TracelessSkewDimension in
+theorem skewOffDiagOf_mem (b : Fin 3 → ℂ) :
+    (⟨skewOffDiagOf b, skewOffDiagOf_skew b⟩ : skewAdjoint (Matrix (Fin 4) (Fin 4) ℂ))
+      ∈ traceless 4 :=
+  -- membership IS `(trace _).im = 0` definitionally, so the term is supplied rather than the
+  -- goal restated: the style linter reserves `show` for readability
+  have h : (Matrix.trace (skewOffDiagOf b)).im = 0 := by
+    rw [Matrix.trace]
+    simp only [Matrix.diag, Complex.im_sum]
+    exact Finset.sum_eq_zero fun i _ => by rw [skewOffDiagOf_diag b i]; simp
+  h
+
+theorem offDiagMapR_surjective : Function.Surjective offDiagMapR := by
+  intro b
+  refine ⟨⟨⟨skewOffDiagOf b, skewOffDiagOf_skew b⟩, skewOffDiagOf_mem b⟩, ?_⟩
+  funext i
+  exact (by simp [skewOffDiagOf, fin3_to_fin4, i.isLt] :
+    skewOffDiagOf b (fin3_to_fin4 i) 3 = b i)
+
+/-- **THE SIX, AS A REAL DIMENSION.** Three complex entries, two real dimensions each. -/
+theorem finrank_range_offDiagMapR :
+    Module.finrank ℝ (LinearMap.range offDiagMapR) = 6 := by
+  rw [LinearMap.range_eq_top.mpr offDiagMapR_surjective, finrank_top,
+    Module.finrank_pi_fintype ℝ]
+  simp [Complex.finrank_real_complex]
+
+open TracelessSkewDimension in
+/-- **AND THE NINE**, by rank–nullity against `TracelessSkewDimension.finrank_traceless_four`. -/
+theorem finrank_ker_offDiagMapR :
+    Module.finrank ℝ (LinearMap.ker offDiagMapR) = 9 := by
+  have h := LinearMap.finrank_range_add_finrank_ker offDiagMapR
+  rw [finrank_range_offDiagMapR, finrank_traceless_four] at h
+  omega
+
+open TracelessSkewDimension in
+/-- **`15 = 9 + 6` IN `su(4)` ITSELF**, the space
+`TracelessSkewDimension.finrank_prod_diff` counts. This is the statement that bears on that
+file's fence; §3's is the same shape in `sl(4,ℂ)` and does not. -/
+theorem su4_real_splits_nine_six :
+    Module.finrank ℝ (traceless 4)
+      = Module.finrank ℝ (LinearMap.ker offDiagMapR)
+        + Module.finrank ℝ (LinearMap.range offDiagMapR) := by
+  rw [finrank_ker_offDiagMapR, finrank_range_offDiagMapR, finrank_traceless_four]
 
 end PatiSalamOffDiagonal
