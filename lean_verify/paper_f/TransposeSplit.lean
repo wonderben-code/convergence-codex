@@ -47,10 +47,28 @@ splitting is not proved here** — it is named in this header to say what the pa
 reaching for, and naming is not proving. What is proved is that the two splittings are different
 and have the same dimensions.
 
+> **Still open on 2026-08-28, and deliberately recorded next to a fence that closed the same
+> day.** The sentence above — *"the claim that `traceless ⊕ ℂ·I` is the `SU(2)`-equivariant
+> splitting is not proved here"* — is **not** superseded and nothing withdraws it. `SU(2)`
+> -equivariance is unproved anywhere in this estate: no group acts in `TransposeDimension`
+> either, and its header says so. The note is here because the *neighbouring* fence, the one
+> about general `n`, was discharged that day, and `F2_3_ChiralityForced` carries a supersession
+> note quoting **both** halves of its own version of the pair. A reader arriving at this
+> paragraph from that note must not read the closure as covering this half. It does not.
+
 **No general `n`.** `dim Sym_n = n(n+1)/2` is not proved here; `finrank_symSub_two` is `n = 2`,
 obtained from the complement rather than from a basis. The general formula that
 `F2_3_ChiralityForced`'s docstring calls *"standard linear algebra"* was, as of 2026-08-28, still
 unproved anywhere in the estate.
+
+> **Superseded 2026-08-28 (same day).** `TransposeDimension` now proves it, at **any finite index
+> type and with no order hypothesis**: `finrank_symSub_choose` gives `dim Sym_ι = C(#ι + 1, 2)`
+> and `finrank_symSub_fin` gives the `n(n+1)/2` form, with `finrank_asymSub_choose` /
+> `finrank_asymSub_fin` for the antisymmetric side. The route is a coordinate equivalence
+> (`asymEquiv`), not a basis, so the sentence above about "rather than from a basis" is still
+> accurate about **both** files. **Nothing here is withdrawn**: `finrank_asymSub_two` remains the
+> independent span-based derivation of `1`, which `TransposeDimension.general_recovers_two`
+> cross-checks. The paragraph is kept as written because it is the record of what was open.
 
 **Nothing in `F2_3_ChiralityForced` is withdrawn.** Its four results are true arithmetic with
 untouched proofs; what is corrected is one parenthetical, in place, with the original kept.

@@ -360,6 +360,16 @@ STILL NOT PROVED THERE: the general formula dim Sym_n = n(n+1)/2, and that
 traceless ⊕ ℂ·I is the SU(2)-EQUIVARIANT splitting -- no group acts anywhere in
 that file either.
 
+SUPERSEDED IN PART, 2026-08-28 (same day): the FIRST half is now proved, in
+TransposeDimension. finrank_symSub_choose gives dim Sym_ι = C(#ι + 1, 2) at any
+finite index type -- no n = 2, and no order hypothesis either -- and
+finrank_symSub_fin gives the n(n+1)/2 form; finrank_asymSub_choose and
+finrank_asymSub_fin do the antisymmetric side. THE SECOND HALF STANDS
+UNTOUCHED: no group acts in TransposeDimension either, its header says so, and
+SU(2)-equivariance remains unproved anywhere in this estate as of that date.
+The sentence above is kept as written because it is the record of what was
+open, and half of it still is.
+
 For the RIGHT-acting copy (which enters via transpose):
 - The transpose FIXES symmetric matrices: Aᵀ = A
 - The transpose NEGATES antisymmetric matrices: Aᵀ = -A
@@ -377,7 +387,15 @@ THIS IS WHY SU(2)_L REMAINS WHOLE AND SU(2)_R BREAKS TO U(1).
 
 /-- Symmetric n×n matrices have dimension n(n+1)/2. For n=2: 3.
     Note: the general formula n(n+1)/2 for symmetric matrices
-    is standard linear algebra. -/
+    is standard linear algebra.
+
+    SUPERSEDED 2026-08-28: standard, and now also PROVED here --
+    TransposeDimension.finrank_symSub_fin says
+    finrank ℂ (TransposeSplit.symSub (Fin n)) = n * (n + 1) / 2 at every n.
+    The fence above is kept because it is what was written; what changed is
+    that the estate no longer has to take it on trust. This theorem's own
+    content is unchanged -- it is the arithmetic 2 * (2 + 1) / 2 = 3, it is
+    true, and it is NOT withdrawn. -/
 theorem sym_dim_2 : 2 * (2 + 1) / 2 = (3 : ℕ) := by omega
 
 /-- Antisymmetric n×n matrices have dimension n(n-1)/2. For n=2: 1. -/
