@@ -31,7 +31,6 @@ roots = [
 name = "PaperF"
 srcDir = "paper_f"
 roots = [
-  "LovelockSectionalOrthonormal",
   "PairingRecursionFour",
   "LatticeTruncatedByCross",
   "LatticeTruncatedContent",

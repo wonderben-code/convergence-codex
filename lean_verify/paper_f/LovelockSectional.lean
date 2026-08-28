@@ -36,16 +36,21 @@ antisymmetry when the pair is dependent) but it is **not proved here**, and the 
 needs *extend an orthonormal pair to an orthogonal matrix*, which is a Mathlib bridge this estate
 has not built.
 
-**⚠ SUPERSEDED 2026-08-27, kept as written (`ERRATUM 94`, corrected by `ERRATUM 312`).**
-`LovelockSectionalOrthonormal.sec_eq_zero_of_orthonormal` proves it, and
-`eq_zero_of_sec_orthonormal` is `eq_zero_of_sec` with the hypothesis weakened to orthonormal
-pairs. **"Elementary" was right; the stated blocker was wrong.** No extension to an orthogonal
-matrix is used, because the argument never needs a whole matrix — only a second vector.
-`sec_add_smul` (`sec Z x (y + t·x) = sec Z x y`, both added copies dying against `x` by the two
-antisymmetries) manufactures the orthogonal partner inside the plane, and the two scaling lemmas
-normalise it. **The first half of this paragraph is unchanged**: the hypothesis here really is
-about all pairs, and the second missing thing it names — that `ip Z (act Q W) = 0` for every
-orthogonal `Q` is the vanishing of every frame-change's sectional entries — is still not built.
+**⚠ SUPERSEDED 2026-08-27, kept as written (`ERRATUM 94`, corrected by `ERRATUM 313`).**
+**Both clauses are false, and the estate answered them before this paragraph was written.**
+`LovelockSectionalUnit.sec_eq_zero_of_orthonormal` is exactly the step called elementary here, and
+`eq_zero_of_sec_orthonormal` beside it is `eq_zero_of_sec` with the hypothesis weakened to
+orthonormal pairs. **And the "Mathlib bridge this estate has not built" IS built**:
+`LovelockOrthonormalFrame.exists_isOrth_rows` extends an orthonormal pair to an orthogonal matrix
+through `Orthonormal.exists_orthonormalBasis_extension_of_card_eq`, and `sec_eq_zero_of_rows` uses
+it to reach the same conclusion from vanishing on rows of orthogonal matrices.
+
+**A note on how this correction was reached, because the sequence matters** (`ERRATUM 313`). On
+2026-08-27 this paragraph was read as a live gap and the step was re-proved from scratch, in a new
+file, **with the same two theorem names it already had**. That file was withdrawn the same night.
+The re-proof did establish one true thing — the extension lemma is not needed for this step, since
+`sec Z x (y + t·x) = sec Z x y` produces the orthogonal partner with two vectors — but
+`LovelockSectionalUnit` had already taken that route, so nothing was new.
 
 **And the other half is not here either:** that `ip Z (act Q W) = 0` for every orthogonal `Q` is
 equivalent to the sectional entries of every frame-change of `Z` vanishing. That is a computation
