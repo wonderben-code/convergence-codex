@@ -76,6 +76,26 @@
   * **It proves nothing about OS0, OS1 or OS4.** Those need growth bounds,
     Euclidean covariance and clustering respectively, and none is attempted or
     made easier by this.
+
+  ** THE NUMBERING IN THIS HEADER IS THIS FILE'S ALONE, 2026-08-28
+  (ERRATUM 320), and the two bullets above contradict each other under the
+  estate's other two.** CascadeFoundation.OSVerification, F3_9d, F4_3f and
+  F4_4a all place EUCLIDEAN COVARIANCE AT OS1 and permutation symmetry at OS3;
+  this header places Euclidean invariance at OS3. Under theirs, the sentence
+  "it proves nothing about OS1" and the sentence "invariance under that group
+  is what OS3 degenerates to in finite volume" are about the same theorem and
+  cannot both hold.
+  NO THEOREM MOVES. gaussianField_map_perm is correct and every use of it
+  stands; what is wrong is a number. The caution this header exists for --
+  that invariance under Aut(G) is NOT invariance under E(d), because a finite
+  graph has no E(d) -- is right under every numbering and is kept verbatim.
+  The watchlist clause "anything at all that makes OS1 statable in finite
+  volume" is written in the OTHER numbering, and stood open for eighteen days
+  because this theorem was filed under OS3. It is closed by LatticeOS1, which
+  states the axiom (EuclideanCovariantFinVol) and proves the Schwinger
+  functions Aut(G)-invariant at every order rather than only at k = 2.
+  Which numbering the estate should standardise on is a presentation decision
+  and is recorded under DECISIONS NEEDED, not decided here.
   * **It instantiates only at the reflections.** The theorem covers every
     automorphism, but the estate constructs no torus translation and no
     coordinate permutation, so there is nothing else to instantiate at. **The
