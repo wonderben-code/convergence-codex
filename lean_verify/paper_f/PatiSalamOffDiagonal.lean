@@ -74,6 +74,24 @@ will not be by any dimension count: the leptoquark reading is physics.
 `ℂ` half of this file overlaps prior work it did not find, and the overlap is discharged by proving
 the two descriptions equal rather than by softening either.
 
+**⚠ THE BLOCK SIZE GENERALISES, 2026-08-28, AND NOTHING HERE IS WITHDRAWN.**
+`BlockOffDiagonal.block_splits` proves `(p + q)² − 1 = (p² + q² − 1) + 2pq` over `Fin p ⊕ Fin q`,
+by the same accounting: `fromBlocks 0 B C 0` has zero diagonal blocks, so it is traceless for free,
+so the off-diagonal map is surjective, and rank–nullity does the rest. At `p = 3`, `q = 1` the
+summands are `9` and `6`; at `p = q = 2` they are `7` and `8`, so **the same space splits
+differently at a different block structure** — the decomposition is a property of the partition,
+not of the dimension.
+
+**NO TRANSPORT IS CLAIMED AND NONE IS BUILT.** That file works over `Fin p ⊕ Fin q`; this one over
+`Fin 4`. The index types at `p = 3, q = 1` are isomorphic and the dimensions agree, and **that is
+not a reason to call the theorems the same** — `ERRATUM 316` is this file's own record of what
+asserting an identification on the strength of a matching numeral costs. Neither file restates the
+other and neither is a duplicate.
+
+**§4 is NOT generalised.** The real, skew-Hermitian half is one block whose conjugate is the other,
+so its count is `2pq` real dimensions out of `pq` complex entries — a different computation, not
+done there and not done here.
+
 **No wall moves. No published tag moves**, and no claim here bears on the cascade's physical
 content.
 -/
