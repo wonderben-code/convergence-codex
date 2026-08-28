@@ -45,6 +45,16 @@ and only one side of it is a theorem. `TracelessSkewDimension.traceless 4` is no
 **"Subalgebra" is used in the weak sense** available to this estate: a subspace closed under
 `X, Y ↦ X * Y − Y * X`. No `LieSubalgebra` instance is built and no Lie theory is invoked.
 
+**⚠ THE DIMENSION RESTRICTION IS REMOVED 2026-08-28, and this file is kept as the `n = 4` case.**
+`SlAbelianGeneral` proves the same thing over `Fin p ⊕ Fin q` for every `p, q ≥ 2`: the strictly
+upper `p × q` block is a `p·q`-dimensional abelian subalgebra of `sl_{p+q}(ℂ)`, the Cartan is
+`p + q − 1`, and `p + q − 1 < p·q`. **So "abelian dimension ≤ rank" fails in `sl_n(ℂ)` for every
+`n ≥ 4`, by a margin of `(p−1)(q−1)`** — at `p = q` that is `n²/4` against `n − 1`, so the failure
+is not marginal. `abelian_exceeds_cartan_four` there is this file's `4 > 3`, recorded rather than
+reproved (`ERRATUM 313`); the two files build the same subspace over different index types and
+neither is a duplicate of the other. **Nothing about the compact form moves in either file**, and
+that asymmetry is now quantified on one side and still untouched on the other.
+
 **No wall moves. No published tag moves.**
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
