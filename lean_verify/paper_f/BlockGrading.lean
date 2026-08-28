@@ -89,6 +89,15 @@ no such claim**, and neither file bundles a `LieHom` or puts a `LieRing` on the 
 `oddPart`; it does not build a `LieRingModule` or a `LieModule` instance, and no theorem here says
 the odd part is a representation of the even part.
 
+**⚠ SUPERSEDED THE SAME DAY, `BlockOddModule`.** `oddMod` is the odd part as a
+`LieSubmodule ℂ ↥(evenLie p q) (Matrix …)`, and the `LieRingModule`/`LieModule` instances come
+from `LieSubalgebra.lieRingModule` and `LieSubalgebra.lieModule` with **nothing verified there
+either** — the only input is `lie_evenPart_oddPart` above. That file also computes the action:
+`⁅fromBlocks A 0 0 D, fromBlocks 0 B C 0⁆ = fromBlocks 0 (A·B − B·D) (D·C − C·A) 0`, and proves
+the two pieces complementary **in the lattice of `evenLie`-submodules**, which is what makes the
+grading a decomposition of representations. **Irreducibility is not proved there and is not
+begun.** This file's own statements are unchanged.
+
 **No root space decomposition, no Cartan subalgebra, no semisimplicity, no Killing form.** The
 grading is a two-step filtration by block position and nothing more. `SlFourAbelian` and
 `SlAbelianGeneral` remain the estate's only statements about abelian subspaces of `sl`, and they
