@@ -90,6 +90,21 @@
     of sl3 must be a 3 or a 3-bar plus a singlet. That is the
     representation theory this estate still does not have, and nothing
     begins it. The nonexistence theorem is NOT proved.
+
+    ** AND THE RANK CLAUSE IS NOW CHECKED, 2026-08-28.** The sentence
+    above says rank alone is not an obstruction inside sl4(C), "which
+    contains 4-dimensional abelian subalgebras (an off-diagonal 2x2
+    block)". That was prose about a witness nobody had built.
+    SlFourAbelian builds it: nilBlockRange is the strictly-upper 2x2
+    block, finrank_nilBlockRange = 4, nilBlock_mul_eq_zero makes every
+    product zero so nilBlockRange_bracket_mem closes it under the
+    bracket, and cartanRange is the diagonal traceless matrices with
+    finrank_cartanRange = 3. abelian_exceeds_cartan is 4 > 3: an
+    abelian subalgebra strictly larger than a Cartan, so
+    "abelian dimension <= rank" is false in sl4(C). The clause was
+    right. What is still NOT proved is the other side of the contrast
+    — that su(4), the compact form, has no abelian subspace above
+    dimension 3 — which needs maximal-torus theory and is not begun.
   * Nothing about groups, fermion representations, or the Weinberg
     angle. The successor file computes the Weinberg trace forms on the
     honest Pati–Salam representation, where SU(2)_L is a separate
