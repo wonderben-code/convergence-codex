@@ -118,12 +118,38 @@ theorem trace_surjective {n : ℕ} (hn : 0 < n) :
 /-- The traceless n×n complex matrices: ker(trace).
     This is sl_n(ℂ), the complexification of su(n).
     For the cascade (n=4), this is the 15-dimensional Lie algebra
-    containing su(3) ⊕ su(2) ⊕ u(1) as a subalgebra. -/
+    containing su(3) ⊕ su(2) ⊕ u(1) as a subalgebra.
+
+    ⚠ BOTH CLAUSES OF LINE 2 ARE NOW THEOREMS RATHER THAN PROSE, 2026-08-28.
+    "This is sl_n(ℂ)": BlockGrading.sl_toSubmodule is `rfl` -- TracelessMatrix n
+    IS the carrier of Mathlib's LieAlgebra.SpecialLinear.sl (Fin n) ℂ, and
+    ERRATUM 324 records what six headers denying it cost.
+    "the complexification of su(n)": TracelessRealSplit.sup_eq and inf_eq_bot give
+    the concrete form -- as a REAL space this is the internal direct sum of the
+    traceless anti-Hermitian matrices and their i-multiple, and
+    finrank_traceZeroSub reads 2(n^2 - 1). No tensor product is constructed. -/
 noncomputable def TracelessMatrix (n : ℕ) : Submodule ℂ (Matrix (Fin n) (Fin n) ℂ) :=
   LinearMap.ker (traceMap n)
 
 /-- dim(sl₄(ℂ)) = 15.
     The Lie algebra of SU(4), the cascade gauge group.
+
+    ⚠ LINE 2 CONFLATES A GROUP WITH A COMPLEXIFICATION, 2026-08-28 (ERRATUM 94:
+    quoted, not rewritten; ERRATUM 325 is the record). The Lie algebra of SU(4) is
+    su(4), which is REAL of real dimension 15; sl₄(ℂ) is the Lie algebra of
+    SL(4,ℂ), of COMPLEX dimension 15 and REAL dimension 30. The definition four
+    above says the right thing -- "sl_n(ℂ), the complexification of su(n)" -- so
+    this file states both readings within four definitions of each other.
+    TracelessRealSplit.finrank_four settles it: 30 against 15.
+
+    WHY NOTHING CAUGHT IT: the numeral 15 is a COMPLEX dimension in this theorem
+    and a REAL dimension in the sentence above it, so every check the estate ran --
+    all of them dimension checks -- agreed with both readings at once. That is
+    ERRATUM 325's pattern in its second guise, and ERRATUM 316's before that.
+
+    THE THEOREM IS TRUE AND IS NOT WITHDRAWN. It states
+    finrank ℂ (TracelessMatrix 4) = 15, which is correct; what is wrong is one
+    clause of the prose naming what that object is.
     PROOF: Rank-nullity on trace : M₄(ℂ) → ℂ.
     trace is surjective → dim(range) = 1 → dim(ker) = 16 - 1 = 15.
     GENUINE Mathlib proof using LinearMap.finrank_range_add_finrank_ker. -/
@@ -140,7 +166,11 @@ theorem traceless_dim_4 : Module.finrank ℂ (TracelessMatrix 4) = 15 := by
   change Module.finrank ℂ (LinearMap.ker (traceMap 4)) = 15; omega
 
 /-- dim(sl₃(ℂ)) = 8.
-    The Lie algebra of SU(3), the QCD gauge group (strong force). -/
+    The Lie algebra of SU(3), the QCD gauge group (strong force).
+
+    ⚠ SAME CONFLATION AS traceless_dim_4, SAME DATE (ERRATUM 325). su(3) is real of
+    real dimension 8; sl₃(ℂ) has complex dimension 8 and real dimension 16. The
+    theorem is true and is not withdrawn. -/
 theorem traceless_dim_3 : Module.finrank ℂ (TracelessMatrix 3) = 8 := by
   have h_rn := LinearMap.finrank_range_add_finrank_ker (traceMap 3)
   have h_total : Module.finrank ℂ (Matrix (Fin 3) (Fin 3) ℂ) = 9 := by
@@ -154,7 +184,11 @@ theorem traceless_dim_3 : Module.finrank ℂ (TracelessMatrix 3) = 8 := by
   change Module.finrank ℂ (LinearMap.ker (traceMap 3)) = 8; omega
 
 /-- dim(sl₂(ℂ)) = 3.
-    The Lie algebra of SU(2), the weak force gauge group. -/
+    The Lie algebra of SU(2), the weak force gauge group.
+
+    ⚠ SAME CONFLATION AS traceless_dim_4, SAME DATE (ERRATUM 325). su(2) is real of
+    real dimension 3; sl₂(ℂ) has complex dimension 3 and real dimension 6. The
+    theorem is true and is not withdrawn. -/
 -- GENERALISED 2026-08-28, and these three are kept: TracelessDimension.finrank_tracelessMatrix
 -- proves finrank C (TracelessMatrix n) = n^2 - 1 for every 0 < n, at an arbitrary finite index
 -- type (SlAbelianGeneral.tracelessSub) and not only at Fin n. These three theorems are correct,

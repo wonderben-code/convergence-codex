@@ -78,6 +78,13 @@ statement below.
 would make "real form" a theorem rather than a word — is **not proved here**; `smul_I_notMem` is
 the one-directional statement that `i` moves you out, and the decomposition is a different claim.
 
+**⚠ AND IT IS PROVED THE SAME DAY, `TracelessRealSplit`.** `sup_eq` and `inf_eq_bot`: the traceless
+matrices are the **internal real direct sum** of `tracelessSkewMat` and `HermitianNotLie
+.tracelessHerm`, which is `i · tracelessSkewMat`. `finrank_traceZeroSub` reads `2(n² − 1)`, so
+"real form" is now a dimension statement and not a word. **Still no tensor product is
+constructed** and no isomorphism to `su(n) ⊗_ℝ ℂ` is exhibited — the decomposition is the
+concrete content of the phrase, not the functor.
+
 **No physics.**
 
 **No wall moves. No published tag moves.**
