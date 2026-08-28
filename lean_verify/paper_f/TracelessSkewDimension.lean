@@ -154,7 +154,19 @@ theorem finrank_prod_3_2_1 :
 
 /-- **AND THE DIFFERENCE IS NINE**, which `F4_1e`'s next docstring reads as six leptoquarks plus
 three right-handed weak bosons. **That reading is not proved here**: this is `21 − 12`, and nothing
-in this file decomposes either space. -/
+in this file decomposes either space.
+
+**⚠ HALF SUPERSEDED 2026-08-28, kept as written (`ERRATUM 94`, `ERRATUM 315`), and WHICH half
+matters.** `PatiSalamOffDiagonal` decomposes the `su(4)` factor: `offDiagMap` reads a traceless
+`4 × 4` matrix's last column and last row, is surjective onto `(Fin 3 → ℂ) × (Fin 3 → ℂ)` because a
+purely off-diagonal matrix has zero diagonal and so is automatically traceless, and rank–nullity
+gives `15 = 9 + 6` with the kernel characterised as the block-diagonal part
+(`mem_ker_offDiagMap_iff`). **So the SIX is now a subspace rather than a subtraction.**
+
+**The other three are untouched**: they come from `su(2)_R ⊕ u(1)_{B−L}` minus hypercharge, a
+different computation in a different factor. **And the reading itself is still not proved** — that
+these six directions are leptoquark gauge bosons is physics, not a consequence of a dimension
+count, and nothing in either file mentions a particle or a decay. -/
 theorem finrank_prod_diff :
     Module.finrank ℝ (traceless 4 × traceless 2 × traceless 2)
       = Module.finrank ℝ
