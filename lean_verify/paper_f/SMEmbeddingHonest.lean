@@ -21,6 +21,19 @@
   estate formalises (sl_n(ℂ); ℂ for u(1)); every dimension count agrees
   with the compact real forms (dim_ℝ su(n) = dim_ℂ sl_n(ℂ)).
 
+  ⚠ THAT NAMING LICENCE IS NOW A THEOREM, AND SO IS ITS LIMIT, 2026-08-28.
+  The licence: dim_ℝ su(n) = dim_ℂ sl_n(ℂ) = n² − 1, from
+  TracelessSkewLie.finrank_tracelessSkewMat (real) against
+  TracelessDimension.finrank_tracelessSub (complex) — asserted here when this
+  file was written, proved since. The limit, which matters more:
+  TracelessRealSplit.finrank_four reads dim_ℝ sl₄(ℂ) = 30 against
+  dim_ℝ su(4) = 15, so the agreeing NUMBERS are not agreeing OBJECTS.
+  ERRATUM 325 is the record of three places in the estate where that
+  coincidence hid a false identification; this file's convention is not one of
+  them — it states the convention rather than relying on it silently — but the
+  sentence above is exactly the coincidence those three exploited, and it is
+  worth knowing that it now has both a proof and a counterweight.
+
   WHAT THIS FILE PROVES (exactly this, nothing more):
 
   1. `u1_eq_su3_add_su2` — THE OVERLAP: the u(1) image lies inside the

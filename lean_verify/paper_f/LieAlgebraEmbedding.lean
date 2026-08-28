@@ -461,7 +461,40 @@ theorem u1Embed_bracket (a b : ℂ) :
     with the 3 extra generators being Pati-Salam leptoquark bosons.
 
     This is the GENUINE proof that the Standard Model gauge algebra
-    embeds in su(4) as a Lie subalgebra — not just a linear subspace. -/
+    embeds in su(4) as a Lie subalgebra — not just a linear subspace.
+
+    ⚠ THAT LAST SENTENCE IS FALSE AND HAS BEEN MACHINE-CHECKED FALSE SINCE
+    2026-08-04 (ERRATA 36; ERRATUM 94: quoted, not rewritten). THIS FILE
+    CARRIED NO POINTER TO ITS OWN REFUTATION UNTIL 2026-08-28, which is the
+    defect being repaired here: a reader of this docstring had no way to reach
+    the correction. SMEmbeddingHonest proves, of THESE maps:
+      - u1_eq_su3_add_su2 -- the u(1) image lies inside the span of the other
+        two, so the "third direction" is not a third direction;
+      - assembly_not_injective and assembly_range_eq_eleven -- the assembled
+        linear map has a nonzero kernel and spans 11 dimensions, not 12;
+      - assembly_range_not_bracket_closed -- that 11-dimensional span is not a
+        Lie subalgebra;
+      - su3_su2_images_not_commuting -- the sl3 and sl2 images do NOT commute,
+        the blocks sharing row and column 2. Distinct factors of a direct sum
+        commute and a Lie morphism preserves that, so the assembly is not a Lie
+        homomorphism either.
+    SMLieHom (2026-08-28) sharpens the last point from "the images do not
+    commute" to no_lieHom_assembling: there is NO LieHom from
+    sl3(C) x sl2(C) x C to sl4(C) whose first two components are these maps.
+
+    EVERY THEOREM IN THIS FILE IS TRUE AND NONE IS WITHDRAWN, including the
+    three bracket-preservation results below: each map individually IS a
+    morphism of Lie algebras, and SMLieHom bundles all three as LieHoms with
+    those theorems as their map_lie' -- reproving nothing, since Ring.lie_def
+    makes them statements about Mathlib's bracket on the nose and
+    BlockGrading.sl_toSubmodule makes TracelessMatrix n the carrier of
+    LieAlgebra.SpecialLinear.sl (Fin n) C. What is false is only the reading of
+    the package as an embedding of the DIRECT SUM.
+
+    ALSO: "su(4)" here denotes sl4(C), which is complex of complex dimension
+    15; su(4) is real of real dimension 15 and TracelessRealSplit.finrank_four
+    separates them (ERRATUM 325, second family). SMEmbeddingHonest's naming
+    paragraph states the convention. -/
 theorem sm_embedding_theorem :
     Function.Injective su3EmbedRestricted ∧
     Function.Injective su2EmbedRestricted ∧
