@@ -47,6 +47,20 @@
   rather than by the compiler**, which is what a docstring's inability to fail
   typechecking guarantees.
 
+  ⚠ **BOTH THEOREMS NOW EXIST, AND THIS PARAGRAPH SAID NOTHING ABOUT IT UNTIL
+  2026-08-28.** The sentence above — *"Neither exists and neither is proved
+  here"* — was true when written and is **kept as written**, because it is the
+  record of the overclaim. What was missing is the forward pointer, and a
+  reader arriving here followed a dead end. The route it describes was walked
+  in three files: `PrismGreen` (the transport along `↥(lower V) ≃ V`, and both
+  blocks inverted), `PrismReflectedForm.reflectedForm_prism_eq` (the reflected
+  form as half the difference of two base-graph Green functions, at masses `m`
+  and `√(m² + 2)` — exactly the statement promised), and
+  `PrismStrict.reflectionPositive_prism_strict` (the strict inequality).
+  `PrismStrict`'s own header says the overclaim recorded here *"is discharged
+  by this line"*, and names the four-file chain. **The overclaim therefore
+  stands as a record and no longer as an outstanding debt.**
+
   WHAT THIS DOES NOT DO, and the first item is the honest answer to the
   question the previous file raised.
   * **THIS IS NOT A BRIDGE TO `TransferMatrix` OR `TransferGap`, and it does

@@ -49,6 +49,21 @@
     and **is not attempted here.** The overclaim recorded in
     `PrismTransfer`'s header therefore stands, with its leg shortened by
     three steps out of four.
+
+    ⚠ **THE FOURTH STEP WAS TAKEN, AND THIS FILE DID NOT SAY SO UNTIL
+    2026-08-28.** Everything in the bullet above was true when written and is
+    **kept as written**; what was missing is the forward pointer, and a
+    reader arriving at *"is not attempted here"* followed a dead end.
+    `PrismReflectedForm.reflectedForm_prism_eq` is the reindexing this bullet
+    calls mechanical, and `PrismStrict` supplies the strictness by the very
+    route named here — `PrismStrict.inv_sub_inv` is
+    `P⁻¹ − M⁻¹ = P⁻¹(M − P)M⁻¹`, and `PrismStrict.inv_sub_inv_posDef` closes
+    it at `M = P + 1 + 1`, with `PrismStrict.PosDef.mul_self` doing the work
+    that the "two commuting positive definite matrices" phrase was reaching
+    for. The end of the chain is
+    `PrismStrict.reflectionPositive_prism_strict`. **The leg is four steps out
+    of four**, and `MatrixLoewner.posDef_inv_le_inv` is still the only
+    NON-strict form — nothing above is withdrawn.
   * **Nothing about the reflection.** This file is linear algebra about two
     blocks; it does not mention `ReflectionPositive` and proves no positivity
     of any quadratic form in a reflected variable.
