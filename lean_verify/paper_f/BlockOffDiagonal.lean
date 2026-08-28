@@ -31,6 +31,14 @@ At `p = 3`, `q = 1` the two summands are `9` and `6`, which is the Pati–Salam 
 they are `7` and `8` in `sl(4,ℂ)`, so the same space splits differently at a different block
 structure — the decomposition is a property of the **partition**, not of the dimension.
 
+**⚠ THE FIRST SUMMAND IS NO LONGER ONLY A NUMBER, 2026-08-28.** `p² + q² − 1` above is described
+as the kernel's dimension and nothing more. `BlockDiagonalSplit.range_blockDiagMap_eq_ker` exhibits
+that kernel as the range of an injection from `tracelessSub (Fin p) × tracelessSub (Fin q) × ℂ`, so
+`finrank_ker_eq_sum` reads `(p² − 1) + (q² − 1) + 1` **as three exhibited spaces** rather than as
+arithmetic. The four-way decomposition of `sl(p+q)` is now `sl(p) ⊕ sl(q) ⊕ ℂ ⊕ (off-diagonal)`,
+every summand a named image or range. **No Lie theory is claimed there either** — the summands are
+called `sl(p)` and `sl(q)` in prose and nowhere in the statements.
+
 ## What is NOT claimed
 
 **No transport to `PatiSalamOffDiagonal` is claimed.** That file works over `Fin 4`; this one over
