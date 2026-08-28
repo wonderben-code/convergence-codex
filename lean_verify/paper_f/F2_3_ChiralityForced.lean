@@ -336,6 +336,30 @@ Concretely: M₂ has a natural decomposition into symmetric and antisymmetric:
   dim(Sym₂) = 3 (the SU(2) Lie algebra + identity, i.e., spin-1 + scalar)
   dim(Asym₂) = 1 (a single antisymmetric generator)
 
+⚠ THE PARENTHETICAL ON LINE 3 DESCRIBES A DIFFERENT DECOMPOSITION, 2026-08-28
+(ERRATUM 94: quoted, not rewritten; ERRATUM 325, third family). "Spin-1 plus
+scalar" is traceless ⊕ ℂ·I, the splitting of M₂(ℂ) by the TRACE; the line it
+annotates is the splitting by the TRANSPOSE. Both are 3 + 1 and they are NOT the
+same two spaces: TransposeSplit.symSub_ne_tracelessMatrix (the identity is
+symmetric and not traceless) and TransposeSplit.asymSub_ne_scalars (the
+antisymmetric generator is traceless and not a scalar). The gloss also does not
+add up on its own terms -- "the SU(2) Lie algebra + identity" is 3 + 1 = 4,
+attached to a space of dimension 3.
+
+WHY IT SURVIVED: TransposeSplit.same_dimensions -- the two decompositions have
+the same pair of dimensions, and until that file there was no space in this
+estate to compare. The four results below (sym_dim_2, asym_dim_2,
+sym_asym_total, transpose_eigenspaces) are arithmetic on numerals; sym_dim_2 is
+literally 2 * (2 + 1) / 2 = 3, and its own docstring fences the content as
+"standard linear algebra". They are true and are NOT withdrawn; what is
+corrected is the parenthetical. TransposeSplit now supplies symSub and asymSub
+as spaces, with finrank 3 and 1, so the two numerals below are dimensions of
+exhibited objects as well as integers.
+
+STILL NOT PROVED THERE: the general formula dim Sym_n = n(n+1)/2, and that
+traceless ⊕ ℂ·I is the SU(2)-EQUIVARIANT splitting -- no group acts anywhere in
+that file either.
+
 For the RIGHT-acting copy (which enters via transpose):
 - The transpose FIXES symmetric matrices: Aᵀ = A
 - The transpose NEGATES antisymmetric matrices: Aᵀ = -A
