@@ -45,6 +45,11 @@ in the statements already. What was genuinely missing — that the decomposition
 is proved in `BlockGrading` for the even/odd grading below, and is **still open** for the four-way
 splitting of the kernel (`blockDiagMap` is not yet known to be a Lie algebra morphism).
 
+**⚠ AND THE FOUR-WAY CASE CLOSED THE SAME DAY, `BlockLieMorphism`.** `blockDiagMap_lie` proves the
+intertwining equation, so the kernel's splitting respects the bracket too; `evenSlLie` is the
+kernel as a `LieSubalgebra` and `map_range_blockDiagMap` identifies it with `blockDiagMap`'s
+image. Nothing above is withdrawn — this file still states no bracket.
+
 ## What is NOT claimed
 
 **No transport to `PatiSalamOffDiagonal` is claimed.** That file works over `Fin 4`; this one over

@@ -43,6 +43,19 @@ decomposition**: nothing yet says `blockDiagMap` is a morphism of Lie algebras, 
 different theorem, it is not proved anywhere, and until it is, `sl(p) ⊕ sl(q) ⊕ ℂ` here remains a
 decomposition of a **module**.
 
+**⚠ AND NOW IT IS PROVED, 2026-08-28 — `BlockLieMorphism`.** `blockDiagMap_lie` is exactly the
+missing equation: `blockDiagMap` intertwines `prodBracket`, the componentwise bracket on
+`sl(p) × sl(q) × ℂ` **with the `ℂ` factor central**, with the bracket on matrices. It rests on
+`lie_blockDiagOf`, which says the two scalar shifts cancel out of both corners so the bracket
+never sees `c`, and `prodBracket_scalar` records that the `ℂ` component of every bracket is `0`.
+`evenSlLie` is this file's first summand as a `LieSubalgebra` and `map_range_blockDiagMap` shows
+`blockDiagMap`'s image is exactly its carrier. **So `sl(p) ⊕ sl(q) ⊕ ℂ` is a decomposition of a
+Lie subalgebra by a bracket-preserving injection**, and the sentence above is discharged. What the
+scalar direction is *not* is central in `sl(p+q)`: `lie_centreOf_offDiagOf` computes its adjoint
+action on the off-diagonal part as multiplication by `±(p+q)c`, which makes it `BlockGrading`'s
+grading element rather than a central one. **No `LieRing` instance is put on the product and no
+`LieHom` is bundled** — see that file's own fences.
+
 **No transport to any `Fin n` file**, and none is built — `PatiSalamOffDiagonal`,
 `SMEmbeddingHonest` and `ColourCommutant` all work over `Fin 4`.
 `SMEmbeddingHonest.colour_bl_finrank` exhibits colour ⊕ `B − L` as a `9`-dimensional subspace

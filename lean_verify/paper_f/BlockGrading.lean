@@ -80,6 +80,11 @@ the kernel; this file does not claim it is a morphism of Lie algebras, and `even
 identified with `sl(p) ⊕ sl(q) ⊕ ℂ` as a Lie algebra. `diag_mul_diag` is the fact that would drive
 such a proof and it is proved here, but the morphism is not built and the statement is not made.
 
+**⚠ THE PREDICTION HELD AND THE STATEMENT IS NOW MADE ELSEWHERE, 2026-08-28.** `BlockLieMorphism`
+proves `blockDiagMap_lie` from `lie_blockDiagOf`, which is `diag_mul_diag` plus the fact that a
+scalar shift is invisible to the bracket — the route this paragraph named. **This file still makes
+no such claim**, and neither file bundles a `LieHom` or puts a `LieRing` on the product.
+
 **No Lie module structure on the odd part.** `lie_evenPart_oddPart` says the bracket lands back in
 `oddPart`; it does not build a `LieRingModule` or a `LieModule` instance, and no theorem here says
 the odd part is a representation of the even part.
