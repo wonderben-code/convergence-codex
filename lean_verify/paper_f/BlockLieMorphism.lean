@@ -44,6 +44,17 @@ alternating law verified for the product, which is routine and is **not done her
 statement below is about matrices, where the bracket is Mathlib's, and `prodBracket` appears only
 as the thing `blockDiagMap` is shown to intertwine.
 
+**⚠ SUPERSEDED THE SAME DAY, AND THE REASON GIVEN WAS WRONG — `BlockLieHom`, 2026-08-28.** The
+structure exists: `Mathlib/Algebra/Lie/Prod.lean` gives a `LieRing` on a product, `ℂ` is a
+`LieRing` from its ring structure, and a `LieSubalgebra`'s subtype is one too, so
+`SlProd p q = sl(p) × sl(q) × ℂ` is a Lie algebra **with no verification by anyone here**. The
+Jacobi identity this paragraph offered as the price was paid once, generically, in the library.
+`BlockLieHom.prodBracket_eq` then proves `prodBracket` **is** that product bracket, and
+`prod_lie_scalar` derives the centrality of the `ℂ` factor from `ℂ` being commutative rather than
+from a choice made in this chain. **The sentence is kept as written** (`ERRATUM 94`); what it got
+wrong is not the absence — it never asserted one — but the implication that the work was
+outstanding when the library had done it, which is `ERRATUM 324`'s pattern in its mildest form.
+
 **`blockDiagMap` is not exhibited here as a `LieHom`.** The intertwining equation is proved; the
 bundled morphism is not built, because as of 2026-08-28 nothing in the estate puts a Lie structure
 on its domain to bundle it over. **Counted, not assumed** (`ERRATUM 324`):
@@ -51,6 +62,13 @@ on its domain to bundle it over. **Counted, not assumed** (`ERRATUM 324`):
 chain's three headers and none of them a declaration**. Mathlib's `LieHom` exists
 (`Mathlib/Algebra/Lie/Basic.lean`) and is not the obstacle; the missing input is the `LieRing` on
 `sl(p) × sl(q) × ℂ`.
+
+**⚠ AND SO IT IS NOW BUILT, `BlockLieHom`, the same day.** The count above was right and the
+diagnosis was right — the missing input was exactly the `LieRing` on the domain, and it came from
+one import. `BlockLieHom.blockDiagHom` is the bundled `SlProd p q →ₗ⁅ℂ⁆ sl(p+q)`, with **this
+file's `blockDiagMap_lie` as its `map_lie'` and `blockDiagMap` as its linear part, unchanged**;
+`blockDiagEquiv` is a `LieEquiv` onto its range at `0 < p`, `0 < q`, and
+`range_toSubmodule_eq_ker` puts that range at `BlockOffDiagonal.offDiagMap`'s kernel.
 
 **Nothing about `su(n)` and nothing over `ℝ`.** The grading element here is a complex multiple of a
 block-scalar matrix and is **not** skew-adjoint unless `c` is imaginary; no real form is taken and
