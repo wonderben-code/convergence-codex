@@ -155,6 +155,13 @@ theorem traceless_dim_3 : Module.finrank ℂ (TracelessMatrix 3) = 8 := by
 
 /-- dim(sl₂(ℂ)) = 3.
     The Lie algebra of SU(2), the weak force gauge group. -/
+-- GENERALISED 2026-08-28, and these three are kept: TracelessDimension.finrank_tracelessMatrix
+-- proves finrank C (TracelessMatrix n) = n^2 - 1 for every 0 < n, at an arbitrary finite index
+-- type (SlAbelianGeneral.tracelessSub) and not only at Fin n. These three theorems are correct,
+-- are cited across the estate, and are NOT withdrawn; traceless_dim_two_three_four records that
+-- they are instances of one statement rather than three separate facts. PROOF_STRATEGY §7 rule 3.
+-- The real skew-Hermitian analogue, TracelessSkewDimension.finrank_traceless_add, has been general
+-- since it was written; the complex side is the one that stayed at three cases.
 theorem traceless_dim_2 : Module.finrank ℂ (TracelessMatrix 2) = 3 := by
   have h_rn := LinearMap.finrank_range_add_finrank_ker (traceMap 2)
   have h_total : Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) = 4 := by
