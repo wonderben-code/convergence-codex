@@ -214,7 +214,35 @@ theorem hermitian_observables_dim :
 /-- Traceless Hermitian matrices = su(4) Lie algebra.
     dim = 4² - 1 = 15. These are the gauge observables.
 
-    Uses CascadeData.gauge_algebra_dim from CascadeFoundation. -/
+    Uses CascadeData.gauge_algebra_dim from CascadeFoundation.
+
+    ⚠ THE FIRST LINE IS FALSE AS WRITTEN, 2026-08-28 (ERRATUM 94: quoted, not
+    rewritten; ERRATUM 325 is the record). The traceless Hermitian matrices are
+    NOT a Lie algebra: the commutator of two Hermitian matrices is ANTI-Hermitian,
+    (AB − BA)ᴴ = BᴴAᴴ − AᴴBᴴ = BA − AB = −(AB − BA), so the space is not closed
+    under ⁅·,·⁆ at all. HermitianNotLie.tracelessHerm_not_lie_closed refutes it
+    with two explicit traceless Hermitian 2×2 matrices whose commutator leaves the
+    space, and HermitianNotLie.lie_eq_zero_of_lie_mem_hermSub shows the space is
+    closed exactly where it is abelian.
+
+    WHY IT SURVIVED, AND IT IS NOT CARELESSNESS: the two spaces have the SAME REAL
+    DIMENSION n² − 1, because multiplication by i is a real-linear bijection between
+    them (HermitianNotLie.map_tracelessHerm, finrank_eq_tracelessSkewMat). A
+    dimension check cannot tell them apart and a dimension check is all this estate
+    ever ran against the claim. That is ERRATUM 316's pattern -- right numeral,
+    wrong object -- in a file that predates the campaign.
+
+    WHAT IS TRUE, AND IT IS THE SENTENCE THIS ONE WAS REACHING FOR: su(n) is the
+    traceless ANTI-Hermitian matrices (TracelessSkewLie.tracelessSkewLie, a genuine
+    LieSubalgebra over ℝ), and the traceless Hermitian matrices are its image under
+    multiplication by i. They are closed under the PHYSICISTS' bracket i⁅·,·⁆
+    (HermitianNotLie.physBracket_mem), which is the convention this docstring is
+    written in, and multiplication by i intertwines the two operations
+    (HermitianNotLie.mulI_physBracket).
+
+    NOTHING BELOW IS WITHDRAWN. The theorem states arithmetic about
+    finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) and about numerals; it is true and its
+    proof is untouched. What was wrong is the prose that names the objects. -/
 theorem gauge_observables_su4 :
     -- su(4) = traceless Hermitian: dim 15 (from CascadeFoundation)
     finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) - 1 = 15 ∧
@@ -385,7 +413,15 @@ The cascade provides ALL inputs to the spectral action:
     For each spacetime direction μ, A_μ is a traceless Hermitian 4×4 matrix.
     Total gauge field parameters: 4 directions × 15 generators = 60.
 
-    Uses CascadeData.gauge_algebra_dim from CascadeFoundation. -/
+    Uses CascadeData.gauge_algebra_dim from CascadeFoundation.
+
+    ⚠ SAME CONFLATION AS gauge_observables_su4, SAME DATE (ERRATUM 325). These two
+    lines together identify su(4) with the traceless Hermitian matrices, and those
+    are not a Lie algebra. Under the physics convention the sentence is repairable
+    rather than wrong -- Hermitian generators with the bracket i⁅·,·⁆ -- and
+    HermitianNotLie proves both halves. The count 4 × 15 = 60 is unaffected: the two
+    spaces have the same dimension, which is exactly why the conflation was
+    invisible. The theorem below is arithmetic and is untouched. -/
 theorem gauge_field_in_algebra :
     -- su(4) has dim = 15 (from CascadeFoundation)
     finrank ℂ (Matrix (Fin 4) (Fin 4) ℂ) - 1 = 15 ∧
