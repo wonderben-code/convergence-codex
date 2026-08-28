@@ -74,6 +74,22 @@
     need representation/Cartan theory the estate does not have; what IS
     formalised is the strongest available refutation of these maps:
     their span is not even a Lie subalgebra.
+
+    ** HALF SUPERSEDED 2026-08-28, kept as written (ERRATUM 94).**
+    The clause "whose commutant in C^4 is abelian" is now PROVED, for
+    the block embedding this file uses, and it needed no representation
+    theory: ColourCommutant.mem_colourCommutant_iff computes the
+    commutant of su3EmbedFn's image from fourteen entry equations —
+    it is exactly diag(a,a,a,d), two-dimensional
+    (finrank_colourCommutant) — and colourCommutant_comm makes it
+    abelian. ColourCommutant.no_sl2_triple then rules out EVERY su(2)
+    commuting with this colour, by any maps whatever, not just the
+    three assembled here.
+    WHAT IS STILL MISSING is the other half of the argument above, and
+    it is named exactly: that a faithful 4-dimensional representation
+    of sl3 must be a 3 or a 3-bar plus a singlet. That is the
+    representation theory this estate still does not have, and nothing
+    begins it. The nonexistence theorem is NOT proved.
   * Nothing about groups, fermion representations, or the Weinberg
     angle. The successor file computes the Weinberg trace forms on the
     honest Pati–Salam representation, where SU(2)_L is a separate
