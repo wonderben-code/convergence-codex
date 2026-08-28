@@ -44,6 +44,14 @@ the real, skew-Hermitian version at `n = 4`, and generalising *that* would be a 
 a different argument — the real off-diagonal part is one block whose conjugate is the other, so the
 count is `2pq` real dimensions from `pq` complex entries, not the same computation.
 
+**⚠ THAT UNIT IS DONE, 2026-08-28 — `SkewBlockOffDiagonal`, and the prediction above held exactly.**
+`skew_block_splits` is `(p + q)² − 1 = (p² + q² − 1) + 2pq` over `ℝ`, and it needed the different
+argument this paragraph named: `skewOffDiagMap` reads **one** block, `skewOffDiagOf B = fromBlocks 0
+B (−Bᴴ) 0` is the section, and the `2pq` real dimensions come from `pq` complex entries rather than
+from two independent blocks. It also needed the skew-Hermitian dimension at an arbitrary index type,
+which did not exist and is proved there. **The two splits are the same arithmetic and are not the
+same theorem**, no comparison map between them is built, and neither file claims one.
+
 **No physics.** The kernel here is the block-diagonal traceless matrices as a subspace; whether its
 summands "are" colour and hypercharge is the reading `PatiSalamOffDiagonal` fences, and this file
 adds nothing to it.
