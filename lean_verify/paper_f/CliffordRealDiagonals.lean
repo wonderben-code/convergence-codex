@@ -46,6 +46,20 @@ computed nowhere, and that file says so itself in its own *"does not compute the
 named form"*. So the paragraph is half dead and half live, and reading it as wholly open — which is
 how it reads without this note — costs a search.
 
+**⚠ AND THE LIVE HALF WAS ALREADY DEAD WHEN THAT NOTE WAS WRITTEN — 2026-08-29 (`ERRATUM 329`).**
+*"The FIRST clause stands"* is **false**. `CliffordRealSignatures.sigPos_Q₁₂ = 1` and
+`sigNeg_Q₁₂ = 2` compute the signature of **this file's own `Q₁₂`**, which is
+`QextHyp CliffordAlgebraComplex.Q` — precisely *"`QextHyp` of Mathlib's `(0,1)` form"*. They go
+through `SignatureArithmetic.sigPos_QextHyp` / `sigNeg_QextHyp` (general in `Q`) and
+`sigPos_smul_sq` after rewriting Mathlib's `Q` as `(-1 : ℝ) • QuadraticMap.sq`. **That file is
+dated 18 August, nine days BEFORE the note above**, and its own header table has a row reading
+`| CliffordRealDiagonals.Q₁₂ | QextHyp (−x²) | (1,2) |` — **it names this file and this
+abbreviation.** This file mentions it nowhere. **Both sentences above are kept as written
+(`ERRATUM 94`)**: the original *"not proved here"* was true of THIS file when written and is still
+true of this file, and the 27 August note is correct that the paragraph was half dead. What is
+corrected is only *which* half — it is now wholly dead, and a note written to stop a reader
+searching sent them searching for something that was already on the shelf.
+
 **No published tag moves.**
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
