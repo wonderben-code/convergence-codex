@@ -145,16 +145,19 @@ theorem eigenvalues_massive_lt_of_not_colorable {Δ : ℕ} (hreg : G.IsRegularOf
 
 /-! ## 3. Hence the constant can be lowered, and the characterisation -/
 
-/-- **THE CONVERSE `LaplacianSharpEquality` DECLINED TO CLAIM.** A connected regular graph that is
-not two-colourable admits a strictly smaller constant in the Loewner order. -/
-theorem exists_lt_massive_le_smul_one [Nonempty V] {Δ : ℕ} (hreg : G.IsRegularOfDegree Δ)
-    (hG : G.Connected) (m : ℝ) (hcol : ¬ G.Colorable 2) :
-    ∃ c : ℝ, c < 2 * (Δ : ℝ) + m ^ 2 ∧ massive G m ≤ c • (1 : Matrix V V ℝ) := by
+/-- **THE PASSAGE FROM A STRICT EIGENVALUE BOUND TO A STRICT LOEWNER BOUND**, with the source of
+the strictness left as a hypothesis. Stated separately because two different arguments supply it:
+`exists_lt_massive_le_smul_one` below, and `LaplacianLoewnerDisconnected`'s component version,
+which needs no connectivity. Factoring it out is what keeps the second from copying this proof
+(`ERRATUM 337`). -/
+theorem exists_lt_massive_le_smul_one_of_eigenvalues_lt [Nonempty V] (m : ℝ) {c₀ : ℝ}
+    (hlt : ∀ j : V, (massive_isHermitian G m).eigenvalues j < c₀) :
+    ∃ c : ℝ, c < c₀ ∧ massive G m ≤ c • (1 : Matrix V V ℝ) := by
   classical
   set hH := massive_isHermitian G m with hHdef
   refine ⟨Finset.univ.sup' Finset.univ_nonempty hH.eigenvalues, ?_, ?_⟩
   · rw [Finset.sup'_lt_iff]
-    exact fun j _ => eigenvalues_massive_lt_of_not_colorable G hreg hG m hcol j
+    exact fun j _ => hlt j
   · refine Matrix.le_iff.mpr (Matrix.PosSemidef.of_dotProduct_mulVec_nonneg ?_ (fun x => ?_))
     · rw [Matrix.IsHermitian, Matrix.conjTranspose_eq_transpose_of_trivial]
       refine Matrix.IsSymm.sub ?_ (massive_isSymm G m)
@@ -171,6 +174,15 @@ theorem exists_lt_massive_le_smul_one [Nonempty V] {Δ : ℕ} (hreg : G.IsRegula
         fun j => Finset.le_sup' _ (Finset.mem_univ j)
       have := RayleighMatrix.quadForm_le_of_eigenvalues_le hH hmax (WithLp.toLp 2 x)
       rwa [inner_mv_eq, inner_self_eq] at this
+
+/-- **THE CONVERSE `LaplacianSharpEquality` DECLINED TO CLAIM.** A connected regular graph that is
+not two-colourable admits a strictly smaller constant in the Loewner order — the lemma above at the
+strictness §2 supplies. -/
+theorem exists_lt_massive_le_smul_one [Nonempty V] {Δ : ℕ} (hreg : G.IsRegularOfDegree Δ)
+    (hG : G.Connected) (m : ℝ) (hcol : ¬ G.Colorable 2) :
+    ∃ c : ℝ, c < 2 * (Δ : ℝ) + m ^ 2 ∧ massive G m ≤ c • (1 : Matrix V V ℝ) :=
+  exists_lt_massive_le_smul_one_of_eigenvalues_lt G m
+    (fun j => eigenvalues_massive_lt_of_not_colorable G hreg hG m hcol j)
 
 /-- **THE CHARACTERISATION IN THE LOEWNER ORDER.** For a connected regular graph, the constant
 `2Δ + m²` cannot be lowered **exactly when** the graph is two-colourable — the forward half being
