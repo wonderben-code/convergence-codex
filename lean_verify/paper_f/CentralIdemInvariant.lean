@@ -1,5 +1,6 @@
 import CliffordModelSplitCases
 import QuaternionCenter
+import IdempotentRankInvariant
 
 /-!
 # Split versus simple: the central-idempotent invariant
@@ -97,6 +98,21 @@ accounted for, and eight of the nine are theorems in this file:**
   would cap `M₄(ℍ)` at four orthogonal idempotents against `M₈(ℝ)`'s eight. Whether that closes it
   has not been checked.
 
+  > **CLOSED THE SAME DAY, AND THE BULLET IS KEPT UNCHANGED** (`ERRATUM 94`). The route above was
+  > taken and it went through exactly as described: `four_le_finrank_range` and everything under it
+  > now carry an arbitrary finite index type, `matrix4H_orthIdem_le_four` and
+  > `matrix8R_hasOrthIdem_eight` are the two instances, and
+  > `IdempotentRankInvariant.matrix4H_not_ringEquiv_matrix8R` separates them.
+  > **`isEmpty_ringEquiv_pos_six_neg_six`** is the Clifford statement.
+  > **The forecast is kept because it was a forecast** (`ERRATUM 194`): it named the missing step,
+  > the arithmetic and the instances, and it was written before anything compiled. That it was
+  > right is worth exactly as much as the record of it having been a guess at the time.
+
+**So the census is complete. All nine ranks are accounted for and every row is a theorem** — three
+isomorphic, four by the central-idempotent invariant, one by the square-zero invariant, one by the
+orthogonal-idempotent count. **Three invariants, and none of them is dimension**, which
+`finrank_clifford_sigForm_comm` rules out for every mirror pair at once.
+
 ## What this does NOT do, and it is a real limitation rather than a formality
 
 **It does not subsume `IdempotentRankInvariant`, and cannot.** That file separates `M₂(ℍ)` from
@@ -114,8 +130,11 @@ file needs only that a central idempotent exists on one side and that none does 
 **Nothing here is about simplicity.** *"Not a matrix ring"* is proved; *"not simple"* is not, and no
 Artin–Wedderburn statement is used or implied.
 
-**And neither invariant here reaches rank `6`**, which is the census's one open row and is stated
-above with its route rather than glossed.
+**And neither invariant here reaches rank `6`** — that row is closed by a THIRD invariant, the
+orthogonal-idempotent count of `IdempotentRankInvariant`, which this file imports rather than
+reproves. The three invariants are independent: the centre cannot see `M₂(ℍ)` against `M₄(ℝ)`, the
+square-zero test cannot see any two matrix rings apart, and the idempotent count needs a dimension
+bound proved separately for each base ring.
 
 ## WHAT THE ADVERSARIAL REVIEW CHANGED, RECORDED BECAUSE BOTH FINDINGS WERE THE SAME MISTAKE
 
@@ -458,6 +477,30 @@ theorem algEquiv_pos_four_neg_four :
   obtain ⟨g⟩ := CliffordModelTable.clifford_pos_four
   obtain ⟨h⟩ := CliffordModelTable.clifford_neg_four
   exact ⟨g.trans h.symm⟩
+
+/-- **`Cl(6,0;ℝ) ≇ Cl(0,6;ℝ)`** — `M₄(ℍ)` against `M₈(ℝ)`, both of real dimension `64`, and the
+last row of the census. **Neither invariant in this file can reach it**: neither side splits, so
+`matrix_onlyTrivialCentralIdem` gives both of them only trivial central idempotents; and both are
+matrix rings over a nontrivial base with two distinct indices, so `matrix_not_noSquareZero` gives
+both of them a square-zero element.
+
+What separates them is a **third** invariant, `IdempotentRankInvariant.HasOrthIdem` — how many
+pairwise-orthogonal nonzero idempotents summing to `1` a ring admits. `M₈(ℝ)` admits eight and
+`M₄(ℍ)` at most four, because over ℍ a nonzero idempotent's range has real dimension at least
+`dim_ℝ ℍ = 4`. That file's quaternionic step was stated at `M₂(ℍ)` on `ℍ²` and came off `Fin 2`
+on 2026-08-29 for exactly this row. -/
+theorem isEmpty_ringEquiv_pos_six_neg_six :
+    IsEmpty (CliffordAlgebra (sigForm 6 0) ≃+* CliffordAlgebra (sigForm 0 6)) := by
+  refine ⟨fun f => ?_⟩
+  obtain ⟨g⟩ := CliffordModelResidues.clifford_pos_six
+  obtain ⟨h⟩ := CliffordModelResidues.clifford_neg_six
+  exact IdempotentRankInvariant.matrix4H_not_ringEquiv_matrix8R.elim
+    ((g.symm.toRingEquiv.trans f).trans h.toRingEquiv)
+
+/-- The `ℝ`-algebra form of `isEmpty_ringEquiv_pos_six_neg_six`. -/
+theorem isEmpty_algEquiv_pos_six_neg_six :
+    IsEmpty (CliffordAlgebra (sigForm 6 0) ≃ₐ[ℝ] CliffordAlgebra (sigForm 0 6)) :=
+  ⟨fun φ => isEmpty_ringEquiv_pos_six_neg_six.elim φ.toRingEquiv⟩
 
 /-- **`Cl(8k,0;ℝ) ≅ Cl(0,8k;ℝ)` FOR EVERY `k`** — both are `M_{16^k}(ℝ)`. The general statement is
 free here, since `CliffordModelTable` proves both diagonals at every `k`. -/
