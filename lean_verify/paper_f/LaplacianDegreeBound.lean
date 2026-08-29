@@ -69,6 +69,15 @@ and the claim was written from the shape of the proof rather than from a computa
 > 2-regular and is not covered** — the eigenvector is the alternating vector, which needs the
 > length even — and nothing says whether the bound is attained there.
 > Found by reading `CycleLaplacianSpectrum`'s eigenvalue list at `k = N/2`, one unit later.
+>
+> **^^ AND THE WITHDRAWN SENTENCE IS NOW FALSE RATHER THAN UNCHECKED, the same day.**
+> `CycleSpectralBound.odd_cycle_lt` and `odd_cycle_green_not_attained`: on every **odd** cycle of
+> length at least five — 2-regular, so `Δ = 2` — a constant **strictly below** `4 + m²` already
+> dominates, so the bound is **not** attained there. **The withdrawal was right and is now known
+> to have been right**, which is a stronger thing than it was: the sentence claimed attainment on
+> every graph with all degrees `Δ`, and one family refutes that quantifier.
+> **What is still open is the positive question**: which regular graphs *do* attain it. The even
+> cycles are the only ones known to, and nothing here or there says more.
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/

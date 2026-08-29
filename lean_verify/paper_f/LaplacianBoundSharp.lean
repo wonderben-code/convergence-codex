@@ -55,6 +55,16 @@ graph with all degrees `Δ`. This is one family at one value of `Δ`. The odd cy
 is **not** covered — the alternating vector does not exist there, which is exactly why
 `alt_add_one` needs the length even — and nothing here says whether the bound is attained on it.
 
+> **^ THE ODD CYCLE IS SETTLED 2026-08-29 AND THE WITHDRAWN CLAIM IS NOW FALSE, NOT MERELY
+> UNCHECKED.** Paragraph kept as written (`ERRATUM 94`).
+> `CycleSpectralBound.odd_cycle_lt` and `odd_cycle_green_not_attained`: on every odd cycle of
+> length at least five there is a constant **strictly below** `4 + m²` that already dominates, so
+> the bound is **not** attained there. **Refuting attainment needed the opposite direction from
+> exhibiting it** — one eigenvector suffices to exhibit, and ruling it out needs the eigenvalue
+> list to be COMPLETE, which `CycleGreenFormula` supplied. What is refuted is the withdrawn
+> claim's quantifier; **which regular graphs do attain the bound is still open**, and the even
+> cycles remain the only ones known to.
+
 **It is not a claim about the whole spectrum.** `4 + m²` is exhibited as *an* eigenvalue and shown
 to be an upper bound for the Loewner comparison; that it is the **largest** eigenvalue is not
 stated, because the `iff` above delivers the sharpness without it.
