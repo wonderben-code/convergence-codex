@@ -46,6 +46,18 @@
   still open, still unclaimed. What has closed is the watchlist item's
   PLUMBING residue, which was named as plumbing.
 
+  CROSS-REFERENCE, ADDED 2026-08-29, AND IT SUPERSEDES NOTHING. Everything
+  below is at variance ONE, and this file never said otherwise or fenced the
+  other variances -- so this is a pointer, not an `ERRATUM 94` note, and no
+  sentence here was stale. `HermiteScaledHilbertBasis.hermiteBasisScaled` is
+  the same bundling at every σ ≠ 0, over `HermiteScaledComplete`'s scaled
+  orthogonality and completeness. It is worth knowing about here because
+  `TextbookSobolevScaled` reaches a scaled conclusion by transporting each
+  function back to variance one and invoking THIS basis; that route is not
+  withdrawn and still works. σ = 0 is genuinely excluded there rather than
+  merely unproved: `L²(δ₀)` is one-dimensional and admits no ℕ-indexed
+  orthonormal family.
+
   ABSENT FROM MATHLIB v4.29.1, probed by SHAPE and not by name (ERRATA
   40/42): there is no orthonormal basis or `HilbertBasis` of an
   L²-of-Gaussian anywhere upstream. `Mathlib/RingTheory/Polynomial/
