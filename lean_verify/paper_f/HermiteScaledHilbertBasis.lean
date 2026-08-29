@@ -50,6 +50,16 @@ basis are different statements**, and only the first survives the degeneration.
 `HermiteBessel.coeff` and re-derive Parseval. That dictionary is defined at variance one and is
 **not** transported here, so there is no scaled `repr_apply` and no scaled Parseval below.
 
+> **⚠ Superseded within the hour, 2026-08-29, by §4 of this same file.** `coeffSc` is the scaled
+> coefficient — **a different function from `HermiteBessel.coeff`, not a transport of it**, since
+> its integral is against `γ_σ` — and `repr_apply_scaled` and `parseval_scaled` are the dictionary
+> and the identity. The paragraph is kept (`ERRATUM 94`) because it was true of the file as first
+> written and because the reason it gives is still the right one: the variance-one dictionary is
+> **not** transported, and nothing below reuses it. **One asymmetry with the variance-one file is
+> worth naming**: there, Parseval off the basis is a *consistency check*, because
+> `HermiteParseval.parseval` proves it by hand as well. Here there is no hand proof to agree with,
+> so `parseval_scaled` rests on the bundling alone.
+
 **Nothing in `n` dimensions.** `HermitePiScaledComplete` has the completeness; the `HermitePi*`
 basis line is at variance one, and the scaled `n`-dimensional basis is not built here.
 
@@ -163,5 +173,50 @@ on the critical path, `mkOfOrthogonalEqBot` consuming `orthogonal_eq_bot` direct
 theorem span_dense (hσ : σ ≠ 0) :
     ⊤ ≤ (Submodule.span ℝ (Set.range (eHs σ))).topologicalClosure :=
   le_of_eq (Submodule.topologicalClosure_eq_top_iff.mpr (orthogonal_eq_bot hσ)).symm
+
+/-! ## 4. The coefficient dictionary and Parseval, at variance `σ` -/
+
+/-- The `n`-th **scaled** Hermite coefficient: the pairing against `Hₙ(σ⁻¹·)` in `L²(γ_σ)`,
+normalised by `n!`. The variance-one `HermiteBessel.coeff` is this at `σ = 1`, but it is a
+different function and is not reused — its integral is against `γ`, not `γ_σ`. -/
+noncomputable def coeffSc (σ : ℝ) (n : ℕ) (F : ℝ → ℝ) : ℝ :=
+  (∫ x, F x * (H n).eval (σ⁻¹ * x) ∂(gaussSc σ)) / (n.factorial : ℝ)
+
+theorem inner_HLs (σ : ℝ) (n : ℕ) (F : Lp ℝ 2 (gaussSc σ)) :
+    inner ℝ (HLs σ n) F = (n.factorial : ℝ) * coeffSc σ n (F : ℝ → ℝ) := by
+  have hFeq : (Lp.memLp F).toLp (F : ℝ → ℝ) = F := Lp.toLp_coeFn F (Lp.memLp F)
+  have h1 : inner ℝ (HLs σ n) F
+      = ∫ x, (H n).eval (σ⁻¹ * x) * (F : ℝ → ℝ) x ∂(gaussSc σ) := by
+    conv_lhs => rw [← hFeq]
+    simp only [HLs]
+    rw [inner_toLp_of]
+  rw [h1, coeffSc, mul_div_cancel₀ _ (Nat.cast_ne_zero.mpr n.factorial_ne_zero)]
+  exact integral_congr_ae (Filter.Eventually.of_forall fun x => mul_comm _ _)
+
+theorem repr_apply_scaled (hσ : σ ≠ 0) (F : Lp ℝ 2 (gaussSc σ)) (n : ℕ) :
+    ((hermiteBasisScaled hσ).repr F : ℕ → ℝ) n
+      = Real.sqrt (n.factorial : ℝ) * coeffSc σ n (F : ℝ → ℝ) := by
+  have hne := sqrt_factorial_ne_zero n
+  have key : (Real.sqrt (n.factorial : ℝ))⁻¹ * (n.factorial : ℝ)
+      = Real.sqrt (n.factorial : ℝ) := by
+    refine mul_left_cancel₀ hne ?_
+    rw [← mul_assoc, mul_inv_cancel₀ hne, one_mul, sqrt_factorial_mul_self]
+  rw [HilbertBasis.repr_apply_apply, hermiteBasisScaled_apply, eHs, real_inner_smul_left,
+    inner_HLs, ← mul_assoc, key]
+
+/-- **PARSEVAL AT VARIANCE `σ²`.** Read off the basis, exactly as the variance-one file reads its
+Parseval off `hermiteBasis` — and unlike that one this is **not** a re-derivation of anything:
+the estate has no hand proof of the scaled identity to check it against. -/
+theorem parseval_scaled (hσ : σ ≠ 0) (F : Lp ℝ 2 (gaussSc σ)) :
+    ‖F‖ ^ 2 = ∑' n : ℕ, (n.factorial : ℝ) * coeffSc σ n (F : ℝ → ℝ) ^ 2 := by
+  have h0 : ((2 : ℝ≥0∞).toReal) = ((2 : ℕ) : ℝ) := by norm_num
+  have hnorm := lp.norm_rpow_eq_tsum (p := (2 : ℝ≥0∞))
+    (by rw [h0]; norm_num) ((hermiteBasisScaled hσ).repr F)
+  rw [h0] at hnorm
+  simp only [Real.rpow_natCast] at hnorm
+  rw [← (hermiteBasisScaled hσ).repr.norm_map F, hnorm]
+  refine tsum_congr fun n => ?_
+  rw [repr_apply_scaled hσ, Real.norm_eq_abs, sq_abs, mul_pow,
+    Real.sq_sqrt (Nat.cast_nonneg _)]
 
 end HermiteScaledHilbertBasis
