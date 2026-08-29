@@ -50,6 +50,31 @@
     UNLOCK_WATCHLIST with this file as its trigger.
   * Completeness in L²(γ_σ) for σ ≠ 1 or in n dimensions (the same argument
     transfers; not done here).
+
+    ⚠ BOTH HALVES ARE NOW DONE, AND BY DIFFERENT FILES. The n-dimensional
+    half is `HermitePiComplete`, which reduces to the one-dimensional
+    `hermite_complete` twice. The variance half is
+    `HermiteScaledComplete.polynomials_complete_scaled` and
+    `hermite_complete_scaled`, added 2026-08-29 — and the sentence above was
+    right that "the same argument transfers", with one wrinkle it did not
+    foresee: the transported object is an L² function rather than a
+    differentiable one, so it is only AEStronglyMeasurable, and
+    `PoincareScaledBeyond.integral_scaled` asks for Measurable.
+    `HermiteScaledComplete.integral_scaled_ae` is that change of variables
+    with the hypothesis weakened. The scaled file also proves the
+    orthogonality and the norms, so
+    `hermite_complete_orthogonal_system_scaled` is the full analogue of item
+    6 below. The polynomial completeness holds at EVERY σ including σ = 0,
+    where the measure is δ₀ and orthogonality to the constant polynomial
+    already forces f 0 = 0; the Hermite form needs σ ≠ 0, where σ⁻¹ means
+    something. THE SENTENCE IS KEPT AS WRITTEN (ERRATUM 94): it is the
+    record of what was open, and it stays true of THIS file.
+
+    ⚠ STILL OPEN, AND NOT TO BE READ AS CLOSED BY THE ABOVE: the two
+    generalisations are independent and only one of them has been combined
+    with the other. The `HermitePi*` line is at variance one, and
+    `HermiteScaledComplete` is one-dimensional. **n dimensions at variance σ
+    is proved nowhere in this estate as of 2026-08-29.**
   * Anything about the spectral action. Unchanged, unproven.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.

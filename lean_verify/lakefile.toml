@@ -31,6 +31,7 @@ roots = [
 name = "PaperF"
 srcDir = "paper_f"
 roots = [
+  "HermiteScaledComplete",
   "TransposeDimension",
   "SuGradedLieAlgebra",
   "SMLieHom",
