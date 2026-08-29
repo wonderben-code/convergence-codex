@@ -89,13 +89,30 @@
     **`matrix_hasOrthIdem_card`** — `Mₘ(α)` admits `card m` — replaces
     two separate `fin_cases` computations, and items 2 and 6's witness
     for M₂(ℍ) are both instances of it.
-  * `leftMulVec`, `rightMul`, `four_le_finrank_range` and
-    `leftMulVec4`, `one_le_finrank_range4` carry an arbitrary finite
-    index type in `Type`. **The `4` in the quaternionic step is `dim_ℝ ℍ`
-    and never was about the index type**; the two entries of `Fin 2`
-    were used only in a pair of `Fin.sum_univ_two` rewrites that
+  * `leftMulVec`, `rightMul` and the dimension step carry an arbitrary
+    finite index type in `Type`. **The `4` in the quaternionic step is
+    `dim_ℝ ℍ` and never was about the index type**; the two entries of
+    `Fin 2` were used only in a pair of `Fin.sum_univ_two` rewrites that
     `Finset.sum_mul` does at any size. The universe restriction to
     `Type` is inherited from `orthIdem_card_le`'s `V`, not new here.
+  * **AND THEN THE BASE RING CAME OFF TOO, THE SAME DAY.** There were
+    TWO actions — `leftMulVec4` over ℝ and `leftMulVec` over ℍ, five
+    duplicated lemmas each — and neither used its base ring.
+    **`finrank_le_finrank_range`** is the one dimension step, over any
+    division algebra `D` that is finite-dimensional over a central ℝ:
+    the range of a nonzero idempotent has real dimension at least
+    `dim_ℝ D`. `four_le_finrank_range` is its `D = ℍ` instance and keeps
+    its name because other files cite it. **`one_le_finrank_range4` is
+    NOT an instance and says so**: over ℝ the same bound holds with no
+    idempotency hypothesis, which is strictly stronger.
+  * So **`matrixD_orthIdem_le_card`** caps `Mₘ(D)` at `card m` for every
+    such `D`, and ℝ, ℂ and ℍ are three named instances. **The estate had
+    the ℂ one nowhere**, and it is what makes the complex Clifford
+    classification a classification rather than a list of isomorphisms.
+  * **`card_eq_of_ringEquiv`** is the invariant as a size theorem: a
+    RING isomorphism `Mₘ(D) ≃+* Mₘ'(D')` forces `card m = card m'`,
+    across different division algebras and with nothing ℝ-linear
+    assumed.
   * So **`matrixR_orthIdem_le_card`** and **`matrixH_orthIdem_le_card`**
     cap both families at `card m`, and **`orthIdem_card_pinned`** pins
     the invariant on EVERY real and quaternionic matrix algebra rather
@@ -115,6 +132,7 @@ import Mathlib.Data.Matrix.Basis
 import Mathlib.LinearAlgebra.Trace
 import Mathlib.LinearAlgebra.Projection
 import Mathlib.LinearAlgebra.FiniteDimensional.Basic
+import Mathlib.LinearAlgebra.Complex.FiniteDimensional
 import CliffordRealMinkowski
 import CliffordRealMajorana
 
@@ -282,178 +300,94 @@ instantiation at `d = 1` — over ℝ the quaternionic dimension step is
 replaced by the triviality that a nonzero endomorphism has a nonzero
 range. -/
 
-section MatrixRBound
+section MatrixDBound
 
-variable {m : Type} [Fintype m]
-
-/-- Left multiplication by a real matrix on `m → ℝ`. -/
-def leftMulVec4 (M : Matrix m m ℝ) : (m → ℝ) →ₗ[ℝ] (m → ℝ) where
-  toFun v := M *ᵥ v
-  map_add' x y := Matrix.mulVec_add M x y
-  map_smul' c x := Matrix.mulVec_smul M c x
-
-@[simp]
-theorem leftMulVec4_apply (M : Matrix m m ℝ) (v : m → ℝ) :
-    leftMulVec4 M v = M *ᵥ v := rfl
-
-theorem leftMulVec4_mul (M N : Matrix m m ℝ) :
-    leftMulVec4 (M * N) = leftMulVec4 M ∘ₗ leftMulVec4 N :=
-  LinearMap.ext fun v => (Matrix.mulVec_mulVec v M N).symm
-
-theorem leftMulVec4_one [DecidableEq m] : leftMulVec4 (1 : Matrix m m ℝ) = LinearMap.id :=
-  LinearMap.ext fun v => Matrix.one_mulVec v
-
-theorem leftMulVec4_add (M N : Matrix m m ℝ) :
-    leftMulVec4 (M + N) = leftMulVec4 M + leftMulVec4 N :=
-  LinearMap.ext fun v => Matrix.add_mulVec M N v
-
-theorem leftMulVec4_zero : leftMulVec4 (0 : Matrix m m ℝ) = 0 :=
-  LinearMap.ext fun v => Matrix.zero_mulVec v
-
-/-- The action bundled as an additive hom. -/
-def leftMulVec4Hom :
-    Matrix m m ℝ →+ ((m → ℝ) →ₗ[ℝ] (m → ℝ)) where
-  toFun := leftMulVec4
-  map_zero' := leftMulVec4_zero
-  map_add' := leftMulVec4_add
-
-theorem finrank_rm : Module.finrank ℝ (m → ℝ) = Fintype.card m := by simp
-
-theorem finrank_r4 : Module.finrank ℝ (Fin 4 → ℝ) = 4 := by simp
-
-/-- The real counterpart of `four_le_finrank_range`, and it is the easy
-    one: a NONZERO matrix acts nontrivially (some column is nonzero), so
-    its range is not the zero subspace. No idempotency is needed. -/
-theorem one_le_finrank_range4 (e : Matrix m m ℝ) (h0 : e ≠ 0) :
-    1 ≤ Module.finrank ℝ (LinearMap.range (leftMulVec4 e)) := by
-  classical
-  obtain ⟨i, j, hij⟩ : ∃ i j, e i j ≠ 0 := by
-    by_contra hc
-    push Not at hc
-    exact h0 (Matrix.ext fun a b => (hc a b).trans (Matrix.zero_apply a b).symm)
-  have hv : leftMulVec4 e (Pi.single j 1) ≠ 0 := by
-    intro hz
-    apply hij
-    have hzi := congrFun hz i
-    rw [leftMulVec4_apply, Matrix.mulVec_single] at hzi
-    simpa using hzi
-  have hbot : LinearMap.range (leftMulVec4 e) ≠ ⊥ := by
-    intro hb
-    apply hv
-    have hm : leftMulVec4 e (Pi.single j 1) ∈ LinearMap.range (leftMulVec4 e) :=
-      LinearMap.mem_range_self _ _
-    rw [hb, Submodule.mem_bot] at hm
-    exact hm
-  have hnz : Module.finrank ℝ (LinearMap.range (leftMulVec4 e)) ≠ 0 := fun hz =>
-    hbot (Submodule.finrank_eq_zero.mp hz)
-  omega
-
-/-- **`Mₘ(ℝ)` admits at most `card m`**, and with `matrix_hasOrthIdem_card` that pins the
-invariant on every real matrix algebra at once. -/
-theorem matrixR_orthIdem_le_card [DecidableEq m] {n : ℕ}
-    (h : HasOrthIdem (Matrix m m ℝ) n) : n ≤ Fintype.card m := by
-  have hb := orthIdem_card_le (leftMulVec4Hom (m := m)) leftMulVec4_mul leftMulVec4_one 1
-    (fun x _ h0 => one_le_finrank_range4 x h0) h
-  rw [finrank_rm] at hb
-  omega
-
-/-- **M₄(ℝ) admits at most four.** With `matrix4R_hasOrthIdem_four`
-    this pins the invariant's value at M₄(ℝ) to exactly four. -/
-theorem matrix4R_orthIdem_le_four {n : ℕ}
-    (h : HasOrthIdem (Matrix (Fin 4) (Fin 4) ℝ) n) : n ≤ 4 := by
-  simpa using matrixR_orthIdem_le_card h
-
-end MatrixRBound
-
-/-- **Hence so does Cl(3,1;ℝ)** — pulled back through the Majorana
-    isomorphism. A statement about the Clifford algebra itself,
-    obtained as a payoff of having the isomorphism bundled. -/
-theorem cliffordMajorana_hasOrthIdem_four :
-    HasOrthIdem (CliffordAlgebra CliffordRealMajorana.Q₃₁) 4 :=
-  HasOrthIdem.of_ringEquiv
-    (CliffordRealMajorana.cliffordMajoranaEquiv.symm.toRingEquiv)
-    matrix4R_hasOrthIdem_four
-
-/-! ## 4. The quaternionic side: M₂(ℍ) admits at most two -/
-
-section MatrixHBound
-
-/- Entrywise quaternion arithmetic. Linters silenced for the block,
-including `unreachableTactic`/`unnecessarySimpa`: the build's option set
-lets `simp` finish goals that bare `lake env lean` cannot, so the
-closing `ring` and the `simpa` witnesses are load-bearing under one
-configuration and flagged as redundant under the other. The file must
-compile under BOTH, so they stay. -/
+/- Entrywise quaternion arithmetic in one instance below. Linters silenced for
+the block, including `unreachableTactic`/`unnecessarySimpa`: the build's option
+set lets `simp` finish goals that bare `lake env lean` cannot, so the closing
+`ring` and the `simpa` witnesses are load-bearing under one configuration and
+flagged as redundant under the other. The file must compile under BOTH, so they
+stay. -/
 set_option linter.unusedSimpArgs false
 set_option linter.unnecessarySeqFocus false
 set_option linter.unreachableTactic false
 set_option linter.unusedTactic false
 set_option linter.unnecessarySimpa false
 
-variable {m : Type} [Fintype m]
-
 /-- ℝ is central in ℍ, so the real scalar action commutes with
-    quaternion multiplication. Mathlib does not find this by instance
-    search here, and `Matrix.mulVec_smul` needs it. -/
+    quaternion multiplication. Kept although `Algebra.to_smulCommClass` now
+    supplies it for every base below, because it was written when instance
+    search did not reach it here and removing it changes which instance the
+    elaborator picks. -/
 instance smulCommRealQuaternion : SMulCommClass ℝ ℍ[ℝ] ℍ[ℝ] where
   smul_comm c p q := by
     change c • (p * q) = p * (c • q)
     ext <;> simp <;> ring
 
-/-- Left multiplication by a quaternionic matrix on `m → ℍ`, as an
-    ℝ-linear endomorphism of a real space of dimension `4 * card m`.
-    The point of passing to ℝ is that all the dimension theory below is
-    then over a FIELD. -/
-def leftMulVec (M : Matrix m m ℍ[ℝ]) :
-    (m → ℍ[ℝ]) →ₗ[ℝ] (m → ℍ[ℝ]) where
+variable {D : Type} [DivisionRing D] [Algebra ℝ D] {m : Type} [Fintype m]
+
+/-- Left multiplication by a matrix over `D` on `m → D`, as an ℝ-linear
+    endomorphism. **The point of passing to ℝ is that all the dimension theory
+    below is then over a FIELD** — which is what lets `D` itself be
+    noncommutative.
+
+    **GENERALISED IN THE BASE RING 2026-08-29.** This was two definitions,
+    `leftMulVec4` over ℝ and `leftMulVec` over ℍ, with five duplicated lemmas
+    each. Nothing in either used its base ring. -/
+def leftMulVec (M : Matrix m m D) : (m → D) →ₗ[ℝ] (m → D) where
   toFun v := M *ᵥ v
   map_add' x y := Matrix.mulVec_add M x y
   map_smul' c x := Matrix.mulVec_smul M c x
 
 @[simp]
-theorem leftMulVec_apply (M : Matrix m m ℍ[ℝ]) (v : m → ℍ[ℝ]) :
+theorem leftMulVec_apply (M : Matrix m m D) (v : m → D) :
     leftMulVec M v = M *ᵥ v := rfl
 
-theorem leftMulVec_mul (M N : Matrix m m ℍ[ℝ]) :
+theorem leftMulVec_mul (M N : Matrix m m D) :
     leftMulVec (M * N) = leftMulVec M ∘ₗ leftMulVec N :=
   LinearMap.ext fun v => (Matrix.mulVec_mulVec v M N).symm
 
-theorem leftMulVec_one [DecidableEq m] : leftMulVec (1 : Matrix m m ℍ[ℝ]) = LinearMap.id :=
+theorem leftMulVec_one [DecidableEq m] : leftMulVec (1 : Matrix m m D) = LinearMap.id :=
   LinearMap.ext fun v => Matrix.one_mulVec v
 
-theorem leftMulVec_add (M N : Matrix m m ℍ[ℝ]) :
+theorem leftMulVec_add (M N : Matrix m m D) :
     leftMulVec (M + N) = leftMulVec M + leftMulVec N :=
   LinearMap.ext fun v => Matrix.add_mulVec M N v
 
-theorem leftMulVec_zero : leftMulVec (0 : Matrix m m ℍ[ℝ]) = 0 :=
+theorem leftMulVec_zero : leftMulVec (0 : Matrix m m D) = 0 :=
   LinearMap.ext fun v => Matrix.zero_mulVec v
 
 /-- The action bundled as an additive hom, so `map_sum` is available. -/
 def leftMulVecHom :
-    Matrix m m ℍ[ℝ] →+ ((m → ℍ[ℝ]) →ₗ[ℝ] (m → ℍ[ℝ])) where
+    Matrix m m D →+ ((m → D) →ₗ[ℝ] (m → D)) where
   toFun := leftMulVec
   map_zero' := leftMulVec_zero
   map_add' := leftMulVec_add
 
-/-- `ℍ^m` has real dimension `4 * card m`. -/
-theorem finrank_hm : Module.finrank ℝ (m → ℍ[ℝ]) = 4 * Fintype.card m := by
+/-- `Dᵐ` has real dimension `(dim_ℝ D) * card m`. -/
+theorem finrank_pi_div [FiniteDimensional ℝ D] :
+    Module.finrank ℝ (m → D) = Module.finrank ℝ D * Fintype.card m := by
   rw [Module.finrank_pi_fintype]
-  simp [Quaternion.finrank_eq_four, mul_comm]
+  simp [mul_comm]
 
-/-- ℍ² has real dimension 8. -/
+/-- ℍ² has real dimension 8 — the instance at `D = ℍ`, `m = Fin 2`. -/
 theorem finrank_h2 : Module.finrank ℝ (Fin 2 → ℍ[ℝ]) = 8 := by
-  simpa using finrank_hm (m := Fin 2)
+  rw [finrank_pi_div]
+  simp [Quaternion.finrank_eq_four]
 
-/-- Right multiplication of a vector of quaternions by a quaternion.
-    ℝ-linear because ℝ is central in ℍ, and the reason a nonzero range
-    cannot be small. -/
-def rightMul (v : m → ℍ[ℝ]) : ℍ[ℝ] →ₗ[ℝ] (m → ℍ[ℝ]) where
+/-- ℝ⁴ has real dimension 4 — the instance at `D = ℝ`, `m = Fin 4`. -/
+theorem finrank_r4 : Module.finrank ℝ (Fin 4 → ℝ) = 4 := by simp
+
+/-- Right multiplication of a vector over `D` by an element of `D`.
+    ℝ-linear because ℝ is central, and the reason a nonzero range cannot be
+    small. -/
+def rightMul (v : m → D) : D →ₗ[ℝ] (m → D) where
   toFun q := fun i => v i * q
   map_add' q r := funext fun i => by simp [mul_add]
   map_smul' c q := funext fun i => by simpa using mul_smul_comm c (v i) q
 
 omit [Fintype m] in
-theorem rightMul_injective {v : m → ℍ[ℝ]} (hv : v ≠ 0) :
+theorem rightMul_injective {v : m → D} (hv : v ≠ 0) :
     Function.Injective (rightMul v) := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
   intro q hq
@@ -464,28 +398,31 @@ theorem rightMul_injective {v : m → ℍ[ℝ]} (hv : v ≠ 0) :
   have h1 : v i * q = 0 := congrFun hq i
   exact (mul_eq_zero_iff_left hi).mp h1
 
-/-- **The quaternionic dimension step.** A nonzero idempotent matrix
-    over ℍ has a range of real dimension at least 4 — the range contains
-    some v ≠ 0 and is stable under RIGHT multiplication by quaternions,
-    so it contains the image of the injective ℝ-linear map q ↦ v·q from
-    a 4-dimensional space. This is the step the textbook argument does
-    with ℍ-module rank; here it is ℝ-linear algebra plus the fact that
-    ℍ has no zero divisors.
+/-- **THE DIMENSION STEP.** A nonzero idempotent matrix over a finite-dimensional
+    real division algebra `D` has a range of real dimension at least `dim_ℝ D` —
+    the range contains some `v ≠ 0` and is stable under RIGHT multiplication by
+    `D`, so it contains the image of the injective ℝ-linear map `q ↦ v·q` from a
+    `dim_ℝ D`-dimensional space. This is the step the textbook argument does with
+    module rank over a noncommutative division ring; here it is ℝ-linear algebra
+    plus the fact that a division ring has no zero divisors.
 
-    **THE INDEX TYPE CAME OFF ON 2026-08-29** (`PROOF_STRATEGY` §7 rule 3). It was `Fin 2`, and
-    the only place the two entries were used was a pair of `Fin.sum_univ_two` rewrites that
-    `Finset.sum_mul` and the definition of `mulVec` do at any size. **The `4` is unchanged and is
-    not about `m`** — it is `dim_ℝ ℍ`. -/
-theorem four_le_finrank_range (e : Matrix m m ℍ[ℝ])
-    (he : e * e = e) (h0 : e ≠ 0) :
-    4 ≤ Module.finrank ℝ (LinearMap.range (leftMulVec e)) := by
+    **TWO HYPOTHESES CAME OFF ON 2026-08-29** (`PROOF_STRATEGY` §7 rule 3), and
+    the second is the interesting one. The index type was `Fin 2`, used only in a
+    pair of `Fin.sum_univ_two` rewrites that `Finset.sum_mul` does at any size.
+    **And the base ring was ℍ, with the `4` written as a literal** — it is
+    `dim_ℝ ℍ`, and the argument needs of ℍ only that it is a division ring,
+    finite-dimensional over ℝ, with ℝ central. So ℝ, ℂ and ℍ are three instances
+    of one theorem, and the estate had the first two nowhere. -/
+theorem finrank_le_finrank_range [FiniteDimensional ℝ D]
+    (e : Matrix m m D) (he : e * e = e) (h0 : e ≠ 0) :
+    Module.finrank ℝ D ≤ Module.finrank ℝ (LinearMap.range (leftMulVec e)) := by
   classical
   obtain ⟨i, j, hij⟩ : ∃ i j, e i j ≠ 0 := by
     by_contra hc
     push Not at hc
     exact h0 (Matrix.ext fun a b => (hc a b).trans (Matrix.zero_apply a b).symm)
-  set w : m → ℍ[ℝ] := Pi.single j 1 with hw
-  set v : m → ℍ[ℝ] := e *ᵥ w with hv
+  set w : m → D := Pi.single j 1 with hw
+  set v : m → D := e *ᵥ w with hv
   have hvi : v i = e i j := by
     rw [hv, hw, Matrix.mulVec_single]
     simp
@@ -502,21 +439,86 @@ theorem four_le_finrank_range (e : Matrix m m ℍ[ℝ])
       simpa [Matrix.mulVec, dotProduct] using h3
     change (e *ᵥ fun k => v k * q) a = v a * q
     rw [h1, h2]
-  have hrk : Module.finrank ℝ (LinearMap.range (rightMul v)) = 4 := by
-    rw [LinearMap.finrank_range_of_inj (rightMul_injective hvne),
-      Quaternion.finrank_eq_four]
-  calc 4 = Module.finrank ℝ (LinearMap.range (rightMul v)) := hrk.symm
+  have hrk : Module.finrank ℝ (LinearMap.range (rightMul v)) = Module.finrank ℝ D :=
+    LinearMap.finrank_range_of_inj (rightMul_injective hvne)
+  calc Module.finrank ℝ D = Module.finrank ℝ (LinearMap.range (rightMul v)) := hrk.symm
     _ ≤ Module.finrank ℝ (LinearMap.range (leftMulVec e)) :=
         Submodule.finrank_mono hsub
 
-/-- **`Mₘ(ℍ)` admits at most `card m`** pairwise-orthogonal nonzero idempotents summing to 1 —
-`4 * n ≤ 4 * card m`, the two fours being `dim_ℝ ℍ` on both sides. -/
-theorem matrixH_orthIdem_le_card [DecidableEq m] {n : ℕ}
-    (h : HasOrthIdem (Matrix m m ℍ[ℝ]) n) : n ≤ Fintype.card m := by
-  have hb := orthIdem_card_le (leftMulVecHom (m := m)) leftMulVec_mul leftMulVec_one 4
-    (fun x hx h0 => four_le_finrank_range x hx h0) h
-  rw [finrank_hm] at hb
+/-- **The quaternionic step, at `D = ℍ`.** The statement this file carried before
+    the base ring came off, kept as the instance it now is (`ERRATUM 201`) and
+    because other files cite it by name. -/
+theorem four_le_finrank_range (e : Matrix m m ℍ[ℝ])
+    (he : e * e = e) (h0 : e ≠ 0) :
+    4 ≤ Module.finrank ℝ (LinearMap.range (leftMulVec e)) := by
+  have h := finrank_le_finrank_range e he h0
+  rwa [Quaternion.finrank_eq_four] at h
+
+/-- The real counterpart, and it is the easy one: a NONZERO matrix acts
+    nontrivially (some column is nonzero), so its range is not the zero
+    subspace. **No idempotency is needed, which is why this is NOT the instance
+    of `finrank_le_finrank_range` at `D = ℝ`** — it is a strictly stronger
+    statement in the one place the general theorem is weakest. -/
+theorem one_le_finrank_range4 (e : Matrix m m ℝ) (h0 : e ≠ 0) :
+    1 ≤ Module.finrank ℝ (LinearMap.range (leftMulVec e)) := by
+  classical
+  obtain ⟨i, j, hij⟩ : ∃ i j, e i j ≠ 0 := by
+    by_contra hc
+    push Not at hc
+    exact h0 (Matrix.ext fun a b => (hc a b).trans (Matrix.zero_apply a b).symm)
+  have hv : leftMulVec e (Pi.single j 1) ≠ 0 := by
+    intro hz
+    apply hij
+    have hzi := congrFun hz i
+    rw [leftMulVec_apply, Matrix.mulVec_single] at hzi
+    simpa using hzi
+  have hbot : LinearMap.range (leftMulVec e) ≠ ⊥ := by
+    intro hb
+    apply hv
+    have hm : leftMulVec e (Pi.single j 1) ∈ LinearMap.range (leftMulVec e) :=
+      LinearMap.mem_range_self _ _
+    rw [hb, Submodule.mem_bot] at hm
+    exact hm
+  have hnz : Module.finrank ℝ (LinearMap.range (leftMulVec e)) ≠ 0 := fun hz =>
+    hbot (Submodule.finrank_eq_zero.mp hz)
   omega
+
+/-- **`Mₘ(D)` ADMITS AT MOST `card m`**, for every finite-dimensional real
+    division algebra `D`. The two `dim_ℝ D` factors cancel: the family costs
+    `n * dim_ℝ D` and the space has `dim_ℝ D * card m`. -/
+theorem matrixD_orthIdem_le_card [DecidableEq m] [FiniteDimensional ℝ D] {n : ℕ}
+    (h : HasOrthIdem (Matrix m m D) n) : n ≤ Fintype.card m := by
+  have hb := orthIdem_card_le (leftMulVecHom (m := m) (D := D)) leftMulVec_mul leftMulVec_one
+    (Module.finrank ℝ D) (fun x hx h0 => finrank_le_finrank_range x hx h0) h
+  rw [finrank_pi_div] at hb
+  have hpos : 0 < Module.finrank ℝ D := Module.finrank_pos
+  calc n = n * Module.finrank ℝ D / Module.finrank ℝ D := by
+        rw [Nat.mul_div_cancel _ hpos]
+    _ ≤ Module.finrank ℝ D * Fintype.card m / Module.finrank ℝ D := Nat.div_le_div_right hb
+    _ = Fintype.card m := by
+        rw [Nat.mul_div_cancel_left _ hpos]
+
+/-- **`Mₘ(ℝ)` admits at most `card m`** — the instance at `D = ℝ`. -/
+theorem matrixR_orthIdem_le_card [DecidableEq m] {n : ℕ}
+    (h : HasOrthIdem (Matrix m m ℝ) n) : n ≤ Fintype.card m :=
+  matrixD_orthIdem_le_card h
+
+/-- **`Mₘ(ℂ)` admits at most `card m`** — the instance at `D = ℂ`, which this
+    estate did not have and which the complex classification needs. -/
+theorem matrixC_orthIdem_le_card [DecidableEq m] {n : ℕ}
+    (h : HasOrthIdem (Matrix m m ℂ) n) : n ≤ Fintype.card m :=
+  matrixD_orthIdem_le_card h
+
+/-- **`Mₘ(ℍ)` admits at most `card m`** — the instance at `D = ℍ`. -/
+theorem matrixH_orthIdem_le_card [DecidableEq m] {n : ℕ}
+    (h : HasOrthIdem (Matrix m m ℍ[ℝ]) n) : n ≤ Fintype.card m :=
+  matrixD_orthIdem_le_card h
+
+/-- **M₄(ℝ) admits at most four.** With `matrix4R_hasOrthIdem_four`
+    this pins the invariant's value at M₄(ℝ) to exactly four. -/
+theorem matrix4R_orthIdem_le_four {n : ℕ}
+    (h : HasOrthIdem (Matrix (Fin 4) (Fin 4) ℝ) n) : n ≤ 4 := by
+  simpa using matrixR_orthIdem_le_card h
 
 /-- **M₂(ℍ) admits at most two** — the instance at `m = Fin 2`. -/
 theorem matrix2H_orthIdem_le_two {n : ℕ}
@@ -546,7 +548,7 @@ theorem matrix2H_hasOrthIdem_two :
     matrix_hasOrthIdem_card
   simpa using h
 
-end MatrixHBound
+end MatrixDBound
 
 /-! ## 5. The obstruction, and the two Clifford algebras -/
 
@@ -578,6 +580,22 @@ theorem clifford13_not_algEquiv_clifford31 :
       CliffordAlgebra CliffordRealMajorana.Q₃₁) :=
   ⟨fun φ => clifford13_not_ringEquiv_clifford31.elim φ.toRingEquiv⟩
 
+/-- **THE INVARIANT AS A SIZE THEOREM: A RING ISOMORPHISM BETWEEN MATRIX ALGEBRAS OVER REAL
+    DIVISION ALGEBRAS FORCES THE INDEX TYPES TO HAVE THE SAME SIZE.** The two bases need not be the
+    same division algebra, and nothing here is ℝ-linear: `Mₘ(ℝ) ≃+* Mₘ'(ℍ)` already forces
+    `card m = card m'`. Both directions of `matrix_hasOrthIdem_card` are used, transported across
+    the isomorphism and back, against `matrixD_orthIdem_le_card` on each side. -/
+theorem card_eq_of_ringEquiv {D D' : Type} [DivisionRing D] [Algebra ℝ D] [FiniteDimensional ℝ D]
+    [DivisionRing D'] [Algebra ℝ D'] [FiniteDimensional ℝ D']
+    {m m' : Type} [Fintype m] [Fintype m']
+    (φ : Matrix m m D ≃+* Matrix m' m' D') : Fintype.card m = Fintype.card m' := by
+  classical
+  have h1 : HasOrthIdem (Matrix m' m' D') (Fintype.card m) :=
+    HasOrthIdem.of_ringEquiv φ matrix_hasOrthIdem_card
+  have h2 : HasOrthIdem (Matrix m m D) (Fintype.card m') :=
+    HasOrthIdem.of_ringEquiv φ.symm matrix_hasOrthIdem_card
+  exact Nat.le_antisymm (matrixD_orthIdem_le_card h1) (matrixD_orthIdem_le_card h2)
+
 /-- **M₄(ℍ) ≇ M₈(ℝ)** — two 64-dimensional real algebras, the rank-`6` mirror pair of the
     Clifford census, which the central-idempotent invariant cannot reach because NEITHER of them
     splits. Here the counts differ: `M₈(ℝ)` admits eight orthogonal nonzero idempotents and
@@ -603,10 +621,10 @@ one would contradict the corresponding attained witness. -/
     would then give 4·2 ≤ 4 against `matrix4R_hasOrthIdem_four`. -/
 theorem not_two_le_finrank_range4 :
     ¬ (∀ x : Matrix (Fin 4) (Fin 4) ℝ, x * x = x → x ≠ 0 →
-      2 ≤ Module.finrank ℝ (LinearMap.range (leftMulVec4 x))) := by
+      2 ≤ Module.finrank ℝ (LinearMap.range (leftMulVec x))) := by
   intro hd
-  have hb := orthIdem_card_le (leftMulVec4Hom (m := Fin 4)) leftMulVec4_mul leftMulVec4_one 2 hd
-    matrix4R_hasOrthIdem_four
+  have hb := orthIdem_card_le (leftMulVecHom (m := Fin 4) (D := ℝ)) leftMulVec_mul
+    leftMulVec_one 2 hd matrix4R_hasOrthIdem_four
   rw [finrank_r4] at hb
   omega
 
@@ -618,8 +636,8 @@ theorem not_five_le_finrank_range :
     ¬ (∀ x : Matrix (Fin 2) (Fin 2) ℍ[ℝ], x * x = x → x ≠ 0 →
       5 ≤ Module.finrank ℝ (LinearMap.range (leftMulVec x))) := by
   intro hd
-  have hb := orthIdem_card_le (leftMulVecHom (m := Fin 2)) leftMulVec_mul leftMulVec_one 5 hd
-    matrix2H_hasOrthIdem_two
+  have hb := orthIdem_card_le (leftMulVecHom (m := Fin 2) (D := ℍ[ℝ])) leftMulVec_mul
+    leftMulVec_one 5 hd matrix2H_hasOrthIdem_two
   rw [finrank_h2] at hb
   omega
 

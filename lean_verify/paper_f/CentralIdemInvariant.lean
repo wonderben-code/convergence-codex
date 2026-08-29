@@ -130,6 +130,29 @@ file needs only that a central idempotent exists on one side and that none does 
 **Nothing here is about simplicity.** *"Not a matrix ring"* is proved; *"not simple"* is not, and no
 Artin–Wedderburn statement is used or implied.
 
+## The complex side, added the same day: a classification rather than a list
+
+`CliffordEvenLadder` and `CliffordOddLadder` identify every complex Clifford algebra. **They do not
+say the answers are different from each other**, which is the same gap `W7` item 3 recorded on the
+odd case. Two thirds of it close here, and the third is named rather than glossed.
+
+* **`cliffordEven_ringEquiv_eq`** — `Cl_{2k}(ℂ) ≃+* Cl_{2l}(ℂ)` forces `k = l`, quantified over
+  arbitrary nondegenerate forms on arbitrary complex spaces. Through
+  `IdempotentRankInvariant.card_eq_of_ringEquiv`, which is the orthogonal-idempotent count as a
+  size theorem and needed the `D = ℂ` instance the estate did not have.
+* **`cliffordEven_isEmpty_ringEquiv_cliffordOdd`** — no even rank is ring-isomorphic to any odd
+  rank, at **any** pair of ranks. The even one is a matrix algebra and has only trivial central
+  idempotents; the odd one splits. **No dimension is compared**, so this holds where the two
+  dimensions are wildly different and equally where they are close.
+* **NOT PROVED HERE: odd against odd.** `Cl_{2k+1}(ℂ) ≅ M_{2^k}(ℂ) × M_{2^k}(ℂ)`, and the size
+  theorem above is about matrix algebras, not about products of them. **The route is named and not
+  attempted, and no cost is claimed** (`ERRATUM 246`, `ERRATUM 204`): `HasOrthIdem` needs a product
+  clause — that `A × B` admits `p + q` when `A` admits `p` and `B` admits `q`, by
+  `(eᵢ, 0)` and `(0, fⱼ)`, and at most that, by representing `A × B` on `V × W` through
+  `LinearMap.prodMap`. Whether that closes the odd case has not been checked. Until it is,
+  **`Cl_n(ℂ) ≅ Cl_m(ℂ) ↔ n = m` is not a theorem of this estate** — what is proved is that clause
+  for even against even and for even against odd.
+
 **And neither invariant here reaches rank `6`** — that row is closed by a THIRD invariant, the
 orthogonal-idempotent count of `IdempotentRankInvariant`, which this file imports rather than
 reproves. The three invariants are independent: the centre cannot see `M₂(ℍ)` against `M₄(ℝ)`, the
@@ -340,6 +363,45 @@ theorem cliffordRfOdd_isEmpty_algEquiv_matrixC (k : ℕ) {n : Type*} [Fintype n]
   obtain ⟨g⟩ := CliffordOddLadder.cliffordRfOdd k
   exact ⟨fun φ => (isEmpty_ringEquiv_matrix_of_prod (D := ℂ) (n := n) g.toRingEquiv
     onlyTrivialCentralIdem_of_isDomain).elim φ.toRingEquiv⟩
+
+/-! ### The complex classification, as a classification rather than a list -/
+
+/-- **`Cl_{2k}(ℂ) ≅ Cl_{2l}(ℂ)` AS RINGS FORCES `k = l`.** Both are matrix algebras over ℂ, of
+sizes `2^k` and `2^l`, and `IdempotentRankInvariant.card_eq_of_ringEquiv` says a ring isomorphism
+between matrix algebras over real division algebras forces equal index size. **Quantified over
+arbitrary nondegenerate forms on arbitrary complex spaces**, not over the ladder's own model. -/
+theorem cliffordEven_ringEquiv_eq {k l : ℕ} {V W : Type*} [AddCommGroup V] [Module ℂ V]
+    [FiniteDimensional ℂ V] [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
+    (hV : Module.finrank ℂ V = 2 * k) (hW : Module.finrank ℂ W = 2 * l)
+    {Q : QuadraticForm ℂ V} {R : QuadraticForm ℂ W}
+    (hQ : (QuadraticMap.associated (R := ℂ) Q).SeparatingLeft)
+    (hR : (QuadraticMap.associated (R := ℂ) R).SeparatingLeft)
+    (φ : CliffordAlgebra Q ≃+* CliffordAlgebra R) : k = l := by
+  obtain ⟨g⟩ := CliffordEvenLadder.clifford_iso_of_nondegenerate k hV Q hQ
+  obtain ⟨h⟩ := CliffordEvenLadder.clifford_iso_of_nondegenerate l hW R hR
+  have hcard : Fintype.card (Fin (2 ^ k)) = Fintype.card (Fin (2 ^ l)) :=
+    IdempotentRankInvariant.card_eq_of_ringEquiv (D := ℂ) (D' := ℂ)
+      ((g.symm.toRingEquiv.trans φ).trans h.toRingEquiv)
+  simpa using Nat.pow_right_injective (le_refl 2) (by simpa using hcard)
+
+/-- **NO EVEN-RANK COMPLEX CLIFFORD ALGEBRA IS RING-ISOMORPHIC TO AN ODD-RANK ONE**, at any pair
+of ranks and for any nondegenerate forms. The even one is a matrix algebra and so has only trivial
+central idempotents; the odd one splits and so does not. **No dimension is compared** — the ranks
+are unrelated and the statement holds when the dimensions are wildly different as well as when
+they are close. -/
+theorem cliffordEven_isEmpty_ringEquiv_cliffordOdd (k l : ℕ) {V W : Type*}
+    [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
+    [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
+    (hV : Module.finrank ℂ V = 2 * k) (hW : Module.finrank ℂ W = 2 * l + 1)
+    (Q : QuadraticForm ℂ V) (R : QuadraticForm ℂ W)
+    (hQ : (QuadraticMap.associated (R := ℂ) Q).SeparatingLeft)
+    (hR : (QuadraticMap.associated (R := ℂ) R).SeparatingLeft) :
+    IsEmpty (CliffordAlgebra Q ≃+* CliffordAlgebra R) := by
+  refine ⟨fun φ => ?_⟩
+  obtain ⟨g⟩ := CliffordEvenLadder.clifford_iso_of_nondegenerate k hV Q hQ
+  refine cliffordOdd_not_onlyTrivialCentralIdem l hW R hR ?_
+  exact OnlyTrivialCentralIdem.of_ringEquiv (g.symm.toRingEquiv.trans φ)
+    (matrix_onlyTrivialCentralIdem onlyTrivialCentralIdem_of_isDomain)
 
 /-! ## 5. The real mirror pairs, where no dimension count can help -/
 
