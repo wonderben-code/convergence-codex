@@ -1,46 +1,37 @@
 import RegularBipartiteSharp
-import TorusDecay
-import TorusBipartite
+import RegularSelfEmbedding
 
 /-!
 # The degree bound is exactly right on the periodic lattice, in every dimension
 
 `RegularBipartiteSharp` proved that a `Δ`-regular graph carrying a `±1` labelling that flips across
-every edge has `massive ≼ c·1` **iff** `2Δ + m² ≤ c`, and its header named the one step between
-that and the family this project's field actually lives on:
+every edge has `massive ≼ c·1` **iff** `2Δ + m² ≤ c`. The periodic lattice is two-colourable at
+even side length in every dimension (`TorusBipartite.torusGraph_colorable_two`) and is `2d`-regular
+at side length at least three (`RegularSelfEmbedding.torusGraph_isRegularOfDegree`), so both
+hypotheses hold there and **`massive_torus_le_smul_one_iff`** follows:
 
-> `TorusBipartite.torusGraph_colorable_two` proves the periodic lattice is two-colourable at even
-> side length **in every dimension** … What is missing is that `torusGraph d n` is `2d`-**regular**:
-> the estate has `TorusDecay.torusGraph_degree_le`, an inequality, and no equality.
+```
+massive (torusGraph d n) m ≼ c·1   ↔   4d + m² ≤ c
+```
 
-**This file writes the equality**, and then the sharpness follows immediately:
-**`massive_torus_le_smul_one_iff`** — at every even side length at least four and in every
-dimension, `massive (torusGraph d n) m ≼ c·1` **iff** `4d + m² ≤ c` — with
-**`le_inv_of_smul_one_le_green_torus`** on the propagator side, which is the side
-`LaplacianDegreeBound`'s withdrawn sentence was about.
+at every even side length at least four and in every dimension, with
+**`le_inv_of_smul_one_le_green_torus`** on the propagator side — the side
+`LaplacianDegreeBound`'s withdrawn sentence was about. **So the constant `2Δ + m²` is now known
+exact on the family this project's field actually lives on**, and not only on cycles.
 
-## Where the inequality was, and where the equality is
+## The regularity was already in the estate, and this file first re-proved it
 
-`TorusDecay.torusGraph_degree_le` maps each neighbour to one of the `2d` cyclic steps
-`stepT p i b` and bounds the count by the number of steps. **Nothing in that argument needs the
-steps to be neighbours, or to be distinct** — its own header says so: *"a step that lands on a
-non-neighbour, or back on `p`, only makes the over-count larger."* The equality needs exactly the
-two facts that argument does without:
-
-* **`stepT_adj`** — each step really is a neighbour, which needs `2 ≤ n` (at side one a step returns
-  to `p` and the graph is loopless);
-* **`stepT_injective`** — the `2d` steps are pairwise distinct, which needs `3 ≤ n`: at side two,
-  forward and backward along an axis land on the same site.
-
-Both bounds are sharp in the sense that matters here — the theorem is stated at `3 ≤ n` and the
-counterexamples at `n = 1, 2` are the reason.
+**`ERRATUM 336`.** A first version of this file proved `torusGraph_degree`, `torusGraph_isRegular`,
+`stepT_adj`, `stepT_injective` and two `stepT` lemmas from scratch, and `RegularBipartiteSharp`'s
+header asserted that the estate had only `TorusDecay.torusGraph_degree_le`, an inequality.
+**All six already existed** — in `TorusEmbeddingAllDims`, with `RegularSelfEmbedding` packaging the
+regularity as `IsRegularOfDegree` — and three of them under the **same names**. The duplicates are
+gone from this file, the false sentence is corrected where it stands, and the erratum records the
+cause: a probe truncated by `head -6` was read as an exhaustive one.
 
 ## What is proved
 
-* `stepT_apply_self`, `stepT_apply_of_ne` — a step changes its own coordinate and no other;
-* **`stepT_adj`**, **`stepT_injective`** — the two facts above;
-* **`torusGraph_degree`** and `torusGraph_isRegular` — `degree p = 2d` at every site, hence
-  `IsRegularOfDegree (2*d)`;
+* `nonempty_site` — the site type is inhabited once the side length is positive;
 * **`massive_torus_le_smul_one_iff`** — the sharpness, in every dimension;
 * **`le_inv_of_smul_one_le_green_torus`** — and the propagator's lower bound cannot be raised.
 
@@ -63,89 +54,10 @@ Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 
 namespace TorusRegular
 
-open Matrix GraphLaplacian SimpleGraph BoxGraph TorusReflection TorusDecay
+open Matrix GraphLaplacian SimpleGraph BoxGraph TorusReflection
 open scoped MatrixOrder
 
 variable {d n : ℕ}
-
-/-! ## 1. A cyclic step moves the site it is applied to -/
-
-theorem stepT_apply_self (hn : 2 ≤ n) (p : Site d n) (i : Fin d) (b : Bool) :
-    (stepT p i b) i ≠ p i := by
-  have hlt := (p i).isLt
-  rw [stepT, Function.update_self]
-  cases b <;> simp only [Bool.false_eq_true, if_true, if_false, Ne, Fin.ext_iff] <;>
-    split <;> omega
-
-theorem stepT_apply_of_ne (p : Site d n) {i j : Fin d} (hj : j ≠ i) (b : Bool) :
-    (stepT p i b) j = p j := by
-  rw [stepT, Function.update_of_ne hj]
-
-/-! ## 2. The step is a neighbour, and the `2d` steps are distinct -/
-
-theorem stepT_adj (hn : 2 ≤ n) (p : Site d n) (i : Fin d) (b : Bool) :
-    (torusGraph d n).Adj p (stepT p i b) := by
-  have hlt := (p i).isLt
-  refine ⟨i, fun j hj => (stepT_apply_of_ne p hj b).symm, ?_⟩
-  refine ⟨fun h => stepT_apply_self hn p i b h.symm, ?_⟩
-  rw [stepT, Function.update_self]
-  cases b
-  · by_cases h0 : (p i).val = 0
-    · exact Or.inr (Or.inr (Or.inl ⟨h0, by simp [h0]; omega⟩))
-    · exact Or.inr (Or.inl (by simp [h0]; omega))
-  · by_cases h0 : (p i).val + 1 = n
-    · exact Or.inr (Or.inr (Or.inr ⟨by simp [h0], h0⟩))
-    · exact Or.inl (by simp [h0])
-
-theorem stepT_ne_of_bool (hn : 3 ≤ n) (p : Site d n) (i : Fin d) :
-    stepT p i true ≠ stepT p i false := by
-  have hlt := (p i).isLt
-  intro h
-  have := congrFun h i
-  rw [stepT, stepT, Function.update_self, Function.update_self, Fin.ext_iff] at this
-  simp only [Bool.false_eq_true, if_true, if_false] at this
-  split at this <;> split at this <;> omega
-
-theorem stepT_injective (hn : 3 ≤ n) (p : Site d n) :
-    Function.Injective (fun t : Fin d × Bool => stepT p t.1 t.2) := by
-  rintro ⟨i, b⟩ ⟨i', b'⟩ h
-  simp only at h
-  have hii : i = i' := by
-    by_contra hii
-    have h1 := congrFun h i
-    rw [stepT_apply_of_ne p hii b'] at h1
-    exact stepT_apply_self (by omega) p i b h1
-  subst hii
-  cases b <;> cases b'
-  · rfl
-  · exact absurd h.symm (stepT_ne_of_bool hn p i)
-  · exact absurd h (stepT_ne_of_bool hn p i)
-  · rfl
-
-/-! ## 3. So the periodic lattice is `2d`-regular -/
-
-/-- **THE PERIODIC LATTICE IS `2d`-REGULAR AT EVERY SIDE LENGTH AT LEAST THREE.** -/
-theorem torusGraph_degree (hn : 3 ≤ n) (p : Site d n) :
-    (torusGraph d n).degree p = 2 * d := by
-  classical
-  have hset : (torusGraph d n).neighborFinset p
-      = Finset.image (fun t : Fin d × Bool => stepT p t.1 t.2) Finset.univ := by
-    ext q
-    simp only [SimpleGraph.mem_neighborFinset, Finset.mem_image, Finset.mem_univ, true_and]
-    constructor
-    · intro h
-      obtain ⟨t, ht⟩ := adjT_eq_stepT h
-      exact ⟨t, ht.symm⟩
-    · rintro ⟨t, rfl⟩
-      exact stepT_adj (by omega) p t.1 t.2
-  rw [SimpleGraph.degree, hset, Finset.card_image_of_injective _ (stepT_injective hn p),
-    Finset.card_univ, Fintype.card_prod, Fintype.card_fin, Fintype.card_bool]
-  ring
-
-theorem torusGraph_isRegular (hn : 3 ≤ n) :
-    (torusGraph d n).IsRegularOfDegree (2 * d) := fun p => torusGraph_degree hn p
-
-/-! ## 4. Hence the degree bound is exactly right there -/
 
 instance nonempty_site (hn : 1 ≤ n) : Nonempty (Site d n) := ⟨fun _ => ⟨0, by omega⟩⟩
 
@@ -158,7 +70,7 @@ theorem massive_torus_le_smul_one_iff (hn : 3 ≤ n) (hev : Even n) (m c : ℝ) 
     (TorusBipartite.torusGraph_colorable_two (d := d) hev)
   haveI : Nonempty (Site d n) := nonempty_site (by omega)
   have h := RegularBipartiteSharp.massive_le_smul_one_iff_of_regular (torusGraph d n)
-    (torusGraph_isRegular hn) hσ m c
+    (RegularSelfEmbedding.torusGraph_isRegularOfDegree hn) hσ m c
   rw [h]
   push_cast
   constructor <;> intro hc <;> linarith

@@ -55,6 +55,14 @@ What is missing is that `torusGraph d n` is `2d`-**regular**: the estate has
 `TorusDecay.torusGraph_degree_le`, an inequality, and no equality. **That is recorded as its own
 item and is not attempted here** (`ERRATUM 246`: no cost is claimed).
 
+> **^ THE LAST SENTENCE IS FALSE AND WAS FALSE WHEN WRITTEN** (`ERRATUM 336`, 2026-08-29).
+> Paragraph kept as written (`ERRATUM 94`). The estate has had the **equality** since
+> `TorusEmbeddingAllDims.torusGraph_degree_eq`, with
+> `RegularSelfEmbedding.torusGraph_isRegularOfDegree`
+> packaging it as `IsRegularOfDegree (2*d)` — and `TorusRegular` is the instantiation, which needed
+> no new graph theory at all. What produced the false clause was a probe truncated by `head -6`,
+> read as though it were exhaustive; the erratum records that cause.
+
 **`OS4` does not move, no measure is involved, and no published tag moves.**
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
