@@ -19,8 +19,9 @@ three Mathlib facts pointed at one estate theorem.
   matrix squares to the right thing and is positive semidefinite.
 * **`smul_one_le_sqrt_green`** — hence `√c • 1 ≼ CFC.sqrt (green G m)`, by **`CFC.sqrt_le_sqrt`,
   which is operator monotonicity of the square root**. That is a real theorem — Löwner's — and
-  Mathlib has it for C\*-algebras; the matrices carry that structure through
-  `Mathlib.Analysis.CStarAlgebra.Matrix`, which `MatrixLoewner` already relies on.
+  Mathlib has it for C\*-algebras. **Real matrices are not one**, so §2 supplies the real case;
+  complex matrices are, through `Matrix.instCStarRing` and the instance `MatrixLoewner` assembles
+  from it, which is what §2 transports along.
 * **`inv_sqrt_green_le`** — and inverting once more through `MatrixLoewner.posDef_inv_le_inv`,
   **`(CFC.sqrt (green G m))⁻¹ ≼ √(2Δ + m²) • 1`**.
 * **`inv_sqrt_green_boxGraph_le`** — on the box, `≼ √(4d + m²) • 1` at **every** side length.
