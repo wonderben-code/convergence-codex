@@ -35,8 +35,6 @@ suggested turned out to be cheaper than itself.
 
 ## What is proved
 
-* `massive_mulVec_apply` — the real analogue of `CycleLaplacianSpectrum.cx_massive_mulVec`:
-  `(massive *ᵥ x) v = (deg v + m²)·x v − Σ_{u ∼ v} x u`, at every finite graph;
 * `alt`, `alt_add_one`, `alt_sub_one` — the alternating vector, and the shift that needs `N` even:
   wrapping past the end must flip the sign, and on an odd cycle it does not;
 * **`massive_mulVec_alt`** — `massive *ᵥ alt = (4 + m²) • alt` on every even cycle of length ≥ 4;
@@ -82,18 +80,11 @@ namespace LaplacianBoundSharp
 open Matrix GraphLaplacian SimpleGraph
 open scoped MatrixOrder
 
-/-! ## 1. The massive operator on a real vector -/
+/-! ## 1. The alternating vector
 
-theorem massive_mulVec_apply {V : Type*} [Fintype V] [DecidableEq V] (G : SimpleGraph V)
-    [DecidableRel G.Adj] (m : ℝ) (x : V → ℝ) (v : V) :
-    (massive G m *ᵥ x) v = ((G.degree v : ℝ) + m ^ 2) * x v - ∑ u ∈ G.neighborFinset v, x u := by
-  rw [massive, Matrix.add_mulVec, Pi.add_apply, SimpleGraph.lapMatrix_mulVec_apply]
-  have hd : (Matrix.diagonal (fun _ : V => m ^ 2) *ᵥ x) v = m ^ 2 * x v := by
-    simp [Matrix.mulVec, dotProduct, Matrix.diagonal_apply, Finset.sum_ite_eq]
-  rw [hd]
-  ring
-
-/-! ## 2. The alternating vector -/
+The entrywise identity this file runs on — `(massive G m *ᵥ x) v = (deg v + m²)·x v − Σ_{u ∼ v} x u`
+— is **`GraphGreenPositive.massive_mulVec_apply`** and is cited, not restated. A first version of
+this file proved it again under that exact name (`ERRATUM 337`). -/
 
 /-- `(-1)^j`, the top eigenvector of the even cycle's Laplacian. -/
 def alt (N : ℕ) (j : Fin N) : ℝ := (-1) ^ j.val
@@ -135,8 +126,10 @@ theorem massive_mulVec_alt (M : ℕ) (m : ℝ) :
     massive (cycleGraph (2 * M + 4)) m *ᵥ alt (2 * M + 4)
       = (4 + m ^ 2) • alt (2 * M + 4) := by
   funext j
-  rw [massive_mulVec_apply, cycleGraph_degree_three_le, cycleGraph_neighborFinset,
-    Finset.sum_pair (CycleLaplacianSpectrum.sub_one_ne_add_one _ j), alt_sub_one, alt_add_one]
+  rw [GraphGreenPositive.massive_mulVec_apply, cycleGraph_degree_three_le,
+    cycleGraph_neighborFinset,
+    Finset.sum_pair (CycleLaplacianSpectrum.sub_one_ne_add_one _ j),
+    alt_sub_one, alt_add_one]
   simp only [Pi.smul_apply, smul_eq_mul]
   push_cast
   ring

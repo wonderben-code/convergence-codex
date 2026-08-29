@@ -49,10 +49,10 @@ nothing is cut and the statement is an **equality**.
 statement and nothing else. The main theorem is that statement used twice: on the submatrix it
 gives the exact value at `x`, and on the ambient matrix it gives an **upper bound** at the
 extension by zero of the maximiser. Extension by zero is the only other ingredient, and the two
-facts about it that are needed — `dotProduct_ext` and `quadForm_ext` — are exactly what makes the
-submatrix's form a restriction of the ambient one. **No block decomposition appears**, which is
-worth saying only because a Schur complement is the route a reader expects; whether that route also
-works here is untested.
+facts about it that are needed — `dotProduct_extZero` and `quadForm_extZero` — are exactly what
+makes the submatrix's form a restriction of the ambient one. **No block decomposition appears**,
+which is worth saying only because a Schur complement is the route a reader expects; whether that
+route also works here is untested.
 
 ## What this is NOT
 
@@ -90,13 +90,23 @@ submatrix of `massive`.
 **The estate already had extension by zero, in another packaging, and this file does not use it.**
 `NullSpaceDimension.supportedOn` bundles *"vanishes off `H`"* as a submodule and
 `supportedOnEquiv` is that same extension by zero; thirteen files mention it. It is indexed by a
-`Finset V`, where `ext` here is indexed by an arbitrary injection `W → V` — which is what
+`Finset V`, where `extZero` here is indexed by an arbitrary injection `W → V` — which is what
 `greenDirichlet_mono` needs, since composing two injections is how "nested subdomains" gets said.
-**Neither of the two facts this file actually consumes — `dotProduct_ext` and `quadForm_ext` —
-exists for either packaging**, so nothing was re-proved; what was missed is that the estate had
-the notion at all, and it was found by grepping for the SHAPE only after the file was written.
-A bridge is deliberately not built here — `NullSpaceDimension` transitively imports 51 files of
+**Neither of the two facts this file actually consumes — `dotProduct_extZero` and
+`quadForm_extZero` — exists for either packaging**, so nothing was re-proved; what was missed is
+that the estate had the notion at all, and it was found by grepping for the SHAPE only after the
+file was written. A bridge is deliberately not built here — `NullSpaceDimension` transitively
+imports 51 files of
 `paper_f` against this file's 12 — and is recorded on the watchlist instead.
+
+> **^ "IN ANOTHER PACKAGING" IS AN UNDERCOUNT AND THE SECOND ONE HAD THIS FILE'S NAME**
+> (`ERRATUM 337`, same day; paragraph kept, `ERRATUM 94`). There are **three** extensions by zero
+> in this estate, not two: `NullSpaceDimension.supportedOn`, **`GraphReflectionPositive.ext`** —
+> a plain function on a `Finset V`, which is nearer to this file's than `supportedOn` is — and
+> `extZero` here. **The declarations in this file were called `ext` and `ext_ne_zero` until that
+> was found**, colliding with `GraphReflectionPositive.ext` and `PrismCutPerfect.ext_ne_zero`;
+> they are renamed. The paragraph's conclusion is unchanged — the two facts consumed here exist
+> for none of the three — and what it got wrong is the count and the collision.
 
 **`OS4` does not move, no spectral gap is claimed, and no published tag or website page moves.**
 
@@ -172,19 +182,19 @@ variable {e : W → V}
 
 omit [Fintype V] [DecidableEq V] [Fintype W] [DecidableEq W] in
 /-- Extension by zero along a map of index types. -/
-noncomputable def ext (e : W → V) (y : W → ℝ) : V → ℝ := Function.extend e y 0
+noncomputable def extZero (e : W → V) (y : W → ℝ) : V → ℝ := Function.extend e y 0
 
 omit [Fintype V] [DecidableEq V] [Fintype W] [DecidableEq W] in
-theorem ext_apply (he : Function.Injective e) (y : W → ℝ) (w : W) : ext e y (e w) = y w :=
+theorem extZero_apply (he : Function.Injective e) (y : W → ℝ) (w : W) : extZero e y (e w) = y w :=
   he.extend_apply y 0 w
 
 omit [Fintype V] [DecidableEq V] [Fintype W] [DecidableEq W] in
-theorem ext_apply_of_not_mem {v : V} (hv : ¬ ∃ w, e w = v) (y : W → ℝ) : ext e y v = 0 :=
+theorem extZero_apply_of_not_mem {v : V} (hv : ¬ ∃ w, e w = v) (y : W → ℝ) : extZero e y v = 0 :=
   Function.extend_apply' y (0 : V → ℝ) v hv
 
 omit [DecidableEq V] [DecidableEq W] in
 /-- A sum over `V` of something supported on the image of `e` is a sum over `W`. -/
-theorem sum_ext {M : Type*} [AddCommMonoid M] (he : Function.Injective e) (f : V → M)
+theorem sum_extZero {M : Type*} [AddCommMonoid M] (he : Function.Injective e) (f : V → M)
     (hf : ∀ v : V, (¬ ∃ w, e w = v) → f v = 0) : ∑ v, f v = ∑ w, f (e w) := by
   classical
   have h1 : ∑ v ∈ (Finset.univ.image e), f v = ∑ w, f (e w) :=
@@ -197,36 +207,36 @@ theorem sum_ext {M : Type*} [AddCommMonoid M] (he : Function.Injective e) (f : V
   exact hv (Finset.mem_image.mpr ⟨w, Finset.mem_univ w, rfl⟩)
 
 omit [DecidableEq V] [DecidableEq W] in
-theorem dotProduct_ext (he : Function.Injective e) (x y : W → ℝ) :
-    ext e x ⬝ᵥ ext e y = x ⬝ᵥ y := by
+theorem dotProduct_extZero (he : Function.Injective e) (x y : W → ℝ) :
+    extZero e x ⬝ᵥ extZero e y = x ⬝ᵥ y := by
   rw [dotProduct, dotProduct]
-  refine (sum_ext he _ ?_).trans (Finset.sum_congr rfl fun w _ => ?_)
+  refine (sum_extZero he _ ?_).trans (Finset.sum_congr rfl fun w _ => ?_)
   · intro v hv
-    rw [ext_apply_of_not_mem hv, zero_mul]
-  · rw [ext_apply he, ext_apply he]
+    rw [extZero_apply_of_not_mem hv, zero_mul]
+  · rw [extZero_apply he, extZero_apply he]
 
 omit [DecidableEq V] [DecidableEq W] in
 /-- **THE QUADRATIC FORM OF `A` ON EXTENDED VECTORS IS THE FORM OF THE SUBMATRIX.** -/
-theorem quadForm_ext (he : Function.Injective e) (A : Matrix V V ℝ) (y : W → ℝ) :
-    ext e y ⬝ᵥ (A *ᵥ ext e y) = y ⬝ᵥ ((A.submatrix e e) *ᵥ y) := by
+theorem quadForm_extZero (he : Function.Injective e) (A : Matrix V V ℝ) (y : W → ℝ) :
+    extZero e y ⬝ᵥ (A *ᵥ extZero e y) = y ⬝ᵥ ((A.submatrix e e) *ᵥ y) := by
   rw [dotProduct, dotProduct]
-  refine (sum_ext he _ ?_).trans (Finset.sum_congr rfl fun w _ => ?_)
+  refine (sum_extZero he _ ?_).trans (Finset.sum_congr rfl fun w _ => ?_)
   · intro v hv
-    rw [ext_apply_of_not_mem hv, zero_mul]
-  · rw [ext_apply he]
+    rw [extZero_apply_of_not_mem hv, zero_mul]
+  · rw [extZero_apply he]
     congr 1
     rw [Matrix.mulVec, Matrix.mulVec, dotProduct, dotProduct]
-    refine (sum_ext he _ ?_).trans (Finset.sum_congr rfl fun w' _ => ?_)
+    refine (sum_extZero he _ ?_).trans (Finset.sum_congr rfl fun w' _ => ?_)
     · intro v hv
-      rw [ext_apply_of_not_mem hv, mul_zero]
-    · rw [ext_apply he, Matrix.submatrix_apply]
+      rw [extZero_apply_of_not_mem hv, mul_zero]
+    · rw [extZero_apply he, Matrix.submatrix_apply]
 
 omit [Fintype V] [DecidableEq V] [Fintype W] [DecidableEq W] in
-theorem ext_ne_zero (he : Function.Injective e) {x : W → ℝ} (hx : x ≠ 0) : ext e x ≠ 0 := by
+theorem extZero_ne_zero (he : Function.Injective e) {x : W → ℝ} (hx : x ≠ 0) : extZero e x ≠ 0 := by
   intro hz
   refine hx (funext fun w => ?_)
   have hw := congrFun hz (e w)
-  rwa [ext_apply he] at hw
+  rwa [extZero_apply he] at hw
 
 omit [Fintype V] [DecidableEq V] [Fintype W] [DecidableEq W] in
 /-- **A PRINCIPAL SUBMATRIX ALONG AN INJECTION IS POSITIVE DEFINITE.** Mathlib has this for
@@ -261,9 +271,9 @@ theorem inv_submatrix_le_submatrix_inv {e : W → V} (he : Function.Injective e)
   refine Matrix.le_iff.mpr (Matrix.PosSemidef.of_dotProduct_mulVec_nonneg ?_ fun x => ?_)
   · exact (hA.inv.isHermitian.submatrix e).sub hB.inv.isHermitian
   · rw [star_trivial, Matrix.sub_mulVec, dotProduct_sub, sub_nonneg]
-    have hkey := le_dotProduct_inv_mulVec hA.posSemidef hdetA (ext e x)
-      (ext e ((A.submatrix e e)⁻¹ *ᵥ x))
-    rw [dotProduct_ext he, quadForm_ext he, quadForm_ext he,
+    have hkey := le_dotProduct_inv_mulVec hA.posSemidef hdetA (extZero e x)
+      (extZero e ((A.submatrix e e)⁻¹ *ᵥ x))
+    rw [dotProduct_extZero he, quadForm_extZero he, quadForm_extZero he,
       dotProduct_inv_mulVec_eq hdetB] at hkey
     exact hkey
 

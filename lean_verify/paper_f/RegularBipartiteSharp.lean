@@ -112,7 +112,7 @@ theorem massive_mulVec_signColouring (G : SimpleGraph V) [DecidableRel G.Adj] {�
   have hsum : ∑ u ∈ G.neighborFinset v, σ u = (G.degree v : ℝ) * (- σ v) := by
     rw [Finset.sum_congr rfl hterm, Finset.sum_const, nsmul_eq_mul]
     rfl
-  rw [LaplacianBoundSharp.massive_mulVec_apply, hsum]
+  rw [GraphGreenPositive.massive_mulVec_apply, hsum]
   ring
 
 omit [DecidableEq V] in
