@@ -75,6 +75,19 @@
     with the other. The `HermitePi*` line is at variance one, and
     `HermiteScaledComplete` is one-dimensional. **n dimensions at variance σ
     is proved nowhere in this estate as of 2026-08-29.**
+
+    ⚠ AND THAT LASTED ONE UNIT. `HermitePiScaledComplete`, the same day,
+    proves the combination: `polynomials_complete_pi_scaled` is completeness
+    of the rescaled product Hermite family in L²(γ_σⁿ) at every σ ≠ 0 and
+    every n, with `hermitePi_orthogonal_scaled` and
+    `hermitePi_norm_sq_scaled` giving the orthogonality and the norms — the
+    same numbers as at variance one, in any dimension. The paragraph above
+    is kept as written (ERRATUM 94), and it is worth saying plainly what it
+    is: a fence THIS CAMPAIGN wrote, correct when written, and answered by
+    the next unit. ONE THING IT SAID IS STILL TRUE and is not closed:
+    σ = 0 in n dimensions. The one-dimensional file covers σ = 0; the
+    n-dimensional one does not, and says so in its own header rather than
+    leaving it to be discovered.
   * Anything about the spectral action. Unchanged, unproven.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
