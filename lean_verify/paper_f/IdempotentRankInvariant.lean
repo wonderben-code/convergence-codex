@@ -113,6 +113,16 @@
     RING isomorphism `Mₘ(D) ≃+* Mₘ'(D')` forces `card m = card m'`,
     across different division algebras and with nothing ℝ-linear
     assumed.
+  * **AND THE SAME AT ONE LEVEL UP, ON PRODUCTS**, which the odd complex
+    Clifford algebras need. `HasOrthIdem.prod`: `A × B` admits `p + q`.
+    `HasOrthIdem.exists_split`: and at most that, **with no
+    representation of `A × B` anywhere in it** — project a family to
+    each component, discard the zeros, and what survives on each side is
+    an orthogonal family of nonzero idempotents summing to `1` there,
+    every index surviving somewhere because `(aᵢ, bᵢ) ≠ 0`. Pure ring
+    theory, no trace and no dimension, which is not what the forecast
+    for this step predicted. Hence `matrixProd_hasOrthIdem`,
+    `matrixProd_orthIdem_le` and **`card_eq_of_ringEquiv_prod`**.
   * So **`matrixR_orthIdem_le_card`** and **`matrixH_orthIdem_le_card`**
     cap both families at `card m`, and **`orthIdem_card_pinned`** pins
     the invariant on EVERY real and quaternionic matrix algebra rather
@@ -580,6 +590,129 @@ theorem clifford13_not_algEquiv_clifford31 :
       CliffordAlgebra CliffordRealMajorana.Q₃₁) :=
   ⟨fun φ => clifford13_not_ringEquiv_clifford31.elim φ.toRingEquiv⟩
 
+/-! ## 4b. Products, and why they need no new representation theory
+
+The invariant is defined for any ring, so `A × B` is in scope, but neither the counting principle
+nor any dimension lemma above says anything about one. **Both clauses turn out to be pure ring
+theory** — no action on a vector space, no trace, no dimension. The witness is the obvious family;
+the bound comes from projecting a family in `A × B` to its two components and throwing away the
+zeros, which is why it needs `A` and `B`'s own bounds and nothing else. -/
+
+section Products
+
+variable {A B : Type*} [Ring A] [Ring B]
+
+/-- **A PRODUCT ADMITS THE SUM.** `(eᵢ, 0)` and `(0, fⱼ)`, indexed through `Fin.addCases`. -/
+theorem HasOrthIdem.prod {p q : ℕ} (hA : HasOrthIdem A p) (hB : HasOrthIdem B q) :
+    HasOrthIdem (A × B) (p + q) := by
+  obtain ⟨a, hasq, haorth, hane, hasum⟩ := hA
+  obtain ⟨b, hbsq, hborth, hbne, hbsum⟩ := hB
+  refine ⟨Fin.addCases (fun i => (a i, 0)) (fun j => (0, b j)), ?_, ?_, ?_, ?_⟩
+  · intro k
+    induction k using Fin.addCases with
+    | left i => simp [hasq i]
+    | right j => simp [hbsq j]
+  · intro k l hkl
+    induction k using Fin.addCases with
+    | left i =>
+        induction l using Fin.addCases with
+        | left i' =>
+            have hii : i ≠ i' := fun hc => hkl (by rw [hc])
+            simp [haorth i i' hii]
+        | right j' => simp
+    | right j =>
+        induction l using Fin.addCases with
+        | left i' => simp
+        | right j' =>
+            have hjj : j ≠ j' := fun hc => hkl (by rw [hc])
+            simp [hborth j j' hjj]
+  · intro k
+    induction k using Fin.addCases with
+    | left i =>
+        simp only [Fin.addCases_left]
+        exact fun hc => hane i (by simpa using congrArg Prod.fst hc)
+    | right j =>
+        simp only [Fin.addCases_right]
+        exact fun hc => hbne j (by simpa using congrArg Prod.snd hc)
+  · rw [Fin.sum_univ_add]
+    simp only [Fin.addCases_left, Fin.addCases_right]
+    rw [Prod.ext_iff]
+    constructor
+    · simpa [Prod.fst_sum] using hasum
+    · simpa [Prod.snd_sum] using hbsum
+
+/-- **AND AT MOST THE SUM OF THE TWO BOUNDS.** Project a family in `A × B` to each component and
+discard the zeros: what survives on the left is an orthogonal family of NONZERO idempotents summing
+to `1` in `A`, likewise on the right, and every index survives on at least one side because
+`(aᵢ, bᵢ) ≠ 0`. **No representation of `A × B` is needed**, which is the point — the counting
+principle is about a ring acting on a space and this argument never leaves the ring. -/
+theorem HasOrthIdem.exists_split {n : ℕ} (h : HasOrthIdem (A × B) n) :
+    ∃ p q : ℕ, n ≤ p + q ∧ HasOrthIdem A p ∧ HasOrthIdem B q := by
+  classical
+  obtain ⟨e, hsq, horth, hne, hsum⟩ := h
+  set SA : Finset (Fin n) := Finset.univ.filter fun i => (e i).1 ≠ 0 with hSA
+  set SB : Finset (Fin n) := Finset.univ.filter fun i => (e i).2 ≠ 0 with hSB
+  have hcover : (Finset.univ : Finset (Fin n)) ⊆ SA ∪ SB := by
+    intro i _
+    by_cases hzA : (e i).1 = 0
+    · refine Finset.mem_union_right _ (Finset.mem_filter.mpr ⟨Finset.mem_univ _, ?_⟩)
+      intro hzB
+      exact hne i (by simp [Prod.ext_iff, hzA, hzB])
+    · exact Finset.mem_union_left _ (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hzA⟩)
+  refine ⟨SA.card, SB.card, ?_, ?_, ?_⟩
+  · calc n = (Finset.univ : Finset (Fin n)).card := by simp
+      _ ≤ (SA ∪ SB).card := Finset.card_le_card hcover
+      _ ≤ SA.card + SB.card := Finset.card_union_le _ _
+  · refine ⟨fun k => (e ((SA.orderIsoOfFin rfl k : Fin n))).1, fun k => congrArg Prod.fst (hsq _),
+      ?_, ?_, ?_⟩
+    · intro k l hkl
+      have hne' : ((SA.orderIsoOfFin rfl k : Fin n)) ≠ ((SA.orderIsoOfFin rfl l : Fin n)) :=
+        fun hc => hkl ((SA.orderIsoOfFin rfl).injective (Subtype.ext hc))
+      exact congrArg Prod.fst (horth _ _ hne')
+    · intro k
+      exact (Finset.mem_filter.mp (SA.orderIsoOfFin rfl k).2).2
+    · have h1 : ∑ k : Fin SA.card, (e ((SA.orderIsoOfFin rfl k : Fin n))).1
+          = ∑ x : SA, (e (x : Fin n)).1 :=
+        Equiv.sum_comp (SA.orderIsoOfFin rfl).toEquiv fun x : SA => (e (x : Fin n)).1
+      have h2 : ∑ x : SA, (e (x : Fin n)).1 = ∑ i ∈ SA, (e i).1 :=
+        Finset.sum_coe_sort SA fun i => (e i).1
+      have h3 : ∑ i ∈ SA, (e i).1 = ∑ i, (e i).1 := by
+        refine Finset.sum_subset (Finset.subset_univ SA) fun i _ hi => ?_
+        by_contra hc
+        exact hi (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hc⟩)
+      rw [h1, h2, h3, ← Prod.fst_sum, hsum]
+      rfl
+  · refine ⟨fun k => (e ((SB.orderIsoOfFin rfl k : Fin n))).2, fun k => congrArg Prod.snd (hsq _),
+      ?_, ?_, ?_⟩
+    · intro k l hkl
+      have hne' : ((SB.orderIsoOfFin rfl k : Fin n)) ≠ ((SB.orderIsoOfFin rfl l : Fin n)) :=
+        fun hc => hkl ((SB.orderIsoOfFin rfl).injective (Subtype.ext hc))
+      exact congrArg Prod.snd (horth _ _ hne')
+    · intro k
+      exact (Finset.mem_filter.mp (SB.orderIsoOfFin rfl k).2).2
+    · have h1 : ∑ k : Fin SB.card, (e ((SB.orderIsoOfFin rfl k : Fin n))).2
+          = ∑ x : SB, (e (x : Fin n)).2 :=
+        Equiv.sum_comp (SB.orderIsoOfFin rfl).toEquiv fun x : SB => (e (x : Fin n)).2
+      have h2 : ∑ x : SB, (e (x : Fin n)).2 = ∑ i ∈ SB, (e i).2 :=
+        Finset.sum_coe_sort SB fun i => (e i).2
+      have h3 : ∑ i ∈ SB, (e i).2 = ∑ i, (e i).2 := by
+        refine Finset.sum_subset (Finset.subset_univ SB) fun i _ hi => ?_
+        by_contra hc
+        exact hi (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hc⟩)
+      rw [h1, h2, h3, ← Prod.snd_sum, hsum]
+      rfl
+
+/-- **The bound in the form a caller uses**: two bounds in, one bound out. -/
+theorem orthIdem_prod_le {bA bB : ℕ}
+    (hA : ∀ p, HasOrthIdem A p → p ≤ bA) (hB : ∀ q, HasOrthIdem B q → q ≤ bB)
+    {n : ℕ} (h : HasOrthIdem (A × B) n) : n ≤ bA + bB := by
+  obtain ⟨p, q, hn, hp, hq⟩ := h.exists_split
+  have h1 := hA p hp
+  have h2 := hB q hq
+  omega
+
+end Products
+
 /-- **THE INVARIANT AS A SIZE THEOREM: A RING ISOMORPHISM BETWEEN MATRIX ALGEBRAS OVER REAL
     DIVISION ALGEBRAS FORCES THE INDEX TYPES TO HAVE THE SAME SIZE.** The two bases need not be the
     same division algebra, and nothing here is ℝ-linear: `Mₘ(ℝ) ≃+* Mₘ'(ℍ)` already forces
@@ -595,6 +728,37 @@ theorem card_eq_of_ringEquiv {D D' : Type} [DivisionRing D] [Algebra ℝ D] [Fin
   have h2 : HasOrthIdem (Matrix m m D) (Fintype.card m') :=
     HasOrthIdem.of_ringEquiv φ.symm matrix_hasOrthIdem_card
   exact Nat.le_antisymm (matrixD_orthIdem_le_card h1) (matrixD_orthIdem_le_card h2)
+
+/-- **`Mₘ(D) × Mₘ(D)` ADMITS EXACTLY `2 · card m`**, witness and bound, for every real division
+    algebra `D`. Both halves are instances of the product clause. -/
+theorem matrixProd_hasOrthIdem {D : Type} [DivisionRing D] [Algebra ℝ D]
+    {m : Type} [Fintype m] [DecidableEq m] :
+    HasOrthIdem (Matrix m m D × Matrix m m D) (Fintype.card m + Fintype.card m) :=
+  HasOrthIdem.prod matrix_hasOrthIdem_card matrix_hasOrthIdem_card
+
+theorem matrixProd_orthIdem_le {D : Type} [DivisionRing D] [Algebra ℝ D] [FiniteDimensional ℝ D]
+    {m : Type} [Fintype m] [DecidableEq m] {n : ℕ}
+    (h : HasOrthIdem (Matrix m m D × Matrix m m D) n) :
+    n ≤ Fintype.card m + Fintype.card m :=
+  orthIdem_prod_le (fun _ hp => matrixD_orthIdem_le_card hp)
+    (fun _ hq => matrixD_orthIdem_le_card hq) h
+
+/-- **THE SIZE THEOREM FOR SPLIT ALGEBRAS.** A ring isomorphism
+    `Mₘ(D) × Mₘ(D) ≃+* Mₘ'(D') × Mₘ'(D')` forces `card m = card m'`. Same argument as
+    `card_eq_of_ringEquiv`, one level up, and it is what the odd complex Clifford algebras need. -/
+theorem card_eq_of_ringEquiv_prod {D D' : Type} [DivisionRing D] [Algebra ℝ D]
+    [FiniteDimensional ℝ D] [DivisionRing D'] [Algebra ℝ D'] [FiniteDimensional ℝ D']
+    {m m' : Type} [Fintype m] [Fintype m']
+    (φ : (Matrix m m D × Matrix m m D) ≃+* (Matrix m' m' D' × Matrix m' m' D')) :
+    Fintype.card m = Fintype.card m' := by
+  classical
+  have h1 : HasOrthIdem (Matrix m' m' D' × Matrix m' m' D') (Fintype.card m + Fintype.card m) :=
+    HasOrthIdem.of_ringEquiv φ matrixProd_hasOrthIdem
+  have h2 : HasOrthIdem (Matrix m m D × Matrix m m D) (Fintype.card m' + Fintype.card m') :=
+    HasOrthIdem.of_ringEquiv φ.symm matrixProd_hasOrthIdem
+  have b1 := matrixProd_orthIdem_le h1
+  have b2 := matrixProd_orthIdem_le h2
+  omega
 
 /-- **M₄(ℍ) ≇ M₈(ℝ)** — two 64-dimensional real algebras, the rank-`6` mirror pair of the
     Clifford census, which the central-idempotent invariant cannot reach because NEITHER of them

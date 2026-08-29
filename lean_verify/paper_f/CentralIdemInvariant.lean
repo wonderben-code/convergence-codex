@@ -132,6 +132,13 @@ Artin–Wedderburn statement is used or implied.
 
 ## The complex side, added the same day: a classification rather than a list
 
+**FINISHED LATER THE SAME DAY.** The three bullets below were two proved clauses and one open; all
+three are now proved, and **`clifford_ringEquiv_iff_finrank_eq`** states the classification as the
+biconditional it was always heading for. Every ingredient is an invariant and **none of them is
+dimension**: the central-idempotent invariant separates the parities, and the orthogonal-idempotent
+count fixes the size within each — at one level for the even case, one level up on products for the
+odd.
+
 `CliffordEvenLadder` and `CliffordOddLadder` identify every complex Clifford algebra. **They do not
 say the answers are different from each other**, which is the same gap `W7` item 3 recorded on the
 odd case. Two thirds of it close here, and the third is named rather than glossed.
@@ -152,6 +159,21 @@ odd case. Two thirds of it close here, and the third is named rather than glosse
   `LinearMap.prodMap`. Whether that closes the odd case has not been checked. Until it is,
   **`Cl_n(ℂ) ≅ Cl_m(ℂ) ↔ n = m` is not a theorem of this estate** — what is proved is that clause
   for even against even and for even against odd.
+
+  > **CLOSED THE SAME DAY, AND THE BULLET IS KEPT** (`ERRATUM 94`). `HasOrthIdem.prod` and
+  > `HasOrthIdem.exists_split` are the product clause, and
+  > `IdempotentRankInvariant.card_eq_of_ringEquiv_prod` is the size theorem one level up, so
+  > **`cliffordOdd_ringEquiv_eq`** closes odd against odd and
+  > **`clifford_ringEquiv_iff_finrank_eq`** is the biconditional:
+  > `Cl Q ≃+* Cl R ↔ dim_ℂ V = dim_ℂ W`, for nondegenerate forms on finite-dimensional complex
+  > spaces. **The forecast above named the witness half correctly and the bound half wrongly**, and
+  > that is why it is kept. It said the bound would come from representing `A × B` on `V × W`
+  > through `LinearMap.prodMap`. **It does not, and it needs no representation at all**: project a
+  > family in `A × B` to each component, discard the zeros, and what survives on each side is an
+  > orthogonal family of nonzero idempotents summing to `1` there, with every index surviving
+  > somewhere because `(aᵢ, bᵢ) ≠ 0`. Pure ring theory, no trace and no dimension. **A forecast
+  > that got the shape of half its work wrong is worth more on the record than one that was
+  > right**, which is the argument for keeping both.
 
 **And neither invariant here reaches rank `6`** — that row is closed by a THIRD invariant, the
 orthogonal-idempotent count of `IdempotentRankInvariant`, which this file imports rather than
@@ -402,6 +424,95 @@ theorem cliffordEven_isEmpty_ringEquiv_cliffordOdd (k l : ℕ) {V W : Type*}
   refine cliffordOdd_not_onlyTrivialCentralIdem l hW R hR ?_
   exact OnlyTrivialCentralIdem.of_ringEquiv (g.symm.toRingEquiv.trans φ)
     (matrix_onlyTrivialCentralIdem onlyTrivialCentralIdem_of_isDomain)
+
+/-- **`Cl_{2k+1}(ℂ) ≃+* Cl_{2l+1}(ℂ)` FORCES `k = l`** — the clause that was missing. Both are
+PRODUCTS of matrix algebras over ℂ, so what it needs is
+`IdempotentRankInvariant.card_eq_of_ringEquiv_prod`, the size theorem one level up. -/
+theorem cliffordOdd_ringEquiv_eq {k l : ℕ} {V W : Type*} [AddCommGroup V] [Module ℂ V]
+    [FiniteDimensional ℂ V] [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
+    (hV : Module.finrank ℂ V = 2 * k + 1) (hW : Module.finrank ℂ W = 2 * l + 1)
+    {Q : QuadraticForm ℂ V} {R : QuadraticForm ℂ W}
+    (hQ : (QuadraticMap.associated (R := ℂ) Q).SeparatingLeft)
+    (hR : (QuadraticMap.associated (R := ℂ) R).SeparatingLeft)
+    (φ : CliffordAlgebra Q ≃+* CliffordAlgebra R) : k = l := by
+  obtain ⟨g⟩ := CliffordOddLadder.clifford_iso_of_nondegenerate_odd k hV Q hQ
+  obtain ⟨h⟩ := CliffordOddLadder.clifford_iso_of_nondegenerate_odd l hW R hR
+  have hcard : Fintype.card (Fin (2 ^ k)) = Fintype.card (Fin (2 ^ l)) :=
+    IdempotentRankInvariant.card_eq_of_ringEquiv_prod (D := ℂ) (D' := ℂ)
+      ((g.symm.toRingEquiv.trans φ).trans h.toRingEquiv)
+  simpa using Nat.pow_right_injective (le_refl 2) (by simpa using hcard)
+
+/-- The mirror of `cliffordEven_isEmpty_ringEquiv_cliffordOdd`, so the classification below can
+take either order without an inverse dance at the call site. -/
+theorem cliffordOdd_isEmpty_ringEquiv_cliffordEven (k l : ℕ) {V W : Type*}
+    [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
+    [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
+    (hV : Module.finrank ℂ V = 2 * k + 1) (hW : Module.finrank ℂ W = 2 * l)
+    (Q : QuadraticForm ℂ V) (R : QuadraticForm ℂ W)
+    (hQ : (QuadraticMap.associated (R := ℂ) Q).SeparatingLeft)
+    (hR : (QuadraticMap.associated (R := ℂ) R).SeparatingLeft) :
+    IsEmpty (CliffordAlgebra Q ≃+* CliffordAlgebra R) :=
+  ⟨fun φ => (cliffordEven_isEmpty_ringEquiv_cliffordOdd l k hW hV R Q hR hQ).elim φ.symm⟩
+
+/-- **EQUAL DIMENSION GIVES A RING ISOMORPHISM**, the easy half of the classification: both
+algebras reach the same model, matrix or split according to the parity. -/
+theorem clifford_nonempty_ringEquiv_of_finrank_eq {V W : Type*} [AddCommGroup V] [Module ℂ V]
+    [FiniteDimensional ℂ V] [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
+    {Q : QuadraticForm ℂ V} {R : QuadraticForm ℂ W}
+    (hQ : (QuadraticMap.associated (R := ℂ) Q).SeparatingLeft)
+    (hR : (QuadraticMap.associated (R := ℂ) R).SeparatingLeft)
+    (hVW : Module.finrank ℂ V = Module.finrank ℂ W) :
+    Nonempty (CliffordAlgebra Q ≃+* CliffordAlgebra R) := by
+  rcases Nat.even_or_odd (Module.finrank ℂ V) with he | ho
+  · obtain ⟨k, hk⟩ := he
+    have hV : Module.finrank ℂ V = 2 * k := by omega
+    have hW : Module.finrank ℂ W = 2 * k := by omega
+    obtain ⟨g⟩ := CliffordEvenLadder.clifford_iso_of_nondegenerate k hV Q hQ
+    obtain ⟨h⟩ := CliffordEvenLadder.clifford_iso_of_nondegenerate k hW R hR
+    exact ⟨g.toRingEquiv.trans h.symm.toRingEquiv⟩
+  · obtain ⟨k, hk⟩ := ho
+    have hV : Module.finrank ℂ V = 2 * k + 1 := hk
+    have hW : Module.finrank ℂ W = 2 * k + 1 := by omega
+    obtain ⟨g⟩ := CliffordOddLadder.clifford_iso_of_nondegenerate_odd k hV Q hQ
+    obtain ⟨h⟩ := CliffordOddLadder.clifford_iso_of_nondegenerate_odd k hW R hR
+    exact ⟨g.toRingEquiv.trans h.symm.toRingEquiv⟩
+
+/-- **THE COMPLEX CLASSIFICATION, AS A BICONDITIONAL.** For nondegenerate quadratic forms on
+finite-dimensional complex spaces, `CliffordAlgebra Q` and `CliffordAlgebra R` are isomorphic **as
+rings** exactly when the two spaces have the same dimension.
+
+**Every ingredient is an invariant and none of them is dimension**: the central-idempotent
+invariant separates the parities, and the orthogonal-idempotent count fixes the size within each
+parity — at one level for the even case and one level up, on products, for the odd. The
+`↔`'s easy direction is the two ladders. -/
+theorem clifford_ringEquiv_iff_finrank_eq {V W : Type*} [AddCommGroup V] [Module ℂ V]
+    [FiniteDimensional ℂ V] [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
+    {Q : QuadraticForm ℂ V} {R : QuadraticForm ℂ W}
+    (hQ : (QuadraticMap.associated (R := ℂ) Q).SeparatingLeft)
+    (hR : (QuadraticMap.associated (R := ℂ) R).SeparatingLeft) :
+    Nonempty (CliffordAlgebra Q ≃+* CliffordAlgebra R)
+      ↔ Module.finrank ℂ V = Module.finrank ℂ W := by
+  refine ⟨fun ⟨φ⟩ => ?_, clifford_nonempty_ringEquiv_of_finrank_eq hQ hR⟩
+  rcases Nat.even_or_odd (Module.finrank ℂ V) with heV | hoV <;>
+    rcases Nat.even_or_odd (Module.finrank ℂ W) with heW | hoW
+  · obtain ⟨k, hk⟩ := heV
+    obtain ⟨l, hl⟩ := heW
+    have hV : Module.finrank ℂ V = 2 * k := by omega
+    have hW : Module.finrank ℂ W = 2 * l := by omega
+    have := cliffordEven_ringEquiv_eq hV hW hQ hR φ
+    omega
+  · obtain ⟨k, hk⟩ := heV
+    obtain ⟨l, hl⟩ := hoW
+    have hV : Module.finrank ℂ V = 2 * k := by omega
+    exact (cliffordEven_isEmpty_ringEquiv_cliffordOdd k l hV hl Q R hQ hR).elim φ
+  · obtain ⟨k, hk⟩ := hoV
+    obtain ⟨l, hl⟩ := heW
+    have hW : Module.finrank ℂ W = 2 * l := by omega
+    exact (cliffordOdd_isEmpty_ringEquiv_cliffordEven k l hk hW Q R hQ hR).elim φ
+  · obtain ⟨k, hk⟩ := hoV
+    obtain ⟨l, hl⟩ := hoW
+    have := cliffordOdd_ringEquiv_eq hk hl hQ hR φ
+    omega
 
 /-! ## 5. The real mirror pairs, where no dimension count can help -/
 
