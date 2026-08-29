@@ -310,6 +310,8 @@ instantiation at `d = 1` — over ℝ the quaternionic dimension step is
 replaced by the triviality that a nonzero endomorphism has a nonzero
 range. -/
 
+/-! ## 4. The action, and the dimension step over any real division algebra -/
+
 section MatrixDBound
 
 /- Entrywise quaternion arithmetic in one instance below. Linters silenced for
@@ -560,37 +562,7 @@ theorem matrix2H_hasOrthIdem_two :
 
 end MatrixDBound
 
-/-! ## 5. The obstruction, and the two Clifford algebras -/
-
-/-- **M₂(ℍ) ≇ M₄(ℝ)** — two 16-dimensional real algebras that are not
-    isomorphic even as rings. -/
-theorem matrix2H_not_ringEquiv_matrix4R :
-    IsEmpty (Matrix (Fin 2) (Fin 2) ℍ[ℝ] ≃+* Matrix (Fin 4) (Fin 4) ℝ) := by
-  refine ⟨fun φ => ?_⟩
-  have h4 : HasOrthIdem (Matrix (Fin 2) (Fin 2) ℍ[ℝ]) 4 :=
-    HasOrthIdem.of_ringEquiv φ.symm matrix4R_hasOrthIdem_four
-  have := matrix2H_orthIdem_le_two h4
-  omega
-
-/-- **Cl(1,3;ℝ) ≇ Cl(3,1;ℝ)** as rings: the two Minkowski sign
-    conventions really do give different algebras. This is the fact
-    both Clifford files had to state as a citation; it is now proven
-    in the estate, and W7's residue item on it closes. -/
-theorem clifford13_not_ringEquiv_clifford31 :
-    IsEmpty (CliffordAlgebra CliffordRealMinkowski.Q₁₃ ≃+*
-      CliffordAlgebra CliffordRealMajorana.Q₃₁) := by
-  refine ⟨fun φ => ?_⟩
-  exact matrix2H_not_ringEquiv_matrix4R.elim
-    ((CliffordRealMinkowski.cliffordRealMinkowskiEquiv.symm.toRingEquiv.trans φ).trans
-      CliffordRealMajorana.cliffordMajoranaEquiv.toRingEquiv)
-
-/-- The ℝ-algebra form of the same statement. -/
-theorem clifford13_not_algEquiv_clifford31 :
-    IsEmpty (CliffordAlgebra CliffordRealMinkowski.Q₁₃ ≃ₐ[ℝ]
-      CliffordAlgebra CliffordRealMajorana.Q₃₁) :=
-  ⟨fun φ => clifford13_not_ringEquiv_clifford31.elim φ.toRingEquiv⟩
-
-/-! ## 4b. Products, and why they need no new representation theory
+/-! ## 5. Products, and why they need no new representation theory
 
 The invariant is defined for any ring, so `A × B` is in scope, but neither the counting principle
 nor any dimension lemma above says anything about one. **Both clauses turn out to be pure ring
@@ -760,6 +732,36 @@ theorem card_eq_of_ringEquiv_prod {D D' : Type} [DivisionRing D] [Algebra ℝ D]
   have b2 := matrixProd_orthIdem_le h2
   omega
 
+/-! ## 6. The obstruction, and the two Clifford algebras -/
+
+/-- **M₂(ℍ) ≇ M₄(ℝ)** — two 16-dimensional real algebras that are not
+    isomorphic even as rings. -/
+theorem matrix2H_not_ringEquiv_matrix4R :
+    IsEmpty (Matrix (Fin 2) (Fin 2) ℍ[ℝ] ≃+* Matrix (Fin 4) (Fin 4) ℝ) := by
+  refine ⟨fun φ => ?_⟩
+  have h4 : HasOrthIdem (Matrix (Fin 2) (Fin 2) ℍ[ℝ]) 4 :=
+    HasOrthIdem.of_ringEquiv φ.symm matrix4R_hasOrthIdem_four
+  have := matrix2H_orthIdem_le_two h4
+  omega
+
+/-- **Cl(1,3;ℝ) ≇ Cl(3,1;ℝ)** as rings: the two Minkowski sign
+    conventions really do give different algebras. This is the fact
+    both Clifford files had to state as a citation; it is now proven
+    in the estate, and W7's residue item on it closes. -/
+theorem clifford13_not_ringEquiv_clifford31 :
+    IsEmpty (CliffordAlgebra CliffordRealMinkowski.Q₁₃ ≃+*
+      CliffordAlgebra CliffordRealMajorana.Q₃₁) := by
+  refine ⟨fun φ => ?_⟩
+  exact matrix2H_not_ringEquiv_matrix4R.elim
+    ((CliffordRealMinkowski.cliffordRealMinkowskiEquiv.symm.toRingEquiv.trans φ).trans
+      CliffordRealMajorana.cliffordMajoranaEquiv.toRingEquiv)
+
+/-- The ℝ-algebra form of the same statement. -/
+theorem clifford13_not_algEquiv_clifford31 :
+    IsEmpty (CliffordAlgebra CliffordRealMinkowski.Q₁₃ ≃ₐ[ℝ]
+      CliffordAlgebra CliffordRealMajorana.Q₃₁) :=
+  ⟨fun φ => clifford13_not_ringEquiv_clifford31.elim φ.toRingEquiv⟩
+
 /-- **M₄(ℍ) ≇ M₈(ℝ)** — two 64-dimensional real algebras, the rank-`6` mirror pair of the
     Clifford census, which the central-idempotent invariant cannot reach because NEITHER of them
     splits. Here the counts differ: `M₈(ℝ)` admits eight orthogonal nonzero idempotents and
@@ -772,7 +774,7 @@ theorem matrix4H_not_ringEquiv_matrix8R :
   have := matrix4H_orthIdem_le_four h8
   omega
 
-/-! ## 6. The dimension hypotheses are at their sharp values
+/-! ## 7. The dimension hypotheses are at their sharp values
 
 Review round 14 attacked `orthIdem_card_le` by asking whether its
 `d`-slot was slack — a principle that let you plug in a larger `d` than
@@ -805,7 +807,7 @@ theorem not_five_le_finrank_range :
   rw [finrank_h2] at hb
   omega
 
-/-! ## 7. Both values pinned -/
+/-! ## 8. Both values pinned -/
 
 /-- **The invariant is now known exactly on both algebras** — four for
     M₄(ℝ), two for M₂(ℍ), each with an explicit witness AND a matching
