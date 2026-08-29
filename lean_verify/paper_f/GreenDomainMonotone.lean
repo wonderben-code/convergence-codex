@@ -64,6 +64,14 @@ anything; and no limit is taken. **A step an argument uses is not the argument.*
 distinction `LatticeUniformStein` draws about tightness, drawn here *before* anything downstream
 reads this file rather than after (`ERRATUM 334`).
 
+> **^ AND "THREE THINGS STAND BETWEEN" IS ABOUT THIS ROUTE, NOT ABOUT THE STATEMENT** — added the
+> same day, with the paragraph above kept as written (`ERRATUM 94`, `ERRATUM 335`). The three are
+> what monotone-plus-bounded would need, because that argument needs every domain inside one fixed
+> ambient graph. `WALLS.md` §W2.1 §4 is the account of this step and reaches the same convergence
+> without an infinite-volume operator anywhere in it. **A reader arriving at the paragraph above
+> should not conclude that the convergence waits on `ℤ^d` being a graph here; only this route
+> does.**
+
 **`greenDirichlet` is a new object and nothing in the estate uses it.** `gaussianField K m` has
 covariance `green K m`, the propagator of the graph itself — on a box, the free boundary condition
 and not this one. So no theorem about `gaussianField`, about `LatticeFieldWitness`, or anywhere in
