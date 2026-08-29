@@ -52,16 +52,50 @@ formalised here.** What the invariant buys over ℂ is that it is blind to the b
 
 **The real mirror pairs, where dimension provably cannot.** `finrank_clifford_sigForm_comm`:
 `dim_ℝ Cl(p,q;ℝ) = 2^(p+q) = dim_ℝ Cl(q,p;ℝ)` for **every** `p` and `q`. So no dimension count
-separates a signature from its mirror, ever. Three mirror pairs have one split side and one side
-that is a matrix ring over a field, and this invariant separates all three:
+separates a signature from its mirror, ever.
+
+> **THE COUNT IN THIS PARAGRAPH WAS WRONG WHEN FIRST WRITTEN AND THE CORRECTED VERSION IS BELOW
+> (`ERRATUM 331`).** It read *"Three mirror pairs have one split side … and this invariant separates
+> all three"*, with a three-row table. **There are four**, and the omitted one is `(5,0)`/`(0,5)`,
+> whose split side — `CliffordModelSplitCases.clifford_pos_five_split` — sits four lines from the
+> one that was used, **in the same imported file**. The cause was reading that file's header table
+> by eye instead of enumerating the nine ranks (`ERRATUM 58`: a number about the estate is produced
+> by counting). The fourth pair is proved, and the census below is now over all nine ranks.
+
+**FOUR mirror pairs at rank `≤ 8` have one split side and one side that is a matrix ring over a
+field, and this invariant separates all four:**
 
 | pair | split side | simple side | common `dim_ℝ` |
 |------|-----------|-------------|----------------|
 | `(1,0)` / `(0,1)` | `ℝ × ℝ` | `ℂ` | `2` |
 | `(0,3)` / `(3,0)` | `ℍ × ℍ` | `M₂(ℂ)` | `8` |
+| `(5,0)` / `(0,5)` | `M₂(ℍ) × M₂(ℍ)` | `M₄(ℂ)` | `32` |
 | `(0,7)` / `(7,0)` | `M₈(ℝ) × M₈(ℝ)` | `M₈(ℂ)` | `128` |
 
-Each is stated as a `RingEquiv` non-existence and then as the `ℝ`-algebra corollary.
+Each is stated as a `RingEquiv` non-existence and then as the `ℝ`-algebra corollary. **Which side
+splits is not a choice**: at rank `r ≡ 1 (mod 4)` it is the positive diagonal and at `r ≡ 3` the
+negative one, over the ranks this estate names. That is an observed pattern in the table above and
+nothing here proves it holds beyond rank `8` (`ERRATUM 204`).
+
+## The census over the diagonals, complete at rank `≤ 8` and counted rather than eyeballed
+
+Nine ranks, `r = 0` to `8`, each pairing `Cl(r,0;ℝ)` against `Cl(0,r;ℝ)`. **Every one is
+accounted for, and eight of the nine are theorems in this file:**
+
+* **Three are the same algebra, so there is nothing to separate.** `r = 0` is literally one form.
+  `algEquiv_pos_four_neg_four`: both sides of `r = 4` are `M₂(ℍ)`. `algEquiv_pos_eight_neg_eight`:
+  both sides of `r = 8k` are `M_{16^k}(ℝ)`, for every `k` — the general statement was free.
+* **Four are separated by the central-idempotent invariant** — the table above.
+* **One, `r = 2`, is separated by a second invariant**, because neither side splits: `M₂(ℝ)` has a
+  square-zero matrix and `ℍ` is a division ring. `NoSquareZero`, `noSquareZero_of_divisionRing`,
+  `matrix_not_noSquareZero`, and `isEmpty_ringEquiv_pos_two_neg_two`.
+* **One is open here: `r = 6`**, `M₄(ℍ)` against `M₈(ℝ)`, both of real dimension `64`. Neither
+  splits, both contain square-zero elements, so **both invariants in this file are blind to it**.
+  **The route is named and not attempted, and no cost is claimed** (`ERRATUM 246`, `ERRATUM 204`):
+  `IdempotentRankInvariant.orthIdem_card_le` with the quaternionic dimension step generalised from
+  `M₂(ℍ)` on `ℍ²` to `Mₙ(ℍ)` on `ℍⁿ` — nothing in `four_le_finrank_range`'s proof looks at `n` —
+  would cap `M₄(ℍ)` at four orthogonal idempotents against `M₈(ℝ)`'s eight. Whether that closes it
+  has not been checked.
 
 ## What this does NOT do, and it is a real limitation rather than a formality
 
@@ -80,6 +114,9 @@ file needs only that a central idempotent exists on one side and that none does 
 **Nothing here is about simplicity.** *"Not a matrix ring"* is proved; *"not simple"* is not, and no
 Artin–Wedderburn statement is used or implied.
 
+**And neither invariant here reaches rank `6`**, which is the census's one open row and is stated
+above with its route rather than glossed.
+
 ## WHAT THE ADVERSARIAL REVIEW CHANGED, RECORDED BECAUSE BOTH FINDINGS WERE THE SAME MISTAKE
 
 The first draft compiled and was wrong in a way no build catches. Two claims sat in this header as
@@ -94,6 +131,11 @@ prose that the file did not prove:
 Both are `ERRATUM 201`: **a generalisation that is not instantiated is a claim, and a claim in a
 header is not a theorem.** A third instance was added for the same reason —
 `cliffordRfOdd_isEmpty_algEquiv_matrixC`, so the complex statement is visibly non-vacuous.
+
+**A THIRD FINDING CAME AFTER THE COMMIT, FROM `PROOF_STRATEGY` §6 QUESTION 1**, and it is the
+largest: the mirror-pair count was wrong. It is `ERRATUM 331`, recorded in place above, and the
+answer was the same as for the first two — **count, then write the number**. The census that
+replaced it covers all nine ranks and names the one it cannot reach.
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
@@ -324,6 +366,25 @@ theorem isEmpty_algEquiv_neg_three_pos_three :
     IsEmpty (CliffordAlgebra (sigForm 0 3) ≃ₐ[ℝ] CliffordAlgebra (sigForm 3 0)) :=
   ⟨fun φ => isEmpty_ringEquiv_neg_three_pos_three.elim φ.toRingEquiv⟩
 
+/-- **`Cl(5,0;ℝ) ≇ Cl(0,5;ℝ)`** — `M₂(ℍ) × M₂(ℍ)` against `M₄(ℂ)`, both of real dimension `32`.
+
+**THIS PAIR WAS MISSED BY THE FIRST VERSION OF THIS FILE AND IS `ERRATUM 331`.** The header claimed
+*three* such pairs; there are four at rank `≤ 8`, and the split side of the one omitted —
+`CliffordModelSplitCases.clifford_pos_five_split` — sits four lines from the one that was used, in
+the same imported file. The cause was reading a table by eye instead of enumerating the nine ranks
+(`ERRATUM 58`). -/
+theorem isEmpty_ringEquiv_pos_five_neg_five :
+    IsEmpty (CliffordAlgebra (sigForm 5 0) ≃+* CliffordAlgebra (sigForm 0 5)) := by
+  obtain ⟨g⟩ := CliffordModelSplitCases.clifford_pos_five_split
+  obtain ⟨h⟩ := CliffordModelResidues.clifford_neg_five
+  exact isEmpty_ringEquiv_of_prod_of_trivial g.toRingEquiv h.toRingEquiv
+    (matrix_onlyTrivialCentralIdem onlyTrivialCentralIdem_of_isDomain)
+
+/-- The `ℝ`-algebra form of `isEmpty_ringEquiv_pos_five_neg_five`. -/
+theorem isEmpty_algEquiv_pos_five_neg_five :
+    IsEmpty (CliffordAlgebra (sigForm 5 0) ≃ₐ[ℝ] CliffordAlgebra (sigForm 0 5)) :=
+  ⟨fun φ => isEmpty_ringEquiv_pos_five_neg_five.elim φ.toRingEquiv⟩
+
 /-- **`Cl(0,7;ℝ) ≇ Cl(7,0;ℝ)`** — `M₈(ℝ) × M₈(ℝ)` against `M₈(ℂ)`, both of real dimension `128`.
 The split side is `CliffordModelSplitCases.clifford_neg_seven_split`, which is exactly the shape
 this invariant consumes. -/
@@ -338,5 +399,72 @@ theorem isEmpty_ringEquiv_neg_seven_pos_seven :
 theorem isEmpty_algEquiv_neg_seven_pos_seven :
     IsEmpty (CliffordAlgebra (sigForm 0 7) ≃ₐ[ℝ] CliffordAlgebra (sigForm 7 0)) :=
   ⟨fun φ => isEmpty_ringEquiv_neg_seven_pos_seven.elim φ.toRingEquiv⟩
+
+/-! ## 6. One mirror pair the centre cannot reach, and a second invariant that can -/
+
+/-- **A SECOND INVARIANT**, for the pair where neither side splits. A ring *has no square-zero
+element* when `a * a = 0` forces `a = 0`. Like the first, it is purely ring-theoretic. -/
+def NoSquareZero (A : Type*) [Ring A] : Prop := ∀ a : A, a * a = 0 → a = 0
+
+/-- **IT PASSES ALONG ANY RING ISOMORPHISM**, by the same two lines as the first invariant. -/
+theorem NoSquareZero.of_ringEquiv {A B : Type*} [Ring A] [Ring B]
+    (f : A ≃+* B) (h : NoSquareZero A) : NoSquareZero B := by
+  intro b hb
+  obtain ⟨a, rfl⟩ := f.surjective b
+  have : a * a = 0 := f.injective (by rw [map_mul, hb, map_zero])
+  rw [h a this, map_zero]
+
+/-- **A DIVISION RING HAS IT** — `mul_self_eq_zero`, which is `NoZeroDivisors`. -/
+theorem noSquareZero_of_divisionRing {D : Type*} [DivisionRing D] : NoSquareZero D :=
+  fun _ h => mul_self_eq_zero.mp h
+
+/-- **A MATRIX RING OVER A NONTRIVIAL BASE DOES NOT**, as soon as the index type has two distinct
+elements: `single i j 1` squares to zero because `j ≠ i`, and it is not itself zero. -/
+theorem matrix_not_noSquareZero {α : Type*} [Ring α] [Nontrivial α] {n : Type*} [Fintype n]
+    [DecidableEq n] {i j : n} (hij : i ≠ j) : ¬ NoSquareZero (Matrix n n α) := by
+  intro h
+  have hsq : Matrix.single i j (1 : α) * Matrix.single i j (1 : α) = 0 := by
+    rw [Matrix.single_mul_single_of_ne]
+    exact hij.symm
+  have hne : Matrix.single i j (1 : α) ≠ 0 := by
+    intro hz
+    have h1 := congrFun (congrFun hz i) j
+    simp at h1
+  exact hne (h _ hsq)
+
+/-- **`Cl(2,0;ℝ) ≇ Cl(0,2;ℝ)`** — `M₂(ℝ)` against `ℍ`, both of real dimension `4`, and **neither
+side splits**, so the central-idempotent invariant is blind to this pair. The quaternions are a
+division ring and `M₂(ℝ)` has a square-zero matrix; that is the whole separation. -/
+theorem isEmpty_ringEquiv_pos_two_neg_two :
+    IsEmpty (CliffordAlgebra (sigForm 2 0) ≃+* CliffordAlgebra (sigForm 0 2)) := by
+  refine ⟨fun f => ?_⟩
+  obtain ⟨g⟩ := CliffordModelTable.clifford_pos_two
+  obtain ⟨h⟩ := CliffordModelTable.clifford_neg_two
+  exact matrix_not_noSquareZero (α := ℝ) (i := 0) (j := 1) (by decide)
+    (NoSquareZero.of_ringEquiv ((h.symm.toRingEquiv.trans f.symm).trans g.toRingEquiv)
+      noSquareZero_of_divisionRing)
+
+/-- The `ℝ`-algebra form of `isEmpty_ringEquiv_pos_two_neg_two`. -/
+theorem isEmpty_algEquiv_pos_two_neg_two :
+    IsEmpty (CliffordAlgebra (sigForm 2 0) ≃ₐ[ℝ] CliffordAlgebra (sigForm 0 2)) :=
+  ⟨fun φ => isEmpty_ringEquiv_pos_two_neg_two.elim φ.toRingEquiv⟩
+
+/-! ## 7. The three ranks where there is nothing to separate -/
+
+/-- **`Cl(4,0;ℝ) ≅ Cl(0,4;ℝ)`** — both are `M₂(ℍ)`, so this mirror pair is not a separation problem
+at all. Stated so that the census below is theorems rather than a reading of a table. -/
+theorem algEquiv_pos_four_neg_four :
+    Nonempty (CliffordAlgebra (sigForm 4 0) ≃ₐ[ℝ] CliffordAlgebra (sigForm 0 4)) := by
+  obtain ⟨g⟩ := CliffordModelTable.clifford_pos_four
+  obtain ⟨h⟩ := CliffordModelTable.clifford_neg_four
+  exact ⟨g.trans h.symm⟩
+
+/-- **`Cl(8k,0;ℝ) ≅ Cl(0,8k;ℝ)` FOR EVERY `k`** — both are `M_{16^k}(ℝ)`. The general statement is
+free here, since `CliffordModelTable` proves both diagonals at every `k`. -/
+theorem algEquiv_pos_eight_neg_eight (k : ℕ) :
+    Nonempty (CliffordAlgebra (sigForm (8 * k) 0) ≃ₐ[ℝ] CliffordAlgebra (sigForm 0 (8 * k))) := by
+  obtain ⟨g⟩ := CliffordModelTable.clifford_pos_eight_zero k
+  obtain ⟨h⟩ := CliffordModelTable.clifford_neg_eight_zero k
+  exact ⟨g.trans h.symm⟩
 
 end CentralIdemInvariant
