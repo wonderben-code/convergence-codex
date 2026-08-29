@@ -54,6 +54,24 @@ are distinguished by their *type* and not only by their size. With
 `IdempotentRankInvariant.card_eq_of_ringEquiv` this is the full statement for matrix algebras over
 the three division algebras.
 
+**And the dimension half is stated at the generality its proof has**, not at the two algebras it
+was built for: **`card_and_finrank_eq_of_ringEquiv`** says that for **any** finite-dimensional real
+division algebras `D`, `D'` whose centre is the real scalars, a ring isomorphism `Mₘ(D) ≃+* Mₙ(D')`
+forces `card m = card n` **and** `dim_ℝ D = dim_ℝ D'`. `ℝ` and `ℍ` are instances; `ℂ` deliberately
+is not, since its centre is itself — **so the file's two invariants divide the work exactly along
+the line "is the centre bigger than `ℝ`", and neither is doing the other's job.** The two ad-hoc
+centre computations collapse the same way: `centreIsReal_matrix` carries a real centre from any
+base to its matrix algebras, and `centreIsReal_matrixR` / `centreIsReal_matrixH` are its instances
+at `ℝ` and `ℍ` (`ERRATUM 201`).
+
+**NOT settled, and it is the natural next sentence a reader will want**: that `ℝ`, `ℂ` and `ℍ` are
+the ONLY finite-dimensional real division algebras. That is Frobenius's theorem, and **it is absent
+from this Mathlib — probed by shape rather than by name** (`ERRATUM 42`): the 37 files matching
+`Frobenius` are the characteristic-`p` endomorphism, the Frobenius number and Frobenius elements in
+Galois theory, `DivisionAlgebra` occurs only as a section name, and `frobenius_theorem` is zero.
+**So this file distinguishes three algebras; it does not say they exhaust anything**, and every
+statement here is about the three named families only.
+
 **Not settled, and not claimed**: this says nothing about *split* algebras — products — beyond what
 `CentralIdemInvariant` already proves, and it is not a classification of real Clifford algebras.
 Turning it into one needs every `Cl(p,q;ℝ)` identified as a named matrix algebra or a product of
@@ -118,21 +136,37 @@ theorem not_hasCentralSqrtNegOne {A : Type*} [Ring A] [Algebra ℝ A] [Nontrivia
   have hr : r * r = -1 := (algebraMap ℝ A).injective heq
   nlinarith [mul_self_nonneg r]
 
-/-- `Mₙ(ℝ)` has real centre — Mathlib's `Matrix.center_eq_range` over a commutative base. -/
-theorem centreIsReal_matrixR {n : Type*} [Fintype n] [DecidableEq n] :
-    CentreIsReal (Matrix n n ℝ) := by
+/-- **HAVING A REAL CENTRE PASSES TO MATRIX ALGEBRAS**, over any base. Mathlib's
+`Matrix.center_eq_scalar_image` computes the centre over a **non-commutative** base as the scalar
+image of the base's centre, so nothing here asks the base to be commutative — which is what makes
+`ℍ` an instance rather than a separate computation. -/
+theorem centreIsReal_matrix {D : Type*} [Ring D] [Algebra ℝ D] {n : Type*} [Fintype n]
+    [DecidableEq n] (h : CentreIsReal D) : CentreIsReal (Matrix n n D) := by
   intro x hx
-  rw [Matrix.center_eq_range] at hx
-  obtain ⟨r, rfl⟩ := hx
-  exact ⟨r, by rw [CliffordCenter.algebraMap_eq_scalar]; simp⟩
+  rw [Matrix.center_eq_scalar_image] at hx
+  obtain ⟨c, hc, rfl⟩ := hx
+  obtain ⟨r, rfl⟩ := h hc
+  exact ⟨r, (CliffordCenter.algebraMap_eq_scalar r).symm⟩
 
-/-- `Mₙ(ℍ)` has real centre — `QuaternionCenter.mem_matrixCenter_iff`, which is the
-non-commutative-base statement Mathlib does not carry. -/
-theorem centreIsReal_matrixH {n : Type*} [Fintype n] [DecidableEq n] :
-    CentreIsReal (Matrix n n ℍ[ℝ]) := by
+/-- `ℝ` has real centre, trivially: it is commutative and `algebraMap ℝ ℝ` is the identity. -/
+theorem centreIsReal_real : CentreIsReal ℝ := fun r _ => ⟨r, rfl⟩
+
+/-- `ℍ` has real centre — `QuaternionCenter.center_eq_range`, the statement Mathlib does not
+carry because its matrix-centre theorem for a commutative base cannot see it. -/
+theorem centreIsReal_quaternion : CentreIsReal ℍ[ℝ] := by
   intro x hx
-  obtain ⟨r, hr⟩ := QuaternionCenter.mem_matrixCenter_iff.mp hx
-  exact ⟨r, by rw [CliffordCenter.algebraMap_eq_scalar, ← hr]⟩
+  rw [QuaternionCenter.center_eq_range] at hx
+  exact hx
+
+/-- `Mₙ(ℝ)` has real centre — the instance at `D = ℝ` (`ERRATUM 201`). -/
+theorem centreIsReal_matrixR {n : Type*} [Fintype n] [DecidableEq n] :
+    CentreIsReal (Matrix n n ℝ) :=
+  centreIsReal_matrix centreIsReal_real
+
+/-- `Mₙ(ℍ)` has real centre — the instance at `D = ℍ`. -/
+theorem centreIsReal_matrixH {n : Type*} [Fintype n] [DecidableEq n] :
+    CentreIsReal (Matrix n n ℍ[ℝ]) :=
+  centreIsReal_matrix centreIsReal_quaternion
 
 /-- `Mₙ(ℂ)` DOES have one: the scalar matrix `i`. -/
 theorem hasCentralSqrtNegOne_matrixC {n : Type*} [Fintype n] [DecidableEq n] [Nonempty n] :
@@ -218,6 +252,29 @@ theorem matrixH_not_ringEquiv_matrixC : IsEmpty (Matrix m m ℍ[ℝ] ≃+* Matri
   exact ⟨fun φ => not_hasCentralSqrtNegOne centreIsReal_matrixH
     (HasCentralSqrtNegOne.of_ringEquiv φ.symm hasCentralSqrtNegOne_matrixC)⟩
 
+omit [Nonempty m] in
+/-- **THE DIMENSION HALF AT ITS PROPER GENERALITY.** For finite-dimensional real division algebras
+whose centre is the real scalars, a **ring** isomorphism `Mₘ(D) ≃+* Mₙ(D')` forces both the index
+size and the base's real dimension to agree.
+
+`ℝ` and `ℍ` are the instances; **`ℂ` is deliberately not one**, because its centre is itself, and
+that case is what `HasCentralSqrtNegOne` is for. So the trichotomy's two invariants divide the work
+exactly along the line "is the centre bigger than `ℝ`", and neither is doing the other's job. -/
+theorem card_and_finrank_eq_of_ringEquiv {D D' : Type} [DivisionRing D] [Algebra ℝ D]
+    [FiniteDimensional ℝ D] [DivisionRing D'] [Algebra ℝ D'] [FiniteDimensional ℝ D']
+    (hD' : CentreIsReal D') (φ : Matrix m m D ≃+* Matrix n n D') :
+    Fintype.card m = Fintype.card n ∧ Module.finrank ℝ D = Module.finrank ℝ D' := by
+  classical
+  have hcard : Fintype.card m = Fintype.card n :=
+    IdempotentRankInvariant.card_eq_of_ringEquiv φ
+  refine ⟨hcard, ?_⟩
+  have hdim := finrank_eq_of_ringEquiv (centreIsReal_matrix hD') φ
+  rw [Module.finrank_matrix, Module.finrank_matrix, hcard] at hdim
+  have hpos : 0 < Fintype.card n := Fintype.card_pos
+  have hne : Fintype.card n * Fintype.card n ≠ 0 := by positivity
+  exact Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero hne) hdim
+
+omit [Nonempty m] in
 /-- **`Mₘ(ℝ) ≇ Mₙ(ℍ)`**, at every pair of nonempty finite index types — the case neither the
 central-square-root invariant nor the orthogonal-idempotent count reaches, since both algebras have
 real centre and both admit exactly `card` orthogonal idempotents. **Dimension does it, and
@@ -225,14 +282,9 @@ real centre and both admit exactly `card` orthogonal idempotents. **Dimension do
 theorem matrixR_not_ringEquiv_matrixH : IsEmpty (Matrix m m ℝ ≃+* Matrix n n ℍ[ℝ]) := by
   classical
   refine ⟨fun φ => ?_⟩
-  have hcard : Fintype.card m = Fintype.card n :=
-    IdempotentRankInvariant.card_eq_of_ringEquiv (D := ℝ) (D' := ℍ[ℝ]) φ
-  have hdim := finrank_eq_of_ringEquiv centreIsReal_matrixH φ
-  rw [Module.finrank_matrix, Module.finrank_matrix, Quaternion.finrank_eq_four,
-    Module.finrank_self] at hdim
-  have hpos : 0 < Fintype.card m := Fintype.card_pos
-  rw [hcard] at hdim hpos
-  nlinarith [hdim, hpos]
+  have h := (card_and_finrank_eq_of_ringEquiv centreIsReal_quaternion φ).2
+  rw [Module.finrank_self, Quaternion.finrank_eq_four] at h
+  exact absurd h (by norm_num)
 
 /-- **AND IT SUBSUMES THE ESTATE'S FIRST SEPARATION OF THIS KIND**, which is the instantiation
 `ERRATUM 201` asks for rather than a second proof. `IdempotentRankInvariant.
