@@ -32,6 +32,16 @@ three Mathlib facts pointed at one estate theorem.
 bounded, and the bound does not see the volume. `WALLS` and the watch-list item say what that is
 worth.
 
+> **^ THAT SENTENCE OVERSTATES THIS FILE'S ROLE AND IS KEPT** (`ERRATUM 94`, `ERRATUM 334`),
+> **corrected the same day.** `WitnessVarianceUniform` closes the fence's actual application, and
+> **it does not use anything in this file.** The fence names `(√G)⁻¹`; what the application
+> consumes is the squared norm of **one column** of it, and that column's norm is an exact diagonal
+> entry of `massive` — `deg(v) + m²` — so no bound on the whole matrix is needed. **This file is
+> not on the path from that fence to that bound.**
+> **Nothing here is withdrawn**: every theorem stands, and `sqrt_le_sqrt_real` — operator
+> monotonicity of the square root over ℝ, which Mathlib states only for complex C\*-algebras — is
+> new and independent of the application it was built for.
+
 **It is a Loewner bound, not a norm bound**, and the difference is not pedantic. `A ≼ c • 1` for a
 positive semidefinite `A` does give `‖A‖ ≤ c` in the operator norm, but that step is about the
 norm's characterisation and is **not taken here** — nothing in this file mentions a norm.

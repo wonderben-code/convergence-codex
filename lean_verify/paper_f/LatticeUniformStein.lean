@@ -50,6 +50,17 @@ controlled by the largest eigenvalue of `massive`, which a degree bound controls
 **not proved here and not costed** (`ERRATUM 183`). The uniformity claimed is exactly the
 constant's, and no more.
 
+> **^ CLOSED 2026-08-29 AND THE PARAGRAPH IS KEPT** (`ERRATUM 94`).
+> `WitnessVarianceUniform.absCoordField_var_le_boxGraph`: on the `d`-dimensional box the variance
+> of that witness at any site is at most `m⁻²·(2d + m²)`, **at every side length**. So the
+> application IS uniform, and the paragraph's *"plausibly does not grow"* was right.
+> **ITS REASON WAS NOT.** It says `(√G)⁻¹` is controlled by the largest eigenvalue of `massive`,
+> which a degree bound controls — true, and **not what the application needs**. The tuple is
+> `((√G)⁻¹) j v · sgn(…)`, so what is consumed is the squared norm of **one column**, and that is
+> an exact diagonal entry of `massive`: `deg(v) + m²`, by `sqrtGreenInv_col_sq`. **No bound on the
+> whole matrix enters.** A file was built for the reason this paragraph gave before the consumer
+> was read (`ERRATUM 334`).
+
 **`OS4` does not move**, for the reason it has not moved throughout: a bound whose constant does
 not blow up is an ingredient of a tightness argument and not one. No sequence of measures, no
 limit, no compactness appears here.
