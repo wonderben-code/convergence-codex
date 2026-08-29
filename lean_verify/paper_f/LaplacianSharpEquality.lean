@@ -59,6 +59,14 @@ eigenbasis, and it is the successor unit, not this one** — it needs a `dotProd
 bridge no file states yet and an import (`RayleighPow`) outside this file's closure. **No cost is
 claimed for it** (`ERRATUM 246`): a traced route is not a finished one.
 
+> **^ THAT SUCCESSOR UNIT IS DONE, THE SAME DAY: `LaplacianLoewnerConverse`.** The route above is
+> the route taken, step for step, and the two pieces of plumbing named were the two pieces of
+> plumbing — `inner_mv_eq`, `inner_self_eq`, `import RayleighPow`.
+> **`massive_le_smul_one_iff_colorable`**: for a connected `Δ`-regular graph the constant cannot be
+> lowered **iff** the graph is two-colourable. The paragraph is kept because it was exact when
+> written (`ERRATUM 94`), and because a traced route that then works is worth leaving visible
+> beside the three this week that did not.
+
 **`PerronPrimitive`'s header carries a false sentence, and this file is NOT what falsified it.**
 That file says the classical route to its even case needs *primitive ⇒ not bipartite ⇒ the spectrum
 is not symmetric about `0`*, and that *"`bipartite` appears here only as a property of specific

@@ -54,6 +54,16 @@ side is **even**. That is the whole argument: `k` never enters it, and no bound 
 
 ## What this is NOT
 
+> **THE STATEMENT IS NOW ALSO AVAILABLE WITHOUT THE SPECTRUM, 2026-08-29.**
+> `LaplacianLoewnerConverse.massive_le_smul_one_iff_colorable` proves that any CONNECTED regular
+> graph fails to attain `2Δ + m²` exactly when it is not two-colourable, using
+> `Matrix.IsHermitian.eigenvectorBasis` and never inspecting it — so the odd cycle's case is an
+> instance at `Δ = 2` and the odd periodic lattice follows in every dimension.
+> **THIS FILE IS NOT SUPERSEDED AND THE DIFFERENCES RUN BOTH WAYS**: `odd_cycle_lt` assumes
+> `m ≠ 0`, which the general theorem does not need, and delivers `0 < c`, which the general theorem
+> does not prove. The explicit eigenvalue list here is also what `CycleGreenFormula` consumes, and
+> nothing about it moves.
+
 **It does not identify the constant.** `odd_cycle_lt` produces the supremum of the eigenvalue list
 as a `Finset.sup'` and proves it is below `4 + m²`; **no closed form for it is given**, and none is
 needed for the refutation. Whether that supremum equals `2 + m² − 2cos(π(N−1)/N)` — the value one
