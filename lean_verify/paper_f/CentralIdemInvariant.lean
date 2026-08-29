@@ -223,9 +223,9 @@ theorem isEmpty_ringEquiv_of_prod_of_trivial {C₁ C₂ A B S : Type*} [Ring C�
 idempotents and any nonempty finite index type.
 
 **No `DecidableEq n` is asked for**, and that is not tidying: a `RingEquiv` needs only `Mul` and
-`Add`, and `Matrix.instMul` does not see decidability. The unit matrix does, so the *proof* takes a
-`classical` instance — but the statement is then about the additive-multiplicative structure alone,
-and applies at a concrete index type whatever decidability instance the caller carries. -/
+`Add`, and matrix multiplication does not see decidability. `Matrix.one` does, so the *proof* takes
+a `classical` instance — but the statement is then about the additive-multiplicative structure
+alone, and applies at a concrete index type whatever instance the caller carries. -/
 theorem isEmpty_ringEquiv_matrix_of_prod {C A B D : Type*} [Ring C] [Ring A] [Ring B] [Ring D]
     [Nontrivial A] [Nontrivial B] {n : Type*} [Fintype n] [Nonempty n]
     (g : C ≃+* A × B) (hD : OnlyTrivialCentralIdem D) :
