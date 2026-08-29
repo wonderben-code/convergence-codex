@@ -46,6 +46,14 @@ it, and that is not instantiated here.
 is not two-colourable — `CycleSpectralBound` proves the `d = 1` case of exactly that failure, and
 **nothing here says whether the bound is attained at odd side length in higher dimensions.**
 
+> **^ BOTH HALVES OF THAT SENTENCE ARE NOW THEOREMS, 2026-08-29.** The non-colourability was
+> asserted here and proved nowhere; `LaplacianSharpEquality.torus_not_colorable_two_of_odd` proves
+> it in every dimension, by embedding `cycleGraph n` in `torusGraph (d+1) n` as a graph
+> homomorphism (`axisHom`) and pulling back Mathlib's `chromaticNumber_cycleGraph_of_odd`. And
+> `torus_odd_no_attaining_vector` answers what this file said nothing about: **at every odd side
+> length at least three, in every dimension, no vector attains the bound** — with no spectrum
+> computed. The paragraph is kept because it was exact when written (`ERRATUM 94`).
+
 **It is a statement about a matrix, not about a field.** No measure appears; `gaussianField` is not
 mentioned; `OS4` does not move and no published tag moves.
 

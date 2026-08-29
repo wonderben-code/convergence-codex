@@ -44,6 +44,13 @@ two-colourability to an eigenvalue, to attainment, or to `massive`, and this fil
 mentioning `IsSignColouring`. The odd cycle is consistent with the converse (`CycleSpectralBound`)
 and one family is not a proof.
 
+> **^ THE CONVERSE IS PROVED THE SAME DAY, WITH ONE HYPOTHESIS ADDED
+> (`LaplacianSharpEquality`).** For a **connected** regular graph, attained ⟹ two-colourable, so
+> `exists_quadForm_eq_iff_colorable` is the characterisation this paragraph declines to claim. The
+> connectivity is not slack: `C₃ ⊔ C₄` is 2-regular, attains on its `C₄`, and is not
+> two-colourable. The negative census above was exact when written and the paragraph is kept
+> (`ERRATUM 94`); what it looked for now exists.
+
 **It says nothing about a graph that is two-colourable and not regular** beyond the averaged
 statement, which is genuinely weaker: it bounds `c` below by the *average* of `2·deg + m²`, and
 without regularity that is all the sign colouring gives.

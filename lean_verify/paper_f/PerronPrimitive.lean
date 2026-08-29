@@ -34,6 +34,18 @@ anywhere relates it to a spectrum. So the odd hypothesis is a limit of the argum
 one rather than dressed up as a limit of the mathematics** (`ERRATUM 194`, `ERRATUM 219`: a
 difficulty claim written without a probe is the recurring defect in this record).
 
+⚠ **THE LAST SENTENCE OF THAT PARAGRAPH IS FALSE, AND §3 BELOW IS THE COUNTEREXAMPLE — added the
+same day, 2026-08-22, in the commit after the one that wrote the sentence. Kept per `ERRATUM 94`;
+recorded as `ERRATUM 338`.** `signOf_conj` and `trace_pow_eq_zero` state bipartiteness for an
+**arbitrary** matrix through a `c : n → Bool`, not for a lattice graph, and conclude that every odd
+power has trace zero — which `TracePowerSpectrum.herm_trace_pow` reads as `∑ᵢ λᵢ^k = 0`, a
+statement about the spectrum. `RegularBipartiteSharp` and `LaplacianSharpEquality`
+(2026-08-29) are two more. **NO STEP OF THE CHAIN ABOVE MOVES.** It needs *not bipartite ⇒ −λ_max
+is not an eigenvalue* for an arbitrary non-negative symmetric matrix; §3 proves the **converse**
+direction, and the two 29 August files are about the **Laplacian of a graph**, a different object.
+And §4 removed the odd hypothesis by a route that never needed the chain, so there is no gap here
+to open.
+
 **AND IT IS NOT A LOSS OF GENERALITY IN PRACTICE, WHICH IS STATED AND NOT PROVED HERE.** For a
 nonnegative `A` with no zero row, `A ^ k > 0` implies `A ^ m > 0` for every `m ≥ k`, so an odd
 witness always exists. **That implication is not proved in this file** and the hypothesis is
