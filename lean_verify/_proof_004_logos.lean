@@ -23,6 +23,29 @@
   - RG fixed point existence (Wilson 1971)
   - Widom scaling hypothesis (Widom 1965)
 
+  ⚠ THE REMAINING SORRY DOES NOT GUARD A HARD THEOREM. IT GUARDS A FALSE ONE,
+  AND THIS FILE CARRIED NO POINTER TO THAT UNTIL 2026-08-29 (ERRATA 34;
+  ERRATUM 94: the sorry, its citations and the statement are all KEPT, not
+  rewritten). The list below reads as five literature results away from a
+  proof. It is not: `phase_transition_symmetry_breaking` quantifies over
+  EVERY group action, including trivial ones, and under a trivial action the
+  pushforward along any group element is the identity pushforward — so the
+  symmetry-breaking clause fails for every beta_c, under every interpretation
+  of the axiomatised GibbsMeasure, indeed for every beta-indexed family of
+  measures. No amount of Ruelle, Peierls, Georgii or Wilson can fill it.
+  MACHINE-CHECKED: paper_f/PhaseTransitionStatement.lean,
+  `phase_transition_statement_refuted` — the negation of this file's flagship
+  statement, proved. That file also supplies what the statement was reaching
+  for: the per-model predicate `ExhibitsSymmetryBreaking`, and
+  `exhibitsSymmetryBreaking_nontrivial_action`, which says a non-trivial
+  action is NECESSARY — the missing hypothesis, as a theorem.
+  WHAT IS NOT AFFECTED: every "Provable content" item above is true and
+  proved, here, with no sorry. WHETHER TO AMEND THE FLAGSHIP STATEMENT IS
+  DECISIONS NEEDED and is the author's; nothing in this file is changed
+  beyond this note. ERRATA 34's standing lesson is the reason it is here:
+  "a sorry is a claim too. 'Honestly documented as out of scope' protected
+  this statement from proof-level scrutiny."
+
   Upgrade notes (v2):
   - Gibbs measure definition: opaque axiom instead of sorry in def body
   - Added concrete Rushbrooke witness (mean-field Ising exponents)
@@ -197,6 +220,11 @@ theorem phase_transition_symmetry_breaking
   -- However, part (3) IS provable: we can exhibit concrete exponents
   -- satisfying the scaling relation.
   -- The full assembly requires Steps 1-5, so we mark it:
+  -- ⚠ 2026-08-29: Steps 1-5 are NOT what is missing. This statement is FALSE
+  -- as quantified (trivial group actions), and the negation is proved in
+  -- paper_f/PhaseTransitionStatement.phase_transition_statement_refuted.
+  -- The sorry and its citations are kept as written (ERRATA 34, ERRATUM 94);
+  -- amending the statement is DECISIONS NEEDED. See the file header.
   sorry -- OUT OF SCOPE: requires Steps 1-5 (Ruelle + Peierls + Wilson)
          -- Part (3) alone is proven by mean_field_rushbrooke above.
 
