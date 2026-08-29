@@ -49,6 +49,15 @@ tensor product or a Hom-module is constructed.
 
 **Nothing over `ℝ`, nothing about `su(n)`, no physics, no roots, no semisimplicity.**
 
+> **⚠ The first clause is answered, 2026-08-29, by `SuBlockOddModule` — and the answer is not the
+> same theorem.** `suEvenMod` and `suOddMod` are the real analogues of `evenMod` and `oddMod`,
+> and `sup_eq_tracelessSkewMod` is the analogue of `sup_eq_top` — **but with
+> `tracelessSkewMat` in place of `⊤`**, because over `ℝ` the two pieces do **not** span the
+> ambient matrix space. `SuBlockOddModule.sup_ne_top` proves that, with `1` as the witness.
+> **`sup_eq_top` below is true over `ℂ` and keeps its proof**; what the real case shows is a
+> difference between the forms, not an error here. The remaining clauses of the sentence above
+> stand: no `su(n)` by name, no physics, no roots, no semisimplicity, in either file.
+
 **No wall moves. No published tag moves.**
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.

@@ -47,6 +47,16 @@ declaration, following `F4_1e_SpectralTripleArithmetic`.
 **No `LieSubmodule` for the odd piece**, over `ℝ` or otherwise; `BlockOddModule`'s analogue is
 still unwritten.
 
+> **⚠ Written 2026-08-29, `SuBlockOddModule`.** `suOddMod` is the odd piece as a
+> `LieSubmodule ℝ ↥(suEvenLie p q)`, with `suEvenMod` beside it, and the sentence above is kept
+> (`ERRATUM 94`) as the record of what was open. **The analogue is not literal, and that is the
+> content**: over `ℂ`, `BlockOddModule.sup_eq_top` says the two pieces span **everything**; over
+> `ℝ` they span `tracelessSkewMat`, a **proper** submodule of the same ambient space, and
+> `SuBlockOddModule.sup_ne_top` proves the literal analogue **false** with `1` as the witness —
+> Hermitian, not skew. Skew-Hermiticity cuts the space down before the block grading acts.
+> Nothing here is re-derived: this file's `suPart` grading is at the level of `Submodule ℝ` and
+> stays there.
+
 **No wall moves. No published tag moves.**
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
