@@ -59,6 +59,17 @@ withdrawn before the commit rather than left to be read charitably** (`ERRATUM 2
 `ERRATUM 194`'s rule) — the largest Laplacian eigenvalue of a regular graph is not `2Δ` in general,
 and the claim was written from the shape of the proof rather than from a computation.
 
+> **^ WHERE ELSE IT IS ATTAINED IS NOW ANSWERED, 2026-08-29, AND THE WITHDRAWAL STANDS.**
+> `paper_f/LaplacianBoundSharp.massive_cycle_le_smul_one_iff`: on **every even cycle** of length at
+> least four, `massive ≼ c·1` holds **iff** `4 + m² ≤ c`, and `4 + m² = 2Δ + m²` at `Δ = 2` — so
+> the constant is exactly right there, not merely an upper bound, and
+> `le_inv_of_smul_one_le_green` says the propagator's lower bound cannot be raised there either.
+> **The withdrawn sentence is still withdrawn and was still right to be**: it claimed attainment on
+> *every* graph with all degrees `Δ`, and this is one family at one `Δ`. **The odd cycle is
+> 2-regular and is not covered** — the eigenvector is the alternating vector, which needs the
+> length even — and nothing says whether the bound is attained there.
+> Found by reading `CycleLaplacianSpectrum`'s eigenvalue list at `k = N/2`, one unit later.
+
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 
