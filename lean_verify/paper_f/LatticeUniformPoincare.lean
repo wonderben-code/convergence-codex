@@ -82,6 +82,19 @@ uses (reindex off `Fin n` as in `LatticePoincarePi`, then change variables by `�
 deepening. **Not costed** (`ERRATUM 183`) — and on this chain four difficulty estimates out of
 five were wrong, so a reader should discount any guess about it, including a future one of mine.
 
+> **^ THE PARAGRAPH ABOVE IS STALE AND IS KEPT** (`ERRATUM 94`), **corrected 2026-08-29.** Its
+> clause *"Nothing has done that for the correlated inequality"* was true when written and is now
+> false: `LatticeCorrelatedStein.poincare_correlated_stein` states the sharp inequality on the
+> Stein pair class, and `poincare_correlated_general_of_stein` derives the `C¹` version from it.
+> **And the deepening this paragraph names as next was itself done** — `LatticeUniformStein` moves
+> the uniform bound onto the same class, and its own header says this file *"was written for
+> `ContDiff ℝ 1` observables, because that was the only class available on the day"*.
+> **THE SUCCESSOR RECORDED THE CORRECTION AND THE PREDECESSOR DID NOT**, which is `ERRATUM 226`'s
+> shape — a correction made once per file rather than once per claim — and a reader arriving at
+> this header first would have acted on a dead fence. **Found by probing the fence before working
+> it** (`ERRATUM 314`), which is the only reason no unit was spent on it.
+> The estimate-discounting sentence stands and is not superseded: it was right.
+
 **No published tag moves.**
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
