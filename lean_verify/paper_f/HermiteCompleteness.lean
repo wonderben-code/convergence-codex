@@ -88,6 +88,20 @@
     σ = 0 in n dimensions. The one-dimensional file covers σ = 0; the
     n-dimensional one does not, and says so in its own header rather than
     leaving it to be discovered.
+
+    ⚠ AND THAT LAST SENTENCE WENT STALE THE SAME DAY TOO -- the THIRD fence
+    this campaign wrote and closed within hours, which is recorded rather
+    than tidied away. HermitePiScaledComplete.complete_pi_zero proves it:
+    gamma_0^n is the Dirac mass at the origin
+    (TextbookSobolevPiScaled.gaussPiVar_zero, over the estate's own pi_dirac,
+    absent from Mathlib) and orthogonality to Hpi n 0 = 1 alone forces
+    F 0 = 0, with no integrability hypothesis. The statement is about the
+    PLAIN product Hermite family, because the rescaled one is meaningless at
+    sigma = 0 -- so it is a different statement about a degenerate measure,
+    not the sigma /= 0 theorem extended. Both sentences above are kept
+    (ERRATUM 94). WHAT IS ACTUALLY LEFT: nothing on this list. The variance
+    half, the n-dimensional half, their combination, and the degenerate case
+    are all proved.
   * Anything about the spectral action. Unchanged, unproven.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.

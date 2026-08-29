@@ -1,5 +1,6 @@
 import HermitePiComplete
 import GaussianProductMeasure
+import TextbookSobolevPiScaled
 
 open MeasureTheory ProbabilityTheory Polynomial
 open scoped NNReal ENNReal
@@ -49,6 +50,14 @@ one-dimensional measure is `δ₀` and orthogonality to the constant polynomial 
 `f 0 = 0`. The same is true of `γ_0ⁿ = δ₀ⁿ`, but **it is not proved below**: every statement here
 carries `σ ≠ 0`, which is what the rescaled family `Hpi n m (σ⁻¹ • ·)` needs to mean anything.
 The degenerate case is not claimed in either direction.
+
+> **⚠ Closed the same day, by §4 of this file.** `complete_pi_zero` proves it: `γ_0ⁿ` is the Dirac
+> mass at the origin (`TextbookSobolevPiScaled.gaussPiVar_zero`, over the estate's own `pi_dirac`,
+> which Mathlib does not have), and orthogonality to `Hpi n 0 = 1` alone forces `F 0 = 0`. **The
+> paragraph is kept (`ERRATUM 94`) and its reason is still the right reason**: the statement is
+> about the **plain** family, because the rescaled one is meaningless at `σ = 0` — so this is not
+> the `σ ≠ 0` theorem extended, it is a different statement about a degenerate measure. **No
+> integrability hypothesis is needed or assumed**, as in one dimension.
 
 **No Poincaré inequality.** This is completeness only. The `W^{1,2}` approximation that the
 inequality beyond polynomials needs is untouched here, exactly as `HermiteCompleteness` records.
@@ -202,5 +211,36 @@ theorem hermitePi_complete_orthogonal_system_scaled (hσ : σ ≠ 0) (n : ℕ) :
    fun m => Finset.prod_ne_zero_iff.mpr fun i _ =>
      Nat.cast_ne_zero.mpr (m i).factorial_ne_zero,
    fun F hF horth => polynomials_complete_pi_scaled hσ n F hF horth⟩
+
+/-! ## 4. The degenerate case, `σ = 0` -/
+
+/-- `Hpi n 0` is the constant `1`: every factor is `H 0 = 1`. -/
+theorem Hpi_zero_eq_one (n : ℕ) (x : Fin n → ℝ) : Hpi n 0 x = 1 := by
+  simp [Hpi]
+
+/-- **COMPLETENESS AT VARIANCE ZERO, IN `n` DIMENSIONS.** The clause this file's header left open
+on 2026-08-29, closed the same day. At `σ = 0` the rescaled family `Hpi n m (σ⁻¹ • ·)` is
+meaningless, so the statement is about the **plain** product Hermite family — and it needs only
+the constant one: `γ_0ⁿ` is the Dirac mass at the origin, and orthogonality to `Hpi n 0 = 1`
+already says `F 0 = 0`. **No integrability hypothesis is needed or assumed**, exactly as in one
+dimension. -/
+theorem complete_pi_zero (n : ℕ) (F : (Fin n → ℝ) → ℝ)
+    (horth : ∀ m : Fin n → ℕ, ∫ x, F x * Hpi n m x ∂(gaussPiVar 0 n) = 0) :
+    F =ᵐ[gaussPiVar 0 n] 0 := by
+  have hd : gaussPiVar 0 n = Measure.dirac (0 : Fin n → ℝ) :=
+    TextbookSobolevPiScaled.gaussPiVar_zero n
+  have h1 := horth 0
+  rw [hd] at h1 ⊢
+  rw [integral_dirac] at h1
+  rw [Hpi_zero_eq_one, mul_one] at h1
+  rw [Filter.EventuallyEq, MeasureTheory.ae_iff]
+  have hsub : {x : Fin n → ℝ | ¬ F x = (0 : (Fin n → ℝ) → ℝ) x}
+      ⊆ ({0} : Set (Fin n → ℝ))ᶜ := by
+    intro x hx
+    simp only [Set.mem_compl_iff, Set.mem_singleton_iff]
+    rintro rfl
+    exact hx (by simpa using h1)
+  refine measure_mono_null hsub ?_
+  simp
 
 end HermitePiScaledComplete
