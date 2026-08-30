@@ -103,6 +103,15 @@ choice per bipartite component, which is where the assembly would begin rather t
 **So the gap is that nobody has assembled it, not that the pattern is unknown** — `ERRATUM 340`'s
 distinction, applied here to this file's own fence, and no cost is claimed for it (`ERRATUM 246`).
 
+**⚠ AND THE ASSEMBLY IS DONE, THE SAME DAY, IN `LaplacianSignlessKernel`.** The fence above is kept
+verbatim (`ERRATUM 94`) and **must not be read as status**: `card_bipartiteComponent_eq_finrank_ker`
+proves `Fintype.card {C // (G.induce C.supp).Colorable 2}` is `finrank ℝ (ker (toLin' Q))` for
+every finite graph. The estimate above was right about the shape — it is Mathlib's four-lemma
+chain re-indexed — and wrong about nothing, but the one step with no Mathlib counterpart was not
+foreseen here: two sign-flipping vectors are proportional along a walk, which is what replaces
+Mathlib's `Quot.lift` and is the reason its `L` proof does not transfer. **This file's dichotomy is
+that theorem's zero case** (`finrank_ker_eq_zero_iff_posDef`).
+
 **It computes no eigenvalue of `D + A`**, here or anywhere in this estate. `TorusLaplacianSpectrum`
 diagonalises the *massive* Laplacian on the periodic lattice and says nothing about `Q`.
 

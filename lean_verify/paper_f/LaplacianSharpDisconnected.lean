@@ -112,15 +112,14 @@ theorem exists_neg_adj_of_component_colorable (C : G.ConnectedComponent)
 
 /-! ## 3. And conversely -/
 
-/-- **A SIGN-FLIPPING VECTOR TWO-COLOURS THE COMPONENT WHERE IT DOES NOT VANISH.** -/
-theorem exists_component_colorable_of_neg_adj {x : V → ℝ} (hx : x ≠ 0)
-    (hflip : ∀ u v : V, G.Adj u v → x v = - x u) :
-    ∃ C : G.ConnectedComponent, (G.induce C.supp).Colorable 2 := by
+/-- **A SIGN-FLIPPING VECTOR TWO-COLOURS ITS OWN COMPONENT AT EVERY VERTEX WHERE IT DOES NOT
+VANISH.** Generalised in place 2026-08-30 (`ERRATUM 337`: extract, do not copy) from the existential
+below, which supplied the vertex by choice and then discarded it. The decomposition of the signless
+Laplacian's kernel needs the component named, not merely known to exist. -/
+theorem component_colorable_of_ne_zero {x : V → ℝ}
+    (hflip : ∀ u v : V, G.Adj u v → x v = - x u) {v₀ : V} (hv₀ : x v₀ ≠ 0) :
+    (G.induce (G.connectedComponentMk v₀).supp).Colorable 2 := by
   classical
-  obtain ⟨v₀, hv₀⟩ : ∃ v₀, x v₀ ≠ 0 := by
-    by_contra hc
-    exact hx (funext fun w => not_not.mp fun h => hc ⟨w, h⟩)
-  refine ⟨G.connectedComponentMk v₀, ?_⟩
   have hne : ∀ w : (G.connectedComponentMk v₀).supp, x (w : V) ≠ 0 := by
     rintro ⟨w, hw⟩
     rw [SimpleGraph.ConnectedComponent.mem_supp_iff, SimpleGraph.ConnectedComponent.eq] at hw
@@ -141,6 +140,18 @@ theorem exists_component_colorable_of_neg_adj {x : V → ℝ} (hx : x ≠ 0)
       exact not_lt.mpr (neg_nonpos.mpr h.le)
     simp only [if_pos h, if_neg hb]
     decide
+
+/-- **A SIGN-FLIPPING VECTOR TWO-COLOURS THE COMPONENT WHERE IT DOES NOT VANISH**, which is the
+statement above with the vertex existentially quantified. Its statement is unchanged and nothing is
+withdrawn. -/
+theorem exists_component_colorable_of_neg_adj {x : V → ℝ} (hx : x ≠ 0)
+    (hflip : ∀ u v : V, G.Adj u v → x v = - x u) :
+    ∃ C : G.ConnectedComponent, (G.induce C.supp).Colorable 2 := by
+  classical
+  obtain ⟨v₀, hv₀⟩ : ∃ v₀, x v₀ ≠ 0 := by
+    by_contra hc
+    exact hx (funext fun w => not_not.mp fun h => hc ⟨w, h⟩)
+  exact ⟨G.connectedComponentMk v₀, component_colorable_of_ne_zero G hflip hv₀⟩
 
 /-! ## 4. The characterisation, with no connectivity hypothesis -/
 
