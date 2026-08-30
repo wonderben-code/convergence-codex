@@ -40,6 +40,7 @@
 -/
 import SteinSmoothTest
 import Mathlib.MeasureTheory.Integral.DominatedConvergence
+import Mathlib.Analysis.Calculus.ContDiff.Polynomial
 
 namespace W6Converse
 
@@ -54,9 +55,32 @@ noncomputable section
 Needed because the test functions below are `q·χ_R` and the definition of
 `SmoothSteinPair` asks for `Cc^∞`. Mathlib has `Polynomial.continuous` and
 `Polynomial.hasDerivAt` but no `ContDiff` statement; this is the induction.
+
+**⚠ THAT LAST CLAUSE IS FALSE AND WAS FALSE WHEN WRITTEN. Kept per `ERRATUM 94`; `ERRATUM 354`
+records it.** `Polynomial.contDiff_aeval` is in the **pinned** Mathlib —
+`Mathlib/Analysis/Calculus/ContDiff/Polynomial.lean:22`, `ContDiff 𝕜 n (fun x ↦ f.aeval x)` at every
+`WithTop ℕ∞` order — and the manifest pinning it is dated **2026-05-07**, three months before this
+file. Over `ℝ` it IS this statement, `aeval` and `eval` agreeing by
+`Polynomial.coe_aeval_eq_eval`. **The induction below was a re-proof**, by the same
+`Polynomial.induction_on'` with the same two cases as Mathlib's.
+**REPAIRED BY DELETING THE PROOF, NOT THE THEOREM**: the name has a consumer (`testf_smooth`), so
+it stays and is now one line off Mathlib. `ERRATUM 336`'s class, found by auditing this estate's
+`Mathlib has no …` claims against the pinned tree.
+**AND THE COST OF THE DUPLICATE WAS ONE `import` LINE, WHICH IS WORTH STATING EXACTLY.** The lemma
+was not in this file's import closure, so `exact?` and `simp` could not have found it; it is in the
+pinned tree and reachable by importing `Mathlib.Analysis.Calculus.ContDiff.Polynomial`, which this
+file now does. **That makes the claim false about Mathlib and true about what was in scope** — a
+distinction the sentence did not draw, and the reason `ERRATUM 42`'s rule is to grep the tree
+rather than to trust a failed tactic.
 -/
 
 theorem polynomial_contDiff (q : ℝ[X]) {n : WithTop ℕ∞} :
+    ContDiff ℝ n fun x : ℝ => q.eval x := by
+  simpa [Polynomial.coe_aeval_eq_eval] using Polynomial.contDiff_aeval (𝕜 := ℝ) q n
+
+/-- The original hand induction, kept as a `private` witness that the two statements really are the
+same one, since the repair above is otherwise unfalsifiable prose. -/
+private theorem polynomial_contDiff_by_induction (q : ℝ[X]) {n : WithTop ℕ∞} :
     ContDiff ℝ n fun x : ℝ => q.eval x := by
   induction q using Polynomial.induction_on' with
   | add p r hp hr =>
