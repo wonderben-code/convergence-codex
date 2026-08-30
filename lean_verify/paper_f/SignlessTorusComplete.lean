@@ -69,58 +69,70 @@ noncomputable def chiDBasis {n : ℕ} (hn : n ≠ 0) :
 
 /-! ## 2. Those eigenvalues are all of them -/
 
-/-- **`μ` IS AN EIGENVALUE OF `Q` IFF IT IS `νQ` AT SOME FREQUENCY.** The reverse direction is
-`SignlessTorusSpectrum.cx_signlessLap_mulVec_chiD` with `chiD_ne_zero`. The forward direction is
-the content: expand the eigenvector in the character basis, apply `Q`, and compare coefficients —
-each is multiplied by `νQ k − μ`, which is non-zero by assumption, so every coefficient vanishes
-and the eigenvector is `0`. -/
+/-! ### The argument, at the generality it is actually about
+
+`ERRATUM 337`'s rule — extract, do not copy. What follows has nothing to do with graphs, with `Q`,
+or with characters: it is the statement that **a matrix with a basis of eigenvectors has no other
+eigenvalues**, and it is wanted again the moment anybody asks the same question about the ordinary
+massive Laplacian, whose eigenvectors are the same basis. -/
+
+/-- **A MATRIX DIAGONALISED BY A BASIS HAS EXACTLY THE EIGENVALUES ON THAT BASIS.** Given a basis
+`b` of `ι → ℂ` and a family `ν` with `A *ᵥ b k = ν k • b k`, a scalar `μ` is an eigenvalue of `A`
+**iff** `μ = ν k` for some `k`. The reverse direction needs `b k ≠ 0`, which a basis vector is.
+The forward direction is the content: expand the eigenvector, apply `A`, and every coefficient is
+multiplied by `ν k − μ`, non-zero by assumption, so linear independence kills them all. -/
+theorem eigenvalue_iff_of_basis {ι : Type*} [Fintype ι]
+    (A : Matrix ι ι ℂ) (b : Module.Basis ι ℂ (ι → ℂ)) (ν : ι → ℂ)
+    (hb : ∀ k, A *ᵥ b k = ν k • b k) (μ : ℂ) :
+    (∃ x : ι → ℂ, x ≠ 0 ∧ A *ᵥ x = μ • x) ↔ ∃ k, ν k = μ := by
+  classical
+  have hA : ∀ y : ι → ℂ, A *ᵥ y = Matrix.toLin' A y :=
+    fun y => (Matrix.toLin'_apply _ y).symm
+  constructor
+  · rintro ⟨x, hx0, hx⟩
+    by_contra hex
+    have hnone : ∀ k, ν k ≠ μ := fun k hk => hex ⟨k, hk⟩
+    apply hx0
+    have hrepr : ∑ j, b.repr x j • b j = x := b.sum_repr x
+    have h1 : Matrix.toLin' A x = ∑ j, (ν j * b.repr x j) • b j := by
+      conv_lhs => rw [← hrepr]
+      rw [map_sum]
+      refine Finset.sum_congr rfl fun j _ => ?_
+      rw [map_smul, ← hA, hb, smul_smul, mul_comm]
+    have h2 : μ • x = ∑ j, (μ * b.repr x j) • b j := by
+      conv_lhs => rw [← hrepr]
+      rw [Finset.smul_sum]
+      exact Finset.sum_congr rfl fun j _ => smul_smul _ _ _
+    have hsum : ∑ j, ((ν j - μ) * b.repr x j) • b j = 0 := by
+      have hsplit : ∑ j, ((ν j - μ) * b.repr x j) • b j
+          = (∑ j, (ν j * b.repr x j) • b j) - ∑ j, (μ * b.repr x j) • b j := by
+        rw [← Finset.sum_sub_distrib]
+        refine Finset.sum_congr rfl fun j _ => ?_
+        rw [← sub_smul, sub_mul]
+      rw [hsplit, ← h1, ← h2, ← hA, hx, sub_self]
+    have hzero : ∀ k, (ν k - μ) * b.repr x k = 0 :=
+      Fintype.linearIndependent_iff.1 b.linearIndependent _ hsum
+    have hr : b.repr x = 0 := by
+      ext k
+      rcases mul_eq_zero.1 (hzero k) with h | h
+      · exact absurd (sub_eq_zero.1 h) (hnone k)
+      · exact h
+    simpa using congrArg b.repr.symm hr
+  · rintro ⟨k, rfl⟩
+    exact ⟨b k, b.ne_zero k, hb k⟩
+
+/-- **`μ` IS AN EIGENVALUE OF `Q` IFF IT IS `νQ` AT SOME FREQUENCY.** Now three lines off
+`eigenvalue_iff_of_basis`, the characters being the basis and `cx_signlessLap_mulVec_chiD` the
+eigenvector equation. The statement is unchanged from when the argument was written out here. -/
 theorem eigenvalue_iff (N : ℕ) (μ : ℂ) :
     (∃ x : Site d (N + 3) → ℂ, x ≠ 0 ∧
         MatrixLoewner.cx (signlessLap (torusGraph d (N + 3))) *ᵥ x = μ • x)
       ↔ ∃ k : Site d (N + 3), nuQ N k = μ := by
   classical
   have hn : (N + 3 : ℕ) ≠ 0 := by omega
-  constructor
-  · rintro ⟨x, hx0, hx⟩
-    by_contra hex
-    have hnone : ∀ k : Site d (N + 3), nuQ N k ≠ μ := fun k hk => hex ⟨k, hk⟩
-    apply hx0
-    set b := chiDBasis (d := d) hn with hb
-    have hQ : ∀ y : Site d (N + 3) → ℂ,
-        MatrixLoewner.cx (signlessLap (torusGraph d (N + 3))) *ᵥ y
-          = Matrix.toLin' (MatrixLoewner.cx (signlessLap (torusGraph d (N + 3)))) y :=
-      fun y => (Matrix.toLin'_apply _ y).symm
-    have hrepr : ∑ j, b.repr x j • b j = x := b.sum_repr x
-    have h1 : Matrix.toLin' (MatrixLoewner.cx (signlessLap (torusGraph d (N + 3)))) x
-        = ∑ j, (nuQ N j * b.repr x j) • b j := by
-      conv_lhs => rw [← hrepr]
-      rw [map_sum]
-      refine Finset.sum_congr rfl fun j _ => ?_
-      rw [map_smul, hb, chiDBasis_apply, ← hQ, cx_signlessLap_mulVec_chiD, smul_smul, mul_comm]
-    have h2 : μ • x = ∑ j, (μ * b.repr x j) • b j := by
-      conv_lhs => rw [← hrepr]
-      rw [Finset.smul_sum]
-      exact Finset.sum_congr rfl fun j _ => smul_smul _ _ _
-    have hsum : ∑ j, ((nuQ N j - μ) * b.repr x j) • b j = 0 := by
-      have hsplit : ∑ j, ((nuQ N j - μ) * b.repr x j) • b j
-          = (∑ j, (nuQ N j * b.repr x j) • b j) - ∑ j, (μ * b.repr x j) • b j := by
-        rw [← Finset.sum_sub_distrib]
-        refine Finset.sum_congr rfl fun j _ => ?_
-        rw [← sub_smul, sub_mul]
-      rw [hsplit, ← h1, ← h2, ← hQ, hx, sub_self]
-    have hzero : ∀ k, (nuQ N k - μ) * b.repr x k = 0 :=
-      Fintype.linearIndependent_iff.1 b.linearIndependent _ hsum
-    have hcoeff : ∀ k, b.repr x k = 0 := by
-      intro k
-      rcases mul_eq_zero.1 (hzero k) with h | h
-      · exact absurd (sub_eq_zero.1 h) (hnone k)
-      · exact h
-    have hr : b.repr x = 0 := by ext k; exact hcoeff k
-    have := congrArg b.repr.symm hr
-    simpa using this
-  · rintro ⟨k, rfl⟩
-    exact ⟨chiD (N + 3) k, fun h => chiD_ne_zero (N + 3) k k (congrFun h k),
-      cx_signlessLap_mulVec_chiD N k⟩
+  refine eigenvalue_iff_of_basis _ (chiDBasis (d := d) hn) (nuQ N) (fun k => ?_) μ
+  rw [chiDBasis_apply]
+  exact cx_signlessLap_mulVec_chiD N k
 
 /-- **THE SPECTRUM, AS A SET.** The same statement as `eigenvalue_iff` in the form the word
 *spectrum* means: the set of eigenvalues of `Q` on the `d`-dimensional periodic lattice **is**
