@@ -15,20 +15,27 @@ additive, homogeneous, `O(n)`-equivariant `T` at every `n ≥ 3`. Four files car
 note saying so. **`LovelockOneProp` is the one the sweep missed** — the file whose title is about
 the very `Prop` in question — and `ERRATUM 351` records that.
 
-**So the two halves have sat one import apart for a fortnight and nothing joined them.** This file
-is the join, and it is `PROOF_STRATEGY` §7 rule 3 in its plainest form: `classified_of_killsWeyl`
-carries a hypothesis `hW : KillsWeyl T` that its **other** hypotheses already imply.
+**⚠ THE PARAGRAPH THAT STOOD HERE WAS FALSE AND IS CORRECTED BELOW** (`ERRATUM 353`, kept per
+`ERRATUM 94`). It read: *"So the two halves have sat one import apart for a fortnight and nothing
+joined them. This file is the join."* **They were joined on 16 August, in `LovelockKillsWeyl`
+itself**: `LovelockKillsWeyl.classification` discharges `KillsWeyl` by
+`killsWeyl_of_equivariant` in its own proof, on the same day both landed. I did not find it because
+I grepped for the statement in ONE PHRASING — `Classified T` — and that file writes the equation
+out longhand and contains the word `Classified` **zero times**. That is `ERRATUM 346`'s defect,
+cited in the very entry that carried the false claim.
+
+**WHAT THIS FILE ACTUALLY ADDS, WHICH IS REAL AND IS SMALL.** `LovelockKillsWeyl.classification`
+still carries **four hypotheses that `3 ≤ n` already implies**: `(n : ℝ) − 2 ≠ 0`, an index
+`i : Fin n`, and two distinct indices `i₀ ≠ j₀`. It also states the conclusion **pointwise, with the
+constants written out**, rather than as the packaged predicate.
 
 > **`classified_of_equivariant`** — for every `T` that is additive, homogeneous and
-> `O(n)`-equivariant, at every `n ≥ 3`: **`∃ α β, Classified T α β`**, that is,
-> `T R = α · ricci R + β · scal R · δ` on every algebraic curvature tensor. **No `KillsWeyl`
-> hypothesis, and no hypothesis beyond `3 ≤ n` and equivariance.**
+> `O(n)`-equivariant, at every `n ≥ 3`: **`∃ α β, Classified T α β`**. **The only hypotheses are
+> `3 ≤ n` and the three equivariance conditions** — the index hypotheses are discharged here rather
+> than passed on, and the conclusion is `LovelockOneProp`'s `Classified` predicate.
 
-**WHAT COMES OFF AND WHY IT WAS THERE.** `classified_of_killsWeyl` also asks for
-`(n : ℝ) − 2 ≠ 0`, an index `i : Fin n`, and two distinct indices `i₀ ≠ j₀`. All three follow from
-`3 ≤ n` and are discharged here rather than passed on. They were separate hypotheses because that
-theorem was stated when `KillsWeyl` was open and `n` was unconstrained; **once `n ≥ 3` is forced by
-the theorem supplying `KillsWeyl`, they are consequences.**
+**THAT IS THE WHOLE OF THE CONTRIBUTION AND IT IS STATED AT ITS SIZE.** It is a hypothesis
+reduction and a repackaging, not a first composition. The mathematics was in place on 16 August.
 
 **WHAT THIS IS NOT.** It is not Lovelock's theorem in differential geometry: `T` here is a map on
 algebraic curvature tensors at a point, there is no manifold, no metric connection and no
