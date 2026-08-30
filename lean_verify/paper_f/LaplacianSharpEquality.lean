@@ -27,6 +27,10 @@ over any regular graph.
 two-colouring. **Dropping connectivity makes the statement false**: `C₃ ⊔ C₄` is 2-regular, the
 alternating vector on its `C₄` attains the bound, and the graph is not two-colourable. That
 counterexample is stated, not formalised (`ERRATUM 246`: no cost is claimed for it).
+**^ FORMALISED 30 AUGUST, SENTENCE KEPT** (`ERRATUM 94`):
+`ConnectivityNecessary.connectivity_necessary` refutes this theorem with its connectivity
+hypothesis deleted, on a seven-vertex witness, so the hypothesis is now known necessary rather than
+believed necessary.
 
 **WHAT MATHLIB HAS IS THE OTHER END OF THE SPECTRUM.**
 `SimpleGraph.lapMatrix_toLinearMap₂'_apply'_eq_zero_iff_forall_adj` characterises `xᵀLx = 0` by

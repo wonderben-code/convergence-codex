@@ -40,6 +40,14 @@ and the rest of the graph is unconstrained — `C₃ ⊔ C₄` attains, and its 
 colours. **The `C₃ ⊔ C₄` example is still not formalised**; what is formalised is the theorem that
 makes it unsurprising (`ERRATUM 246`: no cost is claimed for the instance either).
 
+**⚠ IT IS FORMALISED NOW, 30 AUGUST, AND THE SENTENCE ABOVE IS KEPT** (`ERRATUM 94`).
+`paper_f/ConnectivityNecessary.lean` builds it on `Fin 7` — Mathlib has no disjoint-union
+construction for graphs, probed by shape — and proves `witness_isRegular`, `witness_attains`,
+`witness_not_colorable` and hence `connectivity_necessary`. **This file's own conclusion is checked
+on it rather than asserted**: `witness_has_colorable_component` is
+`exists_component_colorable_of_neg_adj` applied to the witness, so the two statements are seen to be
+consistent instead of said to be.
+
 **It is still about a supplied vector, not an eigenvalue list**, and it does **not** carry the
 Loewner-order form. `LaplacianLoewnerConverse.massive_le_smul_one_iff_colorable` keeps its
 connectivity hypothesis, and nothing here removes it: that argument needs every eigenvalue strictly
