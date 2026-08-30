@@ -59,8 +59,12 @@ integrable, and `abs_add_pow_even_le` absorbs the `ε` inside `X` exactly as it 
   6⟨f,Ga⟩⟨f,Gb⟩⟨f,Gc⟩`. **The estate's first order-six correlation at four distinct test
   functions.** Its `3·3 + 6 = 15 = 5‼` is the pairing count of six objects, and it is the one
   visible check that the coefficients are right;
-* **`wick_three_eq_isserlis_four`** — and at the *other* end, `k = 1` collapses the cubic term
-  (`k(k−1)(k−2) = 0`) and reproduces `LatticeIsserlisFour.isserlis_four` exactly. That check is
+* **`wick_three_order_four_eq_isserlis`** — and at the *other* end, `k = 1` collapses the cubic
+  term
+  (`k(k−1)(k−2) = 0`) and reproduces `LatticeIsserlisFour.isserlis_four` exactly. **This bullet
+  read `wick_three_eq_isserlis_four` until 2026-08-30, which was never a declaration — the
+  words are the right ones in the wrong order (`ERRATUM 344`); the wrong spelling is kept here
+  beside the right one per `ERRATUM 94`.** That check is
   not a restatement: `isserlis_four` was proved by polarising a fourth moment twice and shares no
   derivative with anything here, so it is an independent test of the whole chain.
 

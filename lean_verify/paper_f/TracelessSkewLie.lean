@@ -25,7 +25,11 @@ here.
 > not what a `LieSubalgebra` takes.
 >
 > **`tracelessSkewMat ι := skewSub ι ⊓ Submodule.restrictScalars ℝ (tracelessSub ι)`**, so
-> **`su(ι) ≤ sl(ι)` holds by construction** (`tracelessSkewMat_le_sl`) rather than by an argument.
+> **`su(ι) ≤ sl(ι)` holds by construction** (`mem_tracelessSub_of_mem_skewTraceless`) rather than
+> by an argument. **This line read `tracelessSkewMat_le_sl` until 2026-08-30 and that was never a
+> declaration** (`ERRATUM 344`); the theorem it meant carries `su(ι) ≤ sl(ι)` as its own
+> docstring headline, so the claim was checked and only the reference was not. The wrong
+> spelling is kept beside the right one per `ERRATUM 94`.
 >
 > **`tracelessSkewLie ι`** — `su(ι)` as a `LieSubalgebra ℝ (Matrix ι ι ℂ)`: the commutator of two
 > anti-Hermitian matrices is anti-Hermitian, and the trace half is Mathlib's, cited through
