@@ -219,8 +219,27 @@ continuous functions is equality, so a differentiable `g` agreeing a.e. with
 The one thing that had to be built is the full-support instance: Mathlib has
 no `IsOpenPosMeasure` for a `Measure.pi`, and `gaussPi_eq_withDensity` — the
 identity forced out of me two days ago — supplies it in three lines.
+
+**⚠ THE SENTENCE ABOVE IS FALSE. Kept per `ERRATUM 94`; `ERRATUM 356` records it.**
+`Mathlib.MeasureTheory.Constructions.Pi` line 627 declares
+`instance pi.isOpenPosMeasure [∀ i, TopologicalSpace (α i)] [∀ i, IsOpenPosMeasure (μ i)] :
+IsOpenPosMeasure (Measure.pi μ)` — **exactly the general statement the sentence denies**, and it
+needs nothing this estate did not already have: `AbsSteinWitness` supplies
+`(gauss : Measure ℝ).IsOpenPosMeasure`, and `gaussPi n` **is** `Measure.pi (fun _ => gaussianReal
+0 1)`. Two lines now prove the instance, checked in Lean and not by reading.
+
+**WHERE THE REAL GAP IS, since one exists and the sentence points at the wrong place.** Mathlib
+lacks `IsOpenPosMeasure` **for the one-dimensional Gaussian** — that is the piece this estate had
+to build, and it is in `AbsSteinWitness`, not here. The `Measure.pi` step was free.
+**And the reason it did not look free**: `gaussPi` is a `def`, so instance search does not see
+through it to `Measure.pi`; `unfold` first and it resolves. A `def`'s opacity is not a library
+absence, and the sentence recorded it as one.
 -/
 
+/-- Lebesgue measure is absolutely continuous with respect to the Gaussian product measure.
+**No longer what proves the full-support instance** (`ERRATUM 356`) — it stands as a fact in its
+own right, and is kept rather than deleted because it is about the two measures and not about the
+instance that used to consume it. -/
 theorem volume_absolutelyContinuous_gaussPi (n : ℕ) :
     (volume : Measure (Fin n → ℝ)) ≪ gaussPi n := by
   rw [gaussPi_eq_withDensity]
@@ -229,11 +248,14 @@ theorem volume_absolutelyContinuous_gaussPi (n : ℕ) :
   · exact Filter.Eventually.of_forall fun x =>
       (ENNReal.ofReal_ne_zero_iff).mpr (rhoPi_pos n x)
 
+/-- **FULL SUPPORT, STRAIGHT OFF MATHLIB'S `pi` INSTANCE** (`ERRATUM 356`). The proof that stood
+here went through `volume_absolutelyContinuous_gaussPi` because the header believed Mathlib had no
+`IsOpenPosMeasure` for a `Measure.pi`. It has one; all it wants is the one-dimensional instance,
+which `AbsSteinWitness` supplies. The `unfold` is needed only because `gaussPi` is a `def` and
+instance search will not see through it. -/
 instance instIsOpenPosMeasureGaussPi (n : ℕ) : (gaussPi n).IsOpenPosMeasure := by
-  constructor
-  intro U hU hne h0
-  exact (hU.measure_ne_zero (volume : Measure (Fin n → ℝ)) hne)
-    (volume_absolutelyContinuous_gaussPi n h0)
+  unfold gaussPi
+  infer_instance
 
 theorem continuous_absCoord (n : ℕ) (i : Fin n) : Continuous (absCoord n i) :=
   continuous_abs.comp (continuous_apply i)
