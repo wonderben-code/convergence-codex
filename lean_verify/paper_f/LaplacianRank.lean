@@ -40,13 +40,18 @@ section
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-- **RANK-NULLITY FOR A SQUARE REAL MATRIX**, in the `toLin'` form both kernel counts are stated
-in. Mathlib's `LinearMap.finrank_range_add_finrank_ker` is the content; what this adds is the
-translation, since `Matrix.rank` is defined through `mulVecLin` and the counts are stated through
-`Matrix.toLin'`. The two are equal by `Matrix.toLin'_apply'` and that is the whole proof. -/
-theorem rank_add_finrank_ker (A : Matrix V V ℝ) :
-    A.rank + Module.finrank ℝ (LinearMap.ker (Matrix.toLin' A)) = Fintype.card V := by
-  have h : A.rank = Module.finrank ℝ (LinearMap.range (Matrix.toLin' A)) := by
+/-- **RANK-NULLITY FOR A SQUARE MATRIX OVER ANY FIELD**, in the `toLin'` form both kernel counts
+are stated in. Mathlib's `LinearMap.finrank_range_add_finrank_ker` is the content; what this adds is
+the translation, since `Matrix.rank` is defined through `mulVecLin` and the counts are stated
+through `Matrix.toLin'`. The two are equal by `Matrix.toLin'_apply'` and that is the whole proof.
+
+**STATED OVER A FIELD FROM 2026-08-30, AND IT WAS `ℝ` ONLY BEFORE** (`ERRATUM 337`: extract, do not
+copy). `RealComplexRank` wants exactly this statement over `ℂ` in order to compare a real matrix's
+rank with its complexification's, and the proof never used a single property of `ℝ`. Every caller
+below is unchanged and instantiates at `K = ℝ`. -/
+theorem rank_add_finrank_ker {K : Type*} [Field K] (A : Matrix V V K) :
+    A.rank + Module.finrank K (LinearMap.ker (Matrix.toLin' A)) = Fintype.card V := by
+  have h : A.rank = Module.finrank K (LinearMap.range (Matrix.toLin' A)) := by
     rw [Matrix.toLin'_apply']
     rfl
   rw [h, LinearMap.finrank_range_add_finrank_ker, Module.finrank_fintype_fun_eq_card]
