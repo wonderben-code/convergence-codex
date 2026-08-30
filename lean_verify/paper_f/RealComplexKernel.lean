@@ -38,6 +38,10 @@ What works instead needs no rank and no tensor product: **count real dimensions 
 >
 > **`card_bipComp_eq_finrank_ker_cx`** — the component count, now on the complex side, for **every
 > finite graph**.
+>
+> **`toLin_sub_smul_one`, `cx_sub_smul_one`, `finrank_eigenspace_cx`** — and the same at **every
+> real eigenvalue**, the eigenspace at `μ` being the kernel of `A − μ`. Three rewrites on top of the
+> kernel form, which stays the primary theorem because that is where the work is.
 
 ## The coincidence is now a derivation, and what that is worth is stated exactly
 
@@ -60,6 +64,11 @@ done here**.
 **No eigenspace version.** `finrank_ker_cx` is stated at eigenvalue zero. For a real `μ` the same
 argument applies to `A − μ`, and **the general statement is not made below** — it needs the
 subtraction pushed through `cx`, which is true and unproved here.
+**^ THAT PARAGRAPH IS FALSE FROM 2026-08-30 AND IS KEPT AS WRITTEN** (`ERRATUM 94`). The general
+statement **is** made below, as `finrank_eigenspace_cx`, and the subtraction through `cx` is
+`cx_sub_smul_one`. The paragraph survived less than a day, in the same session that wrote it: it
+was a fence against the next unit and the next unit was the one after. What it correctly named is
+the only content — the two rewrites — and what it got wrong is calling them unproved.
 
 **Nothing about complex eigenvalues.** A real matrix can have non-real eigenvalues whose eigenspaces
 have no real counterpart at all; this file says nothing about them and its statement does not
@@ -84,6 +93,16 @@ theorem re_add_mul_I {V : Type*} (x y : V → ℝ) :
 theorem im_add_mul_I {V : Type*} (x y : V → ℝ) :
     (fun v => (((x v : ℂ) + (y v : ℂ) * Complex.I)).im) = y := by
   funext v; simp
+
+/-- Complexification commutes with subtracting a real scalar. Entrywise, so it needs neither
+`Fintype` nor `DecidableEq`. -/
+theorem cx_sub_smul_one {V : Type*} [DecidableEq V] (A : Matrix V V ℝ) (μ : ℝ) :
+    MatrixLoewner.cx (A - μ • (1 : Matrix V V ℝ))
+      = MatrixLoewner.cx A - (μ : ℂ) • (1 : Matrix V V ℂ) := by
+  ext i j
+  simp only [MatrixLoewner.cx, Matrix.map_apply, Matrix.sub_apply, Matrix.smul_apply,
+    Matrix.one_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]
+  split_ifs <;> push_cast <;> ring
 
 section Transfer
 
@@ -163,6 +182,26 @@ theorem finrank_ker_cx (A : Matrix V V ℝ) :
     rw [(kerEquivProd A).finrank_eq, Module.finrank_prod]
     ring
   omega
+
+/-! ### The same at any real eigenvalue
+
+The eigenspace at a real `μ` is the kernel of `A − μ`, so the theorem above is the `μ = 0` case of a
+statement about every real eigenvalue and the general one is three rewrites away. **The kernel form
+stays the primary theorem** — it is where the work is, and nothing is copied. -/
+
+/-- Subtracting a real scalar commutes with `toLin'`. -/
+theorem toLin_sub_smul_one {R : Type*} [CommRing R] (A : Matrix V V R) (μ : R) :
+    Matrix.toLin' A - μ • LinearMap.id = Matrix.toLin' (A - μ • (1 : Matrix V V R)) := by
+  rw [map_sub, map_smul, Matrix.toLin'_one]
+
+/-- **THE TRANSFER AT EVERY REAL EIGENVALUE.** For a real `μ`, the eigenspace of a real square
+matrix at `μ` has the same dimension over `ℝ` as its complexification's eigenspace at `μ` has over
+`ℂ`. The kernel statement is this at `μ = 0`, and this is that statement applied to `A − μ`. -/
+theorem finrank_eigenspace_cx (A : Matrix V V ℝ) (μ : ℝ) :
+    Module.finrank ℂ (LinearMap.ker
+        (Matrix.toLin' (MatrixLoewner.cx A) - (μ : ℂ) • LinearMap.id))
+      = Module.finrank ℝ (LinearMap.ker (Matrix.toLin' A - μ • LinearMap.id)) := by
+  rw [toLin_sub_smul_one, ← cx_sub_smul_one, toLin_sub_smul_one, finrank_ker_cx]
 
 end Transfer
 
