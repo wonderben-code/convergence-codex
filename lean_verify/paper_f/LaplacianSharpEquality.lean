@@ -129,13 +129,12 @@ theorem sum_adj_sq_right (x : V → ℝ) :
   · rw [if_pos h, if_pos ((G.adj_comm b a).mp h)]
   · rw [if_neg h, if_neg (fun hc => h ((G.adj_comm a b).mp hc))]
 
-/-- **THE SLACK IN `LaplacianDegreeBound`'s BOUND, EXACTLY.** On a `Δ`-regular graph the difference
-between `2Δ‖x‖²` and the Laplacian quadratic form is a sum of squares over the edges, one square
-`(xᵢ + xⱼ)²` per ordered adjacent pair. Nothing else is discarded, which is why the bound is sharp
-where it is sharp. -/
-theorem sum_adj_add_sq {Δ : ℕ} (hreg : G.IsRegularOfDegree Δ) (x : V → ℝ) :
+/-- **THE IDENTITY BEHIND THE BOUND, WITH NO REGULARITY.** For ANY finite graph, the sum of
+`(xᵢ + xⱼ)²` over ordered adjacent pairs is `4·Σᵢ deg(i)·xᵢ² − 2·xᵀLx`. Regularity enters only when
+the degree-weighted sum is collapsed to `Δ‖x‖²`, which is the corollary below. -/
+theorem sum_adj_add_sq_of_degree (x : V → ℝ) :
     (∑ i : V, ∑ j : V, if G.Adj i j then (x i + x j) ^ 2 else 0)
-      = 4 * (Δ : ℝ) * (x ⬝ᵥ x) - 2 * (x ⬝ᵥ (G.lapMatrix ℝ) *ᵥ x) := by
+      = 4 * (∑ i : V, (G.degree i : ℝ) * x i ^ 2) - 2 * (x ⬝ᵥ (G.lapMatrix ℝ) *ᵥ x) := by
   have hq : x ⬝ᵥ (G.lapMatrix ℝ) *ᵥ x
       = (∑ i : V, ∑ j : V, if G.Adj i j then (x i - x j) ^ 2 else 0) / 2 := by
     rw [← Matrix.toLinearMap₂'_apply']
@@ -168,13 +167,24 @@ theorem sum_adj_add_sq {Δ : ℕ} (hreg : G.IsRegularOfDegree Δ) (x : V → ℝ
     refine Finset.sum_congr rfl fun i _ => ?_
     rw [Finset.mul_sum]
     exact Finset.sum_congr rfl fun j _ => by by_cases h : G.Adj i j <;> simp [h]
+  have hD : (∑ i : V, ∑ j : V, if G.Adj i j then (x i - x j) ^ 2 else 0)
+      = 2 * (x ⬝ᵥ (G.lapMatrix ℝ) *ᵥ x) := by rw [hq]; ring
+  rw [e1, e2, sum_adj_sq_left G x, sum_adj_sq_right G x, hD] at hsum
+  linarith
+
+/-- **THE SLACK IN `LaplacianDegreeBound`'s BOUND, EXACTLY.** On a `Δ`-regular graph the difference
+between `2Δ‖x‖²` and the Laplacian quadratic form is a sum of squares over the edges, one square
+`(xᵢ + xⱼ)²` per ordered adjacent pair. Nothing else is discarded, which is why the bound is sharp
+where it is sharp. The regularity is used **only** to collapse the degree-weighted sum above, which
+is why `LaplacianSignless` can drop it. -/
+theorem sum_adj_add_sq {Δ : ℕ} (hreg : G.IsRegularOfDegree Δ) (x : V → ℝ) :
+    (∑ i : V, ∑ j : V, if G.Adj i j then (x i + x j) ^ 2 else 0)
+      = 4 * (Δ : ℝ) * (x ⬝ᵥ x) - 2 * (x ⬝ᵥ (G.lapMatrix ℝ) *ᵥ x) := by
   have hdeg : (∑ i : V, (G.degree i : ℝ) * x i ^ 2) = (Δ : ℝ) * (x ⬝ᵥ x) := by
     rw [dotProduct, Finset.mul_sum]
     exact Finset.sum_congr rfl fun i _ => by rw [hreg i]; ring
-  have hD : (∑ i : V, ∑ j : V, if G.Adj i j then (x i - x j) ^ 2 else 0)
-      = 2 * (x ⬝ᵥ (G.lapMatrix ℝ) *ᵥ x) := by rw [hq]; ring
-  rw [e1, e2, sum_adj_sq_left G x, sum_adj_sq_right G x, hdeg, hD] at hsum
-  linarith
+  rw [sum_adj_add_sq_of_degree G x, hdeg]
+  ring
 
 /-- The identity **re-proves** `LaplacianDegreeBound.lapMatrix_quadForm_le` at `deg ≡ Δ`, which is
 the check that its constants are the ones claimed — the header says the bound falls out of the
