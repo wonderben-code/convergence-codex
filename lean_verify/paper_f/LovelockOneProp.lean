@@ -7,6 +7,22 @@ import LovelockDiagonalise
 `RicciProportional`, and proved them **jointly sufficient**. `LovelockDiagonalise` proved the
 second. This file draws the two consequences.
 
+**⚠ THE PARAGRAPH ABOVE, AND THIS FILE'S TITLE, DESCRIBE A STATE OF THE WORLD THAT ENDED THE NEXT
+DAY. KEPT VERBATIM PER `ERRATUM 94`; `ERRATUM 351` RECORDS IT.** This file landed 2026-08-15;
+**`LovelockKillsWeyl.killsWeyl_of_equivariant` (`171d474`, 2026-08-16) proves `KillsWeyl`** for
+every additive, homogeneous, `O(n)`-equivariant `T` at every `n ≥ 3`. Four other files carry a
+`⚠ SUPERSEDED` note saying so and this one did not, for a fortnight — the file whose *title* is a
+claim about that `Prop`.
+
+**NOTHING BELOW IS WRONG AS MATHEMATICS.** `classified_of_killsWeyl`, `killsWeyl_of_classified`
+and `killsWeyl_iff` are exactly right and unchanged. What changed is that the `Prop` they are
+about is no longer open, so *"one `Prop` left"* is now a statement about 15 August.
+
+**AND THE COMPOSITION NOBODY WROTE IS NOW WRITTEN.** `classified_of_killsWeyl`'s `hW : KillsWeyl T`
+follows from its own `hadd`, `hsmul`, `hequiv` together with `3 ≤ n`, so it is **derivable rather
+than assumed**: `LovelockClassified.classified_of_equivariant` is the classification with no
+`KillsWeyl` hypothesis at all.
+
 ## What is proved
 
 * **`classified_of_killsWeyl`** — the classification follows from `KillsWeyl` **alone**, at every
