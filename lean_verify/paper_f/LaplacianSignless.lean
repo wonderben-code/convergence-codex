@@ -40,6 +40,15 @@ does not collapse — and `RegularBipartiteSharp` has only the averaged form for
 generalises is the EQUALITY CASE, not the ORDER statement, and the difference is exactly the
 collapse.
 
+**^ AND THAT PARAGRAPH IS NOW A THEOREM RATHER THAN AN ARGUMENT, 30 AUGUST.** It is kept as written
+(`ERRATUM 94`) and it was right; what it lacked was a witness.
+`LoewnerRegularityNecessary.regularity_necessary` refutes
+`LaplacianLoewnerDisconnected.massive_le_smul_one_iff_exists_component_colorable` with
+`IsRegularOfDegree` weakened to a degree **bound** — the only weakening under which the statement
+still typechecks — on `PrismReflection.path3`, whose degrees are `1, 2, 1`. **The gap is exactly
+`2Δ` minus the true spectral radius**: the claimed constant is `4 + m²` and `massive ≼ (3 + m²)·1`
+holds, while the graph is two-colourable. So *"cannot as they stand"* is now known and not believed.
+
 **It does not compute the spectrum of `D + A`.** Positive semidefiniteness and the kernel are
 proved; nothing else about its eigenvalues is, here or anywhere in this estate.
 
