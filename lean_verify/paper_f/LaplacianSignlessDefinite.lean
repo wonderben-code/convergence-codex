@@ -22,8 +22,10 @@ of the matrix statements those facts are worth, and **its header promised one of
 > **`signlessLap_posDef_iff_of_connected`** — and on a connected graph that reads `Q ≻ 0 ↔ G` is not
 > two-colourable.
 >
-> **`quadForm_lt_iff_no_component_colorable`** — and on a regular graph the criterion is the
-> **strict** degree bound: `xᵀLx < 2Δ‖x‖²` at every `x ≠ 0` iff no component is two-colourable.
+> **`quadForm_lt_iff_no_component_colorable_of_degree`** — and the criterion is the **strict**
+> degree bound: `xᵀLx < 2·Σᵢ deg(i)·xᵢ²` at every `x ≠ 0` iff no component is two-colourable.
+> **No regularity**; the regular reading `quadForm_lt_iff_no_component_colorable` is the same
+> statement with the degree sum collapsed.
 
 **THE CRITERION IS SHOWN TO DISCRIMINATE ON THIS PROJECT'S OWN LATTICE, IN BOTH DIRECTIONS.** The
 periodic lattice has `Q ≻ 0` at every odd side length `≥ 3` and `Q ⊁ 0` at every even side length
@@ -35,9 +37,19 @@ the estate already builds.
 **AND `Q` IS NOT A NEW MATRIX, WHICH §6 MAKES A THEOREM RATHER THAN A REMARK.** `L = D − A` and
 `Q = D + A`, so `signlessLap_add_lapMatrix` says `Q + L = 2D` for every finite graph, and on a
 `Δ`-regular one `dotProduct_signlessLap_of_regular` reads `xᵀQx = 2Δ‖x‖² − xᵀLx`. Hence
-`posDef_iff_quadForm_lt`: **positive definiteness of `Q` IS the degree bound holding strictly**. The
-bound meant is the one at `deg ≡ Δ`, which is what `sum_adj_add_sq` supplies and what
-`LaplacianSharpEquality`'s own `example` re-derives — **not** `LaplacianDegreeBound`'s full
+`posDef_iff_quadForm_lt_of_degree`: **positive definiteness of `Q` IS the degree bound holding
+strictly**, with the bound in its **degree-weighted** form and no regularity anywhere.
+
+**⚠ §6 CARRIED `IsRegularOfDegree` UNTIL 30 AUGUST AND NEVER NEEDED IT.** The first version of this
+section stated all three results only at `deg ≡ Δ`, and `LaplacianSignless`'s header had already
+said in terms that *"regularity is used in exactly one place — to collapse `Σᵢ deg(i)·xᵢ²`"*. The
+uncollapsed identity `sum_adj_add_sq_of_degree` had existed since 29 August. **The fence was mine
+and it was answered in the file it cites.** The three are now stated at the degree sum, the regular
+readings are re-derived from them unchanged (`ERRATUM 337`), and the collapse itself is extracted
+as `LaplacianSharpEquality.sum_degree_mul_sq_of_regular` — it had been living inside
+`sum_adj_add_sq`'s proof as a `have`, so anything else needing it had to copy it.
+
+The regular reading meant is the one at `deg ≡ Δ` — **not** `LaplacianDegreeBound`'s full
 `deg ≤ Δ` statement, a distinction that file already had to make (`ERRATUM 201`).
 
 Composed with the criterion above, that is
@@ -260,34 +272,60 @@ theorem signlessLap_add_lapMatrix : signlessLap G + G.lapMatrix ℝ = (2 : ℝ) 
   simp only [Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]
   ring
 
-/-- **AND ON A REGULAR GRAPH THE FORMS ARE ONE SUBTRACTION APART.** Read off the previous unit's
-`sum_adj_add_sq` rather than from the matrix identity, which is shorter. -/
+/-- **THE TWO FORMS ARE ONE SUBTRACTION APART, ON ANY FINITE GRAPH.** Generalised 30 August from
+the regular version below, which was this file's own fence and which regularity was never needed
+for: `sum_adj_add_sq_of_degree` is the uncollapsed identity, and the collapse is the only thing
+`IsRegularOfDegree` was doing. -/
+theorem dotProduct_signlessLap_of_degree (x : V → ℝ) :
+    x ⬝ᵥ (signlessLap G) *ᵥ x
+      = 2 * (∑ i : V, (G.degree i : ℝ) * x i ^ 2) - x ⬝ᵥ (G.lapMatrix ℝ) *ᵥ x := by
+  rw [dotProduct_signlessLap G x, sum_adj_add_sq_of_degree G x]
+  ring
+
+/-- **AND ON A REGULAR GRAPH THE DEGREE SUM COLLAPSES**, which is the statement this file carried
+before the generalisation, unchanged and re-derived in two lines (`ERRATUM 337`). -/
 theorem dotProduct_signlessLap_of_regular {Δ : ℕ} (hreg : G.IsRegularOfDegree Δ) (x : V → ℝ) :
     x ⬝ᵥ (signlessLap G) *ᵥ x
       = 2 * (Δ : ℝ) * (x ⬝ᵥ x) - x ⬝ᵥ (G.lapMatrix ℝ) *ᵥ x := by
-  rw [dotProduct_signlessLap G x, sum_adj_add_sq G hreg x]
+  rw [dotProduct_signlessLap_of_degree G x, sum_degree_mul_sq_of_regular G hreg x]
   ring
 
 /-- **SO `Q ≻ 0` IS EXACTLY THE STRICT DEGREE BOUND.** `LaplacianDegreeBound` gives `xᵀLx ≤
 2Δ‖x‖²`; this says positive definiteness of `Q` is that inequality being STRICT at every non-zero
 vector. -/
-theorem posDef_iff_quadForm_lt {Δ : ℕ} (hreg : G.IsRegularOfDegree Δ) :
+theorem posDef_iff_quadForm_lt_of_degree :
     (signlessLap G).PosDef ↔
-      ∀ x : V → ℝ, x ≠ 0 → x ⬝ᵥ (G.lapMatrix ℝ) *ᵥ x < 2 * (Δ : ℝ) * (x ⬝ᵥ x) := by
+      ∀ x : V → ℝ, x ≠ 0 →
+        x ⬝ᵥ (G.lapMatrix ℝ) *ᵥ x < 2 * (∑ i : V, (G.degree i : ℝ) * x i ^ 2) := by
   constructor
   · intro hpd x hx
     have hp := hpd.dotProduct_mulVec_pos hx
-    rw [star_trivial, dotProduct_signlessLap_of_regular G hreg x] at hp
+    rw [star_trivial, dotProduct_signlessLap_of_degree G x] at hp
     linarith
   · intro h
     refine Matrix.PosDef.of_dotProduct_mulVec_pos (signlessLap_isHermitian G) fun x hx => ?_
-    rw [star_trivial, dotProduct_signlessLap_of_regular G hreg x]
+    rw [star_trivial, dotProduct_signlessLap_of_degree G x]
     linarith [h x hx]
+
+/-- **THE REGULAR READING**, unchanged and re-derived from the line above. -/
+theorem posDef_iff_quadForm_lt {Δ : ℕ} (hreg : G.IsRegularOfDegree Δ) :
+    (signlessLap G).PosDef ↔
+      ∀ x : V → ℝ, x ≠ 0 → x ⬝ᵥ (G.lapMatrix ℝ) *ᵥ x < 2 * (Δ : ℝ) * (x ⬝ᵥ x) := by
+  rw [posDef_iff_quadForm_lt_of_degree G]
+  exact forall_congr' fun x => forall_congr' fun _ => by
+    rw [sum_degree_mul_sq_of_regular G hreg x, mul_assoc]
 
 /-- **THE STRICT COMPANION TO `LaplacianSharpDisconnected`.** That file says when the degree bound
 is ATTAINED; this says when it is strict everywhere, and the two answers are complementary as they
 must be. Obtained by composing the previous two results, so the agreement is a theorem rather than
 an observation. -/
+theorem quadForm_lt_iff_no_component_colorable_of_degree :
+    (∀ x : V → ℝ, x ≠ 0 →
+        x ⬝ᵥ (G.lapMatrix ℝ) *ᵥ x < 2 * (∑ i : V, (G.degree i : ℝ) * x i ^ 2))
+      ↔ ∀ C : G.ConnectedComponent, ¬ (G.induce C.supp).Colorable 2 :=
+  (posDef_iff_quadForm_lt_of_degree G).symm.trans (signlessLap_posDef_iff G)
+
+/-- **THE REGULAR READING**, unchanged. -/
 theorem quadForm_lt_iff_no_component_colorable {Δ : ℕ} (hreg : G.IsRegularOfDegree Δ) :
     (∀ x : V → ℝ, x ≠ 0 → x ⬝ᵥ (G.lapMatrix ℝ) *ᵥ x < 2 * (Δ : ℝ) * (x ⬝ᵥ x))
       ↔ ∀ C : G.ConnectedComponent, ¬ (G.induce C.supp).Colorable 2 :=

@@ -172,6 +172,16 @@ theorem sum_adj_add_sq_of_degree (x : V → ℝ) :
   rw [e1, e2, sum_adj_sq_left G x, sum_adj_sq_right G x, hD] at hsum
   linarith
 
+omit [DecidableEq V] in
+/-- **THE COLLAPSE, NAMED.** Regularity does exactly one thing in this chain — it turns the
+degree-weighted sum into a multiple of `‖x‖²` — and until 30 August that step lived inside
+`sum_adj_add_sq`'s proof as a `have`, so anything else needing it had to copy it. Extracted rather
+than copied (`ERRATUM 337`). -/
+theorem sum_degree_mul_sq_of_regular {Δ : ℕ} (hreg : G.IsRegularOfDegree Δ) (x : V → ℝ) :
+    (∑ i : V, (G.degree i : ℝ) * x i ^ 2) = (Δ : ℝ) * (x ⬝ᵥ x) := by
+  rw [dotProduct, Finset.mul_sum]
+  exact Finset.sum_congr rfl fun i _ => by rw [hreg i]; ring
+
 /-- **THE SLACK IN `LaplacianDegreeBound`'s BOUND, EXACTLY.** On a `Δ`-regular graph the difference
 between `2Δ‖x‖²` and the Laplacian quadratic form is a sum of squares over the edges, one square
 `(xᵢ + xⱼ)²` per ordered adjacent pair. Nothing else is discarded, which is why the bound is sharp
@@ -180,10 +190,7 @@ is why `LaplacianSignless` can drop it. -/
 theorem sum_adj_add_sq {Δ : ℕ} (hreg : G.IsRegularOfDegree Δ) (x : V → ℝ) :
     (∑ i : V, ∑ j : V, if G.Adj i j then (x i + x j) ^ 2 else 0)
       = 4 * (Δ : ℝ) * (x ⬝ᵥ x) - 2 * (x ⬝ᵥ (G.lapMatrix ℝ) *ᵥ x) := by
-  have hdeg : (∑ i : V, (G.degree i : ℝ) * x i ^ 2) = (Δ : ℝ) * (x ⬝ᵥ x) := by
-    rw [dotProduct, Finset.mul_sum]
-    exact Finset.sum_congr rfl fun i _ => by rw [hreg i]; ring
-  rw [sum_adj_add_sq_of_degree G x, hdeg]
+  rw [sum_adj_add_sq_of_degree G x, sum_degree_mul_sq_of_regular G hreg x]
   ring
 
 /-- The identity **re-proves** `LaplacianDegreeBound.lapMatrix_quadForm_le` at `deg ≡ Δ`, which is
