@@ -45,6 +45,18 @@ judgement, of exactly the kind this group of files exists because one of mine wa
 recorded as a guess for a later unit to test, not as a promise. **Nothing in the estate uses the
 four-index law**, which is why it is not attempted here rather than attempted and abandoned.
 
+**^ THIS WHOLE SECTION IS FALSE FROM THE DAY IT WAS WRITTEN AND IS KEPT AS WRITTEN**
+(`ERRATUM 94`, `ERRATUM 363`). `LovelockActComposition.act_mul` proves the four-index law, dated the
+**same day** as this file and quoting `AlgebraicCurvature`'s caveat as the thing it discharges; and
+`LovelockActInverse` **uses** it (`rw [← act_mul]`), so the last sentence fails too.
+**AND THE CORRECTION HAD ALREADY BEEN MADE, IN THE OTHER FILE.** `AlgebraicCurvature` carries a
+dated supersession note naming `act_mul`, filed under `ERRATUM 225`. The fix reached the file that
+first stated the caveat and not this one, which repeated it — a correction that stopped at the
+original and did not follow the quotation.
+**THE GUESS WAS ALSO WRONG ABOUT THE ROUTE.** *"Fubini on the product index"* is not what happened:
+`act_eq_conj` and `isOrth_kronecker` read `act` as conjugation by the Kronecker square of the frame,
+and the law is a rewrite from there.
+
 **And no `MulAction` instance is built.** The three laws above are what such an instance would
 assert on 2-tensors, and bundling them would mean choosing a carrier — `↥(orthogonalGroup (Fin n)
 ℝ)` acting on `Fin n → Fin n → ℝ` — that nothing in the estate consumes. `LovelockReduction` §1's
