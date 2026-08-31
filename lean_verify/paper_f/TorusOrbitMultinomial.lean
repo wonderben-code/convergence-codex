@@ -41,6 +41,14 @@ neither is obtained from the other, as of 31 August 2026. It is the obvious next
 statement — a special case that must come out right — and no cost is offered for it
 (`ERRATUM 201`, `ERRATUM 194`, `ERRATUM 246`).
 
+**^ DONE THE SAME DAY, AND THE PARAGRAPH ABOVE IS KEPT AS WRITTEN** (`ERRATUM 94`). §5 proves it:
+`cls_injective_of_distinctPairs` (no two axes share a pair, straight off `pairClass_eq_iff`, whose
+conclusion `DistinctPairs` is the negation of), `multinomial_cls_of_distinctPairs` (every class
+fibre is empty or a singleton, so `Nat.multinomial_spec`'s denominator is `1` and the multinomial
+is `d!`), and `card_orbit_eq_two_pow_mul_factorial`, which **derives**
+`TorusOrbitCount.card_orbit_of_distinctPairs` from `card_orbit` rather than restating it. The
+special case comes out right, which is the evidence a new general formula owes.
+
 **It says nothing about the eigenspace.** `TorusHyperoctahedral.orbit_card_le_finrank_eigenspace`
 bounds the degeneracy *below* by the orbit; this computes the orbit, so the bound is now explicit,
 but **whether it is tight at `d ≥ 2` is untouched** and `TorusEightNotTight` exhibits a frequency
@@ -187,5 +195,54 @@ theorem card_orbit {N : ℕ} (k : Site d (N + 3)) :
   congr 1
   ext g
   simp
+
+/-! ## 5. The distinct-pairs case, recovered -/
+
+/-- Under `DistinctPairs` no two axes share a mirror pair, so the class function is injective. -/
+theorem cls_injective_of_distinctPairs {N : ℕ} {k : Site d (N + 3)}
+    (hk : TorusOrbitCount.DistinctPairs k) : Function.Injective (cls k) := by
+  intro i j hij
+  by_contra hne
+  obtain ⟨h1, h2⟩ := hk i j hne
+  have hpc : pairClass N (k i).val = pairClass N (k j).val := congrArg Fin.val hij
+  rcases (pairClass_eq_iff (k i).isLt (k j).isLt).1 hpc with h | h
+  · exact h1 h
+  · exact h2 h
+
+/-- **SO THE MULTINOMIAL COLLAPSES TO `d!`.** Every class fibre is empty or a singleton, so the
+denominator of `Nat.multinomial_spec` is `1`. -/
+theorem multinomial_cls_of_distinctPairs {N : ℕ} {k : Site d (N + 3)}
+    (hk : TorusOrbitCount.DistinctPairs k) :
+    Nat.multinomial univ (fun c : Fin (N + 3) => Fintype.card {i // cls k i = c})
+      = Nat.factorial d := by
+  have hinj := cls_injective_of_distinctPairs hk
+  have hle : ∀ c : Fin (N + 3), Fintype.card {i // cls k i = c} ≤ 1 := by
+    intro c
+    rw [Fintype.card_le_one_iff]
+    rintro ⟨i, hi⟩ ⟨j, hj⟩
+    exact Subtype.ext (hinj (hi.trans hj.symm))
+  have hprod : (∏ c : Fin (N + 3), Nat.factorial (Fintype.card {i // cls k i = c})) = 1 := by
+    refine Finset.prod_eq_one fun c _ => ?_
+    rcases Nat.lt_or_ge (Fintype.card {i // cls k i = c}) 1 with h | h
+    · have h0 : Fintype.card {i // cls k i = c} = 0 := by omega
+      simp [h0]
+    · have h1 : Fintype.card {i // cls k i = c} = 1 := le_antisymm (hle c) h
+      simp [h1]
+  have hsum : ∑ c : Fin (N + 3), Fintype.card {i // cls k i = c} = d := by
+    have hcg := Fintype.card_congr (Equiv.sigmaFiberEquiv (cls k))
+    rw [Fintype.card_sigma, Fintype.card_fin] at hcg
+    exact hcg
+  have hspec := Nat.multinomial_spec (univ : Finset (Fin (N + 3)))
+    fun c => Fintype.card {i // cls k i = c}
+  rw [hprod, one_mul, hsum] at hspec
+  exact hspec
+
+/-- **AND THE GENERAL COUNT RECOVERS `TorusOrbitCount.card_orbit_of_distinctPairs`**, which is the
+check a new general formula owes its own special case (`ERRATUM 201`). The two were proved
+independently; this derives the older one from the newer. -/
+theorem card_orbit_eq_two_pow_mul_factorial {N : ℕ} (k : Site d (N + 3))
+    (hk : TorusOrbitCount.DistinctPairs k) :
+    (orbit k).card = 2 ^ (interiorAxes k).card * Nat.factorial d := by
+  rw [card_orbit k, multinomial_cls_of_distinctPairs hk]
 
 end TorusOrbitMultinomial
