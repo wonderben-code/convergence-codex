@@ -17,6 +17,30 @@ Re-probed 2026-08-11 against the pinned environment: **`Matrix.pow_apply` does n
 the 71 declarations whose names contain `Matrix` and `pow`, none is a sum over walks. This file
 supplies the open case.
 
+**^ THE CLAIM STANDS AND THE SEARCH REPORT DOES NOT, CORRECTED 2026-08-31 (`ERRATUM 94`,
+`ERRATUM 366`), THE SENTENCE KEPT AS WRITTEN.** `71` is the count of names in the `Matrix`
+namespace that contain `pow`. Names *containing* `Matrix` and `pow` — the population this
+sentence names — number **76**, and among the five the namespace restriction dropped is
+**`SimpleGraph.adjMatrix_pow_apply_eq_card_walk`**: each entry of the `n`-th power of a graph's
+adjacency matrix is the number of walks of that length between the two vertices. That is a
+statement about entries of a matrix power and walks. **`Matrix.pow_apply` really does not exist**,
+and `Matrix.pow_apply_pos_iff_nonempty_path`, which is inside the 71, is a positivity criterion
+rather than a sum.
+
+**AND THIS ESTATE HAD ALREADY FOUND THAT THEOREM.** `ERRATUM 342`, on 2026-08-30, names it and
+draws the same lesson about a probe scoped to `SimpleGraph.Walk.*` that structurally could not see
+a theorem in `SimpleGraph.*`. This file was committed 2026-08-11 and its probe was scoped to
+the `Matrix` namespace, which could not see it either; the later entry never came back here.
+The two probes missed one theorem for one reason, nineteen days apart.
+
+**WHAT THIS FILE PROVES IS UNAFFECTED AND THE REASON IS NOT A TECHNICALITY.** Mathlib's theorem is
+about the **adjacency** matrix, whose entries are `0` and `1`, and its right-hand side is a
+**cardinality**; `pow_succ_apply` below is about an arbitrary `M` over an arbitrary commutative
+semiring and its right-hand side is a sum of **products of entries**. The adjacency matrix is the
+case where every product is `0` or `1` and the sum counts. **The two are joined rather than
+compared**: `AdjMatrixWalkTrace.sum_cyc_adjMatrix` derives the closed-walk count from
+`sum_cyc_eq_trace` below, which is the identity Mathlib does not have.
+
 > **`walkProd M b n a s`** — the product `M a s₀ · M s₀ s₁ ⋯ M sₙ₋₁ b` along the walk that starts
 > at `a`, visits `s`, and ends at `b`.
 >
