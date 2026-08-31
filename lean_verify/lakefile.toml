@@ -267,4 +267,5 @@ roots = [
   "BoxProdLapSpectrum",
   "GraphIsoLapSpectrum",
   "BoxLapSpectrum",
+  "BoxLapBasis",
 ]
