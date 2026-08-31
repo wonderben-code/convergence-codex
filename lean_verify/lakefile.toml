@@ -258,4 +258,5 @@ roots = [
   "BoxAdjSpectrum",
   "ProdVecIndependent",
   "BoxAdjBasis",
+  "BoxSpectrumComplete",
 ]

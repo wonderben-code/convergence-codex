@@ -1,0 +1,10 @@
+
+# `eigenvalue_iff` in both directions. `SignlessTorusComplete.eigenvalue_iff` is the SIGNLESS
+# LAPLACIAN of the TORUS over `ℂ`; `BoxSpectrumComplete.eigenvalue_iff` is the ADJACENCY matrix of
+# the BOX over `ℝ`. Different graph, different operator, different field, different namespace —
+# the same question about different objects, and both are three lines off the same
+# `SignlessTorusComplete.eigenvalue_iff_of_basis`, which is exactly why that lemma was generalised
+# from `ℂ` to an arbitrary field the same day. Answered in the SOURCE as well: the new file's
+# docstring names the older theorem and states the four differences. Read 2026-08-31.
+eigenvalue_iff|BoxSpectrumComplete.lean|SignlessTorusComplete.lean
+eigenvalue_iff|SignlessTorusComplete.lean|BoxSpectrumComplete.lean
