@@ -194,6 +194,14 @@ theorem toLin_sub_smul_one {R : Type*} [CommRing R] (A : Matrix V V R) (μ : R) 
     Matrix.toLin' A - μ • LinearMap.id = Matrix.toLin' (A - μ • (1 : Matrix V V R)) := by
   rw [map_sub, map_smul, Matrix.toLin'_one]
 
+/-- **MEMBERSHIP IN AN EIGENSPACE, UNFOLDED.** `x` is in the kernel of `A − μ` exactly when
+`A *ᵥ x = μ • x`. Stated over any commutative ring because nothing in it is about `ℝ` or `ℂ`, and
+because the callers are on both sides of this file's transfer. -/
+theorem mem_ker_sub_smul {R : Type*} [CommRing R] (A : Matrix V V R) (μ : R) (x : V → R) :
+    x ∈ LinearMap.ker (Matrix.toLin' A - μ • LinearMap.id) ↔ A *ᵥ x = μ • x := by
+  rw [toLin_sub_smul_one, LinearMap.mem_ker, Matrix.toLin'_apply, Matrix.sub_mulVec,
+    Matrix.smul_mulVec, Matrix.one_mulVec, sub_eq_zero]
+
 /-- **THE TRANSFER AT EVERY REAL EIGENVALUE.** For a real `μ`, the eigenspace of a real square
 matrix at `μ` has the same dimension over `ℝ` as its complexification's eigenspace at `μ` has over
 `ℂ`. The kernel statement is this at `μ = 0`, and this is that statement applied to `A − μ`. -/
