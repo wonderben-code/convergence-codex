@@ -270,4 +270,5 @@ roots = [
   "BoxLapBasis",
   "BoxMassiveSpectrum",
   "BoxLapModeOrthogonal",
+  "BoxMassiveSharp",
 ]
