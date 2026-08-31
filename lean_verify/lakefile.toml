@@ -265,4 +265,5 @@ roots = [
   "BoxMassiveBound",
   "PathLapSpectrum",
   "BoxProdLapSpectrum",
+  "GraphIsoLapSpectrum",
 ]
