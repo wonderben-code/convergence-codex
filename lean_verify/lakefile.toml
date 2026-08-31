@@ -255,4 +255,5 @@ roots = [
   "PairingKinds",
   "LatticeTruncatedKinds",
   "BoxGraphSuccIso",
+  "BoxAdjSpectrum",
 ]
