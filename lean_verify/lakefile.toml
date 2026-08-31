@@ -256,4 +256,5 @@ roots = [
   "LatticeTruncatedKinds",
   "BoxGraphSuccIso",
   "BoxAdjSpectrum",
+  "ProdVecIndependent",
 ]
