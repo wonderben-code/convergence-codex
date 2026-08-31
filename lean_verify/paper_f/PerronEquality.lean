@@ -52,6 +52,34 @@ and then that the top eigenvalue is **simple**. Neither is here:
 
 So `WALLS` §W4.0 §6 item 2 is **open**, the `W4` row does not move, and what has changed is that
 the route's remaining length is now two named steps rather than one unexamined one.
+
+**⚠ ALL THREE OF THE ABSENCE CLAIMS ABOVE ARE STALE, CORRECTED 2026-08-31 (`ERRATUM 379`,
+`ERRATUM 94`'s form, the section kept as written).** Every one of them was true when written and
+is not true now, and they were found by re-reading this header rather than by any checker:
+
+* *"this estate has **no** Rayleigh-quotient statement for matrices"* — `RayleighMatrix` is that
+  statement: `quadForm_eq_sum` and `normSq_eq_sum` put the form and the norm in eigencoordinates,
+  and `quadForm_le_of_eigenvalues_le` orders the form against the eigenvalues, which is the
+  inequality item 1 wanted.
+* item 1, *"that equality holds at all… is a hypothesis of every theorem below, never a
+  conclusion"* — `PerronVector.quadForm_absVec_ge` is exactly *"a maximiser has `|v|` as a
+  maximiser too"*, and `PerronVector.exists_pos_top_eigenvector` delivers the strictly positive
+  top eigenvector it was wanted for.
+* item 2, *"**Simplicity**… does not follow from anything here"* — `PerronSimple`
+  `top_eigenspace_dim_one` is simplicity for eigenvectors, and `PerronGap.abs_eigenvalues_lt_of_ne`
+  is the separation for values.
+
+**AND THE INDEX-LEVEL STATEMENT NEITHER OF THOSE TWO GIVES WAS ALSO ALREADY PROVED**, in
+`TransferPowerSum.index_eq_of_eigenvalues_eq_top`: with strictly positive entries, two indices
+carrying the top eigenvalue **are the same index**. That is the Perron–Frobenius sentence *"the top
+eigenvalue is simple"* said about the eigenvalue **list**, which is what the two halves above,
+being about eigenvectors and about values, do not say. **Eight files consume it**, each composing
+it inline with `PerronGap.abs_eigenvalues_lt_of_ne` to get *«a different index has strictly smaller
+modulus»*; that composition is nowhere named, and naming it is refactoring rather than mathematics
+(no cost offered, `ERRATUM 246`).
+
+**`WALLS` §W4.0 §6 item 2's closure is recorded at the wall and not here**; what is corrected is
+this header's account of what remains, which is **nothing on this list**.
 -/
 
 namespace PerronEquality
