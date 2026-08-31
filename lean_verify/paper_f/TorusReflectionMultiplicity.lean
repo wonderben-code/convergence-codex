@@ -62,6 +62,28 @@ theorem reflectAxis_val {N : ℕ} (i : Fin d) (k : Site d (N + 3)) :
     ((reflectAxis i k) i).val = (N + 3 - (k i).val) % (N + 3) := by
   rw [reflectAxis, Function.update_self]
 
+/-- **THE MIRRORED COORDINATE HAS THE SAME COSINE.** The one analytic fact behind every reflection
+statement in this chain, extracted so the multi-axis version does not repeat it (`ERRATUM 337`). -/
+theorem cos_mirror_eq (N : ℕ) (a : Fin (N + 3)) :
+    Real.cos (2 * Real.pi * (((N + 3 - a.val) % (N + 3) : ℕ) : ℝ) / ((N : ℝ) + 3))
+      = Real.cos (2 * Real.pi * a.val / ((N : ℝ) + 3)) := by
+  have hn : 0 < N + 3 := by omega
+  have hcast : ((N : ℝ) + 3) = ((N + 3 : ℕ) : ℝ) := by push_cast; ring
+  have hlt : (N + 3 - a.val) % (N + 3) < N + 3 := Nat.mod_lt _ hn
+  have hkey : Real.cos (2 * Real.pi * (((N + 3 - a.val) % (N + 3) : ℕ) : ℝ) / ((N + 3 : ℕ) : ℝ))
+      = Real.cos (2 * Real.pi * a.val / ((N + 3 : ℕ) : ℝ)) := by
+    refine (cos_angle_eq_iff hn hlt a.isLt).2 ?_
+    rcases Nat.eq_zero_or_pos a.val with h0 | h0
+    · left
+      rw [h0]
+      simp
+    · right
+      rw [Nat.mod_eq_of_lt (by omega)]
+      have := a.isLt
+      omega
+  rw [← hcast] at hkey
+  exact hkey
+
 /-- **REFLECTING AN AXIS DOES NOT MOVE THE EIGENVALUE.** Every axis contributes its own cosine and
 only the mirrored one changes; the ring's identity says that cosine is the same. -/
 theorem nuR_reflectAxis (N : ℕ) (m : ℝ) (i : Fin d) (k : Site d (N + 3)) :
@@ -74,20 +96,7 @@ theorem nuR_reflectAxis (N : ℕ) (m : ℝ) (i : Fin d) (k : Site d (N + 3)) :
     intro j
     by_cases hj : j = i
     · subst hj
-      have hlt : (N + 3 - (k j).val) % (N + 3) < N + 3 := Nat.mod_lt _ hn
-      have hkey : Real.cos (2 * Real.pi * ((reflectAxis j k) j).val / ((N + 3 : ℕ) : ℝ))
-          = Real.cos (2 * Real.pi * (k j).val / ((N + 3 : ℕ) : ℝ)) := by
-        refine (cos_angle_eq_iff hn (by rw [reflectAxis_val]; exact hlt) (k j).isLt).2 ?_
-        rw [reflectAxis_val]
-        rcases Nat.eq_zero_or_pos (k j).val with h0 | h0
-        · left
-          rw [h0]
-          simp
-        · right
-          rw [Nat.mod_eq_of_lt (by omega)]
-          omega
-      rw [← hcast] at hkey
-      rw [hkey]
+      rw [reflectAxis_val, cos_mirror_eq]
     · rw [reflectAxis_apply_ne i k hj]
   rw [nuR, nuR, Finset.sum_congr rfl fun j (_ : j ∈ Finset.univ) => hterm j]
 
