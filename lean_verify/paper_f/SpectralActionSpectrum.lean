@@ -37,6 +37,19 @@
   is untouched, and no tag, docstring or claim anywhere in this estate moves. Legs (ii) and (iii)
   are not attempted and their cost is not claimed (`ERRATUM 246`).
 
+  ^ **THREE OF THOSE FOUR CLAUSES HAVE BEEN FALSE SINCE 26 AUGUST 2026, AND THE PARAGRAPH IS KEPT
+    AS WRITTEN** (`ERRATUM 94`, `ERRATUM 365`).
+    **STILL TRUE**: *"Nothing HERE proves…"* — file-scoped, and this file still gives the forward
+    direction only.
+    **FALSE**: `SpectralActionDetermines.eigenvalues_multiset_eq_of_spectralAction_eq` proves that
+    equal spectral actions at the even monomials force the same multiset of squared singular
+    values — equal moments forcing equal singular values, which is the step this paragraph says
+    nobody takes. That file also carries a theorem headed *"`spectralAction_congr_tfae` GAINS ITS
+    FOURTH CLAUSE"*, so it is not untouched; and `SpectralAction` §10's paragraph was itself
+    corrected the same day, so *"no docstring anywhere in this estate moves"* fails too.
+    **This file mentions `SpectralActionDetermines` nowhere**, and the accept reading that vouched
+    for this paragraph repeated its error rather than catching it.
+
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 import SpectralAction
