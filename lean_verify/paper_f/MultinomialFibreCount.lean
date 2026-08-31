@@ -149,12 +149,47 @@ theorem card_matching_of_sizes (m : α → ℕ) (f₀ : ι → α)
   rw [hset, card_matching f₀]
   exact Nat.multinomial_congr fun a _ => hf₀ a
 
+/-! ## 5. And the witness is not needed: the sum condition alone suffices -/
+
+/-- A function realising prescribed fibre sizes, built from the sum condition by indexing the
+domain with `Σ a, Fin (m a)`. -/
+noncomputable def refFn (m : α → ℕ) (h : ∑ a, m a = Fintype.card ι) (i : ι) : α :=
+  (Fintype.equivOfCardEq (β := Σ a : α, Fin (m a))
+    (by rw [Fintype.card_sigma]; simp [h]) i).1
+
+omit [DecidableEq ι] in
+/-- **AND IT DOES REALISE THEM.** -/
+theorem card_refFn_fibre (m : α → ℕ) (h : ∑ a, m a = Fintype.card ι) (a : α) :
+    Fintype.card {i // refFn m h i = a} = m a := by
+  have h1 : Fintype.card {i // refFn m h i = a}
+      = Fintype.card {p : (Σ b : α, Fin (m b)) // p.1 = a} :=
+    Fintype.card_congr (Equiv.subtypeEquiv
+      (Fintype.equivOfCardEq (β := Σ a : α, Fin (m a))
+        (by rw [Fintype.card_sigma]; simp [h])) fun i => Iff.rfl)
+  rw [h1, Fintype.card_congr (Equiv.subtypeSigmaEquiv (fun b : α => Fin (m b)) (· = a)),
+    Fintype.card_sigma]
+  simp only [Fintype.card_fin, Fintype.sum_unique]
+  exact congrArg m (default : {b : α // b = a}).2
+
+/-- **THE COUNT FROM THE SUM CONDITION ALONE.** This is the form
+`UNLOCK_WATCHLIST`'s multinomial item states: no witness, just `∑ₐ mₐ = card ι`. -/
+theorem card_matching_of_sum (m : α → ℕ) (h : ∑ a, m a = Fintype.card ι) :
+    (univ.filter fun g : ι → α => ∀ a, Fintype.card {i // g i = a} = m a).card
+      = Nat.multinomial univ m :=
+  card_matching_of_sizes m (refFn m h) (card_refFn_fibre m h)
+
 /-!
 **WHAT IS STILL MISSING, AND IT IS ONE CONSTRUCTION.** `card_matching_of_sizes` needs an `f₀`
 realising `m`. Every `m` with `∑ₐ mₐ = Fintype.card ι` is realised — index `ι` by
 `Σ a, Fin (m a)` — but **that construction is not built here**, so the theorem is stated with the
 witness as a hypothesis rather than with the sum condition. As of 31 August 2026 nothing in this
 estate builds it, and no cost is offered (`ERRATUM 194`, `ERRATUM 246`).
+
+**^ BUILT THE SAME DAY, AND THE PARAGRAPH ABOVE IS KEPT AS WRITTEN** (`ERRATUM 94`). `refFn` and
+`card_refFn_fibre` in §5 are that construction, and `card_matching_of_sum` is the statement with
+the witness **removed** in favour of `∑ₐ mₐ = Fintype.card ι` — which is the form
+`UNLOCK_WATCHLIST`'s multinomial item asks for. The paragraph was true for about an hour. What
+remains open is only the transport to the torus, below.
 -/
 
 end MultinomialFibreCount
