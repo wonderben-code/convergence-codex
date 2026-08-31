@@ -262,4 +262,5 @@ roots = [
   "SymmetricEigenOrthogonal",
   "BoxModeOrthogonal",
   "OrthogonalQuadForm",
+  "BoxMassiveBound",
 ]
