@@ -42,6 +42,20 @@
   here, no `A ∓ B`, no use of R2, and no theorem about a half of a box
   larger than a singleton.
 
+  ^ **"NOTHING PROVES FOR A GENERAL HALF" HAS BEEN FALSE SINCE 10 AUGUST
+    2026 AND THE CLAUSE IS KEPT AS WRITTEN** (`ERRATUM 94`, `ERRATUM 364`).
+    `StrictCriterion.reflectionPositive_strict_of_gap`, the next day, and
+    `GraphReflectionPositive.reflectionPositive_of_crossOp_nonpos`, on
+    26 August, both quantify over an arbitrary half of an arbitrary graph.
+    This file mentions neither.
+    **AND THE CLAUSE NAMED THE ROUTE THEY TOOK.** *"No block decomposition,
+    no `A ∓ B`, no use of R2"* is exactly `plusOp`/`minusOp` and
+    `MatrixLoewner.posDef_inv_le_inv`, which is what both are built from.
+    **WHAT REMAINS TRUE, so the correction is not itself an overclaim**:
+    both carry a hypothesis on the cross-coupling — the condition this
+    file's own ladder calls **R3** — so nothing proves it UNCONDITIONALLY,
+    and this file never said that.
+
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
   axioms.
 -/
