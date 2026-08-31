@@ -21,6 +21,32 @@ bound that follows is the point of this file.
 > **`hyperoctahedral_le_finrank_eigenspace`** — hence `2^d · d! ≤ dim`, in every dimension and at
 > every side length at least three.
 
+## EXTENDED THE SAME DAY: the bound holds with no hypotheses at all
+
+The three hypotheses were doing one job — **counting** the orbit — and none at all in **bounding**
+the dimension by it. Separating the two makes the general statement shorter than the special one.
+
+> **`orbit k`** — the hyperoctahedral orbit of `k`, as a `Finset`.
+>
+> **`orbit_card_le_finrank_eigenspace`** — **`|orbit k| ≤ dim`, for EVERY frequency, with no
+> hypotheses whatever.** The orbit sits inside the eigenvalue's fibre and the fibre's size is the
+> dimension; `Finset.card_le_card` needs an inclusion and nothing else. **`signedPerm_injective` is
+> not used**, which is the whole content of the generalisation.
+>
+> **`card_orbit_of_generic`** — and at a generic frequency the orbit is full, `2^d · d!`. **This is
+> the only place the three hypotheses are spent.**
+>
+> **`hyperoctahedral_le_finrank_eigenspace` is now a corollary** of those two rather than a separate
+> argument, and its statement is unchanged.
+>
+> **`one_le_card_orbit`** — the orbit is never empty, so the general bound is not vacuous at any
+> frequency: `k` is its own image under the empty reflection and the identity permutation.
+
+**What the general form is worth**: at a frequency with `s` interior axes and repeated coordinates
+the orbit is smaller than `2^d · d!` and larger than `1`, and **the bound still applies** where the
+old statement said nothing at all. What it does *not* do is compute that orbit — no stabiliser is
+described and no orbit-counting formula is proved (`ERRATUM 246`).
+
 ## The two hypotheses, and what each is doing
 
 **`Function.Injective k`** — the coordinates are pairwise distinct. Without it a transposition of
@@ -131,15 +157,18 @@ theorem signedPerm_injective {N : ℕ} (k : Site d (N + 3)) (hinj : Function.Inj
       exact hsum (σ j) (σ j) (by omega)
   simp [Finset.ext hmem]
 
-/-! ## 3. Hence the bound -/
+/-! ## 3. The bound with no hypotheses at all: the orbit -/
 
-/-- **`2^d · d! ≤ dim`.** The hyperoctahedral group acts freely on a generic frequency and every
-image has the same eigenvalue, so the eigenspace is at least that large — in every dimension and at
-every side length at least three. -/
-theorem hyperoctahedral_le_finrank_eigenspace (N : ℕ) (m : ℝ) (k : Site d (N + 3))
-    (hinj : Function.Injective k) (hpos : ∀ i, 0 < (k i).val)
-    (hsum : ∀ i j, (k i).val + (k j).val ≠ N + 3) :
-    2 ^ d * Nat.factorial d ≤ Module.finrank ℝ (LinearMap.ker
+/-- **THE ORBIT OF `k` UNDER THE HYPEROCTAHEDRAL GROUP**, as a `Finset`. -/
+def orbit {N : ℕ} (k : Site d (N + 3)) : Finset (Site d (N + 3)) :=
+  Finset.univ.image fun p : Finset (Fin d) × Equiv.Perm (Fin d) => signedPerm p.1 p.2 k
+
+/-- **`|orbit k| ≤ dim`, WITH NO HYPOTHESES ON `k`.** Every image has `k`'s eigenvalue, so the
+orbit sits inside the eigenvalue's fibre and the fibre's size is the dimension. **The three
+hypotheses of §4 are used to count the orbit and are not used to bound it**, which is why they are
+absent here — `Finset.card_le_card` needs an inclusion and nothing else. -/
+theorem orbit_card_le_finrank_eigenspace (N : ℕ) (m : ℝ) (k : Site d (N + 3)) :
+    (orbit k).card ≤ Module.finrank ℝ (LinearMap.ker
       (Matrix.toLin' (massive (torusGraph d (N + 3)) m) - (nuR N m k) • LinearMap.id)) := by
   classical
   rw [finrank_eigenspace_massive_real N m (nuR N m k)]
@@ -147,23 +176,40 @@ theorem hyperoctahedral_le_finrank_eigenspace (N : ℕ) (m : ℝ) (k : Site d (N
       = (Finset.univ.filter fun k' : Site d (N + 3) => nuR N m k' = nuR N m k).card := by
     rw [Nat.card_eq_fintype_card, Fintype.card_subtype]
   rw [hcard]
-  have himg : (Finset.univ.image
-        fun p : Finset (Fin d) × Equiv.Perm (Fin d) => signedPerm p.1 p.2 k)
-      ⊆ Finset.univ.filter fun k' : Site d (N + 3) => nuR N m k' = nuR N m k := by
-    intro x hx
-    obtain ⟨p, _, rfl⟩ := Finset.mem_image.1 hx
-    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-    exact nuR_signedPerm N m p.1 p.2 k
-  have hcount : (Finset.univ.image
-      fun p : Finset (Fin d) × Equiv.Perm (Fin d) => signedPerm p.1 p.2 k).card
-      = 2 ^ d * Nat.factorial d := by
-    rw [Finset.card_image_of_injective _ (signedPerm_injective k hinj hpos hsum),
-      Finset.card_univ, Fintype.card_prod, Fintype.card_finset, Fintype.card_perm,
-      Fintype.card_fin]
-  calc 2 ^ d * Nat.factorial d
-      = (Finset.univ.image
-          fun p : Finset (Fin d) × Equiv.Perm (Fin d) => signedPerm p.1 p.2 k).card := hcount.symm
-    _ ≤ (Finset.univ.filter fun k' : Site d (N + 3) => nuR N m k' = nuR N m k).card :=
-        Finset.card_le_card himg
+  refine Finset.card_le_card ?_
+  intro x hx
+  obtain ⟨p, _, rfl⟩ := Finset.mem_image.1 hx
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+  exact nuR_signedPerm N m p.1 p.2 k
+
+/-! ## 4. And the generic case, where the orbit is as large as it can be -/
+
+/-- **THE ORBIT IS FULL AT A GENERIC FREQUENCY.** This is where `signedPerm_injective` is spent,
+and it is the only place the three hypotheses are used. -/
+theorem card_orbit_of_generic {N : ℕ} (k : Site d (N + 3)) (hinj : Function.Injective k)
+    (hpos : ∀ i, 0 < (k i).val) (hsum : ∀ i j, (k i).val + (k j).val ≠ N + 3) :
+    (orbit k).card = 2 ^ d * Nat.factorial d := by
+  classical
+  rw [orbit, Finset.card_image_of_injective _ (signedPerm_injective k hinj hpos hsum),
+    Finset.card_univ, Fintype.card_prod, Fintype.card_finset, Fintype.card_perm,
+    Fintype.card_fin]
+
+/-- **`2^d · d! ≤ dim`.** Now a corollary of §3 rather than a separate argument: the orbit bounds
+the dimension for every frequency, and at a generic one the orbit is full. -/
+theorem hyperoctahedral_le_finrank_eigenspace (N : ℕ) (m : ℝ) (k : Site d (N + 3))
+    (hinj : Function.Injective k) (hpos : ∀ i, 0 < (k i).val)
+    (hsum : ∀ i j, (k i).val + (k j).val ≠ N + 3) :
+    2 ^ d * Nat.factorial d ≤ Module.finrank ℝ (LinearMap.ker
+      (Matrix.toLin' (massive (torusGraph d (N + 3)) m) - (nuR N m k) • LinearMap.id)) :=
+  (card_orbit_of_generic k hinj hpos hsum) ▸ orbit_card_le_finrank_eigenspace N m k
+
+/-- **AND THE ORBIT IS NEVER EMPTY**, so §3 is not vacuous at any frequency: `k` is its own image
+under the empty reflection and the identity permutation. -/
+theorem one_le_card_orbit {N : ℕ} (k : Site d (N + 3)) : 1 ≤ (orbit k).card := by
+  classical
+  refine Finset.card_pos.2 ⟨k, ?_⟩
+  refine Finset.mem_image.2 ⟨(∅, Equiv.refl _), Finset.mem_univ _, ?_⟩
+  funext i
+  simp [signedPerm, reflectAxes]
 
 end TorusHyperoctahedral
