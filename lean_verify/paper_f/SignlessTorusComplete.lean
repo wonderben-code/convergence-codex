@@ -77,16 +77,25 @@ eigenvalues**, and it is wanted again the moment anybody asks the same question 
 massive Laplacian, whose eigenvectors are the same basis. -/
 
 /-- **A MATRIX DIAGONALISED BY A BASIS HAS EXACTLY THE EIGENVALUES ON THAT BASIS.** Given a basis
-`b` of `ι → ℂ` and a family `ν` with `A *ᵥ b k = ν k • b k`, a scalar `μ` is an eigenvalue of `A`
+`b` of `ι → K` and a family `ν` with `A *ᵥ b k = ν k • b k`, a scalar `μ` is an eigenvalue of `A`
 **iff** `μ = ν k` for some `k`. The reverse direction needs `b k ≠ 0`, which a basis vector is.
 The forward direction is the content: expand the eigenvector, apply `A`, and every coefficient is
-multiplied by `ν k − μ`, non-zero by assumption, so linear independence kills them all. -/
-theorem eigenvalue_iff_of_basis {ι : Type*} [Fintype ι]
-    (A : Matrix ι ι ℂ) (b : Module.Basis ι ℂ (ι → ℂ)) (ν : ι → ℂ)
-    (hb : ∀ k, A *ᵥ b k = ν k • b k) (μ : ℂ) :
-    (∃ x : ι → ℂ, x ≠ 0 ∧ A *ᵥ x = μ • x) ↔ ∃ k, ν k = μ := by
+multiplied by `ν k − μ`, non-zero by assumption, so linear independence kills them all.
+
+**GENERALISED 2026-08-31 FROM `ℂ` TO AN ARBITRARY FIELD**, hypothesis removed and statement
+otherwise unchanged (`ERRATUM 94`: the text above is kept as written). Nothing in the proof used a
+property of `ℂ`: it needs `Module.Basis`, `Fintype.linearIndependent_iff`, `Matrix.toLin'`, and —
+for the one step that divides the work — `mul_eq_zero`, i.e. no zero divisors. `eigenvalue_iff`
+below is now this at `K = ℂ` with its own statement untouched. **The consumer that wanted it**:
+`BoxAdjBasis.boxBasis` diagonalises the `d`-dimensional box's adjacency matrix over `ℝ`, and until
+this generalisation the completeness step was unavailable to it for no better reason than the
+scalar field. -/
+theorem eigenvalue_iff_of_basis {K : Type*} [Field K] {ι : Type*} [Fintype ι]
+    (A : Matrix ι ι K) (b : Module.Basis ι K (ι → K)) (ν : ι → K)
+    (hb : ∀ k, A *ᵥ b k = ν k • b k) (μ : K) :
+    (∃ x : ι → K, x ≠ 0 ∧ A *ᵥ x = μ • x) ↔ ∃ k, ν k = μ := by
   classical
-  have hA : ∀ y : ι → ℂ, A *ᵥ y = Matrix.toLin' A y :=
+  have hA : ∀ y : ι → K, A *ᵥ y = Matrix.toLin' A y :=
     fun y => (Matrix.toLin'_apply _ y).symm
   constructor
   · rintro ⟨x, hx0, hx⟩
