@@ -264,4 +264,5 @@ roots = [
   "OrthogonalQuadForm",
   "BoxMassiveBound",
   "PathLapSpectrum",
+  "BoxProdLapSpectrum",
 ]
