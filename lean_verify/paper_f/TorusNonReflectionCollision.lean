@@ -42,6 +42,15 @@ negative; it does not replace it with a count. `TorusReflectionCount`'s `2^s` is
 lower bound and there is still no upper one, and **the cost of getting one is not estimated**
 (`ERRATUM 194`, `ERRATUM 246`).
 
+**^ THE CLAUSE ABOUT `2^s` WAS SUPERSEDED THE SAME DAY AND IS KEPT** (`ERRATUM 94`,
+`ERRATUM 372`). **`TorusHyperoctahedral.hyperoctahedral_le_finrank_eigenspace` proves
+`2^d · d! ≤ dim`** — the permutations proved here composed with the reflections counted in
+`TorusReflectionCount` — under the hypotheses that the coordinates are pairwise distinct, none is
+at rest, and no two are mirrors. **What stays true is `2^s` being the only UNCONDITIONAL lower
+bound**, since the new one carries three hypotheses; what is false is *"the only lower bound"*.
+The second half of the sentence stands unchanged: **there is still no upper bound at any `d ≥ 2`**,
+and §3 above is now the reason one cannot come from symmetry.
+
 **No group is constructed.** `nuR_comp_perm` is an invariance statement about a function, not an
 action on frequencies bundled as a `MulAction`; nothing in this estate consumes such a carrier,
 which is `LovelockReduction` §1's reason for not building one.
