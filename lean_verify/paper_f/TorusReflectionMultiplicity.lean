@@ -15,6 +15,16 @@ reflecting a single axis leaves the eigenvalue alone, in every dimension, so **e
 eigenvalue of the massive Laplacian on the periodic lattice is degenerate.** What stays open is the
 converse — whether reflections are *all* the collisions — and that is untouched.
 
+**^ THAT CONVERSE IS SETTLED, 2026-08-31, AND THE SENTENCE IS KEPT** (`ERRATUM 94`,
+`ERRATUM 371`). **Reflections are not all the collisions**, and the reason needs no analysis:
+`νR` is a sum over the axes of a function of one coordinate, so permuting the axes leaves it
+alone — `TorusNonReflectionCollision.nuR_comp_perm`. At `d = 2` and side at least four,
+`(1, 2)` and `(2, 1)` share an eigenvalue and the second is not `reflectAxes S` of the first for
+any `S` (`swap_ne_reflectAxes`). **Nor are the signed permutations all of them**: at side `12`,
+`(2, 3)` and `(0, 4)` collide and are unrelated by any reflection-and-permutation
+(`sporadic_nuR_eq`, `sporadic_ne_signed_perm`). What is still open, and is a different sentence
+from this one, is any **upper** bound on a multiplicity above one dimension.
+
 > **`reflectAxis`** — mirror one coordinate, `kᵢ ↦ n − kᵢ` reduced mod `n`, leaving the others. The
 > reduction is what makes it total, exactly as in `CycleMultiplicityCount.mirrorFreq`.
 >

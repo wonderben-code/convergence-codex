@@ -37,6 +37,15 @@ exceptions are not gaps but the two frequencies that are their own reflections.
 *some* of the collisions there and nothing says they are all of them. **No cost is claimed**
 (`ERRATUM 246`).
 
+**^ SOMETHING SAYS IT NOW, 2026-08-31, AND WHAT IT SAYS IS THAT THEY ARE NOT; THE SENTENCE IS KEPT**
+(`ERRATUM 94`, `ERRATUM 371`). `TorusNonReflectionCollision.nuR_comp_perm` makes `νR` invariant
+under permuting the axes — `νR` is a sum over the axes and a sum does not see their order — so at
+`d = 2` and side at least four `(1, 2)` and `(2, 1)` collide with the second outside every
+`reflectAxes S`. **Nor do the signed permutations exhaust them**: at side `12`, `(2, 3)` and
+`(0, 4)` collide and no reflection-and-permutation relates them. **This file's `d = 1` count is
+untouched** — `2` at every interior frequency, exact — and no upper bound at `d ≥ 2` is proved or
+costed.
+
 **No list of eigenvectors.** The dimension is two; **no basis of that eigenspace is exhibited**, and
 the two characters at `k` and `n − k` are the obvious candidates over `ℂ` — their real and imaginary
 parts are **not** shown here to span the real eigenspace.

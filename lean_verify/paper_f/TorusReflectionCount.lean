@@ -34,7 +34,16 @@ that every interior eigenvalue is degenerate in every dimension, and drew its ow
 **It is still not an upper bound**, and that is unchanged from the previous unit and is the fence
 that matters. Whether two frequencies that are **not** reflections of one another can share an
 eigenvalue at `d ≥ 2` is exactly the question the ring's biconditional settles in one dimension, and
-**nothing settles it in any other**. At `d = 1` the bound here is `2^1 = 2` at an interior frequency
+**nothing settles it in any other**.
+
+**^ SOMETHING SETTLES IT NOW, 2026-08-31, AND THE ANSWER IS YES; THE SENTENCE IS KEPT**
+(`ERRATUM 94`, `ERRATUM 371`). `TorusNonReflectionCollision` proves `νR` invariant under permuting
+the axes — one reindexing of a finite sum — so at `d = 2` and side at least four `(1, 2)` and
+`(2, 1)` collide with `(2, 1)` outside every `reflectAxes S`; and at side `12` the pair `(2, 3)`,
+`(0, 4)` collides outside the signed permutations entirely. **The `2^s` below is unaffected**: it
+was a lower bound and it stays one, and what this closes is the question of whether it could ever
+have been sharp above one dimension. It could not. **No upper bound is proved at `d ≥ 2` and none
+is estimated** (`ERRATUM 246`). At `d = 1` the bound here is `2^1 = 2` at an interior frequency
 and `CycleMultiplicityCount` shows that is exact; **no such statement is available above one
 dimension**, and none is guessed at (`ERRATUM 194`, `ERRATUM 246`).
 
