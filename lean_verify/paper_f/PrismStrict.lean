@@ -36,6 +36,17 @@
     with `M − P` positive definite. The general statement is true and this
     proof would give it with `M − P = D` for positive definite `D`; **it is
     not what was needed, it is not written, and it is not claimed.**
+    ^ **THAT CLAUSE HAS BEEN FALSE SINCE 10 AUGUST 2026 AND IS KEPT AS
+      WRITTEN** (`ERRATUM 94`, `ERRATUM 362`). `StrictCriterion.
+      inv_sub_inv_posDef_gen` proves exactly it — positive definite `P` and
+      `M` with `M − P` positive definite give `P⁻¹ − M⁻¹` positive definite —
+      the day after this file, and says in its own summary that it is closing
+      the sentence above. **This file was never told**, and carried the
+      clause for twenty-one days.
+      **AND THE ROUTE WAS NOT THE ONE PREDICTED EITHER.** *"This proof would
+      give it"* names the `PosDef.mul_self`-and-determinant argument;
+      `StrictCriterion` uses none of it, feeding the variational optimiser for
+      `M` into the bound for `P` in six lines.
   * **It says nothing about the box or the torus.** Neither has the
     identification `PrismTransfer` proved, so on those graphs the reflected
     form is not a difference of two base-graph Green functions and this route
