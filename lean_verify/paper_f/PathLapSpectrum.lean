@@ -38,7 +38,8 @@ computation.
 
 **It is not a basis.** That the `n` vectors `cosMode n k`, `k = 0 … n−1`, are independent is **not**
 proved here; the eigenvalues `2 − 2cos(kπ/n)` are distinct on that range but the argument is not
-written. **Not attempted, not costed** (`ERRATUM 194`, `ERRATUM 246`).
+written. **That independence argument is not attempted in this file, and as of 31 Aug 2026 no cost
+is offered for it** (`ERRATUM 194`, `ERRATUM 246`).
 
 **It is not the box.** `boxGraph d n`'s Laplacian is not treated here; that needs the Laplacian to
 add across `SimpleGraph.boxProd` — an analogue of `BoxProdAdjSpectrum.adjMatrix_mulVec_prodVec` for

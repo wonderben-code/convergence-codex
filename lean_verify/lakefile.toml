@@ -266,4 +266,5 @@ roots = [
   "PathLapSpectrum",
   "BoxProdLapSpectrum",
   "GraphIsoLapSpectrum",
+  "BoxLapSpectrum",
 ]
