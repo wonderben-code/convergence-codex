@@ -126,36 +126,58 @@ theorem sqrt_le_sqrt_real {A B : Matrix V V ℝ} (hA : 0 ≤ A) (hB : 0 ≤ B) (
 
 /-! ## 3. Through the square root -/
 
-/-- **`√c • 1 ≼ CFC.sqrt (green G m)`**, by operator monotonicity of the square root. -/
-theorem smul_one_le_sqrt_green {Δ : ℝ} (hΔ : ∀ p : V, (G.degree p : ℝ) ≤ Δ) {m : ℝ} (hm : m ≠ 0)
-    (hpos : 0 < 2 * Δ + m ^ 2) :
-    Real.sqrt ((2 * Δ + m ^ 2)⁻¹) • (1 : Matrix V V ℝ) ≤ CFC.sqrt (green G m) := by
-  have h := LaplacianDegreeBound.smul_one_le_green G hΔ hm hpos
-  have hnn : (0 : Matrix V V ℝ) ≤ (2 * Δ + m ^ 2)⁻¹ • (1 : Matrix V V ℝ) :=
+/-- **`√(c⁻¹) • 1 ≼ CFC.sqrt (green G m)` FROM ANY LOWER BOUND ON `green`**, by operator
+monotonicity of the square root.
+
+**GENERALISED 2026-08-31, ONE HYPOTHESIS REMOVED** (`ERRATUM 94`: the degree-bound version below is
+kept with its statement unchanged and is now a corollary). The degree bound was only ever used to
+produce `LaplacianDegreeBound.smul_one_le_green`; the square root does not know where the bound came
+from. **The consumer that wanted this**: `BoxMassiveSharp.smul_one_le_green_sharp` gives the box a
+lower bound on `green` with a **provably optimal** constant, from the spectrum rather than from a
+degree, and until this generalisation no `√` statement could use it. -/
+theorem smul_one_le_sqrt_green_of_le {c : ℝ} (hpos : 0 < c) {m : ℝ} (hm : m ≠ 0)
+    (hg : c⁻¹ • (1 : Matrix V V ℝ) ≤ green G m) :
+    Real.sqrt c⁻¹ • (1 : Matrix V V ℝ) ≤ CFC.sqrt (green G m) := by
+  have hnn : (0 : Matrix V V ℝ) ≤ c⁻¹ • (1 : Matrix V V ℝ) :=
     Matrix.le_iff.mpr (by simpa using posSemidef_smul_one (V := V) (le_of_lt (inv_pos.mpr hpos)))
   have hgn : (0 : Matrix V V ℝ) ≤ green G m :=
     Matrix.le_iff.mpr (by simpa using (green_posDef G hm).posSemidef)
-  have hs := sqrt_le_sqrt_real hnn hgn h
+  have hs := sqrt_le_sqrt_real hnn hgn hg
   rwa [sqrt_smul_one (V := V) (le_of_lt (inv_pos.mpr hpos))] at hs
+
+/-- **`√c • 1 ≼ CFC.sqrt (green G m)`**, by operator monotonicity of the square root. -/
+theorem smul_one_le_sqrt_green {Δ : ℝ} (hΔ : ∀ p : V, (G.degree p : ℝ) ≤ Δ) {m : ℝ} (hm : m ≠ 0)
+    (hpos : 0 < 2 * Δ + m ^ 2) :
+    Real.sqrt ((2 * Δ + m ^ 2)⁻¹) • (1 : Matrix V V ℝ) ≤ CFC.sqrt (green G m) :=
+  smul_one_le_sqrt_green_of_le G hpos hm (LaplacianDegreeBound.smul_one_le_green G hΔ hm hpos)
 
 /-! ## 4. And back through the inverse -/
 
-/-- **`(CFC.sqrt (green G m))⁻¹ ≼ √(2Δ + m²) • 1`** — the object `LatticeUniformStein`'s fence
-names, bounded by a constant built only from a degree bound and the mass. -/
-theorem inv_sqrt_green_le {Δ : ℝ} (hΔ : ∀ p : V, (G.degree p : ℝ) ≤ Δ) {m : ℝ} (hm : m ≠ 0)
-    (hpos : 0 < 2 * Δ + m ^ 2) :
-    (CFC.sqrt (green G m))⁻¹ ≤ Real.sqrt (2 * Δ + m ^ 2) • (1 : Matrix V V ℝ) := by
-  have hcpos : 0 < Real.sqrt ((2 * Δ + m ^ 2)⁻¹) := Real.sqrt_pos.mpr (inv_pos.mpr hpos)
-  have hPD : (Real.sqrt ((2 * Δ + m ^ 2)⁻¹) • (1 : Matrix V V ℝ)).PosDef := by
+/-- **`(CFC.sqrt (green G m))⁻¹ ≼ √c • 1` FROM ANY LOWER BOUND ON `green`.**
+
+**GENERALISED 2026-08-31, ONE HYPOTHESIS REMOVED**, with the degree-bound version kept beneath and
+its statement unchanged (`ERRATUM 94`, `ERRATUM 201`: the special case is recovered, not replaced).
+The original docstring, kept: *"the object `LatticeUniformStein`'s fence names, bounded by a
+constant built only from a degree bound and the mass"* — which is exactly the restriction removed,
+since the constant now comes from wherever the caller's bound on `green` came from. -/
+theorem inv_sqrt_green_le_of_le {c : ℝ} (hpos : 0 < c) {m : ℝ} (hm : m ≠ 0)
+    (hg : c⁻¹ • (1 : Matrix V V ℝ) ≤ green G m) :
+    (CFC.sqrt (green G m))⁻¹ ≤ Real.sqrt c • (1 : Matrix V V ℝ) := by
+  have hcpos : 0 < Real.sqrt c⁻¹ := Real.sqrt_pos.mpr (inv_pos.mpr hpos)
+  have hPD : (Real.sqrt c⁻¹ • (1 : Matrix V V ℝ)).PosDef := by
     rw [Matrix.smul_one_eq_diagonal]
     exact Matrix.PosDef.diagonal fun _ => hcpos
-  have hinv := MatrixLoewner.posDef_inv_le_inv hPD (smul_one_le_sqrt_green G hΔ hm hpos)
-  have hd : (Real.sqrt ((2 * Δ + m ^ 2)⁻¹) • (1 : Matrix V V ℝ))⁻¹
-      = Real.sqrt (2 * Δ + m ^ 2) • (1 : Matrix V V ℝ) := by
+  have hinv := MatrixLoewner.posDef_inv_le_inv hPD (smul_one_le_sqrt_green_of_le G hpos hm hg)
+  have hd : (Real.sqrt c⁻¹ • (1 : Matrix V V ℝ))⁻¹ = Real.sqrt c • (1 : Matrix V V ℝ) := by
     refine Matrix.inv_eq_right_inv ?_
     rw [Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, smul_smul,
       Real.sqrt_inv, inv_mul_cancel₀ (ne_of_gt (Real.sqrt_pos.mpr hpos)), one_smul]
   rwa [hd] at hinv
+
+theorem inv_sqrt_green_le {Δ : ℝ} (hΔ : ∀ p : V, (G.degree p : ℝ) ≤ Δ) {m : ℝ} (hm : m ≠ 0)
+    (hpos : 0 < 2 * Δ + m ^ 2) :
+    (CFC.sqrt (green G m))⁻¹ ≤ Real.sqrt (2 * Δ + m ^ 2) • (1 : Matrix V V ℝ) :=
+  inv_sqrt_green_le_of_le G hpos hm (LaplacianDegreeBound.smul_one_le_green G hΔ hm hpos)
 
 /-! ## 5. The box, where the constant still does not see the side length -/
 
