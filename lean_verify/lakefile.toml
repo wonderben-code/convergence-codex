@@ -254,4 +254,5 @@ roots = [
   "LatticeTruncatedUniform",
   "PairingKinds",
   "LatticeTruncatedKinds",
+  "BoxGraphSuccIso",
 ]
