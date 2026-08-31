@@ -268,4 +268,5 @@ roots = [
   "GraphIsoLapSpectrum",
   "BoxLapSpectrum",
   "BoxLapBasis",
+  "BoxMassiveSpectrum",
 ]
