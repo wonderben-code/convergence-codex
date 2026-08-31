@@ -257,4 +257,5 @@ roots = [
   "BoxGraphSuccIso",
   "BoxAdjSpectrum",
   "ProdVecIndependent",
+  "BoxAdjBasis",
 ]
