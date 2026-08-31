@@ -269,4 +269,5 @@ roots = [
   "BoxLapSpectrum",
   "BoxLapBasis",
   "BoxMassiveSpectrum",
+  "BoxLapModeOrthogonal",
 ]
