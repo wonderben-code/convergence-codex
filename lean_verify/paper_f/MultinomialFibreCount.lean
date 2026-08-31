@@ -133,4 +133,28 @@ theorem card_matching (f₀ : ι → α) :
   refine Nat.eq_of_mul_eq_mul_right hpos ?_
   rw [card_matching_mul_prod f₀, ← hspec, Nat.mul_comm]
 
+/-! ## 4. The same thing said about the fibre sizes rather than about a function -/
+
+/-- **THE COUNT, INDEXED BY THE SIZES THEMSELVES.** A consumer holds a size function `m` and some
+function realising it, which is the shape `UNLOCK_WATCHLIST`'s multinomial item asks for. -/
+theorem card_matching_of_sizes (m : α → ℕ) (f₀ : ι → α)
+    (hf₀ : ∀ a, Fintype.card {i // f₀ i = a} = m a) :
+    (univ.filter fun g : ι → α => ∀ a, Fintype.card {i // g i = a} = m a).card
+      = Nat.multinomial univ m := by
+  have hset : (univ.filter fun g : ι → α => ∀ a, Fintype.card {i // g i = a} = m a)
+      = univ.filter fun g : ι → α =>
+          ∀ a, Fintype.card {i // g i = a} = Fintype.card {i // f₀ i = a} := by
+    ext g
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, hf₀]
+  rw [hset, card_matching f₀]
+  exact Nat.multinomial_congr fun a _ => hf₀ a
+
+/-!
+**WHAT IS STILL MISSING, AND IT IS ONE CONSTRUCTION.** `card_matching_of_sizes` needs an `f₀`
+realising `m`. Every `m` with `∑ₐ mₐ = Fintype.card ι` is realised — index `ι` by
+`Σ a, Fin (m a)` — but **that construction is not built here**, so the theorem is stated with the
+witness as a hypothesis rather than with the sum condition. As of 31 August 2026 nothing in this
+estate builds it, and no cost is offered (`ERRATUM 194`, `ERRATUM 246`).
+-/
+
 end MultinomialFibreCount
