@@ -261,4 +261,5 @@ roots = [
   "BoxSpectrumComplete",
   "SymmetricEigenOrthogonal",
   "BoxModeOrthogonal",
+  "OrthogonalQuadForm",
 ]
