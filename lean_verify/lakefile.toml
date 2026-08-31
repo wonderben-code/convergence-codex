@@ -260,4 +260,5 @@ roots = [
   "BoxAdjBasis",
   "BoxSpectrumComplete",
   "SymmetricEigenOrthogonal",
+  "BoxModeOrthogonal",
 ]
