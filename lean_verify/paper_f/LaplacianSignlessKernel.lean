@@ -57,6 +57,15 @@ two-colourable.
 nothing here says anything about any other point of the spectrum, and the estate has no eigenvalue
 of `Q` anywhere.
 
+**⚠ THE SECOND HALF WAS FALSE EIGHT HOURS AND TWENTY-THREE MINUTES LATER. Annotated 1 September
+2026** (`ERRATUM 94`, `ERRATUM 392`). This file was committed at **2026-08-30 05:43**.
+`SignlessTorusSpectrum` was committed at **14:06 the same day**: `nuQ` is the signless Laplacian's
+eigenvalue on the torus and `cx_signlessLap_mulVec_chiD` is the eigenvector equation, with
+`nuQ_eq_real` and `nuQ_real_nonneg` beside it; `SignlessTorusComplete.eigenvalue_iff` (14:38) makes
+it a biconditional, and `TorusMultiplicity` and `TorusTopSimple` (22:01, 22:11) count the
+degeneracies. **The first half stands and is this file's own scope**: nothing *here* computes an
+eigenvalue, and the multiplicity of `0` is still the whole of what is counted.
+
 **It is a statement about a matrix.** No measure appears, nothing in the OS chain changes, and no
 published tag is touched.
 

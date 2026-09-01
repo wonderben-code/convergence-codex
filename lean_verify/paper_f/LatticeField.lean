@@ -160,7 +160,19 @@ product beyond `IsGaussian` and `PosSemidef`.
 on `Site n`** — checked, not assumed: `OS2ProductField.theta` has type
 `(Fin (m+1) → ℝ) → (Fin (m+1) → ℝ)` and negates a real time coordinate,
 `doubled` builds a doubled site family out of it, and a grep for any
-`Site n → Site n` map returns nothing. **So "that layer is done and waiting"
+`Site n → Site n` map returns nothing.
+
+**⚠ DISCHARGED THE SAME DAY. Annotated 1 September 2026** (`ERRATUM 94`, `ERRATUM 392`). *"The
+estate has no reflection on `Site n`"* was true when written and false within hours:
+`LatticeReflection.refl (n : ℕ) : Site n ≃ Site n` is the reflection of the box in its first
+coordinate, and **that file's header quotes this very sentence** — *"`LatticeField` established, by
+attempting it, that the OS2 layer needs a reflection on `Site n` and that the estate has none …
+That sentence was a claim, not a hedge, and this file discharges it"*. The probe recorded here was
+sound and the conclusion drawn from it was acted on immediately; what never happened is anyone
+coming back to this paragraph. The rest of the sentence — that the OS2 layer, not the
+Gaussian-moments layer, is what W1 is about — stands unchanged.
+
+**So "that layer is done and waiting"
 was true of the Gaussian-moments layer and false of the OS2 layer**, and the
 second is the one W1 needs. `WALLS.md` is corrected rather than this
 sentence softened.
