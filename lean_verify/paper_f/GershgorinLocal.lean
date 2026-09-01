@@ -55,7 +55,7 @@ open scoped Matrix
 
 section Localisation
 
-/-! `Matrix.toLin'` and `Finset.univ.erase` both put `DecidableEq` in the STATEMENTS of §1 and §2,
+/-! `Matrix.toLin'` and `Finset.erase` both put `DecidableEq` in the STATEMENTS of §1 and §2,
 so it is a section variable here and not in §3, where it appears only in a proof (`ERRATUM 405`). -/
 
 variable {n : Type*} [Fintype n] [DecidableEq n] {A : Matrix n n ℝ} {μ : ℝ} {v : n → ℝ}
