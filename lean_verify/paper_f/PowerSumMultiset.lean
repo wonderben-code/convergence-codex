@@ -89,7 +89,8 @@ square root exists — and `multiset_eq_of_map_sq_eq` is the general step, state
 multisets of non-negatives rather than for two families.
 **The square-root import went with it**: `Mathlib/Data/Real/Sqrt.lean` was in this file for that
 one rewrite and is gone, replaced by plain `Mathlib/Data/Real/Basic.lean`, which the `ℝ`
-instantiation below needs for the ORDER and which carries no square root at all. **That swap is the check** that the
+instantiation below needs for the ORDER and which carries no square root at
+all. **That swap is the check** that the
 square root was not the content, rather than a claim that it was not — dropping the import
 outright was tried first and fails, because `ℝ` then has no `LE`, which is the obstruction the
 sentence above correctly names. `ℝ` still satisfies every binder, so the theorem this file had

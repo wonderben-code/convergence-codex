@@ -166,7 +166,19 @@ theorem sinh_nonneg {x : ℝ} (hx : 0 ≤ x) : 0 ≤ sinh x := by
 
 /-- And strictly positive on the strictly positive reals. `Real.sinh_pos_of_pos` lives in the same
 differentiation file `sinh_nonneg` avoided, so this is the same four lines with a strict inequality
-rather than a new import. -/
+rather than a new import.
+
+**^ THAT NAME DOES NOT EXIST AND IS KEPT** (`ERRATUM 94`, `ERRATUM 402`), corrected 1 Sep 2026.
+Probed against the pinned constant dump: Mathlib carries `Real.sinh_pos_iff` and
+`Real.sinh_nonneg_iff` — **biconditionals** — in the `Real` namespace, and
+`Mathlib.Meta.Positivity.sinh_pos_of_pos` in the **positivity-extension** namespace, which is not
+`Real`. The sentence above took the `_of_pos` suffix from the second and the `Real` prefix from
+the first. **The claim it supports is unaffected**: an import is still what this theorem avoids,
+and `Real.sinh_pos_iff` is a real name in a file this one does not import — which is exactly what
+the line two theorems above says about `Real.sinh_nonneg_iff`, correctly.
+**IT SURVIVED BECAUSE THIS FILE DECLARES A BARE `sinh_pos_of_pos` ITSELF**: `--cites-lean` used to
+resolve a qualified citation against any bare estate name, so the estate's own theorem is what hid
+the wrong prefix on the Mathlib one. That clause is narrowed as of today. -/
 theorem sinh_pos_of_pos {x : ℝ} (hx : 0 < x) : 0 < sinh x := by
   rw [Real.sinh_eq]
   have h : exp (-x) < exp x := Real.exp_lt_exp.mpr (by linarith)
