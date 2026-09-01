@@ -276,4 +276,5 @@ roots = [
   "BoxSharpLimit",
   "EigenBasisDimension",
   "BoxEigenspaceDimension",
+  "EsymmDeterminesMultiset",
 ]
