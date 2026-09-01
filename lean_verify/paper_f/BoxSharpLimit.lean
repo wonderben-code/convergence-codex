@@ -29,6 +29,16 @@ cannot.
 a theorem here**; only the limit is. As of 1 Sep 2026 no rate is costed (`ERRATUM 194`,
 `ERRATUM 246`).
 
+**^ THE RATE IS PROVED, SAME DAY, AND THIS SENTENCE IS KEPT** (`ERRATUM 94`).
+`paper_f/BoxSharpRate.lean`: `sharp_gap_eq` gives the gap **exactly** as `2d·(1 − cos(π/(m+1)))`,
+and `sharp_gap_le` bounds it by **`d·π²/(m+1)²`** — the `O(d/n²)` above, with the constant named
+rather than an asymptotic symbol. The annotation is written **here**, in the file that declined
+the rate, and not only in the file that proved it: the estate's standing defect is that
+supersession is recorded forward and never backward (`ERRATUM 393`), and this file's own residue
+sentence was one day old.
+**WHAT IS STILL NOT PROVED, AND IT IS THE OTHER HALF**: no LOWER bound on the gap, so
+*"the gap is `Θ(d/n²)`"* remains outside this estate. Not attempted, not costed.
+
 **It is a limit of constants, not of operators.** Nothing here says anything converges in the
 Loewner order, and no infinite-volume object appears — `UNLOCK_WATCHLIST`'s infinite-volume items
 are untouched, and the estate has no operator on an infinite box.
