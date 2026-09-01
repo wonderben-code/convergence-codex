@@ -14,6 +14,25 @@ and §5 inventories the absence rather than guessing at it — `PerronFrobenius`
 **Probed again today and the boundary has not moved**: `gershgorin` and `Gershgorin` occur **0**
 times in the pinned environment, and no constant relates an eigenvalue to a row or column sum.
 
+**CORRECTED 2026-09-01 (`ERRATUM 412`), and the first half of that sentence is true while the
+second is false.** `gershgorin` really is 0 in the name dump — **because Mathlib names the theorem
+after its statement rather than after the person**. It is `eigenvalue_mem_ball`, in
+`Mathlib/LinearAlgebra/Matrix/Gershgorin.lean`, for any `NormedField`: every eigenvalue lies within
+`∑_{j ≠ k} ‖A k j‖` of some diagonal entry `A k k`. **That IS a constant relating an eigenvalue to a
+row sum**, and over `ℝ` with non-negative entries one triangle inequality turns it into
+`abs_le_of_rowSum_le`'s conclusion. No spelling of the eponym would have found it, which is
+`ERRATUM 42`'s rule — probe by SHAPE, not by name — failing in the direction opposite to the one it
+was written for.
+
+**WHAT IS AND IS NOT WITHDRAWN.** The theorems below are unaffected: they are proved, they are
+stated about `A *ᵥ v = μ • v` for real non-negative matrices, and **`abs_le_of_colSum_le` has no
+Mathlib counterpart at all**. What is withdrawn is the claim of NOVELTY for the row-sum half.
+Reproving it through `eigenvalue_mem_ball` is bounded work, is not done here, and is not costed
+(`ERRATUM 194`, `ERRATUM 246`). The `PerronFrobenius` half of the paragraph above was re-probed the
+same day by shape and **stands**: five case-insensitive `perron` matches, three of them the Perron
+integral, one a `TODO`, and one a definitions file for irreducible non-negative matrices with no
+theorem in it.
+
 ## What is proved here
 
 > **`abs_le_of_rowSum_le`** — if `A` has nonnegative entries and `A *ᵥ v = μ • v` for some
