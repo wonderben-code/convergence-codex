@@ -44,6 +44,19 @@ argument used is that `Curv^⊥` is easy to break up, not that any summand is ha
 **`KillsWeyl` at `n ≥ 4` is untouched and the watchlist item does not move.**
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
+
+
+## ⚠ "BECAUSE THE ESTATE HAS NONE" IS FALSE. Annotated 1 September 2026
+
+Kept as written (`ERRATUM 94`, `ERRATUM 391`). `perp_not_irreducible` is stated *"without a subspace
+type because the estate has none"*. **`LovelockCompleteReducibility` (2026-08-22) works with
+`act`-stable submodules of four-index arrays and `LovelockWeylSubmodule` supplies one**, so the
+estate has had the carrier since 22 August.
+
+**Nothing here is restated in submodule form and this note does not claim it should be.** The
+predicate form is what the four assembled facts produce and it says exactly what it says; whether
+the fourth summand's reducibility is worth restating against a `Submodule` is not attempted and not
+costed (`ERRATUM 194`, `ERRATUM 246`).
 -/
 
 namespace LovelockPerpPieces

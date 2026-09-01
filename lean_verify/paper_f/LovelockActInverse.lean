@@ -64,6 +64,21 @@ one restatement of rung 4's gap: `ip_act_transp` carries no `IsAlgCurv` anywhere
 change's adjoint is unconditional even though `T`'s equivariance is not.
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
+
+
+## ⚠ "THE ESTATE HAS NO SUBSPACE TYPE FOR FOUR-INDEX ARRAYS" IS FALSE. Annotated 1 September 2026
+
+Kept as written (`ERRATUM 94`, `ERRATUM 391`). **`LovelockCompleteReducibility` (2026-08-22 15:13)
+proves that every `act`-stable SUBMODULE of four-index arrays has an `act`-stable complement**, and
+instantiates it at `algCurv`; `LovelockWeylSubmodule` (15:22 the same day) then supplies the Weyl
+summand as a `Submodule`, off `weylPart`'s additivity and homogeneity. So the carrier decision this
+paragraph calls *"a decision that has not been taken"* was taken a week later.
+
+**And the second clause is answered too, which is the sharper half.** This section says complete
+reducibility needs *"the complement is invariant, and the two together are everything"*, and that
+*"only the first is here"*. `LovelockCompleteReducibility` is named for exactly the missing half,
+and it cites **this file's** `weylSet_act` on the way — the successor names the predecessor and the
+predecessor never learns, which is `ERRATUM 389`'s one-directional habit.
 -/
 
 namespace LovelockActInverse

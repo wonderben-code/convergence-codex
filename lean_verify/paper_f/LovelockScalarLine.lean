@@ -54,6 +54,18 @@ so is the `O(n)`-orbit-spans question that §5d and §5e both terminate at. **`K
 `n ≥ 4` is untouched and the watchlist item does not move.**
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
+
+
+## ⚠ THE DOCSTRING BELOW SAYS THE ESTATE HAS NO SUBSPACE TYPE. IT HAS. Annotated 1 September 2026
+
+Kept as written (`ERRATUM 94`, `ERRATUM 391`). `OnScalarLine` is *"a predicate rather than a
+subspace, for the reason `LovelockReduction` §1 records: the estate has no subspace type for
+four-index arrays."* **`LovelockCompleteReducibility` and `LovelockWeylSubmodule`, both 2026-08-22,
+use `Submodule ℝ` on exactly this carrier.** The reason the docstring gives is no longer a reason.
+
+**The predicate is not withdrawn.** It is used as a predicate throughout this file and restating it
+as a `Submodule` would change every consumer; that is a carrier decision for the author and is not
+taken here.
 -/
 
 namespace LovelockScalarLine

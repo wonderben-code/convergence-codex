@@ -81,6 +81,17 @@ expansion this estate does not have — `WALLS` W5 fails at the differential geo
 is zero files, and nothing here changes that. **No theorem in this file should be recorded as an
 `a₂` computation.**
 
+**A NOTE ON THAT PARENTHETICAL, 1 SEPTEMBER 2026** (`ERRATUM 391`; the sentence is kept as written,
+`ERRATUM 94`). **The substance stands**: the estate still has no heat-kernel expansion, `WALLS` W5
+still fails at the differential geometry, and nothing here is `a₂`. **The probe behind
+*"`HeatKernel` is zero files"* is imprecise, and it is worth saying which way.** A grep for the
+subject rather than for a filename prefix returns `F3_10a_HeatKernelCanonicity.lean` — which has
+been in the estate since 2026-05-07, before this campaign. **It is not a counterexample**: it fixes
+the cascade's spectral function at `e^{-x}` by a semigroup argument and computes three moments of
+it; it contains no expansion and no curvature. So the claim's conclusion is right and its evidence
+was a filename search where a subject search was wanted, which is `ERRATUM 302`'s rule seen from
+the other side.
+
 **⚠ SUPERSEDED 2026-08-27 IN ITS FIRST PARAGRAPH TOO, kept as written (`ERRATUM 94`).**
 *"`LovelockReduction` names the two `Prop`s that remain"* and *"The watchlist item stays open on
 its recorded blocker"* are false: `LovelockDiagonalise.ricciProportional` and

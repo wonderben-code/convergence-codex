@@ -52,6 +52,23 @@ its hypothesis is unproved. **The watchlist item does not move.** What has chang
 bridges are now one, and that one is a named hypothesis of a named theorem rather than a paragraph.
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
+
+
+## ⚠ THE `OrthonormalBasis` BRIDGE NAMED BELOW WAS BUILT FIFTY-EIGHT MINUTES LATER
+
+Annotated 1 September 2026, kept as written (`ERRATUM 94`, `ERRATUM 391`). This file was committed
+at **2026-08-15 23:30**. `LovelockOrthonormalFrame` was committed at **2026-08-16 00:28** —
+fifty-eight minutes — and `exists_isOrth_rows` extends an orthonormal pair to an orthogonal matrix
+through Mathlib's `Orthonormal.exists_orthonormalBasis_extension_of_card_eq`, which is the bridge
+named here as missing.
+
+**`LovelockSectional` already records this**, in a dated `⚠ SUPERSEDED` note of 2026-08-27 found by
+`ERRATUM 313` — *"the 'Mathlib bridge this estate has not built' IS built"*. That note was added to
+one file carrying the claim and not to this one, which is `ERRATUM 390`'s one-in-four pattern again.
+
+**`hext` as a hypothesis is not withdrawn and the reasoning for it stands**: stating an open step as
+a hypothesis rather than a `sorry` is `LovelockReduction`'s device and is right. What changed is
+that the step is no longer open.
 -/
 
 namespace LovelockWitnessPairing
