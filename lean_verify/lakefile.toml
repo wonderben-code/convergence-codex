@@ -107,6 +107,7 @@ roots = [
   "RealDivisionPureDim",
   "RealDivisionSmallCases",
   "RealDivisionQuaternionCase",
+  "RealSimpleAlgebra",
   "CentralIdemInvariant",
   "CascadeMinimality",
   "SuBlockOddModule",
