@@ -275,4 +275,5 @@ roots = [
   "BoxLapMultiplicity",
   "BoxSharpLimit",
   "EigenBasisDimension",
+  "BoxEigenspaceDimension",
 ]
