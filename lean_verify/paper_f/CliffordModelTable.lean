@@ -33,6 +33,26 @@
   to stop making. Residues `6` and `7` are therefore genuinely open on the positive side, and
   `5`, `6`, `7` on the negative side; §3 states nothing about them.
 
+  ⚠ **ALL FIVE WERE PROVED THIRTEEN MINUTES LATER, AND THE PARAGRAPH IS KEPT AS WRITTEN**
+  (`ERRATUM 94`, `ERRATUM 396`). This file was committed at **2026-08-23 04:55**;
+  `CliffordModelResidues` at **05:08**, and it **imports this file**. It proves
+  `clifford_pos_six` (`M₄(ℍ)`), `clifford_neg_six` (`M₈(ℝ)`), `clifford_neg_five` (`M₄(ℂ)`),
+  `clifford_pos_seven` (`M₈(ℂ)`) and `clifford_neg_seven` (`M₂(M₄(ℝ) × M₄(ℝ))`), plus the five
+  infinite families they generate, and its own header says **"every residue class on both
+  diagonals is now named."**
+
+  **The refusal to guess a route was right and is not withdrawn.** *"Whether the same move reaches
+  `(6,0)` is exactly the kind of guess `ERRATUM 246` says to stop making"* was correct discipline;
+  what happened next is that somebody stopped guessing and **tried it**, which is what
+  `PROOF_STRATEGY` §3 asks for. The answer was yes, by `clifford_step_pos` onto `(0,4)` — one
+  step, exactly the move this paragraph declined to predict.
+
+  **AND THIS SENTENCE COST A UNIT ON 1 SEPTEMBER 2026.** Reading it, and not grepping for
+  `clifford_pos_six`, produced `paper_f/CliffordSixZero.lean` — a re-proof of the first of the
+  five, built green, then deleted (`ERRATUM 373`'s disposition). `dupname_scan` caught it before
+  commit. **A one-line grep for the theorem name would have caught it before the file was
+  written**, and that is `ERRATUM 396`.
+
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 
