@@ -109,6 +109,7 @@ roots = [
   "RealDivisionQuaternionCase",
   "RealSimpleAlgebra",
   "RealDivisionExactlyOne",
+  "GershgorinLocal",
   "CentralIdemInvariant",
   "CascadeMinimality",
   "SuBlockOddModule",
