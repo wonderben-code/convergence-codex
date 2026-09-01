@@ -56,25 +56,54 @@ recovering the multiset itself from the multiset of squares is exactly where a s
 * It is stated for `ℝ`. The proof uses only that the coefficients live in a characteristic-zero
   domain, so the same argument runs over `ℂ`; that generalisation is **not** taken here, because
   nothing in the estate needs it and an untaken generalisation is worth less than a used one.
+
+## TAKEN, 1 SEPTEMBER 2026 — the paragraph above is kept as written (`ERRATUM 94`)
+
+**The generalisation it declined is now taken, and the sentence predicted it exactly**: leg (ii)
+runs verbatim over any `[CommRing K] [IsDomain K] [CharZero K]`. Not one tactic changed — the diff
+is `ℝ ↦ K` and two instance binders. `ℝ` satisfies all three, so every statement this file had
+before is an instance of what it has now, and `SpectralActionDetermines` consumes it unchanged
+without a corollary.
+
+**The instance binders are on the two theorems that need them and not on the file.**
+`E`, `E_zero`, `mul_E_eq_sum` and `aeval_psum` need only `CommRing`; `IsDomain` and `CharZero`
+enter at `E_eq_of_sum_pow_eq` (the division by `k`, and `mul_left_cancel₀`) and travel from there
+to `multiset_eq_of_sum_pow_eq` (whose Vieta step wants the domain for `Polynomial.roots`). Putting
+them in a `variable` line would have attached them to `mul_E_eq_sum`, which is the pattern
+`ERRATUM 274` and `ERRATUM 278` are about — a hypothesis in a statement that belongs to its proof.
+
+**Leg (iii) does not generalise and stays at `ℝ`**, which is not an oversight: `Real.sqrt` and
+`0 ≤ fᵢ` are its content, and an algebraically closed field has neither an order nor a canonical
+square root.
+
+**WHY NOW, AND WHAT IS STILL UNUSED.** `UNLOCK_WATCHLIST`'s trace-moments item asks for
+`Tr(Aᵏ) = ∑ λᵢᵏ` **for a complex matrix**, and its leg (i),
+`TracePowerSpectrum.trace_pow_eq_sum_roots_charpoly`, is already stated over any algebraically
+closed field as `(A ^ k).trace = (A.charpoly.roots.map (· ^ k)).sum` — a **multiset** of roots.
+This file's leg (ii) is stated for **families** `σ → K`, so the two do not yet meet: the missing
+piece is the multiset-shaped form, which `EsymmDeterminesMultiset.eq_of_esymm_eq` (1 Sep, over any
+`CommRing` + `IsDomain`) exists to supply. **As of this edit the generalisation has no consumer**,
+and by this file's own standard that makes it worth less than a used one until the multiset form
+lands. It is recorded that way rather than as an accomplishment.
 -/
 
 namespace PowerSumMultiset
 
 open Finset MvPolynomial
 
-variable {σ : Type*} [Fintype σ]
+variable {σ : Type*} [Fintype σ] {K : Type*} [CommRing K]
 
 /-! ## 1. The two evaluation bridges -/
 
 /-- Evaluating the formal power sum at a family gives the family's power sum. -/
-private lemma aeval_psum (f : σ → ℝ) (k : ℕ) :
-    aeval f (psum σ ℝ k) = ∑ i, f i ^ k := by
+private lemma aeval_psum (f : σ → K) (k : ℕ) :
+    aeval f (psum σ K k) = ∑ i, f i ^ k := by
   simp [psum]
 
 /-- Shorthand: the `k`-th elementary symmetric function of the family's value multiset. -/
-noncomputable def E (f : σ → ℝ) (k : ℕ) : ℝ := (Multiset.map f Finset.univ.val).esymm k
+noncomputable def E (f : σ → K) (k : ℕ) : K := (Multiset.map f Finset.univ.val).esymm k
 
-lemma E_zero (f : σ → ℝ) : E f 0 = 1 := by
+lemma E_zero (f : σ → K) : E f 0 = 1 := by
   simp [E, Multiset.esymm]
 
 /-! ## 2. Newton's recursion, at a family rather than formally -/
@@ -82,11 +111,11 @@ lemma E_zero (f : σ → ℝ) : E f 0 = 1 := by
 /-- **NEWTON'S IDENTITY FOR A FAMILY OF REALS.** `k · eₖ` is a fixed expression in
 `e₀, …, e_{k−1}` and `p₁, …, p_k`. This is `MvPolynomial.mul_esymm_eq_sum` evaluated at `f`;
 the content is entirely Mathlib's and the evaluation is the only step here. -/
-theorem mul_E_eq_sum (f : σ → ℝ) (k : ℕ) :
-    (k : ℝ) * E f k
+theorem mul_E_eq_sum (f : σ → K) (k : ℕ) :
+    (k : K) * E f k
       = (-1) ^ (k + 1) * ∑ a ∈ (Finset.antidiagonal k).filter (fun a => a.1 < k),
           (-1) ^ a.1 * E f a.1 * (∑ i, f i ^ a.2) := by
-  have h := congrArg (aeval f) (MvPolynomial.mul_esymm_eq_sum σ ℝ k)
+  have h := congrArg (aeval f) (MvPolynomial.mul_esymm_eq_sum σ K k)
   simpa [E, map_sum, map_mul, map_pow, aeval_esymm_eq_multiset_esymm, aeval_psum,
     map_natCast, map_neg, map_one] using h
 
@@ -94,8 +123,9 @@ theorem mul_E_eq_sum (f : σ → ℝ) (k : ℕ) :
 
 /-- The induction. If two families agree on every power sum up to `n`, they agree on every
 elementary symmetric function up to `n`. Strong induction on `k`: Newton determines `k · eₖ`
-from strictly earlier `e`'s and the power sums, and `k ≠ 0` is invertible in `ℝ`. -/
-theorem E_eq_of_sum_pow_eq {f g : σ → ℝ} {n : ℕ}
+from strictly earlier `e`'s and the power sums, and `k ≠ 0` is cancellable in `K` — which is what
+`CharZero` and `IsDomain` are for and the only place either is used. -/
+theorem E_eq_of_sum_pow_eq [IsDomain K] [CharZero K] {f g : σ → K} {n : ℕ}
     (h : ∀ k, 1 ≤ k → k ≤ n → ∑ i, f i ^ k = ∑ i, g i ^ k) :
     ∀ k, k ≤ n → E f k = E g k := by
   intro k
@@ -105,9 +135,9 @@ theorem E_eq_of_sum_pow_eq {f g : σ → ℝ} {n : ℕ}
     rcases Nat.eq_zero_or_pos k with rfl | hk
     · simp [E_zero]
     have hsum : ∑ a ∈ (Finset.antidiagonal k).filter (fun a => a.1 < k),
-          (-1 : ℝ) ^ a.1 * E f a.1 * (∑ i, f i ^ a.2)
+          (-1 : K) ^ a.1 * E f a.1 * (∑ i, f i ^ a.2)
         = ∑ a ∈ (Finset.antidiagonal k).filter (fun a => a.1 < k),
-          (-1 : ℝ) ^ a.1 * E g a.1 * (∑ i, g i ^ a.2) := by
+          (-1 : K) ^ a.1 * E g a.1 * (∑ i, g i ^ a.2) := by
       refine Finset.sum_congr rfl fun a ha => ?_
       simp only [Finset.mem_filter, Finset.mem_antidiagonal] at ha
       obtain ⟨hadd, hlt⟩ := ha
@@ -117,7 +147,7 @@ theorem E_eq_of_sum_pow_eq {f g : σ → ℝ} {n : ℕ}
         · omega
         · omega
       rw [h1, h2]
-    have hk0 : (k : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+    have hk0 : (k : K) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
     have hfk := mul_E_eq_sum f k
     rw [hsum, ← mul_E_eq_sum g k] at hfk
     exact mul_left_cancel₀ hk0 hfk
@@ -127,7 +157,7 @@ theorem E_eq_of_sum_pow_eq {f g : σ → ℝ} {n : ℕ}
 /-- The monic polynomial with the family's values as its roots, written from the elementary
 symmetric functions. This is `Multiset.prod_X_add_C_eq_sum_esymm` at the negated multiset, with
 `Multiset.esymm_neg` absorbing the sign. -/
-private lemma prod_X_sub_C_eq (f : σ → ℝ) :
+private lemma prod_X_sub_C_eq (f : σ → K) :
     (Multiset.map (fun a => Polynomial.X - Polynomial.C a)
         (Multiset.map f Finset.univ.val)).prod
       = ∑ j ∈ Finset.range (Fintype.card σ + 1),
@@ -154,7 +184,7 @@ private lemma prod_X_sub_C_eq (f : σ → ℝ) :
 **No positivity and no ordering.** The route is Newton's recursion to the elementary symmetric
 functions, Vieta back to the monic polynomial with those roots, and the root multiset of a split
 polynomial. -/
-theorem multiset_eq_of_sum_pow_eq {f g : σ → ℝ}
+theorem multiset_eq_of_sum_pow_eq [IsDomain K] [CharZero K] {f g : σ → K}
     (h : ∀ k, 1 ≤ k → k ≤ Fintype.card σ → ∑ i, f i ^ k = ∑ i, g i ^ k) :
     Multiset.map f Finset.univ.val = Multiset.map g Finset.univ.val := by
   have hE := E_eq_of_sum_pow_eq h
