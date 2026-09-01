@@ -47,6 +47,28 @@ exist is the statement.
   general statement beside it and **nothing there is changed or deleted** (`ERRATUM 373` is about
   duplicates, and the two differ in hypotheses, index type and field).
 
+## A DEPENDENCY THIS FILE CARRIES AND SHOULD NOT, NAMED RATHER THAN FIXED
+
+This file imports `TransferPowerSum` for **one** lemma,
+`trace_pow_eq_sum_eigenvalues_pow`. That file imports `PerronGap`, which imports `IsingTransfer2D`,
+so **a general statement about Hermitian matrices is chained to the two-dimensional Ising transfer
+matrix.** `TracePowerSpectrum`, where the same argument's `ℂ` case lives as `herm_trace_pow`,
+imports only Mathlib.
+
+**And the coupling is not cosmetic: it is what would stop the one plausible consumer.**
+`SpectralActionDetermines.trace_pow_eq_of_eigenvalues_multiset_eq` is exactly
+`trace_pow_eq_of_multiset_eq` at `A = M * Mᴴ`, `B = N * Nᴴ`, `𝕜 = ℂ` — checked by reading both —
+so that file could drop a hand proof and cite this one, **except that doing so would put the Ising
+chain underneath a spectral-action file.**
+
+**The fix is to lift `trace_pow_eq_sum_eigenvalues_pow` into a Mathlib-only file and have
+`TransferPowerSum` import it rather than contain it.** That is a move, not a copy — copying it here
+would be `ERRATUM 373`'s defect. **It is not done**: it touches two files that are not this unit's
+subject, and no consumer has actually asked for it, so building the refactor for a consumer I
+merely identified would be speculative. **Not attempted, not costed** (`ERRATUM 194`,
+`ERRATUM 246`), and written here so the next unit that wants that consumer finds the obstacle
+already measured rather than rediscovering it.
+
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 
