@@ -88,6 +88,26 @@ open IsingContourInvariant
 
 Stated for an arbitrary bond set rather than for `contour σ`, because §4
 needs it applied to a set that is only later identified as a contour.
+
+
+## ⚠ THE DUAL-LATTICE SENTENCES ABOVE WENT STALE ON 10 AUGUST. Annotated 1 September 2026
+
+Kept as written (`ERRATUM 94`). This header says *"the estate has no dual lattice and no plan to
+build one"* and, of planar duality, *"it is the piece this estate does not have"*. **Both were true
+when written, 2026-08-09 13:35, and both were false 26 hours later.**
+
+`paper_f/DualGraph.lean` (2026-08-10 16:02) **is** that dual lattice, and
+`DualGraph.evenDegrees_dualGraph` is the textbook sentence this header quotes — every plaquette has
+an even number of dual neighbours, under `PlusBoundary` — with
+`exists_cycle_decomposition` giving the circuits. `paper_f/ExtendedDual.lean` (2026-08-11 01:06)
+then removes the boundary hypothesis entirely: `evenDegrees_plaq` holds **for every `σ`**, by
+indexing the outer face by direction rather than as one vertex.
+
+**Nothing in this file is wrong or superseded as mathematics.** `even_crossings_closed` is the
+primal statement and remains the primal statement; the caution that calling it *"contours are
+circuits"* would be wrong still stands. What fell is only the claim about what the estate
+contains — and `ERRATUM 389` is about the fact that the file which built the dual never came back
+to say so.
 -/
 
 /-- How many edges of a walk lie in the bond set `γ`. -/

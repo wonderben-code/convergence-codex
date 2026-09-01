@@ -58,6 +58,21 @@ empty. Both witnesses are decided by the kernel.
 * `ContourCircuits.contour_decomposes_of_evenDegrees` — the corollary, conditional.
 * `ContourCircuits.not_evenDegrees_brokenGraph_sigmaOdd` — the hypothesis can fail.
 * `ContourCircuits.evenDegrees_brokenGraph_chess` — and it can hold, non-vacuously.
+
+
+## ⚠ "HAS DELIBERATELY NOT BUILT ONE" WAS FALSE THIRTY-SEVEN MINUTES LATER. Annotated 1 Sep 2026
+
+Kept as written (`ERRATUM 94`), and the interval is the point. This header says *"This estate has no
+dual lattice and has deliberately not built one"* at **2026-08-10 15:25**.
+`paper_f/DualGraph.lean` was committed at **16:02 the same day** — thirty-seven minutes — and its
+commit message is *"the Peierls circuit decomposition, on the dual"*. `evenDegrees_dualGraph` plus
+`exists_cycle_decomposition` are exactly the two steps this header describes as belonging to the
+textbook's dual route; `ExtendedDual.evenDegrees_plaq` (2026-08-11) then drops the hypothesis.
+
+**The witness below is unaffected and so is the conditional corollary**: the primal statement still
+does not imply even degrees, which is why the dual was built. What fell is the sentence about what
+the estate contains, written in the present tense about a gap that was closed the same afternoon.
+`ERRATUM 389` is about that pattern.
 -/
 
 namespace SimpleGraph

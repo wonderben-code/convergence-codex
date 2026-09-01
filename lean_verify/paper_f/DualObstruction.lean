@@ -41,6 +41,19 @@ dual *simple*; it does nothing to make the *primal* even, and
 `ContourCircuits.not_evenDegrees_brokenGraph_sigmaOdd` is unaffected by it), and it
 says nothing about "surrounds" or `3 ^ |γ|`.
 `IsingBoundaryField.MagnetisationBound` is untouched.
+
+
+## ⚠ "THIS ESTATE HAS NO OBJECT FOR" WAS FALSE THIRTEEN MINUTES LATER. Annotated 1 September 2026
+
+Kept as written (`ERRATUM 94`). This header says the remaining steps are *"geometry about faces,
+which this estate has no object for"* at **2026-08-10 15:38**. `paper_f/PlaquetteLattice.lean` was
+committed at **15:51** — thirteen minutes — and its opening sentence quotes this one and says *"This
+file supplies the object."* `paper_f/DualGraph.lean` (16:02) and `paper_f/DualUnique.lean` (16:43)
+complete the construction.
+
+**So the successor knew and this file never learned**, which is the one-directional habit
+`ERRATUM 389` records. The stated obstruction was accurate, was acted on immediately, and reads
+here as though it still stands.
 -/
 
 namespace DualObstruction

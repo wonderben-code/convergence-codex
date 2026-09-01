@@ -77,6 +77,18 @@ variable {n : ℕ}
 Stated for an arbitrary 4-cycle first. The unit square is then one instance,
 and keeping them apart is what makes the `Fin` bookkeeping of §2 a separate,
 checkable thing rather than something tangled into the parity argument.
+
+
+## ⚠ "THIS ESTATE HAS NO DUAL LATTICE" WENT STALE ON 10 AUGUST. Annotated 1 September 2026
+
+Kept as written (`ERRATUM 94`). True at 2026-08-09 13:53; false from 2026-08-10 16:02, when
+`paper_f/DualGraph.lean` built the dual lattice and proved `evenDegrees_dualGraph` — the
+DUAL-lattice evenness this header correctly identifies as the thing the primal cut does not have.
+`paper_f/ExtendedDual.lean` (2026-08-11) removes the `PlusBoundary` hypothesis.
+
+**The mathematics of this file is untouched**: `even_plaquette` is a statement about plaquettes and
+the 3×3 witness still shows the primal broken-bond graph has a vertex of degree one. Only the
+sentence about what the estate contains fell. `ERRATUM 389`.
 -/
 
 /-- **Any 4-cycle in the box crosses the contour an even number of times.**

@@ -39,6 +39,20 @@ here so the next attempt starts at it.
 
 `IsingBoundaryField.MagnetisationBound` is untouched, and the `3 ^ |γ|` count is not
 begun.
+
+
+## ⚠ "A FACT THIS ESTATE DOES NOT HAVE" WAS FALSE FOUR MINUTES LATER. Annotated 1 September 2026
+
+Kept as written (`ERRATUM 94`), and the interval is again the point. This header names the missing
+fact as *"a bond is the side of at most two plaquettes, and those two are partners across it"* at
+**2026-08-10 16:39**. `paper_f/DualUnique.lean` was committed at **16:43** — four minutes — and its
+title is *"A bond belongs to at most two plaquettes"*, its opening line that exact sentence, and its
+§1 heading *"A bond is the side of at most two plaquettes"*.
+
+**The disjointness this header wanted it for is what `DualUnique` goes on to prove**
+(`bonds_disjoint`, `pairwise_disjoint_bonds`). Nothing here is wrong as mathematics; the sentence
+about what the estate contains was overtaken within the same working session and never annotated.
+`ERRATUM 389`.
 -/
 
 namespace PlaquetteLattice
