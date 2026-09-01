@@ -25,7 +25,10 @@ itself rather than about the pure part.
 > (`(ij)² = -1`), `prod_orthogonal_left` and `prod_orthogonal_right` (`ij` is orthogonal to both).
 > Each is an earlier file's theorem read through the dictionary:
 > `RealDivisionPureForm.isPure_mul_of_anticomm`, `RealDivisionPureForm.sq_mul_of_anticomm`, and
-> `RealDivisionAnticomm.anticomm_mul_left` / `_right`.
+> `RealDivisionAnticomm.anticomm_mul_left` / `_right`. `exists_orthogonal_normalised` closes the
+> section: a normalised `i` and anything outside its span give a normalised orthogonal `j`. **It was
+> written inline inside §5 first**, and moved here the day a second consumer appeared
+> (`ERRATUM 408`) — a shared step belongs upstream of everything that shares it.
 >
 > **§4. The span.** `span_eq_top_of_orthogonal_pair` — for a normalised orthogonal pair `i`, `j`
 > and any `k` with `(k : D) = i * j`, the three span the whole pure part. The proof is the reason
@@ -176,6 +179,29 @@ theorem prod_orthogonal_right {i j k : pureSubmodule D} (hij : pureForm i j = 0)
   rw [hk]
   exact RealDivisionAnticomm.anticomm_mul_right hanti
 
+/-- **The orthogonal partner.** Given a normalised `i` and anything outside its span, there is a
+normalised `j` orthogonal to it: orthogonalise by §2, then scale by
+`RealDivisionPureSpace.exists_smul_sq_neg_one`. **Extracted rather than left inline in §5**, where
+it was first written, on the day a second consumer appeared — the same rule this chain applied to
+`pureSubmodule` and to `pureForm`, and the reason it is here and not beside the second consumer is
+that a shared step belongs upstream of everything that shares it. -/
+theorem exists_orthogonal_normalised {i v : pureSubmodule D} (hi : pureSq i = -1)
+    (hv : v ∉ Submodule.span ℝ ({i} : Set (pureSubmodule D))) :
+    ∃ j : pureSubmodule D, pureSq j = -1 ∧ pureForm i j = 0 := by
+  have hwi : pureForm (v + pureForm v i • i) i = 0 := pureForm_orthogonalise hi v
+  have hwne : v + pureForm v i • i ≠ 0 := by
+    intro h0
+    refine hv ?_
+    have hveq : v = (v + pureForm v i • i) - pureForm v i • i := by abel
+    rw [hveq, h0]
+    exact Submodule.sub_mem _ (Submodule.zero_mem _)
+      (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _))
+  obtain ⟨s, _, hsj⟩ := exists_smul_sq_neg_one
+    (mem_pureSubmodule.mp (v + pureForm v i • i).2)
+    (fun hc => hwne (Submodule.coe_eq_zero.mp hc))
+  refine ⟨s • (v + pureForm v i • i), (pureSq_eq (D := D) hsj).symm, ?_⟩
+  rw [pureForm_comm, pureForm_smul_left, hwi, mul_zero]
+
 /-! ### §4. Three directions span the pure part -/
 
 /-- **THE BASIS ARGUMENT.** For a normalised orthogonal pair `i`, `j` and any `k` equal to `i * j`,
@@ -257,22 +283,7 @@ theorem finrank_pure_le_three : Module.finrank ℝ (pureSubmodule D) ≤ 3 := by
     simp only [Fintype.card_fin] at hb
     omega
   obtain ⟨v, hv⟩ := h2
-  have hwi : pureForm (v + pureForm v (t • u) • (t • u)) (t • u) = 0 :=
-    pureForm_orthogonalise hi v
-  have hwne : v + pureForm v (t • u) • (t • u) ≠ 0 := by
-    intro h0
-    refine hv ?_
-    have hveq : v = (v + pureForm v (t • u) • (t • u)) - pureForm v (t • u) • (t • u) := by abel
-    rw [hveq, h0]
-    exact Submodule.sub_mem _ (Submodule.zero_mem _)
-      (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _))
-  obtain ⟨s, _, hsj⟩ := exists_smul_sq_neg_one
-    (mem_pureSubmodule.mp (v + pureForm v (t • u) • (t • u)).2)
-    (fun hc => hwne (Submodule.coe_eq_zero.mp hc))
-  have hj : pureSq (s • (v + pureForm v (t • u) • (t • u))) = -1 :=
-    (pureSq_eq (D := D) (u := s • (v + pureForm v (t • u) • (t • u))) hsj).symm
-  have hij : pureForm (t • u) (s • (v + pureForm v (t • u) • (t • u))) = 0 := by
-    rw [pureForm_comm, pureForm_smul_left, hwi, mul_zero]
+  obtain ⟨j, hj, hij⟩ := exists_orthogonal_normalised hi hv
   obtain ⟨k, hk⟩ := exists_prod hij
   have hb := finrank_le_of_span_eq_top (span_eq_top_of_orthogonal_pair hi hj hij hk)
   simp only [Fintype.card_fin] at hb

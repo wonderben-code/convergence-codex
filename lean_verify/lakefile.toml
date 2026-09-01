@@ -104,6 +104,7 @@ roots = [
   "RealDivisionAnticomm",
   "RealDivisionFormFun",
   "RealDivisionPureBasis",
+  "RealDivisionPureDim",
   "CentralIdemInvariant",
   "CascadeMinimality",
   "SuBlockOddModule",
