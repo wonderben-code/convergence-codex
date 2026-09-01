@@ -98,6 +98,7 @@ roots = [
   "RealDivisionTrichotomy",
   "RealDivisionQuadratic",
   "RealDivisionPure",
+  "RealDivisionPureAdd",
   "CentralIdemInvariant",
   "CascadeMinimality",
   "SuBlockOddModule",
