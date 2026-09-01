@@ -97,6 +97,7 @@ roots = [
   "LaplacianDegreeBound",
   "RealDivisionTrichotomy",
   "RealDivisionQuadratic",
+  "RealDivisionPure",
   "CentralIdemInvariant",
   "CascadeMinimality",
   "SuBlockOddModule",
