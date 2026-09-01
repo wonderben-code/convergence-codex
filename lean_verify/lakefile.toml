@@ -277,4 +277,5 @@ roots = [
   "EigenBasisDimension",
   "BoxEigenspaceDimension",
   "EsymmDeterminesMultiset",
+  "TraceMomentsSpectrum",
 ]
