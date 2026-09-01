@@ -34,6 +34,24 @@ single matrix algebra, and this construction does not reach it.
 **No published tag moves.**
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
+
+
+## ⚠ "A NORMAL-FORM THEOREM THE ESTATE DOES NOT HAVE" IS FALSE. Annotated 1 September 2026
+
+Kept as written (`ERRATUM 94`). `CliffordClassification` — **which imports this file** — found the
+theorem in Mathlib as `QuadraticForm.equivalent_weightedSumSquares_of_isAlgClosed` and proved
+**`clifford_iso_M16_of_nondegenerate`**: for every 8-dimensional complex space and every
+nondegenerate `Q` on it, `CliffordAlgebra Q ≃ₐ[ℂ] M₁₆(ℂ)`. **That is exactly "the classification
+entry" this section says is out of reach**, and it is reached out of this file's `Q₈` case.
+
+`CliffordSixIso` carries the same sentence and **was** annotated, on 2026-08-27; this file, and
+`F1_7_SpacetimeForced`, were not. That one of three got the note is `ERRATUM 390`'s subject.
+
+**The second paragraph stands unchanged and is why the quantified statement needs nondegeneracy:**
+`CliffordDimension.finrank_cliffordAlgebra_congr` gives dimension `256` for every form including
+the zero form, whose Clifford algebra is the exterior algebra. **And the odd-dimension paragraph
+stands too** — `Cl_{2k+1}(ℂ)` is untouched here and `CentralIdemInvariant`'s remaining clause is
+still open.
 -/
 
 namespace CliffordEightIso

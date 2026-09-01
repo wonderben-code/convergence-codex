@@ -60,6 +60,33 @@ the step preserves the diagonal. **That is the material for the theorem, not the
 **No published tag moves.**
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
+
+
+## ⚠ BOTH ESTATE CLAIMS ABOVE WENT STALE ON THE SAME MORNING. Annotated 1 September 2026
+
+Kept as written (`ERRATUM 94`), and the interval is the point: this file was committed at
+**2026-08-18 07:23**.
+
+* *"the mod-8 periodicity `Cl(p+8,q) ≅ M₁₆(Cl(p,q))`, **which this estate does not have**"* —
+  `CliffordPeriodicityQuantified.clifford_periodicity_eight` was committed at **09:41 the same
+  morning**, two hours and eighteen minutes later, and its docstring is *"Adding `8` to the
+  positive index of a nondegenerate real form multiplies its Clifford algebra by `M₁₆`"*, quantified
+  over every form. `clifford_periodicity_eight_neg` is the mirror.
+* *"Assembling the base cases and the step into a statement quantified over all `p` and `q` needs
+  an induction that **is not in this estate**"* —
+  `CliffordModelPeriodicity.clifford_model_periodicity` is that induction: it reduces every
+  nondegenerate real form to `Cl (sigForm r 0)` or `Cl (sigForm 0 r)` with `r < 8`.
+
+**WHAT IS STILL GENUINELY OPEN, AND IT IS NOT WHAT THIS HEADER SAYS.** `CliffordModelTable`
+(2026-08-23) attaches **eleven** of the sixteen base cases to their models and **names the five it
+does not**. So the gap moved from "no periodicity and no induction" to "five base cases", which is
+a different and much smaller piece of work. **This file's own mathematics is untouched**: it is
+still four base cases and a step, and it is still not the classification theorem.
+
+`WALLS §W7`'s row reads *"CLOSED 8 Aug, except the mod-8 periodicity table"*; the periodicity
+**theorem** is proved and it is the remaining **base cases** that are not. That row is not corrected
+here — `ERRATUM 259` is the entry about a `WALLS` row found false, and this is a second candidate,
+named and not audited.
 -/
 
 namespace CliffordRealQuatFour

@@ -195,7 +195,17 @@ quadratic form throughout, not the dimension. `Cl₈(ℂ) ≅ M₁₆(ℂ)` is *
 form, `CliffordSixIso.Q₆`. The classification says *every* nondegenerate six-dimensional complex
 form gives `M₈(ℂ)`, and that needs a normal-form theorem this estate does not have. **The
 restriction is not pedantic**: the zero form on the same space gives the exterior algebra, which is
-not a matrix algebra, so no statement quantifying over all forms is available. -/
+not a matrix algebra, so no statement quantifying over all forms is available.
+
+**⚠ "A NORMAL-FORM THEOREM THIS ESTATE DOES NOT HAVE" IS FALSE. Annotated 1 September 2026**, kept
+as written (`ERRATUM 94`). `CliffordClassification.clifford_iso_M8_of_nondegenerate` is the
+quantified statement: for **every** six-dimensional complex space and **every** nondegenerate `Q`,
+`CliffordAlgebra Q ≃ₐ[ℂ] M₈(ℂ)`. The normal-form theorem was in Mathlib all along as
+`QuadraticForm.equivalent_weightedSumSquares_of_isAlgClosed`; what was missing was the search, and
+`CliffordClassification`'s own header says so. **The second sentence stands and is now the reason
+the quantified theorem carries a nondegeneracy hypothesis rather than none.** `CliffordSixIso`
+carries the identical claim and was annotated 2026-08-27; this docstring and `CliffordEightIso`
+were not — `ERRATUM 390`. -/
 theorem clifford6_iso_M8 :
     Nonempty (CliffordAlgebra CliffordSixIso.Q₆ ≃ₐ[ℂ] Matrix (Fin 8) (Fin 8) ℂ) :=
   ⟨CliffordSixIso.equivM8⟩
