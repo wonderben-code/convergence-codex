@@ -31,6 +31,18 @@ the eigenvector equation; it survives the completeness statement, which is the h
 to need a transform. Mathlib's `dft` on `ZMod N` is not used, and neither is any character theory of
 `(ZMod n)^d` — the estate has none, and this file does not build one.
 
+**⚠ THE LAST CLAUSE READS WRONGLY AND IS KEPT AS WRITTEN. Annotated 2026-09-01** (`ERRATUM 94`,
+`ERRATUM 393`). **What is defensible**: Mathlib's `dft` is genuinely not used, and neither this
+file nor any other develops character theory as an *abstract* apparatus — no dual group, no
+Pontryagin duality, no `dft`. **What misleads**: this file imports `TorusLaplacianSpectrum`, uses
+its `chiD n k p = ∏ i, chi n (k i) (p i)` throughout, and **proves `sum_chiD_mul_inv` — the
+orthogonality relation of the characters of `(ZMod n)^d`** — in §2 below. So *"the estate has none"*
+and *"this file does not build one"* are false of the concrete characters and their orthogonality,
+and true only of the abstract development. **The claim is narrowed here rather than withdrawn**,
+which is the same disposition `ERRATUM 391` gave `LovelockOrthogonality`'s heat-kernel
+parenthetical: a defensible conclusion resting on a phrase a reader will take more widely than it
+was meant.
+
 ## What this is NOT
 
 **It is still not `WALLS §W2.1` §4's step, and the third clause is why.** That section wants

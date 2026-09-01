@@ -53,6 +53,16 @@
   the label goes after the probe, `ERRATUM 250`). **No claim is made here about what those cost**
   (`ERRATUM 246`).
 
+  ⚠ **TWO OF THE THREE WERE DONE ELEVEN MINUTES LATER. Annotated 2026-09-01** (`ERRATUM 94`,
+  `ERRATUM 393`). This file was committed at **2026-08-23 14:27**; `IsingIndependentSpins` at
+  **14:38**, and its header quotes the sentence above — *"the second being: 'compute the zeroed
+  model's magnetisation as a CONSTANT depending only on `β·h` … this estate does not have that
+  computation'. **This is that computation**"* — and adds that the third leg, positivity of the
+  constant, *"is four lines after it"*. So the second and third of the three named needs were met
+  the same afternoon; **the first, presenting the slab couplings as such a pair, is untouched and
+  the sentence stands for it.** The probe recorded above was sound and its discipline —
+  the label going after the probe — is exactly right; what is missing is anyone coming back.
+
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 

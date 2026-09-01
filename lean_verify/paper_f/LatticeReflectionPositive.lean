@@ -69,6 +69,16 @@
     statement in the estate — neither proved nor stated. Whether the same
     transport reaches one is not asserted here; it is seeded on the
     watchlist.
+    **⚠ THE TRANSPORT REACHED IT FORTY-FOUR MINUTES LATER. Annotated
+    2026-09-01** (`ERRATUM 94`, `ERRATUM 393`). This file was committed at
+    **2026-08-09 19:51**; `LatticeReflectionTwo` at **20:35**, and its header
+    quotes this very sentence — *"`LatticeReflectionPositive`'s header says
+    plainly that the estate has no second-direction statement at all,
+    'neither proved nor written down' … **It reaches it**, and the point of
+    the file is that nothing new was needed."* **The caution above was
+    correct and correctly hedged** — it said only that the transport's reach
+    was not asserted here — and the answer came the same evening. What never
+    happened is anyone returning to this bullet.
   * **Not measure-level OS2.** `LatticeField` established that the estate's
     OS2 packaging reaches the lattice covariance only as far as Gaussian
     moments. Nothing here is about a measure.
