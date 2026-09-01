@@ -53,8 +53,32 @@ namespace: the elementary side was transported to multisets and the power side w
 transport from the symmetric-polynomial identity to a multiset of scalars has to be built, and
 **it is not built here**. No cost is offered (`ERRATUM 194`, `ERRATUM 246`).
 
-**So the item does not close**, and nothing here says anything about a trace, a matrix or an
-eigenvalue.
+**CORRECTION, 1 SEP 2026 — THE TWO PARAGRAPHS ABOVE ARE WRONG ABOUT THE ESTATE AND ARE KEPT AS
+WRITTEN** (`ERRATUM 94`, `ERRATUM 385`). **Leg (ii) was built on 26 August**, in
+`paper_f/PowerSumMultiset.lean`. Its `mul_E_eq_sum` is exactly the transport called *"the missing
+construction"* above — `MvPolynomial.mul_esymm_eq_sum` carried along `aeval` by
+`MvPolynomial.aeval_esymm_eq_multiset_esymm` — and `E_eq_of_sum_pow_eq` is the strong induction on
+`k` with the division by `k` that characteristic zero supplies. It was also **costed**, on 16
+August, by a probe the watchlist block records as having named the route step for step. Every
+Mathlib figure above is correct and `Multiset.psum` really does not exist; what was false is the
+inference from *Mathlib does not have it* to *the estate does not have it*. **An absence probe runs
+against both dumps.**
+
+**AND THE LEG NUMBERS DIFFER BETWEEN THE TWO FILES**, which is how the mistake was made.
+`UNLOCK_WATCHLIST` numbers the bridge (i) the trace identity, (ii) power sums → elementary
+symmetric functions, (iii) elementary symmetric functions → the multiset — the numbering used
+above. `PowerSumMultiset` numbers it (i) the trace identity, (ii) power sums → **the multiset**
+(fusing the other two), (iii) the **even** power sums with positivity. A leg number is not a name.
+
+**WHAT THIS FILE STILL ADDS, STATED AFTER THE CORRECTION RATHER THAN BEFORE IT.**
+`PowerSumMultiset` has **no standalone form of the step this file proves**: its Vieta round trip is
+inlined inside `multiset_eq_of_sum_pow_eq`, its `prod_X_sub_C_eq` is `private`, and both are
+specialised to `ℝ` and to multisets of the shape `Multiset.map f Finset.univ.val`. `eq_of_esymm_eq`
+is over any `CommRing` + `IsDomain`, for an arbitrary multiset, from the `esymm` hypothesis alone.
+
+**So the item does not close** — but for the reason the correction exposes and not the one given
+above: the estate's power-sum route is stated over `ℝ`, and the item asks for a **complex** matrix.
+Nothing here says anything about a trace, a matrix or an eigenvalue.
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
