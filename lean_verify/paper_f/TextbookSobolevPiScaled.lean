@@ -446,14 +446,37 @@ The 1-d chain handles the degenerate variance explicitly
 `σ ≠ 0`). This section does the same in `n`, so every statement above can be
 restated without the hypothesis.
 
-**Mathlib has no `Measure.pi_dirac`** — a product of Dirac masses is a Dirac
+**Mathlib has no `Measure.pi_dirac`** *(**FALSE — see the dated correction on the theorem below,
+`ERRATUM 413`**: `infinitePi_dirac` composed with `infinitePi_eq_pi` gives it in two lines, and the
+theorem is kept only to avoid a 53-job import)* — a product of Dirac masses is a Dirac
 mass — and `exact?` does not find it. It is proved here from
 `Measure.pi_eq`, four lines, and it is generic: no Gaussian content, no
 cascade content. Flagged as a plausible upstream contribution alongside the
 two `pderiv`/`finSuccEquiv` bridges already on the watchlist.
 -/
 
-/-- **A product of Dirac masses is a Dirac mass.** Absent from Mathlib. -/
+/-- **A product of Dirac masses is a Dirac mass.** Absent from Mathlib.
+
+**THAT CLAIM IS FALSE, CORRECTED 2026-09-01 (`ERRATUM 413`), AND IS KEPT ABOVE** (`ERRATUM 94`).
+Mathlib has `MeasureTheory.Measure.infinitePi_dirac` and, **forty-five lines below it in the same
+file**, `MeasureTheory.Measure.infinitePi_eq_pi [Fintype ι] : infinitePi μ = Measure.pi μ`. Together
+they give this statement — for an arbitrary `Fintype` index, arbitrary spaces and an arbitrary
+point, not just `0` on `Fin n → ℝ` — in two lines, **compiled and checked before this note was
+written**:
+
+```
+rw [← Measure.infinitePi_eq_pi]; exact Measure.infinitePi_dirac _
+```
+
+`ERRATUM 360` found `infinitePi_dirac` on 30 August, went looking for exactly that bridge, and
+recorded *"No `Fintype` bridge was found and none is claimed absent"*. It was in the same file, and
+the probe stopped short of it.
+
+**WHY THIS THEOREM IS NEVERTHELESS KEPT AND NOT DELETED, and the reason is measured rather than
+asserted**: the two-line proof needs `import Mathlib.Probability.ProductMeasure`, which this file
+does not have and which costs **53 build jobs** (4491 → 4544, measured). Twelve lines of proof are
+not worth fifty-three jobs on the Hermite chain. **It is kept as a local convenience, explicitly NOT
+because Mathlib lacks the statement**, and it is **withdrawn as an upstreaming candidate**. -/
 theorem pi_dirac (n : ℕ) :
     Measure.pi (fun _ : Fin n => Measure.dirac (0:ℝ)) = Measure.dirac (0 : Fin n → ℝ) := by
   refine Measure.pi_eq fun s hs => ?_
