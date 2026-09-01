@@ -1,5 +1,6 @@
 import PowerSumMultiset
 import SpectralActionSpectrum
+import HermitianTraceMoments
 
 /-!
 # The spectral action DETERMINES the singular values, not merely sees them
@@ -178,22 +179,28 @@ theorem eigenvalues_multiset_eq_of_spectralAction_eq_lambda {M N : Matrix (Fin n
 
 /-- **THE CONVERSE DIRECTION: EQUAL EIGENVALUE MULTISETS GIVE EQUAL TRACE MOMENTS.** The trace of
 `(M · Mᴴ)^k` is the `k`-th power sum of those eigenvalues (`Matrix.trace_pow_mul_conjTranspose`),
-and a power sum is a function of the multiset. Every `k`, no hypotheses. -/
+and a power sum is a function of the multiset. Every `k`, no hypotheses.
+
+**NOW A COROLLARY, 1 SEPTEMBER 2026.** The hand proof this docstring described — two
+`Multiset.map_map` bridges and a rewrite — has been **deleted**, not kept beside its replacement
+(`ERRATUM 373`). `HermitianTraceMoments.trace_pow_eq_of_multiset_eq` is the same statement for any
+Hermitian pair over any `RCLike` field, and this is it at `A = M * Mᴴ`, `B = N * Nᴴ`, `𝕜 = ℂ`. The
+general theorem was proved earlier the same day and recorded as **having no consumer**; this is
+that consumer, and the estate's own standard — *an untaken generalisation is worth less than a used
+one* (`PowerSumMultiset`'s header) — is why it was worth wiring rather than leaving.
+
+**The wiring needed a dependency fix first and that is the honest order of events.** The general
+file imported `TransferPowerSum`, which imports `PerronGap` and the Ising chain, so citing it from
+here would have put the 2D Ising transfer matrix underneath a spectral-action file. The two general
+lemmas were **moved** to `HermitianTracePower` — same namespace, same names, Mathlib-only imports —
+and only then was this corollary possible. `PROOF_STRATEGY` §3: *the moment B lands, immediately
+re-attempt B → C.* -/
 theorem trace_pow_eq_of_eigenvalues_multiset_eq {M N : Matrix (Fin n) (Fin n) ℂ}
     (h : Multiset.map (isHermitian_mul_conjTranspose_self M).eigenvalues Finset.univ.val
        = Multiset.map (isHermitian_mul_conjTranspose_self N).eigenvalues Finset.univ.val)
-    (k : ℕ) : ((M * Mᴴ) ^ k).trace = ((N * Nᴴ) ^ k).trace := by
-  have hM : ∑ i, (((isHermitian_mul_conjTranspose_self M).eigenvalues i : ℂ)) ^ k
-      = (Multiset.map (fun x : ℝ => ((x : ℂ)) ^ k)
-          (Multiset.map (isHermitian_mul_conjTranspose_self M).eigenvalues
-            Finset.univ.val)).sum := by
-    rw [Multiset.map_map]; rfl
-  have hN : ∑ i, (((isHermitian_mul_conjTranspose_self N).eigenvalues i : ℂ)) ^ k
-      = (Multiset.map (fun x : ℝ => ((x : ℂ)) ^ k)
-          (Multiset.map (isHermitian_mul_conjTranspose_self N).eigenvalues
-            Finset.univ.val)).sum := by
-    rw [Multiset.map_map]; rfl
-  rw [Matrix.trace_pow_mul_conjTranspose, Matrix.trace_pow_mul_conjTranspose, hM, hN, h]
+    (k : ℕ) : ((M * Mᴴ) ^ k).trace = ((N * Nᴴ) ^ k).trace :=
+  HermitianTraceMoments.trace_pow_eq_of_multiset_eq
+    (isHermitian_mul_conjTranspose_self M) (isHermitian_mul_conjTranspose_self N) h k
 
 /-- **`SpectralAction.spectralAction_congr_tfae` GAINS ITS FOURTH CLAUSE.**
 

@@ -1,4 +1,5 @@
 import PerronGap
+import HermitianTracePower
 
 /-!
 # The partition function as a power sum of the transfer matrix's own eigenvalues
@@ -49,33 +50,13 @@ open Matrix Finset RayleighMatrix
 
 /-! ## 1. The spectral mapping step for traces
 
-The classical three lines, over any `RCLike` field so that the real case is an instance rather
-than a re-proof.
+**Moved to `HermitianTracePower.lean` on 1 September 2026, same namespace and same names**, so
+every citation of `TransferPowerSum.trace_pow_eq_sum_eigenvalues_pow` and
+`TransferPowerSum.real_trace_pow_eq_sum_eigenvalues_pow` still resolves. The reason is in that
+file's header: these two are general statements about Hermitian matrices and this file imports
+`PerronGap`, so they were sitting underneath the 2D Ising transfer matrix and anything wanting them
+inherited that. A **move**, not a copy (`ERRATUM 373`). Nothing else in this file changed.
 -/
-
-/-- **THE TRACE OF A POWER IS THE POWER SUM OF THE EIGENVALUES.** Mathlib has
-`IsHermitian.trace_eq_sum_eigenvalues` (the case `k = 1`) and `IsHermitian.pow` (a power of a
-Hermitian matrix is Hermitian, which is what lets the partition function be stated in the *wrong*
-eigenvalue family), and nothing joining them. -/
-theorem trace_pow_eq_sum_eigenvalues_pow {𝕜 : Type*} [RCLike 𝕜] {n : Type*} [Fintype n]
-    [DecidableEq n] {A : Matrix n n 𝕜} (hA : A.IsHermitian) (k : ℕ) :
-    (A ^ k).trace = ∑ i, ((hA.eigenvalues i : ℝ) : 𝕜) ^ k := by
-  have hpow : A ^ k
-      = (Unitary.conjStarAlgAut 𝕜 (Matrix n n 𝕜)) hA.eigenvectorUnitary
-          (Matrix.diagonal ((RCLike.ofReal ∘ hA.eigenvalues) ^ k)) := by
-    rw [← Matrix.diagonal_pow, map_pow, ← hA.spectral_theorem]
-  rw [hpow, Unitary.conjStarAlgAut_apply, Matrix.trace_mul_cycle,
-    Unitary.coe_star_mul_self, Matrix.one_mul, Matrix.trace_diagonal]
-  exact Finset.sum_congr rfl fun i _ => rfl
-
-/-- **THE REAL CASE, WITH NO COERCION IN THE STATEMENT.** This is the rung the watchlist item of
-22 August names. `RCLike ℝ` makes it an instance of the theorem above rather than a second proof;
-what it buys is that the statement can be *used* against a real symmetric matrix without carrying
-`RCLike.ofReal` through every rewrite. -/
-theorem real_trace_pow_eq_sum_eigenvalues_pow {n : Type*} [Fintype n] [DecidableEq n]
-    {A : Matrix n n ℝ} (hA : A.IsHermitian) (k : ℕ) :
-    (A ^ k).trace = ∑ i, hA.eigenvalues i ^ k := by
-  simpa using trace_pow_eq_sum_eigenvalues_pow hA k
 
 /-! ## 2. The partition function in its own matrix's spectrum
 

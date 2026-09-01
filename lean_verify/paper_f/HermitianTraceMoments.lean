@@ -1,4 +1,4 @@
-import TransferPowerSum
+import HermitianTracePower
 import PowerSumMultiset
 
 /-!
@@ -68,6 +68,24 @@ subject, and no consumer has actually asked for it, so building the refactor for
 merely identified would be speculative. **Not attempted, not costed** (`ERRATUM 194`,
 `ERRATUM 246`), and written here so the next unit that wants that consumer finds the obstacle
 already measured rather than rediscovering it.
+
+**⚠ IT IS DONE, THE SAME DAY, AND THE PARAGRAPH ABOVE IS KEPT AS WRITTEN** (`ERRATUM 94`,
+`ERRATUM 394`). The two lemmas were **moved** to `paper_f/HermitianTracePower.lean` — same
+namespace, same names, so all eleven existing citations across seven files still resolve — and that
+file imports only `TracePowerSpectrum`, which imports only Mathlib. This file now imports it
+instead of `TransferPowerSum`, and
+**`SpectralActionDetermines.trace_pow_eq_of_eigenvalues_multiset_eq` is now a one-line corollary of
+`trace_pow_eq_of_multiset_eq`**, its hand proof deleted rather than kept beside the replacement
+(`ERRATUM 373`). **So this theorem has a consumer** and is no longer an untaken generalisation.
+
+**The reason the deferral was wrong is in the estate's own standing guidance**, which I had not read
+this session. `PROOF_STRATEGY` §3: *"The moment B lands, immediately re-attempt B → C. Do not
+return to the queue first."* And: *"You may leave the chain only when you have written down the
+remaining leg … as an `UNLOCK_WATCHLIST.md` entry with a REVISIT WHEN trigger."* I wrote the
+remaining leg into this header and the ledger row but **not** into the watchlist with a trigger, so
+by that rule the chain had not been properly left either. The paragraph above is exactly §3's named
+failure mode — *"you prove B, it is genuine, it builds green, it feels like a win, and you bank it"*
+— caught by reading the document the standing orders name.
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/

@@ -278,5 +278,6 @@ roots = [
   "BoxEigenspaceDimension",
   "EsymmDeterminesMultiset",
   "TraceMomentsSpectrum",
+  "HermitianTracePower",
   "HermitianTraceMoments",
 ]
