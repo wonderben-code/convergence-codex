@@ -329,6 +329,36 @@ them since 16 August on the stated ground that **nothing downstream would consum
 gives `(hA.pow k).eigenvalues` and `hA.eigenvalues ^ k` as equal multisets — the eigenvalue-family
 spectral mapping, which `ERRATUM 222` established this estate does not have and Mathlib does not
 either. The item's trigger arm *"a downstream file needs the multiset statement"* has fired here.
+
+## ⚠ TWO SENTENCES ABOVE WENT STALE ON 26 AUGUST. Annotated 1 September 2026, kept as written
+
+Both are kept verbatim (`ERRATUM 94`); this note says which half of each is now false and which
+half still stands. **Found by the re-sweep that followed the trace-moments item's closure**, not by
+any checker — `claims_scan` reads Lean and does enforce that an estate-scoped negative carries a
+date, but **only inside a `what is NOT …` section**, and these sit in a `/-! ## 6 -/` heading
+comment. That exclusion is deliberate and its stated reason is that such sentences *"are not the
+sentences a reader acts on"*; these two are a counterexample to that reason, which is
+`ERRATUM 387`'s subject.
+
+* *"**That implication is not proved here and is not available in this estate**"* — **the second
+  half is false, four days after this file was written.**
+  `PowerSumMultiset.multiset_eq_of_sum_pow_eq` (26 August) is exactly that implication over `ℝ`,
+  and since 1 September it holds over any `[CommRing K] [IsDomain K] [CharZero K]`.
+  *Not proved here* remains true: this file still proves no such thing.
+* *"the eigenvalue-family spectral mapping, which `ERRATUM 222` established **this estate does not
+  have and Mathlib does not either**"* — **the estate half is false and the Mathlib half stands.**
+  `HermitianSpectralMapping.eigenvalues_pow_multiset` (26 August) states exactly
+  `Multiset.map (hA.pow k).eigenvalues univ.val` equals
+  `Multiset.map (fun i => hA.eigenvalues i ^ k) univ.val`,
+  and it reaches it by the spectral theorem rather than by power sums — so §6's advertised payoff
+  was delivered four days later **by a different route**, and this header never said so. The
+  Mathlib half was **re-probed on 1 September** rather than carried forward on trust:
+  `eigenvalues_pow`, `pow_eigenvalues`, `eigenvalues_zpow`, `eigenvalues_sq`, `spectral_mapping`,
+  `spectrum_pow`, `trace_pow_eq_sum` — **0 each**, unchanged from the 22 August probe.
+
+**Nothing here is re-proved and no declaration is added.** The conclusion §6 says it would give is
+already in the estate under `HermitianSpectralMapping.eigenvalues_pow_multiset`; deriving it a
+second time from §6 would be a duplicate (`ERRATUM 373`). What was missing was the annotation.
 -/
 
 section PowerSums
