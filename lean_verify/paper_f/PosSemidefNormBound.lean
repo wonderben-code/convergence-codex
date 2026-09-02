@@ -56,8 +56,16 @@ not an artefact of the proof. **A plan is not a proof and this one was short by 
 threading `SqrtGreenBound.inv_sqrt_green_boxGraph_le` through it and into the variance argument is
 untouched here, not attempted, not costed (`ERRATUM 246`) and not estimated (`ERRATUM 183`). The
 converse direction of `CStarAlgebra.norm_le_iff_le_algebraMap` — `‖A‖ ≤ r → A ≤ r • 1` — is **not**
-proved; only the direction the estate needs is. Nothing in `SqrtGreenBound` is restated and no
-published tag moves.
+proved; only the direction the estate needs is.
+
+**⚠ IT IS PROVED, 2026-09-02, AND THE SENTENCE IS KEPT AS WRITTEN** (`ERRATUM 94`).
+`paper_f/OpNormLoewnerConverse.lean` : `l2_opNorm_le_iff_le_smul_one` is this fence's own statement
+as a biconditional, and `l2_opNorm_le_iff_abs_le` is the symmetric two-sided form. **Cauchy–Schwarz
+and nothing else** — `|x ⬝ᵥ A *ᵥ x| ≤ ‖A‖ (x ⬝ᵥ x)`, which squeezes the quadratic form between
+`±‖A‖ (x ⬝ᵥ x)`. **And the converse needs no `Nonempty V`**, where this file's forward direction
+does: it reads an inequality off every vector and an empty type supplies none.
+
+Nothing in `SqrtGreenBound` is restated and no published tag moves.
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/

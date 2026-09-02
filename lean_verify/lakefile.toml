@@ -127,6 +127,7 @@ roots = [
   "ReflectionFailureCriterion",
   "ReflectionFailureSharper",
   "EntrywiseFromOpNorm",
+  "OpNormLoewnerConverse",
   "RealDivisionIdentify",
   "CentralIdemInvariant",
   "CascadeMinimality",
