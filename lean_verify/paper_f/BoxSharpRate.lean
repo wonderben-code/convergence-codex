@@ -32,6 +32,19 @@ globally. The proof here needs neither a Taylor expansion nor a range restrictio
 `Real.sin_sq_eq_half_sub` at `θ/2` makes `1 − cos θ` equal to `2·sin(θ/2)²`, and
 `Real.sin_sq_le_sq` bounds that by `2·(θ/2)²`. Two library lemmas and `ring`.
 
+**⚠ THE FIRST SENTENCE OF THIS SECTION IS FALSE, AND IS KEPT AS WRITTEN** (`ERRATUM 94`, corrected
+2026-09-02 by `ERRATUM 418`). **Mathlib has it**, as
+**`Real.one_sub_sq_div_two_le_cos : 1 - x ^ 2 / 2 ≤ Real.cos x`** — rearranged, and with **no
+hypothesis on `x` at all**, exactly the generality this section is proud of. **The fifth spelling in
+the list above finds it.** `one_sub_sq_div` matches two names in this estate's own `env_names.txt`
+dump and `Real.one_sub_sq_div_two_le_cos` is the FIRST line of that output. So the eight-spelling
+probe this section cites `ERRATUM 384` for was not eight probes read: the paragraph reports the hits
+on spelling one in detail and says nothing about spelling five, which is what an unread output looks
+like (`ERRATUM 415`, `ERRATUM 157`). **The proof is now one `linarith` over Mathlib's theorem**, and
+the estate's own eleven-line derivation through `Real.sin_sq_eq_half_sub` is withdrawn — it was
+correct and it was redundant (`ERRATUM 413`'s shape). Nothing downstream changes: `sharp_gap_le` and
+`sharp_gap_eq` are untouched and their statements are identical.
+
 ## What this is NOT
 
 **It is not an improvement to any constant.** `BoxMassiveSharp.massive_le_smul_one_sharp` is
@@ -54,15 +67,13 @@ namespace BoxSharpRate
 
 open BoxMassiveSharp
 
-/-- **`1 − cos θ ≤ θ²/2`, for every real `θ`.** No bound on `θ` is needed: at `|θ| ≥ 2` the
-right-hand side is already at least `2`, and the proof does not case split anyway — the half-angle
-identity plus `sin x ^ 2 ≤ x ^ 2` gives it in one line. -/
+/-- **`1 − cos θ ≤ θ²/2`, for every real `θ`.** **THIS IS MATHLIB'S
+`Real.one_sub_sq_div_two_le_cos` REARRANGED** — see the dated correction in §"Why the general lemma
+is stated separately". The name is kept because `sharp_gap_le` below uses it in this orientation and
+because deleting a name changes nothing about the mistake; the eleven-line proof it used to carry
+is gone (`ERRATUM 418`). -/
 theorem one_sub_cos_le_half_sq (θ : ℝ) : 1 - Real.cos θ ≤ θ ^ 2 / 2 := by
-  have hx : 2 * (θ / 2) = θ := by ring
-  have h2 : Real.sin (θ / 2) ^ 2 = 1 / 2 - Real.cos θ / 2 := by
-    rw [Real.sin_sq_eq_half_sub, hx]
-  have h3 : Real.sin (θ / 2) ^ 2 ≤ (θ / 2) ^ 2 := Real.sin_sq_le_sq
-  nlinarith [h2, h3]
+  linarith [Real.one_sub_sq_div_two_le_cos (x := θ)]
 
 /-- **The gap below the degree bound, exactly.** An identity; nothing is estimated here. -/
 theorem sharp_gap_eq (d m : ℕ) (mass : ℝ) :
