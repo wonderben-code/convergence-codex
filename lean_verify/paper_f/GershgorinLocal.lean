@@ -63,10 +63,27 @@ variable {n : Type*} [Fintype n] [DecidableEq n] {A : Matrix n n ℝ} {μ : ℝ}
 /-! ### §1. From `mulVec` to `Module.End.HasEigenvalue` -/
 
 /-- **The bridge the estate did not have.** Every eigenvalue statement in `PerronBound` and the
-transfer-matrix files is phrased with `mulVec`; Mathlib's spectral API wants `Module.End`. -/
-theorem hasEigenvalue_of_mulVec (hv : A *ᵥ v = μ • v) (hne : v ≠ 0) :
-    Module.End.HasEigenvalue (Matrix.toLin' A) μ := by
-  refine Module.End.hasEigenvalue_of_hasEigenvector (x := v) ⟨?_, hne⟩
+transfer-matrix files is phrased with `mulVec`; Mathlib's spectral API wants `Module.End`.
+
+**GENERALISED OFF `ℝ`, 2026-09-02 (`ERRATUM 423`).** It was stated for a real matrix and **nothing
+in its two-line proof is about `ℝ`** — `Module.End.mem_eigenspace_iff` and `Matrix.toLin'_apply`
+hold over any field. The section's `ℝ` variables carried into a statement that never needed them,
+which is `ERRATUM 274`'s shape at the level of a section header rather than a hypothesis. Every
+existing use is at `K = ℝ` and is unaffected.
+
+**AND IT HAS NO CONSUMER TODAY, WHICH IS SAID RATHER THAN GLOSSED.** Three files carry complex
+`mulVec` eigenvector statements (`TorusMultiplicity`, `SignlessTorusReal`, `ColourEquivariance`,
+grepped — `ERRATUM 396`). Two use no spectral API at all. The third uses `Module.End` and
+`eigenspace` heavily but **never `HasEigenvalue`**: it computes with
+`LinearMap.ker (toLin' A − μ • id)` and the plumbing it hand-rolls is `Matrix.toLin'_apply`, not
+this bridge — and the `ker` form it does want is already general, as
+`RealComplexKernel.mem_ker_sub_smul`, over any commutative ring. **So this is a hypothesis removed
+because it was never used, not because anything is waiting on it**, and no cost or benefit beyond
+that is claimed (`ERRATUM 194`, `ERRATUM 246`). -/
+theorem hasEigenvalue_of_mulVec {K : Type*} [Field K] {B : Matrix n n K} {lam : K} {w : n → K}
+    (hv : B *ᵥ w = lam • w) (hne : w ≠ 0) :
+    Module.End.HasEigenvalue (Matrix.toLin' B) lam := by
+  refine Module.End.hasEigenvalue_of_hasEigenvector (x := w) ⟨?_, hne⟩
   rw [Module.End.mem_eigenspace_iff, Matrix.toLin'_apply, hv]
 
 /-! ### §2. Localisation -/
