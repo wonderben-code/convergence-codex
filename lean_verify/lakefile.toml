@@ -111,6 +111,7 @@ roots = [
   "RealDivisionExactlyOne",
   "GershgorinLocal",
   "GershgorinColumn",
+  "PerronRowLower",
   "RealDivisionIdentify",
   "CentralIdemInvariant",
   "CascadeMinimality",
