@@ -110,6 +110,7 @@ roots = [
   "RealSimpleAlgebra",
   "RealDivisionExactlyOne",
   "GershgorinLocal",
+  "GershgorinColumn",
   "RealDivisionIdentify",
   "CentralIdemInvariant",
   "CascadeMinimality",
