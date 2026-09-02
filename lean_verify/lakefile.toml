@@ -121,6 +121,7 @@ roots = [
   "SqrtGreenOpNorm",
   "LaplacianOpNorm",
   "SymmetricOpNorm",
+  "NeumannTailBound",
   "RealDivisionIdentify",
   "CentralIdemInvariant",
   "CascadeMinimality",
