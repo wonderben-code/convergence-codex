@@ -20,6 +20,12 @@ by the half-space decomposition and the Loewner order instead". **The one that s
 remaining step is an **estimate** … what is left will not convert"* to algebra. That is the live
 consumer, and §3 supplies one of its factors.
 
+**⚠ *"THE LIVE CONSUMER"* OVERSTATES THE GAP AND THE PARAGRAPH IS KEPT AS WRITTEN** (`ERRATUM 94`,
+**`ERRATUM 427`**). That ask was already met: `GreenLargeMass.generalRemainder_abs_le` bounds the
+tail entrywise by `Δ²/(m²)³`, at the same generality, before this file existed. §3's `norm_green_le`
+is a factor of a bound in a **different currency**, not the first factor of a bound nobody had.
+`paper_f/EntrywiseFromOpNorm.lean` records the relation between the two.
+
 **WHAT THE COSTING SAYS.**
 * **The analytic half of a Neumann-type estimate is now one line.** `norm_lapMatrix_le` :
   `‖G.lapMatrix ℝ‖ ≤ 2Δ` from a degree bound, and on the box `≤ 4d` **at every side length**.

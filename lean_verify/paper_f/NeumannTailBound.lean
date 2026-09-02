@@ -8,6 +8,14 @@ import GreenExpansion
 the Green function**, of which `green_eq_two_terms` is now the exact closed form."* That tail is
 `green · A · Dinv · A · Dinv`. This file bounds it.
 
+**⚠ THE LAST SENTENCE READS AS A FIRST AND IS NOT ONE; THE PARAGRAPH IS KEPT AS WRITTEN**
+(`ERRATUM 94`, **`ERRATUM 427`**). `GreenLargeMass.generalRemainder_abs_le` bounds **the same
+matrix** entrywise, **by the same constant `Δ²/(m²)³`**, at the same generality and with no
+regularity — and did so before this file existed. What is new here is the currency, an operator norm
+where that is an entrywise bound. **`paper_f/EntrywiseFromOpNorm.lean` folds it back by proving
+more**: `|M x q| ≤ ‖M‖`, so this file's bound IMPLIES that one with the same constant, on a nonempty
+vertex type — which is the hypothesis this route carries and that one does not.
+
 **IT COSTS NOTHING NEW.** Each factor already has a norm bound: `LaplacianOpNorm.norm_green_le`
 gives `‖green G m‖ ≤ (m²)⁻¹`, `SymmetricOpNorm.norm_adjMatrix_le` gives `‖G.adjMatrix ℝ‖ ≤ Δ`, and
 `norm_Dinv_le` below reads `‖Dinv G m‖ ≤ (m²)⁻¹` straight off `Matrix.l2_opNorm_diagonal`, since
