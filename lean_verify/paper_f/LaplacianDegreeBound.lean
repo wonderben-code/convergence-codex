@@ -23,6 +23,14 @@ largest eigenvalue of `massive`, and hence bounds the propagator below in the Lo
   `(a − b)² ≤ 2a² + 2b²` at each edge, with `degree_eq_sum_if_adj` turning the double sum into a
   degree-weighted one. **Mathlib has the Laplacian's quadratic form and no upper bound on it**;
   `gershgorin` is `0` in the pinned dump, which `WALLS §W4` already records.
+  **^ THE SECOND CLAUSE IS TRUE AND ITS INFERENCE IS NOT, AND BOTH ARE KEPT** (`ERRATUM 419`,
+  2026-09-02). `gershgorin` is indeed 0, but Mathlib HAS Gershgorin's circle theorem under a name
+  that does not contain the eponym — `eigenvalue_mem_ball` (`ERRATUM 412`, `ERRATUM 42`: probe by
+  shape, not by eponym) — so a zero name count supports nothing here. **The first clause is
+  unaffected and is what this bullet needs**: Gershgorin bounds EIGENVALUES, not the quadratic
+  form, so it would not give `lapMatrix_quadForm_le` even if it were cited correctly. The
+  `WALLS §W4` passage this sentence appeals to carried the false inference until today and now
+  carries the correction beside it.
 * **`lapMatrix_le_smul_one`, `massive_le_smul_one`** — the same in Mathlib's Loewner order on
   `Matrix`, the order `MatrixLoewner` established this estate can use.
 * **`smul_one_le_green`** — hence `(2Δ + m²)⁻¹ • 1 ≼ green G m`, by

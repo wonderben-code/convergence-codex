@@ -53,7 +53,12 @@ The degenerate case is not claimed in either direction.
 
 > **⚠ Closed the same day, by §4 of this file.** `complete_pi_zero` proves it: `γ_0ⁿ` is the Dirac
 > mass at the origin (`TextbookSobolevPiScaled.gaussPiVar_zero`, over the estate's own `pi_dirac`,
-> which Mathlib does not have), and orthogonality to `Hpi n 0 = 1` alone forces `F 0 = 0`. **The
+> which Mathlib does not have), and orthogonality to `Hpi n 0 = 1` alone forces `F 0 = 0`.
+> **^ THE CLAUSE *"which Mathlib does not have"* IS FALSE AND IS KEPT** (`ERRATUM 419`, 2026-09-02,
+> on `ERRATUM 94`'s rule). Mathlib has it: `Measure.infinitePi_dirac` composed with
+> `Measure.infinitePi_eq_pi`, two lines (`ERRATUM 413`, 2026-09-01). **That correction reached
+> `TextbookSobolevPiScaled` and not this file** — the estate's `pi_dirac` is kept there only to
+> avoid a 53-job import, which is a convenience and not an absence. Nothing else here changes. **The
 > paragraph is kept (`ERRATUM 94`) and its reason is still the right reason**: the statement is
 > about the **plain** family, because the rescaled one is meaningless at `σ = 0` — so this is not
 > the `σ ≠ 0` theorem extended, it is a different statement about a degenerate measure. **No

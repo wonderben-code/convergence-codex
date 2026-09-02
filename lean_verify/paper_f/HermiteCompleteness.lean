@@ -94,7 +94,13 @@
     than tidied away. HermitePiScaledComplete.complete_pi_zero proves it:
     gamma_0^n is the Dirac mass at the origin
     (TextbookSobolevPiScaled.gaussPiVar_zero, over the estate's own pi_dirac,
-    absent from Mathlib) and orthogonality to Hpi n 0 = 1 alone forces
+    absent from Mathlib -- ^ THAT PARENTHETICAL IS FALSE AND IS KEPT
+    (ERRATUM 419, 2026-09-02, on ERRATUM 94's rule): Mathlib HAS it, as
+    Measure.infinitePi_dirac composed with Measure.infinitePi_eq_pi, two lines.
+    TextbookSobolevPiScaled carried this correction from 2026-09-01 and this
+    file did not; the estate's own pi_dirac is kept there only to avoid a
+    53-job import, which is a convenience and not an absence. Nothing else in
+    this sentence changes -- and orthogonality to Hpi n 0 = 1 alone forces
     F 0 = 0, with no integrability hypothesis. The statement is about the
     PLAIN product Hermite family, because the rescaled one is meaningless at
     sigma = 0 -- so it is a different statement about a degenerate measure,
