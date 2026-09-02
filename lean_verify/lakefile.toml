@@ -116,6 +116,7 @@ roots = [
   "PerronDominant",
   "Transfer2Perron",
   "Transfer2Gap",
+  "CycleRotationAut",
   "RealDivisionIdentify",
   "CentralIdemInvariant",
   "CascadeMinimality",
