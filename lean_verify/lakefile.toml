@@ -118,6 +118,7 @@ roots = [
   "Transfer2Gap",
   "CycleRotationAut",
   "PosSemidefNormBound",
+  "SqrtGreenOpNorm",
   "RealDivisionIdentify",
   "CentralIdemInvariant",
   "CascadeMinimality",
