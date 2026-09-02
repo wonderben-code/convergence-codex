@@ -60,6 +60,18 @@ until today this one could not fail because it could not be run.
 statement follows from it and `LaplacianRank.rank_add_finrank_ker` **only after that lemma is
 generalised from `ℝ` to an arbitrary field**, which it is not, and **that generalisation is not
 done here**.
+**^ BOTH CLAUSES ARE NOW PROVED, AND THE RECORD OF THAT IS NOT NEW** — this is a backward pointer
+only, added 2026-09-02, with the paragraph kept as written (`ERRATUM 94`).
+`paper_f/RealComplexRank.lean` **already quotes the paragraph above verbatim in its own header and
+says "Both halves of that sentence are discharged here"**, which is `ERRATUM 393`'s rule working as
+intended: supersession is recorded forward, by the file that supersedes. What that leaves is a
+reader of THIS file with no signal the answer exists, and sixteen other fences in this estate carry
+exactly such a pointer, so this one gets one too. **`LaplacianRank.rank_add_finrank_ker` is stated
+over any field** — `{K : Type*} [Field K]` — generalised in place at `0bcf919`, the same day this
+paragraph was written at `5df7301`, where the lemma really was `(A : Matrix V V ℝ)`. **And the rank
+statement is `RealComplexRank.rank_cx`**: `(cx A).rank = A.rank`, from rank-nullity at `ℂ`, the
+same at `ℝ`, `finrank_ker_cx` between them, and `omega`. **The words «done here» remain true** —
+this file states nothing about rank, and the theorem lives one file along.
 
 **No eigenspace version.** `finrank_ker_cx` is stated at eigenvalue zero. For a real `μ` the same
 argument applies to `A − μ`, and **the general statement is not made below** — it needs the
