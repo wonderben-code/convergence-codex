@@ -14,7 +14,15 @@ the transpose** as its hypothesis, and its own docstring is careful to say that 
 statement about the eigenvalues of `A`; `abs_le_of_colSum_le_det` bridges that gap through the
 determinant, one eigenvalue at a time. Stated once, as a fact about eigenvalues, it is reusable.
 
-> **§1. Transpose.** `det_sub_smul_transpose` — `det (Aᵀ − μ·1) = det (A − μ·1)`, since
+> **§1. Transpose. GENERALISED OFF `ℝ` ON 2026-09-02 (`ERRATUM 424`), for the reason
+> `ERRATUM 423` gives at `GershgorinLocal`**: the section's `ℝ` reached both statements and neither
+> proof needs it. `det_sub_smul_transpose` holds over any `CommRing` and
+> `exists_eigenvector_transpose` over any `CommRing` that is an `IsDomain`, which is what
+> `Matrix.exists_mulVec_eq_zero_iff` asks for. **No consumer outside `ℝ` exists today and none is
+> claimed** — grepped (`ERRATUM 396`): no file under `paper_f/` wants a transpose-eigenvalue
+> statement over `ℂ` or `ℤ`. §§2–3 stay real, because they are about `|·|` and `≤`.
+>
+> `det_sub_smul_transpose` — `det (Aᵀ − μ·1) = det (A − μ·1)`, since
 > `(A − μ·1)ᵀ = Aᵀ − μ·1` and `Matrix.det_transpose`. Hence **`exists_eigenvector_transpose`**: an
 > eigenvector of `A` for `μ` yields one of `Aᵀ` for the same `μ`. **No symmetry, no diagonalisation
 > and no characteristic polynomial** — `Matrix.exists_mulVec_eq_zero_iff` in both directions and one
@@ -59,27 +67,28 @@ needs it too but only inside the proofs below, where `classical` supplies it (`E
 
 /-- `det (Aᵀ − μ·1) = det (A − μ·1)`: the subtraction and the scalar pass through the transpose,
 and `Matrix.det_transpose` does the rest. -/
-theorem det_sub_smul_transpose [DecidableEq n] (A : Matrix n n ℝ) (μ : ℝ) :
-    (Aᵀ - μ • (1 : Matrix n n ℝ)).det = (A - μ • (1 : Matrix n n ℝ)).det := by
-  have h : Aᵀ - μ • (1 : Matrix n n ℝ) = (A - μ • (1 : Matrix n n ℝ))ᵀ := by
+theorem det_sub_smul_transpose {R : Type*} [CommRing R] [DecidableEq n] (A : Matrix n n R)
+    (μ : R) : (Aᵀ - μ • (1 : Matrix n n R)).det = (A - μ • (1 : Matrix n n R)).det := by
+  have h : Aᵀ - μ • (1 : Matrix n n R) = (A - μ • (1 : Matrix n n R))ᵀ := by
     rw [Matrix.transpose_sub, Matrix.transpose_smul, Matrix.transpose_one]
   rw [h, Matrix.det_transpose]
 
 /-- **AN EIGENVECTOR OF `A` GIVES ONE OF `Aᵀ`, FOR THE SAME EIGENVALUE.** The statement
 `PerronBound` routes around by hypothesis and `abs_le_of_colSum_le_det` bridges one eigenvalue at a
 time. No symmetry and no characteristic polynomial. -/
-theorem exists_eigenvector_transpose (hv : A *ᵥ v = μ • v) (hv0 : v ≠ 0) :
-    ∃ w : n → ℝ, w ≠ 0 ∧ Aᵀ *ᵥ w = μ • w := by
+theorem exists_eigenvector_transpose {R : Type*} [CommRing R] [IsDomain R] {B : Matrix n n R}
+    {lam : R} {u : n → R} (hv : B *ᵥ u = lam • u) (hv0 : u ≠ 0) :
+    ∃ w : n → R, w ≠ 0 ∧ Bᵀ *ᵥ w = lam • w := by
   classical
-  have hzero : (A - μ • (1 : Matrix n n ℝ)) *ᵥ v = 0 := by
+  have hzero : (B - lam • (1 : Matrix n n R)) *ᵥ u = 0 := by
     simp [Matrix.sub_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec, hv]
-  have hdet : (A - μ • (1 : Matrix n n ℝ)).det = 0 :=
-    Matrix.exists_mulVec_eq_zero_iff.mp ⟨v, hv0, hzero⟩
-  have hdetT : (Aᵀ - μ • (1 : Matrix n n ℝ)).det = 0 := by
+  have hdet : (B - lam • (1 : Matrix n n R)).det = 0 :=
+    Matrix.exists_mulVec_eq_zero_iff.mp ⟨u, hv0, hzero⟩
+  have hdetT : (Bᵀ - lam • (1 : Matrix n n R)).det = 0 := by
     rw [det_sub_smul_transpose]; exact hdet
   obtain ⟨w, hw0, hw⟩ := Matrix.exists_mulVec_eq_zero_iff.mpr hdetT
   refine ⟨w, hw0, ?_⟩
-  have h2 : Aᵀ *ᵥ w - μ • w = 0 := by
+  have h2 : Bᵀ *ᵥ w - lam • w = 0 := by
     simp only [Matrix.sub_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec] at hw
     exact hw
   exact sub_eq_zero.mp h2
