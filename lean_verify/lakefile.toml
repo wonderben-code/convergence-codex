@@ -113,6 +113,7 @@ roots = [
   "GershgorinColumn",
   "PerronRowLower",
   "PerronCollatzWielandt",
+  "PerronDominant",
   "RealDivisionIdentify",
   "CentralIdemInvariant",
   "CascadeMinimality",
