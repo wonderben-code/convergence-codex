@@ -119,6 +119,7 @@ roots = [
   "CycleRotationAut",
   "PosSemidefNormBound",
   "SqrtGreenOpNorm",
+  "LaplacianOpNorm",
   "RealDivisionIdentify",
   "CentralIdemInvariant",
   "CascadeMinimality",
