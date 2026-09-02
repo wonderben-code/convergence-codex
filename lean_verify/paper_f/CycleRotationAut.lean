@@ -6,6 +6,22 @@ import LatticeOS1
 /-!
 # A non-involutive graph automorphism, so that the weakening is exercised
 
+> ⚠ **READ THIS FIRST (`ERRATUM 422`, added 2026-09-02, hours after the rest).** **The promise this
+> file was written to discharge had been discharged on 2026-08-10 by `paper_f/TorusTranslation.lean`
+> (`adbe234`)** — `isGraphAut_shift`, translation of one coordinate as an automorphism of the torus
+> at every dimension, side length **and shift**; `shift_ne_involutive`; `gaussianField_map_shift`.
+> The watchlist records that discharge **51 lines below the HONEST WEAKNESS paragraph below**,
+> and this file exists because I read down to that paragraph and stopped (`ERRATUM 155`).
+>
+> **The header below is kept unedited** (`ERRATUM 94`). Everything in it is true of this file and
+> false as a description of the estate. **What is actually new here, measured rather than claimed:**
+> §4's identification of `ReflectedFormCongr.rot` as an `IsGraphAut` — a different map from
+> `TorusTranslation.shift`, and one nothing had connected — and §5's `schwinger_*`, since
+> `LatticeOS1` postdates `TorusTranslation` and that file has no Schwinger statement. **§§1–3 are a
+> weaker duplicate**: `cycleGraph` rather than `torusGraph`, one shift rather than every shift,
+> related by `TorusCycleGraph.torusGraph_one_iso`. They are kept because deleting them would erase
+> the record of the error, not because they were needed.
+
 `FieldAutInvariance` weakened `GraphReflection.IsRefl` — adjacency preservation **bundled with**
 `Function.Involutive` — down to `IsGraphAut`, adjacency preservation alone, and proved the Gaussian
 field invariant under every such map. Its own §3 says the estate's only constructed automorphisms
