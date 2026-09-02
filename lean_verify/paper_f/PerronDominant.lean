@@ -43,13 +43,23 @@ never mentions `lamMinus` and never uses symmetry. That theorem is **not restate
 (`ERRATUM 176`): `transfer_abs_lt_lamPlus` is about EVERY sign-changing eigenvector, which is a
 different and wider statement, and the hand theorem remains the one that names the value.
 
-**WHAT THIS IS NOT.** It does not produce a positive eigenvector for a non-symmetric matrix — that
-is the Perron half of Perron–Frobenius without symmetry, it needs a fixed-point or compactness
-argument, and it is **not attempted and not costed** (`ERRATUM 194`, `ERRATUM 246`). So nothing here
-applies to `transfer2` yet: the estate has no positive eigenvector for it, which is checked and not
-assumed. **And no gap for `W4` follows.** §4 needs CONSTANT row sums; `transferSym`'s are not
-constant, and a gap uniform in the strip width is untouched — `UniformSubTopRatio` is not attempted.
-Nothing earlier is restated, deleted or deprecated, and no published tag moves.
+**WHAT THIS IS NOT, as of 2026-09-02.** It does not produce a positive eigenvector for a
+non-symmetric matrix — that is the Perron half of Perron–Frobenius without symmetry, it needs a
+fixed-point or compactness argument, and it is **not attempted and not costed** (`ERRATUM 194`,
+`ERRATUM 246`). So nothing here applies to `transfer2` yet, and that is **grepped rather than
+recalled** (`ERRATUM 396`): `PerronVector.exists_pos_top_eigenvector` is the only theorem under
+`paper_f/` that produces a strictly positive eigenvector, and it takes `Matrix.IsHermitian`.
+
+**AND NO GAP FOR `W4` FOLLOWS, for a reason stated as what is KNOWN and not as what is true.** §4
+needs CONSTANT row sums. **No theorem in this estate gives `transferSym` constant row sums** — no
+declaration under `paper_f/` states any row-sum identity for it at all — and `PerronBound`'s own
+header records the same situation one matrix over, that *"`transfer2`'s row sums have no closed form
+in this estate"*, which is why `abs_le_rowSum_transfer2` leaves its constant a hypothesis. **Whether
+they are in fact constant is not decided here and is not asserted either way** (`ERRATUM 125`); what
+is asserted is that §4's hypothesis is not available, so §4 is not applied **here**. A gap uniform
+in the strip width is untouched by this file, and `UniformSubTopRatio` is not attempted in it —
+neither claim is about what the rest of the estate does. Nothing earlier is restated, deleted or
+deprecated, and no published tag moves.
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
