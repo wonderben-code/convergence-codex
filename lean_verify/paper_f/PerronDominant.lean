@@ -50,6 +50,18 @@ fixed-point or compactness argument, and it is **not attempted and not costed** 
 recalled** (`ERRATUM 396`): `PerronVector.exists_pos_top_eigenvector` is the only theorem under
 `paper_f/` that produces a strictly positive eigenvector, and it takes `Matrix.IsHermitian`.
 
+**^ FORWARD POINTER, ADDED 2026-09-02 THE SAME DAY: *"nothing here applies to `transfer2` yet"* IS
+NO LONGER TRUE, AND THE SENTENCE IS KEPT** (`ERRATUM 94`). It is right that this file proves no
+Perron–Frobenius without symmetry and right about the grep. It is wrong to conclude `transfer2` is
+out of reach: `paper_f/Transfer2Perron.lean` gets a strictly positive eigenvector for `transfer2`
+**without any fixed-point argument**, by transporting one across the positive diagonal similarity
+`transfer2 · D = D · transferSym` that `IsingTransferSym.transfer2_eq` already supplied, and then
+applies §2 and §3 of this file at it. **The missing step was never Perron–Frobenius; it was one
+associativity identity nobody had written.** Added because a reader landing here otherwise takes
+*"not available"* for *"not obtainable"* — `ERRATUM 230`'s defect, whose repair is a pointer at the
+true claim and not a rewrite of the old one, and `ERRATUM 416`'s, which is what happens when a
+correction is recorded in one place and not the others.
+
 **AND NO GAP FOR `W4` FOLLOWS, for a reason stated as what is KNOWN and not as what is true.** §4
 needs CONSTANT row sums. **No theorem in this estate gives `transferSym` constant row sums** — no
 declaration under `paper_f/` states any row-sum identity for it at all — and `PerronBound`'s own
