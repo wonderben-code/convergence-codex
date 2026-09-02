@@ -117,6 +117,7 @@ roots = [
   "Transfer2Perron",
   "Transfer2Gap",
   "CycleRotationAut",
+  "PosSemidefNormBound",
   "RealDivisionIdentify",
   "CentralIdemInvariant",
   "CascadeMinimality",
