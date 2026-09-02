@@ -34,6 +34,13 @@ consumer, and §3 supplies one of its factors.
   file's tool; `‖G.adjMatrix ℝ‖` is **not** reachable from `l2_opNorm_le`, because the adjacency
   matrix is not positive semidefinite and the theorem's first hypothesis fails. Neither is
   attempted, neither is costed (`ERRATUM 246`), and no estimate is offered (`ERRATUM 183`).
+  **⚠ THE SECOND CLAUSE PROVOKED ITS OWN REFUTATION THE SAME DAY, AND THE BULLET IS KEPT AS
+  WRITTEN** (`ERRATUM 94`). It is still true that `PosSemidefNormBound.l2_opNorm_le` cannot reach
+  `‖G.adjMatrix ℝ‖` — that theorem requires `0 ≤ A` — but the sentence reads as though the bound
+  were unavailable, and it is not: `SymmetricOpNorm.norm_adjMatrix_le` proves `‖G.adjMatrix ℝ‖ ≤ Δ`
+  by dropping the positivity hypothesis, which costs one translation of `sq_le_smul_of_le_smul_one`.
+  **Naming the obstacle is what showed it was cheap**, which is the argument for naming obstacles
+  and is why the bullet is left standing rather than edited away.
 * **AND BOUNDING THE TAIL IS STILL NOT W1'S STEP.** The wall asks for the tail to be smaller than
   the cross form's negative direction — a COMPARISON between two quantities — and this file
   computes no cross form and makes no comparison. **A factor of a bound is not the bound, and a

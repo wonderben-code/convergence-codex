@@ -120,6 +120,7 @@ roots = [
   "PosSemidefNormBound",
   "SqrtGreenOpNorm",
   "LaplacianOpNorm",
+  "SymmetricOpNorm",
   "RealDivisionIdentify",
   "CentralIdemInvariant",
   "CascadeMinimality",
