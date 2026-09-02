@@ -18,6 +18,16 @@ one"*. This file removes that one.
 matrix `Dinv` in place of the scalar `s⁻¹`. Substituting it costs three things and no new
 mathematics:
 
+**⚠ THE HEADING ABOVE IS FALSE AND IS KEPT AS WRITTEN** (`ERRATUM 94`, `ERRATUM 427`).
+**`GreenLargeMass.lean` §General ran this chain through `green_eq_two_terms` before this file
+existed** — `Dinv_adj_Dinv_apply`, `green_mirror_general`, the split of the reflected form at an
+arbitrary graph, and `reflectedForm_neg_of_crossForm_pos_general`. The clause is an absence claim
+asserted without a probe, in a session that spent three hours re-probing other people's. **What
+survives here**: the criterion as a named **iff** (§General has the split inline and the one-way
+inequality, not the biconditional), and §4's `crossForm_smul` /
+`crossForm_general_eq_of_regular`. `paper_f/ReflectionFailureSharper.lean` folds it back by proving
+more.
+
 * `Dinv` is diagonal, so at a **mirrored** entry `(θ p, q)` with `p, q ∈ H` its own term vanishes
   (`GreenExpansion.mirror_ne`) and the middle term is the adjacency entry with a weight on each
   side — `Matrix.diagonal_mul` and `Matrix.mul_diagonal`, nothing else.

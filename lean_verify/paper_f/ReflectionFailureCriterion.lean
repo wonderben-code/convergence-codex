@@ -3,6 +3,14 @@ import ReflectionRemainderGeneral
 /-!
 # The first inequality in this chain: when the reflected form is provably negative
 
+**⚠ THIS FILE IS NOT FIRST AND THE HEADER BELOW IS KEPT AS WRITTEN** (`ERRATUM 94`,
+`ERRATUM 427`). `GreenLargeMass.lean` §8's `not_reflectionPositive_of_crossForm_pos_general` is an
+inequality of exactly this shape, on the same class of graphs, with the same coefficient
+`Δ²/(m²)³` and the same reweighting, stated in the `ℓ¹` mass where this is in the `ℓ²` — and it
+exhibits two witnesses where this file exhibits none. **`paper_f/ReflectionFailureSharper.lean`
+proves the `ℓ²` hypothesis is the weaker of the two and derives §8's theorem from this one**, which
+is what the difference between them is worth.
+
 Everything this chain has produced about `WALLS.md`'s W1 has been a **restatement** —
 `GreenExpansion.reflectionPositive_iff_remainder` and its general form say when reflection
 positivity holds, not that it does or does not. The bounds of the last three units say how large the
