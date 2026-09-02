@@ -1,6 +1,7 @@
 import FieldAutInvariance
 import Mathlib.Combinatorics.SimpleGraph.Circulant
 import ReflectedFormCongr
+import LatticeOS1
 
 /-!
 # A non-involutive graph automorphism, so that the weakening is exercised
@@ -124,5 +125,23 @@ theorem gaussianField_map_torusRot {m : ℝ} (hm : m ≠ 0) :
         (permField ReflectedFormCongr.rot)
       = GraphLaplacian.gaussianField (TorusReflection.torusGraph 1 4) m :=
   gaussianField_map_perm isGraphAut_torusRot hm
+
+/-! ### §5. A second consumer, at both maps -/
+
+/-- **EVERY SCHWINGER FUNCTION OF THE CYCLE IS INVARIANT UNDER ROTATION**, at every order.
+`LatticeOS1.schwinger_perm` is the second theorem in this estate whose hypothesis is `IsGraphAut`
+rather than `IsRefl`, so it is the second one the weakening was for, and until §1 it had the same
+involutions available to it as `gaussianField_map_perm` did. -/
+theorem schwinger_cycleRot (n : ℕ) [DecidableRel (cycleGraph (n + 3)).Adj] {m : ℝ} (hm : m ≠ 0)
+    {k : ℕ} (p : Fin k → Fin (n + 3)) :
+    LatticeOS1.schwinger (cycleGraph (n + 3)) m (cycleRot n ∘ p)
+      = LatticeOS1.schwinger (cycleGraph (n + 3)) m p :=
+  LatticeOS1.schwinger_perm (isGraphAut_cycleRot n) hm p
+
+/-- And at the estate's own rotation of the four-cycle. -/
+theorem schwinger_torusRot {m : ℝ} (hm : m ≠ 0) {k : ℕ} (p : Fin k → BoxGraph.Site 1 4) :
+    LatticeOS1.schwinger (TorusReflection.torusGraph 1 4) m (ReflectedFormCongr.rot ∘ p)
+      = LatticeOS1.schwinger (TorusReflection.torusGraph 1 4) m p :=
+  LatticeOS1.schwinger_perm isGraphAut_torusRot hm p
 
 end CycleRotationAut
