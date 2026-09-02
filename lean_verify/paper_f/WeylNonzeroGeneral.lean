@@ -66,6 +66,18 @@ Mathlib. `ERRATUM 230`.
 **And still no dimension count.** The rank of the Weyl summand is not computed here either. One
 entry of one tensor is all that is claimed, now for every `n`.
 
+**^ THE CLAUSE ABOVE PUTTING THE AFFINE CONNECTION AT *ZERO NAMES IN MATHLIB* IS FALSE, AND IS
+KEPT AS WRITTEN** (`ERRATUM 416`, 2026-09-02). Mathlib has **`CovariantDerivative`** — 73 names in
+this estate's own `env_names.txt` — and `IsCovariantDerivativeOn` (24), with `torsion` beside them;
+the probe behind the clause asked for the lower-case `covariantDerivative`, which is **0**
+(`ERRATUM 411`). **EVERY OTHER CLAUSE STANDS, RE-PROBED TODAY RATHER THAN INHERITED**: `LeviCivita`
+**0**, `HeatKernel` and `heatKernel` **0** each, and curvature **0** in four spellings
+(`Curvature`, `curvature`, `riemannianCurvature`, `RiemannCurvature`). **So rung 2 is still the
+wall's remaining step, this file still does not bear on it, and no verdict here changes** — what
+moved is the rung W5 fails at, which `WALLS` §W5.1 records. **The clause reached eight files by
+header inheritance, which is the mechanism `ERRATUM 230` already names**, and no absence mode caught
+it because the sentence names no identifier to probe.
+
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 
