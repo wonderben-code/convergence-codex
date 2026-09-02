@@ -124,6 +124,7 @@ roots = [
   "NeumannTailBound",
   "RemainderFormBound",
   "ReflectionRemainderGeneral",
+  "ReflectionFailureCriterion",
   "RealDivisionIdentify",
   "CentralIdemInvariant",
   "CascadeMinimality",
