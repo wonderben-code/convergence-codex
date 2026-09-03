@@ -36,8 +36,19 @@ equivalent to the same third condition**, `Even n`, so they can be chained throu
 
 **THIS IS NOT THE RAYLEIGH STATEMENT.** *A symmetric matrix's quadratic form attains its upper
 bound exactly when that bound is an eigenvalue* is a general theorem about symmetric matrices.
-**It is not proved here and it is not used here.** What is proved is a biconditional for **one
-family**, obtained because both sides were separately characterised by the same third condition.
+**It is not proved here and it is not used here.**
+
+**⚠ IT IS PROVED ELSEWHERE AS OF 2026-09-03, AND THE SENTENCE ABOVE IS KEPT AS WRITTEN**
+(`ERRATUM 94`): it says *not here*, and that is still true. `RayleighAttainment
+.quadForm_eq_opNorm_iff_mulVec` is the general statement — for symmetric `A` and any `v`,
+`v ⬝ᵥ A *ᵥ v = ‖A‖·(v ⬝ᵥ v)` iff `A *ᵥ v = ‖A‖ • v` — with no spectral theorem, no eigenbasis and
+no positivity. **THIS FILE IS NOT SUPERSEDED AND NOTHING HERE IS EDITED.** That statement is at
+`‖A‖` and says nothing about *which number* that is, so it does not decide this family; the route
+below goes through `Even n`, reaches a **fixed** constant `4d + m²`, and yields
+`quadForm_attained_iff_isGreatest`, which the general statement does not.
+
+What is proved is a biconditional for **one family**, obtained because both sides were separately
+characterised by the same third condition.
 A reader wanting the general fact will not find it below, and `LaplacianSharpEquality`'s refusal to
 assert it stands exactly as written.
 
