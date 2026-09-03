@@ -129,6 +129,7 @@ roots = [
   "EntrywiseFromOpNorm",
   "OpNormLoewnerConverse",
   "OpNormLowerBound",
+  "GreenNormExact",
   "RealDivisionIdentify",
   "CentralIdemInvariant",
   "CascadeMinimality",

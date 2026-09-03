@@ -31,6 +31,18 @@ operator-norm chain of 2026-09-02 was built for, now on both sides of the object
 * **It is not sharp at either end.** The upper bound is `green ≼ (m²)⁻¹ • 1` read as a norm, tight
   only when `green` has an eigenvalue at `(m²)⁻¹`, which needs an isolated vertex; the lower is a
   degree bound and loses whatever the degrees vary by. **No loss is quantified.**
+  **⚠ EVERY CLAIM IN THAT BULLET IS WRONG AND IT IS KEPT AS WRITTEN** (`ERRATUM 94`,
+  **`ERRATUM 434`**, 2026-09-03). `GreenExpansion.green_mulVec_one` — 2026-08-12, in a file this
+  chain cites — gives `green G m *ᵥ 1 = (m²)⁻¹ • 1` on **every** finite graph, because the graph
+  Laplacian kills constants with no hypotheses at all. So `(m²)⁻¹` is an eigenvalue of `green`
+  always: **no isolated vertex is needed and none is relevant.** Hence
+  `GreenNormExact.norm_green_eq` : **`‖green G m‖ = (m²)⁻¹`** on every finite nonempty graph at
+  every `m ≠ 0`. The upper bound is **exactly attained**, so it is sharp rather than not; and
+  `norm_green_ge` below is **strictly** below the truth at every graph with an edge
+  (`GreenNormExact.norm_green_ge_lt_of_pos`), so the loss is now quantified — it is the whole of
+  `(m²)⁻¹ − (2Δ + m²)⁻¹`. **Both theorems below stand**: they are Loewner bounds read as norms, and
+  `LaplacianDegreeBound.smul_one_le_green` bounds every eigenvalue from below, which the equality
+  does not.
 * **No wall moves.** W1's ask is a lower bound on the cross form, a different object entirely, and
   nothing here is about a reflection.
 
