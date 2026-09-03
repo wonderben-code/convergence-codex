@@ -140,6 +140,7 @@ roots = [
   "OpNormTopEigenvalue",
   "MassiveSpectrumRange",
   "GreenSpectrumRange",
+  "LaplacianNormLowerBound",
   "RealDivisionIdentify",
   "CentralIdemInvariant",
   "CascadeMinimality",
