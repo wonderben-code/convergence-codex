@@ -26,6 +26,19 @@ eigenvalue below one, which needs the eigenvalue list to be **complete**. That w
 item was opened with, and `CycleGreenFormula` removed it one unit ago by putting every coordinate
 vector in the characters' span.
 
+**⚠ THE SENTENCE ABOVE IS A CLAIM ABOUT WHAT IS *NEEDED*, AND IT IS FALSE FOR THIS FILE'S
+CONCLUSION; IT IS KEPT AS WRITTEN** (`ERRATUM 94`, 2026-09-03). Ruling attainment out needs **no
+eigenvalue at all**, and **this estate said so five days after this file was written**:
+`LaplacianLoewnerConverse` §4 — *"The two families, with no spectrum computed"*, 2026-08-29 —
+proves **`odd_cycle_exists_lt`**, this file's conclusion, from the colouring characterisation, with
+**no `m ≠ 0`** and at `cycleGraph (2M + 3)` where this file starts at `2M + 5`. Its docstring makes
+the comparison in terms. `CycleNormFromColouring` restates it in the operator-norm currency and
+nothing more (`ERRATUM 436`, which is about that restatement being written as though it were the
+finding). **NOTHING HERE IS SUPERSEDED BY EITHER**: this file computes the cycle's ENTIRE spectrum,
+and `apply_eq_of_mulVec_chi` — *a matrix the characters diagonalise is its own Fourier sum* — is a
+general tool with other consumers. What was wrong is only the necessity: the obstacle was named in
+the currency of eigenvalues, and the answer lives in the currency of colourings.
+
 **And the completeness is used without Parseval.** The route here is
 `apply_eq_of_mulVec_chi` — a generalisation of `CycleGreenFormula.green_cycle_apply` to **any**
 matrix the characters diagonalise, with the propagator case instantiated below it (`ERRATUM 201`) —

@@ -134,6 +134,7 @@ roots = [
   "GreenQuadFormSharp",
   "GreenLoewnerFloorSharp",
   "RayleighAttainment",
+  "CycleNormFromColouring",
   "RealDivisionIdentify",
   "CentralIdemInvariant",
   "CascadeMinimality",
