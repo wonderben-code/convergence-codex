@@ -26,8 +26,13 @@ the sums to `H` for a `c` vanishing off `H`, **which is the exact shape the `iff
 **WHAT IT IS NOT — AND W1 STILL DOES NOT MOVE, FOR THE SAME REASON AS THIS MORNING.** The wall needs
 the remainder to be smaller than **the cross form's negative direction**. This file bounds the
 remainder above by `(Δ² / m²) · ‖c‖²`; it says **nothing whatever about the cross form**, whose
-magnitude nothing in this estate estimates. **An upper bound on one side of a comparison is not the
-comparison**, and what is now missing is a LOWER bound on the other side — a different object, not
+magnitude nothing in this estate estimates **in general** — `GreenLargeMass.crossForm_step_pos`
+gives `2` on `stepGraph` and `IndefiniteCoupling.crossForm_pos` gives `2` on `crossGraph`, which
+are values at points and not a bound on the object. **The word *general* was added 2026-09-03
+(`ERRATUM 429`'s unit); without it the sentence was too absolute**, which is the same shape as the
+three absence claims corrected in the last two days.
+**An upper bound on one side of a comparison is not the comparison**, and what is now missing is a
+LOWER bound on the other side — a different object, not
 attempted here, not costed (`ERRATUM 246`) and not estimated (`ERRATUM 183`).
 
 **And the direction of the inequality matters more than its size.**
