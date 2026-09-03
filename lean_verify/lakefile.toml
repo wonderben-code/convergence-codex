@@ -131,6 +131,7 @@ roots = [
   "OpNormLowerBound",
   "GreenNormExact",
   "LaplacianNormSharp",
+  "GreenQuadFormSharp",
   "RealDivisionIdentify",
   "CentralIdemInvariant",
   "CascadeMinimality",
