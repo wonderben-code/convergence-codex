@@ -141,6 +141,7 @@ roots = [
   "MassiveSpectrumRange",
   "GreenSpectrumRange",
   "LaplacianNormLowerBound",
+  "LaplacianDeltaPlusOne",
   "RealDivisionIdentify",
   "CentralIdemInvariant",
   "CascadeMinimality",
