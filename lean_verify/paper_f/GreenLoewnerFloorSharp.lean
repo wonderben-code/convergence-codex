@@ -1,3 +1,4 @@
+import BoxMassiveSharp
 import GreenQuadFormSharp
 import LaplacianNormSharp
 
@@ -119,5 +120,45 @@ theorem greatest_floor_iff_exists_component_colorable [Nonempty V] {Δ : ℕ}
     rw [heq] at hmc
     have := inv_anti₀ hpos hmc
     rwa [inv_inv] at this
+
+/-! ## 3. The box, where the colourability characterisation cannot reach -/
+
+/-- **THE BOX'S MASSIVE OPERATOR HAS AN EXACT OPERATOR NORM AT EVERY SIDE LENGTH**:
+`‖massive (boxGraph d (n+1)) m‖ = d·(2 + 2cos(π/(n+1))) + m²`. `BoxMassiveSharp` proved both halves
+in the Loewner order — `massive_le_smul_one_sharp` and `not_le_of_lt_sharp`, *"the constant is
+optimal, which is a statement this estate has not been able to make about any other operator bound
+it carries"* — and §1's `LaplacianNormSharp.opNorm_eq_iff_min_smul_one` reads them as a norm.
+
+**THIS IS NOT REACHABLE FROM `LaplacianNormSharp`'s CHARACTERISATION**, which is why it is worth
+stating separately: that one asks `IsRegularOfDegree`, and the box is **not regular at its
+boundary**. The two are the estate's only exact operator norms for a massive graph operator and
+neither subsumes the other. -/
+theorem norm_massive_boxGraph_eq (d n : ℕ) {mass : ℝ} (hm : mass ≠ 0) :
+    ‖massive (BoxGraph.boxGraph d (n + 1)) mass‖ = BoxMassiveSharp.sharp d n mass := by
+  haveI : Nonempty (BoxGraph.Site d (n + 1)) := ⟨fun _ => ⟨0, by omega⟩⟩
+  rw [LaplacianNormSharp.opNorm_eq_iff_min_smul_one
+    (massive_posDef (BoxGraph.boxGraph d (n + 1)) hm).posSemidef.nonneg
+    (BoxMassiveSharp.massive_le_smul_one_sharp d n mass)]
+  intro c hc
+  by_contra hlt
+  exact BoxMassiveSharp.not_le_of_lt_sharp d n mass (not_le.mp hlt) hc
+
+/-- **AND SO `BoxMassiveSharp.smul_one_le_green_sharp`'s CONSTANT CANNOT BE RAISED EITHER.** The
+propagator's floor on the box is optimal at every side length, which the Loewner statement alone
+did not say. -/
+theorem greatest_floor_green_boxGraph (d n : ℕ) {mass : ℝ} (hm : mass ≠ 0) {c : ℝ} (hc : 0 < c)
+    (hle : c • (1 : Matrix (BoxGraph.Site d (n + 1)) (BoxGraph.Site d (n + 1)) ℝ)
+      ≤ green (BoxGraph.boxGraph d (n + 1)) mass) :
+    c ≤ (BoxMassiveSharp.sharp d n mass)⁻¹ := by
+  haveI : Nonempty (BoxGraph.Site d (n + 1)) := ⟨fun _ => ⟨0, by omega⟩⟩
+  have hsharp := (smul_one_le_green_iff (BoxGraph.boxGraph d (n + 1)) hm hc).mp hle
+  have hpos : (0 : ℝ) < BoxMassiveSharp.sharp d n mass := by
+    rw [← norm_massive_boxGraph_eq d n hm]
+    have hm2 : (0 : ℝ) < mass ^ 2 := by positivity
+    exact lt_of_lt_of_le hm2 (OpNormLowerBound.le_opNorm_of_smul_one_le
+      (GreenLargeMass.massSq_le_massive (BoxGraph.boxGraph d (n + 1)) mass))
+  rw [norm_massive_boxGraph_eq d n hm] at hsharp
+  have := inv_anti₀ hpos hsharp
+  rwa [inv_inv] at this
 
 end GreenLoewnerFloorSharp
