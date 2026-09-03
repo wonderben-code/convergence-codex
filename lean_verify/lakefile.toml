@@ -137,6 +137,7 @@ roots = [
   "CycleNormFromColouring",
   "LaplacianTopEigenspace",
   "TorusNormSharp",
+  "OpNormTopEigenvalue",
   "RealDivisionIdentify",
   "CentralIdemInvariant",
   "CascadeMinimality",

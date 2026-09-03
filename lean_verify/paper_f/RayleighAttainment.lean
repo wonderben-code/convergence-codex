@@ -46,6 +46,14 @@ by a positive semidefinite form. That file needed the graph; this needs nothing.
 * **It says nothing about existence.** Whether some `v ≠ 0` attains the bound is exactly whether
   `‖A‖` is an eigenvalue, and this file supplies the equivalence, not the eigenvector.
   `RayleighMatrix.mv_eigenvectorBasis` is the estate's route to existence and is untouched here.
+
+  **⚠ THAT ROUTE WAS TAKEN THE SAME DAY AND THE BULLET IS KEPT AS WRITTEN** (`ERRATUM 94`).
+  `OpNormTopEigenvalue.isGreatest_eigenvalue_opNorm` proves
+  `IsGreatest {μ | ∃ x ≠ 0, A *ᵥ x = μ • x} ‖A‖` for `0 ≼ A` on a nonempty finite type — so
+  `‖A‖` **is** an eigenvalue there, existence and all, off `RayleighMatrix.mv_eigenvectorBasis`
+  exactly as named. **Nothing here is edited or superseded**: this file's equivalence carries no
+  positivity, no `Nonempty V` and no spectral theorem, and those three are what the existence
+  statement costs.
 * **`TorusAttainmentBridge` is not superseded and nothing there is edited.** Its biconditional is
   between the quadratic-form condition and `4d + m²` being an eigenvalue **of a specific family**,
   and it is proved through `Even n` rather than through this; that route also yields
