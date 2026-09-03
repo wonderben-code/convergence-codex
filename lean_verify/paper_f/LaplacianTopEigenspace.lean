@@ -97,4 +97,55 @@ theorem card_bipartiteComponent_eq_finrank_top_eigenspace {Δ : ℕ}
   rw [← signlessLap_eq_of_regular G hreg]
   exact LaplacianSignlessKernel.card_bipartiteComponent_eq_finrank_ker G
 
+/-! ## 4. On a connected graph the count is `1` or `0`, so the top eigenvalue is simple or absent -/
+
+omit [Fintype V] [DecidableEq V] [DecidableRel G.Adj] in
+/-- **ON A CONNECTED GRAPH A COMPONENT IS TWO-COLOURABLE EXACTLY WHEN THE GRAPH IS.** The
+`induceUnivIso` bridge, **extracted rather than inlined a fourth time** (`ERRATUM 337`: the estate's
+recurring defect is re-proving what it already has, and a shared proof is the structural answer).
+`LaplacianLoewnerDisconnected` has it inside an `example` and `CycleNormFromColouring` inside a
+proof term; neither exports it. -/
+theorem induce_colorable_iff_of_connected (hG : G.Connected) (C : G.ConnectedComponent) :
+    (G.induce C.supp).Colorable 2 ↔ G.Colorable 2 := by
+  have hsupp : C.supp = Set.univ := by
+    obtain ⟨v₀, hv₀⟩ := C.exists_rep
+    subst hv₀
+    ext v
+    simp only [SimpleGraph.ConnectedComponent.mem_supp_iff, Set.mem_univ, iff_true]
+    exact SimpleGraph.ConnectedComponent.sound (hG.preconnected v v₀)
+  constructor
+  · intro h
+    rw [hsupp] at h
+    exact SimpleGraph.Colorable.of_hom (SimpleGraph.induceUnivIso G).symm.toHom h
+  · intro h
+    exact SimpleGraph.Colorable.of_hom (SimpleGraph.Embedding.induce _).toHom h
+
+/-- **THE TOP EIGENVALUE IS SIMPLE ON A CONNECTED TWO-COLOURABLE REGULAR GRAPH.** One component, and
+it is two-colourable, so the count of §3 is `1`. -/
+theorem finrank_top_eigenspace_eq_one [Nonempty V] {Δ : ℕ} (hreg : G.IsRegularOfDegree Δ)
+    (hG : G.Connected) (hcol : G.Colorable 2) :
+    Module.finrank ℝ
+        (LinearMap.ker (Matrix.toLin' ((2 * (Δ : ℝ)) • (1 : Matrix V V ℝ) - G.lapMatrix ℝ)))
+      = 1 := by
+  rw [← card_bipartiteComponent_eq_finrank_top_eigenspace G hreg]
+  refine Fintype.card_eq_one_iff.mpr ?_
+  obtain ⟨v₀⟩ := ‹Nonempty V›
+  refine ⟨⟨G.connectedComponentMk v₀, (induce_colorable_iff_of_connected G hG _).mpr hcol⟩,
+    fun C => Subtype.ext ?_⟩
+  obtain ⟨w, hw⟩ := C.1.exists_rep
+  rw [← hw]
+  exact SimpleGraph.ConnectedComponent.sound (hG.preconnected w v₀)
+
+/-- **AND IT IS NOT AN EIGENVALUE AT ALL OTHERWISE.** No component is two-colourable, so the count
+is `0`, which is `LaplacianLoewnerConverse.eigenvalues_massive_lt_of_not_colorable` in the dimension
+currency. -/
+theorem finrank_top_eigenspace_eq_zero {Δ : ℕ} (hreg : G.IsRegularOfDegree Δ)
+    (hG : G.Connected) (hcol : ¬ G.Colorable 2) :
+    Module.finrank ℝ
+        (LinearMap.ker (Matrix.toLin' ((2 * (Δ : ℝ)) • (1 : Matrix V V ℝ) - G.lapMatrix ℝ)))
+      = 0 := by
+  rw [← card_bipartiteComponent_eq_finrank_top_eigenspace G hreg]
+  refine Fintype.card_eq_zero_iff.mpr ⟨fun C => ?_⟩
+  exact hcol ((induce_colorable_iff_of_connected G hG C.1).mp C.2)
+
 end LaplacianTopEigenspace
