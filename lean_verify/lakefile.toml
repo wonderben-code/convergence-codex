@@ -143,6 +143,7 @@ roots = [
   "LaplacianNormLowerBound",
   "LaplacianDeltaPlusOne",
   "RayleighVariational",
+  "CrossBlockTopEigenvalue",
   "RealDivisionIdentify",
   "CentralIdemInvariant",
   "CascadeMinimality",
