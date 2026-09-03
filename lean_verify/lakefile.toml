@@ -135,6 +135,7 @@ roots = [
   "GreenLoewnerFloorSharp",
   "RayleighAttainment",
   "CycleNormFromColouring",
+  "LaplacianTopEigenspace",
   "RealDivisionIdentify",
   "CentralIdemInvariant",
   "CascadeMinimality",
