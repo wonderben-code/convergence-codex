@@ -36,6 +36,18 @@ have and which is the only thing that would convert *"a base case in each residu
 *"a base case for each diagonal"*. **That distinction is exactly what the four previous units
 elided.**
 
+**⚠ *"WHICH THIS ESTATE DOES NOT HAVE"* IS FALSE AND THE PARAGRAPH IS KEPT AS WRITTEN**
+(`ERRATUM 94`, **`ERRATUM 428`**). `CliffordPeriodicityQuantified.clifford_periodicity_eight` —
+*"Adding `8` to the positive index of a nondegenerate real form multiplies its Clifford algebra by
+`M₁₆`"*, quantified over every form — was committed at **09:41 on 2026-08-18**, and
+`clifford_periodicity_eight_neg` is the mirror. **`paper_f/CliffordRealQuatFour.lean` makes the
+identical claim and was corrected on 2026-09-01; this file, its twin, was not** — the correcting
+unit read one file of a pair, which is `ERRATUM 416`'s and `ERRATUM 419`'s shape.
+**The *"Not reachable"* paragraph above is superseded too**: `CliffordModelPeriodicity.
+clifford_model_periodicity` is the induction it says is missing, and `CliffordSignatureStep`'s
+header records **3321 states with `p + q ≤ 80`, 0 undetermined**. **This file's own mathematics is
+untouched** — it is `Cl(2,0;ℝ) ≃ₐ[ℝ] M₂(ℝ)` and nothing else, and that stands.
+
 **No published tag moves.**
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
