@@ -142,6 +142,7 @@ roots = [
   "GreenSpectrumRange",
   "LaplacianNormLowerBound",
   "LaplacianDeltaPlusOne",
+  "RayleighVariational",
   "RealDivisionIdentify",
   "CentralIdemInvariant",
   "CascadeMinimality",
