@@ -44,7 +44,9 @@ non-empty.
 kernel is the only fibre `LaplacianSignlessKernel` counts. The open item about eigenvalue fibres of
 the massive torus Laplacian asks about **every** fibre and is untouched.
 
-**No wall moves**, and nothing consumes this.
+**No wall moves**, and nothing consumes this. **AND SIMPLICITY OF A TOP EIGENVALUE IS NOT NEW HERE**
+— `TorusTopSimple`, `TorusRealMultiplicity` and `PerronSimple` all have it, for one family and one
+matrix class; §4 records what this adds over them (`ERRATUM 438`).
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
@@ -121,7 +123,21 @@ theorem induce_colorable_iff_of_connected (hG : G.Connected) (C : G.ConnectedCom
     exact SimpleGraph.Colorable.of_hom (SimpleGraph.Embedding.induce _).toHom h
 
 /-- **THE TOP EIGENVALUE IS SIMPLE ON A CONNECTED TWO-COLOURABLE REGULAR GRAPH.** One component, and
-it is two-colourable, so the count of §3 is `1`. -/
+it is two-colourable, so the count of §3 is `1`.
+
+**⚠ SIMPLICITY IS NOT NEW IN THIS ESTATE AND THE FIRST DRAFT OF THIS UNIT SAID IT WAS**
+(`ERRATUM 438`). Three earlier results give it: `TorusTopSimple.top_eigenvalue_simple` and
+`TorusRealMultiplicity.top_eigenvalue_simple_real` — `finrank = 1` at `4d + m²` on the even periodic
+lattice, over `ℂ` and over `ℝ` — and `PerronSimple`, simplicity of the top eigenvalue of a strictly
+positive matrix, written for `WALLS` §W4.0 §6 item 2.
+**`RealComplexKernel.card_bipComp_eq_finrank_ker_cx` is the same count as §3 against the
+complexified kernel**, and `torus_card_bipComp_eq_one` is the
+torus case of it.
+**WHAT IS ACTUALLY NEW HERE, MEASURED**: those are **one family and one matrix class**; this is
+**every connected regular graph**, with the dichotomy — simple when two-colourable, **not an
+eigenvalue at all** otherwise — and stated on `L` rather than on `Q` or on a complexification.
+Neither direction subsumes the other: `TorusTopSimple` identifies the frequency and crosses to `ℂ`,
+which this does not. -/
 theorem finrank_top_eigenspace_eq_one [Nonempty V] {Δ : ℕ} (hreg : G.IsRegularOfDegree Δ)
     (hG : G.Connected) (hcol : G.Colorable 2) :
     Module.finrank ℝ
