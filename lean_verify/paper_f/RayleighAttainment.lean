@@ -45,6 +45,23 @@ by a positive semidefinite form. That file needed the graph; this needs nothing.
   statement its header calls absent is no longer absent.
 * **No wall moves.** `W1` asks for a lower bound on the cross form (`WALLS.md` §W1.5).
 
+## §3 — and the eigenvalue currency, for every connected regular graph
+
+`LaplacianLoewnerConverse.eigenvalues_massive_lt_of_not_colorable` already had one direction: on a
+connected regular graph that is **not** two-colourable, every eigenvalue of `massive` is strictly
+below `2Δ + m²`. The converse — *two-colourable, therefore `2Δ` really is an eigenvalue* — was
+available only on the periodic lattice (`TorusSpectrumExtremes.mem_spectrum_top_iff_even`, by parity
+of cosines). §1 supplies it in general, because
+`LaplacianSharpEquality.exists_quadForm_eq_of_colorable` produces a vector attaining the bound and
+`LaplacianNormSharp.norm_lapMatrix_eq_iff_colorable` says that bound **is** `‖L‖` there:
+
+> **`exists_eigenvector_top_iff_colorable`** — on a connected `Δ`-regular graph, `2Δ` is an
+> eigenvalue of `G.lapMatrix ℝ` **iff** `G.Colorable 2`;
+> **`exists_eigenvector_massive_iff_colorable`** is the same at `massive` and `2Δ + m²`.
+
+**The easy direction is easy and the hard one is §1**: an eigenvector attains the form by one line,
+and attaining forces an eigenvector only because the bound is the norm.
+
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 
@@ -104,5 +121,56 @@ theorem quadForm_green_eq_opNorm [Nonempty V] (G : SimpleGraph V) [DecidableRel 
   refine (quadForm_eq_opNorm_iff_mulVec hT _).mpr ?_
   rw [GreenNormExact.norm_green_eq G hm, GreenExpansion.green_mulVec_one (G := G) hm]
   ext p; simp
+
+/-! ## 3. The eigenvalue currency, for every connected regular graph -/
+
+variable (G : SimpleGraph V) [DecidableRel G.Adj]
+
+/-- **`2Δ` IS AN EIGENVALUE OF THE LAPLACIAN IFF THE GRAPH IS TWO-COLOURABLE**, on a connected
+`Δ`-regular graph. `LaplacianLoewnerConverse` had *not colourable ⇒ every eigenvalue strictly
+below*; the converse existed only on the periodic lattice, by parity of cosines. -/
+theorem exists_eigenvector_top_iff_colorable [Nonempty V] {Δ : ℕ} (hreg : G.IsRegularOfDegree Δ)
+    (hG : G.Connected) :
+    (∃ v : V → ℝ, v ≠ 0 ∧ (G.lapMatrix ℝ) *ᵥ v = (2 * (Δ : ℝ)) • v) ↔ G.Colorable 2 := by
+  have hT : (G.lapMatrix ℝ)ᵀ = G.lapMatrix ℝ := G.isSymm_lapMatrix (R := ℝ)
+  constructor
+  · rintro ⟨v, hv, hev⟩
+    refine (LaplacianSharpEquality.exists_quadForm_eq_iff_colorable G hreg hG).mp ⟨v, hv, ?_⟩
+    rw [hev, dotProduct_smul, smul_eq_mul]
+  · intro hcol
+    obtain ⟨x, hx, hq⟩ := LaplacianSharpEquality.exists_quadForm_eq_of_colorable G hreg hcol
+    have hnorm : ‖G.lapMatrix ℝ‖ = 2 * (Δ : ℝ) :=
+      (LaplacianNormSharp.norm_lapMatrix_eq_iff_colorable G hreg hG).mpr hcol
+    refine ⟨x, hx, ?_⟩
+    have := (quadForm_eq_opNorm_iff_mulVec hT x).mp (by rw [hnorm]; exact hq)
+    rwa [hnorm] at this
+
+/-- **THE SAME AT `massive`**: `2Δ + m²` is an eigenvalue of `massive G m` iff `G.Colorable 2`.
+`massive` is `lapMatrix` plus `m²` on the diagonal, so the eigenvectors are the same and the
+eigenvalues shift. -/
+theorem exists_eigenvector_massive_iff_colorable [Nonempty V] {Δ : ℕ}
+    (hreg : G.IsRegularOfDegree Δ) (hG : G.Connected) (m : ℝ) :
+    (∃ v : V → ℝ, v ≠ 0 ∧ GraphLaplacian.massive G m *ᵥ v = (2 * (Δ : ℝ) + m ^ 2) • v)
+      ↔ G.Colorable 2 := by
+  rw [← exists_eigenvector_top_iff_colorable G hreg hG]
+  have hshift : ∀ v : V → ℝ, GraphLaplacian.massive G m *ᵥ v
+      = (G.lapMatrix ℝ) *ᵥ v + (m ^ 2) • v := by
+    intro v
+    rw [GraphLaplacian.massive, Matrix.add_mulVec]
+    congr 1
+    ext p
+    simp [Matrix.mulVec, dotProduct, Matrix.diagonal, mul_comm]
+  constructor
+  · rintro ⟨v, hv, hev⟩
+    refine ⟨v, hv, ?_⟩
+    rw [hshift v] at hev
+    have : (G.lapMatrix ℝ) *ᵥ v = (2 * (Δ : ℝ) + m ^ 2) • v - (m ^ 2) • v := by
+      rw [← hev]; abel
+    rw [this, ← sub_smul]
+    congr 1
+    ring
+  · rintro ⟨v, hv, hev⟩
+    refine ⟨v, hv, ?_⟩
+    rw [hshift v, hev, ← add_smul]
 
 end RayleighAttainment
