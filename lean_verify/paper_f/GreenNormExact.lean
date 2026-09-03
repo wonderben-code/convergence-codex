@@ -48,6 +48,13 @@ bound.
 which is governed by the SMALLEST eigenvalue of `green`; this is the largest. The two ends of the
 spectrum are different questions and only one of them is settled here.
 
+**⚠ THE OTHER END WAS SETTLED THE SAME DAY AND THE PARAGRAPH IS KEPT AS WRITTEN** (`ERRATUM 94`).
+`GreenSpectrumRange.isLeast_eigenvalue_green` gives the smallest eigenvalue of `green G m` as
+`‖massive G m‖⁻¹`, at every finite nonempty graph, off an eigenvector transfer under the inverse.
+**The sentence stays true of `(√green)⁻¹`**, which is `SqrtGreenOpNorm`'s object and involves a
+square root nothing here takes; what has changed is that the propagator's own bottom is no longer
+an open end.
+
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 
