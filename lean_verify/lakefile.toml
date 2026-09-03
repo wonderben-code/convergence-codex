@@ -145,6 +145,7 @@ roots = [
   "RayleighVariational",
   "CrossBlockTopEigenvalue",
   "NeumannTailSharper",
+  "ReflectionThresholdSharper",
   "RealDivisionIdentify",
   "CentralIdemInvariant",
   "CascadeMinimality",
