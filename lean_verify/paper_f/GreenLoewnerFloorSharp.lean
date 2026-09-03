@@ -10,6 +10,18 @@ bound is attained. **This one is the other end of the propagator's spectrum**, a
 pair `LaplacianDegreeBound` opened: `smul_one_le_green` proves `(2Δ + m²)⁻¹ • 1 ≼ green G m` from a
 degree bound and says nothing about whether that constant can be raised.
 
+**⚠ THAT LAST CLAUSE IS FALSE ABOUT THE FILE IT NAMES AND IS KEPT AS WRITTEN** (`ERRATUM 94`,
+**`ERRATUM 437`**, 2026-09-03). `LaplacianDegreeBound`'s own header says the opposite in one line:
+*"`le_inv_of_smul_one_le_green` says the propagator's lower bound cannot be raised there either"*,
+pointing at `LaplacianBoundSharp.le_inv_of_smul_one_le_green` (2026-08-29, **every even cycle**) —
+and `TorusRegular.le_inv_of_smul_one_le_green_torus` does the same for the periodic lattice.
+**THE THEOREMS BELOW ARE NOT DUPLICATES AND THE DIFFERENCE IS REAL**: those are two families at
+`Δ = 2` and one at every `d`, proved by exhibiting an eigenvector; `smul_one_le_green_iff` is the
+greatest floor at **every finite graph**, and `greatest_floor_iff_exists_component_colorable` makes
+optimality **equivalent to a colouring** on any regular graph. What was wrong is the sentence about
+what the earlier file leaves open, which is `ERRATUM 435`'s and `ERRATUM 436`'s shape for the third
+time in one day: a claim about another file's silence, written without reading it.
+
 ## The general step, which has no graph in it
 
 > **`smul_one_le_inv_iff_opNorm_le`** — for a positive definite real matrix `A` and `c > 0`,
