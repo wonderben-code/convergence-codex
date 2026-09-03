@@ -46,6 +46,14 @@ operator-norm chain of 2026-09-02 was built for, now on both sides of the object
 * **No wall moves.** W1's ask is a lower bound on the cross form, a different object entirely, and
   nothing here is about a reflection.
 
+**⚠ THE REASON THAT SENTENCE GIVES IS FALSE AND IT IS KEPT AS WRITTEN** (`ERRATUM 94`,
+**`ERRATUM 441`**, 2026-09-03). *"No wall moves"* stands; what `W1` asks for does not.
+`ReflectionPositive → hcross` has been a **theorem** since 2026-08-13 —
+`ReflectionConverse.reflectionPositive_iff_hcross`, on every finite graph at every mass with no
+fixed point — and with a fixed layer the converse is **refuted**
+(`MirrorConverseFails.converse_fails_with_mirror`). `W1`'s open part is `OS0`/`OS1`/`OS4`, which is
+what `W1`'s own row in `WALLS.md` says.
+
 **`[Nonempty V]` IS REQUIRED AND IS NOT DECORATION**: on an empty vertex type both matrices are `0`,
 `c • 1 ≼ 0` holds for every `c` including positive ones, and `‖0‖ = 0`. The upper-bound direction of
 `OpNormLoewnerConverse` needs no such hypothesis; this one does, for the mirror-image reason.

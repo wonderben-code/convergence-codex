@@ -44,6 +44,14 @@ the difference. **Nothing consumes the equality either**, for the same reason th
 consumer: the chain's users want `‖green‖ ≤ (m²)⁻¹` and now have it as sharp rather than as a
 bound.
 
+**⚠ THE REASON THAT SENTENCE GIVES IS FALSE AND IT IS KEPT AS WRITTEN** (`ERRATUM 94`,
+**`ERRATUM 441`**, 2026-09-03). *"No wall moves"* stands; what `W1` asks for does not.
+`ReflectionPositive → hcross` has been a **theorem** since 2026-08-13 —
+`ReflectionConverse.reflectionPositive_iff_hcross`, on every finite graph at every mass with no
+fixed point — and with a fixed layer the converse is **refuted**
+(`MirrorConverseFails.converse_fails_with_mirror`). `W1`'s open part is `OS0`/`OS1`/`OS4`, which is
+what `W1`'s own row in `WALLS.md` says.
+
 **AND IT SAYS NOTHING ABOUT `(√green)⁻¹`.** `SqrtGreenOpNorm` bounds `‖(CFC.sqrt (green G m))⁻¹‖`,
 which is governed by the SMALLEST eigenvalue of `green`; this is the largest. The two ends of the
 spectrum are different questions and only one of them is settled here.
