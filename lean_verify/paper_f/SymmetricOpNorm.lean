@@ -35,6 +35,13 @@ it does not care about.
 * **It is not sharp and does not claim to be.** `‖G.adjMatrix ℝ‖ ≤ Δ` is the standard degree bound
   on the spectral radius; nothing here says it is attained, and the graphs where it is are not
   identified (not attempted, not costed — `ERRATUM 246`).
+
+  **⚠ A CLASS IS IDENTIFIED SINCE 2026-09-03 AND THE BULLET IS KEPT AS WRITTEN** (`ERRATUM 94`).
+  `AdjNormRegular.norm_adjMatrix_eq_of_regular`: on a `Δ`-regular graph with a vertex the bound is
+  an **equality**, because the all-ones vector is an eigenvector at `Δ`; the periodic lattice is
+  the instance. **The bullet stays true off that class** — on the star `K_{1,n}` the norm is `√n`
+  against `Δ = n` — and the converse, that a *connected* graph attaining it must be regular, is
+  classical Perron–Frobenius and is still **not proved here**.
 * **No wall moves and no published tag moves.** No measure, no limit, no compactness.
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.

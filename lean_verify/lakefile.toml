@@ -146,6 +146,7 @@ roots = [
   "CrossBlockTopEigenvalue",
   "NeumannTailSharper",
   "ReflectionThresholdSharper",
+  "AdjNormRegular",
   "RealDivisionIdentify",
   "CentralIdemInvariant",
   "CascadeMinimality",
