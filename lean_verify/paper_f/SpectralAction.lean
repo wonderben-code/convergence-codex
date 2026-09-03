@@ -75,7 +75,16 @@
 
   Those moments are equivalent to the singular values of `M` — a true and
   standard symmetric-function fact which **this estate does not prove**,
-  and which §9's docstring asserted in passing before `ERRATUM 141`. Every
+  and which §9's docstring asserted in passing before `ERRATUM 141`.
+
+  **⚠ *"WHICH THIS ESTATE DOES NOT PROVE"* IS FALSE AND THE PARAGRAPH IS KEPT
+  AS WRITTEN** (`ERRATUM 94`, **`ERRATUM 430`**).
+  `SpectralActionDetermines.eigenvalues_multiset_eq_iff_trace_pow_eq` proves
+  the equivalence outright — equal trace moments **iff** equal eigenvalue
+  multisets of `M · Mᴴ`, which is equal singular values, those being the
+  square roots — and one direction needs only `n` of the moments. **That
+  file's docstring quotes this file's version of the claim and answers it
+  with "It is now", and the sentence here was never brought into line.** Every
   statement here is about traces. Still not a measure, and neither
   DECISION moves.
 

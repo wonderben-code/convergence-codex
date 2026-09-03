@@ -153,7 +153,18 @@ does the same for W1.
 
     **THIS IS A DEFINITION, NOT A THEOREM.** Nothing in this estate proves
     it, and `WALLS.md` W1 explains why: the factorisation that carried the
-    OU-product programme is structurally unavailable for this covariance. -/
+    OU-product programme is structurally unavailable for this covariance.
+
+    **⚠ *"NOTHING IN THIS ESTATE PROVES IT"* HAS BEEN FALSE SINCE 2026-08-09
+    AND THE PARAGRAPH IS KEPT AS WRITTEN** (`ERRATUM 94`, **`ERRATUM 430`**).
+    `LatticeReflectionPositive.reflectionPositive_lattice` concludes exactly
+    this predicate, for a box of even side, nonzero mass and any region inside
+    the first-coordinate half; `_compl` is the other side, and `WALLS.md`'s W1
+    row says so in its first sentence. **The correction was written the same
+    day — in the proving file's own docstring, which QUOTES this sentence
+    verbatim and then says *"Something in this estate now proves it"* — and it
+    was never brought back here**, to the definition the wall is named for and
+    the place a reader meets first. -/
 def ReflectionPositive (n : ℕ) (m : ℝ) (half : Finset (Site n)) : Prop :=
   ∀ c : Site n → ℝ, (∀ p, p ∉ half → c p = 0) →
     0 ≤ ∑ p, ∑ q, c p * c q * green n m (refl n p) q
