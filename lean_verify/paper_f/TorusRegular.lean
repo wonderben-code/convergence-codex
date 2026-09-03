@@ -35,6 +35,13 @@ cause: a probe truncated by `head -6` was read as an exhaustive one.
 * **`massive_torus_le_smul_one_iff`** — the sharpness, in every dimension;
 * **`le_inv_of_smul_one_le_green_torus`** — and the propagator's lower bound cannot be raised.
 
+**AND THE SAME DICHOTOMY IS IN THE OPERATOR NORM SINCE 2026-09-03**:
+`TorusNormSharp.norm_massive_torus_eq_iff_even` gives `‖massive (torusGraph d n) m‖ = 4d + m²`
+**iff** `n` is even, at `0 < d` and `3 ≤ n`, and `norm_lapMatrix_torus_eq_iff_even` says the same
+at `m = 0`. It is a currency and not a strengthening — the even half is this file's theorem and
+the odd half is `LaplacianSharpEquality`'s — and it is named here so a reader of this file
+arrives at it.
+
 ## What this is NOT
 
 **The box is not the torus and is not reached.** `boxGraph` has a boundary, is **not** regular, and

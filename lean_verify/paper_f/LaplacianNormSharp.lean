@@ -61,6 +61,12 @@ change, not that the hypothesis has to stay, and the changed conclusion is *some
 is two-colourable*. §3 below is that statement in the norm currency, and §2 is instantiated from it
 (`ERRATUM 201`) rather than merely asserted to be its special case.
 
+**FIRST CONSUMER, 2026-09-03, THE SAME DAY**: `TorusNormSharp` instantiates §3 at the periodic
+lattice and gets `‖massive (torusGraph d n) m‖ = 4d + m² ↔ Even n` in every dimension, with the
+component quantifier collapsed by `TorusDecay.torusGraph_connected`. **The sentence below was exact
+when written and is kept** (`ERRATUM 94`): what it says is that nothing wanted the *attainment*, and
+that is still true of `NeumannTailBound` and `LaplacianOpNorm`'s consumers.
+
 **Nothing consumes it**, stated here rather than left to be discovered (`ERRATUM 434`'s week):
 `NeumannTailBound` and `LaplacianOpNorm`'s consumers want an upper bound and are unaffected by its
 being attained or not. **No wall moves**: `W1` asks for a lower bound on the cross form
