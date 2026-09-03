@@ -519,7 +519,18 @@ theorem pow_mul_swap (A B : Matrix (Fin n) (Fin n) ℂ) :
 
 /-- **THE TRACE OF A POWER IS CYCLIC.** `Matrix.trace_mul_comm` is the `k = 1` case; Mathlib has
 no statement for general `k` (searched by shape over `Matrix.trace_*`, `ERRATUM 42`). Used four
-times below, once per block. -/
+times below, once per block.
+
+**⚠ A STRICTLY MORE GENERAL VERSION OF THIS LEMMA EXISTS UNDER THE SAME NAME**, noted
+2026-09-03 (`ERRATUM 430`'s unit, by `newnames_scan`). `IsingTransferSym.trace_pow_mul_comm`
+(2026-08-11) is the same statement over `Matrix α α R` for an arbitrary commutative ring, where this
+one — three days older — is over `Matrix (Fin n) (Fin n) ℂ`. **`dupname_scan` cannot see it**: that
+mode compares statements, and these differ in their type parameters, so a duplicate that differs
+only by generality passes it. **Nothing is deleted here** (`ERRATUM 94`, `ERRATUM 176`): making this
+one a corollary would put a spectral-action file underneath the Ising chain, which is the import
+direction `HermitianTraceMoments` refused in the mirror case and solved by MOVING the lemma to a
+Mathlib-only file. That move is available and **is not taken, not costed** (`ERRATUM 246`) — no
+consumer has asked for it, and the relationship is recorded instead. -/
 theorem trace_pow_mul_comm (A B : Matrix (Fin n) (Fin n) ℂ) :
     ∀ k : ℕ, ((A * B) ^ k).trace = ((B * A) ^ k).trace
   | 0 => by simp
