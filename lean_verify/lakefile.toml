@@ -138,6 +138,7 @@ roots = [
   "LaplacianTopEigenspace",
   "TorusNormSharp",
   "OpNormTopEigenvalue",
+  "MassiveSpectrumRange",
   "RealDivisionIdentify",
   "CentralIdemInvariant",
   "CascadeMinimality",

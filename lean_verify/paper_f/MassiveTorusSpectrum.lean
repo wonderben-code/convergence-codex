@@ -31,6 +31,15 @@ equation `TorusLaplacianSpectrum.cx_massive_mulVec_chiD` has been on the shelf s
 > `d`-dimensional periodic lattice **is `m²`**, in every dimension and at every side length `≥ 3`.
 > This is the statement completeness was needed for: a lower bound on a *set* of eigenvalues is not
 > available from an eigenvector, however many you exhibit.
+>
+> **⚠ THE NECESSITY IN THAT SENTENCE IS FALSE AND IT IS KEPT AS WRITTEN** (`ERRATUM 94`,
+> **`ERRATUM 439`**, 2026-09-03). A lower bound really is not available from eigenvectors — but a
+> **Loewner floor** gives one without any eigenvalue list: `m² • 1 ≼ massive G m` holds at every
+> finite graph, because the difference is `G.lapMatrix ℝ` and Mathlib's `posSemidef_lapMatrix` says
+> that is positive semidefinite. `MassiveSpectrumRange.isLeast_eigenvalue_massive` is the least
+> point at **every** finite nonempty graph, with no characters and no `d`. **This theorem is not
+> superseded**: it is about this family under its own name and has its own consumers, and
+> `spectrum_real_eq_range_nuR` — an equality of **sets** — does need completeness.
 
 ## What was new here and what was carried
 
@@ -166,7 +175,12 @@ cosine is `1`, and the `2d` from the degree cancels exactly. -/
 dimension and at every side length at least three. This is the statement completeness was needed
 for: exhibiting eigenvectors, however many, never bounds a spectrum from below — the bound
 quantifies over *all* eigenvalues, and that quantifier is `massive_eigenvalue_real_iff`'s forward
-direction. -/
+direction.
+
+**⚠ THE LAST CLAUSE IS FALSE AND IS KEPT AS WRITTEN** (`ERRATUM 94`, **`ERRATUM 439`**). The
+quantifier is also discharged by a Loewner floor, which names no eigenvalue at all:
+`MassiveSpectrumRange.isLeast_eigenvalue_massive` proves the same conclusion at **every** finite
+nonempty graph off `posSemidef_lapMatrix`. This theorem stands, under its own name. -/
 theorem isLeast_spectrum_real (N : ℕ) (m : ℝ) :
     IsLeast {μ : ℝ | ∃ x : Site d (N + 3) → ℝ, x ≠ 0 ∧
         massive (torusGraph d (N + 3)) m *ᵥ x = μ • x} (m ^ 2) := by
