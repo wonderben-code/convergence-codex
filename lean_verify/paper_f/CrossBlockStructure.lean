@@ -288,6 +288,28 @@ is `reflectionPositive_iff_isCrossBlock`, and it carries §9's hypotheses becaus
 converse is known. The remaining leg of that wall — the general remainder bound — is an estimate
 and is untouched here.
 
+**⚠ "IS AN ESTIMATE" NAMED A MISSING OBJECT AND THAT OBJECT NOW EXISTS; THE SENTENCE IS KEPT AS
+WRITTEN** (`ERRATUM 94`, 2026-09-03). Two bounds on that remainder were proved on 2026-09-02:
+`GreenLargeMass.generalRemainder_abs_le` entrywise and `NeumannTailBound.norm_neumann_tail_le` in
+operator norm, both `Δ²/(m²)³`, both at an arbitrary finite graph. **The wall does not move**, and
+`WALLS.md` §W1.5 gives the reason at length: the `iff` needs the remainder to DOMINATE the cross
+form, so a ceiling on it bounds only how much it can help. What is missing is a **LOWER** bound on
+the cross form's negative direction in terms of `c ⬝ᵥ c`. This file is untouched either way.
+
+**⚠ AND *"THAT IS WHERE THE CONVERSE IS KNOWN"* STOPPED BEING THE WHOLE TRUTH ONE DAY AFTER THIS
+FILE WAS WRITTEN; THE SENTENCE IS KEPT AS WRITTEN** (`ERRATUM 94`, **`ERRATUM 432`**, 2026-09-03).
+`ReflectionConverse.reflectionPositive_iff_isCrossBlock` (2026-08-13) has **this theorem's exact
+name and none of §9's hypotheses** — no `IsRegularOfDegree`, no `A² = α•1 + β•A + γ•J`, no numeric
+side condition — at **every** mass and every finite graph. **Neither theorem subsumes the other and
+the split is a real one.** That file pays `GraphHalfSpace.IsHalf`, a **fixed-point-free**
+reflection; this one asks only `IsMirrorHalf`, which permits a fixed layer `Mir`. The difference
+is not book-keeping: `MirrorConverseFails` exhibits a seven-vertex graph with `|H| = 2`,
+`|Mir| = 3` that
+is reflection positive at `m² ≤ 1` and fails `hcross`, **so the converse is FALSE once the
+reflection has fixed points**, and §9's class is what buys it back there. The name collision is
+therefore deliberate on one side and unnoticed on the other, and is recorded in
+`newnames_accepted.txt` rather than renamed (`ERRATUM 94`).
+
 It also does not subsume `GraphMirrorReflection.crossForm_nonpos_of_cross_diag` outright: that
 result asks only `IsMirrorHalf`, while the route through this file spends `IsRefl` on the
 symmetry of `~`. The subsumption holds wherever the reflection is a graph automorphism, which is
