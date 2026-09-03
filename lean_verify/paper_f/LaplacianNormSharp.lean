@@ -1,5 +1,5 @@
 import GreenNormExact
-import LaplacianLoewnerConverse
+import LaplacianLoewnerDisconnected
 
 /-!
 # `‖L‖ = 2Δ` exactly when the graph is two-colourable
@@ -48,6 +48,18 @@ seven-vertex witness with connectivity deleted, and `LaplacianSharpEquality`'s o
 that the Loewner statements cannot lose regularity as they stand — *"without the collapse there is
 no single constant to compare against"*. So the hypotheses here are inherited, and known necessary
 rather than believed necessary.
+
+**⚠ HALF OF THAT PARAGRAPH IS FALSE AND IT IS KEPT AS WRITTEN** (`ERRATUM 94`, **`ERRATUM 435`**,
+the same day). **Regularity is necessary** — `LoewnerRegularityNecessary.regularity_necessary`
+refutes weakening it to a degree bound, and does so against the GENERAL statement, so that half
+stands. **Connectivity is not**, and the estate had already removed it:
+`LaplacianLoewnerDisconnected.massive_le_smul_one_iff_exists_component_colorable` is the same
+Loewner characterisation **with no connectivity hypothesis at all**, in a file that IMPORTS the one
+this file used. What `connectivity_necessary` refutes is `exists_quadForm_eq_iff_colorable` with
+connectivity deleted **and the conclusion left as `G.Colorable 2`** — it says the CONCLUSION has to
+change, not that the hypothesis has to stay, and the changed conclusion is *some connected component
+is two-colourable*. §3 below is that statement in the norm currency, and §2 is instantiated from it
+(`ERRATUM 201`) rather than merely asserted to be its special case.
 
 **Nothing consumes it**, stated here rather than left to be discovered (`ERRATUM 434`'s week):
 `NeumannTailBound` and `LaplacianOpNorm`'s consumers want an upper bound and are unaffected by its
@@ -116,5 +128,56 @@ theorem norm_lapMatrix_lt_of_not_colorable [Nonempty V] {Δ : ℕ} (hreg : G.IsR
   rcases lt_or_eq_of_le hle with h | h
   · exact h
   · exact absurd ((norm_lapMatrix_eq_iff_colorable G hreg hG).mp h) hcol
+
+/-! ## 3. And connectivity comes off, because the estate had already taken it off -/
+
+/-- **`‖massive G m‖ = 2Δ + m²` IFF SOME CONNECTED COMPONENT IS TWO-COLOURABLE**, on a `Δ`-regular
+graph with **no connectivity hypothesis**. Same conversion, applied to
+`LaplacianLoewnerDisconnected`'s characterisation instead of `LaplacianLoewnerConverse`'s
+(`ERRATUM 435`). -/
+theorem norm_massive_eq_iff_exists_component_colorable [Nonempty V] {Δ : ℕ}
+    (hreg : G.IsRegularOfDegree Δ) {m : ℝ} (hm : m ≠ 0) :
+    ‖massive G m‖ = 2 * (Δ : ℝ) + m ^ 2
+      ↔ ∃ C : G.ConnectedComponent, (G.induce C.supp).Colorable 2 := by
+  have hdeg : ∀ p : V, (G.degree p : ℝ) ≤ (Δ : ℝ) := fun p => by rw [hreg p]
+  rw [opNorm_eq_iff_min_smul_one (massive_posDef G hm).posSemidef.nonneg
+    (LaplacianDegreeBound.massive_le_smul_one G hdeg m)]
+  exact LaplacianLoewnerDisconnected.massive_le_smul_one_iff_exists_component_colorable G hreg m
+
+/-- **`‖G.lapMatrix ℝ‖ = 2Δ` IFF SOME CONNECTED COMPONENT IS TWO-COLOURABLE**, the `m = 0` case with
+no connectivity hypothesis. -/
+theorem norm_lapMatrix_eq_iff_exists_component_colorable [Nonempty V] {Δ : ℕ}
+    (hreg : G.IsRegularOfDegree Δ) :
+    ‖G.lapMatrix ℝ‖ = 2 * (Δ : ℝ)
+      ↔ ∃ C : G.ConnectedComponent, (G.induce C.supp).Colorable 2 := by
+  have hdeg : ∀ p : V, (G.degree p : ℝ) ≤ (Δ : ℝ) := fun p => by rw [hreg p]
+  have h0 : massive G 0 = G.lapMatrix ℝ := by simp [GraphLaplacian.massive]
+  have hiff :=
+    LaplacianLoewnerDisconnected.massive_le_smul_one_iff_exists_component_colorable G hreg 0
+  rw [h0] at hiff
+  rw [opNorm_eq_iff_min_smul_one (SimpleGraph.posSemidef_lapMatrix ℝ G).nonneg
+    (LaplacianDegreeBound.lapMatrix_le_smul_one G hdeg)]
+  simpa using hiff
+
+/-- **AND SO THE DEGREE BOUND IS STRICT ON A REGULAR GRAPH NO COMPONENT OF WHICH IS
+TWO-COLOURABLE**, with no connectivity hypothesis. -/
+theorem norm_lapMatrix_lt_of_no_component_colorable [Nonempty V] {Δ : ℕ}
+    (hreg : G.IsRegularOfDegree Δ)
+    (hcol : ∀ C : G.ConnectedComponent, ¬ (G.induce C.supp).Colorable 2) :
+    ‖G.lapMatrix ℝ‖ < 2 * (Δ : ℝ) := by
+  have hdeg : ∀ p : V, (G.degree p : ℝ) ≤ (Δ : ℝ) := fun p => by rw [hreg p]
+  rcases lt_or_eq_of_le (LaplacianOpNorm.norm_lapMatrix_le G hdeg) with h | h
+  · exact h
+  · obtain ⟨C, hC⟩ := (norm_lapMatrix_eq_iff_exists_component_colorable G hreg).mp h
+    exact absurd hC (hcol C)
+
+/-- **§2 IS INSTANTIATED FROM §3 RATHER THAN ASSERTED TO BE ITS SPECIAL CASE** (`ERRATUM 201`), and
+the bridge is one line because both characterisations describe the SAME least-ceiling condition. -/
+example [Nonempty V] {Δ : ℕ} (hreg : G.IsRegularOfDegree Δ) (hG : G.Connected) {m : ℝ}
+    (hm : m ≠ 0) : ‖massive G m‖ = 2 * (Δ : ℝ) + m ^ 2 ↔ G.Colorable 2 := by
+  rw [norm_massive_eq_iff_exists_component_colorable G hreg hm]
+  have hgen :=
+    LaplacianLoewnerDisconnected.massive_le_smul_one_iff_exists_component_colorable G hreg m
+  exact hgen.symm.trans (LaplacianLoewnerConverse.massive_le_smul_one_iff_colorable G hreg hG m)
 
 end LaplacianNormSharp
