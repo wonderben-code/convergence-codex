@@ -64,6 +64,15 @@ degree, connectivity — is untouched by it, and `AdjNormRegular` is exactly suc
 regular graph `‖A‖ = Δ`, far above `√Δ`. **The optimality is relative to a stated form**, and the
 statement says so.
 
+> ⚠ **2026-09-04, LATER: THIS PARAGRAPH IS NOW A THEOREM AND NOT A CAVEAT** (`ERRATUM 94`; kept as
+> written, because it was right). `AdjNormAverageDegree` proves the average degree is also a floor,
+> `(∑ deg)/card V ≤ ‖A‖`, and that **neither floor contains the other**: on a `Δ`-regular graph with
+> `Δ ≥ 2` the average floor is strictly better (`sqrt_lt_avg_of_regular`, and `AdjNormRegular` makes
+> it exact there), while on the star at `n ≥ 4` the root floor is strictly better
+> (`avg_lt_sqrt_star`, since the star's average is `2n/(n+1) < 2`).
+> `neither_floor_contains_the_other` exhibits both witnesses — the triangle and the star on five
+> vertices. **The boundary of §5's quantifier is now visible rather than reconstructed.**
+
 **No wall moves.** `W1`'s open part is `OS0`/`OS1`/`OS4` (`ERRATUM 441`).
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
