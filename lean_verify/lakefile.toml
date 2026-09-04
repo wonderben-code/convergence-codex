@@ -344,4 +344,5 @@ roots = [
   "GraphAutDegree",
   "AsymmetricGraph",
   "NeighborDegreeInvariant",
+  "TorusBoundTightIff",
 ]
