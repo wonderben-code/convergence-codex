@@ -56,6 +56,15 @@ So every bound in this chain is a floor on the NORM, and reading it as a floor o
 eigenvalue borrows a fact from Perron–Frobenius that is not here (`ERRATUM 246`: not attempted,
 not costed).
 
+> ⚠ **2026-09-04, LATER THE SAME DAY: THE BORROWED FACT IS NOW PROVED AND THE FENCE IS DISCHARGED**
+> (`ERRATUM 94`; the paragraph is kept, because naming a borrowed fact is what let it be paid for).
+> `NonnegPerronNorm.norm_eq_topEigen_of_nonneg`: for **every** symmetric matrix with nonnegative
+> **entries**, `‖A‖ = topEigen`. The Loewner hypothesis `0 ≤ A` is not needed and is genuinely
+> false here — `NonnegPerronNorm.quadForm_edge_diff_eq_neg_two` evaluates the adjacency form at
+> `e_u − e_v` across any edge and gets `−2`. So `norm_adjMatrix_eq_topEigen` lets every floor in
+> this chain be read on the **top eigenvalue**, and `sqrt_degree_le_topEigen` and
+> `avg_degree_le_topEigen` state the two this file and its predecessor proved.
+
 **Not a bound on the second eigenvalue**, which is what the Ising sub-top-ratio item needs and what
 no file in this chain touches.
 
