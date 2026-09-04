@@ -45,6 +45,17 @@ complement commutes with `green`, and
 the connected cycle. **What is missing is the construction of that map**, and this file does not
 build it. Not attempted; no cost claimed (`ERRATUM 246`).
 
+> ⚠ **THE STATEMENT WAS PROVED THE NEXT UNIT, BY A ROUTE THAT IS NOT THIS ONE, AND THIS PARAGRAPH
+> IS KEPT AS WRITTEN** (`ERRATUM 94`, **`ERRATUM 454`**, 2026-09-04). `FieldHouseholder` exhibits an
+> invariant isometry on **every** finite graph with `3 ≤ |V|`, connected ones included: the
+> **Householder reflection through the all-ones line**, `(2/|V|) · J − 1`. It needs **no degenerate
+> eigenspace and no rotation** — the all-ones vector is an eigenvector of `green` at `m⁻²` on every
+> graph (`GreenExpansion.green_mulVec_one`, in this estate since 12 August), so a symmetric operator
+> preserves both that line and its complement, and the reflection swapping their roles commutes.
+> **A one-dimensional eigenspace was enough.** The paragraph above is right that the rotation route
+> would work and wrong to leave the impression it was the way in — **the third fence in a row to
+> name a route the answer did not take.**
+
 ## What is NOT here
 
 **No new symmetry**, and no claim that the commutant is larger than the known families on any

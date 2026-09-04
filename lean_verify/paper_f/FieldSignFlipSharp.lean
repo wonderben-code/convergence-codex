@@ -50,6 +50,14 @@ it — not the only one — is a rotation inside a degenerate eigenspace, and
 two-dimensional eigenspace, so what is missing is the rotation and not the degeneracy. **Not
 attempted, no cost claimed** (`ERRATUM 246`).
 
+> ⚠ **THE STATEMENT IS PROVED, TWO UNITS LATER, AND THIS PARAGRAPH IS KEPT AS WRITTEN**
+> (`ERRATUM 94`, **`ERRATUM 454`**, 2026-09-04). `FieldHouseholder` exhibits the isometry on
+> **every** finite graph with `3 ≤ |V|`: the Householder reflection through the all-ones line. **It
+> uses no degenerate eigenspace** — a reflection needs a one-dimensional one, and `green`'s
+> all-ones eigenvector supplies it on every graph. The sentence above is right that the rotation
+> would work, and wrong to leave the impression that *"what is missing is the rotation"* was the
+> whole of what was missing.
+
 **Nothing about other diagonal maps.** Only `±1` per coordinate is an isometry; other scalings are
 not, and are not discussed.
 
