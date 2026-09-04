@@ -349,4 +349,5 @@ roots = [
   "LatticeRegularitySharp",
   "LatticeRegularityFloor",
   "LatticeFloorOptimal",
+  "FieldIsometryInvariance",
 ]
