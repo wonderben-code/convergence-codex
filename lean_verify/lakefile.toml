@@ -345,4 +345,5 @@ roots = [
   "AsymmetricGraph",
   "NeighborDegreeInvariant",
   "TorusBoundTightIff",
+  "TorusFibreOrbitPartition",
 ]

@@ -62,6 +62,14 @@ the orbits the fibre contains"* would need the fibre's partition as an indexed f
 one-term case is exactly what the biconditionals above capture, and that is the case the bound is
 about.
 
+> ⚠ **BUILT IN THE NEXT UNIT** (2026-09-04, `ERRATUM 94`; the paragraph is kept because naming the
+> gap precisely is what got it built, for the third time today).
+> `TorusFibreOrbitPartition.finrank_eq_sum_card_orbit` is the sum, indexed by `orbitsOf` — the
+> image of the fibre under `orbit` — and `card_orbitsOf_eq_one_iff` joins it to the criterion
+> above, so *"the bound is an equality exactly when the sum has one term"* is now one theorem
+> rather than two informal restatements. **`orbit_eq_of_mem` really was the only ingredient**, and
+> `mem_orbit_self`, which the estate had not named, was the other line.
+
 **Nothing is claimed about `d = 1`.** `TorusGenericFrequency` settles attainment there and this file
 does not revisit it.
 
