@@ -75,6 +75,15 @@ structure IsRefl (θ : V ≃ V) : Prop where
 variable {G}
 
 omit [DecidableEq V] in
+/-- ⚠ **THE INVOLUTIVITY IS NOT NEEDED, AND THIS STATEMENT IS KEPT AS WRITTEN** (`ERRATUM 94`,
+`ERRATUM 337`; 2026-09-04). `IsRefl` bundles `invol` and the proof below uses `h.invol` twice, but
+degree preservation holds for **every** adjacency-preserving bijection: `θ.symm` does the same work.
+`GraphAutDegree.IsGraphAut.degree` is that statement, and with
+`FieldAutInvariance.IsGraphAut.of_isRefl` this one is derivable from it. **Nothing is superseded
+and nothing is edited** — this lemma has consumers in the reflection chain and they stay — but the
+estate had non-involutive automorphisms (`TorusTranslation`, `CycleRotationAut`,
+`TorusSiteTransitive`) and could not say their degree is preserved, which is the gap
+`FieldAutInvariance` was written to close, left open one lemma down. -/
 theorem IsRefl.degree {θ : V ≃ V} (h : IsRefl G θ) (p : V) :
     G.degree (θ p) = G.degree p := by
   classical
