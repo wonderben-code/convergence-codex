@@ -54,6 +54,15 @@ moves every site to every other, rather than possibly about nothing.
 a theorem, and **no asymmetric graph is constructed anywhere in this estate** (grepped). Exhibiting
 one is **not attempted and not costed** (`ERRATUM 246`).
 
+> ⚠ **BUILT 2026-09-04, SO THE OBSERVATION IS NOW A THEOREM** (`ERRATUM 94`; the paragraph is kept
+> because naming what was missing is what got it built). `AsymmetricGraph.asymGraph` is a triangle
+> with a path and a pendant hanging off it; `asymGraph_asymmetric` proves its only automorphism is
+> the identity, by `decide` over all `720` permutations; and `euclideanCovariantFinVol_vacuous`
+> proves finite-volume OS1 holds there **at every mass, with none of the hypotheses
+> `LatticeOS1.gaussianField_euclideanCovariantFinVol` needs** — because there is nothing for the
+> axiom to say. **That is the contrast this file's site-transitivity result was written against**,
+> and it is now exhibited on both sides.
+
 **Not the reflections.** Transitivity is proved from translations alone. The torus also has
 coordinate permutations (`LatticePointGroup`) and reflections (`TorusReflection`), and this file
 neither uses nor mentions them beyond this sentence.

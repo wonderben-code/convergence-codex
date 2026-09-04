@@ -342,4 +342,5 @@ roots = [
   "BipartiteAdjSymmetry",
   "QuadFormAbsTwoSided",
   "GraphAutDegree",
+  "AsymmetricGraph",
 ]

@@ -66,6 +66,17 @@ enumeration. **This file supplies exactly the lemmas that route needs and stops 
 offered is the shape, and `ERRATUM 194` records four wrong difficulty estimates on this estate's
 chains.
 
+> ⚠ **AND THE ORDERING ABOVE IS ITSELF A WRONG ESTIMATE, KEPT AS WRITTEN** (`ERRATUM 94`,
+> **`ERRATUM 447`**, the next unit). `AsymmetricGraph.asymGraph_asymmetric` settles all `720`
+> permutations by `decide` in **20 seconds**, needing one `inferInstanceAs` and one
+> `set_option maxRecDepth` — **neither of them kernel reduction**, which is what this paragraph
+> named as the risk. **And the invariant route does not start**: its first step was
+> *"`eq_of_degree_unique` fixes the degree-`1` vertex outright"* on the sequence `(1,2,2,3,3,3)`,
+> **which has two vertices of degree `1` and so no unique degree at all** — a misreading of a
+> hypothesis this same unit proved. **Declining to give a time while giving a confident ordering is
+> the same act in a thinner disguise**: an ordering is an estimate. The description of the two
+> routes is accurate and is why the paragraph is kept.
+
 ## What is NOT here
 
 **No asymmetric graph.** The fence is unchanged; only its cost is now written down.
