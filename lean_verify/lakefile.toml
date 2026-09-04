@@ -346,4 +346,5 @@ roots = [
   "NeighborDegreeInvariant",
   "TorusBoundTightIff",
   "TorusFibreOrbitPartition",
+  "LatticeRegularitySharp",
 ]
