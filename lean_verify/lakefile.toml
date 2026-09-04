@@ -334,4 +334,5 @@ roots = [
   "HermitianTracePower",
   "HermitianTraceMoments",
   "AdjNormSqrtDegree",
+  "StarAdjNormExact",
 ]

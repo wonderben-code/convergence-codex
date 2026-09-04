@@ -46,6 +46,13 @@ where it stands: on the star `K_{1,n}` the adjacency eigenvalues are `±√n`, s
 > star that reads `√n ≤ ‖A‖` — the lower half of `‖A‖ = √n`, and the half that shows the constant
 > here cannot be improved. **What is still not formalised is the upper half and the star itself**:
 > no `K_{1,n}` is constructed anywhere in the estate and no eigenvalue of one is computed.
+>
+> ⚠⚠ **AND THE REST OF IT THE SAME DAY** (`ERRATUM 94`). `StarAdjNormExact.starGraph` is the star,
+> `norm_adjMatrix_starGraph_eq` is `‖A‖ = √(card V − 1)`, and `norm_lt_degree` states the gap
+> outright: on a star with at least two leaves `‖A‖ < Δ`, strictly. **The sentence above was true
+> for one day.** No eigenvalue is computed even now — the upper half is a Loewner bracket from
+> Cauchy–Schwarz, not a diagonalisation — so *"no eigenvalue of one is computed"* still stands as
+> written.
 
 **No wall moves.** `W1`'s open part is `OS0`/`OS1`/`OS4` (`ERRATUM 441`), and a sharper factor in a
 necessary condition is not a converse.

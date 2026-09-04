@@ -49,6 +49,15 @@ it does not care about.
   `‖A‖ ≤ Δ` is bracketed from below by `√Δ`. **The bullet still stands**: `√Δ` is not `Δ`, the gap
   is the whole distance between the star and the regular class, and neither endpoint says which
   graphs attain the upper one.
+
+  **⚠⚠ AND THE STAR IN THIS BULLET IS NOW A THEOREM, LATER THE SAME DAY** (`ERRATUM 94`).
+  `StarAdjNormExact.norm_adjMatrix_starGraph_eq`: `‖A‖ = √(card V − 1)` on the star, and
+  `norm_lt_degree`: `‖A‖ < Δ` strictly once it has two leaves. **This bullet's own example stopped
+  being an assertion and became a computation**, and that file's
+  `le_sqrt_of_universal_degree_bound` shows the star forces `√` on any bound written as a function
+  of the degree alone. **The bullet
+  still stands where it stands**: it says the graphs ATTAINING `‖A‖ = Δ` are not identified, and
+  they are still not — a graph where the bound fails is not a characterisation of where it holds.
 * **No wall moves and no published tag moves.** No measure, no limit, no compactness.
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.

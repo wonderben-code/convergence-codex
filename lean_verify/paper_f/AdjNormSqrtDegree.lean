@@ -51,6 +51,18 @@ this shape can do better than the square root, and that this estate has **not** 
 impossible is a claim about every route, and this file is not entitled to it. The item that would
 settle it is on the watchlist, filed by this unit.
 
+> ⚠ **2026-09-04, WITHIN THE DAY: SETTLED, AND BY MORE THAN THE PARAGRAPH ABOVE ASKED FOR**
+> (`ERRATUM 94`; the paragraph is kept exactly as written, because it was right to refuse).
+> `StarAdjNormExact.norm_adjMatrix_starGraph_eq` proves `‖A‖ = √(card V − 1)` on the star, so the
+> constant IS attained — and `StarAdjNormExact.le_sqrt_of_universal_degree_bound` goes further:
+> **no function of the degree alone beats the square root.** If `f (G.degree v) ≤ ‖G.adjMatrix ℝ‖`
+> at every vertex of every finite graph then `f n ≤ √n` for every `n`.
+> `StarAdjNormExact.sqrt_is_the_optimal_degree_bound` states attainment and optimality as one pair,
+> because a sharpness claim is two statements and this estate has previously written one and
+> implied the other. **What the paragraph above says about the ESTATE was true when written and has
+> been false since that file landed**; what it says about method — that a claim of impossibility
+> needs proof, not inheritance — is why the proof exists.
+
 ## What is NOT here
 
 **Not the maximum.** The statement is per-vertex. `√Δ ≤ ‖A‖` for a maximum-degree vertex is the
@@ -66,6 +78,14 @@ at the centre and the all-ones block on the leaves, so `‖A²‖ = n`, and for 
 detour needed, and `SimpleGraph.transpose_adjMatrix` supplies the symmetry. **It is still not
 attempted and not costed here** (`ERRATUM 246`): what is claimed is that the tool exists, not that
 the theorem is cheap.
+
+> ⚠ **2026-09-04: DONE, AND NONE OF THIS PARAGRAPH'S ROUTE WAS USED** (`ERRATUM 94`,
+> **`ERRATUM 443`**, within the day). `StarAdjNormExact` forms no `A²`, computes no all-ones block
+> and never invokes `l2_opNorm_conjTranspose_mul_self`. The star's quadratic form is
+> `2·x c·∑_{v ≠ c} x v`; Cauchy–Schwarz and `2ab ≤ a² + b²` give `−√n • 1 ≼ A ≼ √n • 1` directly,
+> and `SymmetricOpNorm.l2_opNorm_le_of_abs_le` — which already existed — converts that to the norm.
+> **The paragraph is kept because the route it names is real and would also work.** What was wrong
+> was the definite article.
 
 **Not Perron–Frobenius.** `‖A‖ = Δ ⟹ regular` for connected graphs stays open exactly where
 `AdjNormRegular` left it. A lower bound below `Δ` is not a converse.
