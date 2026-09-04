@@ -340,4 +340,5 @@ roots = [
   "NonnegPerronNorm",
   "AdjSpectrumBracket",
   "BipartiteAdjSymmetry",
+  "QuadFormAbsTwoSided",
 ]
