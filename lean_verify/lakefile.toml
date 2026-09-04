@@ -351,4 +351,5 @@ roots = [
   "LatticeFloorOptimal",
   "FieldIsometryInvariance",
   "FieldSignFlip",
+  "FieldSignFlipSharp",
 ]
