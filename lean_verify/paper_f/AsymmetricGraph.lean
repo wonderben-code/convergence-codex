@@ -41,6 +41,15 @@ a first test graph built for this file had degrees `(1,3,2,4,2,2)`, three of the
 still not asymmetric**: it admits the transposition `(4 5)`. Degrees alone do not separate the
 smallest asymmetric graphs, which is precisely why they are the smallest.
 
+> ⚠ **THAT ROUTE DOES NOT START; AN INVARIANT ROUTE DOES, ONE RUNG UP** (2026-09-04, `ERRATUM
+> 448`; the paragraph is kept because the failed step is exactly what pointed at the working one).
+> `NeighborDegreeInvariant.asymGraph_asymmetric_invariant` re-proves `asymGraph_asymmetric`
+> **without inspecting a single permutation**, from the pair *(degree, the set of the neighbours'
+> degrees)* — which separates all six vertices, `36` ordered pairs by `decide`. The rung it needs,
+> `IsGraphAut.neighborDegrees_image`, is `GraphAutDegree`'s two lemmas composed. **The ordering
+> `ERRATUM 447` corrects still stands**: that route needed a lemma that did not exist and arrived
+> second.
+
 ## What is NOT here
 
 **No general theory.** One graph, `decide`, and the consequence. Nothing here characterises

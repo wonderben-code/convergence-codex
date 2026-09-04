@@ -343,4 +343,5 @@ roots = [
   "QuadFormAbsTwoSided",
   "GraphAutDegree",
   "AsymmetricGraph",
+  "NeighborDegreeInvariant",
 ]
