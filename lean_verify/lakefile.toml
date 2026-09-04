@@ -352,4 +352,5 @@ roots = [
   "FieldIsometryInvariance",
   "FieldSignFlip",
   "FieldSignFlipSharp",
+  "FieldCommutant",
 ]
