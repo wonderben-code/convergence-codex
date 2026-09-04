@@ -8,6 +8,16 @@ import RayleighVariational
 `SymmetricOpNorm` and the whole adjacency chain bound `‖A‖`, the largest eigenvalue **in absolute
 value**. For a matrix with nonnegative entries these coincide — a nonnegative matrix's Perron root
 dominates every other eigenvalue in modulus — and **this estate did not prove it.**
+
+> ⚠ **THAT CLAUSE IS FALSE AND IS KEPT AS WRITTEN** (`ERRATUM 94`, **`ERRATUM 446`**, the next
+> unit). `FrobeniusTopBound.abs_le_top_of_all` proves exactly this, with a docstring reading
+> *"EVERY EIGENVALUE IS DOMINATED IN MODULUS BY THE TOP ONE, for a Hermitian matrix with
+> non-negative entries"*, resting on `PerronGap.abs_le_top_of_eigenvector`, older still. **What was
+> genuinely absent, and is what this file supplies, is the identification with the OPERATOR NORM**
+> — `‖A‖ = topEigen`, in `dotProduct` form — which nothing in the estate had. The search that
+> preceded this file probed `topEigen` beside `‖`, the right probe for the identification and the
+> wrong one for the fact: the older theorems are written at a designated maximising index and never
+> say `topEigen`. `AdjSpectrumBracket.abs_eigenvalues_le_topEigen` joins the two vocabularies.
 `AdjNormAverageDegree`'s header fenced the gap this morning in as many words:
 
 > *"the two coincide for a nonnegative matrix by Perron–Frobenius and **this estate does not prove
@@ -45,6 +55,15 @@ using `Aᵢⱼ ≥ 0` at the first step and `quadForm_le_topEigen` **at `|x|`** 
 **So the absolute value is taken on the VECTOR, not on the matrix**, and that is the trick: it turns
 a statement about cancellation among signs into an instance of a bound the estate already had.
 
+> ⚠ **AND IT IS NOT THIS FILE'S TRICK** (`ERRATUM 94`, **`ERRATUM 446`**; the paragraph is kept
+> because the argument it describes is the one this file runs).
+> `PerronGap.abs_le_top_of_eigenvector` does the same thing and has for weeks:
+> `PerronVector.absVec` is the entrywise absolute value of a vector and
+> `PerronVector.normSq_absVec` is `⟪|v|,|v|⟫ = ⟪v,v⟫`, which is `dotProduct_abs_self`
+> below under another name and in another vector API. **Both statements stand** — one in
+> `EuclideanSpace`, one in `dotProduct`, a distinction this estate has had to bridge before
+> (`ERRATUM 337`) — but the idea was borrowed, not found.
+
 ## What this buys, and it is not decoration
 
 Every floor in the adjacency chain becomes a floor on the **top eigenvalue**, which is the quantity
@@ -59,6 +78,12 @@ the top of the spectrum rather than the bottom. It says **nothing** about simpli
 eigenvalue, nothing about positivity of its eigenvector, and nothing about irreducibility;
 `PerronSimple` and `PerronVector` are where those live, for **strictly** positive matrices, and
 neither applies to an adjacency matrix.
+
+> ⚠ **AND THIS NAMES THE WRONG TWO** (`ERRATUM 94`, **`ERRATUM 446`**). It is true of `PerronSimple`
+> and `PerronVector`, and the files that DO apply at nonnegative entries — and that already carry
+> the domination clause — are **`PerronGap`** and **`FrobeniusTopBound`**, neither named here. A
+> fence that surveys the neighbouring theory and omits the two neighbours holding the
+> claimed-absent fact is how the absence claim above survived to be written.
 
 **Not a strict domination.** `‖A‖ = topEigen` does not say the second eigenvalue is strictly below,
 which is exactly what `UNLOCK_WATCHLIST`'s Ising sub-top-ratio item needs and what this does not

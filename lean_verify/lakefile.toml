@@ -338,4 +338,5 @@ roots = [
   "AdjNormAverageDegree",
   "TorusSiteTransitive",
   "NonnegPerronNorm",
+  "AdjSpectrumBracket",
 ]
