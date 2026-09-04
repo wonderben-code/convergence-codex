@@ -42,6 +42,13 @@ it does not care about.
   the instance. **The bullet stays true off that class** — on the star `K_{1,n}` the norm is `√n`
   against `Δ = n` — and the converse, that a *connected* graph attaining it must be regular, is
   classical Perron–Frobenius and is still **not proved here**.
+
+  **⚠ AND SINCE 2026-09-04 THE BOUND IS TWO-SIDED** (`ERRATUM 94`).
+  `AdjNormSqrtDegree.sqrt_degree_le_norm_adjMatrix` gives `√(deg v) ≤ ‖A‖` at every vertex of every
+  finite graph — no regularity, no connectivity — so read at a maximum-degree vertex this bullet's
+  `‖A‖ ≤ Δ` is bracketed from below by `√Δ`. **The bullet still stands**: `√Δ` is not `Δ`, the gap
+  is the whole distance between the star and the regular class, and neither endpoint says which
+  graphs attain the upper one.
 * **No wall moves and no published tag moves.** No measure, no limit, no compactness.
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
