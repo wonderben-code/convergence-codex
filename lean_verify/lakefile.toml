@@ -348,4 +348,5 @@ roots = [
   "TorusFibreOrbitPartition",
   "LatticeRegularitySharp",
   "LatticeRegularityFloor",
+  "LatticeFloorOptimal",
 ]

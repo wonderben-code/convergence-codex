@@ -60,6 +60,15 @@ optimality at the level of the Loewner order, where the biconditional does the w
 `massive G m`, which this estate produces only on named families (`LaplacianBoundSharp`,
 `TorusRegular`), not in general. **Not attempted and no cost claimed.**
 
+> ⚠ **THE PARAGRAPH ABOVE CONFLATES TWO QUESTIONS AND IS KEPT AS WRITTEN** (`ERRATUM 94`,
+> **`ERRATUM 452`**, 2026-09-04, the very next unit). *Optimality of the constant* and *attainment
+> at a test function* are different claims, and **only the second needs an eigenvector**.
+> `LatticeFloorOptimal.le_of_le_generatingFunctional` proves the first with none: a floor holding at
+> every test function **is** a Loewner floor, because a symmetric matrix whose quadratic form
+> dominates `c‖x‖²` everywhere is `≽ c · 1` by definition, and `greatest_smul_one_le_green` already
+> caps every Loewner floor. **The tool was in this file.** What the paragraph asked for — an `f`
+> where the bound is met — is still open, and is still not attempted.
+
 **Not a lower bound with a graph-free constant.** `‖massive G m‖` is a property of the graph, and it
 must be: on a graph with an edge the functional genuinely is larger than the edgeless one at the
 same `‖f‖`, so no floor naming only `m` can be sharp. **That is the asymmetry between the two ends
