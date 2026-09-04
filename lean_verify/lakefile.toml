@@ -336,4 +336,5 @@ roots = [
   "AdjNormSqrtDegree",
   "StarAdjNormExact",
   "AdjNormAverageDegree",
+  "TorusSiteTransitive",
 ]
