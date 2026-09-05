@@ -369,4 +369,5 @@ roots = [
   "FieldSymmetryGroup",
   "FieldCommutantSpectral",
   "FieldInvarianceCommutes",
+  "FieldSimpleSpectrum",
 ]

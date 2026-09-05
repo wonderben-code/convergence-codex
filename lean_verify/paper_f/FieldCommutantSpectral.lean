@@ -53,6 +53,11 @@ frequency-fibre counts, and **that composition is not made**. **Not attempted, n
 **does not build the isomorphism**, which needs the eigenspaces indexed by distinct eigenvalue —
 not by basis vector — and this file does not do that. Naming the shape is not proving it
 (`ERRATUM 194`).
+⚠ **SUPERSEDED AT ALL `dᵢ = 1`, kept as written** (`ERRATUM 94`): `FieldSimpleSpectrum` proves that
+a **simple** spectrum makes the symmetries exactly the `±1` patterns on the eigenbasis — every
+symmetry has signs, every sign pattern is a symmetry, and the signs determine it. **As of
+2026-09-05 the general case, and the packaging as a group isomorphism, are still not done** — both
+are on `UNLOCK_WATCHLIST` — so most of this paragraph stands.
 
 **NOT A CHARACTERISATION OF THE SYMMETRIES OF THE MEASURE, and this is the fence that matters
 most.** ⚠ **SUPERSEDED THE NEXT UNIT** by `FieldInvarianceCommutes`, and kept entire below

@@ -65,6 +65,9 @@ does *not* close. **Not attempted, no cost claimed** (`ERRATUM 246`).
 
 **No group structure.** `symmetryMatrices` is a `Set`, not a subgroup, and nothing here shows it is
 closed under multiplication — true and easy, and still not proved, so not claimed.
+⚠ **SUPERSEDED THE NEXT UNIT, kept as written** (`ERRATUM 94`): `FieldSymmetryGroup` proves the
+group law and bundles it as a `Submonoid`. **A fence that calls the thing behind it easy is a debt,
+and this one was paid within the hour.**
 
 **Nothing about the torus at `d > 1`.** Still `TorusFibreOrbitPartition`'s orbits, still not
 composed.
