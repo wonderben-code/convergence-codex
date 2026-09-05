@@ -48,6 +48,12 @@ attempted, with no cost claimed** (`ERRATUM 246`).
 instantiate that composition — it states the general case and names where the instance lives.
 
 **Still no description of the commutant**, and the degenerate-eigenspace rotations remain unbuilt.
+⚠ **SUPERSEDED 2026-09-05, kept as written** (`ERRATUM 94`, `ERRATUM 459`):
+`FieldCommutantSpectral.mul_green_comm_iff` describes it — a matrix commutes with `green` **iff**
+it carries every eigenvector to an eigenvector at the same eigenvalue — and
+`FieldInvarianceCommutes.mem_symmetryMatrices_iff_gaussianField_map` makes that a description of
+the symmetries of the measure and not of a subset of them. What is still missing is the
+`∏ᵢ O(dᵢ)` packaging, not a characterisation.
 
 **Not OS3 and not any OS axiom. No wall moves. No published tag moves.**
 

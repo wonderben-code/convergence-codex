@@ -47,6 +47,12 @@ independent members is the step this file does not take. **Not attempted, no cos
 ⚠ **THE SECOND HALF IS SUPERSEDED 2026-09-05, kept as written** (`ERRATUM 94`):
 `FieldRotationCount.infinite_symmetryMatrices_of_independent_eigenpair` counts them, from exactly
 this file's hypotheses. **The commutant is still not described**, and that half stands.
+⚠ **SUPERSEDED 2026-09-05, kept as written** (`ERRATUM 94`, `ERRATUM 459`):
+`FieldCommutantSpectral.mul_green_comm_iff` describes it — a matrix commutes with `green` **iff**
+it carries every eigenvector to an eigenvector at the same eigenvalue — and
+`FieldInvarianceCommutes.mem_symmetryMatrices_iff_gaussianField_map` makes that a description of
+the symmetries of the measure and not of a subset of them. What is still missing is the
+`∏ᵢ O(dᵢ)` packaging, not a characterisation.
 
 **Not OS3 and not any OS axiom. No wall moves. No published tag moves.**
 

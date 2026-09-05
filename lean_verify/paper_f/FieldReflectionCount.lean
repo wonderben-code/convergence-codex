@@ -51,6 +51,12 @@ still not described.**
 > indicators of a component and its complement. **Every word above stays true**: this file's
 > argument still separates nothing inside an eigenspace, and it is the pair that is new, not a
 > repair to the argument. The commutant is still not described and no rotation is built.
+> ⚠ **SUPERSEDED 2026-09-05, kept as written** (`ERRATUM 94`, `ERRATUM 459`):
+> `FieldCommutantSpectral.mul_green_comm_iff` describes it — a matrix commutes with `green` **iff**
+> it carries every eigenvector to an eigenvector at the same eigenvalue — and
+> `FieldInvarianceCommutes.mem_symmetryMatrices_iff_gaussianField_map` makes that a description of
+> the symmetries of the measure and not of a subset of them. What is still missing is the
+> `∏ᵢ O(dᵢ)` packaging, not a characterisation.
 
 **No new symmetry.** Every map here is one `FieldEigenReflection` already supplied; what is new is
 that they are pairwise different.

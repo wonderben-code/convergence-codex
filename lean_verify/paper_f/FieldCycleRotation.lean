@@ -60,6 +60,12 @@ circle gives one and nothing here compares them.
 ⚠ **THE SECOND HALF IS SUPERSEDED 2026-09-05, kept as written** (`ERRATUM 94`):
 `FieldRotationCount` compares them and finds infinitely many. **The commutant is still not
 described**, and that half stands.
+⚠ **SUPERSEDED 2026-09-05, kept as written** (`ERRATUM 94`, `ERRATUM 459`):
+`FieldCommutantSpectral.mul_green_comm_iff` describes it — a matrix commutes with `green` **iff**
+it carries every eigenvector to an eigenvector at the same eigenvalue — and
+`FieldInvarianceCommutes.mem_symmetryMatrices_iff_gaussianField_map` makes that a description of
+the symmetries of the measure and not of a subset of them. What is still missing is the
+`∏ᵢ O(dᵢ)` packaging, not a characterisation.
 
 **No wall moves.** `W1`'s open part is `OS0` and `OS4`, and `OS1` in its continuum sense; a wider
 finite-volume symmetry group is a wider shadow and not a smaller gap, which is what

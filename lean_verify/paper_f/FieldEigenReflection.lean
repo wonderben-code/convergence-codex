@@ -40,6 +40,12 @@ graph whose spectrum this estate computes (`CycleLaplacianSpectrum`, `BoxLapSpec
 **Still no description of the commutant.** Reflections along eigenvectors do not exhaust the
 orthogonal maps commuting with a symmetric operator — the rotations inside a degenerate eigenspace
 are the obvious others, and they remain unbuilt.
+⚠ **SUPERSEDED 2026-09-05, kept as written** (`ERRATUM 94`, `ERRATUM 459`):
+`FieldCommutantSpectral.mul_green_comm_iff` describes it — a matrix commutes with `green` **iff**
+it carries every eigenvector to an eigenvector at the same eigenvalue — and
+`FieldInvarianceCommutes.mem_symmetryMatrices_iff_gaussianField_map` makes that a description of
+the symmetries of the measure and not of a subset of them. What is still missing is the
+`∏ᵢ O(dᵢ)` packaging, not a characterisation.
 
 **Nothing about `v = 0`**, where `⟪v,v⟫ = 0` and the definition divides by it.
 

@@ -60,6 +60,12 @@ interior. **The route this sentence names was never necessary.**
 ⚠ **THE SECOND HALF IS SUPERSEDED 2026-09-05, kept as written** (`ERRATUM 94`):
 `FieldRotationCount.infinite_symmetryMatrices_box` counts them on this very graph — infinitely
 many, at every `2 ≤ d` and side length `≥ 2`. **The commutant is still not described.**
+⚠ **SUPERSEDED 2026-09-05, kept as written** (`ERRATUM 94`, `ERRATUM 459`):
+`FieldCommutantSpectral.mul_green_comm_iff` describes it — a matrix commutes with `green` **iff**
+it carries every eigenvector to an eigenvector at the same eigenvalue — and
+`FieldInvarianceCommutes.mem_symmetryMatrices_iff_gaussianField_map` makes that a description of
+the symmetries of the measure and not of a subset of them. What is still missing is the
+`∏ᵢ O(dᵢ)` packaging, not a characterisation.
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/

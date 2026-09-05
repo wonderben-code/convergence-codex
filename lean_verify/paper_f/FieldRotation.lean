@@ -64,6 +64,12 @@ about its difficulty (`ERRATUM 194`); no cost is claimed (`ERRATUM 246`).
 **Nothing on a connected graph**, for the reason `FieldComponentEigen` gives.
 
 **No description of the commutant.** One rotation is not the set of them.
+⚠ **SUPERSEDED 2026-09-05, kept as written** (`ERRATUM 94`, `ERRATUM 459`):
+`FieldCommutantSpectral.mul_green_comm_iff` describes it — a matrix commutes with `green` **iff**
+it carries every eigenvector to an eigenvector at the same eigenvalue — and
+`FieldInvarianceCommutes.mem_symmetryMatrices_iff_gaussianField_map` makes that a description of
+the symmetries of the measure and not of a subset of them. What is still missing is the
+`∏ᵢ O(dᵢ)` packaging, not a characterisation.
 
 **Not OS3 and not any OS axiom. No wall moves. No published tag moves.**
 
