@@ -378,4 +378,5 @@ roots = [
   "FieldLinearClassified",
   "FieldSymmetryIso",
   "FieldAffineSymmetry",
+  "FieldAffineMapSymmetry",
 ]

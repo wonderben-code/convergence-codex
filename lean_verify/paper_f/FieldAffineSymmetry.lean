@@ -52,6 +52,11 @@ extra parameter and not about non-linear maps of any kind.
 `ContinuousLinearMap` part; `gaussianField_map_linearMap_iff` drops continuity but has no
 translation. **An affine map with a merely-linear part is not stated**, and no `AffineMap` from
 Mathlib is used — `affMap` is a bare function. Not attempted, no cost claimed (`ERRATUM 246`).
+⚠ **SUPERSEDED THE NEXT UNIT, kept as written** (`ERRATUM 94`):
+`FieldAffineMapSymmetry.gaussianField_map_affine_iff` takes `f : E →ᵃ[ℝ] E`, whose linear part is a
+bare `→ₗ[ℝ]`, so **all three clauses are answered at once** — Mathlib's `AffineMap` is adopted, the
+merely-linear part is stated, and the two removals are combined. **The fence was right that the
+route was the bundling**: the whole file is `AffineMap.decomp` plus this file's two theorems.
 
 **NO CARDINALITY**, unchanged: the isomorphism of `FieldSymmetryIso` moves every counting question
 onto `Matrix.unitaryGroup V ℝ`, and `FieldLineCount`'s `2^(k+1)` is still a count of the
