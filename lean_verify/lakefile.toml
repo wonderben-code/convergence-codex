@@ -355,4 +355,5 @@ roots = [
   "FieldCommutant",
   "FieldHouseholder",
   "FieldEigenReflection",
+  "FieldSignReflection",
 ]
