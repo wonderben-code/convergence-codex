@@ -377,4 +377,5 @@ roots = [
   "FieldSqrtConjugation",
   "FieldLinearClassified",
   "FieldSymmetryIso",
+  "FieldAffineSymmetry",
 ]
