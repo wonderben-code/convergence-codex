@@ -379,4 +379,5 @@ roots = [
   "FieldSymmetryIso",
   "FieldAffineSymmetry",
   "FieldAffineMapSymmetry",
+  "FieldIsometryLinear",
 ]
