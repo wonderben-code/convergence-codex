@@ -51,6 +51,13 @@ is a rescaling — replace `u, v` by `√⟪v,v⟫ · u` and `√⟪u,u⟫ · v`
 `Real.sq_sqrt` and no new idea, which is said as a description of the step and **not** as a claim
 about its difficulty (`ERRATUM 194`); no cost is claimed (`ERRATUM 246`).
 
+> ⚠ **THE HYPOTHESIS IS DISCHARGED THE NEXT UNIT AND THIS PARAGRAPH IS KEPT AS WRITTEN**
+> (`ERRATUM 94`, 2026-09-05). `FieldRotationInstance.exists_equal_length_eigenpair` rescales any
+> orthogonal eigenpair to a common squared length, and
+> `exists_rotation_symmetry_of_not_reachable` puts a genuine rotation on **every disconnected
+> graph**. **The paragraph is right about this file** — the hypothesis is carried here — and right
+> that the rescaling is the step; what it could not say is whether the step would land.
+
 **Nothing on a connected graph**, for the reason `FieldComponentEigen` gives.
 
 **No description of the commutant.** One rotation is not the set of them.
