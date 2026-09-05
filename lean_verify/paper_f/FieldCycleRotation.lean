@@ -41,8 +41,11 @@ and the first on a graph the OS programme is about.
 `TorusFibreOrbitPartition`'s orbits and **that composition is not made here. Not attempted, no cost
 claimed** (`ERRATUM 246`).
 
-**Not the box**, whose spectrum is `BoxLapSpectrum` and whose eigenspace dimensions are
-`BoxEigenspaceDimension`; the same composition would be needed and is not made.
+**Not the box** — **SUPERSEDED 2026-09-05**, annotated where it stands rather than deleted
+(`ERRATUM 94`), because it was true when written. The fence said the composition through
+`BoxLapSpectrum` and `BoxEigenspaceDimension` "would be needed and is not made"; it is now made,
+in `FieldBoxRotation.exists_rotation_symmetry_box`, and discharged at every `2 ≤ d` and every side
+length `≥ 2` — the physical `d = 4` included — by `exists_rotation_symmetry_box_of_two_le`.
 
 **No description of the commutant**, and no count of the rotations: every `(c, s)` on the unit
 circle gives one and nothing here compares them.
