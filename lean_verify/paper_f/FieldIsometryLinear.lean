@@ -48,6 +48,14 @@ it and it is not there — every `ofSurjective` constructor takes surjectivity a
 `LinearIsometry.toLinearIsometryEquiv`, which does derive it from equal `finrank`, needs the map to
 be linear already, which is what this file is trying to conclude. **A search, not an impression**
 (`ERRATUM 450`). Not attempted, no cost claimed (`ERRATUM 246`).
+⚠ **SUPERSEDED THE NEXT UNIT, kept as written** (`ERRATUM 94`, `ERRATUM 463`):
+`InnerIsometryOnto.surjective` proves it, and **without Mazur–Ulam**. The search above was right and
+the *framing* was wrong: the statement filed as missing is the **normed**-space one, which is indeed
+not in Mathlib; the estate's objects form an **inner product** space, where polarisation gives
+linearity directly and no surjectivity is assumed.
+`InnerIsometryOnto.gaussianField_map_isometry_iff` restates this file's classification for an
+`Isometry`. **The normed-space question is still open and still not in Mathlib** — it was simply
+never the blocker.
 
 **NOTHING ABOUT MAPS THAT ARE NEITHER LINEAR NOR ISOMETRIC.** What is removed is the *linearity*
 assumption from the isometry chain; the *isometry* assumption stays and is doing all the work.

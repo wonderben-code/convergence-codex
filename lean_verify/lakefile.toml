@@ -380,4 +380,5 @@ roots = [
   "FieldAffineSymmetry",
   "FieldAffineMapSymmetry",
   "FieldIsometryLinear",
+  "InnerIsometryOnto",
 ]
