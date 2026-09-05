@@ -44,6 +44,9 @@ is that `green` is positive definite.
 `mvCLM L` for some `L` is standard — `Matrix.toEuclideanLin` is a `LinearEquiv` and a linear map in
 finite dimension is continuous — **and it is not invoked here**, so the statement quantifies over
 matrices and not over continuous linear maps. Not attempted, no cost claimed (`ERRATUM 246`).
+⚠ **SUPERSEDED THE NEXT UNIT, kept as written** (`ERRATUM 94`):
+`FieldSymmetryIso.gaussianField_map_iff_exists_orthogonal` quantifies over continuous linear maps,
+through `FieldSymmetryIso.exists_matrix`. **The fence was right that the step is standard.**
 
 **NO CARDINALITY, and none is proved.** The bijection is onto the orthogonal matrices, so **any**
 statement about how many linear symmetries there are is a statement about `O(V)`, which is Mathlib's
@@ -52,6 +55,9 @@ object and not this estate's. **Nothing here counts anything.**
 **NO GROUP ISOMORPHISM.** `conjSq_bijOn` is a bijection of **sets**. That it carries matrix
 multiplication to matrix multiplication is true and **not proved**, so the word *group* is not used
 of the bijection.
+⚠ **SUPERSEDED THE NEXT UNIT, kept as written** (`ERRATUM 94`): `FieldSymmetryIso.conjSqEquiv` is
+a `MulEquiv` from `Matrix.unitaryGroup V ℝ` to the symmetries as a `Submonoid`. **Still no
+`Subgroup` instance**, and still no cardinality.
 
 **NOTHING ABOUT NON-LINEAR MAPS.** The full automorphism group of the measure is still untouched.
 
@@ -91,30 +97,42 @@ theorem conjSq_injective (hm : m ≠ 0) : Function.Injective (conjSq G m) := by
 
 /-! ## 2. Surjective onto the linear symmetries -/
 
+/-- The inverse conjugation, `L ↦ C^{-1/2} L C^{1/2}`, exposed so that a group isomorphism can use
+it as a map rather than dig it out of an existential. -/
+noncomputable def invConj (G : SimpleGraph V) [DecidableRel G.Adj] (m : ℝ)
+    (L : Matrix V V ℝ) : Matrix V V ℝ :=
+  (sqGreen G m)⁻¹ * L * sqGreen G m
+
+theorem invConj_transpose (L : Matrix V V ℝ) :
+    (invConj G m L)ᵀ = sqGreen G m * Lᵀ * (sqGreen G m)⁻¹ := by
+  rw [invConj, Matrix.transpose_mul, Matrix.transpose_mul, sqGreen_transpose,
+    inv_sqGreen_transpose, Matrix.mul_assoc]
+
+theorem invConj_orthogonal (hm : m ≠ 0) {L : Matrix V V ℝ}
+    (hL : L * green G m * Lᵀ = green G m) : (invConj G m L)ᵀ * invConj G m L = 1 := by
+  refine mul_eq_one_comm.mp ?_
+  rw [invConj_transpose, invConj]
+  calc (sqGreen G m)⁻¹ * L * sqGreen G m * (sqGreen G m * Lᵀ * (sqGreen G m)⁻¹)
+      = (sqGreen G m)⁻¹ * (L * (sqGreen G m * sqGreen G m) * Lᵀ) * (sqGreen G m)⁻¹ := by
+        simp only [Matrix.mul_assoc]
+    _ = (sqGreen G m)⁻¹ * (sqGreen G m * sqGreen G m) * (sqGreen G m)⁻¹ := by
+        rw [sqGreen_mul_self hm, hL]
+    _ = 1 := by
+        rw [← Matrix.mul_assoc, inv_mul_sqGreen hm, Matrix.one_mul, sqGreen_mul_inv hm]
+
+theorem conjSq_invConj (hm : m ≠ 0) (L : Matrix V V ℝ) : conjSq G m (invConj G m L) = L := by
+  rw [conjSq, invConj]
+  calc sqGreen G m * ((sqGreen G m)⁻¹ * L * sqGreen G m) * (sqGreen G m)⁻¹
+      = (sqGreen G m * (sqGreen G m)⁻¹) * L * (sqGreen G m * (sqGreen G m)⁻¹) := by
+        simp only [Matrix.mul_assoc]
+    _ = L := by rw [sqGreen_mul_inv hm, Matrix.one_mul, Matrix.mul_one]
+
 /-- **EVERY LINEAR SYMMETRY IS A CONJUGATED ORTHOGONAL MATRIX**, and the orthogonal matrix is
 `C^{-1/2} L C^{1/2}`. -/
 theorem exists_orthogonal_of_symmetry (hm : m ≠ 0) {L : Matrix V V ℝ}
     (hL : L * green G m * Lᵀ = green G m) :
-    ∃ O : Matrix V V ℝ, Oᵀ * O = 1 ∧ conjSq G m O = L := by
-  refine ⟨(sqGreen G m)⁻¹ * L * sqGreen G m, ?_, ?_⟩
-  · refine mul_eq_one_comm.mp ?_
-    have ht : ((sqGreen G m)⁻¹ * L * sqGreen G m)ᵀ
-        = sqGreen G m * Lᵀ * (sqGreen G m)⁻¹ := by
-      rw [Matrix.transpose_mul, Matrix.transpose_mul, sqGreen_transpose,
-        inv_sqGreen_transpose, Matrix.mul_assoc]
-    rw [ht]
-    calc (sqGreen G m)⁻¹ * L * sqGreen G m * (sqGreen G m * Lᵀ * (sqGreen G m)⁻¹)
-        = (sqGreen G m)⁻¹ * (L * (sqGreen G m * sqGreen G m) * Lᵀ) * (sqGreen G m)⁻¹ := by
-          simp only [Matrix.mul_assoc]
-      _ = (sqGreen G m)⁻¹ * (sqGreen G m * sqGreen G m) * (sqGreen G m)⁻¹ := by
-          rw [sqGreen_mul_self hm, hL]
-      _ = 1 := by
-          rw [← Matrix.mul_assoc, inv_mul_sqGreen hm, Matrix.one_mul, sqGreen_mul_inv hm]
-  · rw [conjSq]
-    calc sqGreen G m * ((sqGreen G m)⁻¹ * L * sqGreen G m) * (sqGreen G m)⁻¹
-        = (sqGreen G m * (sqGreen G m)⁻¹) * L * (sqGreen G m * (sqGreen G m)⁻¹) := by
-          simp only [Matrix.mul_assoc]
-      _ = L := by rw [sqGreen_mul_inv hm, Matrix.one_mul, Matrix.mul_one]
+    ∃ O : Matrix V V ℝ, Oᵀ * O = 1 ∧ conjSq G m O = L :=
+  ⟨invConj G m L, invConj_orthogonal hm hL, conjSq_invConj hm L⟩
 
 /-! ## 3. So the conjugation is a bijection -/
 
