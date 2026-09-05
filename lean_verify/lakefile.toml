@@ -356,4 +356,5 @@ roots = [
   "FieldHouseholder",
   "FieldEigenReflection",
   "FieldSignReflection",
+  "FieldReflectionCount",
 ]
