@@ -28,9 +28,11 @@ to `u` and **`gramSchmidt_ne_zero`** proving it non-zero when `v ∉ span u`, st
 **`gramSchmidt_eigen`** — and it is an eigenvector at the same eigenvalue.
 
 **`exists_rotation_symmetry_of_independent_eigenpair`** — **so two INDEPENDENT eigenvectors at one
-eigenvalue give a rotation symmetry of the Gaussian field**, with no orthogonality assumed
-anywhere. `FieldRotationInstance.exists_rotation_symmetry_of_not_reachable` is the disconnected
-instance and keeps its own proof (`ERRATUM 337`).
+eigenvalue give a rotation symmetry of the Gaussian field at `m ≠ 0`**, with no orthogonality
+assumed anywhere. **The mass hypothesis is part of the claim** — at `m = 0` the field is a point
+mass, every isometry preserves it, and there is no eigenvector to rotate (`FieldMassNecessity`,
+`ERRATUM 455`). `FieldRotationInstance.exists_rotation_symmetry_of_not_reachable` is the
+disconnected instance and keeps its own proof (`ERRATUM 337`).
 
 ## What is NOT here
 

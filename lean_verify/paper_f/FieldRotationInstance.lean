@@ -25,9 +25,11 @@ multiplies it by the square.
 common eigenvalue, an orthogonal eigenpair at that eigenvalue with **equal** squared lengths.
 
 **`exists_rotation_symmetry_of_not_reachable`** — **so every disconnected graph carries a genuine
-rotation of the Gaussian field**: an orthogonal matrix, not the identity, commuting with `green`,
-whose isometry leaves the measure invariant. That is the chain of 4–5 September instantiated on a
-named class of graphs for the first time.
+rotation of the Gaussian field, at `m ≠ 0`**: an orthogonal matrix, not the identity, commuting
+with `green`, whose isometry leaves the measure invariant. **The mass hypothesis is part of the
+claim, not boilerplate** — at `m = 0` the field is a point mass and every isometry preserves it,
+on every graph (`FieldMassNecessity`, `ERRATUM 455`). That is the chain of 4–5 September
+instantiated on a named class of graphs for the first time.
 
 ## What is NOT here
 

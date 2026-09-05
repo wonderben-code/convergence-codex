@@ -30,8 +30,10 @@ swapped.
 **`exists_independent_eigenpair_box`** — hence two independent eigenvectors of `green` there.
 
 **`exists_rotation_symmetry_box`** — **so `boxGraph d n` carries a genuine rotation of the Gaussian
-field** whenever some frequency has two distinct coordinates: an orthogonal matrix, not the
-identity, commuting with the propagator, whose isometry leaves the measure invariant.
+field, at `m ≠ 0`**, whenever some frequency has two distinct coordinates: an orthogonal matrix,
+not the identity, commuting with the propagator, whose isometry leaves the measure invariant.
+**The mass hypothesis is part of the claim** — at `m = 0` the field is a point mass that every
+isometry preserves, on every graph and in every dimension (`FieldMassNecessity`, `ERRATUM 455`).
 
 **`exists_rotation_symmetry_box_of_two_le`** — and that hypothesis is met at every `2 ≤ d` and
 `2 ≤ n`, which includes `d = 4`.

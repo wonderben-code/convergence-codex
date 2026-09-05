@@ -36,7 +36,10 @@ action on the two axes.
 eigenvalue then `R` commutes with it: each of `A`, `B`, `C`, `D` does, because `green` moves through
 a rank-one matrix on either side and produces the same scalar.
 
-**`gaussianField_map_rotMatrix`** — **so the Gaussian field is invariant under it.**
+**`gaussianField_map_rotMatrix`** — **so the Gaussian field is invariant under it**, at `m ≠ 0`.
+**The mass hypothesis is stated here and in every summary below because it is what makes the
+statement say anything**: `FieldMassNecessity` proves `gaussianField G 0` is a point mass at the
+origin, which every linear isometry preserves on every graph (`ERRATUM 455`).
 
 **`rotMatrix_ne_one`** — and at `s ≠ 0` it is not the identity, so this is a symmetry and not a
 restatement of one.

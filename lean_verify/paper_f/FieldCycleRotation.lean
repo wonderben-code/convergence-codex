@@ -30,8 +30,10 @@ eigenvectors of `massive`, and hence of `green` at the reciprocal eigenvalue
 the eigenvalue away from zero).
 
 **`exists_rotation_symmetry_cycle`** — **the connected cycle carries a genuine rotation of the
-Gaussian field**: an orthogonal matrix, not the identity, commuting with the propagator, whose
-isometry leaves the measure invariant. **The first symmetry of this chain on a connected graph**,
+Gaussian field, at `m ≠ 0`**: an orthogonal matrix, not the identity, commuting with the
+propagator, whose isometry leaves the measure invariant. **The mass hypothesis is part of the
+claim** — at `m = 0` the field is a point mass that every isometry preserves
+(`FieldMassNecessity`, `ERRATUM 455`). **The first symmetry of this chain on a connected graph**,
 and the first on a graph the OS programme is about.
 
 ## What is NOT here
