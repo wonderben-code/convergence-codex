@@ -373,4 +373,5 @@ roots = [
   "FieldSimpleCriterion",
   "FieldLineCount",
   "FieldTorusRotation",
+  "FieldLinearSymmetry",
 ]
