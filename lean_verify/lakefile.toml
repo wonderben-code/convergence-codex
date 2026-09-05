@@ -371,4 +371,5 @@ roots = [
   "FieldInvarianceCommutes",
   "FieldSimpleSpectrum",
   "FieldSimpleCriterion",
+  "FieldLineCount",
 ]

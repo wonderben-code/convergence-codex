@@ -181,6 +181,25 @@ theorem exists_signs_line {m : ℕ} {mass : ℝ} (hmass : mass ≠ 0)
       ∀ j, T (hH.eigenvectorBasis j) = ε j • hH.eigenvectorBasis j :=
   FieldSimpleSpectrum.exists_signs hmass hH (eigenvalues_injective_line hmass hH) hT
 
+/-- **A SIGN PATTERN IS A `signIsometry`**, with the sign set read off as a `Finset`. Exposed
+rather than inlined so that a count of the symmetries can reuse it. -/
+theorem exists_signIsometry_eq {m : ℕ} {mass : ℝ}
+    (hH : (green (boxGraph 1 (m + 1)) mass).IsHermitian)
+    {T : EuclideanSpace ℝ (Site 1 (m + 1)) ≃ₗᵢ[ℝ] EuclideanSpace ℝ (Site 1 (m + 1))}
+    (hsigns : ∃ ε : Site 1 (m + 1) → ℝ, (∀ j, ε j = 1 ∨ ε j = -1) ∧
+      ∀ j, T (hH.eigenvectorBasis j) = ε j • hH.eigenvectorBasis j) :
+    ∃ s : Finset (Site 1 (m + 1)), FieldSimpleSpectrum.signIsometry hH s = T := by
+  classical
+  obtain ⟨ε, hε, hTj⟩ := hsigns
+  refine ⟨Finset.univ.filter (fun j => ε j = -1), FieldSimpleSpectrum.eq_of_signs hH fun j => ?_⟩
+  rw [FieldSimpleSpectrum.signIsometry_eigenvectorBasis, hTj j]
+  congr 1
+  by_cases hj : ε j = -1
+  · rw [if_pos (by simp [hj]), hj]
+  · rcases hε j with h1 | h1
+    · rw [if_neg (by simp [hj]), h1]
+    · exact absurd h1 hj
+
 /-- **AND THAT IS EXACTLY WHAT THE SYMMETRIES ARE**: a biconditional, so the word *exactly* is a
 theorem here and not a composition left to the reader. -/
 theorem gaussianField_map_iff_signs_line {m : ℕ} {mass : ℝ} (hmass : mass ≠ 0)
@@ -190,21 +209,10 @@ theorem gaussianField_map_iff_signs_line {m : ℕ} {mass : ℝ} (hmass : mass �
         = gaussianField (boxGraph 1 (m + 1)) mass ↔
       ∃ ε : Site 1 (m + 1) → ℝ, (∀ j, ε j = 1 ∨ ε j = -1) ∧
         ∀ j, T (hH.eigenvectorBasis j) = ε j • hH.eigenvectorBasis j := by
-  classical
   refine ⟨fun hT => exists_signs_line hmass hH hT, ?_⟩
-  rintro ⟨ε, hε, hTj⟩
-  set s : Finset (Site 1 (m + 1)) := Finset.univ.filter (fun j => ε j = -1) with hs
-  have hagree : ∀ j, T (hH.eigenvectorBasis j)
-      = FieldSimpleSpectrum.signIsometry hH s (hH.eigenvectorBasis j) := by
-    intro j
-    rw [hTj j, FieldSimpleSpectrum.signIsometry_eigenvectorBasis]
-    congr 1
-    by_cases hj : ε j = -1
-    · simp [hs, hj]
-    · rcases hε j with h1 | h1
-      · simp [hs, h1]
-      · exact absurd h1 hj
-  rw [FieldSimpleSpectrum.eq_of_signs hH hagree]
+  intro hsigns
+  obtain ⟨s, hs⟩ := exists_signIsometry_eq hH hsigns
+  rw [← hs]
   exact FieldSimpleSpectrum.gaussianField_map_signIsometry hmass hH s
 
 end FieldSimpleCriterion
