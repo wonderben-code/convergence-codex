@@ -362,4 +362,5 @@ roots = [
   "FieldRotation",
   "FieldRotationInstance",
   "FieldEigenGramSchmidt",
+  "FieldCycleRotation",
 ]
