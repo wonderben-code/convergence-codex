@@ -44,6 +44,14 @@ one eigenspace are generally not orthogonal, and this argument says nothing abou
 also why it cannot see the rotations that live inside a degenerate eigenspace. **The commutant is
 still not described.**
 
+> ⚠ **THE PAIR THIS PARAGRAPH SAYS NOTHING ABOUT IS NOW EXHIBITED, AND THE PARAGRAPH IS KEPT AS
+> WRITTEN** (`ERRATUM 94`, 2026-09-05).
+> `FieldComponentEigen.exists_orthogonal_eigenpair_of_not_reachable` gives two **orthogonal**
+> non-zero eigenvectors of `green` at the same eigenvalue `m⁻²` on any disconnected graph — the
+> indicators of a component and its complement. **Every word above stays true**: this file's
+> argument still separates nothing inside an eigenspace, and it is the pair that is new, not a
+> repair to the argument. The commutant is still not described and no rotation is built.
+
 **No new symmetry.** Every map here is one `FieldEigenReflection` already supplied; what is new is
 that they are pairwise different.
 

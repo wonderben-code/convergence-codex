@@ -36,7 +36,9 @@ symmetry of the Gaussian field**, through `FieldCommutant.gaussianField_map_of_c
 
 **No rotation is built.** This removes the *packaging* obstruction and no other. Building a rotation
 inside a degenerate eigenspace still needs two orthogonal eigenvectors at one eigenvalue, and
-**nothing in this estate produces a pair** — `FieldReflectionCount`'s argument is explicitly blind
+**nothing in this estate produces a pair** ⚠ *— true when written; the next unit,*
+`FieldComponentEigen`, *exhibits one on any disconnected graph, and the sentence is kept per*
+`ERRATUM 94` — — `FieldReflectionCount`'s argument is explicitly blind
 inside a single eigenspace, and the torus's eigenvectors are the complex characters. **Not
 attempted, no cost claimed** (`ERRATUM 246`). **This file does not claim the rotations are now
 easy**; it claims one of the two reasons they were impossible is gone.
