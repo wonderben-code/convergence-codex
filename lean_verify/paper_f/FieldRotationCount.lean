@@ -24,6 +24,11 @@ are read straight off. **The angle is recoverable from the matrix**, which is ex
 `FieldOrthIsometry.gaussianField_map_orthIsometry` makes every member a symmetry of the Gaussian
 field, and **`gaussianField_map_of_mem`** says so, so a statement about the size of this set is a
 statement about the size of the symmetry group and not about matrices.
+⚠ **CORRECTED 2026-09-05, and the sentence is kept as written** (`ERRATUM 94`, `ERRATUM 456`):
+that last clause holds **downwards only**. Every member is a symmetry, so a lower bound on this set
+is a lower bound on the symmetry group — which is all this file uses it for, and its conclusion
+stands. **The set is not known to be all of the symmetry group**: that an orthogonal map fixing the
+measure must commute with `green` is proved nowhere in this estate.
 
 **`rotMatrix_inj`** — distinct `(c, s)` give distinct rotations, at any orthogonal pair of equal
 non-zero length.
