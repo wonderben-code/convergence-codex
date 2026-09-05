@@ -49,6 +49,12 @@ worth repeating hardest here, where the graph is the one the physics uses.
 **Nothing about the torus at `d > 1`**, the other composition `FieldCycleRotation` named: its
 degeneracies are `TorusFibreOrbitPartition`'s orbits and that route is still not taken. **Not
 attempted, no cost claimed** (`ERRATUM 246`).
+⚠ **SUPERSEDED 2026-09-05, kept as written** (`ERRATUM 94`, `ERRATUM 458`):
+`FieldTorusRotation.exists_rotation_symmetry_torus` puts a rotation on the torus in **every**
+dimension `d ≥ 1`, and needed no orbit bookkeeping at all —
+`TorusEigenspaceLowerBound.two_pow_mul_multinomial_le_finrank`, in the estate since 2026-08-31,
+bounds the degeneracy below with **no hypotheses**, and the all-ones frequency has every axis
+interior. **The route this sentence names was never necessary.**
 
 **No description of the commutant**, and no count of the rotations.
 ⚠ **THE SECOND HALF IS SUPERSEDED 2026-09-05, kept as written** (`ERRATUM 94`):

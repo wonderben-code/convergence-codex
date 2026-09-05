@@ -42,6 +42,12 @@ and the first on a graph the OS programme is about.
 (`CycleMultiplicityCount` is about `torusGraph 1 (N+3)`); the higher-dimensional fibres are
 `TorusFibreOrbitPartition`'s orbits and **that composition is not made here. Not attempted, no cost
 claimed** (`ERRATUM 246`).
+⚠ **SUPERSEDED 2026-09-05, kept as written** (`ERRATUM 94`, `ERRATUM 458`):
+`FieldTorusRotation.exists_rotation_symmetry_torus` puts a rotation on the torus in **every**
+dimension `d ≥ 1`, and needed no orbit bookkeeping at all —
+`TorusEigenspaceLowerBound.two_pow_mul_multinomial_le_finrank`, in the estate since 2026-08-31,
+bounds the degeneracy below with **no hypotheses**, and the all-ones frequency has every axis
+interior. **The route this sentence names was never necessary.**
 
 **Not the box** — **SUPERSEDED 2026-09-05**, annotated where it stands rather than deleted
 (`ERRATUM 94`), because it was true when written. The fence said the composition through

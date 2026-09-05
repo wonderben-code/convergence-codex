@@ -69,6 +69,12 @@ not a claim that it is short (`ERRATUM 194`).
 a linear isometry is not covered.
 
 **Nothing about the torus at `d > 1`.**
+⚠ **SUPERSEDED 2026-09-05, kept as written** (`ERRATUM 94`, `ERRATUM 458`):
+`FieldTorusRotation.exists_rotation_symmetry_torus` puts a rotation on the torus in **every**
+dimension `d ≥ 1`, and needed no orbit bookkeeping at all —
+`TorusEigenspaceLowerBound.two_pow_mul_multinomial_le_finrank`, in the estate since 2026-08-31,
+bounds the degeneracy below with **no hypotheses**, and the all-ones frequency has every axis
+interior. **The route this sentence names was never necessary.**
 
 **No wall moves.** `W1`'s open part is `OS0` and `OS4`, and `OS1` in its continuum sense. A symmetry
 group that is *small* is no more a gap in an axiom than one that is large.

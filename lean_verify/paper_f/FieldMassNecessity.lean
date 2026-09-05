@@ -64,6 +64,12 @@ statement about `m = 0` moves nothing: every OS statement in this estate is at `
 
 **Nothing about the torus at `d > 1`.** Still `TorusFibreOrbitPartition`'s orbits, still not
 composed. **Not attempted, no cost claimed** (`ERRATUM 246`).
+⚠ **SUPERSEDED 2026-09-05, kept as written** (`ERRATUM 94`, `ERRATUM 458`):
+`FieldTorusRotation.exists_rotation_symmetry_torus` puts a rotation on the torus in **every**
+dimension `d ≥ 1`, and needed no orbit bookkeeping at all —
+`TorusEigenspaceLowerBound.two_pow_mul_multinomial_le_finrank`, in the estate since 2026-08-31,
+bounds the degeneracy below with **no hypotheses**, and the all-ones frequency has every axis
+interior. **The route this sentence names was never necessary.**
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
