@@ -51,6 +51,10 @@ expected and declined to assert.
 neither counted nor identified with the orthogonal group, and **`conjSq` is not shown injective or
 surjective onto the linear symmetries** — both are true by the standard argument and **neither is
 proved**. Not attempted, no cost claimed (`ERRATUM 246`).
+⚠ **SUPERSEDED THE NEXT UNIT, kept as written** (`ERRATUM 94`):
+`FieldLinearClassified.conjSq_bijOn` proves both, and `gaussianField_map_iff_conjSq` is the
+two-sided classification — a matrix's induced map preserves the Gaussian field **iff** the matrix
+is `C^{1/2} O C^{-1/2}` for an orthogonal `O`. **The fence was right that they are short.**
 
 **NOTHING ABOUT NON-LINEAR MAPS.** The full automorphism group of the measure is still untouched.
 
@@ -206,7 +210,13 @@ theorem exists_nonIsometric (hm : m ≠ 0) {u v : V → ℝ} {n μ₁ μ₂ : �
 
 /-- **`L C Lᵀ = C` IS THE CONDITION `FieldLinearSymmetry.gaussianField_map_iff_quadForm`
 CHARACTERISES**, written for a matrix and its transpose rather than for a continuous linear map and
-its adjoint. So a matrix produced above really is a symmetry of the measure. -/
+its adjoint.
+
+⚠ **ANNOTATED 2026-09-05** (`ERRATUM 94`). This docstring went on to say *"so a matrix produced
+above really is a symmetry of the measure"*, which needed one step nobody had taken: that the
+**adjoint** of a matrix is its transpose. `FieldLinearClassified.adjoint_mvCLM` takes it and
+`gaussianField_map_conjSq` states the conclusion, so the sentence is now backed. It was an
+implication read across a coercion (`ERRATUM 456`'s species) and is recorded rather than deleted. -/
 theorem quadForm_of_mul_green_mul_transpose {L : Matrix V V ℝ}
     (h : L * green G m * Lᵀ = green G m) (x : V → ℝ) :
     (Lᵀ *ᵥ x) ⬝ᵥ (green G m *ᵥ (Lᵀ *ᵥ x)) = x ⬝ᵥ (green G m *ᵥ x) := by

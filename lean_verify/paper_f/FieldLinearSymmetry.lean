@@ -46,7 +46,11 @@ where `L* = L⁻¹` turns the condition into commuting, and it keeps its own pro
 
 **NO DESCRIPTION OF THE LARGER GROUP.** `{L | L C L* = C}` is characterised, **not classified**:
 nothing here exhibits its elements, counts them, or relates it to the orthogonal group by the
-conjugation `L ↦ C^{-1/2} L C^{1/2}` that the header sketches. **That sketch is a description of the
+conjugation `L ↦ C^{-1/2} L C^{1/2}` that the header sketches.
+⚠ **SUPERSEDED 2026-09-05, kept as written** (`ERRATUM 94`): `FieldSqrtConjugation` exhibits
+elements and `FieldLinearClassified.gaussianField_map_iff_conjSq` classifies the set as exactly
+`C^{1/2} O(V) C^{-1/2}` — **by the conjugation this paragraph sketched.** Still no count, and still
+no group isomorphism. **That sketch is a description of the
 shape and not a claim** (`ERRATUM 194`), and in particular **`C^{1/2}` is never constructed here**.
 Not attempted, no cost claimed (`ERRATUM 246`).
 
