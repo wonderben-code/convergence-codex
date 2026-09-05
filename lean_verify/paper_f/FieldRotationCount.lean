@@ -29,6 +29,10 @@ that last clause holds **downwards only**. Every member is a symmetry, so a lowe
 is a lower bound on the symmetry group — which is all this file uses it for, and its conclusion
 stands. **The set is not known to be all of the symmetry group**: that an orthogonal map fixing the
 measure must commute with `green` is proved nowhere in this estate.
+⚠ **AND THAT LAST SENTENCE IS ITSELF SUPERSEDED, two units later** (`ERRATUM 94`):
+`FieldInvarianceCommutes.mem_symmetryMatrices_iff_gaussianField_map` proves it, so among orthogonal
+matrices this set **is** the symmetry group and the original clause is now true as written. Both
+annotations stay: each was right when made.
 
 **`rotMatrix_inj`** — distinct `(c, s)` give distinct rotations, at any orthogonal pair of equal
 non-zero length.

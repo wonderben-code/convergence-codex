@@ -28,6 +28,11 @@ asking for since the count was made.**
 Gaussian field exactly when"*, and that is **not** what is proved, here or anywhere in this estate:
 `FieldCommutant.gaussianField_map_of_commutes` goes one way only. See *What is NOT here* below and
 `ERRATUM 456`.
+⚠ **SUPERSEDED THE NEXT UNIT, kept as written** (`ERRATUM 94`):
+`FieldInvarianceCommutes.mem_symmetryMatrices_iff_gaussianField_map` proves the missing direction,
+so for an orthogonal `R` the two readings now coincide and the struck-out sentence is true. **The
+paragraph stays because it was right when written**, and because the gap it named was real for as
+long as it stood.
 
 **How the converse goes.** `green` is positive definite at `m ≠ 0`, hence Hermitian, so it has an
 orthonormal eigenbasis. Two matrices agreeing on a basis are equal, and on the `j`-th eigenvector
@@ -50,7 +55,9 @@ not by basis vector — and this file does not do that. Naming the shape is not 
 (`ERRATUM 194`).
 
 **NOT A CHARACTERISATION OF THE SYMMETRIES OF THE MEASURE, and this is the fence that matters
-most.** `symmetryMatrices G m` is *orthogonal and commuting*. Every member is a symmetry of the
+most.** ⚠ **SUPERSEDED THE NEXT UNIT** by `FieldInvarianceCommutes`, and kept entire below
+(`ERRATUM 94`) — including its route sketch, which is the route that was taken.
+`symmetryMatrices G m` is *orthogonal and commuting*. Every member is a symmetry of the
 Gaussian field (`FieldCommutant.gaussianField_map_of_commutes`), **and the converse is proved
 nowhere in this estate**: an orthogonal map whose pushforward fixes the measure is not known to
 commute with `green`. So this file characterises **membership of a set that is contained in the
