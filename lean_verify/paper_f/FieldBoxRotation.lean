@@ -51,6 +51,9 @@ degeneracies are `TorusFibreOrbitPartition`'s orbits and that route is still not
 attempted, no cost claimed** (`ERRATUM 246`).
 
 **No description of the commutant**, and no count of the rotations.
+⚠ **THE SECOND HALF IS SUPERSEDED 2026-09-05, kept as written** (`ERRATUM 94`):
+`FieldRotationCount.infinite_symmetryMatrices_box` counts them on this very graph — infinitely
+many, at every `2 ≤ d` and side length `≥ 2`. **The commutant is still not described.**
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
@@ -126,13 +129,14 @@ theorem exists_rotation_symmetry_box (d m : ℕ) {mass : ℝ} (hmass : mass ≠ 
   obtain ⟨u, v, hu0, hind, hu, hv⟩ := exists_independent_eigenpair_box d m hmass k hk
   exact exists_rotation_symmetry_of_independent_eigenpair hmass hu0 hind hu hv hcs hs
 
-/-- **AND THE HYPOTHESIS IS MET AT EVERY `2 ≤ d` AND EVERY SIDE LENGTH `≥ 2`**, which includes the
-physical `d = 4`. -/
-theorem exists_rotation_symmetry_box_of_two_le {d m : ℕ} (hd : 2 ≤ d) (hm : 1 ≤ m) {mass : ℝ}
-    (hmass : mass ≠ 0) {c s : ℝ} (hcs : c ^ 2 + s ^ 2 = 1) (hs : s ≠ 0) :
-    ∃ (R : Matrix (Site d (m + 1)) (Site d (m + 1)) ℝ) (h : Rᵀ * R = 1), R ≠ 1 ∧
-      MeasureTheory.Measure.map (orthIsometry h) (gaussianField (boxGraph d (m + 1)) mass)
-        = gaussianField (boxGraph d (m + 1)) mass := by
+/-- **AND THE FREQUENCY HYPOTHESIS IS MET AT EVERY `2 ≤ d` AND EVERY SIDE LENGTH `≥ 2`**, which
+includes the physical `d = 4`. Stated as the *eigenpair* rather than as the rotation, so that
+anything else needing a degenerate eigenvalue on the box can have it too. -/
+theorem exists_independent_eigenpair_box_of_two_le {d m : ℕ} (hd : 2 ≤ d) (hm : 1 ≤ m)
+    {mass : ℝ} (hmass : mass ≠ 0) :
+    ∃ (u v : Site d (m + 1) → ℝ) (μ : ℝ), u ⬝ᵥ u ≠ 0 ∧ (∀ c : ℝ, v ≠ c • u) ∧
+      green (boxGraph d (m + 1)) mass *ᵥ u = μ • u ∧
+      green (boxGraph d (m + 1)) mass *ᵥ v = μ • v := by
   classical
   set i : Fin d := ⟨0, by omega⟩ with hi
   set j : Fin d := ⟨1, by omega⟩ with hj
@@ -148,7 +152,18 @@ theorem exists_rotation_symmetry_box_of_two_le {d m : ℕ} (hd : 2 ≤ d) (hm : 
     rw [hki, hkj]
     intro h
     exact absurd (congrArg Fin.val h) (by simp [ha0, ha1])
-  exact exists_rotation_symmetry_box d m hmass k hne hcs hs
+  obtain ⟨u, v, hu0, hind, hu, hv⟩ := exists_independent_eigenpair_box d m hmass k hne
+  exact ⟨u, v, _, hu0, hind, hu, hv⟩
+
+/-- **SO THE BOX CARRIES A ROTATION UNCONDITIONALLY AT `2 ≤ d` AND SIDE LENGTH `≥ 2`**, the
+physical `d = 4` included. -/
+theorem exists_rotation_symmetry_box_of_two_le {d m : ℕ} (hd : 2 ≤ d) (hm : 1 ≤ m) {mass : ℝ}
+    (hmass : mass ≠ 0) {c s : ℝ} (hcs : c ^ 2 + s ^ 2 = 1) (hs : s ≠ 0) :
+    ∃ (R : Matrix (Site d (m + 1)) (Site d (m + 1)) ℝ) (h : Rᵀ * R = 1), R ≠ 1 ∧
+      MeasureTheory.Measure.map (orthIsometry h) (gaussianField (boxGraph d (m + 1)) mass)
+        = gaussianField (boxGraph d (m + 1)) mass := by
+  obtain ⟨u, v, μ, hu0, hind, hu, hv⟩ := exists_independent_eigenpair_box_of_two_le hd hm hmass
+  exact exists_rotation_symmetry_of_independent_eigenpair hmass hu0 hind hu hv hcs hs
 
 
 end FieldBoxRotation

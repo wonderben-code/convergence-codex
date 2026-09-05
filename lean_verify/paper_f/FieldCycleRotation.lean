@@ -51,6 +51,9 @@ length `≥ 2` — the physical `d = 4` included — by `exists_rotation_symmetr
 
 **No description of the commutant**, and no count of the rotations: every `(c, s)` on the unit
 circle gives one and nothing here compares them.
+⚠ **THE SECOND HALF IS SUPERSEDED 2026-09-05, kept as written** (`ERRATUM 94`):
+`FieldRotationCount` compares them and finds infinitely many. **The commutant is still not
+described**, and that half stands.
 
 **No wall moves.** `W1`'s open part is `OS0` and `OS4`, and `OS1` in its continuum sense; a wider
 finite-volume symmetry group is a wider shadow and not a smaller gap, which is what

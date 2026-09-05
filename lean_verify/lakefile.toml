@@ -365,4 +365,5 @@ roots = [
   "FieldCycleRotation",
   "FieldBoxRotation",
   "FieldMassNecessity",
+  "FieldRotationCount",
 ]

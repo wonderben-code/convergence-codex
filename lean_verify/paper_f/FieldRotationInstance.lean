@@ -43,6 +43,9 @@ set.
 
 **No count of the rotations.** Each `(c, s)` on the unit circle gives one and they are not compared
 here; `FieldReflectionCount`'s separation argument is about reflections and does not apply.
+⚠ **SUPERSEDED 2026-09-05, kept as written** (`ERRATUM 94`): `FieldRotationCount.rotMatrix_inj`
+compares them — `rotMatrix` sends `u` to `c • u + s • v`, so the angle is read back off the
+matrix — and `infinite_symmetryMatrices_of_orthogonal_eigenpair` counts them as infinite.
 
 **Not OS3 and not any OS axiom. No wall moves. No published tag moves.**
 

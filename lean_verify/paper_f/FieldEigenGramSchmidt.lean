@@ -44,6 +44,9 @@ independent members is the step this file does not take. **Not attempted, no cos
 (`ERRATUM 246`), and naming the step is not a claim that it is short (`ERRATUM 194`).
 
 **No description of the commutant**, and no count of the rotations.
+⚠ **THE SECOND HALF IS SUPERSEDED 2026-09-05, kept as written** (`ERRATUM 94`):
+`FieldRotationCount.infinite_symmetryMatrices_of_independent_eigenpair` counts them, from exactly
+this file's hypotheses. **The commutant is still not described**, and that half stands.
 
 **Not OS3 and not any OS axiom. No wall moves. No published tag moves.**
 
