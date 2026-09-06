@@ -11,8 +11,8 @@ goes **without touching a single walk**, and says exactly where the walks become
 ## What is proved
 
 **`leftPart`** — the `V`-part of a graph on `V ⊕ Unit`, which is `SimpleGraph.comap Sum.inl`, with
-`restrict_sup`, `restrict_inf`, `restrict_bot` and `disjoint_restrict`: it is a lattice
-homomorphism on the parts that matter, and it preserves edge-disjointness. **`restrict_augment`** —
+`leftPart_sup`, `leftPart_inf`, `leftPart_bot` and `disjoint_leftPart`: it is a lattice
+homomorphism on the parts that matter, and it preserves edge-disjointness. **`leftPart_augment`** —
 and it undoes the augmentation exactly: `leftPart (augment G) = G`.
 
 **`exists_cycle_parts_decomposition`** — **so every finite graph's edges are the disjoint union of
@@ -22,7 +22,7 @@ residue (a), and it needs no walk at all: the join and the disjointness both com
 commuting with `⊔` and `⊓`. It takes **`Finite` and no decidability**, both being produced inside
 the proof — the linter reported them unused in the statement and the generalisation was free.
 
-**`degree_restrict`, `odd_degree_restrict_iff`, `odd_degree_restrict_cycle_iff`** — **and the
+**`degree_leftPart`, `odd_degree_leftPart_iff`, `odd_degree_leftPart_cycle_iff`** — **and the
 degree signature is exact: in the `V`-part of a cycle, a vertex has odd degree exactly when it was
 joined to the added vertex.** Since the added vertex is joined to exactly the odd-degree vertices
 of `G`, that is the statement *"the pieces' loose ends are the odd vertices"* — at the level of
@@ -80,34 +80,34 @@ variable {V : Type*}
 /-- The `V`-part of a graph on `V ⊕ Unit`. -/
 def leftPart (H : SimpleGraph (V ⊕ Unit)) : SimpleGraph V := SimpleGraph.comap Sum.inl H
 
-theorem restrict_adj (H : SimpleGraph (V ⊕ Unit)) (u v : V) :
+theorem leftPart_adj (H : SimpleGraph (V ⊕ Unit)) (u v : V) :
     (leftPart H).Adj u v ↔ H.Adj (Sum.inl u) (Sum.inl v) := Iff.rfl
 
-theorem restrict_sup (H K : SimpleGraph (V ⊕ Unit)) :
+theorem leftPart_sup (H K : SimpleGraph (V ⊕ Unit)) :
     leftPart (H ⊔ K) = leftPart H ⊔ leftPart K := rfl
 
-theorem restrict_inf (H K : SimpleGraph (V ⊕ Unit)) :
+theorem leftPart_inf (H K : SimpleGraph (V ⊕ Unit)) :
     leftPart (H ⊓ K) = leftPart H ⊓ leftPart K := rfl
 
-theorem restrict_bot : leftPart (⊥ : SimpleGraph (V ⊕ Unit)) = ⊥ := rfl
+theorem leftPart_bot : leftPart (⊥ : SimpleGraph (V ⊕ Unit)) = ⊥ := rfl
 
 /-- **AND IT PRESERVES EDGE-DISJOINTNESS**, which is what the decomposition needs. -/
-theorem disjoint_restrict {H K : SimpleGraph (V ⊕ Unit)} (h : Disjoint H K) :
+theorem disjoint_leftPart {H K : SimpleGraph (V ⊕ Unit)} (h : Disjoint H K) :
     Disjoint (leftPart H) (leftPart K) := by
   rw [disjoint_iff] at h ⊢
-  rw [← restrict_inf, h, restrict_bot]
+  rw [← leftPart_inf, h, leftPart_bot]
 
-theorem foldr_restrict (L : List (SimpleGraph (V ⊕ Unit))) :
+theorem foldr_leftPart (L : List (SimpleGraph (V ⊕ Unit))) :
     (L.map leftPart).foldr (· ⊔ ·) ⊥ = leftPart (L.foldr (· ⊔ ·) ⊥) := by
   induction L with
-  | nil => exact restrict_bot.symm
-  | cons H t ih => rw [List.map_cons, List.foldr_cons, List.foldr_cons, ih, restrict_sup]
+  | nil => exact leftPart_bot.symm
+  | cons H t ih => rw [List.map_cons, List.foldr_cons, List.foldr_cons, ih, leftPart_sup]
 
 /-! ## 2. It undoes the augmentation, so the pieces join to `G` -/
 
 variable [Fintype V] (G : SimpleGraph V) [DecidableRel G.Adj]
 
-theorem restrict_augment : leftPart (augment G) = G := by
+theorem leftPart_augment : leftPart (augment G) = G := by
   ext u v
   exact adj_inl_inl G u v
 
@@ -126,25 +126,25 @@ theorem exists_cycle_parts_decomposition (G : SimpleGraph W) :
   classical
   have : Fintype W := Fintype.ofFinite W
   obtain ⟨L, hcyc, hdisj, hjoin⟩ := exists_cycle_decomposition_augment G
-  refine ⟨L, hcyc, hdisj, hdisj.map _ fun _ _ h => disjoint_restrict h, ?_⟩
-  rw [foldr_restrict, hjoin, restrict_augment]
+  refine ⟨L, hcyc, hdisj, hdisj.map _ fun _ _ h => disjoint_leftPart h, ?_⟩
+  rw [foldr_leftPart, hjoin, leftPart_augment]
 
 end Decomposition
 
 /-! ## 3. The degree signature: the loose ends are exactly the odd vertices -/
 
-instance instDecidableRestrict (H : SimpleGraph (V ⊕ Unit)) [DecidableRel H.Adj] :
+instance instDecidableLeftPart (H : SimpleGraph (V ⊕ Unit)) [DecidableRel H.Adj] :
     DecidableRel (leftPart H).Adj :=
   fun u v => inferInstanceAs (Decidable (H.Adj (Sum.inl u) (Sum.inl v)))
 
 /-- **RESTRICTING DROPS EXACTLY THE EDGE TO THE ADDED VERTEX, WHEN THERE IS ONE.** -/
-theorem degree_restrict (H : SimpleGraph (V ⊕ Unit)) [DecidableRel H.Adj] (v : V) :
+theorem degree_leftPart (H : SimpleGraph (V ⊕ Unit)) [DecidableRel H.Adj] (v : V) :
     (leftPart H).degree v + (if H.Adj (Sum.inl v) (Sum.inr ()) then 1 else 0)
       = H.degree (Sum.inl v) := by
   have h1 : ∑ u : V, (if H.Adj (Sum.inl v) (Sum.inl u) then 1 else 0)
       = (leftPart H).degree v := by
     rw [SimpleGraph.degree, SimpleGraph.neighborFinset_eq_filter, Finset.card_filter]
-    exact (Finset.sum_congr rfl fun u _ => by simp [restrict_adj]).symm
+    exact (Finset.sum_congr rfl fun u _ => by simp [leftPart_adj]).symm
   have h2 : ∑ _t : Unit, (if H.Adj (Sum.inl v) (Sum.inr _t) then 1 else 0)
       = (if H.Adj (Sum.inl v) (Sum.inr ()) then 1 else 0) := Fintype.sum_unique _
   have h3 : H.degree (Sum.inl v)
@@ -156,10 +156,10 @@ theorem degree_restrict (H : SimpleGraph (V ⊕ Unit)) [DecidableRel H.Adj] (v :
 
 /-- **SO WHERE THE WHOLE DEGREE IS EVEN, THE PART'S DEGREE IS ODD EXACTLY AT THE ADDED VERTEX'S
 NEIGHBOURS.** -/
-theorem odd_degree_restrict_iff (H : SimpleGraph (V ⊕ Unit)) [DecidableRel H.Adj] {v : V}
+theorem odd_degree_leftPart_iff (H : SimpleGraph (V ⊕ Unit)) [DecidableRel H.Adj] {v : V}
     (h : Even (H.degree (Sum.inl v))) :
     Odd ((leftPart H).degree v) ↔ H.Adj (Sum.inl v) (Sum.inr ()) := by
-  rw [← degree_restrict H v] at h
+  rw [← degree_leftPart H v] at h
   by_cases hadj : H.Adj (Sum.inl v) (Sum.inr ())
   · rw [if_pos hadj] at h
     simp only [hadj, iff_true]
@@ -169,10 +169,10 @@ theorem odd_degree_restrict_iff (H : SimpleGraph (V ⊕ Unit)) [DecidableRel H.A
     exact Nat.not_odd_iff_even.mpr h
 
 /-- **AND ON A CYCLE THAT IS UNCONDITIONAL**, since a cycle graph has every degree even. -/
-theorem odd_degree_restrict_cycle_iff (H : SimpleGraph (V ⊕ Unit))
+theorem odd_degree_leftPart_cycle_iff (H : SimpleGraph (V ⊕ Unit))
     [DecidableRel H.Adj] (hH : SimpleGraph.IsCycleGraph H) (v : V) :
     Odd ((leftPart H).degree v) ↔ H.Adj (Sum.inl v) (Sum.inr ()) :=
-  odd_degree_restrict_iff H
+  odd_degree_leftPart_iff H
     ((SimpleGraph.evenDegrees_iff_forall_even_degree H).mp hH.evenDegrees _)
 
 /-! ## 4. So the pieces carry the degree signature of a path or a cycle -/
@@ -191,7 +191,7 @@ theorem degree_le_two_of_isCycleGraph {H : SimpleGraph V} [DecidableRel H.Adj]
 
 /-- **THE ODD-DEGREE VERTICES OF THE PART ARE EXACTLY THE ADDED VERTEX'S NEIGHBOURS, AND THERE ARE
 AS MANY OF THEM AS IT HAS.** -/
-theorem card_odd_restrict_eq_degree_inr (H : SimpleGraph (V ⊕ Unit))
+theorem card_odd_leftPart_eq_degree_inr (H : SimpleGraph (V ⊕ Unit))
     [DecidableRel H.Adj] (hH : SimpleGraph.IsCycleGraph H) :
     (Finset.univ.filter fun v : V => Odd ((leftPart H).degree v)).card
       = H.degree (Sum.inr ()) := by
@@ -205,22 +205,22 @@ theorem card_odd_restrict_eq_degree_inr (H : SimpleGraph (V ⊕ Unit))
   rw [hR, h2, add_zero, Finset.card_filter]
   refine Finset.sum_congr rfl fun v _ => ?_
   by_cases hv : H.Adj (Sum.inl v) (Sum.inr ())
-  · rw [if_pos ((odd_degree_restrict_cycle_iff H hH v).mpr hv), if_pos hv.symm]
-  · rw [if_neg (fun hodd => hv ((odd_degree_restrict_cycle_iff H hH v).mp hodd)),
+  · rw [if_pos ((odd_degree_leftPart_cycle_iff H hH v).mpr hv), if_pos hv.symm]
+  · rw [if_neg (fun hodd => hv ((odd_degree_leftPart_cycle_iff H hH v).mp hodd)),
       if_neg (fun hcon => hv hcon.symm)]
 
 /-- **SO EVERY PIECE HAS EITHER NO ODD VERTEX OR EXACTLY TWO** — the degree signature of a cycle or
 of a path, which is as far as degrees can take this. **It is not a path**: a disjoint union of a
 path and a cycle has the same signature, and no walk is produced anywhere in this file. -/
-theorem card_odd_restrict_le_two (H : SimpleGraph (V ⊕ Unit))
+theorem card_odd_leftPart_le_two (H : SimpleGraph (V ⊕ Unit))
     [DecidableRel H.Adj] (hH : SimpleGraph.IsCycleGraph H) :
     (Finset.univ.filter fun v : V => Odd ((leftPart H).degree v)).card = 0 ∨
       (Finset.univ.filter fun v : V => Odd ((leftPart H).degree v)).card = 2 := by
   have hle : (Finset.univ.filter fun v : V => Odd ((leftPart H).degree v)).card ≤ 2 := by
-    rw [card_odd_restrict_eq_degree_inr H hH]
+    rw [card_odd_leftPart_eq_degree_inr H hH]
     exact degree_le_two_of_isCycleGraph hH _
   have heven : Even (Finset.univ.filter fun v : V => Odd ((leftPart H).degree v)).card := by
-    rw [card_odd_restrict_eq_degree_inr H hH]
+    rw [card_odd_leftPart_eq_degree_inr H hH]
     exact (SimpleGraph.evenDegrees_iff_forall_even_degree H).mp hH.evenDegrees _
   rcases heven with ⟨k, hk⟩
   omega

@@ -409,4 +409,5 @@ roots = [
   "OddVertexAugment",
   "CycleRestriction",
   "LeftPartWalk",
+  "CyclePathExtract",
 ]
