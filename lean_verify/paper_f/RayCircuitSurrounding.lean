@@ -83,6 +83,19 @@ conditions and **the two endpoint spins**; `exists_circuit_surrounding_leftRay` 
 **`EvenDegrees (dualGraph σ)`**; `no_spin_from_evenDegrees` takes **`0 < n`** and a configuration
 satisfying the condition. No `PlusBoundary` outside §4, which exists to recover it.
 
+## ⚠ WHAT `EvenDegrees (dualGraph σ)` ACTUALLY ASKS FOR. Annotated 6 September 2026
+
+Nothing above is superseded; this is a forward pointer, because *"no boundary condition"* is an
+easy thing to read into the main theorem and it would be wrong.
+`paper_f/EvenDegreesReach.lean`, which imports this file, shows the hypothesis is **a condition on
+the boundary spins and nothing else** (`evenDegrees_congr_boundary`), and that on the boundary it
+is severe: **no bond along the interior of a rim may be broken** (`left_rim_const` and its three
+partners) and **the two rim neighbours of each corner must agree** (`corner_bl_coupling` and its
+three). The interior is free.
+
+So the class reached here is strictly larger than `+` and is **not** all configurations. That file
+offers **no count and no proportion**, and neither does this one.
+
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 
 -/
