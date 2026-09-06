@@ -1,13 +1,19 @@
 import FieldLineCount
 
 /-!
-# The `2^n` was a cardinality; this is the group — `(ℤ/2)^(m+1)` on a line
+# The `2^|V|` was a cardinality; this is the group — `(ℤ/2)^V` at a simple spectrum
 
-`FieldLineCount` counted the isometric symmetries of the Gaussian field on a line of `m+1` sites at
-**exactly `2^(m+1)`**, and fenced what it had not done, in these words: *no bundled `Subgroup`, and
-no group isomorphism — `signEquiv` is a bijection of types and nothing checks that it carries
-`Finset` symmetric difference to composition, which is what would make it `(ZMod 2)^(m+1)` as a
-group.* **All three are done here.**
+⚠ **GENERALISED IN PLACE, 2026-09-06, together with `FieldLineCount` and
+`FieldSimpleCriterion`.** This file was written for `boxGraph 1 (m+1)` — a line — and its group
+section now takes an arbitrary finite graph whose propagator has a simple spectrum. **No proof
+changed**; the line appeared only in the statements. `signMulEquivLine` recovers the original
+theorem in one line. The original title read *"this is the group — `(ℤ/2)^(m+1)` on a line"*.
+
+`FieldLineCount` counted the isometric symmetries of the Gaussian field at **exactly `2^|V|`**, and
+fenced what it had not done, in these words: *no bundled `Subgroup`, and no group isomorphism —
+`signEquiv` is a bijection of types and nothing checks that it carries `Finset` symmetric difference
+to composition, which is what would make it `(ZMod 2)^(m+1)` as a group.* **All three are done
+here.**
 
 ## What is proved
 
@@ -26,24 +32,29 @@ two. One line from the two above, since `s ∆ s = ⊥`.
 addition**. `1 + 1 = 0` is exactly why the indicator of `s ∆ t` is the sum of the indicators.
 
 **`symmetriesSubgroup`, `mem_symmetriesSubgroup`** — the isometric symmetries as a **`Subgroup`**,
-from `FieldLineCount`'s `refl_mem`, `trans_mem` and `symm_mem`. The group's multiplication is
-`e₁ * e₂ = e₂.trans e₁`, which is why `mul_mem'` takes its two arguments the other way round.
+on **any** finite graph, from `FieldLineCount`'s `refl_mem`, `trans_mem` and `symm_mem`. The group's
+multiplication is `e₁ * e₂ = e₂.trans e₁`, which is why `mul_mem'` takes its two arguments the other
+way round. **This needs neither a simple spectrum nor a non-zero mass.**
 
-**`signHom`, `signHom_apply`, `signMulEquiv`** — **THE SYMMETRY GROUP OF THE GAUSSIAN FIELD ON A
-LINE OF `m+1` SITES IS `(ℤ/2)^(m+1)`**, as a `MulEquiv` and not merely a set of that size.
-Injectivity is `FieldLineCount.signIsometry_injective` through the two bijections; surjectivity is
-`FieldSimpleCriterion.exists_signIsometry_eq`; `MulEquiv.ofBijective` assembles them.
+**`signHom`, `signHom_apply`, `signMulEquiv`** — **THE SYMMETRY GROUP OF A GAUSSIAN FIELD WHOSE
+PROPAGATOR HAS A SIMPLE SPECTRUM IS `(ℤ/2)^V`**, on any finite graph, as a `MulEquiv` and not merely
+a set of that size. Injectivity is `FieldLineCount.signIsometry_injective` through the two
+bijections; surjectivity is `FieldSimpleCriterion.exists_signIsometry_eq`; `MulEquiv.ofBijective`
+assembles them. **`signMulEquivLine`** is the line instance.
 
 ## What is NOT here
 
-**THE EXPONENT IS THE SITE TYPE, NOT `Fin (m+1)`.** The group is
-`Multiplicative (Site 1 (m + 1) → ZMod 2)`. That `Site 1 (m + 1)` has `m+1` elements is what
-`FieldLineCount.card_symmetries` uses to reach the number `2^(m+1)`, and **no re-indexing to
-`Fin (m+1) → ZMod 2` is constructed here**. Not attempted, no cost claimed (`ERRATUM 246`).
+**THE EXPONENT IS THE VERTEX TYPE.** The group is `Multiplicative (V → ZMod 2)`, and for the line
+`Site 1 (k + 1)`. That `Site 1 (k + 1)` has `k+1` elements is what
+`FieldLineCount.card_symmetries_line` uses to reach `2^(k+1)`, and **no re-indexing to
+`Fin (k+1) → ZMod 2` is constructed here**. Not attempted, no cost claimed (`ERRATUM 246`).
 
-**ONLY `d = 1`.** For a box in two or more dimensions the symmetry set is `Set.Infinite`
-(`FieldRotationCount`) and there is no group statement of any kind. **No dichotomy is proved** —
-nothing here says `d = 1` is the only case with a finite symmetry group.
+**ONLY AT A SIMPLE SPECTRUM, AND ONLY THE LINE DISCHARGES IT.** `signMulEquiv` takes
+`Function.Injective hH.eigenvalues`, and `FieldSimpleCriterion.eigenvalues_injective_line` is still
+the estate's **only** proof that any graph has one. For a box in two or more dimensions the symmetry
+set is `Set.Infinite` (`FieldRotationCount`) and there is no group statement of any kind. **No
+dichotomy is proved** — nothing here says a simple spectrum is the only case with a finite symmetry
+group.
 
 **ONLY ISOMETRIC SYMMETRIES**, inherited. `FieldSqrtConjugation.exists_nonIsometric` exhibits a
 linear symmetry of the field that is not an isometry, so this group is a **proper** subgroup of the
@@ -60,15 +71,19 @@ constructed**. **And there is still no index.**
 **No wall moves.** `W1`'s open part is `OS0` and `OS4`, and `OS1` in its continuum sense. A symmetry
 group named exactly, in finite volume, is a shadow named exactly.
 
-**THE HYPOTHESES, READ OFF THE BINDERS** (`ERRATUM 455`): the mass hypothesis `mass ≠ 0` is taken by
-`signHom`, `signHom_apply` and `signMulEquiv` — **three of the eighteen** — and only because
-`FieldLineCount.signIsometry_mem` needs it to know a sign isometry preserves the *measure*. **The
-entire group law is free of it**: `signIsometry_symmDiff`, `signIsometry_mul` and
-`signIsometry_trans_self` hold on **every** graph at **every** mass, and take only a Hermitian
-witness. **Eight** declarations mention no graph, no measure and no mass at all — the **seven** of
-the `Bits` section plus `bitsEquiv_symm_zero`, which sits in the last section only because that is
-where it is used. Five of the eight need `[DecidableEq V]` alone; `bitsEquiv`, `bitsEquiv_symm_add`
-and `bitsEquiv_symm_zero` add `[Fintype V]`, because the inverse filters over `Finset.univ`.
+**THE HYPOTHESES, READ OFF THE BINDERS** (`ERRATUM 455`): a non-zero mass is taken by `signHom`,
+`signHom_apply`, `signMulEquiv` and `signMulEquivLine` — **four of the nineteen** — and only because
+`FieldLineCount.signIsometry_mem` needs it to know a sign isometry preserves the *measure*.
+**Simplicity of the spectrum** is taken by `signMulEquiv` **alone**; `signMulEquivLine` does not
+take it but **discharges** it, through `FieldSimpleCriterion.eigenvalues_injective_line`, and the
+`Subgroup` needs neither it nor the mass. **The entire group law is free of both**:
+`signIsometry_symmDiff`, `signIsometry_mul` and `signIsometry_trans_self` hold on **every** graph at
+**every** mass, and take
+only a Hermitian witness. **Eight** declarations mention no graph, no measure and no mass at all —
+the **seven** of the `Bits` section plus `bitsEquiv_symm_zero`, which sits in the last section only
+because that is where it is used. Five of the eight need `[DecidableEq V]` alone; `bitsEquiv`,
+`bitsEquiv_symm_add` and `bitsEquiv_symm_zero` add `[Fintype V]`, because the inverse filters over
+`Finset.univ`.
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 
@@ -180,40 +195,38 @@ theorem bitsEquiv_symm_add [Fintype V] (f g : V → ZMod 2) :
 
 end Bits
 
-/-! ## 3. The symmetry group of the field on a line, bundled -/
+/-! ## 3. The symmetry group, bundled, at a simple spectrum -/
 
-section Line
+section Group
 
 open BoxGraph
 
-variable {m : ℕ} {mass : ℝ}
+variable {V : Type*} [Fintype V] [DecidableEq V] {G : SimpleGraph V} [DecidableRel G.Adj] {m : ℝ}
 
-/-- **THE ISOMETRIC SYMMETRIES ON A LINE, AS A `Subgroup`.** -/
-def symmetriesSubgroup (m : ℕ) (mass : ℝ) :
-    Subgroup (EuclideanSpace ℝ (Site 1 (m + 1)) ≃ₗᵢ[ℝ] EuclideanSpace ℝ (Site 1 (m + 1))) where
-  carrier := symmetries m mass
+/-- **THE ISOMETRIC SYMMETRIES AS A `Subgroup`**, on any finite graph. -/
+def symmetriesSubgroup (G : SimpleGraph V) [DecidableRel G.Adj] (m : ℝ) :
+    Subgroup (EuclideanSpace ℝ V ≃ₗᵢ[ℝ] EuclideanSpace ℝ V) where
+  carrier := symmetries G m
   one_mem' := refl_mem
   mul_mem' ha hb := trans_mem hb ha
   inv_mem' h := symm_mem h
 
-theorem mem_symmetriesSubgroup
-    {T : EuclideanSpace ℝ (Site 1 (m + 1)) ≃ₗᵢ[ℝ] EuclideanSpace ℝ (Site 1 (m + 1))} :
-    T ∈ symmetriesSubgroup m mass ↔ T ∈ symmetries m mass := Iff.rfl
+theorem mem_symmetriesSubgroup {T : EuclideanSpace ℝ V ≃ₗᵢ[ℝ] EuclideanSpace ℝ V} :
+    T ∈ symmetriesSubgroup G m ↔ T ∈ symmetries G m := Iff.rfl
 
-theorem bitsEquiv_symm_zero {V : Type*} [Fintype V] [DecidableEq V] :
-    bitsEquiv.symm (0 : V → ZMod 2) = (∅ : Finset V) := by
+theorem bitsEquiv_symm_zero {W : Type*} [Fintype W] [DecidableEq W] :
+    bitsEquiv.symm (0 : W → ZMod 2) = (∅ : Finset W) := by
   rw [Equiv.symm_apply_eq]
   exact bits_empty.symm
 
 /-- The sign group as a homomorphism into the symmetries. -/
-noncomputable def signHom (hmass : mass ≠ 0)
-    (hH : (green (boxGraph 1 (m + 1)) mass).IsHermitian) :
-    Multiplicative (Site 1 (m + 1) → ZMod 2) →* symmetriesSubgroup m mass where
+noncomputable def signHom (hm : m ≠ 0) (hH : (green G m).IsHermitian) :
+    Multiplicative (V → ZMod 2) →* symmetriesSubgroup G m where
   toFun f := ⟨signIsometry hH (bitsEquiv.symm (Multiplicative.toAdd f)),
-    mem_symmetriesSubgroup.mpr (signIsometry_mem hmass hH _)⟩
+    mem_symmetriesSubgroup.mpr (signIsometry_mem hm hH _)⟩
   map_one' := by
     refine Subtype.ext ?_
-    have h1 : Multiplicative.toAdd (1 : Multiplicative (Site 1 (m + 1) → ZMod 2)) = 0 := rfl
+    have h1 : Multiplicative.toAdd (1 : Multiplicative (V → ZMod 2)) = 0 := rfl
     simp only [OneMemClass.coe_one, h1]
     rw [bitsEquiv_symm_zero, signIsometry_empty]
     rfl
@@ -225,19 +238,18 @@ noncomputable def signHom (hmass : mass ≠ 0)
     rw [bitsEquiv_symm_add, ← signIsometry_mul]
     rfl
 
-theorem signHom_apply (hmass : mass ≠ 0)
-    (hH : (green (boxGraph 1 (m + 1)) mass).IsHermitian)
-    (f : Multiplicative (Site 1 (m + 1) → ZMod 2)) :
-    ((signHom hmass hH f : symmetriesSubgroup m mass) :
-        EuclideanSpace ℝ (Site 1 (m + 1)) ≃ₗᵢ[ℝ] EuclideanSpace ℝ (Site 1 (m + 1)))
+theorem signHom_apply (hm : m ≠ 0) (hH : (green G m).IsHermitian)
+    (f : Multiplicative (V → ZMod 2)) :
+    ((signHom hm hH f : symmetriesSubgroup G m) :
+        EuclideanSpace ℝ V ≃ₗᵢ[ℝ] EuclideanSpace ℝ V)
       = signIsometry hH (bitsEquiv.symm (Multiplicative.toAdd f)) := rfl
 
-/-- **THE SYMMETRY GROUP OF THE GAUSSIAN FIELD ON A LINE OF `m+1` SITES IS `(ℤ/2)^(m+1)`** —
-not merely a set of that size. -/
-noncomputable def signMulEquiv (hmass : mass ≠ 0)
-    (hH : (green (boxGraph 1 (m + 1)) mass).IsHermitian) :
-    Multiplicative (Site 1 (m + 1) → ZMod 2) ≃* symmetriesSubgroup m mass :=
-  MulEquiv.ofBijective (signHom hmass hH) (by
+/-- **THE SYMMETRY GROUP OF A GAUSSIAN FIELD WHOSE PROPAGATOR HAS A SIMPLE SPECTRUM IS
+`(ℤ/2)^V`** — on any finite graph, and not merely a set of that size. -/
+noncomputable def signMulEquiv (hm : m ≠ 0) (hH : (green G m).IsHermitian)
+    (hsimple : Function.Injective hH.eigenvalues) :
+    Multiplicative (V → ZMod 2) ≃* symmetriesSubgroup G m :=
+  MulEquiv.ofBijective (signHom hm hH) (by
     constructor
     · intro f g hfg
       have h : signIsometry hH (bitsEquiv.symm (Multiplicative.toAdd f))
@@ -246,13 +258,23 @@ noncomputable def signMulEquiv (hmass : mass ≠ 0)
         (bitsEquiv.symm.injective (signIsometry_injective hH h))
     · rintro ⟨T, hT⟩
       obtain ⟨s, hs⟩ := FieldSimpleCriterion.exists_signIsometry_eq hH
-        ((FieldSimpleCriterion.gaussianField_map_iff_signs_line hmass hH T).mp
+        ((FieldSimpleCriterion.gaussianField_map_iff_signs hm hH hsimple T).mp
           (mem_symmetriesSubgroup.mp hT))
       refine ⟨Multiplicative.ofAdd (bits s), Subtype.ext ?_⟩
       have hoa : Multiplicative.toAdd (Multiplicative.ofAdd (bits s)) = bits s := rfl
       have hbs : bitsEquiv.symm (bits s) = s := bitsEquiv.symm_apply_apply s
       rw [signHom_apply, hoa, hbs, hs])
 
-end Line
+/-- **THE LINE IS THE INSTANCE.** -/
+noncomputable def signMulEquivLine {k : ℕ} {mass : ℝ} (hmass : mass ≠ 0) :
+    Multiplicative (Site 1 (k + 1) → ZMod 2)
+      ≃* symmetriesSubgroup (boxGraph 1 (k + 1)) mass :=
+  signMulEquiv hmass _
+    (FieldSimpleCriterion.eigenvalues_injective_line hmass
+      (green_posDef (boxGraph 1 (k + 1)) hmass).isHermitian)
+
+end Group
+
+
 
 end FieldSignGroup

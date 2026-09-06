@@ -3,6 +3,13 @@ import FieldSimpleSpectrum
 /-!
 # The classification bites: the field on a LINE has exactly the sign symmetries
 
+⚠ **PARTLY GENERALISED IN PLACE, 2026-09-06.** `exists_signIsometry_eq` was stated for the line and
+its proof never mentioned one; it now takes an arbitrary finite graph.
+**`gaussianField_map_iff_signs`** is new and states the biconditional at any graph with a simple
+spectrum, and **`gaussianField_map_iff_signs_line` is now a one-line corollary of it** rather than a
+separate proof. Everything else in the file is line-specific and unchanged — in particular
+`eigenvalues_injective_line`, which is the file's point.
+
 `FieldSimpleSpectrum` classified the symmetries at a propagator with pairwise-distinct eigenvalues
 and **could not point at a graph**: its hypothesis `Function.Injective hH.eigenvalues` was carried
 and never discharged, so the file exhibited nothing on which its conclusion bites. **This discharges
@@ -38,9 +45,12 @@ every eigenspace on a line has dimension at most one.
 **`eigenvalues_injective_line`** — **the propagator on a line has a simple spectrum.**
 
 **`exists_signs_line`** — **so every symmetry of the Gaussian field on a line is a sign pattern on
-the eigenbasis**, and **`gaussianField_map_iff_signs_line`** is the biconditional: the converse
-comes from `FieldSimpleSpectrum.gaussianField_map_signIsometry` and `eq_of_signs`, neither of which
-needs simplicity. **The word *exactly* is a theorem here and not a composition left to the reader.**
+the eigenbasis**, and **`gaussianField_map_iff_signs`** is the biconditional **at any graph with a
+simple spectrum**: the converse comes from `FieldSimpleSpectrum.gaussianField_map_signIsometry` and
+`eq_of_signs`, neither of which needs simplicity. **The word *exactly* is a theorem here and not a
+composition left to the reader.** **`gaussianField_map_iff_signs_line`** is the line instance, and
+**`exists_signIsometry_eq`** — a sign pattern is a `signIsometry`, with the sign set read off as a
+`Finset` — holds at any graph and takes no hypothesis beyond a Hermitian witness.
 
 ## What is NOT here
 
@@ -48,6 +58,9 @@ needs simplicity. **The word *exactly* is a theorem here and not a composition l
 and neither is a bundled group isomorphism. `FieldSimpleSpectrum`'s fence on that stands
 unchanged, and both remain on `UNLOCK_WATCHLIST`.
 **Not attempted, no cost claimed** (`ERRATUM 246`).
+⚠ **SUPERSEDED 2026-09-05, kept as written** (`ERRATUM 94`): `FieldLineCount.card_symmetries` is the
+count and `FieldSignGroup.signMulEquiv` the group isomorphism, both **at any graph with a simple
+spectrum** since the 2026-09-06 generalisation.
 
 **NOTHING ABOUT `d ≥ 2` IS ADDED HERE.** The contrast above is between this file and
 `FieldRotationCount`; neither says anything new about the other's case, and in particular **no
@@ -189,12 +202,11 @@ theorem exists_signs_line {m : ℕ} {mass : ℝ} (hmass : mass ≠ 0)
 
 /-- **A SIGN PATTERN IS A `signIsometry`**, with the sign set read off as a `Finset`. Exposed
 rather than inlined so that a count of the symmetries can reuse it. -/
-theorem exists_signIsometry_eq {m : ℕ} {mass : ℝ}
-    (hH : (green (boxGraph 1 (m + 1)) mass).IsHermitian)
-    {T : EuclideanSpace ℝ (Site 1 (m + 1)) ≃ₗᵢ[ℝ] EuclideanSpace ℝ (Site 1 (m + 1))}
-    (hsigns : ∃ ε : Site 1 (m + 1) → ℝ, (∀ j, ε j = 1 ∨ ε j = -1) ∧
+theorem exists_signIsometry_eq (hH : (green G m).IsHermitian)
+    {T : EuclideanSpace ℝ V ≃ₗᵢ[ℝ] EuclideanSpace ℝ V}
+    (hsigns : ∃ ε : V → ℝ, (∀ j, ε j = 1 ∨ ε j = -1) ∧
       ∀ j, T (hH.eigenvectorBasis j) = ε j • hH.eigenvectorBasis j) :
-    ∃ s : Finset (Site 1 (m + 1)), FieldSimpleSpectrum.signIsometry hH s = T := by
+    ∃ s : Finset V, FieldSimpleSpectrum.signIsometry hH s = T := by
   classical
   obtain ⟨ε, hε, hTj⟩ := hsigns
   refine ⟨Finset.univ.filter (fun j => ε j = -1), FieldSimpleSpectrum.eq_of_signs hH fun j => ?_⟩
@@ -206,19 +218,28 @@ theorem exists_signIsometry_eq {m : ℕ} {mass : ℝ}
     · rw [if_neg (by simp [hj]), h1]
     · exact absurd h1 hj
 
-/-- **AND THAT IS EXACTLY WHAT THE SYMMETRIES ARE**: a biconditional, so the word *exactly* is a
-theorem here and not a composition left to the reader. -/
+/-- **AND THAT IS EXACTLY WHAT THE SYMMETRIES ARE**, on **any** graph with a simple spectrum: a
+biconditional, so the word *exactly* is a theorem here and not a composition left to the reader. -/
+theorem gaussianField_map_iff_signs (hm : m ≠ 0) (hH : (green G m).IsHermitian)
+    (hsimple : Function.Injective hH.eigenvalues)
+    (T : EuclideanSpace ℝ V ≃ₗᵢ[ℝ] EuclideanSpace ℝ V) :
+    MeasureTheory.Measure.map T (gaussianField G m) = gaussianField G m ↔
+      ∃ ε : V → ℝ, (∀ j, ε j = 1 ∨ ε j = -1) ∧
+        ∀ j, T (hH.eigenvectorBasis j) = ε j • hH.eigenvectorBasis j := by
+  refine ⟨fun hT => FieldSimpleSpectrum.exists_signs hm hH hsimple hT, ?_⟩
+  intro hsigns
+  obtain ⟨s, hs⟩ := exists_signIsometry_eq hH hsigns
+  rw [← hs]
+  exact FieldSimpleSpectrum.gaussianField_map_signIsometry hm hH s
+
+/-- The line is the instance the chain uses. -/
 theorem gaussianField_map_iff_signs_line {m : ℕ} {mass : ℝ} (hmass : mass ≠ 0)
     (hH : (green (boxGraph 1 (m + 1)) mass).IsHermitian)
     (T : EuclideanSpace ℝ (Site 1 (m + 1)) ≃ₗᵢ[ℝ] EuclideanSpace ℝ (Site 1 (m + 1))) :
     MeasureTheory.Measure.map T (gaussianField (boxGraph 1 (m + 1)) mass)
         = gaussianField (boxGraph 1 (m + 1)) mass ↔
       ∃ ε : Site 1 (m + 1) → ℝ, (∀ j, ε j = 1 ∨ ε j = -1) ∧
-        ∀ j, T (hH.eigenvectorBasis j) = ε j • hH.eigenvectorBasis j := by
-  refine ⟨fun hT => exists_signs_line hmass hH hT, ?_⟩
-  intro hsigns
-  obtain ⟨s, hs⟩ := exists_signIsometry_eq hH hsigns
-  rw [← hs]
-  exact FieldSimpleSpectrum.gaussianField_map_signIsometry hmass hH s
+        ∀ j, T (hH.eigenvectorBasis j) = ε j • hH.eigenvectorBasis j :=
+  gaussianField_map_iff_signs hmass hH (eigenvalues_injective_line hmass hH) T
 
 end FieldSimpleCriterion
