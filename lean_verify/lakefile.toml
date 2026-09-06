@@ -386,4 +386,5 @@ roots = [
   "FieldSymmetryProper",
   "FieldSymmetryEdgeless",
   "FieldSimpleAut",
+  "FieldLaplacianSimple",
 ]
