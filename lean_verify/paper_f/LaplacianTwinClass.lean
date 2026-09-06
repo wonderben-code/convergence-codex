@@ -46,6 +46,13 @@ vertices). **The two counting steps have the same shape and different reach.**
 that**, and for a class that is not maximal it will not be. No upper bound of any kind appears
 anywhere in this estate as of 2026-09-06.
 
+⚠ **THE SECOND CLAUSE IS FALSE AND IS KEPT AS WRITTEN** (`ERRATUM 94`, `ERRATUM 468`, the same
+day). `TwinClassNotExact.class_bound_lt_finrank`: on **two disjoint triangles** every closed twin
+class has three members and is **maximal**, and the eigenspace at `3` has dimension at least four —
+so the bound fails to be sharp for a **maximal** class, and non-maximality is not the reason. **The
+first clause stands**: `|S| − 1 ≤ dim` is proved and the eigenspace is not shown to be exactly that,
+because it is not.
+
 **NO MAXIMAL CLASS, NO PARTITION.** *Being twins* is an equivalence relation on the vertices, the
 classes partition the graph, and the eigenvalue multiplicities should be readable off that
 partition. **None of that is stated**: `S` here is any set whose members are twins of `u₀`, maximal

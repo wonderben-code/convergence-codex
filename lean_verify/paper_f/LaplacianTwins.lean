@@ -65,6 +65,14 @@ the eigenspace is *spanned* by twin differences or that the dimension is *exactl
 for a class that is not maximal it will not be. **No upper bound on the multiplicity of any
 eigenvalue of any graph exists in this estate as of 2026-09-06.**
 
+⚠⚠ **AND THE OTHER HALF IS NOT MERELY UNPROVED — IT IS FALSE, AND SO IS THE REASON GIVEN FOR IT
+IMMEDIATELY ABOVE** (`ERRATUM 468`, the same day; both paragraphs kept as written per
+`ERRATUM 94`). `TwinClassNotExact`: **two disjoint triangles**. Every closed twin class has three
+members (`closed_class_card_le_three`, by exhaustion over all sixty-four subsets), so the bound is
+`2`; the eigenspace at `3` has dimension at least **four**. And the classes **are** maximal, so
+*"for a class that is not maximal it will not be"* names the wrong reason. **The inequality above
+stands and is not sharp.**
+
 **NOTHING ABOUT ADJACENT TWINS.** Vertices with the same **closed** neighbourhood — `N[u] = N[v]`,
 so `u` and `v` adjacent — also give an eigenvector, at `deg u + 1`. **That case is not treated**,
 and `not_adj_of_neighborFinset_eq` shows the case treated here excludes it rather than covering it.
