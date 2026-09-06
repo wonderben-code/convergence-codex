@@ -67,6 +67,14 @@ still satisfies them and edgeless graphs still fail them, and those are still th
 families known. The standing question on `UNLOCK_WATCHLIST` is untouched — an equivalence between
 spectral conditions is not a characterisation of the graphs satisfying them.
 
+⚠ **A THIRD FAMILY AND A NECESSARY CONDITION ARRIVED THE SAME DAY, AND THE PARAGRAPH ABOVE IS KEPT
+AS WRITTEN** (`ERRATUM 94`). `FieldSimpleConnected`: **connectivity is necessary**
+(`preconnected_of_finrank_le_one`, one eigenvalue's worth of work — at `ν = 0` the eigenspace
+counts components) **and not sufficient**, every **periodic lattice** of dimension `d ≥ 1` being
+connected and failing at every mass.
+**The sentence that matters is unchanged**: still no characterisation, and still only the path on
+the satisfying side.
+
 **`injective_of_finrank_le_one` REPEATS AN ARGUMENT THE ESTATE ALREADY HAD.** It is
 `FieldSimpleCriterion.eigenvalues_injective_of_finrank_le_one`'s proof with the `massive`/`green`
 inversion step deleted — same orthonormal-basis contradiction, same
@@ -80,6 +88,12 @@ edgeless graph `FieldSymmetryEdgeless.green_eq_smul_of_no_adj` says the propagat
 matrix outright, so every eigenvalue is the same one and degeneracy is immediate. It is here as a
 **demonstration that the new implication carries on an example**, in the manner of
 `FieldLaplacianInstance`, not as a fact that needed it.
+
+⚠ **AND IT IS SUBSUMED WITHIN THE HOUR, KEPT AND NOT DELETED** (`ERRATUM 94`).
+`FieldSimpleConnected.not_eigenvalues_injective_of_not_preconnected` is the same statement for
+**any** disconnected graph, and `FieldSimpleConnected.not_preconnected_of_no_adj` shows *no edges*
+plus *two or more vertices* is exactly a failure of connectivity — so the theorem below is that one
+at one family.
 
 **NOTHING IS SHOWN TO BE EXACTLY A LINE.** Every eigenspace statement here is an upper bound,
 `≤ 1`. No eigenspace is shown non-trivial, and no `Nonempty` hypothesis appears anywhere.

@@ -389,4 +389,5 @@ roots = [
   "FieldLaplacianSimple",
   "FieldLaplacianInstance",
   "FieldSimpleConverse",
+  "FieldSimpleConnected",
 ]
