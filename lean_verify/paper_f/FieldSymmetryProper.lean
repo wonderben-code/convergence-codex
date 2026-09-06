@@ -40,6 +40,12 @@ identity — the isometric symmetries are a **proper** part.
 scalar Laplacian forces every degree to zero — and **that equivalence is not proved here**. Nothing
 in this file says which graphs fall on which side of the dichotomy; it says only what the condition
 on the propagator is. Not attempted, no cost claimed (`ERRATUM 246`).
+⚠ **SUPERSEDED THE NEXT UNIT, kept as written** (`ERRATUM 94`):
+`FieldSymmetryEdgeless.symmetryMatrices_eq_linSym_iff_no_adj` states the dichotomy **about the
+graph** — the two coincide iff `G` has no edges — and
+`symmetryMatrices_ssubset_linSym_of_ne_bot` says **one edge is enough** for strictness. **The
+sketch above was right in both directions**, including that the degrees fall out of the off-diagonal
+entries. What it called *not proved* is four short lemmas.
 
 **`[Nonempty V]` IS TAKEN, and only by the dichotomy.** With `V` empty every matrix is equal to
 every other and both sides are everything; the statement is true there too but the proof would be a
