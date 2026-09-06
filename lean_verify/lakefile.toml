@@ -408,4 +408,5 @@ roots = [
   "SpectrumOS2Bridge",
   "OddVertexAugment",
   "CycleRestriction",
+  "LeftPartWalk",
 ]
