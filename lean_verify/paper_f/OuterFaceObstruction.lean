@@ -45,6 +45,20 @@ them — a coarser object than one path per cluster. **Recorded as not attempted
 blocked** (`ERRATUM 71` addendum 3): no failed construction was observed, only a sketch that
 does not obviously close.
 
+⚠ **IT WAS ATTEMPTED THE SAME DAY, BY THE FILE THAT IMPORTS THIS ONE, AND THIS PARAGRAPH IS
+KEPT AS WRITTEN** (`ERRATUM 94`, `ERRATUM 471`, annotated 2026-09-06). `ExtendedDual` builds
+exactly the four-vertex repair described above — the outer face indexed by **direction**,
+`Plaq n ⊕ Fin 4` — and proves `evenDegrees_plaq`, every plaquette of even degree with **no
+hypothesis on the configuration**. **And this paragraph's prediction became a theorem there**:
+the rim degrees are not even, `ExtendedDual.not_evenDegrees_extDual`, with `cornerDown` giving
+two rim vertices of degree one. What is still missing is what this paragraph names last — a
+decomposition into circuits **plus paths between the odd vertices** — which is absent from
+this estate and is an open to-do item in Mathlib's own `Trails.lean`. `OddVertexAugment`
+(2026-09-06) supplies the step before it: adjoining one vertex joined to the odd-degree
+vertices makes every degree even, for any finite graph. **`WALLS.md` recorded this
+supersession on 2026-08-12 and this file was never annotated**, which is what `ERRATUM 471` is
+about.
+
 Nothing here touches the Ising measure. `IsingBoundaryField.MagnetisationBound` is untouched.
 -/
 
