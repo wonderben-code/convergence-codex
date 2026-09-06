@@ -424,4 +424,5 @@ roots = [
   "CriterionStrictlyWeaker",
   "NoBrokenOutwardCharacterised",
   "BondsDeficit",
+  "RayBondsParity",
 ]

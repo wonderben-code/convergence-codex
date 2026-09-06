@@ -99,6 +99,23 @@ about `n`, nothing about `PlusBoundary`, and no decidability beyond the classica
 `odd_crossings_bonds_of_ne_of_even_outwardPart` takes **the walk's outward parity and the two
 endpoint spins**, and those three are its entire hypothesis.
 
+## ⚠ THE UNEXAMINED HYPOTHESIS WAS FREE ON A DIFFERENT WALK. Annotated 6 September 2026
+
+The fence above says no theorem here exhibits a walk satisfying `Even (crossings (outwardPart σ) w)`
+on a configuration that fails the criterion, and that on **this chain's** walk — the one ending at
+the corner — it cannot be met by routing. Both sentences stay true of this file and of that walk.
+
+`paper_f/RayBondsParity.lean`, which **imports this one**, takes a different walk and the condition
+is **free** on it: `RayWalk.leftRay` runs along a row and its steps are the bottom sides of that
+row's plaquettes, so `not_outwardBond_sideD_of_interior_row` shows a ray in any row **above the
+bottom** crosses **zero** outward bonds. Hence `even_crossings_bonds_leftRay_iff` and
+`odd_crossings_bonds_leftRay_of_down`: on **every** configuration, a down site whose row meets the
+left edge at an up site is enclosed, with no condition on `σ` anywhere else in the box. The
+excluded row is excluded for a reason that is proved there and not assumed.
+
+What is still not supplied is the step from one odd crossing count to *some circuit surrounds `x`*,
+which needs a pairwise-disjoint decomposition and is `DualUnique`'s work under `+`.
+
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 
 -/
