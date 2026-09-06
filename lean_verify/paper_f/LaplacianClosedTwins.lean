@@ -50,6 +50,12 @@ anywhere in this estate as of 2026-09-06, and its hypothesis — an open pair wh
 than a closed pair's — is not shown to be satisfiable by any graph. Not attempted, no cost claimed
 (`ERRATUM 246`); the item is on `UNLOCK_WATCHLIST`.
 
+⚠ **A GRAPH IS EXHIBITED THE VERY NEXT UNIT, AND THE PARAGRAPH ABOVE IS KEPT AS WRITTEN**
+(`ERRATUM 94`; **found by `stalefence_scan`**, which is the mode `ERRATUM 466` installed for exactly
+this and which fired on its author within the hour). `MixedTwinWitness.mixedGraph` is a
+**connected** seven-vertex graph carrying both pairs at the right degrees, and
+`MixedTwinWitness.two_le_finrank_mixed` applies this theorem to it.
+
 **NO MULTIPLICITY IS COMPUTED IN THIS FILE**, in either case: the bound is `2 ≤` throughout, and a
 twin class of size `k` should give `k − 1`, which is not proved anywhere in this estate as of
 2026-09-06.
