@@ -34,8 +34,12 @@ and the sentence that predicted otherwise is corrected in place (`ERRATUM 468`).
 ## What is NOT here
 
 **THE EIGENSPACE IS NOT COMPUTED.** `4 ≤ dim` is proved and **the dimension is not claimed to be
-four**, though it is. Nothing here bounds it above, and this estate still has **no upper bound on
-the multiplicity of any eigenvalue of any graph** as of 2026-09-06.
+four**, though it is. [**⚠ IT IS FOUR, PROVED THE SAME DAY** —
+`LaplacianTriangleUnion.finrank_twoTriangles_eq`, by holding this bound against
+`LaplacianMultiplicityBound.finrank_add_card_component_le`, which did not exist when this
+sentence was written. Kept as written, `ERRATUM 94`.] Nothing here bounds it above, and this
+estate still has **no upper bound on the multiplicity of any eigenvalue of any graph** as of
+2026-09-06.
 
 ⚠ **THE "NO UPPER BOUND" CLAUSE IS FALSE AND IS KEPT AS WRITTEN** (`ERRATUM 94`, `ERRATUM 469`, the
 same day). `FieldSimpleConnected.finrank_ker_lapMatrix_zero_eq_card_component` gives the

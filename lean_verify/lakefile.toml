@@ -403,4 +403,5 @@ roots = [
   "FieldTwinRotation",
   "LaplacianClassFamily",
   "LaplacianMultiplicityBound",
+  "LaplacianTriangleUnion",
 ]

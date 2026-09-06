@@ -32,7 +32,13 @@ is what the family form buys, and it is why this file has a graph of its own rat
 **STILL NO UPPER BOUND.** `∑ (|T| − 1) ≤ dim`, and **the dimension is not computed for any graph**.
 `TwinClassNotExact` showed the class bound is not sharp for **one** class; **whether the sum over
 all classes is sharp is not addressed**, and on three triangles it happens to be — six is the
-dimension — but that is one graph and this file proves no such thing. **This estate still has no
+dimension — but that is one graph and this file proves no such thing.
+
+⚠ **IT IS SIX, PROVED THE SAME DAY, AND THE PARAGRAPH ABOVE IS KEPT AS WRITTEN** (`ERRATUM 94`).
+`LaplacianTriangleUnion.finrank_threeTriangles_eq`, by holding this file's bound against
+`LaplacianMultiplicityBound.finrank_add_card_component_le`, which did not exist when this sentence
+was written. **The general sharpness question is untouched**: two graphs where the sum is sharp do
+not say when it is sharp. **This estate still has no
 upper bound on the multiplicity of any eigenvalue of any graph** as of 2026-09-06.
 
 ⚠ **THE "NO UPPER BOUND" CLAUSE IS FALSE AND IS KEPT AS WRITTEN** (`ERRATUM 94`, `ERRATUM 469`, the
