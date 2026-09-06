@@ -400,4 +400,5 @@ roots = [
   "LaplacianTwinClass",
   "TwinClassNotExact",
   "LaplacianTwoClasses",
+  "FieldTwinRotation",
 ]
