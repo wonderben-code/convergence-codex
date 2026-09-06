@@ -415,4 +415,5 @@ roots = [
   "EvenRowParity",
   "PathGraphDegree",
   "RowParityCorrection",
+  "RowParityLocate",
 ]
