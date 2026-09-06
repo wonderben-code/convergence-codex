@@ -419,4 +419,5 @@ roots = [
   "RayPieceParity",
   "OddPieceSelect",
   "PieceBranchesRealised",
+  "BondsContourGap",
 ]
