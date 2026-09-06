@@ -74,6 +74,27 @@ candidate is ruled out.
 `exists_noBrokenOutward_not_plusBoundary` take **`0 < n`**; `not_noBrokenOutward_cornerDown` takes
 **`1 < n`**; the two `sigmaPlus` theorems take **nothing at all**.
 
+## ⚠ BOTH FENCES ABOVE WERE ANSWERED THE SAME DAY, AND THE FIRST ONE'S GUESS WAS RIGHT.
+Annotated 6 September 2026
+
+`paper_f/NoBrokenOutwardCharacterised.lean` — which **imports this file** — settled both of the
+*"What is NOT here"* items above within the hour:
+
+* *"NO CHARACTERISATION OF THE CRITERION … the obvious guess, that it holds exactly when every edge
+  of the box is constant, is **not proved**"* — **it is now, and the guess was right.**
+  `noBrokenOutward_iff : NoBrokenOutward σ ↔ PlusBoundary σ ∨ PlusBoundary (flip σ)`, with **no
+  hypothesis on `n`**. So `flip_strictly_weaker` above did not merely find *a* family outside
+  `PlusBoundary`: it found **all** of them.
+* *"NOTHING FOLLOWS FOR THE SPIN"* — sharpened from an observation to a theorem.
+  `no_spin_from_criterion` proves no hypothesis about outward sides determines a boundary spin, by
+  refuting the implication on the flip of the all-up configuration. The sentence above says the
+  criterion *does not* supply the endpoint spin; the theorem says it **cannot**.
+
+The cost was one converse: *every rim bond of the box is an outward side of a plaquette*, which
+`RimBoundary` did not have — it had only the forward direction. Nothing above is wrong; what it
+says about **this file** stays true. This annotation exists because `ERRATUM 471` records the cost
+of leaving a superseded fence unannotated in the file it is written in.
+
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 
 -/

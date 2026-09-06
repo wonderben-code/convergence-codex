@@ -422,4 +422,5 @@ roots = [
   "BondsContourGap",
   "BondsContourCriterion",
   "CriterionStrictlyWeaker",
+  "NoBrokenOutwardCharacterised",
 ]
