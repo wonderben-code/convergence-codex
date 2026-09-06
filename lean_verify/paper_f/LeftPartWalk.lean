@@ -22,6 +22,12 @@ content: the middle vertex is `Sum.inl w` by hypothesis, and `H.Adj (Sum.inl u) 
 with the hypothesis as *the added vertex is not on the walk*, which is how a cycle through it
 presents the pieces on either side.
 
+**`exists_walk_support_aux`, `exists_walk_support_of_notMem`, `exists_leftPart_path_of_notMem`** —
+the same induction **with the support carried along**, and hence **a path comes down a path**. The
+first three theorems return `Nonempty` and so throw the walk away, which is enough for reachability
+and nothing else; the extraction residue (a) still wants needs the support, so §4 repeats the
+induction once with it. `Sum.inl` is injective, so nodup passes both ways along the identification.
+
 **`reachable_leftPart_of_notMem`, `not_reachable_lift`** — **so reachability transports downwards**:
 two vertices joined in `H` by a walk missing the added vertex are joined in the part; and
 contrapositively, if they are **not** joined in the part then every `H`-walk between them passes
@@ -30,12 +36,13 @@ a separation statement in the part into a *forced visit* upstairs.
 
 ## What is NOT here
 
-**THIS IS A WALK, NOT A PATH, AND NOT A PATH GRAPH.** `SimpleGraph.Walk` may repeat vertices and
-edges. Nothing here produces a `Walk.IsPath`, and nothing shows that `leftPart H` **is** the edge
-set of one walk — the analogue of `IsCycleGraph` for paths is not defined in this estate and is not
-defined here. **So residue (a) is not closed**, and what remains of it after this file is: rotate a
-cycle to begin at the added vertex, drop its two end edges, check the middle is a path, and check
-its edges are exactly `leftPart H`. **Not attempted, no cost claimed** (`ERRATUM 246`).
+**A PATH IS PRODUCED ONLY FROM A PATH, AND NEVER A PATH GRAPH.** §4 carries `Walk.IsPath` down,
+**given it upstairs**; it does **not** produce one from a cycle, and nothing here shows that
+`leftPart H` **is** the edge set of one walk — the analogue of `IsCycleGraph` for paths is not
+defined in this estate and is not defined here. **So residue (a) is not closed**, and what
+remains of it after this file is: rotate a cycle to begin at the added vertex, drop its two end
+edges, check the middle is a path, and check its edges are exactly `leftPart H`. **Not
+attempted, no cost claimed** (`ERRATUM 246`).
 
 **NO CYCLE IS ROTATED.** `Walk.rotate` is not used and no theorem here takes `IsCycleGraph` as a
 hypothesis; this file is about walks in an arbitrary graph on `V ⊕ Unit` and mentions neither
@@ -117,5 +124,51 @@ theorem reachable_leftPart_of_notMem {u v : V} (p : H.Walk (Sum.inl u) (Sum.inl 
 theorem not_reachable_lift {u v : V} (h : ¬ (leftPart H).Reachable u v)
     (p : H.Walk (Sum.inl u) (Sum.inl v)) : Sum.inr () ∈ p.support :=
   not_not.mp fun hp => h (reachable_leftPart_of_notMem p hp)
+
+/-! ## 4. And with the support carried along, so paths stay paths
+
+`exists_walk_aux` returns `Nonempty` and therefore **throws away the walk**, which is enough for
+reachability and not enough for anything about the walk's shape. The extraction residue (a) still
+wants — cut a cycle at the added vertex and check the middle is a **path** — needs exactly the
+support, so the induction is repeated once with it carried.
+-/
+
+/-- The same induction, returning the walk **with its support identified**. -/
+theorem exists_walk_support_aux : ∀ {a b : V ⊕ Unit} (p : H.Walk a b),
+    (∀ x ∈ p.support, ∃ w : V, x = Sum.inl w) →
+    ∀ u v : V, a = Sum.inl u → b = Sum.inl v →
+      ∃ q : (leftPart H).Walk u v, q.support.map Sum.inl = p.support := by
+  intro a b p
+  induction p with
+  | nil =>
+    intro _ u v hu hv
+    have huv : u = v := Sum.inl_injective (hu.symm.trans hv)
+    subst huv
+    subst hu
+    exact ⟨Walk.nil, rfl⟩
+  | @cons x y z hadj q ih =>
+    intro hp u v hu hv
+    obtain ⟨w, rfl⟩ := hp y (by simp)
+    subst hu
+    obtain ⟨q', hq'⟩ := ih (fun t ht => hp t (by simp [ht])) w v rfl hv
+    exact ⟨Walk.cons hadj q', by simp [hq']⟩
+
+/-- **A WALK MISSING THE ADDED VERTEX COMES DOWN WITH ITS SUPPORT.** -/
+theorem exists_walk_support_of_notMem {u v : V} (p : H.Walk (Sum.inl u) (Sum.inl v))
+    (hp : Sum.inr () ∉ p.support) :
+    ∃ q : (leftPart H).Walk u v, q.support.map Sum.inl = p.support := by
+  refine exists_walk_support_aux p (fun x hx => ?_) u v rfl rfl
+  cases x with
+  | inl w => exact ⟨w, rfl⟩
+  | inr t => exact absurd hx (by cases t; exact hp)
+
+/-- **AND SO A PATH COMES DOWN A PATH.** `Sum.inl` is injective, so nodup passes both ways along
+the support identification. -/
+theorem exists_leftPart_path_of_notMem {u v : V} (p : H.Walk (Sum.inl u) (Sum.inl v))
+    (hp : Sum.inr () ∉ p.support) (hpath : p.IsPath) :
+    ∃ q : (leftPart H).Walk u v, q.IsPath := by
+  obtain ⟨q, hq⟩ := exists_walk_support_of_notMem p hp
+  refine ⟨q, (Walk.isPath_def q).mpr ?_⟩
+  exact List.Nodup.of_map Sum.inl (hq ▸ (Walk.isPath_def p).mp hpath)
 
 end LeftPartWalk
