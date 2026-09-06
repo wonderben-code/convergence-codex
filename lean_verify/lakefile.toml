@@ -391,4 +391,5 @@ roots = [
   "FieldSimpleConverse",
   "FieldSimpleConnected",
   "FieldInvolutionConverse",
+  "FieldSimpleBox",
 ]
