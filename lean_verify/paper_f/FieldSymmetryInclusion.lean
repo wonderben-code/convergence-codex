@@ -62,6 +62,13 @@ much bigger `linSym` is than `symmetryMatrices`, beyond the strictness on a line
 **THE STRICTNESS IS ONLY ON A LINE.** `exists_nonIsometric` needs two eigenvectors at **distinct**
 eigenvalues, which the line supplies; **no strictness is proved on any other graph**, and none is
 claimed. In particular nothing here says the inclusion is strict whenever `|V| ≥ 2`.
+⚠ **SUPERSEDED THE NEXT UNIT, kept as written** (`ERRATUM 94`):
+`FieldSymmetryProper.symmetryMatrices_ssubset_linSym` proves the strictness on **any** graph whose
+propagator has two distinct eigenvalues, and `symmetryMatrices_eq_linSym_iff` makes that a
+**dichotomy** — the two coincide exactly when the propagator has a single eigenvalue. **The fence
+named the real hypothesis and then attached it to the wrong object**: it is the distinct
+eigenvalues, not the line. **The last sentence stays literally true**: `|V| ≥ 2` is still not the
+condition, and a propagator that is a multiple of the identity is the counterexample.
 
 **No wall moves.** `W1`'s open part is `OS0` and `OS4`, and `OS1` in its continuum sense.
 

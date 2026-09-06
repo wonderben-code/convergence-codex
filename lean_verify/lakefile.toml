@@ -383,4 +383,5 @@ roots = [
   "InnerIsometryOnto",
   "FieldSignGroup",
   "FieldSymmetryInclusion",
+  "FieldSymmetryProper",
 ]
