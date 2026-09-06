@@ -85,6 +85,19 @@ construction is still the repair and is still untouched. **W3 does not move.**
 take the same in index form, two of them with `1 < n` to name the far rim; every corner theorem
 takes **`2 < n`**. No `PlusBoundary` anywhere in this file.
 
+## ⚠ THE GLOBAL STATEMENT WAS ASSEMBLED THE SAME HOUR. Annotated 6 September 2026
+
+*What is NOT here* says the sentence *every boundary site other than the four corners carries the
+same spin* is not a theorem here, and names its cost: a **ranged** variant of
+`NoBrokenOutwardCharacterised.const_of_step` plus four corner glue steps.
+`paper_f/EvenDegreesBoundary.lean`, which **imports this file**, is exactly that and nothing more —
+`const_of_step_from` is the ranged induction, the four `*_const` run it on each rim over
+`1 ≤ k ≤ n - 2`, three anchor lemmas are the glue, and
+**`const_offCorner_of_evenDegrees`** is the sentence, under `2 < n`.
+
+**The estimate was right and the two other fences above still stand**: the converse is still not
+proved, and no count or proportion is offered there either.
+
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 
 -/

@@ -427,4 +427,5 @@ roots = [
   "RayBondsParity",
   "RayCircuitSurrounding",
   "EvenDegreesReach",
+  "EvenDegreesBoundary",
 ]
