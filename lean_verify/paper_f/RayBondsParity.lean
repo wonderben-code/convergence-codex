@@ -92,6 +92,27 @@ takes **`0 < P.j`** and the plaquette's own bounds; the three ray theorems take 
 `odd_crossings_bonds_leftRay_of_down` takes in addition **the two endpoint spins**. No
 `PlusBoundary`, no `NoBrokenOutward`, no condition on `σ` away from the ray's two ends.
 
+## ⚠ THE DECOMPOSITION THIS HEADER SAYS IS NOT SUPPLIED WAS SUPPLIED THE SAME HOUR.
+Annotated 6 September 2026
+
+*What is NOT here* says the step from one odd crossing count to *some circuit surrounds `x`* needs
+a pairwise-disjoint decomposition, that none is supplied, and that it is `DualUnique`'s work under
+`+` and is **not redone**. `paper_f/RayCircuitSurrounding.lean`, which **imports this file**, redoes
+it:
+
+* **`odd_count_circuits_leftRay_iff`** — `DualUnique.odd_count_circuits_iff_down`'s statement along
+  a ray with **no condition on `σ`**, because every ingredient of that theorem except the crossing
+  count was already free of `PlusBoundary`, and this file supplies the crossing count.
+* **`exists_odd_path_or_cycle_piece_leftRay`** — and with **no hypothesis on `σ` at all** beyond the
+  ray's two endpoints, some piece is crossed oddly and is a single path or a single cycle
+  (`OddPieceSelect.exists_odd_path_or_cycle_piece` composed with the theorem below).
+* **`exists_circuit_surrounding_leftRay`** — and under `EvenDegrees (dualGraph σ)` the piece is a
+  **cycle**.
+
+**The paragraph's caution survives the closure and is sharpened there**: a path is not an
+enclosure, so the hypothesis-free version is weaker in *content* and not only in hypotheses
+(`ERRATUM 97`), and the piece still depends on the walk.
+
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 
 -/

@@ -425,4 +425,5 @@ roots = [
   "NoBrokenOutwardCharacterised",
   "BondsDeficit",
   "RayBondsParity",
+  "RayCircuitSurrounding",
 ]
