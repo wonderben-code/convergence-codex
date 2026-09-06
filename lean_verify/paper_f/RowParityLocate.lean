@@ -44,6 +44,15 @@ concludes the site is **down**. What is proved here is about **horizontal lines 
 the whole of `RayWalk`, and **it is not touched**. **Residue (b) is not closed and no part of it is
 claimed.** Not attempted, no cost claimed (`ERRATUM 246`).
 
+⚠ **A RAY APPEARS THE SAME DAY AND THIS PARAGRAPH IS KEPT AS WRITTEN** (`ERRATUM 94`, annotated
+in the unit that superseded it, per `ERRATUM 471`). `RayPieceParity.crossings_leftRay_eq_cntD`
+identifies the leftward ray's crossings of a piece with that piece's row count, so this file's
+two parities are **ray** parities: the ray from a site crosses a piece evenly with no
+exceptional plaquette below it and oddly with an odd correction below it. **The heading is what
+moves; the body stands** — nothing here reaches a site's **spin** or a **cluster**, which needs
+the crossings of a decomposition to sum to the crossings of the whole contour, and neither that
+nor a decomposition of the contour is supplied. **Residue (b) is still not closed.**
+
 **THE TWO EXCEPTIONAL PLAQUETTES ARE NOT ASSUMED DISTINCT, AND NOT ASSUMED TO BE ENDPOINTS.**
 Everything here takes them as **given** — two plaquettes outside which the degree is even — which
 is exactly what `exists_endpoints_of_isPathGraph` returns and **all** that is used. **No theorem

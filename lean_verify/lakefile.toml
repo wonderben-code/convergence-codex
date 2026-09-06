@@ -416,4 +416,5 @@ roots = [
   "PathGraphDegree",
   "RowParityCorrection",
   "RowParityLocate",
+  "RayPieceParity",
 ]

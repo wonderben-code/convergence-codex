@@ -41,6 +41,14 @@ counts along a row, and **the ray argument that turns it into a statement about 
 `RayWalk`'s, and is not touched.** Residue (b) of `S3b-ii` — the open-path analogue of that ray
 argument — is **not** attempted here. **No cost claimed** (`ERRATUM 246`).
 
+⚠ **A RAY APPEARS THE SAME DAY AND THIS PARAGRAPH IS KEPT AS WRITTEN** (`ERRATUM 94`, annotated
+in the unit that superseded it, per `ERRATUM 471`). `RayPieceParity.crossings_leftRay_eq_cntD`
+identifies the leftward ray's crossings of a piece with that piece's row count, so the row
+parities above are ray parities. **The heading is what moves; the body stands** — the ray
+*argument*, which reaches a site's spin, needs the crossings of a **decomposition** to sum to
+the crossings of the whole contour, and neither that nor a decomposition of the contour is
+supplied. **Residue (b) is still not closed.**
+
 **NOTHING ABOUT PATH GRAPHS.** The obvious next move is that a path graph has even degree
 everywhere **except its two endpoints**, so the telescope would acquire a correction term at the
 two rows containing them — which is the shape residue (b) wants. **That is not proved**, and as

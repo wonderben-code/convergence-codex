@@ -46,6 +46,14 @@ the conclusion that the site is down. **None of that is touched.** What is suppl
 bookkeeping such an argument would rest on, for paths as well as circuits. **Residue (b) is not
 closed and no part of it is claimed.**
 
+⚠ **A RAY APPEARS THE SAME DAY AND THIS PARAGRAPH IS KEPT AS WRITTEN** (`ERRATUM 94`, annotated
+in the unit that superseded it, per `ERRATUM 471`). `RayPieceParity.crossings_leftRay_eq_cntD`
+identifies the leftward ray's crossings of a piece with that piece's row count, so the row
+parities above are ray parities. **The heading is what moves; the body stands** — the ray
+*argument*, which reaches a site's spin, needs the crossings of a **decomposition** to sum to
+the crossings of the whole contour, and neither that nor a decomposition of the contour is
+supplied. **Residue (b) is still not closed.**
+
 **NOTHING ABOUT `ExtendedDual`'s RIM VERTICES.** The odd-degree vertices there are the **rims**, of
 a graph on `Plaq n ⊕ Fin 4`; everything here is about `SimpleGraph (Plaq n)` and **no theorem
 relates the two types**.
