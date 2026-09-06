@@ -38,6 +38,23 @@ carries. **W3 does not move. No wall moves. No published tag moves.**
 beyond its own range; every other theorem takes **`EvenDegrees (dualGraph σ)` and `2 < n`**, and
 the four `*_const` take in addition the range `1 ≤ k` and `k + 2 ≤ n`. No `PlusBoundary`.
 
+## ⚠ THE CONVERSE WAS PROVED THE SAME HOUR. Annotated 6 September 2026
+
+*What is NOT here* says the converse is not proved and names what it needs: the trichotomy *every
+plaquette is interior, one-rim or corner*. `paper_f/EvenDegreesConverse.lean`, which **imports this
+file**, supplies exactly that (`outward_iff`) and the converse with it, so
+
+> **`evenDegrees_iff_boundaryConstOffCorner`** — for `2 < n`,
+> `EvenDegrees (dualGraph σ) ↔ BoundaryConstOffCorner σ`.
+
+**And the second fence above is answered by the first.** *Nothing is said about the four corners*
+was a statement about these theorems; with the biconditional it becomes a consequence — the
+right-hand side quantifies only over non-corner sites, so the corner spins are free. That file
+records that the last step is left to the reader and states no theorem for it.
+
+The remaining fences stand: **no count, no proportion, nothing below `2 < n`**, and no theorem is
+added to the Peierls chain by either file.
+
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 
 -/
