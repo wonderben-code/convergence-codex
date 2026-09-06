@@ -51,6 +51,20 @@ is a list of subgraphs of `V ⊕ Unit`, and **no statement here transports anyth
 `Sum.inl`**. That transport is the actual content of the classical theorem, and it is **not
 attempted, no cost claimed** (`ERRATUM 246`).
 
+**⚠ THE TRANSPORT WAS ATTEMPTED AND DONE THE SAME DAY, IN FIVE FILES THAT IMPORT THIS ONE.
+Annotated 6 September 2026** (`ERRATUM 478`). The paragraph above is kept unedited: *"no statement
+**here** transports anything back along `Sum.inl`"* is still true of this file, and the geometry it
+describes is still the right description. **The closing clause is not.**
+`paper_f/CycleRestriction.lean` — which imports this file — defines `leftPart` as
+`SimpleGraph.comap Sum.inl` and is the transport; `LeftPartWalk`, `CyclePathExtract` and
+`LeftPartPathGraph` carry walks, paths and edges across it; and
+**`LeftPartDecomposition.exists_path_cycle_decomposition`** is the classical theorem itself —
+*every finite graph's edges are an edge-disjoint union of paths and cycles*. All five were
+committed on **2026-09-06**, the same day as this file. Nothing above is wrong as mathematics; the
+sentence about what was attempted was overtaken within hours and left standing, which is the defect
+`ERRATUM 471` exists for. **What is still not proved is the count and the endpoint identification**
+— *paths between the odd vertices*, with a count — and `ERRATUM 97`'s point below is untouched.
+
 **W3 DOES NOT MOVE, AND THIS FILE SUPPLIES LESS THAN THE THEOREM THAT WOULD NOT MOVE IT EITHER.**
 `ExtendedDual`'s header records (`ERRATUM 97`) that a decomposition into circuits and paths **would
 not by itself give** `S3b-ii`'s covering, because it does not say which piece the plaquette at `x`

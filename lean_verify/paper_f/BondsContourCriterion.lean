@@ -80,7 +80,14 @@ The *"What is NOT here"* paragraph above names two things as unchecked, and
 * *"`MinimumContour.cornerDown` … is **not** checked against this criterion"* — it is now, and it
   **fails** it (`CriterionStrictlyWeaker.not_noBrokenOutward_cornerDown`), at every `n > 1`.
 
-Both were one composition away from facts this estate already held —
+**AND §4'S THEOREM NOW HAS AN UNCONDITIONAL FORM.** `paper_f/BondsDeficit.lean` proves
+`bonds σ (dualGraph σ)` is the contour with the outward-facing bonds deleted, **on every
+configuration**, and reads the crossing parity off that: `odd_crossings_bonds_of_no_outward`'s
+hypothesis becomes *this one walk crosses the outward part evenly*, a condition on the walk rather
+than on the box. `odd_crossings_bonds_of_down_of_no_outward'` there recovers §4's theorem from it
+in two lines, so nothing below is lost.
+
+Both of the questions above were one composition away from facts this estate already held —
 `IsingContourInvariant.contour_flip` and `DualDegreeExact.outward_of_mem_cornerDown`. Nothing above
 is wrong; what it says about **this file** stays true. This annotation exists because `ERRATUM 471`
 records the cost of leaving a superseded fence unannotated in the file it is written in, and the
