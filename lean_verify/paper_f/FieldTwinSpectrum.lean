@@ -67,6 +67,14 @@ not a claim that it was the only one.
 degree give a repeated Laplacian eigenvalue* is a general theorem, and **this file proves it for one
 graph by direct computation instead**. Not attempted, no cost claimed (`ERRATUM 246`).
 
+⚠ **IT IS STATED IN GENERAL ONE UNIT LATER, AND THE PARAGRAPH ABOVE IS KEPT AS WRITTEN**
+(`ERRATUM 94`). `LaplacianTwins.two_le_finrank_of_twin_pairs`, and it is **cleaner than the sentence
+above in two ways**: *non-adjacent* is not a hypothesis but a consequence
+(`LaplacianTwins.not_adj_of_neighborFinset_eq` — twins with the same neighbours would each be their
+own neighbour), and *disjoint* is too strong, since the pairs may share a vertex.
+`LaplacianTwins.twinGraph_not_injective` re-derives this file's conclusion for **this** graph in one
+line. §4's eigenvector computation is kept and not deleted.
+
 **No wall moves.** `W1`'s open part is `OS0` and `OS4`, and `OS1` in its continuum sense.
 
 **THE HYPOTHESES, READ OFF THE BINDERS** (`ERRATUM 455`): **one of the twenty-six declarations takes

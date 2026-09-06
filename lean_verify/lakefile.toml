@@ -394,4 +394,5 @@ roots = [
   "FieldSimpleBox",
   "FieldAutOrder",
   "FieldTwinSpectrum",
+  "LaplacianTwins",
 ]
