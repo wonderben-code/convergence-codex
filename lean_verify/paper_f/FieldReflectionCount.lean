@@ -38,6 +38,12 @@ different eigenvalues give two **different** isometries, each leaving the Gaussi
 symmetries; turning that into a number on a named graph means counting the spectrum, which for the
 torus is `MassiveTorusSpectrum.spectrum_real_eq_range_nuR` and for the box is `BoxLapSpectrum`.
 **That instantiation is not attempted and no cost is claimed** (`ERRATUM 246`).
+⚠ **THE GOAL WAS REACHED BY ANOTHER ROUTE, 2026-09-05/06, and this paragraph is kept as written**
+(`ERRATUM 94`). `FieldLineCount.card_symmetries` counts the isometric symmetries on a line at
+`2^(m+1)` and `FieldSignGroup.signMulEquiv` makes that group `(ℤ/2)^(m+1)`. **Neither goes through
+this file's injection**, and the instantiation disclaimed above — counting the spectrum and pushing
+it through these reflections — **is still not attempted.** Both sentences are true; they are about
+different routes to the same number.
 
 **Distinct eigenvectors at the SAME eigenvalue are not separated.** Two independent eigenvectors in
 one eigenspace are generally not orthogonal, and this argument says nothing about them — which is
