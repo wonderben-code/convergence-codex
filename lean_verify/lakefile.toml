@@ -393,4 +393,5 @@ roots = [
   "FieldInvolutionConverse",
   "FieldSimpleBox",
   "FieldAutOrder",
+  "FieldTwinSpectrum",
 ]
