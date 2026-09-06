@@ -52,6 +52,14 @@ here; `FieldReflectionCount`'s separation argument is about reflections and does
 ⚠ **SUPERSEDED 2026-09-05, kept as written** (`ERRATUM 94`): `FieldRotationCount.rotMatrix_inj`
 compares them — `rotMatrix` sends `u` to `c • u + s • v`, so the angle is read back off the
 matrix — and `infinite_symmetryMatrices_of_orthogonal_eigenpair` counts them as infinite.
+⚠ **AND THE SUPERSESSION ABOVE NAMED A COMPOSITION NOBODY PERFORMED, KEPT AS WRITTEN** (`ERRATUM
+94`, `ERRATUM 470`, 2026-09-06). The two theorems it names are real and the route it describes
+is correct, but **no theorem counting the symmetries of a disconnected graph existed anywhere in
+this estate until 2026-09-06** — every `infinite_symmetryMatrices` result was about a
+*connected* graph carrying some other degeneracy.
+`FieldDisconnectedCount.infinite_symmetryMatrices_of_not_reachable` is the count, and
+`infinite_symmetryMatrices_of_not_reachable_via_rescaling` is this paragraph's own route written
+out, which shows it needed nothing that did not exist when the paragraph was written.
 
 **Not OS3 and not any OS axiom. No wall moves. No published tag moves.**
 

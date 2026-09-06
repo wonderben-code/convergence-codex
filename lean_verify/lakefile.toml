@@ -404,4 +404,5 @@ roots = [
   "LaplacianClassFamily",
   "LaplacianMultiplicityBound",
   "LaplacianTriangleUnion",
+  "FieldDisconnectedCount",
 ]
