@@ -43,6 +43,18 @@ bottom rim through the corner. The estate has no such theorem and neither does M
 (`WALLS.md` W3 records the Euler-direction gap), so `UNLOCK_WATCHLIST`'s S3b-ii covering is
 still not proved.
 
+⚠ **HALF OF THAT THEOREM EXISTS FROM 2026-09-06 AND THE PARAGRAPH ABOVE IS KEPT AS WRITTEN**
+(`ERRATUM 94`; found by `claims_scan` reporting this file's accept entry STALE, which is the
+mechanism `ERRATUM 471` was written about).
+`LeftPartDecomposition.exists_path_cycle_decomposition` decomposes **any** finite graph's
+edges into paths and cycles — this file's extended dual included, since it is one. **What is
+still missing is the words *between the odd vertices*:** the endpoints of the pieces are
+**not** identified with the odd-degree vertices and the paths are **not** counted, so the
+sentence above is true as written and is now understated. Mathlib still has no existence
+direction; its `Trails.lean` TODO is unchanged, re-read 2026-09-06. **And the paragraph below
+is untouched by all of it**: `ERRATUM 97` still stands, and the decomposition still does not
+say which piece the plaquette at `x` lies on.
+
 **AND THAT DECOMPOSITION WOULD NOT BE ENOUGH BY ITSELF — an earlier draft of this header said
 it was, and that was wrong (`ERRATUM 97`).** The covering has to produce a walk from a
 plaquette *near `x`* out to a rim, and a decomposition says only that the edge set falls into

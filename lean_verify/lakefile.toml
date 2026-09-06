@@ -413,4 +413,5 @@ roots = [
   "LeftPartPathGraph",
   "LeftPartDecomposition",
   "EvenRowParity",
+  "PathGraphDegree",
 ]

@@ -50,6 +50,14 @@ predicate was defined today and appears only as a conclusion, where the cycle ca
 every occurrence of the name in `paper_f` was read. **Not attempted, no cost claimed** (`ERRATUM
 246`).
 
+⚠ **THE DEGREE THEOREM EXISTS THE SAME DAY AND THE PARAGRAPH ABOVE IS KEPT AS WRITTEN**
+(`ERRATUM 94`, annotated **in the unit that superseded it**, which is `ERRATUM 471`'s own rule).
+`PathGraphDegree.even_ncard_neighborSet_path` gives **even at every non-endpoint** — two on the
+path, none off it — and `ncard_neighborSet_path_endpoint` gives **exactly one at each end**, so
+the endpoints are precisely where evenness fails. **The rest of the paragraph stands**: the
+correction term is still not computed, because this file's chain takes `EvenDegrees H`
+**globally**, and refining it to a pointwise hypothesis is a separate step and is not taken.
+
 **THE `+` BOUNDARY IS STILL THERE.** `partial_row` and `even_row` take `PlusBoundary σ` for the two
 edge-of-the-box facts (`sideL_notMem_bonds`, `sideD_notMem_bonds`), and **that hypothesis is used**
 — it is not the one being removed here. The generalisation is in `H`, not in `σ`.
