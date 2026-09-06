@@ -420,4 +420,5 @@ roots = [
   "OddPieceSelect",
   "PieceBranchesRealised",
   "BondsContourGap",
+  "BondsContourCriterion",
 ]
