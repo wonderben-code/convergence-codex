@@ -42,6 +42,16 @@ plaquette having **two** broken outward sides rather than one. So **the path bra
 FORCED-IF, not shown to FIRE**, and finding a configuration that fires it is left open. **Not
 attempted, no cost claimed** (`ERRATUM 246`).
 
+⚠ **IT IS EXHIBITED WITHIN THE HOUR AND THE PARAGRAPH ABOVE IS KEPT AS WRITTEN** (`ERRATUM 94`).
+**`sigmaEdge`** is down at the site `(1, 0)` of the `4 × 4` box — on the bottom edge and **not a
+corner**, which is exactly what the paragraph's two candidates were not. Its plaquette `plaqEdge
+= ⟨1, 0⟩` has `i` neither `0` nor `n − 2`, so **down is its only outward direction**, and that
+one side is broken: `not_evenDegrees_dualGraph_sigmaEdge`, and hence `path_branch_realised`.
+**So the path branch FIRES**, and both branches of the disjunction are inhabited. **The
+paragraph's reasoning was right and its search was too small**: it looked at the two
+configurations the estate already had rather than at what an odd count needs, which is an edge
+plaquette that is not a corner.
+
 **NOTHING IS SAID ABOUT WHICH PIECE THE RAY CROSSES ODDLY.** `cycle_branch_realised` produces a
 cycle crossed oddly; it does **not** say every odd piece there is a cycle, though under `+` that is
 true for the trivial reason that every piece is.
@@ -63,6 +73,8 @@ namespace PieceBranchesRealised
 
 open IsingFiniteVolume IsingContourClosed IsingBoundaryField
 open DualObstruction PlaquetteLattice DualGraph DualBonds DualUnique SimpleGraph
+open IsingContourEnergy ExtendedDual
+
 
 /-! ## 1. The cycle branch fires, on a named configuration -/
 
@@ -93,5 +105,58 @@ theorem exists_path_piece_of_not_evenDegrees {V : Type*} [Finite V] {G : SimpleG
     · exact absurd (show ∃ K ∈ L, IsPathGraph K from ⟨K, hK, h⟩) hcon
     · exact h
   exact hodd (evenDegrees_of_cycle_decomposition hall hp hsup)
+
+/-! ## 3. And the path branch fires too, on a configuration off the `+` boundary -/
+
+instance instDecOutward {n : ℕ} (P : Plaq n) (d : Fin 4) : Decidable (Outward P d) :=
+  inferInstanceAs (Decidable (partnerOf P d = P))
+
+/-- Down at one **boundary** site of the `4 × 4` box, up everywhere else. The site `(1, 0)` is on
+the bottom edge but is not a corner. -/
+def sigmaEdge : Config 4 := fun p => decide (p ≠ ((1 : Fin 4), (0 : Fin 4)))
+
+/-- The plaquette whose bottom side faces out of the box and is broken. Its `i` is neither `0` nor
+`n − 2`, so **down is its only outward direction**, and exactly that one side is broken. -/
+def plaqEdge : Plaq 4 := ⟨1, 0, by omega, by omega⟩
+
+theorem not_outward_zero : ¬ Outward plaqEdge 0 := fun h => by
+  have hi := congrArg Plaq.i h
+  simp [partnerOf, leftP, plaqEdge] at hi
+
+theorem not_outward_one : ¬ Outward plaqEdge 1 := fun h => by
+  have hj := congrArg Plaq.j h
+  simp [partnerOf, upP, plaqEdge] at hj
+
+theorem not_outward_two : ¬ Outward plaqEdge 2 := fun h => by
+  have hi := congrArg Plaq.i h
+  simp [partnerOf, rightP, plaqEdge] at hi
+
+theorem outward_three : Outward plaqEdge 3 := by
+  change partnerOf plaqEdge 3 = plaqEdge
+  exact Plaq.ext rfl rfl
+
+theorem sideD_plaqEdge_mem : sideD plaqEdge ∈ contour sigmaEdge := by
+  rw [sideD, mem_contour]
+  exact ⟨by decide, by decide⟩
+
+/-- **SO ITS DUAL GRAPH HAS AN ODD DEGREE.** The count is done inside the hypothesis, where the
+`Decidable` instances are the ones `even_degree_iff` chose. -/
+theorem not_evenDegrees_dualGraph_sigmaEdge : ¬ EvenDegrees (dualGraph sigmaEdge) := by
+  intro h
+  have h2 := (DualDegreeExact.even_degree_iff sigmaEdge plaqEdge).mp (h plaqEdge)
+  rw [Finset.card_filter, Fin.sum_univ_four,
+    if_neg (fun hc => not_outward_zero hc.2), if_neg (fun hc => not_outward_one hc.2),
+    if_neg (fun hc => not_outward_two hc.2),
+    if_pos ⟨sideD_plaqEdge_mem, outward_three⟩] at h2
+  exact absurd h2 (by decide)
+
+/-- **THE PATH BRANCH FIRES**: every path-or-cycle decomposition of this configuration's dual graph
+contains a path graph. With `cycle_branch_realised`, **both branches of
+`OddPieceSelect.exists_odd_path_or_cycle_piece`'s disjunction are inhabited.** -/
+theorem path_branch_realised {L : List (SimpleGraph (Plaq 4))}
+    (hkind : ∀ K ∈ L, IsPathGraph K ∨ IsCycleGraph K) (hp : L.Pairwise Disjoint)
+    (hsup : L.foldr (· ⊔ ·) ⊥ = dualGraph sigmaEdge) :
+    ∃ K ∈ L, IsPathGraph K :=
+  exists_path_piece_of_not_evenDegrees not_evenDegrees_dualGraph_sigmaEdge hkind hp hsup
 
 end PieceBranchesRealised
