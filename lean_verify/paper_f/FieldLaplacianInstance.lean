@@ -40,6 +40,13 @@ simple spectrum implies every eigenspace is at most a line — is true for a sym
 the eigenspaces span, and **is not proved anywhere in this estate**. It is the same missing step
 `FieldLaplacianSimple` fenced. Not attempted, no cost claimed (`ERRATUM 246`).
 
+⚠ **IT IS PROVED THE SAME DAY, AND THE PARAGRAPH ABOVE IS KEPT AS WRITTEN** (`ERRATUM 94`).
+`FieldSimpleConverse.finrank_massive_le_one_of_eigenvalues_injective` is the reverse implication,
+by exactly the argument the paragraph names; `FieldSimpleConverse.finrank_lapMatrix_le_one_iff`
+makes this file's hypothesis and a simple propagator spectrum **the same condition**, and
+`FieldSimpleConverse.finrank_lapMatrix_le_one_iff_injective` gives the counting form with no mass
+and no hypothesis at all. **The characterisation fence above it does not move.**
+
 **THE EDGELESS RESULT IS NOT A DICHOTOMY.** It exhibits one failing family; it does **not** say the
 hypothesis fails exactly on graphs with a degenerate spectrum, nor connect to
 `FieldSymmetryEdgeless`'s dichotomy beyond sharing its hypothesis. **No claim is made that the two

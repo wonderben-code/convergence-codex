@@ -39,10 +39,24 @@ re-derive it through the Laplacian.** So every theorem here is conditional and, 
 conditional on something nothing in the estate supplies. Not attempted, no cost claimed
 (`ERRATUM 246`).
 
+⚠ **SOMETHING WAS CARRIED THROUGH IT THE SAME DAY, AND THE PARAGRAPH ABOVE IS KEPT AS WRITTEN**
+(`ERRATUM 94`, annotated 2026-09-06 by `ERRATUM 466`, which is about the annotation being late).
+`FieldLaplacianInstance.finrank_lapMatrix_le_one_line` shows the **path graph** satisfies the
+Laplacian hypothesis, and `card_symmetries_line_via_lapMatrix` re-derives the count through it.
+`FieldLaplacianInstance.not_finrank_le_one_of_no_adj` shows the **edgeless graph on two or more
+vertices** fails it, so the hypothesis is neither vacuous nor universal.
+
 **"EVERY EIGENSPACE IS AT MOST A LINE" IS NOT PROVED EQUIVALENT TO "`|V|` DISTINCT EIGENVALUES".**
 For a symmetric matrix they are the same condition, because the eigenspaces span; **that argument is
 not made here**, so a reader holding the classical statement in the counting form has one more step
 to take. It is the mirror of the step this file avoids on the other side.
+
+⚠ **THE ARGUMENT IS MADE, 2026-09-06, AND THE PARAGRAPH ABOVE IS KEPT AS WRITTEN** (`ERRATUM 94`).
+`FieldSimpleConverse.finrank_lapMatrix_le_one_iff_injective` is that equivalence in the counting
+form for the **Laplacian itself**, with no mass, no propagator and no hypothesis; and
+`FieldSimpleConverse.finrank_lapMatrix_le_one_iff` is it against the **propagator's** spectrum.
+**So the door is a two-way door.** The step this file avoided on the other side is made too, by
+`FieldSimpleConverse.finrank_massive_le_one_of_eigenvalues_injective`.
 
 **NOTHING IS SAID ABOUT WHICH GRAPHS THESE ARE.** The item this file answers asked for a
 **characterisation**; this is not one, and opening a door is not walking through it.

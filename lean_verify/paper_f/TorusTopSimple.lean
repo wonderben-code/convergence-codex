@@ -46,6 +46,14 @@ eigenspace, and `TorusMultiplicity` fenced exactly this. **So the agreement reco
 consistency observation and not a theorem**, and it is written down because two independent routes
 landing on the same number is worth knowing even when neither is a proof of the other.
 
+⚠ **BOTH SENTENCES WENT FALSE ON 2026-08-30 AND ARE KEPT AS WRITTEN** (`ERRATUM 94`; annotated
+2026-09-06 by `stalefence_scan`, `ERRATUM 466`, six days late). `RealComplexKernel.finrank_ker_cx`
+proves the transfer for an **arbitrary** real matrix —
+`finrank ℂ (ker (toLin' (cx A))) = finrank ℝ (ker (toLin' A))` — so it is not "not proved anywhere
+in this estate"; and `RealComplexKernel.torus_card_bipComp_eq_one` **joins the two routes**, so the
+agreement is a theorem and not only an observation. `RealComplexKernel` annotated its own stale
+paragraphs the same day and missed this one, in the file its bridge was built for.
+
 ## What is NOT here
 
 **No multiplicity is computed at any interior eigenvalue.** The counting question

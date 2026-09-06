@@ -48,6 +48,13 @@ coordinate slices `{p : pᵢ = c}`, whose cardinality is `n ^ (d - 1)`, and that
 here — it needs a fibre argument over the evaluation map `p ↦ pᵢ` and nothing in this estate has
 needed it. **Stated as the honest remainder**: this file turns *"strictly smaller"* into *"smaller
 by exactly this set"*, not into *"smaller by exactly this number"*.
+
+⚠ **THE ESTATE-WIDE CLAUSE WENT FALSE ON 2026-08-25 AND IS KEPT AS WRITTEN** (`ERRATUM 94`;
+annotated 2026-09-06 by `stalefence_scan`, `ERRATUM 466`, twelve days late). `LatticeSliceCount`
+does the fibre argument — `sliceEquiv`, `card_slice`, `card_midLayer` — and
+`codim_box_odd_eq`, `codim_box_even_eq`, `codim_torus_odd_eq` and `codim_torus_even_eq` state
+**this file's own deficiencies as closed-form numbers**. **The file-local clause stands**: that
+computation is still not here. It is *"nothing in this estate has needed it"* that is false.
 -/
 
 namespace NullSpaceCodimension
