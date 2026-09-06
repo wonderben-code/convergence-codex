@@ -397,4 +397,5 @@ roots = [
   "LaplacianTwins",
   "LaplacianClosedTwins",
   "MixedTwinWitness",
+  "LaplacianTwinClass",
 ]

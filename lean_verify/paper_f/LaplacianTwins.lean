@@ -58,6 +58,13 @@ have a simple spectrum.
 eigenspace of a twin class is spanned by such differences and has dimension one less than the class
 size**; that is not proved here, and no upper bound of any kind appears.
 
+⚠ **HALF SUPERSEDED THE SAME DAY, KEPT AS WRITTEN** (`ERRATUM 94`, found by `fences_scan`).
+`LaplacianTwinClass.card_sub_one_le_finrank_of_open_class` proves **one inequality** of that
+sentence: `|S| − 1 ≤ dim`, for a class of any size. **The other half does not move**: nothing shows
+the eigenspace is *spanned* by twin differences or that the dimension is *exactly* `|S| − 1`, and
+for a class that is not maximal it will not be. **No upper bound on the multiplicity of any
+eigenvalue of any graph exists in this estate as of 2026-09-06.**
+
 **NOTHING ABOUT ADJACENT TWINS.** Vertices with the same **closed** neighbourhood — `N[u] = N[v]`,
 so `u` and `v` adjacent — also give an eigenvector, at `deg u + 1`. **That case is not treated**,
 and `not_adj_of_neighborFinset_eq` shows the case treated here excludes it rather than covering it.
