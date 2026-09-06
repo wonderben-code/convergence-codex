@@ -407,4 +407,5 @@ roots = [
   "FieldDisconnectedCount",
   "SpectrumOS2Bridge",
   "OddVertexAugment",
+  "CycleRestriction",
 ]
