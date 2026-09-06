@@ -405,4 +405,5 @@ roots = [
   "LaplacianMultiplicityBound",
   "LaplacianTriangleUnion",
   "FieldDisconnectedCount",
+  "SpectrumOS2Bridge",
 ]
