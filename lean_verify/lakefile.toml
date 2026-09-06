@@ -421,4 +421,5 @@ roots = [
   "PieceBranchesRealised",
   "BondsContourGap",
   "BondsContourCriterion",
+  "CriterionStrictlyWeaker",
 ]

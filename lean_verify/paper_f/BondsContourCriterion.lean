@@ -68,6 +68,24 @@ carried as the explicit hypothesis it always was.
 finiteness beyond the box. `PlusBoundary` appears in exactly the two theorems that recover the
 original.
 
+## ⚠ BOTH OPEN QUESTIONS OF THIS HEADER WERE SETTLED THE SAME DAY. Annotated 6 September 2026
+
+The *"What is NOT here"* paragraph above names two things as unchecked, and
+`paper_f/CriterionStrictlyWeaker.lean` — which **imports this file** — settled both within the hour:
+
+* *"whether some configuration satisfies the criterion without satisfying `PlusBoundary`"* —
+  **yes**, and not for one witness but for the whole `+` class at once
+  (`CriterionStrictlyWeaker.flip_strictly_weaker`), with a non-empty-contour instance
+  (`contour_flip_sigmaPlus_nonempty`) so the answer is not vacuous.
+* *"`MinimumContour.cornerDown` … is **not** checked against this criterion"* — it is now, and it
+  **fails** it (`CriterionStrictlyWeaker.not_noBrokenOutward_cornerDown`), at every `n > 1`.
+
+Both were one composition away from facts this estate already held —
+`IsingContourInvariant.contour_flip` and `DualDegreeExact.outward_of_mem_cornerDown`. Nothing above
+is wrong; what it says about **this file** stays true. This annotation exists because `ERRATUM 471`
+records the cost of leaving a superseded fence unannotated in the file it is written in, and the
+rule it set is that the annotation goes in the same unit as the supersession.
+
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 
 -/
