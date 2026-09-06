@@ -47,6 +47,10 @@ matrix.
 `Matrix.unitaryGroup V ℝ`, which **is** a group, so `linSym` is a group in substance; **no
 `Subgroup` instance is constructed** and none is claimed. Not attempted, no cost claimed
 (`ERRATUM 246`).
+⚠ **SUPERSEDED 2026-09-06, kept as written** (`ERRATUM 94`):
+`FieldSymmetryInclusion.linSymGL` is a `Subgroup` of `Matrix.GeneralLinearGroup V ℝ`, and
+`FieldSymmetryInclusion.inv_mem_linSym` shows a bare matrix inverse stays in `linSym`. **The
+`Submonoid` here is not replaced** — `linSym` is still the object this file's `MulEquiv` lands in.
 
 **NO CARDINALITY.** The isomorphism moves every counting question onto `Matrix.unitaryGroup V ℝ`,
 which is Mathlib's object. **Nothing here counts anything**, and in particular `FieldLineCount`'s

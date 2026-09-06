@@ -49,6 +49,13 @@ nothing here says `d = 1` is the only case with a finite symmetry group.
 linear symmetry of the field that is not an isometry, so this group is a **proper** subgroup of the
 linear symmetry group that `FieldSymmetryIso.conjSqEquiv` describes. **No relation between the two
 is drawn here** — no inclusion of `symmetriesSubgroup` into `linSym`, and no index.
+⚠ **PARTLY SUPERSEDED THE NEXT UNIT, kept as written** (`ERRATUM 94`):
+`FieldSymmetryInclusion.symmetryMatrices_eq` draws the relation **at the level of matrices** —
+`symmetryMatrices G m = {L ∈ linSym G m | Lᵀ L = 1}`, with no hypothesis on the mass — and
+`symmetryMatrices_ssubset_linSym_line` makes the inclusion **strict** on a line. **The clause is
+still true as stated**: `symmetriesSubgroup` is a group of *linear isometry equivalences* and
+`linSymGL` a subgroup of `GL V ℝ`, and **no homomorphism between those two objects is
+constructed**. **And there is still no index.**
 
 **No wall moves.** `W1`'s open part is `OS0` and `OS4`, and `OS1` in its continuum sense. A symmetry
 group named exactly, in finite volume, is a shadow named exactly.
