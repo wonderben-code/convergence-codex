@@ -22,11 +22,15 @@ content: the middle vertex is `Sum.inl w` by hypothesis, and `H.Adj (Sum.inl u) 
 with the hypothesis as *the added vertex is not on the walk*, which is how a cycle through it
 presents the pieces on either side.
 
-**`exists_walk_support_aux`, `exists_walk_support_of_notMem`, `exists_leftPart_path_of_notMem`** —
+**`exists_walk_data_aux`, `exists_walk_support_aux`, `exists_walk_support_of_notMem`,
+`exists_walk_data_of_notMem`, `exists_leftPart_path_of_notMem`** —
 the same induction **with the support carried along**, and hence **a path comes down a path**. The
 first three theorems return `Nonempty` and so throw the walk away, which is enough for reachability
 and nothing else; the extraction residue (a) still wants needs the support, so §4 repeats the
-induction once with it. `Sum.inl` is injective, so nodup passes both ways along the identification.
+induction once with it — and with the **edges** alongside, since an argument about the *edge set*
+of the piece needs those and carrying them costs the same induction. The support-only form is a
+corollary rather than a second copy of it. `Sum.inl` is injective, so nodup passes both ways along
+the identification.
 
 **`reachable_leftPart_of_notMem`, `not_reachable_lift`** — **so reachability transports downwards**:
 two vertices joined in `H` by a walk missing the added vertex are joined in the part; and
@@ -133,11 +137,14 @@ wants — cut a cycle at the added vertex and check the middle is a **path** —
 support, so the induction is repeated once with it carried.
 -/
 
-/-- The same induction, returning the walk **with its support identified**. -/
-theorem exists_walk_support_aux : ∀ {a b : V ⊕ Unit} (p : H.Walk a b),
+/-- The same induction, returning the walk **with its support and its edges identified**. The
+edges are what an argument about the *edge set* of the piece needs, and carrying them costs the
+same induction, so they are carried here rather than in a third copy of it. -/
+theorem exists_walk_data_aux : ∀ {a b : V ⊕ Unit} (p : H.Walk a b),
     (∀ x ∈ p.support, ∃ w : V, x = Sum.inl w) →
     ∀ u v : V, a = Sum.inl u → b = Sum.inl v →
-      ∃ q : (leftPart H).Walk u v, q.support.map Sum.inl = p.support := by
+      ∃ q : (leftPart H).Walk u v, q.support.map Sum.inl = p.support ∧
+        q.edges.map (Sym2.map Sum.inl) = p.edges := by
   intro a b p
   induction p with
   | nil =>
@@ -145,19 +152,37 @@ theorem exists_walk_support_aux : ∀ {a b : V ⊕ Unit} (p : H.Walk a b),
     have huv : u = v := Sum.inl_injective (hu.symm.trans hv)
     subst huv
     subst hu
-    exact ⟨Walk.nil, rfl⟩
+    exact ⟨Walk.nil, rfl, rfl⟩
   | @cons x y z hadj q ih =>
     intro hp u v hu hv
     obtain ⟨w, rfl⟩ := hp y (by simp)
     subst hu
-    obtain ⟨q', hq'⟩ := ih (fun t ht => hp t (by simp [ht])) w v rfl hv
-    exact ⟨Walk.cons hadj q', by simp [hq']⟩
+    obtain ⟨q', hs, he⟩ := ih (fun t ht => hp t (by simp [ht])) w v rfl hv
+    exact ⟨Walk.cons hadj q', by simp [hs], by simp [he]⟩
+
+/-- The support half, which is all most callers want. -/
+theorem exists_walk_support_aux {a b : V ⊕ Unit} (p : H.Walk a b)
+    (hp : ∀ x ∈ p.support, ∃ w : V, x = Sum.inl w) (u v : V)
+    (hu : a = Sum.inl u) (hv : b = Sum.inl v) :
+    ∃ q : (leftPart H).Walk u v, q.support.map Sum.inl = p.support :=
+  let ⟨q, hs, _⟩ := exists_walk_data_aux p hp u v hu hv
+  ⟨q, hs⟩
 
 /-- **A WALK MISSING THE ADDED VERTEX COMES DOWN WITH ITS SUPPORT.** -/
 theorem exists_walk_support_of_notMem {u v : V} (p : H.Walk (Sum.inl u) (Sum.inl v))
     (hp : Sum.inr () ∉ p.support) :
     ∃ q : (leftPart H).Walk u v, q.support.map Sum.inl = p.support := by
   refine exists_walk_support_aux p (fun x hx => ?_) u v rfl rfl
+  cases x with
+  | inl w => exact ⟨w, rfl⟩
+  | inr t => exact absurd hx (by cases t; exact hp)
+
+/-- **AND THE EDGES COME DOWN WITH IT.** -/
+theorem exists_walk_data_of_notMem {u v : V} (p : H.Walk (Sum.inl u) (Sum.inl v))
+    (hp : Sum.inr () ∉ p.support) :
+    ∃ q : (leftPart H).Walk u v, q.support.map Sum.inl = p.support ∧
+      q.edges.map (Sym2.map Sum.inl) = p.edges := by
+  refine exists_walk_data_aux p (fun x hx => ?_) u v rfl rfl
   cases x with
   | inl w => exact ⟨w, rfl⟩
   | inr t => exact absurd hx (by cases t; exact hp)

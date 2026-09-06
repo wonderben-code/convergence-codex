@@ -410,4 +410,5 @@ roots = [
   "CycleRestriction",
   "LeftPartWalk",
   "CyclePathExtract",
+  "LeftPartPathGraph",
 ]
