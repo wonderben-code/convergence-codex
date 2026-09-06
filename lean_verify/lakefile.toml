@@ -399,4 +399,5 @@ roots = [
   "MixedTwinWitness",
   "LaplacianTwinClass",
   "TwinClassNotExact",
+  "LaplacianTwoClasses",
 ]
