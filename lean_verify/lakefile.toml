@@ -390,4 +390,5 @@ roots = [
   "FieldLaplacianInstance",
   "FieldSimpleConverse",
   "FieldSimpleConnected",
+  "FieldInvolutionConverse",
 ]
