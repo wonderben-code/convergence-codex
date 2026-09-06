@@ -411,4 +411,5 @@ roots = [
   "LeftPartWalk",
   "CyclePathExtract",
   "LeftPartPathGraph",
+  "LeftPartDecomposition",
 ]
