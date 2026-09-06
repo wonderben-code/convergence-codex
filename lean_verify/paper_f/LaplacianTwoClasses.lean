@@ -45,6 +45,12 @@ one graph, and it was one graph when the erratum said so. Not attempted, no cost
 and **no upper bound on the multiplicity of any eigenvalue of any graph exists in this estate** as
 of 2026-09-06 — which is what `ERRATUM 468` was ultimately about, and it is untouched.
 
+⚠ **THE "NO UPPER BOUND" CLAUSE IS FALSE AND IS KEPT AS WRITTEN** (`ERRATUM 94`, `ERRATUM 469`, the
+same day). `FieldSimpleConnected.finrank_ker_lapMatrix_zero_eq_card_component` gives the
+multiplicity of the eigenvalue `0` **exactly**, as the component count, on every finite graph, and
+`finrank_ker_lapMatrix_zero_connected` makes it the number **1** on every connected one. **The rest
+of the paragraph stands.**
+
 **NO MIXED FORM.** Two **open** classes and two **closed** classes are instantiated; **one of each**
 is not, though `sum_sub_one_le_finrank` would carry it exactly as
 `LaplacianClosedTwins.two_le_finrank_of_pair` carries the mixed pair. It is omitted because no graph

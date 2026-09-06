@@ -37,6 +37,12 @@ and the sentence that predicted otherwise is corrected in place (`ERRATUM 468`).
 four**, though it is. Nothing here bounds it above, and this estate still has **no upper bound on
 the multiplicity of any eigenvalue of any graph** as of 2026-09-06.
 
+⚠ **THE "NO UPPER BOUND" CLAUSE IS FALSE AND IS KEPT AS WRITTEN** (`ERRATUM 94`, `ERRATUM 469`, the
+same day). `FieldSimpleConnected.finrank_ker_lapMatrix_zero_eq_card_component` gives the
+multiplicity of the eigenvalue `0` **exactly**, as the component count, on every finite graph, and
+`finrank_ker_lapMatrix_zero_connected` makes it the number **1** on every connected one. **The rest
+of the paragraph stands.**
+
 **NO REPAIRED STATEMENT IS OFFERED.** The true statement in this direction is presumably that the
 twin differences of **all** classes together span a subspace whose dimension is `∑ (|Sᵢ| − 1)`, and
 that the rest of the spectrum comes from the quotient graph. **None of that is proved, stated or

@@ -109,6 +109,19 @@ theorem finrank_ker_lapMatrix_zero_eq_card_component :
       = Fintype.card G.ConnectedComponent := by
   rw [zero_smul, sub_zero, ← SimpleGraph.card_connectedComponent_eq_finrank_ker_toLin'_lapMatrix]
 
+/-- **AND ON A CONNECTED GRAPH THAT EIGENSPACE IS EXACTLY A LINE.** An explicit multiplicity for an
+explicit eigenvalue on every connected graph — added 2026-09-06 by `ERRATUM 469`, which is about
+five later files claiming this estate had no such thing. -/
+theorem finrank_ker_lapMatrix_zero_connected (hconn : G.Connected) :
+    Module.finrank ℝ (LinearMap.ker (Matrix.toLin' (G.lapMatrix ℝ) - (0 : ℝ) • LinearMap.id))
+      = 1 := by
+  classical
+  haveI : Nonempty V := hconn.nonempty
+  rw [finrank_ker_lapMatrix_zero_eq_card_component]
+  refine Fintype.card_eq_one_iff.mpr ⟨G.connectedComponentMk (Classical.arbitrary V), ?_⟩
+  refine SimpleGraph.ConnectedComponent.ind fun v => ?_
+  exact SimpleGraph.ConnectedComponent.sound (hconn.preconnected v _)
+
 /-! ## 2. So the Laplacian hypothesis forces the graph to be connected -/
 
 theorem preconnected_of_finrank_le_one

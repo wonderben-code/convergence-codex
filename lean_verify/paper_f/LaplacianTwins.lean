@@ -65,6 +65,13 @@ the eigenspace is *spanned* by twin differences or that the dimension is *exactl
 for a class that is not maximal it will not be. **No upper bound on the multiplicity of any
 eigenvalue of any graph exists in this estate as of 2026-09-06.**
 
+⚠⚠⚠ **AND THAT LAST SENTENCE IS FALSE TOO** (`ERRATUM 469`, the same day; kept as written per
+`ERRATUM 94`). `FieldSimpleConnected.finrank_ker_lapMatrix_zero_eq_card_component` — proved seven
+units **before** this sentence was written, in the same run — gives the multiplicity of the
+eigenvalue `0` **exactly**, as the number of connected components, on every finite graph; and
+`finrank_ker_lapMatrix_zero_connected` makes it the explicit number **1** on every connected one.
+**The bound above is still not sharp**, which is what the paragraph was reaching for.
+
 ⚠⚠ **AND THE OTHER HALF IS NOT MERELY UNPROVED — IT IS FALSE, AND SO IS THE REASON GIVEN FOR IT
 IMMEDIATELY ABOVE** (`ERRATUM 468`, the same day; both paragraphs kept as written per
 `ERRATUM 94`). `TwinClassNotExact`: **two disjoint triangles**. Every closed twin class has three

@@ -35,6 +35,12 @@ all classes is sharp is not addressed**, and on three triangles it happens to be
 dimension — but that is one graph and this file proves no such thing. **This estate still has no
 upper bound on the multiplicity of any eigenvalue of any graph** as of 2026-09-06.
 
+⚠ **THE "NO UPPER BOUND" CLAUSE IS FALSE AND IS KEPT AS WRITTEN** (`ERRATUM 94`, `ERRATUM 469`, the
+same day). `FieldSimpleConnected.finrank_ker_lapMatrix_zero_eq_card_component` gives the
+multiplicity of the eigenvalue `0` **exactly**, as the component count, on every finite graph, and
+`finrank_ker_lapMatrix_zero_connected` makes it the number **1** on every connected one. **The rest
+of the paragraph stands.**
+
 **NO PARTITION, NO EQUIVALENCE, NO MAXIMALITY.** `C` is any collection of pairwise disjoint sets
 whose members are twins of their base points. **Nothing here says the classes exhaust the vertices,
 that being twins is an equivalence relation, or that the classes are maximal** — and
