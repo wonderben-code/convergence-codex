@@ -49,6 +49,16 @@ disjunction; **ruling out the cycle case would need the ray's crossings of a cyc
 even**, which `RowParityLocate` gives only for the **full-width** ray, and the ray from an interior
 site is not that. **This is a real gap and not a formality.**
 
+⚠ **THE PARAGRAPH ABOVE IS WRONG IN BOTH HALVES AND IS KEPT AS WRITTEN** (`ERRATUM 94`, `ERRATUM
+473`, annotated the same day). **Its premise is false**: `DualUnique.exists_circuit_surrounding`
+exhibits a **cycle** piece crossed an **odd** number of times, which is the enclosure step
+working as intended, so the ray's crossings of a cycle piece are **not** in general even. **And
+therefore it is not a gap**: the cycle branch is the normal case, and under a `+` boundary it is
+the **only** case, every piece being a circuit. What the paragraph should have asked is whether
+**both branches are inhabited**, and `PieceBranchesRealised` answers it: the cycle branch
+**fires** on `DualGraph.sigmaPlus`, and the path branch is **forced** in every decomposition of
+a graph with an odd degree — though no configuration with one is exhibited.
+
 **W3 DOES NOT MOVE.** Two existing theorems are composed with a third.
 
 **No wall moves. No published tag moves.**

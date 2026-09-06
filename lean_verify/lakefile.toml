@@ -418,4 +418,5 @@ roots = [
   "RowParityLocate",
   "RayPieceParity",
   "OddPieceSelect",
+  "PieceBranchesRealised",
 ]
