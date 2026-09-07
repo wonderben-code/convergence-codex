@@ -64,7 +64,8 @@ tangent space, or the chart's — is a modelling decision that belongs to the au
 
 **NO SECOND BIANCHI IDENTITY, NO SECTIONAL CURVATURE, NO EINSTEIN TENSOR, NO EXAMPLE**, as in
 `CurvatureBianchi` and `LeviCivitaRegular`; the Einstein tensor `Ric − ½ S g` is now writable,
-since `Ric` is symmetric, and is not written.
+since `Ric` is symmetric, and is not written. ⚠ By entry 75, later the same day, the flat
+example is: `FlatCurvature.riemann_flat`; the rest of the sentence stands.
 
 **ONLY `C²` METRICS AND `C²` SECTIONS**, as everywhere since `KoszulRegular`; the skew-symmetry
 on sections asks all four of `X, Y, Z, W` to be `C²` at the point, because the bracket rule

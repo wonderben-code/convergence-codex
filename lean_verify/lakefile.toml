@@ -447,4 +447,5 @@ roots = [
   "LeviCivitaRegular",
   "CurvatureBianchi",
   "CurvatureSkew",
+  "FlatCurvature",
 ]

@@ -78,7 +78,9 @@ the Christoffel form of a metric on the model space, not of a metric on a manifo
 **NO EXAMPLE, NOT EVEN THE FLAT ONE.** That the curvature of a Euclidean space vanishes —
 `riemann` for the constant metric on `F`, where the connection is the ordinary derivative
 (`KoszulManifold.leviCivita_eq_flatCov`) and `R` is an antisymmetrised second derivative — is not
-proved.
+proved. ⚠ By entry 75, later the same day, it is: `FlatCurvature.riemann_flat`, with
+`FlatCurvature.ricci_flat` and `FlatCurvature.scalar_flat`, exactly by that antisymmetrised
+second derivative (`FlatCurvature.curvAux_flatCov`).
 
 **ONLY `C¹`.** The connection is shown `C¹`, which is what one derivative of it costs and what
 curvature needs; the class of the connection of a `C^{k+1}` metric for `k ≥ 2`, and with it any
