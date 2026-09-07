@@ -433,4 +433,5 @@ roots = [
   "PawSimpleSpectrum",
   "PathPieceEndpoints",
   "ClusterPiece",
+  "LeviCivitaUnique",
 ]
