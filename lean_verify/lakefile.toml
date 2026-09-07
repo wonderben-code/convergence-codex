@@ -431,4 +431,5 @@ roots = [
   "EvenDegreesConverse",
   "EvenDegreesClassVanishes",
   "PawSimpleSpectrum",
+  "PathPieceEndpoints",
 ]

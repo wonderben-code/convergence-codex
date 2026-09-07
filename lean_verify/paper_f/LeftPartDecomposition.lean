@@ -40,6 +40,14 @@ gives the degree signature of each piece and **nothing here counts pieces or mat
 odd vertices**. **Not attempted, no cost claimed** (`ERRATUM 246`). So what is proved is the
 decomposition's **existence and shape**, not its classical bookkeeping.
 
+⚠ **THE ENDPOINT HALF IS IDENTIFIED, by 7 September 2026, and the paragraph above is kept as
+written** (`ERRATUM 94`). `PathPieceEndpoints.exists_path_cycle_decomposition_odd`: every path piece
+runs between two **distinct odd-degree vertices** of the original graph — read off the very
+construction above, where a path is a cycle through the added vertex with that vertex deleted, so
+its ends are that vertex's neighbours. **The count is still not proved, as of 7 September 2026**:
+nothing says there are exactly half as many paths as odd vertices, and nothing says every odd
+vertex is an end.
+
 **THE DECOMPOSITION IS NOT CANONICAL.** It depends on the list the Euler theorem returns, and
 nothing here is a uniqueness statement; `IsPathGraph` and `IsCycleGraph` are both existentials.
 
