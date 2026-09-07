@@ -69,7 +69,9 @@ is `KoszulUnique`: `difference_eq_zero_of_gCompatible`, `eq_koszul_of_torsionFre
 Koszul construction needs the metric's derivative along vector fields and charts, and `WALLS`
 §W5.1 §3's object — existence there — stays where it was. **Not attempted, no cost claimed**
 (`ERRATUM 246`). What this file removes from that object is the formula: `cov_apply`,
-`cov_gCompatible` and `cov_torsion` are its chart-local content.
+`cov_gCompatible` and `cov_torsion` are its chart-local content. ⚠ By 7 September, entry 65, the
+manifold case is `KoszulManifold.exists_leviCivita`, and it did not go through charts: the Koszul
+expression is made tensorial with Mathlib's `TensorialAt.mkHom₂` directly on the manifold.
 
 **NO `RiemannianBundle` INSTANCE FOR A VARIABLE METRIC**, and so no use of Mathlib's
 `IsMetricCompatible` for one. Compatibility is `IsGCompatible`, stated against `g` directly; the

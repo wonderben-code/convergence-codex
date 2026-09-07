@@ -54,7 +54,9 @@ agreement on sections differentiable at the point, and nothing stronger is claim
 the skew identity needs `FiberBundle.extend`, as `LeviCivitaUnique` already does, and existence
 needs the Koszul construction in charts. `WALLS` §W5.1 §3's object — existence on a Riemannian
 manifold — stays where it was; what the model space now has is existence and uniqueness together.
-**Not attempted, no cost claimed** (`ERRATUM 246`).
+**Not attempted, no cost claimed** (`ERRATUM 246`). ⚠ By 7 September, entry 65, it is attempted
+and done: `KoszulManifold.exists_leviCivita`, with `FiberBundle.extend` where this file used
+constants, exactly as the sentence above predicted.
 
 **NO GENERALISATION TO A NONDEGENERATE FORM.** The only property of `g` used beyond symmetry is
 `injective_g`, so the same proof would run for a pseudo-Riemannian `VarMetric`; `VarMetric` asks

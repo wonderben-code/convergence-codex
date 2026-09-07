@@ -57,7 +57,9 @@ with the derivative of a non-constant metric along vector fields and the Lie bra
 rules, and nothing here starts it. **Not attempted, no cost claimed** (`ERRATUM 246`). ⚠ By
 7 September `KoszulVectorSpace` starts it on the model space: the Koszul construction for a metric
 on `F` that varies with the point, as a one-form added to `flatCov`. The manifold case stays
-untouched there too; `KoszulVectorSpace`'s own fence says what it does not do.
+untouched there too; `KoszulVectorSpace`'s own fence says what it does not do. ⚠ And by
+entry 65 the same day it is done: `KoszulManifold.exists_leviCivita`, coordinate-free, through
+Mathlib's `TensorialAt.mkHom₂`.
 
 **NOT EVEN A NON-CONSTANT METRIC ON `F`.** The tangent-space inner product used is `F`'s own, at
 every point; a Riemannian metric on `F` that varies with the point is a different `RiemannianBundle`

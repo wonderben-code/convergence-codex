@@ -55,7 +55,9 @@ product space with its constant metric, the ordinary derivative is torsion-free 
 metric-compatible, so `IsMetricCompatible` is inhabited, and
 `eq_fderiv_of_torsionFree_of_compatible` makes it the only such connection there through this
 file's uniqueness. **The manifold case — the Koszul construction — is exactly as untouched as
-the paragraph says.**
+the paragraph says.** ⚠ And by entry 65, later the same day, it is not: existence on a
+Riemannian manifold is `KoszulManifold.exists_leviCivita`, with this file's uniqueness as
+`KoszulManifold.eq_leviCivita_of_torsionFree_of_compatible`.
 
 **NOT EQUALITY OF THE CONNECTIONS AS STRUCTURES.** A `CovariantDerivative` is a function on all
 sections and is constrained only where a section is differentiable; two such structures may
