@@ -435,4 +435,5 @@ roots = [
   "ClusterPiece",
   "LeviCivitaUnique",
   "LeviCivitaFlat",
+  "KoszulVectorSpace",
 ]
