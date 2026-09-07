@@ -96,6 +96,18 @@ three). The interior is free.
 So the class reached here is strictly larger than `+` and is **not** all configurations. That file
 offers **no count and no proportion**, and neither does this one.
 
+## ⚠ AND THAT CLASS IS ASYMPTOTICALLY INVISIBLE. Annotated 7 September 2026
+
+The annotation above says the class reached here is strictly larger than `+` and is not all
+configurations. `paper_f/EvenDegreesClassVanishes.lean` measures it:
+**`tendsto_classProb_zero`** — the probability that the boundary is constant away from its corners
+tends to `0` as the box grows, at every `β ≥ 0` and every `h`, and by `EvenDegreesConverse` that is
+the probability of `EvenDegrees (dualGraph σ)` itself.
+
+So `PlusClassVanishes`'s objection to conditioning on `+` applies verbatim to the hypothesis used
+here. **Nothing above is refuted** — every theorem in this file is pointwise and stands — but a
+reader taking *strictly weaker than `+`* as *escapes the obstruction* would be wrong.
+
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 
 -/

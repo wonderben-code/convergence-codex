@@ -55,6 +55,22 @@ conditional estimate repairs that, because the conditional estimate is not what 
   result.**
 
 `MagnetisationBound` is untouched, and is still known false only at `h = 0`.
+
+## ⚠ THE SAME COUNT RUNS FOR A SECOND CLASS. Annotated 7 September 2026
+
+`paper_f/EvenDegreesClassVanishes.lean` re-runs §§3–6 above for the class *the boundary is constant
+away from its four corners* — which `EvenDegreesConverse` proves is exactly
+`SimpleGraph.EvenDegrees (DualGraph.dualGraph σ)`, the hypothesis `RayCircuitSurrounding` uses in
+place of `PlusBoundary` — and gets the same conclusion: **`tendsto_classProb_zero`**.
+
+Two of this file's lemmas are deepened there rather than copied: `isingHB_flipAt_le` loses its
+`PlusBoundary` hypothesis (at the cost of `2|h|` for `2h`), and `flipAt_injOn` needs a **third**
+off-corner boundary site, because the image no longer remembers the flipped site as its unique down
+boundary spin.
+
+**Nothing above changes**, including the labelled guess in *What this does and does not say*, which
+that file does not touch either.
+
 -/
 
 namespace PlusClassVanishes
