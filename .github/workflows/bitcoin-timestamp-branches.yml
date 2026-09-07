@@ -1,0 +1,95 @@
+name: Bitcoin Timestamp (all branches)
+
+# WHY THIS EXISTS
+# The original bitcoin-timestamp.yml fires only on pushes to `main`, so work done
+# on working branches (e.g. the autonomous `claude/*` sessions) was never stamped.
+# This workflow closes that gap WITHOUT interfering with those branches:
+#
+#   - it never pushes to a working branch (the original workflow commits the .ots
+#     back, which on an active branch would break the agent's next push);
+#   - it runs on a schedule instead of per-push, so a branch making hundreds of
+#     commits produces a handful of stamps rather than hundreds of noisy commits;
+#   - it stamps a MANIFEST naming every branch and its head SHA. Because a git
+#     commit hash cryptographically contains its whole ancestry, stamping the head
+#     proves the entire history behind it existed at that time.
+#
+# It also upgrades previously-pending stamps: `ots stamp` returns immediately with
+# a calendar commitment, and only later can that be upgraded to a full Bitcoin
+# attestation. Without the upgrade step, stamps stay pending indefinitely.
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'      # every 6 hours
+  workflow_dispatch:            # and on demand
+
+concurrency:
+  group: bitcoin-timestamp-branches
+  cancel-in-progress: false
+
+jobs:
+  stamp:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Fetch all branches
+        run: git fetch --all --prune
+
+      - name: Install OpenTimestamps
+        run: pip install opentimestamps-client
+
+      - name: Build branch manifest
+        id: manifest
+        run: |
+          set -euo pipefail
+          STAMP_UTC="$(date -u +%Y-%m-%dT%H-%M-%SZ)"
+          echo "stamp_utc=$STAMP_UTC" >> "$GITHUB_OUTPUT"
+          mkdir -p timestamps/branches
+          MANIFEST="timestamps/branches/${STAMP_UTC}.manifest"
+          {
+            echo "# Branch head manifest — $STAMP_UTC"
+            echo "# repo: ${{ github.repository }}"
+            echo "# Each line: <branch> <tab> <head sha>. A commit hash contains its"
+            echo "# entire ancestry, so stamping these heads stamps all history behind them."
+            git for-each-ref --sort=refname \
+              --format='%(refname:strip=3)%09%(objectname)' refs/remotes/origin \
+              | grep -v '^HEAD' || true
+          } > "$MANIFEST"
+          echo "manifest=$MANIFEST" >> "$GITHUB_OUTPUT"
+          cat "$MANIFEST"
+
+      - name: Stamp the manifest
+        run: ots stamp "${{ steps.manifest.outputs.manifest }}"
+
+      - name: Upgrade any pending stamps
+        continue-on-error: true
+        run: |
+          # Turns calendar commitments into full Bitcoin attestations once the
+          # anchoring transaction has confirmed. Harmless if nothing is ready.
+          find timestamps -name '*.ots' -print0 | xargs -0 -r -n 50 ots upgrade || true
+
+      - name: Commit to main
+        run: |
+          set -euo pipefail
+          git config user.name  "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add timestamps/
+          if git diff --cached --quiet; then
+            echo "Nothing to commit."
+            exit 0
+          fi
+          git commit -m "Bitcoin timestamp: branch heads @ ${{ steps.manifest.outputs.stamp_utc }}"
+          for attempt in 1 2 3 4 5; do
+            if git push; then exit 0; fi
+            echo "Push rejected (attempt $attempt) — rebasing and retrying."
+            git pull --rebase origin main
+          done
+          echo "Could not push after 5 attempts." >&2
+          exit 1
