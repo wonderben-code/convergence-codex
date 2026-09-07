@@ -62,7 +62,8 @@ connection is not proved here; `LeviCivitaUnique.eq_of_torsionFree_of_compatible
 `IsMetricCompatible`, that is for the constant metric of a `RiemannianBundle` instance, and applies
 to `m` only through `isGCompatible_ofInner_iff`, in the constant case. The variable-metric
 uniqueness is the same braid with `g x` in place of the inner product and constant sections in
-place of `extend`, and it is the next object, not this file's.
+place of `extend`, and it is the next object, not this file's. ⚠ By 7 September, the same day, it
+is `KoszulUnique`: `difference_eq_zero_of_gCompatible`, `eq_koszul_of_torsionFree_of_gCompatible`.
 
 **A MANIFOLD.** This is the model space with global coordinates. On a Riemannian manifold the
 Koszul construction needs the metric's derivative along vector fields and charts, and `WALLS`

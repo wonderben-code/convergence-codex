@@ -436,4 +436,5 @@ roots = [
   "LeviCivitaUnique",
   "LeviCivitaFlat",
   "KoszulVectorSpace",
+  "KoszulUnique",
 ]
