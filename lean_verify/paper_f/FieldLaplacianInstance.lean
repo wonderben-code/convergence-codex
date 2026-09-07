@@ -34,6 +34,16 @@ extremes are both realised by graphs this estate has already studied.
 question on `UNLOCK_WATCHLIST`. **Nothing here is a characterisation**, and finding a second example
 would not be one either.
 
+⚠ **A SECOND GRAPH IS SHOWN TO SATISFY IT, by 7 September 2026, and the paragraph above is kept as
+written** (`ERRATUM 94`). `PawSimpleSpectrum.finrank_lapMatrix_le_one_paw`: the paw — a triangle
+with a pendant vertex — satisfies the hypothesis, with `eigenvalues_injective_paw`,
+`card_symmetries_paw` and `graphAut_involutive_paw` following through this file's door. **The
+characterisation sentence stands exactly as the paragraph says**: two graphs are not a
+characterisation, and the watchlist item that asked for a second graph closed while the
+characterisation was filed as its own item. This annotation should have been written in the unit
+that proved the paw (`ERRATUM 471`'s rule) and was written one unit later, when `claims_scan`
+expired the reading of this section.
+
 **THE CONVERSE OF THE CRITERION IS STILL NOT PROVED.** *Every eigenspace is at most a line* implies
 a simple spectrum (`FieldSimpleCriterion.eigenvalues_injective_of_finrank_le_one`); the reverse — a
 simple spectrum implies every eigenspace is at most a line — is true for a symmetric matrix because
