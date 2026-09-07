@@ -432,4 +432,5 @@ roots = [
   "EvenDegreesClassVanishes",
   "PawSimpleSpectrum",
   "PathPieceEndpoints",
+  "ClusterPiece",
 ]

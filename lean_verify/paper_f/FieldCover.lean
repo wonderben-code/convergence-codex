@@ -41,6 +41,16 @@ spin down (`PlusClassVanishes`), so the event this file bounds is not the typica
 that branch needs is the geometric step S3b of the map: a cluster stretching from `x` to the
 edge is long, and a long cluster has a long perimeter. **Not begun.**
 
+⚠ **BEGUN, by 7 September 2026, and the paragraph above is kept as written** (`ERRATUM 94`).
+`ClusterPiece.exists_odd_piece_cluster_leftRay` runs the arc's enclosure statement on
+`clusterOff σ x` itself, with no restriction on where the cluster goes: for a down site whose row
+meets the left edge at an up site, a piece of the cluster's own boundary — a cycle, or a path
+between two rim plaquettes — is crossed oddly by the ray. **The perimeter bound is not proved**:
+what exists is `PathPieceEndpoints.distToEdge_le_length_of_mem_support`, the length of such a path
+against the distance to the rim of any plaquette on it, with the plaquette the ray crosses not
+extracted; and **no probability is bounded** — the sum over clusters needs a count of clusters by
+boundary size, which the estate does not have. `MagnetisationBound` is still untouched.
+
 `IsingBoundaryField.MagnetisationBound` is untouched.
 -/
 
