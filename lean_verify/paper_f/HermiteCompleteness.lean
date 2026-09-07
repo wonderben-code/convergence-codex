@@ -48,6 +48,28 @@
     Hermite partial sums and Parseval, which needs the L²-Fourier apparatus
     (bundled `Lp` machinery) this file deliberately avoids. Recorded on
     UNLOCK_WATCHLIST with this file as its trigger.
+
+    ⚠ THE TRIGGER FIRED ON 1 AUGUST 2026 AND THIS BULLET WAS NEVER ANNOTATED.
+    Annotated 7 September 2026 (`ERRATUM 480`; `ERRATUM 94`'s rule keeps the
+    sentence). The route named here is exactly the route taken:
+    `HermiteBessel.lean` and `HermiteParseval.lean` built the L²-Fourier
+    apparatus, and `PoincareBeyondPolynomials.lean` proved the inequality,
+    with `poincare_sin` as the witness that the class exceeds polynomials.
+    It went further the same week: `PoincareSteinClass` defines the class by
+    an integral pairing rather than by coefficients, `HermiteHilbertBasis`
+    supplies Riesz–Fischer for a prescribed sequence, `W6Converse.
+    stein_iff_smooth` proves the polynomial-tested and `Cc^∞`-tested classes
+    COINCIDE, and `TextbookSobolev.stein_iff_sobolevWeak` identifies both
+    with the textbook Lebesgue-weak-derivative Gaussian Sobolev space.
+    `UNLOCK_WATCHLIST`'s items *Gaussian Poincaré beyond polynomials*,
+    *…beyond polynomial test functions*, *…for non-polynomial test functions
+    (W^{1,2}(γ))* and *Poincaré on the maximal class W^{1,2}(γ)* are all
+    CLOSED, the last of them on 9 August with *nothing outstanding*.
+    **The closing line of the annotations below — “WHAT IS ACTUALLY LEFT:
+    nothing on this list” — is true of this bullet as well as of the next
+    one, and it was written about the next one.** Nothing in the paragraph
+    above is wrong as mathematics; what it says about what exists was
+    overtaken five weeks ago.
   * Completeness in L²(γ_σ) for σ ≠ 1 or in n dimensions (the same argument
     transfers; not done here).
 
