@@ -430,4 +430,5 @@ roots = [
   "EvenDegreesBoundary",
   "EvenDegreesConverse",
   "EvenDegreesClassVanishes",
+  "PawSimpleSpectrum",
 ]
