@@ -72,7 +72,9 @@ from the Riemann tensor of a metric, and it is not started. **Not attempted, no 
 (`ERRATUM 246`).
 
 **NO TRACES, NO IDENTITIES BEYOND ANTISYMMETRY.** No Ricci or scalar curvature, no Bianchi
-identity, no pair symmetry.
+identity, no pair symmetry. ⚠ By 7 September, entry 69, the traces are `RicciScalar.ricci` and
+`RicciScalar.scalar`, the latter shown independent of the orthonormal basis; the identities are
+still absent there.
 
 **NOT PACKAGED AS ONE CONTINUOUS TRILINEAR MAP.** `curvEndo cov x : T_xM → T_xM → (T_xM →L T_xM)`
 is bilinear by the four lemmas above and continuous in each slot by finite dimension, and no

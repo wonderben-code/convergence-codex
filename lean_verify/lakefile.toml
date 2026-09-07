@@ -441,4 +441,5 @@ roots = [
   "BracketDerivation",
   "CurvatureTensorial",
   "CurvatureTensor",
+  "RicciScalar",
 ]
