@@ -439,4 +439,5 @@ roots = [
   "KoszulUnique",
   "KoszulManifold",
   "BracketDerivation",
+  "CurvatureTensorial",
 ]
