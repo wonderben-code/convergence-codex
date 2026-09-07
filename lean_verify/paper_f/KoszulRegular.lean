@@ -49,7 +49,12 @@ matrices — or a `C²` orthonormal frame, which neither the estate nor the pinn
 from `C¹` sections `∇_Y Z` for every `C²` field `Y` to a `C¹` section `y ↦ ∇Z(y)` of the
 endomorphism bundle needs Mathlib's `contMDiffAt_hom_bundle` criterion in coordinates. Both steps
 are linear algebra in a moving frame and neither is started. **Not attempted, no cost claimed**
-(`ERRATUM 246`).
+(`ERRATUM 246`). ⚠ By entry 71, later the same day, the first step is done and the alternative
+was not needed: `FrameRegular.contMDiffAt_of_contMDiffAt_inner` is the Gram-inverse leg, the
+inverse taken in the operator ring on `ι → ℝ` by Mathlib's `contDiffAt_ringInverse`, with no
+orthonormal frame; and `FrameRegular.contMDiffAt_leviCivita_apply` is `y ↦ ∇_Y Z(y)` as a `C¹`
+section. The second step — the endomorphism bundle — is exactly as untouched as the paragraph
+says.
 
 **NO CURVATURE OF A METRIC**, therefore: `CurvatureTensor` and `RicciScalar` still apply to no
 Levi-Civita connection.
