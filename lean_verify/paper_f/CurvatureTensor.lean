@@ -69,7 +69,10 @@ differentiable at `x` and `Z` of class `C²` at `x`.
 no curvature of a Riemannian metric is computed. That regularity — the Koszul form depends
 differentiably on the point when the metric is `C²` — is the object that separates this file
 from the Riemann tensor of a metric, and it is not started. **Not attempted, no cost claimed**
-(`ERRATUM 246`).
+(`ERRATUM 246`). ⚠ By entry 72, later the same day, `KoszulManifold.leviCivita` is `IsLocallyC1`
+for a `C²` metric on a `C³` manifold (`LeviCivitaRegular.isLocallyC1_leviCivita`), and
+`curvEndo leviCivita` is the Riemann curvature of the metric, `LeviCivitaRegular.riemann`; the
+sentence is kept as written (`ERRATUM 94`).
 
 **NO TRACES, NO IDENTITIES BEYOND ANTISYMMETRY.** No Ricci or scalar curvature, no Bianchi
 identity, no pair symmetry. ⚠ By 7 September, entry 69, the traces are `RicciScalar.ricci` and

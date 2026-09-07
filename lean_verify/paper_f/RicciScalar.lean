@@ -46,7 +46,10 @@ any `IsLocallyC1` one, and `KoszulManifold.leviCivita` is not shown to be one. T
 curvature here is the metric trace of the Ricci form of an arbitrary such connection, with the
 metric and the connection unrelated; the geometer's scalar curvature is the case
 `cov = leviCivita`, which this estate cannot yet write. **Not attempted, no cost claimed**
-(`ERRATUM 246`).
+(`ERRATUM 246`). ⚠ By entry 72, later the same day, the estate writes it:
+`LeviCivitaRegular.ricci` and `LeviCivitaRegular.scalar` are `ricci leviCivita` and
+`scalar leviCivita` under `LeviCivitaRegular.isLocallyC1_leviCivita`, so the geometer's scalar
+curvature of a `C²` metric is in the estate; the sentence is kept as written (`ERRATUM 94`).
 
 **NO BRIDGE TO THE ALGEBRAIC VOCABULARY.** `AlgebraicCurvature.ricci` and `scal` (the Lovelock
 files, `WALLS` §W5.1 §5h) are traces of an abstract algebraic curvature on `Fin n → ℝ`; no

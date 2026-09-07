@@ -54,7 +54,9 @@ was not needed: `FrameRegular.contMDiffAt_of_contMDiffAt_inner` is the Gram-inve
 inverse taken in the operator ring on `ι → ℝ` by Mathlib's `contDiffAt_ringInverse`, with no
 orthonormal frame; and `FrameRegular.contMDiffAt_leviCivita_apply` is `y ↦ ∇_Y Z(y)` as a `C¹`
 section. The second step — the endomorphism bundle — is exactly as untouched as the paragraph
-says.
+says. ⚠ And by entry 72 it is not: `LeviCivitaRegular.contMDiffAt_hom_of_localFrame` is the
+endomorphism-bundle step, and `LeviCivitaRegular.isLocallyC1_leviCivita` is the statement this
+paragraph names.
 
 **NO CURVATURE OF A METRIC**, therefore: `CurvatureTensor` and `RicciScalar` still apply to no
 Levi-Civita connection.

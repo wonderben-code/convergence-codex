@@ -53,12 +53,16 @@ the endomorphism bundle `Hom(TM, TM)`, is `C¹` on every open set on which `Z` i
 one to the other is Mathlib's `contMDiffAt_hom_bundle` criterion in coordinates — a `Hom`-valued
 section is `C¹` when its coordinate matrix is, and the columns of that matrix are the trivialized
 values of `∇_{sᵢ} Z` for the frame `sᵢ` of the chart — and it is not started. **Not attempted, no
-cost claimed** (`ERRATUM 246`).
+cost claimed** (`ERRATUM 246`). ⚠ By entry 72, later the same day, it is started and finished:
+`LeviCivitaRegular.contMDiffAt_hom_of_localFrame` is the criterion applied to the chart's frame,
+`LeviCivitaRegular.contMDiffAt_leviCivita_hom` is the section, and
+`LeviCivitaRegular.isLocallyC1_leviCivita` is the instance.
 
 **NO CURVATURE OF A METRIC**, therefore. `IsLocallyC1` is the hypothesis under which
 `CurvatureTensor.curvEndo`, `RicciScalar.ricci` and `RicciScalar.scalar` are defined, and
 `leviCivita` is not shown to satisfy it here, so none of the three is yet evaluated on the
-Levi-Civita connection of any metric.
+Levi-Civita connection of any metric. ⚠ By entry 72 all three are: `LeviCivitaRegular.riemann`,
+`LeviCivitaRegular.ricci`, `LeviCivitaRegular.scalar`.
 
 **ONLY `C¹`.** The Gram-inverse leg is stated for `C¹` pairings and a `C¹` conclusion, which is what
 one derivative of the connection costs and what curvature needs. The same argument gives `C^k`

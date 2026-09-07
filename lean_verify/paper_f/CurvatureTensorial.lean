@@ -74,7 +74,10 @@ identity, no symmetry of the Riemann tensor of a metric connection.
 **NOTHING ABOUT `leviCivita`.** `KoszulManifold.leviCivita` is not shown to satisfy
 `ContMDiffCovariantDerivative _ 1`, so nothing here applies to it yet; that regularity — the
 Koszul form's differentiable dependence on the point, for a `C²` metric — is its own object and is
-not started.
+not started. ⚠ By entry 72, later the same day, it is started and finished:
+`LeviCivitaRegular.isLocallyC1_leviCivita`, for a `C²` metric on a `C³` manifold, through
+`KoszulRegular`, `FrameRegular` and the Hom-bundle criterion; the curvature of a metric is
+`LeviCivitaRegular.riemann`.
 
 **THE HYPOTHESES, READ OFF THE BINDERS** (`ERRATUM 455`): `[NormedAddCommGroup E]`,
 `[NormedSpace ℝ E]`, a `ChartedSpace H M` and a model `I` throughout; `[IsManifold I 2 M]` from
