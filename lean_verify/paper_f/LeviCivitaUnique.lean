@@ -49,6 +49,14 @@ construction needs the derivative of the metric along vector fields and the Lie 
 Leibniz rules, and it is the analysis this file did not need; it is the remaining object of
 `WALLS` §W5.1 §3, and it stays that. **Not attempted, no cost claimed** (`ERRATUM 246`).
 
+⚠ **THE FLAT CASE IS DONE THE SAME DAY, AND THE PARAGRAPH ABOVE IS KEPT AS WRITTEN**
+(`ERRATUM 94`). `LeviCivitaFlat.exists_leviCivita`: on a finite-dimensional complete real inner
+product space with its constant metric, the ordinary derivative is torsion-free and
+metric-compatible, so `IsMetricCompatible` is inhabited, and
+`eq_fderiv_of_torsionFree_of_compatible` makes it the only such connection there through this
+file's uniqueness. **The manifold case — the Koszul construction — is exactly as untouched as
+the paragraph says.**
+
 **NOT EQUALITY OF THE CONNECTIONS AS STRUCTURES.** A `CovariantDerivative` is a function on all
 sections and is constrained only where a section is differentiable; two such structures may
 differ on sections differentiable nowhere. What is proved is the vanishing of the difference

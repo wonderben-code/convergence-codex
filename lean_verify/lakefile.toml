@@ -434,4 +434,5 @@ roots = [
   "PathPieceEndpoints",
   "ClusterPiece",
   "LeviCivitaUnique",
+  "LeviCivitaFlat",
 ]
