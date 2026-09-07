@@ -61,7 +61,11 @@ identity) and on `⟨R(v, w) z, u⟩ = −⟨R(v, w) u, z⟩` (metric compatibil
 stated or proved for `riemann`. `AlgebraicCurvature` has the first Bianchi identity as an axiom of
 `IsAlgCurv` and `pair_symm_of_bianchi` as its consequence, on an abstract tensor on `Fin n → ℝ`;
 that `riemann` satisfies that axiom is exactly what is not proved. **Not attempted, no cost
-claimed** (`ERRATUM 246`).
+claimed** (`ERRATUM 246`). ⚠ By entry 73, later the same day, the first Bianchi identity is
+proved for every torsion-free locally `C¹` connection and so for `riemann`
+(`CurvatureBianchi.riemann_cyclic`), with `Ric(w, z) − Ric(z, w) = −tr R(w, z)`
+(`CurvatureBianchi.ricci_sub_swap`); the skew-symmetry, the pair symmetry and the symmetry of
+`Ric` are exactly as unproved as the paragraph says.
 
 **NO SECTIONAL CURVATURE, NO EINSTEIN TENSOR, NO LOCAL FORMULA — FOR `riemann`**, and no bridge to
 the algebraic vocabulary: `AlgebraicCurvature.einstein` and the sectional curvature of the Lovelock

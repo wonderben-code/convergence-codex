@@ -445,4 +445,5 @@ roots = [
   "KoszulRegular",
   "FrameRegular",
   "LeviCivitaRegular",
+  "CurvatureBianchi",
 ]
