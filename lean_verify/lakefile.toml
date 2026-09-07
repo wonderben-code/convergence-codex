@@ -442,4 +442,5 @@ roots = [
   "CurvatureTensorial",
   "CurvatureTensor",
   "RicciScalar",
+  "KoszulRegular",
 ]
