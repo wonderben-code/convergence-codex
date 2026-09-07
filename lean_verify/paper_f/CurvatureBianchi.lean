@@ -53,7 +53,11 @@ not started. With it, the right side of `ricci_sub_swap` vanishes (`LinearMap.tr
 a skew endomorphism) and `Ric` is symmetric; and with `curvEndo_cyclic` the pair symmetry
 `⟨R(u, v) w, z⟩ = ⟨R(w, z) u, v⟩` follows by the algebra that
 `AlgebraicCurvature.pair_symm_of_bianchi` does on components. **Not attempted, no cost claimed**
-(`ERRATUM 246`).
+(`ERRATUM 246`). ⚠ By entry 74, later the same day, all three are proved:
+`CurvatureSkew.curvEndo_inner_skew`, `CurvatureSkew.ricci_symm` and
+`CurvatureSkew.inner_curvEndo_pair_symm`, and for a `C²` metric `CurvatureSkew.riemann_inner_skew`,
+`CurvatureSkew.ricci_metric_symm` and `CurvatureSkew.riemann_inner_pair_symm`; the sentence is
+kept as written (`ERRATUM 94`).
 
 **NO SECOND BIANCHI IDENTITY** — the differential one,
 `(∇_X R)(Y, Z) + (∇_Y R)(Z, X) + (∇_Z R)(X, Y) = 0` — which needs the covariant derivative of the

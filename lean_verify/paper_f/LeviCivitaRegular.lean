@@ -65,7 +65,9 @@ claimed** (`ERRATUM 246`). ⚠ By entry 73, later the same day, the first Bianch
 proved for every torsion-free locally `C¹` connection and so for `riemann`
 (`CurvatureBianchi.riemann_cyclic`), with `Ric(w, z) − Ric(z, w) = −tr R(w, z)`
 (`CurvatureBianchi.ricci_sub_swap`); the skew-symmetry, the pair symmetry and the symmetry of
-`Ric` are exactly as unproved as the paragraph says.
+`Ric` are exactly as unproved as the paragraph says. ⚠ And by entry 74 they are not:
+`CurvatureSkew.riemann_inner_skew`, `CurvatureSkew.riemann_inner_pair_symm` and
+`CurvatureSkew.ricci_metric_symm`.
 
 **NO SECTIONAL CURVATURE, NO EINSTEIN TENSOR, NO LOCAL FORMULA — FOR `riemann`**, and no bridge to
 the algebraic vocabulary: `AlgebraicCurvature.einstein` and the sectional curvature of the Lovelock

@@ -446,4 +446,5 @@ roots = [
   "FrameRegular",
   "LeviCivitaRegular",
   "CurvatureBianchi",
+  "CurvatureSkew",
 ]
