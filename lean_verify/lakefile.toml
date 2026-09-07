@@ -438,4 +438,5 @@ roots = [
   "KoszulVectorSpace",
   "KoszulUnique",
   "KoszulManifold",
+  "BracketDerivation",
 ]
