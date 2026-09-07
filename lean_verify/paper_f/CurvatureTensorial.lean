@@ -63,7 +63,10 @@ sections (`∇_Y Z` must itself be differentiable), so the class cannot be insta
 `mkHom` cannot be applied. What the 3-tensor needs is the `C²` analogue of
 `TensorialAt.pointwise` — two `C²` sections with the same value at `x` give the same `R(X, Y)Z(x)`,
 by a local frame with `C²` coefficients (`contMDiffAt_localFrame_coeff` is in the library) — and
-that is the next object; it is not attempted here. **No cost is claimed** (`ERRATUM 246`).
+that is the next object; it is not attempted here. **No cost is claimed** (`ERRATUM 246`). ⚠ By
+7 September, entry 68, it is `CurvatureTensor.curvAux_congr_of_eq_Z`, and the endomorphism is
+`CurvatureTensor.curvEndo`, under a local form of the regularity class (`IsLocallyC1`) and a `C³`
+manifold; this file's global-`C²` lemmas are superseded there by lemmas at the point.
 
 **NO TRACES, NO IDENTITIES BEYOND ANTISYMMETRY.** No Ricci or scalar curvature, no Bianchi
 identity, no symmetry of the Riemann tensor of a metric connection.
