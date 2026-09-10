@@ -365,7 +365,13 @@ structure HasMassGap where
 
 /-- Construct a HasMassGap from a positive gap value with canonical spectrum.
     The eigenvalue set is {0} ∪ [Δ, ∞): vacuum at 0, continuous spectrum above Δ.
-    The spectral gap property, gap achievement, and decay are all DERIVED from Mathlib. -/
+    The spectral gap property, gap achievement, and decay are all DERIVED from Mathlib.
+    ⚠ STIPULATED, NOT DERIVED (2026-09-10, found by `projection_scan.py`): `vacuum_in_spectrum` is
+    `by simp` against the `eigenvalues` set in this same definition, so the sentence *`the
+    spectral gap property, gap achievement, and decay are all DERIVED from Mathlib`* means derived
+    FROM THE STIPULATED SPECTRUM. **No Hamiltonian, no operator and no spectrum of anything is
+    computed here**: the input is one positive real. `ASSUMPTIONS_LEDGER` entry 2 names this
+    definition. -/
 def HasMassGap.mk_from_positive_gap (Δ : ℝ) (hΔ : 0 < Δ) : HasMassGap where
   gap := Δ
   gap_pos := hΔ
@@ -441,7 +447,13 @@ structure OSVerification where
     OS2: exp(-S) factorises (spectral action decomposes across time reflection).
     OS3: Path integral measure is commutative.
     OS4: Spectral gap forces exponential clustering.
-    OS5: exp(-x²) ≤ 1 bounds all moments. -/
+    OS5: exp(-x²) ≤ 1 bounds all moments.
+    ⚠ STIPULATED, NOT DERIVED (2026-09-10, found by `projection_scan.py`): **`d := 4` is set in
+    this definition and `hd : d = 4` is discharged by `rfl`**, so the first line above does not
+    derive the spacetime dimension — it records it. `euclidean_group_dim` and `os3_symmetry` are
+    likewise arithmetic and `decide` on stipulated values, and the OS axioms that ARE proved here
+    are **elementary facts about `exp`**, which is the model of the axioms this file uses.
+    `ASSUMPTIONS_LEDGER` entries 2 and 8. -/
 def CascadeData.os_verified (C : CascadeData) : OSVerification where
   d := 4
   hd := rfl
@@ -501,7 +513,13 @@ structure WightmanVerification where
   w3_vacuum_unique : ∀ (E : ℝ), exp (-E) = 1 → E = 0
 
 /-- Wightman axioms follow from OS axioms via the reconstruction theorem.
-    This is the Osterwalder-Schrader reconstruction (1973-75). -/
+    This is the Osterwalder-Schrader reconstruction (1973-75).
+    ⚠ STIPULATED, NOT DERIVED (2026-09-10, found by `projection_scan.py`):
+    `w1_lorentz_plus_translations` is `rfl` on `poincare_dim`, set here from `OS.d` by a dimension
+    formula, and the other four axioms are `OS`'s own fields or elementary facts (`exp_zero`,
+    `sq_nonneg`). **So the Osterwalder–Schrader reconstruction theorem is NOT formalised here** —
+    nothing constructs a Hilbert space, a vacuum vector or a representation. The sentence above
+    names the theorem this data record is modelled on. -/
 def OSVerification.to_wightman (OS : OSVerification) : WightmanVerification where
   d := OS.d
   poincare_dim := OS.d * (OS.d - 1) / 2 + OS.d
@@ -558,7 +576,12 @@ structure GaugeEmbedding where
     - total_dim = dim(sl₄) = 15 (from traceless_dim_4)
     - su3_dim = dim(sl₃) = 8 (from traceless_dim_3)
     - su2_dim = dim(sl₂) = 3 (from traceless_dim_2)
-    - u1_dim = dim(u(1)) = 1 (abelian factor) -/
+    - u1_dim = dim(u(1)) = 1 (abelian factor)
+    ⚠ STIPULATED, NOT DERIVED (2026-09-10, found by `projection_scan.py`): The `GENUINE` claim
+    above covers the three dimensions cited from rank-nullity, and **not** `u1_dim_eq`,
+    `beta_zero_eq` and `af`, which are `rfl` and `norm_num` on `u1_dim := 1` and `beta_zero` set
+    in this definition. The abelian factor's dimension and the one-loop coefficient are
+    stipulated. -/
 noncomputable def CascadeData.gauge_embedding (_ : CascadeData) : GaugeEmbedding where
   total_dim := Module.finrank ℂ (TracelessMatrix 4)
   total_dim_eq := traceless_dim_4
@@ -653,7 +676,11 @@ theorem CascadeData.mk_derived_gap_pos
 
 /-- A concrete instance of CascadeData with Λ = 1 (in natural units).
     This shows the framework is non-vacuous: there EXISTS a cascade
-    with all claimed properties. -/
+    with all claimed properties.
+    ⚠ STIPULATED, NOT DERIVED (2026-09-10, found by `projection_scan.py`): All four hypotheses are
+    `by norm_num` on the values set here, which is exactly right for the WITNESS the sentence
+    above says this is: an instance exists, so the structure is not vacuous. Nothing is derived
+    and nothing is claimed to be. -/
 noncomputable def cascade_standard : CascadeData where
   Lambda := 1
   hLambda := by norm_num

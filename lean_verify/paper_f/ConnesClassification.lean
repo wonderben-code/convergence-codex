@@ -66,7 +66,13 @@ structure KODimensionData where
   epsilon_double_prime : ℤ
   epsilon_double_prime_eq : epsilon_double_prime = -1  -- For KO-dim 6: Jγ = -γJ
 
-/-- The Standard Model KO-dimension data: KO-dim 6 with signs (1, 1, -1). -/
+/-- The Standard Model KO-dimension data: KO-dim 6 with signs (1, 1, -1).
+
+    ⚠ STIPULATED, NOT DERIVED (2026-09-10, found by `projection_scan.py`): `ko_dim`, `epsilon`,
+    `epsilon_prime` and `epsilon_double_prime` are all set in this definition, and the four
+    hypothesis fields are `norm_num` and `rfl` on those values. So the KO-dimension and the three
+    signs are RECORDED here, not computed from a real structure — no `J` appears, and
+    `ASSUMPTIONS_LEDGER` entry 18 is the account of that. The word `data` above is accurate. -/
 def sm_ko_data : KODimensionData where
   ko_dim := 6
   ko_dim_mod := by norm_num
@@ -212,7 +218,10 @@ theorem four_le_of_constraints (c : CCConstraints) : 4 ≤ c.matrix_size := by
   push Not at h
   interval_cases n <;> omega
 
-/-- 4 itself is admissible: the bound is sharp. -/
+/-- 4 itself is admissible: the bound is sharp.
+    ⚠ STIPULATED, NOT DERIVED (2026-09-10, found by `projection_scan.py`): The three hypotheses
+    are `norm_num` on `matrix_size := 4`, which is what a sharpness WITNESS is: `4` satisfies the
+    constraints, exhibited. Accurate as written. -/
 def fourConstraints : CCConstraints where
   matrix_size := 4
   matrix_size_pos := by norm_num
@@ -252,7 +261,12 @@ theorem classification_hilbert_dim_forced (ax : ChamseddineConnesAxioms)
     - First order: 4 ≥ 2
     - Poincaré duality: 2 | 4
     - Gauge contains SM: 4²-1 = 15 ≥ 12
-    - Minimal: 4 ≤ 4 -/
+    - Minimal: 4 ≤ 4
+    ⚠ STIPULATED, NOT DERIVED (2026-09-10, found by `projection_scan.py`): Every item in the list
+    above is arithmetic on `matrix_size := 4` and the dimensions set in this definition —
+    `first_order` is `4 ≥ 2`, `poincare_duality` is `2 ∣ 4`, `gauge_contains_sm` is `15 ≥ 12`.
+    **That is the whole content**: the axioms are modelled as inequalities between stipulated
+    integers, and no algebra, Hilbert space or Dirac operator is involved. -/
 noncomputable def cascade_classification : ChamseddineConnesAxioms where
   matrix_size := 4
   matrix_size_pos := by norm_num

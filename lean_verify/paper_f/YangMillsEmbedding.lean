@@ -84,7 +84,11 @@ structure SpectralActionExpansion where
     - algebra_dim = 16 = Module.finrank ℂ CascadeAlgebra (from cascade_algebra_dim)
     - gauge generators = 15 = Module.finrank ℂ (TracelessMatrix 4) (from traceless_dim_4)
     - SM generators = 12 (from sm_lie_algebra_dim)
-    - 4π² > 0 (from Real.pi_pos) -/
+    - 4π² > 0 (from Real.pi_pos)
+    ⚠ STIPULATED, NOT DERIVED (2026-09-10, found by `projection_scan.py`): `d_eq` is `rfl` on `d
+    := 4` set here, and `a0_positive` and `a2_relates_to_dim` are `norm_num` on stipulated values,
+    so the first bullet above records the spacetime dimension rather than deriving it. The other
+    bullets are cited and stand. -/
 noncomputable def CascadeData.spectral_action_expansion (_ : CascadeData) :
     SpectralActionExpansion where
   d := 4
@@ -139,7 +143,11 @@ structure YangMillsData where
 
     β₀ = 11 × N_c - 2 × n_f = 11 × 3 - 2 × 6 = 21 > 0 for SU(3) with
     6 quark flavours (3 generations × 2 chiralities from the cascade).
-    The mass gap comes from CascadeData.has_mass_gap. -/
+    The mass gap comes from CascadeData.has_mass_gap.
+    ⚠ STIPULATED, NOT DERIVED (2026-09-10, found by `projection_scan.py`): `b0_positive` is `by
+    norm_num` on `b0 := 21`, set here from the formula quoted above. **The `THE bridge between the
+    Millennium Prize and the spectral action` sentence is not supported by this definition**,
+    which records β₀ and a gauge dimension and proves one inequality about a numeral. -/
 noncomputable def CascadeData.yang_mills_embedding (C : CascadeData) :
     YangMillsData where
   gauge_dim := Module.finrank ℂ (TracelessMatrix 3)

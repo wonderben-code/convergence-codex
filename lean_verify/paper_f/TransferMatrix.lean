@@ -293,7 +293,10 @@ theorem log_decay_rate (Δ r : ℝ) (hΔ : 0 < Δ) (hr : 0 < r) :
 
 /-- Construct a HamiltonianData from CascadeData.
     The cascade's internal spectral gap becomes the Hamiltonian's spectral gap.
-    The spatial dimension is 3 (the cascade is a 3+1 dimensional theory). -/
+    The spatial dimension is 3 (the cascade is a 3+1 dimensional theory).
+    ⚠ STIPULATED, NOT DERIVED (2026-09-10, found by `projection_scan.py`): `spatial_dim_pos` is
+    `by norm_num` on `spatial_dim := 3`, set here. So *`the spatial dimension is 3`* is a
+    stipulation of this definition, not a property of the cascade derived anywhere. -/
 def CascadeData.to_hamiltonian (C : CascadeData) : HamiltonianData where
   spectral_gap := C.internal_gap
   spectral_gap_pos := C.gap_pos
@@ -449,6 +452,14 @@ theorem transfer_implies_clustering (T : TransferMatrixData)
     - Completeness of the eigenbasis
     - Convergence of the lattice transfer matrix to continuum
     These require infinite-dimensional functional analysis beyond current Mathlib.
+
+    ⚠ WHAT `fully verified` MEANS HERE (2026-09-10, found by `projection_scan.py`): the theorem
+    below is proved by `⟨C.gap_pos, rfl, C.hgap_val, C.gap_decay⟩` — three projections of
+    `CascadeData`'s own fields and one reflexivity. Its four conjuncts are therefore the
+    hypotheses it was handed, rearranged; `C.hgap_val` IS the field `internal_gap = 2 / Lambda ^ 2`
+    and `C.gap_pos`/`C.gap_decay` are one-line consequences of it. **Nothing about a transfer
+    matrix, a Hamiltonian or a spectrum is established by this theorem.**
+    `ASSUMPTIONS_LEDGER` entry 2.
 
     But the LOGICAL CHAIN is fully verified:
     CascadeData → HamiltonianData → TransferMatrixData → HasMassGap -/

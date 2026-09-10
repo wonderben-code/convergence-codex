@@ -49,13 +49,23 @@ structure ConnesAxioms where
       Encoded: Hilbert space dimension -/
   hilbert_dim : ℕ
   hilbert_dim_pos : 0 < hilbert_dim
-  /-- Axiom 5 (Reality): For KO-dim 6, (ε, ε', ε'') = (1, 1, -1) -/
+  /-- Axiom 5 (Reality): For KO-dim 6, (ε, ε', ε'') = (1, 1, -1)
+
+      ⚠ VACUOUS AS STATED (2026-09-10, found by `projection_scan.py`): the type is
+      `ko_dim % 8 = 6 → True`, which **every** value of `ko_dim` satisfies, so this field
+      constrains nothing and cannot fail. The signs `(ε, ε', ε'')` the sentence names do not
+      appear in it. `ASSUMPTIONS_LEDGER` entry 18 is the account of the KO-dimension
+      assignments across the estate; this is the field that carries none of them. -/
   reality_sign_1 : ko_dim % 8 = 6 → True
   /-- Axiom 6+7 (First order + Poincaré duality): algebra × algebra ≥ hilbert -/
   poincare_dual : algebra_dim * algebra_dim ≥ hilbert_dim
 
 /-- The cascade's specific Connes axiom data.
-    KO-dimension = 6, algebra = M₄(ℂ) (dim 16), Hilbert = ℂ⁹⁶ (dim 96). -/
+    KO-dimension = 6, algebra = M₄(ℂ) (dim 16), Hilbert = ℂ⁹⁶ (dim 96).
+    ⚠ STIPULATED, NOT DERIVED (2026-09-10, found by `projection_scan.py`): Every hypothesis field
+    is `norm_num` on a number set in this definition, so this is the DATA the sentence above calls
+    it and not a verification of Connes' axioms. Note also that the structure's `reality_sign_1`
+    field is vacuous (see its own annotation), so Axiom 5 constrains nothing here. -/
 def cascade_connes_axioms : ConnesAxioms where
   ko_dim := 6
   ko_dim_mod := by norm_num

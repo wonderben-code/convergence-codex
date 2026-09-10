@@ -218,7 +218,10 @@ set_option maxHeartbeats 3200000 in
     - γ² = 1 from diagonal_mul_diagonal
     - {γ, D} = 0 from matrix computation
     - D² = m²·1 from matrix multiplication
-    - Dᵀ = D from entry-wise verification -/
+    - Dᵀ = D from entry-wise verification
+    ⚠ STIPULATED, NOT DERIVED (2026-09-10, found by `projection_scan.py`): The `All axioms are
+    PROVED` list above is accurate for the four matrix identities it names. `hn` is not among
+    them: it is `by norm_num` on `n := 4`, set here. -/
 noncomputable def cascade_spectral_triple (m : ℂ) : SpectralTripleData where
   n := 4
   hn := by norm_num

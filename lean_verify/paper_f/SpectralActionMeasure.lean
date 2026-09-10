@@ -189,7 +189,10 @@ structure PartitionFunctionData where
 
 /-- The cascade provides partition function data.
     The dimension 16 comes from cascade_algebra_dim: dim_ℂ(M₄(ℂ)) = 16.
-    All weight properties follow from the analytic theorems above. -/
+    All weight properties follow from the analytic theorems above.
+    ⚠ STIPULATED, NOT DERIVED (2026-09-10, found by `projection_scan.py`): `dim_eq` is `rfl` on
+    `dim := 16`, set here; the dimension is cited (`cascade_algebra_dim`) as the sentence above
+    says. A WITNESS, accurate as written. -/
 noncomputable def CascadeData.partition_function (_ : CascadeData) : PartitionFunctionData where
   dim := 16
   dim_eq := rfl

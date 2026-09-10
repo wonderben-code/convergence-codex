@@ -187,7 +187,11 @@ end BakryEmeryCriterion
 /-- The cascade's quadratic potential: V(D) = Tr(D²/Λ²) = ‖D‖²/Λ² on Herm₄(ℂ).
     This is a QuadraticPotential on ℝ¹⁶ with curvature a = 1/Λ².
     - dim = 16 (Herm₄(ℂ) ≅ ℝ¹⁶, verified via cascade_algebra_dim)
-    - curvature = 1/Λ² (from the spectral action) -/
+    - curvature = 1/Λ² (from the spectral action)
+    ⚠ STIPULATED, NOT DERIVED (2026-09-10, found by `projection_scan.py`): `dim := 16` is set here
+    and `dim_pos` is `by norm_num` on it, so the positivity is arithmetic on a stipulated
+    dimension. The dimension itself is cited (`cascade_algebra_dim`); this is a WITNESS and the
+    docstring is accurate. -/
 noncomputable def cascade_quadratic_potential (C : CascadeData) : QuadraticPotential where
   dim := 16
   dim_pos := by norm_num
@@ -290,7 +294,10 @@ theorem gap_from_cp : P.gap = 1 / P.poincare_constant := by
 end PoincareData
 
 /-- Construct PoincareData from a positive spectral gap.
-    C_P = 1/K is automatically positive when K > 0. -/
+    C_P = 1/K is automatically positive when K > 0.
+    ⚠ STIPULATED, NOT DERIVED (2026-09-10, found by `projection_scan.py`): `hCP` is `rfl` because
+    `poincare_constant` is DEFINED as `1/K` in this same definition. That is what the sentence
+    above says, so this is a definition and not a theorem about Poincaré constants. -/
 noncomputable def poincare_from_gap (K : ℝ) (hK : 0 < K) : PoincareData where
   gap := K
   gap_pos := hK
@@ -356,7 +363,11 @@ variable (L : LogSobolevData)
 
 /-- LSI implies Poincaré: Var_μ(f) ≤ (1/α) · E_μ[|∇f|²].
     The Poincaré constant from LSI is C_P = 1/α.
-    For Gaussian: α = K, so C_P = 1/K (same as from direct Poincaré). -/
+    For Gaussian: α = K, so C_P = 1/K (same as from direct Poincaré).
+    ⚠ STIPULATED, NOT DERIVED (2026-09-10, found by `projection_scan.py`): `hCP` is `rfl` on
+    fields this definition just set, so **`LSI implies Poincaré` is not proved here** — no
+    variance, no Dirichlet form and no function appears. What is built is the data record with the
+    constant renamed. The theorem named above is cited, not formalised. -/
 noncomputable def to_poincare : PoincareData where
   gap := L.lsi_constant
   gap_pos := L.lsi_pos
@@ -415,7 +426,12 @@ end LogSobolevData
 
 /-- Construct LogSobolevData for a Gaussian measure with gap K.
     For Gaussian: the LSI constant α equals the spectral gap K.
-    This is the Bakry-Émery theorem for log-concave measures. -/
+    This is the Bakry-Émery theorem for log-concave measures.
+    ⚠ STIPULATED, NOT DERIVED (2026-09-10, found by `projection_scan.py`): `lsi_eq_gap` is `rfl`
+    because `lsi_constant` and `spectral_gap` are both set to `K` here. So **the Bakry-Émery
+    theorem is not proved in this definition**; it is the reason for choosing the value, and the
+    choice is what is recorded. No measure, no log-Sobolev inequality and no
+    log-concavity appear. -/
 def log_sobolev_from_gap (K : ℝ) (hK : 0 < K) : LogSobolevData where
   lsi_constant := K
   lsi_pos := hK

@@ -97,7 +97,12 @@ structure OSAxiomsVerified where
     - OS5: Gaussian domination from bounded Boltzmann weight
 
     Uses genuine Mathlib lemmas: exp_add, exp_pos, exp_le_one_iff,
-    exp_lt_one_iff, exp_le_exp, exp_injective, sq_nonneg, sq_nonneg. -/
+    exp_lt_one_iff, exp_le_exp, exp_injective, sq_nonneg, sq_nonneg.
+    ⚠ STIPULATED, NOT DERIVED (2026-09-10, found by `projection_scan.py`): `os1_dim_eq` is `rfl`
+    on `os1_euclidean_dim` set here, and `os1_rotation_eq`, `os1_translations` and
+    `os3_symmetry_eq` are `norm_num` and `decide` on stipulated values. The `genuine Mathlib
+    lemmas` sentence above is accurate about the OS2/OS4/OS5 fields and **not** about these four,
+    which are the dimension and symmetry counts recorded rather than computed. -/
 noncomputable def CascadeData.os_axioms_verified (C : CascadeData) : OSAxiomsVerified where
   -- OS1: Euclidean covariance
   os1_euclidean_dim := 4
