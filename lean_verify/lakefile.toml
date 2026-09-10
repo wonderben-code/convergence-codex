@@ -455,4 +455,5 @@ roots = [
   "RicciOrder",
   "ScalarOrder",
   "OrderBridge",
+  "FieldBlockDiagonal",
 ]
