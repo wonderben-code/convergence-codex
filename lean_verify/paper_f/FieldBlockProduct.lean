@@ -39,6 +39,12 @@ the range is.
 * **No `Subgroup` of `GeneralLinearGroup`.** `FieldSymmetryInclusion.linSymGL` takes that route for
   the LINEAR symmetries and it is not taken here; the target monoid is a product of `unitary`
   submonoids, and every factor is a group, but no `Subgroup` instance is built.
+  [⚠ **ONE IS NOW BUILT AND THE SENTENCE IS KEPT AS WRITTEN** (`ERRATUM 94`, 10 SEP 2026):
+  `FieldSymmetrySubgroup.symmetrySubgroup`, a `Subgroup (Matrix.unitaryGroup V ℝ)` rather than of
+  `GeneralLinearGroup`, and `FieldSymmetrySubgroup.symmetrySubgroup_mulEquiv_prod` carries this
+  file's product decomposition to it — so both sides of the isomorphism are groups. The clause
+  about `linSymGL`'s route stands: it is still not taken, and it is the route for the LINEAR
+  symmetries rather than an alternative for these.]
 * **The empty fibres are not excluded and do not need to be.** Every `c : Lev d` is attained, so
   every fibre is nonempty — that is what indexing by the range buys, and it is why the product has
   one factor per distinct eigenvalue rather than one per real number.

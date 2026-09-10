@@ -58,6 +58,14 @@ of the bijection.
 ⚠ **SUPERSEDED THE NEXT UNIT, kept as written** (`ERRATUM 94`): `FieldSymmetryIso.conjSqEquiv` is
 a `MulEquiv` from `Matrix.unitaryGroup V ℝ` to the symmetries as a `Submonoid`. **Still no
 `Subgroup` instance**, and still no cardinality.
+[⚠ **THE `Subgroup` INSTANCE NOW EXISTS AND THE SENTENCE IS KEPT AS WRITTEN** (`ERRATUM 94`,
+10 SEP 2026): `FieldSymmetrySubgroup.symmetrySubgroup` is a `Subgroup (Matrix.unitaryGroup V ℝ)`,
+for the ISOMETRIC symmetries — the orthogonal group being where they already live, so the ambient
+supplies the inverse and `inv_coe_eq_transpose` computes it as the transpose. **The cardinality
+clause stands unchanged and always will**: a factor with a block of size two is infinite. Note the
+distinction this file's own subject makes: these are the LINEAR symmetries, and
+`FieldSymmetryInclusion.linSymGL` is their `Subgroup`, of `Matrix.GeneralLinearGroup V ℝ` — the
+bigger ambient, needed precisely because a linear symmetry need not be orthogonal.]
 
 **NOTHING ABOUT NON-LINEAR MAPS.** The full automorphism group of the measure is still untouched.
 

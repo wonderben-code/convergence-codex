@@ -40,6 +40,16 @@ available: the route `FieldSymmetryGroup`'s own fence named — *carrying the sy
 `Matrix.GeneralLinearGroup`* — was taken for the sibling group on 6 September. **Doing the same for
 `symmetryMatrices`, and upgrading `conjEigEquiv` to a `Subgroup` isomorphism, is not done here and
 no cost is claimed for it** (`ERRATUM 246`).
+[⚠ **BOTH ARE NOW DONE, AND NOT BY THE ROUTE THIS PARAGRAPH NAMED, and the sentence is kept as
+written** (`ERRATUM 94`, 10 SEP 2026). `FieldSymmetrySubgroup.symmetrySubgroup` bundles
+`symmetryMatrices` as a `Subgroup` — of **`Matrix.unitaryGroup V ℝ`**, not of
+`Matrix.GeneralLinearGroup`, because every symmetry here is orthogonal and the orthogonal group is
+the ambient it already sits in; `linSymGL` needs the bigger ambient precisely because a LINEAR
+symmetry need not be orthogonal. `FieldSymmetrySubgroup.symmetrySubgroup_mulEquiv_prod` is the
+`Subgroup` isomorphism, onto the product of the orthogonal groups of the eigenspaces via
+`FieldBlockProduct`, so it upgrades `conjEigEquiv`'s target as well as its source. **The paragraph
+was right that a group bundling was available and right about which fence it answered; it was wrong
+only about which ambient group would be the one used.**]
 
 **How this group sits inside `FieldSymmetryIso`'s, exactly.** `FieldSymmetryInclusion.
 symmetryMatrices_eq` says `symmetryMatrices G m = {L | L ∈ linSym G m ∧ Lᵀ * L = 1}` — **the
