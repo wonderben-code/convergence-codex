@@ -456,4 +456,5 @@ roots = [
   "ScalarOrder",
   "OrderBridge",
   "FieldBlockDiagonal",
+  "FieldEigenMultiplicity",
 ]

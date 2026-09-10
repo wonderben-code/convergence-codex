@@ -63,6 +63,14 @@ still not described.**
 > `FieldInvarianceCommutes.mem_symmetryMatrices_iff_gaussianField_map` makes that a description of
 > the symmetries of the measure and not of a subset of them. What is still missing is the
 > `∏ᵢ O(dᵢ)` packaging, not a characterisation.
+> ⚠ **AND THAT LAST SENTENCE IS STILL EXACTLY RIGHT, 2026-09-10** (`ERRATUM 94`).
+> `FieldBlockDiagonal.mem_symmetryMatrices_iff_blockDiagonal` says an orthogonal matrix is a
+> symmetry **iff** its conjugate by the propagator's eigenvector matrix is block diagonal, and
+> `FieldEigenMultiplicity.finrank_eigenspace_eq_card_fibre` identifies each block's size with the
+> eigenvalue's multiplicity. **So the `∏ᵢ O(dᵢ)` DESCRIPTION exists with the `dᵢ` named** — and the
+> **PACKAGING**, which is the word this sentence used, still does not: there is no
+> `symmetryMatrices ≃* ∏ᵢ O(dᵢ)`, because the distinct eigenvalues are not packaged as an index
+> type and no group homomorphism is built. The sentence distinguished the two and was right to.
 
 **No new symmetry.** Every map here is one `FieldEigenReflection` already supplied; what is new is
 that they are pairwise different.
