@@ -75,7 +75,11 @@ side and not the other: `KoszulOrder` states the `C^k` bundle instance this para
 missing (`contMDiffVectorBundle_succ`, from Mathlib's own lemma) and carries the Koszul scalar
 and the Levi-Civita pairings to order `k`; **this file's Gram-inverse leg is still stated at
 `C¹` alone**, and so is `LeviCivitaRegular`'s endomorphism-bundle leg, which is what the
-sentence's *higher-order regularity of the connection* needs.
+sentence's *higher-order regularity of the connection* needs. ⚠ And by entry 78 both are at
+order `k` — `LeviCivitaOrder.contMDiffAt_of_contMDiffAt_inner` and
+`LeviCivitaOrder.contMDiffAt_hom_of_localFrame` — and with them the connection
+(`contMDiffCovariantDerivativeOn_leviCivita`), so the sentence's *higher-order regularity of the
+Levi-Civita connection* is proved and only the curvature's own is not.
 
 **NO ORTHONORMAL FRAME.** Nothing here orthonormalises; the frame is the chart's, its Gram matrix
 is whatever the metric makes it, and the inverse is taken in the operator ring.

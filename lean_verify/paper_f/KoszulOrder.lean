@@ -54,7 +54,11 @@ at `x`.
 `IsLocalFrameOn.contMDiffAt_of_coeff` — are stated at every order) and then to a `C^k` section of
 `Hom(TM, TM)` (`LeviCivitaRegular`'s leg) is not done at order `k`, so **the Levi-Civita
 connection of a `C^(k+1)` metric is not shown `C^k`**, and `CurvatureTensor`'s `IsLocallyC1` has
-no `C^k` analogue. **Not attempted, no cost claimed** (`ERRATUM 246`).
+no `C^k` analogue. **Not attempted, no cost claimed** (`ERRATUM 246`). ⚠ By entry 78, the next
+unit, both legs are done at order `k` and the connection is: `LeviCivitaOrder`'s
+`contMDiffAt_of_contMDiffAt_inner`, `contMDiffAt_hom_of_localFrame` and
+`contMDiffCovariantDerivativeOn_leviCivita`. **The `IsLocallyC1` half of the sentence stands**:
+there is still no order-parametrised class and no curvature at order `k`.
 
 **NOTHING ABOUT THE CURVATURE'S REGULARITY.** `riemann` is defined through `IsLocallyC1`; that it
 is `C^(k−1)` as a section of a bundle for a `C^(k+1)` metric needs the second half above and a
