@@ -450,4 +450,5 @@ roots = [
   "FlatCurvature",
   "KoszulOrder",
   "LeviCivitaOrder",
+  "TraceFrame",
 ]
