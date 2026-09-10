@@ -31,6 +31,24 @@ side the transpose of a block-diagonal orthogonal matrix is one. **Carrying both
 `Matrix.orthogonalGroup` was tried and is recorded as `ERRATUM 484` — that abbreviation sits behind
 a `local instance` whose lemmas Mathlib's own `TODO` questions, which `FieldSymmetryIso` had
 already written down.**
+⚠ **AND THE `Subgroup` ROUTE DOES EXIST IN THIS ESTATE, WHICH THIS PARAGRAPH SHOULD HAVE SAID**
+(added 2026-09-10 by `RE-SWEEP #46`, `ERRATUM 94`): `FieldSymmetryInclusion.linSymGL` bundles the
+**linear** symmetries as a `Subgroup` of `Matrix.GeneralLinearGroup V ℝ`, **taking no hypothesis on
+the mass**, because the ambient group supplies the inverse. So the sentence above is right that
+`Matrix V V ℝ` is only a monoid and wrong to leave the impression that no group bundling was
+available: the route `FieldSymmetryGroup`'s own fence named — *carrying the symmetries into
+`Matrix.GeneralLinearGroup`* — was taken for the sibling group on 6 September. **Doing the same for
+`symmetryMatrices`, and upgrading `conjEigEquiv` to a `Subgroup` isomorphism, is not done here and
+no cost is claimed for it** (`ERRATUM 246`).
+
+**How this group sits inside `FieldSymmetryIso`'s, exactly.** `FieldSymmetryInclusion.
+symmetryMatrices_eq` says `symmetryMatrices G m = {L | L ∈ linSym G m ∧ Lᵀ * L = 1}` — **the
+isometric symmetries are precisely the orthogonal elements of the linear ones**, with no mass
+hypothesis at all — and `FieldSymmetryProper.symmetryMatrices_eq_linSym_iff` makes the inclusion a
+dichotomy: they coincide **iff** the propagator has a single eigenvalue, which
+`FieldSymmetryEdgeless` reads off as **iff the graph has no edges**. So the two groups of the
+*What is NOT here* section below are related by a theorem and not merely distinguished by a
+sentence.
 
 ## What is proved
 
