@@ -70,7 +70,12 @@ from `C^k` pairings, a `C^k` frame and a `C^k` metric — `contDiffAt_ringInvers
 `IsLocalFrameOn.contMDiffAt_of_coeff` is stated at every order — and it is not stated here,
 because the tangent bundle of the pinned Mathlib is registered as a `C^k` bundle only for
 `k = 1, ∞, ω` and, in this estate, locally for `k = 2`; **the higher-order regularity of the
-Levi-Civita connection of a `C^{k+1}` metric is untouched**.
+Levi-Civita connection of a `C^{k+1}` metric is untouched**. ⚠ By entry 77 it is touched on one
+side and not the other: `KoszulOrder` states the `C^k` bundle instance this paragraph says is
+missing (`contMDiffVectorBundle_succ`, from Mathlib's own lemma) and carries the Koszul scalar
+and the Levi-Civita pairings to order `k`; **this file's Gram-inverse leg is still stated at
+`C¹` alone**, and so is `LeviCivitaRegular`'s endomorphism-bundle leg, which is what the
+sentence's *higher-order regularity of the connection* needs.
 
 **NO ORTHONORMAL FRAME.** Nothing here orthonormalises; the frame is the chart's, its Gram matrix
 is whatever the metric makes it, and the inverse is taken in the operator ring.

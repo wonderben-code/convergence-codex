@@ -448,4 +448,5 @@ roots = [
   "CurvatureBianchi",
   "CurvatureSkew",
   "FlatCurvature",
+  "KoszulOrder",
 ]

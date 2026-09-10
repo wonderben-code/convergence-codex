@@ -63,7 +63,12 @@ Levi-Civita connection.
 
 **ONLY `C²`.** The metric is asked to be `C²` and the sections `C²`, which is what one derivative
 of the connection costs; nothing is said at higher order, and `contMDiffAt_inner` is stated for
-`n ≤ 2` for that reason.
+`n ≤ 2` for that reason. ⚠ By entry 77, on 10 September 2026, this file's own statements are
+restated at every finite order in `KoszulOrder`: for `k : ℕ`, a `C^(k+2)` manifold and a
+`C^(k+1)` metric, the Koszul scalar is `C^k` (`KoszulOrder.contMDiffAt_koszulAux`), of which the
+`k = 1` case is `contMDiffAt_koszulAux` here. The proofs are the same proofs with the order as a
+variable; what this file's sentence is right about is that **nothing here** is said at higher
+order.
 
 **THE HYPOTHESES, READ OFF THE BINDERS** (`ERRATUM 455`): `[NormedAddCommGroup E]`,
 `[NormedSpace ℝ E]`, `[CompleteSpace E]`, a `ChartedSpace H M` and a model `I`, and
