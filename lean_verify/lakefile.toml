@@ -451,4 +451,5 @@ roots = [
   "KoszulOrder",
   "LeviCivitaOrder",
   "TraceFrame",
+  "CurvatureOrder",
 ]
