@@ -48,7 +48,10 @@ What is proved is the regularity of the curvature **expression on three sections
 `TraceFrame.contMDiffAt_trace` would consume to give the Ricci and scalar curvature as `C^k`
 functions of the point — is one step further and is not taken here. The two are related by
 `CurvatureTensor.curvEndo_apply`, which this file does not use. **Not attempted, no cost claimed**
-(`ERRATUM 246`).
+(`ERRATUM 246`). ⚠ By entry 81, later the same day, that step is taken, by exactly the bridge
+named here: `RicciOrder.contMDiffAt_ricciOp_apply` is `curvEndo` as a `C^k` field and
+`RicciOrder.contMDiffAt_ricci` is the Ricci curvature as a `C^k` function. **The scalar curvature
+is still not a function of the point**, for the reason `RicciOrder`'s own fence gives.
 
 **NOTHING ABOUT `IsLocallyC1` OR ITS ORDER-PARAMETRISED FORM.** `CurvatureTensor` is still written
 against the class that fixes one derivative, and this file neither replaces it nor generalises it;

@@ -37,7 +37,11 @@ endomorphism, and no curvature field is available at any order: `CurvatureTensor
 built under the class `IsLocallyC1`, which fixes one derivative, and no smoothness statement
 about it exists (the watchlist item filed by entry 78). **So neither `RicciScalar.ricci` nor
 `RicciScalar.scalar` is shown to be a differentiable function of the point here**, and the
-Einstein–Hilbert integrand is exactly as absent as it was. **Not attempted, no cost claimed**
+Einstein–Hilbert integrand is exactly as absent as it was. ⚠ By entry 81 the curvature field
+does exist (`RicciOrder.contMDiffAt_ricciOp_apply`) and `RicciScalar.ricci` is a `C^k` function
+(`RicciOrder.contMDiffAt_ricci`), which is this file's `contMDiffAt_trace` applied to it — the
+first consumer this tool has. **`RicciScalar.scalar` is still not a function of the point and the
+Einstein–Hilbert integrand is still absent.** **Not attempted, no cost claimed**
 (`ERRATUM 246`).
 
 **THE HYPOTHESIS IS ON THE VALUES, NOT ON THE FIELD.** `contMDiffAt_trace` asks for the frame

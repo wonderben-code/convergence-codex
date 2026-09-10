@@ -88,7 +88,10 @@ regularity of `riemann` as the point moves, is not stated. ⚠ By entry 78 the f
 `LeviCivitaOrder.contMDiffCovariantDerivativeOn_leviCivita` is Mathlib's
 `ContMDiffCovariantDerivativeOn E k` for the Levi-Civita connection of a `C^(k+1)` metric on a
 `C^(k+2)` manifold, of which this file's `isLocallyC1_leviCivita` is the case `k = 1`. **The
-regularity of `riemann` is exactly as unstated as the sentence says.**
+regularity of `riemann` is exactly as unstated as the sentence says.** ⚠ By entry 81 it is stated:
+`RicciOrder.contMDiffAt_riemann` is `y ↦ R(X y, W y)(Z y)` as a `C^k` section for `C^(k+2)` fields
+and a `C^(k+2)` metric, and `RicciOrder.contMDiffAt_ricci'` is `ricci` as a `C^k` function.
+**`scalar` is still not a function of the point.**
 
 **`W5`'S RUNG 4 IS WHERE IT WAS.** The heat-kernel expansion of `Tr f(D/Λ)` and the identification
 of `a₂` as a curvature integral are untouched: the curvature that `a₂` integrates now exists, and
