@@ -71,6 +71,18 @@ the linear symmetries exactly, in finite volume, is a shadow known exactly.
 **seven**, each because it uses the invertibility of `C^{1/2}` or the symmetry of `green`. It is
 **not** taken by `eq_zero_of_quadForm_zero`, `mvCLM`, `mvCLM_apply`, `adjoint_mvCLM` or
 `dotProduct_conj`, which are linear algebra with no graph in them.
+[⚠ **THIS PARAGRAPH IS SHORT BY FOUR DECLARATIONS AND ITS COUNT IS WRONG BY TWO, and both
+lists are kept as written** (`ERRATUM 94`, `ERRATUM 488`, 10 SEP 2026, found by `binder_scan.py`
+— the first defect that tool caught). The two lists above partition **twelve** declarations, seven
+taking `m ≠ 0` and five not. **This file has sixteen.** `invConj`, `invConj_transpose`,
+`invConj_orthogonal` and `conjSq_invConj` were added after the paragraph was written and never
+reached it, and **two of the four take `m ≠ 0`** — `invConj_orthogonal`, because orthogonality of
+the conjugate needs `green` invertible, and `conjSq_invConj`, because it is the inverse leg of the
+same conjugation. **So `m ≠ 0` is written on nine of the sixteen, not seven.** The two that do not
+take it, `invConj` and `invConj_transpose`, belong on the second list: they are the inverse
+conjugation and its transpose, and they hold at every mass. The count is
+`binder_scan.py FieldLinearClassified.lean`, whose declaration universe is
+`check_ledger.count_decls`.]
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 

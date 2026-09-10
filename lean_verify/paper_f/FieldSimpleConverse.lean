@@ -117,6 +117,16 @@ as an inverse and `green_mul_massive` is what makes the two operators trade plac
 `lapMatrix_isHermitian` and `finrank_lapMatrix_le_one_iff_injective` take **no hypothesis
 whatever**, and `FieldLaplacianSimple.ker_massive_eq`, the step that carries the result from
 `massive` to the Laplacian, takes none either.
+[⚠ **THE DENOMINATOR IS WRONG AND THIS PARAGRAPH REFUTES IT ITSELF: §§4–5 HOLD EIGHT
+DECLARATIONS, NOT NINE. The sentence is kept as written** (`ERRATUM 94`, `ERRATUM 488`,
+10 SEP 2026, found by `binder_scan.py`). The six named are right, the count of them is right, and
+the two named just above as taking no hypothesis whatever — `lapMatrix_isHermitian` and
+`finrank_lapMatrix_le_one_iff_injective` — are the rest of §§4–5. **Six plus two is eight**, which
+is what the sections contain; there is no ninth declaration for the sixth to be one of. **So it is
+six of the eight.** The file's sixteen declarations and §§1–3's description are unaffected. This
+is worth a note rather than a silent fix because the paragraph carried its own refutation in the
+next sentence and nine units of adversarial review read past it — the arithmetic between two
+prose sentences is exactly what a reader does not do and a tool does.]
 
 **No wall moves.** `W1`'s open part is `OS0` and `OS4`, and `OS1` in its continuum sense.
 
