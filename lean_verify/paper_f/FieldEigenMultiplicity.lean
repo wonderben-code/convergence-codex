@@ -58,6 +58,15 @@ for membership and this file gives the block sizes; together they say the symmet
 `∏ᵢ O(dᵢ)` with the `dᵢ` identified, but **no `symmetryMatrices ≃* ∏ᵢ O(dᵢ)` is constructed** —
 that still needs the distinct eigenvalues as a quotient index type and two homomorphisms, and none
 of the three is written. **Not attempted, no cost claimed** (`ERRATUM 246`).
+[⚠ **NOW CONSTRUCTED, and the sentence is kept as written** (`ERRATUM 94`, 10 SEP 2026):
+`FieldBlockProduct.symmetry_mulEquiv_prod`. All three pieces this paragraph named exist — the index
+type is `Set.range (eigMu G m hm)` rather than a quotient, which serves the same purpose and is
+finite because `V` is; the assembly is `Matrix.blockDiagonal'` through
+`Equiv.sigmaSubtypeFiberEquiv`; and the homomorphism is a `MulEquiv` in both directions.
+**THIS FILE'S OWN THEOREM IS WHAT MAKES THE FACTORS MEAN ANYTHING**:
+`FieldBlockProduct.card_fib_eq_finrank_eigenspace` is `finrank_eigenspace_eq_card_fibre` read at a
+level of the product, so the factor at `μ` is the orthogonal group of a space of dimension `μ`'s
+multiplicity. The `NO NUMBER` paragraph below stands unchanged.]
 
 **NO NUMBER, AND THERE IS NOT GOING TO BE ONE.** `∏ᵢ O(dᵢ)` is infinite as soon as some `dᵢ ≥ 2`,
 and `FieldTorusRotation.oneFreq` says the torus is degenerate in every dimension. So

@@ -458,4 +458,5 @@ roots = [
   "FieldBlockDiagonal",
   "FieldEigenMultiplicity",
   "FieldBlockGroup",
+  "FieldBlockProduct",
 ]

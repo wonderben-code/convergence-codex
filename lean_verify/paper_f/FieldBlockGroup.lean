@@ -78,6 +78,16 @@ Matrix.orthogonalGroup (fibre μ) ℝ`. Identifying the two needs the distinct e
 quotient index type and a `Matrix.blockDiagonal` over it, and neither is written. **What is proved
 is the isomorphism onto the block-diagonal group; that this group *is* the product is the reading,
 and the reading is not formalised.** **Not attempted, no cost claimed** (`ERRATUM 246`).
+[⚠ **THE READING IS NOW FORMALISED AND THIS PARAGRAPH IS KEPT AS WRITTEN** (`ERRATUM 94`,
+10 SEP 2026): `FieldBlockProduct.blockProdEquiv` is `blockDiagSubmonoid d ≃* ∀ c : Lev d,
+Matrix.unitaryGroup (Fib d c) ℝ`, the dependent product this paragraph describes, for an arbitrary
+level function. The two things it named as missing are both there: the index type is
+`Set.range d` — the levels actually ATTAINED, which is what makes every factor non-trivial
+(`FieldBlockProduct.fib_nonempty`) — and the `Matrix.blockDiagonal` over it is
+`Matrix.blockDiagonal'` reached through `Equiv.sigmaSubtypeFiberEquiv`. The target is
+`Matrix.unitaryGroup` and not `Matrix.orthogonalGroup`, so `ERRATUM 484`'s trap is still avoided
+and `FieldBlockProduct.mem_unitaryGroup_iff_transpose` proves the two agree over `ℝ`. The
+`NO NUMBER` paragraph below stands unchanged.]
 
 **NO NUMBER, AND THERE IS NOT GOING TO BE ONE.** A block-diagonal orthogonal group is infinite as
 soon as one block has size two or more, and `FieldTorusRotation.oneFreq` says the torus is

@@ -70,6 +70,16 @@ none of the three is here. **So the *exact count of the symmetries on the torus*
 closed** — `FieldTorusRotation.infinite_symmetryMatrices_torus` still gives `Set.Infinite` and
 nothing finer, and an infinite group is what `∏ᵢ O(dᵢ)` is whenever some `dᵢ ≥ 2`, which
 `FieldTorusRotation.oneFreq` says is always. **Not attempted, no cost claimed** (`ERRATUM 246`).
+[⚠ **THE ISOMORPHISM NOW EXISTS AND THE SENTENCE IS KEPT AS WRITTEN** (`ERRATUM 94`, 10 SEP 2026):
+`FieldBlockGroup.conjEigEquiv` built it onto the block-diagonal monoid and
+`FieldBlockProduct.symmetry_mulEquiv_prod` composes that with
+`FieldBlockProduct.blockProdEquiv` to give `symmetrySubmonoid G m ≃* ∀ c : Lev (eigMu G m hm),
+Matrix.unitaryGroup (Fib (eigMu G m hm) c) ℝ` — the product over the distinct eigenvalues, with all
+three of the missing pieces built: the index type is `Set.range (eigMu G m hm)`, the assembly is
+`Matrix.blockDiagonal'` through `Equiv.sigmaSubtypeFiberEquiv`, and the homomorphism is a
+`MulEquiv`. **The clause about the COUNT stands unchanged**: the group is infinite whenever a block
+has size two, so `Set.Infinite` is still the finest cardinality statement and this sentence was
+right about that.]
 
 **NO IDENTIFICATION OF THE BLOCK SIZES WITH THE MULTIPLICITIES.** The blocks here are indexed by
 the fibres of `Matrix.IsHermitian.eigenvalues`, and that the fibre of `μ` has size equal to
@@ -77,6 +87,14 @@ the fibres of `Matrix.IsHermitian.eigenvalues`, and that the fibre of `μ` has s
 join this description to `TorusRealMultiplicity.finrank_eigenspace_massive_real` and
 `BoxEigenspaceDimension`'s fibre counts, and until it exists the phrase `∏ᵢ O(dᵢ)` is a reading of
 these theorems rather than one of them.
+[⚠ **BOTH HALVES OF THIS PARAGRAPH ARE NOW FALSE AND IT IS KEPT AS WRITTEN** (`ERRATUM 94`,
+10 SEP 2026). The first half went false three entries later and was never marked until now:
+`FieldEigenMultiplicity.finrank_eigenspace_eq_card_fibre` proves the fibre of `μ` has size
+`finrank` of the `μ`-eigenspace, and `ker_massive_sub_eq_ker_green_sub` joins it to
+`TorusRealMultiplicity`'s counts by showing the two eigenspaces are the SAME submodule. The second
+half went false today: `FieldBlockProduct.blockProdEquiv` makes `∏ᵢ O(dᵢ)` one of these theorems
+rather than a reading of them, and `FieldBlockProduct.card_fib_eq_finrank_eigenspace` is the
+identification this paragraph asked for, stated at a factor of that product.]
 
 **NOTHING ABOUT WHICH GRAPHS.** No graph is named anywhere in this file; every statement is at an
 arbitrary finite `SimpleGraph` with a non-zero mass. The degeneracies that make the description
