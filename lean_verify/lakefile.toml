@@ -454,4 +454,5 @@ roots = [
   "CurvatureOrder",
   "RicciOrder",
   "ScalarOrder",
+  "OrderBridge",
 ]
