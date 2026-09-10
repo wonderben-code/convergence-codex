@@ -453,4 +453,5 @@ roots = [
   "TraceFrame",
   "CurvatureOrder",
   "RicciOrder",
+  "ScalarOrder",
 ]

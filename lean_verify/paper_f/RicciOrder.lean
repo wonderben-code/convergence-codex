@@ -60,7 +60,11 @@ by duality from `ricci` — and nothing here says that `y ↦ ricciEndo y (s y)`
 section, because that is the Riesz representation moving with the point and needs the inverse Gram
 operator a second time. `scalar_eq_sum` computes the scalar curvature in an **orthonormal** basis,
 and no smooth orthonormal frame exists (`FrameRegular`). **Not attempted, no cost claimed**
-(`ERRATUM 246`).
+(`ERRATUM 246`). ⚠ By entry 82, later the same day, the scalar curvature IS a `C^k` function
+(`ScalarOrder.contMDiffAt_scalar`) — and the sentence above is right about why it was blocked and
+wrong about what was needed: `ScalarOrder.scalar_eq_sum_inverse_gram` states the trace so that
+`ricciEndo` does not appear in it, so the Riesz representation is never differentiated. **There is
+still no Einstein–Hilbert integral**, only its integrand: the estate has no volume measure.
 
 **NOTHING ABOUT THE RICCI TENSOR AS A SECTION OF A TENSOR BUNDLE.** What is proved is the
 regularity of `y ↦ Ric(W y, Z y)` for **fields** `W, Z` — the same shape as every other

@@ -40,8 +40,10 @@ about it exists (the watchlist item filed by entry 78). **So neither `RicciScala
 Einstein–Hilbert integrand is exactly as absent as it was. ⚠ By entry 81 the curvature field
 does exist (`RicciOrder.contMDiffAt_ricciOp_apply`) and `RicciScalar.ricci` is a `C^k` function
 (`RicciOrder.contMDiffAt_ricci`), which is this file's `contMDiffAt_trace` applied to it — the
-first consumer this tool has. **`RicciScalar.scalar` is still not a function of the point and the
-Einstein–Hilbert integrand is still absent.** **Not attempted, no cost claimed**
+first consumer this tool has. ⚠ And by entry 82 `RicciScalar.scalar` is one too
+(`ScalarOrder.contMDiffAt_scalar`), through this file's `trace_eq_sum_coeff` rather than
+`contMDiffAt_trace`, so **the Einstein–Hilbert INTEGRAND is present**; the integral is not, the
+estate having no volume measure. **Not attempted, no cost claimed**
 (`ERRATUM 246`).
 
 **THE HYPOTHESIS IS ON THE VALUES, NOT ON THE FIELD.** `contMDiffAt_trace` asks for the frame
