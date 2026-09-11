@@ -15,7 +15,12 @@ connection of a `C^(k+2)` metric on a `C^(k+3)` manifold, the curvature expressi
 The reason this costs one file and not a subject is that `CurvatureTensorial.curvAux` applies the
 connection **only to plain sections of the tangent bundle** — `∇_X(∇_Y Z)` is the connection
 applied to the section `∇_Y Z`, not to a `Hom`-valued object — so the induced connection on
-`Hom(TM, TM)`, which the pinned Mathlib does not have, is never needed. Each of the three terms is
+`Hom(TM, TM)`, which the pinned Mathlib does not have, is never needed. ⚠ Still true of the pinned
+Mathlib, and no longer of this estate: `HomCovariant.homCovariantDerivative` (11 September, entry
+107) is that induced connection, built for an arbitrary covariant derivative on the tangent bundle
+with no metric and no torsion hypothesis. **Nothing in this file changes** — it still never needs
+it — and **no regularity of the induced connection is proved there**, which is what a route through
+it would require. Each of the three terms is
 `LeviCivitaOrder.contMDiffAt_leviCivita_apply` applied twice at shifted orders, and the third also
 uses `KoszulOrder.contMDiffAt_mlieBracket`. Two derivatives cost two orders of the data, which is
 why the metric and the fields are asked for at `C^(k+2)` and the manifold at `C^(k+3)`.

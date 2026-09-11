@@ -467,4 +467,5 @@ roots = [
   "CovariantOrderClass",
   "CovariantOrderMono",
   "CovariantJet",
+  "HomCovariant",
 ]

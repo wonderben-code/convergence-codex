@@ -61,7 +61,12 @@ kept as written (`ERRATUM 94`).
 
 **NO SECOND BIANCHI IDENTITY** — the differential one,
 `(∇_X R)(Y, Z) + (∇_Y R)(Z, X) + (∇_Z R)(X, Y) = 0` — which needs the covariant derivative of the
-curvature, an object not defined here or in the pinned Mathlib.
+curvature, an object not defined here or in the pinned Mathlib. ⚠ Still undefined in the pinned
+Mathlib, and the **tool** it needs now exists in this estate:
+`HomCovariant.homCovariantDerivative` (11 September, entry 107) is the induced connection on
+`Hom(TM, TM)`, so `∇_X R` can be written down as `homCovFun` applied to `y ↦ curvEndo cov y (Y y)
+(Z y)`. **The identity is exactly as unproved as this paragraph says** — no declaration anywhere in
+`paper_f` differentiates `curvEndo` covariantly, and the cyclic sum is not stated.
 
 **ONLY TORSION-FREE CONNECTIONS.** For a connection with torsion the cyclic sum is an expression
 in the torsion and its derivative, and nothing about it is stated.

@@ -68,7 +68,11 @@ complete scalar field, and nothing about the base's own smoothness.
   this rests on is first-order and a second application would need the induced connection on
   `Hom(TM, V)`, which the pinned library does not have — `CurvatureOrder` records the
   `Hom(TM, TM)` case of the same absence, and says there why its route never needs it. **Not
-  attempted, no cost claimed** (`ERRATUM 246`).
+  attempted, no cost claimed** (`ERRATUM 246`). ⚠ **The absence is still the pinned library's and
+  is no longer this estate's**: `HomCovariant.homCovariantDerivative` (entry 107) is the induced
+  connection on `Hom(TM, TM)`, for an arbitrary covariant derivative on the tangent bundle. **The
+  second-order statement is still not stated** — that is what this clause claims and it stands —
+  but the reason given for not attempting it is now only about Mathlib.
 * **NOTHING ABOUT `a₂`, the heat semigroup or a parametrix.** `W5`'s rung 4 is unchanged.
 
 **No wall moves. No published tag moves.**
