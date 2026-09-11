@@ -19,7 +19,10 @@ supplies what triangularisation would have to.** It is the same shape as
 ## The two halves, and one is sharper than the equivalence needs
 
 * **`trace_pow_eq_of_multiset_eq`** — equal eigenvalue multisets give equal trace moments, at
-  **every** `k`, with no hypothesis. A power sum is a function of the multiset.
+  **every** `k`, with no hypothesis on `k`. A power sum is a function of the multiset.
+  (`ERRATUM 495`, 2026-09-11: the clause omitted *on `k`* and so read as a claim about the
+  theorem, which takes three binders — Hermitianity twice, and the multiset equality this bullet
+  names in words. The contrast the sentence is drawing is with the NEXT bullet's range of `k`.)
 * **`multiset_eq_of_trace_pow_eq`** — the converse, from the moments `1 ≤ k ≤ Fintype.card n`
   **only**. `Fintype.card n` of the countably many moments already force the multiset.
 * **`multiset_eq_iff_trace_pow_eq`** — the equivalence, stated over all `k` because that is the

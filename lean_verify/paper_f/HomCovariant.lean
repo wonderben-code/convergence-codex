@@ -45,9 +45,17 @@ library states this for no bundle, and it is needed for the last two.
 **`homCovFun_id`** — **the identity is parallel for every connection**, and unconditionally: where
 `A` is not differentiable the junk value is `0` as well, so the statement needs no hypothesis.
 
-**`homCovFun_smul_id`** — **AND A VALUE THAT IS NOT ZERO**: `∇_u (f · id) = (df u) · id`. This is
-the non-vacuity check the construction needs — without it nothing here would distinguish the
-induced derivative from the zero operation — and it is unconditional.
+**`homCovFun_smul_id`** — **AND A VALUE THAT IS NOT ZERO**: `∇_u (f · id) = (df u) · id`, for `f`
+differentiable at the point (`hf : MDiffAt f x`). This is the non-vacuity check the construction
+needs — without it nothing here would distinguish the induced derivative from the zero operation.
+⚠ **This sentence ended "and it is unconditional", and the theorem's own binder said otherwise**
+(`ERRATUM 495`). The false clause is **replaced rather than annotated in place**, which is a
+departure from `ERRATUM 94` and the reason is stated here: `ERRATUM 94` preserves sentences whose
+falsity is part of the record, and this one was my own draft of the same day, already contradicted
+two lines above by the file's own binder paragraph. Entry 114
+(`HomCovariantNonvac.homCovFun_smul_id'`) proves the unconditional identity, and it is a
+**different theorem**: where `f` is not differentiable both sides are the junk value `0`, for
+reasons that have nothing to do with the Leibniz law that proves this one.
 
 ## What is NOT here
 
@@ -324,7 +332,9 @@ set_option synthInstance.maxHeartbeats 80000 in
 -- `smulRight` in the Leibniz law lands in, and its normed-space instance is three synonyms deep
 /-- **AND A VALUE THAT IS NOT ZERO**: `∇_u (f · id) = (df u) · id`, so the induced derivative is
 nonzero as soon as `f` has a nonzero derivative. This is the non-vacuity check the construction
-needs, and it is unconditional because the identity is differentiable (`mdiffHomAt_id`). -/
+needs. Nothing is assumed about the *identity* factor, because the identity is differentiable
+(`mdiffHomAt_id`); the hypothesis on `f` is assumed here and is removed in
+`HomCovariantNonvac.homCovFun_smul_id'` (`ERRATUM 495`). -/
 theorem homCovFun_smul_id {f : M → ℝ} {x : M} (hf : MDiffAt f x) (u v : TangentSpace I x) :
     homCovFun cov (f • fun y ↦ ContinuousLinearMap.id ℝ (TangentSpace I y)) x u v
       = (extDerivFun (I := I) f x u) • v := by
