@@ -80,7 +80,13 @@ two notions are shown equal only for the constant metric (`isGCompatible_ofInner
 **NO REGULARITY OF `cov`.** `diff` asks `g` to be differentiable once; the connection is built
 from `Dg` and nothing is claimed about its continuity or smoothness
 (`ContMDiffCovariantDerivativeOn` is not proved). **NO CURVATURE**, undefined in this estate and
-in the pinned Mathlib. **No wall moves. No published tag moves.**
+in the pinned Mathlib. ⚠ The estate-scope half of that clause is false, and **cannot have been true
+when this paragraph was last read** (10 September): `AlgebraicCurvature.lean`, an algebraic
+curvature tensor on `Fin n → ℝ`, was first committed on 11 August, a month before this file, and
+`CurvatureTensorial.lean` and `CurvatureTensor.lean` — the curvature of a covariant derivative —
+were first committed the same day as this file. **What is true is the file-local half**: nothing
+here defines a curvature, and `KoszulVectorSpace.cov` is still not connected to any of those
+definitions. `ERRATUM 492`. **No wall moves. No published tag moves.**
 
 **THE HYPOTHESES, READ OFF THE BINDERS** (`ERRATUM 455`): `VarMetric`, `injective_g`, `A`,
 `fderiv_g_apply`, `A_symm`, the `kos` lemmas, `IsGCompatible` and `fderiv_g_XY` take

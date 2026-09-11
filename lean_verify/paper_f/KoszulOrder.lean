@@ -58,11 +58,25 @@ no `C^k` analogue. **Not attempted, no cost claimed** (`ERRATUM 246`). ⚠ By en
 unit, both legs are done at order `k` and the connection is: `LeviCivitaOrder`'s
 `contMDiffAt_of_contMDiffAt_inner`, `contMDiffAt_hom_of_localFrame` and
 `contMDiffCovariantDerivativeOn_leviCivita`. **The `IsLocallyC1` half of the sentence stands**:
-there is still no order-parametrised class and no curvature at order `k`.
+there is still no order-parametrised class and no curvature at order `k`. ⚠ Both clauses of that
+sentence have since failed, on different days, and `ERRATUM 492` is the reading that found them.
+`CovariantOrderClass.IsLocallyCk` (11 September, entry 104) **is** the order-parametrised class,
+and `CovariantOrderMono.isLocallyC1_of_isLocallyCk` (entry 105) turns it into `IsLocallyC1` at
+every order `n ≥ 1`. Curvature at order `k` came earlier: `CurvatureOrder.contMDiffAt_curvAux`
+(10 September, entry 80) and `RicciOrder.contMDiffAt_riemann` (entry 81). **What is still true of
+this paragraph**: neither took this file's second half as its route, and no curvature is yet a
+`C^(k−1)` section of the endomorphism bundle for a `C^(k+1)` metric — `curvEndo` is still built
+under the order-one class.
 
 **NOTHING ABOUT THE CURVATURE'S REGULARITY.** `riemann` is defined through `IsLocallyC1`; that it
 is `C^(k−1)` as a section of a bundle for a `C^(k+1)` metric needs the second half above and a
-regularity statement for `curvEndo`, neither started. `a₂` of `WALLS` §W5 integrates derivatives
+regularity statement for `curvEndo`, neither started. ⚠ Both were started and finished on
+10 September — the second half is `LeviCivitaOrder` (entry 78), the regularity is `CurvatureOrder`
+(entry 80) and `RicciOrder` (entry 81) — but **not the object this sentence names**: what those
+files prove is the regularity of the curvature's VALUES on fields, not of a section of the
+endomorphism bundle, and it costs a `C^(k+2)` metric rather than the `C^(k+1)` priced here. The
+gap between the two is exactly the `UNLOCK_WATCHLIST` item's residues (i) and (ii) (`ERRATUM
+492`). `a₂` of `WALLS` §W5 integrates derivatives
 of the curvature, which is why this file exists and what it does not yet reach.
 
 **ONLY FINITE ORDERS.** `k : ℕ`; the `C^∞` and analytic cases are not stated, because
