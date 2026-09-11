@@ -493,4 +493,5 @@ roots = [
   "CompleteSignlessSpectrum",
   "CompleteSpectrumTwoPoints",
   "MultipartiteSpectrum",
+  "CompleteFieldSymmetry",
 ]
