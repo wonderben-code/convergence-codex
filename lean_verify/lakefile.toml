@@ -482,4 +482,5 @@ roots = [
   "CovariantOrderEndo",
   "CovariantOrderHom",
   "CovariantOrderCovDeriv",
+  "CovariantOrderCovField",
 ]
