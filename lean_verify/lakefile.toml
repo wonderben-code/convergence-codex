@@ -469,4 +469,5 @@ roots = [
   "CovariantJet",
   "HomCovariant",
   "CurvatureEndoOrder",
+  "CurvatureCovDeriv",
 ]
