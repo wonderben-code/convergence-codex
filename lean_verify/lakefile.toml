@@ -474,4 +474,5 @@ roots = [
   "HomCovariantOrder",
   "CurvatureCovOrder",
   "HomCovariantNonvac",
+  "CurvatureCovCyclic",
 ]
