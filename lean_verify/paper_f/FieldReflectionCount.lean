@@ -44,6 +44,16 @@ torus is `MassiveTorusSpectrum.spectrum_real_eq_range_nuR` and for the box is `B
 this file's injection**, and the instantiation disclaimed above — counting the spectrum and pushing
 it through these reflections — **is still not attempted.** Both sentences are true; they are about
 different routes to the same number.
+⚠ **AND THE MATRIX COUNT NOW EXISTS TOO, WHILE THE INSTANTIATION DISCLAIMED HERE IS NOW KNOWN TO BE
+IMPOSSIBLE RATHER THAN UNATTEMPTED, 2026-09-11** (`ERRATUM 94`).
+`FieldSymmetryCount.card_symmetryMatrices_of_injective` counts the symmetry MATRICES at `2 ^ |V|`
+whenever the spectrum is simple, through the product decomposition and not through this file's
+injection either. **But the graphs this paragraph named cannot be counted at all**:
+`FieldSymmetryFinite.finite_iff_lapMatrix` says the symmetries are finite **iff** every eigenspace
+of the Laplacian is at most a line, and the torus and the box are degenerate — so *counting the
+spectrum and pushing it through these reflections* would be counting an infinite set. **The
+paragraph disclaimed an instantiation that is not merely unattempted but unavailable**, which is a
+sharper statement than the one it made and does not repair its argument.
 
 **Distinct eigenvectors at the SAME eigenvalue are not separated.** Two independent eigenvectors in
 one eigenspace are generally not orthogonal, and this argument says nothing about them — which is
@@ -71,6 +81,14 @@ still not described.**
 > **PACKAGING**, which is the word this sentence used, still does not: there is no
 > `symmetryMatrices ≃* ∏ᵢ O(dᵢ)`, because the distinct eigenvalues are not packaged as an index
 > type and no group homomorphism is built. The sentence distinguished the two and was right to.
+> ⚠ **AND THE PACKAGING NOW EXISTS, 2026-09-10/11, so the sentence above has finally gone false and
+> is kept as written** (`ERRATUM 94`). `FieldBlockProduct.symmetry_mulEquiv_prod` is
+> `symmetrySubmonoid G m ≃* ∀ c : Lev (eigMu G m hm), Matrix.unitaryGroup (Fib (eigMu G m hm) c) ℝ`
+> — the two things the note above named as missing are both built: the distinct eigenvalues ARE
+> packaged as an index type, though as `Set.range (eigMu G m hm)` rather than a quotient, and the
+> group homomorphism is a `MulEquiv` in both directions. `FieldSymmetrySubgroup` then makes both
+> sides groups. **The distinction this sentence drew between a DESCRIPTION and a PACKAGING was the
+> right one to draw and it held for five days.**
 
 **No new symmetry.** Every map here is one `FieldEigenReflection` already supplied; what is new is
 that they are pairwise different.
