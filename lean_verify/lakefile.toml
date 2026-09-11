@@ -495,4 +495,5 @@ roots = [
   "MultipartiteSpectrum",
   "CompleteFieldSymmetry",
   "MultipartiteEigenspace",
+  "MultipartiteMultiplicity",
 ]
