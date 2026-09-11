@@ -46,7 +46,9 @@ what antisymmetry is for.
 * **NO REGULARITY.** Nothing makes `y ↦ covRiemann Y Z y u` a section of anything: `HomCovariant`
   proves no smoothness of the induced connection. ⚠ The reason given is false as of entry 112
   (`HomCovariantOrder`); **the statement is still true**, because applying that theorem to the
-  curvature needs it one order up and nothing has done the shift.
+  curvature needs it one order up and nothing has done the shift. ⚠ And the statement is false as
+  of entry 113: `CurvatureCovOrder.contMDiffAt_covRiemann_hom` does the shift. **The paragraph is
+  superseded in both halves**, and is kept as the record of what this file did not reach.
 * **NOTHING AT `k = 0`.** Every theorem about `covRiemann` here carries `hk : k ≠ 0`, inherited
   from `CurvatureCovDeriv`, for the reason that file gives: a `C²` metric gives a `C⁰` curvature
   and there is no derivative to take.

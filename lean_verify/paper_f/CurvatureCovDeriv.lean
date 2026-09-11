@@ -48,7 +48,11 @@ corresponding correction term produces, so the two cancel and the expression is 
   proves no smoothness of the induced connection, so this object exists at a point and is not
   known to vary continuously. ⚠ The clause about `HomCovariant` is false as of entry 112
   (`HomCovariantOrder`), and **the clause about `covRiemann` stands**: the theorem there wants the
-  curvature field one order up, which is an instance shift nothing has done.
+  curvature field one order up, which is an instance shift nothing has done. ⚠ And **the second
+  clause is false too as of entry 113**: `CurvatureCovOrder.contMDiffAt_covRiemann_hom` does that
+  shift and makes `y ↦ (∇_X R)(Y, Z)(y)` a `C^k` section of `Hom(TM, TM)`, for `C^(k+3)` fields on
+  a `C^(k+4)` manifold with a `C^(k+3)` metric. **The whole paragraph is now superseded**, and it
+  is kept because it is what this file proved and did not prove.
 * **NO CONTRACTED FORM.** The divergence of the Einstein tensor, which is what the second Bianchi
   identity is usually wanted for, needs a trace of this object and a metric contraction; neither
   is here, and the modelling decision is the author's.
