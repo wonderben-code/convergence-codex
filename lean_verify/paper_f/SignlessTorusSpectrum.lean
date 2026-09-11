@@ -38,6 +38,15 @@ is *this vector is an eigenvector with this eigenvalue*, and none is *these are 
 **box** is not reached and is not close — it has a boundary and a non-constant degree, so no
 character family at all — and no eigenvalue of `Q` is known at any graph that is not a cycle or a
 torus.
+⚠ **THE BOX IS REACHED ON 2026-09-11, AND THE REASON GIVEN HERE IS WHY IT TOOK SO LONG — kept as
+written** (`ERRATUM 94`). Every clause about characters is true and none of them was the obstacle:
+`SignlessBipartite.signlessLap_eq_conj` conjugates `L` by the diagonal of a `±1` two-colouring and
+lands on `Q`, so on a two-colourable graph the two matrices are **similar** and no character family
+is needed. The box is two-colourable at every side length
+(`SignlessBipartite.boxGraph_colorable_two`), so `signlessLap_mulVec_boxSignlessVec` gives its modes
+and `charpoly_signlessLap_boxGraph` its whole spectrum with multiplicities. **The completeness
+clause stands**: what transfers is exactly what is known about `L`, and `BoxLapSpectrum` does not
+claim to exhaust either.
 -/
 
 namespace SignlessTorusSpectrum

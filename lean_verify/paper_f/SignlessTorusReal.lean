@@ -34,6 +34,13 @@ transfer that lets them is now a theorem about arbitrary real matrices rather th
 eigenvectors here are the real and imaginary parts of characters and **no claim is made that they
 are independent**, so this determines the spectrum as a *set* and not as a list. The **box** is
 still not reached: a boundary and a non-constant degree, so no character family at all.
+⚠ **THE BOX IS REACHED ON 2026-09-11 BY A ROUTE WITH NO CHARACTERS IN IT — kept as written**
+(`ERRATUM 94`): `SignlessBipartite`, through `Q = S L S` on a two-colourable graph. **The
+multiplicity clause stands for the torus** and does not for the box, where
+`SignlessBipartite.eigenvalues_signlessLap_multiset_eq_boxGraph` gives the eigenvalue multiset
+outright — and for the torus at **even** side length
+`eigenvalues_signlessLap_multiset_eq_torusGraph` now does the same, by the same conjugation rather
+than by counting characters.
 -/
 
 namespace SignlessTorusReal

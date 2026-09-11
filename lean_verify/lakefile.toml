@@ -488,4 +488,5 @@ roots = [
   "CovariantOrderCovCyclic",
   "CovariantOrderBianchiSecond",
   "FieldSymmetryHom",
+  "SignlessBipartite",
 ]

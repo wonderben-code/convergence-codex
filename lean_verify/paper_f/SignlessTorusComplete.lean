@@ -32,6 +32,13 @@ A spectrum without completeness is exactly a partial C. `ERRATUM 350`.
 eigenvalue and nothing below counts how often. The **box** is not reached and is not close — a
 boundary and a non-constant degree, so no character family at all. And this is `Q` over `ℂ`; the
 real symmetric matrix has the same eigenvalues, but the transfer is not made and no file claims it.
+⚠ **TWO OF THE THREE CLAUSES MOVE ON 2026-09-11 AND THE THIRD DOES NOT — kept as written** (`ERRATUM
+94`). `SignlessBipartite` proves `Q = S L S` for a `±1` two-colouring, hence equal characteristic
+polynomials and equal eigenvalue **multisets**: that reaches the **box** at every side length and
+supplies **multiplicities** for the torus at even side length, both without a character. **The
+ℂ-to-ℝ clause stands exactly as written**: that file works over `ℝ` from the start and connects
+nothing to this one's complex computation, so the transfer is still not made and still claimed by no
+file.
 -/
 
 namespace SignlessTorusComplete

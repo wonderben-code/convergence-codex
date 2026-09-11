@@ -62,6 +62,11 @@ for it is given, and none is needed for the refutation"* — and it is unchanged
 and the passage between them is not taken.
 
 **The box is not reached.** A boundary and a non-constant degree, so no character family at all.
+⚠ **READ 2026-09-11 AND KEPT AS WRITTEN** (`ERRATUM 94`): the sentence is about **this file**, which
+proves nothing about the box. The estate does reach the box elsewhere — `BoxLapSpectrum` for the
+Laplacian modes, `BoxSpectrumComplete` for the extremes, `BoxLapMultiplicity` for multiplicity lower
+bounds, and `SignlessBipartite` for the signless Laplacian — by routes that use no character family,
+which is the clause that makes the sentence true as stated.
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
