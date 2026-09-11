@@ -460,4 +460,5 @@ roots = [
   "FieldBlockGroup",
   "FieldBlockProduct",
   "FieldSymmetrySubgroup",
+  "FieldSymmetryFinite",
 ]
