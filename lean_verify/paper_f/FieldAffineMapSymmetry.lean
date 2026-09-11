@@ -42,6 +42,18 @@ collision and the rename is the answer to it.
 `AffineEquiv` is constructed**, and the affine symmetries are **not** bundled as a group of any
 kind. `FieldSymmetryIso.conjSqEquiv` bundles the *linear* symmetries and nothing here extends it.
 Not attempted, no cost claimed (`ERRATUM 246`).
+[⚠ **BOTH ARE NOW BUILT AND THE PARAGRAPH IS KEPT AS WRITTEN** (`ERRATUM 94`, 11 SEP 2026):
+`FieldAffineGroup.affineSymmetrySubmonoid` bundles them as a `Submonoid` of `E →ᵃ[ℝ] E` and
+`FieldAffineGroup.affineSymmetrySubgroup` as a `Subgroup` of `E ≃ᵃ[ℝ] E`, the `AffineEquiv` coming
+from `AffineEquiv.ofBijective` applied to this file's own `bijective_affine_of_map`. **Neither
+bundling needs a mass** — the `Subgroup`'s inverses come from the ambient group — and the mass is
+needed only to show the two have the same elements
+(`FieldAffineGroup.exists_equiv_of_mem_submonoid`). The sentence about `conjSqEquiv` stays exactly
+true: nothing extends it, and `FieldAffineGroup`'s header says why a reader must not compose the
+affine bundling with `FieldBlockProduct`'s product — the affine symmetries reduce to the LINEAR
+ones, which are the full orthogonal group, not the isometric `∏ᵢ O(dᵢ)`. **And the corollary this
+file was one step from is now stated**: a translation is a symmetry iff it is the identity
+(`FieldAffineGroup.constVAdd_symmetry_iff`), from this file's own *fixes the origin* clause.]
 
 **STILL NOTHING NON-LINEAR.** An affine map is a linear map plus a constant, and this file's own
 headline is that the constant must vanish. **The full automorphism group of the measure — arbitrary
