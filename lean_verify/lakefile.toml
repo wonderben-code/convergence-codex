@@ -466,4 +466,5 @@ roots = [
   "NormedIsometryOnto",
   "CovariantOrderClass",
   "CovariantOrderMono",
+  "CovariantJet",
 ]

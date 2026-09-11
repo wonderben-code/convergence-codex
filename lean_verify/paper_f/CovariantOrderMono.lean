@@ -63,7 +63,10 @@ statement that it depends only the 1-jet of `σ` at `x`. This will be proved in 
 one above: the hypothesis is on the coefficients in one trivialisation's frame, not on the 1-jet of
 the section as an object. The intrinsic form — equal values and equal `mfderiv` of `T% σ` — is
 **not derived here**, and the step it needs is the chain rule through the trivialisation.
-`UNLOCK_WATCHLIST` carries it as its own item.
+`UNLOCK_WATCHLIST` carries it as its own item. ⚠ It carried it for one unit:
+`CovariantJet.eq_of_mfderiv_eq` (11 September, entry 106) is the intrinsic form, by exactly that
+chain rule, and the item is closed. **The sentence above is true of this file and false of the
+estate**; what it says about the shape of the two statements is unchanged.
 
 **`contMDiffAt_localFrame`**, **`contMDiffAt_sum_extDerivFun_smulRight`**,
 **`contMDiffVectorBundle_add_one`** — the tangent-bundle pieces. The second is the half of the
@@ -221,7 +224,9 @@ depends only on the germ of `σ` at `x`, but not the stronger statement that it 
 statement and not the intrinsic one** — the hypothesis is on the coefficients in one
 trivialisation's frame, not on the 1-jet of the section as an object — and the intrinsic form,
 which would ask for equal values and equal `mfderiv` of `T% σ`, is not derived here. It is two
-lines from the expansion above, which is the point. -/
+lines from the expansion above, which is the point.
+**⚠ The intrinsic form is `CovariantJet.eq_of_mfderiv_eq`, proved one unit later from this lemma
+and a chain rule through the trivialisation; *not derived here* remains true of this file.** -/
 theorem eq_of_localFrame_coeff_eq [Finite ι]
     {cov : (Π x : M, V x) → (Π x : M, TangentSpace I x →L[𝕜] V x)} {s : Set M}
     (hcov : IsCovariantDerivativeOn F cov s)
