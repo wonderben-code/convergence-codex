@@ -478,4 +478,5 @@ roots = [
   "CurvatureBianchiSecond",
   "CurvatureCovBundle",
   "CovariantOrderApply",
+  "CovariantOrderCurv",
 ]
