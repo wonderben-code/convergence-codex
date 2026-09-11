@@ -476,4 +476,5 @@ roots = [
   "HomCovariantNonvac",
   "CurvatureCovCyclic",
   "CurvatureBianchiSecond",
+  "CurvatureCovBundle",
 ]

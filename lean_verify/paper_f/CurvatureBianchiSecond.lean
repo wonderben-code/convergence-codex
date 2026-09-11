@@ -74,7 +74,13 @@ form to quote.
 * **`∇R` IS STILL NOT BUNDLED AS A TENSOR.** The identity is stated for three direction **fields**
   and a fourth field or vector, not for a bundled `(1,3)`-tensor: `CurvatureCovTensor` proves the
   dependence on `Y`, `Z` is through `Y x`, `Z x` and says in its own fence that the bundling is
-  plumbing it does not do. That is unchanged, and this file does not need it.
+  plumbing it does not do. That is unchanged, and this file does not need it. ⚠ **SUPERSEDED THE
+  SAME DAY, entry 118** (`CurvatureCovBundle`), and kept as written (`ERRATUM 94`): the bundling in
+  the two curvature slots is `covRiemannHom`, and `covRiemannAt_cyclic` is **this file's identity
+  for three arbitrary tangent vectors**, which is the form the sentence above says is missing. The
+  four-deep object, with the direction bundled in too, is not built as of 2026-09-11. **The
+  sentence was true
+  for four hours.**
 * **NOTHING FOR A CONNECTION WITH TORSION.** The corrections lemma this proof rests on is
   torsion-free; for a connection with torsion the cyclic sum is an expression in the torsion and
   its derivative, and nothing about it is stated (`CurvatureBianchi`'s fence, at the first

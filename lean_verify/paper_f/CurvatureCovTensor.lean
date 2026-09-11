@@ -38,7 +38,13 @@ what antisymmetry is for.
   `CurvatureTensor.curvEndo`'s construction, `LinearMap.toContinuousLinearMap` over `extend` — is
   **not built**. The two theorems above are what that construction consumes, so it is now
   plumbing rather than mathematics, and it is plumbing this file does not do. **Not attempted, no
-  cost claimed** (`ERRATUM 246`).
+  cost claimed** (`ERRATUM 246`). ⚠ **CLOSED, 2026-09-11 entry 118** (`CurvatureCovBundle`), and
+  the sentence is kept as written (`ERRATUM 94`): `covRiemannHom` is exactly the bilinear map this
+  clause describes, built by the construction it names, on the two theorems above. It also came
+  with more than the clause asked for — linearity in the DIRECTION (`covRiemann_add_dir`,
+  `covRiemann_smul_dir`, neither needing `k ≠ 0`) and the second Bianchi identity for three
+  arbitrary tangent vectors. **What is still not built, as of 2026-09-11, is the four-deep
+  object** with the direction bundled in as well.
 * **NO SECOND BIANCHI IDENTITY**, which is the item's step (3) and needs no tensoriality at all:
   the cyclic sum is a statement about fields. It needs the computation — three derivatives of the
   differentiated field, where the **first** Bianchi identity needed two and cost a file of seven
