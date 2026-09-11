@@ -477,4 +477,5 @@ roots = [
   "CurvatureCovCyclic",
   "CurvatureBianchiSecond",
   "CurvatureCovBundle",
+  "CovariantOrderApply",
 ]
