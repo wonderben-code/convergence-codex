@@ -75,6 +75,11 @@ because no mode will raise it.
   curvature's `Hom`-bundle regularity abstract, so both legs now exist for an arbitrary connection
   — and the order shift is still nobody's theorem. **Not attempted, no cost claimed**
   (`ERRATUM 246`).
+  **⚠ THE LAST CLAUSE IS FALSE AND IS KEPT AS WRITTEN** (`ERRATUM 94`, **`ERRATUM 499`**, the next
+  unit). The shift is `CurvatureCovOrder.contMDiffAt_covRiemann_hom`, which does exactly this
+  bookkeeping for the **Levi-Civita** connection and says so in its own header; it was in the list
+  of four files this campaign had measured two units earlier. What is open is the **abstract**
+  version, which is that file lifted.
 * **NOTHING ABOUT `∇R` AS A TENSOR.** `ERRATUM 494`'s correction and `ERRATUM 498`'s pricing both
   stand: `CurvatureCovDeriv.covRiemann` is a definition with `leviCivita` written into its body, so
   that family is a re-definition and not a re-pointing.
