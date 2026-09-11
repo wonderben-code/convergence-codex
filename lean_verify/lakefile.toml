@@ -490,4 +490,5 @@ roots = [
   "FieldSymmetryHom",
   "SignlessBipartite",
   "CovariantOrderInfty",
+  "CompleteSignlessSpectrum",
 ]

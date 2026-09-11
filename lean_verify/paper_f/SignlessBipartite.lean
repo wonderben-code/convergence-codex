@@ -103,12 +103,17 @@ differ. Not vacuous and not universal.
 * **NOTHING FOR A NON-BIPARTITE GRAPH** beyond the negative above. An odd cycle's signless spectrum
   is still uncomputed; no `Q`-eigenvalue is known at any graph that is neither a cycle, a torus, nor
   bipartite-with-a-known-Laplacian.
-* **THE CONVERSE TRANSFER IS NOT WRITTEN OUT HERE.** `S` is its own inverse, so applying
-  `signlessLap_mulVec_of_lapMatrix` to `Q` runs the correspondence backwards; no statement below
-  does it and none below needs it. Not attempted here, no cost claimed (`ERRATUM 246`).
-* **NO WALL MOVES, AND NO PUBLISHED TAG MOVES.** `W1`'s open part is still `OS0` and `OS4`, and
-  `OS1` in its continuum sense. A finite-volume spectrum identified exactly is a shadow named
-  exactly.
+  ⚠ **THE MIDDLE CLAUSE IS FALSE AND IS CORRECTED THE SAME DAY, kept as written** (`ERRATUM 506`):
+  an odd cycle's signless spectrum **is** computed —
+  `SignlessCycleSpectrum.signless_eigenvalue_eq_real` gives `2 + 2cos(2πk/N)` on every cycle — and
+  the fence this paragraph was paraphrasing says so. The clause that is right is the last one, and
+  `CompleteSignlessSpectrum` narrows it by a family: the complete graph, non-bipartite at three
+  vertices and more, with both Laplacians computed. * **THE CONVERSE TRANSFER IS NOT WRITTEN OUT
+  HERE.** `S` is its own inverse, so applying `signlessLap_mulVec_of_lapMatrix` to `Q` runs the
+  correspondence backwards; no statement below does it and none below needs it. Not attempted
+  here, no cost claimed (`ERRATUM 246`). * **NO WALL MOVES, AND NO PUBLISHED TAG MOVES.** `W1`'s
+  open part is still `OS0` and `OS4`, and `OS1` in its continuum sense. A finite-volume spectrum
+  identified exactly is a shadow named exactly.
 
 **THE HYPOTHESES, READ FROM `#check`** (`ERRATUM 455`): `V` a `Fintype` with `DecidableEq`, a graph
 with `DecidableRel G.Adj`. The general theorems take a sign colouring `IsSignColouring G σ` or
