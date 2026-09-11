@@ -484,4 +484,5 @@ roots = [
   "CovariantOrderCovDeriv",
   "CovariantOrderCovField",
   "CovariantOrderCovTensor",
+  "CovariantOrderCovBundle",
 ]
