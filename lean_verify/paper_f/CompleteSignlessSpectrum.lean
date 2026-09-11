@@ -64,6 +64,12 @@ the single odd cycle that file used.
   dimension count is made**: that the subspace is `(n − 1)`-dimensional, and that the two
   eigenvalues therefore exhaust the spectrum, is standard and **not proved here**. Not attempted, no
   cost claimed (`ERRATUM 246`).
+  ⚠ **PROVED THE NEXT UNIT, kept as written** (2026-09-11):
+  `CompleteSpectrumTwoPoints.eigenvalue_signlessLap_top` shows **every** eigenvalue of `Q` on
+  `K_n` is `2n − 2` or `n − 2` — by summing the eigenvector equation over the vertices, with no
+  spectral theorem and no cardinality hypothesis — and `finrank_eigenspaces_signlessLap_top_add`
+  gives the dimensions `1` and `n − 1`, which add to `n`. The eigenspaces are identified as
+  submodules: the span of the constant vector and the kernel of the sum functional.
 * **NO CHROMATIC NUMBER.** `not_colorable_two_of_three_le` is the one fact needed; that `K_n` has
   chromatic number `n` is not stated.
 * **NOTHING ABOUT `K_n` AS A GRAPH BEYOND THIS.** Its automorphism group, its propagator, its OS
