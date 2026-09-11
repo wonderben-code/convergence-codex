@@ -79,7 +79,11 @@ by `rfl`. Recorded in `newnames_accepted.txt`.
 and `[FiniteDimensional ℝ E]`, a `ChartedSpace H M` with model `I`, the literal manifold orders,
 `[IsManifold I ((k : WithTop ℕ∞) + 1 + 1 + 1) M]`, `[CurvatureTensor.IsLocallyC1 cov]`,
 `[CovariantOrderClass.IsLocallyCk ((k : WithTop ℕ∞) + 1) cov]`, `(hzero : cov.torsion = 0)` and
-`k ≠ 0` on the identity itself — **no metric at any order**.
+`k ≠ 0` on the identity itself — **no metric at any order**. **`[CompleteSpace E]` IS IMPLIED BY THE
+BINDER NEXT TO IT** and appears here only because `#check` prints it: Mathlib's
+`FiniteDimensional.complete` is an instance, so that pair is **one** restriction on the model space
+and not two, in this header and in the seven before it — `ERRATUM 503`, which also records where
+`[FiniteDimensional ℝ E]` is anchored and why two attempts to remove it failed.
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry in this file, 0 new axioms.
 
