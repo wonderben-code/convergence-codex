@@ -29,14 +29,18 @@ needs them there, so the slack is recorded and not spent.
 
 ## What is proved
 
-**`isLocallyCk_up`**, **`isLocallyCk_up_two`**, **`isLocallyCk_down_one`**, **`isLocallyCk_down`** —
-the class at the four orders the three legs ask for: `↑(k+1) + 1` and `↑(k+2)` upward by the cast
-`CurvatureOrder.isManifold_shift` introduced, and `↑k + 1` and `↑k` downward by
-`CovariantOrderMono`'s order-lowering. **Four class shifts where `CurvatureCovOrder` needs eight
-instance shifts**, and the arithmetic of that is worth one line: the metric's four have no
-counterpart when there is no metric, the manifold's four are that file's own and are imported
-rather than reproved, and the four here are the class's — which that file does not need, because
-`leviCivita` belongs to the class at every order by a global instance.
+**`isLocallyCk_up`**, **`isLocallyCk_up_two`**, **`isLocallyCk_down_one`** — the class at three of
+the four orders the legs ask for: `↑(k+1) + 1` and `↑(k+2)` upward by the cast
+`CurvatureOrder.isManifold_shift` introduced, and `↑k + 1` downward by `CovariantOrderMono`'s
+order-lowering. **The fourth, `↑k`, is not declared here**: entry 121's
+`CovariantOrderCurv.isLocallyCk_down` lowers by one from `↑k + 1`, so with the third of these
+registered the elaborator chains them and gets there itself. A first draft declared a second
+`isLocallyCk_down` doing both steps at once, and `newnames_scan.py` asked the right question about
+it. **Three class shifts, then, where `CurvatureCovOrder` needs eight instance shifts**, and the
+arithmetic is worth one line: the metric's four have no counterpart when there is no metric, the
+manifold's four are that file's own and are imported rather than reproved, and the class's are what
+that file never needs, because `leviCivita` belongs to the class at every order by a global
+instance.
 
 **`contMDiffAt_covRiemann_hom_of_isLocallyCk`** — **THE THEOREM: `y ↦ (∇_X R)(Y, Z)(y)` IS A `C^k`
 SECTION OF `Hom(TM, TM)` FOR ANY CONNECTION OF CLASS `C^(k+2)`**, for `X, Y, Z` of class `C^(k+3)`
@@ -74,11 +78,11 @@ not use): `E` normed over `ℝ` with `[CompleteSpace E]` and `[FiniteDimensional
 `ChartedSpace H M` with model `I`, `[IsManifold I 1 M]`, `[IsManifold I 2 M]`, `[IsManifold I 3 M]`
 and `[IsManifold I ((k : WithTop ℕ∞) + 1 + 1 + 1 + 1) M]` — **a `C^(k+4)` manifold, as in
 `CurvatureCovOrder`, and NO metric at any order**, where that file also asks for a `C^(k+3)` metric
-and its companion at `2`. **Five of the six** declarations take
-`[CovariantOrderClass.IsLocallyCk ((k : WithTop ℕ∞) + 1 + 1) cov]`, the sixth takes the metric and
+and its companion at `2`. **Four of the five** declarations take
+`[CovariantOrderClass.IsLocallyCk ((k : WithTop ℕ∞) + 1 + 1) cov]`, the fifth takes the metric and
 no connection at all — its binders are `CurvatureCovOrder`'s theorem's, one for one, which is what
 makes the subsumption a check rather than a claim — and `[CurvatureTensor.IsLocallyC1 cov]` rides
-along for `curvEndo` as in entry 122. **And none of the six takes `k ≠ 0`**: the slot laws of entry
+along for `curvEndo` as in entry 122. **And none of the five takes `k ≠ 0`**: the slot laws of entry
 124 need it and this regularity does not, which is `CurvatureCovOrder`'s signature too — my first
 draft carried `hk` on both theorems and the unused-variable linter removed it.
 
@@ -133,14 +137,16 @@ theorem isLocallyCk_down_one : IsLocallyCk ((k : WithTop ℕ∞) + 1) cov :=
     (by exact_mod_cast (le_self_add : (k : WithTop ℕ∞) + 1 ≤ (k : WithTop ℕ∞) + 1 + 1))
     IsLocallyCk.on_open u hu⟩
 
-omit [IsManifold I 3 M] [CurvatureTensor.IsLocallyC1 cov] in
-/-- And the class at order `k`. -/
-theorem isLocallyCk_down : IsLocallyCk (k : WithTop ℕ∞) cov :=
-  ⟨fun u hu ↦ CovariantOrderMono.contMDiffCovariantDerivativeOn_of_le
-    (j := k) (n := (k : WithTop ℕ∞) + 1 + 1) (le_self_add.trans le_self_add)
-    IsLocallyCk.on_open u hu⟩
+/-! **AND THE CLASS AT ORDER `k` IS NOT DECLARED HERE, BECAUSE ENTRY 121 ALREADY HAS IT.**
+`CovariantOrderCurv.isLocallyCk_down` lowers the class by one from `↑k + 1`, and with
+`isLocallyCk_down_one` above registered as an instance the elaborator chains the two and reaches
+`↑k` on its own. A first draft of this file declared a second `isLocallyCk_down` that lowered two
+orders at once; `newnames_scan.py` asked whether the name was taken and whether the declaration
+holding it was the theorem I was about to prove, and the answer to both was yes. There is no loop in
+the chain: `↑k + 1` does not unify with `↑(k + 1)`, so the search stops. -/
 
-attribute [local instance] isLocallyCk_up isLocallyCk_up_two isLocallyCk_down_one isLocallyCk_down
+attribute [local instance] isLocallyCk_up isLocallyCk_up_two isLocallyCk_down_one
+  CovariantOrderCurv.isLocallyCk_down
 
 /-! ## `∇R` is a field -/
 
