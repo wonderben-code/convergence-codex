@@ -47,7 +47,10 @@ as *"not defined here or in the pinned Mathlib"*.
   the tensor is one subtraction away, not zero away.
 * **NO REGULARITY OF THE INDUCED CONNECTION.** `HomCovariant` proves no smoothness of
   `homCovFun cov A`, so nothing here says `∇R` is a `C^(k-1)` section of anything — only that it
-  exists and is computed at a point.
+  exists and is computed at a point. ⚠ The first clause is false as of entry 112:
+  `HomCovariantOrder` proves the induced connection regular for the Levi-Civita connection. **The
+  second clause stands** — `∇R` needs that theorem fed the curvature ONE ORDER UP, which is an
+  instance shift nothing has done.
 * **RESIDUE (ii) OF THE CURVATURE-REGULARITY ITEM IS UNTOUCHED**: whether a `C^(k+1)` metric would
   suffice where this route asks for `C^(k+2)` needs a counterexample, not a theorem.
 * **NOTHING ABOUT `a₂`, the heat semigroup or a parametrix.** `W5`'s rung 4 is unchanged.

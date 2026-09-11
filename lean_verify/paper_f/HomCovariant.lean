@@ -52,7 +52,11 @@ induced derivative from the zero operation — and it is unconditional.
 ## What is NOT here
 
 * **NO REGULARITY.** Nothing says `homCovFun cov A` is a `C^k` section of `Hom(TM, Hom(TM, TM))`
-  when `A` is a `C^(k+1)` one. That is the next object, and it is what the `UNLOCK_WATCHLIST`
+  when `A` is a `C^(k+1)` one. ⚠ **Not from this file, and only in part**: entry 112
+  (`HomCovariantOrder`) proves `∇_X A` a `C^k` section of `Hom(TM, TM)` for a FIXED direction field
+  `X`, and for the Levi-Civita connection only. **The sentence as written stands** — no statement
+  anywhere makes `homCovFun cov A` a section of the doubly-nested `Hom` bundle, and nothing is
+  proved for an abstract `cov`. That is the next object, and it is what the `UNLOCK_WATCHLIST`
   item *the regularity of the curvature of a metric* needs for its residue (i): that item's
   entry-81 status records the curvature being reached as VALUES on fields rather than as a section
   of the endomorphism bundle, and names this `Hom`-bundle gap as the reason. **The gap is now

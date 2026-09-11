@@ -46,7 +46,9 @@ corresponding correction term produces, so the two cancel and the expression is 
   declarations. Not attempted, no cost claimed.
 * **NO REGULARITY.** Nothing says `y ↦ covRiemann Y Z y u` is a `C^(k−1)` anything; `HomCovariant`
   proves no smoothness of the induced connection, so this object exists at a point and is not
-  known to vary continuously.
+  known to vary continuously. ⚠ The clause about `HomCovariant` is false as of entry 112
+  (`HomCovariantOrder`), and **the clause about `covRiemann` stands**: the theorem there wants the
+  curvature field one order up, which is an instance shift nothing has done.
 * **NO CONTRACTED FORM.** The divergence of the Einstein tensor, which is what the second Bianchi
   identity is usually wanted for, needs a trace of this object and a metric contraction; neither
   is here, and the modelling decision is the author's.
