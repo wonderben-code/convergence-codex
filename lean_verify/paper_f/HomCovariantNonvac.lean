@@ -143,11 +143,25 @@ theorem mdiffAt_of_mdiffHomAt_smul_id [Nontrivial E] {f : M → ℝ} {x : M}
 
 omit [FiniteDimensional ℝ E] [IsManifold I 2 M] in
 /-- **A MULTIPLE OF THE IDENTITY IS A DIFFERENTIABLE SECTION OF `Hom(TM, TM)` IFF ITS MULTIPLIER IS
-A DIFFERENTIABLE FUNCTION**, for a nontrivial model space. The converse direction is the library's
-`MDifferentiableAt.smul_section` on the identity section (`HomCovariant.mdiffHomAt_id`). -/
-theorem mdiffHomAt_smul_id_iff [Nontrivial E] {f : M → ℝ} {x : M} :
-    MDiffHomAt (f • fun y ↦ ContinuousLinearMap.id ℝ (TangentSpace I y)) x ↔ MDiffAt f x :=
-  ⟨mdiffAt_of_mdiffHomAt_smul_id, fun hf ↦ hf.smul_section (mdiffHomAt_id x)⟩
+A DIFFERENTIABLE FUNCTION**, **with no condition on the model space.** The converse direction is
+the library's `MDifferentiableAt.smul_section` on the identity section
+(`HomCovariant.mdiffHomAt_id`).
+
+**`[Nontrivial E]` WAS HERE AND IS NOT NEEDED, AND THE ANSWER WAS IN THE LIBRARY.** The forward
+direction applies a continuous linear functional that does not vanish on the identity, and the zero
+space has none — that is where the hypothesis came from, and it is about the PROOF. An
+`UNLOCK_WATCHLIST` item filed by entry 114 asked whether it was also about the truth, and said the
+degenerate case was *presumably true and trivial* with *each step standard and none formalised
+here*. **The whole statement is Mathlib's**: `mdifferentiable_of_subsingleton` says that when the
+source model space is a subsingleton **every** map out of the manifold is differentiable, so for
+`E = 0` both sides of this `iff` are true and the equivalence is vacuous. The case split is
+`subsingleton_or_nontrivial`, which `homCovFun_smul_id'` below already uses for the same reason.
+`ERRATUM 502` records that the item presumed a proof the pinned library had. -/
+theorem mdiffHomAt_smul_id_iff {f : M → ℝ} {x : M} :
+    MDiffHomAt (f • fun y ↦ ContinuousLinearMap.id ℝ (TangentSpace I y)) x ↔ MDiffAt f x := by
+  rcases subsingleton_or_nontrivial E with hE | hE
+  · exact iff_of_true (mdifferentiable_of_subsingleton x) (mdifferentiable_of_subsingleton x)
+  exact ⟨mdiffAt_of_mdiffHomAt_smul_id, fun hf ↦ hf.smul_section (mdiffHomAt_id x)⟩
 
 /-- **AND A VALUE THAT IS NOT ZERO, WITH NO HYPOTHESIS AT ALL**: `∇_u (f · id) = (df u) · id` for
 every `f : M → ℝ`, differentiable at the point or not. Where `f` is differentiable this is entry
