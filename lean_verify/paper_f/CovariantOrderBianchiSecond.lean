@@ -66,6 +66,11 @@ seventh checked subsumption in eight units.
   identity for three arbitrary tangent vectors is `covRiemann_cyclic_endo` composed with entry
   127's `covRiemannAt_eq`, and that composition is **not made here**.
 * **NOTHING AT `k = 0`**, and **nothing at the analytic order**.
+⚠ **`∞` IS REACHED ON 2026-09-11 AND `ω` IS NOT, kept as written** (`ERRATUM 505`):
+`CovariantOrderInfty` states this chain's results at the **smooth** order, on the strength of
+Mathlib's *`C^∞` is `C^n` for every natural `n`* characterisation. **The sentence is still true of
+`ω`**, which has no such characterisation — which is the reason this very paragraph gives — and true
+of this file, which proves nothing at either.
 * **NO NORMAL COORDINATES**, as in the file generalised: the textbook one-line proof evaluates at
   the centre of a normal coordinate system, and neither this estate nor the pinned library has one.
 

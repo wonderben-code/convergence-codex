@@ -105,6 +105,12 @@ statement with the connection arbitrary.
   `HomCovariantOrder` proves it only for the Levi-Civita connection; nothing here says `∇R` is a
   `C^(k-1)` section of anything, only that it exists and is computed at a point.
 * **NOTHING AT THE ANALYTIC ORDER**, `k` being a natural number.
+⚠ **`∞` IS REACHED ON 2026-09-11 AND `ω` IS NOT, kept as written** (`ERRATUM 505`):
+`CovariantOrderInfty` states this file's results at the **smooth** order — the class at `∞` is the
+class at every finite order (`isLocallyCk_infty_of_nat`), the Levi-Civita connection of a `C^∞`
+metric is in it, and the curvature, `∇R` and the second Bianchi identity follow. **The sentence is
+still true of `ω`**, which has no *`C^n` for every `n`* characterisation, and true of this file,
+which proves nothing at either.
 
 **No wall moves. No published tag moves.**
 

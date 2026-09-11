@@ -50,6 +50,11 @@ estate's own version of it**. Not a second proof: the instance is
   class with an instance to discharge.
 * **NOTHING ABOUT `ω`.** `k` is a natural number here, because the neighbourhood characterisation
   `contMDiffAt_iff_contMDiffOn_nhds` is not available at the analytic order.
+⚠ **`∞` IS REACHED ON 2026-09-11 AND `ω` IS NOT, kept as written** (`ERRATUM 505`):
+`CovariantOrderInfty` states this chain's results at the **smooth** order, on the strength of
+Mathlib's *`C^∞` is `C^n` for every natural `n`* characterisation. **The sentence is still true of
+`ω`**, which has no such characterisation — which is the reason this very paragraph gives — and true
+of this file, which proves nothing at either.
 
 **THE HYPOTHESES, READ OFF THE BINDERS** (`ERRATUM 455`): a normed space `E` over `ℝ` with
 `[CompleteSpace E]`, a `ChartedSpace H M` with model `I`, `[IsManifold I 1 M]`, `[IsManifold I 2 M]`

@@ -24,6 +24,11 @@ than one stated once: four authors wanted the object and none needed it. This es
 reworded on its way into the next header is invisible*. A one-off shingle census over the `paper_f`
 headers — normalising code spans and punctuation, 9-word windows, three files or more — returns the
 near-duplicates that mode cannot see, and after the boilerplate groups this fence was the largest.
+⚠ **THE LAST CLAUSE IS FALSE AND IS CORRECTED WITHIN THE HOUR, kept as written** (`ERRATUM 505`):
+read back off the output, this fence was **sixth** of ten families at five files or more. Larger are
+a sixteen-file citation of a closed watchlist item and, at seven files, ***nothing at the analytic
+order*** — a fence in the covariant-derivative chain of this same session, which the next unit
+takes. Six of the ten families name a mathematical object, not two.
 **The census is a throwaway and is not shipped**: it judged nothing, and the judgement half is the
 part `ERRATUM 60` says a mode must not claim.
 
