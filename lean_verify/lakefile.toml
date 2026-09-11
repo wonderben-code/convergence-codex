@@ -496,4 +496,5 @@ roots = [
   "CompleteFieldSymmetry",
   "MultipartiteEigenspace",
   "MultipartiteMultiplicity",
+  "UnbalancedMultipartite",
 ]
