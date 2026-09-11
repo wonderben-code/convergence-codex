@@ -463,4 +463,5 @@ roots = [
   "FieldSymmetryFinite",
   "FieldSymmetryCount",
   "FieldAffineGroup",
+  "NormedIsometryOnto",
 ]
