@@ -492,4 +492,5 @@ roots = [
   "CovariantOrderInfty",
   "CompleteSignlessSpectrum",
   "CompleteSpectrumTwoPoints",
+  "MultipartiteSpectrum",
 ]
