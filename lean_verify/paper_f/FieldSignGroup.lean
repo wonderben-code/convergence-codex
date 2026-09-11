@@ -67,6 +67,10 @@ is drawn here** — no inclusion of `symmetriesSubgroup` into `linSym`, and no i
 still true as stated**: `symmetriesSubgroup` is a group of *linear isometry equivalences* and
 `linSymGL` a subgroup of `GL V ℝ`, and **no homomorphism between those two objects is
 constructed**. **And there is still no index.**
+⚠ **AND THAT CLAUSE FALLS ON 2026-09-11, kept as written** (`ERRATUM 94`): `FieldSymmetryHom.symHom`
+is the homomorphism, `FieldSymmetryHom.symEquivRange` makes this group isomorphic to its image in
+`linSymGL`, and `FieldSymmetryHom.symmetriesMulEquiv` identifies it with
+`FieldSymmetrySubgroup.symmetrySubgroup`. **There is still no index.**
 
 **No wall moves.** `W1`'s open part is `OS0` and `OS4`, and `OS1` in its continuum sense. A symmetry
 group named exactly, in finite volume, is a shadow named exactly.

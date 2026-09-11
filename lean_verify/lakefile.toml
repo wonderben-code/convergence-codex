@@ -487,4 +487,5 @@ roots = [
   "CovariantOrderCovBundle",
   "CovariantOrderCovCyclic",
   "CovariantOrderBianchiSecond",
+  "FieldSymmetryHom",
 ]

@@ -61,6 +61,12 @@ finite — so the criterion decides the size as well as the finiteness.
   matrix-to-isometry correspondence shown injective, which is `FieldOrthIsometry`'s subject and is
   not attempted (`ERRATUM 246`). A reader wanting one set counted should read the conclusion, not
   the hypothesis.
+  ⚠ **THE CORRESPONDENCE IS SHOWN AND THE MATRICES ARE COUNTED, 2026-09-11, kept as written**
+  (`ERRATUM 94`): `FieldSymmetryHom.symmetriesEquiv` is the bijection this paragraph asks for —
+  `isoMat` one way, `FieldOrthIsometry.orthIsometry` the other, exactly as predicted — and
+  `FieldSymmetryHom.card_symmetryMatrices_of_finite` is the statement this paragraph says is not
+  made: the matrices being finite implies **the matrices** number `2 ^ |V|`. **Everything else in
+  this paragraph stands**, including that this file states only the isometry count.
 
 **No wall moves.** `W1`'s open part is still `OS0`, `OS4` and `OS1` in its continuum sense. A
 criterion for the finiteness of a finite-volume symmetry group is a shadow known exactly.

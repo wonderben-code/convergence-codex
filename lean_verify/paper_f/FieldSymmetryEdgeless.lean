@@ -40,6 +40,10 @@ and `FieldLineCount`'s `2^(m+1)` counts the isometric side only. Not attempted, 
 **STILL THE MATRIX LEVEL.** `FieldSignGroup.symmetriesSubgroup` and
 `FieldSymmetryInclusion.linSymGL` are group objects over different ambient types, and **no
 homomorphism between them is constructed.**
+⚠ **ONE IS CONSTRUCTED SINCE 2026-09-11, kept as written** (`ERRATUM 94`):
+`FieldSymmetryHom.symHom`, and this file's `symmetryMatrices_eq_linSym_iff_no_adj` is what
+`FieldSymmetryHom.range_symHom_eq_top_iff_no_adj` transports into a statement about subgroups. **The
+cardinality and index clauses above are unchanged.**
 
 **THE EMPTY VERTEX SET IS EXCLUDED.** `[Nonempty V]` is inherited from
 `FieldSymmetryProper.symmetryMatrices_eq_linSym_iff`. With no vertices the statement is true for a

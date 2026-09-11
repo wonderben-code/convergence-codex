@@ -55,6 +55,10 @@ hypotheses first.**
 is a `Subgroup` of the *linear isometry equivalences*; `linSymGL` is a `Subgroup` of `GL V ℝ`. **No
 group homomorphism between them is constructed**, and no `MulEquiv`. The fence's word *inclusion* is
 answered as an inclusion of **sets of matrices**. Not attempted, no cost claimed (`ERRATUM 246`).
+⚠ **THE HOMOMORPHISM EXISTS SINCE 2026-09-11, kept as written** (`ERRATUM 94`):
+`FieldSymmetryHom.symHom` is a group homomorphism `symmetriesSubgroup G m →* linSymGL G m`,
+injective (`symHom_injective`), with image exactly the orthogonal part (`mem_range_symHom_iff`).
+**The sentence is true of this file** and the clause *no index* below is still true of the estate.
 
 **NO INDEX.** The fence also said *no index*, and there is still none: nothing here measures how
 much bigger `linSym` is than `symmetryMatrices`, beyond the strictness on a line.

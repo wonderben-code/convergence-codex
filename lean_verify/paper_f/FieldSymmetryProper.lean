@@ -55,6 +55,10 @@ no such hypothesis.
 **STILL THE MATRIX LEVEL.** `FieldSignGroup.symmetriesSubgroup` and
 `FieldSymmetryInclusion.linSymGL` are group objects over different ambient types, and **no
 homomorphism between them is constructed here either.** **And still no index.**
+⚠ **ONE IS CONSTRUCTED ELSEWHERE SINCE 2026-09-11, kept as written** (`ERRATUM 94`):
+`FieldSymmetryHom.symHom`, and `FieldSymmetryHom.range_symHom_eq_top_iff_no_adj` is this file's
+dichotomy at group level — the image is the whole linear symmetry group iff the graph has no edges.
+**Still no index.**
 
 **No wall moves.** `W1`'s open part is `OS0` and `OS4`, and `OS1` in its continuum sense.
 
