@@ -464,4 +464,5 @@ roots = [
   "FieldSymmetryCount",
   "FieldAffineGroup",
   "NormedIsometryOnto",
+  "CovariantOrderClass",
 ]
