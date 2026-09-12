@@ -39,6 +39,15 @@ supplies **multiplicities** for the torus at even side length, both without a ch
 ℂ-to-ℝ clause stands exactly as written**: that file works over `ℝ` from the start and connects
 nothing to this one's complex computation, so the transfer is still not made and still claimed by no
 file.
+⚠ **AND THAT SENTENCE IS FALSE, AND WAS FALSE WHEN WRITTEN — kept as written** (`ERRATUM 94`,
+`ERRATUM 511`, 2026-09-12). It is right about `SignlessBipartite` and wrong about the estate:
+`SignlessTorusReal` was added **2026-08-30**, twelve days before that annotation, **imports this
+file, quotes the fence above verbatim in its own header, and is titled *the complexification
+removed*.** Read from `#check`: `real_eigenvalue_iff_cx` is the transfer for an arbitrary real
+square matrix and real scalar, `eigenvalue_real_iff` is this file's criterion over `ℝ`, and
+`spectrum_real_eq_range_nuQR` is the set equality. **The original fence at the top of this section
+was true when written and is what `SignlessTorusReal` closed**; the 2026-09-11 annotation reopening
+it is the error.
 -/
 
 namespace SignlessTorusComplete

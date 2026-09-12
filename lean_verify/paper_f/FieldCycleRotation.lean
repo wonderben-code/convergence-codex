@@ -104,8 +104,8 @@ theorem exists_independent_of_two_le_finrank {E : Type*} [AddCommGroup E] [Modul
 
 /-! ## 2. The kernel is the eigenvector equation -/
 
-theorem mem_eigenspace_iff_mulVec {n : Type*} [Fintype n] [DecidableEq n]
-    (A : Matrix n n ℝ) (μ : ℝ) (x : n → ℝ) :
+theorem mem_eigenspace_iff_mulVec {R : Type*} [CommRing R] {n : Type*} [Fintype n]
+    [DecidableEq n] (A : Matrix n n R) (μ : R) (x : n → R) :
     x ∈ LinearMap.ker (Matrix.toLin' A - μ • LinearMap.id) ↔ A *ᵥ x = μ • x := by
   simp only [LinearMap.mem_ker, LinearMap.sub_apply, Matrix.toLin'_apply, LinearMap.smul_apply,
     LinearMap.id_apply, sub_eq_zero]

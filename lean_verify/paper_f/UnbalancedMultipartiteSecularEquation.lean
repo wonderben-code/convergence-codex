@@ -262,10 +262,10 @@ theorem finrank_signless_size_secular_zero {n : ℕ} (hn0 : n ≠ 0)
 
 /-! ## 7. Eigenvalue-hood and the dimension count, for any real matrix -/
 
-theorem isEigenvector_iff_finrank_pos {m : Type*} [Fintype m] [DecidableEq m]
-    (A : Matrix m m ℝ) (μ : ℝ) :
-    (∃ x : m → ℝ, x ≠ 0 ∧ A *ᵥ x = μ • x)
-      ↔ 0 < Module.finrank ℝ (LinearMap.ker (Matrix.toLin' A - μ • LinearMap.id)) := by
+theorem isEigenvector_iff_finrank_pos {K : Type*} [Field K] {m : Type*} [Fintype m]
+    [DecidableEq m] (A : Matrix m m K) (μ : K) :
+    (∃ x : m → K, x ≠ 0 ∧ A *ᵥ x = μ • x)
+      ↔ 0 < Module.finrank K (LinearMap.ker (Matrix.toLin' A - μ • LinearMap.id)) := by
   rw [Module.finrank_pos_iff]
   constructor
   · rintro ⟨x, hx0, hx⟩
