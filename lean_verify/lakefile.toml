@@ -505,4 +505,5 @@ roots = [
   "MultipartiteCharpoly",
   "MultipartiteSimpleSpectrum",
   "UnbalancedMultipartiteSignless",
+  "UnbalancedMultipartiteSecular",
 ]

@@ -53,8 +53,25 @@ isomorphism to any other description is formalised, as everywhere in this chain.
   the constant vector covers and which `not_isEigenvector_one_signlessLap` says is the only case it
   covers. Not attempted (`ERRATUM 246`), and naming the equation is not a claim that solving it is
   short (`ERRATUM 194`).
+
+⚠ **THE COMPUTATION IN THAT CLAUSE IS A THEOREM AS OF 2026-09-12 (entry 155), AND THE PARAGRAPH IS
+KEPT AS WRITTEN** (`ERRATUM 94`). `UnbalancedMultipartiteSecular.secularMap` is the map the clause
+writes out in prose, and the reduction is an **equality**: `Q`'s eigenspace at any `μ` splits as the
+part-total-free half plus the kernel of that `r × r` map
+(`finrank_signless_eigenspace_split`, `map_partTotalForm_eq`). **The clause's last sentence still
+stands**: nothing there or here solves the secular equation, and no closed form for that kernel's
+dimension in terms of the part sizes is proved. What changed is that it is now a finite linear
+algebra question in `r` unknowns rather than a sentence about `N` of them.
+
 * **NO UPPER BOUND ON `Q`'S MULTIPLICITY** at `N − n`. `L`'s is exact; `Q`'s eigenspace **contains**
   it and is not shown equal, which would need `Q`'s own characterisation.
+
+⚠ **CLOSED 2026-09-12 (entry 155), AND THE PARAGRAPH IS KEPT AS WRITTEN** (`ERRATUM 94`).
+`UnbalancedMultipartiteSecular.finrank_signless_size_le` bounds the multiplicity by
+`kₙ(n − 1) + r`, and `finrank_signless_size_eq` gives the exact value. **The paragraph priced it
+correctly** — it does need `Q`'s own characterisation, and that is what the later file's §2–§4
+supply. `finrank_signless_eigenspace_diamond` then counts the witness below: multiplicity exactly
+`2`, not merely `≥ 1`.
 * **NO CHARACTERISTIC POLYNOMIAL FOR `Q`**, which needs the spectrum.
 * **NOTHING AT AN EMPTY PART OR AT ONE PART**, inherited from the multiplicity table.
 * **NO WALL MOVES AND NO PUBLISHED TAG MOVES.** `W1`'s open part is still `OS0` and `OS4`, and
