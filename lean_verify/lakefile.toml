@@ -519,4 +519,5 @@ roots = [
   "SecularRootGap",
   "SecularRootCount",
   "SecularRootExact",
+  "SecularPoleMultiplicity",
 ]
