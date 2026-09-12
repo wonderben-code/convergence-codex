@@ -47,6 +47,14 @@ doing the work and is not decoration.
   two-colourable components and reading the answer back. **I do not know a short direct argument**,
   and none is attempted (`ERRATUM 246`). A reader who wants one should not take this file as
   evidence that it is hard.
+
+⚠ **THERE IS ONE, IT IS SHORT, AND THE PARAGRAPH IS KEPT AS WRITTEN** (`ERRATUM 94`, 2026-09-12
+entry 182). `SecularSumZeroGap` gives it in two inequalities and an identity, and it proves
+**more**: past two parts the sum is either positive or strictly below `−1`, so it avoids the whole
+interval `[−1, 0]` and not merely the point. The sentence above was right to invite the search and
+right not to price it as hard; what it got wrong is only that no argument was known, which was true
+of this unit and not of the mathematics.
+
 * **STILL NO CHARACTERISATION** of when a part value is a secular root, and no family in which the
   coincidence occurs — entry 173's fences on those stand.
 * **THE OTHER MULTIPARTITE LEFTOVERS ARE UNTOUCHED**: the exact count of the spectrum, whether the

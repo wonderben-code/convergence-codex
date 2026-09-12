@@ -529,4 +529,5 @@ roots = [
   "SignlessRegularSimple",
   "SignlessPart133Complete",
   "SecularSumZero",
+  "SecularSumZeroGap",
 ]
