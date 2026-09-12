@@ -74,6 +74,15 @@ different graphs and the agreement is on their overlap.
 * **THE THREE COUNTS ARE STILL NOT ADDED**, exactly as at entry 170: no statement anywhere combines
   the part values, the secular roots and the poles into a count of `Q`'s spectrum, and nothing
   rules out a part value coinciding with a secular root.
+
+⚠ **CLOSED 2026-09-12 (entry 173), AND THE PARAGRAPH IS KEPT AS WRITTEN** (`ERRATUM 94`).
+`SecularRootAtPartValue.part_value_eq_secular_root` settles it the other way: **nothing rules the
+coincidence out because it happens.** At `K_{1,3,3}` the part value `N − 3 = 4` satisfies the
+secular equation, and `finrank_signless_part133_four` computes the multiplicity there as
+`k₃(3 − 1) + 1 = 5` — the first use anywhere in the estate of
+`UnbalancedMultipartiteSecularEquation.finrank_signless_size_secular_one`, whose `+ 1` **is** the
+overlap. So the sentence above was right that no unit had ruled it out, and the reason was not that
+nobody had checked: a count of `Q`'s spectrum must be inclusion–exclusion, not addition.
 * **NO ROOT VALUES**, as everywhere in this chain.
 * **NOTHING OVER `ℂ`, NO WALL MOVES AND NO PUBLISHED TAG MOVES.** `W1`'s open part is still `OS0`
   and `OS4`, and `OS1` in its continuum sense.

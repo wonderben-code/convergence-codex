@@ -35,6 +35,15 @@ exactly the number of distinct part sizes**, with membership characterised, not 
   graph is `K_r`, the pole is `N − 2` and `N − 2` is an eigenvalue of multiplicity `r − 1`, counted
   by neither this file nor the part-value chain. Adding the three counts into one statement about
   the spectrum is **not attempted** (`ERRATUM 246`).
+
+⚠ **CLOSED 2026-09-12 (entry 173), AND THE PARAGRAPH IS KEPT AS WRITTEN** (`ERRATUM 94`).
+`SecularRootAtPartValue.part_value_eq_secular_root` settles it the other way: **nothing rules the
+coincidence out because it happens.** At `K_{1,3,3}` the part value `N − 3 = 4` satisfies the
+secular equation, and `finrank_signless_part133_four` computes the multiplicity there as
+`k₃(3 − 1) + 1 = 5` — the first use anywhere in the estate of
+`UnbalancedMultipartiteSecularEquation.finrank_signless_size_secular_one`, whose `+ 1` **is** the
+overlap. So the sentence above was right that no unit had ruled it out, and the reason was not that
+nobody had checked: a count of `Q`'s spectrum must be inclusion–exclusion, not addition.
 * **NO MULTIPLICITY.** Each counted root is a simple eigenvalue by entry 157; that is not restated,
   and nothing here says the *eigenvalues at poles* are simple, because nothing anywhere does.
 * **NO VALUES.** The roots are counted and located, never computed; the two graphs where they are
