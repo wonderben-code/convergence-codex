@@ -79,6 +79,12 @@ in this file depends on that order — the statements are about fibres, which ar
 nothing here relates the fibres to `Polynomial.rootMultiplicity` of the characteristic polynomial,
 which is the other standard notion of multiplicity and is absent from this estate.
 
+⚠ **NO LONGER ABSENT AS OF 2026-09-12 (entry 159), AND THE PARAGRAPH IS KEPT AS WRITTEN**
+(`ERRATUM 94`). `HermitianRootMultiplicity.rootMultiplicity_charpoly` relates exactly these fibres
+to `Polynomial.rootMultiplicity`, for every real Hermitian matrix, and it is proved *through* this
+file's `finrank_eigenspace_eq_card_fibre`. **What still stands here**: nothing in this file relates
+them, and nothing here depends on the eigenvalue ordering.
+
 **NO GRAPH IS NAMED.** Every statement is at an arbitrary finite `SimpleGraph` with `m ≠ 0`. The
 degeneracies that make the multiplicities interesting are the torus's and the box's, and they are
 elsewhere; what is added here is that their counts and this chain's blocks are the same numbers.

@@ -58,6 +58,14 @@ Laplacian's case, one line each.
   `Matrix.IsHermitian.roots_charpoly_eq_eigenvalues` are Mathlib's and are not restated; the
   exponents here are eigenspace dimensions, and their agreement with `Polynomial.rootMultiplicity`
   is not proved.
+
+⚠ **THE AGREEMENT IS PROVED AS OF 2026-09-12 (entry 159)** (`ERRATUM 94`):
+`HermitianRootMultiplicity.rootMultiplicity_charpoly`, for every real Hermitian matrix. **The rest
+of the clause still stands** — degree and monicity are still Mathlib's and still not restated, and
+so is the root multiset this paragraph names. **`ERRATUM 510` is about that name**: the unit that
+closed the clause re-proved `roots_charpoly_eq_eigenvalues` before grepping for it, and the
+re-proof was deleted. A fence that names its own inputs is a parts list; this one was read as a
+single absence.
 * **NO CLAIM OF A FIRST.** `ERRATUM 507`'s lesson: `HermitianSpectralMapping.charpoly_pow_eq`
   already writes a Hermitian matrix's power's characteristic polynomial as a product over the index
   type, and `Matrix.IsHermitian.charpoly_eq` is the `k = 1` case of that. **What is new here is the

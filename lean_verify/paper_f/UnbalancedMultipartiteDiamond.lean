@@ -56,6 +56,12 @@ than merely correct.
   with multiplicities, not a factorisation of `Matrix.charpoly (signlessLap …)`, and the agreement
   of these multiplicities with `Polynomial.rootMultiplicity` is not proved — the same gap
   `MultipartiteCharpoly` closed on the *ordinary* Laplacian's side and nobody has closed here.
+
+⚠ **BOTH HALVES CLOSED AT THIS GRAPH THE NEXT UNIT (2026-09-12, entry 159), AND THE PARAGRAPH IS
+KEPT AS WRITTEN** (`ERRATUM 94`). `HermitianRootMultiplicity.charpoly_signless_diamond` gives
+`(X − 2)²·(X − (3 + √5))·(X − (3 − √5))`, and `rootMultiplicity_charpoly_signlessLap` gives the
+agreement for `Q` on any graph. **The clause's first three words still stand for the family**: the
+general polynomial needs the secular roots, and only this graph's are known.
 * **NO SECOND GRAPH.** The quadratic is solved because it is a quadratic. At `r` parts the secular
   equation has degree up to `r` and nothing here helps; this is one instance, not a method for the
   family (`ERRATUM 194`).

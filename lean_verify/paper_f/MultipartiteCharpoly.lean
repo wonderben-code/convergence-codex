@@ -58,6 +58,12 @@ computations behind it are `decide`.
   is an edgeless graph whose `0` is not simple.
 * **NO ROOT-MULTIPLICITY STATEMENT.** The exponents here are eigenspace dimensions. That they agree
   with `Polynomial.rootMultiplicity` is true and **not proved** — the previous unit fences it too.
+
+⚠ **PROVED 2026-09-12 (entry 159), AND THE PARAGRAPH IS KEPT AS WRITTEN** (`ERRATUM 94`).
+`HermitianRootMultiplicity.rootMultiplicity_charpoly` is the general statement, for every real
+Hermitian matrix, and `rootMultiplicity_lapMatrix_multi_zero`, `_top` and `_size` are these three
+exponents in particular. It is two library facts composed — Mathlib's root multiset and this
+estate's fibre count — which is why the clause was true for as long as it was.
 * **NO CLAIM THAT THIS FAMILY'S POLYNOMIAL IS NEW TO THE LITERATURE.** It is classical; what is
   new is that it is **proved here from the estate's own spectrum**, with no spectral theorem used
   beyond Mathlib's diagonalisation of a Hermitian matrix.
