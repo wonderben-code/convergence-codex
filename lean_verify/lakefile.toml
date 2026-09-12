@@ -541,4 +541,5 @@ roots = [
   "SignlessDoubleBracket",
   "SecularRootsOffPoles",
   "SignlessSharpBracket",
+  "SignlessDoublingFails",
 ]

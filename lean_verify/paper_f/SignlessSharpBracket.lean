@@ -46,6 +46,15 @@ accident of that graph; it is the only way the argument can fail.
   and is sharp; `K_{1,3,3}` fails the third and is **not** sharp, having `s = 2` and three
   eigenvalues rather than six — so the condition is doing real work at least once, and whether some
   graph violating it is nevertheless sharp is **open, not attempted** (`ERRATUM 246`).
+
+  ⚠ **HALF OF IT IS NECESSARY, PROVED THE SAME DAY, AND THE BULLET IS KEPT AS WRITTEN**
+  (`ERRATUM 94`). The third condition has two halves. `SignlessDoublingFails`: if some size is
+  **exactly** twice another then the pole `N − 2nᵢ` **is** the part value `N − nⱼ`, two of the three
+  families share a member, and the cover — each family of size `s` — is at most `3s − 1`, so
+  `#spec < 3s` with **no other hypothesis on the sizes at all**. `K_{1,1,2,2}` is the boundary case
+  exhibited. **The other half** — *no size is more than twice another* — **stays merely
+  sufficient**: `K_{1,3,3}` violates it and is not sharp, but for a **different reason**, a secular
+  root landing on a part value rather than a pole doing so.
 * **NO MULTIPLICITIES AND NO CHARACTERISTIC POLYNOMIAL.** `3s` counts **distinct** eigenvalues. The
   multiplicities are computed elsewhere in this chain and are not assembled into `N` here.
 * **NO ROOT VALUES.** The `s` secular roots are counted and located between poles, never evaluated —
