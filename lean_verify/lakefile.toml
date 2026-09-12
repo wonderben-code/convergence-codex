@@ -526,4 +526,5 @@ roots = [
   "SignlessSpectrumTrichotomy",
   "PawSignlessSpectrum",
   "SignlessSimpleFamilies",
+  "SignlessRegularSimple",
 ]
