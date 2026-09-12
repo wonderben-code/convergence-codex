@@ -539,4 +539,5 @@ roots = [
   "FlatModel",
   "SignlessBracketAttained",
   "SignlessDoubleBracket",
+  "SecularRootsOffPoles",
 ]

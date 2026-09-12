@@ -25,6 +25,15 @@ slot condition.
 exactly the number of distinct part sizes**, with membership characterised, not merely bounded.
 **`exists_eigenvalues_finset_exact`** — and each is an eigenvalue of `Q`.
 
+⚠ **AND IT DISCARDS THE CHARACTERISATION ON THE WAY OUT** (`ERRATUM 94`, `ERRATUM 521`,
+2026-09-12). `exists_roots_finset_exact` returns a **biconditional** — `μ ∈ R` exactly when
+`secularSum μ = −1` **and** `N − 2nₖ − μ ≠ 0` for every `k`, the second clause saying in as many
+words that `μ` is **not a pole** — and this theorem consumes both clauses to build an eigenvector
+and returns only *each is an eigenvalue*. **The disjointness of the roots from the poles was
+therefore unavailable downstream**, and `SignlessDoubleBracket` named it as work to be done.
+`SecularRootsOffPoles.exists_roots_finset_eigen` is this statement with the biconditional kept; its
+proof is these four lines.
+
 ## What is NOT here
 
 * **THIS IS NOT THE NUMBER OF EIGENVALUES OF `Q`, AND THE GAP IS CONCRETE.** Two families of
