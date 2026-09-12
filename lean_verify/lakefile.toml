@@ -546,4 +546,5 @@ roots = [
   "SecularPartValueAbove",
   "SignlessP1122Exact",
   "PartValueSingleton",
+  "SignlessSpectrumComplete",
 ]
