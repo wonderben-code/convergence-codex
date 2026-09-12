@@ -538,4 +538,5 @@ roots = [
   "DensityCover",
   "FlatModel",
   "SignlessBracketAttained",
+  "SignlessDoubleBracket",
 ]
