@@ -43,6 +43,16 @@ failed if the overlap had been miscounted**, and it does not fail.
   `HermitianRootMultiplicity` do it for the diamond through the characteristic polynomial, and the
   same route would work; it is not written. What §5 establishes is the arithmetic consistency
   check, not the completeness statement. Not attempted (`ERRATUM 246`).
+
+⚠ **THE ROUTE NAMED HERE IS THE WRONG ONE, AND THE PARAGRAPH IS KEPT AS WRITTEN** (`ERRATUM 94`,
+2026-09-12 entry 180). The inference **was** in Lean, and not through the characteristic
+polynomial: `HermitianFibreCount.mem_of_isEigenvalue_of_sum_eq` says for **every** real Hermitian
+matrix that a table of eigenspace dimensions adding to the dimension of the space leaves no room
+for another eigenvalue, `UnbalancedMultipartiteTable` cites it by name, and applying it here is
+three lines. `SignlessPart133Complete.isEigenvalue_signless_part133` closes this gap and
+`charpoly_signlessLap_part133` gives `(X − 1)(X − 4)^5(X − 9)`, the exponent `5` being this file's
+overlap made visible. **The bullet was right that the statement was missing from this file and
+wrong about what supplying it would cost.**
 * **THIS IS ONE GRAPH, NOT A CHARACTERISATION.** Nothing here says *when* a part value is a secular
   root — no condition on the part sizes, no count of how often it happens in a family. A single
   witness is what the hedge needed and all it gets.

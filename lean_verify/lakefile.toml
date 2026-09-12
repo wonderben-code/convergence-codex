@@ -527,4 +527,5 @@ roots = [
   "PawSignlessSpectrum",
   "SignlessSimpleFamilies",
   "SignlessRegularSimple",
+  "SignlessPart133Complete",
 ]
