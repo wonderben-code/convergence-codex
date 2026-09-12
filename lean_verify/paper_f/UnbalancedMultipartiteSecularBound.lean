@@ -59,6 +59,13 @@ there and said so; this one is tight.
   to be exactly a line, which is what makes `bound_sharp_diamond` an attainment rather than a
   coincidence. The general criterion is not attempted (`ERRATUM 246`); naming it is not a claim
   that it is short (`ERRATUM 194`).
+
+⚠ **THE CRITERION EXISTS FOR THE `T = ∅` CASE AS OF 2026-09-12 (entry 157), AND THE PARAGRAPH IS
+KEPT AS WRITTEN** (`ERRATUM 94`). `UnbalancedMultipartiteSecularEquation` proves that when no part
+satisfies `N − 2nᵢ = μ` the kernel is a line exactly when `∑ᵢ nᵢ/(N − 2nᵢ − μ) = −1` and trivial
+otherwise — a lower bound and an upper bound at once, with the witness written out. **The paragraph
+still stands where it was aimed**: this file's case is `T ≠ ∅`, where the criterion's hypothesis
+fails and only the `≤ |T| − 1` above is known, with the `|T| = 1` equality.
 * **NO CLOSED FORM AND NO CHARACTERISTIC POLYNOMIAL FOR `Q`**, inherited unchanged.
 * **NOTHING AT AN EMPTY PART**: `∀ i, Nonempty (V i)` is used exactly where the previous unit uses
   it, and for the same reason — `nᵢ₀ ≠ 0` is what turns the half-sized row into a statement about

@@ -65,6 +65,13 @@ equality here needs `∀ i, Nonempty (V i)`, so the two are incomparable, not ne
   case and that is all. What the reduction buys is that the question is now linear algebra in `r`
   unknowns rather than `N`; at a concrete family it is a computation, which is what `§9` is.
   Naming the reduction is not a claim that the general dimension is short (`ERRATUM 194`).
+
+⚠ **THE `§8` CASE IS NOW EXACT, NOT A BOUND, AS OF 2026-09-12 (entry 157)** (`ERRATUM 94`).
+`UnbalancedMultipartiteSecularEquation.finrank_ker_secularMap_eq_one` and `ker_secularMap_eq_bot`
+give `dim ker (secularMap μ) = 1` when `∑ᵢ nᵢ/(N − 2nᵢ − μ) = −1` and `0` otherwise, so under this
+paragraph's own hypothesis the dimension **is** determined. **What the paragraph still gets right**:
+deciding that equation is finding the roots of a polynomial of degree at most `r`, which no unit
+does in general, and at a half-sized value nothing here or there applies at all.
 * **THE `+ r` BOUND IS NOT SHARP, AND THIS FILE'S OWN WITNESS SHOWS IT.** At the diamond it reads
   `1 + 3 = 4` and the true multiplicity is `2`. The sharp statement is the split, not the bound.
 * **THE OTHER HALF OF THE `≤ 1` ARGUMENT IS NOT DONE, AND ITS PRICE IS NAMEABLE.** When some part

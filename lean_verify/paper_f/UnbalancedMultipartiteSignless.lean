@@ -63,6 +63,14 @@ stands**: nothing there or here solves the secular equation, and no closed form 
 dimension in terms of the part sizes is proved. What changed is that it is now a finite linear
 algebra question in `r` unknowns rather than a sentence about `N` of them.
 
+⚠ **AND THE EQUATION ITSELF IS A THEOREM AS OF 2026-09-12 (entry 157)** (`ERRATUM 94`).
+`UnbalancedMultipartiteSecularEquation.isEigenvalue_signless_iff_secular`: whenever no part
+satisfies `N − 2nᵢ = μ`, **`μ` is an eigenvalue of `Q` if and only if `∑ᵢ nᵢ/(N − 2nᵢ − μ) = −1`**,
+and the multiplicity is then `1`. So the clause's *last* sentence — no closed form for the kernel's
+dimension — is now false in that case and true only at the at-most-`r` values where a part is
+half-sized. **What still stands everywhere**: nothing solves the equation, which at a general
+family is a polynomial of degree at most `r`.
+
 * **NO UPPER BOUND ON `Q`'S MULTIPLICITY** at `N − n`. `L`'s is exact; `Q`'s eigenspace **contains**
   it and is not shown equal, which would need `Q`'s own characterisation.
 
