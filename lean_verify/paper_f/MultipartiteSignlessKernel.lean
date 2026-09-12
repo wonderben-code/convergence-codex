@@ -50,6 +50,14 @@ meet, after `K_{t,t}` and the three-vertex path.
   `UnbalancedMultipartiteSecularEquation.ker_secularMap_eq_bot` would need `secularSum 0 ≠ −1`,
   which is not established. **So §2 and §3 do not cover the same graphs**, and the agreement in §4
   is on their overlap. Not attempted (`ERRATUM 246`).
+
+⚠ **CLOSED 2026-09-12 (entry 181), AND THE PARAGRAPH IS KEPT AS WRITTEN** (`ERRATUM 94`).
+`SecularSumZero.secularSum_zero_ne_neg_one` establishes exactly the missing fact, at three or more
+nonempty parts with no half-sized part, and `ker_secularMap_zero_eq_bot` is the consequence this
+bullet asks for. **The proof is graph theory, not arithmetic**: the component count gives `Q`'s
+kernel as zero, the identification off the part values makes that the secular kernel, and a
+nontrivial secular kernel is what `secularSum 0 = −1` would force. `K_{1,3}`, where the sum **is**
+`−1`, shows the three-parts hypothesis is doing the work.
 * **NOTHING HERE IS ABOUT ANY EIGENVALUE BUT `0`.** What the secular chain has that the component
   count does not is every other eigenvalue, and this file adds nothing there.
 * **THE THREE COUNTS ARE STILL NOT ADDED**, as at entries 169, 170 and 171: no statement anywhere

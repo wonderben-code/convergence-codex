@@ -71,6 +71,14 @@ different graphs and the agreement is on their overlap.
 * **THE COMPLEMENT OF §2 IS OPEN.** When no part is half-sized `T` is empty and this file says
   nothing at all; `UnbalancedMultipartiteSecularEquation.ker_secularMap_eq_bot` would need
   `secularSum 0 ≠ −1`, which is not established here.
+
+⚠ **CLOSED 2026-09-12 (entry 181), AND THE PARAGRAPH IS KEPT AS WRITTEN** (`ERRATUM 94`).
+`SecularSumZero.secularSum_zero_ne_neg_one` establishes exactly the missing fact, at three or more
+nonempty parts with no half-sized part, and `ker_secularMap_zero_eq_bot` is the consequence this
+bullet asks for. **The proof is graph theory, not arithmetic**: the component count gives `Q`'s
+kernel as zero, the identification off the part values makes that the secular kernel, and a
+nontrivial secular kernel is what `secularSum 0 = −1` would force. `K_{1,3}`, where the sum **is**
+`−1`, shows the three-parts hypothesis is doing the work.
 * **THE THREE COUNTS ARE STILL NOT ADDED**, exactly as at entry 170: no statement anywhere combines
   the part values, the secular roots and the poles into a count of `Q`'s spectrum, and nothing
   rules out a part value coinciding with a secular root.
