@@ -48,6 +48,16 @@ finite — so the criterion decides the size as well as the finiteness.
   spectrum, not in terms of edges, so it decides nothing about a graph presented combinatorially.
   Two graphs are known to satisfy it (the path, the paw) and the edgeless graph on two or more
   vertices is known to fail it.
+
+⚠ **HALF OF THAT SENTENCE IS OVERTAKEN AS OF 2026-09-12 (entry 161), AND THE PARAGRAPH IS KEPT AS
+WRITTEN** (`ERRATUM 94`). `SimpleSpectrumCharpoly.finite_symmetryMatrices_iff_nodup` restates this
+file's own criterion as **the characteristic polynomial has no repeated root**, and a
+characteristic polynomial is determined by the adjacency matrix — so the criterion is no longer
+stated *in terms of the spectrum*. **The rest of the sentence stands, and the distinction matters**:
+it is still not stated *in terms of edges*. There is no single polynomial inequation in the entries,
+because that would be a discriminant and no polynomial discriminant exists in Mathlib or in this
+estate; and **no characterisation is claimed** — the item's two asks, a family on the satisfying
+side and a third necessary condition, are both still unmet.
 * **No infinite CARDINAL.** `Set.Infinite` says the set is not finite and nothing about which
   infinity; the symmetry group of a degenerate eigenvalue contains a circle, and that is not
   stated.

@@ -510,4 +510,5 @@ roots = [
   "UnbalancedMultipartiteSecularEquation",
   "UnbalancedMultipartiteDiamond",
   "HermitianRootMultiplicity",
+  "SimpleSpectrumCharpoly",
 ]
