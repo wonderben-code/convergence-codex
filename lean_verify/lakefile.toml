@@ -525,4 +525,5 @@ roots = [
   "SecularRootAtPartValue",
   "SignlessSpectrumTrichotomy",
   "PawSignlessSpectrum",
+  "SignlessSimpleFamilies",
 ]
