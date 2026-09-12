@@ -51,6 +51,12 @@ previous unit left uninstantiated**: at `r ≥ 2`, `t ≥ 2` the spectrum is not
   third exponent `rt − r` is zero and the third value stops being an eigenvalue, so the product has
   two factors and not three; the statement would need a different shape and is not given one. The
   three root-multiplicity statements are proved at the weaker `t ≥ 1`, where they still hold.
+
+⚠ **THE `t = 1` SHAPE IS GIVEN THE NEXT UNIT (2026-09-12, entry 163), AND THE PARAGRAPH IS KEPT AS
+WRITTEN** (`ERRATUM 94`). `MultipartiteSignlessSingleton.charpoly_signlessLap_singleton` is the
+two-factor product `(X − 2(r−1))·(X − (r−2))^{r−1}` for `r ≥ 2`, with the third value excluded
+because its multiplicity is **zero** rather than because it collides. **`r = 1` is still excluded**,
+there and here.
 * **NO CLAIM THAT THIS POLYNOMIAL IS NEW.** It is classical — `K_{r×t}` is a standard example — and
   what is new is only that it is proved here from the estate's own multiplicities, with no
   spectral theorem beyond Mathlib's diagonalisation of a Hermitian matrix.
