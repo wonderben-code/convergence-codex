@@ -502,4 +502,5 @@ roots = [
   "UnbalancedMultipartiteTable",
   "HermitianFibreCount",
   "HermitianCharpoly",
+  "MultipartiteCharpoly",
 ]

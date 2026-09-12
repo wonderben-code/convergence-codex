@@ -60,6 +60,13 @@ every eigenvalue, and how often each occurs.
   spanning argument. Exhaustion is proved directly by
   `UnbalancedMultipartite.eigenvalue_lapMatrix_unbal` instead, and the table is a second,
   independent computation that agrees with it rather than a second proof of it.
+
+⚠ **THE MISSING ASSEMBLY EXISTS AS OF 2026-09-12 (entry 147) AND THE PARAGRAPH IS KEPT AS WRITTEN**
+(`ERRATUM 94`). `HermitianFibreCount.mem_of_isEigenvalue_of_sum_eq` is the spanning step, for every
+Hermitian matrix — and it needs no orthogonality at all: multiplicities are fibre sizes, and fibres
+over distinct values are disjoint sets of indices. **The paragraph's last sentence still stands for
+this file**: the table here is not instantiated against that theorem, so this family's exhaustion
+still rests on its direct proof, and the instantiation is a reindexing nobody has done.
 * **NOTHING AT AN EMPTY PART.** Every statement here takes `∀ i, Nonempty (V i)`, and it is not
   decoration: an empty part is counted by `r` and contributes no vertex, so the lift stops being
   injective and `r − 1` stops being the dimension. The honest general statement would count the
@@ -71,6 +78,13 @@ every eigenvalue, and how often each occurs.
   enumerates, which `FieldEigenMultiplicity.finrank_eigenspace_eq_card_fibre` performs for the
   **propagator** — `lapMatrix` occurs nowhere in that file — and which nothing in this estate does
   for the Laplacian. Not attempted (`ERRATUM 246`).
+
+⚠ **CLOSED 2026-09-12 (entries 147–149), AND THE PARAGRAPH IS KEPT AS WRITTEN** (`ERRATUM 94`). The
+transfer it names is `HermitianFibreCount.finrank_eigenspace_hermitian_eq_card_fibre`, for every
+Hermitian matrix; `HermitianCharpoly.charpoly_eq_prod_pow_finrank` factorises the polynomial by
+multiplicity; and `MultipartiteCharpoly.charpoly_lapMatrix_multi` writes **this family's**
+polynomial out as `X · (X − N)^{r−1} · ∏ₙ (X − (N − n))^{kₙ(n−1)}`. **This paragraph named the
+obstacle correctly**, which is more than the five fences `ERRATUM 508` records.
 * **NO SIGNLESS LAPLACIAN.** `UnbalancedMultipartite.not_isEigenvector_one_signlessLap` still
   stands as the reason the cheap route there does not exist.
 * **NO WALL MOVES AND NO PUBLISHED TAG MOVES.** `W1`'s open part is still `OS0` and `OS4`, and
