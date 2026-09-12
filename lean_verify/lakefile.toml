@@ -533,4 +533,5 @@ roots = [
   "GraphIsoSignlessSpectrum",
   "ClusteringWitness",
   "VolumeDensity",
+  "FrameChange",
 ]

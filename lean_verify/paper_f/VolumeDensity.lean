@@ -58,6 +58,15 @@ missing for `∫ S dvol` is now *exactly* measure theory — patching local dens
   **partition of unity** to glue them. Neither is here. **Named, not attempted, no cost claimed**
   (`ERRATUM 246`), and `ScalarOrder`'s fence and `WALLS` §W5's twentieth addendum both stand
   unaltered on everything they say about the integral.
+
+  ⚠ **THE TRANSFORMATION LAW IS PROVED THE SAME DAY AND THIS BULLET IS KEPT AS WRITTEN**
+  (`ERRATUM 94`, 2026-09-12). `FrameChange`: `gramMatrix_changeOf` (`g ↦ A g Aᵀ`),
+  `density_changeOf` (`√det g ↦ |det A| · √det g`), and — the half this bullet did not name —
+  `changeOf_transition`, that **any** second family on a frame's domain **is** such a change, its
+  transition matrix being the frame's own coefficient functional, so `density_eq_transition` holds
+  with no hypothesis on the second family at all. **The rest of this bullet stands**: the partition
+  of unity is not here, there is still no measure, and `ScalarOrder`'s fence and `WALLS` §W5's
+  twentieth addendum are unaltered on everything they say about the integral.
 * **THE DENSITY IS FRAME-DEPENDENT AND THIS FILE DOES NOT SAY OTHERWISE.** Every statement carries
   its frame. `density s` is not an invariant of the metric and must not be read as one until the
   transformation law exists.
