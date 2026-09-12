@@ -35,6 +35,18 @@ different route: at `K₄` minus an edge it gives `1·1 + (2 − 1) = 2`, which 
   size — `K_{t,t}`. So the complete bipartite graph on equal parts is **not** covered, which is
   worth naming because it is the smallest family anyone would test. Not attempted
   (`ERRATUM 246`).
+
+⚠ **CLOSED 2026-09-12 (entry 171), AND THE PARAGRAPH IS KEPT AS WRITTEN** (`ERRATUM 94`).
+`SecularPoleNotPartValue` covers `n = N`, and **neither exclusion was needed**: `n = 0` is vacuous
+under nonemptiness (`ne_zero_of_pole`), and at `n = N` the side condition that replaces the split
+holds automatically (`card_ne_of_eq_card_sigma`), so `finrank_signless_kernel_half_part` gives the
+multiplicity of `0` as `|T| − 1` with nothing added. `finrank_signless_balanced_two_zero` is
+`K_{t,t}`, and `balanced_two_agrees` checks it against
+`LaplacianSignlessKernel.card_bipartiteComponent_eq_finrank_ker`, **which already held that value
+by another route** — so the estimate above was right that the family was uncovered here and wrong
+to suggest the number was unknown. **This paragraph's other two fences stand**: the three counts
+are still not added, and there are still no root values.
+
 * **THE THREE COUNTS ARE STILL NOT ADDED.** Entry 169's gap was in two halves and only one closes
   here: the multiplicity at a pole is now known, but **no statement anywhere combines the part
   values, the secular roots and the poles into a count of `Q`'s spectrum**, and nothing rules out a
