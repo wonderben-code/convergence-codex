@@ -75,6 +75,19 @@ different graphs and the agreement is on their overlap.
   the part values, the secular roots and the poles into a count of `Q`'s spectrum, and nothing
   rules out a part value coinciding with a secular root.
 
+⚠ **NARROWED, NOT CLOSED, 2026-09-12 (entry 174), AND THE PARAGRAPH IS KEPT AS WRITTEN**
+(`ERRATUM 94`). `SignlessSpectrumTrichotomy.eigenvalue_trichotomy` supplies what the addition was
+missing — **there is nothing else**: every eigenvalue of `Q` is a part value, a pole, or a secular
+root, which entry 157's criterion says as a contrapositive and nobody had read that way. With it,
+`exists_spectrum_bracket` puts the number of **distinct** eigenvalues between `s` and `3s` for `s`
+the number of distinct part sizes, and `pole_isEigen_iff` makes the pole family decidable — a pole
+off the part values is an eigenvalue exactly when two parts have half its `n`. **Entry 174 does
+not write the exact count**, and the factor of three is real: at `K_{1,3,3}` one part value **is** a
+secular root (`SecularRootAtPartValue.part_value_eq_secular_root`) and the other **is not**
+(`SignlessSpectrumTrichotomy.secularSum_part133_six_ne`), so the overlap is neither absent nor
+uniform, and nothing characterises when it occurs. So this paragraph is narrowed to a bracket, not
+answered.
+
 ⚠ **CLOSED 2026-09-12 (entry 173), AND THE PARAGRAPH IS KEPT AS WRITTEN** (`ERRATUM 94`).
 `SecularRootAtPartValue.part_value_eq_secular_root` settles it the other way: **nothing rules the
 coincidence out because it happens.** At `K_{1,3,3}` the part value `N − 3 = 4` satisfies the
