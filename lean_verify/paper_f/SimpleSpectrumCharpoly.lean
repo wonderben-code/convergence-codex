@@ -54,6 +54,13 @@ restated in it: no repeated root **iff** two parts, both of size at most two, on
   no graph put through it: the field-symmetry consequence is the *ordinary* Laplacian's
   (`FieldSymmetryFinite` has no signless analogue), and this chain's two computed signless spectra
   are not run through it here.
+
+⚠ **A FAMILY IS PUT THROUGH IT THE NEXT UNIT (2026-09-12, entry 162), AND THE PARAGRAPH IS KEPT AS
+WRITTEN** (`ERRATUM 94`). `MultipartiteSignlessCharpoly.not_nodup_roots_charpoly_signlessLap_multi`
+uses this criterion to show the equipartite family's signless spectrum is **not** simple, for
+`r ≥ 2` and `t ≥ 2`. **The rest of the clause stands**: that is a negative instance, there is still
+no graph on the satisfying side, and `FieldSymmetryFinite` still has no signless analogue, so the
+signless criterion still carries no consequence about a symmetry group.
 * **NOTHING OVER `ℂ`**, and no wall moves and no published tag moves. `W1`'s open part is still
   `OS0` and `OS4`, and `OS1` in its continuum sense.
 

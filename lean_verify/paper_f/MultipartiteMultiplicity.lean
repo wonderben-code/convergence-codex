@@ -63,6 +63,15 @@ was genuinely missing was the **grouping** — the product over the index type i
 explicit factorisation with multiplicities as exponents needed the dimension-to-fibre bridge, now
 `HermitianCharpoly.charpoly_eq_prod_pow_finrank`. **The absence itself was correctly declared**:
 this file writes no characteristic polynomial.
+
+⚠ **AND THE ABSENCE IS CLOSED AS OF 2026-09-12 (entry 162)** (`ERRATUM 94`).
+`MultipartiteSignlessCharpoly.charpoly_signlessLap_multi` writes it out for `r ≥ 2` and `t ≥ 2`:
+`(X − 2(r−1)t)·(X − (r−2)t)^{r−1}·(X − (r−1)t)^{rt−r}`, the exponents being **this file's own three
+dimension counts**. The only step that file adds is the eigenvalue **set** — that the image of the
+enumeration is exactly those three values — for which it needs
+`MultipartiteSpectrum.eigenvalue_signlessLap_multi` in one direction and these three counts being
+non-zero in the other. `rootMultiplicity_signlessLap_multi_top`, `_mid` and `_part` say the
+exponents are root multiplicities.
 * **NOTHING AT `r = 1`**, where the graph is edgeless and two of the three characterisations are
   false — the header says which and why.
 * **NOTHING UNBALANCED.** Parts of different sizes change the degree per part and the row identity
