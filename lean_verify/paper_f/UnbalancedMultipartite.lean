@@ -91,6 +91,14 @@ a size-blind reading of `§4`, and `path_example_not_eigenvalue_two` proves it i
   the eigenvalue **set**, and says nothing about how often each occurs.
 * **NO CHARACTERISTIC POLYNOMIAL**, as in the four units before this one: that step needs
   diagonalisability and these arguments avoid it.
+⚠ **THE REASON IN THE PARAGRAPH ABOVE IS FALSE AND THE PARAGRAPH IS KEPT AS WRITTEN**
+(`ERRATUM 94`, `ERRATUM 508`, 2026-09-12). It does not matter what this file's argument avoids:
+`Matrix.IsHermitian.charpoly_eq` supplies the diagonalisation for **every** Hermitian matrix, and
+this estate had been citing it since 2026-08-26 (`HermitianSpectralMapping`, `RayleighPow`). What
+was genuinely missing was the **grouping** — the product over the index type is free, and the
+explicit factorisation with multiplicities as exponents needed the dimension-to-fibre bridge, now
+`HermitianCharpoly.charpoly_eq_prod_pow_finrank`. **The absence itself was correctly declared**:
+this file writes no characteristic polynomial.
 * **NOTHING ABOUT FIELD SYMMETRIES.** `CompleteFieldSymmetry` and `MultipartiteEigenspace` compose
   their two-dimensional eigenspaces with `FieldSymmetryFinite.finite_iff_lapMatrix`; that
   composition needs the dimensions above and so is not available here.

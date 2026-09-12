@@ -55,6 +55,14 @@ split and this file now proves again by dimension — the same double coverage
   offered (`ERRATUM 246`).
 * **NO CHARACTERISTIC POLYNOMIAL**, as in the three units before this one: that step needs
   diagonalisability and these arguments avoid it.
+⚠ **THE REASON IN THE PARAGRAPH ABOVE IS FALSE AND THE PARAGRAPH IS KEPT AS WRITTEN**
+(`ERRATUM 94`, `ERRATUM 508`, 2026-09-12). It does not matter what this file's argument avoids:
+`Matrix.IsHermitian.charpoly_eq` supplies the diagonalisation for **every** Hermitian matrix, and
+this estate had been citing it since 2026-08-26 (`HermitianSpectralMapping`, `RayleighPow`). What
+was genuinely missing was the **grouping** — the product over the index type is free, and the
+explicit factorisation with multiplicities as exponents needed the dimension-to-fibre bridge, now
+`HermitianCharpoly.charpoly_eq_prod_pow_finrank`. **The absence itself was correctly declared**:
+this file writes no characteristic polynomial.
 * **NOTHING AT `r = 1`**, where the graph is edgeless and two of the three characterisations are
   false — the header says which and why.
 * **NOTHING UNBALANCED.** Parts of different sizes change the degree per part and the row identity

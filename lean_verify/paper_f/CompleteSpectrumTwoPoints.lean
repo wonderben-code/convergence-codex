@@ -66,6 +66,14 @@ is `{2n − 2, (n − 2)^(n−1)}` with nothing left over.
 * **NO CHARACTERISTIC POLYNOMIAL.** `(X − (2n − 2))(X − (n − 2))^(n−1)` follows from the dimension
   count for a symmetric matrix and is **not** written: that step needs diagonalisability, which is
   exactly what the argument above avoids.
+⚠ **THE REASON IN THE PARAGRAPH ABOVE IS FALSE AND THE PARAGRAPH IS KEPT AS WRITTEN**
+(`ERRATUM 94`, `ERRATUM 508`, 2026-09-12). It does not matter what this file's argument avoids:
+`Matrix.IsHermitian.charpoly_eq` supplies the diagonalisation for **every** Hermitian matrix, and
+this estate had been citing it since 2026-08-26 (`HermitianSpectralMapping`, `RayleighPow`). What
+was genuinely missing was the **grouping** — the product over the index type is free, and the
+explicit factorisation with multiplicities as exponents needed the dimension-to-fibre bridge, now
+`HermitianCharpoly.charpoly_eq_prod_pow_finrank`. **The absence itself was correctly declared**:
+this file writes no characteristic polynomial.
 * **NOTHING FOR THE CYCLE OR THE TORUS.** Their completeness fences stand: the case split here is
   special to `K_n`, where the off-diagonal part is the all-ones matrix and has rank one. Nothing
   here generalises to a graph whose adjacency matrix is not `J − I`.

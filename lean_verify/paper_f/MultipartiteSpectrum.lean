@@ -73,6 +73,14 @@ a reminder that an exhaustion theorem lists candidates, not attained values.
   carries it.
 * **NO CHARACTERISTIC POLYNOMIAL.** As in the previous unit, that step needs diagonalisability,
   which this argument avoids.
+⚠ **THE REASON IN THE PARAGRAPH ABOVE IS FALSE AND THE PARAGRAPH IS KEPT AS WRITTEN**
+(`ERRATUM 94`, `ERRATUM 508`, 2026-09-12). It does not matter what this file's argument avoids:
+`Matrix.IsHermitian.charpoly_eq` supplies the diagonalisation for **every** Hermitian matrix, and
+this estate had been citing it since 2026-08-26 (`HermitianSpectralMapping`, `RayleighPow`). What
+was genuinely missing was the **grouping** — the product over the index type is free, and the
+explicit factorisation with multiplicities as exponents needed the dimension-to-fibre bridge, now
+`HermitianCharpoly.charpoly_eq_prod_pow_finrank`. **The absence itself was correctly declared**:
+this file writes no characteristic polynomial.
 * **NO NON-VACUITY FOR THE THIRD FAMILY.** That a vector with every part sum zero and not
   identically zero exists needs `t ≥ 2`, and **it is not proved below** — at `t = 1` the family is
   trivial, which is exactly the `K_n` case the check above describes. * **NO CONNECTEDNESS.** The
