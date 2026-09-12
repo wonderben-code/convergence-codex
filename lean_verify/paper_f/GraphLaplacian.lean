@@ -260,6 +260,12 @@ noncomputable def gaussianField (m : ℝ) : Measure (EuclideanSpace ℝ V) :=
 instance isGaussian_gaussianField (m : ℝ) : IsGaussian (gaussianField G m) :=
   isGaussian_multivariateGaussian
 
+/-- **THE FIELD'S MEAN, AS A VECTOR, IS ZERO.** Named beside the definition rather than derived
+where it is wanted: `gaussianField` is `multivariateGaussian 0 _`, and centring is a property of
+that `0` whatever the covariance turns out to be. -/
+theorem integral_id_gaussianField (m : ℝ) : ∫ ω, ω ∂(gaussianField G m) = 0 :=
+  integral_id_multivariateGaussian
+
 omit [DecidableEq V] in
 private theorem coord_eq_inner (a : V) (ω : EuclideanSpace ℝ V) :
     ω a = ⟪EuclideanSpace.basisFun V ℝ a, ω⟫ :=
@@ -283,8 +289,7 @@ theorem integral_eval (m : ℝ) (p : V) : ∫ ω, ω p ∂(gaussianField G m) = 
   have hid : Integrable (fun ω : EuclideanSpace ℝ V => ω) (gaussianField G m) :=
     IsGaussian.integrable_id
   rw [integral_inner hid]
-  have hzero : ∫ ω, ω ∂(gaussianField G m) = 0 := integral_id_multivariateGaussian
-  rw [hzero, inner_zero_right]
+  rw [integral_id_gaussianField, inner_zero_right]
 
 /-- **THE TWO-POINT FUNCTION IS THE GRAPH'S GREEN FUNCTION.** -/
 theorem twoPoint {m : ℝ} (hm : m ≠ 0) (p q : V) :

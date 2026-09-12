@@ -97,7 +97,7 @@ the covariance turns out to be. -/
 theorem integral_pair (f : EuclideanSpace ℝ V) :
     (gaussianField G m)[pair f] = 0 := by
   rw [ContinuousLinearMap.integral_comp_id_comm IsGaussian.integrable_id (pair f),
-    gaussianField, integral_id_multivariateGaussian]
+    GraphLaplacian.integral_id_gaussianField]
   simp
 
 /-- **THE VARIANCE IS THE GREEN QUADRATIC FORM.** -/

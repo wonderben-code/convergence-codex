@@ -18,6 +18,11 @@ derives it inline as a `have`, and `LatticeGeneratingFunctional.integral_pair` r
 sites do the same for `latticeField` and `fieldMeasure`, which are different measures). What was
 named before was the mean of a **coordinate** (`integral_eval`) and of a **pairing**
 (`integral_pair`), never of the point itself.
+⚠ **AND IT IS NAMED BESIDE THE DEFINITION FROM 2026-09-12 (entry 185), SO THE PARAGRAPH ABOVE IS
+KEPT AS WRITTEN** (`ERRATUM 94`). `GraphLaplacian.integral_id_gaussianField` is the fact where
+`gaussianField` lives; the declaration below is now a one-line pointer at it and the two inline
+derivations the paragraph counts are gone. **The count was right and the placement was wrong**,
+which is what the watchlist item filed about this file said.
 
 **`integral_affMap`** — the mean of an affine image is the image of the mean, by
 `ContinuousLinearMap.integral_comp_comm` against `IsGaussian.integrable_id`.
@@ -112,7 +117,7 @@ theorem measurable_affMap (T : EuclideanSpace ℝ V →L[ℝ] EuclideanSpace ℝ
 
 theorem integral_id_gaussianField (G : SimpleGraph V) [DecidableRel G.Adj] (m : ℝ) :
     ∫ x, x ∂(gaussianField G m) = 0 :=
-  integral_id_multivariateGaussian
+  GraphLaplacian.integral_id_gaussianField G m
 
 theorem integral_affMap (T : EuclideanSpace ℝ V →L[ℝ] EuclideanSpace ℝ V)
     (b : EuclideanSpace ℝ V) :
