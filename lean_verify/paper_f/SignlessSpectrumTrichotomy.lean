@@ -49,8 +49,18 @@ than one eigenvalue at a time.
   part value is `2`, the pole is `0`, and `4` is neither, so it is a secular root; the three
   families are non-empty and disjoint and `bracket_attained` gives `S.card = 3`. **The smallest
   balanced graph is the tight one**, which is why this chain's earlier witnesses missed it: they are
-  all unbalanced and all slack. `spectrum_B22` names the spectrum, `{0, 2, 4}`. **What stays open is
-  the stronger question**: whether every `s` admits a tight graph.
+  all unbalanced and all slack. `spectrum_B22` names the spectrum, `{0, 2, 4}`.
+
+  ⚠ **AND THE STRONGER QUESTION IS ANSWERED TOO, LATER THE SAME DAY.**
+  `SignlessSharpBracket.card_spectrum_eq_three_mul`: with every part of at least two vertices, every
+  size occurring at least twice, and **every size less than twice every other**, `Q` has **exactly
+  `3s`** distinct eigenvalues at every such graph. The third condition is what makes a part value
+  never a secular root — at `μ = N − nⱼ` the terms at `nᵢ = nⱼ` are `−1` each and every other term
+  is `≤ 0` exactly when `nⱼ < 2nᵢ`, so the sum is `≤ −2`. **`K_{1,3,3}` is the case where that
+  fails**, its size-`1` part contributing `+1`, which is why
+  `SecularRootAtPartValue.part_value_eq_secular_root` exists. `card_spectrum_P2233` is the worked
+  case: `K_{2,2,3,3}` has exactly six. **What stays open**: whether the third condition is
+  necessary.
 * **NOTHING HERE IS A MULTIPLICITY.** The bracket counts **distinct** eigenvalues. The
   multiplicities are what entries 156, 157, 170 and 171 compute, and adding them to `N` at a general
   graph is a separate statement that does not appear.
