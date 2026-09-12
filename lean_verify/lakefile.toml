@@ -513,4 +513,5 @@ roots = [
   "SimpleSpectrumCharpoly",
   "MultipartiteSignlessCharpoly",
   "MultipartiteSignlessSingleton",
+  "SecularRootLocation",
 ]

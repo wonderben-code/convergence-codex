@@ -47,6 +47,15 @@ list complete.
   is finding the roots of a polynomial of degree at most `r`, and nothing here does that in
   general. At the graph of `§8`–`§11` it is a quadratic and is solved; that is one family, not a
   method. Naming the criterion is not a claim that solving it is short (`ERRATUM 194`).
+
+⚠ **THAT CLAUSE IS STILL TRUE AND IS NOT WHAT IT SOUNDS LIKE** (2026-09-12, entry 164;
+`ERRATUM 94`'s convention used here for a clarification rather than a correction).
+`SecularRootLocation` does **not** solve the equation and does not contradict a word above — and it
+still gets a root out of it: above the largest pole every term is negative and increasing, two
+explicit values bracket `−1`, and the intermediate value theorem does the rest, so there is exactly
+one root there and it is an eigenvalue of `Q`. **The reading this paragraph invites — that nothing
+general is available until the polynomial is solved — is the one to avoid.** What remains genuinely
+out of reach is the root's *value*, and the count of the roots between consecutive poles.
 * **NOTHING NEW AT A HALF-SIZED VALUE.** Every statement here needs `N − 2nᵢ ≠ μ` for every `i`;
   at the at-most-`r` values where that fails, what is known is what the two previous units left:
   `≤ |T| − 1` with the `|T| = 1` equality, and `finrank_ker_secular_diamond`'s exact computation at
