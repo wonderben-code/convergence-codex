@@ -534,4 +534,5 @@ roots = [
   "ClusteringWitness",
   "VolumeDensity",
   "FrameChange",
+  "TransitionRegular",
 ]

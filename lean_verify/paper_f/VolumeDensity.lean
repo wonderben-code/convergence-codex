@@ -187,16 +187,30 @@ theorem contMDiffAt_gramMatrix_entry {s : ι → Π x : M, TangentSpace I x} {x 
       (le_self_add.trans le_self_add)
   exact ContMDiffAt.inner_bundle (E := (TangentSpace I : M → Type _)) (hs i) (hs j)
 
+omit [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 1 M] [IsManifold I 2 M]
+  [IsManifold I 3 M] [IsManifold I ((k : WithTop ℕ∞) + 1 + 1 + 1) M]
+  [RiemannianBundle (fun (x : M) ↦ TangentSpace I x)]
+  [IsContMDiffRiemannianBundle I ((k : WithTop ℕ∞) + 1 + 1) E (TangentSpace I : M → Type _)]
+  [IsContMDiffRiemannianBundle I 2 E (TangentSpace I : M → Type _)] in
+/-- **THE DETERMINANT OF A MATRIX-VALUED FUNCTION WITH `C^k` ENTRIES IS `C^k`.** The pinned library
+has no such lemma; `Matrix.det_apply'` makes the determinant a finite sum of finite products, so
+`ContMDiffAt.sum` and `ContMDiffAt.prod` do the whole of it. Nothing about a metric, a frame or a
+Gram matrix appears — this is the general fact, and the Gram case below is its instance. -/
+theorem contMDiffAt_det [Fintype ι] [DecidableEq ι] {A : M → Matrix ι ι ℝ} {x : M}
+    (hA : ∀ i j, ContMDiffAt I 𝓘(ℝ) k (fun y ↦ A y i j) x) :
+    ContMDiffAt I 𝓘(ℝ) k (fun y ↦ Matrix.det (A y)) x := by
+  simp only [Matrix.det_apply']
+  refine ContMDiffAt.sum fun σ _ ↦ contMDiffAt_const.mul ?_
+  exact ContMDiffAt.prod fun i _ ↦ hA (σ i) i
+
 omit [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M] [IsManifold I 3 M]
   [IsManifold I ((k : WithTop ℕ∞) + 1 + 1 + 1) M]
   [IsContMDiffRiemannianBundle I 2 E (TangentSpace I : M → Type _)] in
 theorem contMDiffAt_det_gramMatrix [Fintype ι] [DecidableEq ι]
     {s : ι → Π x : M, TangentSpace I x} {x : M}
     (hs : ∀ i, CMDiffAt (k : WithTop ℕ∞) (T% (s i)) x) :
-    ContMDiffAt I 𝓘(ℝ) k (fun y ↦ Matrix.det (gramMatrix s y)) x := by
-  simp only [Matrix.det_apply']
-  refine ContMDiffAt.sum fun σ _ ↦ contMDiffAt_const.mul ?_
-  exact ContMDiffAt.prod fun i _ ↦ contMDiffAt_gramMatrix_entry hs (σ i) i
+    ContMDiffAt I 𝓘(ℝ) k (fun y ↦ Matrix.det (gramMatrix s y)) x :=
+  contMDiffAt_det fun i j ↦ contMDiffAt_gramMatrix_entry hs i j
 
 omit [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M] [IsManifold I 3 M]
   [IsManifold I ((k : WithTop ℕ∞) + 1 + 1 + 1) M]

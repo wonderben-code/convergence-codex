@@ -131,16 +131,20 @@ theorem contMDiffAt_gram {s : ι → Π x : M, TangentSpace I x} {x : M}
 
 variable [FiniteDimensional ℝ E]
 
-omit [CompleteSpace E] [Fintype ι] [DecidableEq ι] [IsManifold I 2 M]
+omit [CompleteSpace E] [FiniteDimensional ℝ E] [Fintype ι] [DecidableEq ι] [IsManifold I 2 M]
   [IsManifold I ((k : WithTop ℕ∞) + 1 + 1) M] in
-/-- **THE GRAM-INVERSE LEG AT ORDER `k`**: a section whose pairings with a `C^m` local frame
-(`m ≥ k`) are `C^k` at a point is `C^k` there. -/
-theorem contMDiffAt_of_contMDiffAt_inner [Finite ι] {m : WithTop ℕ∞}
-    (hm : (k : WithTop ℕ∞) ≤ m) {s : ι → Π x : M, TangentSpace I x} {u : Set M}
-    (hs : IsLocalFrameOn I E m s u) {x : M} (hu : u ∈ 𝓝 x)
-    {t : Π x : M, TangentSpace I x}
-    (ht : ∀ j, ContMDiffAt I 𝓘(ℝ) k (fun y ↦ ⟪t y, s j y⟫) x) :
-    CMDiffAt (k : WithTop ℕ∞) (T% t) x := by
+/-- **THE COEFFICIENTS OF A SECTION IN A LOCAL FRAME ARE `C^k`** as soon as its pairings with the
+frame are.
+
+**Extracted 2026-09-12 (entry 47) from the proof of `contMDiffAt_of_contMDiffAt_inner` below, where
+it had been an unnamed `have` since this file was written** (`ERRATUM 517`). That theorem needs the
+coefficients only to feed `IsLocalFrameOn.contMDiffAt_of_coeff`; the coefficients themselves are
+what a change of frame is made of, and nothing downstream could reach them. -/
+theorem contMDiffAt_coeff [Finite ι] {m : WithTop ℕ∞} (hm : (k : WithTop ℕ∞) ≤ m)
+    {s : ι → Π x : M, TangentSpace I x} {u : Set M} (hs : IsLocalFrameOn I E m s u) {x : M}
+    (hu : u ∈ 𝓝 x) {t : Π x : M, TangentSpace I x}
+    (ht : ∀ j, ContMDiffAt I 𝓘(ℝ) k (fun y ↦ ⟪t y, s j y⟫) x) (i : ι) :
+    ContMDiffAt I 𝓘(ℝ) k (fun y ↦ hs.coeff i y (t y)) x := by
   cases nonempty_fintype ι
   classical
   have hsk : IsLocalFrameOn I E (k : WithTop ℕ∞) s u :=
@@ -156,10 +160,26 @@ theorem contMDiffAt_of_contMDiffAt_inner [Finite ι] {m : WithTop ℕ∞}
   have hb : ContMDiffAt I 𝓘(ℝ, ι → ℝ) k (fun y j ↦ ⟪t y, s j y⟫) x := contMDiffAt_pi_space.2 ht
   have hc : ContMDiffAt I 𝓘(ℝ, ι → ℝ) k
       (fun y ↦ Ring.inverse (gram s y) (fun j ↦ ⟪t y, s j y⟫)) x := hinv.clm_apply hb
-  refine hsk.contMDiffAt_of_coeff (fun i ↦ ?_) hu
   refine (contMDiffAt_pi_space.1 hc i).congr_of_eventuallyEq ?_
   filter_upwards [hu] with y hy
-  exact congrFun (coeff_eq_inverse_gram hsk t hy) i
+  exact congrFun (coeff_eq_inverse_gram hs t hy) i
+
+omit [CompleteSpace E] [Fintype ι] [DecidableEq ι] [IsManifold I 2 M]
+  [IsManifold I ((k : WithTop ℕ∞) + 1 + 1) M] in
+/-- **THE GRAM-INVERSE LEG AT ORDER `k`**: a section whose pairings with a `C^m` local frame
+(`m ≥ k`) are `C^k` at a point is `C^k` there. -/
+theorem contMDiffAt_of_contMDiffAt_inner [Finite ι] {m : WithTop ℕ∞}
+    (hm : (k : WithTop ℕ∞) ≤ m) {s : ι → Π x : M, TangentSpace I x} {u : Set M}
+    (hs : IsLocalFrameOn I E m s u) {x : M} (hu : u ∈ 𝓝 x)
+    {t : Π x : M, TangentSpace I x}
+    (ht : ∀ j, ContMDiffAt I 𝓘(ℝ) k (fun y ↦ ⟪t y, s j y⟫) x) :
+    CMDiffAt (k : WithTop ℕ∞) (T% t) x := by
+  classical
+  have hsk : IsLocalFrameOn I E (k : WithTop ℕ∞) s u :=
+    { linearIndependent := hs.linearIndependent
+      generating := hs.generating
+      contMDiffOn := fun i ↦ (hs.contMDiffOn i).of_le hm }
+  exact hsk.contMDiffAt_of_coeff (fun i ↦ contMDiffAt_coeff le_rfl hsk hu ht i) hu
 
 end Frame
 

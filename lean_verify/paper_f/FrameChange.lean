@@ -49,6 +49,14 @@ attempted**."* This file is that law, and the half of it that was not named.
   That `y ↦ A y` is `C^k` when both families are `C^k` frames is true by
   `FrameRegular.coeff_eq_inverse_gram` and `LeviCivitaOrder.contMDiffAt_gram`, and is **not proved
   here** — the gluing argument would want it and this file does not reach the gluing argument.
+
+  ⚠ **CLOSED THE SAME DAY, AND THE BULLET IS KEPT AS WRITTEN** (`ERRATUM 94`, `ERRATUM 517`).
+  `TransitionRegular.contMDiffAt_transition_entry` and `contMDiffAt_abs_det_transition`: the entries
+  are `C^k`, the determinant is `C^k`, and the Jacobian `|det A|` is a **positive** `C^k` function.
+  **The bullet named the right two ingredients and was wrong about the distance**: the assembly was
+  already inside `LeviCivitaOrder.contMDiffAt_of_contMDiffAt_inner`'s proof as an unnamed `have`,
+  and is now `LeviCivitaOrder.contMDiffAt_coeff`. The rest of the bullet stands: this file still
+  does not reach the gluing argument.
 * **NO ORIENTATION AND NO SIGNED VOLUME.** `|det A|` is what a measure needs; a volume *form* would
   need `det A` and a consistent orientation, and neither appears.
 * **NO CHART STATEMENT.** The law is stated for two families on one frame's domain, not for two
