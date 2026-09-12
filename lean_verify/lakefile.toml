@@ -544,4 +544,5 @@ roots = [
   "SignlessDoublingFails",
   "SecularPositivePart",
   "SecularPartValueAbove",
+  "SignlessP1122Exact",
 ]
