@@ -47,6 +47,22 @@ exact multiplicity on a family with a free parameter per part, and — with
 `UnbalancedMultipartite`'s eigenvalue set — a complete description of this Laplacian's spectrum
 **with** multiplicities at every eigenvalue of the form `N − n`.
 
+⚠ **THE "FIRST" IN THE PARAGRAPH ABOVE WAS PUBLISHED BEFORE IT WAS COUNTED, AND THE COUNT SAYS LESS
+THAN THE SENTENCE SUGGESTS. The paragraph is kept as written** (`ERRATUM 94`, `ERRATUM 507`). Four
+families had an exact multiplicity of a non-zero Laplacian eigenvalue before this one — the cycle
+(`CycleMultiplicityCount.finrank_eigenspace_interior_eq_two`), the complete graph
+(`LaplacianMultiplicityBound.finrank_top_eq`), two fixed unions of triangles
+(`LaplacianTriangleUnion.finrank_twoTriangles_eq`) and the equipartite family
+(`MultipartiteEigenspace.finrank_ker_partForm`) — and the box and torus have one for **every**
+eigenvalue at once (`BoxEigenspaceDimension.finrank_eigenspace_lap_box`,
+`TorusRealMultiplicity.finrank_eigenspace_massive_real`), which is more than this file proves. **The
+sentence's qualifier is what carries it**: those families are indexed by one or two natural numbers
+and this one by an arbitrary finite family of finite types. **The distinction actually worth
+stating** is that `k·(n − 1)` is a **closed form**, where the box and torus formulas reduce the
+multiplicity to a fibre cardinality this estate does not evaluate above dimension one —
+`TorusEightNotTight` says exactly that, and `BoxLapMultiplicity` bounds those cardinalities below
+rather than computing them.
+
 **`finrank_eigenspace_size_of_unique`, `finrank_eigenspace_size_of_two`** — **SO THE TWIN BOUND'S
 DEFICIT IS MEASURED.** At `k = 1` the dimension is `n − 1`: the twin-class bound of the previous
 unit is **exact**. At `k = 2` it is `(n − 1) + (n − 1)`: `LaplacianTwoClasses`' two-class bound is

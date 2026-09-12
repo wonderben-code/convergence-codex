@@ -499,4 +499,5 @@ roots = [
   "UnbalancedMultipartite",
   "UnbalancedMultipartiteTwins",
   "UnbalancedMultipartiteFibre",
+  "UnbalancedMultipartiteTable",
 ]
