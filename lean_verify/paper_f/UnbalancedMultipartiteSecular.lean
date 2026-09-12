@@ -73,6 +73,16 @@ equality here needs `∀ i, Nonempty (V i)`, so the two are incomparable, not ne
   and would make the bound sharp there. It is not proved: it needs a second rank-nullity over the
   subtype `{i // 2nᵢ ≠ n}`, of the kind `§3`–`§6` of `UnbalancedMultipartiteFibre` do for vertices.
   Naming it is not a claim that writing it is short (`ERRATUM 194`).
+
+⚠ **CLOSED 2026-09-12 (entry 156), AND THE PARAGRAPH IS KEPT AS WRITTEN** (`ERRATUM 94`).
+`UnbalancedMultipartiteSecularBound` is that second rank-nullity, over exactly the subtype named
+here: `finrank_ker_secularMap_le_half` bounds the kernel by `|T| − 1`,
+`finrank_signless_size_le_half` bounds the multiplicity by `kₙ(n − 1) + |T| − 1`, and
+`bound_sharp_diamond` shows it **is** sharp at the diamond, as the paragraph predicted. It also
+found something the paragraph did not: at `|T| = 1` the bound is `kₙ(n − 1)` **exactly**, so a
+single half-sized part means `Q` gains no eigenvector over `L` at all
+(`finrank_signless_size_eq_of_unique_half`). **What the paragraph above still gets right**: the
+`+ r` bound of `§7` is the loose one, and the `T = ∅` case's `+ 1` is still not shown attained.
 * **NO CHARACTERISTIC POLYNOMIAL FOR `Q`**, which needs the eigenvalue list, which needs the roots
   of the secular determinant. Not attempted (`ERRATUM 246`).
 * **THE NON-EMPTY-PART HYPOTHESIS CANNOT SIMPLY BE DROPPED**, and the reason is sharper than a

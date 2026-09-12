@@ -506,4 +506,5 @@ roots = [
   "MultipartiteSimpleSpectrum",
   "UnbalancedMultipartiteSignless",
   "UnbalancedMultipartiteSecular",
+  "UnbalancedMultipartiteSecularBound",
 ]
