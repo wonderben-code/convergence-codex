@@ -518,4 +518,5 @@ roots = [
   "SecularRootBounds",
   "SecularRootGap",
   "SecularRootCount",
+  "SecularRootExact",
 ]
