@@ -503,4 +503,5 @@ roots = [
   "HermitianFibreCount",
   "HermitianCharpoly",
   "MultipartiteCharpoly",
+  "MultipartiteSimpleSpectrum",
 ]
