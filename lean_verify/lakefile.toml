@@ -515,4 +515,5 @@ roots = [
   "MultipartiteSignlessSingleton",
   "SecularRootLocation",
   "SecularRootSeparation",
+  "SecularRootBounds",
 ]
