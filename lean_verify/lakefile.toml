@@ -500,4 +500,5 @@ roots = [
   "UnbalancedMultipartiteTwins",
   "UnbalancedMultipartiteFibre",
   "UnbalancedMultipartiteTable",
+  "HermitianFibreCount",
 ]
