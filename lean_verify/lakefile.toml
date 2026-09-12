@@ -530,4 +530,5 @@ roots = [
   "SignlessPart133Complete",
   "SecularSumZero",
   "SecularSumZeroGap",
+  "GraphIsoSignlessSpectrum",
 ]

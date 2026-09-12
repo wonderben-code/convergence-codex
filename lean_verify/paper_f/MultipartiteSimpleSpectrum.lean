@@ -46,6 +46,14 @@ size at most two, and at least one of size one.
   never built a graph isomorphism, and `UnbalancedMultipartite` declined the same identification for
   the same reason. What is machine-checked is the classification by **size profile**; that those
   profiles name the paths is the sentence a reader supplies.
+
+⚠ **BOTH ISOMORPHISMS ARE BUILT 2026-09-12 (entry 183), AND THE PARAGRAPH IS KEPT AS WRITTEN**
+(`ERRATUM 94`). `GraphIsoSignlessSpectrum.pathIso` and `.edgeIso` identify the `(1,2)` and `(1,1)`
+profiles with `pathGraph 3` and `pathGraph 2`, both by `decide`; the sentence a reader supplied is
+now a definition. **The estimate above was right that this chain had never built a graph
+isomorphism and right that the identification is classical** — it was wrong only in leaving it to
+the reader, which cost about twenty lines. **Nothing about this file's classification changes**,
+and it still adds no new graph to the satisfying list.
 * **NO NEW NECESSARY CONDITION.** The watchlist item asks for a family on the satisfying side **or**
   a third necessary condition excluding a graph the two known ones admit. This unit answers the
   first with a negative and contributes **nothing** to the second: every failure here is already
