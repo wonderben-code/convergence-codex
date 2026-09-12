@@ -39,6 +39,21 @@ functions under `E(d)` |
 `LatticeReflectionPositive.reflectionPositive_lattice` | positivity of the continuum OS pairing |
 | clustering | **not bundled — see below** | — | — |
 
+⚠ **THE FOURTH ROW IS STALE, AND WAS STALE THE DAY IT WAS WRITTEN. KEPT AS WRITTEN**
+(`ERRATUM 94`, `ERRATUM 515`, 2026-09-12). `LatticeClustering.ClusteringFinVol` bundles clustering,
+with `gaussianField_clusteringFinVol` its instance at every finite graph — and `LatticeClustering`
+landed **2026-08-28**, the same day as this file. The `⚠` twenty lines below corrects the *reason*
+given for the omission and never touches the *row*, so the file built so that the naming could not
+drift carried a "not bundled" against a bundled property for fifteen days. The row now reads:
+**clustering | `LatticeClustering.ClusteringFinVol` | `LatticeClustering`,
+`LatticeFieldFactorises.indepFun_pair_of_separated` | asymptotic clustering of the continuum
+Schwinger functions**. `LatticeOSPackage` cannot import `LatticeClustering`, which imports it, so
+the bundle of all four lives there and not here — see
+`LatticeClustering.gaussianField_shadows_clustered`.
+**AND THE THIRD COLUMN'S ENTRY IS NOT THE WHOLE STORY**: `ClusteringWitness` (2026-09-12) proves
+the bundled property **empty on every connected graph at the level of site observables** — no two
+sites of the box have independent field values — and exhibits the graph where it is not empty.
+
 ## What is proved
 
 > **`RegularFinVol G m`** — the generating functional is bounded by `exp(‖f‖²/(2m²))` at every `f`,

@@ -81,6 +81,14 @@ theorem gaussianField_clusteringFinVol (hm : m ≠ 0) : ClusteringFinVol G m :=
 
 /-! ## 2. And where it has content -/
 
+/-! ⚠ **THIS HEADING PROMISES WHAT THE SECTION DOES NOT DELIVER, AND IS KEPT AS WRITTEN**
+(`ERRATUM 94`, `ERRATUM 516`, 2026-09-12). Both theorems below say where the property has **no**
+content. `ClusteringWitness` supplies the missing half — the property is non-empty exactly on a
+disconnected graph (`exists_indepFun_eval_iff_not_preconnected`), with a non-degenerate instance
+exhibited on `GreenLargeMass.stepGraph` — and sharpens this section on the way: on a connected
+graph **no two site observables are ever independent**, which is stronger than every instance
+being degenerate. -/
+
 omit [Fintype V] [DecidableEq V] [DecidableRel G.Adj] in
 /-- **ON A CONNECTED GRAPH THE STATEMENT IS EMPTY.** Every vertex is reachable from `p`, so the
 second hypothesis forces `g = 0` and the independence asserted is independence from a constant.
