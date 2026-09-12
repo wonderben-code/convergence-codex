@@ -508,4 +508,5 @@ roots = [
   "UnbalancedMultipartiteSecular",
   "UnbalancedMultipartiteSecularBound",
   "UnbalancedMultipartiteSecularEquation",
+  "UnbalancedMultipartiteDiamond",
 ]
