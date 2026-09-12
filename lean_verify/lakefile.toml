@@ -524,4 +524,5 @@ roots = [
   "MultipartiteSignlessKernel",
   "SecularRootAtPartValue",
   "SignlessSpectrumTrichotomy",
+  "PawSignlessSpectrum",
 ]
