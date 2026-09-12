@@ -43,6 +43,14 @@ than one eigenvalue at a time.
 * **`3s` IS NOT CLAIMED TO BE ATTAINED.** No graph is exhibited where the eigenvalues number `3s`,
   and the `K_{1,3,3}` of entry 173 has `s = 2` with three eigenvalues, comfortably inside the
   bracket. Whether the upper bound is ever tight is open.
+
+  ⚠ **CLOSED THE SAME DAY, AND THE PARAGRAPH IS KEPT AS WRITTEN** (`ERRATUM 94`).
+  `SignlessBracketAttained`: at `K_{2,2}` — one distinct part size, so `s = 1` and `3s = 3` — the
+  part value is `2`, the pole is `0`, and `4` is neither, so it is a secular root; the three
+  families are non-empty and disjoint and `bracket_attained` gives `S.card = 3`. **The smallest
+  balanced graph is the tight one**, which is why this chain's earlier witnesses missed it: they are
+  all unbalanced and all slack. `spectrum_B22` names the spectrum, `{0, 2, 4}`. **What stays open is
+  the stronger question**: whether every `s` admits a tight graph.
 * **NOTHING HERE IS A MULTIPLICITY.** The bracket counts **distinct** eigenvalues. The
   multiplicities are what entries 156, 157, 170 and 171 compute, and adding them to `N` at a general
   graph is a separate statement that does not appear.
