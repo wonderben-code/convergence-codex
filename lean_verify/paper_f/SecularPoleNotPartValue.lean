@@ -58,6 +58,16 @@ not is every eigenvalue other than `0`.
   parts nonempty, hence `0` at three or more parts. **So the cross-check in §4 is at two parts
   only**, and the `r ≥ 3` side, where both routes should say `0` and a disagreement would be most
   visible, is unchecked. Not attempted (`ERRATUM 246`).
+
+⚠ **CLOSED 2026-09-12 (entry 172), AND THE PARAGRAPH IS KEPT AS WRITTEN** (`ERRATUM 94`).
+`MultipartiteSignlessKernel` proves `card_half_le_two` by the arithmetic this bullet describes,
+`card_half_le_one_of_three_parts` past two parts, and hence the kernel `≤ 1` everywhere and `0` at
+three parts or more; `three_parts_agrees` is the `r ≥ 3` side of the cross-check, and
+`diamond_agrees_zero` shows the hypothesis is inhabited at `K₄` minus an edge. **The estimate above
+was right about the argument and right that it was short.** The bullet below it still stands: the
+statements needing a half-sized part are still silent without one, so the two routes cover
+different graphs and the agreement is on their overlap.
+
 * **THE COMPLEMENT OF §2 IS OPEN.** When no part is half-sized `T` is empty and this file says
   nothing at all; `UnbalancedMultipartiteSecularEquation.ker_secularMap_eq_bot` would need
   `secularSum 0 ≠ −1`, which is not established here.
