@@ -54,6 +54,17 @@ for both.
   count of `4`, and at `K_{1,3,3}` it gives `4` against `3`. The slack is the root family, counted
   at its maximum `s` because nothing here bounds the number of secular roots better. Improving
   that is the obvious next question and is **not attempted** (`ERRATUM 246`).
+
+  ⚠ **THE SENTENCE ABOVE IS FALSE AT BOTH OF ITS OWN EXAMPLES, AND IS KEPT AS WRITTEN**
+  (`ERRATUM 94`, `ERRATUM 526`, 2026-09-12 entry 63). The root family is at its **maximum** at
+  both graphs and is not the slack at either. The bound is `|P| + |Q| + |R|` and the spectrum is
+  their **union**, so the gap is the **overlap**. At `K_{1,1,2,2}` (`N = 6`) `P = {4}`,
+  `Q = {2, 4}`, `R = {6 ± 2√2}` and `4` lies in **both `P` and `Q`**. At `K_{1,3,3}` (`N = 7`)
+  `P = {4}`, `Q = {1}`, the secular equation is `μ² − 13μ + 36 = 0` with roots `{9, 4}`, and `4`
+  lies in **both `P` and `R`**. Both overlaps have chain support already —
+  `SignlessDoublingFails.partValues_inter_poles_nonempty` for the first,
+  `SecularRootAtPartValue.part_value_eq_secular_root` for the second. `SignlessOverlapBound` takes
+  the first and sharpens the bound by one, exactly at `K_{1,1,2,2}`; the second is still open.
 * **NO MULTIPLICITIES.** `isEigen_iff` is about the eigenvalue **set**; the dimension theorems it
   is built from carry multiplicities and this statement discards them.
 * **NO DECISION PROCEDURE.** The third clause quantifies over the reals, so the criterion is not a
