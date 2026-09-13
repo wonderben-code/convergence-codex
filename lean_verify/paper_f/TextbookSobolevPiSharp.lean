@@ -28,7 +28,24 @@
     statement is the stronger, and **that nesting is not proved here**: it needs
     `MvPolynomial` evaluation to be `ContDiff` and `MemLp`, neither of which is
     in Mathlib or this estate, so it is a unit of plumbing and not a remark
-    (`ERRATUM 246`). The false clause:
+    (`ERRATUM 246`).
+
+    ⚠ **THE PRECEDING REPAIR IS ITSELF WRONG IN ONE CLAUSE AND IS KEPT AS
+    WRITTEN** (`ERRATUM 94`, `ERRATUM 548`). *"so this file's statement is the
+    stronger"* is **backwards**. Both theorems read *if `c` serves every member
+    of the class then `1 ≤ c`*; polynomials sit INSIDE the textbook class, so
+    quantifying over the textbook class is the STRONGER hypothesis, and a
+    theorem with a stronger hypothesis is the WEAKER theorem.
+    `no_better_constant_sobolevWeakPi` is a **corollary** of
+    `no_better_constant_MV`, not a strengthening of it. The nesting the clause
+    said is not proved here is now proved — `MvPolynomialSobolev` (2026-09-13)
+    has the `ContDiff` and `MemLp` halves and the membership
+    `sobolevWeakPi_eval`, and derives this file's conclusion from the
+    polynomial one in `no_better_constant_sobolevWeakPi_of_MV`. **This file's
+    own proof is not withdrawn**: it proves the same conclusion independently,
+    from `coord_sobolevWeakPi` and the estate's own attainment, with no
+    polynomial anywhere. What was wrong was one word about which of two
+    theorems implies the other. The false clause:
     **In n dimensions the estate does not have it in any class**, and
     `poincare_sharp_var`'s own docstring asserts it in prose — *"so the
     constant is attained and no smaller one can work"* — with nothing
