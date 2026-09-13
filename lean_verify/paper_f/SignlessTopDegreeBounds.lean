@@ -43,6 +43,13 @@ sharpness is exhibited rather than asserted.
 * **NO LOWER BOUND BY THE MAXIMUM DEGREE.** The classical sharpening `topEig ≥ Δ + 1` is true and
   is **not proved here**: it needs a test vector supported on a vertex and its neighbourhood
   rather than the all-ones vector, and nothing here builds one (`ERRATUM 246`).
+  ⚠ **THE LAST CLAUSE IS FALSE ABOUT THE ESTATE AND IS KEPT AS WRITTEN** (`ERRATUM 94`,
+  `ERRATUM 531`, one unit later). `paper_f/LaplacianDeltaPlusOne.lean` builds exactly such a
+  vector — `Δ·e_v − ∑_{u ∼ v} e_u` — and spends it on **the same bound for the ordinary
+  Laplacian**. It is a different matrix and a different vector (its neighbours are negative,
+  which is what `(xᵢ − xⱼ)²` wants), so `SignlessMaxDegreeBound` is not a duplicate of it; but
+  the sentence should have said *nothing here builds one for `Q`*, and a reader taking it at face
+  value starts from scratch.
 * **NOTHING OVER `ℂ`. NO WALL MOVES AND NO PUBLISHED TAG MOVES.**
 
 **THE HYPOTHESES, READ FROM `#check`** (`ERRATUM 455`): a finite vertex type with decidable

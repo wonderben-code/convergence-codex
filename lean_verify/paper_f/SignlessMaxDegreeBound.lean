@@ -15,6 +15,15 @@ each neighbour and `0` elsewhere. Rayleigh's easy half turns it into
 one that makes the two sides cancel**, which is why the bound comes out clean rather than
 asymptotic.
 
+**AND THE ESTATE HAD THE SAME ARGUMENT FOR THE OTHER LAPLACIAN, WHICH THAT FENCE DID NOT KNOW**
+(`ERRATUM 531`). `paper_f/LaplacianDeltaPlusOne.lean` proves `Δ + 1 ≤ ‖G.lapMatrix ℝ‖` with the
+vector `Δ·e_v − ∑_{u ∼ v} e_u`, and its header states the method — *every term of the Laplacian's
+edge sum is a square, so throwing terms away is free*. **This is not a duplicate of it and the
+differences are load-bearing**: a different matrix, whose spectra genuinely differ off the
+two-colourable case (`SignlessColourableNecessary`); a different vector, its neighbours **positive
+and small** because `(xᵢ + xⱼ)²` wants that where `(xᵢ − xⱼ)²` wants them negative; and a bound at
+the maximum degree rather than at each vertex.
+
 **AND THE TWO LOWER BOUNDS ARE INCOMPARABLE, WHICH IS WHY BOTH ARE KEPT.** On a `k`-regular graph
 the average bound gives `2k`, which the previous file showed is exact, while this one gives only
 `k + 1`. On a star `K_{1,n}` the average bound gives under `4` and this one gives `n + 1`.
