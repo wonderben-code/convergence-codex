@@ -554,4 +554,5 @@ roots = [
   "SignlessP1122Charpoly",
   "BoxLapMultiplicityExact",
   "SignlessConjugateMultiplicity",
+  "SignlessColourableNecessary",
 ]
