@@ -556,4 +556,5 @@ roots = [
   "SignlessConjugateMultiplicity",
   "SignlessColourableNecessary",
   "SignlessSeparationNonzero",
+  "SignlessExcessBothWays",
 ]
