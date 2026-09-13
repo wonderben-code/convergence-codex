@@ -93,19 +93,25 @@ theorem finrank_lap_odd_cycle_four_eq_zero (M : ℕ) :
     ⟨fun x => nuR_ne_four_odd M x.1 x.2⟩
   exact Nat.card_of_isEmpty
 
-/-- And at `0` the eigenspace is a line — the ground state, at zero mass.
-**NOT by connectivity**, though the cycle is connected and
+/-- And at `0` the eigenspace is a line, by connectivity.
+⚠ **THE FIRST VERSION OF THIS PROOF WENT THE LONG WAY ROUND AND BLAMED THE WRONG
+THING, AND THE ORIGINAL DOCSTRING IS KEPT BELOW** (`ERRATUM 94`, `ERRATUM 543`).
+The connectivity route did time out — because the proof wrote `rw [zero_smul,
+sub_zero]` FIRST, normalising the goal away from
+`finrank_ker_lapMatrix_zero_connected`'s own statement, which already carries
+`- (0 : ℝ) • LinearMap.id`. The `exact` then had to unify the two spellings, and
+that is what looped. Deleting the rewrite makes it one line. The original:
+*"**NOT by connectivity**, though the cycle is connected and
 `FieldSimpleConnected.finrank_ker_lapMatrix_zero_connected` says so: that route
 timed out at `whnf` past a million heartbeats on the `torusGraph` decidability
 instance. `TorusRealMultiplicity.ground_state_simple_real` is the same fact for
-this family, already proved through the fibre count, and it costs nothing. -/
+this family, already proved through the fibre count, and it costs nothing."* -/
 theorem finrank_lap_odd_cycle_zero_eq_one (M : ℕ) :
     Module.finrank ℝ (LinearMap.ker
       (Matrix.toLin' ((torusGraph 1 (2 * M + 3)).lapMatrix ℝ)
         - (0 : ℝ) • LinearMap.id)) = 1 := by
-  rw [← FieldMassNecessity.massive_zero (G := torusGraph 1 (2 * M + 3))]
-  have h := ground_state_simple_real (d := 1) (2 * M) (0 : ℝ)
-  rwa [show ((0 : ℝ) ^ 2) = (0 : ℝ) from by norm_num] at h
+  exact FieldSimpleConnected.finrank_ker_lapMatrix_zero_connected
+    (FieldSimpleConnected.torus_connected 1 (2 * M))
 
 /-! ## 2. So regularity alone does not give the symmetry -/
 
