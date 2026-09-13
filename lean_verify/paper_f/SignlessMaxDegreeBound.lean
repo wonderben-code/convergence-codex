@@ -48,7 +48,7 @@ least twice any one of its rows. Stated in general because the graph plays no pa
 > went with it, having had no other consumer. The main theorem is unchanged, and so is its proof
 > below the first line.
 
-**`maxDegree_add_one_le_topEigenen`** — **THE FILE'S THEOREM**, on any finite graph with an edge.
+**`maxDegree_add_one_le_topEigen`** — **THE FILE'S THEOREM**, on any finite graph with an edge.
 
 ## What is NOT here
 
@@ -151,7 +151,7 @@ theorem dot_testVec (v : V) {d : ℝ} (hd : d ≠ 0) :
 
 /-! ## 4. So the top of the spectrum clears the maximum degree by one -/
 
-theorem maxDegree_add_one_le_topEigenen [Nonempty V] (hΔ : 0 < G.maxDegree) :
+theorem maxDegree_add_one_le_topEigen [Nonempty V] (hΔ : 0 < G.maxDegree) :
     (G.maxDegree : ℝ) + 1
       ≤ topEigen (LaplacianSignlessDefinite.signlessLap_isHermitian G) := by
   classical
