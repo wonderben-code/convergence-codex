@@ -562,4 +562,5 @@ roots = [
   "HermitianFlatSpectrum",
   "SignlessFlatWitness",
   "SignlessFlatConnected",
+  "SignlessPrimitive",
 ]
