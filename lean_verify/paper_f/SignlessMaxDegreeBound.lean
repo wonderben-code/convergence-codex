@@ -5,13 +5,13 @@ import SignlessTopDegreeBounds
 
 **THE SHARPENING `SignlessTopDegreeBounds` NAMED AND DECLINED.** That file bracketed the top of
 `Q`'s spectrum between twice the average degree and twice the maximum, and wrote: *the classical
-sharpening `topEig ≥ Δ + 1` is true and is not proved here — it needs a test vector supported on a
+sharpening `topEigen ≥ Δ + 1` is true and is not proved here — it needs a test vector supported on a
 vertex and its neighbourhood rather than the all-ones vector, and nothing here builds one.* **This
 builds one.**
 
 **THE VECTOR IS THE STAR AT A VERTEX OF MAXIMUM DEGREE**, weighted `1` at the centre and `1/Δ` at
 each neighbour and `0` elsewhere. Rayleigh's easy half turns it into
-`Δ(1 + 1/Δ)² ≤ topEig · (1 + 1/Δ)`, and `Δ(1 + 1/Δ) = Δ + 1` exactly — **the weight `1/Δ` is the
+`Δ(1 + 1/Δ)² ≤ topEigen · (1 + 1/Δ)`, and `Δ(1 + 1/Δ) = Δ + 1` exactly — **the weight `1/Δ` is the
 one that makes the two sides cancel**, which is why the bound comes out clean rather than
 asymptotic.
 
@@ -38,11 +38,17 @@ least twice any one of its rows. Stated in general because the graph plays no pa
 
 **`testVec`, `testVec_self`, `testVec_adj`, `dot_testVec`** — the star vector and its norm.
 
-**`inner_eq_dot`, `quadForm_le_topEig`** — Rayleigh's easy half in `dotProduct` form. The estate
-had it only on `EuclideanSpace`, and **the bridge is what made the previous file's lower bound
-awkward and this one's possible**.
+> ⚠ **A BULLET STOOD HERE CLAIMING A BRIDGE THE ESTATE ALREADY HAD, AND BOTH ITS DECLARATIONS ARE
+> DELETED** (`ERRATUM 532`, 2026-09-13). It read: *`inner_eq_dot`, `quadForm_le_topEig` — Rayleigh's
+> easy half in `dotProduct` form. The estate had it only on `EuclideanSpace`, and the bridge is what
+> made the previous file's lower bound awkward and this one's possible.* **The second sentence is
+> false.** `RayleighVariational.quadForm_le_topEigen` reads `x ⬝ᵥ A *ᵥ x ≤ topEigen hA * (x ⬝ᵥ x)`
+> — the `dotProduct` form, at this pin, proved 2026-09-03 — and it was in this file's import
+> closure. `quadForm_le_topEigen` is deleted and its one use now calls that file; `inner_eq_dot`
+> went with it, having had no other consumer. The main theorem is unchanged, and so is its proof
+> below the first line.
 
-**`maxDegree_add_one_le_topEig`** — **THE FILE'S THEOREM**, on any finite graph with an edge.
+**`maxDegree_add_one_le_topEigenen`** — **THE FILE'S THEOREM**, on any finite graph with an edge.
 
 ## What is NOT here
 
@@ -64,28 +70,9 @@ Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry in this file, 0 new
 namespace SignlessMaxDegreeBound
 
 open Matrix SimpleGraph LaplacianSignless RayleighMatrix SignlessPerronSimple
+open RayleighVariational
 
 /-! ## 1. Two facts about matrices, with no graph in them -/
-
-section Rayleigh
-variable {V : Type*} [Fintype V] [DecidableEq V]
-
-omit [DecidableEq V] in
-theorem inner_eq_dot (A : Matrix V V ℝ) (x : V → ℝ) :
-    (inner ℝ (WithLp.toLp 2 x) (RayleighMatrix.mv A (WithLp.toLp 2 x)) : ℝ)
-      = x ⬝ᵥ (A *ᵥ x) := by
-  rw [RayleighMatrix.inner_expand]
-  simp only [RayleighMatrix.mv_row, dotProduct, Matrix.mulVec]
-
-theorem quadForm_le_topEig (A : Matrix V V ℝ) (hA : A.IsHermitian) [Nonempty V] (x : V → ℝ) :
-    x ⬝ᵥ (A *ᵥ x) ≤ topEig hA * (x ⬝ᵥ x) := by
-  have h := RayleighMatrix.quadForm_le_of_eigenvalues_le hA (le_topEig hA) (WithLp.toLp 2 x)
-  rw [inner_eq_dot] at h
-  have hxx : (inner ℝ (WithLp.toLp 2 x) (WithLp.toLp 2 x) : ℝ) = x ⬝ᵥ x := by
-    rw [RayleighMatrix.inner_expand]; simp [dotProduct]
-  rwa [hxx] at h
-
-end Rayleigh
 
 section Matrices
 variable {V : Type*} [Fintype V]
@@ -164,9 +151,9 @@ theorem dot_testVec (v : V) {d : ℝ} (hd : d ≠ 0) :
 
 /-! ## 4. So the top of the spectrum clears the maximum degree by one -/
 
-theorem maxDegree_add_one_le_topEig [Nonempty V] (hΔ : 0 < G.maxDegree) :
+theorem maxDegree_add_one_le_topEigenen [Nonempty V] (hΔ : 0 < G.maxDegree) :
     (G.maxDegree : ℝ) + 1
-      ≤ topEig (LaplacianSignlessDefinite.signlessLap_isHermitian G) := by
+      ≤ topEigen (LaplacianSignlessDefinite.signlessLap_isHermitian G) := by
   classical
   obtain ⟨v, hv⟩ := G.exists_maximal_degree_vertex
   set d : ℝ := (G.maxDegree : ℝ) with hddef
@@ -195,14 +182,14 @@ theorem maxDegree_add_one_le_topEig [Nonempty V] (hΔ : 0 < G.maxDegree) :
   have hnorm : x ⬝ᵥ x = 1 + 1 / d := by
     rw [hx, dot_testVec G v hd.ne', hdegv]
     field_simp
-  have hray := quadForm_le_topEig (signlessLap G)
+  have hray := RayleighVariational.quadForm_le_topEigen
     (LaplacianSignlessDefinite.signlessLap_isHermitian G) x
   rw [hnorm] at hray
   have hstep : d * (1 + 1 / d) ^ 2
-      ≤ topEig (LaplacianSignlessDefinite.signlessLap_isHermitian G) * (1 + 1 / d) :=
+      ≤ topEigen (LaplacianSignlessDefinite.signlessLap_isHermitian G) * (1 + 1 / d) :=
     le_trans hquad hray
   have hpos : (0 : ℝ) < 1 + 1 / d := by positivity
-  have hkey : d * (1 + 1 / d) ≤ topEig (LaplacianSignlessDefinite.signlessLap_isHermitian G) := by
+  have hkey : d * (1 + 1 / d) ≤ topEigen (LaplacianSignlessDefinite.signlessLap_isHermitian G) := by
     refine le_of_mul_le_mul_right ?_ hpos
     nlinarith [hstep]
   have : d * (1 + 1 / d) = d + 1 := by field_simp

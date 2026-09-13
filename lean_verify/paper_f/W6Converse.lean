@@ -97,8 +97,11 @@ A single bump, rescaled. `χ = 1` on `[-1,1]` and vanishes outside
 `χ_n′` is uniformly `O(1/n)`, which is where the error term dies.
 -/
 
-/-- The fixed bump. -/
-def chi : ContDiffBump (0 : ℝ) := ⟨1, 2, one_pos, one_lt_two⟩
+/-- The fixed bump.
+
+**`SteinSmoothTest.unitBump`, NOT A SECOND ONE** (`ERRATUM 532`, 2026-09-13). Same type, same four
+arguments, and this file imports that one. Found by `dupbody_scan`. -/
+def chi : ContDiffBump (0 : ℝ) := SteinSmoothTest.unitBump
 
 /-- Its underlying function. -/
 def chiF : ℝ → ℝ := chi

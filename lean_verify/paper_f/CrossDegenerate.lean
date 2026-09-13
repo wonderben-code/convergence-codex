@@ -116,8 +116,12 @@ section Box
 
 variable {d n : ℕ} {m : ℝ}
 
-/-- The corner of the box. -/
-def corner (d n : ℕ) (hn : 0 < n) : BoxGraph.Site d n := fun _ => ⟨0, hn⟩
+/-- The corner of the box.
+
+**`BoxGraph.zeroSite`, NOT A SECOND ONE** (`ERRATUM 532`, 2026-09-13). Same type and same value;
+that file takes `n` implicitly and this one explicitly, which is the whole of the difference and
+is why `dupname_scan` -- which compares signatures -- could not see it. -/
+def corner (d n : ℕ) (hn : 0 < n) : BoxGraph.Site d n := BoxGraph.zeroSite d hn
 
 theorem corner_mem_lowerHalf (i : Fin d) (hn : 0 < n) :
     corner d n hn ∈ lowerHalf i n := by
@@ -127,7 +131,7 @@ theorem corner_mem_lowerHalf (i : Fin d) (hn : 0 < n) :
 
 theorem corner_not_innermost (i : Fin d) (hn : 0 < n) (h4 : 4 ≤ n) :
     ¬ (2 * ((corner d n hn) i).val + 2 = n) := by
-  simp only [corner]
+  simp only [corner, BoxGraph.zeroSite]
   omega
 
 /-- **THE CROSS-COUPLING FORM OF THE BOX VANISHES AT THE CORNER.** -/

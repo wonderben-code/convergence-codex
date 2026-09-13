@@ -128,10 +128,15 @@ theorem continuous_coe_inv :
 
 /-! ## 3. The bundled map SL₂(ℂ) → O(1,3), and its continuity -/
 
-/-- `Λ`, landing in the group O(1,3) rather than in GL₄(ℝ). Built from the estate's existing
-`lorentzSOplusHom` rather than rebuilt. -/
-noncomputable def toO13 : SL2C →* O13 :=
-  (Subgroup.inclusion SOplus_le_O13).comp lorentzSOplusHom
+/-- `Λ`, landing in the group O(1,3) rather than in GL₄(ℝ).
+
+**AND IT IS `LorentzGroup.lorentzHom`, WHICH IS THAT COMPOSITION ALREADY MADE** (`ERRATUM 532`,
+2026-09-13). The docstring here used to end *built from the estate's existing `lorentzSOplusHom`
+rather than rebuilt*, which was half the check: the ingredient was reused and the finished map was
+not. `LorentzGroup` declares `lorentzHom : SL2C →* O13 := (Subgroup.inclusion SOplus_le_O13).comp
+lorentzSOplusHom`, the same type and the same body, and this file imports it. Found by
+`dupbody_scan`. `mat_toO13` and `continuous_toO13` are unchanged and still close by `rfl`. -/
+noncomputable def toO13 : SL2C →* O13 := lorentzHom
 
 theorem mat_toO13 (A : SL2C) :
     mat (toO13 A) = lorentzMat (A : Matrix (Fin 2) (Fin 2) ℂ) := rfl

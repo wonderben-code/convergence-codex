@@ -458,9 +458,15 @@ theorem phase7_all_os_genuine (C : CascadeData) :
    boltzmannDensity_pos⟩
 
 /-- Phase 7: The derived cascade verifies all OS axioms with COMPUTED gap.
-    No axioms assumed — everything flows from Λ > 0 and Λ_QCD > 0. -/
+    No axioms assumed — everything flows from Λ > 0 and Λ_QCD > 0.
+    **AND IT IS `phase7_os2_derived_cascade`, NOT A THIRD COPY OF IT** (`ERRATUM 532`,
+    2026-09-13). Three files built the same `CascadeData` from the same five arguments,
+    each under its own name; `dupbody_scan` found the triple. The theorems below are
+    unchanged and still close by `rfl`, and they now say what they always meant: **one**
+    derived cascade satisfies OS2, the compact OS axioms and cluster decomposition,
+    rather than three cascades that happen to be equal. -/
 noncomputable def phase7_os_derived_cascade : CascadeData :=
-  CascadeData.mk_derived 1 one_pos 0.5 (by norm_num) (by norm_num)
+  phase7_os2_derived_cascade
 
 theorem phase7_os_derived_gap_computed :
     phase7_os_derived_cascade.internal_gap = 2 / 1 ^ 2 := rfl

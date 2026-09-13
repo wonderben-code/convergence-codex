@@ -19,19 +19,19 @@ the degree and the off-diagonal one for each neighbour. The lower one is Rayleig
 inequality into a statement about the *sum* of the degrees.
 
 **AND THEY PINCH.** On a `k`-regular graph the maximum degree is `k` and the degree sum is `nk`, so
-both bounds read `2k` and **`topEig = 2k` exactly**. So neither bound can be improved, and the
+both bounds read `2k` and **`topEigen = 2k` exactly**. So neither bound can be improved, and the
 sharpness is exhibited rather than asserted.
 
 ## What is proved
 
 **`rowSum_signlessLap`** — the row sum of `Q` at `i` is `2 · deg i`. Not previously stated.
 
-**`topEig_le_two_maxDegree`** — the top of the spectrum is at most twice the maximum degree.
+**`topEigen_le_two_maxDegree`** — the top of the spectrum is at most twice the maximum degree.
 
-**`sum_degree_le_topEig_mul_card`** — and at least the average of twice the degrees:
-`2 ∑ᵢ deg i ≤ topEig · |V|`, stated without division.
+**`sum_degree_le_topEigen_mul_card`** — and at least the average of twice the degrees:
+`2 ∑ᵢ deg i ≤ topEigen · |V|`, stated without division.
 
-**`topEig_regular`** — **on a `k`-regular graph `topEig = 2k`**, so both bounds are attained.
+**`topEigen_regular`** — **on a `k`-regular graph `topEigen = 2k`**, so both bounds are attained.
 
 ## What is NOT here
 
@@ -40,7 +40,7 @@ sharpness is exhibited rather than asserted.
 * **NO CONNECTEDNESS ANYWHERE, and that is worth noticing.** Neither bound needs it — they hold on
   every finite graph with a vertex. `SignlessPerronSimple`'s simplicity needs connectedness; the
   *location* of the top does not.
-* **NO LOWER BOUND BY THE MAXIMUM DEGREE.** The classical sharpening `topEig ≥ Δ + 1` is true and
+* **NO LOWER BOUND BY THE MAXIMUM DEGREE.** The classical sharpening `topEigen ≥ Δ + 1` is true and
   is **not proved here**: it needs a test vector supported on a vertex and its neighbourhood
   rather than the all-ones vector, and nothing here builds one (`ERRATUM 246`).
   ⚠ **THE LAST CLAUSE IS FALSE ABOUT THE ESTATE AND IS KEPT AS WRITTEN** (`ERRATUM 94`,
@@ -53,8 +53,8 @@ sharpness is exhibited rather than asserted.
 * **NOTHING OVER `ℂ`. NO WALL MOVES AND NO PUBLISHED TAG MOVES.**
 
 **THE HYPOTHESES, READ FROM `#check`** (`ERRATUM 455`): a finite vertex type with decidable
-equality and adjacency; the three bounds additionally take `Nonempty V`, and `topEig_regular` takes
-`G.IsRegularOfDegree k`. **No connectedness.**
+equality and adjacency; the three bounds additionally take `Nonempty V`, and the regular case
+takes `G.IsRegularOfDegree k`. **No connectedness.**
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry in this file, 0 new axioms.
 
@@ -63,6 +63,7 @@ Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry in this file, 0 new
 namespace SignlessTopDegreeBounds
 
 open Matrix SimpleGraph LaplacianSignless RayleighMatrix SignlessPerronSimple
+open RayleighVariational
 
 variable {V : Type*} [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj]
 
@@ -75,34 +76,34 @@ theorem rowSum_signlessLap (i : V) : ∑ j, signlessLap G i j = 2 * (G.degree i 
     simpa [Matrix.mulVec, dotProduct] using h]
   ring
 
-theorem topEig_le_two_maxDegree [Nonempty V] :
-    topEig (LaplacianSignlessDefinite.signlessLap_isHermitian G)
+theorem topEigen_le_two_maxDegree [Nonempty V] :
+    topEigen (LaplacianSignlessDefinite.signlessLap_isHermitian G)
       ≤ 2 * (G.maxDegree : ℝ) := by
   classical
   set hQ := LaplacianSignlessDefinite.signlessLap_isHermitian G with hQdef
-  obtain ⟨i₀, hi₀⟩ := exists_topEig hQ
+  obtain ⟨i₀, hi₀⟩ := exists_topEigen hQ
   set b := hQ.eigenvectorBasis i₀ with hb
   have hne : (WithLp.ofLp b) ≠ 0 := by
     intro h
     have hn : ‖b‖ = 1 := hQ.eigenvectorBasis.orthonormal.1 i₀
     rw [show b = (0 : EuclideanSpace ℝ V) from by ext v; exact congrFun h v] at hn
     simp at hn
-  have heig : signlessLap G *ᵥ (WithLp.ofLp b) = topEig hQ • (WithLp.ofLp b) := by
+  have heig : signlessLap G *ᵥ (WithLp.ofLp b) = topEigen hQ • (WithLp.ofLp b) := by
     have := RayleighMatrix.mv_eigenvectorBasis hQ i₀
     rw [hi₀] at this
-    exact (mv_iff (signlessLap G) (topEig hQ) (WithLp.ofLp b)).1 (by simpa using this)
+    exact (mv_iff (signlessLap G) (topEigen hQ) (WithLp.ofLp b)).1 (by simpa using this)
   have habs := PerronBound.abs_le_of_rowSum_le (SignlessPrimitive.sl_nonneg G) heig hne
     (C := 2 * (G.maxDegree : ℝ))
     (fun i => by rw [rowSum_signlessLap]; gcongr; exact_mod_cast G.degree_le_maxDegree i)
   exact (abs_le.mp habs).2
 
-theorem sum_degree_le_topEig_mul_card [Nonempty V] :
+theorem sum_degree_le_topEigen_mul_card [Nonempty V] :
     2 * (∑ i : V, (G.degree i : ℝ))
-      ≤ topEig (LaplacianSignlessDefinite.signlessLap_isHermitian G) * Fintype.card V := by
+      ≤ topEigen (LaplacianSignlessDefinite.signlessLap_isHermitian G) * Fintype.card V := by
   classical
   set hQ := LaplacianSignlessDefinite.signlessLap_isHermitian G with hQdef
   set v : EuclideanSpace ℝ V := WithLp.toLp 2 (fun _ => (1 : ℝ)) with hv
-  have hq := RayleighMatrix.quadForm_le_of_eigenvalues_le hQ (le_topEig hQ) v
+  have hq := RayleighMatrix.quadForm_le_of_eigenvalues_le hQ (le_topEigen hQ) v
   have hlhs : (inner ℝ v (RayleighMatrix.mv (signlessLap G) v) : ℝ)
       = 2 * ∑ i : V, (G.degree i : ℝ) := by
     rw [RayleighMatrix.inner_expand]
@@ -114,16 +115,16 @@ theorem sum_degree_le_topEig_mul_card [Nonempty V] :
   rw [hlhs, hrhs] at hq
   exact hq
 
-theorem topEig_regular [Nonempty V] {k : ℕ} (hreg : G.IsRegularOfDegree k) :
-    topEig (LaplacianSignlessDefinite.signlessLap_isHermitian G) = 2 * (k : ℝ) := by
+theorem topEigen_regular [Nonempty V] {k : ℕ} (hreg : G.IsRegularOfDegree k) :
+    topEigen (LaplacianSignlessDefinite.signlessLap_isHermitian G) = 2 * (k : ℝ) := by
   classical
   have hmax : G.maxDegree = k := by
     refine le_antisymm (G.maxDegree_le_of_forall_degree_le _ fun v => (hreg v).le) ?_
     obtain ⟨v⟩ := ‹Nonempty V›
     rw [← hreg v]; exact G.degree_le_maxDegree v
-  have hup := topEig_le_two_maxDegree G
+  have hup := topEigen_le_two_maxDegree G
   rw [hmax] at hup
-  have hlo := sum_degree_le_topEig_mul_card G
+  have hlo := sum_degree_le_topEigen_mul_card G
   rw [show (∑ i : V, (G.degree i : ℝ)) = (Fintype.card V : ℝ) * k by
     simp [hreg _, Finset.sum_const, Finset.card_univ]] at hlo
   have hcard : (0 : ℝ) < Fintype.card V := by

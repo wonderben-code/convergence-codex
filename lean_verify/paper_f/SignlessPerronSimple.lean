@@ -3,6 +3,7 @@ import PerronSimple
 import PerronVector
 import HermitianSpectralMapping
 import HermitianCharpoly
+import RayleighVariational
 import HermitianFlatSpectrum
 
 /-!
@@ -25,7 +26,7 @@ looking at the kernel, and could not reach the rest because a connected non-two-
 positive definite and has no kernel to look at. **`flat_implies_simple_connected` answers it for
 every connected graph at once**, by looking at the top instead of the bottom.
 
-**WHAT THE PROOF ACTUALLY NEEDED, AND IT WAS NOT IRREDUCIBILITY.** `topEig_pow` is the spectral
+**WHAT THE PROOF ACTUALLY NEEDED, AND IT WAS NOT IRREDUCIBILITY.** `topEigen_pow` is the spectral
 step: for a Hermitian matrix with non-negative eigenvalues the top of `A ^ k`'s spectrum is the
 `k`-th power of the top of `A`'s, from `HermitianSpectralMapping.eigenvalues_pow_multiset` and
 monotonicity. `mv_iff` is the plumbing between `RayleighMatrix.mv` on `EuclideanSpace` and
@@ -37,9 +38,20 @@ statement. Everything else is `PerronVector.exists_nonneg_top_eigenvector`,
 
 **`mv_iff`** — an eigenvector equation on `EuclideanSpace` is the same as one on `n → ℝ`.
 
-**`topEig`, `le_topEig`, `exists_topEig`** — the top of a Hermitian spectrum, as a value.
+**`le_topEigen`, `exists_topEigen`** — the top of a Hermitian spectrum is above each eigenvalue
+and is attained at one of them.
 
-**`exists_pow_eigenvalue`, `topEig_pow`** — the top of `A ^ k`'s spectrum is the top of `A`'s,
+> ⚠ **THIS FILE ONCE DECLARED THAT VALUE ITSELF, AND SHOULD NOT HAVE** (`ERRATUM 532`, 2026-09-13).
+> The bullet above used to read *`topEig`, `le_topEig`, `exists_topEig` — the top of a Hermitian
+> spectrum, as a value*, and `topEig` was
+> `Finset.univ.sup' Finset.univ_nonempty hA.eigenvalues`. So is
+> `RayleighVariational.topEigen`, **character for character**, and `RayleighVariational` was already
+> in this file's import closure when the duplicate was written — the object was in scope. The
+> definition is deleted, every use in this chain now reads `topEigen`, and the import is named
+> explicitly rather than left transitive. The two lemmas above are kept because they are not in
+> that file; the value is not.
+
+**`exists_pow_eigenvalue`, `topEigen_pow`** — the top of `A ^ k`'s spectrum is the top of `A`'s,
 raised to `k`, when the eigenvalues are non-negative.
 
 **`pow_mulVec_of_eigen`** — an eigenvector of `A` at `μ` is one of `A ^ k` at `μ ^ k`.
@@ -64,7 +76,7 @@ raised to `k`, when the eigenvalues are non-negative.
 
 **THE HYPOTHESES, READ FROM `#check`** (`ERRATUM 455`): for the graph theorems, a finite vertex
 type with decidable equality and adjacency, `Nontrivial V` and `G.Connected`. The spectral helpers
-take `IsHermitian` and, for `topEig_pow`, non-negative eigenvalues.
+take `IsHermitian` and, for `topEigen_pow`, non-negative eigenvalues.
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry in this file, 0 new axioms.
 
@@ -72,7 +84,7 @@ Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry in this file, 0 new
 
 namespace SignlessPerronSimple
 
-open Matrix SimpleGraph LaplacianSignless RayleighMatrix
+open Matrix SimpleGraph LaplacianSignless RayleighMatrix RayleighVariational
 
 variable {n : Type*} [Fintype n] [DecidableEq n]
 
@@ -89,16 +101,12 @@ theorem mv_iff (A : Matrix n n ℝ) (M : ℝ) (x : n → ℝ) :
     funext i
     simpa [mv] using congrFun h i
 
-/-- The top of a Hermitian matrix's spectrum. -/
-noncomputable def topEig {A : Matrix n n ℝ} (hA : A.IsHermitian) [Nonempty n] : ℝ :=
-  Finset.univ.sup' Finset.univ_nonempty hA.eigenvalues
-
-theorem le_topEig {A : Matrix n n ℝ} (hA : A.IsHermitian) [Nonempty n] (i : n) :
-    hA.eigenvalues i ≤ topEig hA :=
+theorem le_topEigen {A : Matrix n n ℝ} (hA : A.IsHermitian) [Nonempty n] (i : n) :
+    hA.eigenvalues i ≤ topEigen hA :=
   Finset.le_sup' _ (Finset.mem_univ i)
 
-theorem exists_topEig {A : Matrix n n ℝ} (hA : A.IsHermitian) [Nonempty n] :
-    ∃ i, hA.eigenvalues i = topEig hA := by
+theorem exists_topEigen {A : Matrix n n ℝ} (hA : A.IsHermitian) [Nonempty n] :
+    ∃ i, hA.eigenvalues i = topEigen hA := by
   obtain ⟨i, -, hi⟩ := Finset.exists_mem_eq_sup' (Finset.univ_nonempty (α := n)) hA.eigenvalues
   exact ⟨i, hi.symm⟩
 
@@ -111,19 +119,19 @@ theorem exists_pow_eigenvalue {A : Matrix n n ℝ} (hA : A.IsHermitian) (k : ℕ
   obtain ⟨i, -, hi⟩ := hmem
   exact ⟨i, hi⟩
 
-theorem topEig_pow [Nonempty n] {A : Matrix n n ℝ} (hA : A.IsHermitian)
+theorem topEigen_pow [Nonempty n] {A : Matrix n n ℝ} (hA : A.IsHermitian)
     (hnn : ∀ i, 0 ≤ hA.eigenvalues i) (k : ℕ) :
-    topEig (hA.pow k) = topEig hA ^ k := by
+    topEigen (hA.pow k) = topEigen hA ^ k := by
   refine le_antisymm ?_ ?_
   · refine Finset.sup'_le _ _ fun i _ => ?_
     obtain ⟨j, hj⟩ := HermitianSpectralMapping.exists_eigenvalue_pow_eq hA k i
     rw [hj]
     gcongr
-    exacts [hnn j, le_topEig hA j]
-  · obtain ⟨i₀, hi₀⟩ := exists_topEig hA
+    exacts [hnn j, le_topEigen hA j]
+  · obtain ⟨i₀, hi₀⟩ := exists_topEigen hA
     obtain ⟨i, hi⟩ := exists_pow_eigenvalue hA k i₀
     rw [← hi₀, ← hi]
-    exact le_topEig (hA.pow k) i
+    exact le_topEigen (hA.pow k) i
 
 theorem pow_mulVec_of_eigen {A : Matrix n n ℝ} {μ : ℝ} {x : n → ℝ} (h : A *ᵥ x = μ • x) :
     ∀ k, (A ^ k) *ᵥ x = μ ^ k • x := by
@@ -137,7 +145,7 @@ open LaplacianSignless SignlessPrimitive in
 theorem top_simple_connected {V : Type*} [Fintype V] [DecidableEq V] [Nontrivial V]
     (G : SimpleGraph V) [DecidableRel G.Adj] (hconn : G.Connected) :
     Module.finrank ℝ (LinearMap.ker (Matrix.toLin' (signlessLap G)
-      - (topEig (LaplacianSignlessDefinite.signlessLap_isHermitian G)) • LinearMap.id)) ≤ 1 := by
+      - (topEigen (LaplacianSignlessDefinite.signlessLap_isHermitian G)) • LinearMap.id)) ≤ 1 := by
   classical
   set hQ := LaplacianSignlessDefinite.signlessLap_isHermitian G with hQdef
   set k := Fintype.card V with hk
@@ -166,16 +174,16 @@ theorem top_simple_connected {V : Type*} [Fintype V] [DecidableEq V] [Nontrivial
   have hueig : ((signlessLap G) ^ k) *ᵥ (WithLp.ofLp u) = M • (WithLp.ofLp u) := by
     have := (mv_iff ((signlessLap G) ^ k) M (WithLp.ofLp u)).1 (by simpa using hMu)
     simpa using this
-  have hMtop : M = topEig (hQ.pow k) := by
+  have hMtop : M = topEigen (hQ.pow k) := by
     refine le_antisymm ?_ (Finset.sup'_le _ _ fun i _ => hmax i)
     have hmem : M ∈ Finset.univ.image (hQ.pow k).eigenvalues := by
       rw [HermitianCharpoly.mem_image_eigenvalues_iff]
       exact ⟨WithLp.ofLp u, fun h => hune (by ext i; simpa using congrFun h i), hueig⟩
     obtain ⟨i, -, hi⟩ := Finset.mem_image.mp hmem
-    rw [← hi]; exact le_topEig (hQ.pow k) i
+    rw [← hi]; exact le_topEigen (hQ.pow k) i
   have hnn : ∀ i, 0 ≤ hQ.eigenvalues i :=
     (LaplacianSignlessDefinite.signlessLap_posSemidef G).eigenvalues_nonneg
-  have hMeq : M = topEig hQ ^ k := by rw [hMtop, topEig_pow hQ hnn]
+  have hMeq : M = topEigen hQ ^ k := by rw [hMtop, topEigen_pow hQ hnn]
   -- every top eigenvector of `Q` is a top eigenvector of `P`, hence a multiple of `u`
   refine le_trans (Submodule.finrank_mono (?_ : _ ≤ Submodule.span ℝ {WithLp.ofLp u}))
     (le_of_eq_of_le (finrank_span_singleton (fun h => absurd (hupos i₀) (by simp [h]))) le_rfl)
@@ -202,8 +210,8 @@ theorem flat_implies_simple_connected {V : Type*} [Fintype V] [DecidableEq V] [N
     M = 1 := by
   classical
   set hQ := LaplacianSignlessDefinite.signlessLap_isHermitian G with hQdef
-  obtain ⟨i₀, hi₀⟩ := exists_topEig hQ
-  have hmem : topEig hQ ∈ Finset.univ.image hQ.eigenvalues :=
+  obtain ⟨i₀, hi₀⟩ := exists_topEigen hQ
+  have hmem : topEigen hQ ∈ Finset.univ.image hQ.eigenvalues :=
     Finset.mem_image.mpr ⟨i₀, Finset.mem_univ _, hi₀⟩
   have hle := top_simple_connected G hconn
   have hpos := HermitianFlatSpectrum.finrank_pos_of_mem_image hQ hmem

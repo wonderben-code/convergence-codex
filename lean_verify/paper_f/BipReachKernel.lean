@@ -57,25 +57,30 @@ namespace BipReachKernel
 open IndefiniteCoupling StrictBiconditional GraphReflection GraphLaplacian
 open scoped Matrix
 
-/-- The witness: `+1` at site `0`, `−1` at site `1`, zero on the other side of the cut. -/
-def kerVec : Fin 4 → ℝ := fun p => if p = 0 then 1 else if p = 1 then -1 else 0
+/-- The witness: `+1` at site `0`, `−1` at site `1`, zero on the other side of the cut.
+
+**THIS IS `IndefiniteCoupling.cvec`, WHICH THIS FILE ALREADY OPENS** (`ERRATUM 532`, 2026-09-13).
+The body was that file's body character for character, on the same type, with `open
+IndefiniteCoupling` three lines above. Found by `dupbody_scan`; invisible to `dupname_scan`,
+which compares names. -/
+def kerVec : Fin 4 → ℝ := cvec
 
 theorem kerVec_ne_zero : kerVec ≠ 0 := by
   intro h
   have h0 : kerVec 0 = (0 : Fin 4 → ℝ) 0 := by rw [h]
-  simp [kerVec] at h0
+  simp [kerVec, cvec] at h0
 
 /-- `kerVec` vanishes off the half. -/
 theorem kerVec_two : kerVec (2 : Fin 4) = 0 := by
-  simp [kerVec, show (2 : Fin 4) ≠ 0 by decide, show (2 : Fin 4) ≠ 1 by decide]
+  simp [kerVec, cvec, show (2 : Fin 4) ≠ 0 by decide, show (2 : Fin 4) ≠ 1 by decide]
 
 theorem kerVec_three : kerVec (3 : Fin 4) = 0 := by
-  simp [kerVec, show (3 : Fin 4) ≠ 0 by decide, show (3 : Fin 4) ≠ 1 by decide]
+  simp [kerVec, cvec, show (3 : Fin 4) ≠ 0 by decide, show (3 : Fin 4) ≠ 1 by decide]
 
 /-- The row at site `2`: the operator's two `−1` entries meet `1` and `−1`, and the diagonal
 entry — the only place the mass appears — is multiplied by `kerVec 2 = 0`. -/
 theorem mulVec_two (m : ℝ) : (massive bipGraph m *ᵥ kerVec) (2 : Fin 4) = 0 := by
-  simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_four, massive_apply, kerVec]
+  simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_four, massive_apply, kerVec, cvec]
   norm_num [show ¬ bipGraph.Adj 2 2 by decide, show bipGraph.Adj 2 0 by decide,
     show bipGraph.Adj 2 1 by decide, show ¬ bipGraph.Adj 2 3 by decide,
     show (2 : Fin 4) ≠ 0 by decide, show (2 : Fin 4) ≠ 1 by decide,
@@ -84,7 +89,7 @@ theorem mulVec_two (m : ℝ) : (massive bipGraph m *ᵥ kerVec) (2 : Fin 4) = 0 
 
 /-- The row at site `3`, identically. -/
 theorem mulVec_three (m : ℝ) : (massive bipGraph m *ᵥ kerVec) (3 : Fin 4) = 0 := by
-  simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_four, massive_apply, kerVec]
+  simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_four, massive_apply, kerVec, cvec]
   norm_num [show ¬ bipGraph.Adj 3 3 by decide, show bipGraph.Adj 3 0 by decide,
     show bipGraph.Adj 3 1 by decide, show ¬ bipGraph.Adj 3 2 by decide,
     show (3 : Fin 4) ≠ 0 by decide, show (3 : Fin 4) ≠ 1 by decide,

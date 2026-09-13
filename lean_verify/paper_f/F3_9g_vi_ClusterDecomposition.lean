@@ -299,9 +299,15 @@ theorem phase7_cluster_genuine (C : CascadeData) :
 
 /-- Phase 7: Cluster decomposition uses the DERIVED cascade gap.
     CascadeData.mk_derived constructs the cascade with internal_gap = 2/Λ²
-    computed by rfl. The cluster decay rate equals this derived gap. -/
+    computed by rfl. The cluster decay rate equals this derived gap.
+    **AND IT IS `phase7_os2_derived_cascade`, NOT A THIRD COPY OF IT** (`ERRATUM 532`,
+    2026-09-13). Three files built the same `CascadeData` from the same five arguments,
+    each under its own name; `dupbody_scan` found the triple. The theorems below are
+    unchanged and still close by `rfl`, and they now say what they always meant: **one**
+    derived cascade satisfies OS2, the compact OS axioms and cluster decomposition,
+    rather than three cascades that happen to be equal. -/
 noncomputable def phase7_cluster_derived : CascadeData :=
-  CascadeData.mk_derived 1 one_pos 0.5 (by norm_num) (by norm_num)
+  phase7_os2_derived_cascade
 
 theorem phase7_cluster_derived_rate :
     phase7_cluster_derived.internal_gap = 2 / 1 ^ 2 := rfl

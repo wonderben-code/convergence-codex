@@ -162,8 +162,14 @@ A configuration where the hypothesis holds, and where the conclusion says someth
 the chessboard on the 2×2 box breaks all four of its bonds and every site has degree
 two, so the decomposition returns a genuine circuit rather than the empty list. -/
 
-/-- The chessboard configuration on the 2×2 box. -/
-def chess : Config 2 := fun p => decide ((p.1.val + p.2.val) % 2 = 0)
+/-- The chessboard configuration on the 2×2 box.
+
+**`IsingFiniteVolume.chess` AT `n = 2`, NOT A SECOND COPY OF IT** (`ERRATUM 532`, 2026-09-13).
+This file used to repeat the body `fun p => decide ((p.1.val + p.2.val) % 2 = 0)`, which is the
+general definition verbatim -- the general one does not mention `n`, so specialising it changes no
+character. `dupbody_scan` found the pair; `dupname_scan` could not, the two signatures differing.
+Every `decide` below is unaffected: a `def` unfolds in kernel reduction. -/
+def chess : Config 2 := IsingFiniteVolume.chess 2
 
 theorem degree_brokenGraph_chess (p : Site 2) : (brokenGraph chess).degree p = 2 := by
   revert p; decide
