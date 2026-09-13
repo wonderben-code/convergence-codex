@@ -558,4 +558,5 @@ roots = [
   "SignlessSeparationNonzero",
   "SignlessExcessBothWays",
   "HermitianMaxMultiplicity",
+  "SignlessMultipartiteDegeneracy",
 ]
