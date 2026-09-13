@@ -569,4 +569,5 @@ roots = [
   "SignlessStarExact",
   "SignlessStarConverse",
   "SignlessRegularConverse",
+  "SignlessSecondEigen",
 ]

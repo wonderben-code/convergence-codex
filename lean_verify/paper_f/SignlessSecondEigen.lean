@@ -1,0 +1,223 @@
+import SignlessRegularConverse
+import HermitianTracePower
+
+/-!
+# The second eigenvalue, which six units have fenced as absent, and a floor under it
+
+Every unit of this chain since `SignlessPerronSimple` has closed with the same sentence — *no
+second eigenvalue and no gap* — and the sentence was accurate: **the estate defines no second
+eigenvalue for any operator.** `PerronGap` proves a qualitative gap for a strictly positive matrix
+(`abs_eigenvalues_lt_of_ne`: every eigenvalue but the top is strictly smaller in modulus) and stops
+there; `RayleighVariational.topEigen` is a `Finset.sup'` over all of `univ` and has no sibling.
+Grepped before writing, and this time the grep was run (`ERRATUM 535`).
+
+## What is proved
+
+**`topIdx`, `secondEigen`** — an index attaining the top, and the largest eigenvalue **off that
+index**. This is `λ₂` in the multiset convention: when the top has multiplicity two or more,
+`secondEigen = topEigen`, which is what a sorted-with-multiplicity list gives and is the reading
+every bound below is stated against.
+
+**`secondEigen_le_topEigen`** — the obvious half: on any Hermitian matrix with two or more indices,
+and nothing else. (An earlier draft said *the only one that needs no hypothesis*, which
+`uncondclaim_scan` refused — it takes `hA` and `Nontrivial V` like everything here, and what was
+meant was *no bound on the trace and no connectedness*.)
+
+**`trace_le`** — `tr A ≤ topEigen + (|V| − 1)·secondEigen`. The trace is the sum of the eigenvalues
+(`HermitianTracePower.real_trace_pow_eq_sum_eigenvalues_pow` at `k = 1`), one term is the top and
+the other `|V| − 1` are each at most the second.
+
+**`le_secondEigen`** — hence **a floor**: `secondEigen ≥ (tr A − topEigen)/(|V| − 1)`, for every
+real symmetric matrix on two or more points. **This is the file's general content** and it is
+where the quantitative part comes from: an upper bound on `topEigen` becomes a *lower* bound on
+`secondEigen`, because the trace is fixed.
+
+**`trace_signlessLap`** — `tr Q = ∑ᵥ deg(v)`, the adjacency matrix contributing nothing to the
+diagonal.
+
+**`le_secondEigen_signlessLap`** — so on any graph on two or more vertices,
+
+```
+(∑ᵥ deg v − 2Δ) / (|V| − 1)  ≤  secondEigen (signlessLap G)
+```
+
+with `SignlessTopDegreeBounds.topEigen_le_two_maxDegree` supplying the `2Δ`.
+**`le_secondEigen_regular`** reads it on a `k`-regular graph, where it is `k(|V| − 2)/(|V| − 1)` —
+so on a large regular graph the second eigenvalue is nearly `k`, which is half the top.
+
+**`secondEigen_lt_topEigen`** — and on a **connected** graph the gap is strict. This is the first
+statement in the estate that separates the top of a spectrum from the rest of it in the `topEigen`
+vocabulary, and it comes from joining two things proved earlier this week:
+`SignlessPerronSimple.top_simple_connected` says the top eigenspace has dimension at most one, and
+`HermitianFibreCount.finrank_eigenspace_hermitian_eq_card_fibre` says that dimension **is the number
+of indices carrying that eigenvalue**. One index, so every other index is strictly below.
+
+## What is NOT here
+
+* **NO QUANTITATIVE GAP.** `secondEigen < topEigen` is proved on a connected graph; **how far
+  below** is not, and no bound of the form `topEigen − secondEigen ≥ f(G)` appears (`ERRATUM 246`).
+  The floor above is a bound on `secondEigen` from below, which is the opposite direction: together
+  they trap it, they do not separate it.
+* **NO CEILING ON `secondEigen` BEYOND THE TOP.** The classical bounds — Das, Merris, and the
+  interlacing that would come from edge deletion — are each a different argument and none is
+  attempted.
+* **NOTHING ABOUT EIGENVALUES BELOW THE SECOND.** `topIdx` picks one index; a genuine sorted
+  spectrum is not built and `secondEigen` is not shown to be the second element of one.
+* **NOTHING ABOUT THE ORDINARY LAPLACIAN'S ALGEBRAIC CONNECTIVITY**, which is the *smallest*
+  nonzero eigenvalue and a different object entirely; nothing here bears on it.
+* **NOTHING OVER `ℂ`. NO WALL MOVES AND NO PUBLISHED TAG MOVES.**
+
+**THE HYPOTHESES, READ FROM `#check`** (`ERRATUM 455`): a finite vertex type with decidable
+equality, and `Nontrivial V` wherever `secondEigen` appears — the definition needs a second index
+to range over. The graph statements add decidable adjacency, and the strict gap adds `G.Connected`.
+
+Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry in this file, 0 new axioms.
+
+-/
+
+namespace SignlessSecondEigen
+
+open Matrix Finset SimpleGraph LaplacianSignless RayleighVariational
+
+/-! ## 1. The second eigenvalue -/
+
+section Defn
+variable {V : Type*} [Fintype V] [DecidableEq V]
+
+/-- An index attaining the top of the spectrum. -/
+noncomputable def topIdx {A : Matrix V V ℝ} (hA : A.IsHermitian) [Nonempty V] : V :=
+  (SignlessPerronSimple.exists_topEigen hA).choose
+
+theorem eigenvalues_topIdx {A : Matrix V V ℝ} (hA : A.IsHermitian) [Nonempty V] :
+    hA.eigenvalues (topIdx hA) = topEigen hA :=
+  (SignlessPerronSimple.exists_topEigen hA).choose_spec
+
+theorem erase_nonempty [Nontrivial V] (i : V) : (Finset.univ.erase i).Nonempty := by
+  rw [← Finset.card_pos, Finset.card_erase_of_mem (Finset.mem_univ i), Finset.card_univ]
+  have := Fintype.one_lt_card (α := V)
+  omega
+
+/-- **THE SECOND EIGENVALUE**: the largest one carried by an index other than `topIdx`. When the
+top has multiplicity two or more this equals the top, which is the multiset convention. -/
+noncomputable def secondEigen {A : Matrix V V ℝ} (hA : A.IsHermitian) [Nontrivial V] : ℝ :=
+  (Finset.univ.erase (topIdx hA)).sup' (erase_nonempty _) hA.eigenvalues
+
+theorem le_secondEigen_of_ne {A : Matrix V V ℝ} (hA : A.IsHermitian) [Nontrivial V] {i : V}
+    (hi : i ≠ topIdx hA) : hA.eigenvalues i ≤ secondEigen hA :=
+  Finset.le_sup' _ (Finset.mem_erase.mpr ⟨hi, Finset.mem_univ i⟩)
+
+theorem secondEigen_le_topEigen {A : Matrix V V ℝ} (hA : A.IsHermitian) [Nontrivial V] :
+    secondEigen hA ≤ topEigen hA :=
+  Finset.sup'_le _ _ fun i _ => SignlessPerronSimple.le_topEigen hA i
+
+/-! ## 2. The trace pins it from below -/
+
+/-- The trace is the sum of the eigenvalues. -/
+theorem trace_eq_sum {A : Matrix V V ℝ} (hA : A.IsHermitian) :
+    A.trace = ∑ i, hA.eigenvalues i := by
+  have := TransferPowerSum.real_trace_pow_eq_sum_eigenvalues_pow hA 1
+  simpa using this
+
+/-- **ONE TOP AND `|V| − 1` SECONDS.** -/
+theorem trace_le {A : Matrix V V ℝ} (hA : A.IsHermitian) [Nontrivial V] :
+    A.trace ≤ topEigen hA + (Fintype.card V - 1 : ℕ) * secondEigen hA := by
+  classical
+  have hrest : ∑ i ∈ Finset.univ.erase (topIdx hA), hA.eigenvalues i
+      ≤ (Fintype.card V - 1 : ℕ) * secondEigen hA := by
+    calc ∑ i ∈ Finset.univ.erase (topIdx hA), hA.eigenvalues i
+        ≤ ∑ _i ∈ Finset.univ.erase (topIdx hA), secondEigen hA :=
+          Finset.sum_le_sum fun i hi => le_secondEigen_of_ne hA (Finset.mem_erase.mp hi).1
+      _ = (Fintype.card V - 1 : ℕ) * secondEigen hA := by
+          rw [Finset.sum_const, Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ,
+            nsmul_eq_mul]
+  rw [trace_eq_sum hA, ← Finset.add_sum_erase _ _ (Finset.mem_univ (topIdx hA)),
+    eigenvalues_topIdx hA]
+  linarith
+
+/-- **THE FLOOR.** An upper bound on the top is a lower bound on the second, the trace being
+fixed. -/
+theorem le_secondEigen {A : Matrix V V ℝ} (hA : A.IsHermitian) [Nontrivial V] :
+    (A.trace - topEigen hA) / (Fintype.card V - 1 : ℕ) ≤ secondEigen hA := by
+  have hcard : (0 : ℝ) < (Fintype.card V - 1 : ℕ) := by
+    have := Fintype.one_lt_card (α := V)
+    have h1 : 1 ≤ Fintype.card V - 1 := by omega
+    exact_mod_cast lt_of_lt_of_le zero_lt_one h1
+  rw [div_le_iff₀ hcard]
+  linarith [trace_le hA]
+
+end Defn
+
+/-! ## 3. On a graph -/
+
+section Graph
+variable {V : Type*} [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj]
+
+/-- **`tr Q = ∑ deg`.** The adjacency matrix has zero diagonal. -/
+theorem trace_signlessLap : (signlessLap G).trace = ∑ v, (G.degree v : ℝ) := by
+  simp [signlessLap, Matrix.trace_add, SimpleGraph.degMatrix, Matrix.trace_diagonal]
+
+/-- **A FLOOR UNDER THE SECOND EIGENVALUE OF EVERY GRAPH ON TWO OR MORE VERTICES.** -/
+theorem le_secondEigen_signlessLap [Nontrivial V] :
+    ((∑ v, (G.degree v : ℝ)) - 2 * (G.maxDegree : ℝ)) / (Fintype.card V - 1 : ℕ)
+      ≤ secondEigen (LaplacianSignlessDefinite.signlessLap_isHermitian G) := by
+  have hcard : (0 : ℝ) < (Fintype.card V - 1 : ℕ) := by
+    have := Fintype.one_lt_card (α := V)
+    have h1 : 1 ≤ Fintype.card V - 1 := by omega
+    exact_mod_cast lt_of_lt_of_le zero_lt_one h1
+  have hfloor := le_secondEigen (LaplacianSignlessDefinite.signlessLap_isHermitian G)
+  rw [trace_signlessLap G] at hfloor
+  refine le_trans ?_ hfloor
+  have hstep : (∑ v, (G.degree v : ℝ)) - 2 * (G.maxDegree : ℝ)
+      ≤ (∑ v, (G.degree v : ℝ))
+        - topEigen (LaplacianSignlessDefinite.signlessLap_isHermitian G) := by
+    linarith [SignlessTopDegreeBounds.topEigen_le_two_maxDegree G]
+  gcongr
+
+/-- **ON A `k`-REGULAR GRAPH THE FLOOR IS `k(|V| − 2)/(|V| − 1)`**, so on a large regular graph the
+second eigenvalue is nearly `k` — half the top, which is `2k`. -/
+theorem le_secondEigen_regular [Nontrivial V] {k : ℕ} (hreg : G.IsRegularOfDegree k) :
+    ((Fintype.card V : ℝ) * k - 2 * k) / (Fintype.card V - 1 : ℕ)
+      ≤ secondEigen (LaplacianSignlessDefinite.signlessLap_isHermitian G) := by
+  have hΔ : (G.maxDegree : ℝ) = k := by
+    rw [SignlessStarExact.maxDegree_of_regular G hreg]
+  have hsum : ∑ v, (G.degree v : ℝ) = (Fintype.card V : ℝ) * k := by
+    rw [Finset.sum_congr rfl fun v _ => by rw [hreg v], Finset.sum_const, Finset.card_univ,
+      nsmul_eq_mul]
+  have := le_secondEigen_signlessLap G
+  rwa [hsum, hΔ] at this
+
+/-! ## 4. And on a connected graph the gap is strict -/
+
+/-- **EXACTLY ONE INDEX CARRIES THE TOP**, on a connected graph: the top eigenspace has dimension
+at most one and that dimension *is* the number of such indices. -/
+theorem eigenvalues_ne_topEigen [Nontrivial V] (hconn : G.Connected) {i : V}
+    (hi : i ≠ topIdx (LaplacianSignlessDefinite.signlessLap_isHermitian G)) :
+    (LaplacianSignlessDefinite.signlessLap_isHermitian G).eigenvalues i
+      ≠ topEigen (LaplacianSignlessDefinite.signlessLap_isHermitian G) := by
+  classical
+  set hQ := LaplacianSignlessDefinite.signlessLap_isHermitian G with hQdef
+  intro hEq
+  have hsimple := SignlessPerronSimple.top_simple_connected G hconn
+  rw [HermitianFibreCount.finrank_eigenspace_hermitian_eq_card_fibre hQ (topEigen hQ)] at hsimple
+  have h1 : (⟨topIdx hQ, eigenvalues_topIdx hQ⟩ :
+      {j : V // hQ.eigenvalues j = topEigen hQ}) ≠ ⟨i, hEq⟩ := by
+    simp only [ne_eq, Subtype.mk.injEq]
+    exact fun h => hi h.symm
+  have h2 : 1 < Fintype.card {j : V // hQ.eigenvalues j = topEigen hQ} :=
+    Fintype.one_lt_card_iff_nontrivial.mpr ⟨_, _, h1⟩
+  omega
+
+/-- **THE STRICT GAP.** -/
+theorem secondEigen_lt_topEigen [Nontrivial V] (hconn : G.Connected) :
+    secondEigen (LaplacianSignlessDefinite.signlessLap_isHermitian G)
+      < topEigen (LaplacianSignlessDefinite.signlessLap_isHermitian G) := by
+  classical
+  set hQ := LaplacianSignlessDefinite.signlessLap_isHermitian G with hQdef
+  rw [secondEigen, Finset.sup'_lt_iff]
+  intro i hi
+  exact lt_of_le_of_ne (SignlessPerronSimple.le_topEigen hQ i)
+    (eigenvalues_ne_topEigen G hconn (Finset.mem_erase.mp hi).1)
+
+end Graph
+
+end SignlessSecondEigen
