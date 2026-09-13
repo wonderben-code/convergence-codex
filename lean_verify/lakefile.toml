@@ -576,6 +576,7 @@ roots = [
   "SignlessTwinClass",
   "SignlessMultiplicityBound",
   "SignlessStarSpectrum",
+  "SpectrumReflection",
   "SeparatingGraphLap",
   "SeparatingSignless",
   "SecularBoundNotNecessary",
