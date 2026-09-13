@@ -578,4 +578,5 @@ roots = [
   "BoxLapExtremes",
   "BoxLapGap",
   "BoxLapLowWeight",
+  "BoxLapSideThree",
 ]
