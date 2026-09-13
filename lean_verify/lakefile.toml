@@ -561,4 +561,5 @@ roots = [
   "SignlessMultipartiteDegeneracy",
   "HermitianFlatSpectrum",
   "SignlessFlatWitness",
+  "SignlessFlatConnected",
 ]
