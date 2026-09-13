@@ -577,6 +577,7 @@ roots = [
   "SignlessMultiplicityBound",
   "SignlessStarSpectrum",
   "SpectrumReflection",
+  "ReflectionNotColorable",
   "SeparatingGraphLap",
   "SeparatingSignless",
   "SecularBoundNotNecessary",
