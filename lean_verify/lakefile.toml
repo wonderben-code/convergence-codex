@@ -553,4 +553,5 @@ roots = [
   "HermitianDimensionSum",
   "SignlessP1122Charpoly",
   "BoxLapMultiplicityExact",
+  "SignlessConjugateMultiplicity",
 ]
