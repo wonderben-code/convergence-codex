@@ -2,6 +2,16 @@
   SignlessMultiplicityBound.lean — an UPPER bound on signless eigenvalue
   multiplicities, and the first exact multiplicity it pins.
 
+  ⚠ **THE PARAGRAPH BELOW WAS WRONG IN BOTH OF ITS CLAIMS AND IT IS KEPT AS WRITTEN**
+  (`ERRATUM 94`, `ERRATUM 541`). Counted after the fact rather than before it, which
+  is the error: the estate has **95** exact signless multiplicities and **22** upper
+  bounds on signless multiplicities, all predating this file. What is true, and is
+  what §3 actually contributes, is narrower and is stated under WHAT THIS FILE
+  PROVES: no existing upper bound covers an ARBITRARY eigenvalue of an ARBITRARY
+  finite graph. `SignlessPerronSimple.top_simple_connected` is general but only at
+  the top and only when connected; `SignlessColourableNecessary.finrank_ker_signlessLap_le_lap`
+  is general but only at the kernel; every other one names a family. The original:
+
   WHY THIS FILE EXISTS. `LaplacianMultiplicityBound` bounds the multiplicity of
   every non-zero Laplacian eigenvalue — `mult(ν) + #components ≤ |V|` — by the one
   eigenspace the Laplacian always has for free, the kernel, whose dimension is the
@@ -38,18 +48,22 @@
      which is the bracket `Δ + 1 ≤ topEigen` from `SignlessMaxDegreeBound` and not
      a computation of `topEigen` — **the squeeze never needs to know what the top
      eigenvalue IS, only that it is bigger than `n + 1`.**
+     ⚠ **THIS FACT IS NOT NEW AND THE FIRST DRAFT OF THIS FILE SAID IT WAS**
+     (`ERRATUM 541`). `CompleteSpectrumTwoPoints.finrank_eigenspaces_signlessLap_top_add`
+     has it, and had it before this file existed: it gives `1` at the top and the
+     two eigenspaces summing to `|V|`, so `|V| − 1` at `|V| − 2` is one `omega`
+     away. What is new here is the **route**, and the route earns its place only
+     through item 5.
+  5. **`finrank_add_one_le_sharp`** — and that is why the complete graph is kept:
+     it shows **item 3's bound is attained**, so `finrank_add_one_le` states the
+     best constant and not merely a constant. An explicit decomposition of one
+     graph's spectrum cannot say that about a bound quantified over all graphs;
+     a squeeze can, because its upper half is the general bound itself.
 
-  This is the first exact multiplicity of a signless eigenvalue in the estate, and
-  it is the signless twin of `LaplacianMultiplicityBound.finrank_top_eq`: same
-  graph, same route, multiplicity `n + 2` in both, at `n + 1` here and `n + 3`
-  there. **The multiplicities agree and the eigenvalues do not**, which is
-  `SignlessTwinClass`'s observation carried to an exact statement.
-
-  WHAT IS NOT CLAIMED. Item 3 is not sharp in general and is not claimed to be:
-  on a graph with a large twin class it is attained, and on a graph with a simple
-  spectrum it is far off. Nothing here computes `topEigen` for any graph, and
-  nothing here says which graphs attain the bound. Not attempted, no cost claimed
-  (`ERRATUM 246`).
+  WHAT IS NOT CLAIMED. Item 3 is attained (item 5) and is nowhere near attained on
+  a graph with a simple spectrum; **which graphs attain it is not characterised**,
+  and one witness is not a characterisation. Nothing here computes `topEigen` for
+  any graph. Not attempted, no cost claimed (`ERRATUM 246`).
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
@@ -185,12 +199,36 @@ theorem finrank_signless_top_eq (n : ℕ) :
   rw [Fintype.card_fin] at hup
   omega
 
+/-- **AND SO THE BOUND OF §3 IS ATTAINED.** There is a graph and an eigenvalue below
+its top at which `mult(ν) + 1 = |V|` exactly, so `finrank_add_one_le` names the best
+constant rather than merely a constant. This is the whole reason the complete-graph
+theorem above is kept: the fact it states was already the estate's
+(`CompleteSpectrumTwoPoints.finrank_eigenspaces_signlessLap_top_add`,
+`ERRATUM 541`), but a decomposition of one graph's spectrum cannot certify a bound
+quantified over all graphs, and a squeeze whose upper half IS that bound can. -/
+theorem finrank_add_one_le_sharp (n : ℕ) :
+    ((n : ℝ) + 1) ≠ topEigen (LaplacianSignlessDefinite.signlessLap_isHermitian
+        (⊤ : SimpleGraph (Fin (n + 3))))
+      ∧ Module.finrank ℝ (LinearMap.ker
+          (Matrix.toLin' (signlessLap (⊤ : SimpleGraph (Fin (n + 3))))
+            - ((n : ℝ) + 1) • LinearMap.id)) + 1
+        = Fintype.card (Fin (n + 3)) := by
+  refine ⟨ne_of_lt (lt_topEigen_top n), ?_⟩
+  rw [finrank_signless_top_eq, Fintype.card_fin]
+
 /-! ## 5. Review round 61 — the ways this could be hollow
 
 **"§3 could be vacuous — maybe no `ν` differs from the top."** `finrank_signless_top_eq`
 applies it at `n + 1`, and `lt_topEigen_top` proves that value is genuinely below
 the top for every `n`. On a graph with a simple spectrum there are `|V| − 1` such
 `ν`; on the one-vertex graph there are none and §3 says nothing, correctly.
+
+**"§4 might be new."** It is not, and the first draft of this file claimed it was
+without counting — `CompleteSpectrumTwoPoints.finrank_eigenspaces_signlessLap_top_add`
+already gives it, and the estate has 95 exact signless multiplicities in all
+(`ERRATUM 541`). `finrank_signless_top_eq` is kept for its ROUTE and only because
+`finrank_add_one_le_sharp` spends that route on something the other theorem cannot
+say: that the general bound of §3 is the best one.
 
 **"§3 could be the Laplacian bound with a word changed."**
 `LaplacianMultiplicityBound.finrank_add_card_component_le` spends the KERNEL,
