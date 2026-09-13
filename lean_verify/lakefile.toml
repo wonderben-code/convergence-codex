@@ -575,4 +575,5 @@ roots = [
   "SeparatingGraphLap",
   "SeparatingSignless",
   "SecularBoundNotNecessary",
+  "BoxLapExtremes",
 ]
