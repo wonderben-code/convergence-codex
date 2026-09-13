@@ -5,7 +5,15 @@
   because a unit claimed three novelties without counting. The count it produced —
   95 exact signless multiplicities across 30 files — was then sorted by GRAPH
   FAMILY, and the table has three empty rows. Two are empty because the graph is
-  not in the estate at all. The third is the STAR, which this estate has studied
+  not in the estate at all. [⚠ **HALF FALSE, KEPT AS WRITTEN** (`ERRATUM 94`,
+  `ERRATUM 547`): the HYPERCUBE is absent, but the PATH is not —
+  `SimpleGraph.pathGraph` is Mathlib's and this estate uses it in
+  `PathAdjSpectrum`, `PathDegreeBoundary`, `BoxGraphPath.boxGraph_adj_pathGraph`
+  and `BoxAdjSpectrum`. Its row is empty because nobody has computed a
+  multiplicity for it, not because the graph is missing — a different kind of
+  gap and a reachable one. Found by entry 43's own reachability check and not
+  carried back to this sentence until the sweep of entry 49.] The third is the STAR,
+  which this estate has studied
   hard: `StarAdjNormExact` computes its adjacency norm, `SignlessStarExact` its
   signless spectral radius, `SignlessStarConverse` characterises it by that radius.
   **And no theorem anywhere in `paper_f` states a multiplicity for it** — the word

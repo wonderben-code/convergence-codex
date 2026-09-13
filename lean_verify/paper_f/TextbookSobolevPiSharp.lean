@@ -16,6 +16,19 @@
   * NO SMALLER CONSTANT WORKS. A statement quantified over every candidate
     constant `c`: if `c` serves EVERY member of the class then `1 ≤ c`.
     In 1 dimension that is `PoincareSteinScaled.no_better_constant_scaled`.
+    ⚠ **THE NEXT CLAUSE IS FALSE AND IS KEPT AS WRITTEN** (`ERRATUM 94`,
+    `ERRATUM 547`). `GaussianPoincareProduct.no_better_constant_MV` and
+    `GaussianProductMeasure.no_better_constant_measure` are both n-dimensional
+    *no smaller constant works* statements — for the POLYNOMIAL class and for it
+    at measure level. **What is true is narrower and is what this file
+    contributes**: the estate does not have it for the SOBOLEV/STEIN classes —
+    the textbook Lebesgue-weak-derivative class, the `Cc^∞`-tested class, or the
+    Hermite-tested class — which are the three §3 covers. The two classes are
+    nested (a polynomial with its gradient is a textbook member) so this file's
+    statement is the stronger, and **that nesting is not proved here**: it needs
+    `MvPolynomial` evaluation to be `ContDiff` and `MemLp`, neither of which is
+    in Mathlib or this estate, so it is a unit of plumbing and not a remark
+    (`ERRATUM 246`). The false clause:
     **In n dimensions the estate does not have it in any class**, and
     `poincare_sharp_var`'s own docstring asserts it in prose — *"so the
     constant is attained and no smaller one can work"* — with nothing
