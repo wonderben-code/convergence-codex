@@ -551,4 +551,5 @@ roots = [
   "SignlessRootOverlap",
   "SignlessP1123Exact",
   "HermitianDimensionSum",
+  "SignlessP1122Charpoly",
 ]

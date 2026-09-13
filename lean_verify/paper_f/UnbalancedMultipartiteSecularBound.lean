@@ -34,6 +34,15 @@ then every row off `T` has an invertible coefficient.
 `dim ker (secularMap) ≤ |T| − 1` and `Q`'s multiplicity at `N − n` is at most
 `kₙ(n − 1) + |T| − 1`.
 
+⚠ **BOTH INEQUALITIES ARE EQUALITIES, 2026-09-12, AND THE PARAGRAPH IS KEPT AS WRITTEN**
+(`ERRATUM 94`). `SecularPoleMultiplicity.finrank_ker_secularMap_eq_half` and
+`.finrank_signless_size_eq_half` replace `≤` by `=`. The missing half was the reverse inclusion of
+`ker_secularMap_le_inf` below — a `P` supported on `T` with `∑ᵢPᵢ = 0` satisfies every row, each
+reading `dᵢPᵢ` with one factor or the other zero — so the `|T| = 1` corner recorded in the next
+paragraph as *an equality rather than a bound* was the general case all along. **A first draft of
+this annotation, written 2026-09-13, credited the wrong file and said the estate had never turned
+the argument round; it had, the day before** (`ERRATUM 527`).
+
 **`finrank_signless_size_eq_of_unique_half`** — **and when exactly one part is half-sized, `Q`
 gains nothing at all**: its multiplicity at `N − n` is the Laplacian's, exactly. That is the
 `|T| = 1` corner of the paragraph above, and it is an equality rather than a bound.
