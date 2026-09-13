@@ -50,6 +50,17 @@ graph is then not two-colourable.
   (`PawSimpleSpectrum.finrank_lapMatrix_le_one_paw`), so it does not separate the two questions.
   Whether they can differ at all is open, and nothing here bears on it. Not attempted
   (`ERRATUM 246`).
+
+> ⚠ **THE PAW IS READ HERE AS UNHELPFUL AND IT SETTLES THE QUESTION IN THE BULLET'S HEADLINE, KEPT
+> AS WRITTEN** (`ERRATUM 94`, `ERRATUM 537`, 2026-09-13). Everything above is true. But *the
+> hypothesis is not shown necessary* and *no graph separates the two questions* are different
+> claims, and **the paw settles the first**: it is **not two-colourable**
+> (`PawSignlessSpectrum.not_colorable_two_paw`) and the equivalence holds on it anyway, both sides
+> being simple. So the hypothesis is **strictly sufficient** — proved, not merely unproved-necessary
+> — which is `SignlessSimpleNotNecessary.simple_transfer_hypothesis_not_necessary`. The sentence
+> that stands is the second: **no graph is known where the two simplicities differ**, and the paw is
+> indeed no help with that. What was wrong was reading one witness as answering neither question
+> when it answers one of them.
 * **THE TRANSPORT REACHES ONLY TWO-COLOURABLE GRAPHS**, which is why the equipartite multipartite
   family of `MultipartiteSignlessCharpoly` is not covered by it: that family is proved **not**
   two-colourable at three or more parts, and its failing instance was proved directly through the

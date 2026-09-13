@@ -62,6 +62,17 @@ directions. That iff is this file's theorem quantified over `μ`, so it is now a
 * **THE TWO-COLOURING HYPOTHESIS IS NOT SHOWN NECESSARY.** No graph is exhibited where the two
   multiplicities differ. `SignlessSimpleFamilies` records the same gap for simplicity, and this
   file does not close it (`ERRATUM 246`).
+
+> ⚠ **BOTH SENTENCES ARE FALSE ABOUT THE ESTATE WITHIN THE DAY, AND THEY ARE KEPT AS WRITTEN**
+> (`ERRATUM 94`, `ERRATUM 537`, 2026-09-13). **The hypothesis IS necessary and it IS shown**:
+> `SignlessColourableNecessary.colorable_two_iff_forall_finrank_eq`, four units later, is a
+> biconditional — the multiplicities agree at every `μ` **exactly when** `G` is two-colourable, and
+> `μ = 0` already decides it. **And a graph IS exhibited where they differ**, twice:
+> `SignlessExcessBothWays.excess_both_ways_P1122` on `K_{1,1,2,2}`, in **both** directions, and
+> `PawSignlessSpectrum.charpoly_signlessLap_ne_lapMatrix_paw` on the paw. The second sentence is
+> wrong in a second way as well: `SignlessSimpleFamilies` records a gap for **simplicity**, which is
+> a different question with a different answer — there the hypothesis is **not** necessary, and
+> `SignlessSimpleNotNecessary` proves it with the paw. **Two fences, one wording, two answers.**
 * **NOTHING ABOUT ALGEBRAIC MULTIPLICITY.** The polynomial route is described above and not taken;
   no diagonalisability statement is made, used, or needed.
 * **NOTHING OVER `ℂ`. NO WALL MOVES AND NO PUBLISHED TAG MOVES.**
