@@ -555,4 +555,5 @@ roots = [
   "BoxLapMultiplicityExact",
   "SignlessConjugateMultiplicity",
   "SignlessColourableNecessary",
+  "SignlessSeparationNonzero",
 ]
