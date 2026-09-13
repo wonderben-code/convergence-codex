@@ -566,4 +566,5 @@ roots = [
   "SignlessPerronSimple",
   "SignlessTopDegreeBounds",
   "SignlessMaxDegreeBound",
+  "SignlessStarExact",
 ]

@@ -68,6 +68,15 @@
   what remains open is the TOPOLOGICAL reading (ASSUMPTIONS 41 and 42),
   not the algebraic one.
 
+  ⚠ **AND THAT PARENTHESIS IS OUT OF DATE, KEPT AS WRITTEN** (`ERRATUM 94`,
+  `ERRATUM 534`, 2026-09-13). **ASSUMPTION 41 IS RETIRED BY PROOF** —
+  `SL2Connected.identityComponent_eq`, 15 August 2026 — and the ledger's own
+  amendment of 16 August says in terms that the two entries *have come apart
+  and must no longer be quoted together*. **Only 42 stands**, and what it
+  wants is simple-connectedness alone, which is the harder half: nothing in
+  this estate computes a `π₁` of anything. Seven files carry this sentence
+  and all seven are annotated.
+
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
   axioms.
 -/
