@@ -65,19 +65,27 @@ variable {d : ℕ}
 
 /-! ## 1. The eigenspace of a matrix diagonalised by a basis -/
 
+variable {K : Type*} [Field K]
+
+/- **GENERALISED FROM `ℂ` TO A FIELD, 2026-09-13 (entry 68), IN PLACE RATHER THAN COPIED**
+(`RE-SWEEP #53` result (i), `ERRATUM 511`'s pattern). Neither of the two theorems below used `ℂ`
+for anything: the proofs are `sub_eq_zero`, a span computation and `finrank_span_eq_card`, all of
+which hold over any field, and the proof bodies are unchanged. The `ℝ` consumer that wanted them
+is the free-boundary box, whose eigenbasis `BoxLapBasis.boxLapBasis` is real. -/
+
 /-- **THE EIGENSPACE AT `μ` IS THE SPAN OF THE BASIS VECTORS WHOSE EIGENVALUE IS `μ`.** No inner
 product appears: the two inclusions are the eigenvector equation one way, and the coefficient
 computation of `SignlessTorusComplete.eigenvalue_iff_of_basis` the other, keeping the surviving
 coefficients instead of contradicting them. -/
 theorem eigenspace_eq_span_of_basis {ι : Type*} [Fintype ι] [DecidableEq ι]
-    (A : Matrix ι ι ℂ) (b : Module.Basis ι ℂ (ι → ℂ)) (ν : ι → ℂ)
-    (hb : ∀ k, A *ᵥ b k = ν k • b k) (μ : ℂ) :
+    (A : Matrix ι ι K) (b : Module.Basis ι K (ι → K)) (ν : ι → K)
+    (hb : ∀ k, A *ᵥ b k = ν k • b k) (μ : K) :
     LinearMap.ker (Matrix.toLin' A - μ • LinearMap.id)
-      = Submodule.span ℂ (Set.range fun k : {k // ν k = μ} => b k.1) := by
+      = Submodule.span K (Set.range fun k : {k // ν k = μ} => b k.1) := by
   classical
-  have hA : ∀ y : ι → ℂ, A *ᵥ y = Matrix.toLin' A y :=
+  have hA : ∀ y : ι → K, A *ᵥ y = Matrix.toLin' A y :=
     fun y => (Matrix.toLin'_apply _ y).symm
-  have hmem : ∀ y : ι → ℂ,
+  have hmem : ∀ y : ι → K,
       y ∈ LinearMap.ker (Matrix.toLin' A - μ • LinearMap.id) ↔ A *ᵥ y = μ • y := by
     intro y
     rw [LinearMap.mem_ker]
@@ -134,9 +142,9 @@ theorem eigenspace_eq_span_of_basis {ι : Type*} [Fintype ι] [DecidableEq ι]
 subfamily of a basis is (`LinearIndependent.comp` along `Subtype.val`), and
 `finrank_span_eq_card` turns the span into the count. -/
 theorem finrank_eigenspace_of_basis {ι : Type*} [Fintype ι] [DecidableEq ι]
-    (A : Matrix ι ι ℂ) (b : Module.Basis ι ℂ (ι → ℂ)) (ν : ι → ℂ)
-    (hb : ∀ k, A *ᵥ b k = ν k • b k) (μ : ℂ) :
-    Module.finrank ℂ (LinearMap.ker (Matrix.toLin' A - μ • LinearMap.id))
+    (A : Matrix ι ι K) (b : Module.Basis ι K (ι → K)) (ν : ι → K)
+    (hb : ∀ k, A *ᵥ b k = ν k • b k) (μ : K) :
+    Module.finrank K (LinearMap.ker (Matrix.toLin' A - μ • LinearMap.id))
       = Nat.card {k // ν k = μ} := by
   classical
   rw [eigenspace_eq_span_of_basis A b ν hb μ, Nat.card_eq_fintype_card]
