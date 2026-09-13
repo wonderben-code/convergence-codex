@@ -560,4 +560,5 @@ roots = [
   "HermitianMaxMultiplicity",
   "SignlessMultipartiteDegeneracy",
   "HermitianFlatSpectrum",
+  "SignlessFlatWitness",
 ]
