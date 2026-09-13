@@ -35,6 +35,16 @@ instantiations, each needing the two base points to have equal degree so that th
 
 ## What is NOT here
 
+⚠ **THE FIRST SENTENCE BELOW WENT STALE AND WAS NEVER ANNOTATED, AND THE PARAGRAPH IS KEPT AS
+WRITTEN** (`ERRATUM 94`, `ERRATUM 544`). `LaplacianClassFamily.sum_card_sub_one_le_finrank` is the
+sum over a family of classes and has been since that file was written; the clause *"nothing here is
+stated for a family"* stayed true of THIS file, which is why a reader checking the file finds the
+paragraph correct and moves on — the `ERRATUM 542` shape, an estate-scoped first sentence sheltering
+behind file-scoped later ones. **The second clause was true and is now answered too**:
+`LaplacianTwinPartition.card_sub_card_le_finrank` adds the covering hypothesis and turns the sum
+into `|V| − |C|`. It still constructs no `Setoid` and no quotient, for the reason
+`TwinClassNotExact` gives. The paragraph:
+
 **THE GENERAL STATEMENT IS STILL NOT PROVED.** `ERRATUM 468` named the sum over **all** classes;
 this file does **two**. Nothing here is stated for a family of classes, no partition of the vertices
 is constructed, and **the arithmetic of two triangles is not evidence for the general form** — it is
