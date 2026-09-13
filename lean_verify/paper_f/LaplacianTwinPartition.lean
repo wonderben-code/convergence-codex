@@ -144,7 +144,15 @@ theorem star_partition (c : V) :
   · exact ⟨{c}, Or.inr rfl, by simp [hv]⟩
   · exact ⟨Finset.univ.erase c, Or.inl rfl, Finset.mem_erase.mpr ⟨hv, Finset.mem_univ v⟩⟩
 
-/-- **AND THE BOUND IS `|V| − 2` THERE, WHICH IS EXACT.** The star has two twin
+/-- **AND THE BOUND IS `|V| − 2` THERE, WHICH IS EXACT.**
+⚠ **THE CLAUSE "SO §2 READS" IS A DERIVATION THIS FILE DOES NOT PERFORM, AND IT IS
+KEPT AS WRITTEN** (`ERRATUM 94`, `ERRATUM 545`). The theorem below proves the
+EXACTNESS by citing `SpectrumReflection`; it never applies §2 to the star.
+`TwinPartitionSlack.star_bound_from_partition` does, and records what this file
+should have: **`card_sub_card_le_finrank_of_open` does NOT apply to the star**,
+its `hdeg` clause wanting every class's base at degree `ν` while the centre has
+degree `|V| − 1`. The general form applies because `heig` is vacuous on the
+singleton class. The original clause: The star has two twin
 classes, so §2 reads `|V| − 2 ≤ mult(1)`, and
 `SignlessStarSpectrum.finrank_signless_star_one` with `SpectrumReflection`'s
 transfer says the multiplicity is exactly that. So the partition bound is attained

@@ -580,6 +580,7 @@ roots = [
   "ReflectionNotColorable",
   "ReflectionGeneral",
   "LaplacianTwinPartition",
+  "TwinPartitionSlack",
   "SeparatingGraphLap",
   "SeparatingSignless",
   "SecularBoundNotNecessary",
