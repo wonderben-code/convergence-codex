@@ -577,4 +577,5 @@ roots = [
   "SecularBoundNotNecessary",
   "BoxLapExtremes",
   "BoxLapGap",
+  "BoxLapLowWeight",
 ]
