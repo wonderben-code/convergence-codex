@@ -75,7 +75,11 @@ already in the estate under the same name and inside this file's import closure,
 * **NO SECOND EIGENVALUE, NO GAP**, five units running (`ERRATUM 246`).
 * **NOTHING ABOUT DISCONNECTED GRAPHS**, and connectedness is genuinely needed rather than
   convenient: a star plus an isolated vertex has the same `Δ` and the same `topEigen` and is not a
-  star. The hypothesis is doing work and the counterexample says which work.
+  star. The hypothesis is doing work and the counterexample says which work — **and the
+  counterexample is arithmetic, not a theorem** (added 2026-09-13 with `SignlessRegularConverse`,
+  which needs the identical remark at the other end): this estate has no disjoint-union-of-graphs
+  construction and no block-diagonal spectrum theorem, so it is a reason to keep the hypothesis and
+  not an object in the library.
 * **NOTHING OVER `ℂ`. NO WALL MOVES AND NO PUBLISHED TAG MOVES.**
 
 **THE HYPOTHESES, READ FROM `#check`** (`ERRATUM 455`): a finite vertex type with decidable
