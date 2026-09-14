@@ -140,6 +140,9 @@ theorem azumaya_dimension_constraint (a b : ℕ) (ha : a ≥ 1) (_hb : b ≥ 1)
     The Azumaya decomposition End(Mₙ) ≅ Mₙ ⊗ Mₙ^op gives two factors
     each of finrank n², hence equal matrix size n.
 
+    [`ERRATUM 562`. Kept. The statement below is `finrank ℂ (M₄(ℂ)) = 16` — one
+    dimension; nothing is selected and no decomposition appears.]
+
     Now backed by CascadeFoundation.cascade_algebra_dim. -/
 theorem azumaya_selects_symmetric :
     -- finrank of M₄(ℂ) = 4 × 4 × 1 = 16 (genuine dimension computation)
@@ -148,6 +151,13 @@ theorem azumaya_selects_symmetric :
 
 /-- The Azumaya decomposition of End(M₄) gives two factors of equal finrank.
     This is NOT a choice — it is forced by End(A) ≅ A ⊗ A^op.
+
+    [`ERRATUM 562`. Kept. The **first** conjunct below — the one this name is about —
+    is `finrank ℂ (M₄(ℂ)) = finrank ℂ (M₄(ℂ))`, proved by `rfl`: *"both factors have
+    the same finrank"* is stated as `x = x` about ONE object, and no `End`, no `⊗` and
+    no `Aᵐᵒᵖ` occurs in the statement. The other two conjuncts are genuine `finrank`
+    computations. The mathematics the docstring describes IS now in the estate, at
+    `CascadeEnd.azumayaEquiv` and `CascadeEnd.endTensorSq` (2026-09-14).]
     Both tensor factors have finrank 16 (as ℂ-modules), matching M₄(ℂ).
     UPGRADED: the factors squared give D₃ = M₁₆(ℂ) finrank = 256. -/
 theorem end_forces_equal_factors :
@@ -169,6 +179,10 @@ theorem end_forces_equal_factors :
 M₄(ℂ)^op ≅ M₄(ℂ) via transpose. This isomorphism is canonical:
 
 **Skolem-Noether theorem:** Any automorphism of M_n(ℂ) is inner.
+[`ERRATUM 562`, the positive half: as of 2026-09-14 this is a **theorem of this
+estate**, not an external citation — `SkolemNoether.skolemNoether`, over any field,
+with `algEquiv_matrix_unique_up_to_inner` giving the two-identifications statement
+this paragraph actually wants. The comment can now point at a declaration.]
 Therefore any two isomorphisms M_n^op → M_n differ by an inner
 automorphism of M_n. The transpose is the distinguished choice
 (it is the unique antiautomorphism that preserves the diagonal).
@@ -218,7 +232,20 @@ noncomputable def stage2_tensor :
     The left M₄ factor does NOT decompose.
 
     Result: M₄ ⊗ M₄ ≅ M₄ ⊗ (M₂ ⊗ M₂)
-    giving THREE algebra factors. -/
+    giving THREE algebra factors.
+
+    [`ERRATUM 562`. *"The left `M₄` factor does NOT decompose"* is kept as written and
+    is **FALSE as mathematics — refuted six lines above by this same file**.
+    `stage2_tensor` is `M₂ ⊗ M₂ ≃ₐ[ℂ] M₄`, an isomorphism of algebras with no
+    reference to which side of a later tensor product it sits on, so inverting it
+    decomposes `M₄`, whichever copy is named "left". The
+    asymmetry this docstring describes is a fact about the CONSTRUCTION HISTORY —
+    which factor was produced as `End(D₁)` — and not about the algebra.
+    `ASSUMPTIONS_LEDGER` 5 records the general point (*"which factor is left is an
+    argument order, and the mirror compiles identically"*) and
+    `CascadeEnd.azumayaEquiv` exhibits both factors symmetrically; what was not
+    recorded is that a docstring states the mathematical claim outright. Found
+    2026-09-14 by the SPINE recompute's L11 and L12 refuters.] -/
 noncomputable def asymmetric_from_iteration :
     (Matrix (Fin 4) (Fin 4) ℂ ⊗[ℂ] Matrix (Fin 4) (Fin 4) ℂ) ≃ₐ[ℂ]
     (Matrix (Fin 4) (Fin 4) ℂ ⊗[ℂ]

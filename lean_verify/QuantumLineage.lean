@@ -97,7 +97,21 @@ private theorem Q_definite (x : EuclideanSpace ℂ (Fin 2)) :
 
     This ratio IS the quantum mechanical transition probability.
     Gleason's theorem (1957) proves this is the UNIQUE probability
-    measure consistent with the Hilbert space lattice structure. -/
+    measure consistent with the Hilbert space lattice structure.
+
+    [`ERRATUM 561`. The sentence is kept and it invokes Gleason's theorem in a
+    dimension where **Gleason's theorem is false**: the statement below is on
+    `EuclideanSpace ℂ (Fin 2)`, Gleason requires dimension ≥ 3, and in dimension 2
+    non-Born frame functions exist. **This file already knows** — Part 5 says so at
+    line 217, *"Note: Gleason requires dim ≥ 3. Our seed is dim 2"* — so the defect is
+    not ignorance of the hypothesis but a hypothesis stated in one place and dropped
+    in another, a shape this register had not recorded before. `Q_cauchy_schwarz`
+    itself is true and is Mathlib's `norm_inner_le_norm`; nothing is withdrawn. Also
+    filed there: Born/Gleason/Wigner appear in **no** `ASSUMPTIONS_LEDGER` entry at
+    all, and Gleason is a Mathlib gap (`grep -rln -i gleason Mathlib/` returns only
+    `Topology/ExtremallyDisconnected.lean`, a different Gleason result), so the Born
+    rule is an INPUT and needs its own ledger entry. Found 2026-09-14 by the SPINE
+    recompute's L21 refuter.] -/
 private theorem Q_cauchy_schwarz (x y : EuclideanSpace ℂ (Fin 2)) :
     ‖@inner ℂ _ _ x y‖ ≤ ‖x‖ * ‖y‖ :=
   norm_inner_le_norm x y

@@ -252,6 +252,13 @@ theorem gamma_recursion (s : ℝ) (hs : s ≠ 0) :
 
 /-- With f₂ = 1: Newton's constant is fully determined.
     G = 3π/(f₂·Λ²) = 3π/Λ².
+
+    [`ERRATUM 559`. The sentence is kept; the statement below is `12 / 4 = (3 : ℕ)`
+    and contains no `G`, no `Λ` and no `π`. **And it is ℕ division, so it does not
+    even pin its own numerator**: `13 / 4`, `14 / 4` and `15 / 4` are all `3` in `ℕ`,
+    so a theorem named `newtons_constant_determined` is true of three curvature
+    numbers it is not about. Five more declarations in this file carry L19's
+    *"zero free parameters"* over arithmetic of the same kind — see the erratum.]
     The gravity-gauge hierarchy G·Λ² = 3π (exact).
     The coefficient 3 comes from the Lichnerowicz formula
     (12 from curvature / 4 from dim(ℂ⁴) = 3). -/
@@ -276,6 +283,17 @@ theorem cc_contribution_determined :
     After F3.10a: 0 free parameters (all moments = 1).
     Standard Model: 19 free parameters.
     Reduction: 19 → 3 → 0. Complete elimination.
+
+    [`ERRATUM 559`. Kept as written. The statement's fourth conjunct is
+    `19 − 3 = (16 : ℕ)`, and **16 appears nowhere in the chain this docstring states**
+    (`19 → 3 → 0`): the conjunct is a subtraction whose value plays no role in the
+    claim. The first three conjuncts are the genuine Mathlib facts `Γ 1 = 1`,
+    `1! = 1`, `exp 0 = 1`; the identification of the spectral moments `f₀`, `f₂`, `f₄`
+    with those three constants is a definition written nowhere in the estate, and
+    `ASSUMPTIONS_LEDGER` 12's second point records that Cauchy gives `f = e^{−cx}` for
+    ANY `c`, so `f₀ = 1/c` and `f₂ = 1/c²` are not 1. The honest form of what this
+    file asserts is `SpectralCutoffFactorises.cutoff_one_parameter` (2026-09-14),
+    which returns `∃ c, f x = exp (c · x)` and proves nothing about `c`.]
 
     The moments are fixed by the Gamma function and exponential:
     f₀ = Γ(1) = 1, f₂ = Γ(2) = 1! = 1, f₄ = exp(0) = 1.

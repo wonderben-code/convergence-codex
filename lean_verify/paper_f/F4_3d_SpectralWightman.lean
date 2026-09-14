@@ -141,7 +141,26 @@ theorem axiom_poincare_duality :
   exact ⟨by simp [Fintype.card_fin], fun c => sq_nonneg c⟩
 
 /-- All 7 axioms have verifiable content via Mathlib structures.
-    Uses CascadeFoundation types for algebra/Hilbert space dimensions. -/
+    Uses CascadeFoundation types for algebra/Hilbert space dimensions.
+
+    [`ERRATUM 558`. **THE SENTENCE ABOVE IS KEPT AND IS WRONG, AND THIS IS THE WORST
+    SINGLE CASE OF ITS KIND IN THE ESTATE.** The seven conjuncts below are
+    `4 + 0 = 4`, `0 < 16`, `96 > 0`, `1·1·(−1) = −1`, `0 ≤ 0²`, `1² = 1` and
+    `∀ c, 0 ≤ c²`. Not one contains an algebra, a Hilbert space, an operator, a
+    grading or a real structure, so "verifiable content" is arithmetic. The
+    statements are TRUE and are not withdrawn; what is filed is that the NAMES and
+    the comments claim the Connes axioms. **Three properties compound**: the
+    `axiom_` prefix on the seven separate theorems at lines 72–136 reads as *this
+    axiom is verified*; the statements are theorems of arithmetic, so they would
+    survive any change to the physics (`axiom_finiteness` holds if the Hilbert space
+    had dimension 1, and `axiom_first_order` is `0 ≤ 0²`, true of every possible
+    triple and every impossible one); and **the estate HAS a real spectral triple** —
+    `KOSixSpectralTriple.lean` proves a complete finite real triple of KO-dimension
+    6, with `J` antiunitary, `D` self-adjoint against a genuine inner product, the
+    three signs, the commutant and order-one conditions, and faithfulness as a proven
+    conjunct. So this arithmetic is not standing in for something unavailable; it
+    stands beside the real thing. Found 2026-09-14 by the SPINE recompute's L18
+    refuter, reading statements rather than docstrings.] -/
 theorem all_seven_axioms :
     -- Dimension: d = 4 via Fintype.card
     (Fintype.card (Fin 4) + 0 = 4) ∧

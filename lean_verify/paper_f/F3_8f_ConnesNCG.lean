@@ -255,6 +255,18 @@ theorem ko_dimension_matches_SM :
   · rw [cascade_hilbert_dim]; simp
 
 -- Quaternionic structure forced: dim(M₄(ℂ)) = 16, dim(ℂ⁴) = 2 × 2
+-- [`ERRATUM 560`. The name is kept and the statement below is `16 = 16 ∧ 4 = 4`: no
+-- `ℍ`, no real form, no involution, no forcing. `grep 'Quaternion\|ℍ'` on this file
+-- returns eight hits and EVERY ONE is inside a comment or a prose block, so `ℍ`
+-- occurs here only in prose — not once in a theorem statement, a definition or a
+-- type. This is the estate's only declaration named for spine L9's clause *"M₂(ℍ) is
+-- FORCED as the real form"*, and it belongs beside `real_form_forced` (root namespace,
+-- `F3_1b_ModuleSpectral.lean`) in
+-- `ASSUMPTIONS_LEDGER` 6's "where it bites" list, which did not have it. Separately:
+-- the estate PROVES `Cl(4,0) ≅ Cl(0,4) ≅ M₂(ℍ) ≅ Cl(1,3)` (`CliffordRealQuatFour`,
+-- `CentralIdemInvariant.algEquiv_pos_four_neg_four`), so *"(4,0) and (0,4) excluded
+-- structurally"* is false as written and the exclusion is the Riemannian-versus-
+-- Lorentzian input, a postulate.]
 theorem quaternionic_structure_forced :
     finrank ℂ CascadeAlgebra = 16
     ∧ 2 * 2 = finrank ℂ CascadeHilbert := by
