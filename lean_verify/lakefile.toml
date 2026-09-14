@@ -94,6 +94,7 @@ roots = [
   "GreenAmbientMonotone",
   "GreenDomainMonotone",
   "WitnessVarianceUniform",
+  "WitnessVarianceFamily",
   "SqrtGreenBound",
   "LaplacianDegreeBound",
   "RealDivisionTrichotomy",
