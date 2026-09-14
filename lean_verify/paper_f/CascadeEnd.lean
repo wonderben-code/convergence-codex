@@ -64,6 +64,12 @@
   asserted, as of 2026-09-14, between the two routes from `End(M₂)` to `M₄`** — `endMatrixEquiv 2`
   and `endTensorSq 2` composed with `F4_1a_TensorProductIsomorphism`'s `cascadeD1toD2` —
   because a comparison between two isomorphisms is a theorem (`ERRATUM 548`) and it is not proved.
+  **SUPERSEDED THE SAME DAY, and the sentence above is kept as written (`ERRATUM 94`):**
+  `SkolemNoether.endMatrixEquiv_routes_agree` proves the comparison for every `b`, and
+  `endM2_routes_agree` is this line's case. It is *up to conjugation by a single unit* —
+  the two routes choose different bases, so equality is false and conjugacy is the
+  strongest true statement — and it rests on `SkolemNoether.skolemNoether`, gap N5,
+  which was not in the estate when the line above was written.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
@@ -232,6 +238,9 @@ that a word in two headers now has a statement behind it.**
 
 **"The two routes to `M₄` should agree."** They may; it is not proved, and
 saying so without proof is exactly what `ERRATUM 548` was.
+**They do, up to conjugation, and it is now proved** — `SkolemNoether.endM2_routes_agree`,
+the same day, off Skolem–Noether. The paragraph is kept as written: the discipline it
+states is right, and what changed is that somebody did the proof.
 -/
 
 end
