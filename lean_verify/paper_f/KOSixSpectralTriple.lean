@@ -38,6 +38,32 @@
      `piRep_one`, `piRep_mul`, `piRep_add`, `piRep_smul`, `piRep_adjoint`
      (π(aᴴ) is the adjoint of π(a)), and `piRep_injective` (faithful, so the
      representation is not the zero map in disguise).
+     [**`ERRATUM 565`. THIS ITEM IS KEPT AND IS WRONG: `piRep` IS NOT A
+     REPRESENTATION OF THE ALGEBRA.** `piRep a v = ((a *ᵥ v.1.1, a *ᵥ v.1.2),
+     (v.2.1, v.2.2))` returns the two ANTIPARTICLE blocks unchanged — acted on by
+     the identity whatever `a` is — so `piRep` is `(a ⊕ a) ⊕ (1 ⊕ 1)`: unital and
+     multiplicative, and **not additive in `a`**.
+     `KOSixAlgebraAction.piRep_not_additive_in_matrix` proves the negation with an
+     explicit witness, and `piRep_additive_iff_antiparticle_zero` proves that
+     additivity at `v` holds EXACTLY when `v`'s antiparticle part vanishes, so the
+     failure is the generic case.
+     **AND THE TWO THEOREMS THIS ITEM CITES AS EVIDENCE ARE ABOUT A DIFFERENT
+     VARIABLE**: `piRep_add` is `piRep a (u + v) = piRep a u + piRep a v` and
+     `piRep_smul` is `piRep a (c • v) = c • piRep a v` — both linearity in the
+     VECTOR, which every operator in a representation must have, and neither says
+     anything about additivity in the ALGEBRA ELEMENT, which is what makes a family
+     of operators a representation of a ring.
+     **NOTHING BELOW IS WITHDRAWN.** Every theorem in this file is true as stated;
+     `piRep_mul`, `piRep_one`, `piRep_adjoint` and `piRep_injective` hold. What the
+     reader must not conclude is that `commutant_condition` and the order-one
+     condition say *the algebra and its opposite commute* — they are true of this
+     `π` and there is no algebra action for them to be about.
+     In Connes' formalism the antiparticle blocks carry the OPPOSITE algebra through
+     `J π(b) J⁻¹`, which this file has as `piOp`; acting by the identity there is
+     what buys unitality on the whole space at the cost of linearity. The genuine
+     unital ⋆-representation on the particle sector is
+     `KOSixAlgebraAction.particleRep`, and which model the cascade's triple should
+     use is an author's decision, recorded in `UNLOCK_WATCHLIST`.]
   6. **`commutant_condition`** — [π(a), Jπ(b)J⁻¹] = 0, the zeroth-order
      axiom: the algebra and its opposite commute.
   7. **`order_one_condition`** — [[D, π(a)], Jπ(b)J⁻¹] = 0, the first-order

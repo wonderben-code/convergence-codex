@@ -96,6 +96,16 @@
     the theorem cannot be applied to it without building that instance. Queried:
     `grep -n 'InnerProductSpace\|instInner' paper_f/KOSixSpectralTriple.lean` is
     empty. That instance is a unit's work and is named here rather than done.
+    [**`ERRATUM 565`: the paragraph above is kept and names ONE obstacle when there
+    are TWO, and the second is the harder one.** `isSemisimpleRing_of_faithful_star_rep`
+    takes a `RingHom`, and `piRep` is **not** one:
+    `KOSixAlgebraAction.piRep_not_additive_in_matrix` proves it is not additive in
+    the matrix argument, because the antiparticle blocks are returned unchanged. So
+    building the `InnerProductSpace` instance would not have been enough, and the
+    sentence *"the theorem cannot be applied to it without building that instance"*
+    understates the gap. The theorem IS applied to the estate's particle sector, at
+    `KOSixAlgebraAction.matrix_isSemisimple_via_particleRep` — so the shape was
+    right and it is the four-block extension that breaks it.]
   - **The real classification's presentation** stays as `RealSimpleAlgebra` left
     it — division algebras named rather than dispatched through a `Fin 3 → Type` —
     which is `ASSUMPTIONS_LEDGER` 49, an author's decision, and is not made here.
