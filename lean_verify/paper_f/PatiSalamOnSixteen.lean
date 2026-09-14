@@ -337,27 +337,79 @@ theorem index_ratio_one (X Y : Matrix (Fin 4) (Fin 4) ℂ) (A B : Matrix (Fin 2)
   rw [trace_su4Rep_mul, trace_su2LRep_mul, mul_div_assoc, mul_div_assoc, div_self hXY,
     div_self hAB]
 
-/-! ## 5. The physics bridge as a named hypothesis -/
+/-! ## 5. The physics bridge as a named hypothesis — over `ℝ`, because over `ℚ` it is empty
 
-/-- `sin²θ_W` in terms of the two couplings, the textbook definition. -/
+**`ERRATUM 557`.** This section first stated the bridge over `ℚ`, and two of the recompute's
+refuters independently machine-checked that the hypothesis has NO rational solutions: it demands
+`g'²/g² = 3/5`, and `3/5` is not the square of a rational. The theorem was therefore vacuously
+true and said nothing about any coupling pair. It is kept below as
+`weinberg_of_coupling_matching_rat` (`ERRATUM 94`: the statement is not deleted), the
+impossibility is proved beside it as
+`no_rat_coupling_matching`, and the bridge is restated over `ℝ` where the hypothesis is
+**inhabited** — `coupling_matching_inhabited` exhibits the witness. -/
+
+/-- `sin²θ_W` in terms of the two couplings, the textbook definition, over `ℝ`. -/
+noncomputable def sinSqThetaWReal (g g' : ℝ) : ℝ := g' ^ 2 / (g ^ 2 + g' ^ 2)
+
+/-- The rational version, kept for the record. See `ERRATUM 557`: its hypothesis class is empty. -/
 def sinSqThetaWPhys (g g' : ℚ) : ℚ := g' ^ 2 / (g ^ 2 + g' ^ 2)
 
-/-- **THE WEINBERG ANGLE UNDER COUPLING MATCHING.** If the couplings are normalised by one
-invariant form on the chiral 16 — `g'²/g² = Tr(T₃L²)/Tr(Y²)`, `ASSUMPTIONS_LEDGER` 57 — then
-`sin²θ_W = 3/8`. The hypothesis is the whole of the physics; the arithmetic is
-`WeinbergIndex.trace_T3L_sq` and `trace_Y_sq`. -/
-theorem weinberg_of_coupling_matching (g g' : ℚ) (hg : g ≠ 0)
-    (hmatch : g' ^ 2 / g ^ 2 = (T3L * T3L).trace / (Y * Y).trace) :
-    sinSqThetaWPhys g g' = 3 / 8 := by
+/-- **THE WEINBERG ANGLE UNDER COUPLING MATCHING, OVER `ℝ`.** If the couplings are normalised by
+one invariant form on the chiral 16 — `g'² = (Tr(T₃L²)/Tr(Y²)) · g²`, which is
+`ASSUMPTIONS_LEDGER` 57 — then `sin²θ_W = 3/8`. The hypothesis is the whole of the physics; the
+arithmetic is `WeinbergIndex.trace_T3L_sq` and `trace_Y_sq`, and `coupling_matching_inhabited`
+below shows the hypothesis is satisfiable, which over `ℚ` it is not. -/
+theorem weinberg_of_coupling_matching_real (g g' : ℝ) (hg : g ≠ 0)
+    (hmatch : g' ^ 2 = ((T3L * T3L).trace / (Y * Y).trace : ℚ) * g ^ 2) :
+    sinSqThetaWReal g g' = 3 / 8 := by
+  rw [trace_T3L_sq, trace_Y_sq] at hmatch
+  norm_num at hmatch
+  have hg2 : g ^ 2 ≠ 0 := pow_ne_zero 2 hg
+  unfold sinSqThetaWReal
+  rw [hmatch]
+  have hden : g ^ 2 + 3 / 5 * g ^ 2 = 8 / 5 * g ^ 2 := by ring
+  rw [hden, div_eq_iff (by
+    exact mul_ne_zero (by norm_num) hg2)]
+  ring
+
+/-- **THE HYPOTHESIS IS INHABITED.** With `g = 1` and `g' = √(3/5)` the matching holds, so
+`weinberg_of_coupling_matching_real` is not vacuous. This is the check the `ℚ` version lacked. -/
+theorem coupling_matching_inhabited :
+    ∃ g g' : ℝ, g ≠ 0 ∧
+      g' ^ 2 = ((T3L * T3L).trace / (Y * Y).trace : ℚ) * g ^ 2 := by
+  refine ⟨1, Real.sqrt (3 / 5), one_ne_zero, ?_⟩
+  rw [Real.sq_sqrt (by norm_num : (0:ℝ) ≤ 3 / 5), trace_T3L_sq, trace_Y_sq]
+  norm_num
+
+/-- **AND OVER `ℚ` IT IS EMPTY — the finding that forced `ERRATUM 557`.** No pair of rationals
+satisfies the matching, because `Tr(T₃L²)/Tr(Y²) = 3/5` is not the square of a rational: if
+`g'² = (3/5)g²` then `(5g'/g)² = 15`, and `15` is not a rational square
+(`Nat.Prime.irrational_sqrt` on `3`, through `Irrational`). -/
+theorem no_rat_coupling_matching :
+    ¬ ∃ g g' : ℚ, g ≠ 0 ∧ g' ^ 2 / g ^ 2 = (T3L * T3L).trace / (Y * Y).trace := by
+  rintro ⟨g, g', hg, hmatch⟩
   rw [trace_T3L_sq, trace_Y_sq] at hmatch
   have hg2 : g ^ 2 ≠ 0 := pow_ne_zero 2 hg
-  have hsq : g' ^ 2 = 3 / 5 * g ^ 2 := by
-    field_simp at hmatch
+  -- the matching makes `15` a square in `ℚ`, with witness `5 g' / g`
+  have hsq : IsSquare (15 : ℚ) := by
+    refine ⟨5 * g' / g, ?_⟩
+    field_simp at hmatch ⊢
     linarith
-  unfold sinSqThetaWPhys
-  rw [hsq]
-  field_simp
-  ring
+  -- and `15` is not a square in `ℕ`, hence not in `ℚ`
+  have h15 : ¬ IsSquare (15 : ℕ) := by
+    rintro ⟨r, hr⟩
+    have hr4 : r < 4 := by nlinarith
+    interval_cases r <;> omega
+  rw [show ((15 : ℚ)) = ((15 : ℕ) : ℚ) by norm_num,
+    Rat.isSquare_natCast_iff] at hsq
+  exact h15 hsq
+
+/-- The rational statement, KEPT as first written (`ERRATUM 94`) beside the theorem that shows its
+hypothesis class is empty. It is true, and it is true vacuously. -/
+theorem weinberg_of_coupling_matching_rat (g g' : ℚ) (hg : g ≠ 0)
+    (hmatch : g' ^ 2 / g ^ 2 = (T3L * T3L).trace / (Y * Y).trace) :
+    sinSqThetaWPhys g g' = 3 / 8 :=
+  absurd ⟨g, g', hg, hmatch⟩ no_rat_coupling_matching
 
 end
 
