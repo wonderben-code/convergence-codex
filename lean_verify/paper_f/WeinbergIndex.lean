@@ -68,7 +68,12 @@
   physics, not mathematics — inside SO(10) it is automatic, and no
   SO(10) exists in the estate); renormalisation running; symmetry
   breaking; anything about the measured low-energy angle; the full
-  su(4) colour action beyond its B−L direction. The su(2)×su(2) half of
+  su(4) colour action beyond its B−L direction
+  [⚠ that last item is SUPERSEDED, 2026-09-14, and the sentence is kept
+  as written (`ERRATUM 94`): `SU4OnSixteen.su4Rep` is the full `gl₄ ⊇ sl₄`
+  action on the 16 as `4 ⊕ 4̄`, with `su4Rep_bracket` its bracket law and
+  the `SU(4)³`, `SU(4)²–SU(2)_L` and `SU(4)²–SU(2)_R` cubic anomalies
+  proved to vanish on it; every OTHER item in this list stands]. The su(2)×su(2) half of
   the module identification IS now formalised — `Su2ModuleSixteen`
   builds the ladder operators and proves both sl₂ triples, the
   commuting of the two sides, and the centrality of B−L, so the
