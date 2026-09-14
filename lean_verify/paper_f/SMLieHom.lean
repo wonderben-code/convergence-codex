@@ -53,6 +53,11 @@ The corrected docstring says `su(4)` and means `sl₄(ℂ)` — `ERRATUM 325`'s 
 `SMEmbeddingHonest`'s own naming paragraph already flags the convention.
 
 **No `LieSubalgebra` is built for any image**, and no `LieEquiv` onto a range is exhibited.
+⚠ SUPERSEDED IN PART, 2026-09-14, and the sentence is kept as written (`ERRATUM 94`):
+`SMInPatiSalam.smRange` is the range of an injective `LieHom` from `sl₃ × sl₂ × ℂ` into the
+Pati–Salam algebra `sl₄ × sl₂ × sl₂`, as a Mathlib `LieSubalgebra`, of dimension 12. It is a
+subalgebra of the PRODUCT, not of `sl₄` — the target this file's `no_lieHom_assembling` rules
+out — so the sentence above remains true of `sl₄` and is answered for the product.
 
 **No wall moves. No published tag moves.**
 

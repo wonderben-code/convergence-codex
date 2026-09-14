@@ -158,7 +158,7 @@ roots = [
   "HermiteScaledComplete",
   "TransposeDimension",
   "SuGradedLieAlgebra",
-  "SMLieHom",
+  "SMLieHom", "SMInPatiSalam",
   "TransposeSplit",
   "TracelessRealSplit",
   "HermitianNotLie",
