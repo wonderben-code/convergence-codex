@@ -84,7 +84,12 @@ noncomputable def cascadeTensorIso :
       D₁ = End(ℂ²) = M₂(ℂ)
       D₂ = End(M₂(ℂ)) ≅ M₂ ⊗ M₂ ≅ M₄(ℂ)     [n=m=2]
       D₃ = End(M₄(ℂ)) ≅ M₄ ⊗ M₄ ≅ M₁₆(ℂ)    [n=m=4]
-      General: D_{k+1} = M_{2^k} ⊗ M_{2^k} ≅ M_{2^{k+1}} -/
+      General: D_{k+1} = M_{2^k} ⊗ M_{2^k} ≅ M_{2^{k+1}}
+    **The "General" line is wrong as arithmetic and is kept as written (`ERRATUM 553`,
+    2026-09-14):** the cascade sizes are `2, 4, 16, 256, …`, i.e. `D_k = M_{2^{2^{k-1}}}`,
+    and `M_b ⊗ M_b ≅ M_{b²}`, never `M_{2b}`. The theorem below is stated for all `n, m`
+    and is unaffected; `CascadeEnd.endMatrixEquiv b : End(M_b) ≃ₐ M_{b·b}` is the
+    correct general step. -/
 noncomputable def cascadeStepIso (n m : ℕ) :
     Matrix (Fin n) (Fin n) ℂ ⊗[ℂ] Matrix (Fin m) (Fin m) ℂ ≃ₐ[ℂ]
     Matrix (Fin (n * m)) (Fin (n * m)) ℂ :=
@@ -181,6 +186,9 @@ theorem cascade_iso_preserves_dim :
     The tensor product isomorphism M_n ⊗ M_n ≅ M_{n²} gives the
     dimension formula: dim(D_{k+1}) = dim(D_k)². Since D_k = M_{2^k},
     this yields dim(D_{k+1}) = (2^k)² · (2^k)² = (2^{k+1})² = dim(M_{2^{k+1}}).
+    [`ERRATUM 553`: the two sentences above misstate the sizes — `(2^k)⁴ = 2^{4k} ≠
+    2^{2k+2}`; with `D_k = M_{2^{2^{k-1}}}` the formula `dim D_{k+1} = (dim D_k)²` is
+    the true content and is what the theorems prove. Kept as written.]
 
     We verify the concrete ℂ-module dimensions at every cascade level using
     Mathlib's `Module.finrank_matrix` (NOT arithmetic):

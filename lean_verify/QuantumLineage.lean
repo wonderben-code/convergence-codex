@@ -52,6 +52,9 @@ open Function Module Matrix
 
 This inner product is:
 - Forced by the complex vector space structure (unique up to positive scaling)
+  [FALSE as mathematics, `ERRATUM 555`: the inner products on ℂ² form the open cone of
+  positive-definite Hermitian 2×2 matrices, four real dimensions, not a ray; the
+  sentence is kept as written and no theorem below states it]
 - Positive definite: ⟨x,x⟩ ≥ 0 with equality iff x = 0
 - Conjugate-symmetric: ⟨y,x⟩ = conj(⟨x,y⟩)
 
@@ -63,7 +66,10 @@ private theorem Q_seed_dim : finrank ℂ (Fin 2 → ℂ) = 2 := by simp
 
 /-- ℂ² (as EuclideanSpace) carries THE canonical inner product space structure.
     No choice: the Hermitian inner product on a finite-dimensional complex
-    vector space is unique up to positive real scaling. -/
+    vector space is unique up to positive real scaling.
+    [`ERRATUM 555`: the second sentence is false — see the header; the theorem
+    below only exhibits Mathlib's standard structure and proves nothing about
+    uniqueness. Kept as written.] -/
 noncomputable instance Q_ips :
     InnerProductSpace ℂ (EuclideanSpace ℂ (Fin 2)) := inferInstance
 

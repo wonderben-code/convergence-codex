@@ -27,7 +27,12 @@
   3. **`t3RHom`** — `c ↦ c • T₃ᴿ` into `sl₂_R`, with `T₃ᴿ = ½·diag(1, −1)`; a
      `LieHom` because `u(1)` is abelian and `⁅T₃ᴿ, T₃ᴿ⁆ = 0`. This is the
      frame `WeinbergIndex` already uses: hypercharge `Y = T₃ᴿ + (B−L)/2` is
-     split across `sl₂_R` and the `B−L` direction of `sl₄`.
+     split across `sl₂_R` and the `B−L` direction of `sl₄`. **Same
+     direction, not the same scalar (`ERRATUM 552`):** `WeinbergIndex`'s
+     `bl_eq_u1Embed` gives `B−L = u1EmbedFn (1/3)`, so the literal `c • Y`
+     would put `u1EmbedFn (c/6)` in `sl₄`, while `colourBL` puts
+     `u1EmbedFn (c/2) = (3c/2) • (B−L)` there. No theorem depends on the
+     scalar (§5 below), and the sentence above is kept as first written.
   4. **`smToPS`** — the product, and **`smToPS_injective`**. `smToPS_su3`,
      `smToPS_su2`, `smToPS_u1` pin the three restrictions to the estate's
      `SMLieHom.su3Hom`, the identity, and `SMLieHom.u1Hom (c/2)` with `c • T₃ᴿ`.
@@ -149,7 +154,8 @@ theorem smToPS_su2 (B : sl (Fin 2) ℂ) : smToPS (0, B, 0) = (0, B, 0) := by
   change su3EmbedFn 0 + 0 = 0
   rw [h3, add_zero]
 
-/-- The hypercharge direction: `B−L` at `c/2` in `sl₄`, and `c • T₃ᴿ` in `sl₂_R`. -/
+/-- The hypercharge direction: `u1EmbedFn (c/2)`, i.e. `(3c/2) • (B−L)`, in `sl₄`, and
+`c • T₃ᴿ` in `sl₂_R` (the scalar is discussed in the header, `ERRATUM 552`). -/
 theorem smToPS_u1 (c : ℂ) : smToPS (0, 0, c) = (u1Hom (c / 2), 0, c • t3R) := by
   refine Prod.ext ?_ (Prod.ext rfl rfl)
   apply Subtype.ext

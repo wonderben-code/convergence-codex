@@ -362,7 +362,8 @@ the statements resemble each other). It rebuilds *this file's own isomorphism* f
 lemma, with `clifford4ToMatrix_surjective` as the only Clifford-specific input.
 
 **`cliffordMatrixEquiv` above is NOT superseded and is not deleted.** It is the one whose
-generator behaviour `cliffordMatrixEquiv_apply_ι` records, and that behaviour — not the mere
+generator behaviour `cliffordMatrixEquiv_apply_ι` records [no declaration of that name exists —
+the theorem meant is `cliffordMatrixEquiv_ι`, `ERRATUM 554`], and that behaviour — not the mere
 existence of an isomorphism — is what the spin identification consumes. -/
 noncomputable def cliffordMatrixEquiv_via_finrank :
     CliffordAlgebra Q₄ ≃ₐ[ℂ] Matrix (Fin 4) (Fin 4) ℂ :=
