@@ -8,6 +8,11 @@
   This is the endomorphism cascade in action:
     End(ℂ²) = M₂(ℂ)
     End(M₂(ℂ)) ≅ M₂(ℂ) ⊗ M₂(ℂ) ≅ M₄(ℂ)
+  ⚠ NOTE 2026-09-14 (kept as written, `ERRATUM 94`): this file proves the
+  SECOND `≅` on that line and no statement in it mentions `Module.End`. The
+  first `≅` — `End(M₂) ≃ₐ M₂ ⊗ M₂`, the Azumaya decomposition — is
+  `CascadeEnd.endTensorSq 2`, and `CascadeEnd.endM2 : End(M₂) ≃ₐ M₄` is the
+  composite with the End in it. Nothing here is withdrawn.
 
   The isomorphism is the Kronecker product: given A ∈ M₂ and B ∈ M₂,
   A ⊗ B is the 4×4 matrix with (i₁,i₂),(j₁,j₂)-entry = A_{i₁,j₁} · B_{i₂,j₂}.

@@ -332,13 +332,29 @@ theorem constraint_C1_justified : Module.finrank ℂ (Fin 16 → ℂ) = 16 := by
 
 /-- C2 justified: D₂ = End(D₁) = End(M₂) = M₄.
     finrank ℂ (M₂(ℂ)) = 2 × 2 × 1 = 4, and the next cascade level
-    has finrank 4² = 16. -/
+    has finrank 4² = 16.
+
+    ⚠ **SAME SHAPE AS C3 BELOW, KEPT** (`ERRATUM 94`, `ERRATUM 550`): the
+    statement is `finrank M₂ = 4` and contains no `End`. The `End` step is
+    `CascadeEnd.endM2 : End(M₂) ≃ₐ M₄`, and `CascadeEnd.size_eq_of_end_equiv`
+    is C2 as a theorem: any presentation `End(M_b) ≃ₐ M_a` has `a = b²`. -/
 theorem constraint_C2_justified : Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) = 4 := by
   simp [Module.finrank_matrix, Fintype.card_fin, Module.finrank_self]
 
 /-- C3 justified: End(D₁) ≅ D₁ ⊗ D₁^op gives equal factors.
     Both factors have the same finrank = 4 (genuine Mathlib computation).
-    The Azumaya decomposition forces symmetric factor dimensions. -/
+    The Azumaya decomposition forces symmetric factor dimensions.
+
+    ⚠ **THE DOCSTRING OUTRUNS THE THEOREM, AND BOTH ARE KEPT AS WRITTEN**
+    (`ERRATUM 94`, `ERRATUM 550`, 2026-09-14). The first conjunct below is
+    `finrank M₂ = finrank M₂`, closed by `rfl`; no `End`, no `⊗`, no `ᵐᵒᵖ` and
+    no Azumaya decomposition appears in the statement. **The decomposition this
+    docstring names IS in Mathlib** — `IsAzumaya.matrix` and
+    `IsAzumaya.AlgHom.mulLeftRight_bij` — and this file's line 41 (*"not yet in
+    Mathlib"*) was false for that half when written. `CascadeEnd.lean` imports
+    it: `CascadeEnd.endTensorSq` is `End(M_b) ≃ₐ M_b ⊗ M_b` for every `b ≠ 0`,
+    and `CascadeEnd.factor_eq_of_end_equiv_tensor` is C3 as a theorem about
+    ANY such identification, `c = b`. -/
 theorem constraint_C3_justified :
     Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) =
     Module.finrank ℂ (Matrix (Fin 2) (Fin 2) ℂ) ∧
