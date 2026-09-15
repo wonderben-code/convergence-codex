@@ -50,19 +50,41 @@
     `factorOf_bijective`, `factorPerm`,
     `factorPerm_eq_iff`** — the map and its inverse.
   * **`map_single_eq`, `exists_factorPerm`** — the theorem, in pointwise and existential form.
+  * **`factorPerm_involutive`** — **AND `σ` IS FORCED TO BE AN INVOLUTION.** Two lines: apply
+    `s` twice to `e i`, `map_involutive` returns it, `map_single_eq` says the result is
+    `e (σ(σ i))`, and distinct minimal central idempotents differ somewhere. **This was in this
+    file's own *what is not proved* list**, as *"no constraint on which `σ` arise is proved"*,
+    and the adversarial review the standing orders ask for is what took it out.
+  * **`single_mul_single_same`, `map_single_apply_eq_zero`, `blockMap`,
+    `map_single_eq_single_blockMap`, `blockMap_add`, `blockMap_mul`, `blockMap_one`** — **`s`
+    CARRIES BLOCK `i` INTO BLOCK `σ i`**, by an additive, ANTI-multiplicative, unital map. This
+    is the `restrictLeft`/`restrictRight` analogue the first draft listed as missing, and it is
+    **strictly stronger than the shape that list asked for**: it assumes nothing about whether
+    `σ` fixes `i`, so the fixed factors and the swapped pairs are ONE statement, and the
+    “cycles of length `≥ 3` needing their own statement” clause was answering a question that
+    `factorPerm_involutive` shows cannot arise.
 
   WHAT IS **NOT** PROVED.
-  * **The `n`-factor analogue of `restrictLeft`/`restrictRight` is NOT here.** In the two-factor
-    case `StarStructureProduct` goes on to show that a `s` which FIXES `(1,0)` restricts to a
-    `⋆`-structure on `B`, and that a `s` which SWAPS gives a map between the factors. The
-    corresponding statements for a general `σ` — `s` restricts to a `⋆`-structure on each
-    factor `σ` fixes, and to an anti-isomorphism `B i → B (σ i)` on each orbit of length two,
-    with cycles
-    of length `≥ 3` needing their own statement — are **not written**. That is the honest residue
-    of entry 266's item (2) and it is now the whole of it.
-  * **No permutation is computed, and no constraint on which `σ` arise is proved.** For all this
-    file says, every permutation of the index could occur, or only the identity. In particular
-    nothing here says a `⋆`-structure exists at all for a given `σ`.
+  * ~~**The `n`-factor analogue of `restrictLeft`/`restrictRight` is NOT here.**~~ ~~**No
+    permutation is computed, and no constraint on which `σ` arise is proved.**~~ **BOTH WERE
+    FALSE WITHIN THE HOUR, and the adversarial review the standing orders ask for after every
+    new proof file is what found them.** `factorPerm_involutive` is the constraint — `σ² = 1`,
+    two lines — and `map_single_apply_eq_zero` with the `blockMap` family is the
+    `restrictLeft`/`restrictRight` analogue, in a form that needed no case split on whether `σ`
+    fixes `i`. **The transferable shape: a *what is not proved* list is a list of CLAIMS, and
+    two of mine were refuted by the file they were written about.** Section 7 above.
+  * **`blockMap` is not shown BIJECTIVE.** Its inverse ought to be `blockMap` at `σ i`, which
+    lands in `B (σ(σ i))`; `factorPerm_involutive` makes that `B i` — but as a PROPOSITIONAL
+    equality, so composing the two maps needs a transport along it, and the composite's
+    statement is then about a transported map rather than about `blockMap` itself. **Measured,
+    not guessed: the obstruction is dependent-type plumbing and not mathematics**, and it is
+    left for a unit that wants to pay for it.
+  * **No `σ` is REALISED, so the classification is one-sided.** `factorPerm_involutive` says
+    only involutions arise. Whether every involution arises is not proved. The cheap route is
+    named rather than walked: on `∏ ℂ` with `σ` an involution, `s x = fun i => conj (x (σ i))`
+    should be a `⋆`-structure whose `factorPerm` is `σ`, which would make the answer *exactly
+    the involutions* — and it needs `OnlyTrivialCentralIdem ℂ`, which this estate may or may not
+    already carry, checked by a grep and not by a guess before that unit starts.
   * **The hypothesis that each factor has only trivial central idempotents is not discharged
     here.** For matrix algebras it is `CentralIdemInvariant`'s business, and this file takes it
     as given, exactly as `prod_dichotomy` does.
@@ -71,7 +93,9 @@
     is its item (3).
   * **No `⋆`-structure on a product is constructed.** Every statement here is about a given `s`.
 
-  0 sorry. 0 new axioms. 25 declarations, all on `[propext, Classical.choice, Quot.sound]`.
+  0 sorry. 0 new axioms. 33 declarations, none on any axiom outside
+  `[propext, Classical.choice, Quot.sound]` — and `single_mul_single_same` needs only two of the
+  three, which is counted rather than rounded up.
 -/
 
 import StarStructureProduct
@@ -285,6 +309,95 @@ theorem exists_factorPerm [Finite ι] (htriv : ∀ i, OnlyTrivialCentralIdem (B 
     ∃ σ : Equiv.Perm ι, ∀ i : ι, s.map (Pi.single i (1 : B i)) = Pi.single (σ i) (1 : B _) := by
   haveI := Fintype.ofFinite ι
   exact ⟨factorPerm s htriv hone, map_single_eq s htriv hone⟩
+
+/-! ## 7. The permutation is an INVOLUTION, and `s` carries each block into its image -/
+
+/-- **THE PERMUTATION IS AN INVOLUTION**, and this was in the first draft's *what is not
+proved* list as *"no constraint on which `σ` arise is proved"*. It is two lines: apply `s` twice
+to the `i`-th minimal central idempotent, `map_involutive` returns it, and `map_single_eq` says
+the result is the `σ(σ i)`-th — so `σ(σ i) = i`, because two distinct minimal central idempotents
+differ at a coordinate where one is `1` and the other `0`. -/
+theorem factorPerm_involutive (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
+    (hone : ∀ i, (1 : B i) ≠ 0) (i : ι) :
+    factorPerm s htriv hone (factorPerm s htriv hone i) = i := by
+  have h1 : s.map (s.map (Pi.single i (1 : B i)))
+      = Pi.single (factorPerm s htriv hone (factorPerm s htriv hone i)) (1 : B _) := by
+    rw [map_single_eq s htriv hone i, map_single_eq s htriv hone _]
+  rw [s.map_involutive] at h1
+  by_contra hne
+  have := congrFun h1 i
+  rw [Pi.single_eq_same, Pi.single_eq_of_ne (Ne.symm hne)] at this
+  exact hone i this
+
+omit [Fintype ι] in
+/-- `Pi.single i b` is its own product with the `i`-th minimal central idempotent, which is the
+`n`-factor form of `(b, 0) = (b, 0) * (1, 0)` — the identity `StarStructureProduct`'s
+`snd_eq_zero_of_fixes` turns on. -/
+theorem single_mul_single_same (i : ι) (b : B i) :
+    Pi.single i b = Pi.single i b * Pi.single i (1 : B i) := by
+  funext j
+  by_cases h : j = i
+  · subst h; simp
+  · simp [Pi.single_eq_of_ne h]
+
+/-- **`s` CARRIES BLOCK `i` INTO BLOCK `σ i`.** Off `single_mul_single_same`: applying `s` puts
+`s (e i) = e (σ i)` on the LEFT, and that kills every coordinate but `σ i`. This is the
+`n`-factor analogue of `restrictLeft`/`restrictRight`, **and it is strictly stronger than the
+shape the first draft's residue asked for**: it needs no assumption that `σ` fixes `i`, so the
+fixed factors and the swapped pairs are one statement rather than two, and cycles of length
+`≥ 3` — which `factorPerm_involutive` now rules out anyway — needed no separate treatment. -/
+theorem map_single_apply_eq_zero (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
+    (hone : ∀ i, (1 : B i) ≠ 0) (i : ι) (b : B i) {j : ι}
+    (h : j ≠ factorPerm s htriv hone i) : s.map (Pi.single i b) j = 0 := by
+  have h1 : s.map (Pi.single i b)
+      = Pi.single (factorPerm s htriv hone i) (1 : B _) * s.map (Pi.single i b) := by
+    conv_lhs => rw [single_mul_single_same i b]
+    rw [s.map_mul, map_single_eq s htriv hone i]
+  have h2 := congrFun h1 j
+  rw [Pi.mul_apply, Pi.single_eq_of_ne h, zero_mul] at h2
+  exact h2
+
+/-- The induced map on the `i`-th block, landing in the `σ i`-th. -/
+def blockMap (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i, (1 : B i) ≠ 0)
+    (i : ι) (b : B i) : B (factorPerm s htriv hone i) :=
+  s.map (Pi.single i b) (factorPerm s htriv hone i)
+
+/-- And `s` on the `i`-th block IS that map, placed at `σ i`. -/
+theorem map_single_eq_single_blockMap (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
+    (hone : ∀ i, (1 : B i) ≠ 0) (i : ι) (b : B i) :
+    s.map (Pi.single i b) = Pi.single (factorPerm s htriv hone i) (blockMap s htriv hone i b) := by
+  funext j
+  by_cases h : j = factorPerm s htriv hone i
+  · subst h; rw [Pi.single_eq_same]; rfl
+  · rw [map_single_apply_eq_zero s htriv hone i b h, Pi.single_eq_of_ne h]
+
+/-- The block map is ADDITIVE. -/
+theorem blockMap_add (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i, (1 : B i) ≠ 0)
+    (i : ι) (b b' : B i) :
+    blockMap s htriv hone i (b + b') = blockMap s htriv hone i b + blockMap s htriv hone i b' := by
+  have hsplit : Pi.single i (b + b') = Pi.single i b + Pi.single i b' := by
+    funext j
+    by_cases h : j = i
+    · subst h; simp
+    · simp [Pi.single_eq_of_ne h]
+  simp only [blockMap, hsplit, s.map_add, Pi.add_apply]
+
+/-- And ANTI-multiplicative, so each block map is an anti-homomorphism onto its target block —
+which is what *"the involution either fixes a factor or swaps two"* was reaching for. -/
+theorem blockMap_mul (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i, (1 : B i) ≠ 0)
+    (i : ι) (b b' : B i) :
+    blockMap s htriv hone i (b * b') = blockMap s htriv hone i b' * blockMap s htriv hone i b := by
+  have hsplit : Pi.single i (b * b') = Pi.single i b * Pi.single i b' := by
+    funext j
+    by_cases h : j = i
+    · subst h; simp
+    · simp [Pi.single_eq_of_ne h]
+  simp only [blockMap, hsplit, s.map_mul, Pi.mul_apply]
+
+/-- And unital. -/
+theorem blockMap_one (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i, (1 : B i) ≠ 0)
+    (i : ι) : blockMap s htriv hone i 1 = 1 := by
+  simp only [blockMap, map_single_eq s htriv hone i, Pi.single_eq_same]
 
 end
 
