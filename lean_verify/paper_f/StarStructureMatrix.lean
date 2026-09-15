@@ -6,7 +6,9 @@
   *"With Skolem–Noether in hand, the next honest step is the ⋆-structure on a product of matrix
   algebras — the same rung as L6's, approached from the cascade side."* This unit takes the
   single-factor case, which is the whole of the difficulty: the product case is a direct sum and
-  the involution either fixes a factor or swaps two.
+  the involution either fixes a factor or swaps two. **That last sentence was flagged here as a
+  claim about the shape of the work rather than a theorem; it is now a theorem**, proved in
+  `StarStructureProduct` — `prod_dichotomy` and `matrixProd_dichotomy` — which this file imports.
 
   WHY IT IS THE RUNG. Both L6 and L11 arrive at the same question from opposite ends. L6 climbs
   from spectral-triple axioms: rung 1 gives a product `∏ Mₐᵢ(Dᵢ)` and rung 2 asks **which
@@ -44,9 +46,20 @@
     rather than assumed.
 
   WHAT IS **NOT** CLAIMED.
-  * **The PRODUCT case is not done.** The header's first paragraph says the single factor is the
-    whole difficulty; that is a claim about the shape of the remaining work, not a theorem, and
-    no statement here quantifies over `∏ Mₐᵢ(Dᵢ)`.
+  * **The PRODUCT case is not done HERE, and only the two-factor case is done at all.** The
+    header's first paragraph says the single factor is the whole difficulty. The **two**-factor
+    half of that is now a theorem in `StarStructureProduct` (`prod_dichotomy`,
+    `matrixProd_dichotomy`, with `restrictLeft`/`restrictRight` reducing the fixing case to this
+    file's problem on each factor). What is still not a theorem anywhere is the `n`-factor
+    statement. **Be exact about what is missing**: the estate DOES quantify over
+    `∏ Mₐᵢ(Dᵢ)` — `StarRepSemisimple.exists_pi_matrix_of_faithful_star_rep_real` and
+    `_complex` and `RealSimpleAlgebra.exists_pi_matrix_over_three` all produce
+    `A ≃ₐ ∀ i, Matrix (Fin (d i)) (Fin (d i)) (D i)`, which is where an induction would plug
+    in. What is missing is a ⋆-STRUCTURE statement over
+    that product: nothing carries a `StarStr` across `n` factors or permutes the `n` minimal
+    central idempotents, and `prod_dichotomy` is a two-element case split, not that permutation.
+    Composing `restrictLeft` with `exists_inner_conjTranspose` to state the combined
+    classification on `Mₘ(ℂ) × Mₖ(ℂ)` is also not written.
   * **`|c| = 1` and the Hermitian normalisation are NOT proved.** `involution_scalar` gives
     `P = c • Pᴴ`; that forces `|c| = 1`, and rescaling `P` by a square root of `c` would make it
     Hermitian without changing the inner automorphism. **Neither step is here**, so the
@@ -66,6 +79,7 @@
 -/
 
 import SkolemNoether
+import StarStructureProduct
 
 namespace StarStructureMatrix
 
@@ -93,17 +107,24 @@ structure StarStructure (n : ℕ) where
 
 variable (s : StarStructure n)
 
+/-- **Forgetting the scalars.** A ⋆-structure on `Mₙ(ℂ)` is in particular an anti-multiplicative
+additive involution of a ring, which is `StarStructureProduct.StarStr`. Everything that does not
+use `map_smul` is proved once, there, over an arbitrary ring; the two lemmas below are that
+development read back here so no call site has to know about the forgetful map. -/
+def toStarStr : StarStructureProduct.StarStr (Matrix (Fin n) (Fin n) ℂ) where
+  map := s.map
+  map_add := s.map_add
+  map_mul := s.map_mul
+  map_involutive := s.map_involutive
+
 theorem map_bijective : Function.Bijective s.map :=
-  Function.bijective_iff_has_inverse.mpr ⟨s.map, s.map_involutive, s.map_involutive⟩
+  StarStructureProduct.map_bijective (toStarStr s)
 
 /-- **Unitality is a consequence, not an axiom.** `map 1 * map X = map (X * 1) = map X` for
-every `X`, and `map` is onto, so `map 1` is a left identity on all of `Mₙ(ℂ)`. -/
-theorem map_one : s.map 1 = 1 := by
-  have h : ∀ Y, s.map 1 * Y = Y := by
-    intro Y
-    obtain ⟨X, hX⟩ := (map_bijective s).surjective Y
-    rw [← hX, ← s.map_mul, mul_one]
-  simpa using h 1
+every `X`, and `map` is onto, so `map 1` is a left identity on all of `Mₙ(ℂ)`. Proved for an
+arbitrary ring in `StarStructureProduct.map_one`; the matrix algebra plays no part. -/
+theorem map_one : s.map 1 = 1 :=
+  StarStructureProduct.map_one (toStarStr s)
 
 /-! ## 2. Conjugate transpose twisted by an algebra automorphism -/
 
