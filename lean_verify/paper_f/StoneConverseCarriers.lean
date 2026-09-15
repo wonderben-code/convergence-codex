@@ -48,6 +48,14 @@
   * **`euclidean_exists_unique_generator`** — including `ℂⁿ`, which is the carrier
     `FiniteStone.cascade_schrodinger` uses for the forward direction.
   * **`gns_exists_unique_generator`** — and on the GNS space of the cascade's trace state.
+  * **`operator_schrodinger`** — **THE SCHRÖDINGER EQUATION WITH NO GENERATOR SUPPLIED.**
+    `FiniteStone.schrodinger_equation` needs an `H` as input; this needs only the group law and
+    continuity at the single point `0`, and produces the `H`
+    `exists_unique_global_generator` shows is unique. **`euclidean_schrodinger`** is the same at
+    `ℂⁿ`, where `FiniteStone.cascade_schrodinger` needs a Hermitian matrix as input.
+  * **`cascade_generator_eq_neg_I_smul_deriv`** — and on `CascadeGNS.M4` the energy operator of
+    a norm-continuous evolution is `−i·dU/dt|₀`: computed by one differentiation rather than
+    posited.
 
   WHAT IS **NOT** PROVED.
   * **Still the NORM-continuous Stone theorem.** Nothing here weakens `StoneConverseLocal`'s
@@ -71,13 +79,20 @@
     bundled class in this file would impose that choice on everything importing it, so it is not
     done. `CStarMatrix` is the type synonym that makes the choice explicitly, and it is what
     `CascadeGNS` already uses.
-  * **No Schrödinger equation, no derivative, nothing about the generator's spectrum.**
+  * ~~**No Schrödinger equation, no derivative, nothing about the generator's spectrum.**
     `FiniteStone` has `hasDerivAt_unitaryGroup` and `schrodinger_equation` for the group BUILT
     from `H`; composing them with the converse to get "every norm-continuous group satisfies a
-    Schrödinger equation" is one rewrite and is **not written here**.
+    Schrödinger equation" is one rewrite and is **not written here**.~~ **WRITTEN THE SAME DAY,
+    IN THE SAME UNIT-AND-A-HALF**: it was one rewrite, and `PROOF_STRATEGY` §6's third question
+    — *if the unit you just finished WAS a B, retry B→C right now* — is what made me do it
+    instead of writing it down as a limit. `operator_schrodinger`, `euclidean_schrodinger` and
+    `cascade_generator_eq_neg_I_smul_deriv` here; `hasDerivAt_of_group` and
+    `generator_eq_neg_I_smul_deriv` in `StoneConverseLocal`. **NOTHING about the generator's
+    SPECTRUM, which is still true** — no eigenvalues, no spectral measure, no functional calculus
+    of `H` beyond what `argSelfAdjoint` already uses.
   * **Nothing about the Born rule, Gleason or Wigner**, L21's other residues.
 
-  0 sorry. 0 new axioms. 9 declarations, all on `[propext, Classical.choice, Quot.sound]`.
+  0 sorry. 0 new axioms. 12 declarations, all on `[propext, Classical.choice, Quot.sound]`.
 -/
 
 import StoneConverseLocal
@@ -143,6 +158,17 @@ theorem cascade_eq_unitaryGroup_iff (U : ℝ → unitary CascadeGNS.M4) :
       ↔ ∃ H : selfAdjoint CascadeGNS.M4, U = FiniteStone.unitaryGroup H :=
   StoneConverseLocal.eq_unitaryGroup_iff U
 
+/-- **And the derivative on `CascadeGNS.M4`**: the generator is recovered as
+`H = −i·dU/dt|₀`, so on the cascade's own algebra the energy operator of a norm-continuous
+evolution is computed by one differentiation rather than posited. -/
+theorem cascade_generator_eq_neg_I_smul_deriv (U : ℝ → unitary CascadeGNS.M4)
+    (hc : ContinuousAt U 0) (hgrp : ∀ s t, U (s + t) = U s * U t) :
+    ∃ H : selfAdjoint CascadeGNS.M4, (∀ t : ℝ, U t = selfAdjoint.expUnitary (t • H)) ∧
+      HasDerivAt (fun s => ((U s : CascadeGNS.M4))) (Complex.I • (H : CascadeGNS.M4)) 0 ∧
+      ∀ L : CascadeGNS.M4,
+        HasDerivAt (fun s => ((U s : CascadeGNS.M4))) L 0 → (H : CascadeGNS.M4) = -Complex.I • L :=
+  StoneConverseLocal.generator_eq_neg_I_smul_deriv U hc hgrp
+
 /-! ## 3. Bounded operators on a complex Hilbert space -/
 
 section Operators
@@ -196,6 +222,43 @@ theorem gns_exists_unique_generator
     ∃! H : selfAdjoint (CascadeGNS.traceState.GNS →L[ℂ] CascadeGNS.traceState.GNS),
       ∀ t : ℝ, U t = selfAdjoint.expUnitary (t • H) :=
   StoneConverseLocal.exists_unique_global_generator U hc hgrp
+
+set_option synthInstance.maxHeartbeats 400000 in
+-- `HSMul ℝ (selfAdjoint (E →L[ℂ] E))` needs more than the 20000 default: measured, 20000
+-- fails and 21000 succeeds, so this is headroom on a 5% shortfall (`ERRATUM 594`).
+/-- **THE SCHRÖDINGER EQUATION WITH NO GENERATOR SUPPLIED.** `FiniteStone.schrodinger_equation`
+proves `d/dt (U t ψ) = iH (U t ψ)` for the group built from a given `H`. Composed with
+`StoneConverseLocal.exists_global_generator` it says: **every** one-parameter unitary group on a
+complex Hilbert space that is continuous at the single point `0` obeys a Schrödinger equation, for
+a `H` nobody had to provide and which `exists_unique_global_generator` shows is unique. -/
+theorem operator_schrodinger {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
+    [CompleteSpace E] (U : ℝ → unitary (E →L[ℂ] E)) (hc : ContinuousAt U 0)
+    (hgrp : ∀ s t, U (s + t) = U s * U t) :
+    ∃ H : selfAdjoint (E →L[ℂ] E), (∀ t : ℝ, U t = selfAdjoint.expUnitary (t • H)) ∧
+      ∀ (ψ : E) (t : ℝ),
+        HasDerivAt (fun s => ((U s : E →L[ℂ] E)) ψ)
+          ((Complex.I • (H : E →L[ℂ] E) * ((U t : E →L[ℂ] E))) ψ) t := by
+  obtain ⟨H, hH⟩ := StoneConverseLocal.exists_global_generator U hc hgrp
+  refine ⟨H, hH, fun ψ t => ?_⟩
+  have key := FiniteStone.schrodinger_equation H ψ t
+  simp only [FiniteStone.unitaryGroup] at key
+  simpa only [← hH] using key
+
+set_option synthInstance.maxHeartbeats 400000 in
+-- Same shortfall as above (`ERRATUM 594`).
+/-- **And at `ℂⁿ`**, which is `FiniteStone.cascade_schrodinger`'s carrier. That theorem needs a
+Hermitian matrix as input; this one needs only the group law and continuity at one point. -/
+theorem euclidean_schrodinger (n : ℕ)
+    (U : ℝ → unitary (EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n)))
+    (hc : ContinuousAt U 0) (hgrp : ∀ s t, U (s + t) = U s * U t) :
+    ∃ H : selfAdjoint (EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n)),
+      (∀ t : ℝ, U t = selfAdjoint.expUnitary (t • H)) ∧
+      ∀ (ψ : EuclideanSpace ℂ (Fin n)) (t : ℝ),
+        HasDerivAt
+          (fun s => ((U s : EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n))) ψ)
+          ((Complex.I • (H : EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n))
+            * ((U t : EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n)))) ψ) t :=
+  operator_schrodinger U hc hgrp
 
 end Operators
 

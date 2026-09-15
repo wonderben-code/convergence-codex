@@ -101,6 +101,15 @@
     injectivity is that one.
   * **`localGenerator_eq_smul`** — `a t = t · H` near `0`, the `ℝ`-homogeneity of `ERRATUM 591`,
     as a corollary.
+  * **`hasDerivAt_of_group`** — **and every such group is DIFFERENTIABLE, everywhere, with
+    `dU/dt = iH·U`.** `FiniteStone.hasDerivAt_unitaryGroup` proves that for the group BUILT from
+    `H`; composed with the converse it becomes a statement about an arbitrary one, whose
+    generator was not given but recovered.
+  * **`generator_eq_neg_I_smul_deriv`** — and `H = −i·dU/dt|₀`, which is the form the classical
+    statement takes. The last conjunct is what makes it a RECOVERY rather than a coincidence:
+    any `L` with `dU/dt|₀ = L` gives `H = −iL`, by uniqueness of the derivative and
+    `FiniteStone.generator_determined`. So the generator is not merely existent and unique — it
+    is computable from `U` by one differentiation.
   * **`mem_pathComponentOne_iff_prod_exp`** — cited rather than reproved: a unitary is in the
     path component of `1` exactly when it is a FINITE PRODUCT of exponentials (Mathlib's
     `Unitary.mem_pathComponentOne_iff`). It marks the boundary of the SINGLE-exponential
@@ -154,7 +163,7 @@
     `argSelfAdjoint`, which lands in `selfAdjoint A` by construction. The classical route — take
     `H := lim (U t − 1)/(it)` and PROVE it self-adjoint — is not taken and is not needed.
 
-  0 sorry. 0 new axioms. 32 declarations, all on `[propext, Classical.choice, Quot.sound]`.
+  0 sorry. 0 new axioms. 34 declarations, all on `[propext, Classical.choice, Quot.sound]`.
 -/
 
 import FiniteStone
@@ -645,7 +654,43 @@ theorem eq_unitaryGroup_iff (U : ℝ → unitary A) :
     exact ⟨(FiniteStone.continuous_unitaryGroup H).continuousAt,
       FiniteStone.unitaryGroup_add H⟩
 
-/-! ## 9. The boundary of the local statement -/
+/-! ## 9. The DERIVATIVE: `dU/dt = iH·U` with no generator supplied -/
+
+/-- **Every norm-continuous one-parameter unitary group is differentiable, everywhere, and
+satisfies `dU/dt = iH·U`.** `FiniteStone.hasDerivAt_unitaryGroup` proves this for the group BUILT
+from `H`; composed with `exists_global_generator` it becomes a statement about an ARBITRARY such
+group, whose generator was not given but recovered. The `H` here is the unique one of
+`exists_unique_global_generator`, and the first conjunct says so. -/
+theorem hasDerivAt_of_group (U : ℝ → unitary A) (hc : ContinuousAt U 0)
+    (hgrp : ∀ s t, U (s + t) = U s * U t) :
+    ∃ H : selfAdjoint A, (∀ t : ℝ, U t = expUnitary (t • H)) ∧
+      ∀ t : ℝ, HasDerivAt (fun s => ((U s : A))) (Complex.I • (H : A) * ((U t : A))) t := by
+  obtain ⟨H, hH⟩ := exists_global_generator U hc hgrp
+  refine ⟨H, hH, fun t => ?_⟩
+  have key := FiniteStone.hasDerivAt_unitaryGroup H t
+  simp only [FiniteStone.unitaryGroup] at key
+  simpa only [← hH] using key
+
+/-- **And the generator IS the derivative at `0`: `H = −i · dU/dt|₀`.** This is the form the
+classical statement takes, and the last conjunct is what makes it a recovery rather than a
+coincidence: ANY `L` with `dU/dt|₀ = L` gives `H = −i L`, by uniqueness of the derivative and
+`FiniteStone.generator_determined`. So the generator is not merely existent and unique — it is
+COMPUTABLE from `U` by one differentiation. -/
+theorem generator_eq_neg_I_smul_deriv (U : ℝ → unitary A) (hc : ContinuousAt U 0)
+    (hgrp : ∀ s t, U (s + t) = U s * U t) :
+    ∃ H : selfAdjoint A, (∀ t : ℝ, U t = expUnitary (t • H)) ∧
+      HasDerivAt (fun s => ((U s : A))) (Complex.I • (H : A)) 0 ∧
+      ∀ L : A, HasDerivAt (fun s => ((U s : A))) L 0 → (H : A) = -Complex.I • L := by
+  obtain ⟨H, hH, hd⟩ := hasDerivAt_of_group U hc hgrp
+  have h0 : HasDerivAt (fun s => ((U s : A))) (Complex.I • (H : A)) 0 := by
+    have := hd 0
+    rw [hH 0] at this
+    simpa using this
+  refine ⟨H, hH, h0, fun L hL => ?_⟩
+  have hLeq : Complex.I • (H : A) = L := h0.unique hL
+  rw [← hLeq, FiniteStone.generator_determined]
+
+/-! ## 10. The boundary of the local statement -/
 
 /-- **Away from `1`, a general C⋆-algebra gives a PRODUCT of exponentials, not one.** Mathlib's
 `Unitary.mem_pathComponentOne_iff`, stated here to mark what `exists_selfAdjoint_exp_eq`'s
