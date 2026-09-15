@@ -40,8 +40,15 @@
     `star`-family notion — `QuaternionTensor.rmulStar` and its neighbours. **What it has none of
     is a declaration connecting `Mₙ(ℝ)` or `Mₙ(ℍ)` to a ⋆-structure on a MATRIX algebra**, which
     is the question this file is about. The absence is narrow and the count is the grep's.
-  * **The PRODUCT case is still not done** — `∏ Mₐᵢ(Dᵢ)`, which is what both L6 rung 2 and
-    L11's three-factor statement actually need.
+  * **The PRODUCT case is still not done for `n` FACTORS** — `∏ Mₐᵢ(Dᵢ)`, which is what both
+    L6 rung 2 and L11's three-factor statement actually need. The **two**-factor case landed in
+    the two units after this one: `StarStructureProduct.prod_dichotomy` for the dichotomy and
+    `StarStructureProductMatrix.classification_of_ne_size` for the normal form at unequal sizes,
+    the latter consuming `exists_hermitian_twist` on each factor. **Those two call sites are the
+    only consumers `exists_hermitian_twist` has anywhere in the estate, and
+    `star_eq_conj_hermitian` still has none** — grepped, not assumed. Worth saying plainly: the
+    normal form was proved before anything needed it, and the two-factor product classification
+    is the thing that turned out to need it.
   * **Nothing about the cascade is cut.** `a·b·c = 16` keeps every alternative
     (`ASSUMPTIONS_LEDGER` 5, 10, 11, 30, 35).
 

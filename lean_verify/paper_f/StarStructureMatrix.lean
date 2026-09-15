@@ -58,8 +58,12 @@
     in. What is missing is a ⋆-STRUCTURE statement over
     that product: nothing carries a `StarStr` across `n` factors or permutes the `n` minimal
     central idempotents, and `prod_dichotomy` is a two-element case split, not that permutation.
-    Composing `restrictLeft` with `exists_inner_conjTranspose` to state the combined
-    classification on `Mₘ(ℂ) × Mₖ(ℂ)` is also not written.
+    The TWO-factor composition, on the other hand, **is** written, one unit later and one file
+    along: `StarStructureProductMatrix.classification_of_ne_size` states that at `m ≠ k` every
+    ⋆-structure on `Mₘ(ℂ) × Mₖ(ℂ)` is `(X, Y) ↦ ((P X P⁻¹)ᴴ, (Q Y Q⁻¹)ᴴ)` with `P` and `Q`
+    Hermitian units, off this file's `exists_inner_conjTranspose` and
+    `StarStructureHermitian.exists_hermitian_twist` applied to each factor. So what is missing
+    above really is only the `n`-factor statement.
   * **`|c| = 1` and the Hermitian normalisation are NOT proved.** `involution_scalar` gives
     `P = c • Pᴴ`; that forces `|c| = 1`, and rescaling `P` by a square root of `c` would make it
     Hermitian without changing the inner automorphism. **Neither step is here**, so the

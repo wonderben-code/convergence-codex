@@ -53,29 +53,41 @@
     fixing case restricts to a `StarStr` on BOTH factors**, which is what makes "the
     single-factor classification applies to each factor separately" a statement about this file
     rather than a hope.
-  * **`exists_antiIso_of_swaps`** — in the swapping case `s` carries `B × 0` onto `0 × C`, which
-    gives an additive anti-multiplicative bijection `B → C`. **So the two factors are
-    anti-isomorphic**, and a product of two factors that are not can only carry a
-    factor-fixing ⋆-structure.
+  * **`swapMap`** with `fst_eq_zero_of_swaps`, `snd_eq_zero_of_swaps` and its four property
+    lemmas — in the swapping case `s` carries `B × 0` onto `0 × C`, and `b ↦ (s (b, 0)).2` is an
+    additive anti-multiplicative bijection `B → C`. **So the two factors are anti-isomorphic**,
+    and a product of two factors that are not can only carry a factor-fixing ⋆-structure.
+    **`exists_antiIso_of_swaps` is now an assembly of those lemmas rather than a proof**: the map
+    is NAMED, because `StarStructureProductMatrix` needs THIS map's conjugate-linearity and an
+    existential statement cannot supply it.
+  * **`map_eq_of_fixes`** — and the fixing case is not merely reducible to the two factors, it is
+    **determined** by them: `(b, c) = (b, 0) + (0, c)`, `s` is additive, and each summand's image
+    has one component zero, so `s` is exactly the pair of its restrictions. That is the
+    difference between *"the classification applies to each factor"* and *"the classification of
+    the product IS the pair of classifications"*, and the second is what a combined statement
+    needs.
 
   WHAT IS **NOT** CLAIMED.
   * **Two factors, not `n`.** The dichotomy is proved for `B × C`. `∏ᵢ Mₐᵢ(Dᵢ)` with `n` factors
     needs an induction that is not written here, and the permutation of `n` minimal central
     idempotents is a different statement from a two-element case split.
-  * **The swap case is not classified.** `exists_antiIso_of_swaps` produces an anti-isomorphism
-    and stops. It is **not** shown that `B ≃ C`, nor — for matrix factors — that the two sizes
-    agree; `Mₘ(ℂ) ≃ Mₙ(ℂ)ᵐᵒᵖ` forcing `m = n` is a dimension count this file does not do.
-  * **The restrictions are not composed with the single-factor result.** `restrictLeft` and
-    `restrictRight` reduce the fixing case to two instances of `StarStructureMatrix`'s problem
-    and stop there; that composition is left to a later unit, and nothing here states the
-    combined classification of ⋆-structures on `Mₘ(ℂ) × Mₙ(ℂ)`. They also produce a `StarStr`,
-    which has **forgotten the conjugate-linearity** — recovering a
-    `StarStructureMatrix.StarStructure` on each factor needs `map_smul` carried through the
-    restriction, and that is not done.
+  * **The swap case is not classified here.** `exists_antiIso_of_swaps` produces an
+    anti-isomorphism and stops, and it is **not** shown that `B ≃ C`. For matrix factors the
+    dimension count IS now done — `StarStructureProductMatrix.swap_forces_eq_size` proves `m = k`
+    — but it needs `map_smul`, which this file does not have, so nothing HERE forces the sizes to
+    agree. At the level of an arbitrary ring the question stays open: two anti-isomorphic rings
+    need not be isomorphic, and no invariant in this file separates them.
+  * **The restrictions are not composed with the single-factor result IN THIS FILE, and the
+    reason is that they cannot be.** They produce a `StarStr`, which has **forgotten the
+    conjugate-linearity**, so recovering a `StarStructureMatrix.StarStructure` on each factor
+    needs `map_smul` carried through the restriction — not something this file can state, because
+    `StarStr` has no scalars. `StarStructureProductMatrix` adds `map_smul` back and does the
+    composition; **what is not claimed HERE is unchanged**, and no statement in this file gives
+    the combined classification of ⋆-structures on `Mₘ(ℂ) × Mₙ(ℂ)`.
   * **Nothing about the cascade is cut.** `a·b·c = 16` keeps every alternative
     (`ASSUMPTIONS_LEDGER` 5, 10, 11, 30, 35), and L6's rung 2 is not climbed.
 
-  0 sorry. 0 new axioms. **And fewer than the usual three for 15 of the 28 declarations**, which
+  0 sorry. 0 new axioms. **And fewer than the usual three for 21 of the 37 declarations**, which
   is worth recording because it is evidence for the header's first claim that the scalars play no
   part. `#print axioms` on every declaration, each resting on a SUBSET of
   `[propext, Classical.choice, Quot.sound]`:
@@ -84,11 +96,14 @@
   * **`propext` alone** (3): `map_zero`, `one_zero_mem_center`, `one_zero_isIdem`.
   * **`Classical.choice` alone** (4): `map_bijective`, `map_injective`, `map_one`,
     `map_mem_center`.
-  * **`propext` and `Quot.sound`** (3): `snd_eq_zero_of_fixes`, `restrictLeft`,
-    `restrictLeft_map`.
-  * **the full three** (13): `prod_dichotomy`, the mirror restriction and its three lemmas,
-    `exists_antiIso_of_swaps`, the two realisations with their two lemmas, the two restriction
-    computations, and `matrixProd_dichotomy`.
+  * **`propext` and `Quot.sound`** (9): `snd_eq_zero_of_fixes`, `restrictLeft`,
+    `restrictLeft_map`, `fst_eq_zero_of_swaps`, `snd_eq_zero_of_swaps`, `swapMap`, `swapMap_add`,
+    `swapMap_antimul` and `swapMap_surjective`.
+  * **the full three** (16): everything else — `prod_dichotomy`, the mirror restriction with its
+    lemmas, `map_eq_of_fixes`, `swapMap_injective` and `swapMap_bijective` (which go through
+    `map_injective` and so pick up `Classical.choice`), `exists_antiIso_of_swaps`, the two
+    realisations with their lemmas, the two restriction computations, and
+    `matrixProd_dichotomy`.
 -/
 
 import CentralIdemInvariant
@@ -297,62 +312,109 @@ def restrictRight (s : StarStr (B × C))
     (hfix : s.map ((1 : B), (0 : C)) = ((1 : B), (0 : C))) (c : C) :
     (restrictRight s hfix).map c = (s.map ((0 : B), c)).2 := rfl
 
+/-- **And the two restrictions DETERMINE `s`, not merely bound it.** `(b, c) = (b, 0) + (0, c)`,
+`s` is additive, and each summand's image has one component zero, so `s` is exactly the pair of
+its restrictions. This is the difference between *"the classification applies to each factor"* and
+*"the classification of the product IS the pair of classifications"*, and the second is what a
+combined statement on `Mₘ(ℂ) × Mₖ(ℂ)` needs. -/
+theorem map_eq_of_fixes (s : StarStr (B × C))
+    (hfix : s.map ((1 : B), (0 : C)) = ((1 : B), (0 : C))) (b : B) (c : C) :
+    s.map (b, c) = ((restrictLeft s hfix).map b, (restrictRight s hfix).map c) := by
+  have hsplit : (b, c) = (b, (0 : C)) + ((0 : B), c) := by
+    refine Prod.ext ?_ ?_ <;> simp
+  rw [hsplit, s.map_add]
+  refine Prod.ext ?_ ?_
+  · have h : (s.map ((0 : B), c)).1 = 0 := fst_eq_zero_of_fixes s hfix c
+    simp [restrictLeft_map, h]
+  · have h : (s.map (b, (0 : C))).2 = 0 := snd_eq_zero_of_fixes s hfix b
+    simp [restrictRight_map, h]
+
 /-! ## 5. The swapping case makes the factors anti-isomorphic -/
 
-/-- In the swapping case `s` carries `B × 0` onto `0 × C`, so `b ↦ (s (b, 0)).2` is an additive
+/-- In the swapping case `s` carries `B × 0` into `0 × C`: `(b, 0) = (b, 0) * (1, 0)`, and
+applying `s` puts `s (1, 0) = (0, 1)` on the LEFT, which kills the FIRST component. -/
+theorem fst_eq_zero_of_swaps (s : StarStr (B × C))
+    (hswap : s.map ((1 : B), (0 : C)) = ((0 : B), (1 : C))) (b : B) :
+    (s.map (b, (0 : C))).1 = 0 := by
+  have hb : (b, (0 : C)) = (b, (0 : C)) * ((1 : B), (0 : C)) := by
+    refine Prod.ext ?_ ?_ <;> simp
+  have h : s.map (b, (0 : C)) = ((0 : B), (1 : C)) * s.map (b, (0 : C)) := by
+    conv_lhs => rw [hb]
+    rw [s.map_mul, hswap]
+  have h2 := congrArg Prod.fst h
+  simpa using h2
+
+/-- The mirror: `s` also carries `0 × C` into `B × 0`, because involutivity turns `hswap` round
+into `s (0, 1) = (1, 0)`. -/
+theorem snd_eq_zero_of_swaps (s : StarStr (B × C))
+    (hswap : s.map ((1 : B), (0 : C)) = ((0 : B), (1 : C))) (c : C) :
+    (s.map ((0 : B), c)).2 = 0 := by
+  have hone : s.map ((0 : B), (1 : C)) = ((1 : B), (0 : C)) := by
+    have := s.map_involutive ((1 : B), (0 : C))
+    rw [hswap] at this
+    exact this
+  have hc : ((0 : B), c) = ((0 : B), c) * ((0 : B), (1 : C)) := by
+    refine Prod.ext ?_ ?_ <;> simp
+  have h : s.map ((0 : B), c) = ((1 : B), (0 : C)) * s.map ((0 : B), c) := by
+    conv_lhs => rw [hc]
+    rw [s.map_mul, hone]
+  have h2 := congrArg Prod.snd h
+  simpa using h2
+
+/-- **The map the swapping case produces**, named rather than existentially quantified, because a
+later unit needs THIS map's properties and not merely that some such map exists. -/
+def swapMap (s : StarStr (B × C)) (b : B) : C := (s.map (b, (0 : C))).2
+
+theorem swapMap_add (s : StarStr (B × C)) (x y : B) :
+    swapMap s (x + y) = swapMap s x + swapMap s y := by
+  have h : ((x + y : B), (0 : C)) = (x, (0 : C)) + (y, (0 : C)) := by
+    refine Prod.ext ?_ ?_ <;> simp
+  unfold swapMap
+  rw [h, s.map_add]
+  rfl
+
+/-- ANTI-multiplicative, which is the whole point: `s` reverses products and the second
+component of a product in `B × C` is the product of the second components. -/
+theorem swapMap_antimul (s : StarStr (B × C)) (x y : B) :
+    swapMap s (x * y) = swapMap s y * swapMap s x := by
+  have h : ((x * y : B), (0 : C)) = (x, (0 : C)) * (y, (0 : C)) := by
+    refine Prod.ext ?_ ?_ <;> simp
+  unfold swapMap
+  rw [h, s.map_mul]
+  rfl
+
+theorem swapMap_injective (s : StarStr (B × C))
+    (hswap : s.map ((1 : B), (0 : C)) = ((0 : B), (1 : C))) :
+    Function.Injective (swapMap s) := by
+  intro x y hxy
+  have h : s.map (x, (0 : C)) = s.map (y, (0 : C)) :=
+    Prod.ext (by rw [fst_eq_zero_of_swaps s hswap, fst_eq_zero_of_swaps s hswap]) hxy
+  exact congrArg Prod.fst (map_injective s h)
+
+theorem swapMap_surjective (s : StarStr (B × C))
+    (hswap : s.map ((1 : B), (0 : C)) = ((0 : B), (1 : C))) :
+    Function.Surjective (swapMap s) := by
+  intro c
+  refine ⟨(s.map ((0 : B), c)).1, ?_⟩
+  have h : ((s.map ((0 : B), c)).1, (0 : C)) = s.map ((0 : B), c) :=
+    Prod.ext rfl (snd_eq_zero_of_swaps s hswap c).symm
+  unfold swapMap
+  rw [h, s.map_involutive]
+
+theorem swapMap_bijective (s : StarStr (B × C))
+    (hswap : s.map ((1 : B), (0 : C)) = ((0 : B), (1 : C))) :
+    Function.Bijective (swapMap s) :=
+  ⟨swapMap_injective s hswap, swapMap_surjective s hswap⟩
+
+/-- In the swapping case `s` carries `B × 0` onto `0 × C`, so `swapMap` is an additive
 ANTI-multiplicative bijection `B → C`. **A product of two factors that are not anti-isomorphic
 can therefore only carry a factor-fixing ⋆-structure.** The map is produced and nothing is
 claimed about it beyond these three properties. -/
 theorem exists_antiIso_of_swaps (s : StarStr (B × C))
     (hswap : s.map ((1 : B), (0 : C)) = ((0 : B), (1 : C))) :
     ∃ f : B → C, Function.Bijective f ∧ (∀ x y, f (x + y) = f x + f y)
-      ∧ (∀ x y, f (x * y) = f y * f x) := by
-  have hfst : ∀ b : B, (s.map (b, (0 : C))).1 = 0 := by
-    intro b
-    have hb : (b, (0 : C)) = (b, (0 : C)) * ((1 : B), (0 : C)) := by
-      refine Prod.ext ?_ ?_ <;> simp
-    have h : s.map (b, (0 : C)) = ((0 : B), (1 : C)) * s.map (b, (0 : C)) := by
-      conv_lhs => rw [hb]
-      rw [s.map_mul, hswap]
-    have h2 := congrArg Prod.fst h
-    simpa using h2
-  have hsnd : ∀ c : C, (s.map ((0 : B), c)).2 = 0 := by
-    intro c
-    have hone : s.map ((0 : B), (1 : C)) = ((1 : B), (0 : C)) := by
-      have := s.map_involutive ((1 : B), (0 : C))
-      rw [hswap] at this
-      exact this
-    have hc : ((0 : B), c) = ((0 : B), c) * ((0 : B), (1 : C)) := by
-      refine Prod.ext ?_ ?_ <;> simp
-    have h : s.map ((0 : B), c) = ((1 : B), (0 : C)) * s.map ((0 : B), c) := by
-      conv_lhs => rw [hc]
-      rw [s.map_mul, hone]
-    have h2 := congrArg Prod.snd h
-    simpa using h2
-  refine ⟨fun b => (s.map (b, (0 : C))).2, ⟨?_, ?_⟩, ?_, ?_⟩
-  · intro x y hxy
-    dsimp only at hxy
-    have h : s.map (x, (0 : C)) = s.map (y, (0 : C)) :=
-      Prod.ext (by rw [hfst, hfst]) hxy
-    exact congrArg Prod.fst (map_injective s h)
-  · intro c
-    refine ⟨(s.map ((0 : B), c)).1, ?_⟩
-    dsimp only
-    have h : ((s.map ((0 : B), c)).1, (0 : C)) = s.map ((0 : B), c) :=
-      Prod.ext rfl (hsnd c).symm
-    rw [h, s.map_involutive]
-  · intro x y
-    dsimp only
-    have h : ((x + y : B), (0 : C)) = (x, (0 : C)) + (y, (0 : C)) := by
-      refine Prod.ext ?_ ?_ <;> simp
-    rw [h, s.map_add]
-    rfl
-  · intro x y
-    dsimp only
-    have h : ((x * y : B), (0 : C)) = (x, (0 : C)) * (y, (0 : C)) := by
-      refine Prod.ext ?_ ?_ <;> simp
-    rw [h, s.map_mul]
-    rfl
+      ∧ (∀ x y, f (x * y) = f y * f x) :=
+  ⟨swapMap s, swapMap_bijective s hswap, swapMap_add s, swapMap_antimul s⟩
 
 /-! ## 6. Both branches are realised, so the dichotomy is not half-empty -/
 
