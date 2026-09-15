@@ -5,6 +5,23 @@
   SPINE LINK L14, Caesar item 6. **This file exists because the unit before it got a blocker
   wrong, and the correction is the first thing to say.**
 
+  **AMENDED 2026-09-15, ONE UNIT LATER (`ERRATUM 584`), AND THE AMENDMENT IS THE SAME SHAPE AS
+  THE CORRECTION THIS FILE WAS WRITTEN TO MAKE.** Everything below about `ERRATUM 583` stands.
+  What does NOT stand is this header's claim that the tensor form is unavailable in this estate.
+  **`paper_f/ComplexQuaternionTensor.lean` has carried `equivM2C : ℂ ⊗[ℝ] ℍ[ℝ] ≃ₐ[ℝ] M₂(ℂ)`
+  since Campaign 3**, measured the same diamond in the same three ways, and fixed it with one
+  `local instance` line pinning `Module ℝ ℂ` to `Algebra.toModule`. So:
+  * the diamond is real (re-measured: without the pin, `Semiring (ℂ ⊗[ℝ] Mₙ(ℍ))` fails) but the
+    word *"unfixed"* in the NOT-CLAIMED list below is **false**, and is struck there;
+  * `images_span` is, in content, `ComplexQuaternionTensor.T_surjective` in a different basis —
+    **this file is in that respect a RE-PROOF**, which is `ERRATUM 258`'s most expensive error.
+    What it still adds and the older file does not have: the basis is built from this estate's own
+    `pauli1`/`pauli3` (so it connects to `SpectralTripleBimodule`), and
+    `images_linearIndependent` is proved CONSTRUCTIVELY where the older file gets injectivity from
+    a dimension count. Nothing is deleted, because the mathematics is machine-checked and true.
+  * `paper_f/QuaternionMatrixComplexification.lean` now closes L14's Caesar item outright —
+    `ℂ ⊗[ℝ] Mₙ(ℍ) ≃ₐ[ℝ] M₍ₙ·₂₎(ℂ)` at every `n` — off `equivM2C` and four further names.
+
   THE STORY, IN ORDER, BECAUSE THE ORDER IS THE POINT.
   * The campaign's task list carried `ℂ ⊗[ℝ] M₂(ℍ) ≃ₐ M₄(ℂ)` for many units as *"deferred —
     Mathlib has no quaternion complexification"*. `ERRATUM 582` refuted that: the route is three
@@ -43,10 +60,11 @@
   `ℂ`-basis of `M₂(ℂ)` consisting of the images of `1, i, j, k`.
 
   WHAT IS **NOT** CLAIMED.
-  * **No tensor product appears, and `ℂ ⊗[ℝ] ℍ ≃ₐ[ℂ] M₂(ℂ)` is NOT stated.** The diamond
-    `ERRATUM 582` measured is real and unfixed; what this file does is state the same
-    mathematics without needing it. Whether the two are interchangeable in Lean is exactly what
-    the diamond obstructs, and saying they are would be the overclaim this unit exists to avoid.
+  * **No tensor product appears IN THIS FILE**, and `ℂ ⊗[ℝ] ℍ ≃ₐ[ℂ] M₂(ℂ)` is not stated here.
+    The diamond `ERRATUM 582` measured is real; ~~and unfixed~~ **it is FIXED, in the estate,
+    by `ComplexQuaternionTensor`'s one-line `local instance` (`ERRATUM 584`)**, and that file
+    states the `ℝ`-linear tensor form. What this file does is state the same mathematics without
+    needing the pin — which remains worth having, and is no longer the only route.
   * **The four images are not packaged as a `Basis` object.** `images_span` and
     `images_linearIndependent` are
     halves; assembling `Basis (Fin 4) ℂ (M₂(ℂ))` from them is not done, so nothing here says
