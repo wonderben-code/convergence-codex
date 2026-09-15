@@ -400,6 +400,63 @@ def equivQuatTwo :
     CliffordAlgebra (Qext Q (-1) (-1)) ≃ₐ[ℝ] CliffordAlgebra (-Q) ⊗[ℝ] ℍ[ℝ] :=
   (equivTensorNeg Q).trans (congrQuat Q)
 
+/-! ### What these equivalences DO, which until 2026-09-15 nothing said
+
+**Added by `ERRATUM 589`, and the reason is measured rather than anticipated.** Every
+equivalence in this section was defined, used, and rated GENUINE, and **not one theorem named
+any of them.** `ERRATUM 587` is what that costs: its sibling
+`CliffordPeriodicityEight.matrixTensorRight` had the same gap, and a theorem depending on it was
+recorded as unreachable for a unit because every goal mentioning it had to unfold the whole
+composite. A sweep of the estate's own theorem index then found **197 definitions named by no
+theorem statement, 26 of them used by another module** — and two of the five most-used were
+`equivQuatTwo` and `equivMatrixTwo`, right here.
+
+The lemmas are on the `symm` direction, which is the one `T_tmul` gives directly: `symm` IS `T`,
+so *"what the decomposition's inverse does to a pure tensor"* is one rewrite. **Forward-direction
+lemmas are not added**, and nothing here says they are hard — only that they are not written. -/
+
+/-- **`equivTensor.symm` is `T`**, so a pure tensor goes to `L x * R y`. One rewrite. -/
+@[simp] theorem equivTensor_symm_tmul (hc : c₁ * c₂ ≠ 0)
+    (x : CliffordAlgebra ((-(c₁ * c₂)) • Q)) (y : CliffordAlgebra (N c₁ c₂)) :
+    (equivTensor Q c₁ c₂ hc).symm (x ⊗ₜ[ℝ] y) = L Q c₁ c₂ x * R Q c₁ c₂ y := by
+  simp [equivTensor]
+
+/-- The positive step, with the form-transport visible: the first factor arrives as an element of
+`Cl(-Q)` and is carried back along `congrQ (smul_pos_case Q)`. -/
+theorem equivTensorPos_symm_tmul (x : CliffordAlgebra (-Q))
+    (y : CliffordAlgebra (N (1 : ℝ) 1)) :
+    (equivTensorPos Q).symm (x ⊗ₜ[ℝ] y)
+      = L Q 1 1 ((congrQ (smul_pos_case Q)).symm x) * R Q 1 1 y := by
+  simp [equivTensorPos, equivTensor]
+
+/-- The negative step, the same shape through `smul_neg_case`. -/
+theorem equivTensorNeg_symm_tmul (x : CliffordAlgebra (-Q))
+    (y : CliffordAlgebra (N (-1 : ℝ) (-1))) :
+    (equivTensorNeg Q).symm (x ⊗ₜ[ℝ] y)
+      = L Q (-1) (-1) ((congrQ (smul_neg_case Q)).symm x) * R Q (-1) (-1) y := by
+  simp [equivTensorNeg, equivTensor]
+
+/-- **What the quaternionic periodicity step does to `x ⊗ q`** — the quaternion is carried into
+`Cl⟨-1,-1⟩` by `rightQuat.symm` and multiplied on the right. This is the lemma the eight-fold
+chain would have wanted and did not have. -/
+theorem equivQuatTwo_symm_tmul (x : CliffordAlgebra (-Q)) (q : ℍ[ℝ]) :
+    (equivQuatTwo Q).symm (x ⊗ₜ[ℝ] q)
+      = L Q (-1) (-1) ((congrQ (smul_neg_case Q)).symm x)
+          * R Q (-1) (-1) (rightQuat.symm q) := by
+  simp [equivQuatTwo, equivTensorNeg, equivTensor, congrQuat]
+
+/-- **What the matrix periodicity step does to a WHOLE matrix**, entry by entry: each entry is
+carried into `Cl(-Q)`, each index pair into `Cl⟨1,1⟩` through `rightM2.symm`, and the products are
+summed. Stated for a general `M` rather than for `Matrix.single`: the single-entry form needs the
+sum collapsed, and `simp` loops on that collapse (`maxRecDepth` exhausted at 4000, so a loop and
+not a depth shortfall — measured), whereas the general form is what `simp` reaches directly and is
+strictly stronger. -/
+theorem equivMatrixTwo_symm_apply (M : Matrix (Fin 2) (Fin 2) (CliffordAlgebra (-Q))) :
+    (equivMatrixTwo Q).symm M
+      = ∑ p : Fin 2 × Fin 2, L Q 1 1 ((congrQ (smul_pos_case Q)).symm (M p.1 p.2))
+          * R Q 1 1 (rightM2.symm (Matrix.single p.1 p.2 1)) := by
+  simp [equivMatrixTwo, equivTensorPos, equivTensor, congrM2, matrixEquivTensor_apply]
+
 /-! ### The hyperbolic step, as an instance of the same theorem
 
 `c₁ = 1`, `c₂ = −1` gives `c₁c₂ = −1 ≠ 0`, so `ω² = +1` and the first factor is `1 • Q = Q` — **no
