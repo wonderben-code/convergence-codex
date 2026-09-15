@@ -83,12 +83,16 @@
     `restrictLeft`/`restrictRight` analogue, in a form that needed no case split on whether `σ`
     fixes `i`. **The transferable shape: a *what is not proved* list is a list of CLAIMS, and
     two of mine were refuted by the file they were written about.** Section 7 above.
-  * **`blockMap` is not shown BIJECTIVE.** Its inverse ought to be `blockMap` at `σ i`, which
-    lands in `B (σ(σ i))`; `factorPerm_involutive` makes that `B i` — but as a PROPOSITIONAL
-    equality, so composing the two maps needs a transport along it, and the composite's
-    statement is then about a transported map rather than about `blockMap` itself. **Measured,
-    not guessed: the obstruction is dependent-type plumbing and not mathematics**, and it is
-    left for a unit that wants to pay for it.
+  * ~~**`blockMap` is not shown BIJECTIVE.** Its inverse ought to be `blockMap` at `σ i`, which
+    lands in `B (σ(σ i))`; … composing the two maps needs a transport along it … **the
+    obstruction is dependent-type plumbing and not mathematics**, and it is left for a unit that
+    wants to pay for it.~~ **PROVED THE NEXT UNIT, AND NOTHING WAS PAID (`ERRATUM 596`).** The
+    measurement was accurate about the route it named and wrong to read that route's cost as the
+    statement's. Section 9 does not compose the two block maps at all: `map_single_blockMap`
+    says `s (e_{σ i} (blockMap i b)) = e_i b`, which is the same content with both sides in
+    types that already match, and injectivity and surjectivity follow from it in four lines
+    each. **Third instance today of `ERRATUM 582`'s class** — a route recorded as necessary when
+    it was only one route — after `ERRATUM 591` and `ERRATUM 595`.
   * ~~**No `σ` is REALISED, so the classification is one-sided.**~~ **WALKED IN THE SAME UNIT**,
     and the route was the one named: section 8, `exists_conjPerm_iff`. The grep it asked for
     returned `onlyTrivialCentralIdem_of_isDomain`, so `ℂ` cost one line. **What the closed
@@ -96,6 +100,14 @@
     out a family of factors on which some involution is NOT realised — the `⇐` direction is an
     existence statement about one family, not a statement about every family, and the header
     above says so where it is proved.
+  * **`map_single_blockMap`, `blockMap_injective`, `eq_single_of_map_single`,
+    `blockMap_surjective`, `blockMap_bijective`** — **AND EACH BLOCK MAP IS A BIJECTION**, so
+    with `blockMap_add`/`blockMap_mul`/`blockMap_one` it is an anti-isomorphism
+    `B i ≅ B (σ i)`: the `⋆`-structure does not merely map block `i` into block `σ i`, it
+    IDENTIFIES them. **No transport appears** — see `ERRATUM 596`: the statement that replaces
+    “the composite of the two block maps is the identity” is
+    `s (e_{σ i} (blockMap i b)) = e_i b`, which never composes `B i → B (σ i)` with
+    `B (σ i) → B (σ(σ i))` and so never needs `σ(σ i) = i` as a type equality.
   * **The hypothesis that each factor has only trivial central idempotents is not discharged
     here.** For matrix algebras it is `CentralIdemInvariant`'s business, and this file takes it
     as given, exactly as `prod_dichotomy` does.
@@ -104,7 +116,7 @@
     is its item (3).
   * **No `⋆`-structure on a product is constructed.** Every statement here is about a given `s`.
 
-  0 sorry. 0 new axioms. 38 declarations, none on any axiom outside
+  0 sorry. 0 new axioms. 43 declarations, none on any axiom outside
   `[propext, Classical.choice, Quot.sound]` — and `single_mul_single_same` needs only two of the
   three, which is counted rather than rounded up.
 -/
@@ -200,7 +212,8 @@ theorem apply_single_eq_zero_or_one (htriv : ∀ i, OnlyTrivialCentralIdem (B i)
   apply_eq_zero_or_one htriv (map_mem_center s (single_mem_center i))
     (map_isIdem s (single_isIdem i)) j
 
-theorem mem_supp_iff (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i, (1 : B i) ≠ 0)
+theorem mem_supp_iff (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
+    (hone : ∀ i, (1 : B i) ≠ 0)
     (i j : ι) : j ∈ supp s i ↔ s.map (Pi.single i (1 : B i)) j = 1 := by
   simp only [supp, Finset.mem_filter, Finset.mem_univ, true_and]
   rcases apply_single_eq_zero_or_one s htriv i j with h | h
@@ -219,7 +232,8 @@ theorem not_mem_supp_iff (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
 
 /-- **Disjoint**, because distinct minimal central idempotents multiply to `0` and `s` is
 anti-multiplicative, so their images do too — and two `1`s at the same coordinate cannot. -/
-theorem supp_disjoint (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i, (1 : B i) ≠ 0)
+theorem supp_disjoint (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
+    (hone : ∀ i, (1 : B i) ≠ 0)
     {i i' : ι} (hne : i ≠ i') {j : ι} (h : j ∈ supp s i) (h' : j ∈ supp s i') : False := by
   have hmul : s.map (Pi.single i' (1 : B i')) * s.map (Pi.single i (1 : B i)) = 0 := by
     rw [← s.map_mul, single_mul_single_of_ne hne, map_zero s]
@@ -229,7 +243,8 @@ theorem supp_disjoint (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ 
   exact hone j (by simpa using hj)
 
 /-- **Nonempty**, because `s` is injective and the minimal central idempotent is not `0`. -/
-theorem supp_nonempty (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i, (1 : B i) ≠ 0)
+theorem supp_nonempty (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
+    (hone : ∀ i, (1 : B i) ≠ 0)
     (i : ι) : (supp s i).Nonempty := by
   rw [Finset.nonempty_iff_ne_empty]
   intro hemp
@@ -241,7 +256,8 @@ theorem supp_nonempty (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ 
 
 /-- **They cover**, because the identity of a finite product is the SUM of the minimal central
 idempotents, `s` is additive and `s 1 = 1`. -/
-theorem exists_mem_supp (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i, (1 : B i) ≠ 0)
+theorem exists_mem_supp (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
+    (hone : ∀ i, (1 : B i) ≠ 0)
     (j : ι) : ∃ i, j ∈ supp s i := by
   by_contra hcon
   simp only [not_exists] at hcon
@@ -256,14 +272,17 @@ theorem exists_mem_supp (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : �
 /-! ## 6. Hence a PERMUTATION of the factors -/
 
 /-- The factor whose image contains the coordinate `j`. Well defined by section 5. -/
-def factorOf (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i, (1 : B i) ≠ 0) (j : ι) : ι :=
+def factorOf (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
+    (hone : ∀ i, (1 : B i) ≠ 0) (j : ι) : ι :=
   (exists_mem_supp s htriv hone j).choose
 
-theorem mem_supp_factorOf (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i, (1 : B i) ≠ 0)
+theorem mem_supp_factorOf (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
+    (hone : ∀ i, (1 : B i) ≠ 0)
     (j : ι) : j ∈ supp s (factorOf s htriv hone j) :=
   (exists_mem_supp s htriv hone j).choose_spec
 
-theorem eq_factorOf (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i, (1 : B i) ≠ 0)
+theorem eq_factorOf (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
+    (hone : ∀ i, (1 : B i) ≠ 0)
     {i j : ι} (h : j ∈ supp s i) : i = factorOf s htriv hone j := by
   by_contra hne
   exact supp_disjoint s htriv hone hne h (mem_supp_factorOf s htriv hone j)
@@ -277,12 +296,14 @@ theorem factorOf_surjective (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
   obtain ⟨j, hj⟩ := supp_nonempty s htriv hone i
   exact ⟨j, (eq_factorOf s htriv hone hj).symm⟩
 
-theorem factorOf_bijective (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i, (1 : B i) ≠ 0) :
+theorem factorOf_bijective (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
+    (hone : ∀ i, (1 : B i) ≠ 0) :
     Function.Bijective (factorOf s htriv hone) :=
   Finite.surjective_iff_bijective.mp (factorOf_surjective s htriv hone)
 
 /-- **THE PERMUTATION OF THE FACTORS.** -/
-def factorPerm (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i, (1 : B i) ≠ 0) :
+def factorPerm (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
+    (hone : ∀ i, (1 : B i) ≠ 0) :
     Equiv.Perm ι :=
   (Equiv.ofBijective _ (factorOf_bijective s htriv hone)).symm
 
@@ -296,7 +317,8 @@ theorem factorPerm_eq_iff (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
 each having only the trivial central idempotents PERMUTES the minimal central idempotents:
 `s (e i) = e (σ i)` for a permutation `σ` of the index. `prod_dichotomy` is the case of two
 factors, where a permutation of a two-element set is exactly *fixes or swaps*. -/
-theorem map_single_eq (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i, (1 : B i) ≠ 0)
+theorem map_single_eq (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
+    (hone : ∀ i, (1 : B i) ≠ 0)
     (i : ι) :
     s.map (Pi.single i (1 : B i)) = Pi.single (factorPerm s htriv hone i) (1 : B _) := by
   have hmem' : factorPerm s htriv hone i ∈ supp s i := by
@@ -369,7 +391,8 @@ theorem map_single_apply_eq_zero (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
   exact h2
 
 /-- The induced map on the `i`-th block, landing in the `σ i`-th. -/
-def blockMap (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i, (1 : B i) ≠ 0)
+def blockMap (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
+    (hone : ∀ i, (1 : B i) ≠ 0)
     (i : ι) (b : B i) : B (factorPerm s htriv hone i) :=
   s.map (Pi.single i b) (factorPerm s htriv hone i)
 
@@ -383,7 +406,8 @@ theorem map_single_eq_single_blockMap (htriv : ∀ i, OnlyTrivialCentralIdem (B 
   · rw [map_single_apply_eq_zero s htriv hone i b h, Pi.single_eq_of_ne h]
 
 /-- The block map is ADDITIVE. -/
-theorem blockMap_add (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i, (1 : B i) ≠ 0)
+theorem blockMap_add (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
+    (hone : ∀ i, (1 : B i) ≠ 0)
     (i : ι) (b b' : B i) :
     blockMap s htriv hone i (b + b') = blockMap s htriv hone i b + blockMap s htriv hone i b' := by
   have hsplit : Pi.single i (b + b') = Pi.single i b + Pi.single i b' := by
@@ -395,7 +419,8 @@ theorem blockMap_add (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i
 
 /-- And ANTI-multiplicative, so each block map is an anti-homomorphism onto its target block —
 which is what *"the involution either fixes a factor or swaps two"* was reaching for. -/
-theorem blockMap_mul (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i, (1 : B i) ≠ 0)
+theorem blockMap_mul (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
+    (hone : ∀ i, (1 : B i) ≠ 0)
     (i : ι) (b b' : B i) :
     blockMap s htriv hone i (b * b') = blockMap s htriv hone i b' * blockMap s htriv hone i b := by
   have hsplit : Pi.single i (b * b') = Pi.single i b * Pi.single i b' := by
@@ -406,7 +431,8 @@ theorem blockMap_mul (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i
   simp only [blockMap, hsplit, s.map_mul, Pi.mul_apply]
 
 /-- And unital. -/
-theorem blockMap_one (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i, (1 : B i) ≠ 0)
+theorem blockMap_one (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
+    (hone : ∀ i, (1 : B i) ≠ 0)
     (i : ι) : blockMap s htriv hone i 1 = 1 := by
   simp only [blockMap, map_single_eq s htriv hone i, Pi.single_eq_same]
 
@@ -475,6 +501,63 @@ theorem exists_conjPerm_iff (σ : Equiv.Perm ι) :
     exact ⟨conjPermStar σ hσ, factorPerm_conjPermStar σ hσ⟩
 
 end Realisation
+
+/-! ## 9. Each block map is a BIJECTION, with no transport -/
+
+/-- **`s` sends the image block-element straight back.** This is the statement that replaces
+“the composite of the two block maps is the identity”, and it is the point of section 9: it says
+the same thing WITHOUT composing `B i → B (σ i)` with `B (σ i) → B (σ(σ i))`, so no transport
+along `σ(σ i) = i` appears anywhere. Two rewrites. -/
+theorem map_single_blockMap (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
+    (hone : ∀ i, (1 : B i) ≠ 0) (i : ι) (b : B i) :
+    s.map (Pi.single (factorPerm s htriv hone i) (blockMap s htriv hone i b)) = Pi.single i b := by
+  have h := map_single_eq_single_blockMap s htriv hone i b
+  rw [← h, s.map_involutive]
+
+/-- Hence each block map is INJECTIVE. -/
+theorem blockMap_injective (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
+    (hone : ∀ i, (1 : B i) ≠ 0) (i : ι) :
+    Function.Injective (blockMap s htriv hone i) := by
+  intro b b' hbb
+  have h1 := map_single_blockMap s htriv hone i b
+  rw [hbb, map_single_blockMap s htriv hone i b'] at h1
+  simpa using congrFun h1.symm i
+
+/-- An element of the `σ i`-th block is sent into the `i`-th — `map_single_apply_eq_zero` at
+`σ i`, read through `factorPerm_involutive`. -/
+theorem eq_single_of_map_single (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
+    (hone : ∀ i, (1 : B i) ≠ 0) (i : ι)
+    (c : B (factorPerm s htriv hone i)) :
+    s.map (Pi.single (factorPerm s htriv hone i) c)
+      = Pi.single i ((s.map (Pi.single (factorPerm s htriv hone i) c)) i) := by
+  funext j
+  by_cases h : j = i
+  · subst h; rw [Pi.single_eq_same]
+  · rw [Pi.single_eq_of_ne h]
+    refine map_single_apply_eq_zero s htriv hone _ c ?_
+    intro hc
+    exact h (by rw [hc, factorPerm_involutive s htriv hone i])
+
+/-- And SURJECTIVE: the preimage of `c` is the `i`-th coordinate of `s (e_{σ i} c)`. -/
+theorem blockMap_surjective (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
+    (hone : ∀ i, (1 : B i) ≠ 0) (i : ι) :
+    Function.Surjective (blockMap s htriv hone i) := by
+  intro c
+  refine ⟨(s.map (Pi.single (factorPerm s htriv hone i) c)) i, ?_⟩
+  have hsplit := eq_single_of_map_single s htriv hone i c
+  have h2 : Pi.single (factorPerm s htriv hone i) c
+      = Pi.single (factorPerm s htriv hone i)
+          (blockMap s htriv hone i ((s.map (Pi.single (factorPerm s htriv hone i) c)) i)) := by
+    rw [← map_single_eq_single_blockMap s htriv hone i, ← hsplit, s.map_involutive]
+  simpa using (congrFun h2 (factorPerm s htriv hone i)).symm
+
+/-- **SO EACH BLOCK MAP IS A BIJECTION**, and with `blockMap_add`, `blockMap_mul` and
+`blockMap_one` that makes it an anti-isomorphism `B i ≅ B (σ i)`. The `⋆`-structure does not
+merely map block `i` into block `σ i`; it IDENTIFIES them. -/
+theorem blockMap_bijective (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
+    (hone : ∀ i, (1 : B i) ≠ 0) (i : ι) :
+    Function.Bijective (blockMap s htriv hone i) :=
+  ⟨blockMap_injective s htriv hone i, blockMap_surjective s htriv hone i⟩
 
 end
 
