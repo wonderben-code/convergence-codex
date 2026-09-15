@@ -109,15 +109,32 @@
     `s (e_{σ i} (blockMap i b)) = e_i b`, which never composes `B i → B (σ i)` with
     `B (σ i) → B (σ(σ i))` and so never needs `σ(σ i) = i` as a type equality.
   * **`map_single_eq_single_self`, `restrictFixed`** — **`s` RESTRICTS TO A `⋆`-STRUCTURE ON
-    EACH FIXED FACTOR**, which is `StarStructureProduct.restrictLeft` at `n` factors and the
-    statement that hands each fixed block to the SINGLE-FACTOR classification: at
+    EACH FIXED FACTOR**, which is `StarStructureProduct.restrictLeft` at `n` factors.
+    ~~and the statement that hands each fixed block to the SINGLE-FACTOR classification: at
     `B i = Mₙ(ℂ)`, `StarStructureMatrix.exists_hermitian_twist` says the restriction is
-    `X ↦ (P X P⁻¹)ᴴ` with `P` invertible and Hermitian. The map is `b ↦ (s (e_i b)) i`, a
+    `X ↦ (P X P⁻¹)ᴴ` with `P` invertible and Hermitian.~~ **THAT SENTENCE WAS AN OVERCLAIM AND IS
+    CORRECTED IN SECTION 11 (`ERRATUM 597`)**: `restrictFixed` yields a `StarStr`, which carries
+    no scalar field, and `StarStructureHermitian.exists_hermitian_twist` takes a
+    `StarStructureMatrix.StarStructure`, which requires CONJUGATE-ℂ-LINEARITY. That does not
+    follow — a ring anti-automorphism of `Mₙ(ℂ)` need not be conjugate-semilinear — so the bridge
+    needs the linearity as a HYPOTHESIS, which section 11 supplies and discharges. **The
+    citation was wrong too**: the theorem is `StarStructureHermitian.exists_hermitian_twist`,
+    not `StarStructureMatrix.…`, and `--cites-lean` cannot see that — `ERRATUM 598`.
+    The map is `b ↦ (s (e_i b)) i`, a
     coordinate rather than a composite, so again nothing is transported; the fixed-point
     hypothesis is spent exactly on involutivity. **And the obvious route fails on a dependent
     motive** — rewriting `σ i = i` inside `Pi.single (σ i) …` — so `map_single_eq_single_self`
     is stated with the index appearing only inside a `Ne`, which is `ERRATUM 596`'s rule met
     from the other side.
+  * **`MatFam`, `matFam_onlyTrivial`, `matFam_one_ne_zero`, `restrictFixed_smul`,
+    `restrictFixedC`, `exists_hermitian_twist_of_fixed`** — **THE BRIDGE, WITH THE HYPOTHESIS IT
+    ACTUALLY NEEDS.** For a family of matrix algebras over `ℂ` of possibly different sizes: if
+    the ambient `s` is conjugate-linear (`s (c • x) = conj c • s x`), then so is its restriction
+    to a fixed factor — because `Pi.single i (c • b) = c • Pi.single i b` — so the restriction is
+    a `StarStructureMatrix.StarStructure`, and
+    `StarStructureHermitian.exists_hermitian_twist` gives an invertible HERMITIAN `P` with
+    `(s (e_i X)) i = (P X P⁻¹)ᴴ`. **The conjugate-linearity is carried, not derived**, and that
+    is the whole content of `ERRATUM 597`.
   * **`blockMapBack`, `blockMapBack_blockMap`, `blockMap_blockMapBack`** — and on every orbit,
     fixed point or
     2-cycle, **both directions are NAMED and explicitly inverse**, not merely known to exist
@@ -130,12 +147,13 @@
     is its item (3).
   * **No `⋆`-structure on a product is constructed.** Every statement here is about a given `s`.
 
-  0 sorry. 0 new axioms. 48 declarations, none on any axiom outside
+  0 sorry. 0 new axioms. 54 declarations, none on any axiom outside
   `[propext, Classical.choice, Quot.sound]` — and `single_mul_single_same` needs only two of the
   three, which is counted rather than rounded up.
 -/
 
 import StarStructureProduct
+import StarStructureHermitian
 
 namespace StarStructurePi
 
@@ -592,7 +610,8 @@ theorem map_single_eq_single_self (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
 
 /-- **`s` RESTRICTS TO A `⋆`-STRUCTURE ON EACH FIXED FACTOR** — the `n`-factor form of
 `StarStructureProduct.restrictLeft`, and the statement that hands each fixed block to the
-SINGLE-FACTOR classification: for `B i = Mₙ(ℂ)`, `StarStructureMatrix.exists_hermitian_twist`
+SINGLE-FACTOR classification ONCE CONJUGATE-LINEARITY IS SUPPLIED (section 11,
+`ERRATUM 597`): for `B i = Mₙ(ℂ)`, `StarStructureHermitian.exists_hermitian_twist`
 says this restriction is `X ↦ (P X P⁻¹)ᴴ` with `P` invertible and Hermitian. **The map is
 `b ↦ (s (e_i b)) i` and not a composite**, so nothing is transported. Involutivity is where the
 fixed-point hypothesis is spent. -/
@@ -642,6 +661,74 @@ theorem blockMap_blockMapBack (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
           (blockMap s htriv hone i (blockMapBack s htriv hone i c)) := by
     rw [← map_single_eq_single_blockMap s htriv hone i, blockMapBack, ← hsplit, s.map_involutive]
   simpa using (congrFun h2 (factorPerm s htriv hone i)).symm
+
+/-! ## 11. The bridge to the single-factor classification, and the hypothesis it needs -/
+
+section MatrixFactors
+
+open scoped Matrix
+
+variable {ι : Type*} [DecidableEq ι] [Fintype ι] {m : ι → ℕ}
+
+/-- The family of matrix algebras over `ℂ`, one per index, sizes allowed to differ. -/
+abbrev MatFam (m : ι → ℕ) : ι → Type := fun i => Matrix (Fin (m i)) (Fin (m i)) ℂ
+
+omit [DecidableEq ι] [Fintype ι] in
+theorem matFam_onlyTrivial [∀ i, NeZero (m i)] (i : ι) :
+    OnlyTrivialCentralIdem (MatFam m i) :=
+  matrix_onlyTrivialCentralIdem onlyTrivialCentralIdem_of_isDomain
+
+omit [DecidableEq ι] [Fintype ι] in
+theorem matFam_one_ne_zero [∀ i, NeZero (m i)] (i : ι) : (1 : MatFam m i) ≠ 0 := by
+  have : Nonempty (Fin (m i)) := Fin.pos_iff_nonempty.mp (NeZero.pos (m i))
+  exact one_ne_zero
+
+/-- If the ambient `⋆`-structure is conjugate-linear, so is its restriction to a fixed factor. -/
+theorem restrictFixed_smul (s : StarStr (∀ i, MatFam m i)) [∀ i, NeZero (m i)]
+    {i : ι}
+    (hfix : factorPerm s (fun j => matFam_onlyTrivial j) (fun j => matFam_one_ne_zero j) i = i)
+    (hsmul : ∀ (c : ℂ) (x : ∀ i, MatFam m i), s.map (c • x) = (starRingEnd ℂ) c • s.map x)
+    (c : ℂ) (b : MatFam m i) :
+    (restrictFixed s (fun j => matFam_onlyTrivial j) (fun j => matFam_one_ne_zero j) hfix).map
+        (c • b)
+      = (starRingEnd ℂ) c •
+        (restrictFixed s (fun j => matFam_onlyTrivial j) (fun j => matFam_one_ne_zero j) hfix).map
+          b := by
+  have hsingle : Pi.single i (c • b) = c • Pi.single i b := by
+    funext j
+    by_cases h : j = i
+    · subst h; simp
+    · simp [Pi.single_eq_of_ne h]
+  simp only [restrictFixed, hsingle, hsmul, Pi.smul_apply]
+
+variable (s : StarStr (∀ i, MatFam m i))
+
+/-- Hence the fixed factor carries a `StarStructureMatrix.StarStructure`, which is the structure
+the single-factor classification takes as input. -/
+def restrictFixedC [∀ i, NeZero (m i)] {i : ι}
+    (hfix : factorPerm s (fun j => matFam_onlyTrivial j) (fun j => matFam_one_ne_zero j) i = i)
+    (hsmul : ∀ (c : ℂ) (x : ∀ i, MatFam m i), s.map (c • x) = (starRingEnd ℂ) c • s.map x) :
+    StarStructureMatrix.StarStructure (m i) where
+  map := (restrictFixed s (fun j => matFam_onlyTrivial j)
+    (fun j => matFam_one_ne_zero j) hfix).map
+  map_add := (restrictFixed s _ _ hfix).map_add
+  map_smul := restrictFixed_smul s hfix hsmul
+  map_mul := (restrictFixed s _ _ hfix).map_mul
+  map_involutive := (restrictFixed s _ _ hfix).map_involutive
+
+/-- **AND THE SINGLE-FACTOR CLASSIFICATION APPLIES.** -/
+theorem exists_hermitian_twist_of_fixed [∀ i, NeZero (m i)] {i : ι}
+    (hfix : factorPerm s (fun j => matFam_onlyTrivial j) (fun j => matFam_one_ne_zero j) i = i)
+    (hsmul : ∀ (c : ℂ) (x : ∀ i, MatFam m i), s.map (c • x) = (starRingEnd ℂ) c • s.map x) :
+    ∃ P : (Matrix (Fin (m i)) (Fin (m i)) ℂ)ˣ,
+      (P : Matrix (Fin (m i)) (Fin (m i)) ℂ)ᴴ = (P : Matrix (Fin (m i)) (Fin (m i)) ℂ) ∧
+      ∀ X, (s.map (Pi.single i X)) i
+        = ((P : Matrix (Fin (m i)) (Fin (m i)) ℂ) * X
+          * ((P⁻¹ : (Matrix (Fin (m i)) (Fin (m i)) ℂ)ˣ) :
+              Matrix (Fin (m i)) (Fin (m i)) ℂ))ᴴ :=
+  StarStructureHermitian.exists_hermitian_twist (restrictFixedC s hfix hsmul)
+
+end MatrixFactors
 
 end
 
