@@ -67,10 +67,14 @@
     near `0` with NO norm hypothesis. **And the SECOND piece landed with it**:
     `localGenerator_nsmul` (`a (n t) = n · a t` on the window) and
     `localGenerator_eq_nsmul_div` (`a t = n · a (t / n)`), which is `ℚ`-divisibility in the form
-    the next step consumes. **Two of the four are done. The remaining two are not written**:
-    upgrade divisibility to `ℝ`-homogeneity using `continuousAt_localGenerator`, then set
-    `H := (1/t₀) • a t₀` for one small `t₀` and carry `U t = exp(itH)` to all of `ℝ` by the group
-    law. The list above is the order to do them in.
+    the next step consumes. **And the ALGEBRAIC half of the third piece landed with them**:
+    `localGenerator_neg` (`a (−t) = −a t`), `localGenerator_zsmul` (`a (n t) = n · a t` for every
+    INTEGER `n`) and `continuousAt_of_group` (a group continuous at `0` is continuous everywhere —
+    which the `ℝ` step needs, since it compares two continuous functions on a window rather than
+    at a point). With divisibility that is `ℚ`-homogeneity in full. **WHAT IS LEFT, and it is
+    two things**: the passage from `ℚ` to `ℝ`, by comparing two continuous functions that agree
+    on a dense set; and then `H := (1/t₀) • a t₀` for one small `t₀` with `U t = exp(itH)` carried
+    to all of `ℝ` by the group law. Neither is written.
   * **The group law is nowhere used**, so nothing here is specific to one-parameter groups. That is
     a feature of the statements and a limit on them: `local_generator_exists` would hold for any
     continuous curve through `1`.
@@ -90,7 +94,7 @@
     both are recorded as not chased, which is the distinction `ERRATUM 583` exists for.
   * **Nothing about the Born rule, Gleason or Wigner**, the other named residues of L21.
 
-  0 sorry. 0 new axioms. 14 declarations, all on `[propext, Classical.choice, Quot.sound]`.
+  0 sorry. 0 new axioms. 17 declarations, all on `[propext, Classical.choice, Quot.sound]`.
 -/
 
 import FiniteStone
@@ -299,7 +303,58 @@ theorem localGenerator_eq_nsmul_div (U : ℝ → unitary A) (hU0 : U 0 = 1)
   rw [hmul] at h
   exact h
 
-/-! ## 6. The boundary of the local statement -/
+/-! ## 6. Negation, `ℤ`-homogeneity, and continuity away from `0` -/
+
+/-- **A one-parameter group continuous at `0` is continuous everywhere.** `U t = U t₀ · U (t − t₀)`
+and multiplication is continuous. Needed for the `ℝ`-homogeneity step, which compares two
+continuous functions on a window rather than at a point. -/
+theorem continuousAt_of_group (U : ℝ → unitary A) (hc : ContinuousAt U 0)
+    (hgrp : ∀ s t, U (s + t) = U s * U t) (t₀ : ℝ) : ContinuousAt U t₀ := by
+  have hrw : U = fun t => U t₀ * U (t - t₀) := by
+    funext t
+    rw [← hgrp t₀ (t - t₀)]
+    ring_nf
+  have h1 : ContinuousAt (fun t : ℝ => U (t - t₀)) t₀ :=
+    ContinuousAt.comp (by simpa using hc) ((continuous_sub_right t₀).continuousAt)
+  rw [hrw]
+  exact continuousAt_const.mul h1
+
+/-- **`a (−t) = −a t`** — additivity at `t` and `−t`, with `argSelfAdjoint 1 = 0` closing it. -/
+theorem localGenerator_neg (U : ℝ → unitary A) (hU0 : U 0 = 1) (hc : ContinuousAt U 0)
+    (hgrp : ∀ s t, U (s + t) = U s * U t) :
+    ∃ δ > 0, ∀ t : ℝ, |t| < δ → argSelfAdjoint (U (-t)) = -argSelfAdjoint (U t) := by
+  obtain ⟨δ, hδ, hadd⟩ := localGenerator_add_of_small U hU0 hc hgrp
+  refine ⟨δ, hδ, fun t ht => ?_⟩
+  have hneg : |(-t)| < δ := by rwa [abs_neg]
+  have h := hadd t (-t) ht hneg
+  rw [add_neg_cancel, hU0, argSelfAdjoint_one] at h
+  exact eq_neg_of_add_eq_zero_right h.symm
+
+/-- **`a (n t) = n · a t` for every INTEGER `n`**, by cases on the sign off `localGenerator_nsmul`
+and `localGenerator_neg`. With `localGenerator_eq_nsmul_div` this is `ℚ`-homogeneity in full: the
+algebraic half of the third piece is done, and what is left of it is the passage from `ℚ` to `ℝ`,
+which is where `continuousAt_of_group` comes in. -/
+theorem localGenerator_zsmul (U : ℝ → unitary A) (hU0 : U 0 = 1) (hc : ContinuousAt U 0)
+    (hgrp : ∀ s t, U (s + t) = U s * U t) :
+    ∃ δ > 0, ∀ (n : ℤ) (t : ℝ), |(n : ℝ) * t| < δ →
+      argSelfAdjoint (U ((n : ℝ) * t)) = n • argSelfAdjoint (U t) := by
+  obtain ⟨δ₁, hδ₁, hnat⟩ := localGenerator_nsmul U hU0 hc hgrp
+  obtain ⟨δ₂, hδ₂, hneg⟩ := localGenerator_neg U hU0 hc hgrp
+  refine ⟨min δ₁ δ₂, lt_min hδ₁ hδ₂, fun n t ht => ?_⟩
+  have h1 : |(n : ℝ) * t| < δ₁ := lt_of_lt_of_le ht (min_le_left _ _)
+  have h2 : |(n : ℝ) * t| < δ₂ := lt_of_lt_of_le ht (min_le_right _ _)
+  obtain ⟨m, hm⟩ := n.eq_nat_or_neg
+  rcases hm with rfl | rfl
+  · push_cast at h1 ⊢
+    rw [hnat m t h1]
+    simp
+  · have hcast : (((-(m : ℤ)) : ℤ) : ℝ) = -(m : ℝ) := by push_cast; ring
+    rw [hcast] at h1 h2 ⊢
+    rw [neg_mul, abs_neg] at h1 h2
+    rw [neg_mul, hneg ((m : ℝ) * t) h2, hnat m t h1]
+    simp
+
+/-! ## 7. The boundary of the local statement -/
 
 /-- **Away from `1`, a general C⋆-algebra gives a PRODUCT of exponentials, not one.** Mathlib's
 `Unitary.mem_pathComponentOne_iff`, stated here to mark what `exists_selfAdjoint_exp_eq`'s
