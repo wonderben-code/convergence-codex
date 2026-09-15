@@ -1,0 +1,291 @@
+/-
+  StarStructurePi: **THE `n`-FACTOR DICHOTOMY.** A `⋆`-structure on a finite product of rings,
+  each having only the trivial central idempotents, PERMUTES the minimal central idempotents:
+  `s (e i) = e (σ i)` for a permutation `σ` of the index type. `StarStructureProduct`'s
+  `prod_dichotomy` is the case of two factors, where a permutation of a two-element set is
+  exactly *fixes or swaps*; this is the residue `UNLOCK_WATCHLIST` entry 266 left after that
+  unit, in its own words: *"what is left of (2) is the `n`-factor induction alone"*.
+
+  **IT IS NOT AN INDUCTION, and that is the only interesting thing about the proof.** The
+  watchlist called it an induction because the two-factor case was proved by a four-way case
+  split on a pair of trivial-central-idempotent dichotomies, and iterating that is what an
+  induction on the number of factors would do. The `n`-factor statement does not need it. The
+  images `s (e i)` have supports that are pairwise DISJOINT (distinct minimal central
+  idempotents multiply to `0`, `s` is anti-multiplicative, so their images multiply to `0`, and
+  two `1`s at one coordinate cannot), NONEMPTY (`s` is injective and `e i ≠ 0`), and COVERING
+  (the identity of a finite product is the SUM of the `e i`, `s` is additive and `s 1 = 1`).
+  Those three facts make `τ : j ↦ the factor whose image covers j` a well-defined SURJECTION
+  from the index to itself, and **a surjective self-map of a finite type is a bijection**. The
+  permutation is that bijection's inverse. No case split, no induction, no hypothesis on the
+  number of factors.
+
+  WHERE FINITENESS OF THE INDEX IS USED, all three places, because it is the only substantive
+  hypothesis beyond the two-factor case's:
+  * `Finset.univ` in the definition of `supp`;
+  * `univ_sum_single`, that `∑ i, e i = 1` — false for an infinite product, where the identity
+    is not a finite sum of the minimal idempotents;
+  * `factorOf_bijective`, surjective-implies-bijective.
+
+  **`exists_factorPerm`, the existential form, needs only `Finite ι`** — `Fintype.ofFinite`
+  supplies the rest inside the proof, because an `∃` over permutations cannot see which
+  enumeration built them. Mathlib's `linter.unusedFintypeInType` is what pointed that out, and
+  it is the sharper statement, so it is the one kept.
+
+  WHAT IS PROVED.
+  * **`map_sum`** — a `⋆`-structure is additive over a `Finset` sum. Two lines by induction on
+    the `Finset`, and the estate had no such lemma because `StarStr` carries only `map_add`.
+  * **`center_pi_apply`, `isIdem_pi_apply`, `apply_eq_zero_or_one`** — the componentwise half:
+    a central idempotent of `∏ B i` has every component a central idempotent of its factor,
+    hence `0` or `1`. These are `StarStructureProduct`'s `center_prod_left`/`center_prod_right`
+    and `isIdem_prod` at `n` factors, and the proofs are the same one probe vector,
+    `Pi.single i b`, in place of `(b, 0)` and `(0, c)`.
+  * **`single_mem_center`, `single_isIdem`, `single_mul_single_of_ne`, `single_one_ne_zero`,
+    `univ_sum_single`** — the minimal central idempotents and their arithmetic.
+  * **`supp`, `mem_supp_iff`, `not_mem_supp_iff`** — the support of `s (e i)`, and the fact that
+    membership is the same as the component being `1` rather than merely nonzero. **The `1 ≠ 0`
+    hypothesis on each factor is what makes those two statements equivalent** and it is carried
+    explicitly, not assumed away.
+  * **`supp_disjoint`, `supp_nonempty`, `exists_mem_supp`** — the three facts above.
+  * **`factorOf`, `mem_supp_factorOf`, `eq_factorOf`, `factorOf_surjective`,
+    `factorOf_bijective`, `factorPerm`,
+    `factorPerm_eq_iff`** — the map and its inverse.
+  * **`map_single_eq`, `exists_factorPerm`** — the theorem, in pointwise and existential form.
+
+  WHAT IS **NOT** PROVED.
+  * **The `n`-factor analogue of `restrictLeft`/`restrictRight` is NOT here.** In the two-factor
+    case `StarStructureProduct` goes on to show that a `s` which FIXES `(1,0)` restricts to a
+    `⋆`-structure on `B`, and that a `s` which SWAPS gives a map between the factors. The
+    corresponding statements for a general `σ` — `s` restricts to a `⋆`-structure on each
+    factor `σ` fixes, and to an anti-isomorphism `B i → B (σ i)` on each orbit of length two,
+    with cycles
+    of length `≥ 3` needing their own statement — are **not written**. That is the honest residue
+    of entry 266's item (2) and it is now the whole of it.
+  * **No permutation is computed, and no constraint on which `σ` arise is proved.** For all this
+    file says, every permutation of the index could occur, or only the identity. In particular
+    nothing here says a `⋆`-structure exists at all for a given `σ`.
+  * **The hypothesis that each factor has only trivial central idempotents is not discharged
+    here.** For matrix algebras it is `CentralIdemInvariant`'s business, and this file takes it
+    as given, exactly as `prod_dichotomy` does.
+  * **Nothing about the real-form fork.** Entry 266's item (1) residue — the constant `c` with
+    `Pᴴ = c • P`, whose two signs over `ℝ` separate `Mₙ(ℝ)` from `Mₙ(ℍ)` — is untouched, and so
+    is its item (3).
+  * **No `⋆`-structure on a product is constructed.** Every statement here is about a given `s`.
+
+  0 sorry. 0 new axioms. 25 declarations, all on `[propext, Classical.choice, Quot.sound]`.
+-/
+
+import StarStructureProduct
+
+namespace StarStructurePi
+
+open StarStructureProduct CentralIdemInvariant
+
+noncomputable section
+
+/-! ## 1. `⋆`-structures respect finite sums -/
+
+/-- A `⋆`-structure is additive, hence additive over a `Finset` sum. Needed because the
+identity of a finite product is a SUM of the minimal central idempotents, and that is how the
+covering half of the partition argument gets its hands on `s 1 = 1`. -/
+theorem map_sum {A : Type*} [Ring A] (s : StarStr A) {κ : Type*} (t : Finset κ) (f : κ → A) :
+    s.map (∑ x ∈ t, f x) = ∑ x ∈ t, s.map (f x) := by
+  classical
+  induction t using Finset.induction with
+  | empty => simp [map_zero s]
+  | insert a t ha ih => rw [Finset.sum_insert ha, s.map_add, ih, Finset.sum_insert ha]
+
+/-! ## 2. Central idempotents of a finite product are componentwise trivial -/
+
+variable {ι : Type*} {B : ι → Type*} [∀ i, Ring (B i)]
+
+theorem center_pi_apply {e : ∀ i, B i} (he : e ∈ Set.center (∀ i, B i)) (i : ι) :
+    e i ∈ Set.center (B i) := by
+  classical
+  refine Semigroup.mem_center_iff.mpr fun b => ?_
+  have h := Semigroup.mem_center_iff.mp he (Pi.single i b)
+  simpa using congrFun h i
+
+theorem isIdem_pi_apply {e : ∀ i, B i} (he : e * e = e) (i : ι) : e i * e i = e i :=
+  congrFun he i
+
+/-- Each component of a central idempotent is `0` or `1`, given that each factor has only the
+trivial central idempotents. This is the `n`-factor form of `isIdem_prod` plus
+`center_prod_left`/`center_prod_right` together. -/
+theorem apply_eq_zero_or_one (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
+    {e : ∀ i, B i} (hc : e ∈ Set.center (∀ i, B i)) (hi : e * e = e) (i : ι) :
+    e i = 0 ∨ e i = 1 :=
+  htriv i (e i) (center_pi_apply hc i) (isIdem_pi_apply hi i)
+
+/-! ## 3. The minimal central idempotents of a finite product -/
+
+variable [DecidableEq ι]
+
+theorem single_mem_center (i : ι) : (Pi.single i (1 : B i)) ∈ Set.center (∀ i, B i) := by
+  refine Semigroup.mem_center_iff.mpr fun y => ?_
+  funext j
+  by_cases h : j = i
+  · subst h; simp
+  · simp [Pi.single_eq_of_ne h]
+
+theorem single_isIdem (i : ι) :
+    (Pi.single i (1 : B i)) * (Pi.single i (1 : B i)) = Pi.single i (1 : B i) := by
+  funext j
+  by_cases h : j = i
+  · subst h; simp
+  · simp [Pi.single_eq_of_ne h]
+
+theorem single_mul_single_of_ne {i j : ι} (h : i ≠ j) :
+    (Pi.single i (1 : B i)) * (Pi.single j (1 : B j)) = 0 := by
+  funext k
+  by_cases hk : k = i
+  · subst hk; simp [Pi.single_eq_of_ne h]
+  · simp [Pi.single_eq_of_ne hk]
+
+theorem single_one_ne_zero {i : ι} (hone : (1 : B i) ≠ 0) : (Pi.single i (1 : B i)) ≠ 0 := by
+  intro h
+  exact hone (by simpa using congrFun h i)
+
+variable [Fintype ι]
+
+theorem univ_sum_single : (∑ i : ι, Pi.single i (1 : B i)) = 1 := by
+  simpa using Finset.univ_sum_single (fun i : ι => (1 : B i))
+
+/-! ## 4. The support of the image of a minimal central idempotent -/
+
+variable (s : StarStr (∀ i, B i))
+
+open scoped Classical in
+/-- The set of coordinates at which `s` sends the `i`-th minimal central idempotent to `1`. -/
+def supp (i : ι) : Finset ι :=
+  Finset.univ.filter (fun j => s.map (Pi.single i (1 : B i)) j ≠ 0)
+
+omit [Fintype ι] in
+theorem apply_single_eq_zero_or_one (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (i j : ι) :
+    s.map (Pi.single i (1 : B i)) j = 0 ∨ s.map (Pi.single i (1 : B i)) j = 1 :=
+  apply_eq_zero_or_one htriv (map_mem_center s (single_mem_center i))
+    (map_isIdem s (single_isIdem i)) j
+
+theorem mem_supp_iff (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i, (1 : B i) ≠ 0)
+    (i j : ι) : j ∈ supp s i ↔ s.map (Pi.single i (1 : B i)) j = 1 := by
+  simp only [supp, Finset.mem_filter, Finset.mem_univ, true_and]
+  rcases apply_single_eq_zero_or_one s htriv i j with h | h
+  · simp only [h, ne_eq, not_true_eq_false, false_iff]
+    exact fun hc => hone j hc.symm
+  · simp [h, hone j]
+
+theorem not_mem_supp_iff (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
+    (hone : ∀ i, (1 : B i) ≠ 0) (i j : ι) :
+    j ∉ supp s i ↔ s.map (Pi.single i (1 : B i)) j = 0 := by
+  rcases apply_single_eq_zero_or_one s htriv i j with h | h
+  · simp [supp, h]
+  · simp [(mem_supp_iff s htriv hone i j).mpr h, h, hone j]
+
+/-! ## 5. The supports are DISJOINT, NONEMPTY, and COVER -/
+
+/-- **Disjoint**, because distinct minimal central idempotents multiply to `0` and `s` is
+anti-multiplicative, so their images do too — and two `1`s at the same coordinate cannot. -/
+theorem supp_disjoint (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i, (1 : B i) ≠ 0)
+    {i i' : ι} (hne : i ≠ i') {j : ι} (h : j ∈ supp s i) (h' : j ∈ supp s i') : False := by
+  have hmul : s.map (Pi.single i' (1 : B i')) * s.map (Pi.single i (1 : B i)) = 0 := by
+    rw [← s.map_mul, single_mul_single_of_ne hne, map_zero s]
+  have hj := congrFun hmul j
+  simp only [Pi.mul_apply, Pi.zero_apply] at hj
+  rw [(mem_supp_iff s htriv hone i j).mp h, (mem_supp_iff s htriv hone i' j).mp h'] at hj
+  exact hone j (by simpa using hj)
+
+/-- **Nonempty**, because `s` is injective and the minimal central idempotent is not `0`. -/
+theorem supp_nonempty (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i, (1 : B i) ≠ 0)
+    (i : ι) : (supp s i).Nonempty := by
+  rw [Finset.nonempty_iff_ne_empty]
+  intro hemp
+  have hz : s.map (Pi.single i (1 : B i)) = 0 := by
+    funext j
+    exact (not_mem_supp_iff s htriv hone i j).mp (by simp [hemp])
+  have : Pi.single i (1 : B i) = 0 := map_injective s (by rw [hz, map_zero s])
+  exact single_one_ne_zero (hone i) this
+
+/-- **They cover**, because the identity of a finite product is the SUM of the minimal central
+idempotents, `s` is additive and `s 1 = 1`. -/
+theorem exists_mem_supp (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i, (1 : B i) ≠ 0)
+    (j : ι) : ∃ i, j ∈ supp s i := by
+  by_contra hcon
+  simp only [not_exists] at hcon
+  have hz : ∀ i, s.map (Pi.single i (1 : B i)) j = 0 :=
+    fun i => (not_mem_supp_iff s htriv hone i j).mp (hcon i)
+  have h1 : (∑ i : ι, s.map (Pi.single i (1 : B i))) j = (1 : ∀ i, B i) j := by
+    rw [← map_sum s Finset.univ, univ_sum_single, map_one s]
+  rw [Finset.sum_apply] at h1
+  simp only [hz, Finset.sum_const_zero, Pi.one_apply] at h1
+  exact hone j h1.symm
+
+/-! ## 6. Hence a PERMUTATION of the factors -/
+
+/-- The factor whose image contains the coordinate `j`. Well defined by section 5. -/
+def factorOf (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i, (1 : B i) ≠ 0) (j : ι) : ι :=
+  (exists_mem_supp s htriv hone j).choose
+
+theorem mem_supp_factorOf (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i, (1 : B i) ≠ 0)
+    (j : ι) : j ∈ supp s (factorOf s htriv hone j) :=
+  (exists_mem_supp s htriv hone j).choose_spec
+
+theorem eq_factorOf (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i, (1 : B i) ≠ 0)
+    {i j : ι} (h : j ∈ supp s i) : i = factorOf s htriv hone j := by
+  by_contra hne
+  exact supp_disjoint s htriv hone hne h (mem_supp_factorOf s htriv hone j)
+
+/-- `factorOf` is SURJECTIVE, because every support is nonempty — and a surjective self-map of a
+finite type is a bijection, which is where finiteness of the index does its only work. -/
+theorem factorOf_surjective (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
+    (hone : ∀ i, (1 : B i) ≠ 0) :
+    Function.Surjective (factorOf s htriv hone) := by
+  intro i
+  obtain ⟨j, hj⟩ := supp_nonempty s htriv hone i
+  exact ⟨j, (eq_factorOf s htriv hone hj).symm⟩
+
+theorem factorOf_bijective (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i, (1 : B i) ≠ 0) :
+    Function.Bijective (factorOf s htriv hone) :=
+  Finite.surjective_iff_bijective.mp (factorOf_surjective s htriv hone)
+
+/-- **THE PERMUTATION OF THE FACTORS.** -/
+def factorPerm (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i, (1 : B i) ≠ 0) :
+    Equiv.Perm ι :=
+  (Equiv.ofBijective _ (factorOf_bijective s htriv hone)).symm
+
+theorem factorPerm_eq_iff (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
+    (hone : ∀ i, (1 : B i) ≠ 0) (i j : ι) :
+    factorPerm s htriv hone i = j ↔ factorOf s htriv hone j = i := by
+  rw [factorPerm, Equiv.symm_apply_eq]
+  exact ⟨fun h => h.symm, fun h => h.symm⟩
+
+/-- **THE `n`-FACTOR DICHOTOMY, as a permutation.** A `⋆`-structure on a finite product of rings
+each having only the trivial central idempotents PERMUTES the minimal central idempotents:
+`s (e i) = e (σ i)` for a permutation `σ` of the index. `prod_dichotomy` is the case of two
+factors, where a permutation of a two-element set is exactly *fixes or swaps*. -/
+theorem map_single_eq (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i, (1 : B i) ≠ 0)
+    (i : ι) :
+    s.map (Pi.single i (1 : B i)) = Pi.single (factorPerm s htriv hone i) (1 : B _) := by
+  have hmem' : factorPerm s htriv hone i ∈ supp s i := by
+    have ht : factorOf s htriv hone (factorPerm s htriv hone i) = i :=
+      (factorPerm_eq_iff s htriv hone i (factorPerm s htriv hone i)).mp rfl
+    have h0 := mem_supp_factorOf s htriv hone (factorPerm s htriv hone i)
+    rwa [ht] at h0
+  funext j
+  by_cases h : j = factorPerm s htriv hone i
+  · rw [h, (mem_supp_iff s htriv hone i _).mp hmem', Pi.single_eq_same]
+  · have hnot : j ∉ supp s i := fun hmem =>
+      h ((factorPerm_eq_iff s htriv hone i j).mpr (eq_factorOf s htriv hone hmem).symm).symm
+    rw [(not_mem_supp_iff s htriv hone i j).mp hnot, Pi.single_eq_of_ne h]
+
+omit [Fintype ι] in
+/-- **And the two-factor statement is the `n = 2` case**: a permutation of the index either
+fixes `i` or does not, which is `prod_dichotomy`'s *fixes or swaps* once the index has two
+elements. Stated as an `∃` over permutations so nothing has to be said about `σ`'s cycle type. -/
+theorem exists_factorPerm [Finite ι] (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
+    (hone : ∀ i, (1 : B i) ≠ 0) :
+    ∃ σ : Equiv.Perm ι, ∀ i : ι, s.map (Pi.single i (1 : B i)) = Pi.single (σ i) (1 : B _) := by
+  haveI := Fintype.ofFinite ι
+  exact ⟨factorPerm s htriv hone, map_single_eq s htriv hone⟩
+
+end
+
+end StarStructurePi
