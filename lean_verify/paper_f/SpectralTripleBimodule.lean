@@ -91,12 +91,16 @@
   * **Rung 2's own next step is now stateable and is not taken here.** The finding says the
     content lives in the reducible case; the unit does not then go on to classify the
     reducible ones, and no decomposition of `H` into `π`-isotypic pieces is built.
-  * **`J` is a linear map, not an antilinear one.** A real structure is conjugate-linear, and
-    Mathlib's `LinearMap` cannot express that at this signature; `J` is carried as a
-    `Module.End 𝕜 H` satisfying the KO-6 relations, which is weaker than a real structure.
-    **This is a genuine weakening and it is why no conclusion below uses `J`.** The honest
-    version needs a `ConjugateLinearMap` or a `𝕂`-linear `J` with `J (c • v) = star c • J v`,
-    and is a separate unit.
+  * **`J` is a linear map, not an antilinear one.** A real structure is conjugate-linear, so
+    this field is weaker than a real structure, and **that is why no conclusion below uses
+    `J`.** ~~Mathlib's `LinearMap` cannot express that at this signature.~~ **THAT CLAUSE WAS
+    FALSE and is withdrawn — `ERRATUM 571`.** Mathlib's `LinearMap` is semilinear by default:
+    `H →ₛₗ[starRingEnd ℂ] H` is exactly a conjugate-linear map, it has its own notation
+    `→ₗ⋆[ℂ]`, and `RingHomCompTriple` makes two of them compose to a `ℂ`-linear map.
+    `KOSixRealStructureE.Jmap` is such a `J`, with `Jmap_involutive`. What is true is the
+    narrower statement: **this structure's `J` FIELD has type `Module.End 𝕜 H`, which cannot
+    hold a conjugate-linear map** — a fact about the field, not about the library. Widening
+    the field is a separate unit.
   * **`KOSixSpectralTriple` is NOT an instance of `Triple`, and cannot be.** `KOSixAlgebraAction`
     machine-checked that its `piRep` is **not additive in the matrix**
     (`piRep_not_additive_in_matrix`), so it is not a `RingHom`, let alone an `AlgHom`. The

@@ -62,8 +62,12 @@
     unbuilt. This unit changes none of that; it connects two models, it does not climb.
   * **`J`, `γ`, `D` and `piOp` are not transported.** `KOSixSpectralTriple.J` is antilinear
     and `blockEquiv` is a `ℂ`-linear equivalence, so conjugating `J` by it gives an antilinear
-    map on `HfE n` — which `Module.End ℂ (HfE n)` cannot hold, exactly as
-    `KOSixInnerProduct`'s header says. **Naming the obstruction is not removing it.**
+    map on `HfE n`. ~~which `Module.End ℂ (HfE n)` cannot hold, exactly as
+    `KOSixInnerProduct`'s header says.~~ **That framing was wrong — `ERRATUM 571`.** An
+    antilinear map on `HfE n` is perfectly expressible, as `HfE n →ₛₗ[starRingEnd ℂ] HfE n`,
+    and `KOSixRealStructureE.Jmap` is one. What remains true is that **this unit does not
+    build the transport**, which is a statement about what was done and not about what can
+    be.
   * **No KO-dimension, order condition, or connection to `CascadeHilbert`, `CascadeAlgebra` or
     the 96** — L18's standing residue.
 

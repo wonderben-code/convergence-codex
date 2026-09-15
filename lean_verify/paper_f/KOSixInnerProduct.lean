@@ -79,9 +79,10 @@
     agreement with `piRepC` is at the level of the definition — `a` on blocks 0 and 1, `ā` on
     blocks 2 and 3 — and is stated in this comment rather than as a theorem, deliberately,
     because the theorem needs that isomorphism.
-  * **`J` is antilinear** and `Module.End ℂ (HfE n)` cannot hold it; a real structure needs a
-    conjugate-linear map, which `SpectralTripleBimodule`'s header records as a weakening and
-    which no unit has addressed.
+  * **`J` is antilinear** and `Module.End ℂ (HfE n)` cannot hold it — **true, and it does not
+    mean what this header once implied.** `ERRATUM 571`: a conjugate-linear map IS expressible,
+    as `HfE n →ₛₗ[starRingEnd ℂ] HfE n`, and `KOSixRealStructureE.Jmap` is one. The obstruction
+    is this file's choice of `Module.End ℂ`, not the library.
   * **No KO-dimension claim, no grading, no connection to `CascadeHilbert`, `CascadeAlgebra`
     or the 96** — L18's standing residue.
 
