@@ -108,6 +108,20 @@
     “the composite of the two block maps is the identity” is
     `s (e_{σ i} (blockMap i b)) = e_i b`, which never composes `B i → B (σ i)` with
     `B (σ i) → B (σ(σ i))` and so never needs `σ(σ i) = i` as a type equality.
+  * **`map_single_eq_single_self`, `restrictFixed`** — **`s` RESTRICTS TO A `⋆`-STRUCTURE ON
+    EACH FIXED FACTOR**, which is `StarStructureProduct.restrictLeft` at `n` factors and the
+    statement that hands each fixed block to the SINGLE-FACTOR classification: at
+    `B i = Mₙ(ℂ)`, `StarStructureMatrix.exists_hermitian_twist` says the restriction is
+    `X ↦ (P X P⁻¹)ᴴ` with `P` invertible and Hermitian. The map is `b ↦ (s (e_i b)) i`, a
+    coordinate rather than a composite, so again nothing is transported; the fixed-point
+    hypothesis is spent exactly on involutivity. **And the obvious route fails on a dependent
+    motive** — rewriting `σ i = i` inside `Pi.single (σ i) …` — so `map_single_eq_single_self`
+    is stated with the index appearing only inside a `Ne`, which is `ERRATUM 596`'s rule met
+    from the other side.
+  * **`blockMapBack`, `blockMapBack_blockMap`, `blockMap_blockMapBack`** — and on every orbit,
+    fixed point or
+    2-cycle, **both directions are NAMED and explicitly inverse**, not merely known to exist
+    from `blockMap_bijective`.
   * **The hypothesis that each factor has only trivial central idempotents is not discharged
     here.** For matrix algebras it is `CentralIdemInvariant`'s business, and this file takes it
     as given, exactly as `prod_dichotomy` does.
@@ -116,7 +130,7 @@
     is its item (3).
   * **No `⋆`-structure on a product is constructed.** Every statement here is about a given `s`.
 
-  0 sorry. 0 new axioms. 43 declarations, none on any axiom outside
+  0 sorry. 0 new axioms. 48 declarations, none on any axiom outside
   `[propext, Classical.choice, Quot.sound]` — and `single_mul_single_same` needs only two of the
   three, which is counted rather than rounded up.
 -/
@@ -558,6 +572,76 @@ theorem blockMap_bijective (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
     (hone : ∀ i, (1 : B i) ≠ 0) (i : ι) :
     Function.Bijective (blockMap s htriv hone i) :=
   ⟨blockMap_injective s htriv hone i, blockMap_surjective s htriv hone i⟩
+
+/-! ## 10. Fixed factors restrict; paired factors are explicitly inverse -/
+
+/-- On a factor the permutation FIXES, `s` sends the `i`-th block into itself. **Stated so the
+index appears only inside a `Ne`**: the obvious route, rewriting `factorPerm i = i` inside
+`Pi.single (factorPerm i) …`, fails on a dependent motive, which is `ERRATUM 596`'s rule met from
+the other side. -/
+theorem map_single_eq_single_self (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
+    (hone : ∀ i, (1 : B i) ≠ 0) {i : ι} (hfix : factorPerm s htriv hone i = i) (b : B i) :
+    s.map (Pi.single i b) = Pi.single i ((s.map (Pi.single i b)) i) := by
+  funext j
+  by_cases h : j = i
+  · subst h; rw [Pi.single_eq_same]
+  · rw [Pi.single_eq_of_ne h]
+    refine map_single_apply_eq_zero s htriv hone i b ?_
+    rw [hfix]
+    exact h
+
+/-- **`s` RESTRICTS TO A `⋆`-STRUCTURE ON EACH FIXED FACTOR** — the `n`-factor form of
+`StarStructureProduct.restrictLeft`, and the statement that hands each fixed block to the
+SINGLE-FACTOR classification: for `B i = Mₙ(ℂ)`, `StarStructureMatrix.exists_hermitian_twist`
+says this restriction is `X ↦ (P X P⁻¹)ᴴ` with `P` invertible and Hermitian. **The map is
+`b ↦ (s (e_i b)) i` and not a composite**, so nothing is transported. Involutivity is where the
+fixed-point hypothesis is spent. -/
+def restrictFixed (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
+    (hone : ∀ i, (1 : B i) ≠ 0) {i : ι} (hfix : factorPerm s htriv hone i = i) :
+    StarStr (B i) where
+  map b := (s.map (Pi.single i b)) i
+  map_add b b' := by
+    have hsplit : Pi.single i (b + b') = Pi.single i b + Pi.single i b' := by
+      funext j; by_cases h : j = i
+      · subst h; simp
+      · simp [Pi.single_eq_of_ne h]
+    simp only [hsplit, s.map_add, Pi.add_apply]
+  map_mul b b' := by
+    have hsplit : Pi.single i (b * b') = Pi.single i b * Pi.single i b' := by
+      funext j; by_cases h : j = i
+      · subst h; simp
+      · simp [Pi.single_eq_of_ne h]
+    simp only [hsplit, s.map_mul, Pi.mul_apply]
+  map_involutive b := by
+    have hb := map_single_eq_single_self s htriv hone hfix b
+    have h2 : Pi.single i b = s.map (Pi.single i ((s.map (Pi.single i b)) i)) := by
+      rw [← hb, s.map_involutive]
+    simpa using (congrFun h2 i).symm
+
+/-- The way back from the `σ i`-th block to the `i`-th. Again a coordinate of `s`, not a
+composite of two block maps, so no transport appears. -/
+def blockMapBack (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i, (1 : B i) ≠ 0) (i : ι)
+    (c : B (factorPerm s htriv hone i)) : B i :=
+  (s.map (Pi.single (factorPerm s htriv hone i) c)) i
+
+/-- `blockMapBack` undoes `blockMap` … -/
+theorem blockMapBack_blockMap (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
+    (hone : ∀ i, (1 : B i) ≠ 0) (i : ι) (b : B i) :
+    blockMapBack s htriv hone i (blockMap s htriv hone i b) = b := by
+  have h := map_single_blockMap s htriv hone i b
+  simp [blockMapBack, h]
+
+/-- … and is undone by it, so on every orbit — fixed point or 2-cycle — the two blocks are
+explicitly inverse anti-isomorphic, with both directions named. -/
+theorem blockMap_blockMapBack (htriv : ∀ i, OnlyTrivialCentralIdem (B i))
+    (hone : ∀ i, (1 : B i) ≠ 0) (i : ι) (c : B (factorPerm s htriv hone i)) :
+    blockMap s htriv hone i (blockMapBack s htriv hone i c) = c := by
+  have hsplit := eq_single_of_map_single s htriv hone i c
+  have h2 : Pi.single (factorPerm s htriv hone i) c
+      = Pi.single (factorPerm s htriv hone i)
+          (blockMap s htriv hone i (blockMapBack s htriv hone i c)) := by
+    rw [← map_single_eq_single_blockMap s htriv hone i, blockMapBack, ← hsplit, s.map_involutive]
+  simpa using (congrFun h2 (factorPerm s htriv hone i)).symm
 
 end
 
