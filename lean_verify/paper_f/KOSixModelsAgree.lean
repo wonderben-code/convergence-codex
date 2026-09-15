@@ -67,7 +67,9 @@
     antilinear map on `HfE n` is perfectly expressible, as `HfE n →ₛₗ[starRingEnd ℂ] HfE n`,
     and `KOSixRealStructureE.Jmap` is one. What remains true is that **this unit does not
     build the transport**, which is a statement about what was done and not about what can
-    be.
+    be. **`SpectralTripleBimodule.Triple`'s `J` field was widened to
+    `H →ₛₗ[starRingEnd 𝕜] H` one unit later**, so the destination type now exists; the
+    transport itself is still not built here.
   * **No KO-dimension, order condition, or connection to `CascadeHilbert`, `CascadeAlgebra` or
     the 96** — L18's standing residue.
 

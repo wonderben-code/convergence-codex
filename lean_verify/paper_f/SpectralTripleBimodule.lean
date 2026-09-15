@@ -24,7 +24,8 @@
   WHAT THIS FILE ESTABLISHES.
   * **`Triple`** — the `structure FiniteRealSpectralTriple` §W9.1 asks for, over a VARIABLE
     algebra: `π`, `πOp`, `D`, `J`, `γ`, both ⋆-conditions, order-zero, order-one and the KO-6
-    signs `(ε, ε′, ε″) = (1, 1, -1)` as fields. Parametrised over the ground field `𝕂` so
+    signs `(ε, ε′, ε″) = (1, 1, -1)` as fields. **`J` is conjugate-linear, `H →ₗ⋆[𝕜] H`**;
+    it was a `Module.End 𝕜 H` until `ERRATUM 571`. Parametrised over the ground field `𝕂` so
     that both CCM's real case (`𝕂 = ℝ`, `𝕜 = ℂ`) and the estate's own complex case
     (`𝕂 = 𝕜 = ℂ`, where `CascadeEnd`'s Azumaya chain lives) are instances of one object.
   * **`bimodule`** and `bimodule_tmul` — order-zero as a single algebra map.
@@ -40,9 +41,10 @@
     makes CCM's inner fluctuations well defined.
   * **`scalarWitness`** and `triple_inhabited` — the structure is INHABITED, so nothing below is
     vacuous: `A = 𝕂 = 𝕜 = ℂ` acting by scalars on `EuclideanSpace ℂ (Fin 2)`, with `γ = σ₃`
-    and `J = σ₁` (two anticommuting involutions, which is what the KO-6 sign `ε″ = -1`
-    demands and what forces dimension at least two), through Mathlib's
-    `Matrix.toEuclideanCLM` and `ContinuousLinearMap.toLinearMapRingHom`. **Exhibited because
+    through Mathlib's `Matrix.toEuclideanCLM`, and `J` the CONJUGATE-LINEAR coordinate swap
+    `v ↦ (conj (v 1), conj (v 0))` from `ConjugatePermutation.conjPerm`. `J` and `γ`
+    anticommute — the KO-6 sign `ε″ = -1`, which is what forces dimension at least two — and
+    `swap_pauli3` is the one matrix identity that delivers it. **Exhibited because
     a structure nobody can instantiate is a vacuous object, and this campaign has already
     shipped one vacuous statement it had to retract** (`ERRATUM 557`).
 
@@ -91,16 +93,20 @@
   * **Rung 2's own next step is now stateable and is not taken here.** The finding says the
     content lives in the reducible case; the unit does not then go on to classify the
     reducible ones, and no decomposition of `H` into `π`-isotypic pieces is built.
-  * **`J` is a linear map, not an antilinear one.** A real structure is conjugate-linear, so
-    this field is weaker than a real structure, and **that is why no conclusion below uses
-    `J`.** ~~Mathlib's `LinearMap` cannot express that at this signature.~~ **THAT CLAUSE WAS
-    FALSE and is withdrawn — `ERRATUM 571`.** Mathlib's `LinearMap` is semilinear by default:
-    `H →ₛₗ[starRingEnd ℂ] H` is exactly a conjugate-linear map, it has its own notation
-    `→ₗ⋆[ℂ]`, and `RingHomCompTriple` makes two of them compose to a `ℂ`-linear map.
-    `KOSixRealStructureE.Jmap` is such a `J`, with `Jmap_involutive`. What is true is the
-    narrower statement: **this structure's `J` FIELD has type `Module.End 𝕜 H`, which cannot
-    hold a conjugate-linear map** — a fact about the field, not about the library. Widening
-    the field is a separate unit.
+  * ~~**`J` is a linear map, not an antilinear one.**~~ **THE FIELD HAS BEEN WIDENED and the
+    defect is gone — `ERRATUM 571`.** `J` now has type `H →ₛₗ[starRingEnd 𝕜] H`, which Lean
+    prints as `H →ₗ⋆[𝕜] H` and which is exactly a conjugate-linear map; the three KO-6 sign
+    axioms are now conditions on the right kind of object, and `scalarWitness` below carries
+    a genuine real structure. The withdrawn excuse read *"Mathlib's `LinearMap` cannot
+    express that at this signature"*: Mathlib's `LinearMap` is SEMILINEAR by default, and
+    `RingHomCompTriple (starRingEnd 𝕜) (starRingEnd 𝕜) (RingHom.id 𝕜)` is what makes
+    `J.comp J = LinearMap.id` a statable identity. **What remains true, and is much
+    narrower**, is that a `J` of this kind cannot be STORED in `Module.End 𝕜 H` — a fact
+    about a type, not about the library.
+  * **`J` still does no work in §2–§6, and widening it did not change that.** No theorem
+    between `bimodule` and `orderOne_of_central_piOp` mentions `J`; the KO-6 signs constrain
+    only the witnesses. Making the field honest is not the same as making it load-bearing,
+    and this unit did the first, not the second.
   * **`KOSixSpectralTriple` is NOT an instance of `Triple`, and cannot be.** `KOSixAlgebraAction`
     machine-checked that its `piRep` is **not additive in the matrix**
     (`piRep_not_additive_in_matrix`), so it is not a `RingHom`, let alone an `AlgHom`. The
@@ -119,6 +125,7 @@
 
 import StarRepSemisimple
 import CascadeEnd
+import ConjugatePermutation
 
 namespace SpectralTripleBimodule
 
@@ -135,8 +142,9 @@ the two order conditions and the KO-6 signs `(ε, ε′, ε″) = (1, 1, -1)` as
 `𝕂` is the ground field of the algebra and `𝕜` the field of the Hilbert space: CCM's real
 case is `𝕂 = ℝ`, `𝕜 = ℂ`, and the estate's own complex objects are `𝕂 = 𝕜 = ℂ`.
 
-**`J` is carried as a LINEAR map, which is weaker than a real structure** — see the header.
-Nothing below uses it. -/
+**`J` is carried as a CONJUGATE-LINEAR map**, `H →ₛₗ[starRingEnd 𝕜] H`, which is what a real
+structure is. It was a `Module.End 𝕜 H` until `ERRATUM 571` — see the header. Nothing else
+below uses it; the witnesses do. -/
 structure Triple (𝕂 𝕜 A H : Type*) [Field 𝕂] [RCLike 𝕜] [Algebra 𝕂 𝕜]
     [Ring A] [StarRing A] [Algebra 𝕂 A]
     [NormedAddCommGroup H] [InnerProductSpace 𝕜 H] [Module 𝕂 H] [IsScalarTower 𝕂 𝕜 H] where
@@ -147,8 +155,10 @@ structure Triple (𝕂 𝕜 A H : Type*) [Field 𝕂] [RCLike 𝕜] [Algebra �
   πOp : Aᵐᵒᵖ →ₐ[𝕂] Module.End 𝕜 H
   /-- The Dirac operator. -/
   D : Module.End 𝕜 H
-  /-- The real structure, carried as a linear map: see the header's second disclaimer. -/
-  J : Module.End 𝕜 H
+  /-- **The real structure, carried as a CONJUGATE-LINEAR map** — `H →ₛₗ[starRingEnd 𝕜] H`,
+  which Lean prints as `H →ₗ⋆[𝕜] H`. This field was `Module.End 𝕜 H` until `ERRATUM 571`; see
+  the header. -/
+  J : H →ₛₗ[starRingEnd 𝕜] H
   /-- The grading. -/
   γ : Module.End 𝕜 H
   /-- `π` is a ⋆-representation, stated through the inner product as `StarRepSemisimple` does
@@ -160,12 +170,15 @@ structure Triple (𝕂 𝕜 A H : Type*) [Field 𝕂] [RCLike 𝕜] [Algebra �
   order_zero : ∀ (a : A) (b : Aᵐᵒᵖ), Commute (π a) (πOp b)
   /-- **The order-one condition**: the one-forms commute with the opposite action. -/
   order_one : ∀ (a : A) (b : Aᵐᵒᵖ), ⁅⁅D, π a⁆, πOp b⁆ = 0
-  /-- KO-6 sign `ε = 1`. -/
-  J_sq : J * J = 1
-  /-- KO-6 sign `ε′ = 1`. -/
-  J_comm_D : J * D = D * J
+  /-- KO-6 sign `ε = 1`. Two conjugate-linear maps compose to a `𝕜`-LINEAR one — that is
+  `RingHomCompTriple (starRingEnd 𝕜) (starRingEnd 𝕜) (RingHom.id 𝕜)` — so `LinearMap.id` is
+  the right-hand side and the identity is statable. -/
+  J_sq : J.comp J = LinearMap.id
+  /-- KO-6 sign `ε′ = 1`. Both sides are conjugate-linear, by `RingHomCompTriple.ids` and
+  `RingHomCompTriple.right_ids`. -/
+  J_comm_D : J.comp D = D.comp J
   /-- KO-6 sign `ε″ = -1`. -/
-  J_anticomm_γ : J * γ = -(γ * J)
+  J_anticomm_γ : J.comp γ = -(γ.comp J)
   /-- The grading is an involution. -/
   γ_sq : γ * γ = 1
 
@@ -357,9 +370,21 @@ theorem pauli1_anticomm : pauli1 * pauli3 = -(pauli3 * pauli1) := by
   ext i j; fin_cases i <;> fin_cases j <;>
     simp [pauli1, pauli3, Matrix.mul_apply, Fin.sum_univ_two]
 
+/-- The matrix identity `scalarWitness`'s KO-6 sign `ε″ = -1` reduces to: conjugating `σ₃`'s
+entries and swapping its indices returns `-σ₃`. Real and anti-invariant, which is exactly
+`ConjugatePermutation.conjPerm_anticommute_of_neg`'s hypothesis. -/
+theorem swap_pauli3 :
+    (pauli3.submatrix (Equiv.swap (0 : Fin 2) 1) (Equiv.swap (0 : Fin 2) 1)).map
+        (starRingEnd ℂ) = -pauli3 := by
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [pauli3, Equiv.swap_apply_left, Equiv.swap_apply_right]
+
 /-- **A witness, so the structure is not vacuous.** `A = 𝕂 = 𝕜 = ℂ` acting by scalars on
-`EuclideanSpace ℂ (Fin 2)`, with `γ = σ₃`, `J = σ₁` (two anticommuting involutions, which is
-what the KO-6 sign `ε″ = -1` demands and what forces dimension at least two) and `D = 0`.
+`EuclideanSpace ℂ (Fin 2)`, with `γ = σ₃`, `J` the CONJUGATE-LINEAR coordinate swap
+`v ↦ (conj (v 1), conj (v 0))` (which anticommutes with `γ`, as the KO-6 sign `ε″ = -1`
+demands, and which forces dimension at least two) and `D = 0`. **`J` was `σ₁` acting linearly
+until `ERRATUM 571`; the witness now carries a genuine real structure.**
 
 **And the witness demonstrates the finding rather than evading it.** Its `D` is `0`, so it
 satisfies order-one for exactly the trivial reason `orderOne_of_commute_D` names; and its `π`
@@ -371,7 +396,7 @@ def scalarWitness : Triple ℂ ℂ ℂ (EuclideanSpace ℂ (Fin 2)) where
   π := Algebra.ofId ℂ _
   πOp := (Algebra.ofId ℂ _).comp (AlgEquiv.toOpposite ℂ ℂ).symm.toAlgHom
   D := 0
-  J := mEnd pauli1
+  J := ConjugatePermutation.conjPerm (Equiv.swap 0 1)
   γ := mEnd pauli3
   star_π a u v := by
     simp only [Algebra.ofId_apply]
@@ -385,11 +410,13 @@ def scalarWitness : Triple ℂ ℂ ℂ (EuclideanSpace ℂ (Fin 2)) where
     simp
   order_zero a b := Algebra.commute_algebraMap_left _ _ |>.trans (by rfl)
   order_one a b := by simp [Ring.lie_def]
-  J_sq := by unfold mEnd; rw [← map_mul, ← map_mul, pauli1_sq, map_one, map_one]
-  J_comm_D := by simp
+  J_sq := ConjugatePermutation.conjPerm_comp_self _ (Equiv.swap_apply_self 0 1)
+  J_comm_D := by ext v i; simp
   J_anticomm_γ := by
-    unfold mEnd
-    rw [← map_mul, ← map_mul, ← map_mul, ← map_mul, pauli1_anticomm, map_neg, map_neg]
+    refine LinearMap.ext fun v => ?_
+    simpa [mEnd, ContinuousLinearMap.toLinearMapRingHom] using
+      ConjugatePermutation.conjPerm_anticommute_of_neg (Equiv.swap (0 : Fin 2) 1) pauli3
+        swap_pauli3 v
   γ_sq := by unfold mEnd; rw [← map_mul, ← map_mul, pauli3_sq, map_one, map_one]
 
 theorem triple_inhabited : Nonempty (Triple ℂ ℂ ℂ (EuclideanSpace ℂ (Fin 2))) := ⟨scalarWitness⟩

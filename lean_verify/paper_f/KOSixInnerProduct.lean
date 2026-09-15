@@ -82,7 +82,10 @@
   * **`J` is antilinear** and `Module.End ℂ (HfE n)` cannot hold it — **true, and it does not
     mean what this header once implied.** `ERRATUM 571`: a conjugate-linear map IS expressible,
     as `HfE n →ₛₗ[starRingEnd ℂ] HfE n`, and `KOSixRealStructureE.Jmap` is one. The obstruction
-    is this file's choice of `Module.End ℂ`, not the library.
+    is this file's choice of `Module.End ℂ`, not the library. **And the choice has since been
+    corrected where it mattered**: `SpectralTripleBimodule.Triple`'s `J` field now has type
+    `H →ₛₗ[starRingEnd 𝕜] H`. This file's `piRepRing` is a `RingHom` into `Module.End ℂ (HfE n)`
+    and is unaffected — `π` is linear; it is `J` that is not.
   * **No KO-dimension claim, no grading, no connection to `CascadeHilbert`, `CascadeAlgebra`
     or the 96** — L18's standing residue.
 

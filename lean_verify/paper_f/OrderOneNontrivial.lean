@@ -37,9 +37,19 @@
     theorem the unit exists for.
   * **`Dw_not_commute_piW`** and **`piOpW_not_central`** — the hypotheses of BOTH vacuity
     theorems fail: `D` is not in the commutant of `π A`, and `πOp`'s image is not central
-    (`Jw` fails to commute with `piOpW (op σ₃)`, both living in the right slot where
+    (`rightP1` fails to commute with `piOpW (op σ₃)`, both living in the right slot where
     `σ₁σ₃ ≠ σ₃σ₁`). So the witness ESCAPES the traps rather than satisfying their conclusions
     by accident, and `witness_escapes_both_traps` states all four facts as one theorem.
+  * **`Jw`, and it is now a GENUINE real structure — `ERRATUM 571`.** `Triple`'s `J` field was
+    widened from `Module.End ℂ H` to `H →ₛₗ[starRingEnd ℂ] H` in the same unit as this change,
+    so `Jw` is `ConjugatePermutation.conjPerm slotSwap`: conjugate the coordinates, then swap
+    the right Kronecker slot. The three KO-6 signs follow from two matrix identities,
+    `slotSwap_kronLeft_p1` (`σ₁ ⊗ 1` is real and swap-INVARIANT, so `JD = DJ`) and
+    `slotSwap_kronRight_p3` (`1 ⊗ σ₃` is real and swap-ANTI-invariant, so `Jγ = -γJ`).
+    **What `Jw` used to be is kept under the honest name `rightP1`**, a `ℂ`-linear operator
+    which was never a real structure; `rightP1_sq` and `rightP1_anticomm_gw` preserve the two
+    identities the old `J_sq` and `J_anticomm_γ` actually proved, so that what `ERRATUM 571`
+    left standing, and about which object, is on the record rather than deleted.
   * **`orderOne_holds_structurally`** — and the reason order-one holds is worth naming,
     because it is not smallness of anything. The one-form `⁅D, piL a⁆` lives in the LEFT
     Kronecker slot and `piR`'s image lives in the RIGHT one, and different slots commute.
@@ -104,6 +114,12 @@ def clmToEnd : (EuclideanSpace ℂ ι →L[ℂ] EuclideanSpace ℂ ι) →ₐ[�
 `Matrix.toEuclideanCLM`. -/
 def matAlg : Matrix ι ι ℂ →ₐ[ℂ] Module.End ℂ (EuclideanSpace ℂ ι) :=
   (clmToEnd ι).comp (Matrix.toEuclideanCLM (𝕜 := ℂ) (n := ι)).toAlgEquiv.toAlgHom
+
+/-- `matAlg` applied to a vector is Mathlib's `toEuclideanCLM` applied to it, by `rfl`. The
+bridge `ConjugatePermutation`'s lemmas need: they are stated about `toEuclideanCLM`, which is
+what `matAlg` is built from. -/
+theorem matAlg_apply (M : Matrix ι ι ℂ) (v : EuclideanSpace ℂ ι) :
+    matAlg ι M v = Matrix.toEuclideanCLM (𝕜 := ℂ) M v := rfl
 
 theorem matAlg_injective : Function.Injective (matAlg ι) := by
   intro X Y h
@@ -232,14 +248,52 @@ theorem piW_piOpW_commute (a : Matrix (Fin 2) (Fin 2) ℂ)
 
 /-! ### The operators, and the KO-6 relations as matrix identities -/
 
-/-- The Dirac operator, in the LEFT slot so that it fails to commute with `piW`. -/
+/-- The Dirac operator, in the LEFT slot so that it fails to commute with `piW`. Its matrix
+`σ₁ ⊗ 1` is real and untouched by the right-slot swap, which is why `Jw` commutes with it. -/
 def Dw : Module.End ℂ Hw := piW pauli1
 
-/-- The real structure, in the RIGHT slot so that it commutes with `Dw` for free. -/
-def Jw : Module.End ℂ Hw := matAlg Slots ((1 : Matrix (Fin 2) (Fin 2) ℂ) ⊗ₖ pauli1)
+/-- `σ₁` in the RIGHT Kronecker slot, acting `ℂ`-LINEARLY. **This was called `Jw` and was
+this witness's `J` field until `ERRATUM 571`**; it is not a real structure, because a real
+structure is conjugate-linear. It is kept under an honest name because it is still needed:
+`piOpW_not_central` uses it as the element of `Module.End ℂ Hw` that fails to commute with
+`piOpW (op σ₃)`, and that argument needs a LINEAR operator, not an antilinear one. -/
+def rightP1 : Module.End ℂ Hw := matAlg Slots ((1 : Matrix (Fin 2) (Fin 2) ℂ) ⊗ₖ pauli1)
 
-/-- The grading, also in the right slot, anticommuting with `Jw`. -/
+/-- The swap of the RIGHT Kronecker slot, as a permutation of `Slots`. -/
+def slotSwap : Equiv.Perm Slots := (Equiv.refl (Fin 2)).prodCongr (Equiv.swap 0 1)
+
+/-- **The real structure, and it is CONJUGATE-LINEAR**: conjugate the coordinates, then swap
+the right slot. `ERRATUM 571`. -/
+def Jw : Hw →ₛₗ[starRingEnd ℂ] Hw := ConjugatePermutation.conjPerm slotSwap
+
+/-- The grading, in the right slot, anticommuting with `Jw`. -/
 def gw : Module.End ℂ Hw := matAlg Slots ((1 : Matrix (Fin 2) (Fin 2) ℂ) ⊗ₖ pauli3)
+
+theorem slotSwap_involutive (p : Slots) : slotSwap (slotSwap p) = p := by
+  obtain ⟨i, j⟩ := p
+  simp [slotSwap]
+
+/-- `σ₁ ⊗ 1` is real and invariant under the right-slot swap, so `Jw` COMMUTES with `Dw`. The
+swap touches only the slot in which `σ₁ ⊗ 1` is the identity. -/
+theorem slotSwap_kronLeft_p1 :
+    ((pauli1 ⊗ₖ (1 : Matrix (Fin 2) (Fin 2) ℂ)).submatrix slotSwap slotSwap).map
+        (starRingEnd ℂ) = pauli1 ⊗ₖ (1 : Matrix (Fin 2) (Fin 2) ℂ) := by
+  ext p q
+  obtain ⟨i, j⟩ := p
+  obtain ⟨k, l⟩ := q
+  fin_cases i <;> fin_cases j <;> fin_cases k <;> fin_cases l <;>
+    simp [slotSwap, pauli1, Matrix.kroneckerMap, Matrix.one_apply]
+
+/-- `1 ⊗ σ₃` is real and ANTI-invariant under the right-slot swap, so `Jw` ANTICOMMUTES with
+`gw` — the KO-6 sign `ε″ = -1`. Swapping `σ₃`'s two indices negates it. -/
+theorem slotSwap_kronRight_p3 :
+    (((1 : Matrix (Fin 2) (Fin 2) ℂ) ⊗ₖ pauli3).submatrix slotSwap slotSwap).map
+        (starRingEnd ℂ) = -((1 : Matrix (Fin 2) (Fin 2) ℂ) ⊗ₖ pauli3) := by
+  ext p q
+  obtain ⟨i, j⟩ := p
+  obtain ⟨k, l⟩ := q
+  fin_cases i <;> fin_cases j <;> fin_cases k <;> fin_cases l <;>
+    simp [slotSwap, pauli3, Matrix.kroneckerMap, Matrix.one_apply]
 
 theorem kron_right_p1_sq :
     ((1 : Matrix (Fin 2) (Fin 2) ℂ) ⊗ₖ pauli1) * ((1 : Matrix (Fin 2) (Fin 2) ℂ) ⊗ₖ pauli1)
@@ -272,6 +326,18 @@ theorem oneForm_eq (a : Matrix (Fin 2) (Fin 2) ℂ) :
     ⁅Dw, piW a⁆ = piW (pauli1 * a - a * pauli1) := by
   rw [Dw, Ring.lie_def, ← map_mul, ← map_mul, ← map_sub]
 
+/-- **What the old `J_sq` actually said.** `rightP1` squares to one — a true statement, about
+a `ℂ`-linear operator that was never a real structure. Kept so that `kron_right_p1_sq` still
+has a consumer and so that the reader can see exactly which identity `ERRATUM 571` left
+standing and which object it was about. -/
+theorem rightP1_sq : rightP1 * rightP1 = 1 := by
+  rw [rightP1, ← map_mul, kron_right_p1_sq, map_one]
+
+/-- **What the old `J_anticomm_γ` actually said**, likewise: the LINEAR right-slot `σ₁`
+anticommutes with the grading. -/
+theorem rightP1_anticomm_gw : rightP1 * gw = -(gw * rightP1) := by
+  rw [rightP1, gw, ← map_mul, ← map_mul, kron_right_anticomm, map_neg]
+
 /-! ### The `Triple` -/
 
 /-- **The witness.** A `Triple` whose `π` is not a scalar action — see
@@ -296,12 +362,15 @@ def witnessTriple : Triple ℂ ℂ (Matrix (Fin 2) (Fin 2) ℂ) Hw where
   order_one a b := by
     rw [oneForm_eq]
     exact commute_iff_lie_eq.mp (piW_piOpW_commute _ b)
-  J_sq := by rw [Jw, ← map_mul, kron_right_p1_sq, map_one]
+  J_sq := ConjugatePermutation.conjPerm_comp_self _ slotSwap_involutive
   J_comm_D := by
-    rw [Jw, Dw, piW, AlgHom.coe_comp, Function.comp_apply, kronLeft_apply,
-      ← map_mul, ← map_mul, ← Matrix.mul_kronecker_mul, ← Matrix.mul_kronecker_mul,
-      Matrix.one_mul, Matrix.mul_one]
-  J_anticomm_γ := by rw [Jw, gw, ← map_mul, ← map_mul, kron_right_anticomm, map_neg]
+    refine LinearMap.ext fun v => ?_
+    simpa [Jw, Dw, piW, kronLeft_apply, matAlg_apply] using
+      ConjugatePermutation.conjPerm_commute_of_eq slotSwap _ slotSwap_kronLeft_p1 v
+  J_anticomm_γ := by
+    refine LinearMap.ext fun v => ?_
+    simpa [Jw, gw, matAlg_apply] using
+      ConjugatePermutation.conjPerm_anticommute_of_neg slotSwap _ slotSwap_kronRight_p3 v
   γ_sq := by rw [gw, ← map_mul, kron_right_p3_sq, map_one]
 
 theorem triple_inhabited_nonscalar :
@@ -347,19 +416,21 @@ theorem Dw_not_commute_piW : ¬ (∀ a : Matrix (Fin 2) (Fin 2) ℂ, Commute Dw 
 /-- **And `πOp`'s image is NOT central**, so
 `SpectralTripleBimodule.orderOne_of_central_piOp` does not apply either. Together with
 `Dw_not_commute_piW` this is what makes the witness escape both vacuity theorems rather than
-satisfy their conclusions by accident: `Jw` fails to commute with `piOpW (op σ₃)`, because
-both live in the right Kronecker slot and `σ₁σ₃ ≠ σ₃σ₁`. -/
+satisfy their conclusions by accident: `rightP1` fails to commute with `piOpW (op σ₃)`,
+because both live in the right Kronecker slot and `σ₁σ₃ ≠ σ₃σ₁`. **The test element has to be
+`ℂ`-LINEAR — it is quantified over `Module.End ℂ Hw` — which is why this argument uses
+`rightP1` and not the conjugate-linear `Jw` that replaced it (`ERRATUM 571`).** -/
 theorem piOpW_not_central :
     ¬ (∀ (b : (Matrix (Fin 2) (Fin 2) ℂ)ᵐᵒᵖ) (x : Module.End ℂ Hw), Commute (piOpW b) x) := by
   intro h
-  have hc := h (MulOpposite.op pauli3) Jw
+  have hc := h (MulOpposite.op pauli3) rightP1
   have hc' : ((1 : Matrix (Fin 2) (Fin 2) ℂ) ⊗ₖ pauli3ᵀ)
         * ((1 : Matrix (Fin 2) (Fin 2) ℂ) ⊗ₖ pauli1)
       = ((1 : Matrix (Fin 2) (Fin 2) ℂ) ⊗ₖ pauli1)
         * ((1 : Matrix (Fin 2) (Fin 2) ℂ) ⊗ₖ pauli3ᵀ) := by
     refine matAlg_injective Slots ?_
     rw [map_mul, map_mul]
-    simpa [piOpW, Jw, kronRight_apply] using hc
+    simpa [piOpW, rightP1, kronRight_apply] using hc
   rw [← Matrix.mul_kronecker_mul, ← Matrix.mul_kronecker_mul, Matrix.one_mul] at hc'
   have hm := kron_right_injective hc'
   rw [pauli3_transpose] at hm

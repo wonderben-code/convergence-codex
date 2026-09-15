@@ -18,7 +18,11 @@
   `RingHomCompTriple` instances for `starRingEnd ℂ` are already in place, so two of them
   compose back to an honest `ℂ`-linear map. **`Module.End ℂ H` cannot hold `J`, which is true
   and was never the question; the type that holds `J` is `H →ₛₗ[starRingEnd ℂ] H`.** Filed as
-  `ERRATUM 571` and corrected in all three headers.
+  `ERRATUM 571` and corrected in all three headers. **One unit later the field itself was
+  widened**: `SpectralTripleBimodule.Triple.J` now has type `H →ₛₗ[starRingEnd 𝕜] H`, both of
+  the estate's `Triple` witnesses carry genuine conjugate-linear real structures, and
+  `ConjugatePermutation` is the general machinery they use. Diagnosing the claim and repairing
+  the object were two units, and this is the first.
 
   **WHY I BELIEVED IT, because the shape is reusable.** Every earlier unit reached for `J` as
   a FIELD of a structure whose other fields were `Module.End 𝕜 H`, and asked whether that type
