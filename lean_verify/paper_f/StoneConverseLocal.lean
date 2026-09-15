@@ -60,11 +60,13 @@
     upgrades that to `ℝ`-homogeneity; then `H := (1 / t₀) • a t₀` for one small `t₀` and the group
     law carries `U t = exp(i t H)` to all of `ℝ`. **Each of those four is a separate piece of work
     and none is written here.**
-  * **`hsum` is a HYPOTHESIS, not derived from smallness.** `argSelfAdjoint_mul_of_commute` and
-    `localGenerator_add` both assume `‖a u + a v‖ < π` rather than deducing it from `s, t` being
-    small. It should follow from `continuousAt_localGenerator` together with
-    `argSelfAdjoint 1 = 0`, and **that derivation is not written** — it is the first thing the
-    extension above needs, and it is named rather than assumed away.
+  * ~~**`hsum` is a HYPOTHESIS, not derived from smallness.** … **that derivation is not
+    written** — it is the first thing the extension above needs.~~ **WRITTEN IN THE SAME UNIT:**
+    `argSelfAdjoint_one` (`argSelfAdjoint 1 = 0`, off `cfc_apply_one`, which Mathlib does not
+    state), `eventually_norm_localGenerator_lt` and **`localGenerator_add_of_small`** — additivity
+    near `0` with NO norm hypothesis. So of the extension's four pieces the FIRST is done; the
+    other three (iterate for `a (n • t) = n • a t`, upgrade `ℚ` to `ℝ`, then `H` and the group
+    law) are not written, and the list above is the order to do them in.
   * **The group law is nowhere used**, so nothing here is specific to one-parameter groups. That is
     a feature of the statements and a limit on them: `local_generator_exists` would hold for any
     continuous curve through `1`.
@@ -84,7 +86,7 @@
     both are recorded as not chased, which is the distinction `ERRATUM 583` exists for.
   * **Nothing about the Born rule, Gleason or Wigner**, the other named residues of L21.
 
-  0 sorry. 0 new axioms. 9 declarations, all on `[propext, Classical.choice, Quot.sound]`.
+  0 sorry. 0 new axioms. 12 declarations, all on `[propext, Classical.choice, Quot.sound]`.
 -/
 
 import FiniteStone
@@ -95,7 +97,7 @@ import Mathlib.Analysis.CStarAlgebra.Exponential
 namespace StoneConverseLocal
 
 open Complex NormedSpace selfAdjoint Unitary
-open scoped Real
+open scoped Real Topology
 
 noncomputable section
 
@@ -194,7 +196,58 @@ theorem localGenerator_add (U : ℝ → unitary A) (hgrp : ∀ s t, U (s + t) = 
   rw [hgrp s t]
   exact argSelfAdjoint_mul_of_commute hcomm hs ht hsum
 
-/-! ## 3. The boundary of the local statement -/
+/-! ## 4. And near `0` the norm hypothesis is not needed: it follows from continuity -/
+
+/-- `argSelfAdjoint 1 = 0`. Off `cfc_apply_one` and `Complex.arg_one`; Mathlib does not state it,
+and everything in §4 needs it. -/
+@[simp] theorem argSelfAdjoint_one : argSelfAdjoint (1 : unitary A) = 0 := by
+  ext
+  simp [argSelfAdjoint]
+
+/-- **The local generator is eventually as small as you like.** Continuity at `0` plus
+`argSelfAdjoint 1 = 0`; this is what turns the norm hypothesis of §3 into a conclusion. -/
+theorem eventually_norm_localGenerator_lt (U : ℝ → unitary A) (hU0 : U 0 = 1)
+    (hc : ContinuousAt U 0) {ε : ℝ} (hε : 0 < ε) :
+    ∀ᶠ t in 𝓝 (0 : ℝ), ‖argSelfAdjoint (U t)‖ < ε := by
+  have hcg : ContinuousAt (fun t => argSelfAdjoint (U t)) 0 :=
+    continuousAt_localGenerator U hU0 hc
+  have h0 : ‖argSelfAdjoint (U 0)‖ = 0 := by rw [hU0, argSelfAdjoint_one]; simp
+  exact (hcg.norm).eventually_lt_const (by simpa [h0] using hε)
+
+/-- **ADDITIVITY NEAR `0`, WITH NO NORM HYPOTHESIS** — the first of the four pieces
+`UNLOCK_WATCHLIST` entry 268 lists between the local half and a global `H`. Two applications of
+continuity give one `δ` on which both `‖U t − 1‖ < 2` and `‖a t‖ < π/2` hold, and the triangle
+inequality supplies what `localGenerator_add` was assuming. -/
+theorem localGenerator_add_of_small (U : ℝ → unitary A) (hU0 : U 0 = 1)
+    (hc : ContinuousAt U 0) (hgrp : ∀ s t, U (s + t) = U s * U t) :
+    ∃ δ > 0, ∀ s t : ℝ, |s| < δ → |t| < δ →
+      argSelfAdjoint (U (s + t)) = argSelfAdjoint (U s) + argSelfAdjoint (U t) := by
+  obtain ⟨δ₁, hδ₁, hb₁⟩ := Metric.eventually_nhds_iff_ball.mp
+    (eventually_norm_localGenerator_lt U hU0 hc (ε := Real.pi / 2) (by positivity))
+  have hcoe : ContinuousAt (fun t => ((U t : A))) 0 :=
+    (continuous_subtype_val.continuousAt).comp hc
+  have hcn : ContinuousAt (fun t => ‖((U t : A)) - 1‖) 0 :=
+    (hcoe.sub continuousAt_const).norm
+  have h0 : ‖((U 0 : A)) - 1‖ = 0 := by simp [hU0]
+  have hlt : ‖((U 0 : A)) - 1‖ < 2 := by rw [h0]; norm_num
+  obtain ⟨δ₂, hδ₂, hb₂⟩ := Metric.eventually_nhds_iff_ball.mp (hcn.eventually_lt_const hlt)
+  refine ⟨min δ₁ δ₂, lt_min hδ₁ hδ₂, fun s t hs ht => ?_⟩
+  have hs1 : s ∈ Metric.ball (0 : ℝ) δ₁ := by
+    simpa [Real.dist_eq] using lt_of_lt_of_le hs (min_le_left _ _)
+  have ht1 : t ∈ Metric.ball (0 : ℝ) δ₁ := by
+    simpa [Real.dist_eq] using lt_of_lt_of_le ht (min_le_left _ _)
+  have hs2 : s ∈ Metric.ball (0 : ℝ) δ₂ := by
+    simpa [Real.dist_eq] using lt_of_lt_of_le hs (min_le_right _ _)
+  have ht2 : t ∈ Metric.ball (0 : ℝ) δ₂ := by
+    simpa [Real.dist_eq] using lt_of_lt_of_le ht (min_le_right _ _)
+  have hsum : ‖argSelfAdjoint (U s) + argSelfAdjoint (U t)‖ < Real.pi := by
+    calc ‖argSelfAdjoint (U s) + argSelfAdjoint (U t)‖
+        ≤ ‖argSelfAdjoint (U s)‖ + ‖argSelfAdjoint (U t)‖ := norm_add_le _ _
+      _ < Real.pi / 2 + Real.pi / 2 := add_lt_add (hb₁ s hs1) (hb₁ t ht1)
+      _ = Real.pi := by ring
+  exact localGenerator_add U hgrp (hb₂ s hs2) (hb₂ t ht2) hsum
+
+/-! ## 5. The boundary of the local statement -/
 
 /-- **Away from `1`, a general C⋆-algebra gives a PRODUCT of exponentials, not one.** Mathlib's
 `Unitary.mem_pathComponentOne_iff`, stated here to mark what `exists_selfAdjoint_exp_eq`'s
