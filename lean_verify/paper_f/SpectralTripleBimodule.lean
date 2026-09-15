@@ -22,9 +22,18 @@
   new mathematics was required to build it.
 
   WHAT THIS FILE ESTABLISHES.
-  * **`Triple`** — the `structure FiniteRealSpectralTriple` §W9.1 asks for, over a VARIABLE
+  * **`Triple`** — ~~the `structure FiniteRealSpectralTriple` §W9.1 asks for~~ **a structure
+    STRICTLY WEAKER than CCM's real spectral triple, `ERRATUM 573`** — over a VARIABLE
     algebra: `π`, `πOp`, `D`, `J`, `γ`, both ⋆-conditions, order-zero, order-one and the KO-6
-    signs `(ε, ε′, ε″) = (1, 1, -1)` as fields. **`J` is conjugate-linear, `H →ₗ⋆[𝕜] H`**;
+    signs `(ε, ε′, ε″) = (1, 1, -1)` as fields. **The weakening is `πOp`.** In CCM the right
+    action is not a datum: it is `b° = J π(b*) J⁻¹`, manufactured from the real structure, so
+    order-zero and order-one relate THREE objects and not four. Here `πOp` is an independent
+    field with nothing tying it to `J`, and `OppositeFromRealStructure` shows the gap is real
+    rather than notional: for `OrderOneNontrivial.witnessTriple` the `J`-implemented action
+    differs from `πOp` (`oppFromJ_ne_piOpW`) and **CCM's order-zero fails for it**
+    (`oppFromJ_order_zero_fails`). Every theorem below is therefore a theorem about the weaker
+    object. The gap was invisible until `ERRATUM 571`'s repair, because a `ℂ`-linear `J` could
+    not form `J π(b*) J` at all. **`J` is conjugate-linear, `H →ₗ⋆[𝕜] H`**;
     it was a `Module.End 𝕜 H` until `ERRATUM 571`. Parametrised over the ground field `𝕂` so
     that both CCM's real case (`𝕂 = ℝ`, `𝕜 = ℂ`) and the estate's own complex case
     (`𝕂 = 𝕜 = ℂ`, where `CascadeEnd`'s Azumaya chain lives) are instances of one object.
