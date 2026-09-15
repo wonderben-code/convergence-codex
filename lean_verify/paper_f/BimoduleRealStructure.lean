@@ -40,16 +40,39 @@
     halves and conjugate, which leaves the repaired action fixed — and the bimodule's `J` can,
     because the two slots are genuinely different places to be.
 
+  AND A DIRAC OPERATOR AT EVERY SIZE (§5), which is the second half of this file and which
+  removes the two size restrictions the first half left behind.
+  * **`Dgen M = π(M) + πR(op M*)`** — the LEFT action of `M` plus the RIGHT action of `M*`,
+    written in that form rather than as a Kronecker sum because the form is what the proofs run
+    on. `RealSpectralWitness`'s `σ₃ ⊗ 1 + 1 ⊗ σ₃` is its `Fin 2` instance. **`M` is arbitrary**:
+    no self-adjointness and no spectral hypothesis is imposed.
+  * **`oneForm_Dgen`** — `⁅D, π a⁆ = π(⁅M, a⁆)`, because the right summand of `D` commutes with
+    everything in the left slot.
+  * **`orderOne_Dgen`** — **order-one at every size, for every `M`, and structurally**: the
+    one-form lives in the LEFT Kronecker slot and `piR`'s image in the RIGHT one. That is the
+    content of the order-one axiom for a regular bimodule, now at every size.
+  * **`Jbi_conj_Dgen`** and **`Jbi_comm_Dgen`** — **`J D J = D`, hence `JD = DJ`, at every
+    size**: the KO-dimension-6 sign, because the slot swap carries each summand of `D` onto the
+    other.
+  * **`orderOne_Dgen_has_content`** — and the one-form is non-zero at `M = σ₃`, `a = σ₁`, so
+    order-one is satisfied with content and not vacuously (`ERRATUM 557`).
+
   WHAT IS **NOT** CLAIMED.
-  * **No Dirac operator, no grading, no spectral triple at general `ι`.** `piL`, `piR`, `Jbi`
-    and order-zero are size-free; `RealSpectralWitness`'s `D` and `γ` are built from Pauli
-    matrices and Kronecker products and are **not** generalised here. So this is the bimodule
-    and its real structure at every size, not a triple at every size.
-  * **Order-ONE is not addressed at general `ι`.** It is a statement about a `D`, and there is
-    no `D` here.
-  * **`Jbi_not_piL_invariant` is stated at `ι = Fin 2`**, not for every `ι` with at least two
-    elements. The general statement needs a non-commutativity witness parametrised by `ι`, and
-    the concrete one is what the contrast with the previous unit needs.
+  * **NO GRADING at any size, and at `ι = Fin 2` that is not merely unwritten.** `γ` is the one
+    piece of `RealSpectralWitness` that is not generalised here, and `EvenGradingObstruction`
+    proves at `Fin 2` that **no operator can be an even KO-6 grading on this bimodule at all**,
+    and the three hypotheses are worth naming rather than sloganising
+    (`no_even_KO6_grading_operator`): `g` commutes with `π a` for EVERY `a` (that is what *even*
+    means — it commutes with the algebra, not with `D`), `g * g = 1`, and
+    `J g J = -g`. Those three are contradictory. **So what is missing at general size is not a
+    transcription but the ODD case**, and nothing here addresses whether that obstruction
+    generalises beyond `Fin 2`. **This is therefore a bimodule with a real structure and a
+    Dirac operator at every size, and not a spectral triple at every size.**
+  * **`Dgen` is not shown self-adjoint** and no hypothesis on `M` is imposed, so nothing here
+    says `D` is an operator a spectral triple would accept — only that order-one and the
+    `JD = DJ` sign hold for it whatever `M` is.
+  * **Order-one is proved, its spectral consequences are not.** No finite-summability, no
+    dimension spectrum, no residue.
   * **Nothing about the four-block space is added.** The previous unit's result stands as it is:
     about that `J` and any action invariant under it, and not a proof that no real spectral
     triple exists there.
@@ -57,9 +80,10 @@
     (`ASSUMPTIONS_LEDGER` 5, 10, 11, 30, 35), and L6's rung 2 is not climbed: a bimodule at
     every size does not constrain the factor list.
 
-  0 sorry. 0 new axioms. 14 declarations, thirteen on
-  `[propext, Classical.choice, Quot.sound]` and one — `prodComm_involutive` — on `Quot.sound`
-  alone, because swapping a pair twice is `rfl` and the only quotient in sight is `Prod` itself.
+  0 sorry. 0 new axioms. 22 declarations, all but one on
+  `[propext, Classical.choice, Quot.sound]`; the exception is `prodComm_involutive`, on
+  `Quot.sound` alone, because swapping a pair twice is `rfl` and the only quotient in sight is
+  `Prod` itself.
 -/
 
 import OppositeFromRealStructure
@@ -151,26 +175,34 @@ theorem piR_eq_conj_piL (a : Matrix ι ι ℂ) (v : EuclideanSpace ℂ (ι × ι
 
 /-! ## 4. And that is exactly what the four-block space cannot do -/
 
-/-- **`Jbi` MOVES the action**, which is what the previous unit's obstruction requires and what
-the four-block space's real structure cannot do. If `Jbi` were `piL`-invariant then the identity
-above would force `a* ⊗ 1 = 1 ⊗ aᵀ`, and at `σ₁` that fails on a single entry. -/
-theorem Jbi_not_piL_invariant :
-    ¬ RepairedActionJInvariant.JInvariant (fun v => Jbi (Fin 2) v)
-        (fun (a : Matrix (Fin 2) (Fin 2) ℂ) v => piL (Fin 2) a v) := by
+/-- **`Jbi` MOVES the action, at every size with two distinct indices.** If `Jbi` were
+`piL`-invariant then `piR_eq_conj_piL` would force `a* ⊗ 1 = 1 ⊗ aᵀ` for every `a`, and at
+`a = Eᵢⱼ` with `i ≠ j` that fails on one entry: the left side has `Eⱼᵢ j i = 1` there and the right
+side has the factor `1ⱼᵢ = 0`. **This is the hypothesis the previous unit's obstruction needs and
+the four-block space's real structure cannot supply** — all it can do is swap the two halves and
+conjugate, which leaves the repaired action exactly where it was. -/
+theorem Jbi_moves_piL (i j : ι) (hij : i ≠ j) :
+    ¬ RepairedActionJInvariant.JInvariant (fun v => Jbi ι v)
+        (fun (a : Matrix ι ι ℂ) v => piL ι a v) := by
   intro h
-  have key : ∀ (a : Matrix (Fin 2) (Fin 2) ℂ) v,
-      piL (Fin 2) (star a) v = piR (Fin 2) (op a) v := by
+  have key : ∀ (a : Matrix ι ι ℂ) v, piL ι (star a) v = piR ι (op a) v := by
     intro a v
     rw [← piR_eq_conj_piL]
     exact (h (star a) v).symm
-  have hend : (matAlg (Fin 2 × Fin 2))
-        ((star SpectralTripleBimodule.pauli1) ⊗ₖ (1 : Matrix (Fin 2) (Fin 2) ℂ))
-      = (matAlg (Fin 2 × Fin 2))
-        ((1 : Matrix (Fin 2) (Fin 2) ℂ) ⊗ₖ (SpectralTripleBimodule.pauli1)ᵀ) :=
-    LinearMap.ext fun v => key SpectralTripleBimodule.pauli1 v
-  have hmat := matAlg_injective (Fin 2 × Fin 2) hend
-  have h01 := congrArg (fun M => M ((0 : Fin 2), (0 : Fin 2)) ((1 : Fin 2), (0 : Fin 2))) hmat
-  simp [SpectralTripleBimodule.pauli1, Matrix.kroneckerMap, Matrix.one_apply] at h01
+  set E : Matrix ι ι ℂ := Matrix.of (fun p q => if p = i ∧ q = j then (1 : ℂ) else 0) with hE
+  have hend : (matAlg (ι × ι)) ((star E) ⊗ₖ (1 : Matrix ι ι ℂ))
+      = (matAlg (ι × ι)) ((1 : Matrix ι ι ℂ) ⊗ₖ Eᵀ) :=
+    LinearMap.ext fun v => key E v
+  have hmat := matAlg_injective (ι × ι) hend
+  have h01 := congrArg (fun N => N (j, i) (i, i)) hmat
+  simp [hE, Matrix.kroneckerMap, Matrix.one_apply, hij] at h01
+
+/-- The instance at `ι = Fin 2`, kept because it is the one the previous unit's concrete
+obstruction is stated against. -/
+theorem Jbi_not_piL_invariant :
+    ¬ RepairedActionJInvariant.JInvariant (fun v => Jbi (Fin 2) v)
+        (fun (a : Matrix (Fin 2) (Fin 2) ℂ) v => piL (Fin 2) a v) :=
+  Jbi_moves_piL (Fin 2) 0 1 (by decide)
 
 /-- **The two facts side by side, which is the whole content of this file.** The bimodule
 satisfies order-zero at every size, AND its `J` is not action-invariant. The previous unit's
@@ -184,6 +216,85 @@ theorem orderZero_and_J_moves :
       ∧ ¬ RepairedActionJInvariant.JInvariant (fun v => Jbi (Fin 2) v)
           (fun (a : Matrix (Fin 2) (Fin 2) ℂ) v => piL (Fin 2) a v) :=
   ⟨piL_piR_commute (Fin 2), Jbi_not_piL_invariant⟩
+
+/-! ## 5. A Dirac operator at every size, and order-one with it -/
+
+omit [Fintype ι] in
+/-- The mirror of `submatrix_prodComm_kronLeft`: the slot swap carries the RIGHT slot to the
+LEFT one, conjugating as it goes. -/
+theorem submatrix_prodComm_kronRight (a : Matrix ι ι ℂ) :
+    (((1 : Matrix ι ι ℂ) ⊗ₖ a).submatrix (Equiv.prodComm ι ι) (Equiv.prodComm ι ι)).map
+        (starRingEnd ℂ) = (a.map (starRingEnd ℂ)) ⊗ₖ (1 : Matrix ι ι ℂ) := by
+  ext p q
+  obtain ⟨i, j⟩ := p
+  obtain ⟨k, l⟩ := q
+  simp [Matrix.kroneckerMap, Matrix.one_apply, apply_ite (starRingEnd ℂ), mul_comm]
+
+/-- **A Dirac operator on the bimodule, at every size**: the LEFT action of `M` plus the RIGHT
+action of `M*`. Written in exactly that form rather than as a Kronecker sum, because the form is
+what the two theorems below run on — and because `π(M) + πR(op M*)` is the standard shape of a
+bimodule Dirac operator, which `RealSpectralWitness`'s `σ₃ ⊗ 1 + 1 ⊗ σ₃` is the `Fin 2` instance
+of. No self-adjointness or spectral hypothesis is imposed: `M` is arbitrary. -/
+def Dgen (M : Matrix ι ι ℂ) : Module.End ℂ (EuclideanSpace ℂ (ι × ι)) :=
+  piL ι M + piR ι (op (star M))
+
+/-- **The one-form, computed at every size.** `⁅D, π a⁆` is the left action of the commutator
+`⁅M, a⁆`, because the right summand of `D` commutes with everything in the left slot. -/
+theorem oneForm_Dgen (M a : Matrix ι ι ℂ) :
+    ⁅Dgen ι M, piL ι a⁆ = piL ι (M * a - a * M) := by
+  have hc : piR ι (op (star M)) * piL ι a = piL ι a * piR ι (op (star M)) :=
+    (piL_piR_commute ι a (op (star M))).symm.eq
+  rw [Dgen, Ring.lie_def, add_mul, mul_add, hc, map_sub, map_mul, map_mul]
+  abel
+
+/-- **Order-one at every size, for every `M`, and it is structural.** The one-form lives in the
+LEFT Kronecker slot and `piR`'s image lives in the RIGHT one, and different slots commute. So
+every one-form built from the left action automatically commutes with the right action — which is
+the content of the order-one axiom for a regular bimodule, now at every size rather than at
+`Fin 2`. -/
+theorem orderOne_Dgen (M a : Matrix ι ι ℂ) (b : (Matrix ι ι ℂ)ᵐᵒᵖ) :
+    ⁅⁅Dgen ι M, piL ι a⁆, piR ι b⁆ = 0 := by
+  rw [oneForm_Dgen]
+  exact commute_iff_lie_eq.mp (piL_piR_commute ι _ b)
+
+/-- **And `J D J = D`, at every size** — the KO-dimension-6 sign `JD = +DJ`. The slot swap carries
+the left summand onto the right one and back, so the sum is fixed. Conjugating form first,
+because that is what the two halves of `piR_eq_conj_piL` give directly. -/
+theorem Jbi_conj_Dgen (M : Matrix ι ι ℂ) (v : EuclideanSpace ℂ (ι × ι)) :
+    Jbi ι (Dgen ι M (Jbi ι v)) = Dgen ι M v := by
+  have h1 : Jbi ι (piL ι M (Jbi ι v)) = piR ι (op (star M)) v := by
+    have := piR_eq_conj_piL ι (star M) v
+    rwa [star_star] at this
+  have h2 : Jbi ι (piR ι (op (star M)) (Jbi ι v)) = piL ι M v := by
+    have h3 : Jbi ι (piL ι M v) = piR ι (op (star M)) (Jbi ι v) := by
+      have := piR_eq_conj_piL ι (star M) (Jbi ι v)
+      rwa [star_star, Jbi_involutive] at this
+    rw [← h3, Jbi_involutive]
+  have hsum : Dgen ι M (Jbi ι v) = piL ι M (Jbi ι v) + piR ι (op (star M)) (Jbi ι v) := rfl
+  rw [hsum, map_add, h1, h2, Dgen]
+  exact (add_comm _ _).trans rfl
+
+/-- The same identity in the shape a KO-6 sign table wants: `J` COMMUTES with `D`. -/
+theorem Jbi_comm_Dgen (M : Matrix ι ι ℂ) (v : EuclideanSpace ℂ (ι × ι)) :
+    Jbi ι (Dgen ι M v) = Dgen ι M (Jbi ι v) := by
+  have h := Jbi_conj_Dgen ι M (Jbi ι v)
+  rw [Jbi_involutive] at h
+  exact h
+
+/-- **And the one-form is not zero**, so order-one is satisfied with content rather than
+vacuously (`ERRATUM 557`): at `ι = Fin 2`, `M = σ₃` and `a = σ₁` the commutator `⁅σ₃, σ₁⁆` has
+entry `2` in position `(0, 1)`, and `piL` is faithful. -/
+theorem orderOne_Dgen_has_content :
+    ⁅Dgen (Fin 2) SpectralTripleBimodule.pauli3,
+      piL (Fin 2) SpectralTripleBimodule.pauli1⁆ ≠ 0 := by
+  rw [oneForm_Dgen]
+  intro h
+  have hz : SpectralTripleBimodule.pauli3 * SpectralTripleBimodule.pauli1
+      - SpectralTripleBimodule.pauli1 * SpectralTripleBimodule.pauli3 = 0 := by
+    have := piL_injective (Fin 2) (h.trans (map_zero (piL (Fin 2))).symm)
+    exact this
+  have h01 := congrArg (fun N => N (0 : Fin 2) (1 : Fin 2)) hz
+  simp [SpectralTripleBimodule.pauli1, SpectralTripleBimodule.pauli3] at h01
 
 end
 
