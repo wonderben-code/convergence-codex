@@ -28,14 +28,20 @@
     matrix identity.
 
   AND THE THREE FACTS ABOUT THE ESTATE'S OWN WITNESS, which is what the unit exists for.
-  * **`oppFromJ_witness`** — for `witnessTriple`, `J π(a*) J = π(aᵀ)`. The `J` that witness
-    carries sends the left Kronecker slot to the left Kronecker slot. Its `πOp` lives in the
-    RIGHT slot. **So `πOp` is not `J`-implemented**, and `oppFromJ_ne_piOpW` proves the two
-    maps differ.
-  * **`oppFromJ_order_zero_fails`** — and they differ so far that CCM's order-zero FAILS for
+  * **`oppFromJw_eq`** — for unit 18's data, `J π(a*) J = π(aᵀ)`. That `J` sends the left
+    Kronecker slot to the left Kronecker slot; its `πOp` lives in the RIGHT slot. **So `πOp`
+    is not `J`-implemented**, and `oppFromJw_ne_piOpW` proves the two maps differ.
+  * **`oppFromJw_order_zero_fails`** — and they differ so far that CCM's order-zero FAILS for
     the `J`-implemented action: `π(σ₃)` and `J π(σ₁*) J = π(σ₁)` are both left-slot operators
-    and `σ₁σ₃ ≠ σ₃σ₁`. **The witness is not a CCM real spectral triple and cannot be made one
-    by keeping this `J`.**
+    and `σ₁σ₃ ≠ σ₃σ₁`. **That data is not a CCM real spectral triple and cannot be made one
+    by keeping this `J`.** (These three were stated about `witnessTriple` when this file was
+    written. `ERRATUM 573`'s amendment deleted that `Triple` — it fails the new field — so
+    they are now stated about the raw maps, through `oppFromJw`. The mathematics is
+    unchanged; what is gone is the packaging.)
+  * **`oppFromJ_eq_piOp`** — **the amendment's payoff, one line.** Once `Triple` carries
+    `πOp_impl`, `oppFromJ` is not a rival to `πOp` but a description of it: they agree for
+    every `Triple`. What this file measured as a GAP became a THEOREM the moment the axiom was
+    added, which is the cleanest evidence that the axiom was the missing one.
   * **`piOpW_via_prodSwap`** — but the right action IS implementable on this `H`, by a
     different real structure: `Jprod`, conjugation followed by exchanging the two Kronecker
     factors, gives `Jprod π(a*) Jprod = πOp (op a)` **on the nose**. That is the transpose map
@@ -48,16 +54,21 @@
     which is a fact about the witness and is stated rather than resolved.
 
   WHAT IS **NOT** CLAIMED, and the wall does not fall.
-  * **No claim that `witnessTriple` is worthless.** Everything unit 18 proved about it is
-    true of it. What is now known is which object those theorems are about: a `Triple`, which
-    is weaker than a CCM real spectral triple.
+  * **No claim that unit 18's data is worthless.** Everything proved about it is true of it,
+    and none of it was deleted with the `Triple` wrapper: `Dw`, `Jw`, `gw`, `oneForm_eq`,
+    `orderOne_has_content`, `Dw_not_commute_piW`, `piOpW_not_central` and
+    `orderOne_holds_structurally` all stand. What is now known is which object those theorems
+    are about.
   * **No claim that no CCM triple exists on this `H`.** `piOpW_via_prodSwap` shows the right
     action is implementable; what is not built is a `D` compatible with `Jprod` together with
     a grading, nor is it shown that one exists. `Jprod_not_commute_Dw` rules out ONE `D`, the
     one already there.
-  * **`Triple` is NOT amended here.** Adding a field `πOp_eq : πOp = oppFromJ` — or deleting
-    `πOp` and defining it — is a separate unit, and it would invalidate `witnessTriple`, so it
-    is not done in the same breath as discovering the need for it.
+  * ~~**`Triple` is NOT amended here.**~~ **AMENDED the same day**, in the unit after the one
+    that built this file: `Triple` now carries `πOp_impl`, and `OrderOneNontrivial`'s witness
+    was deleted because it fails that field, with `RealSpectralWitness.realWitness` as its
+    replacement. Discovering the need for the axiom, exhibiting a witness that can satisfy it,
+    and adding it were three units, deliberately, so that no commit changed a structure without
+    a green instance of it.
   * **`oppFromJ` is a `RingHom`, not an `AlgHom`.** The `𝕂`-algebra structure needs
     `conj (algebraMap 𝕂 𝕜 r) = algebraMap 𝕂 𝕜 (star r)`, which is a compatibility between the
     star on `𝕂` and the star on `𝕜` that `Triple`'s binders do not carry. The same shape as
@@ -110,6 +121,14 @@ def oppFromJ (T : Triple 𝕂 𝕜 A H) : Aᵐᵒᵖ →+* Module.End 𝕜 H whe
 @[simp] theorem oppFromJ_apply (T : Triple 𝕂 𝕜 A H) (b : Aᵐᵒᵖ) (v : H) :
     oppFromJ T b v = T.J (T.π (star (unop b)) (T.J v)) := rfl
 
+/-- **THE AMENDMENT'S PAYOFF, one line.** Once `Triple` carries `πOp_impl` (`ERRATUM 573`),
+`oppFromJ` is not a rival to `πOp` but a description of it: they agree for every `Triple`. What
+this file measured as a GAP became a THEOREM the moment the axiom was added, which is the
+cleanest evidence that the axiom was the missing one. -/
+theorem oppFromJ_eq_piOp (T : Triple 𝕂 𝕜 A H) (b : Aᵐᵒᵖ) : oppFromJ T b = T.πOp b := by
+  ext v
+  exact (T.πOp_impl b v).symm
+
 /-! ## 2. The computational tool -/
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
@@ -156,10 +175,20 @@ theorem submatrix_slotSwap_kronLeft (a : Matrix (Fin 2) (Fin 2) ℂ) :
   obtain ⟨k, l⟩ := q
   simp [slotSwap, Matrix.kroneckerMap, Matrix.one_apply, apply_ite (starRingEnd ℂ)]
 
+/-- The action CCM's recipe manufactures from unit 18's `J`. **Written out rather than as
+`oppFromJ witnessTriple`**, because that `Triple` no longer exists: `ERRATUM 573` added the
+field `πOp_impl` and this data fails it, which is what the three theorems below prove. The
+`J`, `π` and the two maps are unchanged; only the packaging is gone. -/
+def oppFromJw (b : (Matrix (Fin 2) (Fin 2) ℂ)ᵐᵒᵖ) : Module.End ℂ Hw :=
+  Jw.comp ((piW (star (unop b))).comp Jw)
+
+@[simp] theorem oppFromJw_apply (b : (Matrix (Fin 2) (Fin 2) ℂ)ᵐᵒᵖ) (v : Hw) :
+    oppFromJw b v = Jw (piW (star (unop b)) (Jw v)) := rfl
+
 /-- **The witness's `J` sends the left slot to the left slot.** `J π(a*) J = π(aᵀ)`, so the
 action CCM would manufacture from this `J` is another LEFT action, not the right one. -/
-theorem oppFromJ_witness (a : Matrix (Fin 2) (Fin 2) ℂ) :
-    oppFromJ witnessTriple (op a) = piW aᵀ := by
+theorem oppFromJw_eq (a : Matrix (Fin 2) (Fin 2) ℂ) :
+    oppFromJw (op a) = piW aᵀ := by
   refine LinearMap.ext fun v => ?_
   change Jw (piW (star a) (Jw v)) = piW aᵀ v
   rw [piW_apply, piW_apply, Jw, conjPerm_conj slotSwap slotSwap_involutive,
@@ -167,9 +196,9 @@ theorem oppFromJ_witness (a : Matrix (Fin 2) (Fin 2) ℂ) :
 
 /-- **So `πOp` is NOT `J`-implemented for this witness**, witnessed at `σ₃`: the manufactured
 action is `π(σ₃)`, a left-slot operator, and `πOp (op σ₃)` is a right-slot one. -/
-theorem oppFromJ_ne_piOpW :
-    oppFromJ witnessTriple (op pauli3) ≠ piOpW (op pauli3) := by
-  rw [oppFromJ_witness, pauli3_transpose]
+theorem oppFromJw_ne_piOpW :
+    oppFromJw (op pauli3) ≠ piOpW (op pauli3) := by
+  rw [oppFromJw_eq, pauli3_transpose]
   intro h
   have hm : pauli3 ⊗ₖ (1 : Matrix (Fin 2) (Fin 2) ℂ)
       = (1 : Matrix (Fin 2) (Fin 2) ℂ) ⊗ₖ pauli3ᵀ :=
@@ -185,12 +214,12 @@ theorem oppFromJ_ne_piOpW :
 `π(σ₃)` and `J π(σ₁*) J = π(σ₁)` are both left-slot operators and `σ₁σ₃ ≠ σ₃σ₁`. So
 `witnessTriple` is **not** a CCM real spectral triple, and no choice of `πOp` can rescue it
 while it keeps this `J` — the right action is not a free parameter in CCM. -/
-theorem oppFromJ_order_zero_fails :
+theorem oppFromJw_order_zero_fails :
     ¬ ∀ (a : Matrix (Fin 2) (Fin 2) ℂ) (b : (Matrix (Fin 2) (Fin 2) ℂ)ᵐᵒᵖ),
-        Commute (witnessTriple.π a) (oppFromJ witnessTriple b) := by
+        Commute (piW a) (oppFromJw b) := by
   intro h
   have hc := h pauli3 (op pauli1)
-  rw [oppFromJ_witness, pauli1_transpose] at hc
+  rw [oppFromJw_eq, pauli1_transpose] at hc
   have hm : pauli3 * pauli1 = pauli1 * pauli3 := by
     refine piW_injective ?_
     rw [map_mul, map_mul]
@@ -208,6 +237,11 @@ def Jprod : Hw →ₛₗ[starRingEnd ℂ] Hw := conjPerm prodSwap
 
 theorem prodSwap_involutive (p : Slots) : prodSwap (prodSwap p) = p := by
   obtain ⟨i, j⟩ := p; rfl
+
+/-- `J² = 1` for `Jprod`, pointwise. Stated because `Jprod` wraps `conjPerm`, so
+`conjPerm_involutive` does not match syntactically through the definition. -/
+theorem Jprod_involutive (v : Hw) : Jprod (Jprod v) = v :=
+  ConjugatePermutation.conjPerm_involutive prodSwap prodSwap_involutive v
 
 /-- The matrix identity behind `piOpW_via_prodSwap`: exchanging the factors moves `a* ⊗ 1` to
 `1 ⊗ aᵀ`, which is exactly `kronRight`'s formula. -/

@@ -56,11 +56,14 @@
   is written entrywise rather than as a Kronecker expression.
 
   WHAT IS **NOT** CLAIMED.
-  * **`Triple` is NOT amended here, and this is NOT yet a `Triple`.** Adding the field
-    `πOp_impl` and migrating both witnesses is the next unit; doing it in this one would mean
-    changing a structure and building its replacement instance in the same breath, with no
-    green build in between.
-  * **Unit 18's witness is not deleted and nothing proved about it is withdrawn.** `Dw`, `Jw`,
+  * ~~**`Triple` is NOT amended here, and this is NOT yet a `Triple`.**~~ **BOTH DONE in the
+    unit after this file was written**: `Triple` carries `πOp_impl`, and **`realWitness` below
+    is a full instance of it** — the estate's only non-scalar one, since the `Triple`
+    `OrderOneNontrivial` used to carry was deleted for failing that field (the name is not cited
+    because the declaration no longer exists). `oppFromJ_realWitness` closes the three-unit
+    sequence visibly: the action CCM's recipe manufactures IS `πOp` here.
+  * **Unit 18's DATA is not deleted and nothing proved about it is withdrawn** — its `Triple`
+    wrapper was, when the field arrived. `Dw`, `Jw`,
     `gw` and every theorem about them stand — including `oppFromJ_order_zero_fails`, which is
     the reason this file exists and which would be meaningless if its subject vanished.
   * **No uniqueness.** Four monomial `γ`s were found and one was taken; nothing says the
@@ -198,7 +201,7 @@ theorem Jprod_anticomm_gammaCcm (v : Hw) : Jprod (gammaCcm (Jprod v)) = -(gammaC
 as unit 18's witness, the quintuple `(π, πOp, D, J, γ)` with `J = Jprod`, `D = Dccm`,
 `γ = gammaCcm` satisfies **every** condition `SpectralTripleBimodule.Triple` asks for **and**
 CCM's relation `πOp b = J π(b*) J`, which unit 18's witness provably fails
-(`OppositeFromRealStructure.oppFromJ_order_zero_fails`). Order-one is live rather than vacuous,
+(`OppositeFromRealStructure.oppFromJw_order_zero_fails`). Order-one is live rather than vacuous,
 and `D` is outside the commutant. -/
 theorem ccm_conditions :
     (∀ (a : Matrix (Fin 2) (Fin 2) ℂ) (b : (Matrix (Fin 2) (Fin 2) ℂ)ᵐᵒᵖ),
@@ -216,6 +219,56 @@ theorem ccm_conditions :
   ⟨piW_piOpW_commute, orderOne_Dccm, orderOne_Dccm_has_content, Dccm_not_commute_piW,
     fun v => LinearMap.congr_fun (conjPerm_comp_self prodSwap prodSwap_involutive) v,
     Jprod_comm_Dccm, Jprod_anticomm_gammaCcm, gammaCcm_sq, piOpW_via_prodSwap⟩
+
+/-! ## 5. The `Triple` itself -/
+
+/-- `J (D v) = D (J v)`, the form the `J_comm_D` field wants. -/
+theorem Jprod_comm_Dccm' (v : Hw) : Jprod (Dccm v) = Dccm (Jprod v) := by
+  have h := Jprod_comm_Dccm (Jprod v)
+  rwa [Jprod_involutive] at h
+
+/-- `J (γ v) = -(γ (J v))`, the form the `J_anticomm_γ` field wants. -/
+theorem Jprod_anticomm_gammaCcm' (v : Hw) : Jprod (gammaCcm v) = -(gammaCcm (Jprod v)) := by
+  have h := Jprod_anticomm_gammaCcm (Jprod v)
+  rwa [Jprod_involutive] at h
+
+/-- **THE REPLACEMENT WITNESS.** A `SpectralTripleBimodule.Triple` over `M₂(ℂ)` on the
+four-dimensional regular bimodule, satisfying **every** field including `πOp_impl`, CCM's
+relation. It replaces the `Triple` that `OrderOneNontrivial` used to carry, which `ERRATUM 573`
+deleted when the field was added, and it is the same algebra with the same two actions on the
+same space — only
+`J`, `D` and `γ` differ, and those were the three unit 18 chose for convenience. -/
+def realWitness : Triple ℂ ℂ (Matrix (Fin 2) (Fin 2) ℂ) Hw where
+  π := piW
+  πOp := piOpW
+  D := Dccm
+  J := Jprod
+  γ := gammaCcm
+  star_π := piW_star
+  star_πOp := piOpW_star
+  order_zero := piW_piOpW_commute
+  order_one := orderOne_Dccm
+  J_sq := conjPerm_comp_self prodSwap prodSwap_involutive
+  J_comm_D := LinearMap.ext Jprod_comm_Dccm'
+  J_anticomm_γ := LinearMap.ext Jprod_anticomm_gammaCcm'
+  γ_sq := gammaCcm_sq
+  πOp_impl b v := by
+    have h := piOpW_via_prodSwap (unop b) v
+    rw [op_unop] at h
+    exact h.symm
+
+/-- **The structure has a non-scalar instance again.** `OrderOneNontrivial`'s
+`triple_inhabited_nonscalar` was deleted with its witness; this is its replacement, and unlike
+it this one is a CCM real spectral triple. -/
+theorem triple_inhabited_nonscalar :
+    Nonempty (Triple ℂ ℂ (Matrix (Fin 2) (Fin 2) ℂ) Hw) := ⟨realWitness⟩
+
+/-- **And `oppFromJ` now describes `πOp` rather than rivalling it**, for this witness as for
+every other — the one-line consequence of the amendment, instantiated here so the pair of units
+closes visibly. -/
+theorem oppFromJ_realWitness (b : (Matrix (Fin 2) (Fin 2) ℂ)ᵐᵒᵖ) :
+    oppFromJ realWitness b = piOpW b :=
+  oppFromJ_eq_piOp realWitness b
 
 end
 

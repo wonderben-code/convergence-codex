@@ -30,8 +30,14 @@
     LEFT slot and `J` in the right one, so they commute for free.
 
   WHAT IS PROVED, and the third item is the one the unit exists for.
-  * **`witnessTriple`** — a `SpectralTripleBimodule.Triple ℂ ℂ (M₂(ℂ)) H`. So the structure
-    has a second instance, and this one is not a scalar action.
+  * ~~**`witnessTriple`** — a `SpectralTripleBimodule.Triple ℂ ℂ (M₂(ℂ)) H`.~~ **DELETED
+    2026-09-15, `ERRATUM 573`.** `Triple` gained the field `πOp_impl` — CCM's relation
+    `πOp b = J π(b*) J` — and this data provably does not satisfy it: the `J` here maps the
+    LEFT Kronecker slot to the left slot while `πOp` lives in the RIGHT one, and CCM's
+    order-zero fails for the `J`-implemented action. **A structure gained an axiom and an
+    instance stopped being one.** `RealSpectralWitness.realWitness` replaces it, on this same
+    `H` with this same `π` and `πOp`; `piW_star` and `piOpW_star` are the two ⋆-proofs
+    extracted from here so the two do not diverge. Everything else below is untouched.
   * **`orderOne_has_content`** — `⁅D, piW σ₃⁆ ≠ 0`. The one-form is genuinely non-zero, so
     order-one is a real condition here and not an identity between zeroes. This is the
     theorem the unit exists for.
@@ -340,41 +346,36 @@ theorem rightP1_anticomm_gw : rightP1 * gw = -(gw * rightP1) := by
 
 /-! ### The `Triple` -/
 
-/-- **The witness.** A `Triple` whose `π` is not a scalar action — see
-`orderOne_has_content` and `piOpW_not_central` for why that is the point. -/
-def witnessTriple : Triple ℂ ℂ (Matrix (Fin 2) (Fin 2) ℂ) Hw where
-  π := piW
-  πOp := piOpW
-  D := Dw
-  J := Jw
-  γ := gw
-  star_π a u v := by
-    have h := matAlg_star Slots (kronLeft (Fin 2) (Fin 2) a) u v
-    rw [kronLeft_apply, Matrix.star_eq_conjTranspose, Matrix.conjTranspose_kronecker,
-      Matrix.conjTranspose_one] at h
-    simpa [piW, Matrix.star_eq_conjTranspose] using h
-  star_πOp b u v := by
-    have h := matAlg_star Slots (kronRight (Fin 2) (Fin 2) b) u v
-    rw [kronRight_apply, Matrix.star_eq_conjTranspose, Matrix.conjTranspose_kronecker,
-      Matrix.conjTranspose_one, conjT_transpose_comm] at h
-    simpa [piOpW, MulOpposite.unop_star, Matrix.star_eq_conjTranspose] using h
-  order_zero a b := piW_piOpW_commute a b
-  order_one a b := by
-    rw [oneForm_eq]
-    exact commute_iff_lie_eq.mp (piW_piOpW_commute _ b)
-  J_sq := ConjugatePermutation.conjPerm_comp_self _ slotSwap_involutive
-  J_comm_D := by
-    refine LinearMap.ext fun v => ?_
-    simpa [Jw, Dw, piW, kronLeft_apply, matAlg_apply] using
-      ConjugatePermutation.conjPerm_commute_of_eq slotSwap _ slotSwap_kronLeft_p1 v
-  J_anticomm_γ := by
-    refine LinearMap.ext fun v => ?_
-    simpa [Jw, gw, matAlg_apply] using
-      ConjugatePermutation.conjPerm_anticommute_of_neg slotSwap _ slotSwap_kronRight_p3 v
-  γ_sq := by rw [gw, ← map_mul, kron_right_p3_sq, map_one]
+/-- **`π` is a ⋆-representation.** Extracted from the witness that used to stand here, because
+`RealSpectralWitness.realWitness` needs the same proof and the two should not diverge. -/
+theorem piW_star (a : Matrix (Fin 2) (Fin 2) ℂ) (u v : Hw) :
+    inner ℂ (piW a u) v = inner ℂ u (piW (star a) v) := by
+  have h := matAlg_star Slots (kronLeft (Fin 2) (Fin 2) a) u v
+  rw [kronLeft_apply, Matrix.star_eq_conjTranspose, Matrix.conjTranspose_kronecker,
+    Matrix.conjTranspose_one] at h
+  simpa [piW, Matrix.star_eq_conjTranspose] using h
 
-theorem triple_inhabited_nonscalar :
-    Nonempty (Triple ℂ ℂ (Matrix (Fin 2) (Fin 2) ℂ) Hw) := ⟨witnessTriple⟩
+/-- **`πOp` is a ⋆-representation.** The transpose in `kronRight` and the `star` on the
+opposite algebra are reconciled by `conjT_transpose_comm`. -/
+theorem piOpW_star (b : (Matrix (Fin 2) (Fin 2) ℂ)ᵐᵒᵖ) (u v : Hw) :
+    inner ℂ (piOpW b u) v = inner ℂ u (piOpW (star b) v) := by
+  have h := matAlg_star Slots (kronRight (Fin 2) (Fin 2) b) u v
+  rw [kronRight_apply, Matrix.star_eq_conjTranspose, Matrix.conjTranspose_kronecker,
+    Matrix.conjTranspose_one, conjT_transpose_comm] at h
+  simpa [piOpW, MulOpposite.unop_star, Matrix.star_eq_conjTranspose] using h
+
+/-! ### Where the witness used to be
+
+**`witnessTriple` and `triple_inhabited_nonscalar` were DELETED on 2026-09-15 —
+`ERRATUM 573`.** `SpectralTripleBimodule.Triple` gained the field `πOp_impl`, CCM's relation
+`πOp b = J π(b*) J`, and this data **provably does not satisfy it**: the `J` chosen here maps
+the LEFT Kronecker slot to the left slot while `πOp` lives in the RIGHT one, and CCM's
+order-zero fails for the `J`-implemented action
+(`OppositeFromRealStructure.oppFromJw_order_zero_fails`). **A structure gained an axiom and an
+instance stopped being an instance**, which is the honest outcome and not a loss:
+`RealSpectralWitness.realWitness` is the replacement, on this same `H` with this same `π` and
+this same `πOp`, and every theorem below about `Dw`, `Jw`, `gw` and the one-forms is
+untouched — they are what make the failure a theorem rather than an omission. -/
 
 /-! ## 4. Order-one has CONTENT here, which is what the unit exists for -/
 
@@ -448,7 +449,15 @@ theorem orderOne_holds_structurally (a : Matrix (Fin 2) (Fin 2) ℂ)
       ∧ Commute (piW (pauli1 * a - a * pauli1)) (piOpW b) :=
   ⟨oneForm_eq a, piW_piOpW_commute _ b⟩
 
-/-- The summary, as one statement: a triple in which order-one holds, its one-form is
+/-- **Order-one for this data**, proved directly. It used to be read off `witnessTriple`'s
+`order_one` field; that structure was deleted (`ERRATUM 573`) and the fact is unchanged — the
+one-form lives in the LEFT slot and `πOp`'s image in the RIGHT one. -/
+theorem orderOne_Dw (a : Matrix (Fin 2) (Fin 2) ℂ)
+    (b : (Matrix (Fin 2) (Fin 2) ℂ)ᵐᵒᵖ) : ⁅⁅Dw, piW a⁆, piOpW b⁆ = 0 := by
+  rw [oneForm_eq]
+  exact commute_iff_lie_eq.mp (piW_piOpW_commute _ b)
+
+/-- The summary, as one statement: data in which order-one holds, its one-form is
 non-zero, and neither vacuity hypothesis is satisfied. -/
 theorem witness_escapes_both_traps :
     (∀ (a : Matrix (Fin 2) (Fin 2) ℂ) (b : (Matrix (Fin 2) (Fin 2) ℂ)ᵐᵒᵖ),
@@ -457,7 +466,7 @@ theorem witness_escapes_both_traps :
       ∧ ¬ (∀ a, Commute Dw (piW a))
       ∧ ¬ (∀ (b : (Matrix (Fin 2) (Fin 2) ℂ)ᵐᵒᵖ) (x : Module.End ℂ Hw),
             Commute (piOpW b) x) :=
-  ⟨witnessTriple.order_one, orderOne_has_content, Dw_not_commute_piW, piOpW_not_central⟩
+  ⟨orderOne_Dw, orderOne_has_content, Dw_not_commute_piW, piOpW_not_central⟩
 
 end
 

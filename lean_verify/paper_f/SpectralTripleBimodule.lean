@@ -22,18 +22,19 @@
   new mathematics was required to build it.
 
   WHAT THIS FILE ESTABLISHES.
-  * **`Triple`** — ~~the `structure FiniteRealSpectralTriple` §W9.1 asks for~~ **a structure
-    STRICTLY WEAKER than CCM's real spectral triple, `ERRATUM 573`** — over a VARIABLE
-    algebra: `π`, `πOp`, `D`, `J`, `γ`, both ⋆-conditions, order-zero, order-one and the KO-6
-    signs `(ε, ε′, ε″) = (1, 1, -1)` as fields. **The weakening is `πOp`.** In CCM the right
-    action is not a datum: it is `b° = J π(b*) J⁻¹`, manufactured from the real structure, so
-    order-zero and order-one relate THREE objects and not four. Here `πOp` is an independent
-    field with nothing tying it to `J`, and `OppositeFromRealStructure` shows the gap is real
-    rather than notional: for `OrderOneNontrivial.witnessTriple` the `J`-implemented action
-    differs from `πOp` (`oppFromJ_ne_piOpW`) and **CCM's order-zero fails for it**
-    (`oppFromJ_order_zero_fails`). Every theorem below is therefore a theorem about the weaker
-    object. The gap was invisible until `ERRATUM 571`'s repair, because a `ℂ`-linear `J` could
-    not form `J π(b*) J` at all. **`J` is conjugate-linear, `H →ₗ⋆[𝕜] H`**;
+  * **`Triple`** — over a VARIABLE algebra: `π`, `πOp`, `D`, `J`, `γ`, both ⋆-conditions,
+    order-zero, order-one, the KO-6 signs `(ε, ε′, ε″) = (1, 1, -1)`, **and `πOp_impl`** as
+    fields. ~~the `structure FiniteRealSpectralTriple` §W9.1 asks for~~ — **that description
+    was FALSE until 2026-09-15 and is now true again, `ERRATUM 573`.** The missing axiom was
+    `πOp_impl`: in CCM the right action is not a datum but `b° = J π(b*) J⁻¹`, so order-zero
+    and order-one relate THREE objects and not four. For nine units `πOp` was an independent
+    field with nothing tying it to `J`, and `OppositeFromRealStructure` measured the gap and
+    found it real rather than notional — `OrderOneNontrivial`'s witness satisfied every other
+    field and **failed CCM's order-zero for the `J`-implemented action**, so it was deleted
+    when the field was added and `RealSpectralWitness.realWitness` replaces it. The gap was
+    invisible until `ERRATUM 571`'s repair, because a `ℂ`-linear `J` could not form
+    `J π(b*) J` at all: **a missing axiom hid behind a wrong type.**
+    **`J` is conjugate-linear, `H →ₗ⋆[𝕜] H`**;
     it was a `Module.End 𝕜 H` until `ERRATUM 571`. Parametrised over the ground field `𝕂` so
     that both CCM's real case (`𝕂 = ℝ`, `𝕜 = ℂ`) and the estate's own complex case
     (`𝕂 = 𝕜 = ℂ`, where `CascadeEnd`'s Azumaya chain lives) are instances of one object.
@@ -190,6 +191,15 @@ structure Triple (𝕂 𝕜 A H : Type*) [Field 𝕂] [RCLike 𝕜] [Algebra �
   J_anticomm_γ : J.comp γ = -(γ.comp J)
   /-- The grading is an involution. -/
   γ_sq : γ * γ = 1
+  /-- **CCM'S RELATION, and the axiom this structure was missing until `ERRATUM 573`.**
+  In Connes' definition the right action is not a datum: it is `b° = J π(b*) J⁻¹`, manufactured
+  from the real structure. Without this field `πOp` is a free parameter and the structure is
+  strictly weaker than a real spectral triple — `OppositeFromRealStructure` measured the gap
+  and found it real, not notional. Stated pointwise because `J` is semilinear, so
+  `J ∘ π(b*) ∘ J` is a composite of three maps with two different scalar twists and writing it
+  as an equation of bundled maps would need the `RingHomCompTriple` instances spelled out at
+  every use. -/
+  πOp_impl : ∀ (b : Aᵐᵒᵖ) (v : H), πOp b v = J (π (star (MulOpposite.unop b)) (J v))
 
 variable {𝕂 𝕜 A H : Type*} [Field 𝕂] [RCLike 𝕜] [Algebra 𝕂 𝕜]
   [Ring A] [StarRing A] [Algebra 𝕂 A]
@@ -427,6 +437,12 @@ def scalarWitness : Triple ℂ ℂ ℂ (EuclideanSpace ℂ (Fin 2)) where
       ConjugatePermutation.conjPerm_anticommute_of_neg (Equiv.swap (0 : Fin 2) 1) pauli3
         swap_pauli3 v
   γ_sq := by unfold mEnd; rw [← map_mul, ← map_mul, pauli3_sq, map_one, map_one]
+  πOp_impl b v := by
+    simp only [AlgHom.coe_comp, Function.comp_apply, Algebra.ofId_apply,
+      Module.algebraMap_end_apply, ConjugatePermutation.conjPerm_conj_smul,
+      ConjugatePermutation.conjPerm_involutive (Equiv.swap (0 : Fin 2) 1)
+        (Equiv.swap_apply_self 0 1)]
+    simp
 
 theorem triple_inhabited : Nonempty (Triple ℂ ℂ ℂ (EuclideanSpace ℂ (Fin 2))) := ⟨scalarWitness⟩
 

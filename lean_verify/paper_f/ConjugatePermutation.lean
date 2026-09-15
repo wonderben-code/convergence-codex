@@ -115,6 +115,12 @@ theorem conjPerm_comp (σ τ : Equiv.Perm ι) :
   ext v i
   simp
 
+/-- `J² = 1` pointwise. Reached for three times before it was stated; `conjPerm_comp_self` is
+the bundled form and this is the one proofs actually rewrite with. -/
+theorem conjPerm_involutive (σ : Equiv.Perm ι) (hσ : ∀ i, σ (σ i) = i)
+    (v : EuclideanSpace ℂ ι) : conjPerm σ (conjPerm σ v) = v := by
+  ext i; simp [hσ]
+
 /-- **KO-6 sign `ε = 1` for `conjPerm`**: an involutive `σ` gives `J² = 1`. -/
 theorem conjPerm_comp_self (σ : Equiv.Perm ι) (hσ : ∀ i, σ (σ i) = i) :
     (conjPerm σ).comp (conjPerm σ) = LinearMap.id := by
