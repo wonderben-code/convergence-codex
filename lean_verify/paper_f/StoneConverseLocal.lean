@@ -124,7 +124,20 @@
   * **In finite dimension the two hypotheses coincide**, so at the finite level L21 asked about,
     this IS the whole theorem — *for any C⋆-algebra carrier*. That sentence is a claim about the
     theorem, not about an instantiation, and the instantiation is the next item.
-  * **No instantiation at a concrete carrier, and two costs measured rather than guessed.**
+  * ~~**No instantiation at a concrete carrier, and two costs measured rather than guessed.**~~
+    **CHASED THE NEXT UNIT, AND BOTH COSTS DISSOLVED (`ERRATUM 594`).**
+    `StoneConverseCarriers.lean` lands every theorem below on `CStarMatrix n n ℂ` at any finite
+    index, on `CascadeGNS.M4`, on `B(E)` for any complex Hilbert space, on `ℂⁿ` and on the
+    cascade's GNS space — nine one-term applications, no new mathematics. The first cost was a
+    missing `open scoped ComplexOrder` (`CStarMatrix.instCStarAlgebra` wants `PartialOrder` and
+    `StarOrderedRing` on the ENTRY algebra, which for `ℂ` are scoped); the second a missing
+    `import Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap`, which is where
+    `CStarAlgebra (E →L[ℂ] E)` lives — without it the C⋆ path did not exist to be found, which
+    is why elaboration took the generic monoid one and printed a mismatch. **And the sentence
+    below about heartbeats tested the wrong option**: the search that overruns is governed by
+    `synthInstance.maxHeartbeats`, default 20000, not by `maxHeartbeats`; measured, 20000 fails
+    and 21000 succeeds. The paragraph is kept verbatim as the erratum's evidence.
+  * **The superseded paragraph, kept as written:**
     At `EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n)` the statements do not apply as
     written: `unitary` there elaborates through `ContinuousLinearMap.monoidWithZero` and
     `ContinuousLinearMap.instStarMulId`, while Mathlib's lemmas want
