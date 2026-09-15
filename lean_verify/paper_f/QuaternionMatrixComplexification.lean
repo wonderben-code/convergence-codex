@@ -50,8 +50,16 @@
     `IdempotentRankInvariant.matrix2H_not_ringEquiv_matrix4R` and `matrix4H_not_ringEquiv_matrix8R`
     (the orthogonal-idempotent count: `M₄(ℝ)` admits four and `M₂(ℍ)` two; `M₈(ℝ)` eight and
     `M₄(ℍ)` four). **So the complexification does not determine the real form, and that is now a
-    theorem rather than a remark.** It is stated as a conjunction so that neither half can be read
-    without the other.
+    theorem rather than a remark.** Each is stated as a conjunction so that neither half can be
+    read without the other, and there are two sizes so the first is not an accident of `M₄(ℂ)`.
+  * **`matrix1H_not_ringEquiv_matrix2R`, `realForm_not_determined_two`** — and the same at
+    `n = 1`, which is **the pair this campaign leans on hardest**. `ASSUMPTIONS_LEDGER` 3 says in
+    prose that *"over `ℝ` the uniqueness is FALSE: `ℍ` and `M₂(ℝ)` are non-isomorphic,
+    non-commutative, semisimple, both 4-dimensional"*; the non-isomorphism is proved here (the
+    `n = 1` member of `IdempotentRankInvariant`'s family, which that file does not state), and
+    the two complexify alike. **So *"the minimal non-commutative seed is `M₂(ℂ)`"* cannot be
+    recovered from the complexification either, and that assumption's base-field restriction is
+    doing work no theorem takes over.**
   * **`quatComplexEquivC`** — `ℂ ⊗[ℝ] ℍ[ℝ] ≃ₐ[ℂ] M₂(ℂ)`, the estate's `equivM2C` upgraded from
     `ℝ`-linear to `ℂ`-linear at one factor, via `AlgHom.liftEquiv ℝ ℂ` out of
     `ComplexQuaternionTensor.rho`. **`liftC_eq_T` is the honest content**: the `ℂ`-linear map IS
@@ -86,7 +94,7 @@
     algebra (whose complexification is a product, not a matrix algebra) is not treated, and no
     classification is claimed.
 
-  0 sorry. 0 new axioms. **13 declarations**, all on `[propext, Classical.choice, Quot.sound]`
+  0 sorry. 0 new axioms. **15 declarations**, all on `[propext, Classical.choice, Quot.sound]`
   — and the `local instance` pin below is a fourteenth declaration that the count does NOT include,
   because `check_ledger.py`'s declaration scan has no `local` in its modifier list. The pin's axioms
   were checked too and are the same three.
@@ -159,6 +167,33 @@ theorem realForm_not_determined_eight :
       ∧ IsEmpty (Matrix (Fin 4) (Fin 4) ℍ[ℝ] ≃+* Matrix (Fin 8) (Fin 8) ℝ) :=
   ⟨⟨quatRealSameComplexification 4⟩,
     IdempotentRankInvariant.matrix4H_not_ringEquiv_matrix8R⟩
+
+/-- **`M₁(ℍ) ≇ M₂(ℝ)`** — the `n = 1` member of `IdempotentRankInvariant`'s family, which that
+file states at `n = 2` and `n = 4` but not here. Same proof: `M₂(ℝ)` admits two orthogonal
+nonzero idempotents summing to `1`, `M₁(ℍ)` at most one, and a ring isomorphism would transport
+the first count to the second. **This is the pair `ASSUMPTIONS_LEDGER` 3 names in prose** —
+*"over `ℝ` the uniqueness is FALSE: `ℍ` and `M₂(ℝ)` are non-isomorphic, non-commutative,
+semisimple, both 4-dimensional"* — so it is proved here rather than asserted. -/
+theorem matrix1H_not_ringEquiv_matrix2R :
+    IsEmpty (Matrix (Fin 1) (Fin 1) ℍ[ℝ] ≃+* Matrix (Fin 2) (Fin 2) ℝ) := by
+  refine ⟨fun φ => ?_⟩
+  have h2 : IdempotentRankInvariant.HasOrthIdem (Matrix (Fin 2) (Fin 2) ℝ) 2 := by
+    have h : IdempotentRankInvariant.HasOrthIdem (Matrix (Fin 2) (Fin 2) ℝ)
+        (Fintype.card (Fin 2)) := IdempotentRankInvariant.matrix_hasOrthIdem_card
+    simpa using h
+  have h1 : IdempotentRankInvariant.HasOrthIdem (Matrix (Fin 1) (Fin 1) ℍ[ℝ]) 2 :=
+    IdempotentRankInvariant.HasOrthIdem.of_ringEquiv φ.symm h2
+  have := IdempotentRankInvariant.matrixH_orthIdem_le_card h1
+  simp at this
+
+/-- **The seed-uniqueness pair, at `n = 1`, and this is the one the campaign leans on hardest.**
+`ℍ` and `M₂(ℝ)` complexify alike and are not isomorphic — so *"the minimal non-commutative seed
+is `M₂(ℂ)`"* cannot be recovered from the complexification either, and `ASSUMPTIONS_LEDGER` 3's
+base-field restriction is doing work no theorem can take over. -/
+theorem realForm_not_determined_two :
+    Nonempty (ℂ ⊗[ℝ] Matrix (Fin 1) (Fin 1) ℍ[ℝ] ≃ₐ[ℝ] ℂ ⊗[ℝ] Matrix (Fin 2) (Fin 2) ℝ)
+      ∧ IsEmpty (Matrix (Fin 1) (Fin 1) ℍ[ℝ] ≃+* Matrix (Fin 2) (Fin 2) ℝ) :=
+  ⟨⟨quatRealSameComplexification 1⟩, matrix1H_not_ringEquiv_matrix2R⟩
 
 /-! ## 4. The `ℂ`-linear upgrade at one factor -/
 

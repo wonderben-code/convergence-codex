@@ -70,8 +70,12 @@
     halves; assembling `Basis (Fin 4) ℂ (M₂(ℂ))` from them is not done, so nothing here says
     `finrank ℂ (M₂(ℂ)) = 4` by this route (Mathlib says it directly anyway).
   * **This is `ℍ`, not `M₂(ℍ)`.** L14's Caesar item asks for `ℂ ⊗[ℝ] M₂(ℍ) ≃ₐ M₄(ℂ)`; this is
-    the single-quaternion case, which is what the deferral was blocked on. Moving through a
-    matrix algebra and folding `M₂(M₂(ℂ))` into `M₄(ℂ)` are not written.
+    the single-quaternion case, which is what the deferral was blocked on. ~~Moving through a
+    matrix algebra and folding `M₂(M₂(ℂ))` into `M₄(ℂ)` are not written.~~ **WRITTEN THE SAME
+    DAY, ONE UNIT LATER**: `QuaternionMatrixComplexification.quatMatrixEquiv` does exactly those
+    two steps (`CliffordPeriodicityEight.matrixTensorRight` and `Matrix.compAlgEquiv` plus a
+    reindex) and closes the Caesar item at every size. The first two sentences of this bullet
+    still describe THIS file correctly.
   * **No star structure.** Nothing says `qToM` carries quaternionic conjugation to the conjugate
     transpose, which is what a real-form statement needs.
   * **Nothing about the cascade is cut.** `a·b·c = 16` keeps every alternative
