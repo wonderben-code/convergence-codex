@@ -71,14 +71,17 @@
     independent count, and the chain is non-vacuous.
 
   WHAT IS **NOT** CLAIMED.
-  * **`quatMatrixEquiv` is `ℝ`-linear, not `ℂ`-linear**, and the `ℂ`-linear form of the MATRIX
-    case is not stated. This is measured, not assumed: the lift exists (`AlgHom.liftEquiv`), and
-    what is needed is `quatMatrixEquiv n (z ⊗ₜ 1) = algebraMap ℂ _ z`. `simp` unfolds the whole
-    chain and leaves one explicit goal; pushing the sum `∑ i, 1 ⊗ₜ single i i 1` through the
-    five-fold composite inside `matrixTensorRight` then **times out instance synthesis at 20000
-    heartbeats** on `NonUnitalNonAssocSemiring (ℍ[ℝ] ⊗[ℝ] Mₙ(ℝ))`. **That is an elaboration cost,
-    NOT a structural obstruction**, and saying otherwise is precisely `ERRATUM 583`'s error; it is
-    filed as a tactic residue with the goal state, not as a wall.
+  * ~~**`quatMatrixEquiv` is `ℝ`-linear, not `ℂ`-linear**, and the `ℂ`-linear form of the MATRIX
+    case is not stated. … pushing the sum through the five-fold composite inside
+    `matrixTensorRight` **times out instance synthesis at 20000 heartbeats**. **That is an
+    elaboration cost, NOT a structural obstruction.**~~ **STATED THE SAME DAY, ONE UNIT LATER —
+    `quatMatrixEquivC` and `caesarSixC` (`ERRATUM 587`).** The residue was labelled a tactic cost
+    and that label was right: what it needed was a COMPUTATION LEMMA for the composite, not a
+    bigger heartbeat budget. `CliffordPeriodicityEight.matrixTensorRight` had none — every use of
+    it was opaque — so `matrixTensorRight_single` and `matrixTensorRight_tmul` were added beside
+    the definition, and with `M ⊗ₜ b ↦ M.map (· ⊗ₜ b)` in hand the composite is never unfolded
+    and the timeout never arises. **The `ℝ`-linear statements are kept**: `liftCMat_eq` proves the
+    two maps are the same function, so what the upgrade records is the scalar tower.
   * **The pin is `local` and this file's statements are about the pinned tensor product.** That is
     the same footing as `ComplexQuaternionTensor`, and the composite above is the evidence that it
     is usable; it is not a claim that the pin is unnecessary. Without it the chain does not
@@ -94,7 +97,7 @@
     algebra (whose complexification is a product, not a matrix algebra) is not treated, and no
     classification is claimed.
 
-  0 sorry. 0 new axioms. **15 declarations**, all on `[propext, Classical.choice, Quot.sound]`
+  0 sorry. 0 new axioms. **24 declarations**, all on `[propext, Classical.choice, Quot.sound]`
   — and the `local instance` pin below is a fourteenth declaration that the count does NOT include,
   because `check_ledger.py`'s declaration scan has no `local` in its modifier list. The pin's axioms
   were checked too and are the same three.
@@ -227,7 +230,93 @@ theorem liftC_bijective : Function.Bijective liftC := by
 def quatComplexEquivC : ℂ ⊗[ℝ] ℍ[ℝ] ≃ₐ[ℂ] Matrix (Fin 2) (Fin 2) ℂ :=
   AlgEquiv.ofBijective liftC liftC_bijective
 
-/-! ## 5. Dimensions, computed through the chain -/
+/-! ## 5. The `ℂ`-linear upgrade of the MATRIX chain -/
+
+/-- `equivM2C (z ⊗ₜ 1) = z • 1`, the one value of the estate's equivalence this needs. -/
+theorem equivM2C_tmul_one (z : ℂ) :
+    ComplexQuaternionTensor.equivM2C (z ⊗ₜ[ℝ] (1 : ℍ[ℝ])) = z • 1 := by
+  simp [ComplexQuaternionTensor.equivM2C, ComplexQuaternionTensor.T_tmul]
+
+/-- **The step the previous unit recorded as unreachable, and it was a tactic residue.**
+`quatMatrixEquiv n (z ⊗ₜ 1) = algebraMap ℂ _ z` — i.e. the `ℝ`-linear chain already sends the
+`ℂ`-scalars to the `ℂ`-scalars, which is exactly what `AlgHom.liftEquiv` needs to promote it.
+What unblocked it was giving `CliffordPeriodicityEight.matrixTensorRight` a computation lemma
+(`matrixTensorRight_tmul`, added there this unit): with it the five-fold composite is never
+unfolded, and what is left is `Fin (n * 2)` index arithmetic plus the injectivity of
+`finProdFinEquiv.symm`. -/
+theorem quatMatrixEquiv_tmul_one (n : ℕ) (z : ℂ) :
+    quatMatrixEquiv n (z ⊗ₜ[ℝ] (1 : Matrix (Fin n) (Fin n) ℍ[ℝ]))
+      = algebraMap ℂ (Matrix (Fin (n * 2)) (Fin (n * 2)) ℂ) z := by
+  have key : ∀ a b : Fin (n * 2), a.divNat = b.divNat → a.modNat = b.modNat → a = b := by
+    intro a b h1 h2
+    exact (finProdFinEquiv (m := n) (n := 2)).symm.injective
+      (by simp [finProdFinEquiv_symm_apply, h1, h2])
+  simp only [quatMatrixEquiv, AlgEquiv.trans_apply, Algebra.TensorProduct.comm_tmul,
+    CliffordPeriodicityEight.matrixTensorRight_tmul, AlgEquiv.mapMatrix_apply,
+    Matrix.compAlgEquiv_apply, Matrix.reindexAlgEquiv_apply]
+  ext p q
+  simp only [Matrix.reindex_apply, Matrix.submatrix_apply, finProdFinEquiv_symm_apply,
+    Matrix.comp_apply, Matrix.map_apply, Matrix.one_apply, apply_ite,
+    Algebra.TensorProduct.comm_tmul, equivM2C_tmul_one, Algebra.algebraMap_eq_smul_one,
+    Matrix.smul_apply, smul_eq_mul]
+  by_cases hpq : p = q
+  · subst hpq; simp
+  · rw [if_neg hpq]
+    by_cases hd : p.divNat = q.divNat
+    · rw [if_pos hd]
+      have hm : p.modNat ≠ q.modNat := fun h => hpq (key p q hd h)
+      simp [hm]
+    · simp [hd]
+
+/-- The `ℝ`-algebra map the universal property consumes: `M ↦ quatMatrixEquiv n (1 ⊗ₜ M)`. -/
+def quatMatrixEmb (n : ℕ) :
+    Matrix (Fin n) (Fin n) ℍ[ℝ] →ₐ[ℝ] Matrix (Fin (n * 2)) (Fin (n * 2)) ℂ :=
+  (quatMatrixEquiv n).toAlgHom.comp Algebra.TensorProduct.includeRight
+
+/-- The `ℂ`-algebra map `AlgHom.liftEquiv` produces from it. As at one factor, the universal
+property is a BIJECTION, so nothing is constructed. -/
+def liftCMat (n : ℕ) :
+    ℂ ⊗[ℝ] Matrix (Fin n) (Fin n) ℍ[ℝ] →ₐ[ℂ] Matrix (Fin (n * 2)) (Fin (n * 2)) ℂ :=
+  AlgHom.liftEquiv ℝ ℂ (Matrix (Fin n) (Fin n) ℍ[ℝ])
+    (Matrix (Fin (n * 2)) (Fin (n * 2)) ℂ) (quatMatrixEmb n)
+
+@[simp] theorem liftCMat_tmul (n : ℕ) (z : ℂ) (M : Matrix (Fin n) (Fin n) ℍ[ℝ]) :
+    liftCMat n (z ⊗ₜ[ℝ] M) = z • quatMatrixEmb n M := by
+  simp [liftCMat]
+
+/-- **The honest content, as at one factor**: the `ℂ`-linear map IS the `ℝ`-linear chain,
+function for function. `z ⊗ₜ M` factors as `(z ⊗ₜ 1) * (1 ⊗ₜ M)`, both maps are multiplicative,
+they agree on the right factor by construction, and `quatMatrixEquiv_tmul_one` is the left. -/
+theorem liftCMat_eq (n : ℕ) (x : ℂ ⊗[ℝ] Matrix (Fin n) (Fin n) ℍ[ℝ]) :
+    liftCMat n x = quatMatrixEquiv n x := by
+  induction x using TensorProduct.induction_on with
+  | zero => simp
+  | tmul z M =>
+    have h : (z ⊗ₜ[ℝ] M : ℂ ⊗[ℝ] Matrix (Fin n) (Fin n) ℍ[ℝ])
+        = (z ⊗ₜ[ℝ] (1 : Matrix (Fin n) (Fin n) ℍ[ℝ])) * ((1 : ℂ) ⊗ₜ[ℝ] M) := by
+      rw [Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]
+    rw [h, map_mul, map_mul, quatMatrixEquiv_tmul_one, liftCMat_tmul, liftCMat_tmul, map_one,
+      one_smul, Algebra.algebraMap_eq_smul_one]
+    simp [quatMatrixEmb]
+  | add a b ha hb => simp [ha, hb]
+
+/-- Hence bijective, by transport rather than by a second proof. -/
+theorem liftCMat_bijective (n : ℕ) : Function.Bijective (liftCMat n) := by
+  have h : (liftCMat n : ℂ ⊗[ℝ] Matrix (Fin n) (Fin n) ℍ[ℝ] → _)
+      = quatMatrixEquiv n := funext (liftCMat_eq n)
+  rw [h]
+  exact (quatMatrixEquiv n).bijective
+
+/-- **`ℂ ⊗[ℝ] Mₙ(ℍ) ≃ₐ[ℂ] M₍ₙ·₂₎(ℂ)` at every `n`**, with `ℂ` as the base ring. -/
+def quatMatrixEquivC (n : ℕ) :
+    ℂ ⊗[ℝ] Matrix (Fin n) (Fin n) ℍ[ℝ] ≃ₐ[ℂ] Matrix (Fin (n * 2)) (Fin (n * 2)) ℂ :=
+  AlgEquiv.ofBijective (liftCMat n) (liftCMat_bijective n)
+
+/-- **Caesar item 6 in its `ℂ`-linear form: `ℂ ⊗[ℝ] M₂(ℍ) ≃ₐ[ℂ] M₄(ℂ)`.** -/
+def caesarSixC : ℂ ⊗[ℝ] Matrix (Fin 2) (Fin 2) ℍ[ℝ] ≃ₐ[ℂ] Matrix (Fin 4) (Fin 4) ℂ :=
+  quatMatrixEquivC 2
+
+/-! ## 6. Dimensions, computed through the chain -/
 
 /-- `dim_ℝ Mₙ(ℂ) = 2n²`, the general form of `ComplexQuaternionTensor.finrank_m2c`. -/
 theorem finrank_real_matrix_complex (n : ℕ) :

@@ -105,6 +105,39 @@ def matrixTensorRight :
         (Algebra.TensorProduct.assoc ℝ ℝ ℝ A B (Matrix n n ℝ)).symm.trans
           (matrixEquivTensor n ℝ (A ⊗[ℝ] B)).symm
 
+/-- **What `matrixTensorRight` does to a single-entry matrix**, which is the step the composite
+above hides: `single i j a ⊗ₜ b ↦ single i j (a ⊗ₜ b)`. Added 2026-09-15 (`ERRATUM 587`); every
+rewrite is a Mathlib `_tmul` lemma, with `matrixEquivTensor_apply_single` doing the work that
+`matrixEquivTensor_apply`'s double sum would otherwise force. -/
+theorem matrixTensorRight_single (i j : n) (a : A) (b : B) :
+    matrixTensorRight n A B (Matrix.single i j a ⊗ₜ[ℝ] b)
+      = Matrix.single i j (a ⊗ₜ[ℝ] b) := by
+  simp only [matrixTensorRight, AlgEquiv.trans_apply, Algebra.TensorProduct.congr_apply,
+    Algebra.TensorProduct.map_tmul, AlgHom.coe_coe, matrixEquivTensor_apply_single,
+    Algebra.TensorProduct.assoc_tmul, Algebra.TensorProduct.comm_tmul,
+    Algebra.TensorProduct.assoc_symm_tmul, matrixEquivTensor_apply_symm]
+  ext p q
+  simp only [AlgEquiv.coe_refl, id_eq, Matrix.smul_apply, Matrix.map_apply, Matrix.single,
+    Matrix.of_apply, apply_ite, map_zero, map_one, smul_eq_mul, mul_one, mul_zero]
+  split_ifs with h
+  · rfl
+  · rfl
+
+/-- **`matrixTensorRight` is entrywise on a pure tensor**: `M ⊗ₜ b ↦ M.map (· ⊗ₜ b)`. Added
+2026-09-15 (`ERRATUM 587`) because the equivalence above had NO computation lemma, and without
+one every use of it is opaque: the `ℂ`-linear form of
+`QuaternionMatrixComplexification.quatMatrixEquiv` was recorded as unreachable for exactly this
+reason, on a `simp` run that timed out instance synthesis inside the five-fold composite. Proved
+by additivity off `Matrix.matrix_eq_sum_single` and `matrixTensorRight_single`, so the composite
+is never unfolded on a general matrix. -/
+theorem matrixTensorRight_tmul (M : Matrix n n A) (b : B) :
+    matrixTensorRight n A B (M ⊗ₜ[ℝ] b) = M.map (fun a => a ⊗ₜ[ℝ] b) := by
+  rw [Matrix.matrix_eq_sum_single M]
+  simp only [TensorProduct.sum_tmul, map_sum, matrixTensorRight_single]
+  ext p q
+  simp only [Matrix.sum_apply, Matrix.map_apply, Matrix.single, Matrix.of_apply,
+    TensorProduct.sum_tmul, TensorProduct.ite_tmul]
+
 end Transport
 
 /-- `(A ⊗ ℍ) ⊗ ℍ ≅ M₄(A)`: reassociate, apply `QuaternionTensor.equivM4`, absorb. -/
