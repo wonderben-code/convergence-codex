@@ -63,6 +63,16 @@
     `σ` fixes `i`, so the fixed factors and the swapped pairs are ONE statement, and the
     “cycles of length `≥ 3` needing their own statement” clause was answering a question that
     `factorPerm_involutive` shows cannot arise.
+  * **`complex_onlyTrivial`, `conjPermStar`, `conjPermStar_single`, `factorPerm_conjPermStar`,
+    `exists_conjPerm_iff`** — **AND EVERY INVOLUTION OCCURS, so the answer is EXACTLY THE
+    INVOLUTIONS.** On `∏_{i∈ι} ℂ`, `s x = fun j ↦ conj (x (σ j))` is a `⋆`-structure — additive
+    because `conj` is, anti-multiplicative because `ℂ` is commutative, and involutive **exactly
+    because `σ` is**, which is where `factorPerm_involutive`'s necessity becomes this
+    construction's hypothesis — and its `factorPerm` is `σ`. **The asymmetry between the two
+    directions is real and kept**: the CONSTRAINT holds for every product of rings with trivial
+    central idempotents, and the REALISATION is exhibited on one family. `ℂ` qualifies off the
+    estate's own `onlyTrivialCentralIdem_of_isDomain`, which was checked by a grep of the index
+    before this section was written and not assumed.
 
   WHAT IS **NOT** PROVED.
   * ~~**The `n`-factor analogue of `restrictLeft`/`restrictRight` is NOT here.**~~ ~~**No
@@ -79,12 +89,13 @@
     statement is then about a transported map rather than about `blockMap` itself. **Measured,
     not guessed: the obstruction is dependent-type plumbing and not mathematics**, and it is
     left for a unit that wants to pay for it.
-  * **No `σ` is REALISED, so the classification is one-sided.** `factorPerm_involutive` says
-    only involutions arise. Whether every involution arises is not proved. The cheap route is
-    named rather than walked: on `∏ ℂ` with `σ` an involution, `s x = fun i => conj (x (σ i))`
-    should be a `⋆`-structure whose `factorPerm` is `σ`, which would make the answer *exactly
-    the involutions* — and it needs `OnlyTrivialCentralIdem ℂ`, which this estate may or may not
-    already carry, checked by a grep and not by a guess before that unit starts.
+  * ~~**No `σ` is REALISED, so the classification is one-sided.**~~ **WALKED IN THE SAME UNIT**,
+    and the route was the one named: section 8, `exists_conjPerm_iff`. The grep it asked for
+    returned `onlyTrivialCentralIdem_of_isDomain`, so `ℂ` cost one line. **What the closed
+    classification still does NOT say**: the realisation is on `∏ ℂ` only, so nothing here rules
+    out a family of factors on which some involution is NOT realised — the `⇐` direction is an
+    existence statement about one family, not a statement about every family, and the header
+    above says so where it is proved.
   * **The hypothesis that each factor has only trivial central idempotents is not discharged
     here.** For matrix algebras it is `CentralIdemInvariant`'s business, and this file takes it
     as given, exactly as `prod_dichotomy` does.
@@ -93,7 +104,7 @@
     is its item (3).
   * **No `⋆`-structure on a product is constructed.** Every statement here is about a given `s`.
 
-  0 sorry. 0 new axioms. 33 declarations, none on any axiom outside
+  0 sorry. 0 new axioms. 38 declarations, none on any axiom outside
   `[propext, Classical.choice, Quot.sound]` — and `single_mul_single_same` needs only two of the
   three, which is counted rather than rounded up.
 -/
@@ -398,6 +409,72 @@ theorem blockMap_mul (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i
 theorem blockMap_one (htriv : ∀ i, OnlyTrivialCentralIdem (B i)) (hone : ∀ i, (1 : B i) ≠ 0)
     (i : ι) : blockMap s htriv hone i 1 = 1 := by
   simp only [blockMap, map_single_eq s htriv hone i, Pi.single_eq_same]
+
+/-! ## 8. Which permutations occur: EXACTLY the involutions -/
+
+section Realisation
+
+variable {ι : Type*} [DecidableEq ι] [Fintype ι]
+
+omit [Fintype ι] in
+/-- `ℂ` has only the trivial central idempotents, because it is a domain. The estate's own
+`onlyTrivialCentralIdem_of_isDomain`, named here so section 8 has a factor to work with. -/
+theorem complex_onlyTrivial : OnlyTrivialCentralIdem ℂ := onlyTrivialCentralIdem_of_isDomain
+
+/-- **Conjugate-and-permute**, for an involution `σ`: `s x = fun j ↦ conj (x (σ j))`. Additive
+because `conj` is; ANTI-multiplicative because `ℂ` is commutative, so anti- and multiplicative
+coincide; and involutive **exactly because `σ` is** — which is where `factorPerm_involutive`'s
+necessity turns into this construction's hypothesis. -/
+def conjPermStar (σ : Equiv.Perm ι) (hσ : ∀ i, σ (σ i) = i) : StarStr (∀ _ : ι, ℂ) where
+  map x := fun j => (starRingEnd ℂ) (x (σ j))
+  map_add x y := by funext j; simp
+  map_mul x y := by funext j; simp [mul_comm]
+  map_involutive x := by funext j; simp [hσ j]
+
+omit [Fintype ι] in
+theorem conjPermStar_single (σ : Equiv.Perm ι) (hσ : ∀ i, σ (σ i) = i) (i : ι) :
+    (conjPermStar σ hσ).map (Pi.single i (1 : ℂ)) = Pi.single (σ i) (1 : ℂ) := by
+  funext j
+  by_cases h : j = σ i
+  · subst h
+    simp only [conjPermStar]
+    rw [hσ i, Pi.single_eq_same, _root_.map_one, Pi.single_eq_same]
+  · have hne : σ j ≠ i := by
+      intro hc
+      exact h (by rw [← hc, hσ j])
+    simp only [conjPermStar, Pi.single_eq_of_ne hne, Pi.single_eq_of_ne h, _root_.map_zero]
+
+/-- **AND ITS PERMUTATION IS `σ`.** Off `map_single_eq`'s uniqueness: two `Pi.single`s with value
+`1` at different coordinates differ at one of them. -/
+theorem factorPerm_conjPermStar (σ : Equiv.Perm ι) (hσ : ∀ i, σ (σ i) = i) (i : ι) :
+    factorPerm (conjPermStar σ hσ) (fun _ => complex_onlyTrivial) (fun _ => one_ne_zero) i
+      = σ i := by
+  have h1 := map_single_eq (conjPermStar σ hσ) (fun _ => complex_onlyTrivial)
+    (fun _ => one_ne_zero) i
+  rw [conjPermStar_single σ hσ i] at h1
+  by_contra hne
+  have h2 := congrFun h1 (σ i)
+  rw [Pi.single_eq_same, Pi.single_eq_of_ne (Ne.symm hne)] at h2
+  exact one_ne_zero h2
+
+/-- **THE CLASSIFICATION, both directions.** On `∏_{i∈ι} ℂ` the permutations a `⋆`-structure can
+induce on the minimal central idempotents are **exactly the involutions** — `⇒` is
+`factorPerm_involutive`, proved for an arbitrary family of factors, and `⇐` is `conjPermStar`, which
+needs a concrete one. The asymmetry is real and worth keeping: the CONSTRAINT holds for every
+product of rings with trivial central idempotents, and the REALISATION is exhibited on one. -/
+theorem exists_conjPerm_iff (σ : Equiv.Perm ι) :
+    (∃ s : StarStr (∀ _ : ι, ℂ), ∀ i,
+        factorPerm s (fun _ => complex_onlyTrivial) (fun _ => one_ne_zero) i = σ i)
+      ↔ ∀ i, σ (σ i) = i := by
+  constructor
+  · rintro ⟨s, hs⟩ i
+    have h := factorPerm_involutive s (fun _ => complex_onlyTrivial) (fun _ => one_ne_zero) i
+    rw [hs i, hs (σ i)] at h
+    exact h
+  · intro hσ
+    exact ⟨conjPermStar σ hσ, factorPerm_conjPermStar σ hσ⟩
+
+end Realisation
 
 end
 
