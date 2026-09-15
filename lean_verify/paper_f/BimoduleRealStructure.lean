@@ -57,17 +57,53 @@
   * **`orderOne_Dgen_has_content`** — and the one-form is non-zero at `M = σ₃`, `a = σ₁`, so
     order-one is satisfied with content and not vacuously (`ERRATUM 557`).
 
+  AND THE EVEN-GRADING OBSTRUCTION AT EVERY SIZE (§6), which answers the question the previous
+  section left open and corrects a recorded obstacle.
+  * **`even_eq_piR`** — **the commutant, in three lines and without a double-commutant theorem.**
+    `EvenGradingObstruction` recorded *"the two images generate everything is the double
+    commutant, which this estate does not have"*, and called its entrywise substitute *"the one
+    step that does not generalise as written"*. **On a MATRIX space no such theorem is needed**:
+    every vector is `π(X) 1` for `X` the vector read as a matrix, so an operator commuting with
+    every left multiplication is determined by its value at the identity and equals right
+    multiplication by it. The remark was right about the writing and wrong about the step.
+  * **`no_even_KO6_grading`** — **no even KO-6 grading exists on this bimodule at any non-empty
+    size.** The three conditions are contradictory: `g` commutes with `π a` for EVERY `a` (which
+    is what *even* means — it commutes with the algebra, not with `D`), `g * g = 1`, and
+    `J g J = -g`. Every step is size-free: `even_eq_piR` makes `g` right multiplication by some
+    `G`; `piR_eq_conj_piL` turns `J g J` into left multiplication by `G*`, so the `J`-condition
+    reads `G* X = -X G` for every `X`; at `X = 1` that is `G* = -G`, and putting it back leaves
+    `G X = X G` for every `X`, so `G` is CENTRAL, hence scalar by
+    `StarStructureMatrix.matrix_center_scalar` — **generalised from `Fin m` to an arbitrary finite
+    index type in this unit, with no change to its proof.** Then `G* = -G` gives `conj c = -c`
+    and `g * g = 1` gives `c ^ 2 = 1`, so `normSq c = -1`. Unit 31's endgame at the level of a
+    scalar rather than of one matrix entry.
+  * **`no_even_KO6_grading_on_witness`** — and the subsumption is **checked, not asserted**:
+    `OrderOneNontrivial.piW` is `piL (Fin 2)` and `OppositeFromRealStructure.Jprod` is
+    `Jbi (Fin 2)` definitionally, so `EvenGradingObstruction`'s OPERATOR theorem is this one at
+    one size. **Be exact about which of that file's two theorems this subsumes**, because they
+    do not share a hypothesis: `no_even_KO6_grading_operator` assumes evenness against EVERY
+    `a`, which is what §6 assumes, so that one is subsumed. **`no_even_KO6_grading_on_Hw` is
+    not** — it needs only ONE instance of evenness, commuting with `σ₃ ⊗ 1`, so at `Fin 2` it is
+    STRONGER than §6. The entrywise proof buys a weaker hypothesis and this one buys every size,
+    and neither implies the other, so nothing is deleted.
+
   WHAT IS **NOT** CLAIMED.
-  * **NO GRADING at any size, and at `ι = Fin 2` that is not merely unwritten.** `γ` is the one
-    piece of `RealSpectralWitness` that is not generalised here, and `EvenGradingObstruction`
-    proves at `Fin 2` that **no operator can be an even KO-6 grading on this bimodule at all**,
-    and the three hypotheses are worth naming rather than sloganising
-    (`no_even_KO6_grading_operator`): `g` commutes with `π a` for EVERY `a` (that is what *even*
-    means — it commutes with the algebra, not with `D`), `g * g = 1`, and
-    `J g J = -g`. Those three are contradictory. **So what is missing at general size is not a
-    transcription but the ODD case**, and nothing here addresses whether that obstruction
-    generalises beyond `Fin 2`. **This is therefore a bimodule with a real structure and a
-    Dirac operator at every size, and not a spectral triple at every size.**
+  * **THE GRADING IS STILL ABSENT, AND WHAT IS LEFT IS AN AUTHOR'S DECISION RATHER THAN A GAP.**
+    `γ` is the one piece of `RealSpectralWitness` not generalised here, and §6 does not supply
+    one — it proves that an EVEN one cannot exist at any size. Whether that closes the question
+    depends on whether the estate's notion of a real spectral triple should REQUIRE `γ` to be
+    even, which is `PROGRESS_LOG` **DECISIONS NEEDED 12** and `WALLS` §W9.7, filed with three
+    options and not decided. **What §6 changes about that decision is its price**: the entry
+    records `γ`-evenness as *"provably unattainable on that witness's space"*, and it is now
+    unattainable on the regular bimodule at **every** non-empty size, so option (a) — add both
+    axioms — leaves no non-scalar witness at any size rather than only at size two. **The
+    estate's own `gammaCcm` is not even** (`EvenGradingObstruction.gammaCcm_not_even`), so it is
+    not ruled out by §6; it simply is not an even grading. **So this file is a bimodule with a
+    real structure and a Dirac operator at every size, and not a spectral triple at every
+    size.**
+  * **Nothing is claimed about gradings that are not even.** §6's hypothesis is evenness, and an
+    operator failing it is outside the theorem's scope, not shown to exist or not exist as part
+    of a KO-6 triple.
   * **`Dgen` is not shown self-adjoint** and no hypothesis on `M` is imposed, so nothing here
     says `D` is an operator a spectral triple would accept — only that order-one and the
     `JD = DJ` sign hold for it whatever `M` is.
@@ -80,7 +116,7 @@
     (`ASSUMPTIONS_LEDGER` 5, 10, 11, 30, 35), and L6's rung 2 is not climbed: a bimodule at
     every size does not constrain the factor list.
 
-  0 sorry. 0 new axioms. 22 declarations, all but one on
+  0 sorry. 0 new axioms. 33 declarations, all but one on
   `[propext, Classical.choice, Quot.sound]`; the exception is `prodComm_involutive`, on
   `Quot.sound` alone, because swapping a pair twice is `rfl` and the only quotient in sight is
   `Prod` itself.
@@ -88,6 +124,7 @@
 
 import OppositeFromRealStructure
 import RepairedActionJInvariant
+import StarStructureMatrix
 
 namespace BimoduleRealStructure
 
@@ -295,6 +332,153 @@ theorem orderOne_Dgen_has_content :
     exact this
   have h01 := congrArg (fun N => N (0 : Fin 2) (1 : Fin 2)) hz
   simp [SpectralTripleBimodule.pauli1, SpectralTripleBimodule.pauli3] at h01
+
+/-! ## 6. No even KO-6 grading, at any size, and the double commutant was never needed -/
+
+/-- A matrix read as a vector of the bimodule. -/
+def vecOf (M : Matrix ι ι ℂ) : EuclideanSpace ℂ (ι × ι) := WithLp.toLp 2 (fun p => M p.1 p.2)
+
+/-- And back. The two are mutually inverse on the nose. -/
+def matOf (v : EuclideanSpace ℂ (ι × ι)) : Matrix ι ι ℂ := Matrix.of fun i j => v (i, j)
+
+omit [Fintype ι] [DecidableEq ι] in
+@[simp] theorem matOf_vecOf (M : Matrix ι ι ℂ) : matOf ι (vecOf ι M) = M := rfl
+
+omit [Fintype ι] [DecidableEq ι] in
+@[simp] theorem vecOf_matOf (v : EuclideanSpace ℂ (ι × ι)) : vecOf ι (matOf ι v) = v := rfl
+
+omit [Fintype ι] [DecidableEq ι] in
+@[simp] theorem matOf_neg (v : EuclideanSpace ℂ (ι × ι)) :
+    matOf ι (-v) = -(matOf ι v) := rfl
+
+/-- **The left action is multiplication on the left.** -/
+theorem piL_vecOf (a M : Matrix ι ι ℂ) : piL ι a (vecOf ι M) = vecOf ι (a * M) := by
+  ext p
+  obtain ⟨i, j⟩ := p
+  simp [piL_apply, vecOf, Matrix.mulVec, dotProduct, Matrix.kroneckerMap, Matrix.mul_apply,
+    Matrix.one_apply, Fintype.sum_prod_type]
+
+/-- **And the right action is multiplication on the right.** -/
+theorem piR_vecOf (c M : Matrix ι ι ℂ) : piR ι (op c) (vecOf ι M) = vecOf ι (M * c) := by
+  ext p
+  obtain ⟨i, j⟩ := p
+  simp [piR_apply, vecOf, Matrix.mulVec, dotProduct, Matrix.kroneckerMap, Matrix.mul_apply,
+    Matrix.one_apply, Fintype.sum_prod_type, mul_comm]
+
+/-- **THE COMMUTANT, IN THREE LINES AND WITHOUT A DOUBLE-COMMUTANT THEOREM.**
+`EvenGradingObstruction` recorded *"the two images generate everything is the double commutant,
+which this estate does not have"*, and said its entrywise substitute *"is the one step that does
+not generalise as written"*. **On a MATRIX space the step needs no such theorem.** Every vector
+is `π(X) 1` for `X` the vector read as a matrix, so an operator commuting with every left
+multiplication is determined by its value at the identity: `g v = π(matOf v) (g 1)`, which is
+right multiplication by `matOf (g 1)`. That is the general form of the step, and it is the same
+three lines at every size. -/
+theorem even_eq_piR (g : Module.End ℂ (EuclideanSpace ℂ (ι × ι)))
+    (heven : ∀ a, g * piL ι a = piL ι a * g) (v : EuclideanSpace ℂ (ι × ι)) :
+    g v = piR ι (op (matOf ι (g (vecOf ι 1)))) v := by
+  have hv : piL ι (matOf ι v) (vecOf ι 1) = v := by rw [piL_vecOf, mul_one, vecOf_matOf]
+  have h := congrArg (fun T : Module.End ℂ (EuclideanSpace ℂ (ι × ι)) => T (vecOf ι 1))
+    (heven (matOf ι v))
+  simp only [Module.End.mul_apply] at h
+  rw [hv] at h
+  have step : g v = vecOf ι (matOf ι v * matOf ι (g (vecOf ι 1))) := by
+    rw [h]
+    conv_lhs => rw [← vecOf_matOf ι (g (vecOf ι 1))]
+    rw [piL_vecOf]
+  have step2 : piR ι (op (matOf ι (g (vecOf ι 1)))) v
+      = vecOf ι (matOf ι v * matOf ι (g (vecOf ι 1))) := by
+    conv_lhs => rw [← vecOf_matOf ι v]
+    rw [piR_vecOf]
+  rw [step, step2]
+
+omit [Fintype ι] in
+/-- A scalar multiple of the identity determines its scalar, read off the diagonal. This is the
+only place `[Nonempty ι]` is used below, and the reason is honest: over an empty index type the
+matrix algebra is the zero ring and every scalar gives the same matrix. -/
+theorem smul_one_inj_matrix [Nonempty ι] {c d : ℂ}
+    (h : c • (1 : Matrix ι ι ℂ) = d • (1 : Matrix ι ι ℂ)) : c = d := by
+  obtain ⟨i⟩ := ‹Nonempty ι›
+  have he := congrArg (fun N => N i i) h
+  simpa [Matrix.one_apply] using he
+
+/-- **NO EVEN KO-6 GRADING EXISTS ON THIS BIMODULE, AT ANY NON-EMPTY SIZE.** The three
+conditions are contradictory: `g` commutes with `π a` for EVERY `a` (which is what *even* means —
+it commutes with the algebra, not with `D`), `g * g = 1`, and `J g J = -g`.
+
+THE ROUTE, and every step is now size-free. `even_eq_piR` makes `g` right multiplication by some
+`G`. `piR_eq_conj_piL` turns `J g J` into left multiplication by `G*`, so the `J`-condition reads
+`G* X = -X G` for every `X`. At `X = 1` that is `G* = -G`, and substituting it back leaves
+`G X = X G` for every `X` — so `G` is CENTRAL, hence scalar by
+`StarStructureMatrix.matrix_center_scalar` (generalised from `Fin m` to an arbitrary finite index
+type in this unit, with no change to its proof). Write `G = c • 1`. Then `G* = -G` gives
+`conj c = -c` and `g * g = 1` gives `c ^ 2 = 1`, so `normSq c = (c * conj c).re = -1`, which is
+negative. **Unit 31's endgame at the level of a scalar rather than of one matrix entry.** -/
+theorem no_even_KO6_grading [Nonempty ι] (g : Module.End ℂ (EuclideanSpace ℂ (ι × ι)))
+    (heven : ∀ a, g * piL ι a = piL ι a * g) (hsq : g * g = 1)
+    (hJ : ∀ v, Jbi ι (g (Jbi ι v)) = -(g v)) : False := by
+  have hg : ∀ v, g v = piR ι (op (matOf ι (g (vecOf ι 1)))) v := even_eq_piR ι g heven
+  set G : Matrix ι ι ℂ := matOf ι (g (vecOf ι 1)) with hGdef
+  have key : ∀ v, piL ι (star G) v = -(piR ι (op G) v) := by
+    intro v
+    have h := piR_eq_conj_piL ι G (Jbi ι v)
+    rw [Jbi_involutive] at h
+    have h2 : Jbi ι (piR ι (op G) (Jbi ι v)) = piL ι (star G) v := by
+      rw [← h, Jbi_involutive]
+    rw [← h2, ← hg, hJ, hg]
+  have h1 : star G = -G := by
+    have hv := key (vecOf ι 1)
+    rw [piL_vecOf, piR_vecOf, mul_one, one_mul] at hv
+    have := congrArg (matOf ι) hv
+    simpa using this
+  have hcentral : ∀ X : Matrix ι ι ℂ, G * X = X * G := by
+    intro X
+    have hv := key (vecOf ι X)
+    rw [piL_vecOf, piR_vecOf, h1] at hv
+    have h2 := congrArg (matOf ι) hv
+    simp only [matOf_vecOf, matOf_neg] at h2
+    rw [neg_mul] at h2
+    exact neg_injective h2
+  obtain ⟨c, hc⟩ := StarStructureMatrix.matrix_center_scalar G hcentral
+  have hconj : (starRingEnd ℂ) c = -c := by
+    have h3 : star G = (starRingEnd ℂ) c • (1 : Matrix ι ι ℂ) := by
+      rw [hc, Matrix.star_eq_conjTranspose, Matrix.conjTranspose_smul, Matrix.conjTranspose_one]
+      rfl
+    rw [h3, hc, ← neg_smul] at h1
+    exact smul_one_inj_matrix ι h1
+  have hGsq : G * G = 1 := by
+    have h4 := congrArg (fun T : Module.End ℂ (EuclideanSpace ℂ (ι × ι)) => T (vecOf ι 1)) hsq
+    simp only [Module.End.mul_apply, Module.End.one_apply] at h4
+    rw [hg, hg] at h4
+    rw [piR_vecOf, piR_vecOf, one_mul] at h4
+    have h5 := congrArg (matOf ι) h4
+    simpa using h5
+  have hcsq : c * c = 1 := by
+    rw [hc, smul_mul_smul_comm, one_mul] at hGsq
+    refine smul_one_inj_matrix ι ?_
+    rw [hGsq, one_smul]
+  have hns : Complex.normSq c = -1 := by
+    have h6 : c * (starRingEnd ℂ) c = -1 := by
+      rw [hconj]
+      rw [mul_neg, hcsq]
+    have h7 := congrArg Complex.re h6
+    simpa [Complex.mul_conj, Complex.normSq] using h7
+  have := Complex.normSq_nonneg c
+  rw [hns] at this
+  norm_num at this
+
+/-- **And the general theorem SUBSUMES `EvenGradingObstruction`'s, which is checked here rather
+than asserted.** `OrderOneNontrivial.piW` is `piL (Fin 2)` and `OppositeFromRealStructure.Jprod`
+is `Jbi (Fin 2)` — definitionally, both being `(matAlg _).comp (kronLeft _ _)` and
+`conjPerm (Equiv.prodComm _ _)` — so `no_even_KO6_grading_operator` is this theorem at one size.
+**So that file's entrywise proof is now redundant**, and its header's remark that the step *"does
+not generalise as written"* was right about the writing and wrong about the step. Recorded here;
+the refactor that would delete the entrywise proof is not done in this unit. -/
+theorem no_even_KO6_grading_on_witness (g : Module.End ℂ OrderOneNontrivial.Hw)
+    (heven : ∀ a, g * OrderOneNontrivial.piW a = OrderOneNontrivial.piW a * g)
+    (hsq : g * g = 1)
+    (hJ : ∀ v, OppositeFromRealStructure.Jprod (g (OppositeFromRealStructure.Jprod v))
+      = -(g v)) : False :=
+  no_even_KO6_grading (Fin 2) g heven hsq hJ
 
 end
 

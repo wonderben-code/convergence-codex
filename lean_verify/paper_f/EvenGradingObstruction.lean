@@ -70,7 +70,24 @@
     even KO-6 triple exists on the 96-dimensional space, nor that it does not. The *reason*
     given for CCM's `H` being large is a consistency remark, not a theorem about `H`.
   * **`jointCommutant_piW_piOpW` is proved entrywise for `Fin 2 × Fin 2`**, not derived from a
-    double-commutant theorem. It is the one step that does not generalise as written.
+    double-commutant theorem. ~~It is the one step that does not generalise as written.~~
+    **AMENDED 2026-09-15 (`ERRATUM 580`): that clause was right about the writing and wrong
+    about the step.** On a MATRIX space the commutant needs no double-commutant theorem at all:
+    every vector is `π(X) 1` for `X` the vector read as a matrix, so an operator commuting with
+    every left multiplication is determined by its value at the identity and equals right
+    multiplication by it — three lines, at every size
+    (`BimoduleRealStructure.even_eq_piR`). **And the obstruction itself is now proved at every
+    non-empty size**: `BimoduleRealStructure.no_even_KO6_grading`, with
+    `no_even_KO6_grading_on_witness` CHECKING that it specialises to this file's theorem, since
+    `piW` is `piL (Fin 2)` and `Jprod` is `Jbi (Fin 2)` definitionally. **BE EXACT ABOUT WHICH
+    OF THE TWO THEOREMS BELOW THAT SUBSUMES, because they do not have the same hypothesis.**
+    `no_even_KO6_grading_operator` assumes evenness against EVERY `a`, and the general theorem
+    has exactly that hypothesis, so that one IS subsumed. **`no_even_KO6_grading_on_Hw` is
+    not**: it needs only ONE instance of evenness — commuting with `σ₃ ⊗ 1` — so at `Fin 2` it is
+    STRONGER than the general theorem, which needs all of them. Nothing is deleted here, and the
+    reason is not caution: **the entrywise proof buys a weaker hypothesis and the general proof
+    buys every size, and neither implies the other.** That is a factoring question, filed rather
+    than settled.
   * Rung 2 is not climbed; no factor list is cut; no `K`-theory.
 
   0 sorry. 0 new axioms. `#print axioms` on every declaration below:

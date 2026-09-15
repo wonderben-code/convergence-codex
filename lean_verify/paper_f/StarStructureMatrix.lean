@@ -173,19 +173,21 @@ theorem exists_inner_conjTranspose [NeZero n] :
 /-- **The centre of `Mₙ(K)` is the scalars.** `SPINE.md`'s L11 row names this as the missing
 half of `Aut(Mₙ) ≅ PGLₙ` and says *"the pinned Mathlib has no `Matrix.mem_center_iff`"*. **That
 clause is true and it was never the obstacle**: `Module.End.mem_center_iff` exists for any FREE
-module, and `Matrix.toLinAlgEquiv (Pi.basisFun K (Fin n))` transports it. Eight lines, and the
+module, and `Matrix.toLinAlgEquiv (Pi.basisFun K ι)` transports it, **for an arbitrary finite index
+type** — generalised from `Fin m` in unit 39, where the general form is what the even-grading
+obstruction needs; the proof did not change a line. Eight lines, and the
 transport direction that matters is surjectivity of the equivalence — the centre condition has
 to be checked against every endomorphism, and every endomorphism is a matrix. -/
-theorem matrix_center_scalar {K : Type} [Field K] {m : ℕ} (M : Matrix (Fin m) (Fin m) K)
-    (h : ∀ A : Matrix (Fin m) (Fin m) K, M * A = A * M) :
-    ∃ c : K, M = c • (1 : Matrix (Fin m) (Fin m) K) := by
-  have hc : (Matrix.toLinAlgEquiv (Pi.basisFun K (Fin m)) M) ∈
-      Set.center (Module.End K (Fin m → K)) := by
+theorem matrix_center_scalar {K : Type} [Field K] {ι : Type} [Fintype ι] [DecidableEq ι]
+    (M : Matrix ι ι K) (h : ∀ A : Matrix ι ι K, M * A = A * M) :
+    ∃ c : K, M = c • (1 : Matrix ι ι K) := by
+  have hc : (Matrix.toLinAlgEquiv (Pi.basisFun K ι) M) ∈
+      Set.center (Module.End K (ι → K)) := by
     refine Semigroup.mem_center_iff.mpr fun g => ?_
-    obtain ⟨B, hB⟩ := (Matrix.toLinAlgEquiv (Pi.basisFun K (Fin m))).surjective g
+    obtain ⟨B, hB⟩ := (Matrix.toLinAlgEquiv (Pi.basisFun K ι)).surjective g
     rw [← hB, ← map_mul, ← map_mul, h]
   obtain ⟨c, _, hcc⟩ := Module.End.mem_center_iff.mp hc
-  refine ⟨c, (Matrix.toLinAlgEquiv (Pi.basisFun K (Fin m))).injective ?_⟩
+  refine ⟨c, (Matrix.toLinAlgEquiv (Pi.basisFun K ι)).injective ?_⟩
   rw [hcc, map_smul, _root_.map_one]
   rfl
 
