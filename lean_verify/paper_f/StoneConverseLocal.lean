@@ -64,9 +64,13 @@
     written** — it is the first thing the extension above needs.~~ **WRITTEN IN THE SAME UNIT:**
     `argSelfAdjoint_one` (`argSelfAdjoint 1 = 0`, off `cfc_apply_one`, which Mathlib does not
     state), `eventually_norm_localGenerator_lt` and **`localGenerator_add_of_small`** — additivity
-    near `0` with NO norm hypothesis. So of the extension's four pieces the FIRST is done; the
-    other three (iterate for `a (n • t) = n • a t`, upgrade `ℚ` to `ℝ`, then `H` and the group
-    law) are not written, and the list above is the order to do them in.
+    near `0` with NO norm hypothesis. **And the SECOND piece landed with it**:
+    `localGenerator_nsmul` (`a (n t) = n · a t` on the window) and
+    `localGenerator_eq_nsmul_div` (`a t = n · a (t / n)`), which is `ℚ`-divisibility in the form
+    the next step consumes. **Two of the four are done. The remaining two are not written**:
+    upgrade divisibility to `ℝ`-homogeneity using `continuousAt_localGenerator`, then set
+    `H := (1/t₀) • a t₀` for one small `t₀` and carry `U t = exp(itH)` to all of `ℝ` by the group
+    law. The list above is the order to do them in.
   * **The group law is nowhere used**, so nothing here is specific to one-parameter groups. That is
     a feature of the statements and a limit on them: `local_generator_exists` would hold for any
     continuous curve through `1`.
@@ -86,7 +90,7 @@
     both are recorded as not chased, which is the distinction `ERRATUM 583` exists for.
   * **Nothing about the Born rule, Gleason or Wigner**, the other named residues of L21.
 
-  0 sorry. 0 new axioms. 12 declarations, all on `[propext, Classical.choice, Quot.sound]`.
+  0 sorry. 0 new axioms. 14 declarations, all on `[propext, Classical.choice, Quot.sound]`.
 -/
 
 import FiniteStone
@@ -247,7 +251,55 @@ theorem localGenerator_add_of_small (U : ℝ → unitary A) (hU0 : U 0 = 1)
       _ = Real.pi := by ring
   exact localGenerator_add U hgrp (hb₂ s hs2) (hb₂ t ht2) hsum
 
-/-! ## 5. The boundary of the local statement -/
+/-! ## 5. Iterating it: `ℕ`-homogeneity, and division -/
+
+/-- **`a (n t) = n · a t` while everything stays in the window** — the second of the four pieces
+`UNLOCK_WATCHLIST` entry 268 lists. Induction on `n` off `localGenerator_add_of_small`; the only
+care needed is that `|k t| ≤ |(k+1) t|` and `|t| ≤ |(k+1) t|`, so one hypothesis on the largest
+multiple covers every smaller one. -/
+theorem localGenerator_nsmul (U : ℝ → unitary A) (hU0 : U 0 = 1) (hc : ContinuousAt U 0)
+    (hgrp : ∀ s t, U (s + t) = U s * U t) :
+    ∃ δ > 0, ∀ (n : ℕ) (t : ℝ), |(n : ℝ) * t| < δ →
+      argSelfAdjoint (U ((n : ℝ) * t)) = n • argSelfAdjoint (U t) := by
+  obtain ⟨δ, hδ, hadd⟩ := localGenerator_add_of_small U hU0 hc hgrp
+  refine ⟨δ, hδ, ?_⟩
+  intro n
+  induction n with
+  | zero => intro t _; simp [hU0]
+  | succ k ih =>
+    intro t ht
+    push_cast at ht ⊢
+    have hk0 : (0 : ℝ) ≤ (k : ℝ) := Nat.cast_nonneg k
+    have ht' : |(k : ℝ) * t| < δ := by
+      refine lt_of_le_of_lt ?_ ht
+      rw [abs_mul, abs_mul]
+      refine mul_le_mul_of_nonneg_right ?_ (abs_nonneg t)
+      rw [abs_of_nonneg hk0, abs_of_nonneg (by linarith : (0:ℝ) ≤ (k:ℝ) + 1)]
+      linarith
+    have htt : |t| < δ := by
+      refine lt_of_le_of_lt ?_ ht
+      rw [abs_mul, abs_of_nonneg (by linarith : (0:ℝ) ≤ (k:ℝ) + 1)]
+      nlinarith [abs_nonneg t]
+    have hsplit : ((k : ℝ) + 1) * t = (k : ℝ) * t + t := by ring
+    rw [hsplit, hadd _ _ ht' htt, ih t ht', succ_nsmul]
+
+/-- **And so the generator is divisible**: `a t = n · a (t / n)` for every positive `n`, on the
+same window. This is the form the `ℝ`-homogeneity step consumes — stated with `n •` on the right
+rather than `(1/n) •` on the left, so no scalar inverse appears and nothing has to be said about
+`Module ℝ (selfAdjoint A)`. -/
+theorem localGenerator_eq_nsmul_div (U : ℝ → unitary A) (hU0 : U 0 = 1)
+    (hc : ContinuousAt U 0) (hgrp : ∀ s t, U (s + t) = U s * U t) :
+    ∃ δ > 0, ∀ (n : ℕ) (t : ℝ), 0 < n → |t| < δ →
+      argSelfAdjoint (U t) = n • argSelfAdjoint (U (t / n)) := by
+  obtain ⟨δ, hδ, hn⟩ := localGenerator_nsmul U hU0 hc hgrp
+  refine ⟨δ, hδ, fun n t hnpos htlt => ?_⟩
+  have hne : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hnpos.ne'
+  have hmul : (n : ℝ) * (t / n) = t := by field_simp
+  have h := hn n (t / n) (by rw [hmul]; exact htlt)
+  rw [hmul] at h
+  exact h
+
+/-! ## 6. The boundary of the local statement -/
 
 /-- **Away from `1`, a general C⋆-algebra gives a PRODUCT of exponentials, not one.** Mathlib's
 `Unitary.mem_pathComponentOne_iff`, stated here to mark what `exists_selfAdjoint_exp_eq`'s
