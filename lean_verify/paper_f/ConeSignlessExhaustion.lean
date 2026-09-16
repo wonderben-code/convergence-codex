@@ -38,11 +38,21 @@
     rather than merely populated.**
 
   WHAT IS **NOT** CLAIMED.
-  * **MULTIPLICITIES ARE STILL NOT COMPUTED**, and this is where unit 79's independence remark
-    belongs. The dichotomy says which numbers CAN be eigenvalues and that nothing else can; it
-    does not say how many times each occurs, and that genuinely does need independence of `G`'s
-    zero-sum eigenvectors. **The fence has moved from *which numbers* to *how many times*, which
-    is a smaller fence and a different one.**
+  * ~~**MULTIPLICITIES ARE STILL NOT COMPUTED**, and this is where unit 79's independence remark
+    belongs. The dichotomy does not say how many times each eigenvalue occurs, and that
+    genuinely does need independence of `G`'s zero-sum eigenvectors.~~ **COMPUTED THE NEXT UNIT
+    (82), TO WITHIN THE ONE HUB DIMENSION, AND INDEPENDENCE WAS NOT NEEDED FOR THAT EITHER.**
+    `ConeMultiplicity.finrank_coneEig_bounds`: the cone's multiplicity at `λ` is the rim's
+    zero-sum multiplicity at `λ − d − 1`, **or exactly one more, and never anything else**.
+    `finrank_coneEig` is the exact identity behind it, by rank–nullity on the projection
+    restricted to the eigenspace; `finrank_ker_le_one` bounds the hub term. **So the sentence
+    above was this file's own version of unit 79's mistake, one level down**: it named a real
+    ingredient (independence) and attached it to the wrong claim (the multiplicity), when what
+    the multiplicity actually needs is the same commuting projection read at the level of
+    eigenSPACES rather than eigenVECTORS. What survives is narrower still: **WHICH of the two
+    values it is, is not decided** — the kernel is one-dimensional exactly when `λ` is a root of
+    the hub quadratic and zero otherwise, and only the `≤ 1` bound is proved. The ambiguity is
+    one dimension and it is LOCATED: it is the hub plane and nothing else.
   * **No eigenvalue is EVALUATED.** As in unit 79, both disjuncts are stated in terms of inputs —
     a root of a quadratic, an eigenvalue of `G` — so nothing here computes a number.
   * **The wheel is still not instantiated**, and the cost of instantiating it is unchanged from
@@ -178,6 +188,38 @@ theorem hubPart_comm (hV : 0 < Fintype.card V) {d : ℕ} (hreg : ∀ i, G.degree
       rw [show (G.neighborFinset i).card = G.degree i from rfl, hreg i]
       field_simp
 
+/-- **THE RIM PART OF AN EIGENVECTOR IS AN EIGENVECTOR OF `G`'s ADJACENCY MATRIX**, at the
+eigenvalue shifted down by `d + 1`. **EXTRACTED FROM `eigenvalue_dichotomy`'s PROOF 2026-09-16
+(unit 82) rather than re-derived there** — `ERRATUM 348`'s rule, and the second time in this
+campaign it was applied before a duplicate existed. The multiplicity count needs this as a
+mapping property of a linear map, which a step buried inside a case split cannot serve. -/
+theorem rimPart_eigen (hV : 0 < Fintype.card V) {d : ℕ} (hreg : ∀ i, G.degree i = d)
+    (hrow : ∀ y : V → ℝ, ∑ i, (G.adjMatrix ℝ *ᵥ y) i = (d : ℝ) * ∑ i, y i)
+    {lam : ℝ} {x : Option V → ℝ}
+    (hQ : signlessLap (coneGraph G) *ᵥ x = lam • x) :
+    G.adjMatrix ℝ *ᵥ rimPart (V := V) x = (lam - (d : ℝ) - 1) • rimPart (V := V) x := by
+  have hhub : signlessLap (coneGraph G) *ᵥ hubPart (V := V) x = lam • hubPart (V := V) x := by
+    rw [← hubPart_comm G hV hreg hrow x, hQ, hubPart_smul]
+  funext i
+  have hxi := congrFun hQ (some i)
+  rw [cone_signless_mulVec_rim, hreg i] at hxi
+  have hhi := congrFun hhub (some i)
+  rw [cone_signless_mulVec_rim, hreg i] at hhi
+  simp only [hubPart_none, hubPart_some, Finset.sum_const,
+    show (G.neighborFinset i).card = G.degree i from rfl, hreg i, nsmul_eq_mul,
+    Pi.smul_apply, smul_eq_mul] at hhi
+  rw [adjMatrix_mulVec_apply, Pi.smul_apply, smul_eq_mul]
+  simp only [rimPart]
+  have hsum : ∑ u ∈ G.neighborFinset i, (x (some u)
+      - (∑ j, x (some j)) / (Fintype.card V : ℝ))
+      = (∑ u ∈ G.neighborFinset i, x (some u))
+        - (d : ℝ) * ((∑ j, x (some j)) / (Fintype.card V : ℝ)) := by
+    rw [Finset.sum_sub_distrib, Finset.sum_const,
+      show (G.neighborFinset i).card = G.degree i from rfl, hreg i, nsmul_eq_mul]
+  rw [hsum]
+  simp only [Pi.smul_apply, smul_eq_mul] at hxi
+  linarith [hxi, hhi]
+
 /-- **THE EXHAUSTION.** Every eigenvalue of the cone's signless Laplacian is either a root of
 the hub block's quadratic or `d + 1 + μ` for `μ` an eigenvalue of `G`'s adjacency matrix on a
 NONZERO zero-sum vector. **Nothing about independence of `G`'s eigenvectors is used**: the two
@@ -231,26 +273,8 @@ theorem eigenvalue_dichotomy [Nonempty V] {d : ℕ} (hreg : ∀ i, G.degree i = 
     · linarith [h]
     · exact absurd h hbne
   · right
-    refine ⟨rimPart (V := V) x, hr, rimPart_sum hV x, ?_⟩
-    funext i
-    have hxi := congrFun hQ (some i)
-    rw [cone_signless_mulVec_rim, hreg i] at hxi
-    have hhi := congrFun hhub (some i)
-    rw [cone_signless_mulVec_rim, hreg i] at hhi
-    simp only [hubPart_none, hubPart_some, Finset.sum_const,
-      show (G.neighborFinset i).card = G.degree i from rfl, hreg i, nsmul_eq_mul,
-      Pi.smul_apply, smul_eq_mul] at hhi
-    rw [adjMatrix_mulVec_apply, Pi.smul_apply, smul_eq_mul]
-    simp only [rimPart]
-    have hsum : ∑ u ∈ G.neighborFinset i, (x (some u)
-        - (∑ j, x (some j)) / (Fintype.card V : ℝ))
-        = (∑ u ∈ G.neighborFinset i, x (some u))
-          - (d : ℝ) * ((∑ j, x (some j)) / (Fintype.card V : ℝ)) := by
-      rw [Finset.sum_sub_distrib, Finset.sum_const,
-        show (G.neighborFinset i).card = G.degree i from rfl, hreg i, nsmul_eq_mul]
-    rw [hsum]
-    simp only [Pi.smul_apply, smul_eq_mul] at hxi
-    linarith [hxi, hhi]
+    exact ⟨rimPart (V := V) x, hr, rimPart_sum hV x,
+      rimPart_eigen G hV hreg hrow hQ⟩
 
 end Exhaustion
 
