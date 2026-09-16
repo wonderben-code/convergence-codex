@@ -56,11 +56,22 @@
 
   WHAT IS **NOT** CLAIMED.
 
-  * **THE RIM'S MULTIPLICITIES ARE NOT COMPUTED, only bounded below by one.** `Re(chi k)` and
+  * ~~**THE RIM'S MULTIPLICITIES ARE NOT COMPUTED, only bounded below by one.** `Re(chi k)` and
     `Im(chi k)` are both eigenvectors at the same value and are independent for
     `k ∉ {0, N/2}` — **and proving that independence is exactly the step this chain has avoided
     in every unit.** So the rim side gives eigenVALUES with a nonzero eigenspace, not a
-    multiplicity table. The fence has moved from *no `G`* to *this `G`, one direction*.
+    multiplicity table. The fence has moved from *no `G`* to *this `G`, one direction*.~~
+    **BOUNDED BELOW BY TWO THE NEXT UNIT (88), AND THE INDEPENDENCE COST TWO COORDINATE
+    EVALUATIONS** (`WheelMultiplicity.two_le_finrank_rimEig`, `ERRATUM 620`). At `j = 0` the
+    character is `1`, so its real part is `1` and its imaginary part is `0` and the coefficient
+    of `Re` has to vanish; what is left is `Im(chi) = 0`, and at `j = 1` the character is
+    `zeta ^ k` whose imaginary part is `sin(2πk/N)`. **No independence theory, no orthogonality,
+    no basis.** This paragraph's *the step this chain has avoided in every unit* was true of the
+    chain and false about the difficulty: what every unit from 79 onward declined was
+    independence **in general**, and what was needed was independence of **two named vectors**.
+    What survives, and is now the whole residue: the multiplicity is **not pinned at two** — the
+    upper bound needs the rim's zero-sum spectrum EXHAUSTED by these vectors, a count over all
+    `k` at once, which is not attempted.
   * **THE RIM VALUES ARE NOT PROVED TO EXHAUST THE RIM.** Unit 80's dichotomy says every
     eigenvalue is a hub root or `3 + μ` with `μ` a zero-sum adjacency eigenvalue; that the
     `2cos(2πk/N)` are ALL such `μ` would need a dimension count, which is the same missing
