@@ -63,14 +63,27 @@
     it in one line, which is the point of computing a fibre.
 
   WHAT IS **NOT** CLAIMED.
-  * **The signature is still not computed.** No invariant is constructed here. The file says
-    precisely which twists collide; it does not say which Hermitian forms there are up to `ℝˣ`.
+  * ~~**The signature is still not computed.** No invariant is constructed here.~~ **AMENDED
+    2026-09-16 (unit 70): the invariant IS constructed.** `HermitianRealForm.signature` is the
+    pair `(sigPos, sigNeg)` of the real form `x ↦ re ⟪x, P x⟫`, and
+    `signature_eq_or_swap_of_star_eq` proves the ⋆-structure determines it **up to exchanging
+    its two halves** — which is the bound `hermitianStar_neg` below predicted, and
+    `star_eq_but_signature_ne` shows the exchange is realised rather than a hedge, off the two
+    computed values `signature 1 = (2n, 0)` and `signature (-1) = (0, 2n)`. **Still not
+    computed as of 2026-09-16: the signature of a GENERAL twist.** No diagonalisation is
+    performed, so this file's own `diagTwist = diag(1,-1)` has no evaluated signature. The
+    sentence that follows was the accurate part and stands: this file says precisely which
+    twists collide; it does not say which Hermitian forms there are up to `ℝˣ`.
   * **`conjTransposeStar_ne_diagTwist` separates the two structures as MAPS, not up to
     EQUIVALENCE**, and the difference is not cosmetic. ⋆-structures are classified in the
     literature up to conjugation by an algebra automorphism — `t = α⁻¹ ∘ s ∘ α` — and the
     `ℝˣ`-classes computed here are a strictly finer partition than the conjugation classes.
     Classically these two ⋆-structures are inequivalent because their signatures `(2,0)` and
-    `(1,1)` differ; **that is not what is proved here.**
+    `(1,1)` differ; **that is not what is proved here.** Nor, as of 2026-09-16, anywhere:
+    unit 70 supplies `HermitianRealForm.signature_congr`, the congruence invariance that an
+    inequivalence statement needs, and writes out the algebra (conjugating by `X ↦ S X S⁻¹`
+    replaces the twist `P` by `SᴴP S`), but **the bookkeeping is not written as a theorem about
+    `hermitianStar`**, so the word *inequivalent* is still unearned.
   * **What the missing step needs, measured rather than guessed.** The pinned Mathlib has both
     halves of Sylvester's law of inertia — `Mathlib/LinearAlgebra/QuadraticForm/Signature.lean`
     with `QuadraticMap.Equivalent.sigPos_eq` and `sigNeg_eq` for invariance under equivalence
@@ -81,9 +94,13 @@
     absent is the bridge, and it is bespoke work rather than a lemma.** A complex Hermitian
     form is sesquilinear, not `ℂ`-bilinear, so it is not `QuadraticMap.restrictScalars` of
     anything; the passage is `x ↦ re ⟪x, P x⟫` on the underlying real space, with the Hermitian
-    signature `(p, q)` appearing as `(2p, 2q)`. **The estate has 0 declarations whose
-    statement names both a quadratic form and `IsHermitian` or `conjTranspose`** — grepped —
-    and Mathlib's `QuadraticForm` directory names `IsHermitian` nowhere.
+    signature `(p, q)` appearing as `(2p, 2q)`. ~~**The estate has 0 declarations whose
+    statement names both a quadratic form and `IsHermitian` or `conjTranspose`**~~ — grepped,
+    and true when measured — and Mathlib's `QuadraticForm` directory names `IsHermitian`
+    nowhere. **THE BRIDGE WAS BUILT THE NEXT UNIT (70)**, along exactly the passage described
+    above: `HermitianRealForm.realBilin` and `realQuad`, with `realBilin_symm` the one place
+    `Pᴴ = P` is spent and the `(2p, 2q)` doubling visible in `signature_one`. **The estimate in
+    this bullet was right about the route and about the cost** — it is bespoke and it is short.
   * **Nothing over `ℝ` or `ℍ`.** `twist_unique` is a statement about `ℂ` and uses that the
     Hermitian condition is `conj`-linear over it.
   * **Nothing about the cascade is cut.** `a·b·c = 16` keeps every alternative
