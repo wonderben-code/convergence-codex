@@ -79,11 +79,18 @@
     literature up to conjugation by an algebra automorphism — `t = α⁻¹ ∘ s ∘ α` — and the
     `ℝˣ`-classes computed here are a strictly finer partition than the conjugation classes.
     Classically these two ⋆-structures are inequivalent because their signatures `(2,0)` and
-    `(1,1)` differ; **that is not what is proved here.** Nor, as of 2026-09-16, anywhere:
-    unit 70 supplies `HermitianRealForm.signature_congr`, the congruence invariance that an
-    inequivalence statement needs, and writes out the algebra (conjugating by `X ↦ S X S⁻¹`
-    replaces the twist `P` by `SᴴP S`), but **the bookkeeping is not written as a theorem about
-    `hermitianStar`**, so the word *inequivalent* is still unearned.
+    `(1,1)` differ; **that is not what is proved here.** ~~Nor, as of 2026-09-16, anywhere~~ —
+    **IT IS, AS OF UNIT 71**, `paper_f/StarStructureInequivalent.lean`. The bookkeeping this line
+    said was unwritten is `hermitianStar_congrTwist` (conjugation congrues the twist);
+    `conjugate_of_conjugateAlg` discharges *inner costs no generality* off
+    `SkolemNoether.skolemNoether` rather than asserting it; `signature_eq_or_swap_of_conjugate`
+    composes it with unit 70's `signature_congr`; and
+    `not_conjugateAlg_conjTransposeStar_diagTwist` **separates exactly the two structures this
+    bullet names, at exactly the signatures it names** — `(4, 0)` against `(2, 2)` on the real
+    form, which is `(2,0)` against `(1,1)` doubled. **So the estimate in this bullet was right
+    and its verdict is now out of date**; the `ℝˣ`-classes are still a strictly finer partition
+    than the conjugation classes, which is why the fibre and the signature are different
+    instruments.
   * **What the missing step needs, measured rather than guessed.** The pinned Mathlib has both
     halves of Sylvester's law of inertia — `Mathlib/LinearAlgebra/QuadraticForm/Signature.lean`
     with `QuadraticMap.Equivalent.sigPos_eq` and `sigNeg_eq` for invariance under equivalence

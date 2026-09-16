@@ -64,12 +64,24 @@
     `α⁻¹ (s (α X)) = S⁻¹ ((P S) X (P S)⁻¹)ᴴ S = (Q⁻¹)ᴴ Xᴴ Qᴴ` with `Q = Sᴴ P S`, using that `P`
     and `P⁻¹` are Hermitian. **`signature_congr` is exactly the invariance that statement needs**,
     and `SkolemNoether.skolemNoether` — this estate's own — says every automorphism of `Mₙ(ℂ)` is
-    inner, so taking `α` inner costs no generality. **What is missing is the bookkeeping, not the
-    mathematics.** Until it is a theorem, *inequivalent* is not a word this estate has earned.
-  * **The signature is computed at `±1` and nowhere else.** No diagonalisation is performed, so the
-    signature of the previous unit's own `diagTwist = diag(1,-1)` is **not** evaluated; the Mathlib
-    route for that is `sigPos_of_equiv_weightedSumSquares` and it wants a weighted-sum-of-squares
-    presentation this file does not build.
+    inner, so taking `α` inner costs no generality. ~~**What is missing is the bookkeeping, not
+    the mathematics.** Until it is a theorem, *inequivalent* is not a word this estate has
+    earned.~~ **WRITTEN THE NEXT UNIT (71), AND THE ESTIMATE HELD.**
+    `StarStructureInequivalent.hermitianStar_congrTwist` is the identity above, proved by
+    conjugate-transposing both twists and `noncomm_ring`; `conjugate_of_conjugateAlg` turns the
+    *costs no generality* remark into a theorem off `SkolemNoether.skolemNoether`;
+    `conjugateAlg_symm` makes the relation symmetric so the word means what it should; and
+    `not_conjugateAlg_conjTransposeStar_diagTwist` exhibits **two ⋆-structures on `M₂(ℂ)` that no
+    algebra automorphism relates**, at signatures `(4, 0)` and `(2, 2)`. The bullet below is the
+    one that moved with it — `diagTwist`'s signature is now computed.
+  * ~~**The signature is computed at `±1` and nowhere else.**~~ **AMENDED (unit 71):
+    `diagTwist`'s signature IS computed, `(2, 2)`, and the route this bullet named is not the one
+    that worked.** `sigPos_of_equiv_weightedSumSquares` wants a weighted-sum-of-squares
+    presentation, and none was built: `StarStructureInequivalent.signature_diagTwist` squeezes
+    `sigPos` between `le_sigPos_of_posDef` on one coordinate kernel and
+    `QuadraticForm.sigPos_add_finrank_le_of_nonpos` on the other, both of dimension 2 by
+    rank–nullity. **Three values are computed in all as of 2026-09-16** — at `1`, `-1` and
+    `diag(1,-1)` — and no formula for a general twist, which still needs a diagonalisation.
   * **Nothing over `ℝ` or `ℍ`.** The real form is taken OF a complex matrix; no real or
     quaternionic ⋆-structure appears.
   * **Nothing about the cascade is cut.** `a·b·c = 16` keeps every alternative
