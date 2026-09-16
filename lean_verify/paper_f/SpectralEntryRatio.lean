@@ -43,7 +43,7 @@ regime — in either direction, **it grows without bound in the width at every `
 criterion needs it below `√2`. Hence:
 
 * at `β = 0` every entry is `exp 0 = 1`, the criterion gives ratio `0`, and
-  `IsingTopRatio.uniformSubTopRatio_zero`'s content is recovered from a general statement —
+  `IsingTopRatioZero.uniformSubTopRatio_zero`'s content is recovered from a general statement —
   `ratio_zero_of_constant_entries` below;
 * **at every `β > 0` this route is silent, and not because the estimate is lossy.** The quantity it
   consumes is already unbounded in `n`.
@@ -193,7 +193,7 @@ theorem subTop_ratio_le (hA : A.IsHermitian) {a b : ℝ} (ha : 0 < a)
 /-! ## 5. What it gives at `β = 0`, and what it cannot give beyond -/
 
 /-- **THE CRITERION IS NOT VACUOUS AND ITS EXTREME CASE IS THE KNOWN ONE.** When every entry is
-the same positive number the ratio is `0` — which is `IsingTopRatio.uniformSubTopRatio_zero`'s
+the same positive number the ratio is `0` — which is `IsingTopRatioZero.uniformSubTopRatio_zero`'s
 content reached from a general statement rather than from the rank-one computation.
 
 At `β = 0` every entry of the symmetrised transfer matrix is `exp 0 = 1`, so this applies with

@@ -235,7 +235,7 @@ that is this one.
 Because doing it directly would duplicate `LatticeReflection.adj_refl`'s
 `Fin` arithmetic in the other slot, and duplicated arithmetic is where sign
 errors live. Transporting it costs three rewrites and consumes
-`BoxGraph.adj_revSite`, which was already proved for every coordinate.
+`GraphReflection.adj_revSite`, which was already proved for every coordinate.
 **`BoxGraph`'s generality in `i : Fin d` is being cashed here for the second
 time today**, and it was written speculatively.
 

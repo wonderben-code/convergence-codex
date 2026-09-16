@@ -43,7 +43,7 @@ negative-definite form on the pure part with the Clifford structure, and `dim V 
 **untouched, not attempted, and not costed** (`ERRATUM 194`, `ERRATUM 246`).
 
 **No submodule object is constructed here.** The statement proved is closure under addition and
-under real scalars (`RealDivisionPure.isPure_smul` is in this file, not that one); bundling those
+under real scalars (`RealDivisionPureAdd.isPure_smul` is in this file, not that one); bundling those
 into a `Submodule ℝ D` is a definition, not a theorem, and nothing consumes it yet.
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.

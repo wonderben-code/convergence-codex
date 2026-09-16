@@ -17,7 +17,8 @@ the shape: the product characters are eigenvectors of `Q` too, with one cosine p
 > place of its single term.
 >
 > **`nuQ_add_nu`** — and `νQ + ν = 4d + m²` at every frequency, which is
-> `LaplacianSignless.signlessLap_add_lapMatrix`'s `Q + L = 2D` on a `2d`-regular graph, read one
+> `LaplacianSignlessDefinite.signlessLap_add_lapMatrix`'s `Q + L = 2D` on a `2d`-regular
+> graph, read one
 > eigenvector at a time. **The check the cycle file made at `d = 1`, in every dimension.**
 >
 > **`nuQ_eq_zero_of_even`** — at an even side length and the all-halfway frequency the eigenvalue

@@ -16,7 +16,7 @@
   signless fibre**. The estate's exact signless multiplicities — 95 of them,
   counted for `ERRATUM 541` — cover the box, the complete graph, the multipartite
   family, the paw, several named small graphs, and the torus only at its
-  EXTREMES (`TorusTopSimple.signless_zero_simple_real`, the eigenvalue `0` at even
+  EXTREMES (`TorusRealMultiplicity.signless_zero_simple_real`, the eigenvalue `0` at even
   side length). The interior of the ring is not among them. **That count is what
   chose this unit**, and running it before starting is the whole of what
   `ERRATUM 541` asks for.
@@ -45,7 +45,7 @@
 
   WHAT IS NOT CLAIMED. **Nothing about the EVEN cycle's half frequency.** At
   `2k = n` the fibre is a singleton too and the eigenvalue is `0`, but that case is
-  `TorusTopSimple.signless_zero_simple_real` and is not restated here — item 5 is
+  `TorusRealMultiplicity.signless_zero_simple_real` and is not restated here — item 5 is
   stated for odd `n` precisely so that it does not overlap it. **No count of
   DISTINCT eigenvalues** is given, and item 5 is not "the spectrum of the odd
   cycle": it assigns a multiplicity to each frequency and does not say that
@@ -220,7 +220,7 @@ appears there only at its extremes.
 
 **"§4 might overlap the even case."** It is stated at `2 * M + 3`, which is odd, so
 it does not reach the half frequency at all — where the fibre is also a singleton
-and the eigenvalue is `0`, and where `TorusTopSimple.signless_zero_simple_real`
+and the eigenvalue is `0`, and where `TorusRealMultiplicity.signless_zero_simple_real`
 already answers. Stating §4 for all `n` would have duplicated that theorem, which
 is the mistake `ERRATUM 541` is about.
 

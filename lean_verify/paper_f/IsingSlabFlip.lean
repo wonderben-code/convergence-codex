@@ -21,7 +21,7 @@
   all, because each bond is a product of two spins and both change sign. The
   INTRA-section term is not: `E (flipCross σ) = E σ` is a genuine hypothesis on
   the cross-section's own energy, carried explicitly here as `hE`. At `d = 2` it
-  is `IsingTransfer2D.intra_flipCol` and at the slab it is `slabIntra_flipCross`,
+  is `IsingFlipSymmetry.intra_flipCol` and at the slab it is `slabIntra_flipCross`,
   both proved below, and both for the same reason as the bonds — a sum of
   products of PAIRS of spins.
 

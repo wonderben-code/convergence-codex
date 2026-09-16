@@ -33,7 +33,7 @@
   `os2_measure_level` did NOT transfer and are not attempted**: they consume
   the reflection, and
 
-  **THERE IS NO REFLECTION ON `Site n` AT ALL.** `OS2MeasureLevel.theta` and
+  **THERE IS NO REFLECTION ON `Site n` AT ALL.** `OS2ProductField.theta` and
   `doubled` are built for the OU product's real-valued coordinates
   (`Fin (m+1) → ℝ`, reflecting the time coordinate); a finite box has no
   such map in the estate. So the "packaging" that was waiting turns out to

@@ -226,7 +226,8 @@ theorem mem_reachKer_iff_crossForm (hM : IsMirrorHalf θ H Mir) (h : IsRefl G θ
 the mass appears nowhere in it. `InReachKernel` mentions `m` in its definition, so this is not
 visible from the definition — it is a consequence of the block hypothesis.
 
-`CrossFormMatrix.crossForm_mass_independent` already says the *coupling* is mass-free; that is the
+`GraphMirrorReflection.crossForm_mass_independent` already says the *coupling* is mass-free;
+that is the
 reason the right-hand side of §3 has no `m` in it. What is new is that the property crosses to the
 reach kernel, which is defined through `GraphLaplacian.massive G m`.
 

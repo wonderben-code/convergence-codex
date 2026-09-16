@@ -21,7 +21,8 @@ because `Q` and `L` differ only in the sign of the neighbour sum.
 > and in particular real.
 >
 > **`signless_add_lap_eigenvalue`** — and the two spectra sum to `4` at every frequency, which is
-> `LaplacianSignless.signlessLap_add_lapMatrix`'s `Q + L = 2D` read one eigenvector at a time.
+> `LaplacianSignlessDefinite.signlessLap_add_lapMatrix`'s `Q + L = 2D` read one eigenvector
+> at a time.
 > Two theorems proved by different routes are hereby checked to agree.
 
 **WHAT THE EVEN CASE BUYS, AND IT IS A CHECK AND NOT A NEW FACT.** At `N = 2M` and `k = M` the
@@ -114,7 +115,8 @@ theorem signless_eigenvalue_at_zero (n : ℕ) :
 
 /-! ## 4. `Q + L = 2D`, one eigenvector at a time -/
 
-/-- **THE TWO SPECTRA SUM TO `4` AT EVERY FREQUENCY.** `LaplacianSignless.signlessLap_add_lapMatrix`
+/-- **THE TWO SPECTRA SUM TO `4` AT EVERY FREQUENCY.**
+`LaplacianSignlessDefinite.signlessLap_add_lapMatrix`
 says `Q + L = 2D` as matrices; on the cycle `D` is `2·1`, so on a common eigenvector the two
 eigenvalues must sum to `4`. They do, and the cosines cancel. **Two calculations that came from
 different files are hereby checked against each other; had they disagreed, one would be wrong.** -/
