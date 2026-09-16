@@ -80,8 +80,15 @@
     presentation, and none was built: `StarStructureInequivalent.signature_diagTwist` squeezes
     `sigPos` between `le_sigPos_of_posDef` on one coordinate kernel and
     `QuadraticForm.sigPos_add_finrank_le_of_nonpos` on the other, both of dimension 2 by
-    rank–nullity. **Three values are computed in all as of 2026-09-16** — at `1`, `-1` and
-    `diag(1,-1)` — and no formula for a general twist, which still needs a diagonalisation.
+    rank–nullity. ~~**Three values are computed in all as of 2026-09-16** — at `1`, `-1` and
+    `diag(1,-1)` — and no formula for a general twist, which still needs a diagonalisation.~~
+    **THE FORMULA LANDED IN UNIT 73**, `HermitianSignatureEigenvalues.signature_isHermitian`:
+    for every Hermitian `P`, `signature P = (2 · #{i | 0 < λᵢ}, 2 · #{i | λᵢ < 0})` in its
+    eigenvalues, off Mathlib's `spectral_theorem` and this file's `signature_congr`. **And the
+    prediction in this bullet was wrong in the useful direction**: it said a diagonalisation was
+    needed, and one is — but Mathlib supplies it, and `RE-SWEEP #58` found that by grep rather
+    than by reasoning. `signature_add_of_unit` adds that an INVERTIBLE twist's two halves sum to
+    `2n`, so the form is non-degenerate, which was the watchlist's own word for the residue.
   * **Nothing over `ℝ` or `ℍ`.** The real form is taken OF a complex matrix; no real or
     quaternionic ⋆-structure appears.
   * **Nothing about the cascade is cut.** `a·b·c = 16` keeps every alternative

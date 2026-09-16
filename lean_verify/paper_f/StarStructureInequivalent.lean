@@ -57,7 +57,12 @@
     existence half of the inertia law — any two Hermitian forms of equal signature are congruent —
     which is `QuadraticForm.equivalent_one_zero_neg_one_weighted_sum_squared` in Mathlib and is
     **not consumed here**. Without it, equal signatures do not give conjugacy.
-  * **The signature is computed at `±1` and at `diag(1,-1)` only.** Three values, not a formula.
+  * ~~**The signature is computed at `±1` and at `diag(1,-1)` only.** Three values, not a
+    formula.~~ **AMENDED (unit 73): there IS a formula** —
+    `HermitianSignatureEigenvalues.signature_isHermitian` counts the signs of the eigenvalues,
+    doubled, for every Hermitian matrix. What is still true, and is the narrower statement: **no
+    eigenvalue is EVALUATED anywhere**, so `signature_diagTwist = (2,2)` above remains the only
+    non-definite value this estate holds in hand, and it was obtained without the formula.
     A general `diag(1,…,1,-1,…,-1)` would need the argument above run at every split, and the
     general Hermitian twist would need a diagonalisation.
   * **`ConjugateAlg` is about ⋆-structures on ONE algebra.** Nothing compares ⋆-structures across
