@@ -58,9 +58,18 @@
     relative to `finrank (rimEig G (lam - d - 1))`, which this chain has never computed for any
     `G`. Two eigenvalues out of `n + 1` are now explicit; the other `n - 1` are inputs.
   * **NO CHARACTERISTIC POLYNOMIAL, NO SPECTRAL THEOREM, NO ENUMERATION.** The two roots are
-    reals that are shown to be eigenvalues; nothing here says they are the TOP two, nothing
-    orders the spectrum, and nothing connects to Mathlib's `IsHermitian.eigenvalues` indexing —
+    reals that are shown to be eigenvalues; ~~nothing here says they are the TOP two, nothing
+    orders the spectrum,~~ and nothing connects to Mathlib's `IsHermitian.eigenvalues` indexing —
     the fence this cluster keeps meeting, and untouched here.
+    **THE STRUCK HALF WAS TRUE OF THIS FILE FOR THREE UNITS AND IS NOW FALSE OF THE ESTATE**
+    (2026-09-16, unit 86, `ConeTopEigen.isGreatest_coneSpectrum`): `hubRootPlus` is proved the
+    GREATEST eigenvalue of the cone's `Q`, and `finrank_coneEig_hubRootPlus` proves its
+    eigenspace exactly one-dimensional, so the top is identified AND simple. What made it
+    reachable was unit 85's eigenvector-form degree bound plus the observation that
+    `hubDisc − (2d + 1 − n)² = 4n`; neither needed a spectral theorem. **The enumeration half of
+    the sentence stands** — nothing here or there touches `IsHermitian.eigenvalues` — and so does
+    *nothing orders the REST of the spectrum*: one eigenvalue is separated, and which of the
+    remaining `n − 1` is second is still unknown. Original kept per `ERRATUM 94`.
   * **NOTHING ABOUT A NON-REGULAR RIM.** `hreg` is carried unchanged from unit 80; the projection
     is not `Q`-invariant without it and the chain says so four files running. **The companion
     hypothesis `hrow` — *the adjacency row sums total `d` times the total* — was carried beside
