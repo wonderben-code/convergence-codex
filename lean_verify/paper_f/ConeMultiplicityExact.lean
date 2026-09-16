@@ -55,8 +55,13 @@
   WHAT IS **NOT** CLAIMED.
 
   * **THE RIM HALF EVALUATES NOTHING, AND IT IS THE BIGGER HALF.** Everything about the rim is
-    relative to `finrank (rimEig G (lam - d - 1))`, which this chain has never computed for any
-    `G`. Two eigenvalues out of `n + 1` are now explicit; the other `n - 1` are inputs.
+    relative to `finrank (rimEig G (lam - d - 1))`, ~~which this chain has never computed for any
+    `G`~~ — **NARROWED, NOT FALSIFIED, 2026-09-16 (unit 87)**: `WheelSpectrum` exhibits a nonzero
+    member of `rimEig (cycleGraph (n+3)) (2cos(2πk/(n+3)))` for every `k ≠ 0`, so that eigenspace
+    is proved **at least a line** at one `G`. **No exact rim dimension is computed anywhere,
+    still**, because two independent real eigenvectors would need the independence this chain has
+    avoided in every unit. Two eigenvalues out of `n + 1` are now explicit; the other `n - 1` are
+    inputs, and at the cycle their VALUES are known while their multiplicities are not.
   * **NO CHARACTERISTIC POLYNOMIAL, NO SPECTRAL THEOREM, NO ENUMERATION.** The two roots are
     reals that are shown to be eigenvalues; ~~nothing here says they are the TOP two, nothing
     orders the spectrum,~~ and nothing connects to Mathlib's `IsHermitian.eigenvalues` indexing —

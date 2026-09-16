@@ -44,8 +44,11 @@
 
   * **`λ₂` IS NOT EVALUATED, AND THE CEILING IS NOT SHOWN TIGHT.** `2d + 1` is an upper bound on
     everything below the top; whether any eigenvalue attains it depends on the rim's spectrum,
-    which this chain has computed for no `G`. L37122 asked for *a ceiling on `λ₂`* and gets one;
-    it did not ask for the value and does not get it.
+    ~~which this chain has computed for no `G`~~ — **NARROWED 2026-09-16 (unit 87)**: the cycle's
+    rim VALUES are now known (`2cos(2πk/N)`, so the cone's are `3 + 2cos(2πk/N)`, all of them
+    `≤ 5 = 2d + 1` at `d = 2`, and `5` is approached but **not proved attained** — that would
+    need `cos = 1` at some `k ≠ 0`, which is false). L37122 asked for *a ceiling on `λ₂`* and
+    gets one; it did not ask for the value and does not get it, at the cycle or anywhere else.
   * **NO ORDERING OF THE REST OF THE SPECTRUM.** One eigenvalue is identified and separated. The
     other `n − 1` are still the rim's, unevaluated, and nothing here says which is second.
   * **NOTHING FOR A NON-REGULAR RIM**, and nothing about Mathlib's `IsHermitian.eigenvalues`
