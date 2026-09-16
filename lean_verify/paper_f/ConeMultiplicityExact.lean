@@ -61,8 +61,14 @@
     reals that are shown to be eigenvalues; nothing here says they are the TOP two, nothing
     orders the spectrum, and nothing connects to Mathlib's `IsHermitian.eigenvalues` indexing —
     the fence this cluster keeps meeting, and untouched here.
-  * **NOTHING ABOUT A NON-REGULAR RIM.** `hreg` and `hrow` are carried unchanged from unit 80;
-    the projection is not `Q`-invariant without them and the chain says so three files running.
+  * **NOTHING ABOUT A NON-REGULAR RIM.** `hreg` is carried unchanged from unit 80; the projection
+    is not `Q`-invariant without it and the chain says so four files running. **The companion
+    hypothesis `hrow` — *the adjacency row sums total `d` times the total* — was carried beside
+    `hreg` in sixty-one places across this chain and is GONE from all of them**, because it is
+    exactly `ConeSignlessExhaustion.sum_adjMatrix_mulVec G hreg`, a theorem sitting above every
+    consumer in the file that declared it. Found by reading this file's own signatures and
+    removed the same day; it is an interface simplification and **not** a generalisation, since
+    `hrow` never restricted anything.
   * **NOTHING ABOUT THE CASCADE, THE SPINE OR ANY WALL.** This is `L34948` clause (b)'s family,
     deepened; it is not on the spine and it moves no wall.
 
@@ -217,9 +223,9 @@ theorem hubVec_mem_coneEig {d : ℕ} (hreg : ∀ i, G.degree i = d) {lam : ℝ}
 unit 79's `hubVec`. -/
 theorem ker_ne_bot_of_hubRoot [Nonempty V] (hV : 0 < Fintype.card V) {d : ℕ}
     (hreg : ∀ i, G.degree i = d)
-    (hrow : ∀ y : V → ℝ, ∑ i, (G.adjMatrix ℝ *ᵥ y) i = (d : ℝ) * ∑ i, y i) {lam : ℝ}
+    {lam : ℝ}
     (hlam : HubRoot (Fintype.card V) d lam) :
-    LinearMap.ker ((rimPartL (V := V)).restrict (rimPartL_mapsTo G hV hreg hrow lam)) ≠ ⊥ := by
+    LinearMap.ker ((rimPartL (V := V)).restrict (rimPartL_mapsTo G hV hreg lam)) ≠ ⊥ := by
   rw [Submodule.ne_bot_iff]
   refine ⟨⟨hubVec (V := V) d lam, hubVec_mem_coneEig G hreg hlam⟩, ?_, ?_⟩
   · rw [LinearMap.mem_ker]
@@ -234,8 +240,8 @@ that constant is not zero — so the rim row determines the hub entry and the hu
 the constant, **is** the hub quadratic. -/
 theorem hubRoot_of_ker_ne_bot [Nonempty V] (hV : 0 < Fintype.card V) {d : ℕ}
     (hreg : ∀ i, G.degree i = d)
-    (hrow : ∀ y : V → ℝ, ∑ i, (G.adjMatrix ℝ *ᵥ y) i = (d : ℝ) * ∑ i, y i) (lam : ℝ)
-    (h : LinearMap.ker ((rimPartL (V := V)).restrict (rimPartL_mapsTo G hV hreg hrow lam))
+    (lam : ℝ)
+    (h : LinearMap.ker ((rimPartL (V := V)).restrict (rimPartL_mapsTo G hV hreg lam))
           ≠ ⊥) :
     HubRoot (Fintype.card V) d lam := by
   rw [Submodule.ne_bot_iff] at h
@@ -253,7 +259,7 @@ theorem hubRoot_of_ker_ne_bot [Nonempty V] (hV : 0 < Fintype.card V) {d : ℕ}
     rw [h1, h2]
   have hcne : (z : Option V → ℝ) (some (Classical.arbitrary V)) ≠ 0 := by
     intro hc0
-    have hzz := eq_zero_of_hubRead_eq_zero G hV hreg hrow lam ⟨z, hzmem⟩ hc0
+    have hzz := eq_zero_of_hubRead_eq_zero G hV hreg lam ⟨z, hzmem⟩ hc0
     exact hz0 (Subtype.ext_iff.1 hzz)
   have heq := (mem_coneEig G).1 z.2
   have hnb : ∑ j ∈ G.neighborFinset (Classical.arbitrary V), (z : Option V → ℝ) (some j)
@@ -288,34 +294,34 @@ theorem hubRoot_of_ker_ne_bot [Nonempty V] (hV : 0 < Fintype.card V) {d : ℕ}
 with both directions of the determination it left open. -/
 theorem finrank_ker_eq_one_iff [Nonempty V] (hV : 0 < Fintype.card V) {d : ℕ}
     (hreg : ∀ i, G.degree i = d)
-    (hrow : ∀ y : V → ℝ, ∑ i, (G.adjMatrix ℝ *ᵥ y) i = (d : ℝ) * ∑ i, y i) (lam : ℝ) :
+    (lam : ℝ) :
     Module.finrank ℝ
-        (LinearMap.ker ((rimPartL (V := V)).restrict (rimPartL_mapsTo G hV hreg hrow lam))) = 1
+        (LinearMap.ker ((rimPartL (V := V)).restrict (rimPartL_mapsTo G hV hreg lam))) = 1
       ↔ HubRoot (Fintype.card V) d lam := by
   constructor
   · intro h1
-    refine hubRoot_of_ker_ne_bot G hV hreg hrow lam ?_
+    refine hubRoot_of_ker_ne_bot G hV hreg lam ?_
     intro hbot
     rw [hbot] at h1
     simp at h1
   · intro hlam
-    have hle := finrank_ker_le_one G hV hreg hrow lam
+    have hle := finrank_ker_le_one G hV hreg lam
     have h1 : 1 ≤ Module.finrank ℝ
-        (LinearMap.ker ((rimPartL (V := V)).restrict (rimPartL_mapsTo G hV hreg hrow lam))) :=
-      Submodule.one_le_finrank_iff.2 (ker_ne_bot_of_hubRoot G hV hreg hrow hlam)
+        (LinearMap.ker ((rimPartL (V := V)).restrict (rimPartL_mapsTo G hV hreg lam))) :=
+      Submodule.one_le_finrank_iff.2 (ker_ne_bot_of_hubRoot G hV hreg hlam)
     omega
 
 theorem finrank_ker_eq_zero_of_not_hubRoot [Nonempty V] (hV : 0 < Fintype.card V) {d : ℕ}
     (hreg : ∀ i, G.degree i = d)
-    (hrow : ∀ y : V → ℝ, ∑ i, (G.adjMatrix ℝ *ᵥ y) i = (d : ℝ) * ∑ i, y i) (lam : ℝ)
+    (lam : ℝ)
     (hlam : ¬ HubRoot (Fintype.card V) d lam) :
     Module.finrank ℝ
-        (LinearMap.ker ((rimPartL (V := V)).restrict (rimPartL_mapsTo G hV hreg hrow lam)))
+        (LinearMap.ker ((rimPartL (V := V)).restrict (rimPartL_mapsTo G hV hreg lam)))
       = 0 := by
-  have hle := finrank_ker_le_one G hV hreg hrow lam
+  have hle := finrank_ker_le_one G hV hreg lam
   have hne : Module.finrank ℝ
-      (LinearMap.ker ((rimPartL (V := V)).restrict (rimPartL_mapsTo G hV hreg hrow lam))) ≠ 1 :=
-    fun hc => hlam ((finrank_ker_eq_one_iff G hV hreg hrow lam).1 hc)
+      (LinearMap.ker ((rimPartL (V := V)).restrict (rimPartL_mapsTo G hV hreg lam))) ≠ 1 :=
+    fun hc => hlam ((finrank_ker_eq_one_iff G hV hreg lam).1 hc)
   omega
 
 end Kernel
@@ -327,74 +333,74 @@ section Multiplicity
 variable {V : Type*} [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj]
 
 /-- **THE MULTIPLICITY AT A HUB ROOT**: the rim's zero-sum dimension, plus exactly one. -/
-theorem finrank_coneEig_of_hubRoot [Nonempty V] (hV : 0 < Fintype.card V) {d : ℕ}
+theorem finrank_coneEig_of_hubRoot [Nonempty V] {d : ℕ}
     (hreg : ∀ i, G.degree i = d)
-    (hrow : ∀ y : V → ℝ, ∑ i, (G.adjMatrix ℝ *ᵥ y) i = (d : ℝ) * ∑ i, y i) {lam : ℝ}
+    {lam : ℝ}
     (hlam : HubRoot (Fintype.card V) d lam) :
     Module.finrank ℝ (coneEig G lam)
       = Module.finrank ℝ (rimEig G (lam - (d : ℝ) - 1)) + 1 := by
-  have he := finrank_coneEig G hV hreg hrow lam
-  have hk := (finrank_ker_eq_one_iff G hV hreg hrow lam).2 hlam
+  have he := finrank_coneEig G Fintype.card_pos hreg lam
+  have hk := (finrank_ker_eq_one_iff G Fintype.card_pos hreg lam).2 hlam
   omega
 
 /-- **AND AWAY FROM ONE**: the rim's zero-sum dimension, exactly. -/
-theorem finrank_coneEig_of_not_hubRoot [Nonempty V] (hV : 0 < Fintype.card V) {d : ℕ}
+theorem finrank_coneEig_of_not_hubRoot [Nonempty V] {d : ℕ}
     (hreg : ∀ i, G.degree i = d)
-    (hrow : ∀ y : V → ℝ, ∑ i, (G.adjMatrix ℝ *ᵥ y) i = (d : ℝ) * ∑ i, y i) {lam : ℝ}
+    {lam : ℝ}
     (hlam : ¬ HubRoot (Fintype.card V) d lam) :
     Module.finrank ℝ (coneEig G lam)
       = Module.finrank ℝ (rimEig G (lam - (d : ℝ) - 1)) := by
-  have he := finrank_coneEig G hV hreg hrow lam
-  have hk := finrank_ker_eq_zero_of_not_hubRoot G hV hreg hrow lam hlam
+  have he := finrank_coneEig G Fintype.card_pos hreg lam
+  have hk := finrank_ker_eq_zero_of_not_hubRoot G Fintype.card_pos hreg lam hlam
   omega
 
 /-- **THE STATEMENT UNIT 82 LEFT OPEN, CLOSED.** At every `lam`, the cone's eigenspace has the
 rim's zero-sum eigenspace dimension at `lam - d - 1`, plus one exactly at a hub root and plus
 nothing otherwise — and `hubRoot_not_three_distinct` bounds the exceptional set at two. -/
-theorem finrank_coneEig_cases [Nonempty V] (hV : 0 < Fintype.card V) {d : ℕ}
+theorem finrank_coneEig_cases [Nonempty V] {d : ℕ}
     (hreg : ∀ i, G.degree i = d)
-    (hrow : ∀ y : V → ℝ, ∑ i, (G.adjMatrix ℝ *ᵥ y) i = (d : ℝ) * ∑ i, y i) (lam : ℝ) :
+    (lam : ℝ) :
     (HubRoot (Fintype.card V) d lam ∧ Module.finrank ℝ (coneEig G lam)
         = Module.finrank ℝ (rimEig G (lam - (d : ℝ) - 1)) + 1)
       ∨ (¬ HubRoot (Fintype.card V) d lam ∧ Module.finrank ℝ (coneEig G lam)
         = Module.finrank ℝ (rimEig G (lam - (d : ℝ) - 1))) := by
   by_cases hlam : HubRoot (Fintype.card V) d lam
-  · exact Or.inl ⟨hlam, finrank_coneEig_of_hubRoot G hV hreg hrow hlam⟩
-  · exact Or.inr ⟨hlam, finrank_coneEig_of_not_hubRoot G hV hreg hrow hlam⟩
+  · exact Or.inl ⟨hlam, finrank_coneEig_of_hubRoot G hreg hlam⟩
+  · exact Or.inr ⟨hlam, finrank_coneEig_of_not_hubRoot G hreg hlam⟩
 
 /-! ## What the two roots buy: two eigenvalues, written down -/
 
 /-- **THE LARGER HUB ROOT IS AN EIGENVALUE OF THE CONE'S `Q`**, at every regular rim. This is
 the first place in this chain where an eigenvalue is WRITTEN DOWN rather than described, and it
 is why the *no eigenvalue is EVALUATED* line in units 79, 80 and 82 is amended in place. -/
-theorem one_le_finrank_coneEig_hubRootPlus [Nonempty V] (hV : 0 < Fintype.card V) {d : ℕ}
+theorem one_le_finrank_coneEig_hubRootPlus [Nonempty V] {d : ℕ}
     (hreg : ∀ i, G.degree i = d)
-    (hrow : ∀ y : V → ℝ, ∑ i, (G.adjMatrix ℝ *ᵥ y) i = (d : ℝ) * ∑ i, y i) :
+    :
     1 ≤ Module.finrank ℝ (coneEig G (hubRootPlus (Fintype.card V) d)) := by
-  have h := finrank_coneEig_of_hubRoot G hV hreg hrow
+  have h := finrank_coneEig_of_hubRoot G hreg
     (hubRoot_hubRootPlus (Fintype.card V) d)
   omega
 
 /-- and so is the smaller one. -/
-theorem one_le_finrank_coneEig_hubRootMinus [Nonempty V] (hV : 0 < Fintype.card V) {d : ℕ}
+theorem one_le_finrank_coneEig_hubRootMinus [Nonempty V] {d : ℕ}
     (hreg : ∀ i, G.degree i = d)
-    (hrow : ∀ y : V → ℝ, ∑ i, (G.adjMatrix ℝ *ᵥ y) i = (d : ℝ) * ∑ i, y i) :
+    :
     1 ≤ Module.finrank ℝ (coneEig G (hubRootMinus (Fintype.card V) d)) := by
-  have h := finrank_coneEig_of_hubRoot G hV hreg hrow
+  have h := finrank_coneEig_of_hubRoot G hreg
     (hubRoot_hubRootMinus (Fintype.card V) d)
   omega
 
 /-- **THE `+1` HAPPENS AT EXACTLY TWO EIGENVALUES AND NOWHERE ELSE**, and both are named. Away
 from the two roots the cone's multiplicity IS the rim's zero-sum multiplicity, with nothing
 added and nothing to decide. -/
-theorem finrank_coneEig_eq_of_ne_roots [Nonempty V] (hV : 0 < Fintype.card V) {d : ℕ}
+theorem finrank_coneEig_eq_of_ne_roots [Nonempty V] {d : ℕ}
     (hreg : ∀ i, G.degree i = d)
-    (hrow : ∀ y : V → ℝ, ∑ i, (G.adjMatrix ℝ *ᵥ y) i = (d : ℝ) * ∑ i, y i) {lam : ℝ}
+    {lam : ℝ}
     (hp : lam ≠ hubRootPlus (Fintype.card V) d)
     (hm : lam ≠ hubRootMinus (Fintype.card V) d) :
     Module.finrank ℝ (coneEig G lam)
       = Module.finrank ℝ (rimEig G (lam - (d : ℝ) - 1)) := by
-  refine finrank_coneEig_of_not_hubRoot G hV hreg hrow ?_
+  refine finrank_coneEig_of_not_hubRoot G hreg ?_
   intro hlam
   rcases (hubRoot_iff_eq (Fintype.card V) d lam).1 hlam with h1 | h1
   · exact hp h1

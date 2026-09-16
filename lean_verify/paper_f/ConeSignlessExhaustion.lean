@@ -162,7 +162,6 @@ variable {V : Type*} [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableR
 summands are `Q`-invariant and the decomposition is direct, so an eigenvector's two parts are
 separately eigenvectors. -/
 theorem hubPart_comm (hV : 0 < Fintype.card V) {d : ℕ} (hreg : ∀ i, G.degree i = d)
-    (hrow : ∀ y : V → ℝ, ∑ i, (G.adjMatrix ℝ *ᵥ y) i = (d : ℝ) * ∑ i, y i)
     (x : Option V → ℝ) :
     hubPart (signlessLap (coneGraph G) *ᵥ x)
       = signlessLap (coneGraph G) *ᵥ hubPart (V := V) x := by
@@ -186,7 +185,7 @@ theorem hubPart_comm (hV : 0 < Fintype.card V) {d : ℕ} (hreg : ∀ i, G.degree
           rw [cone_signless_mulVec_rim, hreg j, adjMatrix_mulVec_apply]
         simp_rw [this]
         rw [Finset.sum_add_distrib, Finset.sum_add_distrib, ← Finset.mul_sum,
-          Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hrow]
+          Finset.sum_const, Finset.card_univ, nsmul_eq_mul, sum_adjMatrix_mulVec G hreg]
       rw [hs, hubPart_none, hubPart_some]
       simp only [hubPart_some, Finset.sum_const, nsmul_eq_mul]
       rw [show (G.neighborFinset i).card = G.degree i from rfl, hreg i]
@@ -198,12 +197,11 @@ eigenvalue shifted down by `d + 1`. **EXTRACTED FROM `eigenvalue_dichotomy`'s PR
 campaign it was applied before a duplicate existed. The multiplicity count needs this as a
 mapping property of a linear map, which a step buried inside a case split cannot serve. -/
 theorem rimPart_eigen (hV : 0 < Fintype.card V) {d : ℕ} (hreg : ∀ i, G.degree i = d)
-    (hrow : ∀ y : V → ℝ, ∑ i, (G.adjMatrix ℝ *ᵥ y) i = (d : ℝ) * ∑ i, y i)
     {lam : ℝ} {x : Option V → ℝ}
     (hQ : signlessLap (coneGraph G) *ᵥ x = lam • x) :
     G.adjMatrix ℝ *ᵥ rimPart (V := V) x = (lam - (d : ℝ) - 1) • rimPart (V := V) x := by
   have hhub : signlessLap (coneGraph G) *ᵥ hubPart (V := V) x = lam • hubPart (V := V) x := by
-    rw [← hubPart_comm G hV hreg hrow x, hQ, hubPart_smul]
+    rw [← hubPart_comm G hV hreg x, hQ, hubPart_smul]
   funext i
   have hxi := congrFun hQ (some i)
   rw [cone_signless_mulVec_rim, hreg i] at hxi
@@ -230,7 +228,6 @@ NONZERO zero-sum vector. **Nothing about independence of `G`'s eigenvectors is u
 summands are `Q`-invariant, the projection commutes with `Q`, and an eigenvector's parts are
 therefore separately eigenvectors. -/
 theorem eigenvalue_dichotomy [Nonempty V] {d : ℕ} (hreg : ∀ i, G.degree i = d)
-    (hrow : ∀ y : V → ℝ, ∑ i, (G.adjMatrix ℝ *ᵥ y) i = (d : ℝ) * ∑ i, y i)
     {lam : ℝ} {x : Option V → ℝ} (hx : x ≠ 0)
     (hQ : signlessLap (coneGraph G) *ᵥ x = lam • x) :
     lam ^ 2 = ((Fintype.card V : ℝ) + 2 * d + 1) * lam - 2 * d * (Fintype.card V : ℝ)
@@ -239,7 +236,7 @@ theorem eigenvalue_dichotomy [Nonempty V] {d : ℕ} (hreg : ∀ i, G.degree i = 
   have hV : 0 < Fintype.card V := Fintype.card_pos
   have hn : (Fintype.card V : ℝ) ≠ 0 := Nat.cast_ne_zero.2 (by omega)
   have hhub : signlessLap (coneGraph G) *ᵥ hubPart (V := V) x = lam • hubPart (V := V) x := by
-    rw [← hubPart_comm G hV hreg hrow x, hQ, hubPart_smul]
+    rw [← hubPart_comm G hV hreg x, hQ, hubPart_smul]
   by_cases hr : rimPart (V := V) x = 0
   · left
     set a := x none with ha
@@ -278,7 +275,7 @@ theorem eigenvalue_dichotomy [Nonempty V] {d : ℕ} (hreg : ∀ i, G.degree i = 
     · exact absurd h hbne
   · right
     exact ⟨rimPart (V := V) x, hr, rimPart_sum hV x,
-      rimPart_eigen G hV hreg hrow hQ⟩
+      rimPart_eigen G hV hreg hQ⟩
 
 end Exhaustion
 

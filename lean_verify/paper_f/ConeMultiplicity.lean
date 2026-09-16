@@ -125,12 +125,11 @@ theorem mem_rimEig {mu : ℝ} {y : V → ℝ} :
 
 /-- `rimPartL` carries the cone's eigenspace into the rim's zero-sum eigenspace. -/
 theorem rimPartL_mapsTo (hV : 0 < Fintype.card V) {d : ℕ} (hreg : ∀ i, G.degree i = d)
-    (hrow : ∀ y : V → ℝ, ∑ i, (G.adjMatrix ℝ *ᵥ y) i = (d : ℝ) * ∑ i, y i)
     (lam : ℝ) : ∀ x ∈ coneEig G lam, rimPartL (V := V) x ∈ rimEig G (lam - (d : ℝ) - 1) := by
   intro x hx
   rw [mem_coneEig] at hx
   rw [mem_rimEig]
-  exact ⟨rimPart_eigen G hV hreg hrow hx, rimPart_sum hV x⟩
+  exact ⟨rimPart_eigen G hV hreg hx, rimPart_sum hV x⟩
 
 /-- and `liftRimL` carries it back. -/
 theorem liftRimL_mapsTo {d : ℕ} (hreg : ∀ i, G.degree i = d) (lam : ℝ) :
@@ -145,9 +144,9 @@ theorem liftRimL_mapsTo {d : ℕ} (hreg : ∀ i, G.degree i = d) (lam : ℝ) :
 
 /-- The restriction is SURJECTIVE, because `liftRimL` is a section of it on zero-sum vectors. -/
 theorem restrict_surjective (hV : 0 < Fintype.card V) {d : ℕ} (hreg : ∀ i, G.degree i = d)
-    (hrow : ∀ y : V → ℝ, ∑ i, (G.adjMatrix ℝ *ᵥ y) i = (d : ℝ) * ∑ i, y i) (lam : ℝ) :
+    (lam : ℝ) :
     Function.Surjective
-      ((rimPartL (V := V)).restrict (rimPartL_mapsTo G hV hreg hrow lam)) := by
+      ((rimPartL (V := V)).restrict (rimPartL_mapsTo G hV hreg lam)) := by
   intro z
   refine ⟨⟨liftRimL (V := V) (z : V → ℝ), liftRimL_mapsTo G hreg lam _ z.2⟩, ?_⟩
   apply Subtype.ext
@@ -162,23 +161,23 @@ theorem restrict_surjective (hV : 0 < Fintype.card V) {d : ℕ} (hreg : ∀ i, G
 zero-sum eigenspace at `lam - d - 1`, plus whatever the hub plane contributes — and the hub term
 is the kernel of the projection restricted to the eigenspace. -/
 theorem finrank_coneEig (hV : 0 < Fintype.card V) {d : ℕ} (hreg : ∀ i, G.degree i = d)
-    (hrow : ∀ y : V → ℝ, ∑ i, (G.adjMatrix ℝ *ᵥ y) i = (d : ℝ) * ∑ i, y i) (lam : ℝ) :
+    (lam : ℝ) :
     Module.finrank ℝ (rimEig G (lam - (d : ℝ) - 1))
         + Module.finrank ℝ
-            (LinearMap.ker ((rimPartL (V := V)).restrict (rimPartL_mapsTo G hV hreg hrow lam)))
+            (LinearMap.ker ((rimPartL (V := V)).restrict (rimPartL_mapsTo G hV hreg lam)))
       = Module.finrank ℝ (coneEig G lam) := by
   have h := LinearMap.finrank_range_add_finrank_ker
-    ((rimPartL (V := V)).restrict (rimPartL_mapsTo G hV hreg hrow lam))
-  rw [LinearMap.range_eq_top.2 (restrict_surjective G hV hreg hrow lam)] at h
+    ((rimPartL (V := V)).restrict (rimPartL_mapsTo G hV hreg lam))
+  rw [LinearMap.range_eq_top.2 (restrict_surjective G hV hreg lam)] at h
   simpa using h
 
 /-- Reading one rim coordinate, as a linear map off the kernel. Built explicitly rather than as
 a composition of three maps: the composite's coercion would not unify with
 `LinearMap.ker_eq_bot`, and an explicit `LinearMap.mk` sidesteps that entirely. -/
 noncomputable def hubRead (hV : 0 < Fintype.card V) {d : ℕ} (hreg : ∀ i, G.degree i = d)
-    (hrow : ∀ y : V → ℝ, ∑ i, (G.adjMatrix ℝ *ᵥ y) i = (d : ℝ) * ∑ i, y i) (lam : ℝ)
+    (lam : ℝ)
     [Nonempty V] :
-    (LinearMap.ker ((rimPartL (V := V)).restrict (rimPartL_mapsTo G hV hreg hrow lam)))
+    (LinearMap.ker ((rimPartL (V := V)).restrict (rimPartL_mapsTo G hV hreg lam)))
       →ₗ[ℝ] ℝ where
   toFun z := ((z : (coneEig G lam)) : Option V → ℝ) (some (Classical.arbitrary V))
   map_add' _ _ := rfl
@@ -188,9 +187,9 @@ noncomputable def hubRead (hV : 0 < Fintype.card V) {d : ℕ} (hreg : ∀ i, G.d
 its rim entries are equal, hence all zero, and the rim equation then kills the hub entry. -/
 theorem eq_zero_of_hubRead_eq_zero [Nonempty V] (hV : 0 < Fintype.card V) {d : ℕ}
     (hreg : ∀ i, G.degree i = d)
-    (hrow : ∀ y : V → ℝ, ∑ i, (G.adjMatrix ℝ *ᵥ y) i = (d : ℝ) * ∑ i, y i) (lam : ℝ)
-    (z : LinearMap.ker ((rimPartL (V := V)).restrict (rimPartL_mapsTo G hV hreg hrow lam)))
-    (hz : hubRead G hV hreg hrow lam z = 0) : z = 0 := by
+    (lam : ℝ)
+    (z : LinearMap.ker ((rimPartL (V := V)).restrict (rimPartL_mapsTo G hV hreg lam)))
+    (hz : hubRead G hV hreg lam z = 0) : z = 0 := by
   have hrp : rimPart (V := V) ((z : (coneEig G lam)) : Option V → ℝ) = 0 := by
     have h0 := LinearMap.mem_ker.1 z.2
     have h1 : ((rimPartL (V := V)) ((z : (coneEig G lam)) : Option V → ℝ)) = 0 :=
@@ -220,15 +219,15 @@ its rim entries equal, and the rim equation then determines the hub entry from t
 whole kernel injects into `ℝ` by reading one rim coordinate. -/
 theorem finrank_ker_le_one [Nonempty V] (hV : 0 < Fintype.card V) {d : ℕ}
     (hreg : ∀ i, G.degree i = d)
-    (hrow : ∀ y : V → ℝ, ∑ i, (G.adjMatrix ℝ *ᵥ y) i = (d : ℝ) * ∑ i, y i) (lam : ℝ) :
+    (lam : ℝ) :
     Module.finrank ℝ
-        (LinearMap.ker ((rimPartL (V := V)).restrict (rimPartL_mapsTo G hV hreg hrow lam)))
+        (LinearMap.ker ((rimPartL (V := V)).restrict (rimPartL_mapsTo G hV hreg lam)))
       ≤ 1 := by
-  have hinj : Function.Injective (hubRead G hV hreg hrow lam) := by
+  have hinj : Function.Injective (hubRead G hV hreg lam) := by
     intro a b hab
-    have hsub : hubRead G hV hreg hrow lam (a - b)
-        = hubRead G hV hreg hrow lam a - hubRead G hV hreg hrow lam b := rfl
-    have h := eq_zero_of_hubRead_eq_zero G hV hreg hrow lam (a - b) (by
+    have hsub : hubRead G hV hreg lam (a - b)
+        = hubRead G hV hreg lam a - hubRead G hV hreg lam b := rfl
+    have h := eq_zero_of_hubRead_eq_zero G hV hreg lam (a - b) (by
       rw [hsub, hab, sub_self])
     exact sub_eq_zero.1 h
   have := LinearMap.finrank_le_finrank_of_injective hinj
@@ -237,14 +236,14 @@ theorem finrank_ker_le_one [Nonempty V] (hV : 0 < Fintype.card V) {d : ℕ}
 /-- **THE MULTIPLICITY, PINNED TO WITHIN THE ONE HUB DIMENSION.** The cone's eigenspace at `lam`
 has at least the dimension of the rim's zero-sum eigenspace at `lam - d - 1`, and at most one
 more. **This is what unit 80 recorded as still open**: *multiplicities are still not computed*. -/
-theorem finrank_coneEig_bounds [Nonempty V] (hV : 0 < Fintype.card V) {d : ℕ}
+theorem finrank_coneEig_bounds [Nonempty V] {d : ℕ}
     (hreg : ∀ i, G.degree i = d)
-    (hrow : ∀ y : V → ℝ, ∑ i, (G.adjMatrix ℝ *ᵥ y) i = (d : ℝ) * ∑ i, y i) (lam : ℝ) :
+    (lam : ℝ) :
     Module.finrank ℝ (rimEig G (lam - (d : ℝ) - 1)) ≤ Module.finrank ℝ (coneEig G lam)
       ∧ Module.finrank ℝ (coneEig G lam)
           ≤ Module.finrank ℝ (rimEig G (lam - (d : ℝ) - 1)) + 1 := by
-  have he := finrank_coneEig G hV hreg hrow lam
-  have hk := finrank_ker_le_one G hV hreg hrow lam
+  have he := finrank_coneEig G Fintype.card_pos hreg lam
+  have hk := finrank_ker_le_one G Fintype.card_pos hreg lam
   omega
 
 end Eigenspaces
