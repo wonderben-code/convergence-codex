@@ -27,12 +27,33 @@
   * **`star_eq_conj_hermitian`** — and in normal form the map reads
     `s X = P⁻¹ Xᴴ P`, with no transpose on the twist. So **what remains of the classification
     is `P` itself, a non-degenerate Hermitian form up to real scalars — that is, a SIGNATURE.**
+    **`ERRATUM 609`: the word REAL in that sentence was not proved by this file and is not
+    provable from anything in it.** `involution_scalar` and `involution_norm_one` bound the
+    scalar relating `P` to `Pᴴ`; **the scalar this sentence is about is the one relating two
+    twists that present the SAME ⋆-structure, and that fibre was not computed until unit 69**
+    (`StarStructureTwistFibre.twist_unique`). The sentence is true now. It was not a claim this
+    file had earned when it made it, and the `WHAT IS NOT CLAIMED` bullet below covered the word
+    *signature* and not the word *real*.
 
   WHAT IS **NOT** CLAIMED.
-  * **The signature is not computed, and no two ⋆-structures are shown equivalent or
-    inequivalent.** The classification is reduced to a Hermitian form; which forms give the same
-    ⋆-structure, and what the invariant is, are not stated. Calling the residue "a signature" is
-    a description of the remaining object, not a theorem about it.
+  * ~~**The signature is not computed, and no two ⋆-structures are shown equivalent or
+    inequivalent.**~~ **AMENDED 2026-09-16 (unit 69): the signature is still not computed, and
+    the other two clauses are now theorems.** `StarStructureTwistFibre.hermitianStar_eq_iff`
+    says WHICH forms give the same ⋆-structure — exactly the nonzero REAL multiples of one
+    another, so the fibre of `P ↦ s_P` is an `ℝˣ`-orbit and *"up to real scalars"* in the bullet
+    above is now a theorem rather than a reading; and `conjTransposeStar_ne_diagTwist` exhibits
+    **two ⋆-structures on `M₂(ℂ)` that are different maps** — `X ↦ Xᴴ` against `X ↦ D Xᴴ D` for
+    `D = diag(1,-1)` — which is the thing this line said the estate had none of.
+    The larger half stays open, read 2026-09-16: no invariant is constructed, and the
+    separation is as MAPS, not up to conjugation by an algebra automorphism — the
+    `ℝˣ`-classes are a strictly finer partition than the conjugation classes, so the classical
+    reason these two differ (signatures `(2,0)` against `(1,1)`) is still not this estate's.
+    The classification is reduced to a Hermitian form; ~~which forms give the same
+    ⋆-structure, and~~ what the invariant is, is not stated. Calling the residue "a signature"
+    is a description of the remaining object, not a theorem about it — **and
+    `hermitianStar_neg` now says what any such description must survive: `P` and `-P` present
+    the same ⋆-structure, so the invariant can be a signature only up to exchanging its two
+    parts.**
   * **Nothing is proved over `ℝ`.** The sentence about algebraic closure failing there points at
     where the real-form classification differs, and **it is a pointer to the classical statement,
     not to a theorem of this estate.** Said precisely, because the loose version would be false:
