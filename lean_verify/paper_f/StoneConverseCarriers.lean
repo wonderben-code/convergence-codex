@@ -64,6 +64,19 @@
     operator continuity the classical theorem assumes. In FINITE dimension the two coincide, so
     for `Mₙ(ℂ)`, `CascadeGNS.M4` and `ℂⁿ` this is the whole theorem; for `B(E)` at large `E` it is
     not, and `StoneConverseLocal`'s header says why the gap is forced rather than accidental.
+
+    > **^ THE SENTENCE "IN FINITE DIMENSION THE TWO COINCIDE" WAS PROSE AND IS NOW A THEOREM**
+    > (2026-09-16, unit 64; the paragraph above is kept as written per `ERRATUM 94` because it is
+    > true, not because it is wrong). `StoneStrongContinuity.continuousAt_iff_pointwise` proves
+    > it, and `StoneStrongContinuity.exists_unique_global_generator_of_strong`,
+    > `eq_unitaryGroup_iff_strong` and `schrodinger_of_strong` restate the three theorems of §3
+    > below with continuity of the ORBITS at `0` in place of continuity in the operator norm —
+    > `euclidean_*_of_strong` at `ℂⁿ` with no completeness or finite-dimensionality hypothesis at
+    > all. **What has NOT changed is the substance**: the two hypotheses are equivalent on a
+    > finite-dimensional carrier, so no group is newly reached; what changed is that Lean can now
+    > consume the hypothesis an evolution law supplies. **The `B(E)` clause stands unweakened**,
+    > and the C⋆ carriers of §1 and §2 keep the norm hypothesis for the reason that file states:
+    > the weak hypothesis there is about states `φ (U t)` and needs a basis of the DUAL.
   * **`ASSUMPTIONS_LEDGER` 16 is NOT resolved.** That entry records this estate giving the
     cascade's spacetime level two different, non-isomorphic Hilbert spaces — `ℂ⁴` in `FiniteStone`
     and the 16-dimensional GNS space in `CascadeGNS` — and calls the choice an unstated
