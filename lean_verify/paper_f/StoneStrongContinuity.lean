@@ -7,7 +7,10 @@
   assumes. **In FINITE dimension the two coincide**, so for `Mₙ(ℂ)`, `CascadeGNS.M4` and `ℂⁿ` this
   is the whole theorem."* The clause in bold was prose. **It is a theorem here**, and with it the
   converse holds on the finite-dimensional carriers under the hypothesis the physics actually
-  supplies: continuity of `t ↦ U t ψ` for each state `ψ`, at the single point `0`.
+  supplies: continuity of `t ↦ U t ψ` for each VECTOR `ψ`, at the single point `0`. (The word
+  "state" is deliberately avoided here: unit 65 makes the distinction load-bearing, where a STATE
+  is a positive unital FUNCTIONAL and not a vector, and using one word for both is how the two
+  weakenings get confused. `ERRATUM 606`.)
 
   WHAT KIND OF DEEPENING THIS IS, STATED EXACTLY, BECAUSE "WEAKER HYPOTHESIS" WOULD OVERSTATE
   IT. The hypothesis is weakened in FORM and proved EQUIVALENT in substance: on a
@@ -52,11 +55,24 @@
     `L²(ℝ)` is the standard one and costs a Fourier-side unit of its own — so what this file adds
     to the boundary is that the finite-dimensional side is now closed, not that the other side is
     exhibited.
-  * **The C⋆ carriers keep the norm hypothesis.** `CascadeGNS.M4` and `Mₙ(ℂ)` are finite
+  * ~~**The C⋆ carriers keep the norm hypothesis.** `CascadeGNS.M4` and `Mₙ(ℂ)` are finite
     dimensional, so the analogous weakening holds there too, but the right weak hypothesis on a
     general C⋆-algebra is continuity of `t ↦ φ (U t)` for every state `φ`, not of `t ↦ U t ψ`, and
     the bridge for it is a basis of the DUAL rather than of the space. That is a separate lemma
-    with the same shape and it is not written here; `opNorm_le_sum_basis` does not supply it.
+    with the same shape and it is not written here; `opNorm_le_sum_basis` does not supply it.~~
+
+    > **^ CLOSED BY PROOF THE NEXT UNIT** (2026-09-16, unit 65; the paragraph is kept per
+    > `ERRATUM 94`). `StoneWeakContinuity` runs exactly the route named above:
+    > `continuousAt_iff_weak` for any finite-dimensional complex normed space, then
+    > `exists_unique_global_generator_of_weak` and `eq_unitaryGroup_iff_weak` on any
+    > finite-dimensional C⋆-algebra, then `matrix_*_of_weak` at `Mₙ(ℂ)` and `cascade_*_of_weak`
+    > at `CascadeGNS.M4`. **ONE CLAUSE ABOVE WAS TOO GENEROUS AND IS CORRECTED THERE**: the
+    > hypothesis that file proves from is continuity against every continuous FUNCTIONAL, not
+    > against every STATE. Functional-continuity is the STRONGER requirement, so the state form
+    > is a strictly better theorem and is still unproved — it needs bounded functionals to
+    > decompose into states, and the pinned Mathlib has no state-space API to phrase it with
+    > (measured there). `pointwise_iff_weak` also records that on `E →L[ℂ] E` with `E` finite
+    > dimensional, norm, orbitwise and weak continuity are one condition.
   * **Nothing about the generator's spectrum, the Born rule, Gleason or Wigner.** Unchanged from
     `StoneConverseCarriers`.
 
