@@ -41,14 +41,14 @@
     theorem about every twist rather than a description of one.**
 
   WHAT IS **NOT** CLAIMED.
-  * **COMPLETENESS is still open, and it is now the only thing left of this residue.** Equal
-    signature does not yet give conjugacy. What the formula supplies is the forward direction in
-    sharper form: conjugate twists have equal eigenvalue sign counts. The converse needs two
-    steps this file does not take — normalising `diagonal λ` to `diagonal (sign ∘ λ)` by the
-    positive-diagonal congruence `diag(|λ|^{-1/2})`, and matching two sign patterns of equal
-    counts by a PERMUTATION congruence. Both are congruences, so `signature_congr` covers the
-    invariance; **what is missing is the two explicit congruence matrices**, and the permutation
-    step is the one with real content.
+  * ~~**COMPLETENESS is still open, and it is now the only thing left of this residue.** Equal
+    signature does not yet give conjugacy.~~ **CLOSED THE NEXT UNIT (74),**
+    `HermitianSignatureComplete.conjugate_of_signature_eq`: **equal signature gives CONJUGATE
+    ⋆-structures.** The two steps named below are `congruent_diagonal_signVec` and
+    `congruent_diagonal_comp`, and **this bullet's route estimate was right, including which
+    step carried the content** — the permutation did. One thing it got wrong in the cheap
+    direction: the sign-matching needed NO nowhere-zero hypothesis, because `signVec` is total,
+    and the linter reported the hypotheses unused before the proof was finished.
   * **No eigenvalue is computed.** The formula counts signs of `hP.eigenvalues`, which is
     Mathlib's noncomputable choice of an eigenvalue list; **nothing here evaluates it for a
     particular matrix**. Unit 71's `signature_diagTwist = (2,2)` is still the only non-definite
@@ -221,14 +221,17 @@ def unitaryUnit (U : Matrix.unitaryGroup (Fin n) ℂ) : (Matrix (Fin n) (Fin n) 
     ((unitaryUnit U : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)
       = (U : Matrix (Fin n) (Fin n) ℂ) := rfl
 
-/-- **THE SIGNATURE OF ANY HERMITIAN MATRIX COUNTS THE SIGNS OF ITS EIGENVALUES**, doubled.
-The spectral theorem conjugates `P` to a real diagonal matrix by a UNITARY, which is a
-congruence `HermitianRealForm.signature_congr` cannot see. -/
-theorem signature_isHermitian (P : Matrix (Fin n) (Fin n) ℂ) (hP : P.IsHermitian) :
-    signature P
-      = (2 * (Finset.univ.filter fun i => 0 < hP.eigenvalues i).card,
-         2 * (Finset.univ.filter fun i => hP.eigenvalues i < 0).card) := by
-  set U : (Matrix (Fin n) (Fin n) ℂ)ˣ := unitaryUnit hP.eigenvectorUnitary with hU
+/-- **The spectral theorem as a CONGRUENCE.** `Uᴴ P U` is the real diagonal of `P`'s
+eigenvalues, for `U` the eigenvector unitary. **Exported rather than left inside
+`signature_isHermitian`'s proof** so that unit 74 can consume it instead of re-deriving it —
+`ERRATUM 348`'s rule, that logic nobody can call gets rewritten badly by the next person who
+needs it. -/
+theorem conjTranspose_mul_mul_eq_diagonal (P : Matrix (Fin n) (Fin n) ℂ) (hP : P.IsHermitian) :
+    ((unitaryUnit hP.eigenvectorUnitary : (Matrix (Fin n) (Fin n) ℂ)ˣ) :
+        Matrix (Fin n) (Fin n) ℂ)ᴴ * P
+      * ((unitaryUnit hP.eigenvectorUnitary : (Matrix (Fin n) (Fin n) ℂ)ˣ) :
+        Matrix (Fin n) (Fin n) ℂ)
+      = Matrix.diagonal (fun i => ((hP.eigenvalues i : ℝ) : ℂ)) := by
   have hmul : (hP.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ)ᴴ
       * (hP.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) = 1 := by
     have h := hP.eigenvectorUnitary.2
@@ -240,23 +243,30 @@ theorem signature_isHermitian (P : Matrix (Fin n) (Fin n) ℂ) (hP : P.IsHermiti
     (fun A => (hP.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ)ᴴ * A
       * (hP.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ)) hspec
   simp only at hstep
-  have hD : (U : Matrix (Fin n) (Fin n) ℂ)ᴴ * P * (U : Matrix (Fin n) (Fin n) ℂ)
-      = Matrix.diagonal (fun i => ((hP.eigenvalues i : ℝ) : ℂ)) := by
-    rw [hU, unitaryUnit_val, hstep, ← Matrix.star_eq_conjTranspose]
-    calc star (hP.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ)
-          * ((hP.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ)
-            * Matrix.diagonal (RCLike.ofReal ∘ hP.eigenvalues)
-            * star (hP.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ))
-          * (hP.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ)
-        = (star (hP.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ)
-            * (hP.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ))
+  rw [unitaryUnit_val, hstep, ← Matrix.star_eq_conjTranspose]
+  calc star (hP.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ)
+        * ((hP.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ)
           * Matrix.diagonal (RCLike.ofReal ∘ hP.eigenvalues)
-          * (star (hP.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ)
-            * (hP.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ)) := by noncomm_ring
-      _ = Matrix.diagonal (fun i => ((hP.eigenvalues i : ℝ) : ℂ)) := by
-          rw [Matrix.star_eq_conjTranspose, hmul, Matrix.one_mul, Matrix.mul_one]
-          rfl
-  rw [← signature_congr P U, hD, signature_diagonal]
+          * star (hP.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ))
+        * (hP.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ)
+      = (star (hP.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ)
+          * (hP.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ))
+        * Matrix.diagonal (RCLike.ofReal ∘ hP.eigenvalues)
+        * (star (hP.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ)
+          * (hP.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ)) := by noncomm_ring
+    _ = Matrix.diagonal (fun i => ((hP.eigenvalues i : ℝ) : ℂ)) := by
+        rw [Matrix.star_eq_conjTranspose, hmul, Matrix.one_mul, Matrix.mul_one]
+        rfl
+
+/-- **THE SIGNATURE OF ANY HERMITIAN MATRIX COUNTS THE SIGNS OF ITS EIGENVALUES**, doubled.
+The spectral theorem conjugates `P` to a real diagonal matrix by a UNITARY, which is a
+congruence `HermitianRealForm.signature_congr` cannot see. -/
+theorem signature_isHermitian (P : Matrix (Fin n) (Fin n) ℂ) (hP : P.IsHermitian) :
+    signature P
+      = (2 * (Finset.univ.filter fun i => 0 < hP.eigenvalues i).card,
+         2 * (Finset.univ.filter fun i => hP.eigenvalues i < 0).card) := by
+  rw [← signature_congr P (unitaryUnit hP.eigenvectorUnitary),
+    conjTranspose_mul_mul_eq_diagonal P hP, signature_diagonal]
 
 /-! ## For an invertible twist the form is non-degenerate -/
 

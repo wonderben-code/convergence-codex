@@ -53,11 +53,16 @@
     Mathlib's `QuadraticMap.Equivalent.sigPos_eq` applied to a change of basis.
 
   WHAT IS **NOT** CLAIMED.
-  * **The invariant is not COMPLETE, and it is not.** Equal signature does not give equal
-    ⋆-structure: two Hermitian forms of the same signature are CONGRUENT, not equal, and by the
-    previous unit's fibre a congruent twist `Sᴴ P S` presents the same ⋆-structure only when it is
-    a real multiple of `P`, which is false for generic `S`. **So `signature_eq_or_swap_of_star_eq`
-    runs one way and the converse is not available at this strength.**
+  * **The invariant is not COMPLETE FOR EQUALITY, and it is not.** Equal signature does not give
+    equal ⋆-structure: two Hermitian forms of the same signature are CONGRUENT, not equal, and by
+    the previous unit's fibre a congruent twist `Sᴴ P S` presents the same ⋆-structure only when
+    it is a real multiple of `P`, which is false for generic `S`. **So
+    `signature_eq_or_swap_of_star_eq` runs one way and the converse is not available at this
+    strength.** **AMENDED 2026-09-16 (unit 74), and the amendment SHARPENS this bullet rather
+    than striking it**: for CONJUGACY the converse DOES hold —
+    `HermitianSignatureComplete.conjugate_of_signature_eq`. So the qualifier *for EQUALITY* in
+    the first sentence is load-bearing, and the distinction this bullet draws between equality
+    and congruence is exactly what makes one converse false and the other true.
   * **NO TWO ⋆-STRUCTURES ARE SHOWN INEQUIVALENT.** This is the leg that is now shortest, so the
     algebra is written down rather than described. Conjugating by the inner automorphism
     `α X = S X S⁻¹` replaces the Hermitian twist by `Sᴴ P S`: from `s X = (P X P⁻¹)ᴴ` one computes
