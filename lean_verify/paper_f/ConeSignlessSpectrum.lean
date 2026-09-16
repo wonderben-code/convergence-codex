@@ -49,11 +49,22 @@
     general computation reproduces a known family exactly.
 
   WHAT IS **NOT** CLAIMED.
-  * **EXHAUSTION IS NOT PROVED.** This exhibits eigenvectors; it does not show they span. The
-    count is right — `n − 1` independent zero-sum rim modes plus 2 hub modes is `n + 1 = |V(cone)|`
-    — but **independence of the rim modes is a property of `G`'s eigenvectors that this file does
-    not assume and cannot supply**, and nothing here measures an eigenspace. That is the same
-    fence the cycle and the torus carry in this estate, and it is stated rather than stepped over.
+  * ~~**EXHAUSTION IS NOT PROVED.** This exhibits eigenvectors; it does not show they span. The
+    count is right — `n − 1` independent zero-sum rim modes plus 2 hub modes is
+    `n + 1 = |V(cone)|` — but **independence of the rim modes is a property of `G`'s eigenvectors
+    that this file does not assume and cannot supply**, and nothing here measures an
+    eigenspace.~~ **PROVED THE NEXT UNIT (80),**
+    `ConeSignlessExhaustion.eigenvalue_dichotomy`: every eigenvalue of the cone's `Q` is a root
+    of the hub quadratic or `d + 1 + μ` for `μ` an adjacency eigenvalue on a nonzero zero-sum
+    vector. **AND THIS BULLET'S REASON WAS WRONG, in the cheap direction.** Independence of the
+    rim modes is what a MULTIPLICITY count needs; exhaustion needs only that the two summands are
+    `Q`-invariant and that the decomposition is direct, and both are elementary — the projection
+    onto the hub plane commutes with `Q`, so an eigenvector's two parts are separately
+    eigenvectors by linearity alone, with no orthogonality, no self-adjointness and no basis.
+    **So the obstacle named here was real but misidentified, and the C was one unit away.** What
+    survives is the narrower statement the next unit inherits: **multiplicities are still not
+    computed**, and THAT is where independence belongs. The fence moved from *which numbers* to
+    *how many times*.
   * **No eigenvalue is EVALUATED.** The rim modes take `G`'s adjacency spectrum as input and the
     hub modes take a root of a quadratic as input. **Nothing in this file computes a number**, and
     that is deliberate: it is what makes the result general.
