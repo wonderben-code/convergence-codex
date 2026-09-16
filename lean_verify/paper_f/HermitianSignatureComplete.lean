@@ -50,17 +50,31 @@
     70's `hermitianStar_neg` proves cannot be removed.**
 
   WHAT IS **NOT** CLAIMED.
-  * **The two directions are not yet packaged as one `iff`**, and their hypotheses differ: this
+  * ~~**The two directions are not yet packaged as one `iff`**, and their hypotheses differ: this
     file's forward direction takes `IsHermitian` and equality on the nose, while unit 71's
     converse delivers *equal or exchanged*. Composing them into a single statement about
-    `ℝˣ`-orbits is bookkeeping and is not done here.
+    `ℝˣ`-orbits is bookkeeping and is not done here.~~ **PACKAGED THE NEXT UNIT (75),**
+    `HermitianSignatureClassification.conjugate_iff_signature` and
+    `conjugate_iff_usignature`. **AND THIS BULLET UNDERPRICED IT — it is not bookkeeping.**
+    Matching the sides needs the EXCHANGED case of the forward direction, which this file does
+    not prove: `conjugate_of_signature_swap`, off `hermitianStar_neg` and the new
+    `signature_neg`. Without that one theorem the `iff` is false as stated. The target also
+    turned out to be `Sym2 ℕ` rather than a quotient by `RealScalarRel`: an unordered pair IS
+    the quotient the exchange forces, and `Sym2.mk_eq_mk_iff` turns *equal or exchanged* into
+    EQUALITY, so both sides of the classification became equalities without a quotient type
+    being built at all.
   * **No eigenvalue is EVALUATED anywhere in this chain.** The completeness proof consumes
     eigenvalue SIGN COUNTS and never a value, so `StarStructureInequivalent.signature_diagTwist`
     remains the only non-definite signature this estate has computed.
-  * **Nothing is proved about how many ⋆-structures there are.** Completeness says the signature
-    separates them; it does not count the achievable signatures, which would need a twist
-    exhibited at every `(p, q)` with `p + q = n`. **None is exhibited beyond `±1` and
-    `diag(1,-1)`.**
+  * ~~**Nothing is proved about how many ⋆-structures there are.** Completeness says the
+    signature separates them; it does not count the achievable signatures, which would need a
+    twist exhibited at every `(p, q)` with `p + q = n`. **None is exhibited beyond `±1` and
+    `diag(1,-1)`.**~~ **COUNTED THE NEXT UNIT (75)**, and **this bullet named the missing piece
+    correctly**: `HermitianSignatureClassification.setTwist` exhibits a `±1` twist at every
+    signature, indexed by a `Finset` rather than by a threshold so that the count needs no
+    counting argument, and `card_achievable` gives **`n/2 + 1` ⋆-structures on `Mₙ(ℂ)` up to
+    conjugacy** — two on `M₂(ℂ)`, which makes unit 71's inequivalent pair the `n = 2` case of a
+    count rather than an example.
   * **Nothing over `ℝ` or `ℍ`.** The spectral theorem used is the complex one, and the whole
     chain rests on `U` being unitary hence `ℂ`-linear — which is exactly why the real inertia
     law could not be run backwards (`RE-SWEEP #58`).

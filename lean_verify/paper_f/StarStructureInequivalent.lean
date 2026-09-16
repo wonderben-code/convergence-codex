@@ -52,19 +52,36 @@
     other's exchange. **The estate had no inequivalence statement of any kind before this.**
 
   WHAT IS **NOT** CLAIMED.
-  * **The classification is not finished.** Nothing here says how many ⋆-structures `Mₙ(ℂ)` has up
-    to conjugacy, and the signature is not shown to be a COMPLETE invariant: that needs the
+  * ~~**The classification is not finished.** Nothing here says how many ⋆-structures `Mₙ(ℂ)` has
+    up to conjugacy, and the signature is not shown to be a COMPLETE invariant: that needs the
     existence half of the inertia law — any two Hermitian forms of equal signature are congruent —
     which is `QuadraticForm.equivalent_one_zero_neg_one_weighted_sum_squared` in Mathlib and is
-    **not consumed here**. Without it, equal signatures do not give conjugacy.
+    **not consumed here**. Without it, equal signatures do not give conjugacy.~~ **THE
+    CLASSIFICATION IS FINISHED, 16 SEP 2026, and BOTH clauses of this bullet are struck.**
+    Completeness is `HermitianSignatureComplete.conjugate_of_signature_eq` (unit 74); the
+    biconditional is `HermitianSignatureClassification.conjugate_iff_usignature` and the COUNT is
+    `card_achievable` — **`n/2 + 1` ⋆-structures on `Mₙ(ℂ)` up to conjugacy** (unit 75), so this
+    file's own inequivalent pair is the `n = 2` case of a count. **AND THE ROUTE THIS BULLET
+    NAMED IS NOT THE ONE THAT WORKED, which is the more useful half of the correction**: the
+    existence half of the REAL inertia law cannot be used here at all, because a real isometry
+    need not be `ℂ`-linear. `RE-SWEEP #58` established that by grep and discarded the
+    obstruction before it cost a unit; what worked was the COMPLEX spectral theorem, whose
+    change of basis is unitary and therefore `ℂ`-linear.
   * ~~**The signature is computed at `±1` and at `diag(1,-1)` only.** Three values, not a
     formula.~~ **AMENDED (unit 73): there IS a formula** —
     `HermitianSignatureEigenvalues.signature_isHermitian` counts the signs of the eigenvalues,
     doubled, for every Hermitian matrix. What is still true, and is the narrower statement: **no
     eigenvalue is EVALUATED anywhere**, so `signature_diagTwist = (2,2)` above remains the only
     non-definite value this estate holds in hand, and it was obtained without the formula.
-    A general `diag(1,…,1,-1,…,-1)` would need the argument above run at every split, and the
-    general Hermitian twist would need a diagonalisation.
+    ~~A general `diag(1,…,1,-1,…,-1)` would need the argument above run at every split, and the
+    general Hermitian twist would need a diagonalisation.~~ **BOTH DONE, and BOTH predictions
+    were wrong in the cheap direction.** The general twist needed a diagonalisation and Mathlib
+    had one (unit 73). And the general `±1` diagonal needed no split-by-split argument at all:
+    `HermitianSignatureClassification.setTwist` indexes the sign pattern by a `Finset` instead of
+    a threshold, which makes the positive-entry filter literally that set, so
+    `signature_setTwist` falls to `by_cases` on membership (unit 75). **What survives unchanged
+    is the narrow statement: no eigenvalue is EVALUATED anywhere**, even now that every
+    signature VALUE is exhibited.
   * **`ConjugateAlg` is about ⋆-structures on ONE algebra.** Nothing compares ⋆-structures across
     different `n`, and nothing here is about the `StarStr`/`StarStrC` notions on products.
   * **Nothing over `ℝ` or `ℍ`.**
