@@ -15,9 +15,18 @@
   WHAT IS PROVED.
   * **`coordSupp`, `mem_coordSupp`, `finrank_coordSupp`** — the coordinate subspace machinery at
     full generality. For a `Finset S` of indices, the vectors supported on `S` form an
-    `ℝ`-subspace of `Fin n → ℂ` of dimension **`2 · S.card`**, by rank–nullity on
-    `LinearMap.funLeft` restricted to the complement. Unit 71 did this by hand for two singleton
-    kernels in `Fin 2`; this is the general statement it was a special case of.
+    `ℝ`-subspace of `Fin n → ℂ` of dimension **`2 · S.card`**. Unit 71 did this by hand for two
+    singleton kernels in `Fin 2`; this is the general statement it was a special case of.
+    ~~Proved by rank–nullity on `LinearMap.funLeft` restricted to the complement.~~
+    **AMENDED 2026-09-16 (unit 77): that is no longer the proof, and the reason is a defect of
+    this file's.** `RE-SWEEP #59` found that `coordSupp` was the estate's THIRD copy of one
+    construction — `NullSpaceDimension.supportedOn` is the same thing over `ℝ` instead of `ℂ`,
+    agreeing with it `mem_*` for `mem_*` and `finrank_*` for `finrank_*` — and
+    `UNLOCK_WATCHLIST` L26329 is an item about the duplication, which this file did not check
+    before adding to it. Both are now cases of `SupportedOn.finrank_supportedOn`, **one theorem
+    at `#H · finrank W` with the codomain hypothesis removed**, and this file's proof is one
+    `rw` where it was twenty-five lines. The statement is unchanged; `funLeft` is gone from the
+    code and `Complex.finrank_real_complex` is where the `2` enters.
   * **`realQuad_diagonal_apply`** — for a REAL diagonal matrix the form is
     `x ↦ ∑ i, d i · ‖x i‖²`, which is where the whole computation lives.
   * **`posDef_realQuad_diagonal` and `nonpos_realQuad_diagonal`** — positive definite on the
@@ -62,6 +71,7 @@
 -/
 
 import StarStructureInequivalent
+import SupportedOn
 import Mathlib.Analysis.Matrix.Spectrum
 
 namespace HermitianSignatureEigenvalues
@@ -74,40 +84,21 @@ variable {n : ℕ}
 
 /-- The `ℝ`-subspace of `Fin n → ℂ` of vectors supported on a finite set of coordinates. -/
 def coordSupp (S : Finset (Fin n)) : Submodule ℝ (Fin n → ℂ) :=
-  LinearMap.ker (LinearMap.funLeft ℝ ℂ (fun i : {x : Fin n // x ∈ Sᶜ} => i.val))
+  SupportedOn.supportedOn (R := ℝ) S
 
 theorem mem_coordSupp {S : Finset (Fin n)} {x : Fin n → ℂ} :
-    x ∈ coordSupp S ↔ ∀ i ∉ S, x i = 0 := by
-  constructor
-  · intro hx i hi
-    have := congrFun hx ⟨i, by simpa using hi⟩
-    simpa [LinearMap.funLeft_apply] using this
-  · intro h
-    funext j
-    have hj : (j : Fin n) ∉ S := Finset.mem_compl.1 j.2
-    simpa [LinearMap.funLeft_apply] using h _ hj
+    x ∈ coordSupp S ↔ ∀ i ∉ S, x i = 0 := Iff.rfl
 
+/-- **AMENDED 2026-09-16 (unit 77).** This was proved here by rank–nullity on
+`LinearMap.funLeft` over the complement. `RE-SWEEP #59` found that
+`NullSpaceDimension.supportedOn` is the same construction over `ℝ` instead of `ℂ`, with
+`mem_*` and `finrank_*` matching modulo the prefix, so both are now the `W = ℝ` and `W = ℂ`
+cases of `SupportedOn.finrank_supportedOn` — **one theorem at `#H · finrank W`, with the
+codomain hypothesis removed** (`PROOF_STRATEGY` §7 item 3). The statement is unchanged; the
+`funLeft` argument is gone and `Complex.finrank_real_complex` is where the `2` now enters. -/
 theorem finrank_coordSupp (S : Finset (Fin n)) :
     Module.finrank ℝ (coordSupp S) = 2 * S.card := by
-  have hinj : Function.Injective (fun i : {x : Fin n // x ∈ Sᶜ} => i.val) :=
-    fun a b h => Subtype.ext h
-  have hsurj := LinearMap.funLeft_surjective_of_injective ℝ ℂ
-    (fun i : {x : Fin n // x ∈ Sᶜ} => i.val) hinj
-  have hrange : LinearMap.range (LinearMap.funLeft ℝ ℂ
-      (fun i : {x : Fin n // x ∈ Sᶜ} => i.val)) = ⊤ := LinearMap.range_eq_top.2 hsurj
-  have h : Module.finrank ℝ (LinearMap.range (LinearMap.funLeft ℝ ℂ
-        (fun i : {x : Fin n // x ∈ Sᶜ} => i.val)))
-      + Module.finrank ℝ (coordSupp S) = Module.finrank ℝ (Fin n → ℂ) :=
-    LinearMap.finrank_range_add_finrank_ker _
-  have hc : Module.finrank ℝ ({x : Fin n // x ∈ Sᶜ} → ℂ) = 2 * Sᶜ.card := by
-    rw [Module.finrank_pi_fintype ℝ]
-    simp [Complex.finrank_real_complex, mul_comm]
-  have htop : Module.finrank ℝ (LinearMap.range (LinearMap.funLeft ℝ ℂ
-      (fun i : {x : Fin n // x ∈ Sᶜ} => i.val))) = 2 * Sᶜ.card := by
-    rw [hrange, _root_.finrank_top, hc]
-  have hcard : S.card + Sᶜ.card = n := by simp
-  rw [htop, finrank_real_pi_complex] at h
-  omega
+  rw [coordSupp, SupportedOn.finrank_supportedOn, Complex.finrank_real_complex, mul_comm]
 
 /-! ## The real form of a real diagonal matrix -/
 

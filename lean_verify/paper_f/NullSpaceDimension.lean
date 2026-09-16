@@ -77,6 +77,7 @@
   axioms.
 -/
 import StrictBiconditional
+import SupportedOn
 
 namespace NullSpaceDimension
 
@@ -94,46 +95,29 @@ General linear algebra. The estate has the predicate everywhere as a bare
 needs it bundled.
 -/
 
-/-- The functions vanishing off `H`, as a submodule. -/
-def supportedOn (H : Finset V) : Submodule ℝ (V → ℝ) where
-  carrier := {v | ∀ p, p ∉ H → v p = 0}
-  add_mem' := by intro u v hu hv p hp; simp [hu p hp, hv p hp]
-  zero_mem' := by intro p _; rfl
-  smul_mem' := by intro c v hv p hp; simp [hv p hp]
+/-- The functions vanishing off `H`, as a submodule.
+
+**GENERALISED OUT OF THIS FILE 2026-09-16 (unit 77).** This was the estate's first of three
+copies of one construction (`UNLOCK_WATCHLIST` L26329, `RE-SWEEP #59`); the general form, over
+any module rather than over the scalars, is `SupportedOn.supportedOn`, and this is now that at
+`W = ℝ`. The definition, every statement below and every use in the fourteen files that name
+`supportedOn` are unchanged — **only the import direction moved, which is `ERRATUM 576`'s rule:
+a file that generalises an old one must be the BASE.** -/
+noncomputable def supportedOn (H : Finset V) : Submodule ℝ (V → ℝ) :=
+  SupportedOn.supportedOn (R := ℝ) H
 
 @[simp] theorem mem_supportedOn {H : Finset V} {v : V → ℝ} :
     v ∈ supportedOn H ↔ ∀ p, p ∉ H → v p = 0 := Iff.rfl
 
-open scoped Classical in
-/-- Restriction to `H` is a linear isomorphism onto the functions on `H`.
-    Classical decidability is used for the extension by zero, so that neither
-    `Fintype V` nor `DecidableEq V` appears in §1's statements — the section is
-    general linear algebra and should not carry the wall's instances. -/
-noncomputable def supportedOnEquiv (H : Finset V) : supportedOn H ≃ₗ[ℝ] (H → ℝ) where
-  toFun v := fun p => (v : V → ℝ) ↑p
-  map_add' _ _ := rfl
-  map_smul' _ _ := rfl
-  invFun w := ⟨fun p => if h : p ∈ H then w ⟨p, h⟩ else 0, by
-    intro p hp; exact dif_neg hp⟩
-  left_inv := by
-    intro v
-    apply Subtype.ext
-    funext p
-    dsimp only
-    by_cases hp : p ∈ H
-    · rw [dif_pos hp]
-    · rw [dif_neg hp]
-      exact ((v.2) p hp).symm
-  right_inv := by
-    intro w
-    ext p
-    exact dif_pos p.2
+/-- Restriction to `H` is a linear isomorphism onto the functions on `H`. -/
+noncomputable def supportedOnEquiv (H : Finset V) : supportedOn H ≃ₗ[ℝ] (H → ℝ) :=
+  SupportedOn.supportedOnEquiv (R := ℝ) H
 
-/-- **THE DIMENSION OF THE SUPPORTED FUNCTIONS IS THE SIZE OF THE SUPPORT.** -/
+/-- **THE DIMENSION OF THE SUPPORTED FUNCTIONS IS THE SIZE OF THE SUPPORT.** Now the `W = ℝ`
+case of `SupportedOn.finrank_supportedOn_self`. -/
 theorem finrank_supportedOn (H : Finset V) :
-    Module.finrank ℝ (supportedOn H) = H.card := by
-  rw [(supportedOnEquiv H).finrank_eq, Module.finrank_fintype_fun_eq_card,
-    Fintype.card_coe]
+    Module.finrank ℝ (supportedOn H) = H.card :=
+  SupportedOn.finrank_supportedOn_self (R := ℝ) H
 
 end Supported
 
