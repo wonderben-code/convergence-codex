@@ -43,9 +43,14 @@
     proved and the two-way determination is not. So this is a multiplicity formula with a
     one-dimensional ambiguity, not a multiplicity table — and the ambiguity is located, not
     diffuse: it is the hub plane and nothing else.
-  * **No eigenvalue is EVALUATED and no rim multiplicity is computed.** The formula takes the
-    rim's zero-sum multiplicity as input, exactly as unit 79's and 80's statements take the rim's
-    spectrum as input. **Nothing here computes a number.**
+  * ~~**No eigenvalue is EVALUATED and no rim multiplicity is computed.** The formula takes the
+    rim's zero-sum multiplicity as input, exactly as unit 79's and 80's statements take the
+    rim's spectrum as input. **Nothing here computes a number.**~~
+    **HALF FALSE FROM 2026-09-16 (unit 83).** `ConeMultiplicityExact` evaluates the two hub
+    eigenvalues and decides the `≤ 1` this file left open, so *no eigenvalue is evaluated* is
+    gone. **No rim multiplicity is computed is still exactly true** and is the larger half: two
+    of the cone's `n + 1` eigenvalues are now explicit and the other `n - 1` remain inputs.
+    Original kept per `ERRATUM 94`.
   * **Independence of `G`'s eigenvectors is never used**, which is the point: units 79 and 80
     both named it as the missing ingredient, and it is not needed for this either.
   * **Nothing about the cascade, the spine, or any wall.** `UNLOCK_WATCHLIST` L34948 clause (b)

@@ -65,9 +65,18 @@
     survives is the narrower statement the next unit inherits: **multiplicities are still not
     computed**, and THAT is where independence belongs. The fence moved from *which numbers* to
     *how many times*.
-  * **No eigenvalue is EVALUATED.** The rim modes take `G`'s adjacency spectrum as input and the
-    hub modes take a root of a quadratic as input. **Nothing in this file computes a number**, and
-    that is deliberate: it is what makes the result general.
+  * ~~**No eigenvalue is EVALUATED.** The rim modes take `G`'s adjacency spectrum as input and
+    the hub modes take a root of a quadratic as input. **Nothing in this file computes a
+    number**, and that is deliberate: it is what makes the result general.~~
+    **FALSE IN ITS HUB HALF FROM 2026-09-16 (unit 83), AND BY THIS FILE'S OWN THEOREM.**
+    `ConeMultiplicityExact` writes the two hub eigenvalues down — `hubRootPlus` and
+    `hubRootMinus`, the quadratic formula applied to the discriminant `cone_disc_pos` proves
+    positive here — and proves both are eigenvalues of the cone's `Q` at every regular rim. So
+    *nothing in this file computes a number* was true of this file and became a false thing to
+    say about the chain, **because the number it declined to compute was already determined by
+    the theorem two lines above it**. The RIM half stands: `cone_signless_rim_eigen` takes `G`'s
+    adjacency spectrum as input and no unit has computed it for any `G`. Original kept per
+    `ERRATUM 94`.
   * **The wheel is not instantiated here**, and clause (b)'s *the wheel is untouched* is
     NARROWED by this file rather than closed by it. ~~The estate has the cycle's signless
     spectrum (`SignlessCycleSpectrum`), so the instance is one unit of bookkeeping.~~

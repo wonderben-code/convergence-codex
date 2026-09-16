@@ -53,8 +53,12 @@
     values it is, is not decided** — the kernel is one-dimensional exactly when `λ` is a root of
     the hub quadratic and zero otherwise, and only the `≤ 1` bound is proved. The ambiguity is
     one dimension and it is LOCATED: it is the hub plane and nothing else.
-  * **No eigenvalue is EVALUATED.** As in unit 79, both disjuncts are stated in terms of inputs —
-    a root of a quadratic, an eigenvalue of `G` — so nothing here computes a number.
+  * ~~**No eigenvalue is EVALUATED.** As in unit 79, both disjuncts are stated in terms of
+    inputs — a root of a quadratic, an eigenvalue of `G` — so nothing here computes a number.~~
+    **FALSE IN ITS HUB HALF FROM 2026-09-16 (unit 83):** `ConeMultiplicityExact.hubRootPlus` and
+    `hubRootMinus` are the roots of that quadratic in closed form, so *a root of a quadratic* is
+    an input that has since been evaluated. The eigenvalue-of-`G` half stands. Original kept per
+    `ERRATUM 94`.
   * **The wheel is still not instantiated**, and the cost of instantiating it is unchanged from
     unit 79's corrected estimate: a real eigenvector where the estate holds a complex character,
     and the character sum.
