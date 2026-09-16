@@ -44,7 +44,16 @@
     `k ∉ {0, N/2}`, and the upper bound needs the rim's zero-sum spectrum to be EXHAUSTED by
     these vectors — a dimension count over all `k` at once, which is a different unit and is not
     attempted. Unit 82's `finrank_coneEig_bounds` bounds the cone's dimension by the rim's plus
-    one, so **an upper bound on the rim would transfer immediately**; there is none.
+    one, so **an upper bound on the rim would transfer immediately**; ~~there is none.~~
+    **THOSE THREE WORDS WERE FALSE WHEN WRITTEN** (`ERRATUM 621`, 2026-09-16, unit 89):
+    `HermitianFibreCount.sum_finrank_le` had been in the estate for three days and bounds the
+    eigenspace dimensions at ANY `Finset` of values by `card V`, needing no exhaustion at all.
+    `ConeDimensionSum` transfers it in one application. **What the upper bound does NOT give is
+    this table**, and the reason is not a dimension count: assembling it needs the eigenvalues
+    DISTINCT, and whether `hubRootMinus` collides with some `3 + 2cos(2πk/N)` is a coincidence
+    question — a root of a quadratic against a cosine — of the species this estate records as
+    library-blocked at `L102`. So the residue survives with a **different** and better-named
+    obstruction, which is the only reason this correction is not a retraction.
   * **NOTHING ABOUT `k = 0` OR `sin = 0`.** At `k = 0` the character is constant, so the
     zero-sum condition fails; at `sin(2πk/N) = 0` — which for `0 < k < N` means `k = N/2` and
     `N` even — the imaginary part vanishes identically and the multiplicity really is one from
