@@ -155,7 +155,7 @@ theorem sum_cos_turn {q : ℕ} (hq : 2 ≤ q) :
     rw [geom_sum_eq hne, zeta_pow_card hq0, sub_self, zero_div]
   have hre : ∀ i : ℕ, (zeta q ^ i).re = Real.cos (2 * Real.pi * (i : ℝ) / (q : ℝ)) := by
     intro i
-    rw [zeta_pow_eq_exp_nat hq0, Complex.exp_ofReal_mul_I_re]
+    rw [zeta_pow_eq_exp_nat, Complex.exp_ofReal_mul_I_re]
   rw [← Finset.sum_congr rfl (fun i _ => hre i), ← Complex.re_sum, hgeom, Complex.zero_re]
 
 variable {N : ℕ}

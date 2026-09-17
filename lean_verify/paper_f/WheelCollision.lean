@@ -76,49 +76,21 @@ theorem shifted_quadratic {N : ℕ} {s : ℝ} (h : hubRootMinus N 2 = 3 + s) :
 
 `CycleLaplacianSpectrum.zeta N = exp(2πi/N)`. A rim value at index `k` is `3 + 2cos(2πk/N)`, and
 `2cos(2πk/N)` is exactly `w + w⁻¹` for `w = zeta N ^ k`. That identity is the whole bridge from the
-real quadratic to the algebraic one. -/
+real quadratic to the algebraic one, and it lives in `CycleLaplacianSpectrum` rather than here —
+unit 108 moved it there when it turned out to be the estate's third copy (`ERRATUM 636`). -/
 
-open Polynomial in
-/-- `zeta N ^ k` in exponential form, for an ARBITRARY natural side and index.
-**THE ESTATE NOW HAS THREE OF THESE AND THIS IS THE ONLY ONE WITH NO HYPOTHESIS**
-(`ERRATUM 636`). `CycleLaplacianSpectrum.zeta_pow_eq_exp` takes side `n + 3` and `k : Fin (n + 3)`;
-`TorusPrimeSide.zeta_pow_eq_exp_nat` frees the exponent but carries `hp : p ≠ 0`, which is not
-needed — at `N = 0` both sides are `1`, because `(0 : ℂ)⁻¹ = 0` makes `zeta 0 = exp 0` and
-`(0 : ℝ)⁻¹ = 0` makes the right-hand exponent `0` too. **This copy is NOT deleted in favour of
-either**: doing so would make a wheel file import the torus prime-side chain to get a lemma about
-the cycle, which is the dependency inversion this file declines just below. Unit 108 is queued to
-put the hypothesis-free form in `CycleLaplacianSpectrum`, next to the bounded original, and delete
-both copies. The `_nat` suffix and not a prime: `ERRATUM 634`. -/
-theorem zeta_pow_eq_exp_nat (N k : ℕ) :
-    CycleLaplacianSpectrum.zeta N ^ k
-      = Complex.exp (((2 * Real.pi * (k : ℝ) / (N : ℝ) : ℝ) : ℂ) * Complex.I) := by
-  rw [CycleLaplacianSpectrum.zeta, ← Complex.exp_nat_mul]
-  congr 1
-  push_cast
-  ring
-
-/-- **THE BRIDGE.** `w + w⁻¹ = 2cos(2πk/N)` for `w = zeta N ^ k` — the rim's cosine read as an
-algebraic expression in a root of unity. **THIS GENERALISES
-`TorusLaplacianSpectrum.zeta_pow_add_inv`**, which says it for side `N + 3` and `a : Fin (N + 3)`;
-the statement here is unbounded in both. Named `_nat` rather than given the same name, so that
-`newnames_scan` is not asked a question the docstring can answer. The torus file's version is NOT
-replaced by this one: that would make a torus file import a wheel file, which inverts a sensible
-dependency for no gain. -/
-theorem zeta_pow_add_inv_nat (N k : ℕ) :
-    CycleLaplacianSpectrum.zeta N ^ k + (CycleLaplacianSpectrum.zeta N ^ k)⁻¹
-      = ((2 * Real.cos (2 * Real.pi * (k : ℝ) / (N : ℝ)) : ℝ) : ℂ) := by
-  rw [zeta_pow_eq_exp_nat, ← Complex.exp_neg, ← neg_mul, Complex.exp_mul_I, Complex.exp_mul_I,
-    Complex.cos_neg, Complex.sin_neg]
-  push_cast
-  ring
-
-/-- The form the bridge is actually used in: `w` cleared of its inverse. -/
+/-- The form the bridge is actually used in: `w` cleared of its inverse.
+**THE BRIDGE ITSELF IS NO LONGER IN THIS FILE.** Its first draft proved
+`zeta_pow_eq_exp_nat` and `zeta_pow_add_inv_nat` here, and each turned out to be one of THREE
+copies in the estate — `ERRATUM 634` and `ERRATUM 636`. Unit 108 moved the hypothesis-free forms to
+`CycleLaplacianSpectrum`, where `zeta` is defined and which this file already imports, and deleted
+both local copies; `CycleLaplacianSpectrum.zeta_pow_add_inv_nat` is what this proof now calls. -/
 theorem mul_self_add_one (N k : ℕ) :
     CycleLaplacianSpectrum.zeta N ^ k * ((2 * Real.cos (2 * Real.pi * (k : ℝ) / (N : ℝ)) : ℝ) : ℂ)
       = (CycleLaplacianSpectrum.zeta N ^ k) ^ 2 + 1 := by
   have hne : CycleLaplacianSpectrum.zeta N ^ k ≠ 0 :=
     pow_ne_zero _ (CycleLaplacianSpectrum.zeta_ne_zero N)
-  rw [← zeta_pow_add_inv_nat N k, mul_add, mul_inv_cancel₀ hne]
+  rw [← CycleLaplacianSpectrum.zeta_pow_add_inv_nat N k, mul_add, mul_inv_cancel₀ hne]
   ring
 
 /-- **THE QUARTIC.** `X⁴ + (1−N)X³ + (N−4)X² + (1−N)X + 1`, monic with integer coefficients — the

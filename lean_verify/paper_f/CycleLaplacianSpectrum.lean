@@ -183,15 +183,46 @@ theorem cx_massive_mulVec_chi (n : ℕ) (m : ℝ) (k : Fin (n + 3)) :
   push_cast
   ring
 
-/-! ## 5. The eigenvalue is real, and it is the classical one -/
+/-! ## 5. The eigenvalue is real, and it is the classical one
 
-theorem zeta_pow_eq_exp (n : ℕ) (k : Fin (n + 3)) :
-    zeta (n + 3) ^ k.val
-      = Complex.exp (((2 * Real.pi * k.val / (n + 3) : ℝ) : ℂ) * Complex.I) := by
+**THE TWO `_nat` LEMMAS OPENING THIS SECTION ARE UNIT 108's CONSOLIDATION** (`ERRATUM 636`). Each
+was proved three times in this estate — once here for a `Fin`-bounded exponent, once in
+`TorusPrimeSide` for a free exponent behind an unnecessary `p ≠ 0`, and once in `WheelCollision`
+with no hypothesis at all — and the two duplicates are now deleted. They live here because this is
+where `zeta` is defined and because every consumer already imports this module. The bounded forms
+below keep their names and their exact statements, so no call site moved; they are one-line
+instantiations rather than separate proofs. -/
+
+/-- **`zeta N ^ k` IN EXPONENTIAL FORM, AT ANY SIDE AND ANY EXPONENT, WITH NO HYPOTHESIS.** The
+`N = 0` corner is not an exception and needs no guard: `(0 : ℂ)⁻¹ = 0` makes `zeta 0 = exp 0 = 1`,
+and `(0 : ℝ)⁻¹ = 0` makes the exponent on the right `0` as well, so both sides are `1`.
+`TorusPrimeSide`'s deleted copy carried `hp : p ≠ 0` only because its proof reached for
+`field_simp`; `push_cast; ring` never divides and so never needs it (unit 84's species). -/
+theorem zeta_pow_eq_exp_nat (N k : ℕ) :
+    zeta N ^ k = Complex.exp (((2 * Real.pi * (k : ℝ) / (N : ℝ) : ℝ) : ℂ) * Complex.I) := by
   rw [zeta, ← Complex.exp_nat_mul]
   congr 1
   push_cast
   ring
+
+/-- **AND A ROOT OF UNITY PLUS ITS INVERSE IS TWICE A COSINE**, again at any side and any exponent.
+`TorusLaplacianSpectrum.zeta_pow_add_inv` is now this, instantiated. -/
+theorem zeta_pow_add_inv_nat (N k : ℕ) :
+    zeta N ^ k + (zeta N ^ k)⁻¹
+      = ((2 * Real.cos (2 * Real.pi * (k : ℝ) / (N : ℝ)) : ℝ) : ℂ) := by
+  rw [zeta_pow_eq_exp_nat, ← Complex.exp_neg, ← neg_mul, Complex.exp_mul_I, Complex.exp_mul_I,
+    Complex.cos_neg, Complex.sin_neg]
+  push_cast
+  ring
+
+/-- The `Fin`-bounded form, kept at its original name and statement so that no call site moved.
+It is now `zeta_pow_eq_exp_nat` instantiated; the only work is the coercion
+`((n + 3 : ℕ) : ℝ) = (n : ℝ) + 3`. -/
+theorem zeta_pow_eq_exp (n : ℕ) (k : Fin (n + 3)) :
+    zeta (n + 3) ^ k.val
+      = Complex.exp (((2 * Real.pi * k.val / (n + 3) : ℝ) : ℂ) * Complex.I) := by
+  rw [zeta_pow_eq_exp_nat]
+  norm_num
 
 /-- **THE EIGENVALUE IS `m² + 2 − 2cos(2πk/N)`**, and in particular it is real. -/
 theorem eigenvalue_eq_real (n : ℕ) (m : ℝ) (k : Fin (n + 3)) :

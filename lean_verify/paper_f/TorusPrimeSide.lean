@@ -43,8 +43,13 @@
   `zeta_pow_card` (`ζ^N = 1`), `zeta_pow_eq_exp`, and **`zeta_pow_mod`**, which is precisely the
   content of the mirror-exponent lemma. `CycleGreenFormula.isPrimitiveRoot_zeta` is the
   primitive-root fact. **All four local versions are deleted and the estate's are used**;
-  `zeta_pow_eq_exp_nat` is the one genuine generalisation that remained, and its docstring says
-  so. **WHY THE QUERIES MISSED IT**: draft 2's `awk` was keyed on
+  `zeta_pow_eq_exp_nat` was the one genuine generalisation that remained, and its docstring said
+  so. **^ CORRECTED 2026-09-17, unit 108, SENTENCE ABOVE KEPT** (`ERRATUM 94`): that
+  generalisation was the FIFTH local version, not a survivor. It was proved a third time in
+  `WheelCollision` without the `p ≠ 0` this copy carried — `ERRATUM 636` — and unit 108 has
+  moved the hypothesis-free form to `CycleLaplacianSpectrum.zeta_pow_eq_exp_nat` and deleted this
+  file's. `two_cos_eq_add_pow` now calls the estate's, with no hypothesis to supply.
+  **WHY THE QUERIES MISSED IT**: draft 2's `awk` was keyed on
   `cyclotomic|IsPrimitiveRoot|Irrational` — spellings of the CONCEPT — while the estate holds the
   object under the name `zeta`, with its primitive-root fact in a different module again.
   `ERRATUM 627` carries the rule: **query the OBJECT, not the vocabulary.**
@@ -57,9 +62,12 @@
 
   WHAT IS PROVED.
 
-  * **`zeta_pow_eq_exp_nat`** — `CycleLaplacianSpectrum.zeta_pow_eq_exp` with the exponent an
-    arbitrary natural rather than a `Fin (n+3)`, because `two_cos_eq_add_pow`'s second exponent
-    `p − c` equals `p` at `c = 0`. The root of unity itself, `ζ^p = 1`, the mod-reduction and the
+  * **`zeta_pow_eq_exp_nat` — DELETED by unit 108** (`ERRATUM 636`). It said
+    `CycleLaplacianSpectrum.zeta_pow_eq_exp` with the exponent an arbitrary natural rather than a
+    `Fin (n+3)`, which `two_cos_eq_add_pow` needs because its second exponent `p − c` equals `p`
+    at `c = 0`. That statement now lives at `CycleLaplacianSpectrum.zeta_pow_eq_exp_nat`, **without
+    the `hp : p ≠ 0` this file's version carried** — an artefact of reaching for `field_simp`.
+    The root of unity itself, `ζ^p = 1`, the mod-reduction and the
     primitive-root fact are **the estate's own** (`zeta`, `zeta_pow_card`, `zeta_pow_mod`,
     `CycleGreenFormula.isPrimitiveRoot_zeta`) — see the corrected paragraph above.
   * **`two_cos_eq_add_pow`** — `2cos(2πc/p) = ζ^c + ζ^{p−c}` for every `c ≤ p`, through
@@ -130,18 +138,6 @@ open CycleLaplacianSpectrum CycleGreenFormula
 
 variable {N : ℕ}
 
-/-- **`CycleLaplacianSpectrum.zeta_pow_eq_exp` WITH THE EXPONENT AN ARBITRARY NATURAL** rather
-than a `Fin (n + 3)`, which is what `two_cos_eq_add_pow` needs below: its second exponent is
-`p - c`, and at `c = 0` that is `p` itself, outside the `Fin` range. The estate's version is the
-special case, and this is the only generalisation this file needed (`ERRATUM 627`). -/
-theorem zeta_pow_eq_exp_nat {p : ℕ} (hp : p ≠ 0) (c : ℕ) :
-    zeta p ^ c = Complex.exp ((2 * Real.pi * (c : ℝ) / (p : ℝ) : ℝ) * Complex.I) := by
-  rw [zeta, ← Complex.exp_nat_mul]
-  congr 1
-  have hpc : ((p : ℂ)) ≠ 0 := by simpa using Nat.cast_ne_zero.2 hp
-  push_cast
-  field_simp
-
 /-- The mirror index. -/
 def sig (N : ℕ) (c : Fin (N + 3)) : Fin (N + 3) :=
   ⟨(N + 3 - (c : ℕ)) % (N + 3), Nat.mod_lt _ (by omega)⟩
@@ -178,7 +174,7 @@ theorem two_cos_eq_add_pow {p : ℕ} (hp : p ≠ 0) {c : ℕ} (hc : c ≤ p) :
     (2 : ℂ) * ((Real.cos (2 * Real.pi * (c : ℝ) / (p : ℝ)) : ℝ) : ℂ)
       = zeta p ^ c + zeta p ^ (p - c) := by
   have hpc : ((p : ℂ)) ≠ 0 := by simpa using Nat.cast_ne_zero.2 hp
-  rw [zeta_pow_eq_exp_nat hp c, zeta_pow_eq_exp_nat hp (p - c)]
+  rw [zeta_pow_eq_exp_nat p c, zeta_pow_eq_exp_nat p (p - c)]
   have hcast : ((p - c : ℕ) : ℝ) = (p : ℝ) - (c : ℝ) := Nat.cast_sub hc
   have he : ((2 * Real.pi * ((p - c : ℕ) : ℝ) / (p : ℝ) : ℝ) : ℂ) * Complex.I
       = -(((2 * Real.pi * (c : ℝ) / (p : ℝ) : ℝ) : ℂ) * Complex.I)

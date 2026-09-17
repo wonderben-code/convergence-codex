@@ -179,15 +179,15 @@ theorem cx_massive_mulVec_chiD (N : ℕ) (m : ℝ) (k : Site d (N + 3)) :
   rw [hdeg, hsum, Pi.smul_apply, smul_eq_mul, nu]
   ring
 
-/-- One axis's contribution is real: a root of unity plus its inverse is twice a cosine. The
-`d = 1` file proves this inside `eigenvalue_eq_real`; here it is needed one axis at a time. -/
+/-- One axis's contribution is real: a root of unity plus its inverse is twice a cosine. Kept at
+its original name and statement, and now `CycleLaplacianSpectrum.zeta_pow_add_inv_nat`
+instantiated — unit 108's consolidation (`ERRATUM 636`); the only work left is the coercion
+`((N + 3 : ℕ) : ℝ) = (N : ℝ) + 3`. -/
 theorem zeta_pow_add_inv (N : ℕ) (a : Fin (N + 3)) :
     zeta (N + 3) ^ a.val + (zeta (N + 3) ^ a.val)⁻¹
       = ((2 * Real.cos (2 * Real.pi * a.val / ((N : ℝ) + 3)) : ℝ) : ℂ) := by
-  rw [zeta_pow_eq_exp, ← Complex.exp_neg, ← neg_mul, Complex.exp_mul_I, Complex.exp_mul_I,
-    Complex.cos_neg, Complex.sin_neg]
-  push_cast
-  ring
+  rw [zeta_pow_add_inv_nat]
+  norm_num
 
 /-- **THE EIGENVALUE IS REAL**, and is `2d + m² − 2 Σᵢ cos(2π kᵢ / n)` — one cosine per axis, which
 is the `d = 1` formula with a sum in place of its single term. -/
