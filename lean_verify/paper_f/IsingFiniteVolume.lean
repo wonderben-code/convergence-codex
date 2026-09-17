@@ -59,6 +59,7 @@
 -/
 
 import FiniteGibbs
+import IsingSpin
 import Mathlib.Data.ZMod.Basic
 
 open MeasureTheory
@@ -80,14 +81,18 @@ abbrev Config (n : ℕ) := Site n → Bool
 -- coordinates) — review round 8 corrected an earlier claim here that
 -- Mathlib lacked this instance (ERRATA 38).
 
-/-- Spin value: true ↦ +1, false ↦ −1. -/
-def spin (b : Bool) : ℝ := if b then 1 else -1
+/-! Spin value: true ↦ +1, false ↦ −1.
+**ONE `def`, SHARED, SINCE UNIT 110** (`L23857`): this was a second definition with a body
+identical to `IsingTransfer2D`'s, so no lemma about either applied to the other. It is now
+`IsingSpin.spin`, `export`ed into this namespace — so `IsingFiniteVolume.spin` still names it and
+**no call site moved**, including the `simp [spin]` sites in this file and downstream. An `export`
+is a command and takes no docstring, which is why this is a section comment. -/
 
-theorem abs_spin (b : Bool) : |spin b| = 1 := by
-  cases b <;> simp [spin]
+export IsingSpin (spin)
 
-theorem spin_not (b : Bool) : spin (!b) = -spin b := by
-  cases b <;> simp [spin]
+theorem abs_spin (b : Bool) : |spin b| = 1 := IsingSpin.abs_spin b
+
+theorem spin_not (b : Bool) : spin (!b) = -spin b := IsingSpin.spin_not b
 
 /-- Nearest-neighbour adjacency on the n×n box, FREE boundary: the
     sites differ by one step in exactly one coordinate. -/

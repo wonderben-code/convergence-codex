@@ -30,6 +30,24 @@
   item stays open**; what changes is that its cost is measured and its remaining
   content is tidiness rather than re-proof.
 
+  **^ THE TIDINESS IS DONE. 2026-09-17, UNIT 110; TEXT ABOVE KEPT (`ERRATUM 94`), AND `L23857` IS
+  CLOSED.** There is now ONE `def`, `IsingSpin.spin`, `export`ed into both namespaces, so
+  `IsingFiniteVolume.spin` and `IsingTransfer2D.spin` denote the SAME constant. Every paragraph
+  above stands as the record of what was true when it was written, and three of its sentences are
+  now obsolete in a way worth naming: **two constants no longer exist**, `simp` sets **do** see
+  through the pair (there is no pair), and every theorem in this file is now `rfl` or a restatement
+  of an `IsingSpin` lemma rather than a transfer. `IsingFlipSymmetry.spin_not`, which the last
+  docstring below says *is what that line would have been*, has become exactly that line.
+
+  **THIS FILE IS KEPT AND NOT DELETED, AND THE REASON IS NOT SENTIMENT.** Its statements are still
+  true and still citable; its cost measurement — *182 transitive dependents, of which 20 mention
+  `spin` at all*, and the observation that **importing is not using** — is the reasoning unit 110
+  relied on, and unit 110's own re-measurement (23 modules naming `spin` in a `simp`, `simp_all` or
+  `norm_num` set, about fifty tactic sites) is that measurement done again with a different cut.
+  **`RE-SWEEP #63` FINDING 5 proposed unit 110's disposal without having read this file**, which is
+  `ERRATUM 640`: the sweep had this whole argument available, in a file named for the question, and
+  re-derived the cheap half of it from scratch.
+
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 

@@ -63,7 +63,17 @@ variable {n : ℕ}
 /-- This estate defines `spin` twice with identical bodies — `IsingFiniteVolume.spin` for the box
 and `IsingTransfer2D.spin` for the transfer-matrix chain. The magnetisation machinery is stated
 against the second and the box against the first, so the identification is needed here. It is
-`rfl`, and recording that is cheaper than choosing a winner. -/
+`rfl`, and recording that is cheaper than choosing a winner.
+
+**^ SUPERSEDED 2026-09-17 BY UNIT 110, AND THE SENTENCE ABOVE IS KEPT (`ERRATUM 94`).** A winner
+was chosen: there is now **one** `def`, `IsingSpin.spin`, `export`ed into both namespaces, so both
+names above denote the SAME constant and this theorem is `rfl` **by construction** rather than by
+accident of two bodies agreeing. The old reading — *cheaper than choosing a winner* — was a fair
+call and it had a cost the bridge could not pay: `L23857` recorded that each copy's lemmas applied
+to only one of them, and `IsingFlipSymmetry` had to re-prove `spin_not` one line at a time. That
+gap is closed; `abs_spin`, `spin_not` and `spin_sq` now all apply to both spellings. **This theorem
+is KEPT** — it is what the files that transport across the two names call, and deleting it would
+move call sites for no gain, which is exactly what unit 110 was built to avoid. -/
 theorem spin_eq : (IsingFiniteVolume.spin) = (IsingTransfer2D.spin) := rfl
 
 /-! ## 2. The interaction data -/

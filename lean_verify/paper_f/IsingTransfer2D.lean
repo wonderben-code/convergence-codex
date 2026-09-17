@@ -1,4 +1,5 @@
 import TracePathSum
+import IsingSpin
 import Mathlib.Analysis.SpecialFunctions.Exp
 
 /-!
@@ -83,11 +84,16 @@ namespace IsingTransfer2D
 
 open Finset Real
 
-/-- The `±1` encoding of a spin. -/
-def spin (b : Bool) : ℝ := if b then 1 else -1
+/-! The `±1` encoding of a spin.
+**ONE `def`, SHARED, SINCE UNIT 110** (`L23857`): this was a second definition with a body
+identical to `IsingFiniteVolume`'s. It is now `IsingSpin.spin`, `export`ed into this namespace, so
+`IsingTransfer2D.spin` still names it and no call site moved — and `abs_spin` and `spin_not`, which
+this file never had, are now available to it. An `export` is a command and takes no docstring,
+which is why this is a section comment. -/
 
-theorem spin_sq (b : Bool) : spin b * spin b = 1 := by
-  cases b <;> norm_num [spin]
+export IsingSpin (spin)
+
+theorem spin_sq (b : Bool) : spin b * spin b = 1 := IsingSpin.spin_sq b
 
 /-- **A column of `n+1` spins.** The transfer matrix is indexed by these, and there are `2ⁿ⁺¹`.
 The width is written `n+1` rather than `n` because the column's own bonds wrap — `i + 1` in `Fin n`

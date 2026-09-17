@@ -91,9 +91,14 @@ theorem flipCol_involutive (σ : Col n) : flipCol (flipCol σ) = σ := by
   funext i; simp [flipCol]
 
 /-- A spin changes sign. This is the asymmetry the whole file turns on: bonds are **products of
-two** spins and are therefore invariant, while the observable is a single spin and is not. -/
-theorem spin_not (b : Bool) : spin (!b) = -spin b := by
-  cases b <;> norm_num [spin]
+two** spins and are therefore invariant, while the observable is a single spin and is not.
+
+**THIS IS THE RE-PROOF `UNLOCK_WATCHLIST` `L23857` WAS WRITTEN ABOUT, AND IT IS NO LONGER ONE.**
+The line used to be `cases b <;> norm_num [spin]` — one line that already existed in
+`IsingFiniteVolume`, unusable here because the two `spin`s were distinct constants. Unit 110 made
+them one, so this is `IsingSpin.spin_not` applied. **The name is kept** so the file's own
+`spin_flipCol` and everything downstream of it are untouched. -/
+theorem spin_not (b : Bool) : spin (!b) = -spin b := IsingSpin.spin_not b
 
 theorem spin_flipCol (σ : Col n) (i : Fin (n + 1)) : spin (flipCol σ i) = -spin (σ i) := by
   rw [flipCol, spin_not]
