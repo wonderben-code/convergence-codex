@@ -43,7 +43,7 @@
   * **`cosCls_zero_eq_one`, `cosCls_half`** — `cos 0 = 1` and `cos(2πm/2m) = cos π = −1`, which is
     the only place the side's evenness is used for a VALUE.
   * **`relEven`, `filter_fixed`, `zero_ne_half`, `sum_indicator_fixed`, `sum_indicator_cos`,
-    `sum_relEven`, `sum_relEven_cos`, `relEven_supp`, `clsOne`, `clsOne_val`,
+    `sum_relEven`, `sum_relEven_cos`, `relEven_supp`, `cls1`, `cls1_val`,
     `relEven_one_ne_zero`** — the relation and its four obligations.
   * **`not_noCosRelation_of_even`** — **every even side fails**, and hence
     **`exists_not_tight_of_even`**: at every even side there is a dimension where the bound is not
@@ -76,6 +76,15 @@
     untouched. A guess is available and is deliberately not made: the relation at side 9 came from
     `3 ∣ 9`, so a divisor-based family may exist; **no such family is proved, attempted or
     costed** (`ERRATUM 194`, `ERRATUM 246`).
+    **^ PROVED THE SAME DAY BY UNIT 104, AND THE PARAGRAPH ABOVE IS KEPT AS WRITTEN**
+    (`ERRATUM 94`, `ERRATUM 628`). The family is this file's own argument with the divisor `2`
+    replaced by an arbitrary one: `TorusCompositeSide.not_noCosRelation_of_composite` refutes
+    **every** composite side, so `not_noCosRelation_of_even` is its `q = 2` case
+    (`not_noCosRelation_of_even_of_composite` derives it), and with unit 100 the classification is
+    exactly **tight ⟺ prime** (`TorusCompositeSide.tight_iff_prime`). **The guess was right, it
+    was one parameter away, and naming it as a guess rather than trying it is the defect
+    `ERRATUM 628` records** — the third instance in a day of `ERRATUM 626`'s rule. This file's
+    theorem is not withdrawn: it is the special case, and its relation is the concrete one.
   * **NO PER-FREQUENCY STATEMENT AT AN EVEN SIDE.** `exists_not_tight_of_even` produces a
     dimension, not a frequency, and `TorusCosRelation.orbit_eq_nuRFibre_zero` shows the ground
     state is tight at every side including these.
@@ -233,21 +242,24 @@ theorem relEven_supp {m : ℕ} (hm : N + 3 = m + m) (c : Fin (N + 3))
   ring
 
 /-- The class `1`. It is INTERIOR at every even side, because such a side is at least `4`, and
-that is the only frequency this file needs to name. -/
-def clsOne {m : ℕ} (hm : N + 3 = m + m) : Fin (N + 3) := ⟨1, by omega⟩
+that is the only frequency this file needs to name. **NO HYPOTHESIS**: `1 < N + 3` holds outright,
+and a first draft carried the even-side hypothesis here for no reason (unit 84's
+remove-the-derivable-hypothesis discipline; unit 104 consumes this definition, which is why the
+hypothesis had to go rather than be duplicated). -/
+def cls1 : Fin (N + 3) := ⟨1, by omega⟩
 
-theorem clsOne_val {m : ℕ} (hm : N + 3 = m + m) : ((clsOne hm : Fin (N + 3)) : ℕ) = 1 := rfl
+theorem cls1_val : ((cls1 : Fin (N + 3)) : ℕ) = 1 := rfl
 
-theorem relEven_one_ne_zero {m : ℕ} (hm : N + 3 = m + m) : relEven N m (clsOne hm) ≠ 0 := by
+theorem relEven_one_ne_zero {m : ℕ} (hm : N + 3 = m + m) : relEven N m cls1 ≠ 0 := by
   have hm2 : 2 ≤ m := by omega
-  have hfib : 1 ≤ fibreCount N (clsOne hm) := by
+  have hfib : 1 ≤ fibreCount N (cls1) := by
     refine one_le_fibreCount ?_
-    rw [clsOne_val hm]
+    rw [cls1_val]
     omega
-  have h2 : ¬ ((clsOne hm : Fin (N + 3)) : ℕ) = 0 ∧ ¬ ((clsOne hm : Fin (N + 3)) : ℕ) = m := by
-    rw [clsOne_val hm]
+  have h2 : ¬ ((cls1 : Fin (N + 3)) : ℕ) = 0 ∧ ¬ ((cls1 : Fin (N + 3)) : ℕ) = m := by
+    rw [cls1_val]
     omega
-  have h3 : ¬ (((clsOne hm : Fin (N + 3)) : ℕ) = 0 ∨ ((clsOne hm : Fin (N + 3)) : ℕ) = m) := by
+  have h3 : ¬ (((cls1 : Fin (N + 3)) : ℕ) = 0 ∨ ((cls1 : Fin (N + 3)) : ℕ) = m) := by
     rintro (h | h)
     · exact h2.1 h
     · exact h2.2 h
@@ -259,7 +271,7 @@ theorem not_noCosRelation_of_even {m : ℕ} (hm : N + 3 = m + m) : ¬ NoCosRelat
   intro h
   exact relEven_one_ne_zero hm
     (h (relEven N m) (fun c hc => relEven_supp hm c hc) (sum_relEven hm) (sum_relEven_cos hm)
-      (clsOne hm))
+      (cls1))
 
 theorem exists_not_tight_of_even {m : ℕ} (hm : N + 3 = m + m) (mass : ℝ) :
     ∃ (D : ℕ) (k : Site D (N + 3)),
