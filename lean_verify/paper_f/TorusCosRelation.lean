@@ -205,6 +205,17 @@ theorem cosCls_zero (j : Fin 3) : cosCls 0 j = if (j : ℕ) = 0 then 1 else -(1 
   · push_cast at h ⊢; linarith
   · push_cast at h ⊢; linarith
 
+/-- **SIDE 3 SATISFIES THE CRITERION** — the base case, proved directly because when it was written
+there was no general criterion to instantiate.
+
+**AND IT IS ONE OF THREE PROOFS OF THIS EXACT PROPOSITION IN THE ESTATE** (`RE-SWEEP #63`
+FINDING 2, `ERRATUM 638`). The other two instantiate later general theorems and are the
+`ERRATUM 201` check a general statement owes the special case it subsumes:
+`TorusPrimeSide.noCosRelation_zero_of_prime` (unit 100, via `noCosRelation_of_prime`) and
+`TorusCompositeSide.noCosRelation_zero_of_prime'` (unit 104, via `noCosRelation_iff_prime`). All
+three are wanted; **what was missing until now is that none of them pointed at the others**, and
+this one — the earliest, in the module that DEFINES `NoCosRelation` and which both others import —
+carried no docstring at all, so a reader arriving here had nothing to follow. -/
 theorem noCosRelation_zero : NoCosRelation 0 := by
   intro a hsupp hsum hcos
   have h2 : a 2 = 0 := hsupp 2 (by norm_num)

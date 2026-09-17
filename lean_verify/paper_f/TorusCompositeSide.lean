@@ -351,7 +351,13 @@ theorem not_noCosRelation_six_of_composite : ¬ NoCosRelation 6 :=
 `TorusPrimeSide.noCosRelation_zero_of_prime`, the identical proposition, re-proved through
 `noCosRelation_iff_prime`. It is kept because that re-derivation is the check `ERRATUM 201` says a
 general statement owes the special case it subsumes, and the `'` is the standard reading — same
-statement, different route. `ERRATUM 629` records that the header's absence query missed it. -/
+statement, different route. `ERRATUM 629` records that the header's absence query missed it.
+
+**AND THERE IS A THIRD PROOF, WHICH `ERRATUM 629` DID NOT COUNT** (`RE-SWEEP #63` FINDING 2,
+`ERRATUM 638`): **`TorusCosRelation.noCosRelation_zero`**, unit 98's direct ten-line argument, in
+the module that DEFINES `NoCosRelation` and which this file imports. So this proposition has three
+proofs — one from first principles and two `ERRATUM 201` checks — and all three now name the other
+two. -/
 theorem noCosRelation_zero_of_prime' : NoCosRelation 0 :=
   noCosRelation_iff_prime.2 (by decide)
 

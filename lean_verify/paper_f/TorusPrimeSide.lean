@@ -394,7 +394,18 @@ theorem noCosRelation_ten : NoCosRelation 10 :=
   noCosRelation_of_prime (by decide) (Nat.odd_iff.2 (by norm_num))
 
 /-- **AND UNITS 97 AND 99 ARE NOW INSTANCES**: side 3 and side 5 come out of the general theorem,
-which is the check a new general statement owes the special cases it replaces (`ERRATUM 201`). -/
+which is the check a new general statement owes the special cases it replaces (`ERRATUM 201`).
+
+**^ CORRECTED 2026-09-17 BY `RE-SWEEP #63` FINDING 2, SENTENCE ABOVE KEPT (`ERRATUM 94`); SEE
+`ERRATUM 638`.** The *unit 99* half is right — `noCosRelation_two_of_prime` below re-proves
+`TorusSideFive.noCosRelation_two`, the identical proposition. The *unit 97* half names the wrong
+theorem. Unit 97's side-3 result is `TorusSideThree.orbit_eq_nuRFibre_side_three`, a statement about
+orbits and fibres; the proposition THIS theorem re-proves character for character is unit 98's
+**`TorusCosRelation.noCosRelation_zero`**, a direct ten-line proof in the module that defines the
+predicate. `TorusCompositeSide.noCosRelation_zero_of_prime'` is a third proof of the same thing.
+Naming the neighbouring theorem in place of the identical one is the species `ERRATUM 626` onwards
+records; it is what `ERRATUM 629` missed here, and it is why that erratum counted two copies where
+there are three. -/
 theorem noCosRelation_zero_of_prime : NoCosRelation 0 :=
   noCosRelation_of_prime (by decide) (Nat.odd_iff.2 (by norm_num))
 
