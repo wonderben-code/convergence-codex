@@ -237,17 +237,25 @@ to zero. -/
 def relFour : Fin 4 → ℤ :=
   fun j => if (j : ℕ) = 0 then 1 else if (j : ℕ) = 1 then -2 else if (j : ℕ) = 2 then 1 else 0
 
+/-- `relFour`'s three obligations, NAMED rather than left inside the proof below. A second
+consumer wants them (`TorusFreqTight.least_failing_dim_four`), and repeating five lines of `have`
+in a downstream file is the duplication `ERRATUM 627` is about — the same call unit 104 made for
+`TorusEvenSide.cls1`, which it promoted out of that file (under its former spelling) rather than
+copying it. -/
+theorem relFour_supp : ∀ j : Fin 4, 1 + 3 < 2 * (j : ℕ) → relFour j = 0 := by
+  intro j hj
+  have := j.isLt
+  fin_cases j <;> simp_all [relFour]
+
+theorem sum_relFour : ∑ j, relFour j = 0 := by decide
+
+theorem sum_relFour_cos : ∑ j, (relFour j : ℝ) * cosCls 1 j = 0 := by
+  rw [Fin.sum_univ_four, cosCls_one, cosCls_one, cosCls_one, cosCls_one]
+  norm_num [relFour]
+
 theorem not_noCosRelation_one : ¬ NoCosRelation 1 := by
   intro h
-  have hsupp : ∀ j : Fin 4, 1 + 3 < 2 * (j : ℕ) → relFour j = 0 := by
-    intro j hj
-    have := j.isLt
-    fin_cases j <;> simp_all [relFour]
-  have hsum : ∑ j, relFour j = 0 := by decide
-  have hcos : ∑ j, (relFour j : ℝ) * cosCls 1 j = 0 := by
-    rw [Fin.sum_univ_four, cosCls_one, cosCls_one, cosCls_one, cosCls_one]
-    norm_num [relFour]
-  have h0 := h relFour hsupp hsum hcos 0
+  have h0 := h relFour relFour_supp sum_relFour sum_relFour_cos 0
   simp [relFour] at h0
 
 /-! ## the converse -/
