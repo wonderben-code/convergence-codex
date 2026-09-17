@@ -1,5 +1,6 @@
 import MatrixLoewner
 import GraphGreenPositive
+import SupportedOn
 
 /-!
 # Cutting a subdomain out lowers the propagator: domain monotonicity in the Loewner order
@@ -450,5 +451,48 @@ example (hm : m ≠ 0) (v : V) :
   greenDirichlet_diag_le K (injective_const_unit v) hm ()
 
 end Graph
+
+/-! ## The bridge to `SupportedOn`, and why it is a bridge rather than a merge
+
+`UNLOCK_WATCHLIST` `L26833` recorded that this estate had **two** extensions-by-zero:
+`SupportedOn.supportedOn`, a `Submodule` over a `Finset V`, and this file's `extZero`, a plain
+function along an arbitrary injection `W → V`. Unit 77 merged the submodule side's two copies into
+one theorem with the codomain hypothesis removed. **This half is deliberately NOT merged**, and the
+block's own `BLOCKED ON` line says why: `greenDirichlet_mono` needs an arbitrary injection, because
+**composing two injections is how "nested subdomains" is said and composing two `Finset` inclusions
+is not**. The two objects are genuinely different, so the honest disposal is a transfer.
+
+**AND THAT IS THE DISTINCTION FROM UNIT 110.** There, `IsingFiniteVolume.spin` and
+`IsingTransfer2D.spin` had letter-identical bodies, so a winner was chosen and both names were kept
+pointing at it. Here the bodies differ in their index type and one is strictly more general in a
+direction the other cannot express. **A bridge is the right answer when the objects differ; a merge
+is the right answer when they do not.** Reading `L26833` as unit 110's species would have deleted
+the generality `greenDirichlet_mono` runs on.
+
+`RE-SWEEP #60` priced this: `SupportedOn` has **0** transitive `paper_f` imports and neither module
+is in the other's closure, so this file imports it directly and the bridge is one lemma here rather
+than a third file. **It proves nothing new** — that is the block's phrase and it is accurate. -/
+
+section Bridge
+
+omit [Fintype V] [DecidableEq V] [Fintype W] [DecidableEq W] in
+/-- **THE TWO EXTENSIONS-BY-ZERO AGREE**, at the one place both are defined: along a `Finset`'s
+inclusion, `extZero` is the inverse of `SupportedOn.supportedOnEquiv`. `extZero` is stated for any
+injection and `supportedOn` for a `Finset`, so this is the whole overlap, and it is where a reader
+moving between the Green-function chain and the null-space chain needs it. -/
+theorem extZero_val_eq_supportedOnEquiv_symm (H : Finset V) (y : H → ℝ) :
+    extZero (Subtype.val : H → V) y
+      = ((SupportedOn.supportedOnEquiv (R := ℝ) (W := ℝ) H).symm y : V → ℝ) := by
+  classical
+  funext v
+  by_cases h : v ∈ H
+  · have hv := extZero_apply (e := (Subtype.val : H → V)) Subtype.val_injective y ⟨v, h⟩
+    simp only [SupportedOn.supportedOnEquiv, LinearEquiv.coe_symm_mk]
+    rw [hv, dif_pos h]
+  · rw [extZero_apply_of_not_mem (by rintro ⟨w, rfl⟩; exact h w.2) y]
+    simp only [SupportedOn.supportedOnEquiv, LinearEquiv.coe_symm_mk]
+    rw [dif_neg h]
+
+end Bridge
 
 end GreenDomainMonotone
