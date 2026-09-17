@@ -23,30 +23,52 @@
   hence `2(p−j) > p` — so `a_{σ j} = 0` and `aⱼ = 0`. **No counting argument appears anywhere**,
   which is what makes the proof uniform in `p`.
 
-  **CHECKED ABSENT BEFORE BEING WRITTEN — AND THE FIRST DRAFT OF THIS PARAGRAPH WAS FALSE, so it
-  is struck here rather than used** (`ERRATUM 621`; `ERRATUM 626`'s rule is the same one at the
-  level of a parameter). It said *this estate has used Mathlib's roots-of-unity and cyclotomic API
-  nowhere*. **It has used the roots-of-unity API twice.** `awk` over `estate_types.txt` (14665
-  statements, 1118 modules) for `cyclotomic`, `IsPrimitiveRoot` or `Irrational` returns
-  `CycleGreenFormula.isPrimitiveRoot_zeta` and `TorusSideFive.irrational_sqrt_five`, and
-  `grep` over the sources adds `WheelSpectrum`'s use of `IsPrimitiveRoot.pow_inj` and
-  `RealDivisionQuadratic`'s use of `minpoly.irreducible`. **What IS new here is the CYCLOTOMIC
-  POLYNOMIAL**: `grep -rn cyclotomic` over every `.lean` in the estate returns two prose mentions
-  — `ConeDimensionSum` and `TorusEightNotTight`, both naming it as the thing they do NOT have —
-  and no declaration. So `Polynomial.cyclotomic` and `cyclotomic_eq_minpoly_rat` are the genuinely
-  new import, and `IsPrimitiveRoot` and `minpoly` are not. The four scans of unit 98's header
-  (recorded there) stand unchanged.
+  **CHECKED ABSENT BEFORE BEING WRITTEN — AND BOTH DRAFTS OF THIS PARAGRAPH WERE WRONG. THE FIRST
+  WAS CAUGHT BEFORE THE COMMIT AND THE SECOND SHIPPED; BOTH ARE KEPT AND THE CORRECTION IS BELOW**
+  (`ERRATUM 621`, `ERRATUM 626`, `ERRATUM 627`).
+
+  > **DRAFT 1, struck before the commit:** *this estate has used Mathlib's roots-of-unity and
+  > cyclotomic API nowhere.*
+  >
+  > **DRAFT 2, which SHIPPED on 2026-09-17 and is withdrawn by unit 101:** *`awk` for
+  > `cyclotomic`, `IsPrimitiveRoot` or `Irrational` returns
+  > `CycleGreenFormula.isPrimitiveRoot_zeta` and `TorusSideFive.irrational_sqrt_five` … so
+  > `Polynomial.cyclotomic` and `cyclotomic_eq_minpoly_rat` are the genuinely new import, and
+  > `IsPrimitiveRoot` and `minpoly` are not.*
+
+  **WHAT WAS ACTUALLY THE CASE, and it is worse than draft 2 admitted: this file first defined
+  FOUR objects the estate already had, in a module it already imported.**
+  `CycleLaplacianSpectrum` sits in `TorusCosRelation`'s transitive import closure, and it holds
+  `zeta N = exp(2πi/N)` — **character for character** the `zt` this file defined —
+  `zeta_pow_card` (`ζ^N = 1`), `zeta_pow_eq_exp`, and **`zeta_pow_mod`**, which is precisely the
+  content of the mirror-exponent lemma. `CycleGreenFormula.isPrimitiveRoot_zeta` is the
+  primitive-root fact. **All four local versions are deleted and the estate's are used**;
+  `zeta_pow_eq_exp_nat` is the one genuine generalisation that remained, and its docstring says
+  so. **WHY THE QUERIES MISSED IT**: draft 2's `awk` was keyed on
+  `cyclotomic|IsPrimitiveRoot|Irrational` — spellings of the CONCEPT — while the estate holds the
+  object under the name `zeta`, with its primitive-root fact in a different module again.
+  `ERRATUM 627` carries the rule: **query the OBJECT, not the vocabulary.**
+
+  **WHAT IS GENUINELY NEW IS THE CYCLOTOMIC POLYNOMIAL, and that part of draft 2 stands.**
+  `grep -rn cyclotomic` over every `.lean` in the estate returns two prose mentions —
+  `ConeDimensionSum` and `TorusEightNotTight`, both naming it as the thing they do NOT have — and
+  no declaration. `Polynomial.cyclotomic` and `cyclotomic_eq_minpoly_rat` are this unit's one new
+  import. The four scans of unit 98's header (recorded there) stand unchanged.
 
   WHAT IS PROVED.
 
-  * **`zt`, `zt_pow_eq`, `zt_pow_self`** — the primitive root and its two basic facts, off
-    `Complex.isPrimitiveRoot_exp`.
+  * **`zeta_pow_eq_exp_nat`** — `CycleLaplacianSpectrum.zeta_pow_eq_exp` with the exponent an
+    arbitrary natural rather than a `Fin (n+3)`, because `two_cos_eq_add_pow`'s second exponent
+    `p − c` equals `p` at `c = 0`. The root of unity itself, `ζ^p = 1`, the mod-reduction and the
+    primitive-root fact are **the estate's own** (`zeta`, `zeta_pow_card`, `zeta_pow_mod`,
+    `CycleGreenFormula.isPrimitiveRoot_zeta`) — see the corrected paragraph above.
   * **`two_cos_eq_add_pow`** — `2cos(2πc/p) = ζ^c + ζ^{p−c}` for every `c ≤ p`, through
     `Complex.exp_two_pi_mul_I` and the definition of `Complex.cos`. **It holds at `c = 0` too**,
     which is why no case split is needed later.
-  * **`sig`, `sig_zero`, `sig_involutive`, `zt_pow_sig`, `sum_sig_reindex`** — the mirror
-    `j ↦ (p − j) mod p` as an involution of `Fin p`, and the reindexing it gives.
-  * **`sum_zt_eq_zero`** — the bridge: a cosine relation becomes a vanishing integer combination
+  * **`sig`, `sig_zero`, `sig_involutive`, `zeta_pow_sig`, `sum_sig_reindex`** — the mirror
+    `j ↦ (p − j) mod p` as an involution of `Fin p`, and the reindexing it gives. `zeta_pow_sig`
+    is one line off the estate's `zeta_pow_mod`.
+  * **`sum_zeta_eq_zero`** — the bridge: a cosine relation becomes a vanishing integer combination
     of the `p`-th roots of unity, with coefficients `aⱼ + a_{σ j}`.
   * **`const_of_sum_eq_zero`** — **the cyclotomic step, the one genuinely new piece of Mathlib
     this unit takes on** (see the corrected paragraph above): a vanishing integer combination of
@@ -74,9 +96,13 @@
     frequency says side 9 is tight at `d = 2` and **NOT tight at `d = 3`** — so "odd" is not the
     criterion, and the failure appears only in the third dimension, which is exactly what unit
     98's converse construction predicts, its `∑ a⁺` being `3` for the relation
-    `(1, −1, −1, 2, −1)` there. **That is a measurement, not a theorem, and proving it is the next
-    unit**; it needs `∑_{j<9} cos(2πj/9) = 0`, which this estate does not have. Named so it is not
-    rediscovered, not costed (`ERRATUM 194`, `ERRATUM 246`).
+    `(1, −1, −1, 2, −1)` there. **That is a measurement, not a theorem.** **AND A CLAIM THAT
+    SHIPPED HERE IS WITHDRAWN BY UNIT 101** (`ERRATUM 627`): this paragraph said the proof *needs
+    `∑_{j<9} cos(2πj/9) = 0`, which this estate does not have.* **The estate has it.**
+    `WheelSpectrum.sum_rchi_eq_zero` is `∑ⱼ Re(ζ^{kj}) = 0` for `k ≠ 0`, which at `k = 1` is
+    exactly that sum; the query that missed it was keyed on `∑` beside `Real.cos`, and the estate
+    states the same real number as the real part of a complex one. Not costed (`ERRATUM 194`,
+    `ERRATUM 246`).
   * **NOTHING ABOUT EVEN SIDES.** Sides 4 and 6 are refuted in units 97 and 99; no general
     even-side statement is proved, though the rational-valued cosines at `n = 2m` make one
     plausible. Not attempted.
@@ -94,27 +120,27 @@
 -/
 
 import TorusCosRelation
+import CycleGreenFormula
 import Mathlib.RingTheory.Polynomial.Cyclotomic.Roots
-import Mathlib.RingTheory.RootsOfUnity.Complex
 
 namespace TorusPrimeSide
 
 open Finset BoxGraph TorusOrbitInvariant TorusCosRelation Polynomial
+open CycleLaplacianSpectrum CycleGreenFormula
 
 variable {N : ℕ}
 
-noncomputable def zt (p : ℕ) : ℂ := Complex.exp (2 * ↑Real.pi * Complex.I / p)
-
-theorem zt_pow_eq {p : ℕ} (hp : p ≠ 0) (c : ℕ) :
-    zt p ^ c = Complex.exp ((2 * Real.pi * (c : ℝ) / (p : ℝ) : ℝ) * Complex.I) := by
-  rw [zt, ← Complex.exp_nat_mul]
+/-- **`CycleLaplacianSpectrum.zeta_pow_eq_exp` WITH THE EXPONENT AN ARBITRARY NATURAL** rather
+than a `Fin (n + 3)`, which is what `two_cos_eq_add_pow` needs below: its second exponent is
+`p - c`, and at `c = 0` that is `p` itself, outside the `Fin` range. The estate's version is the
+special case, and this is the only generalisation this file needed (`ERRATUM 627`). -/
+theorem zeta_pow_eq_exp_nat {p : ℕ} (hp : p ≠ 0) (c : ℕ) :
+    zeta p ^ c = Complex.exp ((2 * Real.pi * (c : ℝ) / (p : ℝ) : ℝ) * Complex.I) := by
+  rw [zeta, ← Complex.exp_nat_mul]
   congr 1
   have hpc : ((p : ℂ)) ≠ 0 := by simpa using Nat.cast_ne_zero.2 hp
   push_cast
   field_simp
-
-theorem zt_pow_self {p : ℕ} (hp : p ≠ 0) : zt p ^ p = 1 :=
-  (Complex.isPrimitiveRoot_exp p hp).pow_eq_one
 
 /-- The mirror index. -/
 def sig (N : ℕ) (c : Fin (N + 3)) : Fin (N + 3) :=
@@ -141,20 +167,18 @@ theorem sig_involutive : Function.Involutive (sig N) := by
     rw [sig_val_of_pos (by rw [sig_val_of_pos hpos]; omega), sig_val_of_pos hpos]
     omega
 
-theorem zt_pow_sig (c : Fin (N + 3)) :
-    zt (N + 3) ^ ((sig N c : Fin (N + 3)) : ℕ) = zt (N + 3) ^ (N + 3 - (c : ℕ)) := by
-  have h := c.isLt
-  rcases Nat.eq_zero_or_pos (c : ℕ) with h0 | hpos
-  · have hc0 : c = 0 := Fin.ext h0
-    rw [hc0, sig_zero, show ((0 : Fin (N + 3)) : ℕ) = 0 from rfl, Nat.sub_zero, pow_zero,
-      zt_pow_self (by omega)]
-  · rw [sig_val_of_pos hpos]
+/-- **OFF `CycleLaplacianSpectrum.zeta_pow_mod`**, which is exactly this statement's content: the
+mirror index is `(p - c) % p`, and `zeta`'s powers only see the exponent mod `p`. -/
+theorem zeta_pow_sig (c : Fin (N + 3)) :
+    zeta (N + 3) ^ ((sig N c : Fin (N + 3)) : ℕ) = zeta (N + 3) ^ (N + 3 - (c : ℕ)) := by
+  simp only [sig]
+  exact zeta_pow_mod (by omega) (N + 3 - (c : ℕ))
 
 theorem two_cos_eq_add_pow {p : ℕ} (hp : p ≠ 0) {c : ℕ} (hc : c ≤ p) :
     (2 : ℂ) * ((Real.cos (2 * Real.pi * (c : ℝ) / (p : ℝ)) : ℝ) : ℂ)
-      = zt p ^ c + zt p ^ (p - c) := by
+      = zeta p ^ c + zeta p ^ (p - c) := by
   have hpc : ((p : ℂ)) ≠ 0 := by simpa using Nat.cast_ne_zero.2 hp
-  rw [zt_pow_eq hp c, zt_pow_eq hp (p - c)]
+  rw [zeta_pow_eq_exp_nat hp c, zeta_pow_eq_exp_nat hp (p - c)]
   have hcast : ((p - c : ℕ) : ℝ) = (p : ℝ) - (c : ℝ) := Nat.cast_sub hc
   have he : ((2 * Real.pi * ((p - c : ℕ) : ℝ) / (p : ℝ) : ℝ) : ℂ) * Complex.I
       = -(((2 * Real.pi * (c : ℝ) / (p : ℝ) : ℝ) : ℂ) * Complex.I)
@@ -177,30 +201,30 @@ theorem sum_sig_reindex {M : Type*} [AddCommMonoid M] (f : Fin (N + 3) → M) :
     ∑ c, f (sig N c) = ∑ c, f c :=
   Equiv.sum_comp (Function.Involutive.toPerm (sig N) sig_involutive) f
 
-theorem sum_zt_eq_zero (a : Fin (N + 3) → ℤ)
+theorem sum_zeta_eq_zero (a : Fin (N + 3) → ℤ)
     (hacos : ∑ c, (a c : ℝ) * cosCls N c = 0) :
-    ∑ c : Fin (N + 3), ((a c + a (sig N c) : ℤ) : ℂ) * zt (N + 3) ^ (c : ℕ) = 0 := by
+    ∑ c : Fin (N + 3), ((a c + a (sig N c) : ℤ) : ℂ) * zeta (N + 3) ^ (c : ℕ) = 0 := by
   have hp : (N + 3) ≠ 0 := by omega
-  have hsplit : ∑ c : Fin (N + 3), ((a c + a (sig N c) : ℤ) : ℂ) * zt (N + 3) ^ (c : ℕ)
-      = (∑ c : Fin (N + 3), (a c : ℂ) * zt (N + 3) ^ (c : ℕ))
-        + ∑ c : Fin (N + 3), (a (sig N c) : ℂ) * zt (N + 3) ^ (c : ℕ) := by
+  have hsplit : ∑ c : Fin (N + 3), ((a c + a (sig N c) : ℤ) : ℂ) * zeta (N + 3) ^ (c : ℕ)
+      = (∑ c : Fin (N + 3), (a c : ℂ) * zeta (N + 3) ^ (c : ℕ))
+        + ∑ c : Fin (N + 3), (a (sig N c) : ℂ) * zeta (N + 3) ^ (c : ℕ) := by
     rw [← Finset.sum_add_distrib]
     refine Finset.sum_congr rfl (fun c _ => ?_)
     push_cast
     ring
-  have hre : ∑ c : Fin (N + 3), (a (sig N c) : ℂ) * zt (N + 3) ^ (c : ℕ)
-      = ∑ c : Fin (N + 3), (a c : ℂ) * zt (N + 3) ^ ((sig N c : Fin (N + 3)) : ℕ) := by
+  have hre : ∑ c : Fin (N + 3), (a (sig N c) : ℂ) * zeta (N + 3) ^ (c : ℕ)
+      = ∑ c : Fin (N + 3), (a c : ℂ) * zeta (N + 3) ^ ((sig N c : Fin (N + 3)) : ℕ) := by
     rw [← sum_sig_reindex (N := N)
-      (fun c => (a c : ℂ) * zt (N + 3) ^ ((sig N c : Fin (N + 3)) : ℕ))]
+      (fun c => (a c : ℂ) * zeta (N + 3) ^ ((sig N c : Fin (N + 3)) : ℕ))]
     refine Finset.sum_congr rfl (fun c _ => ?_)
     rw [sig_involutive c]
   rw [hsplit, hre, ← Finset.sum_add_distrib]
   have hterm : ∀ c : Fin (N + 3),
-      (a c : ℂ) * zt (N + 3) ^ (c : ℕ)
-        + (a c : ℂ) * zt (N + 3) ^ ((sig N c : Fin (N + 3)) : ℕ)
+      (a c : ℂ) * zeta (N + 3) ^ (c : ℕ)
+        + (a c : ℂ) * zeta (N + 3) ^ ((sig N c : Fin (N + 3)) : ℕ)
       = 2 * (((a c : ℝ) * cosCls N c : ℝ) : ℂ) := by
     intro c
-    rw [zt_pow_sig, cosCls_eq]
+    rw [zeta_pow_sig, cosCls_eq]
     have h2 := two_cos_eq_add_pow hp (le_of_lt c.isLt)
     push_cast at h2 ⊢
     linear_combination (-(a c : ℂ)) * h2
@@ -209,13 +233,13 @@ theorem sum_zt_eq_zero (a : Fin (N + 3) → ℤ)
 
 /-- A vanishing integer combination of the `p`-th roots of unity has constant coefficients. -/
 theorem const_of_sum_eq_zero {p : ℕ} (hp : p.Prime) (b : ℕ → ℤ)
-    (h : ∑ j ∈ Finset.range p, (b j : ℂ) * (zt p) ^ j = 0)
+    (h : ∑ j ∈ Finset.range p, (b j : ℂ) * (zeta p) ^ j = 0)
     {j : ℕ} (hj : j < p) : b j = b 0 := by
   haveI : Fact p.Prime := ⟨hp⟩
-  set ζ : ℂ := zt p with hzdef
+  set ζ : ℂ := zeta p with hzdef
   have hζ : IsPrimitiveRoot ζ p := by
-    rw [hzdef, zt]
-    exact Complex.isPrimitiveRoot_exp p hp.pos.ne'
+    rw [hzdef]
+    exact isPrimitiveRoot_zeta hp.pos.ne'
   set P : ℚ[X] := ∑ i ∈ Finset.range p, C ((b i : ℚ)) * X ^ i with hPdef
   have hPζ : aeval ζ P = 0 := by
     rw [hPdef]
@@ -287,10 +311,10 @@ theorem noCosRelation_of_prime (hp : Nat.Prime (N + 3)) (hodd : Odd (N + 3)) :
     have hmod : (⟨(c : ℕ) % (N + 3), Nat.mod_lt _ (by omega)⟩ : Fin (N + 3)) = c :=
       Fin.ext (Nat.mod_eq_of_lt c.isLt)
     simp only [hbdef, hmod]
-  have hsum0 : ∑ j ∈ Finset.range (N + 3), (b j : ℂ) * zt (N + 3) ^ j = 0 := by
-    rw [← Fin.sum_univ_eq_sum_range (fun j => (b j : ℂ) * zt (N + 3) ^ j) (N + 3),
+  have hsum0 : ∑ j ∈ Finset.range (N + 3), (b j : ℂ) * zeta (N + 3) ^ j = 0 := by
+    rw [← Fin.sum_univ_eq_sum_range (fun j => (b j : ℂ) * zeta (N + 3) ^ j) (N + 3),
       Finset.sum_congr rfl (fun c _ => by rw [hbval c])]
-    exact sum_zt_eq_zero a hacos
+    exact sum_zeta_eq_zero a hacos
   have hconst : ∀ j, j < N + 3 → b j = b 0 :=
     fun j hj => const_of_sum_eq_zero hp b hsum0 hj
   have hb0 : b 0 = 2 * a 0 := by
