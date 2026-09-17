@@ -66,6 +66,12 @@
     reals that are shown to be eigenvalues; ~~nothing here says they are the TOP two, nothing
     orders the spectrum,~~ and nothing connects to Mathlib's `IsHermitian.eigenvalues` indexing —
     the fence this cluster keeps meeting, and untouched here.
+    **THE SECOND HALF IS OVERTAKEN AS OF 2026-09-17 (unit 113), AND ITS FIRST HALF STANDS**
+    (`ERRATUM 94`, kept rather than struck). *Untouched here* is still exactly right about this
+    file. *The fence this cluster keeps meeting* is not: `WheelSecondFence` crosses it, and the
+    two halves of the crossing — `HermitianFibreCount.finrank_eigenspace_hermitian_eq_card_fibre`
+    and `HermitianCharpoly.mem_image_eigenvalues_iff` — were both in the estate four days BEFORE
+    this file was written.
     **THE STRUCK HALF WAS TRUE OF THIS FILE FOR THREE UNITS AND IS NOW FALSE OF THE ESTATE**
     (2026-09-16, unit 86, `ConeTopEigen.isGreatest_coneSpectrum`): `hubRootPlus` is proved the
     GREATEST eigenvalue of the cone's `Q`, and `finrank_coneEig_hubRootPlus` proves its

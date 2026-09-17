@@ -67,6 +67,10 @@
   **ONE FENCE, UNCHANGED.** `λ₂` here is an `IsGreatest` in eigenvector form, not the estate's
   `SignlessSecondEigen.secondEigen`, which is a `sup'` over `IsHermitian.eigenvalues`. Unit 93
   named the route between them; this file does not travel it and claims nothing about `secondEigen`.
+  [**OVERTAKEN THE SAME DAY, by unit 113** (`ERRATUM 94`): `WheelSecondFence` travels it and
+  restates this file's bracket for `topEigen − secondEigen`. True of this file as written, and it
+  was written an hour before the crossing — which is itself the point of the erratum, since the
+  route was available for five days and EIGHT units said this instead, counted not estimated.]
 
   **AND ONE THING IS NEW TO THE CLUSTER AND IS NOT HIDDEN: A NUMERIC BOUND ON `π`.** Grepped
   before it was used — **no file in `paper_f` had ever cited `Real.pi_lt_d2`, `pi_gt_d2`,

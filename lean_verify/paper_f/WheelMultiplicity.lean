@@ -61,6 +61,9 @@
     because that is what the proof uses.
   * **NO ORDERING, NO ENUMERATION, NO CHARACTERISTIC POLYNOMIAL**, and nothing about Mathlib's
     `IsHermitian.eigenvalues` indexing — unchanged from every unit of this chain.
+    [**Still true of this file; no longer true of the chain, 2026-09-17, unit 113**
+    (`ERRATUM 94`). `WheelSecondFence` crosses the indexing fence and evaluates the estate's own
+    `SignlessSecondEigen.secondEigen` at the wheel.]
   * **NOTHING ABOUT THE CASCADE, THE SPINE OR ANY WALL.**
 
   Lean 4, pinned Mathlib. 0 sorry, no new axioms.

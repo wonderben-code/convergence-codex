@@ -53,6 +53,10 @@
     other `n − 1` are still the rim's, unevaluated, and nothing here says which is second.
   * **NOTHING FOR A NON-REGULAR RIM**, and nothing about Mathlib's `IsHermitian.eigenvalues`
     indexing — the fence this cluster has met in every unit and has still not crossed.
+    [**THE SECOND CLAUSE IS OVERTAKEN, 2026-09-17, unit 113** (`ERRATUM 94`): `WheelSecondFence`
+    crosses it, and `card_fibre_hubRootPlus` is THIS file's `finrank_coneEig_hubRootPlus` read
+    through Mathlib's enumeration, with no transfer lemma in between. The non-regular rim clause
+    stands.]
   * **NOTHING ABOUT THE CASCADE, THE SPINE OR ANY WALL.**
 
   Lean 4, pinned Mathlib. 0 sorry, no new axioms.

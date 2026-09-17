@@ -59,6 +59,13 @@
     carrying the top. **Naming a route is not a claim it is short** (`ERRATUM 194`), and it is
     not attempted here (`ERRATUM 246`) — but it is no longer an unexamined fence, and that
     difference is the point of saying it.
+    [**ATTEMPTED AND DONE, 2026-09-17, unit 113** (`ERRATUM 94`, kept rather than struck):
+    `WheelSecondFence.secondEigen_eq_rimVal_one` proves `secondEigen (wheelHerm n) = rimVal n 1`
+    for every `n ≥ 1`. **AND THIS BULLET NAMED ONLY ONE HALF OF THE ROUTE.** The fibre count is
+    the half stated above; the other half is `HermitianCharpoly.mem_image_eigenvalues_iff`, which
+    turns an index into an eigenvector and back, had been in the estate since 2026-09-12, and is
+    named in no fence sentence of this cluster. This row's ledger entry additionally claimed the
+    route was *named for the first time*, which is false — see the erratum.]
   * **NOTHING ABOUT `λ₂` AT A GRAPH THAT IS NOT A WHEEL.** `L37357`'s general question —
     `topEigen − λ₂ ≥ f(G)` for arbitrary `G` — is untouched, and the research-scale reading in that
     item stands for it. What closes here is one half of that item's own closing condition.

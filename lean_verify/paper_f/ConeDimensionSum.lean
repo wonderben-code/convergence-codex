@@ -58,6 +58,10 @@
     over an arbitrary `Finset` precisely so that the enumeration is not needed, which is why it
     is usable here at all — the fence this cluster has met in every unit is side-stepped rather
     than crossed.
+    [**OVERTAKEN 2026-09-17, unit 113** (`ERRATUM 94`): it is crossed now, in
+    `WheelSecondFence`, and this file's own `signlessLap_coneGraph_isHermitian` is the witness
+    the crossing runs on. Side-stepping it here was still the right choice — the `Finset` form is
+    what makes `sum_finrank_le` usable at all.]
   * **NOTHING ABOUT THE CASCADE, THE SPINE OR ANY WALL OF THE PAPER.**
 
   Lean 4, pinned Mathlib. 0 sorry, no new axioms.
