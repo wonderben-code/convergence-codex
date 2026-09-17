@@ -160,7 +160,7 @@ theorem riemann_apply_eventually {Y Z W : Π x : M, TangentSpace I x} {x : M}
           - covApply cov (mlieBracket I Y Z) W) y := by
   filter_upwards [CurvatureTensor.eventually_mdiffAt_of_cmdiffAt hY,
     CurvatureTensor.eventually_mdiffAt_of_cmdiffAt hZ,
-    CovariantOrderEndo.eventually_cmdiffAt_two' hW] with y hYy hZy hWy
+    CurvatureTensor.eventually_cmdiffAt_of_cmdiffAt hW] with y hYy hZy hWy
   simp only [Pi.sub_apply, covApply_apply]
   exact curvEndo_apply cov hYy hZy hWy
 

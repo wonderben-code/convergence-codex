@@ -126,6 +126,21 @@ theorem eventually_mdiffAt_of_cmdiffAt {Z : Π x : M, TangentSpace I x} {x : M}
   exact ((hZu y (interior_subset hy)).mdifferentiableWithinAt two_ne_zero).mdifferentiableAt
     (mem_interior_iff_mem_nhds.1 hy)
 
+/-- **AND `C²` NEAR `x` WITHOUT LOSING THE ORDER**, which is Mathlib's
+`contMDiffAt_iff_contMDiffAt_nhds` and one line. `UNLOCK_WATCHLIST` `L35270` counted six copies of
+*regular at a point implies regular on a neighbourhood* in this chain; **two of them were this
+statement**, `RicciOrder.eventually_cmdiffAt_two` and `CovariantOrderEndo.eventually_cmdiffAt_two'`,
+in two parallel chains that do not import each other, and both are deleted in favour of this one.
+**IT LIVES HERE BECAUSE THIS FILE'S CONTEXT HAS NO METRIC IN IT.** Both deleted copies sat inside a
+`RiemannianBundle` context and neither `omit` line dropped that binder, which is why the unit that
+counted them could not simply import one: doing so would have put a metric back into a file whose
+point is that there is none. `CurvatureTensor`'s variable block carries no bundle instance at all,
+and it is in the import closure of all four use sites. -/
+theorem eventually_cmdiffAt_of_cmdiffAt {Z : Π x : M, TangentSpace I x} {x : M}
+    (hZ : CMDiffAt (2 : WithTop ℕ∞) (T% Z) x) :
+    ∀ᶠ y in 𝓝 x, CMDiffAt (2 : WithTop ℕ∞) (T% Z) y :=
+  (contMDiffAt_iff_contMDiffAt_nhds (by simp)).1 hZ
+
 /-- Near `x`, `∇_Y (f • Z) = df(Y) • Z + f • ∇_Y Z`, for `f` and `Z` of class `C²` at `x`. -/
 theorem covApply_smul_right_eventually' {f : M → ℝ} {x : M} (hf : ContMDiffAt I 𝓘(ℝ) 2 f x)
     {Z : Π x : M, TangentSpace I x} (hZ : CMDiffAt 2 (T% Z) x) (Y : Π x : M, TangentSpace I x) :

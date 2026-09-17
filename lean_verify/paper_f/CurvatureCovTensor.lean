@@ -98,7 +98,12 @@ attribute [local instance] CurvatureOrder.isManifold_shift CurvatureOrder.isMani
 
 omit [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M] [IsManifold I 3 M]
   [IsContMDiffRiemannianBundle I 2 E (TangentSpace I : M → Type _)] in
-/-- Differentiability of a section of `Hom(TM, TM)` is a property of its germ. -/
+/-- Differentiability of a section of `Hom(TM, TM)` is a property of its germ.
+**AND THE `[RiemannianBundle …]` BINDER CANNOT BE DROPPED, MEASURED 2026-09-17 BY UNIT 115 BY
+TRYING IT.** `L35270`'s second finding says this declaration and `HomCovariantOrder`'s two carry
+that binder unnecessarily — *read from `#check`*. Adding it to the `omit` line above makes Lean
+answer **`cannot omit referenced section variable`** at all three sites. So the binder is used, the
+`omit` line's five-and-not-six is correct, and that finding is withdrawn where it stands. -/
 theorem mdiffHomAt_congr {A A' : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y} {x : M}
     (hA : HomCovariant.MDiffHomAt A x) (h : ∀ᶠ y in 𝓝 x, A y = A' y) :
     HomCovariant.MDiffHomAt A' x := by

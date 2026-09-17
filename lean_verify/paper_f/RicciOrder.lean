@@ -15,7 +15,12 @@ Two things had to be arranged. The **bridge** is `CurvatureTensor.curvEndo_apply
 agrees with the expression at every point where the three fields are regular enough, so the
 tensor's field is `C^k` on the neighbourhood where that holds — which needs the *third* field to be
 `C²` **near** the point, not merely at it, and `eventually_cmdiffAt_two` supplies that from
-`contMDiffAt_iff_contMDiffOn_nhds`. The **trace** is then `TraceFrame.contMDiffAt_trace` against
+`contMDiffAt_iff_contMDiffOn_nhds`.
+[**That theorem was DELETED 2026-09-17 by unit 115** (`L35270`, `ERRATUM 94` — the sentence above
+is kept and this note attached): the statement is now
+`CurvatureTensor.eventually_cmdiffAt_of_cmdiffAt`, one line off Mathlib's
+`contMDiffAt_iff_contMDiffAt_nhds`, in a file whose context has no metric in it.]
+The **trace** is then `TraceFrame.contMDiffAt_trace` against
 the local frame of the tangent bundle's chart at the point, available at order `C^(k+2)` because a
 `C^(k+3)` manifold has a `C^(k+2)` tangent bundle (`contMDiffVectorBundle_add_two`). **No
 orthonormal
@@ -30,8 +35,11 @@ on a finite-dimensional tangent space that is only a repackaging (`ricci_eq_trac
 
 ## What is proved
 
-**`eventually_cmdiffAt_two`** — a section that is `C²` at a point is `C²` at every point of a
-neighbourhood. Needed because the bridge lemma asks for regularity near the point.
+~~**`eventually_cmdiffAt_two`** — a section that is `C²` at a point is `C²` at every point of a
+neighbourhood. Needed because the bridge lemma asks for regularity near the point.~~
+**DELETED 2026-09-17, unit 115** (`L35270`): it was one of two copies of one Mathlib one-liner in
+two chains that do not import each other, and both are replaced by
+`CurvatureTensor.eventually_cmdiffAt_of_cmdiffAt`. The struck sentence is kept per `ERRATUM 94`.
 
 **`contMDiffVectorBundle_add_two`** — the tangent bundle of a `C^(k+3)` manifold is a `C^(k+2)`
 vector bundle, the order at which the chart's local frame is available. Its name distinguishes it
@@ -83,7 +91,10 @@ the classical Christoffel formula — is not investigated.
 **ONLY FINITE ORDERS**, inherited from `CurvatureOrder`, `KoszulOrder` and `LeviCivitaOrder`:
 `k` is a natural number throughout, so nothing here is a statement about `C^∞`, and the
 `contMDiffAt_iff_contMDiffOn_nhds` step in `eventually_cmdiffAt_two` needs a finite order to hold
-at all.
+at all. [**And that clause is now about a theorem in another file**, unit 115: the order
+restriction is unchanged — `contMDiffAt_iff_contMDiffAt_nhds` carries the same `n ≠ ∞` side
+condition — but the step is `CurvatureTensor.eventually_cmdiffAt_of_cmdiffAt`'s and not this
+file's.]
 
 **THE HYPOTHESES, READ OFF THE BINDERS** (`ERRATUM 455`): `[NormedAddCommGroup E]`,
 `[NormedSpace ℝ E]`, `[CompleteSpace E]`, `[FiniteDimensional ℝ E]`, a `ChartedSpace H M` with
@@ -118,16 +129,6 @@ attribute [local instance] CurvatureOrder.isManifold_shift CurvatureOrder.isMani
   CurvatureOrder.isContMDiffRiemannianBundle_self KoszulManifold.finDimTangent
   CurvatureTensor.contMDiffVectorBundle_two
 
-omit [CompleteSpace E] [FiniteDimensional ℝ E]
-  [IsContMDiffRiemannianBundle I 2 E (TangentSpace I : M → Type _)] in
-/-- A section of class `C²` at a point is `C²` at every point of a neighbourhood. -/
-theorem eventually_cmdiffAt_two {Z : Π x : M, TangentSpace I x} {x : M}
-    (hZ : CMDiffAt (2 : WithTop ℕ∞) (T% Z) x) :
-    ∀ᶠ y in 𝓝 x, CMDiffAt (2 : WithTop ℕ∞) (T% Z) y := by
-  obtain ⟨u, hu, hZu⟩ := (contMDiffAt_iff_contMDiffOn_nhds (by simp)).1 hZ
-  filter_upwards [interior_mem_nhds.2 hu] with y hy
-  exact (hZu.mono interior_subset).contMDiffAt (isOpen_interior.mem_nhds hy)
-
 /-- The Ricci operator of the Levi-Civita connection at a point, as a continuous linear map:
 `v ↦ R(v, w) z`, which `RicciScalar.curvLeft` gives as a linear map. -/
 noncomputable def ricciOp (x : M) (w z : TangentSpace I x) :
@@ -153,7 +154,7 @@ theorem contMDiffAt_ricciOp_apply {W Z t : Π x : M, TangentSpace I x} {x : M}
   refine (CurvatureOrder.contMDiffAt_curvAux ht hW hZ).congr_of_eventuallyEq ?_
   filter_upwards [eventually_mdiffAt_of_cmdiffAt (ht.of_le h2),
     eventually_mdiffAt_of_cmdiffAt (hW.of_le h2),
-    eventually_cmdiffAt_two (hZ.of_le h2)] with y hty hWy hZy
+    CurvatureTensor.eventually_cmdiffAt_of_cmdiffAt (hZ.of_le h2)] with y hty hWy hZy
   simp only [ricciOp_apply]
   rw [curvEndo_apply _ hty hWy hZy]
 

@@ -40,12 +40,17 @@ removed.
 
 ## What is proved
 
-**`contMDiffVectorBundle_add_two'`**, **`eventually_cmdiffAt_two'`** — the two pieces of plumbing
-`RicciOrder` states inside a metric's context: the tangent bundle of a `C^(k+3)` manifold is a
-`C^(k+2)` vector bundle, which is the order the local frame is taken at, and a section of class
-`C²` at a point is `C²` at every point of a neighbourhood. Both are restated here with **no metric
-in the context** — that is the whole of the difference, and it is why they are primed rather than
-imported.
+**`contMDiffVectorBundle_add_two'`**, ~~**`eventually_cmdiffAt_two'`**~~ — the two pieces of
+plumbing `RicciOrder` states inside a metric's context: the tangent bundle of a `C^(k+3)`
+manifold is a `C^(k+2)` vector bundle, which is the order the local frame is taken at, and a
+section of class `C²` at a point is `C²` at every point of a neighbourhood. Both are restated
+here with **no metric in the context** — that is the whole of the difference, and it is why they
+are primed rather than imported.
+[**THE SECOND ONE IS DELETED, 2026-09-17, unit 115** (`L35270`, `ERRATUM 94` — the sentence above
+is kept and struck): it and `RicciOrder.eventually_cmdiffAt_two` were two copies of one Mathlib
+one-liner in two chains that do not import each other, and both are replaced by
+`CurvatureTensor.eventually_cmdiffAt_of_cmdiffAt`, whose file's context has no metric in it at
+all — which is the metric-free restatement this paragraph wanted, in a place both chains reach.]
 
 **`isLocallyC1_of_class`** — `IsLocallyCk (k+1) cov` gives `CurvatureTensor.IsLocallyC1 cov`, which
 is what `curvEndo` is defined under. `CovariantOrderMono.isLocallyC1_of_isLocallyCk` proved this as
@@ -159,16 +164,6 @@ theorem contMDiffVectorBundle_add_two' :
 
 attribute [local instance] contMDiffVectorBundle_add_two'
 
-omit [CompleteSpace E] [FiniteDimensional ℝ E] in
-/-- A section of class `C²` at a point is `C²` at every point of a neighbourhood.
-`RicciOrder.eventually_cmdiffAt_two` is this statement inside a `RiemannianBundle` context, proved
-in four lines through the `ContMDiffOn` route; Mathlib's `contMDiffAt_iff_contMDiffAt_nhds` gives
-the `∀ᶠ` form directly, at every order except `∞`. -/
-theorem eventually_cmdiffAt_two' {Z : Π x : M, TangentSpace I x} {x : M}
-    (hZ : CMDiffAt (2 : WithTop ℕ∞) (T% Z) x) :
-    ∀ᶠ y in 𝓝 x, CMDiffAt (2 : WithTop ℕ∞) (T% Z) y :=
-  (contMDiffAt_iff_contMDiffAt_nhds (by simp)).1 hZ
-
 /-- **THE ORDER CLASS GIVES THE CLASS THE CURVATURE IS DEFINED UNDER**: `IsLocallyCk (k+1) cov`
 gives `CurvatureTensor.IsLocallyC1 cov`, by `CovariantOrderMono`'s bridge at order one. -/
 theorem isLocallyC1_of_class [IsLocallyCk ((k : WithTop ℕ∞) + 1) cov] :
@@ -205,7 +200,7 @@ theorem contMDiffAt_curvEndo_apply [IsLocallyCk ((k : WithTop ℕ∞) + 1) cov]
     hZ).congr_of_eventuallyEq ?_
   filter_upwards [eventually_mdiffAt_of_cmdiffAt (hX.of_le h2),
     eventually_mdiffAt_of_cmdiffAt (hY.of_le h2),
-    eventually_cmdiffAt_two' (hZ.of_le h2)] with y hXy hYy hZy
+    CurvatureTensor.eventually_cmdiffAt_of_cmdiffAt (hZ.of_le h2)] with y hXy hYy hZy
   exact congrArg (TotalSpace.mk' E y) (curvEndo_apply cov hXy hYy hZy)
 
 /-- **THE CURVATURE OF ANY `C^(k+1)` CONNECTION IS A `C^k` SECTION OF THE ENDOMORPHISM BUNDLE**:

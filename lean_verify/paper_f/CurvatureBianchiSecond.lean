@@ -36,6 +36,10 @@ bookkeeping at all.
 **`riemann_apply_eventually`** — `R(Y, Z)W = ∇_Y ∇_Z W − ∇_Z ∇_Y W − ∇_{[Y,Z]} W` **as sections
 near the point**, not merely at it. Applying a further covariant derivative to the curvature needs
 the identity on a neighbourhood, which is `RicciOrder.eventually_cmdiffAt_two`'s job.
+[**That theorem was DELETED 2026-09-17 by unit 115** (`L35270`, `ERRATUM 94` — the sentence above
+is kept and this note attached): the job is
+`CurvatureTensor.eventually_cmdiffAt_of_cmdiffAt`'s now, one line off Mathlib's
+`contMDiffAt_iff_contMDiffAt_nhds`, in a file whose context has no metric in it.]
 
 **`isManifold_shift1`, `isMetric_shift1`** — the two order casts that let `LeviCivitaOrder`'s
 order-`k` regularity theorem be used at `k + 1`. `CurvatureCovOrder` needed four of these for one
@@ -141,7 +145,7 @@ theorem riemann_apply_eventually {Y Z W : Π x : M, TangentSpace I x} {x : M}
           - covApply LC (mlieBracket I Y Z) W) y := by
   filter_upwards [CurvatureTensor.eventually_mdiffAt_of_cmdiffAt hY,
     CurvatureTensor.eventually_mdiffAt_of_cmdiffAt hZ,
-    RicciOrder.eventually_cmdiffAt_two hW] with y hYy hZy hWy
+    CurvatureTensor.eventually_cmdiffAt_of_cmdiffAt hW] with y hYy hZy hWy
   simp only [Pi.sub_apply, covApply_apply]
   exact LeviCivitaRegular.riemann_apply hYy hZy hWy
 

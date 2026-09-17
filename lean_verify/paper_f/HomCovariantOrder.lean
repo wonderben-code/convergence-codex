@@ -14,7 +14,9 @@ the Levi-Civita connection at every finite order.
 **`eventually_mdiffHomAt`**, **`eventually_mdiffAt`** — a section of class `C^(k+1)` at a point is
 differentiable at every point of a neighbourhood, for `Hom(TM, TM)` and for `TM`. This is
 `RicciOrder.eventually_cmdiffAt_two`'s device at a general order, and it is what turns a pointwise
-identity into one that can be used near the point.
+identity into one that can be used near the point. [**That name was deleted 2026-09-17 by unit
+115** (`L35270`, `ERRATUM 94`); the device is `CurvatureTensor.eventually_cmdiffAt_of_cmdiffAt`'s
+now, and these two are still the general-order form of it and are not affected.]
 
 **`contMDiffAt_homCovFun_apply`** — **THE THEOREM**: for `A` a `C^(k+1)` section of `Hom(TM, TM)`
 and `X, W` of class `C^(k+1)` at the point, `y ↦ (∇_X A)(W)(y)` is a `C^k` section. The proof is

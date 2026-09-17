@@ -46,6 +46,17 @@ wrote an hour before this file**, so the count includes one of mine. All six are
 specialisations of a lemma Mathlib already has in general form. This file adds a seventh to nothing,
 and the de-duplication is filed as an `UNLOCK_WATCHLIST` item with its target named rather than done
 here, because it edits six files and this unit edits one.
+**THE COUNT IS RIGHT AND THE WORD *ONE FACT* IS NOT, MEASURED BY UNIT 115 (2026-09-17) WHEN IT CAME
+TO DO THE DE-DUPLICATION** (`ERRATUM 94`, this paragraph kept as written). Reading the six
+statements rather than their names: **two of them are the same statement** — `C²` at a point gives
+`C²` on a neighbourhood, `RicciOrder.eventually_cmdiffAt_two` and
+`CovariantOrderEndo.eventually_cmdiffAt_two'`, which is Mathlib's lemma verbatim — and **the other
+four are a different single fact**, the same lemma COMPOSED with a drop to differentiability, at
+four different bundles and orders (`M → ℝ`, `TM` at 2, `Hom(TM, TM)` at `k+1`, `TM` at `k+1`). So it
+is two facts, not one: a duplicate pair and a family of four instances. Unit 115 deleted the pair in
+favour of `CurvatureTensor.eventually_cmdiffAt_of_cmdiffAt` and left the four, because they are at
+genuinely different types and merging them would be a generalisation over an arbitrary vector
+bundle rather than a de-duplication.
 
 ## What is proved
 
