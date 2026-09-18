@@ -11,6 +11,18 @@
   1. Internal space is finite-dimensional (16 real dimensions)
   2. Action is bounded (exp(-S) in (0, 1])
   3. KO-dimension = 2 (mod 8) is the physically correct value
+     ⚠ **THIS ASSERTION IS ONE SIDE OF A DISAGREEMENT THE ESTATE HAS NOT SETTLED, AND UNTIL
+     2026-09-18 THIS FILE WAS THE ONE ASSERTER THE LEDGER DID NOT KNOW ABOUT** (`ERRATUM 94`,
+     `ASSUMPTIONS_LEDGER` 18). `KOSixRealStructure` builds an explicit real structure `J` on an
+     explicit space and **proves `ε = J² = +1`** — the KO-**6** value — and
+     `KOSixRealStructure.J_not_ko_two` proves the KO-2 value is **not available for that `J`**, so
+     the disagreement is not a convention. `F4_1e_SpectralTripleArithmetic` carries the same
+     assertion with a full reconciliation note; this line had none.
+     **WHICH VALUE THE CASCADE OUGHT TO CARRY IS THE AUTHOR'S DECISION** — a question about what
+     the intended real structure is, not about a missing proof — and it is already filed under
+     `DECISIONS NEEDED` (`ASSUMPTIONS_LEDGER` 48, `ε = J²` is `−1` in one file and `+1` in
+     another). **Nothing here is amended, nothing is deleted, and neither claim is weakened**; the
+     word *correct* in the line above is the estate's open question, not its finding.
   4. Spectral triple (A, H, D) satisfies all 7 Connes axioms
 
   UPGRADE: Now built on CascadeFoundation infrastructure.
