@@ -59,6 +59,15 @@ homomorphism between them is constructed here either.** **And still no index.**
 `FieldSymmetryHom.symHom`, and `FieldSymmetryHom.range_symHom_eq_top_iff_no_adj` is this file's
 dichotomy at group level — the image is the whole linear symmetry group iff the graph has no edges.
 **Still no index.**
+⚠ **THE `no index` CLAUSE FALLS ON 2026-09-18, kept as written** (`ERRATUM 94`):
+`paper_f/FieldSymmetryIndex.index_range_symHom_eq_zero_line` proves the index of
+`FieldSymmetryHom.symHom`'s range in `FieldSymmetryInclusion.linSymGL` is **`0`** on
+`boxGraph 1 (k+1)` at `1 ≤ k` — Mathlib's way of writing *infinite index*, so *proper* was
+an understatement of the largest possible kind. `index_range_symHom_eq_zero` is the general
+form, whose hypotheses are the linear group infinite and the isometric one of non-zero
+cardinality. **Not closed in general**: finiteness of the isometric side holds iff the
+spectrum is simple (`FieldSymmetryFinite.finite_iff_injective`), so a graph with a repeated
+eigenvalue has both groups infinite and the cardinality argument says nothing there.
 
 **No wall moves.** `W1`'s open part is `OS0` and `OS4`, and `OS1` in its continuum sense.
 
