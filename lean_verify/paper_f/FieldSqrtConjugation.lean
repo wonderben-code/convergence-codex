@@ -227,27 +227,34 @@ theorem quadForm_of_mul_green_mul_transpose {L : Matrix V V ℝ}
 
 /-! ## 6. And it happens on a named graph: the line -/
 
-open BoxGraph in
-/-- **THE FIELD ON A LINE OF AT LEAST TWO SITES HAS A LINEAR SYMMETRY THAT IS NOT AN ISOMETRY.**
-The line's spectrum is simple (`FieldSimpleCriterion.eigenvalues_injective_line`), so two
-eigenbasis vectors sit at **distinct** eigenvalues, and they are orthonormal by construction. -/
-theorem exists_nonIsometric_line {k : ℕ} (hk : 1 ≤ k) {mass : ℝ} (hmass : mass ≠ 0) :
-    ∃ L : Matrix (Site 1 (k + 1)) (Site 1 (k + 1)) ℝ,
-      L * green (boxGraph 1 (k + 1)) mass * Lᵀ = green (boxGraph 1 (k + 1)) mass ∧
-        Lᵀ * L ≠ 1 := by
+/-! ## 6. The eigenpair, as a named lemma rather than twenty lines inside a proof -/
+
+/-- **A DISTINCT PAIR OF EIGENVALUES SUPPLIES AN ORTHONORMAL EIGENPAIR**, on any finite graph at any
+non-zero mass: the Hermitian eigenvector basis read at two indices whose eigenvalues differ. The
+orthonormality is `eigenvectorBasis`'s and the eigenvector equations are
+`Matrix.IsHermitian.mulVec_eigenvectorBasis`; the only work is carrying `⬝ᵥ` across `WithLp` to
+`inner`, which `RayleighMatrix.inner_expand` does.
+
+⚠ **LIFTED OUT OF TWO PROOFS, 2026-09-18.** This block stood twice, at twenty lines each, inside
+`exists_nonIsometric_line` below and inside
+`FieldSymmetryProper.exists_nonIsometric_of_eigenvalues_ne` — once specialised to the line and
+once general, the same tactics either way. A third consumer
+(`FieldRotationNonIsometric.infinite_nonIsometric_of_eigenvalues_ne`) is what made the duplication
+worth removing rather than recording. **No statement changed anywhere**; all three callers now
+apply this. Same shape as unit 108's consolidation of `zeta_pow_eq_exp`, and the rule
+`ERRATUM 457`/`ERRATUM 465` ask for: when a duplicate is found, keep the one with the weaker
+hypotheses. -/
+theorem exists_orthonormal_eigenpair_of_eigenvalues_ne (hm : m ≠ 0) {i j : V}
+    (hne : (green_posDef G hm).isHermitian.eigenvalues i
+      ≠ (green_posDef G hm).isHermitian.eigenvalues j) :
+    ∃ u v : V → ℝ, u ⬝ᵥ u = 1 ∧ v ⬝ᵥ v = 1 ∧ u ⬝ᵥ v = 0 ∧ v ≠ 0 ∧
+      green G m *ᵥ u = (green_posDef G hm).isHermitian.eigenvalues i • u ∧
+      green G m *ᵥ v = (green_posDef G hm).isHermitian.eigenvalues j • v := by
   classical
-  set hH := (green_posDef (boxGraph 1 (k + 1)) hmass).isHermitian with hHdef
+  set hH := (green_posDef G hm).isHermitian with hHdef
   set b := hH.eigenvectorBasis with hb
-  set i : Site 1 (k + 1) := fun _ => ⟨0, by omega⟩ with hi
-  set j : Site 1 (k + 1) := fun _ => ⟨1, by omega⟩ with hj
-  have hij : i ≠ j := by
-    intro h
-    have := congrFun h ⟨0, by omega⟩
-    exact absurd (congrArg Fin.val this) (by simp [hi, hj])
-  have hne : hH.eigenvalues i ≠ hH.eigenvalues j := fun h =>
-    hij (FieldSimpleCriterion.eigenvalues_injective_line hmass hH h)
-  have hinner : ∀ x y : EuclideanSpace ℝ (Site 1 (k + 1)),
-      (WithLp.ofLp x) ⬝ᵥ (WithLp.ofLp y) = inner ℝ x y := by
+  have hij : i ≠ j := fun h => hne (by rw [h])
+  have hinner : ∀ x y : EuclideanSpace ℝ V, (WithLp.ofLp x) ⬝ᵥ (WithLp.ofLp y) = inner ℝ x y := by
     intro x y
     rw [RayleighMatrix.inner_expand]
     rfl
@@ -259,11 +266,48 @@ theorem exists_nonIsometric_line {k : ℕ} (hk : 1 ≤ k) {mass : ℝ} (hmass : 
     norm_num
   have hijz : (WithLp.ofLp (b i)) ⬝ᵥ (WithLp.ofLp (b j)) = 0 := by
     rw [hinner]; exact b.orthonormal.2 hij
-  have hj0 : (WithLp.ofLp (b j) : Site 1 (k + 1) → ℝ) ≠ 0 := by
+  have hj0 : (WithLp.ofLp (b j) : V → ℝ) ≠ 0 := by
     intro hz
     rw [hz] at hjj
     simp at hjj
-  exact exists_nonIsometric hmass one_ne_zero hii hjj hijz hj0
-    (hH.mulVec_eigenvectorBasis i) (hH.mulVec_eigenvectorBasis j) hne
+  exact ⟨_, _, hii, hjj, hijz, hj0,
+    hH.mulVec_eigenvectorBasis i, hH.mulVec_eigenvectorBasis j⟩
+
+open BoxGraph in
+/-- **THE LINE SUPPLIES A DISTINCT PAIR OF EIGENVALUES**: sites `0` and `1` of `boxGraph 1 (k + 1)`
+at `1 ≤ k`, whose eigenvalues differ because the line's spectrum is simple
+(`FieldSimpleCriterion.eigenvalues_injective_line`).
+
+⚠ **ALSO LIFTED OUT OF `exists_nonIsometric_line`, 2026-09-18**, for the same reason and separately
+from the eigenpair: the index pair is what is special about the line and the extraction is not. -/
+theorem exists_eigenvalues_ne_line {k : ℕ} (hk : 1 ≤ k) {mass : ℝ} (hmass : mass ≠ 0) :
+    ∃ i j : Site 1 (k + 1),
+      (green_posDef (boxGraph 1 (k + 1)) hmass).isHermitian.eigenvalues i
+        ≠ (green_posDef (boxGraph 1 (k + 1)) hmass).isHermitian.eigenvalues j := by
+  classical
+  set hH := (green_posDef (boxGraph 1 (k + 1)) hmass).isHermitian with hHdef
+  refine ⟨fun _ => ⟨0, by omega⟩, fun _ => ⟨1, by omega⟩, fun h => ?_⟩
+  have hij := FieldSimpleCriterion.eigenvalues_injective_line hmass hH h
+  have := congrFun hij ⟨0, by omega⟩
+  exact absurd (congrArg Fin.val this) (by simp)
+
+open BoxGraph in
+/-- **THE FIELD ON A LINE OF AT LEAST TWO SITES HAS A LINEAR SYMMETRY THAT IS NOT AN ISOMETRY.**
+The line's spectrum is simple, so two eigenbasis vectors sit at **distinct** eigenvalues, and they
+are orthonormal by construction.
+
+⚠ **THE PROOF MOVED, NOT THE STATEMENT, 2026-09-18** (`ERRATUM 94`): the index pair and the
+eigenpair it used to build inline are `exists_eigenvalues_ne_line` and
+`exists_orthonormal_eigenpair_of_eigenvalues_ne` above, and this is now their composition.
+`FieldRotationNonIsometric.infinite_nonIsometric_line` upgrades the `∃` here to **infinitely
+many** at the same hypotheses. -/
+theorem exists_nonIsometric_line {k : ℕ} (hk : 1 ≤ k) {mass : ℝ} (hmass : mass ≠ 0) :
+    ∃ L : Matrix (Site 1 (k + 1)) (Site 1 (k + 1)) ℝ,
+      L * green (boxGraph 1 (k + 1)) mass * Lᵀ = green (boxGraph 1 (k + 1)) mass ∧
+        Lᵀ * L ≠ 1 := by
+  obtain ⟨i, j, hne⟩ := exists_eigenvalues_ne_line hk hmass
+  obtain ⟨u, v, huu, hvv, huv, hv0, hu, hv⟩ :=
+    exists_orthonormal_eigenpair_of_eigenvalues_ne hmass hne
+  exact exists_nonIsometric hmass one_ne_zero huu hvv huv hv0 hu hv hne
 
 end FieldSqrtConjugation

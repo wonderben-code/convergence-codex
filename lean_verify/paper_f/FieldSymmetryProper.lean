@@ -87,28 +87,14 @@ theorem exists_nonIsometric_of_eigenvalues_ne (hm : m ≠ 0)
     {i j : V} (hne : (green_posDef G hm).isHermitian.eigenvalues i
       ≠ (green_posDef G hm).isHermitian.eigenvalues j) :
     ∃ L : Matrix V V ℝ, L * green G m * Lᵀ = green G m ∧ Lᵀ * L ≠ 1 := by
-  classical
-  set hH := (green_posDef G hm).isHermitian with hHdef
-  set b := hH.eigenvectorBasis with hb
-  have hij : i ≠ j := fun h => hne (by rw [h])
-  have hinner : ∀ x y : EuclideanSpace ℝ V, (WithLp.ofLp x) ⬝ᵥ (WithLp.ofLp y) = inner ℝ x y := by
-    intro x y
-    rw [RayleighMatrix.inner_expand]
-    rfl
-  have hii : (WithLp.ofLp (b i)) ⬝ᵥ (WithLp.ofLp (b i)) = 1 := by
-    rw [hinner, real_inner_self_eq_norm_sq, b.orthonormal.1 i]
-    norm_num
-  have hjj : (WithLp.ofLp (b j)) ⬝ᵥ (WithLp.ofLp (b j)) = 1 := by
-    rw [hinner, real_inner_self_eq_norm_sq, b.orthonormal.1 j]
-    norm_num
-  have hijz : (WithLp.ofLp (b i)) ⬝ᵥ (WithLp.ofLp (b j)) = 0 := by
-    rw [hinner]; exact b.orthonormal.2 hij
-  have hj0 : (WithLp.ofLp (b j) : V → ℝ) ≠ 0 := by
-    intro hz
-    rw [hz] at hjj
-    simp at hjj
-  exact exists_nonIsometric hm one_ne_zero hii hjj hijz hj0
-    (hH.mulVec_eigenvectorBasis i) (hH.mulVec_eigenvectorBasis j) hne
+  -- ⚠ **THE PROOF MOVED, NOT THE STATEMENT, 2026-09-18** (`ERRATUM 94`). The twenty lines of
+  -- eigenbasis extraction that stood here are
+  -- `FieldSqrtConjugation.exists_orthonormal_eigenpair_of_eigenvalues_ne`, because the same
+  -- twenty lines also stood inside `FieldSqrtConjugation.exists_nonIsometric_line` and a third
+  -- caller wanted them. Nothing about this statement or its hypotheses changed.
+  obtain ⟨u, v, huu, hvv, huv, hv0, hu, hv⟩ :=
+    FieldSqrtConjugation.exists_orthonormal_eigenpair_of_eigenvalues_ne hm hne
+  exact exists_nonIsometric hm one_ne_zero huu hvv huv hv0 hu hv hne
 
 /-- **THE INCLUSION IS STRICT WHENEVER THE PROPAGATOR HAS TWO DISTINCT EIGENVALUES**, on any
 graph. -/

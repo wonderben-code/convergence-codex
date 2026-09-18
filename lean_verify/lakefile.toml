@@ -370,6 +370,7 @@ roots = [
   "FieldBoxRotation",
   "FieldMassNecessity",
   "FieldRotationCount",
+  "FieldRotationNonIsometric",
   "FieldSymmetryGroup",
   "FieldCommutantSpectral",
   "FieldInvarianceCommutes",
