@@ -71,15 +71,15 @@ constructed**. **And there is still no index.**
 is the homomorphism, `FieldSymmetryHom.symEquivRange` makes this group isomorphic to its image in
 `linSymGL`, and `FieldSymmetryHom.symmetriesMulEquiv` identifies it with
 `FieldSymmetrySubgroup.symmetrySubgroup`. **There is still no index.**
-⚠ **THE `no index` CLAUSE FALLS ON 2026-09-18, kept as written** (`ERRATUM 94`):
-`paper_f/FieldSymmetryIndex.index_range_symHom_eq_zero_line` proves the index of
-`FieldSymmetryHom.symHom`'s range in `FieldSymmetryInclusion.linSymGL` is **`0`** on
-`boxGraph 1 (k+1)` at `1 ≤ k` — Mathlib's way of writing *infinite index*, so *proper* was
-an understatement of the largest possible kind. `index_range_symHom_eq_zero` is the general
-form, whose hypotheses are the linear group infinite and the isometric one of non-zero
-cardinality. **Not closed in general**: finiteness of the isometric side holds iff the
-spectrum is simple (`FieldSymmetryFinite.finite_iff_injective`), so a graph with a repeated
-eigenvalue has both groups infinite and the cardinality argument says nothing there.
+⚠ **THE `no index` CLAUSE FALLS ON 2026-09-18, kept as written** (`ERRATUM 94`) — **and this
+file supplied one of the two halves.** `FieldSymmetryIndex.index_range_symHom_eq_zero_line` gives
+index **`0`** for `symHom`'s range in `linSymGL` on `boxGraph 1 (k+1)`, by
+`Subgroup.card_mul_index` against an infinite ambient group; the non-zero cardinality it needs on
+the subgroup side is **this file's count** — `symmetriesSubgroup` is `(ℤ/2)^V` at a simple
+spectrum, carried through `FieldSymmetryHom.symEquivRange`. So the group this file named exactly is
+the group whose index is now known, and the naming is what made the index computable.
+**Not closed in general**: the count needs the spectrum simple, which is `signMulEquiv`'s own
+hypothesis, so the limitation is this file's too.
 
 **No wall moves.** `W1`'s open part is `OS0` and `OS4`, and `OS1` in its continuum sense. A symmetry
 group named exactly, in finite volume, is a shadow named exactly.

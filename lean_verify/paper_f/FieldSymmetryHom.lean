@@ -81,15 +81,16 @@ fence says why the matrix count was not stated.
 * **NO INDEX.** The four fences also say *no index*, and that is **unchanged**:
   `range_symHom_ne_top` says the subgroup is proper and **nothing here measures how much is
   missing**. Not attempted, no cost claimed (`ERRATUM 246`).
-⚠ **THE `no index` CLAUSE FALLS ON 2026-09-18, kept as written** (`ERRATUM 94`):
-`paper_f/FieldSymmetryIndex.index_range_symHom_eq_zero_line` proves the index of
-`FieldSymmetryHom.symHom`'s range in `FieldSymmetryInclusion.linSymGL` is **`0`** on
-`boxGraph 1 (k+1)` at `1 ≤ k` — Mathlib's way of writing *infinite index*, so *proper* was
-an understatement of the largest possible kind. `index_range_symHom_eq_zero` is the general
-form, whose hypotheses are the linear group infinite and the isometric one of non-zero
-cardinality. **Not closed in general**: finiteness of the isometric side holds iff the
-spectrum is simple (`FieldSymmetryFinite.finite_iff_injective`), so a graph with a repeated
-eigenvalue has both groups infinite and the cardinality argument says nothing there.
+  ⚠ **THIS CLAUSE FALLS ON 2026-09-18, kept as written** (`ERRATUM 94`), **and it is
+  `range_symHom_ne_top` — named two lines above as the reason nothing measures what is missing —
+  that is strengthened.** `FieldSymmetryIndex.index_range_symHom_eq_zero_line` proves the index of
+  this file's `symHom`'s range in `linSymGL` is **`0`** on `boxGraph 1 (k+1)` at `1 ≤ k`, which is
+  Mathlib's *infinite index*: so *proper* was the weakest possible true statement. **Both
+  ingredients are this file's**: `symEquivRange` carries `FieldLineCount.card_symmetries` onto the
+  image to give the subgroup's cardinality, and `symHom` itself is the map whose range is measured.
+  **Not closed in general** — the count needs the spectrum simple
+  (`FieldSymmetryFinite.finite_iff_injective`), not merely an edge, so the graph-theoretic
+  dichotomy this file proves is **not** the dichotomy the index obeys.
 * **NO CARDINALITY ON THE LINEAR SIDE.** `FieldSymmetryIso.conjSqEquiv` moves that question onto
   Mathlib's `unitaryGroup`, which is not this estate's object, and nothing here touches it. The
   count made above is the **isometric** side, which is finite exactly when the spectrum is simple.

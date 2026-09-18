@@ -37,7 +37,13 @@ would not be one either.
 ⚠ **A SECOND GRAPH IS SHOWN TO SATISFY IT, by 7 September 2026, and the paragraph above is kept as
 written** (`ERRATUM 94`). `PawSimpleSpectrum.finrank_lapMatrix_le_one_paw`: the paw — a triangle
 with a pendant vertex — satisfies the hypothesis, with `eigenvalues_injective_paw`,
-`card_symmetries_paw` and `graphAut_involutive_paw` following through this file's door. **The
+`card_symmetries_paw` and `graphAut_involutive_paw` following through this file's door.
+**A FOURTH CONSUMER JOINED THAT LIST ON 2026-09-18** (`ERRATUM 471`'s rule, in the unit that did
+it): `FieldSymmetryIndex.index_range_symHom_eq_zero_paw`, the index of the isometric symmetry group
+in the linear one on the paw, which reaches the paw through
+`FieldLaplacianSimple.eigenvalues_injective_of_lapMatrix` and this file's criterion. **It exhibits
+no new graph** — the satisfying class is still the path and the paw — so the paragraph above and
+the characterisation sentence are both untouched. **The
 characterisation sentence stands exactly as the paragraph says**: two graphs are not a
 characterisation, and the watchlist item that asked for a second graph closed while the
 characterisation was filed as its own item. This annotation should have been written in the unit

@@ -59,15 +59,17 @@ homomorphism between them is constructed here either.** **And still no index.**
 `FieldSymmetryHom.symHom`, and `FieldSymmetryHom.range_symHom_eq_top_iff_no_adj` is this file's
 dichotomy at group level — the image is the whole linear symmetry group iff the graph has no edges.
 **Still no index.**
-⚠ **THE `no index` CLAUSE FALLS ON 2026-09-18, kept as written** (`ERRATUM 94`):
-`paper_f/FieldSymmetryIndex.index_range_symHom_eq_zero_line` proves the index of
-`FieldSymmetryHom.symHom`'s range in `FieldSymmetryInclusion.linSymGL` is **`0`** on
-`boxGraph 1 (k+1)` at `1 ≤ k` — Mathlib's way of writing *infinite index*, so *proper* was
-an understatement of the largest possible kind. `index_range_symHom_eq_zero` is the general
-form, whose hypotheses are the linear group infinite and the isometric one of non-zero
-cardinality. **Not closed in general**: finiteness of the isometric side holds iff the
-spectrum is simple (`FieldSymmetryFinite.finite_iff_injective`), so a graph with a repeated
-eigenvalue has both groups infinite and the cardinality argument says nothing there.
+⚠ **THE `no index` CLAUSE FALLS ON 2026-09-18, kept as written** (`ERRATUM 94`) — **and the
+general form does NOT inherit this file's generality, which is the part worth knowing.**
+`FieldSymmetryIndex.index_range_symHom_eq_zero_line` gives index **`0`** on `boxGraph 1 (k+1)`.
+This file's dichotomy runs on *two distinct eigenvalues*, and that is exactly the hypothesis
+`FieldRotationNonIsometric.infinite_nonIsometric_of_eigenvalues_ne` needs — so **the infinitude of
+the difference is available at this file's own generality**, and with
+`symmetryMatrices_eq_linSym_iff` the dichotomy reads *equal, or differing by an infinite set*. The
+**index** needs more: the isometric side finite, which
+`FieldSymmetryFinite.finite_iff_injective` makes equivalent to the spectrum being **simple**. Two
+distinct eigenvalues does not give that, so on a graph with a repeated eigenvalue both groups are
+infinite and the cardinality argument is silent.
 
 **No wall moves.** `W1`'s open part is `OS0` and `OS4`, and `OS1` in its continuum sense.
 

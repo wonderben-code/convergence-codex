@@ -297,15 +297,13 @@ instance constructed* is what the second packaging answers on the map side.
 **"The item might now be closed."** It is not, and the header says which two residues
 survive: **no cardinality** and **no index**. Both are named in the item's own
 governing `STATUS 11 SEP 2026` line and neither is attempted here (`ERRATUM 246`).
-⚠ **THE `no index` CLAUSE FALLS ON 2026-09-18, kept as written** (`ERRATUM 94`):
-`paper_f/FieldSymmetryIndex.index_range_symHom_eq_zero_line` proves the index of
-`FieldSymmetryHom.symHom`'s range in `FieldSymmetryInclusion.linSymGL` is **`0`** on
-`boxGraph 1 (k+1)` at `1 ≤ k` — Mathlib's way of writing *infinite index*, so *proper* was
-an understatement of the largest possible kind. `index_range_symHom_eq_zero` is the general
-form, whose hypotheses are the linear group infinite and the isometric one of non-zero
-cardinality. **Not closed in general**: finiteness of the isometric side holds iff the
-spectrum is simple (`FieldSymmetryFinite.finite_iff_injective`), so a graph with a repeated
-eigenvalue has both groups infinite and the cardinality argument says nothing there.
+⚠ **ONE OF THE TWO RESIDUES FALLS ON 2026-09-18, kept as written** (`ERRATUM 94`): **`no
+index` is closed on a named graph** — `FieldSymmetryIndex.index_range_symHom_eq_zero_line`, index
+**`0`** for `symHom`'s range in `linSymGL` on `boxGraph 1 (k+1)` — and **`no cardinality` survives
+alone**, still for the reason this file gives, that `isometryEquivLinSymCLM` and `conjSqEquiv` move
+every count onto Mathlib's objects rather than the estate's. The item's governing line is updated
+accordingly. **Not closed in general**: the index argument needs the isometric side finite, which
+holds iff the spectrum is simple (`FieldSymmetryFinite.finite_iff_injective`).
 What this file does close is the *group of MAPS*, which is the third residue that line
 does not name and the 2026-09-13 annotation does.
 -/

@@ -1,6 +1,7 @@
 import FieldRotationNonIsometric
 import FieldSymmetryHom
 import FieldLineCount
+import PawSimpleSpectrum
 
 /-!
 # The index, which five files have said nobody measures
@@ -133,6 +134,39 @@ theorem index_range_symHom_eq_zero (hm : m ≠ 0)
   have hG : Nat.card (linSymGL G m) = 0 := Nat.card_eq_zero_of_infinite
   rw [hG] at h
   exact (Nat.mul_eq_zero.mp h).resolve_left hcard
+
+/-! ## 4. The restrictive hypothesis removed: any graph with a simple spectrum -/
+
+/-- **THE INDEX IS `0` ON EVERY GRAPH WHOSE PROPAGATOR HAS A SIMPLE SPECTRUM AND AT LEAST TWO
+VERTICES.** `PROOF_STRATEGY` §7 rule 3 applied to the line-only statement below, and found by
+`RE-SWEEP #66`: the watchlist item *which finite graphs have a SIMPLE Laplacian spectrum* is
+exactly the characterisation of where this theorem applies, so an open question about graphs
+acquired a new consumer.
+
+A simple spectrum plus two vertices gives two distinct eigenvalues for free — that is the whole
+content of `exists_pair_ne` against injectivity — and a simple spectrum gives the count. Nothing
+about the graph enters beyond those two. -/
+theorem index_range_symHom_eq_zero_of_simple [Nontrivial V] (hm : m ≠ 0)
+    (hsimple : Function.Injective (green_posDef G hm).isHermitian.eigenvalues) :
+    (symHom (G := G) (m := m) hm).range.index = 0 := by
+  obtain ⟨i, j, hij⟩ := exists_pair_ne V
+  refine index_range_symHom_eq_zero hm
+    (FieldRotationNonIsometric.infinite_linSym_quadForm_of_eigenvalues_ne (i := i) (j := j) hm
+      fun h => hij (hsimple h)) ?_
+  rw [nat_card_range_symHom hm hsimple]
+  positivity
+
+/-- **AND A SECOND NAMED GRAPH, WHICH THE GENERALISATION MAKES FREE**: the paw — a triangle with a
+pendant vertex — whose Laplacian spectrum `PawSimpleSpectrum.finrank_lapMatrix_le_one_paw` shows is
+simple, carried to the propagator by `FieldLaplacianSimple.eigenvalues_injective_of_lapMatrix`.
+Before the generalisation this needed its own eigenvalue pair and its own infinitude argument; now
+it is two lines. -/
+theorem index_range_symHom_eq_zero_paw {mass : ℝ} (hmass : mass ≠ 0) :
+    (symHom (G := PawSimpleSpectrum.pawGraph) (m := mass) hmass).range.index = 0 :=
+  index_range_symHom_eq_zero_of_simple hmass
+    (FieldLaplacianSimple.eigenvalues_injective_of_lapMatrix hmass
+      (green_posDef PawSimpleSpectrum.pawGraph hmass).isHermitian
+      PawSimpleSpectrum.finrank_lapMatrix_le_one_paw)
 
 /-! ## 4. And on a named graph it is discharged -/
 

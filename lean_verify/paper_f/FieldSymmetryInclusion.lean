@@ -62,15 +62,17 @@ injective (`symHom_injective`), with image exactly the orthogonal part (`mem_ran
 
 **NO INDEX.** The fence also said *no index*, and there is still none: nothing here measures how
 much bigger `linSym` is than `symmetryMatrices`, beyond the strictness on a line.
-⚠ **THE `no index` CLAUSE FALLS ON 2026-09-18, kept as written** (`ERRATUM 94`):
-`paper_f/FieldSymmetryIndex.index_range_symHom_eq_zero_line` proves the index of
-`FieldSymmetryHom.symHom`'s range in `FieldSymmetryInclusion.linSymGL` is **`0`** on
-`boxGraph 1 (k+1)` at `1 ≤ k` — Mathlib's way of writing *infinite index*, so *proper* was
-an understatement of the largest possible kind. `index_range_symHom_eq_zero` is the general
-form, whose hypotheses are the linear group infinite and the isometric one of non-zero
-cardinality. **Not closed in general**: finiteness of the isometric side holds iff the
-spectrum is simple (`FieldSymmetryFinite.finite_iff_injective`), so a graph with a repeated
-eigenvalue has both groups infinite and the cardinality argument says nothing there.
+⚠ **THE `no index` CLAUSE FALLS ON 2026-09-18, kept as written** (`ERRATUM 94`). It asks how
+much bigger `linSym` is than `symmetryMatrices` **beyond the strictness on a line**, and both
+halves now have answers — at two different levels, which is worth separating because this file's
+objects are **sets of matrices**. At set level: `FieldRotationNonIsometric.infinite_nonIsometric`
+makes the difference an **infinite** set wherever `green` has two eigenvectors at distinct
+eigenvalues, so *how much bigger* is *infinitely*, on any such graph and not only on a line. At
+group level, one packaging up from here: `FieldSymmetryIndex.index_range_symHom_eq_zero_line` gives
+index **`0`** for `linSymGL`, which is this file's own `Subgroup`. **Not closed in general at group
+level** — that needs the isometric side finite, which holds iff the spectrum is simple
+(`FieldSymmetryFinite.finite_iff_injective`), a strictly stronger condition than the two-distinct-
+eigenvalues this file's strictness uses.
 
 **THE STRICTNESS IS ONLY ON A LINE.** `exists_nonIsometric` needs two eigenvectors at **distinct**
 eigenvalues, which the line supplies; **no strictness is proved on any other graph**, and none is
