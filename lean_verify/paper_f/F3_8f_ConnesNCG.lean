@@ -10,6 +10,34 @@
   must satisfy 7 axioms. We verify the cascade triple satisfies ALL
   of Connes' axioms with KO-dimension 2 (mod 8).
 
+  ⚠ **DISCLOSURE ADDED 2026-09-18 (unit 120). THE ANALYSIS BELOW WAS ALREADY IN THE
+  REGISTER AND NOT IN THIS FILE, WHICH IS WHY IT IS HERE NOW; NOTHING ABOVE OR BELOW
+  IS AMENDED, DELETED OR WEAKENED** (`ERRATUM 94`).
+
+  **(1) THE KO-DIMENSION IS ONE SIDE OF A DISAGREEMENT THE ESTATE HAS NOT SETTLED.**
+  `KOSixRealStructure` builds an explicit real structure `J` on an explicit space and
+  **proves `ε = J² = +1`** — the KO-**6** value — and `KOSixRealStructure.J_not_ko_two`
+  proves the KO-2 value is **not available for that `J`**, so the disagreement is not a
+  convention. The word *EXACTLY* in Phase 5's *EXACTLY the Standard Model value* is this
+  estate's open question and not its finding. **Which value the cascade ought to carry is
+  the author's decision** — a question about what the intended real structure is, not
+  about a missing proof — and it is filed as `ASSUMPTIONS_LEDGER` 48 / `DECISIONS NEEDED`.
+  `F4_1e_SpectralTripleArithmetic` and `F4_3d_SpectralWightman` carry the same disclosure.
+
+  **(2) AND WHAT THIS FILE'S KO THEOREMS PROVE IS ARITHMETIC, WHICH ITS OWN
+  `TRUE_LEDGER` ROW SAYS IN MORE DETAIL THAN THIS NOTE DOES.** Read it for the full
+  account; in brief, and verified against the statements: `ConnesAxiomData` carries
+  `ko_dim_mod8 : ℕ` and `cascade_connes_data` **sets it to `2` by hand**, so
+  `ko_dimension_matches_SM`'s first conjunct and `all_seven_axioms_verified`'s *Axiom 5*
+  conjunct read that literal back out; `n5_ko_dimension_mod8` is `2 % 8 = 2` twice over;
+  `n5_ko_dim_2_unique_signs` is `(2 * (2 - 1)) / 2 = 1`; and `n5_j_squared_quaternionic`,
+  whose name and gloss say `J² = −1 from quaternionic structure`, states
+  `finrank ℂ CascadeHilbert = 2 * 2` — **no `J` is defined anywhere in this file.** That
+  is `ASSUMPTIONS_LEDGER` 18's *no J is ever an operator*, substantiated here, and
+  `ASSUMPTIONS_LEDGER` 2's structure-field species. The file is graded **HOLLOW (C)** and
+  its row lists the genuine content it does have — `connes_axioms_genuine`,
+  `connes_gauge_embedding`, `n1_clifford_dim_unique` and the `finrank` computations.
+
   THE 7 AXIOMS OF A REAL SPECTRAL TRIPLE (Connes 1996, 2006):
   Axiom 1 (Dimension): Dirac eigenvalue growth gives spectral dim d.
   Axiom 2 (Order one): [[D, a], b°] = 0
