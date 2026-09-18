@@ -45,6 +45,13 @@ makes the class non-empty at orders above one.
   reader: `isLocallyCk_leviCivita` at order `k` does **not** give `IsLocallyC1` for free — that
   comes from the same theorem at `k = 1`, under its own hypotheses, which is why both are
   available and neither is derived from the other.
+  ⚠ **PROVED SINCE, AND THIS PARAGRAPH'S REASONING IS CONFIRMED RATHER THAN OVERTURNED**
+  (`ERRATUM 94`): `CovariantOrderMono.isLocallyCk_of_le` is the monotonicity, by a local-frame
+  expansion and therefore on a finite-dimensional model space. **The paragraph's own diagnosis was
+  right**, and 2026-09-18 exhibited it: with no basis in scope the naive projection leaves
+  `ContMDiffOn … (↑j + 1) (T% σ) u` against `⊢ ContMDiffOn … (n + 1) (T% σ) u`, so the hypothesis
+  really does weaken with the conclusion and no projection exists. `CovariantOrderMono`'s header
+  carries the measurement and the reason the frame is the mechanism. Sentence kept as written.
 * **NO CURVATURE STATEMENT IS RESTATED.** `CurvatureTensor`, `CurvatureSkew`, `CurvatureBianchi`,
   `CurvatureTensorial`, `RicciScalar`, `TraceFrame` and the seven other files that mention
   `IsLocallyC1` are untouched, and the curvature results still fix one derivative. **The item's

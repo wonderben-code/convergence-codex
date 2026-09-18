@@ -79,6 +79,30 @@ expansion that costs a derivative: for coefficients of class `C^(j+1)` the sum `
 is `C^n` on every open set is `C^j` on every open set, in Mathlib's own
 `ContMDiffCovariantDerivativeOn E j`.
 
+**AND `[FiniteDimensional ℝ E]` IS LOAD-BEARING HERE, AT EXACTLY ONE LINE — MEASURED 2026-09-18,
+PROOF_STRATEGY §7 ITEM 3.** `UNLOCK_WATCHLIST` asks whether this theorem, which anchors the binder
+for the whole abstract curvature chain, can be proved **frame-free**. Two machine-checked facts,
+recorded here so the next reader does not repeat the experiment:
+* `omit [FiniteDimensional ℝ E] in` on this theorem fails at **one** site and no other —
+  `set b := Module.finBasis ℝ E`, with `failed to synthesize Module.Finite ℝ E`. The binder buys a
+  **basis**, and nothing else in the proof wants it.
+* The frame-free projection does not exist, and the goal it leaves is the obstruction itself.
+  Attempted with no basis in scope, `⟨fun hσ => (h.contMDiff ?_).of_le hjn⟩` leaves
+  `hσ : ContMDiffOn I (I.prod 𝓘(ℝ, E)) (↑j + 1) (fun x => ⟨x, σ x⟩) u` against
+  `⊢ ContMDiffOn I (I.prod 𝓘(ℝ, E)) (n + 1) (fun x => ⟨x, σ x⟩) u` — **a `C^(j+1)` section where a
+  `C^(n+1)` one is demanded, with `j ≤ n`.** Mathlib's `ContMDiffCovariantDerivativeOn k` takes a
+  `C^(k+1)` section as its hypothesis and returns a `C^k` conclusion, so lowering `k` weakens both
+  ends and the implication runs the wrong way.
+**SO THE LOCAL FRAME IS THE MECHANISM AND NOT A CONVENIENCE**: it applies `cov` only to frame
+sections, which are as regular as the bundle allows and therefore do satisfy the `C^(n+1)`
+hypothesis, and puts `σ`'s lower regularity into scalar coefficients that are differentiated once.
+**A frame-free route needs something the pinned library does not have** — either the monotonicity
+Mathlib defers in its own comment on that class, or an approximation of a `C^(j+1)` section by
+`C^(n+1)` ones, which is a smoothing theorem and is exactly what can fail in infinite dimensions.
+**Negative, and not attempted further** (`ERRATUM 246`). The two `omit` experiments on the
+curvature theorem are a different pair and are `ERRATUM 503`'s; this is the third and it is on the
+anchor rather than downstream of it.
+
 **`isLocallyCk_of_le`** — the same statement as the class: `IsLocallyCk n cov → IsLocallyCk j cov`.
 This is the sentence `CovariantOrderClass`'s *What is NOT here* section reported as unproved.
 
