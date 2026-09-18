@@ -70,6 +70,15 @@ manifold; this file's global-`C²` lemmas are superseded there by lemmas at the 
 
 **NO TRACES, NO IDENTITIES BEYOND ANTISYMMETRY.** No Ricci or scalar curvature, no Bianchi
 identity, no symmetry of the Riemann tensor of a metric connection.
+⚠ **ALL FOUR CLAUSES HAVE FALLEN, and this paragraph is the only one in the section with no dated
+note — the two around it have had theirs since 7 September** (`ERRATUM 94`, `ERRATUM 646`,
+annotated 2026-09-18). Ricci: `RicciOrder.ricciOp` and `LeviCivitaRegular.ricci`. Scalar:
+`RicciScalar.scalar`. Bianchi: the **first** is `CurvatureBianchi.riemann_cyclic` (entry 73) and
+the **second** is `CurvatureBianchiSecond.covRiemann_cyclic` (2026-09-11). Symmetry of the Riemann
+tensor of a metric connection: `CurvatureSkew.riemann_inner_skew`,
+`CurvatureSkew.riemann_inner_pair_symm` and `CurvatureSkew.ricci_metric_symm`, all three stated of
+`LeviCivitaRegular.riemann` — which is the curvature of a metric, the exact object this clause
+names. Kept as written.
 
 **NOTHING ABOUT `leviCivita`.** `KoszulManifold.leviCivita` is not shown to satisfy
 `ContMDiffCovariantDerivative _ 1`, so nothing here applies to it yet; that regularity — the

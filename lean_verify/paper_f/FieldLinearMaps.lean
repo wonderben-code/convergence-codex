@@ -45,7 +45,20 @@
   need `mvCLM` to be multiplicative — which it is, `Matrix.toEuclideanLin` being an
   algebra map, and which is not proved here because nothing consumes it
   (`ERRATUM 246`). **Nothing about non-linear maps**, which is the item's own third
-  clause and untouched. **No wall moves**: `W1`'s open part is `OS0` and `OS4`, and
+  clause and untouched.
+  ⚠ **THE FIRST SENTENCE IS OVERTAKEN AND THE SECOND IS FALSE** (`ERRATUM 94`,
+  `ERRATUM 645`, 2026-09-18). `paper_f/FieldLinearGroup.lean` builds the group:
+  `mvCLM_one` and `mvCLM_mul` are the multiplicativity this paragraph calls unbuilt,
+  `linSymCLM` is the symmetries as a `Submonoid` of maps with `mem_linSymCLM_iff`
+  saying a map lies in it iff its pushforward fixes the field, `linSymCLMGL` is the
+  `Subgroup` of the invertible maps, and **`isometryEquivLinSymCLM`** is the
+  `MulEquiv` with Mathlib's group of linear isometries of `EuclideanSpace ℝ V` — the
+  orthogonal group of `ℝ^V`, with no matrix in the statement. **And the item has no
+  third clause**: its `BLOCKED ON` line says *two things stop that being the sentence
+  a reader wants* and enumerates (a) and (b) only. The non-linear clause belongs to
+  the item *an orthogonal `T` whose pushforward fixes `gaussianField G m` COMMUTES
+  with …*, whose own line reads **WHAT REMAINS IS GENUINELY NON-LINEAR MAPS**. Both
+  sentences are kept as written. **No wall moves**: `W1`'s open part is `OS0` and `OS4`, and
   `OS1` in its continuum sense — knowing the linear symmetries over maps rather
   than over matrices is the same shadow, described in the reader's language.
 
@@ -159,6 +172,12 @@ the watchlist item asked for and what it said stopped the classification being
 along `mvCLMEquiv` needs `mvCLM` multiplicative — true, `Matrix.toEuclideanLin`
 being an algebra map — and is not done because nothing consumes it. Claiming a
 group of maps without building one would be the `ERRATUM 545` move.
+⚠ **BUILT, 2026-09-18** (`ERRATUM 94`): `FieldLinearGroup.linSymCLM`,
+`linSymCLMGL` and `isometryEquivLinSymCLM`. The multiplicativity this paragraph says
+nothing consumes is `FieldLinearGroup.mvCLM_mul` together with `mvCLM_one`, and 23 of
+that file's 24 declarations reach one of the two through their transitive dependencies
+(counted, not asserted; the exception is a matrix-only by-product). The refusal
+recorded here was the right call at the time and the sentence is kept as written.
 
 **"The watchlist item might not have been stale."** Clause (b) is: it says
 *"`conjSq_bijOn` is a bijection of sets. That `conjSq` carries matrix

@@ -45,6 +45,11 @@ merely a field whose values on sections are `C^k`, through
   the form `CovariantOrderClass.IsLocallyCk` — which exists — but no such statement is made.
 * **NO SECOND BIANCHI IDENTITY.** Unchanged: it is a statement about fields and needs the cyclic
   sum, not regularity.
+  ⚠ **FALSE SINCE 2026-09-11, THE DAY THIS FENCE WAS READ** (`ERRATUM 94`, `ERRATUM 646`,
+  annotated 2026-09-18): `CurvatureBianchiSecond.covRiemann_cyclic` for the Levi-Civita connection
+  and `CovariantOrderBianchiSecond.covRiemann_cyclic` for an arbitrary torsion-free one. The
+  sentence is right that regularity is not what the cyclic sum needs, and wrong that the sum is
+  unstated. Kept as written.
 * **NOTHING ABOUT `a₂`, the heat semigroup or a parametrix.** `W5`'s rung 4 is unchanged.
 
 **No wall moves. No published tag moves.**

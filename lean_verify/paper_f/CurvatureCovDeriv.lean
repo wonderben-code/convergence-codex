@@ -44,6 +44,17 @@ corresponding correction term produces, so the two cancel and the expression is 
   telescope the cyclic sum against the Jacobi identity — three derivatives of `W`, where
   `CurvatureBianchi`'s **first** Bianchi identity needed two and cost a file of seven
   declarations. Not attempted, no cost claimed.
+  ⚠ **FALSE SINCE 2026-09-11, AND THE FILE THAT FALSIFIED IT IMPORTS THIS ONE**
+  (`ERRATUM 94`, `ERRATUM 646`, annotated 2026-09-18). `CurvatureBianchiSecond.covRiemann_cyclic`
+  states exactly this sum, for **this file's `covRiemann`**, with `_apply` and `_endo` beside it;
+  `CovariantOrderBianchiSecond.covRiemann_cyclic` does the same for an arbitrary torsion-free
+  covariant derivative. Both landed **the same day this fence was read**, and
+  `CurvatureBianchiSecond`'s own header names `CurvatureCovDeriv` as step (1) of its route — so the
+  annotation had a pointer in both directions and was written in neither. The sentence is kept as
+  written, and the route it describes is the route that was taken: the estimate was the one part it
+  got wrong (that file's header says the computation *is shorter than the estimate*, all nine third
+  derivatives cancelling by additive algebra). **The `NO CONTRACTED FORM` clause below still
+  stands** — `CurvatureBianchiSecond` fences it in the same words.
 * **NO REGULARITY.** Nothing says `y ↦ covRiemann Y Z y u` is a `C^(k−1)` anything; `HomCovariant`
   proves no smoothness of the induced connection, so this object exists at a point and is not
   known to vary continuously. ⚠ The clause about `HomCovariant` is false as of entry 112
