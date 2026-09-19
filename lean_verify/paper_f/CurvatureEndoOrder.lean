@@ -67,6 +67,15 @@ order — `[NormedAddCommGroup E]`, `[NormedSpace ℝ E]`, `[CompleteSpace E]`,
 taken at order `k + 2`. The unused-variable linter reports nothing, so every binder is
 load-bearing — which is `OrderBridge`'s finding again: the literal orders are the connection's
 existence conditions.
+⚠ **THIS PARAGRAPH LISTS EVERY INSTANCE AND OMITS THE ONE MATERIAL HYPOTHESIS** (`ERRATUM 94`,
+`ERRATUM 661`, annotated 2026-09-19). `mdiffHomAt_riemann` and `homCovFun_riemann_apply` take
+`hk : k ≠ 0`, and no clause above names it — in a paragraph whose stated job is to read the
+hypotheses off the binders, and which closes by claiming **every** binder is load-bearing. The
+file is **not** silent about the condition: the *What is proved* bullets state it twice, as
+`k ≥ 1`, which is the same condition in the other surface form and is why a search for the string
+`k ≠ 0` reports this header clean (`ERRATUM 655`'s rule, in its third instance). What is wrong is
+narrower and worse: **the `ERRATUM 455` remedy paragraph has the defect `ERRATUM 455` is about.**
+The paragraph is kept as written; the correction is this note.
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry in this file, 0 new axioms.
 

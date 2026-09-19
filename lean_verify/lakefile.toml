@@ -478,6 +478,7 @@ roots = [
   "CurvatureEndoOrder",
   "CurvatureCovDeriv",
   "CurvatureCovTensor",
+  "CurvatureCovFull",
   "HomCovariantOrder",
   "CurvatureCovOrder",
   "HomCovariantNonvac",

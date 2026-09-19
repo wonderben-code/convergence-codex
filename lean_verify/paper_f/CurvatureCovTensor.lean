@@ -44,7 +44,11 @@ what antisymmetry is for.
   with more than the clause asked for — linearity in the DIRECTION (`covRiemann_add_dir`,
   `covRiemann_smul_dir`, neither needing `k ≠ 0`) and the second Bianchi identity for three
   arbitrary tangent vectors. **What is still not built, as of 2026-09-11, is the four-deep
-  object** with the direction bundled in as well.
+  object** with the direction bundled in as well. ⚠ **BUILT, 2026-09-19** (`ERRATUM 94`):
+  `CurvatureCovFull.covRiemannFull` is that object, `T_xM →L T_xM →L T_xM →L (T_xM →L T_xM)` with
+  the direction outermost, checked against `covRiemann` on fields by `covRiemannFull_apply_field`
+  and carrying the antisymmetry and the second Bianchi identity. Its direction slot needs no
+  `hk`, which is how the clause above came to be read at all.
 * **NO SECOND BIANCHI IDENTITY**, which is the item's step (3) and needs no tensoriality at all:
   the cyclic sum is a statement about fields. It needs the computation — three derivatives of the
   differentiated field, where the **first** Bianchi identity needed two and cost a file of seven
@@ -58,6 +62,15 @@ what antisymmetry is for.
 * **NOTHING AT `k = 0`.** Every theorem about `covRiemann` here carries `hk : k ≠ 0`, inherited
   from `CurvatureCovDeriv`, for the reason that file gives: a `C²` metric gives a `C⁰` curvature
   and there is no derivative to take.
+  ⚠ **FALSE, AND THE COUNTEREXAMPLES ARE TWO OF THIS FILE'S OWN FIVE** (`ERRATUM 94`,
+  `ERRATUM 659`, annotated 2026-09-19). Of the five theorems here whose names begin `covRiemann`,
+  **`covRiemann_congr_left` and `covRiemann_zero_left` take no `hk`** — and `#check` shows they
+  carry no `k` binder of any kind, so they are not statements about `k` at all. **Three** of this
+  file's eight declarations take `hk`, not all of them and not four. The inheritance is real and
+  the broadening is what broke it: `CurvatureCovDeriv` says *every theorem **here***, which is
+  true of its six; this sentence says *every theorem about `covRiemann`*, which is false of these
+  five. The sentence is kept as written (`ERRATUM 94`) and `CurvatureCovFull` proves the `k`-free
+  half it denies — the direction slot bundles with no lower bound on `k`.
 * **NOTHING ABOUT `a₂`, the heat semigroup or a parametrix.** `W5`'s rung 4 is unchanged.
 
 **No wall moves. No published tag moves.**

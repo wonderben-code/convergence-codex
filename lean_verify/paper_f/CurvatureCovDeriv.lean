@@ -75,7 +75,16 @@ corresponding correction term produces, so the two cancel and the expression is 
 `RicciOrder`'s, unchanged — and every theorem here additionally takes `hk : k ≠ 0`, because the
 induced connection needs its argument **differentiable** and the curvature is `C^k`. So **nothing
 in this file says anything at `k = 0`**: a `C²` metric gives a `C⁰` curvature and there is no
-derivative to take. The local instances are `CurvatureEndoOrder`'s six. **There is no `omit` in
+derivative to take.
+⚠ **THE FIRST CLAUSE IS TRUE AND THE CONCLUSION DRAWN FROM IT IS FALSE** (`ERRATUM 94`,
+`ERRATUM 659`, annotated 2026-09-19). All **six** theorems here do take `hk`; the file has a
+**seventh** declaration, and `covRiemann` is a *definition*, with **no `k` binder at all**. So the
+object whose absence at `k = 0` this sentence asserts is *defined* at `k = 0`, and four of
+`CurvatureCovCyclic`'s declarations prove things about it there. The sentence is kept as written
+and the word doing the damage is **`So`**: *every theorem takes `hk`* does not give *nothing in
+this file says anything*, in a file that also defines something. `ERRATUM 660` records that this
+sentence was then copied twice, getting worse each time.
+The local instances are `CurvatureEndoOrder`'s six. **There is no `omit` in
 this file**: every binder is used by every theorem, and the unused-variable linter reports
 nothing.
 

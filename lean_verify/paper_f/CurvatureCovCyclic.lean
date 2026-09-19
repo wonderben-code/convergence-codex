@@ -34,6 +34,14 @@ point, with **no lower bound on `k`** — where all six theorems of `CurvatureCo
 `k ≠ 0`, and four of `CurvatureCovTensor`'s eight declarations do, because the induced connection
 needs an argument it can differentiate. Nothing here differentiates anything twice, which is why
 the bound is absent rather than suppressed.
+⚠ **THE SECOND NUMBER IS WRONG: IT IS THREE, NOT FOUR** (`ERRATUM 94`, `ERRATUM 659`, annotated
+2026-09-19). `CurvatureCovTensor`'s eight declarations are the right denominator, and the three
+that take `hk : k ≠ 0` are `covRiemann_sum_left`, `covRiemann_congr_of_eq_left` and
+`covRiemann_congr_of_eq_right`. `all six theorems of CurvatureCovDeriv` is correct. **This is the
+third and last sentence in the chain of copies `ERRATUM 660` traces**, and it is the one that
+counted ACROSS a file boundary — the estate's `binder_scan.py` checks a binder paragraph's
+denominator against its OWN file's declaration count, so a numerator, and any count of another
+file, are both outside what it can see. The sentence is kept as written.
 
 ## What is proved
 
