@@ -75,6 +75,15 @@ distinct eigenvalues are the point and not an accident.
 say it has the cardinality of the continuum, which is true and is a different statement needing a
 measure of the orthogonal group or an explicit `ℝ`-indexed injection into it rather than an
 injection out of an interval. **Not attempted in this file**, no cost claimed (`ERRATUM 246`).
+⚠ **PROVED, 2026-09-19, AND THE ROUTE THIS SENTENCE PREDICTED WAS THE WRONG ONE**
+(`ERRATUM 654`). `FieldSymmetryContinuum.mk_setOf_orthogonal` and `mk_setOf_linSym` give `𝔠` for
+both sets, and `mk_unitaryGroup` for Mathlib's object. **No measure was needed and no new injection
+was built**: the lower bound is *this file's own circle*, read for its cardinality instead of its
+infinitude — an injection out of an interval is exactly what `Cardinal.mk_Ioo_real` turns into `𝔠`,
+so the thing this sentence named as insufficient was sufficient. The upper bound is the ambient
+matrix space. **Of the seven files in this cluster that decline to name an infinity, this is the
+only one whose sentence is about the group the new file computes**; the other six are about the
+isometric side and stand.
 
 **NOTHING ABOUT THE ISOMETRIC SIDE.** The orthogonal matrices that also commute with the
 propagator are the isometric symmetries, and whether *they* are infinite depends on the graph —

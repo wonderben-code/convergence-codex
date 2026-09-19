@@ -57,6 +57,16 @@ a line.
 different, and not attempted (`ERRATUM 246`). The four fences' conclusions — *no number, and there
 is not going to be one* — are **untouched** by this file; what changes is that their stated REASON
 is now a theorem with a name.
+⚠ **AND THE CARDINAL IS NOW PROVED ON THE OTHER SIDE ONLY, 2026-09-19** (`ERRATUM 654`).
+`FieldSymmetryContinuum` proves `𝔠` for the FULL orthogonal group and for the Gaussian field's
+LINEAR symmetries. **It does not prove it for the groups this sentence is about** — the
+block-diagonal group and the product over eigenvalues, whose infinitude comes from a circle inside
+ONE BLOCK. The lower bound there would need that circle rather than the coordinate-plane one, which
+is the same distinction this file's own §1 draws between the ambient group and a block, and it is
+not drawn a second time by accident: **a theorem with the same shape and a different subject does
+not discharge this sentence**, which is `ERRATUM 653`'s rule and `ERRATUM 654`'s repetition of it.
+**So this sentence stands**, and the watchlist item's residue (3) is re-scoped to the isometric side
+rather than closed.
 
 **THE PRODUCT FORM'S `iff` IS HERE, AND THE ESTIMATE THAT NAMED IT WAS WRONG ABOUT THE ROUTE.**
 `infinite_prod_unitaryGroup_iff_not_injective` is §4. The first draft of this item called it *not
