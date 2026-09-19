@@ -49,6 +49,14 @@ infinite**, in every dimension.
 **NO EXACT COUNT ON THE TORUS**, and no analogue of `FieldLineCount`. The count here is
 `Set.Infinite`, exactly as for the box in `d ≥ 2`. **Not attempted, no cost claimed**
 (`ERRATUM 246`).
+⚠ **THERE IS NOW AN EXACT CARDINAL ON THE TORUS, 2026-09-19, AND THIS PARAGRAPH IS KEPT AS
+WRITTEN** (`ERRATUM 94`). `FieldBlockContinuum.mk_symmetryMatrices_torus`:
+`#(symmetryMatrices (torusGraph d (N + 3)) m) = 𝔠` at every `d ≥ 1`, every side length and
+every non-zero mass, the physical `d = 4` included. **It takes exactly the input this file's
+`infinite_symmetryMatrices_torus` takes** — `exists_independent_eigenpair_torus`, unchanged —
+so the paragraph's *not attempted* was accurate and its implicit *and not soon* was not. **The
+first clause still stands**: `𝔠` is a cardinal, not an analogue of `FieldLineCount`'s
+`2 ^ |V|`, and no formula in `d` and `N` is proved or true.
 
 **NOTHING ABOUT SIDE LENGTHS BELOW THREE.** `torusGraph d (N+3)` is the estate's torus and the
 interior-axis argument uses `N + 3 ≥ 3` directly; sides one and two are not covered and are not

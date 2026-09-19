@@ -61,6 +61,12 @@ side and a third necessary condition, are both still unmet.
 * **No infinite CARDINAL.** `Set.Infinite` says the set is not finite and nothing about which
   infinity; the symmetry group of a degenerate eigenvalue contains a circle, and that is not
   stated.
+  ⚠ **THE CARDINAL IS NOW `𝔠`, 2026-09-19, AND THIS BULLET IS KEPT AS WRITTEN**
+  (`ERRATUM 94`). `FieldBlockContinuum.mk_symmetryMatrices_eq_continuum_iff` is this file's own
+  criterion with `Set.Finite` replaced by a cardinal: the set is finite when `eigMu` is injective
+  and has cardinality exactly `𝔠` when it is not, so **`finite_iff_injective` and the cardinal
+  dichotomy are the same sentence read twice**. Its forward half is
+  `finite_symmetryMatrices_of_injective`, from this file.
 * **THE CRITERION IS ABOUT MATRICES AND THE COUNT IS ABOUT ISOMETRIES, and the two are not the
   same set.** `FieldRotationCount.symmetryMatrices` is a set of matrices and every statement in
   §§1–5 is about it, EXCEPT `card_of_finite`, whose conclusion is about

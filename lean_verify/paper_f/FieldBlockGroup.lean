@@ -118,6 +118,14 @@ orthogonal group of `ℝ^V` and does **not** prove this, because its circle turn
 vectors that may sit in different blocks. Two different theorems, one for each group.
 **AND THE PARAGRAPH'S CONCLUSION IS UNCHANGED**: there is still no number here, and `Infinite` is
 not a cardinal.
+⚠ **AND NOW THERE IS A CARDINAL, 2026-09-19, AND THE PARAGRAPH IS KEPT AS WRITTEN**
+(`ERRATUM 94`). `FieldBlockContinuum.mk_blockDiagSubmonoid_eq_continuum_iff` is stated on
+`blockDiagSubmonoid` itself, across this file's `conjEigEquiv`:
+`#(blockDiagSubmonoid (eigMu G m hm)) = 𝔠` **iff** `eigMu` is not injective. **The paragraph's
+headline is the part that falls**: *there is not going to be one* was a prediction, and it was
+wrong within nine days. What survives is the distinction the paragraph draws in its middle —
+the ambient orthogonal group and this one are different groups — and the new theorem respects it
+by going through the `MulEquiv` rather than by reusing the ambient circle in place.
 
 **THIS IS NOT `FieldSymmetryIso`'s GROUP, AND THE DIFFERENCE MATTERS.**
 `FieldSymmetryIso.conjSqEquiv` proves the **linear** symmetry group — matrices with

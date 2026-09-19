@@ -65,6 +65,20 @@ ONE BLOCK. The lower bound there would need that circle rather than the coordina
 is the same distinction this file's own §1 draws between the ambient group and a block, and it is
 not drawn a second time by accident: **a theorem with the same shape and a different subject does
 not discharge this sentence**, which is `ERRATUM 653`'s rule and `ERRATUM 654`'s repetition of it.
+⚠ **AND NOW IT IS PROVED ON THIS SIDE TOO, 2026-09-19 (unit 129), AND THE NOTE ABOVE IS KEPT AS
+WRITTEN** (`ERRATUM 94`). **Its last sentence is right and its prediction about the route is
+wrong**, which is worth more than the correction: `FieldBlockContinuum` proves
+`#(symmetryMatrices G m) = 𝔠`, `#(symmetrySubmonoid G m) = 𝔠`,
+`#(∀ c, O(Fib c)) = 𝔠` and `#(blockDiagSubmonoid (eigMu G m hm)) = 𝔠`, each **iff** the
+spectrum is degenerate and each stated on its own object — and **no circle inside a block is
+constructed anywhere**. The lower bound is the eigenpair circle
+`FieldRotationCount.rotMatrix_mem_symmetryMatrices` has carried since 5 September, in the plane of
+two eigenvectors at the repeated eigenvalue rather than of two coordinate vectors; the other three
+objects follow across `symmetry_mulEquiv_prod` and `conjEigEquiv`. **So the note's rule held and
+its cost estimate did not**, which is the fourth time this cluster's watchlist item has been wrong
+about a route and is why `ERRATUM 194` says naming one is not costing it. The dichotomy is
+stronger than the sentence this paragraph refuses: the group is finite or exactly `𝔠`, with
+nothing between.
 **So this sentence stands**, and the watchlist item's residue (3) is re-scoped to the isometric side
 rather than closed.
 

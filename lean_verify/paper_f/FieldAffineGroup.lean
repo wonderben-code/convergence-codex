@@ -60,6 +60,16 @@ says exactly when the two coincide.
   UNCHANGED, and that is the point of the note**: there is still no count here, `Infinite` is still
   not a cardinal, and this bullet's second clause about `2 ^ |V|` was never in question. Of the four
   files in `paper_f` that assert a sentence of this shape, **this one is the only one discharged**.
+  ⚠ **AND THE CARDINAL ARRIVED ON 2026-09-18 WITHOUT THIS BULLET BEING TOLD, AND THE NOTE
+  ABOVE IS KEPT AS WRITTEN** (`ERRATUM 94`, `ERRATUM 655`, 2026-09-19).
+  `FieldSymmetryContinuum.mk_setOf_linSym` proves that the linear symmetry set
+  `{L | L * green * Lᵀ = green}` has cardinality exactly `𝔠`, at every graph and every
+  non-zero mass on two or more vertices, which is the group this bullet is about. **The unit
+  that proved it did not know this file was in scope**: its census of the *which infinity*
+  refusal found seven files by searching for the exact string `Infinite` *is not a cardinal*,
+  and the sentence three lines above reads `Infinite` *is still not a cardinal*. The count is
+  eight and the eighth is this one. **A census of a phrase must tolerate interpolation or it is
+  a census of a string** (`ERRATUM 655`).
 * **No `MulEquiv` between the `Submonoid` and the `Subgroup`.** §5 gives the two inclusions —
   every equivalence is a map, and at a non-zero mass every map in the monoid comes from an
   equivalence — but not a bundled isomorphism, which would need the map `e ↦ e.toAffineMap` shown

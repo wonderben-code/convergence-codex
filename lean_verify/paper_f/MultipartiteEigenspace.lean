@@ -57,6 +57,12 @@ the two families overlap nowhere, `K_n` being the case `t = 1` this theorem excl
   file builds none. Neither is attempted and no cost is offered for either (`ERRATUM 246`); the
   watchlist item records both.
 * **NO CARDINALITY.** `Set.Infinite` again says nothing about which infinity.
+  ⚠ **IT DOES NOW, 2026-09-19, AND THIS BULLET IS KEPT AS WRITTEN** (`ERRATUM 94`).
+  `FieldBlockContinuum.mk_symmetryMatrices_eq_continuum_iff` holds at every finite graph, so at
+  `completeEquipartiteGraph r t` the symmetry set has cardinality exactly `𝔠` whenever the
+  spectrum is degenerate — which `two_le_finrank_eigenspace_multi` above says it is for
+  `r ≥ 2`, `t ≥ 2`. The theorem's subject is `symmetryMatrices`, which is this bullet's
+  subject.
 * **NOTHING AT `r = 1` OR `t = 1`.** At `r = 1` the graph is edgeless and the characterisation is
   false, which the header explains; at `t = 1` it is `K_n` and `CompleteFieldSymmetry` has it.
 * **NOTHING FOR AN UNBALANCED COMPLETE MULTIPARTITE GRAPH**, as in the previous unit.

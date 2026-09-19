@@ -175,11 +175,9 @@ theorem infinite_symmetryMatrices_of_independent_eigenpair (hm : m ≠ 0) {u v :
     (hu0 : u ⬝ᵥ u ≠ 0) (hind : ∀ c : ℝ, v ≠ c • u)
     (hu : green G m *ᵥ u = μ • u) (hv : green G m *ᵥ v = μ • v) :
     (symmetryMatrices G m).Infinite := by
-  have hw0 : gramSchmidt u v ⬝ᵥ gramSchmidt u v ≠ 0 :=
-    FieldCycleRotation.dotProduct_self_ne_zero (gramSchmidt_ne_zero hind)
   obtain ⟨u', v', n, hn, hu'u', hv'v', hu'v', hu', hv'⟩ :=
-    exists_equal_length_eigenpair (G := G) (m := m) hu0 hw0
-      (dotProduct_gramSchmidt hu0 v) hu (gramSchmidt_eigen hu hv)
+    FieldEigenGramSchmidt.exists_equal_length_eigenpair_of_independent (G := G) (m := m)
+      hu0 hind hu hv
   exact infinite_symmetryMatrices_of_orthogonal_eigenpair hm hn hu'u' hv'v' hu'v' hu' hv'
 
 /-! ## 4. On the box -/

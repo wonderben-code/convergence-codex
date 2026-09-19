@@ -42,6 +42,14 @@ the range is.
   its own file, and the composition had never been written down**; that is why a later unit
   mistook it for a gap. **The bullet's load-bearing clause is unchanged**: a description is not a
   count, and `Infinite` is not a cardinal.
+  ⚠ **THE CARDINAL IS NOW STATED ON THE PRODUCT ITSELF, 2026-09-19, AND THIS BULLET IS KEPT AS
+  WRITTEN** (`ERRATUM 94`). `FieldBlockContinuum.mk_prod_unitaryGroup_eq_continuum_iff`:
+  `#(∀ c, O(Fib c)) = 𝔠` **iff** `eigMu` is not injective, and
+  `mk_prod_unitaryGroup_lt_aleph0_or_eq_continuum` says the product is finite or exactly `𝔠`
+  with nothing between. It is stated on the product and not on a group merely isomorphic to it,
+  and the transport is this file's own `symmetry_mulEquiv_prod`. **The bullet's first clause
+  stands**: a description is still not a count, and `𝔠` is a cardinal rather than a formula in
+  the block sizes.
 * **`Matrix.unitaryGroup _ ℝ` is the orthogonal group and the file says so rather than using
   `Matrix.orthogonalGroup`**, which `ERRATUM 484` records as a trap: it is an `abbrev` behind a
   local `starRingOfComm` instance whose lemmas Mathlib's own `TODO` questions. `star_eq_transpose`

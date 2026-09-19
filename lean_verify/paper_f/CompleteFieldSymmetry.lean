@@ -49,6 +49,13 @@ through the estate's equivalence between the two simplicity conditions.
 * **NO CARDINALITY.** `Set.Infinite` says the set is not finite and nothing about which infinity;
   the symmetry group of a degenerate eigenvalue contains a circle and that is not stated. Not
   attempted, no cost claimed (`ERRATUM 246`).
+  ⚠ **WHICH INFINITY IS NOW STATED, 2026-09-19, AND THIS BULLET IS KEPT AS WRITTEN**
+  (`ERRATUM 94`). `FieldBlockContinuum.mk_symmetryMatrices_eq_continuum_iff` proves
+  `#(symmetryMatrices G m) = 𝔠` **if and only if** the propagator's spectrum is degenerate, at
+  every finite graph and every non-zero mass, so it applies to `K_n` here. The bullet's own
+  subject is this set and the theorem's is the same set: it is discharged, not merely neighboured
+  (`ERRATUM 653`). The circle clause was discharged earlier still, by
+  `FieldRotationCount.circle_injects_symmetryMatrices` on 5 September.
 * **NOTHING ON THE SATISFYING SIDE.** The open item wants a family with a **simple** Laplacian
   spectrum, and `K_n` is the opposite; nothing here narrows the characterisation.
 * **NOTHING FOR THE EQUIPARTITE FAMILY.** `MultipartiteSpectrum` proves its three eigenvalues

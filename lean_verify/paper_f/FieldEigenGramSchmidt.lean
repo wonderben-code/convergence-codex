@@ -101,6 +101,38 @@ theorem gramSchmidt_eigen {u v : V → ℝ} {μ : ℝ} (hu : green G m *ᵥ u = 
 
 /-! ## 3. So independence is enough -/
 
+/-- **INDEPENDENCE ALREADY GIVES AN ORTHOGONAL EIGENPAIR OF EQUAL LENGTH AT ONE EIGENVALUE.**
+Gram–Schmidt makes the second vector orthogonal to the first without leaving the eigenvalue, and
+`FieldRotationInstance.exists_equal_length_eigenpair` rescales the two to a common non-zero
+length. Everything downstream — a rotation, a circle of them, a continuum of them — is a use of
+this pair and not of the independence it came from.
+
+**EXPORTED 2026-09-19 (unit 129), AND IT HAD BEEN WRITTEN OUT TWICE**: here and in
+`FieldRotationCount.infinite_symmetryMatrices_of_independent_eigenpair`, with no name of its own.
+That is `ERRATUM 653`'s shape — something true, used, and unreachable by name — and the **fourth**
+instance of it in this cluster. Both consumers now call this and neither re-derives it.
+
+The non-vanishing step below is `FieldCycleRotation.dotProduct_self_ne_zero` written out, because
+that lemma lives one import later than this file and this file imports only
+`FieldRotationInstance`. **That duplicate is not removed here**, and saying so is not a claim that
+removing it is hard (`ERRATUM 246`). -/
+theorem exists_equal_length_eigenpair_of_independent {u v : V → ℝ} {μ : ℝ}
+    (hu0 : u ⬝ᵥ u ≠ 0) (hind : ∀ c : ℝ, v ≠ c • u)
+    (hu : green G m *ᵥ u = μ • u) (hv : green G m *ᵥ v = μ • v) :
+    ∃ (u' v' : V → ℝ) (n : ℝ), n ≠ 0 ∧ u' ⬝ᵥ u' = n ∧ v' ⬝ᵥ v' = n ∧ u' ⬝ᵥ v' = 0 ∧
+      green G m *ᵥ u' = μ • u' ∧ green G m *ᵥ v' = μ • v' := by
+  set w : V → ℝ := gramSchmidt u v with hw
+  have hw0 : w ⬝ᵥ w ≠ 0 := by
+    intro hzero
+    refine gramSchmidt_ne_zero hind ?_
+    funext i
+    have hsum : ∑ j, w j * w j = 0 := by rw [← dotProduct]; exact hzero
+    have := (Finset.sum_eq_zero_iff_of_nonneg fun j _ => mul_self_nonneg (w j)).mp hsum i
+      (Finset.mem_univ i)
+    simpa using mul_self_eq_zero.mp this
+  exact exists_equal_length_eigenpair (G := G) (m := m) hu0 hw0
+    (dotProduct_gramSchmidt hu0 v) hu (gramSchmidt_eigen hu hv)
+
 /-- **TWO INDEPENDENT EIGENVECTORS AT ONE EIGENVALUE GIVE A ROTATION SYMMETRY**, with no
 orthogonality assumed. -/
 theorem exists_rotation_symmetry_of_independent_eigenpair (hm : m ≠ 0) {u v : V → ℝ} {μ : ℝ}
@@ -109,19 +141,8 @@ theorem exists_rotation_symmetry_of_independent_eigenpair (hm : m ≠ 0) {u v : 
     {c s : ℝ} (hcs : c ^ 2 + s ^ 2 = 1) (hs : s ≠ 0) :
     ∃ (R : Matrix V V ℝ) (h : Rᵀ * R = 1), R ≠ 1 ∧
       MeasureTheory.Measure.map (orthIsometry h) (gaussianField G m) = gaussianField G m := by
-  set w : V → ℝ := gramSchmidt u v with hw
-  have hw0 : w ⬝ᵥ w ≠ 0 := by
-    intro hzero
-    refine gramSchmidt_ne_zero hind ?_
-    funext i
-    have hnn := dotProduct_self_nonneg (V := V) w
-    have hsum : ∑ j, w j * w j = 0 := by rw [← dotProduct]; exact hzero
-    have := (Finset.sum_eq_zero_iff_of_nonneg fun j _ => mul_self_nonneg (w j)).mp hsum i
-      (Finset.mem_univ i)
-    simpa using mul_self_eq_zero.mp this
   obtain ⟨u', v', n, hn, hu'u', hv'v', hu'v', hu', hv'⟩ :=
-    exists_equal_length_eigenpair (G := G) (m := m) hu0 hw0
-      (dotProduct_gramSchmidt hu0 v) hu (gramSchmidt_eigen hu hv)
+    exists_equal_length_eigenpair_of_independent (G := G) (m := m) hu0 hind hu hv
   have hv'u' : v' ⬝ᵥ u' = 0 := by rw [dotProduct_comm]; exact hu'v'
   refine ⟨FieldRotation.rotMatrix u' v' n c s,
     FieldRotation.rotMatrix_transpose_mul_self hn hu'u' hv'v' hu'v' hcs,

@@ -498,6 +498,7 @@ roots = [
   "FieldLinSymInfinite",
   "FieldBlockInfinite",
   "FieldSymmetryContinuum",
+  "FieldBlockContinuum",
   "FieldSymmetryIndex",
   "SignlessBipartite",
   "CovariantOrderInfty",
