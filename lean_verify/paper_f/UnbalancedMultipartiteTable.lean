@@ -71,6 +71,14 @@ still rests on its direct proof, and the instantiation is a reindexing nobody ha
   decoration: an empty part is counted by `r` and contributes no vertex, so the lift stops being
   injective and `r − 1` stops being the dimension. The honest general statement would count the
   **non-empty** parts, and this file does not state it.
+  ⚠ **THE WORD *EVERY* IS WRONG AND THE REST OF THE CLAUSE IS RIGHT** (`ERRATUM 94`,
+  `ERRATUM 662`, annotated 2026-09-19, found by `binderclaim_scan.py` on its first run).
+  **12 of this file's 20 declarations** take the binder. The eight that do not are the linear
+  algebra of the two maps — `partLift`, `partLift_apply`, `wsum`, `wsum_apply`, `sum_partLift`,
+  `surjective_wsum`, `finrank_ker_wsum` — and `lapMatrix_mulVec_eq_top_iff`, which takes the
+  weaker `Nonempty (Σ i, V i)` instead: **one non-empty part is enough to have a vertex**, and
+  that theorem needs only a vertex. So the sentence is true of every RESULT about the spectrum
+  and false of the file, and the distinction is the one the clause was making. Kept as written.
 * **NOTHING AT ONE PART.** `2 ≤ r` is needed for connectedness — at one part the graph is edgeless,
   and with two or more vertices it is disconnected, so the eigenvalue `0` is not simple.
 * **NO CHARACTERISTIC POLYNOMIAL**, and the missing step is now nameable rather than vague: it is

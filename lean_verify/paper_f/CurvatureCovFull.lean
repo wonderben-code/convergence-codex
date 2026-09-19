@@ -12,17 +12,19 @@ Building it meant reading the chain's binders, and the reading found something e
 
 ## The claim three headers make, and what the binders say
 
-`CurvatureCovDeriv`'s binder paragraph says *every theorem here additionally takes `hk : k ≠ 0` …
-**So nothing in this file says anything at `k = 0`***. The first clause is **true** — all **six**
-of its theorems take `hk`. The conclusion drawn from it is **false**, and the counterexample is the
-file's own seventh declaration: **`covRiemann` is a definition, not a theorem, and it has no `k`
-binder at all.** The object whose absence at `k = 0` the sentence asserts is *defined* at `k = 0`.
+`CurvatureCovDeriv`'s binder paragraph says that every theorem there additionally takes the
+non-zero-order hypothesis, and concludes from that that nothing in the file says anything at order
+zero. The first clause is **true** — all **six** of its theorems take `hk`. The conclusion drawn
+from it is **false**, and the counterexample is the file's own seventh declaration: **`covRiemann`
+is a definition, not a theorem, and it has no `k` binder at all.** The object whose absence at
+`k = 0` the sentence asserts is *defined* at `k = 0`. (The sentences are described rather than
+quoted here, and the same below: a quoted claim reads to `binderclaim_scan.py` as a live one, which
+is the rule `--residues` already imposes on the registers.)
 
-`CurvatureCovTensor` inherits the sentence — *inherited from `CurvatureCovDeriv`, for the reason
-that file gives* — and broadens it to ***Every theorem about `covRiemann` here carries
-`hk : k ≠ 0`***. Broadened, it is false outright: of the **five** theorems there whose names begin
-`covRiemann`, **two** — `covRiemann_congr_left` and `covRiemann_zero_left` — take no `hk`, and
-neither carries a `k` binder of any kind.
+`CurvatureCovTensor` inherits that sentence, says so in those words, and broadens it from *every
+theorem there* to every theorem **about `covRiemann`**. Broadened, it is false outright: of the
+**five** theorems there whose names begin `covRiemann`, **two** — `covRiemann_congr_left` and
+`covRiemann_zero_left` — take no `hk`, and neither carries a `k` binder of any kind.
 
 `CurvatureCovCyclic` then counts across the file boundary — ***four* of `CurvatureCovTensor`'s
 eight declarations do**. The denominator is right and the numerator is not: **three** of the eight
