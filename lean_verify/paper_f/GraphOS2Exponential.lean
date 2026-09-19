@@ -57,6 +57,15 @@
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
   axioms.
+
+  ⚠ **THE MASS HYPOTHESIS IS MISSING FROM THIS HEADER, 2026-09-19, AND THE HEADER IS KEPT AS
+  WRITTEN** (`ERRATUM 94`, `ERRATUM 658`). **Five declarations here take `m ≠ 0`** and no
+  sentence above says so, including *OS2 FOR EXPONENTIAL OBSERVABLES OF THE GAUSSIAN FIELD OF ANY
+  GRAPH*. At `m = 0` that integral is `(∑ c i) · conj (∑ c j)`
+  (`OS2MassNecessity.os2_exponential_zero`) — the squared modulus of the coefficient sum, at
+  every reflection and every frequency family, with the graph, the reflection and the frequencies
+  all dropping out. **The exponential algebra, which this file added precisely because it is the
+  form OS2 is stated in, degenerates exactly as the linear one does.**
 -/
 import GraphOS2
 import OS2ExpKernel
@@ -82,7 +91,13 @@ are built out of `green`, which is the only difference that matters.
 /-- The self-form: `∑∑ c p · c q · G(p,q)`. -/
 def qform (m : ℝ) (c : V → ℝ) : ℝ := ∑ p, ∑ q, c p * c q * green G m p q
 
-/-- **The cross form**: the covariance of `c` with the reflection of `d`. -/
+/-- **The cross form**: the covariance of `c` with the reflection of `d`.
+
+**NOT `GraphMirrorReflection.crossForm`, and the name is reused deliberately**
+(noted 2026-09-19, `newnames_scan`): that one is `∑ p ∈ H, ∑ q ∈ H, w p * w q * massive G m p (θ q)`
+— a sum over ONE HALF against the MASSIVE matrix — and this one sums over all of `V` against the
+GREEN function with the reflection on the left. Different matrix, different range, same English
+word for the same idea. -/
 def crossForm (m : ℝ) (θ : V ≃ V) (c d : V → ℝ) : ℝ :=
   ∑ p, ∑ q, c p * d q * green G m (θ p) q
 

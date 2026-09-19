@@ -59,6 +59,16 @@
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
   axioms.
+
+  ⚠ **AND ONE HYPOTHESIS THIS FILE DOES NOT REMOVE IS ALSO ONE IT DOES NOT MENTION, 2026-09-19**
+  (`ERRATUM 94`, `ERRATUM 658`). The header above is about removing `Even n` and says so at
+  length — *a hypothesis that is removable and not removed is a false advertisement of
+  difficulty*. **All twelve of this file's declarations also take `m ≠ 0`, which is NOT removable,
+  and the header never says it.** At `m = 0` every *at every side length* statement here holds for
+  a reason with nothing to do with the side length or the reflection:
+  `OS2MassNecessity.os2_measure_level_zero`, with no hypotheses at all. **The file's own rule
+  about advertising difficulty applies to the hypothesis it kept as much as to the one it
+  dropped.**
 -/
 import BoxOddReflection
 import GraphOS2Exponential

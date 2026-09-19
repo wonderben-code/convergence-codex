@@ -66,6 +66,17 @@ not move: identifying a limit measure as the `ℤ^d` free field needs `G_n(x,y) 
 **No wall moves. No published tag moves.**
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
+
+⚠ **THE MASS HYPOTHESIS IS MISSING FROM THIS HEADER, 2026-09-19, AND THE HEADER IS KEPT AS
+WRITTEN** (`ERRATUM 94`, `ERRATUM 658`). **Three declarations here take `m ≠ 0`** and no sentence
+above says so. OS1 is invariance of the Schwinger functions under a graph automorphism, and at
+`m = 0` the field is a point mass at the origin (`FieldMassNecessity.gaussianField_zero`), so every
+Schwinger function of POSITIVE order is `0` (`OS2MassNecessity.schwinger_zero`) and the invariance
+is an identity between two zeros — at every graph and every automorphism, for a reason with
+nothing to do with either. **At order zero it is an identity between two empty products**, which is
+why the theorem below is stated at `k + 1` and not at `k`. **This file's
+clause (b) asks for OS1 to be STATABLE in finite volume; what the missing hypothesis costs is that
+a reader cannot tell the statement from its trivial instance.**
 -/
 
 namespace LatticeOS1

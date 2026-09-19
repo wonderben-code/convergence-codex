@@ -63,6 +63,17 @@
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new
   axioms.
+
+  ⚠ **THE MASS HYPOTHESIS IS MISSING FROM THIS HEADER, 2026-09-19, AND THE HEADER IS KEPT AS
+  WRITTEN** (`ERRATUM 94`, `ERRATUM 658`). **Eight of this file's declarations take `m ≠ 0`** and
+  no sentence above says so. The summary *MEASURE-LEVEL OS2 FOR THE GAUSSIAN FIELD OF ANY GRAPH*
+  is **true at `m = 0` as well**: `FieldMassNecessity.gaussianField_zero` makes the field a point
+  mass at the origin, so `OS2MassNecessity.integral_pairing_zero` says the pairing integral is
+  **exactly zero**, and `OS2MassNecessity.os2_measure_level_zero` gets the inequality **with no
+  `ReflectionPositive`, no support condition and no property of the graph**. **And §4's strict
+  statement is FALSE there** (`OS2MassNecessity.not_os2_pos_single_zero`), which is the sharper
+  half: the hypothesis makes §2 non-vacuous and §4 true. Same species as `ERRATUM 455`, second
+  chain.
 -/
 import LatticeReflectionPositive
 import GraphGreenPositive

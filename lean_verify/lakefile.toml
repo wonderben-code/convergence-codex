@@ -501,6 +501,7 @@ roots = [
   "FieldBlockContinuum",
   "FieldFibreCardinal",
   "FieldBoxDichotomy",
+  "OS2MassNecessity",
   "FieldSymmetryIndex",
   "SignlessBipartite",
   "CovariantOrderInfty",
