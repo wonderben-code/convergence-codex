@@ -1,4 +1,5 @@
 import FieldRotationNonIsometric
+import FieldLinSymInfinite
 import FieldSymmetryHom
 import FieldLineCount
 import PawSimpleSpectrum
@@ -29,11 +30,21 @@ first has invertible determinant (`FieldSymmetryInclusion.isUnit_det_of_mem_linS
 `Matrix.GeneralLinearGroup.mkOfDetNeZero` lifts it, injectively. **So a set of matrices being
 infinite makes the GROUP infinite**, which is the transport the previous unit's *What is NOT here*
 says is not made.
+⚠ **ITS `hinf` HYPOTHESIS IS GONE, 2026-09-18, and this bullet is kept as written**
+(`ERRATUM 94`): `[Nontrivial V]` stands in its place, because
+`FieldLinSymInfinite.infinite_setOf_linSym` proves the carrier infinite at every graph and every
+non-zero mass on two or more vertices. **The transport described above is unchanged** — only its
+input stopped being an assumption.
 
 **`index_range_symHom_eq_zero`** — **THE INDEX, wherever the isometric symmetries are finite and
 the linear ones are not.** `Subgroup.card_mul_index` reads `Nat.card H * H.index = Nat.card G`; with
 `Nat.card G = 0` because the ambient group is infinite, and `Nat.card H ≠ 0` because the subgroup
 is not, the index has nowhere to go but `0` — which is Mathlib's way of writing *infinite index*.
+⚠ **AND THE `wherever ... the linear ones are not` IS NO LONGER A CONDITION, 2026-09-18**
+(`ERRATUM 94`): it is a consequence of `[Nontrivial V]`, and
+`FieldLinSymInfinite.infinite_setOf_linSym_iff_nontrivial` shows the two are **equivalent** at a
+non-zero mass, so the trade gave nothing away. What is still a genuine condition is the other
+half: the isometric symmetries must be finite.
 
 **`index_range_symHom_eq_zero_line`** — **AND ON A NAMED GRAPH IT IS DISCHARGED.** On
 `boxGraph 1 (k + 1)` at `1 ≤ k` and every non-zero mass, the isometric symmetry group has index
@@ -41,6 +52,11 @@ is not, the index has nowhere to go but `0` — which is Mathlib's way of writin
 group is infinite by the previous unit's `infinite_linSym_quadForm_line`, and the isometric one has
 exactly `2 ^ (k + 1)` elements by `FieldLineCount.card_symmetries_line` carried across
 `FieldSymmetryHom.symEquivRange`.
+⚠ **THE FIRST CITATION IN THIS BULLET IS STALE, 2026-09-18, the bullet kept as written**
+(`ERRATUM 94`): the proof no longer calls `infinite_linSym_quadForm_line`. It derives
+`Nontrivial (Fin (k + 1))` from `1 ≤ k` and leaves the rest to `FieldLinSymInfinite`, so **the
+line's eigenpair plays no part in the index** — only its `2 ^ (k + 1)` count does, which is the
+second citation and is unaffected.
 
 **`nat_card_range_symHom_line`** — the finite side on its own, because it is the half that is a
 number rather than a zero: `Nat.card` of `symHom`'s range **is** `2 ^ (k + 1)`.
@@ -66,6 +82,13 @@ repeated eigenvalue **both** groups are infinite and this argument says nothing.
 genuine quotient argument rather than a cardinality one, and **it is not attempted in this file**
 (`ERRATUM 246`) — the locality is deliberate and is what `claims_scan.py` asks for: this paragraph
 knows what this unit did, not what the estate contains.
+⚠ **ONE OF THE TWO CONJUNCTS WAS NEVER NEEDED, 2026-09-18** (`ERRATUM 94`): *and two eigenvalues
+differ* is free. `FieldLinSymInfinite.infinite_setOf_linSym` gets the linear group's infinitude
+from two **vertices**, with no reference to the spectrum at all, so the general statement available
+from here is *infinite index whenever the spectrum is simple* — this paragraph's estimate of its own
+reach was one hypothesis too pessimistic. **THE REST OF IT STANDS, and that is the part that
+matters**: on a graph with a repeated eigenvalue both groups are still infinite, the argument still
+says nothing, and that case is still not attempted here.
 
 **NO COSET REPRESENTATIVES, AND NO STRUCTURE FOR THE QUOTIENT.** `index = 0` is a statement that a
 number does not exist. What the quotient *is* — a Grassmannian-like object, on the standard
@@ -93,10 +116,10 @@ declined. Every linear symmetry has invertible determinant
 (`FieldSymmetryInclusion.isUnit_det_of_mem_linSym`), so
 `Matrix.GeneralLinearGroup.mkOfDetNeZero` lifts the carrier into `GL V ℝ`, and the lift is
 injective on the nose: its underlying matrix is the matrix it came from, by `rfl`. -/
-theorem infinite_linSymGL (hm : m ≠ 0)
-    (hinf : {L : Matrix V V ℝ | L * green G m * Lᵀ = green G m}.Infinite) :
+theorem infinite_linSymGL [Nontrivial V] (hm : m ≠ 0) :
     Infinite (linSymGL G m) := by
-  haveI : Infinite {L : Matrix V V ℝ | L * green G m * Lᵀ = green G m} := hinf.to_subtype
+  haveI : Infinite {L : Matrix V V ℝ | L * green G m * Lᵀ = green G m} :=
+    (FieldLinSymInfinite.infinite_setOf_linSym (G := G) hm).to_subtype
   have hdet : ∀ L : {L : Matrix V V ℝ | L * green G m * Lᵀ = green G m}, (L.1).det ≠ 0 :=
     fun L => isUnit_iff_ne_zero.mp (isUnit_det_of_mem_linSym hm (mem_linSym.mpr L.2))
   refine Infinite.of_injective
@@ -123,11 +146,10 @@ theorem nat_card_range_symHom (hm : m ≠ 0)
 Mathlib's way of writing *infinite index*. `Subgroup.card_mul_index` does all of it:
 `Nat.card H * H.index = Nat.card G`, the right side is `0` because the ambient group is infinite,
 and `Nat.card H ≠ 0`, so the index is what is left. -/
-theorem index_range_symHom_eq_zero (hm : m ≠ 0)
-    (hinf : {L : Matrix V V ℝ | L * green G m * Lᵀ = green G m}.Infinite)
+theorem index_range_symHom_eq_zero [Nontrivial V] (hm : m ≠ 0)
     (hcard : Nat.card (symHom (G := G) (m := m) hm).range ≠ 0) :
     (symHom (G := G) (m := m) hm).range.index = 0 := by
-  haveI : Infinite (linSymGL G m) := infinite_linSymGL hm hinf
+  haveI : Infinite (linSymGL G m) := infinite_linSymGL hm
   have h := Subgroup.card_mul_index (symHom (G := G) (m := m) hm).range
   -- rewrite the AMBIENT card, not the subgroup's: `rw [Nat.card_eq_zero_of_infinite]` takes the
   -- first match, which is the subgroup, and then asks for an `Infinite` instance it cannot have.
@@ -149,10 +171,7 @@ about the graph enters beyond those two. -/
 theorem index_range_symHom_eq_zero_of_simple [Nontrivial V] (hm : m ≠ 0)
     (hsimple : Function.Injective (green_posDef G hm).isHermitian.eigenvalues) :
     (symHom (G := G) (m := m) hm).range.index = 0 := by
-  obtain ⟨i, j, hij⟩ := exists_pair_ne V
-  refine index_range_symHom_eq_zero hm
-    (FieldRotationNonIsometric.infinite_linSym_quadForm_of_eigenvalues_ne (i := i) (j := j) hm
-      fun h => hij (hsimple h)) ?_
+  refine index_range_symHom_eq_zero hm ?_
   rw [nat_card_range_symHom hm hsimple]
   positivity
 
@@ -179,8 +198,8 @@ exactly `2 ^ (k + 1)` elements.
 possible kind**: there is no finite index at all. -/
 theorem index_range_symHom_eq_zero_line {k : ℕ} (hk : 1 ≤ k) {mass : ℝ} (hmass : mass ≠ 0) :
     (symHom (G := boxGraph 1 (k + 1)) (m := mass) hmass).range.index = 0 := by
-  refine index_range_symHom_eq_zero hmass
-    (FieldRotationNonIsometric.infinite_linSym_quadForm_line hk hmass) ?_
+  haveI : Nontrivial (Fin (k + 1)) := Fin.nontrivial_iff_two_le.mpr (by omega)
+  refine index_range_symHom_eq_zero hmass ?_
   rw [nat_card_range_symHom hmass
     (FieldSimpleCriterion.eigenvalues_injective_line hmass
       (green_posDef (boxGraph 1 (k + 1)) hmass).isHermitian)]

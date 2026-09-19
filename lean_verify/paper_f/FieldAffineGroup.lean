@@ -53,6 +53,13 @@ says exactly when the two coincide.
 * **No cardinality.** The linear symmetry group is the full orthogonal group, infinite as soon as
   `|V| ≥ 2`, so there is no count to make and `FieldSymmetryCount`'s `2 ^ |V|` is about the
   isometric group and does not transfer.
+  ⚠ **THE REASON IS NOW A THEOREM, 2026-09-18, and this bullet is kept as written**
+  (`ERRATUM 94`). `FieldLinSymInfinite.infinite_setOf_linSym` proves *infinite as soon as
+  `|V| ≥ 2`*, and `FieldLinSymInfinite.infinite_setOf_linSym_iff_nontrivial` proves the `|V| ≥ 2` is
+  **necessary** as well — on one vertex the determinant pins the set to `{1, -1}`. **THE REFUSAL IS
+  UNCHANGED, and that is the point of the note**: there is still no count here, `Infinite` is still
+  not a cardinal, and this bullet's second clause about `2 ^ |V|` was never in question. Of the four
+  files in `paper_f` that assert a sentence of this shape, **this one is the only one discharged**.
 * **No `MulEquiv` between the `Submonoid` and the `Subgroup`.** §5 gives the two inclusions —
   every equivalence is a map, and at a non-zero mass every map in the monoid comes from an
   equivalence — but not a bundled isomorphism, which would need the map `e ↦ e.toAffineMap` shown

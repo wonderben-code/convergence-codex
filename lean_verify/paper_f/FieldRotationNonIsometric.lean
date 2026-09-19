@@ -183,7 +183,14 @@ theorem infinite_nonIsometric (hm : m ≠ 0) {u v : V → ℝ} {n μ₁ μ₂ : 
     hu hv hne ((eq_one_iff_comm hm hO).mp hc)
 
 /-- **SO THE LINEAR SYMMETRY GROUP IS INFINITE** under the same hypotheses — the set is a superset
-of the one counted above. -/
+of the one counted above.
+
+⚠ **SUPERSEDED 2026-09-18, kept as written** (`ERRATUM 94`): **the conclusion needs none of these
+hypotheses.** `FieldLinSymInfinite.infinite_setOf_linSym` proves it from `Nontrivial V` at a
+non-zero mass, and its `_iff_nontrivial` shows that is the exact condition. The eigenpair is
+earned by `infinite_nonIsometric` directly above, where the symmetries must also FAIL to be
+isometries and the two distinct eigenvalues are the whole reason they do. Here they are inherited
+and unused. This statement is true; it is no longer the best available. -/
 theorem infinite_linSym_quadForm (hm : m ≠ 0) {u v : V → ℝ} {n μ₁ μ₂ : ℝ} (hn : n ≠ 0)
     (huu : u ⬝ᵥ u = n) (hvv : v ⬝ᵥ v = n) (huv : u ⬝ᵥ v = 0)
     (hu : green G m *ᵥ u = μ₁ • u) (hv : green G m *ᵥ v = μ₂ • v) (hne : μ₁ ≠ μ₂) :
@@ -208,7 +215,12 @@ theorem infinite_nonIsometric_of_eigenvalues_ne (hm : m ≠ 0) {i j : V}
     exists_orthonormal_eigenpair_of_eigenvalues_ne hm hne
   exact infinite_nonIsometric hm one_ne_zero huu hvv huv hu hv hne
 
-/-- **SO THE LINEAR SYMMETRY GROUP IS INFINITE** on any such graph. -/
+/-- **SO THE LINEAR SYMMETRY GROUP IS INFINITE** on any such graph.
+
+⚠ **SUPERSEDED 2026-09-18, kept as written** (`ERRATUM 94`): `FieldSymmetryIndex` was this
+theorem's only consumer in the estate and no longer calls it. The distinct eigenvalues buy nothing
+on this side of the pair — `FieldLinSymInfinite.infinite_setOf_linSym` reaches the same set from two
+vertices — and everything they do buy is in `infinite_nonIsometric_of_eigenvalues_ne` above. -/
 theorem infinite_linSym_quadForm_of_eigenvalues_ne (hm : m ≠ 0) {i j : V}
     (hne : (green_posDef G hm).isHermitian.eigenvalues i
       ≠ (green_posDef G hm).isHermitian.eigenvalues j) :
@@ -235,7 +247,12 @@ theorem infinite_nonIsometric_line {k : ℕ} (hk : 1 ≤ k) {mass : ℝ} (hmass 
   exact infinite_nonIsometric_of_eigenvalues_ne hmass hne
 
 open BoxGraph in
-/-- **SO THE LINE'S LINEAR SYMMETRY GROUP IS INFINITE.** -/
+/-- **SO THE LINE'S LINEAR SYMMETRY GROUP IS INFINITE.**
+
+⚠ **SUPERSEDED 2026-09-18, kept as written** (`ERRATUM 94`): the line needs no eigenpair for this.
+`Nontrivial (Fin (k + 1))` follows from `1 ≤ k` and `FieldLinSymInfinite.infinite_setOf_linSym`
+does the rest, which is the route `FieldSymmetryIndex.index_range_symHom_eq_zero_line` now takes.
+`infinite_nonIsometric_line` above is untouched and is where `hk` is really spent. -/
 theorem infinite_linSym_quadForm_line {k : ℕ} (hk : 1 ≤ k) {mass : ℝ} (hmass : mass ≠ 0) :
     {L : Matrix (Site 1 (k + 1)) (Site 1 (k + 1)) ℝ |
         L * green (boxGraph 1 (k + 1)) mass * Lᵀ = green (boxGraph 1 (k + 1)) mass}.Infinite :=

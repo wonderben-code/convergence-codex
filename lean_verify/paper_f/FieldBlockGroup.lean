@@ -103,6 +103,15 @@ and `FieldBlockProduct.mem_unitaryGroup_iff_transpose` proves the two agree over
 soon as one block has size two or more, and `FieldTorusRotation.oneFreq` says the torus is
 degenerate in every dimension. `FieldTorusRotation.infinite_symmetryMatrices_torus` remains the
 finest cardinality statement and is the right answer rather than a missing one.
+⚠ **THE AMBIENT CASE IS NOW A THEOREM AND THIS SENTENCE IS STILL NOT, 2026-09-18** (`ERRATUM 94`),
+**recorded here because the two look alike and are not.**
+`FieldLinSymInfinite.infinite_setOf_orthogonal` proves the **full** orthogonal group of `ℝ^V` is
+infinite for `|V| ≥ 2`, by turning the plane of two coordinate vectors. **THAT IS NOT WHAT THIS
+PARAGRAPH CLAIMS.** A block-diagonal group is infinite as soon as ONE BLOCK has size two, which
+needs the two coordinates to lie in the SAME block — and that is a statement about the block
+decomposition, not about the orthogonal group. **So the sentence above is still unproved as
+stated**, and the note is here so that a reader who finds the new theorem does not mistake it for
+this one. The paragraph's conclusion is untouched either way: there is no number here.
 
 **THIS IS NOT `FieldSymmetryIso`'s GROUP, AND THE DIFFERENCE MATTERS.**
 `FieldSymmetryIso.conjSqEquiv` proves the **linear** symmetry group — matrices with

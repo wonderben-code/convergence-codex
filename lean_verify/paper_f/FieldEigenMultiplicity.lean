@@ -68,6 +68,14 @@ finite because `V` is; the assembly is `Matrix.blockDiagonal'` through
 level of the product, so the factor at `μ` is the orthogonal group of a space of dimension `μ`'s
 multiplicity. The `NO NUMBER` paragraph below stands unchanged.]
 
+⚠ **THE FACTOR-WISE CLAIM BELOW IS STILL UNPROVED, 2026-09-18** (`ERRATUM 94`).
+`FieldLinSymInfinite.infinite_setOf_orthogonal` proves `O(ℝ^V)` itself is infinite for `|V| ≥ 2`,
+which is the ambient group and not a **factor** of the product below: `∏ᵢ O(dᵢ)` being infinite
+because some `dᵢ ≥ 2` needs a circle inside the `i`-th factor, and the new file's circle is in the
+plane of two coordinate vectors of `ℝ^V` with nothing said about which eigenspace each lies in.
+**The paragraph stands as written** and its answer is unaffected:
+`FieldTorusRotation.infinite_symmetryMatrices_torus` is still the finest statement.
+
 **NO NUMBER, AND THERE IS NOT GOING TO BE ONE.** `∏ᵢ O(dᵢ)` is infinite as soon as some `dᵢ ≥ 2`,
 and `FieldTorusRotation.oneFreq` says the torus is degenerate in every dimension. So
 `FieldTorusRotation.infinite_symmetryMatrices_torus` remains the finest cardinality statement, and
