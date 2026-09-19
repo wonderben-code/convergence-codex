@@ -80,6 +80,12 @@ three of the missing pieces built: the index type is `Set.range (eigMu G m hm)`,
 `MulEquiv`. **The clause about the COUNT stands unchanged**: the group is infinite whenever a block
 has size two, so `Set.Infinite` is still the finest cardinality statement and this sentence was
 right about that.]
+[⚠ **AND THAT CLAUSE NOW HAS A NAME, 2026-09-19** (`ERRATUM 94`, and `ERRATUM 653` for why it was
+worth going looking): *the group is infinite whenever a block has size two* was asserted here, and
+in three other files, without any of the five citing a proof — which is how a later unit came to
+call it unproved. It is `FieldBlockInfinite.infinite_symmetryMatrices_of_two_le_card_fib`, and the
+product form is `infinite_prod_unitaryGroup_of_two_le_card_fib`. **This file's sentence needs no
+other change**: it was right, and it is now checkable rather than reconstructible.]
 
 **NO IDENTIFICATION OF THE BLOCK SIZES WITH THE MULTIPLICITIES.** The blocks here are indexed by
 the fibres of `Matrix.IsHermitian.eigenvalues`, and that the fibre of `μ` has size equal to

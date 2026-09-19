@@ -32,12 +32,16 @@ the range is.
 * **No cardinality, and there cannot be one.** A block-diagonal orthogonal group is infinite as
   soon as a block has size two, which `FieldTorusRotation.oneFreq` says the torus always does.
   This is a description, not a count.
-  ⚠ **STILL UNPROVED, 2026-09-18, and deliberately so** (`ERRATUM 94`).
-  `FieldLinSymInfinite.infinite_setOf_orthogonal` covers the **ambient** orthogonal group of `ℝ^V`
-  and not a block of it; `FieldBlockGroup`'s note on the same sentence sets out why the two differ,
-  and the reason is the same here — the new circle turns two coordinate vectors that this file's
-  product need not place in one factor. **The bullet's own conclusion is what is load-bearing and it
-  is untouched**: a description is not a count, here or there.
+  ⚠ **PROVED, 2026-09-19, and this file supplied both of its ingredients** (`ERRATUM 653`, which
+  quotes and withdraws the note of 2026-09-18 that said otherwise).
+  **`FieldBlockInfinite.infinite_prod_unitaryGroup_of_two_le_card_fib`**: the product
+  `∏_c O(Fib c)` is infinite as soon as one factor's index type has two elements. The two
+  ingredients are this file's own — `card_fib_eq_finrank_eigenspace`, which makes a block's size
+  the eigenspace dimension, and `symmetry_mulEquiv_prod`, which carries infinitude to the product
+  because it is a `MulEquiv`. **So this bullet was being discharged by a composition of theorems in
+  its own file, and the composition had never been written down**; that is why a later unit
+  mistook it for a gap. **The bullet's load-bearing clause is unchanged**: a description is not a
+  count, and `Infinite` is not a cardinal.
 * **`Matrix.unitaryGroup _ ℝ` is the orthogonal group and the file says so rather than using
   `Matrix.orthogonalGroup`**, which `ERRATUM 484` records as a trap: it is an `abbrev` behind a
   local `starRingOfComm` instance whose lemmas Mathlib's own `TODO` questions. `star_eq_transpose`

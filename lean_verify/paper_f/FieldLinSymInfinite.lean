@@ -16,7 +16,15 @@ orthogonal group, **infinite as soon as `|V| ≥ 2`**, so there is no count to m
 `FieldBlockProduct` say a **block-diagonal** orthogonal group is infinite as soon as one block has
 size two; `FieldEigenMultiplicity` says `∏ᵢ O(dᵢ)` is infinite as soon as some `dᵢ ≥ 2`. Each needs
 a circle **inside a block**, and this file's circle turns the plane of two coordinate vectors, which
-may sit in different blocks. Their sentences stay unproved and their own notes now say so.
+may sit in different blocks.
+⚠ **AND `NOT PROVED HERE` IS THE MOST THIS PARAGRAPH MAY SAY, 2026-09-19** (`ERRATUM 653`): its
+first draft went on to say their sentences *stay unproved*, and **that was false** — the estate
+proves all three, and `FieldBlockInfinite` now states the composition
+(`FieldSymmetryFinite.infinite_symmetryMatrices_of_two_le_finrank` with
+`FieldBlockProduct.card_fib_eq_finrank_eigenspace` and `symmetry_mulEquiv_prod`). **The clause that
+survives is the one about THIS file**, and it is worth keeping: a circle in the plane of two
+coordinate vectors does not respect a block decomposition, so the two theorems are genuinely
+different and neither subsumes the other.
 
 In all four the sentence carries the weight of a refusal — it is the reason no cardinality is
 attempted — and a refusal resting on an unproved sentence is worth exactly the sentence. **One of
@@ -78,8 +86,13 @@ rotations are in a plane of coordinate vectors, which are eigenvectors of nothin
 block of a block-diagonal group, and this file's circle is in the plane of two coordinate vectors,
 which may sit in different blocks. Restricting the construction to a block means choosing two
 coordinates in the same block, which is a statement about the block decomposition and not about
-the orthogonal group. **Not attempted here**, no cost claimed (`ERRATUM 246`), and each of the
-three files carries a dated note saying its own sentence is still unproved.
+the orthogonal group. **Not attempted here**, no cost claimed (`ERRATUM 246`).
+⚠ **AND IT DOES NOT NEED TO BE, 2026-09-19** (`ERRATUM 653`): the first draft of this item ended
+*each of the three files carries a dated note saying its own sentence is still unproved*, which was
+**false**. `FieldBlockInfinite.infinite_symmetryMatrices_of_two_le_card_fib` and
+`infinite_prod_unitaryGroup_of_two_le_card_fib` are those sentences, composed from theorems the
+estate already held. **The fence above stands as a statement about this file** — it really does not
+reach a block — and the three notes now cite the theorem instead of denying it.
 
 **NO TOPOLOGY, NO DIMENSION, NO LIE STRUCTURE.** `|V| ≥ 2` makes the group infinite; that it is a
 compact Lie group of dimension `|V|(|V|-1)/2` is standard and is not stated, invoked or needed.
