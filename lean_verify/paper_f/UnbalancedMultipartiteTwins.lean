@@ -1,5 +1,6 @@
 import UnbalancedMultipartite
 import LaplacianTwoClasses
+import FieldBlockInfinite
 
 /-!
 # The parts of a complete multipartite graph are twin classes
@@ -182,23 +183,25 @@ theorem not_injective_eigenvalues_of_two_equal_parts {i j : ι} (hij : i ≠ j)
 theorem infinite_symmetryMatrices_of_three_le {m : ℝ} (hm : m ≠ 0) {i : ι}
     (h : 3 ≤ Fintype.card (V i)) :
     (symmetryMatrices (completeMultipartiteGraph V) m).Infinite := by
-  intro hfin
-  have hall := (FieldSymmetryFinite.finite_iff_lapMatrix hm).mp hfin
+  -- REWIRED 2026-09-19 (unit 127): this proof used to assume finiteness and negate
+  -- `finite_iff_lapMatrix` by hand. `FieldBlockInfinite` states the positive direction, so the
+  -- eigenspace this file measures is now EXHIBITED rather than reached by contradiction.
+  rw [FieldBlockInfinite.infinite_symmetryMatrices_iff_lapMatrix hm]
   obtain ⟨a⟩ : Nonempty (V i) := Fintype.card_pos_iff.mp (by omega)
+  refine ⟨(Fintype.card (Σ i, V i) : ℝ) - Fintype.card (V i), ?_⟩
   have h2 := card_sub_one_le_finrank_part (V := V) a
-  have hle := hall ((Fintype.card (Σ i, V i) : ℝ) - Fintype.card (V i))
   omega
 
 theorem infinite_symmetryMatrices_of_two_equal_parts {m : ℝ} (hm : m ≠ 0) {i j : ι}
     (hij : i ≠ j) (hcard : Fintype.card (V j) = Fintype.card (V i))
     (h2 : 2 ≤ Fintype.card (V i)) :
     (symmetryMatrices (completeMultipartiteGraph V) m).Infinite := by
-  intro hfin
-  have hall := (FieldSymmetryFinite.finite_iff_lapMatrix hm).mp hfin
+  -- REWIRED 2026-09-19 (unit 127), as the theorem above and for the same reason.
+  rw [FieldBlockInfinite.infinite_symmetryMatrices_iff_lapMatrix hm]
   obtain ⟨a⟩ : Nonempty (V i) := Fintype.card_pos_iff.mp (by omega)
   obtain ⟨b⟩ : Nonempty (V j) := Fintype.card_pos_iff.mp (by omega)
+  refine ⟨(Fintype.card (Σ i, V i) : ℝ) - Fintype.card (V i), ?_⟩
   have hb := sum_sub_one_le_finrank_parts hij a b hcard
-  have hle := hall ((Fintype.card (Σ i, V i) : ℝ) - Fintype.card (V i))
   omega
 
 /-! ## 6. The equipartite family is an instance, reached without transporting anything -/

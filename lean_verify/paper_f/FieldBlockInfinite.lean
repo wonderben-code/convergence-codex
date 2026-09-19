@@ -58,23 +58,23 @@ different, and not attempted (`ERRATUM 246`). The four fences' conclusions — *
 is not going to be one* — are **untouched** by this file; what changes is that their stated REASON
 is now a theorem with a name.
 
-**NO IFF FOR THE PRODUCT FORM.** The `iff` above is about `symmetryMatrices`. Transporting the
-finite half to the product needs `FieldSymmetryFinite.finite_symmetryMatrices_of_injective` carried
-across the same `MulEquiv`, which is a further composition. **Not attempted, and the cost is
-estimated rather than claimed** (`ERRATUM 246`): one `Finite.of_equiv` in the direction
-`FieldSymmetryFinite` already uses at line 174, so a rung rather than a climb — which is exactly
-why it is named here instead of left to be noticed.
+**THE PRODUCT FORM'S `iff` IS HERE, AND THE ESTIMATE THAT NAMED IT WAS WRONG ABOUT THE ROUTE.**
+`infinite_prod_unitaryGroup_iff_not_injective` is §4. The first draft of this item called it *not
+attempted* and estimated one `Finite.of_equiv` across `symmetry_mulEquiv_prod`; what it actually
+took was **not** a transport at all. `FieldSymmetryFinite.finite_symmetryMatrices_of_injective`
+proves the product finite as a `haveI` **inside its own proof** and does not export it, so the
+finite half needed exporting rather than carrying — the equiv is not used. The estimate was a
+climb in the wrong direction, which is why `ERRATUM 194` says naming a route is not costing it.
 
-**THE `iff` HAS THREE CALL SITES WAITING AND THEY ARE NOT REWIRED HERE.**
-`UnbalancedMultipartiteTwins.infinite_symmetryMatrices_of_three_le`,
-`_of_two_equal_parts` and `_equipartite_family` each prove an infinitude by opening `intro hfin`,
-applying `FieldSymmetryFinite.finite_iff_lapMatrix` in the finite direction and finishing with
-`omega` — **the positive direction re-derived by hand, three times**, which is the lemma
-`infinite_symmetryMatrices_iff_lapMatrix` above now is. Rewiring them is not a substitution:
-their proofs use the universally quantified bound to reach a contradiction and would have to be
-restructured to produce a witness instead, and that file would need a new import. **Not attempted
-here**, no cost claimed (`ERRATUM 246`), and the three sites are named so the next unit does not
-have to find them.
+**THE CALL SITES ARE REWIRED, AND THERE WERE TWO OF THEM RATHER THAN THREE.**
+`UnbalancedMultipartiteTwins.infinite_symmetryMatrices_of_three_le` and `_of_two_equal_parts` each
+used to open `intro hfin`, apply `FieldSymmetryFinite.finite_iff_lapMatrix` in the finite direction
+and finish with `omega` — **the positive direction re-derived by hand**. Both now `rw` the `iff`
+above and exhibit the eigenspace instead of reaching it by contradiction.
+⚠ **THE COUNT WAS WRONG WHEN THIS FILE FIRST SAID IT, 2026-09-19** (`ERRATUM 450`'s rule applied
+to my own sentence): the first draft named **three** sites, counting `_equipartite_family`, which
+proves nothing by hand — it is a one-line call to `_of_two_equal_parts`. Two hand proofs, one
+consumer. The rewiring is in the same commit as this correction.
 
 **NOTHING ABOUT WHICH GRAPHS HAVE A DEGENERATE EIGENVALUE.** That is the watchlist's open question
 *which finite graphs have a simple Laplacian spectrum*, and this file consumes it rather than
@@ -150,5 +150,40 @@ theorem infinite_symmetryMatrices_iff_lapMatrix (hm : m ≠ 0) :
       (LinearMap.ker (Matrix.toLin' (G.lapMatrix ℝ) - ν • LinearMap.id)) := by
   rw [Set.Infinite, FieldSymmetryFinite.finite_iff_lapMatrix hm, not_forall]
   exact exists_congr fun _ => not_le
+
+/-! ## 4. The product form's `iff`, and a fact the estate proved inside a proof -/
+
+/-- **THE PRODUCT IS FINITE WHEN THE SPECTRUM IS SIMPLE.** `FieldSymmetryFinite` proves exactly
+this **inside** `finite_symmetryMatrices_of_injective`, as a `haveI` two lines before its own
+conclusion, and does not export it — so the estate held the fact and no statement carried it.
+That is the third instance in this cluster of the shape `ERRATUM 653` records: something true,
+used once, and unreachable by name. The proof here is the same two instances: every fibre is a
+subsingleton, so every factor is finite, so `Pi.finite` applies. -/
+theorem finite_prod_unitaryGroup_of_injective (hm : m ≠ 0)
+    (hsimple : Function.Injective (eigMu G m hm)) :
+    Finite (∀ c : Lev (eigMu G m hm), Matrix.unitaryGroup (Fib (eigMu G m hm) (c : ℝ)) ℝ) := by
+  haveI : ∀ c : Lev (eigMu G m hm), Subsingleton (Fib (eigMu G m hm) (c : ℝ)) :=
+    fun c => FieldSymmetryFinite.subsingleton_fib hsimple _
+  haveI : ∀ c : Lev (eigMu G m hm), Finite (Matrix.unitaryGroup (Fib (eigMu G m hm) (c : ℝ)) ℝ) :=
+    fun _ => FieldSymmetryFinite.finite_unitaryGroup_of_subsingleton
+  exact Pi.finite
+
+/-- **SO THE PRODUCT IS INFINITE IF AND ONLY IF THE SPECTRUM IS NOT SIMPLE**, which is the residue
+this file's own `What is NOT here` named and left. The forward direction is the theorem above
+against `not_finite`; the backward one keeps the range witness that
+`FieldSymmetryFinite.exists_two_le_finrank_of_not_injective` discards: a repeated eigenvalue gives
+two distinct points of **one named fibre**, so the block is exhibited, not quantified over. -/
+theorem infinite_prod_unitaryGroup_iff_not_injective (hm : m ≠ 0) :
+    Infinite (∀ c : Lev (eigMu G m hm), Matrix.unitaryGroup (Fib (eigMu G m hm) (c : ℝ)) ℝ) ↔
+      ¬ Function.Injective (eigMu G m hm) := by
+  refine ⟨fun hinf hinj => ?_, fun hns => ?_⟩
+  · have hfin := finite_prod_unitaryGroup_of_injective hm hinj
+    rw [← not_finite_iff_infinite] at hinf
+    exact hinf hfin
+  · obtain ⟨i, j, hval, hne⟩ := Function.not_injective_iff.1 hns
+    refine infinite_prod_unitaryGroup_of_two_le_card_fib hm
+      (c := ⟨eigMu G m hm i, ⟨i, rfl⟩⟩) ?_
+    refine Fintype.one_lt_card_iff_nontrivial.2 ⟨⟨i, rfl⟩, ⟨j, hval.symm⟩, ?_⟩
+    exact fun hEq => hne (congrArg Subtype.val hEq)
 
 end FieldBlockInfinite
