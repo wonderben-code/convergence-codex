@@ -12,18 +12,25 @@ The `UNLOCK_WATCHLIST` block *the two residues of `CurvatureCovBundle`* has carr
 > is **not** plumbing: the extensions are taken at one point and a section statement compares
 > points, so the object would have to be rebuilt from a field of directions rather than a vector.
 
-**RESIDUE (b) IS NOT DISCHARGED HERE AND THAT SENTENCE IS STILL TRUE.** It is about
-`covRiemannHom`, which bundles the two CURVATURE slots at a fixed direction **vector** `u`, and
-every one of its slots comes through `extend`. Nothing below touches it.
+**RESIDUE (b) IS DISCHARGED IN THE FORM IT PRESCRIBES, AND ITS LITERAL SENTENCE IS STILL
+UNPROVED.** The distinction is worth the two paragraphs.
 
-**What this file does is show that the DEPTH was never the obstacle.** It proves a `C^k` section
-of a doubly-nested bundle — `Hom(TM, Hom(TM, TM))` — for the other pairing of slots:
-`CurvatureCovFull.covRiemannSecDir` bundles the DIRECTION slot of `covRiemann Y Z ·` for **FIELDS**
-`Y` and `Z`, so it takes no extension and no vector and a section statement about it compares
-points already. So residue (b)'s diagnosis is exactly right and is a description of the route
-rather than of a wall: **rebuild from fields and the doubly-nested statement goes through**, in
-three lemmas. What is left of (b) is to do that for `covRiemannHom`'s pairing, which needs the
-direction to become a field there too.
+**The prescription.** (b) says the object *would have to be rebuilt from a field of directions
+rather than a vector*. §3 is that rebuild: `contMDiffAt_covRiemannHom_of_field` makes
+`y ↦ covRiemannHom hk y (X y)` — the same two-curvature-slot bundling, with the direction a
+**field** — a `C^k` section of `Hom(TM, Hom(TM, Hom(TM, TM)))`. So (b)'s diagnosis was exactly
+right and was a description of the route, not of a wall.
+
+**The literal sentence.** (b) is written about `y ↦ covRiemannHom hk y u` for a fixed **vector**
+`u`. That is well-typed — `TangentSpace I x` is a type synonym for `E`, so `u` is accepted at
+every point, **measured 2026-09-19 by trying it** — and it is **still not proved here**, because
+the object it names is chart-dependent: a vector held fixed across points is fixed only through a
+trivialisation. Nothing below touches that form.
+
+**And the DEPTH was never the obstacle**, which §2 shows first and at one level less: the
+direction-bundled `covRiemannSecDir` takes no extension and no vector at all, so a section
+statement about it compares points already, and the doubly-nested statement goes through in three
+lemmas.
 
 ## What is proved
 
@@ -51,17 +58,29 @@ bundle, with the direction slot inside it. The frame values are
 `CurvatureCovOrder.contMDiffAt_covRiemann_hom` with the frame as the direction field.
 
 **AND IT TAKES NO LOWER BOUND ON `k`**, which is the `k`-free core of `ERRATUM 659` reaching the
-regularity: `contMDiffAt_covRiemann_hom` carries no `hk`, so neither does this. Of this file's
-**four** declarations, **two** carry a `k` binder at all and **none** carries `k ≠ 0`.
+regularity: `contMDiffAt_covRiemann_hom` carries no `hk`, so neither does this.
+
+**`contMDiffAt_covRiemannHom_of_field`** — **RESIDUE (b)'S PRESCRIBED REBUILD**: with the
+direction a **field** `X` of class `C^(k+3)` at the point, `y ↦ covRiemannHom hk y (X y)` is a
+`C^k` section of `Hom(TM, Hom(TM, Hom(TM, TM)))`. The frame criterion twice, and at the bottom
+`CurvatureCovBundle.covRiemannAt_eq` replaces the one-point extensions by the frame FIELDS on the
+trivialisation's base set — which is precisely where the extensions stop mattering. **This one
+does take `hk`**, because `covRiemannHom` does.
+
+Of this file's **five** declarations, **three** carry a `k` binder and **one** carries `k ≠ 0`.
 
 ## What is NOT here
 
-* **THE VECTOR-LEVEL OBJECT IS STILL NOT A SECTION, AND THE BLOCK'S OBSTACLE APPLIES TO IT
-  UNCHANGED.** `CurvatureCovFull.covRiemannFull` and `covRiemannDir` are built through
-  `extend E v` — extensions of a vector at one point — so nothing here makes
-  `x ↦ covRiemannFull hk x` a section of anything. What this file shows is that the block's
-  *would have to be rebuilt from a field of directions* was a description of the route, not of a
-  wall. **Not attempted for the vector form, no cost claimed** (`ERRATUM 246`).
+* **THE FOUR-DEEP OBJECT IS STILL NOT A SECTION, AND THE COST OF EVEN ASKING IS MEASURED.**
+  Nothing here makes `x ↦ CurvatureCovFull.covRiemannFull hk x` a `C^k` section of the four-deep
+  bundle. **The statement of it typechecks only at `maxHeartbeats 2000000` and
+  `synthInstance.maxHeartbeats 1000000`** — measured 2026-09-19 by writing it down with a
+  `sorry` — against `1000000` and `400000` for §3 one level below. **Not attempted, no cost
+  claimed** (`ERRATUM 246`), and the numbers are here so the next reader starts from a figure.
+* **NOR IS THE FIXED-VECTOR FORM**, which is residue (b)'s literal subject: `y ↦ covRiemannHom hk
+  y u` for `u` a vector. **As of 2026-09-19** it is well-typed — `TangentSpace I x` reduces to
+  `E`, measured by trying it — and nothing in the estate proves it, because the object is
+  chart-dependent: a vector held fixed across points is fixed only through a trivialisation.
 * **THE TANGENT CASE IS NOT DERIVED FROM THE GENERAL LEMMA, MEASURED 2026-09-19 BY TRYING IT.**
   `LeviCivitaOrder.contMDiffAt_hom_of_localFrame` is the statement above at `E₂ := TangentSpace I`,
   `F₂ := E`, and handing it `contMDiffAt_hom_of_localFrame' φ b h` **fails**: Lean answers
@@ -85,8 +104,11 @@ codomain vector bundle `E₂` with fibre `F₂`; `[FiniteDimensional ℝ E]` is 
 frame criterion, and `[Finite ι]` with it. §2 is `CurvatureCovOrder`'s, unchanged — the `C^(k+4)`
 manifold and the `C^(k+3)` metric, with that file's eight order-shift instances plus
 `KoszulManifold.finDimTangent` and `CurvatureTensor.contMDiffVectorBundle_two` as local instances.
-One `omit`, on `contMDiffVectorBundle_add_three`, dropping the five binders the linter named. No
-`set_option` in this file, and the unused-variable linter reports nothing.
+One `omit`, on `contMDiffVectorBundle_add_three`, dropping the five binders the linter named.
+**Two `set_option`s**, both scoped with `in` to `contMDiffAt_covRiemannHom_of_field` and both
+carrying their reason in a comment: `maxHeartbeats 1000000` and
+`synthInstance.maxHeartbeats 400000`, needed because the target bundle has three nested `→L`
+fibres. The unused-variable linter reports nothing.
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry in this file, 0 new axioms.
 
@@ -171,6 +193,7 @@ attribute [local instance] CurvatureCovOrder.isManifold_up CurvatureCovOrder.isM
   CurvatureCovOrder.isManifold_down_two CurvatureCovOrder.isContMDiffRiemannianBundle_down
   CurvatureCovOrder.isContMDiffRiemannianBundle_down_two
   KoszulManifold.finDimTangent CurvatureTensor.contMDiffVectorBundle_two
+  RicciOrder.contMDiffVectorBundle_add_two
 
 omit [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M] [IsManifold I 3 M]
   [IsContMDiffRiemannianBundle I ((k : WithTop ℕ∞) + 1 + 1 + 1) E (TangentSpace I : M → Type _)]
@@ -197,6 +220,51 @@ theorem contMDiffAt_covRiemannSecDir_hom {Y Z : Π y : M, TangentSpace I y} {x :
   exact CurvatureCovOrder.contMDiffAt_covRiemann_hom
     (contMDiffAt_localFrame_of_mem ((k : WithTop ℕ∞) + 1 + 1 + 1) _ (Module.finBasis ℝ E) i
       (FiberBundle.mem_baseSet_trivializationAt E (TangentSpace I) x)) hY hZ
+
+/-! ## 3. Residue (b)'s own prescription: the direction as a field -/
+
+-- The two limits below are raised because the target bundle is `Hom(TM, Hom(TM, Hom(TM, TM)))`:
+-- unifying a three-deep `→L` fibre against `ContinuousLinearMap.inCoordinates` twice, and
+-- synthesising the vector-bundle instances at each level, exceeds the defaults. **Measured, not
+-- guessed**: the STATEMENT alone needs `maxHeartbeats 1000000` and
+-- `synthInstance.maxHeartbeats 400000` at this depth, and one level further up — the four-deep
+-- `covRiemannFull` as a section — needs 2000000 and 1000000 to typecheck at all. This is the
+-- elaboration cost the `UNLOCK_WATCHLIST` block predicted for the BUNDLING, where it did not
+-- occur; it occurs here, one step later, for the SECTION.
+set_option maxHeartbeats 1000000 in
+-- and the instance search with it, for the same reason: three nested `→L` fibres.
+set_option synthInstance.maxHeartbeats 400000 in
+/-- **AND WITH THE DIRECTION A FIELD, THE CURVATURE-SLOT BUNDLING IS A SECTION TOO** —
+`y ↦ (∇_{X y} R)(·, ·)` is a `C^k` section of `Hom(TM, Hom(TM, Hom(TM, TM)))`. This is the object
+the `UNLOCK_WATCHLIST` block's residue (b) prescribes: it says the object *would have to be
+rebuilt from a field of directions rather than a vector*, and this is that rebuild. The proof is
+the frame criterion twice, and at the bottom `CurvatureCovBundle.covRiemannAt_eq` replaces the
+extensions by the frame fields on the trivialisation's base set — which is exactly where the
+one-point extensions stop mattering. -/
+theorem contMDiffAt_covRiemannHom_of_field (hk : k ≠ 0) {X : Π y : M, TangentSpace I y} {x : M}
+    (hX : CMDiffAt ((k : WithTop ℕ∞) + 1 + 1 + 1) (T% X) x) :
+    ContMDiffAt I (I.prod 𝓘(ℝ, E →L[ℝ] (E →L[ℝ] (E →L[ℝ] E)))) (k : WithTop ℕ∞)
+      (fun y : M ↦ TotalSpace.mk' (E →L[ℝ] (E →L[ℝ] (E →L[ℝ] E))) y
+        (CurvatureCovBundle.covRiemannHom (I := I) hk y (X y))) x := by
+  refine contMDiffAt_hom_of_localFrame'
+    (E₂ := fun y : M ↦ TangentSpace I y →L[ℝ] (TangentSpace I y →L[ℝ] TangentSpace I y))
+    (F₂ := E →L[ℝ] (E →L[ℝ] E)) _ (Module.finBasis ℝ E) fun i ↦ ?_
+  refine contMDiffAt_hom_of_localFrame'
+    (E₂ := fun y : M ↦ TangentSpace I y →L[ℝ] TangentSpace I y)
+    (F₂ := E →L[ℝ] E) _ (Module.finBasis ℝ E) fun j ↦ ?_
+  have hmem := FiberBundle.mem_baseSet_trivializationAt E (TangentSpace I) x
+  refine (CurvatureCovOrder.contMDiffAt_covRiemann_hom hX
+    (contMDiffAt_localFrame_of_mem ((k : WithTop ℕ∞) + 1 + 1 + 1) _ (Module.finBasis ℝ E) i hmem)
+    (contMDiffAt_localFrame_of_mem ((k : WithTop ℕ∞) + 1 + 1 + 1) _ (Module.finBasis ℝ E) j
+      hmem)).congr_of_eventuallyEq ?_
+  filter_upwards [(trivializationAt E (TangentSpace I : M → Type _) x).open_baseSet.mem_nhds
+    hmem] with y hy
+  congr 1
+  simp only [CurvatureCovBundle.covRiemannHom_apply]
+  exact (CurvatureCovBundle.covRiemannAt_eq hk
+    (contMDiffAt_localFrame_of_mem ((k : WithTop ℕ∞) + 1 + 1) _ (Module.finBasis ℝ E) i hy)
+    (contMDiffAt_localFrame_of_mem ((k : WithTop ℕ∞) + 1 + 1) _ (Module.finBasis ℝ E) j hy)
+    (X y))
 
 end Curvature
 
