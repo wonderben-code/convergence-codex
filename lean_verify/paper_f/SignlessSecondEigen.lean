@@ -17,6 +17,13 @@ Grepped before writing, and this time the grep was run (`ERRATUM 535`).
 index**. This is `λ₂` in the multiset convention: when the top has multiplicity two or more,
 `secondEigen = topEigen`, which is what a sorted-with-multiplicity list gives and is the reading
 every bound below is stated against.
+⚠ **THAT SENTENCE WAS AN ASSERTION FOR THE WHOLE LIFE OF THIS FILE AND IS NOW A THEOREM**
+(2026-09-19, unit 140, `ERRATUM 94` — kept because it was right). `secondEigen_eq_topEigen_iff`
+proves it **as an iff and in both directions**: `secondEigen = topEigen` exactly when some index
+other than `topIdx` also attains the top, and `secondEigen_lt_topEigen_iff` reads the strict
+inequality off as simplicity of the top **as a value**. The `UNLOCK_WATCHLIST` item for the
+quantitative gap named the same gap in its own words — *`secondEigen` is connected only to its
+own definition, not to any multiset notion of second largest* — and this is that connection.
 
 **`secondEigen_le_topEigen`** — the obvious half: on any Hermitian matrix with two or more indices,
 and nothing else. (An earlier draft said *the only one that needs no hypothesis*, which
@@ -98,7 +105,10 @@ theorem erase_nonempty [Nontrivial V] (i : V) : (Finset.univ.erase i).Nonempty :
   omega
 
 /-- **THE SECOND EIGENVALUE**: the largest one carried by an index other than `topIdx`. When the
-top has multiplicity two or more this equals the top, which is the multiset convention. -/
+top has multiplicity two or more this equals the top, which is the multiset convention.
+⚠ **THE SECOND SENTENCE WAS AN ASSERTION UNTIL 2026-09-19 AND IS NOW A THEOREM**
+(`secondEigen_eq_topEigen_iff`, unit 140), as an **iff** and in both directions. It is kept as
+written because it was right; what changed is that it is checked. -/
 noncomputable def secondEigen {A : Matrix V V ℝ} (hA : A.IsHermitian) [Nontrivial V] : ℝ :=
   (Finset.univ.erase (topIdx hA)).sup' (erase_nonempty _) hA.eigenvalues
 
@@ -109,6 +119,32 @@ theorem le_secondEigen_of_ne {A : Matrix V V ℝ} (hA : A.IsHermitian) [Nontrivi
 theorem secondEigen_le_topEigen {A : Matrix V V ℝ} (hA : A.IsHermitian) [Nontrivial V] :
     secondEigen hA ≤ topEigen hA :=
   Finset.sup'_le _ _ fun i _ => SignlessPerronSimple.le_topEigen hA i
+
+/-- **THE MULTISET CONVENTION, PROVED RATHER THAN ASSERTED.** `secondEigen`'s own docstring and
+this file's header have said since they were written that *when the top has multiplicity two or
+more this equals the top, which is the multiset convention*. Nothing proved it, and the
+`UNLOCK_WATCHLIST` item for the quantitative gap names the same gap in its own words —
+*`secondEigen` is connected only to its own definition, not to any multiset notion of second
+largest*. This is that connection, as an **iff**: the second eigenvalue equals the top exactly
+when some index other than `topIdx` also attains the top. -/
+theorem secondEigen_eq_topEigen_iff {A : Matrix V V ℝ} (hA : A.IsHermitian) [Nontrivial V] :
+    secondEigen hA = topEigen hA ↔ ∃ j, j ≠ topIdx hA ∧ hA.eigenvalues j = topEigen hA := by
+  constructor
+  · intro h
+    obtain ⟨j, hj, hval⟩ :=
+      Finset.exists_mem_eq_sup' (erase_nonempty (topIdx hA)) hA.eigenvalues
+    exact ⟨j, (Finset.mem_erase.1 hj).1, by rw [← h, secondEigen, hval]⟩
+  · rintro ⟨j, hj, hval⟩
+    exact le_antisymm (secondEigen_le_topEigen hA) (hval ▸ le_secondEigen_of_ne hA hj)
+
+/-- **AND SO THE STRICT INEQUALITY IS EXACTLY SIMPLICITY OF THE TOP AS A VALUE** — no index but
+`topIdx` attains it. `secondEigen_lt_topEigen` below derives this from connectedness; this says
+what the strict inequality MEANS, at any Hermitian matrix and with no graph in sight. -/
+theorem secondEigen_lt_topEigen_iff {A : Matrix V V ℝ} (hA : A.IsHermitian) [Nontrivial V] :
+    secondEigen hA < topEigen hA ↔ ∀ j, j ≠ topIdx hA → hA.eigenvalues j ≠ topEigen hA := by
+  rw [lt_iff_le_and_ne, and_iff_right (secondEigen_le_topEigen hA), ne_eq,
+    secondEigen_eq_topEigen_iff]
+  simp only [not_exists, not_and]
 
 /-! ## 2. The trace pins it from below -/
 
