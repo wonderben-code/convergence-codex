@@ -1,5 +1,6 @@
 import FieldSymmetryContinuum
 import FieldTorusRotation
+import FieldSymmetryCount
 
 /-!
 # Which infinity on the ISOMETRIC side: finite, or exactly the continuum, and nothing between
@@ -307,7 +308,7 @@ theorem mk_blockDiagSubmonoid_eq_continuum_iff (hm : m ≠ 0) :
   rw [mk_congr (FieldBlockGroup.conjEigEquiv (G := G) (m := m) hm).toEquiv.symm]
   exact mk_symmetrySubmonoid_eq_continuum_iff hm
 
-/-! ## 5. On the torus, in every dimension -/
+/-! ## 5. On the torus and on the box -/
 
 /-- **THE GAUSSIAN FIELD ON THE TORUS HAS EXACTLY `𝔠` SYMMETRIES**, in every dimension `d ≥ 1`,
 at every side length `N + 3` and every non-zero mass — the physical `d = 4` included.
@@ -317,5 +318,46 @@ theorem mk_symmetryMatrices_torus {d : ℕ} (hd : 1 ≤ d) (N : ℕ) (hm : m ≠
     #(symmetryMatrices (TorusReflection.torusGraph d (N + 3)) m) = 𝔠 := by
   obtain ⟨u, v, hu0, hind, hu, hv⟩ := FieldTorusRotation.exists_independent_eigenpair_torus hd N hm
   exact mk_symmetryMatrices_of_independent_eigenpair hm hu0 hind hu hv
+
+/-- **AND ON THE BOX**, at every `2 ≤ d`, every side length `≥ 2` and every non-zero mass. Same
+input as `FieldRotationCount.infinite_symmetryMatrices_box`, read for its cardinality:
+`FieldBoxRotation.exists_independent_eigenpair_box_of_two_le`. **Added by `RE-SWEEP #68`**, which
+found two watchlist items saying in as many words that no count on this family was possible. -/
+theorem mk_symmetryMatrices_box {d n : ℕ} (hd : 2 ≤ d) (hn : 1 ≤ n) {mass : ℝ}
+    (hmass : mass ≠ 0) :
+    #(symmetryMatrices (BoxGraph.boxGraph d (n + 1)) mass) = 𝔠 := by
+  obtain ⟨u, v, μ, hu0, hind, hu, hv⟩ :=
+    FieldBoxRotation.exists_independent_eigenpair_box_of_two_le hd hn hmass
+  exact mk_symmetryMatrices_of_independent_eigenpair hmass hu0 hind hu hv
+
+/-- **AND THE LINE IS FINITE**, which is the other half of the box dichotomy.
+`FieldSimpleCriterion.eigenvalues_injective_line` is the line's simple spectrum and `eigMu` is
+literally `(green_isHermitian _).eigenvalues`, so no transfer lemma stands between them. -/
+theorem finite_symmetryMatrices_line {k : ℕ} {mass : ℝ} (hmass : mass ≠ 0) :
+    (symmetryMatrices (BoxGraph.boxGraph 1 (k + 1)) mass).Finite :=
+  FieldSymmetryFinite.finite_symmetryMatrices_of_injective hmass
+    (FieldSimpleCriterion.eigenvalues_injective_line hmass _)
+
+/-- **AND ITS COUNT IS `2 ^ (k+1)`**, the matrix analogue of `FieldLineCount.card_symmetries_line`,
+which counts isometries. -/
+theorem nat_card_symmetryMatrices_line {k : ℕ} {mass : ℝ} (hmass : mass ≠ 0) :
+    Nat.card (symmetryMatrices (BoxGraph.boxGraph 1 (k + 1)) mass) = 2 ^ (k + 1) := by
+  rw [FieldSymmetryCount.card_symmetryMatrices_of_injective hmass
+      (FieldSimpleCriterion.eigenvalues_injective_line hmass _)]
+  rw [Fintype.card_fun, Fintype.card_fin, Fintype.card_fin, pow_one]
+
+theorem mk_symmetryMatrices_line_lt_aleph0 {k : ℕ} {mass : ℝ} (hmass : mass ≠ 0) :
+    #(symmetryMatrices (BoxGraph.boxGraph 1 (k + 1)) mass) < ℵ₀ := by
+  haveI := (finite_symmetryMatrices_line (k := k) hmass).to_subtype
+  exact Cardinal.lt_aleph0_of_finite _
+
+/-- **SO THE BOX DICHOTOMY IS STATED**: one dimension is not the continuum, two or more is exactly
+the continuum. The two halves cannot both hold, because `ℵ₀ ≤ 𝔠`. -/
+theorem mk_symmetryMatrices_line_ne_continuum {k : ℕ} {mass : ℝ} (hmass : mass ≠ 0) :
+    #(symmetryMatrices (BoxGraph.boxGraph 1 (k + 1)) mass) ≠ 𝔠 := by
+  intro h
+  have hlt := mk_symmetryMatrices_line_lt_aleph0 (k := k) hmass
+  rw [h] at hlt
+  exact absurd hlt (not_lt.2 aleph0_le_continuum)
 
 end FieldBlockContinuum

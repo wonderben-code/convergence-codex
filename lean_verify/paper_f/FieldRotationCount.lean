@@ -62,6 +62,14 @@ does *not* close. **Not attempted, no cost claimed** (`ERRATUM 246`).
 
 **No cardinality**, only `Set.Infinite`. The family is the injective image of an interval, so
 "continuum many" is within reach and is **not claimed**, because it is not proved here.
+⚠ **CLAIMED AND PROVED, 2026-09-19, AND THIS PARAGRAPH IS KEPT AS WRITTEN** (`ERRATUM 94`).
+**Its prediction was exactly right**: *the injective image of an interval* is the whole argument,
+and `FieldSymmetryContinuum.continuum_le_of_injOn` is that sentence made into a lemma.
+`FieldBlockContinuum.mk_symmetryMatrices_eq_continuum_iff` gives `# = 𝔠` **iff** the spectrum is
+degenerate, `mk_symmetryMatrices_torus` and `mk_symmetryMatrices_box` give it on this file's own
+two families, and `mk_symmetryMatrices_lt_aleph0_or_eq_continuum` gives the dichotomy — finite, or
+exactly `𝔠`, nothing between. **A fence that names the route to its own closure is worth more
+than one that does not**, and this one named it two weeks early.
 
 **No group structure.** `symmetryMatrices` is a `Set`, not a subgroup, and nothing here shows it is
 closed under multiplication — true and easy, and still not proved, so not claimed.
