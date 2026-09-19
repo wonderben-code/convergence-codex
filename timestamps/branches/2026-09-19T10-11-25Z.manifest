@@ -1,0 +1,6 @@
+# Branch head manifest — 2026-09-19T10-11-25Z
+# repo: wonderben-code/convergence-codex
+# Each line: <branch> <tab> <head sha>. A commit hash contains its
+# entire ancestry, so stamping these heads stamps all history behind them.
+claude/infinitography-formalisation-fbqxf3	64b6b5c2a1f82cd1576ae4f0fc62593a7796c054
+main	ee76a31f03cc6b627bc8eff8a643be5feb820632
