@@ -500,6 +500,7 @@ roots = [
   "FieldSymmetryContinuum",
   "FieldBlockContinuum",
   "FieldFibreCardinal",
+  "FieldBoxDichotomy",
   "FieldSymmetryIndex",
   "SignlessBipartite",
   "CovariantOrderInfty",
