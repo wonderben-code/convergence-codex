@@ -139,13 +139,37 @@ theorem fderivWithin_comp_extChartAt_symm_eq {f : M → ℝ} {x : M}
     (fun _ ↦ v : Π x : M, TangentSpace I x)
   rwa [mpullbackWithin_extChartAt_symm_self] at h
 
-/-- Near `x`, a `C²` function is differentiable. -/
+omit [IsManifold I 2 M] in
+/-- **A MAP THAT IS `C^n` AT A POINT IS DIFFERENTIABLE ON A NEIGHBOURHOOD OF IT**, for any
+`0 ≠ n ≠ ∞` and any target manifold. Mathlib's `contMDiffAt_iff_contMDiffAt_nhds` and
+`ContMDiffAt.mdifferentiableAt`, in that order, and nothing else.
+
+**AND IT DOES NOT REACH THIS ESTATE'S BUNDLE VERSIONS, MEASURED 2026-09-19.** The
+`UNLOCK_WATCHLIST` item that tracks this composite asks *whether Mathlib's `MDiffAt` supports
+the general bundle statement*. The answer is **no at the hypotheses the estate has**:
+`contMDiffAt_iff_contMDiffAt_nhds` wants `IsManifold` on the **TARGET** at order `n`, and for a
+section of a bundle the target is the TOTAL SPACE —
+`IsManifold (I.prod 𝓘(ℝ, E)) 2 (TotalSpace E (TangentSpace I))`, which Lean does not find from
+`[IsManifold I 2 M]` **nor from `[IsManifold I 3 M]`; both were tried.** That is why
+`CurvatureTensor.eventually_mdiffAt_of_cmdiffAt` and `HomCovariantOrder`'s two go the longer way
+round through `contMDiffAt_iff_contMDiffOn_nhds`, which asks nothing of the target: **the longer
+route is buying a weaker hypothesis, not paying for a missing abstraction.** Those three are not
+rewired and nothing here says they should be. -/
+theorem eventually_mdifferentiableAt_of_contMDiffAt
+    {E' : Type*} [NormedAddCommGroup E'] [NormedSpace ℝ E'] {H' : Type*} [TopologicalSpace H']
+    {J : ModelWithCorners ℝ E' H'} {N : Type*} [TopologicalSpace N] [ChartedSpace H' N]
+    {n : WithTop ℕ∞} [IsManifold I n M] [IsManifold J n N]
+    (hn₀ : n ≠ 0) (hn : n ≠ ∞) {f : M → N} {x : M} (hf : ContMDiffAt I J n f x) :
+    ∀ᶠ y in 𝓝 x, MDifferentiableAt I J f y := by
+  filter_upwards [(contMDiffAt_iff_contMDiffAt_nhds hn).1 hf] with y hy
+  exact hy.mdifferentiableAt hn₀
+
+/-- Near `x`, a `C²` function is differentiable. **Four lines became one**, 2026-09-19: this is
+the general statement above at `N := ℝ`, `n := 2`, and the only one of the estate's four
+instances of the composite that it reaches. -/
 theorem eventually_mdifferentiableAt {f : M → ℝ} {x : M} (hf : ContMDiffAt I 𝓘(ℝ) 2 f x) :
-    ∀ᶠ y in 𝓝 x, MDifferentiableAt I 𝓘(ℝ) f y := by
-  obtain ⟨u, hu, hfu⟩ := (contMDiffAt_iff_contMDiffOn_nhds (by simp)).1 hf
-  filter_upwards [interior_mem_nhds.2 hu] with y hy
-  exact ((hfu y (interior_subset hy)).mdifferentiableWithinAt two_ne_zero).mdifferentiableAt
-    (mem_interior_iff_mem_nhds.1 hy)
+    ∀ᶠ y in 𝓝 x, MDifferentiableAt I 𝓘(ℝ) f y :=
+  eventually_mdifferentiableAt_of_contMDiffAt two_ne_zero (by simp) hf
 
 variable [CompleteSpace E]
 
