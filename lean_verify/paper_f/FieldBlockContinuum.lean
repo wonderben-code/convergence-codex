@@ -110,6 +110,14 @@ any more.
 fibre has two or more points and finite otherwise, by `FieldSymmetryContinuum.mk_unitaryGroup` on
 a `Nontrivial` index type, and **this file does not restate it on `Fib`** because the product is
 what the item asked for. **Not attempted here, 2026-09-19**, no cost claimed (`ERRATUM 246`).
+⚠ **STATED THE SAME DAY, AND THIS PARAGRAPH IS KEPT AS WRITTEN** (`ERRATUM 94`).
+`FieldFibreCardinal.mk_unitaryGroup_fib_eq_continuum_iff` is exactly the restatement on `Fib`,
+with `2 ≤ Fintype.card (Fib d c)` in place of `[Nontrivial]`, at an arbitrary level function and
+an arbitrary real level, attained or not; and
+`FieldFibreCardinal.mk_prod_unitaryGroup_eq_continuum_iff_exists_factor` makes this file's
+product theorem and that fibre theorem **one fact**: the product is `𝔠` if and only if some
+single factor is. **The paragraph's *not attempted* was accurate when written and lasted one
+unit**, which is the shortest interval in this cluster and is recorded rather than tidied away.
 
 **NO FORMULA, AND A DICHOTOMY IS NOT A COUNT.** When the group is finite the count is `2 ^ |V|`
 (`FieldSymmetryFinite.card_of_finite`); when it is infinite the cardinal is `𝔠`. **Neither is a

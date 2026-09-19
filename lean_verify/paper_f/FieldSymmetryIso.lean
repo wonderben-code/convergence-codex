@@ -55,6 +55,14 @@ matrix.
 **NO CARDINALITY.** The isomorphism moves every counting question onto `Matrix.unitaryGroup V ℝ`,
 which is Mathlib's object. **Nothing here counts anything**, and in particular `FieldLineCount`'s
 `2^(k+1)` remains a count of the **isometric** symmetries only.
+⚠ **AND THE QUESTION THIS BULLET MOVED IS NOW ANSWERED IN FULL, 2026-09-19, AND THE BULLET IS
+KEPT AS WRITTEN** (`ERRATUM 94`). `Matrix.unitaryGroup V ℝ` is counted completely:
+`FieldFibreCardinal.nat_card_unitaryGroup_of_card_le_one` gives `Nat.card = 2 ^ |V|` when
+`|V| ≤ 1`, and `FieldFibreCardinal.mk_unitaryGroup_eq_continuum_iff` gives `# = 𝔠` **if and only
+if** `1 < |V|`. **So moving the question onto Mathlib's object was the right move and the object
+now has an answer**; nothing in this file counts anything, which is what the bullet says and
+remains true of this file. The last clause is untouched: `2^(k+1)` is still a count of the
+isometric symmetries only.
 
 **NOTHING ABOUT NON-LINEAR MAPS.** The full automorphism group of the measure is still untouched.
 
