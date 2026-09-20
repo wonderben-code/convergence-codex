@@ -43,6 +43,12 @@
     building it needs a `Module` instance produced by the same recursion — that is
     genuinely harder and is **not** done here. What the title's `…` asks for is the
     equivalence at every level, and that is what this gives.
+    ⚠ **DONE 2026-09-20 (hardening unit 152), KEPT AS WRITTEN PER `ERRATUM 94`:**
+    `CascadeTowerRecursive.lean` runs the recursion on a bundle carrying its own `Ring`
+    and `Algebra ℂ` instances, so `Dr (k + 1) = Module.End ℂ (Dr k)` is `rfl`, and
+    `towerEquiv k : Dr k ≃ₐ[ℂ] D k` at every `k` off `endTower` and unit 150's
+    `SeedStarStructure.endAlgConj`. The two readings of the title's `…` are now the same
+    algebras, level by level.
 
   * **L8 — `clifford_finrank_four_of_iso`.** The recompute: *"the converse
     `≅ M₄(ℂ) only for dim 4` is a comment, one composition from a theorem."* It is now a
