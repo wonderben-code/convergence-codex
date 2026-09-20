@@ -114,7 +114,11 @@ from `σ₁` satisfies every other condition and **fails to anticommute with the
 `D = A ⊗ 1 + 1 ⊗ Ā`* was a hand derivation with no theorem behind it. Its ORDER-ONE half is now
 `OrderOneRegularBimodule.orderOne_Hw_iff` — an operator on `Hw` satisfies order-one against
 `piW`/`piOpW` iff it is `piW C + piOpW (op B)` — with `Dccm_eq_piW_add_piOpW` placing this `D` in
-it at `C = B = σ₃`; the `J` half, `B = Ā`, is not yet a theorem. -/
+it at `C = B = σ₃`; the `J` half, `B = Ā`, is not yet a theorem.
+⚠ AND THE SAME DAY (hardening unit 169): the `J` half is `JSelectsDirac.orderOne_jInv_iff` — on `Hw`
+an operator satisfies order-one and commutes with `Jprod` iff it is `piW A + piOpW (op (star A))`,
+i.e. `D = A ⊗ 1 + 1 ⊗ Ā`; `Dccm_eq_piW_add_piOpW_star` is this `D` at `A = σ₃`. The whole sentence
+is now a theorem; the grading clause (`Dγ = −γD` cutting `A`) is not. -/
 def Dsym : Matrix Slots Slots ℂ :=
   pauli3 ⊗ₖ (1 : Matrix (Fin 2) (Fin 2) ℂ) + (1 : Matrix (Fin 2) (Fin 2) ℂ) ⊗ₖ pauli3
 
