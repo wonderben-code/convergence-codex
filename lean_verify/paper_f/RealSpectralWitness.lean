@@ -34,6 +34,11 @@
     because `1 ⊗ σ₁` commutes with every `a ⊗ 1`. So the one-form lands back in the LEFT slot,
     which is what makes order-one hold (`orderOne_Dccm`) while remaining **non-zero**
     (`orderOne_Dccm_has_content`, at `a = σ₃`).
+    ⚠ 20 SEP 2026 (hardening unit 168), the two bullets above kept as written (`ERRATUM 94`; the
+    defect is `ERRATUM 675`): since 2026-09-15 (commit `bb8d637`) `Dsym` is `σ₃ ⊗ 1 + 1 ⊗ σ₃`,
+    the one-form is `π (σ₃a − aσ₃)` (`oneForm_Dccm`) and the non-zero content is at `a = σ₁`
+    (`orderOne_Dccm_has_content`). The `Dsym` docstring and the log recorded the change; these
+    bullets, the `TRUE_LEDGER` row, `WALLS` §W9.5 and the watchlist did not follow it.
   * **`gammaMat`** — the grading, four non-zero entries: `i` at `(00),(11)`, `1` at
     `(01),(01)`, `-1` at `(10),(10)`, `-i` at `(11),(00)`. `gammaCcm_sq` gives `γ² = 1` and
     `Jprod_anticomm_gammaCcm` the KO-6 sign `ε″ = -1`.
@@ -104,7 +109,12 @@ from `σ₁` satisfies every other condition and **fails to anticommute with the
 `σ₃` is the one Pauli matrix for which the anticommutation holds — found by solving
 `Dγ + γD = 0` as a linear system in `A`, where `JDJ = D` and order-one together force
 `D = A ⊗ 1 + 1 ⊗ Ā`. Its solution space is two-dimensional over `ℝ`, spanned by `A = i·1`
-(scalar, so its one-form vanishes) and `A = σ₃`. -/
+(scalar, so its one-form vanishes) and `A = σ₃`.
+⚠ 20 SEP 2026 (hardening unit 168): the sentence *`JDJ = D` and order-one together force
+`D = A ⊗ 1 + 1 ⊗ Ā`* was a hand derivation with no theorem behind it. Its ORDER-ONE half is now
+`OrderOneRegularBimodule.orderOne_Hw_iff` — an operator on `Hw` satisfies order-one against
+`piW`/`piOpW` iff it is `piW C + piOpW (op B)` — with `Dccm_eq_piW_add_piOpW` placing this `D` in
+it at `C = B = σ₃`; the `J` half, `B = Ā`, is not yet a theorem. -/
 def Dsym : Matrix Slots Slots ℂ :=
   pauli3 ⊗ₖ (1 : Matrix (Fin 2) (Fin 2) ℂ) + (1 : Matrix (Fin 2) (Fin 2) ℂ) ⊗ₖ pauli3
 
