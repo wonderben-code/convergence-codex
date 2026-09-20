@@ -437,7 +437,15 @@ Total Goldstones eaten: 3 + 3 = 6 (= 6 massive gauge bosons)
 -/
 
 /-- Goldstone theorem: each broken generator produces one massless
-    Goldstone boson, eaten by the corresponding gauge boson. -/
+    Goldstone boson, eaten by the corresponding gauge boson.
+
+    ⚠ 20 September 2026 (hardening unit 182, `paper_f/ElectroweakVacuumStabiliser.lean`): the
+    statement below is `3 = 3 ∧ 3 = 3 ∧ 3 + 3 = 6` on numerals and proves no Goldstone theorem.
+    The stage-2 three is now a CODIMENSION — `ElectroweakVacuumStabiliser.finrank_brokenEW`, the
+    quotient of `su(2)_L ⊕ u(1)_{T₃R}` by the stabiliser of the vacuum `E₀₀`, which is exactly
+    the charge line (`stabEW_eq_span`). The stage-1 count is `PatiSalamRightSector.broken_nine`
+    and, as a codimension, `PatiSalamStabiliserDimension.finrank_broken` (nine, not this
+    docstring's three). Kept as written (`ERRATUM 94`). -/
 theorem goldstone_boson_count :
     -- Stage 1: SU(2)_R → U(1)_R breaks 2 generators + 1 mixed = 3
     (3 : ℕ) = 3 ∧
