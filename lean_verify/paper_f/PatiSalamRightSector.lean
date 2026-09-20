@@ -40,6 +40,8 @@ different field; confusing the two cost `ERRATUM 316`.
 >
 > **`broken_nine`** — that three plus `PatiSalamOffDiagonal`'s six is the nine, **with both
 > summands exhibited as spaces**: a range on one side, a quotient on the other.
+> ⚠ 20 Sep 2026, unit 179 (`PatiSalamStabiliserDimension.broken_exact`): the nine is the
+> codimension of the vacuum's stabiliser, and the sum is a short exact sequence.
 >
 > **`blLine_eq_centraliser`** (§5, added the same night) — the `B − L` line **is** the centraliser
 > of two colour rotations inside `traceless 4`, so the direction the count starts from is forced
@@ -199,7 +201,14 @@ quotient above. `TracelessSkewDimension.finrank_prod_diff` said `21 − 12 = 9` 
 reading; this says which nine directions, in which factors.
 
 **The reading itself is still not proved** — see the header. That these six are leptoquarks and
-those three are right-handed weak bosons is physics, and this theorem is linear algebra. -/
+those three are right-handed weak bosons is physics, and this theorem is linear algebra.
+
+⚠ 20 September 2026 (hardening unit 179, `PatiSalamStabiliserDimension`): the nine is now a
+CODIMENSION — `finrank ℝ (PSLie ⧸ stab) = 9` for the vacuum's stabiliser `stab` of unit 178
+(`finrank_broken`) — and this sum is a short exact sequence
+`0 → RightSector ⧸ hyperchargeLine → PSLie ⧸ stab → (Fin 3 → ℂ) → 0` (`broken_exact`): the
+broken space is an extension of the six by the three, with maps, not a sum of two numerals. The
+physics reading is still not proved; no splitting is chosen. -/
 theorem broken_nine :
     Module.finrank ℝ (LinearMap.range PatiSalamOffDiagonal.offDiagMapR)
       + Module.finrank ℝ (RightSector ⧸ hyperchargeLine) = 9 := by

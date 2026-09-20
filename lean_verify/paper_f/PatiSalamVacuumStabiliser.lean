@@ -40,6 +40,12 @@
     quotient — the broken directions — has dimension `9 = 18 − 9`, matching
     `PatiSalamRightSector.broken_nine`'s `6 + 3`, is the next unit; this file proves membership
     statements and one biconditional, not a rank.
+    ⚠ DONE, 20 September 2026 (hardening unit 179, `paper_f/PatiSalamStabiliserDimension.lean`):
+    `stabEquivU3 : stab ≃ₗ[ℝ] skewAdjoint (Matrix (Fin 3) (Fin 3) ℂ)`, `finrank_stab = 9`,
+    `finrank_broken = 9`, and `broken_exact` — the `6 + 3` as a short exact sequence
+    `0 → RightSector ⧸ hyperchargeLine → PSLie ⧸ stab → (Fin 3 → ℂ) → 0`. The bullet is kept as
+    written (`ERRATUM 94`); the leptoquark bullet below is answered by the same sequence's
+    right-hand map.
   • The six leptoquark directions (`PatiSalamOffDiagonal.offDiagMapR`'s range) are not related
     to `stab` here; only the right sector is.
   • No group, no exponential, no `LieModule` instance: the bracket law is a matrix identity and
