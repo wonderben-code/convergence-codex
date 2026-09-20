@@ -146,6 +146,49 @@ theorem secondEigen_lt_topEigen_iff {A : Matrix V V ℝ} (hA : A.IsHermitian) [N
     secondEigen_eq_topEigen_iff]
   simp only [not_exists, not_and]
 
+/-- **AND WITHOUT THE CHOSEN INDEX.** `topIdx` is a `choose`; a statement mentioning it is a
+statement about that choice. This says the same thing about the matrix alone: the second
+eigenvalue equals the top exactly when **two distinct indices** attain the top. -/
+theorem secondEigen_eq_topEigen_iff_exists_pair {A : Matrix V V ℝ} (hA : A.IsHermitian)
+    [Nontrivial V] :
+    secondEigen hA = topEigen hA
+      ↔ ∃ i j, i ≠ j ∧ hA.eigenvalues i = topEigen hA ∧ hA.eigenvalues j = topEigen hA := by
+  rw [secondEigen_eq_topEigen_iff]
+  constructor
+  · rintro ⟨j, hj, hval⟩
+    exact ⟨topIdx hA, j, Ne.symm hj, eigenvalues_topIdx hA, hval⟩
+  · rintro ⟨i, j, hij, hi, hj⟩
+    rcases eq_or_ne i (topIdx hA) with rfl | hne
+    · exact ⟨j, Ne.symm hij, hj⟩
+    · exact ⟨i, hne, hi⟩
+
+/-- **THE FIBRE OVER THE TOP IS A SINGLETON EXACTLY WHEN THE GAP IS STRICT.** Still no `topIdx`
+in the statement. -/
+theorem card_fibre_topEigen_eq_one_iff {A : Matrix V V ℝ} (hA : A.IsHermitian) [Nontrivial V] :
+    Fintype.card {i : V // hA.eigenvalues i = topEigen hA} = 1
+      ↔ secondEigen hA < topEigen hA := by
+  rw [Fintype.card_eq_one_iff, secondEigen_lt_topEigen_iff]
+  constructor
+  · rintro ⟨x, hx⟩ j hj hval
+    exact hj (congrArg Subtype.val
+      ((hx ⟨j, hval⟩).trans (hx ⟨topIdx hA, eigenvalues_topIdx hA⟩).symm))
+  · intro h
+    refine ⟨⟨topIdx hA, eigenvalues_topIdx hA⟩, fun y => ?_⟩
+    ext
+    by_contra hne
+    exact h y.1 hne y.2
+
+/-- **AND SO THE STRICT GAP IS ONE-DIMENSIONALITY OF THE TOP EIGENSPACE** — the form a consumer
+wants, and the one the `UNLOCK_WATCHLIST` item's *multiset notion of second largest* was asking
+for. Through `HermitianFibreCount.finrank_eigenspace_hermitian_eq_card_fibre`, which was already
+below this file in the import order. -/
+theorem finrank_eigenspace_topEigen_eq_one_iff {A : Matrix V V ℝ} (hA : A.IsHermitian)
+    [Nontrivial V] :
+    Module.finrank ℝ (LinearMap.ker (Matrix.toLin' A - topEigen hA • LinearMap.id)) = 1
+      ↔ secondEigen hA < topEigen hA := by
+  rw [HermitianFibreCount.finrank_eigenspace_hermitian_eq_card_fibre hA (topEigen hA)]
+  exact card_fibre_topEigen_eq_one_iff hA
+
 /-! ## 2. The trace pins it from below -/
 
 /-- The trace is the sum of the eigenvalues. -/
