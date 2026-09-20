@@ -9,6 +9,18 @@
   a fixed point. This is the mathematical foundation of self-reference:
   Gödel's incompleteness, Turing's halting problem, and Cantor's theorem
   are all consequences.
+  ⚠ ANNOTATED 2026-09-20 (hardening unit 158), the CLAIM above kept as written
+  (`ERRATUM 94`). Of the three named consequences this file proves ONE: Cantor, as
+  `cantor_from_lawvere` and `no_surjection_to_powerset`. Gödel's incompleteness and Turing's
+  halting problem have no Lean counterpart in this estate: the only declaration near the
+  words is `Inexhaustibility.truth_predicate_incomplete`, which is `(T d ↔ ¬ T d) → False` —
+  the liar contradiction, with no formal system, no arithmetic and no machine in it — and
+  that file does not import this one (`grep -rli 'incomplete\|halting' *.lean paper_f/*.lean`
+  finds the words otherwise in prose only). And the hypothesis the theorems below take, a
+  point-surjective `eval : D → D → D`, forces `D` to be a subsingleton —
+  `DInfForces.subsingleton_of_surjective_eval` (2026-09-14) — so at the Root Equation's own
+  `D` the fixed-point conclusion is about a one-point type; the non-degenerate statement
+  lives in the CCC of ω-CPOs, `DInfForces.lawvere_domainReflexive`. `SPINE.md` L1 records both.
 
   For the Generator ToE, the Root Equation D ≅ [D, D] means D can
   represent all its own endomorphisms, so every endomorphism on D has

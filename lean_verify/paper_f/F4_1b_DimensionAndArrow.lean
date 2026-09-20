@@ -25,6 +25,14 @@
      algebraic structure. Time has a direction because the cascade does.
      170 years after Clausius introduced entropy (1854), we give the first
      algebraic grounding of irreversibility.
+     ⚠ ANNOTATED 2026-09-20 (hardening unit 158), the paragraph above kept as written
+     (`ERRATUM 94`). What this file PROVES is arithmetic: `finrank` grows strictly under
+     `End` from dimension 2 on, each cascade level has a unique pre-image among matrix
+     algebras, and nothing but `ℂ²` sits below `M₂` (`end_dim_strictly_increasing`,
+     `end_preimage_M2_unique`, `no_higher_preimage_of_seed`, `arrow_of_time`). No theorem
+     here mentions entropy, a thermodynamic quantity, time, or Clausius; "arrow of time"
+     and "first algebraic grounding of irreversibility" are the header's reading of a
+     dimension count, which `SPINE.md` L5 records as interpretation with no Lean counterpart.
 
   Machine-verified: genuine Mathlib proofs, 0 sorry.
 -/
@@ -254,7 +262,11 @@ theorem no_higher_preimage_of_seed (d : ℕ) (hd : d > 2) :
     of time: irreversibility is built into the mathematical structure.
 
     170 years after Clausius (1854), this provides the first algebraic
-    grounding of time's direction. -/
+    grounding of time's direction.
+
+    ⚠ ANNOTATED 2026-09-20 (hardening unit 158), kept as written (`ERRATUM 94`): the five
+    conjuncts below are `finrank` statements about `End` and matrix algebras; none carries an
+    arrow, an entropy or a time. `SPINE.md` L5: "arrow of time" is interpretation. -/
 theorem arrow_of_time :
     -- 1. Strict growth: finrank(End(V)) > finrank(V) for finrank ≥ 2
     (∀ (V : Type*) [AddCommGroup V] [Module ℂ V] [Module.Free ℂ V] [Module.Finite ℂ V],
