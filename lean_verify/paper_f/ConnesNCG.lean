@@ -270,7 +270,17 @@ structure KODimensionSigns where
     assignments are genuinely different (`toy_ko_ne_sm_ko` below): a physical
     cascade triple needs a real structure with Jγ = −γJ (ε'' = −1), which the
     toy J of this file does not provide. Constructing such a J on the cascade
-    is OPEN and recorded as such. -/
+    is OPEN and recorded as such.
+
+    ⚠ ANNOTATED 2026-09-20 (hardening unit 155, `paper_f/ToyTripleIsKOSixAtOne.lean`), the
+    note above kept as written (`ERRATUM 94`). The "transpose-style J" this record's signs
+    describe is not defined in this file; `ToyTripleIsKOSixAtOne.Jzero` (entrywise
+    conjugation) is, and `toy_ko_zero_signs` proves it realises (+1, +1, +1) on
+    `chiralityOp` and `diracOp m` for real `m`. And on the SAME two operators
+    `ToyTripleIsKOSixAtOne.Jtoy` (antidiagonal conjugation — `KOSixSpectralTriple.J` at
+    `n = 1` in these coordinates) realises (+1, +1, −1), `toy_ko_six_signs`. So the KO-dimension
+    of this toy is a property of the chosen J, not of γ and D; "on the cascade" (the 96, `n ≥ 2`)
+    is untouched. -/
 def cascade_ko_signs : KODimensionSigns where
   epsilon := 1
   epsilon_prime := 1

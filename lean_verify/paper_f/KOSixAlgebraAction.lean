@@ -73,6 +73,10 @@
   * **The three KO-dimensions (0, 2, 6) still stand as declared data**, and
     `toy_triple_is_kosix_at_one` — the coordinate permutation that would retire the KO-0
     record as an object — is still unbuilt.
+    ⚠ BUILT 2026-09-20 (hardening unit 155, `paper_f/ToyTripleIsKOSixAtOne.lean`); the bullet
+    is kept as written (`ERRATUM 94`). `toToy : Hf 1 → (Fin 4 → ℂ)` carries `gamma`, `D` and
+    `J` onto `chiralityOp`, `diracOp m` (real `m`) and an antidiagonal conjugation `Jtoy`; the
+    KO-0 record is now the sign table of a defined map (`Jzero`) on the same two operators.
 
   0 sorry. 0 new axioms. `#print axioms` on every declaration below:
   [propext, Classical.choice, Quot.sound].
