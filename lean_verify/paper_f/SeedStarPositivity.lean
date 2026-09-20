@@ -187,6 +187,10 @@ theorem pointed_of_conjugate {s t : StarStructure n} (h : Conjugate s t) (hs : P
 
 /-! ## 5. The pointed ⋆-structures on `M₂(ℂ)` are exactly the definite class -/
 
+/-- At `n = 2`. ⚠ 20 SEP 2026 (hardening unit 164): the statement at EVERY `n ≥ 1` is
+`StarStructurePointed.pointed_iff_definite` (`Pointed (hermitianStar P hP) ↔ usignature P =
+s(2n, 0)`), proved by the same matrix-unit computation with the two indices free; this theorem is
+its case `n = 2` and is kept because `seed_star_definite_of_pointed` below consumes it. -/
 theorem pointed_iff_usignature (P : (Matrix (Fin 2) (Fin 2) ℂ)ˣ)
     (hP : (P : Matrix (Fin 2) (Fin 2) ℂ)ᴴ = (P : Matrix (Fin 2) (Fin 2) ℂ)) :
     Pointed (hermitianStar P hP) ↔ usignature (P : Matrix (Fin 2) (Fin 2) ℂ) = s(4, 0) := by
