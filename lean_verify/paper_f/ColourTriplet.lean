@@ -62,6 +62,13 @@
     OPERATORS on the two index types, not the submodules. Transporting `quarkSub`
     along `finSumFinEquiv` into a submodule of `Fin 4 → ℂ` is one `Submodule.map`
     away and is named here, not done.
+    ⚠ **DONE 2026-09-20 (unit 148), KEPT AS WRITTEN PER `ERRATUM 94`:**
+    `ColourCascadeSubmodule.lean` transports both submodules — `quarkSub4`,
+    `leptonSub4 : Submodule ℂ (Fin 4 → ℂ)` and `quarkSubCascade : Submodule ℂ
+    CascadeHilbert` — with `finrank 3` / `1`, `su3EmbedFn`-invariance, the singlet
+    annihilated, irreducibility inside the 4 and `IsCompl`; that grep now returns
+    declarations. The cascade IDENTIFICATION (the next bullet's point) is
+    unchanged by it.
   - **No group.** `su(3)` means `sl₃(ℂ)` throughout, as everywhere in this estate;
     no `SU(3)`, no exponential map. The irreducibility is under the traceless
     matrices, which is the Lie-algebra statement.
