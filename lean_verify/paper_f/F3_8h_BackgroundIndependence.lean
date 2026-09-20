@@ -124,6 +124,11 @@ theorem b3_spectral_action_inputs :
 
 Aut(M₄(ℂ)) = Inn(M₄(ℂ)) = PGL₄(ℂ) by Skolem-Noether.
 dim(PGL₄) = 15 = dim(su(4)).
+
+⚠ 20 September 2026 (hardening unit 186, `paper_f/MatrixAutPGL.lean`): the first sentence is now a
+declaration — `MatrixAutPGL.autM4EquivPGL : (CascadeAlgebra ≃ₐ[ℂ] CascadeAlgebra) ≃* PGL(4, ℂ)`,
+with `exists_conjAut_eq` for `Aut = Inn`. The second sentence (`dim = 15`) has no object behind it
+in the estate; `b4_automorphism_dim` below remains the numeral it was.
 -/
 
 -- Automorphism dim: 15 (from CascadeFoundation)

@@ -30,6 +30,8 @@
       → Aut(M₂(ℂ)) ≅ PGL₂(ℂ)         [Skolem-Noether]
       → SL₂(ℂ) ≅ Spin(3,1)           [double cover of Lorentz group]
       → 3+1 dimensions from Aut route  [convergent with End route]
+      ⚠ 20 Sep 2026 (unit 186): the first arrow is `MatrixAutPGL.autM2EquivPGL`; see the note
+      at the end of this file for what the next two arrows have and lack.
 
   TWO INDEPENDENT LINEAGES GIVE dim = 4.
   This is not a coincidence — it is a structural consequence.
@@ -1063,5 +1065,9 @@ Established results invoked (not machine-verified):
 - SL₂(ℂ) ≅ Spin(3,1) (standard Lie theory)
 - PGL₂(ℂ) ≅ SO⁺(3,1) (standard Lie theory)
 - Skolem-Noether: Aut(M_n(ℂ)) ≅ PGL_n(ℂ) (standard algebra)
+  ⚠ 20 September 2026 (hardening unit 186, `paper_f/MatrixAutPGL.lean`): this line is now the
+  estate's own theorem — `MatrixAutPGL.autEquivPGL` at every `n` and every field, `autM2EquivPGL`
+  at `M₂(ℂ)`. Of the two lines above it, `SL₂(ℂ) ⧸ {±1} ≃* SO⁺(1,3)` is `SL2Quotient.sl2QuotEquiv`;
+  `PGL₂(ℂ) ≅ SO⁺(3,1)` itself is not stated — the bridge `PGL(2, ℂ) ≃* SL₂(ℂ) ⧸ {±1}` is unwritten.
 - Spinor representation theory (Atiyah-Bott-Shapiro 1964)
 -/

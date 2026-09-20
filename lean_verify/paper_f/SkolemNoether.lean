@@ -86,6 +86,11 @@
     `SpecialLinearGroup`'s, a different statement about `SL`). No group is built
     here, and `ASSUMPTIONS_LEDGER` 11 — from a matrix factor to the gauge group
     `SU(n)` — is untouched.
+    ⚠ DONE, 20 September 2026 (hardening unit 186, `paper_f/MatrixAutPGL.lean`):
+    `MatrixAutPGL.autEquivPGL : (Mₙ(K) ≃ₐ[K] Mₙ(K)) ≃* PGL(Fin n, K)` at every field and `n ≥ 1`,
+    with `conjAut_eq_iff` the kernel statement in this bullet's own words; the centre came from
+    `StarStructureMatrix.matrix_center_scalar`. `ASSUMPTIONS_LEDGER` 11 is still untouched. The
+    bullet is kept as written (`ERRATUM 94`).
   - **The three-factor uniqueness of L11's headline is NOT closed.** "M₁₆ forces
     (4,2,2) with no alternatives" is still false as a statement about `M₁₆`
     itself: `M₁₆ ≃ₐ M_a ⊗ M_b ⊗ M_c` exists for every `abc = 16` by Kronecker,

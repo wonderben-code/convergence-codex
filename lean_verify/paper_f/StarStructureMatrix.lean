@@ -77,6 +77,9 @@
     (`ASSUMPTIONS_LEDGER` 5, 10, 11, 30, 35).
   * **`Aut(Mₙ) ≅ PGLₙ` is still not stated.** The centre is now available, which was the half
     L11's row named; the statement itself is not written.
+    ⚠ DONE, 20 September 2026 (hardening unit 186, `paper_f/MatrixAutPGL.lean`): written —
+    `MatrixAutPGL.autEquivPGL`, with `matrix_center_scalar` supplying the kernel. The bullet is
+    kept as written (`ERRATUM 94`).
 
   0 sorry. 0 new axioms. `#print axioms` on every declaration below:
   [propext, Classical.choice, Quot.sound].
