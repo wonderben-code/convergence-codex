@@ -20,6 +20,12 @@
   pointed.
   This is what §W9 rung 2 has called *the second half*: among the ⋆-structures the classification
   lists, a C⋆ condition — here its weakest shadow — picks one.
+  ⚠ 20 SEP 2026 (hardening unit 165), the sentence above and the second NOT bullet below kept as
+  written (`ERRATUM 94`; the misnomer is `ERRATUM 673`): in `WALLS` §W9.8's own wording rung 2's
+  FIRST half is *which involutions the product admits* and its SECOND half is *what the order-one
+  condition does to `(A, A°)`*. The selection proved here is the last step of the first half, not
+  the second; the theorems and their scope are as stated. `StarStructureFromRep` (unit 165) then
+  supplies the pointedness this file does not, from a faithful ⋆-representation.
 
   WHAT IS PROVED.
   * `setTwist_inv_val`, `twistMap_setTwist_single` — the sign twist on a matrix unit;

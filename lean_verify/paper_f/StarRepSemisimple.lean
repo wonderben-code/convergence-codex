@@ -84,6 +84,16 @@
     not the wall.** The next rung is the ⋆-structure on the product: which
     involutions a product of matrix algebras admits, and what the order-one
     condition does to the pair `(A, A°)`.
+    ⚠ 20 SEP 2026 (hardening units 34, 69–75, 150–165), sentence kept as written
+    (`ERRATUM 94`): the first clause is now a theorem — on `Mₙ(ℂ)` the involutions
+    are `hermitianStar P`, classified by `usignature` (`n/2 + 1` classes,
+    `HermitianSignatureClassification`); on `Mₙ(ℂ) × Mₙ(ℂ)` there are exactly
+    `(n/2 + 1)² + 1` inner classes (`StarStructureFixConjugacy.classification_count`);
+    and THIS file's hypothesis selects one of them: a faithful ⋆-representation
+    makes the cone pointed, hence the involution is the conjugate transpose's class
+    (`StarStructureFromRep.conjugate_conjTransposeStar_of_faithful_star_rep`,
+    `innerConjugate_prodConjTransposeC_of_faithful_star_rep`). The second clause —
+    the order-one condition on `(A, A°)` — is where `WALLS` §W9.2–§W9.3 left it.
   - **`n = 4` is not selected, and neither is `ℂ ⊕ ℍ ⊕ M₃(ℂ)`.** Nothing here
     prefers one factor list to another; `ASSUMPTIONS_LEDGER` 7's three modelling
     inputs (a single `Mₙ(ℂ)`, `n` even for Poincaré duality, `n² − 1 ≥ 12` for
