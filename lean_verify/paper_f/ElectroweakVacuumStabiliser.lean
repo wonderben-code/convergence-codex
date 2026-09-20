@@ -46,6 +46,11 @@
     `su(4) ⊕ su(2)_L ⊕ su(2)_R` — which should be `su(3) ⊕ u(1)_Q`, nine-dimensional, so that
     `21 − 9 = 12 = 9 + 3` — is the next unit, not this one. Here stage 2 is done on the algebra
     stage 1 leaves, with the `u(3)` colour part set aside because it acts trivially on `(1, 2, 2)`.
+    ⚠ DONE, 20 September 2026 (hardening unit 183, `paper_f/PatiSalamTwoStageStabiliser.lean`):
+    `jointStabEquivU3` (the joint stabiliser of both vacua in `Full` is `u(3)`),
+    `qFull_mem_jointStab` (`6i · Q` fixes both), `finrank_jointBroken = 12`, and the exact sequence
+    `0 → 3 → Full ⧸ jointStab → PSLie ⧸ stab → 0` (`stage1Lift_surjective`,
+    `finrank_ker_stage1Lift = 3`). The bullet is kept as written (`ERRATUM 94`).
   • `EWLie` is a product of `ℝ`-subspaces with no `LieRing` instance, as in unit 178; the
     bracket law (1) is a matrix identity.
   • This file does NOT import `PatiSalamStabiliserLie`: with `Mathlib.Algebra.Lie.Prod` in the
