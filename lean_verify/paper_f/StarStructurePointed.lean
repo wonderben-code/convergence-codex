@@ -26,6 +26,12 @@
   condition does to `(A, A°)`*. The selection proved here is the last step of the first half, not
   the second; the theorems and their scope are as stated. `StarStructureFromRep` (unit 165) then
   supplies the pointedness this file does not, from a faithful ⋆-representation.
+  ⚠ AND THE SAME DAY (hardening unit 166, `TripleSelectsStar`; `ERRATUM 674`): the second NOT
+  bullet's *"as CCM states it — that the real structure `J` of a spectral triple selects the
+  involution"* misattributes. In a real spectral triple, and in this estate's
+  `SpectralTripleBimodule.Triple`, the involution is fixed by the ⋆-representation axiom
+  (`star_π`); `J` CONSUMES the star (`πOp_impl` reads `π (star b)`) and selects nothing.
+  `TripleSelectsStar.Triple.star_pointed` proves the selection from `π` and `star_π` alone.
 
   WHAT IS PROVED.
   * `setTwist_inv_val`, `twistMap_setTwist_single` — the sign twist on a matrix unit;
