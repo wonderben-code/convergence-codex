@@ -45,6 +45,21 @@
         complex algebras (f.d. C⋆ ⇒ semisimple; conversely by
         Wedderburn–Artin) — CITED, not formalised; formalising it would
         need C⋆ radical theory not in Mathlib.
+        ⚠ (Campaign 3 hardening unit 175, 20 September 2026 — this header read in full for
+        the register-versus-file species; the declarations are unchanged since 29 July.)
+        Item (iii) is STALE since 15 September: the estate now FORMALISES a route from a
+        faithful ⋆-structure to semisimplicity —
+        `StarRepSemisimple.isSemisimpleRing_of_faithful_star_rep`: an Artinian ⋆-ring with an
+        injective ring hom into the operators on an inner-product space, intertwining ⋆ with
+        the adjoint, is semisimple (the radical's `a⋆a` are symmetric and nilpotent, hence
+        zero — no C⋆ radical theory is needed); its `_complex` form for a finite-dimensional
+        ℂ-algebra; and `exists_pi_matrix_of_faithful_star_rep_complex` for the Wedderburn
+        output. Since 20 September (units 164–166) such a representation also forces the ⋆
+        to the conjugate transpose's class (`StarStructureFromRep`, `TripleSelectsStar`).
+        What is STILL cited rather than formalised: the C⋆ norm and identity, and the passage
+        from a faithful TRACE to a faithful ⋆-REPRESENTATION (the GNS step) —
+        `ASSUMPTIONS_LEDGER` 4. Item (iv): since 14 September *minimal* is also one
+        statement, `SpineSharpenings.seed_four_isLeast : IsLeast seedDims 4`.
   (iv)  "MINIMAL" is rendered as the two theorems (nothing non-commutative
         below dim 4; dim 4 uniquely M₂(ℂ)) plus the sharpness witnesses.
   NOT proven: that physics requires these constraints (interpretive, §3);
