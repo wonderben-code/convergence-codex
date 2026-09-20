@@ -297,6 +297,53 @@ theorem secondEigen_lt_topEigen [Nontrivial V] (hconn : G.Connected) :
   exact lt_of_le_of_ne (SignlessPerronSimple.le_topEigen hQ i)
     (eigenvalues_ne_topEigen G hconn (Finset.mem_erase.mp hi).1)
 
+/-! ## 5. And so the top eigenspace is a LINE, at every connected graph -/
+
+/-- **THE TOP EIGENSPACE OF `Q` IS EXACTLY ONE-DIMENSIONAL ON ANY CONNECTED GRAPH.**
+`SignlessPerronSimple.top_simple_connected` has bounded this dimension by `1` since the Perron
+work; what it does not give is that the bound is ATTAINED, and the estate's `= 1` statements for a
+top eigenvalue all name a smaller class — `LaplacianTopEigenspace.finrank_top_eigenspace_eq_one`
+and `ReflectionGeneral.finrank_lap_top_eq_one` are the Laplacian's and take **regular** and
+**bipartite**, and `SignlessFlatConnected.forall_finrank_le_one_of_flat_connected` takes bipartite
+and a flatness hypothesis. Here there is no regularity, no colouring and no flatness: connected is
+the whole hypothesis. -/
+theorem finrank_eigenspace_topEigen_signlessLap_eq_one [Nontrivial V] (hconn : G.Connected) :
+    Module.finrank ℝ (LinearMap.ker (Matrix.toLin' (signlessLap G)
+        - topEigen (LaplacianSignlessDefinite.signlessLap_isHermitian G) • LinearMap.id))
+      = 1 :=
+  (finrank_eigenspace_topEigen_eq_one_iff _).2 (secondEigen_lt_topEigen G hconn)
+
+/-- The same read on Mathlib's enumeration: **exactly one index carries the top**.
+`eigenvalues_ne_topEigen` says no index other than the chosen one does; this says it as a count,
+with no chosen index in the statement. -/
+theorem card_fibre_topEigen_signlessLap_eq_one [Nontrivial V] (hconn : G.Connected) :
+    Fintype.card {i : V // (LaplacianSignlessDefinite.signlessLap_isHermitian G).eigenvalues i
+        = topEigen (LaplacianSignlessDefinite.signlessLap_isHermitian G)} = 1 :=
+  (card_fibre_topEigen_eq_one_iff _).2 (secondEigen_lt_topEigen G hconn)
+
+/-- **AND SO THE TOP EIGENVECTOR IS UNIQUE UP TO SCALE**, which is the form a consumer holding a
+vector can use: on a connected graph, any top eigenvector of `Q` is a multiple of any nonzero one.
+A dimension is a number; this is the sentence the number is for. Note the hypothesis on `y` is the
+eigenvector equation alone — `y = 0` is allowed and is the `c = 0` case. -/
+theorem exists_smul_of_mulVec_eq_topEigen [Nontrivial V] (hconn : G.Connected)
+    {x y : V → ℝ}
+    (hx : (signlessLap G).mulVec x
+      = topEigen (LaplacianSignlessDefinite.signlessLap_isHermitian G) • x) (hx0 : x ≠ 0)
+    (hy : (signlessLap G).mulVec y
+      = topEigen (LaplacianSignlessDefinite.signlessLap_isHermitian G) • y) :
+    ∃ c : ℝ, c • x = y := by
+  classical
+  set t := topEigen (LaplacianSignlessDefinite.signlessLap_isHermitian G) with ht
+  set W := LinearMap.ker (Matrix.toLin' (signlessLap G) - t • LinearMap.id) with hW
+  have hxW : x ∈ W := (RealComplexKernel.mem_ker_sub_smul (signlessLap G) t x).2 hx
+  have hyW : y ∈ W := (RealComplexKernel.mem_ker_sub_smul (signlessLap G) t y).2 hy
+  have hx0' : (⟨x, hxW⟩ : W) ≠ 0 := by
+    simpa [Submodule.mk_eq_zero] using hx0
+  have h1 : Module.finrank ℝ W = 1 :=
+    finrank_eigenspace_topEigen_signlessLap_eq_one G hconn
+  obtain ⟨c, hc⟩ := (finrank_eq_one_iff_of_nonzero' (⟨x, hxW⟩ : W) hx0').1 h1 ⟨y, hyW⟩
+  exact ⟨c, congrArg Subtype.val hc⟩
+
 end Graph
 
 end SignlessSecondEigen
