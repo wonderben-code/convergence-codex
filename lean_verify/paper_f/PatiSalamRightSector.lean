@@ -77,6 +77,16 @@ breaking.
 `Su2ModuleSixteen` builds the actual `su(2)_L ⊕ su(2)_R` action, but **on the 16-dimensional
 fermion representation over `ℚ`** — a different object again, and nothing here connects the two.
 
+⚠ **AMENDED 20 SEP 2026 (hardening unit 178, `paper_f/PatiSalamVacuumStabiliser.lean`), in part.**
+A bracket and a representation now exist for THIS object: `act A B X = A X + X Bᵀ` on the
+`(4, 1, 2)` space `Matrix (Fin 4) (Fin 2) ℂ` satisfies the bracket law for all matrices
+(`act_bracket`), and the vacuum `E₃₀` is a vector whose stabiliser in `traceless 4 × traceless 2`
+is computed (`stab`, `mem_stab_iff`). **And (i)'s last sentence moves too**: `yRep`'s line is no
+longer only a convention — `ofRight_mem_stab_iff` proves an element of `RightSector` fixes the
+vacuum iff it lies on `hyperchargeLine`, so given the vacuum direction (which IS a convention, the
+`ν^c` slot) hypercharge is forced. Still no group and no `LieModule` instance; `Submodule.span` is
+still not spontaneous symmetry breaking — *the stabiliser of a vector* is what the words mean here.
+
 **(iv) The quotient's dimension is 3 and `su(2)_R`'s dimension is 3, and they are not the same
 space.** The surviving direction is a mixture, so the quotient is not canonically `su(2)_R`; no
 isomorphism between them is stated or used.
