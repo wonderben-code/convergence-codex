@@ -93,11 +93,8 @@ neighbourhood, so a statement that holds pointwise can be used near the point. -
 theorem eventually_mdiffHomAt {A : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y} {x : M}
     (hA : ContMDiffAt I (I.prod 𝓘(ℝ, E →L[ℝ] E)) ((k : WithTop ℕ∞) + 1)
       (fun y ↦ TotalSpace.mk' (E →L[ℝ] E) y (A y)) x) :
-    ∀ᶠ y in 𝓝 x, HomCovariant.MDiffHomAt A y := by
-  obtain ⟨u, hu, hAu⟩ := (contMDiffAt_iff_contMDiffOn_nhds (by simp)).1 hA
-  filter_upwards [interior_mem_nhds.2 hu] with y hy
-  exact ((hAu.mono interior_subset).contMDiffAt
-    (isOpen_interior.mem_nhds hy)).mdifferentiableAt (by simp)
+    ∀ᶠ y in 𝓝 x, HomCovariant.MDiffHomAt A y :=
+  BracketDerivation.eventually_mdifferentiableAt_of_contMDiffAt (by simp) (by simp) hA
 
 omit [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
   [IsContMDiffRiemannianBundle I ((k : WithTop ℕ∞) + 1) E (TangentSpace I : M → Type _)]
@@ -105,11 +102,8 @@ omit [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
 /-- The same for a section of the tangent bundle. -/
 theorem eventually_mdiffAt {W : Π y : M, TangentSpace I y} {x : M}
     (hW : CMDiffAt ((k : WithTop ℕ∞) + 1) (T% W) x) :
-    ∀ᶠ y in 𝓝 x, MDiffAt (T% W) y := by
-  obtain ⟨u, hu, hWu⟩ := (contMDiffAt_iff_contMDiffOn_nhds (by simp)).1 hW
-  filter_upwards [interior_mem_nhds.2 hu] with y hy
-  exact ((hWu.mono interior_subset).contMDiffAt
-    (isOpen_interior.mem_nhds hy)).mdifferentiableAt (by simp)
+    ∀ᶠ y in 𝓝 x, MDiffAt (T% W) y :=
+  BracketDerivation.eventually_mdifferentiableAt_of_contMDiffAt (by simp) (by simp) hW
 
 /-- **THE INDUCED CONNECTION ON THE ENDOMORPHISM BUNDLE IS REGULAR**: for `A` a `C^(k+1)` section
 of `Hom(TM, TM)` and `X, W` of class `C^(k+1)` at the point, `y ↦ (∇_{X} A)(W)(y)` is a `C^k`

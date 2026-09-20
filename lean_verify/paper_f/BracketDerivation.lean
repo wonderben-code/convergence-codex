@@ -154,7 +154,22 @@ section of a bundle the target is the TOTAL SPACE —
 `CurvatureTensor.eventually_mdiffAt_of_cmdiffAt` and `HomCovariantOrder`'s two go the longer way
 round through `contMDiffAt_iff_contMDiffOn_nhds`, which asks nothing of the target: **the longer
 route is buying a weaker hypothesis, not paying for a missing abstraction.** Those three are not
-rewired and nothing here says they should be. -/
+rewired and nothing here says they should be.
+
+⚠ **THE PARAGRAPH ABOVE IS FALSE FROM *WHICH ASKS NOTHING OF THE TARGET* ONWARDS, AND ALL THREE
+ARE NOW REWIRED, 2026-09-20** (`ERRATUM 94`, kept as written). `contMDiffAt_iff_contMDiffOn_nhds`
+carries `[IsManifold I' n M']` in its own binders, **exactly as
+`contMDiffAt_iff_contMDiffAt_nhds` does** — read from the Mathlib source and not from the call
+sites. So the longer route buys no weaker hypothesis; it asks the target for the same thing, which
+is why the three hand proofs elaborate at all. **What was really measured on 2026-09-19 is that
+the instance is not found IN THIS FILE'S CONTEXT**, and that is true and beside the point:
+`BracketDerivation` sits below every bundle file and nothing here supplies
+`ContMDiffVectorBundle`, which is where the total space's manifold structure comes from. In each
+consumer's own context it is found, and `CurvatureTensor.eventually_mdiffAt_of_cmdiffAt` and
+`HomCovariantOrder`'s two are now one-line applications of the theorem below, their statements
+unchanged. **The general statement reaches all four, not one.** The mechanism is worth more than
+the correction: *an instance search reports on the context it is run in, and a claim about what
+another file can synthesise has to be run in that file.* -/
 theorem eventually_mdifferentiableAt_of_contMDiffAt
     {E' : Type*} [NormedAddCommGroup E'] [NormedSpace ℝ E'] {H' : Type*} [TopologicalSpace H']
     {J : ModelWithCorners ℝ E' H'} {N : Type*} [TopologicalSpace N] [ChartedSpace H' N]
@@ -166,7 +181,12 @@ theorem eventually_mdifferentiableAt_of_contMDiffAt
 
 /-- Near `x`, a `C²` function is differentiable. **Four lines became one**, 2026-09-19: this is
 the general statement above at `N := ℝ`, `n := 2`, and the only one of the estate's four
-instances of the composite that it reaches. -/
+instances of the composite that it reaches.
+
+⚠ **THE LAST CLAUSE IS FALSE AS OF 2026-09-20 AND IS KEPT** (`ERRATUM 94`): the general
+statement reaches **all four**. The other three are rewired to it in `CurvatureTensor` and
+`HomCovariantOrder`; see the annotation on the theorem above for why the measurement that said
+otherwise reported on the wrong context. -/
 theorem eventually_mdifferentiableAt {f : M → ℝ} {x : M} (hf : ContMDiffAt I 𝓘(ℝ) 2 f x) :
     ∀ᶠ y in 𝓝 x, MDifferentiableAt I 𝓘(ℝ) f y :=
   eventually_mdifferentiableAt_of_contMDiffAt two_ne_zero (by simp) hf

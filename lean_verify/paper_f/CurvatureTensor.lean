@@ -120,11 +120,8 @@ variable (cov : CovariantDerivative I E (TangentSpace I : M → Type _))
 
 /-- Near `x`, a section of class `C²` at `x` is differentiable. -/
 theorem eventually_mdiffAt_of_cmdiffAt {Z : Π x : M, TangentSpace I x} {x : M}
-    (hZ : CMDiffAt 2 (T% Z) x) : ∀ᶠ y in 𝓝 x, MDiffAt (T% Z) y := by
-  obtain ⟨u, hu, hZu⟩ := (contMDiffAt_iff_contMDiffOn_nhds (by simp)).1 hZ
-  filter_upwards [interior_mem_nhds.2 hu] with y hy
-  exact ((hZu y (interior_subset hy)).mdifferentiableWithinAt two_ne_zero).mdifferentiableAt
-    (mem_interior_iff_mem_nhds.1 hy)
+    (hZ : CMDiffAt 2 (T% Z) x) : ∀ᶠ y in 𝓝 x, MDiffAt (T% Z) y :=
+  BracketDerivation.eventually_mdifferentiableAt_of_contMDiffAt two_ne_zero (by simp) hZ
 
 /-- **AND `C²` NEAR `x` WITHOUT LOSING THE ORDER**, which is Mathlib's
 `contMDiffAt_iff_contMDiffAt_nhds` and one line. `UNLOCK_WATCHLIST` `L35270` counted six copies of
