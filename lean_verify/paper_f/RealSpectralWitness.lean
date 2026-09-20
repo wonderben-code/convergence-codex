@@ -118,7 +118,12 @@ it at `C = B = σ₃`; the `J` half, `B = Ā`, is not yet a theorem.
 ⚠ AND THE SAME DAY (hardening unit 169): the `J` half is `JSelectsDirac.orderOne_jInv_iff` — on `Hw`
 an operator satisfies order-one and commutes with `Jprod` iff it is `piW A + piOpW (op (star A))`,
 i.e. `D = A ⊗ 1 + 1 ⊗ Ā`; `Dccm_eq_piW_add_piOpW_star` is this `D` at `A = σ₃`. The whole sentence
-is now a theorem; the grading clause (`Dγ = −γD` cutting `A`) is not. -/
+is now a theorem; the grading clause (`Dγ = −γD` cutting `A`) is not.
+⚠ AND THE GRADING CLAUSE TOO (hardening unit 170, `GammaFixesDirac.ccm_fixes_dirac`): on `Hw`,
+order-one, `Jprod`-invariance and anticommutation with `gammaCcm` together hold iff `D = t • Dccm`
+for a real `t` — the *two-dimensional over `ℝ`* solution space for `A` is `span {i·1, σ₃}` as
+written here (`entries_of_anticomm`, `kron_eq_re_smul_Dsym`), and the `i·1` direction gives
+`D = 0`. Every clause of this docstring's derivation is now a theorem, for THIS `γ`. -/
 def Dsym : Matrix Slots Slots ℂ :=
   pauli3 ⊗ₖ (1 : Matrix (Fin 2) (Fin 2) ℂ) + (1 : Matrix (Fin 2) (Fin 2) ℂ) ⊗ₖ pauli3
 
