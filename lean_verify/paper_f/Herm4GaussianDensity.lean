@@ -41,9 +41,16 @@
   * `Z` as an integral. `Z = (πΛ²)⁸` appears as the constant in a density that Mathlib's
     `stdGaussian` makes a probability measure; `∫ exp(-‖A‖²/Λ²) dA = (πΛ²)⁸` is not stated as an
     integral identity here.
+    ⚠ DONE 20 SEP 2026 (hardening unit 162, `Herm4GaussianMoments`), bullet kept as written
+    (`ERRATUM 94`): `integral_boltzmann_weight` — `∫ exp(-‖A‖²/Λ²) dA = (πΛ²)⁸` for `Λ > 0`, with
+    `lintegral_boltzmann_weight` its Lebesgue form.
   * `Λ ≤ 0`. `herm4Boltzmann Λ` is defined for every real `Λ` (at `Λ = 0` it is a Dirac mass);
     the density formula is proved for `Λ > 0` only.
   * Moments, and any connection to the cascade's `D` — unit 12's third and fourth bullets stand.
+    ⚠ HALF DONE 20 SEP 2026 (unit 162): the second moment is transported —
+    `integral_norm_sq_herm4Gaussian` (`∫ ‖A‖² = 16`), `integral_norm_sq_map_smul` (`16 Λ²`),
+    `integral_norm_sq_herm4Boltzmann` (`8 Λ²`); the mean, higher moments and the cascade's `D`
+    stand.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
