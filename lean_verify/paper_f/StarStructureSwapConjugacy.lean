@@ -35,6 +35,12 @@
     classes — `(n/2 + 1)²` by `card_achievable` — but that count is not composed here, and the
     conjugacy by the factor-SWAPPING automorphism `(X, Y) ↦ (Y, X)`, which is not inner, is not
     considered at all; `InnerConjugate` is inner conjugacy only.
+    ⚠ DONE 20 SEP 2026 (unit 160, `StarStructureFixConjugacy`), bullet kept as written
+    (`ERRATUM 94`): the count IS composed there — `fixTwist_innerConjugate_iff_usignature` (inner
+    conjugacy of two fixing normal forms ⟺ both unordered signatures agree) and
+    `classification_count` (exactly `(n/2 + 1)² + 1` classes on `Mₙ(ℂ) × Mₙ(ℂ)` up to INNER
+    conjugacy, by a complete irredundant family of representatives). The factor-swapping
+    automorphism is still not considered, there or here.
   * Anything at more than two factors, anything real or quaternionic, and — as items 2 and (3) of
     the two-spine-links block say — anything about the cascade: that the two `M₂` factors of
     `M₄ ⊗ M₂ ⊗ M₂` may be exchanged in essentially one way does not prefer that factorisation.
