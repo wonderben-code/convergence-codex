@@ -74,6 +74,10 @@
     for a swapping ⋆-structure is given: `prodSwapTranspose` exhibits one at every size, and
     nothing here says every swapping structure is that one twisted, which would be the analogue
     of `exists_hermitian_twist` for the swap branch.
+    ⚠ DONE 2026-09-20 (hardening unit 156, `paper_f/StarStructureSwapNormalForm.lean`); the bullet
+    is kept as written (`ERRATUM 94`). `swapping_classification`: every swapping ⋆-structure on
+    `Mₙ(ℂ) × Mₙ(ℂ)` is `(X, Y) ↦ (S⁻¹ Yᴴ S, (S X S⁻¹)ᴴ)` for one invertible `S` — the analogue of
+    `exists_hermitian_twist` this bullet asked for — and `swapping_iff` says every such `S` occurs.
   * **`P` and `Q` are not pinned down.** The single-factor residue is unchanged — a Hermitian
     form up to scalars, that is, a signature — and it is not computed, so two ⋆-structures are
     still neither shown equivalent nor shown inequivalent. The product classification is exactly
