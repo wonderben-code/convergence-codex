@@ -11,6 +11,14 @@
   - f₄ = f(0) = e⁰ = 1
   - f₂ = ∫₀^∞ x·e^{-x} dx = Γ(2) = 1! = 1
   - f₀ = ∫₀^∞ e^{-x} dx = Γ(1) = 0! = 1
+  ⚠ (hardening unit 174, `DecayingCutoff`; `ERRATUM 559`, `678`): the two integrals above are
+  TRUE and are now theorems — `integral_exp_neg_Ioi_zero` (Mathlib) and
+  `DecayingCutoff.integral_mul_exp_neg_one` — but NO declaration of this file states an integral;
+  its moment declarations prove `Γ 1 = 1`, `1! = 1` and `exp 0 = 1`. And *fixes ALL THREE* hides
+  a choice: for the decaying cutoff `e^{−κx}` the moments are `f(0) = 1` (for EVERY positive
+  factorising cutoff, `DecayingCutoff.cutoff_zero`), `1/κ` and `1/κ²`, and all three equal `1`
+  IF AND ONLY IF `κ = 1` (`DecayingCutoff.moments_eq_one_iff`) — the normalisation
+  `ASSUMPTIONS_LEDGER` 12 records, now an `iff`. Nothing in the estate fixes `κ`.
 
   With f₀ = f₂ = f₄ = 1, all coupling constants are DETERMINED.
   The theory has ZERO free parameters.

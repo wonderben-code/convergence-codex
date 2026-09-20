@@ -38,6 +38,12 @@
       gives `cutoff_exponential_of_factorises`: **the first consumer `F4_1h` has ever
       had**, with `ASSUMPTIONS_LEDGER` 12's silent assumption as a NAMED and DISCHARGED
       hypothesis rather than a sentence in a comment.
+      ⚠ (hardening unit 174, `DecayingCutoff`, `ERRATUM 678`): *monotone* here is Mathlib's
+      `Monotone f` — NON-DECREASING. Under it the exponent `log (f 1)` is provably `≥ 0`
+      (`DecayingCutoff.log_nonneg_of_monotone`, `one_le_of_monotone`), so this class contains
+      NO decaying cutoff, `e^{−v}` included — the case the physics uses. The decaying case is
+      `DecayingCutoff.cutoff_exponential_of_antitone_factorises`, by reflection `x ↦ f (−x)`,
+      with exponent `−log (f (−1))` and `log (f (−1)) ≥ 0`; `decaying_inhabited` is its witness.
 
   THE HYPOTHESIS CLASS IS SHOWN INHABITED, and that is deliberate. `ERRATUM 557` was
   filed this same day against a theorem of mine whose hypothesis no rational could
@@ -240,7 +246,10 @@ theorem cutoff_exponential_of_factorises (f : ℝ → ℝ) (hpos : ∀ x, 0 < f 
 
 /-- The same conclusion with the boundary condition `f 1 = Real.exp c` read off, so the
 exponent is visible as a single real constant: the cutoff has one parameter, and
-`f 1` fixes it. What no theorem here supplies is that the constant is negative. -/
+`f 1` fixes it. What no theorem here supplies is that the constant is negative.
+⚠ `ERRATUM 678` (unit 174): under `Monotone f` the constant is `≥ 0`
+(`DecayingCutoff.log_nonneg_of_monotone`); the decaying case, `∃ κ ≥ 0, f x = exp (−(κ x))`,
+is `DecayingCutoff.cutoff_one_parameter_antitone`. -/
 theorem cutoff_one_parameter (f : ℝ → ℝ) (hpos : ∀ x, 0 < f x)
     (hmon : Monotone f) (hfact : Factorises f) :
     ∃ c : ℝ, ∀ x, f x = Real.exp (c * x) :=
