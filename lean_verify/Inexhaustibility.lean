@@ -12,6 +12,26 @@
 
   These are all consequences of Lawvere's fixed-point theorem applied
   to the specific case where the endomorphism has no fixed point (like Not).
+  ⚠ ANNOTATED 2026-09-20 (hardening unit 159), the CLAIM above kept as written (`ERRATUM 94`).
+  What the seven theorems below prove, read against the three names: CANTOR — yes, and it is
+  Mathlib's `cantor_surjective`/`cantor_injective` wrapped (`cantor_no_surjection`,
+  `cantor_no_injection`, `powerset_strictly_larger`, `structural_inexhaustibility`,
+  `inexhaustibility`; `no_complete_self_description` is Cantor applied to one specific map,
+  and its `φ : D ≃ (D → D)` hypothesis is inessential). TARSKI — `truth_predicate_incomplete` is
+  `(T d ↔ ¬ T d) → False` under a decidability hypothesis: the liar contradiction as a line of
+  propositional logic, with no language, no predicate of sentences and no definability in it.
+  GÖDEL — nothing: no formal system, provability predicate or machine occurs in any
+  statement of this file, and none in any theorem statement of the estate (the words
+  `grep -rli 'gödel\|incompleteness\|halting\|provab\|formal system'` finds over
+  `*.lean paper_f/*.lean` are prose in 43 files; the same words restricted to declaration
+  statements → 4 hits, every one the English word *provable/provably* in a comment inside a
+  statement span, none a provability predicate, formal system or machine).
+  And *"consequences of Lawvere's fixed-point theorem"*: this file imports only Mathlib and
+  derives nothing from `LawvereFixedPoint`
+  (`grep -n '^import' Inexhaustibility.lean` → two Mathlib lines); the header's reading is the
+  standard informal one and is not what the Lean does. `TRUE_LEDGER.md` §`Inexhaustibility`
+  has said so since 29 July; `SPINE.md` L1 records the Gödel/Turing claims as having no Lean
+  counterpart.
 
   Machine verification: Lean 4.29.1 + Mathlib
   Target: 0 sorry
