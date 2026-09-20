@@ -18,6 +18,22 @@
   The lineage follows doubly-exponential growth with no free parameters.
   This is the concrete realisation of the Generator construction in the
   category where quantum mechanics lives.
+  ⚠ ANNOTATED 2026-09-20 (hardening unit 163, `RE-SWEEP #73`), the CLAIM above kept as written
+  (`ERRATUM 94`). What the twenty declarations below prove: the dimension recurrence and its
+  closed form `2^(2^n)` (`emergenceDim_eq_pow`, `emergenceDim_strict_mono`),
+  `finrank (End V) = (finrank V)²` (`finrank_end_sq`), `End(ℂⁿ) ≃ₗ[ℂ] Mₙ(ℂ)` as ℂ-LINEAR spaces
+  (`endEquivMatrix`, not an algebra map), and the finranks `4, 16, 256` of `M₂, M₄, M₁₆`. No
+  statement in this file mentions the Standard Model, a category, an internal hom or quantum
+  mechanics: those words occur at lines 5 and 19–20 only, in prose
+  (`grep -n -i 'standard model\|quantum\|categor' EmergenceLineage.lean`). The
+  algebra-level identifications `D₁ ≅ M₂(ℂ)`, `D₂ ≅ M₄(ℂ)` written above are theorems
+  ELSEWHERE:
+  `CascadeEnd.endM2 : End(M₂) ≃ₐ M₄` (14 Sep),
+  `SpineSharpenings.endTower k : End (D k) ≃ₐ[ℂ] D (k+1)` at every `k`, and
+  `CascadeTowerRecursive` (20 Sep, unit 152), where the tower `D₀ … D₄` is
+  defined BY the recursion and carried as algebras. `TRUE_LEDGER.md` §`EmergenceLineage` has
+  recorded the first point since the July audit (*the SM connection is entirely outside the
+  types*); the file had not said it.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1
   Target: 0 sorry

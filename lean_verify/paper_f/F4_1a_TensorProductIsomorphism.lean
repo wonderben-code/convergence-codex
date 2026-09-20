@@ -26,6 +26,18 @@
   the tensor product of two matrix algebras IS a larger matrix algebra —
   the mechanism by which ℂ² → M₂(ℂ) → M₄(ℂ) → M₁₆(ℂ) proceeds.
   Without this, the cascade is a claim. With this, it's a theorem.
+  ⚠ ANNOTATED 2026-09-20 (hardening unit 163, `RE-SWEEP #73`), the paragraph above kept as
+  written (`ERRATUM 94`): this theorem is ONE STEP's second half — `M₂ ⊗ M₂ ≃ₐ M₄` — and not
+  the cascade. The cascade is the iteration `D (k+1) = End (D k)`, and that is a theorem in
+  other files: `SpineSharpenings.endTower k : End (D k) ≃ₐ[ℂ] D (k+1)` at every `k`, and
+  `CascadeTowerRecursive` (unit 152), which defines the tower BY the recursion; the step with
+  `End` on the left at every size is `CascadeEnd.endMatrixEquiv b`, and `CascadeEnd.endM2` is its
+  case `b = 2` (not this file's map). Where this file's step enters: `SkolemNoether` composes
+  `CascadeEnd.endTensorSq b` with this file's `cascadeStepIso b b` and proves that route agrees
+  with `endMatrixEquiv b` up to conjugation by one unit (`endMatrixEquiv_routes_agree`;
+  `grep -rn cascadeStepIso paper_f` → `SkolemNoether.lean:319` is the only use outside this
+  file). Nothing here is withdrawn: this is the Kronecker step, and it is not, on its own, the
+  cascade.
 
   The isomorphism preserves ALL algebraic structure:
   - Ring structure (addition + multiplication)
