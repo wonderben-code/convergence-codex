@@ -22,6 +22,13 @@
       (`trace_exp_kroneckerSum`). This is a theorem, not a hypothesis: the two Kronecker
       embeddings commute (`commute_kroneckerEmbeddings`), `exp` carries each of them
       (`exp_kroneckerRight`, `exp_kroneckerLeft`), and `Matrix.trace_kronecker` closes it.
+      ⚠ (hardening unit 172, `OrderOneCutoffFactorises`): *built from two levels is a
+      Kronecker SUM* is the PREMISE `UNLOCK_WATCHLIST` `L40433` records as assumed for the
+      cascade's `D` — the estate has no `cascadeDirac`. On the regular bimodule of `Mₙ(ℂ)`
+      the same shape is FORCED by CCM's order-one condition
+      (`OrderOneRegularBimodule.orderOne_iff_kron`, unit 168), and
+      `OrderOneCutoffFactorises.trace_exp_of_orderOne` composes that with this file's
+      `trace_exp_smul_kroneckerSum`; at the witness the trace is `(eᵗ + e⁻ᵗ)²`.
 
   (2) AT THE SPECTRUM LEVEL, which is where the physics lives. Eigenvalues of a tensor
       sum ADD, so "the action factorises over tensor sums" says, for a cutoff `f`,
