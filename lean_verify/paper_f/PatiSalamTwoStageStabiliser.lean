@@ -41,9 +41,17 @@
     `goldstone`-named declarations are numerals — unit 179's header names them).
   • The kernel in (4) is three-dimensional and is not identified with unit 182's
     `EWLie ⧸ stabEW` by an isomorphism; only the dimensions agree. No splitting is chosen.
+    ⚠ 20 September 2026 (hardening unit 184, `paper_f/PatiSalamGoldstoneDirections.lean`), in
+    part: the BROKEN space itself is now identified — `brokenEquivTangent : Full ⧸ jointStab ≃ₗ[ℝ]
+    range jointOrbit`, the tangent directions of the vacuum orbit (and the same at each stage).
+    The kernel of (4) is still not matched to unit 182's quotient by an isomorphism.
   • `u(3)` is reached as a real vector space, as in unit 179; the Lie structure of the joint
     stabiliser would be unit 180's argument repeated on `Full`, and is not repeated.
   • The `su(3)_colour ⊕ u(1)_Q` reading of `u(3)` is not stated as a direct sum in Lean.
+    ⚠ DONE, 20 September 2026 (hardening unit 184): `isCompl_traceless_centreLine` (`u(3) =
+    su(3) ⊕ u(1)` as an internal direct sum), `jointStabEquivU3_qFull` (the charge is the centre
+    `i · 1₃`) and `ofU3Full_snd_eq_zero` (the `su(3)` is colour, in the `su(4)` factor alone).
+    The bullet is kept as written (`ERRATUM 94`).
   • No `LieRing` on `Full`; the two bracket laws (`act_bracket`, `actEW_bracket`) are matrix
     identities in the files this one imports.
 
