@@ -52,6 +52,11 @@
   • `u(3)` is reached as a real vector space, not as a Lie algebra: `stabEquivU3` is `ℝ`-linear
     and no bracket is carried across it. `PSLie` has no `LieRing` instance and `stab` is a
     `Submodule`, as in the two files this one extends.
+    ⚠ DONE, 20 September 2026 (hardening unit 180, `paper_f/PatiSalamStabiliserLie.lean`): at
+    the matrix level `stabLie` is a `LieSubalgebra ℝ` of `gl(4) × gl(2)` carrying unit 178's
+    `stab` (`map_stab_toMat`), `u3Lie` is `u(3)` as a Lie subalgebra of `gl(3)`, and
+    `stabLieEquivU3 : stabLie ≃ₗ⁅ℝ⁆ u3Lie` carries the bracket. The bullet is kept as written
+    (`ERRATUM 94`).
   • The identification of `Fin 3 → ℂ` with "the six leptoquarks" is `offDiagMapR`'s reading of
     the last column, as `PatiSalamOffDiagonal` records; that these are leptoquarks is physics.
   • `PatiSalamRightSector`'s clause (iv) stands: `RightSector ⧸ hyperchargeLine` is not
