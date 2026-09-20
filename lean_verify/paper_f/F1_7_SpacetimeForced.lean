@@ -631,6 +631,9 @@ At D₁ = M₂(ℂ):
   Aut(M₂(ℂ)) ≅ PGL₂(ℂ)          (by Skolem-Noether)
   PSL₂(ℂ) ≅ SO⁺(3,1)            (proper orthochronous Lorentz group)
   SL₂(ℂ) ≅ Spin(3,1)            (double cover = spin group)
+  ⚠ 20 Sep 2026 (units 186–187): the first two lines are `MatrixAutPGL.autM2EquivPGL` and
+  `MatrixPGLPSL.autM2EquivSOplus13` (via `sl2QuotEquivPGL` and `SL2Quotient.sl2QuotEquiv`); the
+  third is prose — see the note at the end of this file.
 
 SL₂(ℂ) is a 6-dimensional real Lie group.
 SO⁺(3,1) is the Lorentz group of 3+1 dimensional spacetime.
@@ -1069,5 +1072,10 @@ Established results invoked (not machine-verified):
   estate's own theorem — `MatrixAutPGL.autEquivPGL` at every `n` and every field, `autM2EquivPGL`
   at `M₂(ℂ)`. Of the two lines above it, `SL₂(ℂ) ⧸ {±1} ≃* SO⁺(1,3)` is `SL2Quotient.sl2QuotEquiv`;
   `PGL₂(ℂ) ≅ SO⁺(3,1)` itself is not stated — the bridge `PGL(2, ℂ) ≃* SL₂(ℂ) ⧸ {±1}` is unwritten.
+  ⚠ 20 September 2026 (hardening unit 187, `paper_f/MatrixPGLPSL.lean`): the bridge is written —
+  `MatrixPGLPSL.sl2QuotEquivPGL : SL₂(ℂ) ⧸ {±1} ≃* PGL(2, ℂ)` — and with it the two lines above:
+  `MatrixPGLPSL.autM2EquivSOplus13 : Aut(M₂(ℂ)) ≃* SO⁺(1,3)`, conjugation by `A ∈ SL₂(ℂ)` going to
+  `lorentzSOplusHom A`. `SL₂(ℂ) ≅ Spin(3,1)` AS GROUPS is still prose: the estate identifies the two
+  quotients by `{±1}` (`SpinSurjective.spinEquivSL2Quot`), not the groups.
 - Spinor representation theory (Atiyah-Bott-Shapiro 1964)
 -/

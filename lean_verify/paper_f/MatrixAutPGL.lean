@@ -48,6 +48,10 @@
     nor needs. **The bridge between them, `PGL(2, ℂ) ≃* SL₂(ℂ) ⧸ {±1}`** (every complex unit
     is a square, so `PGL(n, ℂ) ≅ PSL(n, ℂ)`), **is not written** — queried: no declaration's
     name contains `pgl` or `psl`, and the only `PGL` in `paper_f` is the eleven prose lines.
+    ⚠ DONE, 20 September 2026 (hardening unit 187, `paper_f/MatrixPGLPSL.lean`): the bridge is
+    `sl2QuotEquivPGL`, via `pslEquivPGL : PSL(n, K) ≃* PGL(n, K)` over any algebraically closed
+    field, and the composite is `autM2EquivSOplus13 : Aut(M₂(ℂ)) ≃* SO⁺(1,3)`. The bullet is kept
+    as written (`ERRATUM 94`).
   • L11's headline, *"`M₁₆` forces `(4,2,2)` with no alternatives"*, is not closed by knowing
     `Aut(M₁₆)`: every `abc = 16` still decomposes `M₁₆` by Kronecker and nothing here prefers
     one. Cascade depth, which factor decomposes, and `b = 2` remain postulates

@@ -31,6 +31,10 @@
      SL₂(ℂ) as a subgroup object, and the kernel as an EQUALITY OF
      SUBGROUPS. Same step `SpinQuotient` §1–2 took on the spin side.
   3. **`sl2QuotEquiv : SL₂(ℂ) ⧸ {±1} ≃* SO⁺(1,3)`** — the double cover
+     ⚠ 20 September 2026 (hardening unit 187, `paper_f/MatrixPGLPSL.lean`): this isomorphism now
+     composes with `MatrixAutPGL.autM2EquivPGL` through `MatrixPGLPSL.sl2QuotEquivPGL : SL₂(ℂ) ⧸
+     {±1} ≃* PGL(2, ℂ)` to `autM2EquivSOplus13 : Aut(M₂(ℂ)) ≃* SO⁺(1,3)` — the Lorentz group as the
+     automorphism group of the cascade's first level. Nothing here changed.
      as ONE object. Five conjuncts become one isomorphism.
   4. **`spinQuotToSL2Quot`** and **`spinQuotToSL2Quot_injective`** —
      `Spin(1,3) ⧸ {±1}` embeds in `SL₂(ℂ) ⧸ {±1}`. `SpinMeetsSL2` related
