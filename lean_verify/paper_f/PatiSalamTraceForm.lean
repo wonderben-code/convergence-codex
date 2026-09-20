@@ -57,6 +57,10 @@
     matrices over `ℚ` and are not elements of the `L`s used here; relating the abelian
     ratio `3/5` to these non-abelian forms needs the `u(1)` factor as a Lie algebra and
     is not done.
+    ⚠ 20 September 2026 (hardening unit 190): DONE in `PatiSalamLieModule.lean` — over the
+    Standard-Model algebra `SM = sl₃ × sl₂ × ℂ`, whose `ℂ` IS the `u(1)`, one
+    `LieModule.traceForm` has `(0, T₃, 0)² = 2`, `(0, 0, 1)² = 10/3`, cross term `0`, ratio
+    `3/5` (`weinberg_ratio_traceForm`).
   * **The chiral content.** That the 16 with its two blocks is a CONSEQUENCE of the
     cascade rather than the input `PSIndex` is spine L12's postulate
     (`ASSUMPTIONS_LEDGER` 5, 34).
@@ -277,7 +281,12 @@ explicitly through `DFunLike.coe`, which Lean does not accept by name. **The hon
 refactor, if a later unit wants the conjunction, is three type synonyms of
 `PSIndex → ℂ`** — one per factor, each with its own global instance, the
 `SkolemNoether.Twisted` pattern — and it is named here rather than done, because the
-conjunction is cosmetic: it adds no mathematics to the three theorems above. -/
+conjunction is cosmetic: it adds no mathematics to the three theorems above.
+
+⚠ 20 September 2026 (hardening unit 190): the conjunction exists without synonyms — on the
+PRODUCT algebra `gl₄ × gl₂ × gl₂`, a different type, `psRep` is one `LieHom` with one global
+instance (`PatiSalamLieModule.psLieHom`), and `traceForm_orthogonal_sum` is the three theorems
+as one value; it also has what the three did not: the `sl₄`–`sl₂` cross terms. -/
 
 end
 

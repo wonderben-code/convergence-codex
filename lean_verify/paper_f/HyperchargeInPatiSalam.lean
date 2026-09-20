@@ -23,6 +23,10 @@
   asked for an object that cannot exist, and it did so because it read the `u(1)` off the
   Standard-Model side of the embedding instead of off the Pati–Salam side.** Filed as
   `ERRATUM 569` and corrected in the entry.
+  ⚠ 20 September 2026 (hardening unit 190): *the whole content of the embedding `smToPS`* was
+  too much: `Y = (½ B₄, 0, T₃)` is NOT in the range of `smToPS`
+  (`PatiSalamLieModule.hypercharge_not_mem_range_smToPS`); it is in the range of the
+  hypercharge-normalised `smToPSY` (`smToPSY_u1_eq_hypercharge`). `ERRATUM 679`.
 
   WHAT THAT BUYS, AND IT IS NOT THE NUMBERS. `WeinbergIndex` already proves
   `trace_Y_sq = 10/3`, `trace_T3L_sq = 2`, `trace_T3L_Y = 0` and
@@ -117,7 +121,9 @@ hypercharge is already an element of the Pati–Salam algebra's image on the 16 
 part in `sl₂_R` and the `(B−L)/2` part in `sl₄` — so there is no fourth factor to build a
 four-factor orthogonal sum out of. This is the content of the embedding
 `SMInPatiSalam.smToPS`, and the reason the Pati–Salam algebra has rank 5 while the Standard
-Model has rank 4. -/
+Model has rank 4.
+⚠ 20 September 2026 (unit 190): read *`smToPSY`* — `smToPS`'s `u(1)` line misses `Y`
+(`PatiSalamLieModule.hypercharge_not_mem_range_smToPS`, `ERRATUM 679`). -/
 theorem Y_eq_psRep : Yc = psRep (((1 : ℂ) / 2) • B4, 0, T3) := by
   ext s t
   cases s with

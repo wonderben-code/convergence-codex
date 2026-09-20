@@ -62,6 +62,10 @@ the product algebra. This file finishes the perturbative table.
   derives it. Without an `SO(10)`-type completion it is a modelling assumption, and it is recorded
   as one.
 - `LieModule` packaging of `psRep` (one definition away, unconsumed, as in `SU4OnSixteen`).
+  ⚠ 20 September 2026 (hardening unit 190): DONE — `PatiSalamLieModule.psLieHom` on
+  `gl₄ × gl₂ × gl₂`, global `LieModule` instances over the product, over `PS` and over `SM`,
+  consumed by `LieModule.traceForm` and `LieModule.IsFaithful`. Per-factor `local instance`s
+  had existed since 14 September (`PatiSalamTraceForm`); this bullet predates them.
 
 ## Adversarial review, folded in
 

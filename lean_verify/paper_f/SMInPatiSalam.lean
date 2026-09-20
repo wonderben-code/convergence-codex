@@ -33,6 +33,12 @@
      would put `u1EmbedFn (c/6)` in `sl₄`, while `colourBL` puts
      `u1EmbedFn (c/2) = (3c/2) • (B−L)` there. No theorem depends on the
      scalar (§5 below), and the sentence above is kept as first written.
+     ⚠ 20 September 2026 (hardening unit 190, `PatiSalamLieModule.lean`): *same direction* is
+     false of the `u(1)` LINE in `PS` — the factor of three sits on ONE of its two components,
+     so the line moves: `hypercharge_not_mem_range_smToPS` — no `x : SM` has
+     `psIncl (smToPS x) = (½ B₄, 0, T₃)`. The embedding with `u1EmbedFn (c/6)`, `smToPSY`,
+     has it (`smToPSY_u1_eq_hypercharge`) and is injective too. `ERRATUM 679`; `ERRATUM 552`'s
+     *direction is right* was the same slip one level up.
   4. **`smToPS`** — the product, and **`smToPS_injective`**. `smToPS_su3`,
      `smToPS_su2`, `smToPS_u1` pin the three restrictions to the estate's
      `SMLieHom.su3Hom`, the identity, and `SMLieHom.u1Hom (c/2)` with `c • T₃ᴿ`.
@@ -53,6 +59,8 @@
   three source maps are. **The normalisations** `c/2` and `½·diag(1,−1)` are
   the physics frame and not forced: any nonzero scalars give an injective
   `LieHom`, and the file says so rather than presenting the frame as derived.
+  ⚠ 20 September 2026 (unit 190): `c/2` is NOT the physics frame — `c/6` is, given
+  `u1EmbedFn c = 3c • (B−L)`; see the note under item 3 and `ERRATUM 679`.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
@@ -232,6 +240,9 @@ behind it, and now has both.
 **"The normalisation is a choice."** It is, and the header says so: `c/2` and
 `½·diag(1, −1)` are `WeinbergIndex`'s frame, and any nonzero scalars would give
 an injective `LieHom`. Nothing here derives the frame.
+
+⚠ 20 September 2026 (unit 190): *`WeinbergIndex`'s frame* is `c/6`, not `c/2` — the `u(1)`
+line of `smToPS` misses the hypercharge (`PatiSalamLieModule`, `ERRATUM 679`).
 -/
 
 end

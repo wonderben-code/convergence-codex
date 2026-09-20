@@ -57,6 +57,10 @@
   **No `SU(2)²–SU(4)` or gravitational-mixed term** is stated; the two here are
   the ones the audit named as the L/R separation.
 
+  ⚠ 20 September 2026 (hardening unit 190): the `LieModule` is built — per factor since
+  14 September (`PatiSalamTraceForm`, local instances) and for the whole Pati–Salam action as
+  one global instance over `gl₄ × gl₂ × gl₂` in `PatiSalamLieModule.lean`, faithful over `PS`.
+
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 import AnomalyTraces
