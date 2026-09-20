@@ -79,6 +79,12 @@
     here, and the L20 refuter's finding stands that the constant is missing even for the
     product measure at `n = 16` — `GaussPiDensity` states a `Finset.prod` at general `n`.
     The variance is `1`, not `Λ²`.
+    ⚠ DONE 20 SEP 2026 (hardening unit 161, `Herm4GaussianDensity`), bullet kept as written
+    (`ERRATUM 94`): `herm4Gaussian_eq_withDensity` — `herm4Gaussian = volume.withDensity
+    (A ↦ ofReal (((2π)⁸)⁻¹ · exp(-‖A‖²/2)))`; `herm4Gaussian_map_smul` — the pushforward along
+    `A ↦ Λ • A` has variance `Λ²` and density `((2πΛ²)⁸)⁻¹ · exp(-‖A‖²/(2Λ²))`;
+    `herm4Boltzmann_eq_withDensity` — the weight `exp(-‖A‖²/Λ²)` has `Z = (πΛ²)⁸`. The
+    identification with the spectral action (first bullet) is untouched.
   * **Any connection to the cascade's `D`.** `Herm₄(ℂ)` is the self-adjoint part of
     `M₄(ℂ)`; that the cascade's Dirac operator lives there, and that `M₄(ℂ)` is the
     cascade's `D₂`, is `ASSUMPTIONS_LEDGER` 22 and 30.
