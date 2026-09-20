@@ -587,6 +587,7 @@ roots = [
   "SignlessStarConverse",
   "SignlessRegularConverse",
   "SignlessSecondEigen",
+  "SignlessPerronPositive",
   "SignlessSimpleNotNecessary",
   "SignlessTwins",
   "SignlessTwinClass",
