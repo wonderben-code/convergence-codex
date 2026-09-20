@@ -17,6 +17,11 @@ star operation; searching the whole vendored tree for `skewAdjoint` in any line 
 notion returns **nothing outside those two files**, and `Matrix.specialUnitaryGroup` is a
 `Submonoid` — a group, with no Lie algebra attached. So `su(n)` has to be built, and it is built
 here.
+⚠ 20 September 2026 (hardening unit 188, `paper_f/SkewAdjointExponential.lean`): the `Submonoid`
+now has the Lie algebra attached in one direction — `expSU : traceless n → specialUnitaryGroup`,
+`exp X ∈ SU(n)` for traceless skew-adjoint `X` (`det (exp X) = exp (tr X)` proved from the spectral
+theorem), and the one-parameter subgroups `oneParam`. Surjectivity of `exp` and any tangent-space
+statement are still absent.
 
 ## What is proved
 
@@ -75,6 +80,9 @@ torus, and a dated note on them would suggest otherwise.
 **No compactness.** `su(n)` is called the *compact form* in the literature; nothing here is a
 topological statement, no group is built, and `Matrix.specialUnitaryGroup` is not mentioned in any
 statement below.
+⚠ 20 September 2026 (hardening unit 188): `Matrix.specialUnitaryGroup` is now mentioned in a
+statement — `SkewAdjointExponential.exp_mem_specialUnitaryGroup` — and reached from `traceless n`
+by `expSU`. Still no topology and no compactness; the sentence is kept as written (`ERRATUM 94`).
 
 **No semisimplicity, no Killing form, no `LieAlgebra.IsSemisimple`.**
 

@@ -53,6 +53,11 @@ the product algebra. This file finishes the perturbative table.
   input, and the chiral split is L12's postulate (`ASSUMPTIONS_LEDGER` 5, 34).
 - Any group: `SU(4)`, `SU(2)`, `Spin(10)` exist nowhere in the estate. "Dynkin index" here means
   the trace form of the representation restricted to a factor, compared with the fundamental's.
+  ⚠ 20 September 2026 (hardening unit 188, `paper_f/SkewAdjointExponential.lean`): `SU(4)` and
+  `SU(2)` now exist as Mathlib's `specialUnitaryGroup (Fin 4) ℂ` and `(Fin 2) ℂ`, reached from the
+  estate's `su(4) ⊕ su(2) ⊕ su(2)` by `expFull`; `Spin(10)` still exists nowhere. No group acts on
+  the 16 here — `psRep` is still a Lie-algebra representation. The bullet is kept as written
+  (`ERRATUM 94`).
 - The coupling-matching hypothesis itself. `weinberg_of_coupling_matching` takes it; nothing
   derives it. Without an `SO(10)`-type completion it is a modelling assumption, and it is recorded
   as one.

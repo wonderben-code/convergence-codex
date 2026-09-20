@@ -43,6 +43,11 @@
   • No group: `u(3)` here is a Lie subalgebra of matrices; `U(3)`, its exponential, and any
     statement about the unbroken GROUP are absent, as `TracelessSkewLie`'s header records for
     `SU(n)` (Mathlib's `specialUnitaryGroup` is a `Submonoid` with no Lie algebra attached).
+    ⚠ 20 September 2026 (hardening unit 188, `paper_f/SkewAdjointExponential.lean`): the exponential
+    now exists — `expSU : traceless n → specialUnitaryGroup (Fin n) ℂ`, `exp_mem_unitaryGroup` for
+    every skew-adjoint matrix (so `u(3)` exponentiates into `U(3)`), and `oneParam` for the
+    one-parameter subgroups; statements about the unbroken GROUP as a group are still absent. The
+    bullet is kept as written (`ERRATUM 94`).
   • The vacuum direction is still a convention and nothing here is dynamics (units 178–179's
     bullets, unchanged).
   • `fixLie` is over `ℂ` and `stabLie` over `ℝ`; the two brackets agree because a product's
