@@ -47,6 +47,10 @@
     written. Which `U(1)` is the electric charge is unit 184's statement about algebras
     (`jointStabEquivU3_qFull`); its group-level counterpart — that the centre of `U(3)` is the
     charge's one-parameter subgroup — is not proved here.
+    ⚠ 25 September 2026 (hardening unit 200): the group-level counterpart is proved in
+    `PatiSalamChargeCentre` — `PatiSalamChargeCentre.range_charge_eq_center`: the charge's
+    one-parameter subgroup, carried through `stabilizerPairEquivU3`, is exactly the centre of
+    `U(3)`. The rest of this bullet stands; kept as written (`ERRATUM 94`).
   • Still no potential, no masses and no gauge bosons as objects (unit 191's NOT list stands).
 
   HYPOTHESES, READ OFF THE BINDERS (`ERRATUM 455`). `blockDiag4_mem_unitary` takes `A` unitary and
