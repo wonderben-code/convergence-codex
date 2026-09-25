@@ -33,6 +33,11 @@ it stands. **What was missing mathematically was not the bundling; it was this.*
 
 **It does not bear on `KillsWeyl`**, which is untouched, and **the watchlist item does not move.**
 Every theorem here is about the construction being canonical, not about what `T` does.
+⚠ 25 September 2026 (hardening unit 210, `ERRATUM 693`): *which is untouched* is true only as
+*untouched by this file*. As the estate's status it was overtaken the same night: this
+sentence was committed at 18:17 UTC on 15 August, and at 00:34 on the 16th
+`LovelockKillsWeyl.killsWeyl_of_equivariant` (`171d474`) proved `KillsWeyl` at every `n ≥ 3`;
+the watchlist item is CLOSED BY PROOF. Kept as written (`ERRATUM 94`).
 
 **And it is still not a bundled projection.** No `Submodule`, no `orthogonalProjection`, no
 `LinearMap`. What `curvProj` now has is the characterisation those instances would carry; what it

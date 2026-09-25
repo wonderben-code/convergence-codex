@@ -46,6 +46,10 @@ statements the gaps were about.**
 where the route is open. §5d's rungs 1, 2, 3 were built earlier today and gaps (i) and (ii) are
 closed here, so **the whole of what remains is rung 6**, and it is three named steps, none of them
 done:
+⚠ 25 September 2026 (hardening unit 210, `ERRATUM 693`): overtaken the same night. This
+sentence was committed at 17:25 UTC on 15 August; at 00:34 on the 16th
+`LovelockKillsWeyl.killsWeyl_of_equivariant` (`171d474`) proved `KillsWeyl` at every `n ≥ 3`,
+and the watchlist item is CLOSED BY PROOF. Kept as written (`ERRATUM 94`).
 
 1. reduce a general symmetric `S` to a diagonal one — `LovelockDiagonalise.diagonalisable` exists
    and `act_eqAdjoint` is the transport, but the reduction is not written;

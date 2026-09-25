@@ -52,6 +52,10 @@ not generalise**, because the Weyl summand is not a line and cannot be enumerate
 summand is irreducible over `ℝ`, which is what a Schur argument would consume — is untouched, and
 so is the `O(n)`-orbit-spans question that §5d and §5e both terminate at. **`KillsWeyl` at
 `n ≥ 4` is untouched and the watchlist item does not move.**
+⚠ 25 September 2026 (hardening unit 210, `ERRATUM 693`): overtaken the same night. This
+sentence was committed at 22:30 UTC on 15 August; at 00:34 on the 16th
+`LovelockKillsWeyl.killsWeyl_of_equivariant` (`171d474`) proved `KillsWeyl` at every `n ≥ 3`,
+and the watchlist item is CLOSED BY PROOF. Kept as written (`ERRATUM 94`).
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 

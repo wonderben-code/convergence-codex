@@ -48,6 +48,11 @@ consumes it, and `ip_weylPart_le_self` below is what makes that bound about the 
 **And it says nothing about `KillsWeyl`.** It sharpens *how* non-trivial the Weyl summand is, from
 "has a non-zero entry" to "has positive length". The statement about what an equivariant `T` does
 to it is untouched, and the watchlist item does not move.
+⚠ 25 September 2026 (hardening unit 210, `ERRATUM 693`): *is untouched* is true only as
+*untouched by this file*. As the estate's status it was overtaken the same night: this
+sentence was committed at 16:10 UTC on 15 August, and at 00:34 on the 16th
+`LovelockKillsWeyl.killsWeyl_of_equivariant` (`171d474`) proved that statement, `KillsWeyl`,
+at every `n ≥ 3`; the watchlist item is CLOSED BY PROOF. Kept as written (`ERRATUM 94`).
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/

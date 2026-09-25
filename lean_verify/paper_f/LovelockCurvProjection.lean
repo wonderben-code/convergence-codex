@@ -48,6 +48,10 @@ composed with this projection, and **that composition is not formed here** — n
 file mentions `T`. Two small lemmas are still missing before it can be: the 2-tensor twin of
 `ip_act_transp`, and closure of `IsAlgCurv` under subtraction. **The watchlist item does not move**,
 and `KillsWeyl` at `n ≥ 4` is exactly as open as it was.
+⚠ 25 September 2026 (hardening unit 210, `ERRATUM 693`): overtaken the same night. This
+sentence was committed at 17:19 UTC on 15 August; at 00:34 on the 16th
+`LovelockKillsWeyl.killsWeyl_of_equivariant` (`171d474`) proved `KillsWeyl` at every `n ≥ 3`,
+and the watchlist item is CLOSED BY PROOF. Kept as written (`ERRATUM 94`).
 
 **And this is not the `ip`-orthogonal projection in the bundled sense.** No submodule, no
 `orthogonalProjection` instance, no uniqueness statement. What is proved is idempotence-on-the-image

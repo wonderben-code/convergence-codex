@@ -49,6 +49,10 @@ Bianchi residue as separate invariant pieces, neither of which is computed here)
 
 **`KillsWeyl` at `n ≥ 4` is untouched and the watchlist item does not move.** What this file
 retires is a sentence about a missing carrier, not the wall.
+⚠ 25 September 2026 (hardening unit 210, `ERRATUM 693`): overtaken the same night. This
+sentence was committed at 20:20 UTC on 15 August; at 00:34 on the 16th
+`LovelockKillsWeyl.killsWeyl_of_equivariant` (`171d474`) proved `KillsWeyl` at every `n ≥ 3`,
+and the watchlist item is CLOSED BY PROOF. Kept as written (`ERRATUM 94`).
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/

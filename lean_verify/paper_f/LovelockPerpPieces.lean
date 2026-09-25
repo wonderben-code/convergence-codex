@@ -42,6 +42,10 @@ irreducibility over `ℝ` — the open question — is untouched**, and nothing 
 argument used is that `Curv^⊥` is easy to break up, not that any summand is hard to.
 
 **`KillsWeyl` at `n ≥ 4` is untouched and the watchlist item does not move.**
+⚠ 25 September 2026 (hardening unit 210, `ERRATUM 693`): overtaken the same night. This
+sentence was committed at 21:22 UTC on 15 August; at 00:34 on the 16th
+`LovelockKillsWeyl.killsWeyl_of_equivariant` (`171d474`) proved `KillsWeyl` at every `n ≥ 3`,
+and the watchlist item is CLOSED BY PROOF. Kept as written (`ERRATUM 94`).
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 

@@ -38,6 +38,10 @@ disposed of, not hypothesised.
 
 **`KillsWeyl` at `n ≥ 4` is untouched and the watchlist item does not move.** What this file does is
 make the remaining work two named halves instead of one unnamed one.
+⚠ 25 September 2026 (hardening unit 210, `ERRATUM 693`): overtaken the same night. This
+sentence was committed at 17:29 UTC on 15 August; at 00:34 on the 16th
+`LovelockKillsWeyl.killsWeyl_of_equivariant` (`171d474`) proved `KillsWeyl` at every `n ≥ 3`,
+and the watchlist item is CLOSED BY PROOF. Kept as written (`ERRATUM 94`).
 
 Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
