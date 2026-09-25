@@ -51,6 +51,11 @@
   • `X = 0`, whose stabiliser is the whole group, is excluded by hypothesis and not examined.
   • Why the vacuum should have rank one: that is a potential's minimum, and there is no potential;
     nor are the magnitudes fixed. Each `≃*` is of abstract groups.
+    ⚠ 25 September 2026 (hardening unit 209): the criterion holds for topological groups too —
+    `PatiSalamTopologicalCopies.nonempty_stabilizer_continuousEquiv_U3_iff`; and every
+    stabiliser, the rank-two ones and `X = 0`'s included, is a closed, compact subgroup
+    (`isClosed_stabilizer`, `compactSpace_stabilizer`). What the rank-two stabiliser is, as a
+    group, stands. Kept as written (`ERRATUM 94`).
 
   HYPOTHESES, READ OFF THE BINDERS (`ERRATUM 455`). `eq_one_or_eq_neg_one_of_mul_self` takes
   `P.det = 1` and `P * P = 1`; `eq_of_mem_stabilizer_of_mul_self`, `finite_involutions_stabilizer`

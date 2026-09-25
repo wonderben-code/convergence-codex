@@ -34,6 +34,10 @@
     `≃* Multiplicative (ZMod 3)` is written.
   • The charge's scale (`qFull = 6i · Q`), topology (all `≃*` are of abstract groups), and the
     vacua (still chosen, `ASSUMPTIONS_LEDGER` 60) — unchanged from units 199–200.
+    ⚠ 25 September 2026 (hardening unit 209): topology is supplied —
+    `PatiSalamTopologicalCopies.unbrokenContinuousEquiv`: with the quotient topology,
+    `(SU(3) × U(1)) ⧸ ker splitHom` is homeomorphic to the unbroken group. The charge's scale and
+    the vacua stand. Kept as written (`ERRATUM 94`).
   • Still no potential, no masses, no gauge bosons as objects.
 
   HYPOTHESES, READ OFF THE BINDERS (`ERRATUM 455`). `smul_mem_unitary` takes `A` unitary and

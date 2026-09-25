@@ -52,6 +52,9 @@
     is no potential; nor are the two magnitudes `r`, `s` fixed.
   • Each `≃*` is of abstract groups, and it is conjugation by a chosen `g`: the isomorphism exists
     (`Nonempty`), and the copy of `U(3)` inside the gauge group moves with the vacuum.
+    ⚠ 25 September 2026 (hardening unit 209): and of topological groups —
+    `PatiSalamTopologicalCopies.nonempty_stabilizer_continuousEquiv_U3` and
+    `nonempty_stabilizer_pair_continuousEquiv_U3`. Kept as written (`ERRATUM 94`).
   • The charge's scale, masses and gauge bosons, as in units 199–201.
 
   HYPOTHESES, READ OFF THE BINDERS (`ERRATUM 455`). `exists_unitary_col` takes a unit vector

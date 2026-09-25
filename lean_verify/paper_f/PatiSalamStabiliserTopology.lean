@@ -37,6 +37,11 @@
   • Unit 201's splitting `(SU(3) × U(1)) ⧸ ℤ₃` and the conjugated copies of units 203–204 remain
     isomorphisms of abstract groups; only the identifications at `vac`, at `(vac, vacEW)` and, by
     unit 205, at the diagonal vacua are made topological here.
+    ⚠ 25 September 2026 (hardening unit 209): both are made topological in
+    `PatiSalamTopologicalCopies` — `unbrokenContinuousEquiv` for the splitting;
+    `nonempty_stabilizer_continuousEquiv_U3`, `nonempty_stabilizer_pair_continuousEquiv_U3` and
+    `nonempty_stabilizer_pair_continuousEquiv_U3_of_conj` for the copies. Kept as written
+    (`ERRATUM 94`).
   • The charge's scale; why the vacua have their shapes (no potential); masses.
 
   HYPOTHESES, READ OFF THE BINDERS (`ERRATUM 455`). `norm_entry_le_one_of_mem_unitary` takes a

@@ -35,6 +35,16 @@
   • The first-stage vacuum is `vac` itself; other rank-one first-stage vacua are covered only by
     conjugation, as in unit 203, and that transport is not written for this file's statements.
   • Why the vacua have these shapes (no potential); the magnitudes; topology.
+    ⚠ 25 September 2026 (hardening unit 209, `ERRATUM 692`): all three bullets above were
+    answered, in whole or in part, by later units that did not annotate this header. Topology,
+    by unit 206: `PatiSalamStabiliserTopology.nonempty_stabilizer_vacKK_continuousEquiv_U3`. The
+    first bullet, in part, by unit 207: a pair `(vac, Φ)` has exactly this file's subgroup if
+    and only if `Φ` is a nonzero `diag(κ, κ')` (`PatiSalamSameStabiliser.stabilizer_pair_eq_iff`),
+    and a conjugate of it exactly on the gauge transforms of such pairs (`stabilizer_conj_iff`).
+    Off-diagonal vacua do leave `U(3)`: unit 203's aligned family contains `(vac, E₁₀)`
+    (`PatiSalamTopologicalCopies.aligned_vac_single`). Which leave a group merely isomorphic to
+    `U(3)` is not decided. The second bullet, by `stabilizer_conj_iff` and, topologically,
+    `PatiSalamTopologicalCopies` (unit 209). Kept as written (`ERRATUM 94`).
 
   HYPOTHESES, READ OFF THE BINDERS (`ERRATUM 455`). `eq_diagConj2_of_col1` takes `h ∈ SU(2)`,
   `d * star d = 1`, `h 1 1 = star d` and `h 0 1 = 0`; `diagConj2_mul_star` and
