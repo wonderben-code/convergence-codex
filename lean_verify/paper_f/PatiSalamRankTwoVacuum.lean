@@ -41,6 +41,11 @@
 
   NOT PROVED, said exactly.
   • What the rank-two stabiliser IS as a group: only that it is not `U(3)`.
+    ⚠ 25 September 2026 (hardening unit 211): answered in `PatiSalamRankTwoStabiliser` up to
+    one factor — for invertible `D` the stabiliser of `vac2 · D` is `SU(2) ×` the elements of
+    `SU(2)` commuting with `D Dᴴ` (`stabilizerVac2Equiv`): `SU(2) × SU(2)` when `D Dᴴ` is a
+    multiple of the identity, the second factor commutative otherwise (`commSU2_mul_comm`).
+    That this factor is `U(1)` is not proved there. Kept as written (`ERRATUM 94`).
   • The second stage. Whether a pair of vacua that is not aligned can still leave `U(3)` unbroken
     is not decided here: unit 203's alignment is sufficient, and nothing in the estate shows it
     necessary.
@@ -56,6 +61,8 @@
     stabiliser, the rank-two ones and `X = 0`'s included, is a closed, compact subgroup
     (`isClosed_stabilizer`, `compactSpace_stabilizer`). What the rank-two stabiliser is, as a
     group, stands. Kept as written (`ERRATUM 94`).
+    ⚠ 25 September 2026 (hardening unit 211): answered up to what the commutative factor is —
+    see the first bullet's pointer. Kept as written (`ERRATUM 94`).
 
   HYPOTHESES, READ OFF THE BINDERS (`ERRATUM 455`). `eq_one_or_eq_neg_one_of_mul_self` takes
   `P.det = 1` and `P * P = 1`; `eq_of_mem_stabilizer_of_mul_self`, `finite_involutions_stabilizer`
