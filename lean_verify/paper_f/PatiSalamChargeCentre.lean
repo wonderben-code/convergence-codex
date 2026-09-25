@@ -34,6 +34,8 @@
     both vacua, `K` cyclic of order three, the `SU(3)` factor acting on colour only. Kept as
     written (`ERRATUM 94`).
   • Topology: `stabilizerPairEquivU3` is an isomorphism of abstract groups (unit 199's NOT list).
+    ⚠ 25 September 2026 (hardening unit 206): and of topological groups —
+    `PatiSalamStabiliserTopology.stabilizerPairContinuousEquivU3`. Kept as written (`ERRATUM 94`).
   • The vacua are still chosen (`ASSUMPTIONS_LEDGER` 60); no potential, no masses.
 
   HYPOTHESES, READ OFF THE BINDERS (`ERRATUM 455`). None beyond the types: `expFull_charge_fst`,

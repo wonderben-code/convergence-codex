@@ -43,6 +43,10 @@
     link to the algebra stabilisers of units 179–184 is still the one unit 191 proved:
     exponentials of elements of `jointStab` lie in the group stabiliser
     (`PatiSalamGaugeAction.expFull_mem_stabilizer`).
+    ⚠ 25 September 2026 (hardening unit 206): the homeomorphism half is proved in
+    `PatiSalamStabiliserTopology` — `stabilizerVacContinuousEquivU3` and
+    `stabilizerPairContinuousEquivU3` are isomorphisms of topological groups, and both groups are
+    compact. The Lie-group half stands. Kept as written (`ERRATUM 94`).
   • No splitting into `SU(3)_c × U(1)_Q`. `U(3)` is `(SU(3) × U(1)) ⧸ ℤ₃`, and that quotient is not
     written. Which `U(1)` is the electric charge is unit 184's statement about algebras
     (`jointStabEquivU3_qFull`); its group-level counterpart — that the centre of `U(3)` is the
