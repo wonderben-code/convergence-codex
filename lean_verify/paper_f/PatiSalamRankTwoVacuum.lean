@@ -44,6 +44,10 @@
   • The second stage. Whether a pair of vacua that is not aligned can still leave `U(3)` unbroken
     is not decided here: unit 203's alignment is sufficient, and nothing in the estate shows it
     necessary.
+    ⚠ 25 September 2026 (hardening unit 205): decided in `PatiSalamTwoComponentVacuum` — it can:
+    alignment is not necessary (`exists_not_aligned_stabilizer_equiv_U3`), and every nonzero
+    `diag(κ, κ')` leaves the same subgroup as `vacEW` (`stabilizer_vacKK_eq`). Kept as written
+    (`ERRATUM 94`).
   • `X = 0`, whose stabiliser is the whole group, is excluded by hypothesis and not examined.
   • Why the vacuum should have rank one: that is a potential's minimum, and there is no potential;
     nor are the magnitudes fixed. Each `≃*` is of abstract groups.
