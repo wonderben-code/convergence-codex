@@ -22,6 +22,11 @@ now has the Lie algebra attached in one direction — `expSU : traceless n → s
 `exp X ∈ SU(n)` for traceless skew-adjoint `X` (`det (exp X) = exp (tr X)` proved from the spectral
 theorem), and the one-parameter subgroups `oneParam`. Surjectivity of `exp` and any tangent-space
 statement are still absent.
+⚠ 25 September 2026 (hardening unit 217, `paper_f/PatiSalamMatrixLie.lean`): the other direction — a
+matrix `X` with `exp (t X) ∈ SU(n)` for every real `t` is skew-Hermitian and traceless
+(`forall_exp_mem_specialUnitaryGroup_iff`), so `traceless n` is exactly `SU(n)`'s Lie algebra in the
+sense matrix groups use. Surjectivity of `exp` and a tangent space in the smooth sense are still
+absent.
 
 ## What is proved
 

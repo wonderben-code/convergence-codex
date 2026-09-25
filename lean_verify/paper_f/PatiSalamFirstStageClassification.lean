@@ -71,6 +71,11 @@
     `PatiSalamBrokenCount` — `su(2) × commT D` (`stabAtVac2Equiv`), of dimension six or four
     (`finrank_stabAt_trichotomy`). That they are these groups' Lie algebras stays unproved, for
     the same reason. Kept as written (`ERRATUM 94`).
+    ⚠ 25 September 2026 (hardening unit 217, `paper_f/PatiSalamMatrixLie.lean`): proved in the sense
+    matrix groups use — the Lie algebra of `Stab X`, the matrices `M` with `exp (t M)` in it for
+    every real `t`, is exactly `stabAt X` (`mem_matLie_stabilizer_iff`), so these two groups' Lie
+    algebras have dimension six and four. No smooth structure is put on any group. Kept as written
+    (`ERRATUM 94`).
 
   HYPOTHESES, READ OFF THE BINDERS (`ERRATUM 455`). `comm_diagonal_iff` and `commDiagonalEquiv` take
   `f 0 ≠ f 1`; `star_mul_self_of_lower_zero` takes `SU(2)` membership and `M 1 0 = 0`;

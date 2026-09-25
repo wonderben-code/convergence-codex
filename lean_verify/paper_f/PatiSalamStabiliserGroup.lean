@@ -54,6 +54,11 @@
     `PatiSalamStabiliserTopology` — `stabilizerVacContinuousEquivU3` and
     `stabilizerPairContinuousEquivU3` are isomorphisms of topological groups, and both groups are
     compact. The Lie-group half stands. Kept as written (`ERRATUM 94`).
+    ⚠ 25 September 2026 (hardening unit 217, `paper_f/PatiSalamMatrixLie.lean`): the group's Lie
+    algebra, in the sense matrix groups use, is computed there — `mem_matLie_stabilizer_iff`:
+    `(exp (t A), exp (t B)) ∈ Stab X` for every real `t` exactly when `(A, B)` are the matrices of
+    an element of `stabAt X`, at every vacuum; at `vac` that is unit 178's `stab`, which unit 179
+    made `u(3)`. The Lie-group half still stands. Kept as written (`ERRATUM 94`).
   • No splitting into `SU(3)_c × U(1)_Q`. `U(3)` is `(SU(3) × U(1)) ⧸ ℤ₃`, and that quotient is not
     written. Which `U(1)` is the electric charge is unit 184's statement about algebras
     (`jointStabEquivU3_qFull`); its group-level counterpart — that the centre of `U(3)` is the

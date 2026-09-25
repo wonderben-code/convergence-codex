@@ -60,6 +60,10 @@
   • That `stabAt X` is the Lie algebra of the unbroken group. It is the kernel of the infinitesimal
     action; no smooth structure is put on any group (unit 209's reason), so the link between the two
     is not a theorem here, and each dimension above is the kernel's.
+    ⚠ 25 September 2026 (hardening unit 217, `paper_f/PatiSalamMatrixLie.lean`): it is, in the sense
+    matrix groups use — `mem_matLie_stabilizer_iff`: `(exp (t A), exp (t B)) ∈ Stab X` for every
+    real `t` exactly when `(A, B)` are the matrices of an element of `stabAt X`, at every `X`. The
+    smooth sense stays unstated. Kept as written (`ERRATUM 94`).
   • Which vacuum: the count decides the group once the vacuum is given, and does not choose it —
     that is a potential's minimum, and there is no potential (`ASSUMPTIONS_LEDGER` 60).
   • The second stage, and the electroweak count, beyond unit 184.

@@ -45,6 +45,11 @@ complex side turned out to be (`ERRATUM 324`), and it was measured rather than a
 structure, and **nothing here builds one**. The definition below is called `traceless` rather than
 `su` for exactly that reason. `F4_1e`'s third recorded gap, the dimension of `unitaryGroup` as a
 manifold, is the same kind of statement and is equally untouched.
+⚠ 25 September 2026 (hardening unit 217, `paper_f/PatiSalamMatrixLie.lean`): in the sense matrix
+groups use — the matrices whose one-parameter curves stay in the group — it is proved:
+`forall_exp_mem_specialUnitaryGroup_iff_traceless`, `exp (t X) ∈ SU(n)` for every real `t` exactly
+when `X` is the matrix of an element of `traceless n`. The smooth-group sense, a tangent space,
+stays unproved, as does the manifold dimension. Kept as written (`ERRATUM 94`).
 
 **Nor is the bracket used or supplied.** The subspace *is* closed under the commutator, and that is
 a fact this file neither needs nor proves. What is refuted is only the recorded claim that the

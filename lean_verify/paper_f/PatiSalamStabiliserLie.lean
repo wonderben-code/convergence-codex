@@ -58,6 +58,10 @@
     MulAction.stabilizer Stage1Group vac ≃* GroupU3`, a homeomorphism too since unit 206
     (`PatiSalamStabiliserTopology.stabilizerVacContinuousEquivU3`). The bullet is kept as written
     (`ERRATUM 94`).
+    ⚠ 25 September 2026 (hardening unit 217, `paper_f/PatiSalamMatrixLie.lean`): and the unbroken
+    group's Lie algebra, in the sense matrix groups use, is the set of matrices of `stab`
+    (`mem_matLie_stabilizer_iff` at `vac`), which this file's `map_stab_toMat` identifies with
+    `stabLie`. The bullet is kept as written (`ERRATUM 94`).
   • The vacuum direction is still a convention and nothing here is dynamics (units 178–179's
     bullets, unchanged).
   • `fixLie` is over `ℂ` and `stabLie` over `ℝ`; the two brackets agree because a product's
