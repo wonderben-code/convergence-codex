@@ -57,6 +57,12 @@
   • `expFull` is a function, not a homomorphism from a group (`Full` is a vector space; `exp` is not
     additive off commuting pairs), and its compatibility with units 178 and 182's representations —
     that `exp A · X · exp(B)ᵀ` integrates the Lie-algebra action `A X + X Bᵀ` — is not stated.
+    ⚠ 25 September 2026 (hardening unit 191, `paper_f/PatiSalamGaugeAction.lean`): the
+    compatibility is now stated and proved, with the three groups acting as `MulAction`s —
+    `hasDerivAt_stage1` (the derivative at `t = 0` of `oneParamG1 p t • X` is `act`),
+    `hasDerivAt_stage2LR` (of the `SU(2)_L × SU(2)_R` action, `actEW`) and `hasDerivAt_full`
+    (both fields at once, through `expFull`). `expFull` is still not a homomorphism. The bullet
+    is kept as written (`ERRATUM 94`).
   • The bracket is untouched: `traceless n` has none here (unit 180's `tracelessSkewLie` has), and
     nothing relates `exp` to it (no Baker–Campbell–Hausdorff, no `exp (Ad)`).
 

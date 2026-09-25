@@ -48,6 +48,11 @@
     every skew-adjoint matrix (so `u(3)` exponentiates into `U(3)`), and `oneParam` for the
     one-parameter subgroups; statements about the unbroken GROUP as a group are still absent. The
     bullet is kept as written (`ERRATUM 94`).
+    ⚠ 25 September 2026 (hardening unit 191, `paper_f/PatiSalamGaugeAction.lean`): the unbroken
+    group is now NAMED — Mathlib's `MulAction.stabilizer` of the vacuum under `SU(4) × SU(2)_R`
+    — and the algebra is read off it: `p ∈ stab` iff `oneParamG1 p t` lies in that stabiliser for
+    every `t` (`mem_stab_iff_mem_stabilizer`). The stabiliser subgroup itself is not computed:
+    its identification with `U(3)` is still absent. The bullet is kept as written (`ERRATUM 94`).
   • The vacuum direction is still a convention and nothing here is dynamics (units 178–179's
     bullets, unchanged).
   • `fixLie` is over `ℂ` and `stabLie` over `ℝ`; the two brackets agree because a product's

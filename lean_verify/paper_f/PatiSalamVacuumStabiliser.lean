@@ -50,6 +50,12 @@
     to `stab` here; only the right sector is.
   • No group, no exponential, no `LieModule` instance: the bracket law is a matrix identity and
     the Lie algebra is a pair of `ℝ`-subspaces, as in the files this one extends.
+    ⚠ 25 September 2026 (hardening unit 191, `paper_f/PatiSalamGaugeAction.lean`, after unit
+    188's exponential): the group and the exponential now exist for this bidoublet —
+    `SU(4) × SU(2)_R` acts on it by `g X hᵀ` (`instMulActionStage1`), `act` is that action's
+    generator (`hasDerivAt_stage1`), and `stab` is exactly the set of generators whose
+    one-parameter subgroups fix `vac` (`mem_stab_iff_fixes`). No `LieModule` instance on the
+    bidoublet is built there or here. The bullet is kept as written (`ERRATUM 94`).
 
   HYPOTHESES, READ OFF THE BINDERS (`ERRATUM 455`). `act_bracket` and `act_vac_apply` take
   arbitrary complex matrices; `act_vac_eq_zero_iff` is an unconditional biconditional;

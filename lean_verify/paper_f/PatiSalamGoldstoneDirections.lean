@@ -42,6 +42,13 @@
     broken generators and the orbit's tangent directions are one space. Whether those twelve
     directions are eaten by twelve gauge bosons is physics the estate does not state; the
     three `goldstone`-named declarations remain numerals (unit 179's header names them).
+    ⚠ 25 September 2026 (hardening unit 191, `paper_f/PatiSalamGaugeAction.lean`): when (1) was
+    written the vacuum ORBIT was not an object — no group acted on the Higgs fields, and
+    `range jointOrbit` is the image of the Lie-algebra action at the vacuum, which (1) names by its
+    Lie-theoretic reading. The orbit now exists: `SU(4) × SU(2)_L × SU(2)_R` acts on the pair
+    (`instMulActionFull`), and `mem_range_jointOrbit_iff` proves `range jointOrbit` is exactly the
+    set of velocities at `t = 0` of the curves `t ↦ expFull (t • p) • (vac, vacEW)` in that orbit.
+    No manifold structure on the orbit is claimed. The bullet is kept as written (`ERRATUM 94`).
   • *Transverse to the orbit* (twelve directions) is not *physical Higgs*: without a potential
     there is no radial direction to single out, and `F3_2_HiggsForced.physical_higgs_count`'s
     `8 − 6 = 2` counts differently (the `(1, 2, 2)` alone, six Goldstones subtracted); the two
