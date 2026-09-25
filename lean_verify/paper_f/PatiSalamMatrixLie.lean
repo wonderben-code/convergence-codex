@@ -61,6 +61,11 @@
     199–212's.
   • At stage 2 and for pairs, the subalgebras are characterised at every vacuum, not classified:
     which groups and which dimensions occur there beyond units 182–207's vacua is not computed.
+    ⚠ 25 September 2026 (hardening unit 219, `paper_f/ElectroweakCustodial.lean`): at stage 2 the
+    dimensions are computed — six, three or one (`finrank_stabEWAt_zero`,
+    `finrank_stabEWAt_dichotomy`) — and `mem_matLieEW_stabilizer_iff` is this file's
+    `mem_matLie_stabilizer_iff` at stage 2. The groups at stage 2, and everything for pairs, still
+    are not.
   • The bracket is not carried: that `stabAt X` is closed under the commutator is unit 180's
     argument at `X`, and it needs `TracelessSkewLie`, which this file does not import. Measured:
     with `TracelessSkewLie` in the import closure, `hasDerivAt_star_exp_mul_exp`'s product rule

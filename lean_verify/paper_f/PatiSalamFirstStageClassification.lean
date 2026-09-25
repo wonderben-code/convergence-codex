@@ -65,6 +65,12 @@
   • Which vacuum the model should have: that is a potential's minimum, and there is no potential.
     The trichotomy says what each choice leaves, not which is chosen; nor are the magnitudes fixed.
   • The second stage, the pair with the electroweak vacuum, beyond units 203–207.
+    ⚠ 25 September 2026 (hardening unit 219, `paper_f/ElectroweakCustodial.lean`): the electroweak
+    field ALONE is counted there — a nonzero bidoublet vacuum `Φ` leaves three generators of
+    `su(2)_L ⊕ su(2)_R` unbroken when `Φᴴ Φ` is a multiple of the identity and one otherwise
+    (`finrank_stabEWAt_dichotomy`), and those are the dimensions of the unbroken groups' Lie
+    algebras in the sense matrix groups use (`matLieEW_stabilizer_eq`). The pair beyond units
+    203–207, and the groups themselves, still are not classified; the bullet stands for them.
   • The Lie algebras of the two rank-two groups are not computed, and no smooth structure is put on
     any group (unit 209's reason: none in the pinned Mathlib for `SU(n)`).
     ⚠ 25 September 2026 (hardening unit 213): the unbroken SUBALGEBRAS are computed in

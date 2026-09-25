@@ -67,6 +67,11 @@
   • Which vacuum: the count decides the group once the vacuum is given, and does not choose it —
     that is a potential's minimum, and there is no potential (`ASSUMPTIONS_LEDGER` 60).
   • The second stage, and the electroweak count, beyond unit 184.
+    ⚠ 25 September 2026 (hardening unit 219, `paper_f/ElectroweakCustodial.lean`): the electroweak
+    count on the `(1, 2, 2)` alone is made there at every vacuum — six unbroken generators of
+    `su(2)_L ⊕ su(2)_R` at `Φ = 0`, three when `Φᴴ Φ` is a nonzero multiple of the identity, one
+    otherwise (`finrank_stabEWAt_zero`, `finrank_stabEWAt_dichotomy`); at `vacEW` the one is the
+    charge (`stabEWAt_vacEW`). The count for pairs of vacua beyond unit 184 still stands.
   • Whether `stabAt X` determines the line through `X` (unit 207's Lie-algebra bullet): not
     addressed.
 
