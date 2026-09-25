@@ -81,6 +81,11 @@
     (`isClosed_stabilizer`, `compactSpace_stabilizer`). No manifold or Lie-group structure is used
     in any declaration: the query's word now occurs in four `paper_f` files, all in prose. Kept as
     written (`ERRATUM 94`).
+    ⚠ 25 September 2026 (hardening unit 223, `paper_f/PatiSalamSecondStageTopology.lean`,
+    `ERRATUM 696`): *the actions are continuous* and *every stabiliser is closed and compact* cite
+    the first stage and pairs only; this file's second-stage action, `stage2Act`, was shown
+    continuous and its stabilisers closed and compact in unit 223 (`continuous_stage2_smul`,
+    `isClosed_stabilizer_stage2`, `compactSpace_stabilizer_stage2`). Kept as written (`ERRATUM 94`).
   • The vacuum's orbit is not shown to be a manifold, and `range jointOrbit` is not shown to be
     its tangent space in a differential-geometric sense — only that its elements are exactly the
     velocities of the one-parameter orbit curves through the vacuum.

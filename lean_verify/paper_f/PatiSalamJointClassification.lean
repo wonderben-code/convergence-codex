@@ -58,6 +58,10 @@
   NOT PROVED, said exactly.
   • Topology: the isomorphisms at `Φ = 0` and at non-orthogonal columns are of abstract groups;
     unit 209's topological upgrade is not made for them. At orthogonal columns it is unit 221's.
+    ⚠ 25 September 2026 (hardening unit 223, `paper_f/PatiSalamSecondStageTopology.lean`): made
+    there — `stabilizerPairZeroContinuousEquiv` and `stabilizerPairContinuousEquivSU3Sign`, so
+    `joint_trichotomy_continuous` and `nonempty_stabilizer_pair_continuousEquiv_iff`. Kept as
+    written (`ERRATUM 94`).
   • Other first-stage vacua: only the estate's `vac`. For a rank-one `X`, unit 203's conjugation
     would transport the statements; that transport is not written.
   • The joint Lie algebras are unit 221's counts, twelve, nine and eight; no statement here joins

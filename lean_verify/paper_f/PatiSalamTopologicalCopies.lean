@@ -33,6 +33,11 @@
       in the group element); **`isClosed_stabilizer`** and **`isClosed_stabilizer_full`**: the
       stabiliser of any first-stage vacuum, and of any pair, is closed; `compactSpace_stabilizer`
       and `compactSpace_stabilizer_full`: and compact, the groups being compact by (3).
+      ⚠ 25 September 2026 (hardening unit 223, `paper_f/PatiSalamSecondStageTopology.lean`,
+      `ERRATUM 696`): the title's *every unbroken group is compact* and *for EVERY vacuum* are (4)'s
+      first stage and pairs; the second-stage action and its stabilisers, alone, had no such theorem
+      until unit 223 (`continuous_stage2_smul`, `isClosed_stabilizer_stage2`,
+      `compactSpace_stabilizer_stage2`).
 
   NOT PROVED, said exactly.
   • Lie-group structure. The pinned Mathlib has smooth `LieGroup` instances for the units of a
@@ -51,6 +56,10 @@
     group isomorphic to `U(3)` exactly when it is nonzero with orthogonal columns
     (`nonempty_stabilizer_pair_equiv_U3_iff`). At those the isomorphism is topological (unit 221);
     at the others the groups are identified as abstract groups only. Other first vacua still stand.
+    ⚠ 25 September 2026 (hardening unit 223, `paper_f/PatiSalamSecondStageTopology.lean`): and at
+    the others too, as topological groups (`stabilizerPairZeroContinuousEquiv`,
+    `stabilizerPairContinuousEquivSU3Sign`, `nonempty_stabilizer_pair_continuousEquiv_U3_iff`).
+    Other first vacua still stand.
   • Why the vacua have these shapes (no potential); the magnitudes; the charge's scale; masses.
 
   HYPOTHESES, READ OFF THE BINDERS (`ERRATUM 455`). `stabilizerContinuousEquiv` takes `b = g • a`

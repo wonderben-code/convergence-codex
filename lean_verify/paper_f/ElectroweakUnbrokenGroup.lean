@@ -61,6 +61,12 @@
     `snd_mem_commSU2` — `U(3) × SU(2)` at `Φ = 0`, `U(3)` at orthogonal columns and `SU(3) × {±1}`
     otherwise (`joint_trichotomy`). Kept as written (`ERRATUM 94`).
   • Topology: the isomorphisms are of groups; unit 209's topological upgrades are not made here.
+    ⚠ 25 September 2026 (hardening unit 223, `paper_f/PatiSalamSecondStageTopology.lean`): made
+    there — every isomorphism here is one of topological groups (`stabilizerContinuousEquivSU2`,
+    `stabilizerContinuousEquivCommSU2`, `stabilizerContinuousEquivCircle`,
+    `stabilizerVacEWContinuousEquivCircle`, `stabilizer_dichotomy_continuous`), every second-stage
+    stabiliser being closed and compact (`isClosed_stabilizer_stage2`,
+    `compactSpace_stabilizer_stage2`). Kept as written (`ERRATUM 94`).
   • That these groups' Lie algebras are unit 219's `stabEWAt Φ` is unit 219's
     `mem_matLieEW_stabilizer_iff`; no statement here joins the two files.
   • Which vacuum, masses, and what *custodial* would mean physically: unit 219's bullets, unchanged.
