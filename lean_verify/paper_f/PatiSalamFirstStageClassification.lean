@@ -75,6 +75,11 @@
     electroweak field's groups are classified there — `SU(2)` when `Φᴴ Φ` is a multiple of the
     identity and the circle otherwise, at every nonzero `Φ` (`stabilizer_dichotomy`). The pair
     beyond units 203–207 still is not; the bullet stands for it.
+    ⚠ 25 September 2026 (hardening unit 221, `paper_f/PatiSalamJointCount.lean`): the pair
+    `(vac, Φ)` is counted there at every `Φ` — nine or eight at `Φ ≠ 0`, by whether the columns of
+    `Φ` are orthogonal (`finrank_jointStabAt_vac`) — and at orthogonal columns its group is `U(3)`
+    (`nonempty_stabilizer_pair_continuousEquiv_U3_of_orthogonal`). The groups at the other pairs,
+    and other first vacua, still are not; the bullet stands for them.
   • The Lie algebras of the two rank-two groups are not computed, and no smooth structure is put on
     any group (unit 209's reason: none in the pinned Mathlib for `SU(n)`).
     ⚠ 25 September 2026 (hardening unit 213): the unbroken SUBALGEBRAS are computed in

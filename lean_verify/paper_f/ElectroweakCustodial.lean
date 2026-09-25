@@ -68,6 +68,11 @@
     subgroup, `U(3)`, at every nonzero `diag(κ, κ')`. (7) says only which custodial directions
     survive there; the dimension of the joint unbroken subalgebra at a general `(vac, Φ)` is not
     computed.
+    ⚠ 25 September 2026 (hardening unit 221, `paper_f/PatiSalamJointCount.lean`): computed there —
+    at `Φ ≠ 0` it is nine when the columns of `Φ` are orthogonal, `(Φᴴ Φ) 0 1 = 0`, and eight
+    otherwise, and twelve at `Φ = 0` (`finrank_jointStabAt_vac`, `finrank_jointStabAt_vac_zero`); at
+    the nine-dimensional ones the joint group is `U(3)`
+    (`nonempty_stabilizer_pair_equiv_U3_of_orthogonal`). Kept as written (`ERRATUM 94`).
   • Which vacuum: a potential's minimum, and there is no potential. *Custodial* is the physics name
     for the `su(2)` of (3) — the diagonal one when `Φ` is a multiple of the identity; what it would
     mean for gauge-boson masses is physics the estate does not state. What is proved is the count.

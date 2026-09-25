@@ -69,6 +69,10 @@
     ⚠ 25 September 2026 (hardening unit 220, `paper_f/ElectroweakUnbrokenGroup.lean`): the groups at
     stage 2 are computed there at every nonzero `Φ` — `SU(2)` or the circle
     (`stabilizer_dichotomy`). Pairs beyond units 182–207's vacua still are not.
+    ⚠ 25 September 2026 (hardening unit 221, `paper_f/PatiSalamJointCount.lean`): for pairs
+    `(vac, Φ)` the dimensions are computed there — nine or eight at `Φ ≠ 0`, twelve at `Φ = 0`
+    (`finrank_jointStabAt_vac`) — and the group is `U(3)` at orthogonal columns; the groups at the
+    other pairs, and other first vacua, still are not.
   • The bracket is not carried: that `stabAt X` is closed under the commutator is unit 180's
     argument at `X`, and it needs `TracelessSkewLie`, which this file does not import. Measured:
     with `TracelessSkewLie` in the import closure, `hasDerivAt_star_exp_mul_exp`'s product rule

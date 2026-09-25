@@ -40,6 +40,12 @@
     `specialUnitaryGroup`, and no closed-subgroup theorem to transfer one; no smooth structure is
     put on any group here.
   • Which second-stage vacua leave a group merely isomorphic to `U(3)` (unit 207's residue).
+    ⚠ 25 September 2026 (hardening unit 221, `paper_f/PatiSalamJointCount.lean`): decided there for
+    the first vacuum `vac` in one direction, and at the Lie-algebra level in the other — a nonzero
+    `Φ` with orthogonal columns leaves `U(3)`, as a topological group
+    (`nonempty_stabilizer_pair_continuousEquiv_U3_of_orthogonal`), and any other leaves an
+    eight-dimensional joint unbroken subalgebra (`finrank_jointStabAt_vac`). Whether one of those
+    leaves a group isomorphic to `U(3)` stands: a dimension is not an invariant of abstract groups.
   • Why the vacua have these shapes (no potential); the magnitudes; the charge's scale; masses.
 
   HYPOTHESES, READ OFF THE BINDERS (`ERRATUM 455`). `stabilizerContinuousEquiv` takes `b = g • a`

@@ -72,6 +72,10 @@
     `su(2)_L ⊕ su(2)_R` at `Φ = 0`, three when `Φᴴ Φ` is a nonzero multiple of the identity, one
     otherwise (`finrank_stabEWAt_zero`, `finrank_stabEWAt_dichotomy`); at `vacEW` the one is the
     charge (`stabEWAt_vacEW`). The count for pairs of vacua beyond unit 184 still stands.
+    ⚠ 25 September 2026 (hardening unit 221, `paper_f/PatiSalamJointCount.lean`): the pairs
+    `(vac, Φ)` are counted there at every `Φ` — nine joint unbroken generators when the columns of
+    `Φ ≠ 0` are orthogonal and eight otherwise, twelve at `Φ = 0` (`finrank_jointStabAt_vac`). Pairs
+    with other first-stage vacua still stand.
   • Whether `stabAt X` determines the line through `X` (unit 207's Lie-algebra bullet): not
     addressed.
 

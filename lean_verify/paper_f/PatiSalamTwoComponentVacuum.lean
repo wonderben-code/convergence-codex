@@ -32,6 +32,11 @@
   NOT PROVED, said exactly.
   • A classification of all second-stage vacua: which `Φ` leave `U(3)` unbroken beside the diagonal
     ones is not decided; nothing here says a vacuum with off-diagonal entries does not.
+    ⚠ 25 September 2026 (hardening unit 221, `paper_f/PatiSalamJointCount.lean`): beside the
+    diagonal ones, every `Φ ≠ 0` with orthogonal columns does — an `SU(2)_L` rotation carries it to
+    the diagonal (`exists_mul_eq_vacKK`, `nonempty_stabilizer_pair_equiv_U3_of_orthogonal`); every
+    other leaves a joint unbroken subalgebra of dimension eight (`finrank_jointStabAt_vac`), and
+    whether its group is isomorphic to `U(3)` is not decided. Kept as written (`ERRATUM 94`).
   • The first-stage vacuum is `vac` itself; other rank-one first-stage vacua are covered only by
     conjugation, as in unit 203, and that transport is not written for this file's statements.
   • Why the vacua have these shapes (no potential); the magnitudes; topology.

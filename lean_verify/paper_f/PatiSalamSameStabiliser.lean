@@ -47,6 +47,11 @@
   • Which pairs have a stabiliser merely ISOMORPHIC to `U(3)`: (3) finds the conjugates of the
     unbroken group, and an isomorphic subgroup need not be a conjugate. At the first stage unit 204
     settles the question (rank one); at the second it stays open.
+    ⚠ 25 September 2026 (hardening unit 221, `paper_f/PatiSalamJointCount.lean`): at the second
+    stage, with the first vacuum `vac`, every `Φ ≠ 0` with orthogonal columns leaves `U(3)`
+    (`nonempty_stabilizer_pair_equiv_U3_of_orthogonal`), and every other an eight-dimensional joint
+    unbroken subalgebra (`finrank_jointStabAt_vac`); whether any of those leaves a group isomorphic
+    to `U(3)` stays open. Kept as written (`ERRATUM 94`).
   • The Lie-algebra form of (1): that `stab` determines the line through `vac` is not stated; (4)
     is rescaling only.
   • Why the vacua have these shapes (no potential); masses.
