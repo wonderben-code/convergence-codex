@@ -39,6 +39,10 @@
   • That the rank-one shape is NECESSARY: no theorem here says that a rank-two first-stage vacuum,
     or a non-aligned pair, has a stabiliser that is not `U(3)`. The orbit statements (3) and (5) do
     say such vacua are not gauge-equivalent to the estate's.
+    ⚠ 25 September 2026 (hardening unit 204): the rank-two half is proved in
+    `PatiSalamRankTwoVacuum` — `nonempty_stabilizer_equiv_U3_iff`: a nonzero first-stage vacuum's
+    stabiliser is `U(3)` if and only if it has rank one. The non-aligned half stands. Kept as
+    written (`ERRATUM 94`).
   • Why the vacuum should have rank one and be aligned — that is a potential's minimum, and there
     is no potential; nor are the two magnitudes `r`, `s` fixed.
   • Each `≃*` is of abstract groups, and it is conjugation by a chosen `g`: the isomorphism exists
