@@ -56,6 +56,10 @@
   • `Φ = 0` is excluded throughout; its stabiliser is the whole group, and no statement here says
     so.
   • The joint group is unchanged: units 199's and 205's `U(3)`. This file is the `(1, 2, 2)` alone.
+    ⚠ 25 September 2026 (hardening unit 222, `paper_f/PatiSalamJointClassification.lean`): the joint
+    group at every `(vac, Φ)` is computed there from this file's `fst_eq_of_snd_eq` and
+    `snd_mem_commSU2` — `U(3) × SU(2)` at `Φ = 0`, `U(3)` at orthogonal columns and `SU(3) × {±1}`
+    otherwise (`joint_trichotomy`). Kept as written (`ERRATUM 94`).
   • Topology: the isomorphisms are of groups; unit 209's topological upgrades are not made here.
   • That these groups' Lie algebras are unit 219's `stabEWAt Φ` is unit 219's
     `mem_matLieEW_stabilizer_iff`; no statement here joins the two files.

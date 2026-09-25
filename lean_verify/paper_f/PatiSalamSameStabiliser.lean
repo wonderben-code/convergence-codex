@@ -52,6 +52,11 @@
     (`nonempty_stabilizer_pair_equiv_U3_of_orthogonal`), and every other an eight-dimensional joint
     unbroken subalgebra (`finrank_jointStabAt_vac`); whether any of those leaves a group isomorphic
     to `U(3)` stays open. Kept as written (`ERRATUM 94`).
+    ⚠ 25 September 2026 (hardening unit 222, `paper_f/PatiSalamJointClassification.lean`): decided
+    for `vac` — none of those does, the group being `SU(3) × {±1}`: a pair `(vac, Φ)` leaves a group
+    isomorphic to `U(3)` exactly when `Φ` is nonzero with orthogonal columns
+    (`nonempty_stabilizer_pair_equiv_U3_iff`). Other first vacua stay open. Kept as written
+    (`ERRATUM 94`).
   • The Lie-algebra form of (1): that `stab` determines the line through `vac` is not stated; (4)
     is rescaling only.
   • Why the vacua have these shapes (no potential); masses.

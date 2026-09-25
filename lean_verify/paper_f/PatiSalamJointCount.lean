@@ -53,10 +53,22 @@
   • That a `Φ` with non-orthogonal columns leaves a group not isomorphic to `U(3)`. Its joint Lie
     algebra has dimension eight, and a dimension is not an invariant of abstract groups; no
     topological or smooth invariant is computed here.
+    ⚠ 25 September 2026 (hardening unit 222, `paper_f/PatiSalamJointClassification.lean`): it does —
+    the group is `SU(3) × {±1}` (`stabilizerPairEquivSU3Sign`), not isomorphic to `U(3)`
+    (`not_nonempty_U3_equiv_SU3Sign`: every central element of `SU(3) × {±1}` has sixth power one,
+    and `i · 1 ∈ U(3)` does not). So `Φ` leaves `U(3)` exactly when it is nonzero with orthogonal
+    columns (`nonempty_stabilizer_pair_equiv_U3_iff`). The invariant is the centre, an algebraic
+    one. Kept as written (`ERRATUM 94`).
   • By unit 217's `mem_matLieFull_stabilizer_iff` the counts in (4) are the joint groups' Lie
     algebras in the sense matrix groups use; no statement here joins the two files.
   • Other first-stage vacua: only the estate's `vac`.
   • Which vacuum, masses, and what an eight-generator vacuum would mean physically: nothing here.
+    ⚠ 25 September 2026 (hardening unit 222, `paper_f/PatiSalamJointClassification.lean`): what such
+    a vacuum leaves is computed there — colour, `(diag(A, 1), 1, 1)`
+    (`stabilizerPairEquivSU3Sign_symm_colour`), and the sign `(−1, −1, −1)`
+    (`coe_stabilizerPairEquivSU3Sign_symm_sign`); the electric charge is broken, its rotation by `t`
+    surviving only when `e^{6it} = 1` (`expFull_charge_mem_stabilizer_pair_iff`). Which vacuum,
+    masses and the physics of a broken charge still stand.
 
   HYPOTHESES, READ OFF THE BINDERS (`ERRATUM 455`). `exists_mem_stabEWAt_t3RT_iff`,
   `toStage1_injective`, `finrank_jointStabAt_vac` and `joint_dichotomy` take `Φ ≠ 0`;

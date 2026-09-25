@@ -48,6 +48,11 @@
     (`PatiSalamTwoComponentVacuum.exists_not_aligned_stabilizer_equiv_U3`): `diag(0, 1)` is not
     aligned with `vac` and the pair still leaves `U(3)`; every nonzero `diag(κ, κ')` has the same
     stabiliser as `(vac, vacEW)`. Kept as written (`ERRATUM 94`).
+    ⚠ 25 September 2026 (hardening unit 222, `paper_f/PatiSalamJointClassification.lean`): and some
+    non-aligned pairs do have a stabiliser that is not `U(3)`: with `vac`, every nonzero `Φ` with
+    non-orthogonal columns leaves `SU(3) × {±1}`, not isomorphic to `U(3)`
+    (`nonempty_stabilizer_pair_equiv_U3_iff`), and so is not aligned
+    (`not_aligned_of_not_orthogonal`). Kept as written (`ERRATUM 94`).
   • Why the vacuum should have rank one and be aligned — that is a potential's minimum, and there
     is no potential; nor are the two magnitudes `r`, `s` fixed.
   • Each `≃*` is of abstract groups, and it is conjugation by a chosen `g`: the isomorphism exists

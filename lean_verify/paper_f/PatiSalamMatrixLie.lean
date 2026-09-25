@@ -73,6 +73,9 @@
     `(vac, Φ)` the dimensions are computed there — nine or eight at `Φ ≠ 0`, twelve at `Φ = 0`
     (`finrank_jointStabAt_vac`) — and the group is `U(3)` at orthogonal columns; the groups at the
     other pairs, and other first vacua, still are not.
+    ⚠ 25 September 2026 (hardening unit 222, `paper_f/PatiSalamJointClassification.lean`): the
+    groups at every `(vac, Φ)` are computed there — `U(3) × SU(2)`, `U(3)` or `SU(3) × {±1}`
+    (`joint_trichotomy`); other first vacua still are not.
   • The bracket is not carried: that `stabAt X` is closed under the commutator is unit 180's
     argument at `X`, and it needs `TracelessSkewLie`, which this file does not import. Measured:
     with `TracelessSkewLie` in the import closure, `hasDerivAt_star_exp_mul_exp`'s product rule

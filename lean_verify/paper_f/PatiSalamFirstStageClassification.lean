@@ -80,6 +80,11 @@
     `Φ` are orthogonal (`finrank_jointStabAt_vac`) — and at orthogonal columns its group is `U(3)`
     (`nonempty_stabilizer_pair_continuousEquiv_U3_of_orthogonal`). The groups at the other pairs,
     and other first vacua, still are not; the bullet stands for them.
+    ⚠ 25 September 2026 (hardening unit 222, `paper_f/PatiSalamJointClassification.lean`): the
+    groups at every pair `(vac, Φ)` are classified there — `U(3) × SU(2)` at `Φ = 0`, `U(3)` at
+    orthogonal columns and `SU(3) × {±1}` otherwise, pairwise non-isomorphic (`joint_trichotomy`,
+    `nonempty_stabilizer_pair_equiv_iff`). Other first vacua still are not; the bullet stands for
+    them.
   • The Lie algebras of the two rank-two groups are not computed, and no smooth structure is put on
     any group (unit 209's reason: none in the pinned Mathlib for `SU(n)`).
     ⚠ 25 September 2026 (hardening unit 213): the unbroken SUBALGEBRAS are computed in

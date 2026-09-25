@@ -46,6 +46,11 @@
     (`nonempty_stabilizer_pair_continuousEquiv_U3_of_orthogonal`), and any other leaves an
     eight-dimensional joint unbroken subalgebra (`finrank_jointStabAt_vac`). Whether one of those
     leaves a group isomorphic to `U(3)` stands: a dimension is not an invariant of abstract groups.
+    ⚠ 25 September 2026 (hardening unit 222, `paper_f/PatiSalamJointClassification.lean`): decided —
+    none does: the group there is `SU(3) × {±1}`, and with `vac` a second-stage vacuum `Φ` leaves a
+    group isomorphic to `U(3)` exactly when it is nonzero with orthogonal columns
+    (`nonempty_stabilizer_pair_equiv_U3_iff`). At those the isomorphism is topological (unit 221);
+    at the others the groups are identified as abstract groups only. Other first vacua still stand.
   • Why the vacua have these shapes (no potential); the magnitudes; the charge's scale; masses.
 
   HYPOTHESES, READ OFF THE BINDERS (`ERRATUM 455`). `stabilizerContinuousEquiv` takes `b = g • a`
