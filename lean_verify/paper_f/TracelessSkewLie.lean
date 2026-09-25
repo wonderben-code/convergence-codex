@@ -83,6 +83,11 @@ statement below.
 ⚠ 20 September 2026 (hardening unit 188): `Matrix.specialUnitaryGroup` is now mentioned in a
 statement — `SkewAdjointExponential.exp_mem_specialUnitaryGroup` — and reached from `traceless n`
 by `expSU`. Still no topology and no compactness; the sentence is kept as written (`ERRATUM 94`).
+⚠ 25 September 2026 (hardening unit 215, `ERRATUM 694`): *still no topology and no compactness* is
+stale since units 206 and 209 — `U(n)` and `SU(n)` are compact in the subspace topology of the
+matrices (`PatiSalamStabiliserTopology.isCompact_unitaryGroup`,
+`PatiSalamTopologicalCopies.isCompact_specialUnitaryGroup`). The file's own sentence, *nothing here
+is a topological statement*, stays true of this file.
 
 **No semisimplicity, no Killing form, no `LieAlgebra.IsSemisimple`.**
 

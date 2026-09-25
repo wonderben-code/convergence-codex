@@ -54,6 +54,13 @@
     `traceless n` the tangent space of anything — `specialUnitaryGroup` is a `Submonoid`, and no
     manifold, Lie group or topology is put on it here or anywhere in the estate (queried:
     `LieGroup` occurs in no `paper_f` file).
+    ⚠ 25 September 2026 (hardening unit 215, `ERRATUM 694`): *or topology … anywhere in the
+    estate* is stale since unit 206, which used the subspace topology of the matrices; `U(n)` and
+    `SU(n)` are compact (`PatiSalamStabiliserTopology.isCompact_unitaryGroup`,
+    `PatiSalamTopologicalCopies.isCompact_specialUnitaryGroup`) and the gauge actions continuous
+    (`PatiSalamTopologicalCopies.continuous_stage1_smul`). No manifold or Lie-group structure is
+    used in any declaration; the query's word now occurs in four `paper_f` files, all in prose.
+    Kept as written (`ERRATUM 94`).
   • `expFull` is a function, not a homomorphism from a group (`Full` is a vector space; `exp` is not
     additive off commuting pairs), and its compatibility with units 178 and 182's representations —
     that `exp A · X · exp(B)ᵀ` integrates the Lie-algebra action `A X + X Bᵀ` — is not stated.

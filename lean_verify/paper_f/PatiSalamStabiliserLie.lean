@@ -53,6 +53,11 @@
     — and the algebra is read off it: `p ∈ stab` iff `oneParamG1 p t` lies in that stabiliser for
     every `t` (`mem_stab_iff_mem_stabilizer`). The stabiliser subgroup itself is not computed:
     its identification with `U(3)` is still absent. The bullet is kept as written (`ERRATUM 94`).
+    ⚠ 25 September 2026 (hardening unit 215, `ERRATUM 694`): the identification the note above
+    calls absent is unit 199's `PatiSalamStabiliserGroup.stabilizerVacEquivU3 :
+    MulAction.stabilizer Stage1Group vac ≃* GroupU3`, a homeomorphism too since unit 206
+    (`PatiSalamStabiliserTopology.stabilizerVacContinuousEquivU3`). The bullet is kept as written
+    (`ERRATUM 94`).
   • The vacuum direction is still a convention and nothing here is dynamics (units 178–179's
     bullets, unchanged).
   • `fixLie` is over `ℂ` and `stabLie` over `ℝ`; the two brackets agree because a product's

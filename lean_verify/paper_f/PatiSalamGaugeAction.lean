@@ -63,9 +63,24 @@
     connectedness is not proved, and nothing says the one-parameter subgroups of `stab` generate
     it. The theorems here characterise the stabiliser ALGEBRAS through one-parameter subgroups;
     they do not determine the stabiliser GROUPS.
+    ⚠ 25 September 2026 (hardening unit 215, `ERRATUM 694`): computed since unit 199 —
+    `PatiSalamStabiliserGroup.stabilizerVacEquivU3` (`≅ U(3)` at stage one) and
+    `stabilizerPairEquivU3` (both vacua); as topological groups since unit 206
+    (`PatiSalamStabiliserTopology.stabilizerVacContinuousEquivU3`); and at every nonzero first-stage
+    vacuum since unit 212 (`PatiSalamFirstStageClassification.stabilizer_trichotomy`).
+    Connectedness, and generation by the one-parameter subgroups, are still not shown. Kept as
+    written (`ERRATUM 94`).
   • No topology, manifold or Lie-group structure on `specialUnitaryGroup` (queried at unit 188:
     `LieGroup` occurs in no `paper_f` file). "Generator" means the derivative at `t = 0` of the
     curve `t ↦ exp (t p) • X` in the matrix space; smoothness in the group element is not stated.
+    ⚠ 25 September 2026 (hardening unit 215, `ERRATUM 694`): the topology is stale. Units 206 and
+    209 put the subspace topology of the matrices to work: `U(n)` and `SU(n)` are compact
+    (`PatiSalamStabiliserTopology.isCompact_unitaryGroup`,
+    `PatiSalamTopologicalCopies.isCompact_specialUnitaryGroup`), the actions are continuous
+    (`continuous_stage1_smul`, `continuous_full_smul`), and every stabiliser is closed and compact
+    (`isClosed_stabilizer`, `compactSpace_stabilizer`). No manifold or Lie-group structure is used
+    in any declaration: the query's word now occurs in four `paper_f` files, all in prose. Kept as
+    written (`ERRATUM 94`).
   • The vacuum's orbit is not shown to be a manifold, and `range jointOrbit` is not shown to be
     its tangent space in a differential-geometric sense — only that its elements are exactly the
     velocities of the one-parameter orbit curves through the vacuum.
