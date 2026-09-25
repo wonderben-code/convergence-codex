@@ -71,6 +71,10 @@
     (`finrank_stabEWAt_dichotomy`), and those are the dimensions of the unbroken groups' Lie
     algebras in the sense matrix groups use (`matLieEW_stabilizer_eq`). The pair beyond units
     203–207, and the groups themselves, still are not classified; the bullet stands for them.
+    ⚠ 25 September 2026 (hardening unit 220, `paper_f/ElectroweakUnbrokenGroup.lean`): the
+    electroweak field's groups are classified there — `SU(2)` when `Φᴴ Φ` is a multiple of the
+    identity and the circle otherwise, at every nonzero `Φ` (`stabilizer_dichotomy`). The pair
+    beyond units 203–207 still is not; the bullet stands for it.
   • The Lie algebras of the two rank-two groups are not computed, and no smooth structure is put on
     any group (unit 209's reason: none in the pinned Mathlib for `SU(n)`).
     ⚠ 25 September 2026 (hardening unit 213): the unbroken SUBALGEBRAS are computed in

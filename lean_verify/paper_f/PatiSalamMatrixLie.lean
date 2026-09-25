@@ -66,6 +66,9 @@
     `finrank_stabEWAt_dichotomy`) — and `mem_matLieEW_stabilizer_iff` is this file's
     `mem_matLie_stabilizer_iff` at stage 2. The groups at stage 2, and everything for pairs, still
     are not.
+    ⚠ 25 September 2026 (hardening unit 220, `paper_f/ElectroweakUnbrokenGroup.lean`): the groups at
+    stage 2 are computed there at every nonzero `Φ` — `SU(2)` or the circle
+    (`stabilizer_dichotomy`). Pairs beyond units 182–207's vacua still are not.
   • The bracket is not carried: that `stabAt X` is closed under the commutator is unit 180's
     argument at `X`, and it needs `TracelessSkewLie`, which this file does not import. Measured:
     with `TracelessSkewLie` in the import closure, `hasDerivAt_star_exp_mul_exp`'s product rule

@@ -58,6 +58,11 @@
   NOT PROVED, said exactly.
   • The groups themselves: that `Stab Φ` is `SU(2)`, as `U ↦ (c⁻¹ • Φ U Φᴴ, U)`, in the scalar case
     and a circle otherwise is not proved; (6) is its Lie algebra.
+    ⚠ 25 September 2026 (hardening unit 220, `paper_f/ElectroweakUnbrokenGroup.lean`): proved there
+    — at every nonzero `Φ` the unbroken group is the commutant of `Φᴴ Φ` in `SU(2)`
+    (`stabilizerEquivCommSU2`): `SU(2)`, as `U ↦ (c⁻¹ • Φ U Φᴴ, U)`, when `Φᴴ Φ = c • 1`
+    (`stabilizerEquivSU2`), and the circle otherwise, rank one or two (`stabilizerEquivCircle`); the
+    two are not isomorphic (`stabilizer_dichotomy`). Kept as written (`ERRATUM 94`).
   • The counts (2)–(5) are for the `(1, 2, 2)` alone under `SU(2)_L × SU(2)_R`. The joint count is
     units 183's and 205's and nothing here changes it: `u(3)` at `(vac, vacEW)`, and the same
     subgroup, `U(3)`, at every nonzero `diag(κ, κ')`. (7) says only which custodial directions
