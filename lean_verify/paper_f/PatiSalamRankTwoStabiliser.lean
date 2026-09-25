@@ -47,9 +47,20 @@
   • What the commutative factor is. That `C(P)` is a circle, `U(1)`, when `P = D Dᴴ` is not a
     multiple of the identity, is not proved here; nor that `SU(2) × SU(2)` and `SU(2) × C(P)` are
     not isomorphic. This file alone does not show that the two cases are different groups.
+    ⚠ 25 September 2026 (hardening unit 212): both proved in `PatiSalamFirstStageClassification`
+    — `commHermitianEquiv` (`C(P) ≃* U(1)` for Hermitian `P` not a multiple of the identity) and
+    `not_nonempty_SU2_SU2_equiv_SU2_circle`. Kept as written (`ERRATUM 94`).
   • The case split in terms of `X`: which rank-two `X` have a `D` with `D Dᴴ` a multiple of the
     identity is not stated in terms of `X` itself, and the `D` of (3) is not unique.
+    ⚠ 25 September 2026 (hardening unit 212): stated in `PatiSalamFirstStageClassification` —
+    `SU(2) × SU(2)` exactly when `Xᴴ X` is a multiple of the identity
+    (`nonempty_stabilizer_equiv_SU2_SU2_iff`), `SU(2) × U(1)` otherwise. That `D` is not unique
+    stands. Kept as written (`ERRATUM 94`).
   • Each `≃*` is of abstract groups; no topology is put on either side here.
+    ⚠ 25 September 2026 (hardening unit 212): each holds as topological groups, the stabiliser
+    being compact — `PatiSalamFirstStageClassification.stabilizerVac2ContinuousEquiv`,
+    `stabilizerVac2ContinuousEquivOfScalar`, `stabilizerVac2ContinuousEquivCircle`. Kept as written
+    (`ERRATUM 94`).
   • Why a vacuum should have rank two, or one: that is a potential's minimum, and there is no
     potential; nor are the magnitudes fixed.
 

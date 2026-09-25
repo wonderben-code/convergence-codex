@@ -46,6 +46,9 @@
     `SU(2)` commuting with `D Dᴴ` (`stabilizerVac2Equiv`): `SU(2) × SU(2)` when `D Dᴴ` is a
     multiple of the identity, the second factor commutative otherwise (`commSU2_mul_comm`).
     That this factor is `U(1)` is not proved there. Kept as written (`ERRATUM 94`).
+    ⚠ 25 September 2026 (hardening unit 212): it is, and the two cases are different groups;
+    `PatiSalamFirstStageClassification.stabilizer_trichotomy`: every nonzero first-stage vacuum
+    leaves exactly one of `U(3)`, `SU(2) × SU(2)`, `SU(2) × U(1)`. Kept as written (`ERRATUM 94`).
   • The second stage. Whether a pair of vacua that is not aligned can still leave `U(3)` unbroken
     is not decided here: unit 203's alignment is sufficient, and nothing in the estate shows it
     necessary.
