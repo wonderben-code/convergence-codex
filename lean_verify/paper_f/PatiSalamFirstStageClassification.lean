@@ -67,6 +67,10 @@
   • The second stage, the pair with the electroweak vacuum, beyond units 203–207.
   • The Lie algebras of the two rank-two groups are not computed, and no smooth structure is put on
     any group (unit 209's reason: none in the pinned Mathlib for `SU(n)`).
+    ⚠ 25 September 2026 (hardening unit 213): the unbroken SUBALGEBRAS are computed in
+    `PatiSalamBrokenCount` — `su(2) × commT D` (`stabAtVac2Equiv`), of dimension six or four
+    (`finrank_stabAt_trichotomy`). That they are these groups' Lie algebras stays unproved, for
+    the same reason. Kept as written (`ERRATUM 94`).
 
   HYPOTHESES, READ OFF THE BINDERS (`ERRATUM 455`). `comm_diagonal_iff` and `commDiagonalEquiv` take
   `f 0 ≠ f 1`; `star_mul_self_of_lower_zero` takes `SU(2)` membership and `M 1 0 = 0`;
