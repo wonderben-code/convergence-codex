@@ -51,6 +51,8 @@
     `PatiSalamChargeCentre` — `PatiSalamChargeCentre.range_charge_eq_center`: the charge's
     one-parameter subgroup, carried through `stabilizerPairEquivU3`, is exactly the centre of
     `U(3)`. The rest of this bullet stands; kept as written (`ERRATUM 94`).
+    ⚠ 25 September 2026 (hardening unit 201): and the quotient is written —
+    `PatiSalamUnbrokenSplit.unbrokenEquiv` (`(SU(3) × U(1)) ⧸ K`, `K` cyclic of order three).
   • Still no potential, no masses and no gauge bosons as objects (unit 191's NOT list stands).
 
   HYPOTHESES, READ OFF THE BINDERS (`ERRATUM 455`). `blockDiag4_mem_unitary` takes `A` unitary and

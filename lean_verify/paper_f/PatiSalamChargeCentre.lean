@@ -29,6 +29,10 @@
   • The rest of the splitting. `U(3) = (SU(3) × U(1)) ⧸ ℤ₃`: the `U(1)` — the centre — is now the
     charge's subgroup; that `SU(3)_c` is the determinant-one part, and the quotient by `ℤ₃`, are not
     written.
+    ⚠ 25 September 2026 (hardening unit 201): written in `PatiSalamUnbrokenSplit` —
+    `PatiSalamUnbrokenSplit.unbrokenEquiv` identifies `(SU(3) × U(1)) ⧸ K` with the stabiliser of
+    both vacua, `K` cyclic of order three, the `SU(3)` factor acting on colour only. Kept as
+    written (`ERRATUM 94`).
   • Topology: `stabilizerPairEquivU3` is an isomorphism of abstract groups (unit 199's NOT list).
   • The vacua are still chosen (`ASSUMPTIONS_LEDGER` 60); no potential, no masses.
 
