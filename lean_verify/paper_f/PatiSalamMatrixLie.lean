@@ -68,6 +68,11 @@
     `Mathlib.Algebra.Lie.Classical` or `Mathlib.Algebra.Lie.Graded` alone, and raising the
     instance-search budget twentyfold does not help; with `Mathlib.Algebra.Lie.Prod` alone it
     elaborates. `ElectroweakVacuumStabiliser` records a timeout of the same family.
+    ⚠ 25 September 2026 (hardening unit 218, `paper_f/PatiSalamUnbrokenLieAlgebra.lean`): carried
+    there — `stabLieAt X` is a `LieSubalgebra ℝ` of `gl(4) × gl(2)` at every vacuum, and
+    `matLie_stabilizer_eq` identifies the unbroken group's Lie algebra with it. That file imports
+    this one and `PatiSalamStabiliserLie`, and elaborates no derivative. Kept as written
+    (`ERRATUM 94`).
   • Goldstone's theorem, a potential, masses: unchanged (units 179 and 184).
 
   HYPOTHESES, READ OFF THE BINDERS (`ERRATUM 455`). `mem_skewAdjoint_of_forall_exp_mem_unitaryGroup`
