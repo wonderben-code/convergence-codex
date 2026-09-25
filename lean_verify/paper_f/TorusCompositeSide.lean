@@ -110,6 +110,15 @@
   proof already builds `clsCount k' − clsCount k` and proves it IS a relation, and uses
   `NoCosRelation` only in its final line to force it to zero — so the per-frequency statement is
   that hypothesis weakened to *no relation fits inside `clsCount k`*.
+  ⚠ 25 September 2026 (hardening unit 196, `ERRATUM 685`): the FIRST reason in the note above
+  is itself false and is kept as written (`ERRATUM 94`). The citation was right: item 9 of the
+  running DECISIONS NEEDED list in `PROGRESS_LOG` asks *whether an item whose stated objective
+  is proved, by a route its own `BLOCKED ON` line did not anticipate, should be marked closed* —
+  the question of `ASSUMPTIONS_LEDGER` 51, which the note itself names as the closest species.
+  And *"`DECISIONS NEEDED <n>` means `ASSUMPTIONS_LEDGER` entry `<n>` throughout this estate"* is
+  false: three numberings share the phrase (`ERRATUM 683`), and of the note's four examples only
+  `48` is read that way. The second reason — `PROOF_STRATEGY` §3 rules `L102` OPEN — stands, and
+  unit 105 answered the per-frequency question.
 
   WHAT IS **NOT** CLAIMED.
 
