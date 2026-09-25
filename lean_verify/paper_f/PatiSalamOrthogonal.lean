@@ -66,6 +66,16 @@
     a `Matrix PSIndex PSIndex ℚ` (a `Matrix.diagonal`), not a representation. So there is no
     `ρ_Y` to feed `LieModule.traceForm`, and the four-factor orthogonal sum cannot be
     stated — `UNLOCK_WATCHLIST` 260.
+    ⚠ 25 September 2026 (hardening unit 197, `ERRATUM 686`): this bullet's *what is missing*
+    and *so there is no `ρ_Y`* were overtaken twice, and are kept as written (`ERRATUM 94`).
+    The same day `ERRATUM 569` found `Y = psRep (½ B₄, 0, T₃)`
+    (`HyperchargeInPatiSalam.Y_eq_psRep`): the hypercharge already acts on the 16 as an element
+    of the Pati–Salam image, so there is no fourth factor and no four-factor sum to state. On
+    20 September `PatiSalamLieModule` made the 16 a faithful `LieModule` over `SM` through
+    `smToPSY` (`instIsFaithfulSM`), its `ℂ` slot acting as `Y` (`lie_u1_eq_Y`), and
+    `LieModule.traceForm ℂ SM` gives `10/3` on that slot (`traceForm_SM_u1`). What stands:
+    `WeinbergIndex.Y` is a diagonal `ℚ` matrix, not a representation; and `smToPS`'s `u(1)` is
+    not `Y`'s line (`hypercharge_not_mem_range_smToPS`, `ERRATUM 679`).
 
   0 sorry. 0 new axioms. `#print axioms` on every declaration below:
   [propext, Classical.choice, Quot.sound].
