@@ -34,6 +34,13 @@
   • The VACUUM DIRECTION is a convention. `vac = E₃₀` is the standard `ν^c` slot; nothing here
     derives it, and a different vector has a different stabiliser. What is no longer a convention
     is hypercharge GIVEN the vacuum — the file's contribution is that one implication.
+    ⚠ 25 September 2026 (hardening unit 207, `ERRATUM 690`): *a different vector has a different
+    stabiliser* is false as written. Every nonzero multiple of `vac`, `-vac` among them, has the
+    same stabiliser — for the groups (`PatiSalamVacuumOrbit.stabilizer_smul_of_ne_zero`) and for
+    this file's `stab` (`PatiSalamSameStabiliser.mem_stab_iff_act_smul_vac`). What is true: a
+    first-stage vacuum has exactly `vac`'s stabiliser if and only if it is a nonzero multiple of
+    `vac` (`PatiSalamSameStabiliser.stabilizer_eq_stabilizer_vac_iff`). Kept as written
+    (`ERRATUM 94`).
   • No dynamics: no potential, no minimisation, no mass, no Goldstone theorem. *Symmetry
     breaking* here means exactly *the stabiliser of a vector*, and nothing else.
   • The DIMENSIONS are not computed here. That `finrank ℝ stab = 9` (`stab ≅ u(3)`) and that the

@@ -38,6 +38,13 @@
   NOT PROVED, said exactly.
   • The VACUA are still chosen (`ASSUMPTIONS_LEDGER` 60): these are the stabilisers of `vac` and
     `vacEW`, and a vector of another orbit type has another stabiliser.
+    ⚠ 25 September 2026 (hardening unit 207, `ERRATUM 690`): true by definition if an orbit type
+    is a conjugacy class of stabilisers, and false in the sense unit 203 gave the words (rank one,
+    aligned): `diag(0, 1)` is not aligned with `vac` and leaves this file's subgroup (unit 205).
+    Exactly: a pair has the stabiliser of `(vac, vacEW)` if and only if it is
+    `(c • vac, diag(κ, κ'))` with `c ≠ 0` and `(κ, κ') ≠ 0`
+    (`PatiSalamSameStabiliser.stabilizer_pair_eq_iff`), and a conjugate of it exactly on the gauge
+    transforms of those pairs (`stabilizer_conj_iff`). Kept as written (`ERRATUM 94`).
   • Nothing topological. `≃*` is an isomorphism of abstract groups; that it is a homeomorphism or an
     isomorphism of Lie groups is not stated, and the group's Lie algebra is not computed here. The
     link to the algebra stabilisers of units 179–184 is still the one unit 191 proved:
