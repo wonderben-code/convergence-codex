@@ -53,6 +53,11 @@
     non-orthogonal columns leaves `SU(3) × {±1}`, not isomorphic to `U(3)`
     (`nonempty_stabilizer_pair_equiv_U3_iff`), and so is not aligned
     (`not_aligned_of_not_orthogonal`). Kept as written (`ERRATUM 94`).
+    ⚠ 25 September 2026 (hardening unit 225, `paper_f/PatiSalamPairCriterion.lean`): and the
+    rank-two half holds for pairs — a pair whose first vacuum has rank two never leaves `U(3)`
+    (`not_nonempty_stabilizer_pair_equiv_U3_of_rank_eq_two`); which pairs do, for every nonzero
+    first vacuum, is `nonempty_stabilizer_pair_equiv_U3_iff_of_ne_zero`. Kept as written
+    (`ERRATUM 94`).
   • Why the vacuum should have rank one and be aligned — that is a potential's minimum, and there
     is no potential; nor are the two magnitudes `r`, `s` fixed.
   • Each `≃*` is of abstract groups, and it is conjugation by a chosen `g`: the isomorphism exists

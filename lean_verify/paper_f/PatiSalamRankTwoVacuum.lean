@@ -56,6 +56,11 @@
     alignment is not necessary (`exists_not_aligned_stabilizer_equiv_U3`), and every nonzero
     `diag(κ, κ')` leaves the same subgroup as `vacEW` (`stabilizer_vacKK_eq`). Kept as written
     (`ERRATUM 94`).
+    ⚠ 25 September 2026 (hardening unit 225, `paper_f/PatiSalamPairCriterion.lean`): and which — for
+    a nonzero first vacuum `X`, exactly the pairs with `X` of rank one, `Φ ≠ 0` and `Φᴴ Φ` commuting
+    with `(Xᴴ X)ᵀ` (`nonempty_stabilizer_pair_equiv_U3_iff_of_ne_zero`); a rank-two first vacuum
+    leaves `U(3)` with no second, this file's theorem for pairs
+    (`not_nonempty_stabilizer_pair_equiv_U3_of_rank_eq_two`). Kept as written (`ERRATUM 94`).
   • `X = 0`, whose stabiliser is the whole group, is excluded by hypothesis and not examined.
   • Why the vacuum should have rank one: that is a potential's minimum, and there is no potential;
     nor are the magnitudes fixed. Each `≃*` is of abstract groups.

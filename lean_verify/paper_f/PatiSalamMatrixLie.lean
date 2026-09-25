@@ -76,6 +76,9 @@
     ⚠ 25 September 2026 (hardening unit 222, `paper_f/PatiSalamJointClassification.lean`): the
     groups at every `(vac, Φ)` are computed there — `U(3) × SU(2)`, `U(3)` or `SU(3) × {±1}`
     (`joint_trichotomy`); other first vacua still are not.
+    ⚠ 25 September 2026 (hardening unit 225, `paper_f/PatiSalamPairCriterion.lean`): at every
+    rank-one first vacuum too (`joint_trichotomy_of_rank_eq_one`); at a rank-two one, only that none
+    is `U(3)`.
   • The bracket is not carried: that `stabAt X` is closed under the commutator is unit 180's
     argument at `X`, and it needs `TracelessSkewLie`, which this file does not import. Measured:
     with `TracelessSkewLie` in the import closure, `hasDerivAt_star_exp_mul_exp`'s product rule

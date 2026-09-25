@@ -85,6 +85,12 @@
     orthogonal columns and `SU(3) × {±1}` otherwise, pairwise non-isomorphic (`joint_trichotomy`,
     `nonempty_stabilizer_pair_equiv_iff`). Other first vacua still are not; the bullet stands for
     them.
+    ⚠ 25 September 2026 (hardening unit 225, `paper_f/PatiSalamPairCriterion.lean`): and at every
+    rank-one first vacuum, by conjugation — `U(3) × SU(2)` at `Φ = 0`, `U(3)` when `Φᴴ Φ` commutes
+    with `(Xᴴ X)ᵀ`, `SU(3) × {±1}` otherwise (`joint_trichotomy_of_rank_eq_one`); at a rank-two
+    first vacuum, only that no `Φ` leaves `U(3)`
+    (`not_nonempty_stabilizer_pair_equiv_U3_of_rank_eq_two`). The groups at rank-two pairs still are
+    not; the bullet stands for them.
   • The Lie algebras of the two rank-two groups are not computed, and no smooth structure is put on
     any group (unit 209's reason: none in the pinned Mathlib for `SU(n)`).
     ⚠ 25 September 2026 (hardening unit 213): the unbroken SUBALGEBRAS are computed in

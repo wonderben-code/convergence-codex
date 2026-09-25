@@ -45,8 +45,15 @@
 
   NOT PROVED, said exactly.
   • Other first-stage vacua: only the estate's `vac`, as in unit 222.
+    ⚠ 25 September 2026 (hardening unit 225, `paper_f/PatiSalamPairCriterion.lean`): every rank-one
+    first vacuum, as topological groups, there (`joint_trichotomy_of_rank_eq_one`); a rank-two one
+    leaves `U(3)` with no `Φ` (`nonempty_stabilizer_pair_continuousEquiv_U3_iff_of_ne_zero`). Kept
+    as written (`ERRATUM 94`).
   • Lie-group structure: no smooth structure is put on any group here, for unit 209's reason.
   • The Lie algebras are units 219's and 221's counts; no statement here joins them to these groups.
+    ⚠ 25 September 2026 (hardening unit 225, `paper_f/PatiSalamPairCriterion.lean`): for the joint
+    groups at `vac`, joined for the isomorphism class there
+    (`nonempty_stabilizer_pair_equiv_iff_finrank_eq`); the electroweak stage alone is not.
   • Which vacuum, masses: unchanged from units 220 and 222.
 
   HYPOTHESES, READ OFF THE BINDERS (`ERRATUM 455`). `continuous_stabilizerEquivSU2` and

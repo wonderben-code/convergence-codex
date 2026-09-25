@@ -60,6 +60,10 @@
     the others too, as topological groups (`stabilizerPairZeroContinuousEquiv`,
     `stabilizerPairContinuousEquivSU3Sign`, `nonempty_stabilizer_pair_continuousEquiv_U3_iff`).
     Other first vacua still stand.
+    ⚠ 25 September 2026 (hardening unit 225, `paper_f/PatiSalamPairCriterion.lean`): both pointers'
+    *other first vacua*, decided for every nonzero first vacuum, as topological groups too: `(X, Φ)`
+    leaves `U(3)` exactly when `X` has rank one, `Φ ≠ 0` and `Φᴴ Φ` commutes with `(Xᴴ X)ᵀ`
+    (`nonempty_stabilizer_pair_continuousEquiv_U3_iff_of_ne_zero`).
   • Why the vacua have these shapes (no potential); the magnitudes; the charge's scale; masses.
 
   HYPOTHESES, READ OFF THE BINDERS (`ERRATUM 455`). `stabilizerContinuousEquiv` takes `b = g • a`

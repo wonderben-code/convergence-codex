@@ -64,8 +64,19 @@
     written (`ERRATUM 94`).
   • Other first-stage vacua: only the estate's `vac`. For a rank-one `X`, unit 203's conjugation
     would transport the statements; that transport is not written.
+    ⚠ 25 September 2026 (hardening unit 225, `paper_f/PatiSalamPairCriterion.lean`): written there —
+    every pair with a rank-one first vacuum has the unbroken group of a pair `(vac, Φ gR)`
+    (`exists_stabilizer_pair_continuousEquiv`), so the trichotomy holds at every rank-one `X`, with
+    the condition that `Φᴴ Φ` commute with `(Xᴴ X)ᵀ` (`joint_trichotomy_of_rank_eq_one`); and a
+    rank-two first vacuum leaves `U(3)` with no `Φ`
+    (`not_nonempty_stabilizer_pair_equiv_U3_of_rank_eq_two`). Kept as written (`ERRATUM 94`).
   • The joint Lie algebras are unit 221's counts, twelve, nine and eight; no statement here joins
     them to these groups.
+    ⚠ 25 September 2026 (hardening unit 225, `paper_f/PatiSalamPairCriterion.lean`): joined for the
+    isomorphism class there — two second-stage vacua leave isomorphic joint groups exactly when the
+    counts agree (`nonempty_stabilizer_pair_equiv_iff_finrank_eq`); that the counts are the
+    dimensions of these groups' Lie algebras is unit 217's `mem_matLieFull_stabilizer_iff` with unit
+    221's count.
   • Which vacuum: a potential's minimum, and there is no potential. *Colour* and *electric charge*
     are the physics names of unit 201's `diag(A, 1)` and unit 200's `qFull`; what a vacuum that
     breaks the charge would mean for the photon is physics the estate does not state.

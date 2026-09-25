@@ -62,6 +62,10 @@
   • By unit 217's `mem_matLieFull_stabilizer_iff` the counts in (4) are the joint groups' Lie
     algebras in the sense matrix groups use; no statement here joins the two files.
   • Other first-stage vacua: only the estate's `vac`.
+    ⚠ 25 September 2026 (hardening unit 225, `paper_f/PatiSalamPairCriterion.lean`): the groups, and
+    whether `U(3)` is left, are decided at every nonzero first vacuum there
+    (`joint_trichotomy_of_rank_eq_one`, `nonempty_stabilizer_pair_equiv_U3_iff_of_ne_zero`); the
+    counts in (4) are not transported.
   • Which vacuum, masses, and what an eight-generator vacuum would mean physically: nothing here.
     ⚠ 25 September 2026 (hardening unit 222, `paper_f/PatiSalamJointClassification.lean`): what such
     a vacuum leaves is computed there — colour, `(diag(A, 1), 1, 1)`

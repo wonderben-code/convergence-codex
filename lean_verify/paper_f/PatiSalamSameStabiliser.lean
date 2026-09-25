@@ -57,6 +57,10 @@
     isomorphic to `U(3)` exactly when `Φ` is nonzero with orthogonal columns
     (`nonempty_stabilizer_pair_equiv_U3_iff`). Other first vacua stay open. Kept as written
     (`ERRATUM 94`).
+    ⚠ 25 September 2026 (hardening unit 225, `paper_f/PatiSalamPairCriterion.lean`): decided for
+    every nonzero first vacuum — `(X, Φ)` leaves a group isomorphic to `U(3)` exactly when `X` has
+    rank one, `Φ ≠ 0` and `Φᴴ Φ` commutes with `(Xᴴ X)ᵀ`
+    (`nonempty_stabilizer_pair_equiv_U3_iff_of_ne_zero`). Kept as written (`ERRATUM 94`).
   • The Lie-algebra form of (1): that `stab` determines the line through `vac` is not stated; (4)
     is rescaling only.
   • Why the vacua have these shapes (no potential); masses.

@@ -43,6 +43,10 @@
     second-stage vacuum is classified (`joint_trichotomy`). Kept as written (`ERRATUM 94`).
   • The first-stage vacuum is `vac` itself; other rank-one first-stage vacua are covered only by
     conjugation, as in unit 203, and that transport is not written for this file's statements.
+    ⚠ 25 September 2026 (hardening unit 225, `paper_f/PatiSalamPairCriterion.lean`): the question
+    these statements answer — whether `U(3)` is left — is decided at every rank-one first vacuum
+    there (`nonempty_stabilizer_pair_equiv_U3_iff_of_rank_eq_one`); the subgroup equalities
+    themselves are not transported.
   • Why the vacua have these shapes (no potential); the magnitudes; topology.
     ⚠ 25 September 2026 (hardening unit 209, `ERRATUM 692`): all three bullets above were
     answered, in whole or in part, by later units that did not annotate this header. Topology,
