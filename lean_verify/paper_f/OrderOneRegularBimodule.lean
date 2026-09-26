@@ -59,6 +59,14 @@
     its one-block case, for every finite index type
     (`OrderOneBlockDiagonal.orderOne_iff_kron_of_const`). Multiplicities, sub-bimodules, `ℝ`/`ℍ` and
     the cascade stand; rung 2 is not climbed.
+    ⚠ 26 September 2026 (hardening unit 232, `paper_f/OrderOneCommutant.lean`):
+    multiplicities, sub-bimodules and `ℝ`/`ℍ` factors as sets of complex matrices are written
+    there in commutant form — order-one iff `D = X + Y`, `X` commuting with the right action and
+    `Y` with the left (`OrderOneCommutant.orderOne_iff_commutant`,
+    `orderOne_iff_commutant_compress`) — and this file's `C ⊗ 1 + 1 ⊗ B` is shown there to be
+    forced at any sizes with no multiplicity (`orderOne_iff_kronSum_of_unique`) and not forced
+    at multiplicity two (`exists_orderOne_not_kronSum`). Entry 262 and the cascade stand; rung 2
+    is not climbed.
   * Uniqueness of `(C, B)`: the pair is determined only up to `(C + λ·1, B − λ·1)`, and that is
     not stated.
     ⚠ 26 September 2026 (hardening unit 228, `paper_f/OrderOneBlockDiagonal.lean`): stated

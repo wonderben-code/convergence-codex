@@ -66,6 +66,15 @@
   • Multiplicities and sub-bimodules. CCM's `H_F` contains some pieces several times (the
     generations) and others not at all; here every piece occurs exactly once. The statement for a
     sum with multiplicities, and for the compression to a sub-bimodule, is not written.
+    ⚠ 26 September 2026 (hardening unit 232, `paper_f/OrderOneCommutant.lean`): written
+    there in commutant form, for any sets of test matrices over any field — order-one iff
+    `D = X + Y`, `X` commuting with the right action and `Y` with the left
+    (`OrderOneCommutant.orderOne_iff_commutant`), and on a sub-bimodule with both parts on it
+    (`orderOne_iff_commutant_compress`); computed for full matrix algebras with a multiplicity on
+    one side (`orderOne_multiplicity_iff`), where at multiplicity two not every solution is
+    `C ⊗ 1 + 1 ⊗ B` (`exists_orderOne_not_kronSum`). Block-diagonal test sets with
+    multiplicities — an analogue of `blockKron` — are not computed, and that `H_F` is such a
+    compression is not written.
   • The real structure `J`, the grading `γ` and the KO signs: units 169 and 170 did them for one
     factor of size two; nothing here.
     ⚠ 26 September 2026 (hardening unit 230, `paper_f/OrderOneRealBlock.lean`): `J` is
@@ -73,6 +82,11 @@
     (`OrderOneRealBlock.orderOne_exchConj_iff`); `γ` and the KO signs are not.
   • Quaternionic factors and the real case (`UNLOCK_WATCHLIST` 262): the factors here are matrix
     algebras over one commutative ring.
+    ⚠ 26 September 2026 (hardening unit 232, `paper_f/OrderOneCommutant.lean`): in
+    part — the test sets there are any sets of matrices over any field, `ℍ` inside `M₂(ℂ)` among
+    them, and order-one against them is the sum of the two commutants
+    (`OrderOneCommutant.orderOne_iff_commutant`); the commutants for `ℍ` are not computed, and
+    entry 262's faithfulness question is untouched.
   • Nothing about the cascade, the factor list, or a tag: rung 2 is not climbed.
 
   HYPOTHESES, READ OFF THE BINDERS (`ERRATUM 455`). `single_mem_blockDiagSet` takes `β k = β l`.

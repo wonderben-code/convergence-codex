@@ -46,6 +46,11 @@
     which gradings a product admits, and what `Dγ = −γD` then leaves of `A`, are not here.
   • Multiplicities and sub-bimodules (CCM's `H_F`), and real or quaternionic factors
     (`UNLOCK_WATCHLIST` 262), as in unit 228.
+    ⚠ 26 September 2026 (hardening unit 232, `paper_f/OrderOneCommutant.lean`): in
+    part — order-one alone, without `J`, is written there for any sets of test matrices over any
+    field and on sub-bimodules, in commutant form (`OrderOneCommutant.orderOne_iff_commutant`,
+    `orderOne_iff_commutant_compress`), and computed for full matrix algebras with a multiplicity
+    (`orderOne_multiplicity_iff`); `J` with multiplicities is not.
   • Nothing about the cascade, the factor list, or a tag: rung 2 is not climbed.
 
   HYPOTHESES, READ OFF THE BINDERS (`ERRATUM 455`). `transpose_mem_blockDiagSet` takes

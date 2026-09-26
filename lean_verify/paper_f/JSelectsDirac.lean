@@ -56,6 +56,11 @@
     `D = matAlg (blockKron β A Ā)` (`OrderOneRealBlock.orderOne_jInv_matAlg_iff`) — and this file's
     theorem holds at every finite index type (`orderOne_jInv_matAlg_iff_one`), so *`n = 2` only*
     above is answered too. Anything with multiplicities — CCM's `A_F` on `H_F` — is not.
+    ⚠ 26 September 2026 (hardening unit 232, `paper_f/OrderOneCommutant.lean`): the
+    order-one half with multiplicities and on sub-bimodules is written there in commutant form
+    (`OrderOneCommutant.orderOne_iff_commutant`, `orderOne_iff_commutant_compress`), and
+    computed for full matrix algebras with a multiplicity (`orderOne_multiplicity_iff`); `J`
+    with multiplicities is not.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
