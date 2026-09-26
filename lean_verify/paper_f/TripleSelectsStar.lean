@@ -52,6 +52,10 @@
   WHAT IS **NOT** PROVED, said exactly.
   * Anything about the order-one condition — rung 2's SECOND half in §W9.8's words; `J`, `D`, `γ`
     and the KO-6 signs are carried by every `T` here and used by nothing.
+    ⚠ 26 September 2026 (unit 229, `ERRATUM 698`): the order-one condition is answered
+    on the witness's own space — order-one (unit 168), `J` (169) and `γ` (170) fix `D` to
+    `t • Dccm` (`GammaFixesDirac.ccm_fixes_dirac`) — and for `M_N` over a product of matrix algebras
+    (unit 228); the theorems here still use none of it. Kept as written (`ERRATUM 94`).
   * That any estate algebra other than `M₂(ℂ)` with the conjugate transpose IS the algebra of a
     faithful `Triple`: `realWitness` is the only non-scalar instance (`scalarWitness` is the
     other), and its star is Mathlib's. No `Triple` over `Mₙ(ℂ) × Mₙ(ℂ)` exists in the estate, so

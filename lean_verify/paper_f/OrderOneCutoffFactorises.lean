@@ -58,6 +58,10 @@
     off the diagonal; no theorem here names it as a kernel dimension.
   • `n = 2` for everything on `Hw`; (1) is at every `n ≥ 1`, and its `NeZero n` is inherited
     from `orderOne_iff_kron`, which needs one index to name `M (0,0) (0,0)`.
+    ⚠ 26 September 2026 (unit 229, `ERRATUM 698`): unit 228's
+    `OrderOneBlockDiagonal.orderOne_iff_kron_of_const` derives the classification at every finite
+    index type, the empty one included, so the reason is gone; (1) is not restated and keeps
+    `[NeZero n]`. Unit 228's search for the sentences it answered missed this one.
 
   HYPOTHESES, READ OFF THE BINDERS (`ERRATUM 455`). (1) takes `[NeZero n]` and the order-one
   hypothesis; (2) the order-one hypothesis on `Hw`; the nine declarations of (3) take no

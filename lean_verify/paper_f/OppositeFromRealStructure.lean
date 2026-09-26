@@ -63,6 +63,10 @@
     action is implementable; what is not built is a `D` compatible with `Jprod` together with
     a grading, nor is it shown that one exists. `Jprod_not_commute_Dw` rules out ONE `D`, the
     one already there.
+    ⚠ 26 September 2026 (unit 229, `ERRATUM 698`): built 26 minutes after this file,
+    in `RealSpectralWitness` (`007ffbc`): `Dccm` commutes with `Jprod` and `gammaCcm` is a grading
+    with the KO-6 signs (`ccm_conditions`); `D` anticommuting with it followed in `bb8d637`
+    (`Dccm_anticomm_gammaCcm`). Kept as written (`ERRATUM 94`).
   * ~~**`Triple` is NOT amended here.**~~ **AMENDED the same day**, in the unit after the one
     that built this file: `Triple` now carries `πOp_impl`, and `OrderOneNontrivial`'s witness
     was deleted because it fails that field, with `RealSpectralWitness.realWitness` as its

@@ -48,6 +48,10 @@
     CCM's factor list and real or quaternionic factors are not.
   * What the scale `t` means (a mass, a sign); `Dccm` IS self-adjoint (`Dccm_selfAdjoint`), so
     `t • Dccm` is, but nothing is said about its spectrum.
+    ⚠ 26 September 2026 (unit 229, `ERRATUM 698`): in part, by unit 172 the same day:
+    `Dsym`, whose `matAlg` is `Dccm`, is the diagonal matrix with entries `2, 0, 0, −2`
+    (`OrderOneCutoffFactorises.Dsym_eq_diagonal`). The spectrum of `t • Dccm` as Mathlib's
+    `spectrum` is not stated, and what `t` means stands. Kept as written (`ERRATUM 94`).
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/

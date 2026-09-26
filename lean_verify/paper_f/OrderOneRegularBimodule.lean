@@ -20,6 +20,9 @@
   So on the regular bimodule the order-one condition is not a constraint to be checked witness by
   witness; it is a description of the whole solution set, and `Dccm` is the point of it that `J`
   and `γ` then pick out. The `J` half of the docstring's sentence (`B = Ā`) is not proved here.
+  ⚠ 26 September 2026 (unit 229, `ERRATUM 698`): proved the same day by unit 169 —
+  order-one and `Jprod`-invariance hold iff `D = A ⊗ 1 + 1 ⊗ Ā` (`JSelectsDirac.orderOne_jInv_iff`).
+  Kept as written (`ERRATUM 94`).
 
   WHAT IS PROVED (matrix level: `R` any commutative ring; `n ≥ 1` where `0 : Fin n` is used).
   * `mul_single_kron_one_apply`, `single_kron_one_mul_apply`, `mul_one_kron_single_apply`,
@@ -40,6 +43,9 @@
   WHAT IS **NOT** PROVED, said exactly.
   * The `J` half of the docstring's sentence — that `Jprod D Jprod = D` forces `B = Ā` up to the
     scalar the two slots share. Not here.
+    ⚠ 26 September 2026 (unit 229, `ERRATUM 698`): proved the same day by unit 169
+    (`JSelectsDirac.orderOne_jInv_iff`; the shared scalar is real and absorbed into `A`). Kept as
+    written (`ERRATUM 94`).
   * Anything off the REGULAR bimodule. CCM imposes order-one on `A_F` acting on the fermion space
     `H_F`, not on `A` acting on itself, and nothing here transfers. No factor list is cut; two
     factors, `ℝ`/`ℍ`, unequal sizes, the cascade — none of it. Rung 2 is not climbed; its second

@@ -52,6 +52,12 @@
     called the `J`-selection *the second half*; `ERRATUM 673` records the misnomer.)
   * Anything about the order-one condition, the pair `(A, A°)`, more than two factors, unequal
     sizes, or `ℝ`/`ℍ`. `[NeZero n]` stands on the classification statements.
+    ⚠ 26 September 2026 (unit 229, `ERRATUM 698`): the order-one condition is answered
+    elsewhere — on the regular bimodule of `Mₙ(ℂ)` (unit 168,
+    `OrderOneRegularBimodule.orderOne_iff_kron`), with `J` and `γ` on `M₂(ℂ)` (units 169 and 170),
+    and for `M_N` over a product of matrix algebras (unit 228,
+    `OrderOneBlockDiagonal.orderOne_iff`). For the ⋆-structures, more than two factors, unequal
+    sizes and `ℝ`/`ℍ` stand. Kept as written (`ERRATUM 94`).
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/

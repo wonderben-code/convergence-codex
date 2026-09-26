@@ -103,6 +103,11 @@
   * **Rung 2's own next step is now stateable and is not taken here.** The finding says the
     content lives in the reducible case; the unit does not then go on to classify the
     reducible ones, and no decomposition of `H` into `π`-isotypic pieces is built.
+    ⚠ 26 September 2026 (unit 229, `ERRATUM 698`): in part —
+    order-one is solved on the regular bimodule of `Mₙ(ℂ)`, where `π` is reducible (unit 168,
+    `OrderOneRegularBimodule.orderOne_iff_kron`), and for `M_N` over a product of matrix algebras
+    (unit 228, `OrderOneBlockDiagonal.orderOne_iff`). No isotypic decomposition is built, and no
+    general reducible case is classified. Kept as written (`ERRATUM 94`).
   * ~~**`J` is a linear map, not an antilinear one.**~~ **THE FIELD HAS BEEN WIDENED and the
     defect is gone — `ERRATUM 571`.** `J` now has type `H →ₛₗ[starRingEnd 𝕜] H`, which Lean
     prints as `H →ₗ⋆[𝕜] H` and which is exactly a conjugate-linear map; the three KO-6 sign

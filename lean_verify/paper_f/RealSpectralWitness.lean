@@ -75,6 +75,10 @@
     the reason this file exists and which would be meaningless if its subject vanished.
   * **No uniqueness.** Four monomial `γ`s were found and one was taken; nothing says the
     quintuple is unique, nor that `Dsym` is the only compatible `D`.
+    ⚠ 26 September 2026 (unit 229, `ERRATUM 698`): for `gammaCcm` it is, up to a real
+    scale — order-one, `Jprod`-invariance and `Dγ = −γD` hold exactly for `t • Dccm`, `t` real
+    (unit 170, `GammaFixesDirac.ccm_fixes_dirac`). The quintuple's `γ` is still one of four found.
+    Kept as written (`ERRATUM 94`).
   * ~~**`D` is not shown to anticommute with `γ`**~~ — **CLOSED**, `Dccm_anticomm_gammaCcm`,
     which is what the change of `D` from `σ₁` to `σ₃` bought. **What is still missing from
     CCM's list is that `γ` be EVEN**, i.e. commute with `π`. `gammaCcm` does not, and

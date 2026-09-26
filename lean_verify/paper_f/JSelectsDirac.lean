@@ -38,6 +38,9 @@
   WHAT IS **NOT** PROVED, said exactly.
   * The grading. CCM also asks `Dγ = −γD`; the docstring says this cuts `A` to a two-dimensional
     real space spanned by `i·1` (which gives `D = 0`) and `σ₃`. Not here.
+    ⚠ 26 September 2026 (unit 229, `ERRATUM 698`): proved the same day by unit 170
+    (`GammaFixesDirac.ccm_fixes_dirac`): with `gammaCcm`, `A = diag(a, −ā)` and `D = t • Dccm`, `t`
+    real — the docstring's two-dimensional real space. Kept as written (`ERRATUM 94`).
   * The fibre of `A ↦ piW A + piOpW (op (star A))`: adding `i t·1` (`t` real) to `A` does not
     change `D`, and that this is the whole fibre is not stated.
   * `n = 2` only, because `Jprod`, `piW`, `piOpW` are defined on `Hw` only; the Kronecker lemmas are

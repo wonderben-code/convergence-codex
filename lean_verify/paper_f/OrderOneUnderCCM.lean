@@ -58,6 +58,9 @@
     as a citation in that section; the theorem below does not use it.
   * **No `K`-theory, no cascade, no KO-dimension**, and `D` is still not shown to anticommute
     with `γ` in any witness.
+    ⚠ 26 September 2026 (unit 229, `ERRATUM 698`): shown 38 minutes after this file, in
+    unit 29's amendment (`bb8d637`): `RealSpectralWitness.Dccm_anticomm_gammaCcm`, the witness's
+    `D` anticommutes with its `γ`; `WALLS` §W9.7 (1) records it. Kept as written (`ERRATUM 94`).
 
   0 sorry. 0 new axioms. `#print axioms` on every declaration below:
   [propext, Classical.choice, Quot.sound].
