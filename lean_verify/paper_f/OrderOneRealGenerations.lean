@@ -51,6 +51,11 @@
     only. Block-diagonal algebras, `ℍ` and CCM's `A_F` with generations are not done, and `H_F`
     is not named.
   • The grading `γ` and the KO signs with a generation index, and what `Dγ = −γD` leaves of `A`.
+    ⚠ 26 September 2026 (hardening unit 236, `paper_f/GammaFixesDiracGenerations.lean`): in
+    part — at `ι = Fin 2`, with unit 170's `gammaMat` and the identity on the generation,
+    `Dγ = −γD` leaves `A = diag(a, −ā)` block by block and `D = Dsym ⊗ R` with `R` real
+    (`GammaFixesDiracGenerations.gen_fixes_dirac`), and `JγJ = −γ` (`exchConjGen_gammaGen`);
+    other `ι`, other gradings and products are not.
   • What `A` is physically: nothing here identifies `A`'s action on the generation label with
     Yukawa matrices, or reads a mass or a mixing angle off it.
   • That the trace of the exponential fails to factorise for the operator in (4): only the shape

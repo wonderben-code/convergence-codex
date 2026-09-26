@@ -93,6 +93,11 @@
     (`OrderOneRealGenerations.orderOne_exchConjGen_iff`), and `J` does not restore the tensor-sum
     shape (`exists_orderOne_jInv_not_kronSum`); products with generations, `γ` and the KO signs
     are not.
+    ⚠ 26 September 2026 (hardening unit 236, `paper_f/GammaFixesDiracGenerations.lean`): `γ`
+    with a generation index, in part — for `M₂(ℂ)` with unit 170's grading, the three conditions
+    hold iff `D = Dsym ⊗ R`, `R` real (`GammaFixesDiracGenerations.gen_fixes_dirac`), and the
+    grading does not restore the tensor-sum shape (`exists_gen_fixes_dirac_not_kronSum`);
+    products with generations and other gradings are not.
   • `UNLOCK_WATCHLIST` 262 — whether the doubled algebra acts faithfully in the real case — is
     untouched: the test sets here are sets of matrices over one field, and `ℍ` enters only as one.
   • Nothing about the cascade, its `D` (`L40433`), the factor list, or a tag: rung 2 is not
