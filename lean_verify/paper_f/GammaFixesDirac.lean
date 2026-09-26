@@ -46,6 +46,8 @@
     the one factor, order-one alone is solved for a product of matrix algebras with every pair of
     factors once (`OrderOneBlockDiagonal.orderOne_iff`); `J`, `γ`, multiplicities, the choice of
     CCM's factor list and real or quaternionic factors are not.
+    ⚠ 26 September 2026 (hardening unit 230, `paper_f/OrderOneRealBlock.lean`): `J` on
+    such a product is done there (`OrderOneRealBlock.orderOne_exchConj_iff`); `γ` is not.
   * What the scale `t` means (a mass, a sign); `Dccm` IS self-adjoint (`Dccm_selfAdjoint`), so
     `t • Dccm` is, but nothing is said about its spectrum.
     ⚠ 26 September 2026 (unit 229, `ERRATUM 698`): in part, by unit 172 the same day:

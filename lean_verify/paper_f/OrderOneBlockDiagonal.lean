@@ -68,6 +68,9 @@
     sum with multiplicities, and for the compression to a sub-bimodule, is not written.
   • The real structure `J`, the grading `γ` and the KO signs: units 169 and 170 did them for one
     factor of size two; nothing here.
+    ⚠ 26 September 2026 (hardening unit 230, `paper_f/OrderOneRealBlock.lean`): `J` is
+    done there — order-one and `J`-invariance hold iff `M = blockKron β A Ā`
+    (`OrderOneRealBlock.orderOne_exchConj_iff`); `γ` and the KO signs are not.
   • Quaternionic factors and the real case (`UNLOCK_WATCHLIST` 262): the factors here are matrix
     algebras over one commutative ring.
   • Nothing about the cascade, the factor list, or a tag: rung 2 is not climbed.

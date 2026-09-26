@@ -43,11 +43,19 @@
     real — the docstring's two-dimensional real space. Kept as written (`ERRATUM 94`).
   * The fibre of `A ↦ piW A + piOpW (op (star A))`: adding `i t·1` (`t` real) to `A` does not
     change `D`, and that this is the whole fibre is not stated.
+    ⚠ 26 September 2026 (hardening unit 230, `paper_f/OrderOneRealBlock.lean`): stated
+    there — exactly `A + i t · 1`, `t` real (`OrderOneRealBlock.piW_add_piOpW_star_eq_iff`); on a
+    product, block-scalars `f` with `conj (f j k) = −f k j` (`blockKron_conj_eq_iff`).
   * `n = 2` only, because `Jprod`, `piW`, `piOpW` are defined on `Hw` only; the Kronecker lemmas are
     general. Anything off the regular bimodule — CCM's `A_F` on `H_F` — as in unit 168.
     ⚠ 26 September 2026 (hardening unit 228, `paper_f/OrderOneBlockDiagonal.lean`): the
     order-one half, for a product of matrix algebras with every pair of factors once, is solved
     there (`OrderOneBlockDiagonal.orderOne_iff`); `J` on such a product is not.
+    ⚠ 26 September 2026 (hardening unit 230, `paper_f/OrderOneRealBlock.lean`): `J` on
+    such a product is done there — order-one and `J`-invariance hold iff
+    `D = matAlg (blockKron β A Ā)` (`OrderOneRealBlock.orderOne_jInv_matAlg_iff`) — and this file's
+    theorem holds at every finite index type (`orderOne_jInv_matAlg_iff_one`), so *`n = 2` only*
+    above is answered too. Anything with multiplicities — CCM's `A_F` on `H_F` — is not.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
