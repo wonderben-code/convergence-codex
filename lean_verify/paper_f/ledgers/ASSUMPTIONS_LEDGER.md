@@ -329,11 +329,13 @@ the cutoff files.
   exactly when `κ = 1` (unit 174), so "the moments are set to 1" is exactly a normalisation of `Λ`.
 - **26 September, units 232–243.** Whether order-one gives the tensor-sum shape — the premise the
   factorisation needs — is decided on each of the estate's models:
-  - It holds for every operator exactly for one full matrix algebra at multiplicity one.
-  - It fails with generations, with or without `J` and the grading.
-  - It fails on a product of two or more matrix algebras.
-  - In the model with the grading, it holds exactly when the generation matrix is a multiple of the
-    identity.
+  - Order-one forces the shape for every operator exactly for one full matrix algebra at multiplicity
+    one.
+  - With generations it is not forced, with or without `J` and the grading: some operator meeting
+    every condition is not a tensor sum.
+  - On a product of two or more matrix algebras it is not forced either.
+  - In the model with the grading, a solution has the shape exactly when its generation matrix is a
+    multiple of the identity.
 
 **Still assumed:** the tensor-sum shape for the cascade's own `D`, of which there is none in the
 estate, and for `A_F` on `H_F`, which is none of these models and is not settled either way.

@@ -161,9 +161,10 @@ both.
 
 **The spectral-action chain, stated exactly.** The chain *spectral action → exponential cutoff →
 three moments → couplings* has a premise: that the Dirac operator is a tensor sum. The estate has
-proved that premise's status on every model it has:
-- it holds for one full matrix algebra at one generation;
-- it fails with generations, on products, and with `J` and the grading.
+proved whether the conditions on a Dirac operator force that premise, on every model it has:
+- order-one forces it for every operator only for one full matrix algebra at one generation;
+- with generations, or on a product of two or more factors, it is not forced — with or without `J`
+  and the grading, some operator meeting every condition is not a tensor sum.
 
 The estate has no Dirac operator for the cascade itself, and CCM's `A_F` on `H_F` is none of its
 models. There, the question is **not settled either way**. So the claim that the spectral action
