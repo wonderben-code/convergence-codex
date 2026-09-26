@@ -66,6 +66,11 @@
     groups use, `traceless n` is `SU(n)`'s Lie algebra — `exp (t X) ∈ SU(n)` for every real `t`
     exactly when `X` is skew-Hermitian and traceless (`forall_exp_mem_specialUnitaryGroup_iff`).
     Surjectivity of `exp` stands. Kept as written (`ERRATUM 94`).
+    ⚠ 26 September 2026 (unit 226, `ERRATUM 697`): unit 215's *the gauge actions continuous*,
+    above, cites the first stage's action alone. The action on pairs was shown continuous in unit
+    209 (`PatiSalamTopologicalCopies.continuous_full_smul`), and the second-stage action only in
+    unit 223 (`PatiSalamSecondStageTopology.continuous_stage2_smul`), after the note was written.
+    Kept as written (`ERRATUM 94`).
   • `expFull` is a function, not a homomorphism from a group (`Full` is a vector space; `exp` is not
     additive off commuting pairs), and its compatibility with units 178 and 182's representations —
     that `exp A · X · exp(B)ᵀ` integrates the Lie-algebra action `A X + X Bᵀ` — is not stated.
