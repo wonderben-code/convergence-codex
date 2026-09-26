@@ -67,6 +67,10 @@
     forced at any sizes with no multiplicity (`orderOne_iff_kronSum_of_unique`) and not forced
     at multiplicity two (`exists_orderOne_not_kronSum`). Entry 262 and the cascade stand; rung 2
     is not climbed.
+    ⚠ 26 September 2026 (hardening unit 237, `paper_f/OrderOneQuaternion.lean`): for
+    `ℍ` inside `M₂(ℂ)`, on this file's bimodule at `n = 2`, this file's answer holds unchanged —
+    order-one against `ℍ` iff `M = C ⊗ 1 + 1 ⊗ B` (`OrderOneQuaternion.orderOne_quat_iff`),
+    because `ℍ` spans `M₂(ℂ)` over `ℂ`; `ℝ` factors, entry 262 and the cascade stand.
   * Uniqueness of `(C, B)`: the pair is determined only up to `(C + λ·1, B − λ·1)`, and that is
     not stated.
     ⚠ 26 September 2026 (hardening unit 228, `paper_f/OrderOneBlockDiagonal.lean`): stated

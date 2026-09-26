@@ -61,6 +61,10 @@
     conditions hold iff `D = Dsym ⊗ R` for a real `R` on the generations
     (`GammaFixesDiracGenerations.gen_fixes_dirac`), a real space of dimension `(card μ)²`
     (`finrank_range_DsymGenL`); the factor list is not.
+    ⚠ 26 September 2026 (hardening unit 237, `paper_f/OrderOneQuaternion.lean`): with
+    `ℍ` as the test algebra on this file's space, this file's theorem holds unchanged — the three
+    conditions hold iff `M = t • Dsym`, `t` real (`OrderOneQuaternion.ccm_fixes_dirac_quat`); `ℍ`
+    as one block of CCM's product is not.
   * What the scale `t` means (a mass, a sign); `Dccm` IS self-adjoint (`Dccm_selfAdjoint`), so
     `t • Dccm` is, but nothing is said about its spectrum.
     ⚠ 26 September 2026 (unit 229, `ERRATUM 698`): in part, by unit 172 the same day:

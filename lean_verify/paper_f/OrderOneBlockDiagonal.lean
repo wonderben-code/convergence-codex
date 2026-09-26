@@ -87,6 +87,10 @@
     them, and order-one against them is the sum of the two commutants
     (`OrderOneCommutant.orderOne_iff_commutant`); the commutants for `ℍ` are not computed, and
     entry 262's faithfulness question is untouched.
+    ⚠ 26 September 2026 (hardening unit 237, `paper_f/OrderOneQuaternion.lean`): for
+    `ℍ` inside `M₂(ℂ)` acting on `ℂ² ⊗ ℂ²` they are `M₂(ℂ)`'s — order-one against `ℍ` holds iff
+    `M = C ⊗ 1 + 1 ⊗ B` (`OrderOneQuaternion.orderOne_quat_iff`); `ℍ` as one block of a
+    product, and entry 262, are not.
   • Nothing about the cascade, the factor list, or a tag: rung 2 is not climbed.
 
   HYPOTHESES, READ OFF THE BINDERS (`ERRATUM 455`). `single_mem_blockDiagSet` takes `β k = β l`.

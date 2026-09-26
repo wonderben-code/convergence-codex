@@ -80,6 +80,11 @@
     multiplicity on the right factor; for block-diagonal test sets with multiplicities, for `ℍ`, or
     for CCM's `A_F`, which `X` and `Y` occur is not computed, so no analogue of `blockKron` or of
     unit 228's support theorem (`entry_eq_zero_of_orderOne`) is stated for them.
+    ⚠ 26 September 2026 (hardening unit 237, `paper_f/OrderOneQuaternion.lean`): for
+    `ℍ` inside `M₂(ℂ)` on `ℂ² ⊗ ℂ²`, computed there — order-one sees only the complex spans of
+    the test sets (`OrderOneQuaternion.orderOne_iff_span`), and `ℍ` spans `M₂(ℂ)`, so the answer
+    is `C ⊗ 1 + 1 ⊗ B` (`orderOne_quat_iff`); block-diagonal test sets with multiplicities and
+    `A_F` are not.
   • That the trace of the exponential fails to factorise for an operator as in (8). (8) says the
     SHAPE unit 172's derivation starts from is not forced; whether `trace (exp (t • D))` factorises
     for some other reason is not asked, and nothing here computes a spectrum. The grouping
