@@ -64,6 +64,11 @@
   • The dimension of the self-adjoint solutions: they are `Dsym ⊗ R` with `R` real symmetric,
     and no theorem counts those; the estate counts only the complex symmetric matrices
     (`TransposeDimension.finrank_symSub_fin`).
+    ⚠ 26 September 2026 (hardening unit 241, `paper_f/SelfAdjointDiracCount.lean`): counted
+    there — a real space of dimension `n(n+1)/2`, six at three generations
+    (`SelfAdjointDiracCount.finrank_selfAdjSolutions`, `finrank_selfAdjSolutions_three`); and
+    up to an orthogonal change of basis of the generations, which keeps all three conditions,
+    they are `Dsym ⊗ diag(λ)`, classified by the eigenvalues of `R` (`genRot_equiv_iff_charpoly`).
   • The spectrum of `Dsym ⊗ R` and the trace of its exponential: for the operator in (4) only the
     shape is shown not forced, as in units 232 and 234. Nothing about the cutoff, the cascade's
     `D` (`L40433`), the factor list, or a tag: rung 2 is not climbed.

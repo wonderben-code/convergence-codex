@@ -67,6 +67,10 @@ over `ℂ`, and every statement below is over `ℂ`. The restriction is delibera
 incidental: in characteristic `2` the conditions `Aᵀ = A` and `Aᵀ = -A` are the same condition,
 so the two spaces would coincide and could not be complementary. **That last sentence is prose,
 not a theorem below** — nothing here is proved, or disproved, over any field but `ℂ`.
+⚠ 26 September 2026 (hardening unit 241, `paper_f/SelfAdjointDiracCount.lean`): the symmetric
+count holds over every field, characteristic `2` included, by unordered pairs rather than the
+complement (`SelfAdjointDiracCount.finrank_symMat_choose`), and `symMat_complex_eq_symSub`
+identifies the two spaces over `ℂ`; the antisymmetric count is not redone there.
 
 **Nothing about `SU(2)`, spin, representations, or Lie brackets.** `symSub` is not a Lie
 subalgebra and this file does not say it is; the transpose splitting is a splitting of the
