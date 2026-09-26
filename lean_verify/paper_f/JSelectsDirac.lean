@@ -42,6 +42,9 @@
     change `D`, and that this is the whole fibre is not stated.
   * `n = 2` only, because `Jprod`, `piW`, `piOpW` are defined on `Hw` only; the Kronecker lemmas are
     general. Anything off the regular bimodule — CCM's `A_F` on `H_F` — as in unit 168.
+    ⚠ 26 September 2026 (hardening unit 228, `paper_f/OrderOneBlockDiagonal.lean`): the
+    order-one half, for a product of matrix algebras with every pair of factors once, is solved
+    there (`OrderOneBlockDiagonal.orderOne_iff`); `J` on such a product is not.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/

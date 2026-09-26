@@ -42,6 +42,10 @@
     witness class is, however, now completely understood: `π` fixes the star (unit 166),
     order-one fixes the shape (168), `J` fixes the second factor (169), `γ` fixes everything but a
     real scale (this unit).
+    ⚠ 26 September 2026 (hardening unit 228, `paper_f/OrderOneBlockDiagonal.lean`): off
+    the one factor, order-one alone is solved for a product of matrix algebras with every pair of
+    factors once (`OrderOneBlockDiagonal.orderOne_iff`); `J`, `γ`, multiplicities, the choice of
+    CCM's factor list and real or quaternionic factors are not.
   * What the scale `t` means (a mass, a sign); `Dccm` IS self-adjoint (`Dccm_selfAdjoint`), so
     `t • Dccm` is, but nothing is said about its spectrum.
 

@@ -44,10 +44,27 @@
     `H_F`, not on `A` acting on itself, and nothing here transfers. No factor list is cut; two
     factors, `ℝ`/`ℍ`, unequal sizes, the cascade — none of it. Rung 2 is not climbed; its second
     half is answered for one class of bimodule.
+    ⚠ 26 September 2026 (hardening unit 228, `paper_f/OrderOneBlockDiagonal.lean`): *two factors …
+    unequal sizes* — `M_N` as a bimodule over a product of matrix algebras of any sizes sitting
+    block-diagonally in it, every pair of factors occurring once, is solved there: order-one against
+    the block-diagonal matrices holds iff the operator is a left multiplication depending on the
+    right block plus a right multiplication depending on the left block
+    (`OrderOneBlockDiagonal.orderOne_iff`), and this file's `orderOne_iff_kron` is derived there as
+    its one-block case, for every finite index type
+    (`OrderOneBlockDiagonal.orderOne_iff_kron_of_const`). Multiplicities, sub-bimodules, `ℝ`/`ℍ` and
+    the cascade stand; rung 2 is not climbed.
   * Uniqueness of `(C, B)`: the pair is determined only up to `(C + λ·1, B − λ·1)`, and that is
     not stated.
+    ⚠ 26 September 2026 (hardening unit 228, `paper_f/OrderOneBlockDiagonal.lean`): stated
+    there, for every nonempty finite index type and any commutative ring — `C ⊗ 1 + 1 ⊗ B`
+    determines `(C, B)` exactly up to `(C + c • 1, B − c • 1)`
+    (`OrderOneBlockDiagonal.kron_eq_kron_iff`), and on a product of blocks up to block-scalars
+    moved between the parts (`blockKron_eq_blockKron_iff`).
   * `n = 0` is excluded where `0 : Fin n` is used (`[NeZero n]`); the entry lemmas hold at every
     `n`.
+    ⚠ 26 September 2026 (hardening unit 228, `paper_f/OrderOneBlockDiagonal.lean`):
+    `orderOne_iff_kron` is derived there for every finite index type, the empty one included
+    (`OrderOneBlockDiagonal.orderOne_iff_kron_of_const`).
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
