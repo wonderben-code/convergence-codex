@@ -90,6 +90,13 @@
     for some other reason is not asked, and nothing here computes a spectrum. The grouping
     `(ι × κ) ⊗ μ`, with the multiplicity split off as its own factor, is not tested; nor is (8)
     carried to `A_F` or to a multiplicity of three.
+    ⚠ 26 September 2026 (hardening unit 242, `paper_f/KronSumCriterion.lean`): (8)
+    carried to every size there — with two points in each of `ι`, `κ`, `μ` some order-one
+    operator is a tensor sum in none of the three groupings
+    (`KronSumCriterion.exists_orderOne_not_kronSum_of_nontrivial`), and every one is
+    `C ⊗ 1 + 1 ⊗ B` iff `ι` or `μ` has at most one point (`orderOne_forces_isKronSum_iff`); the
+    grouping `(ι × κ) ⊗ μ` is decided there too, iff both parts are Kronecker sums
+    (`genPart_add_slotsSum_iff`); the trace where the shape fails and `A_F` are not.
   • The real structure `J`, the grading `γ` and the KO signs: unit 230 did `J` with every pair of
     factors once; nothing here.
     ⚠ 26 September 2026 (hardening unit 234, `paper_f/OrderOneRealGenerations.lean`): `J`

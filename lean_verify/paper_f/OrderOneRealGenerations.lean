@@ -60,6 +60,12 @@
     Yukawa matrices, or reads a mass or a mixing angle off it.
   • That the trace of the exponential fails to factorise for the operator in (4): only the shape
     is shown not forced, as in unit 232; nothing here computes a spectrum.
+    ⚠ 26 September 2026 (hardening unit 242, `paper_f/KronSumCriterion.lean`): the
+    shape decided for every `A` — `genPart A + 1 ⊗ Ā` is a tensor sum, in either grouping, iff
+    `A` is a Kronecker sum (`KronSumCriterion.isKronSum_genPart_conj_iff`,
+    `genPart_conj_genPartSum_iff`), so it is forced for every such operator iff `ι` or `μ` has at
+    most one point (`orderOne_jInv_forces_isKronSum_iff`), and (4) holds at every size
+    (`exists_orderOne_jInv_not_kronSum_of_nontrivial`); the trace where it fails is not computed.
   • Nothing about the cascade, its `D` (`L40433`), the factor list, or a tag: rung 2 is not
     climbed.
     ⚠ 26 September 2026 (unit 239, `ERRATUM 700`): the watchlist item meant, *the cascade's `D`

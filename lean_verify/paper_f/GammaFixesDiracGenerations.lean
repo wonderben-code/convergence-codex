@@ -75,6 +75,12 @@
     ⚠ 26 September 2026 (unit 239, `ERRATUM 700`): the watchlist item meant, *the cascade's `D`
     AS A TENSOR SUM*, stood at `L40927` when this was written; the number given, 40433, was its
     line on 20 September, copied from an older record.
+    ⚠ 26 September 2026 (hardening unit 242, `paper_f/KronSumCriterion.lean`): the
+    shape decided — `Dsym ⊗ R` is a tensor sum iff `R` is scalar (unit 241,
+    `SelfAdjointDiracCount.DsymGen_kronSum_iff`), so it is forced iff `μ` has at most one point
+    (`KronSumCriterion.gen_fixes_dirac_forces_isKronSum_iff`), and (4) holds at every
+    multiplicity (`exists_gen_fixes_dirac_not_kronSum_of_nontrivial`); the spectrum and the
+    trace where the shape fails are not computed.
 
   HYPOTHESES, READ OFF THE BINDERS (`ERRATUM 455`). None beyond the declarations' types: every
   statement takes elements of its types and nothing else.
