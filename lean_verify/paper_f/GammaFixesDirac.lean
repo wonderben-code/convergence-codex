@@ -53,6 +53,9 @@
     written there in commutant form (`OrderOneCommutant.orderOne_iff_commutant`) and computed for
     full matrix algebras with a multiplicity (`orderOne_multiplicity_iff`); the other
     commutants, `J`, `γ` and the factor list are not.
+    ⚠ 26 September 2026 (hardening unit 234, `paper_f/OrderOneRealGenerations.lean`): `J`
+    with a generation index, for one full matrix factor, is done there
+    (`OrderOneRealGenerations.orderOne_exchConjGen_iff`); `γ` and the factor list are not.
   * What the scale `t` means (a mass, a sign); `Dccm` IS self-adjoint (`Dccm_selfAdjoint`), so
     `t • Dccm` is, but nothing is said about its spectrum.
     ⚠ 26 September 2026 (unit 229, `ERRATUM 698`): in part, by unit 172 the same day:

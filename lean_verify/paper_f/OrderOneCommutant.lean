@@ -87,6 +87,12 @@
     carried to `A_F` or to a multiplicity of three.
   • The real structure `J`, the grading `γ` and the KO signs: unit 230 did `J` with every pair of
     factors once; nothing here.
+    ⚠ 26 September 2026 (hardening unit 234, `paper_f/OrderOneRealGenerations.lean`): `J`
+    with a generation index, for one full matrix factor, is done there — order-one and
+    `J`-invariance hold iff `D = genPart A + 1 ⊗ Ā`
+    (`OrderOneRealGenerations.orderOne_exchConjGen_iff`), and `J` does not restore the tensor-sum
+    shape (`exists_orderOne_jInv_not_kronSum`); products with generations, `γ` and the KO signs
+    are not.
   • `UNLOCK_WATCHLIST` 262 — whether the doubled algebra acts faithfully in the real case — is
     untouched: the test sets here are sets of matrices over one field, and `ℍ` enters only as one.
   • Nothing about the cascade, its `D` (`L40433`), the factor list, or a tag: rung 2 is not

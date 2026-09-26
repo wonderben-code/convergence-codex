@@ -61,6 +61,11 @@
     (`OrderOneCommutant.orderOne_iff_commutant`, `orderOne_iff_commutant_compress`), and
     computed for full matrix algebras with a multiplicity (`orderOne_multiplicity_iff`); `J`
     with multiplicities is not.
+    ⚠ 26 September 2026 (hardening unit 234, `paper_f/OrderOneRealGenerations.lean`): in
+    part — for one full matrix factor with a generation index, order-one and `J`-invariance hold
+    iff `D = genPart A + 1 ⊗ Ā` (`OrderOneRealGenerations.orderOne_exchConjGen_iff`), and this
+    file's fibre `A + i t · 1` becomes `A + 1 ⊗ G`, `conj G = −G` (`genPart_conj_eq_iff`); on a
+    product, not.
 
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/

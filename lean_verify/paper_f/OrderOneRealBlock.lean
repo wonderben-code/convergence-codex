@@ -51,6 +51,10 @@
     field and on sub-bimodules, in commutant form (`OrderOneCommutant.orderOne_iff_commutant`,
     `orderOne_iff_commutant_compress`), and computed for full matrix algebras with a multiplicity
     (`orderOne_multiplicity_iff`); `J` with multiplicities is not.
+    ⚠ 26 September 2026 (hardening unit 234, `paper_f/OrderOneRealGenerations.lean`): in
+    part — for one full matrix factor with a generation index, order-one and `J`-invariance hold
+    iff `D = genPart A + 1 ⊗ Ā` (`OrderOneRealGenerations.orderOne_exchConjGen_iff`); on a
+    product, not.
   • Nothing about the cascade, the factor list, or a tag: rung 2 is not climbed.
 
   HYPOTHESES, READ OFF THE BINDERS (`ERRATUM 455`). `transpose_mem_blockDiagSet` takes
