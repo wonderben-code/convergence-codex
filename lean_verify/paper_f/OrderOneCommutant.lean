@@ -107,6 +107,9 @@
     untouched: the test sets here are sets of matrices over one field, and `ℍ` enters only as one.
   • Nothing about the cascade, its `D` (`L40433`), the factor list, or a tag: rung 2 is not
     climbed.
+    ⚠ 26 September 2026 (unit 239, `ERRATUM 700`): the watchlist item meant, *the cascade's `D`
+    AS A TENSOR SUM*, stood at `L40927` when this was written; the number given, 40433, was its
+    line on 20 September, copied from an older record.
 
   HYPOTHESES, READ OFF THE BINDERS (`ERRATUM 455`). `decomposition_fibre` takes `X` commuting with
   every `1 ⊗ b`, `b ∈ S_R`, and `Y` with every `a ⊗ 1`, `a ∈ S_L`;

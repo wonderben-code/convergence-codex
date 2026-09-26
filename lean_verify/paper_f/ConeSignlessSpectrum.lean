@@ -92,6 +92,9 @@
     will have to pay**, and saying otherwise would have been an estimate dressed as a fact.
   * **Nothing about the cascade, the spine, or any wall.** This is graph spectral theory on the
     `W3`/signless side, it moves no verdict, and `L34948` clause (c) is untouched.
+    ⚠ 26 September 2026 (unit 239, `ERRATUM 700`): the watchlist item meant here and in the WHY
+    above, *the signless Laplacian's REMAINING frontier*, began on line 34949 when this was
+    written, one below the number given; it is at `L36888` on 26 September.
 
   0 sorry. 0 new axioms. `#print axioms`, stated exactly rather than rounded up: `coneGraph`
   and its two adjacency lemmas depend on **NO axioms at all** — the cone is a `match` and its

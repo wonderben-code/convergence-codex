@@ -91,6 +91,9 @@
     `hrow` never restricted anything.
   * **NOTHING ABOUT THE CASCADE, THE SPINE OR ANY WALL.** This is `L34948` clause (b)'s family,
     deepened; it is not on the spine and it moves no wall.
+    ⚠ 26 September 2026 (unit 239, `ERRATUM 700`): the watchlist item meant, *the signless
+    Laplacian's REMAINING frontier*, began on line 34992 when this was written; the number given
+    is unit 79's, already one line off there. It is at `L36888` on 26 September.
 
   Lean 4, pinned Mathlib. 0 sorry, no new axioms.
 -/

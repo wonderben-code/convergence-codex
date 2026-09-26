@@ -461,6 +461,9 @@ one theorem with the codomain hypothesis removed. **This half is deliberately NO
 block's own `BLOCKED ON` line says why: `greenDirichlet_mono` needs an arbitrary injection, because
 **composing two injections is how "nested subdomains" is said and composing two `Finset` inclusions
 is not**. The two objects are genuinely different, so the honest disposal is a transfer.
+⚠ 26 September 2026 (unit 239, `ERRATUM 700`): the watchlist item meant here and below, *two
+extensions-by-zero in one estate*, began on line 26864 when this was written; 26833 was its line
+one watchlist commit earlier. It is at `L27352` on 26 September.
 
 **AND THAT IS THE DISTINCTION FROM UNIT 110.** There, `IsingFiniteVolume.spin` and
 `IsingTransfer2D.spin` had letter-identical bodies, so a winner was chosen and both names were kept

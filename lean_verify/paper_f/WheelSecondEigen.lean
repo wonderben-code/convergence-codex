@@ -8,6 +8,10 @@
   makes the cone's `2d + 1` sharp*, and units 87 and 92 supply one. The sweep's own marker states
   the limit honestly: **`λ₂` was DETERMINED by a finite comparison and STATED nowhere.** This file
   performs the comparison.
+  ⚠ 26 September 2026 (unit 239, `ERRATUM 700`): 37357 is `RE-SWEEP #61`'s number for the item *a
+  quantitative gap for the signless Laplacian*; in #61's own commit the item began on line 37428,
+  and it did when this file was written. It is at `L39453` on 26 September; the same holds where
+  the number recurs below.
 
   **WHAT THE COMPARISON IS.** Unit 92's table says the wheel's eigenvalues are `hubRootPlus`,
   `hubRootMinus`, and the rim values `3 + 2cos(2πk/N)`. So `λ₂` is whichever of `hubRootMinus` and
