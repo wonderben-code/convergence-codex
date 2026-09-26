@@ -66,6 +66,10 @@
     whether `U(3)` is left, are decided at every nonzero first vacuum there
     (`joint_trichotomy_of_rank_eq_one`, `nonempty_stabilizer_pair_equiv_U3_iff_of_ne_zero`); the
     counts in (4) are not transported.
+    ⚠ 26 September 2026 (hardening unit 227, `paper_f/PatiSalamPairCount.lean`): transported
+    there by the adjoint action (`finrank_jointStabAt_smul`): at every rank-one first vacuum,
+    twelve, nine or eight, the nine when `Φᴴ Φ` commutes with `(Xᴴ X)ᵀ`
+    (`finrank_jointStabAt_of_rank_eq_one`). Rank-two first vacua and `X = 0` are not counted.
   • Which vacuum, masses, and what an eight-generator vacuum would mean physically: nothing here.
     ⚠ 25 September 2026 (hardening unit 222, `paper_f/PatiSalamJointClassification.lean`): what such
     a vacuum leaves is computed there — colour, `(diag(A, 1), 1, 1)`

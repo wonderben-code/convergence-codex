@@ -76,6 +76,13 @@
     `(vac, Φ)` are counted there at every `Φ` — nine joint unbroken generators when the columns of
     `Φ ≠ 0` are orthogonal and eight otherwise, twelve at `Φ = 0` (`finrank_jointStabAt_vac`). Pairs
     with other first-stage vacua still stand.
+    ⚠ 26 September 2026 (hardening unit 227, `paper_f/PatiSalamPairCount.lean`): the pairs with
+    a rank-one first vacuum are counted there — twelve, nine or eight unbroken generators, nine,
+    twelve or thirteen broken, the middle case when `Φᴴ Φ` commutes with `(Xᴴ X)ᵀ`
+    (`finrank_jointStabAt_of_rank_eq_one`, `finrank_quotient_jointStabAt_of_rank_eq_one`) — and
+    the count decides the joint group there, as it decides this file's
+    (`nonempty_stabilizer_pair_equiv_iff_finrank_broken_eq_of_rank_eq_one`). Pairs with a rank-two
+    first vacuum, and `X = 0`, still stand.
   • Whether `stabAt X` determines the line through `X` (unit 207's Lie-algebra bullet): not
     addressed.
 

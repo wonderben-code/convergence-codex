@@ -44,6 +44,10 @@
       second-stage vacua leave isomorphic joint groups exactly when they leave the same number of
       unbroken generators — unit 213's `nonempty_stabilizer_equiv_iff_finrank_broken_eq`, for the
       pair.
+      ⚠ 26 September 2026 (hardening unit 227, `paper_f/PatiSalamPairCount.lean`): at every
+      rank-one first vacuum there, as abstract and as topological groups, and in broken generators
+      too (`nonempty_stabilizer_pair_equiv_iff_finrank_eq_of_rank_eq_one`,
+      `nonempty_stabilizer_pair_equiv_iff_finrank_broken_eq_of_rank_eq_one`).
 
   NOT PROVED, said exactly.
   • `X = 0`, whose stabiliser contains the whole of `SU(4)`: not examined.

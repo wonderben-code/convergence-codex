@@ -79,6 +79,10 @@
     ⚠ 25 September 2026 (hardening unit 225, `paper_f/PatiSalamPairCriterion.lean`): at every
     rank-one first vacuum too (`joint_trichotomy_of_rank_eq_one`); at a rank-two one, only that none
     is `U(3)`.
+    ⚠ 26 September 2026 (hardening unit 227, `paper_f/PatiSalamPairCount.lean`): and the
+    dimensions at every rank-one first vacuum — twelve, nine or eight
+    (`finrank_jointStabAt_of_rank_eq_one`), through the adjoint action on `Full`
+    (`finrank_jointStabAt_smul`).
   • The bracket is not carried: that `stabAt X` is closed under the commutator is unit 180's
     argument at `X`, and it needs `TracelessSkewLie`, which this file does not import. Measured:
     with `TracelessSkewLie` in the import closure, `hasDerivAt_star_exp_mul_exp`'s product rule
