@@ -338,3 +338,224 @@ objects: sin²θ_W = 3/8 as a trace ratio, and the Higgs coupling window. Everyt
 Newton's constant, the cosmological constant, fermion masses, proton lifetime — is
 uncomputed, and this paper says so in one sentence rather than seventeen tables. What the
 May register claimed here is superseded (§7).
+
+---
+
+## 4. What fell — the campaign's harvest
+
+The tags above are the theory's state. This section is what two months of machine
+verification added to it — the wood that thickened even while no headline moved.
+
+**Three walls closed outright.**
+- **W6** (9 August): the Stein class and the smooth-compactly-supported Sobolev space
+  W^{1,2}(γ) are one class — in every dimension. A question the programme could not settle in
+  July is now a biconditional.
+- **W7** (8 August): the real Clifford classification and the spin identification, with the
+  full mod-8 periodicity table proved ten days later for every nondegenerate real form.
+- **W8** (12 August): a **non-trivial reflexive domain** — an ordered structure genuinely
+  satisfying D ≃ (D →𝒄 D) — constructed and verified. The root of the tree grew its own
+  witness: the object the whole programme is named for exists, machine-checked.
+
+**Lorentz and spin, proved properly.** The restricted Lorentz group as the identity component
+of O(1,3) with no hypothesis; the double cover SL₂(ℂ) → SO⁺(1,3), surjective, kernel exactly
+{±1}; the Clifford spin group modulo {±1} identified with SL₂(ℂ) modulo {±1}; the complex
+Clifford classification in every rank.
+
+**Analysis that outgrew its scaffolding.** The Gaussian Poincaré inequality in every dimension
+at every variance; Hermite completeness; Wick's theorem at every order for the finite-volume
+Gaussian field; Stone's theorem in both directions for bounded generators in any C⋆-algebra;
+Frobenius's classification of the real division algebras; reflection positivity for the
+massive lattice field at the measure level — the step wall W1 was *named* for, which fell by
+a route no planning document had listed.
+
+**The Standard-Model side, computed on actual objects — not on numerology.** The Weinberg
+ratio 3/8 as a trace ratio on the chiral 16, in exact rational arithmetic, with a control
+theorem that kills the old dimension-counting story; the full perturbative anomaly table
+vanishing on the actual representation; the Standard Model algebra embedded injectively in
+the Pati–Salam algebra; and — the campaign's late crown — the **Pati–Salam → Standard-Model
+breaking classified**: the unbroken group at every relevant vacuum, the broken-generator
+counts, and the topology, for pairs of vacua at every rank-one first vacuum.
+
+**The seed understood completely.** M₂(ℂ) as the unique minimal seed over ℂ; every
+⋆-structure on Mₙ(ℂ) classified — n/2 + 1 classes up to conjugacy; a faithful
+⋆-representation selecting the conjugate transpose.
+
+**The order-one chain, run to the end.** Sixteen units (168–243) solving the order-one
+condition on every model bimodule the estate possesses — with the real structure, with the
+grading, with generations, on products — ending in an exact criterion: the tensor-sum shape
+that the spectral action's factorisation needs is **forced precisely for one full matrix
+algebra at one generation, and not otherwise**. That theorem is what disciplines link L19
+and retires the May register's proudest headline (§7).
+
+**And five refutations, each a theorem.** A non-trivial D ≅ (D → D) over sets — impossible.
+The Riemannian signatures excluded structurally — false; three signatures share one algebra.
+The Standard Model assembled inside su(4) on the blocks used — false. 3/8 from the
+dimensions — refuted by the 3/7 control. The estate's own comparison route for wall W3 —
+proved insufficient, exactly (O(n) against a target of O(n²)). A programme that can prove
+theorems *against itself* is measuring something.
+
+One more finding is a measurement rather than a theorem, and it matters below: wall W4's old
+uniform-bound target is **false above the critical point** — computed by diagonalising the
+estate's own transfer matrices, where the eigenvalue ratio climbs to 0.99990 at width 13.
+Two proof routes once recorded as failures were not lossy; they were correctly reporting that
+the thing to be bounded does not exist. The target has been restated accordingly (§6).
+
+## 5. The gap survey — six open walls, each with its failing step named
+
+Mendeleev could describe gallium before it existed because the table's structure fixed the
+properties of whatever had to fill the box. This section is our version of that constraint
+structure: for each open gap — six walls behind the tree's two ◇ links and one PARTIAL — the
+staircase that has been climbed, the exact step where the known routes stop, and **what would
+have to exist** for the gap to close. That last item is the predicted shape of the missing
+element.
+
+**W1 · The lattice field's OS axioms — failing step: the infinite-volume limit.** The
+finite-volume programme is done: reflection positivity proved at the measure level in every
+dimension, OS1 proved in finite volume. The limit is not a missing estimate — it is a missing
+*construction*: the finite-volume Gaussians are not a projective system (restricting a box's
+Green function does not give the smaller box's), so no Kolmogorov-style argument applies.
+**What would have to exist:** uniform-in-volume correlation bounds with a tightness argument,
+or an independent infinite-volume construction with a convergence proof. Genuinely open
+mathematics.
+
+**W2 · The continuum field and OS reconstruction — failing step 2b: an unbounded self-adjoint
+Hamiltonian.** The Hilbert space and vacuum come from GNS, already consumed by the estate.
+The Hamiltonian that reconstruction produces is unbounded — and **Lean's mathematics library
+contains no unbounded operator theory at all**: no densely defined operators, no adjoints and
+closures, no spectral measure, no Borel functional calculus. Step 2b is not blocked on a
+theorem; *the objects the theorem is about do not exist yet in the formal ecosystem.*
+**What would have to exist:** the unbounded-operator subject itself — a library-scale
+project, not a research riddle.
+
+**W3 · Symmetry breaking (the Peierls argument) — failing step: the comparison bound.** The
+combinatorial half is climbed: contours, cycle decompositions, the enclosure parity theorem.
+The estate's own comparison route is *proved insufficient* — its output is computed exactly,
+and it is O(n) against a target of O(n²). **What would have to exist:** two recorded author
+decisions, then a comparison model of a genuinely different shape whose output is not
+sublinear. Elementary but voluminous; the gap is a theorem that the old method cannot close
+it, not evidence the statement is false.
+
+**W4 · The mass gap — failing step: a uniform spectral estimate below threshold.** The
+one-dimensional chain is solved completely (whole spectrum, gap 2e^{−|β|}, derived). The old
+uniform target was *measured false* above the critical point and has been restated by ruling
+to the high-temperature phase, where it is believed true and proved nowhere. **What would
+have to exist:** an estimate that sees the transfer matrix's structure — Dobrushin
+uniqueness or a high-temperature cluster expansion — neither of which exists in Mathlib.
+Genuinely open formalisation of genuinely standard physics.
+
+**W5 · The Einstein equations from the spectral action — failing step: rung 4, the
+heat-kernel expansion.** Three rungs of differential geometry are climbed, including the
+algebraic Lovelock classification (every additive, homogeneous, equivariant candidate is
+α·Ric + β·S·δ — the *uniqueness* half of the Einstein equations, proved). Rung 4 needs the
+Dirac operator as an unbounded self-adjoint operator with discrete spectrum, its heat
+semigroup, the parametrix construction, and the coefficient identification. **What would have
+to exist:** the same missing subject as W2, then a research-grade formalisation of the
+heat-kernel expansion. Two costs, and they should never be quoted as one.
+
+**W9 · The Chamseddine–Connes–Marcolli classification — failing step: rung 2's second half on
+CCM's own bimodule.** Rung 1 is climbed (the campaign's own theorem). Rung 2's first half is
+climbed for complex factors. The order-one condition is solved on *every model bimodule the
+estate has* — the sixteen-unit chain of §4. What remains is the real thing: the isotypic
+decomposition of CCM's H_F — a sub-bimodule of a product with three generations and a
+quaternionic factor — built *as an object*, with order-one computed across its pieces. One
+route is already closed by theorem (the doubled-algebra argument cannot run through a regular
+bimodule). **What would have to exist:** that decomposition, then K-theory of finite algebras
+for rung 3 — the latter absent from both the estate and Mathlib.
+
+**The one missing subject.** Two of the six walls — W2 and W5, which are exactly the tree's
+two ◇ links — fail at the *same* absent mathematics: unbounded self-adjoint operators. One
+library, built once, unblocks both boxes. In the periodic-table analogy: two gaps in the
+same column, filled by one discovery. It is the largest single unlock the survey identifies.
+
+**And the honesty clause that governs this whole section:** a failing step marks where the
+*known* routes stop. It is not a proof that no route exists. The campaign's own record
+enforces the humility — W1's named step fell by a route no document had listed, three weeks
+after the wall was declared.
+
+## 6. What the theory rests on — the assumptions, stated
+
+A theory's honesty is measured at its inputs. The assumptions ledger records **57 numbered
+entries**: every choice the estate makes that no proof forced — a definition picked from
+several, a hypothesis nothing supplies, a physics input taken from the literature. An
+assumption is not a missing proof (those are §5's walls); it can only be closed by changing
+the model or defending the choice.
+
+Each entry carries a **bias grade**, and the grading is the ledger's sharpest instrument:
+*anti-conservative* (the choice makes a result read stronger than it is — the dangerous
+direction), *conservative* (reads weaker), *neutral*, or *mixed*. The ledger grades **most of
+its own load-bearing entries anti-conservative** — it indicts its own choices where they
+flatter the theory. Its current states are equally blunt: *Stands*, *Narrowed*, *Hardened*
+(later theorems showed the easy repair is impossible), *Corrected*, *Retired* (proved — three
+entries have graduated from assumption to theorem during the campaign).
+
+**The seven that carry the most weight**, each in one line:
+1. **The cascade record stores its own conclusions as fields** (entry 2) — the
+   highest-leverage entry, invisible at its 21 consumption sites; a genuine recursive cascade
+   now exists beside it, but no theorem yet marries the two.
+2. **Which tensor factor decomposes** (entry 5) — parity violation rests on it; the mirror
+   statement compiles with the same one-line proof.
+3. **The trace state is the vacuum** (entry 16) — GNS's headline results fail for a pure
+   state.
+4. **The spectral weight is multiplicative with unit moments** (entry 12) — the "zero free
+   parameters" story dies exactly here (§7).
+5. **The Higgs vacua are chosen, not derived** (entry 60).
+6. **Three generations are the imaginary quaternions** (entry 25) — *Hardened*: the
+   mathematics itself now proves the complexification cannot decide the real form, so the
+   postulate is genuinely load-bearing.
+7. **The Born rule, Gleason and Wigner are cited physics, not theorems here** (entry 59).
+
+**One entry is the estate's only axiom** (entry 53): a Gibbs measure with no defining
+property, predating the campaign, quarantined and disclosed — no campaign theorem depends on
+it.
+
+**Eleven entries are author decisions**, and five were ruled on 27 September 2026 — the
+rulings this paper is written under: the fermion content is a **named postulate** with
+derivation as an open target; the Gaussian is the **stated approximation** to the
+spectral-action measure, e^{−S} named as the true target; wall W4's target is **restated
+below threshold**; the real structure adopts the **Chamseddine–Connes KO-6 convention**; and
+the estate keeps **both spectral-triple notions under distinct names** — a strict
+CCM-compliant structure for anything this paper calls a real spectral triple, the weaker one
+as named scaffolding. The remaining six decisions stay open and are listed with the ledger.
+
+## 7. The corrections — what this paper retires, in public
+
+In May 2026 the programme's running register carried, in its own capitals: *"MASS GAP SOLVED,
+QG 100% COMPLETE, UNCONDITIONAL MILLENNIUM PRIZE PROGRAMME COMPLETE, ZERO FREE PARAMETERS."*
+
+This paper supersedes that register, and this section does it explicitly, because a
+correction hidden in a footnote is not a correction. On 27 September 2026, twenty-six tag
+rulings — each proposed by the verification campaign with its reasoning, each re-checked five
+times against the estate — were accepted in full. **No derived theorem was withdrawn by any
+of them.** The mathematics stands untouched; what moves is labels, in both directions, to
+match the mathematics exactly.
+
+**The loudest retirements:**
+- **"Mass gap solved / QG 100% complete"** → the spine's honest tags are **OPEN** at L22 and
+  L23. What exists are genuine theorems about the estate's internal models under stated
+  hypotheses — real mathematics, wrongly headlined. The walls behind both links are §5's
+  W1–W5.
+- **"Zero free parameters"** → **not established.** The claim's chain has an unproven
+  premise: that the cascade's Dirac operator is a tensor sum. The campaign's final theorems
+  settle exactly when order-one forces that shape — for one full matrix algebra at one
+  generation, and *not* for the published algebra's actual structure — and what the
+  conditions leave free at three generations is a whole matrix, not three moments.
+- **"ℂ ⊕ ℍ ⊕ M₃(ℂ) at the M₂₅₆ level — PROVED ★"** → **META, OPEN.** The campaign's own
+  digest calls this the largest gap between tag and reality it found: no Lean file
+  constructs that algebra at that level; the files that name it do so to say what they do
+  *not* prove.
+- **"The Weinberg angle 3/8 from the dimensions"** → mechanism **refuted** by the 3/7
+  control theorem; replaced by the stronger true statement — 3/8 as a trace ratio on the
+  actual representation, machine-checked in exact arithmetic.
+- **Three July headlines refuted outright** by the campaign's own theorems: the
+  full-function-space reflexive domain (only one-point solutions over sets); the structural
+  exclusion of Riemannian signatures (three signatures share one algebra); the
+  Standard-Model-in-su(4) assembly (not injective on the blocks used).
+
+**And five upgrades, by the same discipline:** anomaly cancellation and Stone's theorem rise
+from PREDICTED to PARTIAL; seed uniqueness from META-OPEN to PARTIAL; GNS to PROVED for the
+cascade algebra with the trace state, scoped; the emergence-lineage row to PROVED — a place
+where the paper had *undersold* its own Lean. A labelling system that can move in only one
+direction measures nothing; this one moves both ways and is therefore worth reading.
+
+The full ruling-by-ruling record, with the campaign's reasoning quoted, is published beside
+the ledgers (§9).
