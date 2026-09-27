@@ -38,3 +38,32 @@ the evidence that these numbers mean what they say.
 - Plain language wherever it costs nothing; exact mathematical statement wherever it costs
   clarity — this is the technical companion to the book, not the book.
 - Adversarial pass per section before assembly; read-aloud pass at the end.
+
+---
+
+## ★ THE MENDELEEV FRAMING — founder's ruling on what the paper IS (27 Sep, VERBATIM)
+
+> "yes we lay out the theory and then the evidence but also our prediction similar to the
+> periodic table that the gaps in the tree from zero to everything or nothing to everything
+> from what we can see from our mathematics has certain gaps ane our prediction is as AI
+> improves at mathematics and physics and so on - these gaps will be filled showing the
+> tree...similar to how mendeleev said there will be elements in the periodic table where
+> there are gaps."
+
+**What this rules:** the paper is a THEORY paper in the Mendeleev register. The tree is laid
+out whole; the proven links are solid wood; and the gaps are not confessions — THE GAPS ARE
+PREDICTIONS. Each wall's staircase and exact failing step is the "predicted properties of the
+missing element": we state where each gap is, what shape the missing piece must be, and predict
+that as AI improves at mathematics and physics the gaps will be filled, showing the tree.
+Whoever fills one is finding OUR gallium — completing a dated, published, machine-checked,
+Bitcoin-anchored programme.
+
+**Skeleton consequences (applied):**
+- The paper OPENS as a theory statement (the tree, nothing → everything), not as an audit.
+- §8 is renamed THE PREDICTIONS — the gap-list presented Mendeleev-style: per gap, its exact
+  location in the tree, the precise failing step, the shape of the missing mathematics, and
+  the closure prediction. The PREDICTIONS_REGISTER's physical predictions join the same section.
+- The honesty layer (§5–§7) feeds §8 rather than standing apart: the walls ledger IS the
+  gap-prediction table.
+- Working title adjusted to the theory register (candidates to founder with the draft; the
+  audit-flavoured "What Stands Proven" demoted to subtitle candidate).
