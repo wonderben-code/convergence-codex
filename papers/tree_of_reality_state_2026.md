@@ -559,3 +559,139 @@ direction measures nothing; this one moves both ways and is therefore worth read
 
 The full ruling-by-ruling record, with the campaign's reasoning quoted, is published beside
 the ledgers (§9).
+
+---
+
+## 8. The predictions — the empty boxes, and what will fill them
+
+Mendeleev's 1869 table is remembered not for the sixty-three elements it contained but for
+the boxes it left empty. He predicted eka-aluminium and eka-silicon — their densities, their
+oxides, their melting behaviour — from nothing but the table's structure. Gallium arrived in
+1875 and germanium in 1886, matching the descriptions, and the gaps turned out to have been
+the strongest evidence the organising principle was real. A structure that can describe its
+own missing pieces is not incomplete. It is *predictive*.
+
+The Tree of Reality is published here in the same posture. Its two ◇ boxes and the wall
+behind its hardest PARTIAL are not confessions appended to a theory; they are the theory's
+predictive content, each specified to the exact failing step. We know precisely where each
+box sits in the tree, precisely which staircase reaches it, precisely which step no known
+route climbs, and precisely what the missing mathematics must look like when it arrives. That
+is a description of eka-aluminium.
+
+**The prediction, stated once and plainly:**
+
+> **As machine reasoning in mathematics improves, each of the named gaps below will be
+> closed, in the shapes specified — and the Tree of Reality will be shown whole. This
+> prediction is dated, machine-checked at every boundary, and anchored to the Bitcoin
+> blockchain. Whoever closes a gap — human, machine, or the two together — completes the
+> programme published here.**
+
+### The table of missing elements
+
+| Box | Location in the tree | The exact failing step | The predicted shape of the missing piece | Kind |
+|---|---|---|---|---|
+| **E1** | L23 (◇), wall W1 | the infinite-volume limit of the lattice field | uniform-in-volume correlation bounds + tightness, or an independent infinite-volume construction with convergence | open mathematics |
+| **E2** | L23 (◇) and L22 (◇), walls W2 + W5 | unbounded self-adjoint operators — absent from the entire formal ecosystem | densely defined operators, adjoints, closures, essential self-adjointness, spectral measure, semigroup ↔ generator | library-scale infrastructure |
+| **E3** | L23 (◇), wall W3 | the Peierls comparison bound (the old route *proved* insufficient: O(n) against O(n²)) | a comparison model of genuinely different shape with non-sublinear output | voluminous combinatorics |
+| **E4** | L23 (◇), wall W4 | a uniform sub-top spectral estimate, below threshold (restated by ruling; the unrestricted form is measured false) | Dobrushin uniqueness or a high-temperature cluster expansion, formalised | open formalisation of standard physics |
+| **E5** | L22 (◇), wall W5 rung 4 | the heat-kernel expansion of the spectral action | the asymptotic expansion of Tr f(D/Λ) with a₂ identified as a curvature integral — after E2 exists | research-grade, gated on E2 |
+| **E6** | L6, wall W9 rung 2 | order-one across the isotypic pieces of CCM's actual bimodule | the isotypic decomposition of a finite-dimensional bimodule over products of ℝ/ℂ/ℍ matrix algebras, built as an object; then K-theory of finite algebras for rung 3 | construction + missing library |
+
+Three structural facts sharpen the table. **First**, E2 fills two boxes at once — the tree's
+two ◇ links fail at the *same* absent subject, the way two gaps in one column of the periodic
+table await elements with the same valence. **Second**, the boxes are of different kinds, and
+the kinds have different closure profiles: library infrastructure (E2) is engineering — its
+arrival is a matter of effort, not discovery; combinatorics (E3) yields to patience;
+genuinely open mathematics (E1, E4) is the boldest part of the prediction, and we make it
+anyway. **Third**, E5 is *gated*: it cannot be attempted before E2 exists, which makes the
+predicted order of closure itself falsifiable content.
+
+### Why we predict closure — the trajectory argument
+
+The evidence is the campaign this paper closes. In forty-five working days, one researcher
+and one reasoning machine produced 1,230 graded proof files; closed three walls outright —
+including W8, a research-grade construction that had stood since the programme began; proved
+the named step of a fourth wall by a route no planning document contained; and refuted three
+of their own published headlines. Every one of those events was, five years ago, out of
+reach of any machine on earth.
+
+The instrument is improving faster than any instrument in the history of mathematics. We do
+not claim a calendar; we claim a direction. Formal libraries compound — every object built
+for one gap (E2's operators, E6's decomposition) permanently lowers the cost of every later
+attempt. The gaps named here are, by construction, the *best-specified open problems in the
+formal ecosystem*: each arrives with its staircase pre-climbed, its dead routes marked by
+theorems rather than folklore, and its target statement already stated in a machine-checkable
+idiom. They are, deliberately, the problems it is easiest for a rising capability to close.
+
+### What would count against us
+
+Symmetry demands this list, and honesty enjoys it. The prediction fails in kind, not just in
+schedule, if: the restated W4 target is proved false *below* threshold too; the
+infinite-volume limit of E1 is shown not to exist for the massive lattice field; the isotypic
+computation of E6 yields an algebra *other than* the Chamseddine–Connes–Marcolli one; or the
+heat-kernel coefficient of E5, once computable, fails to contain the Einstein term. Any of
+these would be a machine-checked refutation of this paper's central claim, and we commit in
+advance to publishing it under this paper's own DOI lineage with the same prominence as a
+confirmation. The label discipline of §§1–7 is the reader's evidence that the commitment is
+real.
+
+And one caution we owe the reader in the other direction: a failing step marks where the
+known routes stop, not where all routes stop. W1's own named step fell to an unlisted route
+mid-campaign. The boxes may fill sooner, and stranger, than the table suggests. Mendeleev's
+gallium arrived six years early, discovered by a man who had never read his prediction.
+
+## 9. Provenance and verification — trust nothing, run everything
+
+**The repository.** All Lean sources, ledgers, and this paper:
+`github.com/wonderben-code/convergence-codex` (public). The verification campaign's working
+registers — the graded file ledger, the spine table, the walls ledger with every dated
+amendment, the 57-entry assumptions ledger, the 699 errata, the 1,846-entry progress log —
+live in the companion repository `codex-internal`, same branch, under `formalisation/`.
+Where any summary in this paper differs from a register, **the register is right and this
+paper is wrong** — and the correction belongs in the errata.
+
+**The stop point.** Branch `claude/infinitography-formalisation-fbqxf3`; the snapshot stop
+point is the ledger commit following unit 243 (26 September 2026), with the five stop-point
+ledgers under `lean_verify/paper_f/ledgers/`. The founder rulings this paper is written
+under are recorded in `RULINGS_2026-09-27.md`.
+
+**The anchoring.** Every commit in both repositories is Bitcoin-timestamped on a six-hourly
+schedule via OpenTimestamps. The programme's twenty-seven prior papers carry dated Zenodo
+DOIs; this paper receives its own. The May 2026 predictions register of the earlier
+convergence-capstone lineage remains part of the stamped record under its own provenance;
+its empirical predictions are a separate instrument from the gap-predictions of §8 and are
+not restated here.
+
+**The two commands.** To check the mathematics, no trust in the author is required:
+
+```
+lake build          # the estate: 5,091 jobs, green; one sorry + one axiom, both
+                    # pre-campaign, both documented, neither load-bearing
+#print axioms <thm> # any theorem: the campaign's files answer with the standard
+                    # three axioms — propext, Classical.choice, Quot.sound
+```
+
+The per-file grades, the per-unit gate records, and `check_ledger.py --spine` (which
+recomputes the scoreboard from the link table and fails if they disagree) are in the
+registers.
+
+## 10. Coda — publishing the table with its gaps
+
+Here, then, is the tree as of today. Six links of solid, machine-checked wood — existence
+forced from self-reference, the seed, the cascade and its arrow, the algebra of spacetime,
+the splitting of colour. Thirteen links partly grown, each with its unproven remainder named
+in public. Three grafts declared as grafts. And two empty boxes, drawn in their exact places,
+with the properties of their missing elements written beside them.
+
+We could have waited to publish until the boxes were filled. Mendeleev did not wait, and
+chemistry is the richer for it: the empty boxes told the discoverers of gallium and germanium
+what they were looking at. These boxes are offered in the same spirit — to whoever, or
+whatever, arrives with the mathematics to fill them. The tree is planted, dated, and
+anchored. The gaps are the invitation.
+
+---
+
+*Mark E. Mala, September 2026. The author thanks the reasoning machines this programme was
+built with — including the one that spent forty-five days proving, refuting, and grading the
+claims above, filed 699 corrections against the work and its own, and whose final act before
+standing down was to soften a claim.*
