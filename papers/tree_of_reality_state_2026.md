@@ -721,6 +721,15 @@ missing mathematics must look like when it arrives.
 | **G5** | L22 (◇), wall W5 rung 4 | the heat-kernel expansion of the spectral action | the asymptotic expansion of Tr f(D/Λ) with a₂ identified as a curvature integral — after G2 exists | research-grade, gated on G2 |
 | **G6** | L6, wall W9 rung 2 | order-one across the isotypic pieces of CCM's actual bimodule | the isotypic decomposition of a finite-dimensional bimodule over products of ℝ/ℂ/ℍ matrix algebras, built as an object; then K-theory of finite algebras for rung 3 | construction + missing library |
 
+The six gaps are the headline predictions, but the claim extends down the whole tree: every
+PARTIAL link in §4 carries a residue that is named, stated, and machine-checkable, and the
+prediction covers those too. As the boxes fill and the residues close, **the wood of the
+tree hardens** — PARTIAL toward GENUINE, and each declared postulate either earns a
+derivation or remains, permanently and visibly, a stated input. The tree published here is
+the *most complete to date*; the prediction is that every future edition is more solid than
+this one, and that no honest edition will ever have to move a tag downward again — because
+this one already did that work.
+
 Three structural facts sharpen the table. **First**, G2 fills two boxes at once — the tree's
 two ◇ links fail at the *same* absent subject. **Second**, the boxes are of different kinds, and
 the kinds have different closure profiles: library infrastructure (G2) is engineering — its
