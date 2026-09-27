@@ -1,4 +1,4 @@
-# The Tree of Reality: The Complete Tree to Date
+# The Tree of Reality: An Evolutionary Theory of Everything
 
 ### The machine-verified state of the Generator programme — the proven trunk, the stated assumptions, and the predicted gaps
 
@@ -24,7 +24,10 @@ verification. The **Generator theory** — the *Tree of Reality* — proposes th
 of physics are not axioms but descendants: a single minimal algebra, forced by the logic of
 self-reference, grows by one repeated canonical operation into the dimension and signature of
 spacetime, the gauge structure of the Standard Model, colour, chirality, three generations,
-and the machinery of quantum mechanics. §1 states the theory plainly; the rest of the paper
+and the machinery of quantum mechanics. Where the unification tradition seeks one
+framework to *contain* the known structures of physics, this theory derives them from one
+*ancestor*: it is a theory of everything in the sense that evolutionary biology is a theory
+of every species — unification by common descent. §1 states the theory plainly; the rest of the paper
 grades every claim in it.
 
 The grading vocabulary is unforgiving. The theory's chain from nothing to everything has
@@ -65,6 +68,57 @@ claims, a growth process — a small set of forced moves, iterated — that begi
 but the logic of self-reference and produces, level by level, the recognisable structures of
 physics. On this view the right question about any such structure is not *why this axiom?*
 but *which branch of the tree is this, and what forced it to grow?*
+
+### 1.1 Ancestry, not unification
+
+Every prior programme called a theory of everything has, at bottom, sought a **container**:
+one framework — one set of equations, one symmetry, one geometry — large enough to hold the
+known structures of physics side by side. The structures themselves are taken as given; the
+work is to reconcile them. This theory belongs to a different genus. It does not ask *what
+frame contains the branches of physics?* It asks *what did they descend from?*
+
+The precedent is not in physics but in biology. Before common descent, the species were a
+catalogue — each one a separate fact, and every resemblance between them a curiosity.
+Darwin's move was not to find a framework that contained the dog and the octopus; it was to
+show that they are *relatives*. You do not unify a dog and an octopus. You find their
+common ancestor — and then the dog, the octopus, and every species between them fall into
+one tree, and the tree explains not merely that they coexist but *why they share their
+deepest structures*.
+
+The claim of this paper is that physics admits the same move. All of it — spacetime and its
+signature, the gauge forces, colour, the generations, the quantum apparatus — descends from
+a single ancestor: the minimal self-referential seed of §1.2, grown by one repeated
+operation. On this reading, the familiar resemblances across physics — the same small
+algebras surfacing in sector after sector — are not coincidences awaiting a container. They
+are **homologies**: the same bones in the whale's flipper and the bat's wing, inherited
+from the same ancestor.
+
+This is still unification — arguably the strongest form of it. Common descent unified
+biology more completely than any single equation of life could have, because it explains
+kinship rather than mere compatibility, and because it turns a catalogue into a history
+with a direction. The cascade's proven irreversibility (§1.2) gives this tree the same
+property: not just a family, but a family with an arrow.
+
+**Where the analogy is exact, and where it is not.** Exact: a single ancestor; branching
+descent; an irreversible direction; homology as inherited structure; and a tree that is
+tested at its gaps — biology's tree was vindicated by fossils found where the tree said to
+dig, and §9 of this paper is, deliberately, a list of dig sites. Not exact: biological
+evolution runs on variation and selection — chance, filtered. The cascade has neither. Every
+step is *forced*: this is a derivation tree, not a selection tree, closer to the way a proof
+unfolds than to the way a population drifts. The analogy claims ancestry and homology; it
+does not claim natural selection, and nothing in this paper depends on it.
+
+And the difference from the existing programmes, stated without adjudicating any of them: a
+container theory takes as input the structures it unifies, so it can be incomplete but is
+hard to refute *on structure*; an ancestry theory must **derive** its structures, so every
+branch is an exposure. If the tree grows a wrong branch — a gauge structure physics does not
+have, a signature it forbids — the theory fails there, visibly. The grading vocabulary of §2
+exists precisely because ancestry claims are refutable in a way containers are not, and §8
+shows the machinery catching this theory's own wrong branches. Nothing here argues against
+the unification programmes: ancestry answers a different question — not *what law is
+deepest?* but *what did the laws grow from?* — and a finished physics may well need both.
+
+### 1.2 The tree, from root to crown
 
 **The root is a logical fact, not a physical one.** In any setting where description can be
 turned on itself, fixed points are unavoidable — this is Lawvere's fixed-point theorem, the
@@ -110,7 +164,7 @@ produce both gravity and the gauge forces from one formula.
 **What kind of theory this is.** It stakes structure first and numbers second: of physics'
 measured constants, exactly two have so far been computed from the tree's own objects — the
 weak-mixing ratio 3/8 as a trace identity, and the Higgs coupling window — and the paper
-says so in one sentence rather than hiding it in seventeen tables. Its claims live at
+states this inventory up front, because a theory's credibility begins at its inventory. Its claims live at
 deliberately different strengths: some links of the chain are machine-checked theorems, some
 are partly proven with the residue named, some are declared modelling choices, and two are
 open. The discipline of saying *which is which*, link by link, is the entire remainder of
@@ -760,6 +814,26 @@ because the description tells whoever arrives what they are looking at. The boxe
 offered in that spirit — to whoever, or
 whatever, arrives with the mathematics to fill them. The tree is planted, dated, and
 anchored. The gaps are the invitation.
+
+## 12. References — the named results
+
+Classical results are named where they are used; their primary sources are collected here.
+The paper's real bibliography is the repository of §10: the programme's twenty-seven prior
+papers (each with a dated DOI) and every Lean source this paper grades.
+
+- F. W. Lawvere, *Diagonal arguments and cartesian closed categories* (1969).
+- G. Frobenius, on real finite-dimensional division algebras: ℝ, ℂ, ℍ (1878).
+- M. H. Stone, on one-parameter unitary groups (1932).
+- E. P. Wigner, on symmetry representations (1931); A. M. Gleason, on measures on the
+  closed subspaces of a Hilbert space (1957) — cited in §4 (L21) as physics inputs.
+- J. C. Pati and A. Salam, *Lepton number as the fourth "color"* (1974).
+- K. Osterwalder and R. Schrader, *Axioms for Euclidean Green's functions* (1973; 1975).
+- A. Connes, *Noncommutative Geometry* (1994).
+- A. H. Chamseddine and A. Connes, *The spectral action principle* (1997).
+- A. H. Chamseddine, A. Connes and M. Marcolli, *Gravity and the standard model with
+  neutrino mixing* (2007).
+- L. de Moura and S. Ullrich, *The Lean 4 theorem prover and programming language* (2021);
+  The mathlib Community, *The Lean mathematical library* (2020).
 
 ---
 
