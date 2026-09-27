@@ -4,12 +4,14 @@
 
 **Author:** Mark E. Mala (pen name of Ekram Alam)
 **Date:** September 2026
-**Series:** the capstone of the Infinitography / Convergence Codex programme. This paper
+**Series:** the capstone of the Infinitography / Convergence Codex programme — a
+single-author, machine-verified research programme asking whether the structures of physics
+are generated from a minimal self-referential root. This paper
 supersedes the running claim-registers of the programme's earlier documents (in particular the
-May 2026 register of *Paper F v5.1*) wherever they disagree; §7 lists every superseded claim
+May 2026 register of *Paper F v5.1*) wherever they disagree; §8 lists every superseded claim
 explicitly. The underlying papers keep their DOIs and their history.
-**Verification:** every mathematical claim in this paper is backed by a machine-checked Lean 4
-proof in the public repository `wonderben-code/convergence-codex`, and §9 gives the exact
+**Verification:** every mathematical claim in this paper is backed by a machine-checked proof
+in the Lean 4 proof assistant, in the public repository `wonderben-code/convergence-codex`, and §10 gives the exact
 branch, commit discipline, and the two commands that let a reader check any of it without
 trusting the author.
 
@@ -17,47 +19,113 @@ trusting the author.
 
 ## Abstract
 
-In 1869 Mendeleev published a table with holes in it. He did not apologise for the holes: he
-predicted that elements would be found to fill them, and described what those elements would
-look like. The gaps were not the table's weakness. They were its testable content.
+This paper states a theory and publishes its complete current state under machine
+verification. The **Generator theory** — the *Tree of Reality* — proposes that the structures
+of physics are not axioms but descendants: a single minimal algebra, forced by the logic of
+self-reference, grows by one repeated canonical operation into the dimension and signature of
+spacetime, the gauge structure of the Standard Model, colour, chirality, three generations,
+and the machinery of quantum mechanics. §1 states the theory plainly; the rest of the paper
+grades every claim in it.
 
-This paper does the same for a theory of physics. We lay out the **Tree of Reality** — a single
-generative structure that begins with nothing but the impossibility of a certain map, forces a
-first algebra, and grows by one repeated operation into spacetime, gauge structure, colour,
-chirality, generations, and the machinery of quantum mechanics — in **its most complete form to
-date**: twenty-four links from nothing to everything, each labelled with exactly what a proof
-assistant has verified about it.
+The grading vocabulary is unforgiving. The theory's chain from nothing to everything has
+twenty-four links. **Six are GENUINE** — their headlines are machine-checked theorems, resting
+on nothing but the three standard axioms of Lean's mathematics library. **Thirteen are
+PARTIAL** — real theorems cover part of the headline, and the unproven residue is named
+precisely, in every row. **Three are POSTULATES** — modelling choices stated rather than
+hidden. **Two are OPEN** — and the paper's closing sections treat those two not as apologies
+but as its predictive content.
 
-The label vocabulary is unforgiving. Of the twenty-four links, **six are GENUINE** — their
-headlines are machine-checked theorems, resting on nothing but the three standard axioms of
-Lean's mathematics library. **Thirteen are PARTIAL** — real theorems cover part of the
-headline, and the unproven residue is named precisely, in every row. **Three are POSTULATES** —
-modelling choices we state rather than hide. **Two are OPEN** — and those two are the theory's
-gallium and germanium.
+The prediction is this: the open gaps are exactly located, their missing mathematics is
+exactly shaped — down to the failing step of each staircase — and as machine reasoning in
+mathematics improves, the gaps will be filled and the tree shown whole. The prediction is
+dated, machine-checked at its boundaries, and anchored to the Bitcoin blockchain. Whoever
+fills a gap — human, machine, or the two together — completes the programme published here.
 
-The paper's final section states the programme's prediction in Mendeleev's register: the open
-gaps are exactly located, their missing mathematics is exactly shaped — down to the failing
-step of each staircase — and we predict that as machine reasoning in mathematics improves,
-these gaps will be filled and the tree shown whole. The prediction is dated, published,
-machine-checked and Bitcoin-anchored. Whoever fills a gap completes this programme.
-
-The evidence discipline behind those labels is itself a result. Over a 45-working-day
-verification campaign (28 July – 26 September 2026, 243 numbered units), the estate grew to
+The evidence discipline behind the labels is itself a result. Over a 45-working-day
+verification campaign (28 July – 26 September 2026, 243 numbered units), the corpus grew to
 **1,230 graded Lean files (312,334 lines), building green in 5,091 jobs, with exactly one
 `sorry` and one `axiom` in the entire build** — both predating the campaign, both documented,
-neither load-bearing for any claim below. In 169 consecutive units of hardening, **no spine
+neither load-bearing for any claim below. In 169 consecutive units of hardening, **no link
 rating moved**: the work sharpened residues and closed named sub-gaps without inflating a
 single headline. Three of the programme's own July headlines were *machine-refuted* by the
 campaign and are tagged down in this paper by the same hands that proved everything else. A
-theory that keeps its own score this way earns the right to point at its gaps and call them
-predictions.
+theory that keeps its own score this way earns the right to call its gaps predictions.
 
 ---
 
-## 1. The reader's contract
+## 1. The theory, in plain terms
+
+This section states the theory on its own ground, for a reader meeting it for the first
+time. Nothing here is yet graded; every claim below is audited, link by link, in §4.
+
+Physics, as normally written, begins with axioms: a spacetime of stated dimension, a gauge
+group chosen to match experiment, particle content and constants supplied by hand. The
+Generator theory proposes that these are not starting points but *descendants*. There is, it
+claims, a growth process — a small set of forced moves, iterated — that begins with nothing
+but the logic of self-reference and produces, level by level, the recognisable structures of
+physics. On this view the right question about any such structure is not *why this axiom?*
+but *which branch of the tree is this, and what forced it to grow?*
+
+**The root is a logical fact, not a physical one.** In any setting where description can be
+turned on itself, fixed points are unavoidable — this is Lawvere's fixed-point theorem, the
+single mechanism underneath Cantor's diagonal argument and Gödel's incompleteness. The
+theory reads that unavoidability as the seed of existence: a world in which reference is
+possible cannot be empty, because self-reference forces something for reference to land on.
+(The theorem is machine-checked — from no axioms at all; whether the reading is right is
+graded with everything else.)
+
+**The seed is the smallest algebra that can hold a non-commutative fact.** Ask for the
+minimal structure in which the order of operations matters — the signature property of the
+quantum world — and, over the complex numbers, the answer is unique: M₂(ℂ), the two-by-two
+complex matrices. Physicists know this object as the observable algebra of a single qubit,
+the smallest quantum system there is. The tree grows from it.
+
+**One operation drives all growth.** From any stage, pass to End of it — the algebra of all
+linear transformations of that stage; informally, *the mathematics of studying the previous
+stage*. Applied to the seed it yields M₄(ℂ); applied again, M₁₆(ℂ); again, M₂₅₆(ℂ). The
+dimension squares at every step, and the process is provably irreversible — growth has a
+built-in direction. This iterated End is the *generator* of the theory's name, and the
+sequence M₂ → M₄ → M₁₆ → M₂₅₆ → … is called *the cascade*.
+
+**Three lineages branch from the growth.** Every algebra in the cascade supports three
+canonical kinds of structure, and the theory tracks each as a lineage of the tree: **End** —
+what things *are* (matter, spacetime, structure); **Aut** — how things *transform* (symmetry,
+and so forces); and the **inner product** ⟨·,·⟩ — how things are *known* (measurement,
+probability, quantum mechanics). That these three are the *only* canonical lineages is a
+modelling choice the paper declares openly rather than a theorem.
+
+**The branches are the recognisable face of physics.** At the cascade's second level, M₄(ℂ)
+is exactly the Clifford algebra of four-dimensional spacetime — the algebra Dirac built the
+electron's equation from — and it is that algebra *only* in dimension four: the theory's
+account of why space and time have the dimensions they do. At the next level, M₁₆ carries
+the Pati–Salam structure long identified as a natural home of the Standard Model; inside it,
+the fundamental four splits as 3 ⊕ 1 — three colours of quark beside one lepton. The
+quaternions — the last real division algebra Frobenius's theorem allows — have exactly three
+independent imaginary directions: the theory's candidate for why matter comes in three
+generations. A Higgs sector appears with its coupling bracketed inside a proven window. And
+the three lineages reunite in one object — the spectral triple: one algebra, one Hilbert
+space, one Dirac operator — on which a single functional, the spectral action, is claimed to
+produce both gravity and the gauge forces from one formula.
+
+**What kind of theory this is.** It stakes structure first and numbers second: of physics'
+measured constants, exactly two have so far been computed from the tree's own objects — the
+weak-mixing ratio 3/8 as a trace identity, and the Higgs coupling window — and the paper
+says so in one sentence rather than hiding it in seventeen tables. Its claims live at
+deliberately different strengths: some links of the chain are machine-checked theorems, some
+are partly proven with the residue named, some are declared modelling choices, and two are
+open. The discipline of saying *which is which*, link by link, is the entire remainder of
+this paper.
+
+---
+
+## 2. The reader's contract
 
 This section fixes what every label in this paper means, so that no sentence below can say
-more than the mathematics does.
+more than the mathematics does. Two working terms first: **the estate** is the programme's
+complete formal corpus — every Lean proof file and ledger in the repositories of §10 — and
+**the campaign** is the 45-working-day verification effort (28 July – 26 September 2026)
+that graded it, working in 243 numbered **units**, each one sealed cycle of proof, audit and
+commit.
 
 **GENUINE.** The link's headline is a machine-checked theorem: no `sorry`, standard axioms only
 (`propext`, `Classical.choice`, `Quot.sound`), and the formal statement says what the headline
@@ -68,10 +136,10 @@ link's own row. The residue is always one of two kinds — open mathematics, or 
 and the row says which.
 
 **POSTULATE.** The headline is a modelling choice. It is recorded in the assumptions ledger
-(§6), with what it bites and which way it cuts. A postulate is not a defect; an *unstated*
+(§7), with what it bites and which way it cuts. A postulate is not a defect; an *unstated*
 postulate is.
 
-**OPEN.** A precisely stated wall (§5) with no covering theorem: the staircase of steps toward
+**OPEN.** A precisely stated wall (§6) with no covering theorem: the staircase of steps toward
 it is climbed as far as it goes, and the exact failing step is named.
 
 Two boundaries matter as much as the labels. **First**, a GENUINE link is a theorem about the
@@ -81,11 +149,11 @@ removes doubt about the mathematics, not about the physics identification. **Sec
 wall's failing step marks where the *known* routes stop — it is not a proof that no route
 exists. One of the campaign's own walls fell by a route no document had listed.
 
-Everything else in this paper is organised to be checked: §9 gives the repository, the branch,
+Everything else in this paper is organised to be checked: §10 gives the repository, the branch,
 the stop-point commit, and the verification commands. The reader is never asked to trust; only
 to run.
 
-## 2. The method, and why the labels can be believed
+## 3. The method, and why the labels can be believed
 
 The tree was not labelled by opinion. It was labelled by a campaign with the following
 discipline, run from 28 July to 26 September 2026 in 243 numbered units.
@@ -112,19 +180,19 @@ campaign's drift was zero. That fact, more than any single theorem, is why the s
 tags below can be taken at face value.
 
 **The refutations.** The campaign proved theorems *against* three of the programme's own
-published July sentences (§7): the reflexive-domain headline over sets, the structural
+published July sentences (§8): the reflexive-domain headline over sets, the structural
 exclusion of Riemannian signatures, and the Standard-Model-in-su(4) assembly. Each refutation
 is itself machine-checked, and each is worth as much as a proof — a labelling system that can
 only move in the author's favour measures nothing.
 
 ---
 
-## 3. The Tree, whole — the most complete form to date
+## 4. The Tree, whole — the most complete form to date
 
 This section is the paper. Everything before it is calibration; everything after it is
 support. The figure below renders the Tree of Reality as of unit 243 — every link of the
-nothing→everything chain carrying its audited tag, with the two open gaps drawn **in place**,
-marked ◇, the way Mendeleev left conspicuous boxes empty.
+nothing→everything chain — the programme calls it *the spine* — carrying its audited tag, with the two open gaps drawn **in place**,
+marked ◇ and left deliberately visible.
 
 **The scoreboard: of 24 links — 6 GENUINE · 13 PARTIAL · 3 POSTULATE · 2 OPEN.**
 (Read strictly three ways, the count is 6 GENUINE and 18 not; every PARTIAL row below names
@@ -167,15 +235,15 @@ its residue, and the residue is always either open mathematics or a stated postu
                └─ L24  PARTIAL    the numbers: what has actually been computed
 ```
 
-The two ◇ boxes are the subject of §8. They are not embarrassments at the edge of the tree;
+The two ◇ boxes are the subject of §9. They are not embarrassments at the edge of the tree;
 they are its most precisely surveyed territory — each carries a climbed staircase and a named
-failing step, which is to say: a description of the missing element.
+failing step, which is to say: a description of the missing piece.
 
 ### The 24 links, each in one honest breath
 
 What follows compresses the audited link table. For every link: what the headline says, what
 is machine-proved (with the proving files), and what is not — with the residue's kind. The
-full statement-level table, with every dated amendment, is in the published ledgers (§9).
+full statement-level table, with every dated amendment, is in the published ledgers (§10).
 
 **L1 · Existence from self-reference — GENUINE.** The root. Lawvere's fixed-point theorem at
 the programme's own domain (proved with *no* axioms at all — the file's axiom print is empty),
@@ -210,7 +278,7 @@ honestly:* "the arrow of time" is an interpretation; no theorem mentions entropy
 the files say so. *(paper_f/F4_1b · EmergenceLineage · SpineSharpenings)*
 
 **L6 · Why the fourth level — PARTIAL.** Minimality of 4 under the stated criterion is proved
-with no upper bound assumed, and the first rung of the Chamseddine–Connes–Marcolli
+with no upper bound assumed, and the first rung of the Chamseddine–Connes–Marcolli (CCM)
 classification is climbed: a finite-dimensional ⋆-algebra with a faithful ⋆-representation is
 a product of matrix algebras. On rung 2, the ⋆-structures are classified and the order-one
 condition is solved on every model bimodule the estate has. *Not proved:* the classification's
@@ -242,7 +310,7 @@ algebra, so Lorentzian-over-Riemannian is a postulate, now recorded as one.
 where the estate says it does, and the full Standard Model algebra embeds injectively in the
 Pati–Salam algebra. *Machine-refuted:* the July sentence "the SM algebra embeds in su(4)" for
 the estate's own maps — the honest statement is the two-step one, and ~30 files' prose is
-re-pointed accordingly (§7). The group level is a recorded postulate. *(SMLieHom ·
+re-pointed accordingly (§8). The group level is a recorded postulate. *(SMLieHom ·
 SMEmbeddingHonest · SMInPatiSalam)*
 
 **L11 · Pati–Salam at M₁₆ — PARTIAL.** The isomorphism M₄ ⊗ M₄ ≅ M₁₆ is genuine;
@@ -254,7 +322,7 @@ system. *(F1_6_PatiSalamForced · CascadeEnd · SkolemNoether)*
 **L12 · Chirality — POSTULATE.** The asymmetry that makes the weak force left-handed is, in
 the estate, a definitional convention: the mirror statement compiles with the same one-line
 proof. This paper says so plainly — parity violation is *modelled*, not derived, and the row
-that once said otherwise is corrected in §7. *(supporting structure: TransposeSplit ·
+that once said otherwise is corrected in §8. *(supporting structure: TransposeSplit ·
 Su2ModuleSixteen)*
 
 **L13 · Colour 4 → 3 ⊕ 1 — GENUINE.** On the cascade's own carrier: the block embedding of
@@ -278,7 +346,8 @@ derived; N = 96 is a recorded choice; no 125 GeV claim is made anywhere. *(Higgs
 units 199–227)*
 
 **L16 · Anomaly cancellation — PARTIAL.** The full perturbative anomaly table vanishes on the
-chiral 16, evaluated on the actual representation in one theorem. *Cited, not proved:* that
+chiral 16 — the sixteen fermion states of one Standard-Model generation in the Pati–Salam
+representation — evaluated on the actual representation in one theorem. *Cited, not proved:* that
 the cubic trace IS the triangle anomaly (ABJ), and Witten's global anomaly (Mathlib has no
 homotopy groups). The fermion content is an input. *(AnomalyTraces ·
 PatiSalamOnSixteen)*
@@ -286,7 +355,7 @@ PatiSalamOnSixteen)*
 **L17 · The Weinberg angle — PARTIAL.** In exact rational arithmetic on the chiral 16:
 Tr(T₃L²)/Tr(Q²) = 3/8, and Tr(T₃L²)/Tr(Y²) = 3/5 — with a control theorem showing the
 same construction on dimension-counting gives 3/7, which *refutes* the programme's old
-"3/8 from the dimensions" mechanism (§7). *Assumed:* the coupling matching that turns the
+"3/8 from the dimensions" mechanism (§8). *Assumed:* the coupling matching that turns the
 trace ratio into the physical angle at unification. *(WeinbergIndex)*
 
 **L18 · The spectral triple — PARTIAL.** A complete finite real spectral triple of
@@ -294,16 +363,16 @@ KO-dimension 6 exists for Mₙ(ℂ) on a four-block space, and the estate's own 
 regular bimodule of M₂(ℂ) is understood completely. *Not proved:* that it is the *cascade's*
 triple — nothing connects it to the cascade's Hilbert space; which real structure the cascade
 carries was an open author decision, ruled on 27 September 2026 (the Chamseddine–Connes KO-6
-convention; §6). *(KOSixSpectralTriple · KOSixRealStructure · units 164–172)*
+convention; §7). *(KOSixSpectralTriple · KOSixRealStructure · units 164–172)*
 
 **L19 · The spectral action: the exponential forced — PARTIAL.** The genuinely striking half
-is proved: a factorising cutoff must be exponential (the Cauchy functional equation, in
-Mathlib, no shortcuts), and on a tensor-sum operator the cutoff trace factorises. *Not
+is proved: a factorising cutoff must be exponential (the Cauchy functional equation, proved in
+Mathlib — Lean's community mathematics library — with no shortcuts), and on a tensor-sum operator the cutoff trace factorises. *Not
 proved:* the premise. No theorem says the cascade's Dirac operator IS a tensor sum — the
 estate has no cascade Dirac operator at all — and the campaign's final units settled exactly
 when the order-one condition supplies that shape: for one full matrix algebra at one
 generation, and *not* for products or generations. The "zero free parameters" headline of the
-May register does not survive this row (§7). *(F4_1h · SpectralCutoffFactorises ·
+May register does not survive this row (§8). *(F4_1h · SpectralCutoffFactorises ·
 KronSumCriterion · ProductKronSum)*
 
 **L20 · The Boltzmann measure — PARTIAL.** A genuine 16-dimensional Gaussian probability
@@ -322,7 +391,7 @@ named step. *(CascadeGNS · FiniteStone · StoneConverseLocal)*
 algebraic Lovelock classification (every additive, homogeneous, equivariant map on curvature
 tensors is α·Ric + β·S·δ — proved), and the geometric chain to rung 3. What is missing, named
 exactly: the heat-kernel expansion of the spectral action — which requires unbounded
-self-adjoint operator theory that exists nowhere in Lean's ecosystem. §8 states the
+self-adjoint operator theory that exists nowhere in Lean's ecosystem. §9 states the
 prediction.
 
 **L23 · ◇ OPEN — Yang–Mills and the mass gap.** The predicted element at gaps W1–W4. What
@@ -331,17 +400,17 @@ OS1 in finite volume, transfer-matrix gaps computed exactly for stand-in models 
 *measured refutation* showing the old uniform-bound target is false above the critical point,
 which is why the target was re-stated by ruling this September. What is missing, named
 exactly: the infinite-volume limit (no projective system exists to take it along), and an
-estimate that sees the transfer matrix's structure below threshold. §8 states the prediction.
+estimate that sees the transfer matrix's structure below threshold. §9 states the prediction.
 
 **L24 · The numbers — PARTIAL.** Exactly two physical numbers have been computed on actual
 objects: sin²θ_W = 3/8 as a trace ratio, and the Higgs coupling window. Everything else —
 Newton's constant, the cosmological constant, fermion masses, proton lifetime — is
 uncomputed, and this paper says so in one sentence rather than seventeen tables. What the
-May register claimed here is superseded (§7).
+May register claimed here is superseded (§8).
 
 ---
 
-## 4. What fell — the campaign's harvest
+## 5. What fell — the campaign's harvest
 
 The tags above are the theory's state. This section is what two months of machine
 verification added to it — the wood that thickened even while no headline moved.
@@ -385,7 +454,7 @@ order-one condition on every model bimodule the estate possesses — with the re
 grading, with generations, on products — ending in an exact criterion: the tensor-sum shape
 that the spectral action's factorisation needs is **forced precisely for one full matrix
 algebra at one generation, and not otherwise**. That theorem is what disciplines link L19
-and retires the May register's proudest headline (§7).
+and retires the May register's proudest headline (§8).
 
 **And five refutations, each a theorem.** A non-trivial D ≅ (D → D) over sets — impossible.
 The Riemannian signatures excluded structurally — false; three signatures share one algebra.
@@ -398,16 +467,15 @@ One more finding is a measurement rather than a theorem, and it matters below: w
 uniform-bound target is **false above the critical point** — computed by diagonalising the
 estate's own transfer matrices, where the eigenvalue ratio climbs to 0.99990 at width 13.
 Two proof routes once recorded as failures were not lossy; they were correctly reporting that
-the thing to be bounded does not exist. The target has been restated accordingly (§6).
+the thing to be bounded does not exist. The target has been restated accordingly (§7).
 
-## 5. The gap survey — six open walls, each with its failing step named
+## 6. The gap survey — six open walls, each with its failing step named
 
-Mendeleev could describe gallium before it existed because the table's structure fixed the
-properties of whatever had to fill the box. This section is our version of that constraint
-structure: for each open gap — six walls behind the tree's two ◇ links and one PARTIAL — the
+A gap is only a prediction if what fills it is described in advance. This section is that
+description: for each open gap — six walls behind the tree's two ◇ links and one PARTIAL — the
 staircase that has been climbed, the exact step where the known routes stop, and **what would
 have to exist** for the gap to close. That last item is the predicted shape of the missing
-element.
+piece.
 
 **W1 · The lattice field's OS axioms — failing step: the infinite-volume limit.** The
 finite-volume programme is done: reflection positivity proved at the measure level in every
@@ -455,7 +523,7 @@ heat-kernel expansion. Two costs, and they should never be quoted as one.
 **W9 · The Chamseddine–Connes–Marcolli classification — failing step: rung 2's second half on
 CCM's own bimodule.** Rung 1 is climbed (the campaign's own theorem). Rung 2's first half is
 climbed for complex factors. The order-one condition is solved on *every model bimodule the
-estate has* — the sixteen-unit chain of §4. What remains is the real thing: the isotypic
+estate has* — the sixteen-unit chain of §5. What remains is the real thing: the isotypic
 decomposition of CCM's H_F — a sub-bimodule of a product with three generations and a
 quaternionic factor — built *as an object*, with order-one computed across its pieces. One
 route is already closed by theorem (the doubled-algebra argument cannot run through a regular
@@ -464,20 +532,20 @@ for rung 3 — the latter absent from both the estate and Mathlib.
 
 **The one missing subject.** Two of the six walls — W2 and W5, which are exactly the tree's
 two ◇ links — fail at the *same* absent mathematics: unbounded self-adjoint operators. One
-library, built once, unblocks both boxes. In the periodic-table analogy: two gaps in the
-same column, filled by one discovery. It is the largest single unlock the survey identifies.
+library, built once, unblocks both boxes. It is the largest single unlock the survey
+identifies.
 
 **And the honesty clause that governs this whole section:** a failing step marks where the
 *known* routes stop. It is not a proof that no route exists. The campaign's own record
 enforces the humility — W1's named step fell by a route no document had listed, three weeks
 after the wall was declared.
 
-## 6. What the theory rests on — the assumptions, stated
+## 7. What the theory rests on — the assumptions, stated
 
 A theory's honesty is measured at its inputs. The assumptions ledger records **57 numbered
 entries**: every choice the estate makes that no proof forced — a definition picked from
 several, a hypothesis nothing supplies, a physics input taken from the literature. An
-assumption is not a missing proof (those are §5's walls); it can only be closed by changing
+assumption is not a missing proof (those are §6's walls); it can only be closed by changing
 the model or defending the choice.
 
 Each entry carries a **bias grade**, and the grading is the ledger's sharpest instrument:
@@ -497,7 +565,7 @@ entries have graduated from assumption to theorem during the campaign).
 3. **The trace state is the vacuum** (entry 16) — GNS's headline results fail for a pure
    state.
 4. **The spectral weight is multiplicative with unit moments** (entry 12) — the "zero free
-   parameters" story dies exactly here (§7).
+   parameters" story dies exactly here (§8).
 5. **The Higgs vacua are chosen, not derived** (entry 60).
 6. **Three generations are the imaginary quaternions** (entry 25) — *Hardened*: the
    mathematics itself now proves the complexification cannot decide the real form, so the
@@ -509,8 +577,8 @@ property, predating the campaign, quarantined and disclosed — no campaign theo
 it.
 
 **Eleven entries are author decisions.** The five highest-leverage decisions across the
-ledger and the campaign's running list were ruled on 27 September 2026 — the rulings this
-paper is written under: the fermion content is a **named postulate** with
+ledger and the campaign's running list were ruled by the author on 27 September 2026 —
+the rulings this paper is written under: the fermion content is a **named postulate** with
 derivation as an open target; the Gaussian is the **stated approximation** to the
 spectral-action measure, e^{−S} named as the true target; wall W4's target is **restated
 below threshold**; the real structure adopts the **Chamseddine–Connes KO-6 convention**; and
@@ -519,7 +587,7 @@ CCM-compliant structure for anything this paper calls a real spectral triple, th
 as named scaffolding. Of the ledger's eleven decision entries this closes entry 48; the
 remaining ten stay open and are listed with the ledger.
 
-## 7. The corrections — what this paper retires, in public
+## 8. The corrections — what this paper retires, in public
 
 In May 2026 the programme's running register carried, in its own capitals: *"MASS GAP SOLVED,
 QG 100% COMPLETE, UNCONDITIONAL MILLENNIUM PRIZE PROGRAMME COMPLETE, ZERO FREE PARAMETERS."*
@@ -527,14 +595,14 @@ QG 100% COMPLETE, UNCONDITIONAL MILLENNIUM PRIZE PROGRAMME COMPLETE, ZERO FREE P
 This paper supersedes that register, and this section does it explicitly, because a
 correction hidden in a footnote is not a correction. On 27 September 2026, twenty-six tag
 rulings — each proposed by the verification campaign with its reasoning, each re-checked five
-times against the estate — were accepted in full. **No derived theorem was withdrawn by any
+times against the estate — were accepted in full by the author. **No derived theorem was withdrawn by any
 of them.** The mathematics stands untouched; what moves is labels, in both directions, to
 match the mathematics exactly.
 
 **The loudest retirements:**
 - **"Mass gap solved / QG 100% complete"** → the spine's honest tags are **OPEN** at L22 and
   L23. What exists are genuine theorems about the estate's internal models under stated
-  hypotheses — real mathematics, wrongly headlined. The walls behind both links are §5's
+  hypotheses — real mathematics, wrongly headlined. The walls behind both links are §6's
   W1–W5.
 - **"Zero free parameters"** → **not established.** The claim's chain has an unproven
   premise: that the cascade's Dirac operator is a tensor sum. The campaign's final theorems
@@ -560,25 +628,25 @@ where the paper had *undersold* its own Lean. A labelling system that can move i
 direction measures nothing; this one moves both ways and is therefore worth reading.
 
 The full ruling-by-ruling record, with the campaign's reasoning quoted, is published beside
-the ledgers (§9).
+the ledgers (§10).
 
 ---
 
-## 8. The predictions — the empty boxes, and what will fill them
+## 9. The predictions — the empty boxes, and what will fill them
 
-Mendeleev's 1869 table is remembered not for the sixty-three elements it contained but for
-the boxes it left empty. He predicted eka-aluminium and eka-silicon — their densities, their
-oxides, their melting behaviour — from nothing but the table's structure. Gallium arrived in
-1875 and germanium in 1886, matching the descriptions, and the gaps turned out to have been
-the strongest evidence the organising principle was real. A structure that can describe its
-own missing pieces is not incomplete. It is *predictive*.
+A theory with gaps can hold them in one of two postures: apology, or prediction. This
+paper chooses prediction, and the logic of the choice is old and simple. When a structure is
+precise enough to specify its own missing pieces — where each gap sits, what shape the
+filler must take, what properties it must have — the gaps are not the structure's weakness;
+they are its testable content. The canonical precedent is the periodic table, published with
+empty boxes whose described-in-advance occupants, once found, became the strongest evidence
+that the organising structure was real. The analogy claims a posture, not a stature: whether
+this tree earns any place in that history is exactly what the predictions below put at risk.
 
-The Tree of Reality is published here in the same posture. Its two ◇ boxes and the wall
-behind its hardest PARTIAL are not confessions appended to a theory; they are the theory's
-predictive content, each specified to the exact failing step. We know precisely where each
-box sits in the tree, precisely which staircase reaches it, precisely which step no known
-route climbs, and precisely what the missing mathematics must look like when it arrives. That
-is a description of eka-aluminium.
+The Tree of Reality is published here in that posture. Its two ◇ boxes and the wall behind
+its hardest PARTIAL are specified to the exact failing step: precisely where each box sits
+in the tree, which staircase reaches it, which step no known route climbs, and what the
+missing mathematics must look like when it arrives.
 
 **The prediction, stated once and plainly:**
 
@@ -588,24 +656,23 @@ is a description of eka-aluminium.
 > blockchain. Whoever closes a gap — human, machine, or the two together — completes the
 > programme published here.**
 
-### The table of missing elements
+### The gap table
 
-| Box | Location in the tree | The exact failing step | The predicted shape of the missing piece | Kind |
+| Gap | Location in the tree | The exact failing step | The predicted shape of the missing piece | Kind |
 |---|---|---|---|---|
-| **E1** | L23 (◇), wall W1 | the infinite-volume limit of the lattice field | uniform-in-volume correlation bounds + tightness, or an independent infinite-volume construction with convergence | open mathematics |
-| **E2** | L23 (◇) and L22 (◇), walls W2 + W5 | unbounded self-adjoint operators — absent from the entire formal ecosystem | densely defined operators, adjoints, closures, essential self-adjointness, spectral measure, semigroup ↔ generator | library-scale infrastructure |
-| **E3** | L23 (◇), wall W3 | the Peierls comparison bound (the old route *proved* insufficient: O(n) against O(n²)) | a comparison model of genuinely different shape with non-sublinear output | voluminous combinatorics |
-| **E4** | L23 (◇), wall W4 | a uniform sub-top spectral estimate, below threshold (restated by ruling; the unrestricted form is measured false) | Dobrushin uniqueness or a high-temperature cluster expansion, formalised | open formalisation of standard physics |
-| **E5** | L22 (◇), wall W5 rung 4 | the heat-kernel expansion of the spectral action | the asymptotic expansion of Tr f(D/Λ) with a₂ identified as a curvature integral — after E2 exists | research-grade, gated on E2 |
-| **E6** | L6, wall W9 rung 2 | order-one across the isotypic pieces of CCM's actual bimodule | the isotypic decomposition of a finite-dimensional bimodule over products of ℝ/ℂ/ℍ matrix algebras, built as an object; then K-theory of finite algebras for rung 3 | construction + missing library |
+| **G1** | L23 (◇), wall W1 | the infinite-volume limit of the lattice field | uniform-in-volume correlation bounds + tightness, or an independent infinite-volume construction with convergence | open mathematics |
+| **G2** | L23 (◇) and L22 (◇), walls W2 + W5 | unbounded self-adjoint operators — absent from the entire formal ecosystem | densely defined operators, adjoints, closures, essential self-adjointness, spectral measure, semigroup ↔ generator | library-scale infrastructure |
+| **G3** | L23 (◇), wall W3 | the Peierls comparison bound (the old route *proved* insufficient: O(n) against O(n²)) | a comparison model of genuinely different shape with non-sublinear output | voluminous combinatorics |
+| **G4** | L23 (◇), wall W4 | a uniform sub-top spectral estimate, below threshold (restated by ruling; the unrestricted form is measured false) | Dobrushin uniqueness or a high-temperature cluster expansion, formalised | open formalisation of standard physics |
+| **G5** | L22 (◇), wall W5 rung 4 | the heat-kernel expansion of the spectral action | the asymptotic expansion of Tr f(D/Λ) with a₂ identified as a curvature integral — after G2 exists | research-grade, gated on G2 |
+| **G6** | L6, wall W9 rung 2 | order-one across the isotypic pieces of CCM's actual bimodule | the isotypic decomposition of a finite-dimensional bimodule over products of ℝ/ℂ/ℍ matrix algebras, built as an object; then K-theory of finite algebras for rung 3 | construction + missing library |
 
-Three structural facts sharpen the table. **First**, E2 fills two boxes at once — the tree's
-two ◇ links fail at the *same* absent subject, the way two gaps in one column of the periodic
-table await elements with the same valence. **Second**, the boxes are of different kinds, and
-the kinds have different closure profiles: library infrastructure (E2) is engineering — its
-arrival is a matter of effort, not discovery; combinatorics (E3) yields to patience;
-genuinely open mathematics (E1, E4) is the boldest part of the prediction, and we make it
-anyway. **Third**, E5 is *gated*: it cannot be attempted before E2 exists, which makes the
+Three structural facts sharpen the table. **First**, G2 fills two boxes at once — the tree's
+two ◇ links fail at the *same* absent subject. **Second**, the boxes are of different kinds, and
+the kinds have different closure profiles: library infrastructure (G2) is engineering — its
+arrival is a matter of effort, not discovery; combinatorics (G3) yields to patience;
+genuinely open mathematics (G1, G4) is the boldest part of the prediction, and we make it
+anyway. **Third**, G5 is *gated*: it cannot be attempted before G2 exists, which makes the
 predicted order of closure itself falsifiable content.
 
 ### Why we predict closure — the trajectory argument
@@ -620,7 +687,7 @@ reach of any machine on earth.
 
 The instrument is improving faster than any instrument in the history of mathematics. We do
 not claim a calendar; we claim a direction. Formal libraries compound — every object built
-for one gap (E2's operators, E6's decomposition) permanently lowers the cost of every later
+for one gap (G2's operators, G6's decomposition) permanently lowers the cost of every later
 attempt. The gaps named here are, by construction, the *best-specified open problems in the
 formal ecosystem*: each arrives with its staircase pre-climbed, its dead routes marked by
 theorems rather than folklore, and its target statement already stated in a machine-checkable
@@ -630,40 +697,40 @@ idiom. They are, deliberately, the problems it is easiest for a rising capabilit
 
 Symmetry demands this list, and honesty enjoys it. The prediction fails in kind, not just in
 schedule, if: the restated W4 target is proved false *below* threshold too; the
-infinite-volume limit of E1 is shown not to exist for the massive lattice field; the isotypic
-computation of E6 yields an algebra *other than* the Chamseddine–Connes–Marcolli one; or the
-heat-kernel coefficient of E5, once computable, fails to contain the Einstein term. Any of
+infinite-volume limit of G1 is shown not to exist for the massive lattice field; the isotypic
+computation of G6 yields an algebra *other than* the Chamseddine–Connes–Marcolli one; or the
+heat-kernel coefficient of G5, once computable, fails to contain the Einstein term. Any of
 these would be a machine-checked refutation of this paper's central claim, and we commit in
 advance to publishing it under this paper's own DOI lineage with the same prominence as a
-confirmation. The label discipline of §§1–7 is the reader's evidence that the commitment is
+confirmation. The label discipline of §§2–8 is the reader's evidence that the commitment is
 real.
 
 And one caution we owe the reader in the other direction: a failing step marks where the
 known routes stop, not where all routes stop. W1's own named step fell to an unlisted route
-mid-campaign. The boxes may fill sooner, and stranger, than the table suggests. Gallium was found by a
-chemist who had never read the prediction — and when his measured density disagreed with
-the empty box, it was the measurement that turned out to be wrong.
+mid-campaign. The boxes may fill sooner, and by stranger routes, than the table suggests.
 
-## 9. Provenance and verification — trust nothing, run everything
+## 10. Provenance and verification — trust nothing, run everything
 
 **The repository.** All Lean sources, ledgers, and this paper:
 `github.com/wonderben-code/convergence-codex` (public). The verification campaign's working
 registers — the graded file ledger, the spine table, the walls ledger with every dated
 amendment, the 57-entry assumptions ledger, the 699 errata, the 1,846-entry progress log —
-live in the companion repository `codex-internal`, same branch, under `formalisation/`.
+are deposited in the archival package published with this paper's DOI; the five stop-point
+ledgers that summarise them, and the author's rulings, are archived beside this paper in the
+public repository (`papers/capstone2026-work/`), and originate on the campaign branch below.
 Where any summary in this paper differs from a register, **the register is right and this
 paper is wrong** — and the correction belongs in the errata.
 
 **The stop point.** Branch `claude/infinitography-formalisation-fbqxf3`; the snapshot stop
 point is the ledger commit following unit 243 (26 September 2026), with the five stop-point
-ledgers under `lean_verify/paper_f/ledgers/`. The founder rulings this paper is written
-under are recorded in `RULINGS_2026-09-27.md`.
+ledgers under `lean_verify/paper_f/ledgers/`. The author's rulings of 27 September 2026, under
+which this paper is written, are archived beside this paper (`RULINGS_2026-09-27.md`).
 
 **The anchoring.** Every commit in both repositories is Bitcoin-timestamped on a six-hourly
 schedule via OpenTimestamps. The programme's twenty-seven prior papers carry dated Zenodo
 DOIs; this paper receives its own. The May 2026 predictions register of the earlier
 convergence-capstone lineage remains part of the stamped record under its own provenance;
-its empirical predictions are a separate instrument from the gap-predictions of §8 and are
+its empirical predictions are a separate instrument from the gap-predictions of §9 and are
 not restated here.
 
 **The two commands.** To check the mathematics, no trust in the author is required:
@@ -679,17 +746,18 @@ The per-file grades, the per-unit gate records, and `check_ledger.py --spine` (w
 recomputes the scoreboard from the link table and fails if they disagree) are in the
 registers.
 
-## 10. Coda — publishing the table with its gaps
+## 11. Coda — publishing the table with its gaps
 
 Here, then, is the tree as of today. Six links of solid, machine-checked wood — existence
 forced from self-reference, the seed, the cascade and its arrow, the algebra of spacetime,
 the splitting of colour. Thirteen links partly grown, each with its unproven remainder named
 in public. Three grafts declared as grafts. And two empty boxes, drawn in their exact places,
-with the properties of their missing elements written beside them.
+with the properties of their missing pieces written beside them.
 
-We could have waited to publish until the boxes were filled. Mendeleev did not wait, and
-chemistry is the richer for it: the empty boxes told the discoverers of gallium and germanium
-what they were looking at. These boxes are offered in the same spirit — to whoever, or
+We could have waited to publish until the boxes were filled. We publish now, deliberately:
+a structure that can describe its own missing pieces is most useful *before* they are found,
+because the description tells whoever arrives what they are looking at. The boxes are
+offered in that spirit — to whoever, or
 whatever, arrives with the mathematics to fill them. The tree is planted, dated, and
 anchored. The gaps are the invitation.
 
