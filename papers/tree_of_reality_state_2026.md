@@ -102,8 +102,8 @@ nothing.
 
 **Errata.** The campaign filed **699 numbered errata** against itself and the estate — each one
 a sentence somebody wrote that the mathematics later contradicted, with the correction quoted
-beside it. The last erratum was filed forty minutes before stand-down, against the campaign's
-own draft ledgers. The errata are part of the published record.
+beside it. The last correction was committed three minutes after the stand-down ledgers
+themselves — softening a claim in the campaign's own closing documents. The errata are part of the published record.
 
 **The stability result.** Across units 75–243 — 169 units of continuous sharpening — **no spine
 rating moved**. Five separate recomputations re-read the whole table against the work and each
@@ -380,8 +380,8 @@ counts, and the topology, for pairs of vacua at every rank-one first vacuum.
 ⋆-structure on Mₙ(ℂ) classified — n/2 + 1 classes up to conjugacy; a faithful
 ⋆-representation selecting the conjugate transpose.
 
-**The order-one chain, run to the end.** Sixteen units (168–243) solving the order-one
-condition on every model bimodule the estate possesses — with the real structure, with the
+**The order-one chain, run to the end.** A chain of units spanning 168–243 solving the
+order-one condition on every model bimodule the estate possesses — with the real structure, with the
 grading, with generations, on products — ending in an exact criterion: the tensor-sum shape
 that the spectral action's factorisation needs is **forced precisely for one full matrix
 algebra at one generation, and not otherwise**. That theorem is what disciplines link L19
@@ -508,14 +508,16 @@ entries have graduated from assumption to theorem during the campaign).
 property, predating the campaign, quarantined and disclosed — no campaign theorem depends on
 it.
 
-**Eleven entries are author decisions**, and five were ruled on 27 September 2026 — the
-rulings this paper is written under: the fermion content is a **named postulate** with
+**Eleven entries are author decisions.** The five highest-leverage decisions across the
+ledger and the campaign's running list were ruled on 27 September 2026 — the rulings this
+paper is written under: the fermion content is a **named postulate** with
 derivation as an open target; the Gaussian is the **stated approximation** to the
 spectral-action measure, e^{−S} named as the true target; wall W4's target is **restated
 below threshold**; the real structure adopts the **Chamseddine–Connes KO-6 convention**; and
 the estate keeps **both spectral-triple notions under distinct names** — a strict
 CCM-compliant structure for anything this paper calls a real spectral triple, the weaker one
-as named scaffolding. The remaining six decisions stay open and are listed with the ledger.
+as named scaffolding. Of the ledger's eleven decision entries this closes entry 48; the
+remaining ten stay open and are listed with the ledger.
 
 ## 7. The corrections — what this paper retires, in public
 
@@ -610,7 +612,8 @@ predicted order of closure itself falsifiable content.
 
 The evidence is the campaign this paper closes. In forty-five working days, one researcher
 and one reasoning machine produced 1,230 graded proof files; closed three walls outright —
-including W8, a research-grade construction that had stood since the programme began; proved
+including W8, a construction that had stood open since the programme's walls were first
+named; proved
 the named step of a fourth wall by a route no planning document contained; and refuted three
 of their own published headlines. Every one of those events was, five years ago, out of
 reach of any machine on earth.
@@ -637,8 +640,9 @@ real.
 
 And one caution we owe the reader in the other direction: a failing step marks where the
 known routes stop, not where all routes stop. W1's own named step fell to an unlisted route
-mid-campaign. The boxes may fill sooner, and stranger, than the table suggests. Mendeleev's
-gallium arrived six years early, discovered by a man who had never read his prediction.
+mid-campaign. The boxes may fill sooner, and stranger, than the table suggests. Gallium was found by a
+chemist who had never read the prediction — and when his measured density disagreed with
+the empty box, it was the measurement that turned out to be wrong.
 
 ## 9. Provenance and verification — trust nothing, run everything
 
