@@ -67,3 +67,19 @@ Bitcoin-anchored programme.
   gap-prediction table.
 - Working title adjusted to the theory register (candidates to founder with the draft; the
   audit-flavoured "What Stands Proven" demoted to subtitle candidate).
+
+## ★ THE COMPLETE-TREE REQUIREMENT (founder, 27 Sep, VERBATIM)
+
+> "our paper will show the tree of life in its most complete form to date aka whatever the
+> maths twin has done to date, and everything so far done, in its complete form - so its like
+> showing the most up to date and most complete version of the periodic tabel even if gaps
+> exist? the paper will do that in a clear way?"
+
+**Ruled: THE TREE IS THE PAPER'S CENTERPIECE ARTIFACT** — as the table was Mendeleev's. The
+paper renders the Tree of Reality in its most complete form ever assembled: all 24 links,
+frozen post-audit tags, the 26 rulings applied, everything proven through unit 243 folded in,
+and the six gaps drawn IN PLACE as predicted elements. Shown whole and at a glance early
+(§1), unpacked link by link (§3), gaps extracted as the predictions table (§8).
+**Expectation set with the founder: "most complete" cuts both ways — thicker wood AND more
+honest labels; some tags visibly move down from older documents. That is the applied rulings,
+and it is what makes the predictions credible.**
