@@ -794,7 +794,11 @@ not yet found** — in our own universe (as undiscovered sectors, regimes, or re
 the same mathematics) or beyond it (Tier 3). The practical face of this prediction: if the
 tree is ever said to "predict a physics we do not observe," the correct reading is not
 *the tree is wrong* but *the tree has located a sibling* — with one strict exception,
-stated below, that keeps the claim honest.
+stated below, that keeps the claim honest. And the prediction cuts forward as well as
+back: any later discovery of such a tree-generated structure — in nature, in the
+laboratory, in the mathematics of another field, or in another realised instantiation —
+confirms a prediction that is dated, machine-specified and anchored *here*, before the
+discovery.
 
 **Tier 3 — the programme's published conjecture, at its own tier: the branches are
 realised.** The programme's prior work — *The Infinite Ground* (2026), with the origin
