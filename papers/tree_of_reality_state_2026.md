@@ -186,6 +186,33 @@ are partly proven with the residue named, some are declared modelling choices, a
 open. The discipline of saying *which is which*, link by link, is the entire remainder of
 this paper.
 
+### 1.3 The claims, in one place
+
+For the reader who wants the theory's full commitment on a single page, its claims are
+these, in ascending order of boldness:
+
+1. **From nothing, something is forced.** The tree begins at ∅; self-reference makes
+   emptiness untenable, a seed algebra follows, and one repeated operation grows the tree.
+2. **The tree drawn in this paper is the branch of *known* physics.** What §4 renders is
+   our universe's physics as currently established — spacetime, gauge structure, colour,
+   generations, the quantum apparatus — traced to the common ancestor and graded link by
+   link, machine-checked wherever the tag says so.
+3. **The gaps in our branch will close.** As machine reasoning in mathematics advances, the
+   named gaps of §9 will be filled in the shapes specified, and the wood of the tree will
+   harden — the first class of prediction.
+4. **The seed has other descendants.** Alternative physics exists as coherent mathematics —
+   proved, at four named forks — and is predicted to be *undiscovered rather than
+   impossible*: possibly present in our own universe and not yet found, possibly realised
+   beyond it (the latter at the plenitude conjecture's own evidential tier). Discovery of
+   such a structure confirms a prediction dated here — the second class.
+5. **Any newly found physics lands in one of three places.** It extends our branch, or it
+   realises a sibling — both predicted — or it fits nowhere on the tree, and that third
+   outcome refutes the generative claim itself. The theory names its own failure mode in
+   advance.
+
+Everything after this point is the evidence, the grading, and the machinery that keeps
+these five claims honest.
+
 ---
 
 ## 2. The reader's contract
@@ -260,7 +287,9 @@ only move in the author's favour measures nothing.
 ## 4. The Tree, whole — the most complete form to date
 
 This section is the paper. Everything before it is calibration; everything after it is
-support. The figure below renders the Tree of Reality as of unit 243 — every link of the
+support. What is drawn here is the **walked branch** — the physics of our universe as
+currently known, traced back to nothing — with the sibling branches of §9 implied at every
+fork the mathematics has proved. The figure below renders the Tree of Reality as of unit 243 — every link of the
 nothing→everything chain — the programme calls it *the spine* — carrying its audited tag, with the two open gaps drawn **in place**,
 marked ◇ and left deliberately visible.
 
