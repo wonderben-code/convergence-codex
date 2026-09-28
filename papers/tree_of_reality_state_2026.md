@@ -811,6 +811,16 @@ assigns it: a meta-empirical argument built on frameworks that are themselves
 interpretations, taken at face value — conjecture, clearly so, and published as such with
 its own DOI and date.
 
+**The trichotomy — what any newly discovered physics means for this theory.** Stated as
+one claim, in advance: physics not yet known will, when found, do one of three things.
+**Either it extends the walked branch** — a new structure of our own lineage, joining the
+tree where the tree already has a place for it, strengthening it; **or it realises a
+sibling** — a structure from a branch we do not inhabit, confirming the second-class
+prediction above; **or it fits nowhere on the tree at all** — no branch of the generator,
+walked or unwalked, can grow it. The first two confirm the theory, and are predicted. The
+third refutes the generative claim itself, and we say so now: a genuinely tree-orphaned
+physics is this theory's deepest possible failure mode, named before any candidate exists.
+
 **The boundary that keeps all of this falsifiable.** A shield that deflects every failure
 would make the theory unfalsifiable, so the boundary is drawn here, in advance: **the tree
 is refutable on the branch it walks, and never excused by the branches it merely
