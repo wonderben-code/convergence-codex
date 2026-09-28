@@ -1,0 +1,25 @@
+{
+  "doi": "10.5281/zenodo.23011897",
+  "conceptdoi": "10.5281/zenodo.23011896",
+  "record_id": 23011897,
+  "url": "https://zenodo.org/record/23011897",
+  "title": "The Tree of Reality: An Evolutionary Theory of Everything",
+  "published": "2026-09-28T10:03:40.933490+00:00",
+  "files": [
+    {
+      "name": "tree_of_reality_state_2026.md",
+      "checksum": "cc5ac21a59020558bb4755050a9a1632",
+      "size": 68433
+    },
+    {
+      "name": "archival_package.zip",
+      "checksum": "dacaeaabbcb968961544c523b72c118e",
+      "size": 10229175
+    },
+    {
+      "name": "Tree_of_Reality_2026.pdf",
+      "checksum": "fa28c995d99ddeff38767aa993bd5176",
+      "size": 470166
+    }
+  ]
+}

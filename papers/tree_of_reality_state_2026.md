@@ -2,6 +2,8 @@
 
 ### The machine-verified state of the Generator programme — the proven trunk, the stated assumptions, and the predicted gaps
 
+**DOI:** 10.5281/zenodo.23011897 · https://zenodo.org/record/23011897 (concept DOI
+10.5281/zenodo.23011896 — resolves to the latest version). Published 28 September 2026.
 **Author:** Mark E. Mala (pen name of Ekram Alam)
 **Date:** September 2026
 **Series:** the capstone of the Infinitography / Convergence Codex programme — a
