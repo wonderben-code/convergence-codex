@@ -43,6 +43,10 @@ exactly shaped — down to the failing step of each staircase — and as machine
 mathematics improves, the gaps will be filled and the tree shown whole. The prediction is
 dated, machine-checked at its boundaries, and anchored to the Bitcoin blockchain. Whoever
 fills a gap — human, machine, or the two together — completes the programme published here.
+A second class of prediction follows from the tree's branching: at four nodes the
+mathematics proves alternative branches exist, and structures generated on branches we do
+not inhabit are predicted to be undiscovered, not impossible — stated at its own evidential
+tier in §9.
 
 The evidence discipline behind the labels is itself a result. Over a 45-working-day
 verification campaign (28 July – 26 September 2026, 243 numbered units), the corpus grew to
@@ -120,7 +124,9 @@ deepest?* but *what did the laws grow from?* — and a finished physics may well
 
 ### 1.2 The tree, from root to crown
 
-**The root is a logical fact, not a physical one.** In any setting where description can be
+**The root is a logical fact, not a physical one — and the tree genuinely begins at
+nothing.** Its first node is ∅: not a vacuum, not a field, not a law waiting to act —
+nothing. In any setting where description can be
 turned on itself, fixed points are unavoidable — this is Lawvere's fixed-point theorem, the
 single mechanism underneath Cantor's diagonal argument and Gödel's incompleteness. The
 theory reads that unavoidability as the seed of existence: a world in which reference is
@@ -147,6 +153,16 @@ what things *are* (matter, spacetime, structure); **Aut** — how things *transf
 and so forces); and the **inner product** ⟨·,·⟩ — how things are *known* (measurement,
 probability, quantum mechanics). That these three are the *only* canonical lineages is a
 modelling choice the paper declares openly rather than a theorem.
+
+**And the ancestor has many descendants — this paper walks one branch.** A common ancestor
+with a single line of descent would be a chain, not a tree, and the programme's published
+formalism says as much: its origin statement generates a *family* of self-referential fixed
+points — the chain **∅ → I → I ⊕ I → {D∞^C}**, one fixed point for every categorical
+setting C — with the known structures of physics identified as *"structural properties of
+specific lineages"* that *"share a common ancestor."* The branch this paper walks — complex
+seed, Lorentzian signature, the Pati–Salam decomposition, three generations — is the one
+whose crown we inhabit. Where the walk meets a fork, the paper says so, and §9 returns to
+what the other branches mean.
 
 **The branches are the recognisable face of physics.** At the cascade's second level, M₄(ℂ)
 is exactly the Clifford algebra of four-dimensional spacetime — the algebra Dirac built the
@@ -626,6 +642,13 @@ entries have graduated from assumption to theorem during the campaign).
    postulate is genuinely load-bearing.
 7. **The Born rule, Gleason and Wigner are cited physics, not theorems here** (entry 59).
 
+Read against §1.2's family of descendants, the load-bearing postulates share a character
+worth naming: most are **indexical**. Which base field, which tensor factor, which
+signature, which vacuum — these do not shrink the tree; they state *which branch of it we
+inhabit*, the way a return address does not diminish a continent. The machine results of §9
+make this reading precise rather than rhetorical: at each of those choices, the alternative
+is proved to exist.
+
 **One entry is the estate's only axiom** (entry 53): a Gibbs measure with no defining
 property, predating the campaign, quarantined and disclosed — no campaign theorem depends on
 it.
@@ -738,6 +761,64 @@ genuinely open mathematics (G1, G4) is the boldest part of the prediction, and w
 anyway. **Third**, G5 is *gated*: it cannot be attempted before G2 exists, which makes the
 predicted order of closure itself falsifiable content.
 
+### The sibling branches — the second class of prediction
+
+Everything above concerns the branch we inhabit. The tree's own logic — §1.1's argument,
+and the published family **{D∞^C}** — says the ancestor has other descendants. This
+subsection states what that means, in three tiers whose evidential grades are deliberately
+different and deliberately labelled.
+
+**Tier 1 — machine-checked: the alternative branches exist as mathematics.** The campaign
+proved, at four separate nodes of the tree, that the branch we walk is not the only
+coherent one — and these are the same theorems §8 reported as corrections, read now in
+their other direction:
+- **The seed forks over the reals.** Over ℝ, two seeds qualify — M₂(ℝ) and the quaternions
+  ℍ — proved non-isomorphic, with the same complexification: two distinct branches meeting
+  every published constraint (`RealDivisionQuaternionCase`, `realForm_not_determined_two`).
+- **The sixteenth level forks.** Every factorisation a·b·c = 16 decomposes M₁₆, and the
+  mathematics prefers none of them: Pati–Salam is our address there, not a theorem
+  (scoreboard L11).
+- **The signature forks.** Three signatures share one Clifford algebra — the Riemannian
+  worlds are not excluded (`LorentzianChosen.three_signatures_one_algebra`).
+- **The depth is not forced** (`CascadeMinimality.not_forall_eq_four`): the criterion that
+  motivates four levels provably does not compel them.
+
+One set of theorems, two honest readings: as corrections they discipline our branch; as
+geometry they draw the others.
+
+**Tier 2 — this paper's prediction: unfamiliar branches are undiscovered, not impossible.**
+Walk the tree down a fork we did not take and the generator still generates: coherent
+algebraic worlds with quaternionic seeds, Riemannian signatures, other gauge
+decompositions. We predict that such tree-generated structures are **candidates for physics
+not yet found** — in our own universe (as undiscovered sectors, regimes, or realisations of
+the same mathematics) or beyond it (Tier 3). The practical face of this prediction: if the
+tree is ever said to "predict a physics we do not observe," the correct reading is not
+*the tree is wrong* but *the tree has located a sibling* — with one strict exception,
+stated below, that keeps the claim honest.
+
+**Tier 3 — the programme's published conjecture, at its own tier: the branches are
+realised.** The programme's prior work — *The Infinite Ground* (2026), with the origin
+statement of *The Theory of Everything and the Origin of Reality* (2026) — argues from the
+convergence of five independent frameworks that all coherent configurations are realised:
+*"the space of actuality exhausts the space of possibility."* Under that conjecture the
+sibling branches are not merely possible physics but actual ones — other instantiations,
+elsewhere in the ground. This paper inherits the claim at the evidential tier its source
+assigns it: a meta-empirical argument built on frameworks that are themselves
+interpretations, taken at face value — conjecture, clearly so, and published as such with
+its own DOI and date.
+
+**The boundary that keeps all of this falsifiable.** A shield that deflects every failure
+would make the theory unfalsifiable, so the boundary is drawn here, in advance: **the tree
+is refutable on the branch it walks, and never excused by the branches it merely
+permits.** The walked branch is pre-registered — §4 fixes it, link by link, tag by tag,
+before any dispute — so a failure there (a walked-branch structure contradicted by observed
+physics, or a gap of §9 proved unfillable as restated) counts fully against the theory and
+may never be reclassified, after the fact, as a sibling. Conversely, the absence from
+observed physics of a structure the tree generates on an *unwalked* branch refutes
+nothing: that is exactly what Tier 2 predicts. Pre-registration is what makes the
+distinction principled rather than convenient — the address was written down before the
+mail arrived.
+
 ### Why we predict closure — the trajectory argument
 
 The evidence is the campaign this paper closes. In forty-five working days, one researcher
@@ -758,7 +839,9 @@ idiom. They are, deliberately, the problems it is easiest for a rising capabilit
 
 ### What would count against us
 
-Symmetry demands this list, and honesty enjoys it. The prediction fails in kind, not just in
+Symmetry demands this list, and honesty enjoys it. The boundary of the sibling-branches
+subsection binds throughout: everything below concerns the walked, pre-registered branch,
+where failures count in full and no sibling excuse is available. The prediction fails in kind, not just in
 schedule, if: the restated W4 target is proved false *below* threshold too; the
 infinite-volume limit of G1 is shown not to exist for the massive lattice field; the isotypic
 computation of G6 yields an algebra *other than* the Chamseddine–Connes–Marcolli one; or the
@@ -837,6 +920,9 @@ papers (each with a dated DOI) and every Lean source this paper grades.
   closed subspaces of a Hilbert space (1957) — cited in §4 (L21) as physics inputs.
 - J. C. Pati and A. Salam, *Lepton number as the fourth "color"* (1974).
 - K. Osterwalder and R. Schrader, *Axioms for Euclidean Green's functions* (1973; 1975).
+- M. E. Mala, *The Infinite Ground* (2026), doi:10.5281/zenodo.19479968; *The Theory of
+  Everything and the Origin of Reality* (2026), doi:10.5281/zenodo.19550042 — the
+  possibility-space lineage inherited, at its own tier, by §9's third class of claim.
 - A. Connes, *Noncommutative Geometry* (1994).
 - A. H. Chamseddine and A. Connes, *The spectral action principle* (1997).
 - A. H. Chamseddine, A. Connes and M. Marcolli, *Gravity and the standard model with
