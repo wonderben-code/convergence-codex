@@ -210,8 +210,12 @@ these, in ascending order of boldness:
    outcome refutes the generative claim itself. The theory names its own failure mode in
    advance.
 
-Everything after this point is the evidence, the grading, and the machinery that keeps
-these five claims honest.
+Taken together, the five claims make the tree a **prediction instrument that points both
+ways**: outward, it says where to dig and what may exist — the gaps of our branch, and the
+structures of the branches beside it; inward, it says where anything newly found must land
+— filling a gap, joining our branch, or matching a sibling — with "nowhere" as the theory's
+own named refutation. Everything after this point is the evidence, the grading, and the
+machinery that keeps these five claims honest.
 
 ---
 
