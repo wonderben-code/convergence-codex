@@ -24,7 +24,7 @@ This paper reports a calculation with a different character: every input is fixe
 
 ## 2. The framework, in brief
 
-The Generator Theory of Everything (developed across a published programme: the machine-verified foundation [D], the three-lineage emergence of physics [E], the complete mathematical programme [F], and the capstone statement [G/Tree]) proposes that physical structure descends from the minimal nontrivial seed ℂ² by an algebraic cascade ℂ² → M₂(ℂ) → M₄(ℂ) → M₁₆(ℂ), with three lineages emerging from the seed's three canonical structures:
+The Generator Theory of Everything (developed across a published programme: the machine-verified foundation [D], the three-lineage emergence of physics [E], the complete mathematical programme [F], and the capstone statement [G/Tree]) is an *evolutionary* theory of everything: where conventional unification seeks a single framework large enough to hold today's physics — unification by assembly — the GToE inverts the question and asks what today's physics *descends from*. Its claim is that the laws, forces and particles are not separate structures to be welded together but a family: descendants of a minimal common ancestor, grown by a single rule of derivation, the way all life descends from one seed by one mechanism. Concretely, physical structure descends from the minimal nontrivial seed ℂ² by an algebraic cascade ℂ² → M₂(ℂ) → M₄(ℂ) → M₁₆(ℂ), with three lineages emerging from the seed's three canonical structures:
 
 - the **End lineage** (endomorphisms) → gauge structure;
 - the **⟨·,·⟩ lineage** (inner product) → quantum/fermionic structure;
@@ -85,6 +85,18 @@ using the cascade-determined thermal history (T_PS ~ 10²⁹ K, T₀ = 2.725 K; 
 | Static cascade (L1–L5) | ~10⁶³ | ~10¹¹⁰ | 9 |
 | **Dynamical cascade (this work)** | **~10⁻⁵⁵–10⁻⁵³** | **~10⁶–10⁷** | **~112** |
 
+### 5.1 The calculation, numerically
+
+So that every step can be checked by hand:
+
+1. **Loop coefficient:** N_B(IR)/(64π²) = 4/(64 × 9.8696) = 4/631.65 = 6.33 × 10⁻³ (a mathematical constant; §6, Gap 6).
+2. **Cutoff today:** Λ(t₀) = Λ_PS × (T₀/T_PS) = 10¹⁶ GeV × (2.725 K / 1.16×10²⁹ K) = 2.35 × 10⁻¹³ GeV; quoted conservatively as 10⁻¹³ GeV.
+3. **Fourth power:** (10⁻¹³ GeV)⁴ = 10⁻⁵² GeV⁴.
+4. **Prediction:** ρ = 6.33 × 10⁻³ × 10⁻⁵² = **6.3 × 10⁻⁵⁵ GeV⁴** (positive, since the surviving degrees of freedom are bosonic).
+5. **Comparison:** ρ_obs/ρ_pred = 2.3 × 10⁻⁴⁷ / 6.3 × 10⁻⁵⁵ = 3.6 × 10⁷ — the residual. (Using the sharper step 2 value: ρ = 1.9 × 10⁻⁵³, residual 1.2 × 10⁶.)
+6. **Improvement:** naive gap 10⁷²/2.3×10⁻⁴⁷ ≈ 10¹¹⁸·⁶; achieved gap 10⁷·⁶; orders closed ≈ 111–112.
+7. **Static stage, for reference:** |ρ_L1| = 44 × (10¹⁶)⁴/631.65 ≈ 7 × 10⁶² GeV⁴ (negative; the ~10¹¹⁰ gap of Stage 1), with the symmetry-breaking shifts of order +10⁶² GeV⁴ (Pati–Salam stage) and −10⁷ GeV⁴ (electroweak stage) layered on top.
+
 The problem has been transformed. The question is no longer "why is the vacuum energy 10¹²⁰ times too large?" but "why is it a million-fold too small?" — a residual that the error budget below locates in identifiable, computable sources. To our knowledge, no other parameter-free, first-principles calculation has come within thirty orders of magnitude of the observed value.
 
 ## 6. Six specialist gaps, closed
@@ -118,6 +130,8 @@ The framework's distinctive methodological claim is that the cosmological consta
 - **Track A — known pressures, uncomputed:** sub-structures already proven to exist within the three lineages whose vacuum contributions remain to be computed (the non-perturbative layer L6 is the principal outstanding item).
 - **Track B — new physics from the seed:** systematic exploration of cascade sub-structures (centres, quotients, cross-level morphisms, dark-sector branches of the decomposition, the largely unexplored 256-dimensional structure at M₁₆(ℂ)) — each new structure a potential new series term.
 - **Track C — completed here:** time evolution and backreaction, which this paper's Stage 2 supplies.
+
+The alignment between the error budget and the theory's own open problems is exact, and it is the heart of the claim. Each row of §7 names a piece of the GToE that is not yet fully worked out: the precision of the cutoff's running is the theory's cosmology branch awaiting sharper derivation; the species count through thermal history is the theory's particle-spectrum branch applied epoch by epoch; the spectral moments are fixed by the theory's heat-kernel canonicity result; and the non-perturbative layer L6 is the theory's one uncomputed vacuum structure. **The remaining error is not noise around the theory — it is a list of the theory's unfinished chapters.** Solving them was already the programme's roadmap before the cosmological constant entered the picture; the prediction is that each solution, as it lands, will move this one number toward observation. The cosmological constant thereby becomes a running integration test for the entire Theory of Everything.
 
 **Prediction (the convergent-series prediction).** As additional cascade-derived contributions from Tracks A and B are computed and added, the discrepancy between predicted and observed cosmological constant will decrease monotonically. Each contribution is independently derivable from the cascade and independently testable for sign and magnitude.
 
