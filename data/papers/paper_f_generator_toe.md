@@ -1877,7 +1877,7 @@ The additive formula is the perturbative answer: ρ_add = ρ_L1 + Δρ_L2 + Δρ
    - H₀ ≈ 1.5 × 10⁻⁴² GeV → H₀⁴ ~ 10⁻¹⁶⁸ GeV⁴
    - Observed ρ_CC ~ 10⁻⁴⁷ GeV⁴ → need Λ(t₀)⁴ ~ 10⁻⁴⁶ GeV⁴ → Λ(t₀) ~ 10⁻¹² GeV
    - Therefore α = Λ(t₀)/H₀ = 10⁻¹²/10⁻⁴² = **10³⁰**
-   - Verification: α⁴ × H₀⁴ × 44/(64π²) = 10¹²⁰ × 10⁻¹⁶⁸ × 0.07 ≈ 10⁻⁴⁷ ✓
+   - Verification: α⁴ × H₀⁴ × 44/(64π²) = 10¹²⁰ × 5×10⁻¹⁶⁸ × 0.07 ≈ 3.5×10⁻⁴⁹ — within the stated 3–7-order mechanism band (the definitive §9.35 arithmetic, 6.3×10⁻⁵⁵ at Λ(t₀)=10⁻¹³ GeV, is the exact result). [Corrected 5 Oct 2026: an earlier version of this illustrative line rounded to ≈10⁻⁴⁷, loose by ~2 orders.]
 
 **Phase 5: The complete picture.** The CC computation is:
 
