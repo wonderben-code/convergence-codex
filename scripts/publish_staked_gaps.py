@@ -76,7 +76,7 @@ REFERENCES = [
 CSS = """
 @page { size: A4; margin: 2.4cm 2cm;
     @bottom-center { content: counter(page); font-family: 'Georgia', serif; font-size: 10pt; color: #666; } }
-body { font-family: 'Georgia', 'Times New Roman', serif; font-size: 11pt; line-height: 1.55; color: #1a1a1a; }
+body { font-family: 'Georgia', 'Arial Unicode MS', 'Noto Sans', 'Times New Roman', serif; font-size: 11pt; line-height: 1.55; color: #1a1a1a; }
 h1 { font-size: 21pt; margin: 0 0 4pt 0; color: #111; page-break-after: avoid; }
 h1 + p em { color: #555; font-size: 12pt; }
 h2 { font-size: 15pt; margin: 26pt 0 8pt 0; color: #222; border-bottom: 1px solid #ccc; padding-bottom: 4pt; page-break-after: avoid; }
@@ -90,7 +90,7 @@ th { border: 1px solid #999; padding: 5pt 7pt; text-align: left; font-weight: bo
 td { border: 1px solid #ccc; padding: 4pt 7pt; text-align: left; }
 tr:nth-child(even) td { background: #fafafa; }
 ul, ol { margin: 4pt 0 8pt 0; padding-left: 20pt; } li { margin-bottom: 4pt; }
-code { font-family: 'Menlo', 'Courier New', monospace; font-size: 9.5pt; background: #f4f4f4; padding: 1pt 3pt; border-radius: 2pt; }
+code { font-family: 'Menlo', 'Arial Unicode MS', 'Courier New', monospace; font-size: 9.5pt; background: #f4f4f4; padding: 1pt 3pt; border-radius: 2pt; }
 blockquote { border-left: 3pt solid #999; margin: 10pt 0; padding: 4pt 14pt; color: #333; font-style: italic; }
 a { color: #1a4a8a; text-decoration: none; }
 """
