@@ -18,8 +18,9 @@ direction), together with the result that would *refute* the theory at that site
 novel prediction, and stake it: that these gaps will be closed soon — by advancing automated
 reasoning, by human–machine teams, or by the authors — because they were deliberately specified to be
 the best-posed open problems a rising formal-reasoning capability can reach. The predictions here
-sharpen those first registered in the capstone (28 September 2026); both predate, and one is already
-weakly confirmed by, the public frontier-model mathematics release of 6 October 2026. Everything is
+sharpen those first registered — and dated — in the capstone on 28 September 2026, which predate (and
+are, in their meta-form, already weakly confirmed by) the public frontier-model mathematics release of
+6 October 2026. Everything is
 dated and anchored to the Bitcoin blockchain. Whoever closes a gap, in the shape predicted, confirms a
 pre-registered prediction; whoever closes one in a different shape, or shows it cannot be closed,
 refutes the claim at that site. Both outcomes are the point.
@@ -86,10 +87,10 @@ Locations refer to links (L·) and walls (W·) of the capstone's §4 audit. "Pre
 framework-derived conditional; "confidence" is our calibrated credence that the gap closes in (one of)
 the predicted shape(s).
 
-### G1 — the infinite-volume limit of the lattice gauge field
-- **Location / failing step:** L23 (◇), wall W1 — the infinite-volume limit of the massive lattice gauge field (Yang–Mills).
-- **Prediction kind:** *bounded* mechanism, *pinned* attribute-list. The filler is a construction of the infinite-volume (continuum) limit whose limiting theory has every one of the following checkable attributes: **(i)** the limit exists through the relevant coupling *without selecting a subsequence* (a canonical limit); **(ii)** it satisfies the Osterwalder–Schrader axioms — reflection positivity, Euclidean invariance, and clustering; **(iii)** OS reconstruction yields a Hilbert space with a *unique* translation-invariant vacuum; **(iv)** correlations decay *exponentially, with constants uniform in the volume*; **(v)** the theory is genuinely interacting — a nonzero connected four-point function on separated supports (non-Gaussian). The limit is reached by one of two mechanisms: **(a)** uniform-in-volume correlation bounds plus tightness of the finite-volume measures, or **(b)** an independent construction carrying an explicit convergence theorem. We commit that the filler uses mechanism (a) or (b) and that the limit has attributes (i)–(v). **Kill-condition:** no infinite-volume limit exists for the massive lattice gauge field, or a limit exists that violates an OS axiom.
-- **Confidence:** medium–high. Attributes (i), (ii), (iv), (v) were realised for the 2-D O(n) model in the 6 October 2026 release — (iv) formalised in Lean, the rest on paper — a neighbouring, non-gauge instance of exactly this shape; the 4-D gauge case is the hard open part.
+### G1 — the infinite-volume limit of the lattice field (Yang–Mills box)
+- **Location / failing step:** L23 (◇), wall W1 — the infinite-volume limit of the massive lattice field of the Yang–Mills construction (L23).
+- **Prediction kind:** *bounded* mechanism, *pinned* attribute-list. The filler is a construction of the infinite-volume (continuum) limit whose limiting theory has every one of the following checkable attributes: **(i)** the limit exists through the relevant coupling *without selecting a subsequence* (a canonical limit); **(ii)** it satisfies the Osterwalder–Schrader axioms — reflection positivity, Euclidean invariance, and clustering; **(iii)** OS reconstruction yields a Hilbert space with a *unique* translation-invariant vacuum; **(iv)** correlations decay *exponentially, with constants uniform in the volume*; **(v)** the theory is genuinely interacting — a nonzero connected four-point function on separated supports (non-Gaussian). The limit is reached by one of two mechanisms: **(a)** uniform-in-volume correlation bounds plus tightness of the finite-volume measures, or **(b)** an independent construction carrying an explicit convergence theorem. We commit that the filler uses mechanism (a) or (b) and that the limit has attributes (i)–(v). **Kill-condition:** no infinite-volume limit exists for the massive lattice field, or a limit exists that violates an OS axiom.
+- **Confidence:** medium–high. Attributes (i)–(v) were realised for the 2-D O(n) model in the 6 October 2026 release — (iv) formalised in Lean, the rest on paper — a neighbouring, non-gauge instance of exactly this shape; the 4-D gauge case is the hard open part.
 
 ### G2 — unbounded self-adjoint operators (the keystone)
 - **Location / failing step:** L22 + L23 (◇), walls W2 + W5 — the theory of unbounded self-adjoint operators, needed by *both* the gravity box and the mass-gap box.
@@ -98,8 +99,8 @@ the predicted shape(s).
 
 ### G3 — a comparison bound of different shape
 - **Location / failing step:** L23 (◇), wall W3 — the comparison step; the classical Peierls contour-energy route is *proved* insufficient here (it yields O(n) where O(n²) is required).
-- **Prediction kind:** *open-directional.* The filler is a comparison inequality with these attributes: **(i)** non-sublinear output — at least O(n²) in the relevant size parameter, strictly beating the O(n) ceiling of the contour-energy route; **(ii)** structurally distinct from that route (which is closed by theorem, so the filler cannot be a refinement of it); **(iii)** valid under the *actual* dependence structure present (it may not assume the independence the classical argument used). We predict such a bound exists with attributes (i)–(iii); we do not pin its construction, which is why this is the least-specified of the six.
-- **Confidence:** medium — the boldest "open mathematics" bet. The 6 October release offered comparison bounds of novel *hypothesis* shape (dependence-tolerant matchings; FK likelihood ratios) but none with non-sublinear output, leaving the named defect exactly where it was.
+- **Prediction kind:** *open-directional.* The filler is a comparison inequality with these attributes: **(i)** output at least O(n²) in the relevant size parameter — strictly beating the O(n) ceiling the contour-energy route provably yields; **(ii)** structurally distinct from that route (which is closed by theorem, so the filler cannot be a refinement of it); **(iii)** valid under the *actual* dependence structure present (it may not assume the independence the classical argument used). We predict such a bound exists with attributes (i)–(iii); we do not pin its construction, which is why this is the least-specified of the six.
+- **Confidence:** medium — the boldest "open mathematics" bet. The 6 October release offered comparison bounds of novel *hypothesis* shape (dependence-tolerant matchings; FK likelihood ratios) but none reaching O(n²), leaving the named defect exactly where it was.
 
 ### G4 — a uniform sub-top spectral estimate
 - **Location / failing step:** L23 (◇), wall W4 — a uniform spectral estimate below threshold (the unrestricted form was *measured false* and restated to the believed regime).
@@ -130,7 +131,7 @@ restated here as staked content.
 **The PARTIAL residues.** Every PARTIAL link of the capstone's §4 carries a named, machine-checkable
 remainder, and the prediction covers them too: as the boxes fill and the residues close, the wood of
 the tree hardens — PARTIAL toward GENUINE — and no honest future edition should have to move a grade
-*downward* again, because the auditing campaign already did that work in both directions (it demoted
+*downward* again, because the auditing campaign already did that work in both directions (it refuted
 three of the programme's own published headlines and promoted five it had undersold).
 
 **The sibling branches.** The generator has more descendants than the one branch physics walks: the
@@ -164,10 +165,12 @@ The predictions above concern *what* each solution looks like. This one concerns
 *when*, and we stake it as a falsifiable forecast rather than a hope:
 
 > **As automated mathematical reasoning continues its current trajectory, the gaps named here will be
-> closed — in the shapes predicted — soon, and in the gated order G2-before-G5. The agent of closure
-> will be advancing AI, human–machine teams, or the authors. We expect the engineering gaps (G2, G4)
-> and the combinatorial gap (G3's search) to fall first, the gated geometry (G5) to follow G2, and the
-> genuinely open mathematics (G1) to be the last and least certain.**
+> closed — in the shapes predicted — soon (on the order of years, not decades), and in the gated order
+> G2-before-G5. The agent of closure will be advancing AI, human–machine teams, or the authors. We
+> expect the engineering gaps (G2, G4) and the combinatorial gap (G3's search) to fall first, the gated
+> geometry (G5) to follow G2, and the genuinely open mathematics (G1) to be the last and least certain.
+> Should the trajectory stall and these gaps remain substantially open well beyond that window, this
+> meta-prediction is falsified — and we will record that with the same prominence as a confirmation.**
 
 **The trajectory argument.** The gaps named here are, by construction, the best-specified open problems
 in the formal ecosystem: each arrives with its staircase pre-climbed, its dead routes marked by
@@ -185,7 +188,7 @@ an infinite-volume KMS construction in the shape of G1; the generator→group ha
 a Friedrichs construction in the shape of G2's missing library; an algebraic K₀ reusable for G6 — while
 the hardest cores (the spectral theorem, the spectral action, lattice gauge theory, Dobrushin
 uniqueness) remained untouched. This is the meta-prediction materialising in public, on a timetable: our
-predictions were dated 28 September 2026 in the capstone; this release came nine days later and moved
+predictions were dated 28 September 2026 in the capstone; this release came eight days later and moved
 the frontier toward, but not into, our gaps. We record it with the field's own caveats — roughly 42% of
 that release's claims passed formal checking, with documented faithfulness concerns — and we reuse
 nothing from it unverified.
