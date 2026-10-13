@@ -75,7 +75,10 @@ the framework determines the answer:
 - **Open-directional** — the framework suggests a direction but does not pin it. We state the expected direction and why, flagged as exploratory, at lower confidence.
 
 Each gap also carries a **confidence** and, where applicable, an explicit **kill-condition**: the
-result which, if obtained, refutes the theory at that site rather than filling it.
+result which, if obtained, refutes the theory at that site rather than filling it. Within each kind we
+list **as many concrete, checkable attributes of the filler as the framework confidently determines** —
+so that a solution, whoever produces it, can be matched against the prediction attribute by attribute,
+in the manner of a predicted element checked against its later-measured properties.
 
 ## 4. The staked gaps
 
@@ -83,10 +86,10 @@ Locations refer to links (L·) and walls (W·) of the capstone's §4 audit. "Pre
 framework-derived conditional; "confidence" is our calibrated credence that the gap closes in (one of)
 the predicted shape(s).
 
-### G1 — the infinite-volume limit of the lattice field
-- **Location / failing step:** L23 (◇), wall W1 — the infinite-volume limit of the massive lattice field.
-- **Prediction kind:** *bounded.* The limit **exists**, and is reached by one of two shapes: **(a)** uniform-in-volume correlation bounds together with tightness of the finite-volume measures; or **(b)** an independent infinite-volume construction with an explicit convergence theorem. We commit that the solution is one of these two; a demonstration that *no* infinite-volume limit exists for the massive lattice field is the kill-condition.
-- **Confidence:** medium–high. The shape is standard constructive field theory, and the 6 October 2026 release exhibits exactly (a)+(b) for 2-D O(n) spin models (a uniform-in-volume exponential clustering bound, formalised; an OS-reconstructed theory with a positive Hamiltonian gap, on paper) — a neighbouring, non-gauge instance of the predicted shape.
+### G1 — the infinite-volume limit of the lattice gauge field
+- **Location / failing step:** L23 (◇), wall W1 — the infinite-volume limit of the massive lattice gauge field (Yang–Mills).
+- **Prediction kind:** *bounded* mechanism, *pinned* attribute-list. The filler is a construction of the infinite-volume (continuum) limit whose limiting theory has every one of the following checkable attributes: **(i)** the limit exists through the relevant coupling *without selecting a subsequence* (a canonical limit); **(ii)** it satisfies the Osterwalder–Schrader axioms — reflection positivity, Euclidean invariance, and clustering; **(iii)** OS reconstruction yields a Hilbert space with a *unique* translation-invariant vacuum; **(iv)** correlations decay *exponentially, with constants uniform in the volume*; **(v)** the theory is genuinely interacting — a nonzero connected four-point function on separated supports (non-Gaussian). The limit is reached by one of two mechanisms: **(a)** uniform-in-volume correlation bounds plus tightness of the finite-volume measures, or **(b)** an independent construction carrying an explicit convergence theorem. We commit that the filler uses mechanism (a) or (b) and that the limit has attributes (i)–(v). **Kill-condition:** no infinite-volume limit exists for the massive lattice gauge field, or a limit exists that violates an OS axiom.
+- **Confidence:** medium–high. Attributes (i), (ii), (iv), (v) were realised for the 2-D O(n) model in the 6 October 2026 release — (iv) formalised in Lean, the rest on paper — a neighbouring, non-gauge instance of exactly this shape; the 4-D gauge case is the hard open part.
 
 ### G2 — unbounded self-adjoint operators (the keystone)
 - **Location / failing step:** L22 + L23 (◇), walls W2 + W5 — the theory of unbounded self-adjoint operators, needed by *both* the gravity box and the mass-gap box.
@@ -94,23 +97,23 @@ the predicted shape(s).
 - **Confidence:** very high *that it is built* — this is engineering, not discovery; its arrival is a matter of effort. It is the single most consequential gap, because it fills two boxes at once and gates G5.
 
 ### G3 — a comparison bound of different shape
-- **Location / failing step:** L23 (◇), wall W3 — the Peierls comparison step; the known route is *proved* insufficient (it yields O(n) where O(n²) is required).
-- **Prediction kind:** *open-directional.* We predict that a comparison model of **genuinely different shape**, with non-sublinear (≥ O(n²)) output, exists. We do not pin its construction; the known contour-energy route is closed by theorem, so the filler must be structurally new.
-- **Confidence:** medium. This is the boldest of the "open mathematics" bets. The 6 October release contains comparison bounds of novel *hypothesis* shape (dependence-tolerant matchings; FK likelihood ratios) but none with non-sublinear output — the defect we name is untouched, as predicted.
+- **Location / failing step:** L23 (◇), wall W3 — the comparison step; the classical Peierls contour-energy route is *proved* insufficient here (it yields O(n) where O(n²) is required).
+- **Prediction kind:** *open-directional.* The filler is a comparison inequality with these attributes: **(i)** non-sublinear output — at least O(n²) in the relevant size parameter, strictly beating the O(n) ceiling of the contour-energy route; **(ii)** structurally distinct from that route (which is closed by theorem, so the filler cannot be a refinement of it); **(iii)** valid under the *actual* dependence structure present (it may not assume the independence the classical argument used). We predict such a bound exists with attributes (i)–(iii); we do not pin its construction, which is why this is the least-specified of the six.
+- **Confidence:** medium — the boldest "open mathematics" bet. The 6 October release offered comparison bounds of novel *hypothesis* shape (dependence-tolerant matchings; FK likelihood ratios) but none with non-sublinear output, leaving the named defect exactly where it was.
 
 ### G4 — a uniform sub-top spectral estimate
 - **Location / failing step:** L23 (◇), wall W4 — a uniform spectral estimate below threshold (the unrestricted form was *measured false* and restated to the believed regime).
-- **Prediction kind:** *bounded.* The estimate is obtained by one of two standard techniques, formalised: **(a)** a Dobrushin uniqueness condition, or **(b)** a convergent high-temperature cluster expansion. The answer lies within this set. Kill-condition: the restated target proved false *below* threshold too.
-- **Confidence:** high *as formalisation of known physics* — both techniques are textbook; what is missing is their machine-checked instance in this setting.
+- **Prediction kind:** *bounded.* The filler is an estimate with attributes: **(i)** uniform in system size / volume; **(ii)** valid below the stated threshold; **(iii)** bounding the *sub-top* spectrum of the relevant transfer operator — a gap below its top — delivering the uniform spectral gap W4 needs. It is obtained by one of two standard mechanisms, each with its own signature: **(a)** a *Dobrushin uniqueness* condition — a summable one-site influence bound giving exponential decay of correlations and uniqueness of the Gibbs state; or **(b)** a *convergent high-temperature cluster (polymer) expansion* — absolute convergence giving analyticity of the pressure and the gap. The answer lies within this set. **Kill-condition:** the restated target proved false *below* threshold too.
+- **Confidence:** high, as formalisation of known physics — both mechanisms are textbook; what is missing is their machine-checked instance in this setting.
 
 ### G5 — the heat-kernel expansion of the spectral action
 - **Location / failing step:** L22 (◇), wall W5 rung 4 — the short-time asymptotic expansion of Tr f(D/Λ) for the trunk's Dirac-type operator.
-- **Prediction kind:** *pinned, and gated.* The predicted shape is the Chamseddine–Connes–Marcolli spectral-action expansion, with the second Seeley–DeWitt coefficient a₂ identified as a curvature integral — i.e. the Einstein–Hilbert term emerging from the spectrum. Kill-condition: the coefficient, once computable, **fails to contain the Einstein term**. Gated on G2 (it cannot be attempted before the unbounded-operator library exists), which makes the *order* of closure itself falsifiable content.
+- **Prediction kind:** *pinned, and gated.* The filler is the Chamseddine–Connes–Marcolli spectral-action expansion of Tr f(D/Λ) as Λ → ∞, whose Seeley–DeWitt coefficients carry specific, checkable geometric content: a cosmological-constant term at order Λ⁴ (∝ ∫√g); **the Einstein–Hilbert term a₂ at order Λ² (∝ ∫√g · R) — the central prediction**; and the Yang–Mills and Higgs terms at order Λ⁰. The sharp attribute: a₂ is a specific positive constant times the scalar-curvature integral. **Kill-condition:** a₂, once computable, **fails to contain the Einstein term**. Gated on G2 (it cannot be attempted before the unbounded-operator library exists), which makes the *order* of closure (G2 before G5) itself falsifiable content.
 - **Confidence:** high in the shape (this is standard noncommutative geometry); contingent on G2. The 6 October release contains no Dirac operator, no spectral action, and no heat-trace asymptotic anywhere — G5 is untouched, exactly as its gating on G2 predicts.
 
 ### G6 — the isotypic decomposition and the K-theory of finite algebras
 - **Location / failing step:** L6, wall W9 rung 2 — order-one behaviour across the isotypic pieces of the Chamseddine–Connes–Marcolli bimodule.
-- **Prediction kind:** *pinned.* The predicted shape is the isotypic decomposition of a finite-dimensional bimodule over products of ℝ/ℂ/ℍ matrix algebras, built as an explicit object, followed (for rung 3) by the K-theory of those finite-dimensional algebras. Finite-dimensional representation theory (Wedderburn) determines the decomposition; the outcome **must be** the Chamseddine–Connes–Marcolli algebra. Kill-condition: the computation yields an algebra *other than* CCM.
+- **Prediction kind:** *pinned.* The filler is the isotypic decomposition of a finite-dimensional bimodule over a product of ℝ/ℂ/ℍ matrix algebras, built as an explicit object, with attributes: **(i)** the bimodule splits into isotypic components indexed by the irreducible representations of that finite matrix-algebra product; **(ii)** the resulting finite geometry is *exactly* the Chamseddine–Connes–Marcolli finite algebra that the walked (Pati–Salam) branch selects, carrying the Standard-Model fermion content as its bimodule; **(iii)** (rung 3) the K-theory is that of this finite-dimensional algebra. Finite-dimensional representation theory (Wedderburn) determines the decomposition, so the outcome is forced. **Kill-condition:** the computation yields an algebra *other than* the CCM one.
 - **Confidence:** high. The 6 October release supplies genuinely reusable scaffolding — an algebraic K₀ for an arbitrary ring that instantiates at finite-dimensional algebras, and bimodule / isotypic machinery over ℂ (the real/quaternionic case not yet done) — lowering the cost of this gap without closing it.
 
 **Three structural facts sharpen the table.** First, **G2 fills two boxes at once** — the tree's two
