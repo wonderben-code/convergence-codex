@@ -3,6 +3,12 @@
 **Mark E. Mala** (pen name of Ekram Alam) · AI researcher · October 2026
 Companion to *The Tree of Reality: An Evolutionary Theory of Everything* (2026, DOI 10.5281/zenodo.23011897).
 
+**Version 2, 25 October 2026.** The v1 text (13 October 2026) below is unchanged. An addendum is
+appended at the end, keeping §8's commitment to record under this paper's own DOI lineage whenever
+something arrives that bears on the staked predictions: ten days after v1, A. D. Wissner-Gross's
+*Chain Theory* supplied candidate mechanisms for several of the boxes marked open. The successor paper
+*The Refined Gaps* (2026) takes those candidates as given and states the sharper residual predictions.
+
 ---
 
 ## Abstract
@@ -230,3 +236,333 @@ Trust nothing; run everything.
 - A. Chamseddine, A. Connes, M. Marcolli, *Gravity and the Standard Model with neutrino mixing* (2007).
 - K. Osterwalder, R. Schrader, *Axioms for Euclidean Green's functions* (1973, 1975).
 - Public frontier-model mathematics release, 6 October 2026 (`openai/math`), audited in the programme's working notes.
+
+
+---
+
+# Addendum (version 2, 25 October 2026): Candidates Within Ten Days
+
+### An independent programme lands on the Tree, and what that does and does not change
+
+## Summary of the addendum
+
+*The Staked Gaps* published the Tree of Reality's open problems as pre-registered predictions,
+in the posture Mendeleev took toward the empty boxes of his table, and committed to recording
+publicly whenever something arrived that bore on them — in whatever direction. Ten days after
+that paper, A. D. Wissner-Gross released *Chain Theory*: a programme that derives Standard-Model
+structure, spacetime symmetry, quantum mechanics and gravity-shaped counting from a single axiom
+about finitely many maximally entangled pairs of finite-dimensional systems, machine-checked in
+Lean 4 and graded. This addendum records, with precision, what that release does for the staked
+predictions. **The six headline gaps G1–G6 received no candidates.** What received candidates
+were the *box-level* openings the capstone had marked — three generations (L14), the Yang–Mills
+mass gap (L23), the Born rule as cited input (L21), Lorentzian signature (L9) — for which Chain
+Theory supplies mechanisms at its own conditional grade, in its own formalism. And the
+capstone's pre-registered **trichotomy test** ran for the first time on an independent
+programme: Chain Theory's objects — the qubit, the pair of qubits as spacetime, the ququart, the
+qutrit, S(U(3)×U(2)), SU(4) = Spin(6) — land on the Tree's branch, not beside it or nowhere. We
+separate the coincidences that are generic from the ones that are not. We state what the Tree
+offers Chain Theory's own open items. We pre-register ten joint tests, with what each outcome
+would mean for both programmes, and we state the caveats on both sides without softening: neither
+programme's identification with physics is verified, and not one link of the Tree changes grade
+in this document. A second edition of the capstone will be published only when one does.
+
+---
+
+## 1. What arrived
+
+On 23 October 2026, A. D. Wissner-Gross published three documents and a Lean file under the name
+*Chain Theory*: a preprint, *A Parameter-Free Candidate for the Fine-Structure Constant from
+Entangled Qudits*; a 754-page working-draft compendium, *Chain Theory: Toward Fundamental Physics
+from Distilling Networks of Entangled Qudits* (release 0.1); an introductory slide deck; and
+`ChainAlpha.lean`, a self-contained Core Lean 4 file checking the preprint's central computation.
+The announcement followed on 24 October.
+
+The axiom, in full: *"Nothing exists but finitely many maximally entangled pairs of qudits, some
+qudits shared, known only by distilling them."* Six definitions fix the terms. A *read cap* follows
+from the definition of "known": a read fixes both ends of a pair only when every positive map
+between their operator algebras is decomposable, which by Størmer (1963), Woronowicz (1976) and
+Choi (1975) holds exactly when d₁d₂ ≤ 6. So two *genres* of link are readable at first order —
+(2,2) and (3,2) — and four are dark: (3,3), (4,2), (4,3), (4,4). The six genres are conjectured to
+correspond to spacetime, electromagnetism, the strong interaction, the weak interaction, the
+Yukawa sector and the Higgs.
+
+Chain Theory grades every boxed statement as a *theorem*, a *conditional theorem* (conditions
+named in the box) or an *open result*, and marks correspondences with physics as *conjectured*
+or *by name*. Release 0.1 holds 100 theorems (64 tied to Lean declarations), 109 conditional
+theorems and 198 open results. Its headline: an exact algebraic number,
+(79 + 48√2 + 42√3 + 3√6)/31104, inverse 137.035 999 189 566…, derived as a theorem of the
+definitions from a weighted count over the 172 measurement records of a qutrit maximally
+entangled with a qubit, and *conjectured* (Conjecture 1) to be the fine-structure constant at zero
+momentum transfer — 0.60σ from CODATA 2022. The author is explicit that the identification is a
+conjecture "used in no proof" and absent from the Lean file.
+
+We note the kinship Chain Theory itself declares: among programmes that "derive parts of the
+Standard Model from a finite or algebraic input" it names "the spectral action on a finite
+noncommutative geometry" — the Chamseddine–Connes tradition from which the Tree of Reality
+grows.
+
+## 2. The record
+
+For the reader checking the chronology, the dated public documents are:
+
+| Document | Published | Record |
+|---|---|---|
+| *The Tree of Reality* (capstone): the full graded tree, L1–L24, gaps G1–G6, the sibling-branch predictions and the trichotomy (§9) | 28 September 2026 | DOI 10.5281/zenodo.23011897; git first commit 27 Sep 2026; OpenTimestamps on every push |
+| *The Staked Gaps*: G1–G6 as pre-registered predictions; the residues and siblings restated as staked content (§5); the trichotomy's falsifiability boundary (§6); the meta-prediction (§7); the protocol for claiming a fill (§8) | 13 October 2026 | DOI 10.5281/zenodo.23338726 |
+| *The Forced and the Chosen*: the declared inputs and the plenitude conjecture | 14 October 2026 | DOI 10.5281/zenodo.23356221 |
+| *Chain Theory*: preprint, compendium 0.1, slides, `ChainAlpha.lean` | 23 October 2026 | alexwg.org/publications/ |
+
+The two programmes were developed independently; neither cites the other before this addendum.
+That is what makes the comparison informative.
+
+## 3. The six headline gaps: untouched
+
+*The Staked Gaps* staked six gaps with attribute-level predictions: **G1** the infinite-volume
+limit of the lattice field; **G2** the unbounded self-adjoint operator library (the keystone);
+**G3** a comparison bound of different shape than the contour-energy route; **G4** a uniform
+sub-top spectral estimate by Dobrushin uniqueness or a convergent cluster expansion; **G5** the
+heat-kernel expansion of the spectral action with the Einstein–Hilbert a₂ term; **G6** the
+isotypic decomposition of the finite bimodule and its K-theory.
+
+**Chain Theory bears on none of these.** Its confinement result (171.1, conditional) is a
+statement about readability of the (3,3) genre under the read cap — a mechanism of a different
+kind from the continuum-limit and spectral-gap estimates G1, G3 and G4 ask for, and not a
+candidate for them. Its gravity results (90.1, 90.2, 99.1, 104.1, 115.1) build a depth metric and
+a graph-Laplacian curvature by counting — a route disjoint from the spectral action's heat-kernel
+expansion that G5 predicts, and not a candidate for it. It does not use unbounded operators (G2)
+or the spectral triple (G6). The six headline predictions stand exactly as staked, and the
+meta-prediction's timetable for them is unaffected by this release.
+
+We say this first so that nothing below can be read as a claim that it is otherwise.
+
+## 4. The boxes that received candidates
+
+*The Staked Gaps* §5 restated as staked content the two further classes of prediction the
+capstone made beyond G1–G6: the *residues* — the named unproven remainder in every PARTIAL,
+POSTULATE and OPEN link — and the *siblings*. Four of those residues received candidate
+mechanisms from Chain Theory. In each case we record our marked opening, the candidate, its grade
+*in Chain Theory*, and what importing it would require. None of this changes a grade here.
+
+**L14 · Three generations — POSTULATE.** The capstone records "three generations are the imaginary
+quaternions" as a physical postulate (assumptions ledger, entry 25): ℍ ⊂ M₂(ℂ) has three imaginary
+units, and the step from that to three copies of the chiral 16 is a modelling choice. Chain Theory
+supplies two results that bound the count from above: the *generation bound at the hub dimension*
+(197.3, theorem) — a hub assembly is a ququart carrying a qubit pair among its legs, and admits at
+most a third generation — and *three, a theorem of the valence* (83.1, theorem on the recorded
+roster). It also records, with the same honesty as our postulate, that three *is* the count only
+as an open result (197.5). The two programmes hold complementary halves: an upper bound of three
+on one side, a candidate reason for exactly three on the other. Import would require stating the
+hub-assembly argument as a Mathlib theorem about tensor factorisations of M₄ = M₂ ⊗ M₂ (test Q4
+below), after which L14 could move to "bounded above by theorem; identification open".
+
+**L23 · Yang–Mills and the mass gap — OPEN.** The capstone has a wall (W1–W4) and no mechanism.
+Chain Theory supplies one: *confinement as dark-genre readability* (171.1, conditional). The (3,3)
+link has d₁d₂ = 9 > 6, so no single distillation fixes both ends; "at all 494 qutrit–qutrit links
+of the roster, no read survives at first order." The Tree's colour triplet (L13, GENUINE) is a
+qutrit, so the (3,3) cell is M₃ ⊗ M₃ inside the colour block of M₁₆, and the read cap would say:
+in the Tree's own object, no single act of knowing fixes two colour ends. This would not close G1,
+G3 or G4 — those concern the continuum — but it could reclassify L23 from "wall" to "mechanism
+stated, continuum limit open". Import requires translating "read" into the inner-product lineage
+and checking that the decomposability threshold survives in the spectral-triple setting (Q6).
+
+**L21 · The Born rule — PARTIAL (cited input).** The capstone cites the Born rule, Gleason and
+Wigner as physics, not theorems (entry 59). Chain Theory derives the Born readout from "the wash"
+(35.1, 40.1, conditional) — with premises it names: "the Hilbert space of a qudit and the pair as
+a ray." The two orderings are complementary: the Tree builds the Hilbert space from the inner
+product by GNS and cites the probability rule; Chain Theory takes the Hilbert space and derives
+the probability rule. Chained, they may close a circle neither closes alone (Q8).
+
+**L9 · Lorentzian signature — PARTIAL.** The Tree's fork reaches (1,3) but does not fully exclude
+the Euclidean alternative. Chain Theory's *Lorentz group as the isometries of the Hermitian split*
+(54.1, conditional) and *one against three at every step* (55.1, theorem) come with a lattice
+argument of a kind the Tree has not tried: the indefinite form admits infinitely many integer
+isometries (a Pell equation) while a definite form admits finitely many, so "the signature by
+existence reads Lorentzian." Whether the Tree's Clifford lattice supports the same argument is
+open.
+
+Two further openings received material short of a mechanism. **L22 (Einstein equations, OPEN,
+gated on G2):** Chain Theory's graph-Laplacian curvature (90.2, conditional) is a finite stand-in
+computable now, whose relation to the a₂ coefficient G5 predicts is a question (Q7), not a
+candidate for G5. **L15 (Higgs window, PARTIAL):** Chain Theory's Higgs quartic as an exact
+element of ℚ(√2, √3) (202.1, theorem) is a point to test against the window (Q1).
+
+## 5. The trichotomy, run
+
+The capstone §9 pre-registered a trichotomy for any new structure that appears: it *fills a gap*,
+*joins our branch*, or *realises a sibling* — each confirming the second-class prediction — or it
+*fits nowhere on the tree*, which refutes it. *The Staked Gaps* §6 drew the boundary that keeps
+this falsifiable: a structure that fits nowhere may never be reclassified after the fact as a
+sibling.
+
+Chain Theory is the first independent programme on which the test has run. Object by object:
+
+| Chain Theory object | Its grade | Where it lands on the Tree | Tree grade |
+|---|---|---|---|
+| the qubit (register two); one-dimensional end excluded (2.9) | theorem | the seed M₂(ℂ) (L3) | GENUINE |
+| the ququart (register four); hub pair as one qudit of dimension four (65.2) | theorem | M₄ = End(M₂), the first cascade step (L4) | GENUINE |
+| the (2,2) link; Spin^c(4) (58.1); the Clifford relation at four generators (ch. 3-5); read as spacetime (Conjecture 2) | 58.1 theorem; identification conjectured | Cl₄(ℂ) ≅ M₄(ℂ), and only in dimension 4 (L8) | GENUINE |
+| the qutrit (register three) | Conjecture 0, conditional | colour: 4 → 3⊕1 (L13) | GENUINE |
+| S(U(3)×U(2)) ≅ (SU(3)×SU(2)×U(1))/ℤ₆ as face group of the (3,2) tether; Y = 1/6 (64.2, 65.1) | theorem on the networks | Pati–Salam on M₁₆ with colour split (L10, L11, L13) | PARTIAL / GENUINE |
+| S(U(2)×U(4)), "SU(4) = Spin(6)" at the (2,4) cell | by name | SU(4)_c of Pati–Salam (L11) | PARTIAL |
+| three registers {2, 3, 4} (Conjecture 0) | conditional | the cascade's levels {2, 4} and the split {3}; nothing else below 16 (L4, L13) | GENUINE |
+| the read cap's visible genres: d₁d₂ ∈ {4, 6} | theorem (given the literature) | the visible sector: M₄ (4) and the 3 ⊗ 2 block of M₁₆ (6) | — |
+
+Every object lands on the branch. The verdict of the pre-registered test is *joins our branch*,
+the second of the three confirming outcomes, and not *fits nowhere*.
+
+**Which coincidences are generic, and which are not.** Honesty requires the split. The Standard
+Model group as S(U(3)×U(2)) is a *generic* consequence of having a 3 and a 2: it is the stabiliser
+of a 3+2 split in SU(5) (Baez and Huerta 2010, which Chain Theory cites), and any finite programme
+with a qutrit and a qubit will reach it. That coincidence is weak evidence. Three coincidences
+are *not* generic: (i) that the pair of qubits is spacetime of dimension four — the Tree has this
+as a theorem about Clifford algebras, Chain Theory reaches it from the spin-c group of the pair,
+and nothing about "two qubits" forces "four dimensions" in general; (ii) that the register set is
+exactly {2, 3, 4} — Chain Theory finds it empirically from its move table, the cascade generates
+it, and neither construction has any reason to stop at 4 except that it does; (iii) that the
+threshold 6 marks the visible world on both sides — Chain Theory's read cap from positive-map
+decomposability, the Tree's 3 ⊗ 2 block from the colour split, with no shared premise. A fourth
+emerged from the first computation (§7, Q3): the α object of Chain Theory's Theorem 1 needs a
+qutrit and *three* qubits; the Tree's M₁₆ = (3⊕1) ⊗ 2 ⊗ 2 supplies the qutrit and two, and the
+third first appears at M₂₅₆ — the Tree's fourth level, the level at which L6 independently places
+the Chamseddine–Connes–Marcolli finite algebra. Neither programme had reason to expect that the
+other's object would complete at that level.
+
+## 6. What the Tree offers Chain Theory's own open items
+
+Chain Theory's compendium ends with an ungraded page (Table 239.1): 74 open results, 48 re-posed,
+133 conditional clauses. For four of its named openings the Tree has a candidate, offered at the
+Tree's grade and in the spirit the compendium asks for — "corrections and objections are welcome."
+
+- **Conjecture 0 (box 1.7), the three registers.** The cascade (L4, GENUINE) produces levels of
+  dimension 2, 4, 16, …; colour (L13, GENUINE) splits the 4 as 3⊕1. So {2, 4} are levels, {3} is a
+  split of a level, and nothing of dimension 5, 6, 7 or 8 occurs below 16. This is a generative
+  basis for the register set, if Chain Theory's move table can be matched to End-iteration (Q10).
+- **Conjecture 2 (open result 1.9), spacetime at (2,2).** L8 (GENUINE): the two-qubit algebra *is*
+  the Clifford algebra of four-dimensional space, and no other dimension's Clifford algebra is a
+  cascade level. Support for the identification from the object itself, independent of the
+  gravity results above it (Q2).
+- **The step below the axiom.** L1 (GENUINE): Lawvere's fixed-point theorem — self-reference
+  forces existence; L3 (GENUINE): the smallest algebra that can host it is M₂(ℂ). Chain Theory
+  takes "it from bit" literally; the Tree offers a reason there is a bit (Q9).
+- **The Weinberg angle.** Not derived in the compendium (the electroweak cell is reached "by
+  name"). L17 (PARTIAL): sin²θ_W = 3/8 as an exact trace ratio on the chiral 16, with a control
+  theorem showing the ratio is a property of the representation content, not of the dimensions.
+  It lives on the same Pati–Salam object as Chain Theory's gauge group.
+
+## 7. Ten joint tests, pre-registered
+
+Each is stated so that either outcome is informative for both programmes. Full statements are in
+`docs/chain-theory/06_questions_to_work_on_together.md` in the public repository.
+
+| | Test | Needs from Chain Theory | Needs from the Tree | If yes | If no |
+|---|---|---|---|---|---|
+| Q1 | Higgs quartic inside the window? | 202.1 | L15 | mutual support on one number | a specific, findable discrepancy |
+| Q2 | Are the (2,2) Clifford generators the Tree's? | ch. 3-5 | `Cl4IsoM4` (L8) | Conjecture 2 can cite a theorem | the two "four"s differ |
+| Q3 | Does the 172-record count inside M₁₆ give 1/137.036? | the Letter's definitions | M₁₆ with 4 → 3⊕1 | a second derivation of the α candidate; the Tree's first coupling constant | the definition that carries the weight is identified |
+| Q4 | Does the hub bound transfer to M₄? | 197.3 | M₄ = M₂ ⊗ M₂ | L14 bounded above by theorem | the bound depends on the network, not the algebra |
+| Q5 | Do the three attach sites carry i, j, k? | 83.1, 197.4 | ℍ ⊂ M₂(ℂ) | 197.5 and L14 are one statement | two different threes |
+| Q6 | Does the read cap state in the spectral triple? | the read cap | colour block of M₁₆, D | L23 gains a mechanism | the pictures differ at a named place |
+| Q7 | Does the Laplacian curvature track the heat kernel? | 90.2, 115.1 | L19, G5 | a continuum target for the field equation; a finite stand-in for G5 | two different gravities at one cell |
+| Q8 | Does the Born circle close? | 35.1 | GNS (L21) | the probability rule from the inner product with nothing cited | a hidden import is located |
+| Q9 | Does "known" (Def. 1.6) force three lineages? | Definition 1.6 | L7 | the Tree's only structural postulate becomes a theorem | a fourth aspect is found |
+| Q10 | Does End-iteration reproduce the move table? | the move table | L4, L13 | Conjecture 0 derived | a register the cascade cannot generate |
+
+**Order of attempt.** Q1, Q2 and Q3 are computations and come first. Q4, Q6, Q8 and Q9 are proofs
+for Mathlib. Q5, Q7 and Q10 are investigations before they are proofs.
+
+**First results (25 October 2026; `docs/chain-theory/08_results_first_pass.md` and
+`scripts/chain_theory/q3_alpha_count_in_M16.py` in the public repository).**
+
+*Q3 — answered at outcome (b).* The Letter's count was rebuilt from its own rules — letters at
+slots (8, 3, 8, 3), 169 products and 3 commutators, the exchanges X and Y as 172 × 172 commuting
+involutions — and reproduced exactly: tr X = 82, tr Y = 70, tr XY = −8; sectors 79, 48, 42, 3;
+1/α = 137.035 999 189 566 155…. The object was then realised inside M₁₆ by explicit 16 × 16
+matrices. The qutrit and both read qubits are present with the right letter algebras and
+commutation structure, so the *numerator* transfers unchanged — it depends on the end dimensions
+alone. The *denominator* N = 24 · 36 · 36 does not: its 24 is the traceless part of the unread
+third link, a third qubit entangled with the qutrit, which M₁₆ does not contain and M₂₅₆ does.
+And the 169 products, realised as matrices, span only 66 dimensions: Chain Theory's two *copies*
+of the one shared qutrit ("one copy per link", Definition 1.3) collapse to a single M₃ factor,
+so the count lives in Chain Theory's record space (Definitions 1.3 and 1.6), not in the operator
+algebra of the shared system. The definition that carries the weight is thereby identified. For
+the Tree this means L24 does not acquire a coupling constant from the algebra alone; for Chain
+Theory it localises exactly which clauses a derivation of the number rests on, and shows that the
+cascade supplies the object those clauses act on at its fourth level.
+
+*Q2 — yes.* The compendium's (2,2) generators (ch. 3-5: β = diag(1, 1, −1, −1) and three α) and
+the Tree's γ₁ = σ₃ ⊗ I₂, γ₂, γ₃, γ₄ (`F4_1e_CliffordMatrix.lean`) are Clifford generators on the
+same M₂ ⊗ M₂; β is γ₁ entry for entry; over ℂ both generate Cl₄(ℂ) ≅ M₄(ℂ) (`D2_is_Cl4`).
+Conjecture 2 can cite a theorem for the dimension. Nothing here touches the metric.
+
+*Q1 — inputs located, not yet compared.* Chain Theory's quartic (202.1) is stated relationally
+through its office tables (a Higgs face over a vacuum face squared; vacuum office 6561); the
+explicit number was not extracted. The Tree's window is g²/N ≤ λ̃ ≤ g², N = 96. Both sides'
+normalisations are needed before a comparison means anything.
+
+## 8. Caveats, on both sides, without softening
+
+**On Chain Theory.** The α number is a theorem of the definitions; that it is α(0) is a
+conjecture, as its author states. The Letter's own table shows that nearby wordings of the
+definitions give 1/α between 135.89 and 146.52, two within one percent; each is excluded by a
+clause of a definition, not by comparison with experiment, and the reader must judge whether
+the clauses are forced. Four of the six sector identifications are "by name"; the other two are
+conjectures. Many compendium theorems are, in the author's words, "a census of a finite catalog,
+not a proof for every web." None of this is a criticism; it is what the documents say about
+themselves, and it is why the correspondences in §5 are correspondences between *constructions*,
+not between verified physics.
+
+**On the Tree.** Six of twenty-four links are GENUINE. Thirteen are PARTIAL with a named
+residue; three are POSTULATES; two are OPEN. The Tree computes two numbers (the Weinberg ratio
+and a Higgs window) and no coupling constant. Its gravity is gated on an unbuilt operator
+library. Its identification with physics — that this M₄ is spacetime, that this 3 is colour — is
+exactly as conjectural as Chain Theory's, and the capstone says so in every row.
+
+**On this addendum.** It records that two independent finite constructions meet at the same
+objects. That is evidence that the objects are natural. It is not evidence that either
+programme's physics is right, and nothing in it has been verified beyond the two programmes'
+own Lean files, which check finite computations and not physical identifications. The honest
+summary is: the boxes were drawn in advance, candidates arrived, and the tests that would turn
+candidates into fills are now pre-registered. The ten days are a fact about timing, not about
+truth.
+
+## 9. What would change the scoreboard
+
+A second edition of *The Tree of Reality* will be published when, and only when, at least one of
+the following is a Mathlib theorem or a completed computation:
+
+- **L14 → "bounded above":** the hub-dimension bound proved for M₄ (Q4).
+- **L23 → "mechanism stated":** the read cap stated and proved on the colour block (Q6).
+- **L21 → GENUINE or sharper PARTIAL:** the Born circle closed with no cited input (Q8).
+- **L7 → PARTIAL or GENUINE:** the three lineages derived from a knowledge clause (Q9).
+- **L24 → a coupling constant:** the 172-record count completed inside M₁₆, whatever it gives (Q3).
+
+Until then the scoreboard is 6 · 13 · 3 · 2, as published on 28 September 2026, and this
+addendum adds to the record and subtracts nothing from the caution.
+
+## 10. Provenance
+
+This addendum is published as version 2 of *The Staked Gaps* under its concept DOI
+10.5281/zenodo.23338725, with the v1 text unchanged above, and committed to
+`wonderben-code/convergence-codex`, where every push is anchored to the Bitcoin blockchain by
+OpenTimestamps; the commit precedes the deposit. It was sent to the author of Chain Theory on
+publication with an invitation to correct any misstatement of his work; corrections received will be
+incorporated in v3 and recorded in `docs/chain-theory/07_reading_log.md`. The successor paper, *The
+Refined Gaps* (2026), takes the candidates recorded here as given and pre-registers the residual
+predictions R1–R12.
+
+## References
+
+- A. D. Wissner-Gross, *A Parameter-Free Candidate for the Fine-Structure Constant from Entangled
+  Qudits* (23 Oct 2026). alexwg.org/publications/ChainTheoryAlpha.pdf
+- A. D. Wissner-Gross, *Chain Theory: Toward Fundamental Physics from Distilling Networks of
+  Entangled Qudits*, working draft release 0.1 (23 Oct 2026). alexwg.org/publications/ChainTheoryCompendium.pdf
+- A. D. Wissner-Gross, *Chain Theory: An Introduction* (23 Oct 2026). alexwg.org/publications/ChainTheoryTalk.pdf
+- A. D. Wissner-Gross, `ChainAlpha.lean` (23 Oct 2026). alexwg.org/publications/ChainAlpha.lean
+- M. E. Mala, *The Tree of Reality: An Evolutionary Theory of Everything* (28 Sep 2026). DOI 10.5281/zenodo.23011897
+- M. E. Mala, *The Staked Gaps* (13 Oct 2026). DOI 10.5281/zenodo.23338726
+- M. E. Mala, *The Forced and the Chosen* (14 Oct 2026). DOI 10.5281/zenodo.23356221
+- A. H. Chamseddine and A. Connes, *The spectral action principle*, Commun. Math. Phys. 186, 731 (1997)
+- A. H. Chamseddine, A. Connes and M. Marcolli, *Gravity and the standard model with neutrino mixing*, Adv. Theor. Math. Phys. 11, 991 (2007)
+- J. C. Baez and J. Huerta, *The algebra of grand unified theories*, Bull. AMS 47, 483 (2010)
+- E. Størmer, Acta Math. 110, 233 (1963); S. L. Woronowicz, Rep. Math. Phys. 10, 165 (1976); M.-D. Choi, Linear Algebra Appl. 12, 95 (1975)
+- F. W. Lawvere, *Diagonal arguments and cartesian closed categories* (1969)
