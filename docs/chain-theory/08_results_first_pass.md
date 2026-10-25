@@ -110,6 +110,46 @@ dim Cl₄(ℂ) = dim M₄(ℂ) = 16 with the algebra map from `CliffordAlgebra.l
 A comparison needs (i) Chain Theory's quartic as a number, and (ii) a common normalisation of λ
 and of g. Both are obtainable; neither was in this pass. **Status: open, inputs identified.**
 
+## R7 · Pell family on the Tree's Clifford lattice — holds, and sharpens
+
+**Script:** `scripts/chain_theory/r7_r9_lattice_and_parity.py`. For each real signature sharing
+Cl₄(ℂ), the integer isometry group O(Q; ℤ) was decided — by exhaustive enumeration for the
+definite form, by explicit construction of an infinite-order element for the indefinite ones:
+
+| Signature | O(Q; ℤ) | Witness |
+|---|---|---|
+| Euclidean (4,0) | **finite**, exactly 384 (signed permutations) | enumeration |
+| Lorentzian (1,3) | **infinite** | integer isometry with spectral radius 5.83 |
+| split (2,2) — the real form of the Tree's Q₄ | **infinite** | integer isometry with spectral radius 5.16 |
+
+The prediction as stated holds: definite finite, indefinite infinite. **The refinement:** both
+indefinite signatures that share Cl₄(ℂ) have infinite integer isometry groups, so Chain Theory's
+"signature by existence" argument *excludes the Euclidean branch* at the Tree's fork L9 and does
+*not* select Lorentzian (1,3) over split (2,2). It is a theorem-grade exclusion of one branch of
+the fork, not a selection of the walked one. L9's residue narrows from "exclude Euclidean; choose
+among (1,3)/(2,2)/(3,1)" to "choose among the indefinite three" — a smaller residue with a new
+argument closing the first half.
+
+## R9 · The improper element on M₄ = M₂ ⊗ M₂ — answered, and re-posed
+
+Same script. With the Tree's γ₁ = σ₃⊗I₂, γ₂ = σ₁⊗I₂, γ₃ = (σ₃σ₁)⊗σ₃, γ₄ = (σ₃σ₁)⊗σ₁
+(squares +1, +1, −1, −1; pairwise anticommuting), the chirality element is
+γ₅ = γ₁γ₂γ₃γ₄ = σ₂ ⊗ σ₂, and the improper element P = γ₁ sends (γ₁, γ₂, γ₃, γ₄) ↦
+(+γ₁, −γ₂, −γ₃, −γ₄) and anticommutes with γ₅ (swaps the Weyl spinors).
+
+- P = σ₃ ⊗ I₂ is of the form A ⊗ I: **outcome (ii)** — it acts within the first tensor factor
+  and leaves the second untouched; it is not the factor swap.
+- **Two qualifications that change the question.** (1) Which factor P lives in is a property of
+  the chosen Clifford basis, not of M₄. (2) γ₅ = σ₂ ⊗ σ₂ is *not* aligned with the
+  factorisation — the Weyl split is not a tensor-factor split — so "which factor is left" is not
+  a question M₄ = M₂ ⊗ M₂ can answer at all.
+
+**Verdict:** R9 as stated is answered (shape ii, basis-dependent) and shown to be *posed on the
+wrong object*. The Tree's L12 choice lives at M₁₆ = M₄ ⊗ M₄ (the Pati–Salam SU(2)_L × SU(2)_R
+factors), and R9 is re-posed there as R9′: *does the improper element of Cl₄, lifted to M₁₆,
+exchange the two M₄ factors or single one out?* A refinement, found by our own test, not a
+confirmation — and recorded as such.
+
 ## What changed in this folder as a result
 
 - 03: a new correspondence — the α object's third qubit is first available at M₂₅₆, the Tree's

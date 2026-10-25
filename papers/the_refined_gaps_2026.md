@@ -471,6 +471,30 @@ The refinement runs both ways. Taking the Tree's theorems as correct:
 R1, R3, R5, R8 are Mathlib proofs. R2, R6, R10's embedding, R11, R12 need both programmes'
 objects side by side and are the joint work.
 
+### 7.1 First results, 25 October 2026
+
+Two residuals were pure computations and were run on the day of writing
+(`scripts/chain_theory/r7_r9_lattice_and_parity.py`, public). Both came back as *refinements* — the
+outcome §6 said a correct candidate should produce.
+
+**R7 — holds as stated, and sharpens.** On the Tree's Clifford lattice, the Euclidean form (4,0)
+has exactly 384 integer isometries (finite, by enumeration); the Lorentzian form (1,3) and the
+split form (2,2) each admit an integer isometry of infinite order (spectral radii 5.83 and 5.16,
+explicit matrices in the script). So Chain Theory's existence argument *excludes the Euclidean
+branch* at the fork L9 — a theorem-grade exclusion the Tree did not have — and does *not* choose
+between the indefinite signatures (1,3) and (2,2), which share Cl₄(ℂ). L9's residue narrows to
+"select among the indefinite three"; it does not close.
+
+**R9 — answered, and re-posed.** With the Tree's γ-basis, the improper element P = γ₁ = σ₃ ⊗ I₂
+acts within the first tensor factor of M₄ = M₂ ⊗ M₂ (shape ii) and anticommutes with
+γ₅ = γ₁γ₂γ₃γ₄ = σ₂ ⊗ σ₂. But γ₅ is not aligned with the factorisation — the Weyl split is not a
+tensor-factor split — and which factor P lives in is a property of the basis. So "which factor is
+left" is not a question M₄ can answer, and R9 was posed on the wrong object. It is re-posed at
+M₁₆ = M₄ ⊗ M₄, where L12's choice actually lives, as **R9′**: *does the improper element of Cl₄,
+lifted to M₁₆, exchange the two M₄ factors or single one out?* We record this as a correction to
+this paper found by its own test, on the day of writing, and leave the original R9 in the table
+above so the correction is visible.
+
 ## 8. What kills this paper
 
 Three layers, stated in advance.
