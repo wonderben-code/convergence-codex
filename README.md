@@ -71,6 +71,18 @@ Active, exploratory. Gnosis (v1 published; v2 cross-domain in development) and L
 
 Published on [Zenodo](https://zenodo.org), CERN's open-access repository, each with a permanent DOI and Bitcoin timestamp.
 
+**The Tree of Reality series (latest first):**
+
+| Paper | Date | DOI |
+|---|---|---|
+| *The Refined Gaps* — what the Tree's open boxes become if Chain Theory's candidates hold; validation of the posture; predictions R1–R12 | 25 Oct 2026 | [10.5281/zenodo.23637019](https://doi.org/10.5281/zenodo.23637019) |
+| *The Staked Gaps* v2 — v1 text + addendum recording the first candidates (Chain Theory) | 25 Oct 2026 | [10.5281/zenodo.23637020](https://doi.org/10.5281/zenodo.23637020) · concept [10.5281/zenodo.23338725](https://doi.org/10.5281/zenodo.23338725) |
+| *The Forced and the Chosen* — the Tree's declared inputs, and the plenitude of its branches | 14 Oct 2026 | [10.5281/zenodo.23356221](https://doi.org/10.5281/zenodo.23356221) |
+| *The Staked Gaps* v1 — the gaps as pre-registered predictions | 13 Oct 2026 | [10.5281/zenodo.23338726](https://doi.org/10.5281/zenodo.23338726) |
+| *The Tree of Reality: An Evolutionary Theory of Everything* — the capstone: 24 links graded, 6·13·3·2 | 28 Sep 2026 | [10.5281/zenodo.23011897](https://doi.org/10.5281/zenodo.23011897) |
+
+Source markdown and PDFs are in `papers/`. The reading of A. D. Wissner-Gross's *Chain Theory* alongside the Tree — correspondences, what each offers the other, ten joint questions, first results — is in [`docs/chain-theory/`](docs/chain-theory/README.md).
+
 ## Open Source
 
 MIT License. Code, data, and papers are open. To audit a claim: find its node in the Tree of Reality, follow it to the Lean file, run `lake build`, watch it compile.
