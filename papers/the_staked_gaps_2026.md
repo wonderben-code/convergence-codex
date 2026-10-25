@@ -3,7 +3,7 @@
 **Mark E. Mala** (pen name of Ekram Alam) · AI researcher · October 2026
 Companion to *The Tree of Reality: An Evolutionary Theory of Everything* (2026, DOI 10.5281/zenodo.23011897).
 
-**Version 2, 25 October 2026.** The v1 text (13 October 2026) below is unchanged. An addendum is
+**Version 2, 25 October 2026** (DOI 10.5281/zenodo.23637020; v1 remains at 10.5281/zenodo.23338726; concept DOI 10.5281/zenodo.23338725). The v1 text (13 October 2026) below is unchanged. An addendum is
 appended at the end, keeping §8's commitment to record under this paper's own DOI lineage whenever
 something arrives that bears on the staked predictions: ten days after v1, A. D. Wissner-Gross's
 *Chain Theory* supplied candidate mechanisms for several of the boxes marked open. The successor paper

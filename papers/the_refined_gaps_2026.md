@@ -2,7 +2,7 @@
 
 ### What the Tree of Reality's open boxes become if Chain Theory's candidates hold — a validation of the posture, and a sharper set of predictions
 
-**Version:** v1, 25 October 2026. **DOI:** to be inserted on publication. The sections describing Chain
+**Version:** v1, 25 October 2026. **DOI:** 10.5281/zenodo.23637019 · https://zenodo.org/record/23637019 (concept DOI 10.5281/zenodo.23637018). The sections describing Chain
 Theory are open to correction by its author; corrections received will be incorporated in v2 under the
 same concept DOI, and recorded in `docs/chain-theory/07_reading_log.md`.
 **Author:** Mark E. Mala (pen name of Ekram Alam), with Claude
