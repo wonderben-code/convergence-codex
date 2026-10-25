@@ -33,6 +33,7 @@ other, and each can lend the other what it has. These notes try to map that exch
 | [05_what_the_tree_offers_chain_theory.md](05_what_the_tree_offers_chain_theory.md) | Open items in Chain Theory (by box number) for which the Tree has a candidate theorem |
 | [06_questions_to_work_on_together.md](06_questions_to_work_on_together.md) | Concrete joint problems, each with a sketch of how it could be run |
 | [07_reading_log.md](07_reading_log.md) | What was read in full, what only in part, and what is not yet understood — so the Chain Theory side can see exactly where these notes may be wrong |
+| [08_results_first_pass.md](08_results_first_pass.md) | First results: Q3 (the 172-record count inside M₁₆ — numerator transfers, denominator needs a third qubit first available at M₂₅₆, the count lives in the record space not the algebra), Q2 (yes: his β is our γ₁), Q1 (inputs located). Script in `scripts/chain_theory/` |
 
 ## The Tree of Reality, for Chain Theory readers
 
