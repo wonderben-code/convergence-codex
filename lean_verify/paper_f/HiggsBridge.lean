@@ -83,6 +83,24 @@ NOT proven here (named stairs, so the [CLAIMED] tag stays honest):
   current reach, cited). The 125 GeV number is NEVER claimed as proven
   content.
 
+  ⚠ 28 October 2026 — CORRECTION (kept beside the original, not replacing it).
+  The clause above, "the RG running from Λ to the electroweak scale producing
+  ≈125 GeV (… cited)", is NOT supported with Standard-Model field content. The
+  running has now been done numerically (convergence-codex main,
+  `scripts/chain_theory/q1_quartic_vs_window.py`; write-up in
+  `docs/chain-theory/09_results_second_pass.md`, Q1/T3), validated against the
+  published NNLO results (λ(M_Pl) = −0.0141 vs −0.0143). With SM running, the
+  window as a boundary condition at Λ = 10¹⁶ … M_Pl requires m_H ≈ 131–176 GeV;
+  the measured 125.2 GeV lies BELOW it for every N, because the lower edge
+  g²/N > 0 while the measured λ(Λ) < 0 above ~10¹⁰ GeV (positivity would need
+  m_t < 171.0 GeV against the measured 172.57 ± 0.29). This is the known
+  tension of the spectral Standard Model (CCM 2007 gave ≈170 GeV); the
+  literature reaches ≈125 GeV only by adding a scalar singlet σ
+  (Chamseddine–Connes 2012), which this estate does not contain. The theorems
+  in this file are unaffected: they bracket a defined quantity. What changes
+  is the reading: the window, read physically with SM content, is in tension
+  with data.
+
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 
