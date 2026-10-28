@@ -101,6 +101,15 @@ NOT proven here (named stairs, so the [CLAIMED] tag stays honest):
   is the reading: the window, read physically with SM content, is in tension
   with data.
 
+  ⚠ 28 October 2026, later — FOLLOW-UP (R13, convergence-codex main,
+  `docs/chain-theory/10_results_third_pass.md`). The repair is computed. On the
+  estate's own Pati–Salam 16 no Pati–Salam-invariant Majorana entry exists and
+  the unique SM-singlet one lies in a (10̄,1,3), so a Majorana mass forces a
+  field whose singlet component is σ. With σ and the Chamseddine–Connes 2012
+  boundary conditions, the window gives m_H = 125.20 GeV at a seesaw-consistent
+  σ scale near 10¹⁴ GeV (vacuum metastable, as in the SM). A computation, not a
+  proof; this file's theorems are unaffected.
+
   Machine verification: Lean 4.29.1 + Mathlib v4.29.1. 0 sorry, 0 new axioms.
 -/
 
