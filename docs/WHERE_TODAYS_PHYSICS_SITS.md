@@ -26,7 +26,7 @@ three meet (the spectral triple and everything built on it).
 | Colour (three quark colours) | End, L13 | the 4 splits as 3 ⊕ 1 | GENUINE |
 | Why the weak force is left-handed | End, L12 | two binaries at M₁₆ = End(M₄): which factor is covariant (exchanged only by anti-automorphisms — charge-conjugation type) and which chiral half SU(2)_L acts on (exchanged only by the improper element — parity); refined 28 Oct, R9′ | POSTULATE |
 | Three generations of matter | End, L14 | the three imaginary quaternions inside M₂(ℂ) | POSTULATE (Chain Theory supplies a ≤ 3 bound — Q4) |
-| The Higgs | End, L15 | the bidoublet scalar; coupling window g²/N ≤ λ̃ ≤ g² | PARTIAL (no 125 GeV claim is made). **Tension with data (28 Oct):** with Standard-Model running the window implies m_H ≈ 131–176 GeV; measured 125.2 lies below it for every N (needs m_t < 171.0 vs 172.57 ± 0.29) — the known spectral-SM tension; the literature's fix (a scalar σ) is not on the tree. See `docs/chain-theory/09_results_second_pass.md` |
+| The Higgs | End, L15 | the bidoublet scalar; coupling window g²/N ≤ λ̃ ≤ g² | PARTIAL (no 125 GeV claim is made). **Tension with data, then resolved (28 Oct):** with Standard-Model running alone the window implies m_H ≈ 131–176 GeV, above the measured 125.2. The repair, the scalar σ, turns out to be *forced* on the tree's own Pati–Salam 16 once neutrinos have Majorana masses; with σ (Chamseddine–Connes 2012 boundary conditions) the window gives m_H = 125.20 GeV at a seesaw-consistent σ scale ~10¹⁴ GeV, with the vacuum metastable as in the Standard Model. A computation, not a proof (one-loop above σ, dominant Yukawas). See `docs/chain-theory/09_…` and `10_results_third_pass.md` |
 | Weinberg angle (electroweak mixing) | End, L17 | sin²θ_W = 3/8 as an exact trace ratio on the chiral 16 | PARTIAL |
 | Anomaly cancellation (why the SM is consistent) | End, L16 | the perturbative anomaly table vanishes on the chiral 16 | PARTIAL |
 | Quantum mechanics (Hilbert space, Schrödinger equation, unitary evolution) | ⟨·,·⟩, L21 | GNS on the trace state → Hilbert space; Stone's theorem → Schrödinger | PARTIAL |
@@ -48,7 +48,7 @@ three meet (the spectral triple and everything built on it).
 - **Proved:** the trunk and the geometry — existence, the seed, growth, four-dimensional
   spacetime, colour.
 - **Partly proved, residue named:** the Standard Model's structure, the Higgs window (proved as
-  mathematics, but in tension with the measured Higgs mass under Standard-Model running), the
+  mathematics; consistent with the measured Higgs mass once the σ field the tree forces is included), the
   Weinberg angle, quantum mechanics (with the Born rule declared as an input).
 - **Declared rather than derived:** the three lineages, chirality, three generations.
 - **Open, with the missing piece described:** gravity (L22) and rigorous QFT / the mass gap
