@@ -149,4 +149,31 @@ level six.
   extra point. The Tree's Higgs bidoublet and σ both come from the Pati–Salam scalar sector, so the
   question of whether Chain Theory's closed hub read is the (1,2,2) bears on both.
 
+## Where the three passes leave the Tree (an assessment, 28 October 2026)
+
+**Stronger.**
+- **L15, the Higgs.** Two days ago it conflicted with a measured number; now it is consistent
+  with it. The repair is a field the Tree's own Pati–Salam structure forces.
+- **One independent cross-check passed.** The neutrino mass and the Higgs mass, two separate
+  measurements, ask for the same σ scale. That check could have failed.
+- **More machine-checked mathematics.** About twenty new Lean theorems
+  (`lean_verify/chain_theory/`), each depending only on the standard axioms.
+- **The method.** Predictions were made in advance, tested in public, and failures (R2, R10) were
+  recorded as prominently as successes.
+
+**Unchanged.**
+- **No grade has moved.** The scoreboard is still 6 · 13 · 3 · 2.
+- **The two walls are untouched:** gravity (L22) and the mass gap (L23).
+- **The Higgs repair is partly borrowed and partly fitted.** It uses Chamseddine–Connes's boundary
+  conditions, and one parameter (n ≈ 1.65) is fitted to 125 GeV. Fitting one number with one dial
+  is accommodation, not prediction. The seesaw cross-check is what lifts it above a pure fit.
+- **Two hoped-for links with Chain Theory failed.** Its generations are not the quaternions (R2),
+  and its particle webs do not sit at the Tree's fourth level (R10).
+
+**So:** the Tree is more solid, because it survived contact with data and its weakest physics link
+now has a working repair, and it is better tested. It is not more proven. Validation in the strong
+sense would be a grade moving, or a prediction made before a measurement. The nearest candidates are
+the σ sector (if the cascade's own Dirac operator can be shown to generate σ) and R15 (which can
+promote or sink L14).
+
 Nothing in the Tree's scoreboard changes. 6 · 13 · 3 · 2.
