@@ -156,6 +156,34 @@ theorem hub_hypotheses_satisfiable :
     have := congrFun (congrFun h (f i)) (f i)
     simp at this
 
+/-! ### R1′ · the closed core triangle, formalised (The Refined Gaps v2, §A8)
+
+Theorem C′ took "two core ends at each site" as its index type `Fin 2`. Here the closed triangle
+supplies it: the three qutrit sites are `Fin 3`, every pair of distinct sites is linked, and the core
+ends at site `s` are indexed by the other two sites. The count of three then follows with no network
+input beyond "closed triangle" and the valence law (Theorem A). -/
+
+/-- At each site of a closed triangle the core links are indexed by the other two sites. -/
+theorem card_other_sites (s : Fin 3) : Fintype.card {t : Fin 3 // t ≠ s} = 2 := by
+  rw [Fintype.card_subtype_compl, Fintype.card_fin, Fintype.card_subtype_eq]
+
+/-- **R1′.** A closed triangle of qutrits: at site `s`, the ends of its core links (one for each other
+site `t ≠ s`) and its attachments `A s` are pairwise orthogonal nonzero idempotents of M₃. Then the
+triangle admits at most three attachments in total. -/
+theorem closed_triangle_attachments_le_three (A : Fin 3 → Type*) [∀ s, Fintype (A s)]
+    (P : ∀ s, {t : Fin 3 // t ≠ s} ⊕ A s → Matrix (Fin 3) (Fin 3) K)
+    (hidem : ∀ s i, P s i * P s i = P s i)
+    (horth : ∀ s i j, i ≠ j → P s i * P s j = 0)
+    (hne : ∀ s i, P s i ≠ 0) :
+    ∑ s, Fintype.card (A s) ≤ 3 := by
+  have h : ∀ s, Fintype.card (A s) ≤ 1 := by
+    intro s
+    have := card_le_of_orthogonal_idempotents (P s) (hidem s) (horth s) (hne s)
+    rw [Fintype.card_sum, card_other_sites] at this
+    omega
+  calc ∑ s, Fintype.card (A s) ≤ ∑ _s : Fin 3, 1 := Finset.sum_le_sum fun s _ => h s
+    _ = 3 := by simp
+
 /-! ### The multiplicative reading -/
 
 /-- The trace of an idempotent matrix is the dimension of its range. -/
