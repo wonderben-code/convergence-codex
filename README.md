@@ -76,6 +76,7 @@ Published on [Zenodo](https://zenodo.org), CERN's open-access repository, each w
 | Paper | Date | DOI |
 |---|---|---|
 | *The Refined Gaps* — what the Tree's open boxes become if Chain Theory's candidates hold; validation of the posture; predictions R1–R12 | 25 Oct 2026 | [10.5281/zenodo.23637019](https://doi.org/10.5281/zenodo.23637019) |
+| *The Refined Gaps* v2 — the residuals tested: R1 holds re-posed, R2 refuted (recorded under §8), R3 half confirmed, R9′ answered, L11 narrowed; our own L15 Higgs correction; R13–R16 staked for v3 | 28 Oct 2026 | [10.5281/zenodo.23724193](https://doi.org/10.5281/zenodo.23724193) |
 | *The Staked Gaps* v2 — v1 text + addendum recording the first candidates (Chain Theory) | 25 Oct 2026 | [10.5281/zenodo.23637020](https://doi.org/10.5281/zenodo.23637020) · concept [10.5281/zenodo.23338725](https://doi.org/10.5281/zenodo.23338725) |
 | *The Forced and the Chosen* — the Tree's declared inputs, and the plenitude of its branches | 14 Oct 2026 | [10.5281/zenodo.23356221](https://doi.org/10.5281/zenodo.23356221) |
 | *The Staked Gaps* v1 — the gaps as pre-registered predictions | 13 Oct 2026 | [10.5281/zenodo.23338726](https://doi.org/10.5281/zenodo.23338726) |
