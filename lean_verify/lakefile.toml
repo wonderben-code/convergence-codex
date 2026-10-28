@@ -71,3 +71,8 @@ roots = [
   "OSReconstructionFormal",
   "ConnesNCG",
 ]
+
+[[lean_lib]]
+name = "ChainTheory"
+srcDir = "chain_theory"
+roots = ["Q4HubBound"]

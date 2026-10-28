@@ -5,6 +5,8 @@ quickly it could be run. Each names what it would show either way.
 
 ## Q1 · Does the Higgs quartic land in the window?
 
+> **Status 28 Oct 2026:** run from the compendium's own numbers — see `09_results_second_pass.md`.
+
 **Needs.** Chain Theory's exact quartic (202.1): an element of ℚ(√2, √3), stated at the
 Higgs-form sinks. The Tree's coupling window (L15), stated as rational bounds.
 
@@ -49,6 +51,8 @@ worth knowing.
 
 ## Q4 · Does the hub bound transfer to M₄?
 
+> **Status 28 Oct 2026:** answered — yes as a theorem about frames (additive); no as tensor factors. See `09_results_second_pass.md`.
+
 **Needs.** Chain Theory's 197.3: "a hub assembly is a ququart carrying a qubit pair among its
 qubit legs, the pair takes two of its four ends and every move applies at a site with spare
 alone, so a hub assembly admits at most the third generation." The Tree's M₄ = M₂ ⊗ M₂ with its
@@ -76,6 +80,8 @@ statement, and each side's half-proof completes the other's. If no: the two thre
 different threes, and the coincidence of the number is a coincidence.
 
 ## Q6 · Does the read cap give L23 a mechanism in the spectral-triple language?
+
+> **Status 28 Oct 2026:** location yes, mechanism no; the drafted statement is false for colour-blind D. See `09_results_second_pass.md`.
 
 **Needs.** Chain Theory's read cap (d₁d₂ ≤ 6 from decomposable positive maps; Størmer,
 Woronowicz, Choi). The Tree's colour block M₃ ⊗ M₃ inside M₁₆ and its Dirac operator D.

@@ -14,6 +14,18 @@ see exactly where these notes may be wrong and correct them.
 | `ChainAlpha.lean` (Core Lean 4.35) | ≈70 % read verbatim (header, definitions, record construction, counts, the "what this file does not check" list); the closed-form evaluation and `#print axioms` in the tail were not read directly but are reported in the slides and README | partial |
 | C. S. Carson, "The Sand Castles of Brazzaville Beach" (independent commentary) | full text | complete; used only to confirm which claims are conjectures |
 
+## 28 October 2026 — second reading (for Q4, R9′, Q6, Q1)
+
+| Document | How read | Coverage |
+|---|---|---|
+| Compendium, release 0.1 (re-downloaded from alexwg.org, text extracted with `pdftotext -layout`) | read in full: the glossary (office, valence, hub, leg, in-leg, dock, closed leg, spare/room usages), the introduction's paragraph on monogamy and the copy model, Definitions 1.1–1.6, chapter 83 (83.1 and its derivation), chapter 152 (152.1 and its exact part, measures 27 + 40 + 12), chapter 197 (197.1–197.5 and the census derivation), chapter 202 (202.1 and its exact part, eq. 337), the one-column result around eq. 124, the valence-law sentence of chapter I (at most d pairs at a qudit of dimension d), 9.7–9.8 on the valence bound | complete for these boxes |
+| Alpha Letter | re-read: the paragraph on sharing and monogamy ("one copy per pair … monogamy is never violated"), the definitions table | complete for these passages |
+
+**Resolved from the list below.** Item 1: the glossary defines **office** as "the first-order read
+of a body at its common support, the register of the read at one link", whose nearest standard
+term is "the first-order coefficient of a matrix element". The quartic is the ratio of the
+hub-face office to the vacuum office squared (eq. 124).
+
 ## Things not yet understood (and therefore possibly misstated above)
 
 1. **"Office."** The glossary's definition was not located verbatim; 02 gives "≈ a coupling or
