@@ -2,9 +2,15 @@
 
 ### What the Tree of Reality's open boxes become if Chain Theory's candidates hold — a validation of the posture, and a sharper set of predictions
 
-**Version:** v1, 25 October 2026. **DOI:** 10.5281/zenodo.23637019 · https://zenodo.org/record/23637019 (concept DOI 10.5281/zenodo.23637018). The sections describing Chain
-Theory are open to correction by its author; corrections received will be incorporated in v2 under the
-same concept DOI, and recorded in `docs/chain-theory/07_reading_log.md`.
+**Version:** v2, 28 October 2026. **DOI:** 10.5281/zenodo.23724193 · https://zenodo.org/records/23724193 (v1, 25 October 2026, remains at
+10.5281/zenodo.23637019; concept DOI 10.5281/zenodo.23637018). **The v1 text below is unchanged.**
+An addendum is appended at the end. It scores the tests run since v1 against §7's pre-registered
+table and §8's kill-conditions, records one correction of the Tree's own that those tests found,
+and pre-registers what has become sharper for v3. No correction from the Chain Theory side has been
+received as of this version, so v1's descriptions of Chain Theory stand as written; the invitation to
+correct them carries forward to v3 and is recorded in `docs/chain-theory/07_reading_log.md`. Where
+v1 says below that it proves nothing new, that describes v1: the addendum reports new Lean theorems
+(`lean_verify/chain_theory/`) and new public computations (`scripts/chain_theory/`).
 **Author:** Mark E. Mala (pen name of Ekram Alam), with Claude
 **Series:** the first successor to *The Staked Gaps* (DOI 10.5281/zenodo.23338726, 13 October 2026),
 recording the first independent test of its predictions; companion to *The Tree of Reality*
@@ -560,3 +566,410 @@ here is his.
 - E. Størmer, Acta Math. 110, 233 (1963); S. L. Woronowicz, Rep. Math. Phys. 10, 165 (1976); M.-D. Choi, Linear Algebra Appl. 12, 95 (1975)
 - F. W. Lawvere, *Diagonal arguments and cartesian closed categories* (1969)
 - D. Mendeleev, *On the relationship of the properties of the elements to their atomic weights* (1869)
+
+
+---
+
+# Addendum (version 2, 28 October 2026): The Residuals, Tested
+
+### Seven tests run three days after v1: what held, what sharpened, what failed, and one error of our own
+
+## Summary of the addendum
+
+Version 1 pre-registered twelve residuals (R1–R12, §7), each with the result that would confirm it
+and the result that would refute the Tree at that site (§8). It promised that a refutation would be
+recorded with the same prominence as a confirmation. Between 25 and 28 October 2026 the residuals
+that could be run quickly were run: as Lean theorems where they were proofs, and as public scripts
+where they were computations. One further test was run that v1 had not listed, and it found an error
+in the Tree itself.
+
+**The outcomes, in one line each:**
+
+- **R1** (the three-generation bound on M₄): **holds, in a re-posed form.** The counting is a
+  theorem about frames of M₄ and M₃, machine-checked. The tensor-factor form v1 asked for is
+  provably impossible.
+- **R2** (the attach sites are i, j, k): **refuted.** No operators on Chain Theory's
+  three-dimensional generation space can satisfy the quaternion relations, and this is proved in
+  Lean. Per §8 this is a refutation at the L14 site, conditional on Chain Theory's own account of
+  generations, which is open on its side.
+- **R3** (the read cap on the colour block): **confirmed in shape (ii), refuted in shape (i).** The
+  decomposability threshold reappears across the Tree's bimodule cut exactly at the colour block;
+  the statement about the Dirac operator is false.
+- **R9 → R9′** (the improper element at M₁₆): **answered.** It singles out one factor and does not
+  exchange them. Exchanging the factors is the work of a different class of operations, so L12 is
+  re-posed as two separate choices.
+- **R11** (no register 5–8): **consistent from the Tree's side.** As a by-product, Chain Theory's
+  Conjecture 0 narrows the Tree's L11 from four alternatives to two.
+- **R4** (the continuum is unchanged): **consistent.** Nothing here touches G1, G3 or G4.
+- **R5, R6, R8, R10, R12:** **not yet run.** They are carried to v3 (§A8).
+- **Not pre-registered: the Higgs window (L15).** Read physically, with Standard-Model running,
+  the Tree's window **excludes the measured Higgs mass**. This is a correction of the Tree, found by
+  our own test. The same section compares Chain Theory's Higgs quartic, computed from its own
+  numbers, with the window.
+
+**No grade moves.** The scoreboard stays at 6 GENUINE · 13 PARTIAL · 3 POSTULATE · 2 OPEN. Section
+A8 lists what has become narrower or newly computable, as the work to attempt before v3.
+
+All files are public in `wonderben-code/convergence-codex`:
+
+- Lean: `lean_verify/chain_theory/Q4HubBound.lean` and `Q5TwoThrees.lean`, built in the estate as
+  the `ChainTheory` library; every theorem depends only on `propext`, `Classical.choice` and
+  `Quot.sound`.
+- Scripts: `scripts/chain_theory/` (`r9prime_parity_at_M16.py`, `q6_read_cap_on_colour_block.py`,
+  `q1_quartic_vs_window.py`, `q5_two_threes.py`, `q10_registers_vs_cascade.py`).
+- Write-up: `docs/chain-theory/09_results_second_pass.md`.
+
+## A1. The scorecard
+
+| # | Residual (v1 §7) | Confirms / refutes, as pre-registered | Outcome |
+|---|---|---|---|
+| R1 | L14(a) the ≤3 bound on M₄ | bound a theorem of M₂ ⊗ M₂ / bound needs the network | **Holds, re-posed.** The M₄ half (the hub is saturated) is a theorem of M₄ alone; the count of three uses the network's triangle; the tensor-factor form is impossible |
+| R2 | L14(b) attach sites = i, j, k | quaternion relations hold / sites commute or are not ℍ | **Refuted**, and more strongly than the kill-condition: no quaternion action exists on the generation space |
+| R3 | L23(a) the read cap on the spectral triple | a statement on the colour block / no algebraic statement | **Shape (ii) confirmed** (the bimodule cut); **shape (i) refuted** (the Dirac operator) |
+| R4 | L23(b) continuum unchanged | G1/G3/G4 unaffected | **Consistent** |
+| R5 | L21 the Born circle | — | not run |
+| R6 | L24 record space over M₂₅₆ | — | not run |
+| R7 | L9 Pell family | — | run in v1 (§7.1): holds and sharpens |
+| R8 | L7 three aspects | — | not run |
+| R9′ | L12 the improper element at M₁₆ | exchanges the factors, or singles one out / no action | **Singles one out.** The exchange belongs to anti-automorphisms; L12 is re-posed |
+| R10 | fourth level, the webs in M₂₅₆ | — | not run |
+| R11 | no register 5–8 | the census confirms / a 5-dimensional end | **Consistent** from the Tree's side; by-product: L11 narrows from 4 to 2 |
+| R12 | Weinberg 3/8 from the offices | — | not run |
+
+## A2. R1 · the bound transfers, as a theorem about frames
+
+**What Chain Theory's bound rests on.** Theorem 197.3 reads: *"a hub assembly is a ququart carrying
+a qubit pair among its qubit legs; the pair takes two of its four ends and every move applies at a
+site with spare alone, so a hub assembly admits at most the third generation at the hub dimension
+four."* The counting is Chain Theory's *valence law*: at most d pairs at a qudit of dimension d. The
+compendium reads this law off Definition 1.5, under which a read gives a qudit its only basis, *"one
+direction for each pair the qudit meets"*.
+
+Monogamy is respected by the copy model. A shared qudit *"holds one copy of itself for each of its
+pairs … much as a four-dimensional system, which has room for two qubits, can be maximally entangled
+with two separate qubits at once."*
+
+So "a ququart has four ends" can be read in two ways:
+
+- **additively**, as four directions of a frame; or
+- **multiplicatively**, as tensor factors.
+
+v1 posed R1 in the second reading. The Lean file `Q4HubBound.lean` tests both.
+
+| Theorem | Statement |
+|---|---|
+| A `card_le_of_orthogonal_idempotents` | nonzero idempotents of Mₙ(K) with PᵢPⱼ = 0 for i ≠ j number at most n (the valence law, read additively) |
+| B `hub_saturated` | an in-leg and three legs in M₄ leave no nonzero idempotent orthogonal to all four (no spare at a full hub) |
+| B′ `hub_legs_le_three` | beside an in-leg, at most three legs fit in M₄ |
+| C `core_spare_le_one` | in M₃, with two core ends taken, at most one further end fits |
+| C′ `core_attachments_le_three` | three such core qutrits admit at most three attachments in total |
+| `hub_hypotheses_satisfiable` | the four diagonal units of M₄ meet B's hypotheses (B is not vacuous) |
+| D `dvd_of_unital_algHom` | a unital algebra map M_m(K) → Mₙ(K) in characteristic 0 exists only if m divides n |
+| D′ | there is no unital M₃(ℂ) → M₄(ℂ) and no unital M₈(ℂ) → M₄(ℂ) |
+
+**Result.** The bound transfers as a theorem about **frames**:
+
+- the hub assembly fills M₄ (1 + 3 = 4, nothing spare);
+- the closed core triangle leaves one direction at each of its three qutrits;
+- so there are at most three attachments.
+
+In the tensor reading, R1's attribute fails. Theorem D shows the qubit pair already exhausts
+M₄ = M₂ ⊗ M₂, and a qutrit fits inside a ququart only as a *corner*, never as a tensor factor. That
+corner is the Tree's own L13 split, 4 = 3 ⊕ 1.
+
+**Against §8's kill-condition.** R1's kill-condition was "the bound needs the network and has no
+statement about M₄ alone". It is half met:
+
+- M₄ alone carries the saturation of the hub (Theorem B);
+- the count of three needs the triangle's shape, which Theorem C′ takes as a hypothesis, from the
+  network.
+
+We record R1 as holding in a re-posed form. The definition that carries the weight is Chain Theory's
+Definition 1.5, read on the carrier ℂ⁴.
+
+## A3. R2 · the attach sites are not the quaternions: a refutation, recorded as promised
+
+v1's §8 committed, before any test was run: *"if the attach sites are not quaternionic (R2
+refuted) … then the Tree is refuted at that site, on the branch it walks, and may not be excused …
+Each such refutation would be recorded with the same prominence as a confirmation."* This section
+does that.
+
+**Where each three lives, in Chain Theory's own words.** The derivation of Chain Theory's Theorem
+2.9 says: *"at a qubit end the commutator phase of two reads is a sign and their product one further
+traceless operator fixed under every matching, while a qutrit end carries a cube root."*
+
+- **The Tree's three** (L14) is the first structure. The imaginary quaternions i, j, k are a
+  qubit's three traceless directions: two reads that anticommute, and their product.
+- **Chain Theory's three** (197.4) is the second. The generations are the three *qutrit* corners of
+  the closed core triangle, spanning *"a generation space of dimension three"*, carried cyclically
+  by the shift (197.2). Their mixing is the order-three Fourier matrix (166.1).
+
+**What the Lean file `Q5TwoThrees.lean` proves:**
+
+- **(A) `twist_pow_eq_one`.** If invertible A and B on an n-dimensional space satisfy AB = c·BA,
+  then cⁿ = 1. So the commutator phase at a d-dimensional end is a d-th root of unity: a sign at a
+  qubit, a cube root at a qutrit. This is a second, independent proof of the clause quoted above.
+- **(B) `no_anticommuting_pair_of_odd`.** In odd dimension, no two invertible operators anticommute.
+- **(C) `no_quaternion_action_of_odd`.** There is no unital ℝ-algebra map ℍ → Mₙ(ℂ) for odd n, and
+  in particular none into M₃(ℂ).
+
+**The verdict.** R2's kill-condition was "the three attach-site operators commute, or generate
+something other than ℍ". The truth is stronger. Theorem C shows that **no operators whatever on
+Chain Theory's three-dimensional generation space realise the quaternion relations**, not even up
+to a phase. The two threes are different structures:
+
+- the Tree's: a qubit's three anticommuting directions, with commutator phase −1;
+- Chain Theory's: a qutrit triangle's three sites, with phase e^(2πi/3).
+
+**What is refuted, and what is not.** R2 predicted that Chain Theory's open result 197.5 ("three
+generations as attach sites") and the Tree's postulate L14 ("three generations are the imaginary
+quaternions") are one statement. They are not.
+
+The two programmes therefore give **different accounts of why there are three generations**, and
+the two accounts cannot be one mechanism. This is the refutation §8 promised to record. Three
+qualifications fix its scope:
+
+1. **The candidate is itself open.** §8 applies "if the candidates hold". Chain Theory's 197.5 is
+   an *open result* on its own side: the ladder is unmet at the sinks of its census. So the
+   refutation is of the *identification of the two accounts*, conditional on Chain Theory's.
+2. **L14's grade cannot fall.** L14 was a POSTULATE and remains one. What falls is §6.1's route to
+   GENUINE ("if both hold"). §6.1's fallback ("if (a) holds and (b) fails, L14 becomes 'bounded
+   above by theorem; selection open'") is **not** triggered. The bound of §A2 counts attach sites,
+   and R2 shows those are not the Tree's generations; to adopt the bound, the Tree would have to
+   adopt Chain Theory's account of generations in place of its own.
+3. **The consequence for *The Forced and the Chosen*.** It staked the hardening of L14 from
+   POSTULATE toward GENUINE. That hardening must now come from the quaternion side itself, not from
+   Chain Theory's attach sites.
+
+**What the two threes share.** One structure: an **oriented cyclic Z₃**.
+
+- In ℍ, the cycle i ↦ j ↦ k ↦ i is an inner automorphism (`cycle_is_inner`, conjugation by
+  u = (1 + i + j + k)/2). No automorphism swaps two units while fixing the third
+  (`no_orientation_reversing_swap`): ijk = −1 while kji = +1, so the quaternion triple has symmetry
+  Z₃, not S₃.
+- In Chain Theory, the triangle is carried by a directed shift.
+- The script `q5_two_threes.py` shows the cycle, written on Im ℍ in the basis (i, j, k), *is* the
+  site shift. Its eigenbasis against (i, j, k) is the order-three Fourier matrix, every squared
+  modulus 1/3 and every phase a multiple of a third of a turn, which is Chain Theory's eq. (250).
+
+This sharing is real but generic: any triple carried by a cycle has it. We do not count it as
+evidence. Chain Theory's polar unitary of the incidence matrix (197.4) is a rotation by 40.22°, not
+of order four and not about the cycle's axis. Like every rotation, it is an automorphism of the
+quaternion triple, so it carries no discriminating content.
+
+## A4. R3 · the read cap lands on the Tree's colour block
+
+**The Tree's object.** M₁₆ = End(M₄) = M₄ ⊗ M₄^op acts on the carrier M₄ = ℂ⁴ ⊗ ℂ⁴\*. The cut
+between the two factors is the bimodule's left–right cut (§A5). L13 splits ℂ⁴ = ℂ³ ⊕ ℂ¹, so the
+carrier has a **gluon corner** ℂ³ ⊗ ℂ³\*, the 3 ⊗ 3̄ = 8 + 1 of colour.
+
+**Shape (ii): the threshold reappears in the bimodule. Confirmed.** Horodecki's 3 × 3 state
+(parameter a = 0.3) was placed on the gluon corner (`q6_read_cap_on_colour_block.py`) and checked:
+
+- positive, with trace 1;
+- a positive partial transpose across the left–right cut;
+- entangled (realignment norm 1.003 > 1).
+
+It is therefore bound entangled, and no distillation can sharpen it. Against Chain Theory's read cap
+d₁d₂ ≤ 6, the Tree's blocks sort as follows:
+
+- **readable:** the isospin pair (2,2), the quark doublet (3,2) (exactly at the cap) and
+  colour–lepton (3,1);
+- **dark:** the gluon corner (3,3).
+
+**The cap falls exactly between the quark doublet and the gluon corner**, and L23 is about the
+gluon corner.
+
+**Shape (i): a statement about the Dirac operator. Refuted.** The statement was *"no conditional
+expectation onto a mutually-unbiased-basis subalgebra of the colour factor commutes with D on that
+block."* It is false for every colour-blind D = 1₃ ⊗ Y, which is the form of every finite
+Standard-Model Dirac operator. Such a D commutes with the whole colour factor, and so with every
+conditional expectation onto a colour subalgebra; this was checked in the computational and the
+Fourier bases.
+
+**Against §6.2.** §6.2 said that if (a) held, L23 would move to "mechanism stated, continuum limit
+open". We do not take that step. What holds is a *location*: Chain Theory's dark object exists on
+the Tree's carrier, at the colour block, across the cut where the Tree's left and right actions
+meet. It is not a mechanism for a mass gap, because no finite statement about (A, H, D) implies a
+gap. There is also a reason that applies to both programmes. Pure SU(3) Yang–Mills has a
+deconfining transition at finite temperature, with the same colour dimension on either side of it,
+so a dimension count alone cannot be what confines. A mechanism must enter through the state or the
+dynamics. **L23 stays ◇ OPEN**, and R4 holds: G1, G3 and G4 are untouched.
+
+## A5. R9′ · the improper element at M₁₆, and L12 re-posed
+
+v1's §7.1 found that R9 was posed on the wrong object, and re-posed it at M₁₆ = End(M₄)
+≅ M₄ ⊗ M₄^op. There the Tree's L12 lives: the left factor 𝓛 acts covariantly (ξ ↦ aξ) and the right
+factor 𝓡 contravariantly (ξ ↦ ξb), as in `F2_3_ChiralityForced`.
+
+**The test.** We used the Tree's γ₁…γ₄ (squares +1, +1, −1, −1), γ₅ = γ₁γ₂γ₃γ₄ and P = γ₁, and
+realised every canonical lift as a 16 × 16 matrix (`r9prime_parity_at_M16.py`). Each was tested on
+two things:
+
+- the two factors;
+- the carrier's split into 8 even and 8 odd Clifford elements, the eigenspaces of the grading
+  Ad γ₅.
+
+| Lift | the factors 𝓛, 𝓡 | the 8 + 8 halves |
+|---|---|---|
+| L(P): ξ ↦ Pξ (the improper element acting on spinors) | preserved; acts on 𝓛 alone | **exchanged** |
+| R(P): ξ ↦ ξP | preserved; acts on 𝓡 alone | **exchanged** |
+| Ad P, the reflection, Ad γ₅ (automorphisms) | preserved; act on both | preserved |
+| reversion, Clifford conjugation, transpose (anti-automorphisms) | **exchanged** | preserved |
+| J: ξ ↦ ξ† (antilinear; the real structure of a spectral triple) | **exchanged** | preserved |
+
+L(P) anticommutes with L(γ₅). Ad P commutes with Ad γ₅: the automorphism lift loses the sign that
+makes P a parity.
+
+**Outcome.**
+
+- R9′'s shape (ii) is realised. The improper element *singles out* one factor, and which one is the
+  side the spinors are taken on, a convention.
+- The kill-condition ("no action") is not met.
+
+The new fact is that the two binary choices are carried by **different classes of operations**:
+
+- exchanging the *factors*, which is L12 as the capstone words it ("which factor is left"), is done
+  only by anti-automorphisms, of the kind that act as charge conjugation in noncommutative geometry;
+- exchanging the *chiral halves* is done only by the improper element acting on spinors.
+
+**L12 is re-posed as two choices:**
+
+1. which factor is covariant: the 4 against the 4̄ of (4,2,1) ⊕ (4̄,1,2), a choice of the charge
+   conjugation kind;
+2. which chiral half SU(2)_L acts on: the parity choice.
+
+The grade is unchanged (POSTULATE). The capstone's single sentence named the first choice; parity
+violation is the second.
+
+## A6. R11 · registers, and what Conjecture 0 does for L11
+
+`q10_registers_vs_cascade.py` gives three results.
+
+- **Every register Chain Theory uses is generated by the Tree.** Register 2 is the seed's carrier,
+  4 is the next level's, and 3 is L13's split, 4 = 3 ⊕ 1. The cascade's levels 16 and 256 are
+  composites in Chain Theory, not registers.
+- **The Tree's walked branch never needs a single system larger than 4.** The Pati–Salam factors
+  are (4,2,2); after L13 they are (3,1,2,2); the fundamentals of su(4), su(3) and su(2) are 4, 3
+  and 2. This is consistent with R11 from the Tree's side. The census of Chain Theory's own move
+  table remains Chain Theory's to report: its Conjecture 0 is a conditional theorem under that
+  table.
+- **By-product: L11 narrows.** L11's residue is that nothing in the mathematics prefers (4,2,2)
+  among the three-factor decompositions of 16: (16,1,1), (8,2,1), (4,4,1) and (4,2,2). If every
+  nontrivial factor must be one of Chain Theory's registers, only **(4,4,1) and (4,2,2)** remain,
+  and the walked branch is one of them. The two survivors differ only in reading the second 4 as
+  one ququart or as a qubit pair, which is the identification Chain Theory's Theorem 65.2 makes
+  ("the hub pair as one qudit of dimension four"). This narrowing is conditional on Conjecture 0,
+  like R7's narrowing of L9.
+
+**The six genres on the Tree's objects:**
+
+- (2,2), spacetime: agree (Q2: Chain Theory's β is the Tree's γ₁).
+- (3,2): agree on the algebra. su(3)+su(2)+u(1), dimension 12, is both the cell's identification
+  algebra and the algebra acting on the Tree's quark doublet.
+- (4,2), weak: agree. It is the Pati–Salam (4,2,1) block, where SU(2)_L acts.
+- (3,3), strong: agree. It is the gluon corner of §A4.
+- The two Higgs cells, (4,3) and (4,4): open. The Tree's Higgs is the (1,2,2) bidoublet,
+  2 ⊗ 2 = 4 dimensions. Chain Theory's is a qubit pair read as one ququart (200.1, 65.2). They may
+  be one object, met through 65.2. This is posed in §A8, not claimed.
+
+## A7. A correction of our own: the Higgs window and the measured Higgs mass
+
+This test was not on v1's list. We ran it while comparing Chain Theory's Higgs quartic with the
+Tree's coupling window, and it found an error in how the Tree's window had been described.
+
+**The two numbers.**
+
+- **Chain Theory's quartic** (eq. 124 and Theorem 202.1) is the hub-face office over the vacuum
+  office squared: λ = (46656001681/182250000)/V², with V at six readings (6561, 81, 65536, 256, 16,
+  256). At the first reading, λ = 46656001681/7845264902250000 ≈ 5.947 × 10⁻⁶. Its convention,
+  m_H² = 2λv², matches the Tree's.
+- **The Tree's window** (L15, `HiggsBridge`) is g²/N ≤ λ̃ ≤ g² at the cutoff Λ, with N = 96 and
+  λ = 4λ̃. That is, g²/24 ≤ λ(Λ) ≤ 4g², with g = g₃(Λ).
+
+Chain Theory states no scale for its number, so the comparison is conditional on reading that
+number at the Tree's cutoff.
+
+**The running.** `q1_quartic_vs_window.py` evolves the Standard-Model couplings in the MS-bar
+scheme, with one loop in full plus the two-loop gauge terms and the dominant two-loop top, QCD and
+Higgs terms. The boundary values at m_t come from Buttazzo et al. (2013). **Validation:** the script
+gives λ(M_Pl) = −0.0141 against their −0.0143, and λ turns negative at 10^9.7 GeV against their
+~10¹⁰.
+
+| Test | Result |
+|---|---|
+| Chain Theory's number at the cutoff (Λ = 10¹³ … M_Pl) | first reading: **below** the window at every cutoff, by a factor of 1,700–2,400. The reading V = 81 (λ ≈ 0.039) is **inside** at every cutoff. V = 16 (λ ≈ 1.000) is inside up to 10¹⁷ GeV. |
+| Chain Theory's number as a running coupling | first reading: equal to the Standard Model's λ(μ) at μ ≈ 10^10.6 GeV, just below the scale where the measured λ crosses zero. This is a weak test, since any value in the Standard Model's range is met at some scale. |
+| **The Tree's window as a boundary condition at Λ = 10¹⁶ … M_Pl** | the lower edge needs λ(m_t) ≈ 0.139, so **m_H ≈ 131–132 GeV**; the upper edge needs m_H ≈ 168–176 GeV. **The measured 125.20 GeV lies below the window.** |
+| Robustness | the lower edge is strictly positive for every N (λ̃ = g²b/a² > 0), so no choice of N helps. λ(Λ) > 0 with m_H = 125.20 needs m_t < 171.0 GeV (published NNLO: about 171.5), against the measured 172.57 ± 0.29. |
+
+**What this corrects.** The capstone makes no 125 GeV claim, and the window is a theorem about a
+defined quantity, so **L15's grade does not change** (PARTIAL). But the estate's `HiggsBridge`
+documentation said that running from Λ to the electroweak scale *produces* about 125 GeV, citing
+the literature. With Standard-Model field content it does not.
+
+Read as a physical boundary condition at a high cutoff, the Tree's window **is in tension with the
+measured Higgs mass**: about 6 GeV in m_H, or about 1.5 GeV in m_t. This is the known difficulty of
+the spectral Standard Model, whose 2007 version predicted about 170 GeV. The literature reaches
+125 GeV by adding a scalar singlet σ (Chamseddine–Connes 2012), and that singlet appears naturally
+in Pati–Salam spectral models (Chamseddine–Connes–van Suijlekom 2013). The Tree does not yet contain
+it.
+
+The correction has been made where the claim appeared:
+
+- a dated note in `HiggsBridge`, beside the original text, which is kept;
+- the reference table `docs/WHERE_TODAYS_PHYSICS_SITS.md`;
+- the Tree page at infinitography.com, which had also wrongly called 125 GeV "the
+  Chamseddine–Connes value".
+
+This correction was found by testing a Tree link against measurement, and the repair it calls
+for is now a staked prediction (R13).
+
+## A8. What has become sharper: the work before v3
+
+Each item says what narrowed, what to compute, and what would confirm or refute. R13–R16 are new
+pre-registrations in the format of §7. The rest carry v1's residuals forward.
+
+| # | What | Narrowed from | Test | Confirms | Refutes (at that site) |
+|---|---|---|---|---|---|
+| **R13** | **The σ field.** The Tree's Pati–Salam finite geometry, with a Majorana entry in its finite Dirac operator, yields a scalar singlet σ, and with σ the boundary condition reproduces m_H ≈ 125 GeV | §A7 | (a) the Tree's Pati–Salam algebra admits the Majorana entry and the inner fluctuation that produces σ (first-order condition relaxed, as in CCvS 2013); (b) the Standard Model plus σ, run from Λ with the Chamseddine–Connes 2012 boundary conditions | σ arises and m_H lands at 125.2 within the running's error | no Majorana entry or no singlet on the Tree's algebra: **L15 is then refuted as physics** at the Higgs mass, not merely in tension |
+| **R14** | **The Higgs cells.** Chain Theory's closed hub read (200.1), realised on M₂ ⊗ M₂ (65.2), transforms as the Tree's (1,2,2) bidoublet under su(2) ⊕ su(2) | §A6 | build the hub read on the two qubits and decompose it under the two su(2)s | (2,2) | any other representation: the two Higgs fields are different objects |
+| **R15** | **Where the three generations live.** The Tree's own fermion count (96 = 3 × 16 × 2, the N = 96 of L15) carries the generations as a three-dimensional multiplicity space on which mixing acts. Decide which structure that space carries: the quaternion reading (real; symmetry SO(3); no intrinsic phase) or a qutrit reading (complex; Z₃ with ω; Fourier mixing) | §A3 | (a) state L14 as a structure on the multiplicity space, not on M₂(ℂ); (b) compute which Yukawa textures respect each structure and whether the observed CP phase is compatible | the quaternion reading admits the observed mixing with its phase from a stated source | the quaternion structure forbids CP violation in quark mixing with no other source: **L14's quaternion reading is refuted** |
+| **R16** | **The read cap through the vacuum.** If the read cap bears on confinement, it enters through the state: the vacuum of a minimal lattice gauge model, restricted to the colour block across the left–right cut, is bound entangled at strong coupling and not at weak coupling | §A4 | the reduced vacuum state of a small SU(3) or Z₃ lattice gauge model, partially transposed, across a range of couplings | bound entanglement tracks the confining regime | no bound entanglement in the confining regime: the read cap is not the mechanism on the Tree's side |
+| R1′ | Formalise the triangle | §A2 | state Chain Theory's closed core triangle as a structure in Mathlib and derive C′'s hypothesis from it | the count of three without network input | — |
+| R10 | The fourth level (from v1) | — | per-web dimension count of Chain Theory's sixteen particle webs, under the copy model, against M₂₅₆ | all fit | a web needs M₆₅₅₃₆ |
+| R6 | The record space over M₂₅₆ (from v1) | — | construct "one copy per link" from the inner-product lineage | the 172-record space | only the operator algebra (rank 66) |
+| R5, R8, R12 | The Born circle, the three aspects, Weinberg from the offices (from v1) | — | Q8, Q9, and the trace identification | as in §7 | as in §7 |
+| L11 | Choose between (4,4,1) and (4,2,2) | §A6 | whether Chain Theory's move table forces 65.2's qubit-pair reading | (4,2,2) forced | both admissible: L11's residue is one reading choice |
+
+R13 and R15 matter most. Each can refute a Tree link *as physics*, R13 at the Higgs mass and R15 at
+the quaternion account of generations, and each has a concrete computation behind it. We commit to
+running them before v3, and to recording either outcome here.
+
+## A9. Caveats, and provenance of this version
+
+**Caveats.** Everything in §§A2–A6 is finite mathematics about the two programmes' objects; none of
+it verifies a physical identification on either side.
+
+- §A7's running is one loop in full plus the dominant two-loop terms. It is validated against the
+  published NNLO results to about 0.0002 in λ(M_Pl), and its conclusion (a few GeV) is far larger
+  than that error.
+- Chain Theory's quartic is quoted at its six readings, and the choice among them is Chain Theory's
+  to make.
+- Each refutation and correction above is conditional exactly as stated.
+
+**Provenance.** The v1 text is unchanged above this addendum. The Lean files, scripts and the
+write-up were committed to `wonderben-code/convergence-codex` on 28 October 2026 (commits 13ad865
+and 97c65cb), and every push to that repository is anchored to the Bitcoin blockchain by
+OpenTimestamps. This version's text is committed before it is deposited. The dated record
+establishes the priority of the *predictions*. It makes no claim on anyone's solutions, and every
+result of Chain Theory cited here is his.
+
+## References added in v2
+
+- D. Buttazzo, G. Degrassi, P. P. Giardino, G. F. Giudice, F. Sala, A. Salvio and A. Strumia, *Investigating the near-criticality of the Higgs boson*, JHEP 12 (2013) 089
+- A. H. Chamseddine and A. Connes, *Resilience of the spectral standard model*, JHEP 09 (2012) 104
+- A. H. Chamseddine, A. Connes and W. D. van Suijlekom, *Beyond the spectral standard model: emergence of Pati–Salam unification*, JHEP 11 (2013) 132
+- P. Horodecki, *Separability criterion and inseparable mixed states with positive partial transposition*, Phys. Lett. A 232, 333 (1997)
+- Particle Data Group, *Review of Particle Physics* (2024): m_t = 172.57 ± 0.29 GeV, m_H = 125.20 ± 0.11 GeV
+- M. E. Mala, *Chain Theory ↔ the Tree of Reality: results, second pass*, `docs/chain-theory/09_results_second_pass.md` in `wonderben-code/convergence-codex` (28 Oct 2026)
