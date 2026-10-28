@@ -1,4 +1,4 @@
-# Results — second pass on Q4, R9′, Q6, Q1
+# Results — second pass on Q4, R9′, Q6, Q1, Q5, Q10
 
 **Date:** 28 October 2026. Computations in `scripts/chain_theory/`; the Q4 theorems in
 `lean_verify/chain_theory/Q4HubBound.lean` (Lean 4.29.1 + Mathlib, built in the estate as the
@@ -160,6 +160,87 @@ readings were tested.
   HiggsBridge docstring line, "the RG running from Λ to the electroweak scale producing ≈125 GeV
   (… cited)", is not supported with Standard-Model content and is proposed for correction.
 
+## Q5 · Are the three attach sites the three imaginary quaternions? — two different threes, sharing an oriented Z₃
+
+**File:** `lean_verify/chain_theory/Q5TwoThrees.lean` (standard axioms only); companion script
+`scripts/chain_theory/q5_two_threes.py`.
+
+**Where each three lives, in Chain Theory's own words.** The derivation of Theorem 2.9: "at a qubit
+end the commutator phase of two reads is a sign and their product one further traceless operator
+fixed under every matching, while a qutrit end carries a cube root." The Tree's i, j, k are the
+qubit's structure: two anticommuting reads and their product, the third traceless direction.
+Chain Theory's three generations are the three **qutrit** corners of the closed core triangle,
+spanning "a generation space of dimension three" (197.4) and carried cyclically by the shift
+(197.2).
+
+| Theorem | Statement |
+|---|---|
+| A `twist_pow_eq_one` | invertible A, B on an n-dimensional space with AB = c·BA force cⁿ = 1. This is a second proof of 2.9's clause: the phase at a d-dimensional end is a d-th root of unity |
+| B `no_anticommuting_pair_of_odd` | in odd dimension, no two invertible operators anticommute |
+| C `no_quaternion_action_of_odd`, `…_on_generation_space` | no unital ℝ-algebra map ℍ → Mₙ(ℂ) for odd n; none into M₃(ℂ) |
+| `cycle_is_inner` | conjugation by u = (1 + i + j + k)/2 cycles i ↦ j ↦ k ↦ i |
+| `no_orientation_reversing_swap`; `qi_qj_qk`, `qk_qj_qi` | no automorphism swaps i, j and fixes k; ijk = −1 while kji = +1 |
+
+**The script adds:**
+- The cycle, written on Im ℍ in the basis (i, j, k), *is* the site shift of the triangle.
+- Its eigenbasis against (i, j, k) is the order-3 Fourier matrix, with every squared modulus 1/3
+  and phases in thirds of a turn. That is Chain Theory's eq. (250) for the mixing.
+- The polar unitary of 197.4's incidence matrix is a rotation by 40.22° about (0.674, −0.300,
+  0.674). It is not of order four, and it is not about the cycle's axis.
+
+**Verdict.** This is Q5's second outcome, refined: **two different threes**.
+- The Tree's three is a qubit's three traceless directions, with commutator phase −1.
+- Chain Theory's three is a qutrit triangle's three sites, with phase e^{2πi/3}.
+
+Theorem C makes this a theorem rather than an impression: i, j, k cannot act on Chain Theory's
+generation space at all.
+
+**What the two threes share** is one structure, the **oriented cyclic Z₃**. In ℍ it is an inner
+automorphism, and the quaternion triple has symmetry Z₃, not S₃. In Chain Theory it is the directed
+shift, and it brings with it the same Fourier "momentum" basis (166.1). That sharing is real but
+generic: any cyclically carried triple has it. The two triples also both carry a sign around the
+cycle (ijk = −1; odd cycles take a half turn in Theorem 44.1). Whether those are one sign needs a
+quaternionic transport around the core triangle, which neither side defines.
+
+**What it shows.** Chain Theory's 197.5 and the Tree's L14 are **not the same statement**, and the
+two half-proofs do not complete each other. Q4's counting lemma remains a parallel route to "at
+most three", not a proof of L14. **L14 stays POSTULATE.** For *The Forced and the Chosen*, the
+staked hardening of L14 must come from the quaternions' own side (Frobenius plus a forcing
+argument), not from the attach sites.
+
+## Q10 · Chain Theory's registers against the cascade — every register generated; L11 narrows
+
+**Script:** `scripts/chain_theory/q10_registers_vs_cascade.py`.
+
+- **Every register is generated.** Register 2 is cascade level 1 (the seed's carrier), 4 is level
+  2, and 3 is L13's split 4 = 3 ⊕ 1. The cascade's levels 16 and 256 are composites in Chain
+  Theory: the two ends of a (4,4) link, and the home of the α object's third qubit (Q3).
+- **R11 holds on the Tree's side.** The walked branch never needs a single system above 4: the
+  Pati–Salam factors are (4,2,2); after L13 they are (3,1,2,2); the fundamentals of su(4), su(3)
+  and su(2) have dimensions 4, 3, 2.
+- **Conjecture 0 narrows L11.**
+  - L11's three-factor decompositions of 16 are (16,1,1), (8,2,1), (4,4,1) and (4,2,2), and nothing
+    in the mathematics prefers one.
+  - Requiring every nontrivial factor to be a Chain Theory register leaves **(4,4,1) and (4,2,2)**,
+    and the walked branch is among them.
+  - The two survivors differ only in reading the second 4 as one ququart or as a qubit pair, the
+    identification Chain Theory's 65.2 makes ("the hub pair as one qudit of dimension four").
+  - This is a conditional narrowing, like R7 at L9. It holds if Conjecture 0 does.
+- **The six genres sit on the Tree's objects:**
+  - (2,2), spacetime: agree, by Q2.
+  - (3,2): su(3)+su(2)+u(1), dimension 12, is both the cell's identification algebra and the algebra
+    acting on the Tree's quark doublet.
+  - (4,2), weak: agree; it is the Pati–Salam (4,2,1) block, where SU(2)_L acts.
+  - (3,3), strong: agree; it is the gluon corner, by Q6.
+  - The two Higgs cells, (4,3) and (4,4), are open. The Tree's Higgs is the (1,2,2) bidoublet,
+    2 ⊗ 2 = 4 dimensions. Chain Theory's is a qubit pair read as one ququart (200.1, 65.2). They
+    may be one object, met through 65.2. That is posed, not claimed.
+
+**What it shows.** This is Q10's first outcome: every register Chain Theory's networks require is
+generated by the cascade and its one split. In return, Chain Theory's register bound does
+something for the Tree that its own mathematics does not: it cuts L11's alternatives from four
+to two.
+
 ## What changed as a result
 
 - **06 / Q4:** answered, yes in the additive reading. The question as posed (tensor factors)
@@ -169,6 +250,8 @@ readings were tested.
 - **06 / Q1:** run from the compendium's own numbers. The comparison is conditional on scale and
   reading.
 - **R9′:** answered. L12 is re-posed as two binaries.
+- **06 / Q5:** answered: two different threes sharing an oriented Z₃. L14 is not completed by 197.5.
+- **06 / Q10:** answered: every register is generated. L11 narrows from 4 alternatives to 2 under Conjecture 0.
 - **Proposed corrections to the Tree:** the L12 wording (two binaries), and the L15 / HiggsBridge
   125 GeV line (tension with data under Standard-Model running, recorded as such).
 

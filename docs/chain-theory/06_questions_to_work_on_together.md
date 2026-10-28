@@ -68,6 +68,8 @@ tells Chain Theory which of its definitions carries the weight.
 
 ## Q5 · Do the three attach sites carry a quaternionic structure?
 
+> **Status 28 Oct 2026:** answered — no at the operator level (Lean: no quaternion action in odd dimension); the two threes share an oriented cyclic Z₃. See `09_results_second_pass.md`.
+
 **Needs.** Chain Theory's three core sites of the closed (3,3) triangle (83.1, 197.4). The
 Tree's ℍ ⊂ M₂(ℂ) with imaginary units i, j, k.
 
@@ -137,6 +139,8 @@ clause from Chain Theory as the premise. If no: the fourth aspect, whatever it i
 both programmes have missed.
 
 ## Q10 · Can End-iteration reproduce the move table behind Conjecture 0?
+
+> **Status 28 Oct 2026:** answered — every register (2, 3, 4) is a cascade level or L13's split; Conjecture 0 narrows L11 from 4 alternatives to 2. See `09_results_second_pass.md`.
 
 **Needs.** Chain Theory's move table (the moves that admit registers 2, 3, 4 and no others).
 The Tree's cascade and colour split.
