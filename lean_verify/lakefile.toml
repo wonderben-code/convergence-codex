@@ -75,4 +75,4 @@ roots = [
 [[lean_lib]]
 name = "ChainTheory"
 srcDir = "chain_theory"
-roots = ["Q4HubBound", "Q5TwoThrees", "R14R15HiggsAndPhases"]
+roots = ["Q4HubBound", "Q5TwoThrees", "R14R15HiggsAndPhases", "R8KnownGivesPairing"]

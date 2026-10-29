@@ -19,7 +19,7 @@ three meet (the spectral triple and everything built on it).
 | Why anything exists | Trunk, L1 (root) | Lawvere's fixed-point theorem: self-reference forces existence | GENUINE |
 | The first thing: a qubit | Trunk, L3 | M₂(ℂ), the smallest algebra over ℂ in which order of operations matters | GENUINE |
 | Growth, and the arrow of time | Trunk, L4–L5 | the cascade M₂ → M₄ → M₁₆ → M₂₅₆ → …, by End-iteration; irreversible | GENUINE |
-| The three lineages themselves | Trunk, L7 | End · Aut · ⟨·,·⟩ as the only canonical operations | POSTULATE (Chain Theory's three definitions may supply a derivation — Q9) |
+| The three lineages themselves | Trunk, L7 | End · Aut · ⟨·,·⟩ as the only canonical operations | POSTULATE. **R8 run (29 Oct):** under Chain Theory's knowledge clause, the pairing is *forced* by the carrier and its symmetries — the only invariant functional is the trace (Lean), whose GNS is ⟨·,·⟩ — and nothing fourth arises (FFT, checked to n, k ≤ 3). Candidate move to PARTIAL, pending founder ruling |
 | Spacetime is 4-dimensional | End, L8 | the two-qubit algebra M₄ *is* Cl₄(ℂ), and only in dimension 4 | GENUINE |
 | Special relativity (one time, three space) | End, L9; Lorentz group SO⁺(1,3) on Aut | the real Clifford algebra of signature (1,3) | PARTIAL (Euclidean alternative not fully excluded; Chain Theory's Pell argument excludes it — R7) |
 | Standard Model gauge forces (strong, weak, electromagnetic) | End, L10–L11 | su(3) ⊕ su(2) ⊕ u(1) embedded in M₁₆ = M₄ ⊗ M₄ via Pati–Salam | PARTIAL |
@@ -30,7 +30,7 @@ three meet (the spectral triple and everything built on it).
 | Weinberg angle (electroweak mixing) | End, L17 | sin²θ_W = 3/8 as an exact trace ratio on the chiral 16 | PARTIAL |
 | Anomaly cancellation (why the SM is consistent) | End, L16 | the perturbative anomaly table vanishes on the chiral 16 | PARTIAL |
 | Quantum mechanics (Hilbert space, Schrödinger equation, unitary evolution) | ⟨·,·⟩, L21 | GNS on the trace state → Hilbert space; Stone's theorem → Schrödinger | PARTIAL |
-| The Born rule (probabilities) | ⟨·,·⟩, under L21 | **cited input, not derived** (Gleason) | POSTULATE (Chain Theory derives it conditionally — Q8) |
+| The Born rule (probabilities) | ⟨·,·⟩, under L21 | **cited input** (Gleason); **R5 (29 Oct):** the circle closes — the twirl of the matchings leaves weight \|⟨Ω,x⟩\|² on the GNS vector Ω, which is Chain Theory's maximally entangled pair; only the reading of that weight as a probability remains | POSTULATE (narrowing to the interpretive step pending founder ruling) |
 | Gravity / general relativity (Einstein's equations) | Aut, L22 | the spectral action's heat-kernel expansion should yield the Einstein–Hilbert term | ◇ OPEN — gap G5, gated on G2 |
 | Quantum gravity | not a separate branch | gravity and the Standard Model come from *one* functional (the spectral action) on *one* Dirac operator: L18–L19 together with L22 | PARTIAL + OPEN |
 | Quantum field theory (fields, particles, rigorous QFT) | Crown, L18–L20 and L23 | spectral triple → spectral action → Boltzmann measure; Osterwalder–Schrader reconstruction → Wightman QFT | PARTIAL; reconstruction OPEN |
