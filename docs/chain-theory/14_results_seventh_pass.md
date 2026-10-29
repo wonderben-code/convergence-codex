@@ -157,3 +157,18 @@ The controls show the method finds an implementer whenever one exists.
 pass: 169 independent products). The third copy and the exchanges X and Y are rules on Chain Theory's
 record labels, not operations on the Hilbert space the Tree's lineages build. That part of the α
 count belongs to Chain Theory's own structure (Definitions 1.3 and 1.6), as Q3 first indicated.
+
+## Next solve paths (identified 29 October 2026, not yet attempted)
+
+Ranked by how strongly each could move the Tree:
+
+| | Path | What it could do |
+|---|---|---|
+| A | **L9 signature by KO-dimension.** Build the real structure for each indefinite signature on Cl₄, read off its KO-dimension, and add the Tree's ruled finite KO-dimension 6. Barrett (J. Math. Phys. 48, 012303 (2007)): a total of 0 mod 8 permits the Majorana–Weyl condition that removes fermion doubling. Sign conventions must be checked carefully before any claim. | Close L9's residue: Lorentzian forced, split (2,2) excluded, given the KO-6 ruling and the fermion-doubling condition. |
+| B | **A joint (m_H, m_t) fit with three-generation neutrino Yukawas.** One generation cannot fit both masses (n ≈ 1.66 for m_H, n ≈ 3.3 for m_t). Three generations bring two independent traces (tr Y_ν†Y_ν and tr (Y_ν†Y_ν)²) and the Yukawa–Majorana alignment. Add the seesaw with measured mass splittings and mixing (Casas–Ibarra). | Turn the top-mass failure into a fit, and predict the lightest neutrino mass, Σm_ν or the ordering, which JUNO, KATRIN and DESI/Euclid will test. The outcome is unknown; the fit may be under-determined. |
+| C | **Busch's theorem in Lean.** Any additive probability assignment on effects is tr(ρE), with a short proof. | Replace "Gleason, cited" in L21 with a proved theorem under one operational premise. |
+| D | **Degree-3 invariants in Lean**, then scope a general Schur–Weyl / First Fundamental Theorem formalisation. | Move L7 toward GENUINE. |
+| E | **The gauge group of each real form** of M₄ ⊕ M₄. | Show that observation (weak isospin is SU(2)) selects the quaternionic form, which files L18's real form as a fork fixed by observation. |
+| F | **The read cap through the vacuum** of a small lattice gauge model, by exact diagonalisation. | Test whether bound entanglement tracks confinement (speculative). |
+
+Out of reach for now: L22 (gravity, gated on the unbounded-operator library, G2) and L23 (the mass gap, G1/G3/G4).
