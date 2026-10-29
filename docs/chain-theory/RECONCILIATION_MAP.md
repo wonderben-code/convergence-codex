@@ -1,11 +1,9 @@
 # A reconciliation map: Chain Theory and the Tree of Reality
 
-**29 October 2026.** This is a working map of how two independent programmes fit together: A. D.
-Wissner-Gross's *Chain Theory* (23 October 2026) and the Tree of Reality (Mark E. Mala with Claude).
-Every row cites the computation or proof behind it, in this folder (results 08–13),
-`scripts/chain_theory/` and `lean_verify/chain_theory/`. It is offered to both programmes as a shared
-working document. Corrections from the Chain Theory side are welcome and will be recorded in
-`07_reading_log.md`.
+**29 October 2026.** A working map of how the Tree of Reality (Mark E. Mala with Claude) relates to
+A. D. Wissner-Gross's *Chain Theory* (23 October 2026), whose published work is cited throughout. Every
+row cites the computation or proof behind it: results 08–13 in this folder, `scripts/chain_theory/` and
+`lean_verify/chain_theory/`.
 
 ## The picture, stated as a hypothesis
 
@@ -48,7 +46,7 @@ The results of the last four days make this concrete in places. They do not prov
 Chain Theory's axiom makes every link maximally entangled. In the Tree's bidoublet reading, the
 physical Higgs vacuum is **almost a product state** (about 0.002 bits, R14). A maximally entangled
 vacuum would force m_t = m_b (Lean). Chain Theory assigns quark masses through the offices of
-separate webs, which may be its way past this. It is put here as a question, not a claim.
+separate webs, which may be its way past this. It is recorded as an open question, not a claim.
 
 ## Tests that would decide the hypothesis
 

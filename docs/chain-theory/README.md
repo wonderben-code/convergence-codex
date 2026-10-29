@@ -4,8 +4,8 @@
 so the two programmes can be studied together.**
 
 Started 25 October 2026, on first reading of the Chain Theory release of 23 October 2026.
-Maintained by Mark E. Mala (Ekram Alam) with Claude. Corrections from the Chain Theory side are
-very welcome — the whole point of this folder is to get the correspondences *right*.
+Maintained by Mark E. Mala (Ekram Alam) with Claude. Chain Theory is cited from its public documents
+of 23 October 2026; the aim of this folder is to get the correspondences *right*.
 
 ## Why this folder exists
 
